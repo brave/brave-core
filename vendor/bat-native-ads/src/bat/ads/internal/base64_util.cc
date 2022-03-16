@@ -6,16 +6,16 @@
 #include "bat/ads/internal/base64_util.h"
 
 #include "base/base64.h"
-#include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 
 namespace ads {
 
 std::vector<uint8_t> Base64ToBytes(const std::string& value_base64) {
-  std::string output;
-  base::Base64Decode(value_base64, &output);
+  std::string value_as_string;
+  base::Base64Decode(value_base64, &value_as_string);
 
-  const std::string hex_encoded = base::HexEncode(output.data(), output.size());
+  const std::string hex_encoded =
+      base::HexEncode(value_as_string.data(), value_as_string.size());
 
   std::vector<uint8_t> bytes;
   base::HexStringToBytes(hex_encoded, &bytes);

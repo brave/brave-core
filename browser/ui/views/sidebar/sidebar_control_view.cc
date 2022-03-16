@@ -16,6 +16,7 @@
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/common/webui_url_constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -201,8 +202,7 @@ void SidebarControlView::AddChildViews() {
 void SidebarControlView::OnButtonPressed(views::View* view) {
   if (view == sidebar_settings_view_) {
     browser_->sidebar_controller()->LoadAtTab(
-        GURL("brave://settings?search=" +
-             l10n_util::GetStringUTF8(IDS_SETTINGS_SIDEBAR_SHOW_OPTION_TITLE)));
+        GURL(chrome::kChromeUISettingsURL));
   }
 }
 

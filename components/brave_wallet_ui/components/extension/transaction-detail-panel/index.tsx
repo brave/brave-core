@@ -8,7 +8,7 @@ import { useExplorer, useTransactionParser } from '../../../common/hooks'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { getTransactionStatusString } from '../../../utils/tx-utils'
 import { toProperCase } from '../../../utils/string-utils'
-import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
+import { mojoTimeDeltaToJSDate } from '../../../utils/datetime-utils'
 import Amount from '../../../utils/amount'
 
 import { getLocale } from '../../../../common/locale'

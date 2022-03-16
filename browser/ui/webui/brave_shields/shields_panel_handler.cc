@@ -32,3 +32,13 @@ void ShieldsPanelHandler::CloseUI() {
     embedder->CloseUI();
   }
 }
+
+void ShieldsPanelHandler::OpenURL(const GURL& url) {
+  Browser* browser = chrome::FindBrowserWithWebContents(
+      webui_controller_->web_ui()->GetWebContents());
+
+  if (!browser)
+    return;
+
+  chrome::AddTabAt(browser, url, -1, true);
+}

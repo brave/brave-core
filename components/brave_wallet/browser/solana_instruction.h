@@ -10,12 +10,6 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
-
-namespace base {
-class Value;
-}  // namespace base
 
 namespace brave_wallet {
 
@@ -27,7 +21,7 @@ namespace brave_wallet {
 class SolanaInstruction {
  public:
   SolanaInstruction(const std::string& program_id,
-                    std::vector<SolanaAccountMeta>&& accounts,
+                    const std::vector<SolanaAccountMeta>& accounts,
                     const std::vector<uint8_t>& data);
   ~SolanaInstruction();
 
@@ -41,14 +35,6 @@ class SolanaInstruction {
     return accounts_;
   }
   const std::string& GetProgramId() const { return program_id_; }
-
-  mojom::SolanaInstructionPtr ToMojomSolanaInstruction() const;
-  base::Value ToValue() const;
-
-  static void FromMojomSolanaInstructions(
-      const std::vector<mojom::SolanaInstructionPtr>& mojom_instructions,
-      std::vector<SolanaInstruction>* instructions);
-  static absl::optional<SolanaInstruction> FromValue(const base::Value& value);
 
  private:
   std::string program_id_;

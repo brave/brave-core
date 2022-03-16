@@ -9,7 +9,6 @@
 
 #include "base/callback.h"
 #include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -42,24 +41,6 @@ namespace brave_wallet {
 
 namespace {
 
-void GetErrorCodeMessage(base::Value formed_response,
-                         mojom::ProviderError* error,
-                         std::string* error_message) {
-  if (!formed_response.is_dict()) {
-    *error = mojom::ProviderError::kSuccess;
-    error_message->clear();
-    return;
-  }
-  const base::Value* code = formed_response.FindKey("code");
-  if (code) {
-    *error = static_cast<mojom::ProviderError>(code->GetInt());
-  }
-  const base::Value* message = formed_response.FindKey("message");
-  if (message) {
-    *error_message = message->GetString();
-  }
-}
-
 void UpdateCustomNetworks(PrefService* prefs,
                           std::vector<base::Value>* values) {
   DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
@@ -76,26 +57,17 @@ void UpdateCustomNetworks(PrefService* prefs,
   }
 }
 
-void OnRequestResponse(bool* callback_called,
-                       bool expected_success,
-                       const std::string& expected_response,
-                       base::Value id,
-                       base::Value formed_response,
-                       const bool reject,
-                       const std::string& first_allowed_account,
-                       const bool update_bind_js_properties) {
+void OnRequestResponse(
+    bool* callback_called,
+    bool expected_success,
+    const std::string& expected_response,
+    const int status,
+    const std::string& response,
+    const base::flat_map<std::string, std::string>& headers) {
   *callback_called = true;
-  std::string response;
-  base::JSONWriter::Write(formed_response, &response);
-  mojom::ProviderError error;
-  std::string error_message;
-  GetErrorCodeMessage(std::move(formed_response), &error, &error_message);
-  bool success = error == brave_wallet::mojom::ProviderError::kSuccess;
-  EXPECT_EQ(expected_success, success);
-  if (!success) {
-    response = "";
-  }
+  bool success = status == 200;
   EXPECT_EQ(expected_response, response);
+  EXPECT_EQ(expected_success, success);
 }
 
 void OnStringResponse(bool* callback_called,
@@ -527,26 +499,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
           EXPECT_EQ(error_message, expected_error_message);
           run_loop.Quit();
         }));
-    run_loop.Run();
-  }
-
-  void TestGetSolanaSignatureStatuses(
-      const std::vector<std::string>& tx_signatures,
-      const std::vector<absl::optional<SolanaSignatureStatus>>& expected_stats,
-      mojom::SolanaProviderError expected_error,
-      const std::string& expected_error_message) {
-    base::RunLoop run_loop;
-    json_rpc_service_->GetSolanaSignatureStatuses(
-        tx_signatures,
-        base::BindLambdaForTesting(
-            [&](const std::vector<absl::optional<SolanaSignatureStatus>>& stats,
-                mojom::SolanaProviderError error,
-                const std::string& error_message) {
-              EXPECT_EQ(stats, expected_stats);
-              EXPECT_EQ(error, expected_error);
-              EXPECT_EQ(error_message, expected_error_message);
-              run_loop.Quit();
-            }));
     run_loop.Run();
   }
 
@@ -1143,14 +1095,13 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
   std::string request =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_blockNumber\",\"params\":"
       "[]}";
-  std::string result = "\"0xb539d5\"";
   std::string expected_response =
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" + result + "}";
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xb539d5\"}";
   SetInterceptor("eth_blockNumber", "true", expected_response);
   json_rpc_service_->Request(
-      request, true, base::Value(), mojom::CoinType::ETH,
+      request, true, mojom::CoinType::ETH,
       base::BindOnce(&OnRequestResponse, &callback_called, true /* success */,
-                     result));
+                     expected_response));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
@@ -1159,21 +1110,19 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_getBlockByNumber\","
       "\"params\":"
       "[\"0x5BAD55\",true]}";
-  result = "\"0xb539d5\"";
-  expected_response =
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" + result + "}";
+  expected_response = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xb539d5\"}";
   SetInterceptor("eth_getBlockByNumber", "0x5BAD55,true", expected_response);
   json_rpc_service_->Request(
-      request, true, base::Value(), mojom::CoinType::ETH,
+      request, true, mojom::CoinType::ETH,
       base::BindOnce(&OnRequestResponse, &callback_called, true /* success */,
-                     result));
+                     expected_response));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->Request(
-      request, true, base::Value(), mojom::CoinType::ETH,
+      request, true, mojom::CoinType::ETH,
       base::BindOnce(&OnRequestResponse, &callback_called, false /* success */,
                      ""));
   base::RunLoop().RunUntilIdle();
@@ -1186,7 +1135,6 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
                  "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xb539d5\"}");
   json_rpc_service_->GetBalance(
       "0x4e02f254184E904300e0775E4b8eeCB1", mojom::CoinType::ETH,
-      mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "0xb539d5"));
   base::RunLoop().RunUntilIdle();
@@ -1196,7 +1144,6 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->GetBalance(
       "0x4e02f254184E904300e0775E4b8eeCB1", mojom::CoinType::ETH,
-      mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
@@ -1207,7 +1154,6 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
   SetInvalidJsonInterceptor();
   json_rpc_service_->GetBalance(
       "0x4e02f254184E904300e0775E4b8eeCB1", mojom::CoinType::ETH,
-      mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
@@ -1215,20 +1161,9 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  json_rpc_service_->GetBalance(
-      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::CoinType::ETH, "",
-      base::BindOnce(&OnStringResponse, &callback_called,
-                     mojom::ProviderError::kInvalidParams,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
-                     ""));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-
-  callback_called = false;
   SetLimitExceededJsonErrorResponse();
   json_rpc_service_->GetBalance(
       "0x4e02f254184E904300e0775E4b8eeCB1", mojom::CoinType::ETH,
-      mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
                      "Request exceeds defined limit", ""));
@@ -1336,7 +1271,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
 
   json_rpc_service_->GetERC20TokenBalance(
       "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
-      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::kMainnetChainId,
+      "0x4e02f254184E904300e0775E4b8eeCB1",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "",
                      "0x00000000000000000000000000000000000000000000000166e12cf"
@@ -1348,7 +1283,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->GetERC20TokenBalance(
       "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
-      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::kMainnetChainId,
+      "0x4e02f254184E904300e0775E4b8eeCB1",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
@@ -1359,7 +1294,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
   SetInvalidJsonInterceptor();
   json_rpc_service_->GetERC20TokenBalance(
       "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
-      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::kMainnetChainId,
+      "0x4e02f254184E904300e0775E4b8eeCB1",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
@@ -1370,7 +1305,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
   SetLimitExceededJsonErrorResponse();
   json_rpc_service_->GetERC20TokenBalance(
       "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
-      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::kMainnetChainId,
+      "0x4e02f254184E904300e0775E4b8eeCB1",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
                      "Request exceeds defined limit", ""));
@@ -1380,18 +1315,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
   // Invalid input should fail.
   callback_called = false;
   json_rpc_service_->GetERC20TokenBalance(
-      "", "", mojom::kMainnetChainId,
-      base::BindOnce(&OnStringResponse, &callback_called,
-                     mojom::ProviderError::kInvalidParams,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
-                     ""));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-
-  callback_called = false;
-  json_rpc_service_->GetERC20TokenBalance(
-      "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
-      "0x4e02f254184E904300e0775E4b8eeCB1", "",
+      "", "",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
@@ -1882,7 +1806,6 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
   // Invalid inputs.
   json_rpc_service_->GetERC721TokenBalance(
       "", "0x1", "0x983110309620D911731Ac0932219af06091b6744",
-      mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
@@ -1893,7 +1816,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
   callback_called = false;
   json_rpc_service_->GetERC721TokenBalance(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "",
-      "0x983110309620D911731Ac0932219af06091b6744", mojom::kMainnetChainId,
+      "0x983110309620D911731Ac0932219af06091b6744",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
@@ -1904,18 +1827,6 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
   callback_called = false;
   json_rpc_service_->GetERC721TokenBalance(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1", "",
-      mojom::kMainnetChainId,
-      base::BindOnce(&OnStringResponse, &callback_called,
-                     mojom::ProviderError::kInvalidParams,
-                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
-                     ""));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-
-  callback_called = false;
-  json_rpc_service_->GetERC721TokenBalance(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
-      "0x983110309620D911731Ac0932219af06091b6744", "",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
@@ -1933,7 +1844,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
   callback_called = false;
   json_rpc_service_->GetERC721TokenBalance(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
-      "0x983110309620D911731Ac0932219af06091b6744", mojom::kMainnetChainId,
+      "0x983110309620D911731Ac0932219af06091b6744",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "0x1"));
   base::RunLoop().RunUntilIdle();
@@ -1943,7 +1854,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
   callback_called = false;
   json_rpc_service_->GetERC721TokenBalance(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
-      "0x983110309620d911731ac0932219af06091b6744", mojom::kMainnetChainId,
+      "0x983110309620d911731ac0932219af06091b6744",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "0x1"));
   base::RunLoop().RunUntilIdle();
@@ -1953,7 +1864,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
   callback_called = false;
   json_rpc_service_->GetERC721TokenBalance(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
-      "0x983110309620d911731ac0932219af06091b7811", mojom::kMainnetChainId,
+      "0x983110309620d911731ac0932219af06091b7811",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "0x0"));
   base::RunLoop().RunUntilIdle();
@@ -1962,7 +1873,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->GetERC721TokenBalance(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
-      "0x983110309620d911731ac0932219af06091b6744", mojom::kMainnetChainId,
+      "0x983110309620d911731ac0932219af06091b6744",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
@@ -1972,7 +1883,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
   SetInvalidJsonInterceptor();
   json_rpc_service_->GetERC721TokenBalance(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
-      "0x983110309620d911731ac0932219af06091b6744", mojom::kMainnetChainId,
+      "0x983110309620d911731ac0932219af06091b6744",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
@@ -1982,7 +1893,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
   SetLimitExceededJsonErrorResponse();
   json_rpc_service_->GetERC721TokenBalance(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
-      "0x983110309620d911731ac0932219af06091b6744", mojom::kMainnetChainId,
+      "0x983110309620d911731ac0932219af06091b6744",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
                      "Request exceeds defined limit", ""));
@@ -2093,9 +2004,7 @@ TEST_F(JsonRpcServiceUnitTest, Reset) {
   json_rpc_service_->switch_chain_requests_[GURL()] = "";
   json_rpc_service_->switch_chain_callbacks_[GURL()] =
       base::BindLambdaForTesting(
-          [&](base::Value id, base::Value formed_response, const bool reject,
-              const std::string& first_allowed_account,
-              const bool update_bind_js_properties) {});
+          [&](mojom::ProviderError error, const std::string& error_message) {});
 
   json_rpc_service_->Reset();
 
@@ -2296,88 +2205,10 @@ TEST_F(JsonRpcServiceUnitTest, MigrateMultichainNetworks) {
       selected_networks->FindStringKey(kSolanaPrefKey);
   ASSERT_TRUE(sol_selected_networks);
   EXPECT_EQ(*sol_selected_networks, mojom::kSolanaMainnet);
-
-  const std::string* fil_selected_networks =
-      selected_networks->FindStringKey(kFilecoinPrefKey);
-  ASSERT_TRUE(fil_selected_networks);
-  EXPECT_EQ(*fil_selected_networks, mojom::kFilecoinMainnet);
+  EXPECT_FALSE(selected_networks->FindStringKey(kFilecoinPrefKey));
 
   EXPECT_FALSE(prefs()->HasPrefPath(kBraveWalletCustomNetworksDeprecated));
   EXPECT_FALSE(prefs()->HasPrefPath(kBraveWalletCurrentChainId));
-}
-
-TEST_F(JsonRpcServiceUnitTest, GetSolanaSignatureStatuses) {
-  std::string json = R"(
-      {"jsonrpc":2.0, "id":1, "result":
-        {
-          "context": {"slot": 82},
-          "value": [
-            {
-              "slot": 9007199254740991,
-              "confirmations": 10,
-              "err": null,
-              "confirmationStatus": "confirmed"
-            },
-            {
-              "slot": 72,
-              "confirmations": 9007199254740991,
-              "err": null,
-              "confirmationStatus": "confirmed"
-            },
-            {
-              "slot": 1092,
-              "confirmations": null,
-              "err": {"InstructionError":[0,{"Custom":1}]},
-              "confirmationStatus": "finalized"
-            },
-            null
-          ]
-        }
-      }
-  )";
-  SetInterceptor("getSignatureStatuses", "", json);
-
-  std::vector<std::string> tx_sigs = {
-      "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpRzr"
-      "FmBV6UjKdiSZkQUW",
-      "5j7s6NiJS3JAkvgkoc18WVAsiSaci2pxB2A6ueCJP4tprA2TFg9wSyTLeYouxPBJEMzJinEN"
-      "TkpA52YStRW5Dia7",
-      "4VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpRzr"
-      "FmBV6UjKdiSZkQUW",
-      "45j7s6NiJS3JAkvgkoc18WVAsiSaci2pxB2A6ueCJP4tprA2TFg9wSyTLeYouxPBJEMzJinE"
-      "NTkpA52YStRW5Dia7"};
-
-  std::vector<absl::optional<SolanaSignatureStatus>> expected_statuses(
-      {SolanaSignatureStatus(kMaxSafeIntegerUint64, 10u, "", "confirmed"),
-       SolanaSignatureStatus(72u, kMaxSafeIntegerUint64, "", "confirmed"),
-       SolanaSignatureStatus(
-           1092u, 0u, R"({"InstructionError":[0,{"Custom":1}]})", "finalized"),
-       absl::nullopt});
-  TestGetSolanaSignatureStatuses(tx_sigs, expected_statuses,
-                                 mojom::SolanaProviderError::kSuccess, "");
-
-  // Response parsing error
-  SetInterceptor("getSignatureStatuses", "",
-                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}");
-  TestGetSolanaSignatureStatuses(
-      tx_sigs, std::vector<absl::optional<SolanaSignatureStatus>>(),
-      mojom::SolanaProviderError::kParsingError,
-      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-
-  // JSON RPC error
-  SetInterceptor("getSignatureStatuses", "",
-                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":"
-                 "{\"code\":-32601, \"message\": \"method does not exist\"}}");
-  TestGetSolanaSignatureStatuses(
-      tx_sigs, std::vector<absl::optional<SolanaSignatureStatus>>(),
-      mojom::SolanaProviderError::kMethodNotFound, "method does not exist");
-
-  // HTTP error
-  SetHTTPRequestTimeoutInterceptor();
-  TestGetSolanaSignatureStatuses(
-      tx_sigs, std::vector<absl::optional<SolanaSignatureStatus>>(),
-      mojom::SolanaProviderError::kInternalError,
-      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 }  // namespace brave_wallet

@@ -127,8 +127,7 @@ public class PortfolioHelper {
                                         balancesMultiResponse.singleResponseComplete);
                         context.userAsset = userAsset;
                         contexts.add(context);
-                        mJsonRpcService.getBalance(
-                                accountInfo.address, CoinType.ETH, mChainId, context);
+                        mJsonRpcService.getBalance(accountInfo.address, CoinType.ETH, context);
                     } else {
                         AsyncUtils.GetErc20TokenBalanceResponseContext context =
                                 new AsyncUtils.GetErc20TokenBalanceResponseContext(
@@ -138,7 +137,7 @@ public class PortfolioHelper {
                         mJsonRpcService.getErc20TokenBalance(
                                 Utils.getContractAddress(
                                         mChainId, userAsset.symbol, userAsset.contractAddress),
-                                accountInfo.address, mChainId, context);
+                                accountInfo.address, context);
                     }
                 }
             }

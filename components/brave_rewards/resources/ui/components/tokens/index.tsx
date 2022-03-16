@@ -18,7 +18,6 @@ export interface Props {
   isNegative?: boolean
   size?: Size
   color?: Type
-  showApproxSign?: boolean
 }
 
 export default class Tokens extends React.PureComponent<Props, {}> {
@@ -26,13 +25,12 @@ export default class Tokens extends React.PureComponent<Props, {}> {
     size: 'normal',
     color: 'default',
     currency: 'USD',
-    showApproxSign: false
+    toFixed: 'true'
   }
 
   render () {
-    const { id, converted, value, hideText, isNegative, size, color, currency, showApproxSign } = this.props
+    const { id, converted, value, hideText, isNegative, size, color, currency } = this.props
     const batFormatString = getLocale('bat')
-    const approxSign = showApproxSign ? '≈' : ''
 
     return (
       <StyledWrapper id={id} size={size} color={color}>
@@ -50,8 +48,8 @@ export default class Tokens extends React.PureComponent<Props, {}> {
         </StyledTokens>
         {
           converted !== undefined
-          ? <StyledContent showApproxSign={showApproxSign}>
-            {approxSign} {converted} {currency}
+          ? <StyledContent>
+            {converted} {currency}
           </StyledContent>
           : null
         }

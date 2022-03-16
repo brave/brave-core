@@ -27,8 +27,6 @@ public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
     private final List<String> mTitles =
             new ArrayList<>(Arrays.asList(mContext.getResources().getString(R.string.portfolio),
                     mContext.getResources().getString(R.string.accounts)));
-    private PortfolioFragment mCurrentPortfolioFragment;
-
     public CryptoFragmentPageAdapter(FragmentManager fm) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
@@ -39,8 +37,7 @@ public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
         if (position == 1) {
             return AccountsFragment.newInstance();
         } else {
-            mCurrentPortfolioFragment = PortfolioFragment.newInstance();
-            return mCurrentPortfolioFragment;
+            return PortfolioFragment.newInstance();
         }
     }
 
@@ -53,9 +50,5 @@ public class CryptoFragmentPageAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return mTitles.get(position);
-    }
-
-    public PortfolioFragment getCurrentPortfolioFragment() {
-        return mCurrentPortfolioFragment;
     }
 }

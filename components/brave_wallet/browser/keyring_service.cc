@@ -630,7 +630,7 @@ HDKeyring* KeyringService::ResumeKeyring(const std::string& keyring_id,
     if (keyring_id == mojom::kFilecoinKeyringId) {
       auto* filecoin_keyring = static_cast<FilecoinKeyring*>(keyring);
       if (filecoin_keyring) {
-        filecoin_keyring->RestoreFilecoinAccount(
+        filecoin_keyring->ImportFilecoinAccount(
             private_key, imported_account_info.account_address);
       }
     } else {
@@ -848,11 +848,11 @@ bool KeyringService::IsKeyringExist(const std::string& keyring_id) const {
   return keyrings_.contains(keyring_id) || IsKeyringCreated(keyring_id);
 }
 
-void KeyringService::ImportFilecoinAccount(
+void KeyringService::ImportFilecoinSECP256K1Account(
     const std::string& account_name,
     const std::string& private_key_hex,
     const std::string& network,
-    ImportFilecoinAccountCallback callback) {
+    ImportFilecoinSECP256K1AccountCallback callback) {
   DCHECK(IsFilecoinEnabled());
   if (!LazilyCreateKeyring(mojom::kFilecoinKeyringId)) {
     VLOG(1) << "Unable to create Filecoin keyring";
@@ -865,32 +865,73 @@ void KeyringService::ImportFilecoinAccount(
     return;
   }
   std::vector<uint8_t> private_key;
-  mojom::FilecoinAddressProtocol protocol;
-  if (!FilecoinKeyring::DecodeImportPayload(private_key_hex, &private_key,
-                                            &protocol)) {
+  if (!base::HexStringToBytes(private_key_hex, &private_key)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  auto address = ImportSECP256K1AccountForFilecoinKeyring(account_name,
+                                                          private_key, network);
+  if (!address) {
     std::move(callback).Run(false, "");
     return;
   }
 
+  std::move(callback).Run(true, *address);
+}
+
+void KeyringService::ImportFilecoinBLSAccount(
+    const std::string& account_name,
+    const std::string& private_key_hex,
+    const std::string& network,
+    ImportFilecoinBLSAccountCallback callback) {
+  DCHECK(IsFilecoinEnabled());
+  if (!LazilyCreateKeyring(mojom::kFilecoinKeyringId)) {
+    VLOG(1) << "Unable to create Filecoin keyring";
+    return;
+  }
+
+  if (account_name.empty() || private_key_hex.empty() ||
+      !encryptors_[mojom::kFilecoinKeyringId]) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  std::vector<uint8_t> private_key;
+  if (!base::HexStringToBytes(private_key_hex, &private_key)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  auto address =
+      ImportBLSAccountForFilecoinKeyring(account_name, private_key, network);
+  if (!address) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::move(callback).Run(true, *address);
+}
+
+absl::optional<std::string>
+KeyringService::ImportSECP256K1AccountForFilecoinKeyring(
+    const std::string& account_name,
+    const std::vector<uint8_t>& private_key,
+    const std::string& network) {
   auto* keyring = static_cast<FilecoinKeyring*>(
       GetHDKeyringById(mojom::kFilecoinKeyringId));
   if (!keyring) {
-    std::move(callback).Run(false, "");
-    return;
+    return absl::nullopt;
   }
 
   const std::string address =
-      keyring->ImportFilecoinAccount(private_key, network, protocol);
+      keyring->ImportFilecoinSECP256K1Account(private_key, network);
   if (address.empty()) {
-    std::move(callback).Run(false, "");
-    return;
+    return absl::nullopt;
   }
   std::vector<uint8_t> encrypted_key;
   if (!encryptors_[mojom::kFilecoinKeyringId]->Encrypt(
           private_key, GetOrCreateNonceForKeyring(mojom::kFilecoinKeyringId),
           &encrypted_key)) {
-    std::move(callback).Run(false, "");
-    return;
+    return absl::nullopt;
   }
   ImportedAccountInfo info(account_name, address,
                            base::Base64Encode(encrypted_key),
@@ -899,7 +940,38 @@ void KeyringService::ImportFilecoinAccount(
 
   NotifyAccountsChanged();
 
-  std::move(callback).Run(true, address);
+  return address;
+}
+
+absl::optional<std::string> KeyringService::ImportBLSAccountForFilecoinKeyring(
+    const std::string& account_name,
+    const std::vector<uint8_t>& private_key,
+    const std::string& network) {
+  auto* keyring = static_cast<FilecoinKeyring*>(
+      GetHDKeyringById(mojom::kFilecoinKeyringId));
+  if (!keyring) {
+    return absl::nullopt;
+  }
+
+  const std::string address =
+      keyring->ImportFilecoinBLSAccount(private_key, network);
+  if (address.empty()) {
+    return absl::nullopt;
+  }
+  std::vector<uint8_t> encrypted_key;
+  if (!encryptors_[mojom::kFilecoinKeyringId]->Encrypt(
+          private_key, GetOrCreateNonceForKeyring(mojom::kFilecoinKeyringId),
+          &encrypted_key)) {
+    return absl::nullopt;
+  }
+  ImportedAccountInfo info(account_name, address,
+                           base::Base64Encode(encrypted_key),
+                           mojom::CoinType::FIL);
+  SetImportedAccountForKeyring(prefs_, info, mojom::kFilecoinKeyringId);
+
+  NotifyAccountsChanged();
+
+  return address;
 }
 
 void KeyringService::ImportAccount(const std::string& account_name,
@@ -1010,8 +1082,6 @@ void KeyringService::GetPrivateKeyForImportedAccount(
     std::string encoded_private_key;
     if (keyring_id == mojom::kSolanaKeyringId) {
       encoded_private_key = Base58Encode(private_key);
-    } else if (keyring_id == mojom::kFilecoinKeyringId) {
-      encoded_private_key = base::Base64Encode(private_key);
     } else {
       encoded_private_key = base::ToLowerASCII(base::HexEncode(private_key));
     }

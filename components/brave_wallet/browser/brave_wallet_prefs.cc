@@ -64,8 +64,7 @@ base::Value GetDefaultSelectedNetworks() {
                                  brave_wallet::mojom::kMainnetChainId);
   selected_networks.SetStringKey(brave_wallet::kSolanaPrefKey,
                                  brave_wallet::mojom::kSolanaMainnet);
-  selected_networks.SetStringKey(brave_wallet::kFilecoinPrefKey,
-                                 brave_wallet::mojom::kFilecoinMainnet);
+  // TODO(spylogsster): Add Filecoin
 
   return selected_networks;
 }

@@ -79,8 +79,7 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
 export const getBalance = (address: string): Promise<string> => {
   return new Promise(async (resolve, reject) => {
     const { jsonRpcService } = getAPIProxy()
-    const chainId = await jsonRpcService.getChainId(BraveWallet.CoinType.ETH)
-    const result = await jsonRpcService.getBalance(address, BraveWallet.CoinType.ETH, chainId.chainId)
+    const result = await jsonRpcService.getBalance(address, BraveWallet.CoinType.ETH)
     if (result.error === BraveWallet.ProviderError.kSuccess) {
       resolve(Amount.normalize(result.balance))
     } else {
@@ -189,10 +188,10 @@ export function refreshVisibleTokenInfo (currentNetwork: BraveWallet.NetworkInfo
 export function refreshBalances () {
   return async (dispatch: Dispatch, getState: () => State) => {
     const { jsonRpcService } = getAPIProxy()
-    const { wallet: { accounts, userVisibleTokensInfo, selectedNetwork } } = getState()
+    const { wallet: { accounts, userVisibleTokensInfo } } = getState()
 
     const getBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
-      const balanceInfo = await jsonRpcService.getBalance(account.address, account.coin, selectedNetwork.chainId)
+      const balanceInfo = await jsonRpcService.getBalance(account.address, account.coin)
       return balanceInfo
     }))
     await dispatch(WalletActions.nativeAssetBalancesUpdated({
@@ -204,9 +203,9 @@ export function refreshBalances () {
     const getBlockchainTokenBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
       return Promise.all(visibleTokens.map(async (token) => {
         if (token.isErc721) {
-          return jsonRpcService.getERC721TokenBalance(token.contractAddress, token.tokenId ?? '', account.address, selectedNetwork.chainId)
+          return jsonRpcService.getERC721TokenBalance(token.contractAddress, token.tokenId ?? '', account.address)
         }
-        return jsonRpcService.getERC20TokenBalance(token.contractAddress, account.address, selectedNetwork.chainId)
+        return jsonRpcService.getERC20TokenBalance(token.contractAddress, account.address)
       }))
     }))
 
@@ -404,32 +403,4 @@ export function refreshSitePermissions () {
     const accountsWithPermission: Array<WalletAccountType | undefined> = getAllPermissions.filter((account) => account !== undefined)
     dispatch(WalletActions.setSitePermissions({ accounts: accountsWithPermission }))
   }
-}
-
-/**
- * Check if the keyring associated with the given account AND the network
- * support the EIP-1559 fee market for paying gas fees.
- *
- * This method can also be used to determine if the given parameters support
- * EVM Type-2 transactions. The return value is always false for non-EVM
- * networks.
- *
- * @param {WalletAccountType} account
- * @param {BraveWallet.NetworkInfo} network
- * @returns {boolean} Returns a boolean result indicating EIP-1559 support.
- */
-export function hasEIP1559Support (account: WalletAccountType, network: BraveWallet.NetworkInfo) {
-  let keyringSupportsEIP1559
-  switch (account.accountType) {
-    case 'Primary':
-    case 'Secondary':
-    case 'Ledger':
-    case 'Trezor':
-      keyringSupportsEIP1559 = true
-      break
-    default:
-      keyringSupportsEIP1559 = false
-  }
-
-  return keyringSupportsEIP1559 && (network.data?.ethData?.isEip1559 ?? false)
 }

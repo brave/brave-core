@@ -89,7 +89,6 @@ TEST_F(GeminiUtilTest, GetAuthorizeUrl) {
             "crypto:send,"
             "account:read,"
             "payments:create,"
-            "payments:send,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=my-state"
             "&response_type=code");
@@ -106,7 +105,6 @@ TEST_F(GeminiUtilTest, GetAuthorizeUrl) {
             "crypto:send,"
             "account:read,"
             "payments:create,"
-            "payments:send,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=my-state"
             "&response_type=code");
@@ -214,7 +212,6 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
             "crypto:send,"
             "account:read,"
             "payments:create,"
-            "payments:send,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=aaabbbccc"
             "&response_type=code");
@@ -233,7 +230,6 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
             "crypto:send,"
             "account:read,"
             "payments:create,"
-            "payments:send,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=aaabbbccc"
             "&response_type=code");
@@ -253,7 +249,6 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
             "crypto:send,"
             "account:read,"
             "payments:create,"
-            "payments:send,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=aaabbbccc"
             "&response_type=code");
@@ -272,7 +267,6 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
             "crypto:send,"
             "account:read,"
             "payments:create,"
-            "payments:send,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=aaabbbccc"
             "&response_type=code");
@@ -291,7 +285,6 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
             "crypto:send,"
             "account:read,"
             "payments:create,"
-            "payments:send,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=aaabbbccc"
             "&response_type=code");
@@ -310,7 +303,6 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
             "crypto:send,"
             "account:read,"
             "payments:create,"
-            "payments:send,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=aaabbbccc"
             "&response_type=code");

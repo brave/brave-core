@@ -20,7 +20,6 @@ class MojoBubbleWebUIController;
 using brave_shields::BraveShieldsDataController;
 using brave_shields::mojom::SiteBlockInfo;
 using brave_shields::mojom::SiteSettings;
-using favicon::FaviconDriver;
 
 class ShieldsPanelDataHandler : public brave_shields::mojom::DataHandler,
                                 public BraveShieldsDataController::Observer,
@@ -46,16 +45,13 @@ class ShieldsPanelDataHandler : public brave_shields::mojom::DataHandler,
   void SetIsNoScriptsEnabled(bool is_enabled) override;
   void SetHTTPSEverywhereEnabled(bool is_enabled) override;
   void SetBraveShieldsEnabled(bool is_enabled) override;
-  void OpenWebCompatWindow() override;
 
  private:
   BraveShieldsDataController* GetActiveShieldsDataController();
   void UpdateSiteBlockInfo();
 
-  // BraveShieldsDataController::Observer
+  // brave_shields::BraveShieldsDataController
   void OnResourcesChanged() override;
-  void OnFaviconUpdated() override;
-
   // TabStripModelObserver
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,

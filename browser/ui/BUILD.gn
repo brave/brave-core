@@ -182,15 +182,6 @@ source_set("ui") {
       "views/web_discovery_dialog_view.h",
     ]
 
-    # Enable FirstRun dialog on Win.
-    # Upstream only includes it on mac/Linux.
-    if (is_win) {
-      sources += [
-        "//chrome/browser/ui/views/first_run_dialog.cc",
-        "//chrome/browser/ui/views/first_run_dialog.h",
-      ]
-    }
-
     if (use_aura) {
       sources += [
         "views/renderer_context_menu/brave_render_view_context_menu_views.cc",
@@ -260,6 +251,7 @@ source_set("ui") {
     "//brave/app/theme:brave_unscaled_resources",
     "//brave/app/vector_icons:vector_icons",
     "//brave/browser:sparkle_buildflags",
+    "//brave/browser/devtools",
     "//brave/browser/gcm_driver",
     "//brave/browser/profiles",
     "//brave/browser/tor",
@@ -565,6 +557,13 @@ source_set("ui") {
         "views/toolbar/brave_vpn_toggle_button.h",
       ]
     }
+  }
+
+  if (is_win) {
+    sources += [
+      "webui/settings/ms_edge_protocol_message_handler.cc",
+      "webui/settings/ms_edge_protocol_message_handler.h",
+    ]
   }
 
   if (is_win && is_official_build) {

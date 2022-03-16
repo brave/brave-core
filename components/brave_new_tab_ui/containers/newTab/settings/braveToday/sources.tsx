@@ -145,7 +145,7 @@ export default function Sources (props: SourcesProps) {
             </SettingsRow>
           ))}
           <Styled.FeedInputLabel>
-            Feed URL
+            Feed Url
             <Styled.FeedInput type={'text'} value={feedInputText} onChange={onChangeFeedInput} />
           </Styled.FeedInputLabel>
           {(feedInputIsValid === FeedInputValidity.NotValid) &&

@@ -154,7 +154,7 @@ void EthTxManager::AddUnapprovedTransaction(
   if (from.empty()) {
     std::move(callback).Run(
         false, "",
-        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
+        l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_FROM_EMPTY));
     return;
   }
   std::string error;
@@ -166,7 +166,8 @@ void EthTxManager::AddUnapprovedTransaction(
   if (!tx) {
     std::move(callback).Run(
         false, "",
-        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_CONVERT_TX_DATA));
+        l10n_util::GetStringUTF8(
+            IDS_WALLET_ETH_SEND_TRANSACTION_CONVERT_TX_DATA));
     return;
   }
 
@@ -277,7 +278,7 @@ void EthTxManager::AddUnapproved1559Transaction(
   if (from.empty()) {
     std::move(callback).Run(
         false, "",
-        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
+        l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_FROM_EMPTY));
     return;
   }
   std::string error;
@@ -289,7 +290,8 @@ void EthTxManager::AddUnapproved1559Transaction(
   if (!tx) {
     std::move(callback).Run(
         false, "",
-        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_CONVERT_TX_DATA));
+        l10n_util::GetStringUTF8(
+            IDS_WALLET_ETH_SEND_TRANSACTION_CONVERT_TX_DATA));
     return;
   }
 
@@ -449,22 +451,7 @@ void EthTxManager::ProcessHardwareSignature(
   meta->set_status(mojom::TransactionStatus::Approved);
   tx_state_manager_->AddOrUpdateTx(*meta);
   auto data = meta->tx()->GetSignedTransaction();
-
-  auto internal_callback =
-      base::BindOnce(&EthTxManager::ContinueProcessHardwareSignature,
-                     weak_factory_.GetWeakPtr(), std::move(callback));
-
-  PublishTransaction(tx_meta_id, data, std::move(internal_callback));
-}
-
-void EthTxManager::ContinueProcessHardwareSignature(
-    ProcessHardwareSignatureCallback callback,
-    bool status,
-    mojom::ProviderErrorUnionPtr error_union,
-    const std::string& error_message) {
-  DCHECK(error_union && error_union->is_provider_error());
-  std::move(callback).Run(status, error_union->get_provider_error(),
-                          error_message);
+  PublishTransaction(tx_meta_id, data, std::move(callback));
 }
 
 void EthTxManager::ApproveTransaction(const std::string& tx_meta_id,
@@ -474,9 +461,7 @@ void EthTxManager::ApproveTransaction(const std::string& tx_meta_id,
   if (!meta) {
     LOG(ERROR) << "No transaction found";
     std::move(callback).Run(
-        false,
-        mojom::ProviderErrorUnion::NewProviderError(
-            mojom::ProviderError::kResourceNotFound),
+        false, mojom::ProviderError::kResourceNotFound,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
     return;
   }
@@ -486,9 +471,7 @@ void EthTxManager::ApproveTransaction(const std::string& tx_meta_id,
                          &chain_id)) {
     LOG(ERROR) << "Could not convert chain ID";
     std::move(callback).Run(
-        false,
-        mojom::ProviderErrorUnion::NewProviderError(
-            mojom::ProviderError::kInternalError),
+        false, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_ETH_INVALID_CHAIN_ID_RPC));
     return;
   }
@@ -515,9 +498,7 @@ void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
     tx_state_manager_->AddOrUpdateTx(*meta);
     LOG(ERROR) << "GetNextNonce failed";
     std::move(callback).Run(
-        false,
-        mojom::ProviderErrorUnion::NewProviderError(
-            mojom::ProviderError::kInternalError),
+        false, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_ETH_GET_NONCE_ERROR));
     return;
   }
@@ -530,9 +511,7 @@ void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
   if (!meta->tx()->IsSigned()) {
     LOG(ERROR) << "Transaction must be signed first";
     std::move(callback).Run(
-        false,
-        mojom::ProviderErrorUnion::NewProviderError(
-            mojom::ProviderError::kInternalError),
+        false, mojom::ProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_ETH_SIGN_TRANSACTION_ERROR));
     return;
   }
@@ -558,9 +537,7 @@ void EthTxManager::OnPublishTransaction(std::string tx_meta_id,
   if (!meta) {
     DCHECK(false) << "Transaction should be found";
     std::move(callback).Run(
-        false,
-        mojom::ProviderErrorUnion::NewProviderError(
-            mojom::ProviderError::kResourceNotFound),
+        false, mojom::ProviderError::kResourceNotFound,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
     return;
   }
@@ -579,9 +556,7 @@ void EthTxManager::OnPublishTransaction(std::string tx_meta_id,
     UpdatePendingTransactions();
   }
 
-  std::move(callback).Run(error_message.empty(),
-                          mojom::ProviderErrorUnion::NewProviderError(error),
-                          error_message);
+  std::move(callback).Run(error_message.empty(), error, error_message);
 }
 
 void EthTxManager::MakeERC20TransferData(

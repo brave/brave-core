@@ -44,12 +44,10 @@ source_set("ads") {
   ]
 }
 
-ios_objc_mojom_wrappers("ads_mojom_wrappers") {
+mojom_wrappers("ads_mojom_wrappers") {
   mojom_target =
       "//brave/vendor/bat-native-ads/include/bat/ads/public/interfaces"
-  sources = [
-    "//brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom",
-  ]
+  mojom_file = "//brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom"
   exclude_types = [
     "DBCommand",
     "DBCommandBinding",

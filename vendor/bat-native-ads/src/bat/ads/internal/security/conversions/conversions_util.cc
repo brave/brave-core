@@ -38,7 +38,7 @@ bool IsConversionIdValid(const std::string& conversion_id) {
 
 }  // namespace
 
-absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
+absl::optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
     const VerifiableConversionInfo& verifiable_conversion) {
   const std::string message = verifiable_conversion.id;
   const std::string public_key_base64 = verifiable_conversion.public_key;

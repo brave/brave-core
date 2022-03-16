@@ -17,6 +17,10 @@ import {
   SignHardwareTransactionOperationResult
 } from '../types'
 
+export function encodeKeyToHex (key: string): string {
+  return Buffer.from(key, 'base64').toString('hex')
+}
+
 export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
   private deviceId: string
   private provider?: LedgerProvider
