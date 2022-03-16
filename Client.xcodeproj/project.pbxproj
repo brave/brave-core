@@ -1141,6 +1141,7 @@
 		D3C3696E1CC6B78800348A61 /* LocalRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C3696D1CC6B78800348A61 /* LocalRequestHelper.swift */; };
 		D3D488591ABB54CD00A93597 /* FileAccessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D488581ABB54CD00A93597 /* FileAccessorTests.swift */; };
 		D3FEC38D1AC4B42F00494F45 /* AutocompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FEC38C1AC4B42F00494F45 /* AutocompleteTextField.swift */; };
+		D51CD9C727DBC6A600C01104 /* PortfolioStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51CD9C627DBC6A600C01104 /* PortfolioStoreTests.swift */; };
 		D83822001FC7961D00303C12 /* DispatchQueueExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83821FF1FC7961D00303C12 /* DispatchQueueExtensions.swift */; };
 		D863C8F21F68BFC20058D95F /* GradientProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D863C8E31F68BFC20058D95F /* GradientProgressBar.swift */; };
 		D8D33A7D1FBD080300A20A28 /* SnapKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D33A7C1FBD080300A20A28 /* SnapKitExtensions.swift */; };
@@ -3100,6 +3101,7 @@
 		D3FA777A1A43B2990010CD32 /* SearchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTests.swift; sourceTree = "<group>"; };
 		D3FA77831A43B2CE0010CD32 /* OpenSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenSearch.swift; sourceTree = "<group>"; };
 		D3FEC38C1AC4B42F00494F45 /* AutocompleteTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteTextField.swift; sourceTree = "<group>"; };
+		D51CD9C627DBC6A600C01104 /* PortfolioStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioStoreTests.swift; sourceTree = "<group>"; };
 		D83821FF1FC7961D00303C12 /* DispatchQueueExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueueExtensions.swift; sourceTree = "<group>"; };
 		D863C8E31F68BFC20058D95F /* GradientProgressBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientProgressBar.swift; sourceTree = "<group>"; };
 		D8D33A7C1FBD080300A20A28 /* SnapKitExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapKitExtensions.swift; sourceTree = "<group>"; };
@@ -4172,6 +4174,7 @@
 				7DF911DE27726E5E00EF0D8B /* BuyTokenStoreTest.swift */,
 				279115362755597200033843 /* SendTokenStoreTests.swift */,
 				7DF911BF276A8D1600EF0D8B /* SwapTokenStoreTests.swift */,
+				D51CD9C627DBC6A600C01104 /* PortfolioStoreTests.swift */,
 				277309E72721DF6D007643F6 /* WeiFormatterTests.swift */,
 				27EA1B0D2729E6C8003C5CF9 /* AddressTests.swift */,
 				7DC52B1E273D9D230067E237 /* WalletArrayExtensionTests.swift */,
@@ -7970,6 +7973,7 @@
 			files = (
 				2792CBD5275952C40055151E /* PasteboardTests.swift in Sources */,
 				279115422755597200033843 /* SendTokenStoreTests.swift in Sources */,
+				D51CD9C727DBC6A600C01104 /* PortfolioStoreTests.swift in Sources */,
 				27EA1B0E2729E6C8003C5CF9 /* AddressTests.swift in Sources */,
 				7DF911DF27726E5E00EF0D8B /* BuyTokenStoreTest.swift in Sources */,
 				7DC52B1F273D9D230067E237 /* WalletArrayExtensionTests.swift in Sources */,
