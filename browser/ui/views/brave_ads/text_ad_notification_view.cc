@@ -52,11 +52,11 @@ constexpr SkColor kDarkModeBodyColor = SkColorSetRGB(0xd7, 0xdb, 0xe2);
 
 const int kBodyMaximumLines = 2;
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const int kBodyLineSpacing = 0;
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
 const int kBodyLineSpacing = 2;
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
 const int kBodyLineSpacing = 2;
 #endif
 

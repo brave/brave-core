@@ -6,6 +6,7 @@
 #include "bat/ads/internal/platform/platform_helper.h"
 
 #include "base/memory/singleton.h"
+#include "build/build_config.h"
 
 namespace ads {
 
@@ -39,8 +40,8 @@ PlatformHelper* PlatformHelper::GetInstance() {
   return GetInstanceImpl();
 }
 
-#if !defined(OS_ANDROID) && !defined(OS_APPLE) && !defined(OS_LINUX) && \
-    !defined(OS_WIN)
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_APPLE) && !BUILDFLAG(IS_LINUX) && \
+    !BUILDFLAG(IS_WIN)
 PlatformHelper* PlatformHelper::GetInstanceImpl() {
   // Return a default platform helper for unsupported platforms
   return base::Singleton<PlatformHelper>::get();

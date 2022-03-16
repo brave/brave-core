@@ -77,7 +77,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/common/chrome_paths.h"
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/fullscreen.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -103,7 +103,7 @@
 #include "ui/message_center/public/cpp/notification_types.h"
 #include "ui/message_center/public/cpp/notifier_id.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/notifications/brave_notification_platform_bridge_helper_android.h"
 #include "chrome/browser/android/service_tab_launcher.h"
 #include "chrome/browser/android/tab_android.h"
@@ -920,7 +920,7 @@ void AdsServiceImpl::SetEnvironment() {
   environment = ads::mojom::Environment::kStaging;
 #endif
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   if (GetBooleanPref(brave_rewards::prefs::kUseRewardsStagingServer)) {
     environment = ads::mojom::Environment::kStaging;
   }
@@ -961,7 +961,7 @@ bool AdsServiceImpl::IsDebug() const {
 }
 
 void AdsServiceImpl::StartCheckIdleStateTimer() {
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   idle_poll_timer_.Stop();
 
   idle_poll_timer_.Start(FROM_HERE, base::Seconds(1), this,
@@ -1186,7 +1186,7 @@ void AdsServiceImpl::OpenNewTabWithUrl(const std::string& url) {
     return;
   }
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   // ServiceTabLauncher can currently only launch new tabs
   const content::OpenURLParams params(gurl, content::Referrer(),
                                       WindowOpenDisposition::NEW_FOREGROUND_TAB,
@@ -1722,7 +1722,7 @@ bool AdsServiceImpl::IsUpgradingFromPreBraveAdsBuild() {
   // |prefs::kEnabled| is set to true, |prefs::kIdleTimeThreshold| does not
   // exist, |prefs::kVersion| does not exist and it is not the first time the
   // browser has run for this user
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   return GetBooleanPref(ads::prefs::kEnabled) &&
          !PrefExists(ads::prefs::kIdleTimeThreshold) &&
          !PrefExists(prefs::kVersion) && !first_run::IsChromeFirstRun();
@@ -1817,7 +1817,7 @@ bool AdsServiceImpl::IsForeground() const {
 }
 
 bool AdsServiceImpl::IsFullScreen() const {
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   return IsFullScreenMode();
 #else
   return true;
@@ -1885,7 +1885,7 @@ void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
                 "service.ads_service"),
             notification_data, nullptr);
 
-#if !defined(OS_MAC) || defined(OFFICIAL_BUILD)
+#if !BUILDFLAG(IS_MAC) || defined(OFFICIAL_BUILD)
     // set_never_timeout uses an XPC service which requires signing so for now
     // we don't set this for macos dev builds
     notification->set_never_timeout(true);
@@ -1899,7 +1899,7 @@ void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
 }
 
 void AdsServiceImpl::StartNotificationTimeoutTimer(const std::string& uuid) {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   if (!ShouldShowCustomAdNotifications()) {
     return;
   }
@@ -1953,7 +1953,7 @@ void AdsServiceImpl::CloseNotification(const std::string& uuid) {
 
     platform_bridge->CloseAdNotification(uuid);
   } else {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     const std::string brave_ads_url_prefix = kAdNotificationUrlPrefix;
     const GURL service_worker_scope =
         GURL(brave_ads_url_prefix.substr(0, brave_ads_url_prefix.size() - 1));

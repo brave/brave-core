@@ -26,7 +26,7 @@ int AdNotificationTimeout();
 
 extern const base::Feature kCustomAdNotifications;
 bool IsCustomAdNotificationsEnabled();
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 int AdNotificationFadeDuration();
 std::string AdNotificationDarkModeBackgroundColor();
 bool ShouldAttachAdNotificationToBrowserWindow();
@@ -34,7 +34,7 @@ double AdNotificationNormalizedDisplayCoordinateX();
 int AdNotificationInsetX();
 double AdNotificationNormalizedDisplayCoordinateY();
 int AdNotificationInsetY();
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 extern const base::Feature kAllowedToFallbackToCustomAdNotifications;
 bool IsAllowedToFallbackToCustomAdNotificationsEnabled();

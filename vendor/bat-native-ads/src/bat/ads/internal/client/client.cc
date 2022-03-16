@@ -23,6 +23,7 @@
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
+#include "build/build_config.h"
 
 namespace ads {
 
@@ -125,7 +126,7 @@ void Client::Initialize(InitializeCallback callback) {
 }
 
 void Client::AppendAdHistory(const AdHistoryInfo& ad_history) {
-#if !defined(OS_IOS)
+#if !BUILDFLAG(IS_IOS)
   DCHECK(is_initialized_);
 
   client_->ads_shown_history.push_front(ad_history);

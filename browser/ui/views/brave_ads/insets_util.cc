@@ -13,7 +13,7 @@ namespace brave_ads {
 
 void AdjustInsetsForFontList(gfx::Insets* insets,
                              const gfx::FontList& font_list) {
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   // On Windows, the fonts can have slightly different metrics reported,
   // depending on where the code runs. In Chrome, DirectWrite is on, which means
   // font metrics are reported from Skia, which rounds from float using ceil.

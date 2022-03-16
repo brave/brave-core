@@ -40,8 +40,8 @@ NotificationHelper* NotificationHelper::GetInstance() {
   return GetInstanceImpl();
 }
 
-#if !defined(OS_MAC) && !defined(OS_WIN) && !defined(OS_LINUX) && \
-    !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_WIN) && !BUILDFLAG(IS_LINUX) && \
+    !BUILDFLAG(IS_ANDROID)
 NotificationHelper* NotificationHelper::GetInstanceImpl() {
   // Return a default notification helper for unsupported platforms
   return base::Singleton<NotificationHelper>::get();

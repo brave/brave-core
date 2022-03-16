@@ -22,7 +22,7 @@
 #include "bat/ads/internal/logging.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "base/android/build_info.h"
 #include "base/system/sys_info.h"
 #endif
@@ -33,7 +33,7 @@ namespace {
 
 AdNotifications* g_ad_notifications = nullptr;
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 const int kMaximumAdNotifications = 3;
 #else
 const int kMaximumAdNotifications = 0;  // No limit
@@ -179,7 +179,7 @@ uint64_t AdNotifications::Count() const {
   return ad_notifications_.size();
 }
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 void AdNotifications::RemoveAllAfterReboot() {
   database::table::AdEvents database_table;
   database_table.GetAll([=](const bool success, const AdEventList& ad_events) {
