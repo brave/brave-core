@@ -6,21 +6,29 @@
 #include <map>
 #include <string>
 
+#include "base/containers/flat_map.h"
+
 namespace brave_federated {
 
 class DataStoreService;
+struct AdNotificationTimingTaskLog;
 class EligibilityService;
 class Client;
 
 class LearningService {
  public:
-  LearningService(DataStoreService* data_store_service, EligibilityService* eligibility_service);
+  LearningService(
+      DataStoreService* data_store_service, 
+      EligibilityService* eligibility_service);
   ~LearningService();
 
   void StartLearning();
   void StopLearning();
 
  private:
+  void AdNotificationLogsLoadComplete(
+      base::flat_map<int, AdNotificationTimingTaskLog> logs);
+
   DataStoreService* data_store_service_;
   EligibilityService* eligibility_service_;
   std::map<std::string, Client*> clients_;

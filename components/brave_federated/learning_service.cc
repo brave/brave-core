@@ -11,6 +11,9 @@
 #include "brave/components/brave_federated/client/client.h"
 #include "brave/components/brave_federated/data_store_service.h"
 #include "brave/components/brave_federated/data_stores/ad_notification_timing_data_store.h"
+#include "brave/components/brave_federated/eligibility_service.h"
+
+#include <iostream>
 
 namespace brave_federated {
 
@@ -23,11 +26,14 @@ LearningService::LearningService(
     auto* ad_timing_data_store = data_store_service_->GetAdNotificationTimingDataStore();
     std::string model = "model";
     Client* ad_notification_client = new Client(kAdNotificationTaskName, model);
-    ad_timing_data_store->LoadLogs([&ad_notification_client](std::map<int, AdNotificationTimingTaskLog> logs) {
-        ad_notification_client->SetLogs("logs");
-    });
+    auto callback = base::BindOnce(&LearningService::AdNotificationLogsLoadComplete,
+                                 base::Unretained(this));
+    ad_timing_data_store->LoadLogs(std::move(callback));
 
     clients_.insert(std::make_pair("task_name", std::move(ad_notification_client)));
+    eligibility_service_->IsEligibileForFederatedTask();
+
+    
 }
 
 LearningService::~LearningService() {}
@@ -42,6 +48,11 @@ void LearningService::StopLearning() {
     for ( auto it = clients_.begin(); it != clients_.end(); ++it ) {
         it->second->Stop();
     } 
+}
+
+void LearningService::AdNotificationLogsLoadComplete(
+    base::flat_map<int, AdNotificationTimingTaskLog> logs) {
+    std::cerr << "Yo" << std::endl;
 }
 
 }

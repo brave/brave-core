@@ -8,6 +8,7 @@
 
 #include <string>
 #include <memory>
+#include <vector>
 
 namespace brave_federated {
 
@@ -16,9 +17,14 @@ class Client {
   Client(const std::string& task_name, const std::string& model);
   ~Client();
 
-  void SetLogs(const std::string& logs);
+  void SetTrainingData(std::vector<std::vector<float>> training_data);
   void Start();
   void Stop();
+
+ private:
+  std::string task_name_ = "";
+  std::string model_ = "";
+  std::vector<std::vector<float>> training_data_;
 };
 
 } // namespace brave_federated
