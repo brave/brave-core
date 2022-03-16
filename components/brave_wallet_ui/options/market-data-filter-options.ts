@@ -7,23 +7,7 @@ export const AssetFilterOptions = (): AssetFilter[] => [
     label: getLocale('braveWalletMarketDataAllAssetsFilter')
   },
   {
-    value: 'watchlist',
-    label: getLocale('braveWalletMarketDataWatchlistFilter')
-  },
-  {
     value: 'tradable',
     label: getLocale('braveWalletMarketDataTradableFilter')
-  },
-  {
-    value: 'solana',
-    label: getLocale('braveWalletMarketDataSolanaFilter')
-  },
-  {
-    value: 'ethereum',
-    label: getLocale('braveWalletMarketDataEthereumFilter')
-  },
-  {
-    value: 'bsc',
-    label: getLocale('braveWalletMarketDataBscFilter')
   }
 ]

@@ -568,8 +568,12 @@ export interface NFTMetadataReturnType {
   }
 }
 
+export type AssetFilterOption =
+  | 'all'
+  | 'tradable'
+
 export type AssetFilter = {
-  value: string
+  value: AssetFilterOption
   label: string
 }
 

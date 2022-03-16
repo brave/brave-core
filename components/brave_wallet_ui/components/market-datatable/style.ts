@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export interface StyleProps {
-  alignment: 'right' | 'left'
+  alignment: 'right' | 'left' | 'center'
 }
 
 export const StyledWrapper = styled.div`
@@ -34,7 +34,18 @@ export const AssetsColumnItemSpacer = styled.div`
 `
 export const TextWrapper = styled.div<StyleProps>`
   display: flex;
-  justify-content: ${p => p.alignment === 'right' ? 'flex-end' : 'flex-start'};
+  justify-content: ${p => {
+    switch (p.alignment) {
+      case 'left':
+        return 'flex-start'
+      case 'right':
+        return 'flex-end'
+      case 'center':
+        return 'center'
+      default:
+        return 'center'
+    }
+  }};
   width: 100%;
   font-family: Poppins;
   font-size: 14px;

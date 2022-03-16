@@ -704,6 +704,7 @@ function Container (props: Props) {
                 isLoadingCoinMarketData={isLoadingCoinMarketData}
                 coinMarkets={coinMarketData}
                 onFetchCoinMarkets={onFetchCoinMarkets}
+                tradableAssets={swapAssetOptions}
               />
             }
           </Route>

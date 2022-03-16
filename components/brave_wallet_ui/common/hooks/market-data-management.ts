@@ -15,7 +15,7 @@ export const useMarketDataManagement = (marketData: BraveWallet.CoinMarket[], so
     return sortedMarketData
   }, [marketData, sortOrder, columnId])
 
-  const filterCoinMarketData = React.useCallback((searchList: BraveWallet.CoinMarket[], searchTerm: string) => {
+  const searchCoinMarkets = React.useCallback((searchList: BraveWallet.CoinMarket[], searchTerm: string) => {
     if (!searchTerm) {
       return searchList
     }
@@ -40,6 +40,6 @@ export const useMarketDataManagement = (marketData: BraveWallet.CoinMarket[], so
 
   return {
     sortCoinMarketData,
-    filterCoinMarketData
+    searchCoinMarkets
   }
 }

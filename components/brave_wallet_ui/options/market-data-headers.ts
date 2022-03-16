@@ -1,3 +1,4 @@
+import { getLocale } from '../../common/locale'
 import { MarketDataHeader } from '../components/market-datatable'
 
 const alignRight = {
@@ -7,10 +8,10 @@ const alignRight = {
 // The id field matches values in MarketDataTableColumnTypes
 // which match property fields in CoinMarketMetadata
 // this helps in finding the correct header to sort by
-export const MarketDataTableHeaders = [
+export const marketDataTableHeaders = [
   {
     id: 'assets',
-    content: 'Assets',
+    content: getLocale('braveWalletMarketDataAssetsColumn'),
     customStyle: {
       width: 350,
       paddingLeft: 10
@@ -18,7 +19,7 @@ export const MarketDataTableHeaders = [
   },
   {
     id: 'currentPrice',
-    content: 'Price',
+    content: getLocale('braveWalletMarketDataPriceColumn'),
     sortable: true,
     customStyle: {
       ...alignRight,
@@ -27,7 +28,7 @@ export const MarketDataTableHeaders = [
   },
   {
     id: 'priceChangePercentage24h',
-    content: '24hr',
+    content: getLocale('braveWalletMarketData24HrColumn'),
     sortable: true,
     customStyle: {
       ...alignRight
@@ -35,7 +36,7 @@ export const MarketDataTableHeaders = [
   },
   {
     id: 'marketCap',
-    content: 'Mkt. Cap',
+    content: getLocale('braveWalletMarketDataMarketCapColumn'),
     sortable: true,
     sortOrder: 'desc',
     customStyle: {
@@ -44,7 +45,7 @@ export const MarketDataTableHeaders = [
   },
   {
     id: 'totalVolume',
-    content: 'Volume',
+    content: getLocale('braveWalletMarketDataVolumeColumn'),
     sortable: true,
     customStyle: {
       ...alignRight

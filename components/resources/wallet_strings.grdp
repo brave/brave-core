@@ -438,9 +438,10 @@
     Enter now!
   </message>
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_ALL_ASSETS_FILTER" desc="Label text for all assets in market data filter">All Assets</message>
-  <message name="IDS_BRAVE_WALLET_MARKET_DATA_WATCHLIST_FILTER" desc="Label text for watchlist in market data filter"> Watchlist</message>
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_TRADABLE_FILTER" desc="Label text for tradable in market data filter">Tradable</message>
-  <message name="IDS_BRAVE_WALLET_MARKET_DATA_SOLANA_FILTER" desc="Label text for solana in market data filter">Solana</message>
-  <message name="IDS_BRAVE_WALLET_MARKET_DATA_ETHEREUM_FILTER" desc="Label text for ethereum in market data filter">Ethereum</message>
-  <message name="IDS_BRAVE_WALLET_MARKET_DATA_BSC_FILTER" desc="Label text for binance smart chain in market data filter">BSC</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_ASSETS_COLUMN" desc="Market data table assets column name">Assets</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_PRICE_COLUMN" desc="Market data table price column name">Price</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_24Hr_COLUMN" desc="Market data table 24 hour percentage price change column name">24hr</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_MARKETCAP_COLUMN" desc="Market data table market cap column name">Mkt. Cap</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_VOLUME_COLUMN" desc="Market data table volume column name">Volume</message>
 </grit-part>

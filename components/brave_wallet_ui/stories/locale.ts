@@ -481,9 +481,10 @@ provideStrings({
 
   // Market Data Filters
   braveWalletMarketDataAllAssetsFilter: 'All Assets',
-  braveWalletMarketDataWatchlistFilter: 'Watchlist',
   braveWalletMarketDataTradableFilter: 'Tradable',
-  braveWalletMarketDataSolanaFilter: 'Solana',
-  braveWalletMarketDataEthereumFilter: 'Ethereum',
-  braveWalletMarketDataBscFilter: 'BSC'
+  braveWalletMarketDataAssetsColumn: 'Assets',
+  braveWalletMarketDataPriceColumn: 'Price',
+  braveWalletMarketData24HrColumn: '24Hr',
+  braveWalletMarketDataMarketCapColumn: 'Mkt. Cap',
+  braveWalletMarketDataVolumeColumn: 'Volume'
 })

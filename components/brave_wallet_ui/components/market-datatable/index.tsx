@@ -16,7 +16,6 @@ import {
 } from '../../utils/format-prices'
 import AssetNameAndIcon from '../asset-name-and-icon'
 import AssetPriceChange from '../asset-price-change'
-import AssetWishlistStar from '../asset-wishlist-star'
 import { LoadIcon, LoadIconWrapper } from '../desktop/views/market/style'
 
 export interface MarketDataHeader extends Header {
@@ -55,11 +54,12 @@ const MarketDataTable = (props: Props) => {
 
     const cellsContent: React.ReactNode[] = [
       <AssetsColumnWrapper>
-        <AssetsColumnItemSpacer>
+        {/* Hidden until wishlist feature is available on the backend */}
+        {/* <AssetsColumnItemSpacer>
           <AssetWishlistStar active={true} />
-        </AssetsColumnItemSpacer>
+        </AssetsColumnItemSpacer> */}
         <AssetsColumnItemSpacer>
-          <TextWrapper alignment="right">{marketCapRank}</TextWrapper>
+          <TextWrapper alignment="center">{marketCapRank}</TextWrapper>
         </AssetsColumnItemSpacer>
         <AssetNameAndIcon
           assetName={name}
