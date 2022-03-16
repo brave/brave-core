@@ -110,7 +110,7 @@ def InvokeChromiumGenerateSymbols(args, lib_paths):
 
             try:
                 # Invoke the original Chromium script
-                args_to_pass = ['python',
+                args_to_pass = ['vpython3',
                                 chromium_script,
                                 '--build-dir=' + args.build_dir,
                                 '--symbols-dir=' + args.symbols_dir,
