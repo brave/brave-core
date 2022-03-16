@@ -26,7 +26,6 @@ class EthNonceTracker : public NonceTracker {
   EthNonceTracker(TxStateManager* tx_state_manager,
                   JsonRpcService* json_rpc_service);
   ~EthNonceTracker() override;
-  EthNonceTracker operator=(const EthNonceTracker&) = delete;
 
   // NonceTracker
   void GetNextNonce(const std::string& from,
@@ -38,11 +37,11 @@ class EthNonceTracker : public NonceTracker {
       uint256_t start) override;
 
  private:
-  void OnEthGetNetworkNonce(const std::string& from,
-                            GetNextNonceCallback callback,
-                            uint256_t result,
-                            mojom::ProviderError error,
-                            const std::string& error_message);
+  void OnGetNetworkNonce(const std::string& from,
+                         GetNextNonceCallback callback,
+                         uint256_t network_nonce,
+                         mojom::ProviderError error,
+                         const std::string& error_message);
 
   base::WeakPtrFactory<EthNonceTracker> weak_factory_;
 };

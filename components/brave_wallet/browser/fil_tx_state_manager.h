@@ -9,13 +9,8 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
-#include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/fil_address.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
 
@@ -41,10 +36,6 @@ class FilTxStateManager : public TxStateManager {
  private:
   std::unique_ptr<TxMeta> ValueToTxMeta(const base::Value& value) override;
   std::string GetTxPrefPathPrefix() override;
-
-  std::string chain_id_;
-  std::string network_url_;
-  base::WeakPtrFactory<FilTxStateManager> weak_factory_;
 };
 
 }  // namespace brave_wallet

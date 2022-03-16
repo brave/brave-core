@@ -7,19 +7,20 @@
 
 #include <utility>
 
-#include "base/logging.h"
+#include "base/strings/strcat.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
 FilTxStateManager::FilTxStateManager(PrefService* prefs,
                                      JsonRpcService* json_rpc_service)
-    : TxStateManager(prefs, json_rpc_service), weak_factory_(this) {}
+    : TxStateManager(prefs, json_rpc_service) {}
 
 FilTxStateManager::~FilTxStateManager() = default;
 
@@ -29,7 +30,10 @@ std::unique_ptr<FilTxMeta> FilTxStateManager::GetFilTx(const std::string& id) {
 }
 
 std::string FilTxStateManager::GetTxPrefPathPrefix() {
-  return "fil." + json_rpc_service_->GetChainId(mojom::CoinType::FIL);
+  return base::StrCat(
+      {kFilecoinPrefKey, ".",
+       GetNetworkId(prefs_, mojom::CoinType::FIL,
+                    json_rpc_service_->GetChainId(mojom::CoinType::FIL))});
 }
 
 std::unique_ptr<TxMeta> FilTxStateManager::ValueToTxMeta(

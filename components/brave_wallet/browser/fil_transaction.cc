@@ -25,7 +25,7 @@ bool IsNumericString(const std::string& value) {
 
 }  // namespace
 
-FilTransaction::FilTransaction() : gas_limit_(0) {}
+FilTransaction::FilTransaction() {}
 
 FilTransaction::FilTransaction(const FilTransaction&) = default;
 FilTransaction::FilTransaction(absl::optional<uint64_t> nonce,

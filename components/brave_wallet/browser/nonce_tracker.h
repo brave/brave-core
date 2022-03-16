@@ -12,9 +12,7 @@
 
 #include "base/callback.h"
 #include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
 #include "base/synchronization/lock.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 namespace brave_wallet {
@@ -43,14 +41,14 @@ class NonceTracker {
 
   base::Lock* GetLock() { return &nonce_lock_; }
 
-  JsonRpcService* GetJsonRpcService();
-
+ protected:
   absl::optional<uint256_t> GetFinalNonce(const std::string& from,
                                           uint256_t result);
 
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
+
  private:
   raw_ptr<TxStateManager> tx_state_manager_ = nullptr;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   base::Lock nonce_lock_;
 };
 
