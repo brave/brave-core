@@ -1410,6 +1410,9 @@ Are you sure you want to do this?
         <message name="IDS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu">
           Show Sidebar
         </message>
+        <message name="IDS_SETTINGS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu in settings">
+          Show Sidebar
+        </message>
         <message name="IDS_SIDEBAR_SHOW_OPTION_ALWAYS" desc="Label for always show sidebar option">
           Always
         </message>
