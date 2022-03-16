@@ -45,9 +45,11 @@ declare_args() {
     # Generate all symbols (breakpad + native) for Release builds
     brave_debug_symbol_level = 2
   } else {
-    brave_debug_symbol_level = 1
+    brave_debug_symbol_level = 0
   }
 }
+
+should_generate_breakpad_symbols = brave_debug_symbol_level != 0
 
 brave_version = "$brave_version_major.$brave_version_minor.$brave_version_build"
 

@@ -185,9 +185,7 @@ group("create_dist") {
   if (is_android) {
     deps += [ "build/android:sign_app" ]
   } else {
-    if (brave_debug_symbol_level != 0) {
-      deps += [ ":create_symbols_dist" ]
-    }
+    deps += [ ":create_symbols_dist" ]
   }
 
   # for linux zip will be created along with installer
