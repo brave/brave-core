@@ -396,6 +396,9 @@ function Container (props: Props) {
 
   const onCreateAccount = (name: string, coin: BraveWallet.CoinType) => {
     const created = props.walletPageActions.addAccount({ accountName: name, coin: coin })
+    if (walletLocation.includes(WalletRoutes.Accounts)) {
+      history.push(WalletRoutes.Accounts)
+    }
     if (created) {
       onHideAddModal()
     }
