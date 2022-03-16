@@ -218,6 +218,7 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
   }
 
   void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
+    CertVerifierBrowserTest::SetUpDefaultCommandLine(command_line);
     command_line->AppendSwitchASCII(
         "enable-blink-features",
         "EncryptedMediaEncryptionSchemeQuery");
