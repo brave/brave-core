@@ -100,11 +100,7 @@ public class PortfolioStore: ObservableObject {
             return
           }
           let symbol = token.symbol.lowercased()
-          if let oldBalance = balances[token.symbol] {
-            balances[symbol] = oldBalance + balance
-          } else {
-            balances[symbol] = balance
-          }
+          balances[symbol, default: 0] += balance
         }
       }
     }
