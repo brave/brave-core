@@ -104,7 +104,11 @@ function MainPanel () {
           <a href="#" onClick={handleLearnMoreClick}>{braveShieldsBlockedNote.duringTag}</a>
           {braveShieldsBlockedNote.afterTag}
         </S.BlockNote>
-        <S.BlockCount>{siteBlockInfo?.totalBlockedResources}</S.BlockCount>
+        <S.BlockCount
+          title={siteBlockInfo?.totalBlockedResources.toString()}
+        >
+          {(siteBlockInfo?.totalBlockedResources ?? 0) > 99 ? '99+' : siteBlockInfo?.totalBlockedResources}
+        </S.BlockCount>
       </S.CountBox>
       </S.HeaderBox>
       <S.StatusBox>
