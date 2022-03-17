@@ -133,6 +133,9 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
 
     private void SetDisconnectBtnClickHandler() {
         Button btnDisconnect = (Button) findViewById(R.id.user_wallet_disconnect);
+        btnDisconnect.setText(
+                String.format(getResources().getString(R.string.user_wallet_disconnect_rewards),
+                        walletTypeString));
         SetBtnOpenUrlClickHandler(btnDisconnect, DISCONNECT_WALLET_URL);
         /*
         -- Use this code when android transitions to native code for Brave Rewards UI --
