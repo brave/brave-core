@@ -1819,6 +1819,12 @@ Are you sure you want to do this?
     <message name="IDS_CONTINUE_TEXT" desc="Brave Wallet onboarding text">
       Continue
     </message>
+    <message name="IDS_MESSAGE" desc="Brave wallet message title text">
+      Message
+    </message>
+    <message name="IDS_DATA_TEXT" desc="Brave wallet data title text">
+      DATA
+    </message>
     <message name="IDS_BACKUP_WALLET_CHECKBOX_TEXT" desc="Brave Wallet onboarding text">
       I understand that if I lose my recovery phrase, I won’t be able to access my crypto wallet.
     </message>
@@ -2886,6 +2892,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_ACCESSIBILITY_WALLET_DAPP_PANEL_EXPAND" desc="Content description for expand panel action on Brave wallet Dapp wallet panel">
       Expand
+    </message>
+    <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_POSITIVE_BUTTON_ACTION" desc="Brave wallet Dapp sign farment positive action text">
+      Sign
     </message>
     </messages>
   </release>

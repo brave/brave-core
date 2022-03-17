@@ -152,12 +152,13 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
         }
     }
 
-    private final DefaultLifecycleObserver defaultLifecycleObserver = new DefaultLifecycleObserver() {
-        @Override
-        public void onResume(@NonNull LifecycleOwner owner) {
-            if (mBraveWalletPanel != null) {
-                mBraveWalletPanel.resume();
-            }
-        }
-    };
+    private final DefaultLifecycleObserver defaultLifecycleObserver =
+            new DefaultLifecycleObserver() {
+                @Override
+                public void onResume(@NonNull LifecycleOwner owner) {
+                    if (mBraveWalletPanel != null) {
+                        mBraveWalletPanel.resume();
+                    }
+                }
+            };
 }
