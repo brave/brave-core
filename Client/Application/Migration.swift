@@ -208,7 +208,7 @@ fileprivate extension Preferences {
         static let playlistV1FileSettingsLocationCompleted =
             Option<Bool>(key: "migration.playlistv1-file-settings-location-completed", default: false)
         static let playlistV2FoldersInitialMigrationCompleted =
-            Option<Bool>(key: "migration.playlistv2-folders-initial-migration-completed", default: false)
+            Option<Bool>(key: "migration.playlistv2-folders-initial-migration-2-completed", default: false)
         static let removeLargeFaviconsMigrationCompleted =
             Option<Bool>(key: "migration.remove-large-favicons", default: false)
         // This is new preference introduced in iOS 1.32.3, tracks whether we should perform database migration.

@@ -109,7 +109,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
         let createdSort = NSSortDescriptor(key: "dateAdded", ascending: false)
         return PlaylistItem.all(where: predicate,
                                      sortDescriptors: [orderSort, createdSort],
-                                     fetchLimit: 20) ?? []
+                                     fetchBatchSize: 20) ?? []
     }
     
     public static func getItem(pageSrc: String) -> PlaylistItem? {
