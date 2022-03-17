@@ -182,12 +182,12 @@ source_set("ui") {
       "views/web_discovery_dialog_view.h",
     ]
 
-    # Enable FirstRun dialog on Win.
+    # Use different FirstRun dialog UI on Win.
     # Upstream only includes it on mac/Linux.
     if (is_win) {
       sources += [
-        "//chrome/browser/ui/views/first_run_dialog.cc",
-        "//chrome/browser/ui/views/first_run_dialog.h",
+        "views/first_run_dialog_win.cc",
+        "views/first_run_dialog_win.h",
       ]
     }
 

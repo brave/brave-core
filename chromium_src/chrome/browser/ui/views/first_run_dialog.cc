@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/bind.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
@@ -30,10 +29,6 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/window/dialog_delegate.h"
-
-#if BUILDFLAG(IS_WIN)
-#include "brave/browser/brave_shell_integration.h"
-#endif
 
 namespace first_run {
 
@@ -73,7 +68,7 @@ FirstRunDialog::FirstRunDialog(base::RepeatingClosure learn_more_callback,
     : quit_runloop_(quit_runloop) {
   ALLOW_UNUSED_LOCAL(report_crashes_);
 
-  SetTitle(l10n_util::GetStringUTF16(IDS_FIRSTRUN_DIALOG_WINDOW_TITLE_BRAVE));
+  SetTitle(l10n_util::GetStringUTF16(IDS_FIRST_RUN_DIALOG_WINDOW_TITLE));
   SetButtons(ui::DIALOG_BUTTON_OK);
   SetExtraView(
       std::make_unique<views::Link>(l10n_util::GetStringUTF16(IDS_LEARN_MORE)))
@@ -118,17 +113,8 @@ void FirstRunDialog::Done() {
 bool FirstRunDialog::Accept() {
   GetWidget()->Hide();
 
-  if (make_default_->GetChecked()) {
-    // shell_integration::SetAsDefaultBrowser() doesn't work on Windows 8+.
-    // Upstream will use DefaultBrowserWorker when it's available on all OSs.
-    // See the comments of shell_integration::SetAsDefaultBrowser().
-#if BUILDFLAG(IS_WIN)
-    base::MakeRefCounted<shell_integration::BraveDefaultBrowserWorker>()
-        ->StartSetAsDefault(base::NullCallback());
-#else
+  if (make_default_->GetChecked())
     shell_integration::SetAsDefaultBrowser();
-#endif
-  }
 
   Done();
   return true;
