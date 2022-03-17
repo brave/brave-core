@@ -68,7 +68,7 @@ void RecordHistograms(PrefService* prefs, bool toggled, bool enabled_now) {
   } else if (prefs->GetBoolean(kSpeedreaderPrefEverEnabled)) {
     status = EnabledStatus::kEverEnabled;
   }
-
+ 
   UMA_HISTOGRAM_ENUMERATION(kSpeedreaderEnabledUMAHistogramName, status);
 }
 
@@ -76,7 +76,7 @@ void RecordHistograms(PrefService* prefs, bool toggled, bool enabled_now) {
 
 SpeedreaderService::SpeedreaderService(PrefService* prefs) : prefs_(prefs) {}
 
-SpeedreaderService::~SpeedreaderService() {}
+SpeedreaderService::~SpeedreaderService() = default;
 
 // static
 void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
@@ -87,12 +87,12 @@ void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 }
 
 void SpeedreaderService::ToggleSpeedreader() {
-  const bool enabled = prefs_->GetBoolean(kSpeedreaderPrefEnabled);
-  prefs_->SetBoolean(kSpeedreaderPrefEnabled, !enabled);
-  if (!enabled)
+  const bool enabled = !prefs_->GetBoolean(kSpeedreaderPrefEnabled);
+  prefs_->SetBoolean(kSpeedreaderPrefEnabled, enabled);
+  if (enabled)
     prefs_->SetBoolean(kSpeedreaderPrefEverEnabled, true);
   RecordHistograms(prefs_, true,
-                   !enabled);  // toggling - now enabled
+                   enabled);  // toggling - now enabled
 }
 
 void SpeedreaderService::DisableSpeedreaderForTest() {

@@ -99,31 +99,14 @@ void OpenGuestProfile() {
 
 void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  using DistillState = speedreader::DistillState;
   WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
-  if (contents) {
-    auto* tab_helper =
-        speedreader::SpeedreaderTabHelper::FromWebContents(contents);
-    if (!tab_helper)
-      return;
-
-    const DistillState state = tab_helper->PageDistillState();
-    switch (state) {
-      case DistillState::kSpeedreaderMode:
-      case DistillState::kSpeedreaderOnDisabledPage:
-        tab_helper->ShowSpeedreaderBubble();
-        break;
-      case DistillState::kReaderMode:
-        // Refresh the page (toggles off Speedreader)
-        contents->GetController().Reload(content::ReloadType::NORMAL, false);
-        break;
-      case DistillState::kPageProbablyReadable:
-        tab_helper->SingleShotSpeedreader();
-        break;
-      default:
-        NOTREACHED();
-    }
+  if (!contents)
+    return;
+  if (auto* tab_helper =
+          speedreader::SpeedreaderTabHelper::FromWebContents(contents)) {
+    tab_helper->Distill();
   }
+
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 }
 

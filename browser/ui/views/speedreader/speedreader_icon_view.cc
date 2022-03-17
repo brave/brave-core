@@ -124,11 +124,11 @@ void SpeedreaderIconView::OnExecuting(
     PageActionIconView::ExecuteSource execute_source) {}
 
 views::BubbleDialogDelegate* SpeedreaderIconView::GetBubble() const {
-  auto* web_contents = GetWebContents();
+  const auto* web_contents = GetWebContents();
   if (!web_contents)
     return nullptr;
 
-  auto* tab_helper =
+  const auto* tab_helper =
       speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
   if (!tab_helper)
     return nullptr;
