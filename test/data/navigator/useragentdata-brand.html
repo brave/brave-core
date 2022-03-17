@@ -10,7 +10,8 @@
     navigator.userAgentData.getHighEntropyValues(
       ["fullVersionList"]).then(ua => {
         if (ua.fullVersionList.length == 3) {
-          if (ua.fullVersionList[2].brand == "Brave Browser") {
+          brands = "|" + ua.fullVersionList[0].brand + "|" + ua.fullVersionList[1].brand + "|" + ua.fullVersionList[2].brand + "|";
+          if (brands.indexOf("|Brave|") != -1) {
             document.title = "pass";
           }
         }
