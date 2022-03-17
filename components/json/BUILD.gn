@@ -1,0 +1,21 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//testing/test.gni")
+
+group("rust_lib") {
+  visibility = [ "//brave/build/rust:*" ]
+  deps = [ "rs:rust_lib" ]
+}
+
+source_set("brave_json_unit_tests") {
+  testonly = true
+  sources = [ "//brave/components/json/json_parser_unittest.cc" ]
+  deps = [
+    "//brave/components/json/rs:cxx",
+    "//brave/components/json/rs:cxx_gen",
+    "//testing/gtest",
+  ]
+}  # source_set("brave_wallet_unit_tests")
