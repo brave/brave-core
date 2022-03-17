@@ -80,7 +80,11 @@ PARAMS="--input $SOURCE_DIR --output $DEST_DIR --identity $MAC_SIGNING_IDENTIFIE
 if [[ -z "${DEVELOPMENT}" ]]; then
   # Copy mac_provisioning_profile to the packaging_dir since that's where the
   # signing scripts expects to find it.
-  cp -f "$MAC_PROVISIONING_PROFILE" "$PKG_DIR"
+  MAC_SIGNING_IDENTIFIER_LOWER=`echo "$MAC_SIGNING_IDENTIFIER" | tr '[:upper:]' '[:lower:]'`
+  PP_FILENAME_EXT=$(basename -- "$MAC_PROVISIONING_PROFILE")
+  PP_EXT="${PP_FILENAME_EXT##*.}"
+  PP_FILENAME="${PP_FILENAME_EXT%.*}"
+  cp -f "$MAC_PROVISIONING_PROFILE" "$PKG_DIR/$PP_FILENAME.$MAC_SIGNING_IDENTIFIER_LOWER.$PP_EXT"
 else
   PARAMS="$PARAMS $DEVELOPMENT"
 fi
