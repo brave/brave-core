@@ -10,6 +10,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -234,6 +235,29 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
   std::vector<uint8_t> private_key;
   EXPECT_TRUE(base::HexStringToBytes(account_0_pri_key, &private_key));
   EXPECT_TRUE(keyring.ImportAccount(private_key).empty());
+}
+
+TEST(EthereumKeyringUnitTest, GetPublicKeyFromX25519_XSalsa20_Poly1305) {
+  EthereumKeyring keyring;
+  const char kMnemonic[] =
+      "home various adjust motion canvas stand combine gravity cluster behave "
+      "despair dove";
+  std::unique_ptr<std::vector<uint8_t>> seed = MnemonicToSeed(kMnemonic, "");
+  ASSERT_TRUE(seed);
+  keyring.ConstructRootHDKey(*seed, "m/44'/60'/0'/0");
+  keyring.AddAccounts(1);
+  std::string public_encryption_key;
+  EXPECT_TRUE(keyring.GetPublicKeyFromX25519_XSalsa20_Poly1305(
+      keyring.GetAddress(0), &public_encryption_key));
+  EXPECT_EQ(public_encryption_key,
+            "eui9/fqCHT7aSUkKK9eooQFnOCD9COK9Mi1ZtOxIj2A=");
+
+  // Incorrect address
+  EXPECT_FALSE(keyring.GetPublicKeyFromX25519_XSalsa20_Poly1305(
+      "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", &public_encryption_key));
+  // Invalid address
+  EXPECT_FALSE(keyring.GetPublicKeyFromX25519_XSalsa20_Poly1305(
+      "", &public_encryption_key));
 }
 
 }  // namespace brave_wallet

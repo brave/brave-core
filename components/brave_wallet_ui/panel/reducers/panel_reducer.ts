@@ -50,10 +50,12 @@ const defaultState: PanelState = {
     domainHash: '',
     primaryHash: ''
   }],
-  publicEncryptionKeyData: {
+  getEncryptionPublicKeyRequest: {
     address: '',
     message: '',
-    origin: ''
+    origin: {
+      url: ''
+    }
   },
   switchChainRequest: {
     origin: {
@@ -97,6 +99,13 @@ reducer.on(PanelActions.switchEthereumChain, (state: any, request: BraveWallet.S
   return {
     ...state,
     switchChainRequest: request
+  }
+})
+
+reducer.on(PanelActions.getEncryptionPublicKey, (state: any, request: BraveWallet.GetEncryptionPublicKeyRequest) => {
+  return {
+    ...state,
+    getEncryptionPublicKeyRequest: request
   }
 })
 

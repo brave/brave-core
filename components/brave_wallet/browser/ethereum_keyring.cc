@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/ethereum_keyring.h"
 
+#include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -126,6 +127,20 @@ std::string EthereumKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
 
   // TODO(darkdh): chain id op code
   return addr.ToChecksumAddress();
+}
+
+bool EthereumKeyring::GetPublicKeyFromX25519_XSalsa20_Poly1305(
+    const std::string& address,
+    std::string* key) {
+  HDKey* hd_key = static_cast<HDKey*>(GetHDKeyFromAddress(address));
+  if (!hd_key)
+    return false;
+  const std::vector<uint8_t> public_key =
+      hd_key->GetPublicKeyFromX25519_XSalsa20_Poly1305();
+  if (!public_key.size())
+    return false;
+  *key = base::Base64Encode(public_key);
+  return true;
 }
 
 }  // namespace brave_wallet

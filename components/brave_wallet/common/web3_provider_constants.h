@@ -23,6 +23,7 @@ constexpr char kEthBlockNumber[] = "eth_blockNumber";
 constexpr char kEthSign[] = "eth_sign";
 constexpr char kPersonalSign[] = "personal_sign";
 constexpr char kPersonalEcRecover[] = "personal_ecRecover";
+constexpr char kEthGetEncryptionPublicKey[] = "eth_getEncryptionPublicKey";
 constexpr char kWalletWatchAsset[] = "wallet_watchAsset";
 constexpr char kMetamaskWatchAsset[] = "metamask_watchAsset";
 // We currently don't handle it until MetaMask point it to v3 or v4 other than

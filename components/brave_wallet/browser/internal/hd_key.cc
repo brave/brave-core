@@ -16,6 +16,7 @@
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h"
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h"
+#include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
 #include "crypto/encryptor.h"
 #include "crypto/sha2.h"
 #include "crypto/symmetric_key.h"
@@ -417,6 +418,15 @@ std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
     LOG(ERROR) << __func__ << ": secp256k1_ec_pubkey_serialize failed";
   }
 
+  return public_key;
+}
+
+std::vector<uint8_t> HDKey::GetPublicKeyFromX25519_XSalsa20_Poly1305() const {
+  size_t public_key_len = crypto_scalarmult_curve25519_tweet_BYTES;
+  std::vector<uint8_t> public_key(public_key_len);
+  if (crypto_scalarmult_curve25519_tweet_base(public_key.data(),
+                                              private_key_.data()) != 0)
+    return std::vector<uint8_t>();
   return public_key;
 }
 

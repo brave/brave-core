@@ -200,6 +200,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   bool RecoverAddressByDefaultKeyring(const std::vector<uint8_t>& message,
                                       const std::vector<uint8_t>& signature,
                                       std::string* address);
+  bool GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
+      const std::string& address,
+      std::string* key);
 
   void AddAccountsWithDefaultName(size_t number);
 

@@ -34,6 +34,7 @@ TEST(EthRequestHelperUnitTest, CommonParseErrors) {
     std::string signature;
     EXPECT_FALSE(
         ParsePersonalEcRecoverParams(error_case, &message, &signature));
+    EXPECT_FALSE(ParseEthGetEncryptionPublicKeyParams(error_case, &address));
   }
 }
 
@@ -459,6 +460,31 @@ TEST(EthResponseHelperUnitTest, ParsePersonalEcRecoverParams) {
       signature,
       "0xeb0c4e96c69a98dbdd61ac6871e39c12c90e9fa4420a017a23c67f4cc4fd06f43c32ad"
       "e58cd19ed438ce7e2d7360b59020489e9ac05e56e8637d3e516165c3f11c");
+}
+
+TEST(EthResponseHelperUnitTest, ParseEthGetEncryptionPublicKeyParams) {
+  const std::string json(
+      R"({
+        "params": [
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
+        ]
+      })");
+  const std::string json_extra_entry(
+      R"({
+        "params": [
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83",
+          "12345",
+          null,
+          123
+        ]
+      })");
+
+  std::string address;
+  EXPECT_TRUE(ParseEthGetEncryptionPublicKeyParams(json, &address));
+  EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
+
+  EXPECT_TRUE(ParseEthGetEncryptionPublicKeyParams(json_extra_entry, &address));
+  EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
 }
 
 TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {

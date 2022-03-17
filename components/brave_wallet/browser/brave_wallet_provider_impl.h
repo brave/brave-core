@@ -83,6 +83,9 @@ class BraveWalletProviderImpl final
                       RequestCallback callback,
                       base::Value id);
 
+  void GetEncryptionPublicKey(const std::string& address,
+                              RequestCallback callback,
+                              base::Value id);
   // Used for eth_signTypedData
   // message is for displaying the sign request to users
   // message_to_sign is the hex representation without 0x for eip712 hash
@@ -222,6 +225,14 @@ class BraveWalletProviderImpl final
                                      base::Value id,
                                      const std::string& normalized_json_request,
                                      mojom::NetworkInfoPtr chain);
+  void ContinueGetEncryptionPublicKey(
+      RequestCallback callback,
+      base::Value id,
+      const std::string& address,
+      const std::vector<std::string>& allowed_accounts,
+      mojom::ProviderError error,
+      const std::string& error_message);
+
   void OnGetNetworkAndDefaultKeyringInfo(
       RequestCallback callback,
       base::Value id,

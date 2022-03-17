@@ -746,7 +746,7 @@ void BraveWalletService::AddSignMessageRequest(
 
 void BraveWalletService::AddSuggestTokenRequest(
     mojom::AddSuggestTokenRequestPtr request,
-    RequestNewCallback callback,
+    mojom::BraveWalletProvider::RequestCallback callback,
     base::Value id) {
   // wallet_watchAsset currently only expect non-empty contract address and
   // only ERC20 type.
@@ -787,6 +787,37 @@ void BraveWalletService::AddSuggestTokenRequest(
   add_suggest_token_ids_[addr] = std::move(id);
 }
 
+void BraveWalletService::AddGetPublicKeyRequest(
+    const std::string& address,
+    const GURL& origin,
+    mojom::BraveWalletProvider::RequestCallback callback,
+    base::Value id) {
+  // There can be only 1 request per origin
+  if (add_get_encryption_public_key_requests_.contains(origin)) {
+    std::unique_ptr<base::Value> formed_response;
+    bool reject = true;
+    formed_response = GetProviderErrorDictionary(
+        mojom::ProviderError::kUserRejectedRequest,
+        l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
+    std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
+                            "", false);
+    return;
+  }
+  add_get_encryption_public_key_requests_[origin] = address;
+  add_get_encryption_public_key_callbacks_[origin] = std::move(callback);
+  get_encryption_public_key_ids_[origin] = std::move(id);
+}
+
+void BraveWalletService::GetPendingGetEncryptionPublicKeyRequests(
+    GetPendingGetEncryptionPublicKeyRequestsCallback callback) {
+  std::vector<mojom::GetEncryptionPublicKeyRequestPtr> requests;
+  for (const auto& request : add_get_encryption_public_key_requests_) {
+    requests.push_back(mojom::GetEncryptionPublicKeyRequest::New(
+        request.first, request.second, ""));
+  }
+  std::move(callback).Run(std::move(requests));
+}
+
 void BraveWalletService::GetPendingAddSuggestTokenRequests(
     GetPendingAddSuggestTokenRequestsCallback callback) {
   std::vector<mojom::AddSuggestTokenRequestPtr> requests;
@@ -805,6 +836,7 @@ void BraveWalletService::NotifyAddSuggestTokenRequestsProcessed(
         add_suggest_token_callbacks_.contains(addr) &&
         add_suggest_token_ids_.contains(addr)) {
       auto callback = std::move(add_suggest_token_callbacks_[addr]);
+      base::Value id = std::move(add_suggest_token_ids_[addr]);
 
       std::unique_ptr<base::Value> formed_response;
       bool reject = false;
@@ -821,8 +853,8 @@ void BraveWalletService::NotifyAddSuggestTokenRequestsProcessed(
             mojom::ProviderError::kInternalError,
             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
         reject = true;
-        std::move(callback).Run(std::move(add_suggest_token_ids_[addr]),
-                                std::move(*formed_response), reject, "", false);
+        std::move(callback).Run(std::move(id), std::move(*formed_response),
+                                reject, "", false);
         continue;
       }
 
@@ -831,9 +863,55 @@ void BraveWalletService::NotifyAddSuggestTokenRequestsProcessed(
       add_suggest_token_ids_.erase(addr);
       formed_response = base::Value::ToUniquePtrValue(base::Value(approved));
       reject = false;
-      std::move(callback).Run(std::move(add_suggest_token_ids_[addr]),
-                              std::move(*formed_response), reject, "", false);
+      std::move(callback).Run(std::move(id), std::move(*formed_response),
+                              reject, "", false);
     }
+  }
+}
+
+void BraveWalletService::NotifyGetPublicKeyRequestProcessed(
+    bool approved,
+    const GURL& origin) {
+  if (!add_get_encryption_public_key_requests_.contains(origin) ||
+      !add_get_encryption_public_key_callbacks_.contains(origin) ||
+      !get_encryption_public_key_ids_.contains(origin)) {
+    return;
+  }
+  auto callback = std::move(add_get_encryption_public_key_callbacks_[origin]);
+  base::Value id = std::move(get_encryption_public_key_ids_[origin]);
+
+  std::string address = add_get_encryption_public_key_requests_[origin];
+  add_get_encryption_public_key_requests_.erase(origin);
+  add_get_encryption_public_key_callbacks_.erase(origin);
+  get_encryption_public_key_ids_.erase(origin);
+
+  bool reject = true;
+  if (approved) {
+    std::string key;
+    if (!keyring_service_
+             ->GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(address,
+                                                                        &key)) {
+      std::unique_ptr<base::Value> formed_response;
+      formed_response = GetProviderErrorDictionary(
+          mojom::ProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+      std::move(callback).Run(std::move(id), std::move(*formed_response),
+                              reject, "", false);
+      return;
+    }
+
+    std::unique_ptr<base::Value> formed_response;
+    formed_response = base::Value::ToUniquePtrValue(base::Value(key));
+    reject = false;
+    std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
+                            "", false);
+  } else {
+    std::unique_ptr<base::Value> formed_response;
+    formed_response = GetProviderErrorDictionary(
+        mojom::ProviderError::kUserRejectedRequest,
+        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+    std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
+                            "", false);
   }
 }
 
@@ -863,6 +941,22 @@ void BraveWalletService::CancelAllSignMessageCallbacks() {
   }
 }
 
+void BraveWalletService::CancelAllGetEncryptionPublicKeyCallbacks() {
+  add_get_encryption_public_key_requests_.clear();
+  std::unique_ptr<base::Value> formed_response;
+  bool reject = true;
+  for (auto& callback : add_get_encryption_public_key_callbacks_) {
+    formed_response = GetProviderErrorDictionary(
+        mojom::ProviderError::kUserRejectedRequest,
+        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+    std::move(callback.second)
+        .Run(std::move(get_encryption_public_key_ids_[callback.first]),
+             std::move(*formed_response), reject, "", false);
+  }
+  add_get_encryption_public_key_callbacks_.clear();
+  get_encryption_public_key_ids_.clear();
+}
+
 void BraveWalletService::OnNetworkChanged() {
   CancelAllSuggestedTokenCallbacks();
 }
@@ -877,6 +971,7 @@ void BraveWalletService::Reset() {
   ClearBraveWalletServicePrefs(prefs_);
   CancelAllSuggestedTokenCallbacks();
   CancelAllSignMessageCallbacks();
+  CancelAllGetEncryptionPublicKeyCallbacks();
 
   if (keyring_service_)
     keyring_service_->Reset();
