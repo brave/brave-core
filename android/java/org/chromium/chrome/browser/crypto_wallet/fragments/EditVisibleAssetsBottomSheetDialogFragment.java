@@ -356,6 +356,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                         tokenDecimalsEdit.setText(
                                 String.valueOf(token.decimals), TextView.BufferType.EDITABLE);
                         selfChange = false;
+                        addButton.setEnabled(true);
                     }
                 });
             }
