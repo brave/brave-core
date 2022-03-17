@@ -35,6 +35,8 @@ class SpeedreaderTabHelper
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
   SpeedreaderTabHelper& operator=(SpeedreaderTabHelper&) = delete;
 
+  static void MaybeCreateForWebContents(content::WebContents* contents);
+
   base::WeakPtr<SpeedreaderTabHelper> GetWeakPtr();
 
   // Returns |true| if Speedreader is turned on for all sites.

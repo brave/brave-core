@@ -8,10 +8,12 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/feature_list.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
+#include "brave/components/speedreader/features.h"
 #include "brave/components/speedreader/speedreader_extended_info_handler.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
@@ -47,6 +49,14 @@ SpeedreaderTabHelper::~SpeedreaderTabHelper() {
   DCHECK(!pref_change_registrar_);
   DCHECK(!speedreader_bubble_);
   DCHECK(!content_rules_);
+}
+
+// static
+void SpeedreaderTabHelper::MaybeCreateForWebContents(
+    content::WebContents* contents) {
+  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+    SpeedreaderTabHelper::CreateForWebContents(contents);
+  }
 }
 
 base::WeakPtr<SpeedreaderTabHelper> SpeedreaderTabHelper::GetWeakPtr() {

@@ -21,6 +21,7 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "chrome/grit/generated_resources.h"
+#include "include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/theme_provider.h"
@@ -45,13 +46,8 @@ SpeedreaderIconView::SpeedreaderIconView(
 SpeedreaderIconView::~SpeedreaderIconView() = default;
 
 void SpeedreaderIconView::UpdateImpl() {
-  if (!base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
-    SetVisible(false);
-    return;
-  }
-
-  auto* contents = GetWebContents();
-  if (!contents || !contents->GetLastCommittedURL().SchemeIsHTTPOrHTTPS()) {
+  const DistillState state = GetDistillState();
+  if (speedreader::PageDoesntSupportDistillation(state)) {
     SetVisible(false);
     return;
   }
@@ -62,34 +58,29 @@ void SpeedreaderIconView::UpdateImpl() {
   }
 
   const ui::ThemeProvider* theme_provider = GetThemeProvider();
-  const DistillState state = GetDistillState();
   const bool is_distilled = speedreader::PageStateIsDistilled(state);
 
-  if (!is_distilled) {
-    if (state == DistillState::kSpeedreaderOnDisabledPage ||
-        state == DistillState::kPageProbablyReadable) {
-      SetVisible(true);
-    } else {
-      SetVisible(false);
+  if (is_distilled) {
+    UpdateIconImage();
+    if (theme_provider) {
+      const SkColor icon_color_active = theme_provider->GetColor(
+          BraveThemeProperties::COLOR_SPEEDREADER_ICON);
+      SetIconColor(icon_color_active);
     }
-
-    if (GetVisible()) {
+    SetVisible(true);
+  } else {
+    if (speedreader::PageSupportsDistilation(state)) {
       // Reset the icon color
       if (theme_provider) {
-        SkColor icon_color_default =
+        const SkColor icon_color_default =
             GetOmniboxColor(theme_provider, OmniboxPart::RESULTS_ICON);
         SetIconColor(icon_color_default);
       }
       UpdateIconImage();
+      SetVisible(true);
+    } else {
+      SetVisible(false);
     }
-  }
-
-  if (is_distilled) {
-    UpdateIconImage();
-    if (theme_provider)
-      SetIconColor(theme_provider->GetColor(
-          BraveThemeProperties::COLOR_SPEEDREADER_ICON));
-    SetVisible(true);
   }
 }
 
