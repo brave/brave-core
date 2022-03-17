@@ -31,6 +31,7 @@
 #include "brave/components/p3a/brave_p3a_scheduler.h"
 #include "brave/components/p3a/brave_p3a_switches.h"
 #include "brave/components/p3a/brave_p3a_uploader.h"
+#include "brave/components/p3a/brave_p3a_version_util.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/vendor/brave_base/random.h"
@@ -225,6 +226,7 @@ BraveP3AService::~BraveP3AService() = default;
 void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry,
                                     bool first_run) {
   BraveP3ALogStore::RegisterPrefs(registry);
+  RegisterP3AVersionUtilPrefs(registry);
   registry->RegisterTimePref(kLastRotationTimeStampPref, {});
   registry->RegisterBooleanPref(kP3AEnabled, true);
 
@@ -375,6 +377,8 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
 void BraveP3AService::InitMessageMeta() {
   message_meta_.platform = brave_stats::GetPlatformIdentifier();
   message_meta_.channel = channel_;
+
+  message_meta_.current_version = IsBrowserAtLatestVersion(local_state_);
   message_meta_.version =
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
 
@@ -394,9 +398,10 @@ void BraveP3AService::InitMessageMeta() {
   UpdateMessageMeta();
 
   VLOG(2) << "Message meta: " << message_meta_.platform << " "
-          << message_meta_.channel << " " << message_meta_.version << " "
-          << message_meta_.woi << " " << message_meta_.wos << " "
-          << message_meta_.country_code << " " << message_meta_.refcode;
+          << message_meta_.channel << " " << message_meta_.current_version
+          << " " << message_meta_.version << " " << message_meta_.woi << " "
+          << message_meta_.wos << " " << message_meta_.country_code << " "
+          << message_meta_.refcode;
 }
 
 void BraveP3AService::UpdateMessageMeta() {

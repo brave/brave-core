@@ -72,7 +72,7 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   void OnSimpleLoaderComplete(
       std::unique_ptr<brave_stats::BraveStatsUpdaterParams>
           stats_updater_params,
-      scoped_refptr<net::HttpResponseHeaders> headers);
+      std::unique_ptr<std::string> resp_body);
 
   // Invoked when server ping timer fires.
   void OnServerPingTimerFired();

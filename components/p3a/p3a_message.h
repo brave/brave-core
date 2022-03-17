@@ -23,6 +23,9 @@ struct MessageMetainfo {
   ~MessageMetainfo();
 
   std::string platform;
+  bool current_version;
+  // TODO(djandries): Remove the following field once the protobuf stuff is
+  // removed
   std::string version;
   std::string channel;
   base::Time date_of_install;

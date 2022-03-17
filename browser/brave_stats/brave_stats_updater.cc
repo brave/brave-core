@@ -36,6 +36,7 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/fetch_api.mojom-shared.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 #include "brave/components/brave_referrals/common/pref_names.h"
@@ -224,12 +225,17 @@ GURL BraveStatsUpdater::BuildStatsEndpoint(const std::string& path) {
 
 void BraveStatsUpdater::OnSimpleLoaderComplete(
     std::unique_ptr<brave_stats::BraveStatsUpdaterParams> stats_updater_params,
-    scoped_refptr<net::HttpResponseHeaders> headers) {
+    std::unique_ptr<std::string> resp_body) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   GURL final_url = simple_url_loader_->GetFinalURL();
   int response_code = -1;
-  if (headers)
-    response_code = headers->response_code();
+  if (simple_url_loader_->ResponseInfo()) {
+    const scoped_refptr<net::HttpResponseHeaders> headers =
+        simple_url_loader_->ResponseInfo()->headers;
+    if (headers) {
+      response_code = headers->response_code();
+    }
+  }
   if (simple_url_loader_->NetError() != net::OK || response_code < 200 ||
       response_code > 299) {
     VLOG(1) << "Failed to send usage stats to update server"
@@ -248,6 +254,14 @@ void BraveStatsUpdater::OnSimpleLoaderComplete(
     // Unfortunately we need to serialize this in case the user starts
     // the browser, stats ping goes, then we lose the original params.
     pref_service_->SetString(kThresholdQuery, threshold_query.spec());
+  }
+
+  // Get latest browser version, for P3A "current_version" message flag
+  std::string latest_version;
+  if (GetLatestBrowserVersionFromPingResponse(*resp_body, &latest_version)) {
+    VLOG(1) << "Retrieved latest browser version from usage ping "
+            << "response: " << latest_version;
+    pref_service_->SetString(kLatestBrowserVersion, latest_version);
   }
 
   // The request to the update server succeeded, so it's safe to save
@@ -414,7 +428,7 @@ void BraveStatsUpdater::SendServerPing() {
       std::move(resource_request), traffic_annotation);
   simple_url_loader_->SetRetryOptions(
       1, network::SimpleURLLoader::RETRY_ON_NETWORK_CHANGE);
-  simple_url_loader_->DownloadHeadersOnly(
+  simple_url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       loader_factory,
       base::BindOnce(&BraveStatsUpdater::OnSimpleLoaderComplete,
                      base::Unretained(this), std::move(stats_updater_params)));
@@ -464,6 +478,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kLastCheckYMD, std::string());
   registry->RegisterStringPref(kWeekOfInstallation, std::string());
   registry->RegisterTimePref(kBraveWalletPingReportedUnlockTime, base::Time());
+  registry->RegisterStringPref(kLatestBrowserVersion, std::string());
 }
 
 }  // namespace brave_stats

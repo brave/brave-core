@@ -9,6 +9,8 @@
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 
 #include "base/environment.h"
+#include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
@@ -129,6 +131,38 @@ uint8_t UsageBitfieldFromTimestamp(const base::Time& last_usage_time,
   }
 
   return result;
+}
+
+bool GetLatestBrowserVersionFromPingResponse(
+    const std::string& json,
+    std::string* latest_version_result) {
+  base::JSONReader::ValueWithError parsed_value =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!parsed_value.value) {
+    VLOG(1)
+        << "Latest browser version retrieval: Bad usage ping response JSON. "
+        << "Error:" << parsed_value.error_message;
+    return false;
+  }
+
+  const base::DictionaryValue* resp_dict;
+  if (!parsed_value.value->GetAsDictionary(&resp_dict)) {
+    VLOG(1) << "Latest browser version retrieval: usage ping response is not a "
+               "JSON object.";
+    return false;
+  }
+
+  const std::string* latest_version = resp_dict->FindStringKey("latestVersion");
+  if (!latest_version) {
+    VLOG(1) << "Latest browser version retrieval: usage ping response does not "
+               "contain "
+            << "latest version field.";
+    return false;
+  }
+
+  *latest_version_result = *latest_version;
+  return true;
 }
 
 }  // namespace brave_stats

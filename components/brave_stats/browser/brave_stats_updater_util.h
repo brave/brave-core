@@ -40,6 +40,10 @@ enum : uint8_t {
 uint8_t UsageBitfieldFromTimestamp(const base::Time& last_usage_time,
                                    const base::Time& last_reported_usage_time);
 
+bool GetLatestBrowserVersionFromPingResponse(
+    const std::string& json,
+    std::string* latest_version_result);
+
 }  // namespace brave_stats
 
 #endif  // BRAVE_COMPONENTS_BRAVE_STATS_BROWSER_BRAVE_STATS_UPDATER_UTIL_H_

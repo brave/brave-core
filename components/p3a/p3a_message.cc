@@ -85,7 +85,7 @@ base::Value GenerateP3AMessageDict(base::StringPiece metric_name,
   // Fill meta.
   result.SetStringKey("country_code", meta.country_code);
   result.SetStringKey("platform", meta.platform);
-  result.SetStringKey("version", meta.version);
+  result.SetBoolKey("current_version", meta.current_version);
   result.SetStringKey("channel", meta.channel);
   result.SetIntKey("woi", meta.woi);
   result.SetIntKey("wos", meta.wos);

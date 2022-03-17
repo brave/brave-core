@@ -9,5 +9,8 @@ namespace brave {
 
 const char kP3AEnabled[] = "brave.p3a.enabled";
 const char kP3ANoticeAcknowledged[] = "brave.p3a.notice_acknowledged";
+const char kP3ALastKnownInstalledVersion[] = "brave.p3a.last_known_version";
+const char kP3ACurrentVersionInstallTime[] =
+    "brave.p3a.curr_version_install_time";
 
 }  // namespace brave

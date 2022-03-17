@@ -25,6 +25,7 @@ const char kStatsReportingEnabled[] = "brave.stats.reporting_enabled";
 // in the case that the user sends the standard usage ping, stops the browser,
 // meets the threshold requirements, and then starts the browser before the
 // threshold ping was sent.
+const char kLatestBrowserVersion[] = "brave.stats.latest_browser_version";
 const char kThresholdQuery[] = "brave.stats.threshold_query";
 const char kWeekOfInstallation[] = "brave.stats.week_of_installation";
 const char kWidevineOptedIn[] = "brave.widevine_opted_in";

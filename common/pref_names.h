@@ -21,6 +21,7 @@ extern const char kLastCheckMonth[];
 extern const char kFirstCheckMade[];
 extern const char kThresholdCheckMade[];
 extern const char kThresholdQuery[];
+extern const char kLatestBrowserVersion[];
 extern const char kWeekOfInstallation[];
 extern const char kStatsReportingEnabled[];
 extern const char kWidevineOptedIn[];
