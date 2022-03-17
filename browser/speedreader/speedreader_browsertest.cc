@@ -5,17 +5,23 @@
 
 #include "base/bind.h"
 #include "base/path_service.h"
+#include "base/run_loop.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/speedreader/features.h"
 #include "brave/components/speedreader/speedreader_service.h"
+#include "brave/components/speedreader/speedreader_util.h"
 #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
 #include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
@@ -76,10 +82,20 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
         browser()->profile());
   }
 
+  PageActionIconView* GetReaderButton() {
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->toolbar_button_provider()
+        ->GetPageActionIconView(PageActionIconType::kReaderMode);
+  }
+
+  void ClickReaderButton() {
+    browser()->command_controller()->ExecuteCommand(
+        IDC_SPEEDREADER_ICON_ONCLICK);
+    content::WaitForLoadStop(ActiveWebContents());
+  }
+
   void ToggleSpeedreader() {
     speedreader_service()->ToggleSpeedreader();
-    ActiveWebContents()->GetController().Reload(content::ReloadType::NORMAL,
-                                                false);
   }
 
   void DisableSpeedreader() {
@@ -157,29 +173,33 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DisableSiteWorks) {
       speedreader::PageStateIsDistilled(tab_helper()->PageDistillState()));
 }
 
-// disabled in https://github.com/brave/brave-browser/issues/11328
-IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   ToggleSpeedreader();
   const GURL url = https_server_.GetURL(kTestHost, kTestPageReadable);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents = ActiveWebContents();
-  content::RenderFrameHost* rfh = contents->GetMainFrame();
 
-  const char kGetStyleLength[] =
-      "document.getElementById(\"brave_speedreader_style\").innerHTML.length";
+  const std::string kGetStyleLength =
+      "document.getElementById('brave_speedreader_style').innerHTML.length";
 
-  const char kGetContentLength[] = "document.body.innerHTML.length";
+  const std::string kGetContentLength = "document.body.innerHTML.length";
+
+  const auto eval_js = [&](const std::string& script) {
+    int out;
+    EXPECT_TRUE(content::ExecuteScriptAndExtractInt(
+        contents, "window.domAutomationController.send(" + script + ")", &out));
+    return out;
+  };
 
   // Check that the document became much smaller and that non-empty speedreader
   // style is injected.
-  EXPECT_LT(0, content::EvalJs(rfh, kGetStyleLength));
-  EXPECT_GT(17750 + 1, content::EvalJs(rfh, kGetContentLength));
+  EXPECT_LT(0, eval_js(kGetStyleLength));
+  EXPECT_GT(17750 + 1, eval_js(kGetContentLength));
 
   // Check that disabled speedreader doesn't affect the page.
   ToggleSpeedreader();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  rfh = contents->GetMainFrame();
-  EXPECT_LT(106000, content::EvalJs(rfh, kGetContentLength));
+  EXPECT_LT(106000, eval_js(kGetContentLength));
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, P3ATest) {
@@ -192,7 +212,80 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, P3ATest) {
 
   // SpeedReader recently enabled, toggled once
   ToggleSpeedreader();
-  tester.ExpectBucketCount(kSpeedreaderEnabledUMAHistogramName, 2, 1);
+  tester.ExpectBucketCount(kSpeedreaderEnabledUMAHistogramName, 2, 2);
   tester.ExpectBucketCount(kSpeedreaderToggleUMAHistogramName, 1, 1);
   tester.ExpectBucketCount(kSpeedreaderToggleUMAHistogramName, 2, 0);
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ClickingOnReaderButton) {
+  EXPECT_FALSE(speedreader_service()->IsEnabled());
+
+  NavigateToPageSynchronously(kTestPageReadable);
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+
+  EXPECT_EQ(speedreader::DistillState::kPageProbablyReadable,
+            tab_helper()->PageDistillState());
+  ClickReaderButton();
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+  EXPECT_EQ(speedreader::DistillState::kReaderMode,
+            tab_helper()->PageDistillState());
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+
+  ClickReaderButton();
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+  EXPECT_EQ(speedreader::DistillState::kPageProbablyReadable,
+            tab_helper()->PageDistillState());
+
+  EXPECT_FALSE(speedreader_service()->IsEnabled());
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreader) {
+  EXPECT_FALSE(speedreader_service()->IsEnabled());
+  NavigateToPageSynchronously(kTestPageReadable);
+
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+  EXPECT_EQ(speedreader::DistillState::kPageProbablyReadable,
+            tab_helper()->PageDistillState());
+  ToggleSpeedreader();
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+  EXPECT_EQ(speedreader::DistillState::kSpeedreaderOnDisabledPage,
+            tab_helper()->PageDistillState());
+  DisableSpeedreader();
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+  EXPECT_EQ(speedreader::DistillState::kPageProbablyReadable,
+            tab_helper()->PageDistillState());
+
+  ClickReaderButton();
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+  EXPECT_EQ(speedreader::DistillState::kReaderMode,
+            tab_helper()->PageDistillState());
+  ToggleSpeedreader();
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+  EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
+            tab_helper()->PageDistillState());
+  DisableSpeedreader();
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+  EXPECT_EQ(speedreader::DistillState::kReaderMode,
+            tab_helper()->PageDistillState());
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TogglingSiteSpeedreader) {
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestPageReadable);
+
+  for (int i = 0; i < 2; ++i) {
+    EXPECT_TRUE(WaitForLoadStop(ActiveWebContents()));
+    EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
+              tab_helper()->PageDistillState());
+    EXPECT_TRUE(GetReaderButton()->GetVisible());
+
+    tab_helper()->MaybeToggleEnabledForSite(false);
+    EXPECT_TRUE(WaitForLoadStop(ActiveWebContents()));
+    EXPECT_EQ(speedreader::DistillState::kSpeedreaderOnDisabledPage,
+              tab_helper()->PageDistillState());
+    EXPECT_TRUE(GetReaderButton()->GetVisible());
+
+    tab_helper()->MaybeToggleEnabledForSite(true);
+    EXPECT_TRUE(WaitForLoadStop(ActiveWebContents()));
+  }
 }
