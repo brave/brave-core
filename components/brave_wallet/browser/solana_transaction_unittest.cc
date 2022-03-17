@@ -15,12 +15,15 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -35,9 +38,15 @@ const char kMnemonic[] =
 
 class SolanaTransactionUnitTest : public testing::Test {
  public:
-  SolanaTransactionUnitTest() {
+  SolanaTransactionUnitTest()
+      : shared_url_loader_factory_(
+            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+                &url_loader_factory_)) {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    keyring_service_.reset(new KeyringService(&prefs_));
+    json_rpc_service_.reset(
+        new JsonRpcService(shared_url_loader_factory_, &prefs_));
+    keyring_service_.reset(
+        new KeyringService(json_rpc_service_.get(), &prefs_));
   }
 
   ~SolanaTransactionUnitTest() override = default;
@@ -76,6 +85,9 @@ class SolanaTransactionUnitTest : public testing::Test {
  private:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  network::TestURLLoaderFactory url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
 };
 

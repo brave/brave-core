@@ -134,6 +134,7 @@ const char kLegacyBraveWallet[] = "legacy_brave_wallet";
 const char kHardwareAccounts[] = "hardware";
 const char kHardwareDerivationPath[] = "derivation_path";
 const char kSelectedAccount[] = "selected_account";
+const int kDiscoveryAttempts = 20;
 
 mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
   if (keyring_id == mojom::kFilecoinKeyringId) {
@@ -203,7 +204,9 @@ void SerializeHardwareAccounts(const std::string& device_id,
 
 }  // namespace
 
-KeyringService::KeyringService(PrefService* prefs) : prefs_(prefs) {
+KeyringService::KeyringService(JsonRpcService* json_rpc_service,
+                               PrefService* prefs)
+    : json_rpc_service_(json_rpc_service), prefs_(prefs) {
   DCHECK(prefs);
   auto_lock_timer_ = std::make_unique<base::OneShotTimer>();
 
@@ -769,7 +772,10 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
       AddAccountForKeyring(mojom::kSolanaKeyringId, GetAccountName(1));
   }
 
-  // TODO(darkdh): add account discovery mechanism
+  if (keyring) {
+    discovery_weak_factory_.InvalidateWeakPtrs();
+    AddDiscoveryAccountsForKeyring(1, kDiscoveryAttempts);
+  }
 
   std::move(callback).Run(keyring);
 }
@@ -1091,6 +1097,47 @@ void KeyringService::AddAccountForKeyring(const std::string& keyring_id,
   SetAccountMetaForKeyring(
       prefs_, GetAccountPathByIndex(accounts_num - 1, keyring_id), account_name,
       keyring->GetAddress(accounts_num - 1), keyring_id);
+}
+
+void KeyringService::AddDiscoveryAccountsForKeyring(int discovery_account_index,
+                                                    int attempts_left) {
+  if (attempts_left <= 0)
+    return;
+  auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
+  if (!keyring)
+    return;
+  json_rpc_service_->GetTransactionCount(
+      keyring->GetDiscoveryAddress(discovery_account_index),
+      base::BindOnce(&KeyringService::OnGetTransactionCount,
+                     discovery_weak_factory_.GetWeakPtr(),
+                     discovery_account_index, attempts_left));
+}
+
+void KeyringService::OnGetTransactionCount(int discovery_account_index,
+                                           int attempts_left,
+                                           uint256_t result,
+                                           mojom::ProviderError error,
+                                           const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess)
+    return;
+
+  if (result > 0) {
+    auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
+    if (!keyring)
+      return;
+    int last_account_index = keyring->GetAccountsNumber() - 1;
+    DCHECK_GE(last_account_index, 0);
+    if (discovery_account_index > last_account_index) {
+      AddAccountsWithDefaultName(discovery_account_index - last_account_index);
+      NotifyAccountsChanged();
+    }
+
+    AddDiscoveryAccountsForKeyring(discovery_account_index + 1,
+                                   kDiscoveryAttempts);
+  } else {
+    AddDiscoveryAccountsForKeyring(discovery_account_index + 1,
+                                   attempts_left - 1);
+  }
 }
 
 absl::optional<std::string> KeyringService::ImportAccountForKeyring(
@@ -1442,6 +1489,7 @@ void KeyringService::Reset(bool notify_observer) {
   StopAutoLockTimer();
   encryptors_.clear();
   keyrings_.clear();
+  discovery_weak_factory_.InvalidateWeakPtrs();
   ClearKeyringServiceProfilePrefs(prefs_);
   if (notify_observer) {
     for (const auto& observer : observers_) {
