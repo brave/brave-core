@@ -19,6 +19,8 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 
+using version_info::Channel;
+
 namespace sidebar {
 
 namespace {
@@ -89,10 +91,14 @@ std::vector<SidebarItem> GetDefaultSidebarItems() {
 }  // namespace
 
 // static
-void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
+void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
+                                          version_info::Channel channel) {
   registry->RegisterListPref(kSidebarItems);
   registry->RegisterIntegerPref(
-      kSidebarShowOption, static_cast<int>(ShowSidebarOption::kShowAlways));
+      kSidebarShowOption,
+      channel == Channel::STABLE
+          ? static_cast<int>(ShowSidebarOption::kShowNever)
+          : static_cast<int>(ShowSidebarOption::kShowAlways));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
 }
 
