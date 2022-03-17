@@ -11,7 +11,10 @@
 #include "brave/components/sidebar/sidebar_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/version_info/channel.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using version_info::Channel;
 
 namespace sidebar {
 
@@ -21,10 +24,6 @@ class SidebarServiceTest : public testing::Test,
   SidebarServiceTest() = default;
 
   ~SidebarServiceTest() override = default;
-
-  void SetUp() override {
-    SidebarService::RegisterProfilePrefs(prefs_.registry());
-  }
 
   void TearDown() override { service_->RemoveObserver(this); }
 
@@ -74,6 +73,7 @@ class SidebarServiceTest : public testing::Test,
 };
 
 TEST_F(SidebarServiceTest, AddRemoveItems) {
+  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::CANARY);
   InitService();
 
   // Check the default items count.
@@ -118,6 +118,7 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
 }
 
 TEST_F(SidebarServiceTest, MoveItem) {
+  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
   InitService();
 
   // Add one more item to test with 4 items.
@@ -149,6 +150,7 @@ TEST_F(SidebarServiceTest, MoveItem) {
 }
 
 TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
+  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
   // Make prefs already have builtin items before service initialization.
   // And it has old url.
   {
@@ -185,6 +187,7 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
 }
 
 TEST_F(SidebarServiceTest, BuiltInItemDoesntHaveHistoryItem) {
+  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
   // Make prefs already have builtin items before service initialization.
   // And it has history item.
   {
@@ -216,6 +219,7 @@ TEST_F(SidebarServiceTest, BuiltInItemDoesntHaveHistoryItem) {
 }
 
 TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithoutBuiltInItemTypeKey) {
+  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::STABLE);
   // Prepare built-in item in prefs w/o setting BuiltInItemType.
   // If not stored, service uses url to get proper latest properties.
   {
@@ -241,6 +245,7 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithoutBuiltInItemTypeKey) {
 }
 
 TEST_F(SidebarServiceTest, SidebarShowOptionsDeprecationTest) {
+  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::STABLE);
   // Show on click is deprecated.
   // Treat it as a show on mouse over.
   prefs_.SetInteger(
@@ -252,7 +257,15 @@ TEST_F(SidebarServiceTest, SidebarShowOptionsDeprecationTest) {
             service_->GetSidebarShowOption());
 }
 
-TEST_F(SidebarServiceTest, SidebarShowOptionsDefaultTest) {
+TEST_F(SidebarServiceTest, SidebarShowOptionsDefaultTestStable) {
+  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::STABLE);
+  InitService();
+  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowNever,
+            service_->GetSidebarShowOption());
+}
+
+TEST_F(SidebarServiceTest, SidebarShowOptionsDefaultTestNonStable) {
+  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
   InitService();
   EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
             service_->GetSidebarShowOption());

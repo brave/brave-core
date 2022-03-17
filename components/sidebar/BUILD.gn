@@ -20,6 +20,7 @@ static_library("sidebar") {
     "//brave/components/resources:strings",
     "//components/keyed_service/core",
     "//components/prefs",
+    "//components/version_info",
     "//ui/base",
     "//url",
   ]
@@ -36,6 +37,7 @@ source_set("unit_tests") {
       "//brave/components/sidebar",
       "//components/prefs",
       "//components/prefs:test_support",
+      "//components/version_info",
       "//content/public/browser",
       "//content/test:test_support",
       "//testing/gtest",
