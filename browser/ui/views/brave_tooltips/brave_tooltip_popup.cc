@@ -34,7 +34,7 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/widget/widget.h"
 
-#if defined(OS_WIN) || defined(OS_LINUX)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 #include "ui/views/widget/desktop_aura/desktop_native_widget_aura.h"
 #endif
 
@@ -49,11 +49,11 @@ constexpr SkColor kDarkModeBackgroundColor = SkColorSetRGB(0x3B, 0x3E, 0x4F);
 
 constexpr SkColor kBorderColor = SkColorSetRGB(0xF7, 0x3A, 0x1C);
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 constexpr int kCornerRadius = 0;
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
 constexpr int kCornerRadius = 7;
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
 constexpr int kCornerRadius = 7;
 #endif
 
@@ -365,7 +365,7 @@ void BraveTooltipPopup::CreateWidgetView() {
   widget->set_focus_on_creation(false);
   widget_observation_.Observe(widget);
 
-#if defined(OS_WIN) || defined(OS_LINUX)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
   // We want to ensure that this toast always goes to the native desktop,
   // not the Ash desktop (since there is already another toast contents view
   // there

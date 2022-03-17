@@ -31,7 +31,7 @@
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 #include "components/component_updater/component_updater_service.h"
 #endif
 
@@ -168,7 +168,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   EXPECT_FALSE(observer.bubble_added_);
 }
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 // On linux, additional permission request is used to ask restarting.
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
                        TriggerTwoPermissionTest) {

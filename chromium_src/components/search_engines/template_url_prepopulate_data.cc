@@ -17,7 +17,7 @@
 #include "components/search_engines/search_engines_pref_names.h"
 
 #define GetDataVersion GetDataVersion_ChromiumImpl
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #define GetLocalPrepopulatedEngines GetLocalPrepopulatedEngines_Unused
 #endif
 #define GetPrepopulatedDefaultSearch GetPrepopulatedDefaultSearch_Unused
@@ -25,7 +25,7 @@
 #define GetPrepopulatedEngines GetPrepopulatedEngines_Unused
 #include "src/components/search_engines/template_url_prepopulate_data.cc"
 #undef GetDataVersion
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #undef GetLocalPrepopulatedEngines
 #endif
 #undef GetPrepopulatedDefaultSearch
@@ -411,7 +411,7 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
 
 // Redefines function with the same name in Chromium. Modifies the function to
 // get search engines defined by Brave.
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 
 std::vector<std::unique_ptr<TemplateURLData>> GetLocalPrepopulatedEngines(
     const std::string& locale) {

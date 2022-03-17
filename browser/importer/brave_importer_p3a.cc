@@ -29,7 +29,7 @@ void RecordImporterP3A(importer::ImporterType type) {
   case importer::TYPE_UNKNOWN:
     metric = ImporterSource::kNone;
     break;
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   case importer::TYPE_IE:
     metric = ImporterSource::kIE;
     break;
@@ -40,7 +40,7 @@ void RecordImporterP3A(importer::ImporterType type) {
   case importer::TYPE_FIREFOX:
     metric = ImporterSource::kFirefox;
     break;
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
   case importer::TYPE_SAFARI:
     metric = ImporterSource::kSafari;
     break;

@@ -44,7 +44,7 @@
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "content/public/browser/url_data_source.h"
@@ -322,7 +322,7 @@ RewardsDOMHandler::RewardsDOMHandler() : weak_factory_(this) {}
 RewardsDOMHandler::~RewardsDOMHandler() {}
 
 void RewardsDOMHandler::RegisterMessages() {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   // Create our favicon data source.
   Profile* profile = Profile::FromWebUI(web_ui());
   content::URLDataSource::Add(
@@ -800,7 +800,7 @@ void RewardsDOMHandler::ClaimPromotion(base::Value::ConstListView args) {
 
   const std::string promotion_id = args[0].GetString();
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   rewards_service_->ClaimPromotion(
       promotion_id, base::BindOnce(&RewardsDOMHandler::OnClaimPromotion,
                                    weak_factory_.GetWeakPtr(), promotion_id));
@@ -945,7 +945,7 @@ void RewardsDOMHandler::OnNotificationDeleted(
     brave_rewards::RewardsNotificationService* rewards_notification_service,
     const brave_rewards::RewardsNotificationService::RewardsNotification&
         notification) {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   if (notification.type_ == brave_rewards::RewardsNotificationService::
                                 REWARDS_NOTIFICATION_GRANT &&
       IsJavascriptAllowed()) {
@@ -2123,7 +2123,7 @@ BraveRewardsPageUI::BraveRewardsPageUI(content::WebUI* web_ui,
     : WebUIController(web_ui) {
   CreateAndAddWebUIDataSource(web_ui, name, kBraveRewardsPageGenerated,
                               kBraveRewardsPageGeneratedSize,
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
                               IDR_BRAVE_REWARDS_ANDROID_PAGE_HTML,
 #else
                               IDR_BRAVE_REWARDS_PAGE_HTML,

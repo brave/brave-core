@@ -63,7 +63,7 @@ IPFSOnboardingPage::IPFSOnboardingPage(
                                                        std::move(controller)),
       ipfs_service_(ipfs_service) {
   service_observer_.Observe(ipfs_service_);
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   theme_observer_.Observe(ui::NativeTheme::GetInstanceForNativeUi());
 #endif
 }
@@ -249,7 +249,7 @@ void IPFSOnboardingPage::PopulateInterstitialStrings(
       "peersError",
       l10n_util::GetStringFUTF16(IDS_IPFS_ONBOARDING_PEERS_ERROR, u"{value}"));
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   std::u16string theme_type =
       ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors()
           ? u"dark"

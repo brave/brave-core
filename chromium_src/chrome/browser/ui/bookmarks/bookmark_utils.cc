@@ -40,9 +40,9 @@ bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
 ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
                                      absl::variant<int, SkColor> color) {
   int default_id =
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
       IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_LIGHT;
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
       IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_LIGHT;
 #else
       IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIGHT;
@@ -61,10 +61,10 @@ ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
     }
 
     const int resource_id = color_utils::IsDark(sk_color)
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
                                 ? IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_LIGHT
                                 : IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_DARK;
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
                                 ? IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_LIGHT
                                 : IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_DARK;
 #else

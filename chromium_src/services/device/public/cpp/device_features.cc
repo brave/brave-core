@@ -10,9 +10,9 @@
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     {kWinrtGeolocationImplementation, base::FEATURE_ENABLED_BY_DEFAULT},
-#endif  // defined(OS_WIN)
+#endif  // BUILDFLAG(IS_WIN)
 }});
 
 }  // namespace features

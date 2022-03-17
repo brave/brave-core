@@ -43,7 +43,7 @@ class BraveSyncPrefsTest : public testing::Test {
   std::unique_ptr<brave_sync::Prefs> brave_sync_prefs_;
 };
 
-#if defined(OS_APPLE)
+#if BUILDFLAG(IS_APPLE)
 
 // On macOS expected to see decryption failure when reading seed on
 // locked keyring
@@ -60,7 +60,7 @@ TEST_F(BraveSyncPrefsTest, ValidPassphraseKeyringLocked) {
   OSCryptMocker::TearDown();
 }
 
-#endif  // defined(OS_APPLE)
+#endif  // BUILDFLAG(IS_APPLE)
 
 TEST_F(BraveSyncPrefsTest, FailedToDecryptBraveSeedValue) {
   OSCryptMocker::SetUp();

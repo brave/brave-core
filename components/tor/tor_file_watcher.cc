@@ -24,7 +24,7 @@ namespace {
 constexpr base::TaskTraits kWatchTaskTraits = {base::MayBlock(),
                                                base::TaskPriority::BEST_EFFORT};
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 constexpr char kControlPortMinTmpl[] = "PORT=1.1.1.1:1\r\n";
 constexpr char kControlPortMaxTmpl[] = "PORT=255.255.255.255:65535\r\n";
 constexpr char kLineBreak[] = "\r\n";

@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "build/build_config.h"
 #include "extensions/buildflags/buildflags.h"
 
 namespace base {
@@ -18,7 +19,7 @@ class Value;
 }  // namespace base
 
 base::FilePath GetChromeUserDataFolder();
-#if !defined(OS_LINUX)
+#if !BUILDFLAG(IS_LINUX)
 base::FilePath GetCanaryUserDataFolder();
 #endif
 base::FilePath GetChromiumUserDataFolder();

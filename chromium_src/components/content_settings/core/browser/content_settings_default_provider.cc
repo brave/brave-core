@@ -5,7 +5,7 @@
 
 #include "build/build_config.h"
 
-#if !defined(OS_IOS)
+#if !BUILDFLAG(IS_IOS)
 #define BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES           \
   const std::string& autoplay_pref =                            \
       GetPrefName(ContentSettingsType::AUTOPLAY);               \

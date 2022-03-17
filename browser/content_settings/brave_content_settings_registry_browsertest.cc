@@ -12,7 +12,7 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "content/public/test/browser_test.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
 #include "chrome/test/base/in_process_browser_test.h"

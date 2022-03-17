@@ -38,7 +38,7 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "ui/gfx/image/image.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "brave/components/safetynet/safetynet_check.h"
 #endif
 
@@ -767,7 +767,7 @@ class RewardsServiceImpl : public RewardsService,
 
   bool IsValidWalletType(const std::string& wallet_type) const;
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   ledger::type::Environment GetServerEnvironmentForAndroid();
   void GrantAttestationResult(
       const std::string& promotion_id, bool result,

@@ -13,7 +13,7 @@
 #include "content/public/test/unittest_test_suite.h"
 #include "mojo/core/embedder/scoped_ipc_support.h"
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include "chrome/install_static/test/scoped_install_details.h"
 #endif
 
@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
       test_io_thread.task_runner(),
       mojo::core::ScopedIPCSupport::ShutdownPolicy::FAST);
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   install_static::ScopedInstallDetails scoped_install_details;
 #endif
 

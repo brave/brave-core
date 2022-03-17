@@ -16,7 +16,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/android/brave_shields_content_settings.h"
 #endif
 
@@ -88,7 +88,7 @@ void PerfPredictorTabHelper::RecordSavings() {
 
       if (bandwidth_tracker_)
         bandwidth_tracker_->RecordSavings(savings);
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
       chrome::android::BraveShieldsContentSettings::DispatchSavedBandwidth(
           savings);
 #endif

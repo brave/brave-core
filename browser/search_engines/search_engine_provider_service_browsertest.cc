@@ -262,7 +262,7 @@ namespace extensions {
 
 // Copied from settings_overrides_browsertest.cc
 // On linux, search engine from extension is not set by default.
-#if defined(OS_WIN) || defined(OS_MAC)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 // Prepopulated id hardcoded in test_extension.
 const int kTestExtensionPrepopulatedId = 3;
 // TemplateURLData with search engines settings from test extension manifest.

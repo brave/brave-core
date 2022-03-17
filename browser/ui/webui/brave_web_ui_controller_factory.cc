@@ -29,7 +29,7 @@
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
@@ -41,7 +41,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
@@ -89,7 +89,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
              ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) {
     return new IPFSUI(web_ui, url.host());
 #endif  // BUILDFLAG(ENABLE_IPFS)
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWalletPageHost) {
     if (brave_wallet::IsNativeWalletEnabled()) {
       auto default_wallet = brave_wallet::GetDefaultWallet(profile->GetPrefs());
@@ -103,7 +103,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kWalletPanelHost) {
     return new WalletPanelUI(web_ui);
 #endif  // BUILDFLAG(OS_ANDROID)
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
   } else if (host == kVPNPanelHost) {
     if (brave_vpn::IsBraveVPNEnabled()) {
       return new VPNPanelUI(web_ui);
@@ -113,11 +113,11 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new BraveRewardsPageUI(web_ui, url.host());
   } else if (host == kRewardsInternalsHost) {
     return new BraveRewardsInternalsUI(web_ui, url.host());
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   } else if (host == kTipHost) {
     return new BraveTipUI(web_ui, url.host());
-#endif  // !defined(OS_ANDROID)
-#if !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWelcomeHost) {
     return new BraveWelcomeUI(web_ui, url.host());
   } else if (host == chrome::kChromeUISettingsHost) {
@@ -129,7 +129,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
             brave_shields::features::kBraveShieldsPanelV2)) {
       return new ShieldsPanelUI(web_ui);
     }
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
   } else if (host == kTorInternalsHost) {
     return new TorInternalsUI(web_ui, url.host());
@@ -149,7 +149,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              const GURL& url) {
   if (url.host_piece() == kAdblockHost ||
       url.host_piece() == kWebcompatReporterHost ||
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
       (url.host_piece() == kShieldsPanelHost &&
        base::FeatureList::IsEnabled(
            brave_shields::features::kBraveShieldsPanelV2)) ||
@@ -158,13 +158,13 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       (url.host_piece() == kIPFSWebUIHost &&
        base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) ||
 #endif  // BUILDFLAG(ENABLE_IPFS)
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
       (url.host_piece() == kVPNPanelHost && brave_vpn::IsBraveVPNEnabled()) ||
 #endif
 #if BUILDFLAG(ENABLE_SIDEBAR)
       url.host_piece() == kSidebarBookmarksHost ||
 #endif
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
       url.host_piece() == kWalletPanelHost ||
       url.host_piece() == kWalletPageHost ||
 #endif
@@ -176,11 +176,11 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #endif
       url.host_piece() == kWelcomeHost ||
       url.host_piece() == chrome::kChromeUIWelcomeURL ||
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
       // On Android New Tab is a native page implemented in Java, so no need in
       // WebUI.
       url.host_piece() == chrome::kChromeUINewTabHost ||
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
       url.host_piece() == chrome::kChromeUISettingsHost) {
     return &NewWebUI;
   }
@@ -188,7 +188,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
   return nullptr;
 }
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 bool ShouldBlockRewardsWebUI(
       content::BrowserContext* browser_context, const GURL& url) {
   if (url.host_piece() != kRewardsPageHost &&
@@ -206,17 +206,17 @@ bool ShouldBlockRewardsWebUI(
   }
   return false;
 }
-#endif  // defined(OS_ANDROID)
+#endif  // BUILDFLAG(IS_ANDROID)
 
 }  // namespace
 
 WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
       content::BrowserContext* browser_context, const GURL& url) {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   if (ShouldBlockRewardsWebUI(browser_context, url)) {
     return WebUI::kNoWebUI;
   }
-#endif  // defined(OS_ANDROID)
+#endif  // BUILDFLAG(IS_ANDROID)
   WebUIFactoryFunction function = GetWebUIFactoryFunction(NULL, url);
   if (function) {
     return reinterpret_cast<WebUI::TypeID>(function);

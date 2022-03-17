@@ -97,7 +97,7 @@ struct ProfilePrefRegistration {
       sync_preferences::TestingPrefServiceSyncable* prefs) {
     language::LanguagePrefs::RegisterProfilePrefs(prefs->registry());
     prefs->SetString(translate::testing::accept_languages_prefs, std::string());
-#if defined(OS_CHROMEOS)
+#if BUILDFLAG(IS_CHROMEOS)
     prefs->SetString(
         translate::testing::preferred_languages_prefs, std::string());
 #endif

@@ -35,10 +35,10 @@
 
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/p3a/p3a_core_metrics.h"
 #include "chrome/browser/first_run/first_run.h"
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
@@ -65,7 +65,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   RegisterPrefsForBraveReferralsService(registry);
 #endif
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
   // Turn off super annoying 'Hold to quit'
   registry->SetDefaultPrefValue(prefs::kConfirmToQuitEnabled,
       base::Value(false));
@@ -79,18 +79,18 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   brave::BraveP3AService::RegisterPrefs(registry,
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
                                         first_run::IsChromeFirstRun());
 #else
                                         // BraveP3AService::RegisterPrefs
                                         // doesn't use this arg on Android
                                         false);
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 
   brave_shields::RegisterShieldsP3APrefs(registry);
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   BraveNewTabMessageHandler::RegisterLocalStatePrefs(registry);
   BraveWindowTracker::RegisterPrefs(registry);
   BraveUptimeTracker::RegisterPrefs(registry);

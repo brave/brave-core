@@ -181,7 +181,7 @@ void BravePrefProvider::RegisterProfilePrefs(
   registry->RegisterDictionaryPref(
       "brave.migrate.content_settings.exceptions.plugins");
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   // This path is no longer registered upstream but we still need it to migrate
   // Shields settings away from ResourceIdentifier on Android.
   if (!registry->defaults()->GetValue(

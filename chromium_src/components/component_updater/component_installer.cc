@@ -36,7 +36,7 @@ void ComponentInstaller::Register(RegisterCallback register_callback,
     "ojhpjlocmbogdgmfpkhlaaeamibhnphh",  // Zxcvbn Data Dictionaries
     "gonpemdgkjcecdgbnaabipppbmgfggbe",  // First Party Sets
     "dhlpobdgcjafebgbbhjdnapejmpkgiie",  // Desktop Sharing Hub
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     "lmelglejhemejginpboagddgdfbepgmp",  // Optimization Hints
     "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest
 #endif

@@ -8,12 +8,12 @@
 
 #include "chrome/browser/ui/views/chrome_views_delegate.h"
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 #include "brave/browser/ui/views/brave_views_delegate_linux.h"
 #define ChromeViewsDelegate BraveViewsDelegateLinux
 #endif
 #include "src/chrome/test/views/accessibility_checker.h"
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 #undef ChromeViewsDelegate
 #endif
 

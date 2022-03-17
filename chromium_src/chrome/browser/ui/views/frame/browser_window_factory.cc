@@ -7,7 +7,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
-#if defined(OS_WIN) || defined(OS_MAC)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 #include "brave/browser/ui/views/frame/brave_browser_frame.h"
 
 #define BrowserFrame BraveBrowserFrame
@@ -17,6 +17,6 @@
 #include "src/chrome/browser/ui/views/frame/browser_window_factory.cc"
 #undef BrowserView
 
-#if defined(OS_WIN) || defined(OS_MAC)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 #undef BrowserFrame
 #endif

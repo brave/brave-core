@@ -19,7 +19,7 @@
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/ui/hid/hid_chooser_controller.h"
 #include "chrome/grit/generated_resources.h"
@@ -28,7 +28,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #endif
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 namespace {
 std::u16string BraveCreateTitleLabel() {
   auto wallet_title = l10n_util::GetStringUTF16(IDS_BRAVE_WALLET);
@@ -82,7 +82,7 @@ class BraveWalletTabHelperUnitTest : public testing::Test {
   std::unique_ptr<content::WebContents> web_contents_;
 };
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 TEST_F(BraveWalletTabHelperUnitTest, GetApproveBubbleURL) {
   auto* helper = brave_wallet_tab_helper();
   ASSERT_TRUE(helper);

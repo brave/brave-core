@@ -36,7 +36,7 @@ enum BravePrepopulatedEngineID : unsigned int {
   BRAVE_PREPOPULATED_ENGINES_START = 500,
   PREPOPULATED_ENGINE_ID_AMAZON = 500,  // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,  // No longer in defaults (7/2020).
 #endif
   PREPOPULATED_ENGINE_ID_FINDX,         // No longer exists (11/2018).
@@ -97,7 +97,7 @@ enum BravePrepopulatedEngineID : unsigned int {
 extern const PrepopulatedEngine duckduckgo;
 extern const PrepopulatedEngine duckduckgo_de;
 extern const PrepopulatedEngine duckduckgo_au_nz_ie;
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 extern const PrepopulatedEngine duckduckgo_lite;
 #endif
 extern const PrepopulatedEngine brave_ecosia;

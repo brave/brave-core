@@ -441,7 +441,7 @@ TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 
 // Linux doesn't support referral service now.
 // So, always start NTP SI component.

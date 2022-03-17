@@ -18,7 +18,7 @@ using std::placeholders::_3;
 namespace {
 
 bool HandledByGreaselion(const std::string media_type) {
-#if defined(OS_ANDROID) || defined(OS_IOS)
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
   return false;
 #else
   return media_type == "github" || media_type == "reddit" ||

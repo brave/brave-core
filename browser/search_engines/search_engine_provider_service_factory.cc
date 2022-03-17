@@ -107,7 +107,7 @@ void SearchEngineProviderServiceFactory::RegisterProfilePrefs(
                                 false);
   // Restore default behaviour for Android until we figure out if we want this
   // option there.
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   bool allow_open_search_engines = true;
 #else
   bool allow_open_search_engines = false;

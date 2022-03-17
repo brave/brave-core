@@ -15,7 +15,7 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser_list_observer.h"
 #endif
 
@@ -27,7 +27,7 @@ class RewardsService;
 
 class RewardsTabHelper : public RewardsServiceObserver,
                          public content::WebContentsObserver,
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
                          public BrowserListObserver,
 #endif
                          public content::WebContentsUserData<RewardsTabHelper> {
@@ -52,7 +52,7 @@ class RewardsTabHelper : public RewardsServiceObserver,
   void OnVisibilityChanged(content::Visibility visibility) override;
   void WebContentsDestroyed() override;
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   // BrowserListObserver overrides
   void OnBrowserSetLastActive(Browser* browser) override;
   void OnBrowserNoLongerActive(Browser* browser) override;

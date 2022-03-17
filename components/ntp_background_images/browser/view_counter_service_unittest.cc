@@ -201,7 +201,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest,
 
   // Even with bg images turned off, SR wallpaper should be active.
   EnableSRPref(true);
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 #else
   EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
@@ -215,7 +215,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest,
        BINotActiveWithNTPBackgoundOptionOptedOut) {
   EnableNTPBGImagesPref(false);
   service_->bi_images_data_ = GetDemoBackgroundWallpaper();
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   // On android, |kNewTabPageShowBackgroundImage| prefs is not used for
   // controlling bg option. So view counter can give data.
   EXPECT_TRUE(view_counter_->IsBackgroundWallpaperActive());
@@ -241,7 +241,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, IsActiveOptedIn) {
   // Active if SR is only opted in.
   EnableSIPref(false);
   EnableSRPref(true);
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 #else
   EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
@@ -275,7 +275,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, ActiveInitiallyOptedIn) {
   EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
 }
 
-#if !defined(OS_LINUX)
+#if !BUILDFLAG(IS_LINUX)
 // Super referral feature is disabled on linux.
 TEST_F(NTPBackgroundImagesViewCounterTest, ModelTest) {
   service_->sr_images_data_ = GetDemoBrandedWallpaper(true);

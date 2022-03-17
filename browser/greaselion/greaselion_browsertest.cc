@@ -186,7 +186,7 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
   raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
 };
 
-#if !defined(OS_MAC)
+#if !BUILDFLAG(IS_MAC)
 class GreaselionServiceLocaleTest : public GreaselionServiceTest {
  public:
   explicit GreaselionServiceLocaleTest(const std::string& locale)
@@ -559,7 +559,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, CleanShutdown) {
   ui_test_utils::WaitForBrowserToClose(browser());
 }
 
-#if !defined(OS_MAC)
+#if !BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestEnglish,
                        ScriptInjectionWithMessagesDefaultLocale) {
   ASSERT_TRUE(InstallMockExtension());

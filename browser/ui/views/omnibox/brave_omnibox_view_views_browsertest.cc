@@ -38,7 +38,7 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyURLToClipboardTest) {
                            &text_from_clipboard);
   EXPECT_EQ(test_url, text_from_clipboard);
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   clipboard->ReadAsciiText(ui::ClipboardBuffer::kSelection,
                            /* data_dst = */ nullptr,
                            &text_from_clipboard);

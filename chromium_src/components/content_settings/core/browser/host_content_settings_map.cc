@@ -5,7 +5,7 @@
 
 #include "build/build_config.h"
 
-#if defined(OS_IOS)
+#if BUILDFLAG(IS_IOS)
 #include "src/components/content_settings/core/browser/host_content_settings_map.cc"
 #else
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"

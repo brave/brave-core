@@ -23,7 +23,7 @@ void ShowPanel(content::WebContents* web_contents);
 // Show wallet onboarding page.
 void ShowWalletOnboarding(content::WebContents* web_contents);
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 void SetCallbackForNewSetupNeededForTesting(base::OnceCallback<void()>);
 #endif
 

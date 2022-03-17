@@ -12,7 +12,7 @@ namespace features {
 
 const base::Feature kSkusFeature {
   "SkusFeature",
-#if defined(OS_IOS)
+#if BUILDFLAG(IS_IOS)
       base::FEATURE_ENABLED_BY_DEFAULT
 #else
       base::FEATURE_DISABLED_BY_DEFAULT

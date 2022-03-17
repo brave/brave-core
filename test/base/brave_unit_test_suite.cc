@@ -14,7 +14,7 @@ BraveUnitTestSuite::BraveUnitTestSuite(int argc, char** argv)
     : ChromeUnitTestSuite(argc, argv) {}
 
 void BraveUnitTestSuite::Initialize() {
-#if defined(OS_WIN) && defined(OFFICIAL_BUILD)
+#if BUILDFLAG(IS_WIN) && defined(OFFICIAL_BUILD)
   // When ChromeExtensionsBrowserClient is initialized, it needs
   install_static::InitializeProductDetailsForPrimaryModule();
 #endif

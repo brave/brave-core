@@ -481,7 +481,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetOAuthClientURL) {
 
 // Test disabled due to failure when run from a Powershell context
 // TODO(ryanml): Fix test when running on Windows Powershell and remove guard
-#if !defined(OS_WIN)
+#if !BUILDFLAG(IS_WIN)
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccessToken) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
@@ -698,7 +698,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetConvertAssetsServerError) {
 
 // Test disabled due to failure when run from a Powershell context
 // TODO(ryanml): Fix test when running on Windows Powershell and remove guard
-#if !defined(OS_WIN)
+#if !BUILDFLAG(IS_WIN)
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, RevokeToken) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());

@@ -10,11 +10,11 @@
 #include "components/version_info/channel.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 #include "base/environment.h"
 #endif
 
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
 // GetChannelByName is only supported on MacOS.
 TEST(BraveChannelInfoTest, ChannelByNameTest) {
 #if defined(OFFICIAL_BUILD)
@@ -33,7 +33,7 @@ TEST(BraveChannelInfoTest, ChannelByNameTest) {
 }
 #endif  // OS_MAC
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 TEST(BraveChannelInfoTest, ParentDirectoryOfUserDataDirectoryTest) {
   base::FilePath path;
   EXPECT_TRUE(chrome::GetDefaultUserDataDirectory(&path));

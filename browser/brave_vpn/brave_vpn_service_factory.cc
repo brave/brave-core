@@ -24,7 +24,7 @@
 // returns BraveVpnService.
 //
 // See https://github.com/brave/brave-browser/issues/20374 for more info.
-#if defined(OS_WIN) || defined(OS_MAC)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 #include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
@@ -35,13 +35,13 @@ BraveVpnServiceFactory* BraveVpnServiceFactory::GetInstance() {
 }
 
 // static
-#if defined(OS_WIN) || defined(OS_MAC)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 BraveVpnServiceDesktop* BraveVpnServiceFactory::GetForProfile(
     Profile* profile) {
   return static_cast<BraveVpnServiceDesktop*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
-#elif defined(OS_ANDROID)
+#elif BUILDFLAG(IS_ANDROID)
 BraveVpnService* BraveVpnServiceFactory::GetForProfile(Profile* profile) {
   return static_cast<BraveVpnService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
@@ -57,7 +57,7 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveVpnService",
           BrowserContextDependencyManager::GetInstance()) {
-#if defined(OS_WIN) || defined(OS_MAC)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
   DependsOn(skus::SkusServiceFactory::GetInstance());
 #endif
 }
@@ -66,7 +66,7 @@ BraveVpnServiceFactory::~BraveVpnServiceFactory() = default;
 
 KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-#if defined(OS_WIN) || defined(OS_MAC)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
   if (!brave_vpn::IsBraveVPNEnabled())
     return nullptr;
 #endif
@@ -77,7 +77,7 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
 
 // TODO(bsclifton) or TODO(shong):
 // see same notes above
-#if defined(OS_WIN) || defined(OS_MAC)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
   auto callback = base::BindRepeating(
       [](content::BrowserContext* context) {
         return skus::SkusServiceFactory::GetForContext(context);
@@ -85,7 +85,7 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
       context);
   return new BraveVpnServiceDesktop(
       shared_url_loader_factory, user_prefs::UserPrefs::Get(context), callback);
-#elif defined(OS_ANDROID)
+#elif BUILDFLAG(IS_ANDROID)
   return new BraveVpnService(shared_url_loader_factory);
 #endif
 }

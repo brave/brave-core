@@ -32,9 +32,9 @@ class BraveMainDelegate : public ChromeMainDelegate {
   void PreSandboxStartup() override;
 
  private:
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   void AdjustSyncServiceUrlForAndroid(std::string* brave_sync_service_url);
-#endif  // defined(OS_ANDROID)
+#endif  // BUILDFLAG(IS_ANDROID))
 };
 
 #endif  // BRAVE_APP_BRAVE_MAIN_DELEGATE_H_

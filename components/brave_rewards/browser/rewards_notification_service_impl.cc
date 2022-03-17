@@ -97,9 +97,9 @@ void RewardsNotificationServiceImpl::DeleteAllNotifications(
     const bool delete_displayed) {
   bool displayed = delete_displayed;
 
-  #if defined(OS_ANDROID)
-    displayed = true;
-  #endif
+#if BUILDFLAG(IS_ANDROID)
+  displayed = true;
+#endif
 
   if (displayed) {
     rewards_notifications_displayed_.clear();
@@ -351,7 +351,7 @@ void RewardsNotificationServiceImpl::OnFetchPromotions(
     args.push_back(base::NumberToString(item->claimable_until * 1000));
 
     bool only_once = true;
-  #if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     only_once = false;
   #endif
 

@@ -16,7 +16,7 @@
 namespace translate {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     {kTranslate, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
 }});

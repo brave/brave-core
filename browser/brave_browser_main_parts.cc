@@ -41,7 +41,7 @@
 #include "components/account_id/account_id.h"
 #endif
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -49,11 +49,11 @@
 #include "content/public/browser/web_contents.h"
 #endif
 
-#if BUILDFLAG(ENABLE_TOR) || !defined(OS_ANDROID)
+#if BUILDFLAG(ENABLE_TOR) || !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/browser_process.h"
 #endif
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/infobars/sync_v2_migrate_infobar_delegate.h"
 #include "chrome/browser/sync/sync_service_factory.h"
 #include "components/sync/driver/sync_service.h"
@@ -120,7 +120,7 @@ void BraveBrowserMainParts::PostBrowserStart() {
   }
 #endif
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   Browser* browser = chrome::FindLastActive();
   content::WebContents* active_web_contents = nullptr;
 
@@ -146,7 +146,7 @@ void BraveBrowserMainParts::PostBrowserStart() {
       }
     }
   }
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 void BraveBrowserMainParts::PreShutdown() {
@@ -155,7 +155,7 @@ void BraveBrowserMainParts::PreShutdown() {
 
 void BraveBrowserMainParts::PreProfileInit() {
   ChromeBrowserMainParts::PreProfileInit();
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   auto* command_line = base::CommandLine::ForCurrentProcess();
   if (!base::FeatureList::IsEnabled(brave_sync::features::kBraveSync)) {
     // Disable sync temporarily
@@ -176,7 +176,7 @@ void BraveBrowserMainParts::PostProfileInit(Profile* profile,
                                             bool is_initial_profile) {
   ChromeBrowserMainParts::PostProfileInit(profile, is_initial_profile);
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   if (profile->GetPrefs()->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
     content::RenderFrameHost::AllowInjectingJavaScript();
     auto* command_line = base::CommandLine::ForCurrentProcess();

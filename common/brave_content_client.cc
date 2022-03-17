@@ -14,7 +14,7 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
-#if BUILDFLAG(ENABLE_WIDEVINE) && defined(OS_LINUX)
+#if BUILDFLAG(ENABLE_WIDEVINE) && BUILDFLAG(IS_LINUX)
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
@@ -25,7 +25,7 @@
 
 namespace {
 
-#if BUILDFLAG(ENABLE_WIDEVINE) && defined(OS_LINUX)
+#if BUILDFLAG(ENABLE_WIDEVINE) && BUILDFLAG(IS_LINUX)
 // Hint file is used to give where widevine cdm library is installed.
 // On linux, zygote loads widevine before sandbox is initialized.
 // So, it should know where widevine is installed.
@@ -90,7 +90,7 @@ void BraveContentClient::AddAdditionalSchemes(Schemes* schemes) {
 void BraveContentClient::AddContentDecryptionModules(
     std::vector<content::CdmInfo>* cdms,
     std::vector<media::CdmHostFilePath>* cdm_host_file_paths) {
-#if BUILDFLAG(ENABLE_WIDEVINE) && defined(OS_LINUX)
+#if BUILDFLAG(ENABLE_WIDEVINE) && BUILDFLAG(IS_LINUX)
   CreateDefaultWidevineCdmHintFile();
 #endif
 

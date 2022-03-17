@@ -8,7 +8,7 @@
 #include "chrome/browser/ui/permission_bubble/permission_prompt.h"
 #include "components/permissions/request_type.h"
 
-#if !defined(OS_ANDROID) && !defined(OS_IOS)
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 #include "brave/browser/ui/views/permission_bubble/ethereum_permission_prompt_impl.h"
 #endif
 
@@ -26,7 +26,7 @@ std::unique_ptr<permissions::PermissionPrompt> CreatePermissionPrompt(
     return nullptr;
   }
 
-#if !defined(OS_ANDROID) && !defined(OS_IOS)
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   if (delegate->Requests()[0]->request_type() ==
       permissions::RequestType::kBraveEthereum) {
     return std::make_unique<EthereumPermissionPromptImpl>(browser, web_contents,

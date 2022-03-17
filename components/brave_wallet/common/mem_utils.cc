@@ -4,8 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/common/mem_utils.h"
+#include "build/build_config.h"
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include <windows.h>
 #endif
 
@@ -14,7 +15,7 @@ namespace brave_wallet {
 void SecureZeroData(void* data, size_t size) {
   if (data == nullptr || size == 0)
     return;
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   SecureZeroMemory(data, size);
 #else
   // 'volatile' is required. Otherwise optimizers can remove this function

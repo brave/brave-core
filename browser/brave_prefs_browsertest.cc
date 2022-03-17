@@ -41,11 +41,11 @@
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_vpn/pref_names.h"
 #endif
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
 #include "chrome/test/base/in_process_browser_test.h"
@@ -120,7 +120,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       kBraveGCMChannelStatus));
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       brave_vpn::prefs::kBraveVPNShowButton));
 #endif
@@ -146,7 +146,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
       prefs::kCloudPrintProxyEnabled));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kCloudPrintSubmitEnabled));
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       ntp_prefs::kNtpUseMostVisitedTiles));
 #endif
@@ -162,7 +162,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MediaRouterPrefTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveLocalStatePrefsBrowserTest, DefaultLocalStateTest) {
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(
       kDefaultBrowserPromptEnabled));
 #endif

@@ -23,7 +23,7 @@ absl::optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(
   }
 
   static const SponsoredImagesComponentData regional_data[] = {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     {"AD",
      "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3ab7dmWvTMdMjVLWTj1mdmTsj"
      "0s8uHuFnH1I+"

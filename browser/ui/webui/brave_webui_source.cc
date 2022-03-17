@@ -23,7 +23,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/resource_path.h"
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "chrome/grit/chromium_strings.h"
@@ -54,7 +54,7 @@ void AddResourcePaths(content::WebUIDataSource* html_source,
 
 void CustomizeWebUIHTMLSource(const std::string &name,
     content::WebUIDataSource* source) {
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   if (name == "rewards" || name == "wallet") {
     NavigationBarDataProvider::Initialize(source);
   }
@@ -71,14 +71,14 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "314e7529efec41c8867019815f4d8dad.svg", IDR_BRAVE_NEW_TAB_IMG4 },
         { "6c337c63662ee0ba4e57f6f8156d69ce.svg", IDR_BRAVE_NEW_TAB_IMG2 },
         // New tab Backgrounds
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
         { "dylan-malval_sea-min.webp", IDR_BRAVE_NEW_TAB_BACKGROUND1 },
 #endif
         // private tab
         { "c168145d6bf1abf2c0322636366f7dbe.svg", IDR_BRAVE_PRIVATE_TAB_TOR_IMG },               // NOLINT
         { "dbdc336ccc651b8a7c925b3482d6e65a.svg", IDR_BRAVE_PRIVATE_TAB_IMG }
     }
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
     }, {
       std::string("rewards"), {
         { "favicon.ico", IDR_BRAVE_REWARDS_FAVICON },
@@ -421,7 +421,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       }
     }, {
       std::string("welcome"), {
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
         { "headerText", IDS_WELCOME_HEADER },
 #endif
         { "welcome", IDS_BRAVE_WELCOME_PAGE_MAIN_TITLE },

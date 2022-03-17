@@ -22,7 +22,7 @@ std::string GetChannelSuffixForDataDir() {
   return std::string();
 }
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 std::string GetDesktopName(base::Environment* env) {
 #if defined(OFFICIAL_BUILD)
   version_info::Channel product_channel(chrome::GetChannel());
@@ -45,7 +45,7 @@ std::string GetDesktopName(base::Environment* env) {
     return name;
   return "brave-browser.desktop";
 }
-#endif  // defined(OS_LINUX)
+#endif  // BUILDFLAG(IS_LINUX)
 
 version_info::Channel GetChannel() {
   return brave::GetChannelImpl(nullptr, nullptr);

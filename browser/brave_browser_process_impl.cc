@@ -74,7 +74,7 @@
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #endif
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
 #include "brave/browser/ui/brave_browser_command_controller.h"

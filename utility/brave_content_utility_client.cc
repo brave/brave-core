@@ -16,7 +16,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/service_factory.h"
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/utility/importer/brave_profile_import_impl.h"
 #endif
 
@@ -32,7 +32,7 @@
 
 namespace {
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 auto RunBraveProfileImporter(
     mojo::PendingReceiver<brave::mojom::ProfileImport> receiver) {
   return std::make_unique<BraveProfileImportImpl>(std::move(receiver));
@@ -69,7 +69,7 @@ BraveContentUtilityClient::~BraveContentUtilityClient() = default;
 
 void BraveContentUtilityClient::RegisterMainThreadServices(
     mojo::ServiceFactory& services) {
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   services.Add(RunBraveProfileImporter);
 #endif
 

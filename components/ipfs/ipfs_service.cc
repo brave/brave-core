@@ -326,16 +326,16 @@ void IpfsService::ExecuteNodeCommand(const base::CommandLine& command_line,
                                      const base::FilePath& data,
                                      BoolCallback callback) {
   base::LaunchOptions options;
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   options.environment[L"IPFS_PATH"] = data.value();
 #else
   options.environment["IPFS_PATH"] = data.value();
 #endif
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   options.kill_on_parent_death = true;
 #endif
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   options.start_hidden = true;
 #endif
   base::Process process = base::LaunchProcess(command_line, options);

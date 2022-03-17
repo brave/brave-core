@@ -24,7 +24,7 @@ namespace {
 bool ShouldIgnoreHarmonySpec(const views::View& view) {
   const ui::NativeTheme* theme = view.GetNativeTheme();
   DCHECK(theme);
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
   return false;
 #else
   if (theme->UserHasContrastPreference())
@@ -39,7 +39,7 @@ bool ShouldIgnoreHarmonySpec(const views::View& view) {
   const bool label_color_is_black =
       test_color == SK_ColorBLACK || test_color == gfx::kGoogleGrey900;
   return !label_color_is_black;
-#endif  // defined(OS_MAC)
+#endif  // BUILDFLAG(IS_MAC)
 }
 
 }  // namespace

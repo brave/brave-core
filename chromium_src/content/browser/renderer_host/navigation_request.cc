@@ -7,7 +7,7 @@
 #include "content/browser/renderer_host/frame_tree_node.h"
 #include "url/gurl.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "content/browser/renderer_host/navigator.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
@@ -17,7 +17,7 @@ namespace {
 
 GURL GetTopDocumentGURL(content::FrameTreeNode* frame_tree_node) {
   GURL gurl;
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   // On Android, a base URL can be set for the frame. If this the case, it is
   // the URL to use for cookies.
   content::NavigationEntry* last_committed_entry =

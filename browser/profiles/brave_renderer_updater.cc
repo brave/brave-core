@@ -88,7 +88,7 @@ void BraveRendererUpdater::UpdateRenderer(
       brave_wallet_web3_provider_.GetValue());
 
   bool brave_use_native_wallet =
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
       false;
 #else
       (default_wallet ==

@@ -50,7 +50,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterUint64Pref(prefs::kServerPublisherListStamp, 0ull);
   registry->RegisterStringPref(prefs::kUpholdAnonAddress, "");
   registry->RegisterStringPref(prefs::kBadgeText, "1");
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   registry->RegisterBooleanPref(prefs::kUseRewardsStagingServer, false);
 #endif
   registry->RegisterStringPref(prefs::kExternalWalletType, "");

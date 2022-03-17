@@ -13,7 +13,7 @@
 
 #include "build/build_config.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #error This file should only be included on desktop.
 #endif
 
@@ -55,7 +55,7 @@ class BraveUptimeTracker {
 // BrowserListObserver should only be only on desktop
 // Brave.Uptime.BrowserOpenMinutes and Brave.Core.LastTimeIncognitoUsed
 // don't work on Android
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 // Periodically records P3A stats (extracted from Local State) regarding the
 // time when incognito windows were used.
 // Used as a leaking singletone.
@@ -80,7 +80,7 @@ class BraveWindowTracker : public BrowserListObserver {
   base::RepeatingTimer timer_;
   raw_ptr<PrefService> local_state_ = nullptr;
 };
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace brave
 

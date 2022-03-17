@@ -8,7 +8,7 @@
 #include "content/public/test/browser_test.h"
 #include "ui/base/resource/resource_bundle.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
 #include "chrome/test/base/in_process_browser_test.h"
@@ -23,7 +23,7 @@ IN_PROC_BROWSER_TEST_F(PlatformBrowserTest, ResourceExistanceTest) {
           IDR_PRODUCT_LOGO_32_DEV);
   EXPECT_FALSE(test_image.IsEmpty());
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   test_image =
       ui::ResourceBundle::GetSharedInstance().GetImageNamed(
           IDR_PRODUCT_LOGO_128_BETA);

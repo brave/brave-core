@@ -308,7 +308,7 @@ bool ViewCounterService::IsBrandedWallpaperActive() const {
 }
 
 bool ViewCounterService::IsBackgroundWallpaperActive() const {
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage))
     return false;
 #endif

@@ -18,13 +18,13 @@ namespace attestation {
 
 AttestationImpl::AttestationImpl(LedgerImpl* ledger) :
     Attestation(ledger) {
-  #if defined(OS_IOS)
-    platform_instance_ = std::make_unique<AttestationIOS>(ledger);
-  #elif defined(OS_ANDROID)
-    platform_instance_ = std::make_unique<AttestationAndroid>(ledger);
-  #else
-    platform_instance_ = std::make_unique<AttestationDesktop>(ledger);
-  #endif
+#if BUILDFLAG(IS_IOS)
+  platform_instance_ = std::make_unique<AttestationIOS>(ledger);
+#elif BUILDFLAG(IS_ANDROID)
+  platform_instance_ = std::make_unique<AttestationAndroid>(ledger);
+#else
+  platform_instance_ = std::make_unique<AttestationDesktop>(ledger);
+#endif
 }
 
 AttestationImpl::~AttestationImpl() = default;

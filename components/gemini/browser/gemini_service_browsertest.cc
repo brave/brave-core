@@ -344,7 +344,7 @@ IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetOAuthClientURL) {
   ASSERT_EQ(expected_url, client_url);
 }
 
-#if !defined(OS_WIN)
+#if !BUILDFLAG(IS_WIN)
 IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetAccessToken) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
@@ -382,7 +382,7 @@ IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetAccessTokenServerError) {
   WaitForGetAccessToken(false);
 }
 
-#if !defined(OS_WIN)
+#if !BUILDFLAG(IS_WIN)
 IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, RefreshAccessToken) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());

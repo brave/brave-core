@@ -17,11 +17,11 @@ class BatLedgerService;
 template <>
 inline sandbox::mojom::Sandbox
 content::GetServiceSandboxType<bat_ledger::mojom::BatLedgerService>() {
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   return sandbox::mojom::Sandbox::kNoSandbox;
 #else
   return sandbox::mojom::Sandbox::kUtility;
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_SERVICE_SANDBOX_TYPE_H_

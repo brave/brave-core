@@ -476,7 +476,7 @@ class BraveContentSettingsAgentImplV2BrowserTest
 
 // This test currently fails on Linux platforms due to an upstream bug when
 // SwANGLE is used, see upstream bug at http://crbug.com/1192632.
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 #define MAYBE_WebGLReadPixels DISABLED_WebGLReadPixels
 #else
 #define MAYBE_WebGLReadPixels WebGLReadPixels

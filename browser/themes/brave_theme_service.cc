@@ -11,14 +11,14 @@
 #include "chrome/browser/profiles/profile.h"
 #include "brave/browser/profiles/profile_util.h"
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include "brave/browser/themes/brave_theme_helper_win.h"
 #endif
 
 namespace {
 
 const ThemeHelper& GetBraveThemeHelper(Profile* profile) {
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   using BraveThemeHelper = BraveThemeHelperWin;
 #endif
   // Because the helper is created as a NoDestructor static, we need separate

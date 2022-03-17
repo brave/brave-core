@@ -55,7 +55,7 @@ std::pair<base::FilePath, base::FilePath> InitTorPath(
     return std::make_pair(base::FilePath(), base::FilePath());
   }
 
-#if defined(OS_POSIX)
+#if BUILDFLAG(IS_POSIX)
   // Ensure that Tor client executable has appropriate file
   // permissions, as CRX unzipping does not preserve them.
   // See https://crbug.com/555011
@@ -64,7 +64,7 @@ std::pair<base::FilePath, base::FilePath> InitTorPath(
                << executable_path.value().c_str();
     return std::make_pair(base::FilePath(), base::FilePath());
   }
-#endif  // defined(OS_POSIX)
+#endif  // BUILDFLAG(IS_POSIX)
 
   return std::make_pair(executable_path, torrc_path);
 }
@@ -80,7 +80,7 @@ void DeleteFile(const base::FilePath& file) {
 
 }  // namespace
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const char kTorClientComponentName[] = "Brave Tor Client Updater (Windows)";
 const char kTorClientComponentId[] = "cpoalefficncklhjfpglfiplenlpccdb";
 const char kTorClientComponentBase64PublicKey[] =
@@ -91,7 +91,7 @@ const char kTorClientComponentBase64PublicKey[] =
     "4Qa6VFmuoBhup54tTZvMv+ikoKKaQkHzkkjTa4hV5AzdnFDKO8C9qJb3T/Ef0+MO"
     "IuZjyySVzGNcOfASeHkhxhlwMQSQuhCN5mdFW5YBnVZ/5QWx8WzbhqBny/ZynS4e"
     "rQIDAQAB";
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
 const char kTorClientComponentName[] = "Brave Tor Client Updater (Mac)";
 const char kTorClientComponentId[] = "cldoidikboihgcjfkhdeidbpclkineef";
 const char kTorClientComponentBase64PublicKey[] =
@@ -102,7 +102,7 @@ const char kTorClientComponentBase64PublicKey[] =
     "jKVAy1hc9mApZSyt4oGvUu4SJZnxlYMrY4Ze+OWbDesi2JGy+6dA1ddL9IdnwCb3"
     "9CBOMNjaHeCVz0MKxdCWGPieQM0R7S1KvDCVqAkss6NAbLB6AVM0JulqxC9b+hr/"
     "xwIDAQAB";
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
 const char kTorClientComponentName[] = "Brave Tor Client Updater (Linux)";
 const char kTorClientComponentId[] = "biahpgbdmdkfgndcmfiipgcebobojjkp";
 const char kTorClientComponentBase64PublicKey[] =

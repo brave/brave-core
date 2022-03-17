@@ -23,7 +23,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/android/tab_web_contents_delegate_android.h"
 #include "content/public/browser/web_contents.h"
 #else
@@ -280,7 +280,7 @@ void AdblockDOMHandler::HandleViewSubscriptionSource(
                             ->subscription_service_manager()
                             ->GetListTextFileUrl(subscription_url);
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   web_ui()->GetWebContents()->GetDelegate()->OpenURLFromTab(
       web_ui()->GetWebContents(),
       content::OpenURLParams(file_url, content::Referrer(),

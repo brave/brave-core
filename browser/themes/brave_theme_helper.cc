@@ -16,7 +16,7 @@
 #include "ui/gfx/color_utils.h"
 #include "ui/native_theme/native_theme.h"
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 #include "chrome/browser/themes/custom_theme_supplier.h"
 #endif
 
@@ -76,7 +76,7 @@ SkColor GetOmniboxResultBackground(int id, bool dark, bool priv) {
       base::ClampRound(GetOmniboxStateOpacity(state) * 0xff));
 }
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 bool IsUsingSystemTheme(const CustomThemeSupplier* theme_supplier) {
   return theme_supplier &&
          theme_supplier->get_theme_type() == CustomThemeSupplier::NATIVE_X11;
@@ -93,7 +93,7 @@ SkColor BraveThemeHelper::GetDefaultColor(
     const CustomThemeSupplier* theme_supplier) const {
   const bool is_brave_theme_properties =
       BraveThemeProperties::IsBraveThemeProperties(id);
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   // IF gtk theme is selected, respect it.
   if (!is_brave_theme_properties && IsUsingSystemTheme(theme_supplier)) {
     return ThemeHelper::GetDefaultColor(id, incognito, theme_supplier);
@@ -181,7 +181,7 @@ absl::optional<SkColor> BraveThemeHelper::GetOmniboxColor(
     int id,
     bool incognito,
     const CustomThemeSupplier* theme_supplier) const {
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   // If gtk theme is selected, respect it.
   if (IsUsingSystemTheme(theme_supplier)) {
     return ThemeHelper::GetOmniboxColor(id, incognito, theme_supplier);

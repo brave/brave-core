@@ -33,7 +33,7 @@
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_vpn/features.h"
 #endif
 
@@ -320,7 +320,7 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
 // file so we turn it off for the macro sections.
 // clang-format off
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
 #define BRAVE_VPN_FEATURE_ENTRIES                         \
     {kBraveVPNFeatureInternalName,                        \
      flag_descriptions::kBraveVPNName,                    \
@@ -432,7 +432,7 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
 #define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #define BRAVE_SHIELDS_FEATURE_ENTRIES                                    \
     {"brave-shields-v2",                                                 \
      flag_descriptions::kBraveShieldsV2Name,                             \

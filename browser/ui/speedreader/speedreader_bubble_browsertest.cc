@@ -57,7 +57,7 @@ IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
 
 // Disable this test for intermittent crashes on macOS.
 // See https://github.com/brave/brave-browser/issues/20082
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
 #define MAYBE_InvokeUi_speedreader_mode_bubble_basic \
   DISABLED_InvokeUi_speedreader_mode_bubble_basic
 #else

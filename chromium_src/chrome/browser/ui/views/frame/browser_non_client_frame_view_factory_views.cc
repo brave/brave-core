@@ -5,7 +5,7 @@
 
 #include "build/build_config.h"
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include "brave/browser/ui/views/frame/brave_glass_browser_frame_view.h"
 #define GlassBrowserFrameView BraveGlassBrowserFrameView
 #endif
@@ -17,6 +17,6 @@
 
 #undef OpaqueBrowserFrameView
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #undef GlassBrowserFrameView
 #endif

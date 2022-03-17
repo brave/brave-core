@@ -46,7 +46,7 @@ class LedgerDatabaseMigrationTest : public testing::Test {
       return "";
     }
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     // Test data files may or may not have line endings converted to CRLF by
     // git checkout on Windows (depending on git autocrlf setting). Remove
     // CRLFs if they are there and replace with just LF, otherwise leave the

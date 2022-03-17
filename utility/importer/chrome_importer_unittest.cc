@@ -138,7 +138,7 @@ TEST_F(ChromeImporterTest, ImportFavicons) {
 
 // The mock keychain only works on macOS, so only run this test on macOS (for
 // now)
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
 TEST_F(ChromeImporterTest, ImportPasswords) {
   // Use mock keychain on mac to prevent blocking permissions dialogs.
   OSCryptMocker::SetUp();

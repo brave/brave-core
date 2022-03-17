@@ -14,7 +14,7 @@
 namespace media_router {
 
 bool MediaRouterEnabled(content::BrowserContext* context) {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   return MediaRouterEnabled_ChromiumImpl(context);
 #else
   if (!base::FeatureList::IsEnabled(kMediaRouter)) {

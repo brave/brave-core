@@ -83,7 +83,7 @@ extern const char kImportDialogExtensions[];
 extern const char kImportDialogPayments[];
 extern const char kMRUCyclingEnabled[];
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 extern const char kDesktopModeEnabled[];
 extern const char kPlayYTVideoInBrowserEnabled[];
 extern const char kBackgroundVideoPlaybackEnabled[];

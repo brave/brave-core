@@ -5,7 +5,7 @@
 
 #include "brave/browser/brave_shell_integration.h"
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include <shlobj.h>
 
 #include <utility>
@@ -21,7 +21,7 @@ BraveDefaultBrowserWorker::~BraveDefaultBrowserWorker() = default;
 
 void BraveDefaultBrowserWorker::SetAsDefaultImpl(
     base::OnceClosure on_finished_callback) {
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   if (GetDefaultWebClientSetPermission() != SET_DEFAULT_NOT_ALLOWED) {
     bool success = false;
     const wchar_t* kAssociations[] = {L"https", L"http", L".html", L".htm"};

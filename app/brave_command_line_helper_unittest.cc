@@ -21,7 +21,7 @@ int CountA(const base::CommandLine::StringVector& sv) {
   int count = 0;
   for (const auto& argv : sv) {
     std::string value;
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     value = base::WideToUTF8(argv);
 #else
     value = argv;

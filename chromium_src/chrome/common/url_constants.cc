@@ -203,7 +203,7 @@ const char kSyncGoogleDashboardURL[] =
 const char kSyncLearnMoreURL[] =
     "https://support.brave.com/";
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 const char kSyncTrustedVaultOptInURL[] = "https://support.brave.com/";
 #endif
 
@@ -219,13 +219,13 @@ const char kWhoIsMyAdministratorHelpURL[] =
 const char kCwsEnhancedSafeBrowsingLearnMoreURL[] =
     "https://support.brave.com/";
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 const char kEnhancedPlaybackNotificationLearnMoreURL[] =
 // Keep in sync with chrome/android/java/strings/android_chrome_strings.grd
     "https://community.brave.com";
 #endif
 
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
 const char kChromeEnterpriseSignInLearnMoreURL[] =
     "https://support.brave.com/";
 
@@ -234,7 +234,7 @@ const char kMac10_10_ObsoleteURL[] =
     "360025390311-How-do-I-download-and-install-Brave-";
 #endif
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const char kChromeCleanerLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017884152-How-do-I-remove-unwanted-ads-pop-ups-malware-";

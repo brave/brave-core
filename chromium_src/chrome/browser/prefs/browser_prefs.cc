@@ -64,7 +64,7 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   dark_mode::MigrateBraveDarkModePrefs(profile);
 
   // Added 9/2020
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   new_tab_page::MigrateNewTabPagePrefs(profile);
 #endif
 

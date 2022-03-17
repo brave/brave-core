@@ -9,7 +9,7 @@
 
 #if defined(OFFICIAL_BUILD)
 
-#if defined(OS_WIN) || defined(OS_MAC)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 TEST(InstallVerifierUnitTest, TestShouldEnforce) {
   EXPECT_TRUE(extensions::InstallVerifier::ShouldEnforce());
 }
@@ -17,6 +17,6 @@ TEST(InstallVerifierUnitTest, TestShouldEnforce) {
 TEST(InstallVerifierUnitTest, TestShouldNotEnforce) {
   EXPECT_FALSE(extensions::InstallVerifier::ShouldEnforce());
 }
-#endif  // defined(OS_WIN) || defined(OS_MAC)
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 
 #endif  // defined(OFFICIAL_BUILD)

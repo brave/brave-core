@@ -139,7 +139,7 @@ TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesTest) {
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
-#if !defined(OS_LINUX)
+#if !BUILDFLAG(IS_LINUX)
 TEST_F(NTPBackgroundImagesSourceTest, BasicSuperReferralDataTest) {
   // Valid super referral component json data.
   const std::string test_json_string_referral = R"(

@@ -10,7 +10,7 @@
 
 // Pref file that holds installed extension list.
 constexpr char kChromeExtensionsPreferencesFile[] =
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
     "Preferences";
 #else
     "Secure Preferences";

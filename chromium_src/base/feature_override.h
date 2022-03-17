@@ -22,7 +22,7 @@
 //
 //      OVERRIDE_FEATURE_DEFAULT_STATES({{
 //          {kUpstreamFeature, base::FEATURE_ENABLED_BY_DEFAULT},
-//      #if defined(OS_ANDROID)
+//      #if BUILDFLAG(IS_ANDROID)
 //          {kAnotherUpstreamFeature, base::FEATURE_DISABLED_BY_DEFAULT},
 //      #endif
 //      }});

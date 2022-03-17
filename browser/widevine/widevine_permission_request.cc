@@ -41,7 +41,7 @@ void WidevinePermissionRequest::PermissionDecided(ContentSetting result,
                                                   bool is_one_time) {
   // Permission granted
   if (result == ContentSetting::CONTENT_SETTING_ALLOW) {
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
     // Prevent relaunch during the browser test.
     // This will cause abnormal termination during the test.
     if (for_restart_ && !is_test_) {

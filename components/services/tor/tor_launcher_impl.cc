@@ -80,10 +80,10 @@ void TorLauncherImpl::Launch(mojom::TorConfigPtr config,
   }
 
   base::LaunchOptions launchopts;
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   launchopts.kill_on_parent_death = true;
 #endif
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   launchopts.start_hidden = true;
 #endif
   base::Process tor_process = base::LaunchProcess(args, launchopts);

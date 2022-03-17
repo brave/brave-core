@@ -31,12 +31,12 @@
 #include "brave/browser/greaselion/greaselion_tab_helper.h"
 #endif
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/android/preferences/background_video_playback_tab_helper.h"
 #include "brave/browser/android/preferences/website/desktop_mode_tab_helper.h"
 #endif
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #endif
 
@@ -76,13 +76,13 @@ void AttachTabHelpers(content::WebContents* web_contents) {
       web_contents);
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShieldsPanelV2)) {
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
     brave_shields::BraveShieldsDataController::CreateForWebContents(
         web_contents);
 #endif
   }
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   DesktopModeTabHelper::CreateForWebContents(web_contents);
   BackgroundVideoPlaybackTabHelper::CreateForWebContents(web_contents);
 #else

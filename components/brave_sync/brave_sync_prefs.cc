@@ -162,7 +162,7 @@ bool Prefs::IsSyncV1Enabled() const {
   return pref_service_->GetBoolean(kSyncEnabled);
 }
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 void Prefs::SetSyncV1WasEnabled() const {
   pref_service_->SetBoolean(kSyncEnabled, true);
 }

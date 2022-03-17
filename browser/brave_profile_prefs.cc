@@ -113,13 +113,13 @@
 #include "brave/components/tor/tor_profile_service.h"
 #endif
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "components/feed/core/shared_prefs/pref_names.h"
 #include "components/ntp_tiles/pref_names.h"
 #include "components/translate/core/browser/translate_pref_names.h"
 #endif
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/startup/default_brave_browser_prompt.h"
 #endif
 
@@ -145,7 +145,7 @@ void RegisterProfilePrefsForMigration(
 #endif
 
   dark_mode::RegisterBraveDarkModePrefsForMigration(registry);
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   new_tab_page::RegisterNewTabPagePrefsForMigration(registry);
 #endif
 
@@ -181,7 +181,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_sync::Prefs::RegisterProfilePrefs(registry);
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
   brave_vpn::prefs::RegisterProfilePrefs(registry);
 #endif
 
@@ -234,7 +234,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       registry);
 #endif
 
-#if !defined(OS_ANDROID) && !defined(OS_CHROMEOS)
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
   // Disable sharing hub on stable only.
   if (chrome::GetChannel() == version_info::Channel::STABLE) {
     registry->SetDefaultPrefValue(prefs::kDesktopSharingHubEnabled,
@@ -242,7 +242,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   }
 #endif
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   registry->RegisterBooleanPref(kDesktopModeEnabled, false);
   registry->RegisterBooleanPref(kPlayYTVideoInBrowserEnabled, true);
   registry->RegisterBooleanPref(kBackgroundVideoPlaybackEnabled, false);
@@ -412,15 +412,15 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   sidebar::SidebarService::RegisterProfilePrefs(registry, chrome::GetChannel());
 #endif
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   BraveOmniboxClientImpl::RegisterProfilePrefs(registry);
 #endif
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   brave_ads::RegisterP2APrefs(registry);
 #endif
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   // Turn on most visited mode on NTP by default.
   // We can turn customization mode on when we have add-shortcut feature.
   registry->SetDefaultPrefValue(ntp_prefs::kNtpUseMostVisitedTiles,

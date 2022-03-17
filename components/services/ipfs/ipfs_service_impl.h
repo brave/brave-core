@@ -36,7 +36,7 @@ class IpfsServiceImpl : public mojom::IpfsService {
   std::unique_ptr<brave::ChildProcessMonitor> child_monitor_;
   mojo::Receiver<mojom::IpfsService> receiver_;
   SetCrashHandlerCallback crash_handler_callback_;
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   bool in_shutdown_ = false;
 #endif
   SEQUENCE_CHECKER(sequence_checker_);

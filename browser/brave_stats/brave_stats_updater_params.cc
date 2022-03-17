@@ -244,7 +244,7 @@ void BraveStatsUpdaterParams::SetFirstRunForTest(bool first_run) {
 
 // static
 base::Time BraveStatsUpdaterParams::GetFirstRunTime(PrefService* pref_service) {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   // Android doesn't use a sentinel to track first run, so we use a
   // preference instead. kReferralAndroidFirstRunTimestamp is used because
   // previously only referrals needed to know the first run value.
@@ -265,7 +265,7 @@ base::Time BraveStatsUpdaterParams::GetFirstRunTime(PrefService* pref_service) {
   // with the switches:kNoFirstRun flag, so we need to allow blocking for that.
   base::ScopedAllowBlockingForTesting allow_blocking;
   return first_run::GetFirstRunSentinelCreationTime();
-#endif  // #defined(OS_ANDROID)
+#endif  // #BUILDFLAG(IS_ANDROID)
 }
 
 }  // namespace brave_stats

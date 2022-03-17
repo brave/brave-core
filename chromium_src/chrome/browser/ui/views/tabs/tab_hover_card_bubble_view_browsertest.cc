@@ -105,7 +105,7 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest {
 // This test appears to be flaky on Windows. Upstream tests were also found to
 // be flaky, so for now we'll follow the upstream lead and disable this one on
 // Windows. See crbug.com/1050765.
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #define MAYBE_ChromeSchemeUrl DISABLED_ChromeSchemeUrl
 #else
 #define MAYBE_ChromeSchemeUrl ChromeSchemeUrl
