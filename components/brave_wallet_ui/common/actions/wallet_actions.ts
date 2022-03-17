@@ -23,7 +23,8 @@ import {
   RemoveSitePermissionPayloadType,
   AddSitePermissionPayloadType,
   UpdateUnapprovedTransactionSpendAllowanceType,
-  UpdateUnapprovedTransactionNonceType
+  UpdateUnapprovedTransactionNonceType,
+  SetTransactionProviderErrorType
 } from '../constants/action_types'
 import {
   BraveWallet,
@@ -115,3 +116,4 @@ export const speedupTransaction = createAction<BraveWallet.TransactionInfo>('spe
 export const defaultCurrenciesUpdated = createAction<DefaultCurrencies>('defaultCurrenciesUpdated')
 export const expandWalletNetworks = createAction('expandWalletNetworks')
 export const refreshBalancesAndPriceHistory = createAction('refreshBalancesAndPriceHistory')
+export const setTransactionProviderError = createAction<SetTransactionProviderErrorType>('setTransactionProviderError')

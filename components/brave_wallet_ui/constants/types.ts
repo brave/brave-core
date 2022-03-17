@@ -215,6 +215,7 @@ export interface WalletState {
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean
   defaultCurrencies: DefaultCurrencies
+  transactionProviderErrorRegistry: TransactionProviderErrorRegistry
 }
 
 export interface PanelState {
@@ -562,4 +563,13 @@ export interface NFTMetadataReturnType {
     facebook: string
     logo: string
   }
+}
+
+export interface TransactionProviderError {
+  code: BraveWallet.ProviderError | BraveWallet.SolanaProviderError
+  message: string
+}
+
+export interface TransactionProviderErrorRegistry {
+  [transactionId: string]: TransactionProviderError
 }

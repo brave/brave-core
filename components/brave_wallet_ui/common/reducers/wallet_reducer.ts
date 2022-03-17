@@ -25,6 +25,7 @@ import {
   ActiveOriginChanged,
   IsEip1559Changed,
   NewUnapprovedTxAdded,
+  SetTransactionProviderErrorType,
   SitePermissionsPayloadType,
   TransactionStatusChanged,
   UnapprovedTxUpdated
@@ -83,7 +84,8 @@ const defaultState: WalletState = {
   defaultCurrencies: {
     fiat: '',
     crypto: ''
-  }
+  },
+  transactionProviderErrorRegistry: {}
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
@@ -447,6 +449,16 @@ reducer.on(WalletActions.defaultCurrenciesUpdated, (state: any, payload: Default
   return {
     ...state,
     defaultCurrencies: payload
+  }
+})
+
+reducer.on(WalletActions.setTransactionProviderError, (state: WalletState, payload: SetTransactionProviderErrorType) => {
+  return {
+    ...state,
+    transactionProviderErrorRegistry: {
+      ...state.transactionProviderErrorRegistry,
+      [payload.transaction.id]: payload.providerError
+    }
   }
 })
 

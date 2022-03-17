@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { ArrowRightIcon } from 'brave-ui/components/icons'
+import { AlertCircleIcon, ArrowRightIcon } from 'brave-ui/components/icons'
+
 import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
@@ -139,4 +140,11 @@ export const AccountNameText = styled.span`
   font-weight: 600;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
+`
+
+export const AlertIcon = styled(AlertCircleIcon)`
+  width: 14px;
+  height: 14px;
+  color: ${(p) => p.theme.color.interactive05};
+  padding-left: 2px;
 `

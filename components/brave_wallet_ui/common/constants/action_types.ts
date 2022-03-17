@@ -6,6 +6,7 @@
 import {
   BraveWallet,
   SlippagePresetObjectType,
+  TransactionProviderError,
   WalletAccountType
 } from '../../constants/types'
 
@@ -109,4 +110,9 @@ export type RemoveSitePermissionPayloadType = {
 export type AddSitePermissionPayloadType = {
   origin: string
   account: string
+}
+
+export type SetTransactionProviderErrorType = {
+  transaction: BraveWallet.TransactionInfo
+  providerError: TransactionProviderError
 }
