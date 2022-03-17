@@ -20,8 +20,7 @@ protocol Deletable where Self: NSManagedObject {
 protocol Readable where Self: NSManagedObject {
     static func count(predicate: NSPredicate?, context: NSManagedObjectContext) -> Int?
     static func first(where predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, context: NSManagedObjectContext) -> Self?
-    static func all(where predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, fetchLimit: Int, 
-                    context: NSManagedObjectContext) -> [Self]?
+    static func all(where predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, fetchLimit: Int, fetchBatchSize: Int, context: NSManagedObjectContext) -> [Self]?
 }
 
 // MARK: - Implementations
@@ -108,12 +107,14 @@ extension Readable {
     static func all(where predicate: NSPredicate? = nil,
                     sortDescriptors: [NSSortDescriptor]? = nil,
                     fetchLimit: Int = 0,
+                    fetchBatchSize: Int = 0,
                     context: NSManagedObjectContext = DataController.viewContext) -> [Self]? {
         let request = getFetchRequest()
         
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
         request.fetchLimit = fetchLimit
+        request.fetchBatchSize = fetchBatchSize
         
         do {
             return try context.fetch(request)
