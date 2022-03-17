@@ -478,6 +478,8 @@ function Container (props: Props) {
     } else {
       props.walletActions.approveTransaction(selectedPendingTransaction)
     }
+
+    onSelectTransaction(selectedPendingTransaction)
   }
 
   const onOpenSettings = () => {

@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 import * as EthereumBlockies from 'ethereum-blockies'
 
 // Hooks
@@ -15,7 +16,8 @@ import { getLocale } from '../../../../common/locale'
 import {
   BraveWallet,
   WalletAccountType,
-  DefaultCurrencies
+  DefaultCurrencies,
+  WalletState
 } from '../../../constants/types'
 import Header from '../../buy-send-swap/select-header'
 
@@ -35,7 +37,8 @@ import {
   SpacerText,
   FromToRow,
   AccountNameText,
-  ArrowIcon
+  ArrowIcon,
+  AlertIcon
 } from './style'
 
 import {
@@ -44,6 +47,7 @@ import {
 } from '../shared-panel-styles'
 
 import { StatusBubble } from '../../shared/style'
+import { TransactionStatusTooltip } from '../transaction-status-tooltip'
 
 export interface Props {
   transaction: BraveWallet.TransactionInfo
@@ -59,6 +63,7 @@ export interface Props {
 }
 
 const TransactionDetailPanel = (props: Props) => {
+  // props
   const {
     transaction,
     selectedNetwork,
@@ -72,10 +77,23 @@ const TransactionDetailPanel = (props: Props) => {
     onCancelTransaction
   } = props
 
+  // redux
+  const {
+    selectedAccount,
+    transactions,
+    transactionProviderErrorRegistry
+  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+
+  const liveTransaction = React.useMemo(() => {
+    return selectedAccount?.address && transactions[selectedAccount.address]
+      ? transactions[selectedAccount.address].find(tx => tx.id === transaction.id) ?? transaction
+      : transaction
+  }, [transaction, selectedAccount, transactions])
+
   const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens)
   const transactionDetails = React.useMemo(
-    () => parseTransaction(transaction),
-    [transaction]
+    () => parseTransaction(liveTransaction),
+    [liveTransaction]
   )
 
   const fromOrb = React.useMemo(() => {
@@ -89,20 +107,20 @@ const TransactionDetailPanel = (props: Props) => {
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
   const onClickRetryTransaction = () => {
-    if (transaction) {
-      onRetryTransaction(transaction)
+    if (liveTransaction) {
+      onRetryTransaction(liveTransaction)
     }
   }
 
   const onClickSpeedupTransaction = () => {
-    if (transaction) {
-      onSpeedupTransaction(transaction)
+    if (liveTransaction) {
+      onSpeedupTransaction(liveTransaction)
     }
   }
 
   const onClickCancelTransaction = () => {
-    if (transaction) {
-      onCancelTransaction(transaction)
+    if (liveTransaction) {
+      onCancelTransaction(liveTransaction)
     }
   }
 
@@ -110,30 +128,30 @@ const TransactionDetailPanel = (props: Props) => {
     if (transactionDetails.isSwap) {
       return toProperCase(getLocale('braveWalletSwap'))
     }
-    if (transaction.txType === BraveWallet.TransactionType.ERC20Approve) {
+    if (liveTransaction.txType === BraveWallet.TransactionType.ERC20Approve) {
       return toProperCase(getLocale('braveWalletApprovalTransactionIntent'))
     }
     return toProperCase(getLocale('braveWalletTransactionSent'))
-  }, [transactionDetails, transaction])
+  }, [transactionDetails, liveTransaction])
 
   const transactionValue = React.useMemo((): string => {
-    if (transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
-      transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom) {
+    if (liveTransaction.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
+        liveTransaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom) {
       return transactionDetails.erc721BlockchainToken?.name + ' ' + transactionDetails.erc721TokenId
     }
     return new Amount(transactionDetails.value)
       .formatAsAsset(undefined, transactionDetails.symbol)
-  }, [transactionDetails, transaction])
+  }, [transactionDetails, liveTransaction])
 
   const transactionFiatValue = React.useMemo((): string => {
-    if (transaction.txType !== BraveWallet.TransactionType.ERC721TransferFrom &&
-      transaction.txType !== BraveWallet.TransactionType.ERC721SafeTransferFrom &&
-      transaction.txType !== BraveWallet.TransactionType.ERC20Approve) {
+    if (liveTransaction.txType !== BraveWallet.TransactionType.ERC721TransferFrom &&
+      liveTransaction.txType !== BraveWallet.TransactionType.ERC721SafeTransferFrom &&
+      liveTransaction.txType !== BraveWallet.TransactionType.ERC20Approve) {
       return transactionDetails.fiatValue
         .formatAsFiat(defaultCurrencies.fiat)
     }
     return ''
-  }, [transactionDetails, transaction, defaultCurrencies])
+  }, [transactionDetails, liveTransaction, defaultCurrencies])
 
   return (
     <StyledWrapper>
@@ -153,6 +171,25 @@ const TransactionDetailPanel = (props: Props) => {
       <PanelDescription>{transactionTitle}</PanelDescription>
       <TransactionValue>{transactionValue}</TransactionValue>
       <PanelDescription>{transactionFiatValue}</PanelDescription>
+      <DetailRow>
+        <DetailTitle>
+          {getLocale('braveWalletTransactionDetailStatus')}
+        </DetailTitle>
+        <StatusRow>
+          <StatusBubble status={transactionDetails.status} />
+          <DetailTextDarkBold>
+            {getTransactionStatusString(transactionDetails.status)}
+          </DetailTextDarkBold>
+
+          {transactionDetails.status === BraveWallet.TransactionStatus.Error && transactionProviderErrorRegistry[liveTransaction.id] &&
+              <TransactionStatusTooltip text={
+                `${transactionProviderErrorRegistry[liveTransaction.id].code}: ${transactionProviderErrorRegistry[liveTransaction.id].message}`
+              }>
+                <AlertIcon />
+              </TransactionStatusTooltip>
+          }
+        </StatusRow>
+      </DetailRow>
       <DetailRow>
         <DetailTitle>
           {getLocale('braveWalletAllowSpendTransactionFee')}
@@ -181,13 +218,13 @@ const TransactionDetailPanel = (props: Props) => {
           {mojoTimeDeltaToJSDate(transactionDetails.createdTime).toUTCString()}
         </DetailTextDark>
       </DetailRow>
-      {transactionDetails.status !== BraveWallet.TransactionStatus.Rejected &&
+      {![BraveWallet.TransactionStatus.Rejected, BraveWallet.TransactionStatus.Error].includes(transactionDetails.status) &&
         <DetailRow>
           <DetailTitle>
             {getLocale('braveWalletTransactionDetailHash')}
           </DetailTitle>
-          <DetailButton onClick={onClickViewOnBlockExplorer('tx', transaction?.txHash)}>
-            {reduceAddress(transaction.txHash)}
+          <DetailButton onClick={onClickViewOnBlockExplorer('tx', liveTransaction?.txHash)}>
+            {reduceAddress(liveTransaction.txHash)}
           </DetailButton>
         </DetailRow>
       }
@@ -199,18 +236,8 @@ const TransactionDetailPanel = (props: Props) => {
           {selectedNetwork.chainName}
         </DetailTextDark>
       </DetailRow>
-      <DetailRow>
-        <DetailTitle>
-          {getLocale('braveWalletTransactionDetailStatus')}
-        </DetailTitle>
-        <StatusRow>
-          <StatusBubble status={transactionDetails.status} />
-          <DetailTextDarkBold>
-            {getTransactionStatusString(transactionDetails.status)}
-          </DetailTextDarkBold>
-        </StatusRow>
-      </DetailRow>
-      {(transactionDetails.status === BraveWallet.TransactionStatus.Approved || transactionDetails.status === BraveWallet.TransactionStatus.Submitted) &&
+
+      {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted].includes(transactionDetails.status) &&
         <DetailRow>
           <DetailTitle />
           <StatusRow>

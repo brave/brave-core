@@ -30,7 +30,8 @@ import {
   SwapErrorResponse,
   WalletAccountType,
   WalletState,
-  WalletInfo
+  WalletInfo,
+  TransactionProviderError
 } from '../../constants/types'
 
 // Utils
@@ -419,7 +420,13 @@ handler.on(WalletActions.approveTransaction.getType(), async (store: Store, txIn
   const result = await apiProxy.txService.approveTransaction(BraveWallet.CoinType.ETH, txInfo.id)
   const error = result.errorUnion.providerError ?? result.errorUnion.solanaProviderError
   if (error !== BraveWallet.ProviderError.kSuccess) {
-    console.error(`Failed to approve transaction: ${result.errorMessage}`)
+    await store.dispatch(WalletActions.setTransactionProviderError({
+      transaction: txInfo,
+      providerError: {
+        code: error,
+        message: result.errorMessage
+      } as TransactionProviderError
+    }))
   }
 
   await store.dispatch(refreshTransactionHistory(txInfo.fromAddress))
