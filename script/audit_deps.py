@@ -14,7 +14,7 @@ import os
 import subprocess
 import sys
 
-from rust_deps_config import RUST_DEPS_PACKAGE_VERSION
+from deps_config import RUST_DEPS_PACKAGE_VERSION
 
 # Use all (sub)paths except these for npm audit.
 NPM_EXCLUDE_PATHS = [
