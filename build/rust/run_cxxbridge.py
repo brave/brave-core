@@ -7,7 +7,7 @@
 import os
 import sys
 
-from rust_deps_config import RUST_DEPS_PACKAGE_VERSION
+from deps_config import RUST_DEPS_PACKAGE_VERSION
 
 # Set up path to load build_utils.py which enables us to do
 # atomic output that's maximally compatible with ninja.

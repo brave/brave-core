@@ -16,7 +16,7 @@ except ImportError:  # For Py3 compatibility
     from urllib.error import URLError # pylint: disable=no-name-in-module,import-error
 
 import deps
-from rust_deps_config import RUST_DEPS_PACKAGES_URL, RUST_DEPS_PACKAGE_VERSION
+from deps_config import DEPS_PACKAGES_URL, RUST_DEPS_PACKAGE_VERSION
 
 BRAVE_CORE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -42,7 +42,7 @@ def get_url(platform):
         print('Exiting.')
         sys.exit(1)
 
-    return RUST_DEPS_PACKAGES_URL + "/" + filename
+    return DEPS_PACKAGES_URL + "/rust-deps/" + filename
 
 
 def should_download():

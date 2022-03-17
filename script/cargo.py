@@ -10,7 +10,7 @@ import os
 import sys
 import subprocess
 
-from rust_deps_config import RUST_DEPS_PACKAGE_VERSION
+from deps_config import RUST_DEPS_PACKAGE_VERSION
 
 
 def run_cargo(command, args):
