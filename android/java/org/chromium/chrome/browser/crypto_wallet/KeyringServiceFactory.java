@@ -9,8 +9,7 @@ import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.KeyringService;
-// import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-// import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -22,19 +21,26 @@ import org.chromium.mojo.system.impl.CoreImpl;
 public class KeyringServiceFactory {
     private static final Object lock = new Object();
     private static KeyringServiceFactory instance;
+    private Profile mProfile;
 
-    public static KeyringServiceFactory getInstance() {
+    public static KeyringServiceFactory getInstance(Profile profile) {
         synchronized (lock) {
             if (instance == null) {
-                instance = new KeyringServiceFactory();
+                instance = new KeyringServiceFactory(profile);
             }
         }
         return instance;
     }
 
+    public KeyringServiceFactory(Profile profile) {
+        mProfile = profile;
+        if (mProfile == null) {
+            mProfile = Profile.getLastUsedRegularProfile();
+        }
+    }
+
     public KeyringService getKeyringService(ConnectionErrorHandler connectionErrorHandler) {
-        // Profile profile = Utils.getProfile(false); // always use regular profile
-        int nativeHandle = KeyringServiceFactoryJni.get().getInterfaceToKeyringService();
+        int nativeHandle = KeyringServiceFactoryJni.get().getInterfaceToKeyringService(mProfile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         KeyringService keyringService = KeyringService.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) keyringService).getProxyHandler();
@@ -49,6 +55,6 @@ public class KeyringServiceFactory {
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToKeyringService();
+        int getInterfaceToKeyringService(Profile profile);
     }
 }

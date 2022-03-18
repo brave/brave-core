@@ -69,5 +69,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity {
         //         }
         ft.replace(R.id.frame_layout, fragment);
         ft.commit();
+
+        onInitialLayoutInflationComplete();
     }
 }

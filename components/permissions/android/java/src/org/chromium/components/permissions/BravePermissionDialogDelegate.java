@@ -245,7 +245,7 @@ public class BravePermissionDialogDelegate
             return;
         }
 
-        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+        mKeyringService = KeyringServiceFactory.getInstance(null).getKeyringService(this);
     }
 
     public KeyringService getKeyringService() {
