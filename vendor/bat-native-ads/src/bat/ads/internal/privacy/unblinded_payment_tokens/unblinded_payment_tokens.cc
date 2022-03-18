@@ -7,7 +7,6 @@
 #include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_tokens.h"
 
 #include <string>
-#include <utility>
 
 #include "base/check_op.h"
 #include "base/guid.h"
@@ -33,10 +32,10 @@ UnblindedPaymentTokenList UnblindedPaymentTokens::GetAllTokens() const {
 }
 
 base::Value UnblindedPaymentTokens::GetTokensAsList() {
-  base::Value list(base::Value::Type::LIST);
+  base::ListValue list;
 
   for (const auto& unblinded_payment_token : unblinded_payment_tokens_) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
+    base::DictionaryValue dictionary;
 
     dictionary.SetKey(
         "transaction_id",
@@ -57,7 +56,7 @@ base::Value UnblindedPaymentTokens::GetTokensAsList() {
     dictionary.SetKey(
         "ad_type", base::Value(std::string(unblinded_payment_token.ad_type)));
 
-    list.Append(std::move(dictionary));
+    list.Append(dictionary.Clone());
   }
 
   return list;

@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/account/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 
-#include <utility>
-
 #include "base/check.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
@@ -81,7 +79,7 @@ std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
   base::DictionaryValue dictionary;
 
   base::Value payment_request_dto = CreatePaymentRequestDTO(payload);
-  dictionary.SetKey("paymentCredentials", std::move(payment_request_dto));
+  dictionary.SetKey("paymentCredentials", payment_request_dto.Clone());
 
   dictionary.SetKey("payload", base::Value(payload));
 
@@ -95,7 +93,7 @@ std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
 
 std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePayload()
     const {
-  base::Value payload(base::Value::Type::DICTIONARY);
+  base::DictionaryValue payload;
   payload.SetKey("paymentId", base::Value(wallet_.id));
 
   std::string json;
@@ -109,13 +107,13 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePaymentRequestDTO(
     const std::string& payload) const {
   DCHECK(!payload.empty());
 
-  base::Value payment_request_dto(base::Value::Type::LIST);
+  base::ListValue payment_request_dto;
 
   for (const auto& unblinded_payment_token : unblinded_payment_tokens_) {
-    base::Value payment_credential(base::Value::Type::DICTIONARY);
+    base::DictionaryValue payment_credential;
 
     base::Value credential = CreateCredential(unblinded_payment_token, payload);
-    payment_credential.SetKey("credential", base::Value(std::move(credential)));
+    payment_credential.SetKey("credential", base::Value(credential.Clone()));
 
     payment_credential.SetKey(
         "confirmationType",
@@ -125,7 +123,7 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePaymentRequestDTO(
         "publicKey",
         base::Value(unblinded_payment_token.public_key.encode_base64()));
 
-    payment_request_dto.Append(std::move(payment_credential));
+    payment_request_dto.Append(payment_credential.Clone());
   }
 
   return payment_request_dto;
@@ -136,7 +134,7 @@ base::Value RedeemUnblindedPaymentTokensUrlRequestBuilder::CreateCredential(
     const std::string& payload) const {
   DCHECK(!payload.empty());
 
-  base::Value credential(base::Value::Type::DICTIONARY);
+  base::DictionaryValue credential;
 
   VerificationKey verification_key =
       unblinded_payment_token.value.derive_verification_key();

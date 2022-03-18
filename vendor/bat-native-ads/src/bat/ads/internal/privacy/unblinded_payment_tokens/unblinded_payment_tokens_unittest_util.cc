@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
 
-#include <utility>
-
 #include "base/check.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
@@ -129,13 +127,13 @@ UnblindedPaymentTokenList GetRandomUnblindedPaymentTokens(const int count) {
 }
 
 base::Value GetUnblindedPaymentTokensAsList(const int count) {
-  base::Value list(base::Value::Type::LIST);
+  base::ListValue list;
 
   const UnblindedPaymentTokenList& unblinded_payment_tokens =
       GetUnblindedPaymentTokens(count);
 
   for (const auto& unblinded_payment_token : unblinded_payment_tokens) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
+    base::DictionaryValue dictionary;
 
     dictionary.SetKey("transaction_id",
                       base::Value(unblinded_payment_token.transaction_id));
@@ -155,7 +153,7 @@ base::Value GetUnblindedPaymentTokensAsList(const int count) {
     dictionary.SetKey(
         "ad_type", base::Value(std::string(unblinded_payment_token.ad_type)));
 
-    list.Append(std::move(dictionary));
+    list.Append(dictionary.Clone());
   }
 
   return list;

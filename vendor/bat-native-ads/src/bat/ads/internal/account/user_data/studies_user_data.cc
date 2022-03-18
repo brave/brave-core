@@ -16,7 +16,7 @@ base::DictionaryValue GetStudies() {
 
   base::FieldTrial::ActiveGroups studies = features::GetStudies();
   for (const auto& study : studies) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
+    base::DictionaryValue dictionary;
 
     dictionary.SetKey("name", base::Value(study.trial_name));
     dictionary.SetKey("group", base::Value(study.group_name));

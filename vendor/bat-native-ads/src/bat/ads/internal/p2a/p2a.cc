@@ -16,7 +16,7 @@ namespace p2a {
 
 void RecordEvent(const std::string& name,
                  const std::vector<std::string>& questions) {
-  base::Value list(base::Value::Type::LIST);
+  base::ListValue list;
   for (const auto& question : questions) {
     list.Append(question);
   }

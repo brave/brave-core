@@ -124,14 +124,14 @@ EpsilonGreedyBanditArmMap EpsilonGreedyBanditArms::FromJson(
 
 std::string EpsilonGreedyBanditArms::ToJson(
     const EpsilonGreedyBanditArmMap& arms) {
-  base::Value arms_dictionary(base::Value::Type::DICTIONARY);
+  base::DictionaryValue arms_dictionary;
 
   for (const auto& arm : arms) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
+    base::DictionaryValue dictionary;
     dictionary.SetKey(kSegmentKey, base::Value(arm.first));
     dictionary.SetKey(kPullsKey, base::Value(arm.second.pulls));
     dictionary.SetKey(kValueKey, base::Value(arm.second.value));
-    arms_dictionary.SetKey(arm.first, std::move(dictionary));
+    arms_dictionary.SetKey(arm.first, dictionary.Clone());
   }
 
   std::string json;

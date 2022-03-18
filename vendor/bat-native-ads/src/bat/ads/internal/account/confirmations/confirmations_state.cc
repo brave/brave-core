@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 
-#include <utility>
-
 #include "base/check_op.h"
 #include "base/guid.h"
 #include "base/json/json_reader.h"
@@ -154,26 +152,26 @@ bool ConfirmationsState::RemoveFailedConfirmation(
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string ConfirmationsState::ToJson() {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
+  base::DictionaryValue dictionary;
 
   // Issuers
   base::Value issuers = IssuerListToValue(issuers_);
-  dictionary.SetKey("issuers", std::move(issuers));
+  dictionary.SetKey("issuers", issuers.Clone());
 
   // Confirmations
   base::Value failed_confirmations =
       GetFailedConfirmationsAsDictionary(failed_confirmations_);
-  dictionary.SetKey("confirmations", std::move(failed_confirmations));
+  dictionary.SetKey("confirmations", failed_confirmations.Clone());
 
   // Unblinded tokens
   base::Value unblinded_tokens = unblinded_tokens_->GetTokensAsList();
-  dictionary.SetKey("unblinded_tokens", std::move(unblinded_tokens));
+  dictionary.SetKey("unblinded_tokens", unblinded_tokens.Clone());
 
   // Unblinded payment tokens
   base::Value unblinded_payment_tokens =
       unblinded_payment_tokens_->GetTokensAsList();
   dictionary.SetKey("unblinded_payment_tokens",
-                    std::move(unblinded_payment_tokens));
+                    unblinded_payment_tokens.Clone());
 
   // Write to JSON
   std::string json;
@@ -224,13 +222,13 @@ IssuerList ConfirmationsState::GetIssuers() const {
 
 base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
     const ConfirmationList& confirmations) const {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
+  base::DictionaryValue dictionary;
 
-  base::Value list(base::Value::Type::LIST);
+  base::ListValue list;
   for (const auto& confirmation : confirmations) {
     DCHECK(confirmation.IsValid());
 
-    base::Value confirmation_dictionary(base::Value::Type::DICTIONARY);
+    base::DictionaryValue confirmation_dictionary;
 
     confirmation_dictionary.SetKey("id", base::Value(confirmation.id));
 
@@ -246,7 +244,7 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
     std::string ad_type = std::string(confirmation.ad_type);
     confirmation_dictionary.SetKey("ad_type", base::Value(ad_type));
 
-    base::Value token_info_dictionary(base::Value::Type::DICTIONARY);
+    base::DictionaryValue token_info_dictionary;
     const std::string unblinded_token_base64 =
         confirmation.unblinded_token.value.encode_base64();
     token_info_dictionary.SetKey("unblinded_token",
@@ -255,7 +253,7 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
         confirmation.unblinded_token.public_key.encode_base64();
     token_info_dictionary.SetKey("public_key", base::Value(public_key_base64));
     confirmation_dictionary.SetKey("token_info",
-                                   std::move(token_info_dictionary));
+                                   token_info_dictionary.Clone());
 
     const std::string payment_token_base64 =
         confirmation.payment_token.encode_base64();
@@ -287,10 +285,10 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
     confirmation_dictionary.SetKey("created",
                                    base::Value(confirmation.was_created));
 
-    list.Append(std::move(confirmation_dictionary));
+    list.Append(confirmation_dictionary.Clone());
   }
 
-  dictionary.SetKey("failed_confirmations", std::move(list));
+  dictionary.SetKey("failed_confirmations", list.Clone());
 
   return dictionary;
 }

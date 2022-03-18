@@ -67,7 +67,7 @@ void AdDiagnostics::GetAdDiagnostics(GetAdDiagnosticsCallback callback) const {
 }
 
 base::Value AdDiagnostics::CollectDiagnostics() const {
-  base::Value diagnostics(base::Value::Type::LIST);
+  base::ListValue diagnostics;
 
   for (const auto& entry_pair : ad_diagnostics_entries_) {
     AdDiagnosticsEntry* entry = entry_pair.second.get();

@@ -72,7 +72,7 @@ bool StatementInfo::operator!=(const StatementInfo& rhs) const {
 }
 
 std::string StatementInfo::ToJson() const {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
+  base::DictionaryValue dictionary;
 
   // Next payment date
   dictionary.SetKey("next_payment_date",

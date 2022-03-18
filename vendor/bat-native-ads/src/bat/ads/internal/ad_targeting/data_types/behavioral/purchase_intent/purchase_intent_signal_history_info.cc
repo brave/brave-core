@@ -67,7 +67,7 @@ bool PurchaseIntentSignalHistoryInfo::operator!=(
 }
 
 std::string PurchaseIntentSignalHistoryInfo::ToJson() const {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
+  base::DictionaryValue dictionary;
 
   dictionary.SetKey("timestamp_in_seconds",
                     base::Value(base::NumberToString(created_at.ToDoubleT())));

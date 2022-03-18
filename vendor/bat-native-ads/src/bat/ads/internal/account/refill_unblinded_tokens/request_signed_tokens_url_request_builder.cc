@@ -6,7 +6,6 @@
 #include "bat/ads/internal/account/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 
 #include <cstdint>
-#include <utility>
 
 #include "base/base64.h"
 #include "base/check.h"
@@ -99,16 +98,16 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
 }
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {
-  base::Value list(base::Value::Type::LIST);
+  base::ListValue list;
 
   for (const auto& blinded_token : blinded_tokens_) {
     const std::string blinded_token_base64 = blinded_token.encode_base64();
     base::Value blinded_token_base64_value = base::Value(blinded_token_base64);
-    list.Append(std::move(blinded_token_base64_value));
+    list.Append(blinded_token_base64_value.Clone());
   }
 
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-  dictionary.SetKey("blindedTokens", base::Value(std::move(list)));
+  base::DictionaryValue dictionary;
+  dictionary.SetKey("blindedTokens", base::Value(list.Clone()));
 
   std::string json;
   base::JSONWriter::Write(dictionary, &json);

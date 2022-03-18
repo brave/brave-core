@@ -25,7 +25,7 @@ using challenge_bypass_ristretto::VerificationKey;
 using challenge_bypass_ristretto::VerificationSignature;
 
 std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
-  base::Value dto(base::Value::Type::DICTIONARY);
+  base::DictionaryValue dto;
 
   dto.SetKey("creativeInstanceId",
              base::Value(confirmation.creative_instance_id));
@@ -35,11 +35,11 @@ std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
   const std::string blinded_payment_token_base64 =
       confirmation.blinded_payment_token.encode_base64();
   if (!blinded_payment_token_base64.empty()) {
-    base::Value list(base::Value::Type::LIST);
+    base::ListValue list;
 
     list.Append(blinded_payment_token_base64);
 
-    dto.SetKey("blindedPaymentTokens", std::move(list));
+    dto.SetKey("blindedPaymentTokens", list.Clone());
   }
 
   const std::string type = std::string(confirmation.type);
@@ -100,7 +100,7 @@ std::string CreateCredential(const privacy::UnblindedTokenInfo& unblinded_token,
     return "";
   }
 
-  base::Value dictionary(base::Value::Type::DICTIONARY);
+  base::DictionaryValue dictionary;
 
   dictionary.SetKey("payload", base::Value(payload));
   dictionary.SetKey("signature", base::Value(verification_signature_base64));

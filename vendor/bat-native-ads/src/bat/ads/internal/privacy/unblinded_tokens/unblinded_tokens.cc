@@ -7,7 +7,6 @@
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 
 #include <string>
-#include <utility>
 
 #include "base/check_op.h"
 #include "base/values.h"
@@ -32,16 +31,16 @@ UnblindedTokenList UnblindedTokens::GetAllTokens() const {
 }
 
 base::Value UnblindedTokens::GetTokensAsList() {
-  base::Value list(base::Value::Type::LIST);
+  base::ListValue list;
 
   for (const auto& unblinded_token : unblinded_tokens_) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
+    base::DictionaryValue dictionary;
     dictionary.SetKey("unblinded_token",
                       base::Value(unblinded_token.value.encode_base64()));
     dictionary.SetKey("public_key",
                       base::Value(unblinded_token.public_key.encode_base64()));
 
-    list.Append(std::move(dictionary));
+    list.Append(dictionary.Clone());
   }
 
   return list;

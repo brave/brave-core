@@ -6,7 +6,6 @@
 #include "bat/ads/internal/account/issuers/issuers_value_util.h"
 
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/check_op.h"
@@ -98,10 +97,10 @@ absl::optional<PublicKeyMap> ParsePublicKeys(const base::Value& value) {
 }  // namespace
 
 base::Value IssuerListToValue(const IssuerList& issuers) {
-  base::Value issuers_list(base::Value::Type::LIST);
+  base::ListValue issuers_list;
 
   for (const auto& issuer : issuers) {
-    base::Value issuer_dictionary(base::Value::Type::DICTIONARY);
+    base::DictionaryValue issuer_dictionary;
 
     const absl::optional<std::string>& name_optional =
         GetNameForIssuerType(issuer.type);
@@ -112,9 +111,9 @@ base::Value IssuerListToValue(const IssuerList& issuers) {
 
     issuer_dictionary.SetKey(kNameKey, base::Value(name));
 
-    base::Value public_keys_list(base::Value::Type::LIST);
+    base::LisValue public_keys_list;
     for (const auto& public_key : issuer.public_keys) {
-      base::Value public_key_dictionary(base::Value::Type::DICTIONARY);
+      base::DictionaryValue public_key_dictionary;
 
       public_key_dictionary.SetKey(kPublicKeyKey,
                                    base::Value(public_key.first));
@@ -123,11 +122,11 @@ base::Value IssuerListToValue(const IssuerList& issuers) {
           kAssociatedValueKey,
           base::Value(base::NumberToString(public_key.second)));
 
-      public_keys_list.Append(std::move(public_key_dictionary));
+      public_keys_list.Append(public_key_dictionary.Clone());
     }
-    issuer_dictionary.SetKey(kPublicKeysKey, std::move(public_keys_list));
+    issuer_dictionary.SetKey(kPublicKeysKey, public_keys_list.Clone());
 
-    issuers_list.Append(std::move(issuer_dictionary));
+    issuers_list.Append(issuer_dictionary.Clone());
   }
 
   return issuers_list;

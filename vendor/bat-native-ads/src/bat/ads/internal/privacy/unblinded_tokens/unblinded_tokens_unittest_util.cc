@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
-#include <utility>
-
 #include "base/check.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
@@ -105,12 +103,12 @@ UnblindedTokenList GetRandomUnblindedTokens(const int count) {
 }
 
 base::Value GetUnblindedTokensAsList(const int count) {
-  base::Value list(base::Value::Type::LIST);
+  base::ListValue list;
 
   const UnblindedTokenList& unblinded_tokens = GetUnblindedTokens(count);
 
   for (const auto& unblinded_token : unblinded_tokens) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
+    base::DictionaryValue dictionary;
 
     dictionary.SetKey("unblinded_token",
                       base::Value(unblinded_token.value.encode_base64()));
@@ -118,7 +116,7 @@ base::Value GetUnblindedTokensAsList(const int count) {
     dictionary.SetKey("public_key",
                       base::Value(unblinded_token.public_key.encode_base64()));
 
-    list.Append(std::move(dictionary));
+    list.Append(dictionary.Clone());
   }
 
   return list;

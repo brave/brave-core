@@ -1305,22 +1305,22 @@ void AdsServiceImpl::OnGetAdsHistory(OnGetAdsHistoryCallback callback,
     base::DictionaryValue ad_history_dictionary;
     base::DictionaryValue ad_content_dictionary = item.ad_content.ToValue();
     ad_history_dictionary.SetPath("adContent",
-                                  std::move(ad_content_dictionary));
+                                  ad_content_dictionary.Clone());
     base::DictionaryValue category_content_dictionary =
         item.category_content.ToValue();
     ad_history_dictionary.SetPath("categoryContent",
-                                  std::move(category_content_dictionary));
+                                  category_content_dictionary.Clone());
     base::ListValue ad_history_list;
-    ad_history_list.Append(std::move(ad_history_dictionary));
+    ad_history_list.Append(ad_history_dictionary.Clone());
 
     base::DictionaryValue dictionary;
     dictionary.SetKey("uuid", base::Value(std::to_string(uuid++)));
     const base::Time time = base::Time::FromDoubleT(item.timestamp);
     const double js_time = time.ToJsTimeIgnoringNull();
     dictionary.SetKey("timestampInMilliseconds", base::Value(js_time));
-    dictionary.SetPath("adDetailRows", std::move(ad_history_list));
+    dictionary.SetPath("adDetailRows", ad_history_list.Clone());
 
-    list.Append(std::move(dictionary));
+    list.Append(dictionary.Clone());
   }
 
   std::move(callback).Run(list);

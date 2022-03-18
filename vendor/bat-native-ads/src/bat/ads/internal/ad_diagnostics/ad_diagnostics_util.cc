@@ -29,10 +29,10 @@ void AppendDiagnosticsKeyValue(const std::string& key,
   DCHECK(diagnostics);
   DCHECK(diagnostics->is_list());
 
-  base::Value entry(base::Value::Type::DICTIONARY);
+  base::DictionaryValue entry;
   entry.SetStringKey(kDiagnosticsEntryKey, key);
   entry.SetStringKey(kDiagnosticsEntryValue, value);
-  diagnostics->Append(std::move(entry));
+  diagnostics->Append(entry.Clone());
 }
 
 absl::optional<std::string> GetDiagnosticsValueByKey(

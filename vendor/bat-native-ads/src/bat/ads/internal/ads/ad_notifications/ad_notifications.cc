@@ -6,7 +6,6 @@
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
 
 #include <functional>
-#include <utility>
 
 #include "base/check_op.h"
 #include "base/json/json_reader.h"
@@ -469,11 +468,11 @@ bool AdNotifications::GetNotificationsFromDictionary(
 }
 
 std::string AdNotifications::ToJson() {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
+  base::DictionaryValue dictionary;
 
   auto notifications = GetAsList();
   dictionary.SetKey(kNotificationsListKey,
-                    base::Value(std::move(notifications)));
+                    base::Value(notifications.Clone()));
 
   // Write to JSON
   std::string json;
@@ -483,10 +482,10 @@ std::string AdNotifications::ToJson() {
 }
 
 base::Value AdNotifications::GetAsList() {
-  base::Value list(base::Value::Type::LIST);
+  base::ListValue list;
 
   for (const auto& ad_notification : ad_notifications_) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
+    base::DictionaryValue dictionary;
 
     dictionary.SetKey(kNotificationUuidKey, base::Value(ad_notification.uuid));
     dictionary.SetKey(kNotificationCreativeInstanceIdKey,
@@ -505,7 +504,7 @@ base::Value AdNotifications::GetAsList() {
     dictionary.SetKey(kNotificationTargetUrlKey,
                       base::Value(ad_notification.target_url));
 
-    list.Append(std::move(dictionary));
+    list.Append(dictionary.Clone());
   }
 
   return list;

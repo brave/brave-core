@@ -13,7 +13,7 @@ namespace ads {
 namespace JSONWriter {
 
 std::string WriteSegments(const SegmentList& segments) {
-  base::Value list(base::Value::Type::LIST);
+  base::ListValue list;
 
   for (const auto& segment : segments) {
     DCHECK(!segment.empty());
