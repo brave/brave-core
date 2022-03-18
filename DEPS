@@ -33,6 +33,13 @@ hooks = [
     'action': ['python', 'script/bootstrap.py'],
   },
   {
+    # Download hermetic xcode for goma
+    'name': 'download_hermetic_xcode',
+    'pattern': '.',
+    'condition': 'host_os == "mac"',
+    'action': ['vpython3', 'build/mac/download_hermetic_xcode.py'],
+  },
+  {
     # Download rust deps if necessary for Android
     'name': 'download_rust_deps',
     'pattern': '.',
@@ -61,12 +68,6 @@ hooks = [
     'pattern': '.',
     'condition': 'not checkout_android and not checkout_ios',
     'action': ['vpython3', 'script/web_discovery_project.py', '--install'],
-  },
-  {
-    'name': 'hermetic_xcode',
-    'pattern': '.',
-    'condition': 'checkout_mac',
-    'action': ['vpython3', 'script/hermetic_xcode.py'],
   },
   {
     'name': 'generate_licenses',

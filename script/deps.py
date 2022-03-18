@@ -6,6 +6,7 @@
 """This script is used to download deps."""
 
 import os
+import shutil
 import sys
 import tarfile
 import tempfile
@@ -71,6 +72,12 @@ def DownloadAndUnpack(url, output_dir, path_prefix=None):
     with tempfile.TemporaryFile() as f:
         DownloadUrl(url, f)
         f.seek(0)
+        # TODO(bridiver) we need to validate against a checksum
+        try:
+            os.unlink(output_dir)
+        except OSError as e:
+            pass
+        shutil.rmtree(output_dir, ignore_errors=True)
         EnsureDirExists(output_dir)
         if url.endswith('.zip'):
             assert path_prefix is None
