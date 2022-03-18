@@ -229,20 +229,20 @@ class VideoView: UIView, VideoTrackerBarDelegate {
         // delegate?.togglePlayerGravity(self)
 
         // Advance or go back by 15 seconds
-        let tapLocation: CGPoint = gestureRecognizer.location(in: self)
+        let tapLocation = gestureRecognizer.location(in: self)
 
         // If we got a tap in 0width...0.4width (left part of the view).
-        if tapLocation.x > 0 && tapLocation.x < 0.4*self.bounds.size.width {
+        if tapLocation.x > 0 && tapLocation.x < 0.4 * bounds.size.width {
             // Retreat by 15 seconds.
             self.seekBackwards()
         // If we got a tap in 0.6width...1width (right part of the view).
-        } else if tapLocation.x > 0.6*self.bounds.size.width && tapLocation.x < self.bounds.size.width {
+        } else if tapLocation.x > 0.6 * bounds.size.width && tapLocation.x < bounds.size.width {
             // Advance video by 15 seconds.
             self.seekForwards()
         // If there's a click in the central area
-        } else if tapLocation.x > 0.4*self.bounds.size.width && 0.4*self.bounds.size.width < 0.6*self.bounds.size.width {
+        } else if tapLocation.x > 0.4 * bounds.size.width && 0.4 * bounds.size.width < 0.6 * bounds.size.width {
             // Pause/resume the video
-            if delegate?.isPlaying ?? false {
+            if delegate?.isPlaying == true {
                 self.pause()
             } else {
                 self.play()
@@ -252,7 +252,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
 
     // This is where we know when panning gesture started and finished.
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if event?.type == UIEvent.EventType.touches {
+        if event?.type == .touches {
             dragStartedVolume = AVAudioSession.sharedInstance().outputVolume
 
             toggleOverlays(showOverlay: true)
@@ -316,40 +316,29 @@ class VideoView: UIView, VideoTrackerBarDelegate {
                 if currentDraggingDirection == .verticalDirection {
 
                     // Vertical dragging adjusts volume.
-                    let vDragRatio = 4*gestureRecognizer.translation(in: self).y/self.bounds.height // (-0.5 ... 0.5)*4
+                    let vDragRatio = 4 * gestureRecognizer.translation(in: self).y / bounds.height // (-0.5 ... 0.5) * 4
                     
                     if vDragRatio != 0 && self.dragStartedVolume >= 0 {
                         if let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider {
-                            var finalVal: Float = 0
-                            finalVal = self.dragStartedVolume + Float(-vDragRatio)
+                            let finalVal = self.dragStartedVolume - Float(vDragRatio)
 
                             // Making sure finalVal is within 0..1 interval
-                            if finalVal < 0 {
-                                finalVal = 0
-                            } else if finalVal > 1 {
-                                finalVal = 1
-                            }
-                            slider.value = finalVal
+                            slider.value = min(max(0.0, finalVal), 1.0)
                         }
                     }
                     // End of vertical panning processing.
                 } else {
 
                     // Otherwise it's a horizontal pan.
-                    let dragRatio = gestureRecognizer.translation(in: self).x/self.bounds.width // (-0.5 ... 0.5)*1
+                    let dragRatio = gestureRecognizer.translation(in: self).x / bounds.width // (-0.5 ... 0.5)*1
                     var vidDurationSeconds = 0.0
                     if let currentItem = currentPlayer.currentItem {
                         vidDurationSeconds = CGFloat((currentItem.duration.value)) / CGFloat((currentItem.duration.timescale))
                     }
-                    var finalSeconds = dragStartedTimelinePos + dragRatio*vidDurationSeconds
+                    var finalSeconds = dragStartedTimelinePos + dragRatio * vidDurationSeconds
 
                     // Making sure we're not out of bounds
-                    if finalSeconds<0 {
-                        finalSeconds = 0
-                    }
-                    if finalSeconds > vidDurationSeconds {
-                        finalSeconds = vidDurationSeconds
-                    }
+                    finalSeconds = min(max(0.0, finalSeconds), vidDurationSeconds)
 
                     guard let delegate = delegate else { return }
 
