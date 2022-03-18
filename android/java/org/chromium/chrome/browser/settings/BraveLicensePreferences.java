@@ -34,6 +34,8 @@ public class BraveLicensePreferences extends BravePreferenceFragment {
         assert R.string.chrome_additional_terms_of_service_title > 0
             : "Something has changed in the upstream!";
         assert R.string.google_privacy_policy_url > 0 : "Something has changed in the upstream!";
+        assert R.string.autofill_save_card_prompt_upload_explanation_v3 > 0
+            : "Something has changed in the upstream!";
 
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_license_preferences);
         getActivity().setTitle(R.string.brave_license_text);
