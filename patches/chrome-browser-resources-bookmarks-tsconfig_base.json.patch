@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/bookmarks/tsconfig_base.json b/chrome/browser/resources/bookmarks/tsconfig_base.json
-index 0a20352d2653446dc321ad6de4eceded9aa9a859..e4b4ff4dc1b7a3783892724ae8c180482c589b88 100644
+index 4dc7745e135b7f4641c44fc2fa2583cf70695b88..9c36d0888d224496a2c93cbcc7b75ede14c524b2 100644
 --- a/chrome/browser/resources/bookmarks/tsconfig_base.json
 +++ b/chrome/browser/resources/bookmarks/tsconfig_base.json
 @@ -1,6 +1,7 @@
@@ -7,6 +7,6 @@ index 0a20352d2653446dc321ad6de4eceded9aa9a859..e4b4ff4dc1b7a3783892724ae8c18048
    "extends": "../../../../tools/typescript/tsconfig_base.json",
    "compilerOptions": {
 +    "allowJs": true,
+     "noImplicitOverride": true,
      "noPropertyAccessFromIndexSignature": false,
      "noUnusedLocals": false,
-     "strictPropertyInitialization": false
