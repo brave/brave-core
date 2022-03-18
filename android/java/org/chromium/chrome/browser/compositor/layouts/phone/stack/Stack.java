@@ -20,6 +20,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.compositor.layouts.Layout;
 import org.chromium.chrome.browser.compositor.layouts.Layout.Orientation;
 import org.chromium.chrome.browser.compositor.layouts.components.LayoutTab;
+import org.chromium.chrome.browser.compositor.layouts.components.StackLayoutTab;
 import org.chromium.chrome.browser.compositor.layouts.phone.StackLayoutBase;
 import org.chromium.chrome.browser.compositor.layouts.phone.stack.StackAnimation.OverviewAnimationType;
 import org.chromium.chrome.browser.layouts.animation.CompositorAnimationHandler;
@@ -1155,12 +1156,12 @@ public abstract class Stack {
      */
     @VisibleForTesting
     public RectF getCloseBoundsOnLayoutTab(LayoutTab layoutTab) {
-        if (!layoutTab.get(LayoutTab.IS_TITLE_NEEDED) || !layoutTab.get(LayoutTab.IS_VISIBLE)
-                || layoutTab.get(LayoutTab.BORDER_CLOSE_BUTTON_ALPHA) < 0.5f
+        if (!layoutTab.get(StackLayoutTab.IS_TITLE_NEEDED) || !layoutTab.get(LayoutTab.IS_VISIBLE)
+                || layoutTab.get(StackLayoutTab.BORDER_CLOSE_BUTTON_ALPHA) < 0.5f
                 || layoutTab.get(LayoutTab.BORDER_ALPHA) < 0.5f
                 || layoutTab.get(LayoutTab.BORDER_ALPHA) != 1.0f
-                || Math.abs(layoutTab.get(LayoutTab.TILT_X_IN_DEGREES)) > 1.0f
-                || Math.abs(layoutTab.get(LayoutTab.TILT_Y_IN_DEGREES)) > 1.0f) {
+                || Math.abs(layoutTab.get(StackLayoutTab.TILT_X_IN_DEGREES)) > 1.0f
+                || Math.abs(layoutTab.get(StackLayoutTab.TILT_Y_IN_DEGREES)) > 1.0f) {
             return null;
         }
         RectF closePlacement = layoutTab.get(LayoutTab.CLOSE_PLACEMENT);
@@ -1419,7 +1420,7 @@ public abstract class Stack {
         for (int i = 0; i < mStackTabs.length; ++i) {
             assert mStackTabs[i] != null;
             StackTab stackTab = mStackTabs[i];
-            LayoutTab layoutTab = stackTab.getLayoutTab();
+            StackLayoutTab layoutTab = stackTab.getLayoutTab();
 
             // Position
             final float stackScrollOffset =
@@ -1735,8 +1736,9 @@ public abstract class Stack {
                     maxContentHeight = mStackTabs[i].getLayoutTab().getMaxContentHeight();
                 }
 
-                LayoutTab layoutTab = mLayout.createLayoutTab(tabId, isIncognito,
-                        Layout.SHOW_CLOSE_BUTTON, needTitle, maxContentWidth, maxContentHeight);
+                LayoutTab layoutTab = mLayout.createStackLayoutTab(tabId, isIncognito,
+                        StackLayoutBase.SHOW_CLOSE_BUTTON, needTitle, maxContentWidth,
+                        maxContentHeight);
                 layoutTab.setInsetBorderVertical(true);
                 layoutTab.setShowToolbar(true);
                 layoutTab.setToolbarAlpha(0.f);
