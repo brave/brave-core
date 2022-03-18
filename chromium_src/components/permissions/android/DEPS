@@ -3,4 +3,5 @@ include_rules = [
   "+components/grit",
   "+components/permissions",
   "+components/strings",
+  "+third_party/blink/public/mojom",
 ]
