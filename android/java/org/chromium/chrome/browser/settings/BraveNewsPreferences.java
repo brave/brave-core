@@ -196,43 +196,30 @@ public class BraveNewsPreferences extends BravePreferenceFragment
             mAddSource.setText("");
         }
 
-        boolean isNewsOn = BravePrefServiceBridge.getInstance().getNewsOptIn();
-
-        if (!isNewsOn) {
-            mTurnOnNews.setChecked(false);
-            mShowNews.setVisible(false);
-            setSourcesVisibility(BravePrefServiceBridge.getInstance().getNewsOptIn());
-        } else {
-            mTurnOnNews.setChecked(true);
-            mTurnOnNews.setVisible(false);
-            mShowNews.setVisible(true);
-            if (BravePrefServiceBridge.getInstance().getShowNews()) {
-                mShowNews.setChecked(true);
-            } else {
-                mShowNews.setChecked(false);
-            }
-            setSourcesVisibility(BravePrefServiceBridge.getInstance().getShowNews());
+        // Ensure the shownews pref is false when it's unchechecked
+        if (!mShowNews.isChecked()) {
+            BravePrefServiceBridge.getInstance().setShowNews(false);
         }
+        mTurnOnNews.setVisible(false);
+        setSourcesVisibility(BravePrefServiceBridge.getInstance().getShowNews());
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String key = preference.getKey();
         if (PREF_TURN_ON_NEWS.equals(key)) {
-            BravePrefServiceBridge.getInstance().setNewsOptIn((boolean) newValue);
+            // Unused for now as we temporarly remove the Enable switch
             BravePrefServiceBridge.getInstance().setShowNews(false);
-            if ((boolean) newValue) {
-                mShowNews.setVisible(true);
-                mShowNews.setChecked(false);
-            } else {
-                mShowNews.setVisible(false);
-            }
         } else if (PREF_SHOW_NEWS.equals(key)) {
             SharedPreferences.Editor sharedPreferencesEditor =
                     ContextUtils.getAppSharedPreferences().edit();
             sharedPreferencesEditor.putBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, false);
             sharedPreferencesEditor.apply();
             BravePrefServiceBridge.getInstance().setShowNews((boolean) newValue);
+            // Sets Enable switch to the same value to keep the conditions in BraveNewTabLayout.java
+            // valid
+            BravePrefServiceBridge.getInstance().setNewsOptIn((boolean) newValue);
+
         } else if (PREF_RSS_SOURCES.equals(key)) {
             if (((String) newValue).equals("")) {
                 return true;
