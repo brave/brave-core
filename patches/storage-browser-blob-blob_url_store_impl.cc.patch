@@ -1,0 +1,12 @@
+diff --git a/storage/browser/blob/blob_url_store_impl.cc b/storage/browser/blob/blob_url_store_impl.cc
+index a42d12fd035f17da2a5e3cf05872e1cb5e216172..a7b0bc718dea5ebb2f27f35982dd5065451b1afc 100644
+--- a/storage/browser/blob/blob_url_store_impl.cc
++++ b/storage/browser/blob/blob_url_store_impl.cc
+@@ -178,6 +178,7 @@ bool BlobURLStoreImpl::BlobUrlIsValid(const GURL& url,
+   } else {
+     valid_origin = origin_ == url_origin;
+   }
++  valid_origin |= IsBlobUrlValidForPartitionedOrigin(origin_, url_origin);
+   if (!valid_origin) {
+     mojo::ReportBadMessage(base::StrCat(
+         {"URL with invalid origin passed to BlobURLStore::", method}));
