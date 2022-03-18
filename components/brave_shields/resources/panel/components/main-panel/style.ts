@@ -65,16 +65,16 @@ export const SiteTitle = styled.h1`
 
 export const CountBox = styled.section`
   display: grid;
-  grid-template-columns: 24px 2fr 0.5fr;
+  grid-template-columns: 24px 2fr 80px;
   align-items: center;
   grid-gap: 10px;
+  overflow: hidden;
 `
 
 export const BlockCount = styled.span`
   font-size: 38px;
   line-height: 1;
   color: ${(p) => p.theme.color.text01};
-  pointer-events: none;
   grid-column: 3;
   text-align: right;
 `

@@ -56,7 +56,7 @@ export const SettingsDesc = styled.section`
 export const ControlGroup = styled.div`
   display: grid;
   grid-gap: 15px;
-  grid-template-columns: 24px 1fr 30px;
+  grid-template-columns: 24px 1fr 40px;
   grid-gap: 10px;
   align-items: center;
   margin-bottom: 8px;
@@ -99,6 +99,7 @@ export const CountButton = styled.button`
   max-width: 100%;
   border-radius: 4px;
   border: 2px solid transparent;
+  cursor: pointer;
 
   &:hover {
     background-color: ${(p) => p.theme.color.disabled};
@@ -111,6 +112,11 @@ export const CountButton = styled.button`
   &:disabled,
   [disabled] {
     color: ${(p) => p.theme.color.disabled};
+    pointer-events: none; /* This disables native title tooltip */
+
+    &:hover {
+      background-color: unset;
+    }
   }
 
 `

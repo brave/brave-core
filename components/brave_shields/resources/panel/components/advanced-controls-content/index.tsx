@@ -86,9 +86,9 @@ function AdvancedControlsContent () {
     if (getSiteSettings) getSiteSettings()
   }
 
-  const adsListCount = siteBlockInfo?.adsList.length
-  const httpRedirectsListCount = siteBlockInfo?.httpRedirectsList.length
-  const jsListCount = siteBlockInfo?.jsList.length
+  const adsListCount = siteBlockInfo?.adsList.length ?? 0
+  const httpRedirectsListCount = siteBlockInfo?.httpRedirectsList.length ?? 0
+  const jsListCount = siteBlockInfo?.jsList.length ?? 0
 
   return (
     <section
@@ -113,10 +113,12 @@ function AdvancedControlsContent () {
             </Select>
           </div>
           <S.CountButton
+            title={adsListCount.toString()}
             aria-label={getLocale('braveShieldsTrackersAndAds')}
             onClick={() => setViewType?.(ViewType.AdsList)}
+            disabled={adsListCount <= 0}
           >
-            <span>{adsListCount}</span>
+            <span>{adsListCount > 99 ? '99+' : adsListCount}</span>
           </S.CountButton>
         </S.ControlGroup>
         <S.ControlGroup>
@@ -131,10 +133,12 @@ function AdvancedControlsContent () {
             />
           </label>
           <S.CountButton
+            title={httpRedirectsListCount.toString()}
             aria-label={getLocale('braveShieldsConnectionsUpgraded')}
             onClick={() => setViewType?.(ViewType.HttpsList)}
+            disabled={httpRedirectsListCount <= 0}
           >
-            {httpRedirectsListCount}
+            {httpRedirectsListCount > 99 ? '99+' : httpRedirectsListCount}
           </S.CountButton>
         </S.ControlGroup>
         <S.ControlGroup>
@@ -149,10 +153,12 @@ function AdvancedControlsContent () {
             />
           </label>
           <S.CountButton
+            title={jsListCount.toString()}
             aria-label={getLocale('braveShieldsScriptsBlocked')}
             onClick={() => setViewType?.(ViewType.ScriptsList)}
+            disabled={jsListCount <= 0}
           >
-            {jsListCount}
+            {jsListCount > 99 ? '99+' : jsListCount}
           </S.CountButton>
         </S.ControlGroup>
         <S.ControlGroup>
