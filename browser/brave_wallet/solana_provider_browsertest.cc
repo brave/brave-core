@@ -4,11 +4,14 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/containers/flat_map.h"
+#include "base/feature_list.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -53,10 +56,10 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
                 events_listener) override {}
   void Connect(absl::optional<base::Value> arg,
                ConnectCallback callback) override {
-    if (error_ == SolanaProviderError::kSuccess)
+    if (error_ == SolanaProviderError::kSuccess) {
       std::move(callback).Run(SolanaProviderError::kSuccess, "",
                               kTestPublicKey);
-    else {
+    } else {
       std::move(callback).Run(error_, error_message_, "");
     }
   }
@@ -156,7 +159,10 @@ class TestBraveContentBrowserClient : public BraveContentBrowserClient {
 
 class SolanaProviderTest : public InProcessBrowserTest {
  public:
-  SolanaProviderTest() {}
+  SolanaProviderTest() {
+    feature_list_.InitAndEnableFeature(
+        brave_wallet::features::kBraveWalletSolanaFeature);
+  }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -171,8 +177,10 @@ class SolanaProviderTest : public InProcessBrowserTest {
     // This is intentional to trigger
     // TestBraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame
     GURL url = GURL("brave://settings");
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    ASSERT_TRUE(WaitForLoadStop(web_contents()));
+    NavigateToURLAndWaitForLoadStop(browser(), url);
+
+    ASSERT_TRUE(base::FeatureList::IsEnabled(
+        brave_wallet::features::kNativeBraveWalletFeature));
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -181,47 +189,82 @@ class SolanaProviderTest : public InProcessBrowserTest {
     command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
   }
 
-  content::WebContents* web_contents() const {
-    return browser()->tab_strip_model()->GetActiveWebContents();
+  content::WebContents* web_contents(Browser* browser) const {
+    return browser->tab_strip_model()->GetActiveWebContents();
+  }
+
+  void NavigateToURLAndWaitForLoadStop(Browser* browser, const GURL& url) {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, url)) << ":" << url;
+    ASSERT_TRUE(WaitForLoadStop(web_contents(browser))) << ":" << url;
   }
 
  protected:
   TestBraveContentBrowserClient test_content_browser_client_;
+  base::test::ScopedFeatureList feature_list_;
 
  private:
   net::test_server::EmbeddedTestServerHandle test_server_handle_;
 };
 
+class SolanaProviderDisabledTest : public SolanaProviderTest {
+ public:
+  SolanaProviderDisabledTest() {
+    feature_list_.Reset();
+    feature_list_.InitAndDisableFeature(
+        brave_wallet::features::kBraveWalletSolanaFeature);
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderDisabledTest, SolanaObject) {
+  GURL url = embedded_test_server()->GetURL("/empty.html");
+  NavigateToURLAndWaitForLoadStop(browser(), url);
+
+  auto result = EvalJs(web_contents(browser()),
+                       "window.domAutomationController.send(!!window.solana)",
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(false), result.value);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Incognito) {
+  Browser* private_browser = CreateIncognitoBrowser(nullptr);
+  GURL url = embedded_test_server()->GetURL("/empty.html");
+  NavigateToURLAndWaitForLoadStop(private_browser, url);
+
+  auto result = EvalJs(web_contents(private_browser),
+                       "window.domAutomationController.send(!!window.solana)",
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(false), result.value);
+}
+
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Connect) {
   GURL url = embedded_test_server()->GetURL("/empty.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  ASSERT_TRUE(WaitForLoadStop(web_contents()));
+  NavigateToURLAndWaitForLoadStop(browser(), url);
 
-  auto result = EvalJs(web_contents(), ConnectScript(""),
+  auto result = EvalJs(web_contents(browser()), ConnectScript(""),
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(kTestPublicKey), result.value);
 
   // allow extra parameters
-  auto result2 = EvalJs(web_contents(), ConnectScript("{}, 123"),
+  auto result2 = EvalJs(web_contents(browser()), ConnectScript("{}, 123"),
                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(kTestPublicKey), result2.value);
 
   // non object args
-  auto result3 = EvalJs(web_contents(), ConnectScript("123"),
+  auto result3 = EvalJs(web_contents(browser()), ConnectScript("123"),
                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(
       base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
       result3.value);
 
-  TestSolanaProvider* provider =
-      test_content_browser_client_.GetProvider(web_contents()->GetMainFrame());
+  TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
+      web_contents(browser())->GetMainFrame());
   ASSERT_TRUE(provider);
 
   // error returns from browser process
   constexpr char kErrorMessage[] = "error from browser";
   provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
 
-  auto result4 = EvalJs(web_contents(), ConnectScript(""),
+  auto result4 = EvalJs(web_contents(browser()), ConnectScript(""),
                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   // check error message + error code
   EXPECT_EQ(base::Value(kErrorMessage +

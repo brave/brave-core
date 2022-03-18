@@ -58,6 +58,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
  private:
   JSSolanaProvider(bool use_native_wallet, content::RenderFrame* render_frame);
 
+  void InjectInitScript();
   bool EnsureConnected();
   void OnRemoteDisconnect();
 

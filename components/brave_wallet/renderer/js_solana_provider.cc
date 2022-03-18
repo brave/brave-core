@@ -8,11 +8,13 @@
 #include <tuple>
 #include <utility>
 
+#include "base/no_destructor.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
+#include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/array_buffer.h"
@@ -21,20 +23,42 @@
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "third_party/blink/public/web/web_script_source.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/resource/resource_bundle.h"
 #include "v8/include/v8-microtask-queue.h"
 #include "v8/include/v8-typed-array.h"
 
 namespace brave_wallet {
+
+namespace {
+
+static base::NoDestructor<std::string> g_provider_script("");
+
+std::string LoadDataResource(const int id) {
+  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+  if (resource_bundle.IsGzipped(id)) {
+    return resource_bundle.LoadDataResourceString(id);
+  }
+
+  return std::string(resource_bundle.GetRawDataResource(id));
+}
+
+}  // namespace
 
 JSSolanaProvider::JSSolanaProvider(bool use_native_wallet,
                                    content::RenderFrame* render_frame)
     : use_native_wallet_(use_native_wallet),
       render_frame_(render_frame),
       v8_value_converter_(content::V8ValueConverter::Create()) {
+  if (g_provider_script->empty()) {
+    *g_provider_script = LoadDataResource(
+        IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_SCRIPT_BUNDLE_JS);
+  }
   EnsureConnected();
   v8_value_converter_->SetStrategy(&strategy_);
 }
+
 JSSolanaProvider::~JSSolanaProvider() {
   weak_ptr_factory_.InvalidateWeakPtrs();
 }
@@ -93,6 +117,7 @@ bool JSSolanaProvider::Init(v8::Local<v8::Context> context) {
     global
         ->Set(context, gin::StringToSymbol(isolate, "solana"), provider.ToV8())
         .Check();
+    InjectInitScript();
   } else {
     render_frame_->GetWebFrame()->AddMessageToConsole(
         blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
@@ -142,6 +167,15 @@ void JSSolanaProvider::AccountChangedEvent(
     args.push_back(std::move(v8_public_key));
   }
   FireEvent(kAccountChangedEvent, std::move(args));
+}
+
+void JSSolanaProvider::InjectInitScript() {
+  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
+  if (web_frame->IsProvisional())
+    return;
+
+  web_frame->ExecuteScript(
+      blink::WebScriptSource(blink::WebString::FromUTF8(*g_provider_script)));
 }
 
 bool JSSolanaProvider::EnsureConnected() {
