@@ -6,6 +6,33 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FIRST_RUN_DIALOG_WIN_H_
 #define BRAVE_BROWSER_UI_VIEWS_FIRST_RUN_DIALOG_WIN_H_
 
-// TODO(simonhong): Implement FirstRunDialogWin.
+#include "base/callback.h"
+#include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/views/window/dialog_delegate.h"
+
+class FirstRunDialogWin : public views::DialogDelegateView {
+ public:
+  METADATA_HEADER(FirstRunDialogWin);
+
+  FirstRunDialogWin(const FirstRunDialogWin&) = delete;
+  FirstRunDialogWin& operator=(const FirstRunDialogWin&) = delete;
+
+  static void Show(base::RepeatingClosure quit_runloop);
+
+ private:
+  explicit FirstRunDialogWin(base::RepeatingClosure quit_runloop);
+  ~FirstRunDialogWin() override;
+
+  // This terminates the nested message-loop.
+  void Done();
+
+  // views::DialogDelegate overrides:
+  bool Accept() override;
+
+  // views::WidgetDelegate overrides:
+  void WindowClosing() override;
+
+  base::RepeatingClosure quit_runloop_;
+};
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FIRST_RUN_DIALOG_WIN_H_
