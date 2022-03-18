@@ -48,7 +48,7 @@ type::Result GetTransaction::ParseBody(const std::string& body,
   }
 
   const auto* tx_status = dictionary->FindStringKey("status");
-  if (!tx_status) {
+  if (!tx_status || tx_status->empty()) {
     BLOG(0, "Missing transfer status");
     return type::Result::LEDGER_ERROR;
   }
@@ -85,16 +85,17 @@ void GetTransaction::OnRequest(const type::UrlResponse& response,
 
   std::string status;
   result = ParseBody(response.body, &status);
-  BLOG(1, "Transfer Status: " << status);
 
   if (result == type::Result::LEDGER_OK) {
-    if (status == "Pending") {
-      callback(type::Result::RETRY);
+    if (status == "Error") {
+      BLOG(0, "Transfer error");
+      callback(type::Result::LEDGER_ERROR);
       return;
     }
 
     if (status != "Completed") {
-      callback(type::Result::LEDGER_ERROR);
+      BLOG(1, "Transfer not yet completed (status: " << status << ")");
+      callback(type::Result::RETRY);
       return;
     }
   }
