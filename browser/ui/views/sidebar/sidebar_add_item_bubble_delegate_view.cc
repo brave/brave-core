@@ -163,7 +163,6 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
         BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_HEADER_TEXT));
   }
   header->SetAutoColorReadabilityEnabled(false);
-  header->SetPreferredSize(kAddItemBubbleEntrySize);
   constexpr gfx::Insets kHeaderInsets{10, 34, 4, 8};
   header->SetBorder(views::CreateEmptyBorder(kHeaderInsets));
   header->SetHorizontalAlignment(gfx::ALIGN_LEFT);

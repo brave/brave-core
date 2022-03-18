@@ -18,6 +18,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_panel_webview.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/browser_context.h"
@@ -161,13 +162,13 @@ void SidebarContainerView::UpdateBackgroundAndBorder() {
   if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
     constexpr int kBorderThickness = 1;
     // Fill background because panel's color uses alpha value.
-    SetBackground(views::CreateSolidBackground(theme_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND)));
+    SetBackground(views::CreateSolidBackground(
+        theme_provider->GetColor(ThemeProperties::COLOR_TOOLBAR)));
     if (sidebar_panel_webview_ && sidebar_panel_webview_->GetVisible()) {
       SetBorder(views::CreateSolidSidedBorder(
           0, 0, 0, kBorderThickness,
           theme_provider->GetColor(
-              BraveThemeProperties::COLOR_SIDEBAR_PANEL_BORDER)));
+              ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR)));
     } else {
       // Don't need right side border when panel is closed.
       SetBorder(nullptr);

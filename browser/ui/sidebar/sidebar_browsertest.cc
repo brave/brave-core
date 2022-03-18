@@ -32,6 +32,16 @@ class SidebarBrowserTest : public InProcessBrowserTest,
   SidebarBrowserTest() {}
   ~SidebarBrowserTest() override = default;
 
+  void PreRunTestOnMainThread() override {
+    InProcessBrowserTest::PreRunTestOnMainThread();
+
+    auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
+    // Enable sidebar explicitely because sidebar option is different based on
+    // channel.
+    service->SetSidebarShowOption(
+        SidebarService::ShowSidebarOption::kShowAlways);
+  }
+
   BraveBrowser* brave_browser() {
     return static_cast<BraveBrowser*>(browser());
   }

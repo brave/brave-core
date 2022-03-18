@@ -403,7 +403,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  sidebar::SidebarService::RegisterProfilePrefs(registry);
+  sidebar::SidebarService::RegisterProfilePrefs(registry, chrome::GetChannel());
 #endif
 
 #if !defined(OS_ANDROID)
