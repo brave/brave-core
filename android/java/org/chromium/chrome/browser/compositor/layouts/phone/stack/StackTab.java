@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.compositor.layouts.Layout.Orientation;
 import org.chromium.chrome.browser.compositor.layouts.components.LayoutTab;
+import org.chromium.chrome.browser.compositor.layouts.components.StackLayoutTab;
 import org.chromium.chrome.browser.layouts.animation.FloatProperty;
 
 /**
@@ -64,7 +65,7 @@ public class StackTab {
     private long mVisiblitySortingValue; // Sorting value based on visible area.
     private int mOrderSortingValue; // Sorting value based on distance to selection.
 
-    private LayoutTab mLayoutTab;
+    private StackLayoutTab mLayoutTab;
 
     public static final FloatProperty<StackTab> DISCARD_AMOUNT =
             new FloatProperty<StackTab>("DISCARD_AMOUNT") {
@@ -160,7 +161,8 @@ public class StackTab {
      * @param tab The tab this instance is supposed to draw.
      */
     public StackTab(LayoutTab tab) {
-        mLayoutTab = tab;
+        assert tab instanceof StackLayoutTab : "Wrong tab type!";
+        mLayoutTab = (StackLayoutTab) tab;
     }
 
     /**
@@ -180,7 +182,7 @@ public class StackTab {
     /**
      * @return The {@link LayoutTab} this instance is supposed to draw.
      */
-    public LayoutTab getLayoutTab() {
+    public StackLayoutTab getLayoutTab() {
         return mLayoutTab;
     }
 
@@ -188,7 +190,8 @@ public class StackTab {
      * Set the {@link LayoutTab} this instance is supposed to draw.
      */
     public void setLayoutTab(LayoutTab tab) {
-        mLayoutTab = tab;
+        assert tab instanceof StackLayoutTab : "Wrong tab type!";
+        mLayoutTab = (StackLayoutTab) tab;
     }
 
     /**

@@ -202,6 +202,10 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/compositor/layouts/LayoutManagerChromePhone"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/compositor/layouts/BraveLayoutManagerChrome"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/compositor/layouts/LayoutManagerImpl"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/compositor/scene_layer/TabListSceneLayer"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/tasks/tab_management/TabUiFeatureUtilities"));
         Assert.assertTrue(classExists(
@@ -696,6 +700,14 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
                 "mSearchEngineAdapter"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/compositor/layouts/LayoutManagerImpl", "mTabCache"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/compositor/scene_layer/TabListSceneLayer",
+                        "mNativePtr"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/compositor/scene_layer/TabListSceneLayer",
+                        "mIsInitialized"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
                 "mCategory", true, SiteSettingsCategory.class));

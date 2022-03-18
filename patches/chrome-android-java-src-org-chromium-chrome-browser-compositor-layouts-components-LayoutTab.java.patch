@@ -1,0 +1,12 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/compositor/layouts/components/LayoutTab.java b/chrome/android/java/src/org/chromium/chrome/browser/compositor/layouts/components/LayoutTab.java
+index 30724364716e62c42ee68628cabc881d4e85bd72..cedb06b6257eae15fa595a4bcaa94cd950184c97 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/compositor/layouts/components/LayoutTab.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/compositor/layouts/components/LayoutTab.java
+@@ -149,6 +149,7 @@ public class LayoutTab extends PropertyModel {
+             new PropertyModel.WritableFloatPropertyKey();
+ 
+     public static final PropertyKey[] ALL_KEYS = new PropertyKey[] {TAB_ID, IS_INCOGNITO, SCALE, X,
++            StackLayoutTab.TILT_X_IN_DEGREES, StackLayoutTab.TILT_Y_IN_DEGREES, StackLayoutTab.TILT_X_PIVOT_OFFSET, StackLayoutTab.TILT_Y_PIVOT_OFFSET, StackLayoutTab.BORDER_CLOSE_BUTTON_ALPHA,
+             Y, RENDER_X, RENDER_Y, CLIPPED_X, CLIPPED_Y, CLIPPED_WIDTH, CLIPPED_HEIGHT, ALPHA,
+             SATURATION, BORDER_ALPHA, BORDER_SCALE, ORIGINAL_CONTENT_WIDTH_IN_DP,
+             ORIGINAL_CONTENT_HEIGHT_IN_DP, MAX_CONTENT_WIDTH, MAX_CONTENT_HEIGHT,

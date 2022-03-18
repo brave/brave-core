@@ -309,6 +309,15 @@
 
 -keep class org.chromium.chrome.browser.compositor.layouts.BraveLayoutManagerChrome
 
+-keep class org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl {
+    *** mTabCache;
+}
+
+-keep class org.chromium.chrome.browser.compositor.scene_layer.TabListSceneLayer {
+    *** mNativePtr;
+    *** mIsInitialized;
+}
+
 -keep class org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities {
     *** isGridTabSwitcherEnabled(...);
     *** isTabGroupsAndroidEnabled(...);

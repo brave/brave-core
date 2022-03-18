@@ -14,6 +14,7 @@ import androidx.annotation.IntDef;
 import org.chromium.base.MathUtils;
 import org.chromium.chrome.browser.compositor.layouts.Layout.Orientation;
 import org.chromium.chrome.browser.compositor.layouts.components.LayoutTab;
+import org.chromium.chrome.browser.compositor.layouts.components.StackLayoutTab;
 import org.chromium.chrome.browser.layouts.animation.CompositorAnimationHandler;
 import org.chromium.chrome.browser.layouts.animation.CompositorAnimator;
 import org.chromium.chrome.browser.layouts.animation.FloatProperty;
@@ -265,7 +266,7 @@ public class StackAnimation {
             case OverviewAnimationType.FULL_ROLL:
                 // Responsible for generating the animations that make all the tabs do a full roll.
                 for (int i = 0; i < tabs.length; ++i) {
-                    LayoutTab layoutTab = tabs[i].getLayoutTab();
+                    StackLayoutTab layoutTab = tabs[i].getLayoutTab();
                     // Set the pivot
                     layoutTab.setTiltX(
                             layoutTab.getTiltX(), layoutTab.getScaledContentHeight() / 2.0f);
@@ -344,13 +345,13 @@ public class StackAnimation {
     }
 
     private void addLandscapePortraitTiltScrollAnimation(
-            StackAnimatorSet stackAnimatorSet, LayoutTab tab, float end, int durationMs) {
+            StackAnimatorSet stackAnimatorSet, StackLayoutTab tab, float end, int durationMs) {
         if (mOrientation == Orientation.LANDSCAPE) {
             stackAnimatorSet.addToAnimation(
-                    tab, LayoutTab.TILT_Y_IN_DEGREES, tab.getTiltY(), end, durationMs);
+                    tab, StackLayoutTab.TILT_Y_IN_DEGREES, tab.getTiltY(), end, durationMs);
         } else {
             stackAnimatorSet.addToAnimation(
-                    tab, LayoutTab.TILT_X_IN_DEGREES, tab.getTiltX(), end, durationMs);
+                    tab, StackLayoutTab.TILT_X_IN_DEGREES, tab.getTiltX(), end, durationMs);
         }
     }
 
@@ -473,7 +474,7 @@ public class StackAnimation {
             StackAnimatorSet stackAnimatorSet, StackTab[] tabs, int focusIndex, int spacing) {
         for (int i = 0; i < tabs.length; ++i) {
             StackTab tab = tabs[i];
-            LayoutTab layoutTab = tab.getLayoutTab();
+            StackLayoutTab layoutTab = tab.getLayoutTab();
 
             addLandscapePortraitTiltScrollAnimation(
                     stackAnimatorSet, layoutTab, 0.0f, TAB_FOCUSED_ANIMATION_DURATION_MS);

@@ -55,6 +55,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/BraveLayoutManagerChrome.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/scene_layer/StackTabListSceneLayer.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/components/StackLayoutTab.java",
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/StackLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/StackLayoutBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/stack/OverlappingStack.java",

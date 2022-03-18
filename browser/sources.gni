@@ -237,6 +237,8 @@ if (is_android) {
     "//brave/browser/android/brave_stats_updater_android.cc",
     "//brave/browser/sync/brave_sync_devices_android.cc",
     "//brave/browser/sync/brave_sync_devices_android.h",
+    "//brave/browser/android/compositor/scene_layer/stack_tab_list_scene_layer.cc",
+    "//brave/browser/android/compositor/scene_layer/stack_tab_list_scene_layer.h",
   ]
 
   brave_chrome_browser_sources += brave_browser_brave_wallet_android_sources

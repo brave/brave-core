@@ -67,6 +67,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveWebsitePermissionsFetcherClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/ByteCodeProcessor.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/ClassPathValidator.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/StackTabListSceneLayerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/ThreadAssertionClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/TypeUtils.java",
   ]

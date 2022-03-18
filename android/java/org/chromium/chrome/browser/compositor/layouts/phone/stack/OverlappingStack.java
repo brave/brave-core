@@ -12,6 +12,7 @@ import org.chromium.base.MathUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.compositor.layouts.Layout.Orientation;
 import org.chromium.chrome.browser.compositor.layouts.components.LayoutTab;
+import org.chromium.chrome.browser.compositor.layouts.components.StackLayoutTab;
 import org.chromium.chrome.browser.compositor.layouts.phone.StackLayoutBase;
 import org.chromium.chrome.browser.compositor.layouts.phone.stack.StackAnimation.OverviewAnimationType;
 import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
@@ -384,7 +385,7 @@ public class OverlappingStack extends Stack {
         }
 
         for (int i = mStackTabs.length - 1; i >= 0; i--) {
-            LayoutTab layoutTab = mStackTabs[i].getLayoutTab();
+            StackLayoutTab layoutTab = mStackTabs[i].getLayoutTab();
             layoutTab.setVisible(true);
 
             // Don't bother with clipping tabs that are dying, rotating, with an X offset, or
