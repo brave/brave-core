@@ -39,10 +39,11 @@ export function RewardsSummary (props: Props) {
   const { getString } = React.useContext(LocaleContext)
   const { data } = props
 
-  function renderRow (amount: number, message: string, key: string) {
+  function renderRowWithNode (
+    amount: number, message: React.ReactNode, key: string) {
     return (
       <tr>
-        <td>{getString(message)}</td>
+        <td>{message}</td>
         <td className='amount' data-test-id={`rewards-summary-${key}`}>
           <TokenAmount
             minimumFractionDigits={2}
@@ -60,25 +61,24 @@ export function RewardsSummary (props: Props) {
     )
   }
 
+  function renderRow (amount: number, message: string, key: string) {
+    const messageNode = getString(message)
+    return renderRowWithNode(amount, messageNode, key)
+  }
+
   function renderPendingTips () {
     if (!data.pendingTips || !props.onViewPendingTips) {
       return null
     }
 
     return (
-      <style.pendingTips>
-        <style.pendingAmount>
-          <TokenAmount minimumFractionDigits={2} amount={data.pendingTips} />
-        </style.pendingAmount>
-        <style.pendingText>
-          {getString('walletPendingContributions')}
-        </style.pendingText>
+      renderRowWithNode(data.pendingTips,
         <style.pendingAction>
           <button onClick={props.onViewPendingTips}>
-            {getString('walletSeeAll')}
+            {getString('walletPendingContributions')}
           </button>
-        </style.pendingAction>
-      </style.pendingTips>
+        </style.pendingAction>,
+        'pending')
     )
   }
 
@@ -89,7 +89,6 @@ export function RewardsSummary (props: Props) {
         <div>{monthFormatter.format(Date.now())}</div>
       </style.header>
       <style.body>
-        {renderPendingTips()}
         <style.dataTable>
           <table>
             <tbody>
@@ -108,6 +107,7 @@ export function RewardsSummary (props: Props) {
               }
               {renderRow(-data.oneTimeTips, 'walletOneTimeTips', 'one-time')}
               {renderRow(-data.monthlyTips, 'walletMonthlyTips', 'monthly')}
+              {renderPendingTips()}
             </tbody>
           </table>
         </style.dataTable>

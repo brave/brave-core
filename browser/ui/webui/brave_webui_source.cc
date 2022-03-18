@@ -786,7 +786,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "walletPendingContributions", IDS_REWARDS_WALLET_PENDING_CONTRIBUTIONS },  // NOLINT
         { "walletRewardsFromAds", IDS_REWARDS_WALLET_REWARDS_FROM_ADS },
         { "walletRewardsSummary", IDS_REWARDS_WALLET_REWARDS_SUMMARY },
-        { "walletSeeAll", IDS_REWARDS_WALLET_SEE_ALL },
         { "walletUnverified", IDS_REWARDS_WALLET_UNVERIFIED },
         { "walletViewStatement", IDS_REWARDS_WALLET_VIEW_STATEMENT },
         { "walletVerified", IDS_REWARDS_WALLET_VERIFIED },

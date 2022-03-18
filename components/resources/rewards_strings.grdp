@@ -58,9 +58,6 @@
   <message name="IDS_REWARDS_WALLET_REWARDS_SUMMARY" desc="">
     Rewards Summary
   </message>
-  <message name="IDS_REWARDS_WALLET_SEE_ALL" desc="">
-    See all
-  </message>
   <message name="IDS_REWARDS_WALLET_UNVERIFIED" desc="">
     Unverified
   </message>

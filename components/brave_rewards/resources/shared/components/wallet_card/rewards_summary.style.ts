@@ -39,36 +39,6 @@ export const body = styled.div`
   }
 `
 
-export const pendingTips = styled.div`
-  margin: 0 16px;
-  padding: 8px 0 14px;
-  display: flex;
-
-  border-bottom: solid 1px var(--brave-palette-neutral200);
-
-  .brave-theme-dark & {
-    border-color: var(--brave-palette-neutral600);
-  }
-`
-
-export const pendingAmount = styled.div`
-  .amount {
-    font-weight: 600;
-    color: #b13c7a;
-  }
-`
-
-export const pendingText = styled.div`
-  flex: 1 1 auto;
-  padding-left: 4px;
-  font-size: 12px;
-  color: var(--brave-palette-neutral600);
-
-  .brave-theme-dark & {
-    color: var(--brave-palette-grey400);
-  }
-`
-
 export const pendingAction = styled.div`
   button {
     ${mixins.buttonReset}
