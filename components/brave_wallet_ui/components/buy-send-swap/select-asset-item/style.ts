@@ -29,6 +29,7 @@ export const AssetName = styled.span`
   letter-spacing: 0.01em;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
+  text-align: left;
 `
 
 export const AssetBalance = styled.span`
