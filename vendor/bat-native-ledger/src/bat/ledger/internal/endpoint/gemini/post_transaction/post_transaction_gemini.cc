@@ -125,6 +125,12 @@ void PostTransaction::OnRequest(const type::UrlResponse& response,
   result = ParseBody(response.body, &id, &transfer_status);
 
   if (result == type::Result::LEDGER_OK) {
+    if (transfer_status == "Error") {
+      BLOG(0, "Transfer error");
+      callback(type::Result::LEDGER_ERROR, "");
+      return;
+    }
+
     if (transfer_status != "Completed") {
       BLOG(1, "Transfer not yet completed (status: " << transfer_status << ")");
       callback(type::Result::RETRY, id);
