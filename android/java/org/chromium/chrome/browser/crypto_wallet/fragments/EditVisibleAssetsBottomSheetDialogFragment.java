@@ -452,16 +452,19 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         List<WalletListItemModel> checkedAssets = walletCoinAdapter.getCheckedAssets();
         Activity activity = getActivity();
         if (activity instanceof BuySendSwapActivity && checkedAssets.size() > 0) {
+            BuySendSwapActivity buySendSwapActivity = (BuySendSwapActivity) activity;
             if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST
                     || mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST
                     || mType == WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST) {
-                ((BuySendSwapActivity) activity)
-                        .updateBuySendSwapAsset(checkedAssets.get(0).getSubTitle(),
-                                checkedAssets.get(0).getBlockchainToken(), true);
+                buySendSwapActivity.updateBuySendSwapAsset(checkedAssets.get(0).getSubTitle(),
+                        checkedAssets.get(0).getBlockchainToken(), true);
+                buySendSwapActivity.updateBalanceMaybeSwap(
+                        buySendSwapActivity.getCurrentSelectedAccountAddr());
             } else if (mType == WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST) {
-                ((BuySendSwapActivity) activity)
-                        .updateBuySendSwapAsset(checkedAssets.get(0).getSubTitle(),
-                                checkedAssets.get(0).getBlockchainToken(), false);
+                buySendSwapActivity.updateBuySendSwapAsset(checkedAssets.get(0).getSubTitle(),
+                        checkedAssets.get(0).getBlockchainToken(), false);
+                buySendSwapActivity.updateBalanceMaybeSwap(
+                        buySendSwapActivity.getCurrentSelectedAccountAddr());
             }
         }
         dismiss();
