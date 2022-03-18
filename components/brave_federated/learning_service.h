@@ -7,6 +7,8 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "brave/components/brave_federated/eligibility_service_observer.h"
+
 
 namespace brave_federated {
 
@@ -15,15 +17,17 @@ struct AdNotificationTimingTaskLog;
 class EligibilityService;
 class Client;
 
-class LearningService {
+class LearningService: public Observer {
  public:
   LearningService(
       DataStoreService* data_store_service, 
       EligibilityService* eligibility_service);
-  ~LearningService();
+  ~LearningService() override;
 
   void StartLearning();
   void StopLearning();
+
+  void OnEligibilityChanged(bool is_eligible) override;
 
  private:
   void AdNotificationLogsLoadComplete(

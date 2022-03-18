@@ -34,6 +34,7 @@ struct AdNotificationTimingTaskLog {
   int number_of_tabs;
   bool label;
   base::Time creation_date;
+  int features = 5;
 };
 
 // AdNotificationTimingDataStore stores logs for the ad notification timing
@@ -69,6 +70,9 @@ class AdNotificationTimingDataStore final : public DataStore {
   bool AddLog(const AdNotificationTimingTaskLog& log);
   IdToAdNotificationTimingTaskLogMap LoadLogs();
   bool EnsureTable() override;
+
+  static std::vector<std::vector<float>> ConvertToTrainingData(
+    IdToAdNotificationTimingTaskLogMap logs);
 
  private:
   SEQUENCE_CHECKER(sequence_checker_);

@@ -91,6 +91,28 @@ bool AdNotificationTimingDataStore::AddLog(
   return s.Run();
 }
 
+// static
+std::vector<std::vector<float>> AdNotificationTimingDataStore::ConvertToTrainingData(
+    AdNotificationTimingDataStore::IdToAdNotificationTimingTaskLogMap logs) {
+    std::vector<std::vector<float>> trd(logs.size(), std::vector<float>(logs.begin()->second.features));
+    int i = 0; 
+    for (auto iter = logs.begin(); iter != logs.end(); ++iter) {
+      AdNotificationTimingTaskLog log = iter->second;
+
+      base::Time::Exploded time;
+      log.time.LocalExplode(&time);
+      trd.at(i).at(0) = ((time.day_of_month - 1) * 24 * 60 + time.hour * 60 + time.minute) / 30;
+      trd.at(i).at(1) = log.locale == "US" ? 1.0 : 0.0;
+      trd.at(i).at(2) = log.number_of_tabs;
+      trd.at(i).at(3) = log.label ? 1.0 : 0.0;
+      trd.at(i).at(4) = ((time.day_of_month - 1) * 24 * 60 + time.hour * 60 + time.minute) / 30;
+
+      i++;
+    }
+
+    return trd;
+}
+
 AdNotificationTimingDataStore::IdToAdNotificationTimingTaskLogMap
 AdNotificationTimingDataStore::LoadLogs() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
