@@ -1,8 +1,8 @@
 diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
-index ba90872e26ddec96ea4cc233791768df2c1bdaa0..f0140e74e9d73d08fd4e2e9075368c66fde96b9d 100755
+index 9252a0a5649c5aedbc41c873f738b3dfc4c8751c..0487ba0962b223b991ed75a3cf98abb1050e304c 100755
 --- a/build/android/gyp/dex.py
 +++ b/build/android/gyp/dex.py
-@@ -58,7 +58,7 @@ _IGNORE_WARNINGS = (
+@@ -54,7 +54,7 @@ _IGNORE_WARNINGS = (
  _SKIPPED_CLASS_FILE_NAMES = (
      'module-info.class',  # Explicitly skipped by r8/utils/FileUtils#isClassFile
  )

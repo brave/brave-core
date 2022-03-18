@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index e6552612669ebac289674c7fc9e2548b6f7d6323..5137401e370675b63c6a3400e90192474d54dc99 100644
+index c8e94fa101179f1faf15a6631d3a8d5bd4dcc687..5a7d0bcbdbb16f007a961607d5bfb9345537c3ee 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -2915,6 +2915,7 @@ const FeatureEntry::FeatureVariation kTabStripImprovementsTabWidthVariations[] =
+@@ -2948,6 +2948,7 @@ const FeatureEntry::FeatureVariation kUnthrottledNestedTimeout_Variations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
