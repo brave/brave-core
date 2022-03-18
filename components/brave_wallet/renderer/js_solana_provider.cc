@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/array_buffer.h"
 #include "gin/handle.h"
@@ -20,6 +21,7 @@
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "v8/include/v8-microtask-queue.h"
 #include "v8/include/v8-typed-array.h"
 
@@ -197,19 +199,20 @@ v8::Local<v8::Promise> JSSolanaProvider::Connect(gin::Arguments* arguments) {
     return v8::Local<v8::Promise>();
   }
 
-  // Get base::Value arg to pass
+  // Get base::Value arg to pass and ignore extra parameters
   absl::optional<base::Value> arg = absl::nullopt;
   v8::Local<v8::Value> v8_arg;
-  if (arguments->Length() > 1 ||
-      (arguments->Length() == 1 && !arguments->GetNext(&v8_arg))) {
-    arguments->ThrowError();
+  if (arguments->Length() >= 1 && !arguments->GetNext(&v8_arg)) {
+    arguments->ThrowTypeError(
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
   }
   if (!v8_arg.IsEmpty()) {
     std::unique_ptr<base::Value> arg_value =
         v8_value_converter_->FromV8Value(v8_arg, isolate->GetCurrentContext());
     if (!arg_value || !arg_value->is_dict()) {
-      arguments->ThrowError();
+      arguments->ThrowTypeError(
+          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
       return v8::Local<v8::Promise>();
     }
     arg = std::move(*arg_value);
@@ -460,12 +463,6 @@ void JSSolanaProvider::OnConnect(
   v8::Local<v8::Value> result;
   if (error == mojom::SolanaProviderError::kSuccess) {
     result = CreatePublicKey(context, public_key);
-
-    v8::Local<v8::Value> v8_public_key;
-    CHECK(GetProperty(context, result, u"publicKey").ToLocal(&v8_public_key));
-    std::vector<v8::Local<v8::Value>> args;
-    args.push_back(std::move(v8_public_key));
-    FireEvent(kConnectEvent, std::move(args));
   } else {
     std::unique_ptr<base::Value> formed_response =
         GetProviderErrorDictionary(error, error_message);
@@ -475,6 +472,16 @@ void JSSolanaProvider::OnConnect(
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
                std::move(result),
                error == mojom::SolanaProviderError::kSuccess);
+
+  if (error == mojom::SolanaProviderError::kSuccess) {
+    v8::Local<v8::Value> v8_public_key;
+    CHECK(
+        GetProperty(context, CreatePublicKey(context, public_key), u"publicKey")
+            .ToLocal(&v8_public_key));
+    std::vector<v8::Local<v8::Value>> args;
+    args.push_back(std::move(v8_public_key));
+    FireEvent(kConnectEvent, std::move(args));
+  }
 }
 
 void JSSolanaProvider::OnSignAndSendTransaction(

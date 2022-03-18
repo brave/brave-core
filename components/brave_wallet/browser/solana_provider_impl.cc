@@ -26,13 +26,8 @@ void SolanaProviderImpl::Init(
 void SolanaProviderImpl::Connect(absl::optional<base::Value> arg,
                                  ConnectCallback callback) {
   // TODO(darkdh): handle onlyIfTrusted when it exists
-  // NOTIMPLEMENTED();
-  // std::move(callback).Run(mojom::SolanaProviderError::kInternalError, "",
-  // "");
-  std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
-                          "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
-  events_listener_->AccountChangedEvent(
-      "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
+  NOTIMPLEMENTED();
+  std::move(callback).Run(mojom::SolanaProviderError::kInternalError, "", "");
 }
 
 void SolanaProviderImpl::Disconnect() {

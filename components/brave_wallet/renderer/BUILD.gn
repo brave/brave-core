@@ -15,6 +15,7 @@ source_set("renderer") {
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:solana_utils",
     "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
+    "//brave/components/resources:strings_grit",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",
