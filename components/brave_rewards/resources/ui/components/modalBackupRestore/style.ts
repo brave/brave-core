@@ -10,6 +10,63 @@ interface StyleProps {
   error?: boolean
 }
 
+export const StyledSyncCodeWidget = styled('div')<{}>`
+  margin: 0 20px;
+  width: -webkit-fill-available;
+  font-family: Muli, sans-serif;
+  padding: 10px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c2c4cf;
+  border-image: initial;
+  border-radius: 6px;
+`
+
+export const StyledSyncCodeText = styled('textarea')<{}>`
+  box-sizing: border-box;
+  min-height: 140px;
+  width: 100%;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c2c4cf;
+  border-radius: 6px;
+  padding: 15px 20px;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 26px;
+`
+
+export const StyledSyncCodeFooter = styled('div')<{}>`
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto;
+  align-items: center;
+`
+
+export const StyledSyncCodeClipboard = styled('div')<{}>`
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto;
+  align-items: center;
+  gap: 10px;
+`
+
+export const StyledClipboardSuccess = styled('span')<{}>`
+  transition: opacity 2s cubic-bezier(0.23, 1, 0.32, 1);
+  opacity: 0;
+
+  .is-success-true {
+    opacity: 1;
+  }
+`
+
+export const StyledClipBoardButton = styled('div')`
+  margin: 0;
+  width: 24px;
+  height: 24px;
+`
+
 export const StyledContent = styled('div')<{}>`
   font-size: 14px;
   font-family: Muli, sans-serif;

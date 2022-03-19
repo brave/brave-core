@@ -20,7 +20,13 @@ import {
   StyledSafe,
   StyledControlWrapper,
   StyledText,
-  StyledTextWrapper
+  StyledTextWrapper,
+  StyledSyncCodeWidget,
+  StyledSyncCodeText,
+  StyledSyncCodeFooter,
+  StyledSyncCodeClipboard,
+  StyledClipboardSuccess,
+  StyledClipBoardButton
 } from './style'
 import { TextArea, Modal, Button } from 'brave-ui/components'
 import { getLocale } from 'brave-ui/helpers'
@@ -50,6 +56,17 @@ export interface Props {
 interface State {
   recoveryKey: string
   errorShown: boolean
+}
+
+export function ClipBoardIcon () {
+  return (
+    <svg
+      viewBox='0 0 32 32'
+      className='icon'
+    >
+      <path d="M16 2c-1.645 0-3 1.355-3 3H9C7.355 5 6 6.355 6 8v18c0 1.645 1.355 3 3 3h14c1.645 0 3-1.355 3-3V8c0-1.645-1.355-3-3-3h-4c0-1.645-1.355-3-3-3zm0 2c.564 0 1 .436 1 1 0 .564-.436 1-1 1-.564 0-1-.436-1-1 0-.564.436-1 1-1zM9 7h4v1a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V7h4c.565 0 1 .435 1 1v18c0 .565-.435 1-1 1H9c-.565 0-1-.435-1-1V8c0-.565.435-1 1-1zm3 6a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2h-8zm0 4a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2h-5zm0 4a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2h-8z" />
+    </svg>
+  )
 }
 
 /*
@@ -224,6 +241,20 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
             })
           }
         </StyledContent>
+        <StyledSyncCodeWidget>
+          <StyledSyncCodeText readOnly={true} defaultValue='sync code goes here'></StyledSyncCodeText>
+          <StyledSyncCodeFooter>
+            {'24'}
+            <StyledSyncCodeClipboard>
+              <StyledClipboardSuccess>
+                {'sync code copied'}
+              </StyledClipboardSuccess>
+              <StyledClipBoardButton>
+                <ClipBoardIcon />
+              </StyledClipBoardButton>
+            </StyledSyncCodeClipboard>
+          </StyledSyncCodeFooter>
+        </StyledSyncCodeWidget>
         <StyledDoneWrapper>
           <Button
             text={getLocale('done')}
