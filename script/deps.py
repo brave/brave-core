@@ -16,8 +16,8 @@ import zipfile
 try:
     from urllib2 import HTTPError, URLError, urlopen
 except ImportError:  # For Py3 compatibility
-    from urllib.error import HTTPError, URLError
-    from urllib.request import urlopen
+    from urllib.error import HTTPError, URLError # pylint: disable=no-name-in-module,import-error
+    from urllib.request import urlopen # pylint: disable=no-name-in-module,import-error
 
 
 def DownloadUrl(url, output_file):
@@ -46,9 +46,9 @@ def DownloadUrl(url, output_file):
                 sys.stdout.flush()
                 dots_printed = num_dots
             if bytes_done != total_size:
-                raise URLError("only got %d of %d bytes" %
-                               (bytes_done, total_size))
-            print(' Done.')
+                raise URLError("only got {} of {} bytes".format(
+                    bytes_done, total_size))
+            print(" Done.")
             return
         except URLError as e:
             sys.stdout.write('\n')
@@ -56,7 +56,7 @@ def DownloadUrl(url, output_file):
             if num_retries == 0 or isinstance(e, HTTPError) and e.code == 404:
                 raise e
             num_retries -= 1
-            print('Retrying in %d s ...' % retry_wait_s)
+            print("Retrying in {} s ...".format(retry_wait_s))
             time.sleep(retry_wait_s)
             retry_wait_s *= 2
 
@@ -67,15 +67,15 @@ def EnsureDirExists(path):
 
 
 def DownloadAndUnpack(url, output_dir, path_prefix=None):
-    """Download an archive from url and extract into output_dir. If path_prefix is not
-        None, only extract files whose paths within the archive start with path_prefix."""
+    """Download an archive from url and extract into output_dir. If path_prefix
+       is not None, only extract files whose paths within the archive start
+       with path_prefix."""
     with tempfile.TemporaryFile() as f:
         DownloadUrl(url, f)
         f.seek(0)
-        # TODO(bridiver) we need to validate against a checksum
         try:
             os.unlink(output_dir)
-        except OSError as e:
+        except OSError:
             pass
         shutil.rmtree(output_dir, ignore_errors=True)
         EnsureDirExists(output_dir)
@@ -89,7 +89,3 @@ def DownloadAndUnpack(url, output_dir, path_prefix=None):
                 members = [m for m in t.getmembers(
                 ) if m.name.startswith(path_prefix)]
             t.extractall(path=output_dir, members=members)
-
-
-if __name__ == '__main__':
-    sys.exit(main())

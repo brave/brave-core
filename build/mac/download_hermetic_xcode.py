@@ -10,11 +10,11 @@
 
 import argparse
 import os
-import pkg_resources
 import platform
 import plistlib
 import subprocess
 import sys
+import pkg_resources
 
 try:
     from urllib2 import URLError
@@ -33,7 +33,9 @@ def LoadPList(path):
 
 # This contains binaries from Xcode 13.2.1 13C100, along with the macOS 12 SDK
 XCODE_VERSION = '13.2.1'
-HERMETIC_XCODE_BINARY = DEPS_PACKAGES_URL + '/xcode-hermetic-toolchain/xcode-hermetic-toolchain-xcode-' + XCODE_VERSION + '-sdk-12.1-12.0.tar.gz'
+HERMETIC_XCODE_BINARY = (DEPS_PACKAGES_URL +
+    '/xcode-hermetic-toolchain/xcode-hermetic-toolchain-xcode-' + XCODE_VERSION
+    + '-sdk-12.1-12.0.tar.gz')
 
 # The toolchain will not be downloaded if the minimum OS version is not met. 19
 # is the major version number for macOS 10.15. Xcode 13.2 13C90 only runs on
@@ -41,7 +43,8 @@ HERMETIC_XCODE_BINARY = DEPS_PACKAGES_URL + '/xcode-hermetic-toolchain/xcode-her
 # the OS minimum through Xcode 12.4, still seems to work.
 MAC_MINIMUM_OS_VERSION = [19, 4]
 
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'build'))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..',
+    '..', 'build'))
 TOOLCHAIN_ROOT = os.path.join(BASE_DIR, 'mac_files')
 TOOLCHAIN_BUILD_DIR = os.path.join(TOOLCHAIN_ROOT, 'Xcode.app')
 
@@ -53,12 +56,12 @@ def PlatformMeetsHermeticXcodeRequirements():
   major_version = [int(v) for v in platform.release().split('.')[:len(needed)]]
   return major_version >= needed
 
-  
+
 def GetHermeticXcodeVersion(binaries_root):
   hermetic_xcode_version_plist_path = os.path.join(binaries_root,
                                                'Contents/version.plist')
 
-  if not os.path.exists(hermetic_xcode_version_plist_path):  
+  if not os.path.exists(hermetic_xcode_version_plist_path):
     return ''
 
   hermetic_xcode_version_plist = LoadPList(hermetic_xcode_version_plist_path)
@@ -69,18 +72,18 @@ def InstallXcodeBinaries():
   """Installs the Xcode binaries and accepts the license.
   """
   binaries_root = os.path.join(TOOLCHAIN_ROOT, 'xcode_binaries')
-  if (XCODE_VERSION == GetHermeticXcodeVersion(binaries_root) and not 
+  if (XCODE_VERSION == GetHermeticXcodeVersion(binaries_root) and not
       os.path.islink(binaries_root)):
-    print('Hermetic Xcode ' + XCODE_VERSION + ' already installed')
+    print(f"Hermetic Xcode {XCODE_VERSION} already installed")
     return 0
 
   url = HERMETIC_XCODE_BINARY
-  print('Downloading hermetic xcode: %s' % url)
-  try: 
+  print(f"Downloading hermetic Xcode: {url}")
+  try:
     deps.DownloadAndUnpack(url, binaries_root)
   except URLError:
-      print('Failed to download hermetic Xcode: %s' % url)
-      print('Exiting.')
+      print(f"Failed to download hermetic Xcode: {url}")
+      print("Exiting.")
       return 1
 
   # Accept the license for this version of Xcode if it's newer than the
@@ -109,7 +112,8 @@ def InstallXcodeBinaries():
   license_accept_script = '/usr/local/bin/xcode_accept_license.py'
   if os.path.exists(license_accept_script):
     args = [
-        'sudo', license_accept_script, '--xcode-version', hermetic_xcode_version,
+        'sudo', license_accept_script,
+        '--xcode-version', hermetic_xcode_version,
         '--license-version', hermetic_xcode_license_version
     ]
     subprocess.check_call(args)
