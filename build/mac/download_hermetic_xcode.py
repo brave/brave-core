@@ -140,7 +140,7 @@ def InstallXcodeBinaries():
 
 def main():
   parser = argparse.ArgumentParser(description='Download hermetic Xcode.')
-  args = parser.parse_args()
+  parser.parse_args()
 
   if not PlatformMeetsHermeticXcodeRequirements():
     print('OS version does not support toolchain.')

@@ -53,7 +53,7 @@ def DownloadUrl(url, output_file):
         except URLError as e:
             sys.stdout.write('\n')
             print(e)
-            if num_retries == 0 or isinstance(e, HTTPError) and e.code == 404:
+            if num_retries == 0 or isinstance(e, HTTPError) and e.code == 404: # pylint: disable=no-member
                 raise e
             num_retries -= 1
             print("Retrying in {} s ...".format(retry_wait_s))
