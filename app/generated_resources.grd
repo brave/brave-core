@@ -11,85 +11,74 @@ are declared in tools/grit/grit_rule.gni.
     <output filename="grit/generated_resources.h" type="rc_header">
       <emit emit_type="prepend" />
     </output>
-    <if expr="is_android">
-      <output filename="generated_resources_af.pak" type="data_package" lang="af" />
-      <output filename="generated_resources_as.pak" type="data_package" lang="as" />
-      <output filename="generated_resources_az.pak" type="data_package" lang="az" />
-      <output filename="generated_resources_be.pak" type="data_package" lang="be" />
-      <output filename="generated_resources_bs.pak" type="data_package" lang="bs" />
-      <output filename="generated_resources_eu.pak" type="data_package" lang="eu" />
-      <output filename="generated_resources_fr-CA.pak" type="data_package" lang="fr-CA" />
-      <output filename="generated_resources_gl.pak" type="data_package" lang="gl" />
-      <output filename="generated_resources_hy.pak" type="data_package" lang="hy" />
-      <output filename="generated_resources_is.pak" type="data_package" lang="is" />
-      <output filename="generated_resources_ka.pak" type="data_package" lang="ka" />
-      <output filename="generated_resources_kk.pak" type="data_package" lang="kk" />
-      <output filename="generated_resources_km.pak" type="data_package" lang="km" />
-      <output filename="generated_resources_ky.pak" type="data_package" lang="ky" />
-      <output filename="generated_resources_lo.pak" type="data_package" lang="lo" />
-      <output filename="generated_resources_mk.pak" type="data_package" lang="mk" />
-      <output filename="generated_resources_mn.pak" type="data_package" lang="mn" />
-      <output filename="generated_resources_my.pak" type="data_package" lang="my" />
-      <output filename="generated_resources_ne.pak" type="data_package" lang="ne" />
-      <output filename="generated_resources_or.pak" type="data_package" lang="or" />
-      <output filename="generated_resources_pa.pak" type="data_package" lang="pa" />
-      <output filename="generated_resources_si.pak" type="data_package" lang="si" />
-      <output filename="generated_resources_sq.pak" type="data_package" lang="sq" />
-      <output filename="generated_resources_sr-Latn.pak" type="data_package" lang="sr-Latn" />
-      <output filename="generated_resources_ur.pak" type="data_package" lang="ur" />
-      <output filename="generated_resources_uz.pak" type="data_package" lang="uz" />
-      <output filename="generated_resources_zh-HK.pak" type="data_package" lang="zh-HK" />
-      <output filename="generated_resources_zu.pak" type="data_package" lang="zu" />
-    </if>
-    <if expr="chromeos_ash or chromeos_lacros">
-      <output filename="generated_resources_af.pak" type="data_package" lang="af" />
-      <output filename="generated_resources_is.pak" type="data_package" lang="is" />
-      <output filename="generated_resources_zu.pak" type="data_package" lang="zu" />
-    </if>
+    <output filename="generated_resources_af.pak" type="data_package" lang="af" />
     <output filename="generated_resources_am.pak" type="data_package" lang="am" />
     <output filename="generated_resources_ar.pak" type="data_package" lang="ar" />
+    <output filename="generated_resources_as.pak" type="data_package" lang="as" />
+    <output filename="generated_resources_az.pak" type="data_package" lang="az" />
+    <output filename="generated_resources_be.pak" type="data_package" lang="be" />
     <output filename="generated_resources_bg.pak" type="data_package" lang="bg" />
     <output filename="generated_resources_bn.pak" type="data_package" lang="bn" />
+    <output filename="generated_resources_bs.pak" type="data_package" lang="bs" />
     <output filename="generated_resources_ca.pak" type="data_package" lang="ca" />
     <output filename="generated_resources_cs.pak" type="data_package" lang="cs" />
     <output filename="generated_resources_da.pak" type="data_package" lang="da" />
     <output filename="generated_resources_de.pak" type="data_package" lang="de" />
     <output filename="generated_resources_el.pak" type="data_package" lang="el" />
-    <output filename="generated_resources_en-US.pak" type="data_package" lang="en" />
     <output filename="generated_resources_en-GB.pak" type="data_package" lang="en-GB" />
+    <output filename="generated_resources_en-US.pak" type="data_package" lang="en" />
     <output filename="generated_resources_es.pak" type="data_package" lang="es" />
     <output filename="generated_resources_es-419.pak" type="data_package" lang="es-419" />
     <output filename="generated_resources_et.pak" type="data_package" lang="et" />
+    <output filename="generated_resources_eu.pak" type="data_package" lang="eu" />
     <output filename="generated_resources_fa.pak" type="data_package" lang="fa" />
     <output filename="generated_resources_fi.pak" type="data_package" lang="fi" />
     <output filename="generated_resources_fil.pak" type="data_package" lang="fil" />
+    <output filename="generated_resources_fr-CA.pak" type="data_package" lang="fr-CA" />
     <output filename="generated_resources_fr.pak" type="data_package" lang="fr" />
+    <output filename="generated_resources_gl.pak" type="data_package" lang="gl" />
     <output filename="generated_resources_gu.pak" type="data_package" lang="gu" />
     <output filename="generated_resources_he.pak" type="data_package" lang="he" />
     <output filename="generated_resources_hi.pak" type="data_package" lang="hi" />
     <output filename="generated_resources_hr.pak" type="data_package" lang="hr" />
     <output filename="generated_resources_hu.pak" type="data_package" lang="hu" />
+    <output filename="generated_resources_hy.pak" type="data_package" lang="hy" />
     <output filename="generated_resources_id.pak" type="data_package" lang="id" />
+    <output filename="generated_resources_is.pak" type="data_package" lang="is" />
     <output filename="generated_resources_it.pak" type="data_package" lang="it" />
     <output filename="generated_resources_ja.pak" type="data_package" lang="ja" />
+    <output filename="generated_resources_ka.pak" type="data_package" lang="ka" />
+    <output filename="generated_resources_kk.pak" type="data_package" lang="kk" />
+    <output filename="generated_resources_km.pak" type="data_package" lang="km" />
     <output filename="generated_resources_kn.pak" type="data_package" lang="kn" />
     <output filename="generated_resources_ko.pak" type="data_package" lang="ko" />
+    <output filename="generated_resources_ky.pak" type="data_package" lang="ky" />
+    <output filename="generated_resources_lo.pak" type="data_package" lang="lo" />
     <output filename="generated_resources_lt.pak" type="data_package" lang="lt" />
     <output filename="generated_resources_lv.pak" type="data_package" lang="lv" />
+    <output filename="generated_resources_mk.pak" type="data_package" lang="mk" />
     <output filename="generated_resources_ml.pak" type="data_package" lang="ml" />
+    <output filename="generated_resources_mn.pak" type="data_package" lang="mn" />
     <output filename="generated_resources_mr.pak" type="data_package" lang="mr" />
     <output filename="generated_resources_ms.pak" type="data_package" lang="ms" />
+    <output filename="generated_resources_my.pak" type="data_package" lang="my" />
+    <output filename="generated_resources_ne.pak" type="data_package" lang="ne" />
     <output filename="generated_resources_nl.pak" type="data_package" lang="nl" />
     <!-- The translation console uses 'no' for Norwegian Bokmål. It should
          be 'nb'. -->
     <output filename="generated_resources_nb.pak" type="data_package" lang="no" />
+    <output filename="generated_resources_pa.pak" type="data_package" lang="pa" />
     <output filename="generated_resources_pl.pak" type="data_package" lang="pl" />
     <output filename="generated_resources_pt-BR.pak" type="data_package" lang="pt-BR" />
     <output filename="generated_resources_pt-PT.pak" type="data_package" lang="pt-PT" />
+    <output filename="generated_resources_or.pak" type="data_package" lang="or" />
     <output filename="generated_resources_ro.pak" type="data_package" lang="ro" />
     <output filename="generated_resources_ru.pak" type="data_package" lang="ru" />
+    <output filename="generated_resources_si.pak" type="data_package" lang="si" />
     <output filename="generated_resources_sk.pak" type="data_package" lang="sk" />
     <output filename="generated_resources_sl.pak" type="data_package" lang="sl" />
+    <output filename="generated_resources_sq.pak" type="data_package" lang="sq" />
+    <output filename="generated_resources_sr-Latn.pak" type="data_package" lang="sr-Latn" />
     <output filename="generated_resources_sr.pak" type="data_package" lang="sr" />
     <output filename="generated_resources_sv.pak" type="data_package" lang="sv" />
     <output filename="generated_resources_sw.pak" type="data_package" lang="sw" />
@@ -98,9 +87,16 @@ are declared in tools/grit/grit_rule.gni.
     <output filename="generated_resources_th.pak" type="data_package" lang="th" />
     <output filename="generated_resources_tr.pak" type="data_package" lang="tr" />
     <output filename="generated_resources_uk.pak" type="data_package" lang="uk" />
+    <output filename="generated_resources_ur.pak" type="data_package" lang="ur" />
+    <output filename="generated_resources_uz.pak" type="data_package" lang="uz" />
     <output filename="generated_resources_vi.pak" type="data_package" lang="vi" />
     <output filename="generated_resources_zh-CN.pak" type="data_package" lang="zh-CN" />
+    <output filename="generated_resources_zh-HK.pak" type="data_package" lang="zh-HK" />
     <output filename="generated_resources_zh-TW.pak" type="data_package" lang="zh-TW" />
+    <output filename="generated_resources_zu.pak" type="data_package" lang="zu" />
+    <!-- Pseudolocales -->
+    <output filename="generated_resources_ar-XB.pak" type="data_package" lang="ar-XB" />
+    <output filename="generated_resources_en-XA.pak" type="data_package" lang="en-XA" />
 
     <!-- On Android, output some strings into Android's xml string format.
          These strings are tagged with formatter_data="android_java" -->
@@ -190,10 +186,6 @@ are declared in tools/grit/grit_rule.gni.
       <output filename="java/res/values-ar-rXB/generated_resources.xml" lang="ar-XB" type="android" context="android_java" />
       <output filename="java/res/values-en-rXA/generated_resources.xml" lang="en-XA" type="android" context="android_java" />
     </if>
-
-    <!-- Pseudolocales -->
-    <output filename="generated_resources_ar-XB.pak" type="data_package" lang="ar-XB" />
-    <output filename="generated_resources_en-XA.pak" type="data_package" lang="en-XA" />
   </outputs>
   <translations>
     <file path="resources/generated_resources_af.xtb" lang="af" />
@@ -2140,9 +2132,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_NOTIFICATION_COPY_TO_CLIPBOARD" desc="In the download notification, the text of 'Copy to clipboard' button, which is to copy the file content (eg. an image for image files) to the clipboard">
         Copy to clipboard
       </message>
-      <message name="IDS_DOWNLOAD_NOTIFICATION_ANNOTATE" desc="In the download notification, the text of the button that opens the file (if it is an image) in the note-taking app so the user can annotate it">
-        Annotate image
-      </message>
 
       <!-- Download Context Menu Items -->
       <if expr="not is_android">
@@ -2340,6 +2329,15 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_DOWNLOAD_SEPERATOR" desc="A separator to place between download size and download time. A symbol, in this case a bullet •, with a white space before it and a white space after it, is used to separate them. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
         ''' • '''
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_DOWNLOAD_SYMBOL" desc="A symbol for active downloads, in this case downward arrow ↓. If the downward arrow ↓ resembles another symbol in the language, please translate the downward arrow ↓ as a symbol that indicates a downward arrow">
+        '''↓ '''
+      </message>
+      <message name="IDS_DOWNLOAD_STATUS_RESUMING" desc="When resuming a download, let the user know we're resuming the download.">
+        Resuming...
+      </message>
+      <message name="IDS_DOWNLOAD_STATUS_DONE" desc="When a download is finished, let the user know.">
+        Done
       </message>
 
       <!-- Desktop omnibox PWA install icon -->
@@ -4874,6 +4872,42 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <!-- End Extension Settings Overridden Dialog strings. -->
 
+      <!-- Deprecated Apps Deletion Dialog strings. -->
+      <message name="IDS_DEPRECATED_APPS_RENDERER_TITLE" desc="The title of the deprecated app dialog">
+        {NUM_APPS, plural,
+        =1 {Unsupported App}
+        other {Unsupported Apps}}
+      </message>
+      <message name="IDS_DEPRECATED_APPS_MONITOR_RENDERER" desc="States how many deprecated apps are present, with a link to a help article">
+        {NUM_APPS, plural,
+        =1 {1 of your apps is no longer supported. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>}
+        other {# of your apps are no longer supported. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>}}
+      </message>
+      <message name="IDS_DEPRECATED_APPS_LEARN_MORE" desc="Redirects to a link with more information on chrome apps deprecation">
+        Learn more
+      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_DEPRECATED_APPS_OK_LABEL" desc="Label for OK button on deprecated apps dialog">
+          {NUM_APPS, plural,
+          =1 {Delete App Now}
+          other {Delete Apps Now}}
+        </message>
+        <message name="IDS_DEPRECATED_APPS_CANCEL_LABEL" desc="Label for Cancel button on deprecated apps dialog">
+          Ask Next Time
+        </message>
+      </if>
+        <if expr="not use_titlecase">
+        <message name="IDS_DEPRECATED_APPS_OK_LABEL" desc="Label for OK button on deprecated apps dialog">
+          {NUM_APPS, plural,
+          =1 {Delete app now}
+          other {Delete apps now}}
+        </message>
+        <message name="IDS_DEPRECATED_APPS_CANCEL_LABEL" desc="Label for Cancel button on deprecated apps dialog">
+          Ask next time
+        </message>
+      </if>
+      <!-- End Deprecated Apps Deletion Dialog strings. -->
+
       <!-- Extensions Menu bubble -->
       <message name="IDS_EXTENSIONS_MENU_TITLE" desc="Title of the Extensions Menu">
         Extensions
@@ -5898,7 +5932,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!-- NTP Modules -->
       <message name="IDS_NTP_MODULES_INFO_BUTTON_TITLE" desc="Text shown in tooltip of info button of an NTP module.">
-        Why am I seeing this?
+        About this card
       </message>
       <message name="IDS_NTP_MODULES_DISMISS_TOAST_MESSAGE" desc="Text shown in the toast confirming a module has been dismissed.">
         <ph name="MODULE_TITLE">$1<ex>Office Chairs</ex></ph> hidden
@@ -5936,6 +5970,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_SHOPPING_TASKS_LOWER" desc="Name of the shopping tasks module in lowercase shown in various UIs.">
         shopping suggestions
       </message>
+      <message name="IDS_NTP_MODULES_RECIPE_INFO" desc="Text shown in the body of the info dialog of the recipe module.">
+        You’re seeing suggested recipes based on your recent Search activity for recipes.
+        <ph name="BREAK">&lt;br&gt;</ph>
+        <ph name="BREAK">&lt;br&gt;</ph>
+        You can manage settings from the card menu or see more options in Customize Brave.
+      </message>
       <message name="IDS_NTP_MODULES_RECIPE_TASKS_SENTENCE" desc="Name of the recipe tasks module in sentence case shown in various UIs.">
         Recipe ideas
       </message>
@@ -5959,6 +5999,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_CART_LOWER_YOUR" desc="Name of the chrome cart module in lowercase shown in various UIs.">
         your carts
+      </message>
+      <message name="IDS_NTP_MODULES_CART_INFO" desc="Text shown in the body of the info dialog of the cart module.">
+        You’re seeing carts that help you easily get back to items you left in shopping carts across the web.
+        <ph name="BREAK">&lt;br&gt;</ph>
+        <ph name="BREAK">&lt;br&gt;</ph>
+        You can manage settings from the card menu or see more options in Customize Brave.
       </message>
       <message name="IDS_NTP_MODULES_CART_ITEM_COUNT_SINGULAR" desc="Item count displayed on chrome cart module when there is a single item in a cart.">
         <ph name="ITEM_COUNT_ONE">$1<ex>1</ex></ph> item
@@ -5991,10 +6037,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
         From your Google Drive
       </message>
       <message name="IDS_NTP_MODULES_DRIVE_INFO" desc="Text shown in the body of the info dialog of the drive module.">
-        You’re seeing your recent and suggested documents based on your previous activity using Google Drive.
+        You’re seeing suggested files to help you easily get back to your most recent activity in Google Drive.
         <ph name="BREAK">&lt;br&gt;</ph>
         <ph name="BREAK">&lt;br&gt;</ph>
-        Learn about the data Google Drive collects and why <ph name="BEGIN_LINK">&lt;a href="https://support.google.com/drive/answer/2450387" target="_blank"&gt;</ph>here<ph name="END_LINK">&lt;/a&gt;</ph>.
+        You can manage settings from the card menu or see more options in Customize Brave.
       </message>
       <message name="IDS_NTP_MODULES_PHOTOS_TITLE" desc="Title shown in the header of the photos module.">
         From your Google Photos
@@ -6018,10 +6064,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
         memories from Google Photos
       </message>
       <message name="IDS_NTP_MODULES_PHOTOS_INFO" desc="Text shown in the body of the info dialog of the Photos module.">
-        Your memories from Google Photos are shown here. They are visible only to you, whenever you’re signed in.
+        You’re seeing photo and video highlights from your Google Photos library. You can control what shows up in your highlights at <ph name="BEGIN_LINK">&lt;a href="https://photos.google.com/settings?referrer=CHROME_NTP" target="_blank"&gt;</ph>photos.google.com/settings<ph name="END_LINK">&lt;/a&gt;</ph>.
         <ph name="BREAK">&lt;br&gt;</ph>
         <ph name="BREAK">&lt;br&gt;</ph>
-        Manage what you see in your memories at <ph name="BEGIN_LINK">&lt;a href="https://photos.google.com/settings?referrer=CHROME_NTP" target="_blank"&gt;</ph>photos.google.com/settings<ph name="END_LINK">&lt;/a&gt;</ph>.
+        You can manage settings for this card from the card menu or see more options in Customize Brave.
       </message>
       <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_EXPLORE" desc="Text to encourage users to explore Google Photos in the new tab page.">
         Explore more of your memories in Google Photos
@@ -6063,7 +6109,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Top picks for you
       </message>
       <message name="IDS_NTP_MODULES_SHOPPING_TASKS_INFO_TITLE" desc="Title shown on the info dialog of a task module.">
-        Why am I seeing this?
+        About this card
       </message>
       <message name="IDS_NTP_MODULES_TASKS_INFO" desc="Text shown in the body of the info dialog of a task module.">
         You're seeing this item based on your previous activity using Brave services. You can see your data, delete it, and change your settings at <ph name="BEGIN_LINK1">&lt;a href="https://myactivity.google.com/" target="_blank"&gt;</ph>myactivity.google.com<ph name="END_LINK1">&lt;/a&gt;</ph>.
@@ -6079,9 +6125,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_RECIPE_TASKS_RECOMMENDED" desc="Text shown in a tag on a recipe task module recipe indicating that it is recommended.">
         Recommended
-      </message>
-      <message name="IDS_NTP_MODULES_CART_HEADER_CHIP_NEW" desc="Text shown on the header chip of chrome cart module.">
-        New
       </message>
       <message name="IDS_NTP_MODULES_CART_WARM_WELCOME" desc="Text shown in the module header when module shows for the first couple of times. This is served as welcome message and user education.">
         Find what you added to shopping carts and check out when you're ready
@@ -6145,6 +6188,24 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_TITLE" desc="The consent flow is a 2-step process. This text shown on the step 2 as the title description.">
         Get discounts?
+      </message>
+      <message name="IDS_NTP_MODULES_NEW_TAG_LABEL" desc="Label for tag shown on new Modular NTP Desktop features.">
+        New
+      </message>
+      <message name="IDS_NTP_MODULES_FIRST_RUN_EXPERIENCE_TITLE" desc="Title for Modular NTP Desktop v1 First Run Experience.">
+        Your page, your way
+      </message>
+      <message name="IDS_NTP_MODULES_FIRST_RUN_EXPERIENCE_BODY_LINE_1" desc="Line 1 of Modular NTP Desktop v1 First Run Experience's body.">
+        Pick cards that keep you updated on things that matter to you
+      </message>
+      <message name="IDS_NTP_MODULES_FIRST_RUN_EXPERIENCE_BODY_LINE_2" desc="Line 2 of Modular NTP Desktop v1 First Run Experience's body.">
+        See all card options in Customize Brave
+      </message>
+      <message name="IDS_NTP_MODULES_FIRST_RUN_EXPERIENCE_OPT_IN_BUTTON" desc="Opt in button for Modular NTP Desktop v1 First Run Experience.">
+        Got it
+      </message>
+      <message name="IDS_NTP_MODULES_FIRST_RUN_EXPERIENCE_OPT_OUT_BUTTON" desc="Opt out button for Modular NTP Desktop v1 First Run Experience.">
+       Don't show
       </message>
 
       <!-- Extensions NTP Middle Slot Promo -->
@@ -6620,11 +6681,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- User Education Tutorial Strings -->
+      <message name="IDS_TUTORIAL_RESTART_TUTORIAL" desc="The text shown on the button for restarting a tutorial">
+        Restart tutorial
+      </message>
+      <message name="IDS_TUTORIAL_CLOSE_TUTORIAL" desc="The text shown on the button for closing a tutorial">
+        Close
+      </message>
       <message name="IDS_TUTORIAL_TAB_GROUP_ADD_TAB_TO_GROUP" desc="The description of the add tab step in the tab group tutorial">
         Right-Click on a Tab and select "Add Tab To New Group"
       </message>
       <message name="IDS_TUTORIAL_TAB_GROUP_EDIT_BUBBLE" desc="The description of the editor bubble step in the tab group tutorial">
-        Name your group and choose a color
+        Name your group, choose a color, and tap Enter
       </message>
       <message name="IDS_TUTORIAL_TAB_GROUP_DRAG_TAB" desc="The description of the drag step in the tab group tutorial">
         Try dragging other open tabs to your group
@@ -7545,17 +7612,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_ACCNAME_SIDE_SEARCH_TOOL" desc="The accessible name for the side search tool.">
           Side Search
         </message>
-        <message name="IDS_ACCNAME_SIDE_SEARCH_TOOLBAR_BUTTON" desc="The accessible name for the side search toolbar button.">
-          Toggle side search
+        <message name="IDS_ACCNAME_SIDE_SEARCH_TOOLBAR_BUTTON_ACTIVATED" desc="The accessible name for the side search toolbar button when the button is active and the side panel is open.">
+          Close search in side panel. Search is open in the side panel.
         </message>
-        <message name="IDS_ACCNAME_SIDE_SEARCH_TOOLBAR_BUTTON_ACTIVATED" desc="The accessible name for the side search toolbar button when side search is activated.">
-          Toggle side search. Side search activated.
-        </message>
-        <message name="IDS_ACCNAME_SIDE_SEARCH_TOOLBAR_BUTTON_NOT_ACTIVATED" desc="The accessible name for the side search toolbar button when side search is not activated.">
-          Toggle side search. Side search not activated.
+        <message name="IDS_ACCNAME_SIDE_SEARCH_TOOLBAR_BUTTON_NOT_ACTIVATED" desc="The accessible name for the side search toolbar button when the button is not active and the side panel is not open.">
+          Open search in side panel. Search is not open in the side panel.
         </message>
         <message name="IDS_ACCNAME_SIDE_SEARCH_CLOSE_BUTTON" desc="The accessible name for the side search header close button.">
-          Close side search
+          Close search in side panel
         </message>
         <message name="IDS_ACCNAME_SIDE_SEARCH_FEEDBACK_BUTTON" desc="The accessible name for the side search header feedback button.">
           Submit Feedback
@@ -7563,11 +7627,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_SIDE_SEARCH_PROMO" desc="Promo UI shown next to the side search button to encourage its use.">
           See more search results in side panel
         </message>
-        <message name="IDS_TOOLTIP_SIDE_SEARCH_TOOLBAR_BUTTON" desc="The tooltip for the side search toolbar button.">
-          Toggle side search
+        <message name="IDS_TOOLTIP_SIDE_SEARCH_TOOLBAR_BUTTON_ACTIVATED" desc="The tooltip for the side search toolbar button when the button is active and the side panel is open.">
+          Close search in side panel
+        </message>
+        <message name="IDS_TOOLTIP_SIDE_SEARCH_TOOLBAR_BUTTON_NOT_ACTIVATED" desc="The tooltip for the side search toolbar button when the button is not active and the side panel is not open.">
+          Open search in side panel
         </message>
         <message name="IDS_TOOLTIP_SIDE_SEARCH_CLOSE_BUTTON" desc="The tooltip for the side search header close button.">
-          Close side search
+          Close search in side panel
         </message>
         <message name="IDS_TOOLTIP_SIDE_SEARCH_FEEDBACK_BUTTON" desc="The tooltip for the side search header feedback button.">
           Submit Feedback
@@ -10617,11 +10684,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
          Your organization doesn't allow you to share this content. If you need help, contact your administrator.
       </message>
 
-      <!--Printer registration message for local discovery and Print Preview-->
-      <message name="IDS_CLOUD_PRINT_REGISTER_PRINTER_INFORMATION" desc="Information about registering printers with Google Cloud Print shown to the user before they confirm registration.">
-        Documents are <ph name="BEGIN_LINK_HELP">&lt;a is="action-link" href="https://support.google.com/cloudprint/answer/2541843" target="_blank"&gt;</ph>sent to Brave<ph name="END_LINK_HELP">&lt;/a&gt;</ph> to prepare them for printing. View, edit and manage your printers and printer history on the <ph name="BEGIN_LINK_DASHBOARD">&lt;a is="action-link" href="https://www.google.com/cloudprint#jobs" target="_blank"&gt;</ph>Google Cloud Print dashboard<ph name="END_LINK_DASHBOARD">&lt;/a&gt;</ph>.
-      </message>
-
       <!--Tab alert tooltip strings-->
       <message name="IDS_TOOLTIP_TAB_ALERT_STATE_MEDIA_RECORDING" desc="Extra tool tip text, when the tab is recording media.">
         This tab is using your camera or microphone.
@@ -12224,85 +12286,57 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_INPUT_OVERLAY_MENU_SEND_FEEDBACK" desc="Entry point to send feedback regarding input-overlay.">
         Send feedback
       </message>
+      <message name="IDS_INPUT_OVERLAY_EDIT_MENU_KEYBOARD_KEY" desc="Entry point to bind action to keyboard key.">
+        Keyboard key
+      </message>
+      <message name="IDS_INPUT_OVERLAY_EDIT_MENU_LEFT_MOUSE_CLICK" desc="Entry point to bind action to left mouse click.">
+        Left mouse click
+      </message>
+      <message name="IDS_INPUT_OVERLAY_EDIT_MENU_RIGHT_MOUSE_CLICK" desc="Entry point to bind action to right mouse click.">
+        Right mouse click
+      </message>
+      <message name="IDS_INPUT_OVERLAY_EDIT_MENU_RESET" desc="Entry point to reset the action binding to original binding.">
+        Reset
+      </message>
     </if>
 
     <!-- Privacy Sandbox Dialog strings -->
     <!-- TODO(crbug.com/1286276) These strings are not final yet and therefore marked as translateable="false" -->
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_TITLE" translateable="false" desc="Title of the Privacy Sandbox Dialog.">
-      Nullam mollis, enim pellentesque
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_TITLE" translateable="false" desc="Title of the Privacy Sandbox Dialog.">
+      Help us build a more private web
     </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_SUBTITLE" translateable="false" desc="Subtitle of the Privacy Sandbox Dialog.">
-      Integer tristique vitae dolor quis imperdiet. Nunc facilisis dolor id
-      tempus sollicitudin. Cras interdum eros tincidunt ornare mattis.
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BODY_HEADER_1" translateable="false" desc="Header of the first section in the body of the Privacy Sandbox Dialog.">
+      Limit sharing between sites
     </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_BODY_HEADER_1" translateable="false" desc="Header of the first section in the body of the Privacy Sandbox Dialog.">
-      Sub subtitle 1
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BODY_DESCRIPTION_1" translateable="false" desc="Description of the first section in the body of the Privacy Sandbox Dialog.">
+      We’re exploring ways to restrict cross-site tracking while enabling sites to stop ad spam and fraud.
     </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_BODY_DESCRIPTION_1" translateable="false" desc="Description of the first section in the body of the Privacy Sandbox Dialog.">
-      Nunc a odio sodales, tincidunt purus tempus,
-    sodales mauris. Aliquam ultricies lorem
-    sed auctor tristique.
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BODY_HEADER_2" translateable="false" desc="Header of the second section in the body of the Privacy Sandbox Dialog.">
+      Try more transparent ads
     </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_BODY_HEADER_2" translateable="false" desc="Header of the second section in the body of the Privacy Sandbox Dialog.">
-      Sub subtitle 2
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_LABEL" translateable="false" desc="Learn more label of the collapsable section in the body of the Privacy Sandbox Dialog.">
+      Learn more about Browser-based ad personalization
     </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_BODY_DESCRIPTION_2" translateable="false" desc="Description of the second section in the body of the Privacy Sandbox Dialog.">
-      Suspendisse suscipit pulvinar varius.
-      Vestibulum bibendum, nisi non facilisis euismod, dui urna viverra diam,
-      euismod interdum ipsum nulla id felis. Cras suscipit dolor justo, id
-      pellentesque ipsum finibus in. Ut accumsan
-      suscipit.
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_2_HEADER" translateable="false" desc="Header of the second section in the collapsable section of the Privacy Sandbox Dialog.">
+      Sites you visit that define your interests
     </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_LABEL" translateable="false" desc="Learn more label of the collapsable section in the body of the Privacy Sandbox Dialog.">
-      Learn more nisi non facilisis euismod
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_BOTTOM_SUMMARY" translateable="false" desc="Summary text in the bottom of the Privacy Sandbox Dialog.">
-      Donec consectetur id eros sed
-      placerat. Maecenas tincidunt diam eros, a tempus lectus consequat ac.
-      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
-      turpis egestas. Sed gravida vitae mauris non vulputate.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_1_HEADER" translateable="false" desc="Header of the first section in the collapsable section of the Privacy Sandbox Dialog.">
-      Pellentesque habitant morbi tr
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_1_BULLET_POINT_1" translateable="false" desc="First bullet point of the first section in the collapsable section of the Privacy Sandbox Dialog.">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Maecenas tincidunt diam eros:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
-      Pellentesque habitant morbi tristique senectus et netus et.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_1_BULLET_POINT_2" translateable="false" desc="Second bullet point of the first section in the collapsable section of the Privacy Sandbox Dialog.">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Donec consectetur eros:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
-      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
-      turpis egestas. Sed gravida vitae mauris non vulputate.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_1_BULLET_POINT_3" translateable="false" desc="Third bullet point of the first section in the collapsable section of the Privacy Sandbox Dialog.">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph> Acturpis egestas sed gravida:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
-      Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_2_HEADER" translateable="false" desc="Header of the second section in the collapsable section of the Privacy Sandbox Dialog.">
-      Cras suscipit dolor justo, id pellentesque ipsum
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_2_BULLET_POINT_1" translateable="false" desc="First bullet point of the second section in the collapsable section of the Privacy Sandbox Dialog.">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Senectus et netus et malesuada:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
-      Pellentesque habitant morbi tristique senectus et netus et.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_2_BULLET_POINT_2" translateable="false" desc="Second bullet point of the second section in the collapsable section of the Privacy Sandbox Dialog.">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Pellentesque habitant morbi tristique:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
-      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
-      turpis egestas. Sed gravida vitae mauris non vulputate. Pellentesque habitant morbi tristique senectus. Acturpis egestas sed gravida Donec consectetur eros.
-    </message>
-    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_2_BULLET_POINT_3" translateable="false" desc="Third bullet point of the second section in the collapsable section of the Privacy Sandbox Dialog.">
-      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Morbi tristique senectus et netus:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
-      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
-      turpis egestas. Sed gravida vitae mauris non vulputate.
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_2_BULLET_POINT_3" translateable="false" desc="Third bullet point of the second section in the collapsable section of the Privacy Sandbox Dialog.">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How you can manage your data:<ph name="END_BOLD">&lt;/b&gt;</ph> To protect your privacy, we auto-delete sites from the list that are older than 4 weeks. A site you visit again might appear on the list again. Or you can remove a site If you don’t want that site to ever define interests for you.
     </message>
     <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_ACCEPT_BUTTON" translateable="false" desc="Label of the button that accepts the consent in the Privacy Sandbox Dialog.">
-      Accept
+      Yes, I’m in
     </message>
     <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_DECLINE_BUTTON" translateable="false" desc="Label of the button that declines the consent in the Privacy Sandbox Dialog.">
-      Decline
+      No thanks
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_SUBTITLE" translateable="false" desc="Subtitle of the Privacy Sandbox Dialog.">
+      We’re exploring new features that allow sites to deliver the same browsing experience using less of your info
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_BODY_HEADER_1" translateable="false" desc="Header of the first section in the body of the Privacy Sandbox Dialog.">
+      Limit sharing between sites
     </message>
     <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_ACKNOWLEDGE_BUTTON" translateable="false" desc="Label of the button that acknowledges the notice in the Privacy Sandbox Dialog.">
-      Ack
+      Got it
     </message>
     <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_OPEN_SETTINGS_BUTTON" translateable="false" desc="Label of the button that opens settings in the Privacy Sandbox Dialog.">
       Settings
