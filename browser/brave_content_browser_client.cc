@@ -561,7 +561,8 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
                            : content::WeakDocumentPtr();
 
     webtorrent::HandleMagnetProtocol(url, web_contents_getter, page_transition,
-                                     has_user_gesture, initiating_origin,
+                                     has_user_gesture, is_in_fenced_frame_tree,
+                                     initiating_origin,
                                      std::move(weak_initiator_document));
     return true;
   }
