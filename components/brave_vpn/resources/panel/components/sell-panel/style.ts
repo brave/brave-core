@@ -119,7 +119,7 @@ export const GuardianLogo = styled.i`
   margin-left: 5px;
 `
 export const ActionArea = styled.div`
-  padding: 0 32px;
+  padding: 0 18px;
   width: 100%;
   text-align: center;
   box-sizing: border-box;
@@ -139,12 +139,11 @@ export const ActionArea = styled.div`
 
   button {
     width: 100%;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 
     &:first-child {
       backdrop-filter: blur(16px);
       background: rgba(255, 255, 255, 0.24);
-      border-color: transparent;
 
       &:hover {
         background: rgba(255, 255, 255, 0.42);

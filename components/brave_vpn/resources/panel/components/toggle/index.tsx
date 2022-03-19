@@ -7,6 +7,7 @@ import { getLocale } from '../../../../../common/locale'
 import { ConnectionState } from '../../api/panel_browser_api'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
+import { FabulouslyLargeToggle } from '$web-components/toggle'
 
 function useIsOnSelector () {
   // We derive isOn from connectionStatus to be synchronized
@@ -20,23 +21,18 @@ function Toggle () {
   const isOn = useIsOnSelector()
   const status = useSelector(state => state.connectionStatus)
 
-  const onToggleClick = () => {
-    const activated = !isOn
-    if (activated) dispatch(Actions.connect())
+  const handleToggleChange = (isOn: boolean) => {
+    if (isOn) dispatch(Actions.connect())
     else dispatch(Actions.disconnect())
   }
 
   return (
     <>
-      <S.ToggleBox
-        type='button'
-        role='switch'
-        aria-checked={isOn}
-        onClick={onToggleClick}
-        isActive={isOn}
-      >
-        <S.Knob isActive={isOn} />
-      </S.ToggleBox>
+      <FabulouslyLargeToggle
+        onChange={handleToggleChange}
+        isOn={isOn}
+        brand="vpn"
+      />
       <S.StatusBox>
         {status === ConnectionState.CONNECTED && <S.ActiveIndicator />}
         {status === ConnectionState.CONNECTING && <S.Loader><LoaderIcon /></S.Loader>}

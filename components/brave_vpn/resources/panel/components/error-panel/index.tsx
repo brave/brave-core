@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Button } from 'brave-ui'
+import Button from '$web-components/button'
 
 import * as S from './style'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
@@ -35,20 +35,17 @@ function ErrorPanel () {
           {getLocale('braveVpnUnableConnectInfo').replace(/\$\d+/g, (match) => matches[match])}
         </S.ReasonDesc>
         <S.ActionArea>
-            <Button
-              level='primary'
-              type='accent'
-              brand='rewards'
-              text={getLocale('braveVpnTryAgain')}
-              onClick={handleTryAgain}
-            />
-            <Button
-              level='tertiary'
-              type='accent'
-              brand='rewards'
-              text={getLocale('braveVpnChooseAnotherServer')}
-              onClick={handleChooseServer}
-            />
+          <Button
+            type={'submit'}
+            isPrimary
+            isCallToAction
+            onClick={handleTryAgain}
+          >
+            {getLocale('braveVpnTryAgain')}
+          </Button>
+          <S.ButtonText onClick={handleChooseServer}>
+            {getLocale('braveVpnChooseAnotherServer')}
+          </S.ButtonText>
         </S.ActionArea>
       </S.PanelContent>
     </S.Box>

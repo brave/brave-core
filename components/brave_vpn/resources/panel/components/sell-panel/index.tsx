@@ -3,7 +3,7 @@ import * as React from 'react'
 import { getLocale } from '../../../../../common/locale'
 import { useSelector } from '../../state/hooks'
 import * as S from './style'
-import { Button } from 'brave-ui'
+import Button from '$web-components/button'
 
 function SellPanel () {
   const productUrls = useSelector(state => state.productUrls)
@@ -42,12 +42,12 @@ function SellPanel () {
         </S.List>
         <S.ActionArea>
           <Button
-            level='primary'
-            type='default'
-            brand='rewards'
-            text={getLocale('braveVpnBuy')}
+            isPrimary
+            isCallToAction
             onClick={handleClick.bind(null, 'checkout')}
-          />
+          >
+            {getLocale('braveVpnBuy')}
+          </Button>
           <a href="#" onClick={handleClick.bind(null, 'recover')}>
             {getLocale('braveVpnPurchased')}
           </a>

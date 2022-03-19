@@ -28,24 +28,14 @@ export const PanelTitle = styled.h1`
   margin: 0 13px 0 0;
 `
 
-export const ToggleBox = styled.div`
-  margin-bottom: 15px;
-`
-
-export const StatusIndicatorBox = styled.div`
-  margin-bottom: 24px;
-`
-
 export const SettingsButton = styled.button`
   border: 0;
   background: transparent;
+  cursor: pointer;
 
   svg {
     width: 24px;
     height: 24px;
-  }
-
-  svg>path {
     fill: ${(p) => p.theme.color.text02};
   }
 `
@@ -64,6 +54,7 @@ export const RegionSelectorButton = styled.button`
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.18);
   background-color: ${(p) => p.theme.color.background02};
   padding: 0 16px;
+  cursor: pointer;
 
   svg {
     width: 18px;
@@ -79,13 +70,14 @@ export const RegionSelectorButton = styled.button`
     --svg-color: ${(p) => p.theme.color.interactive05};
   }
 
-  &:focus {
-    --border-color: #A0A5EB;
+  &:focus-visible {
+    --border-color: ${(p) => p.theme.color.focusBorder};
+    outline: 0;
   }
 `
 
 export const RegionLabel = styled.span`
-  font-family: Poppins;
+  font-family: ${(p) => p.theme.fontFamily.heading};
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;

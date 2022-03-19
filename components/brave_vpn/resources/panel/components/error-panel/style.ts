@@ -47,12 +47,27 @@ export const IconBox = styled.div`
 
 export const ActionArea = styled.div`
   width: 100%;
+  display: grid;
 
   button {
-    width: 100%;
-
     &:first-child {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
+  }
+`
+
+export const ButtonText = styled.button`
+  --border-color: transparent;
+  color: ${(p) => p.theme.color.interactive05};
+  font-family: ${(p) => p.theme.fontFamily.heading};
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 4px;
+  background: transparent;
+  cursor: pointer;
+  border: 2px solid var(--border-color);
+
+  &:focus-visible {
+    --border-color: ${(p) => p.theme.color.focusBorder};
   }
 `

@@ -94,6 +94,7 @@ export const BackButton = styled.button`
   padding: 0;
   display: flex;
   align-items: center;
+  cursor: pointer;
 
   span {
     font-family: ${(p) => p.theme.fontFamily.heading};
@@ -108,7 +109,7 @@ export const BackButton = styled.button`
     margin-right: 5px;
   }
 
-  svg > path {
+  svg {
     fill: ${(p) => p.theme.color.interactive05};
   }
 `

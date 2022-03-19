@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { Button, Radio } from 'brave-ui'
+import { Radio } from 'brave-ui'
+import Button from '$web-components/button'
 import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
 
 import * as S from './style'
@@ -75,12 +76,13 @@ function SelectRegion () {
         </S.RegionList>
         <S.ActionArea>
           <Button
+            type={'submit'}
+            isPrimary
+            isCallToAction
             onClick={handleConnect}
-            level='primary'
-            type='accent'
-            brand='rewards'
-            text={getLocale('braveVpnConnect')}
-          />
+          >
+            {getLocale('braveVpnConnect')}
+          </Button>
         </S.ActionArea>
       </S.PanelContent>
     </S.Box>
