@@ -27,8 +27,7 @@ using challenge_bypass_ristretto::VerificationSignature;
 std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
   base::Value dto(base::Value::Type::DICTIONARY);
 
-  dto.SetKey("creativeInstanceId",
-             base::Value(confirmation.creative_instance_id));
+  dto.SetStringKey("creativeInstanceId", confirmation.creative_instance_id);
 
   dto.SetKey("payload", base::Value(base::Value::Type::DICTIONARY));
 
@@ -43,11 +42,11 @@ std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
   }
 
   const std::string type = std::string(confirmation.type);
-  dto.SetKey("type", base::Value(type));
+  dto.SetStringKey("type", type);
 
   const std::string public_key =
       confirmation.unblinded_token.public_key.encode_base64();
-  dto.SetKey("publicKey", base::Value(public_key));
+  dto.SetStringKey("publicKey", public_key);
 
   absl::optional<base::Value> user_data =
       base::JSONReader::Read(confirmation.user_data);
@@ -102,9 +101,9 @@ std::string CreateCredential(const privacy::UnblindedTokenInfo& unblinded_token,
 
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
-  dictionary.SetKey("payload", base::Value(payload));
-  dictionary.SetKey("signature", base::Value(verification_signature_base64));
-  dictionary.SetKey("t", base::Value(token_preimage_base64));
+  dictionary.SetStringKey("payload", payload);
+  dictionary.SetStringKey("signature", verification_signature_base64);
+  dictionary.SetStringKey("t", token_preimage_base64);
 
   std::string json;
   base::JSONWriter::Write(dictionary, &json);

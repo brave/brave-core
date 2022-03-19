@@ -128,9 +128,9 @@ std::string EpsilonGreedyBanditArms::ToJson(
 
   for (const auto& arm : arms) {
     base::Value dictionary(base::Value::Type::DICTIONARY);
-    dictionary.SetKey(kSegmentKey, base::Value(arm.first));
-    dictionary.SetKey(kPullsKey, base::Value(arm.second.pulls));
-    dictionary.SetKey(kValueKey, base::Value(arm.second.value));
+    dictionary.SetStringKey(kSegmentKey, arm.first);
+    dictionary.SetIntKey(kPullsKey, arm.second.pulls);
+    dictionary.SetDoubleKey(kValueKey, arm.second.value);
     arms_dictionary.SetKey(arm.first, std::move(dictionary));
   }
 

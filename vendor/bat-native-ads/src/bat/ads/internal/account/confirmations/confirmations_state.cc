@@ -232,43 +232,41 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
 
     base::Value confirmation_dictionary(base::Value::Type::DICTIONARY);
 
-    confirmation_dictionary.SetKey("id", base::Value(confirmation.id));
+    confirmation_dictionary.SetStringKey("id", confirmation.id);
 
-    confirmation_dictionary.SetKey("transaction_id",
-                                   base::Value(confirmation.transaction_id));
+    confirmation_dictionary.SetStringKey("transaction_id",
+                                         confirmation.transaction_id);
 
-    confirmation_dictionary.SetKey(
-        "creative_instance_id", base::Value(confirmation.creative_instance_id));
+    confirmation_dictionary.SetStringKey("creative_instance_id",
+                                         confirmation.creative_instance_id);
 
     std::string type = std::string(confirmation.type);
-    confirmation_dictionary.SetKey("type", base::Value(type));
+    confirmation_dictionary.SetStringKey("type", type);
 
     std::string ad_type = std::string(confirmation.ad_type);
-    confirmation_dictionary.SetKey("ad_type", base::Value(ad_type));
+    confirmation_dictionary.SetStringKey("ad_type", ad_type);
 
     base::Value token_info_dictionary(base::Value::Type::DICTIONARY);
     const std::string unblinded_token_base64 =
         confirmation.unblinded_token.value.encode_base64();
-    token_info_dictionary.SetKey("unblinded_token",
-                                 base::Value(unblinded_token_base64));
+    token_info_dictionary.SetStringKey("unblinded_token",
+                                       unblinded_token_base64);
     const std::string public_key_base64 =
         confirmation.unblinded_token.public_key.encode_base64();
-    token_info_dictionary.SetKey("public_key", base::Value(public_key_base64));
+    token_info_dictionary.SetStringKey("public_key", public_key_base64);
     confirmation_dictionary.SetKey("token_info",
                                    std::move(token_info_dictionary));
 
     const std::string payment_token_base64 =
         confirmation.payment_token.encode_base64();
-    confirmation_dictionary.SetKey("payment_token",
-                                   base::Value(payment_token_base64));
+    confirmation_dictionary.SetStringKey("payment_token", payment_token_base64);
 
     const std::string blinded_payment_token_base64 =
         confirmation.blinded_payment_token.encode_base64();
-    confirmation_dictionary.SetKey("blinded_payment_token",
-                                   base::Value(blinded_payment_token_base64));
+    confirmation_dictionary.SetStringKey("blinded_payment_token",
+                                         blinded_payment_token_base64);
 
-    confirmation_dictionary.SetKey("credential",
-                                   base::Value(confirmation.credential));
+    confirmation_dictionary.SetStringKey("credential", confirmation.credential);
 
     absl::optional<base::Value> user_data =
         base::JSONReader::Read(confirmation.user_data);
@@ -280,12 +278,11 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
       }
     }
 
-    confirmation_dictionary.SetKey(
+    confirmation_dictionary.SetStringKey(
         "timestamp_in_seconds",
-        base::Value(base::NumberToString(confirmation.created_at.ToDoubleT())));
+        base::NumberToString(confirmation.created_at.ToDoubleT()));
 
-    confirmation_dictionary.SetKey("created",
-                                   base::Value(confirmation.was_created));
+    confirmation_dictionary.SetBoolKey("created", confirmation.was_created);
 
     list.Append(std::move(confirmation_dictionary));
   }

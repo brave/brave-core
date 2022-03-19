@@ -6,6 +6,7 @@
 #include "bat/ads/internal/account/user_data/totals_user_data.h"
 
 #include <string>
+#include <utility>
 
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
@@ -30,21 +31,21 @@ base::DictionaryValue GetTotals(
     base::DictionaryValue total;
 
     const std::string& ad_format = bucket.first;
-    total.SetKey(kAdFormatKey, base::Value(ad_format));
+    total.SetStringKey(kAdFormatKey, ad_format);
 
     const ConfirmationTypeBucketMap& confirmations = bucket.second;
     for (const auto& confirmation : confirmations) {
       const std::string& confirmation_type = confirmation.first;
-      const std::string& count = base::NumberToString(confirmation.second);
+      const std::string count = base::NumberToString(confirmation.second);
 
-      total.SetKey(confirmation_type, base::Value(count));
+      total.SetStringKey(confirmation_type, count);
     }
 
-    list.Append(total.Clone());
+    list.Append(std::move(total));
   }
 
   base::DictionaryValue user_data;
-  user_data.SetKey(kTotalsKey, list.Clone());
+  user_data.SetKey(kTotalsKey, std::move(list));
   return user_data;
 }
 

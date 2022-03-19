@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/user_data/conversion_user_data_builder.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "base/values.h"
 #include "bat/ads/internal/account/user_data/conversion_user_data_util.h"
@@ -65,20 +67,20 @@ void BuildConversion(const std::string& creative_instance_id,
                 verifiable_conversion_envelope_optional.value();
 
         base::DictionaryValue conversion_envelope;
-        conversion_envelope.SetKey(kAlgorithmKey, base::Value(kAlgorithm));
-        conversion_envelope.SetKey(
-            kCipherTextKey,
-            base::Value(verifiable_conversion_envelope.ciphertext));
-        conversion_envelope.SetKey(
+        conversion_envelope.SetStringKey(kAlgorithmKey, kAlgorithm);
+        conversion_envelope.SetStringKey(
+            kCipherTextKey, verifiable_conversion_envelope.ciphertext);
+        conversion_envelope.SetStringKey(
             kEphemeralPublicKeyKey,
-            base::Value(verifiable_conversion_envelope.ephemeral_public_key));
-        conversion_envelope.SetKey(
-            kNonceKey, base::Value(verifiable_conversion_envelope.nonce));
+            verifiable_conversion_envelope.ephemeral_public_key);
+        conversion_envelope.SetStringKey(kNonceKey,
+                                         verifiable_conversion_envelope.nonce);
 
         base::DictionaryValue user_data;
-        user_data.SetKey(kConversionEnvelopeKey, conversion_envelope.Clone());
+        user_data.SetKey(kConversionEnvelopeKey,
+                         std::move(conversion_envelope));
 
-        callback(user_data.Clone());
+        callback(std::move(user_data));
       });
 }
 

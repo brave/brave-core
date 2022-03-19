@@ -1314,10 +1314,10 @@ void AdsServiceImpl::OnGetAdsHistory(OnGetAdsHistoryCallback callback,
     ad_history_list.Append(std::move(ad_history_dictionary));
 
     base::DictionaryValue dictionary;
-    dictionary.SetKey("uuid", base::Value(std::to_string(uuid++)));
+    dictionary.SetStringKey("uuid", base::NumberToString(uuid++));
     const base::Time time = base::Time::FromDoubleT(item.timestamp);
     const double js_time = time.ToJsTimeIgnoringNull();
-    dictionary.SetKey("timestampInMilliseconds", base::Value(js_time));
+    dictionary.SetDoubleKey("timestampInMilliseconds", js_time);
     dictionary.SetPath("adDetailRows", std::move(ad_history_list));
 
     list.Append(std::move(dictionary));

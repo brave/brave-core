@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/user_data/studies_user_data.h"
 
+#include <utility>
+
 #include "base/values.h"
 #include "bat/ads/internal/features/features.h"
 
@@ -18,14 +20,14 @@ base::DictionaryValue GetStudies() {
   for (const auto& study : studies) {
     base::Value dictionary(base::Value::Type::DICTIONARY);
 
-    dictionary.SetKey("name", base::Value(study.trial_name));
-    dictionary.SetKey("group", base::Value(study.group_name));
+    dictionary.SetStringKey("name", study.trial_name);
+    dictionary.SetStringKey("group", study.group_name);
 
-    list.Append(dictionary.Clone());
+    list.Append(std::move(dictionary));
   }
 
   base::DictionaryValue user_data;
-  user_data.SetKey("studies", list.Clone());
+  user_data.SetKey("studies", std::move(list));
 
   return user_data;
 }

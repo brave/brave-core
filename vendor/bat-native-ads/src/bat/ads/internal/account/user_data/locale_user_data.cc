@@ -28,10 +28,10 @@ base::DictionaryValue GetLocale() {
 
   if (locale::IsMemberOfAnonymitySet(locale)) {
     const std::string country_code = brave_l10n::GetCountryCode(locale);
-    user_data.SetKey("countryCode", base::Value(country_code));
+    user_data.SetStringKey("countryCode", country_code);
   } else {
     if (locale::ShouldClassifyAsOther(locale)) {
-      user_data.SetKey("countryCode", base::Value("??"));
+      user_data.SetStringKey("countryCode", "??");
     }
   }
 
