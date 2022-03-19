@@ -41,7 +41,7 @@ bool BraveResolveContext::GetDohServerAvailability(
   // lead to an error page with HOSTNAME_NOT_RESOLVED error right after user
   // opt-in from the interstitial page.
   if (IsDecentralizedDNSResolver(session->config()
-                                     .dns_over_https_servers[doh_server_index]
+                                     .doh_config.servers()[doh_server_index]
                                      .server_template()) &&
       !IsFirstProbeCompleted(doh_server_stats_[doh_server_index]))
     return true;
@@ -57,7 +57,7 @@ size_t BraveResolveContext::NumAvailableDohServers(
   // completed.
   for (size_t i = 0; i < doh_server_stats_.size(); i++) {
     if (IsDecentralizedDNSResolver(
-            session->config().dns_over_https_servers[i].server_template()) &&
+            session->config().doh_config.servers()[i].server_template()) &&
         !IsFirstProbeCompleted(doh_server_stats_[i]))
       num++;
   }

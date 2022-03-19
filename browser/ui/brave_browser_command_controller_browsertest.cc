@@ -21,7 +21,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/sync/driver/sync_driver_switches.h"
+#include "components/sync/base/command_line_switches.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
@@ -116,7 +116,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   CheckBraveVPNCommands(browser());
 #endif
 
-  if (switches::IsSyncAllowedByFlag())
+  if (syncer::IsSyncAllowedByFlag())
     EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
   else
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
@@ -148,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   CheckBraveVPNCommands(private_browser);
 #endif
 
-  if (switches::IsSyncAllowedByFlag())
+  if (syncer::IsSyncAllowedByFlag())
     EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
   else
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
@@ -215,7 +215,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
 
-  if (switches::IsSyncAllowedByFlag())
+  if (syncer::IsSyncAllowedByFlag())
     EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
   else
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));

@@ -11,13 +11,13 @@
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/component_updater/component_updater_switches.h"
 #include "components/embedder_support/switches.h"
-#include "components/federated_learning/features/features.h"
 #include "components/language/core/common/language_experiments.h"
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/permissions/features.h"
+#include "components/privacy_sandbox/privacy_sandbox_features.h"
 #include "components/reading_list/features/reading_list_switches.h"
 #include "components/security_state/core/features.h"
 #include "content/public/browser/render_view_host.h"
@@ -96,8 +96,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kCssSelectorFragmentAnchor,
     &blink::features::kFledge,
     &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
-    &blink::features::kInterestCohortAPIOriginTrial,
-    &blink::features::kInterestCohortFeaturePolicy,
     &blink::features::kInterestGroupStorage,
     &blink::features::kParakeet,
     &blink::features::kPrerender2,
@@ -107,18 +105,15 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #if !defined(OS_ANDROID)
     &features::kCopyLinkToText,
 #endif
-    &features::kDirectSockets,
     &features::kFedCm,
     &features::kFirstPartySets,
     &features::kIdleDetection,
     &features::kNotificationTriggers,
-    &features::kPrivacySandboxSettings3,
+    &privacy_sandbox::kPrivacySandboxSettings3,
     &features::kOmniboxTriggerForNoStatePrefetch,
     &features::kSignedExchangeSubresourcePrefetch,
     &features::kSubresourceWebBundles,
     &features::kWebOTP,
-    &federated_learning::kFederatedLearningOfCohorts,
-    &federated_learning::kFlocIdComputedEventLogging,
     &media::kLiveCaption,
     &net::features::kPartitionedCookies,
     &network::features::kTrustTokens,

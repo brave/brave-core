@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/observer_list.h"
+#include "base/observer_list_types.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "extensions/browser/extension_registry_observer.h"
 #include "extensions/common/extension_id.h"
@@ -44,6 +45,9 @@ class GreaselionService : public KeyedService,
   GreaselionService() = default;
   GreaselionService(const GreaselionService&) = delete;
   GreaselionService& operator=(const GreaselionService&) = delete;
+
+  // KeyedService
+  void Shutdown() override {}
 
   virtual void SetFeatureEnabled(GreaselionFeature feature, bool enabled) = 0;
   virtual void UpdateInstalledExtensions() = 0;

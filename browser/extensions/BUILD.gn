@@ -71,6 +71,7 @@ source_set("extensions") {
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_vpn/buildflags",
+    "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs/buildflags",

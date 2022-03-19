@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/tabs/alert_indicator_button.h b/chrome/browser/ui/views/tabs/alert_indicator_button.h
+index b22209ca9a16afbae492cd08df6b49b214de06e2..63de769d9273b4705fe62ecc34690f38c5c478db 100644
+--- a/chrome/browser/ui/views/tabs/alert_indicator_button.h
++++ b/chrome/browser/ui/views/tabs/alert_indicator_button.h
+@@ -78,6 +78,7 @@ class AlertIndicatorButton : public views::ImageButton,
+   gfx::ImageSkia GetImageToPaint() override;
+ 
+  private:
++  friend class BraveAlertIndicatorButton;
+   friend class AlertIndicatorButtonTest;
+   friend class TabTest;
+   class FadeAnimationDelegate;

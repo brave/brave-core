@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ad_diagnostics/catalog_last_updated_ad_diagnostics_entry.h"
 
+#include "base/time/time.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_diagnostics/ad_diagnostics_util.h"
 #include "bat/ads/internal/ads_client_helper.h"

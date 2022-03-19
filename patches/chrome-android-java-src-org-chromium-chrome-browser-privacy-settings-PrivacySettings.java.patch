@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-index 21d2f9a564923af6b6b6f4afed02b18e4613a7ef..0cc05440e70b6f6bf2110294d064bdca86acbf6e 100644
+index c0ae26c3261180258f6520843a9ba01cbdc2a33b..30137f15c6a439c20304d811a2f920c7ff6850a7 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-@@ -50,7 +50,7 @@ import org.chromium.ui.text.SpanApplier;
+@@ -51,7 +51,7 @@ import org.chromium.ui.text.SpanApplier;
   * Fragment to keep track of the all the privacy related preferences.
   */
  public class PrivacySettings

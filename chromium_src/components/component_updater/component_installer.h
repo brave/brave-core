@@ -16,9 +16,11 @@
 // for component_installer.cc, so that we can still compile and link.
 #define OnUpdateError                                            \
   Register_ChromiumImpl(ComponentUpdateService* cus,             \
-                        base::OnceClosure callback);             \
+                        base::OnceClosure callback,              \
+                        base::TaskPriority task_priority);       \
   void Register_ChromiumImpl(RegisterCallback register_callback, \
-                             base::OnceClosure callback);        \
+                             base::OnceClosure callback,         \
+                             base::TaskPriority task_priority);  \
   void OnUpdateError
 
 #include "src/components/component_updater/component_installer.h"

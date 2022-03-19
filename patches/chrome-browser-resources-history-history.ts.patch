@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/history.ts b/chrome/browser/resources/history/history.ts
-index cff9b4ac74757abba28d3eb993787ee14a4c7f63..48a0e7528b4f2d50a3d3e855d0ad0dc9ce4183fc 100644
+index 4b73bf7f350e6a86eade676579615fa526bc9750..a6013375c18423756f6f2c1ae61e6c3a80d57c29 100644
 --- a/chrome/browser/resources/history/history.ts
 +++ b/chrome/browser/resources/history/history.ts
 @@ -2,6 +2,8 @@
@@ -10,4 +10,4 @@ index cff9b4ac74757abba28d3eb993787ee14a4c7f63..48a0e7528b4f2d50a3d3e855d0ad0dc9
 +import './brave_overrides/index.js';
  import './app.js';
  
- export {ensureLazyLoaded, listenForPrivilegedLinkClicks} from './app.js';
+ export {CrActionMenuElement} from 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js';

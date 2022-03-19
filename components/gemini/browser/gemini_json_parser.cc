@@ -90,7 +90,7 @@ bool GeminiJSONParser::GetAccountBalancesFromJSON(
     return false;
   }
 
-  for (const base::Value &val : pv_arr->GetList()) {
+  for (const base::Value& val : pv_arr->GetList()) {
     const base::Value* currency = val.FindKey("currency");
     const base::Value* available = val.FindKey("available");
 
@@ -129,7 +129,7 @@ bool GeminiJSONParser::GetDepositInfoFromJSON(
     return false;
   }
 
-  const base::Value &val = pv_arr->GetList()[0];
+  const base::Value& val = pv_arr->GetList()[0];
   const base::Value* asset_address = val.FindKey("address");
 
   if (asset_address && asset_address->is_string()) {

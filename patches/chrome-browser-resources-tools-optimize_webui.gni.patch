@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/tools/optimize_webui.gni b/chrome/browser/resources/tools/optimize_webui.gni
-index 8b4098da7a728d233d85b90bd8fe248d417b5b88..7bdca098e738195704ef94903d4dae6c5cae0323 100644
+index b7a9fd788a6d051c87c261bd7268129d6e3ad4da..a4c03d67f07755ceb5f6ebcac2caa7b8c36a59cc 100644
 --- a/chrome/browser/resources/tools/optimize_webui.gni
 +++ b/chrome/browser/resources/tools/optimize_webui.gni
-@@ -50,6 +50,7 @@ template("optimize_webui") {
-       "chrome://resources/polymer/v3_0/|$polymer_path",
-       "chrome://resources/|$resources_path",
+@@ -54,6 +54,7 @@ template("optimize_webui") {
+       "//resources/polymer/v3_0/|$polymer_path",
+       "//resources/|$resources_path",
      ]
 +    import("//brave/browser/resources/tools/brave_optimize_webui.gni") deps += brave_webui_deps external_paths += brave_webui_external_paths
      if (defined(invoker.external_paths)) {

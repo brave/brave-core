@@ -1,10 +1,10 @@
 diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
-index 0ee7090363635d23864a1f06cd3a7496a2dbae0b..7c3cf1907c8ee5bbadcb185d77007727fd697cc0 100644
+index e9336278cc0420cde032061a9e41e61018ce6553..eae542312028041c0143b38cecf75dcaf187d10d 100644
 --- a/build/config/android/internal_rules.gni
 +++ b/build/config/android/internal_rules.gni
-@@ -3908,6 +3908,7 @@ if (enable_java_templates) {
-         }
-         _analysis_public_deps += [ ":$_bytecode_checks_target" ]
+@@ -3922,6 +3922,7 @@ if (enable_java_templates) {
+       } else {
+         not_needed(invoker, [ "missing_classes_allowlist" ])
        }
 +      foreach(bytecode_jar, brave_bytecode_jars) { if (rebase_path(_unprocessed_jar_path, root_build_dir) == bytecode_jar) { _bytecode_rewriter_output_jar = "$target_out_dir/$target_name.bytecode-rewritten.jar" brave_bytecode_rewriter("${target_name}__bytecode_rewrite") { build_config = _build_config } _unprocessed_jar_deps = [] _unprocessed_jar_deps = [ ":${target_name}__bytecode_rewrite" ] _unprocessed_jar_path = _bytecode_rewriter_output_jar } }
  

@@ -105,6 +105,9 @@ patches/*.java.patch @samartnik
 # Bitcoin-core
 third_party/bitcoin-core/BUILD.gn @orspetol
 
+# Boost imports (i.e. config, multiprecision)
+third_party/boost @brave/deps-reviewers
+
 # Network auditor
 browser/net/brave_network_audit_allowed_lists.h @brave/sec-team
 

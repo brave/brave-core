@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/renderer/brave_wallet_js_handler.h"
 
 #include <limits>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -207,7 +208,7 @@ void BraveWalletJSHandler::OnIsUnlocked(
   base::Value result = base::Value(!locked);
   v8::Local<v8::Value> local_result =
       content::V8ValueConverter::Create()->ToV8Value(&result, context);
-  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, local_result));
+  std::ignore = resolver->Resolve(context, local_result);
 }
 
 void BraveWalletJSHandler::OnGetAllowedAccounts(
@@ -397,9 +398,9 @@ void BraveWalletJSHandler::SendResponse(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   if (success) {
-    ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+    std::ignore = resolver->Resolve(context, result);
   } else {
-    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+    std::ignore = resolver->Reject(context, result);
   }
 }
 
@@ -930,8 +931,7 @@ void BraveWalletJSHandler::SendAsync(gin::Arguments* args) {
         input, isolate->GetCurrentContext());
     if (base::JSONWriter::Write(*input_value, &input_json)) {
       std::string method;
-      ALLOW_UNUSED_LOCAL(
-          GetEthJsonRequestInfo(input_json, &id, nullptr, nullptr));
+      std::ignore = GetEthJsonRequestInfo(input_json, &id, nullptr, nullptr);
     }
 
     auto global_context(

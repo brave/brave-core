@@ -27,7 +27,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "components/sync/driver/sync_driver_switches.h"
+#include "components/sync/base/command_line_switches.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -126,7 +126,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   if (!is_guest_session) {
     UpdateCommandForBraveRewards();
     UpdateCommandForBraveWallet();
-    if (switches::IsSyncAllowedByFlag())
+    if (syncer::IsSyncAllowedByFlag())
       UpdateCommandForBraveSync();
   }
   UpdateCommandForBraveAdblock();

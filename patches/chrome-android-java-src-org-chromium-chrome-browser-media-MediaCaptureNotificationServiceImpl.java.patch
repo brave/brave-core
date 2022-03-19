@@ -1,0 +1,12 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/media/MediaCaptureNotificationServiceImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/media/MediaCaptureNotificationServiceImpl.java
+index 8918f50b69bed867a8fd898eba5564d624ae9259..9f96e578f1d172dcebc62023930adc4779740cea 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/media/MediaCaptureNotificationServiceImpl.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/media/MediaCaptureNotificationServiceImpl.java
+@@ -173,6 +173,7 @@ public class MediaCaptureNotificationServiceImpl extends MediaCaptureNotificatio
+         }
+     }
+ 
++    @android.annotation.SuppressLint("WrongConstant")
+     private void createNotification(
+             int notificationId, @MediaType int mediaType, String url, boolean isIncognito) {
+         final String channelId = mediaType == MediaType.SCREEN_CAPTURE

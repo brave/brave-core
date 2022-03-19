@@ -1,12 +1,12 @@
 diff --git a/services/network/cookie_settings.cc b/services/network/cookie_settings.cc
-index a860a19cca4886c037decf45a01dc9e3ac7c47bd..0d9065c9f8daeefb4f4c0d7befdd560f7fb45085 100644
+index b0d1311bf71caa04016ee4b33bed383774ac4885..3777eea6bd9277390cd413c88d6b5a7006c7dd39 100644
 --- a/services/network/cookie_settings.cc
 +++ b/services/network/cookie_settings.cc
-@@ -180,6 +180,7 @@ CookieSettings::GetCookieSettingWithMetadata(
-       // Note: global settings are implemented as a catch-all (*, *) pattern.
-       if (IsExplicitSetting(*entry) || cookie_setting == CONTENT_SETTING_BLOCK)
-         blocked_by_third_party_setting = false;
-+      BRAVE_COOKIE_SETTINGS_GET_COOKIE_SETTINGS_INTERNAL
+@@ -206,6 +206,7 @@ CookieSettings::GetCookieSettingWithMetadata(
+         // TODO(dylancutler): Consider adding an enum variant for this case.
+         blocked_by_third_party_setting = CookieSettings::
+             ThirdPartyCookieBlockingSetting::kThirdPartyStateAllowed;
++        BRAVE_COOKIE_SETTINGS_GET_COOKIE_SETTINGS_INTERNAL
      }
    }
  

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/import_data_handler.cc b/chrome/browser/ui/webui/settings/import_data_handler.cc
-index 1189cac8efe920b963ab417139d697ab81b327c0..7f37e16173b944497824238524e1075339c2232c 100644
+index 11d897430fda28aa9636543a79cd7f1530d8eb0a..6e65b61406e78ea00499bd1a227b3423f6ab55d7 100644
 --- a/chrome/browser/ui/webui/settings/import_data_handler.cc
 +++ b/chrome/browser/ui/webui/settings/import_data_handler.cc
-@@ -130,6 +130,7 @@ void ImportDataHandler::HandleImportData(const base::ListValue* args) {
+@@ -130,6 +130,7 @@ void ImportDataHandler::HandleImportData(base::Value::ConstListView args) {
      selected_items |= importer::PASSWORDS;
    if (*types.FindBoolKey(prefs::kImportDialogSearchEngine))
      selected_items |= importer::SEARCH_ENGINES;
@@ -11,7 +11,7 @@ index 1189cac8efe920b963ab417139d697ab81b327c0..7f37e16173b944497824238524e10753
    const importer::SourceProfile& source_profile =
        importer_list_->GetSourceProfileAt(browser_index);
 @@ -210,6 +211,7 @@ void ImportDataHandler::SendBrowserProfileData(const std::string& callback_id) {
-     browser_profile->SetBoolean(
+     browser_profile->SetBoolKey(
          "autofillFormData",
          (browser_services & importer::AUTOFILL_FORM_DATA) != 0);
 +    BRAVE_SEND_BROWSER_PROFILE_DATA

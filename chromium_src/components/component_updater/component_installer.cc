@@ -14,16 +14,18 @@
 namespace component_updater {
 
 void ComponentInstaller::Register(ComponentUpdateService* cus,
-                                  base::OnceClosure callback) {
+                                  base::OnceClosure callback,
+                                  base::TaskPriority task_priority) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   DCHECK(cus);
   Register(base::BindOnce(&ComponentUpdateService::RegisterComponent,
                           base::Unretained(cus)),
-           std::move(callback));
+           std::move(callback), task_priority);
 }
 
 void ComponentInstaller::Register(RegisterCallback register_callback,
-                                  base::OnceClosure callback) {
+                                  base::OnceClosure callback,
+                                  base::TaskPriority task_priority) {
   static std::string disallowed_components[] = {
     "bklopemakmnopmghhmccadeonafabnal",  // Legacy TLS Deprecation Config
     "cmahhnpholdijhjokonmfdjbfmklppij",  // Federated Learning of Cohorts
@@ -50,7 +52,8 @@ void ComponentInstaller::Register(RegisterCallback register_callback,
       return;
     }
   }
-  Register_ChromiumImpl(std::move(register_callback), std::move(callback));
+  Register_ChromiumImpl(std::move(register_callback), std::move(callback),
+                        task_priority);
 }
 
 }  // namespace component_updater

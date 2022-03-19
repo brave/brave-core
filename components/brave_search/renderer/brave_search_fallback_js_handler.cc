@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_search/renderer/brave_search_fallback_js_handler.h"
 
+#include <tuple>
 #include <utility>
 
 #include "base/no_destructor.h"
@@ -133,7 +134,7 @@ void BraveSearchFallbackJSHandler::OnFetchBackupResults(
   v8::Local<v8::String> result;
   result = v8::String::NewFromUtf8(isolate_, response.c_str()).ToLocalChecked();
 
-  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+  std::ignore = resolver->Resolve(context, result);
 }
 
 }  // namespace brave_search

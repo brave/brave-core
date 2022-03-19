@@ -62,7 +62,6 @@ source_set("net") {
     "//components/user_prefs",
     "//content/public/browser",
     "//content/public/common",
-    "//extensions/common:common_constants",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system",
     "//net",
@@ -74,6 +73,10 @@ source_set("net") {
     "//third_party/re2",
     "//url",
   ]
+
+  if (enable_extensions) {
+    deps += [ "//extensions/common:common_constants" ]
+  }
 
   if (enable_ipfs) {
     sources += [

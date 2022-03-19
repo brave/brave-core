@@ -119,7 +119,6 @@ public class BraveMainPreferencesBase
         // Below prefs are removed from main settings.
         removePreferenceIfPresent(MainSettings.PREF_SYNC_PROMO);
         removePreferenceIfPresent(MainSettings.PREF_SIGN_IN);
-        removePreferenceIfPresent(MainSettings.PREF_DATA_REDUCTION);
         removePreferenceIfPresent(MainSettings.PREF_SEARCH_ENGINE);
         removePreferenceIfPresent(MainSettings.PREF_UI_THEME);
         removePreferenceIfPresent(MainSettings.PREF_DOWNLOADS);

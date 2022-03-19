@@ -8,10 +8,9 @@ assert(enable_extensions)
 
 pack_web_resources("extension_generated_resources") {
   resource_name = "brave_rewards_panel"
-  output_dir = "$root_gen_dir/brave/components/brave_rewards/resources/extension"
-  deps = [
-    "brave_rewards:brave_rewards_panel"
-  ]
+  output_dir =
+      "$root_gen_dir/brave/components/brave_rewards/resources/extension"
+  deps = [ "brave_rewards:brave_rewards_panel" ]
 }
 
 grit("static_resources") {
@@ -23,12 +22,12 @@ grit("static_resources") {
     "brave_rewards_extension_static.pak",
   ]
 
-  deps = [
-  ]
+  deps = []
 
   resource_ids = "//brave/browser/resources/resource_ids"
 
-  output_dir = "$root_gen_dir/brave/components/brave_rewards/resources/extension"
+  output_dir =
+      "$root_gen_dir/brave/components/brave_rewards/resources/extension"
 }
 
 repack("resources") {
@@ -48,40 +47,32 @@ repack("resources") {
 if (is_mac) {
   group("framework_bundle_data") {
     deps = []
-    foreach(locale, locales) {
-      deps += [":framework_bundle_data_${locale}"]
+    foreach(locale, platform_pak_locales) {
+      deps += [ ":framework_bundle_data_${locale}" ]
     }
   }
 
-  foreach(locale, locales) {
+  foreach(locale, platform_pak_locales) {
     bundle_data("framework_bundle_data_${locale}") {
       locale = string_replace(locale, "-", "_")
       source_locale = string_replace(locale, "nb", "no")
-      sources = [
-        "brave_rewards/_locales/$source_locale/messages.json"
-      ]
-      outputs = [
-        "{{bundle_resources_dir}}/brave_rewards/_locales/$locale/{{source_file_part}}"
-      ]
+      sources = [ "brave_rewards/_locales/$source_locale/messages.json" ]
+      outputs = [ "{{bundle_resources_dir}}/brave_rewards/_locales/$locale/{{source_file_part}}" ]
     }
   }
 } else {
   group("locales") {
     deps = []
-    foreach(locale, locales) {
-      deps += [":locales_${locale}"]
+    foreach(locale, platform_pak_locales) {
+      deps += [ ":locales_${locale}" ]
     }
   }
-  foreach(locale, locales) {
+  foreach(locale, platform_pak_locales) {
     copy("locales_${locale}") {
       locale = string_replace(locale, "-", "_")
       source_locale = string_replace(locale, "nb", "no")
-      sources = [
-        "brave_rewards/_locales/${source_locale}/messages.json",
-      ]
-      outputs = [
-        "$root_out_dir/resources/brave_rewards/_locales/${locale}/{{source_file_part}}",
-      ]
+      sources = [ "brave_rewards/_locales/${source_locale}/messages.json" ]
+      outputs = [ "$root_out_dir/resources/brave_rewards/_locales/${locale}/{{source_file_part}}" ]
     }
   }
 }

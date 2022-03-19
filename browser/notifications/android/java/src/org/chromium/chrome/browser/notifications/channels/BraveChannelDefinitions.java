@@ -7,6 +7,7 @@
 
 package org.chromium.chrome.browser.notifications.channels;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 
 import org.chromium.chrome.browser.notifications.R;
@@ -27,6 +28,7 @@ public class BraveChannelDefinitions {
         public static final String BRAVE_ADS = "com.brave.browser.ads";
     }
 
+    @SuppressLint("NewApi")
     static protected void addBraveChannels(
             Map<String, PredefinedChannel> map, Set<String> startup) {
         map.put(ChannelId.BRAVE_ADS,
@@ -42,6 +44,7 @@ public class BraveChannelDefinitions {
         startup.add(ChannelId.BRAVE_ADS_BACKGROUND);
     }
 
+    @SuppressLint("NewApi")
     static protected void addBraveChannelGroups(
             Map<String, ChannelDefinitions.PredefinedChannelGroup> map) {
         map.put(ChannelGroupId.BRAVE_ADS,

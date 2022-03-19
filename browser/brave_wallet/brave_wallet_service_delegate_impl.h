@@ -11,6 +11,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/brave_wallet/external_wallets_importer.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"

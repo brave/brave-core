@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/renderer/brave_ads_js_handler.h"
 
+#include <tuple>
 #include <utility>
 
 #include "base/no_destructor.h"
@@ -118,7 +119,7 @@ v8::Local<v8::Promise> BraveAdsJSHandler::RequestAdsEnabled(
     v8::Local<v8::String> result =
         v8::String::NewFromUtf8(isolate, kUserGestureRejectReason)
             .ToLocalChecked();
-    ALLOW_UNUSED_LOCAL(resolver->Reject(isolate->GetCurrentContext(), result));
+    std::ignore = resolver->Reject(isolate->GetCurrentContext(), result);
     return resolver->GetPromise();
   }
 
@@ -147,7 +148,7 @@ void BraveAdsJSHandler::OnRequestAdsEnabled(
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver->Get(isolate);
   v8::Local<v8::Boolean> result = v8::Boolean::New(isolate, response);
 
-  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+  std::ignore = resolver->Resolve(context, result);
 }
 
 }  // namespace brave_ads

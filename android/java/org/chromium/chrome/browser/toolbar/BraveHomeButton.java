@@ -23,6 +23,10 @@ public class BraveHomeButton extends HomeButton implements TintObserver {
 
     public BraveHomeButton(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        // This check is just making sure that this dimen is still used in Chromium to avoid lint
+        // issues.
+        assert R.dimen.home_button_list_menu_width > 0 : "Something has changed in the upstream!";
     }
 
     public void setThemeColorProvider(ThemeColorProvider themeColorProvider) {

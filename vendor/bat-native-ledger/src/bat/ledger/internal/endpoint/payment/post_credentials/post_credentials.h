@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PAYMENT_POST_CREDENTIALS_POST_CREDENTIALS_H_
-#define BRAVELEDGER_ENDPOINT_PAYMENT_POST_CREDENTIALS_POST_CREDENTIALS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_POST_CREDENTIALS_POST_CREDENTIALS_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_POST_CREDENTIALS_POST_CREDENTIALS_H_
 
 #include <memory>
 #include <string>
@@ -50,20 +50,18 @@ class PostCredentials {
   explicit PostCredentials(LedgerImpl* ledger);
   ~PostCredentials();
 
-  void Request(
-      const std::string& order_id,
-      const std::string& item_id,
-      const std::string& type,
-      std::unique_ptr<base::ListValue> blinded_creds,
-      PostCredentialsCallback callback);
+  void Request(const std::string& order_id,
+               const std::string& item_id,
+               const std::string& type,
+               base::Value::List&& blinded_creds,
+               PostCredentialsCallback callback);
 
  private:
   std::string GetUrl(const std::string& order_id);
 
-  std::string GeneratePayload(
-      const std::string& item_id,
-      const std::string& type,
-      std::unique_ptr<base::ListValue> blinded_creds);
+  std::string GeneratePayload(const std::string& item_id,
+                              const std::string& type,
+                              base::Value::List&& blinded_creds);
 
   type::Result CheckStatusCode(const int status_code);
 
@@ -78,4 +76,4 @@ class PostCredentials {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PAYMENT_POST_CREDENTIALS_POST_CREDENTIALS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_POST_CREDENTIALS_POST_CREDENTIALS_H_

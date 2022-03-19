@@ -15,8 +15,7 @@ std::string RLPTestValueToString(const base::Value& val) {
   std::string output;
   if (val.is_string()) {
     output = "'";
-    std::string s;
-    val.GetAsString(&s);
+    std::string s = val.GetString();
     output += s + "'";
   } else if (val.is_list()) {
     if (output.size()) {
@@ -26,13 +25,11 @@ std::string RLPTestValueToString(const base::Value& val) {
     std::string elems;
     const base::ListValue* list;
     val.GetAsList(&list);
-    for (size_t i = 0; i < list->GetList().size(); i++) {
-      const base::Value* child;
-      list->Get(i, &child);
+    for (const auto& item : list->GetList()) {
       if (elems.size()) {
         elems += ", ";
       }
-      elems += RLPTestValueToString(*child);
+      elems += RLPTestValueToString(item);
     }
     output += elems + "]";
   }
@@ -52,27 +49,27 @@ namespace brave_wallet {
 TEST(RLPDecodeTest, ByteString00) {
   base::Value val;
   ASSERT_TRUE(RLPDecode(FromHex("0x00"), &val));
-  std::string s;
-  ASSERT_TRUE(val.GetAsString(&s));
+  ASSERT_TRUE(val.is_string());
   std::string bytestring = {0};
+  std::string s = val.GetString();
   ASSERT_EQ(bytestring, s);
 }
 
 TEST(RLPDecodeTest, ByteString01) {
   base::Value val;
   ASSERT_TRUE(RLPDecode(FromHex("0x01"), &val));
-  std::string s;
-  ASSERT_TRUE(val.GetAsString(&s));
+  ASSERT_TRUE(val.is_string());
   std::string bytestring = {1};
+  std::string s = val.GetString();
   ASSERT_EQ(bytestring, s);
 }
 
 TEST(RLPDecodeTest, ByteString7f) {
   base::Value val;
   ASSERT_TRUE(RLPDecode(FromHex("0x7f"), &val));
-  std::string s;
-  ASSERT_TRUE(val.GetAsString(&s));
+  ASSERT_TRUE(val.is_string());
   std::string bytestring = {0x7f};
+  std::string s = val.GetString();
   ASSERT_EQ(bytestring, s);
 }
 

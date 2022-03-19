@@ -893,7 +893,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     public void showLikePopDownMenu(int xOffset, int yOffset) {
         this.preShow();
 
-        this.window.setAnimationStyle(R.style.OverflowMenuAnim);
+        this.window.setAnimationStyle(R.style.EndIconMenuAnim);
 
         if (SysUtils.isLowEndDevice()) {
             this.window.setAnimationStyle(0);

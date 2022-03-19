@@ -72,7 +72,7 @@ public class BraveTalkOptInPopup {
     }
 
     public void showLikePopDownMenu() {
-        mWindow.setAnimationStyle(R.style.OverflowMenuAnim);
+        mWindow.setAnimationStyle(R.style.EndIconMenuAnim);
 
         if (SysUtils.isLowEndDevice()) {
             mWindow.setAnimationStyle(0);

@@ -45,6 +45,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/browser/net",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/decentralized_dns",
     "//brave/components/tor/buildflags",

@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/user_activity/idle_time.h"
 
+#include "base/time/time.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/user_activity/user_activity_features.h"
