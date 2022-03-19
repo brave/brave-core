@@ -257,4 +257,9 @@ const char kOutdatedPluginLearnMoreURL[] =
     "360018163151-How-do-I-manage-Flash-audio-video-";
 #endif
 
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+const char kChromeAppsDeprecationLearnMoreURL[] =
+    "https://support.google.com/chrome/?p=chrome_app_deprecation";
+#endif
+
 }  // namespace chrome
