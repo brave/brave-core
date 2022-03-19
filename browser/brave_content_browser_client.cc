@@ -544,10 +544,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 bool BraveContentBrowserClient::HandleExternalProtocol(
     const GURL& url,
     content::WebContents::Getter web_contents_getter,
-    int child_id,
     int frame_tree_node_id,
     content::NavigationUIData* navigation_data,
-    bool is_main_frame,
+    bool is_primary_main_frame,
+    bool is_in_fenced_frame_tree,
     network::mojom::WebSandboxFlags sandbox_flags,
     ui::PageTransition page_transition,
     bool has_user_gesture,
@@ -598,9 +598,10 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 #endif
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
-      url, web_contents_getter, child_id, frame_tree_node_id, navigation_data,
-      is_main_frame, sandbox_flags, page_transition, has_user_gesture,
-      initiating_origin, initiator_document, out_factory);
+      url, web_contents_getter, frame_tree_node_id, navigation_data,
+      is_primary_main_frame, is_in_fenced_frame_tree, sandbox_flags,
+      page_transition, has_user_gesture, initiating_origin, initiator_document,
+      out_factory);
 }
 
 void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
