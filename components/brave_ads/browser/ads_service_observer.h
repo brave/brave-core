@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_OBSERVER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_OBSERVER_H_
 
+#include "base/observer_list.h"
 #include "base/observer_list_types.h"
 
 namespace brave_ads {

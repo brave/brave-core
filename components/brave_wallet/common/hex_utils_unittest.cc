@@ -122,36 +122,36 @@ TEST(HexUtilsUnitTest, HexValueToUint256) {
 TEST(HexUtilsUnitTest, HexValueToInt256) {
   int256_t out;
   ASSERT_TRUE(HexValueToInt256("0x", &out));
-  ASSERT_EQ(out, (int256_t)0);
+  EXPECT_EQ(out, int256_t(0));
   ASSERT_TRUE(HexValueToInt256("0x0", &out));
-  ASSERT_EQ(out, (int256_t)0);
+  EXPECT_EQ(out, int256_t(0));
   ASSERT_TRUE(HexValueToInt256("0x1", &out));
-  ASSERT_EQ(out, (int256_t)1);
+  EXPECT_EQ(out, int256_t(1));
   ASSERT_TRUE(HexValueToInt256("0x1234", &out));
-  ASSERT_EQ(out, (int256_t)4660);
+  EXPECT_EQ(out, (int256_t)4660);
   ASSERT_TRUE(HexValueToInt256("0xB", &out));
-  ASSERT_EQ(out, (int256_t)11);
+  EXPECT_EQ(out, (int256_t)11);
 
   // Max int256 value can be represented
-  int256_t expected_val = std::numeric_limits<int256_t>::max();
+  int256_t expected_val = kMax256BitInt;
   ASSERT_TRUE(HexValueToInt256(
       "0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
       &out));
-  ASSERT_TRUE(out == (int256_t)expected_val);
+  EXPECT_EQ(out, expected_val);
 
   // Min int256 value can be represented
-  expected_val = std::numeric_limits<int256_t>::min();
+  expected_val = kMin256BitInt;
   ASSERT_TRUE(HexValueToInt256(
       "0x8000000000000000000000000000000000000000000000000000000000000000",
       &out));
-  ASSERT_TRUE(out == (int256_t)expected_val);
+  EXPECT_EQ(out, expected_val);
 
   // Biggest int256 negative value can be represented
-  expected_val = (int256_t)-1;
+  expected_val = int256_t(-1);
   ASSERT_TRUE(HexValueToInt256(
       "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
       &out));
-  ASSERT_TRUE(out == (int256_t)expected_val);
+  EXPECT_EQ(out, expected_val);
 
   // Should return false when out of bounds
   ASSERT_FALSE(HexValueToInt256(
@@ -160,7 +160,7 @@ TEST(HexUtilsUnitTest, HexValueToInt256) {
 
   // Check padded values too
   ASSERT_TRUE(HexValueToInt256("0x00000000000000000000000F0", &out));
-  ASSERT_EQ(out, (int256_t)240);
+  EXPECT_EQ(out, int256_t(240));
 }
 
 TEST(HexUtilsUnitTest, Uint256ValueToHex) {

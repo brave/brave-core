@@ -25,7 +25,7 @@ def GetDumpSymsBinary(build_dir=None):
     DUMP_SYMS = 'dump_syms'
     dump_syms_bin = os.path.join(os.path.expanduser(build_dir), DUMP_SYMS)
     if not os.access(dump_syms_bin, os.X_OK):
-        print('Cannot find %s.' % dump_syms_bin)
+        print(f'Cannot find {dump_syms_bin}.')
         return None
 
     return dump_syms_bin
@@ -38,7 +38,8 @@ def GetRequiredLibsPaths(args, extension):
     with zipfile.ZipFile(args.package_path, 'r') as zf:
         if extension == '.aab':
             AAB_BASE_LIB_RE = re.compile('base/lib/[^/]*/\\S*[.]so')
-            libs_in_package = [s for s in zf.namelist() if AAB_BASE_LIB_RE.match(s)]
+            libs_in_package = \
+                [s for s in zf.namelist() if AAB_BASE_LIB_RE.match(s)]
         elif extension == '.apk':
             APK_LIB_RE = re.compile('lib/[^/]*/\\S*[.]so')
             libs_in_package = [s for s in zf.namelist() if APK_LIB_RE.match(s)]
@@ -49,7 +50,8 @@ def GetRequiredLibsPaths(args, extension):
         }
 
     # Additional ABIs
-    additional_abi_dirs = glob.glob(os.path.join(args.build_dir, 'android_clang_*'))
+    additional_abi_dirs = glob.glob(os.path.join(args.build_dir,
+                                                 'android_clang_*'))
 
     if len(additional_abi_dirs) > 1:
         # We have more than one additional ABIs. This may be in theory, but
@@ -59,7 +61,8 @@ def GetRequiredLibsPaths(args, extension):
 
     libs_only_names = set() #lib_names
     for lib in libs_in_package:
-        # Cut out 'crazy.' if exists, see //chrome/android/chrome_public_apk_tmpl.gni
+        # Cut out 'crazy.' if exists
+        # see //chrome/android/chrome_public_apk_tmpl.gni
         lib_name = os.path.basename(lib).replace('crazy.', '')
         if not lib_name in ignored_libs:
             libs_only_names.add(lib_name)
@@ -81,7 +84,8 @@ def GetRequiredLibsPaths(args, extension):
                 return []
 
         if additional_abi_dirs:
-            lib_path = os.path.join(additional_abi_dirs[0], 'lib.unstripped', lib_name)
+            lib_path = os.path.join(additional_abi_dirs[0], 'lib.unstripped',
+                                    lib_name)
             if os.path.exists(lib_path):
                 libs_result.append(lib_path)
 
@@ -102,7 +106,8 @@ def InvokeChromiumGenerateSymbols(args, lib_paths):
     at_least_one_failed = multiprocessing.Value('b', False)
 
     chromium_script = os.path.join(args.src_root,
-                                   'components/crash/content/tools/generate_breakpad_symbols.py')
+                                   'components/crash/content/tools'
+                                   '/generate_breakpad_symbols.py')
 
     def _Worker():
         while True:
@@ -110,7 +115,7 @@ def InvokeChromiumGenerateSymbols(args, lib_paths):
 
             try:
                 # Invoke the original Chromium script
-                args_to_pass = ['python',
+                args_to_pass = ['vpython3',
                                 chromium_script,
                                 '--build-dir=' + args.build_dir,
                                 '--symbols-dir=' + args.symbols_dir,
@@ -149,21 +154,23 @@ def InvokeChromiumGenerateSymbols(args, lib_paths):
     return 0
 
 def main():
-    parser = argparse.ArgumentParser(description='Generates symbols for Android package')
+    parser = argparse.ArgumentParser(description='Generates symbols for '
+                                     'Android package')
     parser.add_argument('--build-dir', type=str, required=True,
                         help='The build output directory.')
     parser.add_argument('--symbols-dir', type=str, required=True,
                         help='The directory where to write the symbols file.')
     parser.add_argument('--package-path', type=str, required=True,
-                        help='The path of the apk or aab package to generate symbols '
-                        'for libs from it.')
+                        help='The path of the apk or aab package to generate '
+                        'symbols for libs from it.')
     parser.add_argument('--src-root', type=str, required=True,
                         help='The path of the root src Chromium\'s folder.')
     parser.add_argument('--clear', action='store_true', required=False,
                         help='Clear the symbols directory before writing new '
                         'symbols.')
-    parser.add_argument('--jobs', '--j', default=CONCURRENT_TASKS, required=False,
-                        type=int, help='Number of parallel tasks to run.')
+    parser.add_argument('--jobs', '--j', default=CONCURRENT_TASKS,
+                        required=False, type=int,
+                        help='Number of parallel tasks to run.')
     parser.add_argument('--verbose', '--v', required=False, action='store_true',
                         help='Print verbose status output.')
 

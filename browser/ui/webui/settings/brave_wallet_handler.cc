@@ -66,27 +66,27 @@ BraveWalletHandler::~BraveWalletHandler() {}
 void BraveWalletHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "getAutoLockMinutes",
-      base::BindRepeating(&BraveWalletHandler::GetAutoLockMinutes,
+      base::BindRepeating(&BraveWalletHandler::GetAutoLockMinutesDeprecated,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "removeEthereumChain",
-      base::BindRepeating(&BraveWalletHandler::RemoveEthereumChain,
+      base::BindRepeating(&BraveWalletHandler::RemoveEthereumChainDeprecated,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getCustomNetworksList",
-      base::BindRepeating(&BraveWalletHandler::GetCustomNetworksList,
+      base::BindRepeating(&BraveWalletHandler::GetCustomNetworksListDeprecated,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "addEthereumChain",
-      base::BindRepeating(&BraveWalletHandler::AddEthereumChain,
+      base::BindRepeating(&BraveWalletHandler::AddEthereumChainDeprecated,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setActiveNetwork",
-      base::BindRepeating(&BraveWalletHandler::SetActiveNetwork,
+      base::BindRepeating(&BraveWalletHandler::SetActiveNetworkDeprecated,
                           base::Unretained(this)));
 }
 
-void BraveWalletHandler::GetAutoLockMinutes(base::Value::ConstListView args) {
+void BraveWalletHandler::GetAutoLockMinutes(const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   AllowJavascript();
@@ -94,7 +94,7 @@ void BraveWalletHandler::GetAutoLockMinutes(base::Value::ConstListView args) {
       args[0], base::Value(prefs->GetInteger(kBraveWalletAutoLockMinutes)));
 }
 
-void BraveWalletHandler::RemoveEthereumChain(base::Value::ConstListView args) {
+void BraveWalletHandler::RemoveEthereumChain(const base::Value::List& args) {
   CHECK_EQ(args.size(), 2U);
   PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   AllowJavascript();
@@ -102,8 +102,7 @@ void BraveWalletHandler::RemoveEthereumChain(base::Value::ConstListView args) {
   ResolveJavascriptCallback(args[0], base::Value(true));
 }
 
-void BraveWalletHandler::GetCustomNetworksList(
-    base::Value::ConstListView args) {
+void BraveWalletHandler::GetCustomNetworksList(const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   base::Value list(base::Value::Type::LIST);
@@ -132,7 +131,7 @@ void BraveWalletHandler::OnAddEthereumChain(
     std::move(chain_callback_for_testing_).Run();
 }
 
-void BraveWalletHandler::AddEthereumChain(base::Value::ConstListView args) {
+void BraveWalletHandler::AddEthereumChain(const base::Value::List& args) {
   CHECK_EQ(args.size(), 2U);
   AllowJavascript();
   std::string error_message;
@@ -159,7 +158,7 @@ void BraveWalletHandler::AddEthereumChain(base::Value::ConstListView args) {
   ResolveJavascriptCallback(args[0], std::move(result));
 }
 
-void BraveWalletHandler::SetActiveNetwork(base::Value::ConstListView args) {
+void BraveWalletHandler::SetActiveNetwork(const base::Value::List& args) {
   CHECK_EQ(args.size(), 2U);
   AllowJavascript();
   auto* json_rpc_service =
@@ -170,4 +169,54 @@ void BraveWalletHandler::SetActiveNetwork(base::Value::ConstListView args) {
                                        brave_wallet::mojom::CoinType::ETH)
                                  : false;
   ResolveJavascriptCallback(args[0], base::Value(result));
+}
+
+// Remove this method and pass it the non-Deprecated version instead to
+// RegisterMessageCallback once CL 3483819 lands (in Chromium 101).
+void BraveWalletHandler::AddEthereumChainDeprecated(
+    base::Value::ConstListView args) {
+  base::Value::List args_list;
+  for (const auto& arg : args)
+    args_list.Append(arg.Clone());
+  AddEthereumChain(args_list);
+}
+
+// Remove this method and pass it the non-Deprecated version instead to
+// RegisterMessageCallback once CL 3483819 lands (in Chromium 101).
+void BraveWalletHandler::SetActiveNetworkDeprecated(
+    base::Value::ConstListView args) {
+  base::Value::List args_list;
+  for (const auto& arg : args)
+    args_list.Append(arg.Clone());
+  SetActiveNetwork(args_list);
+}
+
+// Remove this method and pass it the non-Deprecated version instead to
+// RegisterMessageCallback once CL 3483819 lands (in Chromium 101).
+void BraveWalletHandler::GetAutoLockMinutesDeprecated(
+    base::Value::ConstListView args) {
+  base::Value::List args_list;
+  for (const auto& arg : args)
+    args_list.Append(arg.Clone());
+  GetAutoLockMinutes(args_list);
+}
+
+// Remove this method and pass it the non-Deprecated version instead to
+// RegisterMessageCallback once CL 3483819 lands (in Chromium 101).
+void BraveWalletHandler::RemoveEthereumChainDeprecated(
+    base::Value::ConstListView args) {
+  base::Value::List args_list;
+  for (const auto& arg : args)
+    args_list.Append(arg.Clone());
+  RemoveEthereumChain(args_list);
+}
+
+// Remove this method and pass it the non-Deprecated version instead to
+// RegisterMessageCallback once CL 3483819 lands (in Chromium 101).
+void BraveWalletHandler::GetCustomNetworksListDeprecated(
+    base::Value::ConstListView args) {
+  base::Value::List args_list;
+  for (const auto& arg : args)
+    args_list.Append(arg.Clone());
+  GetCustomNetworksList(args_list);
 }

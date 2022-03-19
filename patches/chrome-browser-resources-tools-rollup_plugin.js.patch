@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/tools/rollup_plugin.js b/chrome/browser/resources/tools/rollup_plugin.js
-index 1717bb41e5cca3d61255073fd99002ba4592e6ad..8e7913b281ce91add70f3e19131d9af3eeb17d03 100644
+index 6fe7387f3cc4c915aedc002fe0b65b391aad74a5..a8a4bd981559fd987954989af351a9bb3a953bf6 100644
 --- a/chrome/browser/resources/tools/rollup_plugin.js
 +++ b/chrome/browser/resources/tools/rollup_plugin.js
-@@ -89,6 +89,7 @@ export default function plugin(
+@@ -93,6 +93,7 @@ export default function plugin(
        if (origin) {
          origin = normalizeSlashes(origin);
        }

@@ -6,4 +6,7 @@
      =1 {When this control is on and the status is active, Brave determines which large group of profiles, or "cohort," your recent browsing activity is most similar to. Advertisers can select ads for the group and your browsing activity is kept private on your device. Your group is updated every day.}
      other {When this control is on and the status is active, Brave determines which large group of profiles, or "cohort," your recent browsing activity is most similar to. Advertisers can select ads for the group and your browsing activity is kept private on your device. Your group is updated every {NUM_DAYS} days.}}
   </message>
+  <message name="IDS_PRIVACY_SANDBOX_TOPICS_TAXONOMY_V1_TOPIC_ID_254" translateable="false" desc="Taxonomy Member. Meaning: [Umbrella category that encompasses social groups and social issues based on personal identity, cultural traditions, family, faith and personal beliefs; &quot;special interest&quot; groups and communities; communities based on age, gender, ethnicity, religion, political affiliation or lifestyle choice; the scientific study of profiles and social groups in the &quot;social sciences&quot;.] Existing Ref: http://tc-message/message/FatCatTaxonomy_Verticals4/5098251294806643822">
+    Profiles &amp; society
+  </message>
   </grit-part>

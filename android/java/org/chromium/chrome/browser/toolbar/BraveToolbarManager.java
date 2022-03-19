@@ -43,6 +43,7 @@ import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.night_mode.NightModeStateProvider;
 import org.chromium.chrome.browser.omnibox.LocationBar;
+import org.chromium.chrome.browser.omnibox.suggestions.OmniboxPedalDelegate;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.SadTab;
@@ -159,6 +160,7 @@ public class BraveToolbarManager extends ToolbarManager {
             @NonNull Supplier<MerchantTrustSignalsCoordinator>
                     merchantTrustSignalsCoordinatorSupplier,
             OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
+            @NonNull OmniboxPedalDelegate omniboxPedalDelegate,
             boolean initializeWithIncognitoColors) {
         super(activity, controlsSizer, fullscreenManager, controlContainer, compositorViewHolder,
                 urlFocusChangedCallback, topUiThemeColorProvider, tabObscuringHandler,
@@ -172,9 +174,9 @@ public class BraveToolbarManager extends ToolbarManager {
                 appMenuDelegate, activityLifecycleDispatcher, startSurfaceParentTabSupplier,
                 bottomSheetController, isWarmOnResumeSupplier, tabContentManager, tabCreatorManager,
                 overviewModeBehaviorSupplier, snackbarManager, jankTracker,
-
                 merchantTrustSignalsCoordinatorSupplier, tabReparentingControllerSupplier,
-                initializeWithIncognitoColors);
+                omniboxPedalDelegate, initializeWithIncognitoColors);
+
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
         mActivity = activity;

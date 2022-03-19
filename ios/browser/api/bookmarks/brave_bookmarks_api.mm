@@ -7,6 +7,7 @@
 
 #include "base/compiler_specific.h"
 #include "base/containers/adapters.h"
+#include "base/containers/stack.h"
 #include "base/guid.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/post_task.h"

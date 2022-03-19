@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_search/renderer/brave_search_default_js_handler.h"
 
+#include <tuple>
 #include <utility>
 
 #include "base/no_destructor.h"
@@ -138,7 +139,7 @@ void BraveSearchDefaultJSHandler::OnCanSetDefaultSearchProvider(
   v8::Local<v8::Boolean> result;
   result = v8::Boolean::New(isolate, response);
 
-  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+  std::ignore = resolver->Resolve(context, result);
 }
 
 void BraveSearchDefaultJSHandler::SetIsDefaultSearchProvider(

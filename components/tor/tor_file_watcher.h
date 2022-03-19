@@ -13,6 +13,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_path_watcher.h"
 #include "base/memory/weak_ptr.h"
+#include "base/time/time.h"
 
 namespace base {
 class SequencedTaskRunner;

@@ -67,8 +67,8 @@ TEST_F(PostCredsTest, ServerOK) {
             callback(response);
           }));
 
-  auto creds = std::make_unique<base::ListValue>();
-  creds->Append(base::Value("asfeq4gerg34gl3g34lg34g"));
+  base::Value::List creds;
+  creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
@@ -92,8 +92,8 @@ TEST_F(PostCredsTest, ServerError400) {
             callback(response);
           }));
 
-  auto creds = std::make_unique<base::ListValue>();
-  creds->Append(base::Value("asfeq4gerg34gl3g34lg34g"));
+  base::Value::List creds;
+  creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
@@ -116,8 +116,8 @@ TEST_F(PostCredsTest, ServerError403) {
             callback(response);
           }));
 
-  auto creds = std::make_unique<base::ListValue>();
-  creds->Append(base::Value("asfeq4gerg34gl3g34lg34g"));
+  base::Value::List creds;
+  creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
@@ -140,8 +140,8 @@ TEST_F(PostCredsTest, ServerError409) {
             callback(response);
           }));
 
-  auto creds = std::make_unique<base::ListValue>();
-  creds->Append(base::Value("asfeq4gerg34gl3g34lg34g"));
+  base::Value::List creds;
+  creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
@@ -164,8 +164,8 @@ TEST_F(PostCredsTest, ServerError410) {
             callback(response);
           }));
 
-  auto creds = std::make_unique<base::ListValue>();
-  creds->Append(base::Value("asfeq4gerg34gl3g34lg34g"));
+  base::Value::List creds;
+  creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
@@ -188,8 +188,8 @@ TEST_F(PostCredsTest, ServerError500) {
             callback(response);
           }));
 
-  auto creds = std::make_unique<base::ListValue>();
-  creds->Append(base::Value("asfeq4gerg34gl3g34lg34g"));
+  base::Value::List creds;
+  creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",
@@ -212,8 +212,8 @@ TEST_F(PostCredsTest, ServerErrorRandom) {
             callback(response);
           }));
 
-  auto creds = std::make_unique<base::ListValue>();
-  creds->Append(base::Value("asfeq4gerg34gl3g34lg34g"));
+  base::Value::List creds;
+  creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
       "ff50981d-47de-4210-848d-995e186901a1",

@@ -10,7 +10,6 @@
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kDirectSockets, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFedCm, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFirstPartySets, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIdleDetection, base::FEATURE_DISABLED_BY_DEFAULT},

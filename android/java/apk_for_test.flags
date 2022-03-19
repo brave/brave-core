@@ -8,14 +8,6 @@
 # needed for checking of existence for bytecode manipulation
 -keepnames class org.chromium.chrome.browser.settings.MainSettings
 
--keep class org.chromium.chrome.browser.sync.AndroidSyncSettings {
-    *** updateCachedSettings(...);
-    *** setChromeSyncEnabled(...);
-    *** mIsSyncable;
-    *** mChromeSyncEnabled;
-    *** mMasterSyncEnabled;
-}
-
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkBridge {
     *** extensiveBookmarkChangesBeginning(...);
     *** extensiveBookmarkChangesEnded(...);
@@ -66,7 +58,7 @@
 -keep class org.chromium.chrome.browser.sync.settings.ManageSyncSettings {
     *** mGoogleActivityControls;
     *** mSyncEncryption;
-    *** mManageSyncData;
+    *** mReviewSyncData;
     *** mSyncPaymentsIntegration;
     *** mTurnOffSync;
 }
@@ -203,14 +195,14 @@
 }
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BottomControlsMediator {
-    public <init>(...);
+    <init>(...);
     *** mBottomControlsHeight;
     *** mModel;
     *** mBrowserControlsSizer;
 }
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsMediator {
-    public <init>(...);
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.query_tiles.QueryTileSection {
@@ -336,14 +328,14 @@
 }
 
 -keep class org.chromium.chrome.browser.feed.FeedSurfaceMediator {
-    public <init>(...);
+    <init>(...);
     *** mCoordinator;
     *** mSnapScrollHelper;
     *** destroyPropertiesForStream(...);
 }
 
 -keep class org.chromium.chrome.browser.feed.BraveFeedSurfaceMediator {
-    public <init>(...);
+    <init>(...);
     *** mCoordinator;
     *** mSnapScrollHelper;
 }

@@ -9,6 +9,7 @@
 #include "base/notreached.h"
 #include "base/rand_util.h"
 #include "base/threading/sequenced_task_runner_handle.h"
+#include "base/time/time.h"
 
 namespace brave_vpn {
 

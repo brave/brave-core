@@ -27,19 +27,19 @@
 namespace certificate {
 namespace x509_utils {
 std::vector<net::der::Input> SupportedExtensionOIDs() {
-  return {net::SubjectKeyIdentifierOid(),
-          net::KeyUsageOid(),
-          net::SubjectAltNameOid(),
-          net::BasicConstraintsOid(),
-          net::NameConstraintsOid(),
-          net::CertificatePoliciesOid(),
-          net::AuthorityKeyIdentifierOid(),
-          net::PolicyConstraintsOid(),
-          net::ExtKeyUsageOid(),
-          net::AuthorityInfoAccessOid(),
-          net::AdCaIssuersOid(),
-          net::AdOcspOid(),
-          net::CrlDistributionPointsOid()};
+  return {net::der::Input(net::kSubjectKeyIdentifierOid),
+          net::der::Input(net::kKeyUsageOid),
+          net::der::Input(net::kSubjectAltNameOid),
+          net::der::Input(net::kBasicConstraintsOid),
+          net::der::Input(net::kNameConstraintsOid),
+          net::der::Input(net::kCertificatePoliciesOid),
+          net::der::Input(net::kAuthorityKeyIdentifierOid),
+          net::der::Input(net::kPolicyConstraintsOid),
+          net::der::Input(net::kExtKeyUsageOid),
+          net::der::Input(net::kAuthorityInfoAccessOid),
+          net::der::Input(net::kAdCaIssuersOid),
+          net::der::Input(net::kAdOcspOid),
+          net::der::Input(net::kCrlDistributionPointsOid)};
 }
 
 bool ExtractEmbeddedSCT(

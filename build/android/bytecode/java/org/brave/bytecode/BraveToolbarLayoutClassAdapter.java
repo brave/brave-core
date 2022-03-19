@@ -22,5 +22,7 @@ public class BraveToolbarLayoutClassAdapter extends BraveClassVisitor {
         changeSuperName(sToolbarPhoneClassName, sBraveToolbarLayoutClassName);
 
         changeSuperName(sToolbarTabletClassName, sBraveToolbarLayoutClassName);
+
+        deleteMethod(sToolbarPhoneClassName, "onHomeButtonUpdate");
     }
 }

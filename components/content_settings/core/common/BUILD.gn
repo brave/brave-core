@@ -6,7 +6,6 @@ source_set("common") {
 
   deps = [
     "//brave/components/brave_shields/common:common",
-    "//brave/extensions:common",
     "//components/content_settings/core/common",
     "//url",
   ]

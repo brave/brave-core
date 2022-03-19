@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/overlay/overlay_window_views.cc b/chrome/browser/ui/views/overlay/overlay_window_views.cc
-index 6636961b18c71de0477407e6bebc64b091144afd..6f3fbc178903b105f85a015353941df3f8b662fa 100644
+index d96a4937e6ff6bbf4311673b4c91e9f0e957832a..188edd6b13bfbc087344976b6131a65182619126 100644
 --- a/chrome/browser/ui/views/overlay/overlay_window_views.cc
 +++ b/chrome/browser/ui/views/overlay/overlay_window_views.cc
-@@ -1312,6 +1312,7 @@ void OverlayWindowViews::UpdateMaxSize(const gfx::Rect& work_area) {
+@@ -522,6 +522,7 @@ void OverlayWindowViews::UpdateMaxSize(const gfx::Rect& work_area) {
  
    max_size_ = new_max_size;
  

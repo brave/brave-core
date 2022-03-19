@@ -142,9 +142,9 @@ class BraveActionsContainer : public views::View,
   void HideActivePopup() override;
   bool CloseOverflowMenuIfOpen() override;
   void PopOutAction(ToolbarActionViewController* action,
-                    bool is_sticky,
                     base::OnceClosure closure) override;
-  bool ShowToolbarActionPopupForAPICall(const std::string& action_id) override;
+  bool ShowToolbarActionPopupForAPICall(const std::string& action_id,
+                                        ShowPopupCallback callback) override;
   void ShowToolbarActionBubble(
       std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) override;
   void ShowToolbarActionBubbleAsync(

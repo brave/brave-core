@@ -499,15 +499,15 @@ bool EncodeStringArray(const std::vector<std::string>& input,
     // Offset for ith element =
     //     offset for i-1th + 32 * (count for i-1th) +
     //     32 * ceil(i-1th.size() / 32.0) (length of encoding for i-1th).
-    std::string encoded_offset;
+    std::string encoded_offset_for_element;
     size_t rows = std::ceil(input[i - 1].size() / 32.0);
     data_offset += (rows + 1) * 32;
 
-    success =
-        PadHexEncodedParameter(Uint256ValueToHex(data_offset), &encoded_offset);
+    success = PadHexEncodedParameter(Uint256ValueToHex(data_offset),
+                                     &encoded_offset_for_element);
     if (!success)
       return false;
-    *output += encoded_offset.substr(2);
+    *output += encoded_offset_for_element.substr(2);
   }
 
   // Write count and encoding for array elements.

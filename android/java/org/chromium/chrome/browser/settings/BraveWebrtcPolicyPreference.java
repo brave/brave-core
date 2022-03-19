@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -46,6 +47,7 @@ public class BraveWebrtcPolicyPreference
     protected static final String FALLBACK_SUPPORT_URL =
             "https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
 
+    @SuppressLint("WrongConstant")
     public BraveWebrtcPolicyPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -96,6 +98,7 @@ public class BraveWebrtcPolicyPreference
     }
 
     @Override
+    @SuppressLint("WrongConstant")
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         for (int i = 0; i < WebrtcPolicy.NUM_ENTRIES; i++) {
             if (mButtons.get(i).isChecked()) {

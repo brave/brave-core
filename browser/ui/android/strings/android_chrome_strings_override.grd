@@ -122,14 +122,21 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SETTINGS_INCOGNITO_TAB_LOCK_SUMMARY_ANDROID_SETTING_ON" desc="Summary for a toggle in Settings that allows users to lock their existing Private tabs with a device reauthentication mechanism. This summary is shown to the user when the screen lock setting is on in the device.">
         Use screen lock to see open Private tabs
       </message>
+      <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_SUMMARY" desc="Summary of the settings page to configure spam and fraud reduction." translateable="false">
+        Help sites fight fraud and distinguish bots from profiles
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_DESCRIPTION" desc="Description of the settings page to configure spam and fraud reduction." translateable="false">
+        Spam &amp; fraud reduction relies on trust tokens to help sites fight fraud and distinguish bots from profiles.
+
+Based on your interaction with a site, like regularly signing in to an account, that site can issue a trust token to your browser. Later, if other sites you visit check for and find a valid trust token, they’re more likely to treat you like a profile and not a bot.
+
+Trust tokens improve privacy on the web and can’t be used to find out who you are.
+      </message>
       <message name="IDS_PRIVACY_REVIEW_COOKIES_BLOCK_INCOGNITO_TITLE" desc="Title for the radio button for blocking third-party cookies in private.">
         Block while using private
       </message>
       <message name="IDS_PRIVACY_REVIEW_COOKIES_BLOCK_INCOGNITO_DESCRIPTION" desc="Description for the radio button for blocking third-party cookies in private.">
         While in private, sites can’t use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
-      </message>
-      <message name="IDS_DATA_REDUCTION_DESCRIPTION_LITE_MODE" desc="Text describing how the Lite mode feature works. Seen only before the user has enabled the feature.">
-        When Lite mode is on, Brave uses Brave servers to make pages load faster. Lite mode rewrites very slow pages to load only essential content. Lite mode does not apply to Private tabs.
       </message>
       <message name="IDS_DOWNLOAD_LOCATION_INCOGNITO_WARNING" desc="Text that indicates to the user that downloaded files in Private are still saved on the device and are visible to other users of this device.">
         Files you download in Private mode are still visible to anyone who uses this device.
@@ -173,7 +180,7 @@ CHAR_LIMIT guidelines:
         New Private tab
       </message>
       <message name="IDS_FEATURE_NOTIFICATION_GUIDE_NOTIFICATION_MESSAGE_INCOGNITO_TAB" desc="Notification body text educating user about private tab in chrome.">
-        To browse without saving activity to your device, try out Private
+        To browse privately on this device, try out Private
       </message>
       <message name="IDS_FEATURE_NOTIFICATION_GUIDE_TOOLTIP_MESSAGE_INCOGNITO_TAB" desc="Tooltip text educating user about using private tab in chrome.">
         To open a new Private tab, open the menu
@@ -246,6 +253,9 @@ CHAR_LIMIT guidelines:
         To share with profiles nearby, let them scan this QR Code
       </message>
 
+      <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_MESSAGE" desc="The body text of a dialog explaining the benefits of enabling Brave notifications.">
+        You’ll be able to easily manage media controls, private sessions, downloads and more
+      </message>
       </messages>
   </release>
 </grit>

@@ -1,8 +1,8 @@
 diff --git a/net/http/transport_security_state.cc b/net/http/transport_security_state.cc
-index 55dcb678f42a1581205dd82fb3389361571be75c..4be94622aacb03c26544843a0e59720c1dcb61c1 100644
+index 873c2bf85b61472b2dadc329b8a82deaf2c721b8..ca828983a589f3c8e300ac6283c44fd81f91f960 100644
 --- a/net/http/transport_security_state.cc
 +++ b/net/http/transport_security_state.cc
-@@ -418,6 +418,7 @@ TransportSecurityState::TransportSecurityState(
+@@ -417,6 +417,7 @@ TransportSecurityState::TransportSecurityState(
      BUILDFLAG(IS_IOS)
    enable_static_pins_ = false;
    enable_static_expect_ct_ = false;

@@ -10,15 +10,16 @@
 namespace ui {
 
 void AddNativeUiColorMixer(ColorProvider* provider,
-                           bool dark_window,
-                           bool high_contrast) {
+                           const ColorProviderManager::Key& key) {
   if (@available(macOS 10.14, *)) {
-    AddNativeUiColorMixer_Chromium(provider, dark_window, high_contrast);
+    AddNativeUiColorMixer_Chromium(provider, key);
     return;
   }
 
+  const bool high_contrast =
+      key.contrast_mode == ColorProviderManager::ContrastMode::kHigh;
   if (high_contrast) {
-    AddNativeUiColorMixer_Chromium(provider, dark_window, high_contrast);
+    AddNativeUiColorMixer_Chromium(provider, key);
     return;
   }
 
@@ -26,7 +27,7 @@ void AddNativeUiColorMixer(ColorProvider* provider,
   // that doesn't support dark mode. We are using dark mode on old macOS but
   // some below colors are fetched from system color and they are not dark mode
   // aware. So, we should replace those colors with dark mode aware ui color.
-  AddNativeUiColorMixer_Chromium(provider, dark_window, high_contrast);
+  AddNativeUiColorMixer_Chromium(provider, key);
   ColorMixer& mixer = provider->AddMixer();
   mixer[kColorMenuItemForeground] = {kColorPrimaryForeground};
   mixer[kColorMenuItemForegroundDisabled] = {kColorDisabledForeground};

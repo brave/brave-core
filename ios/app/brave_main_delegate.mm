@@ -16,9 +16,8 @@
 #include "brave/components/brave_component_updater/browser/switches.h"
 #include "components/browser_sync/browser_sync_switches.h"
 #include "components/component_updater/component_updater_switches.h"
+#include "components/sync/base/command_line_switches.h"
 #include "components/sync/base/model_type.h"
-#include "components/sync/base/sync_base_switches.h"
-#include "components/sync/driver/sync_driver_switches.h"
 #include "ios/chrome/browser/chrome_switches.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -61,8 +60,8 @@ void BraveMainDelegate::BasicStartupComplete() {
   }
 
   // Brave's sync protocol does not use the sync service url
-  if (!command_line->HasSwitch(switches::kSyncServiceURL)) {
-    command_line->AppendSwitchASCII(switches::kSyncServiceURL,
+  if (!command_line->HasSwitch(syncer::kSyncServiceURL)) {
+    command_line->AppendSwitchASCII(syncer::kSyncServiceURL,
                                     kBraveSyncServiceURL);
   }
 

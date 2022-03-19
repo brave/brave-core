@@ -644,6 +644,10 @@ are declared in tools/grit/grit_rule.gni.
             Remove highlight
           </message>
 
+          <message name="IDS_CONTENT_CONTEXT_RESHARELINKTOTEXT" desc="The name of the Reshare Copy Link to Highlight command in the content area context menu">
+            Copy link to highlight
+          </message>
+
           <message name="IDS_CONTENT_CONTEXT_SAVEIMAGEAS" desc="The name of the Save Image As command in the content area context menu">
             Sa&amp;ve image as...
           </message>
@@ -886,6 +890,10 @@ are declared in tools/grit/grit_rule.gni.
 
           <message name="IDS_CONTENT_CONTEXT_REMOVELINKTOTEXT" desc="In TitleCase: The name of the Remove Highlights command in the content area context menu">
             Remove Highlight
+          </message>
+
+          <message name="IDS_CONTENT_CONTEXT_RESHARELINKTOTEXT" desc="In Title Case: The name of the Reshare Copy Link to Highlight command in the content area context menu">
+            Copy Link to Highlight
           </message>
 
           <message name="IDS_CONTENT_CONTEXT_SAVEIMAGEAS" desc="In Title Case: The name of the Save Image As command in the content area context menu">
@@ -2007,8 +2015,6 @@ are declared in tools/grit/grit_rule.gni.
           Show in Finder
         </message>
       </if>
-      <if expr="chromeos">
-      </if>
       <message name="IDS_DOWNLOAD_TAB_CANCELLED" desc="Text that appears next to the downloaded files that have been canceled">
         Canceled
       </message>
@@ -2321,6 +2327,17 @@ are declared in tools/grit/grit_rule.gni.
           Quit
         </message>
       </if>
+
+      <!-- Download Bubble -->
+      <message name="IDS_DOWNLOAD_BUBBLE_HEADER_TEXT" desc="Header text in the Download Bubble">
+        Recent Downloads
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_FOOTER_LINK" desc="Footer link in the Download Bubble">
+        Show all downloads
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_DOWNLOAD_SEPERATOR" desc="A separator to place between download size and download time. A symbol, in this case a bullet •, with a white space before it and a white space after it, is used to separate them. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
+        ''' • '''
+      </message>
 
       <!-- Desktop omnibox PWA install icon -->
       <if expr="not is_android">
@@ -3739,9 +3756,16 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
       <if expr="enable_extensions">
-        <message name="IDS_UTILITY_PROCESS_IMAGE_WRITER_NAME" desc="The name of the utility process used for writing Chrome OS system images.">
-          Chrome OS System Image Writer
-        </message>
+        <if expr="reven">
+          <message name="IDS_UTILITY_PROCESS_IMAGE_WRITER_NAME" desc="The name of the utility process used for writing CouldReady 2.0 system images.">
+            CouldReady 2.0 System Image Writer
+          </message>
+        </if>
+        <if expr="not reven">
+          <message name="IDS_UTILITY_PROCESS_IMAGE_WRITER_NAME" desc="The name of the utility process used for writing Chrome OS system images.">
+            Chrome OS System Image Writer
+          </message>
+        </if>
       </if>
       <if expr="enable_extensions or is_android">
         <message name="IDS_UTILITY_PROCESS_MEDIA_GALLERY_UTILITY_NAME" desc="The name of the utility process used for checking media files.">
@@ -4289,15 +4313,28 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_REPORTING_PRIVATE" desc="Permission string for enterprise private reporting permission.">
           Read information about your browser, OS, and device
         </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
-          Run Chrome OS diagnostic tests.
-        </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY" desc="Permission string for chrome.os.telemetry API.">
-          Read Chrome OS device information and device data.
-        </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_SERIAL_NUMBER" desc="Permission string for serial number permission.">
-          Read Chrome OS device and component serial numbers.
-        </message>
+        <if expr="reven">
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
+            Run CloudReady 2.0 diagnostic tests.
+          </message>
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY" desc="Permission string for chrome.os.telemetry API.">
+            Read CloudReady 2.0 device information and device data.
+          </message>
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_SERIAL_NUMBER" desc="Permission string for serial number permission.">
+            Read CloudReady 2.0 device and component serial numbers.
+          </message>
+        </if>
+        <if expr="not reven">
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
+            Run Chrome OS diagnostic tests.
+          </message>
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY" desc="Permission string for chrome.os.telemetry API.">
+            Read Chrome OS device information and device data.
+          </message>
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_SERIAL_NUMBER" desc="Permission string for serial number permission.">
+            Read Chrome OS device and component serial numbers.
+          </message>
+        </if>
       </if>
 
       <!-- Extension/App error messages -->
@@ -4348,9 +4385,16 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_EXTENSION_INSTALL_GALLERY_ONLY" desc="Error displayed when an app or extension that has an update URL used by the gallery is installed when not directly downloaded from the gallery.">
         This can only be added from the <ph name="CHROME_WEB_STORE">$1<ex>Web Store</ex></ph>
       </message>
-      <message name="IDS_EXTENSION_INSTALL_KIOSK_MODE_ONLY" desc="Error displayed during installation of an app with 'kiosk_only' attribute but user is not in Chrome OS kiosk mode.">
-        App with 'kiosk_only' manifest attribute must be installed in Chrome OS kiosk mode
-      </message>
+      <if expr="reven">
+        <message name="IDS_EXTENSION_INSTALL_KIOSK_MODE_ONLY" desc="Error displayed during installation of an app with 'kiosk_only' attribute but user is not in CloudReady 2.0 kiosk mode.">
+          App with 'kiosk_only' manifest attribute must be installed in CloudReady 2.0 kiosk mode
+        </message>
+      </if>
+      <if expr="not reven">
+        <message name="IDS_EXTENSION_INSTALL_KIOSK_MODE_ONLY" desc="Error displayed during installation of an app with 'kiosk_only' attribute but user is not in Chrome OS kiosk mode.">
+          App with 'kiosk_only' manifest attribute must be installed in Chrome OS kiosk mode
+        </message>
+      </if>
       <message name="IDS_EXTENSION_OVERLAPPING_WEB_EXTENT" desc="Error message when a user tries to install an app with a web extent that overlaps another installed app.">
         Could not add application "<ph name="TO_INSTALL_APP_NAME">$1<ex>Brave Mail</ex></ph>" because it conflicts with "<ph name="INSTALLED_APP_NAME">$2<ex>Brave Calendar</ex></ph>".
       </message>
@@ -4497,6 +4541,15 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_EXTENSION_ACTION_INSPECT_POPUP" desc="The text for the right-click menu of page and browser actions which shows the popup and opens the developer tools (sentence case).">
             Inspect popup
           </message>
+          <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_COMBOBOX_RUN_ON_CLICK" desc="The label in an extension's site access combobox to allow the extension access to the page only when the user click on the extension action (sentence case).">
+            When I click the extension
+          </message>
+          <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_COMBOBOX_RUN_ON_SITE" desc="The label in an extension's site access combobox to always allow the extension access to the current origin (sentence case).">
+            Always
+          </message>
+          <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_COMBOBOX_RUN_ON_ALL_SITES" desc="The label in an extension's site access combobox to always allow the extension access on all sites (sentence case).">
+            Always on all sites
+          </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_CANT_ACCESS_PAGE" desc="The label in an extension's context menu indicating the extension cannot access the current page. (title case)">
@@ -4552,6 +4605,15 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_EXTENSION_ACTION_INSPECT_POPUP" desc="The text for the right-click menu of page and browser actions which shows the popup and opens the developer tools (title case).">
             Inspect Popup
+          </message>
+          <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_COMBOBOX_RUN_ON_CLICK" desc="The label in an extension's site access combobox to allow the extension access to the page only when the user click on the extension action (title case).">
+            When I Click the Extension
+          </message>
+          <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_COMBOBOX_RUN_ON_SITE" desc="The label in an extension's site access combobox to always allow the extension access to the current origin (title case).">
+            Always
+          </message>
+          <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_COMBOBOX_RUN_ON_ALL_SITES" desc="The label in an extension's site access combobox to always allow the extension access on all sites (title case).">
+            Always on All Sites
           </message>
         </if>
       </if>
@@ -4849,8 +4911,23 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_REQUESTS_ACCESS_SECTION_TITLE" desc="Header for section of extensions that request access to the current site's data. $1 is replaced with the current site.">
         Requested to read and change <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
       </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_USER_SETTINGS_TITLE" desc="Title of the button in the site access tab used to show/hide the user settings options.">
+        Choose your default setting
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_USER_SETTINGS_ALLOW_ALL_TEXT" desc="Text of the allow all extensions option in the user settings options inside the site access tab.">
+        Allow all extensions to read and change <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_USER_SETTINGS_BLOCK_ALL_TEXT" desc="Text of the allow all extensions option in the user settings options inside the site access tab.">
+        Don't allow any extensions to read and change <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_USER_SETTINGS_CUSTOMIZE_EACH_TEXT" desc="Text of the allow all extensions option in the user settings options inside the site access tab.">
+        Customize permissions for each extension
+      </message>
       <message name="IDS_EXTENSIONS_MENU_EXTENSIONS_TAB_TITLE" desc="Title of the installed extensions tab in the Extensions Menu">
         Installed
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_EXTENSIONS_TAB_DISCOVER_MORE_TITLE" desc="Text of the button in the installed extensions tab used to open the webstore page">
+        Discover more extensions
       </message>
 
       <!-- Settings API bubble -->
@@ -4954,6 +5031,29 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_WEB_APP_WINDOW_CONTROLS_OVERLAY_DISABLED_ALERT" desc="Status change notification that the title bar is showing after window controls overlay is disabled">
         Title bar is now showing
       </message>
+
+      <message name="IDS_WEB_APP_SETTINGS_TITLE" desc="Title of web app settings page">
+        App Settings
+      </message>
+
+      <if expr="chromeos_ash or chromeos_lacros">
+        <then>
+          <message name="IDS_WEB_APP_SETTINGS_LINK" desc="Text of the link pointing to the app settings page. This appears at the bottom of the Permissions pane of the Page Information Window for app windows (in place of 'Site settings').">
+            App settings
+          </message>
+          <message name="IDS_WEB_APP_SETTINGS_LINK_TOOLTIP" desc="The text of the tooltip on IDS_WEB_APP_SETTINGS_LINK.">
+            Go to app settings
+          </message>
+        </then>
+        <else>
+          <message name="IDS_WEB_APP_SETTINGS_LINK" desc="Text of the link pointing to the app settings page. The link appears in app window/tab -&gt; page info bubble in place of Site Settings, and in chrome://apps right click menu">
+            Settings
+          </message>
+          <message name="IDS_WEB_APP_SETTINGS_LINK_TOOLTIP" desc="The text of the tooltip on IDS_WEB_APP_SETTINGS_LINK.">
+            Go to settings
+          </message>
+        </else>
+      </if>
 
       <!-- Components -->
       <message name="IDS_COMPONENTS_TITLE" desc="Title for the chrome://components page.">
@@ -5100,6 +5200,21 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_SAVE_PASSWORD_FOOTER" desc="The footer text of the bubble that offers user to save a password to Brave.">
         Passwords are saved in your Brave sync chain so you can use them on any device
+      </message>
+      <message name="IDS_PASSWORD_MANAGER_GENERATED_PASSWORD_SAVED_MESSAGE_DESCRIPTION" desc="The description in the Brave Password Manager's message that appears after saving a password that was autogenerated for the user.">
+        You can view and manage saved passwords in Brave Password Manager
+      </message>
+      <message name="IDS_PASSWORD_MANAGER_SAVE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION" desc="The description of the Brave Password Manager's save password message when the user is signed in.">
+        To Brave Password Manager for <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
+      </message>
+      <message name="IDS_PASSWORD_MANAGER_SAVE_PASSWORD_SIGNED_OUT_MESSAGE_DESCRIPTION" desc="The description of the Brave Password Manager's save password message when the user is signed out.">
+        To Brave Password Manager on this device
+      </message>
+      <message name="IDS_PASSWORD_MANAGER_UPDATE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION" desc="The description of the Brave Password Manager's update password message when the user is signed in.">
+        In Brave Password Manager for <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
+      </message>
+      <message name="IDS_PASSWORD_MANAGER_UPDATE_PASSWORD_SIGNED_OUT_MESSAGE_DESCRIPTION" desc="The description of the Brave Password Manager's update password message when the user is signed out.">
+        In Brave Password Manager on this device
       </message>
       <if expr="use_titlecase">
         <message name="IDS_PASSWORD_MANAGER_ACCOUNT_CHOOSER_SIGN_IN" desc="In Title Case: The title of the Sign in button in the account chooser when there is one account.">
@@ -5876,54 +5991,66 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Learn about the data Google Drive collects and why <ph name="BEGIN_LINK">&lt;a href="https://support.google.com/drive/answer/2450387" target="_blank"&gt;</ph>here<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
       <message name="IDS_NTP_MODULES_PHOTOS_TITLE" desc="Title shown in the header of the photos module.">
-        From your Brave Photos
+        From your Google Photos
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_TITLE" desc="Title shown for Brave Photos Memories in the list of available cards for the new tab page.">
-        Brave Photos memories
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_TITLE" desc="Title shown for Google Photos Memories in the list of available cards for the new tab page.">
+        Google Photos memories
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_HIDE_TODAY" desc="Part of label (combined with IDS_NTP_MODULES_DISMISS_BUTTON_TEXT) used to hide Brave Photos Memories from the new tab page for today.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_HIDE_TODAY" desc="Part of label (combined with IDS_NTP_MODULES_DISMISS_BUTTON_TEXT) used to hide Google Photos Memories from the new tab page for today.">
         your memories for today
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_HIDDEN_TODAY" desc="Confirmation text shown when Brave Photos Memories were hidden from the new tab page for today.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_HIDDEN_TODAY" desc="Confirmation text shown when Google Photos Memories were hidden from the new tab page for today.">
         Memories hidden for today
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_SOFT_OPT_OUT" desc="Confirmation text shown when Brave Photos Memories is soft disabled">
+      <message name="IDS_NTP_MODULES_PHOTOS_SOFT_OPT_OUT" desc="Confirmation text shown when Google Photos Memories is soft disabled">
         Memories hidden for two days
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_DISABLE" desc="Part of label (combined with IDS_NTP_MODULES_DISABLE_BUTTON_TEXT) used to disable Brave Photos Memories from the new tab page.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_DISABLE" desc="Part of label (combined with IDS_NTP_MODULES_DISABLE_BUTTON_TEXT) used to disable Google Photos Memories from the new tab page.">
         memories
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_DISABLED" desc="Part of confirmation text (combined with IDS_NTP_MODULES_DISABLE_TOAST_MESSAGE) shown when the Brave Photos Memories module is disabled from the new tab page.">
-        memories from Brave Photos
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_DISABLED" desc="Part of confirmation text (combined with IDS_NTP_MODULES_DISABLE_TOAST_MESSAGE) shown when the Google Photos Memories module is disabled from the new tab page.">
+        memories from Google Photos
       </message>
       <message name="IDS_NTP_MODULES_PHOTOS_INFO" desc="Text shown in the body of the info dialog of the Photos module.">
-        Your memories from Brave Photos are shown here. They are visible only to you, whenever you’re signed in.
+        Your memories from Google Photos are shown here. They are visible only to you, whenever you’re signed in.
         <ph name="BREAK">&lt;br&gt;</ph>
         <ph name="BREAK">&lt;br&gt;</ph>
         Manage what you see in your memories at <ph name="BEGIN_LINK">&lt;a href="https://photos.google.com/settings?referrer=CHROME_NTP" target="_blank"&gt;</ph>photos.google.com/settings<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_EXPLORE" desc="Text to encourage users to explore Brave Photos in the new tab page.">
-        Explore more of your memories in Brave Photos
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_EXPLORE" desc="Text to encourage users to explore Google Photos in the new tab page.">
+        Explore more of your memories in Google Photos
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_TITLE" desc="Title of the opt-in UI for Brave Photos in the new tab page.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_TITLE" desc="Title of the opt-in UI for Google Photos in the new tab page.">
         See your memories here
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_TEXT" desc="Text for the opt-in UI for Brave Photos in the new tab page.">
-        Start exploring your memories from Brave Photos, whenever you’re signed in.
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_PERSONALIZED_WELCOME_TITLE_TEMPLATE" desc="Personalized title of the opt-in UI for Google Photos in the new tab page.">
+        See "<ph name="PERSONALIZED_MEMORY_TITLE">$1<ex>Recent Highlights</ex></ph>" and other memories here
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_BUTTON_OPT_IN" desc="Label of the button to opt-in of Brave Photos in the new tab page.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_RH_WELCOME_TITLE" desc="Title of the opt-in UI for Google Photos in the new tab page emphasizing on recent highlights.">
+        See "Recent Highlights" and other memories here
+      </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_FAVORITE_PEOPLE_WELCOME_TITLE" desc="Title of the opt-in UI for Google Photos in the new tab page emphasizing on favorite profiles.">
+        See memories of your favorite profiles and more
+      </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_TRIPS_WELCOME_TITLE" desc="Title of the opt-in UI for Google Photos in the new tab page emphasizing on trips.">
+        See memories of your recent trips and more
+      </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_TEXT" desc="Text for the opt-in UI for Google Photos in the new tab page.">
+        Start exploring your memories from Google Photos, whenever you’re signed in.
+      </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_BUTTON_OPT_IN" desc="Label of the button to opt-in of Google Photos in the new tab page.">
         See memories
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_BUTTON_OPT_OUT" desc="Label of the button to opt-out of Brave Photos in the new tab page.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_BUTTON_OPT_OUT" desc="Label of the button to opt-out of Google Photos in the new tab page.">
         No thanks
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_BUTTON_SOFT_OPT_OUT" desc="Label of the button to soft opt-out of Brave Photos in the new tab page.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_BUTTON_SOFT_OPT_OUT" desc="Label of the button to soft opt-out of Google Photos in the new tab page.">
         Ask me later
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_EXAMPLE" desc="Example of a memory title for the Brave Photos module in the new tab page.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_EXAMPLE" desc="Example of a memory title for the Google Photos module in the new tab page.">
         2 years ago
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_NEW" desc="Text shown on the header chip of Brave Photos module.">
+      <message name="IDS_NTP_MODULES_PHOTOS_NEW" desc="Text shown on the header chip of Google Photos module.">
         New
       </message>
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
@@ -5992,6 +6119,28 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_CONFIRMATION_DISMISS" desc="Text shown on snack bar button. Clicking it indicates that users have understood the content of the snack bar.">
         Got it
       </message>
+      <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_CONTENT_V2" desc="Text shown on the consent card for getting discount asking if users would like to give their consent to the feature.">
+        Let Brave find personalized discounts on your carts?
+      </message>
+      <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_CONTENT_V3" desc="Text shown on the consent card for getting discount asking if users would like to give their consent to the feature.">
+        Let Brave use your cart to find available discounts?
+      </message>
+      <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_STEP_1_WITH_MERCHANT_NAME" desc="Text shown on the consent card asking if users would like to give their consent to the feature.">
+        Get discounts for <ph name="MERCHANT_NAME">$1<ex>Amazon</ex></ph>
+      </message>
+      <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_STEP_1_WITH_TWO_MERCHANT_NAMES" desc="Text shown on the consent card asking if users would like to give their consent to the feature.">
+        Get discounts for <ph name="MERCHANT_NAME_1">$1<ex>Amazon</ex></ph> and <ph name="MERCHANT_NAME_2">$2<ex>Walmart</ex></ph>
+      </message>
+      <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_STEP_1_WITH_THREE_MERCHANT_NAMES" desc="Text shown on the consent card asking if users would like to give their consent to the feature.">
+        Get discounts for <ph name="MERCHANT_NAME_1">$1<ex>Amazon</ex></ph>, <ph name="MERCHANT_NAME_2">$2<ex>Walmart</ex></ph> and more
+      </message>
+      <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_STEP_1_CONTINUE" desc="The consent flow is a 2-step process. This text shown on the continue button of the consent card in step 1. See consent request in IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_CONTENT_WITH_MERCHANT_NAME.">
+        Continue
+      </message>
+      <message name="IDS_NTP_MODULES_CART_DISCOUNT_CONSENT_TITLE" desc="The consent flow is a 2-step process. This text shown on the step 2 as the title description.">
+        Get discounts?
+      </message>
+
       <!-- Extensions NTP Middle Slot Promo -->
       <message name="IDS_EXTENSIONS_PROMO_PERFORMANCE">
         Web browsing should be fast. Take a moment to <ph name="BEGIN_LINK">&lt;a href="chrome://extensions"&gt;</ph>check your extensions<ph name="END_LINK">&lt;/a&gt;</ph> now.
@@ -6185,7 +6334,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TOOLTIP_SAVE_CREDIT_CARD_FAILURE" desc="The tooltip for the icon that shows the credit card is not successfully uploaded">
         Can't save card right now
       </message>
-      <message name="IDS_TOOLTIP_MIGRATE_LOCAL_CARD" desc="Tooltip for the credit card icon that appears in the address bar. Icon is shown when a user has a credit card stored locally in Brave but not in Brave Pay.">
+      <message name="IDS_TOOLTIP_MIGRATE_LOCAL_CARD" desc="Tooltip for the credit card icon that appears in the address bar. Icon is shown when a user has a credit card stored locally in Brave but not in Google Pay.">
         Save payment method
       </message>
       <message name="IDS_TOOLTIP_TRANSLATE" desc="The tooltip for translate">
@@ -6227,6 +6376,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_INITIATING_ORIGIN" desc="The label for the initiating origin of the intent picker.">
           From <ph name="ORIGIN">$1<ex>https://google.com</ex></ph>
         </message>
+        <message name="IDS_INTENT_CHIP_LABEL" desc="The label of a button to open the current webpage in an installed app.">
+          Open in app
+        </message>
+
+        <if expr="chromeos_ash">
+          <message name="IDR_INTENT_PICKER_SUPPORTED_LINKS_INFOBAR_MESSAGE" desc="The text of an infobar asking if the user wants to open web links supported by a particular app (e.g. https://www.youtube.com) in that app.">
+            Always use the <ph name="APP">$1<ex>YouTube</ex></ph> app to open supported web links?
+          </message>
+          <message name="IDR_INTENT_PICKER_SUPPORTED_LINKS_INFOBAR_OK_LABEL" desc="The label of a confirm button for an infobar asking if the user wants to open web links in an app. If clicked, the selected app will always be opened when clicking supported web links.">
+            Always use
+          </message>
+        </if>
       </if>
 
       <!--Accessible name/action strings-->
@@ -6316,6 +6477,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_ACCNAME_TAB_SCROLL_TRAILING" desc="The accessible name for the TabStrip trailing scroll button.">
         Scroll towards the last tab
+      </message>
+      <message name="IDS_ACCNAME_MUTE_TAB" desc="The accessible name for the Mute tab button.">
+        Mute tab
+      </message>
+      <message name="IDS_ACCNAME_EXTENSIONS_MENU_SITE_ACCESS_COMBOBOX" desc="The accessible name for the extension's site access combobox in the extensions menu.">
+        Site Access Option
       </message>
 
       <!-- Clipboard permission -->
@@ -6409,13 +6576,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Your reading list has moved to the new side panel. Try it here.
       </message>
       <message name="IDS_TAB_GROUPS_NEW_GROUP_PROMO" desc="Text shown on promotional UI encouraging users to create a tab group in their tab strip">
-        To group tabs together, right-click a tab
+        Organize your tabs with tab groups
       </message>
       <message name="IDS_TAB_GROUPS_UNNAMED_GROUP_TOOLTIP" desc="Static tooltip to display on hover over unnamed tab group.">
         Unnamed group - <ph name="GROUP_CONTENT_STRING">$1<ex>"New Tab" and one other</ex></ph>
       </message>
       <message name="IDS_TAB_GROUPS_NAMED_GROUP_TOOLTIP" desc="Dynamic tooltip to display on hover over named tab group.">
         <ph name="GROUP_NAME">$1<ex>New Group</ex></ph> - <ph name="GROUP_CONTENT_STRING">$2<ex>"New Tab" and one other</ex></ph>
+      </message>
+      <message name="IDS_TAB_AUDIO_MUTING_PROMO" desc="Text shown on the promotional UI appearing next to the tab alert indicator.">
+        Click the speaker icon to mute this tab
       </message>
       <if expr="use_titlecase">
         <message name="IDS_PROMO_DISMISS_BUTTON" desc="Text shown on the button for the user to acknowledge that they understand the message">
@@ -7111,9 +7281,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_LOAD_STATE_WAITING_FOR_CACHE">
         Waiting for cache...
-      </message>
-      <message name="IDS_LOAD_STATE_WAITING_FOR_APPCACHE">
-        Waiting for AppCache...
       </message>
       <message name="IDS_LOAD_STATE_ESTABLISHING_PROXY_TUNNEL">
         Waiting for proxy tunnel...
@@ -7831,7 +7998,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Year
       </message>
       <message name="IDS_AUTOFILL_FROM_GOOGLE_ACCOUNT" desc="The name of the Brave product that stores user addresses or credit cards in the cloud. This should not be translated." formatter_data="android_java">
-        Brave Pay
+        Google Pay
       </message>
 
       <if expr="is_linux and not chromeos and not lacros">
@@ -7987,19 +8154,83 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Share link to <ph name="SHARE_TARGET">$1<ex>Facebook</ex></ph>
       </message>
 
-      <!-- Desktop screenshot -->
-      <message name="IDS_BROWSER_SHARING_SCREENSHOT_POST_CAPTURE_TITLE" desc="Title for the dialog shown after a screenshot is captured.">
-       Screenshot copied to clipboard
-      </message>
-      <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_DOWNLOAD_BUTTON_LABEL" desc="Button text for the Screenshot dialog download button.">
-        Download
-      </message>
-      <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_EDIT_BUTTON_LABEL" desc="Button text for the Screenshot dialog edit button.">
-        Edit
-      </message>
-      <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_SHARE_BUTTON_LABEL" desc="Button text for the Screenshot dialog share button.">
-        Share
-      </message>
+      <!-- Desktop Screenshots feature within the share hub; desktop-only. -->
+      <if expr="not is_android">
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_POST_CAPTURE_TITLE" desc="Title for the dialog shown after a screenshot is captured.">
+        Screenshot copied to clipboard
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_DOWNLOAD_BUTTON_LABEL" desc="Button text for the Screenshot dialog download button.">
+          Download
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_EDIT_BUTTON_LABEL" desc="Button text for the Screenshot dialog edit button.">
+          Edit
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_SHARE_BUTTON_LABEL" desc="Button text for the Screenshot dialog share button.">
+          Share
+        </message>
+        <!-- Desktop Screenshots Image Editor app strings; filled in to component webui
+            loaded into chrome-untrusted://image-editor -->
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_SELECTION" desc="The tooltip for the image editor's selection tool button.">
+          Selection Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_CROP" desc="The tooltip for the image editor's crop tool button.">
+          Crop Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_TEXT" desc="The tooltip for the image editor's text tool button.">
+          Text Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_ELLIPSE" desc="The tooltip for the image editor's ellipse tool button.">
+          Ellipse Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_RECTANGLE" desc="The tooltip for the image editor's rectangle tool button.">
+          Rectangle Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_LINE" desc="The tooltip for the image editor's line tool button.">
+          Line Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_ARROW" desc="The tooltip for the image editor's arrow tool button.">
+          Arrow Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_BRUSH" desc="The tooltip for the image editor's brush tool button.">
+          Brush Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_EMOJI" desc="The tooltip for the image editor's emoji tool button.">
+          Emoji Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_HIGHLIGHTER" desc="The tooltip for the image editor's highlither tool button.">
+          Highlighter Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_UNDO" desc="The tooltip for the image editor's undo button.">
+          Undo
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_REDO" desc="The tooltip for the image editor's redo button.">
+          Redo
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_ZOOM_IN" desc="The tooltip for the image editor's zoom in button.">
+          Zoom In
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_ZOOM_OUT" desc="The tooltip for the image editor's zoom out button.">
+          Zoom Out
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_COMMIT_CROP" desc="The button text for the image editor's confirm crop button.">
+          Crop
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_COMMIT_CROP" desc="The tooltip for the image editor's confirm crop button.">
+          Confirm Crop
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_CANCEL_CROP" desc="The button text for the image editor's cancel crop button.">
+          Cancel
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_CANCEL_CROP" desc="The tooltip for the image editor's cancel crop button.">
+          Cancel Crop
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_BUTTON_DOWNLOAD_IMAGE" desc="The tooltip for the image editor's download image button that saves the image.">
+          Download Image
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_BUTTON_COPY" desc="The button text for the image editor's copy to clipboard button.">
+          Copy to Clipboard
+        </message>
+      </if>
 
       <!-- Clipboard History Menu feature. -->
       <message name="IDS_CONTEXT_MENU_SHOW_CLIPBOARD_HISTORY_MENU" desc="Show the clipboard history menu.">
@@ -8211,10 +8442,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <if expr="not is_android">
         <if expr="chromeos">
           <message name="IDS_DEVICE_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (BraveOS)">
-            Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
+            Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
           </message>
           <message name="IDS_DEVICE_MANAGED_BY_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (BraveOS)">
-            Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by <ph name="ENROLLMENT_DOMAIN">$3<ex>example.com</ex></ph>
+            Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by <ph name="ENROLLMENT_DOMAIN">$3<ex>example.com</ex></ph>
           </message>
         </if>
         <message name="IDS_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (non-BraveOS)">
@@ -9085,10 +9316,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
         <!-- Encryption tab of the configure sync dialog -->
         <message name="IDS_SYNC_FULL_ENCRYPTION_BODY_CUSTOM" desc="Text of the radio that when selected enables full encryption.">
-          Data is encrypted with your sync passphrase. This doesn't include payment methods and addresses from Brave Pay.
+          Data is encrypted with your sync passphrase. This doesn't include payment methods and addresses from Google Pay.
         </message>
         <message name="IDS_SYNC_FULL_ENCRYPTION_BODY_CUSTOM_WITH_DATE" desc="Text of the radio that when selected enables full encryption.">
-          Data was encrypted with your sync passphrase on <ph name="TIME">$1<ex>Sept 1, 2012</ex></ph>. This doesn't include payment methods and addresses from Brave Pay.
+          Data was encrypted with your sync passphrase on <ph name="TIME">$1<ex>Sept 1, 2012</ex></ph>. This doesn't include payment methods and addresses from Google Pay.
         </message>
       </if>
 
@@ -9808,11 +10039,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Continue blocking this site from having full control of MIDI devices
       </message>
 
-      <!-- Protocol Handler -->
-      <message name="IDS_REGISTER_PROTOCOL_HANDLER_TOOLTIP" desc="Location bar icon tooltip text when a page wants to use registerProtocolHandler.">
-        This page wants to install a service handler.
-      </message>
-
       <!-- Media Stream -->
       <message name="IDS_MICROPHONE_CAMERA_ALLOWED" desc="Status text that is used as location bar icon tooltip text and as media settings bubble status text when a page is allowed to use the camera and microphone.">
         This page is accessing your camera and microphone.
@@ -10062,36 +10288,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Press |<ph name="ACCELERATOR">$1<ex>Esc</ex></ph>| to show your cursor
       </message>
 
-      <!-- Register Protocol Handler Strings -->
-      <message name="IDS_REGISTER_PROTOCOL_HANDLER_MAILTO_NAME" desc="A more user friendly way of describing mailto: links.">
-        email
-      </message>
-      <message name="IDS_REGISTER_PROTOCOL_HANDLER_WEBCAL_NAME" desc="A more user friendly way of describing webcal: links.">
-        web calendar
-      </message>
-
-      <message name="IDS_REGISTER_PROTOCOL_HANDLER_CONFIRM" desc="The message to display when asking a user to confirm the registration of a protocol handler.">
-        Allow <ph name="HANDLER_HOSTNAME">$1<ex>google.com</ex></ph> to open all <ph name="PROTOCOL">$2<ex>search</ex></ph> links?
-      </message>
-      <message name="IDS_REGISTER_PROTOCOL_HANDLER_CONFIRM_REPLACE" desc="The message to display when asking a user to confirm the registration of a protocol handler.">
-        Allow <ph name="HANDLER_HOSTNAME">$1<ex>google.com</ex></ph> to open all <ph name="PROTOCOL">$2<ex>search</ex></ph> links instead of <ph name="REPLACED_HANDLER_TITLE">$3<ex>Elgoog Search</ex></ph>?
-      </message>
-      <message name="IDS_REGISTER_PROTOCOL_HANDLER_CONFIRM_FRAGMENT" desc="The permission fragment to display when asking a user to confirm the registration of a protocol handler in a permission bubble. Follows a prompt 'This site would like to:'.">
-        Open <ph name="PROTOCOL">$1<ex>search</ex></ph> links
-      </message>
-      <message name="IDS_REGISTER_PROTOCOL_HANDLER_CONFIRM_REPLACE_FRAGMENT" desc="The permission fragment to display when asking a user to confirm the registration of a protocol handler. Follows a prompt 'This site would like to:'.">
-        Open <ph name="PROTOCOL">$1<ex>search</ex></ph> links instead of <ph name="REPLACED_HANDLER_TITLE">$2<ex>Elgoog Search</ex></ph>
-      </message>
-      <message name="IDS_REGISTER_PROTOCOL_HANDLER_ACCEPT" desc="Text to show for the accept button for the register protocol handler request infobar.">
-        Allow
-      </message>
-      <message name="IDS_REGISTER_PROTOCOL_HANDLER_DENY" desc="Text to show for the deny button for the register protocol handler request infobar.">
-        Deny
-      </message>
-      <message name="IDS_REGISTER_PROTOCOL_HANDLER_IGNORE" desc="Text to show for an ignore prompt for a register protocol handler registration request.">
-        Ignore
-      </message>
-
       <!-- Media Capture messages -->
       <message name="IDS_MEDIA_CAPTURE_SCREEN_INFOBAR_TEXT" desc="Text requesting permission for a site to access the device's screen.">
         <ph name="HOST">$1<ex>html5rocks.com</ex></ph> wants to share your screen
@@ -10285,7 +10481,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Pinned by administrator
         </message>
         <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_TITLE" desc="Text for an option shown in a context menu for app items in the Chrome OS app list that allows users to reorder items in the app list. Clicking the option opens a submenu in which the user can choose how the items in the app list should be ordered (e.g. by name or the icon color).">
-          Reorder by
+          Sort by
         </message>
         <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_BY_NAME" desc="Text for an option shown in a context menu for app items in the Chrome OS app list that allows users to reorder items by their names in the app list. This option is under the 'Reorder by' submenu">
           Name
@@ -10445,20 +10641,20 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_TAB_AX_LABEL_AUDIO_MUTING_FORMAT" desc="Accessibility label text, when all tab audio output is muted. Example: 'Google Play Music - Audio muted'">
         <ph name="WINDOW_TITLE">$1<ex>Google Play Music</ex></ph> - Audio muted
       </message>
-      <message name="IDS_TAB_AX_LABEL_BLUETOOTH_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to and has access to a Bluetooth device. Example: 'Brave Photos - Bluetooth device connected'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Photos</ex></ph> - Bluetooth device connected
+      <message name="IDS_TAB_AX_LABEL_BLUETOOTH_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to and has access to a Bluetooth device. Example: 'Google Photos - Bluetooth device connected'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Photos</ex></ph> - Bluetooth device connected
       </message>
-      <message name="IDS_TAB_AX_LABEL_BLUETOOTH_SCAN_ACTIVE_FORMAT" desc="Accessibility label text, when a tab is actively scanning for Bluetooth devices. Example: 'Brave Photos - Bluetooth scan active'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Photos</ex></ph> - Bluetooth scan active
+      <message name="IDS_TAB_AX_LABEL_BLUETOOTH_SCAN_ACTIVE_FORMAT" desc="Accessibility label text, when a tab is actively scanning for Bluetooth devices. Example: 'Google Photos - Bluetooth scan active'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Photos</ex></ph> - Bluetooth scan active
       </message>
-      <message name="IDS_TAB_AX_LABEL_USB_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to a USB device. Example: 'Brave Photos - USB device connected'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Photos</ex></ph> - USB device connected
+      <message name="IDS_TAB_AX_LABEL_USB_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to a USB device. Example: 'Google Photos - USB device connected'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Photos</ex></ph> - USB device connected
       </message>
-      <message name="IDS_TAB_AX_LABEL_HID_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to a HID device. Example: 'Brave Photos - HID device connected'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Photos</ex></ph> - HID device connected
+      <message name="IDS_TAB_AX_LABEL_HID_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to a HID device. Example: 'Google Photos - HID device connected'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Photos</ex></ph> - HID device connected
       </message>
-      <message name="IDS_TAB_AX_LABEL_SERIAL_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to a serial port. Example: 'Brave Photos - Serial port connected'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Photos</ex></ph> - Serial port connected
+      <message name="IDS_TAB_AX_LABEL_SERIAL_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to a serial port. Example: 'Google Photos - Serial port connected'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Photos</ex></ph> - Serial port connected
       </message>
       <message name="IDS_TAB_AX_LABEL_NETWORK_ERROR_FORMAT" desc="Accessibility label text, when tab has encountered a network error such as being disconnected from the internet. Example: 'www.google.com - Network error'">
         <ph name="WINDOW_TITLE">$1<ex>www.google.com</ex></ph> - Network error
@@ -10565,6 +10761,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_A11Y_ALERT_WINDOW_OVERVIEW_MODE_ENTERED" desc="The accessible text read when the user enters window overview mode in Ash.">
           Entered window overview mode. Swipe to navigate, or press tab if using a keyboard.
+        </message>
+        <message name="IDS_A11Y_ALERT_DESK_TEMPLATES_MODE_ENTERED" desc="The accessible text read when the user enters desk templates mode in Ash.">
+          Viewing templates. Press tab to navigate.
         </message>
         <message name="IDS_A11Y_ALERT_WORKSPACE_FULLSCREEN_STATE_ENTERED" desc="The accessible text read when the current workspace state changes to fullscreen, which means the window in current workspace is fullcreen.">
           Entered full screen
@@ -10830,12 +11029,28 @@ Please help our engineers fix this problem. Tell us what happened right before y
         "<ph name="CHROME_EXTENSION_NAME">$1<ex>Brave Extension Name</ex></ph>" wants to connect to a HID device
       </message>
       <message name="IDS_HID_CHOOSER_ITEM_WITHOUT_NAME" desc="User option displaying the device IDs for a Human Interface Device (HID) without a device name.">
-        Unknown Device (<ph name="DEVICE_ID">$1<ex>1234:abcd</ex></ph>) </message>
+        Unknown Device (<ph name="DEVICE_ID">$1<ex>1234:abcd</ex></ph>)
+      </message>
       <message name="IDS_HID_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of HID devices.">
         Finding devices...
       </message>
       <message name="IDS_HID_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of HID devices.">
         Finding HID devices...
+      </message>
+      <message name="IDS_HID_POLICY_DESCRIPTION_FOR_VENDOR_ID_AND_PRODUCT_ID" desc="String describing a HID device permission granted by enterprise policy to a site when only the numeric product ID and vendor ID are available">
+        HID device (<ph name="VENDOR_ID">$1<ex>1234</ex></ph>:<ph name="PRODUCT_ID">$2<ex>1234</ex></ph>)
+      </message>
+      <message name="IDS_HID_POLICY_DESCRIPTION_FOR_VENDOR_ID" desc="String describing a HID device permission granted by enterprise policy to a site for all devices from a single vendor when only the numeric vendor ID is available.">
+        HID devices from vendor <ph name="VENDOR_ID">$1<ex>1234</ex></ph>
+      </message>
+      <message name="IDS_HID_POLICY_DESCRIPTION_FOR_USAGE_AND_USAGE_PAGE" desc="String describing a HID device permission granted by permission policy to a site for all devices containing a top-level collection with a single HID usage when only the numeric HID usage value is available.">
+        HID devices with usage <ph name="USAGE">$1<ex>1234</ex></ph> from usage page <ph name="USAGE_PAGE">$2<ex>1234</ex></ph>
+      </message>
+      <message name="IDS_HID_POLICY_DESCRIPTION_FOR_USAGE_PAGE" desc="String describing a HID device permission granted by permission policy to a site for all devices containing a top-level collection with any usage from a HID usage page when only the numeric HID usage page value is available.">
+        HID devices with usages from usage page <ph name="USAGE_PAGE">$1<ex>1234</ex></ph>
+      </message>
+      <message name="IDS_HID_POLICY_DESCRIPTION_FOR_ANY_DEVICE" desc="String describing a HID device permission granted by permission policy to a site for all devices.">
+        Any HID device
       </message>
     </if>
 
@@ -10869,14 +11084,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       </if>
     </if>
-
-  <!-- Protocol Handling intent prompt -->
-    <if expr="not is_android">
-      <message name="IDS_PROTOCOL_HANDLER_INTENT_PICKER_QUESTION" desc="Label on the protocol handler intent picker.">
-    Allow app to open <ph name="PROTOCOL_SCHEME">$1<ex>mailto</ex></ph> links?
-  </message>
-  </if>
-
 
     <!-- Font Access chooser -->
     <if expr="not is_android">
@@ -11296,8 +11503,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_CABLEV2_2ND_FACTOR_DESCRIPTION" desc="The contents of a dialog shown when the user tries to sign-in using a phone as a security key, or tries to register their phone as a security key for a future sign-in. A security key is traditionally a small USB device that is touched to confirm a sign-in (e.g. a gNubby) and, in this context, the phone is replacing the need for a separate device. The placeholder for the notification title will be replaced with the string that will appear in the notification on the phone. These messages are 4300134428943426639 and 581442427601260656.">
         <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> sent a notification to your phone. To confirm it's you, tap the “<ph name="NOTIFICATIONTITLE"><ex>Verify with this phone</ex>$2</ph>” notification and follow the steps.
       </message>
-      <message name="IDS_WEBAUTHN_CABLEV2_ADD_PHONE" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone.">
-        Add a new phone
+      <message name="IDS_WEBAUTHN_CABLEV2_ADD_PHONE" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone. Currently this ability is specific to Android phones.">
+        Add a new Android phone
       </message>
 
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DESCRIPTION_SHORT" desc="Second line of text in an item letting the user know that they can use their phone as a security key. The user needs to check their phone and respond to a notification that will ask them to press a button on the phone's screen to confirm that they're logging in.">
@@ -11549,11 +11756,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
         =1 {Checking this file with your organization's security policies...}
       other {Checking these files with your organization's security policies...}}
     </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_PRINT_PENDING_MESSAGE" desc="Message shown in tab modal dialog while performing a deep scan of a printed document to see if it complies with enterprise policies">
+      Checking this document with your organization's security policies...
+    </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_SUCCESS_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of data when it complies with enterprise policies">
       {NUM_FILES, plural,
         =0 {Security checks are done. Your data will be uploaded.}
         =1 {Security checks are done. Your file will be uploaded.}
       other {Security checks are done. Your files will be uploaded.}}
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_PRINT_SUCCESS_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of a printed document when it complies with enterprise policies">
+        Security checks are done. Your document will be printed.
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_UPLOAD_FAILURE_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of uploaded data when it doesn't comply with enterprise security policies">
       {NUM_FILES, plural,
@@ -11566,6 +11779,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         =0 {This data has sensitive or dangerous content}
         =1 {This file has sensitive or dangerous content}
       other {These files have sensitive or dangerous content}}
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_PRINT_WARNING_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of a printed document when it doesn't comply with enterprise security policies">
+        This document has sensitive content.
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_TIMEOUT_MESSAGE" desc="Message shown in tab modal dialog after a deep scan times out.">
       Something went wrong. Scanning could not be completed. Please try again.
@@ -11583,6 +11799,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       {NUM_FILES, plural,
         =1 {This file is too big for a security check. You can upload files up to 50 MB.}
       other {Some of these files are too big for a security check. You can upload files up to 50 MB.}}
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_LARGE_PRINT_FAILURE_MESSAGE" desc="Message shown in the tab modal dialog when the printed document to be scanned is too large according to the enterprise policies">
+        This document is too big for a security check. You can print documents of up to 50 MB.
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_ENCRYPTED_FILE_FAILURE_MESSAGE" desc="Message shown in the tab modal dialog when the uploaded file to be scanned is encrypted and when this is not allowed by enterprise policies">
       {NUM_FILES, plural,
@@ -11603,6 +11822,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_UPLOAD_BYPASS_JUSTIFICATION_LABEL" desc="Text displayed in the label above the bypass justification text area, explaining to the user that they have to enter a justification for uploading the file/pasted data even though there was a data loss prevention warning.">
       Please enter a reason for uploading this data:
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_BYPASS_JUSTIFICATION_TEXT_LIMIT_LABEL" desc="A label that contains the current amount of characters in the bypass justification text box, as well as the maximum limit of characters. This is displayed to the user so they know when the limit is exceeded.">
+      <ph name="ACTUAL_CHAR_COUNT">$1<ex>10</ex></ph>/<ph name="MAX_CHAR_COUNT">$2<ex>280</ex></ph>
     </message>
 
 
@@ -11753,11 +11975,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <message name="IDS_APP_PAUSE_HEADING" desc="Tells the user the app will be paused.">
-      You reached the time limit your parent set for <ph name="APP_NAME">$1<ex>Brave Photos</ex></ph>. You can use it for <ph name="TIME_LIMIT">$2<ex>2 hours and 30 minutes</ex></ph> tomorrow.
+      You reached the time limit your parent set for <ph name="APP_NAME">$1<ex>Google Photos</ex></ph>. You can use it for <ph name="TIME_LIMIT">$2<ex>2 hours and 30 minutes</ex></ph> tomorrow.
     </message>
 
     <message name="IDS_APP_PAUSE_HEADING_FOR_WEB_APPS" desc="Tells the user the app will be paused.">
-      You reached the time limit your parent set for <ph name="APP_NAME">$1<ex>Brave Photos</ex></ph> Brave app. You can use it for <ph name="TIME_LIMIT">$2<ex>2 hours and 30 minutes</ex></ph> tomorrow.
+      You reached the time limit your parent set for <ph name="APP_NAME">$1<ex>Google Photos</ex></ph> Brave app. You can use it for <ph name="TIME_LIMIT">$2<ex>2 hours and 30 minutes</ex></ph> tomorrow.
     </message>
 
     <!-- App block prompt -->
@@ -11766,11 +11988,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <message name="IDS_APP_BLOCK_HEADING_FOR_CHILD" desc="Tells the child the app is blocked.">
-      <ph name="APP_NAME">$1<ex>Brave Photos</ex></ph> is blocked by your parent. Ask your parent for permission to use this app.
+      <ph name="APP_NAME">$1<ex>Google Photos</ex></ph> is blocked by your parent. Ask your parent for permission to use this app.
     </message>
 
     <message name="IDS_APP_BLOCK_HEADING" desc="Tells the user the app is blocked.">
-      <ph name="APP_NAME">$1<ex>Brave Photos</ex></ph> is blocked by admin. Ask admin for permission to use this app.
+      <ph name="APP_NAME">$1<ex>Google Photos</ex></ph> is blocked by admin. Ask admin for permission to use this app.
     </message>
 
     <!-- Extension request -->
@@ -11923,6 +12145,110 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Continue
       </message>
     </if>
+
+    <!-- Input overlay strings -->
+    <if expr="chromeos_ash">
+      <message name="IDS_INPUT_OVERLAY_MENU_ENTRY_BUTTON" desc="Button to access Input Overlay's settings menu.">
+        Game Control
+      </message>
+      <message name="IDS_INPUT_OVERLAY_MENU_GAME_CONTROL" desc="Toggle to enable input overlay feature for arc games.">
+        Game Control
+      </message>
+      <message name="IDS_INPUT_OVERLAY_MENU_KEY_MAPPING" desc="Text shown next to the customize button to engage in modifying key bindings for games.">
+        Key mapping
+      </message>
+      <message name="IDS_INPUT_OVERLAY_MENU_CUSTOMIZE_BUTTON" desc="Text displayed to engage in key binding edition.">
+        Customize
+      </message>
+      <message name="IDS_INPUT_OVERLAY_MENU_SHOW_HINT_OVERLAY" desc="Text shown next to the toggle to enable/disable the display overlay to the user.">
+        Show hint overlay
+      </message>
+      <message name="IDS_INPUT_OVERLAY_MENU_SEND_FEEDBACK" desc="Entry point to send feedback regarding input-overlay.">
+        Send feedback
+      </message>
+    </if>
+
+    <!-- Privacy Sandbox Dialog strings -->
+    <!-- TODO(crbug.com/1286276) These strings are not final yet and therefore marked as translateable="false" -->
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_TITLE" translateable="false" desc="Title of the Privacy Sandbox Dialog.">
+      Nullam mollis, enim pellentesque
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_SUBTITLE" translateable="false" desc="Subtitle of the Privacy Sandbox Dialog.">
+      Integer tristique vitae dolor quis imperdiet. Nunc facilisis dolor id
+      tempus sollicitudin. Cras interdum eros tincidunt ornare mattis.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_BODY_HEADER_1" translateable="false" desc="Header of the first section in the body of the Privacy Sandbox Dialog.">
+      Sub subtitle 1
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_BODY_DESCRIPTION_1" translateable="false" desc="Description of the first section in the body of the Privacy Sandbox Dialog.">
+      Nunc a odio sodales, tincidunt purus tempus,
+    sodales mauris. Aliquam ultricies lorem
+    sed auctor tristique.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_BODY_HEADER_2" translateable="false" desc="Header of the second section in the body of the Privacy Sandbox Dialog.">
+      Sub subtitle 2
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_BODY_DESCRIPTION_2" translateable="false" desc="Description of the second section in the body of the Privacy Sandbox Dialog.">
+      Suspendisse suscipit pulvinar varius.
+      Vestibulum bibendum, nisi non facilisis euismod, dui urna viverra diam,
+      euismod interdum ipsum nulla id felis. Cras suscipit dolor justo, id
+      pellentesque ipsum finibus in. Ut accumsan
+      suscipit.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_LABEL" translateable="false" desc="Learn more label of the collapsable section in the body of the Privacy Sandbox Dialog.">
+      Learn more nisi non facilisis euismod
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_BOTTOM_SUMMARY" translateable="false" desc="Summary text in the bottom of the Privacy Sandbox Dialog.">
+      Donec consectetur id eros sed
+      placerat. Maecenas tincidunt diam eros, a tempus lectus consequat ac.
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
+      turpis egestas. Sed gravida vitae mauris non vulputate.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_1_HEADER" translateable="false" desc="Header of the first section in the collapsable section of the Privacy Sandbox Dialog.">
+      Pellentesque habitant morbi tr
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_1_BULLET_POINT_1" translateable="false" desc="First bullet point of the first section in the collapsable section of the Privacy Sandbox Dialog.">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Maecenas tincidunt diam eros:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
+      Pellentesque habitant morbi tristique senectus et netus et.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_1_BULLET_POINT_2" translateable="false" desc="Second bullet point of the first section in the collapsable section of the Privacy Sandbox Dialog.">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Donec consectetur eros:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
+      turpis egestas. Sed gravida vitae mauris non vulputate.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_1_BULLET_POINT_3" translateable="false" desc="Third bullet point of the first section in the collapsable section of the Privacy Sandbox Dialog.">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph> Acturpis egestas sed gravida:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_2_HEADER" translateable="false" desc="Header of the second section in the collapsable section of the Privacy Sandbox Dialog.">
+      Cras suscipit dolor justo, id pellentesque ipsum
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_2_BULLET_POINT_1" translateable="false" desc="First bullet point of the second section in the collapsable section of the Privacy Sandbox Dialog.">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Senectus et netus et malesuada:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
+      Pellentesque habitant morbi tristique senectus et netus et.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_2_BULLET_POINT_2" translateable="false" desc="Second bullet point of the second section in the collapsable section of the Privacy Sandbox Dialog.">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Pellentesque habitant morbi tristique:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
+      turpis egestas. Sed gravida vitae mauris non vulputate. Pellentesque habitant morbi tristique senectus. Acturpis egestas sed gravida Donec consectetur eros.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_2_BULLET_POINT_3" translateable="false" desc="Third bullet point of the second section in the collapsable section of the Privacy Sandbox Dialog.">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Morbi tristique senectus et netus:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
+      turpis egestas. Sed gravida vitae mauris non vulputate.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_ACCEPT_BUTTON" translateable="false" desc="Label of the button that accepts the consent in the Privacy Sandbox Dialog.">
+      Accept
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_DECLINE_BUTTON" translateable="false" desc="Label of the button that declines the consent in the Privacy Sandbox Dialog.">
+      Decline
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_ACKNOWLEDGE_BUTTON" translateable="false" desc="Label of the button that acknowledges the notice in the Privacy Sandbox Dialog.">
+      Ack
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_OPEN_SETTINGS_BUTTON" translateable="false" desc="Label of the button that opens settings in the Privacy Sandbox Dialog.">
+      Settings
+    </message>
   </messages>
 </release>
 </grit>

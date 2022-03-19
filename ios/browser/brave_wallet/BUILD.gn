@@ -23,6 +23,7 @@ source_set("brave_wallet") {
   ]
   deps = [
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",

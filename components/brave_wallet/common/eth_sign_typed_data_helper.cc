@@ -122,6 +122,8 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::HashStruct(
   return KeccakHash(*encoded_data);
 }
 
+// Encode the json data by the its type defined in json custom types starting
+// from primary type. See unittests for some examples.
 absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeData(
     const std::string& primary_type_name,
     const base::Value& data) const {
@@ -154,6 +156,8 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeData(
   return result;
 }
 
+// Encode each field of a custom type, if a field is also a custom type it
+// will call EncodeData recursively until it reaches an atomic type
 absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     const std::string& type,
     const base::Value& value) const {
@@ -206,8 +210,9 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     if (!value_bool)
       return absl::nullopt;
     uint256_t encoded_value = (uint256_t)*value_bool;
+    // Append the encoded value to byte array result in big endian order
     for (int i = 256 - 8; i >= 0; i -= 8) {
-      result.push_back((encoded_value >> i) & 0xFF);
+      result.push_back(static_cast<uint8_t>((encoded_value >> i) & 0xFF));
     }
   } else if (type == "address") {
     const std::string* value_str = value.GetIfString();
@@ -286,8 +291,9 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
       default:
         return absl::nullopt;
     }
+    // Append the encoded value to byte array result in big endian order
     for (int i = 256 - 8; i >= 0; i -= 8) {
-      result.push_back((encoded_value >> i) & 0xFF);
+      result.push_back(static_cast<uint8_t>((encoded_value >> i) & 0xFF));
     }
   } else if (base::StartsWith(type, "int", base::CompareCase::SENSITIVE)) {
     // int8 to int256 in steps of 8
@@ -334,20 +340,19 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
           return absl::nullopt;
         break;
       case 128:
-        if (encoded_value > std::numeric_limits<int128_t>::max() ||
-            encoded_value < std::numeric_limits<int128_t>::min())
+        if (encoded_value > kMax128BitInt || encoded_value < kMin128BitInt)
           return absl::nullopt;
         break;
       case 256:
-        if (encoded_value > std::numeric_limits<int256_t>::max() ||
-            encoded_value < std::numeric_limits<int256_t>::min())
+        if (encoded_value > kMax256BitInt || encoded_value < kMin256BitInt)
           return absl::nullopt;
         break;
       default:
         return absl::nullopt;
     }
+    // Append the encoded value to byte array result in big endian order
     for (int i = 256 - 8; i >= 0; i -= 8) {
-      result.push_back((encoded_value >> i) & 0xFF);
+      result.push_back(static_cast<uint8_t>((encoded_value >> i) & 0xFF));
     }
   } else {
     auto encoded_data = EncodeData(type, value);

@@ -9,7 +9,7 @@
     <output filename="grit/brave_webtorrent_resources_map.h" type="resource_map_header" />
   </outputs>
   <release seq="1">
-    <includes first_id="37500">
+    <includes first_id="45000">
       <include name="IDR_BRAVE_WEBTORRENT" file="brave_webtorrent/extension/manifest.json" type="BINDATA" />
       <include name="IDR_BRAVE_WEBTORRENT_HTML" file="brave_webtorrent/extension/brave_webtorrent.html" type="BINDATA" />
       <include name="IDR_BRAVE_WEBTORRENT2_HTML" file="brave_webtorrent/extension/brave_webtorrent2.html" type="BINDATA" />

@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/color/color_provider.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/gfx/geometry/insets.h"
@@ -68,8 +69,8 @@ void PaddedImageButton::AdjustBorderInsetToFitHeight(const int height) {
 void PaddedImageButton::OnThemeChanged() {
   ImageButton::OnThemeChanged();
 
-  const SkColor background_color = GetNativeTheme()->GetSystemColor(
-      ui::NativeTheme::kColorId_WindowBackground);
+  const SkColor background_color =
+      GetColorProvider()->GetColor(ui::kColorWindowBackground);
   views::InkDrop::Get(this)->SetBaseColor(
       color_utils::GetColorWithMaxContrast(background_color));
 }

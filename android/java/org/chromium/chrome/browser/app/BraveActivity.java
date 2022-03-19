@@ -1217,4 +1217,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         BraveTabUiFeatureUtilities.maybeOverrideEnableTabGroupAutoCreationPreference(
                 ContextUtils.getApplicationContext());
     }
+
+    @Override
+    protected boolean supportsDynamicColors() {
+        // Dynamic colors cause styling issues with Brave theme.
+        return false;
+    }
 }

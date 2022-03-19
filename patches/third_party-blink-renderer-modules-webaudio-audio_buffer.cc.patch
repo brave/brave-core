@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
-index f652c3709fe917cdb2601ceb5037b07b6c53a4b9..46911eab0bd2e198c3147bbb6a61b217f4938ef9 100644
+index 366870d677769b475021eb1e664ea4b05c3afe00..f169140dea55a7c87fa475030dba3225cf30b029 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 @@ -197,6 +197,7 @@ AudioBuffer::AudioBuffer(AudioBus* bus)

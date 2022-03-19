@@ -170,11 +170,8 @@ bool IsDefaultAvatarIconUrl(const std::string& url, size_t* icon_index) {
 }
 
 ui::ImageModel GetGuestAvatar(int size) {
-  return ui::ImageModel::FromVectorIcon(
-      kUserMenuGuestIcon,
-      ui::NativeTheme::GetInstanceForNativeUi()->GetSystemColor(
-          ui::NativeTheme::kColorId_DefaultIconColor),
-      size);
+  return ui::ImageModel::FromVectorIcon(kUserMenuGuestIcon, ui::kColorIcon,
+                                        size);
 }
 
 gfx::Image GetPlaceholderAvatarIconWithColors(SkColor fill_color,

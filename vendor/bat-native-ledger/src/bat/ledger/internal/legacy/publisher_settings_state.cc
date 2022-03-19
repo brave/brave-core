@@ -164,7 +164,7 @@ bool PublisherSettingsState::FromDict(
       dictionary->FindListKey(kProcessedPendingPublishersKey);
   if (processed_pending_publishers_list) {
     for (const auto& processed_pending_publisher_value :
-        processed_pending_publishers_list->GetList()) {
+         processed_pending_publishers_list->GetList()) {
       if (!processed_pending_publisher_value.is_string()) {
         NOTREACHED();
         continue;

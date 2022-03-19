@@ -5,12 +5,12 @@
 
 package org.chromium.chrome.browser.upgrade;
 
+import org.chromium.base.BundleUtils;
 import org.chromium.chrome.browser.base.SplitCompatJobIntentService;
-import org.chromium.chrome.browser.base.SplitCompatUtils;
 
 public class BraveUpgradeJobIntentService extends SplitCompatJobIntentService {
     public BraveUpgradeJobIntentService() {
-        super(SplitCompatUtils.getIdentifierName(
+        super(BundleUtils.getIdentifierName(
                 "org.chromium.chrome.browser.upgrade.BraveUpgradeJobIntentServiceImpl"));
     }
 }

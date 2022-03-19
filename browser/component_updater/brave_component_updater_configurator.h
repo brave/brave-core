@@ -63,6 +63,7 @@ class BraveConfigurator : public update_client::Configurator {
   std::unique_ptr<update_client::ProtocolHandlerFactory>
   GetProtocolHandlerFactory() const override;
   absl::optional<bool> IsMachineExternallyManaged() const override;
+  update_client::UpdaterStateProvider GetUpdaterStateProvider() const override;
 
  private:
   friend class base::RefCountedThreadSafe<BraveConfigurator>;

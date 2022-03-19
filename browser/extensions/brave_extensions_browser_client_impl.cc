@@ -6,8 +6,8 @@
 #include "brave/browser/extensions/brave_extensions_browser_client_impl.h"
 
 #include <memory>
+#include <tuple>
 
-#include "base/ignore_result.h"
 #include "brave/browser/extensions/brave_extensions_browser_api_provider.h"
 #include "chrome/browser/extensions/chrome_component_extension_resource_manager.h"
 
@@ -19,8 +19,8 @@ BraveExtensionsBrowserClientImpl::BraveExtensionsBrowserClientImpl() {
   // the UI thread (due to pdf_extension_util::AddStrings calling
   // g_browser_process->GetApplicationLocale() that has a DCHECK to that
   // regard).
-  ignore_result(GetComponentExtensionResourceManager()
-                    ->GetTemplateReplacementsForExtension(""));
+  std::ignore = GetComponentExtensionResourceManager()
+                    ->GetTemplateReplacementsForExtension("");
 }
 
 }  // namespace extensions

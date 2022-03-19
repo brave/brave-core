@@ -106,16 +106,16 @@ class TestBraveWalletHandler : public BraveWalletHandler {
 
   void RegisterMessages() override {}
 
-  void RemoveEthereumChain(base::Value::ConstListView args) {
+  void RemoveEthereumChain(const base::Value::List& args) {
     BraveWalletHandler::RemoveEthereumChain(args);
   }
-  void GetCustomNetworksList(base::Value::ConstListView args) {
+  void GetCustomNetworksList(const base::Value::List& args) {
     BraveWalletHandler::GetCustomNetworksList(args);
   }
-  void AddEthereumChain(base::Value::ConstListView args) {
+  void AddEthereumChain(const base::Value::List& args) {
     BraveWalletHandler::AddEthereumChain(args);
   }
-  void SetActiveNetwork(base::Value::ConstListView args) {
+  void SetActiveNetwork(const base::Value::List& args) {
     BraveWalletHandler::SetActiveNetwork(args);
   }
   content::TestWebUI* web_ui() { return &test_web_ui_; }
@@ -215,7 +215,7 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
       handler.prefs()->GetDictionary(kBraveWalletUserAssets);
   const base::Value* list = assets_pref->FindKey("0x999");
   ASSERT_TRUE(list->is_list());
-  base::Value::ConstListView asset_list = list->GetList();
+  const base::Value::List& asset_list = list->GetList();
   ASSERT_EQ(asset_list.size(), 1u);
 
   EXPECT_EQ(*asset_list[0].FindStringKey("contract_address"), "");
@@ -235,7 +235,7 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
   ASSERT_TRUE(data.arg1()->is_string());
   EXPECT_EQ(data.arg1()->GetString(), "id");
 
-  auto arg3_list = data.arg3()->GetList();
+  const auto& arg3_list = data.arg3()->GetList();
   ASSERT_EQ(arg3_list.size(), 2UL);
   EXPECT_EQ(arg3_list[0].GetBool(), false);
   std::string error_message =
@@ -280,7 +280,7 @@ TEST(TestBraveWalletHandler, AddEthereumChainWrongNetwork) {
   ASSERT_TRUE(data.arg1()->is_string());
   EXPECT_EQ(data.arg1()->GetString(), "id");
 
-  auto arg3_list = data.arg3()->GetList();
+  const auto& arg3_list = data.arg3()->GetList();
   ASSERT_EQ(arg3_list.size(), 2UL);
   EXPECT_EQ(arg3_list[0].GetBool(), false);
   std::string error_message = l10n_util::GetStringFUTF8(
@@ -316,7 +316,7 @@ TEST(TestBraveWalletHandler, AddEthereumChainFail) {
   ASSERT_TRUE(data.arg1()->is_string());
   EXPECT_EQ(data.arg1()->GetString(), "id");
 
-  auto arg3_list = data.arg3()->GetList();
+  const auto& arg3_list = data.arg3()->GetList();
   ASSERT_EQ(arg3_list.size(), 2UL);
   EXPECT_EQ(arg3_list[0].GetBool(), false);
   std::string error_message =

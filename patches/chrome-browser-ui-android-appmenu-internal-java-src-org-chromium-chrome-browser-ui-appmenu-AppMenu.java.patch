@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java b/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
-index b33f2e730ced54a87dd3a02d0d520de0d0f29f7c..903e720441f5c8b92b04317ec7fd274355720c75 100644
+index 20f24b484247463fdb4f6bd724e193e5e578b538..e146f3fec8ba005641e0de5018da6915cc44a7e6 100644
 --- a/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
 +++ b/chrome/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/AppMenu.java
 @@ -219,6 +219,7 @@ class AppMenu implements OnItemClickListener, OnKeyListener, AppMenuClickHandler
          mPopup.setOutsideTouchable(true);
  
-         if (!isByPermanentButton) mPopup.setAnimationStyle(R.style.OverflowMenuAnim);
+         if (!isByPermanentButton) mPopup.setAnimationStyle(R.style.EndIconMenuAnim);
 +        if (!isByPermanentButton) mPopup.setAnimationStyle(BraveAppMenu.getAnimationStyle());
  
          // Turn off window animations for low end devices.

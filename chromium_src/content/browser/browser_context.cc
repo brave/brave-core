@@ -50,7 +50,8 @@ std::string GetSessionStorageNamespaceId(WebContents* web_contents) {
   DCHECK(site_instance_impl);
 
   return static_cast<NavigationControllerImpl&>(web_contents->GetController())
-      .GetSessionStorageNamespace(site_instance_impl->GetSiteInfo())
+      .GetSessionStorageNamespace(
+          site_instance_impl->GetStoragePartitionConfig())
       ->id();
 }
 

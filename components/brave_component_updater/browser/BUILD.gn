@@ -28,9 +28,6 @@ static_library("browser") {
       "extension_whitelist_service.h",
     ]
 
-    deps += [
-      "//brave/vendor/extension-whitelist/brave:extension-whitelist",
-      "//extensions/common",
-    ]
+    deps += [ "//brave/vendor/extension-whitelist/brave:extension-whitelist" ]
   }
 }

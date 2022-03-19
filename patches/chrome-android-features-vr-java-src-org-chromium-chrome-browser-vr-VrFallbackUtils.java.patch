@@ -1,0 +1,12 @@
+diff --git a/chrome/android/features/vr/java/src/org/chromium/chrome/browser/vr/VrFallbackUtils.java b/chrome/android/features/vr/java/src/org/chromium/chrome/browser/vr/VrFallbackUtils.java
+index ef8a7d1f59b21c6c65f41009054f959a90301360..563ef806e93ee94dd39df1705b786c00ae619f46 100644
+--- a/chrome/android/features/vr/java/src/org/chromium/chrome/browser/vr/VrFallbackUtils.java
++++ b/chrome/android/features/vr/java/src/org/chromium/chrome/browser/vr/VrFallbackUtils.java
+@@ -23,6 +23,7 @@ import org.chromium.content_public.browser.UiThreadTaskTraits;
+     private static final int PREPARING_VR_NOTIFICATION_TIMEOUT_MS = 5000;
+     private static final int PREPARING_VR_NOTIFICATION_DELAY_MS = 2000;
+ 
++    @android.annotation.SuppressLint("WrongConstant")
+     /** Shows immersive notification informing the user that the VR browser is not ready yet. */
+     public static void showFailureNotification(Context context) {
+         PostTask.postDelayedTask(UiThreadTaskTraits.DEFAULT, () -> {

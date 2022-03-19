@@ -37,11 +37,11 @@ std::string PostCredentials::GetUrl(const std::string& order_id) {
 std::string PostCredentials::GeneratePayload(
     const std::string& item_id,
     const std::string& type,
-    std::unique_ptr<base::ListValue> blinded_creds) {
+    base::Value::List&& blinded_creds) {
   base::Value body(base::Value::Type::DICTIONARY);
   body.SetStringKey("itemId", item_id);
   body.SetStringKey("type", type);
-  body.SetKey("blindedCreds", base::Value(std::move(*blinded_creds)));
+  body.SetKey("blindedCreds", base::Value(std::move(blinded_creds)));
 
   std::string json;
   base::JSONWriter::Write(body, &json);
@@ -73,12 +73,11 @@ type::Result PostCredentials::CheckStatusCode(const int status_code) {
   return type::Result::LEDGER_OK;
 }
 
-void PostCredentials::Request(
-    const std::string& order_id,
-    const std::string& item_id,
-    const std::string& type,
-    std::unique_ptr<base::ListValue> blinded_creds,
-    PostCredentialsCallback callback) {
+void PostCredentials::Request(const std::string& order_id,
+                              const std::string& item_id,
+                              const std::string& type,
+                              base::Value::List&& blinded_creds,
+                              PostCredentialsCallback callback) {
   auto url_callback = std::bind(&PostCredentials::OnRequest,
       this,
       _1,
