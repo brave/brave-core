@@ -19,6 +19,7 @@
 #include "components/signin/internal/identity_manager/accounts_mutator_impl.h"
 #include "components/signin/internal/identity_manager/device_accounts_synchronizer_impl.h"
 #include "components/signin/internal/identity_manager/diagnostics_provider_impl.h"
+#include "components/signin/internal/identity_manager/fake_account_capabilities_fetcher_factory.h"
 #include "components/signin/internal/identity_manager/fake_profile_oauth2_token_service.h"
 #include "components/signin/internal/identity_manager/gaia_cookie_manager_service.h"
 #include "components/signin/internal/identity_manager/primary_account_manager.h"
@@ -109,7 +110,8 @@ class BraveIdentityManagerTest : public testing::Test {
     auto account_fetcher_service = std::make_unique<AccountFetcherService>();
     account_fetcher_service->Initialize(
         &signin_client_, token_service.get(), account_tracker_service.get(),
-        std::make_unique<image_fetcher::FakeImageDecoder>());
+        std::make_unique<image_fetcher::FakeImageDecoder>(),
+        std::make_unique<FakeAccountCapabilitiesFetcherFactory>());
 
     std::unique_ptr<PrimaryAccountPolicyManager> policy_manager;
     auto primary_account_manager = std::make_unique<PrimaryAccountManager>(
