@@ -30,10 +30,11 @@ export interface Props {
   showEmptyState: boolean
   onFetchMoreMarketData: () => void
   onSort?: (column: MarketDataTableColumnTypes, newSortOrder: SortOrder) => void
+  onSelectCoinMarket: (coinMarket: BraveWallet.CoinMarket) => void
 }
 
 const MarketDataTable = (props: Props) => {
-  const { headers, coinMarketData, moreDataAvailable, showEmptyState, onFetchMoreMarketData, onSort } = props
+  const { headers, coinMarketData, moreDataAvailable, showEmptyState, onFetchMoreMarketData, onSort, onSelectCoinMarket } = props
 
   const renderCells = (coinMarkDataItem: BraveWallet.CoinMarket) => {
     const {
@@ -119,11 +120,18 @@ const MarketDataTable = (props: Props) => {
   }
 
   const rows: Row[] = React.useMemo(() => {
-    const cells = coinMarketData.map((coinMarketItem: BraveWallet.CoinMarket) => {
-      return renderCells(coinMarketItem)
+    const rows = coinMarketData.map((coinMarketItem: BraveWallet.CoinMarket) => {
+      const cells = renderCells(coinMarketItem)
+      const row = {
+        content: cells,
+        data: coinMarketItem,
+        onClick: onSelectCoinMarket
+      } as Row
+
+      return row
     })
 
-    return cells.map(cell => { return { content: cell } })
+    return rows
   }, [coinMarketData, headers])
 
   return (
@@ -143,6 +151,7 @@ const MarketDataTable = (props: Props) => {
         >
           <TableWrapper>
             <Table
+              id='market-datatable'
               headers={headers}
               rows={rows}
               onSort={onSort}

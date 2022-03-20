@@ -42,7 +42,7 @@ import {
   WalletIcon
 } from './style'
 
-import { TransactionPlaceholderText, Spacer } from '../portfolio/style'
+import { TransactionPlaceholderText, Spacer } from '../portfolio/components/portfolio-top-section/style'
 
 // Components
 import { BackButton, Tooltip } from '../../../shared'

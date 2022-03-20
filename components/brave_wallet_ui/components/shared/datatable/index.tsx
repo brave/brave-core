@@ -33,6 +33,8 @@ export interface Cell {
 export interface Row {
   customStyle?: {[key: string]: string}
   content: Cell[]
+  data: any
+  onClick?: (data: any) => void
 }
 
 export interface Props {
@@ -81,6 +83,12 @@ const Table = (props: Props) => {
     })
   }
 
+  const onRowClick = (row: Row) => {
+    if (row.onClick) {
+      row.onClick(row.data)
+    }
+  }
+
   return (
     <StyledWrapper id={id}>
       {
@@ -103,6 +111,7 @@ const Table = (props: Props) => {
                   <StyledTR
                     key={i}
                     customStyle={row.customStyle}
+                    onClick={() => onRowClick(row)}
                   >
                     {
                       row.content.map((cell: Cell, j: number) =>
@@ -117,7 +126,7 @@ const Table = (props: Props) => {
                   </StyledTR>
                 )
               }
-            </StyledTBody>
+              </StyledTBody>
             : null
           }
         </StyledTable>

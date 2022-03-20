@@ -1,4 +1,13 @@
 import styled from 'styled-components'
+import { ArrowUpIcon } from 'brave-ui/components/icons'
+import EyeOnIcon from '../../../../../../assets/svg-icons/eye-on-icon.svg'
+import EyeOffIcon from '../../../../../../assets/svg-icons/eye-off-icon.svg'
+import { AssetIconProps, AssetIconFactory, WalletButton } from '../../../../../shared/style'
+
+interface StyleProps {
+  isDown: boolean
+  hideBalances: boolean
+}
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -72,14 +81,7 @@ export const AssetRow = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
-`
-
-export const AssetColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+  margin-bottom: 9px;
 `
 
 export const PriceRow = styled.div`
@@ -96,14 +98,6 @@ export const AssetNameText = styled.span`
   font-weight: 600;
   letter-spacing: 0.02em;
   color: ${(p) => p.theme.color.text01};
-`
-
-export const NetworkDescription = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 16px;
-  letter-spacing: 0.02em;
-  color: ${(p) => p.theme.color.text02};
 `
 
 export const DetailText = styled.span`
@@ -144,7 +138,7 @@ export const DividerText = styled.span`
 export const PercentBubble = styled.div<Partial<StyleProps>>`
   display: flex;
   align-items: center;
-  justify-conent: center;
+  justify-content: center;
   flex-direction: row;
   padding: 4px 8px;
   border-radius: 8px;

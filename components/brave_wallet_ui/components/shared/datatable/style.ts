@@ -79,6 +79,7 @@ export const StyledTH = styled('th')<Partial<StyleProps>>`
 `
 
 export const StyledTR = styled('tr')<Partial<Row>>`
+  cursor: pointer;
 
   ${p => p.customStyle
     ? css`

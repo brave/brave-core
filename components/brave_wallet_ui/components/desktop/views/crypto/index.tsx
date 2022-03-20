@@ -16,11 +16,10 @@ import {
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../'
 import { getLocale } from '../../../../../common/locale'
-import { PortfolioView, AccountsView } from '../'
+import { PortfolioView, AccountsView, MarketView } from '../'
 import {
   HardwareWalletConnectOpts
 } from '../../popup-modals/add-account-modal/hardware-wallet-connect/types'
-import MarketView from '../market'
 
 interface ParamsType {
   category?: TopTabNavTypes
@@ -268,6 +267,10 @@ const CryptoView = (props: Props) => {
     }
   }
 
+  const portfolioHistory = React.useMemo(() => {
+    return portfolioPriceHistory
+  }, [portfolioPriceHistory])
+
   return (
     <StyledWrapper onClick={onClickHideMore}>
       {!hideNav &&
@@ -322,7 +325,7 @@ const CryptoView = (props: Props) => {
           onAddCustomAsset={onAddCustomAsset}
           selectedAsset={selectedAsset}
           portfolioBalance={portfolioBalance}
-          portfolioPriceHistory={portfolioPriceHistory}
+          portfolioPriceHistory={portfolioHistory}
           transactions={transactions}
           selectedAssetFiatPrice={selectedAssetFiatPrice}
           selectedAssetCryptoPrice={selectedAssetCryptoPrice}
@@ -369,12 +372,28 @@ const CryptoView = (props: Props) => {
           networkList={networkList}
         />
       </Route>
-      <Route path={WalletRoutes.Market} exact={true}>
+      <Route path={WalletRoutes.MarketSub} >
         <MarketView
           isLoadingCoinMarketData={isLoadingCoinMarketData}
-          onFetchCoinMarkets={onFetchCoinMarkets}
           coinMarkets={coinMarkets}
           tradableAssets={tradableAssets}
+          selectedAsset={selectedAsset}
+          defaultCurrencies={defaultCurrencies}
+          selectedNetwork={selectedNetwork}
+          portfolioPriceHistory={portfolioHistory}
+          selectedAssetPriceHistory={selectedAssetPriceHistory}
+          selectedAssetFiatPrice={selectedAssetFiatPrice}
+          selectedAssetCryptoPrice={selectedAssetCryptoPrice}
+          selectedTimeline={selectedTimeline}
+          selectedPortfolioTimeline={selectedPortfolioTimeline}
+          networkList={networkList}
+          portfolioBalance={portfolioBalance}
+          isLoading={isLoading}
+          isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
+          onFetchCoinMarkets={onFetchCoinMarkets}
+          onSelectAsset={onSelectAsset}
+          onChangeTimeline={onChangeTimeline}
+          onSelectNetwork={(network => () => onSelectNetwork(network))}
         />
       </Route>
 

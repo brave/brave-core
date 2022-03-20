@@ -23,7 +23,7 @@ import {
   DividerText,
   SubDivider,
   Spacer
-} from '../../style'
+} from '../portfolio-top-section/style'
 
 export interface Props {
   filteredAssetList: UserAssetInfoType[]

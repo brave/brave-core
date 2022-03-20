@@ -33,7 +33,7 @@ import {
   AssetBalanceDisplay,
   DividerRow,
   CoinGeckoText
-} from '../../style'
+} from '../../components/portfolio-top-section/style'
 
 export interface Props {
   transactionSpotPrices: BraveWallet.AssetPrice[]

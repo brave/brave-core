@@ -555,6 +555,7 @@ export enum WalletRoutes {
   Portfolio = '/crypto/portfolio',
   PortfolioSub = '/crypto/portfolio/:id?',
   Market = '/crypto/market',
+  MarketSub = '/crypto/market/:id?',
   Accounts = '/crypto/accounts',
   AddAccountModal = '/crypto/accounts/add-account',
   AddAssetModal = '/crypto/portfolio/add-asset',

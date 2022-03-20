@@ -527,6 +527,8 @@ function Container (props: Props) {
   }
 
   React.useEffect(() => {
+    const acceptedMarketRoutes = walletLocation.includes(WalletRoutes.Market) ? walletLocation : ''
+
     // Creates a list of Accepted Portfolio Routes
     const acceptedPortfolioRoutes = userVisibleTokensInfo.map((token) => {
       if (token.contractAddress === '') {
@@ -573,6 +575,7 @@ function Container (props: Props) {
       walletLocation !== WalletRoutes.AddAccountModal &&
       walletLocation !== WalletRoutes.AddAssetModal &&
       walletLocation !== WalletRoutes.Market &&
+      walletLocation !== acceptedMarketRoutes &&
       acceptedAccountRoutes.length !== 0 &&
       acceptedPortfolioRoutes.length !== 0
     ) {
