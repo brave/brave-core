@@ -8,6 +8,7 @@
 #include "base/numerics/safe_conversions.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/themes/theme_properties.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
@@ -107,10 +108,10 @@ SkColor BraveThemeHelper::GetDefaultColor(
     incognito = true;
   }
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
   switch (id) {
     // Pick most contrast color between our light and dark colors based on
     // current toolbar color.
+#if BUILDFLAG(ENABLE_SIDEBAR)
     case BraveThemeProperties::COLOR_SIDEBAR_ITEM_DRAG_INDICATOR_COLOR:
     case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUTTON_DISABLED:
     case BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE:
@@ -138,10 +139,27 @@ SkColor BraveThemeHelper::GetDefaultColor(
                                   incognito, theme_supplier),
                          0xFF * kToolbarInkDropHighlightVisibleOpacity);
     }
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_BORDER:
+    case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_CONNECTED:
+    case BraveThemeProperties::COLOR_BRAVE_VPN_BUTTON_TEXT_DISCONNECTED: {
+      const auto toolbar_color =
+          GetColor(ThemeProperties::COLOR_TOOLBAR, incognito, theme_supplier);
+      const auto color_for_light = MaybeGetDefaultColorForBraveUi(
+          id, incognito, is_tor_,
+          dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
+      const auto color_for_dark = MaybeGetDefaultColorForBraveUi(
+          id, incognito, is_tor_,
+          dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
+      DCHECK(color_for_light && color_for_dark);
+      return color_utils::PickContrastingColor(
+          color_for_light.value(), color_for_dark.value(), toolbar_color);
+    }
+#endif
     default:
       break;
   }
-#endif
 
   const dark_mode::BraveDarkModeType type =
       dark_mode::GetActiveBraveDarkModeType();
