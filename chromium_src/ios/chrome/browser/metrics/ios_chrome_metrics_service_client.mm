@@ -97,6 +97,11 @@ void IOSChromeMetricsServiceClient::RegisterPrefs(
   metrics::MetricsService::RegisterPrefs(registry);
 }
 
+variations::SyntheticTrialRegistry*
+IOSChromeMetricsServiceClient::GetSyntheticTrialRegistry() {
+  return synthetic_trial_registry_.get();
+}
+
 metrics::MetricsService* IOSChromeMetricsServiceClient::GetMetricsService() {
   return nullptr;
 }
@@ -174,6 +179,10 @@ void IOSChromeMetricsServiceClient::WebStateDidStopLoading(
 }
 
 void IOSChromeMetricsServiceClient::Initialize() {
+  synthetic_trial_registry_ =
+      std::make_unique<variations::SyntheticTrialRegistry>(
+          IsExternalExperimentAllowlistEnabled());
+
   RegisterMetricsServiceProviders();
 }
 
