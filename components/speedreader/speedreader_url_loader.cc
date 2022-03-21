@@ -139,7 +139,7 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
         base::BindOnce(
             [](base::WeakPtr<SpeedReaderURLLoader> self, std::string result) {
               if (self) {
-                self->BodySnifferURLLoader::CompleteLoading(result);
+                self->BodySnifferURLLoader::CompleteLoading(std::move(result));
               }
             },
             weak_factory_.GetWeakPtr()));

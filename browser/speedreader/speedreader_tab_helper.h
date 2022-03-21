@@ -20,6 +20,7 @@ class NavigationEntry;
 class NavigationHandle;
 class WebContents;
 }  // namespace content
+
 namespace speedreader {
 
 class SpeedreaderBubbleView;
