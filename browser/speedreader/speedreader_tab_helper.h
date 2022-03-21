@@ -111,11 +111,11 @@ class SpeedreaderTabHelper
   void WebContentsDestroyed() override;
 
   // SpeedreaderResultDelegate:
-  void OnDistillComplete() override;  
+  void OnDistillComplete() override;
 
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 
-  bool is_active_ = false;  
+  bool is_active_ = false;
 
   bool single_shot_next_request_ =
       false;  // run speedreader once on next page load

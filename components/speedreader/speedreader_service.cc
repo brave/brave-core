@@ -68,7 +68,7 @@ void RecordHistograms(PrefService* prefs, bool toggled, bool enabled_now) {
   } else if (prefs->GetBoolean(kSpeedreaderPrefEverEnabled)) {
     status = EnabledStatus::kEverEnabled;
   }
- 
+
   UMA_HISTOGRAM_ENUMERATION(kSpeedreaderEnabledUMAHistogramName, status);
 }
 

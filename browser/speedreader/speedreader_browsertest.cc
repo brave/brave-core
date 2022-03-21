@@ -94,9 +94,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     content::WaitForLoadStop(ActiveWebContents());
   }
 
-  void ToggleSpeedreader() {
-    speedreader_service()->ToggleSpeedreader();
-  }
+  void ToggleSpeedreader() { speedreader_service()->ToggleSpeedreader(); }
 
   void DisableSpeedreader() {
     speedreader_service()->DisableSpeedreaderForTest();

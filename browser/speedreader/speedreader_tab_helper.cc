@@ -102,7 +102,7 @@ void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
 
   const bool enabled = speedreader::IsEnabledForSite(
       content_rules_, web_contents()->GetLastCommittedURL());
-  if (enabled == on) 
+  if (enabled == on)
     return;
 
   speedreader::SetEnabledForSite(content_rules_,
@@ -163,8 +163,7 @@ void SpeedreaderTabHelper::UpdateActiveState(const GURL& url) {
     auto* rewriter_service =
         g_brave_browser_process->speedreader_rewriter_service();
     if (rewriter_service->URLLooksReadable(url)) {
-      VLOG(2) << __func__
-              << "URL passed speedreader heuristic: " << url;
+      VLOG(2) << __func__ << "URL passed speedreader heuristic: " << url;
       if (!IsSpeedreaderEnabled()) {
         SetNextRequestState(DistillState::kPageProbablyReadable);
       } else if (!IsEnabledForSite(url)) {
@@ -197,7 +196,8 @@ void SpeedreaderTabHelper::ShowReaderModeBubble() {
 }
 
 Profile* SpeedreaderTabHelper::GetProfile() const {
-  auto *profile = Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  auto* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   DCHECK(profile);
   return profile;
 }
@@ -245,12 +245,12 @@ void SpeedreaderTabHelper::OnPrefChanged() {
   switch (distill_state_) {
     case DistillState::kUnknown:
     case DistillState::kNone:
-    break;  // Nothing to do.
+      break;  // Nothing to do.
     case DistillState::kPageProbablyReadable:
       if (is_speedreader_enabled) {
         distill_state_ = DistillState::kSpeedreaderOnDisabledPage;
       }
-    break;
+      break;
     case DistillState::kSpeedreaderMode:
       if (!is_speedreader_enabled) {
         distill_state_ = DistillState::kReaderMode;
@@ -270,7 +270,7 @@ void SpeedreaderTabHelper::OnPrefChanged() {
       break;
     }
     default:
-    break;    
+      break;
   }
 
   UpdateButtonIfNeeded();
