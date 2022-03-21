@@ -128,7 +128,8 @@ public class BraveWalletAutoLockPreferences
             return;
         }
 
-        mKeyringService = KeyringServiceFactory.getInstance(Utils.getProfile(false)).getKeyringService(this);
+        mKeyringService =
+                KeyringServiceFactory.getInstance(Utils.getProfile(false)).getKeyringService(this);
     }
 
     private void setPrefWalletAutoLockTime(String s) {

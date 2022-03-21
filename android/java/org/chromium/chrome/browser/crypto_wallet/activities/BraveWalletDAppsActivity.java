@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddTokenFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageFragment;
 
 import java.util.HashMap;
@@ -64,9 +65,10 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity {
         //             fragment = new AddEthereumChainFragment();
         //         } else if (mActivityType == ActivityType.SWITCH_ETHEREUM_CHAIN) {
         //             fragment = new SwitchEthereumChainFragment();
-        //         } else if (mActivityType == ActivityType.ADD_TOKEN) {
-        //             fragment = new AddTokenFragmentFragment();
         //         }
+        else if (mActivityType == ActivityType.ADD_TOKEN) {
+            fragment = new AddTokenFragment();
+        }
         ft.replace(R.id.frame_layout, fragment);
         ft.commit();
 

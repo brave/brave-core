@@ -363,7 +363,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
             return;
         }
 
-        mKeyringService = KeyringServiceFactory.getInstance(Utils.getProfile(false)).getKeyringService(this);
+        mKeyringService =
+                KeyringServiceFactory.getInstance(Utils.getProfile(false)).getKeyringService(this);
     }
 
     private void InitJsonRpcService() {
