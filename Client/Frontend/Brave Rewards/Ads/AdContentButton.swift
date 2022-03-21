@@ -24,7 +24,7 @@ class AdContentButton: UIControl {
     $0.font = .systemFont(ofSize: 14.0, weight: .regular)
     $0.text = Strings.Ads.adNotificationTitle.uppercased()
   }
-  
+
   private let backgroundView: UIVisualEffectView = {
     let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterial))
     backgroundView.isUserInteractionEnabled = false
@@ -34,43 +34,43 @@ class AdContentButton: UIControl {
     backgroundView.layer.masksToBounds = true
     return backgroundView
   }()
-  
+
   override public init(frame: CGRect) {
     super.init(frame: frame)
-    
+
     let headerStackView = UIStackView().then {
       $0.spacing = 8.0
     }
-    
+
     let stackView = UIStackView().then {
       $0.axis = .vertical
       $0.spacing = 2.0
       $0.alignment = .leading
       $0.isUserInteractionEnabled = false
     }
-    
+
     addSubview(backgroundView)
     addSubview(stackView)
     stackView.addArrangedSubview(headerStackView)
     stackView.setCustomSpacing(8, after: headerStackView)
     stackView.addArrangedSubview(titleLabel)
     stackView.addArrangedSubview(bodyLabel)
-   
+
     let iconImageView = UIImageView(image: UIImage(imageLiteralResourceName: "bat-small"))
-    
+
     headerStackView.addArrangedSubview(iconImageView)
     headerStackView.addArrangedSubview(appNameLabel)
-    
+
     backgroundView.snp.makeConstraints {
       $0.edges.equalTo(self)
     }
-    
+
     stackView.snp.makeConstraints {
       $0.edges.equalTo(self).inset(UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12))
     }
-    
+
     backgroundColor = .clear
-    
+
     layer.borderColor = UIColor.black.withAlphaComponent(0.15).cgColor
     layer.borderWidth = 1.0 / UIScreen.main.scale
     layer.cornerRadius = 10
@@ -79,18 +79,18 @@ class AdContentButton: UIControl {
     layer.shadowOffset = CGSize(width: 0, height: 1)
     layer.shadowRadius = 2
   }
-  
+
   public override func layoutSubviews() {
     super.layoutSubviews()
-    
+
     layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
   }
-  
+
   public override var isHighlighted: Bool {
     didSet {
       let scale: CGFloat = self.isHighlighted ? 1.025 : 1

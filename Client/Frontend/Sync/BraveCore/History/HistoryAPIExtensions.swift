@@ -11,76 +11,81 @@ import CoreData
 import Shared
 
 extension BraveHistoryAPI {
-    
-    // MARK: Internal
-    
-    func add(url: URL, title: String, dateAdded: Date, isURLTyped: Bool = true) {
-        let historyNode = HistoryNode(url: url, title: title, dateAdded: dateAdded)
-        addHistory(historyNode, isURLTyped: isURLTyped)
+
+  // MARK: Internal
+
+  func add(url: URL, title: String, dateAdded: Date, isURLTyped: Bool = true) {
+    let historyNode = HistoryNode(url: url, title: title, dateAdded: dateAdded)
+    addHistory(historyNode, isURLTyped: isURLTyped)
+  }
+
+  func frc() -> HistoryV2FetchResultsController? {
+    return Historyv2Fetcher(historyAPI: self)
+  }
+
+  func suffix(_ maxLength: Int, _ completion: @escaping ([HistoryNode]) -> Void) {
+    search(
+      withQuery: nil, maxCount: UInt(max(20, maxLength)),
+      completion: { historyResults in
+        completion(historyResults.map { $0 })
+      })
+  }
+
+  func byFrequency(query: String, completion: @escaping ([HistoryNode]) -> Void) {
+    guard !query.isEmpty else {
+      return
     }
 
-    func frc() -> HistoryV2FetchResultsController? {
-        return Historyv2Fetcher(historyAPI: self)
-    }
-    
-    func suffix(_ maxLength: Int, _ completion: @escaping ([HistoryNode]) -> Void) {
-        search(withQuery: nil, maxCount: UInt(max(20, maxLength)), completion: { historyResults in
-            completion(historyResults.map { $0 })
-        })
+    search(
+      withQuery: query, maxCount: 200,
+      completion: { historyResults in
+        completion(historyResults.map { $0 })
+      })
+  }
+
+  func update(_ historyNode: HistoryNode, customTitle: String?, dateAdded: Date?) {
+    if let title = customTitle {
+      historyNode.title = title
     }
 
-    func byFrequency(query: String, completion: @escaping ([HistoryNode]) -> Void) {
-        guard !query.isEmpty else {
-            return
-        }
+    if let date = dateAdded {
+      historyNode.dateAdded = date
+    }
+  }
 
-        search(withQuery: query, maxCount: 200, completion: { historyResults in
-            completion(historyResults.map { $0 })
-        })
-    }
+  // MARK: Private
 
-    func update(_ historyNode: HistoryNode, customTitle: String?, dateAdded: Date?) {
-        if let title = customTitle {
-            historyNode.title = title
-        }
+  private struct AssociatedObjectKeys {
+    static var serviceStateListener: Int = 0
+  }
 
-        if let date = dateAdded {
-            historyNode.dateAdded = date
-        }
-    }
-    
-    // MARK: Private
-        
-    private struct AssociatedObjectKeys {
-        static var serviceStateListener: Int = 0
-    }
-    
-    private var observer: HistoryServiceListener? {
-        get { objc_getAssociatedObject(self, &AssociatedObjectKeys.serviceStateListener) as? HistoryServiceListener }
-        set { objc_setAssociatedObject(self, &AssociatedObjectKeys.serviceStateListener, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
-    }
+  private var observer: HistoryServiceListener? {
+    get { objc_getAssociatedObject(self, &AssociatedObjectKeys.serviceStateListener) as? HistoryServiceListener }
+    set { objc_setAssociatedObject(self, &AssociatedObjectKeys.serviceStateListener, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+  }
 }
 
 // MARK: Brave-Core Only
 
 extension BraveHistoryAPI {
-    
-    func waitForHistoryServiceLoaded(_ completion: @escaping () -> Void) {
-        if isBackendLoaded {
+
+  func waitForHistoryServiceLoaded(_ completion: @escaping () -> Void) {
+    if isBackendLoaded {
+      DispatchQueue.main.async {
+        completion()
+      }
+    } else {
+      observer = add(
+        HistoryServiceStateObserver({ [weak self] in
+          if case .serviceLoaded = $0 {
+            self?.observer?.destroy()
+            self?.observer = nil
+
             DispatchQueue.main.async {
-                completion()
+              completion()
             }
-        } else {
-            observer = add(HistoryServiceStateObserver({ [weak self] in
-                if case .serviceLoaded = $0 {
-                    self?.observer?.destroy()
-                    self?.observer = nil
-                    
-                    DispatchQueue.main.async {
-                        completion()
-                    }
-                }
-            }))
-        }
+          }
+        }))
     }
+  }
 }

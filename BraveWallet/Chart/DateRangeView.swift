@@ -12,12 +12,14 @@ struct DateRangeView: View {
   @Binding var selectedRange: BraveWallet.AssetPriceTimeframe
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-  
+
   private var accessibilityRows: [[BraveWallet.AssetPriceTimeframe]] {
-    [[.live, .oneDay, .oneWeek],
-     [.oneMonth, .threeMonths, .oneYear, .all]]
+    [
+      [.live, .oneDay, .oneWeek],
+      [.oneMonth, .threeMonths, .oneYear, .all],
+    ]
   }
-  
+
   @ViewBuilder private func button(for range: BraveWallet.AssetPriceTimeframe) -> some View {
     Button(action: { selectedRange = range }) {
       Text(verbatim: range.displayString)
@@ -25,7 +27,7 @@ struct DateRangeView: View {
     }
     .buttonStyle(OptionButtonStyle(isSelected: range == selectedRange))
   }
-  
+
   var body: some View {
     Group {
       if sizeCategory.isAccessibilityCategory && horizontalSizeClass == .compact {
@@ -61,7 +63,7 @@ extension BraveWallet.AssetPriceTimeframe: CaseIterable {
   public static var allCases: [BraveWallet.AssetPriceTimeframe] {
     [.live, .oneDay, .oneWeek, .oneMonth, .threeMonths, .oneYear, .all]
   }
-  
+
   var accessibilityLabel: String {
     switch self {
     case .live: return Strings.Wallet.dateIntervalHourAccessibilityLabel
@@ -74,7 +76,7 @@ extension BraveWallet.AssetPriceTimeframe: CaseIterable {
     @unknown default: return ""
     }
   }
-  
+
   var displayString: String {
     switch self {
     case .live: return Strings.Wallet.dateIntervalHour
@@ -91,18 +93,18 @@ extension BraveWallet.AssetPriceTimeframe: CaseIterable {
 
 private struct OptionButtonStyle: ButtonStyle {
   var isSelected: Bool
-  
+
   @Environment(\.colorScheme) private var colorScheme
-  
+
   private var backgroundShape: some View {
     RoundedRectangle(cornerRadius: 6, style: .continuous)
       .fill(Color(.secondaryBraveLabel))
   }
-  
+
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .foregroundColor(.white)
-      .colorMultiply(isSelected ? Color(.braveBackground) : Color(.secondaryBraveLabel)) // To animate text color
+      .colorMultiply(isSelected ? Color(.braveBackground) : Color(.secondaryBraveLabel))  // To animate text color
       .padding(.horizontal, 6)
       .padding(.vertical, 4)
       .background(

@@ -6,9 +6,9 @@ import Foundation
 import Storage
 
 protocol ToolbarUrlActionsDelegate: AnyObject {
-    func openInNewTab(_ url: URL, isPrivate: Bool)
-    func copy(_ url: URL)
-    func share(_ url: URL)
-    func batchOpen(_ urls: [URL])
-    func select(url: URL, visitType: VisitType)
+  func openInNewTab(_ url: URL, isPrivate: Bool)
+  func copy(_ url: URL)
+  func share(_ url: URL)
+  func batchOpen(_ urls: [URL])
+  func select(url: URL, visitType: VisitType)
 }

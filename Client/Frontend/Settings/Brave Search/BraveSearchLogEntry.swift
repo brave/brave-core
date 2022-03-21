@@ -6,34 +6,33 @@
 import SwiftUI
 
 class BraveSearchLogEntry: ObservableObject {
-    static let shared = BraveSearchLogEntry()
-    
-    init(isEnabled: Bool = false, logs: [FallbackLogEntry] = []) {
-        self.isEnabled = isEnabled
-        self.logs = logs
-    }
-    
-    @Published var isEnabled = false {
-        didSet {
-            if !isEnabled {
-                logs.removeAll()
-            }
-        }
-    }
-    
-    @Published var logs: [FallbackLogEntry] = []
-    
-    struct FallbackLogEntry: Identifiable {
-        let id = UUID()
-        
-        var date: Date
-        let url: URL
-        var query: String
-        var cookies: [HTTPCookie]
-        var canAnswerTime: String?
-        var backupQuery: String?
-        var fallbackTime: String?
-        var fallbackData: Data?
-    }
-}
+  static let shared = BraveSearchLogEntry()
 
+  init(isEnabled: Bool = false, logs: [FallbackLogEntry] = []) {
+    self.isEnabled = isEnabled
+    self.logs = logs
+  }
+
+  @Published var isEnabled = false {
+    didSet {
+      if !isEnabled {
+        logs.removeAll()
+      }
+    }
+  }
+
+  @Published var logs: [FallbackLogEntry] = []
+
+  struct FallbackLogEntry: Identifiable {
+    let id = UUID()
+
+    var date: Date
+    let url: URL
+    var query: String
+    var cookies: [HTTPCookie]
+    var canAnswerTime: String?
+    var backupQuery: String?
+    var fallbackTime: String?
+    var fallbackData: Data?
+  }
+}

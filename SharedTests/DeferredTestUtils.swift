@@ -6,19 +6,18 @@ import Shared
 import XCTest
 
 protocol Succeedable {
-    var isSuccess: Bool { get }
-    var isFailure: Bool { get }
+  var isSuccess: Bool { get }
+  var isFailure: Bool { get }
 }
 
 extension Maybe: Succeedable {}
 
 extension Deferred where T: Succeedable {
-    func succeeded() {
-        XCTAssertTrue(self.value.isSuccess)
-    }
+  func succeeded() {
+    XCTAssertTrue(self.value.isSuccess)
+  }
 
-    func failed() {
-        XCTAssertTrue(self.value.isFailure)
-    }
+  func failed() {
+    XCTAssertTrue(self.value.isFailure)
+  }
 }
-

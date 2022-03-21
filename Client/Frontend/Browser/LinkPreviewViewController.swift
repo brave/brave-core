@@ -8,34 +8,34 @@ import Data
 import Shared
 
 class LinkPreviewViewController: UIViewController {
-    
-    let url: URL
-    
-    init(url: URL) {
-        self.url = url
-        super.init(nibName: nil, bundle: nil)
+
+  let url: URL
+
+  init(url: URL) {
+    self.url = url
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  @available(*, unavailable)
+  required init?(coder aDecoder: NSCoder) { fatalError() }
+
+  override func viewDidLoad() {
+    let configuration = WKWebViewConfiguration().then {
+      $0.setURLSchemeHandler(InternalSchemeHandler(), forURLScheme: InternalURL.scheme)
     }
-    
-    @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) { fatalError() }
-    
-    override func viewDidLoad() {
-        let configuration = WKWebViewConfiguration().then {
-            $0.setURLSchemeHandler(InternalSchemeHandler(), forURLScheme: InternalURL.scheme)
-        }
-        
-        let wk = WKWebView(frame: view.frame, configuration: configuration)
-        
-        let domain = Domain.getOrCreate(forUrl: url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
-        
-        BlocklistName.blocklists(forDomain: domain).on.forEach {
-            ContentBlockerHelper.ruleStore.lookUpContentRuleList(forIdentifier: $0.filename) { rule, _ in
-                guard let rule = rule else { return }
-                wk.configuration.userContentController.add(rule)
-            }
-        }
-        
-        view.addSubview(wk)
-        wk.load(URLRequest(url: url))
+
+    let wk = WKWebView(frame: view.frame, configuration: configuration)
+
+    let domain = Domain.getOrCreate(forUrl: url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+
+    BlocklistName.blocklists(forDomain: domain).on.forEach {
+      ContentBlockerHelper.ruleStore.lookUpContentRuleList(forIdentifier: $0.filename) { rule, _ in
+        guard let rule = rule else { return }
+        wk.configuration.userContentController.add(rule)
+      }
     }
+
+    view.addSubview(wk)
+    wk.load(URLRequest(url: url))
+  }
 }

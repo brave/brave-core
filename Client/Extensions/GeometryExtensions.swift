@@ -5,24 +5,24 @@
 import UIKit
 
 extension CGRect {
-    var center: CGPoint {
-        get {
-            return CGPoint(x: size.width / 2, y: size.height / 2)
-        }
-        set {
-            self.origin = CGPoint(x: newValue.x - size.width / 2, y: newValue.y - size.height / 2)
-        }
+  var center: CGPoint {
+    get {
+      return CGPoint(x: size.width / 2, y: size.height / 2)
     }
+    set {
+      self.origin = CGPoint(x: newValue.x - size.width / 2, y: newValue.y - size.height / 2)
+    }
+  }
 }
 
 extension UIEdgeInsets {
-    init(equalInset inset: CGFloat) {
-        self.init()
-        top = inset
-        left = inset
-        right = inset
-        bottom = inset
-    }
+  init(equalInset inset: CGFloat) {
+    self.init()
+    top = inset
+    left = inset
+    right = inset
+    bottom = inset
+  }
 }
 
 /**
@@ -34,10 +34,10 @@ Generates the affine transform for transforming the first CGRect into the second
 - returns: CGAffineTransform that transforms the first CGRect into the second
 */
 func CGAffineTransformMakeRectToRect(_ frame: CGRect, toFrame: CGRect) -> CGAffineTransform {
-    let scale = toFrame.size.width / frame.size.width
-    let tx = toFrame.origin.x + toFrame.width / 2 - (frame.origin.x + frame.width / 2)
-    let ty = toFrame.origin.y - frame.origin.y * scale * 2
-    let translation = CGAffineTransform(translationX: tx, y: ty)
-    let scaledAndTranslated = translation.scaledBy(x: scale, y: scale)
-    return scaledAndTranslated
+  let scale = toFrame.size.width / frame.size.width
+  let tx = toFrame.origin.x + toFrame.width / 2 - (frame.origin.x + frame.width / 2)
+  let ty = toFrame.origin.y - frame.origin.y * scale * 2
+  let translation = CGAffineTransform(translationX: tx, y: ty)
+  let scaledAndTranslated = translation.scaledBy(x: scale, y: scale)
+  return scaledAndTranslated
 }

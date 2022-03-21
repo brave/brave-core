@@ -7,45 +7,45 @@ import BraveUI
 
 /// The background component for each card
 class FeedCardBackgroundView: UIVisualEffectView {
-    init() {
-        super.init(effect: UIBlurEffect(style: .systemThinMaterialDark))
-        
-        layer.cornerRadius = 10
-        layer.cornerCurve = .continuous
-        clipsToBounds = true
-        isUserInteractionEnabled = false
-        isAccessibilityElement = false
-        contentView.backgroundColor = UIColor.white.withAlphaComponent(0.17)
-    }
-    @available(*, unavailable)
-    required init(coder: NSCoder) {
-        fatalError()
-    }
+  init() {
+    super.init(effect: UIBlurEffect(style: .systemThinMaterialDark))
+
+    layer.cornerRadius = 10
+    layer.cornerCurve = .continuous
+    clipsToBounds = true
+    isUserInteractionEnabled = false
+    isAccessibilityElement = false
+    contentView.backgroundColor = UIColor.white.withAlphaComponent(0.17)
+  }
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
 }
 
 /// The card background to use when the entire card is tappable
 class FeedCardBackgroundButton: SpringButton {
-    /// The blurred background view
-    private let backgroundView = FeedCardBackgroundView()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        highlightScale = 0.98
-        
-        addSubview(backgroundView)
-        backgroundView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        
-        layer.cornerRadius = backgroundView.layer.cornerRadius
-        layer.cornerCurve = backgroundView.layer.cornerCurve
-        clipsToBounds = true
+  /// The blurred background view
+  private let backgroundView = FeedCardBackgroundView()
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    highlightScale = 0.98
+
+    addSubview(backgroundView)
+    backgroundView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
     }
-    
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        guard let view = super.hitTest(point, with: event) else { return nil }
-        if view is UIControl { return view }
-        return self
-    }
+
+    layer.cornerRadius = backgroundView.layer.cornerRadius
+    layer.cornerCurve = backgroundView.layer.cornerCurve
+    clipsToBounds = true
+  }
+
+  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    guard let view = super.hitTest(point, with: event) else { return nil }
+    if view is UIControl { return view }
+    return self
+  }
 }

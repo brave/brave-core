@@ -9,54 +9,54 @@ import SwiftKeychainWrapper
 private let log = Logger.keychainLogger
 
 public extension KeychainWrapper {
-    static var sharedAppContainerKeychain: KeychainWrapper {
-        let baseBundleIdentifier = AppInfo.baseBundleIdentifier
-        let accessGroupPrefix = Bundle.main.infoDictionaryString(forKey: "MozDevelopmentTeam")
-        let accessGroupIdentifier = AppInfo.keychainAccessGroupWithPrefix(accessGroupPrefix)
-        return KeychainWrapper(serviceName: baseBundleIdentifier, accessGroup: accessGroupIdentifier)
-    }
+  static var sharedAppContainerKeychain: KeychainWrapper {
+    let baseBundleIdentifier = AppInfo.baseBundleIdentifier
+    let accessGroupPrefix = Bundle.main.infoDictionaryString(forKey: "MozDevelopmentTeam")
+    let accessGroupIdentifier = AppInfo.keychainAccessGroupWithPrefix(accessGroupPrefix)
+    return KeychainWrapper(serviceName: baseBundleIdentifier, accessGroup: accessGroupIdentifier)
+  }
 }
 
 public extension KeychainWrapper {
-    func ensureStringItemAccessibility(_ accessibility: SwiftKeychainWrapper.KeychainItemAccessibility, forKey key: String) {
-        if self.hasValue(forKey: key) {
-            if self.accessibilityOfKey(key) != .afterFirstUnlock {
-                log.debug("updating item \(key) with \(accessibility)")
+  func ensureStringItemAccessibility(_ accessibility: SwiftKeychainWrapper.KeychainItemAccessibility, forKey key: String) {
+    if self.hasValue(forKey: key) {
+      if self.accessibilityOfKey(key) != .afterFirstUnlock {
+        log.debug("updating item \(key) with \(accessibility)")
 
-                guard let value = self.string(forKey: key) else {
-                    log.error("failed to get item \(key)")
-                    return
-                }
-
-                if !self.removeObject(forKey: key) {
-                    log.warning("failed to remove item \(key)")
-                }
-
-                if !self.set(value, forKey: key, withAccessibility: accessibility) {
-                    log.warning("failed to update item \(key)")
-                }
-            }
+        guard let value = self.string(forKey: key) else {
+          log.error("failed to get item \(key)")
+          return
         }
-    }
 
-    func ensureObjectItemAccessibility(_ accessibility: SwiftKeychainWrapper.KeychainItemAccessibility, forKey key: String) {
-        if self.hasValue(forKey: key) {
-            if self.accessibilityOfKey(key) != .afterFirstUnlock {
-                log.debug("updating item \(key) with \(accessibility)")
-
-                guard let value = self.object(forKey: key) else {
-                    log.error("failed to get item \(key)")
-                    return
-                }
-
-                if !self.removeObject(forKey: key) {
-                    log.warning("failed to remove item \(key)")
-                }
-
-                if !self.set(value, forKey: key, withAccessibility: accessibility) {
-                    log.warning("failed to update item \(key)")
-                }
-            }
+        if !self.removeObject(forKey: key) {
+          log.warning("failed to remove item \(key)")
         }
+
+        if !self.set(value, forKey: key, withAccessibility: accessibility) {
+          log.warning("failed to update item \(key)")
+        }
+      }
     }
+  }
+
+  func ensureObjectItemAccessibility(_ accessibility: SwiftKeychainWrapper.KeychainItemAccessibility, forKey key: String) {
+    if self.hasValue(forKey: key) {
+      if self.accessibilityOfKey(key) != .afterFirstUnlock {
+        log.debug("updating item \(key) with \(accessibility)")
+
+        guard let value = self.object(forKey: key) else {
+          log.error("failed to get item \(key)")
+          return
+        }
+
+        if !self.removeObject(forKey: key) {
+          log.warning("failed to remove item \(key)")
+        }
+
+        if !self.set(value, forKey: key, withAccessibility: accessibility) {
+          log.warning("failed to update item \(key)")
+        }
+      }
+    }
+  }
 }

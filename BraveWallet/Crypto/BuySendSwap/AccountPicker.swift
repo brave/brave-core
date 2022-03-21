@@ -10,12 +10,12 @@ import struct Shared.Strings
 struct AccountPicker: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
-  
+
   @State private var isPresentingPicker: Bool = false
   @State private var isPresentingAddAccount: Bool = false
   @Environment(\.sizeCategory) private var sizeCategory
   @ScaledMetric private var avatarSize = 24.0
-  
+
   var body: some View {
     Group {
       if sizeCategory.isAccessibilityCategory {
@@ -36,7 +36,7 @@ struct AccountPicker: View {
       pickerList
     }
   }
-  
+
   private var accountView: some View {
     HStack {
       Blockie(address: keyringStore.selectedAccount.address)
@@ -57,14 +57,14 @@ struct AccountPicker: View {
     }
     .padding(.vertical, 6)
   }
-  
+
   private func copyAddress() {
     UIPasteboard.general.string = keyringStore.selectedAccount.address
   }
 
   @available(iOS, introduced: 14.0, deprecated: 15.0)
   @State private var isPresentingCopyAddressActionSheet: Bool = false
-  
+
   @ViewBuilder private var accountPickerView: some View {
     Group {
       if #available(iOS 15.0, *) {
@@ -92,24 +92,26 @@ struct AccountPicker: View {
             }
         )
         .actionSheet(isPresented: $isPresentingCopyAddressActionSheet) {
-          .init(title: Text(keyringStore.selectedAccount.address), message: nil, buttons: [
-            .default(Text(Strings.Wallet.copyAddressButtonTitle), action: copyAddress),
-            .cancel()
-          ])
+          .init(
+            title: Text(keyringStore.selectedAccount.address), message: nil,
+            buttons: [
+              .default(Text(Strings.Wallet.copyAddressButtonTitle), action: copyAddress),
+              .cancel(),
+            ])
         }
       }
     }
     .accessibilityLabel(Strings.Wallet.selectedAccountAccessibilityLabel)
     .accessibilityValue("\(keyringStore.selectedAccount.name), \(keyringStore.selectedAccount.address.truncatedAddress)")
   }
-  
+
   private var networkPickerView: some View {
     NetworkPicker(
       networkStore: networkStore,
       selectedNetwork: networkStore.selectedChainBinding
     )
   }
-  
+
   private var pickerList: some View {
     NavigationView {
       List {

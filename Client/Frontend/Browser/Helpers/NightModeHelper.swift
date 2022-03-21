@@ -8,39 +8,39 @@ import Shared
 import BraveShared
 
 class NightModeHelper: TabContentScript {
-    fileprivate weak var tab: Tab?
-    
-    static var isActivated: Bool {
-        return Preferences.General.nightModeEnabled.value
-    }
+  fileprivate weak var tab: Tab?
 
-    required init(tab: Tab) {
-        self.tab = tab
-    }
+  static var isActivated: Bool {
+    return Preferences.General.nightModeEnabled.value
+  }
 
-    static func name() -> String {
-        return "NightMode"
-    }
+  required init(tab: Tab) {
+    self.tab = tab
+  }
 
-    func scriptMessageHandlerName() -> String? {
-        return "NightMode"
-    }
+  static func name() -> String {
+    return "NightMode"
+  }
 
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void) {
-        // Do nothing.
+  func scriptMessageHandlerName() -> String? {
+    return "NightMode"
+  }
+
+  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void) {
+    // Do nothing.
+  }
+
+  static func setNightMode(tabManager: TabManager, enabled: Bool) {
+    Preferences.General.nightModeEnabled.value = enabled
+
+    for tab in tabManager.allTabs {
+      tab.nightMode = enabled
+
+      // For WKWebView background color to take effect, isOpaque must be false,
+      // which is counter-intuitive. Default is true. The color is previously
+      // set to black in the WKWebView init.
+      tab.webView?.isOpaque = !enabled
+      tab.webView?.scrollView.indicatorStyle = enabled ? .white : .default
     }
- 
-    static func setNightMode(tabManager: TabManager, enabled: Bool) {
-        Preferences.General.nightModeEnabled.value = enabled
-        
-        for tab in tabManager.allTabs {
-            tab.nightMode = enabled
-            
-            // For WKWebView background color to take effect, isOpaque must be false,
-            // which is counter-intuitive. Default is true. The color is previously
-            // set to black in the WKWebView init.
-            tab.webView?.isOpaque = !enabled
-            tab.webView?.scrollView.indicatorStyle = enabled ? .white : .default
-        }
-    }
+  }
 }

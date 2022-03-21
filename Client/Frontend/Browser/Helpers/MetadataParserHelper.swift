@@ -11,85 +11,87 @@ import WebKit
 private let log = Logger.browserLogger
 
 class MetadataParserHelper: TabEventHandler {
-    private var tabObservers: TabObservers!
+  private var tabObservers: TabObservers!
 
-    init() {
-        self.tabObservers = registerFor(
-            .didChangeURL,
-            queue: .main)
+  init() {
+    self.tabObservers = registerFor(
+      .didChangeURL,
+      queue: .main)
+  }
+
+  deinit {
+    unregister(tabObservers)
+  }
+
+  func tab(_ tab: Tab, didChangeURL url: URL) {
+    // Get the metadata out of the page-metadata-parser, and into a type safe struct as soon
+    // as possible.
+    guard let webView = tab.webView,
+      let url = webView.url, url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
+    else {
+      // TabEvent.post(.pageMetadataNotAvailable, for: tab)
+      tab.pageMetadata = nil
+      return
     }
 
-    deinit {
-        unregister(tabObservers)
-    }
+    webView.evaluateSafeJavaScript(functionName: "__firefox__.metadata && __firefox__.metadata.getMetadata()", contentWorld: .defaultClient, asFunction: false) { (result, error) in
+      guard error == nil else {
+        // TabEvent.post(.pageMetadataNotAvailable, for: tab)
+        tab.pageMetadata = nil
+        return
+      }
 
-    func tab(_ tab: Tab, didChangeURL url: URL) {
-        // Get the metadata out of the page-metadata-parser, and into a type safe struct as soon
-        // as possible.
-        guard let webView = tab.webView,
-            let url = webView.url, url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) else {
-                // TabEvent.post(.pageMetadataNotAvailable, for: tab)
-                tab.pageMetadata = nil
-                return
-        }
-        
-        webView.evaluateSafeJavaScript(functionName: "__firefox__.metadata && __firefox__.metadata.getMetadata()", contentWorld: .defaultClient, asFunction: false) { (result, error) in
-            guard error == nil else {
-                // TabEvent.post(.pageMetadataNotAvailable, for: tab)
-                tab.pageMetadata = nil
-                return
-            }
-            
-            guard let dict = result as? [String: Any],
-                  let data = try? JSONSerialization.data(withJSONObject: dict, options: []) else {
-                log.debug("Page contains no metadata!")
-//                TabEvent.post(.pageMetadataNotAvailable, for: tab)
-                tab.pageMetadata = nil
-                return
-            }
-            
-            do {
-                let pageMetadata = try JSONDecoder().decode(PageMetadata.self, from: data)
-                tab.pageMetadata = pageMetadata
-                TabEvent.post(.didLoadPageMetadata(pageMetadata), for: tab)
-            } catch {
-                log.error("Failed to parse metadata: \(error)")
-                // To avoid issues where `pageMetadata` points to the last website to successfully
-                // parse metadata, set to nil
-                tab.pageMetadata = nil
-            }
-        }
+      guard let dict = result as? [String: Any],
+        let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+      else {
+        log.debug("Page contains no metadata!")
+        //                TabEvent.post(.pageMetadataNotAvailable, for: tab)
+        tab.pageMetadata = nil
+        return
+      }
+
+      do {
+        let pageMetadata = try JSONDecoder().decode(PageMetadata.self, from: data)
+        tab.pageMetadata = pageMetadata
+        TabEvent.post(.didLoadPageMetadata(pageMetadata), for: tab)
+      } catch {
+        log.error("Failed to parse metadata: \(error)")
+        // To avoid issues where `pageMetadata` points to the last website to successfully
+        // parse metadata, set to nil
+        tab.pageMetadata = nil
+      }
     }
+  }
 }
 
 class MediaImageLoader: TabEventHandler {
-    private var tabObservers: TabObservers!
-    private let prefs: Prefs
+  private var tabObservers: TabObservers!
+  private let prefs: Prefs
 
-    init(_ prefs: Prefs) {
-        self.prefs = prefs
-        self.tabObservers = registerFor(
-            .didLoadPageMetadata,
-            queue: .main)
+  init(_ prefs: Prefs) {
+    self.prefs = prefs
+    self.tabObservers = registerFor(
+      .didLoadPageMetadata,
+      queue: .main)
+  }
+
+  deinit {
+    unregister(tabObservers)
+  }
+
+  func tab(_ tab: Tab, didLoadPageMetadata metadata: PageMetadata) {
+    if let mediaURL = metadata.mediaURL, let url = URL(string: mediaURL) {
+      loadImage(from: url)
+    }
+  }
+
+  fileprivate func loadImage(from url: URL) {
+    let shouldCacheImages = !NoImageModeHelper.isActivated
+    if !shouldCacheImages {
+      return
     }
 
-    deinit {
-        unregister(tabObservers)
-    }
-
-    func tab(_ tab: Tab, didLoadPageMetadata metadata: PageMetadata) {
-        if let mediaURL = metadata.mediaURL, let url = URL(string: mediaURL) {
-            loadImage(from: url)
-        }
-    }
-
-    fileprivate func loadImage(from url: URL) {
-        let shouldCacheImages = !NoImageModeHelper.isActivated
-        if !shouldCacheImages {
-            return
-        }
-
-        WebImageCacheManager.shared.load(from: url)
-    }
+    WebImageCacheManager.shared.load(from: url)
+  }
 
 }

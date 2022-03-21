@@ -9,23 +9,24 @@ import BraveUI
 struct BiometricsPromptView: UIViewControllerRepresentable {
   @Binding var isPresented: Bool
   var action: (Bool, UINavigationController?) -> Bool
-  
+
   func makeUIViewController(context: Context) -> UIViewController {
     .init()
   }
-  
+
   func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
     if isPresented {
       if uiViewController.presentedViewController != nil {
         return
       }
-      let controller = PopupViewController(rootView: EnableBiometricsView(action: { enabled in
-        if action(enabled, uiViewController.navigationController) {
-          uiViewController.dismiss(animated: true) {
-            isPresented = false
+      let controller = PopupViewController(
+        rootView: EnableBiometricsView(action: { enabled in
+          if action(enabled, uiViewController.navigationController) {
+            uiViewController.dismiss(animated: true) {
+              isPresented = false
+            }
           }
-        }
-      }))
+        }))
       uiViewController.present(controller, animated: true)
     } else {
       if uiViewController.presentedViewController != nil {

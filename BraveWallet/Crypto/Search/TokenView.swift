@@ -8,7 +8,7 @@ import BraveCore
 
 struct TokenView: View {
   var token: BraveWallet.BlockchainToken
-  
+
   var body: some View {
     HStack(spacing: 8) {
       AssetIconView(token: token)
@@ -27,8 +27,8 @@ struct TokenView: View {
 
 #if DEBUG
 struct TokenView_Previews: PreviewProvider {
-    static var previews: some View {
-      TokenView(token: MockBlockchainRegistry.testTokens.first!)
-    }
+  static var previews: some View {
+    TokenView(token: MockBlockchainRegistry.testTokens.first!)
+  }
 }
 #endif

@@ -6,26 +6,26 @@ import Foundation
 
 enum ImageCacheType: Int, CustomDebugStringConvertible {
 
-    /// The image was not available in the cache, but was downloaded from the web.
-    case none
+  /// The image was not available in the cache, but was downloaded from the web.
+  case none
 
-    /// The image was obtained from the memory cache.
-    case memory
+  /// The image was obtained from the memory cache.
+  case memory
 
-    /// The image was obtained from the disk cache.
-    case disk
+  /// The image was obtained from the disk cache.
+  case disk
 
-    var debugDescription: String {
-        switch self {
-        case .none:
-            return "Image was not available in the cache, but was downloaded from the web"
-            
-        case .memory:
-            return "Image was obtained from the memory cache"
-            
-        case .disk:
-            return "Image was obtained from the disk cache"
-        }
+  var debugDescription: String {
+    switch self {
+    case .none:
+      return "Image was not available in the cache, but was downloaded from the web"
+
+    case .memory:
+      return "Image was obtained from the memory cache"
+
+    case .disk:
+      return "Image was obtained from the disk cache"
     }
+  }
 
 }

@@ -6,7 +6,7 @@
 import Foundation
 
 class DismissableNavigationViewController: UINavigationController {
-    @objc func dismissViewController() {
-        dismiss(animated: true)
-    }
+  @objc func dismissViewController() {
+    dismiss(animated: true)
+  }
 }

@@ -12,7 +12,7 @@ private struct XorshiftRandomNumberGenerator: RandomNumberGenerator {
   var y: UInt32
   var z: UInt32
   var w: UInt32
-  
+
   mutating func next() -> UInt64 {
     let t = x ^ (x << 11)
     x = y
@@ -30,7 +30,7 @@ class Blockies {
     0x67D4B4, 0xAFCE57, 0xF0CB44, 0xF28A29, 0xFC798F,
     0xC1226E, 0xFAB5EE, 0x9677EE, 0x5433B0,
   ]
-  
+
   init(seed: String) {
     let startIndex = seed.startIndex
     var xorSeed: [UInt32] = [0, 0, 0, 0]
@@ -48,17 +48,17 @@ class Blockies {
       w: xorSeed[3]
     )
   }
-  
+
   func makeColor() -> UIColor {
     let normalized = Double(generator.next()) / Double(UInt32.max)
     return UIColor(rgb: colors[Int(floor(normalized * 100)) % colors.count])
   }
-  
+
   func image(length: Int, scale: CGFloat) -> UIImage {
     let color = makeColor()
     let backgroundColor = makeColor()
     let spotColor = makeColor()
-    
+
     func data() -> [[Double]] {
       let dataLength = Int(ceil(Double(length) / 2.0))
       var data: [[Double]] = []
@@ -74,7 +74,7 @@ class Blockies {
       }
       return data
     }
-    
+
     let size = CGSize(width: CGFloat(length) * scale, height: CGFloat(length) * scale)
     let renderer = UIGraphicsImageRenderer(size: size)
     let data = data()
@@ -103,7 +103,7 @@ class Blockies {
 
 struct Blockie: View {
   var address: String
-  
+
   var body: some View {
     Image(uiImage: Blockies(seed: address).image(length: 8, scale: 16))
       .resizable()

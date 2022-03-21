@@ -5,51 +5,51 @@
 import UIKit
 
 class ToolbarButton: UIButton {
-    fileprivate var selectedTintColor: UIColor?
-    fileprivate var primaryTintColor: UIColor?
-    fileprivate var disabledTintColor: UIColor?
-    
-    let top: Bool
-    
-    required init(top: Bool) {
-        self.top = top
-        super.init(frame: .zero)
-        adjustsImageWhenHighlighted = false
-        imageView?.contentMode = .scaleAspectFit
-        
-        selectedTintColor = .braveOrange
-        primaryTintColor = .braveLabel
-        tintColor = primaryTintColor
-        imageView?.tintColor = tintColor
-    }
+  fileprivate var selectedTintColor: UIColor?
+  fileprivate var primaryTintColor: UIColor?
+  fileprivate var disabledTintColor: UIColor?
 
-    override init(frame: CGRect) {
-        fatalError("init(coder:) has not been implemented")
+  let top: Bool
+
+  required init(top: Bool) {
+    self.top = top
+    super.init(frame: .zero)
+    adjustsImageWhenHighlighted = false
+    imageView?.contentMode = .scaleAspectFit
+
+    selectedTintColor = .braveOrange
+    primaryTintColor = .braveLabel
+    tintColor = primaryTintColor
+    imageView?.tintColor = tintColor
+  }
+
+  override init(frame: CGRect) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override open var isHighlighted: Bool {
+    didSet {
+      self.tintColor = isHighlighted ? selectedTintColor : primaryTintColor
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+  }
+
+  override open var isEnabled: Bool {
+    didSet {
+      self.tintColor = primaryTintColor?.withAlphaComponent(isEnabled ? 1.0 : 0.4)
     }
-    
-    override open var isHighlighted: Bool {
-        didSet {
-            self.tintColor = isHighlighted ? selectedTintColor : primaryTintColor
-        }
+  }
+
+  override var tintColor: UIColor! {
+    didSet {
+      self.imageView?.tintColor = self.tintColor
     }
-    
-    override open var isEnabled: Bool {
-        didSet {
-            self.tintColor = primaryTintColor?.withAlphaComponent(isEnabled ? 1.0 : 0.4)
-        }
-    }
-    
-    override var tintColor: UIColor! {
-        didSet {
-            self.imageView?.tintColor = self.tintColor
-        }
-    }
-    
-    override func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willDisplayMenuFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
-        UIImpactFeedbackGenerator(style: .medium).bzzt()
-    }
+  }
+
+  override func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willDisplayMenuFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
+    UIImpactFeedbackGenerator(style: .medium).bzzt()
+  }
 }

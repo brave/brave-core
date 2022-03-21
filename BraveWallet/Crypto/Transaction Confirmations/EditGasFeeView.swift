@@ -18,13 +18,13 @@ struct EditGasFeeView: View {
   var transaction: BraveWallet.TransactionInfo
   /// The confirmation store to update gas prices on save
   @ObservedObject var confirmationStore: TransactionConfirmationStore
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   @State private var perGasPrice: String = ""
   @State private var gasLimit: String = ""
   @State private var isShowingAlert: Bool = false
-  
+
   private func setup() {
     perGasPrice = WeiFormatter.weiToDecimalGwei(transaction.ethTxGasPrice.removingHexPrefix, radix: .hex) ?? "0"
     // Gas limit is already in Gwei…
@@ -38,16 +38,17 @@ struct EditGasFeeView: View {
       return value.decimalExpansion(precisionAfterDecimalPoint: 2)
     }()
   }
-  
+
   private func save() {
     // Gas limit is already in Gwei, so doesn't need additional conversion other than to hex
     guard let limit = BDouble(gasLimit)?.rounded().asString(radix: 16),
-          let gasFeeInWei = WeiFormatter.gweiToWei(perGasPrice, radix: .decimal, outputRadix: .hex) else {
-            return
-          }
+      let gasFeeInWei = WeiFormatter.gweiToWei(perGasPrice, radix: .decimal, outputRadix: .hex)
+    else {
+      return
+    }
     let hexGasLimit = "0x\(limit)"
     let hexGasFee = "0x\(gasFeeInWei)"
-    
+
     confirmationStore.updateGasFeeAndLimits(
       for: transaction,
       gasPrice: hexGasFee,
@@ -60,22 +61,23 @@ struct EditGasFeeView: View {
       }
     }
   }
-  
+
   private var isSaveButtonDisabled: Bool {
     guard let gasPrice = BDouble(perGasPrice), gasPrice > 0,
-          let limit = BDouble(gasLimit), limit > 0 else {
-            return true
-          }
+      let limit = BDouble(gasLimit), limit > 0
+    else {
+      return true
+    }
     return false
   }
-  
+
   var body: some View {
     List {
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.perGasPriceTitle))
           .osAvailabilityModifiers { content in
             if #available(iOS 15.0, *) {
-              content // Padding already applied
+              content  // Padding already applied
             } else {
               content.padding(.top)
             }

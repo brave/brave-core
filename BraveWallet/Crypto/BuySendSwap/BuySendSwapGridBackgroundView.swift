@@ -7,13 +7,13 @@ import SwiftUI
 
 struct BuySendSwapGridBackgroundView: View {
   @Environment(\.sizeCategory) private var sizeCategory
-  
+
   var backgroundColor: Color = Color(.secondaryBraveGroupedBackground)
-  
+
   private var backgroundShape: some InsettableShape {
     RoundedRectangle(cornerRadius: 10, style: .continuous)
   }
-  
+
   var body: some View {
     backgroundShape
       .fill(backgroundColor)

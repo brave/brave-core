@@ -6,7 +6,7 @@ import UIKit
 
 private class LoaderLayer: CALayer {
   weak var parent: LoaderView?
-  
+
   override func action(forKey event: String) -> CAAction? {
     if event == kCAOnOrderIn && parent?.isAnimating == true {
       // Resume animation
@@ -23,7 +23,7 @@ public class LoaderView: UIView {
     case small
     case normal
     case large
-    
+
     fileprivate var size: CGSize {
       switch self {
       case .small:
@@ -34,7 +34,7 @@ public class LoaderView: UIView {
         return CGSize(width: 64, height: 64)
       }
     }
-    
+
     fileprivate var lineWidth: CGFloat {
       switch self {
       case .small:
@@ -46,58 +46,58 @@ public class LoaderView: UIView {
       }
     }
   }
-  
+
   override public class var layerClass: AnyClass {
     return LoaderLayer.self
   }
-  
+
   private(set) public var isAnimating: Bool = false
-  
+
   public func start() {
     isAnimating = true
     loaderLayer.add(rotateAnimation, forKey: "rotation")
   }
-  
+
   public func stop() {
     isAnimating = false
     loaderLayer.removeAnimation(forKey: "rotation")
   }
-  
+
   public let size: Size
-  
+
   public init(size: Size) {
     self.size = size
-    
+
     super.init(frame: CGRect(origin: .zero, size: size.size))
-    
+
     layer.addSublayer(loaderLayer)
     (layer as? LoaderLayer)?.parent = self
   }
-  
+
   override public var tintColor: UIColor! {
     didSet {
       loaderLayer.strokeColor = tintColor.resolvedColor(with: traitCollection).cgColor
     }
   }
-  
+
   override public func layoutSubviews() {
     super.layoutSubviews()
-    
+
     loaderLayer.frame = bounds
     loaderLayer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
   }
-  
+
   override public var intrinsicContentSize: CGSize {
     return size.size
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
   }
-  
+
   // MARK: - Private
-  
+
   private var rotateAnimation: CABasicAnimation = {
     let anim = CABasicAnimation(keyPath: "transform.rotation")
     anim.repeatCount = .infinity
@@ -107,7 +107,7 @@ public class LoaderView: UIView {
     anim.toValue = CGFloat.pi * 2
     return anim
   }()
-  
+
   private lazy var loaderLayer: CAShapeLayer = {
     let layer = CAShapeLayer()
     layer.lineCap = .round

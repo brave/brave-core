@@ -11,54 +11,57 @@ import Shared
 private let log = Logger.browserLogger
 
 class CarplayTemplateApplicationSceneDelegate: NSObject {
-    private static let configurationName = "CPTemplateSceneConfiguration"
-    
-    // MARK: UISceneDelegate
-    
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        if scene is CPTemplateApplicationScene,
-            session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName {
-            log.debug("Template application scene will connect.")
-        }
-    }
+  private static let configurationName = "CPTemplateSceneConfiguration"
 
-    func sceneDidDisconnect(_ scene: UIScene) {
-        if scene.session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName {
-            log.debug("Template application scene did disconnect.")
-        }
+  // MARK: UISceneDelegate
+
+  func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+    if scene is CPTemplateApplicationScene,
+      session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName
+    {
+      log.debug("Template application scene will connect.")
     }
-    
-    func sceneDidBecomeActive(_ scene: UIScene) {
-        if scene.session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName {
-            log.debug("Template application scene did become active.")
-        }
+  }
+
+  func sceneDidDisconnect(_ scene: UIScene) {
+    if scene.session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName {
+      log.debug("Template application scene did disconnect.")
     }
-    
-    func sceneWillResignActive(_ scene: UIScene) {
-        if scene.session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName {
-            log.debug("Template application scene will resign active.")
-        }
+  }
+
+  func sceneDidBecomeActive(_ scene: UIScene) {
+    if scene.session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName {
+      log.debug("Template application scene did become active.")
     }
+  }
+
+  func sceneWillResignActive(_ scene: UIScene) {
+    if scene.session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName {
+      log.debug("Template application scene will resign active.")
+    }
+  }
 }
 
 // MARK: CPTemplateApplicationSceneDelegate
 
 extension CarplayTemplateApplicationSceneDelegate: CPTemplateApplicationSceneDelegate {
-    
-    func templateApplicationScene(_ templateApplicationScene: CPTemplateApplicationScene, didConnect interfaceController: CPInterfaceController) {
-        log.debug("Template application scene did connect.")
-        
-        DispatchQueue.main.async {
-            PlaylistCarplayManager.shared.connect(interfaceController: interfaceController)
-        }
+
+  func templateApplicationScene(_ templateApplicationScene: CPTemplateApplicationScene, didConnect interfaceController: CPInterfaceController) {
+    log.debug("Template application scene did connect.")
+
+    DispatchQueue.main.async {
+      PlaylistCarplayManager.shared.connect(interfaceController: interfaceController)
     }
-    
-    func templateApplicationScene(_ templateApplicationScene: CPTemplateApplicationScene,
-                                  didDisconnectInterfaceController interfaceController: CPInterfaceController) {
-        log.debug("Template application scene did disconnect.")
-        
-        DispatchQueue.main.async {
-            PlaylistCarplayManager.shared.disconnect(interfaceController: interfaceController)
-        }
+  }
+
+  func templateApplicationScene(
+    _ templateApplicationScene: CPTemplateApplicationScene,
+    didDisconnectInterfaceController interfaceController: CPInterfaceController
+  ) {
+    log.debug("Template application scene did disconnect.")
+
+    DispatchQueue.main.async {
+      PlaylistCarplayManager.shared.disconnect(interfaceController: interfaceController)
     }
+  }
 }

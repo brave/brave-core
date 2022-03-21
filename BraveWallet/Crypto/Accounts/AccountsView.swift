@@ -15,15 +15,15 @@ struct AccountsView: View {
   @ObservedObject var keyringStore: KeyringStore
   @State private var navigationController: UINavigationController?
   @State private var selectedAccount: BraveWallet.AccountInfo?
-  
+
   private var primaryAccounts: [BraveWallet.AccountInfo] {
     keyringStore.keyring.accountInfos.filter(\.isPrimary)
   }
-  
+
   private var secondaryAccounts: [BraveWallet.AccountInfo] {
     keyringStore.keyring.accountInfos.filter(\.isImported)
   }
-  
+
   private func copyAccountAddressButton(_ address: String) -> some View {
     Button(action: {
       UIPasteboard.general.string = address
@@ -31,14 +31,16 @@ struct AccountsView: View {
       Label(Strings.Wallet.copyAddressButtonTitle, image: "brave.clipboard")
     }
   }
-  
+
   var body: some View {
     List {
       Section(
-        header: AccountsHeaderView(keyringStore: keyringStore,
-                                   settingsStore: cryptoStore.settingsStore,
-                                   networkStore: cryptoStore.networkStore)
-          .resetListHeaderStyle()
+        header: AccountsHeaderView(
+          keyringStore: keyringStore,
+          settingsStore: cryptoStore.settingsStore,
+          networkStore: cryptoStore.networkStore
+        )
+        .resetListHeaderStyle()
       ) {
       }
       Section(
@@ -87,23 +89,26 @@ struct AccountsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .background(
-      NavigationLink(isActive: Binding(
-        get: { selectedAccount != nil },
-        set: { if !$0 { selectedAccount = nil } }
-      ), destination: {
-        if let account = selectedAccount {
-          AccountActivityView(
-            keyringStore: keyringStore,
-            activityStore: cryptoStore.accountActivityStore(for: account),
-            networkStore: cryptoStore.networkStore
-          )
+      NavigationLink(
+        isActive: Binding(
+          get: { selectedAccount != nil },
+          set: { if !$0 { selectedAccount = nil } }
+        ),
+        destination: {
+          if let account = selectedAccount {
+            AccountActivityView(
+              keyringStore: keyringStore,
+              activityStore: cryptoStore.accountActivityStore(for: account),
+              networkStore: cryptoStore.networkStore
+            )
             .onDisappear {
               cryptoStore.closeAccountActivityStore(for: account)
             }
-        }
-      }, label: {
-        EmptyView()
-      })
+          }
+        },
+        label: {
+          EmptyView()
+        })
     )
     .listStyle(InsetGroupedListStyle())
     .osAvailabilityModifiers { content in

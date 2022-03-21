@@ -18,7 +18,7 @@ public struct DocumentOpenerView: UIViewControllerRepresentable {
   public var allowsMultipleSelection: Bool
   public var initialDirectoryURL: URL?
   public var onCompletion: ([URL]) -> Void
-  
+
   public init(
     allowedContentTypes: [UTType],
     allowsMultipleSelection: Bool = false,

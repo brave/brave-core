@@ -9,76 +9,76 @@ import BraveShared
 import Shared
 
 class BraveNewsEmptyFeedView: UIView, FeedCardContent {
-    
-    var sourcesAndSettingsButtonTapped: (() -> Void)?
-    
-    private let backgroundView = FeedCardBackgroundView()
-    
-    private let stackView = UIStackView().then {
-        $0.axis = .vertical
-        $0.alignment = .center
-        $0.spacing = 8
+
+  var sourcesAndSettingsButtonTapped: (() -> Void)?
+
+  private let backgroundView = FeedCardBackgroundView()
+
+  private let stackView = UIStackView().then {
+    $0.axis = .vertical
+    $0.alignment = .center
+    $0.spacing = 8
+  }
+
+  private let sourcesAndSettingsButton = ActionButton(type: .system).then {
+    $0.layer.borderWidth = 0
+    $0.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .semibold)
+    $0.setTitle(Strings.BraveNews.sourcesAndSettings, for: .normal)
+    $0.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
+    $0.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+  }
+
+  private let titleLabel = UILabel().then {
+    $0.textAlignment = .center
+    $0.textColor = .white
+    $0.font = .systemFont(ofSize: 22, weight: .semibold)
+    $0.numberOfLines = 0
+    $0.text = Strings.BraveNews.emptyFeedTitle
+  }
+
+  private let messageLabel = UILabel().then {
+    $0.textAlignment = .center
+    $0.textColor = .white
+    $0.font = .systemFont(ofSize: 16)
+    $0.numberOfLines = 0
+    $0.text = Strings.BraveNews.emptyFeedBody
+  }
+
+  required init() {
+    super.init(frame: .zero)
+
+    addSubview(backgroundView)
+    addSubview(stackView)
+
+    backgroundView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
     }
-    
-    private let sourcesAndSettingsButton = ActionButton(type: .system).then {
-        $0.layer.borderWidth = 0
-        $0.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .semibold)
-        $0.setTitle(Strings.BraveNews.sourcesAndSettings, for: .normal)
-        $0.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
-        $0.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+    stackView.snp.makeConstraints {
+      $0.edges.equalToSuperview().inset(24)
     }
-    
-    private let titleLabel = UILabel().then {
-        $0.textAlignment = .center
-        $0.textColor = .white
-        $0.font = .systemFont(ofSize: 22, weight: .semibold)
-        $0.numberOfLines = 0
-        $0.text = Strings.BraveNews.emptyFeedTitle
-    }
-    
-    private let messageLabel = UILabel().then {
-        $0.textAlignment = .center
-        $0.textColor = .white
-        $0.font = .systemFont(ofSize: 16)
-        $0.numberOfLines = 0
-        $0.text = Strings.BraveNews.emptyFeedBody
-    }
-    
-    required init() {
-        super.init(frame: .zero)
-        
-        addSubview(backgroundView)
-        addSubview(stackView)
-        
-        backgroundView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(24)
-        }
-        
-        stackView.addStackViewItems(
-            .view(UIImageView(image: UIImage(imageLiteralResourceName: "brave-today-error"))),
-            .customSpace(16),
-            .view(titleLabel),
-            .view(messageLabel),
-            .customSpace(20),
-            .view(sourcesAndSettingsButton)
-        )
-        
-        sourcesAndSettingsButton.addTarget(self, action: #selector(tappedSettingsButton), for: .touchUpInside)
-    }
-    
-    @available(*, unavailable)
-    required init(coder: NSCoder) {
-        fatalError()
-    }
-    
-    @objc private func tappedSettingsButton() {
-        sourcesAndSettingsButtonTapped?()
-    }
-    
-    // unused
-    var actionHandler: ((Int, FeedItemAction) -> Void)?
-    var contextMenu: FeedItemMenu?
+
+    stackView.addStackViewItems(
+      .view(UIImageView(image: UIImage(imageLiteralResourceName: "brave-today-error"))),
+      .customSpace(16),
+      .view(titleLabel),
+      .view(messageLabel),
+      .customSpace(20),
+      .view(sourcesAndSettingsButton)
+    )
+
+    sourcesAndSettingsButton.addTarget(self, action: #selector(tappedSettingsButton), for: .touchUpInside)
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+
+  @objc private func tappedSettingsButton() {
+    sourcesAndSettingsButtonTapped?()
+  }
+
+  // unused
+  var actionHandler: ((Int, FeedItemAction) -> Void)?
+  var contextMenu: FeedItemMenu?
 }

@@ -19,7 +19,7 @@ extension UIPasteboard {
       [[kUTTypeUTF8PlainText as String: string]],
       options: [
         .localOnly: true,
-        .expirationDate: expirationDate
+        .expirationDate: expirationDate,
       ]
     )
   }

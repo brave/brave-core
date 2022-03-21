@@ -13,82 +13,82 @@ import Shared
 // with the same layout/interface as `Bookmark (from CoreData)`
 class Bookmarkv2: WebsitePresentable {
 
-    // MARK: Lifecycle
+  // MARK: Lifecycle
 
-    init(_ bookmarkNode: BookmarkNode) {
-        self.bookmarkNode = bookmarkNode
-    }
-    
-    // MARK: Internal
-    
-    public let bookmarkNode: BookmarkNode
-    
-    public var bookmarkFavIconObserver: BookmarkModelListener?
+  init(_ bookmarkNode: BookmarkNode) {
+    self.bookmarkNode = bookmarkNode
+  }
 
-    public var isFolder: Bool {
-        return bookmarkNode.isFolder == true
-    }
+  // MARK: Internal
 
-    public var title: String? {
-        return bookmarkNode.titleUrlNodeTitle
-    }
+  public let bookmarkNode: BookmarkNode
 
-    public var url: String? {
-        bookmarkNode.titleUrlNodeUrl?.absoluteString
-    }
+  public var bookmarkFavIconObserver: BookmarkModelListener?
 
-    public var domain: Domain? {
-        if let url = bookmarkNode.titleUrlNodeUrl {
-            return Domain.getOrCreate(forUrl: url, persistent: true)
-        }
-        return nil
-    }
+  public var isFolder: Bool {
+    return bookmarkNode.isFolder == true
+  }
 
-    public var parent: Bookmarkv2? {
-        if let parent = bookmarkNode.parent {
-            // Return nil if the parent is the ROOT node
-            // because AddEditBookmarkTableViewController.sortFolders
-            // sorts root folders by having a nil parent.
-            // If that code changes, we should change here to match.
-            if bookmarkNode.parent?.guid != BookmarkManager.rootNodeId {
-                return Bookmarkv2(parent)
-            }
-        }
-        return nil
-    }
+  public var title: String? {
+    return bookmarkNode.titleUrlNodeTitle
+  }
 
-    public var children: [Bookmarkv2]? {
-        return bookmarkNode.children.map({ Bookmarkv2($0) })
-    }
+  public var url: String? {
+    bookmarkNode.titleUrlNodeUrl?.absoluteString
+  }
 
-    public var canBeDeleted: Bool {
-        return bookmarkNode.isPermanentNode == false
+  public var domain: Domain? {
+    if let url = bookmarkNode.titleUrlNodeUrl {
+      return Domain.getOrCreate(forUrl: url, persistent: true)
     }
+    return nil
+  }
 
-    public var objectID: Int {
-        return Int(bookmarkNode.nodeId)
+  public var parent: Bookmarkv2? {
+    if let parent = bookmarkNode.parent {
+      // Return nil if the parent is the ROOT node
+      // because AddEditBookmarkTableViewController.sortFolders
+      // sorts root folders by having a nil parent.
+      // If that code changes, we should change here to match.
+      if bookmarkNode.parent?.guid != BookmarkManager.rootNodeId {
+        return Bookmarkv2(parent)
+      }
     }
+    return nil
+  }
 
-    public func update(customTitle: String?, url: URL?) {
-        bookmarkNode.setTitle(customTitle ?? "")
-        bookmarkNode.url = url
-    }
-    
-    public func existsInPersistentStore() -> Bool {
-        return bookmarkNode.isValid && bookmarkNode.parent != nil
-    }
+  public var children: [Bookmarkv2]? {
+    return bookmarkNode.children.map({ Bookmarkv2($0) })
+  }
+
+  public var canBeDeleted: Bool {
+    return bookmarkNode.isPermanentNode == false
+  }
+
+  public var objectID: Int {
+    return Int(bookmarkNode.nodeId)
+  }
+
+  public func update(customTitle: String?, url: URL?) {
+    bookmarkNode.setTitle(customTitle ?? "")
+    bookmarkNode.url = url
+  }
+
+  public func existsInPersistentStore() -> Bool {
+    return bookmarkNode.isValid && bookmarkNode.parent != nil
+  }
 }
 
 class BraveBookmarkFolder: Bookmarkv2 {
-    public let indentationLevel: Int
-    
-    private override init(_ bookmarkNode: BookmarkNode) {
-        self.indentationLevel = 0
-        super.init(bookmarkNode)
-    }
+  public let indentationLevel: Int
 
-    public init(_ bookmarkFolder: BookmarkFolder) {
-        self.indentationLevel = bookmarkFolder.indentationLevel
-        super.init(bookmarkFolder.bookmarkNode)
-    }
+  private override init(_ bookmarkNode: BookmarkNode) {
+    self.indentationLevel = 0
+    super.init(bookmarkNode)
+  }
+
+  public init(_ bookmarkFolder: BookmarkFolder) {
+    self.indentationLevel = bookmarkFolder.indentationLevel
+    super.init(bookmarkFolder.bookmarkNode)
+  }
 }

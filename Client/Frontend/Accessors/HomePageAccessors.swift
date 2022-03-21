@@ -11,11 +11,11 @@ import XCGLogger
 /// as static.
 class HomePageAccessors {
 
-    static func getHomePage(_ prefs: Prefs) -> URL? {
-        let string = prefs.stringForKey(HomePageConstants.homePageURLPrefKey)
-        guard let urlString = string else {
-            return nil
-        }
-        return NSURL(string: urlString) as URL?
+  static func getHomePage(_ prefs: Prefs) -> URL? {
+    let string = prefs.stringForKey(HomePageConstants.homePageURLPrefKey)
+    guard let urlString = string else {
+      return nil
     }
+    return NSURL(string: urlString) as URL?
+  }
 }

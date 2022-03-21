@@ -30,7 +30,7 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
   @Binding private var selectedDataPoint: DataType?
   /// The fill applied to the line
   private var fill: FillStyle
-  
+
   init(
     data: [DataType],
     numberOfColumns: Int,
@@ -54,14 +54,14 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
     self.points = data.enumerated().map { index, dataPoint -> CGPoint in
       // Swift needs this pre-definition where the type is specified on lhs to compile in a
       // reasonable time (because of CGPoint generics)
-      let x: CGFloat = CGFloat(index) / CGFloat(numberOfColumns  - 1)
+      let x: CGFloat = CGFloat(index) / CGFloat(numberOfColumns - 1)
       let y: CGFloat = CGFloat(1.0) - (CGFloat(1.0) * ((dataPoint.value - min) / (max - min)))
       return .init(x: x, y: y)
     }
     self._selectedDataPoint = selectedDataPoint
     self.fill = fill()
   }
-  
+
   private func point(for index: Int, in size: CGSize) -> CGPoint? {
     guard index >= 0 && index < points.count else {
       return nil
@@ -71,11 +71,11 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
       y: points[index].y * size.height
     )
   }
-  
+
   private struct LineChartShape: Shape {
     /// The points, plotted relatively in a [0, 1] coordinate space
     var points: [CGPoint]
-    
+
     var animatableData: LineChartAnimatableData {
       get { .init(points: points.map(\.animatableData)) }
       set { points = newValue.points.map { CGPoint(x: $0.first, y: $0.second) } }
@@ -106,15 +106,15 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
       .strokedPath(StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
     }
   }
-  
+
   private struct DragContext<DataType: DataPoint> {
     var location: CGPoint
     var size: CGSize
     var dataPoint: DataType?
   }
-  
+
   @State private var dragContext: DragContext<DataType>?
-  
+
   private func makeDragContext(
     from offset: CGFloat,
     in size: CGSize
@@ -123,7 +123,8 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
     let stride = width / CGFloat(numberOfColumns - 1)
     let index = Int(round(offset / stride))
     guard index >= 0 && index < data.count,
-          let calculatedPoint = point(for: index, in: size) else {
+      let calculatedPoint = point(for: index, in: size)
+    else {
       return nil
     }
     return .init(
@@ -132,14 +133,15 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
       dataPoint: data[index]
     )
   }
-  
+
   @State private var animationScale: CGFloat = 0
-  
+
   var finalDotView: some View {
     let size: CGFloat = 14.0
     return GeometryReader { proxy in
       if numberOfColumns != points.count,
-         let scaledPoint = point(for: points.endIndex - 1, in: proxy.size) {
+        let scaledPoint = point(for: points.endIndex - 1, in: proxy.size)
+      {
         Circle()
           .frame(width: size, height: size)
           .background(
@@ -168,14 +170,14 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
       }
     }
   }
-  
+
   @State private var dragValueSize: CGSize = .zero
-  
+
   private let dateFormatter = DateFormatter().then {
     $0.dateStyle = .short
     $0.timeStyle = .short
   }
-  
+
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
       Group {
@@ -184,10 +186,12 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
           let offset = max(0, min(dragContext.size.width - dragValueSize.width, offsetCenter))
           Text(dateFormatter.string(from: dataPoint.date))
             .padding(.horizontal, 8)
-            .overlay(GeometryReader { proxy in
-              Color.clear
-                .preference(key: ValueSizePreferenceKey.self, value: proxy.size)
-            })
+            .overlay(
+              GeometryReader { proxy in
+                Color.clear
+                  .preference(key: ValueSizePreferenceKey.self, value: proxy.size)
+              }
+            )
             .frame(maxWidth: .infinity, alignment: .leading)
             .offset(x: offset)
         } else {
@@ -203,14 +207,14 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
         .mask(
           LineChartShape(points: points)
             .padding(.vertical, 14)
-            .drawingGroup() // Drawing group clips anything above it, so we need additional padding
+            .drawingGroup()  // Drawing group clips anything above it, so we need additional padding
             .overlay(
               finalDotView
-                .padding(.vertical, 14) // But drag calculations need to use the correct coordinates without padding)
+                .padding(.vertical, 14)  // But drag calculations need to use the correct coordinates without padding)
             )
         )
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.vertical, -14) // But drag calculations need to use the correct coordinates without padding
+        .padding(.vertical, -14)  // But drag calculations need to use the correct coordinates without padding
         .overlay(
           Group {
             if let dragContext = dragContext {
@@ -223,24 +227,25 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
             }
           }
         )
-        .overlay(GeometryReader { proxy in
-          Color.clear
-            .contentShape(Rectangle())
-            .gesture(
-              DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                .onChanged({ value in
-                  dragContext = makeDragContext(
-                    from: value.location.x,
-                    in: proxy.size
-                  )
-                  selectedDataPoint = dragContext?.dataPoint
-                })
-                .onEnded({ _ in
-                  dragContext = nil
-                  selectedDataPoint = nil
-                })
-            )
-        })
+        .overlay(
+          GeometryReader { proxy in
+            Color.clear
+              .contentShape(Rectangle())
+              .gesture(
+                DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                  .onChanged({ value in
+                    dragContext = makeDragContext(
+                      from: value.location.x,
+                      in: proxy.size
+                    )
+                    selectedDataPoint = dragContext?.dataPoint
+                  })
+                  .onEnded({ _ in
+                    dragContext = nil
+                    selectedDataPoint = nil
+                  })
+              )
+          })
     }
     .padding(.bottom, 16)
     .padding(.top, 4)
@@ -252,11 +257,11 @@ extension CGPoint {
   fileprivate func midpoint(to point: CGPoint) -> CGPoint {
     .init(x: (x + point.x) / 2.0, y: (y + point.y) / 2.0)
   }
-  
+
   fileprivate func controlPoint(to otherPoint: CGPoint) -> CGPoint {
     var point = midpoint(to: otherPoint)
     let diffY = abs(otherPoint.y - point.y)
-    
+
     if y < otherPoint.y {
       point.y += diffY
     } else if y > otherPoint.y {
@@ -273,7 +278,7 @@ extension CGPoint {
 private struct ChartAccessibilityModifier_FB9812596: ViewModifier {
   var title: String
   var dataPoints: [DataPoint]
-  
+
   func body(content: Content) -> some View {
     content.accessibilityChartDescriptor(LineChartDescriptor(title: title, values: dataPoints))
   }
@@ -296,7 +301,7 @@ extension View {
 private struct LineChartDescriptor: AXChartDescriptorRepresentable {
   var title: String
   var values: [DataPoint]
-  
+
   func makeChartDescriptor() -> AXChartDescriptor {
     let (min, max) = { () -> (CGFloat, CGFloat) in
       let filledData = values.map({ $0.value })
@@ -325,13 +330,15 @@ private struct LineChartDescriptor: AXChartDescriptorRepresentable {
         }
       ),
       additionalAxes: [],
-      series: [AXDataSeriesDescriptor(
-        name: "",
-        isContinuous: true,
-        dataPoints: values.map {
-          AXDataPoint(x: $0.date.formatted(.dateTime), y: $0.value, additionalValues: [], label: nil)
-        }
-      )]
+      series: [
+        AXDataSeriesDescriptor(
+          name: "",
+          isContinuous: true,
+          dataPoints: values.map {
+            AXDataPoint(x: $0.date.formatted(.dateTime), y: $0.value, additionalValues: [], label: nil)
+          }
+        )
+      ]
     )
   }
 }
@@ -342,7 +349,7 @@ private struct LineChartDescriptor: AXChartDescriptorRepresentable {
 private struct LineChartAnimatableData: VectorArithmetic {
   /// The points to plot in the chart
   var points: [CGPoint.AnimatableData]
-  
+
   /// Applies a function between two animatable data sets
   static func animatableData(
     lhs: Self,
@@ -365,28 +372,28 @@ private struct LineChartAnimatableData: VectorArithmetic {
       }
       // Thanks to https://stackoverflow.com/q/64157672 for collapsing points implementation detail
     }
-    
+
     return .init(points: points)
   }
-  
+
   static func + (lhs: Self, rhs: Self) -> Self {
     animatableData(lhs: lhs, rhs: rhs, applying: +)
   }
-  
+
   static func - (lhs: Self, rhs: Self) -> Self {
     animatableData(lhs: lhs, rhs: rhs, applying: -)
   }
-  
+
   mutating func scale(by rhs: Double) {
     points.indices.forEach { index in
       self.points[index].scale(by: rhs)
     }
   }
-  
+
   var magnitudeSquared: Double {
     return points.reduce(0, { $0 + $1.magnitudeSquared })
   }
-  
+
   static var zero: LineChartAnimatableData {
     return .init(points: [])
   }

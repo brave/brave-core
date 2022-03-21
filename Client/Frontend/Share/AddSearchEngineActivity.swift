@@ -7,26 +7,26 @@ import Foundation
 import Shared
 
 class AddSearchEngineActivity: UIActivity {
-    fileprivate let callback: () -> Void
+  fileprivate let callback: () -> Void
 
-    init(callback: @escaping () -> Void) {
-        self.callback = callback
-    }
+  init(callback: @escaping () -> Void) {
+    self.callback = callback
+  }
 
-    override var activityTitle: String? {
-        return Strings.CustomSearchEngine.customEngineNavigationTitle
-    }
+  override var activityTitle: String? {
+    return Strings.CustomSearchEngine.customEngineNavigationTitle
+  }
 
-    override var activityImage: UIImage? {
-        return #imageLiteral(resourceName: "AddSearch").template
-    }
+  override var activityImage: UIImage? {
+    return #imageLiteral(resourceName: "AddSearch").template
+  }
 
-    override func perform() {
-        callback()
-        activityDidFinish(true)
-    }
+  override func perform() {
+    callback()
+    activityDidFinish(true)
+  }
 
-    override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
-        return true
-    }
+  override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
+    return true
+  }
 }

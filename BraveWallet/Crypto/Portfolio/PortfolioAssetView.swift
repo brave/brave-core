@@ -11,7 +11,7 @@ struct PortfolioAssetView: View {
   var symbol: String
   var amount: String
   var quantity: String
-  
+
   var body: some View {
     HStack {
       image

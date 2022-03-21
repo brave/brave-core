@@ -19,15 +19,15 @@ class MockAssetRatioService: BraveWalletAssetRatioService {
     }
     completion(!prices.isEmpty, Array(prices.values))
   }
-  
+
   func estimatedTime(_ gasPrice: String, completion: @escaping (Bool, String) -> Void) {
     completion(false, "")
   }
-  
+
   func tokenInfo(_ contractAddress: String, completion: @escaping (BraveWallet.BlockchainToken?) -> Void) {
     completion(nil)
   }
-  
+
   func priceHistory(_ asset: String, vsAsset: String, timeframe: BraveWallet.AssetPriceTimeframe, completion: @escaping (Bool, [BraveWallet.AssetTimePrice]) -> Void) {
     completion(false, [])
   }

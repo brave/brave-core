@@ -29,12 +29,12 @@ class TabbedPageViewController: UIViewController {
           animated: false
         )
       }
-      
+
       var tabsSnapshot = NSDiffableDataSourceSnapshot<Int, TabsBarView.TabItem>()
       tabsSnapshot.appendSections([0])
       tabsSnapshot.appendItems(pages.map({ .init(id: UUID(), viewController: $0) }))
       tabsBar.dataSource.apply(tabsSnapshot, animatingDifferences: false)
-      
+
       titleObservers.removeAllObjects()
       for vc in pages {
         titleObservers.setObject(
@@ -52,60 +52,60 @@ class TabbedPageViewController: UIViewController {
             },
           forKey: vc)
       }
-      
+
       updateTabsBarSelectionIndicator(pageIndex: 0)
     }
   }
-  
+
   private var titleObservers: NSMapTable<UIViewController, AnyCancellable> = .weakToStrongObjects()
-  
+
   private let tabsBar = TabsBarView()
-  
+
   private let pageViewController = UIPageViewController(
     transitionStyle: .scroll,
     navigationOrientation: .horizontal,
     options: nil
   )
-  
+
   private var contentOffsetObservation: NSKeyValueObservation?
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     view.backgroundColor = .braveBackground
     addChild(pageViewController)
     pageViewController.didMove(toParent: self)
     view.addSubview(pageViewController.view)
     view.addSubview(tabsBar)
-    
+
     // Gets rid of the bottom border to appear flush with the tab bar
     navigationItem.standardAppearance = UINavigationBarAppearance().then {
       $0.configureWithDefaultBackground()
       $0.shadowColor = .clear
     }
-    
+
     tabsBar.selectedTabAtIndexPath = { [unowned self] indexPath in
       moveToPage(at: indexPath)
     }
     tabsBar.boundsWidthChanged = { [unowned self] in
       updateTabsBarSelectionIndicator(pageIndex: currentIndex ?? 0)
     }
-    
+
     tabsBar.snp.makeConstraints {
       $0.leading.trailing.equalToSuperview()
       $0.top.equalTo(view.safeAreaLayoutGuide)
       $0.height.equalTo(tabBarHeight)
     }
-    
+
     pageViewController.view.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-  
+
     pageViewController.additionalSafeAreaInsets =
       .init(top: tabBarHeight, left: 0, bottom: 0, right: 0)
     pageViewController.dataSource = self
     pageViewController.delegate = self
-    
+
     if let scrollView = pageViewController.scrollView {
       contentOffsetObservation =
         scrollView.observe(\.contentOffset) { [unowned self] scrollView, _ in
@@ -113,7 +113,7 @@ class TabbedPageViewController: UIViewController {
         }
     }
   }
-  
+
   /// Information that is used to transition between two tabs during a scroll
   private struct PageTransitionContext {
     /// The current page index
@@ -121,9 +121,9 @@ class TabbedPageViewController: UIViewController {
     /// The index of the page the user is scrolling to
     var targetIndex: Int
   }
-  
+
   private var pageTransitionContext: PageTransitionContext?
-  
+
   /// Updates the tabs bar selection indicator frame and ensures it is visible to the user
   private func updateTabsBarSelectionIndicatorFrame(x: CGFloat, width: CGFloat) {
     tabsBar.selectionIndicatorView.frame = CGRect(
@@ -142,7 +142,7 @@ class TabbedPageViewController: UIViewController {
       tabsBar.collectionView.scrollRectToVisible(rectToKeepVisible, animated: false)
     }
   }
-  
+
   /// Updates the tabs bar selection indicator to display under the tab at a given page index
   private func updateTabsBarSelectionIndicator(pageIndex: Int) {
     guard pageIndex < pages.count else { return }
@@ -160,7 +160,7 @@ class TabbedPageViewController: UIViewController {
     // scrolling (this method is called at the end of each full page scroll completion)
     tabsBar.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
   }
-  
+
   /// Updates the tabs bar selection indicator based on the content offset of the
   /// `UIPageViewController`s internal scroll view
   private func updateTabsBarSelectionIndicator(contentOffset: CGPoint) {
@@ -169,7 +169,7 @@ class TabbedPageViewController: UIViewController {
     if contentSizeWidth.isZero {
       return
     }
-    
+
     // The page process is a clamped value from -1 to 1 from the current index
     // to the target index. A negative number means user is scrolling to a
     // previous tab, and a positive number means scrolling forward
@@ -177,20 +177,21 @@ class TabbedPageViewController: UIViewController {
       // `UIPageViewController`'s scroll view actually always has a contentSize of 3 pages since
       // the data source just asks for each page one at a time, hence subtracing 1 page worth before
       // computing the delta
-      let delta = (contentOffset.x - pageViewController.view.bounds.width) /
-        pageViewController.view.bounds.width
+      let delta = (contentOffset.x - pageViewController.view.bounds.width) / pageViewController.view.bounds.width
       return max(-1, min(1, delta))
     }()
-    
+
     // Grab the frames of the two transitioning cells
     let layout = tabsBar.collectionView.collectionViewLayout
-    let currentPageFrame = layout.layoutAttributesForItem(
-      at: .init(item: pageTransitionContext.currentIndex, section: 0)
-    )?.frame ?? .zero
-    let targetPageFrame = layout.layoutAttributesForItem(
-      at: .init(item: pageTransitionContext.targetIndex, section: 0)
-    )?.frame ?? .zero
-    
+    let currentPageFrame =
+      layout.layoutAttributesForItem(
+        at: .init(item: pageTransitionContext.currentIndex, section: 0)
+      )?.frame ?? .zero
+    let targetPageFrame =
+      layout.layoutAttributesForItem(
+        at: .init(item: pageTransitionContext.targetIndex, section: 0)
+      )?.frame ?? .zero
+
     let pageDelta = abs(pageProgress)
     updateTabsBarSelectionIndicatorFrame(
       x: {
@@ -207,7 +208,7 @@ class TabbedPageViewController: UIViewController {
       }()
     )
   }
-  
+
   /// Moves to a given page and adjusts the tabs bar accordingly
   private func moveToPage(at indexPath: IndexPath) {
     guard let currentIndex = currentIndex, indexPath.item < pages.count else { return }
@@ -232,7 +233,7 @@ extension TabbedPageViewController: UIPageViewControllerDataSource {
     }
     return nil
   }
-  
+
   func pageViewController(
     _ pageViewController: UIPageViewController,
     viewControllerBefore viewController: UIViewController
@@ -250,25 +251,27 @@ extension TabbedPageViewController: UIPageViewControllerDelegate {
   /// `UIPageViewController`
   private var currentIndex: Int? {
     if let currentController = pageViewController.viewControllers?.first,
-       let currentIndex = pages.firstIndex(of: currentController) {
+      let currentIndex = pages.firstIndex(of: currentController)
+    {
       return currentIndex
     }
     return nil
   }
-  
+
   func pageViewController(
     _ pageViewController: UIPageViewController,
     willTransitionTo pendingViewControllers: [UIViewController]
   ) {
     guard let currentIndex = currentIndex,
-          let pendingController = pendingViewControllers.first,
-          let pendingIndex = pages.firstIndex(of: pendingController) else { return }
+      let pendingController = pendingViewControllers.first,
+      let pendingIndex = pages.firstIndex(of: pendingController)
+    else { return }
     self.pageTransitionContext = .init(
       currentIndex: currentIndex,
       targetIndex: pendingIndex
     )
   }
-  
+
   func pageViewController(
     _ pageViewController: UIPageViewController,
     didFinishAnimating finished: Bool,
@@ -289,24 +292,24 @@ extension TabbedPageViewController: UIPageViewControllerDelegate {
 }
 
 private class TabsBarView: UIView, UICollectionViewDelegate {
-  
+
   fileprivate struct TabItem: Hashable {
     var id: UUID
     var viewController: UIViewController
-    
+
     var title: String? {
       viewController.title ?? viewController.navigationItem.title
     }
-    
+
     func hash(into hasher: inout Hasher) {
       id.hash(into: &hasher)
     }
-    
+
     static func == (lhs: Self, rhs: Self) -> Bool {
       lhs.id == rhs.id && lhs.title == rhs.title
     }
   }
-  
+
   private(set) lazy var dataSource: UICollectionViewDiffableDataSource<Int, TabItem> = {
     UICollectionViewDiffableDataSource<Int, TabItem>(
       collectionView: collectionView,
@@ -315,7 +318,8 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
           let cell = cv.dequeueReusableCell(
             withReuseIdentifier: Cell.reuseIdentifier,
             for: indexPath
-          ) as? Cell else {
+          ) as? Cell
+        else {
           return nil
         }
         cell.title = item.title
@@ -323,18 +327,18 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
       }
     )
   }()
-  
+
   private let shadowView = UIView().then {
     $0.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
   }
-  
+
   let selectionIndicatorView: BraveGradientView = .init { traitCollection in
     if traitCollection.userInterfaceStyle == .dark {
       return BraveGradient.darkGradient02
     }
     return BraveGradient.lightGradient02
   }
-  
+
   let collectionView = UICollectionView(
     frame: .zero,
     collectionViewLayout: {
@@ -349,10 +353,10 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
       return flowLayout
     }()
   )
-  
+
   var selectedTabAtIndexPath: ((IndexPath) -> Void)?
   var boundsWidthChanged: (() -> Void)?
-  
+
   override var bounds: CGRect {
     didSet {
       if oldValue.width != bounds.width {
@@ -360,24 +364,24 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
       }
     }
   }
-  
+
   override func layoutSubviews() {
     super.layoutSubviews()
-    
+
     guard bounds.width != 0 && collectionView.numberOfItems(inSection: 0) != 0 else { return }
     (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?
       .itemSize = CGSize(width: (bounds.width - 32) / CGFloat(collectionView.numberOfItems(inSection: 0)), height: tabBarHeight)
   }
-  
+
   override init(frame: CGRect) {
     super.init(frame: frame)
-    
+
     backgroundColor = .braveBackground
-    
+
     addSubview(collectionView)
     addSubview(shadowView)
     collectionView.addSubview(selectionIndicatorView)
-    
+
     collectionView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -386,7 +390,7 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
       $0.leading.trailing.equalToSuperview()
       $0.top.equalTo(snp.bottom)
     }
-    
+
     collectionView.register(Cell.self, forCellWithReuseIdentifier: Cell.reuseIdentifier)
     collectionView.dataSource = dataSource
     collectionView.delegate = self
@@ -396,48 +400,48 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
     collectionView.showsHorizontalScrollIndicator = false
     collectionView.isDirectionalLockEnabled = true
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
   }
-  
+
   // MARK: - UICollectionViewDelegate
-  
+
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     selectedTabAtIndexPath?(indexPath)
   }
-  
+
   // MARK: -
-  
+
   private class Cell: UICollectionViewCell {
     static let reuseIdentifier = "tabCell"
-    
+
     var title: String? {
       didSet {
         label.text = title?.uppercased()
-        
+
         // Accessibility
         accessibilityLabel = title
         largeContentTitle = title
       }
     }
-    
+
     let label = UILabel().then {
       $0.font = .boldSystemFont(ofSize: 15)
       $0.textAlignment = .center
     }
-    
+
     override init(frame: CGRect) {
       super.init(frame: frame)
-      
+
       contentView.addSubview(label)
-      
+
       label.snp.makeConstraints {
         $0.leading.trailing.equalTo(contentView).inset(12)
         $0.centerY.equalTo(contentView)
       }
-      
+
       isAccessibilityElement = true
       accessibilityTraits = [.staticText, .button]
       // Since we aren't going to support dynamic type on the tab titles, we will adopt a large
@@ -445,7 +449,7 @@ private class TabsBarView: UIView, UICollectionViewDelegate {
       showsLargeContentViewer = true
       addInteraction(UILargeContentViewerInteraction())
     }
-    
+
     @available(*, unavailable)
     required init(coder: NSCoder) {
       fatalError()

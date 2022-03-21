@@ -11,15 +11,15 @@ private let log = Logger.browserLogger
 
 public struct UIKitController: View {
   private var makeVC: () -> UIViewController
-  
+
   public init(_ makeVC: @escaping @autoclosure () -> UIViewController) {
     self.makeVC = makeVC
   }
-  
+
   private var controller: some View {
     _UIKitController(makeVC)
   }
-  
+
   public var body: some View {
     if #available(iOS 14.0, *) {
       controller
@@ -28,7 +28,7 @@ public struct UIKitController: View {
       controller
     }
   }
-  
+
   private struct _UIKitController: UIViewControllerRepresentable {
     private var makeVC: () -> UIViewController
     init(_ makeVC: @escaping () -> UIViewController) {

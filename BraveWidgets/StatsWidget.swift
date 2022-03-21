@@ -9,116 +9,116 @@ import Shared
 import BraveShared
 
 struct StatsWidget: Widget {
-    var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "StatsWidget", provider: StatsProvider()) { entry in
-            StatsView(entry: entry)
-        }
-        .supportedFamilies([.systemMedium])
-        .configurationDisplayName(Strings.Widgets.shieldStatsTitle)
-        .description(Strings.Widgets.shieldStatsDescription)
+  var body: some WidgetConfiguration {
+    StaticConfiguration(kind: "StatsWidget", provider: StatsProvider()) { entry in
+      StatsView(entry: entry)
     }
+    .supportedFamilies([.systemMedium])
+    .configurationDisplayName(Strings.Widgets.shieldStatsTitle)
+    .description(Strings.Widgets.shieldStatsDescription)
+  }
 }
 
 private struct StatsEntry: TimelineEntry {
-    var date: Date
-    var statData: [StatData]
+  var date: Date
+  var statData: [StatData]
 }
 
 private struct StatsProvider: TimelineProvider {
-    typealias Entry = StatsEntry
-    
-    var stats: [StatData] {
-        let kinds: [StatKind] = [.adsBlocked, .dataSaved, .timeSaved]
-        return kinds.map { StatData(name: $0.name, value: $0.displayString, color: $0.valueColor) }
-    }
-    
-    func placeholder(in context: Context) -> Entry {
-        Entry(date: Date(), statData: [])
-    }
-    func getSnapshot(in context: Context, completion: @escaping (Entry) -> Void) {
-        let entry = Entry(date: Date(), statData: stats)
-        completion(entry)
-    }
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
-        let entry = Entry(date: Date(), statData: stats)
-        let timeline = Timeline(entries: [entry], policy: .never)
-        completion(timeline)
-    }
+  typealias Entry = StatsEntry
+
+  var stats: [StatData] {
+    let kinds: [StatKind] = [.adsBlocked, .dataSaved, .timeSaved]
+    return kinds.map { StatData(name: $0.name, value: $0.displayString, color: $0.valueColor) }
+  }
+
+  func placeholder(in context: Context) -> Entry {
+    Entry(date: Date(), statData: [])
+  }
+  func getSnapshot(in context: Context, completion: @escaping (Entry) -> Void) {
+    let entry = Entry(date: Date(), statData: stats)
+    completion(entry)
+  }
+  func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
+    let entry = Entry(date: Date(), statData: stats)
+    let timeline = Timeline(entries: [entry], policy: .never)
+    completion(timeline)
+  }
 }
 
 private struct StatsView: View {
-    var entry: StatsEntry
-    @Environment(\.redactionReasons) var redactionReasons
-    
-    private var placeholderOrPrivacyRedaction: Bool {
-        if #available(iOS 15, *) {
-            return redactionReasons.contains(.placeholder) || redactionReasons.contains(.privacy)
-        } else {
-            return redactionReasons.contains(.placeholder)
-        }
+  var entry: StatsEntry
+  @Environment(\.redactionReasons) var redactionReasons
+
+  private var placeholderOrPrivacyRedaction: Bool {
+    if #available(iOS 15, *) {
+      return redactionReasons.contains(.placeholder) || redactionReasons.contains(.privacy)
+    } else {
+      return redactionReasons.contains(.placeholder)
     }
-    
-    var body: some View {
-        VStack {
-            HStack {
-                Image("brave.shields.done")
-                Text(Strings.Widgets.shieldStatsWidgetTitle)
-                    .foregroundColor(Color(UIColor.braveLabel))
-                    .font(.system(size: 13, weight: .semibold))
-                Spacer()
-                Image("brave-icon-no-bg")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 24)
-            }
-            .unredacted()
-            Spacer()
-            HStack(alignment: .top, spacing: 8) {
-                ForEach(entry.statData, id: \.name) { data in
-                    Color.clear
-                        .overlay(
-                            VStack(spacing: 4) {
-                                Text(verbatim: placeholderOrPrivacyRedaction ? "-" : data.value)
-                                    .font(.system(size: 32.0))
-                                    .foregroundColor(Color(data.color))
-                                    .multilineTextAlignment(.center)
-                                    .minimumScaleFactor(0.5)
-                                    .unredacted()
-                                Text(verbatim: data.name)
-                                    .font(.system(size: 10, weight: .semibold))
-                                    .multilineTextAlignment(.center)
-                                    .unredacted()
-                            }
-                        )
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding(4)
-                }
-            }
-            Spacer()
+  }
+
+  var body: some View {
+    VStack {
+      HStack {
+        Image("brave.shields.done")
+        Text(Strings.Widgets.shieldStatsWidgetTitle)
+          .foregroundColor(Color(UIColor.braveLabel))
+          .font(.system(size: 13, weight: .semibold))
+        Spacer()
+        Image("brave-icon-no-bg")
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .frame(height: 24)
+      }
+      .unredacted()
+      Spacer()
+      HStack(alignment: .top, spacing: 8) {
+        ForEach(entry.statData, id: \.name) { data in
+          Color.clear
+            .overlay(
+              VStack(spacing: 4) {
+                Text(verbatim: placeholderOrPrivacyRedaction ? "-" : data.value)
+                  .font(.system(size: 32.0))
+                  .foregroundColor(Color(data.color))
+                  .multilineTextAlignment(.center)
+                  .minimumScaleFactor(0.5)
+                  .unredacted()
+                Text(verbatim: data.name)
+                  .font(.system(size: 10, weight: .semibold))
+                  .multilineTextAlignment(.center)
+                  .unredacted()
+              }
+            )
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(4)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.vertical, 12)
-        .padding(.horizontal, 16)
-        .background(Color(UIColor.secondaryBraveBackground))
-        .foregroundColor(Color(UIColor.braveLabel))
+      }
+      Spacer()
     }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .padding(.vertical, 12)
+    .padding(.horizontal, 16)
+    .background(Color(UIColor.secondaryBraveBackground))
+    .foregroundColor(Color(UIColor.braveLabel))
+  }
 }
 
 // MARK: - Previews
 
 #if DEBUG
 struct StatsWidget_Previews: PreviewProvider {
-    static var stats: [StatData] {
-        let kinds: [StatKind] = [.adsBlocked, .dataSaved, .timeSaved]
-        return kinds.map { StatData(name: $0.name, value: $0.displayString, color: $0.valueColor) }
-    }
-    
-    static var previews: some View {
-        StatsView(entry: StatsEntry(date: Date(), statData: stats))
-            .previewContext(WidgetPreviewContext(family: .systemMedium))
-        StatsView(entry: StatsEntry(date: Date(), statData: stats))
-            .redacted(reason: .placeholder)
-            .previewContext(WidgetPreviewContext(family: .systemMedium))
-    }
+  static var stats: [StatData] {
+    let kinds: [StatKind] = [.adsBlocked, .dataSaved, .timeSaved]
+    return kinds.map { StatData(name: $0.name, value: $0.displayString, color: $0.valueColor) }
+  }
+
+  static var previews: some View {
+    StatsView(entry: StatsEntry(date: Date(), statData: stats))
+      .previewContext(WidgetPreviewContext(family: .systemMedium))
+    StatsView(entry: StatsEntry(date: Date(), statData: stats))
+      .redacted(reason: .placeholder)
+      .previewContext(WidgetPreviewContext(family: .systemMedium))
+  }
 }
 #endif

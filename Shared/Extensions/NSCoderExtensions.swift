@@ -12,30 +12,30 @@ import Foundation
  * These helper functions provide a unified way of achieving that
  **/
 extension NSCoder {
-    /**
+  /**
     * Decode as Int regardless of which Swift version was used to encode it
     **/
-    open func decodeAsInt(forKey key: String) -> Int {
-        return self.decodeObject(forKey: key) as? Int ?? self.decodeInteger(forKey: key)
-    }
-    /**
+  open func decodeAsInt(forKey key: String) -> Int {
+    return self.decodeObject(forKey: key) as? Int ?? self.decodeInteger(forKey: key)
+  }
+  /**
      * Decode as UInt64 regardless of which Swift version was used to encode it
      **/
-    open func decodeAsUInt64(forKey key: String) -> UInt64 {
-        return (self.decodeObject(forKey: key)  as? NSNumber)?.uint64Value ?? UInt64(self.decodeInt64(forKey: key))
-    }
+  open func decodeAsUInt64(forKey key: String) -> UInt64 {
+    return (self.decodeObject(forKey: key) as? NSNumber)?.uint64Value ?? UInt64(self.decodeInt64(forKey: key))
+  }
 
-    /**
+  /**
      * Decode as Bool regardless of which Swift version was used to encode it
      **/
-    open func decodeAsBool(forKey key: String) -> Bool {
-        return self.decodeObject(forKey: key) as? Bool ?? self.decodeBool(forKey: key)
-    }
+  open func decodeAsBool(forKey key: String) -> Bool {
+    return self.decodeObject(forKey: key) as? Bool ?? self.decodeBool(forKey: key)
+  }
 
-    /**
+  /**
      * Decode as Double regardless of which Swift version was used to encode it
      **/
-    open func decodeAsDouble(forKey key: String) -> Double {
-        return (self.decodeObject(forKey: key) as? NSNumber)?.doubleValue ?? self.decodeDouble(forKey: key)
-    }
+  open func decodeAsDouble(forKey key: String) -> Double {
+    return (self.decodeObject(forKey: key) as? NSNumber)?.doubleValue ?? self.decodeDouble(forKey: key)
+  }
 }

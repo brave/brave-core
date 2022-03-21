@@ -10,10 +10,10 @@ struct AccountsHeaderView: View {
   @ObservedObject var keyringStore: KeyringStore
   var settingsStore: SettingsStore
   var networkStore: NetworkStore
-  
+
   @State private var isPresentingBackup: Bool = false
   @State private var isPresentingAddAccount: Bool = false
-  
+
   var body: some View {
     HStack {
       Button(action: { isPresentingBackup = true }) {
@@ -50,8 +50,10 @@ struct AccountsHeaderView: View {
               .navigationViewStyle(StackNavigationViewStyle())
             }
         )
-        NavigationLink(destination: WalletSettingsView(settingsStore: settingsStore,
-                                                       networkStore: networkStore)
+        NavigationLink(
+          destination: WalletSettingsView(
+            settingsStore: settingsStore,
+            networkStore: networkStore)
         ) {
           Label(Strings.Wallet.settings, image: "brave.gear")
             .labelStyle(.iconOnly)
@@ -71,8 +73,8 @@ struct AccountsHeaderView_Previews: PreviewProvider {
       settingsStore: .previewStore,
       networkStore: .previewStore
     )
-      .previewLayout(.sizeThatFits)
-      .previewColorSchemes()
+    .previewLayout(.sizeThatFits)
+    .previewColorSchemes()
   }
 }
 #endif

@@ -5,32 +5,32 @@
 import UIKit
 
 protocol BookmarkDetailsViewDelegate: AnyObject {
-    func correctValues(validationPassed: Bool)
+  func correctValues(validationPassed: Bool)
 }
 
 class AddEditHeaderView: UIView {
-    
-    struct UX {
-        static let defaultSpacing: CGFloat = 8
-        static let faviconSize: CGFloat = 64
+
+  struct UX {
+    static let defaultSpacing: CGFloat = 8
+    static let faviconSize: CGFloat = 64
+  }
+
+  let mainStackView = UIStackView().then {
+    $0.axis = .vertical
+    $0.spacing = UX.defaultSpacing
+  }
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    addSubview(mainStackView)
+
+    mainStackView.snp.makeConstraints {
+      $0.edges.equalTo(self)
     }
-    
-    let mainStackView = UIStackView().then {
-        $0.axis = .vertical
-        $0.spacing = UX.defaultSpacing
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        addSubview(mainStackView)
-        
-        mainStackView.snp.makeConstraints {
-            $0.edges.equalTo(self)
-        }
-    }
-    
-    @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
-        fatalError()
-    }
+  }
+
+  @available(*, unavailable)
+  required init?(coder aDecoder: NSCoder) {
+    fatalError()
+  }
 }

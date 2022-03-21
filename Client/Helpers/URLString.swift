@@ -11,19 +11,19 @@ import Foundation
 /// This wrapper decodes a `String` type rather than a `URL` type and converts that decoded string into a
 /// `URL` using `URL(string:)`
 @propertyWrapper struct URLString: Equatable, Decodable {
-    var wrappedValue: URL?
-    
-    init(wrappedValue: URL?) {
-        self.wrappedValue = wrappedValue
+  var wrappedValue: URL?
+
+  init(wrappedValue: URL?) {
+    self.wrappedValue = wrappedValue
+  }
+
+  init(from decoder: Decoder) throws {
+    let container = try decoder.singleValueContainer()
+    if container.decodeNil() {
+      wrappedValue = nil
+    } else {
+      let value = try container.decode(String.self)
+      wrappedValue = URL(string: value)
     }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        if container.decodeNil() {
-            wrappedValue = nil
-        } else {
-            let value = try container.decode(String.self)
-            wrappedValue = URL(string: value)
-        }
-    }
+  }
 }

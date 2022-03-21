@@ -10,7 +10,7 @@ import BigNumber
 struct WeiFormatter {
   /// The style to use when formatting wei to decimals
   var decimalFormatStyle: DecimalFormatStyle
-  
+
   enum DecimalFormatStyle {
     /// A basic decimal format with the requested precision
     ///
@@ -24,7 +24,7 @@ struct WeiFormatter {
     ///
     /// Shows 6 decimals of precision and is rounded. Example: `3.141592`
     case gasFee(limit: String, radix: Radix = .decimal)
-    
+
     fileprivate var precision: Int {
       switch self {
       case .decimals(let precision):
@@ -35,7 +35,7 @@ struct WeiFormatter {
         return 6
       }
     }
-    
+
     fileprivate var isRounded: Bool {
       switch self {
       case .decimals:
@@ -45,12 +45,12 @@ struct WeiFormatter {
       }
     }
   }
-  
+
   enum Radix: Int {
     case decimal = 10
     case hex = 16
   }
-  
+
   private static func isStringValid(_ string: String, radix: Radix) -> Bool {
     switch radix {
     case .decimal:
@@ -59,7 +59,7 @@ struct WeiFormatter {
       return string.allSatisfy(\.isHexDigit)
     }
   }
-  
+
   /// Get a decimal representation of a Wei value given some decimal precision of said Wei
   ///
   /// - parameters:
@@ -69,12 +69,14 @@ struct WeiFormatter {
   ///                 ERC20 tokens will have 18 decimals by default
   func decimalString(for value: String, radix: Radix = .decimal, decimals: Int) -> String? {
     guard !value.isEmpty, Self.isStringValid(value, radix: radix),
-          let bv = BDouble(value, radix: radix.rawValue) else {
+      let bv = BDouble(value, radix: radix.rawValue)
+    else {
       return nil
     }
     var decimal = bv / (BDouble(10) ** decimals)
     if case .gasFee(let limit, let limitRadix) = decimalFormatStyle,
-       let gasLimit = BDouble(limit, radix: limitRadix.rawValue) {
+      let gasLimit = BDouble(limit, radix: limitRadix.rawValue)
+    {
       decimal *= gasLimit
     }
     return decimal.decimalExpansion(
@@ -82,7 +84,7 @@ struct WeiFormatter {
       rounded: decimalFormatStyle.isRounded
     )
   }
-  
+
   /// Get a wei string from a decimal string
   ///
   /// - parameters:
@@ -101,7 +103,7 @@ struct WeiFormatter {
     }
     return weiValue.rounded().asString(radix: radix.rawValue)
   }
-  
+
   /// Get a wei string from a decimal value
   ///
   /// - parameters:
@@ -117,12 +119,14 @@ struct WeiFormatter {
     }
     return weiValue.rounded().asString(radix: radix.rawValue)
   }
-  
+
   static func weiToDecimalGwei(
     _ weiString: String,
-    radix: Radix) -> String? {
+    radix: Radix
+  ) -> String? {
     guard isStringValid(weiString, radix: radix),
-          let value = BDouble(weiString, radix: radix.rawValue) else {
+      let value = BDouble(weiString, radix: radix.rawValue)
+    else {
       return nil
     }
     let decimal = (value / (BDouble(10) ** 9))
@@ -132,14 +136,15 @@ struct WeiFormatter {
       return decimal.decimalExpansion(precisionAfterDecimalPoint: 2, rounded: true)
     }
   }
-  
+
   static func gweiToWei(
     _ gweiString: String,
     radix: Radix,
     outputRadix: Radix
   ) -> String? {
     guard isStringValid(gweiString, radix: radix),
-          let gwei = BDouble(gweiString, radix: radix.rawValue) else {
+      let gwei = BDouble(gweiString, radix: radix.rawValue)
+    else {
       return nil
     }
     return (gwei * (BDouble(10) ** 9))

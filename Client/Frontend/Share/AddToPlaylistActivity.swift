@@ -6,52 +6,51 @@ import Foundation
 import Shared
 
 class AddToPlaylistActivity: UIActivity {
-    fileprivate let callback: () -> Void
+  fileprivate let callback: () -> Void
 
-    init(callback: @escaping () -> Void) {
-        self.callback = callback
-    }
+  init(callback: @escaping () -> Void) {
+    self.callback = callback
+  }
 
-    override var activityTitle: String? {
-        return Strings.PlayList.addToPlayListAlertTitle
-    }
+  override var activityTitle: String? {
+    return Strings.PlayList.addToPlayListAlertTitle
+  }
 
-    override var activityImage: UIImage? {
-        return #imageLiteral(resourceName: "playlist_menu")
-    }
+  override var activityImage: UIImage? {
+    return #imageLiteral(resourceName: "playlist_menu")
+  }
 
-    override func perform() {
-        callback()
-        activityDidFinish(true)
-    }
+  override func perform() {
+    callback()
+    activityDidFinish(true)
+  }
 
-    override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
-        return true
-    }
+  override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
+    return true
+  }
 }
 
 class OpenInPlaylistActivity: UIActivity {
-    fileprivate let callback: () -> Void
+  fileprivate let callback: () -> Void
 
-    init(callback: @escaping () -> Void) {
-        self.callback = callback
-    }
+  init(callback: @escaping () -> Void) {
+    self.callback = callback
+  }
 
-    override var activityTitle: String? {
-        return Strings.PlayList.toastExitingItemPlaylistTitle
-    }
+  override var activityTitle: String? {
+    return Strings.PlayList.toastExitingItemPlaylistTitle
+  }
 
-    override var activityImage: UIImage? {
-        return #imageLiteral(resourceName: "playlist_menu")
-    }
+  override var activityImage: UIImage? {
+    return #imageLiteral(resourceName: "playlist_menu")
+  }
 
-    override func perform() {
-        callback()
-        activityDidFinish(true)
-    }
+  override func perform() {
+    callback()
+    activityDidFinish(true)
+  }
 
-    override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
-        return true
-    }
+  override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
+    return true
+  }
 }
-

@@ -12,34 +12,35 @@ struct SendTokenView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var sendTokenStore: SendTokenStore
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   @State private var amountInput = ""
   @State private var isShowingScanner = false
   @State private var isShowingError = false
-  
+
   @ScaledMetric private var length: CGFloat = 16.0
-  
+
   private var isSendDisabled: Bool {
     guard let sendAmount = BDouble(amountInput),
-          let balance = sendTokenStore.selectedSendTokenBalance,
-          let token = sendTokenStore.selectedSendToken,
-          !sendTokenStore.isMakingTx else {
+      let balance = sendTokenStore.selectedSendTokenBalance,
+      let token = sendTokenStore.selectedSendToken,
+      !sendTokenStore.isMakingTx
+    else {
       return true
     }
-    
+
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: Int(token.decimals)))
     if weiFormatter.weiString(from: amountInput, radix: .decimal, decimals: Int(token.decimals)) == nil {
       return true
     }
-    
+
     return sendAmount == 0
-    || sendAmount > balance
-    || amountInput.isEmpty
-    || sendTokenStore.addressError != nil
+      || sendAmount > balance
+      || amountInput.isEmpty
+      || sendTokenStore.addressError != nil
   }
-  
+
   var body: some View {
     NavigationView {
       Form {
@@ -48,19 +49,21 @@ struct SendTokenView: View {
             keyringStore: keyringStore,
             networkStore: networkStore
           )
-            .listRowBackground(Color.clear)
-            .resetListHeaderStyle()
-            .padding(.top)
-            .padding(.bottom, -16) // Get it a bit closer
+          .listRowBackground(Color.clear)
+          .resetListHeaderStyle()
+          .padding(.top)
+          .padding(.bottom, -16)  // Get it a bit closer
         ) {
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.sendCryptoFromTitle))
         ) {
-          NavigationLink(destination:
-                          SendTokenSearchView(sendTokenStore: sendTokenStore,
-                                              network: networkStore.selectedChain
-                                             )
+          NavigationLink(
+            destination:
+              SendTokenSearchView(
+                sendTokenStore: sendTokenStore,
+                network: networkStore.selectedChain
+              )
           ) {
             HStack {
               if let token = sendTokenStore.selectedSendToken {
@@ -81,9 +84,11 @@ struct SendTokenView: View {
         Section(
           header:
             WalletListHeaderView(
-              title: Text(String.localizedStringWithFormat(Strings.Wallet.sendCryptoAmountTitle,
-                                                           sendTokenStore.selectedSendToken?.symbol ?? "")
-                        )
+              title: Text(
+                String.localizedStringWithFormat(
+                  Strings.Wallet.sendCryptoAmountTitle,
+                  sendTokenStore.selectedSendToken?.symbol ?? "")
+              )
             ),
           footer: ShortcutAmountGrid(action: { amount in
             amountInput = "\((sendTokenStore.selectedSendTokenBalance ?? 0) * amount.rawValue)"
@@ -91,11 +96,13 @@ struct SendTokenView: View {
           .listRowInsets(.zero)
           .padding(.bottom, 8)
         ) {
-          TextField(String.localizedStringWithFormat(Strings.Wallet.amountInCurrency,
-                                                     sendTokenStore.selectedSendToken?.symbol ?? ""),
-                    text: $amountInput
+          TextField(
+            String.localizedStringWithFormat(
+              Strings.Wallet.amountInCurrency,
+              sendTokenStore.selectedSendToken?.symbol ?? ""),
+            text: $amountInput
           )
-            .keyboardType(.decimalPad)
+          .keyboardType(.decimalPad)
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
@@ -198,13 +205,13 @@ struct SendTokenView: View {
 
 #if DEBUG
 struct SendTokenView_Previews: PreviewProvider {
-    static var previews: some View {
-      SendTokenView(
-        keyringStore: .previewStore,
-        networkStore: .previewStore,
-        sendTokenStore: .previewStore
-      )
-        .previewColorSchemes()
-    }
+  static var previews: some View {
+    SendTokenView(
+      keyringStore: .previewStore,
+      networkStore: .previewStore,
+      sendTokenStore: .previewStore
+    )
+    .previewColorSchemes()
+  }
 }
 #endif

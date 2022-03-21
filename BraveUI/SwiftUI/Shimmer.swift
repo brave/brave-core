@@ -9,7 +9,7 @@ import SwiftUI
 private struct ShimmerViewModifier: ViewModifier {
   var isShimmering: Bool
   var duration: Double
-  
+
   func body(content: Content) -> some View {
     content
       .mask(
@@ -24,21 +24,21 @@ private struct ShimmerViewModifier: ViewModifier {
         }
       )
   }
-  
+
   struct _GradientView: View {
     var animation: Animation
-    
+
     // LinearGradient unfortunately cannot animate its colors, so we'll animate its start/end points
     @State private var points: (UnitPoint, UnitPoint) = (UnitPoint(x: -2, y: 0.5), .leading)
-    
+
     var body: some View {
       LinearGradient(
-        colors: [ .black.opacity(0.3), .black, .black.opacity(0.3) ],
+        colors: [.black.opacity(0.3), .black, .black.opacity(0.3)],
         startPoint: points.0,
         endPoint: points.1
       )
       .onAppear {
-        DispatchQueue.main.async { [self] in // Need this due to a SwiftUI bug…
+        DispatchQueue.main.async { [self] in  // Need this due to a SwiftUI bug…
           withAnimation(animation) {
             points = (.trailing, UnitPoint(x: 2, y: 0.5))
           }
@@ -78,7 +78,7 @@ struct ShimmerViewModifier_PreviewProvider: PreviewProvider {
       .padding()
     }
   }
-  
+
   static var previews: some View {
     PreviewView()
   }
