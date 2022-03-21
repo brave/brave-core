@@ -417,7 +417,7 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     @Override
-    public void visitInnerClass​(String name, String outerName, String innerName, int access) {
+    public void visitInnerClass(String name, String outerName, String innerName, int access) {
         if (shouldDeleteInnerClass(innerName)) {
             System.out.println("delete InnerClass " + innerName + " from " + mName);
             return;
@@ -428,7 +428,7 @@ class BraveClassVisitor extends ClassVisitor {
             access &= ~ACC_PRIVATE;
             access |= ACC_PUBLIC;
         }
-        super.visitInnerClass​(name, outerName, innerName, access);
+        super.visitInnerClass(name, outerName, innerName, access);
     }
 
     @Override
