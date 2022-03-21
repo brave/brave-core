@@ -24,8 +24,8 @@ class StackTabListSceneLayer : public TabListSceneLayer {
   StackTabListSceneLayer(JNIEnv* env,
                          const base::android::JavaRef<jobject>& jobj);
 
-  StackTabListSceneLayer(const TabListSceneLayer&) = delete;
-  StackTabListSceneLayer& operator=(const TabListSceneLayer&) = delete;
+  StackTabListSceneLayer(const StackTabListSceneLayer&) = delete;
+  StackTabListSceneLayer& operator=(const StackTabListSceneLayer&) = delete;
 
   ~StackTabListSceneLayer() override;
 

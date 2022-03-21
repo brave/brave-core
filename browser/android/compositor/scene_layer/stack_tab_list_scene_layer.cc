@@ -5,6 +5,8 @@
 
 #include "brave/browser/android/compositor/scene_layer/stack_tab_list_scene_layer.h"
 
+#include <map>
+
 #include "brave/build/android/jni_headers/StackTabListSceneLayer_jni.h"
 #include "chrome/browser/android/compositor/layer/tab_layer.h"
 #include "chrome/browser/android/compositor/layer_title_cache.h"

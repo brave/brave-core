@@ -70,8 +70,8 @@ public class StackTabListSceneLayer extends TabListSceneLayer {
             init(tabContentManager, resourceManager);
         }
 
-        TabListSceneLayerJni.get().updateLayer(mNativePtr, StackTabListSceneLayer.this, tabListBgColor,
-                viewport.left, viewport.top, viewport.width(), viewport.height());
+        TabListSceneLayerJni.get().updateLayer(mNativePtr, StackTabListSceneLayer.this,
+                tabListBgColor, viewport.left, viewport.top, viewport.width(), viewport.height());
 
         if (backgroundResourceId != INVALID_RESOURCE_ID) {
             TabListSceneLayerJni.get().putBackgroundLayer(mNativePtr, StackTabListSceneLayer.this,
