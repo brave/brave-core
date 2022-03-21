@@ -13,7 +13,7 @@ import SPMLibraries
 struct WalletListHeaderView<Title: View, Subtitle: View>: View {
   var title: Title
   var subtitle: Subtitle
-  
+
   init(
     @ViewBuilder title: () -> Title,
     @ViewBuilder subtitle: () -> Subtitle
@@ -21,7 +21,7 @@ struct WalletListHeaderView<Title: View, Subtitle: View>: View {
     self.title = title()
     self.subtitle = subtitle()
   }
-  
+
   var body: some View {
     VStack(alignment: .leading, spacing: 4) {
       title
@@ -78,43 +78,43 @@ class WalletTableViewHeaderView: UITableViewHeaderFooterView {
     $0.axis = .vertical
     $0.spacing = 6
   }
-  
+
   let titleLabel = UILabel().then {
     $0.textColor = .secondaryBraveLabel
     $0.font = .preferredFont(forTextStyle: .footnote, weight: .medium)
     $0.adjustsFontForContentSizeCategory = true
     $0.numberOfLines = 0
   }
-  
+
   let subtitleLabel = UILabel().then {
     $0.textColor = .secondaryBraveLabel
     $0.font = .preferredFont(forTextStyle: .caption1)
     $0.adjustsFontForContentSizeCategory = true
     $0.numberOfLines = 0
   }
-  
+
   private var cancellables: Set<AnyCancellable> = []
-  
+
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
-    
+
     contentView.addSubview(stackView)
     stackView.addArrangedSubview(titleLabel)
     stackView.addArrangedSubview(subtitleLabel)
-    
+
     stackView.snp.makeConstraints {
       $0.top.greaterThanOrEqualTo(contentView.layoutMarginsGuide)
       $0.bottom.equalTo(contentView.layoutMarginsGuide)
       $0.leading.trailing.equalTo(contentView).inset(8)
     }
-    
+
     titleLabel
       .publisher(for: \.text)
       .sink { [weak self] value in
         self?.titleLabel.isHidden = (value ?? "").isEmpty
       }
       .store(in: &cancellables)
-    
+
     subtitleLabel
       .publisher(for: \.text)
       .sink { [weak self] value in
@@ -122,25 +122,27 @@ class WalletTableViewHeaderView: UITableViewHeaderFooterView {
       }
       .store(in: &cancellables)
   }
-  
+
   override func prepareForReuse() {
     super.prepareForReuse()
     titleLabel.text = ""
     subtitleLabel.text = ""
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
   }
-  
+
   @available(iOS, unavailable)
   override var textLabel: UILabel? {
-    get { nil } set { } // swiftlint:disable:this unused_setter_value
+    get { nil }
+    set {}  // swiftlint:disable:this unused_setter_value
   }
-  
+
   @available(iOS, unavailable)
   override var detailTextLabel: UILabel? {
-    get { nil } set { } // swiftlint:disable:this unused_setter_value
+    get { nil }
+    set {}  // swiftlint:disable:this unused_setter_value
   }
 }

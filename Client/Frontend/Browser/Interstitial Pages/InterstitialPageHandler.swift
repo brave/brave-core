@@ -6,6 +6,6 @@
 import Foundation
 
 protocol InterstitialPageHandler {
-    func canHandle(error: NSError) -> Bool
-    func response(for model: ErrorPageModel) -> (URLResponse, Data)?
+  func canHandle(error: NSError) -> Bool
+  func response(for model: ErrorPageModel) -> (URLResponse, Data)?
 }

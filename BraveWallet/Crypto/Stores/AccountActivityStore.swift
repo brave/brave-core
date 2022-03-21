@@ -10,12 +10,12 @@ class AccountActivityStore: ObservableObject {
   let account: BraveWallet.AccountInfo
   @Published private(set) var assets: [AssetViewModel] = []
   @Published private(set) var transactions: [BraveWallet.TransactionInfo] = []
-  
+
   private let walletService: BraveWalletBraveWalletService
   private let rpcService: BraveWalletJsonRpcService
   private let assetRatioService: BraveWalletAssetRatioService
   private let txService: BraveWalletTxService
-  
+
   init(
     account: BraveWallet.AccountInfo,
     walletService: BraveWalletBraveWalletService,
@@ -28,16 +28,16 @@ class AccountActivityStore: ObservableObject {
     self.rpcService = rpcService
     self.assetRatioService = assetRatioService
     self.txService = txService
-    
+
     self.rpcService.add(self)
     self.txService.add(self)
   }
-  
+
   func update() {
     fetchAssets()
     fetchTransactions()
   }
-  
+
   private func fetchAssets() {
     rpcService.chainId { [self] chainId in
       walletService.userAssets(chainId) { tokens in
@@ -47,20 +47,23 @@ class AccountActivityStore: ObservableObject {
         assetRatioService.price(
           tokens.map { $0.symbol.lowercased() },
           toAssets: ["usd"],
-          timeframe: .oneDay) { success, prices in
-            for price in prices {
-              if let index = assets.firstIndex(where: {
-                $0.token.symbol.caseInsensitiveCompare(price.fromAsset) == .orderedSame
-              }) {
-                assets[index].price = price.price
-              }
+          timeframe: .oneDay
+        ) { success, prices in
+          for price in prices {
+            if let index = assets.firstIndex(where: {
+              $0.token.symbol.caseInsensitiveCompare(price.fromAsset) == .orderedSame
+            }) {
+              assets[index].price = price.price
             }
           }
+        }
         for token in tokens {
           rpcService.balance(for: token, in: account) { value in
-            if let value = value, let index = assets.firstIndex(where: {
-              $0.token.symbol.caseInsensitiveCompare(token.symbol) == .orderedSame
-            }) {
+            if let value = value,
+              let index = assets.firstIndex(where: {
+                $0.token.symbol.caseInsensitiveCompare(token.symbol) == .orderedSame
+              })
+            {
               assets[index].decimalBalance = value
             }
           }
@@ -68,10 +71,11 @@ class AccountActivityStore: ObservableObject {
       }
     }
   }
-  
+
   private func fetchTransactions() {
     txService.allTransactionInfo(.eth, from: account.address) { transactions in
-      self.transactions = transactions
+      self.transactions =
+        transactions
         .sorted(by: { $0.createdTime > $1.createdTime })
     }
   }

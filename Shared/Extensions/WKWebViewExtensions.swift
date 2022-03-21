@@ -8,86 +8,86 @@ import JavaScriptCore
 import WebKit
 
 enum JavascriptError: Error {
-    case invalid
+  case invalid
 }
 
 public extension WKUserScript {
-    static func create(source: String, injectionTime: WKUserScriptInjectionTime, forMainFrameOnly: Bool, in contentWorld: WKContentWorld) -> WKUserScript {
-        
-        if #available(iOS 14.3, *) {
-            return WKUserScript(source: source, injectionTime: injectionTime, forMainFrameOnly: forMainFrameOnly, in: contentWorld)
-        } else {
-            return WKUserScript(source: source, injectionTime: injectionTime, forMainFrameOnly: forMainFrameOnly)
-        }
+  static func create(source: String, injectionTime: WKUserScriptInjectionTime, forMainFrameOnly: Bool, in contentWorld: WKContentWorld) -> WKUserScript {
+
+    if #available(iOS 14.3, *) {
+      return WKUserScript(source: source, injectionTime: injectionTime, forMainFrameOnly: forMainFrameOnly, in: contentWorld)
+    } else {
+      return WKUserScript(source: source, injectionTime: injectionTime, forMainFrameOnly: forMainFrameOnly)
     }
+  }
 }
 
 public extension WKWebView {
-    func generateJSFunctionString(functionName: String, args: [Any?], escapeArgs: Bool = true) -> (javascript: String, error: Error?) {
-        var sanitizedArgs = [String]()
-        for arg in args {
-            if let arg = arg {
-                do {
-                    if let arg = arg as? String {
-                        sanitizedArgs.append(escapeArgs ? "'\(arg.htmlEntityEncodedString)'" : "\(arg)")
-                    } else {
-                        let data = try JSONSerialization.data(withJSONObject: arg, options: [.fragmentsAllowed])
-                        
-                        if let str = String(data: data, encoding: .utf8) {
-                            sanitizedArgs.append(str)
-                        } else {
-                            throw JavascriptError.invalid
-                        }
-                    }
-                } catch {
-                    return ("", error)
-                }
+  func generateJSFunctionString(functionName: String, args: [Any?], escapeArgs: Bool = true) -> (javascript: String, error: Error?) {
+    var sanitizedArgs = [String]()
+    for arg in args {
+      if let arg = arg {
+        do {
+          if let arg = arg as? String {
+            sanitizedArgs.append(escapeArgs ? "'\(arg.htmlEntityEncodedString)'" : "\(arg)")
+          } else {
+            let data = try JSONSerialization.data(withJSONObject: arg, options: [.fragmentsAllowed])
+
+            if let str = String(data: data, encoding: .utf8) {
+              sanitizedArgs.append(str)
             } else {
-                sanitizedArgs.append("null")
+              throw JavascriptError.invalid
             }
+          }
+        } catch {
+          return ("", error)
         }
-        
-        if args.count != sanitizedArgs.count {
-            assertionFailure("Javascript parsing failed.")
-            return ("", JavascriptError.invalid)
-        }
-        
-        return ("\(functionName)(\(sanitizedArgs.joined(separator: ", ")))", nil)
+      } else {
+        sanitizedArgs.append("null")
+      }
     }
 
-    func evaluateSafeJavaScript(functionName: String, args: [Any] = [], contentWorld: WKContentWorld, escapeArgs: Bool = true, asFunction: Bool = true, completion: ((Any?, Error?) -> Void)? = nil) {
-        var javascript = functionName
-        
-        if asFunction {
-            let js = generateJSFunctionString(functionName: functionName, args: args, escapeArgs: escapeArgs)
-            if js.error != nil {
-                if let completionHandler = completion {
-                    completionHandler(nil, js.error)
-                }
-                return
-            }
-            javascript = js.javascript
-        }
-        
-        if #available(iOS 14.3, *) {
-            // swiftlint:disable:next safe_javascript
-            evaluateJavaScript(javascript, in: nil, in: contentWorld) { result  in
-                switch result {
-                    case .success(let value):
-                        completion?(value, nil)
-                    case .failure(let error):
-                        completion?(nil, error)
-                }
-            }
-        } else {
-            // swiftlint:disable:next safe_javascript
-            evaluateJavaScript(javascript) { result, error in
-                if let error = error {
-                    completion?(nil, error)
-                } else {
-                    completion?(result, error)
-                }
-            }
-        }
+    if args.count != sanitizedArgs.count {
+      assertionFailure("Javascript parsing failed.")
+      return ("", JavascriptError.invalid)
     }
+
+    return ("\(functionName)(\(sanitizedArgs.joined(separator: ", ")))", nil)
+  }
+
+  func evaluateSafeJavaScript(functionName: String, args: [Any] = [], contentWorld: WKContentWorld, escapeArgs: Bool = true, asFunction: Bool = true, completion: ((Any?, Error?) -> Void)? = nil) {
+    var javascript = functionName
+
+    if asFunction {
+      let js = generateJSFunctionString(functionName: functionName, args: args, escapeArgs: escapeArgs)
+      if js.error != nil {
+        if let completionHandler = completion {
+          completionHandler(nil, js.error)
+        }
+        return
+      }
+      javascript = js.javascript
+    }
+
+    if #available(iOS 14.3, *) {
+      // swiftlint:disable:next safe_javascript
+      evaluateJavaScript(javascript, in: nil, in: contentWorld) { result in
+        switch result {
+        case .success(let value):
+          completion?(value, nil)
+        case .failure(let error):
+          completion?(nil, error)
+        }
+      }
+    } else {
+      // swiftlint:disable:next safe_javascript
+      evaluateJavaScript(javascript) { result, error in
+        if let error = error {
+          completion?(nil, error)
+        } else {
+          completion?(result, error)
+        }
+      }
+    }
+  }
 }

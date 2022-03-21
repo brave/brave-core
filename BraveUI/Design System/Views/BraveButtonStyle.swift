@@ -8,12 +8,12 @@ import SwiftUI
 public struct BraveButtonSize {
   public var font: Font
   public var padding: EdgeInsets
-  
+
   public init(font: Font, padding: EdgeInsets) {
     self.font = font
     self.padding = padding
   }
-  
+
   public static let small: Self = .init(
     font: Font.caption.weight(.semibold),
     padding: .init(top: 6, leading: 12, bottom: 6, trailing: 12)
@@ -30,13 +30,13 @@ public struct BraveButtonSize {
 
 public struct BraveFilledButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
-  
+
   public var size: BraveButtonSize
-  
+
   public init(size: BraveButtonSize) {
     self.size = size
   }
-  
+
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .opacity(configuration.isPressed ? 0.7 : 1.0)
@@ -60,13 +60,13 @@ public struct BraveFilledButtonStyle: ButtonStyle {
 
 public struct BraveOutlineButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
-  
+
   public var size: BraveButtonSize
-  
+
   public init(size: BraveButtonSize) {
     self.size = size
   }
-  
+
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .opacity(configuration.isPressed ? 0.7 : 1.0)
@@ -92,16 +92,16 @@ public struct BraveOutlineButtonStyle: ButtonStyle {
 #if DEBUG
 struct BraveButtonStyle_Previews: PreviewProvider {
   static let defaultSizes: [BraveButtonSize] = [
-    .small, .normal, .large
+    .small, .normal, .large,
   ]
-  
+
   static var previews: some View {
     Group {
       HStack {
         ForEach([false, true], id: \.self) { disabled in
           VStack {
             ForEach(defaultSizes.indices) { index in
-              Button(action: { }) {
+              Button(action: {}) {
                 Text(verbatim: "Button text")
               }
               .buttonStyle(BraveFilledButtonStyle(size: defaultSizes[index]))
@@ -115,7 +115,7 @@ struct BraveButtonStyle_Previews: PreviewProvider {
         ForEach([false, true], id: \.self) { disabled in
           VStack {
             ForEach(defaultSizes.indices) { index in
-              Button(action: { }) {
+              Button(action: {}) {
                 Text(verbatim: "Button text")
               }
               .buttonStyle(BraveOutlineButtonStyle(size: defaultSizes[index]))

@@ -7,35 +7,35 @@ import Foundation
 import Shared
 
 class BraveRewardsSupportedCountView: UIStackView {
-    
-    let countLabel = UILabel().then {
-        $0.text = "0"
-        $0.font = .systemFont(ofSize: 36)
-        $0.setContentHuggingPriority(.required, for: .horizontal)
-        $0.textColor = .braveLabel
-    }
-    
-    private let bodyLabel = UILabel().then {
-        $0.text = Strings.Rewards.totalSupportedCount
-        $0.numberOfLines = 0
-        $0.font = .systemFont(ofSize: 15)
-        $0.textColor = .braveLabel
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        spacing = 16
-        alignment = .center
-        
-        addStackViewItems(
-            .view(countLabel),
-            .view(bodyLabel)
-        )
-    }
-    
-    @available(*, unavailable)
-    required init(coder: NSCoder) {
-        fatalError()
-    }
+
+  let countLabel = UILabel().then {
+    $0.text = "0"
+    $0.font = .systemFont(ofSize: 36)
+    $0.setContentHuggingPriority(.required, for: .horizontal)
+    $0.textColor = .braveLabel
+  }
+
+  private let bodyLabel = UILabel().then {
+    $0.text = Strings.Rewards.totalSupportedCount
+    $0.numberOfLines = 0
+    $0.font = .systemFont(ofSize: 15)
+    $0.textColor = .braveLabel
+  }
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    spacing = 16
+    alignment = .center
+
+    addStackViewItems(
+      .view(countLabel),
+      .view(bodyLabel)
+    )
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
 }

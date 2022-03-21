@@ -8,17 +8,17 @@ import Shared
  * Used to bridge the NSErrors we get here into something that Result is happy with.
  */
 open class DatabaseError: MaybeErrorType {
-    let err: NSError?
+  let err: NSError?
 
-    open var description: String {
-        return err?.localizedDescription ?? "Unknown database error."
-    }
+  open var description: String {
+    return err?.localizedDescription ?? "Unknown database error."
+  }
 
-    public init(description: String) {
-        self.err = NSError(domain: "mozilla", code: 0, userInfo: [NSLocalizedDescriptionKey: description])
-    }
+  public init(description: String) {
+    self.err = NSError(domain: "mozilla", code: 0, userInfo: [NSLocalizedDescriptionKey: description])
+  }
 
-    public init(err: NSError?) {
-        self.err = err
-    }
+  public init(err: NSError?) {
+    self.err = err
+  }
 }

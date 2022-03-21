@@ -8,16 +8,16 @@ import Foundation
 import XCTest
 
 class MockFiles: FileAccessor {
-    init() {
-        let docPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)[0]
-        super.init(rootPath: (docPath as NSString).appendingPathComponent("testing"))
-    }
+  init() {
+    let docPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)[0]
+    super.init(rootPath: (docPath as NSString).appendingPathComponent("testing"))
+  }
 }
 
 class SupportingFiles: FileAccessor {
-    init() {
-        let path = Bundle.main.bundlePath + "/PlugIns/StorageTests.xctest/"
-        NSLog("Supporting files: \(path)")
-        super.init(rootPath: path)
-    }
+  init() {
+    let path = Bundle.main.bundlePath + "/PlugIns/StorageTests.xctest/"
+    NSLog("Supporting files: \(path)")
+    super.init(rootPath: path)
+  }
 }

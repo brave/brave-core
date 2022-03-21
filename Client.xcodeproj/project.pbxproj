@@ -5465,10 +5465,10 @@
 				59B6912721B695A400E9388E /* InfoPlist.strings */,
 				0AF0411A2267C61100EBF982 /* ManagedObjectExtensions.swift */,
 			);
-			indentWidth = 4;
+			indentWidth = 2;
 			path = Data;
 			sourceTree = "<group>";
-			tabWidth = 4;
+			tabWidth = 2;
 		};
 		5D1DC52120AC9AFB00905E5A /* DataTests */ = {
 			isa = PBXGroup;
@@ -6437,9 +6437,9 @@
 				5DE7689220B3456E00FF5533 /* BraveSharedTests */,
 				28CE83EF1A1D246900576538 /* ThirdParty */,
 			);
-			indentWidth = 4;
+			indentWidth = 2;
 			sourceTree = "<group>";
-			tabWidth = 4;
+			tabWidth = 2;
 			usesTabs = 0;
 		};
 		F84B21BF1A090F8100AAB793 /* Products */ = {

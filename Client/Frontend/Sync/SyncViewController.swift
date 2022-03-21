@@ -6,41 +6,41 @@ import BraveShared
 import Data
 
 class RoundInterfaceButton: UIButton {
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        layer.cornerRadius = bounds.height / 2.0
-    }
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    layer.cornerRadius = bounds.height / 2.0
+  }
 }
 
 class RoundInterfaceView: UIView {
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        layer.cornerRadius = min(bounds.height, bounds.width) / 2.0
-    }
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    layer.cornerRadius = min(bounds.height, bounds.width) / 2.0
+  }
 }
 
 class SyncViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.backgroundColor = .secondaryBraveBackground
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    view.backgroundColor = .secondaryBraveBackground
+  }
+
+  /// Perform a block of code only if user has a network connection, shows an error alert otherwise.
+  /// Most of sync initialization methods require an internet connection.
+  func doIfConnected(code: () -> Void) {
+    if !DeviceInfo.hasConnectivity() {
+      present(SyncAlerts.noConnection, animated: true)
+      return
     }
-    
-    /// Perform a block of code only if user has a network connection, shows an error alert otherwise.
-    /// Most of sync initialization methods require an internet connection.
-    func doIfConnected(code: () -> Void) {
-        if !DeviceInfo.hasConnectivity() {
-            present(SyncAlerts.noConnection, animated: true)
-            return
-        }
-        
-        code()
+
+    code()
+  }
+
+  @objc func didLeaveSyncGroup() {
+    DispatchQueue.main.async { [weak self] in
+      self?.navigationController?.popToRootViewController(animated: true)
     }
-    
-    @objc func didLeaveSyncGroup() {
-        DispatchQueue.main.async { [weak self] in
-            self?.navigationController?.popToRootViewController(animated: true)
-        }
-    }
+  }
 }

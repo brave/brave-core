@@ -9,11 +9,11 @@ import SwiftUI
 /// Presents a SwiftUI view heirarchy in a popup that displays in the center of the screen
 public class PopupViewController<Content: View>: UIViewController, UIViewControllerTransitioningDelegate, BasicAnimationControllerDelegate {
   private let hostingController: UIHostingController<PopupView<Content>>
-  
+
   private let backgroundView = UIView().then {
     $0.backgroundColor = UIColor(white: 0.0, alpha: 0.3)
   }
-  
+
   public init(rootView: Content) {
     let popup = PopupView({ rootView })
     hostingController = UIHostingController(rootView: popup)
@@ -23,44 +23,44 @@ public class PopupViewController<Content: View>: UIViewController, UIViewControl
     addChild(hostingController)
     hostingController.didMove(toParent: self)
   }
-  
+
   public override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     view.backgroundColor = .clear
     hostingController.view.backgroundColor = .clear
-    
+
     view.addSubview(backgroundView)
     view.addSubview(hostingController.view)
-    
+
     backgroundView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    
+
     hostingController.view.snp.makeConstraints {
       $0.edges.equalTo(view.safeAreaLayoutGuide)
     }
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
   }
-  
+
   public func animatePresentation(context: UIViewControllerContextTransitioning) {
     context.containerView.addSubview(view)
-    
+
     backgroundView.alpha = 0.0
     hostingController.view.transform = CGAffineTransform(translationX: 0, y: context.containerView.bounds.height)
-    
+
     UIViewPropertyAnimator(duration: 0.35, dampingRatio: 1.0) { [self] in
       backgroundView.alpha = 1.0
       hostingController.view.transform = .identity
     }.startAnimation()
-    
+
     context.completeTransition(true)
   }
-  
+
   public func animateDismissal(context: UIViewControllerContextTransitioning) {
     let animator = UIViewPropertyAnimator(duration: 0.25, dampingRatio: 1.0) { [self] in
       backgroundView.alpha = 0.0
@@ -72,11 +72,11 @@ public class PopupViewController<Content: View>: UIViewController, UIViewControl
     }
     animator.startAnimation()
   }
-  
+
   public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
     BasicAnimationController(delegate: self, direction: .dismissing)
   }
-  
+
   public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
     BasicAnimationController(delegate: self, direction: .presenting)
   }
@@ -84,11 +84,11 @@ public class PopupViewController<Content: View>: UIViewController, UIViewControl
 
 public struct PopupView<Content: View>: View {
   public var content: Content
-  
+
   public init(@ViewBuilder _ content: () -> Content) {
     self.content = content()
   }
-  
+
   public var body: some View {
     content
       .frame(maxWidth: 400)
@@ -112,7 +112,7 @@ struct PopupPreviews: PreviewProvider {
           Text(verbatim: "Subtitle Subtitle Subtitle Subtitle Subtitle")
             .font(.subheadline)
             .multilineTextAlignment(.center)
-          Button(action: { }) {
+          Button(action: {}) {
             Text(verbatim: "Test")
           }
           .padding(.top)

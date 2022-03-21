@@ -8,23 +8,23 @@ import Shared
 private let log = Logger.browserLogger
 
 protocol LocalAdblockResourceProtocol {
-    func loadLocalData(name: String, type: String, completion: ((Data) -> Void))
+  func loadLocalData(name: String, type: String, completion: ((Data) -> Void))
 }
 
 extension LocalAdblockResourceProtocol {
-    func loadLocalData(name: String, type: String, completion: ((Data) -> Void)) {
-        guard let path = Bundle.main.path(forResource: name, ofType: type) else {
-            log.error("Could not find local file with name: \(name) and type :\(type)")
-            return
-        }
-        
-        let url = URL(fileURLWithPath: path)
-        
-        do {
-            let data = try Data(contentsOf: url)
-            completion(data)
-        } catch {
-            log.error(error)
-        }
+  func loadLocalData(name: String, type: String, completion: ((Data) -> Void)) {
+    guard let path = Bundle.main.path(forResource: name, ofType: type) else {
+      log.error("Could not find local file with name: \(name) and type :\(type)")
+      return
     }
+
+    let url = URL(fileURLWithPath: path)
+
+    do {
+      let data = try Data(contentsOf: url)
+      completion(data)
+    } catch {
+      log.error(error)
+    }
+  }
 }

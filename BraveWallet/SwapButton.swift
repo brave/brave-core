@@ -16,15 +16,15 @@ class SwapButton: SpringButton {
   private let imageView = UIImageView(image: UIImage(imageLiteralResourceName: "swap")).then {
     $0.isUserInteractionEnabled = false
   }
-  
+
   override init(frame: CGRect) {
     super.init(frame: frame)
-    
+
     imageView.contentMode = .scaleAspectFit
-    
+
     addSubview(gradientView)
     addSubview(imageView)
-    
+
     gradientView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -34,29 +34,29 @@ class SwapButton: SpringButton {
     snp.makeConstraints {
       $0.width.equalTo(snp.height)
     }
-    
+
     layer.shadowColor = UIColor.black.cgColor
     layer.shadowOffset = .init(width: 0, height: 1)
     layer.shadowRadius = 1
     layer.shadowOpacity = 0.3
-    
+
     accessibilityLabel = ListFormatter.localizedString(
       byJoining: [Strings.Wallet.buy, Strings.Wallet.send, Strings.Wallet.swap]
     )
   }
-  
+
   override func layoutSubviews() {
     super.layoutSubviews()
-    
+
     gradientView.layer.cornerRadius = bounds.height / 2.0
     layer.shadowPath = UIBezierPath(ovalIn: bounds).cgPath
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
   }
-  
+
   override var intrinsicContentSize: CGSize {
     .init(width: 44, height: 44)
   }

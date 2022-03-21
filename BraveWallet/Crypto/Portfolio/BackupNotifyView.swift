@@ -9,11 +9,11 @@ import struct Shared.Strings
 struct BackupNotifyView: View {
   var action: () -> Void
   var onDismiss: () -> Void
-  
+
   private var backgroundShape: some InsettableShape {
     RoundedRectangle(cornerRadius: 8, style: .continuous)
   }
-  
+
   var body: some View {
     let closeImage = Image(systemName: "xmark")
     ZStack(alignment: .topTrailing) {
@@ -31,7 +31,7 @@ struct BackupNotifyView: View {
       Button(action: onDismiss) {
         closeImage
           .foregroundColor(Color(.braveLabel))
-          .padding(12) // To make the hit-area a bit bigger
+          .padding(12)  // To make the hit-area a bit bigger
       }
     }
     .frame(maxWidth: .infinity)

@@ -18,7 +18,7 @@ import BraveCore
 struct AssetIconView: View {
   var token: BraveWallet.BlockchainToken
   @ScaledMetric var length: CGFloat = 40
-  
+
   private var fallbackMonogram: some View {
     Blockie(address: token.contractAddress)
       .overlay(
@@ -28,18 +28,19 @@ struct AssetIconView: View {
           .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
       )
   }
-  
+
   private var localImage: Image? {
     for logo in [token.logo, token.symbol.lowercased()] {
       if let baseURL = BraveWallet.TokenRegistryUtils.tokenLogoBaseURL,
-         case let imageURL = baseURL.appendingPathComponent(logo),
-         let image = UIImage(contentsOfFile: imageURL.path) {
+        case let imageURL = baseURL.appendingPathComponent(logo),
+        let image = UIImage(contentsOfFile: imageURL.path)
+      {
         return Image(uiImage: image)
       }
     }
     return nil
   }
-  
+
   var body: some View {
     Group {
       if let image = localImage {
@@ -70,21 +71,23 @@ struct AssetIconView_Previews: PreviewProvider {
       .previewLayout(.sizeThatFits)
       .padding()
       .previewSizeCategories()
-    AssetIconView(token: .init(
-      contractAddress: "0x55296f69f40ea6d20e478533c15a6b08b654e758",
-      name: "XY Oracle",
-      logo: "",
-      isErc20: true,
-      isErc721: false,
-      symbol: "XYO",
-      decimals: 18,
-      visible: false,
-      tokenId: "",
-      coingeckoId: ""
-    ))
-      .previewLayout(.sizeThatFits)
-      .padding()
-      .previewSizeCategories()
+    AssetIconView(
+      token: .init(
+        contractAddress: "0x55296f69f40ea6d20e478533c15a6b08b654e758",
+        name: "XY Oracle",
+        logo: "",
+        isErc20: true,
+        isErc721: false,
+        symbol: "XYO",
+        decimals: 18,
+        visible: false,
+        tokenId: "",
+        coingeckoId: ""
+      )
+    )
+    .previewLayout(.sizeThatFits)
+    .padding()
+    .previewSizeCategories()
   }
 }
 #endif

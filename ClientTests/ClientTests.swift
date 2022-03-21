@@ -12,64 +12,66 @@ import WebKit
 
 class ClientTests: XCTestCase {
 
-    /// Our local server should only accept whitelisted hosts (localhost and 127.0.0.1).
-    /// All other localhost equivalents should return 403.
-    func testDisallowLocalhostAliases() {
-        // Allowed local hosts. The first two are equivalent since iOS forwards an
-        // empty host to localhost.
-        [ "localhost",
-            "",
-            "127.0.0.1",
-            ].forEach { XCTAssert(hostIsValid($0), "\($0) host should be valid.") }
+  /// Our local server should only accept whitelisted hosts (localhost and 127.0.0.1).
+  /// All other localhost equivalents should return 403.
+  func testDisallowLocalhostAliases() {
+    // Allowed local hosts. The first two are equivalent since iOS forwards an
+    // empty host to localhost.
+    [
+      "localhost",
+      "",
+      "127.0.0.1",
+    ].forEach { XCTAssert(hostIsValid($0), "\($0) host should be valid.") }
 
-        // Disallowed local hosts. WKWebView will direct them to our server, but the server
-        // should reject them.
-        [ "[::1]",
-            "2130706433",
-            "0",
-            "127.00.00.01",
-            "017700000001",
-            "0x7f.0x0.0x0.0x1"
-            ].forEach { XCTAssertFalse(hostIsValid($0), "\($0) host should not be valid.") }
-    }
-    
-    func testDownloadsFolder() {
-        let path = try? FileManager.default.downloadsPath()
-        XCTAssertNotNil(path)
-        
-        XCTAssert(FileManager.default.fileExists(atPath: path!.path))
-        
-        // Let's pretend user deletes downloads folder via files.app
-        XCTAssertNoThrow(try FileManager.default.removeItem(at: path!))
-        
-        XCTAssertFalse(FileManager.default.fileExists(atPath: path!.path))
-        
-        // Calling downloads path should recreate the deleted folder
-        XCTAssertNoThrow(try FileManager.default.downloadsPath())
-        
-        XCTAssert(FileManager.default.fileExists(atPath: path!.path))
-    }
+    // Disallowed local hosts. WKWebView will direct them to our server, but the server
+    // should reject them.
+    [
+      "[::1]",
+      "2130706433",
+      "0",
+      "127.00.00.01",
+      "017700000001",
+      "0x7f.0x0.0x0.0x1",
+    ].forEach { XCTAssertFalse(hostIsValid($0), "\($0) host should not be valid.") }
+  }
 
-    fileprivate func hostIsValid(_ host: String) -> Bool {
-        let expectation = self.expectation(description: "Validate host for \(host)")
-        let port = WebServer.sharedInstance.port
-        
-        var request = URLRequest(url: URL(string: "http://\(host):\(port)/reader-mode/page?url=https%3A%2F%2Fbrave.com")!)
-        var response: HTTPURLResponse?
-        
-        let username = WebServer.sharedInstance.credentials.user ?? ""
-        let password = WebServer.sharedInstance.credentials.password ?? ""
-        
-        let credentials = "\(username):\(password)".data(using: .utf8)?.base64EncodedString() ?? ""
+  func testDownloadsFolder() {
+    let path = try? FileManager.default.downloadsPath()
+    XCTAssertNotNil(path)
 
-        request.setValue("Basic \(credentials)", forHTTPHeaderField: "Authorization")
+    XCTAssert(FileManager.default.fileExists(atPath: path!.path))
 
-        URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: .main).dataTask(with: request) { data, resp, error in
-            response = resp as? HTTPURLResponse
-            expectation.fulfill()
-        }.resume()
+    // Let's pretend user deletes downloads folder via files.app
+    XCTAssertNoThrow(try FileManager.default.removeItem(at: path!))
 
-        waitForExpectations(timeout: 100, handler: nil)
-        return response?.statusCode == 200
-    }
+    XCTAssertFalse(FileManager.default.fileExists(atPath: path!.path))
+
+    // Calling downloads path should recreate the deleted folder
+    XCTAssertNoThrow(try FileManager.default.downloadsPath())
+
+    XCTAssert(FileManager.default.fileExists(atPath: path!.path))
+  }
+
+  fileprivate func hostIsValid(_ host: String) -> Bool {
+    let expectation = self.expectation(description: "Validate host for \(host)")
+    let port = WebServer.sharedInstance.port
+
+    var request = URLRequest(url: URL(string: "http://\(host):\(port)/reader-mode/page?url=https%3A%2F%2Fbrave.com")!)
+    var response: HTTPURLResponse?
+
+    let username = WebServer.sharedInstance.credentials.user ?? ""
+    let password = WebServer.sharedInstance.credentials.password ?? ""
+
+    let credentials = "\(username):\(password)".data(using: .utf8)?.base64EncodedString() ?? ""
+
+    request.setValue("Basic \(credentials)", forHTTPHeaderField: "Authorization")
+
+    URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: .main).dataTask(with: request) { data, resp, error in
+      response = resp as? HTTPURLResponse
+      expectation.fulfill()
+    }.resume()
+
+    waitForExpectations(timeout: 100, handler: nil)
+    return response?.statusCode == 200
+  }
 }

@@ -10,88 +10,89 @@ import BraveShared
 private let log = Logger.braveCoreLogger
 
 extension ContentBlockerHelper: TabContentScript {
-    class func name() -> String {
-        return "TrackingProtectionStats"
+  class func name() -> String {
+    return "TrackingProtectionStats"
+  }
+
+  func scriptMessageHandlerName() -> String? {
+    return "trackingProtectionStats"
+  }
+
+  func clearPageStats() {
+    stats = TPPageStats()
+    blockedRequests.removeAll()
+  }
+
+  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+    defer { replyHandler(nil, nil) }
+    guard let body = message.body as? [String: AnyObject] else {
+      return
     }
 
-    func scriptMessageHandlerName() -> String? {
-        return "trackingProtectionStats"
+    if UserScriptManager.isMessageHandlerTokenMissing(in: body) {
+      log.debug("Missing required security token.")
+      return
     }
 
-    func clearPageStats() {
-        stats = TPPageStats()
-        blockedRequests.removeAll()
+    guard isEnabled,
+      let data = body["data"] as? [String: String],
+      let urlString = data["url"],
+      let mainDocumentUrl = tab?.webView?.url
+    else {
+      return
+    }
+    let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+    let domain = Domain.getOrCreate(forUrl: mainDocumentUrl, persistent: !isPrivateBrowsing)
+    if let shieldsAllOff = domain.shield_allOff, Bool(truncating: shieldsAllOff) {
+      // if domain is "all_off", can just skip
+      return
     }
 
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
-        defer { replyHandler(nil, nil) }
-        guard let body = message.body as? [String: AnyObject] else {
-            return
-        }
-        
-        if UserScriptManager.isMessageHandlerTokenMissing(in: body) {
-            log.debug("Missing required security token.")
-            return
-        }
-        
-        guard isEnabled,
-            let data = body["data"] as? [String: String],
-            let urlString = data["url"],
-            let mainDocumentUrl = tab?.webView?.url else {
-            return
-        }
-        let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-        let domain = Domain.getOrCreate(forUrl: mainDocumentUrl, persistent: !isPrivateBrowsing)
-        if let shieldsAllOff = domain.shield_allOff, Bool(truncating: shieldsAllOff) {
-            // if domain is "all_off", can just skip
-            return
-        }
-    
-        guard let url = URL(string: urlString) else { return }
-        
-        let resourceType = TPStatsResourceType(rawValue: data["resourceType"] ?? "")
-        
-        if resourceType == .script && domain.isShieldExpected(.NoScript, considerAllShieldsOption: true) {
-            self.stats = self.stats.addingScriptBlock()
-            BraveGlobalShieldStats.shared.scripts += 1
-            return
-        }
-        
-        var req = URLRequest(url: url)
-        req.mainDocumentURL = mainDocumentUrl
+    guard let url = URL(string: urlString) else { return }
 
-        TPStatsBlocklistChecker.shared.isBlocked(request: req, domain: domain, resourceType: resourceType) { listItem in
-            DispatchQueue.main.async {
-                if let listItem = listItem {
-                    if listItem == .https {
-                        if mainDocumentUrl.scheme == "https" && url.scheme == "http" && resourceType != .image {
-                            // WKWebView will block loading this URL so we can't count it due to mixed content restrictions
-                            // Unfortunately, it does not check to see if a content blocker would promote said URL to https
-                            // before blocking the load
-                            return
-                        }
-                    }
-                    if self.blockedRequests.contains(url) {
-                        return
-                    }
+    let resourceType = TPStatsResourceType(rawValue: data["resourceType"] ?? "")
 
-                    self.blockedRequests.insert(url)
-                    self.stats = self.stats.create(byAddingListItem: listItem)
+    if resourceType == .script && domain.isShieldExpected(.NoScript, considerAllShieldsOption: true) {
+      self.stats = self.stats.addingScriptBlock()
+      BraveGlobalShieldStats.shared.scripts += 1
+      return
+    }
 
-                    // Increase global stats (here due to BlocklistName being in Client and BraveGlobalShieldStats being
-                    // in BraveShared)
-                    let stats = BraveGlobalShieldStats.shared
-                    switch listItem {
-                    case .ad: stats.adblock += 1
-                    case .https: stats.httpse += 1
-                    case .tracker: stats.trackingProtection += 1
-                    case .image: stats.images += 1
-                    default:
-                        // TODO: #97 Add fingerprinting count here when it is integrated
-                        break
-                    }
-                }
+    var req = URLRequest(url: url)
+    req.mainDocumentURL = mainDocumentUrl
+
+    TPStatsBlocklistChecker.shared.isBlocked(request: req, domain: domain, resourceType: resourceType) { listItem in
+      DispatchQueue.main.async {
+        if let listItem = listItem {
+          if listItem == .https {
+            if mainDocumentUrl.scheme == "https" && url.scheme == "http" && resourceType != .image {
+              // WKWebView will block loading this URL so we can't count it due to mixed content restrictions
+              // Unfortunately, it does not check to see if a content blocker would promote said URL to https
+              // before blocking the load
+              return
             }
+          }
+          if self.blockedRequests.contains(url) {
+            return
+          }
+
+          self.blockedRequests.insert(url)
+          self.stats = self.stats.create(byAddingListItem: listItem)
+
+          // Increase global stats (here due to BlocklistName being in Client and BraveGlobalShieldStats being
+          // in BraveShared)
+          let stats = BraveGlobalShieldStats.shared
+          switch listItem {
+          case .ad: stats.adblock += 1
+          case .https: stats.httpse += 1
+          case .tracker: stats.trackingProtection += 1
+          case .image: stats.images += 1
+          default:
+            // TODO: #97 Add fingerprinting count here when it is integrated
+            break
+          }
         }
+      }
     }
+  }
 }

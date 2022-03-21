@@ -9,73 +9,73 @@ import Shared
 import XCGLogger
 
 enum ShortcutType: String {
-    case newTab = "NewTab"
-    case newPrivateTab = "NewPrivateTab"
-    case scanQRCode = "ScanQRCode"
+  case newTab = "NewTab"
+  case newPrivateTab = "NewPrivateTab"
+  case scanQRCode = "ScanQRCode"
 
-    init?(fullType: String) {
-        guard let last = fullType.components(separatedBy: ".").last else { return nil }
+  init?(fullType: String) {
+    guard let last = fullType.components(separatedBy: ".").last else { return nil }
 
-        self.init(rawValue: last)
-    }
+    self.init(rawValue: last)
+  }
 
-    var type: String {
-        return Bundle.main.bundleIdentifier! + ".\(self.rawValue)"
-    }
+  var type: String {
+    return Bundle.main.bundleIdentifier! + ".\(self.rawValue)"
+  }
 }
 
 protocol QuickActionHandlerDelegate {
-    func handleShortCutItemType(_ type: ShortcutType, userData: [String: NSSecureCoding]?)
+  func handleShortCutItemType(_ type: ShortcutType, userData: [String: NSSecureCoding]?)
 }
 
 class QuickActions: NSObject {
 
-    fileprivate let log = Logger.browserLogger
+  fileprivate let log = Logger.browserLogger
 
-    static let quickActionsVersion = "1.0"
-    static let quickActionsVersionKey = "dynamicQuickActionsVersion"
+  static let quickActionsVersion = "1.0"
+  static let quickActionsVersionKey = "dynamicQuickActionsVersion"
 
-    static let tabURLKey = "url"
-    static let tabTitleKey = "title"
+  static let tabURLKey = "url"
+  static let tabTitleKey = "title"
 
-    static var sharedInstance = QuickActions()
+  static var sharedInstance = QuickActions()
 
-    var launchedShortcutItem: UIApplicationShortcutItem?
+  var launchedShortcutItem: UIApplicationShortcutItem?
 
-    // MARK: Handling Quick Actions
-    @discardableResult func handleShortCutItem(_ shortcutItem: UIApplicationShortcutItem, withBrowserViewController bvc: BrowserViewController ) -> Bool {
+  // MARK: Handling Quick Actions
+  @discardableResult func handleShortCutItem(_ shortcutItem: UIApplicationShortcutItem, withBrowserViewController bvc: BrowserViewController) -> Bool {
 
-        // Verify that the provided `shortcutItem`'s `type` is one handled by the application.
-        guard let shortCutType = ShortcutType(fullType: shortcutItem.type) else { return false }
+    // Verify that the provided `shortcutItem`'s `type` is one handled by the application.
+    guard let shortCutType = ShortcutType(fullType: shortcutItem.type) else { return false }
 
-        DispatchQueue.main.async {
-            self.dismissAlertPopupView()
-            self.handleShortCutItemOfType(shortCutType, userData: shortcutItem.userInfo, browserViewController: bvc)
-        }
-
-        return true
+    DispatchQueue.main.async {
+      self.dismissAlertPopupView()
+      self.handleShortCutItemOfType(shortCutType, userData: shortcutItem.userInfo, browserViewController: bvc)
     }
 
-    fileprivate func handleShortCutItemOfType(_ type: ShortcutType, userData: [String: NSSecureCoding]?, browserViewController: BrowserViewController) {
-        switch type {
-        case .newTab:
-            handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: false)
-        case .newPrivateTab:
-            handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: true)
-        case .scanQRCode:
-            handleScanQR(withBrowserViewController: browserViewController)
-        }
-    }
+    return true
+  }
 
-    fileprivate func handleOpenNewTab(withBrowserViewController bvc: BrowserViewController, isPrivate: Bool) {
-        bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: isPrivate)
+  fileprivate func handleShortCutItemOfType(_ type: ShortcutType, userData: [String: NSSecureCoding]?, browserViewController: BrowserViewController) {
+    switch type {
+    case .newTab:
+      handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: false)
+    case .newPrivateTab:
+      handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: true)
+    case .scanQRCode:
+      handleScanQR(withBrowserViewController: browserViewController)
     }
+  }
 
-    fileprivate func dismissAlertPopupView() {
-        UIApplication.shared.keyWindow?.subviews.forEach { ($0 as? AlertPopupView)?.dismissWithType(dismissType: .noAnimation) }
-    }
+  fileprivate func handleOpenNewTab(withBrowserViewController bvc: BrowserViewController, isPrivate: Bool) {
+    bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: isPrivate)
+  }
 
-    fileprivate func handleScanQR(withBrowserViewController bvc: BrowserViewController) {
-        bvc.scanQRCode()
-    }
+  fileprivate func dismissAlertPopupView() {
+    UIApplication.shared.keyWindow?.subviews.forEach { ($0 as? AlertPopupView)?.dismissWithType(dismissType: .noAnimation) }
+  }
+
+  fileprivate func handleScanQR(withBrowserViewController bvc: BrowserViewController) {
+    bvc.scanQRCode()
+  }
 }

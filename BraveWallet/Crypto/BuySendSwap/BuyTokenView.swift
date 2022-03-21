@@ -12,12 +12,12 @@ struct BuyTokenView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var buyTokenStore: BuyTokenStore
-  
+
   @State private var amountInput = ""
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.openWalletURLAction) private var openWalletURL
-  
+
   var body: some View {
     NavigationView {
       Form {
@@ -26,10 +26,10 @@ struct BuyTokenView: View {
             keyringStore: keyringStore,
             networkStore: networkStore
           )
-            .listRowBackground(Color.clear)
-            .resetListHeaderStyle()
-            .padding(.top)
-            .padding(.bottom, -16) // Get it a bit closer
+          .listRowBackground(Color.clear)
+          .resetListHeaderStyle()
+          .padding(.top)
+          .padding(.bottom, -16)  // Get it a bit closer
         ) {
         }
         if networkStore.selectedChain.chainId == BraveWallet.MainnetChainId {
@@ -71,11 +71,11 @@ struct BuyTokenView: View {
               }) {
                 Text(Strings.Wallet.buyButtonTitle)
               }
-                .buttonStyle(BraveFilledButtonStyle(size: .normal))
-                .frame(maxWidth: .infinity)
+              .buttonStyle(BraveFilledButtonStyle(size: .normal))
+              .frame(maxWidth: .infinity)
             }
-              .resetListHeaderStyle()
-              .listRowBackground(Color(.clear))
+            .resetListHeaderStyle()
+            .listRowBackground(Color(.clear))
           ) {
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -132,14 +132,13 @@ struct BuyTokenView: View {
 
 #if DEBUG
 struct BuyTokenView_Previews: PreviewProvider {
-    static var previews: some View {
-      BuyTokenView(
-        keyringStore: .previewStore,
-        networkStore: .previewStore,
-        buyTokenStore: .previewStore
-      )
-        .previewColorSchemes()
-    }
+  static var previews: some View {
+    BuyTokenView(
+      keyringStore: .previewStore,
+      networkStore: .previewStore,
+      buyTokenStore: .previewStore
+    )
+    .previewColorSchemes()
+  }
 }
 #endif
-

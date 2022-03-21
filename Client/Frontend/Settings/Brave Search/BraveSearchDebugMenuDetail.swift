@@ -12,22 +12,22 @@ private let log = Logger.browserLogger
 
 struct BraveSearchDebugMenuDetail: View {
   let logEntry: BraveSearchLogEntry.FallbackLogEntry
-  
+
   @State private var showingSheet = false
-  
+
   var body: some View {
     Form {
       ValueRow(title: "URL", value: logEntry.url.absoluteString)
-      
+
       Section(header: Text(verbatim: "/can/answer")) {
         ValueRow(title: "Cookies", value: cookieNames)
         ValueRow(title: "Time taken(s)", value: logEntry.canAnswerTime ?? "-")
         ValueRow(title: "Response", value: logEntry.backupQuery ?? "-")
       }
-      
+
       Section(header: Text(verbatim: "Search Fallback")) {
         ValueRow(title: "Time taken(s)", value: logEntry.fallbackTime ?? "-")
-        
+
         Button("Export response") {
           showingSheet.toggle()
         }
@@ -38,18 +38,18 @@ struct BraveSearchDebugMenuDetail: View {
       }
     }
   }
-  
+
   private var cookieNames: String {
     logEntry.cookies.map {
       "\($0.name): \($0.value)"
     }
     .joined(separator: ", ")
   }
-  
+
   private var dataAsUrl: URL? {
     guard let data = logEntry.fallbackData else { return nil }
     let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("output.html")
-    
+
     do {
       try data.write(to: tempUrl)
       return tempUrl
@@ -58,11 +58,11 @@ struct BraveSearchDebugMenuDetail: View {
       return nil
     }
   }
-  
+
   private struct ValueRow: View {
     var title: LocalizedStringKey
     var value: String
-    
+
     var body: some View {
       HStack {
         Text(title)

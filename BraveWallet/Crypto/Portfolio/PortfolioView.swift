@@ -15,29 +15,32 @@ struct PortfolioView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var portfolioStore: PortfolioStore
-  
+
   @State private var dismissedBackupBannerThisSession: Bool = false
   @State private var isPresentingBackup: Bool = false
   @State private var isPresentingEditUserAssets: Bool = false
-  
+
   private var isShowingBackupBanner: Bool {
     !keyringStore.keyring.isBackedUp && !dismissedBackupBannerThisSession
   }
-  
+
   private let currencyFormatter = NumberFormatter().then {
     $0.numberStyle = .currency
     $0.currencyCode = "USD"
   }
-  
+
   private var listHeader: some View {
     VStack(spacing: 0) {
       if isShowingBackupBanner {
-        BackupNotifyView(action: {
-          isPresentingBackup = true
-        }, onDismiss: {
-          // Animating this doesn't seem to work in SwiftUI.. will keep an eye out for iOS 15
-          dismissedBackupBannerThisSession = true
-        })
+        BackupNotifyView(
+          action: {
+            isPresentingBackup = true
+          },
+          onDismiss: {
+            // Animating this doesn't seem to work in SwiftUI.. will keep an eye out for iOS 15
+            dismissedBackupBannerThisSession = true
+          }
+        )
         .buttonStyle(PlainButtonStyle())
         .padding([.top, .leading, .trailing], 12)
         .sheet(isPresented: $isPresentingBackup) {
@@ -56,16 +59,17 @@ struct PortfolioView: View {
       )
     }
   }
-  
+
   @State private var tableInset: CGFloat = -16.0
-  
+
   @State private var selectedToken: BraveWallet.BlockchainToken?
-  
+
   var body: some View {
     List {
       Section(
-        header: listHeader
-          .padding(.horizontal, tableInset) // inset grouped layout margins workaround
+        header:
+          listHeader
+          .padding(.horizontal, tableInset)  // inset grouped layout margins workaround
           .resetListHeaderStyle()
       ) {
       }
@@ -101,23 +105,26 @@ struct PortfolioView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .background(
-      NavigationLink(isActive: Binding(
-        get: { selectedToken != nil },
-        set: { if !$0 { selectedToken = nil } }
-      ), destination: {
-        if let token = selectedToken {
-          AssetDetailView(
-            assetDetailStore: cryptoStore.assetDetailStore(for: token),
-            keyringStore: keyringStore,
-            networkStore: cryptoStore.networkStore
-          )
+      NavigationLink(
+        isActive: Binding(
+          get: { selectedToken != nil },
+          set: { if !$0 { selectedToken = nil } }
+        ),
+        destination: {
+          if let token = selectedToken {
+            AssetDetailView(
+              assetDetailStore: cryptoStore.assetDetailStore(for: token),
+              keyringStore: keyringStore,
+              networkStore: cryptoStore.networkStore
+            )
             .onDisappear {
               cryptoStore.closeAssetDetailStore(for: token)
             }
-        }
-      }, label: {
-        EmptyView()
-      })
+          }
+        },
+        label: {
+          EmptyView()
+        })
     )
     .animation(.default, value: portfolioStore.userVisibleAssets)
     .listStyle(InsetGroupedListStyle())
@@ -135,12 +142,12 @@ struct BalanceHeaderView: View {
   var isLoading: Bool
   @ObservedObject var networkStore: NetworkStore
   @Binding var selectedDateRange: BraveWallet.AssetPriceTimeframe
-  
+
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-  
+
   @State private var selectedBalance: BalanceTimePrice?
-  
+
   private var balanceOrDataPointView: some View {
     HStack {
       Group {
@@ -188,12 +195,12 @@ struct BalanceHeaderView: View {
     .foregroundColor(.primary)
     .padding(.top, 12)
   }
-  
+
   private var emptyBalanceData: [BalanceTimePrice] {
     // About 300 points added so it doesn't animate funny
     (0..<300).map { _ in .init(date: Date(), price: 0.0, formattedPrice: "") }
   }
-  
+
   var body: some View {
     let chartData = historicalBalances.isEmpty ? emptyBalanceData : historicalBalances
     VStack(alignment: .leading, spacing: 4) {
@@ -230,7 +237,7 @@ struct PortfolioViewController_Previews: PreviewProvider {
       )
       .navigationBarTitleDisplayMode(.inline)
     }
-      .previewColorSchemes()
+    .previewColorSchemes()
   }
 }
 #endif

@@ -11,11 +11,11 @@ import struct Shared.Strings
 struct AssetSearchView: View {
   var keyringStore: KeyringStore
   var cryptoStore: CryptoStore
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   @State private var allTokens: [BraveWallet.BlockchainToken] = []
-  
+
   var body: some View {
     NavigationView {
       TokenList(tokens: allTokens.filter({ $0.isErc20 || $0.symbol == cryptoStore.networkStore.selectedChain.symbol })) { token in
@@ -25,9 +25,9 @@ struct AssetSearchView: View {
             keyringStore: keyringStore,
             networkStore: cryptoStore.networkStore
           )
-            .onDisappear {
-              cryptoStore.closeAssetDetailStore(for: token)
-            }
+          .onDisappear {
+            cryptoStore.closeAssetDetailStore(for: token)
+          }
         ) {
           TokenView(token: token)
         }

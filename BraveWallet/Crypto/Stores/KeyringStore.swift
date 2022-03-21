@@ -14,30 +14,30 @@ import Combine
 struct AutoLockInterval: Identifiable, Hashable {
   var value: Int32
   var label: String
-  
+
   init(value: Int32) {
     self.value = value
     self.label = Self.formatter.string(
       from: Measurement<UnitDuration>(value: Double(value), unit: .minutes)
     )
   }
-  
+
   var id: Int32 {
     value
   }
-  
+
   static let minute = AutoLockInterval(value: 1)
   static let fiveMinutes = AutoLockInterval(value: 5)
   static let tenMinutes = AutoLockInterval(value: 10)
   static let thirtyMinutes = AutoLockInterval(value: 30)
-  
+
   static let allOptions: [AutoLockInterval] = [
     .minute,
     .fiveMinutes,
     .tenMinutes,
-    .thirtyMinutes
+    .thirtyMinutes,
   ]
-  
+
   private static let formatter = MeasurementFormatter().then {
     $0.locale = Locale.current
     $0.unitOptions = .providedUnit
@@ -53,7 +53,7 @@ struct RecoveryWord: Hashable, Identifiable {
   var value: String
   /// The index of that word within the entire phrase
   var index: Int
-  
+
   var id: String {
     "\(index)-\(value)"
   }
@@ -85,10 +85,10 @@ public class KeyringStore: ObservableObject {
       keyringService.setSelectedAccount(selectedAccount.address, coin: .eth) { _ in }
     }
   }
-  
+
   private let keyringService: BraveWalletKeyringService
   private var cancellable: AnyCancellable?
-  
+
   public init(keyringService: BraveWalletKeyringService) {
     self.keyringService = keyringService
     self.keyringService.add(self)
@@ -109,7 +109,7 @@ public class KeyringStore: ObservableObject {
         self?.updateKeyringInfo()
       }
   }
-  
+
   private func updateKeyringInfo() {
     keyringService.defaultKeyringInfo { [self] keyringInfo in
       if UIApplication.shared.applicationState != .active {
@@ -122,26 +122,25 @@ public class KeyringStore: ObservableObject {
       keyring = keyringInfo
       if !keyring.accountInfos.isEmpty {
         keyringService.selectedAccount(.eth) { accountAddress in
-          selectedAccount = keyringInfo.accountInfos.first(where: { $0.address == accountAddress }) ??
-            keyringInfo.accountInfos.first!
+          selectedAccount = keyringInfo.accountInfos.first(where: { $0.address == accountAddress }) ?? keyringInfo.accountInfos.first!
         }
       }
     }
   }
-  
+
   func markOnboardingCompleted() {
     self.isOnboardingVisible = false
   }
-  
+
   func notifyWalletBackupComplete() {
     keyringService.notifyWalletBackupComplete()
   }
-  
+
   func lock() {
     lockedManually = true
     keyringService.lock()
   }
-  
+
   func unlock(password: String, completion: @escaping (Bool) -> Void) {
     if !keyring.isKeyringCreated {
       return
@@ -155,32 +154,33 @@ public class KeyringStore: ObservableObject {
       self?.updateKeyringInfo()
     }
   }
-  
+
   func isStrongPassword(_ password: String, completion: @escaping (Bool) -> Void) {
     keyringService.isStrongPassword(password, completion: completion)
   }
-  
+
   func createWallet(password: String, completion: ((String) -> Void)? = nil) {
     keyringService.createWallet(password) { [weak self] mnemonic in
       self?.updateKeyringInfo()
       completion?(mnemonic)
     }
   }
-  
+
   func recoveryPhrase(_ completion: @escaping ([RecoveryWord]) -> Void) {
     keyringService.mnemonic { phrase in
-      let words = phrase
+      let words =
+        phrase
         .split(separator: " ")
         .enumerated()
         .map { RecoveryWord(value: String($0.element), index: $0.offset) }
       completion(words)
     }
   }
-  
+
   func restoreWallet(words: [String], password: String, isLegacyBraveWallet: Bool, completion: ((Bool) -> Void)? = nil) {
     restoreWallet(phrase: words.joined(separator: " "), password: password, isLegacyBraveWallet: isLegacyBraveWallet, completion: completion)
   }
-  
+
   func restoreWallet(phrase: String, password: String, isLegacyBraveWallet: Bool, completion: ((Bool) -> Void)? = nil) {
     keyringService.restoreWallet(
       phrase,
@@ -197,21 +197,21 @@ public class KeyringStore: ObservableObject {
       completion?(isMnemonicValid)
     }
   }
-  
+
   func addPrimaryAccount(_ name: String, completion: ((Bool) -> Void)? = nil) {
     keyringService.addAccount(name, coin: .eth) { success in
       self.updateKeyringInfo()
       completion?(success)
     }
   }
-  
+
   func addSecondaryAccount(_ name: String, privateKey: String, completion: ((Bool, String) -> Void)? = nil) {
     keyringService.importAccount(name, privateKey: privateKey, coin: .eth) { success, address in
       self.updateKeyringInfo()
       completion?(success, address)
     }
   }
-  
+
   func addSecondaryAccount(
     _ name: String,
     json: String,
@@ -222,14 +222,14 @@ public class KeyringStore: ObservableObject {
       completion?(success, address)
     }
   }
-  
+
   func removeSecondaryAccount(forAddress address: String, completion: ((Bool) -> Void)? = nil) {
     keyringService.removeImportedAccount(address, coin: .eth) { success in
       self.updateKeyringInfo()
       completion?(success)
     }
   }
-  
+
   func renameAccount(_ account: BraveWallet.AccountInfo, name: String, completion: ((Bool) -> Void)? = nil) {
     let handler: (Bool) -> Void = { success in
       self.updateKeyringInfo()
@@ -241,7 +241,7 @@ public class KeyringStore: ObservableObject {
       keyringService.setKeyringDerivedAccountName(BraveWallet.DefaultKeyringId, address: account.address, name: name, completion: handler)
     }
   }
-  
+
   func privateKey(for account: BraveWallet.AccountInfo, completion: @escaping (String?) -> Void) {
     if account.isPrimary {
       keyringService.privateKey(forKeyringAccount: account.address, coin: .eth) { success, key in
@@ -253,7 +253,7 @@ public class KeyringStore: ObservableObject {
       }
     }
   }
-  
+
   func notifyUserInteraction() {
     if keyring.isLocked {
       // Auto-lock isn't running until the keyring is unlocked
@@ -261,11 +261,11 @@ public class KeyringStore: ObservableObject {
     }
     keyringService.notifyUserInteraction()
   }
-  
+
   // MARK: - Keychain
-  
+
   private static let passwordKeychainKey = "brave-wallet-password"
-  
+
   /// Stores the users wallet password in the keychain so that they may unlock using biometrics/passcode
   static func storePasswordInKeychain(_ password: String) -> OSStatus {
     guard let passwordData = password.data(using: .utf8) else { return errSecInvalidData }
@@ -279,7 +279,7 @@ public class KeyringStore: ObservableObject {
     let query: [String: Any] = [
       kSecClass as String: kSecClassGenericPassword,
       kSecAttrAccount as String: passwordKeychainKey,
-      kSecValueData as String: passwordData
+      kSecValueData as String: passwordData,
     ]
     #else
     let accessControl = SecAccessControlCreateWithFlags(
@@ -292,22 +292,22 @@ public class KeyringStore: ObservableObject {
       kSecClass as String: kSecClassGenericPassword,
       kSecAttrAccount as String: passwordKeychainKey,
       kSecAttrAccessControl as String: accessControl as Any,
-      kSecValueData as String: passwordData
+      kSecValueData as String: passwordData,
     ]
     #endif
     return SecItemAdd(query as CFDictionary, nil)
   }
-  
+
   @discardableResult
   static func resetKeychainStoredPassword() -> Bool {
     let query: [String: Any] = [
       kSecClass as String: kSecClassGenericPassword,
-      kSecAttrAccount as String: passwordKeychainKey
+      kSecAttrAccount as String: passwordKeychainKey,
     ]
     let status = SecItemDelete(query as CFDictionary)
     return status == errSecSuccess
   }
-  
+
   static var isKeychainPasswordStored: Bool {
     let context = LAContext()
     context.interactionNotAllowed = true
@@ -315,7 +315,7 @@ public class KeyringStore: ObservableObject {
       kSecClass as String: kSecClassGenericPassword,
       kSecAttrAccount as String: passwordKeychainKey,
       kSecMatchLimit as String: kSecMatchLimitOne,
-      kSecUseAuthenticationContext as String: context
+      kSecUseAuthenticationContext as String: context,
     ]
     let status = SecItemCopyMatching(query as CFDictionary, nil)
     #if targetEnvironment(simulator)
@@ -325,7 +325,7 @@ public class KeyringStore: ObservableObject {
     return status == errSecInteractionNotAllowed
     #endif
   }
-  
+
   /// Retreives a users stored wallet password using biometrics or passcode or nil if they have not saved
   /// it to the keychain
   static func retrievePasswordFromKeychain() -> String? {
@@ -333,15 +333,16 @@ public class KeyringStore: ObservableObject {
       kSecClass as String: kSecClassGenericPassword,
       kSecAttrAccount as String: passwordKeychainKey,
       kSecMatchLimit as String: kSecMatchLimitOne,
-      kSecReturnData as String: true
+      kSecReturnData as String: true,
     ]
     var passwordData: AnyObject?
     let status = SecItemCopyMatching(query as CFDictionary, &passwordData)
     guard status == errSecSuccess,
-          let data = passwordData as? Data,
-          let password = String(data: data, encoding: .utf8) else {
-            return nil
-          }
+      let data = passwordData as? Data,
+      let password = String(data: data, encoding: .utf8)
+    else {
+      return nil
+    }
     return password
   }
 }
@@ -350,10 +351,10 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
   public func keyringReset() {
     isOnboardingVisible = true
   }
-  
+
   public func autoLockMinutesChanged() {
   }
-  
+
   public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
     updateKeyringInfo()
   }
@@ -361,27 +362,27 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
   public func keyringCreated(_ keyringId: String) {
     updateKeyringInfo()
   }
-  
+
   public func keyringRestored(_ keyringId: String) {
     updateKeyringInfo()
   }
-  
+
   public func locked() {
     // Put this in the background since biometrics prompt will block the main queue
     DispatchQueue.main.async { [self] in
       self.updateKeyringInfo()
     }
   }
-  
+
   public func unlocked() {
     updateKeyringInfo()
   }
-  
+
   public func backedUp() {
     updateKeyringInfo()
   }
-  
+
   public func accountsChanged() {
     updateKeyringInfo()
-  }  
+  }
 }

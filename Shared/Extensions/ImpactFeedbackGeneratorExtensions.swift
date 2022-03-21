@@ -5,11 +5,11 @@
 import UIKit
 
 extension UIImpactFeedbackGenerator {
-    @discardableResult
-    public func bzzt() -> Self {
-        self.prepare()
-        self.impactOccurred()
-        // Returned in case wanted for retaining to re-impact
-        return self
-    }
+  @discardableResult
+  public func bzzt() -> Self {
+    self.prepare()
+    self.impactOccurred()
+    // Returned in case wanted for retaining to re-impact
+    return self
+  }
 }

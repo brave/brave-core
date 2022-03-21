@@ -8,63 +8,63 @@ import Data
 import BraveShared
 
 struct DownloadedResourceResponse: Decodable {
-    let statusCode: Int
-    let data: Data?
-    
-    static func from(message: WKScriptMessage) throws -> DownloadedResourceResponse? {
-        if !JSONSerialization.isValidJSONObject(message.body) {
-            return nil
-        }
-        
-        let data = try JSONSerialization.data(withJSONObject: message.body, options: .prettyPrinted)
-        return try JSONDecoder().decode(DownloadedResourceResponse.self, from: data)
+  let statusCode: Int
+  let data: Data?
+
+  static func from(message: WKScriptMessage) throws -> DownloadedResourceResponse? {
+    if !JSONSerialization.isValidJSONObject(message.body) {
+      return nil
     }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.statusCode = try container.decode(Int.self, forKey: .statusCode)
-        self.data = Data(base64Encoded: try container.decode(String.self, forKey: .base64Data))
-    }
-    
-    private enum CodingKeys: String, CodingKey {
-        case statusCode
-        case base64Data
-    }
+
+    let data = try JSONSerialization.data(withJSONObject: message.body, options: .prettyPrinted)
+    return try JSONDecoder().decode(DownloadedResourceResponse.self, from: data)
+  }
+
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.statusCode = try container.decode(Int.self, forKey: .statusCode)
+    self.data = Data(base64Encoded: try container.decode(String.self, forKey: .base64Data))
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case statusCode
+    case base64Data
+  }
 }
 
 class ResourceDownloadManager: TabContentScript {
-    fileprivate weak var tab: Tab?
-    
-    init(tab: Tab) {
-        self.tab = tab
-    }
-    
-    static func name() -> String {
-        return "ResourceDownloadManager"
-    }
-    
-    func scriptMessageHandlerName() -> String? {
-        return "ResourceDownloadManager\(UserScriptManager.messageHandlerTokenString)"
-    }
-    
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
-        defer { replyHandler(nil, nil) }
-        
-        do {
-            let response = try DownloadedResourceResponse.from(message: message)
-            tab?.temporaryDocument?.onDocumentDownloaded(document: response, error: nil)
-        } catch {
-            tab?.temporaryDocument?.onDocumentDownloaded(document: nil, error: error)
-        }
-    }
-    
-    static func downloadResource(for tab: Tab, url: URL) {        
-        let token = UserScriptManager.securityTokenString
+  fileprivate weak var tab: Tab?
 
-        tab.webView?.evaluateSafeJavaScript(functionName: "D\(token).download", args: [url.absoluteString], contentWorld: .defaultClient) { _, error in
-            if let error = error {
-                tab.temporaryDocument?.onDocumentDownloaded(document: nil, error: error)
-            }
-        }
+  init(tab: Tab) {
+    self.tab = tab
+  }
+
+  static func name() -> String {
+    return "ResourceDownloadManager"
+  }
+
+  func scriptMessageHandlerName() -> String? {
+    return "ResourceDownloadManager\(UserScriptManager.messageHandlerTokenString)"
+  }
+
+  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+    defer { replyHandler(nil, nil) }
+
+    do {
+      let response = try DownloadedResourceResponse.from(message: message)
+      tab?.temporaryDocument?.onDocumentDownloaded(document: response, error: nil)
+    } catch {
+      tab?.temporaryDocument?.onDocumentDownloaded(document: nil, error: error)
     }
+  }
+
+  static func downloadResource(for tab: Tab, url: URL) {
+    let token = UserScriptManager.securityTokenString
+
+    tab.webView?.evaluateSafeJavaScript(functionName: "D\(token).download", args: [url.absoluteString], contentWorld: .defaultClient) { _, error in
+      if let error = error {
+        tab.temporaryDocument?.onDocumentDownloaded(document: nil, error: error)
+      }
+    }
+  }
 }

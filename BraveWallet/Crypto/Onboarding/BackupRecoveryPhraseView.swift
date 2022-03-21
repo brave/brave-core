@@ -10,17 +10,17 @@ import struct Shared.Strings
 
 struct BackupRecoveryPhraseView: View {
   @ObservedObject var keyringStore: KeyringStore
-  
+
   @State private var confirmedPhraseBackup: Bool = false
   @State private var recoveryWords: [RecoveryWord] = []
-  
+
   private var warningView: some View {
     HStack(alignment: .firstTextBaseline) {
       Image(systemName: "exclamationmark.circle")
         .font(.subheadline.weight(.semibold))
         .foregroundColor(.red)
         .accessibilityHidden(true)
-      
+
       let warningPartOne = Text(Strings.Wallet.backupRecoveryPhraseWarningPartOne)
         .fontWeight(.semibold)
         .foregroundColor(.red)
@@ -37,13 +37,13 @@ struct BackupRecoveryPhraseView: View {
         .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
     )
   }
-  
+
   private func copyRecoveryPhrase() {
     UIPasteboard.general.setSecureString(
       recoveryWords.map(\.value).joined(separator: " ")
     )
   }
-  
+
   var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 16) {
@@ -118,12 +118,12 @@ struct BackupRecoveryPhraseView: View {
       )
     }
   }
-  
+
   struct ToolbarModifier: ViewModifier {
     var isShowingCancel: Bool
-    
+
     @Environment(\.presentationMode) @Binding private var presentationMode
-   
+
     func body(content: Content) -> some View {
       if isShowingCancel {
         content

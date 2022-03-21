@@ -6,19 +6,19 @@ import Foundation
 import XCTest
 
 class HexExtensionsTests: XCTestCase {
-    func testHexEncodedString() {
-        XCTAssertEqual("Hello, world!".data(using: .utf8)!.hexEncodedString, "48656c6c6f2c20776f726c6421")
-        XCTAssertEqual("Hello, world!!".data(using: .utf8)!.hexEncodedString, "48656c6c6f2c20776f726c642121")
-    }
+  func testHexEncodedString() {
+    XCTAssertEqual("Hello, world!".data(using: .utf8)!.hexEncodedString, "48656c6c6f2c20776f726c6421")
+    XCTAssertEqual("Hello, world!!".data(using: .utf8)!.hexEncodedString, "48656c6c6f2c20776f726c642121")
+  }
 
-    func testHexDecodedData() {
-        XCTAssertEqual("48656c6c6f2c20776f726c6421".hexDecodedData, "Hello, world!".data(using: .utf8))
-        XCTAssertEqual("48656c6c6f2c20776f726c642121".hexDecodedData, "Hello, world!!".data(using: .utf8))
-    }
+  func testHexDecodedData() {
+    XCTAssertEqual("48656c6c6f2c20776f726c6421".hexDecodedData, "Hello, world!".data(using: .utf8))
+    XCTAssertEqual("48656c6c6f2c20776f726c642121".hexDecodedData, "Hello, world!!".data(using: .utf8))
+  }
 
-    func testHexDecodedDataWithInvalidInput() {
-        XCTAssertEqual("".hexDecodedData, Data())
-        XCTAssertEqual("cheese".hexDecodedData, Data())
-        XCTAssertEqual("a".hexDecodedData, Data())
-    }
+  func testHexDecodedDataWithInvalidInput() {
+    XCTAssertEqual("".hexDecodedData, Data())
+    XCTAssertEqual("cheese".hexDecodedData, Data())
+    XCTAssertEqual("a".hexDecodedData, Data())
+  }
 }

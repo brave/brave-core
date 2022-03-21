@@ -20,11 +20,11 @@ struct AssetDetailHeaderView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @Binding var buySendSwapDestination: BuySendSwapDestination?
-  
+
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
   @State private var selectedCandle: BraveWallet.AssetTimePrice?
-  
+
   private var deltaText: some View {
     HStack(spacing: 2) {
       Image(systemName: assetDetailStore.priceIsDown ? "arrow.down" : "arrow.up")
@@ -37,15 +37,15 @@ struct AssetDetailHeaderView: View {
       Color(
         assetDetailStore.priceIsDown ? .walletRed : .walletGreen
       )
-        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+      .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
     )
   }
-  
+
   private var emptyData: [BraveWallet.AssetTimePrice] {
     // About 300 points added so it doesn't animate funny
     (0..<300).map { _ in .init(date: Date(), price: "0.0") }
   }
-  
+
   var body: some View {
     VStack(spacing: 0) {
       VStack(alignment: .leading) {
@@ -95,16 +95,20 @@ struct AssetDetailHeaderView: View {
             }
           }
         }
-        Text(String.localizedStringWithFormat(Strings.Wallet.assetDetailSubtitle,
-                                              assetDetailStore.token.name,
-                                              assetDetailStore.token.symbol))
-          .font(.footnote)
-          .foregroundColor(Color(.secondaryBraveLabel))
+        Text(
+          String.localizedStringWithFormat(
+            Strings.Wallet.assetDetailSubtitle,
+            assetDetailStore.token.name,
+            assetDetailStore.token.symbol)
+        )
+        .font(.footnote)
+        .foregroundColor(Color(.secondaryBraveLabel))
         VStack(alignment: .leading) {
           HStack {
             Group {
               if let selectedCandle = selectedCandle,
-                 let formattedString = AssetDetailStore.priceFormatter.string(from: NSNumber(value: selectedCandle.value)) {
+                let formattedString = AssetDetailStore.priceFormatter.string(from: NSNumber(value: selectedCandle.value))
+              {
                 Text(formattedString)
               } else {
                 Text(assetDetailStore.price)
@@ -126,9 +130,10 @@ struct AssetDetailHeaderView: View {
             .shimmer(assetDetailStore.isLoadingChart)
         }
         .chartAccessibility(
-          title: String.localizedStringWithFormat(Strings.Wallet.assetDetailSubtitle,
-                                                  assetDetailStore.token.name,
-                                                  assetDetailStore.token.symbol),
+          title: String.localizedStringWithFormat(
+            Strings.Wallet.assetDetailSubtitle,
+            assetDetailStore.token.name,
+            assetDetailStore.token.symbol),
           dataPoints: data
         )
         .disabled(data.isEmpty)
@@ -195,7 +200,7 @@ struct CurrencyDetailHeaderView_Previews: PreviewProvider {
     .padding(.vertical)
     .previewLayout(.sizeThatFits)
     .previewSizeCategories()
-//    .previewColorSchemes()
+    //    .previewColorSchemes()
   }
 }
 #endif

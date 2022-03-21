@@ -7,40 +7,40 @@ import Foundation
 import BraveCore
 
 class HistoryServiceStateObserver: BraveServiceStateObserver, HistoryServiceObserver {
-    private let listener: (StateChange) -> Void
-    
-    enum StateChange {
-        case serviceLoaded
-        case serviceDeleted
-        case historyVisited(HistoryNode)
-        case historyModified(_ nodeList: [HistoryNode])
-        case historyDeleted(_ nodeList: [HistoryNode], isAllHistory: Bool)
-    }
-    
-    init(_ listener: @escaping (StateChange) -> Void) {
-        self.listener = listener
-    }
-    
-    func historyServiceLoaded() {
-        listener(.serviceLoaded)
+  private let listener: (StateChange) -> Void
 
-        postServiceLoadedNotification()
-    }
-    
-    func historyServiceBeingDeleted() {
-        listener(.serviceDeleted)
-    }
-    
-    func historyNodeVisited(_ historyNode: HistoryNode) {
-        listener(.historyVisited(historyNode))
-    }
-    
-    func historyNodesModified(_ historyNodeList: [HistoryNode]) {
-        listener(.historyModified(historyNodeList))
-    }
+  enum StateChange {
+    case serviceLoaded
+    case serviceDeleted
+    case historyVisited(HistoryNode)
+    case historyModified(_ nodeList: [HistoryNode])
+    case historyDeleted(_ nodeList: [HistoryNode], isAllHistory: Bool)
+  }
 
-    func historyNodesDeleted(_ historyNodeList: [HistoryNode], isAllHistory: Bool) {
-        listener(.historyDeleted(historyNodeList, isAllHistory: isAllHistory))
-    }
-    
+  init(_ listener: @escaping (StateChange) -> Void) {
+    self.listener = listener
+  }
+
+  func historyServiceLoaded() {
+    listener(.serviceLoaded)
+
+    postServiceLoadedNotification()
+  }
+
+  func historyServiceBeingDeleted() {
+    listener(.serviceDeleted)
+  }
+
+  func historyNodeVisited(_ historyNode: HistoryNode) {
+    listener(.historyVisited(historyNode))
+  }
+
+  func historyNodesModified(_ historyNodeList: [HistoryNode]) {
+    listener(.historyModified(historyNodeList))
+  }
+
+  func historyNodesDeleted(_ historyNodeList: [HistoryNode], isAllHistory: Bool) {
+    listener(.historyDeleted(historyNodeList, isAllHistory: isAllHistory))
+  }
+
 }

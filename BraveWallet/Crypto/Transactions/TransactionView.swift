@@ -17,44 +17,49 @@ struct TransactionView: View {
   var visibleTokens: [BraveWallet.BlockchainToken]
   var displayAccountCreator: Bool
   var assetRatios: [String: Double]
-  
+
   private let timeFormatter = RelativeDateTimeFormatter().then {
     $0.unitsStyle = .full
     $0.dateTimeStyle = .numeric
   }
-  
+
   private let numberFormatter = NumberFormatter().then {
     $0.numberStyle = .currency
     $0.currencyCode = "USD"
   }
-  
+
   private func namedAddress(for address: String) -> String {
     NamedAddresses.name(for: address, accounts: keyringStore.keyring.accountInfos)
   }
-  
+
   private var gasFee: (String, fiat: String)? {
     let isEIP1559Transaction = info.isEIP1559Transaction
     let limit = info.ethTxGasLimit
     let formatter = WeiFormatter(decimalFormatStyle: .gasFee(limit: limit.removingHexPrefix, radix: .hex))
     let hexFee = isEIP1559Transaction ? (info.txDataUnion.ethTxData1559?.maxFeePerGas ?? "") : info.ethTxGasPrice
     if let value = formatter.decimalString(for: hexFee.removingHexPrefix, radix: .hex, decimals: Int(networkStore.selectedChain.decimals)) {
-      return (value, {
-        guard let doubleValue = Double(value), let assetRatio = assetRatios[networkStore.selectedChain.symbol.lowercased()] else {
-          return "$0.00"
-        }
-        return numberFormatter.string(from: NSNumber(value: doubleValue * assetRatio)) ?? "$0.00"
-      }())
+      return (
+        value,
+        {
+          guard let doubleValue = Double(value), let assetRatio = assetRatios[networkStore.selectedChain.symbol.lowercased()] else {
+            return "$0.00"
+          }
+          return numberFormatter.string(from: NSNumber(value: doubleValue * assetRatio)) ?? "$0.00"
+        }()
+      )
     }
     return nil
   }
-  
+
   @ViewBuilder private var title: some View {
     let formatter = WeiFormatter(decimalFormatStyle: .balance)
     switch info.txType {
     case .erc20Approve:
-      if info.txArgs.count > 1, let token = visibleTokens.first(where: {
-        $0.contractAddress == info.txArgs[0]
-      }) {
+      if info.txArgs.count > 1,
+        let token = visibleTokens.first(where: {
+          $0.contractAddress == info.txArgs[0]
+        })
+      {
         Text(String.localizedStringWithFormat(Strings.Wallet.transactionApproveSymbolTitle, formatter.decimalString(for: info.txArgs[1].removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? "", token.symbol))
       } else {
         Text(Strings.Wallet.transactionUnknownApprovalTitle)
@@ -68,9 +73,11 @@ struct TransactionView: View {
         Text(String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, amount, networkStore.selectedChain.symbol, fiat))
       }
     case .erc20Transfer:
-      if info.txArgs.count > 1, let token = visibleTokens.first(where: {
-        $0.contractAddress.caseInsensitiveCompare(info.ethTxToAddress) == .orderedSame
-      }) {
+      if info.txArgs.count > 1,
+        let token = visibleTokens.first(where: {
+          $0.contractAddress.caseInsensitiveCompare(info.ethTxToAddress) == .orderedSame
+        })
+      {
         let amount = formatter.decimalString(for: info.txArgs[1].removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? ""
         let fiat = numberFormatter.string(from: NSNumber(value: assetRatios[token.symbol.lowercased(), default: 0] * (Double(amount) ?? 0))) ?? "$0.00"
         Text(String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, amount, token.symbol, fiat))
@@ -89,7 +96,7 @@ struct TransactionView: View {
       EmptyView()
     }
   }
-  
+
   @ViewBuilder private var subtitle: some View {
     // For the time being, use the same subtitle label until we have the ability to parse
     // Swap from/to addresses
@@ -102,7 +109,7 @@ struct TransactionView: View {
         )
       )
   }
-  
+
   private var metadata: Text {
     let date = Text(info.createdTime, formatter: timeFormatter)
     if displayAccountCreator {
@@ -110,7 +117,7 @@ struct TransactionView: View {
     }
     return date
   }
-  
+
   var body: some View {
     HStack(spacing: 12) {
       BlockieGroup(

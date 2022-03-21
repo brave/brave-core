@@ -5,42 +5,42 @@
 import UIKit
 
 class SettingsNavigationController: UINavigationController {
-    var popoverDelegate: PresentingModalViewControllerDelegate?
+  var popoverDelegate: PresentingModalViewControllerDelegate?
 
-    @objc func done() {
-        if let delegate = popoverDelegate {
-            delegate.dismissPresentedModalViewController(self, animated: true)
-        } else {
-            self.dismiss(animated: true, completion: nil)
-        }
+  @objc func done() {
+    if let delegate = popoverDelegate {
+      delegate.dismissPresentedModalViewController(self, animated: true)
+    } else {
+      self.dismiss(animated: true, completion: nil)
     }
+  }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        if self.view.overrideUserInterfaceStyle == .light || self.overrideUserInterfaceStyle == .light {
-            return .darkContent
-        } 
-        return .lightContent
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    if self.view.overrideUserInterfaceStyle == .light || self.overrideUserInterfaceStyle == .light {
+      return .darkContent
     }
-    
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
-    }
-    
-    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
-        return .portrait
-    }
-    
-    override var shouldAutorotate: Bool {
-        return false
-    }
+    return .lightContent
+  }
+
+  override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    return .portrait
+  }
+
+  override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+    return .portrait
+  }
+
+  override var shouldAutorotate: Bool {
+    return false
+  }
 }
 
 protocol PresentingModalViewControllerDelegate {
-    func dismissPresentedModalViewController(_ modalViewController: UIViewController, animated: Bool)
+  func dismissPresentedModalViewController(_ modalViewController: UIViewController, animated: Bool)
 }
 
 class ModalSettingsNavigationController: UINavigationController {
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
-    }
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .default
+  }
 }

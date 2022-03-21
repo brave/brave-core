@@ -31,6 +31,9 @@ fi
 
 npm run build
 
+# Setup local git config
+git config --local blame.ignoreRevsFile .git-blame-ignore-revs
+
 # Sets up local configurations from the tracked .template files
 
 # Checking the `Local` Directory

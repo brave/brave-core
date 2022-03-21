@@ -13,19 +13,19 @@ struct AccountActivityView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var activityStore: AccountActivityStore
   @ObservedObject var networkStore: NetworkStore
-  
+
   @State private var detailsPresentation: DetailsPresentation?
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.openWalletURLAction) private var openWalletURL
-  
+
   private struct DetailsPresentation: Identifiable {
     var inEditMode: Bool
     var id: String {
       "\(inEditMode)"
     }
   }
-  
+
   private var accountInfo: BraveWallet.AccountInfo {
     guard let info = keyringStore.keyring.accountInfos.first(where: { $0.address == activityStore.account.address }) else {
       // The account has been removed... User should technically never see this state because
@@ -34,12 +34,12 @@ struct AccountActivityView: View {
     }
     return info
   }
-  
+
   private let currencyFormatter = NumberFormatter().then {
     $0.numberStyle = .currency
     $0.currencyCode = "USD"
   }
-  
+
   private func emptyTextView(_ message: String) -> some View {
     Text(message)
       .font(.footnote.weight(.medium))
@@ -47,7 +47,7 @@ struct AccountActivityView: View {
       .multilineTextAlignment(.center)
       .foregroundColor(Color(.secondaryBraveLabel))
   }
-  
+
   var body: some View {
     List {
       Section {
@@ -90,15 +90,18 @@ struct AccountActivityView: View {
               networkStore: networkStore,
               visibleTokens: activityStore.assets.map(\.token),
               displayAccountCreator: false,
-              assetRatios: activityStore.assets.reduce(into: [String: Double](), {
-                $0[$1.token.symbol.lowercased()] = Double($1.price)
-              })
+              assetRatios: activityStore.assets.reduce(
+                into: [String: Double](),
+                {
+                  $0[$1.token.symbol.lowercased()] = Double($1.price)
+                })
             )
             .contextMenu {
               if !tx.txHash.isEmpty {
                 Button(action: {
                   if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
-                     let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)") {
+                    let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)")
+                  {
                     openWalletURL?(url)
                   }
                 }) {
@@ -135,7 +138,7 @@ struct AccountActivityView: View {
 private struct AccountActivityHeaderView: View {
   var account: BraveWallet.AccountInfo
   var action: (_ tappedEdit: Bool) -> Void
-  
+
   var body: some View {
     VStack {
       Blockie(address: account.address)

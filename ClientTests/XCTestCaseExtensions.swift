@@ -6,22 +6,22 @@ import Foundation
 import XCTest
 
 extension XCTestCase {
-    func wait(_ time: TimeInterval) {
-        let expectation = self.expectation(description: "Wait")
-        DispatchQueue.main.asyncAfter(deadline: .now() + time, execute: { expectation.fulfill() })
-        waitForExpectations(timeout: time + 1, handler: nil)
+  func wait(_ time: TimeInterval) {
+    let expectation = self.expectation(description: "Wait")
+    DispatchQueue.main.asyncAfter(deadline: .now() + time, execute: { expectation.fulfill() })
+    waitForExpectations(timeout: time + 1, handler: nil)
+  }
+
+  func waitForCondition(timeout: TimeInterval = 10, condition: () -> Bool) {
+    let timeoutTime = Date.timeIntervalSinceReferenceDate + timeout
+
+    while !condition() {
+      if Date.timeIntervalSinceReferenceDate > timeoutTime {
+        XCTFail("Condition timed out")
+        return
+      }
+
+      wait(0.1)
     }
-
-    func waitForCondition(timeout: TimeInterval = 10, condition: () -> Bool) {
-        let timeoutTime = Date.timeIntervalSinceReferenceDate + timeout
-
-        while !condition() {
-            if Date.timeIntervalSinceReferenceDate > timeoutTime {
-                XCTFail("Condition timed out")
-                return
-            }
-
-            wait(0.1)
-        }
-    }
+  }
 }

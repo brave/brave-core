@@ -8,25 +8,25 @@ import Shared
 import BraveShared
 
 class BraveGetUA: TabContentScript {
-    fileprivate weak var tab: Tab?
+  fileprivate weak var tab: Tab?
 
-    required init(tab: Tab) {
-        self.tab = tab
-    }
+  required init(tab: Tab) {
+    self.tab = tab
+  }
 
-    static func name() -> String {
-        return "BraveGetUA"
-    }
+  static func name() -> String {
+    return "BraveGetUA"
+  }
 
-    func scriptMessageHandlerName() -> String? {
-        return BraveGetUA.name()
-    }
+  func scriptMessageHandlerName() -> String? {
+    return BraveGetUA.name()
+  }
 
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
-        // 🙀 😭 🏃‍♀️💨
-    }
+  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+    // 🙀 😭 🏃‍♀️💨
+  }
 
-    static var isActivated: Bool {
-        return true
-    }
+  static var isActivated: Bool {
+    return true
+  }
 }

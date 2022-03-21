@@ -9,7 +9,7 @@ import struct Shared.Strings
 
 struct AddAccountView: View {
   @ObservedObject var keyringStore: KeyringStore
-  
+
   @State private var name: String = ""
   @State private var privateKey: String = ""
   @State private var isPresentingImport: Bool = false
@@ -18,7 +18,7 @@ struct AddAccountView: View {
   @State private var failedToImport: Bool = false
   @ScaledMetric(relativeTo: .body) private var privateKeyFieldHeight: CGFloat = 140.0
   @Environment(\.presentationMode) @Binding var presentationMode
-  
+
   private func addAccount() {
     if privateKey.isEmpty {
       // Add normal account
@@ -36,8 +36,7 @@ struct AddAccountView: View {
           failedToImport = true
         }
       }
-      let accountName = name.isEmpty ?
-      String.localizedStringWithFormat(Strings.Wallet.defaultSecondaryAccountName, keyringStore.keyring.accountInfos.filter(\.isImported).count + 1) : name
+      let accountName = name.isEmpty ? String.localizedStringWithFormat(Strings.Wallet.defaultSecondaryAccountName, keyringStore.keyring.accountInfos.filter(\.isImported).count + 1) : name
       if isJSONImported {
         keyringStore.addSecondaryAccount(accountName, json: privateKey, password: originPassword, completion: handler)
       } else {
@@ -45,7 +44,7 @@ struct AddAccountView: View {
       }
     }
   }
-  
+
   private var isJSONImported: Bool {
     guard let data = privateKey.data(using: .utf8) else {
       return false
@@ -57,7 +56,7 @@ struct AddAccountView: View {
       return false
     }
   }
-  
+
   var body: some View {
     List {
       accountNameSection
@@ -113,7 +112,7 @@ struct AddAccountView: View {
       )
     }
   }
-  
+
   private var accountNameSection: some View {
     Section(
       header: WalletListHeaderView(
@@ -123,7 +122,7 @@ struct AddAccountView: View {
       )
       .osAvailabilityModifiers { content in
         if #available(iOS 15.0, *) {
-          content // Padding already applied
+          content  // Padding already applied
         } else {
           content
             .padding(.top)
@@ -134,7 +133,7 @@ struct AddAccountView: View {
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
   }
-  
+
   private var originPasswordSection: some View {
     Section(
       header: WalletListHeaderView(
@@ -147,7 +146,7 @@ struct AddAccountView: View {
     }
     .listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
-  
+
   private var privateKeySection: some View {
     Section(
       header: WalletListHeaderView(
@@ -163,7 +162,7 @@ struct AddAccountView: View {
         .background(
           Text(Strings.Wallet.importAccountPlaceholder)
             .padding(.vertical, 8)
-            .padding(.horizontal, 4) // To match the TextEditor's editing insets
+            .padding(.horizontal, 4)  // To match the TextEditor's editing insets
             .frame(maxWidth: .infinity, alignment: .leading)
             .foregroundColor(Color(.placeholderText))
             .opacity(privateKey.isEmpty ? 1 : 0)

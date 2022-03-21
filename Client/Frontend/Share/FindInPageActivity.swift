@@ -6,26 +6,26 @@ import Foundation
 import Shared
 
 class FindInPageActivity: UIActivity {
-    fileprivate let callback: () -> Void
+  fileprivate let callback: () -> Void
 
-    init(callback: @escaping () -> Void) {
-        self.callback = callback
-    }
+  init(callback: @escaping () -> Void) {
+    self.callback = callback
+  }
 
-    override var activityTitle: String? {
-        return Strings.findInPage
-    }
+  override var activityTitle: String? {
+    return Strings.findInPage
+  }
 
-    override var activityImage: UIImage? {
-        return #imageLiteral(resourceName: "shareFindInPage")
-    }
+  override var activityImage: UIImage? {
+    return #imageLiteral(resourceName: "shareFindInPage")
+  }
 
-    override func perform() {
-        callback()
-        activityDidFinish(true)
-    }
+  override func perform() {
+    callback()
+    activityDidFinish(true)
+  }
 
-    override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
-        return true
-    }
+  override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
+    return true
+  }
 }

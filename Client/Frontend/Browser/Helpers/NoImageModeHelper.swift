@@ -8,25 +8,25 @@ import Shared
 import BraveShared
 
 class NoImageModeHelper: TabContentScript {
-    fileprivate weak var tab: Tab?
+  fileprivate weak var tab: Tab?
 
-    required init(tab: Tab) {
-        self.tab = tab
-    }
+  required init(tab: Tab) {
+    self.tab = tab
+  }
 
-    static func name() -> String {
-        return "NoImageMode"
-    }
+  static func name() -> String {
+    return "NoImageMode"
+  }
 
-    func scriptMessageHandlerName() -> String? {
-        return "NoImageMode"
-    }
+  func scriptMessageHandlerName() -> String? {
+    return "NoImageMode"
+  }
 
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
-        // Do nothing.
-    }
+  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+    // Do nothing.
+  }
 
-    static var isActivated: Bool {
-        return Preferences.Shields.blockImages.value
-    }
+  static var isActivated: Bool {
+    return Preferences.Shields.blockImages.value
+  }
 }

@@ -7,55 +7,55 @@ import Foundation
 import Shared
 
 extension WalletTransferCompleteViewController {
-    class WalletTransferCompleteView: UIView {
-        
-        private let scrollView = UIScrollView()
-        private let stackView = UIStackView().then {
-            $0.axis = .vertical
-            $0.spacing = 4
-            $0.layoutMargins = UIEdgeInsets(equalInset: 16)
-            $0.isLayoutMarginsRelativeArrangement = true
-        }
-        let titleLabel = UILabel().then {
-            $0.text = Strings.Rewards.walletTransferCompleteTitle
-            $0.numberOfLines = 0
-            $0.font = .systemFont(ofSize: 17, weight: .semibold)
-            $0.textColor = .braveInfoLabel
-        }
-        let bodyLabel = UILabel().then {
-            $0.text = Strings.Rewards.walletTransferCompleteBody
-            $0.numberOfLines = 0
-            $0.font = .systemFont(ofSize: 17)
-            $0.textColor = .braveLabel
-        }
-        
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-            
-            backgroundColor = .secondaryBraveBackground
-            
-            addSubview(scrollView)
-            scrollView.addSubview(stackView)
-            stackView.addStackViewItems(
-                .view(titleLabel),
-                .view(bodyLabel)
-            )
-            
-            scrollView.snp.makeConstraints {
-                $0.edges.equalToSuperview()
-            }
-            scrollView.contentLayoutGuide.snp.makeConstraints {
-                $0.width.equalToSuperview()
-                $0.top.bottom.equalTo(stackView)
-            }
-            stackView.snp.makeConstraints {
-                $0.edges.equalToSuperview()
-            }
-        }
-        
-        @available(*, unavailable)
-        required init(coder: NSCoder) {
-            fatalError()
-        }
+  class WalletTransferCompleteView: UIView {
+
+    private let scrollView = UIScrollView()
+    private let stackView = UIStackView().then {
+      $0.axis = .vertical
+      $0.spacing = 4
+      $0.layoutMargins = UIEdgeInsets(equalInset: 16)
+      $0.isLayoutMarginsRelativeArrangement = true
     }
+    let titleLabel = UILabel().then {
+      $0.text = Strings.Rewards.walletTransferCompleteTitle
+      $0.numberOfLines = 0
+      $0.font = .systemFont(ofSize: 17, weight: .semibold)
+      $0.textColor = .braveInfoLabel
+    }
+    let bodyLabel = UILabel().then {
+      $0.text = Strings.Rewards.walletTransferCompleteBody
+      $0.numberOfLines = 0
+      $0.font = .systemFont(ofSize: 17)
+      $0.textColor = .braveLabel
+    }
+
+    override init(frame: CGRect) {
+      super.init(frame: frame)
+
+      backgroundColor = .secondaryBraveBackground
+
+      addSubview(scrollView)
+      scrollView.addSubview(stackView)
+      stackView.addStackViewItems(
+        .view(titleLabel),
+        .view(bodyLabel)
+      )
+
+      scrollView.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+      scrollView.contentLayoutGuide.snp.makeConstraints {
+        $0.width.equalToSuperview()
+        $0.top.bottom.equalTo(stackView)
+      }
+      stackView.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+    }
+
+    @available(*, unavailable)
+    required init(coder: NSCoder) {
+      fatalError()
+    }
+  }
 }

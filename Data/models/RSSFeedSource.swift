@@ -7,39 +7,39 @@ import Foundation
 import CoreData
 
 public final class RSSFeedSource: NSManagedObject, CRUD {
-    @NSManaged public var title: String?
-    @NSManaged public var feedUrl: String
-    
-    public class func get(with feedUrl: String) -> RSSFeedSource? {
-        let predicate = NSPredicate(format: "\(#keyPath(RSSFeedSource.feedUrl)) == %@", feedUrl)
-        return first(where: predicate)
+  @NSManaged public var title: String?
+  @NSManaged public var feedUrl: String
+
+  public class func get(with feedUrl: String) -> RSSFeedSource? {
+    let predicate = NSPredicate(format: "\(#keyPath(RSSFeedSource.feedUrl)) == %@", feedUrl)
+    return first(where: predicate)
+  }
+
+  public class func all() -> [RSSFeedSource] {
+    all() ?? []
+  }
+
+  public class func delete(with feedUrl: String) {
+    let context = DataController.viewContext
+    if let item = get(with: feedUrl) {
+      item.delete(context: .existing(context))
+      if context.hasChanges {
+        try? context.save()
+      }
     }
-    
-    public class func all() -> [RSSFeedSource] {
-        all() ?? []
+  }
+
+  public class func insert(title: String?, feedUrl: String) {
+    let context = DataController.viewContext
+    let source = RSSFeedSource(entity: entity(in: context), insertInto: context)
+    source.title = title
+    source.feedUrl = feedUrl
+    if context.hasChanges {
+      try? context.save()
     }
-    
-    public class func delete(with feedUrl: String) {
-        let context = DataController.viewContext
-        if let item = get(with: feedUrl) {
-            item.delete(context: .existing(context))
-            if context.hasChanges {
-                try? context.save()
-            }
-        }
-    }
-    
-    public class func insert(title: String?, feedUrl: String) {
-        let context = DataController.viewContext
-        let source = RSSFeedSource(entity: entity(in: context), insertInto: context)
-        source.title = title
-        source.feedUrl = feedUrl
-        if context.hasChanges {
-            try? context.save()
-        }
-    }
-    
-    private class func entity(in context: NSManagedObjectContext) -> NSEntityDescription {
-        NSEntityDescription.entity(forEntityName: "RSSFeedSource", in: context)!
-    }
+  }
+
+  private class func entity(in context: NSManagedObjectContext) -> NSEntityDescription {
+    NSEntityDescription.entity(forEntityName: "RSSFeedSource", in: context)!
+  }
 }

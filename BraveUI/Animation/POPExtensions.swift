@@ -10,7 +10,7 @@ import pop
 
 /// Defines a protocol that may be used to obtain a property animator
 public protocol ExpressibleByPropertyAnimator {
-  
+
   /// The pop animatable property
   var animatableProperty: POPAnimatableProperty { get }
 }
@@ -23,21 +23,23 @@ extension POPAnimatableProperty: ExpressibleByPropertyAnimator {
 
 extension String: ExpressibleByPropertyAnimator {
   public var animatableProperty: POPAnimatableProperty {
-    return POPAnimatableProperty.property(withName: self) as! POPAnimatableProperty // swiftlint:disable:this force_cast
+    return POPAnimatableProperty.property(withName: self) as! POPAnimatableProperty  // swiftlint:disable:this force_cast
   }
 }
 
 extension NSObject {
-  
-  private func animate<T>(type: T.Type,
-                          property: ExpressibleByPropertyAnimator,
-                          key: String,
-                          _ animation: (T, Bool) -> Void) -> T where T: POPPropertyAnimation {
+
+  private func animate<T>(
+    type: T.Type,
+    property: ExpressibleByPropertyAnimator,
+    key: String,
+    _ animation: (T, Bool) -> Void
+  ) -> T where T: POPPropertyAnimation {
     if let running = pop_animation(forKey: key) as? T {
       animation(running, true)
       return running
     }
-    
+
     let newAnimation = T()
     newAnimation.removedOnCompletion = true
     newAnimation.property = property.animatableProperty
@@ -45,7 +47,7 @@ extension NSObject {
     pop_add(newAnimation, forKey: key)
     return newAnimation
   }
-  
+
   /// Create a spring animation to animate a given property.
   ///
   /// - parameters:
@@ -60,7 +62,7 @@ extension NSObject {
   public func springAnimate(property: ExpressibleByPropertyAnimator, key: String, _ animation: (_: POPSpringAnimation, _ inProgress: Bool) -> Void) -> POPSpringAnimation {
     return animate(type: POPSpringAnimation.self, property: property, key: key, animation)
   }
-  
+
   /// Create a basic animation to animate a given property.
   ///
   /// - parameters:
@@ -82,7 +84,7 @@ extension NSObject {
 public protocol CustomPropertyAnimator {}
 
 extension CustomPropertyAnimator {
-  
+
   /// Creates an animatable property without dealing with C pointers from the pop library
   ///
   /// - parameters:
@@ -99,19 +101,21 @@ extension CustomPropertyAnimator {
     reading: @escaping (_ parent: Self) -> [CGFloat],
     writing: @escaping (_ parent: Self, _ values: [CGFloat]) -> Void,
     threshold: CGFloat = 0.01
-    ) -> POPAnimatableProperty {
-    return POPAnimatableProperty.property(withName: name, initializer: { property in
-      guard let property = property else { return }
-      
-      property.readBlock = {
-        $1?[0] = reading($0 as! Self)[0] // swiftlint:disable:this force_cast
-      }
-      property.writeBlock = {
-        writing($0 as! Self, [$1!.pointee]) // swiftlint:disable:this force_cast
-      }
-      
-      property.threshold = threshold
-    }) as! POPAnimatableProperty // swiftlint:disable:this force_cast
+  ) -> POPAnimatableProperty {
+    return POPAnimatableProperty.property(
+      withName: name,
+      initializer: { property in
+        guard let property = property else { return }
+
+        property.readBlock = {
+          $1?[0] = reading($0 as! Self)[0]  // swiftlint:disable:this force_cast
+        }
+        property.writeBlock = {
+          writing($0 as! Self, [$1!.pointee])  // swiftlint:disable:this force_cast
+        }
+
+        property.threshold = threshold
+      }) as! POPAnimatableProperty  // swiftlint:disable:this force_cast
   }
 }
 

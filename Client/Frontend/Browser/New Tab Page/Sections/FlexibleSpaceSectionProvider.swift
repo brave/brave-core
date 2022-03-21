@@ -10,15 +10,15 @@ private class EmptyCollectionViewCell: UICollectionViewCell, CollectionViewReusa
 }
 
 class FlexibleSpaceSectionProvider: NSObject, NTPSectionProvider {
-    func registerCells(to collectionView: UICollectionView) {
-        collectionView.register(EmptyCollectionViewCell.self)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return collectionView.dequeueReusableCell(for: indexPath) as EmptyCollectionViewCell
-    }
+  func registerCells(to collectionView: UICollectionView) {
+    collectionView.register(EmptyCollectionViewCell.self)
+  }
+
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return 1
+  }
+
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    return collectionView.dequeueReusableCell(for: indexPath) as EmptyCollectionViewCell
+  }
 }

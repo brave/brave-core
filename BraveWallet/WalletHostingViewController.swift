@@ -21,7 +21,7 @@ public protocol BraveWalletDelegate: AnyObject {
 public class WalletHostingViewController: UIHostingController<CryptoView> {
   public weak var delegate: BraveWalletDelegate?
   private var cancellable: AnyCancellable?
-  
+
   public init(walletStore: WalletStore) {
     gesture = WalletInteractionGestureRecognizer(
       keyringStore: walletStore.keyringStore
@@ -57,30 +57,30 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
         }
       }
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
   }
-  
+
   deinit {
     gesture.view?.removeGestureRecognizer(gesture)
   }
-  
+
   private let gesture: WalletInteractionGestureRecognizer
-  
+
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     view.window?.addGestureRecognizer(gesture)
     UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
   }
-  
+
   // MARK: -
-  
+
   public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
     [.portrait, .portraitUpsideDown]
   }
-  
+
   public override var shouldAutorotate: Bool {
     true
   }

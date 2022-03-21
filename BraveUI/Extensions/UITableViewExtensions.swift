@@ -4,7 +4,7 @@
 
 import UIKit
 
-public protocol TableViewReusable { }
+public protocol TableViewReusable {}
 
 extension TableViewReusable {
   fileprivate static var identifier: String {

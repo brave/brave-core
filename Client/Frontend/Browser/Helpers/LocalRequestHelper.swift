@@ -9,34 +9,35 @@ import WebKit
 private let log = Logger.browserLogger
 
 class LocalRequestHelper: TabContentScript {
-    func scriptMessageHandlerName() -> String? {
-        return "localRequestHelper"
+  func scriptMessageHandlerName() -> String? {
+    return "localRequestHelper"
+  }
+
+  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+    defer { replyHandler(nil, nil) }
+    guard let requestUrl = message.frameInfo.request.url,
+      let internalUrl = InternalURL(requestUrl),
+      let params = message.body as? [String: String]
+    else { return }
+
+    if UserScriptManager.isMessageHandlerTokenMissing(in: params) {
+      log.debug("Missing required security token.")
+      return
     }
 
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
-        defer { replyHandler(nil, nil) }
-        guard let requestUrl = message.frameInfo.request.url,
-              let internalUrl = InternalURL(requestUrl),
-              let params = message.body as? [String: String] else { return }
-        
-        if UserScriptManager.isMessageHandlerTokenMissing(in: params) {
-            log.debug("Missing required security token.")
-            return
-        }
-
-        if params["type"] == "reload" {
-            // If this is triggered by session restore pages, the url to reload is a nested url argument.
-            if let _url = internalUrl.extractedUrlParam, let nested = InternalURL(_url), let url = nested.extractedUrlParam {
-                message.webView?.replaceLocation(with: url)
-            } else {
-                _ = message.webView?.reload()
-            }
-        } else {
-            assertionFailure("Invalid message: \(message.body)")
-        }
+    if params["type"] == "reload" {
+      // If this is triggered by session restore pages, the url to reload is a nested url argument.
+      if let _url = internalUrl.extractedUrlParam, let nested = InternalURL(_url), let url = nested.extractedUrlParam {
+        message.webView?.replaceLocation(with: url)
+      } else {
+        _ = message.webView?.reload()
+      }
+    } else {
+      assertionFailure("Invalid message: \(message.body)")
     }
+  }
 
-    class func name() -> String {
-        return "LocalRequestHelper"
-    }
+  class func name() -> String {
+    return "LocalRequestHelper"
+  }
 }

@@ -25,19 +25,21 @@ public class SendTokenStore: ObservableObject {
   @Published var sendAddress = "" {
     didSet {
       timer?.invalidate()
-      timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { [weak self] _ in
-        self?.validateSendAddress()
-      })
+      timer = Timer.scheduledTimer(
+        withTimeInterval: 0.25, repeats: false,
+        block: { [weak self] _ in
+          self?.validateSendAddress()
+        })
     }
   }
   /// An error for input send address. Nil for no error.
   @Published var addressError: AddressError?
-  
+
   enum AddressError: LocalizedError {
     case sameAsFromAddress
     case contractAddress
     case notEthAddress
-    
+
     var errorDescription: String? {
       switch self {
       case .sameAsFromAddress:
@@ -49,7 +51,7 @@ public class SendTokenStore: ObservableObject {
       }
     }
   }
-  
+
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
@@ -59,7 +61,7 @@ public class SendTokenStore: ObservableObject {
   private var allTokens: [BraveWallet.BlockchainToken] = []
   private var currentAccountAddress: String?
   private var timer: Timer?
-  
+
   public init(
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
@@ -76,21 +78,21 @@ public class SendTokenStore: ObservableObject {
     self.blockchainRegistry = blockchainRegistry
     self.ethTxManagerProxy = ethTxManagerProxy
     self.selectedSendToken = prefilledToken
-    
+
     self.keyringService.add(self)
     self.rpcService.add(self)
-    
+
     self.keyringService.selectedAccount(.eth) { address in
       self.currentAccountAddress = address
     }
   }
-  
+
   func fetchAssets() {
     rpcService.network { [weak self] network in
       guard let self = self else { return }
       self.walletService.userAssets(network.chainId) { tokens in
         self.userAssets = tokens
-        
+
         if let selectedToken = self.selectedSendToken {
           if tokens.isEmpty {
             self.selectedSendToken = nil
@@ -101,23 +103,23 @@ public class SendTokenStore: ObservableObject {
           self.selectedSendToken = tokens.first
         }
       }
-      
+
       // store tokens in `allTokens` for address validation
       self.blockchainRegistry.allTokens(BraveWallet.MainnetChainId) { tokens in
         self.allTokens = tokens + [network.nativeToken]
       }
     }
   }
-  
+
   private func fetchAssetBalance() {
     guard let token = selectedSendToken else {
       selectedSendTokenBalance = nil
       return
     }
-    
+
     rpcService.chainId { [self] chainId in
       walletService.userAssets(chainId) { tokens in
-        guard let index = tokens.firstIndex(where: { $0.id == token.id}) else {
+        guard let index = tokens.firstIndex(where: { $0.id == token.id }) else {
           self.selectedSendTokenBalance = nil
           return
         }
@@ -125,26 +127,28 @@ public class SendTokenStore: ObservableObject {
       }
     }
   }
-  
+
   private func fetchBalance(for token: BraveWallet.BlockchainToken) {
     keyringService.selectedAccount(.eth) { [self] accountAddress in
       guard let accountAddress = accountAddress else {
         self.selectedSendTokenBalance = nil
         return
       }
-      
+
       let balanceFormatter = WeiFormatter(decimalFormatStyle: .balance)
       func updateBalance(_ status: BraveWallet.ProviderError, _ balance: String) {
-        guard status == .success, let decimalString = balanceFormatter.decimalString(
-          for: balance.removingHexPrefix,
-             radix: .hex,
-             decimals: Int(token.decimals)
-        ), !decimalString.isEmpty, let decimal = Double(decimalString) else {
+        guard status == .success,
+          let decimalString = balanceFormatter.decimalString(
+            for: balance.removingHexPrefix,
+            radix: .hex,
+            decimals: Int(token.decimals)
+          ), !decimalString.isEmpty, let decimal = Double(decimalString)
+        else {
           return
         }
         selectedSendTokenBalance = decimal
       }
-      
+
       self.rpcService.network { network in
         // Get balance for ETH token
         if token.symbol == network.symbol {
@@ -158,8 +162,10 @@ public class SendTokenStore: ObservableObject {
         }
         // Get balance for erc20 token
         else if token.isErc20 {
-          self.rpcService.erc20TokenBalance(token.contractAddress,
-                                          address: accountAddress) { balance, status, _ in
+          self.rpcService.erc20TokenBalance(
+            token.contractAddress,
+            address: accountAddress
+          ) { balance, status, _ in
             guard status == .success else {
               self.selectedSendTokenBalance = nil
               return
@@ -169,9 +175,11 @@ public class SendTokenStore: ObservableObject {
         }
         // Get balance for erc721 token
         else if token.isErc721 {
-          self.rpcService.erc721TokenBalance(token.contractAddress,
-                                                tokenId: token.id,
-                                                accountAddress: accountAddress) { balance, status, _ in
+          self.rpcService.erc721TokenBalance(
+            token.contractAddress,
+            tokenId: token.id,
+            accountAddress: accountAddress
+          ) { balance, status, _ in
             guard status == .success else {
               self.selectedSendTokenBalance = nil
               return
@@ -182,7 +190,7 @@ public class SendTokenStore: ObservableObject {
       }
     }
   }
-  
+
   private func makeEIP1559Tx(
     chainId: String,
     baseData: BraveWallet.TxData,
@@ -195,7 +203,7 @@ public class SendTokenStore: ObservableObject {
       completion(success)
     }
   }
-  
+
   private func validateSendAddress() {
     guard !sendAddress.isEmpty else {
       addressError = nil
@@ -207,13 +215,14 @@ public class SendTokenStore: ObservableObject {
     } else if currentAccountAddress?.lowercased() == normalizedSendAddress {
       addressError = .sameAsFromAddress
     } else if (userAssets.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil)
-                || (allTokens.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil) {
+      || (allTokens.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil)
+    {
       addressError = .contractAddress
     } else {
       addressError = nil
     }
   }
-  
+
   func sendToken(
     amount: String,
     completion: @escaping (_ success: Bool) -> Void
@@ -224,7 +233,7 @@ public class SendTokenStore: ObservableObject {
       let weiHexString = weiFormatter.weiString(from: amount, radix: .hex, decimals: Int(token.decimals)),
       let fromAddress = currentAccountAddress
     else { return }
-    
+
     isMakingTx = true
     rpcService.network { [weak self] network in
       guard let self = self else { return }
@@ -258,7 +267,7 @@ public class SendTokenStore: ObservableObject {
           } else {
             let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
             self.txService.addUnapprovedTransaction(txDataUnion, from: fromAddress) { success, txMetaId, errorMessage in
-              self.isMakingTx = false 
+              self.isMakingTx = false
               completion(success)
             }
           }
@@ -266,7 +275,7 @@ public class SendTokenStore: ObservableObject {
       }
     }
   }
-  
+
   #if DEBUG
   func setUpTest() {
     currentAccountAddress = "test-current-account-address"
@@ -278,28 +287,28 @@ public class SendTokenStore: ObservableObject {
 extension SendTokenStore: BraveWalletKeyringServiceObserver {
   public func keyringReset() {
   }
-  
+
   public func keyringCreated(_ keyringId: String) {
   }
-  
+
   public func keyringRestored(_ keyringId: String) {
   }
-  
+
   public func locked() {
   }
-  
+
   public func unlocked() {
   }
-  
+
   public func backedUp() {
   }
-  
+
   public func accountsChanged() {
   }
-  
+
   public func autoLockMinutesChanged() {
   }
-  
+
   public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
     fetchAssetBalance()
     keyringService.selectedAccount(coinType) { [weak self] address in
@@ -315,10 +324,10 @@ extension SendTokenStore: BraveWalletJsonRpcServiceObserver {
     selectedSendToken = nil
     fetchAssets()
   }
-  
+
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
   }
-  
+
   public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
   }
 }

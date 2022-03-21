@@ -7,36 +7,36 @@ import SnapKit
 import BraveUI
 
 private struct ErrorToastDefaultUX {
-    static let cornerRadius: CGFloat = 40
-    static let margins = UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
+  static let cornerRadius: CGFloat = 40
+  static let margins = UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
 }
 
 class ErrorToast: UIView {
-    lazy var textLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .braveErrorLabel
-        label.backgroundColor = .clear
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
-    }()
+  lazy var textLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .braveErrorLabel
+    label.backgroundColor = .clear
+    label.textAlignment = .center
+    label.numberOfLines = 0
+    return label
+  }()
 
-    var cornerRadius: CGFloat = ErrorToastDefaultUX.cornerRadius {
-        didSet {
-            setNeedsDisplay()
-        }
+  var cornerRadius: CGFloat = ErrorToastDefaultUX.cornerRadius {
+    didSet {
+      setNeedsDisplay()
     }
+  }
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        isOpaque = false
-        addSubview(textLabel)
-        textLabel.snp.makeConstraints { make in
-            make.edges.equalTo(self).inset(ErrorToastDefaultUX.margins)
-        }
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    isOpaque = false
+    addSubview(textLabel)
+    textLabel.snp.makeConstraints { make in
+      make.edges.equalTo(self).inset(ErrorToastDefaultUX.margins)
     }
+  }
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 }

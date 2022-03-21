@@ -11,12 +11,12 @@ import struct Shared.Strings
 struct AccountPrivateKeyView: View {
   @ObservedObject var keyringStore: KeyringStore
   var account: BraveWallet.AccountInfo
-  
+
   @State private var key: String = ""
   @State private var isKeyVisible: Bool = false
-  
+
   @Environment(\.pixelLength) private var pixelLength
-  
+
   var body: some View {
     ScrollView(.vertical) {
       VStack {
@@ -52,14 +52,13 @@ struct AccountPrivateKeyView: View {
           Color(.secondaryBraveBackground).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         )
         .padding(40)
-        
+
         Button(action: {
           withAnimation {
             isKeyVisible.toggle()
           }
         }) {
-          Text(isKeyVisible ? Strings.Wallet.hidePrivateKeyButtonTitle :
-                Strings.Wallet.showPrivateKeyButtonTitle)
+          Text(isKeyVisible ? Strings.Wallet.hidePrivateKeyButtonTitle : Strings.Wallet.showPrivateKeyButtonTitle)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .normal))
         .animation(nil, value: isKeyVisible)
