@@ -231,6 +231,7 @@ void SpeedreaderTabHelper::ReloadContents() {
 void SpeedreaderTabHelper::ProcessNavigation(
     content::NavigationHandle* navigation_handle) {
   if (!navigation_handle->IsInMainFrame() ||
+      navigation_handle->IsSameDocument() ||
       MaybeUpdateCachedState(navigation_handle)) {
     return;
   }

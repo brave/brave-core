@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_URL_LOADER_H_
 #define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_URL_LOADER_H_
 
+#include <string>
 #include <tuple>
 
 #include "base/memory/raw_ptr.h"
@@ -79,7 +80,7 @@ class SpeedReaderURLLoader : public body_sniffer::BodySnifferURLLoader {
   void OnBodyReadable(MojoResult) override;
   void OnBodyWritable(MojoResult) override;
 
-  void CompleteLoading(std::string body) override;   
+  void CompleteLoading(std::string body) override;
   void OnCompleteSending() override;
   base::WeakPtr<SpeedreaderResultDelegate> delegate_;
 
