@@ -720,7 +720,8 @@ private class WelcomeAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             }
             
             if fromView == fromWelcomeView.topImageView ||
-                fromView == fromWelcomeView.bottomImageView {
+                fromView == fromWelcomeView.bottomImageView ||
+                fromView == fromWelcomeView.skipButton {
                 UIView.animate(withDuration: totalAnimationTime, delay: 0.0, options: .curveEaseInOut) {
                     fromView.transform = toView.transform
                 } completion: { finished in
