@@ -58,7 +58,7 @@ bool PageDoesntSupportDistillation(DistillState state) {
   return state == DistillState::kNone || state == DistillState::kUnknown;
 }
 
-bool PageSupportsDistilation(DistillState state) {
+bool PageSupportsDistillation(DistillState state) {
   return state == DistillState::kSpeedreaderOnDisabledPage ||
          state == DistillState::kPageProbablyReadable;
 }

@@ -21,7 +21,6 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "chrome/grit/generated_resources.h"
-#include "include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/theme_provider.h"
@@ -69,7 +68,7 @@ void SpeedreaderIconView::UpdateImpl() {
     }
     SetVisible(true);
   } else {
-    if (speedreader::PageSupportsDistilation(state)) {
+    if (speedreader::PageSupportsDistillation(state)) {
       // Reset the icon color
       if (theme_provider) {
         const SkColor icon_color_default =
