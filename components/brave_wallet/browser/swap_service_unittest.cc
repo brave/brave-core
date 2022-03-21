@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -102,6 +103,7 @@ class SwapServiceUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 TEST_F(SwapServiceUnitTest, GetPriceQuote) {
@@ -154,7 +156,7 @@ TEST_F(SwapServiceUnitTest, GetPriceQuote) {
 
 TEST_F(SwapServiceUnitTest, GetPriceQuoteError) {
   std::string error =
-      R"({"code":100,"reason":"Validation Failed","validationErrors":[{"field":"sellAmount","code":1000,"reason":"should have required property 'sellAmount'"},{"field":"buyAmount","code":1000,"reason":"should have required property 'buyAmount'"},{"field":"","code":1001,"reason":"should match exactly one schema in oneOf"}]})";
+      R"({"code":100,"reason":"Validation Failed","validationErrors":[{"code":1000,"field":"sellAmount","reason":"should have required property 'sellAmount'"},{"code":1000,"field":"buyAmount","reason":"should have required property 'buyAmount'"},{"code":1001,"field":"","reason":"should match exactly one schema in oneOf"}]})";
   SetErrorInterceptor(error);
   bool callback_run = false;
   swap_service_->GetPriceQuote(
@@ -165,8 +167,8 @@ TEST_F(SwapServiceUnitTest, GetPriceQuoteError) {
 }
 
 TEST_F(SwapServiceUnitTest, GetPriceQuoteUnexpectedReturn) {
-  std::string error = "Could not parse response body: Woot";
-  std::string unexpected_return = "Woot";
+  std::string error = "Could not parse response body: ";
+  std::string unexpected_return = "";
   SetInterceptor(unexpected_return);
   bool callback_run = false;
   swap_service_->GetPriceQuote(
@@ -231,25 +233,8 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayload) {
 }
 
 TEST_F(SwapServiceUnitTest, GetTransactionPayloadError) {
-  std::string error = R"(
-    {
-      "code": 100,
-      "reason": "Validation Failed",
-      "validationErrors": [{
-        "code": 1000,
-        "field": "sellAmount",
-        "reason": "should have required property 'sellAmount'"
-      }, {
-        "code": 1000,
-        "field": "buyAmount",
-        "reason": "should have required property 'buyAmount'"
-      }, {
-        "code": 1001,
-        "field": "",
-        "reason": "should match exactly one schema in oneOf"
-      }]
-    })";
-
+  std::string error =
+      R"({"code":100,"reason":"Validation Failed","validationErrors":[{"code":1000,"field":"sellAmount","reason":"should have required property 'sellAmount'"},{"code":1000,"field":"buyAmount","reason":"should have required property 'buyAmount'"},{"code":1001,"field":"","reason":"should match exactly one schema in oneOf"}]})";
   SetErrorInterceptor(error);
   bool callback_run = false;
   swap_service_->GetTransactionPayload(
@@ -260,7 +245,7 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayloadError) {
 }
 
 TEST_F(SwapServiceUnitTest, GetTransactionPayloadUnexpectedReturn) {
-  std::string error = "Could not parse response body: Woot";
+  std::string error = "Could not parse response body: ";
   std::string unexpected_return = "Woot";
   SetInterceptor(unexpected_return);
   bool callback_run = false;
