@@ -106,7 +106,8 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
             return;
         }
 
-        mKeyringService = KeyringServiceFactory.getInstance(Utils.getProfile(false)).getKeyringService(this);
+        mKeyringService =
+                KeyringServiceFactory.getInstance(Utils.getProfile(false)).getKeyringService(this);
         mKeyringService.addObserver(this);
     }
 

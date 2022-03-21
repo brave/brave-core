@@ -170,7 +170,8 @@ public class DappsBottomSheetDialogFragment extends BottomSheetDialogFragment
             return;
         }
 
-        mKeyringService = KeyringServiceFactory.getInstance(Utils.getProfile(false)).getKeyringService(this);
+        mKeyringService =
+                KeyringServiceFactory.getInstance(Utils.getProfile(false)).getKeyringService(this);
         updateView(getView());
     }
 }

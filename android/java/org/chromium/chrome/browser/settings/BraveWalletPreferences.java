@@ -64,7 +64,8 @@ public class BraveWalletPreferences
             return;
         }
 
-        mKeyringService = KeyringServiceFactory.getInstance(Utils.getProfile(false)).getKeyringService(this);
+        mKeyringService =
+                KeyringServiceFactory.getInstance(Utils.getProfile(false)).getKeyringService(this);
     }
 
     @Override

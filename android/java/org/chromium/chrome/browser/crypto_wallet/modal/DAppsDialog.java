@@ -149,6 +149,7 @@ public class DAppsDialog extends Dialog implements ConnectionErrorHandler, Keyri
             return;
         }
 
-        mKeyringService = KeyringServiceFactory.getInstance(Utils.getProfile(false)).getKeyringService(this);
+        mKeyringService =
+                KeyringServiceFactory.getInstance(Utils.getProfile(false)).getKeyringService(this);
     }
 }

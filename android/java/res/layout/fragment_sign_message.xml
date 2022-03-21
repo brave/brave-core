@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="48dp"
+    android:background="@color/wallet_bg"
     tools:context=".browser.crypto_wallet.fragments.dapps.SignMessageFragment">
 
     <com.google.android.material.card.MaterialCardView
@@ -92,7 +93,7 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/fragment_sign_msg_tv_message_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"/>
 
         <LinearLayout

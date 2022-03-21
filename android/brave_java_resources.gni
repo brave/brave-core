@@ -878,6 +878,7 @@ brave_java_resources = [
   "java/res/layout/dapps_bottom_sheet.xml",
   "java/res/layout/edit_visible_assets_bottom_sheet.xml",
   "java/res/layout/fragment_accounts.xml",
+  "java/res/layout/fragment_add_token.xml",
   "java/res/layout/fragment_backup_wallet.xml",
   "java/res/layout/fragment_binance_buy.xml",
   "java/res/layout/fragment_binance_convert.xml",

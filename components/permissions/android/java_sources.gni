@@ -7,8 +7,8 @@ brave_components_permissions_java_sources = [
 ]
 
 brave_components_permissions_java_deps = [
-  "//chrome/browser/profiles/android:java",
   "//brave/components/brave_wallet/common:mojom_java",
+  "//chrome/browser/profiles/android:java",
   "//mojo/public/java:bindings_java",
   "//mojo/public/java:system_java",
   "//mojo/public/java/system:system_impl_java",
