@@ -191,7 +191,7 @@ public class CardBuilderFeedCard {
         LinearLayout layout3 = new LinearLayout(mActivity);
         RecyclerView.LayoutParams linearLayoutParams =
                 (RecyclerView.LayoutParams) mLinearLayout.getLayoutParams();
-
+        mLinearLayout.setPadding(0, 0, 0, 0);
         try {
             switch (type) {
                 case CardType.HEADLINE:
@@ -284,15 +284,13 @@ public class CardBuilderFeedCard {
                                 adLogo.setCompoundDrawablesWithIntrinsicBounds(
                                         R.drawable.ic_rewards, 0, 0, 0);
                                 adLogo.setText(R.string.brave_news_ad);
-                                adLogo.setTextColor(mActivity.getResources().getColor(
-                                        R.color.brave_theme_color));
+                                adLogo.setTextColor(
+                                        mActivity.getResources().getColor(R.color.blurple));
                                 GradientDrawable gd = new GradientDrawable();
                                 gd.setColor(
                                         mActivity.getResources().getColor(R.color.news_text_color));
                                 gd.setCornerRadius(15);
-                                gd.setStroke(1,
-                                        mActivity.getResources().getColor(
-                                                R.color.brave_theme_color));
+
                                 adLogo.setBackground(gd);
                                 adLogo.setPadding(5, 5, 10, 5);
                                 adLogo.setLayoutParams(adLogoParams);
@@ -621,7 +619,7 @@ public class CardBuilderFeedCard {
                     mLinearLayout.setBackgroundColor(Color.TRANSPARENT);
                     linearLayoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
                     linearLayoutParams.setMargins(
-                            mHorizontalMargin - 20, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
+                            mHorizontalMargin, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
                     mLinearLayout.setLayoutParams(linearLayoutParams);
 
                     LinearLayout.LayoutParams cellParams =
@@ -639,6 +637,10 @@ public class CardBuilderFeedCard {
                     addElementsToSingleLayout(layoutLeft, 0, type);
 
                     mLinearLayout.addView(layoutRight);
+
+                    cellParams =
+                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
                     cellParams.setMargins(20, 0, 0, 0);
 
                     cellParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
