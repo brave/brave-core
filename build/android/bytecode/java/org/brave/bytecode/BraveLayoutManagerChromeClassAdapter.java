@@ -17,23 +17,11 @@ public class BraveLayoutManagerChromeClassAdapter extends BraveClassVisitor {
     static String sLayoutManagerImplClassName =
             "org/chromium/chrome/browser/compositor/layouts/LayoutManagerImpl";
 
-    static String sStackTabListSceneLayerClassName =
-            "org/chromium/chrome/browser/compositor/scene_layer/StackTabListSceneLayer";
-
-    static String sTabListSceneLayerClassName =
-            "org/chromium/chrome/browser/compositor/scene_layer/TabListSceneLayer";
-
     public BraveLayoutManagerChromeClassAdapter(ClassVisitor visitor) {
         super(visitor);
         changeSuperName(sLayoutManagerChromePhoneClassName, sBraveLayoutManagerChromeClassName);
 
         deleteField(sBraveLayoutManagerChromeClassName, "mTabCache");
         makeProtectedField(sLayoutManagerImplClassName, "mTabCache");
-
-        deleteField(sStackTabListSceneLayerClassName, "mNativePtr");
-        makeProtectedField(sTabListSceneLayerClassName, "mNativePtr");
-
-        deleteField(sStackTabListSceneLayerClassName, "mIsInitialized");
-        makeProtectedField(sTabListSceneLayerClassName, "mIsInitialized");
     }
 }

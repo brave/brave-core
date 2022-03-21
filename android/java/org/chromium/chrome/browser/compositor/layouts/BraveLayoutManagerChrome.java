@@ -37,7 +37,7 @@ import org.chromium.ui.resources.dynamics.DynamicResourceLoader;
 import java.util.List;
 
 public class BraveLayoutManagerChrome extends LayoutManagerChrome
-        implements OverviewModeController, ChromeAccessibilityUtil.Observer {
+        implements OverviewModeBehavior, ChromeAccessibilityUtil.Observer {
     // To delete in bytecode, members from parent class will be used instead.
     private SparseArray<LayoutTab> mTabCache;
 
@@ -77,21 +77,6 @@ public class BraveLayoutManagerChrome extends LayoutManagerChrome
             mLayerTitleCache = new LayerTitleCache(mHost.getContext(), getResourceManager());
             mLayerTitleCache.setTabModelSelector(selector);
         }
-    }
-
-    @Override
-    public void hideOverview(boolean animate) {
-        Layout activeLayout = getActiveLayout();
-        if (activeLayout instanceof StackLayout) {
-            if (animate) {
-                activeLayout.onTabSelecting(time(), Tab.INVALID_TAB_ID);
-            } else {
-                startHiding(Tab.INVALID_TAB_ID, false);
-                doneHiding();
-            }
-            return;
-        }
-        super.hideOverview(animate);
     }
 
     @Override
