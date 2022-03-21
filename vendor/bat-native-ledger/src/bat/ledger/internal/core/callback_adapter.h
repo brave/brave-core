@@ -33,7 +33,7 @@ class CallbackAdapter {
 
   // Converts a boolean value to a |mojom::Result| for interoperability with
   // code that requires |mojom::Result| values.
-  inline static mojom::Result ResultCode(bool success) {
+  static mojom::Result ResultCode(bool success) {
     return success ? mojom::Result::LEDGER_OK : mojom::Result::LEDGER_ERROR;
   }
 
