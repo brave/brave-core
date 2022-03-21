@@ -11,6 +11,7 @@
 
 #include "base/bind.h"
 #include "base/check.h"
+#include "base/memory/weak_ptr.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
@@ -97,15 +98,15 @@ void SpeedReaderURLLoader::OnBodyWritable(MojoResult r) {
   }
 }
 
-void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
+void SpeedReaderURLLoader::CompleteLoading(std::string body) {
   DCHECK_EQ(State::kLoading, state_);
   if (!throttle_ || !rewriter_service_) {
     Abort();
     return;
   }
 
-  VLOG(2) << __func__ << " buffered body size = " << buffered_body_.size();
-  bytes_remaining_in_buffer_ = buffered_body_.size();
+  VLOG(2) << __func__ << " buffered body size = " << body.size();
+  bytes_remaining_in_buffer_ = body.size();
 
   if (bytes_remaining_in_buffer_ > 0) {
     // Offload heavy distilling to another thread.
@@ -133,14 +134,18 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
 
               return stylesheet + transformed;
             },
-            std::move(buffered_body_),
-            rewriter_service_->MakeRewriter(response_url_),
+            std::move(body), rewriter_service_->MakeRewriter(response_url_),
             rewriter_service_->GetContentStylesheet()),
-        base::BindOnce(&SpeedReaderURLLoader::CompleteLoading,
-                       weak_factory_.GetWeakPtr()));
+        base::BindOnce(
+            [](base::WeakPtr<SpeedReaderURLLoader> self, std::string result) {
+              if (self) {
+                self->BodySnifferURLLoader::CompleteLoading(result);
+              }
+            },
+            weak_factory_.GetWeakPtr()));
     return;
   }
-  CompleteLoading(std::move(buffered_body_));
+  BodySnifferURLLoader::CompleteLoading(std::move(body));
 }
 
 void SpeedReaderURLLoader::OnCompleteSending() {

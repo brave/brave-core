@@ -78,13 +78,15 @@ class SpeedReaderURLLoader : public body_sniffer::BodySnifferURLLoader {
 
   void OnBodyReadable(MojoResult) override;
   void OnBodyWritable(MojoResult) override;
-  void MaybeLaunchSpeedreader();
 
+  void CompleteLoading(std::string body) override;   
   void OnCompleteSending() override;
   base::WeakPtr<SpeedreaderResultDelegate> delegate_;
 
   // Not Owned
   raw_ptr<SpeedreaderRewriterService> rewriter_service_ = nullptr;
+
+  base::WeakPtrFactory<SpeedReaderURLLoader> weak_factory_{this};
 };
 
 }  // namespace speedreader

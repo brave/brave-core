@@ -95,7 +95,7 @@ class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
   virtual void OnBodyReadable(MojoResult) = 0;
   virtual void OnBodyWritable(MojoResult) = 0;
 
-  void CompleteLoading(std::string body);
+  virtual void CompleteLoading(std::string body);
   void CompleteSending();
   virtual void OnCompleteSending();
   void SendReceivedBodyToClient();
@@ -125,10 +125,9 @@ class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
   mojo::SimpleWatcher body_consumer_watcher_;
   mojo::SimpleWatcher body_producer_watcher_;
 
-  base::WeakPtrFactory<BodySnifferURLLoader> weak_factory_{this};
-
  private:
   void CancelAndResetHandles();
+  base::WeakPtrFactory<BodySnifferURLLoader> weak_factory_{this};
 };
 
 }  // namespace body_sniffer

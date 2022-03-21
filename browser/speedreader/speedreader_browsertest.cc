@@ -173,10 +173,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DisableSiteWorks) {
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   ToggleSpeedreader();
-  const GURL url = https_server_.GetURL(kTestHost, kTestPageReadable);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  content::WebContents* contents = ActiveWebContents();
-
+  NavigateToPageSynchronously(kTestPageReadable);
   const std::string kGetStyleLength =
       "document.getElementById('brave_speedreader_style').innerHTML.length";
 
@@ -185,7 +182,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   const auto eval_js = [&](const std::string& script) {
     int out;
     EXPECT_TRUE(content::ExecuteScriptAndExtractInt(
-        contents, "window.domAutomationController.send(" + script + ")", &out));
+        ActiveWebContents(),
+        "window.domAutomationController.send(" + script + ")", &out));
     return out;
   };
 
@@ -196,7 +194,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
 
   // Check that disabled speedreader doesn't affect the page.
   ToggleSpeedreader();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  NavigateToPageSynchronously(kTestPageReadable);
   EXPECT_LT(106000, eval_js(kGetContentLength));
 }
 
