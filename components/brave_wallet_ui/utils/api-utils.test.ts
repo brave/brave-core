@@ -1,42 +1,47 @@
-import { GetTokenParam, GetFlattenedAccountBalances } from './api-utils'
-import { mockNetworks } from '../stories/mock-data/mock-networks'
+import { getTokenParam, getFlattenedAccountBalances } from './api-utils'
 import { AccountAssetOptions } from '../options/asset-options'
 import { mockAccount } from '../common/constants/mocks'
 
+const ethToken = AccountAssetOptions[0]
+const batToken = AccountAssetOptions[1]
+
 describe('Check token param', () => {
   test('Value should return contract address', () => {
-    expect(GetTokenParam(mockNetworks[0], AccountAssetOptions[1])).toEqual('0x0D8775F648430679A709E98d2b0Cb6250d2887EF')
+    expect(getTokenParam(batToken)).toEqual('0x0D8775F648430679A709E98d2b0Cb6250d2887EF')
   })
 
   test('Value should return symbol', () => {
-    expect(GetTokenParam(mockNetworks[1], AccountAssetOptions[1])).toEqual('bat')
+    expect(getTokenParam({
+      ...batToken,
+      contractAddress: ''
+    })).toEqual('bat')
   })
 
   test('Value should return coingeckoId', () => {
-    expect(GetTokenParam(mockNetworks[1], {
-      ...AccountAssetOptions[1],
+    expect(getTokenParam({
+      ...batToken,
       coingeckoId: 'mockCoingeckoId'
     })).toEqual('mockCoingeckoId')
   })
 })
 
 const mockUserVisibleTokenOptions = [
-  AccountAssetOptions[0],
-  AccountAssetOptions[1]
+  ethToken,
+  batToken
 ]
 const mockAccounts = [
   {
     ...mockAccount,
     tokenBalanceRegistry: {
-      [AccountAssetOptions[0].contractAddress.toLowerCase()]: '238699740940532526',
-      [AccountAssetOptions[1].contractAddress.toLowerCase()]: '0'
+      [ethToken.contractAddress.toLowerCase()]: '238699740940532526',
+      [batToken.contractAddress.toLowerCase()]: '0'
     }
   },
   {
     ...mockAccount,
     tokenBalanceRegistry: {
-      [AccountAssetOptions[0].contractAddress.toLowerCase()]: '80573000000000000',
-      [AccountAssetOptions[1].contractAddress.toLowerCase()]: '0'
+      [ethToken.contractAddress.toLowerCase()]: '80573000000000000',
+      [batToken.contractAddress.toLowerCase()]: '0'
     }
   }
 ]
@@ -44,19 +49,19 @@ const mockAccounts = [
 const expectedResult = [
   {
     balance: 319272740940532500,
-    token: AccountAssetOptions[0]
+    token: ethToken
   },
   {
     balance: 0,
-    token: AccountAssetOptions[1]
+    token: batToken
   }
 ]
 
 describe('Check Flattened Account Balances', () => {
   test('Value should return an Empty Array', () => {
-    expect(GetFlattenedAccountBalances([], mockUserVisibleTokenOptions)).toEqual([])
+    expect(getFlattenedAccountBalances([], mockUserVisibleTokenOptions)).toEqual([])
   })
   test('Value should return a Flattened Account Balance List', () => {
-    expect(GetFlattenedAccountBalances(mockAccounts, mockUserVisibleTokenOptions)).toEqual(expectedResult)
+    expect(getFlattenedAccountBalances(mockAccounts, mockUserVisibleTokenOptions)).toEqual(expectedResult)
   })
 })

@@ -301,6 +301,7 @@ struct BlockchainToken {
   bool visible = true;
   string token_id = "";  // Non-empty for ERC721 tokens.
   string coingecko_id = "";
+  string chain_id;
 };
 
 // WebUI-side handler for requests from the browser.

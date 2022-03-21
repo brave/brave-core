@@ -67,7 +67,9 @@ const accounts: WalletAccountType[] = [
     id: '1',
     name: 'Account 1',
     address: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
-    balance: '311780000000000000',
+    nativeBalanceRegistry: {
+      '0x1': '311780000000000000'
+    },
     accountType: 'Primary',
     tokenBalanceRegistry: {},
     coin: BraveWallet.CoinType.ETH
@@ -76,7 +78,9 @@ const accounts: WalletAccountType[] = [
     id: '2',
     name: 'Account 2',
     address: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
-    balance: '311780000000000000',
+    nativeBalanceRegistry: {
+      '0x1': '311780000000000000'
+    },
     accountType: 'Primary',
     tokenBalanceRegistry: {},
     coin: BraveWallet.CoinType.ETH
@@ -85,7 +89,9 @@ const accounts: WalletAccountType[] = [
     id: '3',
     name: 'Account 3',
     address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-    balance: '311780000000000000',
+    nativeBalanceRegistry: {
+      '0x1': '311780000000000000'
+    },
     accountType: 'Primary',
     tokenBalanceRegistry: {},
     coin: BraveWallet.CoinType.ETH
@@ -398,7 +404,9 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
       id: '1',
       name: 'Account 1',
       address: '1',
-      balance: '0.31178',
+      nativeBalanceRegistry: {
+        '0x1': '311780000000000000'
+      },
       accountType: 'Primary',
       tokenBalanceRegistry: {},
       coin: BraveWallet.CoinType.ETH
@@ -528,7 +536,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   }
 
   const onSelectPresetAmount = (percent: number) => {
-    const amount = Number(selectedAccount.balance) * percent
+    const amount = Number(selectedAccount.nativeBalanceRegistry[0]) * percent
     setFromAmount(amount.toString())
   }
 
@@ -697,7 +705,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         addressWarning=''
                         selectedAsset={selectedAsset}
                         selectedAssetAmount={fromAmount}
-                        selectedAssetBalance={selectedAccount.balance.toString()}
+                        selectedAssetBalance={(selectedAccount.nativeBalanceRegistry)[selectedAsset.chainId]}
                         toAddressOrUrl={toAddress}
                         toAddress={toAddress}
                         amountValidationError={undefined}
@@ -744,11 +752,11 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                     {selectedPanel === 'assets' &&
                       <AssetsPanel
                         defaultCurrencies={mockDefaultCurrencies}
-                        selectedNetwork={selectedNetwork}
                         selectedAccount={selectedAccount}
                         spotPrices={[]}
                         userAssetList={AccountAssetOptions}
                         onAddAsset={onAddAsset}
+                        networkList={[selectedNetwork]}
                       />
                     }
                   </ScrollContainer>

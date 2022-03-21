@@ -2,7 +2,7 @@ import * as React from 'react'
 import { create } from 'ethereum-blockies'
 
 // Constants
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, SupportedTestNetworks } from '../../../constants/types'
 
 // Utils
 import { stripERC20TokenImageURL, isRemoteImageURL, isValidIconExtension } from '../../../utils/string-utils'
@@ -46,16 +46,6 @@ function CreateNetworkIcon (props: Props) {
     return false
   }, [isRemoteURL, isDataURL, networkImageURL])
 
-  // Will remove these hardcoded chainId's.
-  // We need to return a normal Ethereum Icon URL for Ethereum Mainnet
-  // and return a grayed out Ethereum Icon Url for Ethereum Test Networks from the backend.
-  const testNetworkList = [
-    BraveWallet.RINKEBY_CHAIN_ID,
-    BraveWallet.ROPSTEN_CHAIN_ID,
-    BraveWallet.GOERLI_CHAIN_ID,
-    BraveWallet.KOVAN_CHAIN_ID,
-    BraveWallet.LOCALHOST_CHAIN_ID
-  ]
   const needsPlaceholder = nativeAsset.logo === '' && (networkImageURL === '' || !isValidIcon)
 
   const orb = React.useMemo(() => {
@@ -86,7 +76,7 @@ function CreateNetworkIcon (props: Props) {
   return (
     <IconWrapper
       marginRight={marginRight ?? 0}
-      isTestnet={testNetworkList.includes(network.chainId)}
+      isTestnet={SupportedTestNetworks.includes(network.chainId)}
     >
       <NetworkIcon
         icon={

@@ -405,7 +405,9 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
         id: id,
         name: name,
         address: wallet.address,
-        balance: singleAccountBalance(wallet),
+        nativeBalanceRegistry: {
+          '0x1': singleAccountBalance(wallet)
+        },
         asset: selectedAsset ? selectedAsset.symbol : '',
         accountType: 'Primary',
         tokenBalanceRegistry: {},
@@ -786,7 +788,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onToggleAddModal={onToggleAddModal}
                               onUpdateAccountName={onUpdateAccountName}
                               selectedNetwork={selectedNetwork}
-                              onSelectNetwork={onSelectNetwork}
                               isFetchingPortfolioPriceHistory={false}
                               selectedPortfolioTimeline={selectedTimeline}
                               onRemoveAccount={onRemoveAccount}
@@ -831,7 +832,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             orderExpiration={orderExpiration}
             slippageTolerance={slippageTolerance}
             swapFromAsset={fromAsset}
-            accounts={mockUserAccounts}
+            accounts={accounts}
             selectedNetwork={selectedNetwork}
             selectedAccount={selectedAccount}
             selectedTab={selectedWidgetTab}

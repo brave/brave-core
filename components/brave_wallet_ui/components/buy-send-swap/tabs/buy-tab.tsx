@@ -3,7 +3,8 @@ import {
   UserAccountType,
   BuySendSwapViewTypes,
   BraveWallet,
-  DefaultCurrencies
+  DefaultCurrencies,
+  WalletAccountType
 } from '../../../constants/types'
 import {
   AccountsAssetsNetworks,
@@ -12,7 +13,7 @@ import {
 } from '..'
 
 export interface Props {
-  accounts: UserAccountType[]
+  accounts: WalletAccountType[]
   networkList: BraveWallet.NetworkInfo[]
   selectedNetwork: BraveWallet.NetworkInfo
   selectedAccount: UserAccountType

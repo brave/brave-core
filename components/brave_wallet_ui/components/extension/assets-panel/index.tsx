@@ -21,7 +21,7 @@ export interface Props {
   spotPrices: BraveWallet.AssetPrice[]
   userAssetList: BraveWallet.BlockchainToken[]
   defaultCurrencies: DefaultCurrencies
-  selectedNetwork: BraveWallet.NetworkInfo
+  networkList: BraveWallet.NetworkInfo[]
   selectedAccount: WalletAccountType
   onAddAsset: () => void
 }
@@ -31,12 +31,12 @@ const AssetsPanel = (props: Props) => {
     userAssetList,
     spotPrices,
     defaultCurrencies,
-    selectedNetwork,
     selectedAccount,
+    networkList,
     onAddAsset
   } = props
 
-  const getBalance = useBalance(selectedNetwork)
+  const getBalance = useBalance(networkList)
 
   const onClickAsset = (symbol: string) => () => {
     const url = `brave://wallet${WalletRoutes.Portfolio}/${symbol}`
@@ -62,7 +62,7 @@ const AssetsPanel = (props: Props) => {
           key={asset.contractAddress}
           assetBalance={getBalance(selectedAccount, asset)}
           token={asset}
-          selectedNetwork={selectedNetwork}
+          networks={networkList}
           isPanel={true}
         />
       )}

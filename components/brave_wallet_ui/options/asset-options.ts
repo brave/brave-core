@@ -10,7 +10,9 @@ import {
   BNBIconUrl,
   BTCIconUrl,
   ETHIconUrl,
-  ZRXIconUrl
+  ZRXIconUrl,
+  SOLIconUrl,
+  FILECOINIconUrl
 } from '../assets/asset-icons'
 import {
   CeloIcon,
@@ -46,6 +48,14 @@ export function makeNetworkAsset (network: BraveWallet.NetworkInfo) {
       logo = CeloIcon
       break
 
+    case network.symbol.toUpperCase() === 'SOL':
+      logo = SOLIconUrl
+      break
+
+    case network.symbol.toUpperCase() === 'FIL':
+      logo = FILECOINIconUrl
+      break
+
     case network.symbol.toUpperCase() === 'ETH':
       logo = 'chrome://erc-token-images/eth.png'
       break
@@ -64,7 +74,8 @@ export function makeNetworkAsset (network: BraveWallet.NetworkInfo) {
     decimals: network.decimals,
     visible: true,
     tokenId: '',
-    coingeckoId: ''
+    coingeckoId: '',
+    chainId: network.chainId
   } as BraveWallet.BlockchainToken
 }
 
@@ -106,7 +117,8 @@ export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
     decimals: 18,
     visible: true,
     tokenId: '',
-    coingeckoId: ''
+    coingeckoId: '',
+    chainId: '0x1'
   },
   {
     contractAddress: '2',
@@ -118,7 +130,8 @@ export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
     decimals: 18,
     visible: true,
     tokenId: '',
-    coingeckoId: ''
+    coingeckoId: '',
+    chainId: '0x1'
   },
   {
     contractAddress: '3',
@@ -130,7 +143,8 @@ export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
     decimals: 18,
     visible: true,
     tokenId: '',
-    coingeckoId: ''
+    coingeckoId: '',
+    chainId: '0x3'
   },
   {
     contractAddress: '4',
@@ -142,7 +156,8 @@ export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
     decimals: 18,
     visible: true,
     tokenId: '',
-    coingeckoId: ''
+    coingeckoId: '',
+    chainId: '0x1'
   },
   {
     contractAddress: '5',
@@ -154,7 +169,8 @@ export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
     decimals: 18,
     visible: true,
     tokenId: '',
-    coingeckoId: ''
+    coingeckoId: '',
+    chainId: '0x1'
   },
   {
     contractAddress: '6',
@@ -166,7 +182,8 @@ export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
     decimals: 18,
     visible: true,
     tokenId: '',
-    coingeckoId: ''
+    coingeckoId: '',
+    chainId: '0x1'
   },
   {
     contractAddress: '7',
@@ -178,13 +195,17 @@ export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
     decimals: 0,
     visible: true,
     tokenId: '0x42a5',
-    coingeckoId: ''
+    coingeckoId: '',
+    chainId: '0x1'
   }
 ]
 
 // Use only with storybook as dummy data.
 export const AccountAssetOptions: BraveWallet.BlockchainToken[] = [
-  ETH,
+  {
+    ...ETH,
+    chainId: '0x1'
+  },
   {
     contractAddress: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
     name: 'Basic Attention Token',
@@ -195,7 +216,8 @@ export const AccountAssetOptions: BraveWallet.BlockchainToken[] = [
     decimals: 18,
     visible: true,
     tokenId: '',
-    coingeckoId: ''
+    coingeckoId: '',
+    chainId: '0x1'
   },
   {
     contractAddress: '3',
@@ -207,7 +229,8 @@ export const AccountAssetOptions: BraveWallet.BlockchainToken[] = [
     decimals: 8,
     visible: true,
     tokenId: '',
-    coingeckoId: ''
+    coingeckoId: '',
+    chainId: '0x1'
   },
   {
     contractAddress: '4',
@@ -219,7 +242,8 @@ export const AccountAssetOptions: BraveWallet.BlockchainToken[] = [
     decimals: 8,
     visible: true,
     tokenId: '',
-    coingeckoId: ''
+    coingeckoId: '',
+    chainId: '0x1'
   },
   {
     contractAddress: '5',
@@ -231,7 +255,8 @@ export const AccountAssetOptions: BraveWallet.BlockchainToken[] = [
     decimals: 8,
     visible: true,
     tokenId: '',
-    coingeckoId: ''
+    coingeckoId: '',
+    chainId: '0x1'
   },
   {
     contractAddress: '0xE41d2489571d322189246DaFA5ebDe1F4699F498',
@@ -243,6 +268,7 @@ export const AccountAssetOptions: BraveWallet.BlockchainToken[] = [
     decimals: 18,
     visible: true,
     tokenId: '',
-    coingeckoId: ''
+    coingeckoId: '',
+    chainId: '0x1'
   }
 ]

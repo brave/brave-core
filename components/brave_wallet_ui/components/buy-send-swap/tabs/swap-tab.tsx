@@ -7,7 +7,8 @@ import {
   ExpirationPresetObjectType,
   ToOrFromType,
   BraveWallet,
-  SwapValidationErrorType
+  SwapValidationErrorType,
+  WalletAccountType
 } from '../../../constants/types'
 import {
   AccountsAssetsNetworks,
@@ -16,7 +17,7 @@ import {
 } from '..'
 
 export interface Props {
-  accounts: UserAccountType[]
+  accounts: WalletAccountType[]
   networkList: BraveWallet.NetworkInfo[]
   orderType: OrderTypes
   swapToAsset: BraveWallet.BlockchainToken | undefined

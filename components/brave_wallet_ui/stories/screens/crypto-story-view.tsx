@@ -63,7 +63,6 @@ export interface Props {
   onDoneViewingPrivateKey: () => void
   onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
   onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
-  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   onToggleAddModal: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   getBalance: (address: string) => Promise<string>
@@ -121,7 +120,6 @@ const CryptoStoryView = (props: Props) => {
     onImportAccount,
     onImportFilecoinAccount,
     onUpdateAccountName,
-    onSelectNetwork,
     onToggleAddModal,
     onRemoveAccount,
     onViewPrivateKey,
@@ -293,7 +291,6 @@ const CryptoStoryView = (props: Props) => {
           onSelectAsset={onSelectAsset}
           onSelectAccount={onSelectAccount}
           onClickAddAccount={onClickAddAccount}
-          onSelectNetwork={onSelectNetwork}
           addUserAssetError={false}
           selectedAsset={selectedAsset}
           portfolioBalance={portfolioBalance}
@@ -341,6 +338,7 @@ const CryptoStoryView = (props: Props) => {
           onRetryTransaction={onClickRetryTransaction}
           onSpeedupTransaction={onClickSpeedupTransaction}
           onCancelTransaction={onClickCancelTransaction}
+          networkList={networkList}
         />
       }
       {showAddModal &&

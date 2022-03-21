@@ -42,6 +42,7 @@ export interface Props {
   fullAssetList: BraveWallet.BlockchainToken[]
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   selectedNetwork: BraveWallet.NetworkInfo
+  networkList: BraveWallet.NetworkInfo[]
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
   foundTokenInfoByContractAddress?: BraveWallet.BlockchainToken
 }
@@ -52,6 +53,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     userVisibleTokensInfo,
     addUserAssetError,
     selectedNetwork,
+    networkList,
     onClose,
     onAddCustomAsset,
     onFindTokenInfoByContractAddress,
@@ -172,7 +174,8 @@ const EditVisibleAssetsModal = (props: Props) => {
     symbol: selectedNetwork.symbol,
     visible: true,
     tokenId: '',
-    coingeckoId: ''
+    coingeckoId: '',
+    chainId: ''
   }
 
   const tokenList = React.useMemo(() => {
@@ -232,6 +235,7 @@ const EditVisibleAssetsModal = (props: Props) => {
         let token = foundTokenInfoByContractAddress
         token.tokenId = tokenID ? new Amount(tokenID).toHex() : ''
         token.logo = iconURL
+        token.chainId = selectedNetwork.chainId
         setIsLoading(true)
         onAddCustomAsset(token)
         return
@@ -239,6 +243,7 @@ const EditVisibleAssetsModal = (props: Props) => {
       let foundToken = foundTokenInfoByContractAddress
       foundToken.coingeckoId = coingeckoID !== '' ? coingeckoID : foundTokenInfoByContractAddress.coingeckoId
       foundToken.logo = iconURL
+      foundToken.chainId = selectedNetwork.chainId
       onAddCustomAsset(foundToken)
     } else {
       const newToken: BraveWallet.BlockchainToken = {
@@ -251,7 +256,8 @@ const EditVisibleAssetsModal = (props: Props) => {
         tokenId: tokenID ? new Amount(tokenID).toHex() : '',
         logo: iconURL,
         visible: true,
-        coingeckoId: coingeckoID
+        coingeckoId: coingeckoID,
+        chainId: selectedNetwork.chainId
       }
       onAddCustomAsset(newToken)
     }
@@ -490,10 +496,10 @@ const EditVisibleAssetsModal = (props: Props) => {
                   <>
                     {filteredTokenList.map((token) =>
                       <AssetWatchlistItem
-                        key={token.contractAddress}
+                        key={`${token.contractAddress}-${token.symbol}-${token.chainId}`}
                         isCustom={isCustomToken(token)}
                         token={token}
-                        selectedNetwork={selectedNetwork}
+                        networkList={networkList}
                         onRemoveAsset={onRemoveAsset}
                         isSelected={isAssetSelected(token)}
                         onSelectAsset={onCheckWatchlistItem}

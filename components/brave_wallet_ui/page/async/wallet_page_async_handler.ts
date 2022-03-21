@@ -31,7 +31,7 @@ import {
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
-import { GetTokenParam } from '../../utils/api-utils'
+import { getTokenParam } from '../../utils/api-utils'
 
 const handler = new AsyncActionHandler()
 
@@ -87,11 +87,10 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store: Store, payload
   const walletState = getWalletState(store)
   const defaultFiat = walletState.defaultCurrencies.fiat.toLowerCase()
   const defaultCrypto = walletState.defaultCurrencies.crypto.toLowerCase()
-  const selectedNetwork = walletState.selectedNetwork
   if (payload.asset) {
     const selectedAsset = payload.asset
-    const defaultPrices = await assetRatioService.getPrice([GetTokenParam(selectedNetwork, selectedAsset)], [defaultFiat, defaultCrypto], payload.timeFrame)
-    const priceHistory = await assetRatioService.getPriceHistory(GetTokenParam(selectedNetwork, selectedAsset), defaultFiat, payload.timeFrame)
+    const defaultPrices = await assetRatioService.getPrice([getTokenParam(selectedAsset)], [defaultFiat, defaultCrypto], payload.timeFrame)
+    const priceHistory = await assetRatioService.getPriceHistory(getTokenParam(selectedAsset), defaultFiat, payload.timeFrame)
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: priceHistory, defaultFiatPrice: defaultPrices.values[0], defaultCryptoPrice: defaultPrices.values[1], timeFrame: payload.timeFrame }))
   } else {
     store.dispatch(WalletPageActions.updatePriceInfo({ priceHistory: undefined, defaultFiatPrice: undefined, defaultCryptoPrice: undefined, timeFrame: payload.timeFrame }))

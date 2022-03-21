@@ -24,7 +24,7 @@ export interface WalletAccountType {
   name: string
   address: string
   tokenBalanceRegistry: TokenBalanceRegistry
-  balance: string
+  nativeBalanceRegistry: TokenBalanceRegistry
   accountType: 'Primary' | 'Secondary' | 'Ledger' | 'Trezor'
   deviceId?: string
   coin: BraveWallet.CoinType
@@ -189,6 +189,7 @@ export interface WalletState {
   hasInitialized: boolean
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
+  isTestNetworksEnabled: boolean
   isWalletCreated: boolean
   isWalletLocked: boolean
   favoriteApps: BraveWallet.AppItem[]
@@ -214,8 +215,10 @@ export interface WalletState {
   gasEstimates?: BraveWallet.GasEstimation1559
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean
+  selectedCoin: BraveWallet.CoinType
   defaultCurrencies: DefaultCurrencies
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
+  defaultNetworks: BraveWallet.NetworkInfo[]
 }
 
 export interface PanelState {
@@ -335,7 +338,18 @@ export interface GetAllTokensReturnInfo {
 }
 
 export interface GetNativeAssetBalancesReturnInfo {
-  balances: BraveWallet.JsonRpcService_GetBalance_ResponseParams[]
+  balances: BraveWallet.JsonRpcService_GetBalance_ResponseParams[][]
+}
+
+export interface BalancePayload {
+  balance: string
+  error: number
+  errorMessage: string
+  chainId: string
+}
+
+export interface GetNativeAssetBalancesPayload {
+  balances: BalancePayload[][]
 }
 
 export interface GetBlockchainTokenBalanceReturnInfo {
@@ -572,4 +586,27 @@ export interface TransactionProviderError {
 
 export interface TransactionProviderErrorRegistry {
   [transactionId: string]: TransactionProviderError
+}
+
+export const SupportedCoinTypes = [
+  BraveWallet.CoinType.ETH,
+  BraveWallet.CoinType.SOL,
+  BraveWallet.CoinType.FIL
+]
+
+export const SupportedTestNetworks = [
+  BraveWallet.RINKEBY_CHAIN_ID,
+  BraveWallet.ROPSTEN_CHAIN_ID,
+  BraveWallet.GOERLI_CHAIN_ID,
+  BraveWallet.KOVAN_CHAIN_ID,
+  BraveWallet.LOCALHOST_CHAIN_ID,
+  BraveWallet.SOLANA_DEVNET,
+  BraveWallet.SOLANA_TESTNET,
+  BraveWallet.FILECOIN_TESTNET
+]
+
+export enum CoinTypesMap {
+  ETH = BraveWallet.CoinType.ETH,
+  FIL = BraveWallet.CoinType.FIL,
+  SOL = BraveWallet.CoinType.SOL
 }

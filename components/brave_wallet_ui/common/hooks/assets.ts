@@ -19,8 +19,8 @@ import usePricing from './pricing'
 import useBalance from './balance'
 
 export default function useAssets (
-  accounts: WalletAccountType[],
   selectedAccount: WalletAccountType,
+  networkList: BraveWallet.NetworkInfo[],
   selectedNetwork: BraveWallet.NetworkInfo,
   fullTokenList: BraveWallet.BlockchainToken[],
   userVisibleTokensInfo: BraveWallet.BlockchainToken[],
@@ -28,24 +28,32 @@ export default function useAssets (
   getBuyAssets: () => Promise<BraveWallet.BlockchainToken[]>
 ) {
   const { computeFiatAmount } = usePricing(spotPrices)
-  const getBalance = useBalance(selectedNetwork)
+  const getBalance = useBalance(networkList)
   const nativeAsset = React.useMemo(
     () => makeNetworkAsset(selectedNetwork),
     [selectedNetwork]
   )
 
+  const assetsByNetwork = React.useMemo(() => {
+    if (!userVisibleTokensInfo) {
+      return []
+    }
+
+    return userVisibleTokensInfo.filter((token) => token.chainId === selectedNetwork.chainId)
+  }, [userVisibleTokensInfo, selectedNetwork])
+
   const swapAssetOptions: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     return [
       nativeAsset,
       ...fullTokenList.filter((asset) => asset.symbol.toUpperCase() === 'BAT'),
-      ...userVisibleTokensInfo
+      ...assetsByNetwork
         .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase())),
       ...fullTokenList
         .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase()))
-        .filter(asset => !userVisibleTokensInfo
+        .filter(asset => !assetsByNetwork
           .some(token => token.symbol.toUpperCase() === asset.symbol.toUpperCase()))
     ]
-  }, [fullTokenList, userVisibleTokensInfo, nativeAsset])
+  }, [fullTokenList, userVisibleTokensInfo, nativeAsset, assetsByNetwork])
 
   const [buyAssetOptions, setBuyAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([nativeAsset])
 
@@ -58,8 +66,8 @@ export default function useAssets (
     }).catch(e => console.error(e))
   }, [])
 
-  const panelUserAssetList = React.useMemo(() => {
-    if (!userVisibleTokensInfo) {
+  const assetsByValueAndNetwork = React.useMemo(() => {
+    if (!assetsByNetwork) {
       return []
     }
 
@@ -67,7 +75,7 @@ export default function useAssets (
       return []
     }
 
-    return userVisibleTokensInfo.sort(function (a, b) {
+    return assetsByNetwork.sort(function (a, b) {
       const aBalance = getBalance(selectedAccount, a)
       const bBalance = getBalance(selectedAccount, b)
 
@@ -76,12 +84,12 @@ export default function useAssets (
 
       return bFiatBalance.toNumber() - aFiatBalance.toNumber()
     })
-  }, [selectedAccount, userVisibleTokensInfo, getBalance, computeFiatAmount])
+  }, [selectedAccount, assetsByNetwork, getBalance, computeFiatAmount])
 
   return {
     swapAssetOptions,
-    sendAssetOptions: userVisibleTokensInfo,
+    sendAssetOptions: assetsByNetwork,
     buyAssetOptions,
-    panelUserAssetList
+    panelUserAssetList: assetsByValueAndNetwork
   }
 }

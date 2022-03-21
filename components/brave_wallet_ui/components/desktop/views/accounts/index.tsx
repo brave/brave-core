@@ -7,7 +7,8 @@ import {
   AccountTransactions,
   BraveWallet,
   DefaultCurrencies,
-  AddAccountNavTypes
+  AddAccountNavTypes,
+  CoinTypesMap
 } from '../../../../constants/types'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
@@ -61,6 +62,7 @@ export interface Props {
   transactions: AccountTransactions
   privateKey: string
   selectedNetwork: BraveWallet.NetworkInfo
+  networkList: BraveWallet.NetworkInfo[]
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   transactionSpotPrices: BraveWallet.AssetPrice[]
   selectedAccount: WalletAccountType | undefined
@@ -89,6 +91,7 @@ function Accounts (props: Props) {
     userVisibleTokensInfo,
     selectedAccount,
     defaultCurrencies,
+    networkList,
     goBack,
     onSelectAccount,
     onSelectAsset,
@@ -103,7 +106,7 @@ function Accounts (props: Props) {
     onCancelTransaction
   } = props
 
-  const getBalance = useBalance(selectedNetwork)
+  const getBalance = useBalance(networkList)
 
   const groupById = (accounts: WalletAccountType[], key: string) => {
     return accounts.reduce((result, obj) => {
@@ -180,9 +183,29 @@ function Accounts (props: Props) {
     }
   }, [selectedAccount, transactions])
 
+  const accountsTokensList = React.useMemo(() => {
+    if (!selectedAccount) {
+      return []
+    }
+    // Since LOCALHOST's chainId is shared between coinType's
+    // this check will make sure we are returning the correct
+    // LOCALHOST asset for each account.
+    const coinName = CoinTypesMap[selectedAccount?.coin ?? 0]
+    const localHostCoins = userVisibleTokensInfo.filter((token) => token.chainId === BraveWallet.LOCALHOST_CHAIN_ID)
+    const accountsLocalHost = localHostCoins.find((token) => token.symbol.toUpperCase() === coinName)
+    const chainList = networkList.filter((network) => network.coin === selectedAccount?.coin).map((network) => network.chainId) ?? []
+    const list =
+      userVisibleTokensInfo.filter((token) => chainList.includes(token?.chainId ?? '') &&
+        token.chainId !== BraveWallet.LOCALHOST_CHAIN_ID) ?? []
+    if (accountsLocalHost) {
+      return [...list, accountsLocalHost]
+    }
+    return list
+  }, [userVisibleTokensInfo, selectedAccount, networkList])
+
   const erc271Tokens = React.useMemo(() =>
-    userVisibleTokensInfo.filter((token) => token.isErc721),
-    [userVisibleTokensInfo]
+    accountsTokensList.filter((token) => token.isErc721),
+    [accountsTokensList]
   )
 
   return (
@@ -283,13 +306,13 @@ function Accounts (props: Props) {
           </WalletInfoRow>
           <SubviewSectionTitle>{getLocale('braveWalletAccountsAssets')}</SubviewSectionTitle>
           <SubDivider />
-          {userVisibleTokensInfo.filter((token) => !token.isErc721).map((item) =>
+          {accountsTokensList.filter((token) => !token.isErc721).map((item) =>
             <PortfolioAssetItem
               spotPrices={transactionSpotPrices}
               defaultCurrencies={defaultCurrencies}
-              key={item.contractAddress}
+              key={`${item.contractAddress}-${item.symbol}-${item.chainId}`}
               assetBalance={getBalance(selectedAccount, item)}
-              selectedNetwork={selectedNetwork}
+              networks={networkList}
               token={item}
             />
           )}
@@ -301,10 +324,10 @@ function Accounts (props: Props) {
               <SubDivider />
               {erc271Tokens?.map((item) =>
                 <PortfolioAssetItem
-                  selectedNetwork={selectedNetwork}
                   spotPrices={transactionSpotPrices}
+                  networks={networkList}
                   defaultCurrencies={defaultCurrencies}
-                  key={item.contractAddress}
+                  key={`${item.contractAddress}-${item.symbol}-${item.chainId}`}
                   assetBalance={getBalance(selectedAccount, item)}
                   token={item}
                 />

@@ -22,7 +22,6 @@ export default function useAssetManagement (
   setUserAssetVisible: SimpleActionCreator<SetUserAssetVisiblePayloadType>,
   removeUserAsset: SimpleActionCreator<RemoveUserAssetPayloadType>,
   refreshBalancesPricesAndHistory: EmptyActionCreator,
-  selectedNetwork: BraveWallet.NetworkInfo,
   fullTokenList: BraveWallet.BlockchainToken[],
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
 ) {
@@ -32,7 +31,7 @@ export default function useAssetManagement (
         ...token,
         logo: stripERC20TokenImageURL(token.logo) || ''
       },
-      chainId: selectedNetwork.chainId
+      chainId: token?.chainId ?? ''
     })
   }
 
@@ -56,7 +55,7 @@ export default function useAssetManagement (
     userVisibleTokensInfo.filter((firstItem) =>
       !updatedTokensList.some((secondItem) =>
         firstItem.contractAddress.toLowerCase() === secondItem.contractAddress.toLowerCase()))
-      .forEach((token) => removeUserAsset({ token, chainId: selectedNetwork.chainId }))
+      .forEach((token) => removeUserAsset({ token, chainId: token?.chainId ?? '' }))
 
     // Gets a list of custom tokens returned from updatedTokensList payload
     // then compares customTokens against userVisibleTokensInfo list and updates the custom tokens visibility if it has changed
@@ -73,13 +72,13 @@ export default function useAssetManagement (
         }
         // Updates token visibility exluding a networks native token
         if (foundToken?.visible !== token.visible && token.contractAddress.toLowerCase() !== '') {
-          setUserAssetVisible({ token, chainId: selectedNetwork.chainId, isVisible: token.visible })
+          setUserAssetVisible({ token, chainId: token?.chainId ?? '', isVisible: token.visible })
         }
       })
 
     // Refreshes Balances, Prices and Price History when done.
     refreshBalancesPricesAndHistory()
-  }, [userVisibleTokensInfo, selectedNetwork])
+  }, [userVisibleTokensInfo])
 
   return {
     onUpdateVisibleAssets,

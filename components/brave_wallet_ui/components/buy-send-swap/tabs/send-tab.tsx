@@ -4,7 +4,8 @@ import {
   BuySendSwapViewTypes,
   ToOrFromType,
   BraveWallet,
-  AmountValidationErrorType
+  AmountValidationErrorType,
+  WalletAccountType
 } from '../../../constants/types'
 import {
   AccountsAssetsNetworks,
@@ -13,7 +14,7 @@ import {
 } from '..'
 
 export interface Props {
-  accounts: UserAccountType[]
+  accounts: WalletAccountType[]
   selectedAsset: BraveWallet.BlockchainToken | undefined
   selectedNetwork: BraveWallet.NetworkInfo
   selectedAccount: UserAccountType
