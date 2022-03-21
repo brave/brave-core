@@ -27,18 +27,17 @@ class LayerTitleCache;
                      int close_button_color, bool show_tab_title);             \
   void SetTitle(DecorationTitle* title);                                       \
   void InitStack(LayerTitleCache* layer_title_cache);                          \
+                                                                               \
+ private:                                                                      \
+  scoped_refptr<cc::Layer> title_;                                             \
+  scoped_refptr<cc::UIResourceLayer> close_button_;                            \
+  raw_ptr<LayerTitleCache> layer_title_cache_;                                 \
+                                                                               \
+ public:                                                                       \
   void SetProperties
-
-#define brightness_                                 \
-  Dummy() { return 0; }                             \
-  scoped_refptr<cc::Layer> title_;                  \
-  scoped_refptr<cc::UIResourceLayer> close_button_; \
-  raw_ptr<LayerTitleCache> layer_title_cache_;      \
-  float brightness_
 
 #include "src/chrome/browser/android/compositor/layer/tab_layer.h"
 
 #undef SetProperties
-#undef brightness_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_ANDROID_COMPOSITOR_LAYER_TAB_LAYER_H_
