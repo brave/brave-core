@@ -6,6 +6,7 @@
 #include "bat/ads/ads.h"
 
 #include "base/check.h"
+#include "base/no_destructor.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/locale/supported_country_codes.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -14,9 +15,15 @@ namespace ads {
 
 mojom::Environment g_environment = mojom::Environment::kStaging;
 
-mojom::SysInfo g_sys_info;
+mojom::SysInfo& SysInfo() {
+  static base::NoDestructor<mojom::SysInfo> sys_info;
+  return *sys_info;
+}
 
-mojom::BuildChannel g_build_channel;
+mojom::BuildChannel& BuildChannel() {
+  static base::NoDestructor<mojom::BuildChannel> build_channel;
+  return *build_channel;
+}
 
 bool g_is_debug = false;
 

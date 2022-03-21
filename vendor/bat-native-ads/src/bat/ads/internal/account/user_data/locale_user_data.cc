@@ -19,7 +19,7 @@ namespace user_data {
 base::DictionaryValue GetLocale() {
   base::DictionaryValue user_data;
 
-  if (!g_build_channel.is_release) {
+  if (!BuildChannel().is_release) {
     return user_data;
   }
 

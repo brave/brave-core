@@ -15,8 +15,8 @@ namespace user_data {
 base::DictionaryValue GetBuildChannel() {
   base::DictionaryValue user_data;
 
-  DCHECK(!g_build_channel.name.empty());
-  user_data.SetStringKey("buildChannel", g_build_channel.name);
+  DCHECK(!BuildChannel().name.empty());
+  user_data.SetStringKey("buildChannel", BuildChannel().name);
   return user_data;
 }
 
