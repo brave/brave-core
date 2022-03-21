@@ -47,6 +47,8 @@ constexpr char kRegionNameKey[] = "name";
 constexpr char kRegionNamePrettyKey[] = "name-pretty";
 constexpr char kRegionCountryIsoCodeKey[] = "country-iso-code";
 
+constexpr char kCreateSupportTicket[] = "api/v1.2/partners/support-ticket";
+
 std::string GetStringFor(ConnectionState state) {
   switch (state) {
     case ConnectionState::CONNECTED:
@@ -111,7 +113,6 @@ constexpr char kProfileCredential[] = "api/v1.1/register-and-create";
 constexpr char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";
 constexpr char kCreateSubscriberCredentialV12[] =
     "api/v1.2/subscriber-credential/create";
-constexpr char kCreateSupportTicket[] = "api/v1.2/partners/support-ticket";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("brave_vpn_service", R"(
@@ -998,6 +999,17 @@ BraveVpnService::GetBraveVPNConnectionAPI() {
     return brave_vpn::BraveVPNOSConnectionAPI::GetInstanceForTest();
   return brave_vpn::BraveVPNOSConnectionAPI::GetInstance();
 }
+
+void BraveVpnService::OnCreateSupportTicket(
+    CreateSupportTicketCallback callback,
+    int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  bool success = status == 200;
+  VLOG(2) << "OnCreateSupportTicket success=" << success
+          << "\nresponse_code=" << status << "\nbody=[[" << body << "]]";
+  std::move(callback).Run(success, body);
+}
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 void BraveVpnService::AddObserver(
@@ -1304,15 +1316,4 @@ void BraveVpnService::GetSubscriberCredentialV12(
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback),
                {{"Brave-Payments-Environment", payments_environment}});
-}
-
-void BraveVpnService::OnCreateSupportTicket(
-    CreateSupportTicketCallback callback,
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  bool success = status == 200;
-  VLOG(2) << "OnCreateSupportTicket success=" << success
-          << "\nresponse_code=" << status << "\nbody=[[" << body << "]]";
-  std::move(callback).Run(success, body);
 }

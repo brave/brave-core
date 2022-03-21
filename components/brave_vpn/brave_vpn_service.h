@@ -192,6 +192,12 @@ class BraveVpnService :
                                     bool success);
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success);
+  void OnCreateSupportTicket(
+      CreateSupportTicketCallback callback,
+      int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+
   brave_vpn::BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI();
 
   void set_test_timezone(const std::string& timezone) {
@@ -221,12 +227,6 @@ class BraveVpnService :
 
   void OnGetSubscriberCredential(
       ResponseCallback callback,
-      int status,
-      const std::string& body,
-      const base::flat_map<std::string, std::string>& headers);
-
-  void OnCreateSupportTicket(
-      CreateSupportTicketCallback callback,
       int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
