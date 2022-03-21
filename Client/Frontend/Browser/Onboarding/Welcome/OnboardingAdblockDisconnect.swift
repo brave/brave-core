@@ -9,23 +9,24 @@ import Shared
 private let log = Logger.browserLogger
 
 struct OnboardingDisconnectItem: Codable {
-    let properties: [String]
-    let resources: [String]
+  let properties: [String]
+  let resources: [String]
 }
 
 struct OnboardingDisconnectList: Codable {
-    let license: String
-    let entities: [String: OnboardingDisconnectItem]
-    
-    static func loadFromFile() -> OnboardingDisconnectList? {
-        do {
-            if let path = Bundle.main.path(forResource: "disconnect-entitylist", ofType: "json"),
-               let contents = try String(contentsOfFile: path).data(using: .utf8) {
-                return try JSONDecoder().decode(OnboardingDisconnectList.self, from: contents)
-            }
-        } catch {
-            log.error("Error Decoding OnboardingDisconectList: \(error)")
-        }
-        return nil
+  let license: String
+  let entities: [String: OnboardingDisconnectItem]
+
+  static func loadFromFile() -> OnboardingDisconnectList? {
+    do {
+      if let path = Bundle.main.path(forResource: "disconnect-entitylist", ofType: "json"),
+        let contents = try String(contentsOfFile: path).data(using: .utf8)
+      {
+        return try JSONDecoder().decode(OnboardingDisconnectList.self, from: contents)
+      }
+    } catch {
+      log.error("Error Decoding OnboardingDisconectList: \(error)")
     }
+    return nil
+  }
 }

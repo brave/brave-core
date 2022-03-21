@@ -12,7 +12,7 @@ struct AccountAssetViewModel: Identifiable {
   fileprivate var decimalBalance: Double
   var balance: String
   var fiatBalance: String
-  
+
   var id: String {
     account.id
   }
@@ -38,17 +38,17 @@ class AssetDetailStore: ObservableObject {
   @Published private(set) var accounts: [AccountAssetViewModel] = []
   @Published private(set) var transactions: [BraveWallet.TransactionInfo] = []
   @Published private(set) var isBuySupported: Bool = true
-  
+
   private(set) var assetPriceValue: Double = 0.0
-  
+
   private let assetRatioService: BraveWalletAssetRatioService
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
   private let txService: BraveWalletTxService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
-  
+
   let token: BraveWallet.BlockchainToken
-  
+
   init(
     assetRatioService: BraveWalletAssetRatioService,
     keyringService: BraveWalletKeyringService,
@@ -63,31 +63,31 @@ class AssetDetailStore: ObservableObject {
     self.txService = txService
     self.blockchainRegistry = blockchainRegistry
     self.token = token
-    
+
     self.keyringService.add(self)
     self.rpcService.add(self)
     self.txService.add(self)
   }
-  
+
   static let priceFormatter = NumberFormatter().then {
     $0.numberStyle = .currency
     $0.currencyCode = "USD"
     $0.maximumFractionDigits = 4
   }
-  
+
   private let percentFormatter = NumberFormatter().then {
     $0.numberStyle = .percent
     $0.maximumFractionDigits = 2
   }
-  
+
   func update() {
     isLoadingPrice = true
     isLoadingChart = true
-    
+
     blockchainRegistry.buyTokens(BraveWallet.MainnetChainId) { [self] tokens in
       isBuySupported = tokens.first(where: { $0.symbol.lowercased() == token.symbol.lowercased() }) != nil
     }
-    
+
     keyringService.defaultKeyringInfo { [self] keyring in
       accounts = keyring.accountInfos.map {
         .init(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
@@ -95,26 +95,28 @@ class AssetDetailStore: ObservableObject {
       assetRatioService.price(
         [token.symbol],
         toAssets: ["usd", "btc"],
-        timeframe: timeframe) { [weak self] success, prices in
-          guard let self = self else { return }
-          self.isLoadingPrice = false
-          self.isInitialState = false
-          if let assetPrice = prices.first(where: { $0.toAsset == "usd" }),
-             let value = Double(assetPrice.price) {
-            self.assetPriceValue = value
-            self.price = Self.priceFormatter.string(from: NSNumber(value: value)) ?? ""
-            if let deltaValue = Double(assetPrice.assetTimeframeChange) {
-              self.priceIsDown = deltaValue < 0
-              self.priceDelta = self.percentFormatter.string(from: NSNumber(value: deltaValue / 100.0)) ?? ""
-            }
-            for index in 0..<self.accounts.count {
-              self.accounts[index].fiatBalance = Self.priceFormatter.string(from: NSNumber(value: self.accounts[index].decimalBalance * self.assetPriceValue)) ?? ""
-            }
+        timeframe: timeframe
+      ) { [weak self] success, prices in
+        guard let self = self else { return }
+        self.isLoadingPrice = false
+        self.isInitialState = false
+        if let assetPrice = prices.first(where: { $0.toAsset == "usd" }),
+          let value = Double(assetPrice.price)
+        {
+          self.assetPriceValue = value
+          self.price = Self.priceFormatter.string(from: NSNumber(value: value)) ?? ""
+          if let deltaValue = Double(assetPrice.assetTimeframeChange) {
+            self.priceIsDown = deltaValue < 0
+            self.priceDelta = self.percentFormatter.string(from: NSNumber(value: deltaValue / 100.0)) ?? ""
           }
-          if let assetPrice = prices.first(where: { $0.toAsset == "btc" }) {
-            self.btcRatio = "\(assetPrice.price) BTC"
+          for index in 0..<self.accounts.count {
+            self.accounts[index].fiatBalance = Self.priceFormatter.string(from: NSNumber(value: self.accounts[index].decimalBalance * self.assetPriceValue)) ?? ""
           }
         }
+        if let assetPrice = prices.first(where: { $0.toAsset == "btc" }) {
+          self.btcRatio = "\(assetPrice.price) BTC"
+        }
+      }
       assetRatioService.priceHistory(
         token.symbol,
         vsAsset: "usd",
@@ -128,7 +130,7 @@ class AssetDetailStore: ObservableObject {
       fetchTransactions()
     }
   }
-  
+
   func fetchAccountBalances() {
     isLoadingAccountBalances = true
     keyringService.defaultKeyringInfo { [self] keyring in
@@ -149,7 +151,7 @@ class AssetDetailStore: ObservableObject {
       }
     }
   }
-  
+
   func fetchTransactions() {
     rpcService.network { [weak self] network in
       guard let self = self else { return }
@@ -164,7 +166,8 @@ class AssetDetailStore: ObservableObject {
           }
         }
         group.notify(queue: .main) {
-          self.transactions = allTransactions
+          self.transactions =
+            allTransactions
             .filter { tx in
               switch tx.txType {
               case .erc20Approve, .erc20Transfer:
@@ -186,7 +189,7 @@ class AssetDetailStore: ObservableObject {
 extension AssetDetailStore: BraveWalletKeyringServiceObserver {
   func keyringReset() {
   }
-  
+
   func accountsChanged() {
     keyringService.defaultKeyringInfo { [self] keyring in
       accounts = keyring.accountInfos.map {
@@ -196,25 +199,25 @@ extension AssetDetailStore: BraveWalletKeyringServiceObserver {
       fetchTransactions()
     }
   }
-  
+
   func keyringCreated(_ keyringId: String) {
   }
-  
+
   func keyringRestored(_ keyringId: String) {
   }
-  
+
   func locked() {
   }
-  
+
   func unlocked() {
   }
-  
+
   func backedUp() {
   }
-  
+
   func autoLockMinutesChanged() {
   }
-  
+
   func selectedAccountChanged(_ coin: BraveWallet.CoinType) {
   }
 }

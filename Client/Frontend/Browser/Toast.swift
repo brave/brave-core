@@ -6,85 +6,91 @@ import Foundation
 import SnapKit
 
 class Toast: UIView {
-    var animationConstraint: Constraint?
-    var completionHandler: ((Bool) -> Void)?
+  var animationConstraint: Constraint?
+  var completionHandler: ((Bool) -> Void)?
 
-    weak var viewController: UIViewController?
+  weak var viewController: UIViewController?
 
-    var displayState = State.dismissed
+  var displayState = State.dismissed
 
-    lazy var gestureRecognizer: UITapGestureRecognizer = {
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        gestureRecognizer.cancelsTouchesInView = false
-        return gestureRecognizer
-    }()
+  lazy var gestureRecognizer: UITapGestureRecognizer = {
+    let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+    gestureRecognizer.cancelsTouchesInView = false
+    return gestureRecognizer
+  }()
 
-    lazy var toastView: UIView = {
-        let toastView = UIView()
-        toastView.backgroundColor = SimpleToastUX.toastDefaultColor
-        return toastView
-    }()
+  lazy var toastView: UIView = {
+    let toastView = UIView()
+    toastView.backgroundColor = SimpleToastUX.toastDefaultColor
+    return toastView
+  }()
 
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-        superview?.addGestureRecognizer(gestureRecognizer)
-    }
+  override func didMoveToSuperview() {
+    super.didMoveToSuperview()
+    superview?.addGestureRecognizer(gestureRecognizer)
+  }
 
-    func showToast(viewController: UIViewController? = nil, delay: DispatchTimeInterval, duration: DispatchTimeInterval?, makeConstraints: @escaping (SnapKit.ConstraintMaker) -> Swift.Void) {
-        self.viewController = viewController
-        
-        self.displayState = .pendingShow
+  func showToast(viewController: UIViewController? = nil, delay: DispatchTimeInterval, duration: DispatchTimeInterval?, makeConstraints: @escaping (SnapKit.ConstraintMaker) -> Swift.Void) {
+    self.viewController = viewController
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-            viewController?.view.addSubview(self)
+    self.displayState = .pendingShow
 
-            self.layer.removeAllAnimations()
-            self.snp.makeConstraints(makeConstraints)
-            self.layoutIfNeeded()
+    DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+      viewController?.view.addSubview(self)
 
-            UIView.animate(withDuration: SimpleToastUX.toastAnimationDuration, animations: {
-                self.animationConstraint?.update(offset: 0)
-                self.layoutIfNeeded()
-            }) { finished in
-                self.displayState = .showing
-                if let duration = duration {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
-                        self.dismiss(false)
-                    }
-                }
-            }
+      self.layer.removeAllAnimations()
+      self.snp.makeConstraints(makeConstraints)
+      self.layoutIfNeeded()
+
+      UIView.animate(
+        withDuration: SimpleToastUX.toastAnimationDuration,
+        animations: {
+          self.animationConstraint?.update(offset: 0)
+          self.layoutIfNeeded()
         }
+      ) { finished in
+        self.displayState = .showing
+        if let duration = duration {
+          DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+            self.dismiss(false)
+          }
+        }
+      }
+    }
+  }
+
+  func dismiss(_ buttonPressed: Bool) {
+    if displayState == .pendingDismiss || displayState == .dismissed {
+      return
     }
 
-    func dismiss(_ buttonPressed: Bool) {
-        if displayState == .pendingDismiss || displayState == .dismissed {
-            return
-        }
-        
-        displayState = .pendingDismiss
-        superview?.removeGestureRecognizer(gestureRecognizer)
-        layer.removeAllAnimations()
-        
-        UIView.animate(withDuration: SimpleToastUX.toastAnimationDuration, animations: {
-            self.animationConstraint?.update(offset: SimpleToastUX.toastHeight)
-            self.layoutIfNeeded()
-        }) { finished in
-            self.displayState = .dismissed
-            self.removeFromSuperview()
-            if !buttonPressed {
-                self.completionHandler?(false)
-            }
-        }
-    }
+    displayState = .pendingDismiss
+    superview?.removeGestureRecognizer(gestureRecognizer)
+    layer.removeAllAnimations()
 
-    @objc func handleTap(_ gestureRecognizer: UIGestureRecognizer) {
-        dismiss(false)
+    UIView.animate(
+      withDuration: SimpleToastUX.toastAnimationDuration,
+      animations: {
+        self.animationConstraint?.update(offset: SimpleToastUX.toastHeight)
+        self.layoutIfNeeded()
+      }
+    ) { finished in
+      self.displayState = .dismissed
+      self.removeFromSuperview()
+      if !buttonPressed {
+        self.completionHandler?(false)
+      }
     }
-    
-    enum State {
-        case showing
-        case pendingShow
-        case pendingDismiss
-        case dismissed
-    }
+  }
+
+  @objc func handleTap(_ gestureRecognizer: UIGestureRecognizer) {
+    dismiss(false)
+  }
+
+  enum State {
+    case showing
+    case pendingShow
+    case pendingDismiss
+    case dismissed
+  }
 }

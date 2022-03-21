@@ -48,7 +48,7 @@ extension BraveWallet.TransactionInfo {
     }*/
     txDataUnion.ethTxData1559?.baseData.value ?? ""
   }
-  
+
   var ethTxGasLimit: String {
     // Eth transaction are all coming as `ethTxData1559`
     // Comment below out for future proper eth transaction separation (EIP1559 and non-EIP1559)
@@ -59,7 +59,7 @@ extension BraveWallet.TransactionInfo {
     }*/
     txDataUnion.ethTxData1559?.baseData.gasLimit ?? ""
   }
-  
+
   var ethTxGasPrice: String {
     // Eth transaction are all coming as `ethTxData1559`
     // Comment below out for future proper eth transaction separation (EIP1559 and non-EIP1559)
@@ -70,7 +70,7 @@ extension BraveWallet.TransactionInfo {
     }*/
     txDataUnion.ethTxData1559?.baseData.gasPrice ?? ""
   }
-  
+
   var ethTxData: [NSNumber] {
     // Eth transaction are all coming as `ethTxData1559`
     // Comment below out for future proper eth transaction separation (EIP1559 and non-EIP1559)
@@ -81,7 +81,7 @@ extension BraveWallet.TransactionInfo {
     }*/
     txDataUnion.ethTxData1559?.baseData.data ?? .init()
   }
-  
+
   var ethTxNonce: String {
     // Eth transaction are all coming as `ethTxData1559`
     // Comment below out for future proper eth transaction separation (EIP1559 and non-EIP1559)
@@ -98,28 +98,31 @@ extension BraveWallet.EthereumChain: Identifiable {
   public var id: String {
     chainId
   }
-  
+
   public var nativeToken: BraveWallet.BlockchainToken {
-    .init(contractAddress: "",
-          name: symbolName,
-          logo: iconUrls.first ?? "",
-          isErc20: false,
-          isErc721: false,
-          symbol: symbol,
-          decimals: decimals,
-          visible: false,
-          tokenId: "",
-          coingeckoId: ""
+    .init(
+      contractAddress: "",
+      name: symbolName,
+      logo: iconUrls.first ?? "",
+      isErc20: false,
+      isErc721: false,
+      symbol: symbol,
+      decimals: decimals,
+      visible: false,
+      tokenId: "",
+      coingeckoId: ""
     )
   }
-  
+
   public var isCustom: Bool {
-    let ethNetworks = [BraveWallet.MainnetChainId,
-                       BraveWallet.RinkebyChainId,
-                       BraveWallet.RopstenChainId,
-                       BraveWallet.GoerliChainId,
-                       BraveWallet.KovanChainId,
-                       BraveWallet.LocalhostChainId]
+    let ethNetworks = [
+      BraveWallet.MainnetChainId,
+      BraveWallet.RinkebyChainId,
+      BraveWallet.RopstenChainId,
+      BraveWallet.GoerliChainId,
+      BraveWallet.KovanChainId,
+      BraveWallet.LocalhostChainId,
+    ]
     return !ethNetworks.contains(id)
   }
 }
@@ -128,12 +131,12 @@ extension BraveWallet.BlockchainToken: Identifiable {
   public var id: String {
     symbol.lowercased()
   }
-  
+
   public func contractAddress(in network: BraveWallet.EthereumChain) -> String {
     if network.chainId == BraveWallet.RopstenChainId {
       switch symbol.uppercased() {
       case "ETH": return BraveWallet.ethSwapAddress
-      case "DAI" : return BraveWallet.daiSwapAddress
+      case "DAI": return BraveWallet.daiSwapAddress
       case "USDC": return BraveWallet.usdcSwapAddress
       default: return contractAddress
       }
@@ -149,15 +152,15 @@ extension BraveWallet.BlockchainToken: Identifiable {
 extension BraveWallet {
   /// The address that is expected when you are swapping ETH via SwapService APIs
   public static let ethSwapAddress: String = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-  
+
   ///  The address that is expected when you are swapping DAI via SwapService APIs
   ///  Also the contract address to fetch DAI balance on Ropsten
   public static let daiSwapAddress: String = "0xad6d458402f60fd3bd25163575031acdce07538d"
-  
+
   ///  The address that is expected when you are swapping USDC via SwapService APIs
   ///  Also the contract address to fetch USDC balance on Ropsten
   public static let usdcSwapAddress: String = "0x07865c6e87b9f70255377e024ace6630c1eaa37f"
-  
+
   /// A list of supported assets' symbols for swapping in `Ropsten` network
   public static let assetsSwapInRopsten: [String] = ["DAI", "USDC"]
 }

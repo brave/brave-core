@@ -11,7 +11,7 @@ import Shared
 @available(iOS 15.0, *)
 private struct SwipeActionsViewModifier_FB9812596: ViewModifier {
   var action: () -> Void
-  
+
   func body(content: Content) -> some View {
     content
       .swipeActions(edge: .trailing) {
@@ -27,7 +27,7 @@ struct CustomNetworkListView: View {
   @State private var isPresentingNetworkDetails: CustomNetworkModel?
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.sizeCategory) private var sizeCategory
-  
+
   private struct CustomNetworkDetails: Identifiable {
     var isEditMode: Bool
     var network: BraveWallet.EthereumChain?
@@ -35,11 +35,11 @@ struct CustomNetworkListView: View {
       "\(isEditMode)"
     }
   }
-  
+
   private func removeNetwork(_ network: BraveWallet.EthereumChain) {
     networkStore.removeCustomNetwork(network) { _ in }
   }
-  
+
   var body: some View {
     List {
       Section {
@@ -80,11 +80,12 @@ struct CustomNetworkListView: View {
           .osAvailabilityModifiers { content in
             if #available(iOS 15.0, *) {
               content
-                .modifier(SwipeActionsViewModifier_FB9812596 {
-                  withAnimation(.default) {
-                    removeNetwork(network)
-                  }
-                })
+                .modifier(
+                  SwipeActionsViewModifier_FB9812596 {
+                    withAnimation(.default) {
+                      removeNetwork(network)
+                    }
+                  })
             } else {
               content
             }
@@ -102,16 +103,18 @@ struct CustomNetworkListView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(.insetGrouped)
-    .overlay(Group {
-      if networkStore.ethereumChains.filter({ $0.isCustom }).isEmpty {
-        Text(Strings.Wallet.noNetworks)
-          .font(.headline.weight(.medium))
-          .frame(maxWidth: .infinity)
-          .multilineTextAlignment(.center)
-          .foregroundColor(Color(.secondaryBraveLabel))
-          .transition(.opacity)
+    .overlay(
+      Group {
+        if networkStore.ethereumChains.filter({ $0.isCustom }).isEmpty {
+          Text(Strings.Wallet.noNetworks)
+            .font(.headline.weight(.medium))
+            .frame(maxWidth: .infinity)
+            .multilineTextAlignment(.center)
+            .foregroundColor(Color(.secondaryBraveLabel))
+            .transition(.opacity)
+        }
       }
-    })
+    )
     .navigationTitle(Strings.Wallet.customNetworksTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
@@ -138,13 +141,13 @@ struct CustomNetworkListView: View {
 
 #if DEBUG
 struct CustomNetworkListView_Previews: PreviewProvider {
-    static var previews: some View {
-      NavigationView {
-        CustomNetworkListView(networkStore: .previewStore)
-      }
-      NavigationView {
-        CustomNetworkListView(networkStore: .previewStoreWithCustomNetworkAdded)
-      }
+  static var previews: some View {
+    NavigationView {
+      CustomNetworkListView(networkStore: .previewStore)
     }
+    NavigationView {
+      CustomNetworkListView(networkStore: .previewStoreWithCustomNetworkAdded)
+    }
+  }
 }
 #endif

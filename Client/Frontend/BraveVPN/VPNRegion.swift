@@ -6,13 +6,13 @@
 import Foundation
 
 struct VPNRegion: Codable {
-    let continent: String
-    let name: String
-    let namePretty: String
-    
-    private enum CodingKeys: String, CodingKey {
-        case continent
-        case name
-        case namePretty = "name-pretty"
-    }
+  let continent: String
+  let name: String
+  let namePretty: String
+
+  private enum CodingKeys: String, CodingKey {
+    case continent
+    case name
+    case namePretty = "name-pretty"
+  }
 }

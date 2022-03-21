@@ -10,14 +10,14 @@ import LocalAuthentication
 
 struct UnlockWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
-  
+
   @State private var password: String = ""
   @State private var unlockError: UnlockError?
   @State private var attemptedBiometricsUnlock: Bool = false
-  
+
   private enum UnlockError: LocalizedError {
     case incorrectPassword
-    
+
     var errorDescription: String? {
       switch self {
       case .incorrectPassword:
@@ -25,11 +25,11 @@ struct UnlockWalletView: View {
       }
     }
   }
-  
+
   private var isPasswordValid: Bool {
     !password.isEmpty
   }
-  
+
   private func unlock() {
     // Conflict with the keyboard submit/dismissal that causes a bug
     // with SwiftUI animating the screen away...
@@ -42,14 +42,14 @@ struct UnlockWalletView: View {
       }
     }
   }
-  
+
   private func fillPasswordFromKeychain() {
     if let password = KeyringStore.retrievePasswordFromKeychain() {
       self.password = password
       unlock()
     }
   }
-  
+
   private var biometricsIcon: Image? {
     let context = LAContext()
     if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
@@ -66,7 +66,7 @@ struct UnlockWalletView: View {
     }
     return nil
   }
-  
+
   var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 46) {
@@ -122,8 +122,7 @@ struct UnlockWalletView: View {
     }
     .onAppear {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-        if !keyringStore.lockedManually && !attemptedBiometricsUnlock && keyringStore.keyring.isLocked &&
-            UIApplication.shared.isProtectedDataAvailable {
+        if !keyringStore.lockedManually && !attemptedBiometricsUnlock && keyringStore.keyring.isLocked && UIApplication.shared.isProtectedDataAvailable {
           attemptedBiometricsUnlock = true
           fillPasswordFromKeychain()
         }

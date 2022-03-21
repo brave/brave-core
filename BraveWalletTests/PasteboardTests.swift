@@ -7,19 +7,19 @@ import XCTest
 @testable import BraveWallet
 
 class PasteboardTests: XCTestCase {
-    func testExpiringSecureString() {
-        let expectation = expectation(description: "pasteboard-expiration")
-        let pasteboard = UIPasteboard.withUniqueName()
-        let data = "test"
-        pasteboard.setSecureString(data, expirationDate: Date().addingTimeInterval(0.5))
-        XCTAssertEqual(pasteboard.string, data)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            defer { expectation.fulfill() }
-            // After expiration the string should be nil
-            XCTAssertNil(pasteboard.string)
-        }
-        waitForExpectations(timeout: 3) { error in
-            XCTAssertNil(error)
-        }
+  func testExpiringSecureString() {
+    let expectation = expectation(description: "pasteboard-expiration")
+    let pasteboard = UIPasteboard.withUniqueName()
+    let data = "test"
+    pasteboard.setSecureString(data, expirationDate: Date().addingTimeInterval(0.5))
+    XCTAssertEqual(pasteboard.string, data)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      defer { expectation.fulfill() }
+      // After expiration the string should be nil
+      XCTAssertNil(pasteboard.string)
     }
+    waitForExpectations(timeout: 3) { error in
+      XCTAssertNil(error)
+    }
+  }
 }

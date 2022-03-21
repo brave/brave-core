@@ -10,23 +10,23 @@ import struct Shared.Strings
 
 struct VerifyRecoveryPhraseView: View {
   @ObservedObject var keyringStore: KeyringStore
-  
+
   @State private var recoveryWords: [RecoveryWord] = []
   @State private var randomizedWords: [RecoveryWord] = []
   @State private var selectedWords: [RecoveryWord] = []
-  
+
   @Environment(\.modalPresentationMode) @Binding private var modalPresentationMode
-  
+
   private var wordsSelectedInCorrectOrder: Bool {
     recoveryWords == selectedWords
   }
-  
+
   private func tappedWord(_ word: RecoveryWord) {
     withAnimation(.default) {
       selectedWords.append(word)
     }
   }
-  
+
   private func tappedVerify() {
     guard wordsSelectedInCorrectOrder else { return }
     keyringStore.notifyWalletBackupComplete()
@@ -36,7 +36,7 @@ struct VerifyRecoveryPhraseView: View {
       modalPresentationMode = false
     }
   }
-  
+
   var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 16) {
@@ -122,11 +122,11 @@ private struct SelectedWordsBox: View {
   var recoveryWords: [RecoveryWord]
   @Binding var selectedWords: [RecoveryWord]
   @Environment(\.pixelLength) private var pixelLength
-  
+
   enum WordEntry: Hashable, Identifiable {
     case word(String, index: Int, isCorrect: Bool)
     case placeholder(atIndex: Int)
-    
+
     func hash(into hasher: inout Hasher) {
       switch self {
       case .word(let word, let index, _):
@@ -135,7 +135,7 @@ private struct SelectedWordsBox: View {
       case .placeholder(let index): hasher.combine(index)
       }
     }
-    
+
     var id: String {
       switch self {
       case .word(let word, let index, _):
@@ -145,24 +145,24 @@ private struct SelectedWordsBox: View {
       }
     }
   }
-  
+
   private var entries: [WordEntry] {
     var words: [WordEntry] =
       selectedWords
-        .enumerated()
-        .map({ .word($0.element.value, index: $0.offset, isCorrect: recoveryWords[$0.offset] == $0.element) })
+      .enumerated()
+      .map({ .word($0.element.value, index: $0.offset, isCorrect: recoveryWords[$0.offset] == $0.element) })
     if words.count < 12 {
       words.append(contentsOf: (words.count..<12).map { .placeholder(atIndex: $0) })
     }
     return words
   }
-  
+
   private func tappedWord(atIndex index: Int) {
     withAnimation(.default) {
       _ = selectedWords.remove(at: index)
     }
   }
-  
+
   private func view(for entry: WordEntry) -> some View {
     let clipShape = RoundedRectangle(cornerRadius: 4, style: .continuous)
     return Group {
@@ -192,7 +192,7 @@ private struct SelectedWordsBox: View {
     }
     .font(.footnote.bold())
   }
-  
+
   var body: some View {
     RecoveryPhraseGrid(data: entries, id: \.id) { word in
       view(for: word)

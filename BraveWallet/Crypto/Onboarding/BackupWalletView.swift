@@ -11,7 +11,7 @@ import struct Shared.Strings
 struct BackupWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
   @State private var acknowledgedWarning: Bool = false
-  
+
   var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 46) {

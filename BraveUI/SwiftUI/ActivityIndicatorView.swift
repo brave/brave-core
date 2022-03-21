@@ -14,16 +14,16 @@ public struct ActivityIndicatorView: UIViewRepresentable {
   public var style: UIActivityIndicatorView.Style
   /// Whether or not the indicator is animating
   public var isAnimating: Bool
-  
+
   public init(style: UIActivityIndicatorView.Style = .medium, isAnimating: Bool) {
     self.style = style
     self.isAnimating = isAnimating
   }
-  
+
   public func makeUIView(context: Context) -> UIActivityIndicatorView {
     UIActivityIndicatorView(style: style)
   }
-  
+
   public func updateUIView(_ uiView: UIActivityIndicatorView, context: Context) {
     uiView.style = style
     if isAnimating {

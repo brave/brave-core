@@ -6,31 +6,31 @@ import UIKit
 import pop
 
 class AdSwipeButton: UIControl {
-  
+
   enum ContentType {
     case text(String, textColor: UIColor)
     case image(UIImage)
   }
-  
+
   private let highlightView = UIView().then {
     $0.backgroundColor = UIColor(white: 1.0, alpha: 0.3)
     $0.alpha = 0.0
     $0.isUserInteractionEnabled = false
   }
-  
+
   private let clippedView = UIView().then {
     $0.isUserInteractionEnabled = false
   }
-  
+
   init(contentType: ContentType) {
     super.init(frame: .zero)
-    
+
     addSubview(clippedView)
     clippedView.addSubview(highlightView)
     highlightView.snp.makeConstraints {
       $0.edges.equalTo(self)
     }
-    
+
     switch contentType {
     case .image(let image):
       let imageView = UIImageView(image: image)
@@ -50,7 +50,7 @@ class AdSwipeButton: UIControl {
         $0.center.equalTo(self)
       }
     }
-    
+
     layer.borderColor = UIColor.black.withAlphaComponent(0.15).cgColor
     layer.borderWidth = 1.0 / UIScreen.main.scale
     layer.cornerRadius = 10
@@ -59,7 +59,7 @@ class AdSwipeButton: UIControl {
     layer.shadowOpacity = 0.25
     layer.shadowOffset = CGSize(width: 0, height: 1)
     layer.shadowRadius = 2
-    
+
     clippedView.snp.makeConstraints {
       $0.edges.equalTo(self)
     }
@@ -67,12 +67,12 @@ class AdSwipeButton: UIControl {
     clippedView.layer.cornerCurve = layer.cornerCurve
     clippedView.clipsToBounds = true
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
   }
-  
+
   override var isHighlighted: Bool {
     didSet {
       highlightView.basicAnimate(property: kPOPViewAlpha, key: "alpha") { animation, _ in

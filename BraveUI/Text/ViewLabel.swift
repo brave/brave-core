@@ -8,19 +8,19 @@ import UIKit
 /// `NSAttachmentAttributeName` and `ViewTextAttachment` in the assigned
 /// attributed string.
 public class ViewLabel: UITextView, NSLayoutManagerDelegate {
-  
+
   public init() {
     super.init(frame: .zero, textContainer: nil)
-    
+
     isEditable = false
     isScrollEnabled = false
     isSelectable = false
     textContainerInset = .zero
     delaysContentTouches = false
-    
+
     layoutManager.delegate = self
   }
-  
+
   override public var attributedText: NSAttributedString! {
     willSet {
       viewAttachments.forEach { $0.0.view.removeFromSuperview() }
@@ -29,14 +29,14 @@ public class ViewLabel: UITextView, NSLayoutManagerDelegate {
       viewAttachments.forEach { addSubview($0.0.view) }
     }
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
   }
-  
+
   // MARK: -
-  
+
   private var viewAttachments: [(ViewTextAttachment, NSRange)] {
     var attachments: [(ViewTextAttachment, NSRange)] = []
     let range = NSRange(location: 0, length: textStorage.length)
@@ -47,7 +47,7 @@ public class ViewLabel: UITextView, NSLayoutManagerDelegate {
     }
     return attachments
   }
-  
+
   private func layoutViewAttachments() {
     let attachments = viewAttachments
     let scale = UIScreen.main.scale
@@ -71,9 +71,9 @@ public class ViewLabel: UITextView, NSLayoutManagerDelegate {
       )
     }
   }
-  
+
   // MARK: - NSLayoutManagerDelegate
-  
+
   public func layoutManager(_ layoutManager: NSLayoutManager, didCompleteLayoutFor textContainer: NSTextContainer?, atEnd layoutFinishedFlag: Bool) {
     if layoutFinishedFlag {
       layoutViewAttachments()
@@ -90,21 +90,21 @@ public class ViewTextAttachment: NSTextAttachment {
     /// Give a specific size
     case fixedSize(CGSize)
   }
-  
+
   public let view: UIView
   public let attachmentSize: AttachmentSize
-  
+
   public init(view: UIView, attachmentSize: AttachmentSize = .intrinsicContentSize) {
     self.view = view
     self.attachmentSize = attachmentSize
     super.init(data: nil, ofType: nil)
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
   }
-  
+
   override public func attachmentBounds(for textContainer: NSTextContainer?, proposedLineFragment lineFrag: CGRect, glyphPosition position: CGPoint, characterIndex charIndex: Int) -> CGRect {
     switch attachmentSize {
     case .intrinsicContentSize:
@@ -113,7 +113,7 @@ public class ViewTextAttachment: NSTextAttachment {
       return CGRect(origin: .zero, size: size)
     }
   }
-  
+
   override public func image(forBounds imageBounds: CGRect, textContainer: NSTextContainer?, characterIndex charIndex: Int) -> UIImage? {
     return nil
   }

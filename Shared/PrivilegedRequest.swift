@@ -26,32 +26,32 @@ private let REQUEST_KEY_PRIVILEGED = "privileged"
  doing this is not clear as these requests should work fine as regular URLRequest().
  **/
 public class PrivilegedRequest: NSMutableURLRequest {
-    override init(url: URL, cachePolicy: NSURLRequest.CachePolicy, timeoutInterval: TimeInterval) {
-        func getUrl() -> URL {
-            if InternalURL.isValid(url: url), let result = InternalURL.authorize(url: url) {
-                return result
-            }
-            return url
-        }
-        super.init(url: getUrl(), cachePolicy: cachePolicy, timeoutInterval: timeoutInterval)
-        setPrivileged()
+  override init(url: URL, cachePolicy: NSURLRequest.CachePolicy, timeoutInterval: TimeInterval) {
+    func getUrl() -> URL {
+      if InternalURL.isValid(url: url), let result = InternalURL.authorize(url: url) {
+        return result
+      }
+      return url
     }
+    super.init(url: getUrl(), cachePolicy: cachePolicy, timeoutInterval: timeoutInterval)
+    setPrivileged()
+  }
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setPrivileged()
-    }
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    setPrivileged()
+  }
 
-    fileprivate func setPrivileged() {
-        URLProtocol.setProperty(true, forKey: REQUEST_KEY_PRIVILEGED, in: self)
-    }
+  fileprivate func setPrivileged() {
+    URLProtocol.setProperty(true, forKey: REQUEST_KEY_PRIVILEGED, in: self)
+  }
 }
 
 extension URLRequest {
-    public var isPrivileged: Bool {
-        if let url = url, let internalUrl = InternalURL(url) {
-            return internalUrl.isAuthorized
-        }
-        return URLProtocol.property(forKey: REQUEST_KEY_PRIVILEGED, in: self) != nil
+  public var isPrivileged: Bool {
+    if let url = url, let internalUrl = InternalURL(url) {
+      return internalUrl.isAuthorized
     }
+    return URLProtocol.property(forKey: REQUEST_KEY_PRIVILEGED, in: self) != nil
+  }
 }

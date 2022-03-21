@@ -9,48 +9,48 @@ import WebKit
 private let log = Logger.browserLogger
 
 protocol FindInPageHelperDelegate: AnyObject {
-    func findInPageHelper(_ findInPageHelper: FindInPageHelper, didUpdateCurrentResult currentResult: Int)
-    func findInPageHelper(_ findInPageHelper: FindInPageHelper, didUpdateTotalResults totalResults: Int)
+  func findInPageHelper(_ findInPageHelper: FindInPageHelper, didUpdateCurrentResult currentResult: Int)
+  func findInPageHelper(_ findInPageHelper: FindInPageHelper, didUpdateTotalResults totalResults: Int)
 }
 
 class FindInPageHelper: TabContentScript {
-    weak var delegate: FindInPageHelperDelegate?
-    fileprivate weak var tab: Tab?
+  weak var delegate: FindInPageHelperDelegate?
+  fileprivate weak var tab: Tab?
 
-    class func name() -> String {
-        return "FindInPage"
+  class func name() -> String {
+    return "FindInPage"
+  }
+
+  required init(tab: Tab) {
+    self.tab = tab
+  }
+
+  func scriptMessageHandlerName() -> String? {
+    return "findInPageHandler"
+  }
+
+  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+    defer { replyHandler(nil, nil) }
+    guard let body = message.body as? [String: AnyObject] else {
+      return
     }
 
-    required init(tab: Tab) {
-        self.tab = tab
+    if UserScriptManager.isMessageHandlerTokenMissing(in: body) {
+      log.debug("Missing required security token.")
+      return
     }
 
-    func scriptMessageHandlerName() -> String? {
-        return "findInPageHandler"
+    guard let data = body["data"] as? [String: Int] else {
+      log.error("Could not find a message body or the data did not meet expectations: \(message.body)")
+      return
     }
 
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
-        defer { replyHandler(nil, nil) }
-        guard let body = message.body as? [String: AnyObject] else {
-            return
-        }
-        
-        if UserScriptManager.isMessageHandlerTokenMissing(in: body) {
-            log.debug("Missing required security token.")
-            return
-        }
-        
-        guard let data = body["data"] as? [String: Int] else {
-            log.error("Could not find a message body or the data did not meet expectations: \(message.body)")
-            return
-        }
-
-        if let currentResult = data["currentResult"] {
-            delegate?.findInPageHelper(self, didUpdateCurrentResult: currentResult)
-        }
-
-        if let totalResults = data["totalResults"] {
-            delegate?.findInPageHelper(self, didUpdateTotalResults: totalResults)
-        }
+    if let currentResult = data["currentResult"] {
+      delegate?.findInPageHelper(self, didUpdateCurrentResult: currentResult)
     }
+
+    if let totalResults = data["totalResults"] {
+      delegate?.findInPageHelper(self, didUpdateTotalResults: totalResults)
+    }
+  }
 }

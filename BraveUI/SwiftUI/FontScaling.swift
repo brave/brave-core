@@ -9,22 +9,22 @@ import SwiftUI
 /// A class for scaling font based on size category and accessibility
 /// The font will scale depending on size of your view and accessibility settings
 struct ScaledFont: ViewModifier {
-    @Environment(\.sizeCategory)
-    var sizeCategory
-    
-    var size: CGFloat
-    var weight: Font.Weight
-    var design: Font.Design
+  @Environment(\.sizeCategory)
+  var sizeCategory
 
-    func body(content: Content) -> some View {
-        let scaledSize = UIFontMetrics.default.scaledValue(for: size)
-        return content.font(.system(size: scaledSize, weight: weight, design: design))
-    }
+  var size: CGFloat
+  var weight: Font.Weight
+  var design: Font.Design
+
+  func body(content: Content) -> some View {
+    let scaledSize = UIFontMetrics.default.scaledValue(for: size)
+    return content.font(.system(size: scaledSize, weight: weight, design: design))
+  }
 }
 
 /// Extension so font scaling can be used on `View` as a modifier.
 extension View {
-    func scaledFont(size: CGFloat, weight: Font.Weight = .regular, design: Font.Design = .default) -> some View {
-        return self.modifier(ScaledFont(size: size, weight: weight, design: design))
-    }
+  func scaledFont(size: CGFloat, weight: Font.Weight = .regular, design: Font.Design = .default) -> some View {
+    return self.modifier(ScaledFont(size: size, weight: weight, design: design))
+  }
 }

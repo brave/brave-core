@@ -8,47 +8,49 @@ import Shared
 import BraveShared
 
 class SiteReportedView: UIStackView {
-    
-    let titleLabel = UILabel().then {
-        $0.text = Strings.Shields.siteReportedTitle
-        $0.font = .systemFont(ofSize: 24)
-        $0.numberOfLines = 0
-        $0.textColor = .braveLabel
-    }
-    
-    let bodyLabel = UILabel().then {
-        $0.text = Strings.Shields.siteReportedBody
-        $0.font = .systemFont(ofSize: 17)
-        $0.numberOfLines = 0
-        $0.textColor = .braveLabel
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        axis = .vertical
-        spacing = 16
-        
-        layoutMargins = UIEdgeInsets(equalInset: 30)
-        isLayoutMarginsRelativeArrangement = true
-        
-        addStackViewItems(
-            .view(UIStackView().then {
-                $0.spacing = 16
-                $0.addStackViewItems(
-                    .view(UIImageView(image: UIImage(imageLiteralResourceName: "check-circle")).then {
-                        $0.setContentHuggingPriority(.required, for: .horizontal)
-                        $0.setContentHuggingPriority(.required, for: .vertical)
-                    }),
-                    .view(titleLabel)
-                )
-            }),
-            .view(bodyLabel)
-        )
-    }
-    
-    @available(*, unavailable)
-    required init(coder: NSCoder) {
-        fatalError()
-    }
+
+  let titleLabel = UILabel().then {
+    $0.text = Strings.Shields.siteReportedTitle
+    $0.font = .systemFont(ofSize: 24)
+    $0.numberOfLines = 0
+    $0.textColor = .braveLabel
+  }
+
+  let bodyLabel = UILabel().then {
+    $0.text = Strings.Shields.siteReportedBody
+    $0.font = .systemFont(ofSize: 17)
+    $0.numberOfLines = 0
+    $0.textColor = .braveLabel
+  }
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    axis = .vertical
+    spacing = 16
+
+    layoutMargins = UIEdgeInsets(equalInset: 30)
+    isLayoutMarginsRelativeArrangement = true
+
+    addStackViewItems(
+      .view(
+        UIStackView().then {
+          $0.spacing = 16
+          $0.addStackViewItems(
+            .view(
+              UIImageView(image: UIImage(imageLiteralResourceName: "check-circle")).then {
+                $0.setContentHuggingPriority(.required, for: .horizontal)
+                $0.setContentHuggingPriority(.required, for: .vertical)
+              }),
+            .view(titleLabel)
+          )
+        }),
+      .view(bodyLabel)
+    )
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
 }

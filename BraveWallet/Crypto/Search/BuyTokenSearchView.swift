@@ -9,9 +9,9 @@ import struct Shared.Strings
 
 struct BuyTokenSearchView: View {
   @ObservedObject var buyTokenStore: BuyTokenStore
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   var body: some View {
     TokenList(tokens: buyTokenStore.buyTokens) { token in
       Button(action: {
@@ -24,4 +24,3 @@ struct BuyTokenSearchView: View {
     .navigationTitle(Strings.Wallet.searchTitle.capitalized)
   }
 }
-

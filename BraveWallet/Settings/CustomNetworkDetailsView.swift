@@ -16,7 +16,7 @@ struct NetworkInputItem: Identifiable {
 struct NetworkTextField: View {
   var placeholder: String
   @Binding var item: NetworkInputItem
-  
+
   var body: some View {
     VStack(alignment: .leading) {
       TextField(placeholder, text: $item.input)
@@ -27,7 +27,7 @@ struct NetworkTextField: View {
           Image(systemName: "exclamationmark.circle.fill")
           Text(error)
             .fixedSize(horizontal: false, vertical: true)
-              .animation(nil, value: error)
+            .animation(nil, value: error)
         }
         .accessibilityElement(children: .combine)
         .transition(
@@ -48,7 +48,7 @@ class CustomNetworkModel: ObservableObject, Identifiable {
   var id: String {
     "\(isEditMode)"
   }
-  
+
   @Published var networkId = NetworkInputItem(input: "") {
     didSet {
       if networkId.input != oldValue.input {
@@ -106,7 +106,7 @@ class CustomNetworkModel: ObservableObject, Identifiable {
       }
     }
   }
-  
+
   @Published var rpcUrls: [NetworkInputItem] = [NetworkInputItem(input: "")] {
     didSet {
       // we only care the set on each item's `input`
@@ -114,7 +114,7 @@ class CustomNetworkModel: ObservableObject, Identifiable {
         // validate every entry except the last new entry if there is one
         var hasNewEntry = false
         for (index, item) in rpcUrls.enumerated() {
-          if item.input.isEmpty && item.error == nil { // no validation on new entry
+          if item.input.isEmpty && item.error == nil {  // no validation on new entry
             hasNewEntry = true
           } else {
             if URIFixup.getURL(item.input) == nil {
@@ -138,7 +138,7 @@ class CustomNetworkModel: ObservableObject, Identifiable {
         // validate every entry except the last new entry if there is one
         var hasNewEntry = false
         for (index, item) in iconUrls.enumerated() {
-          if item.input.isEmpty && item.error == nil { // no validation on new entry
+          if item.input.isEmpty && item.error == nil {  // no validation on new entry
             hasNewEntry = true
           } else {
             if URIFixup.getURL(item.input) == nil {
@@ -162,7 +162,7 @@ class CustomNetworkModel: ObservableObject, Identifiable {
         // validate every entry except the last new entry if there is one
         var hasNewEntry = false
         for (index, item) in blockUrls.enumerated() {
-          if item.input.isEmpty && item.error == nil { // no validation on new entry
+          if item.input.isEmpty && item.error == nil {  // no validation on new entry
             hasNewEntry = true
           } else {
             if URIFixup.getURL(item.input) == nil {
@@ -179,13 +179,13 @@ class CustomNetworkModel: ObservableObject, Identifiable {
       }
     }
   }
-  
+
   /// Updates the details of this class based on a custom network
   func populateDetails(from network: BraveWallet.EthereumChain) {
     self.isEditMode = true
-    
+
     let chainIdInDecimal: String
-    if let intValue = Int(network.chainId.removingHexPrefix, radix: 16) { // BraveWallet.EthereumChain.chainId should always in hex
+    if let intValue = Int(network.chainId.removingHexPrefix, radix: 16) {  // BraveWallet.EthereumChain.chainId should always in hex
       chainIdInDecimal = "\(intValue)"
     } else {
       chainIdInDecimal = network.chainId
@@ -210,19 +210,19 @@ class CustomNetworkModel: ObservableObject, Identifiable {
 struct CustomNetworkDetailsView: View {
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var model: CustomNetworkModel
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   @State private var customNetworkError: CustomNetworkError?
-  
+
   enum CustomNetworkError: LocalizedError, Identifiable {
     case failed(errMsg: String)
     case duplicateId
-    
+
     var id: String {
       errorDescription
     }
-    
+
     var errorTitle: String {
       switch self {
       case .failed:
@@ -231,7 +231,7 @@ struct CustomNetworkDetailsView: View {
         return ""
       }
     }
-    
+
     var errorDescription: String {
       switch self {
       case .failed(let errMsg):
@@ -241,7 +241,7 @@ struct CustomNetworkDetailsView: View {
       }
     }
   }
-  
+
   init(
     networkStore: NetworkStore,
     model: CustomNetworkModel
@@ -249,14 +249,14 @@ struct CustomNetworkDetailsView: View {
     self.networkStore = networkStore
     self.model = model
   }
-  
+
   var body: some View {
     Form {
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkChainIdTitle))
           .osAvailabilityModifiers { content in
             if #available(iOS 15.0, *) {
-              content // padding already exists in 15
+              content  // padding already exists in 15
             } else {
               content.padding(.top)
             }
@@ -266,8 +266,8 @@ struct CustomNetworkDetailsView: View {
           placeholder: Strings.Wallet.customNetworkChainIdPlaceholder,
           item: $model.networkId
         )
-          .keyboardType(.numberPad)
-          .disabled(model.isEditMode)
+        .keyboardType(.numberPad)
+        .disabled(model.isEditMode)
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
@@ -304,7 +304,7 @@ struct CustomNetworkDetailsView: View {
           placeholder: Strings.Wallet.customNetworkCurrencyDecimalPlaceholder,
           item: $model.networkDecimals
         )
-          .keyboardType(.numberPad)
+        .keyboardType(.numberPad)
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
@@ -367,16 +367,18 @@ struct CustomNetworkDetailsView: View {
     }
     .background(
       Color.clear
-        .alert(item: $customNetworkError, content: { error in
-          Alert(
-            title: Text(error.errorTitle),
-            message: Text(error.errorDescription),
-            dismissButton: .default(Text(Strings.OKString))
-          )
-        })
+        .alert(
+          item: $customNetworkError,
+          content: { error in
+            Alert(
+              title: Text(error.errorTitle),
+              message: Text(error.errorDescription),
+              dismissButton: .default(Text(Strings.OKString))
+            )
+          })
     )
   }
-  
+
   private func validateAllFields() -> Bool {
     if model.networkId.input.isEmpty {
       model.networkId.error = Strings.Wallet.customNetworkEmptyErrMsg
@@ -387,38 +389,40 @@ struct CustomNetworkDetailsView: View {
     if model.networkDecimals.input.isEmpty {
       model.networkDecimals.error = Strings.Wallet.customNetworkEmptyErrMsg
     }
-    if model.rpcUrls.first(where: { !$0.input.isEmpty && $0.error == nil }) == nil { // has no valid url
-      if let index = model.rpcUrls.firstIndex(where: { $0.input.isEmpty }) { // find the first empty entry
-        model.rpcUrls[index].error = Strings.Wallet.customNetworkEmptyErrMsg // set the empty err msg
+    if model.rpcUrls.first(where: { !$0.input.isEmpty && $0.error == nil }) == nil {  // has no valid url
+      if let index = model.rpcUrls.firstIndex(where: { $0.input.isEmpty }) {  // find the first empty entry
+        model.rpcUrls[index].error = Strings.Wallet.customNetworkEmptyErrMsg  // set the empty err msg
       }
     }
-    
+
     if model.networkId.error != nil
-        || model.networkName.error != nil
-        || model.networkSymbolName.error != nil
-        || model.networkSymbol.error != nil
-        || model.networkDecimals.error != nil
-        || model.rpcUrls.filter({ !$0.input.isEmpty && $0.error == nil }).isEmpty {
+      || model.networkName.error != nil
+      || model.networkSymbolName.error != nil
+      || model.networkSymbol.error != nil
+      || model.networkDecimals.error != nil
+      || model.rpcUrls.filter({ !$0.input.isEmpty && $0.error == nil }).isEmpty
+    {
       return false
     }
-    
+
     return true
   }
-  
+
   private func addCustomNetwork() {
     guard validateAllFields() else { return }
-    
+
     var chainIdInHex = ""
     if let idValue = Int(model.networkId.input) {
       chainIdInHex = "0x\(String(format: "%02x", idValue))"
     }
     // Check if input chain id already existed for non-edit mode
     if !model.isEditMode,
-        networkStore.ethereumChains.contains(where: { $0.id == chainIdInHex }) {
+      networkStore.ethereumChains.contains(where: { $0.id == chainIdInHex })
+    {
       customNetworkError = .duplicateId
       return
     }
-    
+
     let blockExplorerUrls: [String] = model.blockUrls.compactMap({
       if !$0.input.isEmpty && $0.error == nil {
         return $0.input
@@ -440,21 +444,22 @@ struct CustomNetworkDetailsView: View {
         return nil
       }
     })
-    let network: BraveWallet.EthereumChain = .init(chainId: chainIdInHex,
-                                                   chainName: model.networkName.input,
-                                                   blockExplorerUrls: blockExplorerUrls,
-                                                   iconUrls: iconUrls,
-                                                   rpcUrls: rpcUrls,
-                                                   symbol: model.networkSymbol.input,
-                                                   symbolName: model.networkSymbol.input,
-                                                   decimals: Int32(model.networkDecimals.input) ?? 18,
-                                                   isEip1559: false)
+    let network: BraveWallet.EthereumChain = .init(
+      chainId: chainIdInHex,
+      chainName: model.networkName.input,
+      blockExplorerUrls: blockExplorerUrls,
+      iconUrls: iconUrls,
+      rpcUrls: rpcUrls,
+      symbol: model.networkSymbol.input,
+      symbolName: model.networkSymbol.input,
+      decimals: Int32(model.networkDecimals.input) ?? 18,
+      isEip1559: false)
     networkStore.addCustomNetwork(network) { accepted, errMsg in
       guard accepted else {
         customNetworkError = .failed(errMsg: errMsg)
         return
       }
-      
+
       presentationMode.dismiss()
     }
   }
@@ -462,13 +467,13 @@ struct CustomNetworkDetailsView: View {
 
 #if DEBUG
 struct CustomNetworkDetailsView_Previews: PreviewProvider {
-    static var previews: some View {
-      NavigationView {
-        CustomNetworkDetailsView(
-          networkStore: .previewStore,
-          model: .init()
-        )
-      }
+  static var previews: some View {
+    NavigationView {
+      CustomNetworkDetailsView(
+        networkStore: .previewStore,
+        model: .init()
+      )
     }
+  }
 }
 #endif

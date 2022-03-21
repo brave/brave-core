@@ -9,7 +9,7 @@ import UIKit
 open class SpringButton: UIControl {
   /// The scale to adjust to when the control is highlighted
   open var highlightScale: CGFloat = 0.95
-  
+
   override open var isHighlighted: Bool {
     didSet {
       UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.8) {
@@ -19,14 +19,14 @@ open class SpringButton: UIControl {
       .startAnimation()
     }
   }
-  
+
   public override init(frame: CGRect) {
     super.init(frame: frame)
-    
+
     accessibilityTraits.insert(.button)
     isAccessibilityElement = true
   }
-  
+
   @available(*, unavailable)
   public required init(coder: NSCoder) {
     fatalError()

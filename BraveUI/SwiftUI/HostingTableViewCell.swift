@@ -17,22 +17,22 @@ import SwiftUI
 /// adjust the containing `HostingTableViewCell`.
 public class HostingTableViewCell<Content: View>: UITableViewCell {
   public let hostingController = UIHostingController<Content?>(rootView: nil)
-  
+
   public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    
+
     hostingController.view.backgroundColor = .clear
     contentView.addSubview(hostingController.view)
     hostingController.view.snp.makeConstraints {
       $0.edges.equalTo(contentView)
     }
   }
-  
+
   @available(*, unavailable)
   public required init(coder: NSCoder) {
     fatalError()
   }
-  
+
   public func setRootView(_ rootView: Content, parent: UIViewController) {
     if hostingController.parent != parent {
       parent.addChild(hostingController)

@@ -13,13 +13,13 @@ import BraveUI
 public struct CryptoView: View {
   var walletStore: WalletStore
   @ObservedObject var keyringStore: KeyringStore
-  
+
   // in iOS 15, PresentationMode will be available in SwiftUI hosted by UIHostingController
   // but for now we'll have to manage this ourselves
   var dismissAction: (() -> Void)?
-  
+
   var openWalletURLAction: ((URL) -> Void)?
-  
+
   public init(
     walletStore: WalletStore,
     keyringStore: KeyringStore
@@ -27,13 +27,13 @@ public struct CryptoView: View {
     self.walletStore = walletStore
     self.keyringStore = keyringStore
   }
-  
+
   private enum VisibleScreen: Equatable {
     case crypto
     case onboarding
     case unlock
   }
-  
+
   private var visibleScreen: VisibleScreen {
     let keyring = keyringStore.keyring
     if !keyring.isKeyringCreated || keyringStore.isOnboardingVisible {
@@ -44,7 +44,7 @@ public struct CryptoView: View {
     }
     return .crypto
   }
-  
+
   @ToolbarContentBuilder
   private var dismissButtonToolbarContents: some ToolbarContent {
     ToolbarItemGroup(placement: .cancellationAction) {
@@ -55,7 +55,7 @@ public struct CryptoView: View {
       }
     }
   }
-  
+
   public var body: some View {
     ZStack {
       switch visibleScreen {
@@ -88,11 +88,13 @@ public struct CryptoView: View {
         .zIndex(2)  // Needed or the dismiss animation messes up
       }
     }
-    .animation(.default, value: visibleScreen) // Animate unlock dismiss (required for some reason)
+    .animation(.default, value: visibleScreen)  // Animate unlock dismiss (required for some reason)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .environment(\.openWalletURLAction, .init(action: { url in
-      openWalletURLAction?(url)
-    }))
+    .environment(
+      \.openWalletURLAction,
+      .init(action: { url in
+        openWalletURLAction?(url)
+      }))
   }
 }
 
@@ -100,7 +102,7 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
   var keyringStore: KeyringStore
   @ObservedObject var cryptoStore: CryptoStore
   var toolbarDismissContent: DismissContent
-  
+
   var body: some View {
     UIKitNavigationView {
       CryptoPagesView(cryptoStore: cryptoStore, keyringStore: keyringStore)
@@ -145,17 +147,19 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
           }
         }
     )
-    .environment(\.buySendSwapDestination, Binding(
-      get: { cryptoStore.buySendSwapDestination },
-      set: { destination in
-        if cryptoStore.isPresentingAssetSearch {
-          cryptoStore.isPresentingAssetSearch = false
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-            self.cryptoStore.buySendSwapDestination = destination
+    .environment(
+      \.buySendSwapDestination,
+      Binding(
+        get: { cryptoStore.buySendSwapDestination },
+        set: { destination in
+          if cryptoStore.isPresentingAssetSearch {
+            cryptoStore.isPresentingAssetSearch = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+              self.cryptoStore.buySendSwapDestination = destination
+            }
+          } else {
+            cryptoStore.buySendSwapDestination = destination
           }
-        } else {
-          cryptoStore.buySendSwapDestination = destination
-        }
-      }))
+        }))
   }
 }

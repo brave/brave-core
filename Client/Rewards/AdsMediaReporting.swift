@@ -10,40 +10,40 @@ import BraveCore
 private let log = Logger.braveCoreLogger
 
 class AdsMediaReporting: TabContentScript {
-    let rewards: BraveRewards
-    weak var tab: Tab?
-    
-    init(rewards: BraveRewards, tab: Tab) {
-        self.rewards = rewards
-        self.tab = tab
+  let rewards: BraveRewards
+  weak var tab: Tab?
+
+  init(rewards: BraveRewards, tab: Tab) {
+    self.rewards = rewards
+    self.tab = tab
+  }
+
+  class func name() -> String {
+    return "AdsMediaReporting"
+  }
+
+  func scriptMessageHandlerName() -> String? {
+    return "adsMediaReporting"
+  }
+
+  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+    defer { replyHandler(nil, nil) }
+    guard let body = message.body as? [String: AnyObject] else {
+      return
     }
-    
-    class func name() -> String {
-        return "AdsMediaReporting"
+
+    if UserScriptManager.isMessageHandlerTokenMissing(in: body) {
+      log.debug("Missing required security token.")
+      return
     }
-    
-    func scriptMessageHandlerName() -> String? {
-        return "adsMediaReporting"
+
+    if let isPlaying = body["data"] as? Bool, rewards.isEnabled {
+      guard let tab = tab else { return }
+      if isPlaying {
+        rewards.reportMediaStarted(tabId: Int(tab.rewardsId))
+      } else {
+        rewards.reportMediaStopped(tabId: Int(tab.rewardsId))
+      }
     }
-    
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
-        defer { replyHandler(nil, nil) }
-        guard let body = message.body as? [String: AnyObject] else {
-            return
-        }
-        
-        if UserScriptManager.isMessageHandlerTokenMissing(in: body) {
-            log.debug("Missing required security token.")
-            return
-        }
-        
-        if let isPlaying = body["data"] as? Bool, rewards.isEnabled {
-            guard let tab = tab else { return }
-            if isPlaying {
-                rewards.reportMediaStarted(tabId: Int(tab.rewardsId))
-            } else {
-                rewards.reportMediaStopped(tabId: Int(tab.rewardsId))
-            }
-        }
-    }
+  }
 }

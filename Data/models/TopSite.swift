@@ -6,11 +6,11 @@ import Foundation
 import Shared
 
 final class TopSite: NSManagedObject, CRUD {
-    @NSManaged var title: String?
-    @NSManaged var url: String?
-    @NSManaged var syncUUID: String?
-    @NSManaged var order: Int16
-    @NSManaged var notifications: Int16
-    @NSManaged var createdOn: Date?
-    @NSManaged var favicon: FaviconMO?
+  @NSManaged var title: String?
+  @NSManaged var url: String?
+  @NSManaged var syncUUID: String?
+  @NSManaged var order: Int16
+  @NSManaged var notifications: Int16
+  @NSManaged var createdOn: Date?
+  @NSManaged var favicon: FaviconMO?
 }

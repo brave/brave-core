@@ -10,119 +10,119 @@ import BraveUI
 /// The same style switch accessory view as in Static framework, except will not be recreated each time the Cell
 /// is configured, since it will be stored as is in `Row.Accessory.view`
 class SwitchAccessoryView: UISwitch {
-    typealias ValueChange = (Bool) -> Void
-    
-    init(initialValue: Bool, valueChange: (ValueChange)? = nil) {
-        self.valueChange = valueChange
-        super.init(frame: .zero)
-        isOn = initialValue
-        addTarget(self, action: #selector(valueChanged), for: .valueChanged)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    var valueChange: ValueChange?
-    
-    @objc func valueChanged() {
-        valueChange?(self.isOn)
-    }
+  typealias ValueChange = (Bool) -> Void
+
+  init(initialValue: Bool, valueChange: (ValueChange)? = nil) {
+    self.valueChange = valueChange
+    super.init(frame: .zero)
+    isOn = initialValue
+    addTarget(self, action: #selector(valueChanged), for: .valueChanged)
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  var valueChange: ValueChange?
+
+  @objc func valueChanged() {
+    valueChange?(self.isOn)
+  }
 }
 
 extension Row {
-    /// Creates a switch toggle `Row` which updates a `Preferences.Option<Bool>`
-    static func boolRow(title: String, detailText: String? = nil, option: Preferences.Option<Bool>, onValueChange: SwitchAccessoryView.ValueChange? = nil, image: UIImage? = nil) -> Row {
-        return Row(
-            text: title,
-            detailText: detailText,
-            image: image,
-            accessory: .view(SwitchAccessoryView(initialValue: option.value, valueChange: onValueChange ?? { option.value = $0 })),
-            cellClass: MultilineSubtitleCell.self,
-            uuid: option.key
-        )
-    }
-    
-    /// Creates a switch toggle `Row` which holds local value and no preference update
-    static func boolRow(title: String, detailText: String? = nil, toggleValue: Bool, valueChange: @escaping ValueChange, cellReuseId: String) -> Row {
-        return Row(
-            text: title,
-            detailText: detailText,
-            accessory: .view(SwitchAccessoryView(initialValue: toggleValue, valueChange: valueChange)),
-            cellClass: MultilineSubtitleCell.self,
-            reuseIdentifier: cellReuseId
-        )
-    }
+  /// Creates a switch toggle `Row` which updates a `Preferences.Option<Bool>`
+  static func boolRow(title: String, detailText: String? = nil, option: Preferences.Option<Bool>, onValueChange: SwitchAccessoryView.ValueChange? = nil, image: UIImage? = nil) -> Row {
+    return Row(
+      text: title,
+      detailText: detailText,
+      image: image,
+      accessory: .view(SwitchAccessoryView(initialValue: option.value, valueChange: onValueChange ?? { option.value = $0 })),
+      cellClass: MultilineSubtitleCell.self,
+      uuid: option.key
+    )
+  }
+
+  /// Creates a switch toggle `Row` which holds local value and no preference update
+  static func boolRow(title: String, detailText: String? = nil, toggleValue: Bool, valueChange: @escaping ValueChange, cellReuseId: String) -> Row {
+    return Row(
+      text: title,
+      detailText: detailText,
+      accessory: .view(SwitchAccessoryView(initialValue: toggleValue, valueChange: valueChange)),
+      cellClass: MultilineSubtitleCell.self,
+      reuseIdentifier: cellReuseId
+    )
+  }
 }
 
 class MultilineButtonCell: ButtonCell {
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        textLabel?.numberOfLines = 0
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+    textLabel?.numberOfLines = 0
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 }
 
 class CenteredButtonCell: ButtonCell, TableViewReusable {
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        textLabel?.textAlignment = .center
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+    textLabel?.textAlignment = .center
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 }
 
 class MultilineValue1Cell: Value1Cell {
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        textLabel?.numberOfLines = 0
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+    textLabel?.numberOfLines = 0
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 }
 
 class ColoredDetailCell: UITableViewCell, Cell {
-    
-    static let colorKey = "color"
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .value1, reuseIdentifier: reuseIdentifier)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configure(row: Row) {
-        textLabel?.text = row.text
-        detailTextLabel?.text = row.detailText
-        accessoryType = row.accessory.type
-        imageView?.image = row.image
-        
-        guard let detailColor = row.context?[ColoredDetailCell.colorKey] as? UIColor else { return }
-        detailTextLabel?.textColor = detailColor
-    }
+
+  static let colorKey = "color"
+
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: .value1, reuseIdentifier: reuseIdentifier)
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  func configure(row: Row) {
+    textLabel?.text = row.text
+    detailTextLabel?.text = row.detailText
+    accessoryType = row.accessory.type
+    imageView?.image = row.image
+
+    guard let detailColor = row.context?[ColoredDetailCell.colorKey] as? UIColor else { return }
+    detailTextLabel?.textColor = detailColor
+  }
 }
 
 class MultilineSubtitleCell: SubtitleCell {
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        textLabel?.numberOfLines = 0
-        detailTextLabel?.numberOfLines = 0
-        detailTextLabel?.textColor = .secondaryBraveLabel
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+    textLabel?.numberOfLines = 0
+    detailTextLabel?.numberOfLines = 0
+    detailTextLabel?.textColor = .secondaryBraveLabel
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 }

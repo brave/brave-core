@@ -11,7 +11,7 @@ import struct Shared.Strings
 
 struct SetupCryptoView: View {
   @ObservedObject var keyringStore: KeyringStore
-  
+
   var body: some View {
     VStack(spacing: 46) {
       Image("setup-welcome")

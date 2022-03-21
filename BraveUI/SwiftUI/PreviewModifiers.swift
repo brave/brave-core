@@ -8,7 +8,7 @@ import SwiftUI
 
 private struct PreviewColorSchemeIteratorModifier: ViewModifier {
   var schemes: [ColorScheme]
-  
+
   func body(content: Content) -> some View {
     ForEach(schemes, id: \.self) { scheme in
       content
@@ -21,7 +21,7 @@ private struct PreviewColorSchemeIteratorModifier: ViewModifier {
 
 private struct PreviewContentSizeCategoriesIteratorModifier: ViewModifier {
   var categories: [ContentSizeCategory]
-  
+
   func body(content: Content) -> some View {
     ForEach(categories, id: \.self) { category in
       content

@@ -10,10 +10,10 @@ import BraveUI
 public struct WalletSettingsView: View {
   @ObservedObject var settingsStore: SettingsStore
   @ObservedObject var networkStore: NetworkStore
-  
+
   @State private var isShowingResetWalletAlert = false
   @State private var isShowingResetTransactionAlert = false
-  
+
   public init(
     settingsStore: SettingsStore,
     networkStore: NetworkStore
@@ -31,7 +31,7 @@ public struct WalletSettingsView: View {
     }
     return all.sorted(by: { $0.value < $1.value })
   }
-  
+
   public var body: some View {
     List {
       Section(
@@ -89,9 +89,11 @@ public struct WalletSettingsView: View {
           Alert(
             title: Text(Strings.Wallet.settingsResetTransactionAlertTitle),
             message: Text(Strings.Wallet.settingsResetTransactionAlertMessage),
-            primaryButton: .destructive(Text(Strings.Wallet.settingsResetTransactionAlertButtonTitle), action: {
-              settingsStore.resetTransaction()
-            }),
+            primaryButton: .destructive(
+              Text(Strings.Wallet.settingsResetTransactionAlertButtonTitle),
+              action: {
+                settingsStore.resetTransaction()
+              }),
             secondaryButton: .cancel(Text(Strings.cancelButtonTitle))
           )
         }
@@ -102,9 +104,11 @@ public struct WalletSettingsView: View {
           Alert(
             title: Text(Strings.Wallet.settingsResetWalletAlertTitle),
             message: Text(Strings.Wallet.settingsResetWalletAlertMessage),
-            primaryButton: .destructive(Text(Strings.Wallet.settingsResetWalletAlertButtonTitle), action: {
-              settingsStore.reset()
-            }),
+            primaryButton: .destructive(
+              Text(Strings.Wallet.settingsResetWalletAlertButtonTitle),
+              action: {
+                settingsStore.reset()
+              }),
             secondaryButton: .cancel(Text(Strings.no))
           )
         }

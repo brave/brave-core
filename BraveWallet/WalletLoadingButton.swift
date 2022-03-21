@@ -10,7 +10,7 @@ struct WalletLoadingButton<Label: View>: View {
   var isLoading: Bool
   var action: () -> Void
   var label: Label
-  
+
   init(
     isLoading: Bool,
     action: @escaping () -> Void,
@@ -20,7 +20,7 @@ struct WalletLoadingButton<Label: View>: View {
     self.action = action
     self.label = label()
   }
-  
+
   var body: some View {
     Button {
       if !isLoading {
@@ -44,27 +44,27 @@ struct WalletLoadingButton_Previews: PreviewProvider {
       WalletLoadingButton(
         isLoading: true,
         action: {
-        // preview
+          // preview
         },
         label: {
           Text("Preview")
         }
       )
-        .buttonStyle(BraveFilledButtonStyle(size: .normal))
-        .disabled(true)
-        .frame(maxWidth: .infinity)
+      .buttonStyle(BraveFilledButtonStyle(size: .normal))
+      .disabled(true)
+      .frame(maxWidth: .infinity)
       WalletLoadingButton(
         isLoading: false,
         action: {
-        // preview
+          // preview
         },
         label: {
           Text("Preview")
         }
       )
-        .buttonStyle(BraveFilledButtonStyle(size: .normal))
-        .disabled(false)
-        .frame(maxWidth: .infinity)
+      .buttonStyle(BraveFilledButtonStyle(size: .normal))
+      .disabled(false)
+      .frame(maxWidth: .infinity)
     }
   }
 }

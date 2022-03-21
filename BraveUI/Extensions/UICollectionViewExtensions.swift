@@ -4,7 +4,7 @@
 
 import UIKit
 
-public protocol CollectionViewReusable { }
+public protocol CollectionViewReusable {}
 
 extension CollectionViewReusable {
   fileprivate static var identifier: String {

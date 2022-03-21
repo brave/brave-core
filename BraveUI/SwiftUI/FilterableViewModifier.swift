@@ -12,9 +12,9 @@ struct FilterableViewModifier: ViewModifier {
   @Binding var query: String
   var prompt: String?
   var onSubmit: (() -> Void)?
-  
+
   @StateObject private var searchDelegate = SearchDelegate()
-  
+
   func body(content: Content) -> some View {
     content
       .introspectViewController { vc in
@@ -41,7 +41,7 @@ struct FilterableViewModifier: ViewModifier {
 private class SearchDelegate: NSObject, UISearchBarDelegate, ObservableObject {
   @Published var query: String = ""
   var onSubmit: (() -> Void)?
-  
+
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     query = searchText
   }
@@ -59,7 +59,7 @@ private struct SearchableViewModifier_FB9812596: ViewModifier {
   var text: Binding<String>
   var prompt: String?
   var onSubmit: (() -> Void)?
-  
+
   func body(content: Content) -> some View {
     content.searchable(
       text: text,

@@ -8,30 +8,30 @@ private let log = Logger.browserLogger
 
 struct ReferralData {
 
-    let downloadId: String
-    let referralCode: String
-    let offerPage: String?
+  let downloadId: String
+  let referralCode: String
+  let offerPage: String?
 
-    func isExtendedUrp() -> Bool {
-        return offerPage != nil
+  func isExtendedUrp() -> Bool {
+    return offerPage != nil
+  }
+
+  init(downloadId: String, code: String, offerPage: String? = nil) {
+    self.downloadId = downloadId
+    self.referralCode = code
+
+    self.offerPage = offerPage
+  }
+
+  init?(json: JSON) {
+    guard let downloadId = json["download_id"].string, let code = json["referral_code"].string else {
+      log.error("Failed to unwrap json to Referral struct.")
+      UrpLog.log("Failed to unwrap json to Referral struct. \(json)")
+      return nil
     }
 
-    init(downloadId: String, code: String, offerPage: String? = nil) {
-        self.downloadId = downloadId
-        self.referralCode = code
-
-        self.offerPage = offerPage
-    }
-
-    init?(json: JSON) {
-        guard let downloadId = json["download_id"].string, let code = json["referral_code"].string else {
-            log.error("Failed to unwrap json to Referral struct.")
-            UrpLog.log("Failed to unwrap json to Referral struct. \(json)")
-            return nil
-        }
-
-        self.downloadId = downloadId
-        self.referralCode = code
-        self.offerPage = json["offer_page_url"].string
-    }
+    self.downloadId = downloadId
+    self.referralCode = code
+    self.offerPage = json["offer_page_url"].string
+  }
 }

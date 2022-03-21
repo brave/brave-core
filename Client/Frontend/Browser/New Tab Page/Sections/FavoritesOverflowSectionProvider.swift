@@ -12,90 +12,92 @@ import Shared
 private let log = Logger.browserLogger
 
 class FavoritesOverflowButton: SpringButton {
-    private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .light)).then {
-        $0.clipsToBounds = true
-        $0.isUserInteractionEnabled = false
+  private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .light)).then {
+    $0.clipsToBounds = true
+    $0.isUserInteractionEnabled = false
+  }
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    let label = UILabel().then {
+      $0.text = Strings.NTP.showMoreFavorites
+      $0.textColor = .white
+      $0.font = UIFont.systemFont(ofSize: 12.0, weight: .medium)
     }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        let label = UILabel().then {
-            $0.text = Strings.NTP.showMoreFavorites
-            $0.textColor = .white
-            $0.font = UIFont.systemFont(ofSize: 12.0, weight: .medium)
-        }
-        
-        backgroundView.layer.cornerCurve = .continuous
-        
-        addSubview(backgroundView)
-        backgroundView.contentView.addSubview(label)
-        
-        backgroundView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        label.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10))
-        }
+
+    backgroundView.layer.cornerCurve = .continuous
+
+    addSubview(backgroundView)
+    backgroundView.contentView.addSubview(label)
+
+    backgroundView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        backgroundView.layer.cornerRadius = bounds.height / 2.0 // Pill shape
+    label.snp.makeConstraints {
+      $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10))
     }
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    backgroundView.layer.cornerRadius = bounds.height / 2.0  // Pill shape
+  }
 }
 
 class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
-    let action: () -> Void
-    var sectionDidChange: (() -> Void)?
-    
-    private typealias FavoritesOverflowCell = NewTabCenteredCollectionViewCell<FavoritesOverflowButton>
-    
-    private var frc: NSFetchedResultsController<Favorite>
-    
-    init(action: @escaping () -> Void) {
-        self.action = action
-        frc = Favorite.frc()
-        frc.fetchRequest.fetchLimit = 10
-        super.init()
-        try? frc.performFetch()
-        frc.delegate = self
-    }
-    
-    @objc private func tappedButton() {
-        action()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let width = fittingSizeForCollectionView(collectionView, section: section).width
-        let count = frc.fetchedObjects?.count ?? 0
-        return count > FavoritesSectionProvider.numberOfItems(in: collectionView, availableWidth: width) ? 1 : 0
-    }
-    
-    func registerCells(to collectionView: UICollectionView) {
-        collectionView.register(FavoritesOverflowCell.self)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(for: indexPath) as FavoritesOverflowCell
-        cell.view.addTarget(self, action: #selector(tappedButton), for: .touchUpInside)
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var size = fittingSizeForCollectionView(collectionView, section: indexPath.section)
-        size.height = 24
-        return size
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets { .zero }
+  let action: () -> Void
+  var sectionDidChange: (() -> Void)?
+
+  private typealias FavoritesOverflowCell = NewTabCenteredCollectionViewCell<FavoritesOverflowButton>
+
+  private var frc: NSFetchedResultsController<Favorite>
+
+  init(action: @escaping () -> Void) {
+    self.action = action
+    frc = Favorite.frc()
+    frc.fetchRequest.fetchLimit = 10
+    super.init()
+    try? frc.performFetch()
+    frc.delegate = self
+  }
+
+  @objc private func tappedButton() {
+    action()
+  }
+
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    let width = fittingSizeForCollectionView(collectionView, section: section).width
+    let count = frc.fetchedObjects?.count ?? 0
+    return count > FavoritesSectionProvider.numberOfItems(in: collectionView, availableWidth: width) ? 1 : 0
+  }
+
+  func registerCells(to collectionView: UICollectionView) {
+    collectionView.register(FavoritesOverflowCell.self)
+  }
+
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCell(for: indexPath) as FavoritesOverflowCell
+    cell.view.addTarget(self, action: #selector(tappedButton), for: .touchUpInside)
+    return cell
+  }
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    var size = fittingSizeForCollectionView(collectionView, section: indexPath.section)
+    size.height = 24
+    return size
+  }
+
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    insetForSectionAt section: Int
+  ) -> UIEdgeInsets { .zero }
 }
 
 extension FavoritesOverflowSectionProvider: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        try? frc.performFetch()
-        sectionDidChange?()
-    }
+  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    try? frc.performFetch()
+    sectionDidChange?()
+  }
 }

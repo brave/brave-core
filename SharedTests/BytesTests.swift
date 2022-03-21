@@ -7,18 +7,18 @@ import Shared
 
 class BytesTests: XCTestCase {
 
-    func testGenerateRandomBytes() {
-        
-        let rollCount = 200
-        let bytesLength: UInt = 256
-        
-        var resultsSet = Set<Data>()
-        
-        for _ in 0..<rollCount {
-            resultsSet.insert(Bytes.generateRandomBytes(bytesLength))
-        }
-        
-        // Sets not equal means we found a duplicate, which should not happen for such small sample size.
-        XCTAssertEqual(resultsSet.count, rollCount)
+  func testGenerateRandomBytes() {
+
+    let rollCount = 200
+    let bytesLength: UInt = 256
+
+    var resultsSet = Set<Data>()
+
+    for _ in 0..<rollCount {
+      resultsSet.insert(Bytes.generateRandomBytes(bytesLength))
     }
+
+    // Sets not equal means we found a duplicate, which should not happen for such small sample size.
+    XCTAssertEqual(resultsSet.count, rollCount)
+  }
 }

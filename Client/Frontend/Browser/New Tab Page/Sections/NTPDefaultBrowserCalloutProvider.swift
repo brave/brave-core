@@ -9,112 +9,116 @@ import Shared
 import BraveShared
 
 class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
-    var sectionDidChange: (() -> Void)?
-    private var defaultCalloutView = DefaultBrowserCalloutView()
-    
-    private typealias DefaultBrowserCalloutCell = NewTabCenteredCollectionViewCell<DefaultBrowserCalloutView>
-    
-    static var shouldShowCallout: Bool {
-        !Preferences.General.defaultBrowserCalloutDismissed.value
-            && AppConstants.iOSVersionGreaterThanOrEqual(to: 14)
-            && AppConstants.buildChannel == .release
+  var sectionDidChange: (() -> Void)?
+  private var defaultCalloutView = DefaultBrowserCalloutView()
+
+  private typealias DefaultBrowserCalloutCell = NewTabCenteredCollectionViewCell<DefaultBrowserCalloutView>
+
+  static var shouldShowCallout: Bool {
+    !Preferences.General.defaultBrowserCalloutDismissed.value
+      && AppConstants.iOSVersionGreaterThanOrEqual(to: 14)
+      && AppConstants.buildChannel == .release
+  }
+
+  func registerCells(to collectionView: UICollectionView) {
+    collectionView.register(DefaultBrowserCalloutCell.self)
+  }
+
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    Self.shouldShowCallout ? 1 : 0
+  }
+
+  func collectionView(
+    _ collectionView: UICollectionView,
+    cellForItemAt indexPath: IndexPath
+  ) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCell(for: indexPath) as DefaultBrowserCalloutCell
+    cell.view.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
+    cell.view.closeHaandler = { [weak self] in
+      Preferences.General.defaultBrowserCalloutDismissed.value = true
+      self?.sectionDidChange?()
+
     }
-    
-    func registerCells(to collectionView: UICollectionView) {
-        collectionView.register(DefaultBrowserCalloutCell.self)
+    return cell
+  }
+
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    sizeForItemAt indexPath: IndexPath
+  ) -> CGSize {
+
+    var size = fittingSizeForCollectionView(collectionView, section: indexPath.section)
+    size.height = defaultCalloutView.systemLayoutSizeFitting(size).height
+
+    return size
+  }
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    if !Self.shouldShowCallout {
+      return .zero
     }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        Self.shouldShowCallout ? 1 : 0
+
+    return UIEdgeInsets(top: 12, left: 16, bottom: -16, right: 16)
+  }
+
+  @objc func openSettings() {
+    guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+      return
     }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(for: indexPath) as DefaultBrowserCalloutCell
-        cell.view.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
-        cell.view.closeHaandler = { [weak self] in
-            Preferences.General.defaultBrowserCalloutDismissed.value = true
-            self?.sectionDidChange?()
-            
-        }
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        var size = fittingSizeForCollectionView(collectionView, section: indexPath.section)
-        size.height = defaultCalloutView.systemLayoutSizeFitting(size).height
-        
-        return size
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        if !Self.shouldShowCallout {
-            return .zero
-        }
-        
-        return UIEdgeInsets(top: 12, left: 16, bottom: -16, right: 16)
-    }
-    
-    @objc func openSettings() {
-        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-            return
-        }
-        
-        Preferences.General.defaultBrowserCalloutDismissed.value = true
-        UIApplication.shared.open(settingsUrl)
-    }
+
+    Preferences.General.defaultBrowserCalloutDismissed.value = true
+    UIApplication.shared.open(settingsUrl)
+  }
 }
 
 private class DefaultBrowserCalloutView: SpringButton {
-    
-    var closeHaandler: (() -> Void)?
-    
-    private let closeButton = UIButton().then {
-        $0.setImage(#imageLiteral(resourceName: "close_tab_bar").template, for: .normal)
-        $0.tintColor = .lightGray
-        $0.contentEdgeInsets = UIEdgeInsets(equalInset: 4)
-        $0.accessibilityLabel = Strings.defaultBrowserCalloutCloseAccesabilityLabel
+
+  var closeHaandler: (() -> Void)?
+
+  private let closeButton = UIButton().then {
+    $0.setImage(#imageLiteral(resourceName: "close_tab_bar").template, for: .normal)
+    $0.tintColor = .lightGray
+    $0.contentEdgeInsets = UIEdgeInsets(equalInset: 4)
+    $0.accessibilityLabel = Strings.defaultBrowserCalloutCloseAccesabilityLabel
+  }
+
+  private let label = UILabel().then {
+    $0.text = Strings.setDefaultBrowserCalloutTitle
+    $0.textColor = .black
+    $0.font = UIFont.systemFont(ofSize: 14.0, weight: .medium)
+    $0.numberOfLines = 0
+    $0.preferredMaxLayoutWidth = 280
+    $0.textAlignment = .center
+  }
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    clipsToBounds = true
+    layer.cornerRadius = 8
+    layer.cornerCurve = .continuous
+    backgroundColor = .braveSuccessBackground
+
+    addSubview(label)
+    addSubview(closeButton)
+
+    closeButton.addTarget(self, action: #selector(closeTab), for: .touchUpInside)
+
+    label.snp.makeConstraints {
+      $0.top.bottom.equalToSuperview().inset(10)
+      $0.leading.equalToSuperview().offset(24)
+      $0.trailing.equalTo(closeButton).inset(20)
     }
-    
-    private let label = UILabel().then {
-        $0.text = Strings.setDefaultBrowserCalloutTitle
-        $0.textColor = .black
-        $0.font = UIFont.systemFont(ofSize: 14.0, weight: .medium)
-        $0.numberOfLines = 0
-        $0.preferredMaxLayoutWidth = 280
-        $0.textAlignment = .center
+
+    closeButton.snp.makeConstraints {
+      $0.top.equalToSuperview().inset(2)
+      $0.trailing.equalToSuperview().inset(8)
     }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        clipsToBounds = true
-        layer.cornerRadius = 8
-        layer.cornerCurve = .continuous
-        backgroundColor = .braveSuccessBackground
-        
-        addSubview(label)
-        addSubview(closeButton)
-        
-        closeButton.addTarget(self, action: #selector(closeTab), for: .touchUpInside)
-        
-        label.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().inset(10)
-            $0.leading.equalToSuperview().offset(24)
-            $0.trailing.equalTo(closeButton).inset(20)
-        }
-        
-        closeButton.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(2)
-            $0.trailing.equalToSuperview().inset(8)
-        }
-    }
-    
-    @objc func closeTab() {
-        closeHaandler?()
-    }
+  }
+
+  @objc func closeTab() {
+    closeHaandler?()
+  }
 
 }

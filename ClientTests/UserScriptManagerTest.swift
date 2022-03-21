@@ -7,22 +7,22 @@ import XCTest
 @testable import Client
 
 class UserScriptManagerTest: XCTestCase {
-    func testisMessageHandlerTokenMissing() {
-        var body: [String: Any] = [
-            "data": 1,
-            "securitytoken": UserScriptManager.messageHandlerTokenString
-        ]
-        XCTAssertFalse(UserScriptManager.isMessageHandlerTokenMissing(in: body))
+  func testisMessageHandlerTokenMissing() {
+    var body: [String: Any] = [
+      "data": 1,
+      "securitytoken": UserScriptManager.messageHandlerTokenString,
+    ]
+    XCTAssertFalse(UserScriptManager.isMessageHandlerTokenMissing(in: body))
 
-        body = [
-            "data": 1,
-            "securitytoken": "test"
-        ]
-        XCTAssertTrue(UserScriptManager.isMessageHandlerTokenMissing(in: body))
+    body = [
+      "data": 1,
+      "securitytoken": "test",
+    ]
+    XCTAssertTrue(UserScriptManager.isMessageHandlerTokenMissing(in: body))
 
-        body = [
-            "data": 1,
-        ]
-        XCTAssertTrue(UserScriptManager.isMessageHandlerTokenMissing(in: body))
-    }
+    body = [
+      "data": 1
+    ]
+    XCTAssertTrue(UserScriptManager.isMessageHandlerTokenMissing(in: body))
+  }
 }

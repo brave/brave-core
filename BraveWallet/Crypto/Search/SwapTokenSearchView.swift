@@ -11,15 +11,15 @@ struct SwapTokenSearchView: View {
   @ObservedObject var swapTokenStore: SwapTokenStore
 
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   enum SwapSearchType {
     case fromToken
     case toToken
   }
-  
+
   var searchType: SwapSearchType
   var network: BraveWallet.EthereumChain
-  
+
   var body: some View {
     let excludedToken = searchType == .fromToken ? swapTokenStore.selectedToToken : swapTokenStore.selectedFromToken
     TokenList(tokens: swapTokenStore.allTokens.filter { ($0.symbol != excludedToken?.symbol) && ($0.isErc20 || $0.symbol == network.symbol) }) { token in
@@ -43,9 +43,10 @@ struct SwapTokenSearchView: View {
 #if DEBUG
 struct SwapTokenSearchView_Previews: PreviewProvider {
   static var previews: some View {
-    SwapTokenSearchView(swapTokenStore: .previewStore,
-                        searchType: .fromToken,
-                        network: .init()
+    SwapTokenSearchView(
+      swapTokenStore: .previewStore,
+      searchType: .fromToken,
+      network: .init()
     )
   }
 }

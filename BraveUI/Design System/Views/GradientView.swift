@@ -8,29 +8,29 @@ import SwiftUI
 
 /// A UIView whos layer is a gradient layer
 public class GradientView: UIView {
-  
+
   public convenience init() {
     self.init(colors: [], positions: [], startPoint: .zero, endPoint: CGPoint(x: 0, y: 1))
   }
-  
+
   public init(colors: [UIColor], positions: [CGFloat], startPoint: CGPoint, endPoint: CGPoint) {
     super.init(frame: .zero)
-    
+
     gradientLayer.colors = colors.map { $0.resolvedColor(with: traitCollection).cgColor }
     gradientLayer.locations = positions.map { NSNumber(value: Double($0)) }
     gradientLayer.startPoint = startPoint
     gradientLayer.endPoint = endPoint
   }
-  
+
   /// The gradient layer which you may modify
   public var gradientLayer: CAGradientLayer {
-    return layer as! CAGradientLayer // swiftlint:disable:this force_cast
+    return layer as! CAGradientLayer  // swiftlint:disable:this force_cast
   }
-  
+
   public override class var layerClass: AnyClass {
     return CAGradientLayer.self
   }
-  
+
   @available(*, unavailable)
   required init?(coder aDecoder: NSCoder) {
     fatalError()
@@ -45,17 +45,17 @@ public class GradientView: UIView {
 /// providers
 public class BraveGradientView: GradientView {
   private var provider: (UITraitCollection) -> BraveGradient
-  
+
   public init(dynamicProvider provider: @escaping (UITraitCollection) -> BraveGradient) {
     self.provider = provider
     super.init(colors: [], positions: [], startPoint: .zero, endPoint: .zero)
     updateGradient()
   }
-  
+
   public convenience init(gradient: BraveGradient) {
     self.init(dynamicProvider: { _ in gradient })
   }
-  
+
   private func updateGradient() {
     let gradient = provider(traitCollection)
     gradientLayer.type = gradient.type
@@ -64,7 +64,7 @@ public class BraveGradientView: GradientView {
     gradientLayer.startPoint = gradient.startPoint
     gradientLayer.endPoint = gradient.endPoint
   }
-  
+
   public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
     if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
@@ -72,4 +72,3 @@ public class BraveGradientView: GradientView {
     }
   }
 }
-

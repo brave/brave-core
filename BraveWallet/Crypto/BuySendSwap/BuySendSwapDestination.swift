@@ -12,11 +12,11 @@ import BraveCore
 struct BuySendSwapDestination: Identifiable, Equatable, Hashable {
   enum Kind: String, Identifiable, CaseIterable {
     case buy, send, swap
-    
+
     var id: String {
       rawValue
     }
-    
+
     var localizedTitle: String {
       switch self {
       case .buy:
@@ -27,7 +27,7 @@ struct BuySendSwapDestination: Identifiable, Equatable, Hashable {
         return Strings.Wallet.swap
       }
     }
-    
+
     var localizedDescription: String {
       switch self {
       case .buy:
@@ -39,7 +39,7 @@ struct BuySendSwapDestination: Identifiable, Equatable, Hashable {
       }
     }
   }
-  
+
   var kind: Kind
   var initialToken: BraveWallet.BlockchainToken?
   var id: String { kind.id }

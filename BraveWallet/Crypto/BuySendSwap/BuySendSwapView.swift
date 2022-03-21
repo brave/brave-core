@@ -11,7 +11,7 @@ struct BuySendSwapView: View {
   var network: BraveWallet.EthereumChain
   var action: (BuySendSwapDestination) -> Void
   var destinations: [BuySendSwapDestination]
-  
+
   init(
     network: BraveWallet.EthereumChain,
     action: @escaping (BuySendSwapDestination) -> Void
@@ -21,12 +21,14 @@ struct BuySendSwapView: View {
     if network.isCustom {
       destinations = [BuySendSwapDestination(kind: .send)]
     } else {
-      destinations = [BuySendSwapDestination(kind: .buy),
-                        BuySendSwapDestination(kind: .send),
-                        BuySendSwapDestination(kind: .swap)]
+      destinations = [
+        BuySendSwapDestination(kind: .buy),
+        BuySendSwapDestination(kind: .send),
+        BuySendSwapDestination(kind: .swap),
+      ]
     }
   }
-  
+
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
       ForEach(destinations, id: \.self) { destination in
@@ -60,7 +62,7 @@ struct BuySendSwapView_Previews: PreviewProvider {
   static var previews: some View {
     BuySendSwapView(network: .init(), action: { _ in })
       .previewLayout(.sizeThatFits)
-//      .previewColorSchemes()
+      //      .previewColorSchemes()
       .previewSizeCategories([.large, .accessibilityLarge])
   }
 }

@@ -9,36 +9,36 @@ import Static
 import Shared
 
 class RewardsInternalsContributionPublishersListController: TableViewController {
-    private let publishers: [Ledger.ContributionPublisher]
-    init(publishers: [Ledger.ContributionPublisher]) {
-        self.publishers = publishers
-        super.init(style: .grouped)
+  private let publishers: [Ledger.ContributionPublisher]
+  init(publishers: [Ledger.ContributionPublisher]) {
+    self.publishers = publishers
+    super.init(style: .grouped)
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    title = Strings.RewardsInternals.publishers
+
+    let batFormatter = NumberFormatter().then {
+      $0.minimumIntegerDigits = 1
+      $0.minimumFractionDigits = 1
+      $0.maximumFractionDigits = 3
     }
-    
-    @available(*, unavailable)
-    required init(coder: NSCoder) {
-        fatalError()
+
+    dataSource.sections = publishers.map { pub in
+      .init(
+        header: .title(pub.publisherKey),
+        rows: [
+          Row(text: Strings.RewardsInternals.totalAmount, detailText: "\(batFormatter.string(from: NSNumber(value: pub.totalAmount)) ?? "0.0") \(Strings.BAT)"),
+          Row(text: Strings.RewardsInternals.contributionAmount, detailText: "\(batFormatter.string(from: NSNumber(value: pub.contributedAmount)) ?? "0.0") \(Strings.BAT)"),
+        ]
+      )
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        title = Strings.RewardsInternals.publishers
-        
-        let batFormatter = NumberFormatter().then {
-            $0.minimumIntegerDigits = 1
-            $0.minimumFractionDigits = 1
-            $0.maximumFractionDigits = 3
-        }
-        
-        dataSource.sections = publishers.map { pub in
-            .init(
-                header: .title(pub.publisherKey),
-                rows: [
-                    Row(text: Strings.RewardsInternals.totalAmount, detailText: "\(batFormatter.string(from: NSNumber(value: pub.totalAmount)) ?? "0.0") \(Strings.BAT)"),
-                    Row(text: Strings.RewardsInternals.contributionAmount, detailText: "\(batFormatter.string(from: NSNumber(value: pub.contributedAmount)) ?? "0.0") \(Strings.BAT)"),
-                ]
-            )
-        }
-    }
+  }
 }

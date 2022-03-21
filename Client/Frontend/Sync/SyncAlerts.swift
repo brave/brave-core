@@ -6,21 +6,22 @@ import Foundation
 import Shared
 
 struct SyncAlerts {
-    static var noConnection: UIAlertController {
-        let alert = UIAlertController(title: Strings.syncNoConnectionTitle,
-                                      message: Strings.syncNoConnectionBody, preferredStyle: .alert)
-        
-        let okAction = UIAlertAction(title: Strings.OKString, style: .default)
-        alert.addAction(okAction)
-        return alert
-    }
-    
-    static var initializationError: UIAlertController {
-        let title = Strings.syncInitErrorTitle
-        let message = Strings.syncInitErrorMessage
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
-        
-        return alert
-    }
+  static var noConnection: UIAlertController {
+    let alert = UIAlertController(
+      title: Strings.syncNoConnectionTitle,
+      message: Strings.syncNoConnectionBody, preferredStyle: .alert)
+
+    let okAction = UIAlertAction(title: Strings.OKString, style: .default)
+    alert.addAction(okAction)
+    return alert
+  }
+
+  static var initializationError: UIAlertController {
+    let title = Strings.syncInitErrorTitle
+    let message = Strings.syncInitErrorMessage
+    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
+
+    return alert
+  }
 }

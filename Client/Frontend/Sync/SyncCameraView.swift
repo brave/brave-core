@@ -6,178 +6,180 @@ import BraveShared
 import Data
 
 class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
-    var captureSession: AVCaptureSession?
-    var videoPreviewLayer: AVCaptureVideoPreviewLayer?
-    var cameraOverlayView: UIImageView!
-    private lazy var cameraAccessButton: RoundInterfaceButton = {
-        let button = self.createCameraButton()
-        button.setTitle(Strings.grantCameraAccess, for: .normal)
-        button.tintColor = .white
-        button.addTarget(self, action: #selector(SEL_cameraAccess), for: .touchUpInside)
-        return button
-    }()
+  var captureSession: AVCaptureSession?
+  var videoPreviewLayer: AVCaptureVideoPreviewLayer?
+  var cameraOverlayView: UIImageView!
+  private lazy var cameraAccessButton: RoundInterfaceButton = {
+    let button = self.createCameraButton()
+    button.setTitle(Strings.grantCameraAccess, for: .normal)
+    button.tintColor = .white
+    button.addTarget(self, action: #selector(SEL_cameraAccess), for: .touchUpInside)
+    return button
+  }()
 
-    private lazy var openSettingsButton: RoundInterfaceButton = {
-        let button = self.createCameraButton()
-        button.setTitle(Strings.openPhoneSettingsActionTitle, for: .normal)
-        button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
-        return button
-    }()
-    
-    var scanCallback: ((_ data: String) -> Void)?
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        cameraOverlayView = UIImageView(image: UIImage(named: "camera-overlay"))
-        cameraOverlayView.contentMode = .center
-        addSubview(cameraOverlayView)
-        addSubview(cameraAccessButton)
-        addSubview(openSettingsButton)
+  private lazy var openSettingsButton: RoundInterfaceButton = {
+    let button = self.createCameraButton()
+    button.setTitle(Strings.openPhoneSettingsActionTitle, for: .normal)
+    button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
+    return button
+  }()
 
-        [cameraAccessButton, openSettingsButton].forEach { button in
-            button.snp.makeConstraints { make in
-                make.centerX.equalTo(cameraOverlayView)
-                make.centerY.equalTo(cameraOverlayView)
-                make.width.equalTo(150)
-                make.height.equalTo(40)
-            }
+  var scanCallback: ((_ data: String) -> Void)?
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    cameraOverlayView = UIImageView(image: UIImage(named: "camera-overlay"))
+    cameraOverlayView.contentMode = .center
+    addSubview(cameraOverlayView)
+    addSubview(cameraAccessButton)
+    addSubview(openSettingsButton)
+
+    [cameraAccessButton, openSettingsButton].forEach { button in
+      button.snp.makeConstraints { make in
+        make.centerX.equalTo(cameraOverlayView)
+        make.centerY.equalTo(cameraOverlayView)
+        make.width.equalTo(150)
+        make.height.equalTo(40)
+      }
+    }
+
+    switch AVCaptureDevice.authorizationStatus(for: AVMediaType.video) {
+    case .authorized:
+      cameraAccessButton.isHidden = true
+      openSettingsButton.isHidden = true
+      startCapture()
+    case .denied:
+      cameraAccessButton.isHidden = true
+      openSettingsButton.isHidden = false
+    default:
+      cameraAccessButton.isHidden = false
+      openSettingsButton.isHidden = true
+    }
+  }
+
+  fileprivate func createCameraButton() -> RoundInterfaceButton {
+    let button = RoundInterfaceButton(type: .roundedRect)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.bold)
+    button.setTitleColor(UIColor.white, for: .normal)
+    button.backgroundColor = .clear
+    button.layer.borderColor = UIColor.white.withAlphaComponent(0.4).cgColor
+    button.layer.borderWidth = 1.5
+
+    return button
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override func layoutSubviews() {
+    if let vpl = videoPreviewLayer {
+      vpl.frame = bounds
+    }
+    cameraOverlayView.frame = bounds
+  }
+
+  @objc func SEL_cameraAccess() {
+    startCapture()
+  }
+
+  @objc func openSettings() {
+    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+  }
+
+  private func startCapture() {
+    guard let captureDevice = AVCaptureDevice.default(for: AVMediaType.video) else {
+      print("Capture device is nil")
+      return
+    }
+
+    let input: AVCaptureDeviceInput?
+    do {
+      input = try AVCaptureDeviceInput(device: captureDevice) as AVCaptureDeviceInput
+    } catch let error as NSError {
+      debugPrint(error)
+      return
+    }
+
+    captureSession = AVCaptureSession()
+
+    guard let captureSession = captureSession else {
+      print("Capture session is nil")
+      return
+    }
+
+    captureSession.addInput(input! as AVCaptureInput)
+
+    let captureMetadataOutput = AVCaptureMetadataOutput()
+    captureSession.addOutput(captureMetadataOutput)
+
+    captureMetadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+    captureMetadataOutput.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
+
+    videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+    videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
+    videoPreviewLayer?.frame = layer.bounds
+    layer.addSublayer(videoPreviewLayer!)
+
+    captureSession.startRunning()
+    bringSubviewToFront(cameraOverlayView)
+
+    AVCaptureDevice.requestAccess(
+      for: AVMediaType.video,
+      completionHandler: { (granted: Bool) -> Void in
+        DispatchQueue.main.async {
+          self.cameraAccessButton.isHidden = true
+          if granted {
+            self.openSettingsButton.isHidden = true
+          } else {
+            self.openSettingsButton.isHidden = false
+            self.bringSubviewToFront(self.openSettingsButton)
+          }
         }
+      })
+  }
 
-        switch AVCaptureDevice.authorizationStatus(for: AVMediaType.video) {
-        case .authorized:
-            cameraAccessButton.isHidden = true
-            openSettingsButton.isHidden = true
-            startCapture()
-        case .denied:
-            cameraAccessButton.isHidden = true
-            openSettingsButton.isHidden = false
-        default:
-            cameraAccessButton.isHidden = false
-            openSettingsButton.isHidden = true
-        }
-    }
+  func startRunning() {
+    captureSession?.startRunning()
+  }
 
-    fileprivate func createCameraButton() -> RoundInterfaceButton {
-        let button = RoundInterfaceButton(type: .roundedRect)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.bold)
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.backgroundColor = .clear
-        button.layer.borderColor = UIColor.white.withAlphaComponent(0.4).cgColor
-        button.layer.borderWidth = 1.5
+  func stopRunning() {
+    captureSession?.stopRunning()
+  }
 
-        return button
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        if let vpl = videoPreviewLayer {
-            vpl.frame = bounds
-        }
-        cameraOverlayView.frame = bounds
-    }
-    
-    @objc func SEL_cameraAccess() {
-        startCapture()
-    }
+  func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
 
-    @objc func openSettings() {
-        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-    }
-    
-    private func startCapture() {
-        guard let captureDevice = AVCaptureDevice.default(for: AVMediaType.video) else {
-            print("Capture device is nil")
-            return
-        }
-        
-        let input: AVCaptureDeviceInput?
-        do {
-            input = try AVCaptureDeviceInput(device: captureDevice) as AVCaptureDeviceInput
-        } catch let error as NSError {
-            debugPrint(error)
-            return
-        }
-        
-        captureSession = AVCaptureSession()
+    if metadataObjects.isEmpty { return }
 
-        guard let captureSession = captureSession else {
-            print("Capture session is nil")
-            return
+    guard let metadataObj = metadataObjects[0] as? AVMetadataMachineReadableCodeObject else {
+      assertionFailure("Could not cast metadataObj to AVMetadataMachineReadableCodeObject")
+      return
+    }
+    if metadataObj.type == AVMetadataObject.ObjectType.qr {
+      if let callback = scanCallback {
+        if let stringValue = metadataObj.stringValue {
+          callback(stringValue)
         }
+      }
+    }
+  }
 
-        captureSession.addInput(input! as AVCaptureInput)
-        
-        let captureMetadataOutput = AVCaptureMetadataOutput()
-        captureSession.addOutput(captureMetadataOutput)
-        
-        captureMetadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-        captureMetadataOutput.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
-        
-        videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        videoPreviewLayer?.frame = layer.bounds
-        layer.addSublayer(videoPreviewLayer!)
-        
-        captureSession.startRunning()
-        bringSubviewToFront(cameraOverlayView)
+  func cameraOverlayError() {
+    NSObject.cancelPreviousPerformRequests(withTarget: self)
 
-        AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { (granted: Bool) -> Void in
-            DispatchQueue.main.async {
-                self.cameraAccessButton.isHidden = true
-                if granted {
-                    self.openSettingsButton.isHidden = true
-                } else {
-                    self.openSettingsButton.isHidden = false
-                    self.bringSubviewToFront(self.openSettingsButton)
-                }
-            }
-        })
-    }
-    
-    func startRunning() {
-        captureSession?.startRunning()
-    }
-    
-    func stopRunning() {
-        captureSession?.stopRunning()
-    }
-    
-    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        
-        if metadataObjects.isEmpty { return }
-        
-        guard let metadataObj = metadataObjects[0] as? AVMetadataMachineReadableCodeObject else {
-            assertionFailure("Could not cast metadataObj to AVMetadataMachineReadableCodeObject")
-            return
-        }
-        if metadataObj.type == AVMetadataObject.ObjectType.qr {
-            if let callback = scanCallback {
-                if let stringValue = metadataObj.stringValue {
-                    callback(stringValue)
-                }
-            }
-        }
-    }
-    
-    func cameraOverlayError() {
-        NSObject.cancelPreviousPerformRequests(withTarget: self)
-        
-        cameraOverlayView.tintColor = .red
-        perform(#selector(cameraOverlayNormal), with: self, afterDelay: 1.0)
-    }
-    
-    func cameraOverlaySuccess() {
-        NSObject.cancelPreviousPerformRequests(withTarget: self)
-        
-        cameraOverlayView.tintColor = .green
-        perform(#selector(cameraOverlayNormal), with: self, afterDelay: 1.0)
-    }
-    
-    @objc func cameraOverlayNormal() {
-        cameraOverlayView.tintColor = .white
-    }
+    cameraOverlayView.tintColor = .red
+    perform(#selector(cameraOverlayNormal), with: self, afterDelay: 1.0)
+  }
+
+  func cameraOverlaySuccess() {
+    NSObject.cancelPreviousPerformRequests(withTarget: self)
+
+    cameraOverlayView.tintColor = .green
+    perform(#selector(cameraOverlayNormal), with: self, afterDelay: 1.0)
+  }
+
+  @objc func cameraOverlayNormal() {
+    cameraOverlayView.tintColor = .white
+  }
 }

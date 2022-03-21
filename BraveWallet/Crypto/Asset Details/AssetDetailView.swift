@@ -14,13 +14,13 @@ struct AssetDetailView: View {
   @ObservedObject var assetDetailStore: AssetDetailStore
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
-  
+
   @State private var tableInset: CGFloat = -16.0
   @State private var isShowingAddAccount: Bool = false
-  
+
   @Environment(\.buySendSwapDestination)
   private var buySendSwapDestination: Binding<BuySendSwapDestination?>
-  
+
   @Environment(\.openWalletURLAction) private var openWalletURL
 
   var body: some View {
@@ -33,7 +33,7 @@ struct AssetDetailView: View {
           buySendSwapDestination: buySendSwapDestination
         )
         .resetListHeaderStyle()
-        .padding(.horizontal, tableInset) // inset grouped layout margins workaround
+        .padding(.horizontal, tableInset)  // inset grouped layout margins workaround
       ) {
       }
       Section(
@@ -93,7 +93,8 @@ struct AssetDetailView: View {
               if !tx.txHash.isEmpty {
                 Button(action: {
                   if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
-                     let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)") {
+                    let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)")
+                  {
                     openWalletURL?(url)
                   }
                 }) {
@@ -144,7 +145,7 @@ struct CurrencyDetailView_Previews: PreviewProvider {
         keyringStore: .previewStore,
         networkStore: .previewStore
       )
-        .navigationBarTitleDisplayMode(.inline)
+      .navigationBarTitleDisplayMode(.inline)
     }
     .previewColorSchemes()
   }

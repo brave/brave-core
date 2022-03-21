@@ -30,7 +30,7 @@ public class AdsNotificationHandler: BraveAdsNotificationHandler {
   public var canShowNotifications: (() -> Bool)?
   /// The controller which we will show notifications on top of
   public private(set) weak var presentingController: UIViewController?
-  
+
   /// Create a handler instance with the given ads instance.
   ///
   /// - note: This method automatically sets `notificationsHandler` on BATBraveAds
@@ -40,55 +40,58 @@ public class AdsNotificationHandler: BraveAdsNotificationHandler {
     self.ads.notificationsHandler = self
     self.presentingController = presentingController
   }
-  
+
   private var adsQueue: [AdNotification] = []
-  
+
   private lazy var adsViewController = AdsViewController()
-  
+
   private func displayAd(notification: AdNotification) {
     guard let presentingController = presentingController else { return }
-    
+
     guard let window = presentingController.view.window else {
       return
     }
-    
+
     if adsViewController.parent == nil {
       window.addSubview(adsViewController.view)
       adsViewController.view.snp.makeConstraints {
         $0.edges.equalTo(window.safeAreaLayoutGuide.snp.edges)
       }
     }
-    
+
     self.ads.reportAdNotificationEvent(notification.uuid, eventType: .viewed)
-    
-    adsViewController.display(ad: notification, handler: { [weak self] (notification, action) in
-      guard let self = self else { return }
-      switch action {
-      case .opened:
-        self.ads.reportAdNotificationEvent(notification.uuid, eventType: .clicked)
-      case .dismissed:
-        self.ads.reportAdNotificationEvent(notification.uuid, eventType: .dismissed)
-      case .timedOut:
-        self.ads.reportAdNotificationEvent(notification.uuid, eventType: .timedOut)
-      case .disliked:
-        self.ads.reportAdNotificationEvent(notification.uuid, eventType: .dismissed)
-        self.ads.toggleThumbsDown(forAd: notification.uuid, advertiserId: notification.advertiserID)
-      }
-      self.actionOccured?(notification, action)
-      
-      if let nextAd = self.adsQueue.popLast() {
-        self.displayAd(notification: nextAd)
-      }
-    }, animatedOut: { [weak self] in
-      guard let self = self else { return }
-      if self.adsViewController.visibleAdView == nil && self.adsQueue.isEmpty {
-        self.adsViewController.willMove(toParent: nil)
-        self.adsViewController.view.removeFromSuperview()
-        self.adsViewController.removeFromParent()
-      }
-    })
+
+    adsViewController.display(
+      ad: notification,
+      handler: { [weak self] (notification, action) in
+        guard let self = self else { return }
+        switch action {
+        case .opened:
+          self.ads.reportAdNotificationEvent(notification.uuid, eventType: .clicked)
+        case .dismissed:
+          self.ads.reportAdNotificationEvent(notification.uuid, eventType: .dismissed)
+        case .timedOut:
+          self.ads.reportAdNotificationEvent(notification.uuid, eventType: .timedOut)
+        case .disliked:
+          self.ads.reportAdNotificationEvent(notification.uuid, eventType: .dismissed)
+          self.ads.toggleThumbsDown(forAd: notification.uuid, advertiserId: notification.advertiserID)
+        }
+        self.actionOccured?(notification, action)
+
+        if let nextAd = self.adsQueue.popLast() {
+          self.displayAd(notification: nextAd)
+        }
+      },
+      animatedOut: { [weak self] in
+        guard let self = self else { return }
+        if self.adsViewController.visibleAdView == nil && self.adsQueue.isEmpty {
+          self.adsViewController.willMove(toParent: nil)
+          self.adsViewController.view.removeFromSuperview()
+          self.adsViewController.removeFromParent()
+        }
+      })
   }
-  
+
   public func showNotification(_ notification: AdNotification) {
     adsQueue.insert(notification, at: 0)
     if adsViewController.visibleAdView == nil {
@@ -96,22 +99,25 @@ public class AdsNotificationHandler: BraveAdsNotificationHandler {
       displayAd(notification: adsQueue.popLast()!)
     }
   }
-  
+
   public func clearNotification(withIdentifier identifier: String) {
     adsQueue.removeAll(where: { $0.uuid == identifier })
   }
-  
+
   public func shouldShowNotifications() -> Bool {
     guard let presentingController = presentingController,
-          let rootVC = presentingController.currentScene?.browserViewController else { return false }
+      let rootVC = presentingController.currentScene?.browserViewController
+    else { return false }
     func topViewController(startingFrom viewController: UIViewController) -> UIViewController {
       var top = viewController
       if let navigationController = top as? UINavigationController,
-        let vc = navigationController.visibleViewController {
+        let vc = navigationController.visibleViewController
+      {
         return topViewController(startingFrom: vc)
       }
       if let tabController = top as? UITabBarController,
-        let vc = tabController.selectedViewController {
+        let vc = tabController.selectedViewController
+      {
         return topViewController(startingFrom: vc)
       }
       while let next = top.presentedViewController {

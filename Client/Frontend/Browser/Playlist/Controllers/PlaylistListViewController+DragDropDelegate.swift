@@ -10,67 +10,67 @@ import BraveUI
 // MARK: - Reordering of cells
 
 extension PlaylistListViewController: UITableViewDragDelegate, UITableViewDropDelegate {
-    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        PlaylistManager.shared.reorderItems(from: sourceIndexPath, to: destinationIndexPath) {
-            PlaylistManager.shared.reloadData()
-        }
+  func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    PlaylistManager.shared.reorderItems(from: sourceIndexPath, to: destinationIndexPath) {
+      PlaylistManager.shared.reloadData()
     }
-    
-    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        let item = PlaylistManager.shared.itemAtIndex(indexPath.row)
-        let dragItem = UIDragItem(itemProvider: NSItemProvider())
-        dragItem.localObject = item
-        return [dragItem]
+  }
+
+  func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+    let item = PlaylistManager.shared.itemAtIndex(indexPath.row)
+    let dragItem = UIDragItem(itemProvider: NSItemProvider())
+    dragItem.localObject = item
+    return [dragItem]
+  }
+
+  func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+
+    var dropProposal = UITableViewDropProposal(operation: .cancel)
+    guard session.items.count == 1 else { return dropProposal }
+
+    if tableView.hasActiveDrag {
+      dropProposal = UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
     }
-    
-    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
-        
-        var dropProposal = UITableViewDropProposal(operation: .cancel)
-        guard session.items.count == 1 else { return dropProposal }
-        
-        if tableView.hasActiveDrag {
-            dropProposal = UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
-        }
-        return dropProposal
-    }
-        
-    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
-        guard let sourceIndexPath = coordinator.items.first?.sourceIndexPath else { return }
-        let destinationIndexPath: IndexPath
-        if let indexPath = coordinator.destinationIndexPath {
-            destinationIndexPath = indexPath
-        } else {
-            let section = tableView.numberOfSections - 1
-            let row = tableView.numberOfRows(inSection: section)
-            destinationIndexPath = IndexPath(row: row, section: section)
-        }
-        
-        if coordinator.proposal.operation == .move {
-            guard let item = coordinator.items.first else { return }
-            _ = coordinator.drop(item.dragItem, toRowAt: destinationIndexPath)
-            tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, dragPreviewParametersForRowAt indexPath: IndexPath) -> UIDragPreviewParameters? {
-        guard let cell = tableView.cellForRow(at: indexPath) as? PlaylistCell else { return nil }
-        
-        let preview = UIDragPreviewParameters()
-        preview.visiblePath = UIBezierPath(roundedRect: cell.contentView.frame, cornerRadius: 12.0)
-        preview.backgroundColor = .tertiaryBraveBackground
-        return preview
+    return dropProposal
+  }
+
+  func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+    guard let sourceIndexPath = coordinator.items.first?.sourceIndexPath else { return }
+    let destinationIndexPath: IndexPath
+    if let indexPath = coordinator.destinationIndexPath {
+      destinationIndexPath = indexPath
+    } else {
+      let section = tableView.numberOfSections - 1
+      let row = tableView.numberOfRows(inSection: section)
+      destinationIndexPath = IndexPath(row: row, section: section)
     }
 
-    func tableView(_ tableView: UITableView, dropPreviewParametersForRowAt indexPath: IndexPath) -> UIDragPreviewParameters? {
-        guard let cell = tableView.cellForRow(at: indexPath) as? PlaylistCell else { return nil }
-        
-        let preview = UIDragPreviewParameters()
-        preview.visiblePath = UIBezierPath(roundedRect: cell.contentView.frame, cornerRadius: 12.0)
-        preview.backgroundColor = .tertiaryBraveBackground
-        return preview
+    if coordinator.proposal.operation == .move {
+      guard let item = coordinator.items.first else { return }
+      _ = coordinator.drop(item.dragItem, toRowAt: destinationIndexPath)
+      tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
     }
-    
-    func tableView(_ tableView: UITableView, dragSessionIsRestrictedToDraggingApplication session: UIDragSession) -> Bool {
-        true
-    }
+  }
+
+  func tableView(_ tableView: UITableView, dragPreviewParametersForRowAt indexPath: IndexPath) -> UIDragPreviewParameters? {
+    guard let cell = tableView.cellForRow(at: indexPath) as? PlaylistCell else { return nil }
+
+    let preview = UIDragPreviewParameters()
+    preview.visiblePath = UIBezierPath(roundedRect: cell.contentView.frame, cornerRadius: 12.0)
+    preview.backgroundColor = .tertiaryBraveBackground
+    return preview
+  }
+
+  func tableView(_ tableView: UITableView, dropPreviewParametersForRowAt indexPath: IndexPath) -> UIDragPreviewParameters? {
+    guard let cell = tableView.cellForRow(at: indexPath) as? PlaylistCell else { return nil }
+
+    let preview = UIDragPreviewParameters()
+    preview.visiblePath = UIBezierPath(roundedRect: cell.contentView.frame, cornerRadius: 12.0)
+    preview.backgroundColor = .tertiaryBraveBackground
+    return preview
+  }
+
+  func tableView(_ tableView: UITableView, dragSessionIsRestrictedToDraggingApplication session: UIDragSession) -> Bool {
+    true
+  }
 }

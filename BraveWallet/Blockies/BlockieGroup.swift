@@ -33,7 +33,7 @@ struct BlockieGroup: View {
   /// Whether or not additional padding is added to the group to keep the main blockie
   /// visually centered
   var alignVisuallyCentered = true
-  
+
   var body: some View {
     ZStack(alignment: .trailing) {
       Blockie(address: fromAddress)
@@ -44,7 +44,7 @@ struct BlockieGroup: View {
           d[HorizontalAlignment.center]
         }
     }
-    .padding(.leading, alignVisuallyCentered ? size * 0.3 : 0) // Visually center the main blockie
+    .padding(.leading, alignVisuallyCentered ? size * 0.3 : 0)  // Visually center the main blockie
   }
 }
 
@@ -72,9 +72,9 @@ struct BlockieGroup_Previews: PreviewProvider {
         toAddress: "0xbd5b489e2177f20a0779dff0faa834ca834bcd39"
       )
     }
-      .padding()
-      .previewLayout(.sizeThatFits)
-      .previewSizeCategories()
+    .padding()
+    .previewLayout(.sizeThatFits)
+    .previewSizeCategories()
   }
 }
 #endif

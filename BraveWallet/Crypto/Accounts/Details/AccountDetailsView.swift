@@ -17,17 +17,17 @@ struct AccountDetailsView: View {
   @ObservedObject var keyringStore: KeyringStore
   var account: BraveWallet.AccountInfo
   var editMode: Bool
-  
+
   @State private var name: String = ""
   @State private var isFieldFocused: Bool = false
   @State private var isPresentingRemoveConfirmation: Bool = false
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   private func removeAccount() {
     keyringStore.removeSecondaryAccount(forAddress: account.address)
   }
-  
+
   private func renameAccountAndDismiss() {
     if name.isEmpty {
       // Show error?
@@ -36,7 +36,7 @@ struct AccountDetailsView: View {
     keyringStore.renameAccount(account, name: name)
     presentationMode.dismiss()
   }
-  
+
   var body: some View {
     NavigationView {
       List {
@@ -119,7 +119,7 @@ struct AccountDetailsView: View {
 
 private struct AccountDetailsHeaderView: View {
   var address: String
-  
+
   private var qrCodeImage: UIImage? {
     guard let addressData = address.data(using: .utf8) else { return nil }
     let context = CIContext()
@@ -127,12 +127,13 @@ private struct AccountDetailsHeaderView: View {
     filter.message = addressData
     filter.correctionLevel = "H"
     if let image = filter.outputImage,
-       let cgImage = context.createCGImage(image, from: image.extent) {
+      let cgImage = context.createCGImage(image, from: image.extent)
+    {
       return UIImage(cgImage: cgImage)
     }
     return nil
   }
-  
+
   var body: some View {
     VStack(spacing: 12) {
       RoundedRectangle(cornerRadius: 10, style: .continuous)

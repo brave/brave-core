@@ -6,20 +6,20 @@
 import Intents
 
 class IntentHandler: INExtension {
-    
-    override func handler(for intent: INIntent) -> Any {
-        if intent is OpenWebsiteIntent {
-            return OpenWebsiteIntentHandler()
-        }
-        
-        if intent is OpenHistoryWebsiteIntent {
-            return OpenHistoryWebsiteIntentHandler()
-        }
-        
-        if intent is OpenBookmarkWebsiteIntent {
-            return OpenBookmarkWebsiteIntent()
-        }
-        
-        return self
+
+  override func handler(for intent: INIntent) -> Any {
+    if intent is OpenWebsiteIntent {
+      return OpenWebsiteIntentHandler()
     }
+
+    if intent is OpenHistoryWebsiteIntent {
+      return OpenHistoryWebsiteIntentHandler()
+    }
+
+    if intent is OpenBookmarkWebsiteIntent {
+      return OpenBookmarkWebsiteIntent()
+    }
+
+    return self
+  }
 }
