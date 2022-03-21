@@ -51,7 +51,7 @@ TOOLCHAIN_BUILD_DIR = os.path.join(TOOLCHAIN_ROOT, 'Xcode.app')
 
 def PlatformMeetsHermeticXcodeRequirements():
   if sys.platform != 'darwin':
-    return True
+    return False
   needed = MAC_MINIMUM_OS_VERSION
   major_version = [int(v) for v in platform.release().split('.')[:len(needed)]]
   return major_version >= needed
