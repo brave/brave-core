@@ -13,6 +13,8 @@
 @class BravePasswordAPI;
 @class BraveSyncAPI;
 @class BraveSyncProfileServiceIOS;
+@class BraveStats;
+
 @protocol BraveWalletBlockchainRegistry;
 @protocol BraveWalletBraveWalletProvider;
 @protocol BraveWalletProviderDelegate;
@@ -76,6 +78,8 @@ OBJC_EXPORT
              isPrivateBrowsing:(bool)isPrivateBrowsing;
 
 @property(readonly) NSString* walletProviderJS;
+
+@property(readonly) BraveStats* braveStats;
 
 @end
 

@@ -1,8 +1,16 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index 97ee8b825bcfc0441daa0b40405bb6c049ed9d35..c83754a70c7754a854c9dd358590f68dddc4edd9 100644
+index 97ee8b825bcfc0441daa0b40405bb6c049ed9d35..8c22b7d4e00b6986ceb752791a01a719f28c1145 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -310,6 +310,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -202,6 +202,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+   registry->RegisterIntegerPref(kTrialGroupPrefName, 0);
+ 
+   registry->RegisterIntegerPref(kSigninBottomSheetShownCount, 0);
++  BRAVE_REGISTER_LOCAL_STATE_PREFS
+ }
+ 
+ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -310,6 +311,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
  
    // Preference related to the browser sign-in policy that is being deprecated.
    registry->RegisterBooleanPref(kSigninAllowedByPolicy, true);
