@@ -19,7 +19,6 @@ namespace first_run {
 // Enable first run dialog on Win also.
 // Upstream only uses it for macOS/Linux.
 void ShowFirstRunDialog(Profile* profile);
-void ShowFirstRunDialogViews(Profile* profile);
 
 }  // namespace first_run
 
