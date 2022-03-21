@@ -6,12 +6,14 @@
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/memory/weak_ptr.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/solana_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -30,8 +32,60 @@ using brave_wallet::mojom::SolanaProviderError;
 
 namespace {
 
+// error returns from browser process
+constexpr char kErrorMessage[] = "error from browser";
 constexpr char kTestPublicKey[] =
     "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+
+const std::vector<uint8_t> kSerializedMessage = {
+    1,   0,   1,   2,   161, 51,  89,  91,  115, 210, 217, 212, 76,  159, 171,
+    200, 40,  150, 157, 70,  197, 71,  24,  44,  209, 108, 143, 4,   58,  251,
+    215, 62,  201, 172, 159, 197, 0,   0,   0,   0,   0,   0,   0,   0,   0,
+    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+    0,   0,   0,   0,   0,   0,   0,   0,   65,  223, 160, 84,  229, 200, 41,
+    124, 255, 227, 200, 207, 94,  13,  128, 218, 71,  139, 178, 169, 91,  44,
+    201, 177, 125, 166, 36,  96,  136, 125, 3,   136, 1,   1,   2,   0,   0,
+    12,  2,   0,   0,   0,   100, 0,   0,   0,   0,   0,   0,   0};
+
+const std::vector<uint8_t> kSerializedTx = {
+    1,   224, 52,  14,  175, 211, 221, 245, 217, 123, 232, 68,  232, 120, 145,
+    131, 154, 133, 31,  130, 73,  190, 13,  227, 109, 83,  152, 160, 202, 226,
+    134, 138, 141, 135, 187, 72,  153, 173, 159, 205, 222, 253, 26,  44,  34,
+    18,  250, 176, 21,  84,  7,   142, 247, 65,  218, 40,  117, 145, 118, 52,
+    75,  183, 98,  232, 10,  1,   0,   1,   2,   161, 51,  89,  91,  115, 210,
+    217, 212, 76,  159, 171, 200, 40,  150, 157, 70,  197, 71,  24,  44,  209,
+    108, 143, 4,   58,  251, 215, 62,  201, 172, 159, 197, 0,   0,   0,   0,
+    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   65,  223,
+    160, 84,  229, 200, 41,  124, 255, 227, 200, 207, 94,  13,  128, 218, 71,
+    139, 178, 169, 91,  44,  201, 177, 125, 166, 36,  96,  136, 125, 3,   136,
+    1,   1,   2,   0,   0,   12,  2,   0,   0,   0,   100, 0,   0,   0,   0,
+    0,   0,   0};
+
+const std::vector<uint8_t> kSignedTx = {
+    1,   231, 78,  150, 120, 219, 234, 88,  44,  144, 225, 53,  221, 88,  82,
+    59,  51,  62,  211, 225, 231, 182, 123, 231, 229, 201, 48,  30,  137, 119,
+    233, 102, 88,  31,  65,  88,  147, 197, 72,  166, 241, 126, 26,  59,  239,
+    64,  196, 116, 28,  17,  124, 0,   123, 13,  28,  65,  242, 241, 226, 46,
+    227, 55,  234, 251, 10,  1,   0,   1,   2,   161, 51,  89,  91,  115, 210,
+    217, 212, 76,  159, 171, 200, 40,  150, 157, 70,  197, 71,  24,  44,  209,
+    108, 143, 4,   58,  251, 215, 62,  201, 172, 159, 197, 0,   0,   0,   0,
+    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   62,  84,
+    174, 253, 228, 77,  50,  164, 215, 178, 46,  88,  242, 49,  114, 246, 244,
+    48,  9,   18,  36,  41,  160, 254, 174, 6,   207, 115, 11,  58,  220, 167,
+    1,   1,   2,   0,   0,   12,  2,   0,   0,   0,   100, 0,   0,   0,   0,
+    0,   0,   0};
+
+std::string VectorToArrayString(const std::vector<uint8_t>& vec) {
+  std::string result;
+  for (size_t i = 0; i < vec.size(); ++i) {
+    base::StrAppend(&result, {base::NumberToString(vec[i])});
+    if (i != vec.size() - 1)
+      base::StrAppend(&result, {", "});
+  }
+  return result;
+}
 
 std::string ConnectScript(const std::string& args) {
   return base::StringPrintf(
@@ -43,6 +97,42 @@ std::string ConnectScript(const std::string& args) {
           }
         } connect())",
       args.c_str());
+}
+
+std::string SignTransactionScript(const std::string& args) {
+  const std::string signed_tx = VectorToArrayString(kSignedTx);
+  return base::StringPrintf(
+      R"(async function signTransaction() {
+          try {
+            const result = await window.solana.signTransaction%s
+            if (result.serialize().join() === new Uint8Array([%s]).join())
+              window.domAutomationController.send(true)
+             else
+              window.domAutomationController.send(false)
+          } catch (err) {
+            window.domAutomationController.send(err.message + (err.code ?? ""))
+          }
+        } signTransaction())",
+      args.c_str(), signed_tx.c_str());
+}
+
+std::string SignAllTransactionsScript(const std::string& args) {
+  const std::string signed_tx = VectorToArrayString(kSignedTx);
+  return base::StringPrintf(
+      R"(async function signAllTransactions() {
+          try {
+            const result = await window.solana.signAllTransactions%s
+            const isSameTx =
+              (tx) => tx.serialize().join() === new Uint8Array([%s]).join()
+            if (result.every(isSameTx))
+              window.domAutomationController.send(true)
+             else
+              window.domAutomationController.send(false)
+          } catch (err) {
+            window.domAutomationController.send(err.message + (err.code ?? ""))
+          }
+        } signAllTransactions())",
+      args.c_str(), signed_tx.c_str());
 }
 
 class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
@@ -61,16 +151,47 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
                               kTestPublicKey);
     } else {
       std::move(callback).Run(error_, error_message_, "");
+      ClearError();
     }
   }
   void Disconnect() override {}
-  void IsConnected(IsConnectedCallback callback) override {}
-  void GetPublicKey(GetPublicKeyCallback callback) override {}
+  void IsConnected(IsConnectedCallback callback) override {
+    if (error_ == SolanaProviderError::kSuccess) {
+      std::move(callback).Run(true);
+    } else {
+      std::move(callback).Run(false);
+      ClearError();
+    }
+  }
+  void GetPublicKey(GetPublicKeyCallback callback) override {
+    std::move(callback).Run(kTestPublicKey);
+  }
   void SignTransaction(const std::string& encoded_serialized_msg,
-                       SignTransactionCallback callback) override {}
+                       SignTransactionCallback callback) override {
+    EXPECT_EQ(encoded_serialized_msg,
+              brave_wallet::Base58Encode(kSerializedMessage));
+    if (error_ == SolanaProviderError::kSuccess) {
+      std::move(callback).Run(SolanaProviderError::kSuccess, "", kSignedTx);
+    } else {
+      std::move(callback).Run(error_, error_message_, std::vector<uint8_t>());
+      ClearError();
+    }
+  }
   void SignAllTransactions(
       const std::vector<std::string>& encoded_serialized_msgs,
-      SignAllTransactionsCallback callback) override {}
+      SignAllTransactionsCallback callback) override {
+    for (const auto& encoded_serialized_msg : encoded_serialized_msgs)
+      EXPECT_EQ(encoded_serialized_msg,
+                brave_wallet::Base58Encode(kSerializedMessage));
+    if (error_ == SolanaProviderError::kSuccess) {
+      std::move(callback).Run(SolanaProviderError::kSuccess, "",
+                              {kSignedTx, kSignedTx});
+    } else {
+      std::move(callback).Run(error_, error_message_,
+                              std::vector<std::vector<uint8_t>>());
+      ClearError();
+    }
+  }
   void SignAndSendTransaction(
       const std::string& encoded_serialized_msg,
       SignAndSendTransactionCallback callback) override {}
@@ -176,7 +297,9 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
     // This is intentional to trigger
     // TestBraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame
-    GURL url = GURL("brave://settings");
+    NavigateToURLAndWaitForLoadStop(browser(), GURL("brave://settings"));
+
+    GURL url = embedded_test_server()->GetURL("/empty.html");
     NavigateToURLAndWaitForLoadStop(browser(), url);
 
     ASSERT_TRUE(base::FeatureList::IsEnabled(
@@ -216,9 +339,6 @@ class SolanaProviderDisabledTest : public SolanaProviderTest {
 };
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderDisabledTest, SolanaObject) {
-  GURL url = embedded_test_server()->GetURL("/empty.html");
-  NavigateToURLAndWaitForLoadStop(browser(), url);
-
   auto result = EvalJs(web_contents(browser()),
                        "window.domAutomationController.send(!!window.solana)",
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
@@ -236,10 +356,15 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Incognito) {
   EXPECT_EQ(base::Value(false), result.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Connect) {
-  GURL url = embedded_test_server()->GetURL("/empty.html");
-  NavigateToURLAndWaitForLoadStop(browser(), url);
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, IsPhantom) {
+  auto result =
+      EvalJs(web_contents(browser()),
+             "window.domAutomationController.send(window.solana.isPhantom)",
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result.value);
+}
 
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Connect) {
   auto result = EvalJs(web_contents(browser()), ConnectScript(""),
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(kTestPublicKey), result.value);
@@ -260,8 +385,6 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Connect) {
       web_contents(browser())->GetMainFrame());
   ASSERT_TRUE(provider);
 
-  // error returns from browser process
-  constexpr char kErrorMessage[] = "error from browser";
   provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
 
   auto result4 = EvalJs(web_contents(browser()), ConnectScript(""),
@@ -271,4 +394,177 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Connect) {
                         base::NumberToString(static_cast<int>(
                             SolanaProviderError::kUserRejectedRequest))),
             result4.value);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, OnConnect) {
+  auto result =
+      EvalJs(web_contents(browser()),
+             R"(async function connect() {await window.solana.connect()}
+              window.solana.on('connect',
+                (key) => window.domAutomationController.send(key.toString()))
+              connect())",
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(kTestPublicKey), result.value);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, IsConnected) {
+  auto result =
+      EvalJs(web_contents(browser()),
+             "window.domAutomationController.send(window.solana.isConnected)",
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result.value);
+
+  TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
+      web_contents(browser())->GetMainFrame());
+  ASSERT_TRUE(provider);
+
+  // just make TestSolanaProvider::IsConnected to return false
+  provider->SetError(SolanaProviderError::kUserRejectedRequest, "");
+
+  auto result2 =
+      EvalJs(web_contents(browser()),
+             "window.domAutomationController.send(window.solana.isConnected)",
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(false), result2.value);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, GetPublicKey) {
+  auto result = EvalJs(
+      web_contents(browser()),
+      "window.domAutomationController.send(window.solana.publicKey.toString())",
+      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(kTestPublicKey), result.value);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Disconnect) {
+  auto result = EvalJs(web_contents(browser()),
+                       R"(async function disconnect() {
+                  const result = await window.solana.disconnect()
+                  if (result == undefined)
+                    window.domAutomationController.send(true)
+                  else
+                    window.domAutomationController.send(false)
+                }
+                disconnect())",
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result.value);
+
+  // OnDisconnect
+  auto result2 =
+      EvalJs(web_contents(browser()),
+             R"(async function disconnect() {await window.solana.disconnect()}
+                window.solana.on('disconnect', (arg) => {
+                  if (!arg)
+                    window.domAutomationController.send(true)
+                  else
+                    window.domAutomationController.send(false)
+                })
+                disconnect())",
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result2.value);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
+  const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
+  const std::string tx =
+      base::StrCat({"(window.solana.createTransaction(new Uint8Array([",
+                    serialized_tx_str, "])))"});
+  auto result = EvalJs(web_contents(browser()), SignTransactionScript(tx),
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result.value);
+
+  // allow extra parameters
+  const std::string tx2 = base::StrCat({"(", tx, ", {})"});
+  auto result2 = EvalJs(web_contents(browser()), SignTransactionScript(tx2),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result2.value);
+
+  // no arg
+  auto result3 = EvalJs(web_contents(browser()), SignTransactionScript("()"),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(
+      base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
+      result3.value);
+
+  // not solanaWeb3.Transaction
+  auto result4 =
+      EvalJs(web_contents(browser()), SignTransactionScript("('123')"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(
+      base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
+      result4.value);
+
+  TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
+      web_contents(browser())->GetMainFrame());
+  ASSERT_TRUE(provider);
+
+  provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
+
+  auto result5 = EvalJs(web_contents(browser()), SignTransactionScript(tx),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  // check error message + error code
+  EXPECT_EQ(base::Value(kErrorMessage +
+                        base::NumberToString(static_cast<int>(
+                            SolanaProviderError::kUserRejectedRequest))),
+            result5.value);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
+  const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
+  const std::string txs = base::StrCat(
+      {"([window.solana.createTransaction(new Uint8Array([", serialized_tx_str,
+       "])), window.solana.createTransaction(new Uint8Array([",
+       serialized_tx_str, "]))])"});
+  auto result = EvalJs(web_contents(browser()), SignAllTransactionsScript(txs),
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result.value);
+
+  // allow extra parameters
+  const std::string txs2 =
+      base::StrCat({"([window.solana.createTransaction(new Uint8Array([",
+                    serialized_tx_str, "]))], 1234)"});
+  auto result2 =
+      EvalJs(web_contents(browser()), SignAllTransactionsScript(txs2),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result2.value);
+
+  // no arg
+  auto result3 =
+      EvalJs(web_contents(browser()), SignAllTransactionsScript("()"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(
+      base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
+      result3.value);
+
+  // not array
+  auto result4 =
+      EvalJs(web_contents(browser()), SignAllTransactionsScript("({})"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(
+      base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
+      result4.value);
+
+  // not entirely solanaWeb3.Transaction[]
+  const std::string txs3 =
+      base::StrCat({"([window.solana.createTransaction(new Uint8Array([",
+                    serialized_tx_str, "])), 1234])"});
+  auto result5 =
+      EvalJs(web_contents(browser()), SignAllTransactionsScript("({})"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(
+      base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
+      result5.value);
+
+  TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
+      web_contents(browser())->GetMainFrame());
+  ASSERT_TRUE(provider);
+
+  provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
+  auto result6 = EvalJs(web_contents(browser()), SignAllTransactionsScript(txs),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  // check error message + error code
+  EXPECT_EQ(base::Value(kErrorMessage +
+                        base::NumberToString(static_cast<int>(
+                            SolanaProviderError::kUserRejectedRequest))),
+            result6.value);
 }

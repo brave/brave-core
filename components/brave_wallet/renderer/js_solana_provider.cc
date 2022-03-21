@@ -405,15 +405,19 @@ v8::Local<v8::Promise> JSSolanaProvider::SignTransaction(
     return v8::Local<v8::Promise>();
   }
   v8::Local<v8::Value> transaction;
-  if (arguments->Length() != 1 || !arguments->GetNext(&transaction)) {
-    arguments->ThrowError();
+  if (arguments->Length() < 1 || !arguments->GetNext(&transaction)) {
+    arguments->ThrowTypeError(
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
   }
 
   absl::optional<std::string> serialized_message =
       GetSerializedMessage(transaction);
-  if (!serialized_message)
+  if (!serialized_message) {
+    arguments->ThrowTypeError(
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
+  }
 
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
@@ -441,9 +445,10 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAllTransactions(
     return v8::Local<v8::Promise>();
   }
   v8::Local<v8::Value> transactions;
-  if (arguments->Length() != 1 || !arguments->GetNext(&transactions) ||
+  if (arguments->Length() < 1 || !arguments->GetNext(&transactions) ||
       !transactions->IsArray()) {
-    arguments->ThrowError();
+    arguments->ThrowTypeError(
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
   }
   std::vector<std::string> serialized_messages;
@@ -453,8 +458,13 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAllTransactions(
   for (uint32_t i = 0; i < transactions_count; ++i) {
     absl::optional<std::string> serialized_message = GetSerializedMessage(
         transactions_array->Get(context, i).ToLocalChecked());
-    if (serialized_message)
-      serialized_messages.push_back(*serialized_message);
+    if (!serialized_message) {
+      arguments->ThrowTypeError(
+          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+      return v8::Local<v8::Promise>();
+    }
+
+    serialized_messages.push_back(*serialized_message);
   }
 
   auto global_context(v8::Global<v8::Context>(isolate, context));
@@ -722,6 +732,8 @@ absl::optional<std::string> JSSolanaProvider::GetSerializedMessage(
   v8::MaybeLocal<v8::Value> serialized_msg = CallMethodOfObject(
       render_frame_->GetWebFrame(), transaction, u"serializeMessage",
       std::vector<v8::Local<v8::Value>>());
+  if (serialized_msg.IsEmpty())
+    return absl::nullopt;
   // base58 encode Uint8Array which is defined in
   // V8ConverterStrategy::FromV8ArrayBuffer
   std::unique_ptr<base::Value> encoded_msg = v8_value_converter_->FromV8Value(
