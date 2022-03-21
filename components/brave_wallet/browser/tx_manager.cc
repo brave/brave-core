@@ -45,6 +45,18 @@ TxManager::~TxManager() {
   tx_state_manager_->RemoveObserver(this);
 }
 
+void TxManager::GetTransactionInfo(const std::string& tx_meta_id,
+                                   GetTransactionInfoCallback callback) {
+  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(tx_meta_id);
+  if (!meta) {
+    LOG(ERROR) << "No transaction found";
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  std::move(callback).Run(meta->ToTransactionInfo());
+}
+
 void TxManager::GetAllTransactionInfo(const std::string& from,
                                       GetAllTransactionInfoCallback callback) {
   if (from.empty()) {

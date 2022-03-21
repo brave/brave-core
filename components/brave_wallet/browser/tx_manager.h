@@ -38,6 +38,8 @@ class TxManager : public TxStateManager::Observer,
   using ApproveTransactionCallback =
       mojom::TxService::ApproveTransactionCallback;
   using RejectTransactionCallback = mojom::TxService::RejectTransactionCallback;
+  using GetTransactionInfoCallback =
+      mojom::TxService::GetTransactionInfoCallback;
   using GetAllTransactionInfoCallback =
       mojom::TxService::GetAllTransactionInfoCallback;
   using SpeedupOrCancelTransactionCallback =
@@ -53,6 +55,8 @@ class TxManager : public TxStateManager::Observer,
                                   ApproveTransactionCallback) = 0;
   virtual void RejectTransaction(const std::string& tx_meta_id,
                                  RejectTransactionCallback);
+  virtual void GetTransactionInfo(const std::string& tx_meta_id,
+                                  GetTransactionInfoCallback);
   virtual void GetAllTransactionInfo(const std::string& from,
                                      GetAllTransactionInfoCallback);
 

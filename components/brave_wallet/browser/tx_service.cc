@@ -97,6 +97,12 @@ void TxService::RejectTransaction(mojom::CoinType coin_type,
   GetTxManager(coin_type)->RejectTransaction(tx_meta_id, std::move(callback));
 }
 
+void TxService::GetTransactionInfo(mojom::CoinType coin_type,
+                                   const std::string& tx_meta_id,
+                                   GetTransactionInfoCallback callback) {
+  GetTxManager(coin_type)->GetTransactionInfo(tx_meta_id, std::move(callback));
+}
+
 void TxService::GetAllTransactionInfo(mojom::CoinType coin_type,
                                       const std::string& from,
                                       GetAllTransactionInfoCallback callback) {
