@@ -9,43 +9,43 @@ import Storage
 import XCTest
 
 open class MockProfile: Profile {
-    
-    // Read/Writeable properties for mocking
-    public var files: FileAccessor
-    public var logins: BrowserLogins
 
-    fileprivate let name: String = "mockaccount"
+  // Read/Writeable properties for mocking
+  public var files: FileAccessor
+  public var logins: BrowserLogins
 
-    init() {
-        files = MockFiles()
-        logins = MockLogins(files: files)
-    }
+  fileprivate let name: String = "mockaccount"
 
-    public func localName() -> String {
-        return name
-    }
+  init() {
+    files = MockFiles()
+    logins = MockLogins(files: files)
+  }
 
-    public func reopen() {
-    }
+  public func localName() -> String {
+    return name
+  }
 
-    public func shutdown() {
-    }
+  public func reopen() {
+  }
 
-    public var isShutdown: Bool = false
+  public func shutdown() {
+  }
 
-    lazy public var isChinaEdition: Bool = {
-        return Locale.current.identifier == "zh_CN"
-    }()
+  public var isShutdown: Bool = false
 
-    lazy public var certStore: CertStore = {
-        return CertStore()
-    }()
+  lazy public var isChinaEdition: Bool = {
+    return Locale.current.identifier == "zh_CN"
+  }()
 
-    lazy public var searchEngines: SearchEngines = {
-        return SearchEngines(files: self.files)
-    }()
+  lazy public var certStore: CertStore = {
+    return CertStore()
+  }()
 
-    lazy public var prefs: Prefs = {
-        return MockProfilePrefs()
-    }()
+  lazy public var searchEngines: SearchEngines = {
+    return SearchEngines(files: self.files)
+  }()
+
+  lazy public var prefs: Prefs = {
+    return MockProfilePrefs()
+  }()
 }

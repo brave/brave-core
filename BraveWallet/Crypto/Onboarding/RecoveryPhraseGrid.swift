@@ -9,12 +9,12 @@ import Algorithms
 /// Displays a grid of recovery words
 struct RecoveryPhraseGrid<Word: Hashable, ID: Hashable, Content: View>: View {
   @Environment(\.sizeCategory) private var sizeCategory
-  
+
   var data: [Word]
   var id: KeyPath<Word, ID>
   var spacing: CGFloat
   var content: (Word) -> Content
-  
+
   init(
     data: [Word],
     id: KeyPath<Word, ID>,
@@ -26,16 +26,16 @@ struct RecoveryPhraseGrid<Word: Hashable, ID: Hashable, Content: View>: View {
     self.spacing = spacing
     self.content = content
   }
-  
+
   private var numberOfColumns: Int {
     sizeCategory.isAccessibilityCategory ? 2 : 3
   }
-  
+
   /// The data chunked into columns for iOS 13 APIs
   private var gridData: [[Word]] {
     data.chunks(ofCount: numberOfColumns).map(Array.init)
   }
-  
+
   var body: some View {
     let columns: [GridItem] = (0..<numberOfColumns).map { _ in .init(.flexible()) }
     LazyVGrid(columns: columns, spacing: spacing) {
@@ -51,7 +51,7 @@ struct RecoveryPhraseGrid_Previews: PreviewProvider {
   static let data: [String] = [
     "Tomato", "Green", "Velvet", "Span",
     "Celery", "Atoms", "Parent", "Stop",
-    "Bowl", "Wishful", "Stone", "Exercise"
+    "Bowl", "Wishful", "Stone", "Exercise",
   ]
   static var previews: some View {
     Group {

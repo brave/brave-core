@@ -13,25 +13,25 @@ private let log = Logger.browserLogger
 /// then link that file(as a reference) to the project to make it visible
 /// in the Bundle.
 public protocol BundledJSProtocol {
-    /// Name of the javascript file without .js extension.
-    var name: String { get }
-    /// Bundle where the javascript file is located.
-    var bundle: Bundle { get }
-    /// Gets a bundled javascript file and returns it as a String.
-    var get: String? { get }
+  /// Name of the javascript file without .js extension.
+  var name: String { get }
+  /// Bundle where the javascript file is located.
+  var bundle: Bundle { get }
+  /// Gets a bundled javascript file and returns it as a String.
+  var get: String? { get }
 }
 
 public extension BundledJSProtocol {
-    var get: String? {
-        do {
-            guard let filePath = bundle.path(forResource: name, ofType: "js") else {
-                throw "Could not find script named: \(name)"
-            }
-            
-            return try String(contentsOfFile: filePath, encoding: String.Encoding.utf8)
-        } catch {
-            log.error("Could not find or parse script named: \(name)")
-            return nil
-        }
+  var get: String? {
+    do {
+      guard let filePath = bundle.path(forResource: name, ofType: "js") else {
+        throw "Could not find script named: \(name)"
+      }
+
+      return try String(contentsOfFile: filePath, encoding: String.Encoding.utf8)
+    } catch {
+      log.error("Could not find or parse script named: \(name)")
+      return nil
     }
+  }
 }

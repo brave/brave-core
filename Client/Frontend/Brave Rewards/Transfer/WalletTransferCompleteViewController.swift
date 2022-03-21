@@ -9,48 +9,48 @@ import BraveCore
 import BraveShared
 
 class WalletTransferCompleteViewController: UIViewController {
-    
-    private let status: Ledger.DrainStatus?
-    
-    init(status: Ledger.DrainStatus?) {
-        self.status = status
-        super.init(nibName: nil, bundle: nil)
-        if status == .complete {
-            // Require user to acknowledge by tapping done
-            isModalInPresentation = true
-        }
+
+  private let status: Ledger.DrainStatus?
+
+  init(status: Ledger.DrainStatus?) {
+    self.status = status
+    super.init(nibName: nil, bundle: nil)
+    if status == .complete {
+      // Require user to acknowledge by tapping done
+      isModalInPresentation = true
     }
-    
-    @available(*, unavailable)
-    required init(coder: NSCoder) {
-        fatalError()
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+
+  private var transferCompleteView: WalletTransferCompleteView {
+    view as! WalletTransferCompleteView  // swiftlint:disable:this force_cast
+  }
+
+  override func loadView() {
+    view = WalletTransferCompleteView()
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    navigationItem.hidesBackButton = true
+    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tappedDone))
+    title = Strings.Rewards.walletTransferTitle
+
+    if let status = status {
+      transferCompleteView.titleLabel.text = status.transferStatusTitle
+      transferCompleteView.bodyLabel.text = status.transferStatusBody
     }
-    
-    private var transferCompleteView: WalletTransferCompleteView {
-        view as! WalletTransferCompleteView // swiftlint:disable:this force_cast
+  }
+
+  @objc private func tappedDone() {
+    if status == .complete {
+      Preferences.Rewards.transferCompletionAcknowledged.value = true
     }
-    
-    override func loadView() {
-        view = WalletTransferCompleteView()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        navigationItem.hidesBackButton = true
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tappedDone))
-        title = Strings.Rewards.walletTransferTitle
-        
-        if let status = status {
-            transferCompleteView.titleLabel.text = status.transferStatusTitle
-            transferCompleteView.bodyLabel.text = status.transferStatusBody
-        }
-    }
-    
-    @objc private func tappedDone() {
-        if status == .complete {
-            Preferences.Rewards.transferCompletionAcknowledged.value = true
-        }
-        dismiss(animated: true)
-    }
+    dismiss(animated: true)
+  }
 }

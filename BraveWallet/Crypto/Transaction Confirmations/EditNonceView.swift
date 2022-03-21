@@ -11,11 +11,11 @@ import struct Shared.Strings
 struct EditNonceView: View {
   var confirmationStore: TransactionConfirmationStore
   var transaction: BraveWallet.TransactionInfo
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
   @State private var nonce = ""
   @State private var isShowingAlert = false
-  
+
   var body: some View {
     List {
       Section(
@@ -32,13 +32,14 @@ struct EditNonceView: View {
             let nonceHex = "0x\(String(format: "%02x", value))"
             confirmationStore.editNonce(
               for: transaction,
-              nonce: nonceHex) { success in
-                if success {
-                  presentationMode.dismiss()
-                } else {
-                  isShowingAlert = true
-               }
+              nonce: nonceHex
+            ) { success in
+              if success {
+                presentationMode.dismiss()
+              } else {
+                isShowingAlert = true
               }
+            }
           }
         }) {
           Text(Strings.Wallet.saveButtonTitle)
@@ -67,7 +68,7 @@ struct EditNonceView: View {
       }
     }
   }
-  
+
   private func setup() {
     nonce = Int(transaction.ethTxNonce.removingHexPrefix, radix: 16).map(String.init) ?? transaction.ethTxNonce
   }

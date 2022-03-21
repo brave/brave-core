@@ -15,18 +15,18 @@ struct ShortcutAmountGrid: View {
     case half = 0.5
     case threeQuarters = 0.75
     case all = 1.0
-    
+
     var label: String {
       let nf = NumberFormatter()
       nf.numberStyle = .percent
       return nf.string(from: NSNumber(value: rawValue)) ?? ""
     }
   }
-  
+
   var action: (Amount) -> Void
-  
+
   @Environment(\.sizeCategory) private var sizeCategory
-  
+
   var body: some View {
     HStack(spacing: 8) {
       ForEach(Amount.allCases, id: \.rawValue) { amount in
@@ -48,33 +48,33 @@ struct ShortcutAmountGrid: View {
 struct SlippageGrid: View {
   @Binding var selectedSlippage: Option
   @Binding var customSlippage: Int?
-  
+
   @State private var input = ""
-  
+
   struct Option: Equatable {
     var value: Double
-    
+
     var id: Double {
       return value
     }
-    
+
     var localizedString: String {
       let nf = NumberFormatter()
       nf.numberStyle = .percent
       nf.maximumFractionDigits = 2
       return nf.string(from: NSNumber(value: value)) ?? ""
     }
-    
+
     static let halfPercent: Option = .init(value: 0.005)
     static let onePercent: Option = .init(value: 0.01)
     static let twoPercent: Option = .init(value: 0.02)
     static let predefinedOptions: [Option] = [
-      .halfPercent, .onePercent, .twoPercent
+      .halfPercent, .onePercent, .twoPercent,
     ]
   }
-  
+
   @Environment(\.sizeCategory) private var sizeCategory
-  
+
   var body: some View {
     HStack(spacing: 8) {
       ForEach(Option.predefinedOptions, id: \.id) { option in
@@ -122,21 +122,21 @@ struct SlippageGrid: View {
         .accessibilityAddTraits(customSlippage != nil ? .isSelected : [])
     }
   }
-  
+
   func resignFirstResponder() {
-      UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
   }
-  
+
   private func isPredefinedOptionSelected(_ id: Double) -> Bool {
     guard customSlippage == nil else { return false }
-    
+
     return id == selectedSlippage.id
   }
 }
 
 struct MarketPriceView: View {
   @ObservedObject var swapTokenStore: SwapTokenStore
-  
+
   var body: some View {
     HStack {
       VStack(alignment: .leading) {
@@ -165,14 +165,14 @@ struct SwapCryptoView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var ethNetworkStore: NetworkStore
   @ObservedObject var swapTokensStore: SwapTokenStore
-  
+
   @State private var orderType: OrderType = .market
   @State var hideSlippage = true
   @State private var isSwapDisclaimerVisible: Bool = false
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.openWalletURLAction) private var openWalletURL
-  
+
   @ViewBuilder var unsupportedSwapChainSection: some View {
     Section {
       VStack(alignment: .leading, spacing: 4.0) {
@@ -186,7 +186,7 @@ struct SwapCryptoView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
   }
-  
+
   private var formatSlippage: String {
     if let overrideSlippage = swapTokensStore.overrideSlippage {
       let nf = NumberFormatter()
@@ -197,7 +197,7 @@ struct SwapCryptoView: View {
       return swapTokensStore.slippageOption.localizedString
     }
   }
-  
+
   private var isSwapButtonDisabled: Bool {
     guard !swapTokensStore.isMakingTx else {
       return true
@@ -209,7 +209,7 @@ struct SwapCryptoView: View {
       return false
     }
   }
-  
+
   private var swapButtonTitle: String {
     switch swapTokensStore.state {
     case .error(let error):
@@ -220,12 +220,12 @@ struct SwapCryptoView: View {
       return Strings.Wallet.swapCryptoSwapButtonTitle
     }
   }
-  
+
   private var isSwapEnabled: Bool {
     let selectedChain = ethNetworkStore.selectedChainId
     return selectedChain == BraveWallet.MainnetChainId || selectedChain == BraveWallet.RopstenChainId
   }
-  
+
   @ViewBuilder var swapFormSections: some View {
     Section(
       header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoFromTitle))
@@ -249,9 +249,10 @@ struct SwapCryptoView: View {
     .listRowBackground(Color(.secondaryBraveGroupedBackground))
     Section(
       header: WalletListHeaderView(
-        title: Text(String.localizedStringWithFormat(
-          Strings.Wallet.swapCryptoAmountTitle,
-          swapTokensStore.selectedFromToken?.symbol ?? ""))
+        title: Text(
+          String.localizedStringWithFormat(
+            Strings.Wallet.swapCryptoAmountTitle,
+            swapTokensStore.selectedFromToken?.symbol ?? ""))
       ),
       footer: VStack(spacing: 20) {
         ShortcutAmountGrid(action: { amount in
@@ -274,7 +275,7 @@ struct SwapCryptoView: View {
             .clipShape(Capsule())
         }
       }
-        .listRowInsets(.zero)
+      .listRowInsets(.zero)
     ) {
       TextField(
         String.localizedStringWithFormat(
@@ -282,7 +283,7 @@ struct SwapCryptoView: View {
           swapTokensStore.selectedFromToken?.symbol ?? ""),
         text: $swapTokensStore.sellAmount
       )
-        .keyboardType(.decimalPad)
+      .keyboardType(.decimalPad)
     }
     .listRowBackground(Color(.secondaryBraveGroupedBackground))
     Section(
@@ -309,9 +310,10 @@ struct SwapCryptoView: View {
     .listRowBackground(Color(.secondaryBraveGroupedBackground))
     Section(
       header: WalletListHeaderView(
-        title: Text(String.localizedStringWithFormat(
-          Strings.Wallet.swapCryptoAmountReceivingTitle,
-          swapTokensStore.selectedToToken?.symbol ?? ""))
+        title: Text(
+          String.localizedStringWithFormat(
+            Strings.Wallet.swapCryptoAmountReceivingTitle,
+            swapTokensStore.selectedToToken?.symbol ?? ""))
       )
     ) {
       TextField(
@@ -320,7 +322,7 @@ struct SwapCryptoView: View {
           swapTokensStore.selectedToToken?.symbol ?? ""),
         text: $swapTokensStore.buyAmount
       )
-        .keyboardType(.decimalPad)
+      .keyboardType(.decimalPad)
     }
     .listRowBackground(Color(.secondaryBraveGroupedBackground))
     Section(
@@ -346,8 +348,8 @@ struct SwapCryptoView: View {
             selectedSlippage: $swapTokensStore.slippageOption,
             customSlippage: $swapTokensStore.overrideSlippage
           )
-            .listRowInsets(.zero)
-            .transition(.opacity)
+          .listRowInsets(.zero)
+          .transition(.opacity)
         }
       }
     ) {
@@ -383,18 +385,21 @@ struct SwapCryptoView: View {
       header:
         VStack(spacing: 16) {
           Text(
-            String.localizedStringWithFormat(Strings.Wallet.braveSwapFeeDisclaimer, {
-              let formatter = NumberFormatter()
-              formatter.numberStyle = .percent
-              formatter.minimumFractionDigits = 3
-              formatter.maximumFractionDigits = 3
-              return formatter.string(from: NSNumber(
-                value: WalletConstants.braveSwapFee
-              )) ?? ""
-            }())
+            String.localizedStringWithFormat(
+              Strings.Wallet.braveSwapFeeDisclaimer,
+              {
+                let formatter = NumberFormatter()
+                formatter.numberStyle = .percent
+                formatter.minimumFractionDigits = 3
+                formatter.maximumFractionDigits = 3
+                return formatter.string(
+                  from: NSNumber(
+                    value: WalletConstants.braveSwapFee
+                  )) ?? ""
+              }())
           )
-            .foregroundColor(Color(.braveLabel))
-            .font(.footnote)
+          .foregroundColor(Color(.braveLabel))
+          .font(.footnote)
           WalletLoadingButton(
             isLoading: swapTokensStore.isMakingTx,
             action: {
@@ -404,8 +409,8 @@ struct SwapCryptoView: View {
               Text(swapButtonTitle)
             }
           )
-            .disabled(isSwapButtonDisabled)
-            .buttonStyle(BraveFilledButtonStyle(size: .normal))
+          .disabled(isSwapButtonDisabled)
+          .buttonStyle(BraveFilledButtonStyle(size: .normal))
         }
         .frame(maxWidth: .infinity)
         .padding(.top, 16)
@@ -429,10 +434,12 @@ struct SwapCryptoView: View {
         Alert(
           title: Text(Strings.Wallet.swapDexAggrigatorNote),
           message: Text(Strings.Wallet.swapDexAggrigatorDisclaimer),
-          primaryButton: Alert.Button.default(Text(Strings.learnMore), action: {
-            guard let url = URL(string: "https://0x.org/") else { return }
-            openWalletURL?(url)
-          }),
+          primaryButton: Alert.Button.default(
+            Text(Strings.learnMore),
+            action: {
+              guard let url = URL(string: "https://0x.org/") else { return }
+              openWalletURL?(url)
+            }),
           secondaryButton: Alert.Button.cancel(Text(Strings.OKString))
         )
       }
@@ -441,12 +448,12 @@ struct SwapCryptoView: View {
       .listRowBackground(Color(.braveGroupedBackground))
     }
   }
-  
+
   enum OrderType {
     case market
     case limit
   }
-  
+
   var body: some View {
     NavigationView {
       Form {
@@ -455,10 +462,10 @@ struct SwapCryptoView: View {
             keyringStore: keyringStore,
             networkStore: ethNetworkStore
           )
-            .listRowBackground(Color.clear)
-            .resetListHeaderStyle()
-            .padding(.top)
-            .padding(.bottom, -16) // Get it a bit closer
+          .listRowBackground(Color.clear)
+          .resetListHeaderStyle()
+          .padding(.top)
+          .padding(.bottom, -16)  // Get it a bit closer
         ) {
         }
         if isSwapEnabled {
@@ -494,7 +501,7 @@ struct SwapCryptoView_Previews: PreviewProvider {
       ethNetworkStore: .previewStore,
       swapTokensStore: .previewStore
     )
-//      .previewSizeCategories([.large, .accessibilityLarge])
+    //      .previewSizeCategories([.large, .accessibilityLarge])
   }
 }
 #endif

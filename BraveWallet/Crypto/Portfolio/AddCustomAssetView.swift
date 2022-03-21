@@ -10,13 +10,13 @@ import Shared
 struct AddCustomAssetView: View {
   @ObservedObject var userAssetStore: UserAssetsStore
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   @State private var nameInput = ""
   @State private var addressInput = ""
   @State private var symbolInput = ""
   @State private var decimalsInput = ""
   @State private var showError = false
-  
+
   var body: some View {
     NavigationView {
       Form {
@@ -83,51 +83,52 @@ struct AddCustomAssetView: View {
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       .navigationTitle(Strings.Wallet.customTokenTitle)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-          ToolbarItemGroup(placement: .cancellationAction) {
-            Button(action: {
-              presentationMode.dismiss()
-            }) {
-              Text(Strings.cancelButtonTitle)
-                .foregroundColor(Color(.braveOrange))
-            }
-          }
-          ToolbarItemGroup(placement: .navigationBarTrailing) {
-            Button(action: {
-              resignFirstResponder()
-              addCustomToken()
-            }) {
-              Text(Strings.Wallet.add)
-                .foregroundColor(Color(.braveOrange))
-            }
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItemGroup(placement: .cancellationAction) {
+          Button(action: {
+            presentationMode.dismiss()
+          }) {
+            Text(Strings.cancelButtonTitle)
+              .foregroundColor(Color(.braveOrange))
           }
         }
-        .alert(isPresented: $showError) {
-          Alert(
-            title: Text(Strings.Wallet.addCustomTokenErrorTitle),
-            message: Text(Strings.Wallet.addCustomTokenErrorMessage),
-            dismissButton: .default(Text(Strings.OKString))
-          )
+        ToolbarItemGroup(placement: .navigationBarTrailing) {
+          Button(action: {
+            resignFirstResponder()
+            addCustomToken()
+          }) {
+            Text(Strings.Wallet.add)
+              .foregroundColor(Color(.braveOrange))
+          }
         }
+      }
+      .alert(isPresented: $showError) {
+        Alert(
+          title: Text(Strings.Wallet.addCustomTokenErrorTitle),
+          message: Text(Strings.Wallet.addCustomTokenErrorMessage),
+          dismissButton: .default(Text(Strings.OKString))
+        )
+      }
     }
   }
-  
+
   private func resignFirstResponder() {
-      UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
   }
-  
+
   private func addCustomToken() {
-    let token = BraveWallet.BlockchainToken(contractAddress: addressInput,
-                                            name: nameInput,
-                                            logo: "",
-                                            isErc20: true,
-                                            isErc721: false,
-                                            symbol: symbolInput,
-                                            decimals: Int32(decimalsInput) ?? 18,
-                                            visible: true,
-                                            tokenId: "",
-                                            coingeckoId: "")
+    let token = BraveWallet.BlockchainToken(
+      contractAddress: addressInput,
+      name: nameInput,
+      logo: "",
+      isErc20: true,
+      isErc721: false,
+      symbol: symbolInput,
+      decimals: Int32(decimalsInput) ?? 18,
+      visible: true,
+      tokenId: "",
+      coingeckoId: "")
     userAssetStore.addUserAsset(token: token) { [self] success in
       if success {
         presentationMode.dismiss()
@@ -140,11 +141,13 @@ struct AddCustomAssetView: View {
 
 #if DEBUG
 struct AddCustomAssetView_Previews: PreviewProvider {
-    static var previews: some View {
-      AddCustomAssetView(userAssetStore: UserAssetsStore(walletService: MockBraveWalletService(),
-                                                         blockchainRegistry: MockBlockchainRegistry(),
-                                                         rpcService: MockJsonRpcService(),
-                                                         assetRatioService: MockAssetRatioService()))
-    }
+  static var previews: some View {
+    AddCustomAssetView(
+      userAssetStore: UserAssetsStore(
+        walletService: MockBraveWalletService(),
+        blockchainRegistry: MockBlockchainRegistry(),
+        rpcService: MockJsonRpcService(),
+        assetRatioService: MockAssetRatioService()))
+  }
 }
 #endif

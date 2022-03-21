@@ -10,31 +10,31 @@ private let log = Logger.browserLogger
 // Is fixed in WebKit, remove this file when the fix arrives in iOS release.
 
 private let swizzling: (UIScrollView.Type) -> Void = { obj in
-    let originalSelector = #selector(setter: UIView.bounds)
-    let swizzledSelector = #selector(obj.swizzle_setBounds(bounds:))
-    guard let originalMethod = class_getInstanceMethod(obj, originalSelector), let swizzledMethod = class_getInstanceMethod(obj, swizzledSelector) else { return }
-    method_exchangeImplementations(originalMethod, swizzledMethod)
+  let originalSelector = #selector(setter:UIView.bounds)
+  let swizzledSelector = #selector(obj.swizzle_setBounds(bounds:))
+  guard let originalMethod = class_getInstanceMethod(obj, originalSelector), let swizzledMethod = class_getInstanceMethod(obj, swizzledSelector) else { return }
+  method_exchangeImplementations(originalMethod, swizzledMethod)
 }
 
 private var hasSwizzled = false
 
 extension UIScrollView {
 
-    final public class func doBadSwizzleStuff() {
-        guard !hasSwizzled else { return }
+  final public class func doBadSwizzleStuff() {
+    guard !hasSwizzled else { return }
 
-        hasSwizzled = true
-        swizzling(self)
+    hasSwizzled = true
+    swizzling(self)
+  }
+
+  @objc func swizzle_setBounds(bounds: CGRect) {
+    let validSize = [bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height].every({ !$0.isNaN })
+    let validBounds = [bounds.size.width, bounds.size.height].every({ $0 >= 0 })
+
+    guard validBounds && validSize && !bounds.isInfinite else {
+      log.debug("Bad scrollview bounds detected [negative size].")
+      return
     }
-
-    @objc func swizzle_setBounds(bounds: CGRect) {
-        let validSize = [bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height].every({ !$0.isNaN })
-        let validBounds = [bounds.size.width, bounds.size.height].every({ $0 >= 0 })
-
-        guard validBounds && validSize && !bounds.isInfinite else {
-            log.debug("Bad scrollview bounds detected [negative size].")
-            return
-        }
-        self.swizzle_setBounds(bounds: bounds)
-    }
+    self.swizzle_setBounds(bounds: bounds)
+  }
 }

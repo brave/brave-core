@@ -9,14 +9,14 @@ import Combine
 
 /// The main wallet store
 public class WalletStore {
-  
+
   public let keyringStore: KeyringStore
   public var cryptoStore: CryptoStore?
-  
+
   // MARK: -
-  
+
   private var cancellable: AnyCancellable?
-  
+
   public init(
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
@@ -39,7 +39,7 @@ public class WalletStore {
       ethTxManagerProxy: ethTxManagerProxy
     )
   }
-  
+
   private func setUp(
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
@@ -69,6 +69,6 @@ public class WalletStore {
             ethTxManagerProxy: ethTxManagerProxy
           )
         }
-    }
+      }
   }
 }

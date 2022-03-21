@@ -6,16 +6,16 @@ import Foundation
 
 final class WebImageCacheWithNoPrivacyProtectionManager {
 
-    private let webImageCache: WebImageCache
+  private let webImageCache: WebImageCache
 
-    static let shared: WebImageCache = {
-        let webImageCacheManager = WebImageCacheWithNoPrivacyProtectionManager(isPrivate: false)
-        return webImageCacheManager.webImageCache
-    }()
+  static let shared: WebImageCache = {
+    let webImageCacheManager = WebImageCacheWithNoPrivacyProtectionManager(isPrivate: false)
+    return webImageCacheManager.webImageCache
+  }()
 
-    private init(isPrivate: Bool) {
-        let webImageCache = WebImageCache(isPrivate: isPrivate)
-        self.webImageCache = webImageCache
-    }
+  private init(isPrivate: Bool) {
+    let webImageCache = WebImageCache(isPrivate: isPrivate)
+    self.webImageCache = webImageCache
+  }
 
 }

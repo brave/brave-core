@@ -11,7 +11,7 @@ import BraveCore
 
 private struct EditTokenView: View {
   @ObservedObject var assetStore: AssetStore
-  
+
   var body: some View {
     Button(action: {
       assetStore.isVisible.toggle()
@@ -40,7 +40,7 @@ private struct EditTokenView: View {
 @available(iOS 15.0, *)
 private struct SwipeActionsViewModifier_FB9812596: ViewModifier {
   var action: () -> Void
-  
+
   func body(content: Content) -> some View {
     content
       .swipeActions(edge: .trailing) {
@@ -54,26 +54,26 @@ private struct SwipeActionsViewModifier_FB9812596: ViewModifier {
 struct EditUserAssetsView: View {
   @ObservedObject var userAssetsStore: UserAssetsStore
   var assetsUpdated: () -> Void
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
   @State private var query = ""
   @State private var isAddingCustomAsset = false
   @State private var isPresentingAssetRemovalError = false
-  
+
   private var tokenStores: [AssetStore] {
     let normalizedQuery = query.lowercased()
     var stores = userAssetsStore.assetStores
     if !normalizedQuery.isEmpty {
       stores = stores.filter {
-        $0.token.symbol.lowercased().contains(normalizedQuery) ||
-        $0.token.name.lowercased().contains(normalizedQuery)
+        $0.token.symbol.lowercased().contains(normalizedQuery) || $0.token.name.lowercased().contains(normalizedQuery)
       }
     }
-    return stores
+    return
+      stores
       .sorted(by: { $0.token.symbol.caseInsensitiveCompare($1.token.symbol) == .orderedAscending })
       .sorted(by: { $0.isVisible && !$1.isVisible })
   }
-  
+
   var body: some View {
     NavigationView {
       List {
@@ -92,14 +92,14 @@ struct EditUserAssetsView: View {
                 .foregroundColor(Color(.braveBlurpleTint))
             }
           }
-            .osAvailabilityModifiers { content in
-              if #available(iOS 15.0, *) {
-                content // Padding already applied
-              } else {
-                content
-                  .padding(.top)
-              }
+          .osAvailabilityModifiers { content in
+            if #available(iOS 15.0, *) {
+              content  // Padding already applied
+            } else {
+              content
+                .padding(.top)
             }
+          }
         ) {
           let tokens = tokenStores
           if tokens.isEmpty {
@@ -115,9 +115,10 @@ struct EditUserAssetsView: View {
                   .osAvailabilityModifiers { content in
                     if #available(iOS 15.0, *) {
                       content
-                        .modifier(SwipeActionsViewModifier_FB9812596 {
-                          removeCustomToken(store.token)
-                        })
+                        .modifier(
+                          SwipeActionsViewModifier_FB9812596 {
+                            removeCustomToken(store.token)
+                          })
                     } else {
                       content
                         .contextMenu {
@@ -165,7 +166,7 @@ struct EditUserAssetsView: View {
     }
     .navigationViewStyle(StackNavigationViewStyle())
   }
-  
+
   private func removeCustomToken(_ token: BraveWallet.BlockchainToken) {
     userAssetsStore.removeUserAsset(token: token) { [self] success in
       isPresentingAssetRemovalError = !success

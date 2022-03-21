@@ -11,7 +11,7 @@ import struct Shared.Strings
 
 struct EnableBiometricsView: View {
   var action: (_ enable: Bool) -> Void
-  
+
   var body: some View {
     VStack {
       Image("pin-migration-graphic")

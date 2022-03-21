@@ -14,7 +14,7 @@ import SwiftKeychainWrapper
 
 // Import these dependencies ONLY for the main `Client` application target.
 #if MOZ_TARGET_CLIENT
-    import SwiftyJSON
+import SwiftyJSON
 #endif
 
 private let log = Logger.syncLogger
@@ -22,90 +22,92 @@ private let log = Logger.syncLogger
 public let ProfileRemoteTabsSyncDelay: TimeInterval = 0.1
 
 class ProfileFileAccessor: FileAccessor {
-    convenience init(profile: Profile) {
-        self.init(localName: profile.localName())
+  convenience init(profile: Profile) {
+    self.init(localName: profile.localName())
+  }
+
+  init(localName: String) {
+    let profileDirName = "profile.\(localName)"
+
+    // Bug 1147262: First option is for device, second is for simulator.
+    var rootPath: String
+    let sharedContainerIdentifier = AppInfo.sharedContainerIdentifier
+    if let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: sharedContainerIdentifier) {
+      rootPath = url.path
+    } else {
+      log.error("Unable to find the shared container. Defaulting profile location to ~/Library/Application Support/ instead.")
+      rootPath =
+        (NSSearchPathForDirectoriesInDomains(
+          .applicationSupportDirectory,
+          .userDomainMask, true)[0])
     }
 
-    init(localName: String) {
-        let profileDirName = "profile.\(localName)"
+    super.init(rootPath: URL(fileURLWithPath: rootPath).appendingPathComponent(profileDirName).path)
 
-        // Bug 1147262: First option is for device, second is for simulator.
-        var rootPath: String
-        let sharedContainerIdentifier = AppInfo.sharedContainerIdentifier
-        if let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: sharedContainerIdentifier) {
-            rootPath = url.path
-        } else {
-            log.error("Unable to find the shared container. Defaulting profile location to ~/Library/Application Support/ instead.")
-            rootPath = (NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory,
-                                                            .userDomainMask, true)[0])
-        }
-
-        super.init(rootPath: URL(fileURLWithPath: rootPath).appendingPathComponent(profileDirName).path)
-        
-        // Create the "Downloads" folder in the documents directory if doesn't exist.
-        FileManager.default.getOrCreateFolder(name: "Downloads", excludeFromBackups: true, location: .documentDirectory)
-    }
+    // Create the "Downloads" folder in the documents directory if doesn't exist.
+    FileManager.default.getOrCreateFolder(name: "Downloads", excludeFromBackups: true, location: .documentDirectory)
+  }
 }
 
 /**
  * A Profile manages access to the user's data.
  */
 protocol Profile: AnyObject {
-    var prefs: Prefs { get }
-    var searchEngines: SearchEngines { get }
-    var files: FileAccessor { get }
-    var logins: BrowserLogins { get }
-    var certStore: CertStore { get }
+  var prefs: Prefs { get }
+  var searchEngines: SearchEngines { get }
+  var files: FileAccessor { get }
+  var logins: BrowserLogins { get }
+  var certStore: CertStore { get }
 
-    var isShutdown: Bool { get }
-    
-    func shutdown()
-    func reopen()
+  var isShutdown: Bool { get }
 
-    // I got really weird EXC_BAD_ACCESS errors on a non-null reference when I made this a getter.
-    // Similar to <http://stackoverflow.com/questions/26029317/exc-bad-access-when-indirectly-accessing-inherited-member-in-swift>.
-    func localName() -> String
+  func shutdown()
+  func reopen()
+
+  // I got really weird EXC_BAD_ACCESS errors on a non-null reference when I made this a getter.
+  // Similar to <http://stackoverflow.com/questions/26029317/exc-bad-access-when-indirectly-accessing-inherited-member-in-swift>.
+  func localName() -> String
 }
 
 fileprivate let PrefKeyClientID = "PrefKeyClientID"
 extension Profile {
-    var clientID: String {
-        let clientID: String
-        if let id = prefs.stringForKey(PrefKeyClientID) {
-            clientID = id
-        } else {
-            clientID = UUID().uuidString
-            prefs.setString(clientID, forKey: PrefKeyClientID)
-        }
-        return clientID
+  var clientID: String {
+    let clientID: String
+    if let id = prefs.stringForKey(PrefKeyClientID) {
+      clientID = id
+    } else {
+      clientID = UUID().uuidString
+      prefs.setString(clientID, forKey: PrefKeyClientID)
     }
+    return clientID
+  }
 }
 
 open class BrowserProfile: Profile {
-    
-    fileprivate let name: String
-    fileprivate let keychain: KeychainWrapper
-    var isShutdown = false
 
-    internal let files: FileAccessor
+  fileprivate let name: String
+  fileprivate let keychain: KeychainWrapper
+  var isShutdown = false
 
-    let loginsDB: BrowserDB
+  internal let files: FileAccessor
 
-    private static var loginsKey: String? {
-        let key = "sqlcipher.key.logins.db"
-        let keychain = KeychainWrapper.sharedAppContainerKeychain
-        keychain.ensureStringItemAccessibility(.afterFirstUnlock, forKey: key)
-        if keychain.hasValue(forKey: key) {
-            return keychain.string(forKey: key)
-        }
+  let loginsDB: BrowserDB
 
-        let Length: UInt = 256
-        let secret = Bytes.generateRandomBytes(Length).base64EncodedString
-        keychain.set(secret, forKey: key, withAccessibility: .afterFirstUnlock)
-        return secret
+  private static var loginsKey: String? {
+    let key = "sqlcipher.key.logins.db"
+    let keychain = KeychainWrapper.sharedAppContainerKeychain
+    keychain.ensureStringItemAccessibility(.afterFirstUnlock, forKey: key)
+    if keychain.hasValue(forKey: key) {
+      return keychain.string(forKey: key)
     }
 
-    /**
+    let Length: UInt = 256
+    let secret = Bytes.generateRandomBytes(Length).base64EncodedString
+    keychain.set(secret, forKey: key, withAccessibility: .afterFirstUnlock)
+    return secret
+  }
+
+  /**
      * N.B., BrowserProfile is used from our extensions, often via a pattern like
      *
      *   BrowserProfile(…).foo.saveSomething(…)
@@ -118,80 +120,80 @@ open class BrowserProfile: Profile {
      * However, if we provide it here, it's assumed that we're initializing it from the application,
      * and initialize the logins.db.
      */
-    init(localName: String, clear: Bool = false) {
-        log.debug("Initing profile \(localName) on thread \(Thread.current).")
-        self.name = localName
-        self.files = ProfileFileAccessor(localName: localName)
-        self.keychain = KeychainWrapper.sharedAppContainerKeychain
+  init(localName: String, clear: Bool = false) {
+    log.debug("Initing profile \(localName) on thread \(Thread.current).")
+    self.name = localName
+    self.files = ProfileFileAccessor(localName: localName)
+    self.keychain = KeychainWrapper.sharedAppContainerKeychain
 
-        if clear {
-            do {
-                // Remove the contents of the directory…
-                try self.files.removeFilesInDirectory()
-                // …then remove the directory itself.
-                try self.files.remove("")
-            } catch {
-                log.info("Cannot clear profile: \(error)")
-            }
-        }
-
-        // If the profile dir doesn't exist yet, this is first run (for this profile). The check is made here
-        // since the DB handles will create new DBs under the new profile folder.
-        let isNewProfile = !files.exists("")
-
-        // Set up our database handles.
-        self.loginsDB = BrowserDB(filename: "logins.db", secretKey: BrowserProfile.loginsKey, schema: LoginsSchema(), files: files)
-
-        if isNewProfile {
-            log.info("New profile. Removing old account metadata.")
-            prefs.clearAll()
-        }
-
-        // Always start by needing invalidation.
-        // This is the same as self.history.setTopSitesNeedsInvalidation, but without the
-        // side-effect of instantiating SQLiteHistory (and thus BrowserDB) on the main thread.
-        prefs.setBool(false, forKey: PrefsKeys.keyTopSitesCacheIsValid)
+    if clear {
+      do {
+        // Remove the contents of the directory…
+        try self.files.removeFilesInDirectory()
+        // …then remove the directory itself.
+        try self.files.remove("")
+      } catch {
+        log.info("Cannot clear profile: \(error)")
+      }
     }
 
-    func reopen() {
-        log.debug("Reopening profile.")
-        isShutdown = false
-        
-        loginsDB.reopenIfClosed()
+    // If the profile dir doesn't exist yet, this is first run (for this profile). The check is made here
+    // since the DB handles will create new DBs under the new profile folder.
+    let isNewProfile = !files.exists("")
+
+    // Set up our database handles.
+    self.loginsDB = BrowserDB(filename: "logins.db", secretKey: BrowserProfile.loginsKey, schema: LoginsSchema(), files: files)
+
+    if isNewProfile {
+      log.info("New profile. Removing old account metadata.")
+      prefs.clearAll()
     }
 
-    func shutdown() {
-        log.debug("Shutting down profile.")
-        isShutdown = true
-        
-        loginsDB.forceClose()
-    }
-    
-    deinit {
-        log.debug("Deiniting profile \(self.localName()).")
-    }
+    // Always start by needing invalidation.
+    // This is the same as self.history.setTopSitesNeedsInvalidation, but without the
+    // side-effect of instantiating SQLiteHistory (and thus BrowserDB) on the main thread.
+    prefs.setBool(false, forKey: PrefsKeys.keyTopSitesCacheIsValid)
+  }
 
-    func localName() -> String {
-        return name
-    }
+  func reopen() {
+    log.debug("Reopening profile.")
+    isShutdown = false
 
-    lazy var searchEngines: SearchEngines = {
-        return SearchEngines(files: self.files)
-    }()
+    loginsDB.reopenIfClosed()
+  }
 
-    func makePrefs() -> Prefs {
-        return NSUserDefaultsPrefs(prefix: self.localName())
-    }
+  func shutdown() {
+    log.debug("Shutting down profile.")
+    isShutdown = true
 
-    lazy var prefs: Prefs = {
-        return self.makePrefs()
-    }()
+    loginsDB.forceClose()
+  }
 
-    lazy var certStore: CertStore = {
-        return CertStore()
-    }()
+  deinit {
+    log.debug("Deiniting profile \(self.localName()).")
+  }
 
-    lazy var logins: BrowserLogins = {
-        return SQLiteLogins(db: self.loginsDB)
-    }()
+  func localName() -> String {
+    return name
+  }
+
+  lazy var searchEngines: SearchEngines = {
+    return SearchEngines(files: self.files)
+  }()
+
+  func makePrefs() -> Prefs {
+    return NSUserDefaultsPrefs(prefix: self.localName())
+  }
+
+  lazy var prefs: Prefs = {
+    return self.makePrefs()
+  }()
+
+  lazy var certStore: CertStore = {
+    return CertStore()
+  }()
+
+  lazy var logins: BrowserLogins = {
+    return SQLiteLogins(db: self.loginsDB)
+  }()
 }

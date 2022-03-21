@@ -8,7 +8,7 @@ import SwiftUI
 
 private struct NoCaptureViewModifier: ViewModifier {
   @State private var isCaptured: Bool = false
-  
+
   func body(content: Content) -> some View {
     content
       .opacity(isCaptured ? 0 : 1)

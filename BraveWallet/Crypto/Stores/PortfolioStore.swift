@@ -11,7 +11,7 @@ public struct AssetViewModel: Identifiable, Equatable {
   var decimalBalance: Double
   var price: String
   var history: [BraveWallet.AssetTimePrice]
-  
+
   public var id: String {
     token.id
   }
@@ -21,7 +21,7 @@ struct BalanceTimePrice: DataPoint, Equatable {
   var date: Date
   var price: Double
   var formattedPrice: String
-  
+
   var value: CGFloat {
     price
   }
@@ -45,20 +45,20 @@ public class PortfolioStore: ObservableObject {
   @Published private(set) var historicalBalances: [BalanceTimePrice] = []
   /// Whether or not balances are still currently loading
   @Published private(set) var isLoadingBalances: Bool = false
-  
+
   public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
     walletService: self.walletService,
     blockchainRegistry: self.blockchainRegistry,
     rpcService: self.rpcService,
     assetRatioService: self.assetRatioService
   )
-  
+
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioService: BraveWalletAssetRatioService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
-  
+
   public init(
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
@@ -71,22 +71,22 @@ public class PortfolioStore: ObservableObject {
     self.walletService = walletService
     self.assetRatioService = assetRatioService
     self.blockchainRegistry = blockchainRegistry
-    
+
     self.rpcService.add(self)
     self.keyringService.add(self)
-    
+
     keyringService.isLocked { [self] isLocked in
       if !isLocked {
         update()
       }
     }
   }
-  
+
   private let numberFormatter = NumberFormatter().then {
     $0.numberStyle = .currency
     $0.currencyCode = "USD"
   }
-  
+
   /// Fetches the balances for a given list of tokens for each of the given accounts, giving a dictionary with a balance for each token symbol.
   private func fetchBalances(for tokens: [BraveWallet.BlockchainToken], accounts: [BraveWallet.AccountInfo], completion: @escaping ([String: Double]) -> Void) {
     var balances: [String: Double] = [:]
@@ -104,11 +104,13 @@ public class PortfolioStore: ObservableObject {
         }
       }
     }
-    group.notify(queue: .main, execute: {
-      completion(balances)
-    })
+    group.notify(
+      queue: .main,
+      execute: {
+        completion(balances)
+      })
   }
-  
+
   /// Fetches the prices for a given list of symbols, giving a dictionary with the price for each symbol
   private func fetchPrices(for symbols: [String], completion: @escaping ([String: String]) -> Void) {
     assetRatioService.price(
@@ -122,7 +124,7 @@ public class PortfolioStore: ObservableObject {
       completion(prices)
     }
   }
-  
+
   /// Fetches the price history for the given symbols, giving a dictionary with the price history for each symbol
   private func fetchPriceHistory(for symbols: [String], completion: @escaping ([String: [BraveWallet.AssetTimePrice]]) -> Void) {
     var priceHistories: [String: [BraveWallet.AssetTimePrice]] = [:]
@@ -140,9 +142,11 @@ public class PortfolioStore: ObservableObject {
         priceHistories[symbol] = history.sorted(by: { $0.date < $1.date })
       }
     }
-    group.notify(queue: .main, execute: {
-      completion(priceHistories)
-    })
+    group.notify(
+      queue: .main,
+      execute: {
+        completion(priceHistories)
+      })
   }
 
   func update() {
@@ -186,7 +190,8 @@ public class PortfolioStore: ObservableObject {
             )
           }
           // Compute balance based on current prices
-          let currentBalance = userVisibleAssets
+          let currentBalance =
+            userVisibleAssets
             .compactMap {
               if let price = Double($0.price) {
                 return $0.decimalBalance * price
@@ -196,12 +201,14 @@ public class PortfolioStore: ObservableObject {
             .reduce(0.0, +)
           balance = numberFormatter.string(from: NSNumber(value: currentBalance)) ?? "–"
           // Compute historical balances based on historical prices and current balances
-          let assets = userVisibleAssets.filter { !$0.history.isEmpty } // [[AssetTimePrice]]
-          let minCount = assets.map(\.history.count).min() ?? 0 // Shortest array count
+          let assets = userVisibleAssets.filter { !$0.history.isEmpty }  // [[AssetTimePrice]]
+          let minCount = assets.map(\.history.count).min() ?? 0  // Shortest array count
           historicalBalances = (0..<minCount).map { index in
-            let value = assets.reduce(0.0, {
-              $0 + ((Double($1.history[index].price) ?? 0.0) * $1.decimalBalance)
-            })
+            let value = assets.reduce(
+              0.0,
+              {
+                $0 + ((Double($1.history[index].price) ?? 0.0) * $1.decimalBalance)
+              })
             return .init(
               date: assets.map { $0.history[index].date }.max() ?? .init(),
               price: value,
@@ -218,10 +225,10 @@ public class PortfolioStore: ObservableObject {
 extension PortfolioStore: BraveWalletJsonRpcServiceObserver {
   public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
   }
-  
+
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
   }
-  
+
   public func chainChangedEvent(_ chainId: String) {
     update()
   }
@@ -230,7 +237,7 @@ extension PortfolioStore: BraveWalletJsonRpcServiceObserver {
 extension PortfolioStore: BraveWalletKeyringServiceObserver {
   public func keyringReset() {
   }
-  
+
   public func accountsChanged() {
     update()
   }

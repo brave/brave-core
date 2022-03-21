@@ -5,24 +5,24 @@
 import Foundation
 
 enum OnboardingState: Int {
-    /// Unknown, this can happen for upgrading users where other information
-    /// (e.g. `firstLaunch` is used to determine the onboarding state.
-    case undetermined
-    /// The user has not seen this onboarding.
-    case unseen
-    /// The user has completed this onboarding.
-    case completed
-    /// The user has skipped the onboarding.
-    case skipped
+  /// Unknown, this can happen for upgrading users where other information
+  /// (e.g. `firstLaunch` is used to determine the onboarding state.
+  case undetermined
+  /// The user has not seen this onboarding.
+  case unseen
+  /// The user has completed this onboarding.
+  case completed
+  /// The user has skipped the onboarding.
+  case skipped
 }
 
 enum OnboardingProgress: Int {
-    /// The user has never started any onboarding.
-    case none
-    /// The user has completed the privacy consent
-    case privacyConsent
-    /// The user has completed the search engine onboarding.
-    case searchEngine
-    /// The user has completed the rewards onboarding.
-    case rewards
+  /// The user has never started any onboarding.
+  case none
+  /// The user has completed the privacy consent
+  case privacyConsent
+  /// The user has completed the search engine onboarding.
+  case searchEngine
+  /// The user has completed the rewards onboarding.
+  case rewards
 }

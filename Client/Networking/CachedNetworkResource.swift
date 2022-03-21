@@ -5,9 +5,8 @@
 import Foundation
 
 struct CachedNetworkResource {
-    let data: Data
-    let etag: String?
-    /// When the resource was last time modified on the server.
-    let lastModifiedTimestamp: TimeInterval?
+  let data: Data
+  let etag: String?
+  /// When the resource was last time modified on the server.
+  let lastModifiedTimestamp: TimeInterval?
 }
-

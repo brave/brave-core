@@ -11,14 +11,14 @@ import Data
 private let log = Logger.browserLogger
 
 class SafeBrowsing {
-    static func isSafeBrowsingEnabledForURL(_ url: URL) -> Bool {
-        guard url.baseDomain != nil else {
-            log.error("url: \(url) host is nil")
-            return false
-        }
-        let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-        let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
-        let isSafeBrowsingEnabled = domain.isShieldExpected(.SafeBrowsing, considerAllShieldsOption: false)
-        return isSafeBrowsingEnabled
+  static func isSafeBrowsingEnabledForURL(_ url: URL) -> Bool {
+    guard url.baseDomain != nil else {
+      log.error("url: \(url) host is nil")
+      return false
     }
+    let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+    let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
+    let isSafeBrowsingEnabled = domain.isShieldExpected(.SafeBrowsing, considerAllShieldsOption: false)
+    return isSafeBrowsingEnabled
+  }
 }

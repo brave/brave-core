@@ -11,9 +11,9 @@ struct AccountView: View {
   var address: String
   /// The account name describing what the account is for
   var name: String
-  
+
   @ScaledMetric private var avatarSize = 40.0
-  
+
   var body: some View {
     HStack {
       Blockie(address: address)

@@ -10,20 +10,19 @@ import struct Shared.Strings
 struct TokenList<Content: View>: View {
   var tokens: [BraveWallet.BlockchainToken]
   var content: (BraveWallet.BlockchainToken) -> Content
-  
+
   @State private var query = ""
-  
+
   private var filteredTokens: [BraveWallet.BlockchainToken] {
     let normalizedQuery = query.lowercased()
     if normalizedQuery.isEmpty {
       return tokens
     }
     return tokens.filter {
-      $0.symbol.lowercased().contains(normalizedQuery) ||
-      $0.name.lowercased().contains(normalizedQuery)
+      $0.symbol.lowercased().contains(normalizedQuery) || $0.name.lowercased().contains(normalizedQuery)
     }
   }
-  
+
   init(
     tokens: [BraveWallet.BlockchainToken],
     @ViewBuilder content: @escaping (BraveWallet.BlockchainToken) -> Content
@@ -31,7 +30,7 @@ struct TokenList<Content: View>: View {
     self.tokens = tokens
     self.content = content
   }
-    
+
   var body: some View {
     List {
       Section(
@@ -40,7 +39,7 @@ struct TokenList<Content: View>: View {
         )
         .osAvailabilityModifiers { content in
           if #available(iOS 15.0, *) {
-            content // Padding already applied
+            content  // Padding already applied
           } else {
             content
               .padding(.top)
@@ -76,4 +75,3 @@ struct TokenListView_Previews: PreviewProvider {
   }
 }
 #endif
-

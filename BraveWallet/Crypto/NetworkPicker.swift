@@ -19,7 +19,7 @@ struct NetworkPicker: View {
   @State private var isPresentingAddNetwork: Bool = false
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.buySendSwapDestination) @Binding private var buySendSwapDestination
-  
+
   private var availableChains: [BraveWallet.EthereumChain] {
     networkStore.ethereumChains.filter({
       if let destination = buySendSwapDestination {
@@ -30,7 +30,7 @@ struct NetworkPicker: View {
       return true
     })
   }
-  
+
   var body: some View {
     Menu {
       Picker(

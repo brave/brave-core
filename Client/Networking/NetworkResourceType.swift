@@ -5,13 +5,13 @@
 import Foundation
 
 enum NetworkResourceType {
-    case cached(etag: String?)
-    case regular
-    
-    func isCached() -> Bool {
-        switch self {
-        case .cached(_): return true
-        default: return false
-        }
+  case cached(etag: String?)
+  case regular
+
+  func isCached() -> Bool {
+    switch self {
+    case .cached(_): return true
+    default: return false
     }
+  }
 }

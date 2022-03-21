@@ -13,7 +13,7 @@ struct AddressQRCodeScannerView: View {
   @State private var isErrorPresented: Bool = false
   @State private var permissionDenied: Bool = false
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   var body: some View {
     NavigationView {
       #if targetEnvironment(simulator)
@@ -40,47 +40,52 @@ struct AddressQRCodeScannerView: View {
       }
       .ignoresSafeArea()
       #else
-      _AddressQRCodeScannerView(address: $address,
-                                isErrorPresented: $isErrorPresented,
-                                isPermissionDenied: $permissionDenied,
-                                dismiss: { presentationMode.dismiss() }
+      _AddressQRCodeScannerView(
+        address: $address,
+        isErrorPresented: $isErrorPresented,
+        isPermissionDenied: $permissionDenied,
+        dismiss: { presentationMode.dismiss() }
       )
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-          ToolbarItemGroup(placement: .cancellationAction) {
-            Button(action: {
-              presentationMode.dismiss()
-            }) {
-              Text(Strings.cancelButtonTitle)
-                .foregroundColor(Color(.braveOrange))
-            }
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItemGroup(placement: .cancellationAction) {
+          Button(action: {
+            presentationMode.dismiss()
+          }) {
+            Text(Strings.cancelButtonTitle)
+              .foregroundColor(Color(.braveOrange))
           }
         }
-        .ignoresSafeArea()
-        .background(
-          Color.clear
-            .alert(isPresented: $isErrorPresented) {
-              Alert(
-                title: Text(""),
-                message: Text(Strings.scanQRCodeInvalidDataErrorMessage),
-                dismissButton: .default(Text(Strings.scanQRCodeErrorOKButton), action: {
+      }
+      .ignoresSafeArea()
+      .background(
+        Color.clear
+          .alert(isPresented: $isErrorPresented) {
+            Alert(
+              title: Text(""),
+              message: Text(Strings.scanQRCodeInvalidDataErrorMessage),
+              dismissButton: .default(
+                Text(Strings.scanQRCodeErrorOKButton),
+                action: {
                   presentationMode.dismiss()
                 })
-              )
-            }
-        )
-        .background(
-          Color.clear
-            .alert(isPresented: $permissionDenied) {
-              Alert(
-                title: Text(""),
-                message: Text(Strings.scanQRCodePermissionErrorMessage),
-                dismissButton: .default(Text(Strings.openPhoneSettingsActionTitle), action: {
+            )
+          }
+      )
+      .background(
+        Color.clear
+          .alert(isPresented: $permissionDenied) {
+            Alert(
+              title: Text(""),
+              message: Text(Strings.scanQRCodePermissionErrorMessage),
+              dismissButton: .default(
+                Text(Strings.openPhoneSettingsActionTitle),
+                action: {
                   UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
                 })
-              )
-            }
-        )
+            )
+          }
+      )
       #endif
     }
   }
@@ -92,15 +97,16 @@ private struct _AddressQRCodeScannerView: UIViewControllerRepresentable {
   @Binding var isErrorPresented: Bool
   @Binding var isPermissionDenied: Bool
   var dismiss: () -> Void
-  
+
   func makeUIViewController(context: Context) -> UIViewControllerType {
-    AddressQRCodeScannerViewController(address: _address,
-                                isErrorPresented: _isErrorPresented,
-                                isPermissionDenied: _isPermissionDenied,
-                                dismiss: self.dismiss
+    AddressQRCodeScannerViewController(
+      address: _address,
+      isErrorPresented: _isErrorPresented,
+      isPermissionDenied: _isPermissionDenied,
+      dismiss: self.dismiss
     )
   }
-  
+
   func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
   }
 }
@@ -109,17 +115,17 @@ private class AddressQRCodeScannerViewController: UIViewController {
   @Binding private var address: String
   @Binding private var isErrorPresented: Bool
   @Binding private var isPermissionDenied: Bool
-  
+
   private let captureDevice = AVCaptureDevice.default(for: .video)
   private let captureSession = AVCaptureSession().then {
     $0.sessionPreset = .high
   }
-  
+
   private var previewLayer: AVCaptureVideoPreviewLayer?
   private var isFinishScanning = false
-  
+
   var dismiss: () -> Void
-  
+
   init(
     address: Binding<String>,
     isErrorPresented: Binding<Bool>,
@@ -132,12 +138,12 @@ private class AddressQRCodeScannerViewController: UIViewController {
     self.dismiss = dismiss
     super.init(nibName: nil, bundle: nil)
   }
-  
+
   @available(*, unavailable)
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -166,7 +172,7 @@ private class AddressQRCodeScannerViewController: UIViewController {
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    
+
     previewLayer?.frame = view.layer.bounds
   }
 
@@ -174,7 +180,7 @@ private class AddressQRCodeScannerViewController: UIViewController {
     super.viewWillAppear(animated)
 
     resetCamera()
-    
+
     if !captureSession.isRunning {
       captureSession.startRunning()
     }
@@ -227,7 +233,7 @@ extension AddressQRCodeScannerViewController: AVCaptureMetadataOutputObjectsDele
     }
     isFinishScanning = true
   }
-  
+
   func resetCamera() {
     isFinishScanning = false
   }

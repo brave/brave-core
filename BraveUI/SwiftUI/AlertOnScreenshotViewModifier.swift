@@ -9,7 +9,7 @@ import SwiftUI
 private struct AlertOnScreenshotViewModifier: ViewModifier {
   var alert: () -> Alert
   @State private var isPresentingAlert: Bool = false
-  
+
   func body(content: Content) -> some View {
     content
       .alert(isPresented: $isPresentingAlert, content: alert)

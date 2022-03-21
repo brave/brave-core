@@ -10,25 +10,25 @@ import BigNumber
 import Shared
 
 struct TransactionConfirmationView: View {
-  
+
   @ObservedObject var confirmationStore: TransactionConfirmationStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var keyringStore: KeyringStore
-  
+
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   private enum ViewMode: Int {
     case transaction
     case details
   }
-  
+
   @State private var viewMode: ViewMode = .transaction
-  
+
   private var activeTransaction: BraveWallet.TransactionInfo {
     confirmationStore.transactions.first(where: { $0.id == confirmationStore.activeTransactionId }) ?? (confirmationStore.transactions.first ?? .init())
   }
-  
+
   private func next() {
     if let index = confirmationStore.transactions.firstIndex(where: { $0.id == confirmationStore.activeTransactionId }) {
       var nextIndex = confirmationStore.transactions.index(after: index)
@@ -40,28 +40,28 @@ struct TransactionConfirmationView: View {
       confirmationStore.activeTransactionId = confirmationStore.transactions.first!.id
     }
   }
-  
+
   private func rejectAll() {
     for transaction in confirmationStore.transactions {
       confirmationStore.reject(transaction: transaction)
     }
   }
-  
+
   private var fromAccountName: String {
     NamedAddresses.name(for: activeTransaction.fromAddress, accounts: keyringStore.keyring.accountInfos)
   }
-  
+
   private var toAccountName: String {
     return NamedAddresses.name(for: activeTransaction.ethTxToAddress, accounts: keyringStore.keyring.accountInfos)
   }
-  
+
   private var transactionType: String {
     if activeTransaction.txType == .erc20Approve {
       return Strings.Wallet.transactionTypeApprove
     }
     return activeTransaction.isSwap ? Strings.Wallet.swap : Strings.Wallet.send
   }
-  
+
   private var transactionDetails: String {
     if activeTransaction.txArgs.isEmpty {
       let data = activeTransaction.ethTxData
@@ -81,7 +81,7 @@ struct TransactionConfirmationView: View {
         .joined(separator: "\n\n")
     }
   }
-  
+
   @ViewBuilder private var editGasFeeButton: some View {
     let titleView = Text(Strings.Wallet.editGasFeeButtonTitle)
       .fontWeight(.semibold)
@@ -112,7 +112,7 @@ struct TransactionConfirmationView: View {
     }
     .font(.footnote)
   }
-  
+
   var body: some View {
     NavigationView {
       ScrollView(.vertical) {
@@ -162,9 +162,10 @@ struct TransactionConfirmationView: View {
             .accessibilityElement()
             .accessibility(addTraits: .isStaticText)
             .accessibility(
-              label: Text(String.localizedStringWithFormat(
-                Strings.Wallet.transactionFromToAccessibilityLabel, fromAccountName, toAccountName
-              ))
+              label: Text(
+                String.localizedStringWithFormat(
+                  Strings.Wallet.transactionFromToAccessibilityLabel, fromAccountName, toAccountName
+                ))
             )
             VStack(spacing: 4) {
               Text(transactionType)
@@ -172,7 +173,7 @@ struct TransactionConfirmationView: View {
               Text("\(confirmationStore.state.value) \(confirmationStore.state.symbol)")
                 .fontWeight(.semibold)
                 .foregroundColor(Color(.bravePrimary))
-              Text(confirmationStore.state.fiat) // Value in Fiat
+              Text(confirmationStore.state.fiat)  // Value in Fiat
                 .font(.footnote)
             }
             .padding(.vertical, 8)
@@ -237,10 +238,12 @@ struct TransactionConfirmationView: View {
                   .accessibilityElement(children: .contain)
                   Divider()
                     .padding(.leading)
-                  NavigationLink(destination: EditNonceView(
-                    confirmationStore: confirmationStore,
-                    transaction: activeTransaction
-                  )) {
+                  NavigationLink(
+                    destination: EditNonceView(
+                      confirmationStore: confirmationStore,
+                      transaction: activeTransaction
+                    )
+                  ) {
                     HStack {
                       Image("brave.gear")
                         .foregroundColor(Color(.braveBlurpleTint))
@@ -302,8 +305,8 @@ struct TransactionConfirmationView: View {
                   startPoint: .top,
                   endPoint: .bottom
                 )
-                  .ignoresSafeArea()
-                  .allowsHitTesting(false)
+                .ignoresSafeArea()
+                .allowsHitTesting(false)
               )
           }
         },
@@ -327,7 +330,7 @@ struct TransactionConfirmationView: View {
       confirmationStore.prepare()
     }
   }
-  
+
   @ViewBuilder private var rejectConfirmContainer: some View {
     if sizeCategory.isAccessibilityCategory {
       VStack {
@@ -339,7 +342,7 @@ struct TransactionConfirmationView: View {
       }
     }
   }
-  
+
   @ViewBuilder private var rejectConfirmButtons: some View {
     Button(action: {
       confirmationStore.reject(transaction: activeTransaction)
@@ -361,7 +364,7 @@ struct TransactionConfirmationView: View {
 /// so we have to fallback to UIKit for this
 private struct DetailsTextView: UIViewRepresentable {
   var text: String
-  
+
   func makeUIView(context: Context) -> UITextView {
     let textView = UITextView()
     textView.text = text
@@ -390,7 +393,7 @@ struct TransactionConfirmationView_Previews: PreviewProvider {
       networkStore: .previewStore,
       keyringStore: .previewStoreWithWalletCreated
     )
-      .previewLayout(.sizeThatFits)
+    .previewLayout(.sizeThatFits)
   }
 }
 #endif

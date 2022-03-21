@@ -6,29 +6,28 @@ import Foundation
 import Shared
 
 class RequestDesktopSiteActivity: UIActivity {
-    private weak var tab: Tab?
-    fileprivate let callback: () -> Void
+  private weak var tab: Tab?
+  fileprivate let callback: () -> Void
 
-    init(tab: Tab?, callback: @escaping () -> Void) {
-        self.tab = tab
-        self.callback = callback
-    }
-    
-    override var activityTitle: String? {
-        tab?.isDesktopSite == true ?
-            Strings.appMenuViewMobileSiteTitleString : Strings.appMenuViewDesktopSiteTitleString
-    }
+  init(tab: Tab?, callback: @escaping () -> Void) {
+    self.tab = tab
+    self.callback = callback
+  }
 
-    override var activityImage: UIImage? {
-        tab?.isDesktopSite == true ? #imageLiteral(resourceName: "shareRequestMobileSite") : #imageLiteral(resourceName: "shareRequestDesktopSite")
-    }
+  override var activityTitle: String? {
+    tab?.isDesktopSite == true ? Strings.appMenuViewMobileSiteTitleString : Strings.appMenuViewDesktopSiteTitleString
+  }
 
-    override func perform() {
-        callback()
-        activityDidFinish(true)
-    }
+  override var activityImage: UIImage? {
+    tab?.isDesktopSite == true ? #imageLiteral(resourceName: "shareRequestMobileSite") : #imageLiteral(resourceName: "shareRequestDesktopSite")
+  }
 
-    override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
-        return true
-    }
+  override func perform() {
+    callback()
+    activityDidFinish(true)
+  }
+
+  override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
+    return true
+  }
 }

@@ -8,56 +8,57 @@ import Shared
 private let log = Logger.browserLogger
 
 enum FileType: String {
-    case dat, json, tgz
+  case dat, json, tgz
 }
 
 enum AdblockerType {
-    case general
-    case httpse
-    case regional(locale: String)
-    
-    var locale: String? {
-        switch self {
-        case .regional(let locale): return locale
-        default: return nil
-        }}
-    
-    var associatedFiles: [FileType] { return [.json, fileForStatsLibrary] }
-    
-    private var fileForStatsLibrary: FileType {
-        switch self {
-        case .general, .regional: return .dat
-        case .httpse: return .tgz
-        }
+  case general
+  case httpse
+  case regional(locale: String)
+
+  var locale: String? {
+    switch self {
+    case .regional(let locale): return locale
+    default: return nil
     }
-    
-    /// A name under which given resource is stored locally in the app.
-    var identifier: String {
-        switch self {
-        case .general: return BlocklistName.ad.filename
-        case .httpse: return BlocklistName.https.filename
-        case .regional(let locale): return locale
-        }
+  }
+
+  var associatedFiles: [FileType] { return [.json, fileForStatsLibrary] }
+
+  private var fileForStatsLibrary: FileType {
+    switch self {
+    case .general, .regional: return .dat
+    case .httpse: return .tgz
     }
-    
-    /// A name under which given resource is stored on server.
-    func resourceName(for fileType: FileType) -> String? {
-        switch self {
-        case .general: return AdblockResourcesMappings.generalAdblockName(for: fileType)
-        case .httpse: return AdblockResourcesMappings.generalHttpseName
-        case .regional(let locale):
-            guard let regionalName = ResourceLocale(rawValue: locale)?.resourceName(for: fileType) else {
-                return nil
-            }
-            return "\(regionalName)-latest"
-        }
+  }
+
+  /// A name under which given resource is stored locally in the app.
+  var identifier: String {
+    switch self {
+    case .general: return BlocklistName.ad.filename
+    case .httpse: return BlocklistName.https.filename
+    case .regional(let locale): return locale
     }
-    
-    var blockListName: BlocklistName? {
-        switch self {
-        case .general: return BlocklistName.ad
-        case .httpse: return BlocklistName.https
-        case .regional(let locale): return ContentBlockerRegion.with(localeCode: locale)
-        }
+  }
+
+  /// A name under which given resource is stored on server.
+  func resourceName(for fileType: FileType) -> String? {
+    switch self {
+    case .general: return AdblockResourcesMappings.generalAdblockName(for: fileType)
+    case .httpse: return AdblockResourcesMappings.generalHttpseName
+    case .regional(let locale):
+      guard let regionalName = ResourceLocale(rawValue: locale)?.resourceName(for: fileType) else {
+        return nil
+      }
+      return "\(regionalName)-latest"
     }
+  }
+
+  var blockListName: BlocklistName? {
+    switch self {
+    case .general: return BlocklistName.ad
+    case .httpse: return BlocklistName.https
+    case .regional(let locale): return ContentBlockerRegion.with(localeCode: locale)
+    }
+  }
 }

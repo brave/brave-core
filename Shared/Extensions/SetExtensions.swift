@@ -5,80 +5,80 @@
 import Foundation
 
 public extension SetIterator {
-    mutating func take(_ n: Int) -> [Element]? {
-        precondition(n >= 0)
+  mutating func take(_ n: Int) -> [Element]? {
+    precondition(n >= 0)
 
-        if n == 0 {
-            return []
-        }
+    if n == 0 {
+      return []
+    }
 
-        var count: Int = 0
-        var out: [Element] = []
+    var count: Int = 0
+    var out: [Element] = []
 
-        while count < n {
-            count += 1
-            guard let val = self.next() else {
-                if out.isEmpty {
-                    return nil
-                }
-                return out
-            }
-            out.append(val)
+    while count < n {
+      count += 1
+      guard let val = self.next() else {
+        if out.isEmpty {
+          return nil
         }
         return out
+      }
+      out.append(val)
     }
+    return out
+  }
 }
 
 public extension Set {
-    func withSubsetsOfSize(_ n: Int, f: (Set<Iterator.Element>) throws -> Void) rethrows {
-        precondition(n > 0)
+  func withSubsetsOfSize(_ n: Int, f: (Set<Iterator.Element>) throws -> Void) rethrows {
+    precondition(n > 0)
 
-        if self.isEmpty {
-            return
-        }
-
-        if n > self.count {
-            try f(self)
-            return
-        }
-
-        if n == 1 {
-            try self.forEach { try f(Set([$0])) }
-            return
-        }
-
-        var generator = self.makeIterator()
-        while let next = generator.take(n) {
-            if !next.isEmpty {
-                try f(Set(next))
-            }
-        }
+    if self.isEmpty {
+      return
     }
 
-    func subsetsOfSize(_ n: Int) -> [Set<Iterator.Element>] {
-        precondition(n > 0)
-
-        if self.isEmpty {
-            return []
-        }
-
-        if n > self.count {
-            return [self]
-        }
-
-        if n == 1 {
-            // Special case.
-            return self.map({ Set([$0]) })
-        }
-
-        var generator = self.makeIterator()
-        var out: [Set<Iterator.Element>] = []
-        out.reserveCapacity(self.count / n)
-        while let next = generator.take(n) {
-            if !next.isEmpty {
-                out.append(Set(next))
-            }
-        }
-        return out
+    if n > self.count {
+      try f(self)
+      return
     }
+
+    if n == 1 {
+      try self.forEach { try f(Set([$0])) }
+      return
+    }
+
+    var generator = self.makeIterator()
+    while let next = generator.take(n) {
+      if !next.isEmpty {
+        try f(Set(next))
+      }
+    }
+  }
+
+  func subsetsOfSize(_ n: Int) -> [Set<Iterator.Element>] {
+    precondition(n > 0)
+
+    if self.isEmpty {
+      return []
+    }
+
+    if n > self.count {
+      return [self]
+    }
+
+    if n == 1 {
+      // Special case.
+      return self.map({ Set([$0]) })
+    }
+
+    var generator = self.makeIterator()
+    var out: [Set<Iterator.Element>] = []
+    out.reserveCapacity(self.count / n)
+    while let next = generator.take(n) {
+      if !next.isEmpty {
+        out.append(Set(next))
+      }
+    }
+    return out
+  }
 }

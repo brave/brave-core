@@ -7,27 +7,27 @@ import Shared
 import WebKit
 
 class WindowRenderHelperScript: TabContentScript {
-    fileprivate weak var tab: Tab?
-    
-    class func name() -> String {
-        return "WindowRenderHelper"
-    }
-    
-    required init(tab: Tab) {
-        self.tab = tab
-    }
-    
-    func scriptMessageHandlerName() -> String? {
-        return "WindowRenderHelper\(UserScriptManager.messageHandlerTokenString)"
-    }
-    
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
-        // Do nothing with the messages received.
-        // For now.. It's useful for debugging though.
-    }
-    
-    static func executeScript(for tab: Tab) {
-        let token = UserScriptManager.securityTokenString
-        tab.webView?.evaluateSafeJavaScript(functionName: "W\(token).resizeWindow", contentWorld: .defaultClient)
-    }
+  fileprivate weak var tab: Tab?
+
+  class func name() -> String {
+    return "WindowRenderHelper"
+  }
+
+  required init(tab: Tab) {
+    self.tab = tab
+  }
+
+  func scriptMessageHandlerName() -> String? {
+    return "WindowRenderHelper\(UserScriptManager.messageHandlerTokenString)"
+  }
+
+  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+    // Do nothing with the messages received.
+    // For now.. It's useful for debugging though.
+  }
+
+  static func executeScript(for tab: Tab) {
+    let token = UserScriptManager.securityTokenString
+    tab.webView?.evaluateSafeJavaScript(functionName: "W\(token).resizeWindow", contentWorld: .defaultClient)
+  }
 }

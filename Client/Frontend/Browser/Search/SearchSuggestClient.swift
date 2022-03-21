@@ -16,74 +16,76 @@ let SearchSuggestClientErrorInvalidResponse = 1
  * Query callbacks that must run even if they are cancelled should wrap their contents in `withExtendendLifetime`.
  */
 class SearchSuggestClient {
-    fileprivate let searchEngine: OpenSearchEngine
-    fileprivate var request: URLSessionDataTask?
-    fileprivate let userAgent: String
+  fileprivate let searchEngine: OpenSearchEngine
+  fileprivate var request: URLSessionDataTask?
+  fileprivate let userAgent: String
 
-    lazy fileprivate var session: URLSession = {
-        let configuration = URLSessionConfiguration.ephemeral
-        configuration.httpAdditionalHeaders = ["User-Agent": self.userAgent]
-        return URLSession(configuration: configuration, delegate: nil, delegateQueue: .main)
-    }()
+  lazy fileprivate var session: URLSession = {
+    let configuration = URLSessionConfiguration.ephemeral
+    configuration.httpAdditionalHeaders = ["User-Agent": self.userAgent]
+    return URLSession(configuration: configuration, delegate: nil, delegateQueue: .main)
+  }()
 
-    init(searchEngine: OpenSearchEngine, userAgent: String) {
-        self.searchEngine = searchEngine
-        self.userAgent = userAgent
+  init(searchEngine: OpenSearchEngine, userAgent: String) {
+    self.searchEngine = searchEngine
+    self.userAgent = userAgent
+  }
+
+  func query(_ query: String, callback: @escaping (_ response: [String]?, _ error: NSError?) -> Void) {
+    let url = searchEngine.suggestURLForQuery(query)
+    if url == nil {
+      let error = NSError(domain: SearchSuggestClientErrorDomain, code: SearchSuggestClientErrorInvalidEngine, userInfo: nil)
+      callback(nil, error)
+      return
     }
 
-    func query(_ query: String, callback: @escaping (_ response: [String]?, _ error: NSError?) -> Void) {
-        let url = searchEngine.suggestURLForQuery(query)
-        if url == nil {
-            let error = NSError(domain: SearchSuggestClientErrorDomain, code: SearchSuggestClientErrorInvalidEngine, userInfo: nil)
-            callback(nil, error)
-            return
+    request = session.dataTask(
+      with: url!,
+      completionHandler: { data, response, error in
+        if let error = error {
+          return callback(nil, error as NSError?)
         }
 
-        request = session.dataTask(with: url!, completionHandler: { data, response, error in
-            if let error = error {
-                return callback(nil, error as NSError?)
-            }
-            
-            let responseError = NSError(domain: SearchSuggestClientErrorDomain, code: SearchSuggestClientErrorInvalidResponse, userInfo: nil)
-            
-            if let response = response as? HTTPURLResponse {
-                if !(200..<300).contains(response.statusCode) {
-                    return callback(nil, responseError)
-                }
-            }
-            
-            guard let data = data else {
-                return callback(nil, responseError)
-            }
-            
-            do {
-                let result = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
-                
-                // The response will be of the following format:
-                //    ["foobar",["foobar","foobar2000 mac","foobar skins",...]]
-                // That is, an array of at least two elements: the search term and an array of suggestions.
-                guard let array = result as? NSArray else {
-                    return callback(nil, responseError)
-                }
-                
-                if array.count < 2 {
-                    return callback(nil, responseError)
-                }
+        let responseError = NSError(domain: SearchSuggestClientErrorDomain, code: SearchSuggestClientErrorInvalidResponse, userInfo: nil)
 
-                let suggestions = array[1] as? [String]
-                if suggestions == nil {
-                    return callback(nil, responseError)
-                }
+        if let response = response as? HTTPURLResponse {
+          if !(200..<300).contains(response.statusCode) {
+            return callback(nil, responseError)
+          }
+        }
 
-                callback(suggestions!, nil)
-            } catch {
-                return callback(nil, error as NSError?)
-            }
-        })
-        request?.resume()
-    }
+        guard let data = data else {
+          return callback(nil, responseError)
+        }
 
-    func cancelPendingRequest() {
-        request?.cancel()
-    }
+        do {
+          let result = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+
+          // The response will be of the following format:
+          //    ["foobar",["foobar","foobar2000 mac","foobar skins",...]]
+          // That is, an array of at least two elements: the search term and an array of suggestions.
+          guard let array = result as? NSArray else {
+            return callback(nil, responseError)
+          }
+
+          if array.count < 2 {
+            return callback(nil, responseError)
+          }
+
+          let suggestions = array[1] as? [String]
+          if suggestions == nil {
+            return callback(nil, responseError)
+          }
+
+          callback(suggestions!, nil)
+        } catch {
+          return callback(nil, error as NSError?)
+        }
+      })
+    request?.resume()
+  }
+
+  func cancelPendingRequest() {
+    request?.cancel()
+  }
 }

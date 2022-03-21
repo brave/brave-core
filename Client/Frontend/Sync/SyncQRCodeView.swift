@@ -3,34 +3,34 @@
 import BraveCore
 
 class SyncQRCodeView: UIImageView {
-    
-    private let barcodeSize: CGFloat = 200.0
-    
-    convenience init(syncApi: BraveSyncAPI) {
-        self.init(frame: CGRect.zero)
-        
-        contentMode = .scaleAspectFill
-        
-        if let img = syncApi.getQRCodeImageV2(CGSize(width: barcodeSize, height: barcodeSize)) {
-            image = img
-        }
+
+  private let barcodeSize: CGFloat = 200.0
+
+  convenience init(syncApi: BraveSyncAPI) {
+    self.init(frame: CGRect.zero)
+
+    contentMode = .scaleAspectFill
+
+    if let img = syncApi.getQRCodeImageV2(CGSize(width: barcodeSize, height: barcodeSize)) {
+      image = img
     }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func createQRFromString(_ str: String) -> CIImage? {
-        let stringData = str.data(using: String.Encoding.utf8)
-        let filter = CIFilter(name: "CIQRCodeGenerator")
-        
-        filter?.setValue(stringData, forKey: "inputMessage")
-        filter?.setValue("H", forKey: "inputCorrectionLevel")
-        
-        return filter?.outputImage
-    }
+  }
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  func createQRFromString(_ str: String) -> CIImage? {
+    let stringData = str.data(using: String.Encoding.utf8)
+    let filter = CIFilter(name: "CIQRCodeGenerator")
+
+    filter?.setValue(stringData, forKey: "inputMessage")
+    filter?.setValue("H", forKey: "inputCorrectionLevel")
+
+    return filter?.outputImage
+  }
 }

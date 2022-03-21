@@ -11,36 +11,36 @@ import BraveShared
 
 /// A menu button that provides a shortcut to toggling Night Mode
 struct NightModeMenuButton: View {
-    @ObservedObject private var nightMode = Preferences.General.nightModeEnabled
-    
-    var dismiss: () -> Void
-    
-    var body: some View {
-        HStack {
-            MenuItemHeaderView(
-                icon: UIImage(systemName: nightMode.value ? "moon.fill": "moon")?.template ?? UIImage(),
-                title: Strings.NightMode.settingsTitle)
-            Spacer()
-            Toggle("", isOn: $nightMode.value)
-                .labelsHidden()
-                .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-                .onChange(of: nightMode.value) { _ in
-                    dismiss()
-                }
+  @ObservedObject private var nightMode = Preferences.General.nightModeEnabled
+
+  var dismiss: () -> Void
+
+  var body: some View {
+    HStack {
+      MenuItemHeaderView(
+        icon: UIImage(systemName: nightMode.value ? "moon.fill" : "moon")?.template ?? UIImage(),
+        title: Strings.NightMode.settingsTitle)
+      Spacer()
+      Toggle("", isOn: $nightMode.value)
+        .labelsHidden()
+        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+        .onChange(of: nightMode.value) { _ in
+          dismiss()
         }
-        .padding(.horizontal, 14)
-        .frame(maxWidth: .infinity, minHeight: 48.0)
-        .background(
-            Button(action: {
-                Preferences.General.nightModeEnabled.value.toggle()
-                dismiss()
-            }) {
-                Color.clear
-            }
-            .buttonStyle(TableCellButtonStyle())
-        )
-        .accessibilityElement()
-        .accessibility(addTraits: .isButton)
-        .accessibility(label: Text(Strings.NightMode.settingsTitle))
     }
+    .padding(.horizontal, 14)
+    .frame(maxWidth: .infinity, minHeight: 48.0)
+    .background(
+      Button(action: {
+        Preferences.General.nightModeEnabled.value.toggle()
+        dismiss()
+      }) {
+        Color.clear
+      }
+      .buttonStyle(TableCellButtonStyle())
+    )
+    .accessibilityElement()
+    .accessibility(addTraits: .isButton)
+    .accessibility(label: Text(Strings.NightMode.settingsTitle))
+  }
 }

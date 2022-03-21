@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 extension Dictionary {
-    public mutating func merge(with dictionary: Dictionary) {
-        dictionary.forEach { updateValue($1, forKey: $0) }
-    }
+  public mutating func merge(with dictionary: Dictionary) {
+    dictionary.forEach { updateValue($1, forKey: $0) }
+  }
 }

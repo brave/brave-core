@@ -24,8 +24,8 @@ extension BraveWalletJsonRpcService {
       let formatter = WeiFormatter(decimalFormatStyle: .balance)
       if let valueString = formatter.decimalString(
         for: wei.removingHexPrefix,
-           radix: .hex,
-           decimals: Int(token.decimals)
+        radix: .hex,
+        decimals: Int(token.decimals)
       ) {
         completion(Double(valueString))
       } else {
@@ -42,10 +42,11 @@ extension BraveWalletJsonRpcService {
           completion: convert
         )
       } else if token.isErc721 {
-        erc721TokenBalance(token.contractAddress,
-                           tokenId: token.tokenId,
-                           accountAddress: account.address,
-                           completion: convert)
+        erc721TokenBalance(
+          token.contractAddress,
+          tokenId: token.tokenId,
+          accountAddress: account.address,
+          completion: convert)
       } else {
         completion(nil)
       }

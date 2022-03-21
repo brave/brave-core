@@ -12,7 +12,7 @@ import struct Shared.AppConstants
 
 struct CreateWalletContainerView: View {
   @ObservedObject var keyringStore: KeyringStore
-  
+
   var body: some View {
     ScrollView(.vertical) {
       CreateWalletView(keyringStore: keyringStore)
@@ -30,11 +30,11 @@ struct CreateWalletContainerView: View {
 
 private struct CreateWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
-  
+
   private enum ValidationError: LocalizedError, Equatable {
     case requirementsNotMet
     case inputsDontMatch
-    
+
     var errorDescription: String? {
       switch self {
       case .requirementsNotMet:
@@ -44,13 +44,13 @@ private struct CreateWalletView: View {
       }
     }
   }
-  
+
   @State private var password: String = ""
   @State private var repeatedPassword: String = ""
   @State private var validationError: ValidationError?
   @State private var isShowingBiometricsPrompt: Bool = false
   @State private var isSkippingBiometricsPrompt: Bool = false
-  
+
   private func createWallet() {
     validate { success in
       if !success {
@@ -67,11 +67,11 @@ private struct CreateWalletView: View {
       }
     }
   }
-  
+
   private var isBiometricsAvailable: Bool {
     LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
   }
-  
+
   private func validate(_ completion: @escaping (Bool) -> Void) {
     keyringStore.isStrongPassword(password) { isValidPassword in
       if !isValidPassword {
@@ -84,21 +84,21 @@ private struct CreateWalletView: View {
       completion(validationError == nil)
     }
   }
-  
+
   private func handlePasswordChanged(_ value: String) {
     if validationError == .requirementsNotMet {
       // Reset validation on user changing
       validationError = nil
     }
   }
-  
+
   private func handleRepeatedPasswordChanged(_ value: String) {
     if validationError == .inputsDontMatch {
       // Reset validation on user changing
       validationError = nil
     }
   }
-  
+
   var body: some View {
     VStack(spacing: 0) {
       VStack(spacing: 46) {
@@ -129,24 +129,27 @@ private struct CreateWalletView: View {
       .frame(maxHeight: .infinity, alignment: .top)
       .padding()
       .padding(.vertical)
-      .background(BiometricsPromptView(isPresented: $isShowingBiometricsPrompt) { enabled, navController in
-        // Store password in keychain
-        if enabled, case let status = KeyringStore.storePasswordInKeychain(password),
-           status != errSecSuccess {
-          let isPublic = AppConstants.buildChannel.isPublic
-          let alert = UIAlertController(
-            title: Strings.Wallet.biometricsSetupErrorTitle,
-            message: Strings.Wallet.biometricsSetupErrorMessage + (isPublic ? "" : " (\(status))"),
-            preferredStyle: .alert
-          )
-          alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
-          navController?.presentedViewController?.present(alert, animated: true)
-          return false
+      .background(
+        BiometricsPromptView(isPresented: $isShowingBiometricsPrompt) { enabled, navController in
+          // Store password in keychain
+          if enabled, case let status = KeyringStore.storePasswordInKeychain(password),
+            status != errSecSuccess
+          {
+            let isPublic = AppConstants.buildChannel.isPublic
+            let alert = UIAlertController(
+              title: Strings.Wallet.biometricsSetupErrorTitle,
+              message: Strings.Wallet.biometricsSetupErrorMessage + (isPublic ? "" : " (\(status))"),
+              preferredStyle: .alert
+            )
+            alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
+            navController?.presentedViewController?.present(alert, animated: true)
+            return false
+          }
+          let controller = UIHostingController(rootView: BackupWalletView(keyringStore: keyringStore))
+          navController?.pushViewController(controller, animated: true)
+          return true
         }
-        let controller = UIHostingController(rootView: BackupWalletView(keyringStore: keyringStore))
-        navController?.pushViewController(controller, animated: true)
-        return true
-      })
+      )
       .background(
         NavigationLink(
           destination: BackupWalletView(keyringStore: keyringStore),

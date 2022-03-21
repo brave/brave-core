@@ -13,23 +13,25 @@ private class WalletWebImageManager: ObservableObject {
   @Published public var isFinished: Bool = false
   /// loading error
   @Published public var error: Error?
-  
+
   private var manager = SDWebImageManager.shared
   private var operation: SDWebImageOperation?
-  
-  init() { }
-  
+
+  init() {}
+
   func load(url: URL?, options: SDWebImageOptions = []) {
-    operation = manager.loadImage(with: url, options: options, progress: nil, completed: { [weak self] image, data, error, _, finished, _ in
-      guard let self = self else { return }
-      self.image = image
-      self.error = error
-      if finished {
-        self.isFinished = true
-      }
-    })
+    operation = manager.loadImage(
+      with: url, options: options, progress: nil,
+      completed: { [weak self] image, data, error, _, finished, _ in
+        guard let self = self else { return }
+        self.image = image
+        self.error = error
+        if finished {
+          self.isFinished = true
+        }
+      })
   }
-  
+
   func cancel() {
     operation?.cancel()
     operation = nil
@@ -40,9 +42,9 @@ struct WebImageReader<Content: View>: View {
   @StateObject private var imageManager: WalletWebImageManager = .init()
   var url: URL?
   var options: SDWebImageOptions
-  
+
   private var content: (_ image: UIImage?, _ isFinished: Bool) -> Content
-  
+
   init(
     url: URL?,
     options: SDWebImageOptions = [],
@@ -52,7 +54,7 @@ struct WebImageReader<Content: View>: View {
     self.url = url
     self.options = options
   }
-  
+
   var body: some View {
     content(imageManager.image, imageManager.isFinished)
       .onAppear {

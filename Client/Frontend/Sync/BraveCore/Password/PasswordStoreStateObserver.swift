@@ -7,24 +7,24 @@ import Foundation
 import BraveCore
 
 class PasswordStoreStateObserver: BraveServiceStateObserver, PasswordStoreObserver {
-    
-    private let listener: (StateChange) -> Void
-    
-    enum StateChange {
-        case passwordFormsChanged(_ formList: [PasswordForm])
-        case passwordFormsRetained(_ formList: [PasswordForm])
-    }
-    
-    init(_ listener: @escaping (StateChange) -> Void) {
-        self.listener = listener
-    }
-    
-    func passwordFormsChanged(_ changedFormList: [PasswordForm]) {
-        listener(.passwordFormsChanged(changedFormList))
-    }
-    
-    func passwordFormsRetained(_ retainedFormList: [PasswordForm]) {
-        listener(.passwordFormsRetained(retainedFormList))
-    }
-    
+
+  private let listener: (StateChange) -> Void
+
+  enum StateChange {
+    case passwordFormsChanged(_ formList: [PasswordForm])
+    case passwordFormsRetained(_ formList: [PasswordForm])
+  }
+
+  init(_ listener: @escaping (StateChange) -> Void) {
+    self.listener = listener
+  }
+
+  func passwordFormsChanged(_ changedFormList: [PasswordForm]) {
+    listener(.passwordFormsChanged(changedFormList))
+  }
+
+  func passwordFormsRetained(_ retainedFormList: [PasswordForm]) {
+    listener(.passwordFormsRetained(retainedFormList))
+  }
+
 }

@@ -8,25 +8,25 @@ import BraveUI
 
 /// A self-sizing new tab collection view which just holds a themable view
 class NewTabCollectionViewCell<View: UIView>: UICollectionViewCell, CollectionViewReusable {
-    /// The content view
-    let view = View()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contentView.addSubview(view)
-        view.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+  /// The content view
+  let view = View()
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    contentView.addSubview(view)
+    view.snp.makeConstraints {
+      $0.edges.equalToSuperview()
     }
-    
-    @available(*, unavailable)
-    required init(coder: NSCoder) {
-        fatalError()
-    }
-    
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        let attributes = super.preferredLayoutAttributesFitting(layoutAttributes)
-        attributes.size = view.systemLayoutSizeFitting(layoutAttributes.size, withHorizontalFittingPriority: .fittingSizeLevel, verticalFittingPriority: .fittingSizeLevel)
-        return attributes
-    }
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+
+  override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+    let attributes = super.preferredLayoutAttributesFitting(layoutAttributes)
+    attributes.size = view.systemLayoutSizeFitting(layoutAttributes.size, withHorizontalFittingPriority: .fittingSizeLevel, verticalFittingPriority: .fittingSizeLevel)
+    return attributes
+  }
 }

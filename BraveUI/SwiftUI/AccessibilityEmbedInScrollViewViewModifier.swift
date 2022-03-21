@@ -19,10 +19,10 @@ extension ContentSizeCategory {
   var isAccessibilityCategory: Bool {
     switch self {
     case .accessibilityExtraExtraExtraLarge,
-         .accessibilityExtraExtraLarge,
-         .accessibilityExtraLarge,
-         .accessibilityLarge,
-         .accessibilityMedium:
+      .accessibilityExtraExtraLarge,
+      .accessibilityExtraLarge,
+      .accessibilityLarge,
+      .accessibilityMedium:
       return true
     default:
       return false
@@ -32,7 +32,7 @@ extension ContentSizeCategory {
 
 struct AccessibilityEmbedInScrollViewViewModifier: ViewModifier {
   @Environment(\.sizeCategory) private var sizeCategory
-  
+
   // Note: Remove @ViewBuilder when CI is Xcode 12.5+
   @ViewBuilder func body(content: Content) -> some View {
     if sizeCategory.isAccessibilityCategory {
@@ -52,7 +52,7 @@ extension View {
   ///
   /// - note: If a user transitions between an accessibility size category and normal size category,
   ///         this View will be removed and re-added to the view hierarchy and thus cause possible
-  ///         `transition`, `onAppear`, and `onDisappear` executions.         
+  ///         `transition`, `onAppear`, and `onDisappear` executions.
   /// - warning: Use this only when you know your View can fit inside all device sizes except when
   ///            the size category is using accessibility sizes.
   /// - warning: Embedding certain View's inside a ScrollView can cause them to layout differently,

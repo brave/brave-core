@@ -6,22 +6,22 @@ import Foundation
 import WebKit
 
 class CustomSearchHelper: TabContentScript {
-    fileprivate weak var tab: Tab?
+  fileprivate weak var tab: Tab?
 
-    required init(tab: Tab) {
-        self.tab = tab
-    }
+  required init(tab: Tab) {
+    self.tab = tab
+  }
 
-    func scriptMessageHandlerName() -> String? {
-        return "customSearchHelper"
-    }
+  func scriptMessageHandlerName() -> String? {
+    return "customSearchHelper"
+  }
 
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
-        defer { replyHandler(nil, nil) }
-        // We don't listen to messages because the BVC calls the searchHelper script by itself.
-    }
+  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+    defer { replyHandler(nil, nil) }
+    // We don't listen to messages because the BVC calls the searchHelper script by itself.
+  }
 
-    class func name() -> String {
-        return "CustomSearchHelper"
-    }
+  class func name() -> String {
+    return "CustomSearchHelper"
+  }
 }

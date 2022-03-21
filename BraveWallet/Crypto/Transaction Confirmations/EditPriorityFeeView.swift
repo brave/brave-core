@@ -23,24 +23,24 @@ struct EditPriorityFeeView: View {
   var gasEstimation: BraveWallet.GasEstimation1559
   /// The confirmation store to update gas prices on save
   @ObservedObject var confirmationStore: TransactionConfirmationStore
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   private enum GasFeeKind: Hashable {
     case low, optimal, high, custom
   }
-  
+
   @State private var gasFeeKind: GasFeeKind = .optimal
   @State private var gasLimit: String = ""
   @State private var maximumGasPrice: String = ""
   @State private var maximumTipPrice: String = ""
   @State private var baseInGwei: String = ""
   @State private var isShowingAlert: Bool = false
-  
+
   private func setup() {
     let selectedMaxPrice = transaction.txDataUnion.ethTxData1559?.maxFeePerGas ?? ""
     let selectedMaxTip = transaction.txDataUnion.ethTxData1559?.maxPriorityFeePerGas ?? ""
-    
+
     // Gas limit is already in Gwei…
     gasLimit = {
       guard let value = BDouble(transaction.ethTxGasLimit.removingHexPrefix, radix: 16) else {
@@ -54,22 +54,19 @@ struct EditPriorityFeeView: View {
     maximumTipPrice = WeiFormatter.weiToDecimalGwei(selectedMaxTip.removingHexPrefix, radix: .hex) ?? "0"
     maximumGasPrice = WeiFormatter.weiToDecimalGwei(selectedMaxPrice.removingHexPrefix, radix: .hex) ?? "0"
     baseInGwei = WeiFormatter.weiToDecimalGwei(gasEstimation.baseFeePerGas.removingHexPrefix, radix: .hex) ?? "0"
-    
+
     // Comparing from high to low as sometimes avg/slow fees are the same
-    if selectedMaxPrice == gasEstimation.fastMaxFeePerGas &&
-        selectedMaxTip == gasEstimation.fastMaxPriorityFeePerGas {
+    if selectedMaxPrice == gasEstimation.fastMaxFeePerGas && selectedMaxTip == gasEstimation.fastMaxPriorityFeePerGas {
       gasFeeKind = .high
-    } else if selectedMaxPrice == gasEstimation.avgMaxFeePerGas &&
-                selectedMaxTip == gasEstimation.avgMaxPriorityFeePerGas {
+    } else if selectedMaxPrice == gasEstimation.avgMaxFeePerGas && selectedMaxTip == gasEstimation.avgMaxPriorityFeePerGas {
       gasFeeKind = .optimal
-    } else if selectedMaxPrice == gasEstimation.slowMaxFeePerGas &&
-                selectedMaxTip == gasEstimation.slowMaxPriorityFeePerGas {
+    } else if selectedMaxPrice == gasEstimation.slowMaxFeePerGas && selectedMaxTip == gasEstimation.slowMaxPriorityFeePerGas {
       gasFeeKind = .low
     } else {
       gasFeeKind = .custom
     }
   }
-  
+
   private func save() {
     // See `isSaveButtonDisabled` for validation
     var hexGasLimit = transaction.ethTxGasLimit
@@ -88,16 +85,17 @@ struct EditPriorityFeeView: View {
     case .custom:
       // Gas limit is already in Gwei, so doesn't need additional conversion other than to hex
       guard let limit = BDouble(gasLimit)?.rounded().asString(radix: 16),
-            let gasFee = WeiFormatter.gweiToWei(maximumGasPrice, radix: .decimal, outputRadix: .hex),
-            let gasTip = WeiFormatter.gweiToWei(maximumTipPrice, radix: .decimal, outputRadix: .hex) else {
-              // Show error?
-              return
-            }
+        let gasFee = WeiFormatter.gweiToWei(maximumGasPrice, radix: .decimal, outputRadix: .hex),
+        let gasTip = WeiFormatter.gweiToWei(maximumTipPrice, radix: .decimal, outputRadix: .hex)
+      else {
+        // Show error?
+        return
+      }
       hexGasLimit = "0x\(limit)"
       hexGasFee = "0x\(gasFee)"
       hexGasTip = "0x\(gasTip)"
     }
-    
+
     confirmationStore.updateGasFeeAndLimits(
       for: transaction,
       maxPriorityFeePerGas: hexGasTip,
@@ -111,7 +109,7 @@ struct EditPriorityFeeView: View {
       }
     }
   }
-  
+
   private var calculatedMaximumFee: String {
     let formatter = WeiFormatter(decimalFormatStyle: .gasFee(limit: gasLimit, radix: .decimal))
     let gasFeeInWei: String
@@ -126,25 +124,27 @@ struct EditPriorityFeeView: View {
       gasFeeInWei = WeiFormatter.gweiToWei(maximumGasPrice, radix: .decimal, outputRadix: .hex) ?? ""
     }
     let proposedGasValue = formatter.decimalString(for: gasFeeInWei.removingHexPrefix, radix: .hex, decimals: 18) ?? ""
-    let proposedGasFiat = confirmationStore.numberFormatter.string(
-      from: NSNumber(value: confirmationStore.state.gasAssetRatio * (Double(proposedGasValue) ?? 0.0))
-    ) ?? "–"
+    let proposedGasFiat =
+      confirmationStore.numberFormatter.string(
+        from: NSNumber(value: confirmationStore.state.gasAssetRatio * (Double(proposedGasValue) ?? 0.0))
+      ) ?? "–"
     return "\(proposedGasFiat) (\(proposedGasValue) \(confirmationStore.state.gasSymbol))"
   }
-  
+
   private var isSaveButtonDisabled: Bool {
     if case .custom = gasFeeKind {
       // Validate data
       guard let gasLimitValue = BDouble(gasLimit), gasLimitValue > 0,
-            let basePrice = BDouble(baseInGwei),
-            let maxTipValue = BDouble(maximumTipPrice), maxTipValue > 0,
-            let maxFeeValue = BDouble(maximumGasPrice), maxFeeValue > basePrice else {
-              return true
-            }
+        let basePrice = BDouble(baseInGwei),
+        let maxTipValue = BDouble(maximumTipPrice), maxTipValue > 0,
+        let maxFeeValue = BDouble(maximumGasPrice), maxFeeValue > basePrice
+      else {
+        return true
+      }
     }
     return false
   }
-  
+
   private var maximumPriorityFeeBinding: Binding<String> {
     // We have to setup a custom `Binding` instead of using `onChange` so that `maximumGasPrice` is not
     // altered during setup. If a user edits the `maximumGasPrice` themselves and saves it, when they come
@@ -155,12 +155,13 @@ struct EditPriorityFeeView: View {
     } set: { value in
       maximumTipPrice = value
       if let base = BDouble(baseInGwei),
-         let tip = BDouble(value) {
+        let tip = BDouble(value)
+      {
         maximumGasPrice = (floor(base) + tip).decimalExpansion(precisionAfterDecimalPoint: 2)
       }
     }
   }
-  
+
   var body: some View {
     List {
       Section(

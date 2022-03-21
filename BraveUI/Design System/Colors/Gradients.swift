@@ -36,7 +36,7 @@ public struct BraveGradient {
   public var stops: [Stop]
   public var startPoint: CGPoint
   public var endPoint: CGPoint
-  
+
   public init(stops: [Stop], angle: Angle) {
     let alpha = angle.radians
     let startPoint = CGPoint(
@@ -49,7 +49,7 @@ public struct BraveGradient {
     )
     self.init(stops: stops, startPoint: startPoint, endPoint: endPoint)
   }
-  
+
   public init(stops: [Stop], startPoint: CGPoint, endPoint: CGPoint) {
     self.stops = stops
     self.startPoint = startPoint

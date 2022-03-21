@@ -7,34 +7,34 @@ import BraveShared
 import Shared
 
 enum DefaultTheme: String, RepresentableOptionType {
-    case system = "Z71ED37E-EC3E-436E-AD5F-B22748306A6B"
-    case light = "ACE618A3-D6FC-45A4-94F2-1793C40AE927"
-    case dark = "B900A41F-2C02-4664-9DE4-C170956339AC"
-    
-    static var normalThemesOptions = [
-        DefaultTheme.system,
-        DefaultTheme.light,
-        DefaultTheme.dark
-    ]
-    
-    public var userInterfaceStyleOverride: UIUserInterfaceStyle {
-        switch self {
-        case .system:
-            return .unspecified
-        case .light:
-            return .light
-        case .dark:
-            return .dark
-        }
+  case system = "Z71ED37E-EC3E-436E-AD5F-B22748306A6B"
+  case light = "ACE618A3-D6FC-45A4-94F2-1793C40AE927"
+  case dark = "B900A41F-2C02-4664-9DE4-C170956339AC"
+
+  static var normalThemesOptions = [
+    DefaultTheme.system,
+    DefaultTheme.light,
+    DefaultTheme.dark,
+  ]
+
+  public var userInterfaceStyleOverride: UIUserInterfaceStyle {
+    switch self {
+    case .system:
+      return .unspecified
+    case .light:
+      return .light
+    case .dark:
+      return .dark
     }
-    
-    public var displayString: String {
-        // Due to translations needs, titles are hardcoded here, ideally they would be pulled from the
-        //  theme files themselves.
-        switch self {
-        case .system: return Strings.themesAutomaticOption
-        case .light: return Strings.themesLightOption
-        case .dark: return Strings.themesDarkOption
-        }
+  }
+
+  public var displayString: String {
+    // Due to translations needs, titles are hardcoded here, ideally they would be pulled from the
+    //  theme files themselves.
+    switch self {
+    case .system: return Strings.themesAutomaticOption
+    case .light: return Strings.themesLightOption
+    case .dark: return Strings.themesDarkOption
     }
+  }
 }

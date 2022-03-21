@@ -9,21 +9,23 @@ private struct ResetListHeaderStyleModifier: ViewModifier {
   @Environment(\.font) private var font
   @Environment(\.sizeCategory) private var sizeCategory
   var insets: EdgeInsets?
-  
+
   func body(content: Content) -> some View {
     content
       .textCase(.none)
       .font(font)
       .foregroundColor(.primary)
-      .listRowInsets(insets.map {
-        // When using an accessibility font size, inset grouped tables automatically change to regular
-        // grouped tables which do not have a horizontal default padding. This ensures headers which opt into
-        // inset removal still get some horizontal padding from the edge of the screen.
-        if $0 == .zero && sizeCategory.isAccessibilityCategory {
-          return .init(top: 0, leading: 16, bottom: 0, trailing: 16)
+      .listRowInsets(
+        insets.map {
+          // When using an accessibility font size, inset grouped tables automatically change to regular
+          // grouped tables which do not have a horizontal default padding. This ensures headers which opt into
+          // inset removal still get some horizontal padding from the edge of the screen.
+          if $0 == .zero && sizeCategory.isAccessibilityCategory {
+            return .init(top: 0, leading: 16, bottom: 0, trailing: 16)
+          }
+          return $0
         }
-        return $0
-      })
+      )
       .accessibilityRemoveTraits(.isHeader)
   }
 }

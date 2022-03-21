@@ -7,16 +7,16 @@ import Data
 import Combine
 
 final class PrivateBrowsingManager: ObservableObject {
-    
-    @Published var isPrivateBrowsing = false {
-        didSet {
-            if oldValue != isPrivateBrowsing {
-                if !isPrivateBrowsing {
-                    Domain.clearInMemoryDomains()
-                }
-            }
+
+  @Published var isPrivateBrowsing = false {
+    didSet {
+      if oldValue != isPrivateBrowsing {
+        if !isPrivateBrowsing {
+          Domain.clearInMemoryDomains()
         }
+      }
     }
-    
-    static let shared = PrivateBrowsingManager()
+  }
+
+  static let shared = PrivateBrowsingManager()
 }

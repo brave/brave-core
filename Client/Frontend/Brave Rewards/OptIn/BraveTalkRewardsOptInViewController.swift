@@ -9,73 +9,75 @@ import Shared
 import BraveShared
 
 class BraveTalkRewardsOptInViewController: UIViewController, PopoverContentComponent {
-    
-    /// Gets called when a user taps on 'Enable Rewards' button.
-    var rewardsEnabledHandler: (() -> Void)?
-    var linkTapped: ((URLRequest) -> Void)?
-    
-    private var braveTalkView: View {
-        view as! View // swiftlint:disable:this force_cast
-    }
-    
-    override func loadView() {
-        view = View()
-    }
-    
-    override func viewDidLoad() {
-        updatePreferredContentSize()
-        
-        braveTalkView.enableRewardsButton .addTarget(self, action: #selector(enableRewardsAction),
-                                                     for: .touchUpInside)
-        braveTalkView.disclaimer.onLinkedTapped = { [unowned self] link in
-            var request: URLRequest?
-            
-            self.dismiss(animated: true) {
-                switch link.absoluteString {
-                case "tos":
-                    request = URLRequest(url: BraveUX.batTermsOfUseURL)
-                case "privacy-policy":
-                    request = URLRequest(url: BraveUX.bravePrivacyURL)
-                default:
-                    assertionFailure()
-                }
-                
-                if let request = request {
-                    self.linkTapped?(request)
-                }
-            }
+
+  /// Gets called when a user taps on 'Enable Rewards' button.
+  var rewardsEnabledHandler: (() -> Void)?
+  var linkTapped: ((URLRequest) -> Void)?
+
+  private var braveTalkView: View {
+    view as! View  // swiftlint:disable:this force_cast
+  }
+
+  override func loadView() {
+    view = View()
+  }
+
+  override func viewDidLoad() {
+    updatePreferredContentSize()
+
+    braveTalkView.enableRewardsButton.addTarget(
+      self, action: #selector(enableRewardsAction),
+      for: .touchUpInside)
+    braveTalkView.disclaimer.onLinkedTapped = { [unowned self] link in
+      var request: URLRequest?
+
+      self.dismiss(animated: true) {
+        switch link.absoluteString {
+        case "tos":
+          request = URLRequest(url: BraveUX.batTermsOfUseURL)
+        case "privacy-policy":
+          request = URLRequest(url: BraveUX.bravePrivacyURL)
+        default:
+          assertionFailure()
         }
-    }
-    
-    @objc func enableRewardsAction() {
-        dismiss(animated: true) {
-            self.rewardsEnabledHandler?()
+
+        if let request = request {
+          self.linkTapped?(request)
         }
-        
+      }
     }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        if previousTraitCollection?.preferredContentSizeCategory
-            != traitCollection.preferredContentSizeCategory {
-            
-            updatePreferredContentSize()
-        }
+  }
+
+  @objc func enableRewardsAction() {
+    dismiss(animated: true) {
+      self.rewardsEnabledHandler?()
     }
-    
-    private func updatePreferredContentSize() {
-        let baseHeight: CGFloat = BraveUX.baseDimensionValue
-        let scale = UIFontMetrics.default
-        
-        // For phones in portrait we leave extra space to dismiss the popup by tapping outside of it.
-        if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
-            let scaledHeight = scale.scaledValue(for: baseHeight)
-            let height = min(scaledHeight, UIScreen.main.bounds.height - 150)
-            
-            preferredContentSize = .init(width: 350, height: height)
-        } else {
-            preferredContentSize = .init(width: 350, height: scale.scaledValue(for: baseHeight))
-        }
+
+  }
+
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+
+    if previousTraitCollection?.preferredContentSizeCategory
+      != traitCollection.preferredContentSizeCategory
+    {
+
+      updatePreferredContentSize()
     }
+  }
+
+  private func updatePreferredContentSize() {
+    let baseHeight: CGFloat = BraveUX.baseDimensionValue
+    let scale = UIFontMetrics.default
+
+    // For phones in portrait we leave extra space to dismiss the popup by tapping outside of it.
+    if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
+      let scaledHeight = scale.scaledValue(for: baseHeight)
+      let height = min(scaledHeight, UIScreen.main.bounds.height - 150)
+
+      preferredContentSize = .init(width: 350, height: height)
+    } else {
+      preferredContentSize = .init(width: 350, height: scale.scaledValue(for: baseHeight))
+    }
+  }
 }

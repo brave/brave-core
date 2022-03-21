@@ -13,8 +13,8 @@ import SwiftUI
 ///            non-private version of this API). Should be checked at each major OS release. If it breaks,
 ///            change to a regular `ViewModifier`
 public struct BraveTextFieldStyle: TextFieldStyle {
-  public init() { }
-  
+  public init() {}
+
   public func _body(configuration: TextField<_Label>) -> some View {
     configuration
       .modifier(BaseBraveTextFieldStyleModifier())
@@ -31,13 +31,13 @@ public struct BraveTextFieldStyle: TextFieldStyle {
 ///            change to a regular `ViewModifier`
 public struct BraveValidatedTextFieldStyle<Failure: LocalizedError & Equatable>: TextFieldStyle {
   public var error: Failure?
-  
+
   /// Creates a validated TextField style that displays a red border & background color when the provided
   /// error is non-nil.
   public init(error: Failure?) {
     self.error = error
   }
-  
+
   /// Creates a validated TextField style when the error provided is equal to a specific case of that Error
   ///
   /// This allows you to write the following:
@@ -51,7 +51,7 @@ public struct BraveValidatedTextFieldStyle<Failure: LocalizedError & Equatable>:
   public init(error: Failure?, when predicate: Failure) {
     self.error = error == predicate ? error : nil
   }
-  
+
   public func _body(configuration: TextField<_Label>) -> some View {
     VStack(alignment: .leading) {
       configuration
@@ -67,7 +67,7 @@ public struct BraveValidatedTextFieldStyle<Failure: LocalizedError & Equatable>:
           Image(systemName: "exclamationmark.circle.fill")
           Text(error.localizedDescription)
             .fixedSize(horizontal: false, vertical: true)
-            .animation(nil, value: error.localizedDescription) // Dont animate the text change, just alpha
+            .animation(nil, value: error.localizedDescription)  // Dont animate the text change, just alpha
         }
         .transition(
           .asymmetric(
@@ -85,15 +85,15 @@ public struct BraveValidatedTextFieldStyle<Failure: LocalizedError & Equatable>:
 
 private struct BaseBraveTextFieldStyleModifier: ViewModifier {
   @Environment(\.pixelLength) private var pixelLength
-  
+
   var strokeColor: Color?
   var lineWidthFactor: CGFloat?
   var backgroundColor: Color?
-  
+
   private var borderShape: some InsettableShape {
     RoundedRectangle(cornerRadius: 4, style: .continuous)
   }
-  
+
   func body(content: Content) -> some View {
     content
       .font(.callout)

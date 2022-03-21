@@ -8,29 +8,29 @@ import BraveUI
 
 /// A new tab collection view cell where the view is horizontally centered and themeable.
 class NewTabCenteredCollectionViewCell<View: UIView>: UICollectionViewCell, CollectionViewReusable {
-    /// The content view
-    let view = View()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contentView.addSubview(view)
-        view.snp.remakeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.centerX.equalToSuperview()
-            $0.leading.greaterThanOrEqualToSuperview()
-            $0.trailing.lessThanOrEqualToSuperview()
-        }
+  /// The content view
+  let view = View()
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    contentView.addSubview(view)
+    view.snp.remakeConstraints {
+      $0.top.bottom.equalToSuperview()
+      $0.centerX.equalToSuperview()
+      $0.leading.greaterThanOrEqualToSuperview()
+      $0.trailing.lessThanOrEqualToSuperview()
     }
-    
-    @available(*, unavailable)
-    required init(coder: NSCoder) {
-        fatalError()
-    }
-    
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        // swiftlint:disable:next force_cast
-        let attributes = layoutAttributes.copy() as! UICollectionViewLayoutAttributes
-        attributes.size.height = systemLayoutSizeFitting(layoutAttributes.size, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
-        return attributes
-    }
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+
+  override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+    // swiftlint:disable:next force_cast
+    let attributes = layoutAttributes.copy() as! UICollectionViewLayoutAttributes
+    attributes.size.height = systemLayoutSizeFitting(layoutAttributes.size, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
+    return attributes
+  }
 }

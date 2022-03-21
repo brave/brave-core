@@ -8,25 +8,25 @@ import SwiftUI
 
 /// A view that embeds a SwiftUI hierarchy within a UINavigationController
 ///
-/// The root view controller will be set to the SwiftUI View provided 
+/// The root view controller will be set to the SwiftUI View provided
 ///
 /// In iOS 15 using `StackNavigationStyle` will cause issues with toolbar buttons and large title mode. In
 /// those instances you can switch to use a ``UIKitNavigationView`` to fallback to UIKit.
 public struct UIKitNavigationView<Content: View>: View {
   public var content: Content
-  
+
   public init(@ViewBuilder content: () -> Content) {
     self.content = content()
   }
-  
+
   public var body: some View {
     _UIKitNavigationView(content: content)
       .ignoresSafeArea()
   }
-  
+
   private struct _UIKitNavigationView<Content: View>: UIViewControllerRepresentable {
     var content: Content
-    
+
     func makeUIViewController(context: Context) -> UINavigationController {
       UINavigationController(
         rootViewController: UIHostingController(
