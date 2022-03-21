@@ -5,16 +5,9 @@
 
 #include "brave/browser/android/compositor/scene_layer/stack_tab_list_scene_layer.h"
 
-#include <vector>
-
-#include "base/android/jni_array.h"
-#include "base/android/jni_string.h"
 #include "brave/build/android/jni_headers/StackTabListSceneLayer_jni.h"
-#include "chrome/browser/android/compositor/layer/content_layer.h"
 #include "chrome/browser/android/compositor/layer/tab_layer.h"
 #include "chrome/browser/android/compositor/layer_title_cache.h"
-#include "chrome/browser/android/compositor/tab_content_manager.h"
-#include "ui/android/resources/resource_manager_impl.h"
 
 using base::android::JavaParamRef;
 using base::android::JavaRef;

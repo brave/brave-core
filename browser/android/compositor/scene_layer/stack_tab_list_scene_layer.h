@@ -6,17 +6,7 @@
 #ifndef BRAVE_BROWSER_ANDROID_COMPOSITOR_SCENE_LAYER_STACK_TAB_LIST_SCENE_LAYER_H_
 #define BRAVE_BROWSER_ANDROID_COMPOSITOR_SCENE_LAYER_STACK_TAB_LIST_SCENE_LAYER_H_
 
-#include <map>
-#include <memory>
-#include <set>
-
-#include "base/memory/raw_ptr.h"
-#include "cc/layers/layer.h"
-#include "cc/layers/ui_resource_layer.h"
-#include "chrome/browser/android/compositor/layer/layer.h"
 #include "chrome/browser/android/compositor/scene_layer/tab_list_scene_layer.h"
-#include "chrome/browser/android/compositor/tab_content_manager.h"
-#include "third_party/skia/include/core/SkColor.h"
 
 namespace ui {
 class ResourceManager;
