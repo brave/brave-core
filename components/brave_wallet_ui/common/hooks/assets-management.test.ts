@@ -1,8 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks'
+
 import * as WalletActions from '../actions/wallet_actions'
-import {
-  mockNetwork
-} from '../constants/mocks'
 import useAssetManagement from './assets-management'
 import { AccountAssetOptions } from '../../options/asset-options'
 
@@ -46,7 +44,7 @@ describe('useAssetManagement hook', () => {
       mockUserVisibleTokensInfo
     ))
     act(() => result.current.onUpdateVisibleAssets([AccountAssetOptions[1], AccountAssetOptions[2], AccountAssetOptions[3]]))
-    expect(addedAssetSpy).toBeCalledWith({ chainId: mockNetwork.chainId, token: { ...AccountAssetOptions[3], logo: '' } })
+    expect(addedAssetSpy).toBeCalledWith({ ...AccountAssetOptions[3], logo: '' })
     expect(refreshedBalancesPricesSpy).toBeCalledTimes(1)
   })
 
@@ -59,8 +57,8 @@ describe('useAssetManagement hook', () => {
       AccountAssetOptions,
       mockUserVisibleTokensInfo
     ))
-    act(() => result.current.onUpdateVisibleAssets([AccountAssetOptions[1]]))
-    expect(removedAssetSpy).toBeCalledWith({ chainId: mockNetwork.chainId, token: AccountAssetOptions[2] })
+    act(() => result.current.onUpdateVisibleAssets([mockUserVisibleTokensInfo[0]]))
+    expect(removedAssetSpy).toBeCalledWith(mockUserVisibleTokensInfo[1])
     expect(refreshedBalancesPricesSpy).toBeCalledTimes(1)
   })
 
@@ -74,8 +72,8 @@ describe('useAssetManagement hook', () => {
       mockUserVisibleTokensInfo
     ))
     act(() => result.current.onUpdateVisibleAssets([AccountAssetOptions[1], AccountAssetOptions[3]]))
-    expect(addedAssetSpy).toBeCalledWith({ chainId: mockNetwork.chainId, token: { ...AccountAssetOptions[3], logo: '' } })
-    expect(removedAssetSpy).toBeCalledWith({ chainId: mockNetwork.chainId, token: AccountAssetOptions[2] })
+    expect(addedAssetSpy).toBeCalledWith({ ...AccountAssetOptions[3], logo: '' })
+    expect(removedAssetSpy).toBeCalledWith(AccountAssetOptions[2])
     expect(refreshedBalancesPricesSpy).toBeCalledTimes(1)
   })
 
@@ -89,7 +87,7 @@ describe('useAssetManagement hook', () => {
       [...mockUserVisibleTokensInfo, mockCustomToken]
     ))
     act(() => result.current.onUpdateVisibleAssets([...mockUserVisibleTokensInfo, { ...mockCustomToken, visible: false }]))
-    expect(setUserAssetVisibleSpy).toBeCalledWith({ chainId: mockNetwork.chainId, token: { ...mockCustomToken, visible: false }, isVisible: false })
+    expect(setUserAssetVisibleSpy).toBeCalledWith({ token: { ...mockCustomToken, visible: false }, isVisible: false })
     expect(refreshedBalancesPricesSpy).toBeCalledTimes(1)
   })
 
@@ -103,7 +101,7 @@ describe('useAssetManagement hook', () => {
       [...mockUserVisibleTokensInfo, { ...mockCustomToken, visible: false }]
     ))
     act(() => result.current.onUpdateVisibleAssets([...mockUserVisibleTokensInfo, mockCustomToken]))
-    expect(setUserAssetVisibleSpy).toBeCalledWith({ chainId: mockNetwork.chainId, token: mockCustomToken, isVisible: true })
+    expect(setUserAssetVisibleSpy).toBeCalledWith({ token: mockCustomToken, isVisible: true })
     expect(refreshedBalancesPricesSpy).toBeCalledTimes(1)
   })
 })

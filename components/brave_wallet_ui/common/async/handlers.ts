@@ -1,4 +1,4 @@
-// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
@@ -6,10 +6,8 @@
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
 import {
-  AddUserAssetPayloadType,
   ChainChangedEventPayloadType,
   RemoveSitePermissionPayloadType,
-  RemoveUserAssetPayloadType,
   SetUserAssetVisiblePayloadType,
   UnlockWalletPayloadType,
   UpdateUnapprovedTransactionGasFieldsType,
@@ -282,20 +280,20 @@ handler.on(WalletActions.getAllTokensList.getType(), async (store) => {
   store.dispatch(WalletActions.setAllTokensList(allTokensList))
 })
 
-handler.on(WalletActions.addUserAsset.getType(), async (store: Store, payload: AddUserAssetPayloadType) => {
-  const braveWalletService = getAPIProxy().braveWalletService
-  const result = await braveWalletService.addUserAsset(payload.token, payload.chainId)
+handler.on(WalletActions.addUserAsset.getType(), async (store: Store, payload: BraveWallet.BlockchainToken) => {
+  const { braveWalletService } = getAPIProxy()
+  const result = await braveWalletService.addUserAsset(payload, payload.chainId)
   store.dispatch(WalletActions.addUserAssetError(!result.success))
 })
 
-handler.on(WalletActions.removeUserAsset.getType(), async (store: Store, payload: RemoveUserAssetPayloadType) => {
-  const braveWalletService = getAPIProxy().braveWalletService
-  await braveWalletService.removeUserAsset(payload.token, payload.chainId)
+handler.on(WalletActions.removeUserAsset.getType(), async (store: Store, payload: BraveWallet.BlockchainToken) => {
+  const { braveWalletService } = getAPIProxy()
+  await braveWalletService.removeUserAsset(payload, payload.chainId)
 })
 
 handler.on(WalletActions.setUserAssetVisible.getType(), async (store: Store, payload: SetUserAssetVisiblePayloadType) => {
-  const braveWalletService = getAPIProxy().braveWalletService
-  await braveWalletService.setUserAssetVisible(payload.token, payload.chainId, payload.isVisible)
+  const { braveWalletService } = getAPIProxy()
+  await braveWalletService.setUserAssetVisible(payload.token, payload.token.chainId, payload.isVisible)
 })
 
 handler.on(WalletActions.refreshBalancesAndPriceHistory.getType(), async (store: Store) => {

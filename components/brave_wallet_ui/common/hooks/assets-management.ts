@@ -1,37 +1,35 @@
-// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { SimpleActionCreator, EmptyActionCreator } from 'redux-act'
-import {
-  BraveWallet
-} from '../../constants/types'
 
-import {
-  AddUserAssetPayloadType,
-  SetUserAssetVisiblePayloadType,
-  RemoveUserAssetPayloadType
-} from '../constants/action_types'
+// Constants
+import { BraveWallet } from '../../constants/types'
+import { SetUserAssetVisiblePayloadType } from '../constants/action_types'
 
+// Utils
 import { stripERC20TokenImageURL } from '../../utils/string-utils'
 
+const onlyInLeft = (left: BraveWallet.BlockchainToken[], right: BraveWallet.BlockchainToken[]) =>
+  left.filter(leftValue =>
+    !right.some(rightValue =>
+        leftValue.contractAddress.toLowerCase() === rightValue.contractAddress.toLowerCase()))
+
 export default function useAssetManagement (
-  addUserAsset: SimpleActionCreator<AddUserAssetPayloadType>,
+  addUserAsset: SimpleActionCreator<BraveWallet.BlockchainToken>,
   setUserAssetVisible: SimpleActionCreator<SetUserAssetVisiblePayloadType>,
-  removeUserAsset: SimpleActionCreator<RemoveUserAssetPayloadType>,
+  removeUserAsset: SimpleActionCreator<BraveWallet.BlockchainToken>,
   refreshBalancesPricesAndHistory: EmptyActionCreator,
   fullTokenList: BraveWallet.BlockchainToken[],
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
 ) {
   const onAddUserAsset = (token: BraveWallet.BlockchainToken) => {
     addUserAsset({
-      token: {
-        ...token,
-        logo: stripERC20TokenImageURL(token.logo) || ''
-      },
-      chainId: token?.chainId ?? ''
+      ...token,
+      logo: stripERC20TokenImageURL(token.logo) || ''
     })
   }
 
@@ -46,25 +44,19 @@ export default function useAssetManagement (
 
   const onUpdateVisibleAssets = React.useCallback((updatedTokensList: BraveWallet.BlockchainToken[]) => {
     // Gets a list of all added tokens and adds them to the userVisibleTokensInfo list
-    updatedTokensList.filter((firstItem) =>
-      !userVisibleTokensInfo.some((secondItem) =>
-        firstItem.contractAddress.toLowerCase() === secondItem.contractAddress.toLowerCase()))
-      .forEach((token) => onAddUserAsset(token))
+    onlyInLeft(updatedTokensList, userVisibleTokensInfo)
+      .forEach(token => onAddUserAsset(token))
 
     // Gets a list of all removed tokens and removes them from the userVisibleTokensInfo list
-    userVisibleTokensInfo.filter((firstItem) =>
-      !updatedTokensList.some((secondItem) =>
-        firstItem.contractAddress.toLowerCase() === secondItem.contractAddress.toLowerCase()))
-      .forEach((token) => removeUserAsset({ token, chainId: token?.chainId ?? '' }))
+    onlyInLeft(userVisibleTokensInfo, updatedTokensList)
+      .forEach(token => removeUserAsset(token))
 
     // Gets a list of custom tokens returned from updatedTokensList payload
     // then compares customTokens against userVisibleTokensInfo list and updates the custom tokens visibility if it has changed
-    updatedTokensList.filter((firstItem) =>
-      !fullTokenList.some((secondItem) =>
-        firstItem.contractAddress.toLowerCase() === secondItem.contractAddress.toLowerCase()))
-      .forEach((token) => {
+    onlyInLeft(updatedTokensList, fullTokenList)
+      .forEach(token => {
         const foundToken = findVisibleTokenInfo(token)
-        // Since a networks native token (example 'ETH') can be removed from the the userVisibleTokensInfo list,
+        // Since a networks native token (example 'ETH') can be removed from the userVisibleTokensInfo list,
         // when it is re-added we handle it as a custom token since it is not part of the token registry.
         // This check here will add it only if it's value 'visible' is returned true
         if (token.contractAddress.toLowerCase() === '' && !foundToken?.visible && token.visible) {
@@ -72,11 +64,11 @@ export default function useAssetManagement (
         }
         // Updates token visibility exluding a networks native token
         if (foundToken?.visible !== token.visible && token.contractAddress.toLowerCase() !== '') {
-          setUserAssetVisible({ token, chainId: token?.chainId ?? '', isVisible: token.visible })
+          setUserAssetVisible({ token, isVisible: token.visible })
         }
       })
 
-    // Refreshes Balances, Prices and Price History when done.
+    // Refresh Balances, Prices and Price History when done.
     refreshBalancesPricesAndHistory()
   }, [userVisibleTokensInfo])
 
