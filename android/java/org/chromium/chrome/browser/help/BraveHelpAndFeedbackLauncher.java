@@ -20,14 +20,16 @@ import javax.annotation.Nonnull;
 
 public class BraveHelpAndFeedbackLauncher extends HelpAndFeedbackLauncherImpl {
     protected static final String FALLBACK_SUPPORT_URL = "https://community.brave.com/";
-    private static final String SAFE_BROWSING_URL = "https://brave.com/privacy/browser/#safe-browsing";
+    private static final String SAFE_BROWSING_URL =
+            "https://brave.com/privacy/browser/#safe-browsing";
     private static final String TAG = "BraveHelpAndFeedbackLauncher";
 
     @Override
     protected void show(
             Activity activity, String helpContext, @Nonnull FeedbackCollector collector) {
         Log.d(TAG, "Feedback data: " + collector.getBundle());
-        if(helpContext.equalsIgnoreCase(activity.getResources().getString(R.string.help_context_safe_browsing))) {
+        if (helpContext.equalsIgnoreCase(
+                    activity.getResources().getString(R.string.help_context_safe_browsing))) {
             launchSafeBrowsingUri(activity);
         } else {
             launchFallbackSupportUri(activity);
@@ -35,7 +37,6 @@ public class BraveHelpAndFeedbackLauncher extends HelpAndFeedbackLauncherImpl {
     }
 
     private void launchSafeBrowsingUri(Context context) {
-
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(SAFE_BROWSING_URL));
         // Let Chrome know that this intent is from Chrome, so that it does not close the app when
         // the user presses 'back' button.
