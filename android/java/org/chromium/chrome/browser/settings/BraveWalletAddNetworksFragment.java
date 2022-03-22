@@ -5,6 +5,9 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK;
+import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -66,7 +69,8 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         final View view = inflater.inflate(R.layout.brave_wallet_add_network, container, false);
 
         Button btAdd = view.findViewById(R.id.add);
-        boolean activeNetwork = getActivity().getIntent().getBooleanExtra("activeNetwork", false);
+        boolean activeNetwork =
+                getArguments().getBoolean(ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK, false);
         if (!activeNetwork) {
             btAdd.setOnClickListener(v -> {
                 if (!validateInputsAddChain(view)) {
@@ -77,7 +81,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         } else {
             btAdd.setVisibility(View.GONE);
         }
-        mChainId = getActivity().getIntent().getStringExtra("chainId");
+        mChainId = getArguments().getString(ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID);
         mChainIdEditText = view.findViewById(R.id.chain_id);
         if (!mChainId.isEmpty()) {
             btAdd.setText(R.string.brave_wallet_add_network_submit);
