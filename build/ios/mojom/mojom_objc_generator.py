@@ -272,7 +272,7 @@ class BaseDictionaryValueMojoTypemap(MojoTypemap):
         return (mojom.IsStructKind(kind) and
                 kind.qualified_name == 'mojo_base.mojom.DictionaryValue')
     def ObjCWrappedType(self):
-        return "NSDictionary<NSString*,NSObject*>*"
+        return "NSDictionary<NSString*,MojoBaseValue*>*"
     def ExpectedCppType(self):
         return "base::Value"
     def DefaultObjCValue(self, default):
@@ -288,7 +288,7 @@ class BaseListValueMojoTypemap(MojoTypemap):
         return (mojom.IsStructKind(kind) and
                 kind.qualified_name == 'mojo_base.mojom.ListValue')
     def ObjCWrappedType(self):
-        return "NSArray*"
+        return "NSArray<MojoBaseValue*>*"
     def ExpectedCppType(self):
         return "base::Value"
     def DefaultObjCValue(self, default):
