@@ -37,6 +37,16 @@ absl::optional<SolanaInstruction> Transfer(
 
 }  // namespace spl_token_program
 
+namespace spl_associated_token_account_program {
+
+absl::optional<SolanaInstruction> CreateAssociatedTokenAccount(
+    const std::string& funding_address,
+    const std::string& wallet_address,
+    const std::string& associated_token_account_address,
+    const std::string& spl_token_mint_address);
+
+}  // namespace spl_associated_token_account_program
+
 }  // namespace solana
 
 }  // namespace brave_wallet

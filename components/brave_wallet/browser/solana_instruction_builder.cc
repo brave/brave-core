@@ -125,6 +125,50 @@ absl::optional<SolanaInstruction> Transfer(
 
 }  // namespace spl_token_program
 
+namespace spl_associated_token_account_program {
+
+// Create an associated token account for the given wallet address and token
+// mint.
+// Account references:
+// 0. Funding account (must be a system account) [signer, writeable].
+// 1. Associated token account address to be created [non-signer, writable].
+// 2. Wallet address for the new associated token account [non-signer,
+//    readonly].
+// 3. The token mint for the new associated token account [non-signer,
+//    readonly].
+// 4. System program [non-signer, readonly].
+// 5. SPL Token program [non-signer, readonly].
+// 6. Rent sysvar [non-signer, readonly].
+// Ref:
+// https://docs.rs/spl-associated-token-account/1.0.3/spl_associated_token_account/fn.create_associated_token_account.html
+//
+// TODO(jocelyn): Update this to match
+// instruction::create_associated_token_account in spl-associated-token-account
+// after v1.0.5 is out.
+absl::optional<SolanaInstruction> CreateAssociatedTokenAccount(
+    const std::string& funding_address,
+    const std::string& wallet_address,
+    const std::string& associated_token_account_address,
+    const std::string& spl_token_mint_address) {
+  if (funding_address.empty() || wallet_address.empty() ||
+      associated_token_account_address.empty() ||
+      spl_token_mint_address.empty())
+    return absl::nullopt;
+
+  std::vector<SolanaAccountMeta> account_metas = {
+      SolanaAccountMeta(funding_address, true, true),
+      SolanaAccountMeta(associated_token_account_address, false, true),
+      SolanaAccountMeta(wallet_address, false, false),
+      SolanaAccountMeta(spl_token_mint_address, false, false),
+      SolanaAccountMeta(kSolanaSystemProgramId, false, false),
+      SolanaAccountMeta(kSolanaTokenProgramId, false, false),
+      SolanaAccountMeta(kSolanaSysvarRentProgramId, false, false)};
+  return SolanaInstruction(kSolanaAssociatedTokenProgramId,
+                           std::move(account_metas), std::vector<uint8_t>());
+}
+
+}  // namespace spl_associated_token_account_program
+
 }  // namespace solana
 
 }  // namespace brave_wallet

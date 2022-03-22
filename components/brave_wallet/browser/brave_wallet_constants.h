@@ -660,6 +660,12 @@ constexpr int kSolanaBlockhashSize = 32;
 // fragment header)
 constexpr size_t kSolanaMaxTxSize = 1232;
 constexpr char kSolanaSystemProgramId[] = "11111111111111111111111111111111";
+constexpr char kSolanaTokenProgramId[] =
+    "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+constexpr char kSolanaAssociatedTokenProgramId[] =
+    "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
+constexpr char kSolanaSysvarRentProgramId[] =
+    "SysvarRent111111111111111111111111111111111";
 
 constexpr char kEthereumPrefKey[] = "ethereum";
 constexpr char kFilecoinPrefKey[] = "filecoin";
