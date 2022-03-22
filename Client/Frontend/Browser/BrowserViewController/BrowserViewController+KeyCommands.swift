@@ -133,6 +133,10 @@ extension BrowserViewController {
     navigationHelper.openBookmarks()
   }
 
+  @objc private func showShieldsKeyCommand() {
+    presentBraveShieldsViewController()
+  }
+  
   @objc private func showDownloadsKeyCommand() {
     navigationHelper.openDownloads() { [weak self] success in
       if !success {
@@ -158,25 +162,55 @@ extension BrowserViewController {
   }
 
   override var keyCommands: [UIKeyCommand]? {
-    let navigationCommands = [
+    let isEditingText = tabManager.selectedTab?.isEditing ?? false
+      
+    var navigationCommands = [
       // Web Page Key Commands
       UIKeyCommand(title: Strings.reloadPageTitle, action: #selector(reloadTabKeyCommand), input: "r", modifierFlags: .command),
-      UIKeyCommand(title: Strings.backTitle, action: #selector(goBackKeyCommand), input: "[", modifierFlags: .command),
-      UIKeyCommand(title: Strings.forwardTitle, action: #selector(goForwardKeyCommand), input: "]", modifierFlags: .command),
+    ]
+
+    let tabMovementCommands = [
+      UIKeyCommand(title: Strings.backTitle, action: #selector(goBackKeyCommand), input: UIKeyCommand.inputLeftArrow, modifierFlags: .command),
+      UIKeyCommand(title: Strings.forwardTitle, action: #selector(goForwardKeyCommand), input: UIKeyCommand.inputRightArrow, modifierFlags: .command)
+    ]
+    
+    if !isEditingText {
+      navigationCommands += tabMovementCommands
+    }
+    
+    navigationCommands += [
+      UIKeyCommand(input: "[", modifierFlags: .command, action: #selector(goBackKeyCommand)),
+      UIKeyCommand(input: "]", modifierFlags: .command, action: #selector(goForwardKeyCommand)),
+    ]
+      
+    navigationCommands += [
       // URL Bar - Tab Key Commands
       UIKeyCommand(title: Strings.selectLocationBarTitle, action: #selector(selectLocationBarKeyCommand), input: "l", modifierFlags: .command),
       UIKeyCommand(title: Strings.newTabTitle, action: #selector(newTabKeyCommand), input: "t", modifierFlags: .command),
-      UIKeyCommand(title: Strings.newPrivateTabTitle, action: #selector(newPrivateTabKeyCommand), input: "p", modifierFlags: [.command, .shift]),
-      UIKeyCommand(title: Strings.closeTabTitle, action: #selector(closeTabKeyCommand), input: "w", modifierFlags: .command),
-      UIKeyCommand(title: Strings.showNextTabTitle, action: #selector(nextTabKeyCommand), input: "\t", modifierFlags: .control),
-      UIKeyCommand(title: Strings.showPreviousTabTitle, action: #selector(previousTabKeyCommand), input: "\t", modifierFlags: [.control, .shift]),
+      UIKeyCommand(title: Strings.newPrivateTabTitle, action: #selector(newPrivateTabKeyCommand), input: "n", modifierFlags: [.command, .shift]),
+      UIKeyCommand(title: Strings.closeTabTitle, action: #selector(closeTabKeyCommand), input: "w", modifierFlags: .command)
+    ]
+    
+    let tabNavigationKeyCommands = [
+      // Tab Navigation Key Commands
+      UIKeyCommand(title: Strings.showNextTabTitle, action: #selector(nextTabKeyCommand), input: UIKeyCommand.inputRightArrow, modifierFlags: [.command, .alternate]),
+      UIKeyCommand(title: Strings.showPreviousTabTitle, action: #selector(previousTabKeyCommand), input: UIKeyCommand.inputLeftArrow, modifierFlags: [.command, .alternate])
+    ]
+    
+    if !isEditingText {
+      navigationCommands += tabNavigationKeyCommands
+    }
+  
+    navigationCommands += [
+      UIKeyCommand(input: "}", modifierFlags: [.command], action: #selector(nextTabKeyCommand)),
+      UIKeyCommand(input: "{", modifierFlags: [.command], action: #selector(previousTabKeyCommand)),
       UIKeyCommand(title: Strings.showTabTrayFromTabKeyCodeTitle, action: #selector(showTabTrayKeyCommand), input: "\t", modifierFlags: [.command, .alternate]),
-      UIKeyCommand(
-        title: String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count),
-        action: #selector(showTabTrayKeyCommand), input: "\t", modifierFlags: [.command, .shift]),
+      
       // Page Navigation Key Commands
       UIKeyCommand(title: Strings.showHistoryTitle, action: #selector(showHistoryKeyCommand), input: "y", modifierFlags: [.command]),
-      UIKeyCommand(title: Strings.showDownloadsTitle, action: #selector(showDownloadsKeyCommand), input: "j", modifierFlags: .command),
+      UIKeyCommand(title: Strings.showDownloadsTitle, action: #selector(showDownloadsKeyCommand), input: "l", modifierFlags: .command),
+      UIKeyCommand(title: Strings.showShieldsTitle, action: #selector(showShieldsKeyCommand), input: ",", modifierFlags: .command),
+
       // Switch tab to match Safari on iOS.
       UIKeyCommand(input: "]", modifierFlags: [.command, .shift], action: #selector(nextTabKeyCommand)),
       UIKeyCommand(input: "[", modifierFlags: [.command, .shift], action: #selector(previousTabKeyCommand)),
@@ -225,25 +259,15 @@ extension BrowserViewController {
       UIKeyCommand(input: UIKeyCommand.inputUpArrow, modifierFlags: [], action: #selector(moveURLCompletionKeyCommand(sender:))),
     ]
 
-    let overridesTextEditingCommands = [
-      UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: [.command, .shift], action: #selector(nextTabKeyCommand)),
-      UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: [.command, .shift], action: #selector(previousTabKeyCommand)),
-      UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: .command, action: #selector(goBackKeyCommand)),
-      UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: .command, action: #selector(goForwardKeyCommand)),
-    ]
-
     // In iOS 15+, certain keys events are delivered to the text input or focus systems first, unless specified otherwise
     if #available(iOS 15, *) {
       searchLocationCommands.forEach { $0.wantsPriorityOverSystemBehavior = true }
-      overridesTextEditingCommands.forEach { $0.wantsPriorityOverSystemBehavior = true }
+      tabMovementCommands.forEach { $0.wantsPriorityOverSystemBehavior = true }
+      tabNavigationKeyCommands.forEach { $0.wantsPriorityOverSystemBehavior = true }
     }
-
-    let isEditingText = tabManager.selectedTab?.isEditing ?? false
 
     if topToolbar.inOverlayMode {
       keyCommandList.append(contentsOf: searchLocationCommands)
-    } else if !isEditingText {
-      keyCommandList.append(contentsOf: overridesTextEditingCommands)
     }
 
     return keyCommandList

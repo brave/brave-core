@@ -64,6 +64,7 @@ extension Strings {
   public static let showHistoryTitle = NSLocalizedString("showHistoryTitle", bundle: Bundle.braveShared, value: "Show History", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
   public static let showDownloadsTitle = NSLocalizedString("showDownloadsTitle", bundle: Bundle.braveShared, value: "Show Downloads", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
   public static let showBookmarksTitle = NSLocalizedString("showBookmarksTitle", bundle: Bundle.shared, value: "Show Bookmarks", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
+  public static let showShieldsTitle = NSLocalizedString("showShieldsTitle", bundle: Bundle.shared, value: "Open Brave Shields", comment: "Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields")
   public static let addBookmarkTitle = NSLocalizedString("addBookmarkTitle", bundle: Bundle.braveShared, value: "Add Bookmark", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
   public static let addFavouritesTitle = NSLocalizedString("addFavouritesTitle", bundle: Bundle.braveShared, value: "Add to Favourites", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
   public static let findInPageTitle = NSLocalizedString("findInPageTitle", bundle: Bundle.braveShared, value: "Find in Page", comment: "Label to display in the Discoverability overlay for keyboard shortcuts")
