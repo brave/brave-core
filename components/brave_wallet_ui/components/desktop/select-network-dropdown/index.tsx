@@ -1,10 +1,12 @@
 import * as React from 'react'
 import { BraveWallet } from '../../../constants/types'
-import { SelectNetwork, Tooltip, SelectNetworkButton } from '../../shared'
+import { SelectNetwork } from '../../shared'
 // Styled Components
 import {
   StyledWrapper,
-  DropDown
+  DropDown,
+  NetworkButton,
+  DropDownIcon
 } from './style'
 
 export interface Props {
@@ -20,14 +22,7 @@ function SelectNetworkDropdown (props: Props) {
 
   return (
     <StyledWrapper>
-      <Tooltip
-        text={selectedNetwork.chainName}
-      >
-        <SelectNetworkButton
-          onClick={onClick}
-          selectedNetwork={selectedNetwork}
-        />
-      </Tooltip>
+      <NetworkButton onClick={onClick}>{selectedNetwork.chainName} <DropDownIcon /></NetworkButton>
       {showNetworkDropDown &&
         <DropDown>
           <SelectNetwork
