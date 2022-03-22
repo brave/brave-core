@@ -6,6 +6,7 @@
 #include "src/content/public/common/content_features.cc"
 
 #include "base/feature_override.h"
+#include "build/build_config.h"
 
 namespace features {
 

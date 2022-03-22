@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/option_keys.h"
+#include "build/build_config.h"
 #include "sql/statement.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

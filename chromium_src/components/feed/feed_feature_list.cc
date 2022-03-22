@@ -6,6 +6,7 @@
 #include "src/components/feed/feed_feature_list.cc"
 
 #include "base/feature_override.h"
+#include "build/build_config.h"
 
 namespace feed {
 

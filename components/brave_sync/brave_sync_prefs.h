@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/values.h"
+#include "build/build_config.h"
 
 class PrefRegistrySimple;
 class PrefService;

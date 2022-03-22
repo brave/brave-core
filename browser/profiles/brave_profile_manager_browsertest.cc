@@ -14,6 +14,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/components/tor/tor_utils.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"

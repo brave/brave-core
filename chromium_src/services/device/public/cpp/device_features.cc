@@ -6,6 +6,7 @@
 #include "src/services/device/public/cpp/device_features.cc"
 
 #include "base/feature_override.h"
+#include "build/build_config.h"
 
 namespace features {
 

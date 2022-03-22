@@ -10,6 +10,7 @@
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "ui/gfx/color_palette.h"

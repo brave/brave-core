@@ -20,6 +20,7 @@
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/common/pref_names.h"
 #include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_registry_simple.h"

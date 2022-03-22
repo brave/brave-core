@@ -41,6 +41,7 @@
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/prefetch/pref_names.h"
 #include "chrome/browser/prefetch/prefetch_prefs.h"
 #include "chrome/browser/prefs/session_startup_pref.h"

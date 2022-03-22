@@ -6,11 +6,12 @@
 #include <memory>
 #include <utility>
 
-#include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/attestation/attestation_androidx.h"
 #include "bat/ledger/internal/attestation/attestation_desktop.h"
 #include "bat/ledger/internal/attestation/attestation_impl.h"
 #include "bat/ledger/internal/attestation/attestation_iosx.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "build/build_config.h"
 #include "net/http/http_status_code.h"
 
 namespace ledger {

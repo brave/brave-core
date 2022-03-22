@@ -15,6 +15,7 @@
 #include "base/process/launch.h"
 #include "base/version.h"
 #include "brave/components/services/ipfs/ipfs_service_utils.h"
+#include "build/build_config.h"
 
 namespace {
 

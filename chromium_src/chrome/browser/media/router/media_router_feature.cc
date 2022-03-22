@@ -5,6 +5,7 @@
 
 #include "chrome/browser/media/router/media_router_feature.h"
 
+#include "build/build_config.h"
 #include "content/public/browser/browser_context.h"
 
 #define MediaRouterEnabled MediaRouterEnabled_ChromiumImpl

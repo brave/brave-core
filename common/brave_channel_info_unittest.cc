@@ -6,6 +6,7 @@
 #include "chrome/common/channel_info.h"
 
 #include "base/files/file_path.h"
+#include "build/build_config.h"
 #include "chrome/common/chrome_paths_internal.h"
 #include "components/version_info/channel.h"
 #include "testing/gtest/include/gtest/gtest.h"

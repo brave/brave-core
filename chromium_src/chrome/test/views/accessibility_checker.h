@@ -8,6 +8,8 @@
 
 #include "chrome/browser/ui/views/chrome_views_delegate.h"
 
+#include "build/build_config.h"
+
 #if BUILDFLAG(IS_LINUX)
 #include "brave/browser/ui/views/brave_views_delegate_linux.h"
 #define ChromeViewsDelegate BraveViewsDelegateLinux

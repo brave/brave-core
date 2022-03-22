@@ -12,6 +12,7 @@
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/ssl/cert_verifier_browser_test.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"

@@ -29,6 +29,7 @@
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/ipfs/service_sandbox_type.h"
+#include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"

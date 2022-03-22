@@ -7,6 +7,7 @@
 
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "build/build_config.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "components/permissions/request_type.h"
 #include "components/vector_icons/vector_icons.h"

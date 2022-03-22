@@ -6,10 +6,11 @@
 #include "brave/browser/themes/brave_theme_service.h"
 
 #include "base/no_destructor.h"
-#include "brave/browser/themes/brave_theme_helper.h"
 #include "brave/browser/extensions/brave_theme_event_router.h"
-#include "chrome/browser/profiles/profile.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/themes/brave_theme_helper.h"
+#include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "brave/browser/themes/brave_theme_helper_win.h"

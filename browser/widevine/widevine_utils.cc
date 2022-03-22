@@ -13,6 +13,7 @@
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
 #include "chrome/browser/profiles/profile.h"

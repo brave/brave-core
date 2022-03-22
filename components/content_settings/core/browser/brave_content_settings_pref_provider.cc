@@ -17,6 +17,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
+#include "build/build_config.h"
 #include "components/content_settings/core/browser/content_settings_pref.h"
 #include "components/content_settings/core/browser/website_settings_registry.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"

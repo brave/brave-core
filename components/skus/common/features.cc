@@ -6,6 +6,7 @@
 #include "brave/components/skus/common/features.h"
 
 #include "base/feature_list.h"
+#include "build/build_config.h"
 
 namespace skus {
 namespace features {

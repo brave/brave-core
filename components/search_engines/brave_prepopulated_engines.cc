@@ -5,6 +5,7 @@
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 
+#include "build/build_config.h"
 #include "components/search_engines/prepopulated_engines.h"
 #include "components/search_engines/search_engine_type.h"
 

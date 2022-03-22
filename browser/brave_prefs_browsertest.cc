@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/prefetch/pref_names.h"
 #include "chrome/browser/prefetch/prefetch_prefs.h"

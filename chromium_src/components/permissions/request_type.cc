@@ -5,6 +5,8 @@
 
 #include "components/permissions/request_type.h"
 
+#include "build/build_config.h"
+
 #if BUILDFLAG(IS_ANDROID)
 #include "components/resources/android/theme_resources.h"
 #else

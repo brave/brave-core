@@ -12,6 +12,7 @@
 #include "brave/browser/search_engines/tor_window_search_engine_provider_service.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"

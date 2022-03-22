@@ -13,6 +13,7 @@
 #include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "build/build_config.h"
 #include "components/country_codes/country_codes.h"
 #include "components/search_engines/search_engines_pref_names.h"
 

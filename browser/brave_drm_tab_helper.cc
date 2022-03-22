@@ -12,6 +12,7 @@
 #include "brave/browser/widevine/constants.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/common/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"

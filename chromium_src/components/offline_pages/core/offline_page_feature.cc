@@ -6,6 +6,7 @@
 #include "src/components/offline_pages/core/offline_page_feature.cc"
 
 #include "base/feature_override.h"
+#include "build/build_config.h"
 
 namespace offline_pages {
 

@@ -5,6 +5,7 @@
 
 #include "brave/grit/brave_theme_resources.h"
 #include "brave/grit/brave_unscaled_resources.h"
+#include "build/build_config.h"
 #include "content/public/test/browser_test.h"
 #include "ui/base/resource/resource_bundle.h"
 

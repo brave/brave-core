@@ -9,6 +9,7 @@
 #include "base/path_service.h"
 #include "base/time/time.h"
 #include "brave/components/tor/tor_file_watcher.h"
+#include "build/build_config.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

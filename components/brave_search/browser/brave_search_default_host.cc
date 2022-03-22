@@ -13,6 +13,7 @@
 #include "brave/components/brave_search/browser/prefs.h"
 #include "brave/components/brave_search/common/features.h"
 #include "brave/components/weekly_storage/daily_storage.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url.h"

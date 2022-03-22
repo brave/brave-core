@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/common/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/ui_features.h"

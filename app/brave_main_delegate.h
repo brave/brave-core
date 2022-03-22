@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "build/build_config.h"
 #include "chrome/app/chrome_main_delegate.h"
 
 // Chrome implementation of ContentMainDelegate.

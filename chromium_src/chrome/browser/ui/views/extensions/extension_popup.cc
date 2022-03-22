@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "build/build_config.h"
 #include "chrome/browser/extensions/extension_view_host.h"
 #include "extensions/common/constants.h"
 

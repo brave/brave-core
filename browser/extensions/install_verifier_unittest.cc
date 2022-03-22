@@ -5,6 +5,7 @@
 
 #include "chrome/browser/extensions/install_verifier.h"
 
+#include "build/build_config.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if defined(OFFICIAL_BUILD)

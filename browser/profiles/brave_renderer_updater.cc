@@ -8,15 +8,16 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/common/brave_renderer_configuration.mojom.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_process_host.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 BraveRendererUpdater::BraveRendererUpdater(Profile* profile)
     : profile_(profile), is_wallet_allowed_for_context_(false) {

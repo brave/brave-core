@@ -5,6 +5,8 @@
 
 #include "chrome/browser/signin/account_consistency_mode_manager.h"
 
+#include "build/build_config.h"
+
 #if BUILDFLAG(IS_ANDROID)
 #define BRAVE_COMPUTE_ACCOUNT_CONSISTENCY_METHOD \
   return AccountConsistencyMethod::kDisabled;

@@ -17,6 +17,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
 #include "url/gurl.h"
 

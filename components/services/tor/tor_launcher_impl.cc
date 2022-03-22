@@ -11,6 +11,7 @@
 #include "base/files/file_util.h"
 #include "base/process/launch.h"
 #include "base/strings/string_number_conversions.h"
+#include "build/build_config.h"
 
 namespace tor {
 

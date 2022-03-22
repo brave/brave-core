@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "build/build_config.h"
 #include "components/strings/grit/components_strings.h"
 #include "third_party/widevine/cdm/buildflags.h"
 

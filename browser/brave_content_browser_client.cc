@@ -70,6 +70,7 @@
 #include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_browser_interface_binders.h"
 #include "chrome/browser/chrome_content_browser_client.h"

@@ -6,10 +6,11 @@
 #include <memory>
 #include <utility>
 
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/media/media.h"
 #include "bat/ledger/internal/legacy/static_values.h"
-#include "bat/ledger/internal/constants.h"
+#include "build/build_config.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;

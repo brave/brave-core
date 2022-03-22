@@ -5,6 +5,7 @@
 
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/test/test_browser_dialog.h"

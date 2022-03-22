@@ -17,6 +17,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/url_util.h"

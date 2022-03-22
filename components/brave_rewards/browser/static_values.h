@@ -14,6 +14,7 @@
 
 #include "base/time/time.h"
 #include "bat/ledger/option_keys.h"
+#include "build/build_config.h"
 
 namespace brave_rewards {
 

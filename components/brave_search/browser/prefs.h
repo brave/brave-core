@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_PREFS_H_
 #define BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_PREFS_H_
 
+#include "build/build_config.h"
+
 namespace brave_search {
 namespace prefs {
 

@@ -6,6 +6,7 @@
 #include "chrome/common/url_constants.h"
 
 #include "build/branding_buildflags.h"
+#include "build/build_config.h"
 #include "chrome/common/webui_url_constants.h"
 
 namespace chrome {

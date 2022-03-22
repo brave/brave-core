@@ -5,6 +5,8 @@
 
 #include "components/component_updater/component_installer.h"
 
+#include "build/build_config.h"
+
 #define Register Register_ChromiumImpl
 #include "src/components/component_updater/component_installer.cc"
 #undef Register

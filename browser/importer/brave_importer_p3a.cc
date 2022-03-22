@@ -6,6 +6,7 @@
 #include "brave/browser/importer/brave_importer_p3a.h"
 
 #include "base/metrics/histogram_macros.h"
+#include "build/build_config.h"
 
 namespace {
 // Note: append-only enumeration! Never remove any existing values, as this enum
