@@ -68,9 +68,7 @@ std::string GetAuthorizeUrl(const std::string& state,
       "&state=%s"
       "&response_type=code"
       "&code_challenge_method=S256"
-      "&code_challenge=%s"
-      "&utm_source=brave"
-      "&utm_medium=referral",
+      "&code_challenge=%s",
       url.c_str(), id.c_str(), state.c_str(), code_challenge.c_str());
 }
 
