@@ -253,5 +253,8 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
                        AddBraveToNavigatorUserAgentBrandList) {
   GURL url = https_server()->GetURL("a.com", "/simple.html");
   NavigateToURLUntilLoadStop(url);
-  EXPECT_EQ("Chromium|Brave|;Not A Brand", EvalJs(contents(), kBrandScript));
+  std::string brands = EvalJs(contents(), kBrandScript).ExtractString();
+  EXPECT_NE(std::string::npos, brands.find("Brave"));
+  EXPECT_NE(std::string::npos, brands.find("Chromium"));
+  EXPECT_NE(std::string::npos, brands.find(";Not A Brand"));
 }
