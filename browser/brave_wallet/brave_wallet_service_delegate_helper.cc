@@ -9,7 +9,7 @@
 #include "build/build_config.h"
 #include "content/public/browser/browser_context.h"
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 #endif
 
@@ -18,7 +18,7 @@ namespace brave_wallet {
 // static
 std::unique_ptr<BraveWalletServiceDelegate> BraveWalletServiceDelegate::Create(
     content::BrowserContext* browser_context) {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   return std::make_unique<BraveWalletServiceDelegate>();
 #else
   return std::make_unique<BraveWalletServiceDelegateImpl>(browser_context);

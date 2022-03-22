@@ -5,19 +5,19 @@
 
 #include "chrome/browser/chrome_browser_main.h"
 #include "brave/browser/brave_browser_process_impl.h"
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_untrusted_web_ui_controller_factory.h"
 #include "chrome/browser/ui/webui/chrome_untrusted_web_ui_controller_factory.h"
 #endif
 
 #define BrowserProcessImpl BraveBrowserProcessImpl
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #define ChromeUntrustedWebUIControllerFactory               \
   BraveUntrustedWebUIControllerFactory::RegisterInstance(); \
   ChromeUntrustedWebUIControllerFactory
 #endif
 #include "src/chrome/browser/chrome_browser_main.cc"
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #undef ChromeUntrustedWebUIControllerFactory
 #endif
 #undef BrowserProcessImpl

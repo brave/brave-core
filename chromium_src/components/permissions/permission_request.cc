@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "build/build_config.h"
 #include "components/strings/grit/components_strings.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -25,7 +26,7 @@
     return std::u16string();
 
 namespace {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 const unsigned int IDS_VR_INFOBAR_TEXT_OVERRIDE = IDS_VR_INFOBAR_TEXT;
 #else
 const unsigned int IDS_VR_PERMISSION_FRAGMENT_OVERRIDE =
@@ -33,7 +34,7 @@ const unsigned int IDS_VR_PERMISSION_FRAGMENT_OVERRIDE =
 #endif
 }  // namespace
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 // For PermissionRequest::GetDialogMessageText
 #undef IDS_VR_INFOBAR_TEXT
 #define IDS_VR_INFOBAR_TEXT     \
@@ -75,13 +76,13 @@ bool PermissionRequest::SupportsLifetime() const {
   const RequestType kExcludedTypes[] = {
     RequestType::kDiskQuota,
     RequestType::kMultipleDownloads,
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     RequestType::kProtectedMediaIdentifier,
 #else
     RequestType::kRegisterProtocolHandler,
     RequestType::kSecurityAttestation,
     RequestType::kU2fApiRequest,
-#endif  // defined(OS_ANDROID)
+#endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_WIDEVINE)
     RequestType::kWidevine
 #endif  // BUILDFLAG(ENABLE_WIDEVINE)

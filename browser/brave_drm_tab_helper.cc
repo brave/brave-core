@@ -12,6 +12,7 @@
 #include "brave/browser/widevine/constants.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/common/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -30,7 +31,7 @@ bool IsAlreadyRegistered(ComponentUpdateService* cus) {
   return std::find(component_ids.begin(), component_ids.end(),
                    kWidevineComponentId) != component_ids.end();
 }
-#if !defined(OS_LINUX)
+#if !BUILDFLAG(IS_LINUX)
 content::WebContents* GetActiveWebContents() {
   if (Browser* browser = chrome::FindLastActive())
     return browser->tab_strip_model()->GetActiveWebContents();
@@ -104,7 +105,7 @@ void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
 void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
   if (event == ComponentUpdateService::Observer::Events::COMPONENT_UPDATED &&
       id == kWidevineComponentId) {
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
     // Ask restart instead of reloading. Widevine is only usable after
     // restarting on linux. This restart permission request is only shown if
     // this tab asks widevine explicitely.

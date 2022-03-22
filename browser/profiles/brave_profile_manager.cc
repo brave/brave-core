@@ -91,7 +91,7 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
       profile->GetPrefs());
 
 // Chromecast is enabled by default on Android.
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   auto* pref_service = profile->GetPrefs();
   // At start, the value of kEnableMediaRouterOnRestart is updated to match
   // kEnableMediaRouter so users don't lose their current setting
@@ -175,7 +175,7 @@ void BraveProfileManager::SetNonPersonalProfilePrefs(Profile* profile) {
 }
 
 void BraveProfileManager::MigrateProfileNames() {
-#if !defined(OS_ANDROID) && !defined(OS_CHROMEOS)
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
   // If any profiles have a default name using an
   // older version of the default name string format,
   // then name it with the new default name string format.

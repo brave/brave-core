@@ -5,7 +5,7 @@
 
 #include "build/build_config.h"  // For OS_LINUX
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 #include "brave/browser/ui/views/brave_views_delegate_linux.h"
 #undef ChromeViewsDelegate
 #define ChromeViewsDelegate BraveViewsDelegateLinux

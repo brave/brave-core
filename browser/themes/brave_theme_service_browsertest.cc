@@ -6,12 +6,13 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/common/pref_names.h"
-#include "chrome/test/base/in_process_browser_test.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -19,7 +20,7 @@
 #include "ui/native_theme/native_theme.h"
 #include "ui/native_theme/native_theme_observer.h"
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include "base/run_loop.h"
 #include "base/test/scoped_run_loop_timeout.h"
 #include "base/time/time.h"
@@ -38,7 +39,7 @@ class TestNativeThemeObserver : public ui::NativeThemeObserver {
   MOCK_METHOD1(OnNativeThemeUpdated, void(ui::NativeTheme*));
 };
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 void RunLoopRunWithTimeout(base::TimeDelta timeout) {
   // ScopedRunLoopTimeout causes a FATAL failure on timeout though, but for us
   // the timeout means success, so turn the FATAL failure into success.
@@ -151,7 +152,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
   }
 }
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 // Test native theme notification is called properly by changing reg value.
 // This simulates dark mode setting from Windows settings.
 // And Toggle it twice from initial value to go back to initial value  because

@@ -29,6 +29,7 @@
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/ipfs/service_sandbox_type.h"
+#include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -326,16 +327,16 @@ void IpfsService::ExecuteNodeCommand(const base::CommandLine& command_line,
                                      const base::FilePath& data,
                                      BoolCallback callback) {
   base::LaunchOptions options;
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   options.environment[L"IPFS_PATH"] = data.value();
 #else
   options.environment["IPFS_PATH"] = data.value();
 #endif
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   options.kill_on_parent_death = true;
 #endif
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   options.start_hidden = true;
 #endif
   base::Process process = base::LaunchProcess(command_line, options);

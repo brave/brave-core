@@ -6,11 +6,12 @@
 #include "src/components/feed/feed_feature_list.cc"
 
 #include "base/feature_override.h"
+#include "build/build_config.h"
 
 namespace feed {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     {kInterestFeedContentSuggestions, base::FEATURE_DISABLED_BY_DEFAULT},
     {kInterestFeedV2, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif

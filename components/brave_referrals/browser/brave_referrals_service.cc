@@ -45,7 +45,7 @@
 #include "services/network/public/mojom/fetch_api.mojom-shared.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/android/service_tab_launcher.h"
 #else
 #include "chrome/browser/ui/browser.h"
@@ -247,7 +247,7 @@ void BraveReferralsService::Start() {
       pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile);
   std::string download_id = pref_service_->GetString(kReferralDownloadID);
   if (!checked_for_promo_code_file && !has_initialized && download_id.empty()) {
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
     task_runner_->PostTaskAndReplyWithResult(
         FROM_HERE, base::BindOnce(&ReadPromoCode, GetPromoCodeFileName()),
         base::BindOnce(&BraveReferralsService::OnReadPromoCodeComplete,
@@ -400,7 +400,7 @@ void BraveReferralsService::OnReadPromoCodeComplete(
 }
 
 void BraveReferralsService::GetFirstRunTime() {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   // Android doesn't use a sentinel to track first run, so we use a
   // preference instead.
   base::Time first_run_timestamp =
@@ -530,7 +530,7 @@ std::string BraveReferralsService::BuildReferralFinalizationCheckPayload()
   root.SetKey("api_key", base::Value(api_key_));
   root.SetKey("download_id",
               base::Value(pref_service_->GetString(kReferralDownloadID)));
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   root.SetKey("safetynet_status",
               base::Value(pref_service_->GetString(kSafetynetStatus)));
 #endif
@@ -586,7 +586,7 @@ void BraveReferralsService::InitReferral() {
       kMaxReferralServerResponseSizeBytes);
 }
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 void BraveReferralsService::GetSafetynetStatusResult(
     const bool token_received,
     const std::string& result_string,
@@ -600,7 +600,7 @@ void BraveReferralsService::GetSafetynetStatusResult(
 #endif
 
 void BraveReferralsService::CheckForReferralFinalization() {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   if (pref_service_->GetString(kSafetynetStatus).empty()) {
     // Get safetynet status before finalization
     safetynet_check::ClientAttestationCallback attest_callback =
@@ -657,7 +657,7 @@ void BraveReferralsService::CheckForReferralFinalization() {
       kMaxReferralServerResponseSizeBytes);
 }
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 void BraveReferralsService::InitAndroidReferrer() {
   android_brave_referrer::InitReferrerCallback init_referrer_callback =
       base::BindOnce(&BraveReferralsService::OnAndroidBraveReferrerReady,
@@ -685,7 +685,7 @@ void RegisterPrefsForBraveReferralsService(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kReferralAttemptTimestamp, base::Time());
   registry->RegisterIntegerPref(kReferralAttemptCount, 0);
   registry->RegisterListPref(kReferralHeaders);
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   registry->RegisterTimePref(kReferralAndroidFirstRunTimestamp, base::Time());
   registry->RegisterStringPref(kSafetynetStatus, std::string());
 #endif

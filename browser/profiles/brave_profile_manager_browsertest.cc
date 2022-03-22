@@ -14,6 +14,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/components/tor/tor_utils.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
@@ -30,7 +31,7 @@
 #include "brave/components/ipfs/features.h"
 #endif
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
 #include "chrome/browser/profiles/profile_window.h"
@@ -153,7 +154,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   Profile* otr_profile =
       profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   profiles::SwitchToGuestProfile(base::DoNothing());
   ui_test_utils::WaitForBrowserToOpen();
 
@@ -183,13 +184,13 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 #if BUILDFLAG(ENABLE_IPFS)
   EXPECT_NE(ipfs::IpfsServiceFactory::GetForContext(profile), nullptr);
   EXPECT_EQ(ipfs::IpfsServiceFactory::GetForContext(otr_profile), nullptr);
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   EXPECT_EQ(ipfs::IpfsServiceFactory::GetForContext(guest_profile), nullptr);
 #endif
 #endif
 }
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
                        PRE_MediaRouterDisabledRestartTest) {
   Profile* profile =

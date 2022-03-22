@@ -5,14 +5,16 @@
 
 #include "components/permissions/request_type.h"
 
-#if defined(OS_ANDROID)
+#include "build/build_config.h"
+
+#if BUILDFLAG(IS_ANDROID)
 #include "components/resources/android/theme_resources.h"
 #else
 #include "components/vector_icons/vector_icons.h"
 #include "ui/gfx/vector_icon_types.h"
 #endif
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 namespace {
 constexpr auto kAndroidInfobarPermissionCookie =
     IDR_ANDROID_INFOBAR_PERMISSION_COOKIE;

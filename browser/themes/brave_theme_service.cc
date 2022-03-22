@@ -6,19 +6,20 @@
 #include "brave/browser/themes/brave_theme_service.h"
 
 #include "base/no_destructor.h"
-#include "brave/browser/themes/brave_theme_helper.h"
 #include "brave/browser/extensions/brave_theme_event_router.h"
-#include "chrome/browser/profiles/profile.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/themes/brave_theme_helper.h"
+#include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include "brave/browser/themes/brave_theme_helper_win.h"
 #endif
 
 namespace {
 
 const ThemeHelper& GetBraveThemeHelper(Profile* profile) {
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   using BraveThemeHelper = BraveThemeHelperWin;
 #endif
   // Because the helper is created as a NoDestructor static, we need separate

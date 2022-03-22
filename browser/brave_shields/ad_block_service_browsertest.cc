@@ -33,6 +33,7 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
@@ -705,7 +706,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
 // These tests fail intermittently on macOS; see
 // https://github.com/brave/brave-browser/issues/15912
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
 #define MAYBE_CnameCloakedRequestsGetBlocked \
   DISABLED_CnameCloakedRequestsGetBlocked
 #define MAYBE_CnameCloakedRequestsCanBeExcepted \
@@ -752,7 +753,7 @@ class TestAdBlockSubscriptionServiceManagerObserver
 
 // This test fails intermittently on Windows; see
 // https://github.com/brave/brave-browser/issues/17849
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #define MAYBE_SubscribeToCustomSubscription \
   DISABLED_SubscribeToCustomSubscription
 #else

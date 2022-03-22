@@ -8,7 +8,7 @@
 #include "components/omnibox/browser/omnibox_controller.h"
 #include "url/gurl.h"
 
-#if !defined(OS_IOS)
+#if !BUILDFLAG(IS_IOS)
 #include "content/public/common/url_constants.h"
 #endif
 
@@ -36,7 +36,7 @@ class BraveOmniboxController : public OmniboxController {
 
 namespace {
 void BraveAdjustTextForCopy(GURL* url) {
-#if !defined(OS_IOS)
+#if !BUILDFLAG(IS_IOS)
   if (url->scheme() == content::kChromeUIScheme) {
     GURL::Replacements replacements;
     replacements.SetSchemeStr(content::kBraveUIScheme);

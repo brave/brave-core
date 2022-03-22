@@ -6,13 +6,14 @@
 #include "src/services/device/public/cpp/device_features.cc"
 
 #include "base/feature_override.h"
+#include "build/build_config.h"
 
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     {kWinrtGeolocationImplementation, base::FEATURE_ENABLED_BY_DEFAULT},
-#endif  // defined(OS_WIN)
+#endif  // BUILDFLAG(IS_WIN)
 }});
 
 }  // namespace features

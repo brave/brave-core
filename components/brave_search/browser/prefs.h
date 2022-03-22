@@ -6,12 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_PREFS_H_
 #define BRAVE_COMPONENTS_BRAVE_SEARCH_BROWSER_PREFS_H_
 
+#include "build/build_config.h"
+
 namespace brave_search {
 namespace prefs {
 
 constexpr char kDailyAsked[] = "brave.brave_search.daily_asked";
 constexpr char kTotalAsked[] = "brave.brave_search.total_asked";
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 constexpr char kFetchFromNative[] = "brave.brave_search.fetch_se_from_native";
 #endif
 

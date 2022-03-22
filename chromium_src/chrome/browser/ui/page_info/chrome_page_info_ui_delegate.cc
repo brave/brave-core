@@ -11,11 +11,11 @@
 #include "src/chrome/browser/ui/page_info/chrome_page_info_ui_delegate.cc"
 
 bool ChromePageInfoUiDelegate::AddIPFSTabForURL(const GURL& ipfs_url) {
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   chrome::AddTabAt(chrome::FindLastActiveWithProfile(GetProfile()),
                    GURL(ipfs_url), -1, true);
   return true;
 #else
   return false;
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 }

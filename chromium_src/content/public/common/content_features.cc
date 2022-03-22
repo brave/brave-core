@@ -6,6 +6,7 @@
 #include "src/content/public/common/content_features.cc"
 
 #include "base/feature_override.h"
+#include "build/build_config.h"
 
 namespace features {
 
@@ -16,7 +17,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kNotificationTriggers, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSignedExchangeSubresourcePrefetch, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSubresourceWebBundles, base::FEATURE_DISABLED_BY_DEFAULT},
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     {kWebNfc, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
     {kWebOTP, base::FEATURE_DISABLED_BY_DEFAULT},

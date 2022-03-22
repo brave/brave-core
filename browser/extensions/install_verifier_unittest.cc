@@ -5,11 +5,12 @@
 
 #include "chrome/browser/extensions/install_verifier.h"
 
+#include "build/build_config.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if defined(OFFICIAL_BUILD)
 
-#if defined(OS_WIN) || defined(OS_MAC)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 TEST(InstallVerifierUnitTest, TestShouldEnforce) {
   EXPECT_TRUE(extensions::InstallVerifier::ShouldEnforce());
 }
@@ -17,6 +18,6 @@ TEST(InstallVerifierUnitTest, TestShouldEnforce) {
 TEST(InstallVerifierUnitTest, TestShouldNotEnforce) {
   EXPECT_FALSE(extensions::InstallVerifier::ShouldEnforce());
 }
-#endif  // defined(OS_WIN) || defined(OS_MAC)
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 
 #endif  // defined(OFFICIAL_BUILD)

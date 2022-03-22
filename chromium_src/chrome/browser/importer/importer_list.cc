@@ -54,7 +54,7 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
   AddChromeToProfiles(profiles, chrome_profiles, chrome_user_data_folder,
                       brand_chrome);
 
-#if !defined(OS_LINUX)
+#if !BUILDFLAG(IS_LINUX)
   const base::FilePath canary_user_data_folder = GetCanaryUserDataFolder();
   base::ListValue* canary_profiles =
       GetChromeSourceProfiles(canary_user_data_folder);

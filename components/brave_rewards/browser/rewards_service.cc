@@ -7,9 +7,10 @@
 
 #include "base/logging.h"
 #include "base/time/time.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "content/public/common/referrer.h"
 
@@ -50,7 +51,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterUint64Pref(prefs::kServerPublisherListStamp, 0ull);
   registry->RegisterStringPref(prefs::kUpholdAnonAddress, "");
   registry->RegisterStringPref(prefs::kBadgeText, "1");
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   registry->RegisterBooleanPref(prefs::kUseRewardsStagingServer, false);
 #endif
   registry->RegisterStringPref(prefs::kExternalWalletType, "");

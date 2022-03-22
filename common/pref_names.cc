@@ -5,6 +5,8 @@
 
 #include "brave/common/pref_names.h"
 
+#include "build/build_config.h"
+
 const char kAdsBlocked[] = "brave.stats.ads_blocked";
 // We no longer update this pref, but we keep it around for now because it's
 // added to kAdsBlocked when being displayed.
@@ -98,7 +100,7 @@ const char kDontAskForCrashReporting[] = "brave.dont_ask_for_crash_reporting";
 const char kEnableMediaRouterOnRestart[] =
     "brave.enable_media_router_on_restart";
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 const char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";
 const char kPlayYTVideoInBrowserEnabled[] =
     "brave.play_yt_video_in_browser_enabled";

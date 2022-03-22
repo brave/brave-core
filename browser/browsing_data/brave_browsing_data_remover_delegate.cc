@@ -13,6 +13,7 @@
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
+#include "build/build_config.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -143,15 +144,15 @@ void BraveBrowsingDataRemoverDelegate::ClearIPFSCache() {
 
   base::FilePath data_path = service->GetDataPath();
   base::LaunchOptions options;
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   options.environment[L"IPFS_PATH"] = data_path.value();
 #else
   options.environment["IPFS_PATH"] = data_path.value();
 #endif
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   options.kill_on_parent_death = true;
 #endif
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   options.start_hidden = true;
 #endif
 

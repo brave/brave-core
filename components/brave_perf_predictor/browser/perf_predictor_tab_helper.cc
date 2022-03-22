@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -16,7 +17,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/android/brave_shields_content_settings.h"
 #endif
 
@@ -88,7 +89,7 @@ void PerfPredictorTabHelper::RecordSavings() {
 
       if (bandwidth_tracker_)
         bandwidth_tracker_->RecordSavings(savings);
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
       chrome::android::BraveShieldsContentSettings::DispatchSavedBandwidth(
           savings);
 #endif

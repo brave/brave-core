@@ -28,7 +28,7 @@
 #include "brave/ui/webui/resources/grit/brave_webui_resources.h"
 #include "brave/ui/webui/resources/grit/brave_webui_resources_map.h"
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include "base/strings/utf_string_conversions.h"
 #endif
 
@@ -110,7 +110,7 @@ std::string BraveSharedResourcesDataSource::GetMimeType(
   if (path.empty())
     return "text/html";
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   base::FilePath file(base::UTF8ToWide(path));
   std::string extension = base::WideToUTF8(file.FinalExtension());
 #else

@@ -71,6 +71,7 @@
 #include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_browser_interface_binders.h"
 #include "chrome/browser/chrome_content_browser_client.h"
@@ -170,7 +171,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/brave_drm_tab_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
 #include "brave/components/brave_vpn/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
@@ -187,7 +188,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/sidebar/sidebar_bookmarks_ui.h"
 #endif
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
@@ -199,11 +200,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_today/common/features.h"
 #endif
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_ads/brave_ads_host_android.h"
 #elif BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/brave_ads/brave_ads_host.h"
-#endif  // defined(OS_ANDROID)
+#endif  // BUILDFLAG(IS_ANDROID)
 
 namespace {
 
@@ -234,19 +235,19 @@ void BindCosmeticFiltersResourcesOnTaskRunner(
 void BindBraveAdsHost(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_ads::mojom::BraveAdsHost> receiver) {
-#if defined(OS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
   auto* context = frame_host->GetBrowserContext();
   auto* profile = Profile::FromBrowserContext(context);
 
   mojo::MakeSelfOwnedReceiver(
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
       std::make_unique<brave_ads::BraveAdsHostAndroid>(
 #elif BUILDFLAG(ENABLE_EXTENSIONS)
       std::make_unique<brave_ads::BraveAdsHost>(
-#endif  // defined(OS_ANDROID)
+#endif  // BUILDFLAG(IS_ANDROID)
           profile),
       std::move(receiver));
-#endif  // defined(OS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
+#endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
 }
 
 void BindCosmeticFiltersResources(
@@ -483,7 +484,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   map->Add<skus::mojom::SkusService>(
       base::BindRepeating(&MaybeBindSkusSdkImpl));
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
@@ -494,7 +495,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         brave_shields::mojom::PanelHandlerFactory, ShieldsPanelUI>(map);
   }
 #endif
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
   if (brave_vpn::IsBraveVPNEnabled()) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
         brave_vpn::mojom::PanelHandlerFactory, VPNPanelUI>(map);
@@ -507,14 +508,14 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 
 // Brave News
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
         brave_news::mojom::BraveNewsController, BraveNewTabUI>(map);
   }
 #endif
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_new_tab_page::mojom::PageHandlerFactory, BraveNewTabUI>(map);
 #endif
@@ -836,7 +837,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   std::vector<std::unique_ptr<content::NavigationThrottle>> throttles =
       ChromeContentBrowserClient::CreateThrottlesForNavigation(handle);
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<content::NavigationThrottle> ntp_shows_navigation_throttle =
       NewTabShowsNavigationThrottle::MaybeCreateThrottleFor(handle);
   if (ntp_shows_navigation_throttle)

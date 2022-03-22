@@ -12,6 +12,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
+#include "build/build_config.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
@@ -69,11 +70,11 @@ class BraveTorClientUpdaterTest : public ExtensionBrowserTest {
   }
 
   bool InstallTorClientUpdater() {
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     return InstallTorClientUpdater("tor-client-updater-win");
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
     return InstallTorClientUpdater("tor-client-updater-mac");
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
     return InstallTorClientUpdater("tor-client-updater-linux");
 #else
     return false;

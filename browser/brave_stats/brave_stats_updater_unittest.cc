@@ -20,6 +20,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_profile.h"
@@ -54,7 +55,7 @@ class BraveStatsUpdaterTest : public testing::Test {
   ~BraveStatsUpdaterTest() override {}
 
   void SetUp() override {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     task_environment_.AdvanceClock(base::Days(2));
 #else
     base::Time future_mock_time;

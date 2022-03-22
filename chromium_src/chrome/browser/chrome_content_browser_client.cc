@@ -9,7 +9,7 @@
 #include "extensions/buildflags/buildflags.h"
 #include "ui/gfx/image/image_skia.h"
 
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
 #include "brave/browser/brave_browser_main_parts_mac.h"
 #undef ChromeBrowserMainPartsMac
 #define ChromeBrowserMainPartsMac BraveBrowserMainPartsMac

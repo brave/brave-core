@@ -11,7 +11,7 @@
 #include "extensions/browser/extension_prefs_factory.h"
 #include "extensions/browser/extension_registry_factory.h"
 
-#if !defined(OS_LINUX)
+#if !BUILDFLAG(IS_LINUX)
 #define BRAVE_THEMESERVICEFACTORY_BUILDSERVICEINSTANCEFOR \
   using ThemeService = BraveThemeService;
 #else

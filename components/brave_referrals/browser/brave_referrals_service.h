@@ -17,10 +17,11 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
 #include "url/gurl.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_referrals/browser/android_brave_referrer.h"
 #include "brave/components/safetynet/safetynet_check.h"
 #endif
@@ -114,7 +115,7 @@ class BraveReferralsService : public ProfileManagerObserver {
   // Invoked after reading contents of promo code file.
   void OnReadPromoCodeComplete(const std::string& promo_code);
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   void GetSafetynetStatusResult(const bool token_received,
                                 const std::string& result_string,
                                 const bool attestation_passed);

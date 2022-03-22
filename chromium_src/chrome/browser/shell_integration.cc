@@ -5,7 +5,7 @@
 
 #include "build/build_config.h"
 
-#if !defined(OS_WIN)
+#if !BUILDFLAG(IS_WIN)
 #include "chrome/grit/generated_resources.h"
 
 #define GetAppShortcutsSubdirName GetAppShortcutsSubdirName_UnUsed
@@ -13,11 +13,11 @@
 
 #include "src/chrome/browser/shell_integration.cc"
 
-#if !defined(OS_WIN)
+#if !BUILDFLAG(IS_WIN)
 #undef GetAppShortcutsSubdirName
 #endif
 
-#if !defined(OS_WIN)
+#if !BUILDFLAG(IS_WIN)
 namespace shell_integration {
 std::u16string GetAppShortcutsSubdirName() {
   int id = IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_STABLE;
@@ -45,4 +45,4 @@ std::u16string GetAppShortcutsSubdirName() {
   return l10n_util::GetStringUTF16(id);
 }
 }  // namespace shell_integration
-#endif  // !defined(OS_WIN)
+#endif  // !BUILDFLAG(IS_WIN)

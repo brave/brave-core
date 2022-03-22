@@ -13,6 +13,7 @@
 #include "brave/components/brave_search/browser/prefs.h"
 #include "brave/components/brave_search/common/features.h"
 #include "brave/components/weekly_storage/daily_storage.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url.h"
@@ -49,7 +50,7 @@ void BraveSearchDefaultHost::RegisterProfilePrefs(
     PrefRegistrySimple* registry) {
   registry->RegisterListPref(brave_search::prefs::kDailyAsked);
   registry->RegisterIntegerPref(brave_search::prefs::kTotalAsked, 0);
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   registry->RegisterBooleanPref(brave_search::prefs::kFetchFromNative, false);
 #endif
 }
@@ -163,7 +164,7 @@ void BraveSearchDefaultHost::SetIsDefaultSearchProvider() {
   template_url_service_->SetUserSelectedDefaultSearchProvider(provider);
   // TODO(sergz): A workaround for Android to avoid default se overwrite on
   // Settings menu open.
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   prefs_->SetBoolean(prefs::kFetchFromNative, true);
 #endif
 }

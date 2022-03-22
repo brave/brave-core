@@ -6,11 +6,12 @@
 #include "src/components/offline_pages/core/offline_page_feature.cc"
 
 #include "base/feature_override.h"
+#include "build/build_config.h"
 
 namespace offline_pages {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     {kPrefetchingOfflinePagesFeature, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
 }});

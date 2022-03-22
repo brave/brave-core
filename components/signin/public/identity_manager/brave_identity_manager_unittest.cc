@@ -34,7 +34,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "components/signin/internal/identity_manager/child_account_info_fetcher_android.h"
 #endif
 
@@ -141,7 +141,7 @@ class BraveIdentityManagerTest : public testing::Test {
             primary_account_manager.get(), &pref_service_,
             AccountConsistencyMethod::kDisabled);
 
-#if defined(OS_ANDROID) || defined(OS_IOS)
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
     init_params.device_accounts_synchronizer =
         std::make_unique<DeviceAccountsSynchronizerImpl>(
             token_service->GetDelegate());

@@ -38,7 +38,7 @@ class DigitalGoodsAPIBrowserTest : public InProcessBrowserTest,
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
     if (IsDigitalGoodsAPIEnabled()) {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
       command_line->AppendSwitch(
           switches::kEnableExperimentalWebPlatformFeatures);
 #else

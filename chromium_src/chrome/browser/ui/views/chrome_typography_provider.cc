@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include "build/build_config.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
@@ -24,7 +25,7 @@ namespace {
 bool ShouldIgnoreHarmonySpec(const views::View& view) {
   const ui::NativeTheme* theme = view.GetNativeTheme();
   DCHECK(theme);
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
   return false;
 #else
   if (theme->UserHasContrastPreference())
@@ -39,7 +40,7 @@ bool ShouldIgnoreHarmonySpec(const views::View& view) {
   const bool label_color_is_black =
       test_color == SK_ColorBLACK || test_color == gfx::kGoogleGrey900;
   return !label_color_is_black;
-#endif  // defined(OS_MAC)
+#endif  // BUILDFLAG(IS_MAC)
 }
 
 }  // namespace

@@ -4,8 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_shell_integration.h"
+#include "build/build_config.h"
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include <shlobj.h>
 
 #include <utility>
@@ -21,7 +22,7 @@ BraveDefaultBrowserWorker::~BraveDefaultBrowserWorker() = default;
 
 void BraveDefaultBrowserWorker::SetAsDefaultImpl(
     base::OnceClosure on_finished_callback) {
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   if (GetDefaultWebClientSetPermission() != SET_DEFAULT_NOT_ALLOWED) {
     bool success = false;
     const wchar_t* kAssociations[] = {L"https", L"http", L".html", L".htm"};

@@ -36,6 +36,7 @@
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
+#include "build/build_config.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/buildflags.h"
@@ -74,7 +75,7 @@
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #endif
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
 #include "brave/browser/ui/brave_browser_command_controller.h"

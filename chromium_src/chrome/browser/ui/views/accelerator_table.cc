@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/views/accelerator_table.h"
 
+#include "build/build_config.h"
+
 #define GetAcceleratorList GetAcceleratorList_ChromiumImpl
 #include "src/chrome/browser/ui/views/accelerator_table.cc"
 #undef GetAcceleratorList
@@ -12,7 +14,7 @@
 namespace {
 
 const AcceleratorMapping kBraveAcceleratorMap[] = {
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
     // Command-Option-N
     {ui::VKEY_N, ui::EF_ALT_DOWN | ui::EF_PLATFORM_ACCELERATOR,
      IDC_NEW_OFFTHERECORD_WINDOW_TOR},

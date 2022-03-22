@@ -36,13 +36,13 @@
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 #include "chrome/grit/chromium_strings.h"
 #include "components/os_crypt/key_storage_config_linux.h"
 #include "ui/base/l10n/l10n_util.h"
-#endif  // defined(OS_LINUX)
+#endif  // BUILDFLAG(IS_LINUX)
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include "base/base64.h"
 #include "base/win/wincrypt_shim.h"
 #endif
@@ -52,7 +52,7 @@ using base::Time;
 namespace {
 
 // Most of below code is copied from os_crypt_win.cc
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 // Contains base64 random key encrypted with DPAPI.
 const char kOsCryptEncryptedKeyPrefName[] = "os_crypt.encrypted_key";
 
@@ -113,7 +113,7 @@ bool SetEncryptionKeyForPasswordImporting(
 #endif
 
 bool SetEncryptionKey(const base::FilePath& source_path) {
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   // Set up crypt config.
   std::unique_ptr<os_crypt::Config> config(new os_crypt::Config());
   config->product_name = l10n_util::GetStringUTF8(IDS_PRODUCT_NAME);
@@ -123,7 +123,7 @@ bool SetEncryptionKey(const base::FilePath& source_path) {
   return true;
 #endif
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   base::FilePath local_state_path = source_path.DirName().Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("Local State")));
   if (!base::PathExists(local_state_path))

@@ -43,7 +43,7 @@ using extensions::Event;
 using extensions::EventRouter;
 #endif
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #endif
 
@@ -197,7 +197,7 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
       request_url.spec(), frame_tree_node_id);
 }
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 // static
 void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
     const std::string& block_type,
@@ -223,7 +223,7 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
 #endif
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShieldsPanelV2)) {
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
     if (!web_contents)
       return;
     brave_shields::BraveShieldsDataController::FromWebContents(web_contents)

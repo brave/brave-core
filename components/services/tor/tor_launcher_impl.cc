@@ -11,6 +11,7 @@
 #include "base/files/file_util.h"
 #include "base/process/launch.h"
 #include "base/strings/string_number_conversions.h"
+#include "build/build_config.h"
 
 namespace tor {
 
@@ -80,10 +81,10 @@ void TorLauncherImpl::Launch(mojom::TorConfigPtr config,
   }
 
   base::LaunchOptions launchopts;
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   launchopts.kill_on_parent_death = true;
 #endif
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   launchopts.start_hidden = true;
 #endif
   base::Process tor_process = base::LaunchProcess(args, launchopts);

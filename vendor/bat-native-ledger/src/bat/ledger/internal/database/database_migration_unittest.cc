@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/option_keys.h"
+#include "build/build_config.h"
 #include "sql/statement.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -46,7 +47,7 @@ class LedgerDatabaseMigrationTest : public testing::Test {
       return "";
     }
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     // Test data files may or may not have line endings converted to CRLF by
     // git checkout on Windows (depending on git autocrlf setting). Remove
     // CRLFs if they are there and replace with just LF, otherwise leave the

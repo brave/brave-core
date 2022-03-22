@@ -11,9 +11,9 @@
 
 namespace features {
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 extern const base::Feature kBraveRewards;
-#endif  // defined(OS_ANDROID)
+#endif  // BUILDFLAG(IS_ANDROID)
 
 extern const base::Feature kTabAudioIconInteractive;
 

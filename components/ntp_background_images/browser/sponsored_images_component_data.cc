@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
 #include "base/feature_list.h"
 #include "brave/components/ntp_background_images/browser/features.h"
-#include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
+#include "build/build_config.h"
 
 namespace ntp_background_images {
 
@@ -23,7 +24,7 @@ absl::optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(
   }
 
   static const SponsoredImagesComponentData regional_data[] = {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     {"AD",
      "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3ab7dmWvTMdMjVLWTj1mdmTsj"
      "0s8uHuFnH1I+"

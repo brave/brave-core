@@ -5,9 +5,9 @@
 
 #include "brave/components/child_process_monitor/child_process_monitor.h"
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include <windows.h>
-#elif defined(OS_POSIX)
+#elif BUILDFLAG(IS_POSIX)
 #include <signal.h>
 #endif
 
@@ -19,6 +19,7 @@
 #include "base/test/test_timeouts.h"
 #include "base/threading/platform_thread.h"
 #include "base/threading/sequenced_task_runner_handle.h"
+#include "build/build_config.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "testing/multiprocess_func_list.h"
 
@@ -80,10 +81,10 @@ TEST_F(ChildProcessMonitorTest, Kill) {
                    EXPECT_EQ(pid, process.Pid());
                    run_loop.Quit();
                  }));
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   HANDLE handle = ::OpenProcess(PROCESS_ALL_ACCESS, 0, process.Pid());
   ::TerminateProcess(handle, 1);
-#elif defined(OS_POSIX)
+#elif BUILDFLAG(IS_POSIX)
   ::kill(process.Pid(), SIGKILL);
 #endif
   WaitForChildTermination(process.Handle());
@@ -113,7 +114,7 @@ TEST_F(ChildProcessMonitorTest, ChildExit) {
 
 MULTIPROCESS_TEST_MAIN(SleepyCrashChildProcess) {
   base::PlatformThread::Sleep(TestTimeouts::tiny_timeout() * 10);
-#if defined(OS_POSIX)
+#if BUILDFLAG(IS_POSIX)
   // Have to disable to signal handler for segv so we can get a crash
   // instead of an abnormal termination through the crash dump handler.
   ::signal(SIGSEGV, SIG_DFL);

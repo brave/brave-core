@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "build/build_config.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_switches.h"
@@ -31,7 +32,7 @@
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
 #include "chrome/browser/browser_features.h"
@@ -84,7 +85,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, OriginTrialsTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
     &translate::kTFLiteLanguageDetectionEnabled,
 #endif
     &autofill::features::kAutofillEnableAccountWalletStorage,
@@ -102,7 +103,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kSpeculationRulesPrefetchProxy,
     &blink::features::kTextFragmentAnchor,
     &blink::features::kWebSQLInThirdPartyContextEnabled,
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
     &features::kCopyLinkToText,
 #endif
     &features::kFedCm,
@@ -134,7 +135,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
   const base::Feature* enabled_features[] = {
     &blink::features::kPrefetchPrivacyChanges,
     &blink::features::kReducedReferrerGranularity,
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     &features::kWinrtGeolocationImplementation,
 #endif
     &net::features::kPartitionConnectionsByNetworkIsolationKey,

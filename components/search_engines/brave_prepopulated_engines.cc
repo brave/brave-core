@@ -5,6 +5,7 @@
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 
+#include "build/build_config.h"
 #include "components/search_engines/prepopulated_engines.h"
 #include "components/search_engines/search_engine_type.h"
 
@@ -103,7 +104,7 @@ const PrepopulatedEngine duckduckgo_au_nz_ie =
                        NULL,
                        PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE);
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 const PrepopulatedEngine duckduckgo_lite = {
     L"DuckDuckGo Lite",
     L":dl",
@@ -132,7 +133,7 @@ const PrepopulatedEngine brave_ecosia =
                        NULL,
                        L":e",
                        "https://www.ecosia.org/search?tt="
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
                        "42b8ae98"
 #else
                        "e8eb07a6"
@@ -193,7 +194,7 @@ const PrepopulatedEngine brave_yandex =
                        L"Yandex",
                        NULL,
                        "https://yandex.ru/search/?clid="
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
                        "2423859"
 #else
                        "2353835"
@@ -209,7 +210,7 @@ const PrepopulatedEngine brave_search = {
     L":br",
     "https://cdn.search.brave.com/serp/favicon.ico",
     "https://search.brave.com/search?q={searchTerms}&source="
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     "android",
 #else
     "desktop",

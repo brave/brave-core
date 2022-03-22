@@ -16,6 +16,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
+#include "build/build_config.h"
 
 namespace tor {
 
@@ -24,7 +25,7 @@ namespace {
 constexpr base::TaskTraits kWatchTaskTraits = {base::MayBlock(),
                                                base::TaskPriority::BEST_EFFORT};
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 constexpr char kControlPortMinTmpl[] = "PORT=1.1.1.1:1\r\n";
 constexpr char kControlPortMaxTmpl[] = "PORT=255.255.255.255:65535\r\n";
 constexpr char kLineBreak[] = "\r\n";

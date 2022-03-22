@@ -9,25 +9,26 @@
 #include <utility>
 
 #include "base/memory/singleton.h"
+#include "build/build_config.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 class Profile;
 
-#if defined(OS_WIN) || defined(OS_MAC)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 class BraveVpnServiceDesktop;
 #endif
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 class BraveVpnService;
 #endif
 
 class BraveVpnServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-#if defined(OS_WIN) || defined(OS_MAC)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
   static BraveVpnServiceDesktop* GetForProfile(Profile* profile);
 #endif
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   static BraveVpnService* GetForProfile(Profile* profile);
 #endif
   static BraveVpnServiceFactory* GetInstance();

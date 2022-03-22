@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/values.h"
+#include "build/build_config.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -43,7 +44,7 @@ class Prefs {
 
   // It is only used to read whether sync v1 was enabled before upgrading
   bool IsSyncV1Enabled() const;
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   // Used for android clients to pretend sync v1 was enabled through the prefs.
   // Originally Android used shared preferences
   void SetSyncV1WasEnabled() const;

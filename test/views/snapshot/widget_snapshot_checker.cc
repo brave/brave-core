@@ -11,6 +11,7 @@
 #include "base/path_service.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/common/brave_paths.h"
+#include "build/build_config.h"
 #include "cc/test/pixel_comparator.h"
 #include "cc/test/pixel_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -28,23 +29,23 @@ namespace {
 constexpr char kSnapshotFileName[] = "snapshot.png";
 
 base::StringPiece GetPlatformName() {
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   return "win";
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
   return "mac";
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
   return "linux";
-#endif  // defined(OS_WIN)
+#endif  // BUILDFLAG(IS_WIN)
 }
 
 bool IsSnapshotCheckingSupported() {
   // TODO(https://github.com/brave/brave-browser/issues/17024): Add snapshots
   // checking support for MacOS.
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
   return false;
 #else
   return true;
-#endif  // defined(OS_MAC)
+#endif  // BUILDFLAG(IS_MAC)
 }
 
 bool WriteFailedSnapshotFile(const SkBitmap& png_bitmap,

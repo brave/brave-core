@@ -16,6 +16,7 @@
 #include "base/scoped_observation.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "build/build_config.h"
 #include "components/component_updater/component_updater_service.h"
 
 class BraveIpfsClientUpdaterTest;
@@ -24,7 +25,7 @@ using brave_component_updater::BraveComponent;
 
 namespace ipfs {
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 static const char kIpfsClientComponentName[] =
     "Brave IPFS Client Updater (Windows)";
 static const char kIpfsClientComponentId[] = "lnbclahgobmjphilkalbhebakmblnbij";
@@ -36,7 +37,7 @@ static const char kIpfsClientComponentBase64PublicKey[] =
     "5WFfljFxICOKeb7S/a1I0lWu2Y4Yv/ohbzktjcpAluefz6mE5d/sSBdQGdJzJIdo"
     "/CRfYgax5nMumx0x38CmVN53GVB+5TM0mw1bhU52ASysgZjAC0++Kbl1qXeSZuWM"
     "/QIDAQAB";
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
 static const char kIpfsClientComponentName[] =
     "Brave IPFS Client Updater (Mac)";
 #if defined(ARCH_CPU_ARM64)
@@ -60,7 +61,7 @@ static const char kIpfsClientComponentBase64PublicKey[] =
     "59uo1UEJYwr+HQ0pvt/gEdns1ccUsGEm9PAMJRptvrGX/fauIMAASvByMRG7XC27"
     "gwIDAQAB";
 #endif
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
 static const char kIpfsClientComponentName[] =
     "Brave IPFS Client Updater (Linux)";
 static const char kIpfsClientComponentId[] = "oecghfpdmkjlhnfpmmjegjacfimiafjp";

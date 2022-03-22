@@ -14,6 +14,7 @@
 
 #include "base/time/time.h"
 #include "bat/ledger/option_keys.h"
+#include "build/build_config.h"
 
 namespace brave_rewards {
 
@@ -21,22 +22,21 @@ const std::vector<std::string> kBitflyerCountries = {
     "JP"  // ID: 19024
 };
 
-#if defined(OS_ANDROID)
-  const std::map<std::string, bool> kBoolOptions = {
-      {ledger::option::kClaimUGP, false}
-  };
+#if BUILDFLAG(IS_ANDROID)
+const std::map<std::string, bool> kBoolOptions = {
+    {ledger::option::kClaimUGP, false}};
 
-  const std::map<std::string, int> kIntegerOptions = {};
+const std::map<std::string, int> kIntegerOptions = {};
 
-  const std::map<std::string, double> kDoubleOptions = {};
+const std::map<std::string, double> kDoubleOptions = {};
 
-  const std::map<std::string, std::string> kStringOptions = {};
+const std::map<std::string, std::string> kStringOptions = {};
 
-  const std::map<std::string, int64_t> kInt64Options = {};
+const std::map<std::string, int64_t> kInt64Options = {};
 
-  const std::map<std::string, uint64_t> kUInt64Options = {
-      {ledger::option::kPublisherListRefreshInterval,
-       7* base::Time::kHoursPerDay * base::Time::kSecondsPerHour}};
+const std::map<std::string, uint64_t> kUInt64Options = {
+    {ledger::option::kPublisherListRefreshInterval,
+     7 * base::Time::kHoursPerDay* base::Time::kSecondsPerHour}};
 #else
   const std::map<std::string, bool> kBoolOptions = {
       {ledger::option::kClaimUGP, false}

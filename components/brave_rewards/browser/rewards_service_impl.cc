@@ -256,9 +256,9 @@ ledger::type::InlineTipsPlatforms ConvertInlineTipStringToPlatform(
 
 bool ProcessPublisher(const GURL& url) {
   // we should always process publisher on desktop
-  #if !defined(OS_ANDROID)
-    return true;
-  #endif
+#if !BUILDFLAG(IS_ANDROID)
+  return true;
+#endif
 
   const std::vector<GURL> excluded = {
       GURL("https://twitter.com")
@@ -292,7 +292,7 @@ bool IsMediaLink(const GURL& url,
 
 
 // read comment about file pathes at src\base\files\file_path.h
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const base::FilePath::StringType kDiagnosticLogPath(L"Rewards.log");
 const base::FilePath::StringType kLedger_state(L"ledger_state");
 const base::FilePath::StringType kPublisher_state(L"publisher_state");
@@ -481,11 +481,11 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
 
   ledger::type::Environment environment = ledger::type::Environment::STAGING;
   // Environment
-  #if defined(OFFICIAL_BUILD) && defined(OS_ANDROID)
-    environment = GetServerEnvironmentForAndroid();
-  #elif defined(OFFICIAL_BUILD)
-    environment = ledger::type::Environment::PRODUCTION;
-  #endif
+#if defined(OFFICIAL_BUILD) && BUILDFLAG(IS_ANDROID)
+  environment = GetServerEnvironmentForAndroid();
+#elif defined(OFFICIAL_BUILD)
+  environment = ledger::type::Environment::PRODUCTION;
+#endif
   SetEnvironment(environment);
 
   SetDebug(false);
@@ -1031,7 +1031,7 @@ void RewardsServiceImpl::LoadURL(
   if (net_request->url.DomainIs("twitter.com")) {
     net_request->credentials_mode = network::mojom::CredentialsMode::kInclude;
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     net_request->headers.SetHeader(
         net::HttpRequestHeaders::kUserAgent,
         "DESKTOP");
@@ -1223,17 +1223,13 @@ void RewardsServiceImpl::AttestationAndroid(
     return;
   }
 
-  #if defined(OS_ANDROID)
-    auto attest_callback =
-        base::BindOnce(&RewardsServiceImpl::OnAttestationAndroid,
-            AsWeakPtr(),
-            promotion_id,
-            std::move(callback),
-            nonce);
-    safetynet_check_runner_.performSafetynetCheck(
-        nonce,
-        std::move(attest_callback));
-  #endif
+#if BUILDFLAG(IS_ANDROID)
+  auto attest_callback =
+      base::BindOnce(&RewardsServiceImpl::OnAttestationAndroid, AsWeakPtr(),
+                     promotion_id, std::move(callback), nonce);
+  safetynet_check_runner_.performSafetynetCheck(nonce,
+                                                std::move(attest_callback));
+#endif
 }
 
 void RewardsServiceImpl::OnAttestationAndroid(
@@ -3077,7 +3073,7 @@ void RewardsServiceImpl::OnRecordBackendP3AStatsAC(
                                     auto_contributions);
 }
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 ledger::type::Environment RewardsServiceImpl::GetServerEnvironmentForAndroid() {
   auto result = ledger::type::Environment::PRODUCTION;
   bool use_staging = false;
@@ -3097,25 +3093,25 @@ ledger::type::Environment RewardsServiceImpl::GetServerEnvironmentForAndroid() {
 ledger::type::ClientInfoPtr GetDesktopClientInfo() {
   auto info = ledger::type::ClientInfo::New();
   info->platform = ledger::type::Platform::DESKTOP;
-  #if defined(OS_MAC)
-    info->os = ledger::type::OperatingSystem::MACOS;
-  #elif defined(OS_WIN)
-    info->os = ledger::type::OperatingSystem::WINDOWS;
-  #elif defined(OS_LINUX)
-    info->os = ledger::type::OperatingSystem::LINUX;
-  #else
-    info->os = ledger::type::OperatingSystem::UNDEFINED;
-  #endif
+#if BUILDFLAG(IS_MAC)
+  info->os = ledger::type::OperatingSystem::MACOS;
+#elif BUILDFLAG(IS_WIN)
+  info->os = ledger::type::OperatingSystem::WINDOWS;
+#elif BUILDFLAG(IS_LINUX)
+  info->os = ledger::type::OperatingSystem::LINUX;
+#else
+  info->os = ledger::type::OperatingSystem::UNDEFINED;
+#endif
 
   return info;
 }
 
 ledger::type::ClientInfoPtr RewardsServiceImpl::GetClientInfo() {
-  #if defined(OS_ANDROID)
-    return android_util::GetAndroidClientInfo();
-  #else
-    return GetDesktopClientInfo();
-  #endif
+#if BUILDFLAG(IS_ANDROID)
+  return android_util::GetAndroidClientInfo();
+#else
+  return GetDesktopClientInfo();
+#endif
 }
 
 void RewardsServiceImpl::UnblindedTokensReady() {

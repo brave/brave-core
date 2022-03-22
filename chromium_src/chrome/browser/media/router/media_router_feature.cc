@@ -5,6 +5,7 @@
 
 #include "chrome/browser/media/router/media_router_feature.h"
 
+#include "build/build_config.h"
 #include "content/public/browser/browser_context.h"
 
 #define MediaRouterEnabled MediaRouterEnabled_ChromiumImpl
@@ -14,7 +15,7 @@
 namespace media_router {
 
 bool MediaRouterEnabled(content::BrowserContext* context) {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   return MediaRouterEnabled_ChromiumImpl(context);
 #else
   if (!base::FeatureList::IsEnabled(kMediaRouter)) {

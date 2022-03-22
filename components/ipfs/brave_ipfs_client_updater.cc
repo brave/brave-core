@@ -69,7 +69,7 @@ base::FilePath InitExecutablePath(const base::FilePath& install_dir) {
     return base::FilePath();
   }
 
-#if defined(OS_POSIX)
+#if BUILDFLAG(IS_POSIX)
   // Ensure that Ipfs client executable has appropriate file
   // permissions, as CRX unzipping does not preserve them.
   // See https://crbug.com/555011
@@ -78,7 +78,7 @@ base::FilePath InitExecutablePath(const base::FilePath& install_dir) {
                << executable_path.value().c_str();
     return base::FilePath();
   }
-#endif  // defined(OS_POSIX)
+#endif  // BUILDFLAG(IS_POSIX)
 
   return executable_path;
 }

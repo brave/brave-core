@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/common/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -24,7 +25,7 @@ class BraveTabsSearchButtonTest : public InProcessBrowserTest,
   BraveTabsSearchButtonTest() = default;
   ~BraveTabsSearchButtonTest() override = default;
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   bool IsWin10TabSearchCaptionButtonEnabled() { return GetParam(); }
 
   void SetUp() override {
@@ -43,7 +44,7 @@ class BraveTabsSearchButtonTest : public InProcessBrowserTest,
 #endif
 };
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 IN_PROC_BROWSER_TEST_P(BraveTabsSearchButtonTest, HideShowSettingTest) {
 #else
 IN_PROC_BROWSER_TEST_F(BraveTabsSearchButtonTest, HideShowSettingTest) {
@@ -72,7 +73,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabsSearchButtonTest, HideShowSettingTest) {
   EXPECT_TRUE(button->GetVisible());
 }
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 INSTANTIATE_TEST_SUITE_P(BraveTabsSearchButtonTest,
                          BraveTabsSearchButtonTest,
                          ::testing::Bool());

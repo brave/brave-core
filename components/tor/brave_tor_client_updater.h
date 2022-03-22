@@ -17,6 +17,7 @@
 #include "base/observer_list_types.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "build/build_config.h"
 
 class BraveTorClientUpdaterTest;
 class PrefService;
@@ -25,14 +26,14 @@ using brave_component_updater::BraveComponent;
 
 namespace tor {
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 extern const char kTorClientComponentName[];
 extern const char kTorClientComponentId[];
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
 extern const char kTorClientComponentName[];
 extern const char kTorClientComponentId[];
 extern const char kTorClientComponentBase64PublicKey[];
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
 extern const char kTorClientComponentName[];
 extern const char kTorClientComponentId[];
 extern const char kTorClientComponentBase64PublicKey[];

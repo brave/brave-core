@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "build/build_config.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
@@ -10,10 +11,10 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
-#include "url/gurl.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/controls/textfield/textfield.h"
+#include "url/gurl.h"
 
 class BraveOmniboxViewViewsTest : public InProcessBrowserTest {
  public:
@@ -38,7 +39,7 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyURLToClipboardTest) {
                            &text_from_clipboard);
   EXPECT_EQ(test_url, text_from_clipboard);
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   clipboard->ReadAsciiText(ui::ClipboardBuffer::kSelection,
                            /* data_dst = */ nullptr,
                            &text_from_clipboard);

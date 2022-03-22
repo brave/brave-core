@@ -15,6 +15,7 @@
 #include "base/process/launch.h"
 #include "base/version.h"
 #include "brave/components/services/ipfs/ipfs_service_utils.h"
+#include "build/build_config.h"
 
 namespace {
 
@@ -94,15 +95,15 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
   }
 
   base::LaunchOptions options;
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   options.environment[L"IPFS_PATH"] = data_path.value();
 #else
   options.environment["IPFS_PATH"] = data_path.value();
 #endif
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   options.kill_on_parent_death = true;
 #endif
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   options.start_hidden = true;
 #endif
 
