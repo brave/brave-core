@@ -24,7 +24,8 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity {
         SIGN_MESSAGE(0),
         ADD_ETHEREUM_CHAIN(1),
         SWITCH_ETHEREUM_CHAIN(2),
-        ADD_TOKEN(3);
+        ADD_TOKEN(3),
+        CONNECT_ACCOUNT(4);
 
         private int value;
         private static Map map = new HashMap<>();

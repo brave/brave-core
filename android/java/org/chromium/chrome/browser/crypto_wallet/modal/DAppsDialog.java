@@ -126,7 +126,7 @@ public class DAppsDialog extends Dialog implements ConnectionErrorHandler, Keyri
     private String getCurrentHostHttpAddress() {
         ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
         if (activity != null) {
-            return activity.getActivityTab().getUrl().getSpec();
+            return activity.getActivityTab().getUrl().getOrigin().getSpec();
         }
         return "";
     }

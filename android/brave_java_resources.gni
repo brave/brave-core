@@ -610,6 +610,7 @@ brave_java_resources = [
   "java/res/drawable/ic_card_background.xml",
   "java/res/drawable/ic_check.xml",
   "java/res/drawable/ic_check_circle.xml",
+  "java/res/drawable/ic_check_white.xml",
   "java/res/drawable/ic_checkbox_filled.xml",
   "java/res/drawable/ic_checkbox_outline.xml",
   "java/res/drawable/ic_chevron_left.xml",

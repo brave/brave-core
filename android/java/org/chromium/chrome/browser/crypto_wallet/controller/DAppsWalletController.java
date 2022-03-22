@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
+import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -22,6 +24,7 @@ import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.modal.BraveWalletPanel;
 import org.chromium.chrome.browser.crypto_wallet.modal.DAppsDialog;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
+import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -57,7 +60,7 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
     }
 
     public void showWalletPanel() {
-        initKeyringService();
+        InitKeyringService();
         InitJsonRpcService();
         if (Utils.shouldShowCryptoOnboarding()) {
             showOnBoardingOrUnlock();
@@ -70,14 +73,24 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
                     // TODO: check if pending dapps transaction are available and implement an
                     // action accrodingly
                     if (!isFoundPendingDAppsTx) {
-                        mBraveWalletPanel = new BraveWalletPanel(
-                                mAnchorViewHost, mDialogOrPanelDismissListener, mJsonRpcService);
-                        mBraveWalletPanel.showLikePopDownMenu();
-                        setupLifeCycleUpdater();
+                        createAndShowWalletPanel();
                     }
                 }
             });
         }
+    }
+
+    private void createAndShowWalletPanel() {
+        mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
+            AccountInfo[] accountInfos = new AccountInfo[0];
+            if (keyringInfo != null) {
+                accountInfos = keyringInfo.accountInfos;
+            }
+            mBraveWalletPanel = new BraveWalletPanel(
+                    mAnchorViewHost, mDialogOrPanelDismissListener, mJsonRpcService, accountInfos);
+            mBraveWalletPanel.showLikePopDownMenu();
+            setupLifeCycleUpdater();
+        });
     }
 
     private void setupLifeCycleUpdater() {
@@ -92,9 +105,10 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
     @Override
     public void onConnectionError(MojoException e) {
         mKeyringService.close();
+        mJsonRpcService.close();
         mKeyringService = null;
         mJsonRpcService = null;
-        initKeyringService();
+        InitKeyringService();
         InitJsonRpcService();
         updateState();
     }
@@ -123,7 +137,7 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
         mHasStateInitialise = true;
     }
 
-    private void initKeyringService() {
+    private void InitKeyringService() {
         if (mKeyringService != null) {
             return;
         }
@@ -132,7 +146,7 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
                 KeyringServiceFactory.getInstance(Utils.getProfile(false)).getKeyringService(this);
     }
 
-    protected void InitJsonRpcService() {
+    private void InitJsonRpcService() {
         if (mJsonRpcService != null) {
             return;
         }

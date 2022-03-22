@@ -65,7 +65,11 @@ source_set("brave_wallet_delegate") {
     "//mojo/public/cpp/bindings",
   ]
   if (is_android) {
-    sources += [ "brave_wallet_provider_delegate_impl_helper_android.cc" ]
+    sources += [
+      "brave_wallet_provider_delegate_impl_helper_android.cc",
+      "brave_wallet_service_delegate_impl_android.cc",
+      "brave_wallet_service_delegate_impl_android.h",
+    ]
   } else {
     sources += [
       "brave_wallet_provider_delegate_impl_helper.cc",

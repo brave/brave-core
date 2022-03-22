@@ -2881,6 +2881,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_DAPP_WALLET_PANEL_CONNECTIVITY_STATUS" desc="Brave wallet Dapp wallet connectivity status">
       Not connected...
     </message>
+    <message name="IDS_DAPP_WALLET_PANEL_CONNECTIVITY_STATUS_CONNECTED" desc="Brave wallet Dapp wallet connectivity status">
+      Connected
+    </message>
     <message name="IDS_ACCESSIBILITY_WALLET_DAPP_PANEL_ACCOUNT" desc="Content description for account image on Brave wallet Dapp wallet panel">
       User account
     </message>
