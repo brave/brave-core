@@ -59,6 +59,20 @@ std::string getSignatureStatuses(
   return GetJSON(dictionary);
 }
 
+std::string getAccountInfo(const std::string& pubkey) {
+  base::Value params(base::Value::Type::LIST);
+  params.Append(pubkey);
+
+  // Set encoding to base64 because the document says base58 is currently the
+  // default value but is slow and deprecated.
+  base::Value configuration(base::Value::Type::DICTIONARY);
+  configuration.SetStringKey("encoding", "base64");
+  params.Append(std::move(configuration));
+
+  base::Value dictionary = GetJsonRpcDictionary("getAccountInfo", &params);
+  return GetJSON(dictionary);
+}
+
 }  // namespace solana
 
 }  // namespace brave_wallet

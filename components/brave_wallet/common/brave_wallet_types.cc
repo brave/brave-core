@@ -94,4 +94,14 @@ absl::optional<SolanaSignatureStatus> SolanaSignatureStatus::FromValue(
   return status;
 }
 
+bool SolanaAccountInfo::operator==(const SolanaAccountInfo& info) const {
+  return lamports == info.lamports && owner == info.owner &&
+         data == info.data && executable == info.executable &&
+         rent_epoch == info.rent_epoch;
+}
+
+bool SolanaAccountInfo::operator!=(const SolanaAccountInfo& info) const {
+  return !operator==(info);
+}
+
 }  // namespace brave_wallet

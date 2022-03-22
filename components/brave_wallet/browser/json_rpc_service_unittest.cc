@@ -550,6 +550,25 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestGetSolanaAccountInfo(
+      absl::optional<SolanaAccountInfo> expected_account_info,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetSolanaAccountInfo(
+        "vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg",
+        base::BindLambdaForTesting(
+            [&](absl::optional<SolanaAccountInfo> account_info,
+                mojom::SolanaProviderError error,
+                const std::string& error_message) {
+              EXPECT_EQ(account_info, expected_account_info);
+              EXPECT_EQ(error, expected_error);
+              EXPECT_EQ(error_message, expected_error_message);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
  protected:
   std::unique_ptr<JsonRpcService> json_rpc_service_;
 
@@ -2378,6 +2397,62 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaSignatureStatuses) {
       tx_sigs, std::vector<absl::optional<SolanaSignatureStatus>>(),
       mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetSolanaAccountInfo) {
+  std::string json = R"(
+    {
+      "jsonrpc":"2.0","id":1,
+      "result": {
+        "context":{"slot":123065869},
+        "value":{
+          "data":["encoded_base64_string","base64"],
+          "executable":false,
+          "lamports":88801034809120,
+          "owner":"11111111111111111111111111111111",
+          "rentEpoch":284
+        }
+      }
+    }
+  )";
+  SetInterceptor("getAccountInfo", "", json);
+
+  SolanaAccountInfo expected_info;
+  expected_info.lamports = 88801034809120ULL;
+  expected_info.owner = "11111111111111111111111111111111";
+  expected_info.data = "encoded_base64_string";
+  expected_info.executable = false;
+  expected_info.rent_epoch = 284;
+  TestGetSolanaAccountInfo(expected_info, mojom::SolanaProviderError::kSuccess,
+                           "");
+
+  // value can be null for an account not on chain.
+  SetInterceptor(
+      "getAccountInfo", "",
+      R"({"jsonrpc":"2.0","result":{"context":{"slot":123121238},"value":null},"id":1})");
+  TestGetSolanaAccountInfo(absl::nullopt, mojom::SolanaProviderError::kSuccess,
+                           "");
+
+  // Response parsing error
+  SetInterceptor("getAccountInfo", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}");
+  TestGetSolanaAccountInfo(absl::nullopt,
+                           mojom::SolanaProviderError::kParsingError,
+                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // JSON RPC error
+  SetInterceptor("getAccountInfo", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":"
+                 "{\"code\":-32601, \"message\": \"method does not exist\"}}");
+  TestGetSolanaAccountInfo(absl::nullopt,
+                           mojom::SolanaProviderError::kMethodNotFound,
+                           "method does not exist");
+
+  // HTTP error
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetSolanaAccountInfo(absl::nullopt,
+                           mojom::SolanaProviderError::kInternalError,
+                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 }  // namespace brave_wallet

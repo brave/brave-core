@@ -18,6 +18,7 @@ std::string getTokenAccountBalance(const std::string& pubkey);
 std::string sendTransaction(const std::string& signed_tx);
 std::string getLatestBlockhash();
 std::string getSignatureStatuses(const std::vector<std::string>& tx_signatures);
+std::string getAccountInfo(const std::string& pubkey);
 
 }  // namespace solana
 

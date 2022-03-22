@@ -147,6 +147,28 @@ struct SolanaSignatureStatus {
   std::string confirmation_status;
 };
 
+struct SolanaAccountInfo {
+  SolanaAccountInfo() = default;
+  ~SolanaAccountInfo() = default;
+  bool operator==(const SolanaAccountInfo&) const;
+  bool operator!=(const SolanaAccountInfo&) const;
+
+  // Number of lamports assigned to this account.
+  uint64_t lamports;
+
+  // base-58 encoded Pubkey of the program this account has been assigned to.
+  std::string owner;
+
+  // Data associated with the account, base64 encoded.
+  std::string data;
+
+  // Indicating if the account contains a program.
+  bool executable;
+
+  // The epoch at which this account will next owe rent.
+  uint64_t rent_epoch;
+};
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BRAVE_WALLET_TYPES_H_
