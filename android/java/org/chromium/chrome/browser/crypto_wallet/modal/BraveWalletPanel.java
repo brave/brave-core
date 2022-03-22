@@ -92,7 +92,7 @@ public class BraveWalletPanel implements ConnectionErrorHandler, DialogInterface
         mPopupWindow.setFocusable(true);
         mPopupWindow.setOutsideTouchable(true);
 
-        mPopupWindow.setAnimationStyle(R.style.OverflowMenuAnim);
+        mPopupWindow.setAnimationStyle(R.style.EndIconMenuAnim);
 
         if (SysUtils.isLowEndDevice()) {
             mPopupWindow.setAnimationStyle(0);

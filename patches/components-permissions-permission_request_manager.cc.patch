@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_request_manager.cc b/components/permissions/permission_request_manager.cc
-index 7c2d6ad6d3f3e10d3c9c15278ccd3ad9b5247c5a..bb31e6eac2f078cbfb4ec42801068d9fe569b8ff 100644
+index 30d020a934feab640cf74d00cdb9049fe1eda4b0..4b0eae7643d7eaea4b7cb4869be79caab2d5a607 100644
 --- a/components/permissions/permission_request_manager.cc
 +++ b/components/permissions/permission_request_manager.cc
-@@ -450,6 +450,7 @@ const std::vector<PermissionRequest*>& PermissionRequestManager::Requests() {
+@@ -448,6 +448,7 @@ const std::vector<PermissionRequest*>& PermissionRequestManager::Requests() {
  }
  
  GURL PermissionRequestManager::GetRequestingOrigin() const {
