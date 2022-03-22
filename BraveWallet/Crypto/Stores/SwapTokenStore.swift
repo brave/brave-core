@@ -624,32 +624,24 @@ public class SwapTokenStore: ObservableObject {
     }
 
     // All tokens from token registry
-    blockchainRegistry.allTokens(BraveWallet.MainnetChainId) { [weak self] tokens in
+    rpcService.network { [weak self] network in
       guard let self = self else { return }
-      self.rpcService.network { network in
+      self.blockchainRegistry.allTokens(network.chainId) { tokens in
         // Native token on the current selected network
         let nativeAsset = network.nativeToken
         // Custom tokens added by users
         self.walletService.userAssets(network.chainId) { userAssets in
           let customTokens = userAssets.filter { asset in
-            !tokens.contains(where: { $0.contractAddress == asset.contractAddress })
+            !tokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(asset.contractAddress) == .orderedSame })
           }
           let sortedCustomTokens = customTokens.sorted {
-            if $0.contractAddress == nativeAsset.contractAddress {
+            if $0.contractAddress(in: network).caseInsensitiveCompare(nativeAsset.contractAddress) == .orderedSame {
               return true
             } else {
               return $0.symbol < $1.symbol
             }
           }
-          if network.chainId == BraveWallet.RopstenChainId {
-            self.allTokens =
-              sortedCustomTokens
-              + tokens.filter {
-                BraveWallet.assetsSwapInRopsten.contains($0.symbol)
-              }.sorted(by: { $0.symbol < $1.symbol })
-          } else {
-            self.allTokens = sortedCustomTokens + tokens.sorted(by: { $0.symbol < $1.symbol })
-          }
+          self.allTokens = sortedCustomTokens + tokens.sorted(by: { $0.symbol < $1.symbol })
           // Seems like user assets always include the selected network's native asset
           // But let's make sure all token list includes the native asset
           if !self.allTokens.contains(where: { $0.symbol.lowercased() == nativeAsset.symbol.lowercased() }) {

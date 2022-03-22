@@ -133,34 +133,14 @@ extension BraveWallet.BlockchainToken: Identifiable {
   }
 
   public func contractAddress(in network: BraveWallet.EthereumChain) -> String {
-    if network.chainId == BraveWallet.RopstenChainId {
-      switch symbol.uppercased() {
-      case "ETH": return BraveWallet.ethSwapAddress
-      case "DAI": return BraveWallet.daiSwapAddress
-      case "USDC": return BraveWallet.usdcSwapAddress
-      default: return contractAddress
-      }
-    } else {
-      // ETH special swap address in Ropsten network
-      // Only checking token.symbol with selected network.symbol is sufficient
-      // since there is no swap support for custom networks.
-      return symbol == network.symbol ? BraveWallet.ethSwapAddress : contractAddress
-    }
+    // ETH special swap address
+    // Only checking token.symbol with selected network.symbol is sufficient
+    // since there is no swap support for custom networks.
+    return symbol == network.symbol ? BraveWallet.ethSwapAddress : contractAddress
   }
 }
 
 extension BraveWallet {
   /// The address that is expected when you are swapping ETH via SwapService APIs
   public static let ethSwapAddress: String = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-
-  ///  The address that is expected when you are swapping DAI via SwapService APIs
-  ///  Also the contract address to fetch DAI balance on Ropsten
-  public static let daiSwapAddress: String = "0xad6d458402f60fd3bd25163575031acdce07538d"
-
-  ///  The address that is expected when you are swapping USDC via SwapService APIs
-  ///  Also the contract address to fetch USDC balance on Ropsten
-  public static let usdcSwapAddress: String = "0x07865c6e87b9f70255377e024ace6630c1eaa37f"
-
-  /// A list of supported assets' symbols for swapping in `Ropsten` network
-  public static let assetsSwapInRopsten: [String] = ["DAI", "USDC"]
 }

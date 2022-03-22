@@ -105,7 +105,7 @@ public class SendTokenStore: ObservableObject {
       }
 
       // store tokens in `allTokens` for address validation
-      self.blockchainRegistry.allTokens(BraveWallet.MainnetChainId) { tokens in
+      self.blockchainRegistry.allTokens(network.chainId) { tokens in
         self.allTokens = tokens + [network.nativeToken]
       }
     }

@@ -15,6 +15,7 @@ struct TransactionView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   var visibleTokens: [BraveWallet.BlockchainToken]
+  var allTokens: [BraveWallet.BlockchainToken]
   var displayAccountCreator: Bool
   var assetRatios: [String: Double]
 
@@ -30,6 +31,13 @@ struct TransactionView: View {
 
   private func namedAddress(for address: String) -> String {
     NamedAddresses.name(for: address, accounts: keyringStore.keyring.accountInfos)
+  }
+
+  private func token(for contractAddress: String) -> BraveWallet.BlockchainToken? {
+    let findToken: (BraveWallet.BlockchainToken) -> Bool = {
+      $0.contractAddress(in: networkStore.selectedChain).caseInsensitiveCompare(contractAddress) == .orderedSame
+    }
+    return visibleTokens.first(where: findToken) ?? allTokens.first(where: findToken)
   }
 
   private var gasFee: (String, fiat: String)? {
@@ -55,12 +63,9 @@ struct TransactionView: View {
     let formatter = WeiFormatter(decimalFormatStyle: .balance)
     switch info.txType {
     case .erc20Approve:
-      if info.txArgs.count > 1,
-        let token = visibleTokens.first(where: {
-          $0.contractAddress == info.txArgs[0]
-        })
-      {
-        Text(String.localizedStringWithFormat(Strings.Wallet.transactionApproveSymbolTitle, formatter.decimalString(for: info.txArgs[1].removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? "", token.symbol))
+      let contractAddress = info.txDataUnion.ethTxData1559?.baseData.to ?? ""
+      if let value = info.txArgs[safe: 1], let token = token(for: contractAddress) {
+        Text(String.localizedStringWithFormat(Strings.Wallet.transactionApproveSymbolTitle, formatter.decimalString(for: value.removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? "", token.symbol))
       } else {
         Text(Strings.Wallet.transactionUnknownApprovalTitle)
       }
@@ -73,21 +78,15 @@ struct TransactionView: View {
         Text(String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, amount, networkStore.selectedChain.symbol, fiat))
       }
     case .erc20Transfer:
-      if info.txArgs.count > 1,
-        let token = visibleTokens.first(where: {
-          $0.contractAddress.caseInsensitiveCompare(info.ethTxToAddress) == .orderedSame
-        })
-      {
-        let amount = formatter.decimalString(for: info.txArgs[1].removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? ""
+      if let value = info.txArgs[safe: 1], let token = token(for: info.ethTxToAddress) {
+        let amount = formatter.decimalString(for: value.removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? ""
         let fiat = numberFormatter.string(from: NSNumber(value: assetRatios[token.symbol.lowercased(), default: 0] * (Double(amount) ?? 0))) ?? "$0.00"
         Text(String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, amount, token.symbol, fiat))
       } else {
         Text(Strings.Wallet.send)
       }
     case .erc721TransferFrom, .erc721SafeTransferFrom:
-      if let token = visibleTokens.first(where: {
-        $0.contractAddress.caseInsensitiveCompare(info.ethTxToAddress) == .orderedSame
-      }) {
+      if let token = token(for: info.ethTxToAddress) {
         Text(String.localizedStringWithFormat(Strings.Wallet.transactionUnknownSendTitle, token.symbol))
       } else {
         Text(Strings.Wallet.send)
@@ -213,6 +212,7 @@ struct Transaction_Previews: PreviewProvider {
         keyringStore: .previewStoreWithWalletCreated,
         networkStore: .previewStore,
         visibleTokens: [.previewToken],
+        allTokens: [],
         displayAccountCreator: false,
         assetRatios: ["eth": 4576.36]
       )
@@ -221,6 +221,7 @@ struct Transaction_Previews: PreviewProvider {
         keyringStore: .previewStoreWithWalletCreated,
         networkStore: .previewStore,
         visibleTokens: [.previewToken],
+        allTokens: [],
         displayAccountCreator: true,
         assetRatios: ["eth": 4576.36]
       )
@@ -229,6 +230,7 @@ struct Transaction_Previews: PreviewProvider {
         keyringStore: .previewStoreWithWalletCreated,
         networkStore: .previewStore,
         visibleTokens: [.previewToken],
+        allTokens: [],
         displayAccountCreator: false,
         assetRatios: ["eth": 4576.36]
       )
