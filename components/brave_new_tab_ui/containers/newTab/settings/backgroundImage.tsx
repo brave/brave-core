@@ -8,10 +8,12 @@ import * as React from 'react'
 import {
   SettingsRow,
   SettingsText,
-  StyledCustomBackgroundSettings,
   StyledCustomBackgroundOption,
   StyledCustomBackgroundOptionImage,
   StyledCustomBackgroundOptionLabel,
+  StyledCustomBackgroundOptionSolidColor,
+  StyledCustomBackgroundSettings,
+  StyledSelectionBorder,
   StyledUploadIconContainer,
   StyledUploadLabel
 } from '../../../components/default'
@@ -21,16 +23,40 @@ import { Toggle } from '../../../components/toggle'
 
 import { getLocale } from '../../../../common/locale'
 
+import SolidColorChooser from './solidColorChooser'
+
 interface Props {
+  newTabData: NewTab.State
   toggleBrandedWallpaperOptIn: () => void
   toggleShowBackgroundImage: () => void
   useCustomBackgroundImage: (useCustom: boolean) => void
+  useSolidColorBackground: (color: string) => void
   brandedWallpaperOptIn: boolean
   showBackgroundImage: boolean
   featureCustomBackgroundEnabled: boolean
 }
 
-class BackgroundImageSettings extends React.PureComponent<Props, {}> {
+enum Location {
+  LIST,
+  SOLID_COLORS
+}
+
+interface State {
+  location: Location
+}
+
+class BackgroundImageSettings extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      location: Location.LIST
+    }
+  }
+
+  setLocation = (location: Location) => {
+    this.setState({ location })
+  }
+
   onClickCustomBackground = () => {
     this.props.useCustomBackgroundImage(true)
   }
@@ -39,8 +65,13 @@ class BackgroundImageSettings extends React.PureComponent<Props, {}> {
     this.props.useCustomBackgroundImage(false)
   }
 
+  onClickSolidColorBackground = () => {
+    this.setState({ location: Location.SOLID_COLORS })
+  }
+
   render () {
     const {
+      newTabData,
       toggleShowBackgroundImage,
       toggleBrandedWallpaperOptIn,
       brandedWallpaperOptIn,
@@ -48,55 +79,87 @@ class BackgroundImageSettings extends React.PureComponent<Props, {}> {
       featureCustomBackgroundEnabled
     } = this.props
 
+    const usingCustomBackground: boolean = !!newTabData.backgroundWallpaper &&
+        !!newTabData.backgroundWallpaper.wallpaperImageUrl &&
+        !newTabData.backgroundWallpaper.author && !newTabData.backgroundWallpaper.link
+    const usingSolidColorBackground: boolean = !!newTabData.backgroundWallpaper?.wallpaperSolidColor
+    const usingBraveBackground: boolean = !usingCustomBackground && !usingSolidColorBackground
+
     return (
-      <div>
-        <SettingsRow>
-          <SettingsText>{getLocale('showBackgroundImage')}</SettingsText>
-          <Toggle
-            onChange={toggleShowBackgroundImage}
-            checked={showBackgroundImage}
-            size='large'
+      <>
+        {this.state.location === Location.LIST && (
+          <div>
+            <SettingsRow>
+              <SettingsText>{getLocale('showBackgroundImage')}</SettingsText>
+              <Toggle
+                onChange={toggleShowBackgroundImage}
+                checked={showBackgroundImage}
+                size='large'
+              />
+            </SettingsRow>
+            <SettingsRow isChildSetting={true}>
+              <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
+              <Toggle
+                onChange={toggleBrandedWallpaperOptIn}
+                // This option can only be enabled if
+                // users opt in for background images
+                checked={showBackgroundImage && brandedWallpaperOptIn}
+                disabled={!showBackgroundImage}
+                size='small'
+              />
+            </SettingsRow>
+            {showBackgroundImage && featureCustomBackgroundEnabled && (
+              <StyledCustomBackgroundSettings>
+                <StyledCustomBackgroundOption
+                  onClick={this.onClickCustomBackground}
+                >
+                  <StyledSelectionBorder selected={usingCustomBackground}>
+                    <StyledUploadIconContainer selected={usingCustomBackground}>
+                      <UploadIcon />
+                      <StyledUploadLabel>
+                        {getLocale('customBackgroundImageOptionUploadLabel')}
+                      </StyledUploadLabel>
+                    </StyledUploadIconContainer>
+                  </StyledSelectionBorder>
+                  <StyledCustomBackgroundOptionLabel>
+                    {getLocale('customBackgroundImageOptionTitle')}
+                  </StyledCustomBackgroundOptionLabel>
+                </StyledCustomBackgroundOption>
+                <StyledCustomBackgroundOption
+                  onClick={this.onClickBraveBackground}
+                >
+                  <StyledSelectionBorder selected={usingBraveBackground}>
+                    <StyledCustomBackgroundOptionImage style={{ backgroundImage: `url(${braveBackground})` }} selected={usingBraveBackground}/>
+                  </StyledSelectionBorder>
+                  <StyledCustomBackgroundOptionLabel>
+                    {getLocale('braveBackgroundImageOptionTitle')}
+                  </StyledCustomBackgroundOptionLabel>
+                </StyledCustomBackgroundOption>
+                <StyledCustomBackgroundOption
+                  onClick={this.onClickSolidColorBackground}
+                >
+                  <StyledSelectionBorder selected={usingSolidColorBackground}>
+                    <StyledCustomBackgroundOptionSolidColor
+                      style={{ backgroundColor: usingSolidColorBackground ? newTabData.backgroundWallpaper?.wallpaperSolidColor : '#151E9A' }}
+                      selected={usingSolidColorBackground}
+                    />
+                  </StyledSelectionBorder>
+                  <StyledCustomBackgroundOptionLabel>
+                    { getLocale('solidColorTitle') }
+                  </StyledCustomBackgroundOptionLabel>
+                </StyledCustomBackgroundOption>
+              </StyledCustomBackgroundSettings>
+            )}
+          </div>
+        )}
+        {this.state.location === Location.SOLID_COLORS && (
+          <SolidColorChooser
+            currentColor={newTabData.backgroundWallpaper?.wallpaperSolidColor}
+            useSolidColorBackground={this.props.useSolidColorBackground}
+            onBack={() => this.setLocation(Location.LIST)}
           />
-        </SettingsRow>
-        <SettingsRow isChildSetting={true}>
-          <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
-          <Toggle
-            onChange={toggleBrandedWallpaperOptIn}
-            // This option can only be enabled if
-            // users opt in for background images
-            checked={showBackgroundImage && brandedWallpaperOptIn}
-            disabled={!showBackgroundImage}
-            size='small'
-          />
-        </SettingsRow>
-        {
-          showBackgroundImage &&
-          featureCustomBackgroundEnabled &&
-          <StyledCustomBackgroundSettings>
-            <StyledCustomBackgroundOption
-              onClick={this.onClickCustomBackground}
-            >
-              <StyledUploadIconContainer>
-                <UploadIcon />
-                <StyledUploadLabel>
-                  {getLocale('customBackgroundImageOptionUploadLabel')}
-                </StyledUploadLabel>
-              </StyledUploadIconContainer>
-              <StyledCustomBackgroundOptionLabel>
-                {getLocale('customBackgroundImageOptionTitle')}
-              </StyledCustomBackgroundOptionLabel>
-            </StyledCustomBackgroundOption>
-            <StyledCustomBackgroundOption
-              onClick={this.onClickBraveBackground}
-            >
-              <StyledCustomBackgroundOptionImage src={braveBackground} />
-              <StyledCustomBackgroundOptionLabel>
-                {getLocale('braveBackgroundImageOptionTitle')}
-              </StyledCustomBackgroundOptionLabel>
-            </StyledCustomBackgroundOption>
-          </StyledCustomBackgroundSettings>
-        }
-      </div>
+        )}
+      </>
     )
   }
 }

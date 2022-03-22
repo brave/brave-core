@@ -121,9 +121,14 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       // Empty custom bg url means using brave background.
       const url = payload.customBackground.url.url
-      state.backgroundWallpaper =
-          url === '' ? backgroundAPI.randomBackgroundImage()
-                     : { wallpaperImageUrl: url }
+      const solidColor = payload.customBackground.solidColor
+      if (url !== '') {
+        state.backgroundWallpaper = { wallpaperImageUrl: url, wallpaperSolidColor: undefined }
+      } else if (solidColor !== '') {
+        state.backgroundWallpaper = { wallpaperImageUrl: undefined, wallpaperSolidColor: solidColor }
+      } else {
+        state.backgroundWallpaper = backgroundAPI.randomBackgroundImage()
+      }
       break
 
     case types.NEW_TAB_PRIVATE_TAB_DATA_UPDATED:

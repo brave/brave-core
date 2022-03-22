@@ -143,6 +143,7 @@ class NewTabPage extends React.Component<Props, State> {
   braveNewsPromptTimerId: number
   hasInitBraveToday: boolean = false
   imageSource?: string = undefined
+  solidBackgroundColor?: string = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
   onVisiblityTimerExpired = () => {
     this.dismissBrandedWallpaperNotification(false)
@@ -470,6 +471,10 @@ class NewTabPage extends React.Component<Props, State> {
     } else {
       getNTPBrowserAPI().pageHandler.useBraveBackground()
     }
+  }
+
+  useSolidColorBackground = (color: string) => {
+    getNTPBrowserAPI().pageHandler.useSolidColorBackground(color)
   }
 
   startRewards = () => {
@@ -1172,6 +1177,7 @@ class NewTabPage extends React.Component<Props, State> {
       showClock = false
       cryptoContent = null
     }
+    const solidColorForBackground = this.props.newTabData.backgroundWallpaper?.wallpaperSolidColor
 
     return (
       <Page.App
@@ -1179,14 +1185,15 @@ class NewTabPage extends React.Component<Props, State> {
         hasImage={hasImage}
         imageSrc={this.imageSource}
         imageHasLoaded={this.state.backgroundHasLoaded}
-        data-show-news-prompt={(this.state.backgroundHasLoaded && this.state.isPromptingBraveToday) ? true : undefined}
-      >
+        solidColorForBackground={solidColorForBackground}
+        data-show-news-prompt={((this.state.backgroundHasLoaded || solidColorForBackground) && this.state.isPromptingBraveToday) ? true : undefined}>
         <Page.Page
             hasImage={hasImage}
             imageSrc={this.imageSource}
             imageHasLoaded={this.state.backgroundHasLoaded}
             showClock={showClock}
             showStats={showStats}
+            solidColorForBackground={this.props.newTabData.backgroundWallpaper?.wallpaperSolidColor}
             showRewards={!!cryptoContent}
             showBraveTalk={newTabData.showBraveTalk && newTabData.braveTalkSupported}
             showBinance={newTabData.showBinance}
@@ -1325,6 +1332,7 @@ class NewTabPage extends React.Component<Props, State> {
           setMostVisitedSettings={this.setMostVisitedSettings}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
           useCustomBackgroundImage={this.useCustomBackgroundImage}
+          useSolidColorBackground={this.useSolidColorBackground}
           showBackgroundImage={newTabData.showBackgroundImage}
           showClock={newTabData.showClock}
           clockFormat={newTabData.clockFormat}
@@ -1354,6 +1362,7 @@ class NewTabPage extends React.Component<Props, State> {
           todayPublishers={this.props.todayData.publishers}
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.props.saveSetAllStackWidgets}
+          newTabData={this.props.newTabData}
         />
         {
           showEditTopSite

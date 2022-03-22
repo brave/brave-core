@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_H_
 
 #include <memory>
+#include <string>
 
 #include "components/keyed_service/core/keyed_service.h"
 
@@ -23,8 +24,11 @@ class NTPCustomBackgroundImagesService : public KeyedService {
  public:
   class Delegate {
    public:
-    virtual bool IsCustomBackgroundEnabled() = 0;
+    virtual bool IsCustomImageBackgroundEnabled() = 0;
     virtual base::FilePath GetCustomBackgroundImageLocalFilePath() = 0;
+
+    virtual bool IsSolidColorBackgroundEnabled() = 0;
+    virtual std::string GetSolidColor() = 0;
 
     virtual ~Delegate() = default;
   };
