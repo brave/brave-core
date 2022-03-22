@@ -116,6 +116,8 @@ namespace brave_wallet {
 namespace {
 const size_t kSaltSize = 32;
 const size_t kNonceSize = 12;
+const int kPbkdf2Iterations = 100000;
+const int kPbkdf2KeySize = 256;
 const char kRootPath[] = "m/44'/{coin}'";
 const char kPasswordEncryptorSalt[] = "password_encryptor_salt";
 const char kPasswordEncryptorNonce[] = "password_encryptor_nonce";
@@ -1512,7 +1514,7 @@ bool KeyringService::CreateEncryptorForKeyring(const std::string& password,
     SetPrefInBytesForKeyring(kPasswordEncryptorSalt, salt, id);
   }
   encryptors_[id] = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-      password, salt, 100000, 256);
+      password, salt, kPbkdf2Iterations, kPbkdf2KeySize);
   return encryptors_[id] != nullptr;
 }
 
@@ -1796,6 +1798,51 @@ void KeyringService::IsStrongPassword(const std::string& password,
   }
 
   std::move(callback).Run(true);
+}
+
+void KeyringService::ValidatePassword(const std::string& password,
+                                      ValidatePasswordCallback callback) {
+  if (password.empty()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  const std::string keyring_id = mojom::kDefaultKeyringId;
+
+  std::vector<uint8_t> salt(kSaltSize);
+  if (!GetPrefInBytesForKeyring(kPasswordEncryptorSalt, &salt, keyring_id)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  // TODO(apaymyshev): move this call(and other ones in this file) to background
+  // thread.
+  auto encryptor = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
+      password, salt, kPbkdf2Iterations, kPbkdf2KeySize);
+  if (!encryptor) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  std::vector<uint8_t> encrypted_mnemonic;
+  if (!GetPrefInBytesForKeyring(kEncryptedMnemonic, &encrypted_mnemonic,
+                                keyring_id)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  std::vector<uint8_t> nonce(kNonceSize);
+  if (!GetPrefInBytesForKeyring(kPasswordEncryptorNonce, &nonce, keyring_id)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  std::vector<uint8_t> mnemonic;
+  if (!encryptor->Decrypt(encrypted_mnemonic, nonce, &mnemonic)) {
+    std::move(callback).Run(false);
+    return;
+  }
+  std::move(callback).Run(!mnemonic.empty());
 }
 
 void KeyringService::GetChecksumEthAddress(
