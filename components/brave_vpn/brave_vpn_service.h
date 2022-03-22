@@ -92,7 +92,7 @@ class BraveVpnService :
 
   void BindInterface(
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
-  void OnPanelVisible();
+  void LoadPurchasedState();
 
   // mojom::vpn::ServiceHandler
   void GetConnectionState(GetConnectionStateCallback callback) override;
@@ -231,7 +231,6 @@ class BraveVpnService :
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
-  void LoadPurchasedState();
   void SetPurchasedState(PurchasedState state);
   void EnsureMojoConnected();
   void OnMojoConnectionError();

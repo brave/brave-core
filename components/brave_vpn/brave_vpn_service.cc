@@ -446,10 +446,6 @@ void BraveVpnService::BindInterface(
   receivers_.Add(this, std::move(receiver));
 }
 
-void BraveVpnService::OnPanelVisible() {
-  LoadPurchasedState();
-}
-
 void BraveVpnService::GetConnectionState(GetConnectionStateCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__ << " : " << connection_state_;

@@ -26,7 +26,7 @@ void VPNPanelHandler::ShowUI() {
       BraveVpnServiceFactory::GetForProfile(profile_);
   if (embedder) {
     embedder->ShowUI();
-    vpn_service_desktop->OnPanelVisible();
+    vpn_service_desktop->LoadPurchasedState();
   }
 }
 
