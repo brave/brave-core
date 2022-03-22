@@ -37,7 +37,11 @@ using content::TitleWatcher;
 
 namespace {
 const char kUserAgentScript[] = "navigator.userAgent";
-}
+const char kBrandScript[] =
+    "navigator.userAgentData.brands[0].brand + '|' + "
+    "navigator.userAgentData.brands[1].brand + '|' + "
+    "navigator.userAgentData.brands[2].brand";
+}  // namespace
 
 class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
  public:
@@ -247,10 +251,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
 // Tests results of user agent metadata brands
 IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
                        AddBraveToNavigatorUserAgentBrandList) {
-  GURL url_b =
-      https_server()->GetURL("b.com", "/navigator/useragentdata-brand.html");
-  NavigateToURLUntilLoadStop(url_b);
-  std::u16string expected_title(u"pass");
-  TitleWatcher watcher(contents(), expected_title);
-  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+  GURL url = https_server()->GetURL("a.com", "/simple.html");
+  NavigateToURLUntilLoadStop(url);
+  EXPECT_EQ("Chromium|Brave|;Not A Brand", EvalJs(contents(), kBrandScript));
 }
