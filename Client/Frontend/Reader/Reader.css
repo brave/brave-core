@@ -84,6 +84,11 @@ body {
     color: #333333;
 }
 
+.black {
+    background-color: #000000;
+    color: #eeeeee;
+}
+
 .sans-serif {
   font-family: sans-serif;
 }
@@ -340,6 +345,13 @@ body {
 .sepia > .content a:visited,
 .sepia > .content a:hover,
 .sepia > .content a:active {
+    color: #00acff !important;
+}
+
+.black > .content a,
+.black > .content a:visited,
+.black > .content a:hover,
+.black > .content a:active {
     color: #00acff !important;
 }
 

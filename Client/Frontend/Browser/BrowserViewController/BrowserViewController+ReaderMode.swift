@@ -67,43 +67,44 @@ extension BrowserViewController: ReaderModeStyleViewControllerDelegate {
 // MARK: - ReaderModeBarViewDelegate
 
 extension BrowserViewController: ReaderModeBarViewDelegate {
+  func readerModeSettingsTapped(_ view: UIView) {
+    guard let readerMode = tabManager.selectedTab?.getContentScript(name: "ReaderMode") as? ReaderMode,
+      readerMode.state == ReaderModeState.active
+    else {
+      return
+    }
 
-  func readerModeBar(_ readerModeBar: ReaderModeBarView, didSelectButton buttonType: ReaderModeBarButtonType) {
-    switch buttonType {
-    case .settings:
-      if let readerMode = tabManager.selectedTab?.getContentScript(name: "ReaderMode") as? ReaderMode, readerMode.state == ReaderModeState.active {
-        var readerModeStyle = DefaultReaderModeStyle
-        if let dict = profile.prefs.dictionaryForKey(ReaderModeProfileKeyStyle) {
-          if let style = ReaderModeStyle(dict: dict as [String: AnyObject]) {
-            readerModeStyle = style
-          }
-        }
-
-        let readerModeStyleViewController = ReaderModeStyleViewController()
-        readerModeStyleViewController.delegate = self
-        readerModeStyleViewController.readerModeStyle = readerModeStyle
-        readerModeStyleViewController.modalPresentationStyle = .popover
-
-        let setupPopover = { [unowned self] in
-          if let popoverPresentationController = readerModeStyleViewController.popoverPresentationController {
-            popoverPresentationController.backgroundColor = .white
-            popoverPresentationController.delegate = self
-            popoverPresentationController.sourceView = readerModeBar
-            popoverPresentationController.sourceRect = CGRect(x: readerModeBar.frame.width / 2, y: UIConstants.toolbarHeight, width: 1, height: 1)
-            popoverPresentationController.permittedArrowDirections = .up
-          }
-        }
-
-        setupPopover()
-
-        if readerModeStyleViewController.popoverPresentationController != nil {
-          displayedPopoverController = readerModeStyleViewController
-          updateDisplayedPopoverProperties = setupPopover
-        }
-
-        present(readerModeStyleViewController, animated: true, completion: nil)
+    var readerModeStyle = DefaultReaderModeStyle
+    if let dict = profile.prefs.dictionaryForKey(ReaderModeProfileKeyStyle) {
+      if let style = ReaderModeStyle(dict: dict as [String: AnyObject]) {
+        readerModeStyle = style
       }
     }
+
+    let readerModeStyleViewController = ReaderModeStyleViewController(selectedStyle: readerModeStyle)
+    readerModeStyleViewController.delegate = self
+    readerModeStyleViewController.modalPresentationStyle = .popover
+
+    let setupPopover = { [unowned self, weak readerModeStyleViewController] in
+
+      if let popoverPresentationController = readerModeStyleViewController?.popoverPresentationController {
+        popoverPresentationController.backgroundColor = .white
+        popoverPresentationController.delegate = self
+        popoverPresentationController.sourceView = view
+        popoverPresentationController.sourceRect =
+          CGRect(x: view.bounds.width / 2, y: UIConstants.toolbarHeight / 2, width: 0, height: 0)
+        popoverPresentationController.permittedArrowDirections = .up
+      }
+    }
+
+    setupPopover()
+
+    if readerModeStyleViewController.popoverPresentationController != nil {
+      displayedPopoverController = readerModeStyleViewController
+      updateDisplayedPopoverProperties = setupPopover
+    }
+
+    present(readerModeStyleViewController, animated: true, completion: nil)
   }
 }
 
@@ -216,7 +217,9 @@ extension BrowserViewController {
       }
     }
     readerModeStyle.fontSize = ReaderModeFontSize.defaultSize
-    self.readerModeStyleViewController(ReaderModeStyleViewController(), didConfigureStyle: readerModeStyle)
+    self.readerModeStyleViewController(
+      ReaderModeStyleViewController(selectedStyle: readerModeStyle),
+      didConfigureStyle: readerModeStyle)
   }
 
   func ignoreNavigationInTab(_ tab: Tab, navigation: WKNavigation) {
