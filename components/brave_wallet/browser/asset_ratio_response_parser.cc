@@ -383,7 +383,7 @@ mojom::BlockchainTokenPtr ParseTokenInfo(const std::string& json) {
   if (!result || !result->is_list())
     return nullptr;
 
-  auto result_list = result->GetList();
+  const auto& result_list = result->GetList();
   if (result_list.size() != 1 || !result_list[0].is_dict())
     return nullptr;
   const base::Value* token = &result_list[0];

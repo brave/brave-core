@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/extensions/item_list.ts b/chrome/browser/resources/extensions/item_list.ts
-index b6ccfd5fd0b98aa4f6d30bc21c25726ca2140385..b63b15f2c12c66902e61a09f544a7773f579547e 100644
+index 4666a42b5ec00896c2889bf751ca5d09aa0e4331..247d8224173be3212f95ac48881239712855e80e 100644
 --- a/chrome/browser/resources/extensions/item_list.ts
 +++ b/chrome/browser/resources/extensions/item_list.ts
 @@ -12,6 +12,7 @@ import {IronA11yAnnouncer} from 'chrome://resources/polymer/v3_0/iron-a11y-annou

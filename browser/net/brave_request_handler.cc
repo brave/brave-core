@@ -52,8 +52,11 @@
 
 static bool IsInternalScheme(std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK(ctx);
-  return ctx->request_url.SchemeIs(extensions::kExtensionScheme) ||
-         ctx->request_url.SchemeIs(content::kChromeUIScheme);
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  if (ctx->request_url.SchemeIs(extensions::kExtensionScheme))
+    return true;
+#endif
+  return ctx->request_url.SchemeIs(content::kChromeUIScheme);
 }
 
 BraveRequestHandler::BraveRequestHandler() {

@@ -18,6 +18,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/extensions/extension_popup_types.h"
 #include "chrome/browser/ui/extensions/extensions_container.h"
 #include "chrome/browser/ui/toolbar/toolbar_action_view_delegate.h"
 #include "components/sessions/content/session_tab_helper.h"
@@ -87,11 +88,11 @@ ui::MenuModel* BraveActionViewController::GetContextMenu(
   return nullptr;
 }
 
-bool BraveActionViewController::ExecuteActionUI(
-    std::string relative_path) {
-  return TriggerPopupWithUrl(PopupShowAction::SHOW_POPUP,
-      extension()->GetResourceURL(relative_path),
-      true);
+void BraveActionViewController::ExecuteActionUI(
+    const std::string& relative_path) {
+  TriggerPopupWithUrl(PopupShowAction::kShow,
+                      extension()->GetResourceURL(relative_path),
+                      /*grant_tab_permissions=*/true, ShowPopupCallback());
 }
 
 ExtensionActionViewController*
@@ -99,26 +100,17 @@ BraveActionViewController::GetPreferredPopupViewController() {
   return this;
 }
 
-bool BraveActionViewController::TriggerPopupWithUrl(
-    PopupShowAction show_action,
-    const GURL& popup_url,
-    bool grant_tab_permissions) {
-  // If this extension is currently showing a popup, hide it. This behavior is
-  // a bit different than ExtensionActionViewController, which will hide any
-  // popup, regardless of extension. Consider duplicating the original behavior.
-  HidePopup();
+void BraveActionViewController::TriggerPopup(PopupShowAction show_action,
+                                             bool grant_tab_permissions,
+                                             ShowPopupCallback callback) {
+  content::WebContents* const web_contents =
+      view_delegate_->GetCurrentWebContents();
+  if (!web_contents)
+    return;
 
-  std::unique_ptr<extensions::ExtensionViewHost> host =
-      extensions::ExtensionViewHostFactory::CreatePopupHost(popup_url,
-                                                            browser_);
-  if (!host)
-    return false;
-
-  popup_host_ = host.get();
-  popup_host_observation_.Observe(popup_host_);
-  extensions_container_->SetPopupOwner(this);
-  ShowPopup(std::move(host), grant_tab_permissions, show_action);
-  return true;
+  const int tab_id = sessions::SessionTabHelper::IdForTab(web_contents).id();
+  TriggerPopupWithUrl(show_action, extension_action_->GetPopupUrl(tab_id),
+                      grant_tab_permissions, std::move(callback));
 }
 
 void BraveActionViewController::OnPopupClosed() {
@@ -134,6 +126,29 @@ gfx::Image BraveActionViewController::GetIcon(
     const gfx::Size& size) {
   return gfx::Image(
       gfx::ImageSkia(GetIconImageSource(web_contents, size), size));
+}
+
+void BraveActionViewController::TriggerPopupWithUrl(
+    PopupShowAction show_action,
+    const GURL& popup_url,
+    bool grant_tab_permissions,
+    ShowPopupCallback callback) {
+  // If this extension is currently showing a popup, hide it. This behavior is
+  // a bit different than ExtensionActionViewController, which will hide any
+  // popup, regardless of extension. Consider duplicating the original behavior.
+  HidePopup();
+
+  std::unique_ptr<extensions::ExtensionViewHost> host =
+      extensions::ExtensionViewHostFactory::CreatePopupHost(popup_url,
+                                                            browser_);
+  if (!host)
+    return;
+
+  popup_host_ = host.get();
+  popup_host_observation_.Observe(popup_host_);
+  extensions_container_->SetPopupOwner(this);
+  ShowPopup(std::move(host), grant_tab_permissions, show_action,
+            std::move(callback));
 }
 
 std::unique_ptr<BraveActionIconWithBadgeImageSource>

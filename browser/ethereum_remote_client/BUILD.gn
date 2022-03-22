@@ -24,6 +24,8 @@ source_set("ethereum_remote_client") {
   deps = [
     "//base",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:pref_names",
+    "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//components/content_settings/core/browser",

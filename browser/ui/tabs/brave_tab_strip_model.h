@@ -13,7 +13,8 @@
 class BraveTabStripModel : public TabStripModel {
  public:
   explicit BraveTabStripModel(TabStripModelDelegate* delegate,
-                              Profile* profile);
+                              Profile* profile,
+                              TabGroupModelFactory* group_model_factory);
 
   ~BraveTabStripModel() override;
 

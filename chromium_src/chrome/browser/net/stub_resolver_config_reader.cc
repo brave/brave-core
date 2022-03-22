@@ -10,6 +10,7 @@
 #include "base/strings/strcat.h"
 #include "brave/components/decentralized_dns/utils.h"
 #include "brave/net/decentralized_dns/constants.h"
+#include "net/dns/public/dns_over_https_config.h"
 #endif
 
 namespace {
@@ -19,7 +20,7 @@ namespace {
 // kDnsOverHttpsTemplates pref as the servers we added here are special and
 // only applies to certain TLD which is different from user's global DoH
 // provider settings.
-void AddDoHServers(std::string* doh_templates,
+void AddDoHServers(net::DnsOverHttpsConfig* doh_config,
                    PrefService* local_state,
                    bool force_check_parental_controls_for_automatic_mode) {
   // force_check_parental_controls_for_automatic_mode is only true for
@@ -29,27 +30,32 @@ void AddDoHServers(std::string* doh_templates,
     return;
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+  std::string doh_config_string = doh_config->ToString();
+
   if (decentralized_dns::IsUnstoppableDomainsResolveMethodDoH(local_state) &&
-      doh_templates->find(decentralized_dns::kUnstoppableDomainsDoHResolver) ==
+      doh_config_string.find(
+          decentralized_dns::kUnstoppableDomainsDoHResolver) ==
           std::string::npos) {
-    *doh_templates =
+    doh_config_string =
         base::StrCat({decentralized_dns::kUnstoppableDomainsDoHResolver, " ",
-                      *doh_templates});
+                      doh_config_string});
   }
 
   if (decentralized_dns::IsENSResolveMethodDoH(local_state) &&
-      doh_templates->find(decentralized_dns::kENSDoHResolver) ==
+      doh_config_string.find(decentralized_dns::kENSDoHResolver) ==
           std::string::npos) {
-    *doh_templates =
-        base::StrCat({decentralized_dns::kENSDoHResolver, " ", *doh_templates});
+    doh_config_string = base::StrCat(
+        {decentralized_dns::kENSDoHResolver, " ", doh_config_string});
   }
+
+  *doh_config = net::DnsOverHttpsConfig::FromStringLax(doh_config_string);
 #endif
 }
 
 }  // namespace
 
-#define BRAVE_GET_AND_UPDATE_CONFIGURATION    \
-  AddDoHServers(&doh_templates, local_state_, \
+#define BRAVE_GET_AND_UPDATE_CONFIGURATION \
+  AddDoHServers(&doh_config, local_state_, \
                 force_check_parental_controls_for_automatic_mode);
 
 #include "src/chrome/browser/net/stub_resolver_config_reader.cc"

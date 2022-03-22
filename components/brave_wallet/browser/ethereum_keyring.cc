@@ -95,7 +95,8 @@ std::vector<uint8_t> EthereumKeyring::SignMessage(
 
   int recid;
   std::vector<uint8_t> signature = hd_key->Sign(hash, &recid);
-  uint8_t v = chain_id ? recid + chain_id * 2 + 35 : recid + 27;
+  uint8_t v =
+      static_cast<uint8_t>(chain_id ? recid + chain_id * 2 + 35 : recid + 27);
   signature.push_back(v);
 
   return signature;

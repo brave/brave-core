@@ -18,6 +18,8 @@ deps = {
   "third_party/ethash/src": "https://github.com/chfast/ethash.git@e4a15c3d76dc09392c7efd3e30d84ee3b871e9ce",
   "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@95ea54ba089610019a74c1176a2c7c0dba144b1c",
   "third_party/argon2/src": "https://github.com/P-H-C/phc-winner-argon2.git@62358ba2123abd17fccf2a108a301d4b52c01a7c",
+  "third_party/boost/config": "https://github.com/boostorg/config.git@e108255ffb5d2557ed3398b3fc575a2e9fd434cc",
+  "third_party/boost/multiprecision": "https://github.com/boostorg/multiprecision.git@db0bb4d2d2611605b7ce97220fb9973fd7e072c9",
 }
 
 recursedeps = [

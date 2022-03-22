@@ -13,6 +13,7 @@ source_set("common_handler") {
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:hd_keyring",
+    "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common:mojom",
     "//chrome/browser/profiles:profile",
     "//content/public/browser",

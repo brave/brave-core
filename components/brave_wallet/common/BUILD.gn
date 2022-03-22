@@ -38,6 +38,8 @@ static_library("common") {
     "//brave/third_party/ethash",
     "//url",
   ]
+
+  public_deps = [ "//brave/third_party/boost" ]
 }
 
 source_set("common_constants") {

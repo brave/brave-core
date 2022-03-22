@@ -1,5 +1,5 @@
 diff --git a/tools/clang/pylib/clang/compile_db.py b/tools/clang/pylib/clang/compile_db.py
-index 9cea148ee9a06df045f2237bf5745032d00d2ab2..56b96e3de27289b15de38c430ab9ce64b5a84d12 100755
+index eff48afe2de97dc1649818008570c4af08eb465c..ceab8f819570006a325b66a3d04028dc6c3cbed4 100755
 --- a/tools/clang/pylib/clang/compile_db.py
 +++ b/tools/clang/pylib/clang/compile_db.py
 @@ -12,7 +12,7 @@ import sys

@@ -1,6 +1,10 @@
+import("//extensions/buildflags/buildflags.gni")
+
 if (is_android || is_ios) {
   source_set("common") {
     sources = [
+      "//extensions/common/constants.cc",
+      "//extensions/common/constants.h",
       "//extensions/common/error_utils.cc",
       "//extensions/common/error_utils.h",
       "//extensions/common/url_pattern.cc",
@@ -22,13 +26,15 @@ if (is_android || is_ios) {
         "//content/public/common/url_constants.cc",
         "//content/public/common/url_constants.h",
       ]
+      deps += [
+        "//build:chromecast_buildflags",
+        "//build:chromeos_buildflags",
+      ]
     } else {
       deps += [ "//content/public/common" ]
     }
 
     public_deps = [
-      "//extensions/common:common_constants",
-
       # Upstream bug: common_constants (above) has a dep on
       # //components/services/app_service/public/mojom, which should have a dep
       # on //ui/gfx/image/mojom, but doesn't, so we have to include it directly.

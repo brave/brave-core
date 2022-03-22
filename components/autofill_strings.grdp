@@ -69,7 +69,7 @@
     Plex
   </message>
   <message name="IDS_AUTOFILL_CC_GOOGLE_PAY" desc="Brave pay brand name">
-    Brave Pay
+    Google Pay
   </message>
   <message name="IDS_AUTOFILL_CC_JCB" desc="JCB credit card name." formatter_data="android_java">
     JCB
@@ -287,13 +287,13 @@
   <!-- Autofill/Wallet integration preferences -->
   <if expr="not is_ios">
     <then>
-      <message name="IDS_AUTOFILL_ENABLE_PAYMENTS_INTEGRATION_CHECKBOX_LABEL" desc="Label for the checkbox that controls the Autofill/Payments integration feature used for Autofill Home. 'Brave Pay' should not be translated as it is the product name. Sentence-Cased.">
-        Payment methods and addresses using Brave Pay
+      <message name="IDS_AUTOFILL_ENABLE_PAYMENTS_INTEGRATION_CHECKBOX_LABEL" desc="Label for the checkbox that controls the Autofill/Payments integration feature used for Autofill Home. 'Google Pay' should not be translated as it is the product name. Sentence-Cased.">
+        Payment methods and addresses using Google Pay
       </message>
     </then>
     <else>
-      <message name="IDS_AUTOFILL_ENABLE_PAYMENTS_INTEGRATION_CHECKBOX_LABEL" desc="Label for the checkbox that controls the Autofill/Payments integration feature used for Autofill Home. 'Brave Pay' should not be translated as it is the product name. Title-Cased.">
-        Payment Methods and Addresses Using Brave Pay
+      <message name="IDS_AUTOFILL_ENABLE_PAYMENTS_INTEGRATION_CHECKBOX_LABEL" desc="Label for the checkbox that controls the Autofill/Payments integration feature used for Autofill Home. 'Google Pay' should not be translated as it is the product name. Title-Cased.">
+        Payment Methods and Addresses Using Google Pay
       </message>
     </else>
   </if>

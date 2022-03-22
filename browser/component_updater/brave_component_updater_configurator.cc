@@ -196,4 +196,12 @@ absl::optional<bool> BraveConfigurator::IsMachineExternallyManaged() const {
   return absl::nullopt;
 }
 
+update_client::UpdaterStateProvider BraveConfigurator::GetUpdaterStateProvider()
+    const {
+  // TODO(crbug.com/1286378) - add a dependency on //chrome/updater and
+  // implement this function so that it picks up that updater state, in
+  // addition to Omaha or Keystone updater states.
+  return configurator_impl_.GetUpdaterStateProvider();
+}
+
 }  // namespace component_updater

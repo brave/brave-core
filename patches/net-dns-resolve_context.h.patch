@@ -1,8 +1,8 @@
 diff --git a/net/dns/resolve_context.h b/net/dns/resolve_context.h
-index 19b657dca694df4d867653b822d508bc0f95091c..29dcacddc11100ef8732182f308edac2974d4919 100644
+index d9063ae8eb172ae4d52e395651c50521992668dc..acbcc1ec15236c4b6110b85e85a2058e25932145 100644
 --- a/net/dns/resolve_context.h
 +++ b/net/dns/resolve_context.h
-@@ -185,6 +185,7 @@ class NET_EXPORT_PRIVATE ResolveContext : public base::CheckedObserver {
+@@ -199,6 +199,7 @@ class NET_EXPORT_PRIVATE ResolveContext : public base::CheckedObserver {
      return weak_ptr_factory_.GetWeakPtr();
    }
  

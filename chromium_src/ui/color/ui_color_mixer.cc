@@ -10,9 +10,11 @@
 namespace ui {
 
 void AddBraveUiColorMixer(ColorProvider* provider,
-                          bool dark_window,
-                          bool high_contrast) {
+                          const ColorProviderManager::Key& key) {
   ColorMixer& mixer = provider->AddMixer();
+
+  const bool dark_mode =
+      key.color_mode == ColorProviderManager::ColorMode::kDark;
 
   // --------------------------------------------------------------------------
   // Border colors
@@ -33,8 +35,8 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   // TODO(simonhong): Add this color to palette.
   mixer[kColorButtonBorder] = {SkColorSetRGB(0xc3, 0xc4, 0xcf)};
   // For deprecated kColorId_ButtonEnabledColor
-  mixer[kColorButtonForeground] = {dark_window ? SK_ColorWHITE
-                                               : gfx::kBraveGrey800};
+  mixer[kColorButtonForeground] = {dark_mode ? SK_ColorWHITE
+                                             : gfx::kBraveGrey800};
   mixer[kColorButtonForegroundChecked] = {kColorButtonForeground};
   // For deprecated kColorId_TextOnProminentButtonColor
   mixer[kColorButtonForegroundProminent] = {SK_ColorWHITE};
@@ -49,8 +51,8 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   // Link colors
   // --------------------------------------------------------------------------
   // For deprecated kColorId_LinkEnabled & kColorId_LinkPressed
-  mixer[kColorLinkForeground] = {dark_window ? gfx::kBraveColorOrange300
-                                             : gfx::kBraveColorBrand};
+  mixer[kColorLinkForeground] = {dark_mode ? gfx::kBraveColorOrange300
+                                           : gfx::kBraveColorBrand};
   mixer[kColorLinkForegroundPressed] = {kColorLinkForeground};
 
   // --------------------------------------------------------------------------
@@ -72,15 +74,14 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   // Text colors
   // --------------------------------------------------------------------------
   // For deprecated kColorId_TextfieldSelectionBackgroundFocused
-  mixer[kColorTextfieldSelectionBackground] = {
-      dark_window ? gfx::kGoogleBlue800 : gfx::kGoogleBlue200};
+  mixer[kColorTextfieldSelectionBackground] = {dark_mode ? gfx::kGoogleBlue800
+                                                         : gfx::kGoogleBlue200};
 }
 
 void AddUiColorMixer(ColorProvider* provider,
-                     bool dark_window,
-                     bool high_contrast) {
-  AddUiColorMixer_Chromium(provider, dark_window, high_contrast);
-  AddBraveUiColorMixer(provider, dark_window, high_contrast);
+                     const ColorProviderManager::Key& key) {
+  AddUiColorMixer_Chromium(provider, key);
+  AddBraveUiColorMixer(provider, key);
 }
 
 }  // namespace ui

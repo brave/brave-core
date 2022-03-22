@@ -43,7 +43,8 @@ class PrivacySandboxSettingsTest : public testing::Test {
     InitializePrefsBeforeStart();
 
     privacy_sandbox_settings_ = std::make_unique<BravePrivacySandboxSettings>(
-        host_content_settings_map(), cookie_settings(), prefs());
+        host_content_settings_map(), cookie_settings(), prefs(),
+        /*incognito_profile=*/false);
   }
 
   virtual void InitializePrefsBeforeStart() {}
@@ -444,7 +445,7 @@ TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
                 {GURL("https://embedded.com")}));
 }
 
-TEST_F(PrivacySandboxSettingsTest, IsPrivacySandboxAllowed) {
+TEST_F(PrivacySandboxSettingsTest, IsPrivacySandboxEnabled) {
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
       /*privacy_sandbox_enabled=*/false,
@@ -453,7 +454,7 @@ TEST_F(PrivacySandboxSettingsTest, IsPrivacySandboxAllowed) {
       /*user_cookie_exceptions=*/{},
       /*managed_cookie_setting=*/privacy_sandbox_test_util::kNoSetting,
       /*managed_cookie_exceptions=*/{});
-  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxAllowed());
+  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxEnabled());
 
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
@@ -463,7 +464,7 @@ TEST_F(PrivacySandboxSettingsTest, IsPrivacySandboxAllowed) {
       /*user_cookie_exceptions=*/{},
       /*managed_cookie_setting=*/privacy_sandbox_test_util::kNoSetting,
       /*managed_cookie_exceptions=*/{});
-  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxAllowed());
+  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxEnabled());
 
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
@@ -475,13 +476,15 @@ TEST_F(PrivacySandboxSettingsTest, IsPrivacySandboxAllowed) {
       /*managed_cookie_exceptions=*/{});
 
   // Trying to enable the privacy sandbox doesn't make a difference in Brave.
-  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxAllowed());
+  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxEnabled());
 
   // Check that even bypassing PrivacySandboxSettings::SetPrivacySandboxEnabled,
-  // and manually updating the preference, we still don't get this enabled.
+  // and manually updating the preferences, we still don't get this enabled.
   profile()->GetTestingPrefService()->SetBoolean(
       prefs::kPrivacySandboxApisEnabled, true);
-  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxAllowed());
+  profile()->GetTestingPrefService()->SetBoolean(
+      prefs::kPrivacySandboxApisEnabledV2, true);
+  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxEnabled());
 }
 
 TEST_F(PrivacySandboxSettingsTest, IsFlocAllowed) {
@@ -502,6 +505,8 @@ TEST_F(PrivacySandboxSettingsTest, IsFlocAllowed) {
   // and manually updating the preferences, we still don't get this enabled.
   profile()->GetTestingPrefService()->SetBoolean(
       prefs::kPrivacySandboxApisEnabled, true);
+  profile()->GetTestingPrefService()->SetBoolean(
+      prefs::kPrivacySandboxApisEnabledV2, true);
   profile()->GetTestingPrefService()->SetBoolean(
       prefs::kPrivacySandboxFlocEnabled, true);
   EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowed());

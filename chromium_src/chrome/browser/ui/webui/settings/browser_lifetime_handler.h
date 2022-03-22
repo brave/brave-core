@@ -30,7 +30,7 @@ class BrowserLifetimeHandler : public BrowserLifetimeHandler_ChromiumImpl {
   ~BrowserLifetimeHandler() override;
 
  private:
-  void HandleRelaunch(const base::ListValue* /*args*/) override;
+  void HandleRelaunch(base::Value::ConstListView args) override;
 };
 
 }  // namespace settings

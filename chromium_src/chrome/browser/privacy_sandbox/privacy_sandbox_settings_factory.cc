@@ -17,5 +17,6 @@ KeyedService* PrivacySandboxSettingsFactory::BuildServiceInstanceFor(
 
   return new BravePrivacySandboxSettings(
       HostContentSettingsMapFactory::GetForProfile(profile),
-      CookieSettingsFactory::GetForProfile(profile).get(), profile->GetPrefs());
+      CookieSettingsFactory::GetForProfile(profile).get(), profile->GetPrefs(),
+      profile->IsIncognitoProfile());
 }

@@ -60,47 +60,48 @@ TEST(StringUtilsUnitTest, Base10ValueToUint256) {
 TEST(StringUtilsUnitTest, Base10ValueToInt256) {
   int256_t out;
   ASSERT_TRUE(Base10ValueToInt256("0", &out));
-  ASSERT_EQ(out, (int256_t)0);
+  EXPECT_EQ(out, int256_t(0));
   ASSERT_TRUE(Base10ValueToInt256("1", &out));
-  ASSERT_EQ(out, (int256_t)1);
+  EXPECT_EQ(out, int256_t(1));
   ASSERT_TRUE(Base10ValueToInt256("-1", &out));
-  ASSERT_EQ(out, (int256_t)-1);
+  EXPECT_EQ(out, int256_t(-1));
   ASSERT_TRUE(Base10ValueToInt256("12345678910", &out));
-  ASSERT_EQ(out, (int256_t)12345678910);
+  EXPECT_EQ(out, int256_t(12345678910));
   ASSERT_TRUE(Base10ValueToInt256("-12345678910", &out));
-  ASSERT_EQ(out, (int256_t)-12345678910);
+  EXPECT_EQ(out, int256_t(-12345678910));
 
   // Max int256 value can be represented
-  int256_t expected_val = std::numeric_limits<int256_t>::max();
+  int256_t expected_val = kMax256BitInt;
   ASSERT_TRUE(
       Base10ValueToInt256("5789604461865809771178549250434395392663499233282028"
                           "2019728792003956564819967",
                           &out));
-  ASSERT_TRUE(out == (int256_t)expected_val);
+  EXPECT_EQ(out, expected_val);
 
   // Min int256 value can be represented
-  expected_val = std::numeric_limits<int256_t>::min();
+  expected_val = kMin256BitInt;
   ASSERT_TRUE(Base10ValueToInt256(
       "-5789604461865809771178549250434395392663499233282028"
       "2019728792003956564819968",
       &out));
-  ASSERT_TRUE(out == (int256_t)expected_val);
+  EXPECT_EQ(out, expected_val);
 
   // Should return false when out of bounds
-  ASSERT_FALSE(
+  EXPECT_FALSE(
       Base10ValueToInt256("5789604461865809771178549250434395392663499233282028"
                           "2019728792003956564819968",
                           &out));
-  ASSERT_FALSE(Base10ValueToInt256(
+
+  EXPECT_FALSE(Base10ValueToInt256(
       "-5789604461865809771178549250434395392663499233282028"
       "2019728792003956564819969",
       &out));
 
-  ASSERT_FALSE(Base10ValueToInt256("0xB", &out));
+  EXPECT_FALSE(Base10ValueToInt256("0xB", &out));
 
   // Check padded values too
   ASSERT_TRUE(Base10ValueToInt256("0000000000000000000000010", &out));
-  ASSERT_EQ(out, (int256_t)10);
+  EXPECT_EQ(out, int256_t(10));
 }
 
 }  // namespace brave_wallet

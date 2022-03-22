@@ -55,8 +55,8 @@ TEST_F(PostCredentialsTest, ServerOK) {
             callback(response);
           }));
 
-  auto blinded = std::make_unique<base::ListValue>();
-  blinded->Append(base::Value("asfeq4gerg34gl3g34lg34g"));
+  base::Value::List blinded;
+  blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
@@ -81,8 +81,8 @@ TEST_F(PostCredentialsTest, ServerError400) {
             callback(response);
           }));
 
-  auto blinded = std::make_unique<base::ListValue>();
-  blinded->Append(base::Value("asfeq4gerg34gl3g34lg34g"));
+  base::Value::List blinded;
+  blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
@@ -107,8 +107,8 @@ TEST_F(PostCredentialsTest, ServerError409) {
             callback(response);
           }));
 
-  auto blinded = std::make_unique<base::ListValue>();
-  blinded->Append(base::Value("asfeq4gerg34gl3g34lg34g"));
+  base::Value::List blinded;
+  blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
@@ -133,8 +133,8 @@ TEST_F(PostCredentialsTest, ServerError500) {
             callback(response);
           }));
 
-  auto blinded = std::make_unique<base::ListValue>();
-  blinded->Append(base::Value("asfeq4gerg34gl3g34lg34g"));
+  base::Value::List blinded;
+  blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
@@ -159,8 +159,8 @@ TEST_F(PostCredentialsTest, ServerErrorRandom) {
             callback(response);
           }));
 
-  auto blinded = std::make_unique<base::ListValue>();
-  blinded->Append(base::Value("asfeq4gerg34gl3g34lg34g"));
+  base::Value::List blinded;
+  blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
   creds_->Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",

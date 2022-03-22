@@ -9,6 +9,7 @@
 #include "base/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/observer_list_types.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 
 using brave_component_updater::DATFileDataBuffer;

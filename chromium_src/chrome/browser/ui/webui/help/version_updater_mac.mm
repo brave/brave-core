@@ -115,7 +115,7 @@ void VersionUpdaterMac::CheckForUpdate(StatusCallback status_callback,
 #endif
 }
 
-void VersionUpdaterMac::PromoteUpdater() const {
+void VersionUpdaterMac::PromoteUpdater() {
   NOTIMPLEMENTED();
 }
 

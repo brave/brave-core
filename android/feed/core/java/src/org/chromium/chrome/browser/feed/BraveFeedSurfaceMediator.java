@@ -10,6 +10,7 @@ import android.widget.ScrollView;
 
 import androidx.annotation.Nullable;
 
+import org.chromium.chrome.browser.feed.sort_ui.FeedOptionsCoordinator;
 import org.chromium.ui.modelutil.PropertyModel;
 
 public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
@@ -19,9 +20,10 @@ public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
 
     BraveFeedSurfaceMediator(FeedSurfaceCoordinator coordinator, Context context,
             @Nullable SnapScrollHelper snapScrollHelper, PropertyModel headerModel,
-            @FeedSurfaceCoordinator.StreamTabId int openingTabId,
-            FeedActionDelegate actionDelegate) {
-        super(coordinator, context, snapScrollHelper, headerModel, openingTabId, actionDelegate);
+            @FeedSurfaceCoordinator.StreamTabId int openingTabId, FeedActionDelegate actionDelegate,
+            FeedOptionsCoordinator optionsCoordinator) {
+        super(coordinator, context, snapScrollHelper, headerModel, openingTabId, actionDelegate,
+                optionsCoordinator);
     }
 
     @Override

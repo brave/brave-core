@@ -18,12 +18,12 @@
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/json/json_file_value_serializer.h"
 #include "base/one_shot_event.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/task/task_runner_util.h"
 #include "base/values.h"
 #include "base/version.h"
@@ -55,8 +55,8 @@ constexpr char kRunAtDocumentStart[] = "document_start";
 
 bool ShouldComputeHashesForResource(
     const base::FilePath& relative_resource_path) {
-  std::vector<base::FilePath::StringType> components;
-  relative_resource_path.GetComponents(&components);
+  std::vector<base::FilePath::StringType> components =
+      relative_resource_path.GetComponents();
   return !components.empty() && components[0] != extensions::kMetadataFolder;
 }
 
@@ -65,8 +65,6 @@ bool ShouldComputeHashesForResource(
 // extension that the caller should take ownership of, or nullptr.
 //
 // NOTE: This function does file IO and should not be called on the UI thread.
-// NOTE: The caller takes ownership of the directory at extension->path() on the
-// returned object.
 absl::optional<greaselion::GreaselionServiceImpl::GreaselionConvertedExtension>
 ConvertGreaselionRuleToExtensionOnTaskRunner(
     const greaselion::GreaselionRule& rule,
@@ -206,10 +204,17 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
             extensions::file_util::GetComputedHashesPath(extension->path()));
   }
 
-  // Take ownership of this temporary directory so it's deleted when
-  // the service exits
-  return std::make_pair(extension, std::move(temp_dir));
+  // Take ownership of this temporary directory; the service will delete it on
+  // exit
+  return std::make_pair(extension, temp_dir.Take());
 }
+
+void DeleteExtensionDirs(const std::vector<base::FilePath>& extension_dirs) {
+  for (const auto& extension_dir : extension_dirs) {
+    base::DeletePathRecursively(extension_dir);
+  }
+}
+
 }  // namespace
 
 namespace greaselion {
@@ -241,9 +246,13 @@ GreaselionServiceImpl::GreaselionServiceImpl(
   state_[GreaselionFeature::SUPPORTS_MINIMUM_BRAVE_VERSION] = true;
 }
 
-GreaselionServiceImpl::~GreaselionServiceImpl() {
+GreaselionServiceImpl::~GreaselionServiceImpl() {}
+
+void GreaselionServiceImpl::Shutdown() {
   download_service_->RemoveObserver(this);
   extension_registry_->RemoveObserver(this);
+  task_runner_->PostTask(FROM_HERE,
+                         base::BindOnce(&DeleteExtensionDirs, extension_dirs_));
 }
 
 bool GreaselionServiceImpl::IsGreaselionExtension(const std::string& id) {
@@ -325,7 +334,7 @@ void GreaselionServiceImpl::PostConvert(
     LOG(ERROR) << "Could not load Greaselion script";
   } else {
     greaselion_extensions_.push_back(converted_extension->first->id());
-    extension_dirs_.push_back(std::move(converted_extension->second));
+    extension_dirs_.push_back(converted_extension->second);
     extension_system_->ready().Post(
         FROM_HERE, base::BindOnce(&GreaselionServiceImpl::Install,
                                   weak_factory_.GetWeakPtr(),

@@ -291,7 +291,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         //Set the location of the window on the screen
         popupWindow.showAsDropDown(anchorView, 0, 0);
         popupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NOT_NEEDED);
-        popupWindow.setAnimationStyle(R.style.OverflowMenuAnim);
+        popupWindow.setAnimationStyle(R.style.EndIconMenuAnim);
 
         // Turn off window animations for low end devices, and on Android M, which has built-in menu
         // animations.
@@ -579,7 +579,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             ImageView mBlockShieldsIcon = mShieldsLayout.findViewById(R.id.toggle_favicon);
             mBlockShieldsIcon.setImageResource(R.drawable.ic_chevron_right);
             mBlockShieldsIcon.setColorFilter(
-                    mContext.getResources().getColor(R.color.default_icon_color_tint_list));
+                    mContext.getResources().getColor(R.color.default_icon_color_baseline));
             TextView mBlockShieldsText = mShieldsLayout.findViewById(R.id.toggle_text);
             mBlockShieldsText.setText(titleStringId);
 

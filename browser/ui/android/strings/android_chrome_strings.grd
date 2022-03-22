@@ -265,6 +265,9 @@ CHAR_LIMIT guidelines:
       <message name="IDS_NOTIFICATION_CATEGORY_SECURITY_KEY" desc="Label for a category of notifications that tells the user that they can sign in on a different computer by using this device [CHAR_LIMIT=32]">
         Sign-in verifications
       </message>
+      <message name="IDS_NOTIFICATION_CATEGORY_FEATURE_GUIDE" desc="Label for a category of notifications that is used to promote features in chrome to improve user engagement and browsing experience [CHAR_LIMIT=32]">
+        Brave tips
+      </message>
 
       <message name="IDS_UNSUPPORTED" desc="Message displayed to the user when an attempted action is not supported.">
         Unsupported
@@ -535,6 +538,24 @@ CHAR_LIMIT guidelines:
       <message name="IDS_AUTOFILL_PAYMENTS_AUTHENTICATOR_SELECTION_DIALOG_NEGATIVE_BUTTON_LABEL" desc="Negative button label for the dialog where the user selects an authenticator from a list of options.">
         Cancel
       </message>
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_VIRTUAL_CARD_UNENROLL_DIALOG_TITLE" desc="Title for the dialog where the user confirms that they wish to unenroll a card from Virtual Cards.">
+        Remove your virtual card?
+      </message>
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_VIRTUAL_CARD_UNENROLL_DIALOG_MESSAGE" desc="Message for the dialog where the user confirms that they wish to unenroll a card from Virtual Cards.">
+        You’ll no longer be able to use your virtual card with Google Pay. <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Learn more about virtual cards<ph name="END_LINK1">&lt;/link1&gt;</ph>
+      </message>
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_VIRTUAL_CARD_UNENROLL_DIALOG_POSITIVE_BUTTON_LABEL" desc="Positive button label for the dialog where the user confirms that they wish to unenroll a card from Virtual Cards.">
+        Remove
+      </message>
+      <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_EDUCATION_TEXT" desc="Text explaining the benefit of enrolling a credit card as a virtual card. Also contains a link to learn more about virtual cards from IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL.">
+        A virtual card disguises your actual card to help protect you from potential fraud. <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Learn more about virtual cards<ph name="END_LINK1">&lt;/link1&gt;</ph>
+      </message>
+      <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_CARD_CONTAINER_TITLE" desc="Text describing how the virtual card will be shown to the user in autofill suggestions.">
+        Virtual card
+      </message>
+      <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_INFOBAR_CARD_PREFIX" desc="Notifies the user that their virtual card card is linked with a card on their account.">
+        linked with
+      </message>
 
        <!-- Payment Request section preview strings -->
        <message name="IDS_PAYMENT_REQUEST_PAYMENT_METHODS_PREVIEW" desc="This is a snippet of a payment method a user has saved to Brave, plus an indication of the number of additional payment methods the user has saved.         Its function is to show the user has payment methods that can be used to complete a payment, and thus doesn't have to type the entire payment method. [ICU Syntax]">
@@ -634,17 +655,11 @@ CHAR_LIMIT guidelines:
       <message name="IDS_PASSWORD_VIA_FEDERATION" desc="Text for federated credential's value.">
         with <ph name="PROVIDER">%1$s<ex>example.com</ex></ph>
       </message>
-      <message name="IDS_PASSWORD_ENTRY_VIEWER_COPY_STORED_SITE" desc="Content description for the button that copies the stored site.">
-        Copy URL
-      </message>
       <message name="IDS_PASSWORD_ENTRY_VIEWER_COPY_STORED_USERNAME" desc="Content description for the button that copies the stored username.">
         Copy username
       </message>
       <message name="IDS_PASSWORD_ENTRY_VIEWER_COPY_STORED_PASSWORD" desc="Content description for the button that copies the stored password.">
         Copy password
-      </message>
-      <message name="IDS_PASSWORD_ENTRY_VIEWER_VIEW_STORED_PASSWORD" desc="Content description for the button that allows users to view the stored password upon reauthentication.">
-        Unmask password
       </message>
       <message name="IDS_PASSWORD_ENTRY_VIEWER_SHOW_STORED_PASSWORD" desc="Content description for the button that allows users to view the stored password upon reauthentication.">
         Show password
@@ -664,14 +679,8 @@ CHAR_LIMIT guidelines:
       <message name="IDS_PASSWORD_ENTRY_VIEWER_USERNAME_COPIED_INTO_CLIPBOARD" desc="Text that announces to the user that the username of a saved account has been copied into clipboard.">
         Username copied
       </message>
-      <message name="IDS_PASSWORD_ENTRY_VIEWER_SITE_COPIED_INTO_CLIPBOARD" desc="Text that announces to the user that the site of a saved account has been copied into clipboard.">
-        Site copied
-      </message>
       <message name="IDS_PASSWORD_ENTRY_VIEWER_PASSWORD_COPIED_INTO_CLIPBOARD" desc="Text that announces to the user that the password of a saved account has been copied into clipboard.">
         Password copied
-      </message>
-      <message name="IDS_PASSWORD_ENTRY_VIEWER_SET_LOCK_SCREEN" desc="Text prompting user to set device lock in order to view/copy passwords">
-        To view or copy your password here, set screen lock on this device.
       </message>
       <message name="IDS_PASSWORD_ENTRY_VIEW_SET_SCREEN_LOCK" desc="Text prompting user to set up screen lock on their device in order to view passwords">
         To view passwords, first set a screen lock on your device
@@ -810,12 +819,6 @@ Touch &amp; hold any word to search. To refine your search, select more or fewer
       <message name="IDS_CONTEXTUAL_SEARCH_NO_THANKS_BUTTON" desc="A button to confirm and dismiss opt out promo">
         No thanks
       </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_HELP_BODY" desc="Some help text that is shown in the body of a paragraph. The text tells the user what gesture to use instead of a previous gesture in order to search.">
-        To search from this page, touch &amp; hold words instead of tapping them
-      </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_HELP_HEADER" desc="Summary help text that is shown at the top of a paragraph. The text tells the user what gesture to use in order to search.">
-        Touch &amp; hold for more relevant info
-      </message>
       <message name="IDS_CONTEXTUAL_SEARCH_DEFAULT_CAPTION" desc="Summary help text that is shown as a second line in the Contextual Search peeking bottom sheet telling the user that they can tap the text in order to open the sheet and see search results there.">
         Tap to see search results
       </message>
@@ -885,6 +888,154 @@ Privacy Sandbox trials are still in active development and are available in sele
       </message>
       <message name="IDS_PRIVACY_SANDBOX_FLOC_RESET_BUTTON" desc="Button text to reset FLoC group ID.">
         Reset group
+      </message>
+
+      <!-- TODO(crbug.com/1286276) These strings are not final yet and therefor marked as translatable="false" -->
+      <message name="IDS_PRIVACY_SANDBOX_TRIALS_TITLE" desc="Title shown at the top of privacy sandbox settings." translateable="false">
+        Trials
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DESCRIPTION" desc="Description shown at the top of privacy sandbox settings." translateable="false">
+       With Privacy Sandbox trials, sites can deliver the same browsing experience using less of your data. That means more privacy for you and less cross-site tracking. We’ll add new trials as they’re ready to test.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_AD_PERSONALIZATION_TITLE" desc="Title of the settings page to configure ad personalization." translateable="false">
+        Ad personalization
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_AD_PERSONALIZATION_SUMMARY" desc="Summary of the settings page to configure ad personalization." translateable="false">
+        Your browsing history affects the ads you see
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_AD_PERSONALIZATION_DESCRIPTION" desc="Description of the settings page to configure ad personalization" translateable="false">
+       Your browsing history affects the ads you see and the interests as estimated below. Brave auto-deletes your interests every few weeks to protect your privacy. Interests refresh unless you remove them.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_AD_MEASUREMENT_TITLE" desc="Title of the settings page to explain ad measurement." translateable="false">
+        Ad measurement
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_AD_MEASUREMENT_DESCRIPTION" desc="Description of the settings page to explain ad measurement" translateable="false">
+        Ad measurement allows sites you visit to request information from Brave that helps the site measure the performance of their ads. Ad measurement restricts cross-site tracking by transferring as little information as possible between sites.
+
+You can control measurement information associated with you by accessing <ph name="BEGIN_LINK">&lt;link&gt;</ph>your browsing history.<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_AD_MEASUREMENT_SUMMARY" desc="Summary of the settings page to explain ad measurement." translateable="false">
+        Advertisers can understand how ads perform
+     </message>
+      <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_TITLE" desc="Title of the settings page to configure spam and fraud reduction." translateable="false">
+        Spam &amp; fraud reduction
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_SUMMARY" desc="Summary of the settings page to configure spam and fraud reduction." translateable="false">
+        Help sites fight fraud and distinguish bots from profiles
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_DESCRIPTION" desc="Description of the settings page to configure spam and fraud reduction." translateable="false">
+        Spam &amp; fraud reduction relies on trust tokens to help sites fight fraud and distinguish bots from profiles.
+
+Based on your interaction with a site, like regularly signing in to an account, that site can issue a trust token to your browser. Later, if other sites you visit check for and find a valid trust token, they’re more likely to treat you like a profile and not a bot.
+
+Trust tokens improve privacy on the web and can’t be used to find out who you are.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_LEARN_MORE_LINK" desc="Text of a link to explain ad personalization." translateable="false">
+       <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more about browser-based ad personalization<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_LEARN_MORE_TITLE_1" desc="Title of the page to learn more about the Topics API for the privacy sandbox." translateable="false">
+        Your interests as estimated by Brave
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_LEARN_MORE_DESCRIPTION_1" desc="Description of the page to learn more about the Topics API for the privacy sandbox." translateable="false">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>What data is used:<ph name="END_BOLD1">&lt;/b&gt;</ph> Your browsing history, a record of sites you’ve visited using Brave on this device.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_LEARN_MORE_DESCRIPTION_2" desc="Description of the page to learn more about the Topics API for the privacy sandbox." translateable="false">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How we use this data:<ph name="END_BOLD1">&lt;/b&gt;</ph> Brave can estimate your interests. Later, a site you visit can ask Brave to see your interests in order to personalize the ads you see.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_LEARN_MORE_DESCRIPTION_3" desc="Description of the page to learn more about the Topics API for the privacy sandbox." translateable="false">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How you can manage your data:<ph name="END_BOLD1">&lt;/b&gt;</ph> Your interests are deleted and refreshed each week. You can also block an interest anytime.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_LEARN_MORE_TITLE" desc="Title of the settings page to explain ad personalization." translateable="false">
+        About personalized ads
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_ADD_INTEREST_BUTTON_DESCRIPTION" desc="Content description for button that adds an ad interest" translateable="false">
+        Add interest?
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_ADD_INTEREST_SNACKBAR" desc="Text on a snackbar after an ad personalization interest was added" translateable="false">
+        Interest added
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_REMOVE_INTEREST_BUTTON_DESCRIPTION" desc="Content description for button that removes an ad interest" translateable="false">
+        Remove interest?
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_REMOVE_INTEREST_SNACKBAR" desc="Text on a snackbar after an ad personalization interest was removed" translateable="false">
+        Interest removed
+      </message>
+       <message name="IDS_PRIVACY_SANDBOX_REMOVE_INTEREST_TITLE" desc="Title of the settings page to configure interests that were removed from ad personalization." translateable="false">
+        Interests you removed
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_REMOVE_INTEREST_DESCRIPTION" desc="Description of the settings page to configure interests that were removed from ad personalization." translateable="false">
+        Add an interest if you think ads related to that interest would be useful to you
+      </message>
+       <message name="IDS_PRIVACY_SANDBOX_TOPIC_INTERESTS_CATEGORY" desc="Title of a section of the settings page to configure ad personalization." translateable="false">
+        Your interests as estimated by Brave
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_TOPIC_EMPTY_STATE" desc="Summary shown when no interests for ad personlization are available." translateable="false">
+        A list of interests will appear here as you browse the web
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_REMOVED_TOPICS_EMPTY_STATE" desc="Summary shown when no interests for ad personlization are available." translateable="false">
+        Interest you removed will appear here
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_FLEDGE_INTERESTS_CATEGORY" desc="Title of a section of the settings page to configure ad personalization." translateable="false">
+        Sites you visit that define your interests
+      </message>
+       <message name="IDS_PRIVACY_SANDBOX_FLEDGE_UNDER_DEVELOPMENT_NOTICE" desc="Text to explain that a feature for ad personalization is not implemented yet." translateable="false">
+        This feature is currently under development
+      </message>
+
+      <!-- Privacy Sandbox dialog. The strings are preliminary. -->
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_NO_BUTTON" desc="Button to decline enabling Privacy Sandbox features." translateable="false">
+        No thanks
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_YES_BUTTON" desc="Button to accept enabling Privacy Sandbox features." translateable="false">
+        I’m in
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_ACKNOWLEDGE_BUTTON" desc="Button to acknowledge the notice about Privacy Sandbox features." translateable="false">
+        Got it
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_SETTINGS_BUTTON" desc="Button to go to Privacy Sandbox settings." translateable="false">
+        Settings
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_TITLE" desc="Title for the Privacy Sandbox consent dialog." translateable="false">
+        Help us build a more private web
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_SUBTITLE" desc="Subtitle for the Privacy Sandbox consent dialog." translateable="false">
+        Brave is exploring new features that allow sites to deliver the same browsing experience using less of your info
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_HEADING_ONE" desc="First heading for the Privacy Sandbox consent dialog text." translateable="false">
+        Limit sharing between sites
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DESCRIPTION_ONE" desc="First paragraph for the Privacy Sandbox consent dialog text." translateable="false">
+        We’re exploring ways to restrict cross-site tracking while enabling sites to stop ad spam and fraud.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_HEADING_TWO" desc="Second heading for the Privacy Sandbox consent dialog text." translateable="false">
+        Try more transparent ads
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DESCRIPTION_TWO" desc="Second paragraph for the Privacy Sandbox consent dialog text." translateable="false">
+        During the experiment, Brave will estimate topics you may be interested in, based on your recent browsing history. Then, without learning who you are, some sites you visit will use this info to show you relevant ads.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DROPDOWN_BUTTON" desc="Text on the button for the dropdown element in the the Privacy Sandbox consent dialog" translateable="false">
+        Learn more about Browser-based ad personalization
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DROPDOWN_HEADING" desc="Heading for the dropdown element in the the Privacy Sandbox consent dialog" translateable="false">
+        Your interests as estimated by Brave
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DROPDOWN_ONE" desc="First element of the dropdown in the the Privacy Sandbox consent dialog" translateable="false">
+        What data is used: Your browsing history, a record of sites you’ve visited using Brave on this device.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DROPDOWN_TWO" desc="Second element of the dropdown in the the Privacy Sandbox consent dialog" translateable="false">
+        How we use this data: Brave can estimate your interests. Later, a site you visit can ask Brave to see your interests in order to personalize the ads you see.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DROPDOWN_THREE" desc="Third element of the dropdown in the the Privacy Sandbox consent dialog" translateable="false">
+        How you can manage your data: Your interests are deleted and refreshed each week. You can also block an interest anytime.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DESCRIPTION_THREE" desc="Third paragraph for the Privacy Sandbox consent dialog text." translateable="false">
+        You can change your mind at any time in Brave settings. During trials, your interaction with sites may not be more private than it is without these new features.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_NOTICE_TITLE" desc="Title for the Privacy Sandbox notice dialog." translateable="false">
+        We’re exploring new features that allow sites to deliver the same browsing experience using less of your info
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_NOTICE_DESCRIPTION" desc="Last paragraph of the Privacy Sandbox consent dialog text" translateable="false">
+        You can learn more about these features in Brave settings. During trials, your interaction with sites may not be more private than it is without these new features.
       </message>
 
       <!-- Secure DNS Settings.  Used by //chrome/browser/privacy. -->
@@ -1356,38 +1507,6 @@ Your Brave account may have other forms of browsing history like searches and ac
         Turn off
       </message>
 
-      <!-- Accessibility preferences -->
-      <message name="IDS_PREFS_ACCESSIBILITY" desc="Title of Accessibility settings, which allows the user to change webpage font sizes. [CHAR_LIMIT=32]">
-        Accessibility
-      </message>
-      <message name="IDS_FONT_SIZE" desc="Title for font size preference.">
-        Text scaling
-      </message>
-      <message name="IDS_FONT_SIZE_PREVIEW_TEXT" desc="Preview text for font-size slider.">
-        Drag the slider until you can read this comfortably. Text should look at least this big after double-tapping on a paragraph.
-      </message>
-      <message name="IDS_FORCE_ENABLE_ZOOM_TITLE" desc="Title of preference that allows the user to zoom in on any webpage, even if the page tries to disable zooming.">
-        Force enable zoom
-      </message>
-      <message name="IDS_FORCE_ENABLE_ZOOM_SUMMARY" desc="Summary of preference that allows the user to zoom in on any webpage, even if the page tries to disable zooming.">
-        Override a website’s request to prevent zooming in
-      </message>
-      <message name="IDS_READER_FOR_ACCESSIBILITY_TITLE" desc="Title of preference that allows the user to use simplified view on any articles, even if the page is mobile-friendly. Simplified view is the new user-facing name for Reader Mode, which extracts the content of an article and removes clutter from a web page and puts the result in a easier-to-read format.">
-        Simplified view for web pages
-      </message>
-      <message name="IDS_READER_FOR_ACCESSIBILITY_SUMMARY" desc="Summary of preference that allows the user to use simplified view on any supported articles, even if the page is mobile-friendly.">
-        Offer to show articles in simplified view, when supported
-      </message>
-      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_TITLE" desc="Title of preference that allows the user to use a simplified tab switcher that is accessibility friendly. The words 'Open tabs' should match translation in TC ID 3108541343994525384, provided that 'open' is correctly used as an adjective and not a verb.">
-        Simplified view for open tabs
-      </message>
-      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_SUMMARY" desc="Summary of the preference that allows the user to use a simplified tab switcher. The simplified tab switcher is recommended for use with TalkBack and Switch Access which are accessibility services provided by Android. TalkBack does not need to be translated. 'Switch Access' translation should match TC ID 382005103867249841.">
-       Recommended when TalkBack or Switch Access are on
-      </message>
-      <message name="IDS_ACCESSIBILITY_CAPTIONS_TITLE" desc="Title of the preference that allows the user to update caption settings.">
-        Captions
-      </message>
-
       <!-- Language Settings -->
       <message name="IDS_LANGUAGE_SETTINGS" desc="Title for the Languages settings screen that allows users to manage their languages preferences. [CHAR_LIMIT=32]">
         Languages
@@ -1484,86 +1603,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_LANGUAGES_SETTINGS_NEVER_SITES_TITLE" desc="Short title for Translation settings page showing a list of sites that should never be translated">
         Never translate sites
-      </message>
-
-      <!-- Lite Mode-->
-      <message name="IDS_DATA_REDUCTION_TITLE_LITE_MODE" desc="Menu item for Lite mode, which allows users to save mobile data by compressing network traffic.">
-        Lite mode
-      </message>
-      <message name="IDS_DATA_REDUCTION_INITIAL_TITLE" desc="This title states that the below chart will contain the user's data savings after they have started browsing.">
-        Your data savings will appear here
-      </message>
-      <message name="IDS_DATA_REDUCTION_BENEFITS_DESCRIPTION_LITE_MODE" desc="Description text about the benefits of the Lite mode feature. Seen only before the user has enabled the feature.">
-         In Lite mode, Brave loads pages faster and uses up to 60 percent less data.
-      </message>
-      <message name="IDS_DATA_REDUCTION_DESCRIPTION_LITE_MODE" desc="Text describing how the Lite mode feature works. Seen only before the user has enabled the feature.">
-        When Lite mode is on, Brave uses Brave servers to make pages load faster. Lite mode rewrites very slow pages to load only essential content. Lite mode does not apply to Private tabs.
-      </message>
-      <message name="IDS_DATA_REDUCTION_MENU_ITEM_SUMMARY_LITE_MODE" desc="Label that states the percent of mobile data that was saved by Lite mode. Lite mode allows users to to reduce their mobile data usage by compressing network traffic.">
-        <ph name="PERCENT">%1$s<ex>49%</ex></ph> data savings
-      </message>
-      <message name="IDS_DATA_REDUCTION_SAVINGS_LABEL" desc="Data Reduction statistics label that states the amount of mobile data that was saved by Lite mode. Lite mode allows users to to reduce their mobile data usage by compressing network traffic.">
-        data saved
-      </message>
-      <message name="IDS_DATA_REDUCTION_USAGE_LABEL" desc="Data Reduction statistics label that states the amount of data that was used by Brave when Lite mode is enabled.">
-        data used
-      </message>
-      <message name="IDS_DATA_REDUCTION_START_DATE_CONTENT_DESCRIPTION" desc="This label is used in the device screen reader to describe the starting date that data savings are computed from. This will always be used in the form 'Start date: February 28'.">
-        Start date <ph name="date">%1$s<ex>Feb 28</ex></ph>
-      </message>
-      <message name="IDS_DATA_REDUCTION_END_DATE_CONTENT_DESCRIPTION" desc="This label is used in the device screen reader to describe the end date that data savings are computed until. This will always be used in the form 'End date: February 28'..">
-        End date <ph name="date">%1$s<ex>Feb 28</ex></ph>
-      </message>
-      <message name="IDS_DATA_REDUCTION_BREAKDOWN_SITE_TITLE" desc="Title for the sites column on the Data Reduction statistics page. The breakdown lists the top ten sites with the greatest amount of data usage or mobile data that was saved.">
-        Site
-      </message>
-      <message name="IDS_DATA_REDUCTION_BREAKDOWN_SITE_HEADER_CONTENT_DESCRIPTION" desc="This label is used to state that by clicking the associated button, the displayed table will be sorted by website domain name. This is used in the device's screen reader and is not displayed visually to the user.">
-        Sort by site
-      </message>
-      <message name="IDS_DATA_REDUCTION_BREAKDOWN_HOSTNAME_SORTED" desc="This title states that the following table contains the details of how much data was saved for each site and that the table rows are sorted by the name of the site. This is used in the device's screen reader and is not displayed visually to the user.">
-        Details: Sorted by site name
-      </message>
-      <message name="IDS_DATA_REDUCTION_BREAKDOWN_USED_TITLE" desc="Title for the data used column on the Data Reduction statistics page. The breakdown lists the top ten sites with the greatest amount of data usage or mobile data that was saved.">
-        Used
-      </message>
-      <message name="IDS_DATA_REDUCTION_BREAKDOWN_USED_HEADER_CONTENT_DESCRIPTION" desc="This label is used to state that by clicking the associated button, the displayed table will be sorted descending by the amount of mobile data that was used when viewing a webpage. This is used in the device's screen reader and is not displayed visually to the user.">
-        Sort by amount of data used
-      </message>
-      <message name="IDS_DATA_REDUCTION_BREAKDOWN_DATA_USED_SORTED" desc="This title states that the following table contains the details of how much data was saved for each site and that the table rows are sorted by the how much data was used for each site. This is used in the device's screen reader and is not displayed visually to the user.">
-        Details: Sorted by amount of data used
-      </message>
-      <message name="IDS_DATA_REDUCTION_BREAKDOWN_SAVED_TITLE" desc="Title for the data saved column on the Data Reduction statistics page. The breakdown lists for the top ten sites with the greatest amount of data usage or mobile data that was saved. Lite mode allows users to to reduce their mobile data usage by compressing network traffic.">
-        Saved
-      </message>
-      <message name="IDS_DATA_REDUCTION_BREAKDOWN_SAVED_HEADER_CONTENT_DESCRIPTION" desc="This label is used to state that by clicking the associated button, the displayed table will be sorted descending by the amount of mobile data that was saved when viewing a webpage by using Brave's Lite mode feature. This is used in the device's screen reader and is not displayed visually to the user.">
-        Sort by amount of data saved
-      </message>
-      <message name="IDS_DATA_REDUCTION_BREAKDOWN_DATA_SAVED_SORTED" desc="This title states that the following table contains the details of how much data was saved for each site and that the table rows are sorted by how much data was saved for each site. This is used in the device's screen reader and is not displayed visually to the user.">
-        Details: Sorted by amount of data saved
-      </message>
-      <message name="IDS_DATA_REDUCTION_BREAKDOWN_USED_CONTENT_DESCRIPTION" desc="This label is used as a suffix to describe the amount of mobile data that was used to view a webpage. It is used in the form '0 bytes used'.">
-        <ph name="amount">%1$s<ex>0 bytes</ex></ph> used
-      </message>
-      <message name="IDS_DATA_REDUCTION_BREAKDOWN_SAVED_CONTENT_DESCRIPTION" desc="This label is used as a suffix to describe the amount of mobile data that was saved when viewing a webpage by using Brave's Lite mode feature. It is used in the form '0 bytes used'.">
-        <ph name="amount">%1$s<ex>0 bytes</ex></ph> saved
-      </message>
-      <message name="IDS_DATA_REDUCTION_BREAKDOWN_REMAINING_SITES_LABEL" desc="Title for the the remaining sites on the Data Reduction statistics page. The breakdown lists the top ten sites with the greatest amount of data usage or mobile data that was saved and then groups the remaining sites together.">
-        Remaining sites (<ph name="NUMBER_OF_SITES">%1$d<ex>35</ex></ph>)
-      </message>
-      <message name="IDS_DATA_REDUCTION_BREAKDOWN_OTHER_HOST_NAME" desc="Appears in a table that has a Site column and a Used column. URLs of sites the user has visited appear in the Site column, and the amount of data the site has used appears under Used. The “Other” entry appears at the bottom of the Site column, and is a grouping for sites and services where the URL is unavailable.">
-        Other
-      </message>
-      <message name="IDS_DATA_REDUCTION_USAGE_RESET_STATISTICS_BUTTON" desc="Text to be displayed on the button to reset the Data Reduction statistics.">
-        Reset statistics
-      </message>
-      <message name="IDS_DATA_REDUCTION_USAGE_RESET_STATISTICS_CONFIRMATION_TITLE_LITE_MODE" desc="Text to be displayed on the confirmation dialog to reset the user's history of data savings.">
-        Reset Lite mode?
-      </message>
-      <message name="IDS_DATA_REDUCTION_USAGE_RESET_STATISTICS_CONFIRMATION_DIALOG_LITE_MODE" desc="Text to be displayed on the confirmation dialog to reset the user's history of data savings.">
-        Resetting erases your history of data savings, including the list of visited sites.
-      </message>
-      <message name="IDS_DATA_REDUCTION_USAGE_RESET_STATISTICS_CONFIRMATION_BUTTON" desc="Text to be displayed on the confirmation button to proceed with resetting the history of data savings.">
-        Reset
       </message>
 
        <!-- Dangerous download -->
@@ -1779,9 +1818,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
 
       <!-- Sync strings in account management dialog -->
-      <message name="IDS_SYNC_ANDROID_SYSTEM_SYNC_DISABLED" desc="Message to show when Android system-level sync flag is disabled">
-        Android system sync disabled
-      </message>
       <message name="IDS_SYNC_ON" desc="The text is displayed as a gray subtitle of a settings item titled 'Sync' and indicates that sync is on.">
         On
       </message>
@@ -1832,9 +1868,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_GOOGLE_PRIVACY_POLICY_URL" desc="URL for the Brave privacy policy" translateable="false">
         https://policies.google.com/privacy
       </message>
-      <message name="IDS_FAMILY_LINK_PRIVACY_POLICY_URL" desc="URL for the Family Link privacy policy" translateable="false">
-        https://families.google.com/intl/$LOCALE/familylink/privacy/child-policy/
-      </message>
 
       <!-- Sign-in strings -->
       <message name="IDS_SIGNOUT_TITLE" desc="Title for sign out of Brave dialog [CHAR_LIMIT=40]">
@@ -1884,9 +1917,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_RECENT_TABS_SYNC_PROMO_ENABLE_CHROME_SYNC" desc="Text that displayed in a textview encouraging the user to enable sync.">
         To get your tabs from your other devices, turn on sync.
       </message>
-      <message name="IDS_RECENT_TABS_SYNC_PROMO_ENABLE_ANDROID_SYNC" desc="Text that displayed in a textview encouraging the user to enable sync in the android settings.">
-        To get your tabs from your other devices, turn on “Auto-sync data” in Android account settings.
-      </message>
       <message name="IDS_NTP_RECENT_TABS_SYNC_PROMO_INSTRUCTIONS" desc="Information about sync displayed on the NTP when the user has signed in on mobile but not on desktop">
         Tabs that you've opened in Brave on your other devices will appear here.
       </message>
@@ -1918,14 +1948,14 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SYNC_SETTINGS" desc="Title for preference which enables sync'ing of settings. [CHAR_LIMIT=32]">
         Settings
       </message>
-      <message name="IDS_SYNC_PAYMENTS_INTEGRATION" desc="Title for preference which enables import of Brave Pay data for Autofill. 'Brave Pay' should not be translated as it is the product name.">
-        Payment methods and addresses using Brave Pay
+      <message name="IDS_SYNC_PAYMENTS_INTEGRATION" desc="Title for preference which enables import of Google Pay data for Autofill. 'Google Pay' should not be translated as it is the product name.">
+        Payment methods and addresses using Google Pay
       </message>
       <message name="IDS_SYNC_ENCRYPTION" desc="Preference category name for sync encryption. [CHAR_LIMIT=32]">
         Encryption
       </message>
-      <message name="IDS_SYNC_MANAGE_DATA" desc="Title for link to Brave Dashboard to manage sync data.">
-        Manage synced data
+      <message name="IDS_SYNC_REVIEW_DATA" desc="Title for link to https://chrome.google.com/sync Dashboard to manage sync data.">
+        Review your synced data
       </message>
       <message name="IDS_SYNC_PASSPHRASE_TYPE_TITLE" desc="Title of sync passphrase type dialog. [CHAR_LIMIT=24]">
         Encryption
@@ -1943,7 +1973,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Brave sync chain
       </message>
       <message name="IDS_SYNC_CUSTOM_PASSPHRASE" desc="Prompt user to create a custom sync password.">
-        Passphrase encryption doesn’t include payment methods and addresses from Brave Pay. Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting you'll need to reset sync. <ph name="BEGIN_LINK">&lt;learnmore&gt;</ph>Learn more<ph name="END_LINK">&lt;/learnmore&gt;</ph>
+        Passphrase encryption doesn’t include payment methods and addresses from Google Pay. Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting you'll need to reset sync. <ph name="BEGIN_LINK">&lt;learnmore&gt;</ph>Learn more<ph name="END_LINK">&lt;/learnmore&gt;</ph>
       </message>
       <message name="IDS_SYNC_ENTER_CUSTOM_PASSPHRASE_HINT" desc="Hint for the passphrase field when user is to type in a passphrase. [CHAR_LIMIT=30]">
         Passphrase
@@ -1967,7 +1997,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Passphrases do not match
       </message>
       <message name="IDS_SYNC_PASSPHRASE_ENCRYPTION_RESET_INSTRUCTIONS" desc="Inform user how to change their encryption setting.">
-        Passphrase encryption doesn’t include payment methods and addresses from Brave Pay.
+        Passphrase encryption doesn’t include payment methods and addresses from Google Pay.
 
 To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<ph name="END_LINK">&lt;/resetlink&gt;</ph>
       </message>
@@ -2009,9 +2039,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SYNC_NEEDS_VERIFICATION_TITLE" desc="Title of the error message shown when sync needs to verify the user.">
         Sync needs to verify it's you
       </message>
-      <message name="IDS_HINT_ANDROID_SYNC_DISABLED" desc="Hint message to resolve Android system sync is disabled error.">
-        Open Android settings and re-enable Android system sync to start Brave sync
-      </message>
       <message name="IDS_HINT_SYNC_AUTH_ERROR" desc="Hint message to resolve sync auth error.">
         Sign in again to start sync
       </message>
@@ -2041,9 +2068,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Sync error card button strings -->
-      <message name="IDS_ANDROID_SYNC_DISABLED_ERROR_CARD_BUTTON" desc="Button text for android sync disabled error in sync error cards.">
-        Enable Android system sync
-      </message>
       <message name="IDS_CLIENT_OUT_OF_DATE_ERROR_CARD_BUTTON" desc="Button text for client out of date error in sync error cards.">
           Update <ph name="PRODUCT_NAME">%1$s<ex>Brave</ex></ph>
       </message>
@@ -2134,57 +2158,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Download
       </message>
 
-      <!-- DownloadProgressInfoBar -->
-      <message name="IDS_DOWNLOAD_INFOBAR_SPEEDING_UP_DOWNLOAD" desc="InfoBar text describing that the download is being accelerated by chrome">
-        Speeding up your download.
-      </message>
-      <message name="IDS_DOWNLOAD_INFOBAR_DOWNLOADING_FILES" desc="InfoBar text describing that chrome is downloading one or more files">
-        {FILE_COUNT, plural,
-          =1 {Downloading file.}
-          other {Downloading # files.}}
-      </message>
-      <message name="IDS_DOWNLOADING_MULTIPLE_FILES_WITH_BYTES" desc="InfoBar text describing that chrome is downloading multiple files along with the total size of the files being downloaded">
-        Downloading <ph name="count">%1$d<ex>2</ex></ph> files (<ph name="megabytes">%2$s<ex>100 MB</ex></ph>).
-      </message>
-      <message name="IDS_DOWNLOADING_FILE_WITH_BYTES" desc="Label describing that file download is in progress along with the total size information">
-        Downloading file (<ph name="megabytes">%1$s<ex>100 MB</ex></ph>).
-      </message>
-      <message name="IDS_MULTIPLE_DOWNLOAD_COMPLETE" desc="Label describing that one or more downloads have completed">
-        {FILE_COUNT, plural,
-          =1 {1 download complete.}
-          other {# downloads complete.}}
-      </message>
-      <message name="IDS_MULTIPLE_DOWNLOAD_FAILED" desc="Label describing that one or more downloads have failed">
-        {FILE_COUNT, plural,
-          =1 {1 download failed.}
-          other {# downloads failed.}}
-      </message>
-      <message name="IDS_MULTIPLE_DOWNLOAD_PENDING" desc="Label describing that one or more downloads are pending">
-        {FILE_COUNT, plural,
-          =1 {1 download pending.}
-          other {# downloads pending.}}
-      </message>
-      <message name="IDS_MULTIPLE_DOWNLOAD_SCHEDULED" desc="Label describing that one or more downloads are scheduled">
-        {FILE_COUNT, plural,
-          =1 {1 download scheduled.}
-          other {# downloads scheduled.}}
-      </message>
-      <message name="IDS_DOWNLOAD_INFOBAR_FILENAME" desc="Label showing the file name that just finished downloading">
-         <ph name="FILE_NAME">%1$s<ex>abc.png</ex></ph>.
-      </message>
-      <message name="IDS_DOWNLOAD_INFOBAR_ACCESSIBILITY_MESSAGE_WITH_LINK" desc="InfoBar accessibility text describing the link on the download progress infobar">
-        <ph name="MESSAGE">%1$s<ex>Downloading file (200 MB)</ex></ph> <ph name="LINK_NAME">%2$s<ex>Details</ex></ph> button
-      </message>
-      <message name="IDS_DOWNLOAD_SCHEDULED_ON_WIFI" desc="Label describing that the download was scheduled to start on Wi-Fi.">
-        You’ll see a notification when this download starts on Wi-Fi.
-      </message>
-      <message name="IDS_DOWNLOAD_SCHEDULED_ON_DATE" desc="Label describing that the download was scheduled to start at a later date.">
-        You’ll see a notification when this download starts on <ph name="date">%1$s<ex>Feb 28 2020</ex></ph>.
-      </message>
-      <message name="IDS_DOWNLOAD_SCHEDULED_ON_TIME" desc="Label describing that the download was scheduled to start at a later time.">
-        You’ll see a notification when this download starts at <ph name="time">%1$s<ex>8:30PM</ex></ph>.
-      </message>
-
       <!-- Download progress message UI -->
       <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_IN_PROGRESS_DESCRIPTION" desc="Download message text describing that user can find about their download status from notifications.">
         See notification for download status
@@ -2217,8 +2190,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
           =1 {1 download scheduled}
           other {# downloads scheduled}}
       </message>
-      <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_SCHEDULED_DESCRIPTION" desc="Download message text describing that user can find about their download status from notifications.">
+      <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_SCHEDULED_DESCRIPTION_ON_WIFI" desc="Download message text describing that user can find about their download status from notifications.">
         Download will start when on Wi-Fi
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_SCHEDULED_DESCRIPTION_ON_DATE" desc="Download message text describing that the download was scheduled to start at a later date.">
+        Download will start on <ph name="date">%1$s<ex>Feb 28 2020</ex></ph>.
+      </message>
+      <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_SCHEDULED_DESCRIPTION_ON_TIME" desc="Download message text describing that the download was scheduled to start at a later time.">
+        Download will start at <ph name="time">%1$s<ex>8:30PM</ex></ph>.
       </message>
 
       <message name="IDS_MENU_TRANSLATE" desc="Menu item for triggering a page translation. The word 'Translate' should match the translation in TC ID 1613971242435858090. [CHAR_LIMIT=27]">
@@ -2704,7 +2683,10 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Pages that you visit appear here
       </message>
       <message name="IDS_HISTORY_MANAGER_NO_RESULTS" desc="Text explaining that no browsing history items match a search query.">
-        No history found
+        Can’t find that page. Check your spelling or try a search on <ph name="SEARCH_ENGINE">%1$s<ex>Brave</ex></ph>.
+      </message>
+      <message name="IDS_HISTORY_MANAGER_NO_RESULTS_NO_DSE" desc="Text explaining that no browsing history items match a search query when the default search engine is not set.">
+        Can’t find that page. Check your spelling or try a web search.
       </message>
       <message name="IDS_HISTORY_MANAGER_SEARCH" desc="Placeholder text for the input field that allows users to search browsing history.">
         Search your history
@@ -2748,16 +2730,16 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Brave First Run Experience
       </message>
       <message name="IDS_FRE_TOS" desc="Message explaining that use of Brave is governed by terms of service.">
-        By using Brave, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>.
+        By using Brave, you agree to the <ph name="BEGIN_TOS_LINK">&lt;TOS_LINK&gt;</ph>Brave Terms of Service<ph name="END_TOS_LINK">&lt;/TOS_LINK&gt;</ph>, and the <ph name="BEGIN_ATOS_LINK">&lt;ATOS_LINK&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_ATOS_LINK">&lt;/ATOS_LINK&gt;</ph>.
       </message>
-      <message name="IDS_FRE_TOS_AND_PRIVACY_CHILD_ACCOUNT" desc="Message explaining that use of Brave is governed by Brave's terms of service, and Family Link's privacy notice for children.">
-        By using Brave, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>. The <ph name="BEGIN_LINK3">&lt;LINK3&gt;</ph>Privacy Notice for Brave sync chains Managed with Family Link<ph name="END_LINK3">&lt;/LINK3&gt;</ph> also applies.
+      <message name="IDS_FRE_TOS_AND_PRIVACY_CHILD_ACCOUNT" desc="Message explaining that use of Brave is governed by Brave's terms of service, and the Brave Privacy Policy.">
+        By using Brave, you agree to the <ph name="BEGIN_TOS_LINK">&lt;TOS_LINK&gt;</ph>Brave Terms of Service<ph name="END_TOS_LINK">&lt;/TOS_LINK&gt;</ph>, and the <ph name="BEGIN_ATOS_LINK">&lt;ATOS_LINK&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_ATOS_LINK">&lt;/ATOS_LINK&gt;</ph>. The <ph name="BEGIN_PRIVACY_LINK">&lt;PRIVACY_LINK&gt;</ph>Privacy Policy<ph name="END_PRIVACY_LINK">&lt;/PRIVACY_LINK&gt;</ph> also applies.
       </message>
       <message name="IDS_LIGHTWEIGHT_FRE_ASSOCIATED_APP_TOS" desc="Message explaining that use of Brave is governed by Brave's terms of service.">
         <ph name="APP_NAME">%1$s<ex>Brave Maps</ex></ph> will open in Brave. By continuing, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>.
       </message>
-      <message name="IDS_LIGHTWEIGHT_FRE_ASSOCIATED_APP_TOS_AND_PRIVACY_CHILD_ACCOUNT" desc="Message explaining that use of Brave is governed by Brave's terms of service, and Family Link's privacy notice for children.">
-        <ph name="APP_NAME">%1$s<ex>Brave Maps</ex></ph> will open in Brave. By continuing, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>. The <ph name="BEGIN_LINK3">&lt;LINK3&gt;</ph>Privacy Notice for Brave sync chains Managed with Family Link<ph name="END_LINK3">&lt;/LINK3&gt;</ph> also applies.
+      <message name="IDS_LIGHTWEIGHT_FRE_ASSOCIATED_APP_TOS_AND_PRIVACY_CHILD_ACCOUNT" desc="Message explaining that use of Brave is governed by Brave's terms of service, and the Brave Privacy Policy.">
+        <ph name="APP_NAME">%1$s<ex>Brave Maps</ex></ph> will open in Brave. By continuing, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>. The <ph name="BEGIN_LINK3">&lt;LINK3&gt;</ph>Privacy Policy<ph name="END_LINK3">&lt;/LINK3&gt;</ph> also applies.
       </message>
       <message name="IDS_FRE_SEND_REPORT_CHECK" desc="Text for asking the user to allow sending stats and crash reports">
         Help make Brave better by sending usage statistics and crash reports to Brave.
@@ -2778,9 +2760,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_SIGNIN_FRE_FOOTER" desc="The text is displayed in a footer on the very first screen of Brave. The link ‘Terms of Service’ opens the Brave Terms of Service. Preferably, ensure consistency with the “Usage statistics and crash reports” section of the Brave Privacy Policy (google.com/chrome/privacy). Separate the first and the second part through a line break.">
         By continuing, you agree to the <ph name="BEGIN_TOS_LINK">&lt;TOS_LINK&gt;</ph>Terms of Service<ph name="END_TOS_LINK">&lt;/TOS_LINK&gt;</ph>.\nTo help improve the app, Brave sends usage and crash data to Brave. <ph name="BEGIN_UMA_LINK">&lt;UMA_LINK&gt;</ph>Manage<ph name="END_UMA_LINK">&lt;/UMA_LINK&gt;</ph>
-      </message>
-      <message name="IDS_SIGNIN_FRE_FOOTER_SUPERVISED_USER" desc="The text is displayed in a footer on the very first screen of Brave. The link 'Terms of Service' opens the Brave Terms of Service. The link 'Privacy Policy' opens the Brave Privacy Policy. Preferably, ensure consistency with the “Usage statistics and crash reports” section of the Brave Privacy Policy (google.com/chrome/privacy). Separate the first and the second sentence through a line break.">
-        By continuing, you agree to the <ph name="BEGIN_TOS_LINK">&lt;TOS_LINK&gt;</ph>Terms of Service<ph name="END_TOS_LINK">&lt;/TOS_LINK&gt;</ph> and <ph name="BEGIN_PRIVACY_LINK">&lt;PRIVACY_LINK&gt;</ph>Privacy\u00A0Policy<ph name="END_PRIVACY_LINK">&lt;/PRIVACY_LINK&gt;</ph>.\nTo help improve the app, Brave sends usage and crash data to Brave. <ph name="BEGIN_UMA_LINK">&lt;UMA_LINK&gt;</ph>Manage<ph name="END_UMA_LINK">&lt;/UMA_LINK&gt;</ph>
       </message>
       <message name="IDS_SIGNIN_FRE_FOOTER_TOS" desc="The text is displayed in a footer on the very first screen of Brave. The link ‘Terms of Service’ opens the Brave Terms of Service.">
         By continuing, you agree to the <ph name="BEGIN_TOS_LINK">&lt;TOS_LINK&gt;</ph>Terms of Service<ph name="END_TOS_LINK">&lt;/TOS_LINK&gt;</ph>.
@@ -3196,16 +3175,16 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
 
       <!-- Feature notification guide -->
       <message name="IDS_FEATURE_NOTIFICATION_GUIDE_NOTIFICATION_TITLE" desc="Notification title text educating user about tips and tricks in chrome.">
-        Brave tips:
+        Brave tips
       </message>
       <message name="IDS_FEATURE_NOTIFICATION_GUIDE_NOTIFICATION_MESSAGE_DEFAULT_BROWSER" desc="Notification body text educating user about setting chrome as default browser.">
-        Learn how to set chrome as your default
+        Learn how to set Brave as your default
       </message>
       <message name="IDS_FEATURE_NOTIFICATION_GUIDE_NOTIFICATION_MESSAGE_SIGN_IN" desc="Notification body text educating user about signing in into chrome.">
         To get your Brave stuff across devices, sign in
       </message>
       <message name="IDS_FEATURE_NOTIFICATION_GUIDE_NOTIFICATION_MESSAGE_INCOGNITO_TAB" desc="Notification body text educating user about private tab in chrome.">
-        To browse without saving activity to your device, try out Private
+        To browse privately on this device, try out Private
       </message>
       <message name="IDS_FEATURE_NOTIFICATION_GUIDE_NOTIFICATION_MESSAGE_NTP_SUGGESTION_CARD" desc="Notification body text educating user about discovering suggested articles in chrome new tab page.">
         Discover new content on Brave’s homepage
@@ -3834,6 +3813,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCESSIBILITY_OMNIBOX_MOST_VISITED_TILE" desc="When the user focuses a Frequently Visited URL tile suggestion, the tile will be crome://announced according to the following pattern">
         <ph name="WEBSITE_TITLE">%1$s<ex>Crater Lake National Park (U.S. National Park Service)</ex></ph>: <ph name="WEBSITE_URL">%2$s<ex>https://www.nps.gov/crla</ex></ph>
       </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_PEDAL" desc="Announce focused Brave Action Button on the Omnibox Suggestions List. List of known Action buttons is defined here: https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/omnibox/omnibox_pedal_implementations.cc">
+        Brave action button: <ph name="ACTION">%s<ex>clear browsing data</ex></ph>
+      </message>
 
       <message name="IDS_ACCESSIBILITY_SHARE_SELECTED_ITEMS" desc="Content description for the button to share selected items. [ICU Syntax]">
         {NUM_SELECTED, plural,
@@ -3887,23 +3869,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_CONTEXTUAL_SEARCH_QUICK_ACTION_CAPTION_GENERIC_WEBSITE" desc="Caption displayed in the Contextual Search bar prompting the user to navigate to a web page.">
         Go to page
       </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_IPH_ENABLE" desc="An in-product-help message for the Touch to Search feature on Brave Android. The message encourages users to let Brave Search servers have access to the page content to get better translations.">
-        To get better translations, let Brave Search use the current page
-      </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_IPH_ENTITY" desc="An in-product-help message for the Tap to Search feature on Brave Android. The message encourages users to open a panel that contains search results for the word or phrase they tapped on.">
-        See instant search results in this panel
-      </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_IPH_SEARCH_RESULT" desc="An in-product-help message for the Tap to Search feature. It encourages users to open the Tap to Search panel to see search results for a word or phrase they have tapped.">
-        Tap a word to search instantly or see related actions
-      </message>
       <message name="IDS_CONTEXTUAL_SEARCH_IPH_TAP" desc="An in-product-help message for encouraging users to tap instead of long pressing to trigger the Tap to Search feature.">
         You can also search with a quick tap on a word
-      </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_IPH_TOUCH_AND_HOLD" desc="An in-product-help message for encouraging users to use a touch and hold gesture to trigger the Touch to Search feature.">
-        To search, touch &amp; hold a word
-      </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_IPH_TOUCH_AND_HOLD_ENGAGED" desc="An in-product-help message for encouraging engaged users to use a touch and hold gesture to trigger the Touch to Search feature.">
-        To search, touch &amp; hold a word instead of tapping it
       </message>
 
       <!-- Web apps -->
@@ -4306,6 +4273,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Unable to install <ph name="module">%1$s<ex>augmented reality</ex></ph> for Brave
       </message>
 
+      <!-- Instant Apps -->
+      <message name="IDS_INSTANT_APPS_MESSAGE_TITLE" desc="Title of the message shown to prompt the user to open an Instant App.">
+        Open app for <ph name="appname">%1$s</ph>?
+      </message>
+      <message name="IDS_ACCESSIBILITY_INSTANT_APPS_MESSAGE_TITLE_CONTENT_DESCRIPTION" desc="Accessibility text for the title of the Instant Apps message.">
+        Open app for <ph name="appname">%1$s</ph> with Google Play?
+      </message>
+
       <!-- Custom Context Menu Informations -->
       <message name="IDS_CONTEXTMENU_IMAGE_TITLE" desc="The title of a context menu tab when the item pressed contains more than one type. This indicates that all the actions are related to the image.">
         IMAGE
@@ -4398,12 +4373,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_IPH_DOWNLOAD_INDICATOR_TEXT" desc="The in-product-help message to open download home, which is shown alongside the offline indicator when the device goes offline.">
         See your offline files
       </message>
-      <message name="IDS_IPH_DATA_SAVER_DETAIL_TEXT" desc="The in-product-help message to open lite mode.">
-        See how much data you've saved
-      </message>
-      <message name="IDS_IPH_DATA_SAVER_DETAIL_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to open lite mode.">
-        See how much data you've saved from the More Options button
-      </message>
       <message name="IDS_IPH_IDENTITY_DISC_TEXT" desc="The in-product-help text prompting the user that tapping identity disc will navigate to 'Sync and Brave services' settings page.">
         Manage your account
       </message>
@@ -4468,9 +4437,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_IPH_DOWNLOAD_INFOBAR_DOWNLOAD_CONTINUING_TEXT" desc="The in-product-help message on the download InfoBar to inform that download is still continuing.">
         Your download is still in progress
-      </message>
-      <message name="IDS_IPH_DOWNLOAD_INFOBAR_DOWNLOADS_ARE_FASTER_TEXT" desc="The in-product-help message on the download InfoBar to inform that downloads are now faster than before.">
-        Brave now downloads files faster
       </message>
 
       <!-- Quick Action Search Widget -->
@@ -4842,6 +4808,10 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         <ph name="PRODUCT_NAME">%1$s<ex>Brave</ex></ph> needs Nearby devices permission in order to connect to your device
       </message>
 
+      <message name="IDS_CABLEV2_ERROR_NO_SCREENLOCK" desc="The description of an error shown when the user is trying to use their phone to register or authenticate with a website on a laptop, but no screen lock is set on the phone. The term 'screen lock' refers to setting a pattern, PIN, or fingerprint that is used each time the phone is unlocked. This is needed when using the phone to authenticate because we want the owner of the phone to prove that they authorize the action. This message appears above a button that opens the phone's settings directly at the screen for configuring a screen lock.">
+        To use this device as a security key, set a screen lock
+      </message>
+
       <message name="IDS_CABLEV2_ERROR_GENERIC" desc="The description of an error shown when the user is trying to use their phone to sign into a website on a laptop, but some generic error occured.">
         Try another verification option
       </message>
@@ -5141,6 +5111,10 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Creating GIF <ph name="PERCENT">%1$d<ex>13</ex></ph>%%
       </message>
 
+      <message name="IDS_LIGHTWEIGHT_REACTIONS_CREATING_GIF_ANNOUNCEMENT" is_accessibility_with_no_ui="true" desc="The accessibility text to read when GIF creation begins.">
+        Creating GIF
+      </message>
+
       <message name="IDS_LIGHTWEIGHT_REACTIONS_TOOLBAR_ANNOUNCEMENT" is_accessibility_with_no_ui="true" desc="The accessibility text to read when the lightweight reactions toolbar is selected. The user can then select a reaction from the toolbar to place on the screen.">
         Choose an emotion
       </message>
@@ -5265,6 +5239,20 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Save up to 60% data, read today's news
       </message>
 
+      <!-- Notification Permission Rationale Dialog Strings-->
+      <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_TITLE" desc="The title of a dialog shown to users before asking for notification permission.">
+        Brave notifications make things easier
+      </message>
+      <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_MESSAGE" desc="The body text of a dialog explaining the benefits of enabling Brave notifications.">
+        You’ll be able to easily manage media controls, private sessions, downloads and more
+      </message>
+      <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_ACCEPT_BUTTON_TEXT" desc="The text of the positive button on the notification permission prompt dialog">
+        Continue
+      </message>
+      <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_REJECT_BUTTON_TEXT" desc="The text of the negative button on the notification permission prompt dialog">
+        No thanks
+      </message>
+
       <!-- Get Image Descriptions -->
       <message name="IDS_IMAGE_DESCRIPTIONS_DIALOG_HEADER" desc="Header for confirmation dialog to enable image descriptions.">
         Get image descriptions?
@@ -5364,17 +5352,17 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- WebID Account Selection strings -->
-      <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_SINGLE" desc="Header for Account Selection sheet where the user only has a single account to sign up with." translateable="false">
-        Sign up for <ph name="SITE_NAME">%1$s<ex>rp.example</ex></ph>
+      <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_AUTO" desc="Header for sign in sheet. Sheet is shown to inform user of sign in. Sign in occurs automatically. (User can cancel)." translateable="false">
+        Signing in to <ph name="SITE_NAME">%1$s<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_URL">%2$s<ex>idp.com</ex></ph>
       </message>
-      <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE" desc="Header for Account Selection sheet where the user can pick an account to sign up with." translateable="false">
-        Choose an account for <ph name="SITE_NAME">%1$s<ex>rp.example</ex></ph>
+      <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT" desc="Header for sign in sheet. Sheet is shown to prompt user for sign in consent." translateable="false">
+        Sign in to <ph name="SITE_NAME">%1$s<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_URL">%2$s<ex>idp.com</ex></ph>
       </message>
-      <message name="IDS_ACCOUNT_SELECTION_SHEET_IDP_SUBHEADER" desc="Sub-heading for Account Selection sheet where user can pick an account to sign up with." translateable="false">
-        with <ph name="IDENTITY_PROVIDER_URL">%1$s<ex>idp.com</ex></ph>
+      <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_LINKS" desc="The consent text shown to the user before sign up." translateable="false">
+          To continue, <ph name="PROVIDER_NAME">%1$s<ex>provider.example</ex></ph> will share your name, email, address, and profile picture with this site.
       </message>
       <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT" desc="The consent text shown to the user before sign up." translateable="false">
-        To sign up, <ph name="PROVIDER_NAME">%1$s<ex>provider.example</ex></ph> will share your name, email, address, and profile picture with <ph name="RP_URL1">%2$s<ex>recipes.com</ex></ph>. See <ph name="RP_URL2">%3$s<ex>recipes.com</ex></ph>'s <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>privacy policy<ph name="END_LINK1">&lt;/link1&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>terms of service<ph name="END_LINK2">&lt;/link2&gt;</ph>.
+        To continue, <ph name="PROVIDER_NAME">%1$s<ex>provider.example</ex></ph> will share your name, email, address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">&lt;link_privacy_policy&gt;</ph>privacy policy<ph name="END_LINK1">&lt;/link_privacy_policy&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link_terms_of_service&gt;</ph>terms of service<ph name="END_LINK2">&lt;/link_terms_of_service&gt;</ph>.
       </message>
 
       <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials." translateable="false">
@@ -5391,9 +5379,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_ACCOUNT_SELECTION_SHEET_CLOSED" desc="Accessibility string read when the Account Selection bottom sheet showing a list of the user's accounts is closed." translateable="false">
         List of accounts to be selected is closed.
-      </message>
-      <message name="IDS_SIGN_IN_SHEET_TITLE" desc="Header for sign in sheet." translateable="false">
-        Signing into <ph name="SITE_NAME">%1$s<ex>rp.example</ex></ph>
       </message>
       <message name="IDS_VERIFY_SHEET_TITLE" desc="Header for verify sheet." translateable="false">
         Verifying…
@@ -5466,6 +5451,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Profile Management strings -->
+      <message name="IDS_MANAGED_BROWSER" desc="The text label of the chrome://management page in the app menu">
+        Managed browser
+      </message>
       <message name="IDS_MANAGEMENT" desc="Title of the chrome://management page, which shows whether the account is managed.">
         Management
       </message>

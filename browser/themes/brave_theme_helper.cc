@@ -162,19 +162,16 @@ SkColor BraveThemeHelper::GetDefaultColor(
 absl::optional<SkColor> BraveThemeHelper::GetOmniboxColor(
     int id,
     bool incognito,
-    const CustomThemeSupplier* theme_supplier,
-    bool* has_custom_color) const {
+    const CustomThemeSupplier* theme_supplier) const {
 #if defined(OS_LINUX)
   // If gtk theme is selected, respect it.
   if (IsUsingSystemTheme(theme_supplier)) {
-    return ThemeHelper::GetOmniboxColor(id, incognito, theme_supplier,
-                                        has_custom_color);
+    return ThemeHelper::GetOmniboxColor(id, incognito, theme_supplier);
   }
 #endif
 
   if (theme_supplier)
-    return ThemeHelper::GetOmniboxColor(id, incognito, theme_supplier,
-                                        has_custom_color);
+    return ThemeHelper::GetOmniboxColor(id, incognito, theme_supplier);
 
   const bool dark = dark_mode::GetActiveBraveDarkModeType() ==
                     dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
@@ -200,6 +197,5 @@ absl::optional<SkColor> BraveThemeHelper::GetOmniboxColor(
   }
 
   // All other values, call original function
-  return ThemeHelper::GetOmniboxColor(id, incognito, theme_supplier,
-                                      has_custom_color);
+  return ThemeHelper::GetOmniboxColor(id, incognito, theme_supplier);
 }

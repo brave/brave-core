@@ -43,7 +43,7 @@ class BraveAppMenu extends AppMenu {
     }
 
     public static int getAnimationStyle() {
-        return isMenuFromBottom() ? R.style.OverflowMenuAnimBottom : R.style.OverflowMenuAnim;
+        return isMenuFromBottom() ? R.style.EndIconMenuAnimBottom : R.style.EndIconMenuAnim;
     }
 
     private static boolean isMenuFromBottom() {

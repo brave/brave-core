@@ -13,15 +13,22 @@
 BravePrivacySandboxSettings::BravePrivacySandboxSettings(
     HostContentSettingsMap* host_content_settings_map,
     content_settings::CookieSettings* cookie_settings,
-    PrefService* pref_service)
+    PrefService* pref_service,
+    bool incognito_profile)
     : PrivacySandboxSettings(host_content_settings_map,
                              cookie_settings,
-                             pref_service),
+                             pref_service,
+                             incognito_profile),
       pref_service_(pref_service) {
   // Register observers for the Privacy Sandbox & FLoC preferences.
   user_prefs_registrar_.Init(pref_service_);
   user_prefs_registrar_.Add(
       prefs::kPrivacySandboxApisEnabled,
+      base::BindRepeating(
+          &BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged,
+          base::Unretained(this)));
+  user_prefs_registrar_.Add(
+      prefs::kPrivacySandboxApisEnabledV2,
       base::BindRepeating(
           &BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged,
           base::Unretained(this)));
@@ -36,9 +43,12 @@ BravePrivacySandboxSettings::~BravePrivacySandboxSettings() = default;
 
 void BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged() {
   // Make sure that Private Sandbox features remain disabled even if we manually
-  // access the Pref service and try to change the preference from there.
+  // access the Pref service and try to change the preferences from there.
   if (pref_service_->GetBoolean(prefs::kPrivacySandboxApisEnabled)) {
     pref_service_->SetBoolean(prefs::kPrivacySandboxApisEnabled, false);
+  }
+  if (pref_service_->GetBoolean(prefs::kPrivacySandboxApisEnabledV2)) {
+    pref_service_->SetBoolean(prefs::kPrivacySandboxApisEnabledV2, false);
   }
   if (pref_service_->GetBoolean(prefs::kPrivacySandboxFlocEnabled)) {
     pref_service_->SetBoolean(prefs::kPrivacySandboxFlocEnabled, false);

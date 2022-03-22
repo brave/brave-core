@@ -14,7 +14,6 @@ source_set("unit_tests") {
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
     "//components/content_settings/core/test:test_support",
-    "//components/federated_learning",
     "//components/privacy_sandbox:privacy_sandbox",
     "//components/privacy_sandbox:privacy_sandbox_prefs",
     "//components/privacy_sandbox:test_support",

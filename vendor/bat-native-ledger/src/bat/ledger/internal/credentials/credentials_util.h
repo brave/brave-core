@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_CREDENTIALS_CREDENTIALS_UTIL_H_
-#define BRAVELEDGER_CREDENTIALS_CREDENTIALS_UTIL_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CREDENTIALS_CREDENTIALS_UTIL_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CREDENTIALS_CREDENTIALS_UTIL_H_
 
 #include <memory>
 #include <string>
@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "bat/ledger/internal/credentials/credentials_redeem.h"
 #include "bat/ledger/mojom_structs.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 #include "wrapper.hpp"
 
@@ -31,7 +32,7 @@ std::vector<BlindedToken> GenerateBlindCreds(
 
 std::string GetBlindedCredsJSON(const std::vector<BlindedToken>& blinded);
 
-std::unique_ptr<base::ListValue> ParseStringToBaseList(
+absl::optional<base::Value::List> ParseStringToBaseList(
     const std::string& string_list);
 
 bool UnBlindCreds(
@@ -65,4 +66,4 @@ bool GenerateSuggestionMock(
 }  // namespace credential
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_CREDENTIALS_CREDENTIALS_UTIL_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CREDENTIALS_CREDENTIALS_UTIL_H_

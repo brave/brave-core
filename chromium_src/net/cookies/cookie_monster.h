@@ -40,10 +40,12 @@ class NET_EXPORT CookieMonster : public ChromiumCookieMonster {
   void SetCookieableSchemes(const std::vector<std::string>& schemes,
                             SetCookieableSchemesCallback callback) override;
 
-  void SetCanonicalCookieAsync(std::unique_ptr<CanonicalCookie> cookie,
-                               const GURL& source_url,
-                               const CookieOptions& options,
-                               SetCookiesCallback callback) override;
+  void SetCanonicalCookieAsync(
+      std::unique_ptr<CanonicalCookie> cookie,
+      const GURL& source_url,
+      const CookieOptions& options,
+      SetCookiesCallback callback,
+      const CookieAccessResult* cookie_access_result = nullptr) override;
   void GetCookieListWithOptionsAsync(
       const GURL& url,
       const CookieOptions& options,
