@@ -66,6 +66,10 @@ const char kNewTabPageHideAllWidgets[] = "brave.new_tab_page.hide_all_widgets";
 const char kNewTabPageShowsOptions[] = "brave.new_tab_page.shows_options";
 const char kNewTabPageCustomBackgroundEnabled[] =
     "brave.new_tab_page.custom_background_enabled";
+const char kNewTabPageSolidColorBackgroundEnabled[] =
+    "brave.new_tab_page.solid_color_background_enabled";
+const char kNewTabPageSelectedSolidColorBackground[] =
+    "brave.new_tab_page.selected_solid_color_background";
 const char kBraveTodayIntroDismissed[] = "brave.today.intro_dismissed";
 const char kBinanceAccessToken[] = "brave.binance.access_token";
 const char kBinanceRefreshToken[] = "brave.binance.refresh_token";

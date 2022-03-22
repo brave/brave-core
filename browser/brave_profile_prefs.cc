@@ -336,7 +336,14 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       static_cast<int>(NewTabPageShowsOptions::kDashboard));
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
+
+  // TODO(sangwoo.ko) If this feature is still under development, consider
+  // migrating two prefs into single prefs with enum. This would require us to
+  // modify related mojom too.
   registry->RegisterBooleanPref(kNewTabPageCustomBackgroundEnabled, false);
+  registry->RegisterBooleanPref(kNewTabPageSolidColorBackgroundEnabled, false);
+  registry->RegisterStringPref(kNewTabPageSelectedSolidColorBackground,
+                               "#151E9A");
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)

@@ -73,12 +73,23 @@ void BraveNewTabPageHandler::ChooseLocalCustomBackground() {
 
 void BraveNewTabPageHandler::UseBraveBackground() {
   // Call ntp custom background images service.
-  profile_->GetPrefs()->SetBoolean(kNewTabPageCustomBackgroundEnabled, false);
+  auto* prefs = profile_->GetPrefs();
+  prefs->SetBoolean(kNewTabPageCustomBackgroundEnabled, false);
+  prefs->SetBoolean(kNewTabPageSolidColorBackgroundEnabled, false);
   OnCustomBackgroundImageUpdated();
   DeleteSanitizedImageFile();
 }
 
-bool BraveNewTabPageHandler::IsCustomBackgroundEnabled() const {
+void BraveNewTabPageHandler::UseSolidColorBackground(const std::string& color) {
+  profile_->GetPrefs()->SetBoolean(kNewTabPageCustomBackgroundEnabled, false);
+  profile_->GetPrefs()->SetBoolean(kNewTabPageSolidColorBackgroundEnabled,
+                                   true);
+  profile_->GetPrefs()->SetString(kNewTabPageSelectedSolidColorBackground,
+                                  color);
+  OnCustomBackgroundImageUpdated();
+}
+
+bool BraveNewTabPageHandler::IsCustomBackgroundImageEnabled() const {
   auto* prefs = profile_->GetPrefs();
   if (prefs->IsManagedPreference(prefs::kNtpCustomBackgroundDict))
     return false;
@@ -86,17 +97,32 @@ bool BraveNewTabPageHandler::IsCustomBackgroundEnabled() const {
   return prefs->GetBoolean(kNewTabPageCustomBackgroundEnabled);
 }
 
+bool BraveNewTabPageHandler::IsSolidColorBackgroundEnabled() const {
+  auto* prefs = profile_->GetPrefs();
+  if (prefs->IsManagedPreference(prefs::kNtpCustomBackgroundDict))
+    return false;
+
+  return prefs->GetBoolean(kNewTabPageSolidColorBackgroundEnabled);
+}
+
 void BraveNewTabPageHandler::OnCustomBackgroundImageUpdated() {
   brave_new_tab_page::mojom::CustomBackgroundPtr value =
       brave_new_tab_page::mojom::CustomBackground::New();
   // Pass empty struct when custom background is disabled.
-  if (IsCustomBackgroundEnabled()) {
+  if (IsCustomBackgroundImageEnabled()) {
     // Add a timestamp to the url to prevent the browser from using a cached
     // version when "Upload an image" is used multiple times.
     std::string time_string = std::to_string(base::Time::Now().ToTimeT());
     std::string local_string(ntp_background_images::kCustomWallpaperURL);
     value->url = GURL(local_string + "?ts=" + time_string);
+  } else if (IsSolidColorBackgroundEnabled()) {
+    value->solid_color = profile_->GetPrefs()->GetString(
+        kNewTabPageSelectedSolidColorBackground);
   }
+
+  // TODO(sangwoo.ko) This doesn't notify other open NTP that background has
+  // been changed. Maybe the NTP should observe related preference. That would
+  // also be better for newly opened NTP.
   page_->OnBackgroundUpdated(std::move(value));
 }
 
@@ -166,6 +192,8 @@ void BraveNewTabPageHandler::OnSavedEncodedImage(bool success) {
     return;
 
   profile_->GetPrefs()->SetBoolean(kNewTabPageCustomBackgroundEnabled, true);
+  profile_->GetPrefs()->SetBoolean(kNewTabPageSolidColorBackgroundEnabled,
+                                   false);
   OnCustomBackgroundImageUpdated();
 }
 

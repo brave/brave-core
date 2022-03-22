@@ -119,6 +119,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   hasInitBraveToday: boolean = false
   imageSource?: string = undefined
+  solidBackgroundColor?: string = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
   onVisiblityTimerExpired = () => {
     this.dismissBrandedWallpaperNotification(false)
@@ -130,6 +131,7 @@ class NewTabPage extends React.Component<Props, State> {
     // if a notification is open at component mounting time, close it
     this.props.actions.showTilesRemovedNotice(false)
     this.imageSource = GetBackgroundImageSrc(this.props)
+    this.solidBackgroundColor = this.props.newTabData.backgroundWallpaper?.wallpaperSolidColor
     this.trackCachedImage()
     if (GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.trackBrandedWallpaperNotificationAutoDismiss()
@@ -141,6 +143,7 @@ class NewTabPage extends React.Component<Props, State> {
     const oldImageSource = GetBackgroundImageSrc(prevProps)
     const newImageSource = GetBackgroundImageSrc(this.props)
     this.imageSource = newImageSource
+    this.solidBackgroundColor = this.props.newTabData.backgroundWallpaper?.wallpaperSolidColor
     if (newImageSource && oldImageSource !== newImageSource) {
       this.trackCachedImage()
     }
@@ -413,6 +416,10 @@ class NewTabPage extends React.Component<Props, State> {
     } else {
       getNTPBrowserAPI().pageHandler.useBraveBackground()
     }
+  }
+
+  useSolidColorBackground = (color: string) => {
+    getNTPBrowserAPI().pageHandler.useSolidColorBackground(color)
   }
 
   startRewards = () => {
@@ -1100,6 +1107,7 @@ class NewTabPage extends React.Component<Props, State> {
         hasImage={hasImage}
         imageSrc={this.imageSource}
         imageHasLoaded={this.state.backgroundHasLoaded}
+        solidColor={this.solidBackgroundColor}
       >
         <Page.Page
             hasImage={hasImage}
@@ -1243,6 +1251,7 @@ class NewTabPage extends React.Component<Props, State> {
           setMostVisitedSettings={this.setMostVisitedSettings}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
           useCustomBackgroundImage={this.useCustomBackgroundImage}
+          useSolidColorBackground={this.useSolidColorBackground}
           showBackgroundImage={newTabData.showBackgroundImage}
           showClock={newTabData.showClock}
           clockFormat={newTabData.clockFormat}

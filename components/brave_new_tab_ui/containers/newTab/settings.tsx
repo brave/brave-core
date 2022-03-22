@@ -66,6 +66,7 @@ export interface Props {
   toggleBrandedWallpaperOptIn: () => void
   toggleCards: (show: boolean) => void
   useCustomBackgroundImage: (useCustom: boolean) => void
+  useSolidColorBackground: (color: string) => void
   showBackgroundImage: boolean
   showStats: boolean
   showToday: boolean
@@ -183,6 +184,10 @@ export default class Settings extends React.PureComponent<Props, State> {
 
   useCustomBackgroundImage = (useCustom: boolean) => {
     this.props.useCustomBackgroundImage(useCustom)
+  }
+
+  useSolidColorBackground = (color: string) => {
+    this.props.useSolidColorBackground(color);
   }
 
   setActiveTab (activeTab: TabType) {
@@ -346,6 +351,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                     toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
                     toggleShowBackgroundImage={this.toggleShowBackgroundImage}
                     useCustomBackgroundImage={this.useCustomBackgroundImage}
+                    useSolidColorBackground={this.useSolidColorBackground}
                     brandedWallpaperOptIn={brandedWallpaperOptIn}
                     showBackgroundImage={showBackgroundImage}
                     featureCustomBackgroundEnabled={featureCustomBackgroundEnabled}

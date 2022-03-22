@@ -613,6 +613,12 @@ export const StyledCustomBackgroundOptionImage = styled('img')<{}>`
   border-radius: 10.8718px;
 `
 
+export const StyledCustomBackgroundOptionSolidColor = styled('div')<{}>`
+  width: 100%;
+  height: 160px;
+  border-radius: 10.8718px;
+`
+
 export const StyledUploadLabel = styled('div')<{}>`
 font-style: normal;
 font-weight: 400;

@@ -57,6 +57,8 @@ extern const char kNewTabPageShowBraveTalk[];
 extern const char kNewTabPageHideAllWidgets[];
 extern const char kNewTabPageShowsOptions[];
 extern const char kNewTabPageCustomBackgroundEnabled[];
+extern const char kNewTabPageSolidColorBackgroundEnabled[];
+extern const char kNewTabPageSelectedSolidColorBackground[];
 extern const char kBraveTodayIntroDismissed[];
 extern const char kAlwaysShowBookmarkBarOnNTP[];
 extern const char kAutocompleteEnabled[];

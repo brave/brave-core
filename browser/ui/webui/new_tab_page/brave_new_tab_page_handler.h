@@ -55,6 +55,7 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   // brave_new_tab_page::mojom::PageHandler overrides:
   void ChooseLocalCustomBackground() override;
   void UseBraveBackground() override;
+  void UseSolidColorBackground(const std::string& color) override;
 
   // Observe NTPCustomBackgroundImagesService.
   void OnCustomBackgroundImageUpdated();
@@ -65,7 +66,8 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
                     void* params) override;
   void FileSelectionCanceled(void* params) override;
 
-  bool IsCustomBackgroundEnabled() const;
+  bool IsCustomBackgroundImageEnabled() const;
+  bool IsSolidColorBackgroundEnabled() const;
   image_fetcher::ImageDecoder* GetImageDecoder();
   void ConvertSelectedImageFileAndSave(const base::FilePath& image_file);
   void OnGotImageFile(absl::optional<std::string> input);

@@ -21,10 +21,13 @@ import { Toggle } from '../../../components/toggle'
 
 import { getLocale } from '../../../../common/locale'
 
+import SolidColorBackgroundOption from './solidColorBackgroundOption'
+
 interface Props {
   toggleBrandedWallpaperOptIn: () => void
   toggleShowBackgroundImage: () => void
   useCustomBackgroundImage: (useCustom: boolean) => void
+  useSolidColorBackground: (color: string) => void
   brandedWallpaperOptIn: boolean
   showBackgroundImage: boolean
   featureCustomBackgroundEnabled: boolean
@@ -39,7 +42,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, {}> {
     this.props.useCustomBackgroundImage(false)
   }
 
-  render () {
+  render() {
     const {
       toggleShowBackgroundImage,
       toggleBrandedWallpaperOptIn,
@@ -94,6 +97,7 @@ class BackgroundImageSettings extends React.PureComponent<Props, {}> {
                 {getLocale('braveBackgroundImageOptionTitle')}
               </StyledCustomBackgroundOptionLabel>
             </StyledCustomBackgroundOption>
+            <SolidColorBackgroundOption color="#151E9A" name="Solid color" useSolidColorBackground={this.props.useSolidColorBackground} />
           </StyledCustomBackgroundSettings>
         }
       </div>
