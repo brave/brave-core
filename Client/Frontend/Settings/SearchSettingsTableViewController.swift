@@ -324,8 +324,7 @@ class SearchSettingsTableViewController: UITableViewController {
 
   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
     if let engine = customSearchEngines[safe: indexPath.row],
-      engine == searchEngines.defaultEngine(forType: .standard)
-    {
+      engine == searchEngines.defaultEngine(forType: .standard) {
       return false
     }
 

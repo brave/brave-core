@@ -324,8 +324,7 @@ extension Domain {
       }
     } else {
       if var accounts = wallet_permittedAccounts?.components(separatedBy: ","),
-        let index = accounts.firstIndex(of: account)
-      {
+        let index = accounts.firstIndex(of: account) {
         accounts.remove(at: index)
         wallet_permittedAccounts = accounts.joined(separator: ",")
       }

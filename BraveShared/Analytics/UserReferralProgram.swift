@@ -199,8 +199,7 @@ public class UserReferralProgram {
   /// Returns referral code and sets expiration day for its deletion from DAU pings(if needed).
   public class func getReferralCode() -> String? {
     if let referralCodeDeleteDate = Preferences.URP.referralCodeDeleteDate.value,
-      Date().timeIntervalSince1970 >= referralCodeDeleteDate
-    {
+      Date().timeIntervalSince1970 >= referralCodeDeleteDate {
       Preferences.URP.referralCode.value = nil
       Preferences.URP.referralCodeDeleteDate.value = nil
       UrpLog.log("Enough time has passed, removing referral code data")

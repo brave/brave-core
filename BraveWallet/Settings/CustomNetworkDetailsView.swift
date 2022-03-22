@@ -400,8 +400,7 @@ struct CustomNetworkDetailsView: View {
       || model.networkSymbolName.error != nil
       || model.networkSymbol.error != nil
       || model.networkDecimals.error != nil
-      || model.rpcUrls.filter({ !$0.input.isEmpty && $0.error == nil }).isEmpty
-    {
+      || model.rpcUrls.filter({ !$0.input.isEmpty && $0.error == nil }).isEmpty {
       return false
     }
 
@@ -417,8 +416,7 @@ struct CustomNetworkDetailsView: View {
     }
     // Check if input chain id already existed for non-edit mode
     if !model.isEditMode,
-      networkStore.ethereumChains.contains(where: { $0.id == chainIdInHex })
-    {
+      networkStore.ethereumChains.contains(where: { $0.id == chainIdInHex }) {
       customNetworkError = .duplicateId
       return
     }

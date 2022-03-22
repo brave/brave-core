@@ -66,8 +66,7 @@ class BlockSummaryTests: XCTestCase {
   // It will return nil If website and savings amount for it doesnt exist in json file
   private func fetchDomainSiteSavings(with urlString: String) -> String? {
     if let url = URL(string: urlString),
-      let savings = subject.fetchDomainFetchedSiteSavings(url)
-    {
+      let savings = subject.fetchDomainFetchedSiteSavings(url) {
       return savings
     }
 

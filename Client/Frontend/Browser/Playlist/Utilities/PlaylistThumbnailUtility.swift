@@ -289,8 +289,7 @@ private class FavIconImageRenderer {
 
         if let image = attributes.image {
           if let backgroundColor = attributes.backgroundColor,
-            let cgImage = image.cgImage
-          {
+            let cgImage = image.cgImage {
             // attributes.includesPadding sometimes returns 0 for icons that should. It's better this way to always include the padding.
             let padding = 4.0
             let size = CGSize(

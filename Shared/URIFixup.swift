@@ -22,8 +22,7 @@ public class URIFixup {
 
     // Validate if the HOST is a valid IP address.
     if let url = URL(string: "https://\(string)"),
-      let host = url.host, !host.isEmpty
-    {
+      let host = url.host, !host.isEmpty {
       return isValidIPAddress(host)
     } else {
       return false
@@ -126,8 +125,7 @@ public class URIFixup {
     // It is a mathematical expression
     if let url = URL(string: trimmed),
       url.scheme == nil,
-      Double(trimmed) != nil
-    {
+      Double(trimmed) != nil {
       return nil
     }
 
@@ -135,8 +133,7 @@ public class URIFixup {
     // IE: brave.com.com.com.com or 123.4.5 or "hello.world.whatever"
     // However, a valid URL can be "brave.com" or "hello.world"
     if let url = URL(string: escaped),
-      url.scheme == nil
-    {
+      url.scheme == nil {
       let dotCount = escaped.reduce(0, { $1 == "." ? $0 + 1 : $0 })
       if dotCount > 0 && !isValidIPAddress(escaped) {
         // If there is a "." or ":", prepend "http://" and try again. Since this

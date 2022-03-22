@@ -121,8 +121,7 @@ class Migration {
             options: [.skipsHiddenFiles])
           assets.forEach({
             if let item = PlaylistItem.cachedItem(cacheURL: $0),
-              let pageSrc = item.pageSrc
-            {
+              let pageSrc = item.pageSrc {
               let destination = playlistDirectory.appendingPathComponent($0.lastPathComponent)
 
               do {

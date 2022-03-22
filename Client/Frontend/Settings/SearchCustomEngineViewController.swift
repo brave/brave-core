@@ -544,8 +544,7 @@ extension SearchCustomEngineViewController: UITextViewDelegate {
       let encodedText = text.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
       let url = URL(string: encodedText),
       url.host != nil,
-      url.isWebPage()
-    {
+      url.isWebPage() {
       if let scheme = url.scheme, let host = url.host {
         self.host = URL(string: "\(scheme)://\(host)")
       }

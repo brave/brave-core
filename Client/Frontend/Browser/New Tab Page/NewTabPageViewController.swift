@@ -498,8 +498,7 @@ class NewTabPageViewController: UIViewController {
       if let itemCount = collectionView.dataSource?.collectionView(collectionView, numberOfItemsInSection: 0),
         itemCount > 0,  // Only scroll if the section has items, otherwise it will crash.
         collectionView.dataSource?
-          .collectionView(collectionView, cellForItemAt: firstItemIndexPath) != nil
-      {
+          .collectionView(collectionView, cellForItemAt: firstItemIndexPath) != nil {
         collectionView.scrollToItem(at: firstItemIndexPath, at: .top, animated: true)
       } else {
         // Cannot scorll to deleted item index.
@@ -544,8 +543,7 @@ class NewTabPageViewController: UIViewController {
       guard let url = context.item.content.url else { return }
       let item = context.item
       if !switchingToPrivateMode, item.content.contentType == .partner,
-        let creativeInstanceID = item.content.creativeInstanceID
-      {
+        let creativeInstanceID = item.content.creativeInstanceID {
         rewards.ads.reportPromotedContentAdEvent(
           item.content.urlHash,
           creativeInstanceId: creativeInstanceID,

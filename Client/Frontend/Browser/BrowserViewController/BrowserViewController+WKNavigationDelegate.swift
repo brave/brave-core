@@ -142,8 +142,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
     // Universal links do not work if the request originates from the app, manual handling is required.
     if let mainDocURL = navigationAction.request.mainDocumentURL,
-      let universalLink = UniversalLinkManager.universalLinkType(for: mainDocURL, checkPath: true)
-    {
+      let universalLink = UniversalLinkManager.universalLinkType(for: mainDocURL, checkPath: true) {
       switch universalLink {
       case .buyVPN:
         presentCorrespondingVPNViewController()
@@ -192,8 +191,7 @@ extension BrowserViewController: WKNavigationDelegate {
     // Brave Search logic.
 
     if navigationAction.targetFrame?.isMainFrame == true,
-      BraveSearchManager.isValidURL(url)
-    {
+      BraveSearchManager.isValidURL(url) {
       // We fetch cookies to determine if backup search was enabled on the website.
       let profile = self.profile
       webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
@@ -237,8 +235,7 @@ extension BrowserViewController: WKNavigationDelegate {
       } else {
         if Preferences.Shields.httpsEverywhere.value,
           url.scheme == "http",
-          let urlHost = url.normalizedHost()
-        {
+          let urlHost = url.normalizedHost() {
           HttpsEverywhereStats.shared.shouldUpgrade(url) { shouldupgrade in
             DispatchQueue.main.async {
               if shouldupgrade {
@@ -331,8 +328,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
     if let tab = tabManager[webView],
       let responseURL = responseURL,
-      InternalURL(responseURL)?.isSessionRestore == true
-    {
+      InternalURL(responseURL)?.isSessionRestore == true {
       tab.shouldClassifyLoadsForAds = false
     }
 

@@ -77,8 +77,7 @@ extension FeedItem.Content {
   private static func imageURL(from document: HTMLDocument, releativeTo baseURL: URL?) -> URL? {
     if let src = document.firstChild(xpath: "//img[@src]")?.attr("src"),
       let url = URL(string: src, relativeTo: baseURL),
-      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
-    {
+      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) {
       return url
     }
     return nil
@@ -106,8 +105,7 @@ extension FeedItem.Content {
     var description = ""
     var imageURL: URL?
     if let image = feedItem.image, let url = URL(string: image, relativeTo: location.url.domainURL),
-      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
-    {
+      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) {
       imageURL = url
     }
     if let text = feedItem.contentText {
@@ -115,8 +113,7 @@ extension FeedItem.Content {
     }
     if let html = feedItem.contentHtml, let doc = try? HTMLDocument(string: html) {
       if imageURL == nil,
-        let imageURLFromHTML = Self.imageURL(from: doc, releativeTo: location.url.domainURL)
-      {
+        let imageURLFromHTML = Self.imageURL(from: doc, releativeTo: location.url.domainURL) {
         imageURL = imageURLFromHTML
       }
       if description.isEmpty, let text = Self.descriptionText(from: doc) {
@@ -149,20 +146,17 @@ extension FeedItem.Content {
     var imageURL: URL?
     if let thumbnail = feedItem.media?.mediaThumbnails?.first?.attributes?.url,
       let url = URL(string: thumbnail, relativeTo: location.url.domainURL),
-      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
-    {
+      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) {
       imageURL = url
     }
     if feedItem.summary?.attributes?.type == "text" {
       description = feedItem.summary?.value ?? ""
     } else if feedItem.content?.attributes?.type == "html",
       let html = feedItem.content?.value,
-      let doc = try? HTMLDocument(string: html)
-    {
+      let doc = try? HTMLDocument(string: html) {
       // Find one in description?
       if imageURL == nil,
-        let imageURLFromHTML = Self.imageURL(from: doc, releativeTo: location.url.domainURL)
-      {
+        let imageURLFromHTML = Self.imageURL(from: doc, releativeTo: location.url.domainURL) {
         imageURL = imageURLFromHTML
       }
       if description.isEmpty, let text = Self.descriptionText(from: doc) {
@@ -195,14 +189,12 @@ extension FeedItem.Content {
     var imageURL: URL?
     if let thumbnail = feedItem.media?.mediaThumbnails?.first?.attributes?.url,
       let url = URL(string: thumbnail, relativeTo: location.url.domainURL),
-      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
-    {
+      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) {
       imageURL = url
     }
     if let html = feedItem.description, let doc = try? HTMLDocument(string: html) {
       if imageURL == nil,
-        let imageURLFromHTML = Self.imageURL(from: doc, releativeTo: location.url.domainURL)
-      {
+        let imageURLFromHTML = Self.imageURL(from: doc, releativeTo: location.url.domainURL) {
         imageURL = imageURLFromHTML
       }
       if description.isEmpty, let text = Self.descriptionText(from: doc) {

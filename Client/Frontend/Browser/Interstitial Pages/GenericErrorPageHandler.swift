@@ -10,8 +10,7 @@ class GenericErrorPageHandler: InterstitialPageHandler {
   func canHandle(error: NSError) -> Bool {
     // Handle CFNetwork Error
     if error.domain == kCFErrorDomainCFNetwork as String,
-      let code = CFNetworkErrors(rawValue: Int32(error.code))
-    {
+      let code = CFNetworkErrors(rawValue: Int32(error.code)) {
 
       let unhandledCodes: [CFNetworkErrors] = [
         // Handled by NetworkErrorPageHandler
@@ -65,8 +64,7 @@ class GenericErrorPageHandler: InterstitialPageHandler {
     var action = ""
     var domain = model.domain
     if domain == kCFErrorDomainCFNetwork as String,
-      let code = CFNetworkErrors(rawValue: Int32(model.errorCode))
-    {
+      let code = CFNetworkErrors(rawValue: Int32(model.errorCode)) {
 
       // Update the error code domain
       domain = GenericErrorPageHandler.CFErrorToName(code)

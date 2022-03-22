@@ -126,8 +126,7 @@ class NTPDataSource {
 
       if let theme = customTheme,
         let refCode = theme.refCode,
-        Preferences.NewTabPage.selectedCustomTheme.value != nil
-      {
+        Preferences.NewTabPage.selectedCustomTheme.value != nil {
         return (theme.wallpapers, .withQRCode(refCode), .randomOrderAvoidDuplicates)
       }
 

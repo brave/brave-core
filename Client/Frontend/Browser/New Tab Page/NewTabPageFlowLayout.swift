@@ -153,8 +153,7 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
   ) -> Bool {
     if let section = braveNewsSection,
       preferredAttributes.representedElementCategory == .cell,
-      preferredAttributes.indexPath.section == section
-    {
+      preferredAttributes.indexPath.section == section {
       return preferredAttributes.size.height.rounded() != originalAttributes.size.height.rounded()
     }
     return super.shouldInvalidateLayout(

@@ -147,8 +147,7 @@ extension BraveTalkRewardsOptInViewController {
       super.traitCollectionDidChange(previousTraitCollection)
 
       if previousTraitCollection?.preferredContentSizeCategory
-        != traitCollection.preferredContentSizeCategory
-      {
+        != traitCollection.preferredContentSizeCategory {
 
         DispatchQueue.main.async {
           self.setupButtonConstaints()

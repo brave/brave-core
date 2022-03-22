@@ -136,8 +136,7 @@ struct PlaylistMoveFolderView: View {
             HStack(spacing: 12.0) {
               if selectedItems.count > 1,
                 let firstItem = selectedItems[safe: 0],
-                let secondItem = selectedItems[safe: 1]
-              {
+                let secondItem = selectedItems[safe: 1] {
                 ZStack {
                   PlaylistFolderImage(item: firstItem)
                     .rotationEffect(.degrees(5.0))

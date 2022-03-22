@@ -108,8 +108,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
     rewardsView.legacyWalletTransferButton.isHidden = true
     rewardsView.legacyWalletTransferStatusButton.isHidden = true
     if let _ = Preferences.Rewards.transferDrainID.value,
-      let legacyWallet = legacyWallet
-    {
+      let legacyWallet = legacyWallet {
       if !Preferences.Rewards.transferCompletionAcknowledged.value {
         legacyWallet.updateDrainStatus { status in
           self.drainStatus = status

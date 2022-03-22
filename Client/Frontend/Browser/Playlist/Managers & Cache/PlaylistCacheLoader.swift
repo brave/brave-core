@@ -608,8 +608,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
 
     // Universal links do not work if the request originates from the app, manual handling is required.
     if let mainDocURL = navigationAction.request.mainDocumentURL,
-      let universalLink = UniversalLinkManager.universalLinkType(for: mainDocURL, checkPath: true)
-    {
+      let universalLink = UniversalLinkManager.universalLinkType(for: mainDocURL, checkPath: true) {
       switch universalLink {
       case .buyVPN:
         decisionHandler(.cancel)
@@ -646,8 +645,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       } else {
         if Preferences.Shields.httpsEverywhere.value,
           url.scheme == "http",
-          let urlHost = url.normalizedHost()
-        {
+          let urlHost = url.normalizedHost() {
           HttpsEverywhereStats.shared.shouldUpgrade(url) { shouldupgrade in
             DispatchQueue.main.async {
               if shouldupgrade {
@@ -708,8 +706,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
 
     if let responseURL = responseURL,
       let internalURL = InternalURL(responseURL),
-      internalURL.isSessionRestore
-    {
+      internalURL.isSessionRestore {
       tab.shouldClassifyLoadsForAds = false
     }
 

@@ -181,8 +181,7 @@ private struct ShortcutsView: View {
       // TODO: Would be nice to export handling this url to `BraveShared`.
       // Now it's hardcoded here and in `NavigationRouter`.
       if let url = URL(string: "brave://shortcut?path=0"),
-        let image = UIImage(named: "brave-logo-no-bg-small")
-      {
+        let image = UIImage(named: "brave-logo-no-bg-small") {
         Link(
           destination: url,
           label: {
