@@ -11,6 +11,7 @@ import { StyledTitleTab } from '../widgetTitleTab'
 import { LocaleContext } from '../../../../brave_rewards/resources/shared/lib/locale_context'
 import { WithThemeVariables } from '../../../../brave_rewards/resources/shared/components/with_theme_variables'
 import { GrantInfo } from '../../../../brave_rewards/resources/shared/lib/grant_info'
+import { OnboardingCompletedStore } from '../../../../brave_rewards/resources/shared/lib/onboarding_completed_store'
 
 import {
   RewardsCard,
@@ -21,6 +22,14 @@ import {
 export { SponsoredImageTooltip }
 
 const locale = { getString: (key: string) => getLocale(key) }
+const onboardingCompleted = new OnboardingCompletedStore()
+
+export function showRewardsOnboarding () {
+  if (!onboardingCompleted.load()) {
+    onboardingCompleted.save()
+    chrome.braveRewards.openBrowserActionUI('brave_rewards_panel.html#tour')
+  }
+}
 
 export function RewardsContextAdapter (props: { children: React.ReactNode }) {
   return (
