@@ -21,6 +21,7 @@
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
+#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/content/browser/webui/brave_shared_resources_data_source.h"
@@ -50,6 +51,10 @@
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
 #include "brave/browser/decentralized_dns/decentralized_dns_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_GREASELION)
+#include "brave/browser/greaselion/greaselion_service_factory.h"
 #endif
 
 using content::BrowserThread;
@@ -138,6 +143,9 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
     brave_news::BraveNewsControllerFactory::GetForContext(profile);
   }
   brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(profile);
+#if BUILDFLAG(ENABLE_GREASELION)
+  greaselion::GreaselionServiceFactory::GetForBrowserContext(profile);
+#endif
 }
 
 bool BraveProfileManager::IsAllowedProfilePath(

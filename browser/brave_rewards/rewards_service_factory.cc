@@ -16,7 +16,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -32,11 +31,6 @@
 #include "extensions/browser/event_router_factory.h"
 #include "brave/browser/brave_rewards/extension_rewards_service_observer.h"
 #include "brave/browser/brave_rewards/extension_rewards_notification_service_observer.h"
-#endif
-
-#if BUILDFLAG(ENABLE_GREASELION)
-#include "brave/browser/greaselion/greaselion_service_factory.h"
-#include "brave/components/greaselion/browser/greaselion_service.h"
 #endif
 
 namespace brave_rewards {
@@ -70,9 +64,6 @@ RewardsServiceFactory::RewardsServiceFactory()
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   DependsOn(extensions::EventRouterFactory::GetInstance());
 #endif
-#if BUILDFLAG(ENABLE_GREASELION)
-  DependsOn(greaselion::GreaselionServiceFactory::GetInstance());
-#endif
 }
 
 KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
@@ -90,15 +81,8 @@ KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
       std::make_unique<ExtensionRewardsNotificationServiceObserver>(
           Profile::FromBrowserContext(context));
 #endif
-#if BUILDFLAG(ENABLE_GREASELION)
-  greaselion::GreaselionService* greaselion_service =
-      greaselion::GreaselionServiceFactory::GetForBrowserContext(context);
-  std::unique_ptr<RewardsServiceImpl> rewards_service(new RewardsServiceImpl(
-      Profile::FromBrowserContext(context), greaselion_service));
-#else
   std::unique_ptr<RewardsServiceImpl> rewards_service(
       new RewardsServiceImpl(Profile::FromBrowserContext(context)));
-#endif
   rewards_service->Init(std::move(extension_observer),
                         std::move(private_observer),
                         std::move(notification_observer));

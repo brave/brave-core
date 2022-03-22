@@ -17,7 +17,6 @@
 #include "brave/components/brave_rewards/browser/test_util.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -52,11 +51,7 @@ class RewardsServiceJPTest : public testing::Test {
     SetMockLocale("ja-JP");
     profile_ = CreateBraveRewardsProfile(temp_dir_.GetPath());
     ASSERT_TRUE(profile_.get() != NULL);
-#if BUILDFLAG(ENABLE_GREASELION)
-    auto* rewards_ = new RewardsServiceImpl(profile(), nullptr);
-#else
     auto* rewards_ = new RewardsServiceImpl(profile());
-#endif
     RewardsServiceFactory::SetServiceForTesting(std::move(rewards_));
     rewards_service_ = static_cast<RewardsServiceImpl*>(
         RewardsServiceFactory::GetForProfile(profile()));

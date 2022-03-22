@@ -38,16 +38,26 @@ namespace greaselion {
 extern const char kGreaselionConfigFile[];
 extern const char kGreaselionConfigFileVersion[];
 
-enum GreaselionPreconditionValue { kMustBeFalse, kMustBeTrue, kAny };
+enum class PreconditionValue { kMustBeFalse, kMustBeTrue, kAny };
 
 struct GreaselionPreconditions {
-  GreaselionPreconditionValue rewards_enabled = kAny;
-  GreaselionPreconditionValue twitter_tips_enabled = kAny;
-  GreaselionPreconditionValue reddit_tips_enabled = kAny;
-  GreaselionPreconditionValue github_tips_enabled = kAny;
-  GreaselionPreconditionValue auto_contribution_enabled = kAny;
-  GreaselionPreconditionValue ads_enabled = kAny;
-  GreaselionPreconditionValue supports_minimum_brave_version = kAny;
+  PreconditionValue rewards_enabled = PreconditionValue::kAny;
+  PreconditionValue twitter_tips_enabled = PreconditionValue::kAny;
+  PreconditionValue reddit_tips_enabled = PreconditionValue::kAny;
+  PreconditionValue github_tips_enabled = PreconditionValue::kAny;
+  PreconditionValue auto_contribution_enabled = PreconditionValue::kAny;
+  PreconditionValue ads_enabled = PreconditionValue::kAny;
+  PreconditionValue supports_minimum_brave_version = PreconditionValue::kAny;
+};
+
+struct GreaselionFeatures {
+  bool rewards = false;
+  bool twitter_tips = false;
+  bool reddit_tips = false;
+  bool github_tips = false;
+  bool auto_contribution = false;
+  bool ads = false;
+  bool supports_minimum_brave_version = false;
 };
 
 class GreaselionRule {
@@ -64,8 +74,8 @@ class GreaselionRule {
              const std::string& minimum_brave_version_value,
              const base::FilePath& messages_value,
              const base::FilePath& resource_dir);
-  bool Matches(
-      GreaselionFeatures state, const base::Version& browser_version) const;
+  bool Matches(const GreaselionFeatures& features,
+               const base::Version& browser_version) const;
   std::string name() const { return name_; }
   std::vector<std::string> url_patterns() const { return url_patterns_; }
   std::vector<base::FilePath> scripts() const { return scripts_; }
@@ -79,9 +89,7 @@ class GreaselionRule {
 
  private:
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
-  GreaselionPreconditionValue ParsePrecondition(const base::Value& value);
-  bool PreconditionFulfilled(GreaselionPreconditionValue precondition,
-                             bool value) const;
+  PreconditionValue ParsePrecondition(const base::Value& value);
 
   std::string name_;
   std::vector<std::string> url_patterns_;
@@ -116,8 +124,9 @@ class GreaselionDownloadService : public LocalDataFilesObserver {
   // implementation of our own observers
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnRulesReady(GreaselionDownloadService* download_service) = 0;
+    virtual void OnRulesReady() = 0;
   };
+
   void AddObserver(Observer* observer) { observers_.AddObserver(observer); }
   void RemoveObserver(Observer* observer) {
     observers_.RemoveObserver(observer);

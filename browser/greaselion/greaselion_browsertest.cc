@@ -56,9 +56,7 @@ class GreaselionDownloadServiceWaiter
 
  private:
   // GreaselionDownloadService::Observer:
-  void OnRulesReady(GreaselionDownloadService* download_service) override {
-    run_loop_.QuitWhenIdle();
-  }
+  void OnRulesReady() override { run_loop_.QuitWhenIdle(); }
 
   GreaselionDownloadService* const download_service_;
   base::RunLoop run_loop_;
@@ -84,8 +82,7 @@ class GreaselionServiceWaiter : public GreaselionService::Observer {
 
  private:
   // GreaselionService::Observer:
-  void OnExtensionsReady(GreaselionService* greaselion_service,
-                         bool success) override {
+  void OnExtensionsReady(bool success) override {
     ASSERT_TRUE(success);
     run_loop_.QuitWhenIdle();
   }

@@ -7,8 +7,6 @@ if (enable_greaselion) {
   brave_browser_greaselion_sources += [
     "//brave/browser/greaselion/greaselion_service_factory.cc",
     "//brave/browser/greaselion/greaselion_service_factory.h",
-    "//brave/browser/greaselion/greaselion_tab_helper.cc",
-    "//brave/browser/greaselion/greaselion_tab_helper.h",
   ]
 
   brave_browser_greaselion_deps += [
@@ -16,6 +14,7 @@ if (enable_greaselion) {
     "//brave/components/greaselion/browser",
     "//chrome/common",
     "//components/keyed_service/content",
+    "//components/user_prefs",
     "//extensions/browser",
   ]
 }

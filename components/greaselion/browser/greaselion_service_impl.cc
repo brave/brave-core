@@ -27,11 +27,14 @@
 #include "base/task/task_runner_util.h"
 #include "base/values.h"
 #include "base/version.h"
+#include "bat/ads/pref_names.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_component_updater/browser/switches.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
-#include "brave/components/version_info//version_info.h"
+#include "brave/components/version_info/version_info.h"
 #include "chrome/browser/extensions/extension_service.h"
+#include "components/prefs/pref_service.h"
 #include "components/version_info/version_info.h"
 #include "crypto/sha2.h"
 #include "extensions/browser/computed_hashes.h"
@@ -224,12 +227,14 @@ GreaselionServiceImpl::GreaselionServiceImpl(
     const base::FilePath& install_directory,
     extensions::ExtensionSystem* extension_system,
     extensions::ExtensionRegistry* extension_registry,
+    PrefService* prefs,
     scoped_refptr<base::SequencedTaskRunner> task_runner)
     : download_service_(download_service),
       install_directory_(install_directory),
       extension_system_(extension_system),
       extension_service_(extension_system->extension_service()),
       extension_registry_(extension_registry),
+      prefs_(prefs),
       all_rules_installed_successfully_(true),
       update_in_progress_(false),
       update_pending_(false),
@@ -240,10 +245,9 @@ GreaselionServiceImpl::GreaselionServiceImpl(
       weak_factory_(this) {
   download_service_->AddObserver(this);
   extension_registry_->AddObserver(this);
-  for (int i = FIRST_FEATURE; i != LAST_FEATURE; i++)
-    state_[static_cast<GreaselionFeature>(i)] = false;
+  AddPrefListeners();
   // Static-value features
-  state_[GreaselionFeature::SUPPORTS_MINIMUM_BRAVE_VERSION] = true;
+  features_.supports_minimum_brave_version = true;
 }
 
 GreaselionServiceImpl::~GreaselionServiceImpl() {}
@@ -296,10 +300,19 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
   DCHECK(update_in_progress_);
   all_rules_installed_successfully_ = true;
   pending_installs_ = 0;
+
+  // At this point, any GL extensions that were previously loaded have now been
+  // unloaded. We can now clean up their corresponding temp folders.
+  if (!extension_dirs_.empty()) {
+    task_runner_->PostTask(
+        FROM_HERE,
+        base::BindOnce(&DeleteExtensionDirs, std::move(extension_dirs_)));
+  }
+
   std::vector<std::unique_ptr<GreaselionRule>>* rules =
       download_service_->rules();
   for (const std::unique_ptr<GreaselionRule>& rule : *rules) {
-    if (rule->Matches(state_, browser_version_) &&
+    if (rule->Matches(features_, browser_version_) &&
         rule->has_unknown_preconditions() == false) {
       pending_installs_ += 1;
     }
@@ -310,7 +323,7 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
     return;
   }
   for (const std::unique_ptr<GreaselionRule>& rule : *rules) {
-    if (rule->Matches(state_, browser_version_) &&
+    if (rule->Matches(features_, browser_version_) &&
         rule->has_unknown_preconditions() == false) {
       // Convert script file to component extension. This must run on extension
       // file task runner, which was passed in in the constructor.
@@ -395,22 +408,16 @@ void GreaselionServiceImpl::MaybeNotifyObservers() {
       UpdateInstalledExtensions();
     } else {
       for (auto& observer : observers_)
-        observer.OnExtensionsReady(this, all_rules_installed_successfully_);
+        observer.OnExtensionsReady(all_rules_installed_successfully_);
     }
   }
 }
 
-void GreaselionServiceImpl::OnRulesReady(
-    GreaselionDownloadService* download_service) {
-  for (auto& observer : observers_) {
-    observer.OnRulesReady(this);
-  }
-}
-
-void GreaselionServiceImpl::SetFeatureEnabled(GreaselionFeature feature,
-                                              bool enabled) {
-  DCHECK(feature >= 0 && feature < LAST_FEATURE);
-  state_[feature] = enabled;
+void GreaselionServiceImpl::OnRulesReady() {
+  // When the downloaded data has been updated we need to reload all extensions,
+  // since we currently don't know what has changed and must assume that
+  // everything has changed.
+  SetFeaturesUsingPrefs();
   UpdateInstalledExtensions();
 }
 
@@ -423,6 +430,42 @@ void GreaselionServiceImpl::SetBrowserVersionForTesting(
   CHECK(version.IsValid());
   browser_version_ = version;
   UpdateInstalledExtensions();
+}
+
+void GreaselionServiceImpl::AddPrefListeners() {
+  // Currently we only listen for changes to the "Ads enabled" pref. If we add
+  // listeners for other relevant prefs we may want to debounce the extension
+  // update process in order to avoid intermediate, ephemeral extension sets.
+  pref_change_registrar_.Init(prefs_);
+  pref_change_registrar_.Add(
+      ads::prefs::kEnabled,
+      base::BindRepeating(&GreaselionServiceImpl::OnAnyPreferenceChanged,
+                          base::Unretained(this)));
+}
+
+void GreaselionServiceImpl::OnAnyPreferenceChanged() {
+  SetFeaturesUsingPrefs();
+  UpdateInstalledExtensions();
+}
+
+void GreaselionServiceImpl::SetFeaturesUsingPrefs() {
+  features_.rewards = true;
+  features_.auto_contribution =
+      prefs_->GetBoolean(brave_rewards::prefs::kAutoContributeEnabled);
+  features_.ads = prefs_->GetBoolean(ads::prefs::kEnabled);
+
+  bool show_rewards_button =
+      prefs_->GetBoolean(brave_rewards::prefs::kShowButton);
+
+  features_.twitter_tips =
+      show_rewards_button &&
+      prefs_->GetBoolean(brave_rewards::prefs::kInlineTipTwitterEnabled);
+  features_.reddit_tips =
+      show_rewards_button &&
+      prefs_->GetBoolean(brave_rewards::prefs::kInlineTipRedditEnabled);
+  features_.github_tips =
+      show_rewards_button &&
+      prefs_->GetBoolean(brave_rewards::prefs::kInlineTipGithubEnabled);
 }
 
 }  // namespace greaselion

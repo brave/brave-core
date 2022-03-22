@@ -8,8 +8,7 @@
 
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
-
-class Profile;
+#include "content/public/browser/browser_context.h"
 
 namespace greaselion {
 

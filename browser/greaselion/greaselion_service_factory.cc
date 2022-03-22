@@ -11,11 +11,13 @@
 #include "base/memory/singleton.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "brave/components/greaselion/browser/greaselion_service_impl.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "extensions/browser/extension_file_task_runner.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_factory.h"
@@ -32,6 +34,9 @@ GreaselionServiceFactory* GreaselionServiceFactory::GetInstance() {
 
 GreaselionService* GreaselionServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
+  if (!context || !brave::IsRegularProfile(context)) {
+    return nullptr;
+  }
   return static_cast<GreaselionService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
@@ -67,6 +72,7 @@ KeyedService* GreaselionServiceFactory::BuildServiceInstanceFor(
   std::unique_ptr<GreaselionServiceImpl> greaselion_service(
       new GreaselionServiceImpl(download_service, install_directory,
                                 extension_system, extension_registry,
+                                user_prefs::UserPrefs::Get(context),
                                 task_runner));
   return greaselion_service.release();
 }

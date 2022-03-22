@@ -19,9 +19,12 @@
 #include "base/version.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "extensions/common/extension_id.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
+
+class PrefService;
 
 namespace base {
 class SequencedTaskRunner;
@@ -39,22 +42,22 @@ namespace greaselion {
 class GreaselionServiceImpl : public GreaselionService,
                               public GreaselionDownloadService::Observer {
  public:
-  explicit GreaselionServiceImpl(
-      GreaselionDownloadService* download_service,
-      const base::FilePath& install_directory,
-      extensions::ExtensionSystem* extension_system,
-      extensions::ExtensionRegistry* extension_registry,
-      scoped_refptr<base::SequencedTaskRunner> task_runner);
+  GreaselionServiceImpl(GreaselionDownloadService* download_service,
+                        const base::FilePath& install_directory,
+                        extensions::ExtensionSystem* extension_system,
+                        extensions::ExtensionRegistry* extension_registry,
+                        PrefService* prefs,
+                        scoped_refptr<base::SequencedTaskRunner> task_runner);
+
   GreaselionServiceImpl(const GreaselionServiceImpl&) = delete;
   GreaselionServiceImpl& operator=(const GreaselionServiceImpl&) = delete;
+
   ~GreaselionServiceImpl() override;
 
   // KeyedService overrides
   void Shutdown() override;
 
   // GreaselionService overrides
-  void SetFeatureEnabled(GreaselionFeature feature, bool enabled) override;
-  void UpdateInstalledExtensions() override;
   bool IsGreaselionExtension(const std::string& id) override;
   std::vector<extensions::ExtensionId> GetExtensionIdsForTesting() override;
   bool ready() override;
@@ -72,7 +75,11 @@ class GreaselionServiceImpl : public GreaselionService,
       std::pair<scoped_refptr<extensions::Extension>, base::FilePath>;
 
  private:
+  void UpdateInstalledExtensions();
   void SetBrowserVersionForTesting(const base::Version& version) override;
+  void AddPrefListeners();
+  void OnAnyPreferenceChanged();
+  void SetFeaturesUsingPrefs();
   void CreateAndInstallExtensions();
   void PostConvert(
       absl::optional<GreaselionConvertedExtension> converted_extension);
@@ -80,17 +87,15 @@ class GreaselionServiceImpl : public GreaselionService,
   void MaybeNotifyObservers();
 
   // GreaselionDownloadService::Observer:
-  void OnRulesReady(GreaselionDownloadService* download_service) override;
+  void OnRulesReady() override;
 
-  raw_ptr<GreaselionDownloadService> download_service_ = nullptr;  // NOT OWNED
-  GreaselionFeatures state_;
+  raw_ptr<GreaselionDownloadService> download_service_ = nullptr;
+  GreaselionFeatures features_;
   const base::FilePath install_directory_;
-  raw_ptr<extensions::ExtensionSystem> extension_system_ =
-      nullptr;  // NOT OWNED
-  raw_ptr<extensions::ExtensionService> extension_service_ =
-      nullptr;  // NOT OWNED
-  raw_ptr<extensions::ExtensionRegistry> extension_registry_ =
-      nullptr;  // NOT OWNED
+  raw_ptr<extensions::ExtensionSystem> extension_system_ = nullptr;
+  raw_ptr<extensions::ExtensionService> extension_service_ = nullptr;
+  raw_ptr<extensions::ExtensionRegistry> extension_registry_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
   bool all_rules_installed_successfully_;
   bool update_in_progress_;
   bool update_pending_;
@@ -100,6 +105,7 @@ class GreaselionServiceImpl : public GreaselionService,
   std::vector<extensions::ExtensionId> greaselion_extensions_;
   std::vector<base::FilePath> extension_dirs_;
   base::Version browser_version_;
+  PrefChangeRegistrar pref_change_registrar_;
   base::WeakPtrFactory<GreaselionServiceImpl> weak_factory_;
 };
 

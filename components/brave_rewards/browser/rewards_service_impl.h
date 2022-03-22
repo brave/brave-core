@@ -28,7 +28,6 @@
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
-#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "build/build_config.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
@@ -41,10 +40,6 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/safetynet/safetynet_check.h"
-#endif
-
-#if BUILDFLAG(ENABLE_GREASELION)
-#include "brave/components/greaselion/browser/greaselion_service.h"
 #endif
 
 namespace base {
@@ -97,20 +92,13 @@ using StopLedgerCallback = base::OnceCallback<void(ledger::type::Result)>;
 
 class RewardsServiceImpl : public RewardsService,
                            public ledger::LedgerClient,
-#if BUILDFLAG(ENABLE_GREASELION)
-                           public greaselion::GreaselionService::Observer,
-#endif
                            public base::SupportsWeakPtr<RewardsServiceImpl> {
  public:
-#if BUILDFLAG(ENABLE_GREASELION)
-  explicit RewardsServiceImpl(
-      Profile* profile,
-      greaselion::GreaselionService* greaselion_service);
-#else
   explicit RewardsServiceImpl(Profile* profile);
-#endif
+
   RewardsServiceImpl(const RewardsServiceImpl&) = delete;
   RewardsServiceImpl& operator=(const RewardsServiceImpl&) = delete;
+
   ~RewardsServiceImpl() override;
 
   // KeyedService:
@@ -369,13 +357,6 @@ class RewardsServiceImpl : public RewardsService,
   friend class ::RewardsFlagBrowserTest;
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
-
-#if BUILDFLAG(ENABLE_GREASELION)
-  void EnableGreaseLion();
-
-  // GreaselionService::Observer:
-  void OnRulesReady(greaselion::GreaselionService* greaselion_service) override;
-#endif
 
   void OnConnectionClosed(const ledger::type::Result result);
 
@@ -777,10 +758,6 @@ class RewardsServiceImpl : public RewardsService,
 #endif
 
   raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
-#if BUILDFLAG(ENABLE_GREASELION)
-  raw_ptr<greaselion::GreaselionService> greaselion_service_ =
-      nullptr;  // NOT OWNED
-#endif
   mojo::AssociatedReceiver<bat_ledger::mojom::BatLedgerClient>
       bat_ledger_client_receiver_;
   mojo::AssociatedRemote<bat_ledger::mojom::BatLedger> bat_ledger_;

@@ -74,13 +74,12 @@ GreaselionRule::GreaselionRule(const GreaselionRule& name) = default;
 
 GreaselionRule& GreaselionRule::operator=(const GreaselionRule& name) = default;
 
-GreaselionPreconditionValue GreaselionRule::ParsePrecondition(
-    const base::Value& value) {
-  GreaselionPreconditionValue condition = kAny;
+PreconditionValue GreaselionRule::ParsePrecondition(const base::Value& value) {
   if (value.is_bool()) {
-    condition = value.GetBool() ? kMustBeTrue : kMustBeFalse;
+    return value.GetBool() ? PreconditionValue::kMustBeTrue
+                           : PreconditionValue::kMustBeFalse;
   }
-  return condition;
+  return PreconditionValue::kAny;
 }
 
 void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
@@ -92,7 +91,7 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
                            const base::FilePath& resource_dir) {
   if (preconditions_value) {
     for (const auto kv : preconditions_value->DictItems()) {
-      GreaselionPreconditionValue condition = ParsePrecondition(kv.second);
+      PreconditionValue condition = ParsePrecondition(kv.second);
       if (kv.first == kRewards) {
         preconditions_.rewards_enabled = condition;
       } else if (kv.first == kTwitterTips) {
@@ -143,43 +142,47 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
 
 GreaselionRule::~GreaselionRule() = default;
 
-bool GreaselionRule::PreconditionFulfilled(
-    GreaselionPreconditionValue precondition,
-    bool value) const {
-  switch (precondition) {
-    case kMustBeTrue:
-      return value;
-    case kMustBeFalse:
-      return !value;
-    default:
-      return true;
-  }
-}
+bool GreaselionRule::Matches(const GreaselionFeatures& features,
+                             const base::Version& browser_version) const {
+  auto precondition_fulfilled = [](PreconditionValue value, bool has_feature) {
+    switch (value) {
+      case PreconditionValue::kMustBeTrue:
+        return has_feature;
+      case PreconditionValue::kMustBeFalse:
+        return !has_feature;
+      default:
+        return true;
+    }
+  };
 
-bool GreaselionRule::Matches(
-    GreaselionFeatures state, const base::Version& browser_version) const {
   // Validate against preconditions.
-  if (!PreconditionFulfilled(preconditions_.rewards_enabled,
-                             state[greaselion::REWARDS]))
+  if (!precondition_fulfilled(preconditions_.rewards_enabled,
+                              features.rewards)) {
     return false;
-  if (!PreconditionFulfilled(preconditions_.twitter_tips_enabled,
-                             state[greaselion::TWITTER_TIPS]))
+  }
+  if (!precondition_fulfilled(preconditions_.twitter_tips_enabled,
+                              features.twitter_tips)) {
     return false;
-  if (!PreconditionFulfilled(preconditions_.reddit_tips_enabled,
-                             state[greaselion::REDDIT_TIPS]))
+  }
+  if (!precondition_fulfilled(preconditions_.reddit_tips_enabled,
+                              features.reddit_tips)) {
     return false;
-  if (!PreconditionFulfilled(preconditions_.github_tips_enabled,
-                             state[greaselion::GITHUB_TIPS]))
+  }
+  if (!precondition_fulfilled(preconditions_.github_tips_enabled,
+                              features.github_tips)) {
     return false;
-  if (!PreconditionFulfilled(preconditions_.auto_contribution_enabled,
-                             state[greaselion::AUTO_CONTRIBUTION]))
+  }
+  if (!precondition_fulfilled(preconditions_.auto_contribution_enabled,
+                              features.auto_contribution)) {
     return false;
-  if (!PreconditionFulfilled(preconditions_.supports_minimum_brave_version,
-                          state[greaselion::SUPPORTS_MINIMUM_BRAVE_VERSION]))
+  }
+  if (!precondition_fulfilled(preconditions_.supports_minimum_brave_version,
+                              features.supports_minimum_brave_version)) {
     return false;
-  if (!PreconditionFulfilled(preconditions_.ads_enabled,
-                             state[greaselion::ADS]))
+  }
+  if (!precondition_fulfilled(preconditions_.ads_enabled, features.ads)) {
     return false;
+  }
   // Validate against browser version.
   if (base::Version::IsValidWildcardString(minimum_brave_version_)) {
     bool rule_version_is_higher_than_browser =
@@ -315,8 +318,9 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
         minimum_brave_version_value, messages_path, resource_dir_);
     rules_.push_back(std::move(rule));
   }
-  for (Observer& observer : observers_)
-    observer.OnRulesReady(this);
+  for (Observer& observer : observers_) {
+    observer.OnRulesReady();
+  }
 }
 
 void GreaselionDownloadService::OnComponentReady(

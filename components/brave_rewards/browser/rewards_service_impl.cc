@@ -306,17 +306,8 @@ const base::FilePath::StringType kPublisher_info_db("publisher_info_db");
 const base::FilePath::StringType kPublishers_list("publishers_list");
 #endif
 
-#if BUILDFLAG(ENABLE_GREASELION)
-RewardsServiceImpl::RewardsServiceImpl(
-    Profile* profile,
-    greaselion::GreaselionService* greaselion_service)
-#else
 RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
-#endif
     : profile_(profile),
-#if BUILDFLAG(ENABLE_GREASELION)
-      greaselion_service_(greaselion_service),
-#endif
       bat_ledger_client_receiver_(new bat_ledger::LedgerClientMojoBridge(this)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -338,23 +329,10 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 
   if (base::FeatureList::IsEnabled(features::kVerboseLoggingFeature))
     persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
-
-#if BUILDFLAG(ENABLE_GREASELION)
-  if (greaselion_service_) {
-    greaselion_service_->AddObserver(this);
-  }
-#endif
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-#if BUILDFLAG(ENABLE_GREASELION)
-  if (greaselion_service_) {
-    greaselion_service_->RemoveObserver(this);
-  }
-#endif
-
   if (ledger_database_) {
     file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
   }
@@ -1376,40 +1354,6 @@ void RewardsServiceImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
   bat_ledger_->GetReconcileStamp(std::move(callback));
 }
 
-#if BUILDFLAG(ENABLE_GREASELION)
-void RewardsServiceImpl::EnableGreaseLion() {
-  if (!greaselion_service_) {
-    return;
-  }
-
-  greaselion_service_->SetFeatureEnabled(greaselion::REWARDS, true);
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::AUTO_CONTRIBUTION,
-      profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled));
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::ADS, profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
-
-  const bool show_button = profile_->GetPrefs()->GetBoolean(prefs::kShowButton);
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::TWITTER_TIPS,
-      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipTwitterEnabled) &&
-          show_button);
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::REDDIT_TIPS,
-      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipRedditEnabled) &&
-          show_button);
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::GITHUB_TIPS,
-      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled) &&
-          show_button);
-}
-
-void RewardsServiceImpl::OnRulesReady(
-    greaselion::GreaselionService* greaselion_service) {
-  EnableGreaseLion();
-}
-#endif
-
 void RewardsServiceImpl::StopLedger(StopLedgerCallback callback) {
   BLOG(1, "Shutting down ledger process");
   if (!Connected()) {
@@ -1737,14 +1681,6 @@ void RewardsServiceImpl::OnFetchBalanceForEnableRewards(
 }
 
 void RewardsServiceImpl::OnAdsEnabled(bool ads_enabled) {
-#if BUILDFLAG(ENABLE_GREASELION)
-  if (greaselion_service_) {
-    greaselion_service_->SetFeatureEnabled(
-        greaselion::ADS,
-        profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
-  }
-#endif
-
   for (auto& observer : observers_) {
     observer.OnAdsEnabled(this, ads_enabled);
   }

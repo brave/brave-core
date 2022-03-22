@@ -1,4 +1,5 @@
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
+import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//components/gcm_driver/config.gni")
 
@@ -58,6 +59,10 @@ source_set("profiles") {
 
   if (enable_tor) {
     deps += [ "//brave/browser/tor" ]
+  }
+
+  if (enable_greaselion) {
+    deps += [ "//brave/components/greaselion/browser" ]
   }
 }
 

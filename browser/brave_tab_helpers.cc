@@ -17,7 +17,6 @@
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
-#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -27,10 +26,6 @@
 #include "extensions/buildflags/buildflags.h"
 #include "net/base/features.h"
 #include "third_party/widevine/cdm/buildflags.h"
-
-#if BUILDFLAG(ENABLE_GREASELION)
-#include "brave/browser/greaselion/greaselion_tab_helper.h"
-#endif
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/android/preferences/background_video_playback_tab_helper.h"
@@ -70,9 +65,6 @@
 namespace brave {
 
 void AttachTabHelpers(content::WebContents* web_contents) {
-#if BUILDFLAG(ENABLE_GREASELION)
-  greaselion::GreaselionTabHelper::CreateForWebContents(web_contents);
-#endif
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
   if (base::FeatureList::IsEnabled(
