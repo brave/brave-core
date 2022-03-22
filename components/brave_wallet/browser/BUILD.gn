@@ -229,6 +229,7 @@ source_set("hd_keyring") {
 
   deps = [
     ":constants",
+    ":solana_utils",
     ":transaction",
     "internal:hd_key",
     "//base",
@@ -237,7 +238,10 @@ source_set("hd_keyring") {
     "//brave/components/bls/rs:cxx_gen",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
+    "//crypto",
   ]
+
+  public_deps = [ "//brave/components/brave_wallet/rust:rust-rs" ]
 }
 
 source_set("transaction") {
