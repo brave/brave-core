@@ -251,7 +251,6 @@ source_set("ui") {
     "//brave/app/theme:brave_unscaled_resources",
     "//brave/app/vector_icons:vector_icons",
     "//brave/browser:sparkle_buildflags",
-    "//brave/browser/devtools",
     "//brave/browser/gcm_driver",
     "//brave/browser/profiles",
     "//brave/browser/tor",
