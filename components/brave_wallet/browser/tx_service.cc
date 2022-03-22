@@ -54,6 +54,10 @@ EthTxManager* TxService::GetEthTxManager() {
   return static_cast<EthTxManager*>(GetTxManager(mojom::CoinType::ETH));
 }
 
+SolanaTxManager* TxService::GetSolanaTxManager() {
+  return static_cast<SolanaTxManager*>(GetTxManager(mojom::CoinType::SOL));
+}
+
 mojo::PendingRemote<mojom::TxService> TxService::MakeRemote() {
   mojo::PendingRemote<mojom::TxService> remote;
   tx_service_receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
@@ -74,6 +78,19 @@ TxService::MakeEthTxManagerProxyRemote() {
 void TxService::BindEthTxManagerProxy(
     mojo::PendingReceiver<mojom::EthTxManagerProxy> receiver) {
   eth_tx_manager_receivers_.Add(this, std::move(receiver));
+}
+
+mojo::PendingRemote<mojom::SolanaTxManagerProxy>
+TxService::MakeSolanaTxManagerProxyRemote() {
+  mojo::PendingRemote<mojom::SolanaTxManagerProxy> remote;
+  solana_tx_manager_receivers_.Add(this,
+                                   remote.InitWithNewPipeAndPassReceiver());
+  return remote;
+}
+
+void TxService::BindSolanaTxManagerProxy(
+    mojo::PendingReceiver<mojom::SolanaTxManagerProxy> receiver) {
+  solana_tx_manager_receivers_.Add(this, std::move(receiver));
 }
 
 void TxService::AddUnapprovedTransaction(
@@ -237,6 +254,26 @@ void TxService::ProcessHardwareSignature(
 
 void TxService::GetGasEstimation1559(GetGasEstimation1559Callback callback) {
   GetEthTxManager()->GetGasEstimation1559(std::move(callback));
+}
+
+void TxService::MakeSystemProgramTransferTxData(
+    const std::string& from,
+    const std::string& to,
+    uint64_t lamports,
+    MakeSystemProgramTransferTxDataCallback callback) {
+  GetSolanaTxManager()->MakeSystemProgramTransferTxData(from, to, lamports,
+                                                        std::move(callback));
+}
+
+void TxService::MakeTokenProgramTransferTxData(
+    const std::string& spl_token_mint_address,
+    const std::string& from_wallet_address,
+    const std::string& to_wallet_address,
+    uint64_t amount,
+    MakeTokenProgramTransferTxDataCallback callback) {
+  GetSolanaTxManager()->MakeTokenProgramTransferTxData(
+      spl_token_mint_address, from_wallet_address, to_wallet_address, amount,
+      std::move(callback));
 }
 
 }  // namespace brave_wallet

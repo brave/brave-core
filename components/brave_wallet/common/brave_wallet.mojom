@@ -791,6 +791,30 @@ interface EthTxManagerProxy {
   ProcessHardwareSignature(string tx_meta_id, string v, string r, string s) => (bool status, ProviderError error, string error_message);
 };
 
+interface SolanaTxManagerProxy {
+  // Get transaction data for transfering SOL.
+  MakeSystemProgramTransferTxData(string from, string to, uint64 lamports)
+      => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
+
+  // Get transaction data for transfering SPL tokens from one associated token
+  // account to another.
+  //
+  // If the receiving associated token account exists on the chain, the created
+  // transaction will have one instruction which is the transfer instruction.
+  // If the receiving associated token account is not created yet, the created
+  // transaction will have two instructions, the first one is the instruction
+  // to create the associated token account for the receipient, and the second
+  // instruction is the transfer instruction. Note that sender will fund the
+  // creation (an additional cost) with the minimum balance for the new account
+  // to be rent exempt.
+  MakeTokenProgramTransferTxData(
+      string spl_token_mint_address,
+      string from_wallet_address,
+      string to_wallet_address,
+      uint64 amount)
+      => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
+};
+
 interface BraveWalletServiceObserver {
   // Fired when the active origin is changed
   OnActiveOriginChanged(string origin);
