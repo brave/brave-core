@@ -354,7 +354,7 @@ void RewardsNotificationServiceImpl::OnFetchPromotions(
     bool only_once = true;
 #if BUILDFLAG(IS_ANDROID)
     only_once = false;
-  #endif
+#endif
 
     AddNotification(
         notification_type,
