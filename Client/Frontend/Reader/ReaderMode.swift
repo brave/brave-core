@@ -31,6 +31,20 @@ enum ReaderModeTheme: String {
   case light = "light"
   case dark = "dark"
   case sepia = "sepia"
+  case black = "black"
+
+  var backgroundColor: UIColor {
+    switch self {
+    case .light:
+      return .white
+    case .dark:
+      return .darkGray
+    case .sepia:
+      return .init(rgb: 0xf0e6dc)  // Light Beige
+    case .black:
+      return .black
+    }
+  }
 }
 
 enum ReaderModeFontType: String {

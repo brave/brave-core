@@ -22,14 +22,6 @@ private struct ReaderModeStyleViewControllerUX {
   static let fontSizeButtonTextColorEnabled = UIColor.bravePrimary
   static let fontSizeButtonTextColorDisabled = UIColor.braveDisabled
 
-  static let themeRowBackgroundColor = UIColor.white
-  static let themeTitleColorLight = UIColor.darkText
-  static let themeTitleColorDark = UIColor.white
-  static let themeTitleColorSepia = UIColor.darkText
-  static let themeBackgroundColorLight = UIColor.white
-  static let themeBackgroundColorDark = UIColor.darkGray
-  static let themeBackgroundColorSepia = UIColor(rgb: 0xf0e6dc)  // Light Beige
-
   static let brightnessRowBackground = UIColor.secondaryBraveBackground
   static let brightnessSliderTintColor = UIColor.braveOrange
   static let brightnessSliderWidth = 140
@@ -46,12 +38,20 @@ protocol ReaderModeStyleViewControllerDelegate {
 
 class ReaderModeStyleViewController: UIViewController {
   var delegate: ReaderModeStyleViewControllerDelegate?
-  var readerModeStyle: ReaderModeStyle = DefaultReaderModeStyle
+  var readerModeStyle: ReaderModeStyle
 
   fileprivate var fontTypeButtons: [FontTypeButton]!
   fileprivate var fontSizeLabel: FontSizeLabel!
   fileprivate var fontSizeButtons: [FontSizeButton]!
   fileprivate var themeButtons: [ThemeButton]!
+
+  init(selectedStyle: ReaderModeStyle) {
+    self.readerModeStyle = selectedStyle
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  @available(*, unavailable)
+  required init?(coder: NSCoder) { fatalError() }
 
   override func viewDidLoad() {
     // Our preferred content size has a fixed width and height based on the rows + padding
@@ -120,11 +120,32 @@ class ReaderModeStyleViewController: UIViewController {
 
     themeButtons = [
       ThemeButton(theme: ReaderModeTheme.light),
-      ThemeButton(theme: ReaderModeTheme.dark),
       ThemeButton(theme: ReaderModeTheme.sepia),
+      ThemeButton(theme: ReaderModeTheme.dark),
+      ThemeButton(theme: ReaderModeTheme.black),
     ]
 
-    setupButtons(themeButtons, inRow: themeRow, action: #selector(changeTheme))
+    themeButtons.first(where: { $0.theme == readerModeStyle.theme })?.isSelected = true
+
+    let stackView = UIStackView()
+    stackView.distribution = .equalSpacing
+    themeRow.addSubview(stackView)
+    stackView.snp.remakeConstraints {
+      $0.leading.trailing.equalToSuperview().inset(32)
+      $0.centerY.equalToSuperview()
+    }
+
+    let buttonSize: CGFloat = 32
+    themeButtons.forEach {
+      $0.snp.makeConstraints {
+        $0.size.equalTo(buttonSize)
+      }
+      $0.layer.cornerRadius = buttonSize / 2
+      $0.clipsToBounds = true
+
+      $0.addTarget(self, action: #selector(changeTheme), for: .touchUpInside)
+      stackView.addArrangedSubview($0)
+    }
 
     // Brightness row
 
@@ -201,9 +222,7 @@ class ReaderModeStyleViewController: UIViewController {
     for button in fontTypeButtons {
       button.isSelected = (button.fontType == fontType)
     }
-    for button in themeButtons {
-      button.fontType = fontType
-    }
+
     fontSizeLabel.fontType = fontType
   }
 
@@ -238,9 +257,15 @@ class ReaderModeStyleViewController: UIViewController {
   @objc func changeTheme(_ button: ThemeButton) {
     selectTheme(button.theme)
     delegate?.readerModeStyleViewController(self, didConfigureStyle: readerModeStyle)
+    themeButtons.forEach { $0.isSelected = false }
+    button.isSelected = true
   }
 
-  fileprivate func selectTheme(_ theme: ReaderModeTheme) {
+  fileprivate func selectTheme(_ theme: ReaderModeTheme?) {
+    guard let theme = theme else {
+      return
+    }
+
     readerModeStyle.theme = theme
   }
 
@@ -337,40 +362,26 @@ class FontSizeLabel: UILabel {
 // MARK: -
 
 class ThemeButton: UIButton {
-  var theme: ReaderModeTheme!
+  var theme: ReaderModeTheme?
 
   convenience init(theme: ReaderModeTheme) {
     self.init(frame: .zero)
     self.theme = theme
 
-    setTitle(theme.rawValue, for: [])
-
+    themeBorders()
     accessibilityHint = Strings.readerModeThemeButtonAccessibilityHint
 
-    switch theme {
-    case .light:
-      setTitle(Strings.readerModeThemeButtonTitleLight, for: [])
-      setTitleColor(ReaderModeStyleViewControllerUX.themeTitleColorLight, for: .normal)
-      backgroundColor = ReaderModeStyleViewControllerUX.themeBackgroundColorLight
-    case .dark:
-      setTitle(Strings.readerModeThemeButtonTitleDark, for: [])
-      setTitleColor(ReaderModeStyleViewControllerUX.themeTitleColorDark, for: [])
-      backgroundColor = ReaderModeStyleViewControllerUX.themeBackgroundColorDark
-    case .sepia:
-      setTitle(Strings.readerModeThemeButtonTitleSepia, for: [])
-      setTitleColor(ReaderModeStyleViewControllerUX.themeTitleColorSepia, for: .normal)
-      backgroundColor = ReaderModeStyleViewControllerUX.themeBackgroundColorSepia
-    }
+    backgroundColor = theme.backgroundColor
   }
 
-  var fontType: ReaderModeFontType = .sansSerif {
+  private func themeBorders() {
+    layer.borderWidth = isSelected ? 2 : 1
+    layer.borderColor = isSelected ? UIColor.braveOrange.cgColor : UIColor.braveSeparator.cgColor
+  }
+
+  override var isSelected: Bool {
     didSet {
-      switch fontType {
-      case .sansSerif:
-        titleLabel?.font = UIFont(name: "FiraSans-Book", size: DynamicFontHelper.defaultHelper.ReaderStandardFontSize)
-      case .serif:
-        titleLabel?.font = UIFont(name: "NewYorkMedium-Regular", size: DynamicFontHelper.defaultHelper.ReaderStandardFontSize)
-      }
+      themeBorders()
     }
   }
 }

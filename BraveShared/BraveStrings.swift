@@ -483,9 +483,13 @@ extension Strings {
   public static let readerModeBiggerFontButtonAccessibilityLabel = NSLocalizedString("ReaderModeBiggerFontButtonAccessibilityLabel", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Increase text size", comment: "Accessibility label for button increasing font size in display settings of reader mode")
   public static let readerModeFontSizeLabelText = NSLocalizedString("ReaderModeFontSizeLabelText", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Aa", comment: "Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar.")
   public static let readerModeThemeButtonAccessibilityHint = NSLocalizedString("ReaderModeThemeButtonAccessibilityHint", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Changes color theme.", comment: "Accessibility hint for the color theme setting buttons in reader mode display settings")
-  public static let readerModeThemeButtonTitleLight = NSLocalizedString("ReaderModeThemeButtonTitleLight", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Light", comment: "Light theme setting in Reading View settings")
-  public static let readerModeThemeButtonTitleDark = NSLocalizedString("ReaderModeThemeButtonTitleDark", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Dark", comment: "Dark theme setting in Reading View settings")
-  public static let readerModeThemeButtonTitleSepia = NSLocalizedString("ReaderModeThemeButtonTitleSepia", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Sepia", comment: "Sepia theme setting in Reading View settings")
+
+  public static let readerModeButtonTitle =
+    NSLocalizedString(
+      "readerModeSettingsButton",
+      tableName: "BraveShared",
+      bundle: .braveShared,
+      value: "Reader Mode", comment: "Title of a bar that show up when you enter reader mode.")
 }
 
 // MARK:-  SearchEnginePicker.swift

@@ -9,49 +9,36 @@ import XCGLogger
 
 private let log = Logger.browserLogger
 
-enum ReaderModeBarButtonType {
-  case settings
-
-  fileprivate var localizedDescription: String {
-    switch self {
-    case .settings: return Strings.readerModeDisplaySettingsButtonTitle
-    }
-  }
-
-  fileprivate var imageName: String {
-    switch self {
-    case .settings: return "SettingsSerif"
-    }
-  }
-
-  fileprivate var image: UIImage? {
-    let image = UIImage(imageLiteralResourceName: imageName)
-    image.accessibilityLabel = localizedDescription
-    return image
-  }
-}
-
-protocol ReaderModeBarViewDelegate {
-  func readerModeBar(_ readerModeBar: ReaderModeBarView, didSelectButton buttonType: ReaderModeBarButtonType)
+protocol ReaderModeBarViewDelegate: AnyObject {
+  func readerModeSettingsTapped(_ view: UIView)
 }
 
 class ReaderModeBarView: UIView {
-  var delegate: ReaderModeBarViewDelegate?
+  weak var delegate: ReaderModeBarViewDelegate?
 
-  var settingsButton: UIButton!
+  private let readerModeButton = UIButton(type: .system).then {
+    $0.setTitle(Strings.readerModeButtonTitle, for: .normal)
+    $0.setTitleColor(.braveLabel, for: .normal)
+    $0.titleLabel?.font = .preferredFont(forTextStyle: .subheadline)
+    $0.accessibilityIdentifier = "ReaderModeBarView.readerModeSettingsButton"
+  }
+
+  private let settingsButton = UIButton(type: .system).then {
+    $0.setImage(#imageLiteral(resourceName: "brave-today-settings").template, for: .normal)
+    $0.tintColor = .braveLabel
+    $0.accessibilityIdentifier = "ReaderModeBarView.settingsButton"
+  }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    backgroundColor = .secondaryBraveBackground
+    backgroundColor = .urlBarBackground
 
-    settingsButton = createButton(.settings, action: #selector(tappedSettingsButton))
-    settingsButton.accessibilityIdentifier = "ReaderModeBarView.settingsButton"
-    settingsButton.snp.makeConstraints { (make) -> Void in
-      make.height.centerX.centerY.equalTo(self)
-      make.width.equalTo(80)
+    addSubview(readerModeButton)
+    readerModeButton.addTarget(self, action: #selector(tappedSettingsButton), for: .touchUpInside)
+    readerModeButton.snp.makeConstraints {
+      $0.centerX.centerY.equalToSuperview()
     }
-    settingsButton.tintColor = .braveLabel
 
     let borderView = UIView.separatorLine
     addSubview(borderView)
@@ -59,21 +46,20 @@ class ReaderModeBarView: UIView {
       $0.top.equalTo(snp.bottom)
       $0.leading.trailing.equalToSuperview()
     }
+
+    addSubview(settingsButton)
+    settingsButton.addTarget(self, action: #selector(tappedSettingsButton), for: .touchUpInside)
+    settingsButton.snp.makeConstraints {
+      $0.trailing.equalToSuperview().inset(16)
+      $0.centerY.equalToSuperview()
+    }
   }
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
-  fileprivate func createButton(_ type: ReaderModeBarButtonType, action: Selector) -> UIButton {
-    let button = UIButton()
-    addSubview(button)
-    button.setImage(type.image, for: [])
-    button.addTarget(self, action: action, for: .touchUpInside)
-    return button
-  }
-
   @objc func tappedSettingsButton(_ sender: UIButton!) {
-    delegate?.readerModeBar(self, didSelectButton: .settings)
+    delegate?.readerModeSettingsTapped(sender)
   }
 }
