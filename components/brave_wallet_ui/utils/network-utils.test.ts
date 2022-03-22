@@ -4,7 +4,8 @@ import {
   reduceNetworkDisplayName,
   getNetworksByCoinType,
   getTokensNetwork,
-  getTokensCoinType
+  getTokensCoinType,
+  getCoinFromTxDataUnion
 } from './network-utils'
 import { mockNetworks } from '../stories/mock-data/mock-networks'
 import { NewAssetOptions } from '../options/asset-options'
@@ -70,5 +71,40 @@ describe('getTokensCoinType', () => {
   })
   it('Binance Coin with chainId 0x3333333458, should default to CoinType ETH', () => {
     expect(getTokensCoinType(mockNetworks, { ...bnbToken, chainId: '0x3333333458' })).toEqual(BraveWallet.CoinType.ETH)
+  })
+})
+
+describe('getCoinFromTxDataUnion', () => {
+  it('Filecoin transaction', () => {
+    expect(getCoinFromTxDataUnion({
+      filTxData: {} as BraveWallet.FilTxData,
+      ethTxData: undefined,
+      ethTxData1559: undefined,
+      solanaTxData: undefined
+    })).toEqual(BraveWallet.CoinType.FIL)
+  })
+  it('Ethereum transaction', () => {
+    expect(getCoinFromTxDataUnion({
+      filTxData: undefined,
+      ethTxData: {} as BraveWallet.TxData,
+      ethTxData1559: undefined,
+      solanaTxData: undefined
+    })).toEqual(BraveWallet.CoinType.ETH)
+  })
+  it('Ethereum1559 transaction', () => {
+    expect(getCoinFromTxDataUnion({
+      filTxData: undefined,
+      ethTxData: undefined,
+      ethTxData1559: {} as BraveWallet.TxData1559,
+      solanaTxData: undefined
+    })).toEqual(BraveWallet.CoinType.ETH)
+  })
+  it('Solana transaction', () => {
+    expect(getCoinFromTxDataUnion({
+      filTxData: undefined,
+      ethTxData: undefined,
+      ethTxData1559: undefined,
+      solanaTxData: {} as BraveWallet.SolanaTxData
+    })).toEqual(BraveWallet.CoinType.SOL)
   })
 })

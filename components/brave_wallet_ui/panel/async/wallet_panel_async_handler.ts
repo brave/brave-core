@@ -40,13 +40,14 @@ import {
   dialogErrorFromTrezorErrorCode
 } from '../../common/async/hardware'
 
-import { fetchSwapQuoteFactory, getCoinFromTxDataUnion } from '../../common/async/handlers'
+import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
 
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 import { HardwareVendor } from '../../common/api/hardware_keyrings'
 import { isRemoteImageURL } from '../../utils/string-utils'
+import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 
 const handler = new AsyncActionHandler()
 

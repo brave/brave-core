@@ -57,6 +57,7 @@ import {
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
 import BalanceUpdater from './balanceUpdater'
+import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 
 const handler = new AsyncActionHandler()
 
@@ -107,12 +108,6 @@ async function updateAccountInfo (store: Store) {
   } else {
     await refreshWalletInfo(store)
   }
-}
-
-export const getCoinFromTxDataUnion = (txDataUnion: BraveWallet.TxDataUnion): BraveWallet.CoinType => {
-  if (txDataUnion.filTxData) { return BraveWallet.CoinType.FIL }
-  if (txDataUnion.solanaTxData) { return BraveWallet.CoinType.SOL }
-  return BraveWallet.CoinType.ETH
 }
 
 handler.on(WalletActions.refreshBalancesAndPrices.getType(), async (store: Store) => {
