@@ -13,6 +13,7 @@
 #include "base/bind.h"
 #include "base/json/json_reader.h"
 #include "base/rand_util.h"
+#include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
@@ -78,6 +79,7 @@
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/common/url_constants.h"
+#include "chrome/grit/chromium_strings.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
@@ -933,4 +935,42 @@ void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
   // This will stop NavigatorPlugins from returning fixed plugins data and will
   // allow us to return our farbled data
   web_prefs->allow_non_empty_navigator_plugins = true;
+}
+
+blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
+  blink::UserAgentMetadata metadata =
+      ChromeContentBrowserClient::GetUserAgentMetadata();
+  if (metadata.brand_version_list.size() == 2) {
+    // some logic copied from upstream GetUserAgentBrandList and
+    // GenerateBrandVersionList
+    std::string major_version_string = version_info::GetMajorVersionNumber();
+    int seed = 0;
+    DCHECK(base::StringToInt(major_version_string, &seed));
+    DCHECK_GE(seed, 0);
+    blink::UserAgentBrandVersion greasey_bv =
+        metadata.brand_version_list[seed % 2];
+    blink::UserAgentBrandVersion chromium_bv =
+        metadata.brand_version_list[(seed + 1) % 2];
+    blink::UserAgentBrandVersion brave_bv = {
+        l10n_util::GetStringUTF8(IDS_PRODUCT_NAME), chromium_bv.version};
+    const int npermutations = 6;  // 3!
+    int permutation = seed % npermutations;
+    const std::vector<std::vector<int>> orders{{0, 1, 2}, {0, 2, 1}, {1, 0, 2},
+                                               {1, 2, 0}, {2, 0, 1}, {2, 1, 0}};
+    const std::vector<int> order = orders[permutation];
+    blink::UserAgentBrandList greased_brand_version_list(3);
+    greased_brand_version_list[order[0]] = greasey_bv;
+    greased_brand_version_list[order[1]] = chromium_bv;
+    greased_brand_version_list[order[2]] = brave_bv;
+    metadata.brand_version_list = greased_brand_version_list;
+    greasey_bv.version = base::StrCat({greasey_bv.version, ".0.0.0"});
+    chromium_bv.version = base::StrCat({chromium_bv.version, ".0.0.0"});
+    brave_bv.version = base::StrCat({brave_bv.version, ".0.0.0"});
+    blink::UserAgentBrandList greased_brand_full_version_list(3);
+    greased_brand_full_version_list[order[0]] = greasey_bv;
+    greased_brand_full_version_list[order[1]] = chromium_bv;
+    greased_brand_full_version_list[order[2]] = brave_bv;
+    metadata.brand_full_version_list = greased_brand_full_version_list;
+  }
+  return metadata;
 }

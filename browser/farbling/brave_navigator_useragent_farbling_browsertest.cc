@@ -37,7 +37,11 @@ using content::TitleWatcher;
 
 namespace {
 const char kUserAgentScript[] = "navigator.userAgent";
-}
+const char kBrandScript[] =
+    "navigator.userAgentData.brands[0].brand + '|' + "
+    "navigator.userAgentData.brands[1].brand + '|' + "
+    "navigator.userAgentData.brands[2].brand";
+}  // namespace
 
 class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
  public:
@@ -242,4 +246,15 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   std::u16string expected_title(u"pass");
   TitleWatcher watcher(contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
+
+// Tests results of user agent metadata brands
+IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
+                       AddBraveToNavigatorUserAgentBrandList) {
+  GURL url = https_server()->GetURL("a.com", "/simple.html");
+  NavigateToURLUntilLoadStop(url);
+  std::string brands = EvalJs(contents(), kBrandScript).ExtractString();
+  EXPECT_NE(std::string::npos, brands.find("Brave"));
+  EXPECT_NE(std::string::npos, brands.find("Chromium"));
+  EXPECT_NE(std::string::npos, brands.find(";Not A Brand"));
 }

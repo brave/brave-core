@@ -142,6 +142,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   void OverrideWebkitPrefs(content::WebContents* web_contents,
                            blink::web_pref::WebPreferences* prefs) override;
 
+  blink::UserAgentMetadata GetUserAgentMetadata() override;
+
  private:
   uint64_t session_token_;
   uint64_t incognito_session_token_;
