@@ -746,6 +746,9 @@ interface TxService {
   // Used to reject a transaction
   RejectTransaction(CoinType coin_type, string tx_meta_id) => (bool status);
 
+  // Used to get transaction info
+  GetTransactionInfo(CoinType coin_type, string tx_meta_id) => (TransactionInfo? transaction_info);
+
   // Obtains a list of all transactions from an address.
   // This returns different data depending on which network is currently selected in JsonRpcService
   GetAllTransactionInfo(CoinType coin_type, string from) => (array<TransactionInfo> transaction_infos);

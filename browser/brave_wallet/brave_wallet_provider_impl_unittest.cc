@@ -593,6 +593,19 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     return result;
   }
 
+  mojom::TransactionInfoPtr GetTransactionInfo(const std::string& meta_id) {
+    mojom::TransactionInfoPtr transaction_info;
+    base::RunLoop run_loop;
+    tx_service()->GetTransactionInfo(
+        mojom::CoinType::ETH, meta_id,
+        base::BindLambdaForTesting([&](mojom::TransactionInfoPtr v) {
+          transaction_info = std::move(v);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return transaction_info;
+  }
+
   std::vector<mojom::TransactionInfoPtr> GetAllTransactionInfo() {
     std::vector<mojom::TransactionInfoPtr> transaction_infos;
     base::RunLoop run_loop;
@@ -924,6 +937,9 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransaction) {
   EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from()));
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Unapproved);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
+
+  EXPECT_EQ(*GetTransactionInfo(infos[0]->id), *infos[0]);
+  EXPECT_TRUE(GetTransactionInfo("unknown_id").is_null());
 
   // Set an interceptor and just fake a common repsonse for
   // eth_getTransactionCount and eth_sendRawTransaction

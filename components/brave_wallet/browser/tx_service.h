@@ -55,6 +55,9 @@ class TxService : public KeyedService,
   void RejectTransaction(mojom::CoinType coin_type,
                          const std::string& tx_meta_id,
                          RejectTransactionCallback) override;
+  void GetTransactionInfo(mojom::CoinType coin_type,
+                          const std::string& tx_meta_id,
+                          GetTransactionInfoCallback) override;
   void GetAllTransactionInfo(mojom::CoinType coin_type,
                              const std::string& from,
                              GetAllTransactionInfoCallback) override;
