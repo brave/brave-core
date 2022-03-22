@@ -261,6 +261,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.alignment = .center
     $0.spacing = 8
     $0.translatesAutoresizingMaskIntoConstraints = false
+    $0.isLayoutMarginsRelativeArrangement = true
   }
 
   private let navigationStackView = UIStackView().then {
@@ -272,6 +273,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
     locationContainer.snp.remakeConstraints {
       $0.height.equalTo(TopToolbarViewUX.locationHeight)
     }
+
+    mainStackView.layoutMargins = UIDevice.isIpad ? UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5) : .zero
 
     mainStackView.snp.remakeConstraints { make in
       make.top.bottom.equalTo(self)
