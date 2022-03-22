@@ -8,6 +8,15 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
+#include "base/strings/utf_string_conversions.h"
+#include "brave/components/skus/browser/skus_utils.h"
+#include "net/cookies/cookie_inclusion_status.h"
+#include "net/cookies/parsed_cookie.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/url_util.h"
+
 #if !BUILDFLAG(IS_ANDROID)
 #include "base/base64.h"
 #include "base/bind.h"
@@ -27,15 +36,6 @@
 #include "components/version_info/version_info.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
-
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
-#include "base/strings/utf_string_conversions.h"
-#include "brave/components/skus/browser/skus_utils.h"
-#include "net/cookies/cookie_inclusion_status.h"
-#include "net/cookies/parsed_cookie.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
-#include "url/url_util.h"
 
 namespace {
 

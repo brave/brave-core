@@ -8,7 +8,20 @@
 
 #include <string>
 
+#include "base/bind.h"
+#include "base/callback_forward.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/sequence_checker.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_vpn/brave_vpn.mojom.h"
+#include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "build/build_config.h"
+#include "components/keyed_service/core/keyed_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "url/gurl.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include <memory>
@@ -21,19 +34,6 @@
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
-
-#include "base/bind.h"
-#include "base/callback_forward.h"
-#include "base/memory/scoped_refptr.h"
-#include "base/sequence_checker.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_vpn/brave_vpn.mojom.h"
-#include "brave/components/skus/common/skus_sdk.mojom.h"
-#include "components/keyed_service/core/keyed_service.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
-#include "mojo/public/cpp/bindings/remote_set.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "url/gurl.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -239,7 +239,7 @@ class BraveVpnService :
       const std::string& credential_as_cookie);
 
 #if !BUILDFLAG(IS_ANDROID)
-  PrefService* prefs_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
   std::vector<brave_vpn::mojom::Region> regions_;
   brave_vpn::mojom::Region device_region_;
   brave_vpn::mojom::Region selected_region_;
