@@ -15,6 +15,7 @@
 #include "bat/ads/internal/backoff_timer.h"
 
 namespace base {
+class Time;
 class Value;
 }  // namespace base
 
@@ -52,7 +53,8 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
 
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
 
-  ConfirmationInfo CreateConfirmation(const std::string& transaction_id,
+  ConfirmationInfo CreateConfirmation(const base::Time& time,
+                                      const std::string& transaction_id,
                                       const std::string& creative_instance_id,
                                       const ConfirmationType& confirmation_type,
                                       const AdType& ad_type,

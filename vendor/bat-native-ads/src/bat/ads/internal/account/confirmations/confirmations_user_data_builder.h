@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/user_data/user_data_builder.h"
 
@@ -15,13 +16,15 @@ namespace ads {
 
 class ConfirmationsUserDataBuilder final : public UserDataBuilder {
  public:
-  ConfirmationsUserDataBuilder(const std::string& creative_instance_id,
+  ConfirmationsUserDataBuilder(const base::Time& time,
+                               const std::string& creative_instance_id,
                                const ConfirmationType& confirmation_type);
   ~ConfirmationsUserDataBuilder() override;
 
   void Build(UserDataBuilderCallback callback) const override;
 
  private:
+  base::Time time_;
   std::string creative_instance_id_;
   ConfirmationType confirmation_type_ = ConfirmationType::kUndefined;
 

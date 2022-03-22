@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/account/confirmations/confirmations_user_data_builder.h"
 
-#include <memory>
 #include <string>
 
 #include "base/json/json_writer.h"
@@ -13,6 +12,7 @@
 #include "base/values.h"
 #include "bat/ads/internal/conversions/conversion_queue_item_unittest_util.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "third_party/re2/src/re2/re2.h"
 
@@ -46,18 +46,22 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
 
+  const base::Time time =
+      TimeFromString("November 18 2020 12:34:56.789", /* is_local */ false);
+  AdvanceClock(time);
+
   // Act
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
   // Assert
-  ConfirmationsUserDataBuilder user_data_builder(kCreativeInstanceId,
+  ConfirmationsUserDataBuilder user_data_builder(Now(), kCreativeInstanceId,
                                                  ConfirmationType::kViewed);
   user_data_builder.Build([](const base::Value& user_data) {
     std::string json;
     base::JSONWriter::Write(user_data, &json);
 
     const std::string expected_json =
-        R"({"buildChannel":"release","countryCode":"US","odyssey":"host","platform":"windows","studies":[]})";
+        R"({"buildChannel":"release","countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","odyssey":"host","platform":"windows","studies":[],"systemTimestamp":"2020-11-18T12:00:00.000Z"})";
 
     EXPECT_EQ(expected_json, json);
   });
@@ -73,18 +77,22 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForConversionConfirmationType) {
   sys_info.is_uncertain_future = false;
   SetSysInfo(sys_info);
 
+  const base::Time time =
+      TimeFromString("November 18 2020 12:34:56.789", /* is_local */ false);
+  AdvanceClock(time);
+
   // Act
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
   // Assert
-  ConfirmationsUserDataBuilder user_data_builder(kCreativeInstanceId,
+  ConfirmationsUserDataBuilder user_data_builder(Now(), kCreativeInstanceId,
                                                  ConfirmationType::kConversion);
   user_data_builder.Build([](const base::Value& user_data) {
     std::string json;
     base::JSONWriter::Write(user_data, &json);
 
     const std::string pattern =
-        R"~({"buildChannel":"release","conversionEnvelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"},"countryCode":"US","odyssey":"host","platform":"windows","studies":\[]})~";
+        R"~({"buildChannel":"release","conversionEnvelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"},"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","odyssey":"host","platform":"windows","studies":\[],"systemTimestamp":"2020-11-18T12:00:00.000Z"})~";
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 }

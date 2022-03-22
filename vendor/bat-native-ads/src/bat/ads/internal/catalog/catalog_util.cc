@@ -17,6 +17,10 @@ namespace {
 const int kCatalogLifespanInDays = 1;
 }
 
+std::string GetCatalogId() {
+  return AdsClientHelper::Get()->GetStringPref(prefs::kCatalogId);
+}
+
 bool DoesCatalogExist() {
   return AdsClientHelper::Get()->GetIntegerPref(prefs::kCatalogVersion) > 0;
 }
