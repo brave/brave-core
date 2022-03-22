@@ -57,23 +57,7 @@ RegisterPolymerTemplateModifications({
         `)
       }
     }
-    const clearBrowsingData = templateContent.getElementById('clearBrowsingData')
-    if (!clearBrowsingData || !clearBrowsingData.parentNode) {
-      console.error(`[Brave Settings Overrides] Couldn't find clearBrowsingData`)
-    } else {
-      const isDeAmpFeatureEnabled = loadTimeData.getBoolean('isDeAmpFeatureEnabled')
-      if (isDeAmpFeatureEnabled) {
-        // "beforebegin" assumes existence of parentNode
-        clearBrowsingData.insertAdjacentHTML("beforebegin", `
-          <settings-toggle-button
-            class="hr"
-            pref="{{prefs.brave.de_amp.enabled}}"
-            label="${I18nBehavior.i18n("deAmpSettingLabel")}"
-            sub-label="${I18nBehavior.i18n("deAmpSettingSubLabel")}">
-          </settings-toggle-button>
-      `);
-      }
-    }
+    
     const privacySandboxLinkRow = templateContent.getElementById('privacySandboxLinkRow')
     if (!privacySandboxLinkRow) {
       console.error('[Brave Settings Overrides] Could not find privacySandboxLinkRow id on privacy page.')

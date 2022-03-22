@@ -54,6 +54,12 @@
         sub-label="$i18n{statsUsagePingEnabledDesc}"
         on-settings-boolean-control-change="onStatsUsagePingEnabledChange_">
     </settings-toggle-button>
+    <settings-toggle-button
+        class="cr-row"
+        pref="{{prefs.brave.de_amp.enabled}}"
+        label="$i18n{deAmpSettingLabel}"
+        sub-label="$i18n{deAmpSettingSubLabel}">
+    </settings-toggle-button>
   </template>
   <script src="brave_personalization_options.js"></script>
 </dom-module>
