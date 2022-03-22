@@ -295,15 +295,19 @@ v8::Local<v8::Promise> JSSolanaProvider::SignAndSendTransaction(
     return v8::Local<v8::Promise>();
   }
   v8::Local<v8::Value> transaction;
-  if (arguments->Length() != 1 || !arguments->GetNext(&transaction)) {
-    arguments->ThrowError();
+  if (arguments->Length() < 1 || !arguments->GetNext(&transaction)) {
+    arguments->ThrowTypeError(
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
   }
 
   absl::optional<std::string> serialized_message =
       GetSerializedMessage(transaction);
-  if (!serialized_message)
+  if (!serialized_message) {
+    arguments->ThrowTypeError(
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
+  }
 
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
@@ -329,14 +333,18 @@ v8::Local<v8::Promise> JSSolanaProvider::SignMessage(
     return v8::Local<v8::Promise>();
   }
   v8::Local<v8::Value> message;
-  if (arguments->Length() > 2 || !arguments->GetNext(&message)) {
-    arguments->ThrowError();
+  if (arguments->Length() < 1 || !arguments->GetNext(&message)) {
+    arguments->ThrowTypeError(
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
   }
   std::unique_ptr<base::Value> encoded_msg =
       v8_value_converter_->FromV8Value(message, isolate->GetCurrentContext());
-  if (!encoded_msg->is_string())
+  if (!encoded_msg->is_string()) {
+    arguments->ThrowTypeError(
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
+  }
 
   absl::optional<std::string> display_str = absl::nullopt;
   v8::Local<v8::Value> display;
@@ -370,15 +378,28 @@ v8::Local<v8::Promise> JSSolanaProvider::Request(gin::Arguments* arguments) {
     return v8::Local<v8::Promise>();
   }
   v8::Local<v8::Value> arg;
-  if (arguments->Length() != 1 || !arguments->GetNext(&arg)) {
-    arguments->ThrowError();
+  if (arguments->Length() < 1 || !arguments->GetNext(&arg)) {
+    arguments->ThrowTypeError(
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
   }
 
   std::unique_ptr<base::Value> arg_value =
       v8_value_converter_->FromV8Value(arg, isolate->GetCurrentContext());
-  if (!arg_value->is_dict())
+  if (!arg_value->is_dict()) {
+    arguments->ThrowTypeError(
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return v8::Local<v8::Promise>();
+  }
+  // Passing method to OnRequest in case it needs special handling, ex. connect
+  // which requires us to construct a solanaWeb3.PublicKey object which can only
+  // be done on renderer side.
+  const std::string* method = arg_value->FindStringKey("method");
+  if (!method) {
+    arguments->ThrowTypeError(
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return v8::Local<v8::Promise>();
+  }
 
   auto global_context(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
@@ -388,7 +409,7 @@ v8::Local<v8::Promise> JSSolanaProvider::Request(gin::Arguments* arguments) {
       std::move(*arg_value),
       base::BindOnce(&JSSolanaProvider::OnRequest,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
-                     std::move(promise_resolver), isolate));
+                     std::move(promise_resolver), isolate, *method));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
@@ -667,10 +688,10 @@ void JSSolanaProvider::OnRequest(
     v8::Global<v8::Context> global_context,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
+    const std::string& method,
     mojom::SolanaProviderError error,
     const std::string& error_message,
-    base::Value result,
-    const absl::optional<std::string>& method) {
+    base::Value result) {
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
@@ -678,20 +699,15 @@ void JSSolanaProvider::OnRequest(
   v8::Context::Scope context_scope(context);
   v8::Local<v8::Value> v8_result;
   if (error == mojom::SolanaProviderError::kSuccess) {
-    // Dictionary to object
-    if (!method) {
-      v8_result =
-          v8_value_converter_->ToV8Value(&result, global_context.Get(isolate));
-    } else if (*method == "connect") {
+    if (method == "connect") {
       const std::string* public_key = result.FindStringKey("publicKey");
       DCHECK(public_key);
 
-      v8::Local<v8::Value> v8_public_key;
-      CHECK(GetProperty(context, CreatePublicKey(context, *public_key),
-                        u"publicKey")
-                .ToLocal(&v8_public_key));
-
-      v8_result = v8_public_key;
+      v8_result = CreatePublicKey(context, *public_key);
+    } else {
+      // Dictionary to object
+      v8_result =
+          v8_value_converter_->ToV8Value(&result, global_context.Get(isolate));
     }
   } else {
     std::unique_ptr<base::Value> formed_response =

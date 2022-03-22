@@ -143,10 +143,10 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   void OnRequest(v8::Global<v8::Context> global_context,
                  v8::Global<v8::Promise::Resolver> promise_resolver,
                  v8::Isolate* isolate,
+                 const std::string& method,
                  mojom::SolanaProviderError error,
                  const std::string& error_message,
-                 base::Value result,
-                 const absl::optional<std::string>& method);
+                 base::Value result);
 
   void SendResponse(v8::Global<v8::Context> global_context,
                     v8::Global<v8::Promise::Resolver> promise_resolver,

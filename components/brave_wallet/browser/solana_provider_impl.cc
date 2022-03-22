@@ -64,16 +64,9 @@ void SolanaProviderImpl::SignAndSendTransaction(
     const std::string& encoded_serialized_msg,
     SignAndSendTransactionCallback callback) {
   base::Value result(base::Value::Type::DICTIONARY);
-  result.SetStringKey("publicKey",
-                      "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
-  result.SetStringKey("signature",
-                      "As4N6cok5f7nhXp56Hdw8dWZpUnY8zjYKzBqK45CexE1qNPCqt6Y"
-                      "2gnZduGgqASDD1c6QULBRypVa9BikoxWpGA");
-  std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
+  NOTIMPLEMENTED();
+  std::move(callback).Run(mojom::SolanaProviderError::kInternalError, "",
                           std::move(result));
-  // NOTIMPLEMENTED();
-  // std::move(callback).Run(mojom::SolanaProviderError::kInternalError, "",
-  // std::move(result));
 }
 
 void SolanaProviderImpl::SignMessage(
@@ -81,29 +74,16 @@ void SolanaProviderImpl::SignMessage(
     const absl::optional<std::string>& display_encoding,
     SignMessageCallback callback) {
   base::Value result(base::Value::Type::DICTIONARY);
-  result.SetStringKey("publicKey",
-                      "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
-  result.SetStringKey("signature",
-                      "As4N6cok5f7nhXp56Hdw8dWZpUnY8zjYKzBqK45CexE1qNPCqt6Y"
-                      "2gnZduGgqASDD1c6QULBRypVa9BikoxWpGA");
-  std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
+  NOTIMPLEMENTED();
+  std::move(callback).Run(mojom::SolanaProviderError::kInternalError, "",
                           std::move(result));
-  // NOTIMPLEMENTED();
-  // std::move(callback).Run(mojom::SolanaProviderError::kInternalError, "",
-  // std::move(result));
 }
 
 void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
   base::Value result(base::Value::Type::DICTIONARY);
-  result.SetStringKey("publicKey",
-                      "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
-  result.SetStringKey("signature",
-                      "As4N6cok5f7nhXp56Hdw8dWZpUnY8zjYKzBqK45CexE1qNPCqt6Y"
-                      "2gnZduGgqASDD1c6QULBRypVa9BikoxWpGA");
-  std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
-                          std::move(result), absl::nullopt);
-  // std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
-  //                        std::move(result), "connect");
+  NOTIMPLEMENTED();
+  std::move(callback).Run(mojom::SolanaProviderError::kInternalError, "",
+                          std::move(result));
 }
 
 }  // namespace brave_wallet

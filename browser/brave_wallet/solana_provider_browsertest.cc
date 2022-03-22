@@ -12,6 +12,7 @@
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "chrome/browser/ui/browser.h"
@@ -36,6 +37,9 @@ namespace {
 constexpr char kErrorMessage[] = "error from browser";
 constexpr char kTestPublicKey[] =
     "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+constexpr char kTestSignature[] =
+    "As4N6cok5f7nhXp56Hdw8dWZpUnY8zjYKzBqK45CexE1qNPCqt6Y2gnZduGgqASDD1c6QULBRy"
+    "pVa9BikoxWpGA";
 
 const std::vector<uint8_t> kSerializedMessage = {
     1,   0,   1,   2,   161, 51,  89,  91,  115, 210, 217, 212, 76,  159, 171,
@@ -77,6 +81,13 @@ const std::vector<uint8_t> kSignedTx = {
     1,   1,   2,   0,   0,   12,  2,   0,   0,   0,   100, 0,   0,   0,   0,
     0,   0,   0};
 
+const std::vector<uint8_t> kMessageToSign = {
+    84,  111, 32,  97,  118, 111, 105, 100, 32,  100, 105, 103, 105, 116, 97,
+    108, 32,  100, 111, 103, 110, 97,  112, 112, 101, 114, 115, 44,  32,  115,
+    105, 103, 110, 32,  98,  101, 108, 111, 119, 32,  116, 111, 32,  97,  117,
+    116, 104, 101, 110, 116, 105, 99,  97,  116, 101, 32,  119, 105, 116, 104,
+    32,  67,  114, 121, 112, 116, 111, 67,  111, 114, 103, 105, 115, 46};
+
 std::string VectorToArrayString(const std::vector<uint8_t>& vec) {
   std::string result;
   for (size_t i = 0; i < vec.size(); ++i) {
@@ -85,6 +96,10 @@ std::string VectorToArrayString(const std::vector<uint8_t>& vec) {
       base::StrAppend(&result, {", "});
   }
   return result;
+}
+
+std::string GetRequstObject(const std::string& method) {
+  return base::StringPrintf(R"({method: "%s", params: {}})", method.c_str());
 }
 
 std::string ConnectScript(const std::string& args) {
@@ -107,7 +122,7 @@ std::string SignTransactionScript(const std::string& args) {
             const result = await window.solana.signTransaction%s
             if (result.serialize().join() === new Uint8Array([%s]).join())
               window.domAutomationController.send(true)
-             else
+            else
               window.domAutomationController.send(false)
           } catch (err) {
             window.domAutomationController.send(err.message + (err.code ?? ""))
@@ -126,13 +141,74 @@ std::string SignAllTransactionsScript(const std::string& args) {
               (tx) => tx.serialize().join() === new Uint8Array([%s]).join()
             if (result.every(isSameTx))
               window.domAutomationController.send(true)
-             else
+            else
               window.domAutomationController.send(false)
           } catch (err) {
             window.domAutomationController.send(err.message + (err.code ?? ""))
           }
         } signAllTransactions())",
       args.c_str(), signed_tx.c_str());
+}
+
+std::string SignAndSendTransactionScript(const std::string& args) {
+  const std::string expected_result = base::StringPrintf(
+      R"({ publicKey: "%s", signature: "%s"})", kTestPublicKey, kTestSignature);
+  return base::StringPrintf(
+      R"(async function signAndSendTransaction() {
+          try {
+            const result = await window.solana.signAndSendTransaction%s
+            if (JSON.stringify(result) === JSON.stringify(%s))
+              window.domAutomationController.send(true)
+            else
+              window.domAutomationController.send(false)
+          } catch (err) {
+            window.domAutomationController.send(err.message + (err.code ?? ""))
+          }
+        } signAndSendTransaction())",
+      args.c_str(), expected_result.c_str());
+}
+
+std::string SignMessageScript(const std::string& args) {
+  std::vector<uint8_t> signature(brave_wallet::kSolanaSignatureSize);
+  EXPECT_TRUE(brave_wallet::Base58Decode(std::string(kTestSignature),
+                                         &signature, signature.size()));
+  const std::string signature_str = VectorToArrayString(signature);
+  const std::string expected_result = base::StringPrintf(
+      R"({ publicKey: "%s", signature: new Uint8Array([%s])})", kTestPublicKey,
+      signature_str.c_str());
+  return base::StringPrintf(
+      R"(async function signMessage() {
+          try {
+            const result = await window.solana.signMessage%s
+            if (JSON.stringify(result) === JSON.stringify(%s))
+              window.domAutomationController.send(true)
+            else
+              window.domAutomationController.send(false)
+          } catch (err) {
+            window.domAutomationController.send(err.message + (err.code ?? ""))
+          }
+        } signMessage())",
+      args.c_str(), expected_result.c_str());
+}
+
+std ::string RequestScript(const std::string& args) {
+  const std::string expected_result = base::StringPrintf(
+      R"({ publicKey: "%s", signature: "%s"})", kTestPublicKey, kTestSignature);
+  return base::StringPrintf(
+      R"(async function request() {
+          try {
+            const result = await window.solana.request%s
+            if (JSON.stringify(result) === JSON.stringify(%s))
+              window.domAutomationController.send(true)
+            else if (result.publicKey)
+              window.domAutomationController.send(result.publicKey.toString())
+            else
+              window.domAutomationController.send(false)
+          } catch (err) {
+            window.domAutomationController.send(err.message + (err.code ?? ""))
+          }
+        } request())",
+      args.c_str(), expected_result.c_str());
 }
 
 class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
@@ -194,11 +270,47 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   }
   void SignAndSendTransaction(
       const std::string& encoded_serialized_msg,
-      SignAndSendTransactionCallback callback) override {}
+      SignAndSendTransactionCallback callback) override {
+    EXPECT_EQ(encoded_serialized_msg,
+              brave_wallet::Base58Encode(kSerializedMessage));
+    base::Value result(base::Value::Type::DICTIONARY);
+    if (error_ == SolanaProviderError::kSuccess) {
+      result.SetStringKey("publicKey", kTestPublicKey);
+      result.SetStringKey("signature", kTestSignature);
+      std::move(callback).Run(SolanaProviderError::kSuccess, "",
+                              std::move(result));
+    } else {
+      std::move(callback).Run(error_, error_message_, std::move(result));
+      ClearError();
+    }
+  }
   void SignMessage(const std::string& encoded_msg,
                    const absl::optional<std::string>& display_encoding,
-                   SignMessageCallback callback) override {}
-  void Request(base::Value arg, RequestCallback callback) override {}
+                   SignMessageCallback callback) override {
+    EXPECT_EQ(encoded_msg, brave_wallet::Base58Encode(kMessageToSign));
+    base::Value result(base::Value::Type::DICTIONARY);
+    if (error_ == SolanaProviderError::kSuccess) {
+      result.SetStringKey("publicKey", kTestPublicKey);
+      result.SetStringKey("signature", kTestSignature);
+      std::move(callback).Run(SolanaProviderError::kSuccess, "",
+                              std::move(result));
+    } else {
+      std::move(callback).Run(error_, error_message_, std::move(result));
+      ClearError();
+    }
+  }
+  void Request(base::Value arg, RequestCallback callback) override {
+    base::Value result(base::Value::Type::DICTIONARY);
+    if (error_ == SolanaProviderError::kSuccess) {
+      result.SetStringKey("publicKey", kTestPublicKey);
+      result.SetStringKey("signature", kTestSignature);
+      std::move(callback).Run(SolanaProviderError::kSuccess, "",
+                              std::move(result));
+    } else {
+      std::move(callback).Run(error_, error_message_, std::move(result));
+      ClearError();
+    }
+  }
 
   void SetError(SolanaProviderError error, const std::string& error_message) {
     error_ = error;
@@ -561,6 +673,160 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
 
   provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
   auto result6 = EvalJs(web_contents(browser()), SignAllTransactionsScript(txs),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  // check error message + error code
+  EXPECT_EQ(base::Value(kErrorMessage +
+                        base::NumberToString(static_cast<int>(
+                            SolanaProviderError::kUserRejectedRequest))),
+            result6.value);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
+  const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
+  const std::string tx =
+      base::StrCat({"(window.solana.createTransaction(new Uint8Array([",
+                    serialized_tx_str, "])))"});
+  auto result =
+      EvalJs(web_contents(browser()), SignAndSendTransactionScript(tx),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result.value);
+
+  // allow extra parameters
+  const std::string tx2 = base::StrCat({"(", tx, ", {})"});
+  auto result2 =
+      EvalJs(web_contents(browser()), SignAndSendTransactionScript(tx2),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result2.value);
+
+  // no arg
+  auto result3 =
+      EvalJs(web_contents(browser()), SignAndSendTransactionScript("()"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(
+      base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
+      result3.value);
+
+  // not solanaWeb3.Transaction
+  auto result4 =
+      EvalJs(web_contents(browser()), SignAndSendTransactionScript("('123')"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(
+      base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
+      result4.value);
+
+  TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
+      web_contents(browser())->GetMainFrame());
+  ASSERT_TRUE(provider);
+
+  provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
+
+  auto result5 =
+      EvalJs(web_contents(browser()), SignAndSendTransactionScript(tx),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  // check error message + error code
+  EXPECT_EQ(base::Value(kErrorMessage +
+                        base::NumberToString(static_cast<int>(
+                            SolanaProviderError::kUserRejectedRequest))),
+            result5.value);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
+  const std::string msg_str = VectorToArrayString(kMessageToSign);
+  const std::string msg = base::StrCat({"(new Uint8Array([", msg_str, "]))"});
+  auto result = EvalJs(web_contents(browser()), SignMessageScript(msg),
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result.value);
+
+  // with display
+  const std::string msg2 =
+      base::StrCat({"(new Uint8Array([", msg_str, "], \"utf8\"))"});
+  auto result2 = EvalJs(web_contents(browser()), SignMessageScript(msg2),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result2.value);
+
+  // allow extra parameters
+  const std::string msg3 =
+      base::StrCat({"(new Uint8Array([", msg_str, "], \"utf8\", 123))"});
+  auto result3 = EvalJs(web_contents(browser()), SignMessageScript(msg2),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result3.value);
+
+  // not Uint8Array
+  const std::string msg4 = base::StrCat({"([", msg_str, "])"});
+  auto result4 =
+      EvalJs(web_contents(browser()), SignAndSendTransactionScript(msg4),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(
+      base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
+      result4.value);
+
+  // no arg
+  auto result5 =
+      EvalJs(web_contents(browser()), SignAndSendTransactionScript("()"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(
+      base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
+      result5.value);
+
+  TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
+      web_contents(browser())->GetMainFrame());
+  ASSERT_TRUE(provider);
+
+  provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
+
+  auto result6 = EvalJs(web_contents(browser()), SignMessageScript(msg),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  // check error message + error code
+  EXPECT_EQ(base::Value(kErrorMessage +
+                        base::NumberToString(static_cast<int>(
+                            SolanaProviderError::kUserRejectedRequest))),
+            result6.value);
+}
+
+// Request test here won't be testing params object, renderer just convert the
+// object to dictionary and pass it to browser and it is resposibility of
+// browser process to extract the info
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
+  const std::string request =
+      base::StrCat({"(", GetRequstObject("connect"), ")"});
+  auto result = EvalJs(web_contents(browser()), RequestScript(request),
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(kTestPublicKey), result.value);
+
+  const std::string request2 =
+      base::StrCat({"(", GetRequstObject("signAndSendTransaction"), ")"});
+  auto result2 = EvalJs(web_contents(browser()), RequestScript(request2),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result2.value);
+
+  // allow extra parameters
+  const std::string request3 =
+      base::StrCat({"(", GetRequstObject("signTransaction"), ", 123)"});
+  auto result3 = EvalJs(web_contents(browser()), RequestScript(request3),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result2.value);
+
+  // no arg
+  auto result4 = EvalJs(web_contents(browser()), RequestScript("()"),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(
+      base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
+      result4.value);
+
+  // object without method
+  auto result5 = EvalJs(web_contents(browser()), RequestScript("({})"),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(
+      base::Value(l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)),
+      result5.value);
+
+  TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
+      web_contents(browser())->GetMainFrame());
+  ASSERT_TRUE(provider);
+
+  provider->SetError(SolanaProviderError::kUserRejectedRequest, kErrorMessage);
+
+  auto result6 = EvalJs(web_contents(browser()), RequestScript(request),
                         content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   // check error message + error code
   EXPECT_EQ(base::Value(kErrorMessage +
