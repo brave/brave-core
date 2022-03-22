@@ -49,6 +49,9 @@ struct AccountActivityView: View {
   }
 
   var body: some View {
+    let assetRatios = activityStore.assets.reduce(into: [String: Double](), {
+      $0[$1.token.symbol.lowercased()] = Double($1.price)
+    })
     List {
       Section {
         AccountActivityHeaderView(account: accountInfo) { editMode in
@@ -89,12 +92,9 @@ struct AccountActivityView: View {
               keyringStore: keyringStore,
               networkStore: networkStore,
               visibleTokens: activityStore.assets.map(\.token),
+              allTokens: activityStore.allTokens,
               displayAccountCreator: false,
-              assetRatios: activityStore.assets.reduce(
-                into: [String: Double](),
-                {
-                  $0[$1.token.symbol.lowercased()] = Double($1.price)
-                })
+              assetRatios: assetRatios
             )
             .contextMenu {
               if !tx.txHash.isEmpty {

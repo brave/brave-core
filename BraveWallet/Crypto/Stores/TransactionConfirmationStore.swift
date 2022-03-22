@@ -119,21 +119,19 @@ public class TransactionConfirmationStore: ObservableObject {
 
         let formatter = WeiFormatter(decimalFormatStyle: .balance)
         let txValue = transaction.ethTxValue.removingHexPrefix
-
-        self.blockchainRegistry.allTokens(BraveWallet.MainnetChainId) { tokens in
+        
+        self.blockchainRegistry.allTokens(chainId) { tokens in
           self.walletService.userAssets(chainId) { userAssets in
-            let allTokens =
-              tokens
-              + userAssets.filter { asset in
-                // Only get custom tokens
-                !tokens.contains(where: { $0.contractAddress == asset.contractAddress })
-              }
-
+            let allTokens = tokens + userAssets.filter { asset in
+              // Only get custom tokens
+              !tokens.contains(where: { $0.contractAddress(in: selectedChain).caseInsensitiveCompare(asset.contractAddress) == .orderedSame })
+            }
+            
             switch transaction.txType {
             case .erc20Approve:
               // Find token in args
               if let token = allTokens.first(where: {
-                $0.contractAddress.caseInsensitiveCompare(transaction.txArgs[0]) == .orderedSame
+                $0.contractAddress(in: selectedChain).caseInsensitiveCompare(transaction.txArgs[0]) == .orderedSame
               }) {
                 self.state.symbol = token.symbol
                 let approvalValue = transaction.txArgs[1].removingHexPrefix
@@ -141,7 +139,7 @@ public class TransactionConfirmationStore: ObservableObject {
               }
             case .erc20Transfer:
               if let token = allTokens.first(where: {
-                $0.contractAddress.caseInsensitiveCompare(transaction.ethTxToAddress) == .orderedSame
+                $0.contractAddress(in: selectedChain).caseInsensitiveCompare(transaction.ethTxToAddress) == .orderedSame
               }) {
                 self.state.symbol = token.symbol
                 let value = transaction.txArgs[1].removingHexPrefix

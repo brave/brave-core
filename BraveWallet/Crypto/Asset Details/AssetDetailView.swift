@@ -85,7 +85,8 @@ struct AssetDetailView: View {
               info: tx,
               keyringStore: keyringStore,
               networkStore: networkStore,
-              visibleTokens: [],
+              visibleTokens: [assetDetailStore.token],
+              allTokens: [], // AssetDetailView is specific to a single token
               displayAccountCreator: true,
               assetRatios: [assetDetailStore.token.symbol.lowercased(): assetDetailStore.assetPriceValue]
             )

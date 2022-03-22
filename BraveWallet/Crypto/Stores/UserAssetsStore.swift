@@ -78,15 +78,16 @@ public class UserAssetsStore: ObservableObject {
   private func updateSelectedAssets(_ network: BraveWallet.EthereumChain) {
     walletService.userAssets(network.chainId) { [self] userAssets in
       let visibleAssetIds = userAssets.filter(\.visible).map(\.id)
-      let isTestnet = network.chainId != BraveWallet.MainnetChainId
-      blockchainRegistry.allTokens(BraveWallet.MainnetChainId) { registryTokens in
-        allTokens = (isTestnet ? [] : registryTokens) + [network.nativeToken]
+      blockchainRegistry.allTokens(network.chainId) { registryTokens in
+        allTokens = registryTokens + [network.nativeToken]
         assetStores = allTokens.union(userAssets, f: { $0.id }).map { token in
           AssetStore(
             walletService: walletService,
             chainId: network.chainId,
             token: token,
-            isCustomToken: !allTokens.contains(where: { $0.contractAddress == token.contractAddress }),
+            isCustomToken: !allTokens.contains(where: {
+              $0.contractAddress(in: network).caseInsensitiveCompare(token.contractAddress) == .orderedSame
+            }),
             isVisible: visibleAssetIds.contains(token.id)
           )
         }

@@ -8,7 +8,7 @@ import BraveCore
 public class CryptoStore: ObservableObject {
   public let networkStore: NetworkStore
   public let portfolioStore: PortfolioStore
-
+  
   @Published var buySendSwapDestination: BuySendSwapDestination? {
     didSet {
       if buySendSwapDestination == nil {
@@ -27,7 +27,7 @@ public class CryptoStore: ObservableObject {
     }
   }
   @Published private(set) var hasUnapprovedTransactions: Bool = false
-
+  
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
@@ -36,7 +36,7 @@ public class CryptoStore: ObservableObject {
   let blockchainRegistry: BraveWalletBlockchainRegistry
   private let txService: BraveWalletTxService
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
-
+  
   public init(
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
@@ -55,7 +55,7 @@ public class CryptoStore: ObservableObject {
     self.blockchainRegistry = blockchainRegistry
     self.txService = txService
     self.ethTxManagerProxy = ethTxManagerProxy
-
+    
     self.networkStore = .init(rpcService: rpcService)
     self.portfolioStore = .init(
       keyringService: keyringService,
@@ -64,11 +64,11 @@ public class CryptoStore: ObservableObject {
       assetRatioService: assetRatioService,
       blockchainRegistry: blockchainRegistry
     )
-
+    
     self.keyringService.add(self)
     self.txService.add(self)
   }
-
+  
   private var buyTokenStore: BuyTokenStore?
   func openBuyTokenStore(_ prefilledToken: BraveWallet.BlockchainToken?) -> BuyTokenStore {
     if let store = buyTokenStore {
@@ -82,7 +82,7 @@ public class CryptoStore: ObservableObject {
     buyTokenStore = store
     return store
   }
-
+  
   private var sendTokenStore: SendTokenStore?
   func openSendTokenStore(_ prefilledToken: BraveWallet.BlockchainToken?) -> SendTokenStore {
     if let store = sendTokenStore {
@@ -100,7 +100,7 @@ public class CryptoStore: ObservableObject {
     sendTokenStore = store
     return store
   }
-
+  
   private var swapTokenStore: SwapTokenStore?
   func openSwapTokenStore(_ prefilledToken: BraveWallet.BlockchainToken?) -> SwapTokenStore {
     if let store = swapTokenStore {
@@ -120,7 +120,7 @@ public class CryptoStore: ObservableObject {
     swapTokenStore = store
     return store
   }
-
+  
   private var assetDetailStore: AssetDetailStore?
   func assetDetailStore(for token: BraveWallet.BlockchainToken) -> AssetDetailStore {
     if let store = assetDetailStore, store.token.id == token.id {
@@ -137,13 +137,13 @@ public class CryptoStore: ObservableObject {
     assetDetailStore = store
     return store
   }
-
+  
   func closeAssetDetailStore(for token: BraveWallet.BlockchainToken) {
     if let store = assetDetailStore, store.token.id == token.id {
       assetDetailStore = nil
     }
   }
-
+  
   private var accountActivityStore: AccountActivityStore?
   func accountActivityStore(for account: BraveWallet.AccountInfo) -> AccountActivityStore {
     if let store = accountActivityStore, store.account.address == account.address {
@@ -154,18 +154,19 @@ public class CryptoStore: ObservableObject {
       walletService: walletService,
       rpcService: rpcService,
       assetRatioService: assetRatioService,
-      txService: txService
+      txService: txService,
+      blockchainRegistry: blockchainRegistry
     )
     accountActivityStore = store
     return store
   }
-
+  
   func closeAccountActivityStore(for account: BraveWallet.AccountInfo) {
     if let store = accountActivityStore, store.account.address == account.address {
       accountActivityStore = nil
     }
   }
-
+  
   private var confirmationStore: TransactionConfirmationStore?
   func openConfirmationStore() -> TransactionConfirmationStore {
     if let store = confirmationStore {
@@ -183,13 +184,13 @@ public class CryptoStore: ObservableObject {
     confirmationStore = store
     return store
   }
-
+  
   private(set) lazy var settingsStore = SettingsStore(
     keyringService: keyringService,
     walletService: walletService,
     txService: txService
   )
-
+  
   func fetchUnapprovedTransactions() {
     keyringService.defaultKeyringInfo { [self] keyring in
       var pendingTransactions: [BraveWallet.TransactionInfo] = []
