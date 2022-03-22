@@ -250,8 +250,10 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   std::vector<mojom::SolanaInstructionPtr> instructions;
   instructions.push_back(std::move(instruction));
 
-  auto solana_tx_data =
-      mojom::SolanaTxData::New("", from_account, std::move(instructions));
+  auto solana_tx_data = mojom::SolanaTxData::New(
+      "" /* recent_blockhash */, from_account, to_account,
+      "" /* spl_token_mint_address */, 10000000u /* lamport */, 0 /* amount */,
+      mojom::TransactionType::SolanaSystemTransfer, std::move(instructions));
 
   auto tx = SolanaTransaction::FromSolanaTxData(solana_tx_data.Clone());
   ASSERT_TRUE(tx);

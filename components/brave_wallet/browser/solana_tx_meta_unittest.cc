@@ -32,6 +32,9 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   auto tx = std::make_unique<SolanaTransaction>(
       recent_blockhash, from_account,
       std::vector<SolanaInstruction>({instruction}));
+  tx->set_to_wallet_address(to_account);
+  tx->set_lamports(10000000u);
+  tx->set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
 
   SolanaTxMeta meta(std::move(tx));
   SolanaSignatureStatus status(82, 10, "", "confirmed");
@@ -63,7 +66,7 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   EXPECT_EQ(meta.confirmed_time().ToJavaTime(),
             ti->confirmed_time.InMilliseconds());
 
-  EXPECT_EQ(mojom::TransactionType::Other, ti->tx_type);
+  EXPECT_EQ(meta.tx()->tx_type(), ti->tx_type);
   EXPECT_TRUE(ti->tx_params.empty());
   EXPECT_TRUE(ti->tx_args.empty());
 
@@ -82,8 +85,10 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
 
   ASSERT_TRUE(ti->tx_data_union->is_solana_tx_data());
   EXPECT_EQ(ti->tx_data_union->get_solana_tx_data(),
-            mojom::SolanaTxData::New(recent_blockhash, from_account,
-                                     std::move(instructions)));
+            mojom::SolanaTxData::New(
+                recent_blockhash, from_account, to_account, "", 10000000, 0,
+                mojom::TransactionType::SolanaSystemTransfer,
+                std::move(instructions)));
 }
 
 TEST(SolanaTxMetaUnitTest, ToValue) {
@@ -102,6 +107,9 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
   auto tx = std::make_unique<SolanaTransaction>(
       recent_blockhash, from_account,
       std::vector<SolanaInstruction>({instruction}));
+  tx->set_to_wallet_address(to_account);
+  tx->set_lamports(10000000u);
+  tx->set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
 
   SolanaTxMeta meta(std::move(tx));
   SolanaSignatureStatus status(82, 10, "", "confirmed");
@@ -152,7 +160,12 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
               "data": "AgAAAICWmAAAAAAA"
             }
           ]
-        }
+        },
+        "to_wallet_address": "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV",
+        "spl_token_mint_address": "",
+        "lamports": "10000000",
+        "amount": "0",
+        "tx_type": 6
       },
       "signature_status": {
         "slot": "82",

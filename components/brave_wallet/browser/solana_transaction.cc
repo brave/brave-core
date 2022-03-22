@@ -8,6 +8,8 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/check.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
@@ -24,6 +26,9 @@ SolanaTransaction::SolanaTransaction(
 
 SolanaTransaction::SolanaTransaction(SolanaMessage&& message)
     : message_(std::move(message)) {}
+
+SolanaTransaction::SolanaTransaction(const SolanaTransaction&) = default;
+SolanaTransaction::~SolanaTransaction() = default;
 
 bool SolanaTransaction::operator==(const SolanaTransaction& tx) const {
   return message_ == tx.message_;
@@ -69,13 +74,34 @@ std::string SolanaTransaction::GetSignedTransaction(
 }
 
 mojom::SolanaTxDataPtr SolanaTransaction::ToSolanaTxData() const {
-  return message_.ToSolanaTxData();
+  auto solana_tx_data = message_.ToSolanaTxData();
+  solana_tx_data->to_wallet_address = to_wallet_address_;
+  solana_tx_data->spl_token_mint_address = spl_token_mint_address_;
+  solana_tx_data->tx_type = tx_type_;
+  solana_tx_data->lamports = lamports_;
+  solana_tx_data->amount = amount_;
+  return solana_tx_data;
 }
 
 base::Value SolanaTransaction::ToValue() const {
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetKey("message", message_.ToValue());
+
+  dict.SetStringKey("to_wallet_address", to_wallet_address_);
+  dict.SetStringKey("spl_token_mint_address", spl_token_mint_address_);
+  dict.SetIntKey("tx_type", static_cast<int>(tx_type_));
+  dict.SetStringKey("lamports", base::NumberToString(lamports_));
+  dict.SetStringKey("amount", base::NumberToString(amount_));
+
   return dict;
+}
+
+void SolanaTransaction::set_tx_type(mojom::TransactionType tx_type) {
+  DCHECK(tx_type >= mojom::TransactionType::Other &&
+         tx_type <=
+             mojom::TransactionType::
+                 SolanaSPLTokenTransferWithAssociatedTokenAccountCreation);
+  tx_type_ = tx_type;
 }
 
 // static
@@ -92,7 +118,37 @@ absl::optional<SolanaTransaction> SolanaTransaction::FromValue(
   if (!message)
     return absl::nullopt;
 
-  return SolanaTransaction(std::move(*message));
+  auto tx = SolanaTransaction(std::move(*message));
+
+  const auto* to_wallet_address = value.FindStringKey("to_wallet_address");
+  if (!to_wallet_address)
+    return absl::nullopt;
+  tx.set_to_wallet_address(*to_wallet_address);
+
+  const auto* spl_token_mint_address =
+      value.FindStringKey("spl_token_mint_address");
+  if (!spl_token_mint_address)
+    return absl::nullopt;
+  tx.set_spl_token_mint_address(*spl_token_mint_address);
+
+  auto tx_type = value.FindIntKey("tx_type");
+  if (!tx_type)
+    return absl::nullopt;
+  tx.set_tx_type(static_cast<mojom::TransactionType>(*tx_type));
+
+  const auto* lamports_string = value.FindStringKey("lamports");
+  uint64_t lamports = 0;
+  if (!lamports_string || !base::StringToUint64(*lamports_string, &lamports))
+    return absl::nullopt;
+  tx.set_lamports(lamports);
+
+  const auto* amount_string = value.FindStringKey("amount");
+  uint64_t amount = 0;
+  if (!amount_string || !base::StringToUint64(*amount_string, &amount))
+    return absl::nullopt;
+  tx.set_amount(amount);
+
+  return tx;
 }
 
 // static
@@ -101,9 +157,15 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromSolanaTxData(
   std::vector<SolanaInstruction> instructions;
   SolanaInstruction::FromMojomSolanaInstructions(solana_tx_data->instructions,
                                                  &instructions);
-  return std::make_unique<SolanaTransaction>(solana_tx_data->recent_blockhash,
-                                             solana_tx_data->fee_payer,
-                                             std::move(instructions));
+  auto tx = std::make_unique<SolanaTransaction>(
+      solana_tx_data->recent_blockhash, solana_tx_data->fee_payer,
+      std::move(instructions));
+  tx->set_to_wallet_address(solana_tx_data->to_wallet_address);
+  tx->set_spl_token_mint_address(solana_tx_data->spl_token_mint_address);
+  tx->set_tx_type(solana_tx_data->tx_type);
+  tx->set_lamports(solana_tx_data->lamports);
+  tx->set_amount(solana_tx_data->amount);
+  return tx;
 }
 
 }  // namespace brave_wallet
