@@ -61,8 +61,6 @@ void ApplyLifetimeToPermissionRequests(
       permission_prompt->delegate()->Requests();
   if (requests.size() != 0 &&
       requests[0]->request_type() == permissions::RequestType::kBraveEthereum) {
-    // TODO(sergz) make a proper clean up as we don't call it on dialog dismiss
-    // currently
     Java_BravePermissionDialogDelegate_disconnectMojoServices(env, obj);
 
     return;
