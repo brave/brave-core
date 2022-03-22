@@ -127,8 +127,7 @@ private struct AccountDetailsHeaderView: View {
     filter.message = addressData
     filter.correctionLevel = "H"
     if let image = filter.outputImage,
-      let cgImage = context.createCGImage(image, from: image.extent)
-    {
+      let cgImage = context.createCGImage(image, from: image.extent) {
       return UIImage(cgImage: cgImage)
     }
     return nil

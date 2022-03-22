@@ -188,8 +188,7 @@ class PlaylistManager: NSObject {
   func sizeOfDownloadedItem(for pageSrc: String) -> String? {
     var isDirectory: ObjCBool = false
     if let asset = downloadManager.localAsset(for: pageSrc),
-      FileManager.default.fileExists(atPath: asset.url.path, isDirectory: &isDirectory)
-    {
+      FileManager.default.fileExists(atPath: asset.url.path, isDirectory: &isDirectory) {
 
       let formatter = ByteCountFormatter().then {
         $0.zeroPadsFractionDigits = true
@@ -281,8 +280,7 @@ class PlaylistManager: NSObject {
       }
 
       if let cacheItem = PlaylistItem.getItem(pageSrc: item.pageSrc),
-        cacheItem.cachedData != nil
-      {
+        cacheItem.cachedData != nil {
         if !deleteCache(item: item) {
           // If we cannot delete an item's cache for any given reason,
           // Do NOT delete the folder containing the item.
@@ -323,8 +321,7 @@ class PlaylistManager: NSObject {
     }
 
     if let cacheItem = PlaylistItem.getItem(pageSrc: item.pageSrc),
-      cacheItem.cachedData != nil
-    {
+      cacheItem.cachedData != nil {
       // Do NOT delete the item if we can't delete it's local cache.
       // That will cause zombie items.
       if deleteCache(item: item) {
@@ -346,8 +343,7 @@ class PlaylistManager: NSObject {
 
     if let cacheItem = PlaylistItem.getItem(pageSrc: item.pageSrc),
       let cachedData = cacheItem.cachedData,
-      !cachedData.isEmpty
-    {
+      !cachedData.isEmpty {
       var isStale = false
 
       do {
@@ -427,8 +423,7 @@ class PlaylistManager: NSObject {
               options: [.skipsHiddenFiles])
             assets.forEach({
               if let item = PlaylistItem.cachedItem(cacheURL: $0),
-                let pageSrc = item.pageSrc
-              {
+                let pageSrc = item.pageSrc {
                 self.cancelDownload(item: PlaylistInfo(item: item))
                 PlaylistItem.updateCache(pageSrc: pageSrc, cachedData: nil)
               }

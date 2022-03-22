@@ -154,8 +154,7 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
   func queryForSearchURL(_ url: URL?) -> String? {
     if isSearchURLForEngine(url) {
       if let key = searchQueryComponentKey,
-        let value = url?.getQuery()[key]
-      {
+        let value = url?.getQuery()[key] {
         return value.replacingOccurrences(of: "+", with: " ").removingPercentEncoding
       }
     }
@@ -350,8 +349,7 @@ class OpenSearchParser {
     } else if let imageElement = largestImageElement,
       let imageURL = URL(string: imageElement.stringValue),
       let imageData = try? Data(contentsOf: imageURL),
-      let image = UIImage.imageFromDataThreadSafe(imageData)
-    {
+      let image = UIImage.imageFromDataThreadSafe(imageData) {
       uiImage = image
     } else {
       print("Error: Invalid search image data")

@@ -138,8 +138,7 @@ class TabTrayController: LoadingViewController {
     if initialScrollCompleted { return }
 
     if let selectedTab = tabManager.selectedTab,
-      let selectedIndexPath = dataSource.indexPath(for: selectedTab)
-    {
+      let selectedIndexPath = dataSource.indexPath(for: selectedTab) {
       DispatchQueue.main.async {
         self.tabTrayView.collectionView.scrollToItem(at: selectedIndexPath, at: .centeredVertically, animated: false)
       }

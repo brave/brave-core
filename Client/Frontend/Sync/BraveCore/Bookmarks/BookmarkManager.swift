@@ -54,8 +54,7 @@ class BookmarkManager {
 
     // Display last visited folder..
     if let folderNode = bookmarksAPI.getNodeById(nodeId),
-      folderNode.isVisible
-    {
+      folderNode.isVisible {
       return Bookmarkv2(folderNode)
     }
 
@@ -74,8 +73,7 @@ class BookmarkManager {
     if Preferences.General.showLastVisitedBookmarksFolder.value,
       let nodeId = Preferences.Chromium.lastBookmarksFolderNodeId.value,
       var folderNode = bookmarksAPI.getNodeById(nodeId),
-      folderNode.isVisible
-    {
+      folderNode.isVisible {
 
       // We don't ever display the root node
       // It is the mother of all nodes
@@ -217,8 +215,7 @@ class BookmarkManager {
     }
 
     if let node = frc.object(at: sourceIndexPath)?.bookmarkNode,
-      let parent = node.parent ?? bookmarksAPI.mobileNode
-    {
+      let parent = node.parent ?? bookmarksAPI.mobileNode {
 
       // Moving to the very last index.. same as appending..
       if destinationIndexPath.row == parent.children.count - 1 {
@@ -277,8 +274,7 @@ class BookmarkManager {
     let observer = BookmarkModelStateObserver { [weak self] state in
       if case .favIconChanged(let node) = state {
         if node.isValid && bookmarkItem.bookmarkNode.isValid
-          && node.guid == bookmarkItem.bookmarkNode.guid
-        {
+          && node.guid == bookmarkItem.bookmarkNode.guid {
 
           if bookmarkItem.bookmarkNode.isFavIconLoaded {
             self?.removeFavIconObserver(bookmarkItem)

@@ -189,8 +189,7 @@ class VideoTrackerBar: UIView {
     if CMTimeCompare(endTime, .zero) != 0,
       endTime.value > 0,
       currentTime.isValid && !currentTime.isIndefinite,
-      endTime.isValid && !endTime.isIndefinite
-    {
+      endTime.isValid && !endTime.isIndefinite {
 
       slider.value = CGFloat(currentTime.value) / CGFloat(endTime.value)
       currentTimeLabel.text = VideoTrackerBar.timeToString(currentTime)
@@ -248,8 +247,7 @@ class VideoTrackerBar: UIView {
   public static func timeToString(_ time: CMTime) -> String {
     let totalSeconds = abs(CMTimeGetSeconds(time))
     if Int(totalSeconds) >= 3600,
-      let result = formatter.string(from: totalSeconds)
-    {
+      let result = formatter.string(from: totalSeconds) {
       // It is necessary to use the correct formatter because the formatter
       // can drop leading zeroes which will cause `0s` to show instead of `00:00`
       // Also if all zeroes are dropped and padded, it formats as `00`.

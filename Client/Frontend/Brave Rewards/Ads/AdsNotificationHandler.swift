@@ -111,13 +111,11 @@ public class AdsNotificationHandler: BraveAdsNotificationHandler {
     func topViewController(startingFrom viewController: UIViewController) -> UIViewController {
       var top = viewController
       if let navigationController = top as? UINavigationController,
-        let vc = navigationController.visibleViewController
-      {
+        let vc = navigationController.visibleViewController {
         return topViewController(startingFrom: vc)
       }
       if let tabController = top as? UITabBarController,
-        let vc = tabController.selectedViewController
-      {
+        let vc = tabController.selectedViewController {
         return topViewController(startingFrom: vc)
       }
       while let next = top.presentedViewController {

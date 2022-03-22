@@ -88,8 +88,7 @@ class TPStatsBlocklistChecker {
       if isAdOrTrackerListEnabled
         && AdBlockStats.shared.shouldBlock(
           request,
-          currentTabUrl: currentTabUrl)
-      {
+          currentTabUrl: currentTabUrl) {
         completion(BlocklistName.ad)
         return
       }

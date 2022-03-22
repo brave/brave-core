@@ -335,8 +335,7 @@ extension BrowserViewController: TopToolbarDelegate {
           }
 
           if let recentSearch = recentSearch,
-            let searchType = RecentSearchType(rawValue: recentSearch.searchType)
-          {
+            let searchType = RecentSearchType(rawValue: recentSearch.searchType) {
             if shouldSubmitSearch {
               recentSearch.update(dateAdded: Date())
             }

@@ -195,8 +195,7 @@ extension BraveSyncAPI {
 
     if let image = filter.outputImage,
       image.extent.size.width > 0.0,
-      image.extent.size.height > 0.0
-    {
+      image.extent.size.height > 0.0 {
       let scaleX = size.width / image.extent.size.width
       let scaleY = size.height / image.extent.size.height
       let transform = CGAffineTransform(scaleX: scaleX, y: scaleY)

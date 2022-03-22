@@ -245,8 +245,7 @@ class TabManager: NSObject {
       // Also look for tabs that haven't been restored yet.
       if let sessionData = tab.sessionData,
         0..<sessionData.urls.count ~= sessionData.currentPage,
-        sessionData.urls[sessionData.currentPage] == url
-      {
+        sessionData.urls[sessionData.currentPage] == url {
         return tab
       }
     }
@@ -631,8 +630,7 @@ class TabManager: NSObject {
           } else {
             return tab2
           }
-        }), parentTab == newTab, tab !== newTab, newTab.lastExecutedTime != nil
-    {
+        }), parentTab == newTab, tab !== newTab, newTab.lastExecutedTime != nil {
       // We select the most recently visited tab, only if it is also the parent tab of the closed tab.
       _selectedIndex = allTabs.firstIndex(of: newTab) ?? -1
     } else {
@@ -858,8 +856,7 @@ class TabManager: NSObject {
     var savedTabs = [TabMO]()
 
     if let autocloseTime = Preferences.AutoCloseTabsOption(
-      rawValue: Preferences.General.autocloseTabs.value)?.timeInterval
-    {
+      rawValue: Preferences.General.autocloseTabs.value)?.timeInterval {
       // To avoid db problems, we first retrieve fresh tabs(on main thread context)
       // then delete old tabs(background thread context)
       savedTabs = TabMO.all(noOlderThan: autocloseTime)

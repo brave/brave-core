@@ -17,8 +17,7 @@ class CarplayTemplateApplicationSceneDelegate: NSObject {
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     if scene is CPTemplateApplicationScene,
-      session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName
-    {
+      session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName {
       log.debug("Template application scene will connect.")
     }
   }

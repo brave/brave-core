@@ -434,8 +434,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         // and update `item.isFavIconLoading` and `item.isFavIconLoaded` properties..
         // Order of this if-statement matters because of that logic!
         if (item.bookmarkNode.icon == nil && (item.bookmarkNode.isFavIconLoading || item.bookmarkNode.isFavIconLoaded))
-          || item.bookmarkNode.icon != nil
-        {
+          || item.bookmarkNode.icon != nil {
           setFavIcon(cell, item)
         } else if let domain = item.domain, let url = domain.url?.asURL {
           // favicon object associated through domain relationship - set from cache or download

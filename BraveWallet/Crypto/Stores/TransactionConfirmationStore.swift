@@ -190,13 +190,11 @@ public class TransactionConfirmationStore: ObservableObject {
           return
         }
         if let price = prices.first(where: { $0.fromAsset == symbolKey }),
-          let ratio = Double(price.price)
-        {
+          let ratio = Double(price.price) {
           self.assetRatios[symbolKey] = ratio
         }
         if let price = prices.first(where: { $0.fromAsset == gasKey }),
-          let gasRatio = Double(price.price)
-        {
+          let gasRatio = Double(price.price) {
           self.assetRatios[gasKey] = gasRatio
         }
         updateState()

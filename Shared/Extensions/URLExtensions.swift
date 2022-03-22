@@ -287,8 +287,7 @@ extension URL {
 
   public var withoutWWW: URL {
     if let normalized = self.normalizedHost(stripWWWSubdomainOnly: true),
-      var components = URLComponents(url: self, resolvingAgainstBaseURL: false)
-    {
+      var components = URLComponents(url: self, resolvingAgainstBaseURL: false) {
       components.scheme = self.scheme
       components.port = self.port
       components.host = normalized

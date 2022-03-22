@@ -101,8 +101,7 @@ class AssetDetailStore: ObservableObject {
         self.isLoadingPrice = false
         self.isInitialState = false
         if let assetPrice = prices.first(where: { $0.toAsset == "usd" }),
-          let value = Double(assetPrice.price)
-        {
+          let value = Double(assetPrice.price) {
           self.assetPriceValue = value
           self.price = Self.priceFormatter.string(from: NSNumber(value: value)) ?? ""
           if let deltaValue = Double(assetPrice.assetTimeframeChange) {

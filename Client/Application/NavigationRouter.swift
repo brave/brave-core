@@ -69,8 +69,7 @@ enum NavigationPath: Equatable {
     } else if urlString.starts(with: "\(scheme)://shortcut"),
       let valueString = components.valueForQuery("path"),
       let value = WidgetShortcut.RawValue(valueString),
-      let path = WidgetShortcut(rawValue: value)
-    {
+      let path = WidgetShortcut(rawValue: value) {
       self = .widgetShortcutURL(path)
     } else {
       return nil

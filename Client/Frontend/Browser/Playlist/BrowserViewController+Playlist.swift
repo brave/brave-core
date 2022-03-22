@@ -258,8 +258,7 @@ extension BrowserViewController: PlaylistHelperDelegate {
     if shouldShowOnboarding {
       if Preferences.Playlist.addToPlaylistURLBarOnboardingCount.value < 2,
         shouldShowPlaylistOnboardingThisSession,
-        presentedViewController == nil
-      {
+        presentedViewController == nil {
         Preferences.Playlist.addToPlaylistURLBarOnboardingCount.value += 1
 
         topToolbar.layoutIfNeeded()

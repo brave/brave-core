@@ -222,8 +222,7 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
         else { continue }
 
         if downloadTask.state != .completed,
-          let item = PlaylistItem.getItem(pageSrc: pageSrc)
-        {
+          let item = PlaylistItem.getItem(pageSrc: pageSrc) {
           let info = PlaylistInfo(item: item)
           let asset = MediaDownloadTask(id: info.pageSrc, name: info.name, asset: downloadTask.urlAsset)
           self.activeDownloadTasks[downloadTask] = asset
@@ -336,8 +335,7 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
 
     if asset == nil,
       let taskDescription = task.taskDescription,
-      let taskURL = URL(string: taskDescription)
-    {
+      let taskURL = URL(string: taskDescription) {
       asset = MediaDownloadTask(
         id: taskDescription,
         name: "System Restore - Cached Item",
@@ -458,8 +456,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
           if task.state != .completed,
             let item = PlaylistItem.getItem(pageSrc: pageSrc),
             let mediaSrc = item.mediaSrc,
-            let assetUrl = URL(string: mediaSrc)
-          {
+            let assetUrl = URL(string: mediaSrc) {
             let info = PlaylistInfo(item: item)
             let asset = MediaDownloadTask(id: info.pageSrc, name: info.name, asset: AVURLAsset(url: assetUrl))
             self.activeDownloadTasks[task] = asset
@@ -511,8 +508,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
     var asset = activeDownloadTasks.removeValue(forKey: task)
     if asset == nil,
       let taskDescription = task.taskDescription,
-      let taskURL = URL(string: taskDescription)
-    {
+      let taskURL = URL(string: taskDescription) {
       asset = MediaDownloadTask(
         id: taskDescription,
         name: "System Restore - Cached Item",
@@ -578,8 +574,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
 
     if asset == nil,
       let taskDescription = downloadTask.taskDescription,
-      let taskURL = URL(string: taskDescription)
-    {
+      let taskURL = URL(string: taskDescription) {
       asset = MediaDownloadTask(
         id: taskDescription,
         name: "System Restore - Cached Item",
@@ -609,16 +604,14 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
 
       // Detect based on File Extension.
       if let url = downloadTask.originalRequest?.url,
-        let detectedExtension = PlaylistMimeTypeDetector(url: url).fileExtension
-      {
+        let detectedExtension = PlaylistMimeTypeDetector(url: url).fileExtension {
         detectedFileExtension = detectedExtension
       }
 
       // Detect based on Content-Type header.
       if detectedFileExtension == nil,
         let contentType = response.allHeaderFields["Content-Type"] as? String,
-        let detectedExtension = PlaylistMimeTypeDetector(mimeType: contentType).fileExtension
-      {
+        let detectedExtension = PlaylistMimeTypeDetector(mimeType: contentType).fileExtension {
         detectedFileExtension = detectedExtension
       }
 

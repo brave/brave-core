@@ -189,8 +189,7 @@ class AdblockResourceDownloader {
       }
 
       if let lastModified = $0.resource.lastModifiedTimestamp,
-        let data = String(lastModified).data(using: .utf8)
-      {
+        let data = String(lastModified).data(using: .utf8) {
         let lastModifiedFileName = fileName + ".lastmodified"
         fileSaveCompletions.append(
           fm.writeToDiskInFolder(
