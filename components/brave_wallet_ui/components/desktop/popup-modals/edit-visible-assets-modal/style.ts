@@ -97,6 +97,22 @@ export const FormWrapper = styled.div`
   margin-top: 10px;
 `
 
+export const FormRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`
+
+export const FormColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 49%;
+`
+
 export const InputLabel = styled.span`
   font-family: Poppins;
   font-size: 14px;
@@ -108,7 +124,7 @@ export const InputLabel = styled.span`
 
 export const Input = styled.input`
   outline: none;
-  width: 250px;
+  width: 265px;
   background-image: none;
   background-color: ${(p) => p.theme.color.background02};
   box-shadow: none;
