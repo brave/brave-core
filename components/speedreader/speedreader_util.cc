@@ -54,10 +54,6 @@ bool URLReadableHintExtractor::HasHints(const GURL& url) {
   return false;
 }
 
-bool PageDoesntSupportDistillation(DistillState state) {
-  return state == DistillState::kNone || state == DistillState::kUnknown;
-}
-
 bool PageSupportsDistillation(DistillState state) {
   return state == DistillState::kSpeedreaderOnDisabledPage ||
          state == DistillState::kPageProbablyReadable;

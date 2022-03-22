@@ -46,7 +46,8 @@ SpeedreaderIconView::~SpeedreaderIconView() = default;
 
 void SpeedreaderIconView::UpdateImpl() {
   const DistillState state = GetDistillState();
-  if (speedreader::PageDoesntSupportDistillation(state)) {
+  if (!speedreader::PageStateIsDistilled(state) &&
+      !speedreader::PageSupportsDistillation(state)) {
     SetVisible(false);
     return;
   }
@@ -56,31 +57,21 @@ void SpeedreaderIconView::UpdateImpl() {
                                               nullptr);
   }
 
-  const ui::ThemeProvider* theme_provider = GetThemeProvider();
-  const bool is_distilled = speedreader::PageStateIsDistilled(state);
-
-  if (is_distilled) {
-    UpdateIconImage();
-    if (theme_provider) {
+  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+    if (speedreader::PageStateIsDistilled(state)) {
       const SkColor icon_color_active = theme_provider->GetColor(
           BraveThemeProperties::COLOR_SPEEDREADER_ICON);
       SetIconColor(icon_color_active);
-    }
-    SetVisible(true);
-  } else {
-    if (speedreader::PageSupportsDistillation(state)) {
+    } else if (speedreader::PageSupportsDistillation(state)) {
       // Reset the icon color
-      if (theme_provider) {
-        const SkColor icon_color_default =
-            GetOmniboxColor(theme_provider, OmniboxPart::RESULTS_ICON);
-        SetIconColor(icon_color_default);
-      }
-      UpdateIconImage();
-      SetVisible(true);
-    } else {
-      SetVisible(false);
+      const SkColor icon_color_default =
+          GetOmniboxColor(theme_provider, OmniboxPart::RESULTS_ICON);
+      SetIconColor(icon_color_default);
     }
   }
+
+  UpdateIconImage();
+  SetVisible(true);
 }
 
 const gfx::VectorIcon& SpeedreaderIconView::GetVectorIcon() const {

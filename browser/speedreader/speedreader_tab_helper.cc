@@ -77,7 +77,7 @@ bool SpeedreaderTabHelper::IsEnabledForSite(const GURL& url) {
   return speedreader::IsEnabledForSite(content_rules_, url);
 }
 
-void SpeedreaderTabHelper::Distill() {
+void SpeedreaderTabHelper::ProcessIconClick() {
   switch (distill_state_) {
     case DistillState::kSpeedreaderMode:
     case DistillState::kSpeedreaderOnDisabledPage:
@@ -85,7 +85,7 @@ void SpeedreaderTabHelper::Distill() {
       break;
     case DistillState::kReaderMode:
       SetNextRequestState(DistillState::kPageProbablyReadable);
-      ClearCache();
+      ClearPersistedData();
       ReloadContents();
       break;
     case DistillState::kPageProbablyReadable:
@@ -107,7 +107,7 @@ void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
 
   speedreader::SetEnabledForSite(content_rules_,
                                  web_contents()->GetLastCommittedURL(), on);
-  ClearCache();
+  ClearPersistedData();
   ReloadContents();
 }
 
@@ -218,7 +218,7 @@ void SpeedreaderTabHelper::HideBubble() {
   }
 }
 
-void SpeedreaderTabHelper::ClearCache() {
+void SpeedreaderTabHelper::ClearPersistedData() {
   if (auto* entry = web_contents()->GetController().GetLastCommittedEntry()) {
     SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
   }
@@ -278,7 +278,7 @@ void SpeedreaderTabHelper::OnPrefChanged() {
 }
 
 void SpeedreaderTabHelper::UpdateButtonIfNeeded() {
-  if (!is_active_)
+  if (!is_visible_)
     return;
   if (const auto* browser =
           chrome::FindBrowserWithWebContents(web_contents())) {
@@ -304,7 +304,7 @@ void SpeedreaderTabHelper::DidStopLoading() {
 }
 
 void SpeedreaderTabHelper::OnVisibilityChanged(content::Visibility visibility) {
-  is_active_ = visibility != content::Visibility::HIDDEN;
+  is_visible_ = visibility != content::Visibility::HIDDEN;
 }
 
 void SpeedreaderTabHelper::WebContentsDestroyed() {

@@ -47,7 +47,8 @@ class SpeedreaderTabHelper
   // active web contents is blacklisted.
   bool IsEnabledForSite();
 
-  void Distill();
+  // In Speedreader mode shows bubble. In Reader mode toggles state.
+  void ProcessIconClick();
 
   DistillState PageDistillState() const { return distill_state_; }
 
@@ -94,12 +95,16 @@ class SpeedreaderTabHelper
   void UpdateActiveState(const GURL& url);
   void SetNextRequestState(DistillState state);
 
-  void ClearCache();
+  void ClearPersistedData();
   void ReloadContents();
+
+  // Applies the distill state & updates UI for the navigation.
   void ProcessNavigation(content::NavigationHandle* navigation_handle);
 
+  // Updates the distill state when the global speedreader state is changed.
   void OnPrefChanged();
 
+  // Updates UI if the tab is visible.
   void UpdateButtonIfNeeded();
 
   // content::WebContentsObserver:
@@ -116,7 +121,7 @@ class SpeedreaderTabHelper
 
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 
-  bool is_active_ = false;
+  bool is_visible_ = false;
 
   bool single_shot_next_request_ =
       false;  // run speedreader once on next page load

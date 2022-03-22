@@ -51,7 +51,6 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
   void ForwardBodyToClient();
 
   base::WeakPtr<DeAmpThrottle> de_amp_throttle_;
-  base::WeakPtrFactory<DeAmpURLLoader> weak_factory_{this};
 };
 
 }  // namespace de_amp
