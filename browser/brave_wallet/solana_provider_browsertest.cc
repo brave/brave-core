@@ -88,6 +88,16 @@ const std::vector<uint8_t> kMessageToSign = {
     116, 104, 101, 110, 116, 105, 99,  97,  116, 101, 32,  119, 105, 116, 104,
     32,  67,  114, 121, 112, 116, 111, 67,  111, 114, 103, 105, 115, 46};
 
+constexpr char OnAccountChangedScript[] =
+    R"(async function disconnect() {await window.solana.disconnect()}
+       window.solana.on('accountChanged', (result) => {
+        if (result instanceof Object)
+          window.domAutomationController.send(result.toString())
+        else
+          window.domAutomationController.send(result)
+       })
+       disconnect())";
+
 std::string VectorToArrayString(const std::vector<uint8_t>& vec) {
   std::string result;
   for (size_t i = 0; i < vec.size(); ++i) {
@@ -219,7 +229,11 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   TestSolanaProvider& operator=(const TestSolanaProvider&) = delete;
 
   void Init(mojo::PendingRemote<brave_wallet::mojom::SolanaEventsListener>
-                events_listener) override {}
+                events_listener) override {
+    if (!events_listener_.is_bound()) {
+      events_listener_.Bind(std::move(events_listener));
+    }
+  }
   void Connect(absl::optional<base::Value> arg,
                ConnectCallback callback) override {
     if (error_ == SolanaProviderError::kSuccess) {
@@ -230,7 +244,13 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
       ClearError();
     }
   }
-  void Disconnect() override {}
+  void Disconnect() override {
+    // Used to test onAccountChanged
+    if (emit_empty_account_changed_)
+      events_listener_->AccountChangedEvent(absl::nullopt);
+    else
+      events_listener_->AccountChangedEvent(kTestPublicKey);
+  }
   void IsConnected(IsConnectedCallback callback) override {
     if (error_ == SolanaProviderError::kSuccess) {
       std::move(callback).Run(true);
@@ -317,6 +337,10 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
     error_message_ = error_message;
   }
 
+  void SetEmitEmptyAccountChanged(bool value) {
+    emit_empty_account_changed_ = value;
+  }
+
  private:
   void ClearError() {
     error_ = SolanaProviderError::kSuccess;
@@ -324,6 +348,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   }
   SolanaProviderError error_ = SolanaProviderError::kSuccess;
   std::string error_message_;
+  bool emit_empty_account_changed_ = false;
   mojo::Remote<brave_wallet::mojom::SolanaEventsListener> events_listener_;
 };
 
@@ -833,4 +858,20 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
                         base::NumberToString(static_cast<int>(
                             SolanaProviderError::kUserRejectedRequest))),
             result6.value);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, OnAccountChanged) {
+  auto result = EvalJs(web_contents(browser()), OnAccountChangedScript,
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(kTestPublicKey), result.value);
+
+  TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
+      web_contents(browser())->GetMainFrame());
+  ASSERT_TRUE(provider);
+
+  provider->SetEmitEmptyAccountChanged(true);
+
+  auto result2 = EvalJs(web_contents(browser()), OnAccountChangedScript,
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(), result2.value);
 }
