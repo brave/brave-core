@@ -155,6 +155,7 @@ static_library("ethereum_permission_utils") {
 
   deps = [
     "//base",
+    "//net",
     "//third_party/re2",
     "//url",
   ]

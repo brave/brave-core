@@ -9,6 +9,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -135,6 +136,11 @@ bool GetSubRequestOrigin(const GURL& old_origin,
   return AddAccountToHost(old_origin, account, new_origin);
 }
 
+std::string eTLDPlusOne(const GURL& url) {
+  return net::registry_controlled_domains::GetDomainAndRegistry(
+      url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+}
+
 GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
                                 const std::vector<std::string>& accounts,
                                 const std::string& origin) {
@@ -145,6 +151,8 @@ GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
     query_parts.push_back(base::StringPrintf("addr=%s", account.c_str()));
   }
   query_parts.push_back(base::StringPrintf("origin=%s", origin.c_str()));
+  query_parts.push_back(base::StringPrintf("etld-plus-one=%s",
+                                           eTLDPlusOne(GURL(origin)).c_str()));
   std::string query_str = base::JoinString(query_parts, "&");
   url::Replacements<char> replacements;
   replacements.SetQuery(query_str.c_str(), url::Component(0, query_str.size()));
