@@ -115,8 +115,7 @@ class ErrorPageHelper {
       let certChain = error.userInfo["NSErrorPeerCertificateChainKey"] as? [SecCertificate],
       let cert = certChain.first,
       let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? NSError,
-      let certErrorCode = underlyingError.userInfo["_kCFStreamErrorCodeKey"] as? Int
-    {
+      let certErrorCode = underlyingError.userInfo["_kCFStreamErrorCodeKey"] as? Int {
       let encodedCert = (SecCertificateCopyData(cert) as Data).base64EncodedString
       queryItems.append(URLQueryItem(name: "badcert", value: encodedCert))
 
@@ -141,8 +140,7 @@ extension ErrorPageHelper {
   static func certificateError(for url: URL) -> Int {
     if InternalURL.isValid(url: url),
       let internalUrl = InternalURL(url),
-      internalUrl.isErrorPage
-    {
+      internalUrl.isErrorPage {
 
       let query = url.getQuery()
       guard let code = query["code"],
@@ -152,8 +150,7 @@ extension ErrorPageHelper {
       }
 
       if let code = CFNetworkErrors(rawValue: Int32(errCode)),
-        CertificateErrorPageHandler.CFNetworkErrorsCertErrors.contains(code)
-      {
+        CertificateErrorPageHandler.CFNetworkErrorsCertErrors.contains(code) {
         return errCode
       }
 
@@ -194,8 +191,7 @@ extension ErrorPageHelper: TabContentScript {
       UIApplication.shared.open(originalURL, options: [:])
     case MessageCertVisitOnce:
       if let cert = CertificateErrorPageHandler.certFromErrorURL(errorURL),
-        let host = originalURL.host
-      {
+        let host = originalURL.host {
         let origin = "\(host):\(originalURL.port ?? 443)"
         certStore?.addCertificate(cert, forOrigin: origin)
         message.webView?.replaceLocation(with: originalURL)

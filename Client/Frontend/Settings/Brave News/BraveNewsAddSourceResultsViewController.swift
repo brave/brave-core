@@ -84,8 +84,7 @@ class BraveNewsAddSourceResultsViewController: UITableViewController {
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let locations = indexPath.section == 0 ? secureLocations : insecureLocations
     if let location = locations[safe: indexPath.row],
-      let cell = tableView.cellForRow(at: indexPath) as? FeedLocationCell
-    {
+      let cell = tableView.cellForRow(at: indexPath) as? FeedLocationCell {
       if selectedLocations.remove(location) == nil {
         selectedLocations.insert(location)
       }

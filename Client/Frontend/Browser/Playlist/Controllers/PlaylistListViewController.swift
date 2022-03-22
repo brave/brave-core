@@ -197,8 +197,7 @@ class PlaylistListViewController: UIViewController {
     playerView.setControlsEnabled(false)
 
     if let initialItem = initialItem,
-      let item = PlaylistItem.getItem(pageSrc: initialItem.pageSrc)
-    {
+      let item = PlaylistItem.getItem(pageSrc: initialItem.pageSrc) {
       PlaylistManager.shared.currentFolder = item.playlistFolder
     }
 
@@ -248,8 +247,7 @@ class PlaylistListViewController: UIViewController {
 
     // If the current item is already playing, do nothing.
     if let currentItemSrc = PlaylistCarplayManager.shared.currentPlaylistItem?.pageSrc,
-      PlaylistManager.shared.index(of: currentItemSrc) != nil
-    {
+      PlaylistManager.shared.index(of: currentItemSrc) != nil {
       return
     }
 
@@ -700,8 +698,7 @@ extension PlaylistListViewController {
   func onFavIconSelected(_ videoView: VideoView) {
     if let browser = PlaylistCarplayManager.shared.browserController,
       let currentItem = PlaylistCarplayManager.shared.currentPlaylistItem,
-      let pageURL = URL(string: currentItem.pageSrc)
-    {
+      let pageURL = URL(string: currentItem.pageSrc) {
 
       self.dismiss(animated: true) {
         let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing

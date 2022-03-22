@@ -251,8 +251,7 @@ extension TabbedPageViewController: UIPageViewControllerDelegate {
   /// `UIPageViewController`
   private var currentIndex: Int? {
     if let currentController = pageViewController.viewControllers?.first,
-      let currentIndex = pages.firstIndex(of: currentController)
-    {
+      let currentIndex = pages.firstIndex(of: currentController) {
       return currentIndex
     }
     return nil

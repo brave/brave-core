@@ -142,8 +142,7 @@ class PlaylistCarplayController: NSObject {
 
         items.forEach({
           if let userInfo = $0.userInfo as? [String: Any],
-            let itemId = userInfo["id"] as? String
-          {
+            let itemId = userInfo["id"] as? String {
 
             $0.accessoryType = PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
 
@@ -651,8 +650,7 @@ extension PlaylistCarplayController {
 
     let index = PlaylistCarplayManager.shared.currentlyPlayingItemIndex - 1
     if index < PlaylistManager.shared.numberOfAssets,
-      let item = PlaylistManager.shared.itemAtIndex(index)
-    {
+      let item = PlaylistManager.shared.itemAtIndex(index) {
       PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
       playItem(item: item) { [weak self] error in
         PlaylistCarplayManager.shared.currentPlaylistItem = nil
@@ -700,8 +698,7 @@ extension PlaylistCarplayController {
     }
 
     if index >= 0,
-      let item = PlaylistManager.shared.itemAtIndex(index)
-    {
+      let item = PlaylistManager.shared.itemAtIndex(index) {
       PlaylistCarplayManager.shared.currentPlaylistItem = item
       PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
       self.playItem(item: item) { [weak self] error in
@@ -835,8 +832,7 @@ extension PlaylistCarplayController {
     let cacheState = PlaylistManager.shared.state(for: item.pageSrc)
     if cacheState != .invalid {
       if let index = PlaylistManager.shared.index(of: item.pageSrc),
-        let asset = PlaylistManager.shared.assetAtIndex(index)
-      {
+        let asset = PlaylistManager.shared.assetAtIndex(index) {
         load(asset: asset, autoPlayEnabled: true)
           .handleEvents(receiveCancel: {
             if !isPlaying {
@@ -982,8 +978,7 @@ extension PlaylistCarplayController {
     Preferences.Playlist.lastPlayedItemUrl.value = item.pageSrc
 
     if let playTime = player.currentItem?.currentTime(),
-      Preferences.Playlist.playbackLeftOff.value
-    {
+      Preferences.Playlist.playbackLeftOff.value {
       Preferences.Playlist.lastPlayedItemTime.value = playTime.seconds
     } else {
       Preferences.Playlist.lastPlayedItemTime.value = 0.0

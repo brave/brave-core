@@ -30,8 +30,7 @@ extension BrowserViewController {
     // 1. User is brand new
     // 2. User hasn't completed onboarding
     if Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue,
-      Preferences.General.isNewRetentionUser.value == true
-    {
+      Preferences.General.isNewRetentionUser.value == true {
       let onboardingController = WelcomeViewController(
         profile: profile,
         rewards: rewards)
@@ -80,8 +79,7 @@ extension BrowserViewController {
       Preferences.DebugFlag.skipNTPCallouts != true,
       !topToolbar.inOverlayMode,
       topToolbar.currentURL == nil,
-      !Preferences.FullScreenCallout.ntpCalloutCompleted.value
-    {
+      !Preferences.FullScreenCallout.ntpCalloutCompleted.value {
       presentNTPStatsOnboarding()
     }
   }

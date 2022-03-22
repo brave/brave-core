@@ -272,22 +272,19 @@ class MockKeyringService: BraveWalletKeyringService {
       }
       // Has at least one letter
       if (try NSRegularExpression(pattern: "[a-zA-Z]", options: []))
-        .numberOfMatches(in: password, options: [], range: range) < 1
-      {
+        .numberOfMatches(in: password, options: [], range: range) < 1 {
         completion(false)
         return
       }
       // Has at least one number
       if (try NSRegularExpression(pattern: "[0-9]", options: []))
-        .numberOfMatches(in: password, options: [], range: range) < 1
-      {
+        .numberOfMatches(in: password, options: [], range: range) < 1 {
         completion(false)
         return
       }
       // Has at least one non-alphanumeric
       if (try NSRegularExpression(pattern: "[^0-9a-zA-Z]", options: []))
-        .numberOfMatches(in: password, options: [], range: range) < 1
-      {
+        .numberOfMatches(in: password, options: [], range: range) < 1 {
         completion(false)
         return
       }

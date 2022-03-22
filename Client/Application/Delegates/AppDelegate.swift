@@ -188,8 +188,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     if !Preferences.BraveNews.languageChecked.value,
-      let languageCode = Locale.preferredLanguages.first?.prefix(2)
-    {
+      let languageCode = Locale.preferredLanguages.first?.prefix(2) {
       Preferences.BraveNews.languageChecked.value = true
       // Base opt-in visibility on whether or not the user's language is supported in BT
       Preferences.BraveNews.isShowingOptIn.value = FeedDataSource.supportedLanguages.contains(String(languageCode))

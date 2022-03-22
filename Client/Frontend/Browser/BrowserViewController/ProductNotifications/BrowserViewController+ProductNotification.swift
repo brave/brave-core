@@ -61,8 +61,7 @@ extension BrowserViewController {
     var isAboutHomeUrl = false
     if let selectedTab = tabManager.selectedTab,
       let url = selectedTab.url,
-      let internalURL = InternalURL(url)
-    {
+      let internalURL = InternalURL(url) {
       isAboutHomeUrl = internalURL.isAboutHomeURL
     }
 
@@ -113,8 +112,7 @@ extension BrowserViewController {
     var isAboutHomeUrl = false
     if let selectedTab = tabManager.selectedTab,
       let url = selectedTab.url,
-      let internalURL = InternalURL(url)
-    {
+      let internalURL = InternalURL(url) {
       isAboutHomeUrl = internalURL.isAboutHomeURL
     }
 
@@ -133,8 +131,7 @@ extension BrowserViewController {
 
     // Step 1: Load a video on a streaming site
     if !Preferences.ProductNotificationBenchmarks.videoAdBlockShown.value,
-      selectedTab.url?.isVideoSteamingSiteURL == true
-    {
+      selectedTab.url?.isVideoSteamingSiteURL == true {
 
       notifyVideoAdsBlocked()
       Preferences.ProductNotificationBenchmarks.videoAdBlockShown.value = true
@@ -168,8 +165,7 @@ extension BrowserViewController {
     // Data Saved Pop-Over only exist in JP locale
     if Locale.current.regionCode == "JP" {
       if !benchmarkNotificationPresented,
-        !Preferences.ProductNotificationBenchmarks.showingSpecificDataSavedEnabled.value
-      {
+        !Preferences.ProductNotificationBenchmarks.showingSpecificDataSavedEnabled.value {
         guard let currentURL = selectedTab.url,
           DataSaved.get(with: currentURL.absoluteString) == nil,
           let domainFetchedSiteSavings = benchmarkBlockingDataSource?.fetchDomainFetchedSiteSavings(currentURL)

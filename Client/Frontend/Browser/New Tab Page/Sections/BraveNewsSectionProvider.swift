@@ -156,16 +156,14 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
     if iabTrackedCellContexts.isEmpty { return }
     for (indexPath, context) in iabTrackedCellContexts {
       if cellAtIndexPathIsMostlyVisible(indexPath, context: context),
-        context.runningTimer == nil
-      {
+        context.runningTimer == nil {
         context.runningTimer = Timer.scheduledTimer(
           withTimeInterval: 1.0, repeats: false,
           block: { [weak self] timer in
             guard let self = self else { return }
             if let context = self.iabTrackedCellContexts[indexPath],
               context.runningTimer == timer,
-              cellAtIndexPathIsMostlyVisible(indexPath, context: context)
-            {
+              cellAtIndexPathIsMostlyVisible(indexPath, context: context) {
               // Still at least 50% visible
               context.action()
             }
@@ -180,8 +178,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
     }
     if let card = dataSource.state.cards?[safe: indexPath.item] {
       if case .partner(let item) = card,
-        let creativeInstanceID = item.content.creativeInstanceID
-      {
+        let creativeInstanceID = item.content.creativeInstanceID {
         iabTrackedCellContexts[indexPath] = .init(collectionView: collectionView) { [weak self] in
           self?.rewards.ads.reportPromotedContentAdEvent(
             item.content.urlHash,

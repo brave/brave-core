@@ -175,8 +175,7 @@ class RewardsDebugSettingsViewController: TableViewController {
     }
     var selected: DrainStatusOverride = .none
     if let override = Preferences.Rewards.drainStatusOverride.value,
-      let status = DrainStatusOverride(rawValue: override)
-    {
+      let status = DrainStatusOverride(rawValue: override) {
       selected = status
     }
     return Row(

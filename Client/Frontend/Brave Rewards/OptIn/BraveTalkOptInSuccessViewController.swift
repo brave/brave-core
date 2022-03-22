@@ -21,8 +21,7 @@ class BraveTalkOptInSuccessViewController: UIViewController, PopoverContentCompo
     super.traitCollectionDidChange(previousTraitCollection)
 
     if previousTraitCollection?.preferredContentSizeCategory
-      != traitCollection.preferredContentSizeCategory
-    {
+      != traitCollection.preferredContentSizeCategory {
 
       updatePreferredContentSize()
     }

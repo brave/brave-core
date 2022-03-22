@@ -91,8 +91,7 @@ class UserAgentTests: XCTestCase {
   func testDesktopUserAgent() {
     // Must run on iPad iOS 13+
     if UIDevice.current.userInterfaceIdiom != .pad
-      || ProcessInfo().operatingSystemVersion.majorVersion < 13
-    {
+      || ProcessInfo().operatingSystemVersion.majorVersion < 13 {
       return
     }
 
@@ -115,8 +114,7 @@ class UserAgentTests: XCTestCase {
   func testIpadMobileUserAgent() {
     // Must run on iPad iOS 13+
     if UIDevice.current.userInterfaceIdiom != .pad
-      || ProcessInfo().operatingSystemVersion.majorVersion < 13
-    {
+      || ProcessInfo().operatingSystemVersion.majorVersion < 13 {
       return
     }
 

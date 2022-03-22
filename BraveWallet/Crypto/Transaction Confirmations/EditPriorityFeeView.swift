@@ -155,8 +155,7 @@ struct EditPriorityFeeView: View {
     } set: { value in
       maximumTipPrice = value
       if let base = BDouble(baseInGwei),
-        let tip = BDouble(value)
-      {
+        let tip = BDouble(value) {
         maximumGasPrice = (floor(base) + tip).decimalExpansion(precisionAfterDecimalPoint: 2)
       }
     }

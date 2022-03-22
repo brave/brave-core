@@ -231,8 +231,7 @@ open class Login: CustomStringConvertible, LoginData, LoginUsageData, Equatable 
     var realm: String?
     if let uri = URL(string: uriString),
       let scheme = uri.scheme, !scheme.isEmpty,
-      let host = uri.host
-    {
+      let host = uri.host {
       if allowJS && scheme == "javascript" {
         return "javascript:"
       }

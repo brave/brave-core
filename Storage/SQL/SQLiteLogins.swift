@@ -28,8 +28,7 @@ open class SQLiteLogins: BrowserLogins {
     if let timeCreated = row.getTimestamp("timeCreated"),
       let timeLastUsed = row.getTimestamp("timeLastUsed"),
       let timePasswordChanged = row.getTimestamp("timePasswordChanged"),
-      let timesUsed = row["timesUsed"] as? Int
-    {
+      let timesUsed = row["timesUsed"] as? Int {
       login.timeCreated = timeCreated
       login.timeLastUsed = timeLastUsed
       login.timePasswordChanged = timePasswordChanged

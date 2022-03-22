@@ -140,8 +140,7 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
     let size: CGFloat = 14.0
     return GeometryReader { proxy in
       if numberOfColumns != points.count,
-        let scaledPoint = point(for: points.endIndex - 1, in: proxy.size)
-      {
+        let scaledPoint = point(for: points.endIndex - 1, in: proxy.size) {
         Circle()
           .frame(width: size, height: size)
           .background(

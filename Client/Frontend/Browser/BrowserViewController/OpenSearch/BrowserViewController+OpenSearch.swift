@@ -34,8 +34,7 @@ extension BrowserViewController {
     if let tab = tabManager[webView],
       let openSearchMetaData = tab.pageMetadata?.search,
       let url = webView.url,
-      url.isSecureWebPage()
-    {
+      url.isSecureWebPage() {
       return updateAddOpenSearchEngine(
         webView, referenceObject: OpenSearchReference(reference: openSearchMetaData.href, title: openSearchMetaData.title))
     }
@@ -163,8 +162,7 @@ extension BrowserViewController {
     var searchEngineIcon = #imageLiteral(resourceName: "defaultFavicon")
 
     if let faviconURLString = tabManager.selectedTab?.displayFavicon?.url,
-      let iconURL = URL(string: faviconURLString)
-    {
+      let iconURL = URL(string: faviconURLString) {
 
       // Try to fetch Engine Icon using cache manager
       WebImageCacheManager.shared.load(

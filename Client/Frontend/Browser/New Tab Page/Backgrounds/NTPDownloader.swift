@@ -89,8 +89,7 @@ class NTPDownloader {
     }
 
     if let retryDeadline = Preferences.NewTabPage.superReferrerThemeRetryDeadline.value,
-      let refCode = Preferences.URP.referralCode.value
-    {
+      let refCode = Preferences.URP.referralCode.value {
 
       if Date() < retryDeadline {
         return .superReferral(code: refCode)
@@ -126,8 +125,7 @@ class NTPDownloader {
   private func getNTPResource(for type: ResourceType, _ completion: @escaping (NTPThemeable?) -> Void) {
     // Load from cache because the time since the last fetch hasn't expired yet..
     if let nextDate = Preferences.NTP.ntpCheckDate.value,
-      Date().timeIntervalSince1970 - nextDate < 0
-    {
+      Date().timeIntervalSince1970 - nextDate < 0 {
 
       if self.timer == nil {
         let relativeTime = abs(Date().timeIntervalSince1970 - nextDate)
@@ -265,8 +263,7 @@ class NTPDownloader {
 
       // If the time hasn't passed yet, reschedule the timer with the relative time..
       if let nextDate = Preferences.NTP.ntpCheckDate.value,
-        Date().timeIntervalSince1970 - nextDate < 0
-      {
+        Date().timeIntervalSince1970 - nextDate < 0 {
 
         let relativeTime = abs(Date().timeIntervalSince1970 - nextDate)
         self.timer = Timer.scheduledTimer(withTimeInterval: relativeTime, repeats: true) { [weak self] _ in
@@ -647,16 +644,14 @@ class NTPDownloader {
     var hasWallpapers = false
     if let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
       let wallpapers = json["wallpapers"] as? [[String: Any]],
-      wallpapers.count > 0
-    {
+      wallpapers.count > 0 {
       hasWallpapers = true
     }
 
     var hasCampaigns = false
     if let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
       let campaigns = json["campaigns"] as? [[String: Any]],
-      campaigns.count > 0
-    {
+      campaigns.count > 0 {
       hasCampaigns = true
     }
 

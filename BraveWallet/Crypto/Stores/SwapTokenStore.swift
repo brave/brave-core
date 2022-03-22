@@ -571,8 +571,7 @@ public class SwapTokenStore: ObservableObject {
           // check balance first because error can cause by insufficient balance
           if let sellTokenBalance = self.selectedFromTokenBalance,
             let sellAmountValue = BDouble(self.sellAmount),
-            sellTokenBalance < sellAmountValue
-          {
+            sellTokenBalance < sellAmountValue {
             self.state = .error(Strings.Wallet.insufficientBalance)
             return
           }

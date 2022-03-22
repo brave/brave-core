@@ -133,8 +133,7 @@ extension HTTPDownload: URLSessionTaskDelegate, URLSessionDownloadDelegate {
     // error is `.cancelled` and we have resume data.
     if let urlError = error as? URLError,
       urlError.code == .cancelled,
-      resumeData != nil
-    {
+      resumeData != nil {
       return
     }
 

@@ -127,8 +127,7 @@ class Historyv2Fetcher: NSObject, HistoryV2FetchResultsController {
 
         self.historyList = historyNodeList.map { [unowned self] historyItem in
           if let section = self.fetchHistoryTimePeriod(dateAdded: historyItem.dateAdded),
-            let numOfItemInSection = self.sectionDetails[section]
-          {
+            let numOfItemInSection = self.sectionDetails[section] {
             self.sectionDetails.updateValue(numOfItemInSection + 1, forKey: section)
           }
 

@@ -72,8 +72,7 @@ class Tab: NSObject {
 
   var canonicalURL: URL? {
     if let string = pageMetadata?.siteURL,
-      let siteURL = URL(string: string)
-    {
+      let siteURL = URL(string: string) {
       return siteURL
     }
     return self.url
@@ -513,8 +512,7 @@ class Tab: NSObject {
 
     defer {
       if let refreshControl = webView?.scrollView.refreshControl,
-        refreshControl.isRefreshing
-      {
+        refreshControl.isRefreshing {
         refreshControl.endRefreshing()
       }
     }
@@ -669,8 +667,7 @@ class Tab: NSObject {
       return
     }
     if let path = Bundle.main.path(forResource: fileName, ofType: type),
-      let source = try? String(contentsOfFile: path)
-    {
+      let source = try? String(contentsOfFile: path) {
       let userScript = WKUserScript.create(source: source, injectionTime: injectionTime, forMainFrameOnly: mainFrameOnly, in: contentWorld)
       webView.configuration.userContentController.addUserScript(userScript)
     }
@@ -864,8 +861,7 @@ extension Tab {
 
         if let url = self.webView?.url,
           BraveSearchManager.isValidURL(url),
-          let result = self.braveSearchManager?.fallbackQueryResult
-        {
+          let result = self.braveSearchManager?.fallbackQueryResult {
           queryResult = result
         }
 
