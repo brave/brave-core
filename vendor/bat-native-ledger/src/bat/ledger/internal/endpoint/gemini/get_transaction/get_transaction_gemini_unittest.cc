@@ -119,6 +119,32 @@ TEST_F(GeminiGetTransactionTest, ServerOK_Error) {
                         });
 }
 
+TEST_F(GeminiGetTransactionTest, ServerOK_Processing) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = net::HTTP_OK;
+            response.url = request->url;
+            response.body = R"({
+              "result": "OK",
+              "tx_ref": "A5721BF3-530C-42AF-8DEE-005DCFF76970",
+              "amount": 1,
+              "currency": "BAT",
+              "destination": "60bf98d6-d1f8-4d35-8650-8d4570a86b60",
+              "status": "Processing",
+              "reason": ""
+            })";
+            callback(response);
+          }));
+
+  transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                        "A5721BF3-530C-42AF-8DEE-005DCFF76970",
+                        [](const type::Result result) {
+                          EXPECT_EQ(result, type::Result::RETRY);
+                        });
+}
+
 TEST_F(GeminiGetTransactionTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
