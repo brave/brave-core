@@ -75,8 +75,7 @@ struct WeiFormatter {
     }
     var decimal = bv / (BDouble(10) ** decimals)
     if case .gasFee(let limit, let limitRadix) = decimalFormatStyle,
-      let gasLimit = BDouble(limit, radix: limitRadix.rawValue)
-    {
+      let gasLimit = BDouble(limit, radix: limitRadix.rawValue) {
       decimal *= gasLimit
     }
     return decimal.decimalExpansion(

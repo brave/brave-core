@@ -100,8 +100,7 @@ struct AccountActivityView: View {
               if !tx.txHash.isEmpty {
                 Button(action: {
                   if let baseURL = self.networkStore.selectedChain.blockExplorerUrls.first.map(URL.init(string:)),
-                    let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)")
-                  {
+                    let url = baseURL?.appendingPathComponent("tx/\(tx.txHash)") {
                     openWalletURL?(url)
                   }
                 }) {

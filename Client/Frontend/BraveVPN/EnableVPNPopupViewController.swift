@@ -34,8 +34,7 @@ class EnableVPNPopupViewController: UIViewController {
   override func viewDidLayoutSubviews() {
     contentView.snp.remakeConstraints {
       if traitCollection.horizontalSizeClass == .compact
-        && UIApplication.shared.statusBarOrientation.isPortrait
-      {
+        && UIApplication.shared.statusBarOrientation.isPortrait {
         $0.leading.trailing.greaterThanOrEqualTo(view).inset(16)
       } else {
         $0.width.lessThanOrEqualTo(400)

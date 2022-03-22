@@ -156,8 +156,7 @@ public class DAU {
     // Installation date for `dtoi` param has a limited lifetime.
     // After that we clear the install date from the app and always send null `dtoi` param.
     if let installationDate = Preferences.DAU.installationDate.value,
-      retentionMeasureDatePassed(since: installationDate)
-    {
+      retentionMeasureDatePassed(since: installationDate) {
       Preferences.DAU.installationDate.value = nil
     }
 

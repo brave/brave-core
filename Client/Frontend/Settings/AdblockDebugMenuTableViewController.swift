@@ -122,8 +122,7 @@ class AdblockDebugMenuTableViewController: TableViewController {
         let bundlePath = Bundle.main.path(
           forResource: "ABPFilterParserData",
           ofType: "dat"),
-        let data = fm.contents(atPath: bundlePath)
-      {
+        let data = fm.contents(atPath: bundlePath) {
         let hashText = "sha1: \(data.sha1.hexEncodedString)"
         rows.append(.init(text: "ABPFilterParserData.dat", detailText: hashText, cellClass: ShrinkingSubtitleCell.self))
       }

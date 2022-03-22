@@ -252,8 +252,7 @@ class UserTextInputAlert {
   }
 
   private func textFieldConfig(text: String?, placeholder: String?, keyboardType: UIKeyboardType?, forcedInput: Bool)
-    -> (UITextField) -> Void
-  {
+    -> (UITextField) -> Void {
     return { textField in
       textField.attributedPlaceholder = NSAttributedString(
         string: placeholder ?? "",

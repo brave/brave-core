@@ -174,8 +174,7 @@ public class Cryptography {
     if properties.status == errSecSuccess || properties.status == errSecInteractionNotAllowed {
       if let result = properties.result as? [String: Any],
         let item = result[kSecAttrAccessControl as String] as CFTypeRef?,
-        CFGetTypeID(item) == SecAccessControlGetTypeID()
-      {
+        CFGetTypeID(item) == SecAccessControlGetTypeID() {
 
         let accessControl = item as! SecAccessControl  // swiftlint:disable:this force_cast
         return String(describing: accessControl).contains("bio")

@@ -18,8 +18,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
 
     if InternalURL.isValid(url: _url),
       let internalURL = InternalURL(_url),
-      internalURL.isErrorPage
-    {
+      internalURL.isErrorPage {
       return internalURL.originalURLFromErrorPage
     }
 

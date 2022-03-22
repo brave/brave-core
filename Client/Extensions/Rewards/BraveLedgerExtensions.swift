@@ -58,8 +58,7 @@ extension BraveLedger {
     }
     if !AppConstants.buildChannel.isPublic,
       let overrideValue = Preferences.Rewards.drainStatusOverride.value,
-      let status = Ledger.DrainStatus(rawValue: overrideValue)
-    {
+      let status = Ledger.DrainStatus(rawValue: overrideValue) {
       Preferences.Rewards.lastTransferStatus.value = status.rawValue
       completion(status)
       return

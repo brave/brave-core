@@ -37,8 +37,7 @@ struct FormPostData {
 
     if self.action == request.url,
       self.method == request.httpMethod,
-      self.enctype == headers["Content-Type"]
-    {
+      self.enctype == headers["Content-Type"] {
       return true
     }
 

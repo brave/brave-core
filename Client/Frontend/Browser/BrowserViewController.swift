@@ -421,8 +421,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         defer { Preferences.NewTabPage.preloadedFavoritiesInitialized.value = true }
 
         if Preferences.NewTabPage.preloadedFavoritiesInitialized.value
-          || Favorite.hasFavorites
-        {
+          || Favorite.hasFavorites {
           return
         }
 
@@ -493,8 +492,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         var url = URL(string: notification.targetURL)
         if url == nil,
           let percentEncodedURLString =
-            notification.targetURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        {
+            notification.targetURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
           // Try to percent-encode the string and try that
           url = URL(string: percentEncodedURLString)
         }
@@ -540,8 +538,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     view.setNeedsUpdateConstraints()
 
     if let tab = tabManager.selectedTab,
-      let webView = tab.webView
-    {
+      let webView = tab.webView {
       updateURLBar()
       navigationToolbar.updateBackStatus(webView.canGoBack)
       navigationToolbar.updateForwardStatus(webView.canGoForward)
@@ -759,8 +756,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
 
     /// Perform migration to brave-core sync objects
     if !Migration.isChromiumMigrationCompleted,
-      !Preferences.Chromium.syncV2PasswordMigrationStarted.value
-    {
+      !Preferences.Chromium.syncV2PasswordMigrationStarted.value {
       Preferences.Chromium.syncV2ObjectMigrationCount.value = 0
     }
 
@@ -1136,8 +1132,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         if let tab = self.tabManager.selectedTab,
           let readerMode = tab.getContentScript(name: ReaderMode.name()) as? ReaderMode,
           readerMode.state == .active,
-          isReaderModeURL
-        {
+          isReaderModeURL {
           self.showReaderModeBar(animated: false)
           self.updatePlaylistURLBar(tab: tab, state: tab.playlistItemState, item: tab.playlistItem)
         }
@@ -1345,8 +1340,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
       if let url = change?[.newKey] as? URL, !url.isLocal {
         // Notify Rewards of new page load.
         if let rewardsURL = rewardsXHRLoadURL,
-          url.host == rewardsURL.host
-        {
+          url.host == rewardsURL.host {
           tabManager.selectedTab?.reportPageNavigation(to: rewards)
           // Not passing redirection chain here, in page navigation should not use them.
           tabManager.selectedTab?.reportPageLoad(to: rewards, redirectionURLs: [])
@@ -1397,8 +1391,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         if let url = tab.webView?.url ?? tab.url {
           if InternalURL.isValid(url: url),
             let internalUrl = InternalURL(url),
-            (internalUrl.isAboutURL || internalUrl.isAboutHomeURL)
-          {
+            (internalUrl.isAboutURL || internalUrl.isAboutHomeURL) {
 
             tab.secureContentState = .localHost
             if tabManager.selectedTab === tab {
@@ -1409,8 +1402,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
 
           if InternalURL.isValid(url: url),
             let internalUrl = InternalURL(url),
-            internalUrl.isErrorPage
-          {
+            internalUrl.isErrorPage {
 
             if ErrorPageHelper.certificateError(for: url) != 0 {
               tab.secureContentState = .insecure
@@ -1639,8 +1631,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         })
 
       if Preferences.BraveNews.isEnabled.value, let metadata = tab?.pageMetadata,
-        !metadata.feeds.isEmpty
-      {
+        !metadata.feeds.isEmpty {
         let feeds: [RSSFeedLocation] = metadata.feeds.compactMap { feed in
           guard let url = URL(string: feed.href) else { return nil }
           return RSSFeedLocation(title: feed.title, url: url)
@@ -1695,8 +1686,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
       // Check if it's a feed, url is a temp document file URL
       if let selectedTab = tabManager.selectedTab,
         (selectedTab.mimeType == "application/xml" || selectedTab.mimeType == "application/json"),
-        let tabURL = selectedTab.url
-      {
+        let tabURL = selectedTab.url {
 
         let parser = FeedParser(URL: url)
         if case .success(let feed) = parser.parse() {
@@ -1719,8 +1709,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     }
 
     if let webView = tabManager.selectedTab?.webView,
-      evaluateWebsiteSupportOpenSearchEngine(webView)
-    {
+      evaluateWebsiteSupportOpenSearchEngine(webView) {
       let addSearchEngineActivity = AddSearchEngineActivity() { [weak self] in
         self?.addCustomSearchEngineForFocusedElement()
       }
@@ -1834,8 +1823,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
           // should be synced or not. This limitation exists on browser side so we are aligning with this
           if let visitType =
             typedNavigation.first(where: { $0.key.typedDisplayString == url.typedDisplayString })?.value,
-            visitType == .typed
-          {
+            visitType == .typed {
             braveCore.historyAPI.add(url: url, title: tab.title ?? "", dateAdded: Date())
           } else {
             braveCore.historyAPI.add(url: url, title: tab.title ?? "", dateAdded: Date(), isURLTyped: false)
@@ -2202,8 +2190,7 @@ extension BrowserViewController: SearchViewControllerDelegate {
   func searchViewControllerAllowFindInPage() -> Bool {
     if let url = tabManager.selectedTab?.webView?.url,
       let internalURL = InternalURL(url),
-      internalURL.isAboutHomeURL
-    {
+      internalURL.isAboutHomeURL {
       return false
     }
     return true
@@ -2303,8 +2290,7 @@ extension BrowserViewController: TabManagerDelegate {
     let shouldShowPlaylistURLBarButton = selected?.url?.isPlaylistSupportedSiteURL == true
 
     if let readerMode = selected?.getContentScript(name: ReaderMode.name()) as? ReaderMode,
-      !shouldShowPlaylistURLBarButton
-    {
+      !shouldShowPlaylistURLBarButton {
       topToolbar.updateReaderModeState(readerMode.state)
       if readerMode.state == .active {
         showReaderModeBar(animated: false)

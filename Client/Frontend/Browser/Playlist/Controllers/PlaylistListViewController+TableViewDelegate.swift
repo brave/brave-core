@@ -98,8 +98,7 @@ private extension PlaylistListViewController {
 
   func openInNewTab(_ item: PlaylistInfo, isPrivate: Bool) {
     if let browser = PlaylistCarplayManager.shared.browserController,
-      let pageURL = URL(string: item.pageSrc)
-    {
+      let pageURL = URL(string: item.pageSrc) {
 
       self.dismiss(animated: true) {
         browser.tabManager.addTabAndSelect(

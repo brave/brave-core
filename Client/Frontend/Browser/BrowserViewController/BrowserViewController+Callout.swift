@@ -42,8 +42,7 @@ extension BrowserViewController {
 
     if onboardingNotCompleted
       || showedPopup.value
-      || !VPNProductInfo.isComplete
-    {
+      || !VPNProductInfo.isComplete {
       FullScreenCalloutManager.FullScreenCalloutType.vpn.preferenceValue.value = false
       return
     }

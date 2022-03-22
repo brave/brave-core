@@ -277,8 +277,7 @@ class BraveVPNSettingsViewController: TableViewController {
 
       if let resetCellIndexPath =
         dataSource
-        .indexPath(rowUUID: resetCellId, sectionUUID: serverSectionId)
-      {
+        .indexPath(rowUUID: resetCellId, sectionUUID: serverSectionId) {
         let cell = tableView.cellForRow(at: resetCellIndexPath)
 
         alert.popoverPresentationController?.sourceView = cell

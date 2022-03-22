@@ -28,8 +28,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
 
     // Update the error code domain
     if domain == kCFErrorDomainCFNetwork as String,
-      let code = CFNetworkErrors(rawValue: Int32(model.errorCode))
-    {
+      let code = CFNetworkErrors(rawValue: Int32(model.errorCode)) {
       domain = GenericErrorPageHandler.CFErrorToName(code)
     } else if domain == NSURLErrorDomain {
       domain = GenericErrorPageHandler.NSURLErrorToName(model.errorCode)
@@ -90,8 +89,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
     func getCert(_ url: URL) -> SecCertificate? {
       let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
       if let encodedCert = components?.queryItems?.filter({ $0.name == "badcert" }).first?.value,
-        let certData = Data(base64Encoded: encodedCert, options: [])
-      {
+        let certData = Data(base64Encoded: encodedCert, options: []) {
         return SecCertificateCreateWithData(nil, certData as CFData)
       }
 
@@ -114,8 +112,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
   static func isValidCertificateError(error: NSError) -> Bool {
     // Handle CFNetwork Error
     if error.domain == kCFErrorDomainCFNetwork as String,
-      let code = CFNetworkErrors(rawValue: Int32(error.code))
-    {
+      let code = CFNetworkErrors(rawValue: Int32(error.code)) {
       return CertificateErrorPageHandler.CFNetworkErrorsCertErrors.contains(code)
     }
 

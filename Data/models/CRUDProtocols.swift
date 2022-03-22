@@ -49,8 +49,7 @@ extension Deletable {
         // Have to delete objects one by one.
         var isInMemoryContext: Bool = false
         if let currentCoordinator = context.persistentStoreCoordinator,
-          let inMemoryCoordinator = DataController.viewContextInMemory.persistentStoreCoordinator
-        {
+          let inMemoryCoordinator = DataController.viewContextInMemory.persistentStoreCoordinator {
           isInMemoryContext = currentCoordinator == inMemoryCoordinator
         }
         if AppConstants.isRunningTest || isInMemoryContext {

@@ -206,8 +206,7 @@ extension PlaylistHelper: UIGestureRecognizerDelegate {
   func onLongPressedWebView(_ gestureRecognizer: UILongPressGestureRecognizer) {
     if gestureRecognizer.state == .began,
       let webView = tab?.webView,
-      Preferences.Playlist.enableLongPressAddToPlaylist.value
-    {
+      Preferences.Playlist.enableLongPressAddToPlaylist.value {
       let touchPoint = gestureRecognizer.location(in: webView)
 
       let token = UserScriptManager.securityTokenString

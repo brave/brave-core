@@ -736,8 +736,7 @@ extension SearchViewController {
       if let indexPath = tableView.indexPathForRow(at: location),
         let section = availableSections[safe: indexPath.section],
         let suggestion = suggestions[safe: indexPath.row],
-        section == .searchSuggestions
-      {
+        section == .searchSuggestions {
         searchDelegate?.searchViewController(self, didLongPressSuggestion: suggestion)
       }
     }

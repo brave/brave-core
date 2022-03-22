@@ -51,8 +51,7 @@ struct ReaderModeHandlers {
             if let html = ReaderModeUtils.generateReaderContent(
               readabilityResult, initialStyle: readerModeStyle,
               titleNonce: setTitleNonce),
-              let response = GCDWebServerDataResponse(html: html)
-            {
+              let response = GCDWebServerDataResponse(html: html) {
               // Apply a Content Security Policy that disallows everything except images from anywhere and fonts and css from our internal server
               response.setValue("default-src 'none'; img-src *; style-src http://localhost:* '\(readerModeStyleHash)'; font-src http://localhost:*; script-src 'nonce-\(setTitleNonce)'", forAdditionalHeader: "Content-Security-Policy")
               return response

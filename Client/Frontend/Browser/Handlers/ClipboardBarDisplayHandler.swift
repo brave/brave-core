@@ -71,8 +71,7 @@ class ClipboardBarDisplayHandler: NSObject, URLChangeDelegate {
   @objc private func didRestoreSession() {
     DispatchQueue.main.sync {
       if let tabManager = self.tabManager,
-        let firstTab = tabManager.selectedTab
-      {
+        let firstTab = tabManager.selectedTab {
         self.observeURLForFirstTab(firstTab: firstTab)
       } else {
         firstTabLoaded = true
@@ -115,8 +114,7 @@ class ClipboardBarDisplayHandler: NSObject, URLChangeDelegate {
     }
 
     if let url = URL(string: clipboardURL),
-      let _ = tabManager?.getTabFor(url)
-    {
+      let _ = tabManager?.getTabFor(url) {
       return true
     }
     return false

@@ -90,8 +90,7 @@ class PlaylistViewController: UIViewController {
   deinit {
     // Store the last played item's time-offset
     if let playTime = player.currentItem?.currentTime(),
-      Preferences.Playlist.playbackLeftOff.value
-    {
+      Preferences.Playlist.playbackLeftOff.value {
       Preferences.Playlist.lastPlayedItemTime.value = playTime.seconds
     } else {
       Preferences.Playlist.lastPlayedItemTime.value = 0.0
@@ -154,12 +153,10 @@ class PlaylistViewController: UIViewController {
     }
 
     if let initialItem = listController.initialItem,
-      let item = PlaylistItem.getItem(pageSrc: initialItem.pageSrc)
-    {
+      let item = PlaylistItem.getItem(pageSrc: initialItem.pageSrc) {
       PlaylistManager.shared.currentFolder = item.playlistFolder
     } else if let url = Preferences.Playlist.lastPlayedItemUrl.value,
-      let item = PlaylistItem.getItem(pageSrc: url)
-    {
+      let item = PlaylistItem.getItem(pageSrc: url) {
       PlaylistManager.shared.currentFolder = item.playlistFolder
     } else {
       PlaylistManager.shared.currentFolder = nil
@@ -539,8 +536,7 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
     Preferences.Playlist.lastPlayedItemUrl.value = item.pageSrc
 
     if let playTime = player.currentItem?.currentTime(),
-      Preferences.Playlist.playbackLeftOff.value
-    {
+      Preferences.Playlist.playbackLeftOff.value {
       Preferences.Playlist.lastPlayedItemTime.value = playTime.seconds
     } else {
       Preferences.Playlist.lastPlayedItemTime.value = 0.0
@@ -894,8 +890,7 @@ extension PlaylistViewController: VideoViewDelegate {
     let cacheState = PlaylistManager.shared.state(for: item.pageSrc)
     if cacheState != .invalid {
       if let index = PlaylistManager.shared.index(of: item.pageSrc),
-        let asset = PlaylistManager.shared.assetAtIndex(index)
-      {
+        let asset = PlaylistManager.shared.assetAtIndex(index) {
         load(playerView, asset: asset, autoPlayEnabled: listController.autoPlayEnabled)
           .handleEvents(receiveCancel: {
             PlaylistMediaStreamer.clearNowPlayingInfo()

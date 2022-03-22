@@ -77,8 +77,7 @@ class FeedDataSource {
     restoreCachedSources()
     if !AppConstants.buildChannel.isPublic,
       let savedEnvironment = Preferences.BraveNews.debugEnvironment.value,
-      let environment = Environment(rawValue: savedEnvironment)
-    {
+      let environment = Environment(rawValue: savedEnvironment) {
       self.environment = environment
     }
   }
@@ -168,8 +167,7 @@ class FeedDataSource {
     // "en" is the default language and thus does not get the language code inserted into the
     // file name.
     if resource.isLocalized, let languageCode = Locale.preferredLanguages.first?.prefix(2),
-      languageCode != "en", Self.supportedLanguages.contains(String(languageCode))
-    {
+      languageCode != "en", Self.supportedLanguages.contains(String(languageCode)) {
       return "\(resource.name).\(languageCode).\(resource.type)"
     }
     return "\(resource.name).\(resource.type)"
@@ -186,8 +184,7 @@ class FeedDataSource {
     let cachedPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName)?.appendingPathComponent(filename).path
     if let cachedPath = cachedPath,
       let attributes = try? fileManager.attributesOfItem(atPath: cachedPath),
-      let date = attributes[.modificationDate] as? Date
-    {
+      let date = attributes[.modificationDate] as? Date {
       return Date().timeIntervalSince(date) > resource.cacheLifetime
     }
     return true
@@ -207,8 +204,7 @@ class FeedDataSource {
     let cachedPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName)?.appendingPathComponent(name).path
     if (loadExpiredData || !isResourceExpired(resource)),
       let cachedPath = cachedPath,
-      fileManager.fileExists(atPath: cachedPath)
-    {
+      fileManager.fileExists(atPath: cachedPath) {
       todayQueue.async {
         if let cachedContents = fileManager.contents(atPath: cachedPath) {
           deferred.fill(cachedContents)
@@ -572,8 +568,7 @@ class FeedDataSource {
       let items: [FeedItem] = feeds.compactMap { content in
         var score = content.baseScore
         if let feedBaseDomain = content.url?.baseDomain,
-          lastVisitedDomains.contains(feedBaseDomain)
-        {
+          lastVisitedDomains.contains(feedBaseDomain) {
           score -= 5
         }
         guard let source = sources.first(where: { $0.id == content.publisherID }) else {
@@ -781,8 +776,7 @@ class FeedDataSource {
             return true
           }
           return false
-        })
-      {
+        }) {
         // If there are less than 10 cards and they all are ads, show nothing
         generatedCards.removeAll()
       }

@@ -272,8 +272,7 @@ private class SQLiteDBStatement {
     }
 
     if let args = args,
-      let bindError = bind(args)
-    {
+      let bindError = bind(args) {
       throw bindError
     }
   }

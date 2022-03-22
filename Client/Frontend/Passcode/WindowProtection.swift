@@ -71,8 +71,7 @@ class WindowProtection {
   var isPassCodeAvailable: Bool {
     var error: NSError?
     if !context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error),
-      (error as? LAError)?.code == .passcodeNotSet
-    {
+      (error as? LAError)?.code == .passcodeNotSet {
       return false
     }
 
@@ -119,8 +118,7 @@ class WindowProtection {
   private func updateVisibleStatusForForeground(_ determineLockWithPasscode: Bool = true) {
     var error: NSError?
     if !context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error),
-      (error as? LAError)?.code == .passcodeNotSet
-    {
+      (error as? LAError)?.code == .passcodeNotSet {
       // User no longer has a passcode set so we can't evaluate the auth policy
       isVisible = false
       return

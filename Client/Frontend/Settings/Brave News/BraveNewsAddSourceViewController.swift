@@ -203,8 +203,7 @@ class BraveNewsAddSourceViewController: UITableViewController {
         if let refresh = meta["http-equiv"]?.lowercased(), refresh == "refresh",
           let content = meta["content"],
           let index = content.range(of: "URL="),
-          let url = NSURL(string: String(content.suffix(from: index.upperBound)))
-        {
+          let url = NSURL(string: String(content.suffix(from: index.upperBound))) {
           reloadUrl = url as URL
         }
       }

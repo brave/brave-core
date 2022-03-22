@@ -33,8 +33,7 @@ struct AssetIconView: View {
     for logo in [token.logo, token.symbol.lowercased()] {
       if let baseURL = BraveWallet.TokenRegistryUtils.tokenLogoBaseURL,
         case let imageURL = baseURL.appendingPathComponent(logo),
-        let image = UIImage(contentsOfFile: imageURL.path)
-      {
+        let image = UIImage(contentsOfFile: imageURL.path) {
         return Image(uiImage: image)
       }
     }

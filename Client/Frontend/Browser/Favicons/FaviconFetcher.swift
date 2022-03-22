@@ -102,8 +102,7 @@ class FaviconFetcher {
     // If no in-memory favicon is found we look if there's any persisted one(from normal browsing mode)
     // and use that one until in-memory favicon is saved.
     if favicon == nil,
-      PrivateBrowsingManager.shared.isPrivateBrowsing
-    {
+      PrivateBrowsingManager.shared.isPrivateBrowsing {
       favicon = Domain.getPersistedDomain(for: url)?.favicon
     }
 
@@ -360,8 +359,7 @@ class FaviconFetcher {
         if let refresh = meta["http-equiv"]?.lowercased(), refresh == "refresh",
           let content = meta["content"],
           let index = content.range(of: "URL="),
-          let url = NSURL(string: String(content.suffix(from: index.upperBound)))
-        {
+          let url = NSURL(string: String(content.suffix(from: index.upperBound))) {
           reloadUrl = url as URL
         }
       }

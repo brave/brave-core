@@ -241,8 +241,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       // open a new one.
       if let userInfo = userActivity.userInfo,
         let urlString = userInfo[CSSearchableItemActivityIdentifier] as? String,
-        let url = URL(string: urlString)
-      {
+        let url = URL(string: urlString) {
         scene.browserViewController?.switchToTabForURLOrOpen(url, isPrivileged: false)
         return
       }

@@ -43,8 +43,7 @@ class FaviconManager: TabContentScript {
       return { [weak tab] () -> Deferred<Maybe<Favicon>> in
         if let tab = tab,
           let url = URL(string: favicon.url),
-          let currentURL = tab.url
-        {
+          let currentURL = tab.url {
           return self.getFavicon(tab, iconUrl: url, currentURL: currentURL, icon: favicon, profile: profile)
         } else {
           return deferMaybe(FaviconError())

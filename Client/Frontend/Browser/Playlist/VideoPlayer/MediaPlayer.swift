@@ -458,8 +458,7 @@ extension MediaPlayer {
       guard let self = self else { return }
 
       if let pictureInPictureController = self.pictureInPictureController,
-        pictureInPictureController.isPictureInPictureActive
-      {
+        pictureInPictureController.isPictureInPictureActive {
         return
       }
 
@@ -474,8 +473,7 @@ extension MediaPlayer {
       guard let self = self else { return }
 
       if let pictureInPictureController = self.pictureInPictureController,
-        pictureInPictureController.isPictureInPictureActive
-      {
+        pictureInPictureController.isPictureInPictureActive {
         return
       }
 

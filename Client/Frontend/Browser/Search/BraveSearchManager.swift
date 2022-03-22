@@ -304,8 +304,7 @@ extension BraveSearchManager: URLSessionDataDelegate {
 
     if let proposedCredential = challenge.proposedCredential,
       !(proposedCredential.user?.isEmpty ?? true),
-      challenge.previousFailureCount == 0
-    {
+      challenge.previousFailureCount == 0 {
       completionHandler(.useCredential, proposedCredential)
       return
     }

@@ -51,8 +51,7 @@ struct SandboxInspectorView: View {
               fm.enumerator(
                 at: url,
                 includingPropertiesForKeys: nil
-              )?.allObjects as? [URL], !subitems.isEmpty
-            {
+              )?.allObjects as? [URL], !subitems.isEmpty {
               size = try subitems.reduce(
                 0,
                 {

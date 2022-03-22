@@ -451,8 +451,7 @@ class WelcomeViewController: UIViewController {
       }
 
       if let presentingController = presenting as? UINavigationController,
-        let topController = presentingController.topViewController
-      {
+        let topController = presentingController.topViewController {
         presenting = topController
         if presenting.isKind(of: BrowserViewController.self) {
           break
@@ -757,8 +756,7 @@ private class WelcomeAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     }
 
     if let fromCallout = fromWelcomeView.calloutView as? WelcomeViewCallout,
-      let toCallout = toWelcomeView.calloutView as? WelcomeViewCallout
-    {
+      let toCallout = toWelcomeView.calloutView as? WelcomeViewCallout {
       fromCallout.animateFromCopy(view: toCallout, duration: totalAnimationTime, delay: 0.0)
     }
 

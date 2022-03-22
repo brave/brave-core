@@ -49,8 +49,7 @@ open class DiskImageStore {
 
       let imagePath = URL(fileURLWithPath: self.filesDir).appendingPathComponent(key)
       if let data = try? Data(contentsOf: imagePath),
-        let image = UIImage.imageFromDataThreadSafe(data)
-      {
+        let image = UIImage.imageFromDataThreadSafe(data) {
         return deferMaybe(image)
       }
 

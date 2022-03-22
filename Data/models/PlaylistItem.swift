@@ -132,8 +132,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
       var isStale = false
 
       if let cacheData = $0.cachedData,
-        let url = try? URL(resolvingBookmarkData: cacheData, bookmarkDataIsStale: &isStale)
-      {
+        let url = try? URL(resolvingBookmarkData: cacheData, bookmarkDataIsStale: &isStale) {
         return url.path == cacheURL.path
       }
       return false

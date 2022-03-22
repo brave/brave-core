@@ -149,8 +149,7 @@ class MenuViewController: UINavigationController, UIPopoverPresentationControlle
 
     // Bug with pan modal + hidden nav bar causes safe area insets to zero out
     if view.safeAreaInsets == .zero, isPanModalPresented,
-      var insets = view.window?.safeAreaInsets
-    {
+      var insets = view.window?.safeAreaInsets {
       // When that happens we re-set them via additionalSafeAreaInsets to the windows safe
       // area insets. Since the pan modal appears over the entire screen we can safely use
       // the windows safe area. Top will stay 0 since we are using non-translucent nav bar
@@ -177,8 +176,7 @@ class MenuViewController: UINavigationController, UIPopoverPresentationControlle
 
   override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
     if let _ = presentedViewController as? InnerMenuNavigationController,
-      presentingViewController?.presentedViewController === self
-    {
+      presentingViewController?.presentedViewController === self {
       isDismissing = true
       presentingViewController?.dismiss(animated: flag, completion: completion)
     } else {
