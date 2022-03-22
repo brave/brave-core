@@ -21,6 +21,7 @@
 #include "brave/components/skus/browser/switches.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
+#include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios.h"
@@ -350,6 +351,10 @@ static bool CustomLogHandler(int severity,
     _walletProviderJS = base::SysUTF8ToNSString(resource_string);
   }
   return _walletProviderJS;
+}
+
+- (BraveStats*)braveStats {
+  return [[BraveStats alloc] initWithBrowserState:_mainBrowserState];
 }
 
 @end

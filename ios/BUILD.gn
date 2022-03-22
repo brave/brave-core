@@ -4,6 +4,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/ios/browser/api/ads/headers.gni")
+import("//brave/ios/browser/api/brave_stats/headers.gni")
 import("//brave/ios/browser/api/brave_wallet/headers.gni")
 import("//brave/ios/browser/api/certificate/headers.gni")
 import("//brave/ios/browser/api/ledger/headers.gni")
@@ -52,6 +53,7 @@ brave_core_public_headers = [
 ]
 
 brave_core_public_headers += ads_public_headers
+brave_core_public_headers += brave_stats_public_headers
 brave_core_public_headers += brave_wallet_public_headers
 brave_core_public_headers += browser_api_certificate_public_headers
 brave_core_public_headers += ledger_public_headers
