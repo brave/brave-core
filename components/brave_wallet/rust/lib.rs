@@ -1,4 +1,5 @@
 use core::fmt;
+use curve25519_dalek;
 use ed25519_dalek_bip32::derivation_path::{
     ChildIndexError, DerivationPath, DerivationPathParseError,
 };
@@ -69,6 +70,8 @@ mod ffi {
         fn generate_ed25519_extended_secrect_key_from_bytes(
             bytes: &[u8],
         ) -> Box<Ed25519DalekExtendedSecretKeyResult>;
+
+        fn bytes_are_curve25519_point(bytes: &[u8]) -> bool;
 
         fn derive(
             self: &Ed25519DalekExtendedSecretKey,
@@ -183,6 +186,9 @@ fn generate_ed25519_extended_secrect_key_from_bytes(
             })
         }),
     ))
+}
+fn bytes_are_curve25519_point(bytes: &[u8]) -> bool {
+    curve25519_dalek::edwards::CompressedEdwardsY::from_slice(bytes).decompress().is_some()
 }
 
 impl Ed25519DalekExtendedSecretKey {
