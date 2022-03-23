@@ -97,7 +97,11 @@ class ApiRequestHelperUnitTest : public testing::Test {
 
 TEST_F(ApiRequestHelperUnitTest, SanitizedRequest) {
   std::string expected_sanitized_response =
+#if BUILDFLAG(IS_ANDROID)
+      "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":1.8446744073709552E19}";
+#else
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":1.8446744073709552e+19}";
+#endif
   std::string server_raw_response =
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":18446744073709551615}";
   SendRequest(server_raw_response, expected_sanitized_response);
@@ -106,6 +110,7 @@ TEST_F(ApiRequestHelperUnitTest, SanitizedRequest) {
   SendRequest("{", "");
   SendRequest("0", "");
   SendRequest("a", "");
+  SendRequest("{\"a\":1,}", "");
 }
 
 TEST_F(ApiRequestHelperUnitTest, RequestWithConversion) {

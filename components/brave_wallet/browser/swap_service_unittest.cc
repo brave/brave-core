@@ -168,7 +168,7 @@ TEST_F(SwapServiceUnitTest, GetPriceQuoteError) {
 
 TEST_F(SwapServiceUnitTest, GetPriceQuoteUnexpectedReturn) {
   std::string error = "Could not parse response body: ";
-  std::string unexpected_return = "";
+  std::string unexpected_return = "Woot";
   SetInterceptor(unexpected_return);
   bool callback_run = false;
   swap_service_->GetPriceQuote(
