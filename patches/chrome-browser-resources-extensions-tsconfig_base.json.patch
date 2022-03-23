@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/extensions/tsconfig_base.json b/chrome/browser/resources/extensions/tsconfig_base.json
-index 5a5ce8ca5fcac5375175c3886cc5e94a07f45bbb..1802bc0fd9acefcce789c708114941c8f9f89057 100644
+index afa073157282423dbfaec806a22d4c27f9d64528..3e71f76307c7b02ccb23e615e3217fee1b15c5a6 100644
 --- a/chrome/browser/resources/extensions/tsconfig_base.json
 +++ b/chrome/browser/resources/extensions/tsconfig_base.json
 @@ -1,6 +1,7 @@
@@ -7,6 +7,6 @@ index 5a5ce8ca5fcac5375175c3886cc5e94a07f45bbb..1802bc0fd9acefcce789c708114941c8
    "extends": "../../../../tools/typescript/tsconfig_base.json",
    "compilerOptions": {
 +    "allowJs": true,
-     "noImplicitOverride": true,
      "noUncheckedIndexedAccess": false,
      "noUnusedLocals": false,
+     "strictPropertyInitialization": false
