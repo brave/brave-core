@@ -879,8 +879,18 @@ public class BraveNewTabPageLayout
                             }
                         } // end page loop
                         processFeed();
-                        mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
-                        mRecyclerView.scrollToPosition(0);
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mParentScrollView.scrollTo(0, 0);
+                                mRecyclerView.scrollToPosition(0);
+                                if (mImageCreditLayout != null) {
+                                    mImageCreditLayout.setVisibility(View.VISIBLE);
+                                    mImageCreditLayout.setAlpha(1);
+                                }
+                            }
+                        }, 300);
 
                         BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
                         BraveActivity.getBraveActivity().setLoadedFeed(true);
@@ -1051,6 +1061,11 @@ public class BraveNewTabPageLayout
                             final int scrollPositionFinal = scrollPosition;
                             if (mParentScrollView != null) {
                                 mRecyclerView.scrollToPosition(scrollPositionFinal);
+                                if (scrollPositionFinal == 2) {
+                                    mParentScrollView.scrollTo(0, 0);
+                                    mImageCreditLayout.setAlpha(1.0f);
+                                    mImageCreditLayout.requestLayout();
+                                }
                             }
                             if (mRecyclerView.getLayoutManager().findViewByPosition(0) != null) {
                                 correctPosition(false);
@@ -1095,7 +1110,7 @@ public class BraveNewTabPageLayout
                             if (value >= 1) {
                                 value = 1;
                             }
-                            float alpha = (float) (1 - value);
+                            float alpha = (float) (1 - value * 4);
                             if (alpha < 1f) {
                                 mImageCreditLayout.setAlpha(alpha);
                                 mImageCreditLayout.requestLayout();
@@ -1107,6 +1122,10 @@ public class BraveNewTabPageLayout
                                                                   .getUrl()
                                                                   .getSpec())) {
                                     if (mSettingsBar != null) {
+                                        if (BraveActivity.getBraveActivity() != null) {
+                                            BraveActivity.getBraveActivity()
+                                                    .inflateNewsSettingsBar();
+                                        }
                                         if (mSettingsBar.getVisibility() == View.VISIBLE) {
                                             if (value > 0.4) {
                                                 mSettingsBar.setAlpha((float) (value + 0.5));
@@ -1128,7 +1147,9 @@ public class BraveNewTabPageLayout
                                                 mSettingsBar.setVisibility(View.INVISIBLE);
                                             }
                                         } else {
-                                            if (scrollY > 200 && mTouchScroll) {
+                                            boolean isFromNewTab = BraveActivity.getBraveActivity()
+                                                                           .isComesFromNewTab();
+                                            if (scrollY > 200 && (mTouchScroll || isFromNewTab)) {
                                                 mSettingsBar.setVisibility(View.VISIBLE);
                                                 mSettingsBar.setAlpha(1);
                                             }
@@ -1246,6 +1267,13 @@ public class BraveNewTabPageLayout
                                         }
                                         isScrolled = false;
                                         refreshFeed();
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                mParentScrollView.scrollTo(0, 0);
+                                                mRecyclerView.scrollToPosition(0);
+                                            }
+                                        }, 300);
 
                                         newContentButtonText.setVisibility(View.VISIBLE);
                                         loadingSpinner.setVisibility(View.GONE);
@@ -1386,9 +1414,8 @@ public class BraveNewTabPageLayout
                         int offset = recyclerView.computeVerticalScrollOffset();
                         mTouchScroll = true;
                         mFirstVisibleCard = linearLayoutManager.findFirstVisibleItemPosition();
-                        if (!mTouchWidget) {
-                            mParentScrollView.scrollBy(0, offset + 2);
-                        }
+                        mParentScrollView.scrollBy(0, offset + 2);
+
                     } catch (Exception e) {
                         Log.e("bn", "Exception onScrolled:" + e);
                     }
