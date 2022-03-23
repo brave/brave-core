@@ -175,7 +175,7 @@ const Config = function () {
   this.sccache = getNPMConfig(['sccache'])
   this.gomaServerHost = getNPMConfig(['goma_server_host'])
   // os.cpus().length is number of threads not physical cores
-  this.defaultGomaJValue = Math.min(40, os.cpus().length * 2)
+  this.defaultGomaJValue = Math.min(160, os.cpus().length * 20)
   this.isCI = process.env.BUILD_ID !== undefined
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
