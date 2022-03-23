@@ -15,7 +15,6 @@
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="kNewTabPageShowToday"
         android:title="@string/news_show"
-        android:dependency="kBraveTodayOptedIn"
         android:summaryOn="@string/brave_news_optin_subtitle"
         android:summaryOff="@string/brave_news_optin_subtitle" />
 
