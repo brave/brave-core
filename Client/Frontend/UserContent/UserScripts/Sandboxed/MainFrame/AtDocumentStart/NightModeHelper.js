@@ -20,7 +20,20 @@ const NIGHT_MODE_STYLESHEET =
 }
 iframe,img,video {
   -webkit-filter: ${NIGHT_MODE_INVERT_FILTER_CSS} !important;
+}
+
+div.video-overlay, header.site-header {
+  -webkit-filter: ${NIGHT_MODE_INVERT_FILTER_CSS} !important;
+}
+
+header.site-header img {
+  -webkit-filter: none !important;
 }`;
+
+// ^ Two site specific hacks for Brave.com site included in the stylesheet
+// One fixes the image preview of embedded video
+// second keeps the navbar header color instact as well as the brand image.
+// This specific rules should be removed once we upgrade to a more robust night mode stylesheets.
 
 var styleElement;
 
