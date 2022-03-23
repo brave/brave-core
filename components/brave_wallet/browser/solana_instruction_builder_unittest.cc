@@ -75,6 +75,41 @@ TEST(SolanaInstructionBuilderUnitTest, TransferSPLToken) {
 
 }  // namespace spl_token_program
 
+namespace spl_associated_token_account_program {
+
+TEST(SolanaInstructionBuilderUnitTest, CreateAssociatedTokenAccount) {
+  auto ins = CreateAssociatedTokenAccount("funding_address", "wallet_address",
+                                          "associated_token_account_address",
+                                          "spl_token_mint_address");
+  ASSERT_TRUE(ins);
+  EXPECT_EQ(
+      ins.value(),
+      SolanaInstruction(
+          kSolanaAssociatedTokenProgramId,
+          {SolanaAccountMeta("funding_address", true, true),
+           SolanaAccountMeta("associated_token_account_address", false, true),
+           SolanaAccountMeta("wallet_address", false, false),
+           SolanaAccountMeta("spl_token_mint_address", false, false),
+           SolanaAccountMeta(kSolanaSystemProgramId, false, false),
+           SolanaAccountMeta(kSolanaTokenProgramId, false, false),
+           SolanaAccountMeta(kSolanaSysvarRentProgramId, false, false)},
+          std::vector<uint8_t>()));
+
+  EXPECT_FALSE(CreateAssociatedTokenAccount("funding_address",
+                                            "associated_token_account_address",
+                                            "wallet_address", ""));
+  EXPECT_FALSE(CreateAssociatedTokenAccount(
+      "funding_address", "", "wallet_address", "spl_token_mint_address"));
+  EXPECT_FALSE(CreateAssociatedTokenAccount("funding_address",
+                                            "associated_token_account_address",
+                                            "", "spl_token_mint_address"));
+  EXPECT_FALSE(CreateAssociatedTokenAccount("funding_address",
+                                            "associated_token_account_address",
+                                            "wallet_address", ""));
+}
+
+}  // namespace spl_associated_token_account_program
+
 }  // namespace solana
 
 }  // namespace brave_wallet
