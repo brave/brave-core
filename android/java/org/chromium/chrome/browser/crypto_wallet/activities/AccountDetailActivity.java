@@ -225,10 +225,10 @@ public class AccountDetailActivity
     }
 
     @Override
-    public void OnTxApprovedRejected(boolean approved, String accountName, String txId) {}
+    public void onTxApprovedRejected(boolean approved, String accountName, String txId) {}
 
     @Override
-    public void OnTxPending(String accountName, String txId) {}
+    public void onTxPending(String accountName, String txId) {}
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
