@@ -626,8 +626,9 @@ const int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 constexpr char kCryptoEthAddressKey[] = "crypto.ETH.address";
 
 // ERC-165 identifier for ERC721 interface.
-constexpr char kERC721InterfaceId[] = "0x80ac58cd";
 constexpr char kERC1155InterfaceId[] = "0xd9b67a26";
+constexpr char kERC721InterfaceId[] = "0x80ac58cd";
+constexpr char kERC721MetadataInterfaceId[] = "0x5b5e139f";
 
 constexpr char kEthereumPrefKey[] = "ethereum";
 constexpr char kFilecoinPrefKey[] = "filecoin";
