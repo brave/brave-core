@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
 import subprocess
 import os.path
@@ -20,7 +20,7 @@ def main():
     if IS_WIN32 and cc_retcode == 0 and brave_path:
         # This is a specially crafted string that ninja will look for to create
         # deps.
-        sys.stderr.write('Note: including file: %s\n' % brave_path)
+        sys.stderr.write(f'Note: including file: {brave_path}\n')
     return cc_retcode
 
 
@@ -33,12 +33,12 @@ def replace_cc_arg(args):
             index_c = args.index('-c')
     except ValueError:
         # no -c or /c so just skip
-        return
+        return None
 
     if len(args) == 0 or index_c == len(args) - 1:
         # Something wrong, we have -c but have no path in the next arg
         # Just then give all to cc as is
-        return
+        return None
     index_path = index_c + 1
 
     path_cc = args[index_path]
@@ -56,7 +56,7 @@ def replace_cc_arg(args):
 
     if len(chromium_original_dir) >= len(abs_path_cc) + 1:
         # Could not get original chromium src dir
-        return
+        return None
 
     # Relative path
     rel_path = abs_path_cc[len(chromium_original_dir) + 1:]
@@ -76,17 +76,19 @@ def replace_cc_arg(args):
             rel_path = rel_path_parts[4]
         else:
             # Don't even try to substitute path for other auto-generated cc
-            return
+            return None
 
     # Build possible brave/chromium_src_path
     brave_path = os.path.join(chromium_original_dir, 'brave', 'chromium_src',
                               rel_path)
-    if os.path.isfile(brave_path):
-        # Okay, we can replace
-        args[index_path] = os.path.relpath(brave_path,
-                                           os.path.abspath('.')).replace(
-                                               '\\', '/')
-        return brave_path
+    if not os.path.isfile(brave_path):
+        return None
+
+    # Okay, we can replace
+    args[index_path] = os.path.relpath(brave_path,
+                                       os.path.abspath('.')).replace(
+                                           '\\', '/')
+    return brave_path
 
 
 if __name__ == '__main__':

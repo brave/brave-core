@@ -62,7 +62,7 @@ int wmain(int argc, wchar_t* argv[]) {
 
   // Build the new command line that calls python with our script.
   std::wstring cmd_line_builder =
-      L"python ..\\..\\brave\\script\\redirect-cc.py";
+      L"python3 ..\\..\\brave\\script\\redirect-cc.py";
   for (int i = 1; i < argc; i++) {
     cmd_line_builder.append(_T(" "));
     // Double-quote escape args as they may have spaces.
