@@ -28,8 +28,8 @@ export const AssetsColumnWrapper = styled.div`
 
 export const AssetsColumnItemSpacer = styled.div`
   display: inline-flex;
-  align-items: 'center';
-  justify-content: 'center';
+  align-items: center;
+  justify-content: center;
   margin-right: 19px;
 `
 export const TextWrapper = styled.div<StyleProps>`
@@ -64,4 +64,11 @@ export const LineChartWrapper = styled.div`
 export const LoadIconWrapper = styled.div`
   display: flex;
   justify-content: center;
+`
+export const CoinGeckoText = styled.span`
+  font-family: Arial;
+  font-size: 10px;
+  font-weight: normal;
+  color: ${(p) => p.theme.color.text03};
+  margin: 15px 0px;
 `

@@ -97,8 +97,7 @@ function Container (props: Props) {
     defaultCurrencies,
     fullTokenList,
     userVisibleTokensInfo,
-    selectedNetworkFilter
-    userVisibleTokensInfo,
+    selectedNetworkFilter,
     coinMarketData,
     isLoadingCoinMarketData
   } = props.wallet
@@ -680,7 +679,7 @@ function Container (props: Props) {
                 isLoadingCoinMarketData={isLoadingCoinMarketData}
                 coinMarkets={coinMarketData}
                 onFetchCoinMarkets={onFetchCoinMarkets}
-                tradableAssets={swapAssetOptions}
+                tradableAssets={[]} // TODO William: Add swapAssetOptions
               />
             }
           </Route>

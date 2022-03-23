@@ -689,161 +689,161 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   return (
     <Provider store={store}>
       <LibContext.Provider value={Lib as any}>
-      <WalletPageLayout>
-        {/* <SideNav
+        <WalletPageLayout>
+          {/* <SideNav
           navList={NavOptions}
           selectedButton={view}
           onSubmit={navigateTo}
         /> */}
-        <WalletSubViewLayout>
-          {isRestoring ? (
-            <OnboardingRestore
-              checkIsStrongPassword={checkIsStrongPassword}
-              hasRestoreError={hasRestoreError}
-              onRestore={onRestore}
-              toggleShowRestore={onToggleRestore}
-            />
-          ) : (
-            <>
-              {needsOnboarding
-                ? (
-                  <Onboarding
-                    checkIsStrongPassword={checkIsStrongPassword}
-                    importError={importWalletError}
-                    recoveryPhrase={recoveryPhrase}
-                    onSubmit={completeWalletSetup}
-                    onPasswordProvided={passwordProvided}
-                    onShowRestore={onToggleRestore}
-                    isCryptoWalletsInitialized={true}
-                    isMetaMaskInitialized={true}
-                    onImportMetaMask={onImportWallet}
-                    onImportCryptoWallets={onImportWallet}
-                    onSetImportError={onSetImportWalletError}
-                  />
-                ) : (
-                  <>
-                    {view === 'crypto' ? (
-                      <>
-                        {walletLocked ? (
-                          <LockScreen
-                            hasPasswordError={hasPasswordError}
-                            onSubmit={unlockWallet}
-                            disabled={inputValue === ''}
-                            onPasswordChanged={handlePasswordChanged}
-                            onShowRestore={onToggleRestore}
-                          />
-                        ) : (
-                          <>
-                            {showBackup ? (
-                              <BackupWallet
-                                isOnboarding={false}
-                                onCancel={onHideBackup}
-                                onSubmit={onWalletBackedUp}
-                                recoveryPhrase={recoveryPhrase}
-                              />
-                            ) : (
-                              <CryptoStoryView
-                                defaultCurrencies={defaultCurrencies}
-                                onLockWallet={lockWallet}
-                                needsBackup={needsBackup}
-                                onShowBackup={onShowBackup}
-                                accounts={accounts}
-                                onChangeTimeline={onChangeTimeline}
-                                selectedAssetPriceHistory={selectedAssetPriceHistory}
-                                selectedTimeline={selectedTimeline}
-                                selectedAsset={selectedAsset}
-                                fullAssetList={NewAssetOptions}
-                                onSelectAsset={onSelectAsset}
-                                portfolioPriceHistory={selectedAssetPriceHistory}
-                                portfolioBalance={scrapedFullPortfolioBalance()}
-                                transactions={transactionDummyData}
-                                selectedAssetFiatPrice={selectedUSDAssetPrice}
-                                selectedAssetCryptoPrice={selectedBTCAssetPrice}
-                                userAssetList={userAssetList}
-                                onCreateAccount={onCreateAccount}
-                                onImportAccount={onImportAccount}
-                                isFilecoinEnabled={isFilecoinEnabled}
-                                isSolanaEnabled={isSolanaEnabled}
-                                onImportFilecoinAccount={onImportFilecoinAccount}
-                                onConnectHardwareWallet={onConnectHardwareWallet}
-                                onAddHardwareAccounts={onAddHardwareAccounts}
-                                getBalance={getBalance}
-                                isLoading={false}
-                                showAddModal={showAddModal}
-                                onToggleAddModal={onToggleAddModal}
-                                onUpdateAccountName={onUpdateAccountName}
-                                selectedNetwork={selectedNetwork}
-                                isFetchingPortfolioPriceHistory={false}
-                                selectedPortfolioTimeline={selectedTimeline}
-                                onRemoveAccount={onRemoveAccount}
-                                privateKey='gf65a4g6a54fg6a54fg6ad4fa5df65a4d6ff54a6sdf'
-                                onDoneViewingPrivateKey={onDoneViewingPrivateKey}
-                                onViewPrivateKey={onViewPrivateKey}
-                                networkList={mockNetworks}
-                                onImportAccountFromJson={onImportAccountFromJson}
-                                hasImportError={importAccountError}
-                                onSetImportError={onSetImportAccountError}
-                                onAddCustomAsset={onAddCustomAsset}
-                                onUpdateVisibleAssets={onUpdateVisibleAssets}
-                                transactionSpotPrices={[]}
-                                userVisibleTokensInfo={[]}
-                                onShowVisibleAssetsModal={onShowVisibleAssetsModal}
-                                showVisibleAssetsModal={showVisibleAssetsModal}
-                                onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
-                                foundTokenInfoByContractAddress={foundTokenInfo}
-                                coinMarketData={[]}
-                                onFetchMoreMarketData={onFetchMoreMarketData}
-                              />
-                            )}
-                          </>
-                        )}
-                      </>
-                    ) : (
-                      <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                        <h2>{view} view</h2>
-                      </div>
-                    )}
-                  </>
-                )}
-            </>
-          )}
-  
-            </WalletSubViewLayout>
-            {!needsOnboarding && !walletLocked &&
+          <WalletSubViewLayout>
+            {isRestoring ? (
+              <OnboardingRestore
+                checkIsStrongPassword={checkIsStrongPassword}
+                hasRestoreError={hasRestoreError}
+                onRestore={onRestore}
+                toggleShowRestore={onToggleRestore}
+              />
+            ) : (
+              <>
+                {needsOnboarding
+                  ? (
+                    <Onboarding
+                      checkIsStrongPassword={checkIsStrongPassword}
+                      importError={importWalletError}
+                      recoveryPhrase={recoveryPhrase}
+                      onSubmit={completeWalletSetup}
+                      onPasswordProvided={passwordProvided}
+                      onShowRestore={onToggleRestore}
+                      isCryptoWalletsInitialized={true}
+                      isMetaMaskInitialized={true}
+                      onImportMetaMask={onImportWallet}
+                      onImportCryptoWallets={onImportWallet}
+                      onSetImportError={onSetImportWalletError}
+                    />
+                  ) : (
+                    <>
+                      {view === 'crypto' ? (
+                        <>
+                          {walletLocked ? (
+                            <LockScreen
+                              hasPasswordError={hasPasswordError}
+                              onSubmit={unlockWallet}
+                              disabled={inputValue === ''}
+                              onPasswordChanged={handlePasswordChanged}
+                              onShowRestore={onToggleRestore}
+                            />
+                          ) : (
+                            <>
+                              {showBackup ? (
+                                <BackupWallet
+                                  isOnboarding={false}
+                                  onCancel={onHideBackup}
+                                  onSubmit={onWalletBackedUp}
+                                  recoveryPhrase={recoveryPhrase}
+                                />
+                              ) : (
+                                <CryptoStoryView
+                                  defaultCurrencies={defaultCurrencies}
+                                  onLockWallet={lockWallet}
+                                  needsBackup={needsBackup}
+                                  onShowBackup={onShowBackup}
+                                  accounts={accounts}
+                                  onChangeTimeline={onChangeTimeline}
+                                  selectedAssetPriceHistory={selectedAssetPriceHistory}
+                                  selectedTimeline={selectedTimeline}
+                                  selectedAsset={selectedAsset}
+                                  fullAssetList={NewAssetOptions}
+                                  onSelectAsset={onSelectAsset}
+                                  portfolioPriceHistory={selectedAssetPriceHistory}
+                                  portfolioBalance={scrapedFullPortfolioBalance()}
+                                  transactions={transactionDummyData}
+                                  selectedAssetFiatPrice={selectedUSDAssetPrice}
+                                  selectedAssetCryptoPrice={selectedBTCAssetPrice}
+                                  userAssetList={userAssetList}
+                                  onCreateAccount={onCreateAccount}
+                                  onImportAccount={onImportAccount}
+                                  isFilecoinEnabled={isFilecoinEnabled}
+                                  isSolanaEnabled={isSolanaEnabled}
+                                  onImportFilecoinAccount={onImportFilecoinAccount}
+                                  onConnectHardwareWallet={onConnectHardwareWallet}
+                                  onAddHardwareAccounts={onAddHardwareAccounts}
+                                  getBalance={getBalance}
+                                  isLoading={false}
+                                  showAddModal={showAddModal}
+                                  onToggleAddModal={onToggleAddModal}
+                                  onUpdateAccountName={onUpdateAccountName}
+                                  selectedNetwork={selectedNetwork}
+                                  isFetchingPortfolioPriceHistory={false}
+                                  selectedPortfolioTimeline={selectedTimeline}
+                                  onRemoveAccount={onRemoveAccount}
+                                  privateKey="gf65a4g6a54fg6a54fg6ad4fa5df65a4d6ff54a6sdf"
+                                  onDoneViewingPrivateKey={onDoneViewingPrivateKey}
+                                  onViewPrivateKey={onViewPrivateKey}
+                                  networkList={mockNetworks}
+                                  onImportAccountFromJson={onImportAccountFromJson}
+                                  hasImportError={importAccountError}
+                                  onSetImportError={onSetImportAccountError}
+                                  onAddCustomAsset={onAddCustomAsset}
+                                  onUpdateVisibleAssets={onUpdateVisibleAssets}
+                                  transactionSpotPrices={[]}
+                                  userVisibleTokensInfo={[]}
+                                  onShowVisibleAssetsModal={onShowVisibleAssetsModal}
+                                  showVisibleAssetsModal={showVisibleAssetsModal}
+                                  onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
+                                  foundTokenInfoByContractAddress={foundTokenInfo}
+                                  coinMarketData={[]}
+                                  onFetchMoreMarketData={onFetchMoreMarketData}
+                                />
+                              )}
+                            </>
+                          )}
+                        </>
+                      ) : (
+                        <div style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                          <h2>{view} view</h2>
+                        </div>
+                      )}
+                    </>
+                  )}
+              </>
+            )}
+
+          </WalletSubViewLayout>
+          {!needsOnboarding && !walletLocked &&
               <WalletWidgetStandIn>
-                <BuySendSwap
-                  defaultCurrencies={defaultCurrencies}
-                  selectedNetwork={selectedNetwork}
-                  selectedTab={selectedWidgetTab}
-                  buyAmount={buyAmount}
-                  sendAmount={sendAmount}
-                  selectedSendAsset={fromAsset}
-                  sendAssetBalance={fromAssetBalance}
-                  toAddressOrUrl={toAddress}
-                  toAddress={toAddress}
-                  addressError=''
-                  addressWarning=''
-                  onSubmitBuy={onSubmitBuy}
-                  onSetBuyAmount={onSetBuyAmount}
-                  onSetSendAmount={onSetSendAmount}
-                  onSetToAddressOrUrl={onSetToAddress}
-                  onSubmitSend={onSubmitSend}
-                  onSelectNetwork={onSelectNetwork}
-                  onSelectAccount={onSelectAccount}
-                  onSelectPresetSendAmount={onSelectPresetSendAmount}
-                  onSelectTab={setSelectedWidgetTab}
-                  buyAssetOptions={AccountAssetOptions}
-                  sendAssetOptions={AccountAssetOptions}
-                  networkList={mockNetworks}
-                  onSelectSendAsset={onSelectTransactAsset}
-                  onAddNetwork={onAddNetwork}
-                  onAddAsset={onShowVisibleAssetsModal}
-                  sendAmountValidationError={undefined}
-                />
-                <SweepstakesBanner />
+                  <BuySendSwap
+                      defaultCurrencies={defaultCurrencies}
+                      selectedNetwork={selectedNetwork}
+                      selectedTab={selectedWidgetTab}
+                      buyAmount={buyAmount}
+                      sendAmount={sendAmount}
+                      selectedSendAsset={fromAsset}
+                      sendAssetBalance={fromAssetBalance}
+                      toAddressOrUrl={toAddress}
+                      toAddress={toAddress}
+                      addressError=""
+                      addressWarning=""
+                      onSubmitBuy={onSubmitBuy}
+                      onSetBuyAmount={onSetBuyAmount}
+                      onSetSendAmount={onSetSendAmount}
+                      onSetToAddressOrUrl={onSetToAddress}
+                      onSubmitSend={onSubmitSend}
+                      onSelectNetwork={onSelectNetwork}
+                      onSelectAccount={onSelectAccount}
+                      onSelectPresetSendAmount={onSelectPresetSendAmount}
+                      onSelectTab={setSelectedWidgetTab}
+                      buyAssetOptions={AccountAssetOptions}
+                      sendAssetOptions={AccountAssetOptions}
+                      networkList={mockNetworks}
+                      onSelectSendAsset={onSelectTransactAsset}
+                      onAddNetwork={onAddNetwork}
+                      onAddAsset={onShowVisibleAssetsModal}
+                      sendAmountValidationError={undefined}
+                  />
+                  <SweepstakesBanner/>
               </WalletWidgetStandIn>
-            }
-          </WalletPageLayout>
+          }
+        </WalletPageLayout>
       </LibContext.Provider>
     </Provider>
   )

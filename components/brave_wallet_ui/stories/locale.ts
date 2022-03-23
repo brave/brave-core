@@ -490,7 +490,6 @@ provideStrings({
   braveWalletMarketData24HrColumn: '24Hr',
   braveWalletMarketDataMarketCapColumn: 'Mkt. Cap',
   braveWalletMarketDataVolumeColumn: 'Volume',
-  braveWalletSweepstakesCallToAction: 'Enter now!',
 
   // Network Filter
   braveWalletNetworkFilterAll: 'All Networks',

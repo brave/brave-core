@@ -91,7 +91,6 @@ const defaultState: WalletState = {
   defaultNetworks: [] as BraveWallet.NetworkInfo[],
   isLoadingCoinMarketData: true,
   coinMarketData: [],
-  defaultNetworks: [] as BraveWallet.NetworkInfo[],
   selectedNetworkFilter: AllNetworksOption
 }
 

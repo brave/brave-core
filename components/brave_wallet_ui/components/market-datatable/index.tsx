@@ -18,6 +18,7 @@ import {
 import AssetNameAndIcon from '../asset-name-and-icon'
 import AssetPriceChange from '../asset-price-change'
 import { LoadIcon, LoadIconWrapper } from '../desktop/views/market/style'
+import { CoinGeckoText } from '../desktop/views/portfolio/style'
 
 export interface MarketDataHeader extends Header {
   id: MarketDataTableColumnTypes
@@ -137,6 +138,9 @@ const MarketDataTable = (props: Props) => {
             </LoadIconWrapper>
           }
           hasMore={moreDataAvailable}
+          endMessage={
+            <CoinGeckoText>{getLocale('braveWalletPoweredByCoinGecko')}</CoinGeckoText>
+          }
           style={{
             overflow: 'inherit'
           }}
