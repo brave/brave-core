@@ -24,7 +24,6 @@ brave_browser_brave_ads_sources = [
 brave_browser_brave_ads_deps = [
   "//base",
   "//brave/app:brave_generated_resources_grit",
-  "//brave/browser/notifications",
   "//brave/browser/profiles:util",
   "//brave/browser/ui/brave_ads",
   "//brave/common",
