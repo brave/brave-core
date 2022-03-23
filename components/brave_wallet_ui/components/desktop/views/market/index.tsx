@@ -1,31 +1,42 @@
 import * as React from 'react'
 import { useHistory, useParams } from 'react-router'
 
+// Components
 import { SearchBar } from '../../../shared'
 import { AssetsFilterDropdown } from '../..'
 import { AssetFilterOptions } from '../../../../options/market-data-filter-options'
-
-import {
-  LoadIcon,
-  LoadIconWrapper,
-  StyledWrapper,
-  TopRow
-} from './style'
+import { makeNetworkAsset } from '../../../../options/asset-options'
 import { useMarketDataManagement } from '../../../../common/hooks/market-data-management'
 import { marketDataTableHeaders } from '../../../../options/market-data-headers'
+import MarketDataTable from '../../../../components/market-datatable'
+import { PortfolioView } from '../'
+
+// Utils
+import { debounce } from '../../../../../common/debounce'
+import { getLocale } from '../../../../../common/locale'
+
+// Types
 import {
+  AccountTransactions,
+  AddAccountNavTypes,
   AssetFilterOption,
   BraveWallet,
   DefaultCurrencies,
   MarketDataTableColumnTypes,
   PriceDataObjectType,
   SortOrder,
+  UserAssetInfoType,
+  WalletAccountType,
   WalletRoutes
 } from '../../../../constants/types'
-import MarketDataTable from '../../../../components/market-datatable'
-import { debounce } from '../../../../../common/debounce'
-import { getLocale } from '../../../../../common/locale'
-import MarketAssetDetailView from './components/market-asset-detail'
+
+// Styled Components
+import {
+  LoadIcon,
+  LoadIconWrapper,
+  StyledWrapper,
+  TopRow
+} from './style'
 
 export interface Props {
   isLoadingCoinMarketData: boolean
@@ -45,9 +56,28 @@ export interface Props {
   isLoading: boolean
   isFetchingPortfolioPriceHistory: boolean
   onFetchCoinMarkets: (vsAsset: string, limit: number) => void
-  onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
+  toggleNav: () => void
   onChangeTimeline: (path: BraveWallet.AssetPriceTimeframe) => void
-  onSelectNetwork: (network: BraveWallet.NetworkInfo) => () => void
+  onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
+  onSelectAccount: (account: WalletAccountType) => void
+  onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
+  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
+  onAddCustomAsset: (token: BraveWallet.BlockchainToken) => void
+  onShowVisibleAssetsModal: (showModal: boolean) => void
+  onUpdateVisibleAssets: (updatedTokensList: BraveWallet.BlockchainToken[]) => void
+  showVisibleAssetsModal: boolean
+  addUserAssetError: boolean
+  userAssetList: UserAssetInfoType[]
+  accounts: WalletAccountType[]
+  transactions: AccountTransactions
+  fullAssetList: BraveWallet.BlockchainToken[]
+  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
+  transactionSpotPrices: BraveWallet.AssetPrice[]
+  onRetryTransaction: (transaction: BraveWallet.TransactionInfo) => void
+  onSpeedupTransaction: (transaction: BraveWallet.TransactionInfo) => void
+  onCancelTransaction: (transaction: BraveWallet.TransactionInfo) => void
+  onFindTokenInfoByContractAddress: (contractAddress: string) => void
+  foundTokenInfoByContractAddress: BraveWallet.BlockchainToken | undefined
 }
 
 interface ParamsType {
@@ -72,10 +102,29 @@ const MarketView = (props: Props) => {
     portfolioBalance,
     isLoading,
     isFetchingPortfolioPriceHistory,
+    showVisibleAssetsModal,
+    addUserAssetError,
+    userVisibleTokensInfo,
+    fullAssetList,
+    accounts,
+    transactions,
+    userAssetList,
+    transactionSpotPrices,
+    foundTokenInfoByContractAddress,
     onSelectAsset,
     onSelectNetwork,
     onChangeTimeline,
-    onFetchCoinMarkets
+    onFetchCoinMarkets,
+    toggleNav,
+    onSelectAccount,
+    onClickAddAccount,
+    onAddCustomAsset,
+    onShowVisibleAssetsModal,
+    onUpdateVisibleAssets,
+    onRetryTransaction,
+    onSpeedupTransaction,
+    onCancelTransaction,
+    onFindTokenInfoByContractAddress
   } = props
   const [coinsMarketData, setCoinsMarketData] = React.useState<BraveWallet.CoinMarket[]>([])
   const [tableHeaders, setTableHeaders] = React.useState(marketDataTableHeaders)
@@ -86,6 +135,8 @@ const MarketView = (props: Props) => {
   const [currentPage, setCurrentPage] = React.useState<number>(1)
   const [searchTerm, setSearchTerm] = React.useState('')
   const [moreDataAvailable, setMoreDataAvailable] = React.useState<boolean>(false)
+  const [selectedCoinMarket, setSelectedCoinMarket] = React.useState<BraveWallet.CoinMarket>()
+  const [isSupportedBraveWallet, setIsSupportedBraveWallet] = React.useState<boolean>(false)
   const defaultCurrency = 'usd'
   const assetsRequestLimit = 250
   const assetsPerPage = 20
@@ -160,18 +211,29 @@ const MarketView = (props: Props) => {
   }
 
   const onSelectCoinMarket = (coinMarket: BraveWallet.CoinMarket) => {
-    const asset = new BraveWallet.BlockchainToken()
-    asset.coingeckoId = coinMarket.id
-    asset.name = coinMarket.name
-    asset.contractAddress = ''
-    asset.symbol = coinMarket.symbol.toUpperCase()
-    asset.logo = coinMarket.image
-    onSelectAsset(asset)
+    const nativeAsset = makeNetworkAsset(selectedNetwork)
+    const supportedAsset = [...fullAssetList, nativeAsset].find(a => a.symbol.toLowerCase() === coinMarket.symbol.toLowerCase())
+    if (supportedAsset) {
+      onSelectAsset(supportedAsset)
+      setIsSupportedBraveWallet(true)
+    } else {
+      // Token fields have to be set here to avoid null reference
+      const asset = new BraveWallet.BlockchainToken()
+      asset.coingeckoId = coinMarket.id
+      asset.name = coinMarket.name
+      asset.contractAddress = ''
+      asset.symbol = coinMarket.symbol.toUpperCase()
+      asset.logo = coinMarket.image
+      onSelectAsset(asset)
+      setIsSupportedBraveWallet(false)
+    }
+
+    setSelectedCoinMarket(coinMarket)
     history.push(`${WalletRoutes.Market}/${coinMarket.symbol}`)
   }
 
-  const goBack = () => {
-    onSelectAsset(undefined)
+  const onGoBack = () => {
+    setSelectedCoinMarket(undefined)
     history.push(WalletRoutes.Market)
   }
 
@@ -199,8 +261,49 @@ const MarketView = (props: Props) => {
 
   return (
     <StyledWrapper>
-      {!id && !selectedAsset
-        ? <>
+      {id && selectedAsset && selectedCoinMarket ? (
+        <PortfolioView
+          onChangeTimeline={onChangeTimeline}
+          onSelectNetwork={onSelectNetwork}
+          defaultCurrencies={defaultCurrencies}
+          selectedNetwork={selectedNetwork}
+          portfolioPriceHistory={portfolioPriceHistory}
+          selectedAssetPriceHistory={selectedAssetPriceHistory}
+          selectedAssetFiatPrice={selectedAssetFiatPrice}
+          selectedAssetCryptoPrice={selectedAssetCryptoPrice}
+          selectedTimeline={selectedTimeline}
+          selectedPortfolioTimeline={selectedPortfolioTimeline}
+          networkList={networkList}
+          selectedAsset={selectedAsset}
+          selectedCoinMarket={selectedCoinMarket}
+          portfolioBalance={portfolioBalance}
+          isLoading={isLoading}
+          isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
+          toggleNav={toggleNav}
+          onSelectAsset={onSelectAsset}
+          onSelectAccount={onSelectAccount}
+          onClickAddAccount={onClickAddAccount}
+          onAddCustomAsset={onAddCustomAsset}
+          onShowVisibleAssetsModal={onShowVisibleAssetsModal}
+          onUpdateVisibleAssets={onUpdateVisibleAssets}
+          showVisibleAssetsModal={showVisibleAssetsModal}
+          addUserAssetError={addUserAssetError}
+          userAssetList={userAssetList}
+          accounts={accounts}
+          transactions={transactions}
+          fullAssetList={fullAssetList}
+          userVisibleTokensInfo={userVisibleTokensInfo}
+          transactionSpotPrices={transactionSpotPrices}
+          onRetryTransaction={onRetryTransaction}
+          onSpeedupTransaction={onSpeedupTransaction}
+          onCancelTransaction={onCancelTransaction}
+          onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
+          foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
+          onGoBack={onGoBack}
+          isSupportedInBraveWallet={isSupportedBraveWallet}
+        />
+      ) : (
+        <>
           <TopRow>
             <AssetsFilterDropdown
               options={AssetFilterOptions()}
@@ -210,47 +313,30 @@ const MarketView = (props: Props) => {
             <SearchBar
               placeholder={getLocale('braveWalletSearchText')}
               autoFocus={true}
-              action={event => {
+              action={(event) => {
                 setSearchTerm(event.target.value)
                 debounceSearch(event.target.value)
               }}
               disabled={isLoadingCoinMarketData}
             />
           </TopRow>
-          {isLoadingCoinMarketData
-            ? <LoadIconWrapper>
-                <LoadIcon />
-              </LoadIconWrapper>
-            : <MarketDataTable
-                headers={tableHeaders}
-                coinMarketData={visibleCoinMarkets}
-                moreDataAvailable={moreDataAvailable}
-                showEmptyState={searchTerm !== '' || currentFilter !== 'all'}
-                onFetchMoreMarketData={getNextPage}
-                onSort={onSort}
-                onSelectCoinMarket={onSelectCoinMarket}
-              />
-          }
+          {isLoadingCoinMarketData ? (
+            <LoadIconWrapper>
+              <LoadIcon />
+            </LoadIconWrapper>
+          ) : (
+            <MarketDataTable
+              headers={tableHeaders}
+              coinMarketData={visibleCoinMarkets}
+              moreDataAvailable={moreDataAvailable}
+              showEmptyState={searchTerm !== '' || currentFilter !== 'all'}
+              onFetchMoreMarketData={getNextPage}
+              onSort={onSort}
+              onSelectCoinMarket={onSelectCoinMarket}
+            />
+          )}
         </>
-        : <MarketAssetDetailView
-            onChangeTimeline={onChangeTimeline}
-            onSelectNetwork={(network) => () => onSelectNetwork(network)}
-            defaultCurrencies={defaultCurrencies}
-            selectedNetwork={selectedNetwork}
-            portfolioPriceHistory={portfolioPriceHistory}
-            selectedAssetPriceHistory={selectedAssetPriceHistory}
-            selectedAssetFiatPrice={selectedAssetFiatPrice}
-            selectedAssetCryptoPrice={selectedAssetCryptoPrice}
-            selectedTimeline={selectedTimeline}
-            selectedPortfolioTimeline={selectedPortfolioTimeline}
-            networkList={networkList}
-            selectedAsset={selectedAsset}
-            portfolioBalance={portfolioBalance}
-            isLoading={isLoading}
-            isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
-            goBack={goBack}
-          />
-      }
+      )}
     </StyledWrapper>
   )
 }

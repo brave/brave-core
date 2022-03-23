@@ -167,7 +167,7 @@ export const EmptyTransactionContainer = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  height: 100px;
+  height: 50px;
 `
 
 export const TransactionPlaceholderText = styled.span`

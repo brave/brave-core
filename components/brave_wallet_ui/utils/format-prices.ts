@@ -72,7 +72,7 @@ export const formatPriceWithAbbreviation = (value: string, defaultCurrency: stri
     return ''
   }
   const decimalPlacesFormat = String('').padEnd(decimals, '0')
-  const currencySymbol = CurrencySymbols[defaultCurrency]
+  const currencySymbol = CurrencySymbols[defaultCurrency] ? CurrencySymbols[defaultCurrency] : ''
 
   return currencySymbol + numeral(value).format(`0.${decimalPlacesFormat}a`).toUpperCase()
 }

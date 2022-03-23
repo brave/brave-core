@@ -345,6 +345,8 @@ const CryptoView = (props: Props) => {
           onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
           foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
           onUpdateVisibleAssets={onUpdateVisibleAssets}
+          isSupportedInBraveWallet={true}
+          selectedCoinMarket={undefined}
         />
       </Route>
       <Route path={WalletRoutes.AccountsSub} exact={true}>
@@ -372,7 +374,7 @@ const CryptoView = (props: Props) => {
           networkList={networkList}
         />
       </Route>
-      <Route path={WalletRoutes.MarketSub} >
+      <Route path={WalletRoutes.MarketSub}>
         <MarketView
           isLoadingCoinMarketData={isLoadingCoinMarketData}
           coinMarkets={coinMarkets}
@@ -393,7 +395,26 @@ const CryptoView = (props: Props) => {
           onFetchCoinMarkets={onFetchCoinMarkets}
           onSelectAsset={onSelectAsset}
           onChangeTimeline={onChangeTimeline}
-          onSelectNetwork={(network => () => onSelectNetwork(network))}
+          onSelectNetwork={onSelectNetwork}
+          toggleNav={toggleNav}
+          onSelectAccount={onSelectAccount}
+          onClickAddAccount={onClickAddAccount}
+          onAddCustomAsset={onAddCustomAsset}
+          onShowVisibleAssetsModal={onShowVisibleAssetsModal}
+          onUpdateVisibleAssets={onUpdateVisibleAssets}
+          showVisibleAssetsModal={showVisibleAssetsModal}
+          addUserAssetError={addUserAssetError}
+          userAssetList={userAssetList}
+          accounts={accounts}
+          transactions={transactions}
+          fullAssetList={fullAssetList}
+          userVisibleTokensInfo={userVisibleTokensInfo}
+          transactionSpotPrices={transactionSpotPrices}
+          onRetryTransaction={onRetryTransaction}
+          onSpeedupTransaction={onSpeedupTransaction}
+          onCancelTransaction={onCancelTransaction}
+          onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
+          foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
         />
       </Route>
 

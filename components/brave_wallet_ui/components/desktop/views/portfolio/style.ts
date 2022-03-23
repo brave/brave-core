@@ -236,3 +236,13 @@ export const ShowBalanceButton = styled(WalletButton) <Partial<StyleProps>>`
   mask-image: url(${(p) => p.hideBalances ? EyeOffIcon : EyeOnIcon});
   mask-size: cover;
 `
+
+export const AssetNotSupported = styled.p`
+  font-family: Poppins;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  font-weight: 400;
+  color: ${(p) => p.theme.color.text03};
+  margin: 12px 0;
+`

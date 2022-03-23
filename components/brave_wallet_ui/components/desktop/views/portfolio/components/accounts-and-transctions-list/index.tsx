@@ -31,8 +31,7 @@ import {
   EmptyTransactionContainer,
   TransactionPlaceholderText,
   AssetBalanceDisplay,
-  DividerRow,
-  CoinGeckoText
+  DividerRow
 } from '../../components/portfolio-top-section/style'
 
 export interface Props {
@@ -156,7 +155,6 @@ const AccountsAndTransactionsList = (props: Props) => {
               <TransactionPlaceholderText>{getLocale('braveWalletTransactionPlaceholder')}</TransactionPlaceholderText>
             </EmptyTransactionContainer>
           )}
-          <CoinGeckoText>{getLocale('braveWalletPoweredByCoinGecko')}</CoinGeckoText>
         </>
       }
     </>

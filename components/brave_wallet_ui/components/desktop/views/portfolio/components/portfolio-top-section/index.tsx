@@ -46,7 +46,7 @@ import {
 
 export interface Props {
   onChangeTimeline: (path: BraveWallet.AssetPriceTimeframe) => void
-  onSelectNetwork?: (network: BraveWallet.NetworkInfo) => () => void
+  onSelectNetwork: (network: BraveWallet.NetworkInfo) => () => void
   defaultCurrencies: DefaultCurrencies
   selectedNetwork: BraveWallet.NetworkInfo
   networkList: BraveWallet.NetworkInfo[]
@@ -143,12 +143,6 @@ const PortfolioTopSection = (props: Props) => {
     }
   }
 
-  const handleOnSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
-    if (onSelectNetwork) {
-      onSelectNetwork(network)
-    }
-  }
-
   return (
     <StyledWrapper>
       <TopRow>
@@ -164,7 +158,7 @@ const PortfolioTopSection = (props: Props) => {
               networkList={networkList}
               showNetworkDropDown={showNetworkDropdown || false}
               selectedNetwork={selectedNetwork}
-              onSelectNetwork={handleOnSelectNetwork}
+              onSelectNetwork={onSelectNetwork}
             />
           }
         </BalanceRow>
