@@ -7,6 +7,8 @@ static_library("brave_federated") {
     "brave_federated_service.h",
     "client/client.h",
     "client/client.cc",
+    "client/model.h",
+    "client/model.cc",
     "data_store_service.cc",
     "data_store_service.h",
     "data_stores/ad_notification_timing_data_store.cc",

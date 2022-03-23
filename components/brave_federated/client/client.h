@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -12,18 +12,27 @@
 
 namespace brave_federated {
 
+class Model;
+
 class Client {
  public:
-  Client(const std::string& task_name, const std::string& model);
+  Client(const std::string& task_name, Model* model);
   ~Client();
 
-  void SetTrainingData(std::vector<std::vector<float>> training_data);
+  Model* GetModel();
+
   void Start();
+  // TODO() : Stop client
   void Stop();
 
+  void SetTrainingData(std::vector<std::vector<float>> training_data);
+
  private:
+  // TODO() : Constraints: 1. Bound number of participations
+  //                       2. Min batch size
+  //                       3. Gradient clipping
   std::string task_name_ = "";
-  std::string model_ = "";
+  Model* model_;
   std::vector<std::vector<float>> training_data_;
 };
 
