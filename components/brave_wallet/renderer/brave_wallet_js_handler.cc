@@ -28,22 +28,10 @@
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "third_party/blink/public/web/web_script_source.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/origin.h"
 
 namespace {
-
-// By default we allow extensions to overwrite the window.ethereum object
-// but if the user goes into settings and explicitly selects to use Brave Wallet
-// then we will block modifications to window.ethereum here.
-const char kEthereumNonWritable[] =
-    R"(;(function() {
-           Object.defineProperty(window, 'ethereum', {
-             value: window.ethereum,
-             writable: false
-           });
-    })();)";
 
 static base::NoDestructor<std::string> g_provider_script("");
 
@@ -550,19 +538,11 @@ v8::Local<v8::Promise> BraveWalletJSHandler::IsUnlocked() {
   return resolver.ToLocalChecked()->GetPromise();
 }
 
-void BraveWalletJSHandler::ExecuteScript(const std::string script) {
-  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  if (web_frame->IsProvisional())
-    return;
-
-  web_frame->ExecuteScript(
-      blink::WebScriptSource(blink::WebString::FromUTF8(script)));
-}
-
 void BraveWalletJSHandler::InjectInitScript() {
-  ExecuteScript(*g_provider_script);
+  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
+  ExecuteScript(web_frame, *g_provider_script);
   if (!allow_overwrite_window_ethereum_) {
-    ExecuteScript(kEthereumNonWritable);
+    SetProviderNonWritable(web_frame, "ethereum");
   }
 }
 

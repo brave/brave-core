@@ -98,11 +98,11 @@ void BraveRendererUpdater::UpdateRenderer(
       is_wallet_allowed_for_context_;
 #endif
 
-  bool allow_overwrite_window_ethereum =
+  bool allow_overwrite_window_web3_provider =
       default_wallet ==
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;
 
   (*renderer_configuration)
       ->SetConfiguration(brave::mojom::DynamicParams::New(
-          brave_use_native_wallet, allow_overwrite_window_ethereum));
+          brave_use_native_wallet, allow_overwrite_window_web3_provider));
 }

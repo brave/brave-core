@@ -49,20 +49,23 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
   if (!native_javascript_handle_) {
     native_javascript_handle_.reset(new BraveWalletJSHandler(
         render_frame(), dynamic_params.brave_use_native_wallet,
-        dynamic_params.allow_overwrite_window_ethereum));
+        dynamic_params.allow_overwrite_window_web3_provider));
   }
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);
   native_javascript_handle_->ConnectEvent();
   native_javascript_handle_->AllowOverwriteWindowEthereum(
-      dynamic_params.allow_overwrite_window_ethereum);
+      dynamic_params.allow_overwrite_window_web3_provider);
 
   if (base::FeatureList::IsEnabled(
           brave_wallet::features::kBraveWalletSolanaFeature)) {
     if (!js_solana_provider_) {
       js_solana_provider_ = JSSolanaProvider::Install(
-          dynamic_params.brave_use_native_wallet, render_frame(), context);
+          dynamic_params.brave_use_native_wallet,
+          dynamic_params.allow_overwrite_window_web3_provider, render_frame(),
+          context);
     } else {
-      js_solana_provider_->Init(context);
+      js_solana_provider_->Init(
+          context, dynamic_params.allow_overwrite_window_web3_provider);
     }
   }
 }

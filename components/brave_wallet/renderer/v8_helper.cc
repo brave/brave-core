@@ -7,8 +7,10 @@
 
 #include <utility>
 
+#include "base/strings/stringprintf.h"
 #include "gin/converter.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "third_party/blink/public/web/web_script_source.h"
 #include "v8/include/v8-function.h"
 #include "v8/include/v8-microtask-queue.h"
 
@@ -85,6 +87,28 @@ v8::MaybeLocal<v8::Value> CallMethodOfObject(
   return web_frame->CallFunctionEvenIfScriptDisabled(
       v8::Local<v8::Function>::Cast(method), object,
       static_cast<int>(args.size()), args.data());
+}
+
+void ExecuteScript(blink::WebLocalFrame* web_frame, const std::string script) {
+  if (web_frame->IsProvisional())
+    return;
+
+  web_frame->ExecuteScript(
+      blink::WebScriptSource(blink::WebString::FromUTF8(script)));
+}
+
+void SetProviderNonWritable(blink::WebLocalFrame* web_frame,
+                            const std::string& provider) {
+  const char* provider_str = provider.c_str();
+  const std::string script = base::StringPrintf(
+      R"(;(function() {
+           Object.defineProperty(window, '%s', {
+             value: window.%s,
+             writable: false
+           });
+    })();)",
+      provider_str, provider_str);
+  ExecuteScript(web_frame, script);
 }
 
 }  // namespace brave_wallet

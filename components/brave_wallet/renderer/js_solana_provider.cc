@@ -23,7 +23,6 @@
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "third_party/blink/public/web/web_script_source.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "v8/include/v8-microtask-queue.h"
@@ -94,17 +93,19 @@ bool JSSolanaProvider::V8ConverterStrategy::FromV8ArrayBuffer(
 // static
 std::unique_ptr<JSSolanaProvider> JSSolanaProvider::Install(
     bool use_native_wallet,
+    bool allow_overwrite_window_solana,
     content::RenderFrame* render_frame,
     v8::Local<v8::Context> context) {
   std::unique_ptr<JSSolanaProvider> js_solana_provider(
       new JSSolanaProvider(use_native_wallet, render_frame));
-  if (!js_solana_provider->Init(context))
+  if (!js_solana_provider->Init(context, allow_overwrite_window_solana))
     return nullptr;
 
   return js_solana_provider;
 }
 
-bool JSSolanaProvider::Init(v8::Local<v8::Context> context) {
+bool JSSolanaProvider::Init(v8::Local<v8::Context> context,
+                            bool allow_overwrite_window_solana) {
   v8::Isolate* isolate = context->GetIsolate();
   v8::Local<v8::Object> global = context->Global();
   v8::Local<v8::Value> solana_value;
@@ -117,7 +118,7 @@ bool JSSolanaProvider::Init(v8::Local<v8::Context> context) {
     global
         ->Set(context, gin::StringToSymbol(isolate, "solana"), provider.ToV8())
         .Check();
-    InjectInitScript();
+    InjectInitScript(allow_overwrite_window_solana);
   } else {
     render_frame_->GetWebFrame()->AddMessageToConsole(
         blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
@@ -169,13 +170,11 @@ void JSSolanaProvider::AccountChangedEvent(
   FireEvent(kAccountChangedEvent, std::move(args));
 }
 
-void JSSolanaProvider::InjectInitScript() {
+void JSSolanaProvider::InjectInitScript(bool allow_overwrite_window_solana) {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  if (web_frame->IsProvisional())
-    return;
-
-  web_frame->ExecuteScript(
-      blink::WebScriptSource(blink::WebString::FromUTF8(*g_provider_script)));
+  ExecuteScript(web_frame, *g_provider_script);
+  if (!allow_overwrite_window_solana)
+    SetProviderNonWritable(web_frame, "solana");
 }
 
 bool JSSolanaProvider::EnsureConnected() {
