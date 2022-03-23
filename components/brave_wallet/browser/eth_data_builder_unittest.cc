@@ -87,6 +87,16 @@ TEST(EthCallDataBuilderTest, OwnerOf) {
             "0000000f");
 }
 
+TEST(EthCallDataBuilderTest, TokenUri) {
+  std::string data;
+  uint256_t token_id;
+  ASSERT_TRUE(HexValueToUint256("0xf", &token_id));
+  TokenUri(token_id, &data);
+  ASSERT_EQ(data,
+            "0xc87b56dd00000000000000000000000000000000000000000000000000000000"
+            "0000000f");
+}
+
 }  // namespace erc721
 
 namespace erc165 {

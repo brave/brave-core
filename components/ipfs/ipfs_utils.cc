@@ -410,4 +410,17 @@ std::string GetRegistryDomainFromIPNS(const GURL& url) {
       cid, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
+bool ToConfiguredGatewayURL(GURL* url, PrefService* prefs) {
+  if (!IsIPFSScheme(*url))
+    return false;
+  std::string cid;
+  std::string path;
+  if (!ParseCIDAndPathFromIPFSUrl(*url, &cid, &path) || cid.empty()) {
+    return false;
+  }
+  GURL gateway_url =
+      ipfs::GetIPFSGatewayURL(cid, path, ipfs::GetDefaultIPFSGateway(prefs));
+  *url = gateway_url;
+  return true;
+}
 }  // namespace ipfs

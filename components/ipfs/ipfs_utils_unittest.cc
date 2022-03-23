@@ -700,3 +700,15 @@ TEST_F(IpfsUtilsUnitTest, IsValidCIDOrDomain) {
   ASSERT_FALSE(ipfs::IsValidCIDOrDomain("a.b.c.com:11112"));
   ASSERT_FALSE(ipfs::IsValidCIDOrDomain("wrongdomainandcid"));
 }
+
+TEST_F(IpfsUtilsUnitTest, ToConfiguredGatewayURL) {
+  GURL url = GURL("ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1817");
+  ASSERT_TRUE(ipfs::ToConfiguredGatewayURL(&url, prefs()));
+  ASSERT_EQ(
+      url,
+      "https://qmesjsinhppnmxmspmjwixyn6zs4e9zccarigr3jxcawtq.ipfs.dweb.link/"
+      "1817");
+
+  url = GURL("");
+  ASSERT_FALSE(ipfs::ToConfiguredGatewayURL(&url, prefs()));
+}

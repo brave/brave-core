@@ -63,6 +63,7 @@ bool IsAPIGateway(const GURL& url, version_info::Channel channel);
 bool IsIpfsResolveMethodDisabled(PrefService* prefs);
 std::string GetRegistryDomainFromIPNS(const GURL& url);
 bool IsValidCIDOrDomain(const std::string& value);
+bool ToConfiguredGatewayURL(GURL* url, PrefService* prefs);
 }  // namespace ipfs
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_

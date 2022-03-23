@@ -32,6 +32,8 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "brave/components/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -219,7 +221,6 @@ void JsonRpcService::RequestInternal(const std::string& json_payload,
     env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
   }
   request_headers["x-brave-key"] = std::move(brave_key);
-
   api_request_helper_->Request("POST", network_url, json_payload,
                                "application/json", auto_retry_on_network_change,
                                std::move(callback), request_headers);
@@ -1441,6 +1442,190 @@ void JsonRpcService::ContinueGetERC721TokenBalance(
                           mojom::ProviderError::kSuccess, "");
 }
 
+void JsonRpcService::GetERC721Metadata(const std::string& contract_address,
+                                       const std::string& token_id,
+                                       const std::string& chain_id,
+                                       GetERC721MetadataCallback callback) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  if (!EthAddress::IsValidAddress(contract_address)) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  uint256_t token_id_uint = 0;
+  if (!HexValueToUint256(token_id, &token_id_uint)) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  std::string function_signature;
+  if (!erc721::TokenUri(token_id_uint, &function_signature)) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetSupportsInterfaceERC721Metadata,
+                     weak_ptr_factory_.GetWeakPtr(), contract_address,
+                     function_signature, network_url, std::move(callback));
+
+  GetSupportsInterface(contract_address, kERC721MetadataInterfaceId,
+                       std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetSupportsInterfaceERC721Metadata(
+    const std::string& contract_address,
+    const std::string& function_signature,
+    const GURL& network_url,
+    GetERC721MetadataCallback callback,
+    bool is_supported,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess) {
+    std::move(callback).Run("", error, error_message);
+    return;
+  }
+
+  if (!is_supported) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetERC721TokenUri,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  // Call tokenURI on the ERC721 contract
+  RequestInternal(eth::eth_call("", contract_address, "", "", "",
+                                function_signature, "latest"),
+                  true, network_url, std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetERC721TokenUri(
+    GetERC721MetadataCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  // Parse response JSON that wraps the result
+  std::string result;
+  if (!ParseSingleStringResult(body, &result)) {
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
+    std::move(callback).Run("", error, error_message);
+    return;
+  }
+
+  // Parse the URI
+  GURL url;
+  if (!eth::ParseERC721TokenUri(
+          result, &url)) {  // Either invalid RLP encoding, or invalid URL
+    std::move(callback).Run("", mojom::ProviderError::kParsingError,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    return;
+  }
+
+  // Obtain JSON from the URL depending on the scheme.
+  // IPFS, HTTPS, and data URIs are supported.
+  // IPFS and HTTPS URIs require an additional request to fetch the metadata.
+  std::string metadata_json;
+  std::string scheme = url.scheme();
+  if (scheme != url::kDataScheme && scheme != url::kHttpsScheme &&
+      scheme != ipfs::kIPFSScheme) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  } else if (scheme == url::kDataScheme) {
+    if (!ParseDataURIAndExtractJSON(url, &metadata_json)) {
+      std::move(callback).Run(
+          "", mojom::ProviderError::kParsingError,
+          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+      return;
+    }
+
+    // Sanitize JSON
+    data_decoder::JsonSanitizer::Sanitize(
+        std::move(metadata_json),
+        base::BindOnce(&JsonRpcService::OnSanitzeERC721InLineMetadata,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    return;
+  } else if (scheme == ipfs::kIPFSScheme &&
+             !ipfs::ToConfiguredGatewayURL(&url, prefs_)) {
+    std::move(callback).Run("", mojom::ProviderError::kParsingError,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetERC721MetadataPayload,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  api_request_helper_->Request("GET", url, "", "", true,
+                               std::move(internal_callback));
+}
+
+void JsonRpcService::OnSanitzeERC721InLineMetadata(
+    GetERC721MetadataCallback callback,
+    data_decoder::JsonSanitizer::Result result) {
+  if (result.error) {
+    VLOG(1) << "Data URI JSON validation error:" << *result.error;
+    std::move(callback).Run("", mojom::ProviderError::kParsingError,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    return;
+  }
+
+  std::string metadata_json;
+  if (result.value.has_value()) {
+    metadata_json = result.value.value();
+  }
+
+  std::move(callback).Run(metadata_json, mojom::ProviderError::kSuccess, "");
+}
+
+void JsonRpcService::OnGetERC721MetadataPayload(
+    GetERC721MetadataCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  // Invalid JSON becomes an empty string after sanitization
+  if (body.empty()) {
+    std::move(callback).Run("", mojom::ProviderError::kParsingError,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    return;
+  }
+
+  std::move(callback).Run(body, mojom::ProviderError::kSuccess, "");
+}
+
 void JsonRpcService::GetSupportsInterface(
     const std::string& contract_address,
     const std::string& interface_id,
@@ -1462,6 +1647,7 @@ void JsonRpcService::GetSupportsInterface(
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetSupportsInterface,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  DCHECK(&network_urls_[mojom::CoinType::ETH]);
   RequestInternal(
       eth::eth_call("", contract_address, "", "", "", data, "latest"), true,
       network_urls_[mojom::CoinType::ETH], std::move(internal_callback));

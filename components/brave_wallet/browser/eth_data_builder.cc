@@ -123,6 +123,17 @@ bool OwnerOf(uint256_t token_id, std::string* data) {
   return brave_wallet::ConcatHexStrings(function_hash, padded_token_id, data);
 }
 
+bool TokenUri(uint256_t token_id, std::string* data) {
+  const std::string function_hash = GetFunctionHash("tokenURI(uint256)");
+
+  std::string padded_token_id;
+  if (!PadHexEncodedParameter(Uint256ValueToHex(token_id), &padded_token_id)) {
+    return false;
+  }
+
+  return brave_wallet::ConcatHexStrings(function_hash, padded_token_id, data);
+}
+
 }  // namespace erc721
 
 namespace erc165 {

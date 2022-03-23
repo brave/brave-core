@@ -15,6 +15,17 @@
 
 namespace brave_wallet {
 
+bool ParseStringResult(const std::string& json, std::string* value) {
+  DCHECK(value);
+
+  std::string result;
+  if (!ParseSingleStringResult(json, &result))
+    return false;
+
+  size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
+  return brave_wallet::DecodeString(offset, result, value);
+}
+
 namespace eth {
 
 bool ParseAddressResult(const std::string& json, std::string* address) {
@@ -219,16 +230,22 @@ bool ParseEthGasPrice(const std::string& json, std::string* result) {
   return ParseSingleStringResult(json, result);
 }
 
+bool ParseERC721TokenUri(const std::string encoded, GURL* url) {
+  size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
+  std::string decoded;
+  brave_wallet::DecodeString(offset, encoded, &decoded);
+
+  *url = GURL(decoded);
+  if (!url->is_valid()) {
+    return false;
+  }
+
+  return true;
+}
+
 bool ParseEnsResolverContentHash(const std::string& json,
                                  std::string* content_hash) {
-  DCHECK(content_hash);
-
-  std::string result;
-  if (!ParseSingleStringResult(json, &result))
-    return false;
-
-  size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
-  return brave_wallet::DecodeString(offset, result, content_hash);
+  return ParseStringResult(json, content_hash);
 }
 
 bool ParseUnstoppableDomainsProxyReaderGetMany(
@@ -249,14 +266,7 @@ bool ParseUnstoppableDomainsProxyReaderGetMany(
 
 bool ParseUnstoppableDomainsProxyReaderGet(const std::string& json,
                                            std::string* value) {
-  DCHECK(value);
-
-  std::string result;
-  if (!ParseSingleStringResult(json, &result))
-    return false;
-
-  size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
-  return brave_wallet::DecodeString(offset, result, value);
+  return ParseStringResult(json, value);
 }
 
 }  // namespace eth

@@ -129,6 +129,7 @@ static_library("browser") {
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:solana_utils",
+    "//brave/components/ipfs",
     "//brave/components/json/rs:cxx",
     "//brave/components/json/rs:cxx_gen",
     "//brave/components/resources:strings_grit",

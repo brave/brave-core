@@ -140,6 +140,9 @@ std::string GetWeb3ClientVersion();
  */
 std::string eTLDPlusOne(const GURL& url);
 
+// Get the JSON included in a data URI with a mime type application/json
+bool ParseDataURIAndExtractJSON(const GURL url, std::string* json);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_

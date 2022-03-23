@@ -34,6 +34,7 @@ bool ParseEthCall(const std::string& json, std::string* result);
 bool ParseEthEstimateGas(const std::string& json, std::string* result);
 bool ParseEthGasPrice(const std::string& json, std::string* result);
 
+bool ParseERC721TokenUri(const std::string encoded, GURL* url);
 bool ParseEnsResolverContentHash(const std::string& json,
                                  std::string* content_hash);
 bool ParseUnstoppableDomainsProxyReaderGetMany(
