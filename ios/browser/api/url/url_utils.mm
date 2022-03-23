@@ -20,14 +20,34 @@
 
 @implementation NSURL (Utilities)
 
-- (nullable NSString*)brave_domainAndRegistry {
+std::string GetRegistry(const GURL& url) {
+  if (url.host_piece().empty() || url.HostIsIPAddress()) {
+    return std::string();  // No registry.
+  }
+
+  size_t registry_length = GetRegistryLength(
+      url, net::registry_controlled_domains::INCLUDE_UNKNOWN_REGISTRIES,
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+
+  if ((registry_length == std::string::npos) || (registry_length == 0)) {
+    return std::string();  // No registry.
+  }
+  return std::string(url.host(), url.host().length() - registry_length,
+                     registry_length);
+}
+
+- (NSString*)brave_registry {
+  return base::SysUTF8ToNSString(GetRegistry(net::GURLWithNSURL(self)));
+}
+
+- (NSString*)brave_domainAndRegistry {
   std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
       net::GURLWithNSURL(self),
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
   return base::SysUTF8ToNSString(domain);
 }
 
-- (nullable NSString*)brave_domainAndRegistryExcludingPrivateRegistries {
+- (NSString*)brave_domainAndRegistryExcludingPrivateRegistries {
   std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
       net::GURLWithNSURL(self),
       net::registry_controlled_domains::EXCLUDE_PRIVATE_REGISTRIES);
