@@ -24,6 +24,7 @@ export const root = styled.div`
 `
 
 export const title = styled.div`
+  display: flex;
   margin-top: 16px;
   font-weight: 600;
   font-size: 22px;
@@ -34,7 +35,8 @@ export const title = styled.div`
     height: 24px;
     margin-right: 8px;
     vertical-align: middle;
-    margin-bottom: 3px;
+    margin-top: auto;
+    margin-bottom: auto;
   }
 
   &.long {
@@ -77,7 +79,7 @@ export const helpAction = styled.div`
 
   button {
     display: block;
-    height: 40px;
+    height: auto;
     margin: 0 auto;
     padding: 10px 22px;
     font-weight: 600;
