@@ -14,9 +14,8 @@ import platform
 import plistlib
 import subprocess
 import sys
-import pkg_resources
-
 from urllib.error import URLError  # pylint: disable=no-name-in-module,import-error
+import pkg_resources
 
 import deps
 from deps_config import DEPS_PACKAGES_URL
