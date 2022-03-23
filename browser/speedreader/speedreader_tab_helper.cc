@@ -28,6 +28,7 @@
 #include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/reload_type.h"
 #include "content/public/browser/web_contents.h"
 
 namespace speedreader {
@@ -133,13 +134,11 @@ SpeedreaderBubbleView* SpeedreaderTabHelper::speedreader_bubble_view() const {
 bool SpeedreaderTabHelper::MaybeUpdateCachedState(
     content::NavigationHandle* handle) {
   auto* entry = handle->GetNavigationEntry();
-  if (!entry) {
+  if (!entry || handle->GetRestoreType() != content::RestoreType::kRestored) {
     return false;
   }
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
-  DCHECK(profile);
-  auto* speedreader_service = SpeedreaderServiceFactory::GetForProfile(profile);
+  auto* speedreader_service =
+      SpeedreaderServiceFactory::GetForProfile(GetProfile());
 
   const DistillState state =
       SpeedreaderExtendedInfoHandler::GetCachedMode(entry, speedreader_service);

@@ -27,6 +27,7 @@
 #include "components/keep_alive_registry/keep_alive_types.h"
 #include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "content/public/browser/reload_type.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -284,4 +285,37 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TogglingSiteSpeedreader) {
     tab_helper()->MaybeToggleEnabledForSite(true);
     EXPECT_TRUE(WaitForLoadStop(ActiveWebContents()));
   }
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ReloadContent) {
+  ToggleSpeedreader();
+  NavigateToPageSynchronously(kTestPageReadable);
+  auto* contents_1 = ActiveWebContents();
+  NavigateToPageSynchronously(kTestPageReadable);
+  auto* contents_2 = ActiveWebContents();
+
+  auto* tab_helper_1 =
+      speedreader::SpeedreaderTabHelper::FromWebContents(contents_1);
+  auto* tab_helper_2 =
+      speedreader::SpeedreaderTabHelper::FromWebContents(contents_2);
+
+  EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
+            tab_helper_1->PageDistillState());
+  EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
+            tab_helper_2->PageDistillState());
+
+  tab_helper_1->MaybeToggleEnabledForSite(false);
+  content::WaitForLoadStop(contents_1);
+  EXPECT_EQ(speedreader::DistillState::kSpeedreaderOnDisabledPage,
+            tab_helper_1->PageDistillState());
+  EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
+            tab_helper_2->PageDistillState());
+
+  contents_2->GetController().Reload(content::ReloadType::NORMAL, false);
+  content::WaitForLoadStop(contents_2);
+
+  EXPECT_EQ(speedreader::DistillState::kSpeedreaderOnDisabledPage,
+            tab_helper_1->PageDistillState());
+  EXPECT_EQ(speedreader::DistillState::kSpeedreaderOnDisabledPage,
+            tab_helper_2->PageDistillState());
 }
