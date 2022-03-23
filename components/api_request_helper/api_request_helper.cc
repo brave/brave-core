@@ -16,7 +16,26 @@
 
 namespace api_request_helper {
 
+namespace {
+
+void OnSanitize(const int http_code,
+                const base::flat_map<std::string, std::string>& headers,
+                APIRequestHelper::ResultCallback result_callback,
+                data_decoder::JsonSanitizer::Result result) {
+  std::string response_body;
+  if (result.value.has_value())
+    response_body = result.value.value();
+  if (result.error) {
+    VLOG(1) << "Response validation error:" << *result.error;
+    std::move(result_callback).Run(http_code, "", headers);
+    return;
+  }
+  std::move(result_callback).Run(http_code, response_body, headers);
+}
+
 const unsigned int kRetriesCountOnNetworkChange = 1;
+
+}  // namespace
 
 APIRequestHelper::APIRequestHelper(
     net::NetworkTrafficAnnotationTag annotation_tag,
@@ -76,22 +95,6 @@ void APIRequestHelper::Request(
   }
 }
 
-void APIRequestHelper::OnSanitize(
-    const int http_code,
-    const base::flat_map<std::string, std::string>& headers,
-    ResultCallback result_callback,
-    data_decoder::JsonSanitizer::Result result) {
-  std::string response_body;
-  if (result.value.has_value())
-    response_body = result.value.value();
-  if (result.error) {
-    VLOG(1) << "Response validation error:" << *result.error;
-    std::move(result_callback).Run(http_code, "", headers);
-    return;
-  }
-  std::move(result_callback).Run(http_code, response_body, headers);
-}
-
 void APIRequestHelper::OnResponse(
     SimpleURLLoaderList::iterator iter,
     ResultCallback callback,
@@ -130,9 +133,8 @@ void APIRequestHelper::OnResponse(
 
   data_decoder::JsonSanitizer::Sanitize(
       std::move(raw_body),
-      base::BindOnce(&APIRequestHelper::OnSanitize,
-                     weak_ptr_factory_.GetWeakPtr(), response_code,
-                     std::move(headers), std::move(callback)));
+      base::BindOnce(&OnSanitize, response_code, std::move(headers),
+                     std::move(callback)));
 }
 
 }  // namespace api_request_helper

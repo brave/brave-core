@@ -14,15 +14,13 @@
 #include "base/callback_helpers.h"
 #include "base/containers/flat_map.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
-#include "services/data_decoder/public/cpp/json_sanitizer.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
-
-namespace data_decoder {}
 
 namespace api_request_helper {
 
@@ -68,10 +66,6 @@ class APIRequestHelper {
                   ResultCallback callback,
                   ResponseConversionCallback conversion_callback,
                   const std::unique_ptr<std::string> response_body);
-  void OnSanitize(const int http_code,
-                  const base::flat_map<std::string, std::string>& headers,
-                  ResultCallback result_callback,
-                  data_decoder::JsonSanitizer::Result result);
 
   net::NetworkTrafficAnnotationTag annotation_tag_;
   SimpleURLLoaderList url_loaders_;
