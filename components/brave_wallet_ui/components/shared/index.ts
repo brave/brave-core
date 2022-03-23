@@ -10,6 +10,7 @@ import withPlaceholderIcon from './create-placeholder-icon'
 import CreateNetworkIcon from './create-network-icon'
 import SelectNetworkButton from './select-network-button'
 import LoadingSkeleton from './loading-skeleton'
+import CreateSiteOrigin from './create-site-origin'
 
 export {
   AppListItem,
@@ -23,5 +24,6 @@ export {
   withPlaceholderIcon,
   CreateNetworkIcon,
   SelectNetworkButton,
-  LoadingSkeleton
+  LoadingSkeleton,
+  CreateSiteOrigin
 }

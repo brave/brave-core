@@ -5,11 +5,12 @@ import { BraveWallet, WalletAccountType } from '../../../constants/types'
 
 // Utils
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
-import { getLocale } from '../../../../common/locale'
+import { getLocale, splitStringForTag } from '../../../../common/locale'
 
 // Components
 import { create } from 'ethereum-blockies'
 import { NavButton, PanelTab } from '..'
+import { CreateSiteOrigin } from '../../shared'
 
 // Styled Components
 import {
@@ -25,13 +26,14 @@ import {
   DecryptButton
 } from './style'
 
-import { TabRow } from '../shared-panel-styles'
+import { TabRow, URLText } from '../shared-panel-styles'
 
 export interface Props {
   panelType: 'request' | 'read'
   accounts: WalletAccountType[]
   selectedNetwork: BraveWallet.NetworkInfo
   encryptionKeyPayload: BraveWallet.GetEncryptionPublicKeyRequest
+  eTldPlusOne: string
   onProvideOrAllow: () => void
   onCancel: () => void
 }
@@ -42,6 +44,7 @@ function EncryptionKeyPanel (props: Props) {
     accounts,
     selectedNetwork,
     encryptionKeyPayload,
+    eTldPlusOne,
     onProvideOrAllow,
     onCancel
   } = props
@@ -59,6 +62,9 @@ function EncryptionKeyPanel (props: Props) {
     setIsDecrypted(true)
   }
 
+  const descriptionString = getLocale('braveWalletProvideEncryptionKeyDescription').replace('$url', encryptionKeyPayload.origin.url)
+  const { duringTag, afterTag } = splitStringForTag(descriptionString)
+
   return (
     <StyledWrapper>
       <TopRow>
@@ -66,10 +72,22 @@ function EncryptionKeyPanel (props: Props) {
       </TopRow>
       <AccountCircle orb={orb} />
       <AccountNameText>{reduceAccountDisplayName(foundAccountName ?? '', 14)}</AccountNameText>
+      {panelType === 'read' &&
+        <URLText>
+          <CreateSiteOrigin
+            originInfo={
+              {
+                origin: encryptionKeyPayload.origin.url,
+                eTldPlusOne: eTldPlusOne
+              }
+            }
+          />
+        </URLText>
+      }
       <PanelTitle>
         {panelType === 'request'
           ? getLocale('braveWalletProvideEncryptionKeyTitle')
-          : getLocale('braveWalletReadEncryptedMessageTitle').replace('$1', encryptionKeyPayload.origin.url)}
+          : getLocale('braveWalletReadEncryptedMessageTitle')}
       </PanelTitle>
       <TabRow>
         <PanelTab
@@ -89,7 +107,16 @@ function EncryptionKeyPanel (props: Props) {
         ) : (
           <MessageText>
             {panelType === 'request'
-              ? getLocale('braveWalletProvideEncryptionKeyDescription').replace('$1', encryptionKeyPayload.origin.url)
+              ? <>
+                <CreateSiteOrigin
+                  originInfo={
+                    {
+                      origin: duringTag ?? '',
+                      eTldPlusOne: eTldPlusOne
+                    }
+                  } />
+                {afterTag}
+              </>
               : encryptionKeyPayload.message}
           </MessageText>
         )}

@@ -1,10 +1,13 @@
 import * as React from 'react'
-import { WalletAccountType } from '../../../constants/types'
+import { OriginInfo, WalletAccountType } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
+
+// Components
 import {
   DividerLine,
   ConnectedAccountItem
 } from '../'
+import { CreateSiteOrigin } from '../../shared'
 
 // Styled Components
 import {
@@ -25,14 +28,14 @@ export interface Props {
   onSwitchAccount: (account: WalletAccountType) => void
   onAddAccount: () => void
   selectedAccount: WalletAccountType
-  siteURL: string
+  originInfo: OriginInfo
   connectedAccounts: WalletAccountType[]
   accounts: WalletAccountType[]
 }
 
 const SitePermissions = (props: Props) => {
   const {
-    siteURL,
+    originInfo,
     connectedAccounts,
     selectedAccount,
     accounts,
@@ -44,11 +47,11 @@ const SitePermissions = (props: Props) => {
 
   const onDisconnectFromOrigin = (address: string) => {
     const newConnectedAccounts = connectedAccounts.filter((accounts) => accounts.address.toLowerCase() !== address.toLowerCase())
-    onDisconnect(siteURL, address, newConnectedAccounts)
+    onDisconnect(originInfo.origin, address, newConnectedAccounts)
   }
 
   const onConnectToOrigin = (account: WalletAccountType) => {
-    onConnect(siteURL, account)
+    onConnect(originInfo.origin, account)
   }
 
   const onClickSwitchAccount = (account: WalletAccountType) => {
@@ -66,9 +69,13 @@ const SitePermissions = (props: Props) => {
   return (
     <StyledWrapper>
       <HeaderRow>
-        <FavIcon src={`chrome://favicon/size/64@1x/${siteURL}`} />
+        <FavIcon src={`chrome://favicon/size/64@1x/${originInfo.origin}`} />
         <HeaderColumn>
-          <SiteOriginTitle>{siteURL}</SiteOriginTitle>
+          <SiteOriginTitle>
+            <CreateSiteOrigin
+              originInfo={originInfo}
+            />
+          </SiteOriginTitle>
           <AccountsTitle>{getLocale('braveWalletSitePermissionsAccounts').replace('$1', connectedAccounts.length.toString())}</AccountsTitle>
         </HeaderColumn>
       </HeaderRow>

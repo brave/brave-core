@@ -120,3 +120,17 @@ export const DetailTextDark = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
 `
+
+export const URLText = styled.span`
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+  letter-spacing: 0.01em;
+  margin-bottom: 8px;
+  color: ${(p) => p.theme.color.text02};
+  max-width: 80%;
+  word-break: break-word;
+`

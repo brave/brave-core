@@ -145,7 +145,10 @@ export const mockWalletState: WalletState = {
   accounts: [
     mockAccount
   ],
-  activeOrigin: '',
+  activeOrigin: {
+    origin: 'https://app.uniswap.org',
+    eTldPlusOne: 'uniswap.org'
+  },
   addUserAssetError: false,
   connectedAccounts: [],
   defaultCurrencies: {
