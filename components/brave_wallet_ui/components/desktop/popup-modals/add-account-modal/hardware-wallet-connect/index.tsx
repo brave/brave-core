@@ -27,7 +27,7 @@ import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 export interface Props {
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
   onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
-  getBalance: (address: string) => Promise<string>
+  getBalance: (address: string, coin: BraveWallet.CoinType) => Promise<string>
   onChangeFilecoinNetwork: (network: FilecoinNetwork) => void
   preAddedHardwareWalletAccounts: WalletAccountType[]
   selectedAccountType: CreateAccountOptionsType
@@ -111,8 +111,8 @@ export default function (props: Props) {
     props.onAddHardwareAccounts(renamedSelectedAccounts)
   }
 
-  const getBalance = (address: string) => {
-    return props.getBalance(address)
+  const getBalance = (address: string, coin: BraveWallet.CoinType) => {
+    return props.getBalance(address, coin)
   }
 
   const selectVendor = (vendor: HardwareVendor) => {

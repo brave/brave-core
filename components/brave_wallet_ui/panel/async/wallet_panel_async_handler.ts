@@ -47,6 +47,7 @@ import { getLocale } from '../../../common/locale'
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 import { HardwareVendor } from '../../common/api/hardware_keyrings'
 import { isRemoteImageURL } from '../../utils/string-utils'
+import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 
 const handler = new AsyncActionHandler()
 
@@ -230,11 +231,12 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
   const hardwareAccount: HardwareInfo = found.hardware
   await navigateToConnectHardwareWallet(store)
   const apiProxy = getWalletPanelApiProxy()
+  await store.dispatch(PanelActions.navigateToMain())
+  const coin = getCoinFromTxDataUnion(txInfo.txDataUnion)
   if (hardwareAccount.vendor === BraveWallet.LEDGER_HARDWARE_VENDOR) {
     const { success, error, code } = await signLedgerTransaction(apiProxy, hardwareAccount.path, txInfo)
     if (success) {
-      await store.dispatch(PanelActions.navigateToMain())
-      refreshTransactionHistory(txInfo.fromAddress)
+      refreshTransactionHistory(coin, txInfo.fromAddress)
       return
     }
 
@@ -258,7 +260,7 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
   } else if (hardwareAccount.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR) {
     const { success, error, deviceError } = await signTrezorTransaction(apiProxy, hardwareAccount.path, txInfo)
     if (success) {
-      refreshTransactionHistory(txInfo.fromAddress)
+      refreshTransactionHistory(coin, txInfo.fromAddress)
       await store.dispatch(PanelActions.navigateToMain())
       return
     }

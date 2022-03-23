@@ -4,8 +4,18 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import {
+  BraveWallet,
   WalletAccountType
 } from '../constants/types'
+
+export function isValidFilAddress (value: string): boolean {
+  if (!value.startsWith(BraveWallet.FILECOIN_MAINNET) &&
+      !value.startsWith(BraveWallet.FILECOIN_TESTNET)) {
+    return false
+  }
+  // secp256k have 41 address length and BLS keys have 86
+  return (value.length === 41 || value.length === 86)
+}
 
 export function isValidAddress (value: string, length: number): boolean {
   if (!value.match(/^0x[0-9A-Fa-f]*$/)) {

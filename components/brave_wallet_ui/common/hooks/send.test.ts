@@ -3,7 +3,8 @@ import { renderHook, act } from '@testing-library/react-hooks'
 
 import {
   GetEthAddrReturnInfo,
-  GetChecksumEthAddressReturnInfo
+  GetChecksumEthAddressReturnInfo,
+  BraveWallet
 } from '../../constants/types'
 
 import { mockAccount } from '../constants/mocks'
@@ -111,7 +112,8 @@ describe('useSend hook', () => {
       {
         from: 'mockAddress',
         to: 'mockAddress3',
-        value: '0x8ac7230489e80000'
+        value: '0x8ac7230489e80000',
+        coin: BraveWallet.CoinType.ETH
       }
     )
     expect(sendERC20TransferSpy).toBeCalledTimes(0)
@@ -158,7 +160,8 @@ describe('useSend hook', () => {
         contractAddress: AccountAssetOptions[1].contractAddress,
         from: 'mockAddress',
         to: 'mockAddress2',
-        value: '0x1043561a8829300000'
+        value: '0x1043561a8829300000',
+        coin: BraveWallet.CoinType.ETH
       }
     )
     expect(sendERC20TransferSpy).toBeCalledTimes(1)
@@ -205,7 +208,8 @@ describe('useSend hook', () => {
         from: 'mockAddress',
         to: 'mockAddress2',
         tokenId: '0x42a5',
-        value: ''
+        value: '',
+        coin: BraveWallet.CoinType.ETH
       }
     )
     expect(sendERC20TransferSpy).toBeCalledTimes(0)
@@ -249,7 +253,7 @@ describe('useSend hook', () => {
   describe('check for address errors', () => {
     describe.each([
       [mockAccountWithAddress.address, 'braveWalletSameAddressError'],
-      ['0x8b52c24d6e2600bdb8dbb6e8da849ed', 'braveWalletNotValidEthAddress'],
+      ['0x8b52c24d6e2600bdb8dbb6e8da849ed', 'braveWalletNotValidAddress'],
       ['0x0D8775F648430679A709E98d2b0Cb6250d2887EF', 'braveWalletContractAddressError']
     ])('%s', (toAddress, addressError) => {
       it(`Should return a ${addressError}`, async () => {

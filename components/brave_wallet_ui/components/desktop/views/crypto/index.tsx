@@ -36,7 +36,7 @@ export interface Props {
   onImportFilecoinAccount: (accountName: string, key: string, network: string) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
   onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
-  getBalance: (address: string) => Promise<string>
+  getBalance: (address: string, coin: BraveWallet.CoinType) => Promise<string>
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onShowAddModal: () => void
   onHideAddModal: () => void

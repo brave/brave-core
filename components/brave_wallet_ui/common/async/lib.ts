@@ -15,7 +15,9 @@ import {
   BraveKeyrings,
   GetBlockchainTokenInfoReturnInfo,
   SupportedCoinTypes,
-  SupportedTestNetworks
+  SupportedTestNetworks,
+  SendEthTransactionParams,
+  SendFilTransactionParams
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
@@ -25,7 +27,7 @@ import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-util
 import Amount from '../../utils/amount'
 
 import getAPIProxy from './bridge'
-import { Dispatch, State } from './types'
+import { Dispatch, State, Store } from './types'
 import { getHardwareKeyring } from '../api/hardware_keyrings'
 import { GetAccountsHardwareOperationResult } from '../hardware/types'
 import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
@@ -78,11 +80,11 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
   })
 }
 
-export const getBalance = (address: string): Promise<string> => {
+export const getBalance = (address: string, coin: BraveWallet.CoinType): Promise<string> => {
   return new Promise(async (resolve, reject) => {
     const { jsonRpcService } = getAPIProxy()
-    const chainId = await jsonRpcService.getChainId(BraveWallet.CoinType.ETH)
-    const result = await jsonRpcService.getBalance(address, BraveWallet.CoinType.ETH, chainId.chainId)
+    const chainId = await jsonRpcService.getChainId(coin)
+    const result = await jsonRpcService.getBalance(address, coin, chainId.chainId)
     if (result.error === BraveWallet.ProviderError.kSuccess) {
       resolve(Amount.normalize(result.balance))
     } else {
@@ -406,7 +408,7 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
   }
 }
 
-export function refreshTransactionHistory (address?: string) {
+export function refreshTransactionHistory (coin: BraveWallet.CoinType, address?: string) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
     const { txService } = apiProxy
@@ -418,7 +420,7 @@ export function refreshTransactionHistory (address?: string) {
 
     const freshTransactions: AccountTransactions = await accountsToUpdate.reduce(
       async (acc, account) => acc.then(async (obj) => {
-        const { transactionInfos } = await txService.getAllTransactionInfo(BraveWallet.CoinType.ETH, account.address)
+        const { transactionInfos } = await txService.getAllTransactionInfo(coin, account.address)
         obj[account.address] = transactionInfos
         return obj
       }), Promise.resolve({}))
@@ -563,4 +565,84 @@ export function hasEIP1559Support (account: WalletAccountType, network: BraveWal
   }
 
   return keyringSupportsEIP1559 && (network.data?.ethData?.isEip1559 ?? false)
+}
+
+export async function sendEthTransaction (store: Store, payload: SendEthTransactionParams) {
+  const apiProxy = getAPIProxy()
+  /***
+   * Determine whether to create a legacy or EIP-1559 transaction.
+   *
+   * isEIP1559 is true IFF:
+   *   - network supports EIP-1559
+   *   - keyring supports EIP-1559 (ex: certain hardware wallets vendors)
+   *   - payload: SendEthTransactionParams has specified EIP-1559 gas-pricing
+   *     fields.
+   *
+   * In all other cases, fallback to legacy gas-pricing fields.
+   */
+  let isEIP1559
+  switch (true) {
+    // Transaction payload has hardcoded EIP-1559 gas fields.
+    case payload.maxPriorityFeePerGas !== undefined && payload.maxFeePerGas !== undefined:
+      isEIP1559 = true
+      break
+
+    // Transaction payload has hardcoded legacy gas fields.
+    case payload.gasPrice !== undefined:
+      isEIP1559 = false
+      break
+
+    // Check if network and keyring support EIP-1559.
+    default:
+      const { selectedAccount, selectedNetwork } = store.getState().wallet
+      isEIP1559 = hasEIP1559Support(selectedAccount, selectedNetwork)
+  }
+
+  const { chainId } = await apiProxy.jsonRpcService.getChainId(BraveWallet.CoinType.ETH)
+
+  let addResult
+  const txData: BraveWallet.TxData = {
+    nonce: '',
+    // Estimated by eth_tx_service if value is '' for legacy transactions
+    gasPrice: isEIP1559 ? '' : payload.gasPrice || '',
+    // Estimated by eth_tx_service if value is ''
+    gasLimit: payload.gas || '',
+    to: payload.to,
+    value: payload.value,
+    data: payload.data || []
+  }
+
+  if (isEIP1559) {
+    const txData1559: BraveWallet.TxData1559 = {
+      baseData: txData,
+      chainId,
+      // Estimated by eth_tx_service if value is ''
+      maxPriorityFeePerGas: payload.maxPriorityFeePerGas || '',
+      // Estimated by eth_tx_service if value is ''
+      maxFeePerGas: payload.maxFeePerGas || '',
+      gasEstimation: undefined
+    }
+    // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
+    addResult = await apiProxy.txService.addUnapprovedTransaction({ ethTxData1559: txData1559 }, payload.from)
+  } else {
+    // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
+    addResult = await apiProxy.txService.addUnapprovedTransaction({ ethTxData: txData }, payload.from)
+  }
+  return addResult
+}
+
+export async function sendFilTransaction (payload: SendFilTransactionParams) {
+  const apiProxy = getAPIProxy()
+  const filTxData: BraveWallet.FilTxData = {
+    nonce: payload.nonce || '',
+    gasPremium: payload.gasPremium || '',
+    gasFeeCap: payload.gasFeeCap || '',
+    gasLimit: payload.gasLimit || '',
+    maxFee: payload.maxFee || '0',
+    to: payload.to,
+    value: payload.value,
+    cid: payload.cid || ''
+  }
+  // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
+  return await apiProxy.txService.addUnapprovedTransaction({ filTxData: filTxData }, payload.from)
 }

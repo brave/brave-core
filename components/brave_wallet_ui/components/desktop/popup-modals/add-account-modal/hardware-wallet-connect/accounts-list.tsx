@@ -45,7 +45,7 @@ interface Props {
   selectedDerivationScheme: string
   setSelectedDerivationScheme: (scheme: string) => void
   onAddAccounts: () => void
-  getBalance: (address: string) => Promise<string>
+  getBalance: (address: string, coin: BraveWallet.CoinType) => Promise<string>
   filecoinNetwork: FilecoinNetwork
   onChangeFilecoinNetwork: (network: FilecoinNetwork) => void
   selectedAccountType: CreateAccountOptionsType
@@ -211,7 +211,7 @@ interface AccountListItemProps {
   onSelect: () => void
   selected: boolean
   disabled: boolean
-  getBalance: (address: string) => Promise<string>
+  getBalance: (address: string, coin: BraveWallet.CoinType) => Promise<string>
 }
 
 function AccountListItem (props: AccountListItemProps) {
@@ -222,7 +222,7 @@ function AccountListItem (props: AccountListItemProps) {
   const [balance, setBalance] = React.useState('')
 
   React.useMemo(() => {
-    getBalance(account.address).then((result) => {
+    getBalance(account.address, account.coin).then((result) => {
       const formattedBalance = new Amount(result)
         .divideByDecimals(selectedNetwork.decimals)
         .format()
