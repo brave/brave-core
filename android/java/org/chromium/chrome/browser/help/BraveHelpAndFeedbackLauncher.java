@@ -38,7 +38,7 @@ public class BraveHelpAndFeedbackLauncher extends HelpAndFeedbackLauncherImpl {
 
     private void launchSafeBrowsingUri(Context context) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(SAFE_BROWSING_URL));
-        // Let Chrome know that this intent is from Chrome, so that it does not close the app when
+        // Let Brave know that this intent is from Brave, so that it does not close the app when
         // the user presses 'back' button.
         intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
         intent.putExtra(Browser.EXTRA_CREATE_NEW_TAB, true);
