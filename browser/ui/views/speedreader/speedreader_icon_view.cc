@@ -45,13 +45,9 @@ SpeedreaderIconView::SpeedreaderIconView(
 SpeedreaderIconView::~SpeedreaderIconView() = default;
 
 void SpeedreaderIconView::UpdateImpl() {
-  if (!base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
-    SetVisible(false);
-    return;
-  }
-
-  auto* contents = GetWebContents();
-  if (!contents || !contents->GetLastCommittedURL().SchemeIsHTTPOrHTTPS()) {
+  const DistillState state = GetDistillState();
+  if (!speedreader::PageStateIsDistilled(state) &&
+      !speedreader::PageSupportsDistillation(state)) {
     SetVisible(false);
     return;
   }
@@ -61,36 +57,21 @@ void SpeedreaderIconView::UpdateImpl() {
                                               nullptr);
   }
 
-  const ui::ThemeProvider* theme_provider = GetThemeProvider();
-  const DistillState state = GetDistillState();
-  const bool is_distilled = speedreader::PageStateIsDistilled(state);
-
-  if (!is_distilled) {
-    if (state == DistillState::kSpeedreaderOnDisabledPage ||
-        state == DistillState::kPageProbablyReadable) {
-      SetVisible(true);
-    } else {
-      SetVisible(false);
-    }
-
-    if (GetVisible()) {
+  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+    if (speedreader::PageStateIsDistilled(state)) {
+      const SkColor icon_color_active = theme_provider->GetColor(
+          BraveThemeProperties::COLOR_SPEEDREADER_ICON);
+      SetIconColor(icon_color_active);
+    } else if (speedreader::PageSupportsDistillation(state)) {
       // Reset the icon color
-      if (theme_provider) {
-        SkColor icon_color_default =
-            GetOmniboxColor(theme_provider, OmniboxPart::RESULTS_ICON);
-        SetIconColor(icon_color_default);
-      }
-      UpdateIconImage();
+      const SkColor icon_color_default =
+          GetOmniboxColor(theme_provider, OmniboxPart::RESULTS_ICON);
+      SetIconColor(icon_color_default);
     }
   }
 
-  if (is_distilled) {
-    UpdateIconImage();
-    if (theme_provider)
-      SetIconColor(theme_provider->GetColor(
-          BraveThemeProperties::COLOR_SPEEDREADER_ICON));
-    SetVisible(true);
-  }
+  UpdateIconImage();
+  SetVisible(true);
 }
 
 const gfx::VectorIcon& SpeedreaderIconView::GetVectorIcon() const {
@@ -124,11 +105,11 @@ void SpeedreaderIconView::OnExecuting(
     PageActionIconView::ExecuteSource execute_source) {}
 
 views::BubbleDialogDelegate* SpeedreaderIconView::GetBubble() const {
-  auto* web_contents = GetWebContents();
+  const auto* web_contents = GetWebContents();
   if (!web_contents)
     return nullptr;
 
-  auto* tab_helper =
+  const auto* tab_helper =
       speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
   if (!tab_helper)
     return nullptr;

@@ -111,7 +111,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  speedreader::SpeedreaderTabHelper::CreateForWebContents(web_contents);
+  speedreader::SpeedreaderTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)

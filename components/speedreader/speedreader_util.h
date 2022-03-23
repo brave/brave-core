@@ -58,6 +58,9 @@ enum class DistillState {
 // Page is in reader mode or speedreader mode.
 bool PageStateIsDistilled(DistillState state);
 
+// Page can be distilled.
+bool PageSupportsDistillation(DistillState state);
+
 // Page is in reader mode, speedreader mode, or a pending state.
 bool PageWantsDistill(DistillState state);
 
