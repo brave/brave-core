@@ -54,6 +54,7 @@ export type SwapParamsPayloadType = {
 
 export type ActiveOriginChanged = {
   origin: string
+  eTldPlusOne: string
 }
 
 export type UpdateUnapprovedTransactionGasFieldsType = {

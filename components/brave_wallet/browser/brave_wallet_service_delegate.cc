@@ -51,7 +51,7 @@ void BraveWalletServiceDelegate::ResetEthereumPermission(
 
 void BraveWalletServiceDelegate::GetActiveOrigin(
     GetActiveOriginCallback callback) {
-  std::move(callback).Run("");
+  std::move(callback).Run("", "");
 }
 
 }  // namespace brave_wallet

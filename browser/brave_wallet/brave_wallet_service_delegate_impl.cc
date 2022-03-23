@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -161,8 +162,9 @@ void BraveWalletServiceDelegateImpl::TabChangedAt(
 }
 
 void BraveWalletServiceDelegateImpl::FireActiveOriginChanged() {
+  const std::string origin = GetActiveOriginInternal();
   for (auto& observer : observer_list_)
-    observer.OnActiveOriginChanged(GetActiveOriginInternal());
+    observer.OnActiveOriginChanged(origin, eTLDPlusOne(GURL(origin)));
 }
 
 std::string BraveWalletServiceDelegateImpl::GetActiveOriginInternal() {
@@ -174,7 +176,8 @@ std::string BraveWalletServiceDelegateImpl::GetActiveOriginInternal() {
 
 void BraveWalletServiceDelegateImpl::GetActiveOrigin(
     GetActiveOriginCallback callback) {
-  std::move(callback).Run(GetActiveOriginInternal());
+  const std::string origin = GetActiveOriginInternal();
+  std::move(callback).Run(origin, eTLDPlusOne(GURL(origin)));
 }
 
 }  // namespace brave_wallet

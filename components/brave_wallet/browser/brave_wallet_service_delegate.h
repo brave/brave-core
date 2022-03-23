@@ -29,7 +29,8 @@ class BraveWalletServiceDelegate {
   using AddEthereumPermissionCallback = base::OnceCallback<void(bool)>;
   using HasEthereumPermissionCallback = base::OnceCallback<void(bool, bool)>;
   using ResetEthereumPermissionCallback = base::OnceCallback<void(bool)>;
-  using GetActiveOriginCallback = base::OnceCallback<void(const std::string&)>;
+  using GetActiveOriginCallback =
+      mojom::BraveWalletService::GetActiveOriginCallback;
 
   BraveWalletServiceDelegate() = default;
   BraveWalletServiceDelegate(const BraveWalletServiceDelegate&) = delete;
@@ -39,7 +40,8 @@ class BraveWalletServiceDelegate {
 
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnActiveOriginChanged(const std::string& origin) {}
+    virtual void OnActiveOriginChanged(const std::string& origin,
+                                       const std::string& etld_plus_one) {}
   };
   virtual void AddObserver(Observer* observer) {}
   virtual void RemoveObserver(Observer* observer) {}
