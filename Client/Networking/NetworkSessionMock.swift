@@ -9,11 +9,27 @@ class NetworkSessionMock: NetworkSession {
   var response: URLResponse?
   var error: Error?
 
-  func dataRequest(with url: URL, completion: @escaping NetworkSessionDataResponse) {
-    completion(data, response, error)
+  func dataRequest(with url: URL) async throws -> NetworkSessionDataResponse {
+    try await Task.detached(priority: .userInitiated) {
+      if let error = self.error {
+        throw error
+      }
+
+      let data = self.data ?? Data()
+      let response = self.response ?? HTTPURLResponse()
+      return (data, response)
+    }.value
   }
 
-  func dataRequest(with urlRequest: URLRequest, completion: @escaping NetworkSessionDataResponse) {
-    completion(data, response, error)
+  func dataRequest(with urlRequest: URLRequest) async throws -> NetworkSessionDataResponse {
+    try await Task.detached(priority: .userInitiated) {
+      if let error = self.error {
+        throw error
+      }
+
+      let data = self.data ?? Data()
+      let response = self.response ?? HTTPURLResponse()
+      return (data, response)
+    }.value
   }
 }

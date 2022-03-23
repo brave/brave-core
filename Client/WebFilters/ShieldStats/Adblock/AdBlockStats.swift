@@ -20,6 +20,9 @@ class AdBlockStats: LocalAdblockResourceProtocol {
   /// Adblock engine for regional, non-english locales.
   private var regionalAdblockEngine: AdblockRustEngine?
 
+  /// The task that downloads all the files. Can be cancelled
+  private var downloadTask: Task<Void, Never>?
+
   fileprivate var isRegionalAdblockEnabled: Bool { return Preferences.Shields.useRegionAdBlock.value }
 
   fileprivate init() {
@@ -62,11 +65,18 @@ class AdBlockStats: LocalAdblockResourceProtocol {
     let filePaths = enumerator?.allObjects as? [URL]
     let datFileUrls = filePaths?.filter { $0.pathExtension == "dat" }
 
-    datFileUrls?.forEach {
-      let fileName = $0.deletingPathExtension().lastPathComponent
-
-      guard let data = fm.contents(atPath: $0.path) else { return }
-      setDataFile(data: data, id: fileName)
+    downloadTask?.cancel()
+    downloadTask = Task {
+      do {
+        try await datFileUrls?.asyncConcurrentForEach {
+          try Task.checkCancellation()
+          let fileName = $0.deletingPathExtension().lastPathComponent
+          guard let data = fm.contents(atPath: $0.path) else { return }
+          try await self.setDataFile(data: data, id: fileName)
+        }
+      } catch {
+        log.error(error)
+      }
     }
   }
 
@@ -127,34 +137,88 @@ class AdBlockStats: LocalAdblockResourceProtocol {
     }
   }
 
-  @discardableResult func setDataFile(data: Data, id: String) -> Deferred<()> {
-    let completion = Deferred<()>()
-
+  func setDataFile(data: Data, id: String) async throws {
     if !isGeneralAdblocker(id: id) && regionalAdblockEngine == nil {
       regionalAdblockEngine = AdblockRustEngine()
     }
 
     guard let engine = isGeneralAdblocker(id: id) ? generalAdblockEngine : regionalAdblockEngine else {
-      log.error("Adblock engine with id: \(id) is nil")
-      return completion
+      throw "Adblock engine with id: \(id) is nil"
     }
 
-    AdBlockStats.adblockSerialQueue.async {
-      if engine.set(data: data) {
-        log.debug("Adblock file with id: \(id) deserialized successfully")
-        // Clearing the cache or checked urls.
-        // The new list can bring blocked resource that were previously set as not-blocked.
-        self.fifoCacheOfUrlsChecked = FifoDict()
-        completion.fill(())
-      } else {
-        log.error("Failed to deserialize adblock list with id: \(id)")
+    try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+      AdBlockStats.adblockSerialQueue.async {
+        do {
+          try Task.checkCancellation()
+        } catch {
+          continuation.resume(throwing: error)
+          return
+        }
+
+        if engine.set(data: data) {
+          log.debug("Adblock file with id: \(id) deserialized successfully")
+          // Clearing the cache or checked urls.
+          // The new list can bring blocked resource that were previously set as not-blocked.
+          self.fifoCacheOfUrlsChecked = FifoDict()
+          continuation.resume()
+        } else {
+          continuation.resume(throwing: "Failed to deserialize adblock list with id: \(id)")
+        }
       }
     }
-
-    return completion
   }
 
   private func isGeneralAdblocker(id: String) -> Bool {
     return id == AdblockerType.general.identifier || id == bundledGeneralBlocklist
+  }
+}
+
+extension AdBlockStats {
+  func cosmeticFiltersScript(for url: URL) throws -> String? {
+    guard let rules = CosmeticFiltersResourceDownloader.shared.cssRules(for: url)?.data(using: .utf8) else {
+      return nil
+    }
+    
+    let model = try JSONDecoder().decode(CosmeticFilterModel.self, from: rules)
+    
+    var cssRules = ""
+    for rule in model.hideSelectors {
+      cssRules += "\(rule){display: none !important}\n"
+    }
+    
+    for (key, value) in model.styleSelectors {
+      var subRules = ""
+      for subRule in value {
+        subRules += subRule + ";"
+      }
+      
+      cssRules += "\(key){" + subRules + " !important}\n"
+    }
+    
+    return """
+    (function() {
+      var head = document.head || document.getElementsByTagName('head')[0];
+      if (head == null) {
+          return;
+      }
+      
+      var style = document.createElement('style');
+      style.type = 'text/css';
+    
+      var styles = atob("\(cssRules.toBase64())");
+      
+      if (style.styleSheet) {
+        style.styleSheet.cssText = styles;
+      } else {
+        style.appendChild(document.createTextNode(styles));
+      }
+
+      head.appendChild(style);
+      
+      (function(){
+        \(model.injectedScript)
+      })();
+    })();
+    """
   }
 }

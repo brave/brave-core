@@ -483,6 +483,32 @@ extension BrowserViewController: WKNavigationDelegate {
       tabsBar.reloadDataAndRestoreSelectedTab()
     }
 
+    // Cosmetic Filters
+    do {
+      // If the URL is not an `internal://`
+      // about:home url
+      // local-host url
+      // or any sort of internal-url, then we run cosmetic filters on it.
+      // If ad-block shields are enabled for this URL
+      if let url = webView.url,
+        !InternalURL.isValid(url: url),
+        !(InternalURL(url)?.isSessionRestore ?? false),
+        Domain.getOrCreate(
+          forUrl: url,
+          persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing
+        )
+        .isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true),
+        let cosmeticFiltersScript = try AdBlockStats.shared.cosmeticFiltersScript(for: url)
+      {
+        // Execute the cosmetic filters script in the cosmetic filters sandbox world
+        webView.evaluateSafeJavaScript(functionName: cosmeticFiltersScript, args: [], contentWorld: .cosmeticFiltersSandbox, asFunction: false) { _, error in
+          log.error("AdblockRustInjector error: \(String(describing: error))")
+        }
+      }
+    } catch {
+      log.error(error)
+    }
+
     // Added this method to determine long press menu actions better
     // Since these actions are depending on tabmanager opened WebsiteCount
     updateToolbarUsingTabManager(tabManager)

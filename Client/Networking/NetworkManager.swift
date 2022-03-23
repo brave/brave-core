@@ -14,16 +14,12 @@ class NetworkManager {
     self.session = session
   }
 
-  func dataRequest(with url: URL, completion: @escaping NetworkSessionDataResponse) {
-    session.dataRequest(with: url) { data, response, error in
-      completion(data, response, error)
-    }
+  func dataRequest(with url: URL) async throws -> NetworkSessionDataResponse {
+    try await session.dataRequest(with: url)
   }
 
-  func dataRequest(with urlRequest: URLRequest, completion: @escaping NetworkSessionDataResponse) {
-    session.dataRequest(with: urlRequest) { data, response, error in
-      completion(data, response, error)
-    }
+  func dataRequest(with urlRequest: URLRequest) async throws -> NetworkSessionDataResponse {
+    try await session.dataRequest(with: urlRequest)
   }
 
   /// - parameter checkLastServerSideModification: If true, the `CachedNetworkResource` will contain a timestamp
@@ -34,9 +30,7 @@ class NetworkManager {
     retryTimeout: TimeInterval? = 60,
     checkLastServerSideModification: Bool = false,
     customHeaders: [String: String] = [:]
-  ) -> Deferred<CachedNetworkResource> {
-    let completion = Deferred<CachedNetworkResource>()
-
+  ) async throws -> CachedNetworkResource {
     var request = URLRequest(url: url)
 
     // Makes the request conditional, returns 304 if Etag value did not change.
@@ -60,53 +54,53 @@ class NetworkManager {
       request.addValue($0.value, forHTTPHeaderField: $0.key)
     }
 
-    session.dataRequest(with: request) { data, response, error -> Void in
-      if let err = error {
-        log.error(err.localizedDescription)
-        if let retryTimeout = retryTimeout {
-          DispatchQueue.main.asyncAfter(deadline: .now() + retryTimeout) {
-            self.downloadResource(with: url, resourceType: resourceType, retryTimeout: retryTimeout, checkLastServerSideModification: checkLastServerSideModification).upon { resource in
-              completion.fill(resource)
-            }
-          }
-        }
-        return
-      }
-
-      guard let data = data, let response = response as? HTTPURLResponse else {
-        log.error("Failed to unwrap http response or data")
-        return
-      }
-
-      switch response.statusCode {
-      case 400...499:
-        log.error(
-          """
-          Failed to download, status code: \(response.statusCode),\
-          URL:\(String(describing: response.url))
-          """)
-      case fileNotModifiedStatusCode:
-        log.info("File not modified")
-      default:
-        let responseEtag = resourceType.isCached() ? response.allHeaderFields[etagHeader] as? String : nil
-
-        var lastModified: TimeInterval?
-
-        if checkLastServerSideModification,
-          let lastModifiedHeaderValue = response.allHeaderFields["Last-Modified"] as? String {
-          let formatter = DateFormatter().then {
-            $0.timeZone = TimeZone(abbreviation: "GMT")
-            $0.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
-            $0.locale = Locale(identifier: "en_US")
-          }
-
-          lastModified = formatter.date(from: lastModifiedHeaderValue)?.timeIntervalSince1970
-        }
-
-        completion.fill(.init(data: data, etag: responseEtag, lastModifiedTimestamp: lastModified))
-      }
+    let (data, response) = try await task(for: request, retryTimeout: retryTimeout)
+    guard let response = response as? HTTPURLResponse else {
+      throw "Invalid Response Type (Not HTTPURLResponse)"
     }
 
-    return completion
+    switch response.statusCode {
+    case 400...499:
+      let error = """
+        Failed to download, status code: \(response.statusCode),\
+        URL:\(String(describing: response.url))
+        """
+      throw error
+
+    case fileNotModifiedStatusCode:
+      throw "File not modified"
+
+    default:
+      let responseEtag = resourceType.isCached() ? response.allHeaderFields[etagHeader] as? String : nil
+
+      var lastModified: TimeInterval?
+
+      if checkLastServerSideModification,
+        let lastModifiedHeaderValue = response.allHeaderFields["Last-Modified"] as? String
+      {
+        let formatter = DateFormatter().then {
+          $0.timeZone = TimeZone(abbreviation: "GMT")
+          $0.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
+          $0.locale = Locale(identifier: "en_US")
+        }
+
+        lastModified = formatter.date(from: lastModifiedHeaderValue)?.timeIntervalSince1970
+      }
+
+      return CachedNetworkResource(
+        data: data,
+        etag: responseEtag,
+        lastModifiedTimestamp: lastModified)
+    }
+  }
+
+  private func task(for request: URLRequest, retryTimeout: TimeInterval?) async throws -> NetworkSessionDataResponse {
+    if let retryTimeout = retryTimeout {
+      return try await Task.retry(retryCount: 3, retryDelay: retryTimeout) {
+        try await self.dataRequest(with: request)
+      }.value
+    }
+
+    return try await self.dataRequest(with: request)
   }
 }
