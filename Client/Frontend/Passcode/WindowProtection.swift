@@ -146,10 +146,10 @@ class WindowProtection {
         if success {
           UIView.animate(
             withDuration: 0.1,
-            animations: {
+            animations: { [self] in
               lockedViewController.view.alpha = 0.0
             },
-            completion: { _ in
+            completion: { [self] _ in
               isVisible = false
               lockedViewController.view.alpha = 1.0
             })

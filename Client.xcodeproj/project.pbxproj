@@ -10673,7 +10673,6 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/node_modules/brave-core-ios",
 					"$(PROJECT_DIR)/ThirdParty",
 					"$(PROJECT_DIR)/ThirdParty/GCDWebServers",
@@ -10894,7 +10893,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(SRCROOT)/ThirdParty/sqlcipher",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -11353,7 +11351,6 @@
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/node_modules/brave-core-ios",
 					"$(PROJECT_DIR)/ThirdParty",
 					"$(PROJECT_DIR)/ThirdParty/GCDWebServers",
@@ -11562,7 +11559,6 @@
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(SRCROOT)/ThirdParty/sqlcipher",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = "SQLITE_HAS_CODEC=1";
@@ -12439,7 +12435,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(SRCROOT)/ThirdParty/sqlcipher",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -13633,7 +13628,6 @@
 					"@executable_path/../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.5;
-				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
@@ -13673,7 +13667,6 @@
 					"@executable_path/../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.5;
-				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -13712,7 +13705,6 @@
 					"@executable_path/../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.5;
-				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -13751,7 +13743,6 @@
 					"@executable_path/../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.5;
-				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -13790,7 +13781,6 @@
 					"@executable_path/../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.5;
-				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -13828,7 +13818,6 @@
 					"@executable_path/../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.5;
-				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -13930,7 +13919,6 @@
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/node_modules/brave-core-ios",
 					"$(PROJECT_DIR)/ThirdParty",
 					"$(PROJECT_DIR)/ThirdParty/GCDWebServers",
@@ -14032,7 +14020,6 @@
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(SRCROOT)/ThirdParty/sqlcipher",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = "SQLITE_HAS_CODEC=1";
@@ -14170,7 +14157,6 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/node_modules/brave-core-ios",
 					"$(PROJECT_DIR)/ThirdParty",
 					"$(PROJECT_DIR)/ThirdParty/GCDWebServers",
@@ -14254,7 +14240,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(SRCROOT)/ThirdParty/sqlcipher",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -14476,7 +14461,6 @@
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/node_modules/brave-core-ios",
 					"$(PROJECT_DIR)/ThirdParty",
 					"$(PROJECT_DIR)/ThirdParty/GCDWebServers",
@@ -14577,7 +14561,6 @@
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(SRCROOT)/ThirdParty/sqlcipher",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = "SQLITE_HAS_CODEC=1";
@@ -14674,10 +14657,7 @@
 				DEBUG_ACTIVITY_MODE = "";
 				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -14695,16 +14675,12 @@
 					"$(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/include",
 					"$(SRCROOT)",
 					"$(SDKROOT)/usr/include/libxml2",
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)/include/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/leveldb/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/re2",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
-					"$(PROJECT_DIR)/ThirdParty/sqlcipher",
-				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/ThirdParty/sqlcipher";
 				LOCALIZED_STRING_SWIFTUI_SUPPORT = NO;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -14734,7 +14710,6 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
 					"$(PROJECT_DIR)/node_modules/brave-core-ios",
 					"$(PROJECT_DIR)/ThirdParty",
 					"$(PROJECT_DIR)/ThirdParty/GCDWebServers",

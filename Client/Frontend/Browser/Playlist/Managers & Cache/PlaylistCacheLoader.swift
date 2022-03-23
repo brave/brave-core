@@ -659,8 +659,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       if let mainDocumentURL = navigationAction.request.mainDocumentURL,
         mainDocumentURL.schemelessAbsoluteString == url.schemelessAbsoluteString,
         !(InternalURL(url)?.isSessionRestore ?? false),
-        navigationAction.sourceFrame.isMainFrame || navigationAction.targetFrame?.isMainFrame == true
-      {
+        navigationAction.sourceFrame.isMainFrame || navigationAction.targetFrame?.isMainFrame == true {
 
         // Identify specific block lists that need to be applied to the requesting domain
         let domainForShields = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: false)
@@ -757,8 +756,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
     let origin = "\(challenge.protectionSpace.host):\(challenge.protectionSpace.port)"
     if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
       let trust = challenge.protectionSpace.serverTrust,
-      let cert = SecTrustGetCertificateAtIndex(trust, 0), certStore?.containsCertificate(cert, forOrigin: origin) == true
-    {
+      let cert = SecTrustGetCertificateAtIndex(trust, 0), certStore?.containsCertificate(cert, forOrigin: origin) == true {
       completionHandler(.useCredential, URLCredential(trust: trust))
       return
     }

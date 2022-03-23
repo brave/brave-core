@@ -620,8 +620,7 @@ class TabManager: NSObject {
     } else if let parentTab = tab.parent,
       currentTabs.count > 1,
       let newTab = currentTabs.reduce(
-        currentTabs.first,
-        { currentBestTab, tab2 in
+        currentTabs.first, { currentBestTab, tab2 in
           if let tab1 = currentBestTab, let time1 = tab1.lastExecutedTime {
             if let time2 = tab2.lastExecutedTime {
               return time1 <= time2 ? tab2 : tab1
@@ -883,8 +882,7 @@ class TabManager: NSObject {
       tab.url = nil
       let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
       if let url = URL(string: urlString),
-        let faviconURL = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing).favicon?.url
-      {
+        let faviconURL = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing).favicon?.url {
         let icon = Favicon(url: faviconURL, date: Date())
         icon.width = 1
         tab.favicons.append(icon)

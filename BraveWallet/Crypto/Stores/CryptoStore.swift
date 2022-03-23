@@ -202,7 +202,7 @@ public class CryptoStore: ObservableObject {
           pendingTransactions.append(contentsOf: tx.filter { $0.txStatus == .unapproved })
         }
       }
-      group.notify(queue: .main) {
+      group.notify(queue: .main) { [self] in
         if !pendingTransactions.isEmpty && buySendSwapDestination != nil {
           // Dismiss any buy send swap open to show the unapproved transactions
           self.buySendSwapDestination = nil

@@ -267,7 +267,7 @@ class PlaylistCarplayController: NSObject {
     // Need to unwind the navigation stack to the root before attempting any modifications
     // Some cars will crash if we replace or modify the RootTemplate while
     // an alert of CPNowPlayingTemplate.shared is being displayed
-    //interfaceController.pop(to: tabBarTemplate, animated: true)
+    // interfaceController.pop(to: tabBarTemplate, animated: true)
 
     // Update Currently Playing Index before layout (so we can show the playing indicator)
     if let pageSrc = PlaylistCarplayManager.shared.currentPlaylistItem?.pageSrc {
@@ -521,8 +521,7 @@ extension PlaylistCarplayController: CPInterfaceControllerDelegate {
     log.debug("Template \(aTemplate.classForCoder) will appear.")
 
     if interfaceController.topTemplate != CPNowPlayingTemplate.shared,
-      (aTemplate.userInfo as? [String: String])?["id"] == PlaylistCarPlayTemplateID.folders.rawValue
-    {
+      (aTemplate.userInfo as? [String: String])?["id"] == PlaylistCarPlayTemplateID.folders.rawValue {
       self.stop()
 
       PlaylistCarplayManager.shared.onCarplayUIChangedToRoot.send()

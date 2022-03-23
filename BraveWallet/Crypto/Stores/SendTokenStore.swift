@@ -215,8 +215,7 @@ public class SendTokenStore: ObservableObject {
     } else if currentAccountAddress?.lowercased() == normalizedSendAddress {
       addressError = .sameAsFromAddress
     } else if (userAssets.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil)
-      || (allTokens.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil)
-    {
+      || (allTokens.first(where: { $0.contractAddress.lowercased() == normalizedSendAddress }) != nil) {
       addressError = .contractAddress
     } else {
       addressError = nil

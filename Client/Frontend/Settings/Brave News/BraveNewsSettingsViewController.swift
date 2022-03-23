@@ -100,11 +100,9 @@ class BraveNewsSettingsViewController: TableViewController {
           return Row(
             text: location.title,
             detailText: location.url.absoluteString,
-            accessory: .switchToggle(
-              value: enabled,
-              { [unowned self] newValue in
-                self.feedDataSource.toggleRSSFeedEnabled(location, enabled: newValue)
-              }),
+            accessory: .switchToggle(value: enabled, { [unowned self] newValue in
+              self.feedDataSource.toggleRSSFeedEnabled(location, enabled: newValue)
+            }),
             cellClass: SubtitleCell.self,
             editActions: [
               .init(

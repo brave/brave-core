@@ -328,7 +328,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     }
   }
 
-  //MARK: Internal
+  // MARK: Internal
 
   private func disableTableEditingMode() {
     switchTableEditingMode(true)
@@ -728,8 +728,7 @@ extension BookmarksViewController: BookmarksV2FetchResultsDelegate {
             .dequeueReusableCell(
               withIdentifier: String(describing: BookmarkTableViewCell.self),
               for: path) as? BookmarkTableViewCell,
-          let fetchedObjectsCount = self.bookmarksFRC?.fetchedObjectsCount, path.row < fetchedObjectsCount
-        {
+          let fetchedObjectsCount = self.bookmarksFRC?.fetchedObjectsCount, path.row < fetchedObjectsCount {
           self.configureCell(cell, atIndexPath: path)
         }
       }

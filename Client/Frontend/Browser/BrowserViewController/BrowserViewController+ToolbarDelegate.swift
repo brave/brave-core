@@ -377,8 +377,7 @@ extension BrowserViewController: TopToolbarDelegate {
               }
             }
           } else if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs,
-            let searchQuery = UIPasteboard.general.string ?? UIPasteboard.general.url?.absoluteString
-          {
+            let searchQuery = UIPasteboard.general.string ?? UIPasteboard.general.url?.absoluteString {
 
             self.topToolbar.setLocation(searchQuery, search: false)
             self.topToolbar(self.topToolbar, didEnterText: searchQuery)

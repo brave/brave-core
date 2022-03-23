@@ -192,9 +192,7 @@ class AdblockDebugMenuTableViewController: TableViewController {
       var rows = [Row]()
       names.forEach {
         if let data = fm.contents(atPath: folderUrl.appendingPathComponent($0 + ".json").path),
-          let json = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [[String: Any]]
-        {
-
+          let json = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [[String: Any]] {
           let text = "\($0).json: \(json.count) rules"
           let name = $0 + ".json"
 

@@ -415,8 +415,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       InternalSchemeHandler.responders[path] = responder
     }
 
-    ReaderModeHandlers.register(server, profile: profile)  //TODO: PORT TO InternalSchemeHandler
-    BookmarksInterstitialPageHandler.register(server)  //TODO: PORT TO InternalSchemeHandler
+    ReaderModeHandlers.register(server, profile: profile)  // TODO: PORT TO InternalSchemeHandler
+    BookmarksInterstitialPageHandler.register(server)  // TODO: PORT TO InternalSchemeHandler
 
     // Bug 1223009 was an issue whereby CGDWebserver crashed when moving to a background task
     // catching and handling the error seemed to fix things, but we're not sure why.

@@ -147,8 +147,7 @@ extension BrowserViewController {
         var settingsStore: SettingsStore?
         if let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing),
           let walletService = BraveWallet.ServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing),
-          let txService = BraveWallet.TxServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing)
-        {
+          let txService = BraveWallet.TxServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing) {
           settingsStore = SettingsStore(
             keyringService: keyringService,
             walletService: walletService,

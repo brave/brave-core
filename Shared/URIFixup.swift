@@ -140,8 +140,7 @@ public class URIFixup {
         // is strictly an "http://" URL, we also require a host.
         if let url = URL(string: "http://\(escaped)"),
           let host = url.host,
-          host.rangeOfCharacter(from: CharacterSet(charactersIn: "1234567890.[]:").inverted) != nil
-        {
+          host.rangeOfCharacter(from: CharacterSet(charactersIn: "1234567890.[]:").inverted) != nil {
           return validateURL(url)
         }
         return nil

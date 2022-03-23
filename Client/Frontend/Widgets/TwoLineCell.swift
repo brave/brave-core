@@ -300,15 +300,13 @@ private class TwoLineCellHelper {
       }
     }).filter({
       $0 != nil
-    }).reduce(
-      NSMutableAttributedString(string: ""),
-      {
-        if $0.length > 0 {
-          $0.append(NSAttributedString(string: ", "))
-        }
-        $0.append($1!)
-        return $0
-      })
+    }).reduce(NSMutableAttributedString(string: ""), {
+      if $0.length > 0 {
+        $0.append(NSAttributedString(string: ", "))
+      }
+      $0.append($1!)
+      return $0
+    })
 
     container?.isAccessibilityElement = true
     container?.setValue(NSAttributedString(attributedString: label), forKey: "accessibilityLabel")

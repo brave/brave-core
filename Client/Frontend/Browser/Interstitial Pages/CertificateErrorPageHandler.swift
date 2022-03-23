@@ -197,7 +197,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
     errSSLPeerNoRenegotiation: "SSL_PEER_NO_RENEGOTIATION_ALLOWED_ERROR",
     errSSLPeerAuthCompleted: "SSL_PEER_AUTH_COMPLETED_ERROR",
     errSSLClientCertRequested: "SSL_CLIENT_CERT_REQUESTED_ERROR",
-    errSSLHostNameMismatch: "SSL_HOST_NAME_MISMATCH_ERROR",  //SSL_ERROR_BAD_CERT_DOMAIN
+    errSSLHostNameMismatch: "SSL_HOST_NAME_MISMATCH_ERROR",  // SSL_ERROR_BAD_CERT_DOMAIN
     errSSLConnectionRefused: "SSL_CONNECTION_REFUSED_ERROR",
     errSSLDecryptionFail: "SSL_DECRYPTION_FAIL_ERROR",
     errSSLBadRecordMac: "SSL_BAD_RECORD_MAC_ERROR",

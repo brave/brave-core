@@ -586,8 +586,7 @@ extension PlaylistManager {
 
     if trackStatus == .loaded {
       if !asset.tracks.isEmpty,
-        let track = asset.tracks(withMediaType: .video).first ?? asset.tracks(withMediaType: .audio).first
-      {
+        let track = asset.tracks(withMediaType: .video).first ?? asset.tracks(withMediaType: .audio).first {
         if track.timeRange.duration.isIndefinite {
           completion(TimeInterval.infinity)
         } else {

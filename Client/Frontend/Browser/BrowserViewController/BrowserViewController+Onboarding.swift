@@ -198,11 +198,9 @@ extension BrowserViewController {
       let tracker = first?.key
       let trackerCount =
         ((first?.value.count ?? 0) - 1)
-        + trackers.reduce(
-          0,
-          { res, values in
-            res + values.value.count
-          })
+        + trackers.reduce(0, { res, values in
+          res + values.value.count
+        })
 
       $0.setData(domain: domain, trackerBlocked: tracker ?? "", trackerCount: trackerCount)
     }

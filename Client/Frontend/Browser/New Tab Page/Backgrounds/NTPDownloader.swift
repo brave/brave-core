@@ -435,7 +435,7 @@ class NTPDownloader {
       if Self.isSponsorCampaignEnded(data: data) {
         throw NTPError.campaignEnded
       }
-    case .superReferral(_):
+    case .superReferral:
       if Self.isSuperReferralCampaignEnded(data: data) {
         throw NTPError.campaignEnded
       }

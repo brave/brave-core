@@ -17,7 +17,7 @@ class CustomSearchHelper: TabContentScript {
   }
 
   func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
-    defer { replyHandler(nil, nil) }
+    replyHandler(nil, nil)
     // We don't listen to messages because the BVC calls the searchHelper script by itself.
   }
 

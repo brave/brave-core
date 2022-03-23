@@ -81,7 +81,7 @@ extension TabTrayController {
       }
     }
 
-    private let privateModeInfo = TabTrayPrivateModeInfoView().then {
+    private(set) lazy var privateModeInfo = TabTrayPrivateModeInfoView().then {
       $0.learnMoreButton.addTarget(
         self, action: #selector(privateModeLearnMoreAction),
         for: .touchUpInside)
