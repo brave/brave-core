@@ -16,10 +16,7 @@ import subprocess
 import sys
 import pkg_resources
 
-try:
-    from urllib2 import URLError
-except ImportError:  # For Py3 compatibility
-    from urllib.error import URLError  # pylint: disable=no-name-in-module,import-error
+from urllib.error import URLError  # pylint: disable=no-name-in-module,import-error
 
 import deps
 from deps_config import DEPS_PACKAGES_URL
@@ -27,8 +24,6 @@ from deps_config import DEPS_PACKAGES_URL
 
 def LoadPList(path):
     """Loads Plist at |path| and returns it as a dictionary."""
-    if sys.version_info.major == 2:
-        return plistlib.readPlist(path)
     with open(path, 'rb') as f:
         return plistlib.load(f)
 
