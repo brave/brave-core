@@ -14,8 +14,8 @@
 
 #define BRAVE_NAVIGATOR_BASE_USER_AGENT                                \
   {                                                                         \
-    brave_page_graph::PageGraph* page_graph =                               \
-      DomWindow()->GetFrame()->GetDocument()->GetPageGraph();               \
+    ::brave_page_graph::PageGraph* page_graph =                             \
+            ::brave_page_graph::PageGraph::GetFromExecutionContext(*(GetExecutionContext())); \
     if (page_graph != nullptr) {                                            \
       String result = DomWindow()->GetFrame()->Loader().UserAgent();        \
       page_graph->RegisterWebAPICall("NavigatorID.userAgent",               \
