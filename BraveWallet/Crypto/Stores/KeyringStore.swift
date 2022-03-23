@@ -121,7 +121,7 @@ public class KeyringStore: ObservableObject {
       }
       keyring = keyringInfo
       if !keyring.accountInfos.isEmpty {
-        keyringService.selectedAccount(.eth) { accountAddress in
+        keyringService.selectedAccount(.eth) { [self] accountAddress in
           selectedAccount = keyringInfo.accountInfos.first(where: { $0.address == accountAddress }) ?? keyringInfo.accountInfos.first!
         }
       }

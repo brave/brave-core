@@ -76,8 +76,7 @@ class NetworkManager {
       var lastModified: TimeInterval?
 
       if checkLastServerSideModification,
-        let lastModifiedHeaderValue = response.allHeaderFields["Last-Modified"] as? String
-      {
+        let lastModifiedHeaderValue = response.allHeaderFields["Last-Modified"] as? String {
         let formatter = DateFormatter().then {
           $0.timeZone = TimeZone(abbreviation: "GMT")
           $0.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"

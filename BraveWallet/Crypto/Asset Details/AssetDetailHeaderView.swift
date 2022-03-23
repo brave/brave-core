@@ -107,8 +107,7 @@ struct AssetDetailHeaderView: View {
           HStack {
             Group {
               if let selectedCandle = selectedCandle,
-                let formattedString = AssetDetailStore.priceFormatter.string(from: NSNumber(value: selectedCandle.value))
-              {
+                let formattedString = AssetDetailStore.priceFormatter.string(from: NSNumber(value: selectedCandle.value)) {
                 Text(formattedString)
               } else {
                 Text(assetDetailStore.price)

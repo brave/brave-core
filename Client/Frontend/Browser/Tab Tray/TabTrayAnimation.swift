@@ -130,10 +130,9 @@ extension TabTrayController: BasicAnimationControllerDelegate {
         backgroundView.alpha = 0
       }
       // Need delayed animation for these
-      animator.addAnimations(
-        {
-          cellTitleSnapshot?.alpha = 1.0
-        }, delayFactor: 0.5)
+      animator.addAnimations({
+        cellTitleSnapshot?.alpha = 1.0
+      }, delayFactor: 0.5)
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
         tabCell?.isHidden = false
         UIViewPropertyAnimator(duration: 0.1, curve: .linear) {

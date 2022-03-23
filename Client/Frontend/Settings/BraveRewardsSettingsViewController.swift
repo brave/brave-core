@@ -44,11 +44,9 @@ class BraveRewardsSettingsViewController: TableViewController {
           Row(
             text: Strings.Rewards.settingsToggleTitle,
             detailText: Strings.Rewards.settingsToggleMessage,
-            accessory: .switchToggle(
-              value: rewards.isEnabled,
-              { [unowned self] isOn in
-                self.rewards.isEnabled = isOn
-              }),
+            accessory: .switchToggle(value: rewards.isEnabled, { [unowned self] isOn in
+              self.rewards.isEnabled = isOn
+            }),
             cellClass: MultilineSubtitleCell.self)
         ],
         footer: .title(Strings.Rewards.settingsFooterMessage)

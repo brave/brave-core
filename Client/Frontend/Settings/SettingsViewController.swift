@@ -358,7 +358,7 @@ class SettingsViewController: TableViewController {
             title: Strings.NightMode.settingsTitle,
             detailText: Strings.NightMode.settingsDescription,
             option: Preferences.General.nightModeEnabled,
-            onValueChange: { enabled in
+            onValueChange: { [unowned self] enabled in
               NightModeHelper.setNightMode(tabManager: tabManager, enabled: enabled)
             },
             image: UIImage(systemName: "moon"))

@@ -279,19 +279,15 @@ class RewardsDebugSettingsViewController: TableViewController {
         rows: [
           Row(
             text: "Is Debug",
-            accessory: .switchToggle(
-              value: BraveLedger.isDebug,
-              { value in
-                BraveLedger.isDebug = value
-                BraveAds.isDebug = value
-              })),
+            accessory: .switchToggle(value: BraveLedger.isDebug, { value in
+              BraveLedger.isDebug = value
+              BraveAds.isDebug = value
+            })),
           Row(
             text: "Use Short Retries",
-            accessory: .switchToggle(
-              value: BraveLedger.retryInterval != 0,
-              { value in
-                BraveLedger.retryInterval = value ? 30 : 0
-              })),
+            accessory: .switchToggle(value: BraveLedger.retryInterval != 0, { value in
+              BraveLedger.retryInterval = value ? 30 : 0
+            })),
           Row(text: "Reconcile Time", detailText: "Number of minutes between reconciles. 0 = No Override", accessory: .view(reconcileTimeTextField), cellClass: MultilineSubtitleCell.self),
           Row(text: "Custom User Agent", detailText: "Non-persistant. Empty = default", accessory: .view(customUserAgentTextField), cellClass: MultilineSubtitleCell.self),
         ]

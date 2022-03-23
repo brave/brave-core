@@ -52,14 +52,12 @@ struct SandboxInspectorView: View {
                 at: url,
                 includingPropertiesForKeys: nil
               )?.allObjects as? [URL], !subitems.isEmpty {
-              size = try subitems.reduce(
-                0,
-                {
-                  $0
-                    + (try
-                      $1.resourceValues(forKeys: [.totalFileAllocatedSizeKey])
-                      .totalFileAllocatedSize ?? 0)
-                })
+              size = try subitems.reduce(0, {
+                $0
+                + (try
+                   $1.resourceValues(forKeys: [.totalFileAllocatedSizeKey])
+                  .totalFileAllocatedSize ?? 0)
+              })
               children = nodes(from: url)
             } else {
               size = 0

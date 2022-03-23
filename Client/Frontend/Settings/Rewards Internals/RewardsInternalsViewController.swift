@@ -104,8 +104,7 @@ class RewardsInternalsViewController: TableViewController {
             text: Strings.RewardsInternals.walletPaymentID, detailText: info.paymentId,
             selection: { [unowned self] in
               if let index = self.dataSource.sections[safe: 1]?.rows.firstIndex(where: { $0.cellClass == PaymentIDCell.self }),
-                let cell = self.tableView.cellForRow(at: IndexPath(item: index, section: 1)) as? PaymentIDCell
-              {
+                let cell = self.tableView.cellForRow(at: IndexPath(item: index, section: 1)) as? PaymentIDCell {
                 cell.showMenu()
               }
             }, cellClass: PaymentIDCell.self),
@@ -132,8 +131,7 @@ class RewardsInternalsViewController: TableViewController {
               text: Strings.RewardsInternals.walletPaymentID, detailText: internals.paymentId,
               selection: { [unowned self] in
                 if let index = self.dataSource.sections[safe: legacyWalletSection]?.rows.firstIndex(where: { $0.cellClass == PaymentIDCell.self }),
-                  let cell = self.tableView.cellForRow(at: IndexPath(item: index, section: legacyWalletSection)) as? PaymentIDCell
-                {
+                  let cell = self.tableView.cellForRow(at: IndexPath(item: index, section: legacyWalletSection)) as? PaymentIDCell {
                   cell.showMenu()
                 }
               }, cellClass: PaymentIDCell.self),

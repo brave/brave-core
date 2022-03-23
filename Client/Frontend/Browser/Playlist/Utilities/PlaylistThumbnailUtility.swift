@@ -77,15 +77,13 @@ public class PlaylistThumbnailRenderer {
 
   private func bind(_ block: @escaping (URL, @escaping (UIImage?) -> Void) -> Void, url: URL) -> Future<UIImage, Error> {
     Future { promise in
-      block(
-        url,
-        { image in
-          if let image = image {
-            promise(.success(image))
-          } else {
-            promise(.failure("Image could not be loaded"))
-          }
-        })
+      block(url, { image in
+        if let image = image {
+          promise(.success(image))
+        } else {
+          promise(.failure("Image could not be loaded"))
+        }
+      })
     }
   }
 

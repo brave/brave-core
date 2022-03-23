@@ -64,8 +64,8 @@ class FaviconHandler {
       if let header = "%PDF".data(using: .utf8),
         imageData.count >= header.count,
         let range = imageData.range(of: header),
-        range.lowerBound.distance(to: imageData.startIndex) < 8
-      {  //strict PDF parsing. Otherwise index <= (1024 - header.count)
+        range.lowerBound.distance(to: imageData.startIndex) < 8 {
+        // strict PDF parsing. Otherwise index <= (1024 - header.count)
         // ^8 is the best range because some PDF's can contain a UTF-8 BOM (Byte-Order Mark)
 
         favicon.width = 0

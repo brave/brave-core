@@ -156,8 +156,7 @@ class UserScriptManager {
       let (injectionTime, mainFrameOnly, sandboxed) = arg
       let name = (mainFrameOnly ? "MainFrame" : "AllFrames") + "AtDocument" + (injectionTime == .atDocumentStart ? "Start" : "End") + (sandboxed ? "Sandboxed" : "")
       if let path = Bundle.main.path(forResource: name, ofType: "js"),
-        let source = try? NSString(contentsOfFile: path, encoding: String.Encoding.utf8.rawValue) as String
-      {
+        let source = try? NSString(contentsOfFile: path, encoding: String.Encoding.utf8.rawValue) as String {
         let wrappedSource = "(function() { const SECURITY_TOKEN = '\(UserScriptManager.messageHandlerTokenString)'; \(source) })()"
 
         return WKUserScript.create(

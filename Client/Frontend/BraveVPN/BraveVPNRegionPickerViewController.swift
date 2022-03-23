@@ -155,8 +155,7 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
 
     // Tapped on the same cell, do nothing
     if (region.name == Preferences.VPN.vpnRegionOverride.value)
-      || (indexPath.section == Section.automatic.rawValue && Preferences.VPN.vpnRegionOverride.value == nil)
-    {
+      || (indexPath.section == Section.automatic.rawValue && Preferences.VPN.vpnRegionOverride.value == nil) {
       return
     }
 

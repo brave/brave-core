@@ -31,7 +31,7 @@ class SyncPairWordsViewController: SyncViewController {
     return button
   }()
 
-  let useCameraButton = UIButton().then {
+  lazy var useCameraButton = UIButton().then {
     $0.setTitle(Strings.syncSwitchBackToCameraButton, for: .normal)
     $0.addTarget(self, action: #selector(useCameraButtonTapped), for: .touchDown)
     $0.setTitleColor(.braveLabel, for: .normal)

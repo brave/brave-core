@@ -160,8 +160,8 @@ public class PortfolioStore: ObservableObject {
         var balances: [String: Double] = [:]
         var priceHistories: [String: [BraveWallet.AssetTimePrice]] = [:]
         dispatchGroup.enter()
-        keyringService.defaultKeyringInfo { keyring in
-          fetchBalances(for: visibleTokens, accounts: keyring.accountInfos) { fetchedBalances in
+        keyringService.defaultKeyringInfo { [self] keyring in
+          fetchBalances(for: visibleTokens, accounts: keyring.accountInfos) { [self] fetchedBalances in
             balances = fetchedBalances
             let nonZeroBalanceTokens = balances.filter { $1 > 0 }.map { $0.key }
             fetchPriceHistory(for: nonZeroBalanceTokens) { fetchedPriceHistories in
@@ -178,7 +178,7 @@ public class PortfolioStore: ObservableObject {
           defer { dispatchGroup.leave() }
           prices = fetchedPrices
         }
-        dispatchGroup.notify(queue: .main) {
+        dispatchGroup.notify(queue: .main) { [self] in
           // build our userVisibleAssets
           userVisibleAssets = visibleTokens.map { token in
             let symbol = token.symbol.lowercased()
@@ -204,11 +204,9 @@ public class PortfolioStore: ObservableObject {
           let assets = userVisibleAssets.filter { !$0.history.isEmpty }  // [[AssetTimePrice]]
           let minCount = assets.map(\.history.count).min() ?? 0  // Shortest array count
           historicalBalances = (0..<minCount).map { index in
-            let value = assets.reduce(
-              0.0,
-              {
-                $0 + ((Double($1.history[index].price) ?? 0.0) * $1.decimalBalance)
-              })
+            let value = assets.reduce(0.0, {
+              $0 + ((Double($1.history[index].price) ?? 0.0) * $1.decimalBalance)
+            })
             return .init(
               date: assets.map { $0.history[index].date }.max() ?? .init(),
               price: value,

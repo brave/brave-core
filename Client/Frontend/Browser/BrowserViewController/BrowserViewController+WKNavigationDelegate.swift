@@ -258,9 +258,7 @@ extension BrowserViewController: WKNavigationDelegate {
       if let mainDocumentURL = navigationAction.request.mainDocumentURL,
         mainDocumentURL.schemelessAbsoluteString == url.schemelessAbsoluteString,
         !(InternalURL(url)?.isSessionRestore ?? false),
-        navigationAction.sourceFrame.isMainFrame || navigationAction.targetFrame?.isMainFrame == true
-      {
-
+        navigationAction.sourceFrame.isMainFrame || navigationAction.targetFrame?.isMainFrame == true {
         // Identify specific block lists that need to be applied to the requesting domain
         let domainForShields = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: !isPrivateBrowsing)
         let (on, off) = BlocklistName.blocklists(forDomain: domainForShields)
@@ -397,8 +395,7 @@ extension BrowserViewController: WKNavigationDelegate {
     let origin = "\(challenge.protectionSpace.host):\(challenge.protectionSpace.port)"
     if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
       let trust = challenge.protectionSpace.serverTrust,
-      let cert = SecTrustGetCertificateAtIndex(trust, 0), profile.certStore.containsCertificate(cert, forOrigin: origin)
-    {
+      let cert = SecTrustGetCertificateAtIndex(trust, 0), profile.certStore.containsCertificate(cert, forOrigin: origin) {
       completionHandler(.useCredential, URLCredential(trust: trust))
       return
     }
@@ -498,8 +495,7 @@ extension BrowserViewController: WKNavigationDelegate {
           persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing
         )
         .isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true),
-        let cosmeticFiltersScript = try AdBlockStats.shared.cosmeticFiltersScript(for: url)
-      {
+        let cosmeticFiltersScript = try AdBlockStats.shared.cosmeticFiltersScript(for: url) {
         // Execute the cosmetic filters script in the cosmetic filters sandbox world
         webView.evaluateSafeJavaScript(functionName: cosmeticFiltersScript, args: [], contentWorld: .cosmeticFiltersSandbox, asFunction: false) { _, error in
           log.error("AdblockRustInjector error: \(String(describing: error))")

@@ -63,6 +63,7 @@ extension Ledger.ContributionProcessor {
     case .braveUserFunds: return s.contributionProcessorUserFunds
     case .uphold: return s.contributionProcessorUphold
     case .none: return s.contributionProcessorNone
+    case .bitflyer, .gemini: fallthrough
     @unknown default:
       return "-"
     }

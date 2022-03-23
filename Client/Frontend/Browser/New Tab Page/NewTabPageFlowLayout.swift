@@ -38,8 +38,7 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
     if let braveNewsSection = braveNewsSection,
       let collectionView = collectionView,
       collectionView.numberOfItems(inSection: braveNewsSection) != 0,
-      let attribute = super.layoutAttributesForItem(at: IndexPath(item: 0, section: braveNewsSection))
-    {
+      let attribute = super.layoutAttributesForItem(at: IndexPath(item: 0, section: braveNewsSection)) {
       let diff = collectionView.frame.height - attribute.frame.minY
       gapLength = diff - gapPadding
 

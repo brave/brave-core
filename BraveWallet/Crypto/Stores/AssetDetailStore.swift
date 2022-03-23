@@ -136,7 +136,7 @@ class AssetDetailStore: ObservableObject {
       let group = DispatchGroup()
       for account in keyring.accountInfos {
         group.enter()
-        rpcService.balance(for: token, in: account) { value in
+        rpcService.balance(for: token, in: account) { [self] value in
           defer { group.leave() }
           if let index = accounts.firstIndex(where: { $0.account.address == account.address }) {
             accounts[index].decimalBalance = value ?? 0.0

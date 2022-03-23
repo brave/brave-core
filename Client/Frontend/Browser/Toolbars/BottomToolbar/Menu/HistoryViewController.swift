@@ -301,7 +301,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         title: Strings.openNewTabButtonTitle,
         image: UIImage(systemName: "plus.square.on.square"),
         handler: UIAction.deferredActionHandler { _ in
-          self.toolbarUrlActionsDelegate?.openInNewTab(historyItemURL, isPrivate: isPrivateBrowsing)
+          self.toolbarUrlActionsDelegate?.openInNewTab(historyItemURL, isPrivate: self.isPrivateBrowsing)
         })
 
       let newPrivateTabAction = UIAction(

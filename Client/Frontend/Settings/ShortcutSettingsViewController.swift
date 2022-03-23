@@ -130,11 +130,9 @@ class ShortcutSettingsViewController: TableViewController {
   }
 
   private func manageShortcutActivity(for type: ActivityType) {
-    INVoiceShortcutCenter.shared.getAllVoiceShortcuts { [unowned self] (shortcuts, error) in
-      DispatchQueue.main.async {
-        guard let shortcuts = shortcuts else { return }
-
-        guard let shortcut = shortcuts.first(where: { $0.shortcut.userActivity?.activityType == type.identifier }) else {
+    INVoiceShortcutCenter.shared.getAllVoiceShortcuts { [self] (shortcuts, error) in
+      DispatchQueue.main.async { [self] in
+        guard let shortcut = shortcuts?.first(where: { $0.shortcut.userActivity?.activityType == type.identifier }) else {
           presentAddShortcutActivity(for: type)
           return
         }
