@@ -280,7 +280,7 @@ class BaseDictionaryValueMojoTypemap(MojoTypemap):
     def ObjCToCpp(self, accessor):
         return "brave::BaseValueFromNSDictionary(%s)" % accessor
     def CppToObjC(self, accessor):
-        return "brave::NSDictionaryFromBaseValue(%s)" % accessor
+        return "brave::NSDictionaryFromBaseValue(%s.Clone())" % accessor
 
 class BaseListValueMojoTypemap(MojoTypemap):
     @staticmethod
@@ -296,7 +296,7 @@ class BaseListValueMojoTypemap(MojoTypemap):
     def ObjCToCpp(self, accessor):
         return "brave::BaseValueFromNSArray(%s)" % accessor
     def CppToObjC(self, accessor):
-        return "brave::NSArrayFromBaseValue(%s)" % accessor
+        return "brave::NSArrayFromBaseValue(%s.Clone())" % accessor
 
 class PendingRemoteMojoTypemap(MojoTypemap):
     @staticmethod
@@ -444,8 +444,9 @@ class Generator(generator.Generator):
                                       is_move_only_kind(kind))
         typemap = MojoTypemapForKind(kind, False)
         typestring = typemap.ExpectedCppType()
-        if mojom.IsNullableKind(kind) and not (mojom.IsStructKind(kind)
-                                               or mojom.IsUnionKind(kind)):
+        if (mojom.IsNullableKind(kind)
+                and not (isinstance(typemap, StructMojoTypemap)
+                         or isinstance(typemap, UnionMojoTypemap))):
             typestring = "absl::optional<%s>" % typestring
         if should_pass_param_by_value:
             return typestring
@@ -542,7 +543,8 @@ class Generator(generator.Generator):
             raise Exception("No typemap found for the given kind: %s" % kind)
         cpp_assign = typemap.ObjCToCpp(accessor)
         if mojom.IsNullableKind(kind):
-            if mojom.IsStructKind(kind) or mojom.IsUnionKind(kind):
+            if (isinstance(typemap, StructMojoTypemap)
+                    or isinstance(typemap, UnionMojoTypemap)):
                 cpp_assign = "%s ? %s : nullptr" % (accessor, cpp_assign)
             else:
                 cpp_assign = "%s ? absl::make_optional(%s) : absl::nullopt" % (
