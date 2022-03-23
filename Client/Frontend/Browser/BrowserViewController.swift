@@ -1809,7 +1809,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
 
       if (!InternalURL.isValid(url: url) || url.isReaderModeURL), !url.isFileURL {
         // Fire the readability check. This is here and not in the pageShow event handler in ReaderMode.js anymore
-        // because that event wil not always fire due to unreliable page caching. This will either let us know that
+        // because that event will not always fire due to unreliable page caching. This will either let us know that
         // the currently loaded page can be turned into reading mode or if the page already is in reading mode. We
         // ignore the result because we are being called back asynchronous when the readermode status changes.
         webView.evaluateSafeJavaScript(functionName: "\(ReaderModeNamespace).checkReadability", contentWorld: .defaultClient)
@@ -1818,11 +1818,10 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         runScriptsOnWebView(webView)
 
         // Only add history of a url which is not a localhost url
-        if !tab.isPrivate {
+        if !tab.isPrivate, !url.isReaderModeURL {
           // The visitType is checked If it is "typed" or not to determine the History object we are adding
           // should be synced or not. This limitation exists on browser side so we are aligning with this
-          if let visitType =
-            typedNavigation.first(where: { $0.key.typedDisplayString == url.typedDisplayString })?.value,
+          if let visitType = typedNavigation.first(where: { $0.key.typedDisplayString == url.typedDisplayString })?.value,
             visitType == .typed {
             braveCore.historyAPI.add(url: url, title: tab.title ?? "", dateAdded: Date())
           } else {
