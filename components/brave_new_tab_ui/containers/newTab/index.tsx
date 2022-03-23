@@ -26,7 +26,7 @@ import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo
 import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
 import BraveTodayHint from '../../components/default/braveToday/hint'
 import BraveToday, { GetDisplayAdContent } from '../../components/default/braveToday'
-import { SponsoredImageTooltip } from '../../components/default/rewards'
+import { SponsoredImageTooltip, showRewardsOnboarding } from '../../components/default/rewards'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 import getNTPBrowserAPI from '../../api/background'
 
@@ -417,6 +417,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   startRewards = () => {
     chrome.braveRewards.enableRewards()
+    showRewardsOnboarding()
   }
 
   dismissBrandedWallpaperNotification = (isUserAction: boolean) => {
