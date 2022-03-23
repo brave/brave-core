@@ -165,11 +165,13 @@ class BraveVpnService :
 
   brave_vpn::BraveVPNConnectionInfo GetConnectionInfo();
   void LoadCachedRegionData();
-  void LoadSelectedRegion();
+  void LoadCachedSelectedRegion();
   void UpdateAndNotifyConnectionStateChange(ConnectionState state);
 
-  void FetchRegionData();
-  void OnFetchRegionList(const std::string& region_list, bool success);
+  void FetchRegionData(bool background_fetch);
+  void OnFetchRegionList(bool background_fetch,
+                         const std::string& region_list,
+                         bool success);
   bool ParseAndCacheRegionList(base::Value region_value);
   void OnFetchTimezones(const std::string& timezones_list, bool success);
   void ParseAndCacheDeviceRegionName(base::Value timezons_value);
@@ -184,6 +186,7 @@ class BraveVpnService :
   void SetDeviceRegion(const brave_vpn::mojom::Region& region);
 
   std::string GetCurrentTimeZone();
+  void ScheduleBackgroundRegionDataFetch();
   void ScheduleFetchRegionDataIfNeeded();
   std::unique_ptr<brave_vpn::Hostname> PickBestHostname(
       const std::vector<brave_vpn::Hostname>& hostnames);

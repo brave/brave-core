@@ -230,11 +230,11 @@ TEST(BraveVPNFeatureTest, DISABLED_FeatureTest) {
 // TODO(bsclifton): re-enable test after figuring out why crash is happening
 TEST_F(BraveVPNServiceTest, DISABLED_RegionDataTest) {
   // Test invalid region data.
-  service_->OnFetchRegionList(std::string(), true);
+  service_->OnFetchRegionList(false, std::string(), true);
   EXPECT_TRUE(service_->regions_.empty());
 
   // Test valid region data parsing.
-  service_->OnFetchRegionList(GetRegionsData(), true);
+  service_->OnFetchRegionList(false, GetRegionsData(), true);
   const size_t kRegionCount = 11;
   EXPECT_EQ(kRegionCount, service_->regions_.size());
 
@@ -376,7 +376,7 @@ TEST_F(BraveVPNServiceTest, DISABLED_LoadRegionDataFromPrefsTest) {
   EXPECT_TRUE(service_->regions_.empty());
 
   // Set proper data to store them in prefs.
-  service_->OnFetchRegionList(GetRegionsData(), true);
+  service_->OnFetchRegionList(false, GetRegionsData(), true);
   service_->set_test_timezone("Asia/Seoul");
   service_->OnFetchTimezones(GetTimeZonesData(), true);
 
