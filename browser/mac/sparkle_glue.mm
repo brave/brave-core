@@ -200,6 +200,12 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
   // we setAutomaticallyDownloadUpdates:YES above.
   if ([su_updater_ automaticallyDownloadsUpdates])
     [su_updater_ setAutomaticallyChecksForUpdates:YES];
+  else
+    // Prevent Sparkle from asking the user "Check for updates automatically?".
+    // Also prevent local legacy settings from accidentally enabling
+    // auto-updates. Users can still update manually by going to
+    // brave://settings/help.
+    [su_updater_ setAutomaticallyChecksForUpdates:NO];
   [self updateStatus:kAutoupdateRegistered version:nil error:nil];
 }
 
