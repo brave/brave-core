@@ -812,7 +812,7 @@ void BraveVpnService::CreateSupportTicket(
   dict.SetStringKey("payment-validation-data", "");
 
   std::string request_body = CreateJSONRequestBody(dict);
-  LOG(ERROR) << " : sending " << request_body;
+  VLOG(2) << " : sending " << request_body;
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
 
@@ -948,7 +948,7 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
 
   VLOG(2) << __func__ << " : received subscriber credential";
   // TODO(bsclifton): consider storing `subscriber_credential` for
-  // support ticket use-case
+  // support ticket use-case (see `CreateSupportTicket`).
   GetProfileCredentials(
       base::BindOnce(&BraveVpnService::OnGetProfileCredentials,
                      base::Unretained(this)),
