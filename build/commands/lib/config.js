@@ -374,6 +374,7 @@ Config.prototype.buildArgs = function () {
     args.allow_runtime_configurable_key_storage = true
     if (this.use_goma && this.gomaServerHost) {
       args.use_system_xcode = false
+      args.enable_precompiled_headers = false
     }
   }
 
