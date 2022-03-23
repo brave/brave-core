@@ -407,7 +407,11 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
     Preferences.Playlist.webMediaSourceCompatibility.observe(from: self)
     // Lists need to be compiled before attempting tab restoration
-    contentBlockListDeferred = ContentBlockerHelper.compileBundledLists()
+    contentBlockListDeferred = Deferred<()>()
+    Task.detached(priority: .userInitiated) { [weak self] in
+      _ = await ContentBlockerHelper.compileBundledLists()
+      await self?.contentBlockListDeferred?.fill(())
+    }
 
     if rewards.ledger != nil {
       // Ledger was started immediately due to user having ads enabled

@@ -275,6 +275,10 @@ extension Preferences {
     static let lastGeneralAdblockUpdate = Option<Date?>(key: "last-general-adblock-update", default: nil)
     /// When regional blocklists were last time updated on the device.
     static let lastRegionalAdblockUpdate = Option<Date?>(key: "last-regional-adblock-update", default: nil)
+    /// When cosmetic filters CSS was last time updated on the device.
+    static let lastCosmeticFiltersCSSUpdate = Option<Date?>(key: "last-cosmetic-filters-css-update", default: nil)
+    /// When cosmetic filters Scriptlets were last time updated on the device.
+    static let lastCosmeticFiltersScripletsUpdate = Option<Date?>(key: "last-cosmetic-filters-scriptlets-update", default: nil)
   }
 
   final class Playlist {

@@ -4,27 +4,55 @@
 
 import Foundation
 
-typealias NetworkSessionDataResponse = (Data?, URLResponse?, Error?) -> Void
+typealias NetworkSessionDataResponse = (Data, URLResponse)
 
 protocol NetworkSession {
-  func dataRequest(with url: URL, completion: @escaping NetworkSessionDataResponse)
-  func dataRequest(with urlRequest: URLRequest, completion: @escaping NetworkSessionDataResponse)
+  func dataRequest(with url: URL) async throws -> NetworkSessionDataResponse
+  func dataRequest(with urlRequest: URLRequest) async throws -> NetworkSessionDataResponse
 }
 
 extension URLSession: NetworkSession {
-  func dataRequest(with url: URL, completion: @escaping NetworkSessionDataResponse) {
-    let task = dataTask(with: url) { data, response, error in
-      completion(data, response, error)
+  private func createResponse(code: Int = 200, url: URL?) -> URLResponse {
+    guard let url = url else {
+      return URLResponse()
     }
 
-    task.resume()
+    return HTTPURLResponse(
+      url: url,
+      statusCode: code,
+      httpVersion: "HTTP/1.1",
+      headerFields: [:])!
   }
 
-  func dataRequest(with urlRequest: URLRequest, completion: @escaping NetworkSessionDataResponse) {
-    let task = dataTask(with: urlRequest) { data, response, error in
-      completion(data, response, error)
+  func dataRequest(with url: URL) async throws -> NetworkSessionDataResponse {
+    if #available(iOS 15, *) {
+      return try await data(from: url)
+    } else {
+      return try await withCheckedThrowingContinuation { continuation in
+        self.dataTask(with: url) { data, response, error in
+          if let error = error {
+            continuation.resume(throwing: error)
+          } else {
+            continuation.resume(with: .success((data ?? Data(), response ?? self.createResponse(url: url))))
+          }
+        }.resume()
+      }
     }
+  }
 
-    task.resume()
+  func dataRequest(with urlRequest: URLRequest) async throws -> NetworkSessionDataResponse {
+    if #available(iOS 15, *) {
+      return try await data(for: urlRequest)
+    } else {
+      return try await withCheckedThrowingContinuation { continuation in
+        self.dataTask(with: urlRequest) { data, response, error in
+          if let error = error {
+            continuation.resume(throwing: error)
+          } else {
+            continuation.resume(with: .success((data ?? Data(), response ?? self.createResponse(url: urlRequest.url))))
+          }
+        }.resume()
+      }
+    }
   }
 }

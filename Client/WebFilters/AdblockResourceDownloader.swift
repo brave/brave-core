@@ -46,91 +46,92 @@ class AdblockResourceDownloader {
     if now.timeIntervalSince(lastFetchDate) >= fetchInterval {
       lastFetchDate = now
 
-      AdblockResourceDownloader.shared.regionalAdblockResourcesSetup()
-      AdblockResourceDownloader.shared.generalAdblockResourcesSetup()
+      Task.detached(priority: .userInitiated) {
+        do {
+          try await withThrowingTaskGroup(of: Void.self) { [weak self] group in
+            guard let self = self else { return }
+            group.addTask { try await self.regionalAdblockResourcesSetup() }
+            group.addTask { try await self.generalAdblockResourcesSetup() }
+            try await group.waitForAll()
+          }
+        } catch {
+          log.error("Failed to Download Adblock-Resources: \(error)")
+        }
+      }
     }
   }
 
-  func regionalAdblockResourcesSetup() {
+  func regionalAdblockResourcesSetup() async throws {
     if !Preferences.Shields.useRegionAdBlock.value {
       log.debug("Regional adblocking disabled, aborting attempt to download regional resources")
       return
     }
 
-    downloadResources(
+    try await downloadResources(
       type: .regional(locale: locale),
-      queueName: "Regional adblock setup"
-    ).uponQueue(.main) {
-      log.debug("Regional blocklists download and setup completed.")
-      Preferences.Debug.lastRegionalAdblockUpdate.value = Date()
-    }
+      queueName: "Regional adblock setup")
+    log.debug("Regional blocklists download and setup completed.")
+    Preferences.Debug.lastRegionalAdblockUpdate.value = Date()
   }
 
-  func generalAdblockResourcesSetup() {
-    downloadResources(
+  func generalAdblockResourcesSetup() async throws {
+    try await downloadResources(
       type: .general,
-      queueName: "General adblock setup"
-    ).uponQueue(.main) {
-      log.debug("General blocklists download and setup completed.")
-      Preferences.Debug.lastGeneralAdblockUpdate.value = Date()
-    }
+      queueName: "General adblock setup")
+    log.debug("General blocklists download and setup completed.")
+    Preferences.Debug.lastGeneralAdblockUpdate.value = Date()
   }
 
-  private func downloadResources(type: AdblockerType, queueName: String) -> Deferred<()> {
-    let completion = Deferred<()>()
-
-    let queue = DispatchQueue(label: queueName)
+  private func downloadResources(type: AdblockerType, queueName: String) async throws {
     let nm = networkManager
     let folderName = AdblockResourceDownloader.folderName
 
     // file name of which the file will be saved on disk
     let fileName = type.identifier
 
-    let completedDownloads = type.associatedFiles.map { fileType -> Deferred<AdBlockNetworkResource> in
+    async let completedDownloads = type.associatedFiles.asyncConcurrentCompactMap { [weak self] fileType -> AdBlockNetworkResource? in
+      guard let self = self else { return nil }
+
       let fileExtension = fileType.rawValue
       let etagExtension = fileExtension + ".etag"
 
       guard let resourceName = type.resourceName(for: fileType),
         var url = URL(string: AdblockResourceDownloader.endpoint)
       else {
-        return Deferred<AdBlockNetworkResource>()
+        return nil
       }
 
       url.appendPathComponent(resourceName)
       url.appendPathExtension(fileExtension)
 
       var headers = [String: String]()
-      if let servicesKeyValue = Bundle.main.getPlistString(for: servicesKeyName) {
-        headers[servicesKeyHeaderValue] = servicesKeyValue
+      if let servicesKeyValue = Bundle.main.getPlistString(for: self.servicesKeyName) {
+        headers[self.servicesKeyHeaderValue] = servicesKeyValue
       }
 
-      let etag = fileFromDocumentsAsString("\(fileName).\(etagExtension)", inFolder: folderName)
-      let request =
-        nm.downloadResource(
-          with: url, resourceType: .cached(etag: etag),
-          checkLastServerSideModification: !AppConstants.buildChannel.isPublic,
-          customHeaders: headers
-        )
-        .mapQueue(queue) { resource in
-          AdBlockNetworkResource(resource: resource, fileType: fileType, type: type)
-        }
+      let etag = self.fileFromDocumentsAsString("\(fileName).\(etagExtension)", inFolder: folderName)
+      let resource = try await nm.downloadResource(
+        with: url,
+        resourceType: .cached(etag: etag),
+        checkLastServerSideModification: !AppConstants.buildChannel.isPublic,
+        customHeaders: headers)
 
-      return request
+      if resource.data.isEmpty {
+        return nil
+      }
+
+      return AdBlockNetworkResource(
+        resource: resource,
+        fileType: fileType,
+        type: type)
     }
 
-    all(completedDownloads).uponQueue(queue) { resources in
-      // json to content rules compilation happens first, otherwise it makes no sense to proceed further
-      // and overwrite old files that were working before.
-      self.compileContentBlocker(resources: resources, queue: queue)
-        .uponQueue(queue) { _ in
-          if self.writeFilesTodisk(resources: resources, name: fileName, queue: queue) {
-            self.setUpFiles(resources: resources, compileJsonRules: false, queue: queue)
-              .uponQueue(queue) { completion.fill(()) }
-          }
-        }
+    // json to content rules compilation happens first, otherwise it makes no sense to proceed further
+    // and overwrite old files that were working before.
+    try await compileContentBlocker(resources: completedDownloads)
+    if try await writeFilesToDisk(resources: completedDownloads, name: fileName) {
+      try await setUpFiles(resources: completedDownloads, compileJsonRules: false)
     }
-
-    return completion
   }
 
   private func fileFromDocumentsAsString(_ name: String, inFolder folder: String) -> String? {
@@ -140,35 +141,19 @@ class AdblockResourceDownloader {
     }
 
     let fileUrl = folderUrl.appendingPathComponent(name)
-
     guard let data = FileManager.default.contents(atPath: fileUrl.path) else { return nil }
-
     return String(data: data, encoding: .utf8)
   }
 
-  private func compileContentBlocker(
-    resources: [AdBlockNetworkResource],
-    queue: DispatchQueue
-  ) -> Deferred<()> {
-    let completion = Deferred<()>()
-
-    let compiledLists = resources.filter { $0.fileType == .json }
-      .map { res -> Deferred<()> in
-        guard let blockList = res.type.blockListName else { return Deferred<()>() }
-        return blockList.compile(data: res.resource.data)
+  private func compileContentBlocker(resources: [AdBlockNetworkResource]) async {
+    await resources.filter { $0.fileType == .json }
+      .asyncConcurrentForEach { res in
+        guard let blockList = res.type.blockListName else { return }
+        await blockList.compile(data: res.resource.data)
       }
-
-    all(compiledLists).uponQueue(queue) { _ in
-      completion.fill(())
-    }
-
-    return completion
   }
 
-  private func writeFilesTodisk(
-    resources: [AdBlockNetworkResource], name: String,
-    queue: DispatchQueue
-  ) -> Bool {
+  private func writeFilesToDisk(resources: [AdBlockNetworkResource], name: String) async -> Bool {
     var fileSaveCompletions = [Bool]()
     let fm = FileManager.default
     let folderName = AdblockResourceDownloader.folderName
@@ -203,27 +188,21 @@ class AdblockResourceDownloader {
     return !fileSaveCompletions.contains(false)
   }
 
-  private func setUpFiles(resources: [AdBlockNetworkResource], compileJsonRules: Bool, queue: DispatchQueue) -> Deferred<()> {
-    let completion = Deferred<()>()
-    var resourceSetup = [Deferred<()>]()
-
-    resources.forEach {
+  private func setUpFiles(resources: [AdBlockNetworkResource], compileJsonRules: Bool) async throws {
+    try await resources.asyncConcurrentForEach {
       switch $0.fileType {
       case .dat:
-        resourceSetup.append(
-          AdBlockStats.shared.setDataFile(
-            data: $0.resource.data,
-            id: $0.type.identifier))
+        try await AdBlockStats.shared.setDataFile(
+          data: $0.resource.data,
+          id: $0.type.identifier)
       case .json:
         if compileJsonRules {
-          resourceSetup.append(compileContentBlocker(resources: resources, queue: queue))
+          await self.compileContentBlocker(resources: resources)
         }
       case .tgz:
         break  // TODO: Add downloadable httpse list
       }
     }
-    all(resourceSetup).uponQueue(queue) { _ in completion.fill(()) }
-    return completion
   }
 }
 
@@ -231,7 +210,13 @@ extension AdblockResourceDownloader: PreferencesObserver {
   func preferencesDidChange(for key: String) {
     let regionalAdblockPref = Preferences.Shields.useRegionAdBlock
     if key == regionalAdblockPref.key {
-      regionalAdblockResourcesSetup()
+      Task {
+        do {
+          try await regionalAdblockResourcesSetup()
+        } catch {
+          log.error(error)
+        }
+      }
     }
   }
 }

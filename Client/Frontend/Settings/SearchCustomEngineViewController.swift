@@ -283,17 +283,24 @@ extension SearchCustomEngineViewController {
     changeAddButton(for: .loading)
     view.endEditing(true)
 
-    NetworkManager().downloadResource(with: url).uponQueue(.main) { [weak self] response in
-      guard let self = self else { return }
+    Task {
+      do {
+        let response = try await NetworkManager().downloadResource(with: url)
+        await MainActor.run { [weak self] in
+          guard let self = self else { return }
 
-      if let openSearchEngine = OpenSearchParser(pluginMode: true).parse(response.data, referenceURL: referenceURL, image: iconImage, isCustomEngine: true) {
-        self.addSearchEngine(openSearchEngine)
-      } else {
-        let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
+          if let openSearchEngine = OpenSearchParser(pluginMode: true).parse(response.data, referenceURL: referenceURL, image: iconImage, isCustomEngine: true) {
+            self.addSearchEngine(openSearchEngine)
+          } else {
+            let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
 
-        self.present(alert, animated: true) {
-          self.changeAddButton(for: .disabled)
+            self.present(alert, animated: true) {
+              self.changeAddButton(for: .disabled)
+            }
+          }
         }
+      } catch {
+        log.error(error)
       }
     }
   }

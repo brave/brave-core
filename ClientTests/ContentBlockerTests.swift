@@ -96,12 +96,12 @@ class ContentBlockerTests: XCTestCase {
 
   private func compile(jsonString json: String?, expectSuccess: Bool) {
     let data = json?.data(using: .utf8)
-    let completion = contentBlocker?.compile(data: data, ruleStore: store)
 
     let exp = XCTestExpectation(description: "compile")
     exp.isInverted = !expectSuccess
 
-    completion?.upon {
+    Task.detached(priority: .userInitiated) {
+      _ = await self.contentBlocker?.compile(data: data, ruleStore: self.store)
       exp.fulfill()
     }
 

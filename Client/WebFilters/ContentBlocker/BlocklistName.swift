@@ -88,42 +88,36 @@ class BlocklistName: CustomStringConvertible, ContentBlocker {
     return (onList, offList)
   }
 
-  static func compileBundledRules(ruleStore: WKContentRuleListStore) -> Deferred<Void> {
-    let allCompiledDeferred = Deferred<Void>()
-    var allOfThem = BlocklistName.allLists.map {
-      $0.buildRule(ruleStore: ruleStore)
-    }
-    // Compile block-cookie additionally
-    allOfThem.append(BlocklistName.cookie.buildRule(ruleStore: ruleStore))
-    all(allOfThem).upon { _ in
-      allCompiledDeferred.fill(())
-    }
+  static func compileBundledRules(ruleStore: WKContentRuleListStore) async {
+    await withTaskGroup(of: Void.self) { group in
+      BlocklistName.allLists.forEach { list in
+        group.addTask { await list.buildRule(ruleStore: ruleStore) }
+      }
 
-    return allCompiledDeferred
+      // Compile block-cookie additionally
+      group.addTask { await BlocklistName.cookie.buildRule(ruleStore: ruleStore) }
+      await group.waitForAll()
+    }
   }
 
   func compile(
     data: Data?,
     ruleStore: WKContentRuleListStore = ContentBlockerHelper.ruleStore
-  ) -> Deferred<()> {
-    let completion = Deferred<()>()
+  ) async {
+
     guard let data = data, let dataString = String(data: data, encoding: .utf8) else {
       log.error("Could not read data for content blocker compilation.")
-      return completion
+      return
     }
 
-    ruleStore.compileContentRuleList(forIdentifier: self.filename, encodedContentRuleList: dataString) { rule, error in
-      if let error = error {
-        // TODO #382: Potential telemetry location
-        log.error("Content blocker '\(self.filename)' errored: \(error.localizedDescription)")
-        return
-      }
+    do {
+      let rule = try await ruleStore.compileContentRuleList(forIdentifier: filename, encodedContentRuleList: dataString)
+
       assert(rule != nil)
-
       self.rule = rule
-      completion.fill(())
+    } catch {
+      // TODO #382: Potential telemetry location
+      log.error("Content blocker '\(self.filename)' errored: \(error.localizedDescription)")
     }
-
-    return completion
   }
 }

@@ -18,63 +18,53 @@ protocol ContentBlocker: AnyObject, Hashable {
 }
 
 extension ContentBlocker {
-  func buildRule(ruleStore: WKContentRuleListStore) -> Deferred<Void> {
-    let compilerDeferred = Deferred<Void>()
-
-    let compileIt = needsCompiling(ruleStore: ruleStore)
-    compileIt.upon { compile in
-      if !compile {
-        compilerDeferred.fill(())
-        return
-      }
-
-      BlocklistName.loadJsonFromBundle(forResource: self.filename) { jsonString in
-        ruleStore.compileContentRuleList(forIdentifier: self.filename, encodedContentRuleList: jsonString) { rule, error in
-          if let error = error {
-            // TODO #382: Potential telemetry location
-            log.error("Content blocker '\(self.filename)' errored: \(error.localizedDescription)")
-            assert(false)
-          }
-          assert(rule != nil)
-
-          self.rule = rule
-          self.fileVersionPref?.value = self.fileVersion
-          compilerDeferred.fill(())
-        }
-      }
+  func buildRule(ruleStore: WKContentRuleListStore) async {
+    guard await needsCompiling(ruleStore: ruleStore) else {
+      return
     }
 
-    return compilerDeferred
+    if let jsonString = await BlocklistName.loadJsonFromBundle(forResource: filename) {
+      do {
+        let rule = try await ruleStore.compileContentRuleList(forIdentifier: filename, encodedContentRuleList: jsonString)
+
+        assert(rule != nil)
+
+        self.rule = rule
+        self.fileVersionPref?.value = self.fileVersion
+      } catch {
+        // TODO #382: Potential telemetry location
+        log.error("Content blocker '\(self.filename)' errored: \(error.localizedDescription)")
+        assert(false)
+      }
+    }
   }
 
-  private func needsCompiling(ruleStore: WKContentRuleListStore) -> Deferred<Bool> {
-    let needsCompiling = Deferred<Bool>()
+  private func needsCompiling(ruleStore: WKContentRuleListStore) async -> Bool {
     if fileVersionPref?.value != fileVersion {
       // New file, so we must update the lists, no need to check the store
-      needsCompiling.fill(true)
-      return needsCompiling
+      return true
     }
 
-    ruleStore.lookUpContentRuleList(forIdentifier: self.filename) { rule, error in
-      self.rule = rule
-      needsCompiling.fill(self.rule == nil)
+    do {
+      rule = try await ruleStore.contentRuleList(forIdentifier: filename)
+      return false
+    } catch {
+      log.error(error)
+      return true
     }
-    return needsCompiling
   }
 
-  private static func loadJsonFromBundle(forResource file: String, completion: @escaping (_ jsonString: String) -> Void) {
-    DispatchQueue.global().async {
+  private static func loadJsonFromBundle(forResource file: String) async -> String? {
+    await Task.detached(priority: .userInitiated) {
       guard let path = Bundle.main.path(forResource: file, ofType: "json"),
         let source = try? String(contentsOfFile: path, encoding: .utf8)
       else {
         assert(false)
-        return
+        return nil
       }
 
-      DispatchQueue.main.async {
-        completion(source)
-      }
-    }
+      return source
+    }.value
   }
 
   public static func == (lhs: Self, rhs: Self) -> Bool {
