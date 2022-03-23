@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.h b/chrome/browser/ui/views/frame/browser_view.h
-index 10ef4e6fe91d94725605d70fbe1a72e6b960772e..9726c19d3529513dae93a2c946d42714af146cf1 100644
+index 69f92ec5228c4725b129b1452dca8fc52f700c21..ed259244ca73f4c422ef57b3cac57998f0c7cfa7 100644
 --- a/chrome/browser/ui/views/frame/browser_view.h
 +++ b/chrome/browser/ui/views/frame/browser_view.h
-@@ -727,6 +727,7 @@ class BrowserView : public BrowserWindow,
+@@ -732,6 +732,7 @@ class BrowserView : public BrowserWindow,
        const std::map<std::string, std::string>& extra_data) override;
  #endif
  

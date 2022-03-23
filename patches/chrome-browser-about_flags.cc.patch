@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index c8e94fa101179f1faf15a6631d3a8d5bd4dcc687..5a7d0bcbdbb16f007a961607d5bfb9345537c3ee 100644
+index 80c69ea700c9804d69bd7daa9ff6df80aae2eb1d..e6b7312b517e8a0ed10cc8e2e41ed2024c194349 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -2948,6 +2948,7 @@ const FeatureEntry::FeatureVariation kUnthrottledNestedTimeout_Variations[] = {
+@@ -2976,6 +2976,7 @@ constexpr FeatureEntry::FeatureVariation kLensStandaloneVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
