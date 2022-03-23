@@ -162,8 +162,11 @@ mojom::SolanaTxDataPtr SolanaMessage::ToSolanaTxData() const {
   for (const auto& instruction : instructions_)
     mojom_instructions.push_back(instruction.ToMojomSolanaInstruction());
 
-  return mojom::SolanaTxData::New(recent_blockhash_, fee_payer_,
-                                  std::move(mojom_instructions));
+  auto solana_tx_data = mojom::SolanaTxData::New();
+  solana_tx_data->recent_blockhash = recent_blockhash_;
+  solana_tx_data->fee_payer = fee_payer_;
+  solana_tx_data->instructions = std::move(mojom_instructions);
+  return solana_tx_data;
 }
 
 base::Value SolanaMessage::ToValue() const {

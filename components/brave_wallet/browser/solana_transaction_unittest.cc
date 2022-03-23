@@ -11,6 +11,7 @@
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
+#include "base/test/gtest_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -232,11 +233,20 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
        SolanaAccountMeta(to_account, false, true)},
       data);
   SolanaTransaction transaction(recent_blockhash, from_account, {instruction});
+  transaction.set_to_wallet_address(to_account);
+  transaction.set_lamports(10000000u);
+  transaction.set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
 
   auto solana_tx_data = transaction.ToSolanaTxData();
   ASSERT_TRUE(solana_tx_data);
   EXPECT_EQ(solana_tx_data->recent_blockhash, recent_blockhash);
   EXPECT_EQ(solana_tx_data->fee_payer, from_account);
+  EXPECT_EQ(solana_tx_data->to_wallet_address, to_account);
+  EXPECT_EQ(solana_tx_data->spl_token_mint_address, "");
+  EXPECT_EQ(solana_tx_data->lamports, 10000000u);
+  EXPECT_EQ(solana_tx_data->amount, 0u);
+  EXPECT_EQ(solana_tx_data->tx_type,
+            mojom::TransactionType::SolanaSystemTransfer);
 
   ASSERT_EQ(solana_tx_data->instructions.size(), 1u);
   EXPECT_EQ(solana_tx_data->instructions[0]->program_id,
@@ -273,6 +283,9 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
        SolanaAccountMeta(to_account, false, true)},
       data);
   SolanaTransaction transaction(recent_blockhash, from_account, {instruction});
+  transaction.set_to_wallet_address(to_account);
+  transaction.set_lamports(10000000u);
+  transaction.set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
 
   base::Value value = transaction.ToValue();
   auto expect_tx_value = base::JSONReader::Read(R"(
@@ -298,7 +311,12 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
                "data": "AgAAAICWmAAAAAAA"
              }
           ]
-        }
+        },
+        "to_wallet_address": "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV",
+        "spl_token_mint_address": "",
+        "lamports": "10000000",
+        "amount": "0",
+        "tx_type": 6
       }
   )");
 
@@ -315,6 +333,25 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
     ASSERT_TRUE(invalid_value) << ":" << invalid_value_string;
     EXPECT_FALSE(SolanaMessage::FromValue(*invalid_value))
         << ":" << invalid_value_string;
+  }
+}
+
+TEST_F(SolanaTransactionUnitTest, SetTxType) {
+  auto tx =
+      SolanaTransaction("", "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8", {});
+  int solana_min = static_cast<int>(mojom::TransactionType::Other);
+  int solana_max = static_cast<int>(
+      mojom::TransactionType::
+          SolanaSPLTokenTransferWithAssociatedTokenAccountCreation);
+  int max = static_cast<int>(mojom::TransactionType::kMaxValue);
+  for (int i = 0; i <= max; i++) {
+    auto type = static_cast<mojom::TransactionType>(i);
+    if (i < solana_min || i > solana_max) {
+      EXPECT_DCHECK_DEATH(tx.set_tx_type(type));
+    } else {
+      tx.set_tx_type(type);
+      EXPECT_EQ(tx.tx_type(), type);
+    }
   }
 }
 

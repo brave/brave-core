@@ -680,21 +680,24 @@ interface JsonRpcService {
 };
 
 enum TransactionStatus {
-  Unapproved,
-  Approved,
-  Rejected,
-  Submitted,
-  Confirmed,
-  Error
+  Unapproved = 0,
+  Approved = 1,
+  Rejected = 2,
+  Submitted = 3,
+  Confirmed = 4,
+  Error = 5
 };
 
 enum TransactionType {
-  ETHSend,
-  ERC20Transfer,
-  ERC20Approve,
-  ERC721TransferFrom,
-  ERC721SafeTransferFrom,
-  Other
+  ETHSend = 0,
+  ERC20Transfer = 1,
+  ERC20Approve = 2,
+  ERC721TransferFrom = 3,
+  ERC721SafeTransferFrom = 4,
+  Other = 5,
+  SolanaSystemTransfer = 6,  // transfering SOL
+  SolanaSPLTokenTransfer = 7,
+  SolanaSPLTokenTransferWithAssociatedTokenAccountCreation = 8
 };
 
 // TODO(spylogsster): Fill the struct with needed fields.
@@ -942,5 +945,10 @@ struct SolanaInstruction {
 struct SolanaTxData {
   string recent_blockhash;
   string fee_payer;
+  string to_wallet_address;
+  string spl_token_mint_address;
+  uint64 lamports;
+  uint64 amount;
+  TransactionType tx_type;
   array<SolanaInstruction> instructions;
 };

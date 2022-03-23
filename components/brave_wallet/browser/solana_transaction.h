@@ -29,8 +29,8 @@ class SolanaTransaction {
   SolanaTransaction(const std::string& recent_blockhash,
                     const std::string& fee_payer,
                     std::vector<SolanaInstruction>&& instructions);
-  SolanaTransaction(const SolanaTransaction&) = default;
-  ~SolanaTransaction() = default;
+  SolanaTransaction(const SolanaTransaction&);
+  ~SolanaTransaction();
   bool operator==(const SolanaTransaction&) const;
 
   // Serialize the message and sign it.
@@ -44,8 +44,32 @@ class SolanaTransaction {
       mojom::SolanaTxDataPtr solana_tx_data);
   static absl::optional<SolanaTransaction> FromValue(const base::Value& value);
 
+  std::string to_wallet_address() const { return to_wallet_address_; }
+  std::string spl_token_mint_address() const { return spl_token_mint_address_; }
+  mojom::TransactionType tx_type() const { return tx_type_; }
+  uint64_t lamports() const { return lamports_; }
+  uint64_t amount() const { return amount_; }
+
+  void set_to_wallet_address(const std::string& to_wallet_address) {
+    to_wallet_address_ = to_wallet_address;
+  }
+  void set_spl_token_mint_address(const std::string& spl_token_mint_address) {
+    spl_token_mint_address_ = spl_token_mint_address;
+  }
+  void set_tx_type(mojom::TransactionType tx_type);
+  void set_lamports(uint64_t lamports) { lamports_ = lamports; }
+  void set_amount(uint64_t amount) { amount_ = amount; }
+
  private:
   SolanaMessage message_;
+
+  // Data fields to be used for UI, they are filled currently when we create
+  // SolanaTxData to transfer SOL or SPL tokens for UI.
+  std::string to_wallet_address_;
+  std::string spl_token_mint_address_;
+  mojom::TransactionType tx_type_ = mojom::TransactionType::Other;
+  uint64_t lamports_ = 0;  // amount of lamports to transfer
+  uint64_t amount_ = 0;    // amount of SPL tokens to transfer
 };
 
 }  // namespace brave_wallet
