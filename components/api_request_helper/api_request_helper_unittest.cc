@@ -126,6 +126,13 @@ TEST_F(ApiRequestHelperUnitTest, RequestWithConversion) {
   // expecting empty response body after sanitization
   SendRequest(server_raw_response, "",
               base::BindOnce(&ConversionCallback, server_raw_response, ""));
+
+  // Returning absl::nullopt in conversion callback doesn't override the
+  // response
+  server_raw_response = "{}";
+  SendRequest(
+      server_raw_response, server_raw_response,
+      base::BindOnce(&ConversionCallback, server_raw_response, absl::nullopt));
 }
 
 }  // namespace api_request_helper

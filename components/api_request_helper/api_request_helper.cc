@@ -23,13 +23,16 @@ void OnSanitize(const int http_code,
                 APIRequestHelper::ResultCallback result_callback,
                 data_decoder::JsonSanitizer::Result result) {
   std::string response_body;
-  if (result.value.has_value())
-    response_body = result.value.value();
   if (result.error) {
     VLOG(1) << "Response validation error:" << *result.error;
     std::move(result_callback).Run(http_code, "", headers);
     return;
   }
+
+  if (result.value.has_value()) {
+    response_body = result.value.value();
+  }
+
   std::move(result_callback).Run(http_code, response_body, headers);
 }
 
