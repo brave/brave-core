@@ -110,7 +110,10 @@ TEST_F(ApiRequestHelperUnitTest, SanitizedRequest) {
   SendRequest("{", "");
   SendRequest("0", "");
   SendRequest("a", "");
-  SendRequest("{\"a\":1,}", "");
+  // Android's sanitizer doesn't support trailing commas.
+#if !BUILDFLAG(IS_ANDROID)
+  SendRequest("{\"a\":1,}", "{\"a\":1}");
+#endif
 }
 
 TEST_F(ApiRequestHelperUnitTest, RequestWithConversion) {
