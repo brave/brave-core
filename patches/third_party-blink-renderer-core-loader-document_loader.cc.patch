@@ -17,7 +17,7 @@ index 94d7026e591134ea04d30b993917b942829bdfb4..4b87882a6de259b0505fc0b8d465e3de
      const absl::optional<WebURLError>& error) {
 +  // Another option for this is BodyDataReceived. Unclear which one is better.
 +  brave_page_graph::PageGraph* pg = GetFrame()->GetDocument()->GetPageGraph();
-+  if (pg) {
++  if (pg && url_.Protocol() != "chrome-error" && url_.Protocol() != "about") {
 +    pg->RegisterRequestCompleteForDocument(main_resource_identifier_, total_decoded_body_length);
 +  }
    TRACE_EVENT0("loading", "DocumentLoader::BodyLoadingFinished");
