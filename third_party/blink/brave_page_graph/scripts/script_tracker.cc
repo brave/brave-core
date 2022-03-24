@@ -131,7 +131,7 @@ void ScriptTracker::AddDescendantUrlForParent(
       break;
     }
   }
-  if (!already_has_parent) {
+  if (!already_has_parent && parent_id != 0) {
     parent_module_ids.push_back(parent_id);
   }
 }
@@ -166,6 +166,8 @@ void ScriptTracker::SetScriptIdForCode(const ScriptId script_id,
     source_hash_to_script_url_hash_.count(code_hash) > 0 ||
     source_hash_to_node_ids_.count(code_hash) > 0 ||
     extension_source_hash_to_script_url_hash_.count(code_hash) > 0);
+
+  PG_LOG_ASSERT(script_id != 0);
 
   if (extension_source_hash_to_script_url_hash_.count(code_hash) == 1) {
     extension_source_hash_to_script_id_.emplace(code_hash, script_id);
@@ -275,7 +277,6 @@ std::vector<ScriptId> ScriptTracker::GetModuleScriptParentsForScriptId(
     const UrlHash url_hash = source_hash_to_script_url_hash_.at(source_hash);
     if (script_url_to_parent_module_ids_.count(url_hash) != 0) {
       for (const ScriptId& script_id : script_url_to_parent_module_ids_.at(url_hash)) {
-        LOG(ERROR) << "found parent script id: " << script_id;
         parent_script_ids.push_back(script_id);
       }
     }
