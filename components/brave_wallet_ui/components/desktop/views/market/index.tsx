@@ -61,7 +61,6 @@ export interface Props {
   onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
   onSelectAccount: (account: WalletAccountType) => void
   onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
-  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   onAddCustomAsset: (token: BraveWallet.BlockchainToken) => void
   onShowVisibleAssetsModal: (showModal: boolean) => void
   onUpdateVisibleAssets: (updatedTokensList: BraveWallet.BlockchainToken[]) => void
@@ -112,7 +111,6 @@ const MarketView = (props: Props) => {
     transactionSpotPrices,
     foundTokenInfoByContractAddress,
     onSelectAsset,
-    onSelectNetwork,
     onChangeTimeline,
     onFetchCoinMarkets,
     toggleNav,
@@ -264,7 +262,6 @@ const MarketView = (props: Props) => {
       {id && selectedAsset && selectedCoinMarket ? (
         <PortfolioView
           onChangeTimeline={onChangeTimeline}
-          onSelectNetwork={onSelectNetwork}
           defaultCurrencies={defaultCurrencies}
           selectedNetwork={selectedNetwork}
           portfolioPriceHistory={portfolioPriceHistory}

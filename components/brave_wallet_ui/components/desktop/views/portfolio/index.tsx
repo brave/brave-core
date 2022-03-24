@@ -12,7 +12,6 @@ import {
   SupportedTestNetworks
 } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
-import { CurrencySymbols } from '../../../../utils/currency-symbols'
 
 // Utils
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
@@ -20,15 +19,10 @@ import { getTokensNetwork, getTokensCoinType } from '../../../../utils/network-u
 import Amount from '../../../../utils/amount'
 
 // Options
-import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
 
 // Components
-import { BackButton, LoadingSkeleton, withPlaceholderIcon } from '../../../shared'
 import {
-  ChartControlBar,
-  LineChart,
-  EditVisibleAssetsModal,
-  WithHideBalancePlaceholder
+  EditVisibleAssetsModal
 } from '../../'
 
 // import NFTDetails from './components/nft-details'
@@ -40,25 +34,12 @@ import { usePricing, useTransactionParser } from '../../../../common/hooks'
 
 // Styled Components
 import {
-  StyledWrapper,
-  TopRow,
-  BalanceTitle,
-  BalanceText,
-  AssetIcon,
-  AssetRow,
-  AssetColumn,
-  PriceRow,
-  AssetNameText,
-  DetailText,
-  InfoColumn,
-  PriceText,
-  PercentBubble,
-  PercentText,
-  ArrowIcon,
-  BalanceRow,
-  ShowBalanceButton,
-  NetworkDescription
+  AssetNotSupported,
+  CoinGeckoText,
+  StyledWrapper
 } from './style'
+import PortfolioTopSection from './components/portfolio-top-section'
+import AssetStats from './components/asset-stats'
 
 export interface Props {
   toggleNav: () => void
@@ -79,6 +60,7 @@ export interface Props {
   selectedTimeline: BraveWallet.AssetPriceTimeframe
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
   selectedAsset: BraveWallet.BlockchainToken | undefined
+  selectedCoinMarket: BraveWallet.CoinMarket | undefined
   selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
   selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
   selectedAssetPriceHistory: PriceDataObjectType[]
@@ -95,6 +77,8 @@ export interface Props {
   onCancelTransaction: (transaction: BraveWallet.TransactionInfo) => void
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
   foundTokenInfoByContractAddress: BraveWallet.BlockchainToken | undefined
+  isSupportedInBraveWallet: boolean
+  onGoBack?: () => void
 }
 
 const Portfolio = (props: Props) => {
@@ -122,17 +106,20 @@ const Portfolio = (props: Props) => {
     accounts,
     networkList,
     selectedAsset,
+    selectedCoinMarket,
     portfolioBalance,
     transactions,
     userAssetList,
     isLoading,
     isFetchingPortfolioPriceHistory,
     transactionSpotPrices,
+    isSupportedInBraveWallet,
     onRetryTransaction,
     onSpeedupTransaction,
     onCancelTransaction,
     onFindTokenInfoByContractAddress,
-    foundTokenInfoByContractAddress
+    foundTokenInfoByContractAddress,
+    onGoBack
   } = props
 
   // This will be removed once Network Filtering is integrated here
@@ -142,9 +129,6 @@ const Portfolio = (props: Props) => {
   }, [userAssetList])
 
   const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(mainnetAssets)
-  const [fullPortfolioFiatBalance, setFullPortfolioFiatBalance] = React.useState<string>(portfolioBalance)
-  const [hoverBalance, setHoverBalance] = React.useState<string>()
-  const [hoverPrice, setHoverPrice] = React.useState<string>()
   const [showNetworkDropdown, setShowNetworkDropdown] = React.useState<boolean>(false)
   const [hideBalances, setHideBalances] = React.useState<boolean>(false)
   const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
@@ -154,18 +138,8 @@ const Portfolio = (props: Props) => {
   }
 
   React.useEffect(() => {
-    if (portfolioBalance !== '') {
-      setFullPortfolioFiatBalance(portfolioBalance)
-    }
-  }, [portfolioBalance])
-
-  React.useEffect(() => {
     setfilteredAssetList(mainnetAssets)
   }, [mainnetAssets])
-
-  const portfolioHistory = React.useMemo(() => {
-    return portfolioPriceHistory
-  }, [portfolioPriceHistory])
 
   const selectAsset = (asset: BraveWallet.BlockchainToken) => () => {
     onSelectAsset(asset)
@@ -174,23 +148,10 @@ const Portfolio = (props: Props) => {
 
   const goBack = () => {
     onSelectAsset(undefined)
-    setfilteredAssetList(mainnetAssets)
+    setfilteredAssetList(userAssetList)
     toggleNav()
-  }
-
-  const onUpdateBalance = (value: number | undefined) => {
-    if (!selectedAsset) {
-      if (value) {
-        setHoverBalance(new Amount(value).formatAsFiat())
-      } else {
-        setHoverBalance(undefined)
-      }
-    } else {
-      if (value) {
-        setHoverPrice(new Amount(value).formatAsFiat())
-      } else {
-        setHoverPrice(undefined)
-      }
+    if (onGoBack) {
+      onGoBack()
     }
   }
 
@@ -203,14 +164,6 @@ const Portfolio = (props: Props) => {
   const toggleShowVisibleAssetModal = () => {
     onShowVisibleAssetsModal(!showVisibleAssetsModal)
   }
-
-  const priceHistory = React.useMemo(() => {
-    if (parseFloat(portfolioBalance) === 0) {
-      return []
-    } else {
-      return portfolioHistory
-    }
-  }, [portfolioHistory, portfolioBalance])
 
   const selectedAssetTransactions = React.useMemo((): BraveWallet.TransactionInfo[] => {
     const filteredTransactions = Object.values(transactions).flatMap((txInfo) =>
@@ -235,10 +188,6 @@ const Portfolio = (props: Props) => {
         asset.asset.chainId === selectedAsset?.chainId
     )
   }, [filteredAssetList, selectedAsset])
-
-  const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
-  }, [])
 
   const formattedFullAssetBalance = fullAssetBalances?.assetBalance
     ? '(' + new Amount(fullAssetBalances?.assetBalance ?? '')
@@ -276,82 +225,26 @@ const Portfolio = (props: Props) => {
 
   return (
     <StyledWrapper onClick={onHideNetworkDropdown}>
-      <TopRow>
-        <BalanceRow>
-          {!selectedAsset ? (
-            <BalanceTitle>{getLocale('braveWalletBalance')}</BalanceTitle>
-          ) : (
-            <BackButton onSubmit={goBack} />
-          )}
-        </BalanceRow>
-        <BalanceRow>
-          {!selectedAsset?.isErc721 &&
-            <ChartControlBar
-              onSubmit={onChangeTimeline}
-              selectedTimeline={selectedAsset ? selectedTimeline : selectedPortfolioTimeline}
-              timelineOptions={ChartTimelineOptions()}
-            />
-          }
-          <ShowBalanceButton
-            hideBalances={hideBalances}
-            onClick={onToggleHideBalances}
-          />
-        </BalanceRow>
-      </TopRow>
-      {!selectedAsset ? (
-        <WithHideBalancePlaceholder
-          size='big'
-          hideBalances={hideBalances}
-        >
-          <BalanceText>
-            {fullPortfolioFiatBalance !== ''
-              ? `${CurrencySymbols[defaultCurrencies.fiat]}${hoverBalance || fullPortfolioFiatBalance}`
-              : <LoadingSkeleton width={150} height={32} />
-            }
-          </BalanceText>
-        </WithHideBalancePlaceholder>
-      ) : (
-        <>
-          {!selectedAsset.isErc721 &&
-            <InfoColumn>
-              <AssetRow>
-                <AssetIconWithPlaceholder asset={selectedAsset} network={selectedAssetsNetwork} />
-                <AssetColumn>
-                  <AssetNameText>{selectedAsset.name}</AssetNameText>
-                  <NetworkDescription>{selectedAsset.symbol} on {selectedAssetsNetwork?.chainName ?? ''}</NetworkDescription>
-                </AssetColumn>
-              </AssetRow>
-              {/* <DetailText>{selectedAsset.name} {getLocale('braveWalletPrice')} ({selectedAsset.symbol})</DetailText> */}
-              <PriceRow>
-                <PriceText>{CurrencySymbols[defaultCurrencies.fiat]}{hoverPrice || (selectedAssetFiatPrice ? new Amount(selectedAssetFiatPrice.price).formatAsFiat() : 0.00)}</PriceText>
-                <PercentBubble isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}>
-                  <ArrowIcon isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false} />
-                  <PercentText>{selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange).toFixed(2) : 0.00}%</PercentText>
-                </PercentBubble>
-              </PriceRow>
-              <DetailText>
-                {
-                  selectedAssetCryptoPrice
-                    ? new Amount(selectedAssetCryptoPrice.price)
-                      .formatAsAsset(undefined, defaultCurrencies.crypto)
-                    : ''
-                }
-              </DetailText>
-            </InfoColumn>
-          }
-        </>
-      )}
-      {!selectedAsset?.isErc721 &&
-        <LineChart
-          isDown={selectedAsset && selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}
-          isAsset={!!selectedAsset}
-          priceData={selectedAsset ? selectedAssetPriceHistory : priceHistory}
-          onUpdateBalance={onUpdateBalance}
-          isLoading={selectedAsset ? isLoading : parseFloat(portfolioBalance) === 0 ? false : isFetchingPortfolioPriceHistory}
-          isDisabled={selectedAsset ? false : parseFloat(portfolioBalance) === 0}
-        />
-      }
-
+      <PortfolioTopSection
+        onChangeTimeline={onChangeTimeline}
+        defaultCurrencies={defaultCurrencies}
+        selectedAssetsNetwork={selectedAssetsNetwork}
+        networkList={networkList}
+        selectedTimeline={selectedTimeline}
+        selectedPortfolioTimeline={selectedPortfolioTimeline}
+        selectedAsset={selectedAsset}
+        selectedAssetFiatPrice={selectedAssetFiatPrice}
+        selectedAssetCryptoPrice={selectedAssetCryptoPrice}
+        selectedAssetPriceHistory={selectedAssetPriceHistory}
+        portfolioPriceHistory={portfolioPriceHistory}
+        portfolioBalance={portfolioBalance}
+        isLoading={isLoading}
+        isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
+        showToggleBalanceButton={isSupportedInBraveWallet}
+        onToggleHideBalances={onToggleHideBalances}
+        goBack={goBack}
+        hideBalances={hideBalances}
+      />
       {/* Temp Commented out until we have an API to get NFT MetaData */}
       {/* {selectedAsset?.isErc721 &&
         <NFTDetails
@@ -362,25 +255,35 @@ const Portfolio = (props: Props) => {
         />
       } */}
 
-      <AccountsAndTransactionsList
-        accounts={filteredAccountsByCoinType}
-        defaultCurrencies={defaultCurrencies}
-        formattedFullAssetBalance={formattedFullAssetBalance}
-        fullAssetFiatBalance={fullAssetFiatBalance}
-        selectedAsset={selectedAsset}
-        selectedAssetTransactions={selectedAssetTransactions}
-        selectedNetwork={selectedAssetsNetwork ?? selectedNetwork}
-        transactionSpotPrices={transactionSpotPrices}
-        userVisibleTokensInfo={userVisibleTokensInfo}
-        onClickAddAccount={onClickAddAccount}
-        onSelectAccount={onSelectAccount}
-        onSelectAsset={selectAsset}
-        onCancelTransaction={onCancelTransaction}
-        onRetryTransaction={onRetryTransaction}
-        onSpeedupTransaction={onSpeedupTransaction}
-        hideBalances={hideBalances}
-        networkList={networkList}
-      />
+      {isSupportedInBraveWallet
+        ? <AccountsAndTransactionsList
+            accounts={filteredAccountsByCoinType}
+            defaultCurrencies={defaultCurrencies}
+            formattedFullAssetBalance={formattedFullAssetBalance}
+            fullAssetFiatBalance={fullAssetFiatBalance}
+            selectedAsset={selectedAsset}
+            selectedAssetTransactions={selectedAssetTransactions}
+            selectedNetwork={selectedAssetsNetwork ?? selectedNetwork}
+            transactionSpotPrices={transactionSpotPrices}
+            userVisibleTokensInfo={userVisibleTokensInfo}
+            onClickAddAccount={onClickAddAccount}
+            onSelectAccount={onSelectAccount}
+            onSelectAsset={selectAsset}
+            onCancelTransaction={onCancelTransaction}
+            onRetryTransaction={onRetryTransaction}
+            onSpeedupTransaction={onSpeedupTransaction}
+            hideBalances={hideBalances}
+            networkList={networkList}
+          />
+        : <>
+            <AssetNotSupported>{getLocale('braveWalletAssetNotSupported')}</AssetNotSupported>
+          </>
+      }
+
+      {selectedCoinMarket &&
+        <AssetStats selectedCoinMarket={selectedCoinMarket}/>
+      }
+
       {!selectedAsset &&
         <TokenLists
           defaultCurrencies={defaultCurrencies}
@@ -408,6 +311,8 @@ const Portfolio = (props: Props) => {
           onUpdateVisibleAssets={onUpdateVisibleAssets}
         />
       }
+
+      <CoinGeckoText>{getLocale('braveWalletPoweredByCoinGecko')}</CoinGeckoText>
     </StyledWrapper>
   )
 }

@@ -20,7 +20,6 @@ import { BackButton, LoadingSkeleton, withPlaceholderIcon } from '../../../../..
 import {
   ChartControlBar,
   LineChart,
-  SelectNetworkDropdown,
   WithHideBalancePlaceholder
 } from '../../../../'
 
@@ -41,14 +40,15 @@ import {
   ArrowIcon,
   BalanceRow,
   ShowBalanceButton,
-  StyledWrapper
+  StyledWrapper,
+  NetworkDescription,
+  AssetColumn
 } from './style'
 
 export interface Props {
   onChangeTimeline: (path: BraveWallet.AssetPriceTimeframe) => void
-  onSelectNetwork: (network: BraveWallet.NetworkInfo) => () => void
   defaultCurrencies: DefaultCurrencies
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedAssetsNetwork: BraveWallet.NetworkInfo | undefined
   networkList: BraveWallet.NetworkInfo[]
   selectedTimeline: BraveWallet.AssetPriceTimeframe
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
@@ -60,8 +60,7 @@ export interface Props {
   portfolioBalance: string
   isLoading: boolean
   isFetchingPortfolioPriceHistory: boolean
-  hideBalances?: boolean
-  showNetworkSelector: boolean
+  hideBalances: boolean
   showNetworkDropdown?: boolean
   showToggleBalanceButton: boolean
   goBack: () => void
@@ -72,26 +71,20 @@ export interface Props {
 const PortfolioTopSection = (props: Props) => {
   const {
     defaultCurrencies,
-    selectedNetwork,
     portfolioPriceHistory,
+    selectedAssetsNetwork,
     selectedAssetPriceHistory,
     selectedAssetFiatPrice,
     selectedAssetCryptoPrice,
     selectedTimeline,
     selectedPortfolioTimeline,
-    networkList,
     selectedAsset,
     portfolioBalance,
     isLoading,
     isFetchingPortfolioPriceHistory,
     hideBalances,
-    showNetworkSelector,
-    showToggleBalanceButton,
-    showNetworkDropdown,
     goBack,
     onChangeTimeline,
-    onSelectNetwork,
-    toggleShowNetworkDropdown,
     onToggleHideBalances
   } = props
 
@@ -137,96 +130,84 @@ const PortfolioTopSection = (props: Props) => {
     return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
   }, [])
 
-  const onClickNetworkDropdown = () => {
-    if (toggleShowNetworkDropdown) {
-      toggleShowNetworkDropdown()
-    }
-  }
+  
 
   return (
     <StyledWrapper>
       <TopRow>
         <BalanceRow>
           {!selectedAsset ? (
-            <BalanceTitle>{getLocale('braveWalletBalance')}</BalanceTitle>
+              <BalanceTitle>{getLocale('braveWalletBalance')}</BalanceTitle>
           ) : (
-            <BackButton onSubmit={goBack} />
+              <BackButton onSubmit={goBack} />
           )}
-          {showNetworkSelector && !selectedAsset?.isErc721 &&
-            <SelectNetworkDropdown
-              onClick={onClickNetworkDropdown}
-              networkList={networkList}
-              showNetworkDropDown={showNetworkDropdown || false}
-              selectedNetwork={selectedNetwork}
-              onSelectNetwork={onSelectNetwork}
-            />
-          }
         </BalanceRow>
         <BalanceRow>
           {!selectedAsset?.isErc721 &&
-            <ChartControlBar
-              onSubmit={onChangeTimeline}
-              selectedTimeline={selectedAsset ? selectedTimeline : selectedPortfolioTimeline}
-              timelineOptions={ChartTimelineOptions()}
-            />
+              <ChartControlBar
+                  onSubmit={onChangeTimeline}
+                  selectedTimeline={selectedAsset ? selectedTimeline : selectedPortfolioTimeline}
+                  timelineOptions={ChartTimelineOptions()}
+              />
           }
-          {showToggleBalanceButton &&
-            <ShowBalanceButton
+          <ShowBalanceButton
               hideBalances={hideBalances}
               onClick={onToggleHideBalances}
-            />
-          }
+          />
         </BalanceRow>
       </TopRow>
       {!selectedAsset ? (
-        <WithHideBalancePlaceholder
-          size='big'
-          hideBalances={hideBalances || false}
-        >
-          <BalanceText>
-            {fullPortfolioFiatBalance !== ''
-              ? `${CurrencySymbols[defaultCurrencies.fiat]}${hoverBalance || fullPortfolioFiatBalance}`
-              : <LoadingSkeleton width={150} height={32} />
-            }
-          </BalanceText>
-        </WithHideBalancePlaceholder>
+          <WithHideBalancePlaceholder
+              size='big'
+              hideBalances={hideBalances}
+          >
+            <BalanceText>
+              {fullPortfolioFiatBalance !== ''
+                  ? `${CurrencySymbols[defaultCurrencies.fiat]}${hoverBalance || fullPortfolioFiatBalance}`
+                  : <LoadingSkeleton width={150} height={32} />
+              }
+            </BalanceText>
+          </WithHideBalancePlaceholder>
       ) : (
-        <>
-          {!selectedAsset.isErc721 &&
-            <InfoColumn>
-              <AssetRow>
-                <AssetIconWithPlaceholder asset={selectedAsset} network={selectedNetwork} />
-                <AssetNameText>{selectedAsset.name}</AssetNameText>
-              </AssetRow>
-              <DetailText>{selectedAsset.name} {getLocale('braveWalletPrice')} ({selectedAsset.symbol})</DetailText>
-              <PriceRow>
-                <PriceText>{CurrencySymbols[defaultCurrencies.fiat]}{hoverPrice || (selectedAssetFiatPrice ? new Amount(selectedAssetFiatPrice.price).formatAsFiat() : 0.00)}</PriceText>
-                <PercentBubble isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}>
-                  <ArrowIcon isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false} />
-                  <PercentText>{selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange).toFixed(2) : 0.00}%</PercentText>
-                </PercentBubble>
-              </PriceRow>
-              <DetailText>
-                {
-                  selectedAssetCryptoPrice
-                    ? new Amount(selectedAssetCryptoPrice.price)
-                      .formatAsAsset(undefined, defaultCurrencies.crypto)
-                    : ''
-                }
-              </DetailText>
-            </InfoColumn>
-          }
-        </>
+          <>
+            {!selectedAsset.isErc721 &&
+                <InfoColumn>
+                  <AssetRow>
+                    <AssetIconWithPlaceholder asset={selectedAsset} network={selectedAssetsNetwork} />
+                    <AssetColumn>
+                      <AssetNameText>{selectedAsset.name}</AssetNameText>
+                      <NetworkDescription>{selectedAsset.symbol} on {selectedAssetsNetwork?.chainName ?? ''}</NetworkDescription>
+                    </AssetColumn>
+                  </AssetRow>
+                  {/* <DetailText>{selectedAsset.name} {getLocale('braveWalletPrice')} ({selectedAsset.symbol})</DetailText> */}
+                  <PriceRow>
+                    <PriceText>{CurrencySymbols[defaultCurrencies.fiat]}{hoverPrice || (selectedAssetFiatPrice ? new Amount(selectedAssetFiatPrice.price).formatAsFiat() : 0.00)}</PriceText>
+                    <PercentBubble isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}>
+                      <ArrowIcon isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false} />
+                      <PercentText>{selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange).toFixed(2) : 0.00}%</PercentText>
+                    </PercentBubble>
+                  </PriceRow>
+                  <DetailText>
+                    {
+                      selectedAssetCryptoPrice
+                          ? new Amount(selectedAssetCryptoPrice.price)
+                              .formatAsAsset(undefined, defaultCurrencies.crypto)
+                          : ''
+                    }
+                  </DetailText>
+                </InfoColumn>
+            }
+          </>
       )}
       {!selectedAsset?.isErc721 &&
-        <LineChart
-          isDown={selectedAsset && selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}
-          isAsset={!!selectedAsset}
-          priceData={selectedAsset ? selectedAssetPriceHistory : priceHistory}
-          onUpdateBalance={onUpdateBalance}
-          isLoading={selectedAsset ? isLoading : parseFloat(portfolioBalance) === 0 ? false : isFetchingPortfolioPriceHistory}
-          isDisabled={selectedAsset ? false : parseFloat(portfolioBalance) === 0}
-        />
+          <LineChart
+              isDown={selectedAsset && selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}
+              isAsset={!!selectedAsset}
+              priceData={selectedAsset ? selectedAssetPriceHistory : priceHistory}
+              onUpdateBalance={onUpdateBalance}
+              isLoading={selectedAsset ? isLoading : parseFloat(portfolioBalance) === 0 ? false : isFetchingPortfolioPriceHistory}
+              isDisabled={selectedAsset ? false : parseFloat(portfolioBalance) === 0}
+          />
       }
     </StyledWrapper>
   )

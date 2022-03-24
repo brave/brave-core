@@ -395,7 +395,6 @@ const CryptoView = (props: Props) => {
           onFetchCoinMarkets={onFetchCoinMarkets}
           onSelectAsset={onSelectAsset}
           onChangeTimeline={onChangeTimeline}
-          onSelectNetwork={onSelectNetwork}
           toggleNav={toggleNav}
           onSelectAccount={onSelectAccount}
           onClickAddAccount={onClickAddAccount}

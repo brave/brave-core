@@ -87,8 +87,7 @@ const defaultState: WalletState = {
     crypto: ''
   },
   transactionProviderErrorRegistry: {},
-  defaultNetworks: [] as BraveWallet.NetworkInfo[]
-  },
+  defaultNetworks: [] as BraveWallet.NetworkInfo[],
   isLoadingCoinMarketData: true,
   coinMarketData: []
 }

@@ -24,8 +24,7 @@ import {
   AddSitePermissionPayloadType,
   UpdateUnapprovedTransactionSpendAllowanceType,
   UpdateUnapprovedTransactionNonceType,
-  SetTransactionProviderErrorType
-  UpdateUnapprovedTransactionNonceType,
+  SetTransactionProviderErrorType,
   GetCoinMarketPayload,
   GetCoinMarketsResponse
 } from '../constants/action_types'

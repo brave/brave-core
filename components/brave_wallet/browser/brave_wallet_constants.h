@@ -643,6 +643,12 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_MARKET_DATA_VOLUME_COLUMN},
     {"braveWalletMarketDataNoAssetsFound",
      IDS_BRAVE_WALLET_MARKET_DATA_NO_ASSETS_FOUND},
+    {"braveWalletMarketDataDetailRank", IDS_BRAVE_WALLET_MARKET_DATA_DETAIL_RANK},
+    {"braveWalletMarketDataDetailVolume", IDS_BRAVE_WALLET_MARKET_DATA_DETAIL_VOLUME},
+    {"braveWalletMarketDataDetailMarketCap", IDS_BRAVE_WALLET_MARKET_DATA_DETAIL_MARKET_CAP},
+    {"braveWalletMarketDataDetailWebsite", IDS_BRAVE_WALLET_MARKET_DATA_DETAIL_WEBSITE},
+    {"braveWalletMarketDataDetailInformation", IDS_BRAVE_WALLET_MARKET_DATA_DETAIL_INFORMATION},
+    {"braveWalletAssetNotSupported", IDS_BRAVE_WALLET_ASSET_NOT_SUPPORTED},
     {"braveWalletNotValidFilAddress",
      IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS}};
 
