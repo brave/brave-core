@@ -25,17 +25,10 @@ class BraveMainDelegate : public ChromeMainDelegate {
 
  protected:
   // content::ContentMainDelegate implementation:
-  bool BasicStartupComplete(int* exit_code) override;
-
   content::ContentBrowserClient* CreateContentBrowserClient() override;
   content::ContentRendererClient* CreateContentRendererClient() override;
   content::ContentUtilityClient* CreateContentUtilityClient() override;
   void PreSandboxStartup() override;
-
- private:
-#if BUILDFLAG(IS_ANDROID)
-  void AdjustSyncServiceUrlForAndroid(std::string* brave_sync_service_url);
-#endif  // BUILDFLAG(IS_ANDROID))
 };
 
 #endif  // BRAVE_APP_BRAVE_MAIN_DELEGATE_H_

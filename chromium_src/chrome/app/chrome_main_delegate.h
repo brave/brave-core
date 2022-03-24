@@ -8,9 +8,17 @@
 
 #include "brave/common/brave_content_client.h"
 #include "chrome/common/chrome_content_client.h"
+#include "content/public/app/content_main_delegate.h"
 
 #define ChromeContentClient BraveContentClient
+
+#define BasicStartupComplete                         \
+  BasicStartupComplete_ChromiumImpl(int* exit_code); \
+  bool BasicStartupComplete
+
 #include "src/chrome/app/chrome_main_delegate.h"
+
+#undef BasicStartupComplete
 #undef ChromeContentClient
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_APP_CHROME_MAIN_DELEGATE_H_

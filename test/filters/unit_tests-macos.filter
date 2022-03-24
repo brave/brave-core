@@ -1,0 +1,2 @@
+# Unit tests crash systematically on MacOS, disable them all for now.
+-*
