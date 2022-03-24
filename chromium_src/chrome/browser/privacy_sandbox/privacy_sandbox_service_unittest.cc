@@ -30,6 +30,7 @@
 #include "components/sync/base/user_selectable_type.h"
 #include "components/sync/driver/test_sync_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/interest_group_manager.h"
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_task_environment.h"
@@ -72,7 +73,7 @@ class PrivacySandboxServiceTest : public testing::Test {
         CookieSettingsFactory::GetForProfile(profile()).get(),
         profile()->GetPrefs(), policy_service(), sync_service(),
         identity_test_env()->identity_manager(), test_interest_group_manager(),
-        profile_metrics::BrowserProfileType::kRegular);
+        profile_metrics::BrowserProfileType::kRegular, browsing_data_remover());
   }
 
   virtual void InitializePrefsBeforeStart() {}
@@ -99,6 +100,9 @@ class PrivacySandboxServiceTest : public testing::Test {
   }
   TestInterestGroupManager* test_interest_group_manager() {
     return &test_interest_group_manager_;
+  }
+  content::BrowsingDataRemover* browsing_data_remover() {
+    return profile()->GetBrowsingDataRemover();
   }
 
  private:
