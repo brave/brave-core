@@ -974,6 +974,7 @@ public class Utils {
         eth.contractAddress = "";
         eth.logo = "eth.png";
         eth.decimals = 18;
+        eth.chainId = "";
         return eth;
     }
 

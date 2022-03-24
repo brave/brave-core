@@ -250,6 +250,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                             token.isErc721 = false;
                             token.symbol = tokenSymbolEdit.getText().toString();
                             token.decimals = 18;
+                            token.chainId = mChainId;
                             try {
                                 token.decimals =
                                         Integer.valueOf(tokenDecimalsEdit.getText().toString());
