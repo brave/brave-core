@@ -11,6 +11,7 @@ namespace media {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kLiveCaption, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kEnableTabMuting, base::FEATURE_ENABLED_BY_DEFAULT},
 }});
 
 }  // namespace media
