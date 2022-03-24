@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.brave_wallet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
 
 import androidx.test.filters.SmallTest;
 
@@ -15,6 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
@@ -214,5 +216,36 @@ public class BraveWalletUtilsTest {
                 "0xad6d458402f60fd3bd25163575031acdce07538d");
         assertEquals(
                 Utils.getRopstenContractAddress("0xdef1c0ded9bec7f1a1670819833240f027b25eff"), "");
+    }
+
+    @Test
+    @SmallTest
+    public void validateBlockchainTokenTest() {
+        BlockchainToken testToken = new BlockchainToken();
+        java.lang.reflect.Field[] fields = testToken.getClass().getDeclaredFields();
+        for (java.lang.reflect.Field f : fields) {
+            try {
+                java.lang.Class t = f.getType();
+                java.lang.Object v = f.get(testToken);
+                if (!t.isPrimitive()) {
+                    String varName = f.getName();
+                    if (varName.equals("contractAddress") || varName.equals("name")
+                            || varName.equals("logo") || varName.equals("symbol")
+                            || varName.equals("chainId")) {
+                        continue;
+                    }
+                    if (v == null) {
+                        String message = "Check that " + varName + " is initialized everywhere "
+                                + "in Java files, where BlockchainToken object is created . It "
+                                + "could be safely added to the above if to skip that var on checks "
+                                + "after that.";
+                        fail(message);
+                    }
+                }
+            } catch (Exception exc) {
+                // Exception appears on private field members. We just skip them as we are
+                // interested in public members of a mojom structure
+            }
+        }
     }
 }
