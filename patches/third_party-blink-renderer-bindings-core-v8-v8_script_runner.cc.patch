@@ -72,8 +72,8 @@ index 43e2ca14dde26828a13251413d7d966e893dab34..2d2c95bda46835e607540da8393c5a87
 +      {
 +        ScriptSourceLocationType script_location = source.SourceLocationType();
 +        if (script_location != ScriptSourceLocationType::kInspector) {
-+          ::brave_page_graph::PageGraph* page_graph = window->GetFrame()->GetDocument()
-+            ->GetPageGraph();
++          ::brave_page_graph::PageGraph* page_graph =
++                  ::brave_page_graph::PageGraph::GetFromExecutionContext(*execution_context);
 +          if (page_graph != nullptr) {
 +            const int script_id = script->GetUnboundScript()->GetId();
 +            if (script_location ==
