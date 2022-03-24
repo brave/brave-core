@@ -445,25 +445,13 @@ void BraveVpnService::FetchRegionData(bool background_fetch) {
   if (background_fetch && !is_purchased_user())
     return;
 
-  if (background_fetch) {
-    VLOG(2) << __func__ << " : Start fetching region data in background";
-    // Unretained is safe here becasue this class owns request helper.
-    GetAllServerRegions(base::BindOnce(&BraveVpnService::OnFetchRegionList,
-                                       base::Unretained(this), true));
-    return;
-  }
+  VLOG(2) << __func__
+          << (background_fetch ? " : Start fetching region data in background"
+                               : " : Start fetching region data");
 
-  LoadCachedSelectedRegion();
-  LoadCachedRegionData();
-
-  if (!regions_.empty()) {
-    SetPurchasedState(PurchasedState::PURCHASED);
-  }
-
-  VLOG(2) << __func__ << " : Start fetching region data";
   // Unretained is safe here becasue this class owns request helper.
   GetAllServerRegions(base::BindOnce(&BraveVpnService::OnFetchRegionList,
-                                     base::Unretained(this), false));
+                                     base::Unretained(this), background_fetch));
 }
 
 void BraveVpnService::LoadCachedRegionData() {
@@ -535,8 +523,8 @@ void BraveVpnService::OnFetchRegionList(bool background_fetch,
                                         const std::string& region_list,
                                         bool success) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   // Don't update purchased state during the background fetching.
+
   if (!background_fetch && !success) {
     VLOG(2) << "Failed to get region list";
     SetPurchasedState(PurchasedState::FAILED);
@@ -1056,12 +1044,21 @@ void BraveVpnService::LoadPurchasedState() {
 
   SetPurchasedState(PurchasedState::LOADING);
 
+  LoadCachedSelectedRegion();
+  LoadCachedRegionData();
+
 #if !defined(OFFICIAL_BUILD) && !BUILDFLAG(IS_ANDROID)
   auto* cmd = base::CommandLine::ForCurrentProcess();
   if (cmd->HasSwitch(brave_vpn::switches::kBraveVPNTestMonthlyPass)) {
     skus_credential_ =
         cmd->GetSwitchValueASCII(brave_vpn::switches::kBraveVPNTestMonthlyPass);
-    FetchRegionData(false);
+    if (!regions_.empty()) {
+      SetPurchasedState(PurchasedState::PURCHASED);
+    } else {
+      FetchRegionData(false);
+    }
+
+    ScheduleBackgroundRegionDataFetch();
     GetBraveVPNConnectionAPI()->CheckConnection(kBraveVPNEntryName);
     return;
   }
@@ -1151,7 +1148,13 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
     return;
   }
 
-  FetchRegionData(false);
+  // Only fetch when we don't have cache.
+  if (!regions_.empty()) {
+    SetPurchasedState(PurchasedState::PURCHASED);
+  } else {
+    FetchRegionData(false);
+  }
+
   ScheduleBackgroundRegionDataFetch();
   GetBraveVPNConnectionAPI()->CheckConnection(kBraveVPNEntryName);
 }
