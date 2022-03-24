@@ -117,7 +117,7 @@ bool ParseGetLatestBlockhash(const std::string& json, std::string* hash) {
     return false;
 
   auto* hash_ptr = value->FindStringKey("blockhash");
-  if (!hash_ptr)
+  if (!hash_ptr || hash_ptr->empty())
     return false;
   *hash = *hash_ptr;
 
@@ -236,6 +236,16 @@ bool ParseGetAccountInfo(const std::string& json,
   *account_info_out = account_info;
 
   return true;
+}
+
+bool ParseGetFeeForMessage(const std::string& json, uint64_t* fee) {
+  DCHECK(fee);
+
+  base::Value result;
+  if (!ParseResult(json, &result) || !result.is_dict())
+    return false;
+
+  return GetUint64FromDictValue(result, "value", true, fee);
 }
 
 }  // namespace solana

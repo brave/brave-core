@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/base64.h"
 #include "base/bind.h"
 #include "base/environment.h"
 #include "base/json/json_writer.h"
@@ -1801,6 +1802,48 @@ void JsonRpcService::OnGetSolanaAccountInfo(
 
   std::move(callback).Run(account_info, mojom::SolanaProviderError::kSuccess,
                           "");
+}
+
+void JsonRpcService::GetSolanaFeeForMessage(
+    const std::string& message,
+    GetSolanaFeeForMessageCallback callback) {
+  if (message.empty() || !base::Base64Decode(message)) {
+    std::move(callback).Run(
+        0, mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetSolanaFeeForMessage,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(solana::getFeeForMessage(message), true,
+                  network_urls_[mojom::CoinType::SOL],
+                  std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetSolanaFeeForMessage(
+    GetSolanaFeeForMessageCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        0, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  uint64_t fee;
+  if (!solana::ParseGetFeeForMessage(body, &fee)) {
+    mojom::SolanaProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    std::move(callback).Run(0, error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(fee, mojom::SolanaProviderError::kSuccess, "");
 }
 
 }  // namespace brave_wallet

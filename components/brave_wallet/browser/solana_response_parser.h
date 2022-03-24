@@ -30,6 +30,7 @@ bool ParseGetSignatureStatuses(
     std::vector<absl::optional<SolanaSignatureStatus>>* statuses);
 bool ParseGetAccountInfo(const std::string& json,
                          absl::optional<SolanaAccountInfo>* account_info_out);
+bool ParseGetFeeForMessage(const std::string& json, uint64_t* fee);
 
 }  // namespace solana
 

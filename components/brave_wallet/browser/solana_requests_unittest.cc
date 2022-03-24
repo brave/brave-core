@@ -68,6 +68,12 @@ TEST(SolanaRequestsUnitTest, getAccountInfo) {
       R"({"id":1,"jsonrpc":"2.0","method":"getAccountInfo","params":["pubkey",{"encoding":"base64"}]})");
 }
 
+TEST(SolanaRequestsUnitTest, getFeeForMessage) {
+  ASSERT_EQ(
+      getFeeForMessage("message"),
+      R"({"id":1,"jsonrpc":"2.0","method":"getFeeForMessage","params":["message"]})");
+}
+
 }  // namespace solana
 
 }  // namespace brave_wallet

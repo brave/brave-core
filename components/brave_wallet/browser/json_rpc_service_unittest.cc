@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/callback.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -568,6 +569,23 @@ class JsonRpcServiceUnitTest : public testing::Test {
               EXPECT_EQ(error_message, expected_error_message);
               run_loop.Quit();
             }));
+    run_loop.Run();
+  }
+
+  void TestGetSolanaFeeForMessage(const std::string& message,
+                                  uint64_t expected_tx_fee,
+                                  mojom::SolanaProviderError expected_error,
+                                  const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetSolanaFeeForMessage(
+        message, base::BindLambdaForTesting(
+                     [&](uint64_t tx_fee, mojom::SolanaProviderError error,
+                         const std::string& error_message) {
+                       EXPECT_EQ(tx_fee, expected_tx_fee);
+                       EXPECT_EQ(error, expected_error);
+                       EXPECT_EQ(error_message, expected_error_message);
+                       run_loop.Quit();
+                     }));
     run_loop.Run();
   }
 
@@ -2470,6 +2488,66 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaAccountInfo) {
   TestGetSolanaAccountInfo(absl::nullopt,
                            mojom::SolanaProviderError::kInternalError,
                            l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetSolanaFeeForMessage) {
+  std::string json = R"(
+    {
+      "jsonrpc":"2.0","id":1,
+      "result": {
+        "context":{"slot":123065869},
+        "value": 12345
+      }
+    }
+  )";
+  SetInterceptor("getFeeForMessage", "", json);
+  std::string base64_encoded_string;
+  base::Base64Encode("test", &base64_encoded_string);
+
+  TestGetSolanaFeeForMessage(base64_encoded_string, 12345,
+                             mojom::SolanaProviderError::kSuccess, "");
+  std::string base58_encoded_string = "JvSKSz9YHfqEQ8j";
+  // Message has to be base64 encoded string and non-empty.
+  TestGetSolanaFeeForMessage(
+      "", 0, mojom::SolanaProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  TestGetSolanaFeeForMessage(
+      base58_encoded_string, 0, mojom::SolanaProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // value can be null for an account not on chain.
+  SetInterceptor("getFeeForMessage", "",
+                 R"({
+                      "jsonrpc":"2.0",
+                      "result":{
+                      "context":{"slot":123121238},"value":null},"id":1
+                    })");
+  TestGetSolanaFeeForMessage(base64_encoded_string, 0,
+                             mojom::SolanaProviderError::kSuccess, "");
+
+  // Response parsing error
+  SetInterceptor("getFeeForMessage", "",
+                 R"({"jsonrpc":"2.0","id":1,"result":"0"})");
+  TestGetSolanaFeeForMessage(
+      base64_encoded_string, 0, mojom::SolanaProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // JSON RPC error
+  SetInterceptor("getFeeForMessage", "",
+                 R"({
+                      "jsonrpc":"2.0","id":1,
+                      "error":
+                        {"code":-32601, "message": "method does not exist"}
+                    })");
+  TestGetSolanaFeeForMessage(base64_encoded_string, 0,
+                             mojom::SolanaProviderError::kMethodNotFound,
+                             "method does not exist");
+
+  // HTTP error
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetSolanaFeeForMessage(
+      base64_encoded_string, 0, mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 }  // namespace brave_wallet

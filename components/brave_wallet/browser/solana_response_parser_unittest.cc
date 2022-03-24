@@ -102,6 +102,13 @@ TEST(SolanaResponseParserUnitTest, ParseGetLatestBlockhash) {
   std::string hash;
   EXPECT_TRUE(ParseGetLatestBlockhash(json, &hash));
   EXPECT_EQ(hash, "EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N");
+
+  std::vector<std::string> invalid_jsons = {
+      R"({"jsonrpc":2.0, "id":1})", R"({"jsonrpc":2.0, "id":1, "result":{}})",
+      R"({"jsonrpc":2.0, "id":1, "result":{"value":{}}})",
+      R"({"jsonrpc":2.0, "id":1, "result":{"value":{"blockhash":""}}})"};
+  for (const auto& invalid_json : invalid_jsons)
+    EXPECT_FALSE(ParseGetLatestBlockhash(invalid_json, &hash)) << invalid_json;
 }
 
 TEST(SolanaResponseParserUnitTest, ParseGetSignatureStatuses) {
@@ -288,6 +295,25 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
   EXPECT_FALSE(ParseGetAccountInfo(json, &info));
 
   EXPECT_DCHECK_DEATH(ParseGetAccountInfo(json, nullptr));
+}
+
+TEST(SolanaResponseParserUnitTest, ParseGetFeeForMessage) {
+  uint64_t fee = 0u;
+  std::string json = R"({"jsonrpc":2.0, "id":1, "result":{"value":12345}})";
+  EXPECT_TRUE(ParseGetFeeForMessage(json, &fee));
+  EXPECT_EQ(fee, 12345u);
+
+  EXPECT_TRUE(ParseGetFeeForMessage(
+      R"({"jsonrpc":2.0, "id":1, "result":{"value":null}})", &fee));
+  EXPECT_EQ(fee, 0u);
+
+  std::vector<std::string> invalid_jsons = {
+      R"({"jsonrpc":2.0, "id":1})", R"({"jsonrpc":2.0, "id":1, "result":{}})",
+      R"({"jsonrpc":2.0, "id":1, "result":{"value":{}}})"};
+  for (const auto& invalid_json : invalid_jsons)
+    EXPECT_FALSE(ParseGetFeeForMessage(invalid_json, &fee)) << invalid_json;
+
+  EXPECT_DCHECK_DEATH(ParseGetFeeForMessage(json, nullptr));
 }
 
 }  // namespace solana
