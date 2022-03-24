@@ -116,16 +116,21 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
   static bool sTriedCreatingSharedSparkleGlue = false;
   static SparkleGlue* shared = nil;
 
-  if (brave::UpdateEnabled() && !sTriedCreatingSharedSparkleGlue) {
+  bool updateEnabled = brave::UpdateEnabled();
+  if (updateEnabled && !sTriedCreatingSharedSparkleGlue) {
     sTriedCreatingSharedSparkleGlue = true;
 
     shared = [[SparkleGlue alloc] init];
     [shared loadParameters];
-    if (![shared loadSparkleFramework]) {
+    if ([shared loadSparkleFramework]) {
+      VLOG(0) << "brave update: Loaded sparkle framework";
+    } else {
       VLOG(0) << "brave update: Failed to load sparkle framework";
       [shared release];
       shared = nil;
     }
+  } else if (!updateEnabled) {
+    VLOG(0) << "brave update is disabled";
   }
   return shared;
 }
