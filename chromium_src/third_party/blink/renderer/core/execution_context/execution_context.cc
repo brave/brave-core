@@ -6,7 +6,7 @@
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 
 #include "base/command_line.h"
-#include "base/containers/fixed_flat_set.h"
+#include "base/sequence_checker.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
@@ -139,13 +139,6 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
                sizeof session_key_));
   CHECK(h.Sign(domain, domain_key_, sizeof domain_key_));
-  if (kRestrictFontFamilies) {
-    std::mt19937_64 prng = MakePseudoRandomGenerator();
-    for (auto it : kAdditionalFontFamilies) {
-      if (prng() % 2 == 1)
-        additional_font_families_.insert(it);
-    }
-  }
   farbling_enabled_ = true;
 }
 
@@ -277,16 +270,18 @@ WTF::String BraveSessionCache::FarbledUserAgent(WTF::String real_user_agent) {
 bool BraveSessionCache::AllowFontFamily(
     blink::WebContentSettingsClient* settings,
     const AtomicString& family_name) {
-  if (!kRestrictFontFamilies || !farbling_enabled_ || !settings)
+  if (!kRestrictFontFamiliesOnThisPlatform || !farbling_enabled_ || !settings)
     return true;
   switch (settings->GetBraveFarblingLevel()) {
     case BraveFarblingLevel::OFF:
       break;
     case BraveFarblingLevel::BALANCED:
     case BraveFarblingLevel::MAXIMUM: {
-      return kAllowedFontFamilies.contains(family_name.Utf8()) ||
-             additional_font_families_.contains(family_name.Utf8());
-      break;
+      if (kAllowedFontFamilies.contains(family_name.Utf8()))
+        return true;
+      std::mt19937_64 prng = MakePseudoRandomGenerator();
+      prng.discard(family_name.Impl()->GetHash() % 16);
+      return ((prng() % 2) == 0);
     }
     default:
       NOTREACHED();

@@ -9,7 +9,5 @@ source_set("renderer") {
     "brave_font_whitelist.h",
   ]
 
-  deps = [
-    "//brave/components/brave_drm:brave_drm_blink",
-  ]
+  deps = [ "//brave/components/brave_drm:brave_drm_blink" ]
 }

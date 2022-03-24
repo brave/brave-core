@@ -11,7 +11,6 @@
 #include <random>
 
 #include "base/callback.h"
-#include "base/containers/flat_set.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 
 namespace blink {
@@ -60,7 +59,6 @@ class CORE_EXPORT BraveSessionCache final
   bool farbling_enabled_;
   uint64_t session_key_;
   uint8_t domain_key_[32];
-  base::flat_set<base::StringPiece> additional_font_families_;
 
   void PerturbPixelsInternal(const unsigned char* data, size_t size);
 };
