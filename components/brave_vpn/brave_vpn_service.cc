@@ -618,16 +618,12 @@ void BraveVpnService::ParseAndCacheDeviceRegionName(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(timezones_value.is_list());
 
-  if (!timezones_value.is_list()) {
-    SetFallbackDeviceRegion();
+  if (!timezones_value.is_list())
     return;
-  }
 
   const std::string current_time_zone = GetCurrentTimeZone();
-  if (current_time_zone.empty()) {
-    SetFallbackDeviceRegion();
+  if (current_time_zone.empty())
     return;
-  }
 
   for (const auto& timezones : timezones_value.GetList()) {
     DCHECK(timezones.is_dict());
@@ -653,8 +649,6 @@ void BraveVpnService::ParseAndCacheDeviceRegionName(
       }
     }
   }
-
-  SetFallbackDeviceRegion();
 }
 
 void BraveVpnService::SetDeviceRegion(const std::string& name) {
