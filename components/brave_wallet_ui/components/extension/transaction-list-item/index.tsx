@@ -13,6 +13,7 @@ import { toProperCase } from '../../../utils/string-utils'
 import { getTransactionStatusString } from '../../../utils/tx-utils'
 import { formatDateAsRelative } from '../../../utils/datetime-utils'
 import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
+import Amount from '../../../utils/amount'
 
 // Hooks
 import { useTransactionParser } from '../../../common/hooks'
@@ -21,23 +22,22 @@ import { SwapExchangeProxy } from '../../../common/hooks/address-labels'
 // Styled Components
 import {
   DetailTextDarkBold,
-  DetailTextDark,
-  DetailTextLight
+  DetailTextDark
 } from '../shared-panel-styles'
 
 import { StatusBubble } from '../../shared/style'
 
 import {
-  ArrowIcon,
-  BalanceColumn,
   DetailColumn,
-  DetailRow,
   FromCircle,
+  StatusAndTimeRow,
   StatusRow,
   StyledWrapper,
   ToCircle,
   TransactionDetailRow
 } from './style'
+import { reduceAddress } from '../../../utils/reduce-address'
+import { TransactionIntentDescription } from './transaction-intent-description'
 
 export interface Props {
   selectedNetwork: BraveWallet.NetworkInfo
@@ -49,6 +49,8 @@ export interface Props {
   defaultCurrencies: DefaultCurrencies
   onSelectTransaction: (transaction: BraveWallet.TransactionInfo) => void
 }
+
+const { ERC20Approve, ERC721TransferFrom, ERC721SafeTransferFrom } = BraveWallet.TransactionType
 
 const TransactionsListItem = (props: Props) => {
   const {
@@ -79,132 +81,88 @@ const TransactionsListItem = (props: Props) => {
     onSelectTransaction(transaction)
   }
 
-  const transactionIntentLocale = React.useMemo((): string => {
-    switch (true) {
-      case transaction.txType === BraveWallet.TransactionType.ERC20Approve: {
-        const text = getLocale('braveWalletApprovalTransactionIntent')
-        return `${toProperCase(text)} ${transactionDetails.symbol}`
-      }
-
-      // Detect sending to 0x Exchange Proxy
-      case transactionDetails.isSwap: {
-        return getLocale('braveWalletSwap')
-      }
-
-      case transaction.txType === BraveWallet.TransactionType.ETHSend:
-      case transaction.txType === BraveWallet.TransactionType.ERC20Transfer:
-      case transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom:
-      case transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom:
-      default: {
-        const text = getLocale('braveWalletTransactionSent')
-        const erc721ID = transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
-          transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
-          ? ' ' + transactionDetails.erc721TokenId
-          : ''
-        return `${toProperCase(text)} ${transactionDetails.symbol}${erc721ID}`
-      }
+  const transactionIntentLocale = React.useMemo((): React.ReactNode => {
+    // approval
+    if (transaction.txType === ERC20Approve) {
+      return toProperCase(getLocale('braveWalletApprovalTransactionIntent'))
     }
+
+    // Detect sending to 0x Exchange Proxy
+    if (transactionDetails.isSwap) {
+      return getLocale('braveWalletSwap')
+    }
+
+    // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom, ERC721SafeTransferFrom].includes(transaction.txType)
+    let erc721ID = transaction.txType === ERC721TransferFrom || transaction.txType === ERC721SafeTransferFrom
+      ? ' ' + transactionDetails.erc721TokenId
+      : ''
+    return (
+      <DetailTextDark>
+        {`${
+            toProperCase(getLocale('braveWalletTransactionSent'))} ${
+            transactionDetails.fiatValue.formatAsFiat(defaultCurrencies.fiat) || '...'
+          } (${
+            transactionDetails.formattedNativeCurrencyTotal || '...'
+          }${
+            erc721ID
+          })`}
+      </DetailTextDark>
+    )
   }, [transaction])
 
   const transactionIntentDescription = React.useMemo(() => {
-    switch (true) {
-      case transaction.txType === BraveWallet.TransactionType.ERC20Approve: {
-        return (
-          <>
-            <DetailRow>
-              <DetailTextLight>
-                {transactionDetails.value}{' '}
-                {transactionDetails.symbol}
-              </DetailTextLight>
-            </DetailRow>
-            <DetailRow>
-              <ArrowIcon />
-              <DetailTextLight>
-                {transactionDetails.approvalTargetLabel}
-              </DetailTextLight>
-            </DetailRow>
+    // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom, ERC721SafeTransferFrom].includes(transaction.txType)
+    let from = `${reduceAddress(transactionDetails.sender)} `
+    let to = reduceAddress(transactionDetails.recipient)
+    const wrapFromText = transaction.txType === ERC20Approve || transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy
 
-          </>
-        )
-      }
-
+    if (transaction.txType === ERC20Approve) {
+      // Approval
+      from = transactionDetails.isApprovalUnlimited
+        ? `${getLocale('braveWalletTransactionApproveUnlimited')} ${transactionDetails.symbol}`
+        : new Amount(transactionDetails.value).formatAsAsset(undefined, transactionDetails.symbol)
+      to = transactionDetails.approvalTargetLabel || ''
+    } else if (transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy) {
+      // Brave Swap
       // FIXME: Add as new TransactionType on the service side.
-      case transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy: {
-        return (
-          <>
-            <DetailRow>
-              <DetailTextLight>
-                {transactionDetails.value}{' '}
-                {transactionDetails.symbol}
-              </DetailTextLight>
-            </DetailRow>
-            <DetailRow>
-              <ArrowIcon />
-              <DetailTextLight>
-                {transactionDetails.recipientLabel}
-              </DetailTextLight>
-            </DetailRow>
-          </>
-        )
-      }
-
-      case transaction.txType === BraveWallet.TransactionType.ETHSend:
-      case transaction.txType === BraveWallet.TransactionType.ERC20Transfer:
-      case transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom:
-      case transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom:
-      default: {
-        return (
-          <>
-            <DetailRow>
-              <DetailTextLight>
-                {transactionDetails.senderLabel}{' '}
-              </DetailTextLight>
-            </DetailRow>
-            <DetailRow>
-              <ArrowIcon />
-              <DetailTextLight>
-                {transactionDetails.recipientLabel}
-              </DetailTextLight>
-            </DetailRow>
-          </>
-        )
-      }
+      from = `${transactionDetails.value} ${transactionDetails.symbol}`
+      to = transactionDetails.recipientLabel
     }
+
+    return <TransactionIntentDescription from={from} to={to} wrapFrom={wrapFromText} />
   }, [transactionDetails])
 
   return (
     <StyledWrapper onClick={onClickTransaction}>
-      <TransactionDetailRow>
-        <FromCircle orb={fromOrb} />
-        <ToCircle orb={toOrb} />
-        <DetailColumn>
-          <DetailRow>
-            <DetailTextDark>
-              {transactionIntentLocale}
-            </DetailTextDark>&nbsp;
-            <DetailTextLight>-</DetailTextLight>&nbsp;
-            <DetailTextDarkBold>{formatDateAsRelative(mojoTimeDeltaToJSDate(transactionDetails.createdTime))}</DetailTextDarkBold>
-          </DetailRow>
-          {transactionIntentDescription}
-        </DetailColumn>
-      </TransactionDetailRow>
-      <DetailRow>
-        <BalanceColumn>
-          <DetailTextDark>
-            {
-              transactionDetails.fiatValue
-                .formatAsFiat(defaultCurrencies.fiat)
-            }
-          </DetailTextDark>
-          <DetailTextLight>{transactionDetails.formattedNativeCurrencyTotal}</DetailTextLight>
-          <StatusRow>
-            <StatusBubble status={transactionDetails.status} />
-            <DetailTextDarkBold>
-              {getTransactionStatusString(transactionDetails.status)}
-            </DetailTextDarkBold>
-          </StatusRow>
-        </BalanceColumn>
-      </DetailRow>
+      <DetailColumn>
+        <TransactionDetailRow>
+          <DetailColumn>
+            <FromCircle orb={fromOrb} />
+            <ToCircle orb={toOrb} />
+          </DetailColumn>
+
+          <DetailColumn>
+            <span>
+              <DetailTextDark>{transactionIntentLocale}</DetailTextDark>&nbsp;
+              {transactionIntentDescription}
+            </span>
+            <StatusAndTimeRow>
+              <DetailTextDarkBold>
+                {formatDateAsRelative(mojoTimeDeltaToJSDate(transactionDetails.createdTime))}
+              </DetailTextDarkBold>
+
+              <StatusRow>
+                <StatusBubble status={transactionDetails.status} />
+                <DetailTextDarkBold>
+                  {getTransactionStatusString(transactionDetails.status)}
+                </DetailTextDarkBold>
+              </StatusRow>
+            </StatusAndTimeRow>
+          </DetailColumn>
+
+        </TransactionDetailRow>
+      </DetailColumn>
+
     </StyledWrapper>
   )
 }

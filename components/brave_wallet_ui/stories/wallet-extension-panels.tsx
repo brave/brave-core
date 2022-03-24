@@ -398,23 +398,28 @@ _ConnectWithSite.story = {
   name: 'Connect With Site'
 }
 
-export const _ConnectedPanel = (args: { locked: boolean }) => {
-  const transactionDummyAccounts: WalletAccountType[] = [
-    {
-      id: '1',
-      name: 'Account 1',
-      address: '1',
-      nativeBalanceRegistry: {
-        '0x1': '311780000000000000'
-      },
-      accountType: 'Primary',
-      tokenBalanceRegistry: {},
-      coin: BraveWallet.CoinType.ETH
-    }
-  ]
-  const transactionList = {
-    [transactionDummyAccounts[0].address]: [...transactionDummyData[1]].concat(...transactionDummyData[2])
+const transactionDummyAccounts: WalletAccountType[] = [
+  {
+    id: '1',
+    name: 'Account 1',
+    address: '1',
+    nativeBalanceRegistry: {
+      '0x1': '311780000000000000'
+    },
+    accountType: 'Primary',
+    tokenBalanceRegistry: {},
+    coin: BraveWallet.CoinType.ETH
   }
+]
+
+const transactionList = {
+  [transactionDummyAccounts[0].address]: [
+    ...transactionDummyData[1],
+    ...transactionDummyData[2]
+  ]
+}
+
+export const _ConnectedPanel = (args: { locked: boolean }) => {
   const { locked } = args
   const [inputValue, setInputValue] = React.useState<string>('')
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
@@ -849,4 +854,79 @@ export const _AddSuggestedToken = () => {
 
 _AddSuggestedToken.story = {
   name: 'Add Suggested Token'
+}
+
+export const _TransactionDetail = () => {
+  const mockedFunction = () => {
+    // Doesn't do anything in storybook
+  }
+
+  const tx = transactionList[transactionDummyAccounts[0].address][0]
+  return (
+    <StyledExtensionWrapper>
+      <Panel
+        navAction={mockedFunction}
+        title={'Recent Transactions'}
+        useSearch={false}
+        searchAction={undefined}
+      >
+        <ScrollContainer>
+          <TransactionDetailPanel
+            onBack={mockedFunction}
+            onCancelTransaction={mockedFunction}
+            onRetryTransaction={mockedFunction}
+            onSpeedupTransaction={mockedFunction}
+            accounts={transactionDummyAccounts}
+            defaultCurrencies={mockDefaultCurrencies}
+            selectedNetwork={mockNetworks[0]}
+            visibleTokens={NewAssetOptions}
+            transactionSpotPrices={[]}
+            transaction={tx}
+          />
+        </ScrollContainer>
+      </Panel>
+    </StyledExtensionWrapper>
+  )
+}
+
+_TransactionDetail.story = {
+  name: 'Transactions Detail'
+}
+
+export const _RecentTransaction = () => {
+  const onSelectTransaction = () => {
+    // Doesn't do anything in storybook
+  }
+
+  const navigateTo = () => {
+    // Doesn't do anything in storybook
+  }
+
+  return (
+    <StyledExtensionWrapper>
+      <Panel
+        navAction={navigateTo}
+        title={'Recent Transactions'}
+        useSearch={false}
+        searchAction={undefined}
+      >
+        <ScrollContainer>
+          <TransactionsPanel
+            accounts={transactionDummyAccounts}
+            defaultCurrencies={mockDefaultCurrencies}
+            onSelectTransaction={onSelectTransaction}
+            selectedNetwork={mockNetworks[0]}
+            selectedAccount={transactionDummyAccounts[0]}
+            visibleTokens={NewAssetOptions}
+            transactionSpotPrices={[{ assetTimeframeChange: '', fromAsset: 'ETH', toAsset: 'USD', price: '2500' }]}
+            transactions={transactionList}
+          />
+        </ScrollContainer>
+      </Panel>
+    </StyledExtensionWrapper>
+  )
+}
+
+_RecentTransaction.story = {
+  name: 'Recent Transactions'
 }
