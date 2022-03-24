@@ -232,7 +232,7 @@ export function refreshBalances () {
           if (defaultNetworks.some(n => n.chainId === network.chainId)) {
             // Get CoinType SOL balances
             if (network.coin === BraveWallet.CoinType.SOL) {
-              const solBalanceInfo = await jsonRpcService.getSolanaBalance(account.address)
+              const solBalanceInfo = await jsonRpcService.getSolanaBalance(account.address, network.chainId)
               return {
                 ...solBalanceInfo,
                 balance: solBalanceInfo.balance.toString(),
