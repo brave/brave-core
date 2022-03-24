@@ -29,18 +29,6 @@
 using ConnectionState = brave_vpn::mojom::ConnectionState;
 using PurchasedState = brave_vpn::mojom::PurchasedState;
 
-namespace {
-
-std::unique_ptr<skus::SkusServiceImpl> skus_service_;
-mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() {
-  if (!skus_service_) {
-    return mojo::PendingRemote<skus::mojom::SkusService>();
-  }
-  return static_cast<skus::SkusServiceImpl*>(skus_service_.get())->MakeRemote();
-}
-
-}  // namespace
-
 class BraveVPNServiceTest : public testing::Test {
  public:
   BraveVPNServiceTest() {
@@ -57,9 +45,18 @@ class BraveVPNServiceTest : public testing::Test {
         base::MakeRefCounted<network::TestSharedURLLoaderFactory>();
     skus_service_ = std::make_unique<skus::SkusServiceImpl>(&pref_service_,
                                                             url_loader_factory);
-    auto callback = base::BindRepeating(GetSkusService);
-    service_ = std::make_unique<BraveVpnService>(url_loader_factory,
-                                                 &pref_service_, callback);
+    service_ = std::make_unique<BraveVpnService>(
+        url_loader_factory, &pref_service_,
+        base::BindRepeating(&BraveVPNServiceTest::GetSkusService,
+                            base::Unretained(this)));
+  }
+
+  mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() {
+    if (!skus_service_) {
+      return mojo::PendingRemote<skus::mojom::SkusService>();
+    }
+    return static_cast<skus::SkusServiceImpl*>(skus_service_.get())
+        ->MakeRemote();
   }
 
   void OnFetchRegionList(bool background_fetch,
@@ -76,6 +73,10 @@ class BraveVPNServiceTest : public testing::Test {
                         const std::string& hostnames,
                         bool success) {
     service_->OnFetchHostnames(region, hostnames, success);
+  }
+
+  void OnCredentialSummary(const std::string& summary) {
+    service_->OnCredentialSummary(summary);
   }
 
   std::vector<brave_vpn::mojom::Region>& regions() const {
@@ -95,6 +96,8 @@ class BraveVPNServiceTest : public testing::Test {
   ConnectionState& connection_state() { return service_->connection_state_; }
 
   PurchasedState& purchased_state() { return service_->purchased_state_; }
+
+  std::string& skus_credential() { return service_->skus_credential_; }
 
   bool& is_simulation() { return service_->is_simulation_; }
 
@@ -120,9 +123,14 @@ class BraveVPNServiceTest : public testing::Test {
     service_->OnGetProfileCredentials(profile_credential, success);
   }
 
+  void OnPrepareCredentialsPresentation(
+      const std::string& credential_as_cookie) {
+    service_->OnPrepareCredentialsPresentation(credential_as_cookie);
+  }
+
   void OnConnected() { service_->OnConnected(); }
 
-  void OnDisconnected() { service_->OnConnected(); }
+  void OnDisconnected() { service_->OnDisconnected(); }
 
   const brave_vpn::BraveVPNConnectionInfo& GetConnectionInfo() {
     return service_->GetConnectionInfo();
@@ -131,6 +139,8 @@ class BraveVPNServiceTest : public testing::Test {
   void ResetDeviceRegion() {
     service_->device_region_ = brave_vpn::mojom::Region();
   }
+
+  void SetFallbackDeviceRegion() { service_->SetFallbackDeviceRegion(); }
 
   void SetTestTimezone(const std::string& timezone) {
     service_->test_timezone_ = timezone;
@@ -296,16 +306,15 @@ class BraveVPNServiceTest : public testing::Test {
   base::test::ScopedFeatureList scoped_feature_list_;
   content::BrowserTaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable pref_service_;
+  std::unique_ptr<skus::SkusServiceImpl> skus_service_;
   std::unique_ptr<BraveVpnService> service_;
 };
 
-// TODO(bsclifton): re-enable test after figuring out why crash is happening
-TEST(BraveVPNFeatureTest, DISABLED_FeatureTest) {
+TEST(BraveVPNFeatureTest, FeatureTest) {
   EXPECT_FALSE(brave_vpn::IsBraveVPNEnabled());
 }
 
-// TODO(bsclifton): re-enable test after figuring out why crash is happening
-TEST_F(BraveVPNServiceTest, DISABLED_RegionDataTest) {
+TEST_F(BraveVPNServiceTest, RegionDataTest) {
   // Test invalid region data.
   OnFetchRegionList(false, std::string(), true);
   EXPECT_TRUE(regions().empty());
@@ -319,21 +328,22 @@ TEST_F(BraveVPNServiceTest, DISABLED_RegionDataTest) {
   OnFetchTimezones(std::string(), false);
   EXPECT_EQ(regions()[0], device_region());
 
-  // Test proper device region is set when valid timezone is used.
+  // Test fallback region is replaced with proper device region
+  // when valid timezone is used.
   // "asia-sg" region is used for "Asia/Seoul" tz.
-  ResetDeviceRegion();
+  SetFallbackDeviceRegion();
   SetTestTimezone("Asia/Seoul");
   OnFetchTimezones(GetTimeZonesData(), true);
   EXPECT_EQ("asia-sg", device_region().name);
 
-  // Test first region is set as a device region when invalid timezone is set.
-  ResetDeviceRegion();
+  // Test device region is not changed when invalid timezone is set.
+  SetFallbackDeviceRegion();
   SetTestTimezone("Invalid");
   OnFetchTimezones(GetTimeZonesData(), true);
   EXPECT_EQ(regions()[0], device_region());
 }
 
-TEST_F(BraveVPNServiceTest, DISABLED_HostnamesTest) {
+TEST_F(BraveVPNServiceTest, HostnamesTest) {
   // Set valid hostnames list
   hostname().reset();
   OnFetchHostnames("region-a", GetHostnamesData(), true);
@@ -346,14 +356,55 @@ TEST_F(BraveVPNServiceTest, DISABLED_HostnamesTest) {
   EXPECT_FALSE(hostname());
 }
 
-// TODO(bsclifton): fix after flow is decided
-TEST_F(BraveVPNServiceTest, DISABLED_LoadPurchasedStateTest) {
+TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
+  // Service try loading
+  EXPECT_EQ(PurchasedState::LOADING, purchased_state());
+  // Treat not purchased When empty credential string received.
+  OnCredentialSummary("");
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, purchased_state());
+
+  // Treat expired when credential with non active received.
+  purchased_state() = PurchasedState::LOADING;
+  OnCredentialSummary(R"({ "active": false } )");
+  EXPECT_EQ(PurchasedState::EXPIRED, purchased_state());
+
+  // Treat failed when invalid string received.
+  purchased_state() = PurchasedState::LOADING;
+  OnCredentialSummary(R"( "invalid" )");
+  EXPECT_EQ(PurchasedState::FAILED, purchased_state());
+
+  // Reached to purchased state when valid credential, region data
+  // and timezone info.
+  purchased_state() = PurchasedState::LOADING;
+  OnCredentialSummary(R"({ "active": true } )");
+  EXPECT_TRUE(regions().empty());
+  EXPECT_EQ(PurchasedState::LOADING, purchased_state());
+  OnPrepareCredentialsPresentation("credential=abcdefghijk");
+  EXPECT_EQ(PurchasedState::LOADING, purchased_state());
+  OnFetchRegionList(false, GetRegionsData(), true);
+  EXPECT_EQ(PurchasedState::LOADING, purchased_state());
+  SetTestTimezone("Asia/Seoul");
+  OnFetchTimezones(GetTimeZonesData(), true);
+  EXPECT_EQ(PurchasedState::PURCHASED, purchased_state());
+
+  // Treat not purchased when empty.
+  purchased_state() = PurchasedState::LOADING;
+  OnPrepareCredentialsPresentation("credential=");
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, purchased_state());
+
+  // Treat failed when invalid.
+  purchased_state() = PurchasedState::LOADING;
+  OnPrepareCredentialsPresentation("");
+  EXPECT_EQ(PurchasedState::FAILED, purchased_state());
+
+  // Treat as purchased state early when service has region data already.
+  EXPECT_FALSE(regions().empty());
+  purchased_state() = PurchasedState::LOADING;
+  OnPrepareCredentialsPresentation("credential=abcdefghijk");
   EXPECT_EQ(PurchasedState::PURCHASED, purchased_state());
 }
 
-// TODO(bsclifton): re-enable test after figuring out why crash is happening
-TEST_F(BraveVPNServiceTest, DISABLED_CancelConnectingTest) {
+TEST_F(BraveVPNServiceTest, CancelConnectingTest) {
   cancel_connecting() = true;
   connection_state() = ConnectionState::CONNECTING;
   OnCreated();
@@ -400,8 +451,9 @@ TEST_F(BraveVPNServiceTest, DISABLED_CancelConnectingTest) {
   EXPECT_EQ(ConnectionState::DISCONNECTED, connection_state());
 }
 
-// TODO(bsclifton): fix after flow is decided
-TEST_F(BraveVPNServiceTest, DISABLED_ConnectionInfoTest) {
+TEST_F(BraveVPNServiceTest, ConnectionInfoTest) {
+  // Having skus_credential is pre-requisite before try connecting.
+  skus_credential() = "test_credentials";
   // Check valid connection info is set when valid hostname and profile
   // credential are fetched.
   connection_state() = ConnectionState::CONNECTING;
@@ -420,8 +472,7 @@ TEST_F(BraveVPNServiceTest, DISABLED_ConnectionInfoTest) {
   EXPECT_FALSE(GetConnectionInfo().IsValid());
 }
 
-// TODO(bsclifton): re-enable test after figuring out why crash is happening
-TEST_F(BraveVPNServiceTest, DISABLED_NeedsConnectTest) {
+TEST_F(BraveVPNServiceTest, NeedsConnectTest) {
   // Check ignore Connect() request while connecting or disconnecting is
   // in-progress.
   connection_state() = ConnectionState::CONNECTING;
@@ -442,8 +493,7 @@ TEST_F(BraveVPNServiceTest, DISABLED_NeedsConnectTest) {
   EXPECT_EQ(ConnectionState::CONNECTING, connection_state());
 }
 
-// TODO(bsclifton): re-enable test after figuring out why crash is happening
-TEST_F(BraveVPNServiceTest, DISABLED_LoadRegionDataFromPrefsTest) {
+TEST_F(BraveVPNServiceTest, LoadRegionDataFromPrefsTest) {
   // Initially, prefs doesn't have region data.
   EXPECT_EQ(brave_vpn::mojom::Region(), device_region());
   EXPECT_TRUE(regions().empty());
@@ -464,6 +514,7 @@ TEST_F(BraveVPNServiceTest, DISABLED_LoadRegionDataFromPrefsTest) {
   EXPECT_TRUE(regions().empty());
 
   // Check region data is loaded from prefs.
+  purchased_state() = PurchasedState::LOADING;
   LoadCachedRegionData();
   EXPECT_FALSE(brave_vpn::mojom::Region() == device_region());
   EXPECT_FALSE(regions().empty());

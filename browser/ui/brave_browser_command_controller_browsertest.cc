@@ -48,8 +48,9 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   void SetPurchasedUserForBraveVPN(Browser* browser, bool purchased) {
     auto* service = BraveVpnServiceFactory::GetForProfile(browser->profile());
-    auto target_state =
-        purchased ? PurchasedState::PURCHASED : PurchasedState::NOT_PURCHASED;
+    auto target_state = purchased
+                            ? brave_vpn::mojom::PurchasedState::PURCHASED
+                            : brave_vpn::mojom::PurchasedState::NOT_PURCHASED;
     service->SetPurchasedState(target_state);
     // Call explicitely to update vpn commands status because mojo works in
     // async way.

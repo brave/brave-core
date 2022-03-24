@@ -830,7 +830,7 @@ void BraveVpnService::OnFetchHostnames(const std::string& region,
 
   absl::optional<base::Value> value = base::JSONReader::Read(hostnames);
   if (value && value->is_list()) {
-    ParseAndCacheHostnames(region, std::move(*value));
+    ParseAndCacheHostnames(region, *value);
     return;
   }
 
@@ -838,8 +838,9 @@ void BraveVpnService::OnFetchHostnames(const std::string& region,
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
 }
 
-void BraveVpnService::ParseAndCacheHostnames(const std::string& region,
-                                             base::Value hostnames_value) {
+void BraveVpnService::ParseAndCacheHostnames(
+    const std::string& region,
+    const base::Value& hostnames_value) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(hostnames_value.is_list());
   if (!hostnames_value.is_list()) {
@@ -1078,7 +1079,7 @@ void BraveVpnService::OnCredentialSummary(const std::string& summary_string) {
           summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
 
-  if (records_v) {
+  if (records_v && records_v->is_dict()) {
     const base::Value* active = records_v->FindKey("active");
     bool has_credential = active && active->is_bool() && active->GetBool();
     if (has_credential) {

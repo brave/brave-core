@@ -174,7 +174,7 @@ class BraveVpnService :
                         const std::string& hostnames,
                         bool success);
   void ParseAndCacheHostnames(const std::string& region,
-                              base::Value hostnames_value);
+                              const base::Value& hostnames_value);
   void SetDeviceRegion(const std::string& name);
   void SetFallbackDeviceRegion();
   void SetDeviceRegion(const brave_vpn::mojom::Region& region);
