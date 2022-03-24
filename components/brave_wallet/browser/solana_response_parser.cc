@@ -7,6 +7,7 @@
 
 #include <limits>
 
+#include "base/base64.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
@@ -219,7 +220,10 @@ bool ParseGetAccountInfo(const std::string& json,
   if (data_list.size() != 2u || !data_list[0].is_string() ||
       !data_list[1].is_string() || data_list[1].GetString() != "base64")
     return false;
-  account_info.data = data_list[0].GetString();
+  auto data_string = data_list[0].GetString();
+  if (!base::Base64Decode(data_string))
+    return false;
+  account_info.data = data_string;
 
   auto executable = value->FindBoolKey("executable");
   if (!executable)

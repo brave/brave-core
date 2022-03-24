@@ -188,7 +188,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
       "result": {
         "context":{"slot":123065869},
         "value":{
-          "data":["encoded_base64_string","base64"],
+          "data":["SEVMTE8gV09STEQ=","base64"],
           "executable":false,
           "lamports":88801034809120,
           "owner":"11111111111111111111111111111111",
@@ -201,7 +201,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
   SolanaAccountInfo expected_info;
   expected_info.lamports = 88801034809120ULL;
   expected_info.owner = "11111111111111111111111111111111";
-  expected_info.data = "encoded_base64_string";
+  expected_info.data = "SEVMTE8gV09STEQ=";
   expected_info.executable = false;
   expected_info.rent_epoch = 284;
 
@@ -220,6 +220,24 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
   ASSERT_TRUE(ParseGetAccountInfo(json, &info));
   EXPECT_FALSE(info);
 
+  // Parsing should fail if data string is not base64 encoded as it says.
+  json = R"(
+    {
+      "jsonrpc":"2.0","id":1,
+      "result": {
+        "context":{"slot":123065869},
+        "value":{
+          "data":["JvSKSz9YHfqEQ8j","base64"],
+          "executable":false,
+          "lamports":88801034809120,
+          "owner":"11111111111111111111111111111111",
+          "rentEpoch":284
+        }
+      }
+    }
+  )";
+  EXPECT_FALSE(ParseGetAccountInfo(json, &info));
+
   // data using base58 is not supported.
   json = R"(
     {
@@ -227,7 +245,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
       "result": {
         "context":{"slot":123065869},
         "value":{
-          "data":["encoded_base58_string","base58"],
+          "data":["JvSKSz9YHfqEQ8j","base58"],
           "executable":false,
           "lamports":88801034809120,
           "owner":"11111111111111111111111111111111",

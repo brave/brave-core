@@ -2406,7 +2406,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaAccountInfo) {
       "result": {
         "context":{"slot":123065869},
         "value":{
-          "data":["encoded_base64_string","base64"],
+          "data":["SEVMTE8gV09STEQ=","base64"],
           "executable":false,
           "lamports":88801034809120,
           "owner":"11111111111111111111111111111111",
@@ -2420,7 +2420,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaAccountInfo) {
   SolanaAccountInfo expected_info;
   expected_info.lamports = 88801034809120ULL;
   expected_info.owner = "11111111111111111111111111111111";
-  expected_info.data = "encoded_base64_string";
+  expected_info.data = "SEVMTE8gV09STEQ=";
   expected_info.executable = false;
   expected_info.rent_epoch = 284;
   TestGetSolanaAccountInfo(expected_info, mojom::SolanaProviderError::kSuccess,

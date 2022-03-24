@@ -443,14 +443,14 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
       10000000, mojom::TransactionType::SolanaSPLTokenTransfer,
       std::move(instructions));
 
-  // Owner is not token program account.
+  // Owner is the token program account.
   std::string json = R"(
     {
       "jsonrpc":"2.0","id":1,
       "result": {
         "context":{"slot":123065869},
         "value":{
-          "data":["encoded_base64_string","base64"],
+          "data":["SEVMTE8gV09STEQ=","base64"],
           "executable":false,
           "lamports":88801034809120,
           "owner":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
@@ -506,7 +506,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
       "result": {
         "context":{"slot":123065869},
         "value":{
-          "data":["encoded_base64_string","base64"],
+          "data":["SEVMTE8gV09STEQ=","base64"],
           "executable":false,
           "lamports":88801034809120,
           "owner":"11111111111111111111111111111111",
