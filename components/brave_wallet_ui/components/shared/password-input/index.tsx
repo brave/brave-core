@@ -49,6 +49,7 @@ function PasswordInput (props: Props) {
             <ToggleVisibilityButton
               showPassword={showPassword}
               onClick={onTogglePasswordVisibility}
+              tabIndex={-1}
             />
           }
       </InputWrapper>
