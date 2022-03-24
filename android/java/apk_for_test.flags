@@ -8,8 +8,14 @@
 # needed for checking of existence for bytecode manipulation
 -keepnames class org.chromium.chrome.browser.settings.MainSettings
 
-# Do not obfuscate that class as we check on fields in tests
+# Do not obfuscate the above classes as we check on fields in tests
 -keep class org.chromium.brave_wallet.mojom.BlockchainToken { *; }
+-keep class org.chromium.brave_wallet.mojom.SwapParams { *; }
+-keep class org.chromium.brave_wallet.mojom.AccountInfo { *; }
+-keep class org.chromium.brave_wallet.mojom.TxData { *; }
+-keep class org.chromium.brave_wallet.mojom.GasEstimation1559 { *; }
+-keep class org.chromium.brave_wallet.mojom.TxData1559 { *; }
+-keep class org.chromium.brave_wallet.mojom.NetworkInfo { *; }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkBridge {
     *** extensiveBookmarkChangesBeginning(...);

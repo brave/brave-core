@@ -16,8 +16,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.GasEstimation1559;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.SwapParams;
+import org.chromium.brave_wallet.mojom.TxData;
+import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 
@@ -237,6 +243,196 @@ public class BraveWalletUtilsTest {
                     if (v == null) {
                         String message = "Check that " + varName + " is initialized everywhere "
                                 + "in Java files, where BlockchainToken object is created . It "
+                                + "could be safely added to the above if to skip that var on checks "
+                                + "after that.";
+                        fail(message);
+                    }
+                }
+            } catch (Exception exc) {
+                // Exception appears on private field members. We just skip them as we are
+                // interested in public members of a mojom structure
+            }
+        }
+    }
+
+    @Test
+    @SmallTest
+    public void validateSwapParamsTest() {
+        SwapParams testStruct = new SwapParams();
+        java.lang.reflect.Field[] fields = testStruct.getClass().getDeclaredFields();
+        for (java.lang.reflect.Field f : fields) {
+            try {
+                java.lang.Class t = f.getType();
+                java.lang.Object v = f.get(testStruct);
+                if (!t.isPrimitive()) {
+                    String varName = f.getName();
+                    if (varName.equals("takerAddress") || varName.equals("sellAmount")
+                            || varName.equals("buyAmount") || varName.equals("buyToken")
+                            || varName.equals("sellToken") || varName.equals("gasPrice")) {
+                        continue;
+                    }
+                    if (v == null) {
+                        String message = "Check that " + varName + " is initialized everywhere "
+                                + "in Java files, where SwapParams object is created . It "
+                                + "could be safely added to the above if to skip that var on checks "
+                                + "after that.";
+                        fail(message);
+                    }
+                }
+            } catch (Exception exc) {
+                // Exception appears on private field members. We just skip them as we are
+                // interested in public members of a mojom structure
+            }
+        }
+    }
+
+    @Test
+    @SmallTest
+    public void validateAccountInfoTest() {
+        AccountInfo testStruct = new AccountInfo();
+        java.lang.reflect.Field[] fields = testStruct.getClass().getDeclaredFields();
+        for (java.lang.reflect.Field f : fields) {
+            try {
+                java.lang.Class t = f.getType();
+                java.lang.Object v = f.get(testStruct);
+                if (!t.isPrimitive()) {
+                    String varName = f.getName();
+                    if (varName.equals("address") || varName.equals("name")
+                            || varName.equals("hardware")) {
+                        continue;
+                    }
+                    if (v == null) {
+                        String message = "Check that " + varName + " is initialized everywhere "
+                                + "in Java files, where AccountInfo object is created . It "
+                                + "could be safely added to the above if to skip that var on checks "
+                                + "after that.";
+                        fail(message);
+                    }
+                }
+            } catch (Exception exc) {
+                // Exception appears on private field members. We just skip them as we are
+                // interested in public members of a mojom structure
+            }
+        }
+    }
+
+    @Test
+    @SmallTest
+    public void validateTxDataTest() {
+        TxData testStruct = new TxData();
+        java.lang.reflect.Field[] fields = testStruct.getClass().getDeclaredFields();
+        for (java.lang.reflect.Field f : fields) {
+            try {
+                java.lang.Class t = f.getType();
+                java.lang.Object v = f.get(testStruct);
+                if (!t.isPrimitive()) {
+                    String varName = f.getName();
+                    if (varName.equals("nonce") || varName.equals("gasPrice")
+                            || varName.equals("gasLimit") || varName.equals("to")
+                            || varName.equals("value") || varName.equals("data")) {
+                        continue;
+                    }
+                    if (v == null) {
+                        String message = "Check that " + varName + " is initialized everywhere "
+                                + "in Java files, where TxData object is created . It "
+                                + "could be safely added to the above if to skip that var on checks "
+                                + "after that.";
+                        fail(message);
+                    }
+                }
+            } catch (Exception exc) {
+                // Exception appears on private field members. We just skip them as we are
+                // interested in public members of a mojom structure
+            }
+        }
+    }
+
+    @Test
+    @SmallTest
+    public void validateGasEstimation1559Test() {
+        GasEstimation1559 testStruct = new GasEstimation1559();
+        java.lang.reflect.Field[] fields = testStruct.getClass().getDeclaredFields();
+        for (java.lang.reflect.Field f : fields) {
+            try {
+                java.lang.Class t = f.getType();
+                java.lang.Object v = f.get(testStruct);
+                if (!t.isPrimitive()) {
+                    String varName = f.getName();
+                    if (varName.equals("slowMaxPriorityFeePerGas")
+                            || varName.equals("slowMaxFeePerGas")
+                            || varName.equals("avgMaxPriorityFeePerGas")
+                            || varName.equals("avgMaxFeePerGas")
+                            || varName.equals("fastMaxPriorityFeePerGas")
+                            || varName.equals("fastMaxFeePerGas")
+                            || varName.equals("baseFeePerGas")) {
+                        continue;
+                    }
+                    if (v == null) {
+                        String message = "Check that " + varName + " is initialized everywhere "
+                                + "in Java files, where GasEstimation1559 object is created . It "
+                                + "could be safely added to the above if to skip that var on checks "
+                                + "after that.";
+                        fail(message);
+                    }
+                }
+            } catch (Exception exc) {
+                // Exception appears on private field members. We just skip them as we are
+                // interested in public members of a mojom structure
+            }
+        }
+    }
+
+    @Test
+    @SmallTest
+    public void validateTxData1559Test() {
+        TxData1559 testStruct = new TxData1559();
+        java.lang.reflect.Field[] fields = testStruct.getClass().getDeclaredFields();
+        for (java.lang.reflect.Field f : fields) {
+            try {
+                java.lang.Class t = f.getType();
+                java.lang.Object v = f.get(testStruct);
+                if (!t.isPrimitive()) {
+                    String varName = f.getName();
+                    if (varName.equals("baseData") || varName.equals("chainId")
+                            || varName.equals("maxPriorityFeePerGas")
+                            || varName.equals("maxFeePerGas") || varName.equals("gasEstimation")) {
+                        continue;
+                    }
+                    if (v == null) {
+                        String message = "Check that " + varName + " is initialized everywhere "
+                                + "in Java files, where TxData1559 object is created . It "
+                                + "could be safely added to the above if to skip that var on checks "
+                                + "after that.";
+                        fail(message);
+                    }
+                }
+            } catch (Exception exc) {
+                // Exception appears on private field members. We just skip them as we are
+                // interested in public members of a mojom structure
+            }
+        }
+    }
+
+    @Test
+    @SmallTest
+    public void validateNetworkInfoTest() {
+        NetworkInfo testStruct = new NetworkInfo();
+        java.lang.reflect.Field[] fields = testStruct.getClass().getDeclaredFields();
+        for (java.lang.reflect.Field f : fields) {
+            try {
+                java.lang.Class t = f.getType();
+                java.lang.Object v = f.get(testStruct);
+                if (!t.isPrimitive()) {
+                    String varName = f.getName();
+                    if (varName.equals("chainId") || varName.equals("chainName")
+                            || varName.equals("blockExplorerUrls") || varName.equals("iconUrls")
+                            || varName.equals("rpcUrls") || varName.equals("symbol")
+                            || varName.equals("symbolName") || varName.equals("data")) {
+                        continue;
+                    }
+                    if (v == null) {
+                        String message = "Check that " + varName + " is initialized everywhere "
+                                + "in Java files, where NetworkInfo object is created . It "
                                 + "could be safely added to the above if to skip that var on checks "
                                 + "after that.";
                         fail(message);
