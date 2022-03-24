@@ -1031,10 +1031,11 @@ void BraveVpnService::LoadPurchasedState() {
 
   SetPurchasedState(PurchasedState::LOADING);
 
+#if !BUILDFLAG(IS_ANDROID)
   LoadCachedSelectedRegion();
   LoadCachedRegionData();
 
-#if !defined(OFFICIAL_BUILD) && !BUILDFLAG(IS_ANDROID)
+#if !defined(OFFICIAL_BUILD)
   auto* cmd = base::CommandLine::ForCurrentProcess();
   if (cmd->HasSwitch(brave_vpn::switches::kBraveVPNTestMonthlyPass)) {
     skus_credential_ =
@@ -1049,7 +1050,8 @@ void BraveVpnService::LoadPurchasedState() {
     GetBraveVPNConnectionAPI()->CheckConnection(kBraveVPNEntryName);
     return;
   }
-#endif
+#endif  // !defined(OFFICIAL_BUILD)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   EnsureMojoConnected();
   skus_service_->CredentialSummary(
@@ -1135,6 +1137,9 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
     return;
   }
 
+#if BUILDFLAG(IS_ANDROID)
+  SetPurchasedState(PurchasedState::PURCHASED);
+#else
   // Only fetch when we don't have cache.
   if (!regions_.empty()) {
     SetPurchasedState(PurchasedState::PURCHASED);
@@ -1144,6 +1149,7 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
 
   ScheduleBackgroundRegionDataFetch();
   GetBraveVPNConnectionAPI()->CheckConnection(kBraveVPNEntryName);
+#endif
 }
 
 void BraveVpnService::SetPurchasedState(PurchasedState state) {

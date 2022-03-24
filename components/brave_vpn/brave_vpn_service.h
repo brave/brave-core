@@ -90,7 +90,6 @@ class BraveVpnService :
 
   void BindInterface(
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
-  void LoadPurchasedState();
 
   // mojom::vpn::ServiceHandler
   void GetConnectionState(GetConnectionStateCallback callback) override;
@@ -108,6 +107,8 @@ class BraveVpnService :
                            CreateSupportTicketCallback callback) override;
   void GetSupportData(GetSupportDataCallback callback) override;
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+  void LoadPurchasedState();
 
   using ResponseCallback =
       base::OnceCallback<void(const std::string&, bool success)>;
