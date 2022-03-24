@@ -674,7 +674,7 @@ interface JsonRpcService {
   GetSolanaBalance(string pubkey) =>
       (uint64 balance, SolanaProviderError error, string error_message);
   // Returns the token balance of an SPL Token account.
-  GetSPLTokenAccountBalance(string pubkey) =>
+  GetSPLTokenAccountBalance(string wallet_address, string token_mint_address) =>
       (string amount, uint8 decimals, string uiAmountString,
        SolanaProviderError error, string error_message);
 };

@@ -243,7 +243,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetSolanaBalance(const std::string& pubkey,
                         GetSolanaBalanceCallback callback) override;
   void GetSPLTokenAccountBalance(
-      const std::string& pubkey,
+      const std::string& wallet_address,
+      const std::string& token_mint_address,
       GetSPLTokenAccountBalanceCallback callback) override;
   using SendSolanaTransactionCallback =
       base::OnceCallback<void(const std::string& tx_hash,

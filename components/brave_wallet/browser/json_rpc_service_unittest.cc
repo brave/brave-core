@@ -482,7 +482,8 @@ class JsonRpcServiceUnitTest : public testing::Test {
       const std::string& expected_error_message) {
     base::RunLoop run_loop;
     json_rpc_service_->GetSPLTokenAccountBalance(
-        "test_public_key",
+        "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+        "AQoKYV7tYpTrFZN6P5oUufbQKAUr9mNYGe1TTJC9wajM",
         base::BindLambdaForTesting([&](const std::string& amount,
                                        uint8_t decimals,
                                        const std::string& ui_amount_string,
