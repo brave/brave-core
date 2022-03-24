@@ -35,7 +35,7 @@ std::unique_ptr<base::Value> GetProviderErrorDictionary(
   return GetProviderErrorDictionaryIternal(static_cast<int>(code), message);
 }
 
-std::unique_ptr<base::Value> GetProviderErrorDictionary(
+std::unique_ptr<base::Value> GetSolanaProviderErrorDictionary(
     mojom::SolanaProviderError code,
     const std::string& message) {
   return GetProviderErrorDictionaryIternal(static_cast<int>(code), message);

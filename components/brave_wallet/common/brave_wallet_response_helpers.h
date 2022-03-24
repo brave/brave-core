@@ -21,7 +21,7 @@ std::unique_ptr<base::Value> GetProviderRequestReturnFromEthJsonResponse(
 std::unique_ptr<base::Value> GetProviderErrorDictionary(
     mojom::ProviderError code,
     const std::string& message);
-std::unique_ptr<base::Value> GetProviderErrorDictionary(
+std::unique_ptr<base::Value> GetSolanaProviderErrorDictionary(
     mojom::SolanaProviderError code,
     const std::string& message);
 std::unique_ptr<base::Value> ToProviderResponse(base::Value id,

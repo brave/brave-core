@@ -529,7 +529,7 @@ void JSSolanaProvider::OnConnect(
     result = CreatePublicKey(context, public_key);
   } else {
     std::unique_ptr<base::Value> formed_response =
-        GetProviderErrorDictionary(error, error_message);
+        GetSolanaProviderErrorDictionary(error, error_message);
     result = v8_value_converter_->ToV8Value(formed_response.get(), context);
   }
 
@@ -565,7 +565,7 @@ void JSSolanaProvider::OnSignAndSendTransaction(
     v8_result = v8_value_converter_->ToV8Value(&result, context);
   } else {
     std::unique_ptr<base::Value> formed_response =
-        GetProviderErrorDictionary(error, error_message);
+        GetSolanaProviderErrorDictionary(error, error_message);
     v8_result = v8_value_converter_->ToV8Value(formed_response.get(), context);
   }
 
@@ -613,7 +613,7 @@ void JSSolanaProvider::OnSignMessage(
     v8_result = object;
   } else {
     std::unique_ptr<base::Value> formed_response =
-        GetProviderErrorDictionary(error, error_message);
+        GetSolanaProviderErrorDictionary(error, error_message);
     v8_result = v8_value_converter_->ToV8Value(formed_response.get(), context);
   }
 
@@ -638,7 +638,7 @@ void JSSolanaProvider::OnSignTransaction(
     result = CreateTransaction(context, serialized_tx);
   } else {
     std::unique_ptr<base::Value> formed_response =
-        GetProviderErrorDictionary(error, error_message);
+        GetSolanaProviderErrorDictionary(error, error_message);
     result = v8_value_converter_->ToV8Value(formed_response.get(), context);
   }
 
@@ -673,7 +673,7 @@ void JSSolanaProvider::OnSignAllTransactions(
     result = tx_array;
   } else {
     std::unique_ptr<base::Value> formed_response =
-        GetProviderErrorDictionary(error, error_message);
+        GetSolanaProviderErrorDictionary(error, error_message);
     result = v8_value_converter_->ToV8Value(formed_response.get(),
                                             global_context.Get(isolate));
   }
@@ -710,7 +710,7 @@ void JSSolanaProvider::OnRequest(
     }
   } else {
     std::unique_ptr<base::Value> formed_response =
-        GetProviderErrorDictionary(error, error_message);
+        GetSolanaProviderErrorDictionary(error, error_message);
     v8_result = v8_value_converter_->ToV8Value(formed_response.get(),
                                                global_context.Get(isolate));
   }
