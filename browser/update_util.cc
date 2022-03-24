@@ -14,7 +14,7 @@ bool UpdateEnabled() {
   return !base::CommandLine::ForCurrentProcess()->HasSwitch(
       switches::kDisableBraveUpdate);
 #else
-  return true;
+  return false;
 #endif
 }
 
