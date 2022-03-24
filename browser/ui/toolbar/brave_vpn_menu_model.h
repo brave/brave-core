@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_TOOLBAR_BRAVE_VPN_MENU_MODEL_H_
 #define BRAVE_BROWSER_UI_TOOLBAR_BRAVE_VPN_MENU_MODEL_H_
 
+#include "base/memory/raw_ptr.h"
 #include "ui/base/models/simple_menu_model.h"
 
 class Browser;
@@ -26,7 +27,7 @@ class BraveVPNMenuModel : public ui::SimpleMenuModel,
   void Build();
   bool IsBraveVPNButtonVisible() const;
 
-  Browser* browser_ = nullptr;
+  raw_ptr<Browser> browser_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_TOOLBAR_BRAVE_VPN_MENU_MODEL_H_

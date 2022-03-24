@@ -45,11 +45,7 @@ class Value;
 }  // namespace base
 
 class PrefService;
-
-using ConnectionState = brave_vpn::mojom::ConnectionState;
 #endif  // !BUILDFLAG(IS_ANDROID)
-
-using PurchasedState = brave_vpn::mojom::PurchasedState;
 
 // This class is used by desktop and android.
 // However, it includes desktop specific impls and it's hidden
@@ -83,12 +79,14 @@ class BraveVpnService :
   void RemoveVPNConnnection();
 
   bool is_connected() const {
-    return connection_state_ == ConnectionState::CONNECTED;
+    return connection_state_ == brave_vpn::mojom::ConnectionState::CONNECTED;
   }
   bool is_purchased_user() const {
-    return purchased_state_ == PurchasedState::PURCHASED;
+    return purchased_state_ == brave_vpn::mojom::PurchasedState::PURCHASED;
   }
-  ConnectionState connection_state() const { return connection_state_; }
+  brave_vpn::mojom::ConnectionState connection_state() const {
+    return connection_state_;
+  }
 
   void BindInterface(
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
@@ -145,13 +143,7 @@ class BraveVpnService :
 #if !BUILDFLAG(IS_ANDROID)
   friend class BraveAppMenuBrowserTest;
   friend class BraveBrowserCommandControllerTest;
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, RegionDataTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, HostnamesTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, CancelConnectingTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, ConnectionInfoTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, LoadPurchasedStateTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, LoadRegionDataFromPrefsTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, NeedsConnectTest);
+  friend class BraveVPNServiceTest;
 
   // brave_vpn::BraveVPNOSConnectionAPI::Observer overrides:
   void OnCreated() override;
@@ -163,18 +155,19 @@ class BraveVpnService :
   void OnDisconnected() override;
   void OnIsDisconnecting() override;
 
-  brave_vpn::BraveVPNConnectionInfo GetConnectionInfo();
+  const brave_vpn::BraveVPNConnectionInfo& GetConnectionInfo();
   void LoadCachedRegionData();
   void LoadCachedSelectedRegion();
-  void UpdateAndNotifyConnectionStateChange(ConnectionState state);
+  void UpdateAndNotifyConnectionStateChange(
+      brave_vpn::mojom::ConnectionState state);
 
   void FetchRegionData(bool background_fetch);
   void OnFetchRegionList(bool background_fetch,
                          const std::string& region_list,
                          bool success);
-  bool ParseAndCacheRegionList(base::Value region_value);
+  bool ParseAndCacheRegionList(const base::Value& region_value);
   void OnFetchTimezones(const std::string& timezones_list, bool success);
-  void ParseAndCacheDeviceRegionName(base::Value timezons_value);
+  void ParseAndCacheDeviceRegionName(const base::Value& timezons_value);
   void FetchHostnamesForRegion(const std::string& name);
   void OnFetchHostnames(const std::string& region,
                         const std::string& hostnames,
@@ -184,6 +177,8 @@ class BraveVpnService :
   void SetDeviceRegion(const std::string& name);
   void SetFallbackDeviceRegion();
   void SetDeviceRegion(const brave_vpn::mojom::Region& region);
+  void SetRegionToPrefs(const std::string& key,
+                        const brave_vpn::mojom::Region& region);
 
   std::string GetCurrentTimeZone();
   void ScheduleBackgroundRegionDataFetch();
@@ -202,10 +197,6 @@ class BraveVpnService :
       const base::flat_map<std::string, std::string>& headers);
 
   brave_vpn::BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI();
-
-  void set_test_timezone(const std::string& timezone) {
-    test_timezone_ = timezone;
-  }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   using URLRequestCallback =
@@ -234,7 +225,7 @@ class BraveVpnService :
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
-  void SetPurchasedState(PurchasedState state);
+  void SetPurchasedState(brave_vpn::mojom::PurchasedState state);
   void EnsureMojoConnected();
   void OnMojoConnectionError();
   void OnCredentialSummary(const std::string& summary_string);
@@ -249,7 +240,8 @@ class BraveVpnService :
   std::unique_ptr<brave_vpn::Hostname> hostname_;
   brave_vpn::BraveVPNConnectionInfo connection_info_;
   bool cancel_connecting_ = false;
-  ConnectionState connection_state_ = ConnectionState::DISCONNECTED;
+  brave_vpn::mojom::ConnectionState connection_state_ =
+      brave_vpn::mojom::ConnectionState::DISCONNECTED;
   bool needs_connect_ = false;
   base::ScopedObservation<brave_vpn::BraveVPNOSConnectionAPI,
                           brave_vpn::BraveVPNOSConnectionAPI::Observer>
@@ -267,11 +259,12 @@ class BraveVpnService :
   base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
       skus_service_getter_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
-  PurchasedState purchased_state_ = PurchasedState::NOT_PURCHASED;
+  brave_vpn::mojom::PurchasedState purchased_state_ =
+      brave_vpn::mojom::PurchasedState::NOT_PURCHASED;
   mojo::RemoteSet<brave_vpn::mojom::ServiceObserver> observers_;
   api_request_helper::APIRequestHelper api_request_helper_;
   std::string skus_credential_;
-  base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_;
+  base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_SERVICE_H_

@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_vpn/brave_vpn.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -40,7 +41,7 @@ class VPNPanelHandler : public brave_vpn::mojom::PanelHandler {
  private:
   mojo::Receiver<brave_vpn::mojom::PanelHandler> receiver_;
   ui::MojoBubbleWebUIController* const webui_controller_;
-  Profile* profile_;
+  raw_ptr<Profile> profile_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_VPN_VPN_PANEL_HANDLER_H_

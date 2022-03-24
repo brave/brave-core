@@ -31,6 +31,9 @@
 #include "ui/views/border.h"
 #include "ui/views/controls/highlight_path_generator.h"
 
+using ConnectionState = brave_vpn::mojom::ConnectionState;
+using PurchasedState = brave_vpn::mojom::PurchasedState;
+
 namespace {
 
 constexpr int kButtonRadius = 47;
