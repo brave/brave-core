@@ -1,4 +1,4 @@
-// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,I
 // you can obtain one at http://mozilla.org/MPL/2.0/.
@@ -65,7 +65,7 @@ export function makeNetworkAsset (network: BraveWallet.NetworkInfo) {
   }
 
   return {
-    contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+    contractAddress: '',
     name: network.symbolName,
     symbol: network.symbol,
     logo: logo,
@@ -80,7 +80,7 @@ export function makeNetworkAsset (network: BraveWallet.NetworkInfo) {
 }
 
 export const ETH = {
-  contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+  contractAddress: '',
   name: 'Ethereum',
   symbol: 'ETH',
   logo: ETHIconUrl,
@@ -89,7 +89,8 @@ export const ETH = {
   decimals: 18,
   visible: true,
   tokenId: '',
-  coingeckoId: ''
+  coingeckoId: '',
+  chainId: '0x1'
 } as BraveWallet.BlockchainToken
 
 export const BAT = {
@@ -107,19 +108,7 @@ export const BAT = {
 
 // Use only with storybook as dummy data.
 export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
-  {
-    contractAddress: '1',
-    name: 'Ethereum',
-    symbol: 'ETH',
-    logo: ETHIconUrl,
-    isErc20: true,
-    isErc721: false,
-    decimals: 18,
-    visible: true,
-    tokenId: '',
-    coingeckoId: '',
-    chainId: '0x1'
-  },
+  ETH,
   {
     contractAddress: '2',
     name: 'Basic Attention Token',
@@ -202,10 +191,7 @@ export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
 
 // Use only with storybook as dummy data.
 export const AccountAssetOptions: BraveWallet.BlockchainToken[] = [
-  {
-    ...ETH,
-    chainId: '0x1'
-  },
+  ETH,
   {
     contractAddress: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
     name: 'Basic Attention Token',
