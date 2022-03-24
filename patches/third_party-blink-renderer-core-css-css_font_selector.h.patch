@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/css/css_font_selector.h b/third_party/blink/renderer/core/css/css_font_selector.h
-index 1233474eff0e207fd90b695309e5c88a5cd94f0c..515b37ae666f20a34aa7a01f21ef09e9144a81e2 100644
+index 87b589c1da98d780907001a3b85d6747877da93a..5fd63546b46eba856e09ab36c38dd51b36984634 100644
 --- a/third_party/blink/renderer/core/css/css_font_selector.h
 +++ b/third_party/blink/renderer/core/css/css_font_selector.h
 @@ -113,6 +113,7 @@ class CORE_EXPORT CSSFontSelector : public CSSFontSelectorBase {

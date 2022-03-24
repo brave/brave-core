@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/css/offscreen_font_selector.h b/third_party/blink/renderer/core/css/offscreen_font_selector.h
-index 4bc60a8b330419f3587052534232509c0affff5d..6682758391ad58c158d601a99a17d5e37dbe8512 100644
+index 738aef9345cafef8af71d232c0a594b2117c0c6c..bbc223a7dc510ca5ebb6ff652fb72b0db29e5317 100644
 --- a/third_party/blink/renderer/core/css/offscreen_font_selector.h
 +++ b/third_party/blink/renderer/core/css/offscreen_font_selector.h
 @@ -87,6 +87,7 @@ class CORE_EXPORT OffscreenFontSelector : public CSSFontSelectorBase {
