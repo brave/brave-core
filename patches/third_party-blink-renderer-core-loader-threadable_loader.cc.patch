@@ -21,8 +21,7 @@ index 2eabb5f8cf76cd0401b4ec66238c427f4a79c3b1..d9c103a53e30e2ba0a86d4f215950f55
    }
  }
  
- ThreadableLoader::~ThreadableLoader() {}
-@@ -1079,7 +1079,11 @@ Document* ThreadableLoader::GetDocument() const {
+@@ -379,7 +379,11 @@ void ThreadableLoader::DispatchDidFail(const ResourceError& error) {
    client->DidFail(error);
  }
  

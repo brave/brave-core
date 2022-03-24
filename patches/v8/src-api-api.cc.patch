@@ -41,7 +41,6 @@ index b2d6db3661a564d20f6d07a67bff627ba2ee75da..dcd43416e4fb6fbda436af657825aa11
    i::Compiler::ScriptDetails script_details;
    if (!resource_name.IsEmpty()) {
      script_details.name_obj = Utils::OpenHandle(*(resource_name));
-@@ -2461,6 +2484,10 @@ i::Compiler::ScriptDetails GetScriptDetails(
    }
    script_details.line_offset = resource_line_offset;
    script_details.column_offset = resource_column_offset;

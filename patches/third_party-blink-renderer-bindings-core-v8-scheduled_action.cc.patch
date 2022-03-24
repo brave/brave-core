@@ -23,3 +23,4 @@ index 15c2ebe09f8fcf9464b42c934a003b071de27849..795bc42f55a0cd73f1cef0e89971a0c7
 +      source_code,
        KURL(), ScriptFetchOptions(), SanitizeScriptErrors::kDoNotSanitize);
    script->RunScriptOnScriptStateAndReturnValue(script_state_->Get());
+ }

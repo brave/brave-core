@@ -10,4 +10,3 @@ index 32fc54e791af444e146d2fa3ac68f2dbc53fbbd7..c873a380e7542efee501c806e4482b41
      "//build:chromecast_buildflags",
      "//build:chromeos_buildflags",
      "//cc",
-     "//cc/animation",

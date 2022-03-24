@@ -31,7 +31,6 @@ index 2f48e3a2cef9915f077008c5a4009aae45cc0587..892dedee9d1dd78e88fd08b2f596f1f2
      Modulator::SetModulator(script_state, modulator);
  
      // See comment in LocalDOMWindow::modulator_ for this workaround.
-@@ -44,7 +49,7 @@ Modulator* Modulator::From(ScriptState* script_state) {
      window->SetModulator(modulator);
    } else if (auto* worklet_scope =
                   DynamicTo<WorkletGlobalScope>(execution_context)) {

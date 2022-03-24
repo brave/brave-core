@@ -177,10 +177,10 @@ def main():
             "name": "cbindgen",
             "version": "0.14.2",
         },
-        {
-            "name": "cargo-audit",
-            "features": "vendored-openssl",
-        }
+        #{
+        #    "name": "cargo-audit",
+        #    "features": "vendored-openssl",
+        #}
     ]
     for tool in tools:
         cargo_install(tool)

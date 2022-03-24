@@ -54,7 +54,10 @@ action("strip_and_dump_symbols") {
     brave_symbol_file = "$root_out_dir/brave.breakpad.$current_cpu"
   }
 
-  inputs = [ brave_binary, dump_syms_binary ]
+  inputs = [
+    #brave_binary,
+    dump_syms_binary,
+  ]
   outputs = [ brave_symbol_file ]
 
   args = [

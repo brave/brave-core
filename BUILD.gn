@@ -310,7 +310,7 @@ if (!is_android && !is_ios) {
 
     if (!is_mac) {
       sources += [
-        "$root_out_dir/$brave_exe",
+        #"$root_out_dir/$brave_exe",
         "$root_out_dir/brave_100_percent.pak",
         "$root_out_dir/brave_200_percent.pak",
         "$root_out_dir/brave_resources.pak",

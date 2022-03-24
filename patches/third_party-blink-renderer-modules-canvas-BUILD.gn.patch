@@ -1,9 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/canvas/BUILD.gn b/third_party/blink/renderer/modules/canvas/BUILD.gn
-index 3a4fad467511ecb067b15f20f22537604c7442f0..7fd26550a6857f79010f48006b584ef4243d2ff7 100644
+index 4c7dfb33a46ce70965601ba5d96eb12326badcc3..4918986d71a49ef44969f3bd4de36e28c1ff55d7 100644
 --- a/third_party/blink/renderer/modules/canvas/BUILD.gn
 +++ b/third_party/blink/renderer/modules/canvas/BUILD.gn
-@@ -39,6 +39,7 @@ blink_modules_sources("canvas") {
-     "offscreencanvas2d/offscreen_canvas_rendering_context_2d.h",
+@@ -56,6 +56,7 @@ blink_modules_sources("canvas") {
    ]
  
    deps = [ "//third_party/blink/renderer/modules/webcodecs" ]

@@ -676,7 +676,7 @@ index 9f9af8e5ad41d65ecc8d713c0cc65ef429e6bc40..6fd24ddc04fef314ec5625942fe6921c
      case GL_VERSION:
        if (IdentifiabilityStudySettings::Get()->ShouldSample(
                blink::IdentifiableSurface::Type::kWebGLParameter)) {
-         RecordIdentifiableGLParameterDigest(
+@@ -3561,9 +4034,29 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
              pname, IdentifiabilityBenignStringToken(
                         String(ContextGL()->GetString(GL_VERSION))));
        }
@@ -717,14 +717,6 @@ index 9f9af8e5ad41d65ecc8d713c0cc65ef429e6bc40..6fd24ddc04fef314ec5625942fe6921c
 -          RecordIdentifiableGLParameterDigest(
 -              pname, IdentifiabilityBenignStringToken(
 -                         String(ContextGL()->GetString(GL_RENDERER))));
--        }
--        return WebGLAny(script_state,
--                        String(ContextGL()->GetString(GL_RENDERER)));
--      }
--      SynthesizeGLError(
--          GL_INVALID_ENUM, "getParameter",
--          "invalid parameter name, WEBGL_debug_renderer_info not enabled");
--      return ScriptValue::CreateNull(script_state->GetIsolate());
 +      BRAVE_WEBGL_GET_PARAMETER_UNMASKED_RENDERER
 +      {
 +        ScriptValue result;
@@ -742,7 +734,9 @@ index 9f9af8e5ad41d65ecc8d713c0cc65ef429e6bc40..6fd24ddc04fef314ec5625942fe6921c
 +              GL_INVALID_ENUM, "getParameter",
 +              "invalid parameter name, WEBGL_debug_renderer_info not enabled");
 +          result = ScriptValue::CreateNull(script_state->GetIsolate());
-+        }
+         }
+-        return WebGLAny(script_state,
+-                        String(ContextGL()->GetString(GL_RENDERER)));
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
@@ -761,7 +755,11 @@ index 9f9af8e5ad41d65ecc8d713c0cc65ef429e6bc40..6fd24ddc04fef314ec5625942fe6921c
 +        }
 +// #endif
 +        return result;
-+      }
+       }
+-      SynthesizeGLError(
+-          GL_INVALID_ENUM, "getParameter",
+-          "invalid parameter name, WEBGL_debug_renderer_info not enabled");
+-      return ScriptValue::CreateNull(script_state->GetIsolate());
      case WebGLDebugRendererInfo::kUnmaskedVendorWebgl:
 -      if (ExtensionEnabled(kWebGLDebugRendererInfoName)) {
 -        if (IdentifiabilityStudySettings::Get()->ShouldSample(
@@ -769,14 +767,6 @@ index 9f9af8e5ad41d65ecc8d713c0cc65ef429e6bc40..6fd24ddc04fef314ec5625942fe6921c
 -          RecordIdentifiableGLParameterDigest(
 -              pname, IdentifiabilityBenignStringToken(
 -                         String(ContextGL()->GetString(GL_VENDOR))));
--        }
--        return WebGLAny(script_state,
--                        String(ContextGL()->GetString(GL_VENDOR)));
--      }
--      SynthesizeGLError(
--          GL_INVALID_ENUM, "getParameter",
--          "invalid parameter name, WEBGL_debug_renderer_info not enabled");
--      return ScriptValue::CreateNull(script_state->GetIsolate());
 +      BRAVE_WEBGL_GET_PARAMETER_UNMASKED_VENDOR
 +      {
 +        ScriptValue result;
@@ -794,7 +784,9 @@ index 9f9af8e5ad41d65ecc8d713c0cc65ef429e6bc40..6fd24ddc04fef314ec5625942fe6921c
 +              GL_INVALID_ENUM, "getParameter",
 +              "invalid parameter name, WEBGL_debug_renderer_info not enabled");
 +          result = ScriptValue::CreateNull(script_state->GetIsolate());
-+        }
+         }
+-        return WebGLAny(script_state,
+-                        String(ContextGL()->GetString(GL_VENDOR)));
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
@@ -813,11 +805,15 @@ index 9f9af8e5ad41d65ecc8d713c0cc65ef429e6bc40..6fd24ddc04fef314ec5625942fe6921c
 +        }
 +// #endif
 +        return result;
-+      }
+       }
+-      SynthesizeGLError(
+-          GL_INVALID_ENUM, "getParameter",
+-          "invalid parameter name, WEBGL_debug_renderer_info not enabled");
+-      return ScriptValue::CreateNull(script_state->GetIsolate());
      case GL_VERTEX_ARRAY_BINDING_OES:  // OES_vertex_array_object
        if (ExtensionEnabled(kOESVertexArrayObjectName) || IsWebGL2()) {
          if (!bound_vertex_array_object_->IsDefaultObject())
-@@ -3399,14 +3949,37 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
+@@ -3615,14 +4154,37 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
            "invalid parameter name, OES_vertex_array_object not enabled");
        return ScriptValue::CreateNull(script_state->GetIsolate());
      case GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT:  // EXT_texture_filter_anisotropic
@@ -902,15 +898,7 @@ index 9f9af8e5ad41d65ecc8d713c0cc65ef429e6bc40..6fd24ddc04fef314ec5625942fe6921c
    GLStringQuery query(ContextGL());
    return query.Run<GLStringQuery::ShaderInfoLog>(ObjectNonZero(shader));
  }
-@@ -3859,6 +3872,7 @@ WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
-   GLint precision = 0;
-   ContextGL()->GetShaderPrecisionFormat(shader_type, precision_type, range,
-                                         &precision);
-+  BRAVE_WEBGL_RENDERING_CONTEXT_BASE_GETSHADERINFOLOG
-   auto* result = MakeGarbageCollected<WebGLShaderPrecisionFormat>(
-       range[0], range[1], precision);
-   if (IdentifiabilityStudySettings::Get()->ShouldSample(
-@@ -3621,6 +3635,78 @@ WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
+@@ -3841,6 +4408,78 @@ WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
    if (!ValidateShaderType("getShaderPrecisionFormat", shader_type)) {
      return nullptr;
    }
@@ -989,7 +977,15 @@ index 9f9af8e5ad41d65ecc8d713c0cc65ef429e6bc40..6fd24ddc04fef314ec5625942fe6921c
    switch (precision_type) {
      case GL_LOW_FLOAT:
      case GL_MEDIUM_FLOAT:
-@@ -3871,6 +3885,7 @@ WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
+@@ -3859,6 +4498,7 @@ WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
+   GLint precision = 0;
+   ContextGL()->GetShaderPrecisionFormat(shader_type, precision_type, range,
+                                         &precision);
++  BRAVE_WEBGL_RENDERING_CONTEXT_BASE_GETSHADERINFOLOG
+   auto* result = MakeGarbageCollected<WebGLShaderPrecisionFormat>(
+       range[0], range[1], precision);
+   if (IdentifiabilityStudySettings::Get()->ShouldSample(
+@@ -3871,6 +4511,7 @@ WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
  String WebGLRenderingContextBase::getShaderSource(WebGLShader* shader) {
    if (!ValidateWebGLProgramOrShader("getShaderSource", shader))
      return String();

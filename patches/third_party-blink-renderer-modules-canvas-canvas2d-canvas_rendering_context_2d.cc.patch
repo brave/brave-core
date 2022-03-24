@@ -1,8 +1,9 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
-index 78fe811af2a902b4571c057560db76eb55d66016..b234c797c299eac08410a4d374a5871bea52554d 100644
+index 78fe811af2a902b4571c057560db76eb55d66016..7555d8437950259ca161d9b1d042f0bee40052cb 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
-@@ -73,6 +74,8 @@
+@@ -77,6 +77,8 @@
+ #include "third_party/blink/renderer/platform/text/bidi_text_run.h"
  #include "third_party/blink/renderer/platform/wtf/math_extras.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -10,8 +11,7 @@ index 78fe811af2a902b4571c057560db76eb55d66016..b234c797c299eac08410a4d374a5871b
  
  namespace blink {
  
- static const base::TimeDelta kTryRestoreContextInterval =
-@@ -976,6 +976,7 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
+@@ -976,6 +978,7 @@ TextMetrics* CanvasRenderingContext2D::measureText(const String& text) {
    if (!canvas()->GetDocument().GetFrame())
      return MakeGarbageCollected<TextMetrics>();
  

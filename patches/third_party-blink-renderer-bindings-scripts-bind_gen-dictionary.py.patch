@@ -10,8 +10,7 @@ index baeeebbb697f76aa72afd002042cc6b3e7b7ffe6..cd96e85db99516c844ec3964595e7bbc
  from .codegen_utils import make_copyright_header
  from .codegen_utils import make_forward_declarations
  from .codegen_utils import make_header_include_directives
-@@ -800,20 +802,22 @@ def generate_dictionary(dictionary):
-     ])
+@@ -1017,6 +1018,8 @@ def generate_dictionary(dictionary_identifier):
      header_blink_ns.body.extend([
          make_forward_declarations(header_node.accumulator),
          TextNode(""),
@@ -20,11 +19,7 @@ index baeeebbb697f76aa72afd002042cc6b3e7b7ffe6..cd96e85db99516c844ec3964595e7bbc
      ])
      source_node.extend([
          make_copyright_header(),
-         TextNode(""),
-         TextNode("#include \"{}\"".format(header_path)),
-         TextNode(""),
-         make_header_include_directives(source_node.accumulator),
-         TextNode(""),
+@@ -1028,7 +1031,7 @@ def generate_dictionary(dictionary_identifier):
          source_blink_ns,
      ])
      source_blink_ns.body.extend([
@@ -33,4 +28,3 @@ index baeeebbb697f76aa72afd002042cc6b3e7b7ffe6..cd96e85db99516c844ec3964595e7bbc
          TextNode(""),
      ])
  
-     # Assemble the parts.

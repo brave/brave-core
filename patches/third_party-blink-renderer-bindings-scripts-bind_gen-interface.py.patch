@@ -98,47 +98,7 @@ index 9d2ce6944de36058fda4c2e44e9c128d7bb7cd92..09dda0b879961fee7aac22ea5e3dd8ca
  def make_return_value_cache_return_early(cg_context):
      assert isinstance(cg_context, CodeGenContext)
  
-@@ -1490,6 +1572,7 @@ def make_attribute_get_callback_def(cg_context, function_name):
-         make_bindings_trace_event(cg_context),
-         make_report_deprecate_as(cg_context),
-         make_report_measure_as(cg_context),
-+        make_report_track_in_page_graph_as(cg_context),
-         make_log_activity(cg_context),
-         EmptyNode(),
-     ])
-@@ -1535,6 +1618,7 @@ def make_attribute_set_callback_def(cg_context, function_name):
-         make_bindings_trace_event(cg_context),
-         make_report_deprecate_as(cg_context),
-         make_report_measure_as(cg_context),
-+        make_report_track_in_page_graph_as(cg_context),
-         make_log_activity(cg_context),
-         EmptyNode(),
-     ])
-@@ -1576,6 +1660,7 @@ def make_constant_callback_def(cg_context, function_name):
-     logging_nodes = SequenceNode([
-         make_report_deprecate_as(cg_context),
-         make_report_measure_as(cg_context),
-+        make_report_track_in_page_graph_as(cg_context),
-         make_log_activity(cg_context),
-     ])
-     if not logging_nodes:
-@@ -1659,6 +1744,7 @@ def make_constructor_function_def(cg_context, function_name):
-     body.extend([
-         make_report_deprecate_as(cg_context),
-         make_report_measure_as(cg_context),
-+        make_report_track_in_page_graph_as(cg_context),
-         make_log_activity(cg_context),
-         EmptyNode(),
-         make_check_argument_length(cg_context),
-@@ -1724,6 +1810,7 @@ def make_exposed_construct_callback_def(cg_context, function_name):
-         make_bindings_trace_event(cg_context),
-         make_report_deprecate_as(cg_context),
-         make_report_measure_as(cg_context),
-+        make_report_track_in_page_graph_as(cg_context),
-         make_log_activity(cg_context),
-         EmptyNode(),
-         TextNode(v8_set_return_value),
-@@ -1755,6 +1842,7 @@ def make_operation_function_def(cg_context, function_name):
+@@ -1772,6 +1854,7 @@ def make_attribute_get_callback_def(cg_context, function_name):
          make_report_coop_access(cg_context),
          make_report_deprecate_as(cg_context),
          make_report_measure_as(cg_context),
@@ -146,7 +106,47 @@ index 9d2ce6944de36058fda4c2e44e9c128d7bb7cd92..09dda0b879961fee7aac22ea5e3dd8ca
          make_log_activity(cg_context),
          EmptyNode(),
      ])
-@@ -4611,6 +4699,8 @@ def generate_interface(interface):
+@@ -1820,6 +1903,7 @@ def make_attribute_set_callback_def(cg_context, function_name):
+         make_bindings_trace_event(cg_context),
+         make_report_deprecate_as(cg_context),
+         make_report_measure_as(cg_context),
++        make_report_track_in_page_graph_as(cg_context),
+         make_log_activity(cg_context),
+         EmptyNode(),
+     ])
+@@ -1947,6 +2031,7 @@ def make_constant_callback_def(cg_context, function_name):
+     logging_nodes = SequenceNode([
+         make_report_deprecate_as(cg_context),
+         make_report_measure_as(cg_context),
++        make_report_track_in_page_graph_as(cg_context),
+         make_log_activity(cg_context),
+     ])
+     if not logging_nodes:
+@@ -2031,6 +2116,7 @@ def make_constructor_function_def(cg_context, function_name):
+     body.extend([
+         make_report_deprecate_as(cg_context),
+         make_report_measure_as(cg_context),
++        make_report_track_in_page_graph_as(cg_context),
+         make_log_activity(cg_context),
+         EmptyNode(),
+         make_check_argument_length(cg_context),
+@@ -2109,6 +2195,7 @@ def make_exposed_construct_callback_def(cg_context, function_name):
+         make_bindings_trace_event(cg_context),
+         make_report_deprecate_as(cg_context),
+         make_report_measure_as(cg_context),
++        make_report_track_in_page_graph_as(cg_context),
+         make_log_activity(cg_context),
+         EmptyNode(),
+         TextNode(v8_set_return_value),
+@@ -2129,6 +2216,7 @@ def make_named_constructor_property_callback_def(cg_context, function_name):
+         make_bindings_trace_event(cg_context),
+         make_report_deprecate_as(cg_context),
+         make_report_measure_as(cg_context),
++        make_report_track_in_page_graph_as(cg_context),
+         make_log_activity(cg_context),
+         EmptyNode(),
+     ])
+@@ -7213,6 +7301,8 @@ def generate_class_like(class_like):
      api_header_blink_ns.body.extend([
          make_forward_declarations(api_header_node.accumulator),
          EmptyNode(),

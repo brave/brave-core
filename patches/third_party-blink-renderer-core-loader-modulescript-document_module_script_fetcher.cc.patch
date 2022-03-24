@@ -70,5 +70,3 @@ index 2976543643783cbd6d413c192d3da783810100cb..06c58b9c9681653540169db872148d92
    client_->NotifyFetchFinishedSuccess(ModuleScriptCreationParams(
        /*source_url=*/url, /*base_url=*/url,
        ScriptSourceLocationType::kExternalFile, expected_module_type_,
- }
- 

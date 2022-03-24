@@ -11,8 +11,7 @@ index 2660078b0ed37bc3313e645f59e38cd306b1fdca..55408bb029b2a3d71d8b17fb2b50c02b
  namespace blink {
  
  static int g_frame_count = 0;
-@@ -883,11 +888,26 @@ void WebLocalFrameImpl::RequestExecuteScriptInIsolatedWorld(
-         SchedulingPolicy::Feature::kIsolatedWorldScript,
+@@ -1043,11 +1045,26 @@ void WebLocalFrameImpl::RequestExecuteScriptInIsolatedWorld(
          {SchedulingPolicy::DisableBackForwardCache()});
    }
  

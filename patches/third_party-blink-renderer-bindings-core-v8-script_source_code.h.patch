@@ -1,11 +1,12 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/script_source_code.h b/third_party/blink/renderer/bindings/core/v8/script_source_code.h
-index eff28959c340b47033f923751c721fab2b003a32..fa94c9e3c8e2c4142aef9e79dc265c2b358fe925 100644
+index e8582e353506b1a80e42c576697441435165ff33..09917d07fe3364948bb788977f745f4cb7ecaa4b 100644
 --- a/third_party/blink/renderer/bindings/core/v8/script_source_code.h
 +++ b/third_party/blink/renderer/bindings/core/v8/script_source_code.h
-@@ -95,13 +96,20 @@ class CORE_EXPORT ScriptSourceCode final {
+@@ -109,13 +109,20 @@ class CORE_EXPORT ScriptSourceCode final {
      return not_streaming_reason_;
    }
  
+- private:
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  void SetParentScriptId(const int parent_script_id) {
 +    parent_script_id_ = parent_script_id;
@@ -13,7 +14,6 @@ index eff28959c340b47033f923751c721fab2b003a32..fa94c9e3c8e2c4142aef9e79dc265c2b
 +  int ParentScriptId() const { return parent_script_id_; }
 +// #endif
 +
-- private:
    ScriptSourceCode(
        const ParkableString& source,
        ScriptSourceLocationType = ScriptSourceLocationType::kUnknown,

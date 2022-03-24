@@ -1,8 +1,9 @@
 diff --git a/third_party/blink/renderer/modules/storage/storage_area.cc b/third_party/blink/renderer/modules/storage/storage_area.cc
-index cc24c65ae77d3ca71cba58b8c66dbba339d4a68c..a104183579dbeefafb352ec41513016db8c95be2 100644
+index a40cd639f9584a71c81440ff1ca2001d198fcf7e..a96837a5ed7e3f7ca407443b1038c354b7a70215 100644
 --- a/third_party/blink/renderer/modules/storage/storage_area.cc
 +++ b/third_party/blink/renderer/modules/storage/storage_area.cc
-@@ -40,6 +40,9 @@
+@@ -43,6 +43,9 @@
+ #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
  #include "third_party/blink/renderer/platform/wtf/functional.h"
  #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 +#include "third_party/blink/renderer/core/dom/document.h"
@@ -11,8 +12,7 @@ index cc24c65ae77d3ca71cba58b8c66dbba339d4a68c..a104183579dbeefafb352ec41513016d
  
  namespace blink {
  
- StorageArea* StorageArea::Create(LocalDOMWindow* window,
-@@ -94,6 +100,28 @@ String StorageArea::getItem(const String& key,
+@@ -103,6 +106,28 @@ String StorageArea::getItem(const String& key,
      exception_state.ThrowSecurityError("access is denied for this document.");
      return String();
    }

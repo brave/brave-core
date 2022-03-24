@@ -1,8 +1,9 @@
 diff --git a/third_party/blink/renderer/modules/donottrack/navigator_do_not_track.cc b/third_party/blink/renderer/modules/donottrack/navigator_do_not_track.cc
-index 26e258b726aa1b1b48e8d04003c0661bb755da1f..f5e4f7115eddd7e0e4565b115c1e28de9e42054c 100644
+index 73fe45f6506839b89055a98a6a19e932387b9641..846ae50a5ba00d4e6696f2677a5cb2c98a184825 100644
 --- a/third_party/blink/renderer/modules/donottrack/navigator_do_not_track.cc
 +++ b/third_party/blink/renderer/modules/donottrack/navigator_do_not_track.cc
-@@ -34,12 +34,25 @@
+@@ -34,13 +34,26 @@
+ #include "third_party/blink/renderer/core/frame/local_frame.h"
  #include "third_party/blink/renderer/core/frame/local_frame_client.h"
  #include "third_party/blink/renderer/core/frame/navigator.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
