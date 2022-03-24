@@ -38,7 +38,9 @@
 
 using brave_shields::ControlType;
 
+namespace {
 const char kNavigatorLanguagesScript[] = "navigator.languages.toString()";
+}
 
 class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
  public:
