@@ -17,7 +17,7 @@ mod ffi {
 //           convert_uint64_value_to_string("/a/0", json) for { a : [ 1 ]}
 pub fn convert_uint64_value_to_string(path: &str, json: &str) -> String {
     let result_value = serde_json::from_str(&json);
-    if let Err(result_value) = result_value {
+    if result_value.is_err() {
         return String::new();
     }
     let mut unwrapped_value: serde_json::Value = result_value.unwrap();
@@ -42,7 +42,7 @@ pub fn convert_uint64_value_to_string(path: &str, json: &str) -> String {
 //           convert_int64_to_unicode_string("/a/0", json) for { a : [ 1 ]}
 pub fn convert_int64_value_to_string(path: &str, json: &str) -> String {
     let result_value = serde_json::from_str(&json);
-    if let Err(result_value) = result_value {
+    if result_value.is_err() {
         return String::new();
     }
     let mut unwrapped_value: serde_json::Value = result_value.unwrap();
@@ -68,7 +68,7 @@ pub fn convert_int64_value_to_string(path: &str, json: &str) -> String {
 //           convert_string_value_to_uint64("/a/0", json) for { a : [ '1' ]} -> { a : [ 1 ]}
 pub fn convert_string_value_to_uint64(path: &str, json: &str) -> String {
     let result_value = serde_json::from_str(&json);
-    if let Err(result_value) = result_value {
+    if result_value.is_err() {
         return String::new();
     }
     let mut unwrapped_value: serde_json::Value = result_value.unwrap();
@@ -98,7 +98,7 @@ pub fn convert_string_value_to_uint64(path: &str, json: &str) -> String {
 //           convert_string_value_to_int64("/a/0", json) for { a : [ '1' ]} -> { a : [ 1 ]}
 pub fn convert_string_value_to_int64(path: &str, json: &str) -> String {
     let result_value = serde_json::from_str(&json);
-    if let Err(result_value) = result_value {
+    if result_value.is_err() {
         return String::new();
     }
     let mut unwrapped_value: serde_json::Value = result_value.unwrap();
