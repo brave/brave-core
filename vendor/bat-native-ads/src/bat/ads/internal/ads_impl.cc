@@ -775,10 +775,9 @@ void AdsImpl::OnDidProcessDeposit(const TransactionInfo& transaction) {
   DCHECK(transaction.IsValid());
 
   BLOG(3, "Successfully processed deposit for "
-              << std::string(transaction.ad_type)
-              << " with creative instance id "
+              << transaction.ad_type << " with creative instance id "
               << transaction.creative_instance_id << " and "
-              << std::string(transaction.confirmation_type) << " valued at "
+              << transaction.confirmation_type << " valued at "
               << transaction.value);
 }
 
@@ -786,10 +785,9 @@ void AdsImpl::OnFailedToProcessDeposit(
     const std::string& creative_instance_id,
     const AdType& ad_type,
     const ConfirmationType& confirmation_type) {
-  BLOG(0, "Failed to process deposit for " << std::string(ad_type)
-                                           << " with creative instance id "
-                                           << creative_instance_id << " and "
-                                           << std::string(confirmation_type));
+  BLOG(0, "Failed to process deposit for "
+              << ad_type << " with creative instance id "
+              << creative_instance_id << " and " << confirmation_type);
 }
 
 void AdsImpl::OnStatementOfAccountsDidChange() {

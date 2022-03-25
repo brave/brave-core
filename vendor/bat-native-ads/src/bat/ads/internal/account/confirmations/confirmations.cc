@@ -54,10 +54,9 @@ Confirmations::~Confirmations() {
 void Confirmations::Confirm(const TransactionInfo& transaction) {
   DCHECK(transaction.IsValid());
 
-  BLOG(1, "Confirming " << std::string(transaction.confirmation_type) << " for "
-                        << std::string(transaction.ad_type)
-                        << " with transaction id " << transaction.id
-                        << " and creative instance id "
+  BLOG(1, "Confirming " << transaction.confirmation_type << " for "
+                        << transaction.ad_type << " with transaction id "
+                        << transaction.id << " and creative instance id "
                         << transaction.creative_instance_id);
 
   const base::Time now = base::Time::Now();
@@ -194,10 +193,9 @@ void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {
   ConfirmationsState::Get()->AppendFailedConfirmation(confirmation);
   ConfirmationsState::Get()->Save();
 
-  BLOG(1, "Added " << std::string(confirmation.type) << " confirmation for "
-                   << std::string(confirmation.ad_type) << " with id "
-                   << confirmation.id << ", transaction id"
-                   << confirmation.transaction_id
+  BLOG(1, "Added " << confirmation.type << " confirmation for "
+                   << confirmation.ad_type << " with id " << confirmation.id
+                   << ", transaction id" << confirmation.transaction_id
                    << " and creative instance id "
                    << confirmation.creative_instance_id
                    << " to the confirmations queue");
@@ -207,21 +205,20 @@ void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
   DCHECK(confirmation.IsValid());
 
   if (!ConfirmationsState::Get()->RemoveFailedConfirmation(confirmation)) {
-    BLOG(0, "Failed to remove "
-                << std::string(confirmation.type) << " confirmation for "
-                << std::string(confirmation.ad_type) << " with id "
-                << confirmation.id << ", transaction id "
-                << confirmation.transaction_id << " and creative instance id "
-                << confirmation.creative_instance_id
-                << " from the confirmations queue");
+    BLOG(0, "Failed to remove " << confirmation.type << " confirmation for "
+                                << confirmation.ad_type << " with id "
+                                << confirmation.id << ", transaction id "
+                                << confirmation.transaction_id
+                                << " and creative instance id "
+                                << confirmation.creative_instance_id
+                                << " from the confirmations queue");
 
     return;
   }
 
-  BLOG(1, "Removed " << std::string(confirmation.type) << " confirmation for "
-                     << std::string(confirmation.ad_type) << " with id "
-                     << confirmation.id << ", transaction id "
-                     << confirmation.transaction_id
+  BLOG(1, "Removed " << confirmation.type << " confirmation for "
+                     << confirmation.ad_type << " with id " << confirmation.id
+                     << ", transaction id " << confirmation.transaction_id
                      << " and creative instance id "
                      << confirmation.creative_instance_id
                      << " from the confirmations queue");
@@ -231,12 +228,12 @@ void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
 
 void Confirmations::OnDidSendConfirmation(
     const ConfirmationInfo& confirmation) {
-  BLOG(1, "Successfully sent "
-              << std::string(confirmation.type) << " confirmation for "
-              << std::string(confirmation.ad_type) << " with id "
-              << confirmation.id << ", transaction id "
-              << confirmation.transaction_id << " and creative instance id "
-              << confirmation.creative_instance_id);
+  BLOG(1, "Successfully sent " << confirmation.type << " confirmation for "
+                               << confirmation.ad_type << " with id "
+                               << confirmation.id << ", transaction id "
+                               << confirmation.transaction_id
+                               << " and creative instance id "
+                               << confirmation.creative_instance_id);
 
   if (delegate_) {
     delegate_->OnDidConfirm(confirmation);
@@ -250,12 +247,12 @@ void Confirmations::OnDidSendConfirmation(
 void Confirmations::OnFailedToSendConfirmation(
     const ConfirmationInfo& confirmation,
     const bool should_retry) {
-  BLOG(1, "Failed to send "
-              << std::string(confirmation.type) << " confirmation for "
-              << std::string(confirmation.ad_type) << " with id "
-              << confirmation.id << ", transaction id "
-              << confirmation.transaction_id << " and creative instance id "
-              << confirmation.creative_instance_id);
+  BLOG(1, "Failed to send " << confirmation.type << " confirmation for "
+                            << confirmation.ad_type << " with id "
+                            << confirmation.id << ", transaction id "
+                            << confirmation.transaction_id
+                            << " and creative instance id "
+                            << confirmation.creative_instance_id);
 
   if (should_retry) {
     AppendToRetryQueue(confirmation);
@@ -289,11 +286,11 @@ void Confirmations::OnDidRedeemUnblindedToken(
       AdsClientHelper::Get()->GetDoublePref(prefs::kNextTokenRedemptionAt));
 
   BLOG(1, "Successfully redeemed unblinded token for "
-              << std::string(confirmation.ad_type) << " with confirmation id "
+              << confirmation.ad_type << " with confirmation id "
               << confirmation.id << ", transaction id "
               << confirmation.transaction_id << ", creative instance id "
               << confirmation.creative_instance_id << " and "
-              << std::string(confirmation.type) << ". You now have "
+              << confirmation.type << ". You now have "
               << unblinded_payment_tokens_count
               << " unblinded payment tokens which will be redeemed "
               << FriendlyDateAndTime(next_token_redemption_at));
@@ -311,11 +308,11 @@ void Confirmations::OnFailedToRedeemUnblindedToken(
     const ConfirmationInfo& confirmation,
     const bool should_retry) {
   BLOG(1, "Failed to redeem unblinded token for "
-              << std::string(confirmation.ad_type) << " with confirmation id "
+              << confirmation.ad_type << " with confirmation id "
               << confirmation.id << ", transaction id "
               << confirmation.transaction_id << ", creative instance id "
               << confirmation.creative_instance_id << " and "
-              << std::string(confirmation.type));
+              << confirmation.type);
 
   if (should_retry) {
     if (!confirmation.was_created) {

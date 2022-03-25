@@ -59,10 +59,6 @@ ConfirmationType::Value ConfirmationType::value() const {
   return value_;
 }
 
-ConfirmationType::operator std::string() const {
-  return ToString();
-}
-
 std::string ConfirmationType::ToString() const {
   switch (value_) {
     case kUndefined: {
@@ -117,6 +113,11 @@ bool ConfirmationType::operator==(const ConfirmationType& rhs) const {
 
 bool ConfirmationType::operator!=(const ConfirmationType& rhs) const {
   return value_ != rhs.value_;
+}
+
+std::ostream& operator<<(std::ostream& os, const ConfirmationType& type) {
+  os << type.ToString();
+  return os;
 }
 
 }  // namespace ads

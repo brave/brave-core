@@ -26,8 +26,7 @@ T FilterSeenAdsAndRoundRobinIfNeeded(const T& ads, const AdType& type) {
     return filtered_ads;
   }
 
-  BLOG(1,
-       "All " << std::string(type) << " ads have been shown, so round robin");
+  BLOG(1, "All " << type << " ads have been shown, so round robin");
 
   CreativeAdList cast_creative_ads;
   for (const auto& ad : ads) {

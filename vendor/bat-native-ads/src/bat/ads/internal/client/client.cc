@@ -388,7 +388,7 @@ bool Client::ToggleFlaggedAd(const AdContentInfo& ad_content) {
 void Client::UpdateSeenAd(const AdInfo& ad) {
   DCHECK(is_initialized_);
 
-  const std::string type_as_string = std::string(ad.type);
+  const std::string type_as_string = ad.type.ToString();
   client_->seen_ads[type_as_string][ad.creative_instance_id] = true;
   client_->seen_advertisers[type_as_string][ad.advertiser_id] = true;
   Save();
@@ -398,7 +398,7 @@ const std::map<std::string, bool>& Client::GetSeenAdsForType(
     const AdType& type) {
   DCHECK(is_initialized_);
 
-  const std::string type_as_string = std::string(type);
+  const std::string type_as_string = type.ToString();
   return client_->seen_ads[type_as_string];
 }
 
@@ -406,7 +406,7 @@ void Client::ResetSeenAdsForType(const CreativeAdList& creative_ads,
                                  const AdType& type) {
   DCHECK(is_initialized_);
 
-  const std::string type_as_string = std::string(type);
+  const std::string type_as_string = type.ToString();
 
   BLOG(1, "Resetting seen " << type_as_string << "s");
 
@@ -424,7 +424,7 @@ void Client::ResetSeenAdsForType(const CreativeAdList& creative_ads,
 void Client::ResetAllSeenAdsForType(const AdType& type) {
   DCHECK(is_initialized_);
 
-  const std::string type_as_string = std::string(type);
+  const std::string type_as_string = type.ToString();
   BLOG(1, "Resetting seen " << type_as_string << "s");
   client_->seen_ads[type_as_string] = {};
   Save();
@@ -434,7 +434,7 @@ const std::map<std::string, bool>& Client::GetSeenAdvertisersForType(
     const AdType& type) {
   DCHECK(is_initialized_);
 
-  const std::string type_as_string = std::string(type);
+  const std::string type_as_string = type.ToString();
   return client_->seen_advertisers[type_as_string];
 }
 
@@ -442,7 +442,7 @@ void Client::ResetSeenAdvertisersForType(const CreativeAdList& creative_ads,
                                          const AdType& type) {
   DCHECK(is_initialized_);
 
-  const std::string type_as_string = std::string(type);
+  const std::string type_as_string = type.ToString();
 
   BLOG(1, "Resetting seen " << type_as_string << " advertisers");
 
@@ -460,7 +460,7 @@ void Client::ResetSeenAdvertisersForType(const CreativeAdList& creative_ads,
 void Client::ResetAllSeenAdvertisersForType(const AdType& type) {
   DCHECK(is_initialized_);
 
-  const std::string type_as_string = std::string(type);
+  const std::string type_as_string = type.ToString();
   BLOG(1, "Resetting seen " << type_as_string << " advertisers");
   client_->seen_advertisers[type_as_string] = {};
   Save();

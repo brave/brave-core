@@ -209,8 +209,7 @@ void SaveToJson(JsonWriter* writer, const InlineContentAdInfo& info) {
   writer->StartObject();
 
   writer->String("type");
-  const std::string type = std::string(info.type);
-  writer->String(type.c_str());
+  writer->String(info.type.ToString().c_str());
 
   writer->String("uuid");
   writer->String(info.uuid.c_str());
