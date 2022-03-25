@@ -1,108 +1,47 @@
 import * as React from 'react'
 import {
   UserAccountType,
-  OrderTypes,
   BuySendSwapViewTypes,
-  SlippagePresetObjectType,
-  ExpirationPresetObjectType,
   ToOrFromType,
-  BraveWallet,
-  SwapValidationErrorType,
-  WalletAccountType
+  BraveWallet
 } from '../../../constants/types'
 import {
   AccountsAssetsNetworks,
   Header,
   Swap
 } from '..'
+import { useSwap } from '../../../common/hooks'
 
 export interface Props {
-  accounts: WalletAccountType[]
-  networkList: BraveWallet.NetworkInfo[]
-  orderType: OrderTypes
-  swapToAsset: BraveWallet.BlockchainToken | undefined
-  swapFromAsset: BraveWallet.BlockchainToken | undefined
-  selectedNetwork: BraveWallet.NetworkInfo
-  selectedAccount: UserAccountType
-  exchangeRate: string
-  slippageTolerance: SlippagePresetObjectType
-  orderExpiration: ExpirationPresetObjectType
-  fromAmount: string
-  toAmount: string
-  fromAssetBalance: string
-  toAssetBalance: string
-  assetOptions: BraveWallet.BlockchainToken[]
-  isFetchingQuote: boolean
-  isSubmitDisabled: boolean
-  validationError: SwapValidationErrorType | undefined
-  customSlippageTolerance: string
-  onCustomSlippageToleranceChange: (value: string) => void
-  onSubmitSwap: () => void
-  flipSwapAssets: () => void
   onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   onSelectAccount: (account: UserAccountType) => void
-  onToggleOrderType: () => void
-  onSelectSwapAsset: (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => void
-  onSelectSlippageTolerance: (slippage: SlippagePresetObjectType) => void
-  onSelectExpiration: (expiration: ExpirationPresetObjectType) => void
-  onSetExchangeRate: (value: string) => void
-  onSetFromAmount: (value: string) => void
-  onSetToAmount: (value: string) => void
-  onSelectPresetAmount: (percent: number) => void
-  onQuoteRefresh: () => void
   onAddNetwork: () => void
   onAddAsset: () => void
 }
 
 function SwapTab (props: Props) {
   const {
-    accounts,
-    networkList,
-    orderType,
-    swapToAsset,
-    swapFromAsset,
-    selectedNetwork,
-    selectedAccount,
-    exchangeRate,
-    slippageTolerance,
-    orderExpiration,
-    fromAmount,
-    toAmount,
-    fromAssetBalance,
-    toAssetBalance,
-    assetOptions,
-    isFetchingQuote,
-    isSubmitDisabled,
-    validationError,
-    customSlippageTolerance,
-    onCustomSlippageToleranceChange,
-    onSubmitSwap,
-    flipSwapAssets,
     onSelectNetwork,
     onSelectAccount,
-    onToggleOrderType,
-    onSelectSwapAsset,
-    onSelectSlippageTolerance,
-    onSelectExpiration,
-    onSetExchangeRate,
-    onSetFromAmount,
-    onSetToAmount,
-    onSelectPresetAmount,
-    onQuoteRefresh,
     onAddNetwork,
     onAddAsset
   } = props
+
+  const swap = useSwap()
+  const {
+    onSelectTransactAsset,
+    swapAssetOptions
+  } = swap
+
   const [swapView, setSwapView] = React.useState<BuySendSwapViewTypes>('swap')
   const [isSelectingAsset, setIsSelectingAsset] = React.useState<ToOrFromType>('from')
-  const [filteredAssetList, setFilteredAssetList] = React.useState<BraveWallet.BlockchainToken[]>(assetOptions)
+  const [filteredAssetList, setFilteredAssetList] = React.useState<BraveWallet.BlockchainToken[]>(swapAssetOptions)
 
   const onChangeSwapView = (view: BuySendSwapViewTypes, option?: ToOrFromType) => {
     if (option) {
       setIsSelectingAsset(option)
-      setSwapView(view)
-    } else {
-      setSwapView(view)
     }
+    setSwapView(view)
   }
 
   const onClickSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
@@ -116,30 +55,18 @@ function SwapTab (props: Props) {
   }
 
   const onSelectAsset = (asset: BraveWallet.BlockchainToken) => () => {
-    onSelectSwapAsset(asset, isSelectingAsset)
+    onSelectTransactAsset(asset, isSelectingAsset)
     setSwapView('swap')
   }
 
-  const onFilterAssetList = (asset?: BraveWallet.BlockchainToken) => {
+  const onFilterAssetList = React.useCallback((asset?: BraveWallet.BlockchainToken) => {
     if (!asset) {
       return
     }
 
-    const newList = assetOptions.filter((assets) => assets !== asset)
+    const newList = swapAssetOptions.filter((assets) => assets !== asset)
     setFilteredAssetList(newList)
-  }
-
-  const onInputChange = (value: string, name: string) => {
-    if (name === 'to') {
-      onSetToAmount(value)
-    }
-    if (name === 'from') {
-      onSetFromAmount(value)
-    }
-    if (name === 'rate') {
-      onSetExchangeRate(value)
-    }
-  }
+  }, [swapAssetOptions])
 
   const goBack = () => {
     setSwapView('swap')
@@ -150,46 +77,41 @@ function SwapTab (props: Props) {
       {swapView === 'swap' &&
         <>
           <Header
-            selectedAccount={selectedAccount}
-            selectedNetwork={selectedNetwork}
             onChangeSwapView={onChangeSwapView}
           />
           <Swap
-            selectedNetwork={selectedNetwork}
-            toAsset={swapToAsset}
-            fromAsset={swapFromAsset}
-            toAmount={toAmount}
-            fromAmount={fromAmount}
-            orderType={orderType}
-            exchangeRate={exchangeRate}
-            slippageTolerance={slippageTolerance}
-            orderExpiration={orderExpiration}
-            isFetchingQuote={isFetchingQuote}
-            isSubmitDisabled={isSubmitDisabled}
-            validationError={validationError}
-            customSlippageTolerance={customSlippageTolerance}
-            onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
-            onInputChange={onInputChange}
-            onFlipAssets={flipSwapAssets}
-            onSubmitSwap={onSubmitSwap}
-            onSelectPresetAmount={onSelectPresetAmount}
-            onSelectSlippageTolerance={onSelectSlippageTolerance}
-            onSelectExpiration={onSelectExpiration}
+            customSlippageTolerance={swap.customSlippageTolerance}
+            exchangeRate={swap.exchangeRate}
+            flipSwapAssets={swap.flipSwapAssets}
+            fromAmount={swap.fromAmount}
+            fromAssetBalance={swap.fromAssetBalance}
+            isFetchingSwapQuote={swap.isFetchingSwapQuote}
+            isSwapButtonDisabled={swap.isSwapButtonDisabled}
             onChangeSwapView={onChangeSwapView}
-            onToggleOrderType={onToggleOrderType}
+            onCustomSlippageToleranceChange={swap.onCustomSlippageToleranceChange}
             onFilterAssetList={onFilterAssetList}
-            fromAssetBalance={fromAssetBalance}
-            toAssetBalance={toAssetBalance}
-            onQuoteRefresh={onQuoteRefresh}
+            onSelectExpiration={swap.onSelectExpiration}
+            onSelectPresetAmount={swap.onSelectPresetAmount}
+            onSelectSlippageTolerance={swap.onSelectSlippageTolerance}
+            onSubmitSwap={swap.onSubmitSwap}
+            onSwapInputChange={swap.onSwapInputChange}
+            onSwapQuoteRefresh={swap.onSwapQuoteRefresh}
+            onToggleOrderType={swap.onToggleOrderType}
+            orderExpiration={swap.orderExpiration}
+            orderType={swap.orderType}
+            selectedPreset={swap.selectedPreset}
+            setSelectedPreset={swap.setSelectedPreset}
+            slippageTolerance={swap.slippageTolerance}
+            swapValidationError={swap.swapValidationError}
+            toAmount={swap.toAmount}
+            toAssetBalance={swap.toAssetBalance}
+            fromAsset={swap.fromAsset}
+            toAsset={swap.toAsset}
           />
         </>
       }
       {swapView !== 'swap' &&
         <AccountsAssetsNetworks
-          selectedAccount={selectedAccount}
-          selectedNetwork={selectedNetwork}
-          accounts={accounts}
-          networkList={networkList}
           goBack={goBack}
           assetOptions={filteredAssetList}
           onClickSelectAccount={onClickSelectAccount}

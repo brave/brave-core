@@ -228,8 +228,6 @@ export interface PanelState {
   panelTitle: string
   connectingAccounts: string[]
   networkPayload: BraveWallet.NetworkInfo
-  swapQuote?: BraveWallet.SwapResponse
-  swapError?: SwapErrorResponse
   signMessageData: BraveWallet.SignMessageRequest[]
   getEncryptionPublicKeyRequest: BraveWallet.GetEncryptionPublicKeyRequest
   switchChainRequest: BraveWallet.SwitchChainRequest
@@ -257,8 +255,7 @@ export interface PageState {
   showAddModal: boolean
   isCryptoWalletsInitialized: boolean
   isMetaMaskInitialized: boolean
-  swapQuote?: BraveWallet.SwapResponse
-  swapError?: SwapErrorResponse
+
 }
 
 export interface WalletPageState {

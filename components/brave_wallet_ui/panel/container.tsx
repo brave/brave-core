@@ -66,10 +66,8 @@ import { getNetworkInfo } from '../utils/network-utils'
 import {
   findENSAddress,
   findUnstoppableDomainAddress,
-  getBuyAssets,
   getChecksumEthAddress,
-  getERC20Allowance,
-  getIsSwapSupported
+  getERC20Allowance
 } from '../common/async/lib'
 import { isHardwareAccount } from '../utils/address-utils'
 import { useAssets, useBalance, useSwap, useSend, usePreset } from '../common/hooks'
@@ -122,8 +120,6 @@ function Container (props: Props) {
     panelTitle,
     selectedPanel,
     networkPayload,
-    swapQuote,
-    swapError,
     signMessageData,
     switchChainRequest,
     suggestedToken,
@@ -141,7 +137,6 @@ function Container (props: Props) {
   const [buyAmount, setBuyAmount] = React.useState('')
 
   const {
-    swapAssetOptions,
     sendAssetOptions,
     buyAssetOptions,
     panelUserAssetList
@@ -149,54 +144,22 @@ function Container (props: Props) {
     selectedAccount,
     networkList,
     selectedNetwork,
-    props.wallet.fullTokenList,
     userVisibleTokensInfo,
-    transactionSpotPrices,
-    getBuyAssets
+    transactionSpotPrices
   )
 
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(buyAssetOptions[0])
 
+  const swap = useSwap()
   const {
-    exchangeRate,
     filteredAssetList,
-    fromAmount,
-    fromAsset,
-    isFetchingSwapQuote,
-    isSwapButtonDisabled,
-    orderExpiration,
-    orderType,
-    slippageTolerance,
-    swapValidationError,
-    swapToOrFrom,
-    toAmount,
-    toAsset,
-    customSlippageTolerance,
     isSwapSupported,
     onSetFromAmount,
     setSwapToOrFrom,
-    onToggleOrderType,
-    onSwapQuoteRefresh,
-    flipSwapAssets,
-    onSubmitSwap,
-    onSelectExpiration,
-    onSelectSlippageTolerance,
-    onSwapInputChange,
-    onFilterAssetList,
+    swapToOrFrom,
     onSelectTransactAsset,
-    onCustomSlippageToleranceChange
-  } = useSwap(
-    selectedAccount,
-    selectedNetwork,
-    networkList,
-    swapAssetOptions,
-    props.walletPanelActions.fetchPanelSwapQuote,
-    getERC20Allowance,
-    props.walletActions.approveERC20Allowance,
-    getIsSwapSupported,
-    swapQuote,
-    swapError
-  )
+    fromAsset
+  } = swap
 
   const {
     onSetSendAmount,
@@ -222,7 +185,7 @@ function Container (props: Props) {
     props.wallet.fullTokenList
   )
 
-  React.useMemo(() => {
+  React.useEffect(() => {
     setSelectedAccounts([selectedAccount])
   }, [selectedAccount])
 
@@ -235,16 +198,12 @@ function Container (props: Props) {
 
   const getSelectedAccountBalance = useBalance(networkList)
   const sendAssetBalance = getSelectedAccountBalance(selectedAccount, selectedSendAsset)
-  const fromAssetBalance = getSelectedAccountBalance(selectedAccount, fromAsset)
-  const toAssetBalance = getSelectedAccountBalance(selectedAccount, toAsset)
 
-  const onSelectPresetAmountFactory = usePreset(
-    selectedAccount,
-    networkList,
-    onSetFromAmount,
-    onSetSendAmount,
-    fromAsset,
-    selectedSendAsset
+  const onSelectPresetAmount = usePreset(
+    {
+      onSetAmount: onSetFromAmount,
+      asset: fromAsset
+    }
   )
 
   const onSetBuyAmount = (value: string) => {
@@ -889,7 +848,7 @@ function Container (props: Props) {
               <Send
                 onChangeSendView={onChangeSendView}
                 onInputChange={onInputChange}
-                onSelectPresetAmount={onSelectPresetAmountFactory('send')}
+                onSelectPresetAmount={onSelectPresetAmount}
                 onSubmit={onSubmitSend}
                 selectedAsset={selectedSendAsset}
                 selectedNetwork={selectedNetwork}
@@ -946,31 +905,7 @@ function Container (props: Props) {
           >
             <SendWrapper>
               <Swap
-                selectedNetwork={selectedNetwork}
-                fromAsset={fromAsset}
-                toAsset={toAsset}
-                fromAmount={fromAmount}
-                toAmount={toAmount}
-                exchangeRate={exchangeRate}
-                orderType={orderType}
-                orderExpiration={orderExpiration}
-                slippageTolerance={slippageTolerance}
-                isFetchingQuote={isFetchingSwapQuote}
-                isSubmitDisabled={isSwapButtonDisabled}
-                validationError={swapValidationError}
-                fromAssetBalance={fromAssetBalance}
-                toAssetBalance={toAssetBalance}
-                customSlippageTolerance={customSlippageTolerance}
-                onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
-                onToggleOrderType={onToggleOrderType}
-                onSelectExpiration={onSelectExpiration}
-                onSelectSlippageTolerance={onSelectSlippageTolerance}
-                onFlipAssets={flipSwapAssets}
-                onSubmitSwap={onSubmitSwap}
-                onQuoteRefresh={onSwapQuoteRefresh}
-                onSelectPresetAmount={onSelectPresetAmountFactory('swap')}
-                onInputChange={onSwapInputChange}
-                onFilterAssetList={onFilterAssetList}
+                {...swap}
                 onChangeSwapView={onChangeSwapView}
               />
             </SendWrapper>

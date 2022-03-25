@@ -17,16 +17,19 @@ import { makeNetworkAsset } from '../../options/asset-options'
 // Hooks
 import usePricing from './pricing'
 import useBalance from './balance'
+import { useIsMounted } from './useIsMounted'
+import { useLib } from './useLib'
 
 export default function useAssets (
   selectedAccount: WalletAccountType,
   networkList: BraveWallet.NetworkInfo[],
   selectedNetwork: BraveWallet.NetworkInfo,
-  fullTokenList: BraveWallet.BlockchainToken[],
   userVisibleTokensInfo: BraveWallet.BlockchainToken[],
-  spotPrices: BraveWallet.AssetPrice[],
-  getBuyAssets: () => Promise<BraveWallet.BlockchainToken[]>
+  spotPrices: BraveWallet.AssetPrice[]
 ) {
+  const isMounted = useIsMounted()
+  const { getBuyAssets } = useLib()
+
   const { computeFiatAmount } = usePricing(spotPrices)
   const getBalance = useBalance(networkList)
   const nativeAsset = React.useMemo(
@@ -42,27 +45,16 @@ export default function useAssets (
     return userVisibleTokensInfo.filter((token) => token.chainId === selectedNetwork.chainId)
   }, [userVisibleTokensInfo, selectedNetwork])
 
-  const swapAssetOptions: BraveWallet.BlockchainToken[] = React.useMemo(() => {
-    return [
-      nativeAsset,
-      ...fullTokenList.filter((asset) => asset.symbol.toUpperCase() === 'BAT'),
-      ...assetsByNetwork
-        .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase())),
-      ...fullTokenList
-        .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase()))
-        .filter(asset => !assetsByNetwork
-          .some(token => token.symbol.toUpperCase() === asset.symbol.toUpperCase()))
-    ].filter(asset => asset.chainId === selectedNetwork.chainId)
-  }, [fullTokenList, userVisibleTokensInfo, nativeAsset, assetsByNetwork])
-
   const [buyAssetOptions, setBuyAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([nativeAsset])
 
   React.useEffect(() => {
-    getBuyAssets().then(tokens => {
-      setBuyAssetOptions(tokens.map(token => ({
-        ...token,
-        logo: `chrome://erc-token-images/${token.logo}`
-      }) as BraveWallet.BlockchainToken))
+    isMounted && getBuyAssets().then(tokens => {
+      if (isMounted) {
+        setBuyAssetOptions(tokens.map(token => ({
+          ...token,
+          logo: `chrome://erc-token-images/${token.logo}`
+        }) as BraveWallet.BlockchainToken))
+      }
     }).catch(e => console.error(e))
   }, [])
 
@@ -87,7 +79,6 @@ export default function useAssets (
   }, [selectedAccount, assetsByNetwork, getBalance, computeFiatAmount])
 
   return {
-    swapAssetOptions,
     sendAssetOptions: assetsByNetwork,
     buyAssetOptions,
     panelUserAssetList: assetsByValueAndNetwork

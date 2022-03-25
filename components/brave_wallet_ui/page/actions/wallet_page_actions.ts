@@ -24,10 +24,8 @@ import {
 } from '../constants/action_types'
 import {
   BraveWallet,
-  SwapErrorResponse,
   UpdateAccountNamePayloadType
 } from '../../constants/types'
-import { SwapParamsPayloadType } from '../../common/constants/action_types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
 export const restoreWallet = createAction<RestoreWalletPayloadType>('restoreWallet')
@@ -62,6 +60,3 @@ export const setMetaMaskInitialized = createAction<boolean>('setMetaMaskInitiali
 export const importFromCryptoWallets = createAction<ImportFromExternalWalletPayloadType>('importFromCryptoWallets')
 export const importFromMetaMask = createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask')
 export const openWalletSettings = createAction('openWalletSettings')
-export const setPageSwapQuote = createAction<BraveWallet.SwapResponse>('setPageSwapQuote')
-export const setPageSwapError = createAction<SwapErrorResponse | undefined>('setPageSwapError')
-export const fetchPageSwapQuote = createAction<SwapParamsPayloadType>('fetchPageSwapQuote')

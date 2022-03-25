@@ -46,11 +46,8 @@ import {
   findUnstoppableDomainAddress,
   getBalance,
   getBlockchainTokenInfo,
-  getBuyAssets,
   getChecksumEthAddress,
-  getERC20Allowance,
   isStrongPassword,
-  getIsSwapSupported,
   onConnectHardwareWallet
 } from '../common/async/lib'
 
@@ -61,7 +58,6 @@ import {
   usePreset,
   usePricing,
   useSend,
-  useSwap,
   useTokenInfo,
   useAssetManagement
 } from '../common/hooks'
@@ -119,9 +115,7 @@ function Container (props: Props) {
     importWalletError,
     showAddModal,
     isCryptoWalletsInitialized,
-    isMetaMaskInitialized,
-    swapQuote,
-    swapError
+    isMetaMaskInitialized
   } = props.page
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
@@ -132,61 +126,20 @@ function Container (props: Props) {
   const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
 
   const {
-    swapAssetOptions,
     sendAssetOptions,
     buyAssetOptions
   } = useAssets(
     selectedAccount,
     networkList,
     selectedNetwork,
-    fullTokenList,
     userVisibleTokensInfo,
-    transactionSpotPrices,
-    getBuyAssets
+    transactionSpotPrices
   )
 
   const {
     onFindTokenInfoByContractAddress,
     foundTokenInfoByContractAddress
   } = useTokenInfo(getBlockchainTokenInfo, userVisibleTokensInfo, fullTokenList, selectedNetwork)
-
-  const {
-    exchangeRate,
-    fromAmount,
-    fromAsset,
-    isFetchingSwapQuote,
-    isSwapButtonDisabled,
-    orderExpiration,
-    orderType,
-    slippageTolerance,
-    swapValidationError,
-    toAmount,
-    toAsset,
-    customSlippageTolerance,
-    isSwapSupported,
-    onToggleOrderType,
-    onSwapQuoteRefresh,
-    onSetToAmount,
-    onSetFromAmount,
-    flipSwapAssets,
-    onSubmitSwap,
-    onSetExchangeRate,
-    onSelectExpiration,
-    onSelectSlippageTolerance,
-    onSelectTransactAsset,
-    onCustomSlippageToleranceChange
-  } = useSwap(
-    selectedAccount,
-    selectedNetwork,
-    networkList,
-    swapAssetOptions,
-    props.walletPageActions.fetchPageSwapQuote,
-    getERC20Allowance,
-    props.walletActions.approveERC20Allowance,
-    getIsSwapSupported,
-    swapQuote,
-    swapError
-  )
 
   const {
     onSetSendAmount,
@@ -227,16 +180,12 @@ function Container (props: Props) {
   const { computeFiatAmount } = usePricing(transactionSpotPrices)
   const getAccountBalance = useBalance(networkList)
   const sendAssetBalance = getAccountBalance(selectedAccount, selectedSendAsset)
-  const fromAssetBalance = getAccountBalance(selectedAccount, fromAsset)
-  const toAssetBalance = getAccountBalance(selectedAccount, toAsset)
 
-  const onSelectPresetAmountFactory = usePreset(
-    selectedAccount,
-    networkList,
-    onSetFromAmount,
-    onSetSendAmount,
-    fromAsset,
-    selectedSendAsset
+  const onSelectPresetAmount = usePreset(
+    {
+      onSetAmount: onSetSendAmount,
+      asset: selectedSendAsset
+    }
   )
 
   const onToggleShowRestore = React.useCallback(() => {
@@ -716,26 +665,13 @@ function Container (props: Props) {
       {hideMainComponents &&
         <WalletWidgetStandIn>
           <BuySendSwap
-            accounts={accounts}
             networkList={networkList}
-            orderType={orderType}
-            swapToAsset={toAsset}
-            swapFromAsset={fromAsset}
             selectedNetwork={selectedNetwork}
-            selectedAccount={selectedAccount}
             selectedTab={selectedWidgetTab}
-            exchangeRate={exchangeRate}
             buyAmount={buyAmount}
             sendAmount={sendAmount}
-            fromAmount={fromAmount}
-            fromAssetBalance={fromAssetBalance}
-            toAmount={toAmount}
             addressError={addressError}
             addressWarning={addressWarning}
-            toAssetBalance={toAssetBalance}
-            orderExpiration={orderExpiration}
-            slippageTolerance={slippageTolerance}
-            swapValidationError={swapValidationError}
             sendAmountValidationError={sendAmountValidationError}
             toAddressOrUrl={toAddressOrUrl}
             toAddress={toAddress}
@@ -743,33 +679,16 @@ function Container (props: Props) {
             selectedSendAsset={selectedSendAsset}
             sendAssetBalance={sendAssetBalance}
             sendAssetOptions={sendAssetOptions}
-            swapAssetOptions={swapAssetOptions}
-            isFetchingSwapQuote={isFetchingSwapQuote}
-            isSwapSubmitDisabled={isSwapButtonDisabled}
-            isSwapSupported={isSwapSupported}
-            customSlippageTolerance={customSlippageTolerance}
             defaultCurrencies={defaultCurrencies}
-            onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
             onSetBuyAmount={onSetBuyAmount}
             onSetToAddressOrUrl={onSetToAddressOrUrl}
-            onSelectExpiration={onSelectExpiration}
-            onSelectPresetFromAmount={onSelectPresetAmountFactory('swap')}
-            onSelectPresetSendAmount={onSelectPresetAmountFactory('send')}
-            onSelectSlippageTolerance={onSelectSlippageTolerance}
-            onSetExchangeRate={onSetExchangeRate}
+            onSelectPresetSendAmount={onSelectPresetAmount}
             onSetSendAmount={onSetSendAmount}
-            onSetFromAmount={onSetFromAmount}
-            onSetToAmount={onSetToAmount}
-            onSubmitSwap={onSubmitSwap}
             onSubmitSend={onSubmitSend}
             onSubmitBuy={onSubmitBuy}
-            flipSwapAssets={flipSwapAssets}
             onSelectNetwork={onSelectNetwork}
             onSelectAccount={onSelectAccount}
-            onToggleOrderType={onToggleOrderType}
-            onSelectAsset={onSelectTransactAsset}
             onSelectTab={setSelectedWidgetTab}
-            onSwapQuoteRefresh={onSwapQuoteRefresh}
             onSelectSendAsset={onSelectSendAsset}
             onAddNetwork={onAddNetwork}
             onAddAsset={onShowVisibleAssetsModal}

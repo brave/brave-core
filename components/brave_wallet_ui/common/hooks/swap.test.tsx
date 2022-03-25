@@ -1,28 +1,57 @@
+import * as React from 'react'
 import { act, renderHook } from '@testing-library/react-hooks'
 
 // Constants
-import { mockAccount, mockNetwork } from '../constants/mocks'
+import { mockAccount } from '../constants/mocks'
 import { BraveWallet } from '../../constants/types'
 
 // Options
 import { AccountAssetOptions } from '../../options/asset-options'
 
-// Actions
-import * as WalletPageActions from '../../page/actions/wallet_page_actions'
-import * as WalletActions from '../actions/wallet_actions'
-
 // Hooks
+import { TextEncoder, TextDecoder } from 'util'
+global.TextDecoder = TextDecoder as any
+global.TextEncoder = TextEncoder
 import useSwap from './swap'
+
+// Redux
+import { Provider } from 'react-redux'
+import { combineReducers, createStore } from 'redux'
+import { createWalletReducer } from '../reducers/wallet_reducer'
+import { createPageReducer } from '../../page/reducers/page_reducer'
+
+// Mocks
+import * as MockedLib from '../async/__mocks__/lib'
+import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
+import { mockPageState } from '../../stories/mock-data/mock-page-state'
+import { LibContext } from '../context/lib.context'
 
 jest.useFakeTimers()
 
-async function mockGetERC20Allowance (contractAddress: string, ownerAddress: string, spenderAddress: string) {
-  return '1000000000000000000' // 1 unit
+const store = createStore(combineReducers({
+  wallet: createWalletReducer(mockWalletState),
+  page: createPageReducer(mockPageState)
+}))
+
+const renderHookOptions = {
+  wrapper: ({ children }: { children?: React.ReactChildren }) =>
+    <Provider store={store}>
+      <LibContext.Provider value={MockedLib as any}>
+        {children}
+      </LibContext.Provider>
+    </Provider>
 }
 
-const mockIsSwapSupportedFactory = (expected: boolean) =>
-  async (network: BraveWallet.NetworkInfo) =>
-    expected
+function renderHookOptionsWithCustomStore (store: any) {
+  return {
+    wrapper: ({ children }: { children?: React.ReactChildren }) =>
+    <Provider store={store}>
+      <LibContext.Provider value={MockedLib as any}>
+        {children}
+      </LibContext.Provider>
+    </Provider>
+  }
+}
 
 const mockQuote = {
   allowanceTarget: '',
@@ -44,36 +73,25 @@ const mockQuote = {
   buyTokenToEthRate: '1'
 } as BraveWallet.SwapResponse
 
+const mockedBAT = AccountAssetOptions[1]
+
 describe('useSwap hook', () => {
   it('should initialize From and To assets', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useSwap(
-      mockAccount,
-      mockNetwork,
-      [mockNetwork],
-      AccountAssetOptions,
-      WalletPageActions.fetchPageSwapQuote,
-      mockGetERC20Allowance,
-      WalletActions.approveERC20Allowance,
-      mockIsSwapSupportedFactory(true)
-    ))
+    const { result, waitForNextUpdate } = renderHook(() => useSwap(), renderHookOptions)
+
+    act(() => {
+      result.current.setFromAsset(AccountAssetOptions[0])
+      result.current.setToAsset(AccountAssetOptions[1])
+    })
 
     await waitForNextUpdate()
 
-    expect(result.current.fromAsset).toBe(AccountAssetOptions[0])
-    expect(result.current.toAsset).toBe(AccountAssetOptions[1])
+    expect(result.current.fromAsset).toEqual(AccountAssetOptions[0])
+    expect(result.current.toAsset).toEqual(AccountAssetOptions[1])
   })
 
   it('should return if network supports swap or not', async () => {
-    const { result, waitFor } = renderHook(() => useSwap(
-      mockAccount,
-      mockNetwork,
-      [mockNetwork],
-      AccountAssetOptions,
-      WalletPageActions.fetchPageSwapQuote,
-      mockGetERC20Allowance,
-      WalletActions.approveERC20Allowance,
-      mockIsSwapSupportedFactory(true)
-    ))
+    const { result, waitFor } = renderHook(() => useSwap(), renderHookOptions)
 
     await waitFor(() => {
       expect(result.current.isSwapSupported).toBe(true)
@@ -81,20 +99,16 @@ describe('useSwap hook', () => {
   })
 
   describe('token allowance', () => {
-    it('should not query allowance for native From asset', async () => {
-      const mockFn = jest.fn(() => Promise.resolve('mockErc20Allowance'))
+    let mockFn: jest.SpyInstance<Promise<string>, [contractAddress: string, ownerAddress: string, spenderAddress: string]>
+    beforeEach(() => {
+      mockFn = jest.spyOn(MockedLib, 'getERC20Allowance')
+    })
+    afterEach(() => {
+      mockFn.mockRestore()
+    })
 
-      const { waitForNextUpdate } = renderHook(() => useSwap(
-        mockAccount,
-        mockNetwork,
-        [mockNetwork],
-        AccountAssetOptions,
-        WalletPageActions.fetchPageSwapQuote,
-        mockFn,
-        WalletActions.approveERC20Allowance,
-        mockIsSwapSupportedFactory(true),
-        mockQuote
-      ))
+    it('should not query allowance for native From asset', async () => {
+      const { waitForNextUpdate } = renderHook(() => useSwap(), renderHookOptions)
 
       await waitForNextUpdate()
 
@@ -102,23 +116,19 @@ describe('useSwap hook', () => {
     })
 
     it('should not query allowance if no quote', async () => {
-      const mockFn = jest.fn(() => Promise.resolve('mockErc20Allowance'))
-
-      // Remove first item in the list, since it is the native asset.
-      const swapAssets = AccountAssetOptions.slice(1)
-
-      const { waitForNextUpdate } = renderHook(() => useSwap(
-        mockAccount,
-        mockNetwork,
-        [mockNetwork],
-        swapAssets,
-        WalletPageActions.fetchPageSwapQuote,
-        mockFn,
-        WalletActions.approveERC20Allowance,
-        mockIsSwapSupportedFactory(true)
-      ))
+      const { waitForNextUpdate, result, waitFor } = renderHook(() => useSwap(), renderHookOptions)
 
       await waitForNextUpdate()
+
+      // set from-asset to a non-native asset
+      act(() => {
+        result.current.setSwapQuote(undefined)
+        result.current.setFromAsset(mockedBAT)
+      })
+
+      await waitFor(() => {
+        expect(result.current.fromAsset?.contractAddress).toBe(mockedBAT.contractAddress)
+      })
 
       expect(mockFn).not.toHaveBeenCalled()
     })
@@ -129,28 +139,20 @@ describe('useSwap hook', () => {
         allowanceTarget: 'mockAllowanceTarget'
       }
 
-      // Remove first item in the list, since it is the native asset.
-      const swapAssets = AccountAssetOptions.slice(1)
-
-      const mockFn = jest.fn(() => Promise.resolve('mockErc20Allowance'))
-
-      const { waitForNextUpdate } = renderHook(() => useSwap(
-        mockAccount,
-        mockNetwork,
-        [mockNetwork],
-        swapAssets,
-        WalletPageActions.fetchPageSwapQuote,
-        mockFn,
-        WalletActions.approveERC20Allowance,
-        mockIsSwapSupportedFactory(true),
-        quote
-      ))
+      const { result, waitForNextUpdate } = renderHook(() => useSwap(), renderHookOptions)
 
       await waitForNextUpdate()
 
+      // set from-asset to a non-native asset
+      await act(async () => {
+        result.current.setFromAsset(mockedBAT)
+        result.current.setSwapQuote(quote)
+        await waitForNextUpdate()
+      })
+
       expect(mockFn).toBeCalledWith(
-        swapAssets[0].contractAddress,
-        mockAccount.address,
+        mockedBAT.contractAddress,
+        mockWalletState.accounts[0].address,
         quote.allowanceTarget
       )
     })
@@ -159,21 +161,15 @@ describe('useSwap hook', () => {
   describe('swap validation errors', () => {
     it('should not return error if From and To amount are empty', async () => {
       // Step 1: Initialize the useSwap hook.
-      const { result, waitForValueToChange, waitFor } = renderHook(() => useSwap(
-        mockAccount,
-        mockNetwork,
-        [mockNetwork],
-        AccountAssetOptions,
-        WalletPageActions.fetchPageSwapQuote,
-        mockGetERC20Allowance,
-        WalletActions.approveERC20Allowance,
-        mockIsSwapSupportedFactory(true),
-        mockQuote
-      ))
+      const { result, waitForValueToChange, waitFor } = renderHook(() => useSwap(), renderHookOptions)
 
       // Step 2: Consume the update to isSwapSupported, so it does not fire
       // in the middle of a future update.
       await waitForValueToChange(() => result.current.isSwapSupported)
+
+      await act(async () => {
+        result.current.setSwapQuote(mockQuote)
+      })
 
       // OK: From and To amounts are 0, and swapValidationError is undefined.
       // KO: Test case times out.
@@ -188,22 +184,7 @@ describe('useSwap hook', () => {
       // Step 1: Initialize the useSwap hook with the following parameters.
       //    From asset: ETH
       //    Balance:    1 ETH
-      const { result, waitForValueToChange, waitFor } = renderHook(() => useSwap(
-        {
-          ...mockAccount,
-          nativeBalanceRegistry: {
-            '0x1': '1000000000000000000'
-          }
-        },
-        mockNetwork,
-        [mockNetwork],
-        AccountAssetOptions, // From asset is ETH
-        WalletPageActions.fetchPageSwapQuote,
-        mockGetERC20Allowance,
-        WalletActions.approveERC20Allowance,
-        mockIsSwapSupportedFactory(true),
-        mockQuote
-      ))
+      const { result, waitForValueToChange, waitFor } = renderHook(() => useSwap(), renderHookOptions)
 
       // Step 2: Consume the update to isSwapSupported, so it does not fire
       // in the middle of a future update.
@@ -239,17 +220,7 @@ describe('useSwap hook', () => {
     it('should return error if To amount has decimals overflow', async () => {
       // Step 1: Initialize the useSwap hook with the following parameters.
       //    To asset: BAT
-      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
-        mockAccount,
-        mockNetwork,
-        [mockNetwork],
-        AccountAssetOptions, // To asset is BAT
-        WalletPageActions.fetchPageSwapQuote,
-        mockGetERC20Allowance,
-        WalletActions.approveERC20Allowance,
-        mockIsSwapSupportedFactory(true),
-        mockQuote
-      ))
+      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(), renderHookOptions)
 
       // Step 2: Consume the update to isSwapSupported, so it does not fire
       // in the middle of a future update.
@@ -286,17 +257,7 @@ describe('useSwap hook', () => {
       // Step 1: Initialize the useSwap hook with the following parameters.
       //    From asset: ETH
       //    Balance:    0.000000000000123456 ETH
-      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
-        mockAccount, // Balance: 123456 Wei
-        mockNetwork,
-        [mockNetwork],
-        AccountAssetOptions, // From asset is ETH
-        WalletPageActions.fetchPageSwapQuote,
-        mockGetERC20Allowance,
-        WalletActions.approveERC20Allowance,
-        mockIsSwapSupportedFactory(true),
-        mockQuote
-      ))
+      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(), renderHookOptions)
 
       // Step 2: Consume the update to isSwapSupported, so it does not fire
       // in the middle of a future update.
@@ -333,22 +294,7 @@ describe('useSwap hook', () => {
       // Step 1: Initialize the useSwap hook with the following parameters.
       //    From asset: BAT
       //    Balance:    0.000000000000123456 ETH
-      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
-        {
-          ...mockAccount,
-          tokenBalanceRegistry: {
-            [AccountAssetOptions[1].contractAddress.toLowerCase()]: '123456' // 0.000000000000123456 BAT
-          }
-        },
-        mockNetwork,
-        [mockNetwork],
-        AccountAssetOptions.slice(1), // From asset is BAT
-        WalletPageActions.fetchPageSwapQuote,
-        mockGetERC20Allowance,
-        WalletActions.approveERC20Allowance,
-        mockIsSwapSupportedFactory(true),
-        mockQuote
-      ))
+      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(), renderHookOptions)
 
       // Step 2: Consume the update to isSwapSupported, so it does not fire
       // in the middle of a future update.
@@ -386,25 +332,29 @@ describe('useSwap hook', () => {
       //    From asset: ETH
       //    Balance:    0.000000000000123456 ETH
       //    Quote fees: 0.000000000001000000 ETH
-      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
-        mockAccount, // Balance: 123456 Wei
-        mockNetwork,
-        [mockNetwork],
-        AccountAssetOptions, // From asset is ETH
-        WalletPageActions.fetchPageSwapQuote,
-        mockGetERC20Allowance,
-        WalletActions.approveERC20Allowance,
-        mockIsSwapSupportedFactory(true),
-        {
-          ...mockQuote,
-          gasPrice: '10',
-          gas: '100000'
-        }
-      ))
+
+      const mockStore = createStore(combineReducers({
+        wallet: createWalletReducer({
+          ...mockWalletState,
+          selectedAccount: mockAccount // Balance: 123456 Wei
+        }),
+        page: createPageReducer(mockPageState)
+      }))
+
+      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(), renderHookOptionsWithCustomStore(mockStore))
 
       // Step 2: Consume the update to isSwapSupported, so it does not fire
       // in the middle of a future update.
       await waitForValueToChange(() => result.current.isSwapSupported)
+
+      await act(async () => {
+        result.current.setFromAsset(AccountAssetOptions[0]) // From asset is ETH
+        result.current.setSwapQuote({
+          ...mockQuote,
+          gasPrice: '10',
+          gas: '100000'
+        })
+      })
 
       // OK: Assert for swapValidationError to be 'insufficientFundsForGas'.
       // KO: Test case times out.
@@ -419,27 +369,30 @@ describe('useSwap hook', () => {
       //    From amount: 0.000000000000234560 ETH
       //    Quote fees:  0.000000000001000000 ETH
       //    Balance:     0.000000000001234560 ETH
-      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
-        {
-          ...mockAccount,
-          nativeBalanceRegistry: {
-            '0x1': '1234560'
+      const mockStore = createStore(combineReducers({
+        wallet: createWalletReducer({
+          ...mockWalletState,
+          selectedAccount: {
+            ...mockAccount,
+            nativeBalanceRegistry: {
+              [BraveWallet.MAINNET_CHAIN_ID]: '1234560' // 1234560 Wei
+            }
           }
-        },
-        mockNetwork,
-        [mockNetwork],
-        AccountAssetOptions, // From asset is ETH
-        WalletPageActions.fetchPageSwapQuote,
-        mockGetERC20Allowance,
-        WalletActions.approveERC20Allowance,
-        mockIsSwapSupportedFactory(true),
-        {
-          ...mockQuote,
-          gasPrice: '10',
-          gas: '100000',
-          sellAmount: '234561' // 0.000000000000234561 ETH
-        }
-      ))
+        }),
+        page: createPageReducer(mockPageState)
+      }))
+
+      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(), renderHookOptionsWithCustomStore(mockStore))
+
+      act(() => {
+        result.current.setFromAsset(AccountAssetOptions[0])
+        result.current.setSwapQuote({
+            ...mockQuote,
+            gasPrice: '10',
+            gas: '100000',
+            sellAmount: '234561' // 0.000000000000234561 ETH
+        })
+      })
 
       // Step 2: Consume the update to isSwapSupported, so it does not fire
       // in the middle of a future update.
@@ -471,47 +424,67 @@ describe('useSwap hook', () => {
       //    From amount: 10 BAT
       //    Quote fees:  0.000000000001 ETH
       //    Balance:     20 BAT
-      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
-        {
-          ...mockAccount,
-          nativeBalanceRegistry: {
-            '0x1': '1000000000000000000'
-          },
-          tokenBalanceRegistry: {
-            [AccountAssetOptions[1].contractAddress.toLowerCase()]: '20000000000000000000' // 20 BAT
+      const mockStore = createStore(combineReducers({
+        wallet: createWalletReducer({
+          ...mockWalletState,
+          selectedAccount: {
+            ...mockAccount,
+            nativeBalanceRegistry: {
+              [BraveWallet.MAINNET_CHAIN_ID]: '1000000000000000000', // 1 ETH
+              [BraveWallet.ROPSTEN_CHAIN_ID]: '1000000000000000000' // 1 ETH
+            },
+            tokenBalanceRegistry: {
+              [mockedBAT.contractAddress.toLowerCase()]: '20000000000000000000' // 20 BAT
+            }
           }
-        },
-        mockNetwork,
-        [mockNetwork],
-        AccountAssetOptions.slice(1), // From asset is BAT
-        WalletPageActions.fetchPageSwapQuote,
-        mockGetERC20Allowance,
-        WalletActions.approveERC20Allowance,
-        mockIsSwapSupportedFactory(true),
-        {
-          ...mockQuote,
-          gasPrice: '10',
-          gas: '100000',
-          sellAmount: '10000000000000000000' // 10 BAT
-        }
-      ))
+        }),
+        page: createPageReducer(mockPageState)
+      }))
+
+      const { result, waitFor, waitForValueToChange } = renderHook(
+        () => useSwap({
+          fromAsset: AccountAssetOptions[1],
+          toAsset: AccountAssetOptions[0]
+        }),
+        renderHookOptionsWithCustomStore(mockStore)
+      )
 
       // Step 2: Consume the update to isSwapSupported, so it does not fire
       // in the middle of a future update.
       await waitForValueToChange(() => result.current.isSwapSupported)
 
+      // set from asset to BAT
+      act(() => {
+        result.current.setFromAsset(mockedBAT) // From asset is BAT
+        jest.advanceTimersByTime(1001)
+      })
+      await waitFor(() => {
+        expect(result.current.fromAsset?.contractAddress.toLowerCase()).toBe(mockedBAT.contractAddress.toLowerCase())
+      })
+
       // Step 3: Set a From amount, such that the value is greater than
       // token allowance, and wait for at least 1000ms to avoid debouncing.
+      // set from-amount
       act(() => {
-        result.current.onSetFromAmount('10')
+        result.current.onSwapInputChange('19', 'from') // From amount is 19 BAT
         jest.advanceTimersByTime(1001)
+      })
+      await waitFor(() => {
+        expect(result.current.fromAmount).toBe('19')
+      })
+
+      // set-allowance
+      act(() => {
+        result.current.setAllowance('10')
+        jest.advanceTimersByTime(1001)
+      })
+      await waitFor(() => {
+        expect(result.current.allowance).toBe('10')
       })
 
       // OK: Assert for swapValidationError to be 'insufficientAllowance'.
       // KO: Test case times out.
-      await waitFor(() => {
-        expect(result.current.swapValidationError).toBe('insufficientAllowance')
-      })
+      expect(result.current.swapValidationError).toBe('insufficientAllowance')
     })
 
     it('should return error if insufficient liquidity', async () => {
@@ -520,27 +493,18 @@ describe('useSwap hook', () => {
       //    From amount: 0.1 ETH
       //    Quote fees:  0.000000000001 ETH
       //    Balance:     1 ETH
-      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
-        {
-          ...mockAccount,
-          nativeBalanceRegistry: {
-            '0x1': '1000000000000000000'
-          }
-        },
-        mockNetwork,
-        [mockNetwork],
-        AccountAssetOptions, // From asset is ETH
-        WalletPageActions.fetchPageSwapQuote,
-        mockGetERC20Allowance,
-        WalletActions.approveERC20Allowance,
-        mockIsSwapSupportedFactory(true),
-        {
+      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(), renderHookOptions)
+
+      await waitForValueToChange(() => result.current.isSwapSupported)
+
+      await act(async () => {
+        result.current.setSwapQuote({
           ...mockQuote,
           gasPrice: '10',
           gas: '100000',
           sellAmount: '100000000000000000' // 0.1 ETH
-        },
-        {
+        })
+        result.current.setSwapError({
           code: 100, // SWAP_VALIDATION_ERROR_CODE
           reason: 'mockReason',
           validationErrors: [
@@ -550,14 +514,10 @@ describe('useSwap hook', () => {
               reason: 'INSUFFICIENT_ASSET_LIQUIDITY'
             }
           ]
-        }
-      ))
+        })
+      })
 
-      // Step 2: Consume the update to isSwapSupported, so it does not fire
-      // in the middle of a future update.
-      await waitForValueToChange(() => result.current.isSwapSupported)
-
-      // Step 3: Set a From amount, such that there is no validation error,
+      // Step 2: Set a From amount, such that there is no validation error,
       // and wait for at least 1000ms to avoid debouncing.
       act(() => {
         result.current.onSetFromAmount('0.1')
@@ -577,37 +537,24 @@ describe('useSwap hook', () => {
       //    From amount: 0.1 ETH
       //    Quote fees:  0.000000000001 ETH
       //    Balance:     1 ETH
-      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
-        {
-          ...mockAccount,
-          nativeBalanceRegistry: {
-            '0x1': '1000000000000000000'
-          }
-        },
-        mockNetwork,
-        [mockNetwork],
-        AccountAssetOptions, // From asset is ETH
-        WalletPageActions.fetchPageSwapQuote,
-        mockGetERC20Allowance,
-        WalletActions.approveERC20Allowance,
-        mockIsSwapSupportedFactory(true),
-        {
+      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(), renderHookOptions)
+
+      await waitForValueToChange(() => result.current.isSwapSupported)
+
+      await act(async () => {
+        result.current.setSwapQuote({
           ...mockQuote,
           gasPrice: '10',
           gas: '100000',
           sellAmount: '100000000000000000' // 0.1 ETH
-        },
-        {
+        })
+        result.current.setSwapError({
           code: 111, // gas estimation failed
           reason: 'Gas estimation failed'
-        }
-      ))
+        })
+      })
 
-      // Step 2: Consume the update to isSwapSupported, so it does not fire
-      // in the middle of a future update.
-      await waitForValueToChange(() => result.current.isSwapSupported)
-
-      // Step 3: Set a From amount, such that there is no validation error,
+      // Step 2: Set a From amount, such that there is no validation error,
       // and wait for at least 1000ms to avoid debouncing.
       act(() => {
         result.current.onSetFromAmount('0.1')

@@ -99,7 +99,7 @@ export type DefaultBaseCryptocurrencyChanged = {
 }
 
 export type SitePermissionsPayloadType = {
-  accounts: Array<WalletAccountType | undefined>
+  accounts: WalletAccountType[]
 }
 
 export type RemoveSitePermissionPayloadType = {

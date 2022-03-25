@@ -16,8 +16,7 @@ import {
   SignMessageHardwareProcessedPayload,
   SwitchEthereumChainProcessedPayload
 } from '../constants/action_types'
-import { BraveWallet, SwapErrorResponse } from '../../constants/types'
-import { SwapParamsPayloadType } from '../../common/constants/action_types'
+import { BraveWallet } from '../../constants/types'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
 export const connectToSite = createAction<AccountPayloadType>('connectToSite')
@@ -39,9 +38,6 @@ export const expandWalletAccounts = createAction('expandWalletAccounts')
 export const expandWalletAddAsset = createAction('expandWalletAddAsset')
 export const navigateTo = createAction<string>('navigateTo')
 export const navigateToMain = createAction('navigateToMain')
-export const setPanelSwapQuote = createAction<BraveWallet.SwapResponse>('setPanelSwapQuote')
-export const setPanelSwapError = createAction<SwapErrorResponse | undefined>('setPanelSwapError')
-export const fetchPanelSwapQuote = createAction<SwapParamsPayloadType>('fetchPanelSwapQuote')
 export const signMessage = createAction<SignMessagePayload[]>('signMessage')
 export const signMessageProcessed = createAction<SignMessageProcessedPayload>('signMessageProcessed')
 export const signMessageHardware = createAction<BraveWallet.SignMessageRequest>('signMessageHardware')

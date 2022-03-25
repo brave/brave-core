@@ -3,8 +3,7 @@ import {
   UserAccountType,
   BuySendSwapViewTypes,
   BraveWallet,
-  DefaultCurrencies,
-  WalletAccountType
+  DefaultCurrencies
 } from '../../../constants/types'
 import {
   AccountsAssetsNetworks,
@@ -13,10 +12,8 @@ import {
 } from '..'
 
 export interface Props {
-  accounts: WalletAccountType[]
   networkList: BraveWallet.NetworkInfo[]
   selectedNetwork: BraveWallet.NetworkInfo
-  selectedAccount: UserAccountType
   assetOptions: BraveWallet.BlockchainToken[]
   buyAmount: string
   showHeader?: boolean
@@ -31,10 +28,8 @@ export interface Props {
 
 function BuyTab (props: Props) {
   const {
-    accounts,
     networkList,
     selectedNetwork,
-    selectedAccount,
     buyAmount,
     showHeader,
     assetOptions,
@@ -86,8 +81,6 @@ function BuyTab (props: Props) {
         <>
           {showHeader &&
             <Header
-              selectedAccount={selectedAccount}
-              selectedNetwork={selectedNetwork}
               onChangeSwapView={onChangeBuyView}
             />
           }
@@ -105,10 +98,6 @@ function BuyTab (props: Props) {
       }
       {buyView !== 'buy' &&
         <AccountsAssetsNetworks
-          selectedAccount={selectedAccount}
-          selectedNetwork={selectedNetwork}
-          accounts={accounts}
-          networkList={networkList}
           goBack={goBack}
           assetOptions={assetOptions}
           onClickSelectAccount={onClickSelectAccount}

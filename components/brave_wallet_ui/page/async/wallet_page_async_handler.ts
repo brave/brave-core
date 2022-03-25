@@ -29,7 +29,6 @@ import {
   getKeyringIdFromAddress
 } from '../../common/async/lib'
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
-import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
 import { getTokenParam } from '../../utils/api-utils'
 
@@ -217,11 +216,6 @@ handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store: Store, pa
   const pageHandler = getWalletPageApiProxy().pageHandler
   pageHandler.showApprovePanelUI()
 })
-
-handler.on(
-  WalletPageActions.fetchPageSwapQuote.getType(),
-  fetchSwapQuoteFactory(WalletPageActions.setPageSwapQuote, WalletPageActions.setPageSwapError)
-)
 
 handler.on(WalletPageActions.openWalletSettings.getType(), async (store) => {
   chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {

@@ -20,6 +20,7 @@ import Amount from '../../../utils/amount'
 
 // Hooks
 import { usePricing, useTransactionParser, useTokenInfo } from '../../../common/hooks'
+import { useLib } from '../../../common/hooks/useLib'
 
 import { getLocale } from '../../../../common/locale'
 import { withPlaceholderIcon } from '../../shared'
@@ -27,8 +28,6 @@ import { withPlaceholderIcon } from '../../shared'
 import { NavButton, PanelTab, TransactionDetailBox } from '../'
 import EditGas, { MaxPriorityPanels } from '../edit-gas'
 import EditAllowance from '../edit-allowance'
-
-import { getBlockchainTokenInfo } from '../../../common/async/lib'
 
 // Styled Components
 import {
@@ -131,6 +130,7 @@ function ConfirmTransactionPanel (props: Props) {
 
   const transactionGasEstimates = transactionInfo.txDataUnion.ethTxData1559?.gasEstimation
 
+  const { getBlockchainTokenInfo } = useLib()
   const [maxPriorityPanel, setMaxPriorityPanel] = React.useState<MaxPriorityPanels>(MaxPriorityPanels.setSuggested)
   const [suggestedSliderStep, setSuggestedSliderStep] = React.useState<string>('1')
   const [suggestedMaxPriorityFeeChoices, setSuggestedMaxPriorityFeeChoices] = React.useState<string[]>([
