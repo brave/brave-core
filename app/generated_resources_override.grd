@@ -96,9 +96,6 @@ are declared in tools/grit/grit_rule.gni.
 
       <part file="profiles_strings_override.grdp" />
 
-      <if expr="is_win or is_macosx or is_linux">
-        </if>
-
       <if expr="chromeos_ash or chromeos_lacros">
         </if>
       <if expr="chromeos">
@@ -574,7 +571,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_macosx">
         </if>
       <if expr="not is_android">
-        <if expr="chromeos_ash">
+        <if expr="chromeos_ash or chromeos_lacros">
           </if>
       </if>
 
@@ -593,6 +590,10 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_INCOGNITOWINDOW_PROMO_3" desc="Variations option 4. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
         To browse privately, click the dots icon menu to open a Private window
       </message>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">

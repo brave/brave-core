@@ -10,6 +10,9 @@
   <if expr="lacros">
     </if>
 
+  <if expr="chromeos_ash or chromeos_lacros">
+    </if>
+
   <if expr="chromeos">
     </if>
   <if expr="not chromeos">
