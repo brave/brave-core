@@ -77,7 +77,7 @@ pub struct Meta {
 }
 
 impl Meta {
-    /// Performs a merge of two meta structs, preferencing self except desciption.
+    /// Performs a merge of two meta structs, preferencing self except description.
     /// The shortest description will be taken.
     /// Takes ownership of both structs and returns the merged metadata.
     pub fn merge(mut self, other: Self) -> Meta {
@@ -85,18 +85,11 @@ impl Meta {
             self.title = other.title;
         }
         self.author = self.author.or(other.author);
-        self.description = match self.description {
-            None => other.description,
-            Some(x) => match other.description {
-                None => Some(x),
-                Some(y) => {
-                    if x.len() < y.len() {
-                        Some(x)
-                    } else {
-                        Some(y)
-                    }
-                }
-            }
+        self.description = match (self.description, other.description) {
+            (None, None) => None,
+            (Some(x), None) | (None, Some(x)) => Some(x),
+            (Some(x), Some(y)) if x.len() < y.len() => Some(x),
+            (Some(_), Some(y)) => Some(y),
         };
         self.charset = self.charset.or(other.charset);
         self.last_modified = self.last_modified.or(other.last_modified);
