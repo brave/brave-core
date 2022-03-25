@@ -24,7 +24,7 @@ void SaveTransactions(const TransactionList& transactions) {
 
 TransactionInfo BuildTransaction(const double value,
                                  const ConfirmationType& confirmation_type,
-                                 const base::Time& reconciled_at) {
+                                 const base::Time reconciled_at) {
   TransactionInfo transaction;
 
   transaction.id = base::GenerateGUID();

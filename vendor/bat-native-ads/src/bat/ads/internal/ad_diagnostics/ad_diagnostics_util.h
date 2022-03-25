@@ -30,7 +30,7 @@ absl::optional<std::string> GetDiagnosticsValueByKey(
 
 std::string ConvertToString(const bool value);
 
-std::string ConvertToString(const base::Time& time);
+std::string ConvertToString(const base::Time time);
 
 }  // namespace ads
 

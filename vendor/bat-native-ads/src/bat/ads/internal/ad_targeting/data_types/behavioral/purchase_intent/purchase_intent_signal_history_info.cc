@@ -46,7 +46,7 @@ uint16_t GetWeight(base::DictionaryValue* dictionary) {
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo() = default;
 
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
-    const base::Time& created_at,
+    const base::Time created_at,
     const uint16_t weight)
     : created_at(created_at), weight(weight) {}
 

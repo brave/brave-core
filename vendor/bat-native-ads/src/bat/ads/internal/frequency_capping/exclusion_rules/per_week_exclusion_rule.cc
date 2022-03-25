@@ -46,9 +46,9 @@ bool PerWeekExclusionRule::DoesRespectCap(const AdEventList& ad_events,
     return true;
   }
 
-  const base::Time& now = base::Time::Now();
+  const base::Time now = base::Time::Now();
 
-  const base::TimeDelta& time_constraint = base::Days(7);
+  const base::TimeDelta time_constraint = base::Days(7);
 
   const int count = std::count_if(
       ad_events.cbegin(), ad_events.cend(),

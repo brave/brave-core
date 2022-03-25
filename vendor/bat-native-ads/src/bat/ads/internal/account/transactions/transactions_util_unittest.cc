@@ -37,8 +37,8 @@ TEST_F(BatAdsTransactionsUtilTest, GetTransactionsForDateRange) {
       BuildTransaction(0.03, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
-  const base::Time& from_time = Now();
-  const base::Time& to_time = DistantFuture();
+  const base::Time from_time = Now();
+  const base::Time to_time = DistantFuture();
 
   // Act
   const TransactionList& transactions_for_date_range =
@@ -67,8 +67,8 @@ TEST_F(BatAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
 
   AdvanceClock(TimeFromString("25 December 2020", /* is_local */ true));
 
-  const base::Time& from_time = Now();
-  const base::Time& to_time = DistantFuture();
+  const base::Time from_time = Now();
+  const base::Time to_time = DistantFuture();
 
   // Act
   const TransactionList& transactions_for_date_range =

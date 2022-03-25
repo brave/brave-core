@@ -121,8 +121,8 @@ void Transactions::GetAll(GetTransactionsCallback callback) {
                                         std::placeholders::_1, callback));
 }
 
-void Transactions::GetForDateRange(const base::Time& from_time,
-                                   const base::Time& to_time,
+void Transactions::GetForDateRange(const base::Time from_time,
+                                   const base::Time to_time,
                                    GetTransactionsCallback callback) {
   const std::string query = base::StringPrintf(
       "SELECT "

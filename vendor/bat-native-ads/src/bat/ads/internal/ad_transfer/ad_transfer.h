@@ -50,7 +50,7 @@ class AdTransfer final {
   void OnTransferAd(const int32_t tab_id,
                     const std::vector<std::string>& redirect_chain);
 
-  void NotifyWillTransferAd(const AdInfo& ad, const base::Time& time) const;
+  void NotifyWillTransferAd(const AdInfo& ad, const base::Time time) const;
   void NotifyDidTransferAd(const AdInfo& ad) const;
   void NotifyCancelledAdTransfer(const AdInfo& ad, const int32_t tab_id) const;
   void NotifyFailedToTransferAd(const AdInfo& ad) const;

@@ -11,11 +11,11 @@ namespace ads {
 
 bool DoesHistoryRespectCapForRollingTimeConstraint(
     const std::deque<base::Time>& history,
-    const base::TimeDelta& time_constraint,
+    const base::TimeDelta time_constraint,
     const int cap) {
   int count = 0;
 
-  const base::Time& now = base::Time::Now();
+  const base::Time now = base::Time::Now();
 
   for (const auto& time : history) {
     if (now - time < time_constraint) {

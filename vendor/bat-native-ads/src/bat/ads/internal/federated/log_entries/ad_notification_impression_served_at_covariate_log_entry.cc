@@ -16,7 +16,7 @@ AdNotificationImpressionServedAtCovariateLogEntry::
     ~AdNotificationImpressionServedAtCovariateLogEntry() = default;
 
 void AdNotificationImpressionServedAtCovariateLogEntry::SetLastImpressionAt(
-    const base::Time& time) {
+    const base::Time time) {
   impression_served_at_ = time;
 }
 

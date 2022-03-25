@@ -39,7 +39,7 @@ std::string PromotedContentAdsPerHourPermissionRule::GetLastMessage() const {
 
 bool PromotedContentAdsPerHourPermissionRule::DoesRespectCap(
     const std::deque<base::Time>& history) {
-  const base::TimeDelta& time_constraint = base::Hours(1);
+  const base::TimeDelta time_constraint = base::Hours(1);
 
   const int cap = features::GetMaximumPromotedContentAdsPerHour();
 

@@ -107,11 +107,11 @@ AdsImpl* UnitTestBase::GetAds() const {
   return ads_.get();
 }
 
-void UnitTestBase::FastForwardClockBy(const base::TimeDelta& time_delta) {
+void UnitTestBase::FastForwardClockBy(const base::TimeDelta time_delta) {
   task_environment_.FastForwardBy(time_delta);
 }
 
-void UnitTestBase::FastForwardClockTo(const base::Time& time) {
+void UnitTestBase::FastForwardClockTo(const base::Time time) {
   const base::TimeDelta time_delta = time - Now();
 
   FastForwardClockBy(time_delta);
@@ -124,13 +124,13 @@ void UnitTestBase::AdvanceClockToMidnightUTC() {
   return AdvanceClock(time_delta);
 }
 
-void UnitTestBase::AdvanceClock(const base::Time& time) {
+void UnitTestBase::AdvanceClock(const base::Time time) {
   const base::TimeDelta time_delta = time - Now();
 
   return AdvanceClock(time_delta);
 }
 
-void UnitTestBase::AdvanceClock(const base::TimeDelta& time_delta) {
+void UnitTestBase::AdvanceClock(const base::TimeDelta time_delta) {
   task_environment_.AdvanceClock(time_delta);
 }
 

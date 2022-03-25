@@ -9,10 +9,7 @@
 #include <cstdint>
 
 #include "base/observer_list_types.h"
-
-namespace base {
-class Time;
-}  // namespace base
+#include "base/time/time.h"
 
 namespace ads {
 
@@ -21,7 +18,7 @@ struct AdInfo;
 class AdTransferObserver : public base::CheckedObserver {
  public:
   // Invoked when an ad will be transferred
-  virtual void OnWillTransferAd(const AdInfo& ad, const base::Time& time) {}
+  virtual void OnWillTransferAd(const AdInfo& ad, const base::Time time) {}
 
   // Invoked when an ad is transferred
   virtual void OnDidTransferAd(const AdInfo& ad) {}

@@ -121,7 +121,7 @@ void AdTransfer::OnTransferAd(const int32_t tab_id,
 }
 
 void AdTransfer::NotifyWillTransferAd(const AdInfo& ad,
-                                      const base::Time& time) const {
+                                      const base::Time time) const {
   for (AdTransferObserver& observer : observers_) {
     observer.OnWillTransferAd(ad, time);
   }

@@ -14,7 +14,7 @@ class Time;
 namespace ads {
 namespace user_data {
 
-base::DictionaryValue GetCreatedAtTimestamp(const base::Time& time);
+base::DictionaryValue GetCreatedAtTimestamp(const base::Time time);
 
 }  // namespace user_data
 }  // namespace ads

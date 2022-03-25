@@ -13,9 +13,9 @@
 
 namespace ads {
 
-base::Time CalculateNextPaymentDate(const base::Time& next_token_redemption_at,
+base::Time CalculateNextPaymentDate(const base::Time next_token_redemption_at,
                                     const TransactionList& transactions) {
-  const base::Time& now = base::Time::Now();
+  const base::Time now = base::Time::Now();
 
   base::Time::Exploded now_exploded;
   now.UTCExplode(&now_exploded);

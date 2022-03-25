@@ -14,7 +14,7 @@
 namespace ads {
 namespace user_data {
 
-base::DictionaryValue GetCreatedAtTimestamp(const base::Time& time) {
+base::DictionaryValue GetCreatedAtTimestamp(const base::Time time) {
   const std::string timestamp = TimeToPrivacyPreservingISO8601(time);
 
   base::DictionaryValue user_data;

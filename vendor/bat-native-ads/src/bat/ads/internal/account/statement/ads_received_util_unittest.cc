@@ -33,7 +33,7 @@ TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
 
   AdvanceClock(TimeFromString("25 December 2020", /* is_local */ true));
 
-  const base::Time& from_time = Now();
+  const base::Time from_time = Now();
 
   const TransactionInfo& transaction_2 =
       BuildTransaction(0.0, ConfirmationType::kClicked);
@@ -49,7 +49,7 @@ TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
       BuildTransaction(0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_4);
 
-  const base::Time& to_time = DistantFuture();
+  const base::Time to_time = DistantFuture();
 
   // Act
   const int ads_received =
@@ -76,8 +76,8 @@ TEST_F(BatAdsAdsReceivedUtilTest, DoNotGetAdsReceivedForDateRange) {
 
   AdvanceClock(TimeFromString("1 January 2021", /* is_local */ true));
 
-  const base::Time& from_time = Now();
-  const base::Time& to_time = DistantFuture();
+  const base::Time from_time = Now();
+  const base::Time to_time = DistantFuture();
 
   // Act
   const int ads_received =
@@ -92,8 +92,8 @@ TEST_F(BatAdsAdsReceivedUtilTest, GetAdsReceivedForNoTransactions) {
   // Arrange
   const TransactionList transactions;
 
-  const base::Time& from_time = DistantPast();
-  const base::Time& to_time = DistantFuture();
+  const base::Time from_time = DistantPast();
+  const base::Time to_time = DistantFuture();
 
   // Act
   const int ads_received =

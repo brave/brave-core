@@ -22,7 +22,7 @@ class LastUnIdleTimestampAdDiagnosticsEntry final : public AdDiagnosticsEntry {
       const LastUnIdleTimestampAdDiagnosticsEntry&) = delete;
   ~LastUnIdleTimestampAdDiagnosticsEntry() override;
 
-  void SetLastUnIdleTimestamp(const base::Time& time);
+  void SetLastUnIdleTimestamp(const base::Time time);
 
   // AdDiagnosticsEntry
   AdDiagnosticsEntryType GetEntryType() const override;

@@ -32,13 +32,13 @@ class BackoffTimer final {
   // exponentially for each call. If the timer is already running, it will be
   // replaced to call the given |user_task|. Returns the time the delayed task
   // will be fired
-  base::Time Start(const base::TimeDelta& delay, base::OnceClosure user_task);
+  base::Time Start(const base::TimeDelta delay, base::OnceClosure user_task);
 
   // Start a timer to run at a geometrically distributed number of seconds
   // |~delay| from now backing off exponentially for each call. If the timer is
   // already running, it will be replaced to call the given |user_task|. Returns
   // the time the delayed task will be fired
-  base::Time StartWithPrivacy(const base::TimeDelta& delay,
+  base::Time StartWithPrivacy(const base::TimeDelta delay,
                               base::OnceClosure user_task);
 
   // Returns true if the timer is running (i.e., not stopped)
@@ -55,12 +55,12 @@ class BackoffTimer final {
 
   // Optionally call this method to set the maximum backoff delay to
   // |max_delay|. Default maximum backoff delay is 1 hour
-  void set_max_backoff_delay(const base::TimeDelta& max_backoff_delay) {
+  void set_max_backoff_delay(const base::TimeDelta max_backoff_delay) {
     max_backoff_delay_ = max_backoff_delay;
   }
 
  private:
-  base::TimeDelta CalculateDelay(const base::TimeDelta& delay);
+  base::TimeDelta CalculateDelay(const base::TimeDelta delay);
 
   Timer timer_;
 

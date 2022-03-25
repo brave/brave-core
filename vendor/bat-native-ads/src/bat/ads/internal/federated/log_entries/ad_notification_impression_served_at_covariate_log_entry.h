@@ -23,7 +23,7 @@ class AdNotificationImpressionServedAtCovariateLogEntry final
       const AdNotificationImpressionServedAtCovariateLogEntry&) = delete;
   ~AdNotificationImpressionServedAtCovariateLogEntry() override;
 
-  void SetLastImpressionAt(const base::Time& time);
+  void SetLastImpressionAt(const base::Time time);
 
   // CovariateLogEntry
   mojom::DataType GetDataType() const override;

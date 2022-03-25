@@ -15,8 +15,8 @@ class Time;
 namespace ads {
 
 TransactionList GetTransactionsForDateRange(const TransactionList& transactions,
-                                            const base::Time& from_time,
-                                            const base::Time& to_time);
+                                            const base::Time from_time,
+                                            const base::Time to_time);
 
 double GetEarningsForTransactions(const TransactionList& transactions);
 

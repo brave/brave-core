@@ -125,7 +125,7 @@ void Issuers::OnFailedToGetIssuers() {
 void Issuers::FetchAfterDelay() {
   DCHECK(!retry_timer_.IsRunning());
 
-  const base::Time& time = timer_.StartWithPrivacy(
+  const base::Time time = timer_.StartWithPrivacy(
       GetFetchDelay(), base::BindOnce(&Issuers::Fetch, base::Unretained(this)));
 
   BLOG(1, "Fetch issuers " << FriendlyDateAndTime(time));
@@ -139,7 +139,7 @@ base::TimeDelta Issuers::GetFetchDelay() const {
 void Issuers::Retry() {
   DCHECK(!timer_.IsRunning());
 
-  const base::Time& time = retry_timer_.StartWithPrivacy(
+  const base::Time time = retry_timer_.StartWithPrivacy(
       base::Seconds(kRetryAfterSeconds),
       base::BindOnce(&Issuers::OnRetry, base::Unretained(this)));
 
