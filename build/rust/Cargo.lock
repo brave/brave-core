@@ -239,6 +239,7 @@ dependencies = [
 name = "brave-wallet-cxx"
 version = "0.1.0"
 dependencies = [
+ "curve25519-dalek",
  "cxx",
  "cxx-build",
  "ed25519-dalek-bip32",

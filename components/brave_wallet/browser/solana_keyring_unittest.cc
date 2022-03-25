@@ -6,8 +6,10 @@
 #include <memory>
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
+#include "brave/components/brave_wallet/browser/solana_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -137,6 +139,99 @@ TEST(SolanaKeyringUnitTest, ImportAccount) {
   EXPECT_TRUE(keyring.RemoveImportedAccount(
       "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ"));
   EXPECT_EQ(keyring.GetImportedAccountsNumber(), 1u);
+}
+
+// Test cases from test_create_program_address in solana_program::pubkey module.
+// https://docs.rs/solana-program/latest/src/solana_program/pubkey.rs.html
+TEST(SolanaKeyringUnitTest, CreateProgramDerivedAddress) {
+  const std::string program_id = "BPFLoaderUpgradeab1e11111111111111111111111";
+
+  // Max seed length is 32 bytes for each seed.
+  std::vector<uint8_t> exceeded_max_seed_len(32 + 1, 127);
+  std::vector<uint8_t> max_seed(32, 0);
+
+  // Max size of seeds array is 16.
+  std::vector<std::vector<uint8_t>> exceeded_max_seeds = {
+      {1},  {2},  {3},  {4},  {5},  {6},  {7},  {8}, {9},
+      {10}, {11}, {12}, {13}, {14}, {15}, {16}, {17}};
+  std::vector<std::vector<uint8_t>> max_seeds = {
+      {1}, {2},  {3},  {4},  {5},  {6},  {7},  {8},
+      {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16}};
+
+  EXPECT_FALSE(SolanaKeyring::CreateProgramDerivedAddress(
+      {exceeded_max_seed_len}, program_id));
+  EXPECT_FALSE(SolanaKeyring::CreateProgramDerivedAddress(exceeded_max_seeds,
+                                                          program_id));
+
+  auto addr = SolanaKeyring::CreateProgramDerivedAddress({{}, {1}}, program_id);
+  ASSERT_TRUE(addr);
+  EXPECT_EQ(*addr, "BwqrghZA2htAcqq8dzP1WDAhTXYTYWj7CHxF5j7TDBAe");
+
+  std::string test_string = "☉";
+  addr = SolanaKeyring::CreateProgramDerivedAddress(
+      {std::vector<uint8_t>(test_string.begin(), test_string.end()), {0}},
+      program_id);
+  ASSERT_TRUE(addr);
+  EXPECT_EQ(*addr, "13yWmRpaTR4r5nAktwLqMpRNr28tnVUZw26rTvPSSB19");
+
+  std::vector<uint8_t> public_key;
+  ASSERT_TRUE(Base58Decode("SeedPubey1111111111111111111111111111111111",
+                           &public_key, kSolanaPubkeySize));
+  addr =
+      SolanaKeyring::CreateProgramDerivedAddress({public_key, {1}}, program_id);
+  ASSERT_TRUE(addr);
+  EXPECT_EQ(*addr, "976ymqVnfE32QFe6NfGDctSvVa36LWnvYxhU6G2232YL");
+
+  std::string talking = "Talking";
+  std::string squirrels = "Squirrels";
+  std::vector<uint8_t> talking_bytes =
+      std::vector<uint8_t>(talking.begin(), talking.end());
+  std::vector<uint8_t> squirrels_bytes =
+      std::vector<uint8_t>(squirrels.begin(), squirrels.end());
+
+  addr = SolanaKeyring::CreateProgramDerivedAddress(
+      {talking_bytes, squirrels_bytes}, program_id);
+  ASSERT_TRUE(addr);
+  EXPECT_EQ(*addr, "2fnQrngrQT4SeLcdToJAD96phoEjNL2man2kfRLCASVk");
+
+  auto addr2 =
+      SolanaKeyring::CreateProgramDerivedAddress({talking_bytes}, program_id);
+  ASSERT_TRUE(addr2);
+  EXPECT_NE(*addr, *addr2);
+}
+
+// Test cases from test_find_program_address in solana_program::pubkey module.
+// https://docs.rs/solana-program/latest/src/solana_program/pubkey.rs.html
+TEST(SolanaKeyringUnitTest, FindProgramDerivedAddress) {
+  std::string lil = "Lil";
+  std::string bits = "Bits";
+  std::vector<uint8_t> lil_bytes = std::vector<uint8_t>(lil.begin(), lil.end());
+  std::vector<uint8_t> bits_bytes =
+      std::vector<uint8_t>(bits.begin(), bits.end());
+
+  for (size_t i = 0; i < 1000; ++i) {
+    uint8_t bump_seed = 0;
+    auto addr1 = SolanaKeyring::FindProgramDerivedAddress(
+        {lil_bytes, bits_bytes}, kSolanaAssociatedTokenProgramId, &bump_seed);
+    auto addr2 = SolanaKeyring::CreateProgramDerivedAddress(
+        {lil_bytes, bits_bytes, {bump_seed}}, kSolanaAssociatedTokenProgramId);
+    ASSERT_TRUE(addr1 && addr2);
+    EXPECT_EQ(*addr1, *addr2);
+  }
+}
+
+TEST(SolanaKeyringUnitTest, GetAssociatedTokenAccount) {
+  auto addr = SolanaKeyring::GetAssociatedTokenAccount(
+      "D3tynVS3dHGoShEZQcSbsJ69DnoWunhcgya35r5Dtn4p",
+      "8ZETgHajbpwRr6wMjuytNvziM4VUVxfaJWhhhQoYot5T");
+  ASSERT_TRUE(addr);
+  EXPECT_EQ(*addr, "5EHQ5fBsMdN3mESRhTJeEjNb3g33YWzkPBGDjoVtAGkN");
+
+  addr = SolanaKeyring::GetAssociatedTokenAccount(
+      "D3tynVS3dHGoShEZQcSbsJ69DnoWunhcgya35r5Dtn4p",
+      "5ofLtZax45EhkNSkoBrDPdWNonKmijMTsW41ckzPs2r5");
+  ASSERT_TRUE(addr);
+  EXPECT_EQ(*addr, "3bHK4cYoW94angdFWJeDBQcAuSq3mtYEdVaqkm1xXKcy");
 }
 
 }  // namespace brave_wallet
