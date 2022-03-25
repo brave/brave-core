@@ -169,12 +169,13 @@ export default function useSend (
       setAddressError('')
       setAddressWarning('')
       setToAddress('')
+      return
     }
 
     // Fallback error state
     setAddressWarning('')
     setAddressError(getLocale('braveWalletNotValidAddress'))
-  }, [])
+  }, [selectedAccount])
 
   const processFilecoinAddress = React.useCallback((toAddressOrUrl: string) => {
     const valueToLowerCase = toAddressOrUrl.toLowerCase()
