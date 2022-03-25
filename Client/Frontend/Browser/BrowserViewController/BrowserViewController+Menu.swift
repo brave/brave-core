@@ -120,7 +120,10 @@ extension BrowserViewController {
       }
 
       MenuItemButton(icon: #imageLiteral(resourceName: "menu-history").template, title: Strings.historyMenuItem) { [unowned self, unowned menuController] in
-        let vc = HistoryViewController(isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing, historyAPI: braveCore.historyAPI)
+        let vc = HistoryViewController(
+          isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing,
+          historyAPI: braveCore.historyAPI,
+          tabManager: tabManager)
         vc.toolbarUrlActionsDelegate = self
         menuController.pushInnerMenu(vc)
       }

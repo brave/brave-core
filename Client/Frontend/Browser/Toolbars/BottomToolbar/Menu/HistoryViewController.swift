@@ -21,6 +21,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     icon: #imageLiteral(resourceName: "emptyHistory"))
 
   private let historyAPI: BraveHistoryAPI
+  private let tabManager: TabManager
 
   var historyFRC: HistoryV2FetchResultsController?
 
@@ -34,9 +35,10 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
   private let searchController = UISearchController(searchResultsController: nil)
   private var searchQuery = ""
 
-  init(isPrivateBrowsing: Bool, historyAPI: BraveHistoryAPI) {
+  init(isPrivateBrowsing: Bool, historyAPI: BraveHistoryAPI, tabManager: TabManager) {
     self.isPrivateBrowsing = isPrivateBrowsing
     self.historyAPI = historyAPI
+    self.tabManager = tabManager
     super.init(nibName: nil, bundle: nil)
 
     historyFRC = historyAPI.frc()
@@ -183,9 +185,12 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     alert.addAction(
       UIAlertAction(
         title: Strings.History.historyClearActionTitle, style: .destructive,
-        handler: { _ in
-          DispatchQueue.main.async {
-            self.historyAPI.removeAll {
+        handler: { [weak self] _ in
+          guard let self = self else { return }
+          
+          self.historyAPI.deleteAll {
+            // Clearing Tab History with entire history entry
+            self.tabManager.clearTabHistory() {
               self.refreshHistory()
             }
           }
