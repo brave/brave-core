@@ -76,7 +76,10 @@ class BrowserNavigationHelper {
 
   func openHistory() {
     guard let bvc = bvc else { return }
-    let vc = HistoryViewController(isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing, historyAPI: bvc.braveCore.historyAPI)
+    let vc = HistoryViewController(
+      isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing,
+      historyAPI: bvc.braveCore.historyAPI,
+      tabManager: bvc.tabManager)
     vc.toolbarUrlActionsDelegate = bvc
 
     open(vc, doneButton: DoneButton(style: .done, position: .right))

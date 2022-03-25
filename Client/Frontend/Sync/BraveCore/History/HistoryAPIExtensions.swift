@@ -52,6 +52,16 @@ extension BraveHistoryAPI {
       historyNode.dateAdded = date
     }
   }
+  
+  func deleteAll(completion: @escaping () -> Void) {
+    DispatchQueue.main.async {
+      self.removeAll {
+        Domain.deleteNonBookmarkedAndClearSiteVisits() {
+          completion()
+        }
+      }
+    }
+  }
 
   // MARK: Private
 

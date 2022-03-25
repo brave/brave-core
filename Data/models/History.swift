@@ -79,8 +79,7 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
   public class func deleteAll(_ completionOnMain: @escaping () -> Void) {
     DataController.perform { context in
       History.deleteAll(context: .existing(context), includesPropertyValues: false)
-
-      Domain.deleteNonBookmarkedAndClearSiteVisits(context: context) {
+      Domain.deleteNonBookmarkedAndClearSiteVisits() {
         completionOnMain()
       }
     }

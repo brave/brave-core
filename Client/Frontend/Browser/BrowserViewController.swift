@@ -1574,7 +1574,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
       openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: true, isExternal: true)
       popToBVC()
     } else {
-      History.deleteAll { [weak self] in
+      braveCore.historyAPI.deleteAll { [weak self] in
         guard let self = self else { return }
 
         self.tabManager.clearTabHistory() {
