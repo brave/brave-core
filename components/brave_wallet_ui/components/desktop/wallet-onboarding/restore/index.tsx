@@ -135,6 +135,7 @@ function OnboardingRestore (props: Props) {
             onChange={handleRecoveryPhraseChanged}
             value={recoveryPhrase}
             type={showRecoveryPhrase ? 'text' : 'password'}
+            autoComplete='off'
           />
           {hasRestoreError && <ErrorText>{getLocale('braveWalletRestoreError')}</ErrorText>}
           {recoveryPhrase.split(' ').length === 24 &&
