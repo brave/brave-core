@@ -19,7 +19,4 @@ const base::Feature kBraveRewards{"BraveRewards",
 #endif
 #endif  // defined(OS_ANDROID)
 
-const base::Feature kTabAudioIconInteractive{"TabAudioIconInteractive",
-                                             base::FEATURE_ENABLED_BY_DEFAULT};
-
 }  // namespace features
