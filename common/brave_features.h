@@ -15,8 +15,6 @@ namespace features {
 extern const base::Feature kBraveRewards;
 #endif  // BUILDFLAG(IS_ANDROID)
 
-extern const base::Feature kTabAudioIconInteractive;
-
 }  // namespace features
 
 #endif  // BRAVE_COMMON_BRAVE_FEATURES_H_

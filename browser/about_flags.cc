@@ -278,12 +278,6 @@ constexpr char kBraveTranslateGoDescription[] =
     "and brave translation backed. Also disables suggestions to install google "
     "translate extension.";
 
-constexpr char kTabAudioIconInteractiveName[] =
-    "Interactive Tab audio indicator";
-constexpr char kTabAudioIconInteractiveDescription[] =
-    "Enable the Tab audio indicator to also be a button which can mute and "
-    "unmute the Tab.";
-
 // Blink features.
 constexpr char kFileSystemAccessAPIName[] = "File System Access API";
 constexpr char kFileSystemAccessAPIDescription[] =
@@ -559,11 +553,6 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
       flag_descriptions::kRestrictWebSocketsPoolName,                       \
       flag_descriptions::kRestrictWebSocketsPoolDescription, kOsAll,        \
       FEATURE_VALUE_TYPE(blink::features::kRestrictWebSocketsPool)},        \
-    {"tab-audio-icon-interactive",                                          \
-      flag_descriptions::kTabAudioIconInteractiveName,                      \
-      flag_descriptions::kTabAudioIconInteractiveDescription,               \
-      kOsDesktop,                                                           \
-      FEATURE_VALUE_TYPE(features::kTabAudioIconInteractive)},              \
     BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                                 \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
