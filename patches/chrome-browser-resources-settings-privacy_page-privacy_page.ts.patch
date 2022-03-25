@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.ts b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
-index 39bb85c376f0edcf501bbdf45490581e4a71cef8..734a969aca48d8c8515c25d9477672349752f396 100644
+index 3da04c0a84e63a520ed693a9f533ad324f5964da..961507f0f4eb1ef9206f4e6b229ff122e880a4af 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 @@ -20,6 +20,7 @@ import '../site_settings/site_data_details_subpage.js';
@@ -7,6 +7,6 @@ index 39bb85c376f0edcf501bbdf45490581e4a71cef8..734a969aca48d8c8515c25d947767234
  import '../settings_page/settings_subpage.js';
  import '../settings_shared_css.js';
 +import './personalization_options.js';
+ import './privacy_guide/privacy_guide_dialog.js';
  
  import {IPHBubbleElement} from 'chrome://resources/cr_components/iph_bubble/iph_bubble.js';
- import {CrLinkRowElement} from 'chrome://resources/cr_elements/cr_link_row/cr_link_row.js';

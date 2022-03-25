@@ -1,5 +1,5 @@
 diff --git a/build/config/android/BUILD.gn b/build/config/android/BUILD.gn
-index 4fc5565e27a596fe4aa1a093cfc0567fbd24b2a0..893b3ed9478b34de60352070259642bae938973b 100644
+index 69341cea35d0c44aeb5f09b39783bd2abfcdcc43..a564159c384f1dd72cf3e890e784b2edf6edfb3c 100644
 --- a/build/config/android/BUILD.gn
 +++ b/build/config/android/BUILD.gn
 @@ -46,6 +46,7 @@ config("compiler") {
@@ -9,4 +9,4 @@ index 4fc5565e27a596fe4aa1a093cfc0567fbd24b2a0..893b3ed9478b34de60352070259642ba
 +  ldflags += ["-Wl,--allow-multiple-definition"] # Resolve conflict between libgcc++ and rustup symbols (e.g. __divdi3)
  
    if (current_cpu == "arm64") {
-     if (arm_control_flow_integrity == "standard") {
+     # Reduce the page size from 65536 in order to reduce binary size slightly
