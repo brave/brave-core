@@ -251,6 +251,7 @@ const AddAccountModal = (props: Props) => {
                   onChange={handlePrivateKeyChanged}
                   type='password'
                   autoFocus={true}
+                  autoComplete='off'
                 />
               ) : (
                 <>

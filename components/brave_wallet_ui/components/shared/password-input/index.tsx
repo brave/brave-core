@@ -35,6 +35,7 @@ function OnboardingCreatePassword (props: Props) {
         onChange={inputPassword}
         onKeyDown={onKeyDown}
         autoFocus={autoFocus}
+        autoComplete='off'
       />
       {hasError &&
         <ErrorRow>
