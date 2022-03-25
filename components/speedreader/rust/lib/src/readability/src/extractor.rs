@@ -77,14 +77,20 @@ pub struct Meta {
 }
 
 impl Meta {
-    /// Performs a merge of two meta structs, always preferencing self.
+    /// Performs a merge of two meta structs, preferencing self except description.
+    /// The shortest description will be taken.
     /// Takes ownership of both structs and returns the merged metadata.
     pub fn merge(mut self, other: Self) -> Meta {
         if self.title.is_empty() {
             self.title = other.title;
         }
         self.author = self.author.or(other.author);
-        self.description = self.description.or(other.description);
+        self.description = match (self.description, other.description) {
+            (None, None) => None,
+            (Some(x), None) | (None, Some(x)) => Some(x),
+            (Some(x), Some(y)) if x.len() < y.len() => Some(x),
+            (Some(_), Some(y)) => Some(y),
+        };
         self.charset = self.charset.or(other.charset);
         self.last_modified = self.last_modified.or(other.last_modified);
         self
@@ -135,8 +141,11 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
         if data.name.local != local_name!("meta") {
             continue;
         }
-        if let Some(property) = data.attributes.borrow().get(local_name!("property")) {
-            if let Some(ref content) = data.attributes.borrow().get(local_name!("content")) {
+        let attribute = data.attributes.borrow();
+        if let Some(property) =
+            attribute.get(local_name!("property")).or(attribute.get(local_name!("name")))
+        {
+            if let Some(ref content) = attribute.get(local_name!("content")) {
                 match property {
                     "dc:title"
                     | "dcterm:title"
@@ -168,16 +177,14 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
                     _ => (),
                 }
             }
-        } else if let Some(charset) = data.attributes.borrow().get(local_name!("charset")) {
+        } else if let Some(charset) = attribute.get(local_name!("charset")) {
             meta_tags.charset = Some(charset.to_string());
-        } else if data
-            .attributes
-            .borrow()
+        } else if attribute
             .get(local_name!("http-equiv"))
             .map(|e| e.to_ascii_lowercase() == "content-type")
             .unwrap_or(false)
         {
-            if let Some(content) = data.attributes.borrow().get(local_name!("content")) {
+            if let Some(content) = attribute.get(local_name!("content")) {
                 if let Some(charset) = content.split("charset=").nth(1) {
                     meta_tags.charset = Some(charset.trim().to_string());
                 }
