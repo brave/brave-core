@@ -260,6 +260,8 @@ public class BraveNewTabPageLayout
     private boolean mTouchScroll;
     private boolean mComesFromNewTab;
 
+    private Supplier<Tab> mTabProvider;
+
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mProfile = Profile.getLastUsedRegularProfile();
@@ -1521,6 +1523,7 @@ public class BraveNewTabPageLayout
 
         assert (activity instanceof BraveActivity);
         mActivity = activity;
+        mTabProvider = tabProvider;
         ((BraveActivity) mActivity).dismissShieldsTooltip();
     }
 
@@ -1708,11 +1711,13 @@ public class BraveNewTabPageLayout
         } 
     };
 
-    private FetchWallpaperWorkerTask.WallpaperRetrievedCallback wallpaperRetrievedCallback = new FetchWallpaperWorkerTask.WallpaperRetrievedCallback() {
+    private FetchWallpaperWorkerTask.WallpaperRetrievedCallback
+            wallpaperRetrievedCallback = new FetchWallpaperWorkerTask.WallpaperRetrievedCallback() {
         @Override
         public void bgWallpaperRetrieved(Bitmap bgWallpaper) {
             if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
-                if (BraveActivity.getBraveActivity() != null) {
+                if (BraveActivity.getBraveActivity() != null && mTabProvider.get() != null
+                        && !mTabProvider.get().isIncognito()) {
                     BraveActivity.getBraveActivity().setBackground(bgWallpaper);
                 }
                 try {
