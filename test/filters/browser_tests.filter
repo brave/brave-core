@@ -474,6 +474,7 @@
 -SafeBrowsingTriggeredPopupBlockerBrowserTest.*
 -SafeBrowsingTriggeredPopupBlockerPrerenderingBrowserTest.*
 -SafetyTipPageInfoBubbleViewPrerenderBrowserTest.*
+-SameOriginPartitionedCookiesOriginTrialBrowserTest.*
 -SameOriginUaReducedOriginTrialBrowserTest.*
 -SaveCardBubbleControllerImplTest.*
 -SaveCardBubbleViewsFullFormBrowserTestForStatusChip.*
@@ -555,6 +556,7 @@
 -ThirdPartyDataRemoverTest.*
 -ThirdPartyMetricsObserverBrowserTest.*
 -ThirdPartyNTPBrowserTest.*
+-ThirdPartyPartitionedCookiesOriginTrialBrowserTest.*
 -ThirdPartyUaReducedOriginTrialBrowserTest.*
 -ThumbnailReadinessTrackerPrerenderTest.*
 -TranslateFrameBinderPrerenderBrowserTest.*
