@@ -540,10 +540,10 @@ v8::Local<v8::Promise> BraveWalletJSHandler::IsUnlocked() {
 
 void BraveWalletJSHandler::InjectInitScript() {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  ExecuteScript(web_frame, *g_provider_script);
   if (!allow_overwrite_window_ethereum_) {
     SetProviderNonWritable(web_frame, "ethereum");
   }
+  ExecuteScript(web_frame, *g_provider_script);
 }
 
 void BraveWalletJSHandler::FireEvent(const std::string& event,

@@ -8,18 +8,40 @@
     return
   }
   const solanaWeb3 = require('@solana/web3.js')
-  window.solana.createPublickey = function createPublickey(base58Str) {
-    const result = new Object()
-    result.publicKey = new solanaWeb3.PublicKey(base58Str)
-    return result
-  }
-  window.solana.createTransaction = function createTransaction(serializedTx) {
-    return solanaWeb3.Transaction.from(new Uint8Array(serializedTx))
-  }
   const EventEmitter = require('events')
   var SolanaEventEmitter = new EventEmitter()
-  window.solana.on = SolanaEventEmitter.on
-  window.solana.emit = SolanaEventEmitter.emit
-  window.solana.removeListener = SolanaEventEmitter.removeListener
-  window.solana.removeAllListeners = SolanaEventEmitter.removeAllListeners
+  Object.defineProperties(window.solana, {
+    on: {
+      value: SolanaEventEmitter.on,
+      writable: false
+    },
+    emit: {
+      value: SolanaEventEmitter.emit,
+      writable: false
+    },
+    removeListener: {
+      value: SolanaEventEmitter.removeListener,
+      writable: false
+    },
+    removeAllListeners: {
+      value: SolanaEventEmitter.removeAllListeners,
+      writable: false
+    },
+    createPublickey: {
+      value: (base58Str) => {
+        console.warn('This API is intended for internal use.')
+        const result = new Object()
+        result.publicKey = new solanaWeb3.PublicKey(base58Str)
+        return result
+      },
+      writable: false
+    },
+    createTransaction: {
+      value: (serializedTx) => {
+        console.warn('This API is intended for internal use.')
+        return solanaWeb3.Transaction.from(new Uint8Array(serializedTx))
+      },
+      writable: false
+    }
+  })
 })()

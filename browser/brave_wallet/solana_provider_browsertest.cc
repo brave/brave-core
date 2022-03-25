@@ -112,6 +112,17 @@ std::string GetRequstObject(const std::string& method) {
   return base::StringPrintf(R"({method: "%s", params: {}})", method.c_str());
 }
 
+std::string NonWriteableScript(const std::string& method,
+                               const std::string& args) {
+  return base::StringPrintf(
+      R"(window.solana.%s = () => { return "brave" }
+         if (window.solana.%s%s === "brave")
+           window.domAutomationController.send(false)
+         else
+           window.domAutomationController.send(true))",
+      method.c_str(), method.c_str(), args.c_str());
+}
+
 std::string ConnectScript(const std::string& args) {
   return base::StringPrintf(
       R"(async function connect() {
@@ -491,6 +502,46 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Incognito) {
                        "window.domAutomationController.send(!!window.solana)",
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(false), result.value);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, NonWritable) {
+  // window.solana.*
+  auto result = EvalJs(web_contents(browser()),
+                       NonWriteableScript("on", R"(('connect', ()=>{}))"),
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result.value);
+
+  auto result2 = EvalJs(web_contents(browser()),
+                        NonWriteableScript("emit", R"(('connect'))"),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result2.value);
+
+  auto result3 =
+      EvalJs(web_contents(browser()),
+             NonWriteableScript("removeListener", R"(('connect', ()=>{}))"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result3.value);
+
+  auto result4 = EvalJs(web_contents(browser()),
+                        NonWriteableScript("removeAllListeners", R"(())"),
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result4.value);
+
+  auto result5 = EvalJs(
+      web_contents(browser()),
+      NonWriteableScript("createPublickey",
+                         base::StringPrintf(R"(('%s'))", kTestPublicKey)),
+      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result5.value);
+
+  const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
+  auto result6 =
+      EvalJs(web_contents(browser()),
+             NonWriteableScript(
+                 "createTransaction",
+                 base::StringPrintf(R"((%s))", serialized_tx_str.c_str())),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result6.value);
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, IsPhantom) {

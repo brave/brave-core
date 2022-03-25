@@ -172,9 +172,9 @@ void JSSolanaProvider::AccountChangedEvent(
 
 void JSSolanaProvider::InjectInitScript(bool allow_overwrite_window_solana) {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  ExecuteScript(web_frame, *g_provider_script);
   if (!allow_overwrite_window_solana)
     SetProviderNonWritable(web_frame, "solana");
+  ExecuteScript(web_frame, *g_provider_script);
 }
 
 bool JSSolanaProvider::EnsureConnected() {
