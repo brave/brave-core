@@ -44,13 +44,14 @@ function PasswordInput (props: Props) {
           onChange={inputPassword}
           onKeyDown={onKeyDown}
           autoFocus={autoFocus}
+          autoComplete='off'
+        />
+        {showToggleButton &&
+          <ToggleVisibilityButton
+            showPassword={showPassword}
+            onClick={onTogglePasswordVisibility}
           />
-          {showToggleButton &&
-            <ToggleVisibilityButton
-              showPassword={showPassword}
-              onClick={onTogglePasswordVisibility}
-            />
-          }
+        }
       </InputWrapper>
       {hasError &&
         <ErrorRow>
