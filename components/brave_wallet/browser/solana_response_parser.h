@@ -14,6 +14,7 @@
 namespace brave_wallet {
 
 struct SolanaSignatureStatus;
+struct SolanaAccountInfo;
 
 namespace solana {
 
@@ -27,6 +28,8 @@ bool ParseGetLatestBlockhash(const std::string& json, std::string* hash);
 bool ParseGetSignatureStatuses(
     const std::string& json,
     std::vector<absl::optional<SolanaSignatureStatus>>* statuses);
+bool ParseGetAccountInfo(const std::string& json,
+                         absl::optional<SolanaAccountInfo>* account_info_out);
 
 }  // namespace solana
 

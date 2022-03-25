@@ -1738,4 +1738,40 @@ void JsonRpcService::OnGetSolanaSignatureStatuses(
   std::move(callback).Run(statuses, mojom::SolanaProviderError::kSuccess, "");
 }
 
+void JsonRpcService::GetSolanaAccountInfo(
+    const std::string& pubkey,
+    GetSolanaAccountInfoCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetSolanaAccountInfo,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(solana::getAccountInfo(pubkey), true,
+                  network_urls_[mojom::CoinType::SOL],
+                  std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetSolanaAccountInfo(
+    GetSolanaAccountInfoCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        absl::nullopt, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  absl::optional<SolanaAccountInfo> account_info;
+  if (!solana::ParseGetAccountInfo(body, &account_info)) {
+    mojom::SolanaProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    std::move(callback).Run(absl::nullopt, error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(account_info, mojom::SolanaProviderError::kSuccess,
+                          "");
+}
+
 }  // namespace brave_wallet

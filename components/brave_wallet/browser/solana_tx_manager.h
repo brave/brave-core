@@ -26,6 +26,7 @@ class KeyringService;
 class SolanaTxMeta;
 class SolanaTxStateManager;
 struct SolanaSignatureStatus;
+struct SolanaAccountInfo;
 
 class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
  public:
@@ -53,6 +54,22 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       const std::string& tx_meta_id,
       GetTransactionMessageToSignCallback callback) override;
 
+  using MakeSystemProgramTransferTxDataCallback =
+      mojom::SolanaTxManagerProxy::MakeSystemProgramTransferTxDataCallback;
+  using MakeTokenProgramTransferTxDataCallback =
+      mojom::SolanaTxManagerProxy::MakeTokenProgramTransferTxDataCallback;
+  void MakeSystemProgramTransferTxData(
+      const std::string& from,
+      const std::string& to,
+      uint64_t lamports,
+      MakeSystemProgramTransferTxDataCallback callback);
+  void MakeTokenProgramTransferTxData(
+      const std::string& spl_token_mint_address,
+      const std::string& from_wallet_address,
+      const std::string& to_wallet_address,
+      uint64_t amount,
+      MakeTokenProgramTransferTxDataCallback callback);
+
   std::unique_ptr<SolanaTxMeta> GetTxForTesting(const std::string& tx_meta_id);
 
  private:
@@ -77,6 +94,16 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
           signature_statuses,
       mojom::SolanaProviderError error,
       const std::string& error_message);
+  void OnGetAccountInfo(const std::string& spl_token_mint_address,
+                        const std::string& from_wallet_address,
+                        const std::string& to_wallet_address,
+                        const std::string& from_associated_token_account,
+                        const std::string& to_associated_token_account,
+                        uint64_t amount,
+                        MakeTokenProgramTransferTxDataCallback callback,
+                        absl::optional<SolanaAccountInfo> account_info,
+                        mojom::SolanaProviderError error,
+                        const std::string& error_message);
 
   // SolanaBlockTracker::Observer
   void OnLatestBlockhashUpdated(const std::string& blockhash) override;

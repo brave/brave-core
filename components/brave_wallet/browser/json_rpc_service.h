@@ -263,6 +263,12 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& error_message)>;
   void GetSolanaSignatureStatuses(const std::vector<std::string>& tx_signatures,
                                   GetSolanaSignatureStatusesCallback callback);
+  using GetSolanaAccountInfoCallback =
+      base::OnceCallback<void(absl::optional<SolanaAccountInfo> account_info,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
+  void GetSolanaAccountInfo(const std::string& pubkey,
+                            GetSolanaAccountInfoCallback callback);
 
  private:
   void FireNetworkChanged(mojom::CoinType coin);
@@ -442,6 +448,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const base::flat_map<std::string, std::string>& headers);
   void OnGetSolanaSignatureStatuses(
       GetSolanaSignatureStatusesCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+  void OnGetSolanaAccountInfo(
+      GetSolanaAccountInfoCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);

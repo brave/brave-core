@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/test/gtest_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -178,6 +179,115 @@ TEST(SolanaResponseParserUnitTest, ParseGetSignatureStatuses) {
       std::vector<absl::optional<SolanaSignatureStatus>>(4, absl::nullopt);
   ASSERT_TRUE(ParseGetSignatureStatuses(invalid, &statuses));
   EXPECT_EQ(expected_statuses, statuses);
+}
+
+TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
+  std::string json = R"(
+    {
+      "jsonrpc":"2.0","id":1,
+      "result": {
+        "context":{"slot":123065869},
+        "value":{
+          "data":["SEVMTE8gV09STEQ=","base64"],
+          "executable":false,
+          "lamports":88801034809120,
+          "owner":"11111111111111111111111111111111",
+          "rentEpoch":284
+        }
+      }
+    }
+  )";
+
+  SolanaAccountInfo expected_info;
+  expected_info.lamports = 88801034809120ULL;
+  expected_info.owner = "11111111111111111111111111111111";
+  expected_info.data = "SEVMTE8gV09STEQ=";
+  expected_info.executable = false;
+  expected_info.rent_epoch = 284;
+
+  absl::optional<SolanaAccountInfo> info;
+  ASSERT_TRUE(ParseGetAccountInfo(json, &info));
+  EXPECT_EQ(*info, expected_info);
+
+  json = R"(
+    {
+      "jsonrpc":"2.0","id":1,
+      "result":{
+        "context":{"slot":123121238},
+        "value":null
+      }
+    })";
+  ASSERT_TRUE(ParseGetAccountInfo(json, &info));
+  EXPECT_FALSE(info);
+
+  // Parsing should fail if data string is not base64 encoded as it says.
+  json = R"(
+    {
+      "jsonrpc":"2.0","id":1,
+      "result": {
+        "context":{"slot":123065869},
+        "value":{
+          "data":["JvSKSz9YHfqEQ8j","base64"],
+          "executable":false,
+          "lamports":88801034809120,
+          "owner":"11111111111111111111111111111111",
+          "rentEpoch":284
+        }
+      }
+    }
+  )";
+  EXPECT_FALSE(ParseGetAccountInfo(json, &info));
+
+  // data using base58 is not supported.
+  json = R"(
+    {
+      "jsonrpc":"2.0","id":1,
+      "result": {
+        "context":{"slot":123065869},
+        "value":{
+          "data":["JvSKSz9YHfqEQ8j","base58"],
+          "executable":false,
+          "lamports":88801034809120,
+          "owner":"11111111111111111111111111111111",
+          "rentEpoch":284
+        }
+      }
+    }
+  )";
+  EXPECT_FALSE(ParseGetAccountInfo(json, &info));
+
+  // data using jsonParsed encoding param is not supported.
+  json = R"(
+    {
+      "jsonrpc":"2.0","id":1,
+      "result": {
+        "context":{"slot":123065869},
+        "value":{
+          "data":{
+            "nonce": {
+              "initialized": {
+                "authority": "Bbqg1M4YVVfbhEzwA9SpC9FhsaG83YMTYoR4a8oTDLX",
+                "blockhash": "3xLP3jK6dVJwpeGeTDYTwdDK3TKchUf1gYYGHa4sF3XJ",
+                "feeCalculator": {
+                  "lamportsPerSignature": 5000
+                }
+              }
+            }
+          },
+          "executable":false,
+          "lamports":88801034809120,
+          "owner":"11111111111111111111111111111111",
+          "rentEpoch":284
+        }
+      }
+    }
+  )";
+  EXPECT_FALSE(ParseGetAccountInfo(json, &info));
+
+  json = R"({"jsonrpc":"2.0","id":1,"result":{"value":{}}})";
+  EXPECT_FALSE(ParseGetAccountInfo(json, &info));
+
+  EXPECT_DCHECK_DEATH(ParseGetAccountInfo(json, nullptr));
 }
 
 }  // namespace solana

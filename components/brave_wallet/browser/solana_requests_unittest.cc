@@ -62,6 +62,12 @@ TEST(SolanaRequestsUnitTest, getSignatureStatuses) {
   EXPECT_EQ(*json, *expected_json);
 }
 
+TEST(SolanaRequestsUnitTest, getAccountInfo) {
+  ASSERT_EQ(
+      getAccountInfo("pubkey"),
+      R"({"id":1,"jsonrpc":"2.0","method":"getAccountInfo","params":["pubkey",{"encoding":"base64"}]})");
+}
+
 }  // namespace solana
 
 }  // namespace brave_wallet

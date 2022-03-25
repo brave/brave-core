@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_block_tracker.h"
+#include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
@@ -24,6 +25,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -84,6 +86,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
 
   void SetInterceptor(const std::string& latest_blockhash,
                       const std::string& tx_hash,
+                      const std::string& content = "",
                       bool get_signature_statuses = false) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, get_signature_statuses](const network::ResourceRequest& request) {
@@ -108,6 +111,8 @@ class SolanaTxManagerUnitTest : public testing::Test {
                 request.url.spec(),
                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" + tx_hash +
                     "\"}");
+          } else if (*method == "getAccountInfo") {
+            url_loader_factory_.AddResponse(request.url.spec(), content);
           } else if (*method == "getSignatureStatuses") {
             if (!get_signature_statuses) {
               url_loader_factory_.AddResponse(request.url.spec(), "",
@@ -215,6 +220,49 @@ class SolanaTxManagerUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestMakeSystemProgramTransferTxData(
+      const std::string& from,
+      const std::string& to,
+      uint64_t lamports,
+      mojom::SolanaTxDataPtr expected_tx_data,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_err_message) {
+    base::RunLoop run_loop;
+    solana_tx_manager()->MakeSystemProgramTransferTxData(
+        from, to, lamports,
+        base::BindLambdaForTesting([&](mojom::SolanaTxDataPtr tx_data,
+                                       mojom::SolanaProviderError error,
+                                       const std::string& err_message) {
+          EXPECT_EQ(expected_tx_data, tx_data);
+          EXPECT_EQ(expected_error, error);
+          EXPECT_EQ(expected_err_message, err_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  void TestMakeTokenProgramTransferTxData(
+      const std::string& spl_token_mint_address,
+      const std::string& from_wallet_address,
+      const std::string& to_wallet_address,
+      uint64_t amount,
+      mojom::SolanaTxDataPtr expected_tx_data,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_err_message) {
+    base::RunLoop run_loop;
+    solana_tx_manager()->MakeTokenProgramTransferTxData(
+        spl_token_mint_address, from_wallet_address, to_wallet_address, amount,
+        base::BindLambdaForTesting([&](mojom::SolanaTxDataPtr tx_data,
+                                       mojom::SolanaProviderError error,
+                                       const std::string& err_message) {
+          EXPECT_EQ(expected_tx_data, tx_data);
+          EXPECT_EQ(expected_error, error);
+          EXPECT_EQ(expected_err_message, err_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -306,7 +354,7 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   task_environment_.FastForwardBy(
       base::Seconds(kBlockTrackerDefaultTimeInSeconds));
 
-  SetInterceptor(latest_blockhash2_, tx_hash2_, true);
+  SetInterceptor(latest_blockhash2_, tx_hash2_, "", true);
 
   // Fast forward again to have block tracker run with the new interceptor.
   task_environment_.FastForwardBy(
@@ -320,6 +368,185 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   EXPECT_EQ(mojom::TransactionStatus::Confirmed, tx_meta2->status());
   EXPECT_EQ(tx_meta2->signature_status(),
             SolanaSignatureStatus(72u, 0u, "", "finalized"));
+}
+
+TEST_F(SolanaTxManagerUnitTest, MakeSystemProgramTransferTxData) {
+  std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+  const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
+
+  auto solana_account_meta1 =
+      mojom::SolanaAccountMeta::New(from_account, true, true);
+  auto solana_account_meta2 =
+      mojom::SolanaAccountMeta::New(to_account, false, true);
+  std::vector<mojom::SolanaAccountMetaPtr> account_metas;
+  account_metas.push_back(std::move(solana_account_meta1));
+  account_metas.push_back(std::move(solana_account_meta2));
+  auto mojom_instruction = mojom::SolanaInstruction::New(
+      kSolanaSystemProgramId, std::move(account_metas), data);
+
+  std::vector<mojom::SolanaInstructionPtr> instructions;
+  instructions.push_back(std::move(mojom_instruction));
+  auto tx_data = mojom::SolanaTxData::New(
+      "", from_account, to_account, "", 10000000, 0,
+      mojom::TransactionType::SolanaSystemTransfer, std::move(instructions));
+
+  TestMakeSystemProgramTransferTxData(from_account, to_account, 10000000,
+                                      std::move(tx_data),
+                                      mojom::SolanaProviderError::kSuccess, "");
+
+  TestMakeSystemProgramTransferTxData(
+      "", to_account, 10000000, nullptr,
+      mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  TestMakeSystemProgramTransferTxData(
+      from_account, "", 10000000, nullptr,
+      mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
+  // Test receiving associated token account exists.
+  std::string from_wallet_address =
+      "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  std::string to_wallet_address =
+      "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+  std::string spl_token_mint_address =
+      "AQoKYV7tYpTrFZN6P5oUufbQKAUr9mNYGe1TTJC9wajM";
+
+  auto from_associated_token_account = SolanaKeyring::GetAssociatedTokenAccount(
+      spl_token_mint_address, from_wallet_address);
+  ASSERT_TRUE(from_associated_token_account);
+  auto to_associated_token_account = SolanaKeyring::GetAssociatedTokenAccount(
+      spl_token_mint_address, to_wallet_address);
+  ASSERT_TRUE(to_associated_token_account);
+
+  const std::vector<uint8_t> data = {3, 128, 150, 152, 0, 0, 0, 0, 0};
+
+  auto solana_account_meta1 = mojom::SolanaAccountMeta::New(
+      *from_associated_token_account, false, true);
+  auto solana_account_meta2 =
+      mojom::SolanaAccountMeta::New(*to_associated_token_account, false, true);
+  auto solana_account_meta3 =
+      mojom::SolanaAccountMeta::New(from_wallet_address, true, false);
+  std::vector<mojom::SolanaAccountMetaPtr> account_metas;
+  account_metas.push_back(std::move(solana_account_meta1));
+  account_metas.push_back(std::move(solana_account_meta2));
+  account_metas.push_back(std::move(solana_account_meta3));
+  auto mojom_transfer_instruction = mojom::SolanaInstruction::New(
+      kSolanaTokenProgramId, std::move(account_metas), data);
+
+  std::vector<mojom::SolanaInstructionPtr> instructions;
+  instructions.push_back(mojom_transfer_instruction.Clone());
+  auto tx_data = mojom::SolanaTxData::New(
+      "", from_wallet_address, to_wallet_address, spl_token_mint_address, 0,
+      10000000, mojom::TransactionType::SolanaSPLTokenTransfer,
+      std::move(instructions));
+
+  // Owner is the token program account.
+  std::string json = R"(
+    {
+      "jsonrpc":"2.0","id":1,
+      "result": {
+        "context":{"slot":123065869},
+        "value":{
+          "data":["SEVMTE8gV09STEQ=","base64"],
+          "executable":false,
+          "lamports":88801034809120,
+          "owner":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "rentEpoch":284
+        }
+      }
+    }
+  )";
+  SetInterceptor("", "", json);
+  TestMakeTokenProgramTransferTxData(
+      spl_token_mint_address, from_wallet_address, to_wallet_address, 10000000,
+      std::move(tx_data), mojom::SolanaProviderError::kSuccess, "");
+
+  auto solana_account_meta4 =
+      mojom::SolanaAccountMeta::New(from_wallet_address, true, true);
+  auto solana_account_meta5 =
+      mojom::SolanaAccountMeta::New(*to_associated_token_account, false, true);
+  auto solana_account_meta6 =
+      mojom::SolanaAccountMeta::New(to_wallet_address, false, false);
+  auto solana_account_meta7 =
+      mojom::SolanaAccountMeta::New(spl_token_mint_address, false, false);
+  auto solana_account_meta8 =
+      mojom::SolanaAccountMeta::New(kSolanaSystemProgramId, false, false);
+  auto solana_account_meta9 =
+      mojom::SolanaAccountMeta::New(kSolanaTokenProgramId, false, false);
+  auto solana_account_meta10 =
+      mojom::SolanaAccountMeta::New(kSolanaSysvarRentProgramId, false, false);
+  account_metas.push_back(std::move(solana_account_meta4));
+  account_metas.push_back(std::move(solana_account_meta5));
+  account_metas.push_back(std::move(solana_account_meta6));
+  account_metas.push_back(std::move(solana_account_meta7));
+  account_metas.push_back(std::move(solana_account_meta8));
+  account_metas.push_back(std::move(solana_account_meta9));
+  account_metas.push_back(std::move(solana_account_meta10));
+  auto mojom_create_associated_account_instruction =
+      mojom::SolanaInstruction::New(kSolanaAssociatedTokenProgramId,
+                                    std::move(account_metas),
+                                    std::vector<uint8_t>());
+  instructions.push_back(
+      std::move(mojom_create_associated_account_instruction));
+  instructions.push_back(std::move(mojom_transfer_instruction));
+  tx_data = mojom::SolanaTxData::New(
+      "", from_wallet_address, to_wallet_address, spl_token_mint_address, 0,
+      10000000,
+      mojom::TransactionType::
+          SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
+      std::move(instructions));
+
+  // Test owner is not token program account.
+  json = R"(
+    {
+      "jsonrpc":"2.0","id":1,
+      "result": {
+        "context":{"slot":123065869},
+        "value":{
+          "data":["SEVMTE8gV09STEQ=","base64"],
+          "executable":false,
+          "lamports":88801034809120,
+          "owner":"11111111111111111111111111111111",
+          "rentEpoch":284
+        }
+      }
+    }
+  )";
+  SetInterceptor("", "", json);
+  TestMakeTokenProgramTransferTxData(
+      spl_token_mint_address, from_wallet_address, to_wallet_address, 10000000,
+      tx_data.Clone(), mojom::SolanaProviderError::kSuccess, "");
+
+  // Test receiving associated token account does not exist.
+  json = R"(
+    {
+      "jsonrpc":"2.0","id":1,
+      "result":{
+        "context":{"slot":123121238},
+        "value":null
+      }
+    })";
+  SetInterceptor("", "", json);
+  TestMakeTokenProgramTransferTxData(
+      spl_token_mint_address, from_wallet_address, to_wallet_address, 10000000,
+      std::move(tx_data), mojom::SolanaProviderError::kSuccess, "");
+
+  // Empty addresses should be handled.
+  TestMakeTokenProgramTransferTxData(
+      "", to_wallet_address, spl_token_mint_address, 10000000, nullptr,
+      mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  TestMakeTokenProgramTransferTxData(
+      from_wallet_address, "", spl_token_mint_address, 10000000, nullptr,
+      mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  TestMakeTokenProgramTransferTxData(
+      from_wallet_address, to_wallet_address, "", 10000000, nullptr,
+      mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 }  // namespace brave_wallet

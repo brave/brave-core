@@ -7,6 +7,7 @@
 
 #include <limits>
 
+#include "base/base64.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
@@ -181,6 +182,58 @@ bool ParseGetSignatureStatuses(
 
     statuses->push_back(status);
   }
+
+  return true;
+}
+
+bool ParseGetAccountInfo(const std::string& json,
+                         absl::optional<SolanaAccountInfo>* account_info_out) {
+  DCHECK(account_info_out);
+
+  base::Value result;
+  if (!ParseResult(json, &result) || !result.is_dict())
+    return false;
+
+  const base::Value* value = result.FindKey("value");
+  if (!value || (!value->is_none() && !value->is_dict()))
+    return false;
+
+  if (value->is_none()) {
+    *account_info_out = absl::nullopt;
+    return true;
+  }
+
+  SolanaAccountInfo account_info;
+  if (!GetUint64FromDictValue(*value, "lamports", false,
+                              &account_info.lamports))
+    return false;
+
+  auto* owner = value->FindStringKey("owner");
+  if (!owner)
+    return false;
+  account_info.owner = *owner;
+
+  auto* data = value->FindListKey("data");
+  if (!data)
+    return false;
+  const auto& data_list = data->GetList();
+  if (data_list.size() != 2u || !data_list[0].is_string() ||
+      !data_list[1].is_string() || data_list[1].GetString() != "base64")
+    return false;
+  auto data_string = data_list[0].GetString();
+  if (!base::Base64Decode(data_string))
+    return false;
+  account_info.data = data_string;
+
+  auto executable = value->FindBoolKey("executable");
+  if (!executable)
+    return false;
+  account_info.executable = *executable;
+
+  if (!GetUint64FromDictValue(*value, "rentEpoch", false,
+                              &account_info.rent_epoch))
+    return false;
+  *account_info_out = account_info;
 
   return true;
 }

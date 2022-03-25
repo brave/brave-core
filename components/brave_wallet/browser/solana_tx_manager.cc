@@ -11,6 +11,8 @@
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/solana_block_tracker.h"
+#include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
+#include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -226,6 +228,128 @@ void SolanaTxManager::GetTransactionMessageToSign(
     const std::string& tx_meta_id,
     GetTransactionMessageToSignCallback callback) {
   NOTIMPLEMENTED();
+}
+
+void SolanaTxManager::MakeSystemProgramTransferTxData(
+    const std::string& from,
+    const std::string& to,
+    uint64_t lamports,
+    MakeSystemProgramTransferTxDataCallback callback) {
+  absl::optional<SolanaInstruction> instruction =
+      solana::system_program::Transfer(from, to, lamports);
+  if (!instruction) {
+    std::move(callback).Run(
+        nullptr, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  // recent_blockhash will be updated when we are going to send out the tx.
+  SolanaTransaction transaction("" /* recent_blockhash*/, from, {*instruction});
+  transaction.set_to_wallet_address(to);
+  transaction.set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
+  transaction.set_lamports(lamports);
+
+  auto tx_data = transaction.ToSolanaTxData();
+  // This won't be null because we will always construct the mojo struct.
+  DCHECK(tx_data);
+  std::move(callback).Run(std::move(tx_data),
+                          mojom::SolanaProviderError::kSuccess, "");
+}
+
+void SolanaTxManager::MakeTokenProgramTransferTxData(
+    const std::string& spl_token_mint_address,
+    const std::string& from_wallet_address,
+    const std::string& to_wallet_address,
+    uint64_t amount,
+    MakeTokenProgramTransferTxDataCallback callback) {
+  absl::optional<std::string> from_associated_token_account =
+      SolanaKeyring::GetAssociatedTokenAccount(spl_token_mint_address,
+                                               from_wallet_address);
+  absl::optional<std::string> to_associated_token_account =
+      SolanaKeyring::GetAssociatedTokenAccount(spl_token_mint_address,
+                                               to_wallet_address);
+  if (!from_associated_token_account || !to_associated_token_account) {
+    std::move(callback).Run(
+        nullptr, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  // Check if the receiver's associated token account is existed or not.
+  json_rpc_service_->GetSolanaAccountInfo(
+      *to_associated_token_account,
+      base::BindOnce(
+          &SolanaTxManager::OnGetAccountInfo, weak_ptr_factory_.GetWeakPtr(),
+          spl_token_mint_address, from_wallet_address, to_wallet_address,
+          *from_associated_token_account, *to_associated_token_account, amount,
+          std::move(callback)));
+}
+
+void SolanaTxManager::OnGetAccountInfo(
+    const std::string& spl_token_mint_address,
+    const std::string& from_wallet_address,
+    const std::string& to_wallet_address,
+    const std::string& from_associated_token_account,
+    const std::string& to_associated_token_account,
+    uint64_t amount,
+    MakeTokenProgramTransferTxDataCallback callback,
+    absl::optional<SolanaAccountInfo> account_info,
+    mojom::SolanaProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::SolanaProviderError::kSuccess) {
+    std::move(callback).Run(nullptr, error, error_message);
+    return;
+  }
+
+  bool create_associated_token_account = false;
+  std::vector<SolanaInstruction> instructions;
+  if (!account_info || account_info->owner != kSolanaTokenProgramId) {
+    absl::optional<SolanaInstruction> create_associated_token_instruction =
+        solana::spl_associated_token_account_program::
+            CreateAssociatedTokenAccount(from_wallet_address, to_wallet_address,
+                                         to_associated_token_account,
+                                         spl_token_mint_address);
+    if (!create_associated_token_instruction) {
+      std::move(callback).Run(
+          nullptr, mojom::SolanaProviderError::kInternalError,
+          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+      return;
+    }
+    instructions.push_back(std::move(*create_associated_token_instruction));
+    create_associated_token_account = true;
+  }
+
+  absl::optional<SolanaInstruction> transfer_instruction =
+      solana::spl_token_program::Transfer(
+          kSolanaTokenProgramId, from_associated_token_account,
+          to_associated_token_account, from_wallet_address,
+          std::vector<std::string>(), amount);
+  if (!transfer_instruction) {
+    std::move(callback).Run(
+        nullptr, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+  instructions.push_back(std::move(*transfer_instruction));
+
+  // recent_blockhash will be updated when we are going to send out the tx.
+  SolanaTransaction transaction("" /* recent_blockhash*/, from_wallet_address,
+                                std::move(instructions));
+  transaction.set_to_wallet_address(to_wallet_address);
+  transaction.set_spl_token_mint_address(spl_token_mint_address);
+  transaction.set_amount(amount);
+  transaction.set_tx_type(
+      create_associated_token_account
+          ? mojom::TransactionType::
+                SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+          : mojom::TransactionType::SolanaSPLTokenTransfer);
+
+  auto tx_data = transaction.ToSolanaTxData();
+  // This won't be null because we will always construct the mojo struct.
+  DCHECK(tx_data);
+  std::move(callback).Run(std::move(tx_data),
+                          mojom::SolanaProviderError::kSuccess, "");
 }
 
 void SolanaTxManager::OnLatestBlockhashUpdated(const std::string& blockhash) {
