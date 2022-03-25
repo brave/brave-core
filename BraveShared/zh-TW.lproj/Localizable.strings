@@ -97,6 +97,18 @@
 /* No comment provided by engineer. */
 "MyFirstAdTitle" = "這是您的第一則 Brave 廣告";
 
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "模式";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.sectionDescription" = "深色模式會同時影響網站的呈現樣貌和一般的系統外觀。";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.settingsDescription" = "開啟/關閉深色模式";
+
+/* A table cell title for Night Mode - defining element for the toggle */
+"nightMode.settingsTitle" = "深色模式";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "否";
 
@@ -481,9 +493,11 @@
 /* The title of the default playlist folder */
 "playlistFolders.savedFolderTitle" = "已儲存";
 
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.'
-   The title of the section indicating that the user should select a folder to move 1 item to. */
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
 "playlistFolders.selectAFolderTitle" = "選取要將 %lld 個項目移至其中的資料夾";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "選取要將 1 個項目移入的資料夾";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld 個項目";

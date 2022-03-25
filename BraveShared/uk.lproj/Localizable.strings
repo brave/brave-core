@@ -97,6 +97,18 @@
 /* No comment provided by engineer. */
 "MyFirstAdTitle" = "Це ваша перша реклама Brave";
 
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "Режим";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.sectionDescription" = "Нічний режим змінить зовнішній вигляд вебсайту та системи.";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.settingsDescription" = "Увімкнути / вимкнути нічний режим";
+
+/* A table cell title for Night Mode - defining element for the toggle */
+"nightMode.settingsTitle" = "Нічний режим";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Ні";
 
@@ -481,9 +493,11 @@
 /* The title of the default playlist folder */
 "playlistFolders.savedFolderTitle" = "Збережено";
 
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.'
-   The title of the section indicating that the user should select a folder to move 1 item to. */
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
 "playlistFolders.selectAFolderTitle" = "Виберіть папку, щоб перемістити ці об’єкти (%lld)";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "Виберіть папку для переміщення 1 об’єкта";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "Об’єкти: %lld";

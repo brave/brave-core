@@ -52,6 +52,9 @@
 /* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
 "wallet.addCustomTokenErrorTitle" = "Неможливо додати користувацький токен";
 
+/* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
+"wallet.advancedSettingsTransaction" = "Розширені налаштування";
+
 /* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\" */
 "wallet.amountAndGas" = "Сума + газ";
 
@@ -313,6 +316,21 @@
 /* A title of the edit gas screen for standard transactions */
 "wallet.editGasTitle" = "Редагувати газ";
 
+/* The footer title for edit nonce section in advanced settings screen. */
+"wallet.editNonceFooter" = "Транзакція може не розповсюджуватися в мережі, якщо користувацьке значення часу не послідовне або містить помилки";
+
+/* The header title for edit nonce section in advanced settings screen. */
+"wallet.editNonceHeader" = "Значення часу";
+
+/* The placeholder for custom nonce textfield. */
+"wallet.editNoncePlaceholder" = "Уведіть користувацьке значення часу";
+
+/* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee or nonce value. */
+"wallet.editTransactionError" = "Перевірте введену інформацію та спробуйте ще раз.";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.editTransactionErrorCTA" = "Назад";
+
 /* The button title for showing the screen to change what assets are visible */
 "wallet.editVisibleAssetsButtonTitle" = "Редагувати видимі активи";
 
@@ -517,6 +535,9 @@
 /* The title on the restore wallet screen. */
 "wallet.restoreWalletTitle" = "Відновити криптовалютний рахунок";
 
+/* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
+"wallet.saveButtonTitle" = "Зберегти";
+
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "Сканування QR-коду";
 
@@ -583,6 +604,21 @@
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetButtonTitle" = "Скинути";
 
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertButtonTitle" = "Скинути";
+
+/* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertMessage" = "Ця опція в основному використовується розробниками для роботи з локальним тестовим сервером";
+
+/* The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertTitle" = "Справді очистити дані транзакції та значення часу?";
+
+/* The footer message below the button to reset transaction */
+"wallet.settingsResetTransactionFooter" = "Функція очищення транзакцій може стати в пригоді розробникам або під час очищення стану на локальному сервері";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionTitle" = "Очистити дані транзакції та значення часу";
+
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetWalletAlertButtonTitle" = "Скинути налаштування гаманця";
 
@@ -639,6 +675,9 @@
 
 /* The title below account picker when user has selected a test network to swap cryptos */
 "wallet.swapCryptoUnsupportNetworkTitle" = "Непідтримуваний блокчейн.";
+
+/* The description of a swap button on the buy/send/swap modal */
+"wallet.swapDescription" = "Обмін токенів і активів.";
 
 /* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
 "wallet.swapDexAggrigatorDisclaimer" = "0x опрацьовує адресу Ethereum і IP-адресу для транзакції (зокрема, отримання цін). 0x використовуватиме ці дані ЛИШЕ для проведення транзакцій.";

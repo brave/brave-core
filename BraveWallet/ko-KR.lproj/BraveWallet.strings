@@ -52,6 +52,9 @@
 /* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
 "wallet.addCustomTokenErrorTitle" = "맞춤 토큰을 추가할 수 없음";
 
+/* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
+"wallet.advancedSettingsTransaction" = "고급 설정";
+
 /* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\" */
 "wallet.amountAndGas" = "수량 + 가스비";
 
@@ -313,6 +316,21 @@
 /* A title of the edit gas screen for standard transactions */
 "wallet.editGasTitle" = "가스 편집";
 
+/* The footer title for edit nonce section in advanced settings screen. */
+"wallet.editNonceFooter" = "맞춤 논스 값이 시퀀셜이 아니거나 기타 오류가 있으면 트랜잭션이 네트워크로 전파되지 않을 수 있습니다.";
+
+/* The header title for edit nonce section in advanced settings screen. */
+"wallet.editNonceHeader" = "논스";
+
+/* The placeholder for custom nonce textfield. */
+"wallet.editNoncePlaceholder" = "맞춤 논스 값 입력";
+
+/* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee or nonce value. */
+"wallet.editTransactionError" = "입력값을 확인하고 다시 시도하세요.";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.editTransactionErrorCTA" = "뒤로 이동";
+
 /* The button title for showing the screen to change what assets are visible */
 "wallet.editVisibleAssetsButtonTitle" = "표시되는 자산 편집";
 
@@ -517,6 +535,9 @@
 /* The title on the restore wallet screen. */
 "wallet.restoreWalletTitle" = "암호화폐 계정 복구";
 
+/* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
+"wallet.saveButtonTitle" = "저장";
+
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "QR 코드 스캔";
 
@@ -583,6 +604,21 @@
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetButtonTitle" = "재설정";
 
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertButtonTitle" = "재설정";
+
+/* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertMessage" = "주로 로컬 테스트 서버를 운영하는 개발자가 사용하는 옵션입니다.";
+
+/* The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertTitle" = "트랜잭션 및 논스 정보를 초기화하시겠습니까?";
+
+/* The footer message below the button to reset transaction */
+"wallet.settingsResetTransactionFooter" = "트랜잭션 지우기는 주로 개발자가 로컬 서버에서 상태를 지우는 데 유용합니다.";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionTitle" = "트랜잭션 및 논스 정보 지우기";
+
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetWalletAlertButtonTitle" = "월렛 재설정";
 
@@ -639,6 +675,9 @@
 
 /* The title below account picker when user has selected a test network to swap cryptos */
 "wallet.swapCryptoUnsupportNetworkTitle" = "지원되지 않는 체인";
+
+/* The description of a swap button on the buy/send/swap modal */
+"wallet.swapDescription" = "토큰 및 자산을 스왑합니다.";
 
 /* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
 "wallet.swapDexAggrigatorDisclaimer" = "0x는 이더리움 주소와 IP 주소를 처리하여 거래를 수행합니다(견적 받기 포함). 0x는 거래 처리 목적으로만 이 데이터를 사용합니다.";

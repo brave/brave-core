@@ -52,6 +52,9 @@
 /* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
 "wallet.addCustomTokenErrorTitle" = "无法添加自定义令牌";
 
+/* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
+"wallet.advancedSettingsTransaction" = "进阶设置";
+
 /* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\" */
 "wallet.amountAndGas" = "金额 + Gas";
 
@@ -313,6 +316,21 @@
 /* A title of the edit gas screen for standard transactions */
 "wallet.editGasTitle" = "编辑 Gas";
 
+/* The footer title for edit nonce section in advanced settings screen. */
+"wallet.editNonceFooter" = "如果自定义 nonce 值不连续或有其他错误，则交易可能不会传播到网络";
+
+/* The header title for edit nonce section in advanced settings screen. */
+"wallet.editNonceHeader" = "Nonce";
+
+/* The placeholder for custom nonce textfield. */
+"wallet.editNoncePlaceholder" = "输入自定义 nonce 值";
+
+/* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee or nonce value. */
+"wallet.editTransactionError" = "请检查输入内容并再试一次。";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.editTransactionErrorCTA" = "返回";
+
 /* The button title for showing the screen to change what assets are visible */
 "wallet.editVisibleAssetsButtonTitle" = "编辑可见资产";
 
@@ -517,6 +535,9 @@
 /* The title on the restore wallet screen. */
 "wallet.restoreWalletTitle" = "还原加密账户";
 
+/* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
+"wallet.saveButtonTitle" = "保存";
+
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "扫描二维码";
 
@@ -583,6 +604,21 @@
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetButtonTitle" = "重置";
 
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertButtonTitle" = "重置";
+
+/* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertMessage" = "此选项主要由运行本地测试服务器的开发人员使用";
+
+/* The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertTitle" = "您确定要重置交易和 nonce 信息吗？";
+
+/* The footer message below the button to reset transaction */
+"wallet.settingsResetTransactionFooter" = "在开发人员执行开发工作或在本地服务器上清除状态时，清除交易可能很有用";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionTitle" = "清除交易和 nonce 信息";
+
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetWalletAlertButtonTitle" = "重置钱包";
 
@@ -639,6 +675,9 @@
 
 /* The title below account picker when user has selected a test network to swap cryptos */
 "wallet.swapCryptoUnsupportNetworkTitle" = "不支持的区块链";
+
+/* The description of a swap button on the buy/send/swap modal */
+"wallet.swapDescription" = "兑换代币和资产";
 
 /* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
 "wallet.swapDexAggrigatorDisclaimer" = "0x 将处理 Ethereum 地址和 IP 地址以履行交易（包括获得报价）。0x 仅会将数据用于处理交易目的。";

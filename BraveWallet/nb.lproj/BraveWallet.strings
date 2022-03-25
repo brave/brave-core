@@ -52,6 +52,9 @@
 /* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
 "wallet.addCustomTokenErrorTitle" = "Kan ikke legge til egendefinert token";
 
+/* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
+"wallet.advancedSettingsTransaction" = "Avanserte innstillinger";
+
 /* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\" */
 "wallet.amountAndGas" = "Beløp + Gas";
 
@@ -313,6 +316,21 @@
 /* A title of the edit gas screen for standard transactions */
 "wallet.editGasTitle" = "Endre Gas";
 
+/* The footer title for edit nonce section in advanced settings screen. */
+"wallet.editNonceFooter" = "Transaksjonen kan ikke sendes ut i nettverket hvis den egendefinerte nonce-verdien ikke er i riktig rekkefølge, eller har andre feil";
+
+/* The header title for edit nonce section in advanced settings screen. */
+"wallet.editNonceHeader" = "Nonce";
+
+/* The placeholder for custom nonce textfield. */
+"wallet.editNoncePlaceholder" = "Skriv inn egendefinert nonce-verdi";
+
+/* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee or nonce value. */
+"wallet.editTransactionError" = "Kontroller det du har skrevet inn, og prøv på nytt.";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.editTransactionErrorCTA" = "Gå tilbake";
+
 /* The button title for showing the screen to change what assets are visible */
 "wallet.editVisibleAssetsButtonTitle" = "Endre synlige ressurser";
 
@@ -517,6 +535,9 @@
 /* The title on the restore wallet screen. */
 "wallet.restoreWalletTitle" = "Gjenopprett kryptokontoen";
 
+/* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
+"wallet.saveButtonTitle" = "Lagre";
+
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "Skann QR-kode";
 
@@ -583,6 +604,21 @@
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetButtonTitle" = "Tilbakestill";
 
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertButtonTitle" = "Tilbakestill";
+
+/* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertMessage" = "Dette alternativet brukes primært av utviklere som kjører en lokal testserver";
+
+/* The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertTitle" = "Er du sikker på at du vil tilbakestille transaksjons- og nonce-informasjonen?";
+
+/* The footer message below the button to reset transaction */
+"wallet.settingsResetTransactionFooter" = "Sletting av transaksjoner kan være nyttig for utviklere eller ved tilbakestilling av status på en lokal server";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionTitle" = "Slett transaksjons- og nonce-informasjon";
+
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetWalletAlertButtonTitle" = "Tilbakestill lommebok";
 
@@ -639,6 +675,9 @@
 
 /* The title below account picker when user has selected a test network to swap cryptos */
 "wallet.swapCryptoUnsupportNetworkTitle" = "Nettverket støttes ikke";
+
+/* The description of a swap button on the buy/send/swap modal */
+"wallet.swapDescription" = "Bytt tokener og ressurser.";
 
 /* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
 "wallet.swapDexAggrigatorDisclaimer" = "0x behandler Ethereum-adressen og IP-adressen for å gjennomføre en transaksjon (herunder innhenting av pristilbud). 0x bruker KUN disse opplysningene til å behandle transaksjoner.";

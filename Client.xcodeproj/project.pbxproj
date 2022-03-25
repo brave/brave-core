@@ -1105,7 +1105,6 @@
 		CAC5342927A9B87600013056 /* PlaylistFolderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC5342827A9B87600013056 /* PlaylistFolderController.swift */; };
 		CAD0D5D927C007CC001071AC /* PlaylistEditFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD0D5D827C007CC001071AC /* PlaylistEditFolderView.swift */; };
 		CAFC6C9027CFE34800F9CACC /* BraveSyncAPIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09617F252B63F200F3AFBB /* BraveSyncAPIExtensions.swift */; };
-		CAFC6C9127CFE36C00F9CACC /* LoginInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB2F0CE26D3F92D00C8E576 /* LoginInfoViewController.swift */; };
 		CAFC6C9927D011C200F9CACC /* CosmeticFiltersResourceDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFC6C9827D011C200F9CACC /* CosmeticFiltersResourceDownloader.swift */; };
 		CE7F11941F3CEEC800ABFC0B /* RemoteDevices.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F115E1F3CCEF900ABFC0B /* RemoteDevices.swift */; };
 		D018F93E1F44A71A0098F8CA /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D018F93D1F44A7190098F8CA /* Schema.swift */; };
