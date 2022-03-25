@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/database/database_util.h"
 #include "bat/ads/internal/database/database_version.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
@@ -42,6 +43,10 @@ void Migration::FromVersion(const int from_version, ResultCallback callback) {
     callback(/* success */ true);
     return;
   }
+
+  // TODO(https://github.com/brave/brave-browser/issues/14728): Decouple catalog
+  // business logic once we have implemented database observers
+  ResetCatalog();
 
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   for (int i = from_version + 1; i <= to_version; i++) {

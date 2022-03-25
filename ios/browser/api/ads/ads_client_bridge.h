@@ -67,6 +67,7 @@
 - (void)setUint64Pref:(const std::string&)path value:(const uint64_t)value;
 - (uint64_t)getUint64Pref:(const std::string&)path;
 - (void)clearPref:(const std::string&)path;
+- (bool)hasPrefPath:(const std::string&)path;
 - (void)recordP2AEvent:(const std::string&)name
                   type:(const ads::mojom::P2AEventType)type
                  value:(const std::string&)value;

@@ -454,6 +454,17 @@ void BatAdsClientMojoBridge::ClearPref(
   bat_ads_client_->ClearPref(path);
 }
 
+bool BatAdsClientMojoBridge::HasPrefPath(const std::string& path) const {
+  bool value = false;
+
+  if (!connected()) {
+    return value;
+  }
+
+  bat_ads_client_->HasPrefPath(path, &value);
+  return value;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 bool BatAdsClientMojoBridge::connected() const {

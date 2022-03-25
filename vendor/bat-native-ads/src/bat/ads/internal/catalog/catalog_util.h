@@ -10,6 +10,7 @@
 
 namespace ads {
 
+void ResetCatalog();
 std::string GetCatalogId();
 bool DoesCatalogExist();
 bool HasCatalogExpired();

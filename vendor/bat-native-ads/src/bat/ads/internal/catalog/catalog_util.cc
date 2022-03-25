@@ -17,6 +17,13 @@ namespace {
 const int kCatalogLifespanInDays = 1;
 }
 
+void ResetCatalog() {
+  AdsClientHelper::Get()->ClearPref(prefs::kCatalogId);
+  AdsClientHelper::Get()->ClearPref(prefs::kCatalogVersion);
+  AdsClientHelper::Get()->ClearPref(prefs::kCatalogPing);
+  AdsClientHelper::Get()->ClearPref(prefs::kCatalogLastUpdated);
+}
+
 std::string GetCatalogId() {
   return AdsClientHelper::Get()->GetStringPref(prefs::kCatalogId);
 }

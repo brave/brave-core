@@ -138,7 +138,6 @@ void MockGetBooleanPref(const std::unique_ptr<AdsClientMock>& mock) {
       .WillByDefault(Invoke([](const std::string& path) -> bool {
         const std::string pref_path = GetUuidForCurrentTest(path);
         const std::string value = g_prefs[pref_path];
-        DCHECK(!value.empty());
 
         int value_as_int;
         base::StringToInt(value, &value_as_int);
@@ -159,7 +158,6 @@ void MockGetIntegerPref(const std::unique_ptr<AdsClientMock>& mock) {
       .WillByDefault(Invoke([](const std::string& path) -> int {
         const std::string pref_path = GetUuidForCurrentTest(path);
         const std::string value = g_prefs[pref_path];
-        DCHECK(!value.empty());
 
         int value_as_int;
         base::StringToInt(value, &value_as_int);
@@ -180,7 +178,6 @@ void MockGetDoublePref(const std::unique_ptr<AdsClientMock>& mock) {
       .WillByDefault(Invoke([](const std::string& path) -> double {
         const std::string pref_path = GetUuidForCurrentTest(path);
         const std::string value = g_prefs[pref_path];
-        DCHECK(!value.empty());
 
         double value_as_double;
         base::StringToDouble(value, &value_as_double);
@@ -219,7 +216,6 @@ void MockGetInt64Pref(const std::unique_ptr<AdsClientMock>& mock) {
       .WillByDefault(Invoke([](const std::string& path) -> int64_t {
         const std::string pref_path = GetUuidForCurrentTest(path);
         const std::string value = g_prefs[pref_path];
-        DCHECK(!value.empty());
 
         int64_t value_as_int64;
         base::StringToInt64(value, &value_as_int64);
@@ -240,7 +236,6 @@ void MockGetUint64Pref(const std::unique_ptr<AdsClientMock>& mock) {
       .WillByDefault(Invoke([](const std::string& path) -> uint64_t {
         const std::string pref_path = GetUuidForCurrentTest(path);
         const std::string value = g_prefs[pref_path];
-        DCHECK(!value.empty());
 
         uint64_t value_as_uint64;
         base::StringToUint64(value, &value_as_uint64);
@@ -258,8 +253,24 @@ void MockSetUint64Pref(const std::unique_ptr<AdsClientMock>& mock) {
 
 void MockClearPref(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, ClearPref(_))
-      .WillByDefault(
-          Invoke([](const std::string& path) { g_prefs.erase(path); }));
+      .WillByDefault(Invoke([](const std::string& path) {
+        const std::string pref_path = GetUuidForCurrentTest(path);
+        g_prefs.erase(pref_path);
+      }));
+}
+
+void MockHasPrefPath(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, HasPrefPath(_))
+      .WillByDefault(Invoke([](const std::string& path) -> bool {
+        const std::string pref_path = GetUuidForCurrentTest(path);
+
+        const auto iter = g_prefs.find(pref_path);
+        if (iter == g_prefs.end()) {
+          return false;
+        }
+
+        return true;
+      }));
 }
 
 void MockDefaultPrefs(const std::unique_ptr<AdsClientMock>& mock) {
@@ -631,6 +642,8 @@ void MockPrefs(const std::unique_ptr<AdsClientMock>& mock) {
   MockSetUint64Pref(mock);
 
   MockClearPref(mock);
+
+  MockHasPrefPath(mock);
 
   MockDefaultPrefs(mock);
 }

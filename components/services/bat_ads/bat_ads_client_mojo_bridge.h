@@ -143,6 +143,8 @@ class BatAdsClientMojoBridge
   void ClearPref(
       const std::string& path) override;
 
+  bool HasPrefPath(const std::string& path) const override;
+
  private:
   bool connected() const;
 
