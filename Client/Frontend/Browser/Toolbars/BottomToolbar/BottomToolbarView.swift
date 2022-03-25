@@ -30,7 +30,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     super.init(frame: frame)
     setupAccessibility()
 
-    backgroundColor = .secondaryBraveBackground
+    backgroundColor = .urlBarBackground
 
     addSubview(contentView)
     helper = ToolbarHelper(toolbar: self)
@@ -53,7 +53,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     if isPrivateBrowsing {
       backgroundColor = .privateModeBackground
     } else {
-      backgroundColor = .secondaryBraveBackground
+      backgroundColor = .urlBarBackground
     }
   }
 
