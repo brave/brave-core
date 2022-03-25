@@ -275,11 +275,13 @@ void BraveActionsContainer::AddActionViewForShields() {
 void BraveActionsContainer::Update() {
   // Update state of each action and also determine if there are any buttons to
   // show
+  bool can_show = false;
+
   if (shields_action_btn_) {
     shields_action_btn_->Update();
+    can_show = shields_action_btn_->GetVisible();
   }
 
-  bool can_show = false;
   for (auto const& pair : actions_) {
     if (pair.second.view_controller_)
       pair.second.view_controller_->UpdateState();
