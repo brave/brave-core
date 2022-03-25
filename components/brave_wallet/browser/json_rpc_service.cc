@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/fil_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_requests.h"
 #include "brave/components/brave_wallet/browser/solana_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
@@ -1553,24 +1554,51 @@ void JsonRpcService::Reset() {
 }
 
 void JsonRpcService::GetSolanaBalance(const std::string& pubkey,
+                                      const std::string& chain_id,
                                       GetSolanaBalanceCallback callback) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        0u, mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetSolanaBalance,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(solana::getBalance(pubkey), true,
-                  network_urls_[mojom::CoinType::SOL],
+  RequestInternal(solana::getBalance(pubkey), true, network_url,
                   std::move(internal_callback));
 }
 
 void JsonRpcService::GetSPLTokenAccountBalance(
-    const std::string& pubkey,
+    const std::string& wallet_address,
+    const std::string& token_mint_address,
+    const std::string& chain_id,
     GetSPLTokenAccountBalanceCallback callback) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        "", 0, "", mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  absl::optional<std::string> associated_token_account =
+      SolanaKeyring::GetAssociatedTokenAccount(token_mint_address,
+                                               wallet_address);
+  if (!associated_token_account) {
+    std::move(callback).Run(
+        "", 0, "", mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetSPLTokenAccountBalance,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(solana::getTokenAccountBalance(pubkey), true,
-                  network_urls_[mojom::CoinType::SOL],
-                  std::move(internal_callback));
+  RequestInternal(solana::getTokenAccountBalance(*associated_token_account),
+                  true, network_url, std::move(internal_callback));
 }
 
 void JsonRpcService::OnGetSolanaBalance(
