@@ -97,6 +97,18 @@
 /* No comment provided by engineer. */
 "MyFirstAdTitle" = "Este es tu primer anuncio de Brave";
 
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "Modo";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.sectionDescription" = "El modo nocturno modificará tanto la apariencia del sitio web como la del sistema general.";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.settingsDescription" = "Activar/desactivar modo nocturno";
+
+/* A table cell title for Night Mode - defining element for the toggle */
+"nightMode.settingsTitle" = "Modo nocturno";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "No";
 
@@ -481,9 +493,11 @@
 /* The title of the default playlist folder */
 "playlistFolders.savedFolderTitle" = "Guardado";
 
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.'
-   The title of the section indicating that the user should select a folder to move 1 item to. */
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
 "playlistFolders.selectAFolderTitle" = "Selecciona una carpeta para guardar %lld elementos";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "Selecciona una carpeta para guardar 1 elemento";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld elementos";

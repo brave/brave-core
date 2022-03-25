@@ -203,7 +203,7 @@
 "callout.defaultBrowserTitle" = "Braveをデフォルトのブラウザに設定する";
 
 /* Button title for Playlist Onboarding View */
-"callout.playlistOnboardingViewButtonTitle" = "動画を見る";
+"callout.playlistOnboardingViewButtonTitle" = "説明を見る";
 
 /* Description for Playlist Onboarding View */
 "callout.playlistOnboardingViewDescription" = "どこでも、好きなときに動画を楽しめます。バックグラウンド再生、ピクチャーインピクチャー再生、オフライン再生も可能です。そしてもちろん、広告は表示されません。";
@@ -679,6 +679,9 @@
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "非表示";
 
+/* Open and Fill website text selection menu item */
+"MenuItemOpenTitle" = "ウェブサイトを開く";
+
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "表示";
 
@@ -973,6 +976,9 @@
 /* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
 "ReaderModePageCantShowDisplayText" = "ページをリーダービューで表示できませんでした。";
 
+/* Title of a bar that show up when you enter reader mode. */
+"readerModeSettingsButton" = "リーダーモード";
+
 /* Accessibility label for button decreasing font size in display settings of reader mode */
 "ReaderModeSmallerFontButtonAccessibilityLabel" = "テキストサイズを小さくする";
 
@@ -981,15 +987,6 @@
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "色テーマを変更します。";
-
-/* Dark theme setting in Reading View settings */
-"ReaderModeThemeButtonTitleDark" = "ダーク";
-
-/* Light theme setting in Reading View settings */
-"ReaderModeThemeButtonTitleLight" = "ライト";
-
-/* Sepia theme setting in Reading View settings */
-"ReaderModeThemeButtonTitleSepia" = "セピア";
 
 /* Action button for removing sync device. */
 "RemoveDevice" = "削除";
@@ -1110,6 +1107,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "検索候補";
+
+/* Title of an action that allows user to perform a one-click web search for selected text */
+"SearchWithBrave" = "Braveで検索";
 
 /* Settings security section title */
 "Security" = "セキュリティ";

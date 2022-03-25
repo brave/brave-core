@@ -97,6 +97,18 @@
 /* No comment provided by engineer. */
 "MyFirstAdTitle" = "これは初めてのBrave広告です";
 
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "モード";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.sectionDescription" = "ナイトモードは、ウェブサイトとシステム全般の外観に同時に適用されます。";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.settingsDescription" = "ナイトモードをオン/オフ";
+
+/* A table cell title for Night Mode - defining element for the toggle */
+"nightMode.settingsTitle" = "ナイトモード";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "いいえ";
 
@@ -479,11 +491,13 @@
 "playlistFolders.newFolderSectionTitle" = "このフォルダに動画を追加";
 
 /* The title of the default playlist folder */
-"playlistFolders.savedFolderTitle" = "保存済み";
+"playlistFolders.savedFolderTitle" = "追加済み";
 
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.'
-   The title of the section indicating that the user should select a folder to move 1 item to. */
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
 "playlistFolders.selectAFolderTitle" = "%lld件のアイテムを移動するフォルダを選択";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "1件のアイテムを移動するフォルダを選択";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld件のアイテム";

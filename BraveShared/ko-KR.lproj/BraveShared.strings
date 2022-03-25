@@ -679,6 +679,9 @@
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "숨기기";
 
+/* Open and Fill website text selection menu item */
+"MenuItemOpenTitle" = "웹사이트 열기";
+
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "공개";
 
@@ -973,6 +976,9 @@
 /* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
 "ReaderModePageCantShowDisplayText" = "읽기 전용 뷰에서 페이지를 표시할 수 없습니다.";
 
+/* Title of a bar that show up when you enter reader mode. */
+"readerModeSettingsButton" = "리더 모드";
+
 /* Accessibility label for button decreasing font size in display settings of reader mode */
 "ReaderModeSmallerFontButtonAccessibilityLabel" = "텍스트 크기 축소";
 
@@ -981,15 +987,6 @@
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "테마 색상을 변경합니다.";
-
-/* Dark theme setting in Reading View settings */
-"ReaderModeThemeButtonTitleDark" = "어두운";
-
-/* Light theme setting in Reading View settings */
-"ReaderModeThemeButtonTitleLight" = "밝은";
-
-/* Sepia theme setting in Reading View settings */
-"ReaderModeThemeButtonTitleSepia" = "Sepia";
 
 /* Action button for removing sync device. */
 "RemoveDevice" = "제거";
@@ -1110,6 +1107,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "추천 검색어";
+
+/* Title of an action that allows user to perform a one-click web search for selected text */
+"SearchWithBrave" = "Brave로 검색";
 
 /* Settings security section title */
 "Security" = "보안";

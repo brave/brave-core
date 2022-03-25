@@ -679,6 +679,9 @@
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Masquer";
 
+/* Open and Fill website text selection menu item */
+"MenuItemOpenTitle" = "Ouvrir le site Web";
+
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Afficher";
 
@@ -973,6 +976,9 @@
 /* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
 "ReaderModePageCantShowDisplayText" = "Impossible d'afficher la page en mode Lecteur.";
 
+/* Title of a bar that show up when you enter reader mode. */
+"readerModeSettingsButton" = "Mode lecture";
+
 /* Accessibility label for button decreasing font size in display settings of reader mode */
 "ReaderModeSmallerFontButtonAccessibilityLabel" = "Réduire la taille du texte";
 
@@ -981,15 +987,6 @@
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Modifie le thème de couleur.";
-
-/* Dark theme setting in Reading View settings */
-"ReaderModeThemeButtonTitleDark" = "Sombre";
-
-/* Light theme setting in Reading View settings */
-"ReaderModeThemeButtonTitleLight" = "Lumineux";
-
-/* Sepia theme setting in Reading View settings */
-"ReaderModeThemeButtonTitleSepia" = "Sépia";
 
 /* Action button for removing sync device. */
 "RemoveDevice" = "Supprimer";
@@ -1110,6 +1107,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Suggestions de recherche";
+
+/* Title of an action that allows user to perform a one-click web search for selected text */
+"SearchWithBrave" = "Rechercher avec Brave";
 
 /* Settings security section title */
 "Security" = "Sécurité";

@@ -97,6 +97,18 @@
 /* No comment provided by engineer. */
 "MyFirstAdTitle" = "Dies ist Ihre erste Anzeige von Brave.";
 
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "Modus";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.sectionDescription" = "Der Nachtmodus wirkt sich gleichzeitig auf das Erscheinungsbild der Website und das allgemeine Erscheinungsbild des Systems aus.";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.settingsDescription" = "Nachtmodus ein/ausschalten";
+
+/* A table cell title for Night Mode - defining element for the toggle */
+"nightMode.settingsTitle" = "Nachtmodus";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Nein";
 
@@ -481,9 +493,11 @@
 /* The title of the default playlist folder */
 "playlistFolders.savedFolderTitle" = "Gespeichert";
 
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.'
-   The title of the section indicating that the user should select a folder to move 1 item to. */
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
 "playlistFolders.selectAFolderTitle" = "Wählen Sie einen Ordner aus, in den %lld Elemente verschoben werden sollen";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "Wählen Sie einen Ordner aus, in den ein Element verschoben werden soll";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld Elemente";

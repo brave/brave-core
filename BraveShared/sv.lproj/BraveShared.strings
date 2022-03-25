@@ -679,6 +679,9 @@
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Dölj";
 
+/* Open and Fill website text selection menu item */
+"MenuItemOpenTitle" = "Öppna webbplats";
+
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Avslöja";
 
@@ -973,6 +976,9 @@
 /* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
 "ReaderModePageCantShowDisplayText" = "Sidan kunde inte visas i läsläge.";
 
+/* Title of a bar that show up when you enter reader mode. */
+"readerModeSettingsButton" = "Läsläge";
+
 /* Accessibility label for button decreasing font size in display settings of reader mode */
 "ReaderModeSmallerFontButtonAccessibilityLabel" = "Minska textstorleken";
 
@@ -981,15 +987,6 @@
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Ändrar färgtemat.";
-
-/* Dark theme setting in Reading View settings */
-"ReaderModeThemeButtonTitleDark" = "Mörkt";
-
-/* Light theme setting in Reading View settings */
-"ReaderModeThemeButtonTitleLight" = "Ljust";
-
-/* Sepia theme setting in Reading View settings */
-"ReaderModeThemeButtonTitleSepia" = "Sepia";
 
 /* Action button for removing sync device. */
 "RemoveDevice" = "Ta bort";
@@ -1110,6 +1107,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Sökförslag";
+
+/* Title of an action that allows user to perform a one-click web search for selected text */
+"SearchWithBrave" = "Sök med Brave";
 
 /* Settings security section title */
 "Security" = "Säkerhet";

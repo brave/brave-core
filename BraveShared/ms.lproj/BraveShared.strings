@@ -679,6 +679,9 @@
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Sembunyikan";
 
+/* Open and Fill website text selection menu item */
+"MenuItemOpenTitle" = "Buka Laman Web";
+
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Dedah";
 
@@ -973,6 +976,9 @@
 /* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
 "ReaderModePageCantShowDisplayText" = "Halaman ini tidak dapat dipaparkan dalam Paparan Pembaca.";
 
+/* Title of a bar that show up when you enter reader mode. */
+"readerModeSettingsButton" = "Mod Pembaca";
+
 /* Accessibility label for button decreasing font size in display settings of reader mode */
 "ReaderModeSmallerFontButtonAccessibilityLabel" = "Kurangkan saiz teks";
 
@@ -981,15 +987,6 @@
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Mengubah tema warna.";
-
-/* Dark theme setting in Reading View settings */
-"ReaderModeThemeButtonTitleDark" = "Gelap";
-
-/* Light theme setting in Reading View settings */
-"ReaderModeThemeButtonTitleLight" = "Cerah";
-
-/* Sepia theme setting in Reading View settings */
-"ReaderModeThemeButtonTitleSepia" = "Sepia";
 
 /* Action button for removing sync device. */
 "RemoveDevice" = "Alih Keluar";
@@ -1110,6 +1107,9 @@
 
 /* Section header for search suggestions option */
 "SearchSuggestionsSectionHeader" = "Cadangan Carian";
+
+/* Title of an action that allows user to perform a one-click web search for selected text */
+"SearchWithBrave" = "Buat carian melalui Brave";
 
 /* Settings security section title */
 "Security" = "Sekuriti";
