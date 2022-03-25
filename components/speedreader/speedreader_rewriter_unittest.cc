@@ -61,7 +61,8 @@ INSTANTIATE_TEST_SUITE_P(,
                          SpeedreaderRewriterTest,
                          ::testing::Values("jsonld_shortest_desc",
                                            "meta_property_shortest_desc",
-                                           "meta_name_shortest_desc"));
+                                           "meta_name_shortest_desc",
+                                           "no_span_root"));
 
 TEST_P(SpeedreaderRewriterTest, SelectShortestDescription) {
   base::ScopedAllowBlockingForTesting allow_blocking;

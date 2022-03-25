@@ -1,8 +1,8 @@
 use crate::{dom, nlp, scorer, util};
 use html5ever::parse_document;
 use html5ever::tendril::TendrilSink;
-use html5ever::tree_builder::NodeOrText;
-use html5ever::tree_builder::TreeSink;
+use html5ever::tree_builder::{ElementFlags, NodeOrText, TreeSink};
+use html5ever::QualName;
 use kuchiki::NodeRef as Handle;
 use kuchiki::Sink;
 use regex::Regex;
@@ -251,7 +251,18 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     post_process(&mut dom, top_candidate.clone(), &meta);
 
     // Calls html5ever::serialize() with IncludeNode for us.
-    let mut content: String = top_candidate.to_string();
+    let mut content: String = match top_candidate.as_element() {
+        Some(x) if x.name.local == local_name!("span") => {
+            let name = QualName::new(None, ns!(), local_name!("div"));
+            let div = dom.create_element(name, vec![], ElementFlags::default());
+            dom.reparent_children(&top_candidate, &div);
+
+            // Our CSS formats based on id="article".
+            dom::set_attr("id", "article", div.clone(), true);
+            div.to_string()
+        },
+        _ => { top_candidate.to_string() }
+    };
 
     if let Some(ref charset) = meta.charset {
         // Since we strip out the entire head, we need to include charset if one
@@ -268,9 +279,6 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
 }
 
 pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
-    // Our CSS formats based on id="article".
-    dom::set_attr("id", "article", root.clone(), true);
-
     if let Some(first_child) = root.first_child() {
         // Add in the title
         if !meta.title.is_empty() {
@@ -322,6 +330,9 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
             let splitter = dom::create_element_simple(dom, "hr", "", None);
             dom.append_before_sibling(&first_child, NodeOrText::AppendNode(splitter));
         }
+
+        // Our CSS formats based on id="article".
+        dom::set_attr("id", "article", root, true);
     }
 }
 
