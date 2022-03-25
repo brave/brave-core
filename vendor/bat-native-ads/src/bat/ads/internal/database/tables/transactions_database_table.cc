@@ -25,7 +25,7 @@ namespace table {
 
 namespace {
 
-const char kTableName[] = "transactions";
+constexpr char kTableName[] = "transactions";
 
 int BindParameters(mojom::DBCommand* command,
                    const TransactionList& transactions) {

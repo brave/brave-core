@@ -20,9 +20,9 @@ namespace ad_targeting {
 
 namespace {
 
-const char kSegmentKey[] = "segment";
-const char kValueKey[] = "value";
-const char kPullsKey[] = "pulls";
+constexpr char kSegmentKey[] = "segment";
+constexpr char kValueKey[] = "value";
+constexpr char kPullsKey[] = "pulls";
 
 bool GetArmFromDictionary(const base::DictionaryValue* dictionary,
                           EpsilonGreedyBanditArmInfo* info) {

@@ -13,7 +13,7 @@ namespace ads {
 
 namespace {
 
-const char kStudyName[] = "AdvertiserSplitTestStudy";
+constexpr char kStudyName[] = "AdvertiserSplitTestStudy";
 
 absl::optional<std::string> GetSplitTestGroup(const std::string& study_name) {
   base::FieldTrial* field_trial = base::FieldTrialList::Find(study_name);

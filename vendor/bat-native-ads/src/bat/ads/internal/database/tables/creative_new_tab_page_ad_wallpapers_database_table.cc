@@ -21,7 +21,7 @@ namespace table {
 
 namespace {
 
-const char kTableName[] = "creative_new_tab_page_ad_wallpapers";
+constexpr char kTableName[] = "creative_new_tab_page_ad_wallpapers";
 
 int BindParameters(mojom::DBCommand* command,
                    const CreativeNewTabPageAdList& creative_ads) {

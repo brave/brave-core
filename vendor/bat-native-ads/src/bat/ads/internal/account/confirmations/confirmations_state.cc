@@ -33,7 +33,7 @@ namespace {
 
 ConfirmationsState* g_confirmations_state = nullptr;
 
-const char kConfirmationsFilename[] = "confirmations.json";
+constexpr char kConfirmationsFilename[] = "confirmations.json";
 
 }  // namespace
 

@@ -20,7 +20,7 @@ namespace ads {
 
 namespace {
 
-const char kSegmentSeparator[] = "-";
+constexpr char kSegmentSeparator[] = "-";
 
 std::vector<std::string> SplitSegment(const std::string& segment) {
   DCHECK(!segment.empty());

@@ -15,8 +15,8 @@ namespace ads {
 namespace resource {
 
 namespace {
-const char kResourceId[] = "nnqccijfhvzwyrxpxwjrpmynaiazctqb";
-const int kVersionId = 1;
+constexpr char kResourceId[] = "nnqccijfhvzwyrxpxwjrpmynaiazctqb";
+constexpr int kVersionId = 1;
 }  // namespace
 
 Conversions::Conversions() = default;

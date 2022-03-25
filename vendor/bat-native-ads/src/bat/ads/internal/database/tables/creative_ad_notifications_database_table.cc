@@ -35,9 +35,9 @@ namespace table {
 
 namespace {
 
-const char kTableName[] = "creative_ad_notifications";
+constexpr char kTableName[] = "creative_ad_notifications";
 
-const int kDefaultBatchSize = 50;
+constexpr int kDefaultBatchSize = 50;
 
 int BindParameters(mojom::DBCommand* command,
                    const CreativeAdNotificationList& creative_ads) {

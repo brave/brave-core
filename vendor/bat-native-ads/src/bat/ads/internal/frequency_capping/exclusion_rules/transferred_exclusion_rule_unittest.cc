@@ -19,7 +19,7 @@ namespace ads {
 
 namespace {
 
-const char kCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
+constexpr char kCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
 
 const std::vector<std::string> kCampaignIds = {
     "60267cee-d5bb-4a0d-baaf-91cd7f18e07e",

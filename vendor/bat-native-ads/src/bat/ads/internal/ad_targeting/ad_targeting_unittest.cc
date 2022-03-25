@@ -37,8 +37,8 @@ namespace ad_targeting {
 
 namespace {
 
-const char kTextClassificationFeatureName[] = "TextClassification";
-const char kEpsilonGreedyBanditFeatureName[] = "EpsilonGreedyBandit";
+constexpr char kTextClassificationFeatureName[] = "TextClassification";
+constexpr char kEpsilonGreedyBanditFeatureName[] = "EpsilonGreedyBandit";
 
 struct ModelCombinationsParamInfo final {
   bool epsilon_greedy_bandits_enabled;

@@ -18,9 +18,7 @@
 namespace ads {
 
 namespace {
-
-const char kCatalog[] = "catalog_with_multiple_campaigns.json";
-
+constexpr char kCatalog[] = "catalog_with_multiple_campaigns.json";
 }  // namespace
 
 class BatAdsAdTargetingSegmentUtilTest : public UnitTestBase {

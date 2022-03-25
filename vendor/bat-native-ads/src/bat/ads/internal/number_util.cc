@@ -11,8 +11,8 @@ namespace ads {
 
 namespace {
 
-const double kEpsilon = .00001;
-const int kDecimalPlaces = 4;
+constexpr double kEpsilon = .00001;
+constexpr int kDecimalPlaces = 4;
 
 double RoundDoubleNPlaces(const double value, const int n_places) {
   const double pow_10 = pow(10.0f, static_cast<double>(n_places));

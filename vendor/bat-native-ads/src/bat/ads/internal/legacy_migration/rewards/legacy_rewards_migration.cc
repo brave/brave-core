@@ -21,7 +21,7 @@ namespace rewards {
 
 namespace {
 
-const char kFilename[] = "confirmations.json";
+constexpr char kFilename[] = "confirmations.json";
 
 void OnFailedToMigrate(InitializeCallback callback) {
   BLOG(0, "Failed to migrate rewards state");

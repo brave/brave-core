@@ -19,7 +19,7 @@ namespace ads {
 namespace security {
 
 namespace {
-const size_t kCryptoBoxZeroBytes = crypto_box_BOXZEROBYTES;
+constexpr size_t kCryptoBoxZeroBytes = crypto_box_BOXZEROBYTES;
 }  // namespace
 
 absl::optional<VerifiableConversionEnvelopeInfo>

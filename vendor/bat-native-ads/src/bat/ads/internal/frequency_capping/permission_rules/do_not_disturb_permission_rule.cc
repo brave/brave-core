@@ -15,8 +15,8 @@ namespace ads {
 
 namespace {
 
-const int kDoNotDisturbFromHour = 21;  // 9pm
-const int kDoNotDisturbToHour = 6;     // 6am
+constexpr int kDoNotDisturbFromHour = 21;  // 9pm
+constexpr int kDoNotDisturbToHour = 6;     // 6am
 
 }  // namespace
 

@@ -12,10 +12,10 @@ namespace resource {
 namespace features {
 
 namespace {
-const char kFeatureName[] = "AntiTargeting";
-const char kFieldTrialParameterResourceVersion[] =
+constexpr char kFeatureName[] = "AntiTargeting";
+constexpr char kFieldTrialParameterResourceVersion[] =
     "anti_targeting_resource_version";
-const int kDefaultResourceVersion = 1;
+constexpr int kDefaultResourceVersion = 1;
 }  // namespace
 
 const base::Feature kAntiTargeting{kFeatureName,

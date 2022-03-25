@@ -13,15 +13,15 @@ namespace features {
 
 namespace {
 
-const char kFeatureName[] = "Conversions";
+constexpr char kFeatureName[] = "Conversions";
 
-const char kFieldTrialParameterResourceVersion[] =
+constexpr char kFieldTrialParameterResourceVersion[] =
     "conversions_resource_version";
-const int kDefaultResourceVersion = 1;
+constexpr int kDefaultResourceVersion = 1;
 
-const char kFieldTrialParameterDefaultConversionIdPattern[] =
+constexpr char kFieldTrialParameterDefaultConversionIdPattern[] =
     "conversions_default_conversion_id_pattern";
-const char kDefaultConversionIdPattern[] =
+constexpr char kDefaultConversionIdPattern[] =
     "<meta.*name=\"ad-conversion-id\".*content=\"([-a-zA-Z0-9]*)\".*>";
 
 }  // namespace

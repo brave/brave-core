@@ -12,10 +12,10 @@ namespace features {
 
 namespace {
 
-const char kFeatureName[] = "AdRewards";
-const char kFieldTrialParameterNextPaymentDay[] = "next_payment_day";
+constexpr char kFeatureName[] = "AdRewards";
+constexpr char kFieldTrialParameterNextPaymentDay[] = "next_payment_day";
 
-const int kDefaultNextPaymentDay = 5;
+constexpr int kDefaultNextPaymentDay = 5;
 
 }  // namespace
 

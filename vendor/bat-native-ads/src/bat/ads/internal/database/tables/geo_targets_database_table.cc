@@ -24,7 +24,7 @@ namespace table {
 
 namespace {
 
-const char kTableName[] = "geo_targets";
+constexpr char kTableName[] = "geo_targets";
 
 int BindParameters(mojom::DBCommand* command,
                    const CreativeAdList& creative_ads) {

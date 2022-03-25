@@ -23,8 +23,8 @@ namespace processor {
 
 namespace {
 
-const double kArmDefaultValue = 1.0;
-const uint64_t kArmDefaultPulls = 0;
+constexpr double kArmDefaultValue = 1.0;
+constexpr uint64_t kArmDefaultPulls = 0;
 
 EpsilonGreedyBanditArmMap MaybeAddOrResetArms(
     const EpsilonGreedyBanditArmMap& arms) {

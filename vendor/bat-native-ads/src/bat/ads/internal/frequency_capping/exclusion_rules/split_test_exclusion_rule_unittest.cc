@@ -14,9 +14,10 @@
 namespace ads {
 
 namespace {
-const char kTrial[] = "AdvertiserSplitTestStudy";
-const char kGroup[] = "GroupA";
-const char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
+
+constexpr char kTrial[] = "AdvertiserSplitTestStudy";
+constexpr char kGroup[] = "GroupA";
+constexpr char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 
 scoped_refptr<base::FieldTrial> CreateFieldTrial(
     const std::string& trial_name) {

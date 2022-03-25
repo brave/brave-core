@@ -13,9 +13,9 @@ namespace ml {
 
 namespace {
 
-const int kMaximumHtmlLengthToClassify = (1 << 20);
-const int kMaximumSubLen = 6;
-const int kDefaultBucketCount = 10000;
+constexpr int kMaximumHtmlLengthToClassify = (1 << 20);
+constexpr int kMaximumSubLen = 6;
+constexpr int kDefaultBucketCount = 10000;
 
 }  // namespace
 

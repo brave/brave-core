@@ -19,11 +19,11 @@ namespace JSONReader {
 
 namespace {
 
-const char kAdsRewardsKey[] = "ads_rewards";
-const char kPaymentListKey[] = "payments";
-const char kBalanceKey[] = "balance";
-const char kMonthKey[] = "month";
-const char kTransactionCountKey[] = "transaction_count";
+constexpr char kAdsRewardsKey[] = "ads_rewards";
+constexpr char kPaymentListKey[] = "payments";
+constexpr char kBalanceKey[] = "balance";
+constexpr char kMonthKey[] = "month";
+constexpr char kTransactionCountKey[] = "transaction_count";
 
 absl::optional<PaymentInfo> ParsePayment(const base::Value& value) {
   PaymentInfo payment;

@@ -16,7 +16,7 @@
 namespace ads {
 
 namespace {
-const int kConversionCap = 1;
+constexpr int kConversionCap = 1;
 }  // namespace
 
 ConversionExclusionRule::ConversionExclusionRule(const AdEventList& ad_events)

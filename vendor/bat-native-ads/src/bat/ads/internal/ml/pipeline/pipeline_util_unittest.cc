@@ -19,7 +19,7 @@ namespace ml {
 
 namespace {
 
-const char kValidSpamClassificationPipeline[] =
+constexpr char kValidSpamClassificationPipeline[] =
     "ml/pipeline/text_processing/valid_spam_classification.json";
 
 }  // namespace

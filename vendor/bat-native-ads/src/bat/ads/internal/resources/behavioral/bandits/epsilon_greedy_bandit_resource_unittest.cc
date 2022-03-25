@@ -19,7 +19,7 @@ namespace ads {
 namespace resource {
 
 namespace {
-const char kCatalog[] = "catalog.json";
+constexpr char kCatalog[] = "catalog.json";
 }  // namespace
 
 class BatAdsEpsilonGreedyBanditResourceTest : public UnitTestBase {

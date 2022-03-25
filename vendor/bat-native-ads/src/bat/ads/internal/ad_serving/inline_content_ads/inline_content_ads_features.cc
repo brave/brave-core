@@ -12,7 +12,7 @@ namespace inline_content_ads {
 namespace features {
 
 namespace {
-const char kFeatureName[] = "InlineContentAds";
+constexpr char kFeatureName[] = "InlineContentAds";
 }  // namespace
 
 const base::Feature kFeature{kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT};

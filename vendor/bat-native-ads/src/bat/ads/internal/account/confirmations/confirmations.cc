@@ -36,7 +36,7 @@
 namespace ads {
 
 namespace {
-const int64_t kRetryAfterSeconds = 15;
+constexpr int64_t kRetryAfterSeconds = 15;
 }  // namespace
 
 Confirmations::Confirmations(privacy::TokenGeneratorInterface* token_generator)
