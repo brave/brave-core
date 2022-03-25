@@ -6,7 +6,7 @@ index 9d9527bb8461e0ab94f5280aecacd5caebfe60ab..1d9116f5dd374f6c7008cf108f8598b1
        "//third_party/androidx:androidx_annotation_annotation_java",
        "//ui/android:ui_no_recycler_view_java",
      ]
-+    deps += [ "//brave/browser/notifications:brave_java", ]
++    deps += [ "//brave/browser/notifications/android:brave_java", ]
  
      srcjar_deps = [ ":notifications_java_enum_srcjar" ]
      resources_package = "org.chromium.chrome.browser.notifications"
