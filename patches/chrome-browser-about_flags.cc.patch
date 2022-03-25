@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index ad19de513c785ed3cdc9f9c74b1dd8bc21bdc349..e3406532fa028d17f1d7e8e170b678090fd48c73 100644
+index 46b7b5235cd85f9c5dcd29f775d6e478f91fcd2f..23fb1c14406a43e75ac1bc78e7704885e371ccb5 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -2968,6 +2968,7 @@ constexpr FeatureEntry::FeatureVariation kLensStandaloneVariations[] = {
+@@ -2917,6 +2917,7 @@ const FeatureEntry::Choice kAlwaysEnableHdcpChoices[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

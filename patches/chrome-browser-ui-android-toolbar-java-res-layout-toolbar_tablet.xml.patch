@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
-index 58bebd07c50ea3e0a7bdbaeec7954670f433b72f..81da697fcde42ed2d0d85177727029873e2ad308 100644
+index bc469f3aff5d2d07352bcb2be3e91a1960c4d224..991f367ad5220336a14e087c4576b3274aff2135 100644
 --- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
 +++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
 @@ -61,7 +61,7 @@

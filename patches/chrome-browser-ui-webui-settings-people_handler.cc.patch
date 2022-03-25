@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/people_handler.cc b/chrome/browser/ui/webui/settings/people_handler.cc
-index 36c4f5d1fcb687e1871c7d7b3ce6282e3edefc06..96d54b55f7b6ab621093c5096e76ae88ff2bc00d 100644
+index 0466a1ed02cb16b686707a2cc18c3d0421796873..1669b454066418dfbbc975624158fa6df05faee5 100644
 --- a/chrome/browser/ui/webui/settings/people_handler.cc
 +++ b/chrome/browser/ui/webui/settings/people_handler.cc
-@@ -834,6 +834,7 @@ void PeopleHandler::OnStateChanged(syncer::SyncService* sync_service) {
+@@ -841,6 +841,7 @@ void PeopleHandler::OnStateChanged(syncer::SyncService* sync_service) {
  
  void PeopleHandler::BeforeUnloadDialogCancelled() {
    // The before unload dialog is only shown during the first sync setup.
@@ -10,7 +10,7 @@ index 36c4f5d1fcb687e1871c7d7b3ce6282e3edefc06..96d54b55f7b6ab621093c5096e76ae88
    DCHECK(IdentityManagerFactory::GetForProfile(profile_)->HasPrimaryAccount(
        signin::ConsentLevel::kSync));
    syncer::SyncService* service = GetSyncService();
-@@ -883,6 +884,7 @@ base::Value PeopleHandler::GetSyncStatusDictionary() const {
+@@ -890,6 +891,7 @@ base::Value PeopleHandler::GetSyncStatusDictionary() const {
        service && !disallowed_by_policy && service->IsSetupInProgress() &&
            !service->GetUserSettings()->IsFirstSetupComplete() &&
            identity_manager->HasPrimaryAccount(signin::ConsentLevel::kSync));
@@ -18,7 +18,7 @@ index 36c4f5d1fcb687e1871c7d7b3ce6282e3edefc06..96d54b55f7b6ab621093c5096e76ae88
  
    const SyncStatusLabels status_labels = GetSyncStatusLabels(profile_);
    // TODO(crbug.com/1027467): Consider unifying some of the fields below to
-@@ -1049,6 +1051,7 @@ void PeopleHandler::MaybeMarkSyncConfiguring() {
+@@ -1056,6 +1058,7 @@ void PeopleHandler::MaybeMarkSyncConfiguring() {
  }
  
  bool PeopleHandler::IsProfileAuthNeededOrHasErrors() {

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-index f3635215022dc060927059d2d044300ea8071b04..ba9837d267d8f491e938a454603991029e62670e 100644
+index 0a3617a6ae2d906e3c6cb4523da02ba76dd6b33f..f87d791ed7c4c005dd06a28702a5fcd2e56b3660 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-@@ -372,6 +372,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+@@ -374,6 +374,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
                  /* observer = */ this, offlinePageBridge);
  
          int maxRows = 2;
