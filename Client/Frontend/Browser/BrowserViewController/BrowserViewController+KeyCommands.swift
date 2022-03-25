@@ -208,7 +208,7 @@ extension BrowserViewController {
       
       // Page Navigation Key Commands
       UIKeyCommand(title: Strings.showHistoryTitle, action: #selector(showHistoryKeyCommand), input: "y", modifierFlags: [.command]),
-      UIKeyCommand(title: Strings.showDownloadsTitle, action: #selector(showDownloadsKeyCommand), input: "l", modifierFlags: .command),
+      UIKeyCommand(title: Strings.showDownloadsTitle, action: #selector(showDownloadsKeyCommand), input: "j", modifierFlags: .command),
       UIKeyCommand(title: Strings.showShieldsTitle, action: #selector(showShieldsKeyCommand), input: ",", modifierFlags: .command),
 
       // Switch tab to match Safari on iOS.
