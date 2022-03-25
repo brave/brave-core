@@ -13,8 +13,11 @@ mod ffi {
 // Returns an empty String if such conversion is not possible.
 // A path is a Unicode string with the reference tokens separated by /.
 // Inside tokens / is replaced by ~1 and ~ is replaced by ~0.
+// For more information read [RFC6901](https://tools.ietf.org/html/rfc6901).
 // Examples: convert_uint64_value_to_string("/a/b", json) for { a : { b : 1 }}
 //           convert_uint64_value_to_string("/a/0", json) for { a : [ 1 ]}
+//           convert_uint64_value_to_string("/a~0b/0", json) for { "a~b" : [ 1 ]}
+//           convert_uint64_value_to_string("/a~1b/0", json) for { "a/b" : [ 1 ]}
 pub fn convert_uint64_value_to_string(path: &str, json: &str) -> String {
     let result_value = serde_json::from_str(&json);
     if result_value.is_err() {
@@ -38,8 +41,11 @@ pub fn convert_uint64_value_to_string(path: &str, json: &str) -> String {
 // Returns an empty String if such conversion is not possible.
 // A path is a Unicode string with the reference tokens separated by /.
 // Inside tokens / is replaced by ~1 and ~ is replaced by ~0.
+// For more information read [RFC6901](https://tools.ietf.org/html/rfc6901).
 // Examples: convert_int64_to_unicode_string("/a/b", json) for { a : { b : 1 }}
 //           convert_int64_to_unicode_string("/a/0", json) for { a : [ 1 ]}
+//           convert_int64_to_unicode_string("/a~0b/0", json) for { "a~b" : [ 1 ]}
+//           convert_int64_to_unicode_string("/a~1b/0", json) for { "a/b" : [ 1 ]}
 pub fn convert_int64_value_to_string(path: &str, json: &str) -> String {
     let result_value = serde_json::from_str(&json);
     if result_value.is_err() {
@@ -64,8 +70,11 @@ pub fn convert_int64_value_to_string(path: &str, json: &str) -> String {
 // Returns an empty String if such conversion is not possible.
 // A path is a Unicode string with the reference tokens separated by /.
 // Inside tokens / is replaced by ~1 and ~ is replaced by ~0.
+// For more information read [RFC6901](https://tools.ietf.org/html/rfc6901).
 // Examples: convert_string_value_to_uint64("/a/b", json) for { a : { b : '1' }} -> { a : { b : 1 }}
 //           convert_string_value_to_uint64("/a/0", json) for { a : [ '1' ]} -> { a : [ 1 ]}
+//           convert_string_value_to_uint64("/a~0c/b", json) for { "a~c" : { b : '1' }} -> { "a~c" : { b : 1 }}
+//           convert_string_value_to_uint64("/a~1b/0", json) for { "a/b" : [ '1' ]} -> { "a/b" : [ 1 ]}
 pub fn convert_string_value_to_uint64(path: &str, json: &str) -> String {
     let result_value = serde_json::from_str(&json);
     if result_value.is_err() {
@@ -94,8 +103,11 @@ pub fn convert_string_value_to_uint64(path: &str, json: &str) -> String {
 // Returns an empty String if such conversion is not possible.
 // A path is a Unicode string with the reference tokens separated by /.
 // Inside tokens / is replaced by ~1 and ~ is replaced by ~0.
+// For more information read [RFC6901](https://tools.ietf.org/html/rfc6901).
 // Examples: convert_string_value_to_int64("/a/b", json) for { a : { b : '1' }} -> { a : { b : 1 }}
 //           convert_string_value_to_int64("/a/0", json) for { a : [ '1' ]} -> { a : [ 1 ]}
+//           convert_string_value_to_uint64("/a~0c/b", json) for { "a~c" : { b : '1' }} -> { "a~c" : { b : 1 }}
+//           convert_string_value_to_uint64("/a~1b/0", json) for { "a/b" : [ '1' ]} -> { "a/b" : [ 1 ]}
 pub fn convert_string_value_to_int64(path: &str, json: &str) -> String {
     let result_value = serde_json::from_str(&json);
     if result_value.is_err() {

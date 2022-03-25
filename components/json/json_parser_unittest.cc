@@ -23,6 +23,14 @@ TEST(JsonParser, ConvertUint64ToString) {
   EXPECT_TRUE(
       std::string(json::convert_uint64_value_to_string("/a", json)).empty());
 
+  json = R"({"a": { "b/a": 1, "c": 2 }, "d": "string"})";
+  EXPECT_EQ(std::string(json::convert_uint64_value_to_string("/a/b~1a", json)),
+            R"({"a":{"b/a":"1","c":2},"d":"string"})");
+
+  json = R"({"a": { "b~a": 1, "c": 2 }, "d": "string"})";
+  EXPECT_EQ(std::string(json::convert_uint64_value_to_string("/a/b~0a", json)),
+            R"({"a":{"b~a":"1","c":2},"d":"string"})");
+
   json = R"({"a": { "b": 1, "c": 2 }, "d": "string"})";
   EXPECT_EQ(std::string(json::convert_uint64_value_to_string("/a/b", json)),
             R"({"a":{"b":"1","c":2},"d":"string"})");
@@ -88,6 +96,14 @@ TEST(JsonParser, ConvertInt64ToString) {
   json = "{\"a\": " + std::to_string(INT64_MAX) + "}";
   EXPECT_EQ(std::string(json::convert_int64_value_to_string("/a", json)),
             R"({"a":"9223372036854775807"})");
+
+  json = R"({"a": { "b/a": 1, "c": 2 }, "d": "string"})";
+  EXPECT_EQ(std::string(json::convert_int64_value_to_string("/a/b~1a", json)),
+            R"({"a":{"b/a":"1","c":2},"d":"string"})");
+
+  json = R"({"a": { "b~a": 1, "c": 2 }, "d": "string"})";
+  EXPECT_EQ(std::string(json::convert_int64_value_to_string("/a/b~0a", json)),
+            R"({"a":{"b~a":"1","c":2},"d":"string"})");
 
   json = R"({"a": { "b": 1, "c": 2 }, "d": "string"})";
   EXPECT_EQ(std::string(json::convert_int64_value_to_string("/a/b", json)),
@@ -157,6 +173,15 @@ TEST(JsonParser, ConvertStringToUint64) {
   EXPECT_EQ(std::string(json::convert_string_value_to_uint64("/a/b/0/e", json)),
             R"({"a":{"b":[{"e":1}],"c":2},"d":"string"})");
 
+  json = R"({"a~c": { "b": "1", "c": 2 }, "d": "string"})";
+  EXPECT_EQ(std::string(json::convert_string_value_to_uint64("/a~0c/b", json)),
+            R"({"a~c":{"b":1,"c":2},"d":"string"})");
+
+  json = R"({"a/d": { "b": [{"e":"1"}], "c": 2 }, "d": "string"})";
+  EXPECT_EQ(
+      std::string(json::convert_string_value_to_uint64("/a~1d/b/0/e", json)),
+      R"({"a/d":{"b":[{"e":1}],"c":2},"d":"string"})");
+
   json = R"({"a": { "b": "1" }})";
   EXPECT_EQ(std::string(json::convert_string_value_to_uint64("/a/b", json)),
             R"({"a":{"b":1}})");
@@ -225,6 +250,15 @@ TEST(JsonParser, ConvertStringToInt64) {
   json = R"({"a": { "b": [{"e":"1"}], "c": 2 }, "d": "string"})";
   EXPECT_EQ(std::string(json::convert_string_value_to_int64("/a/b/0/e", json)),
             R"({"a":{"b":[{"e":1}],"c":2},"d":"string"})");
+
+  json = R"({"a~e": { "b": "1", "c": 2 }, "d": "string"})";
+  EXPECT_EQ(std::string(json::convert_string_value_to_int64("/a~0e/b", json)),
+            R"({"a~e":{"b":1,"c":2},"d":"string"})");
+
+  json = R"({"a/e": { "b": [{"e":"1"}], "c": 2 }, "d": "string"})";
+  EXPECT_EQ(
+      std::string(json::convert_string_value_to_int64("/a~1e/b/0/e", json)),
+      R"({"a/e":{"b":[{"e":1}],"c":2},"d":"string"})");
 
   json = R"({"a": { "b": "1" }})";
   EXPECT_EQ(std::string(json::convert_string_value_to_int64("/a/b", json)),
