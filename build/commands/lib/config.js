@@ -273,6 +273,10 @@ Config.prototype.buildArgs = function () {
     dcheck_always_on:
       getNPMConfig(['dcheck_always_on'], this.isComponentBuild()),
     brave_channel: this.channel,
+    // Limit action pool (non-compile actions) to amount of CPU cores.
+    // This prevents machine overload during builds with high -j value (goma for ex.).
+    // We set it for all builds to not regen GN with/without goma.
+    action_pool_depth: os.cpus().length,
     brave_google_api_key: this.braveGoogleApiKey,
     brave_google_api_endpoint: this.googleApiEndpoint,
     google_default_client_id: this.googleDefaultClientId,
