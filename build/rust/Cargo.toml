@@ -10,6 +10,7 @@ challenge-bypass-ristretto-ffi = { path = "../../components/challenge_bypass_ris
 speedreader-ffi = { path = "../../components/speedreader/rust/ffi" }
 skus-cxx = { path = "../../components/skus/browser/rs/cxx" }
 brave-news-cxx = { path = "../../components/brave_today/rust" }
+json-cxx = { path = "../../components/json/rs" }
 
 [target.'cfg(feature = "enable_rust_bls")'.dependencies]
 bls-cxx = { path = "../../components/bls/rs" }

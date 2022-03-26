@@ -231,6 +231,7 @@ dependencies = [
  "brave-news-cxx",
  "brave-wallet-cxx",
  "challenge-bypass-ristretto-ffi",
+ "json-cxx",
  "skus-cxx",
  "speedreader-ffi",
 ]
@@ -1049,6 +1050,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a38fc24e30fd564ce974c02bf1d337caddff65be6cc4735a1f7eab22a7440f04"
 dependencies = [
  "wasm-bindgen",
+]
+
+[[package]]
+name = "json-cxx"
+version = "0.0.1"
+dependencies = [
+ "cxx",
+ "libc",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

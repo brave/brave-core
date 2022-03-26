@@ -1,0 +1,16 @@
+[package]
+name = "json-cxx"
+description = "FFI Interface to Rust Json"
+version = "0.0.1"
+edition = "2018"
+publish = false
+
+[dependencies]
+cxx = { path = "../../../../third_party/rust/cxx/v1/crate"}
+serde = {version = "1.0", features = ["derive"]}
+serde_json = {version = "1.0"}
+libc = "0.2.58"
+
+[lib]
+name = "json_cxx"
+crate-type = ["rlib"]
