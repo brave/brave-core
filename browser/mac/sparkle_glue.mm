@@ -116,16 +116,21 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
   static bool sTriedCreatingSharedSparkleGlue = false;
   static SparkleGlue* shared = nil;
 
-  if (brave::UpdateEnabled() && !sTriedCreatingSharedSparkleGlue) {
+  bool updateEnabled = brave::UpdateEnabled();
+  if (updateEnabled && !sTriedCreatingSharedSparkleGlue) {
     sTriedCreatingSharedSparkleGlue = true;
 
     shared = [[SparkleGlue alloc] init];
     [shared loadParameters];
-    if (![shared loadSparkleFramework]) {
+    if ([shared loadSparkleFramework]) {
+      VLOG(0) << "brave update: Loaded sparkle framework";
+    } else {
       VLOG(0) << "brave update: Failed to load sparkle framework";
       [shared release];
       shared = nil;
     }
+  } else if (!updateEnabled) {
+    VLOG(0) << "brave update is disabled";
   }
   return shared;
 }
@@ -200,6 +205,12 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
   // we setAutomaticallyDownloadUpdates:YES above.
   if ([su_updater_ automaticallyDownloadsUpdates])
     [su_updater_ setAutomaticallyChecksForUpdates:YES];
+  else
+    // Prevent Sparkle from asking the user "Check for updates automatically?".
+    // Also prevent local legacy settings from accidentally enabling
+    // auto-updates. Users can still update manually by going to
+    // brave://settings/help.
+    [su_updater_ setAutomaticallyChecksForUpdates:NO];
   [self updateStatus:kAutoupdateRegistered version:nil error:nil];
 }
 
