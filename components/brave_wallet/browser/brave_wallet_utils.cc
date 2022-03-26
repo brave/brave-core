@@ -29,6 +29,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "crypto/random.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/boringssl/src/include/openssl/evp.h"
 #include "url/gurl.h"
@@ -946,6 +947,11 @@ absl::optional<std::string> GetPrefKeyForCoinType(mojom::CoinType coin) {
       return kSolanaPrefKey;
   }
   return absl::nullopt;
+}
+
+std::string eTLDPlusOne(const GURL& url) {
+  return net::registry_controlled_domains::GetDomainAndRegistry(
+      url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
 }  // namespace brave_wallet

@@ -9,7 +9,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -134,11 +134,6 @@ bool GetSubRequestOrigin(const GURL& old_origin,
                          const std::string& account,
                          GURL* new_origin) {
   return AddAccountToHost(old_origin, account, new_origin);
-}
-
-std::string eTLDPlusOne(const GURL& url) {
-  return net::registry_controlled_domains::GetDomainAndRegistry(
-      url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
 GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,

@@ -11,7 +11,6 @@ import {
   NewUnapprovedTxAdded,
   UnapprovedTxUpdated,
   TransactionStatusChanged,
-  ActiveOriginChanged,
   DefaultWalletChanged,
   DefaultBaseCurrencyChanged,
   DefaultBaseCryptocurrencyChanged,
@@ -38,7 +37,8 @@ import {
   WalletInfoBase,
   WalletInfo,
   DefaultCurrencies,
-  GetPriceReturnInfo
+  GetPriceReturnInfo,
+  OriginInfo
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
@@ -89,7 +89,7 @@ export const rejectAllTransactions = createAction('rejectAllTransactions')
 export const setAccountTransactions = createAction<AccountTransactions>('setAccountTransactions')
 export const defaultWalletUpdated = createAction<BraveWallet.DefaultWallet>('defaultWalletUpdated')
 export const setSelectedAccount = createAction<WalletAccountType>('setSelectedAccount')
-export const activeOriginChanged = createAction<ActiveOriginChanged>('activeOriginChanged')
+export const activeOriginChanged = createAction<OriginInfo>('activeOriginChanged')
 export const refreshGasEstimates = createAction('refreshGasEstimates')
 export const setGasEstimates = createAction<BraveWallet.GasEstimation1559>('setGasEstimates')
 export const updateUnapprovedTransactionGasFields = createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields')

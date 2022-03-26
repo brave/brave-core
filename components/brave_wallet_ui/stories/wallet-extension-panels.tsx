@@ -234,7 +234,7 @@ export const _ConfirmErcApproveTransaction = () => {
   const onRejectTransaction = () => alert('Rejected Transaction')
   const onRejectAllTransactions = () => alert('Rejected All Transaction')
   const onQueueNextTransaction = () => alert('Will queue next transaction in line')
-  const refreshGasEstimates = () => {}
+  const refreshGasEstimates = () => { }
   const updateUnapprovedTransactionGasFields = () => alert('Updated gas fields')
   const updateUnapprovedTransactionSpendAllowance = () => alert('Updated spending allowance')
   const updateUnapprovedTransactionNonce = () => alert('Updated nonce')
@@ -244,7 +244,7 @@ export const _ConfirmErcApproveTransaction = () => {
     <StyledExtensionWrapperLonger>
       <ConfirmTransactionPanel
         defaultCurrencies={mockDefaultCurrencies}
-        siteURL='https://app.uniswap.org'
+        originInfo={originInfo}
         selectedNetwork={mockNetworks[0]}
         onQueueNextTransaction={onQueueNextTransaction}
         onRejectAllTransactions={onRejectAllTransactions}

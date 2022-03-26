@@ -119,7 +119,6 @@ static_library("browser") {
     "//brave/components/bls/rs:cxx",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_stats/browser",
-    "//brave/components/brave_wallet/browser:ethereum_permission_utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
@@ -154,8 +153,8 @@ static_library("ethereum_permission_utils") {
   ]
 
   deps = [
+    ":utils",
     "//base",
-    "//net",
     "//third_party/re2",
     "//url",
   ]
@@ -200,6 +199,7 @@ source_set("utils") {
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//components/prefs",
     "//crypto",
+    "//net",
     "//third_party/abseil-cpp:absl",
     "//third_party/boringssl",
     "//url",

@@ -141,16 +141,6 @@ TEST(EthereumPermissionUtilsUnitTest, GetSubRequestOrigin) {
   EXPECT_EQ(new_origin, expected_new_origin_with_port);
 }
 
-TEST(EthereumPermissionUtilsUnitTest, eTLDPlusOne) {
-  EXPECT_EQ("", eTLDPlusOne(GURL()));
-  EXPECT_EQ("brave.com", eTLDPlusOne(GURL("https://blog.brave.com")));
-  EXPECT_EQ("brave.com", eTLDPlusOne(GURL("https://...brave.com")));
-  EXPECT_EQ("brave.com", eTLDPlusOne(GURL("https://a.b.c.d.brave.com/1")));
-  EXPECT_EQ("brave.github.io",
-            eTLDPlusOne(GURL("https://a.b.brave.github.io/example")));
-  EXPECT_EQ("", eTLDPlusOne(GURL("https://github.io")));
-}
-
 TEST(EthereumPermissionUtilsUnitTest, GetConnectWithSiteWebUIURL) {
   GURL base_url("chrome://wallet-panel.top-chrome/");
   std::vector<std::string> addrs = {

@@ -9,7 +9,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/profiles/profile.h"

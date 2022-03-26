@@ -17,10 +17,10 @@ import {
   WalletInfo,
   DefaultCurrencies,
   GetPriceReturnInfo,
-  GetNativeAssetBalancesPayload
+  GetNativeAssetBalancesPayload,
+  OriginInfo
 } from '../../constants/types'
 import {
-  ActiveOriginChanged,
   IsEip1559Changed,
   NewUnapprovedTxAdded,
   SetTransactionProviderErrorType,
@@ -370,7 +370,7 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.activeOriginChanged, (state: WalletState, payload: ActiveOriginChanged): WalletState => {
+  reducer.on(WalletActions.activeOriginChanged, (state: WalletState, payload: OriginInfo): WalletState => {
     return {
       ...state,
       activeOrigin: payload

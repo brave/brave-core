@@ -124,6 +124,11 @@ GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls);
 
 absl::optional<std::string> GetPrefKeyForCoinType(mojom::CoinType coin);
 
+/**
+ * Given an url, return eTLD + 1 for that URL
+ */
+std::string eTLDPlusOne(const GURL& url);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_

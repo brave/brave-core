@@ -58,11 +58,6 @@ bool GetSubRequestOrigin(const GURL& old_origin,
                          GURL* new_origin);
 
 /**
- * Given an url, return eTLD + 1 for that URL
- */
-std::string eTLDPlusOne(const GURL& url);
-
-/**
  * Given accounts, and origin, return the WebUI URL for connecting with site
  * (ethereum permission) request.
  * Example output:
