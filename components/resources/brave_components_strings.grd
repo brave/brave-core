@@ -314,7 +314,7 @@
           Brave Talk
         </message>
         <message name="IDS_SIDEBAR_WALLET_ITEM_TITLE" desc="Title for crypto wallet item in sidebar">
-          Wallet
+          Brave Wallet
         </message>
         <message name="IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE" desc="Title for bookmarks item in sidebar">
           Bookmarks
