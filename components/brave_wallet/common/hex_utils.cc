@@ -26,6 +26,12 @@ std::string ToHex(const std::vector<uint8_t>& data) {
   return "0x" + base::ToLowerASCII(base::HexEncode(data));
 }
 
+// Returns a hex string representation of a binary buffer. The returned hex
+// string will be in lower case, without the 0x prefix.
+std::string HexEncodeLower(const void* bytes, size_t size) {
+  return base::ToLowerASCII(base::HexEncode(bytes, size));
+}
+
 // Determines if the passed in hex string is valid
 bool IsValidHexString(const std::string& hex_input) {
   if (hex_input.length() < 2) {

@@ -87,8 +87,9 @@ void MakeERC721TransferFromDataCallback(base::RunLoop* run_loop,
     mojom::TransactionType tx_type;
     std::vector<std::string> tx_params;
     std::vector<std::string> tx_args;
-    ASSERT_TRUE(
-        GetTransactionInfoFromData(ToHex(data), &tx_type, nullptr, nullptr));
+    auto tx_info = GetTransactionInfoFromData(data);
+    ASSERT_NE(tx_info, absl::nullopt);
+    std::tie(tx_type, tx_params, tx_args) = *tx_info;
     EXPECT_EQ(expected_type, tx_type);
   }
 
@@ -417,14 +418,17 @@ class EthTxManagerUnitTest : public testing::Test {
                 mojom::TransactionType tx_type;
                 std::vector<std::string> tx_params;
                 std::vector<std::string> tx_args;
-                ASSERT_TRUE(GetTransactionInfoFromData(ToHex(data), &tx_type,
-                                                       &tx_params, &tx_args));
+
+                auto tx_info = GetTransactionInfoFromData(data);
+                ASSERT_NE(tx_info, absl::nullopt);
+                std::tie(tx_type, tx_params, tx_args) = *tx_info;
+
                 EXPECT_EQ(expected_type, tx_type);
                 EXPECT_EQ(tx_args[0], from);
                 EXPECT_EQ(tx_args[1], to);
                 EXPECT_EQ(tx_args[2], token_id);
                 EXPECT_EQ(tx_args[3], value);
-                EXPECT_EQ(tx_args[4], "0x");
+                EXPECT_EQ(tx_args[4], "0x");  // empty bytes data
                 EXPECT_EQ(tx_params[0], "address");
                 EXPECT_EQ(tx_params[1], "address");
                 EXPECT_EQ(tx_params[2], "uint256");

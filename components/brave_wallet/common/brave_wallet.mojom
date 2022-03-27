@@ -801,7 +801,8 @@ enum TransactionType {
   SolanaSystemTransfer = 6,  // transfering SOL
   SolanaSPLTokenTransfer = 7,
   SolanaSPLTokenTransferWithAssociatedTokenAccountCreation = 8,
-  ERC1155SafeTransferFrom = 9
+  ERC1155SafeTransferFrom = 9,
+  ETHSwap = 10
 };
 
 struct FilTxData {
