@@ -39,6 +39,8 @@ static_library("browser") {
     "base_brave_shields_service.h",
     "blocked_domain_1pes_lifetime.cc",
     "blocked_domain_1pes_lifetime.h",
+    "brave_farbling_service.cc",
+    "brave_farbling_service.h",
     "brave_shields_p3a.cc",
     "brave_shields_p3a.h",
     "brave_shields_util.cc",

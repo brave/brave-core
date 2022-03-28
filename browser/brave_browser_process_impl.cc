@@ -10,7 +10,6 @@
 
 #include "base/bind.h"
 #include "base/path_service.h"
-#include "base/rand_util.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
@@ -29,6 +28,7 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/debounce/browser/debounce_component_installer.h"
@@ -47,8 +47,6 @@
 #include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/child_process_security_policy.h"
-#include "crypto/hmac.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
@@ -113,9 +111,8 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   g_browser_process = this;
   g_brave_browser_process = this;
 
-  // initialize random seeds for farbling
-  session_token_ = base::RandUint64();
-  incognito_session_token_ = base::RandUint64();
+  // early initialize brave farbling
+  brave_farbling_service();
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   // early initialize referrals
@@ -351,36 +348,6 @@ brave_ads::ResourceComponent* BraveBrowserProcessImpl::resource_component() {
   return resource_component_.get();
 }
 
-uint64_t BraveBrowserProcessImpl::session_token(bool is_off_the_record) {
-  if (is_off_the_record)
-    return incognito_session_token_;
-  return session_token_;
-}
-
-void BraveBrowserProcessImpl::set_session_tokens_for_testing() {
-  session_token_ = incognito_session_token_ = 12345;
-}
-
-bool BraveBrowserProcessImpl::MakePseudoRandomGeneratorForURL(
-    const GURL& url,
-    bool is_off_the_record,
-    std::mt19937_64* prng) {
-  const std::string domain =
-      net::registry_controlled_domains::GetDomainAndRegistry(
-          url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  if (domain.empty())
-    return false;
-  uint8_t domain_key[32];
-  uint64_t session_key = session_token(is_off_the_record);
-  crypto::HMAC h(crypto::HMAC::SHA256);
-  CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key),
-               sizeof session_key));
-  CHECK(h.Sign(domain, domain_key, sizeof domain_key));
-  uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key);
-  *prng = std::mt19937_64(seed);
-  return true;
-}
-
 void BraveBrowserProcessImpl::CreateProfileManager() {
   DCHECK(!created_profile_manager_ && !profile_manager_);
   created_profile_manager_ = true;
@@ -420,3 +387,9 @@ ipfs::BraveIpfsClientUpdater* BraveBrowserProcessImpl::ipfs_client_updater() {
   return ipfs_client_updater_.get();
 }
 #endif  // BUILDFLAG(ENABLE_IPFS)
+
+brave::BraveFarblingService* BraveBrowserProcessImpl::brave_farbling_service() {
+  if (!brave_farbling_service_)
+    brave_farbling_service_ = std::make_unique<brave::BraveFarblingService>();
+  return brave_farbling_service_.get();
+}

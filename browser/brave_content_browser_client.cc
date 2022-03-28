@@ -46,6 +46,7 @@
 #include "brave/components/brave_search/common/brave_search_fallback.mojom.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/domain_block_navigation_throttle.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -615,8 +616,9 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
       Profile* profile =
           process ? Profile::FromBrowserContext(process->GetBrowserContext())
                   : nullptr;
-      session_token = g_brave_browser_process->session_token(
-          profile && !profile->IsOffTheRecord());
+      session_token =
+          g_brave_browser_process->brave_farbling_service()->session_token(
+              profile && !profile->IsOffTheRecord());
     }
     command_line->AppendSwitchASCII("brave_session_token",
                                     base::NumberToString(session_token));

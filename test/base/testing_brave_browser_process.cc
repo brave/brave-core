@@ -132,21 +132,10 @@ brave_ads::ResourceComponent* TestingBraveBrowserProcess::resource_component() {
   return nullptr;
 }
 
-uint64_t TestingBraveBrowserProcess::session_token(bool is_off_the_record) {
+brave::BraveFarblingService*
+TestingBraveBrowserProcess::brave_farbling_service() {
   NOTREACHED();
-  return 0;
-}
-
-void TestingBraveBrowserProcess::set_session_tokens_for_testing() {
-  NOTREACHED();
-}
-
-bool TestingBraveBrowserProcess::MakePseudoRandomGeneratorForURL(
-    const GURL& url,
-    bool is_off_the_record,
-    std::mt19937_64* prng) {
-  NOTREACHED();
-  return false;
+  return nullptr;
 }
 
 void TestingBraveBrowserProcess::SetAdBlockService(

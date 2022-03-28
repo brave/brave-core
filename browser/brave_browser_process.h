@@ -11,8 +11,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 
-#include <random>
-
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -20,11 +18,10 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "extensions/buildflags/buildflags.h"
 
-class GURL;
-
 namespace brave {
 class BraveReferralsService;
 class BraveP3AService;
+class BraveFarblingService;
 }  // namespace brave
 
 namespace brave_component_updater {
@@ -108,11 +105,7 @@ class BraveBrowserProcess {
   speedreader_rewriter_service() = 0;
 #endif
   virtual brave_ads::ResourceComponent* resource_component() = 0;
-  virtual uint64_t session_token(bool is_off_the_record) = 0;
-  virtual void set_session_tokens_for_testing() = 0;
-  virtual bool MakePseudoRandomGeneratorForURL(const GURL& url,
-                                               bool is_off_the_record,
-                                               std::mt19937_64* prng) = 0;
+  virtual brave::BraveFarblingService* brave_farbling_service() = 0;
 };
 
 extern BraveBrowserProcess* g_brave_browser_process;

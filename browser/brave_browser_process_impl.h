@@ -23,6 +23,7 @@ namespace brave {
 class BraveReferralsService;
 class BraveP3AService;
 class HistogramsBraveizer;
+class BraveFarblingService;
 }  // namespace brave
 
 namespace brave_component_updater {
@@ -115,16 +116,9 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;
 #endif
-  uint64_t session_token(bool is_off_the_record) override;
-  void set_session_tokens_for_testing() override;
-  bool MakePseudoRandomGeneratorForURL(const GURL& url,
-                                       bool is_off_the_record,
-                                       std::mt19937_64* prng) override;
+  brave::BraveFarblingService* brave_farbling_service() override;
 
  private:
-  uint64_t session_token_;
-  uint64_t incognito_session_token_;
-
   // BrowserProcessImpl overrides:
   void Init() override;
 
@@ -180,6 +174,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<speedreader::SpeedreaderRewriterService>
       speedreader_rewriter_service_;
 #endif
+
+  std::unique_ptr<brave::BraveFarblingService> brave_farbling_service_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };

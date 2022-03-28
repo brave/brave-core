@@ -13,6 +13,7 @@
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -73,7 +74,8 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
     content::SetContentClient(content_client_.get());
     browser_content_client_.reset(new BraveContentBrowserClient());
     content::SetBrowserClientForTesting(browser_content_client_.get());
-    g_brave_browser_process->set_session_tokens_for_testing();
+    g_brave_browser_process->brave_farbling_service()
+        ->set_session_tokens_for_testing();
 
     host_resolver()->AddRule("*", "127.0.0.1");
   }

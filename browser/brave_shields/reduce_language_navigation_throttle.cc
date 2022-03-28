@@ -11,6 +11,7 @@
 #include "base/feature_list.h"
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -97,8 +98,9 @@ void ReduceLanguageNavigationThrottle::UpdateHeaders() {
                                        ";q=0.8", ";q=0.9", ""};
   std::mt19937_64 prng;
   auto* profile = Profile::FromBrowserContext(context);
-  if (g_brave_browser_process->MakePseudoRandomGeneratorForURL(
-          visible_url, profile && !profile->IsOffTheRecord(), &prng)) {
+  if (g_brave_browser_process->brave_farbling_service()
+          ->MakePseudoRandomGeneratorForURL(
+              visible_url, profile && !profile->IsOffTheRecord(), &prng)) {
     first_language += q_values[prng() % q_values.size()];
   }
   handle->SetRequestHeader(net::HttpRequestHeaders::kAcceptLanguage,
