@@ -12,6 +12,7 @@
 #include "components/component_updater/component_updater_switches.h"
 #include "components/embedder_support/switches.h"
 #include "components/language/core/common/language_experiments.h"
+#include "components/lens/lens_features.h"
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
@@ -83,10 +84,8 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, OriginTrialsTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
+  // Please, keep alphabetized
   const base::Feature* disabled_features[] = {
-#if !defined(OS_ANDROID)
-    &translate::kTFLiteLanguageDetectionEnabled,
-#endif
     &autofill::features::kAutofillEnableAccountWalletStorage,
     &autofill::features::kAutofillServerCommunication,
     &blink::features::kAdInterestGroupAPI,
@@ -109,11 +108,11 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kFirstPartySets,
     &features::kIdleDetection,
     &features::kNotificationTriggers,
-    &privacy_sandbox::kPrivacySandboxSettings3,
     &features::kOmniboxTriggerForNoStatePrefetch,
     &features::kSignedExchangeSubresourcePrefetch,
     &features::kSubresourceWebBundles,
     &features::kWebOTP,
+    &lens::features::kLensStandalone,
     &media::kLiveCaption,
     &net::features::kPartitionedCookies,
     &network::features::kTrustTokens,
@@ -123,7 +122,11 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &optimization_guide::features::
         kRemoteOptimizationGuideFetchingAnonymousDataConsent,
     &permissions::features::kPermissionOnDeviceNotificationPredictions,
+    &privacy_sandbox::kPrivacySandboxSettings3,
     &reading_list::switches::kReadLater,
+#if !BUILDFLAG(IS_ANDROID)
+    &translate::kTFLiteLanguageDetectionEnabled,
+#endif
   };
 
   for (const auto* feature : disabled_features)
