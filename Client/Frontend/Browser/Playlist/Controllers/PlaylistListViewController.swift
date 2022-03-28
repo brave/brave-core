@@ -556,11 +556,13 @@ extension PlaylistListViewController {
     if PlaylistManager.shared.numberOfAssets > 0 {
       tableView.backgroundView = nil
       tableView.separatorStyle = .singleLine
-
-      if !playerView.isFullscreen, UIDevice.current.orientation.isLandscape && UIDevice.isPhone {
-        navigationController?.setToolbarHidden(true, animated: true)
-      } else {
-        navigationController?.setToolbarHidden(false, animated: true)
+      
+      if !playerView.isFullscreen {
+        if UIDevice.current.orientation.isLandscape && UIDevice.isPhone {
+          navigationController?.setToolbarHidden(true, animated: true)
+        } else {
+          navigationController?.setToolbarHidden(false, animated: true)
+        }
       }
     } else {
       let messageLabel = UILabel(frame: view.bounds).then {
@@ -669,6 +671,8 @@ extension PlaylistListViewController {
 
   func onFullscreen() {
     navigationController?.setNavigationBarHidden(true, animated: true)
+    navigationController?.setToolbarHidden(true, animated: true)
+    
     tableView.isHidden = true
     playerView.snp.remakeConstraints {
       $0.edges.equalToSuperview()
