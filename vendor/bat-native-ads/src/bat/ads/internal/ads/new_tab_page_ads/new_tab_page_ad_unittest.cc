@@ -239,7 +239,7 @@ TEST_F(BatAdsNewTabPageAdTest, FireEventIfNotExceededAdsPerHourCap) {
 
   FireAdEvents(ad_event, ads_per_hour - 1);
 
-  const std::string& uuid = base::GenerateGUID();
+  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
   new_tab_page_ad_->FireEvent(uuid, creative_ad.creative_instance_id,
@@ -261,7 +261,7 @@ TEST_F(BatAdsNewTabPageAdTest, DoNotFireEventIfExceededAdsPerHourCap) {
 
   FireAdEvents(ad_event, ads_per_hour);
 
-  const std::string& uuid = base::GenerateGUID();
+  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
   new_tab_page_ad_->FireEvent(uuid, creative_ad.creative_instance_id,
@@ -285,7 +285,7 @@ TEST_F(BatAdsNewTabPageAdTest, FireEventIfNotExceededAdsPerDayCap) {
 
   AdvanceClock(base::Hours(1));
 
-  const std::string& uuid = base::GenerateGUID();
+  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
   new_tab_page_ad_->FireEvent(uuid, creative_ad.creative_instance_id,
@@ -309,7 +309,7 @@ TEST_F(BatAdsNewTabPageAdTest, DoNotFireEventIfExceededAdsPerDayCap) {
 
   AdvanceClock(base::Hours(1));
 
-  const std::string& uuid = base::GenerateGUID();
+  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
   new_tab_page_ad_->FireEvent(uuid, creative_ad.creative_instance_id,

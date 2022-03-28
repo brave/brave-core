@@ -14,13 +14,16 @@ namespace ads {
 CreativeAdInfo BuildCreativeAd() {
   CreativeAdInfo creative_ad;
 
-  creative_ad.creative_instance_id = base::GenerateGUID();
-  creative_ad.creative_set_id = base::GenerateGUID();
-  creative_ad.campaign_id = base::GenerateGUID();
+  creative_ad.creative_instance_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
+  creative_ad.creative_set_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
+  creative_ad.campaign_id = base::GUID::GenerateRandomV4().AsLowercaseString();
   creative_ad.start_at = DistantPast();
   creative_ad.end_at = DistantFuture();
   creative_ad.daily_cap = 1;
-  creative_ad.advertiser_id = base::GenerateGUID();
+  creative_ad.advertiser_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
   creative_ad.priority = 2;
   creative_ad.ptr = 1.0;
   creative_ad.per_day = 3;

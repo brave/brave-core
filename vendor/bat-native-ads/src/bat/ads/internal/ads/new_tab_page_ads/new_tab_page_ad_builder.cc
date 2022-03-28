@@ -13,7 +13,7 @@ namespace ads {
 
 NewTabPageAdInfo BuildNewTabPageAd(
     const CreativeNewTabPageAdInfo& creative_ad) {
-  const std::string& uuid = base::GenerateGUID();
+  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
   return BuildNewTabPageAd(creative_ad, uuid);
 }
 
