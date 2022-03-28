@@ -97,7 +97,7 @@ void ReduceLanguageNavigationThrottle::UpdateHeaders() {
                                        ";q=0.8", ";q=0.9", ""};
   std::mt19937_64 prng;
   auto* profile = Profile::FromBrowserContext(context);
-  if (g_brave_browser_process->MakePseudoRandomGenerator(
+  if (g_brave_browser_process->MakePseudoRandomGeneratorForURL(
           visible_url, profile && !profile->IsOffTheRecord(), &prng)) {
     first_language += q_values[prng() % q_values.size()];
   }

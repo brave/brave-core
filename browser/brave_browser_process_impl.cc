@@ -361,9 +361,10 @@ void BraveBrowserProcessImpl::set_session_tokens_for_testing() {
   session_token_ = incognito_session_token_ = 12345;
 }
 
-bool BraveBrowserProcessImpl::MakePseudoRandomGenerator(const GURL& url,
-                                                        bool is_off_the_record,
-                                                        std::mt19937_64* prng) {
+bool BraveBrowserProcessImpl::MakePseudoRandomGeneratorForURL(
+    const GURL& url,
+    bool is_off_the_record,
+    std::mt19937_64* prng) {
   const std::string domain =
       net::registry_controlled_domains::GetDomainAndRegistry(
           url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);

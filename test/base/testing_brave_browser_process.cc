@@ -141,7 +141,7 @@ void TestingBraveBrowserProcess::set_session_tokens_for_testing() {
   NOTREACHED();
 }
 
-bool TestingBraveBrowserProcess::MakePseudoRandomGenerator(
+bool TestingBraveBrowserProcess::MakePseudoRandomGeneratorForURL(
     const GURL& url,
     bool is_off_the_record,
     std::mt19937_64* prng) {

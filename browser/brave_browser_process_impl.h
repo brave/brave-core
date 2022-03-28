@@ -117,9 +117,9 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
   uint64_t session_token(bool is_off_the_record) override;
   void set_session_tokens_for_testing() override;
-  bool MakePseudoRandomGenerator(const GURL& url,
-                                 bool is_off_the_record,
-                                 std::mt19937_64* prng) override;
+  bool MakePseudoRandomGeneratorForURL(const GURL& url,
+                                       bool is_off_the_record,
+                                       std::mt19937_64* prng) override;
 
  private:
   uint64_t session_token_;
