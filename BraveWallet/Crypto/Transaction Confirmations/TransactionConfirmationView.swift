@@ -134,50 +134,15 @@ struct TransactionConfirmationView: View {
           }
           .font(.callout)
           // Summary
-          VStack(spacing: 8) {
-            VStack {
-              BlockieGroup(
-                fromAddress: activeTransaction.fromAddress,
-                toAddress: activeTransaction.ethTxToAddress,
-                size: 48
-              )
-              Group {
-                if sizeCategory.isAccessibilityCategory {
-                  VStack {
-                    Text(fromAccountName)
-                    Image(systemName: "arrow.down")
-                    Text(toAccountName)
-                  }
-                } else {
-                  HStack {
-                    Text(fromAccountName)
-                    Image(systemName: "arrow.right")
-                    Text(toAccountName)
-                  }
-                }
-              }
-              .foregroundColor(Color(.bravePrimary))
-              .font(.callout)
-            }
-            .accessibilityElement()
-            .accessibility(addTraits: .isStaticText)
-            .accessibility(
-              label: Text(
-                String.localizedStringWithFormat(
-                  Strings.Wallet.transactionFromToAccessibilityLabel, fromAccountName, toAccountName
-                ))
-            )
-            VStack(spacing: 4) {
-              Text(transactionType)
-                .font(.footnote)
-              Text("\(confirmationStore.state.value) \(confirmationStore.state.symbol)")
-                .fontWeight(.semibold)
-                .foregroundColor(Color(.bravePrimary))
-              Text(confirmationStore.state.fiat)  // Value in Fiat
-                .font(.footnote)
-            }
-            .padding(.vertical, 8)
-          }
+          TransactionHeader(
+            fromAccountAddress: activeTransaction.fromAddress,
+            fromAccountName: fromAccountName,
+            toAccountAddress: activeTransaction.ethTxToAddress,
+            toAccountName: toAccountName,
+            transactionType: transactionType,
+            value: "\(confirmationStore.state.value) \(confirmationStore.state.symbol)",
+            fiat: confirmationStore.state.fiat
+          )
           // View Mode
           VStack(spacing: 12) {
             Picker("", selection: $viewMode) {

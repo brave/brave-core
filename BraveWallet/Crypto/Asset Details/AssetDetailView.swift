@@ -17,6 +17,7 @@ struct AssetDetailView: View {
 
   @State private var tableInset: CGFloat = -16.0
   @State private var isShowingAddAccount: Bool = false
+  @State private var transactionDetails: BraveWallet.TransactionInfo?
 
   @Environment(\.buySendSwapDestination)
   private var buySendSwapDestination: Binding<BuySendSwapDestination?>
@@ -81,15 +82,17 @@ struct AssetDetailView: View {
             .font(.footnote)
         } else {
           ForEach(assetDetailStore.transactions, id: \.id) { tx in
-            TransactionView(
-              info: tx,
-              keyringStore: keyringStore,
-              networkStore: networkStore,
-              visibleTokens: [assetDetailStore.token],
-              allTokens: [], // AssetDetailView is specific to a single token
-              displayAccountCreator: true,
-              assetRatios: [assetDetailStore.token.symbol.lowercased(): assetDetailStore.assetPriceValue]
-            )
+            Button(action: { self.transactionDetails = tx }) {
+              TransactionView(
+                info: tx,
+                keyringStore: keyringStore,
+                networkStore: networkStore,
+                visibleTokens: [assetDetailStore.token],
+                allTokens: [], // AssetDetailView is specific to a single token
+                displayAccountCreator: true,
+                assetRatios: [assetDetailStore.token.symbol.lowercased(): assetDetailStore.assetPriceValue]
+              )
+            }
             .contextMenu {
               if !tx.txHash.isEmpty {
                 Button(action: {
@@ -127,12 +130,28 @@ struct AssetDetailView: View {
     .introspectTableView { tableView in
       tableInset = -tableView.layoutMargins.left
     }
+    .background(
+      Color.clear
     .sheet(isPresented: $isShowingAddAccount) {
       NavigationView {
         AddAccountView(keyringStore: keyringStore)
       }
       .navigationViewStyle(StackNavigationViewStyle())
     }
+    )
+    .background(
+      Color.clear
+        .sheet(item: $transactionDetails) { tx in
+          TransactionDetailsView(
+            info: tx,
+            networkStore: networkStore,
+            keyringStore: keyringStore,
+            visibleTokens: [],
+            allTokens: [],
+            assetRatios: [assetDetailStore.token.symbol.lowercased(): assetDetailStore.assetPriceValue]
+          )
+        }
+    )
   }
 }
 
