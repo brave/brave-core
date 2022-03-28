@@ -1266,10 +1266,9 @@ void RewardsDOMHandler::GetAdsHistory(base::Value::ConstListView args) {
   const base::Time from_time_local_midnight = from_time.LocalMidnight();
   const uint64_t from_timestamp = from_time_local_midnight.ToDoubleT();
 
-  ads_service_->GetAdsHistory(
-      from_timestamp, to_timestamp,
-      base::BindOnce(&RewardsDOMHandler::OnGetAdsHistory,
-                     weak_factory_.GetWeakPtr()));
+  ads_service_->GetHistory(from_timestamp, to_timestamp,
+                           base::BindOnce(&RewardsDOMHandler::OnGetAdsHistory,
+                                          weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnGetAdsHistory(const base::ListValue& ads_history) {

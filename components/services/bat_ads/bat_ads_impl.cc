@@ -190,10 +190,10 @@ void BatAdsImpl::OnWalletUpdated(
   ads_->OnWalletUpdated(payment_id, seed);
 }
 
-void BatAdsImpl::GetAdsHistory(const double from_timestamp,
-                               const double to_timestamp,
-                               GetAdsHistoryCallback callback) {
-  ads::AdsHistoryInfo history = ads_->GetAdsHistory(
+void BatAdsImpl::GetHistory(const double from_timestamp,
+                            const double to_timestamp,
+                            GetHistoryCallback callback) {
+  ads::AdsHistoryInfo history = ads_->GetHistory(
       ads::AdsHistoryFilterType::kConfirmationType,
       ads::AdsHistorySortType::kDescendingOrder, from_timestamp, to_timestamp);
 

@@ -177,9 +177,9 @@ class AdsServiceImpl : public AdsService,
 
   void PurgeOrphanedAdEventsForType(const ads::mojom::AdType ad_type) override;
 
-  void GetAdsHistory(const double from_timestamp,
-                     const double to_timestamp,
-                     OnGetAdsHistoryCallback callback) override;
+  void GetHistory(const double from_timestamp,
+                  const double to_timestamp,
+                  OnGetHistoryCallback callback) override;
 
   void GetAccountStatement(GetAccountStatementCallback callback) override;
 
@@ -281,8 +281,7 @@ class AdsServiceImpl : public AdsService,
                             const std::string& dimensions,
                             const std::string& json);
 
-  void OnGetAdsHistory(OnGetAdsHistoryCallback callback,
-                       const std::string& json);
+  void OnGetHistory(OnGetHistoryCallback callback, const std::string& json);
 
   void OnGetAccountStatement(GetAccountStatementCallback callback,
                              const bool success,

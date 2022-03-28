@@ -410,16 +410,16 @@ void AdsServiceImpl::OnGetBraveWallet(ledger::type::BraveWalletPtr wallet) {
                             base::Base64Encode(wallet->recovery_seed));
 }
 
-void AdsServiceImpl::GetAdsHistory(const double from_timestamp,
-                                   const double to_timestamp,
-                                   OnGetAdsHistoryCallback callback) {
+void AdsServiceImpl::GetHistory(const double from_timestamp,
+                                const double to_timestamp,
+                                OnGetHistoryCallback callback) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->GetAdsHistory(from_timestamp, to_timestamp,
-                          base::BindOnce(&AdsServiceImpl::OnGetAdsHistory,
-                                         AsWeakPtr(), std::move(callback)));
+  bat_ads_->GetHistory(from_timestamp, to_timestamp,
+                       base::BindOnce(&AdsServiceImpl::OnGetHistory,
+                                      AsWeakPtr(), std::move(callback)));
 }
 
 void AdsServiceImpl::GetAccountStatement(GetAccountStatementCallback callback) {
@@ -1292,8 +1292,8 @@ void AdsServiceImpl::OnGetInlineContentAd(OnGetInlineContentAdCallback callback,
   std::move(callback).Run(success, dimensions, dictionary);
 }
 
-void AdsServiceImpl::OnGetAdsHistory(OnGetAdsHistoryCallback callback,
-                                     const std::string& json) {
+void AdsServiceImpl::OnGetHistory(OnGetHistoryCallback callback,
+                                  const std::string& json) {
   ads::AdsHistoryInfo ads_history;
   ads_history.FromJson(json);
 

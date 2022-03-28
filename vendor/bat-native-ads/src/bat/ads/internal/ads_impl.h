@@ -193,10 +193,10 @@ class AdsImpl final : public Ads,
 
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
-  AdsHistoryInfo GetAdsHistory(const AdsHistoryFilterType filter_type,
-                               const AdsHistorySortType sort_type,
-                               const double from_timestamp,
-                               const double to_timestamp) override;
+  AdsHistoryInfo GetHistory(const AdsHistoryFilterType filter_type,
+                            const AdsHistorySortType sort_type,
+                            const double from_timestamp,
+                            const double to_timestamp) override;
 
   void GetAccountStatement(GetAccountStatementCallback callback) override;
 

@@ -496,9 +496,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   const double from_timestamp = std::numeric_limits<double>::min();
   const double to_timestamp = std::numeric_limits<double>::max();
 
-  const auto history = ads->GetAdsHistory(ads::AdsHistoryFilterType::kNone,
-                                          ads::AdsHistorySortType::kNone,
-                                          from_timestamp, to_timestamp);
+  const auto history = ads->GetHistory(ads::AdsHistoryFilterType::kNone,
+                                       ads::AdsHistorySortType::kNone,
+                                       from_timestamp, to_timestamp);
 
   const auto dates = [[NSMutableArray<NSDate*> alloc] init];
   for (const auto& item : history.items) {

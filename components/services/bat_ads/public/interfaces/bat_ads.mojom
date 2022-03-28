@@ -97,7 +97,7 @@ interface BatAds {
   PurgeOrphanedAdEventsForType(ads.mojom.AdType ad_type);
   RemoveAllHistory() => (bool success);
   OnWalletUpdated(string payment_id, string seed);
-  GetAdsHistory(double from_timestamp, double to_timestamp) => (string json);
+  GetHistory(double from_timestamp, double to_timestamp) => (string json);
   GetAccountStatement() => (bool success, string json);
   GetAdDiagnostics() => (bool success, string json);
   ToggleAdThumbUp(string json) => (string json);
