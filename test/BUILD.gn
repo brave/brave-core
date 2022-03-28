@@ -285,9 +285,9 @@ test("brave_unit_tests") {
     deps += [ "//chrome/browser/ui/views" ]
   }
 
-  data = [ "data/" ]
+  deps += [ "//brave/build/geolocation" ]
 
-  configs += [ "//brave/build/geolocation" ]
+  data = [ "data/" ]
 
   public_deps = [
     ":brave_test_support_unit",

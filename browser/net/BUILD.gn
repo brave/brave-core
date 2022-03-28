@@ -7,7 +7,7 @@ import("//build/config/features.gni")
 source_set("net") {
   # Remove when https://github.com/brave/brave-browser/issues/10659 is resolved
   check_includes = false
-  configs += [ "//brave/build/geolocation" ]
+
   sources = [
     "brave_ad_block_csp_network_delegate_helper.cc",
     "brave_ad_block_csp_network_delegate_helper.h",
@@ -47,6 +47,7 @@ source_set("net") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
+    "//brave/build/geolocation",
     "//brave/common",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_referrals/buildflags",

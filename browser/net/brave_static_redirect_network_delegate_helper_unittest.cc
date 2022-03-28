@@ -10,6 +10,7 @@
 
 #include "base/strings/string_util.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/build/geolocation/brave_geolocation_buildflags.h"
 #include "components/component_updater/component_updater_url_constants.h"
 #include "net/base/net_errors.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -30,7 +31,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, NoModifyTypicalURL) {
 TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGeoURL) {
   const GURL url(
       "https://www.googleapis.com/geolocation/v1/geolocate?key=2_3_5_7");
-  const GURL expected_url(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY);
+  const GURL expected_url(BUILDFLAG(GOOGLEAPIS_URL));
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =

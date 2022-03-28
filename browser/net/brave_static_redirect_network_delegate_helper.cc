@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/strings/string_piece_forward.h"
+#include "brave/build/geolocation/brave_geolocation_buildflags.h"
 #include "brave/common/network_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/net_errors.h"
@@ -87,7 +88,7 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
       kWidevineGoogleDlPrefix);
 
   if (geo_pattern.MatchesURL(request_url)) {
-    *new_url = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY);
+    *new_url = GURL(BUILDFLAG(GOOGLEAPIS_URL));
     return net::OK;
   }
 
