@@ -696,6 +696,44 @@ void EthTxManager::ContinueMakeERC721TransferFromData(
   std::move(callback).Run(true, data_decoded);
 }
 
+void EthTxManager::MakeERC1155TransferFromData(
+    const std::string& from,
+    const std::string& to,
+    const std::string& token_id,
+    const std::string& value,
+    const std::string& contract_address,
+    MakeERC1155TransferFromDataCallback callback) {
+  uint256_t token_id_uint = 0;
+  if (!HexValueToUint256(token_id, &token_id_uint)) {
+    VLOG(1) << __FUNCTION__ << ": Could not convert token_id";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  uint256_t value_uint = 0;
+  if (!HexValueToUint256(value, &value_uint) || (value_uint == 0)) {
+    VLOG(1) << __FUNCTION__ << ": Could not convert value";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  std::string data;
+  if (!erc1155::SafeTransferFrom(from, to, token_id_uint, value_uint, &data)) {
+    VLOG(1) << __FUNCTION__ << ": Could not make safeTransferFrom data";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  std::vector<uint8_t> data_decoded;
+  if (!PrefixedHexStringToBytes(data, &data_decoded)) {
+    VLOG(1) << __FUNCTION__ << ": Could not decode data";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  std::move(callback).Run(true, data_decoded);
+}
+
 void EthTxManager::NotifyUnapprovedTxUpdated(TxMeta* meta) {
   tx_service_->OnUnapprovedTxUpdated(meta->ToTransactionInfo());
 }

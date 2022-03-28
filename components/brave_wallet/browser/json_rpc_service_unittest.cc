@@ -512,6 +512,27 @@ class JsonRpcServiceUnitTest : public testing::Test {
     return result;
   }
 
+  void TestGetERC1155TokenBalance(const std::string& contract,
+                                  const std::string& token_id,
+                                  const std::string& account_address,
+                                  const std::string& chain_id,
+                                  const std::string& expected_response,
+                                  mojom::ProviderError expected_error,
+                                  const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetERC1155TokenBalance(
+        contract, token_id, account_address, chain_id,
+        base::BindLambdaForTesting([&](const std::string& response,
+                                       mojom::ProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(response, expected_response);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
   void TestGetSolanaBalance(uint64_t expected_balance,
                             mojom::SolanaProviderError expected_error,
                             const std::string& expected_error_message) {
@@ -2118,6 +2139,59 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
                      "Request exceeds defined limit", ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetERC1155TokenBalance) {
+  TestGetERC1155TokenBalance(
+      "", "0x0", "0x16e4476c8fddc552e3b1c4b8b56261d85977fe52",
+      mojom::kMainnetChainId, "", mojom::ProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  TestGetERC1155TokenBalance(
+      "0x28472a58a490c5e09a238847f66a68a47cc76f0f", "0x0", "",
+      mojom::kMainnetChainId, "", mojom::ProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  TestGetERC1155TokenBalance(
+      "0x28472a58a490c5e09a238847f66a68a47cc76f0f",
+      "0x16e4476c8fddc552e3b1c4b8b56261d85977fe52", "", mojom::kMainnetChainId,
+      "", mojom::ProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  TestGetERC1155TokenBalance(
+      "0x28472a58a490c5e09a238847f66a68a47cc76f0f", "0x0",
+      "0x16e4476c8fddc552e3b1c4b8b56261d85977fe52", "", "",
+      mojom::ProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetERC1155TokenBalance(
+      "0x28472a58a490c5e09a238847f66a68a47cc76f0f", "0x0",
+      "0x16e4476c8fddc552e3b1c4b8b56261d85977fe52", mojom::kMainnetChainId, "",
+      mojom::ProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  SetInvalidJsonInterceptor();
+  TestGetERC1155TokenBalance(
+      "0x28472a58a490c5e09a238847f66a68a47cc76f0f", "0x0",
+      "0x16e4476c8fddc552e3b1c4b8b56261d85977fe52", mojom::kMainnetChainId, "",
+      mojom::ProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  SetLimitExceededJsonErrorResponse();
+  TestGetERC1155TokenBalance(
+      "0x28472a58a490c5e09a238847f66a68a47cc76f0f", "0x0",
+      "0x16e4476c8fddc552e3b1c4b8b56261d85977fe52", mojom::kMainnetChainId, "",
+      mojom::ProviderError::kLimitExceeded, "Request exceeds defined limit");
+  SetInterceptor(
+      GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH), "eth_call", "",
+      R"({"jsonrpc":"2.0","id":1,"result":"0x0000000000000000000000000000000000000000000000000000000000000001"})");
+
+  TestGetERC1155TokenBalance(
+      "0x28472a58a490c5e09a238847f66a68a47cc76f0f", "0xf",
+      "0x16e4476c8fddc552e3b1c4b8b56261d85977fe52", mojom::kMainnetChainId,
+      "0x0000000000000000000000000000000000000000000000000000000000000001",
+      mojom::ProviderError::kSuccess, "");
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetSupportsInterface) {

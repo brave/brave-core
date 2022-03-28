@@ -107,6 +107,14 @@ class TxService : public KeyedService,
                                   const std::string& token_id,
                                   const std::string& contract_address,
                                   MakeERC721TransferFromDataCallback) override;
+  void MakeERC1155TransferFromData(
+      const std::string& from,
+      const std::string& to,
+      const std::string& token_id,
+      const std::string& value,
+      const std::string& contract_address,
+      MakeERC1155TransferFromDataCallback) override;
+
   void SetGasPriceAndLimitForUnapprovedTransaction(
       const std::string& tx_meta_id,
       const std::string& gas_price,

@@ -399,6 +399,46 @@ class EthTxManagerUnitTest : public testing::Test {
         std::move(tx_data), from, GetOrigin(), std::move(callback));
   }
 
+  void TestMakeERC1155TransferFromDataTxType(
+      const std::string& from,
+      const std::string& to,
+      const std::string& token_id,
+      const std::string& value,
+      const std::string& contract_address,
+      bool expected_success,
+      mojom::TransactionType expected_type) {
+    base::RunLoop run_loop;
+    eth_tx_manager()->MakeERC1155TransferFromData(
+        from, to, token_id, value, contract_address,
+        base::BindLambdaForTesting(
+            [&](bool success, const std::vector<uint8_t>& data) {
+              EXPECT_EQ(expected_success, success);
+              if (success) {
+                mojom::TransactionType tx_type;
+                std::vector<std::string> tx_params;
+                std::vector<std::string> tx_args;
+                ASSERT_TRUE(GetTransactionInfoFromData(ToHex(data), &tx_type,
+                                                       &tx_params, &tx_args));
+                EXPECT_EQ(expected_type, tx_type);
+                EXPECT_EQ(tx_args[0], from);
+                EXPECT_EQ(tx_args[1], to);
+                EXPECT_EQ(tx_args[2], token_id);
+                EXPECT_EQ(tx_args[3], value);
+                EXPECT_EQ(tx_args[4],
+                          "0x00000000000000000000000000000000000000000000000000"
+                          "00000000000000");
+                EXPECT_EQ(tx_params[0], "address");
+                EXPECT_EQ(tx_params[1], "address");
+                EXPECT_EQ(tx_params[2], "uint256");
+                EXPECT_EQ(tx_params[3], "uint256");
+                EXPECT_EQ(tx_params[4], "bytes");
+              }
+              run_loop.Quit();
+            }));
+
+    run_loop.Run();
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -1970,11 +2010,51 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
   run_loop.reset(new base::RunLoop());
   eth_tx_manager()->MakeERC721TransferFromData(
       "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
-      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "1",
-      "0x0d8775f648430679a709e98d2b0cb6250d2887ee",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "1", contract_transfer_from,
       base::BindOnce(&MakeERC721TransferFromDataCallback, run_loop.get(), false,
                      mojom::TransactionType::Other));
   run_loop->Run();
+}
+
+TEST_F(EthTxManagerUnitTest, MakeERC1155TransferFromData) {
+  // Valid
+  TestMakeERC1155TransferFromDataTxType(
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f",
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "0xf", "0x1",
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef", true,
+      mojom::TransactionType::ERC1155SafeTransferFrom);
+
+  // Invalid from
+  TestMakeERC1155TransferFromDataTxType(
+      "", "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "0xf", "0x1",
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef", false,
+      mojom::TransactionType::Other);
+
+  // Invalid to
+  TestMakeERC1155TransferFromDataTxType(
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f", "", "0xf", "0x1",
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef", false,
+      mojom::TransactionType::Other);
+
+  // Invalid token_id
+  TestMakeERC1155TransferFromDataTxType(
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f",
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "1", "0x1",
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef", false,
+      mojom::TransactionType::Other);
+
+  // Invalid value
+  TestMakeERC1155TransferFromDataTxType(
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f",
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "1", "0x1",
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef", false,
+      mojom::TransactionType::Other);
+
+  // Invalid contract_address
+  TestMakeERC1155TransferFromDataTxType(
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f",
+      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "1", "0x1", "", false,
+      mojom::TransactionType::Other);
 }
 
 TEST_F(EthTxManagerUnitTest, Reset) {

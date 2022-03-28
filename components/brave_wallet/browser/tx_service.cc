@@ -202,6 +202,17 @@ void TxService::MakeERC721TransferFromData(
       from, to, token_id, contract_address, std::move(callback));
 }
 
+void TxService::MakeERC1155TransferFromData(
+    const std::string& from,
+    const std::string& to,
+    const std::string& token_id,
+    const std::string& value,
+    const std::string& contract_address,
+    MakeERC1155TransferFromDataCallback callback) {
+  GetEthTxManager()->MakeERC1155TransferFromData(
+      from, to, token_id, value, contract_address, std::move(callback));
+}
+
 void TxService::SetGasPriceAndLimitForUnapprovedTransaction(
     const std::string& tx_meta_id,
     const std::string& gas_price,
