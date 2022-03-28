@@ -440,9 +440,7 @@ Config.prototype.buildArgs = function () {
       args.target_environment = this.targetEnvironment
     }
     args.enable_dsyms = true
-    args.enable_stripping = !this.isDebug()
-    args.use_clang_coverage = false
-    args.use_lld = false
+    args.enable_stripping = !this.isComponentBuild()
     // Component builds are not supported for iOS:
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
     args.is_component_build = false
@@ -451,7 +449,7 @@ Config.prototype.buildArgs = function () {
     // DCHECK's crash on Static builds without allowing the debugger to continue
     // Can be removed when approprioate DCHECK's have been fixed:
     // https://github.com/brave/brave-browser/issues/10334
-    args.dcheck_always_on = this.isDebug()
+    args.dcheck_always_on = this.isComponentBuild()
 
     args.ios_enable_content_widget_extension = false
     args.ios_enable_search_widget_extension = false

@@ -8,6 +8,11 @@ import("//brave/ios/browser/api/url/headers.gni")
 import("//build/config/compiler/compiler.gni")
 import("//build/config/ios/rules.gni")
 
+# lld is required when building arm64 with optimization in order to avoid
+# runtime crashes
+assert(is_debug || current_cpu != "arm64" || use_lld,
+       "Optimized arm64 iOS builds require lld")
+
 config("internal_config") {
   visibility = [ ":*" ]
   ldflags =
