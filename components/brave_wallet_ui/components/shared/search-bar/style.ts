@@ -7,10 +7,10 @@ export const StyledWrapper = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  height: 32px;
+  height: 36px;
   border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
   box-sizing: border-box;
-  border-radius: 8px;
+  border-radius: 4px;
   background-color: ${(p) => p.theme.color.background02};
   margin-bottom: 10px;
   overflow: hidden;

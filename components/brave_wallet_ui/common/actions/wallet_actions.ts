@@ -117,3 +117,4 @@ export const refreshBalancesAndPriceHistory = createAction('refreshBalancesAndPr
 export const setTransactionProviderError = createAction<SetTransactionProviderErrorType>('setTransactionProviderError')
 export const setSelectedCoin = createAction<BraveWallet.CoinType>('setSelectedCoin')
 export const setDefaultNetworks = createAction<BraveWallet.NetworkInfo[]>('setDefaultNetworks')
+export const setSelectedNetworkFilter = createAction<BraveWallet.NetworkInfo>('setSelectedNetworkFilter')

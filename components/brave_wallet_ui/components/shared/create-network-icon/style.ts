@@ -26,7 +26,11 @@ export const Placeholder = styled.div<Partial<StyleProps>>`
   background-size: cover;
 `
 
-export const NetworkIcon = AssetIconFactory<AssetIconProps>({
-  width: '15px',
+interface IconProps extends AssetIconProps {
+  size?: 'big' | 'small'
+}
+
+export const NetworkIcon = AssetIconFactory<IconProps>(props => ({
+  width: props.size === 'big' ? '25px' : '15px',
   height: 'auto'
-})
+}))

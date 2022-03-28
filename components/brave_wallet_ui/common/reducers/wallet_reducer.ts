@@ -34,6 +34,7 @@ import * as WalletActions from '../actions/wallet_actions'
 import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
 import { sortTransactionByDate } from '../../utils/tx-utils'
 import Amount from '../../utils/amount'
+import { AllNetworksOption } from '../../options/network-filter-options'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -86,7 +87,8 @@ const defaultState: WalletState = {
     crypto: ''
   },
   transactionProviderErrorRegistry: {},
-  defaultNetworks: [] as BraveWallet.NetworkInfo[]
+  defaultNetworks: [] as BraveWallet.NetworkInfo[],
+  selectedNetworkFilter: AllNetworksOption
 }
 
 const getAccountType = (info: AccountInfo) => {
@@ -309,8 +311,8 @@ export const createWalletReducer = (initialState: WalletState) => {
 
   reducer.on(WalletActions.transactionStatusChanged, (state: WalletState, payload: TransactionStatusChanged): WalletState => {
     const newPendingTransactions = state.pendingTransactions
-    .filter((tx: BraveWallet.TransactionInfo) => tx.id !== payload.txInfo.id)
-    .concat(payload.txInfo.txStatus === BraveWallet.TransactionStatus.Unapproved ? [payload.txInfo] : [])
+      .filter((tx: BraveWallet.TransactionInfo) => tx.id !== payload.txInfo.id)
+      .concat(payload.txInfo.txStatus === BraveWallet.TransactionStatus.Unapproved ? [payload.txInfo] : [])
 
     const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
 
@@ -478,6 +480,14 @@ export const createWalletReducer = (initialState: WalletState) => {
     return {
       ...state,
       defaultNetworks: payload
+    }
+  })
+
+  reducer.on(WalletActions.setSelectedNetworkFilter, (state: WalletState, payload: BraveWallet.NetworkInfo): WalletState => {
+    return {
+      ...state,
+      isFetchingPortfolioPriceHistory: true,
+      selectedNetworkFilter: payload
     }
   })
 
