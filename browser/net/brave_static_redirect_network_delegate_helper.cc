@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/strings/string_piece_forward.h"
-#include "brave/build/geolocation/brave_geolocation_buildflags.h"
+#include "brave/browser/net/brave_geolocation_buildflags.h"
 #include "brave/common/network_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/net_errors.h"
