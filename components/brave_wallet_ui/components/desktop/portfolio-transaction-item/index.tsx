@@ -199,8 +199,29 @@ const PortfolioTransactionItem = (props: Props) => {
         )
       }
 
-      // FIXME: Add as new BraveWallet.TransactionType on the service side.
-      case transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy: {
+      case transaction.txType === BraveWallet.TransactionType.ETHSwap: {
+        return (
+          <DetailRow>
+            <DetailTextDark>
+              {transactionDetails.sellAmount}{' '}
+              <AddressOrAsset
+                onClick={onAssetClick(transactionDetails.sellToken?.symbol)}
+              >
+                {transactionDetails.sellToken?.symbol}
+              </AddressOrAsset>
+            </DetailTextDark>
+            <ArrowIcon />
+            <DetailTextDark>
+              {transactionDetails.minBuyAmount}{' '}
+              <AddressOrAsset onClick={onAddressClick(transactionDetails.buyToken?.symbol)}>
+                {transactionDetails.buyToken?.symbol}
+              </AddressOrAsset>
+            </DetailTextDark>
+          </DetailRow>
+        )
+      }
+
+      case transactionDetails.isSwap: {
         return (
           <DetailRow>
             <DetailTextDark>

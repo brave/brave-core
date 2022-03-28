@@ -65,6 +65,12 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   approvalTarget?: string
   approvalTargetLabel?: string
   isApprovalUnlimited?: boolean
+
+  // Swap
+  sellToken?: BraveWallet.BlockchainToken
+  sellAmount?: string
+  buyToken?: BraveWallet.BlockchainToken
+  minBuyAmount?: string
 }
 
 export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkInfo, networkSpotPrice: string, solFeeEstimates?: SolFeeEstimates) {
@@ -393,7 +399,78 @@ export function useTransactionParser (
         } as ParsedTransaction
       }
 
-      // FIXME: swap needs a real parser to figure out the From and To details.
+      // args: (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
+      case txType === BraveWallet.TransactionType.ETHSwap: {
+        const [fillPath, sellAmountArg, minBuyAmountArg] = txArgs
+        const fillContracts = fillPath
+          .slice(2)
+          .match(/.{1,40}/g)
+        const fillTokens = (fillContracts || [])
+          .map(path => '0x' + path)
+          .map(address =>
+            address === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+              ? nativeAsset
+              : findToken(address) || nativeAsset)
+
+        const sellToken = fillTokens.length === 1
+          ? nativeAsset
+          : fillTokens[0]
+        const sellAmountWeiBN = new Amount(sellAmountArg || value)
+        const sellAmountBN = sellAmountWeiBN
+          .divideByDecimals(sellToken.decimals)
+        const sellAmountFiat = computeFiatAmount(
+          sellAmountBN.format(),
+          sellToken.symbol,
+          sellToken.decimals
+        )
+
+        const buyToken = fillTokens[fillTokens.length - 1]
+        const buyAmount = new Amount(minBuyAmountArg)
+          .divideByDecimals(buyToken.decimals)
+          .format(6)
+
+        const feeDetails = parseTransactionFees(transactionInfo)
+        const { gasFeeFiat, gasFee } = feeDetails
+        const totalAmountFiat = new Amount(gasFeeFiat)
+          .plus(sellAmountFiat)
+
+        const insufficientNativeFunds = new Amount(gasFee)
+          .gt(accountNativeBalance)
+        const insufficientTokenFunds = sellAmountBN
+          .gt(getBalance(account, token))
+
+        return {
+          hash: transactionInfo.txHash,
+          nonce,
+          createdTime: transactionInfo.createdTime,
+          status: transactionInfo.txStatus,
+          sender: fromAddress,
+          senderLabel: getAddressLabel(fromAddress),
+          recipient: to,
+          recipientLabel: getAddressLabel(to),
+          fiatValue: sellAmountFiat,
+          fiatTotal: totalAmountFiat,
+          formattedNativeCurrencyTotal: sellAmountFiat
+            .div(networkSpotPrice)
+            .formatAsAsset(6, selectedNetwork.symbol),
+          value: sellAmountBN.format(6),
+          valueExact: sellAmountBN.format(),
+          symbol: sellToken.symbol,
+          decimals: sellToken.decimals,
+          insufficientFundsError: insufficientNativeFunds || insufficientTokenFunds,
+
+          // Set isSwap=false to differentiate ETHSwap from SwapExchangeProxy
+          // case.
+          isSwap: false,
+          sellToken,
+          sellAmount: sellAmountBN
+            .format(6),
+          buyToken,
+          minBuyAmount: buyAmount,
+          ...feeDetails
+        } as ParsedTransaction
+      }
+
       case to.toLowerCase() === SwapExchangeProxy:
       case txType === BraveWallet.TransactionType.ETHSend:
       case txType === BraveWallet.TransactionType.SolanaSystemTransfer:
