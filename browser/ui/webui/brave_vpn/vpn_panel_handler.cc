@@ -22,11 +22,12 @@ VPNPanelHandler::~VPNPanelHandler() = default;
 
 void VPNPanelHandler::ShowUI() {
   auto embedder = webui_controller_->embedder();
-  BraveVpnService* vpn_service_desktop =
+  BraveVpnService* vpn_service =
       BraveVpnServiceFactory::GetForProfile(profile_);
+  DCHECK(vpn_service);
   if (embedder) {
     embedder->ShowUI();
-    vpn_service_desktop->LoadPurchasedState();
+    vpn_service->LoadPurchasedState();
   }
 }
 

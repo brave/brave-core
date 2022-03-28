@@ -6,6 +6,7 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 
 #include "base/feature_list.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/skus/common/features.h"
@@ -66,9 +67,4 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
 #elif BUILDFLAG(IS_ANDROID)
   return new BraveVpnService(shared_url_loader_factory, callback);
 #endif
-}
-
-content::BrowserContext* BraveVpnServiceFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
 }

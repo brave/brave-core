@@ -31,8 +31,8 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -64,7 +64,10 @@ BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
       brave_command_updater_(nullptr) {
   InitBraveCommandState();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  Observe(BraveVpnServiceFactory::GetForProfile(browser_->profile()));
+  if (auto* vpn_service =
+          BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
+    Observe(vpn_service);
+  }
 #endif
 }
 
@@ -189,7 +192,7 @@ void BraveBrowserCommandController::UpdateCommandForSidebar() {
 
 void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (!brave_vpn::IsBraveVPNEnabled()) {
+  if (!brave_vpn::IsBraveVPNEnabled(browser_->profile())) {
     UpdateCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL, false);
     UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, false);
     UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON, false);
