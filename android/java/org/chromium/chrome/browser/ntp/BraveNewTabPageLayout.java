@@ -101,10 +101,6 @@ import org.chromium.chrome.browser.local_database.TopSiteTable;
 import org.chromium.chrome.browser.native_page.ContextMenuManager;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.ntp.NewTabPageLayout;
-import org.chromium.chrome.browser.ntp.widget.NTPWidgetAdapter;
-import org.chromium.chrome.browser.ntp.widget.NTPWidgetItem;
-import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
-import org.chromium.chrome.browser.ntp.widget.NTPWidgetStackActivity;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
@@ -134,11 +130,6 @@ import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
-import org.chromium.chrome.browser.widget.crypto.binance.BinanceNativeWorker;
-import org.chromium.chrome.browser.widget.crypto.binance.BinanceObserver;
-import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
-import org.chromium.chrome.browser.widget.crypto.binance.CryptoWidgetBottomSheetDialogFragment;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.embedder_support.util.UrlUtilities;
@@ -159,12 +150,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BraveNewTabPageLayout
-        extends NewTabPageLayout implements CryptoWidgetBottomSheetDialogFragment
-                                                    .CryptoWidgetBottomSheetDialogDismissListener,
-                                            ConnectionErrorHandler {
+public class BraveNewTabPageLayout extends NewTabPageLayout implements ConnectionErrorHandler {
     private static final String TAG = "BraveNewTabPageView";
-    private static final String BRAVE_BINANCE = "https://brave.com/binance/";
     private static final String BRAVE_REF_URL = "https://brave.com/r/";
     private static final String BRAVE_LEARN_MORE_URL =
             "https://brave.com/privacy/browser/#brave-today";
@@ -191,24 +178,11 @@ public class BraveNewTabPageLayout
     private ViewGroup mSiteSectionView;
     private TileGroup mTileGroup;
     private LottieAnimationView mBadgeAnimationView;
-    private VerticalViewPager ntpWidgetViewPager;
-    private NTPWidgetAdapter ntpWidgetAdapter;
 
     private Tab mTab;
     private Activity mActivity;
-    private LinearLayout indicatorLayout;
     private LinearLayout superReferralSitesLayout;
-    private LinearLayout ntpWidgetLayout;
-    private LinearLayout bianceDisconnectLayout;
-    private LinearLayout binanceWidgetLayout;
-    private ProgressBar binanceWidgetProgress;
     private TextView mTopsiteErrorMessage;
-
-    private BinanceNativeWorker mBinanceNativeWorker;
-    private CryptoWidgetBottomSheetDialogFragment cryptoWidgetBottomSheetDialogFragment;
-    private Timer countDownTimer;
-    private List<NTPWidgetItem> widgetList = new ArrayList<NTPWidgetItem>();
-    public static final int NTP_WIDGET_STACK_CODE = 3333;
 
     // Brave news
     private BraveNewsAdapterFeedCard mAdapterFeedCard;
@@ -256,7 +230,6 @@ public class BraveNewTabPageLayout
     private SharedPreferencesManager.Observer mPreferenceObserver;
     private int mTouchX;
     private int mTouchY;
-    private boolean mTouchWidget;
     private boolean mTouchScroll;
     private boolean mComesFromNewTab;
 
@@ -266,7 +239,6 @@ public class BraveNewTabPageLayout
         super(context, attrs);
         mProfile = Profile.getLastUsedRegularProfile();
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
-        mBinanceNativeWorker = BinanceNativeWorker.getInstance();
         mNTPBackgroundImagesBridge.setNewTabPageListener(newTabPageListener);
         mDatabaseHelper = DatabaseHelper.getInstance();
     }
@@ -274,35 +246,9 @@ public class BraveNewTabPageLayout
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-
-        ntpWidgetLayout = findViewById(R.id.ntp_widget_layout);
-        indicatorLayout = findViewById(R.id.indicator_layout);
-        ntpWidgetViewPager = findViewById(R.id.ntp_widget_view_pager);
-        ntpWidgetAdapter = new NTPWidgetAdapter();
-        ntpWidgetAdapter.setNTPWidgetListener(ntpWidgetListener);
-        ntpWidgetViewPager.setAdapter(ntpWidgetAdapter);
         mComesFromNewTab = false;
         mTouchScroll = false;
 
-        ntpWidgetViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(
-                    int position, float positionOffset, int positionOffsetPixels) {}
-
-            @Override
-            public void onPageSelected(int position) {
-                cancelTimer();
-                if (NTPWidgetManager.getInstance().getBinanceWidget() == position) {
-                    startTimer();
-                }
-                updateAndShowIndicators(position);
-                NTPWidgetManager.getInstance().setNTPWidgetOrder(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {}
-        });
-        showWidgetBasedOnOrder();
         NTPUtil.showBREBottomBanner(this);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
@@ -355,25 +301,13 @@ public class BraveNewTabPageLayout
             new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        layoutParams.setMargins(0, dpToPx(mActivity, 16), 0, dpToPx(mActivity, 16));
+        layoutParams.setMargins(dpToPx(mActivity, 16), dpToPx(mActivity, 16), dpToPx(mActivity, 16),
+                dpToPx(mActivity, 16));
         mBraveStatsViewFallBackLayout.setLayoutParams(layoutParams);
         mBraveStatsViewFallBackLayout.requestLayout();
 
         mBraveStatsViewFallBackLayout.findViewById(R.id.brave_stats_title_layout)
                 .setVisibility(View.GONE);
-        ((TextView) mBraveStatsViewFallBackLayout.findViewById(R.id.brave_stats_text_ads))
-                .setTextColor(mActivity.getResources().getColor(R.color.shield_text_color));
-        ((TextView) mBraveStatsViewFallBackLayout.findViewById(R.id.brave_stats_data_saved_text))
-                .setTextColor(mActivity.getResources().getColor(R.color.shield_text_color));
-        ((TextView) mBraveStatsViewFallBackLayout.findViewById(R.id.brave_stats_text_time))
-                .setTextColor(mActivity.getResources().getColor(R.color.shield_text_color));
-        ((TextView) mBraveStatsViewFallBackLayout.findViewById(R.id.brave_stats_text_time_count))
-                .setTextColor(mActivity.getResources().getColor(R.color.shield_text_color));
-        ((TextView) mBraveStatsViewFallBackLayout.findViewById(
-                 R.id.brave_stats_text_time_count_text))
-                .setTextColor(mActivity.getResources().getColor(R.color.shield_text_color));
-        mBraveStatsViewFallBackLayout.setBackgroundColor(
-                mActivity.getResources().getColor(android.R.color.transparent));
         mBraveStatsViewFallBackLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             @SuppressLint("SourceLockedOrientationActivity")
@@ -396,154 +330,10 @@ public class BraveNewTabPageLayout
         // This function is kept empty to avoid placeholder implementation
     }
 
-    private List<NTPWidgetItem> setWidgetList() {
-        NTPWidgetManager ntpWidgetManager = NTPWidgetManager.getInstance();
-        LayoutInflater inflater =
-                (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        Map<Integer, NTPWidgetItem> ntpWidgetMap = new TreeMap<>();
-        if (mSiteSectionView != null && mSiteSectionView.getParent() != null) {
-            ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
-        }
-
-        for (String widget : ntpWidgetManager.getUsedWidgets()) {
-            NTPWidgetItem ntpWidgetItem = NTPWidgetManager.mWidgetsMap.get(widget);
-            if (widget.equals(NTPWidgetManager.PREF_PRIVATE_STATS)) {
-                View mBraveStatsView = inflater.inflate(R.layout.brave_stats_layout, null);
-                mBraveStatsView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    @SuppressLint("SourceLockedOrientationActivity")
-                    public void onClick(View v) {
-                        mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                        checkForBraveStats();
-                    }
-                });
-                ntpWidgetItem.setWidgetView(mBraveStatsView);
-                ntpWidgetMap.put(ntpWidgetManager.getPrivateStatsWidget(), ntpWidgetItem);
-            } else if (widget.equals(NTPWidgetManager.PREF_FAVORITES)) {
-                View mTopSitesLayout = inflater.inflate(R.layout.top_sites_layout, null);
-                FrameLayout mTopSitesGridLayout =
-                        mTopSitesLayout.findViewById(R.id.top_sites_grid_layout);
-                mTopsiteErrorMessage =
-                        mTopSitesLayout.findViewById(R.id.widget_error_title);
-
-                if (shouldShowSuperReferral() && superReferralSitesLayout != null) {
-                    if (superReferralSitesLayout.getParent() != null) {
-                        ((ViewGroup) superReferralSitesLayout.getParent())
-                                .removeView(superReferralSitesLayout);
-                    }
-                    mTopSitesGridLayout.addView(superReferralSitesLayout);
-                    ntpWidgetItem.setWidgetView(mTopSitesLayout);
-                    ntpWidgetMap.put(ntpWidgetManager.getFavoritesWidget(), ntpWidgetItem);
-                } else if (!mNTPBackgroundImagesBridge.isSuperReferral()
-                        || !NTPBackgroundImagesBridge.enableSponsoredImages()
-                        || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                    boolean showPlaceholder = mTileGroup != null && mTileGroup.hasReceivedData()
-                            && mTileGroup.isEmpty();
-                    if (mSiteSectionView != null && !showPlaceholder) {
-                        mTopsiteErrorMessage.setVisibility(View.GONE);
-                        if (mSiteSectionView.getLayoutParams()
-                                        instanceof ViewGroup.MarginLayoutParams) {
-                            mSiteSectionView.setPadding(0, dpToPx(mActivity, 8), 0, 0);
-                            mSiteSectionView.requestLayout();
-                        }
-                        mTopSitesGridLayout.addView(mSiteSectionView);
-                    } else {
-                        mTopsiteErrorMessage.setVisibility(View.VISIBLE);
-                    }
-                    ntpWidgetItem.setWidgetView(mTopSitesLayout);
-                    ntpWidgetMap.put(ntpWidgetManager.getFavoritesWidget(), ntpWidgetItem);
-                }
-            } else if (widget.equals(NTPWidgetManager.PREF_BINANCE)) {
-                View binanceWidgetView = inflater.inflate(R.layout.crypto_widget_layout, null);
-                binanceWidgetLayout = binanceWidgetView.findViewById(R.id.binance_widget_layout);
-                bianceDisconnectLayout =
-                        binanceWidgetView.findViewById(R.id.binance_disconnect_layout);
-                binanceWidgetProgress =
-                        binanceWidgetView.findViewById(R.id.binance_widget_progress);
-                binanceWidgetProgress.setVisibility(View.GONE);
-                binanceWidgetView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (InternetConnection.isNetworkAvailable(mActivity)) {
-                            if (BinanceWidgetManager.getInstance()
-                                            .isUserAuthenticatedForBinance()) {
-                                cancelTimer();
-                                cryptoWidgetBottomSheetDialogFragment =
-                                        new CryptoWidgetBottomSheetDialogFragment();
-                                cryptoWidgetBottomSheetDialogFragment
-                                        .setCryptoWidgetBottomSheetDialogDismissListener(
-                                                BraveNewTabPageLayout.this);
-                                cryptoWidgetBottomSheetDialogFragment.show(
-                                        ((BraveActivity) mActivity).getSupportFragmentManager(),
-                                        CryptoWidgetBottomSheetDialogFragment.TAG_FRAGMENT);
-                            } else {
-                                TabUtils.openUrlInSameTab(mBinanceNativeWorker.getOAuthClientUrl());
-                                bianceDisconnectLayout.setVisibility(View.GONE);
-                                binanceWidgetProgress.setVisibility(View.VISIBLE);
-                            }
-                        } else {
-                            Toast.makeText(mActivity,
-                                         mActivity.getResources().getString(
-                                                 R.string.please_check_the_connection),
-                                         Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                    }
-                });
-                Button connectButton = binanceWidgetView.findViewById(R.id.btn_connect);
-                connectButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        TabUtils.openUrlInSameTab(mBinanceNativeWorker.getOAuthClientUrl());
-                        bianceDisconnectLayout.setVisibility(View.GONE);
-                        binanceWidgetProgress.setVisibility(View.VISIBLE);
-                    }
-                });
-                ntpWidgetItem.setWidgetView(binanceWidgetView);
-                ntpWidgetMap.put(ntpWidgetManager.getBinanceWidget(), ntpWidgetItem);
-            }
-        }
-
-        return new ArrayList<NTPWidgetItem>(ntpWidgetMap.values());
-    }
-
     private boolean shouldShowSuperReferral() {
         return mNTPBackgroundImagesBridge.isSuperReferral()
                 && NTPBackgroundImagesBridge.enableSponsoredImages()
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
-    }
-
-    private void showWidgetBasedOnOrder() {
-        if (ntpWidgetViewPager != null) {
-            int selectedOrder = NTPWidgetManager.getInstance().getNTPWidgetOrder();
-            ntpWidgetViewPager.setCurrentItem(selectedOrder, true);
-            updateAndShowIndicators(selectedOrder);
-        }
-    }
-
-    private void showWidgets() {
-        List<NTPWidgetItem> tempList = setWidgetList();
-        if (tempList.size() > 0) {
-            ntpWidgetLayout.setVisibility(View.VISIBLE);
-            if (mBraveStatsViewFallBackLayout != null
-                    && mBraveStatsViewFallBackLayout.getParent() != null) {
-                ((ViewGroup) mBraveStatsViewFallBackLayout.getParent())
-                        .removeView(mBraveStatsViewFallBackLayout);
-            }
-        } else {
-            ntpWidgetLayout.setVisibility(View.GONE);
-            if (!UserPrefs.get(Profile.getLastUsedRegularProfile())
-                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
-                showFallBackNTPLayout();
-            }
-            correctPosition(false);
-        }
-
-        if (ntpWidgetAdapter != null) {
-            ntpWidgetAdapter.setWidgetList(tempList);
-            ntpWidgetAdapter.notifyDataSetChanged();
-            showWidgetBasedOnOrder();
-        }
     }
 
     private void checkForBraveStats() {
@@ -594,12 +384,6 @@ public class BraveNewTabPageLayout
         }
         int appOpenCount = SharedPreferencesManager.getInstance().readInt(
                 BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
-        if ((appOpenCount == 0 || appOpenCount == 1)
-                && !NTPWidgetManager.getInstance().hasUpdatedUserPrefForBinance()
-                && !BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
-            NTPWidgetManager.getInstance().setWidget(NTPWidgetManager.PREF_BINANCE, -1);
-            NTPWidgetManager.getInstance().setUpdatedUserPrefForBinance();
-        }
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             if (mSettingsBar != null) {
@@ -634,15 +418,7 @@ public class BraveNewTabPageLayout
                 SharedPreferencesManager.getInstance().addObserver(mPreferenceObserver);
             }
         }
-        showWidgets();
-        if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
-            if (binanceWidgetLayout != null) {
-                binanceWidgetLayout.setVisibility(View.GONE);
-            }
-            mBinanceNativeWorker.getAccountBalances();
-        }
-        mBinanceNativeWorker.AddObserver(mBinanaceObserver);
-        startTimer();
+        showFallBackNTPLayout();
     }
 
     private void initPreferenceObserver() {
@@ -725,8 +501,6 @@ public class BraveNewTabPageLayout
             SharedPreferencesManager.getInstance().removeObserver(mPreferenceObserver);
             mPreferenceObserver = null;
         }
-        mBinanceNativeWorker.RemoveObserver(mBinanaceObserver);
-        cancelTimer();
         super.onDetachedFromWindow();
     }
 
@@ -775,12 +549,10 @@ public class BraveNewTabPageLayout
         if (mImageCreditLayout != null) {
             LinearLayout.LayoutParams linearLayoutParams =
                     (LinearLayout.LayoutParams) mImageCreditLayout.getLayoutParams();
-            int widgetCompensation = 0;
-            if (ntpWidgetViewPager.getChildCount() <= 0) {
-                widgetCompensation = -dpToPx(mActivity, 70);
-            }
-            int imageCreditCorrection = NTPUtil.correctImageCreditLayoutTopPosition(mNtpImageGlobal)
-                    - widgetCompensation;
+
+            int imageCreditCorrection =
+                    NTPUtil.correctImageCreditLayoutTopPosition(mNtpImageGlobal);
+
             if (toTop) {
                 imageCreditCorrection = 0;
             }
@@ -1088,24 +860,6 @@ public class BraveNewTabPageLayout
                     @Override
                     public void onScrollChanged() {
                         try {
-                            int[] location = new int[2];
-                            ntpWidgetLayout.getLocationOnScreen(location);
-                            int widgetTopLeftX = location[0];
-                            int widgetTopLeftY = location[1];
-
-                            // Attempt to prevent scroll while touching in the Widget area to help
-                            // with the ViewPager vertical scroll
-                            if (mTouchX > widgetTopLeftX
-                                    && mTouchX < widgetTopLeftX + ntpWidgetLayout.getWidth()
-                                    && (mTouchY > widgetTopLeftY
-                                            && mTouchY < widgetTopLeftY
-                                                            + ntpWidgetLayout.getHeight() + 50)) {
-                                mParentScrollView.smoothScrollBy(0, 0);
-                                mTouchWidget = true;
-                            } else {
-                                mTouchWidget = false;
-                            }
-
                             int scrollY = mParentScrollView.getScrollY();
                             isScrolled = false;
                             float value = (float) scrollY / mParentScrollView.getMaxScrollAmount();
@@ -1164,31 +918,6 @@ public class BraveNewTabPageLayout
                         }
                     }
                 });
-
-        mParentScrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                mTouchX = (int) event.getX();
-                mTouchY = (int) event.getY();
-
-                int[] location = new int[2];
-                ntpWidgetLayout.getLocationOnScreen(location);
-                int widgetTopLeftX = location[0];
-                int widgetTopLeftY = location[1];
-                mTouchScroll = true;
-
-                if (mTouchX > widgetTopLeftX
-                        && mTouchX < widgetTopLeftX + ntpWidgetLayout.getWidth()
-                        && (mTouchY > widgetTopLeftY
-                                && mTouchY < widgetTopLeftY + ntpWidgetLayout.getHeight() + 50)) {
-                    mParentScrollView.smoothScrollBy(0, 0);
-                    mTouchWidget = true;
-                    return true;
-                }
-                mTouchWidget = false;
-                return false;
-            }
-        });
 
         parentScrollViewObserver.addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -1802,7 +1531,8 @@ public class BraveNewTabPageLayout
 
             TextView tileViewTitleTv = view.findViewById(R.id.tile_view_title);
             tileViewTitleTv.setText(topSite.getName());
-            tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.black));
+            tileViewTitleTv.setTextColor(
+                    getResources().getColor(R.color.brave_state_time_count_color));
 
             ImageView iconIv = view.findViewById(R.id.tile_view_icon);
             if (NTPUtil.imageCache.get(topSite.getDestinationUrl()) == null) {
@@ -1869,7 +1599,7 @@ public class BraveNewTabPageLayout
             });
             superReferralSitesLayout.addView(view);
         }
-        showWidgets();
+        showFallBackNTPLayout();
     }
 
     public void setTab(Tab tab) {
@@ -1883,167 +1613,6 @@ public class BraveNewTabPageLayout
 
     private TabImpl getTabImpl() {
         return (TabImpl) getTab();
-    }
-
-    private void updateAndShowIndicators(int position) {
-        indicatorLayout.removeAllViews();
-        for (int i = 0; i < ntpWidgetAdapter.getCount(); i++) {
-            TextView dotTextView = new TextView(mActivity);
-            dotTextView.setText(Html.fromHtml("&#9679;"));
-            dotTextView.setTextColor(getResources().getColor(android.R.color.white));
-            dotTextView.setTextSize(8);
-            if (position == i) {
-                dotTextView.setAlpha(1.0f);
-            } else {
-                dotTextView.setAlpha(0.4f);
-            }
-            indicatorLayout.addView(dotTextView);
-        }
-    }
-
-    // NTP related methods
-    private NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener =
-            new NTPWidgetAdapter.NTPWidgetListener() {
-                @Override
-                public void onMenuEdit() {
-                    cancelTimer();
-                    openWidgetStack();
-                }
-
-                @Override
-                public void onMenuRemove(int position, boolean isBinanceWidget) {
-                    if (isBinanceWidget) {
-                        mBinanceNativeWorker.revokeToken();
-                        BinanceWidgetManager.getInstance().setBinanceAccountBalance("");
-                        BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(false);
-                        if (cryptoWidgetBottomSheetDialogFragment != null) {
-                            cryptoWidgetBottomSheetDialogFragment.dismiss();
-                        }
-                    }
-
-                    if (BraveActivity.getBraveActivity() != null 
-                        && BraveActivity.getBraveActivity().getActivityTab() != null 
-                        && !UserPrefs.get(Profile.getLastUsedRegularProfile())
-                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
-                        && NTPWidgetManager.getInstance().getUsedWidgets().size() <= 0) {
-                        BraveActivity.getBraveActivity().getActivityTab().reloadIgnoringCache();
-                    } else {
-                        showWidgets();
-                    }
-                }
-
-                @Override
-                public void onMenuLearnMore() {
-                    TabUtils.openUrlInSameTab(BRAVE_BINANCE);
-                }
-
-                @Override
-                public void onMenuRefreshData() {
-                    mBinanceNativeWorker.getAccountBalances();
-                }
-
-                @Override
-                public void onMenuDisconnect() {
-                    mBinanceNativeWorker.revokeToken();
-                    BinanceWidgetManager.getInstance().setBinanceAccountBalance("");
-                    BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(false);
-                    if (cryptoWidgetBottomSheetDialogFragment != null) {
-                        cryptoWidgetBottomSheetDialogFragment.dismiss();
-                    }
-                    // Reset binance widget to connect page
-                    showWidgets();
-                }
-            };
-
-    private BinanceObserver mBinanaceObserver = new BinanceObserver() {
-        @Override
-        public void OnGetAccessToken(boolean isSuccess) {
-            BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(isSuccess);
-            if (isSuccess) {
-                mBinanceNativeWorker.getAccountBalances();
-                if (bianceDisconnectLayout != null) {
-                    bianceDisconnectLayout.setVisibility(View.GONE);
-                }
-                if (binanceWidgetProgress != null) {
-                    binanceWidgetProgress.setVisibility(View.VISIBLE);
-                }
-            }
-        };
-
-        @Override
-        public void OnGetAccountBalances(String jsonBalances, boolean isSuccess) {
-            if (InternetConnection.isNetworkAvailable(mActivity)) {
-                if (!isSuccess) {
-                    BinanceWidgetManager.getInstance().setUserAuthenticationForBinance(isSuccess);
-                    if (cryptoWidgetBottomSheetDialogFragment != null) {
-                        cryptoWidgetBottomSheetDialogFragment.dismiss();
-                    }
-                } else {
-                    if (jsonBalances != null && !TextUtils.isEmpty(jsonBalances)) {
-                        BinanceWidgetManager.getInstance().setBinanceAccountBalance(jsonBalances);
-                    }
-                    try {
-                        BinanceWidgetManager.binanceAccountBalance = new BinanceAccountBalance(
-                                BinanceWidgetManager.getInstance().getBinanceAccountBalance());
-                    } catch (JSONException e) {
-                        Log.e("NTP", e.getMessage());
-                    }
-                }
-            }
-            // Reset binance widget to connect page
-            showWidgets();
-        };
-    };
-
-    // start timer function
-    public void startTimer() {
-        if (countDownTimer == null) {
-            countDownTimer = new Timer();
-            final Handler handler = new Handler();
-            countDownTimer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (BinanceWidgetManager.getInstance()
-                                            .isUserAuthenticatedForBinance()) {
-                                mBinanceNativeWorker.getAccountBalances();
-                            }
-                        }
-                    });
-                }
-            }, 0, 30000);
-        }
-    }
-
-    // cancel timer
-    public void cancelTimer() {
-        if (countDownTimer != null) {
-            countDownTimer.cancel();
-            countDownTimer.purge();
-            countDownTimer = null;
-        }
-    }
-
-    public void openWidgetStack() {
-        final FragmentManager fm = ((BraveActivity) mActivity).getSupportFragmentManager();
-        Fragment auxiliary = new Fragment() {
-            @Override
-            public void onActivityResult(int requestCode, int resultCode, Intent data) {
-                super.onActivityResult(requestCode, resultCode, data);
-                fm.beginTransaction().remove(this).commit();
-                if (requestCode == NTP_WIDGET_STACK_CODE) {
-                    showWidgets();
-                }
-            }
-        };
-        fm.beginTransaction().add(auxiliary, "FRAGMENT_TAG").commit();
-        fm.executePendingTransactions();
-
-        Intent ntpWidgetStackActivityIntent = new Intent(mActivity, NTPWidgetStackActivity.class);
-        ntpWidgetStackActivityIntent.putExtra(NTPWidgetStackActivity.FROM_SETTINGS, false);
-        auxiliary.startActivityForResult(ntpWidgetStackActivityIntent, NTP_WIDGET_STACK_CODE);
     }
 
     @Override
@@ -2077,10 +1646,5 @@ public class BraveNewTabPageLayout
 
         mBraveNewsController =
                 BraveNewsControllerFactory.getInstance().getBraveNewsController(this);
-    }
-
-    @Override
-    public void onCryptoWidgetBottomSheetDialogDismiss() {
-        startTimer();
     }
 }
