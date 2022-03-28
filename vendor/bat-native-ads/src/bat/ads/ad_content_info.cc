@@ -65,7 +65,7 @@ base::DictionaryValue AdContentInfo::ToValue() const {
   dictionary.SetStringKey("brandDisplayUrl", brand_display_url);
   dictionary.SetStringKey("brandUrl", brand_url);
   dictionary.SetIntKey("likeAction", static_cast<int>(like_action_type));
-  dictionary.SetStringKey("adAction", std::string(confirmation_type));
+  dictionary.SetStringKey("adAction", confirmation_type.ToString());
   dictionary.SetBoolKey("savedAd", is_saved);
   dictionary.SetBoolKey("flaggedAd", is_flagged);
 
@@ -242,8 +242,7 @@ void SaveToJson(JsonWriter* writer, const AdContentInfo& info) {
   writer->StartObject();
 
   writer->String("type");
-  const std::string type = std::string(info.type);
-  writer->String(type.c_str());
+  writer->String(info.type.ToString().c_str());
 
   writer->String("uuid");
   writer->String(info.uuid.c_str());
@@ -276,7 +275,7 @@ void SaveToJson(JsonWriter* writer, const AdContentInfo& info) {
   writer->Int(static_cast<int>(info.like_action_type));
 
   writer->String("ad_action");
-  const std::string confirmation_type = std::string(info.confirmation_type);
+  const std::string confirmation_type = info.confirmation_type.ToString();
   writer->String(confirmation_type.c_str());
 
   writer->String("saved_ad");

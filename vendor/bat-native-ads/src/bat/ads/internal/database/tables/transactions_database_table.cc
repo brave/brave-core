@@ -39,8 +39,8 @@ int BindParameters(mojom::DBCommand* command,
     BindDouble(command, index++, transaction.created_at);
     BindString(command, index++, transaction.creative_instance_id);
     BindDouble(command, index++, transaction.value);
-    BindString(command, index++, std::string(transaction.ad_type));
-    BindString(command, index++, std::string(transaction.confirmation_type));
+    BindString(command, index++, transaction.ad_type.ToString());
+    BindString(command, index++, transaction.confirmation_type.ToString());
     BindDouble(command, index++, transaction.reconciled_at);
 
     count++;

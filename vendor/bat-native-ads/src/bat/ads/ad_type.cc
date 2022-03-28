@@ -70,10 +70,6 @@ AdType::Value AdType::value() const {
   return value_;
 }
 
-AdType::operator std::string() const {
-  return ToString();
-}
-
 std::string AdType::ToString() const {
   switch (value_) {
     case kUndefined: {
@@ -104,6 +100,11 @@ bool AdType::operator==(const AdType& rhs) const {
 
 bool AdType::operator!=(const AdType& rhs) const {
   return value_ != rhs.value_;
+}
+
+std::ostream& operator<<(std::ostream& os, const AdType& type) {
+  os << type.ToString();
+  return os;
 }
 
 }  // namespace ads

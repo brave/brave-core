@@ -49,10 +49,10 @@ base::Value UnblindedPaymentTokens::GetTokensAsList() {
 
     dictionary.SetStringKey(
         "confirmation_type",
-        std::string(unblinded_payment_token.confirmation_type));
+        unblinded_payment_token.confirmation_type.ToString());
 
     dictionary.SetStringKey("ad_type",
-                            std::string(unblinded_payment_token.ad_type));
+                            unblinded_payment_token.ad_type.ToString());
 
     list.Append(std::move(dictionary));
   }

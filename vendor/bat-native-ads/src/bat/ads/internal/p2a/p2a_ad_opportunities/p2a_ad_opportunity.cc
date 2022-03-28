@@ -18,10 +18,8 @@ namespace p2a {
 
 void RecordAdOpportunityForSegments(const AdType& ad_type,
                                     const SegmentList& segments) {
-  const std::string type_as_string = std::string(ad_type);
-
   const std::string name =
-      base::StringPrintf("%s_opportunity", type_as_string.c_str());
+      base::StringPrintf("%s_opportunity", ad_type.ToString().c_str());
 
   const std::vector<std::string> questions =
       CreateAdOpportunityQuestions(segments);
