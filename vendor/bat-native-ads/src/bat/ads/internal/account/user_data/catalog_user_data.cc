@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/account/user_data/catalog_user_data.h"
 
-#include <string>
+#include <utility>
 
 #include "base/values.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
@@ -17,12 +17,11 @@ base::DictionaryValue GetCatalog() {
   base::ListValue list;
 
   base::DictionaryValue dictionary;
-  const std::string catalog_id = GetCatalogId();
-  dictionary.SetKey("id", base::Value(catalog_id));
-  list.Append(dictionary.Clone());
+  dictionary.SetStringKey("id", GetCatalogId());
+  list.Append(std::move(dictionary));
 
   base::DictionaryValue user_data;
-  user_data.SetKey("catalog", list.Clone());
+  user_data.SetKey("catalog", std::move(list));
 
   return user_data;
 }
