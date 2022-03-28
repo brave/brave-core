@@ -355,4 +355,36 @@ TEST_F(SolanaTransactionUnitTest, SetTxType) {
   }
 }
 
+TEST_F(SolanaTransactionUnitTest, GetBase64EncodedMessage) {
+  std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+  std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
+
+  SolanaInstruction instruction(
+      // Program ID
+      kSolanaSystemProgramId,
+      // Accounts
+      {SolanaAccountMeta(from_account, true, true),
+       SolanaAccountMeta(to_account, false, true)},
+      // Data
+      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+  SolanaTransaction transaction("", from_account, {instruction});
+
+  // Blockhash not available.
+  EXPECT_TRUE(transaction.GetBase64EncodedMessage("").empty());
+
+  // Blockhash is passed, will be stored in the message.
+  auto result = transaction.GetBase64EncodedMessage(recent_blockhash);
+  auto serialized_msg = transaction.message_.Serialize(nullptr);
+  ASSERT_TRUE(serialized_msg);
+  EXPECT_EQ(result, base::Base64Encode(*serialized_msg));
+
+  // Blockhash is stored in the message already.
+  SolanaTransaction transaction2(recent_blockhash, from_account, {instruction});
+  result = transaction2.GetBase64EncodedMessage("");
+  serialized_msg = transaction2.message_.Serialize(nullptr);
+  ASSERT_TRUE(serialized_msg);
+  EXPECT_EQ(result, base::Base64Encode(*serialized_msg));
+}
+
 }  // namespace brave_wallet
