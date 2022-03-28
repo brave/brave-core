@@ -57,19 +57,19 @@ class ApiRequestHelperUnitTest : public testing::Test {
 
   void OnRequestResponse(
       bool* callback_called,
-      bool expected_success,
       const std::string& expected_response,
+      const int expected_http_code,
       const int http_code,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers) {
     *callback_called = true;
-    bool success = http_code == 200;
-    EXPECT_EQ(expected_success, success);
+    EXPECT_EQ(expected_http_code, http_code);
     EXPECT_EQ(expected_response, body);
   }
 
   void SendRequest(const std::string& server_raw_response,
                    const std::string& expected_sanitized_response,
+                   const int expected_http_code = 200,
                    APIRequestHelper::ResponseConversionCallback
                        conversion_callback = base::NullCallback()) {
     bool callback_called = false;
@@ -79,7 +79,7 @@ class ApiRequestHelperUnitTest : public testing::Test {
         "POST", network_url, "", "application/json", false,
         base::BindOnce(&ApiRequestHelperUnitTest::OnRequestResponse,
                        base::Unretained(this), &callback_called,
-                       true /* success */, expected_sanitized_response),
+                       expected_sanitized_response, expected_http_code),
         {}, -1u, std::move(conversion_callback));
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(callback_called);
@@ -121,25 +121,25 @@ TEST_F(ApiRequestHelperUnitTest, RequestWithConversion) {
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"18446744073709551615\"}";
   std::string server_raw_response =
       "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":18446744073709551615}";
-  SendRequest(server_raw_response, expected_sanitized_response,
+  SendRequest(server_raw_response, expected_sanitized_response, 200,
               base::BindOnce(&ConversionCallback, server_raw_response,
                              expected_sanitized_response));
 
   // Broken json after conversion
   // expecting empty response body after sanitization
   SendRequest(
-      server_raw_response, "",
+      server_raw_response, "", 200,
       base::BindOnce(&ConversionCallback, server_raw_response, "broken json"));
   // Empty json after conversion
   // expecting empty response body after sanitization
-  SendRequest(server_raw_response, "",
+  SendRequest(server_raw_response, "", 200,
               base::BindOnce(&ConversionCallback, server_raw_response, ""));
 
   // Returning absl::nullopt in conversion callback doesn't override the
   // response
   server_raw_response = "{}";
   SendRequest(
-      server_raw_response, server_raw_response,
+      server_raw_response, server_raw_response, 422,
       base::BindOnce(&ConversionCallback, server_raw_response, absl::nullopt));
 }
 

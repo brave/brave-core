@@ -129,9 +129,11 @@ void APIRequestHelper::OnResponse(
   auto raw_body = *response_body;
   if (conversion_callback) {
     auto converted_body = std::move(conversion_callback).Run(raw_body);
-    if (converted_body) {
-      raw_body = converted_body.value();
+    if (!converted_body) {
+      std::move(callback).Run(422, raw_body, headers);
+      return;
     }
+    raw_body = converted_body.value();
   }
 
   data_decoder::JsonSanitizer::Sanitize(
