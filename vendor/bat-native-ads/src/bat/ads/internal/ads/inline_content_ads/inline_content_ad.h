@@ -29,8 +29,6 @@ class InlineContentAd final : public InlineContentAdObserver {
                  const mojom::InlineContentAdEventType event_type);
 
  private:
-  base::ObserverList<InlineContentAdObserver> observers_;
-
   void FireEvent(const InlineContentAdInfo& ad,
                  const std::string& uuid,
                  const std::string& creative_instance_id,
@@ -48,6 +46,8 @@ class InlineContentAd final : public InlineContentAdObserver {
       const std::string& uuid,
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type) const;
+
+  base::ObserverList<InlineContentAdObserver> observers_;
 };
 
 }  // namespace ads

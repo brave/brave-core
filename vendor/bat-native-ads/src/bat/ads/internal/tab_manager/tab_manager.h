@@ -52,14 +52,14 @@ class TabManager final {
   absl::optional<TabInfo> GetForId(const int32_t id) const;
 
  private:
+  void AddTab(const int32_t id, const TabInfo& tab);
+  void UpdateTab(const int32_t id, const TabInfo& tab);
+  void RemoveTab(const int32_t id);
+
   int32_t visible_tab_id_ = 0;
   int32_t last_visible_tab_id_ = 0;
 
   std::map<int32_t, TabInfo> tabs_;
-
-  void AddTab(const int32_t id, const TabInfo& tab);
-  void UpdateTab(const int32_t id, const TabInfo& tab);
-  void RemoveTab(const int32_t id);
 };
 
 }  // namespace ads

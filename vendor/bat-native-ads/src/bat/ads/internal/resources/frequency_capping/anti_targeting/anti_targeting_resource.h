@@ -29,11 +29,11 @@ class AntiTargeting final : public Resource<AntiTargetingInfo> {
   AntiTargetingInfo get() const override;
 
  private:
+  bool FromJson(const std::string& json);
+
   bool is_initialized_ = false;
 
   AntiTargetingInfo anti_targeting_;
-
-  bool FromJson(const std::string& json);
 };
 
 }  // namespace resource

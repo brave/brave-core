@@ -27,14 +27,14 @@ class InlineContentAdsPerDayPermissionRule final : public PermissionRule {
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap(const std::deque<base::Time>& history);
 
   InlineContentAdsPerDayPermissionRule(
       const InlineContentAdsPerDayPermissionRule&) = delete;
   InlineContentAdsPerDayPermissionRule& operator=(
       const InlineContentAdsPerDayPermissionRule&) = delete;
+
+  std::string last_message_;
 };
 
 }  // namespace ads

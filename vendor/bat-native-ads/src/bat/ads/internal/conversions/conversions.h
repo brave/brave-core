@@ -39,10 +39,6 @@ class Conversions final {
   void StartTimerIfReady();
 
  private:
-  base::ObserverList<ConversionsObserver> observers_;
-
-  Timer timer_;
-
   void CheckRedirectChain(const std::vector<std::string>& redirect_chain,
                           const std::string& html,
                           const ConversionIdPatternMap& conversion_id_patterns);
@@ -77,6 +73,10 @@ class Conversions final {
       const ConversionQueueItemInfo& conversion_queue_item) const;
   void NotifyConversionFailed(
       const ConversionQueueItemInfo& conversion_queue_item) const;
+
+  base::ObserverList<ConversionsObserver> observers_;
+
+  Timer timer_;
 };
 
 }  // namespace ads

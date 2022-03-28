@@ -27,14 +27,14 @@ class PromotedContentAdsPerHourPermissionRule final : public PermissionRule {
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap(const std::deque<base::Time>& history);
 
   PromotedContentAdsPerHourPermissionRule(
       const PromotedContentAdsPerHourPermissionRule&) = delete;
   PromotedContentAdsPerHourPermissionRule& operator=(
       const PromotedContentAdsPerHourPermissionRule&) = delete;
+
+  std::string last_message_;
 };
 
 }  // namespace ads

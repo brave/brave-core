@@ -217,48 +217,6 @@ class AdsImpl final : public Ads,
   bool ToggleFlaggedAd(const std::string& json) override;
 
  private:
-  bool is_initialized_ = false;
-
-  std::unique_ptr<AdsClientHelper> ads_client_helper_;
-  std::unique_ptr<AdDiagnostics> ad_diagnostics_;
-  std::unique_ptr<privacy::TokenGenerator> token_generator_;
-  std::unique_ptr<Account> account_;
-  std::unique_ptr<ad_targeting::processor::EpsilonGreedyBandit>
-      epsilon_greedy_bandit_processor_;
-  std::unique_ptr<resource::EpsilonGreedyBandit>
-      epsilon_greedy_bandit_resource_;
-  std::unique_ptr<resource::TextClassification> text_classification_resource_;
-  std::unique_ptr<ad_targeting::processor::TextClassification>
-      text_classification_processor_;
-  std::unique_ptr<resource::PurchaseIntent> purchase_intent_resource_;
-  std::unique_ptr<ad_targeting::processor::PurchaseIntent>
-      purchase_intent_processor_;
-  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
-  std::unique_ptr<resource::Conversions> conversions_resource_;
-  std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
-      subdivision_targeting_;
-  std::unique_ptr<ad_notifications::AdServing> ad_notification_serving_;
-  std::unique_ptr<AdNotification> ad_notification_;
-  std::unique_ptr<AdNotifications> ad_notifications_;
-  std::unique_ptr<AdServer> ad_server_;
-  std::unique_ptr<AdTransfer> ad_transfer_;
-  std::unique_ptr<inline_content_ads::AdServing> inline_content_ad_serving_;
-  std::unique_ptr<InlineContentAd> inline_content_ad_;
-  std::unique_ptr<Client> client_;
-  std::unique_ptr<ConfirmationsState> confirmations_state_;
-  std::unique_ptr<Conversions> conversions_;
-  std::unique_ptr<database::Initialize> database_;
-  std::unique_ptr<new_tab_page_ads::AdServing> new_tab_page_ad_serving_;
-  std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
-  std::unique_ptr<PromotedContentAd> promoted_content_ad_;
-  std::unique_ptr<BrowserManager> browser_manager_;
-  std::unique_ptr<TabManager> tab_manager_;
-  std::unique_ptr<UserActivity> user_activity_;
-  std::unique_ptr<CovariateLogs> covariate_logs_;
-
-  uint32_t last_html_loaded_hash_ = 0;
-  uint32_t last_text_loaded_hash_ = 0;
-
   void set(privacy::TokenGeneratorInterface* token_generator);
 
   void InitializeBrowserManager();
@@ -345,6 +303,48 @@ class AdsImpl final : public Ads,
   // ConversionsObserver:
   void OnConversion(
       const ConversionQueueItemInfo& conversion_queue_item) override;
+
+  bool is_initialized_ = false;
+
+  std::unique_ptr<AdsClientHelper> ads_client_helper_;
+  std::unique_ptr<AdDiagnostics> ad_diagnostics_;
+  std::unique_ptr<privacy::TokenGenerator> token_generator_;
+  std::unique_ptr<Account> account_;
+  std::unique_ptr<ad_targeting::processor::EpsilonGreedyBandit>
+      epsilon_greedy_bandit_processor_;
+  std::unique_ptr<resource::EpsilonGreedyBandit>
+      epsilon_greedy_bandit_resource_;
+  std::unique_ptr<resource::TextClassification> text_classification_resource_;
+  std::unique_ptr<ad_targeting::processor::TextClassification>
+      text_classification_processor_;
+  std::unique_ptr<resource::PurchaseIntent> purchase_intent_resource_;
+  std::unique_ptr<ad_targeting::processor::PurchaseIntent>
+      purchase_intent_processor_;
+  std::unique_ptr<resource::AntiTargeting> anti_targeting_resource_;
+  std::unique_ptr<resource::Conversions> conversions_resource_;
+  std::unique_ptr<ad_targeting::geographic::SubdivisionTargeting>
+      subdivision_targeting_;
+  std::unique_ptr<ad_notifications::AdServing> ad_notification_serving_;
+  std::unique_ptr<AdNotification> ad_notification_;
+  std::unique_ptr<AdNotifications> ad_notifications_;
+  std::unique_ptr<AdServer> ad_server_;
+  std::unique_ptr<AdTransfer> ad_transfer_;
+  std::unique_ptr<inline_content_ads::AdServing> inline_content_ad_serving_;
+  std::unique_ptr<InlineContentAd> inline_content_ad_;
+  std::unique_ptr<Client> client_;
+  std::unique_ptr<ConfirmationsState> confirmations_state_;
+  std::unique_ptr<Conversions> conversions_;
+  std::unique_ptr<database::Initialize> database_;
+  std::unique_ptr<new_tab_page_ads::AdServing> new_tab_page_ad_serving_;
+  std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
+  std::unique_ptr<PromotedContentAd> promoted_content_ad_;
+  std::unique_ptr<BrowserManager> browser_manager_;
+  std::unique_ptr<TabManager> tab_manager_;
+  std::unique_ptr<UserActivity> user_activity_;
+  std::unique_ptr<CovariateLogs> covariate_logs_;
+
+  uint32_t last_html_loaded_hash_ = 0;
+  uint32_t last_text_loaded_hash_ = 0;
 };
 
 }  // namespace ads

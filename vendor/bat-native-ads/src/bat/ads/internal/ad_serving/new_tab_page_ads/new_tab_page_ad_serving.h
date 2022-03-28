@@ -44,7 +44,6 @@ class AdServing final {
   void MaybeServeAd(GetNewTabPageAdCallback callback);
 
  private:
-  std::unique_ptr<EligibleAdsBase> eligible_ads_;
   bool IsSupported() const;
 
   bool ServeAd(const NewTabPageAdInfo& ad,
@@ -52,10 +51,12 @@ class AdServing final {
   void FailedToServeAd(GetNewTabPageAdCallback callback);
   void ServedAd(const NewTabPageAdInfo& ad);
 
-  base::ObserverList<NewTabPageAdServingObserver> observers_;
-
   void NotifyDidServeNewTabPageAd(const NewTabPageAdInfo& ad) const;
   void NotifyFailedToServeNewTabPageAd() const;
+
+  base::ObserverList<NewTabPageAdServingObserver> observers_;
+
+  std::unique_ptr<EligibleAdsBase> eligible_ads_;
 };
 
 }  // namespace new_tab_page_ads

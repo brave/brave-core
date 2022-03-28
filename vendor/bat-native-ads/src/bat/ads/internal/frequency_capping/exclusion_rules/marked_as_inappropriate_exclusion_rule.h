@@ -31,9 +31,9 @@ class MarkedAsInappropriateExclusionRule final
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap(const CreativeAdInfo& creative_ad);
+
+  std::string last_message_;
 };
 
 }  // namespace ads

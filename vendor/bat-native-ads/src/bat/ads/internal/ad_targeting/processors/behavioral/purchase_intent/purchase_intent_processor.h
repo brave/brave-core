@@ -35,8 +35,6 @@ class PurchaseIntent final : public Processor<GURL> {
   void Process(const GURL& url) override;
 
  private:
-  raw_ptr<resource::PurchaseIntent> resource_ = nullptr;  // NOT OWNED
-
   PurchaseIntentSignalInfo ExtractSignal(const GURL& url) const;
 
   PurchaseIntentSiteInfo GetSite(const GURL& url) const;
@@ -44,6 +42,8 @@ class PurchaseIntent final : public Processor<GURL> {
   SegmentList GetSegmentsForSearchQuery(const std::string& search_query) const;
 
   uint16_t GetFunnelWeightForSearchQuery(const std::string& search_query) const;
+
+  raw_ptr<resource::PurchaseIntent> resource_ = nullptr;  // NOT OWNED
 };
 
 }  // namespace processor

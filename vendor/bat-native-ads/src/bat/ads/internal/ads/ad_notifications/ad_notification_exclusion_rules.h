@@ -37,10 +37,10 @@ class ExclusionRules final : public ExclusionRulesBase {
   ~ExclusionRules() override;
 
  private:
-  std::unique_ptr<DismissedExclusionRule> dismissed_exclusion_rule_;
-
   ExclusionRules(const ExclusionRules&) = delete;
   ExclusionRules& operator=(const ExclusionRules&) = delete;
+
+  std::unique_ptr<DismissedExclusionRule> dismissed_exclusion_rule_;
 };
 
 }  // namespace frequency_capping

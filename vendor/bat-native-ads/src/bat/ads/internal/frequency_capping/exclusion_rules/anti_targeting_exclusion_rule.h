@@ -36,13 +36,13 @@ class AntiTargetingExclusionRule final : public ExclusionRule<CreativeAdInfo> {
   std::string GetLastMessage() const override;
 
  private:
+  bool DoesRespectCap(const CreativeAdInfo& creative_ad) const;
+
   resource::AntiTargetingInfo anti_targeting_;
 
   BrowsingHistoryList browsing_history_;
 
   std::string last_message_;
-
-  bool DoesRespectCap(const CreativeAdInfo& creative_ad) const;
 };
 
 }  // namespace ads

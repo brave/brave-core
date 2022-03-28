@@ -53,12 +53,6 @@ class AdNotifications final {
 #endif
 
  private:
-  bool is_initialized_ = false;
-
-  InitializeCallback callback_;
-
-  std::deque<AdNotificationInfo> ad_notifications_;
-
   std::deque<AdNotificationInfo> GetNotificationsFromList(
       base::Value* list) const;
 
@@ -101,6 +95,12 @@ class AdNotifications final {
 
   std::string ToJson();
   base::Value GetAsList();
+
+  bool is_initialized_ = false;
+
+  InitializeCallback callback_;
+
+  std::deque<AdNotificationInfo> ad_notifications_;
 };
 
 }  // namespace ads

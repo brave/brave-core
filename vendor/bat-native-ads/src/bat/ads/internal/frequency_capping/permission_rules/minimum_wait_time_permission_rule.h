@@ -27,13 +27,13 @@ class MinimumWaitTimePermissionRule final : public PermissionRule {
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap(const std::deque<base::Time>& history);
 
   MinimumWaitTimePermissionRule(const MinimumWaitTimePermissionRule&) = delete;
   MinimumWaitTimePermissionRule& operator=(
       const MinimumWaitTimePermissionRule&) = delete;
+
+  std::string last_message_;
 };
 
 }  // namespace ads
