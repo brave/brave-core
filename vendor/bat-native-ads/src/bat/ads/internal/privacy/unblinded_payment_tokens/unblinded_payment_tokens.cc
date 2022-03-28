@@ -38,8 +38,8 @@ base::Value UnblindedPaymentTokens::GetTokensAsList() {
   for (const auto& unblinded_payment_token : unblinded_payment_tokens_) {
     base::Value dictionary(base::Value::Type::DICTIONARY);
 
-    dictionary.SetStringKey(
-        "transaction_id", std::string(unblinded_payment_token.transaction_id));
+    dictionary.SetStringKey("transaction_id",
+                            unblinded_payment_token.transaction_id);
 
     dictionary.SetStringKey("unblinded_token",
                             unblinded_payment_token.value.encode_base64());
