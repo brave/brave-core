@@ -15,7 +15,8 @@ struct AccountActivityView: View {
   @ObservedObject var networkStore: NetworkStore
 
   @State private var detailsPresentation: DetailsPresentation?
-
+  @State private var transactionDetails: BraveWallet.TransactionInfo?
+  
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.openWalletURLAction) private var openWalletURL
 
@@ -87,15 +88,17 @@ struct AccountActivityView: View {
           emptyTextView(Strings.Wallet.noTransactions)
         } else {
           ForEach(activityStore.transactions) { tx in
-            TransactionView(
-              info: tx,
-              keyringStore: keyringStore,
-              networkStore: networkStore,
-              visibleTokens: activityStore.assets.map(\.token),
-              allTokens: activityStore.allTokens,
-              displayAccountCreator: false,
-              assetRatios: assetRatios
-            )
+            Button(action: { self.transactionDetails = tx }) {
+              TransactionView(
+                info: tx,
+                keyringStore: keyringStore,
+                networkStore: networkStore,
+                visibleTokens: activityStore.assets.map(\.token),
+                allTokens: activityStore.allTokens,
+                displayAccountCreator: false,
+                assetRatios: assetRatios
+              )
+            }
             .contextMenu {
               if !tx.txHash.isEmpty {
                 Button(action: {
@@ -114,13 +117,29 @@ struct AccountActivityView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(InsetGroupedListStyle())
-    .sheet(item: $detailsPresentation) {
-      AccountDetailsView(
-        keyringStore: keyringStore,
-        account: accountInfo,
-        editMode: $0.inEditMode
-      )
-    }
+    .background(
+      Color.clear
+        .sheet(item: $detailsPresentation) {
+          AccountDetailsView(
+            keyringStore: keyringStore,
+            account: accountInfo,
+            editMode: $0.inEditMode
+          )
+        }
+    )
+    .background(
+      Color.clear
+        .sheet(item: $transactionDetails) { tx in
+          TransactionDetailsView(
+            info: tx,
+            networkStore: networkStore,
+            keyringStore: keyringStore,
+            visibleTokens: activityStore.assets.map(\.token),
+            allTokens: [],
+            assetRatios: assetRatios
+          )
+        }
+    )
     .onReceive(keyringStore.$keyring) { keyring in
       if !keyring.accountInfos.contains(where: { $0.address == accountInfo.address }) {
         // Account was deleted

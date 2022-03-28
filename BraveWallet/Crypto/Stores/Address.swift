@@ -13,16 +13,25 @@ extension String {
     let prefixLength = hasPrefix("0x") ? 6 : 4
     return "\(prefix(prefixLength))…\(suffix(4))"
   }
+
+  /// Truncates an hash to only show the first 6 digits and last 6 digits
+  var truncatedHash: String {
+    // All addresses should be at least 26 characters long but for the sake of this function, we will ensure
+    // its at least the length of the string
+    let prefixLength = hasPrefix("0x") ? 8 : 6
+    return "\(prefix(prefixLength))…\(suffix(6))"
+  }
+
   /// Removes the `0x` prefix that may exist on the string
   var removingHexPrefix: String {
     hasPrefix("0x") ? String(dropFirst(2)) : self
   }
-
+  
   /// Check if the string is a valid ETH address
   var isETHAddress: Bool {
     // An address has to start with `0x`
     guard starts(with: "0x") else { return false }
-
+    
     // removing `0x`
     let hex = removingHexPrefix
     // Check the length and the rest of the char is a hex digit
