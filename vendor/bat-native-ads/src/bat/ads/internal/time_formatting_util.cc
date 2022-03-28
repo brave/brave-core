@@ -31,7 +31,10 @@ std::string LongFriendlyDateAndTime(const double timestamp,
 
 std::string FriendlyDateAndTime(const base::Time time,
                                 const bool use_sentence_style) {
-  const base::TimeDelta time_delta = time - base::Time::Now();
+  base::TimeDelta time_delta = time - base::Time::Now();
+  if (time_delta.is_negative()) {
+    time_delta = base::TimeDelta();
+  }
 
   if (time_delta.InDays() > 0) {
     return LongFriendlyDateAndTime(time, use_sentence_style);

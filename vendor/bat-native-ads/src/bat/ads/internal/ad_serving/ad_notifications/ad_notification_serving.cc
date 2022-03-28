@@ -210,7 +210,12 @@ base::TimeDelta AdServing::CalculateDelayBeforeServingAnAd() const {
     return kMinimumDelayBeforeServingAnAd;
   }
 
-  return Client::Get()->GetServeAdAt() - base::Time::Now();
+  base::TimeDelta delay = Client::Get()->GetServeAdAt() - base::Time::Now();
+  if (delay.is_negative()) {
+    delay = base::TimeDelta();
+  }
+
+  return delay;
 }
 
 void AdServing::MaybeServeAdAtNextRegularInterval() {
