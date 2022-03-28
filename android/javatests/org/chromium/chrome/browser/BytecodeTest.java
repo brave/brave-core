@@ -223,6 +223,10 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher"));
         Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateImpl"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/partnercustomizations/BraveCustomizationProviderDelegateImpl"));
+        Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/share/send_tab_to_self/BraveDevicePickerBottomSheetContent"));
@@ -536,6 +540,9 @@ public class BytecodeTest {
                 FeedSurfaceCoordinator.class, Context.class, SnapScrollHelper.class,
                 PropertyModel.class, int.class, FeedActionDelegate.class,
                 FeedOptionsCoordinator.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateImpl",
+                "org/chromium/chrome/browser/partnercustomizations/BraveCustomizationProviderDelegateImpl"));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent",
                 "org/chromium/chrome/browser/share/send_tab_to_self/BraveDevicePickerBottomSheetContent",
