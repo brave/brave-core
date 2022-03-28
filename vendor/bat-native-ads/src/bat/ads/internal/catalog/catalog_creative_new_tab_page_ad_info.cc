@@ -16,7 +16,7 @@ CatalogCreativeNewTabPageAdInfo::~CatalogCreativeNewTabPageAdInfo() = default;
 
 bool CatalogCreativeNewTabPageAdInfo::operator==(
     const CatalogCreativeNewTabPageAdInfo& rhs) const {
-  return payload == rhs.payload;
+  return CatalogCreativeInfo::operator==(rhs) && payload == rhs.payload;
 }
 
 bool CatalogCreativeNewTabPageAdInfo::operator!=(

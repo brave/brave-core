@@ -20,9 +20,9 @@ CreativeInlineContentAdInfo::~CreativeInlineContentAdInfo() = default;
 
 bool CreativeInlineContentAdInfo::operator==(
     const CreativeInlineContentAdInfo& rhs) const {
-  return title == rhs.title && description == rhs.description &&
-         image_url == rhs.image_url && dimensions == rhs.dimensions &&
-         cta_text == rhs.cta_text;
+  return CreativeAdInfo::operator==(rhs) && title == rhs.title &&
+         description == rhs.description && image_url == rhs.image_url &&
+         dimensions == rhs.dimensions && cta_text == rhs.cta_text;
 }
 
 bool CreativeInlineContentAdInfo::operator!=(

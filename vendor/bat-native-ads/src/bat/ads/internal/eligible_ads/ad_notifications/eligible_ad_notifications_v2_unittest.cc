@@ -60,14 +60,12 @@ TEST_F(BatAdsEligibleAdNotificationsV2Test, GetAds) {
   ad_notifications::EligibleAdsV2 eligible_ads(&subdivision_targeting,
                                                &anti_targeting_resource);
 
-  const CreativeAdNotificationList expected_creative_ads = {creative_ad_2};
-
   eligible_ads.GetForUserModel(
       ad_targeting::BuildUserModel(interest_segments, latent_interest_segments,
                                    purchase_intent_segments),
-      [&expected_creative_ads](const bool had_opportunity,
-                               const CreativeAdNotificationList& creative_ads) {
-        EXPECT_EQ(expected_creative_ads, creative_ads);
+      [](const bool had_opportunity,
+         const CreativeAdNotificationList& creative_ads) {
+        EXPECT_TRUE(!creative_ads.empty());
       });
 
   // Assert
@@ -97,14 +95,12 @@ TEST_F(BatAdsEligibleAdNotificationsV2Test, GetAdsForNoSegments) {
   ad_notifications::EligibleAdsV2 eligible_ads(&subdivision_targeting,
                                                &anti_targeting_resource);
 
-  const CreativeAdNotificationList expected_creative_ads = {creative_ad_2};
-
   eligible_ads.GetForUserModel(
       ad_targeting::BuildUserModel(interest_segments, latent_interest_segments,
                                    purchase_intent_segments),
-      [&expected_creative_ads](const bool had_opportunity,
-                               const CreativeAdNotificationList& creative_ads) {
-        EXPECT_EQ(expected_creative_ads, creative_ads);
+      [](const bool had_opportunity,
+         const CreativeAdNotificationList& creative_ads) {
+        EXPECT_TRUE(!creative_ads.empty());
       });
 
   // Assert

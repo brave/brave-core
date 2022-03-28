@@ -11,6 +11,7 @@
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder_unittest_util.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_unittest_util.h"
+#include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
@@ -149,14 +150,14 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForMultipleSegments) {
                                                &anti_targeting_resource);
 
   const CreativeNewTabPageAdList& expected_creative_ads = {creative_ad_1,
-                                                           creative_ad_2};
+                                                           creative_ad_3};
 
   eligible_ads.GetForUserModel(
       ad_targeting::BuildUserModel({"technology & computing", "food & drink"},
                                    {}, {}),
       [&expected_creative_ads](const bool success,
                                const CreativeNewTabPageAdList& creative_ads) {
-        EXPECT_EQ(expected_creative_ads, creative_ads);
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 
   // Assert

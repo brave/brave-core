@@ -118,18 +118,32 @@ CreativeNewTabPageAdMap GroupCreativeAdsFromResponse(
       continue;
     }
 
-    // Creative instance already exists, so append the geo targets, dayparts and
+    // Creative instance already exists, so append new geo targets, dayparts and
     // wallpapers to the existing creative ad
-    iter->second.geo_targets.insert(creative_ad.geo_targets.begin(),
-                                    creative_ad.geo_targets.end());
+    for (const auto& geo_target : creative_ad.geo_targets) {
+      const auto geo_target_iter = iter->second.geo_targets.find(geo_target);
+      if (geo_target_iter == iter->second.geo_targets.end()) {
+        iter->second.geo_targets.insert(geo_target);
+      }
+    }
 
-    iter->second.dayparts.insert(iter->second.dayparts.end(),
-                                 creative_ad.dayparts.begin(),
-                                 creative_ad.dayparts.end());
+    for (const auto& daypart : creative_ad.dayparts) {
+      const auto daypart_iter =
+          std::find(iter->second.dayparts.cbegin(),
+                    iter->second.dayparts.cend(), daypart);
+      if (daypart_iter == iter->second.dayparts.end()) {
+        iter->second.dayparts.push_back(daypart);
+      }
+    }
 
-    iter->second.wallpapers.insert(iter->second.wallpapers.end(),
-                                   creative_ad.wallpapers.begin(),
-                                   creative_ad.wallpapers.end());
+    for (const auto& wallpaper : creative_ad.wallpapers) {
+      const auto wallpaper_iter =
+          std::find(iter->second.wallpapers.cbegin(),
+                    iter->second.wallpapers.cend(), wallpaper);
+      if (wallpaper_iter == iter->second.wallpapers.end()) {
+        iter->second.wallpapers.push_back(wallpaper);
+      }
+    }
   }
 
   return creative_ads;

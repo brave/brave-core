@@ -259,7 +259,14 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   // Arrange
   CreativeAdNotificationList creative_ads;
 
-  CreativeDaypartInfo daypart_info;
+  CreativeDaypartInfo daypart_info_1;
+  daypart_info_1.dow = "0";
+  daypart_info_1.start_minute = 0;
+  daypart_info_1.end_minute = 719;
+  CreativeDaypartInfo daypart_info_2;
+  daypart_info_2.dow = "1";
+  daypart_info_2.start_minute = 720;
+  daypart_info_2.end_minute = 1439;
 
   CreativeAdNotificationInfo info_1;
   info_1.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
@@ -276,8 +283,8 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.total_max = 6;
   info_1.value = 1.0;
   info_1.segment = "technology & computing-software";
-  info_1.dayparts.push_back(daypart_info);
-  info_1.dayparts.push_back(daypart_info);
+  info_1.dayparts.push_back(daypart_info_1);
+  info_1.dayparts.push_back(daypart_info_2);
   info_1.geo_targets = {"US"};
   info_1.target_url = "https://brave.com";
   info_1.title = "Test Ad 1 Title";
@@ -300,8 +307,8 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.total_max = 6;
   info_2.value = 1.0;
   info_2.segment = "technology & computing-software";
-  info_2.dayparts.push_back(daypart_info);
-  info_2.dayparts.push_back(daypart_info);
+  info_2.dayparts.push_back(daypart_info_1);
+  info_2.dayparts.push_back(daypart_info_2);
   info_2.geo_targets = {"US-FL", "US-CA"};
   info_2.target_url = "https://brave.com";
   info_2.title = "Test Ad 2 Title";

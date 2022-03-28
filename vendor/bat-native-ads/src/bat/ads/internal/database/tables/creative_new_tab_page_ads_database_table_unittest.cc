@@ -6,6 +6,7 @@
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_unittest_util.h"
+#include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -48,7 +49,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
       [&expected_creative_ads](const bool success, const SegmentList& segments,
                                const CreativeNewTabPageAdList& creative_ads) {
         ASSERT_TRUE(success);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 
@@ -69,7 +70,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
       [&expected_creative_ads](const bool success, const SegmentList& segments,
                                const CreativeNewTabPageAdList& creative_ads) {
         ASSERT_TRUE(success);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 
@@ -130,7 +131,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest, GetForSegments) {
       [&expected_creative_ads](const bool success, const SegmentList& segments,
                                const CreativeNewTabPageAdList& creative_ads) {
         ASSERT_TRUE(success);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 
@@ -253,7 +254,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
       [&expected_creative_ads](const bool success, const SegmentList& segments,
                                const CreativeNewTabPageAdList& creative_ads) {
         ASSERT_TRUE(success);
-        EXPECT_EQ(expected_creative_ads, creative_ads);
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 

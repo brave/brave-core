@@ -20,8 +20,9 @@ CreativeNewTabPageAdInfo::~CreativeNewTabPageAdInfo() = default;
 
 bool CreativeNewTabPageAdInfo::operator==(
     const CreativeNewTabPageAdInfo& rhs) const {
-  return company_name == rhs.company_name && image_url == rhs.image_url &&
-         alt == rhs.alt && wallpapers == rhs.wallpapers;
+  return CreativeAdInfo::operator==(rhs) && company_name == rhs.company_name &&
+         image_url == rhs.image_url && alt == rhs.alt &&
+         wallpapers == rhs.wallpapers;
 }
 
 bool CreativeNewTabPageAdInfo::operator!=(

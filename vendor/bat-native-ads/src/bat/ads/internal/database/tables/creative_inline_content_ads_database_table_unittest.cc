@@ -177,7 +177,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_3.per_day = 3;
   info_3.total_max = 4;
   info_3.value = 1.0;
-  info_3.segment = "Finance-Banking";
+  info_3.segment = "finance-banking";
   info_3.dayparts.push_back(daypart_info);
   info_3.geo_targets = {"US"};
   info_3.target_url = "https://brave.com/3";
@@ -323,6 +323,15 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
+  CreativeDaypartInfo daypart_info_1;
+  daypart_info_1.dow = "0";
+  daypart_info_1.start_minute = 0;
+  daypart_info_1.end_minute = 719;
+  CreativeDaypartInfo daypart_info_2;
+  daypart_info_2.dow = "1";
+  daypart_info_2.start_minute = 720;
+  daypart_info_2.end_minute = 1439;
+
   CreativeInlineContentAdInfo info;
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -336,9 +345,8 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.total_max = 4;
   info.value = 1.0;
   info.segment = "food & drink";
-  CreativeDaypartInfo daypart_info;
-  info.dayparts.push_back(daypart_info);
-  info.dayparts.push_back(daypart_info);
+  info.dayparts.push_back(daypart_info_1);
+  info.dayparts.push_back(daypart_info_2);
   info.geo_targets = {"US-FL", "US-CA"};
   info.target_url = "https://brave.com";
   info.title = "Test Ad Title";
@@ -579,7 +587,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_3.per_day = 3;
   info_3.total_max = 4;
   info_3.value = 1.0;
-  info_3.segment = "Finance-Banking";
+  info_3.segment = "finance-banking";
   info_3.dayparts.push_back(daypart_info);
   info_3.geo_targets = {"US"};
   info_3.target_url = "https://brave.com/3";
