@@ -489,6 +489,7 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
 
   func onFullscreen() {
     if !UIDevice.isIpad || splitController.isCollapsed {
+      navigationController?.setToolbarHidden(true, animated: false)
       listController.onFullscreen()
     } else {
       detailController.onFullscreen()
