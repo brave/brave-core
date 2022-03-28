@@ -27,7 +27,7 @@ class BatAdsUnblindedPaymentTokensTest : public UnitTestBase {
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, GetToken) {
   // Arrange
-  privacy::SetUnblindedPaymentTokens(10);
+  SetUnblindedPaymentTokens(10);
 
   // Act
   const UnblindedPaymentTokenInfo& unblinded_payment_token =
