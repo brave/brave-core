@@ -1,8 +1,8 @@
-import("//build/buildflag_header.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 
 declare_args() {
@@ -13,9 +13,8 @@ declare_args() {
 buildflag_header("geolocation") {
   header = "brave_geolocation_buildflags.h"
 
-  flags = [
-    "GOOGLEAPIS_URL=\"$brave_google_api_endpoint$brave_google_api_key\""
-  ]
+  flags =
+      [ "GOOGLEAPIS_URL=\"$brave_google_api_endpoint$brave_google_api_key\"" ]
 }
 
 source_set("net") {
