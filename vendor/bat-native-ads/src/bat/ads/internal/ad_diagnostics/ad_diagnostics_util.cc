@@ -57,7 +57,7 @@ std::string ConvertToString(const bool value) {
   return value ? "true" : "false";
 }
 
-std::string ConvertToString(const base::Time& time) {
+std::string ConvertToString(const base::Time time) {
   if (time.is_null())
     return {};
   return base::UTF16ToUTF8(base::TimeFormatShortDateAndTime(time));

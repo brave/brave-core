@@ -22,7 +22,7 @@ namespace ads {
 AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
                          const AdType& ad_type,
                          const ConfirmationType& confirmation_type,
-                         const base::Time& created_at) {
+                         const base::Time created_at) {
   AdEventInfo ad_event;
   ad_event.type = ad_type;
   ad_event.confirmation_type = confirmation_type;

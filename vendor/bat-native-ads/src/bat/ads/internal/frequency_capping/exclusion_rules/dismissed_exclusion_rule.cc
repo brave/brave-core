@@ -66,9 +66,9 @@ bool DismissedExclusionRule::DoesRespectCap(const AdEventList& ad_events) {
 AdEventList DismissedExclusionRule::FilterAdEvents(
     const AdEventList& ad_events,
     const CreativeAdInfo& creative_ad) const {
-  const base::Time& now = base::Time::Now();
+  const base::Time now = base::Time::Now();
 
-  const base::TimeDelta& time_constraint =
+  const base::TimeDelta time_constraint =
       features::frequency_capping::ExcludeAdIfDismissedWithinTimeWindow();
 
   AdEventList filtered_ad_events;

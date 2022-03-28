@@ -24,8 +24,8 @@ namespace {
 TransactionList GetUnreconciledTransactionsForDateRange(
     const TransactionList& transactions,
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
-    const base::Time& from_time,
-    const base::Time& to_time) {
+    const base::Time from_time,
+    const base::Time to_time) {
   const size_t unblinded_payment_token_count = unblinded_payment_tokens.size();
 
   if (transactions.size() < unblinded_payment_token_count) {
@@ -45,8 +45,8 @@ TransactionList GetUnreconciledTransactionsForDateRange(
 TransactionList GetAllUnreconciledTransactions(
     const TransactionList& transactions,
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
-  const base::Time& from_time = GetTimeInDistantPast();
-  const base::Time& to_time = GetLocalTimeAtEndOfThisMonth();
+  const base::Time from_time = GetTimeInDistantPast();
+  const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
 
   TransactionList unreconciled_transactions =
       GetUnreconciledTransactionsForDateRange(
@@ -77,7 +77,7 @@ BuildTransactionsForReconciledTransactionsThisMonth(
     return absl::nullopt;
   }
 
-  const base::Time& time = GetLocalTimeAtBeginningOfThisMonth();
+  const base::Time time = GetLocalTimeAtBeginningOfThisMonth();
   const double timestamp = time.ToDoubleT();
 
   TransactionList reconciled_transactions;
@@ -125,7 +125,7 @@ BuildTransactionForReconciledTransactionsLastMonth(
     return absl::nullopt;
   }
 
-  const base::Time& time = GetLocalTimeAtBeginningOfLastMonth();
+  const base::Time time = GetLocalTimeAtBeginningOfLastMonth();
   const double timestamp = time.ToDoubleT();
 
   TransactionInfo reconciled_transaction;

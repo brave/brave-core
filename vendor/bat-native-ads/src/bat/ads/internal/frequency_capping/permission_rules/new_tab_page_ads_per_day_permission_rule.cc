@@ -38,7 +38,7 @@ std::string NewTabPageAdsPerDayPermissionRule::GetLastMessage() const {
 
 bool NewTabPageAdsPerDayPermissionRule::DoesRespectCap(
     const std::deque<base::Time>& history) {
-  const base::TimeDelta& time_constraint = base::Days(1);
+  const base::TimeDelta time_constraint = base::Days(1);
 
   const int cap = features::GetMaximumNewTabPageAdsPerDay();
 

@@ -29,8 +29,8 @@ namespace history {
 
 AdsHistoryInfo Get(const AdsHistoryFilterType filter_type,
                    const AdsHistorySortType sort_type,
-                   const base::Time& from,
-                   const base::Time& to) {
+                   const base::Time from,
+                   const base::Time to) {
   std::deque<AdHistoryInfo> ads_history = Client::Get()->GetAdsHistory();
 
   const auto date_range_filter = std::make_unique<AdsHistoryDateRangeFilter>();

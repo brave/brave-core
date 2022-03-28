@@ -92,7 +92,7 @@ void Confirmations::Retry() {
   }
 
   DCHECK(!retry_timer_.IsRunning());
-  const base::Time& time = retry_timer_.StartWithPrivacy(
+  const base::Time time = retry_timer_.StartWithPrivacy(
       base::Seconds(kRetryAfterSeconds),
       base::BindOnce(&Confirmations::OnRetry, base::Unretained(this)));
 
@@ -116,7 +116,7 @@ void Confirmations::StopRetrying() {
 }
 
 ConfirmationInfo Confirmations::CreateConfirmation(
-    const base::Time& time,
+    const base::Time time,
     const std::string& transaction_id,
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type,
@@ -285,7 +285,7 @@ void Confirmations::OnDidRedeemUnblindedToken(
   const int unblinded_payment_tokens_count =
       ConfirmationsState::Get()->get_unblinded_payment_tokens()->Count();
 
-  const base::Time& next_token_redemption_at = base::Time::FromDoubleT(
+  const base::Time next_token_redemption_at = base::Time::FromDoubleT(
       AdsClientHelper::Get()->GetDoublePref(prefs::kNextTokenRedemptionAt));
 
   BLOG(1, "Successfully redeemed unblinded token for "

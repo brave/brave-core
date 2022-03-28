@@ -63,7 +63,7 @@ bool DaypartExclusionRule::DoesRespectCap(
     return true;
   }
 
-  const base::Time& now = base::Time::Now();
+  const base::Time now = base::Time::Now();
 
   const int local_time_as_minutes = GetLocalTimeAsMinutes(now);
 

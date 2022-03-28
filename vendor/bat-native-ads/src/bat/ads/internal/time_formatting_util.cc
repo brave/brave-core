@@ -13,7 +13,7 @@
 
 namespace ads {
 
-std::string LongFriendlyDateAndTime(const base::Time& time,
+std::string LongFriendlyDateAndTime(const base::Time time,
                                     const bool use_sentence_style) {
   const std::u16string friendly_date_and_time =
       base::TimeFormatFriendlyDateAndTime(time);
@@ -29,7 +29,7 @@ std::string LongFriendlyDateAndTime(const double timestamp,
   return LongFriendlyDateAndTime(time, use_sentence_style);
 }
 
-std::string FriendlyDateAndTime(const base::Time& time,
+std::string FriendlyDateAndTime(const base::Time time,
                                 const bool use_sentence_style) {
   const base::TimeDelta time_delta = time - base::Time::Now();
 
@@ -57,7 +57,7 @@ std::string FriendlyDateAndTime(const double timestamp,
   return FriendlyDateAndTime(time, use_sentence_style);
 }
 
-std::string TimeAsTimestampString(const base::Time& time) {
+std::string TimeAsTimestampString(const base::Time time) {
   const double timestamp = time.ToDoubleT();
   return base::NumberToString(timestamp);
 }

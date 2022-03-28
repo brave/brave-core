@@ -91,7 +91,7 @@ class Client final {
                                    const AdType& type);
   void ResetAllSeenAdvertisersForType(const AdType& type);
 
-  void SetServeAdAt(const base::Time& time);
+  void SetServeAdAt(const base::Time time);
   base::Time GetServeAdAt();
 
   void AppendTextClassificationProbabilitiesToHistory(

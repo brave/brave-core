@@ -25,7 +25,7 @@ std::string ToString(const bool value) {
   return value ? kTrue : kFalse;
 }
 
-std::string ToString(const base::Time& time) {
+std::string ToString(const base::Time time) {
   DCHECK(!time.is_null());
   return base::NumberToString(time.ToDoubleT());
 }

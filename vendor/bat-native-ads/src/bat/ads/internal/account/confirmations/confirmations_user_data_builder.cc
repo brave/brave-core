@@ -19,7 +19,7 @@
 namespace ads {
 
 ConfirmationsUserDataBuilder::ConfirmationsUserDataBuilder(
-    const base::Time& time,
+    const base::Time time,
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type)
     : time_(time),

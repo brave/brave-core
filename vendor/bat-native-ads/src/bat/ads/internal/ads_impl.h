@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_history_filter_types.h"
 #include "bat/ads/ads_history_sort_types.h"
@@ -26,10 +27,6 @@
 #include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-
-namespace base {
-class Time;
-}  // namespace base
 
 namespace ads {
 
@@ -340,7 +337,7 @@ class AdsImpl final : public Ads,
       const mojom::InlineContentAdEventType event_type) override;
 
   // AdTransferObserver:
-  void OnWillTransferAd(const AdInfo& ad, const base::Time& time) override;
+  void OnWillTransferAd(const AdInfo& ad, const base::Time time) override;
   void OnDidTransferAd(const AdInfo& ad) override;
   void OnCancelledAdTransfer(const AdInfo& ad, const int32_t tab_id) override;
   void OnFailedToTransferAd(const AdInfo& ad) override;

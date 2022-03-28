@@ -20,7 +20,7 @@ namespace ads {
 
 namespace {
 
-std::string GetCreatedAtTimestampAsJson(const base::Time& time) {
+std::string GetCreatedAtTimestampAsJson(const base::Time time) {
   const base::DictionaryValue user_data =
       user_data::GetCreatedAtTimestamp(time);
 

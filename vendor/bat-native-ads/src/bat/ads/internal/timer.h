@@ -31,12 +31,12 @@ class Timer final {
   // Start a timer to run at the given |delay| from now. If the timer is already
   // running, it will be replaced to call the given |user_task|. Returns the
   // time the delayed task will be fired
-  base::Time Start(const base::TimeDelta& delay, base::OnceClosure user_task);
+  base::Time Start(const base::TimeDelta delay, base::OnceClosure user_task);
 
   // Start a timer to run at a geometrically distributed number of seconds
   // |~delay| from now. If the timer is already running, it will be replaced to
   // call the given |user_task|. Returns the time the delayed task will be fired
-  base::Time StartWithPrivacy(const base::TimeDelta& delay,
+  base::Time StartWithPrivacy(const base::TimeDelta delay,
                               base::OnceClosure user_task);
 
   // Returns true if the timer is running (i.e., not stopped)

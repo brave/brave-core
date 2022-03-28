@@ -357,7 +357,7 @@ void RefillUnblindedTokens::Retry() {
     delegate_->OnWillRetryRefillingUnblindedTokens();
   }
 
-  const base::Time& time = retry_timer_.StartWithPrivacy(
+  const base::Time time = retry_timer_.StartWithPrivacy(
       base::Seconds(kRetryAfterSeconds),
       base::BindOnce(&RefillUnblindedTokens::OnRetry, base::Unretained(this)));
 

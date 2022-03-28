@@ -16,7 +16,7 @@ namespace ads {
 
 class ConfirmationsUserDataBuilder final : public UserDataBuilder {
  public:
-  ConfirmationsUserDataBuilder(const base::Time& time,
+  ConfirmationsUserDataBuilder(const base::Time time,
                                const std::string& creative_instance_id,
                                const ConfirmationType& confirmation_type);
   ~ConfirmationsUserDataBuilder() override;

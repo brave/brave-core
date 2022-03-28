@@ -38,7 +38,7 @@ class CovariateLogs final {
   mojom::TrainingCovariatesPtr GetTrainingCovariates() const;
 
   void SetAdNotificationImpressionServedAt(
-      const base::Time& impression_served_at);
+      const base::Time impression_served_at);
   void SetAdNotificationWasClicked(bool was_clicked);
   void LogTrainingCovariates();
 

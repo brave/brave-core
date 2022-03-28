@@ -29,8 +29,8 @@ TransactionInfo Add(const std::string& creative_instance_id,
                     const ConfirmationType& confirmation_type,
                     AddTransactionCallback callback);
 
-void GetForDateRange(const base::Time& from_time,
-                     const base::Time& to_time,
+void GetForDateRange(const base::Time from_time,
+                     const base::Time to_time,
                      GetTransactionsCallback callback);
 
 void RemoveAll(RemoveAllTransactionsCallback callback);

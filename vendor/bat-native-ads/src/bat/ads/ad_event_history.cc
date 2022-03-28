@@ -18,10 +18,10 @@ std::string GetTypeId(const std::string& ad_type,
 }
 
 void PurgeHistoryOlderThan(std::vector<double>* history,
-                           const base::TimeDelta& time_delta) {
+                           const base::TimeDelta time_delta) {
   DCHECK(history);
 
-  const base::Time& past = base::Time::Now() - time_delta;
+  const base::Time past = base::Time::Now() - time_delta;
 
   const auto iter = std::remove_if(
       history->begin(), history->end(), [&past](const double timestamp) {

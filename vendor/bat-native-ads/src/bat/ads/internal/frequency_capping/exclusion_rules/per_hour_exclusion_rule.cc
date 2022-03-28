@@ -45,9 +45,9 @@ std::string PerHourExclusionRule::GetLastMessage() const {
 
 bool PerHourExclusionRule::DoesRespectCap(const AdEventList& ad_events,
                                           const CreativeAdInfo& creative_ad) {
-  const base::Time& now = base::Time::Now();
+  const base::Time now = base::Time::Now();
 
-  const base::TimeDelta& time_constraint = base::Hours(1);
+  const base::TimeDelta time_constraint = base::Hours(1);
 
   const int count = std::count_if(
       ad_events.cbegin(), ad_events.cend(),

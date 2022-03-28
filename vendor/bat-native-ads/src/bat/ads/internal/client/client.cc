@@ -466,7 +466,7 @@ void Client::ResetAllSeenAdvertisersForType(const AdType& type) {
   Save();
 }
 
-void Client::SetServeAdAt(const base::Time& time) {
+void Client::SetServeAdAt(const base::Time time) {
   DCHECK(is_initialized_);
 
   client_->serve_ad_at = time;

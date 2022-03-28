@@ -16,7 +16,7 @@ namespace ad_targeting {
 
 struct PurchaseIntentSignalHistoryInfo final {
   PurchaseIntentSignalHistoryInfo();
-  PurchaseIntentSignalHistoryInfo(const base::Time& created_at,
+  PurchaseIntentSignalHistoryInfo(const base::Time created_at,
                                   const uint16_t weight);
   PurchaseIntentSignalHistoryInfo(const PurchaseIntentSignalHistoryInfo& info);
   ~PurchaseIntentSignalHistoryInfo();

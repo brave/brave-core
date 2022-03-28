@@ -53,7 +53,7 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
 
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
 
-  ConfirmationInfo CreateConfirmation(const base::Time& time,
+  ConfirmationInfo CreateConfirmation(const base::Time time,
                                       const std::string& transaction_id,
                                       const std::string& creative_instance_id,
                                       const ConfirmationType& confirmation_type,

@@ -21,7 +21,7 @@ AdDiagnosticsEntryType LastUnIdleTimestampAdDiagnosticsEntry::GetEntryType()
 }
 
 void LastUnIdleTimestampAdDiagnosticsEntry::SetLastUnIdleTimestamp(
-    const base::Time& time) {
+    const base::Time time) {
   last_unidle_timestamp_ = time;
 }
 

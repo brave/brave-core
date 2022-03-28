@@ -15,8 +15,8 @@
 namespace ads {
 
 void BuildStatement(StatementCallback callback) {
-  const base::Time& from_time = GetTimeInDistantPast();
-  const base::Time& to_time = GetLocalTimeAtEndOfThisMonth();
+  const base::Time from_time = GetTimeInDistantPast();
+  const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
 
   transactions::GetForDateRange(
       from_time, to_time,
@@ -33,7 +33,7 @@ void BuildStatement(StatementCallback callback) {
 
         statement.earnings_last_month = GetEarningsForLastMonth(transactions);
 
-        const base::Time& next_payment_date = GetNextPaymentDate(transactions);
+        const base::Time next_payment_date = GetNextPaymentDate(transactions);
         statement.next_payment_date = next_payment_date.ToDoubleT();
 
         statement.ads_received_this_month =

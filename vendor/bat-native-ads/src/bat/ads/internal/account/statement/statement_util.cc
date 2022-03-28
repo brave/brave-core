@@ -17,10 +17,10 @@
 namespace ads {
 
 base::Time GetNextPaymentDate(const TransactionList& transactions) {
-  const base::Time& next_token_redemption_at = base::Time::FromDoubleT(
+  const base::Time next_token_redemption_at = base::Time::FromDoubleT(
       AdsClientHelper::Get()->GetDoublePref(prefs::kNextTokenRedemptionAt));
 
-  const base::Time& next_payment_date =
+  const base::Time next_payment_date =
       CalculateNextPaymentDate(next_token_redemption_at, transactions);
 
   return next_payment_date;
@@ -40,8 +40,8 @@ double GetEarningsForLastMonth(const TransactionList& transactions) {
 }
 
 int GetAdsReceivedForThisMonth(const TransactionList& transactions) {
-  const base::Time& from_time = GetLocalTimeAtBeginningOfThisMonth();
-  const base::Time& to_time = GetLocalTimeAtEndOfThisMonth();
+  const base::Time from_time = GetLocalTimeAtBeginningOfThisMonth();
+  const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
 
   return GetAdsReceivedForDateRange(transactions, from_time, to_time);
 }

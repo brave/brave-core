@@ -9,7 +9,6 @@
 
 #include "base/check.h"
 #include "base/hash/hash.h"
-#include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_notification_info.h"
@@ -932,7 +931,7 @@ void AdsImpl::OnInlineContentAdEventFailed(
               << " and creative instance id " << creative_instance_id);
 }
 
-void AdsImpl::OnWillTransferAd(const AdInfo& ad, const base::Time& time) {
+void AdsImpl::OnWillTransferAd(const AdInfo& ad, const base::Time time) {
   BLOG(1,
        "Transfer ad for " << ad.target_url << " " << FriendlyDateAndTime(time));
 }
