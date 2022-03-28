@@ -125,8 +125,7 @@ void APIRequestHelper::OnResponse(
     std::move(callback).Run(response_code, "", headers);
     return;
   }
-
-  auto raw_body = *response_body;
+  auto& raw_body = *response_body;
   if (conversion_callback) {
     auto converted_body = std::move(conversion_callback).Run(raw_body);
     if (!converted_body) {
