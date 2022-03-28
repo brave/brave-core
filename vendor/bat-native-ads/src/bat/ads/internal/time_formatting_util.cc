@@ -40,14 +40,15 @@ std::string FriendlyDateAndTime(const base::Time time,
     return LongFriendlyDateAndTime(time, use_sentence_style);
   }
 
-  // Show date and time as "in 0 hours, 21 minutes, 58 seconds at 3:07 PM"
+  // Show date and time as "in 0 hours, 21 minutes, 58 seconds at 15:07:30.568"
   std::u16string time_duration;
   if (!base::TimeDurationFormatWithSeconds(
           time_delta, base::DURATION_WIDTH_WIDE, &time_duration)) {
     return LongFriendlyDateAndTime(time);
   }
 
-  const std::u16string time_of_day = base::TimeFormatTimeOfDay(time);
+  const std::u16string time_of_day =
+      base::TimeFormatTimeOfDayWithMilliseconds(time);
 
   return base::StringPrintf("%s%s at %s", use_sentence_style ? "in " : "",
                             base::UTF16ToUTF8(time_duration).c_str(),
