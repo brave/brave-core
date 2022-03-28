@@ -1404,6 +1404,11 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   [self savePref:key];
 }
 
+- (bool)hasPrefPath:(const std::string&)path {
+  const auto key = base::SysUTF8ToNSString(path);
+  return [self.prefs objectForKey:key] != nil;
+}
+
 #pragma mark - Ads Resources Paths
 
 - (NSDictionary*)componentPaths {

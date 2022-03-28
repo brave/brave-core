@@ -43,6 +43,8 @@ interface BatAdsClient {
   GetInt64Pref(string path) => (int64 value);
   [Sync]
   GetUint64Pref(string path) => (uint64 value);
+  [Sync]
+  HasPrefPath(string path) => (bool value);
 
   ShowNotification(string json);
   CloseNotification(string uuid);

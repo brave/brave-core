@@ -145,6 +145,8 @@ class AdsClientMojoBridge
       const uint64_t value) override;
   void ClearPref(
       const std::string& path) override;
+  void HasPrefPath(const std::string& path,
+                   HasPrefPathCallback callback) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind

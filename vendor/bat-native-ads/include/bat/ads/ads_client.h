@@ -160,6 +160,8 @@ class ADS_EXPORT AdsClient {
   virtual void SetUint64Pref(const std::string& path, const uint64_t value) = 0;
 
   virtual void ClearPref(const std::string& path) = 0;
+
+  virtual bool HasPrefPath(const std::string& path) const = 0;
 };
 
 }  // namespace ads

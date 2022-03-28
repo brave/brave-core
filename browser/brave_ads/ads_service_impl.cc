@@ -2367,6 +2367,10 @@ void AdsServiceImpl::ClearPref(const std::string& path) {
   OnPrefChanged(path);
 }
 
+bool AdsServiceImpl::HasPrefPath(const std::string& path) const {
+  return profile_->GetPrefs()->HasPrefPath(path);
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdsServiceImpl::OnBackground() {

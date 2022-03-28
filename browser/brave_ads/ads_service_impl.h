@@ -464,6 +464,8 @@ class AdsServiceImpl : public AdsService,
 
   void ClearPref(const std::string& path) override;
 
+  bool HasPrefPath(const std::string& path) const override;
+
   // BackgroundHelper::Observer implementation
   void OnBackground() override;
   void OnForeground() override;
