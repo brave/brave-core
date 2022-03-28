@@ -85,17 +85,11 @@ void SolanaTxManager::ApproveTransaction(const std::string& tx_meta_id,
     return;
   }
 
-  // Try to use available latest blockhash from block tracker first.
-  std::string hash = GetSolanaBlockTracker()->latest_blockhash();
-  if (!hash.empty()) {
-    OnGetLatestBlockhash(std::move(meta), std::move(callback), hash,
-                         mojom::SolanaProviderError::kSuccess, "");
-    return;
-  }
-
-  json_rpc_service_->GetSolanaLatestBlockhash(base::BindOnce(
-      &SolanaTxManager::OnGetLatestBlockhash, weak_ptr_factory_.GetWeakPtr(),
-      std::move(meta), std::move(callback)));
+  GetSolanaBlockTracker()->GetLatestBlockhash(
+      base::BindOnce(&SolanaTxManager::OnGetLatestBlockhash,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(meta),
+                     std::move(callback)),
+      true);
 }
 
 void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
