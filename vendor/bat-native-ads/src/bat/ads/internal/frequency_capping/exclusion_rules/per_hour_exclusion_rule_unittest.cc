@@ -14,7 +14,7 @@
 namespace ads {
 
 namespace {
-const char kCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
+constexpr char kCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
 }  // namespace
 
 class BatAdsPerHourExclusionRuleTest : public UnitTestBase {

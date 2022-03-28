@@ -18,7 +18,7 @@
 namespace ads {
 
 namespace {
-const int64_t kTransferAdAfterSeconds = 10;
+constexpr int64_t kTransferAdAfterSeconds = 10;
 }  // namespace
 
 AdTransfer::AdTransfer() = default;

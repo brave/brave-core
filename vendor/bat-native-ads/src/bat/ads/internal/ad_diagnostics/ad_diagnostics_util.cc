@@ -18,8 +18,8 @@ namespace ads {
 
 namespace {
 
-const char kDiagnosticsEntryKey[] = "key";
-const char kDiagnosticsEntryValue[] = "value";
+constexpr char kDiagnosticsEntryKey[] = "key";
+constexpr char kDiagnosticsEntryValue[] = "value";
 
 }  // namespace
 

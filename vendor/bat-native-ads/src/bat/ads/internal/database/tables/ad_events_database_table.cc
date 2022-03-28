@@ -22,7 +22,7 @@ namespace table {
 
 namespace {
 
-const char kTableName[] = "ad_events";
+constexpr char kTableName[] = "ad_events";
 
 int BindParameters(mojom::DBCommand* command, const AdEventList& ad_events) {
   DCHECK(command);

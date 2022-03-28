@@ -24,9 +24,9 @@ using challenge_bypass_ristretto::UnblindedToken;
 
 namespace {
 
-const char kUnblindedPaymentTokenListKey[] = "unblinded_payment_tokens";
-const char kPublicKeyKey[] = "public_key";
-const char kUnblindedTokenKey[] = "unblinded_token";
+constexpr char kUnblindedPaymentTokenListKey[] = "unblinded_payment_tokens";
+constexpr char kPublicKeyKey[] = "public_key";
+constexpr char kUnblindedTokenKey[] = "unblinded_token";
 
 absl::optional<privacy::UnblindedPaymentTokenInfo> ParseUnblindedPaymentToken(
     const base::Value& value) {

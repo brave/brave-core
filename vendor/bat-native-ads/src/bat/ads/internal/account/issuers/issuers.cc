@@ -28,7 +28,7 @@ namespace ads {
 
 namespace {
 
-const int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
+constexpr int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
 
 absl::optional<IssuersInfo> ParseJson(const std::string& json) {
   const absl::optional<IssuersInfo>& issuers_optional =

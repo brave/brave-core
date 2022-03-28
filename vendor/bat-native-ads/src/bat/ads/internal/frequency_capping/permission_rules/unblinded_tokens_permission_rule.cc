@@ -12,7 +12,7 @@
 namespace ads {
 
 namespace {
-const int kUnblindedTokensMinimumThreshold = 10;
+constexpr int kUnblindedTokensMinimumThreshold = 10;
 }  // namespace
 
 UnblindedTokensPermissionRule::UnblindedTokensPermissionRule() = default;

@@ -29,9 +29,9 @@ namespace ads {
 
 namespace {
 
-const int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
+constexpr int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
 
-const int64_t kDebugCatalogPing = 15 * base::Time::kSecondsPerMinute;
+constexpr int64_t kDebugCatalogPing = 15 * base::Time::kSecondsPerMinute;
 
 }  // namespace
 

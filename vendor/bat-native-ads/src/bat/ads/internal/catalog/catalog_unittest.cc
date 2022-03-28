@@ -20,11 +20,12 @@ namespace ads {
 
 namespace {
 
-const char kEmptyCatalog[] = "empty_catalog.json";
+constexpr char kEmptyCatalog[] = "empty_catalog.json";
 
-const char kCatalogWithSingleCampaign[] = "catalog_with_single_campaign.json";
+constexpr char kCatalogWithSingleCampaign[] =
+    "catalog_with_single_campaign.json";
 
-const char kCatalogWithMultipleCampaigns[] =
+constexpr char kCatalogWithMultipleCampaigns[] =
     "catalog_with_multiple_campaigns.json";
 
 }  // namespace

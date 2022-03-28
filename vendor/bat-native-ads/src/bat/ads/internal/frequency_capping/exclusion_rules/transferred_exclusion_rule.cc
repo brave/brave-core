@@ -14,7 +14,7 @@
 namespace ads {
 
 namespace {
-const int kTransferredCap = 1;
+constexpr int kTransferredCap = 1;
 }  // namespace
 
 TransferredExclusionRule::TransferredExclusionRule(const AdEventList& ad_events)

@@ -14,7 +14,7 @@
 namespace ads {
 
 namespace {
-const char kSegment[] = "segment";
+constexpr char kSegment[] = "segment";
 }  // namespace
 
 class BatAdsMarkedToNoLongerReceiveExclusionRuleTest : public UnitTestBase {

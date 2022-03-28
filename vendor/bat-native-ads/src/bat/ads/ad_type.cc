@@ -13,11 +13,11 @@ namespace {
 
 // Do not change the following string values as they are used for persisting and
 // restoring state
-const char kUndefinedType[] = "";
-const char kAdNotificationType[] = "ad_notification";
-const char kNewTabPageAdType[] = "new_tab_page_ad";
-const char kPromotedContentAdType[] = "promoted_content_ad";
-const char kInlineContentAdType[] = "inline_content_ad";
+constexpr char kUndefinedType[] = "";
+constexpr char kAdNotificationType[] = "ad_notification";
+constexpr char kNewTabPageAdType[] = "new_tab_page_ad";
+constexpr char kPromotedContentAdType[] = "promoted_content_ad";
+constexpr char kInlineContentAdType[] = "inline_content_ad";
 
 }  // namespace
 

@@ -36,11 +36,13 @@ namespace ads {
 
 namespace {
 
-const int64_t kConvertAfterSeconds =
+constexpr int64_t kConvertAfterSeconds =
     base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
-const int64_t kDebugConvertAfterSeconds = 10 * base::Time::kSecondsPerMinute;
-const int64_t kExpiredConvertAfterSeconds = 1 * base::Time::kSecondsPerMinute;
-const char kSearchInUrl[] = "url";
+constexpr int64_t kDebugConvertAfterSeconds =
+    10 * base::Time::kSecondsPerMinute;
+constexpr int64_t kExpiredConvertAfterSeconds =
+    1 * base::Time::kSecondsPerMinute;
+constexpr char kSearchInUrl[] = "url";
 
 bool HasObservationWindowForAdEventExpired(const int observation_window,
                                            const AdEventInfo& ad_event) {

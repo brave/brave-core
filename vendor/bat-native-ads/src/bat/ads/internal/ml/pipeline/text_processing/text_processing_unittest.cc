@@ -27,19 +27,20 @@ namespace ml {
 
 namespace {
 
-const char kValidSegmentClassificationPipeline[] =
+constexpr char kValidSegmentClassificationPipeline[] =
     "ml/pipeline/text_processing/valid_segment_classification_min.json";
 
-const char kEmptySegmentClassificationPipeline[] =
+constexpr char kEmptySegmentClassificationPipeline[] =
     "ml/pipeline/text_processing/empty_segment_classification.json";
 
-const char kInvalidSpamClassificationPipeline[] =
+constexpr char kInvalidSpamClassificationPipeline[] =
     "ml/pipeline/text_processing/invalid_spam_classification.json";
 
-const char kValidSpamClassificationPipeline[] =
+constexpr char kValidSpamClassificationPipeline[] =
     "ml/pipeline/text_processing/valid_spam_classification.json";
 
-const char kTextCMCCrash[] = "ml/pipeline/text_processing/text_cmc_crash.txt";
+constexpr char kTextCMCCrash[] =
+    "ml/pipeline/text_processing/text_cmc_crash.txt";
 
 }  // namespace
 

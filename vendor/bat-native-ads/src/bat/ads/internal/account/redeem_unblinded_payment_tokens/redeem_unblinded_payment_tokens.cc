@@ -30,13 +30,13 @@ namespace ads {
 
 namespace {
 
-const int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
+constexpr int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
 
-const int64_t kNextTokenRedemptionAfterSeconds =
+constexpr int64_t kNextTokenRedemptionAfterSeconds =
     24 * base::Time::kSecondsPerHour;
-const int64_t kDebugNextTokenRedemptionAfterSeconds =
+constexpr int64_t kDebugNextTokenRedemptionAfterSeconds =
     25 * base::Time::kSecondsPerMinute;
-const int64_t kExpiredNextTokenRedemptionAfterSeconds =
+constexpr int64_t kExpiredNextTokenRedemptionAfterSeconds =
     1 * base::Time::kSecondsPerMinute;
 
 }  // namespace

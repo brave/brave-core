@@ -15,8 +15,10 @@
 namespace ads {
 
 namespace {
-const char kCreativeInstanceId[] = "9cf19f6e-25b8-44f1-9050-2a7247185489";
-const char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
+
+constexpr char kCreativeInstanceId[] = "9cf19f6e-25b8-44f1-9050-2a7247185489";
+constexpr char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
+
 }  // namespace
 
 class BatAdsMarkedAsInappropriateExclusionRuleTest : public UnitTestBase {

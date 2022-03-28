@@ -14,9 +14,10 @@
 namespace ads {
 
 namespace {
-const char kCreativeSetIdOnAntiTargetingList[] =
+
+constexpr char kCreativeSetIdOnAntiTargetingList[] =
     "5bdeab83-048f-48a7-9602-a1092ded123c";
-const char kCreativeSetIdNotOnAntiTargetingList[] =
+constexpr char kCreativeSetIdNotOnAntiTargetingList[] =
     "d175cdfd-57bf-46c3-9b00-89eed71c6ae5";
 
 }  // namespace

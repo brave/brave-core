@@ -18,7 +18,7 @@
 namespace ads {
 
 namespace {
-const int kMinimumWaitTimeFrequencyCap = 1;
+constexpr int kMinimumWaitTimeFrequencyCap = 1;
 }  // namespace
 
 MinimumWaitTimePermissionRule::MinimumWaitTimePermissionRule() = default;

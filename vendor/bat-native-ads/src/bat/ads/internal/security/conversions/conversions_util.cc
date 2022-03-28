@@ -25,12 +25,12 @@ namespace security {
 
 namespace {
 
-const char kAlgorithm[] = "crypto_box_curve25519xsalsa20poly1305";
-const size_t kCryptoBoxZeroBytes = crypto_box_BOXZEROBYTES;
-const size_t kCryptoBoxPublicKeyBytes = crypto_box_PUBLICKEYBYTES;
-const size_t kVacCipherTextLength = 32;
-const size_t kVacMessageMaxLength = 30;
-const size_t kVacMessageMinLength = 1;
+constexpr char kAlgorithm[] = "crypto_box_curve25519xsalsa20poly1305";
+constexpr size_t kCryptoBoxZeroBytes = crypto_box_BOXZEROBYTES;
+constexpr size_t kCryptoBoxPublicKeyBytes = crypto_box_PUBLICKEYBYTES;
+constexpr size_t kVacCipherTextLength = 32;
+constexpr size_t kVacMessageMaxLength = 30;
+constexpr size_t kVacMessageMinLength = 1;
 
 bool IsConversionIdValid(const std::string& conversion_id) {
   return RE2::FullMatch(conversion_id, "^[a-zA-Z0-9-]*$");

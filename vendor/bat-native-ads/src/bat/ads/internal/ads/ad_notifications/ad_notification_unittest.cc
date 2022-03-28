@@ -27,9 +27,7 @@
 namespace ads {
 
 namespace {
-
 constexpr char kUuid[] = "d2ef9bb0-a0dc-472c-bc49-62105bb6da68";
-
 }  // namespace
 
 class BatAdsAdNotificationTest : public AdNotificationObserver,

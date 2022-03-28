@@ -34,24 +34,24 @@ namespace {
 AdNotifications* g_ad_notifications = nullptr;
 
 #if BUILDFLAG(IS_ANDROID)
-const int kMaximumAdNotifications = 3;
+constexpr int kMaximumAdNotifications = 3;
 #else
-const int kMaximumAdNotifications = 0;  // No limit
+constexpr int kMaximumAdNotifications = 0;  // No limit
 #endif
 
-const char kNotificationsFilename[] = "notifications.json";
+constexpr char kNotificationsFilename[] = "notifications.json";
 
-const char kNotificationsListKey[] = "notifications";
+constexpr char kNotificationsListKey[] = "notifications";
 
-const char kNotificationUuidKey[] = "id";
-const char kNotificationCreativeInstanceIdKey[] = "uuid";
-const char kNotificationCreativeSetIdKey[] = "creative_set_id";
-const char kNotificationCampaignIdKey[] = "campaign_id";
-const char kNotificationAdvertiserIdKey[] = "advertiser_id";
-const char kNotificationSegmentKey[] = "segment";
-const char kNotificationTitleKey[] = "advertiser";
-const char kNotificationBodyKey[] = "text";
-const char kNotificationTargetUrlKey[] = "url";
+constexpr char kNotificationUuidKey[] = "id";
+constexpr char kNotificationCreativeInstanceIdKey[] = "uuid";
+constexpr char kNotificationCreativeSetIdKey[] = "creative_set_id";
+constexpr char kNotificationCampaignIdKey[] = "campaign_id";
+constexpr char kNotificationAdvertiserIdKey[] = "advertiser_id";
+constexpr char kNotificationSegmentKey[] = "segment";
+constexpr char kNotificationTitleKey[] = "advertiser";
+constexpr char kNotificationBodyKey[] = "text";
+constexpr char kNotificationTargetUrlKey[] = "url";
 
 }  // namespace
 

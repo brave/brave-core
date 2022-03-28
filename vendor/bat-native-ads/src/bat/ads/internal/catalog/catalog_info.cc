@@ -18,7 +18,7 @@
 namespace ads {
 
 namespace {
-const int64_t kDefaultCatalogPing = 2 * base::Time::kSecondsPerHour;
+constexpr int64_t kDefaultCatalogPing = 2 * base::Time::kSecondsPerHour;
 }  // namespace
 
 CatalogInfo::CatalogInfo() = default;

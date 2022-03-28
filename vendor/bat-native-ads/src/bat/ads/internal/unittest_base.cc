@@ -22,7 +22,7 @@ using ::testing::NiceMock;
 namespace ads {
 
 namespace {
-const char kDatabaseFilename[] = "database.sqlite";
+constexpr char kDatabaseFilename[] = "database.sqlite";
 }  // namespace
 
 UnitTestBase::UnitTestBase()

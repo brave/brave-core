@@ -31,9 +31,9 @@ namespace {
 
 Client* g_client = nullptr;
 
-const char kClientFilename[] = "client.json";
+constexpr char kClientFilename[] = "client.json";
 
-const uint64_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
+constexpr uint64_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
 
 FilteredAdvertiserList::iterator FindFilteredAdvertiser(
     const std::string& advertiser_id,

@@ -23,13 +23,13 @@ namespace ads {
 
 namespace {
 
-const char kNowTagValue[] = "now";
-const char kDistantPastTagValue[] = "distant_past";
-const char kDistantFutureTagValue[] = "distant_future";
-const char kFromSecondsTagValue[] = "seconds";
-const char kFromMinutesTagValue[] = "minutes";
-const char kFromHoursTagValue[] = "hours";
-const char kFromDaysTagValue[] = "days";
+constexpr char kNowTagValue[] = "now";
+constexpr char kDistantPastTagValue[] = "distant_past";
+constexpr char kDistantFutureTagValue[] = "distant_future";
+constexpr char kFromSecondsTagValue[] = "seconds";
+constexpr char kFromMinutesTagValue[] = "minutes";
+constexpr char kFromHoursTagValue[] = "hours";
+constexpr char kFromDaysTagValue[] = "days";
 
 bool ParseTimeDelta(const std::string& value, base::TimeDelta* time_delta) {
   DCHECK(time_delta);

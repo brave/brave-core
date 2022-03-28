@@ -14,7 +14,7 @@
 namespace ads {
 
 namespace {
-const int kCatalogLifespanInDays = 1;
+constexpr int kCatalogLifespanInDays = 1;
 }
 
 std::string GetCatalogId() {

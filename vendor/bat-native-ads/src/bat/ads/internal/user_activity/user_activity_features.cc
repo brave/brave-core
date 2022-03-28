@@ -15,23 +15,23 @@ namespace user_activity {
 
 namespace {
 
-const char kFeatureName[] = "UserActivity";
+constexpr char kFeatureName[] = "UserActivity";
 
-const char kFieldTrialParameterTriggers[] = "triggers";
-const char kDefaultTriggers[] = "01=.5;02=.5;08=1;09=1;0D=1;0E=1";
-const char kFieldTrialParameterTimeWindow[] = "time_window";
-const base::TimeDelta kDefaultTimeWindow = base::Hours(1);
-const char kFieldTrialParameterThreshold[] = "threshold";
-const double kDefaultTreshold = 2.0;
+constexpr char kFieldTrialParameterTriggers[] = "triggers";
+constexpr char kDefaultTriggers[] = "01=.5;02=.5;08=1;09=1;0D=1;0E=1";
+constexpr char kFieldTrialParameterTimeWindow[] = "time_window";
+constexpr base::TimeDelta kDefaultTimeWindow = base::Hours(1);
+constexpr char kFieldTrialParameterThreshold[] = "threshold";
+constexpr double kDefaultTreshold = 2.0;
 
-const char kFieldTrialParameterIdleTimeThreshold[] = "idle_time_threshold";
-const base::TimeDelta kDefaultIdleTimeThreshold = base::Seconds(15);
-const char kFieldTrialParameterMaximumIdleTime[] = "maximum_idle_time";
-const base::TimeDelta kDefaultMaximumIdleTime = base::Seconds(0);
+constexpr char kFieldTrialParameterIdleTimeThreshold[] = "idle_time_threshold";
+constexpr base::TimeDelta kDefaultIdleTimeThreshold = base::Seconds(15);
+constexpr char kFieldTrialParameterMaximumIdleTime[] = "maximum_idle_time";
+constexpr base::TimeDelta kDefaultMaximumIdleTime = base::Seconds(0);
 
-const char kFieldTrialParameterShouldDetectWasLocked[] =
+constexpr char kFieldTrialParameterShouldDetectWasLocked[] =
     "should_detect_was_locked";
-const bool kDefaultShouldDetectWasLocked = false;
+constexpr bool kDefaultShouldDetectWasLocked = false;
 
 }  // namespace
 

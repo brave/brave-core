@@ -13,46 +13,46 @@ namespace features {
 
 namespace {
 
-const char kFeatureName[] = "AdServing";
+constexpr char kFeatureName[] = "AdServing";
 
-const char kFieldTrialParameterDefaultAdNotificationsPerHour[] =
+constexpr char kFieldTrialParameterDefaultAdNotificationsPerHour[] =
     "default_ad_notifications_per_hour";
-const int kDefaultDefaultAdNotificationsPerHour =
+constexpr int kDefaultDefaultAdNotificationsPerHour =
     kDefaultAdNotificationsPerHour;
-const char kFieldTrialParameterMaximumAdNotificationsPerDay[] =
+constexpr char kFieldTrialParameterMaximumAdNotificationsPerDay[] =
     "maximum_ad_notifications_per_day";
-const int kDefaultMaximumAdNotificationsPerDay = 40;
+constexpr int kDefaultMaximumAdNotificationsPerDay = 40;
 
-const char kFieldTrialParameterMaximumInlineContentAdsPerHour[] =
+constexpr char kFieldTrialParameterMaximumInlineContentAdsPerHour[] =
     "maximum_inline_content_ads_per_hour";
-const int kDefaultMaximumInlineContentAdsPerHour = 4;
-const char kFieldTrialParameterMaximumInlineContentAdsPerDay[] =
+constexpr int kDefaultMaximumInlineContentAdsPerHour = 4;
+constexpr char kFieldTrialParameterMaximumInlineContentAdsPerDay[] =
     "maximum_inline_content_ads_per_day";
-const int kDefaultMaximumInlineContentAdsPerDay = 20;
+constexpr int kDefaultMaximumInlineContentAdsPerDay = 20;
 
-const char kFieldTrialParameterMaximumNewTabPageAdsPerHour[] =
+constexpr char kFieldTrialParameterMaximumNewTabPageAdsPerHour[] =
     "maximum_new_tab_page_ads_per_hour";
-const int kDefaultMaximumNewTabPageAdsPerHour = 4;
-const char kFieldTrialParameterMaximumNewTabPageAdsPerDay[] =
+constexpr int kDefaultMaximumNewTabPageAdsPerHour = 4;
+constexpr char kFieldTrialParameterMaximumNewTabPageAdsPerDay[] =
     "maximum_new_tab_page_ads_per_day";
-const int kDefaultMaximumNewTabPageAdsPerDay = 20;
+constexpr int kDefaultMaximumNewTabPageAdsPerDay = 20;
 
-const char kFieldTrialParameterMaximumPromotedContentAdsPerHour[] =
+constexpr char kFieldTrialParameterMaximumPromotedContentAdsPerHour[] =
     "maximum_promoted_content_ads_per_hour";
-const int kDefaultMaximumPromotedContentAdsPerHour = 4;
-const char kFieldTrialParameterMaximumPromotedContentAdsPerDay[] =
+constexpr int kDefaultMaximumPromotedContentAdsPerHour = 4;
+constexpr char kFieldTrialParameterMaximumPromotedContentAdsPerDay[] =
     "maximum_promoted_content_ads_per_day";
-const int kDefaultMaximumPromotedContentAdsPerDay = 20;
+constexpr int kDefaultMaximumPromotedContentAdsPerDay = 20;
 
-const char kFieldTrialParameterBrowsingHistoryMaxCount[] =
+constexpr char kFieldTrialParameterBrowsingHistoryMaxCount[] =
     "browsing_history_max_count";
-const int kDefaultBrowsingHistoryMaxCount = 5000;
-const char kFieldTrialParameterBrowsingHistoryDaysAgo[] =
+constexpr int kDefaultBrowsingHistoryMaxCount = 5000;
+constexpr char kFieldTrialParameterBrowsingHistoryDaysAgo[] =
     "browsing_history_days_ago";
-const int kDefaultBrowsingHistoryDaysAgo = 180;
+constexpr int kDefaultBrowsingHistoryDaysAgo = 180;
 
-const char kFieldTrialParameterAdServingVersion[] = "ad_serving_version";
-const int kDefaultAdServingVersion = 1;
+constexpr char kFieldTrialParameterAdServingVersion[] = "ad_serving_version";
+constexpr int kDefaultAdServingVersion = 1;
 
 }  // namespace
 

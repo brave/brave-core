@@ -14,7 +14,7 @@
 namespace ads {
 
 namespace {
-const int kPerHourCap = 1;
+constexpr int kPerHourCap = 1;
 }  // namespace
 
 PerHourExclusionRule::PerHourExclusionRule(const AdEventList& ad_events)

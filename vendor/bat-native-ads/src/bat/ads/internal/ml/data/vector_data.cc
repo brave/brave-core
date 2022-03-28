@@ -12,7 +12,7 @@ namespace ads {
 namespace ml {
 
 namespace {
-const double kMinimumVectorLength = 1e-7;
+constexpr double kMinimumVectorLength = 1e-7;
 }  // namespace
 
 VectorData::VectorData() : Data(DataType::kVector) {}

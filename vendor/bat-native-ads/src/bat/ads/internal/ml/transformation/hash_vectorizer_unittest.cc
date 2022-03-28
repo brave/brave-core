@@ -16,9 +16,7 @@ namespace ads {
 namespace ml {
 
 namespace {
-
-const char kHashCheck[] = "ml/hash_vectorizer/hashing_validation.json";
-
+constexpr char kHashCheck[] = "ml/hash_vectorizer/hashing_validation.json";
 }  // namespace
 
 class BatAdsHashVectorizerTest : public UnitTestBase {

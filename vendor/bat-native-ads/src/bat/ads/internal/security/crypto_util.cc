@@ -24,9 +24,9 @@ namespace security {
 
 namespace {
 
-const int kHKDFSeedLength = 32;
+constexpr int kHKDFSeedLength = 32;
 
-const uint8_t kHKDFSalt[] = {
+constexpr uint8_t kHKDFSalt[] = {
     126, 244, 99,  158, 51,  68,  253, 80,  133, 183, 51,  180, 77,
     62,  74,  252, 62,  106, 96,  125, 241, 110, 134, 87,  190, 208,
     158, 84,  125, 69,  246, 207, 162, 247, 107, 172, 37,  34,  53,

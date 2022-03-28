@@ -12,12 +12,14 @@ namespace ads {
 namespace features {
 
 namespace {
-const char kFeatureName[] = "TextClassification";
-const char kFieldTrialParameterPageProbabilitiesHistorySize[] =
+
+constexpr char kFeatureName[] = "TextClassification";
+constexpr char kFieldTrialParameterPageProbabilitiesHistorySize[] =
     "page_probabilities_history_size";
-const char kFieldTrialParameterResourceVersion[] =
+constexpr char kFieldTrialParameterResourceVersion[] =
     "text_classification_resource_version";
-const int kDefaultResourceVersion = 1;
+constexpr int kDefaultResourceVersion = 1;
+
 }  // namespace
 
 const base::Feature kTextClassification{kFeatureName,

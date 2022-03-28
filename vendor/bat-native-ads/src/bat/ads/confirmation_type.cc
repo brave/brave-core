@@ -13,17 +13,17 @@ namespace {
 
 // Do not change the following string values as they are used for persisting and
 // restoring state
-const char kUndefinedConfirmationType[] = "";
-const char kClickedConfirmationType[] = "click";
-const char kDismissedConfirmationType[] = "dismiss";
-const char kViewedConfirmationType[] = "view";
-const char kServedConfirmationType[] = "served";
-const char kTransferredConfirmationType[] = "landed";
-const char kSavedConfirmationType[] = "bookmark";
-const char kFlaggedConfirmationType[] = "flag";
-const char kUpvotedConfirmationType[] = "upvote";
-const char kDownvotedConfirmationType[] = "downvote";
-const char kConversionConfirmationType[] = "conversion";
+constexpr char kUndefinedConfirmationType[] = "";
+constexpr char kClickedConfirmationType[] = "click";
+constexpr char kDismissedConfirmationType[] = "dismiss";
+constexpr char kViewedConfirmationType[] = "view";
+constexpr char kServedConfirmationType[] = "served";
+constexpr char kTransferredConfirmationType[] = "landed";
+constexpr char kSavedConfirmationType[] = "bookmark";
+constexpr char kFlaggedConfirmationType[] = "flag";
+constexpr char kUpvotedConfirmationType[] = "upvote";
+constexpr char kDownvotedConfirmationType[] = "downvote";
+constexpr char kConversionConfirmationType[] = "conversion";
 
 }  // namespace
 

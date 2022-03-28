@@ -12,8 +12,10 @@ namespace ads {
 namespace features {
 
 namespace {
-const char kFeatureName[] = "EpsilonGreedyBandit";
-const char kFieldTrialParameterEpsilonValue[] = "epsilon_value";
+
+constexpr char kFeatureName[] = "EpsilonGreedyBandit";
+constexpr char kFieldTrialParameterEpsilonValue[] = "epsilon_value";
+
 }  // namespace
 
 const base::Feature kEpsilonGreedyBandit{kFeatureName,

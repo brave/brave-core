@@ -14,7 +14,7 @@
 namespace ads {
 
 namespace {
-const char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
+constexpr char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 }  // namespace
 
 class BatAdsPerMonthExclusionRuleTest : public UnitTestBase {

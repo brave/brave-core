@@ -14,8 +14,8 @@ namespace server {
 
 namespace {
 
-const char kProductionHost[] = "https://ads-serve.brave.com";
-const char kStagingHost[] = "https://ads-serve.bravesoftware.com";
+constexpr char kProductionHost[] = "https://ads-serve.brave.com";
+constexpr char kStagingHost[] = "https://ads-serve.bravesoftware.com";
 
 }  // namespace
 
