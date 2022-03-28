@@ -998,11 +998,11 @@ interface BraveWalletService {
 };
 
 enum DefaultWallet {
-  AskDeprecated,
-  None,
-  CryptoWallets,
-  BraveWalletPreferExtension,
-  BraveWallet
+  AskDeprecated = 0,
+  None = 1,
+  CryptoWallets = 2,
+  BraveWalletPreferExtension = 3,
+  BraveWallet = 4
 };
 
 struct EncryptionKeyRequest {

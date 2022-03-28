@@ -15,7 +15,9 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -97,6 +99,10 @@ constexpr char OnAccountChangedScript[] =
           window.domAutomationController.send(result)
        })
        disconnect())";
+
+constexpr char CheckSolanaProviderScript[] =
+    "window.domAutomationController.send(!!window.solana)";
+constexpr char OverwriteScript[] = "window.solana = ['test'];window.solana[0]";
 
 std::string VectorToArrayString(const std::vector<uint8_t>& vec) {
   std::string result;
@@ -469,6 +475,11 @@ class SolanaProviderTest : public InProcessBrowserTest {
     ASSERT_TRUE(WaitForLoadStop(web_contents(browser))) << ":" << url;
   }
 
+  void ReloadAndWaitForLoadStop(Browser* browser) {
+    chrome::Reload(browser, WindowOpenDisposition::CURRENT_TAB);
+    ASSERT_TRUE(content::WaitForLoadStop(web_contents(browser)));
+  }
+
  protected:
   TestBraveContentBrowserClient test_content_browser_client_;
   base::test::ScopedFeatureList feature_list_;
@@ -487,8 +498,7 @@ class SolanaProviderDisabledTest : public SolanaProviderTest {
 };
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderDisabledTest, SolanaObject) {
-  auto result = EvalJs(web_contents(browser()),
-                       "window.domAutomationController.send(!!window.solana)",
+  auto result = EvalJs(web_contents(browser()), CheckSolanaProviderScript,
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(false), result.value);
 }
@@ -498,10 +508,52 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Incognito) {
   GURL url = embedded_test_server()->GetURL("/empty.html");
   NavigateToURLAndWaitForLoadStop(private_browser, url);
 
-  auto result = EvalJs(web_contents(private_browser),
-                       "window.domAutomationController.send(!!window.solana)",
+  auto result = EvalJs(web_contents(private_browser), CheckSolanaProviderScript,
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(false), result.value);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, DefaultWallet) {
+  auto result = EvalJs(web_contents(browser()), CheckSolanaProviderScript,
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+
+  EXPECT_EQ(base::Value(true), result.value);
+  brave_wallet::SetDefaultWallet(browser()->profile()->GetPrefs(),
+                                 brave_wallet::mojom::DefaultWallet::None);
+  ReloadAndWaitForLoadStop(browser());
+  auto result2 = EvalJs(web_contents(browser()), CheckSolanaProviderScript,
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(false), result2.value);
+
+  brave_wallet::SetDefaultWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::CryptoWallets);
+  ReloadAndWaitForLoadStop(browser());
+  auto result3 = EvalJs(web_contents(browser()), CheckSolanaProviderScript,
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(false), result3.value);
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ExtensionOverwrite) {
+  brave_wallet::SetDefaultWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWallet);
+  ReloadAndWaitForLoadStop(browser());
+  // can't be overwritten
+  EXPECT_EQ(content::EvalJs(web_contents(browser()), OverwriteScript).error,
+            "");
+  ASSERT_TRUE(
+      content::EvalJs(web_contents(browser()), "window.solana.isPhantom")
+          .ExtractBool());
+
+  brave_wallet::SetDefaultWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  ReloadAndWaitForLoadStop(browser());
+  // overwritten
+  EXPECT_EQ(
+      content::EvalJs(web_contents(browser()), OverwriteScript).ExtractString(),
+      "test");
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, NonWritable) {
