@@ -774,6 +774,10 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
 
   if (keyring) {
     discovery_weak_factory_.InvalidateWeakPtrs();
+    // Start account discovery process. Consecutively look for accounts with at
+    // least one transaction. Add such ones and all missing previous ones(so no
+    // gaps). Stop discovering when there are 20 consecutive accounts with no
+    // transactions.
     AddDiscoveryAccountsForKeyring(1, kDiscoveryAttempts);
   }
 
@@ -1099,8 +1103,9 @@ void KeyringService::AddAccountForKeyring(const std::string& keyring_id,
       keyring->GetAddress(accounts_num - 1), keyring_id);
 }
 
-void KeyringService::AddDiscoveryAccountsForKeyring(int discovery_account_index,
-                                                    int attempts_left) {
+void KeyringService::AddDiscoveryAccountsForKeyring(
+    size_t discovery_account_index,
+    int attempts_left) {
   if (attempts_left <= 0)
     return;
   auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
@@ -1113,7 +1118,7 @@ void KeyringService::AddDiscoveryAccountsForKeyring(int discovery_account_index,
                      discovery_account_index, attempts_left));
 }
 
-void KeyringService::OnGetTransactionCount(int discovery_account_index,
+void KeyringService::OnGetTransactionCount(size_t discovery_account_index,
                                            int attempts_left,
                                            uint256_t result,
                                            mojom::ProviderError error,
@@ -1125,8 +1130,8 @@ void KeyringService::OnGetTransactionCount(int discovery_account_index,
     auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
     if (!keyring)
       return;
-    int last_account_index = keyring->GetAccountsNumber() - 1;
-    DCHECK_GE(last_account_index, 0);
+    DCHECK_GT(keyring->GetAccountsNumber(), 0u);
+    size_t last_account_index = keyring->GetAccountsNumber() - 1;
     if (discovery_account_index > last_account_index) {
       AddAccountsWithDefaultName(discovery_account_index - last_account_index);
       NotifyAccountsChanged();

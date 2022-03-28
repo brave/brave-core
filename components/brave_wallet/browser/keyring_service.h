@@ -277,7 +277,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   void AddAccountForKeyring(const std::string& keyring_id,
                             const std::string& account_name);
-  void AddDiscoveryAccountsForKeyring(int discovery_account_index,
+  void AddDiscoveryAccountsForKeyring(size_t discovery_account_index,
                                       int attempts_left);
   mojom::KeyringInfoPtr GetKeyringInfoSync(const std::string& keyring_id);
   void OnAutoLockFired();
@@ -335,7 +335,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void NotifySelectedAccountChanged(mojom::CoinType coin);
   void SetSelectedAccountForCoin(mojom::CoinType coin,
                                  const std::string& address);
-  void OnGetTransactionCount(int discovery_account_index,
+  void OnGetTransactionCount(size_t discovery_account_index,
                              int attempts_left,
                              uint256_t result,
                              mojom::ProviderError error,
