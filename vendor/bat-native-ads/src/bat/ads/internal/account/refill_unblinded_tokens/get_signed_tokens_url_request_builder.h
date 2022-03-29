@@ -23,10 +23,11 @@ class GetSignedTokensUrlRequestBuilder final : UrlRequestBuilder {
   mojom::UrlRequestPtr Build() override;
 
  private:
-  WalletInfo wallet_;
-  std::string nonce_;
-
   std::string BuildUrl() const;
+
+  WalletInfo wallet_;
+
+  std::string nonce_;
 };
 
 }  // namespace ads

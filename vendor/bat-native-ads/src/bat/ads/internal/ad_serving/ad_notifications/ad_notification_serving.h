@@ -54,11 +54,6 @@ class AdServing final {
   void OnPrefChanged(const std::string& path);
 
  private:
-  bool is_serving_ = false;
-
-  Timer timer_;
-
-  std::unique_ptr<EligibleAdsBase> eligible_ads_;
   bool IsSupported() const;
 
   bool ShouldServeAdsAtRegularIntervals() const;
@@ -73,10 +68,16 @@ class AdServing final {
   void FailedToServeAd();
   void ServedAd(const AdNotificationInfo& ad);
 
-  base::ObserverList<AdNotificationServingObserver> observers_;
-
   void NotifyDidServeAdNotification(const AdNotificationInfo& ad) const;
   void NotifyFailedToServeAdNotification() const;
+
+  base::ObserverList<AdNotificationServingObserver> observers_;
+
+  bool is_serving_ = false;
+
+  Timer timer_;
+
+  std::unique_ptr<EligibleAdsBase> eligible_ads_;
 };
 
 }  // namespace ad_notifications

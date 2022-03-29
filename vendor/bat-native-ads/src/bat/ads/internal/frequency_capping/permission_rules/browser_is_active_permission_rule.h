@@ -22,13 +22,13 @@ class BrowserIsActivePermissionRule final : public PermissionRule {
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap();
 
   BrowserIsActivePermissionRule(const BrowserIsActivePermissionRule&) = delete;
   BrowserIsActivePermissionRule& operator=(
       const BrowserIsActivePermissionRule&) = delete;
+
+  std::string last_message_;
 };
 
 }  // namespace ads

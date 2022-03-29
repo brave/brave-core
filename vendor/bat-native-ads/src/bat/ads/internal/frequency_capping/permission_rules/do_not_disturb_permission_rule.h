@@ -22,13 +22,13 @@ class DoNotDisturbPermissionRule final : public PermissionRule {
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap();
 
   DoNotDisturbPermissionRule(const DoNotDisturbPermissionRule&) = delete;
   DoNotDisturbPermissionRule& operator=(const DoNotDisturbPermissionRule&) =
       delete;
+
+  std::string last_message_;
 };
 
 }  // namespace ads

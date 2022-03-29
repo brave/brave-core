@@ -22,12 +22,12 @@ class MediaPermissionRule final : public PermissionRule {
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap();
 
   MediaPermissionRule(const MediaPermissionRule&) = delete;
   MediaPermissionRule& operator=(const MediaPermissionRule&) = delete;
+
+  std::string last_message_;
 };
 
 }  // namespace ads

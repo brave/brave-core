@@ -27,24 +27,25 @@ class AdServer final {
   void MaybeFetch();
 
  private:
-  base::ObserverList<AdServerObserver> observers_;
-
-  bool is_processing_ = false;
-
   void Fetch();
   void OnFetch(const mojom::UrlResponse& url_response);
 
   void SaveCatalog(const Catalog& catalog);
 
-  Timer timer_;
   void FetchAfterDelay();
 
-  BackoffTimer retry_timer_;
   void Retry();
   void OnRetry();
 
   void NotifyCatalogUpdated(const Catalog& catalog) const;
   void NotifyCatalogFailed() const;
+
+  base::ObserverList<AdServerObserver> observers_;
+
+  bool is_processing_ = false;
+
+  Timer timer_;
+  BackoffTimer retry_timer_;
 };
 
 }  // namespace ads

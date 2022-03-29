@@ -39,12 +39,12 @@ class SubdivisionTargetingExclusionRule final
   std::string GetLastMessage() const override;
 
  private:
+  bool DoesRespectCap(const CreativeAdInfo& creative_ad);
+
   raw_ptr<ad_targeting::geographic::SubdivisionTargeting>
       subdivision_targeting_ = nullptr;  // NOT OWNED
 
   std::string last_message_;
-
-  bool DoesRespectCap(const CreativeAdInfo& creative_ad);
 };
 
 }  // namespace ads

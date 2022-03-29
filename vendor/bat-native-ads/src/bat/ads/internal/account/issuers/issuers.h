@@ -30,24 +30,25 @@ class Issuers {
   void MaybeFetch();
 
  private:
-  raw_ptr<IssuersDelegate> delegate_ = nullptr;
-
-  bool is_fetching_ = false;
-
   void Fetch();
   void OnFetch(const mojom::UrlResponse& url_response);
 
   void OnDidGetIssuers(const IssuersInfo& issuers);
   void OnFailedToGetIssuers();
 
-  Timer timer_;
   void FetchAfterDelay();
   base::TimeDelta GetFetchDelay() const;
 
-  BackoffTimer retry_timer_;
   void Retry();
   void OnRetry();
   void StopRetrying();
+
+  raw_ptr<IssuersDelegate> delegate_ = nullptr;
+
+  bool is_fetching_ = false;
+
+  Timer timer_;
+  BackoffTimer retry_timer_;
 };
 
 }  // namespace ads

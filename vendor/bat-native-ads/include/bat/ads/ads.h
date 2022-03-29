@@ -233,7 +233,6 @@ class ADS_EXPORT Ads {
   virtual bool ToggleFlaggedAd(const std::string& json) = 0;
 
  private:
-  // Not copyable, not assignable
   Ads(const Ads&) = delete;
   Ads& operator=(const Ads&) = delete;
 };

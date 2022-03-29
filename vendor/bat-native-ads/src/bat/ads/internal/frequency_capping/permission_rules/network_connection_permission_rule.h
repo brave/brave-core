@@ -22,14 +22,14 @@ class NetworkConnectionPermissionRule final : public PermissionRule {
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap();
 
   NetworkConnectionPermissionRule(const NetworkConnectionPermissionRule&) =
       delete;
   NetworkConnectionPermissionRule& operator=(
       const NetworkConnectionPermissionRule&) = delete;
+
+  std::string last_message_;
 };
 
 }  // namespace ads

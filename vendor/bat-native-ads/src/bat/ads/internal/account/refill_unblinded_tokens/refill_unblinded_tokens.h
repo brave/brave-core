@@ -41,13 +41,6 @@ class RefillUnblindedTokens final {
   void MaybeRefill(const WalletInfo& wallet);
 
  private:
-  WalletInfo wallet_;
-
-  std::string nonce_;
-
-  std::vector<Token> tokens_;
-  std::vector<BlindedToken> blinded_tokens_;
-
   void Refill();
 
   void RequestSignedTokens();
@@ -60,7 +53,6 @@ class RefillUnblindedTokens final {
 
   void OnFailedToRefillUnblindedTokens(const bool should_retry);
 
-  BackoffTimer retry_timer_;
   void Retry();
   void OnRetry();
 
@@ -68,12 +60,21 @@ class RefillUnblindedTokens final {
 
   int CalculateAmountOfTokensToRefill() const;
 
-  bool is_processing_ = false;
-
   raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
 
   raw_ptr<RefillUnblindedTokensDelegate> delegate_ = nullptr;
+
+  WalletInfo wallet_;
+
+  std::string nonce_;
+
+  std::vector<Token> tokens_;
+  std::vector<BlindedToken> blinded_tokens_;
+
+  bool is_processing_ = false;
+
+  BackoffTimer retry_timer_;
 
   base::WeakPtrFactory<RefillUnblindedTokens> weak_ptr_factory_{this};
 };

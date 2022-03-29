@@ -58,16 +58,10 @@ class ConfirmationsState final {
   }
 
  private:
-  bool is_initialized_ = false;
-  InitializeCallback callback_;
-
   std::string ToJson();
   bool FromJson(const std::string& json);
-
-  IssuerList issuers_;
   bool ParseIssuersFromDictionary(base::DictionaryValue* dictionary);
 
-  ConfirmationList failed_confirmations_;
   base::Value GetFailedConfirmationsAsDictionary(
       const ConfirmationList& confirmations) const;
   bool GetFailedConfirmationsFromDictionary(base::Value* dictionary,
@@ -75,12 +69,20 @@ class ConfirmationsState final {
   bool ParseFailedConfirmationsFromDictionary(
       base::DictionaryValue* dictionary);
 
-  std::unique_ptr<privacy::UnblindedTokens> unblinded_tokens_;
   bool ParseUnblindedTokensFromDictionary(base::DictionaryValue* dictionary);
 
-  std::unique_ptr<privacy::UnblindedPaymentTokens> unblinded_payment_tokens_;
   bool ParseUnblindedPaymentTokensFromDictionary(
       base::DictionaryValue* dictionary);
+
+  bool is_initialized_ = false;
+  InitializeCallback callback_;
+
+  IssuerList issuers_;
+
+  ConfirmationList failed_confirmations_;
+
+  std::unique_ptr<privacy::UnblindedTokens> unblinded_tokens_;
+  std::unique_ptr<privacy::UnblindedPaymentTokens> unblinded_payment_tokens_;
 };
 
 }  // namespace ads

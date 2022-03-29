@@ -27,12 +27,12 @@ class AdsPerDayPermissionRule final : public PermissionRule {
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap(const std::deque<base::Time>& history);
 
   AdsPerDayPermissionRule(const AdsPerDayPermissionRule&) = delete;
   AdsPerDayPermissionRule& operator=(const AdsPerDayPermissionRule&) = delete;
+
+  std::string last_message_;
 };
 
 }  // namespace ads

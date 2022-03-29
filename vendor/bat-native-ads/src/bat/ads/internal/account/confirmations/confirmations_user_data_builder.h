@@ -19,18 +19,19 @@ class ConfirmationsUserDataBuilder final : public UserDataBuilder {
   ConfirmationsUserDataBuilder(const base::Time time,
                                const std::string& creative_instance_id,
                                const ConfirmationType& confirmation_type);
+
   ~ConfirmationsUserDataBuilder() override;
 
   void Build(UserDataBuilderCallback callback) const override;
 
  private:
-  base::Time time_;
-  std::string creative_instance_id_;
-  ConfirmationType confirmation_type_ = ConfirmationType::kUndefined;
-
   ConfirmationsUserDataBuilder(const ConfirmationsUserDataBuilder&) = delete;
   ConfirmationsUserDataBuilder& operator=(const ConfirmationsUserDataBuilder&) =
       delete;
+
+  base::Time time_;
+  std::string creative_instance_id_;
+  ConfirmationType confirmation_type_ = ConfirmationType::kUndefined;
 };
 
 }  // namespace ads

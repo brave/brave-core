@@ -24,13 +24,13 @@ class CreateConfirmationUrlRequestBuilder final : UrlRequestBuilder {
   mojom::UrlRequestPtr Build() override;
 
  private:
-  ConfirmationInfo confirmation_;
-
   std::string BuildUrl() const;
 
   std::vector<std::string> BuildHeaders() const;
 
   std::string BuildBody() const;
+
+  ConfirmationInfo confirmation_;
 };
 
 }  // namespace ads

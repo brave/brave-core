@@ -29,11 +29,11 @@ class Conversions final : public Resource<ConversionIdPatternMap> {
   ConversionIdPatternMap get() const override;
 
  private:
+  bool FromJson(const std::string& json);
+
   bool is_initialized_ = false;
 
   ConversionIdPatternMap conversion_id_patterns_;
-
-  bool FromJson(const std::string& json);
 };
 
 }  // namespace resource

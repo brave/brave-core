@@ -45,7 +45,6 @@ class AdServing final {
                     GetInlineContentAdCallback callback);
 
  private:
-  std::unique_ptr<EligibleAdsBase> eligible_ads_;
   bool IsSupported() const;
 
   bool ServeAd(const InlineContentAdInfo& ad,
@@ -54,10 +53,12 @@ class AdServing final {
                        GetInlineContentAdCallback callback);
   void ServedAd(const InlineContentAdInfo& ad);
 
-  base::ObserverList<InlineContentAdServingObserver> observers_;
-
   void NotifyDidServeInlineContentAd(const InlineContentAdInfo& ad) const;
   void NotifyFailedToServeInlineContentAd() const;
+
+  base::ObserverList<InlineContentAdServingObserver> observers_;
+
+  std::unique_ptr<EligibleAdsBase> eligible_ads_;
 };
 
 }  // namespace inline_content_ads

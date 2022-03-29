@@ -28,9 +28,9 @@ class DaypartExclusionRule final : public ExclusionRule<CreativeAdInfo> {
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap(const CreativeAdInfo& creative_ad) const;
+
+  std::string last_message_;
 };
 
 }  // namespace ads

@@ -35,10 +35,6 @@ class RedeemUnblindedPaymentTokens final {
   void MaybeRedeemAfterDelay(const WalletInfo& wallet);
 
  private:
-  WalletInfo wallet_;
-
-  Timer timer_;
-
   void Redeem();
   void OnRedeem(
       const mojom::UrlResponse& url_response,
@@ -51,16 +47,20 @@ class RedeemUnblindedPaymentTokens final {
 
   void ScheduleNextTokenRedemption();
 
-  BackoffTimer retry_timer_;
   void Retry();
   void OnRetry();
-
-  bool is_processing_ = false;
 
   base::TimeDelta CalculateTokenRedemptionDelay();
   base::Time CalculateNextTokenRedemptionDate();
 
   raw_ptr<RedeemUnblindedPaymentTokensDelegate> delegate_ = nullptr;
+
+  WalletInfo wallet_;
+
+  bool is_processing_ = false;
+
+  Timer timer_;
+  BackoffTimer retry_timer_;
 };
 
 }  // namespace ads

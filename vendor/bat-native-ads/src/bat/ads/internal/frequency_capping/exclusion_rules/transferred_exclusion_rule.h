@@ -29,12 +29,12 @@ class TransferredExclusionRule final : public ExclusionRule<CreativeAdInfo> {
   std::string GetLastMessage() const override;
 
  private:
+  bool DoesRespectCap(const AdEventList& ad_events,
+                      const CreativeAdInfo& creative_ad);
+
   AdEventList ad_events_;
 
   std::string last_message_;
-
-  bool DoesRespectCap(const AdEventList& ad_events,
-                      const CreativeAdInfo& creative_ad);
 };
 
 }  // namespace ads

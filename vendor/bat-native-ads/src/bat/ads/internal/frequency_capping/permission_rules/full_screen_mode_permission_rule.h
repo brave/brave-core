@@ -22,13 +22,13 @@ class FullScreenModePermissionRule final : public PermissionRule {
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap();
 
   FullScreenModePermissionRule(const FullScreenModePermissionRule&) = delete;
   FullScreenModePermissionRule& operator=(const FullScreenModePermissionRule&) =
       delete;
+
+  std::string last_message_;
 };
 
 }  // namespace ads

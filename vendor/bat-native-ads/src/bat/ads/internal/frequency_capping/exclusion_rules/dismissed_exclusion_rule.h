@@ -29,14 +29,14 @@ class DismissedExclusionRule final : public ExclusionRule<CreativeAdInfo> {
   std::string GetLastMessage() const override;
 
  private:
-  AdEventList ad_events_;
-
-  std::string last_message_;
-
   bool DoesRespectCap(const AdEventList& ad_events);
 
   AdEventList FilterAdEvents(const AdEventList& ad_events,
                              const CreativeAdInfo& creative_ad) const;
+
+  AdEventList ad_events_;
+
+  std::string last_message_;
 };
 
 }  // namespace ads

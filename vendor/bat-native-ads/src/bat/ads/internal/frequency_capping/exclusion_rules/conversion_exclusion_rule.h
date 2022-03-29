@@ -29,16 +29,16 @@ class ConversionExclusionRule final : public ExclusionRule<CreativeAdInfo> {
   std::string GetLastMessage() const override;
 
  private:
+  bool ShouldAllow(const CreativeAdInfo& creative_ad);
+
+  bool DoesRespectCap(const AdEventList& ad_events,
+                      const CreativeAdInfo& creative_ad);
+
   bool should_allow_conversion_tracking_ = false;
 
   AdEventList ad_events_;
 
   std::string last_message_;
-
-  bool ShouldAllow(const CreativeAdInfo& creative_ad);
-
-  bool DoesRespectCap(const AdEventList& ad_events,
-                      const CreativeAdInfo& creative_ad);
 };
 
 }  // namespace ads
