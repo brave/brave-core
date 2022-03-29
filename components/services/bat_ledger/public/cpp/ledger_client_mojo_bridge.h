@@ -54,26 +54,38 @@ class LedgerClientMojoBridge :
 
   void PublisherListNormalized(ledger::type::PublisherInfoList list) override;
 
-  void SetBooleanState(const std::string& name, bool value) override;
+  void SetBooleanState(const std::string& name,
+                       bool value,
+                       SetBooleanStateCallback callback) override;
   void GetBooleanState(const std::string& name,
                        GetBooleanStateCallback callback) override;
-  void SetIntegerState(const std::string& name, int value) override;
+  void SetIntegerState(const std::string& name,
+                       int value,
+                       SetIntegerStateCallback callback) override;
   void GetIntegerState(const std::string& name,
                        GetIntegerStateCallback callback) override;
-  void SetDoubleState(const std::string& name, double value) override;
+  void SetDoubleState(const std::string& name,
+                      double value,
+                      SetDoubleStateCallback callback) override;
   void GetDoubleState(const std::string& name,
                       GetDoubleStateCallback callback) override;
   void SetStringState(const std::string& name,
-                      const std::string& value) override;
+                      const std::string& value,
+                      SetStringStateCallback callback) override;
   void GetStringState(const std::string& name,
                       GetStringStateCallback callback) override;
-  void SetInt64State(const std::string& name, int64_t value) override;
+  void SetInt64State(const std::string& name,
+                     int64_t value,
+                     SetInt64StateCallback callback) override;
   void GetInt64State(const std::string& name,
                      GetInt64StateCallback callback) override;
-  void SetUint64State(const std::string& name, uint64_t value) override;
+  void SetUint64State(const std::string& name,
+                      uint64_t value,
+                      SetUint64StateCallback callback) override;
   void GetUint64State(const std::string& name,
                       GetUint64StateCallback callback) override;
-  void ClearState(const std::string& name) override;
+  void ClearState(const std::string& name,
+                  ClearStateCallback callback) override;
 
   void GetBooleanOption(
       const std::string& name,
