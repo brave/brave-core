@@ -336,13 +336,21 @@ public class PopoverController: UIViewController {
 
     viewController.present(self, animated: true, completion: completion)
   }
+  
+  public func dismissPopover(_ completion: (() -> Void)? = nil) {
+    dismiss(animated: true) { [weak self] in
+      guard let self = self else { return }
+      
+      self.popoverDidDismiss?(self)
+      completion?()
+    }
+  }
 
   override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
 
     if dismissesOnOrientationChanged {
-      dismiss(animated: true)
-      popoverDidDismiss?(self)
+      dismissPopover()
     }
   }
 }
@@ -353,10 +361,9 @@ extension PopoverController {
   @objc private func tappedBackgroundOverlay(_ tap: UITapGestureRecognizer) {
     if tap.state == .ended {
       if contentController.popoverShouldDismiss(self) {
-        dismiss(animated: true)
         // Not sure if we want this after dismissal completes or right away. Could always create a
         // `popoverWillDismiss` to put before and `did` after
-        popoverDidDismiss?(self)
+        dismissPopover()
       }
     }
   }
@@ -425,8 +432,7 @@ extension PopoverController {
       }
 
       if contentController.popoverShouldDismiss(self) && (passedVelocityThreshold || scale < 0.5) {
-        dismiss(animated: true)
-        popoverDidDismiss?(self)
+        dismissPopover()
       } else {
         UIView.animate(
           withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [.beginFromCurrentState, .allowUserInteraction],
