@@ -91,6 +91,28 @@ TEST_F(PostClaimBitflyerTest, ServerError400FlaggedWallet) {
                   });
 }
 
+TEST_F(PostClaimBitflyerTest, ServerError400RegionNotSupported) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 400;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "region not supported: failed to validate account: invalid country",
+    "code": 400
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                  [](type::Result result) {
+                    EXPECT_EQ(result, type::Result::REGION_NOT_SUPPORTED);
+                  });
+}
+
 TEST_F(PostClaimBitflyerTest, ServerError400UnknownMessage) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(

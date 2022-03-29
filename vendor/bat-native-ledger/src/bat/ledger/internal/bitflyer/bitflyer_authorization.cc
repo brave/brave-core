@@ -193,6 +193,7 @@ void BitflyerAuthorization::OnClaimWallet(
     case type::Result::MISMATCHED_PROVIDER_ACCOUNTS:
     case type::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:
     case type::Result::FLAGGED_WALLET:
+    case type::Result::REGION_NOT_SUPPORTED:
       ledger_->database()->SaveEventLog(
           log::GetEventLogKeyForLinkingResult(result),
           constant::kWalletBitflyer + std::string("/") + address.substr(0, 5));

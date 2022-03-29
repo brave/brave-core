@@ -1272,8 +1272,42 @@ INSTANTIATE_TEST_SUITE_P(
       type::Result::FLAGGED_WALLET,
       type::WalletStatus::NOT_CONNECTED
     },
+    LinkWalletParamType{  // Region not supported.
+      "05_region_not_supported",
+      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "id": "962ef3b8-bc12-4619-a349-c8083931b795", "label": "Brave Browser" } ])",
+        {}
+      },
+      false,
+      R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_BAD_REQUEST,
+        R"(
+          {
+              "message": "region not supported: failed to validate account: invalid country",
+              "code": 400
+          }
+        )",
+        {}
+      },
+      type::Result::REGION_NOT_SUPPORTED,
+      type::WalletStatus::NOT_CONNECTED
+    },
     LinkWalletParamType{  // Rewards Link (Claim) Wallet failed.
-      "05_link_wallet_failed",
+      "06_link_wallet_failed",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       type::UrlResponse{
         {},
@@ -1302,7 +1336,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::PENDING
     },
     LinkWalletParamType{  // Happy path.
-      "06_happy_path",
+      "07_happy_path",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       type::UrlResponse{
         {},

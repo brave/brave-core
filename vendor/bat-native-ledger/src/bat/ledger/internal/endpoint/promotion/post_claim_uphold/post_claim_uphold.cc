@@ -177,6 +177,8 @@ type::Result PostClaimUphold::ParseBody(const std::string& body) const {
   } else if (message->find("unable to link - unusual activity") !=
              std::string::npos) {
     return type::Result::FLAGGED_WALLET;
+  } else if (message->find("region not supported") != std::string::npos) {
+    return type::Result::REGION_NOT_SUPPORTED;
   } else {
     BLOG(0, "Unknown message!");
     return type::Result::LEDGER_ERROR;
