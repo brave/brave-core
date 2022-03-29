@@ -36,12 +36,8 @@ using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
 void SaveToJson(JsonWriter* writer, const AdContentInfo& info);
 void SaveToJson(JsonWriter* writer, const AdHistoryInfo& info);
-void SaveToJson(JsonWriter* writer, const AdNotificationInfo& info);
 void SaveToJson(JsonWriter* writer, const AdPreferencesInfo& info);
-void SaveToJson(JsonWriter* writer, const AdsHistoryInfo& info);
 void SaveToJson(JsonWriter* writer, const CategoryContentInfo& info);
-void SaveToJson(JsonWriter* writer, const ClientInfo& state);
-void SaveToJson(JsonWriter* writer, const NewTabPageAdInfo& info);
 
 template <typename T>
 void SaveToJson(const T& t, std::string* json) {
