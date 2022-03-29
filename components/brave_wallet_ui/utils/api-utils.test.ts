@@ -32,15 +32,19 @@ const mockUserVisibleTokenOptions = [
 const mockAccounts = [
   {
     ...mockAccount,
+    nativeBalanceRegistry: {
+      '0x1': '238699740940532526'
+    },
     tokenBalanceRegistry: {
-      [ethToken.contractAddress.toLowerCase()]: '238699740940532526',
       [batToken.contractAddress.toLowerCase()]: '0'
     }
   },
   {
     ...mockAccount,
+    nativeBalanceRegistry: {
+      '0x1': '80573000000000000'
+    },
     tokenBalanceRegistry: {
-      [ethToken.contractAddress.toLowerCase()]: '80573000000000000',
       [batToken.contractAddress.toLowerCase()]: '0'
     }
   }
@@ -61,6 +65,7 @@ describe('Check Flattened Account Balances', () => {
   test('Value should return an Empty Array', () => {
     expect(getFlattenedAccountBalances([], mockUserVisibleTokenOptions)).toEqual([])
   })
+
   test('Value should return a Flattened Account Balance List', () => {
     expect(getFlattenedAccountBalances(mockAccounts, mockUserVisibleTokenOptions)).toEqual(expectedResult)
   })
