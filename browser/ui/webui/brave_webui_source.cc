@@ -774,8 +774,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "walletAccountLink", IDS_REWARDS_WALLET_ACCOUNT_LINK },
         { "walletAddFunds", IDS_REWARDS_WALLET_ADD_FUNDS },
         { "walletAutoContribute", IDS_REWARDS_WALLET_AUTO_CONTRIBUTE },
-        { "walletCompleteVerificationLink", IDS_REWARDS_WALLET_COMPLETE_VERIFICATION_LINK },  // NOLINT
-        { "walletCompleteVerificationText", IDS_REWARDS_WALLET_COMPLETE_VERIFICATION_TEXT },  // NOLINT
         { "walletDisconnected", IDS_REWARDS_WALLET_DISCONNECTED },
         { "walletDisconnectLink", IDS_REWARDS_WALLET_DISCONNECT_LINK },
         { "walletEstimatedEarnings", IDS_REWARDS_WALLET_ESTIMATED_EARNINGS },
@@ -784,6 +782,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "walletOneTimeTips", IDS_REWARDS_WALLET_ONE_TIME_TIPS },
         { "walletPending", IDS_REWARDS_WALLET_PENDING },
         { "walletPendingContributions", IDS_REWARDS_WALLET_PENDING_CONTRIBUTIONS },  // NOLINT
+        { "walletPendingText", IDS_REWARDS_WALLET_PENDING_TEXT },
         { "walletRewardsFromAds", IDS_REWARDS_WALLET_REWARDS_FROM_ADS },
         { "walletRewardsSummary", IDS_REWARDS_WALLET_REWARDS_SUMMARY },
         { "walletUnverified", IDS_REWARDS_WALLET_UNVERIFIED },

@@ -48,16 +48,6 @@ export function ExternalWalletBubble (props: Props) {
 
   function renderAccountLink () {
     switch (externalWallet.status) {
-      case 'pending':
-        return (
-          <button onClick={actionHandler('complete-verification')}>
-            {
-              formatMessage(getString('walletCompleteVerificationLink'), [
-                providerName
-              ])
-            }
-          </button>
-        )
       case 'disconnected':
         return (
           <button onClick={actionHandler('reconnect')}>
@@ -68,6 +58,8 @@ export function ExternalWalletBubble (props: Props) {
             }
           </button>
         )
+      case 'pending':
+        return null
       case 'verified':
         return (
           <button onClick={actionHandler('view-account')}>
@@ -94,16 +86,21 @@ export function ExternalWalletBubble (props: Props) {
         </style.header>
         {
           externalWallet.status === 'pending' &&
-            <style.pendingNotice>
-              <PendingIcon />
-              <span>{getString('walletCompleteVerificationText')}</span>
-            </style.pendingNotice>
+          <style.pendingNotice>
+            <PendingIcon />
+            <span>
+              {formatMessage(getString('walletPendingText'), [providerName])}
+            </span>
+          </style.pendingNotice>
         }
         <style.links>
-          <style.link>
-            <style.linkMarker />
-            {renderAccountLink()}
-          </style.link>
+          {
+            externalWallet.status !== 'pending' &&
+            <style.link>
+              <style.linkMarker />
+              {renderAccountLink()}
+            </style.link>
+          }
           <style.link>
             <style.linkMarker />
             <button onClick={actionHandler('disconnect')}>
