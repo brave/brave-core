@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 80c69ea700c9804d69bd7daa9ff6df80aae2eb1d..e6b7312b517e8a0ed10cc8e2e41ed2024c194349 100644
+index 0b2a0ccb532a85e9aa7cedd141c3b546a35b8b8d..7ee4bffd17ca10a0f9c1101b7b9022c574cfa8b9 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
 @@ -2976,6 +2976,7 @@ constexpr FeatureEntry::FeatureVariation kLensStandaloneVariations[] = {
