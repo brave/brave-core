@@ -189,8 +189,8 @@
 <translation id="905529390827000221">4 annonser per timme</translation>
 <translation id="7694167481321619202">5 annonser per timme</translation>
 <translation id="3705420658531870884">10 annonser per timme</translation>
-<translation id="8576106690599421723">Nivå på riktad annons</translation>
-<translation id="4775297407519948063">Brave kan härmed visa annonser avsedda för dig.</translation>
+<translation id="2356652719351432565">Regional annonsrelevans</translation>
+<translation id="3216275550298493597">Detta gör det möjligt för Brave att visa dig annonser som är specifikt avsedda för din region.</translation>
 <translation id="8446884382197647889">Läs mer</translation>
 <translation id="6209514229703649203">Automatiskt upptäckt som [[adsSubdivisionTarget]]</translation>
 <translation id="8010081455002666927">Hitta automatiskt</translation>
@@ -204,9 +204,9 @@
 <translation id="2365740070488517695">Donationer</translation>
 <translation id="5810507495128831593">Visa de engångstips du har gett till webbplatser och kreatörer.</translation>
 <translation id="9147550766164257963">Läs mer om dricks.</translation>
-<translation id="5012991400231464322">Månatliga bidrag</translation>
-<translation id="2084351799622920487">Ställ in återkommande månatliga bidrag så att du kan stödja sidor kontinuerligt.</translation>
-<translation id="8150772404570015166">Inga månatliga bidrag inställda än.</translation>
+<translation id="7577100371127227294">Månatliga dricks</translation>
+<translation id="178390304006113804">Ställ in återkommande månatliga dricks så att du kontinuerligt kan stödja dina favoritkreatörer.</translation>
+<translation id="3302159320447117425">Ingen månatlig dricks har konfigurerats än.</translation>
 <translation id="1617202384704994799">Kommer snart.</translation>
 <translation id="2241248417273918295">Intäkter betalas ut varje månad.</translation>
 <translation id="68906705461077250">Ställ in din önskade frekvens för att öka eller minska intäkterna.</translation>
@@ -214,7 +214,7 @@
 <translation id="4129489167302464118">Din månatliga budget distribueras över de webbplatser du besöker.</translation>
 <translation id="4898632353264854950">Webbplatser kommer dyka upp vartefter du surfar på webben</translation>
 <translation id="3024485967181749006">Total dricks denna månad</translation>
-<translation id="5055577484189948413">Totala bidrag denna månad</translation>
+<translation id="8183455888546367148">Totalt månatlig dricks denna månad</translation>
 <translation id="4153752809523809915">Har du donerat till dina favorit-innehållskreatörer idag?</translation>
 <translation id="7286722244752781970">Minimum tid på en sida innan ett besök loggas</translation>
 <translation id="4424486208397124985">Minsta antal besök för relevans för utgivare</translation>
@@ -234,7 +234,7 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="7841456038054167122">Vänligen skriv in nycklarna igen eller prova andra nycklar</translation>
 <translation id="1911900517212490188">Den angivna återställningsnyckeln stöds inte längre. Gå <ph name="BEGIN_LINK"/>hit<ph name="END_LINK"/> för att få en ny nyckel.</translation>
-<translation id="5549059668721746831">Nästa månatliga bidragsdatum</translation>
+<translation id="7583327070390027131">Nästa datum för månatlig dricks</translation>
 <translation id="6231182869178328516">Jag gav just dricks till <ph name="NAME"/> med Brave Browser. Kolla in den på https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="3082557070674409251">Klickat</translation>
@@ -243,6 +243,11 @@
 <translation id="8826352442759228526">Dina Brave Rewards kan inte verifieras eftersom du har nått den maximala gränsen för verifierade enheter.</translation>
 <translation id="1221593978088944142">Fel: Teckengränsen har nåtts</translation>
 <translation id="3113653894794167793">Tyvärr uppstod ett problem när din begäran skulle behandlas. Vänligen försök igen.</translation>
+<translation id="3509185560119586847">Tyvärr har din Brave Rewards-profil flaggats och du kan inte verifiera med en vårdnadshavare just nu. Den här flaggan kan ibland bero på oregelbunden Brave Ads-aktivitet, även om den också kan vara felaktig.</translation>
+<translation id="5031451251720571882">Observera att medan din Brave Rewards-profil är flaggad kan du inte verifiera den.</translation>
+<translation id="7301759045821910866">Du behöver inte vidta några åtgärder. Din Brave Rewards-profil utvärderas automatiskt regelbundet för att avgöra när (eller om) flaggan kan tas bort. Försök igen då och då för att se om flaggan har tagits bort.</translation>
+<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Läs mer om Braves flaggningsprocess för Rewards-profiler.<ph name="END_LINK"/></translation>
+<translation id="5028274575541726856">Fel: Brave Rewards-profil har flaggats</translation>
 <translation id="2607420597216860026">Försök igen efter att du har slutfört ID-verifikationen på <ph name="PROVIDER"/>.</translation>
 <translation id="3183954159462541696">Fel: Du behöver ett verifierat konto för att logga in</translation>
 <translation id="5260522591743022748">Hmm, det ser ut som om dina Brave Rewards redan har verifierats med ett annat <ph name="PROVIDER"/>-konto. Försök verifiera igen med ditt tidigare konto.</translation>
@@ -273,6 +278,7 @@
 <translation id="2359808026110333948">Fortsätt</translation>
 <translation id="5112354605357157725">Fortsätta till inloggning</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> kräver ett saldo på minst <ph name="AMOUNT"/> BAT för att skapa ett konto. Om du nyligen har anslutit ett konto</translation>
+<translation id="1892970806832316900">Väntande tills <ph name="DATE"/></translation>
 <translation id="752216563428219524">Annonser har inte initierats, uppdatera sidan.</translation>
 <translation id="7422678632904904341">Belopp:</translation>
 <translation id="6969783933307596818">Uppdatera automatiskt var 5:e sekund</translation>
@@ -357,13 +363,13 @@
 <translation id="3248185426436836442">Väntande</translation>
 <translation id="5906820630265272615">BAT-fonder</translation>
 <translation id="5814098892838785557">Är du säker på att du vill sluta stödja den här skaparen?</translation>
-<translation id="3922777918343537463">Avbryt månadsbidrag</translation>
+<translation id="6582097696555842139">Avsluta månatlig dricks</translation>
 <translation id="9087994290002662101">Ändra belopp</translation>
-<translation id="1969724076378550685">Bekräfta avbokning varje månad</translation>
-<translation id="6238322297266927861">Bidrag:</translation>
-<translation id="1723857724166389190">Ditt månatliga bidrag till den här skaparen har annullerats.</translation>
+<translation id="2521187434582281933">Bekräfta att du vill avsluta månatlig dricks</translation>
+<translation id="915758461293673891">Dricksbelopp:</translation>
+<translation id="78017292973022384">Din månatliga dricks till den här kreatören har avslutats.</translation>
 <translation id="534368327994110883">Du stöder för närvarande den här skaparen</translation>
-<translation id="2621124276654521177">Aktuellt månatligt bidrag</translation>
+<translation id="3524380957621081353">Nuvarande månatlig dricks</translation>
 <translation id="7723816962634734185">Anpassa belopp</translation>
 <translation id="7286679368056222644">Ditt månatliga bidrag kommer att vara</translation>
 <translation id="4088764345615745058">Anpassa dricksbelopp</translation>
@@ -374,8 +380,8 @@
 <translation id="8994556588732085585">Vänligen stäng och öppna dricksbannern för att försöka igen.</translation>
 <translation id="8987454605694983241">t.ex. <ph name="AMOUNT"/></translation>
 <translation id="4492470488449820476">Minsta dricksbelopp är <ph name="AMOUNT"/> <ph name="CURRENCY"/></translation>
-<translation id="4371618764691059036">Månadsbidrag har ställts in.</translation>
-<translation id="6356822617569064293">Nästa bidragsdatum:</translation>
+<translation id="9088057605518918276">Månatlig dricks har ställts in.</translation>
+<translation id="6306631474379759382">Nästa dricksdatum:</translation>
 <translation id="3593485149443019592">Inte tillräckligt med tokens. <ph name="LINK_BEGIN"/>Sätt in pengar<ph name="LINK_END"/>.</translation>
 <translation id="3586352807094428968">Brave samlar in 5 % av dricksbeloppet som bearbetningsavgift.</translation>
 <translation id="207268487070188114">Engångsdricks</translation>
@@ -416,12 +422,12 @@
 <translation id="6897083627729802351">När får du belöningar?</translation>
 <translation id="310863932297733723">Dina intjänade tokens från Brave privata annonser under innevarande månad anländer den 5:e nästkommande månad.</translation>
 <translation id="7712287524451429139">Ge tillbaka på ett enkelt sätt</translation>
-<translation id="105037569026952831">Innehållsskapare får dina tokenbidrag automatiskt baserat på dina engagemangsnivåer som vi mäter som ‘Attention’.</translation>
+<translation id="105037569026952831">Skapare får dina tokenbidrag automatiskt baserat på din engagemangsnivå som vi mäter som "Uppmärksamhet".</translation>
 <translation id="5323267338679539010">Säg tack med dricks</translation>
 <translation id="6042317056594735519">Dricks är ett sätt att personligen uppmuntra och stödja innehåll eller skapare som du gillar. Börja dricksa!</translation>
 <translation id="7509452925943421624">Vad kan du göra med tokens?</translation>
 <translation id="5876169128756792273">Tokens kan användas till mer än att stödja skapare. Du kan köpa digitalt innehåll och andra varor när säljare går med.</translation>
-<translation id="1402530520078693620">Slutligen, låt oss komma igång med grundinställningarna</translation>
+<translation id="1402530520078693620">Till sist, låt oss få dina grundinställningar på plats</translation>
 <translation id="3494356595346329740">Du kan ändra detta senare.</translation>
 <translation id="827315274423079662">Tjoho, du är klar!</translation>
 <translation id="8268038362451312235">Genom att använda Brave Belöningar hjälper du till att göra webben till en bättre plats för alla. Och det är toppen!</translation>
@@ -459,7 +465,7 @@
 <translation id="3866249974567520381">Beskrivning</translation>
 <translation id="8605272644314973683">Brave Rewards är</translation>
 <translation id="1346059596910821859">Donation</translation>
-<translation id="6045860799501892362">Ställ in månatliga bidrag</translation>
+<translation id="7277134233385925078">Ställ in månatliga donationer</translation>
 <translation id="298067735430872465">Förtjänst från annonser</translation>
 <translation id="1418534671788496616">Se insättningshistorik</translation>
 <translation id="3412655388715513818">Exkludera denna sida</translation>
@@ -467,8 +473,8 @@
 <translation id="8802504113265057166">[[currency]] som inte används innan utgångsdatum återgår automatiskt till Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Medgivandets utgångsdatum</translation>
 <translation id="1389143276807887637">importera</translation>
-<translation id="1038407494348068191">Hantera din plånbok</translation>
-<translation id="5737831580668469027">Månatliga bidrag!</translation>
+<translation id="6302422639282249274">Hantera Brave Rewards</translation>
+<translation id="211044356803193224">Månatliga donationer!</translation>
 <translation id="2487641031722095938">Det är din lyckodag!</translation>
 <translation id="6255773350565723852">Din tilldelning av token är på väg.</translation>
 <translation id="3453206261112715431">Tilldelning av gratis token</translation>
@@ -476,8 +482,8 @@
 <translation id="4677106999274433911">Du har framgångsrikt krävt belöningar för annonser.</translation>
 <translation id="8304661078305276044">Annonsbelöningar</translation>
 <translation id="1770001816413426741">Belöningsperiod</translation>
-<translation id="2280319752798785157">Månatligt bidrag</translation>
-<translation id="8307851765167460403">Ingen aktivitet än…</translation>
+<translation id="5419313241771906800">Månatlig dricks</translation>
+<translation id="8307851765167460403">Ingen aktivitet än...</translation>
 <translation id="3630697955794050612">av</translation>
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">på</translation>
@@ -487,19 +493,19 @@
 <translation id="156591572855748524">30 dagars annonshistorik</translation>
 <translation id="4923459931733593730">Betalning</translation>
 <translation id="3138528956349114724">Fästa webbplatser är nu</translation>
-<translation id="2337632028350283479">Så här fungerar månatliga bidrag:</translation>
-<translation id="6457273203091513039">Månatliga bidrag kommer inte från dina Autobidrag. De är separerade.</translation>
+<translation id="7562713189950710660">Så här fungerar månatliga donationer:</translation>
+<translation id="1404790274772315264">Månatliga donationer tas inte från din Bidra automatiskt-betalning; de är separata.</translation>
 <translation id="9099396904827413228">Varje webbplats betalas en fast summa varje månad.</translation>
-<translation id="5051110132941857169">Månatliga bidrag betalas ut på en gång, varje månad. Om du använder Autobidrag, lämnas tips ut samtidigt som ditt månatliga bidrag.</translation>
-<translation id="3374483782662414143">Du kan ta bort valfri sida som får månatligt bidrag inifrån tipspanelen.</translation>
+<translation id="7018976623064894683">Månatliga donationer betalas ut samtidigt varje månad. Om du använder Bidra automatiskt så betalas donationerna ut samtidigt som din Bidra automatiskt-betalning.</translation>
+<translation id="1135093233619227159">Du kan redigera vilka webbplatser som får månatliga donationer i donationspanelen.</translation>
 <translation id="5082474983463379713">Vänligen observera:</translation>
 <translation id="1430915738399379752">Skriv ut</translation>
 <translation id="135956957367307069">Förfrågan behandlas. Vänta.</translation>
 <translation id="8725066075913043281">Försök igen</translation>
 <translation id="2600847485413879104">Belönar BAT</translation>
-<translation id="8006596443377585072">bitFlyer-plånbok</translation>
-<translation id="2770577461149798369">Gemini Wallet</translation>
-<translation id="8108350286444475334">Värna plånboken</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
+<translation id="8533411848724153701">Gemini</translation>
+<translation id="6569877533335686968">Uphold</translation>
 <translation id="6977372887576114613">Satte in BAT</translation>
 <translation id="194625454574835815">Återställningsnyckel</translation>
 <translation id="6354568176665589146">Återkommande</translation>
@@ -543,7 +549,7 @@
 <translation id="3535654229833214438">Transaktioner</translation>
 <translation id="8772672608371898774">Braveverifierad utgivare</translation>
 <translation id="5050370287908180130">Se månadssammanställningen för detaljer</translation>
-<translation id="348711787499592128">Brave Rewards-aktivitet</translation>
+<translation id="7853202427316060426">Aktivitet</translation>
 <translation id="7232682712743566408">Rewards-saldo</translation>
 <translation id="1910721550319506122">Välkommen!</translation>
 <translation id="4258022280942725182">Din Brave Rewards</translation>
@@ -563,6 +569,8 @@
 <translation id="4862817811647633830">webbplatser från Auto-Contribute.</translation>
 <translation id="923467487918828349">Visa alla</translation>
 <translation id="5113531205597573951">Besökta webbplatser</translation>
+<translation id="4450893287417543264">Visa inte igen.</translation>
+<translation id="422369484771082705">Det är valfritt att verifiera. Men genom att verifiera kommer du att kunna ta ut dina BAT som tjänats in från Brave Rewards till en plånbok direkt.</translation>
 <translation id="3656941797339037856">Länka Rewards till Gemini!</translation>
 <translation id="31532096120351460">Handla över 50 kryptovalutor, inklusive BAT, på Gemini. Det är en säker plattform för att lagra dina kryptovalutor. Dessutom kan du tjäna ränta i USA, Hongkong och Singapore.</translation>
 <translation id="7404779623219601861">Lös in BAT mot presentkort</translation>
@@ -639,7 +647,7 @@
 <translation id="824449983246282560">Du har inget saldo på ditt konto. Besök Gemini för att köpa.</translation>
 <translation id="8624961452383848703">Jag vill konvertera ...</translation>
 <translation id="616639131065447379">Välkommen till Brave Crypto Wallets</translation>
-<translation id="1740464057879304704">Crypto Wallets låter dig arbeta med kryptovalutor och liknande tillgångar i Brave. Crypto Wallets stödjer Ethereum-polletter som ETH och BAT samt samlarsaker, och låter dig arbeta med Ðappar och andra smarta kontrakt. Allt detta är avsett för dem som är bekanta med Ethereum och andra blockkedjesystem — eller ser fram emot att lära sig.</translation>
+<translation id="1740464057879304704">Plånböcker för kryptovaluta låter dig arbeta med kryptovalutor och relaterade tillgångar i Brave. Plånböcker för kryptovaluta stöder Ethereum-tokens som ETH och BAT, samt collectibles, och låter dig arbeta med Ðapps och andra smarta kontrakt. Allt detta är avsett för dem som är bekanta med Ethereum och andra blockchain-system – eller ser fram emot att lära sig.</translation>
 <translation id="4855440621031541830">Använd bara Crypto Wallets om du går med på att du ensam tar på dig all risk som är förknippad med användningen, och att Brave Software inte tar något ansvar för förluster, inbegripande tillfälliga förluster eller följdförluster som användningen medför.</translation>
 <translation id="3187473319809074178">Allt detta är helt skilt från</translation>
 <translation id="8327818101454798856">Så om du tänkte stödja dina favoritsajter går du dit istället.</translation>
@@ -759,10 +767,9 @@
 <translation id="6080167751812750226">Frånkopplad från <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Beräknade intäkter</translation>
 <translation id="4244985009709452836">Logga in på ditt <ph name="PROVIDER"/>-konto</translation>
-<translation id="7577100371127227294">Månatliga dricks</translation>
 <translation id="2613359062756190460">Engångsdricks</translation>
 <translation id="590733288489975971">Belöningar från Ads</translation>
-<translation id="4989163558385430922">See alla</translation>
+<translation id="6181762795539107980">Ej verifierad</translation>
 <translation id="3026978804849658576">Visa utdrag</translation>
 <translation id="8494748383523030337">Ditt saldo</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/> Rewards: <ph name="AMOUNT"/></translation>
@@ -892,7 +899,7 @@
 <translation id="5242300593039211344">Lås plånbok</translation>
 <translation id="765834632354589737">Säkerhetskopiera plånbok</translation>
 <translation id="1108298724135935307">Anslutna webbplatser</translation>
-<translation id="722307450061393855">Säkerhetskopiera din plånbok nu för att skydda dina kryptotillgångar och se till att du aldrig förlorar åtkomst.</translation>
+<translation id="163697698769819510">Säkerhetskopiera din plånbok nu för att skydda dina tillgångar och se till att du aldrig förlorar åtkomst.</translation>
 <translation id="1018806299114415224">Säkerhetskopiera nu</translation>
 <translation id="5234764350956374838">Ta bort permanent</translation>
 <translation id="4075073132992924258">Brave Wallet är inte inställt som din standardplånbok och svarar inte på web3 DApps. Besök inställningarna för att ändra din standardplånbok.</translation>
@@ -996,6 +1003,12 @@
 <translation id="3474375934783434676">Registrera på egen risk</translation>
 <translation id="5488357322146334497">Meddelande</translation>
 <translation id="3586752056660754651">Signera</translation>
+<translation id="3484981968509595506">En DApp begär att få din offentliga krypteringsnyckel</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> begär dina plånböckers offentlig krypteringsnyckel. Om du samtycker till att tillhandahålla den här nyckeln kan webbplatsen skriva krypterade meddelanden till dig.</translation>
+<translation id="3340247553212049934">Förse</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> vill läsa det här meddelandet för att slutföra din begäran</translation>
+<translation id="714506544401754321">Dekryptera meddelande</translation>
+<translation id="5039804452771397117">Tillåt</translation>
 <translation id="9032898664193335413">Tillåt denna app att spendera din <ph name="TOKEN_SYMBOL"/>?</translation>
 <translation id="854606191596163710">Genom att bevilja denna behörighet tillåter du att den här appen tar ut din <ph name="VALUE"/> och automatiserar transaktioner åt dig.</translation>
 <translation id="8786100550345425552">Redigera behörigheter</translation>
@@ -1098,6 +1111,7 @@
 <translation id="7400927223938424379">Uppsättning föreslagen</translation>
 <translation id="8179605702342645418">Transaktionen kan eventuellt inte spridas i nätverket.</translation>
 <translation id="9100765901046053179">Avancerade inställningar</translation>
+<translation id="1924965034964265193">Ange anpassat nonce-värde</translation>
 <translation id="4220062530885628403">Nonce</translation>
 <translation id="2749584096020594976">Nonce-värdet fastställs automatiskt om det här fältet inte specifieras.</translation>
 <translation id="1599636444563952897">Köpgränsbehörighet tillåter <ph name="SITE_ORIGIN"/> att ta ut och spendera upp till följande summa:</translation>
@@ -1107,9 +1121,11 @@
 <translation id="6825399159373612149">Domän <ph name="DOMAIN_NAME"/> är inte registrerad</translation>
 <translation id="8971278306757462297">Mottagaradressen är din egen adress</translation>
 <translation id="3506416339268164412">Mottagaradressen är ett tokens kontraktadress</translation>
-<translation id="5517732667776806421">Information om kontrollsumma saknas</translation>
-<translation id="4006711930669471508">Ogiltig information om kontrollsumma</translation>
+<translation id="2975056993833847787">Den här adressen kan inte verifieras (kontrollsumma saknas). Vill du fortsätta?</translation>
+<translation id="6320252966164556855">Adressen godkändes inte i verifieringen (ogiltig kontrollsumma). Försök igen och byt ut gemener med versaler.</translation>
 <translation id="4667144295226514387">Gasgräns saknas</translation>
+<translation id="2021522108838444624">Beloppet måste vara större än 0</translation>
+<translation id="8464365289405373974">Till-adress krävs</translation>
 <translation id="862585889767884824">av</translation>
 <translation id="9106265941552476098">Avvisa <ph name="TRANSACTION_LENGTH"/> transaktioner</translation>
 <translation id="1118876217803190221">Otillräcklig balans</translation>
@@ -1147,6 +1163,9 @@
 <translation id="2962388922926051374">Begär metod för "eth_chainId" på <ph name="URL"/> misslyckades</translation>
 <translation id="8325036459845654666">Nätverket har redan lagts till.</translation>
 <translation id="554350381160981853">Signering av data stöds endast på Trezor Model One med Firmware 1.10.5 eller senare</translation>
+<translation id="1752214435563414457">Brave Swap-insatser</translation>
+<translation id="7829441065063984927">7 dagar med kryptogåvor, ~$500k i priser</translation>
+<translation id="8292716346768453265">Delta nu!</translation>
 <translation id="3155170474926428993">Tor launcher</translation>
 <translation id="3745016858329272300">Allmän information</translation>
 <translation id="4045404575593562245">Tor kontrollhändelse</translation>
@@ -1156,22 +1175,24 @@
 <translation id="1671503397662036257">Tor anslutningsstatus</translation>
 <translation id="6024292492796847324">Tor Initieringsförlopp</translation>
 <translation id="8458987127502506209">Aktivera Brave Sköld</translation>
-<translation id="640898327002833127">Brave Sköld <ph name="LINK_BEFORE"/>AKTIVERA<ph name="LINK_AFTER"/></translation>
-<translation id="8676609116485287125">Om den här webbplatsen inte verkar fungera kan du prova att inaktivera Brave Sköld. Detta kan minska Braves integritetsskydd.</translation>
+<translation id="7509914170164691086">Shields är aktiverat <ph name="LINK_BEFORE"/>för<ph name="LINK_AFTER"/></translation>
+<translation id="260764436039299868">Shields är inaktiverat <ph name="LINK_BEFORE"/>för<ph name="LINK_AFTER"/></translation>
+<translation id="7709075156958117386">Om webbplatsen inte fungerar kan du testa att inaktivera Shields. 
+    <ph name="LINK_BEFORE"/>Obs: Det kan försämra Braves sekretesskydd.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Spårare, annonser och mer blockeras <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="5416893287862792505">Avancerade inställningar</translation>
-<translation id="1299672573512347813">Dessa inställningar påverkar webbkompatibiliteten på den här webbplatsen.</translation>
+<translation id="5799940914270080805">Om du ändrar dessa inställningar kan webbplatser sluta fungera.</translation>
 <translation id="9204041448536398473">Globala Sköld-inställningar</translation>
-<translation id="7637771346619326580">Ändra global standard för Sköld</translation>
-<translation id="3520486481604057261">Anpassa Adblock-listor</translation>
-<translation id="3146531623184244174">Anslutningar uppgraderade till HTTPS</translation>
+<translation id="2108334320919763866">Global standard</translation>
+<translation id="1928321796986970424">Filtrera listor</translation>
+<translation id="3570081523466826008">Uppgradera anslutningar till HTTPS</translation>
 <translation id="131231380815754440">Aktivera HTTPS</translation>
-<translation id="7461425058443653485">Script blockerade</translation>
+<translation id="4824468494729001999">Blockera skript</translation>
 <translation id="3246600097575692802">Aktivera blockerade skript</translation>
 <translation id="3603525299146223354">Spårare och annonser</translation>
 <translation id="1146309636943354181">Spårare och annonser blockade (standard)</translation>
 <translation id="5973258875089964805">Spårare och annonser blockade (aggressivt)</translation>
-<translation id="5544888475837817215">Tillåt alla spårare och annonser</translation>
+<translation id="7384778069178817075">Tillåt alla spårare och annonser</translation>
 <translation id="6203697265754637264">Kakor för flera webbplatser blockerade</translation>
 <translation id="4627427111733173920">Kakor blockerades</translation>
 <translation id="3972324600756617403">Alla kakor tillåts</translation>
@@ -1179,6 +1200,10 @@
 <translation id="5582686930349810484">Fingeravtrycksläsning hindrad (standard)</translation>
 <translation id="6696441392507885865">Fingeravtryck blockerade (strikt, kan göra att webbplatser inte fungerar)</translation>
 <translation id="5882733945883311404">Tillåt alla fingeravtryck</translation>
+<translation id="1992750560347846445">Rapportera webbplats</translation>
+<translation id="2387532482048804818">Berätta för oss om webbplatsen inte fungerade korrekt när Shields är aktiverat.</translation>
+<translation id="9167355841012806439">Du visar den här webbplatsen utan Braves sekretesskydd</translation>
+<translation id="6835073906252142271">Brave Shields <ph name="NUMBER"/> spårare, annonser med mera är blockerade</translation>
 <translation id="1742469581923031760">Ansluter…</translation>
 <translation id="1287487756047817908">Kopplar från…</translation>
 <translation id="2325196879156848326">Anslutningen misslyckades</translation>

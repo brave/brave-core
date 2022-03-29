@@ -62,8 +62,8 @@
     "message": "Otomatik-Katkıya Dahil",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "Aylık Katkı",
+  "monthlyTip": {
+    "message": "Aylık Bahşiş",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "Aylık Bahşişler",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Doğrulandı",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Tek-Seferlik Bahşiş",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Ödüller Özeti",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Doğrulandı",
+  "walletUnverified": {
+    "message": "Doğrulanmamış",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Doğrula",
+  "walletVerified": {
+    "message": "Doğrulandı",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Auto-Contribute ve aylık bağışlar için planlı aylık ödemeniz, yetersiz para nedeniyle tamamlanamadı. 30 gün içinde tekrar deneyeceğiz. ",
+    "message": "Planlanmış aylık Otomatik-Katkı ve aylık bahşiş ödemeniz, yetersiz bakiye sebebiyle gerçekleştirilememiştir. 30 gün içinde tekrar deneyeceğiz.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Aylık katkı başarısız oldu",
+    "message": "Aylık bahşiş başarısız oldu",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Aylık katkılarınız işlendi.",
+    "message": "Aylık bahşişleriniz işlendi.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

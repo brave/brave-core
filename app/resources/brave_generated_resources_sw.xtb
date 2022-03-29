@@ -51,6 +51,8 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1643029991199044105">Zungusha kwenye vichupo vilivyotumika hivi majuzi zaidi kwa Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Makala yanapakiwa kiotomatiki katika hali ya kusoma, na kuokoa muda wako.</translation>
+<translation id="5510493033031835532">Elekeza kurasa za AMP upya kiotomatiki</translation>
+<translation id="5197219128592971597">Daima tembelea URL za ukurasa asili (zisizo za AMP), badala ya matoleo ya Google ya Ukarasa wa Simu ya Mkononi wenye Kasi Iliyoongezwa</translation>
 <translation id="5802665280774361839">Onyesha ukamilishaji kiotomatiki kwenye upau wa anwani</translation>
 <translation id="597020512043916976">Onyesha tovuti maarufu katika mapendekezo ya kukamilika kiotomatiki</translation>
 <translation id="264150068416846820">Onyesha tovuti za Brave zilizopendekezwa katika mapendekezo ya kukamilika kiotomatiki</translation>
@@ -218,10 +220,6 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="2414886740292270097">Giza</translation>
 <translation id="1360441190790440400">Sawa na Linux</translation>
 <translation id="1336940801687497203">Sawa na Windows</translation>
-<translation id="5919209812221905840">Kidhibiti chaguo-msingi cha itifaki ya microsoft-edge</translation>
-<translation id="5239541974656019812">Fanya Brave kuwa kidhibiti chaguo-msingi cha itifaki ya microsoft-edge</translation>
-<translation id="7136694880210472378">Fanya iwe chaguomsingi</translation>
-<translation id="1751388324499810661">Brave ni kidhibiti chaguo-msingi cha itifaki ya microsoft-edge</translation>
 <translation id="8721331068159819483">Sawa na MacOS</translation>
 <translation id="2896916411183256228">Hutumia Torenti ya Tovuti kuonyesha torenti moja kwa moja kwenye kisakuzi. Huwezesha mafaili ya torenti na viungo vya sumaku.</translation>
 <translation id="8488282162676695335">Pochi ya Brave</translation>
@@ -233,6 +231,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="4718664830805652430">Sarafu chaguomsingi</translation>
 <translation id="7992507032049865603">Sarafuya dijitali chaguomsingi</translation>
 <translation id="1834467296210148203">Onyesha ikoni ya Brave Wallet kwenye upau zana</translation>
+<translation id="4613486011786721686">Ficha ikoni ya Brave Wallet kwenye upau wa zana</translation>
 <translation id="8239147115686034860">Funga Brave Wallet kiotomatiki</translation>
 <translation id="414639769490080648">Idadi ya dakika za kusubiri hadi Brave Wallet ifungwe kiotomatiki</translation>
 <translation id="6864914031231797928">Ruhusu kuingia kwa Google kwa ajili hya viendelezi</translation>
@@ -397,7 +396,7 @@ Zawadi za Avatar Paladin</translation>
 <translation id="8712637175834984815">Nimeelewa</translation>
 <translation id="4394049700291259645">Zima</translation>
 <translation id="7142548388914389999">Ruhusu changanuzi za bidhaa za kulinda faragha (P3A)</translation>
-<translation id="609106526832379947">Taarifa hii isiyombainisha mtu kabisa huisaidia Brave kukadiria matumizi ya jumla ya vipengele fulani na kuvifanya kuwa bora kwa ajili yako.</translation>
+<translation id="8286082624639565868">Taarifa hii isiyobainisha utambulisho wa mtu kabisa huisaidia Brave kukadiria matumizi ya jumla ya vipengele fulani na kuvifanya kuwa bora kwa ajili yako.</translation>
 <translation id="1947672064022327074">Je, ungependa kuanzisha Crypto Wallets kwa matumizi ya Ethereumt?</translation>
 <translation id="7583735190612229830">Weka Crypto Wallets ili kutumia programu hii na nyingine kama hiyo.</translation>
 <translation id="8731422418734770661">Weka Pochi za Crypto</translation>
@@ -441,6 +440,10 @@ Zawadi za Avatar Paladin</translation>
 <translation id="2808630562319398131">Weka upya data ya Zawadi za Brave...</translation>
 <translation id="2273851479262317744">Weka Brave kuwa kivinjari chaguomsingi</translation>
 <translation id="8581710194025054669">Ili kuhakikisha sera bora mtandaoni, zingatia kuweka Brave kama kivinjari chaguomsingi kwenye kompyuta yako. Brave ikiwa chaguomsingi, kiungo chochote cha wavuti unachobofya kitafunguka kwa ulinzi wa sera ya Brave.</translation>
+<translation id="1968543937259008435">Uko tayari kwa faragha bora zaidi mtandaoni?</translation>
+<translation id="6817415381278637662">Weka Brave kuwa kivinjari chako chaguomsingi ili kupata ulinzi wa faragha wa Brave kwenye kila ukurasa wa wavuti unaofungua.</translation>
+<translation id="8722651357687610395">Weka Brave kuwa chaguomsingi</translation>
+<translation id="2370739752330685659">Labda baadaye</translation>
 <translation id="1241283133946520352">Mitandao</translation>
 <translation id="8205945804087322170">Ongeza mtandao mpya</translation>
 <translation id="2156993118928861787">Awani si halali</translation>

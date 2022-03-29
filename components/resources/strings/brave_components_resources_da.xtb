@@ -189,8 +189,6 @@
 <translation id="905529390827000221">4 annoncer i timen</translation>
 <translation id="7694167481321619202">5 annoncer i timen</translation>
 <translation id="3705420658531870884">10 annoncer i timen</translation>
-<translation id="8576106690599421723">Reklametilpasning på statsniveau</translation>
-<translation id="4775297407519948063">Dette lader Brave vise dig reklamer som er særligt tilpasset til din stat.</translation>
 <translation id="8446884382197647889">Få mere at vide</translation>
 <translation id="6209514229703649203">Auto-detekteret som [[adsSubdivisionTarget]]</translation>
 <translation id="8010081455002666927">Auto-detektering</translation>
@@ -204,9 +202,7 @@
 <translation id="2365740070488517695">Donationer</translation>
 <translation id="5810507495128831593">Se din engangstip, du har givet til hjemmesider og skabere.</translation>
 <translation id="9147550766164257963">Få mere at vide om drikkepenge.</translation>
-<translation id="5012991400231464322">Månedlige bidrag</translation>
-<translation id="2084351799622920487">Opret tilbagevendende månedlige bidrag, så du kan støtte sider kontinuerligt.</translation>
-<translation id="8150772404570015166">Ingen månedlige bidrag er oprettet endnu.</translation>
+<translation id="7577100371127227294">Månedlige donationer</translation>
 <translation id="1617202384704994799">Kommer snart.</translation>
 <translation id="2241248417273918295">Indtjeninger udbetales hver måned.</translation>
 <translation id="68906705461077250">Angiv din foretrukne frekvens for at øge eller nedsætte indtjeninger.</translation>
@@ -214,7 +210,6 @@
 <translation id="4129489167302464118">Din månedlige betaling bliver uddelt blandt siderne du besøger.</translation>
 <translation id="4898632353264854950">Siderne vil blive vist når du browser</translation>
 <translation id="3024485967181749006">Samlede tips denne måned</translation>
-<translation id="5055577484189948413">Samlede bidrag i denne måned</translation>
 <translation id="4153752809523809915">Har du givet din yndlings indholdsskaber drikkepenge i dag?</translation>
 <translation id="7286722244752781970">Minimumstid på en side før et besøg logges</translation>
 <translation id="4424486208397124985">Mindstebesøg for udgiver-relevans</translation>
@@ -234,7 +229,6 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="7841456038054167122">Skriv venligst koderne igen eller prøv andre koder.</translation>
 <translation id="1911900517212490188">Den indtastede gendannelsesnøgle understøttes ikke længere. Besøg venligst <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> for at få en ny nøgle.</translation>
-<translation id="5549059668721746831">Næste månedlige bidragsdato</translation>
 <translation id="6231182869178328516">Jeg har lige givet drikkepenge <ph name="NAME"/> ved hjælp af Brave Browser. Se den på https://brave.com/tips.</translation>
 <translation id="8404935570206006581">BelønMedBrave</translation>
 <translation id="3082557070674409251">Klikket</translation>
@@ -357,13 +351,8 @@
 <translation id="3248185426436836442">Afventer</translation>
 <translation id="5906820630265272615">BAT-midler</translation>
 <translation id="5814098892838785557">Er du sikker på, at du vil stoppe med at støtte denne indholdsskaber?</translation>
-<translation id="3922777918343537463">Annullér månedligt bidrag</translation>
 <translation id="9087994290002662101">Ændr beløb</translation>
-<translation id="1969724076378550685">Bekræft annullering af månedlig</translation>
-<translation id="6238322297266927861">Bidragsbeløb:</translation>
-<translation id="1723857724166389190">Dit månedlige bidrag til denne skaber er blevet annulleret.</translation>
 <translation id="534368327994110883">Du støtter i øjeblikket denne indholdsskaber</translation>
-<translation id="2621124276654521177">Nuværende månedligt bidrag</translation>
 <translation id="7723816962634734185">Tilpasset beløb</translation>
 <translation id="7286679368056222644">Din månedlige støtte kan være</translation>
 <translation id="4088764345615745058">Tilpasset donationsbeløb</translation>
@@ -374,8 +363,6 @@
 <translation id="8994556588732085585">Luk og genåbn drikkepengebanneret for at prøve igen.</translation>
 <translation id="8987454605694983241">f.eks. <ph name="AMOUNT"/></translation>
 <translation id="4492470488449820476">Donationens minimumbeløb er <ph name="AMOUNT"/> <ph name="CURRENCY"/></translation>
-<translation id="4371618764691059036">Månedligt bidrag er indstillet.</translation>
-<translation id="6356822617569064293">Næste bidragsdato:</translation>
 <translation id="3593485149443019592">Ikke nok poletter. <ph name="LINK_BEGIN"/>Tilføj add midler<ph name="LINK_END"/>.</translation>
 <translation id="3586352807094428968">Brave tager 5 % af drikkepengene i håndteringsgebyr.</translation>
 <translation id="207268487070188114">Engangsdrikkepenge</translation>
@@ -416,14 +403,14 @@
 <translation id="6897083627729802351">Hvornår modtager du belønninger?</translation>
 <translation id="310863932297733723">Dine optjente tokens fra Brave Private Ads i hele den nuværende måned kommer den 5. i næste måned.</translation>
 <translation id="7712287524451429139">Det har aldrig været nemmere, at give tilbage</translation>
-<translation id="105037569026952831">Skabere modtager dine tokenbidrag automatisk baseret på dine engagementsniveauer, som vi måler som ‘Opmærksomhed’.</translation>
+<translation id="105037569026952831">Indholdsskabere modtager dine tokenbidrag automatisk baseret på dine engagementsniveauer, som vi måler som "Opmærksomhed".</translation>
 <translation id="5323267338679539010">Sig tak med drikkepenge</translation>
 <translation id="6042317056594735519">At give drikkepenge er en måde, hvorpå du personligt kan opfordre og støtte indhold eller skabere, som du elsker. Kom i gang med dine drikkepenge!</translation>
 <translation id="7509452925943421624">Hvad kan man bruge tokens til?</translation>
 <translation id="5876169128756792273">Tokens kan bruges til andet end at støtte indholdsskabere. Du kan købe digitalt indhold og andre varer som handlende kommer om bord.</translation>
-<translation id="1402530520078693620">Lad os endelig få dig opsat dine grundlæggende indstillinger</translation>
+<translation id="1402530520078693620">Endelig, lad os få dig opsat til de grundlæggende indstillinger</translation>
 <translation id="3494356595346329740">Du kan ændre det senere.</translation>
-<translation id="827315274423079662">Woohoo, du er helt klar!</translation>
+<translation id="827315274423079662">Woohoo, du er klar!</translation>
 <translation id="8268038362451312235">Ved at bruge Brave Rewards hjælper du med at gøre internettet til et bedre sted for alle, og det er fantastisk!</translation>
 <translation id="6518133107902771759">Bekræft</translation>
 <translation id="2318949593486441832">For at hæve BAT, du har tjent ved at se reklamer, skal du bekræfte Brave Belønninger.</translation>
@@ -459,7 +446,7 @@
 <translation id="3866249974567520381">Beskrivelse</translation>
 <translation id="8605272644314973683">Brave Rewards er</translation>
 <translation id="1346059596910821859">Donation</translation>
-<translation id="6045860799501892362">Fastsæt månedligt bidrag</translation>
+<translation id="7277134233385925078">Fastsæt månedlig donation</translation>
 <translation id="298067735430872465">Indtjening fra reklamer</translation>
 <translation id="1418534671788496616">Se depositumshistorik</translation>
 <translation id="3412655388715513818">Ekskluder denne side</translation>
@@ -467,8 +454,8 @@
 <translation id="8802504113265057166">[[currency]], der ikke er brugt inden udløbsdatoen vil automatisk blive returneret til Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Tilskuddets Udløbsdato</translation>
 <translation id="1389143276807887637">importer</translation>
-<translation id="1038407494348068191">Administrer din tegnebog</translation>
-<translation id="5737831580668469027">Månedlige bidrag!</translation>
+<translation id="6302422639282249274">Administrer Brave Belønninger</translation>
+<translation id="211044356803193224">Månedlige donationer!</translation>
 <translation id="2487641031722095938">Det er din heldige dag!</translation>
 <translation id="6255773350565723852">Dit token-tilskud er på vej.</translation>
 <translation id="3453206261112715431">Gratis Token-Tilskud</translation>
@@ -476,8 +463,7 @@
 <translation id="4677106999274433911">Du har bedt om dine reklamebelønninger</translation>
 <translation id="8304661078305276044">Reklamebelønninger</translation>
 <translation id="1770001816413426741">Belønningsperiode</translation>
-<translation id="2280319752798785157">Månedligt bidrag</translation>
-<translation id="8307851765167460403">Ingen aktiviteter endnu…</translation>
+<translation id="8307851765167460403">Ingen aktiviteter endnu ...</translation>
 <translation id="3630697955794050612">fra</translation>
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">til</translation>
@@ -487,19 +473,18 @@
 <translation id="156591572855748524">30-dages reklamehistorik</translation>
 <translation id="4923459931733593730">Betaling</translation>
 <translation id="3138528956349114724">Fastgjorte sider er nu</translation>
-<translation id="2337632028350283479">Sådan fungerer månedlige bidrag:</translation>
-<translation id="6457273203091513039">Månedlige bidrag bliver ikke trukket fra din automatiske bidragsbetaling. De er adskilte.</translation>
+<translation id="7562713189950710660">Sådan virker de månedlige donationer:</translation>
+<translation id="1404790274772315264">Månedlige donationer stammer ikke fra dine auto-bidragsbetalinger. De er særskilte.</translation>
 <translation id="9099396904827413228">Hver side får et fast beløb om måneden.</translation>
-<translation id="5051110132941857169">Månedlige bidrag bliver udbetalt på én gang hver måned. Hvis du bruger automatiske bidrag, går donationer ud på samme tid som din månedlige automatiske bidragsbetaling.</translation>
-<translation id="3374483782662414143">Du kan fjerne enhver side der modtager månedlige bidrag inde fra donationspanelet.</translation>
+<translation id="7018976623064894683">Månedlige donationer betales på en gang, hver måned. Hvis du benytter dig af auto-bidrag, trækkes donationerne samtidigt med dine månedlige auto-bidragsbetalinger.</translation>
+<translation id="1135093233619227159">Du kan fjerne enhver side, der modtager månedlige donationer indefra donationspanelet.</translation>
 <translation id="5082474983463379713">Bemærk venligst:</translation>
 <translation id="1430915738399379752">Udskriv</translation>
 <translation id="135956957367307069">Din anmodning behandles stadig, vent venligst.</translation>
 <translation id="8725066075913043281">Prøv igen</translation>
 <translation id="2600847485413879104">Belønninger BAT</translation>
-<translation id="8006596443377585072">bitFlyer-tegnebog</translation>
-<translation id="2770577461149798369">Gemini Wallet</translation>
-<translation id="8108350286444475334">Uphold Wallet</translation>
+<translation id="8533411848724153701">Gemini</translation>
+<translation id="6569877533335686968">Behold</translation>
 <translation id="6977372887576114613">Indskudt BAT</translation>
 <translation id="194625454574835815">Gendannelsesnøgle</translation>
 <translation id="6354568176665589146">Tilbagevendende</translation>
@@ -543,7 +528,7 @@
 <translation id="3535654229833214438">Transaktioner</translation>
 <translation id="8772672608371898774">Brave-godkendt udgiver</translation>
 <translation id="5050370287908180130">Se den månedlige opgørelse for detaljer</translation>
-<translation id="348711787499592128">Aktivitet for Brave Belønninger</translation>
+<translation id="7853202427316060426">Aktivitet</translation>
 <translation id="7232682712743566408">Belønninger-saldo</translation>
 <translation id="1910721550319506122">Velkommen!</translation>
 <translation id="4258022280942725182">Dine Brave Belønninger</translation>
@@ -563,6 +548,7 @@
 <translation id="4862817811647633830">sider fra auto-bidrag.</translation>
 <translation id="923467487918828349">Vis alle</translation>
 <translation id="5113531205597573951">Sete sider</translation>
+<translation id="4450893287417543264">Vis ikke igen</translation>
 <translation id="3656941797339037856">Knyt Rewards til Gemini!</translation>
 <translation id="31532096120351460">Handl 50+ crypto-valutaer, inklusive BAT, på Gemini. Det er en sikker platform til opbevaring af dine crypto-valutaer. Og du kan optjene renter i USA, Hong Kong og Singapore.</translation>
 <translation id="7404779623219601861">Indløs BAT for gavekort</translation>
@@ -639,7 +625,7 @@
 <translation id="824449983246282560">Du kan ikke nogen saldo på din konto. Besøg Gemini for at købe valuta.</translation>
 <translation id="8624961452383848703">Jeg vil konvertere ...</translation>
 <translation id="616639131065447379">Velkommen til Brave Krypto-tegnebøger</translation>
-<translation id="1740464057879304704">Krypto-tegnebøger lader dig arbejde med kryptovalutaer og relaterede aktiver i Brave. Krypto-tegnebøger understøtter Ethereum-poletter såsom ETH og BAT, samt samleobjekter, og lader dig arbejde med Ðapps og andre smarte kontrakter. Alt dette er tiltænkt personer som enten kender til Ethereum og andre blockchain-systemer — eller som ønsker at lære om dem.</translation>
+<translation id="1740464057879304704">Crypto Wallets giver dig mulighed for at arbejde med kryptovalutaer og relaterede aktiver i Brave. Crypto Wallets understøtter Ethereum-tokens som ETH og BAT samt samleobjekter og lader dig arbejde med Ðapps og andre smartkontrakter. Alt dette er beregnet til folk, der er fortrolige med Ethereum og andre blockchain-systemer - eller er glade for at lære.</translation>
 <translation id="4855440621031541830">Brug kun Krypto-tegnebøger hvis du er indforstået med, at du alene er ansvarlig for alle risici forbundet hermed, og at Brave Software ikke bærer nogen forpligtelse eller noget ansvar for eventuelle tab du måtte opleve som resultat af brug af Krypto-tegnebøger (herunder forbigående tab og følgetab).</translation>
 <translation id="3187473319809074178">Alt dette er helt separat fra</translation>
 <translation id="8327818101454798856">Så hvis du gerne ville støtte dine yndlingssider, skal du kigge derover i stedet.</translation>
@@ -759,10 +745,8 @@
 <translation id="6080167751812750226">Afbryd forbindelsen til <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Anslået indtjening</translation>
 <translation id="4244985009709452836">Log på din <ph name="PROVIDER"/>-konto</translation>
-<translation id="7577100371127227294">Månedlige donationer</translation>
 <translation id="2613359062756190460">Engangsdonationer</translation>
 <translation id="590733288489975971">Belønninger fra reklamer</translation>
-<translation id="4989163558385430922">Se alle</translation>
 <translation id="3026978804849658576">Se opgørelse</translation>
 <translation id="8494748383523030337">Din saldo</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/> Belønninger: <ph name="AMOUNT"/></translation>
@@ -892,7 +876,6 @@
 <translation id="5242300593039211344">Lås tegnebog</translation>
 <translation id="765834632354589737">Sikkerhedskopiér Tegnebog</translation>
 <translation id="1108298724135935307">Forbundne websteder</translation>
-<translation id="722307450061393855">Backup din wallet nu for at beskytte dine crypto-aktiver, så du aldrig mister adgangen.</translation>
 <translation id="1018806299114415224">Back-up nu</translation>
 <translation id="5234764350956374838">Luk</translation>
 <translation id="4075073132992924258">Brave Wallet er ikke sat som din standard-wallet og vil ikke besvare web3 DApps. Besøg indstillingerne for at ændre standard-wallet.</translation>
@@ -996,6 +979,9 @@
 <translation id="3474375934783434676">Skriv under på eget ansvar</translation>
 <translation id="5488357322146334497">Besked</translation>
 <translation id="3586752056660754651">Underskriv</translation>
+<translation id="3340247553212049934">Giv</translation>
+<translation id="714506544401754321">Dekrypter besked</translation>
+<translation id="5039804452771397117">Tillad</translation>
 <translation id="9032898664193335413">Tillad, at denne app bruger dine <ph name="TOKEN_SYMBOL"/>?</translation>
 <translation id="854606191596163710">Ved at give tilladelse giver du denne app adgang til at hæve din <ph name="VALUE"/> og automatisere transaktioner for dig.</translation>
 <translation id="8786100550345425552">Redigér tilladelser</translation>
@@ -1107,13 +1093,11 @@
 <translation id="6825399159373612149">Domænet <ph name="DOMAIN_NAME"/> blev ikke registreret</translation>
 <translation id="8971278306757462297">Modtageradressen er din egen adresse</translation>
 <translation id="3506416339268164412">Modtager adressen er en polets kontraktadresse</translation>
-<translation id="5517732667776806421">Manglende kontrolsumsinformation</translation>
-<translation id="4006711930669471508">Ugyldig kontrolsumsinformation</translation>
 <translation id="4667144295226514387">Mangler gas-grænse</translation>
 <translation id="862585889767884824">af</translation>
 <translation id="9106265941552476098">Afvis <ph name="TRANSACTION_LENGTH"/> transaktioner</translation>
 <translation id="1118876217803190221">Utilstrækkelig saldo</translation>
-<translation id="275990379543116961">Ikke nok midler til gas</translation>
+<translation id="275990379543116961">Ikke nok midler til benzin</translation>
 <translation id="3292453499915466604">Utilstrækkelig likviditet</translation>
 <translation id="805808215102934711">Aktivér <ph name="FROM_ASSET_SYMBOL"/></translation>
 <translation id="3380365263193509176">Ukendt fejl</translation>
@@ -1156,22 +1140,17 @@
 <translation id="1671503397662036257">Tor-forbindelsesstatus</translation>
 <translation id="6024292492796847324">Tor initialiseringsfremgang</translation>
 <translation id="8458987127502506209">Aktivér Brave-skjolde</translation>
-<translation id="640898327002833127">Brave-skjolde <ph name="LINK_BEFORE"/>OPPE<ph name="LINK_AFTER"/></translation>
-<translation id="8676609116485287125">Hvis siden ser forkert ud, så prøv at deaktivere skjolde. Bemærk: Dette vil reducere Braves privatlivsbeskyttelse.</translation>
 <translation id="8377155647357436161">Trackers, reklamer med mere er blokeret <ph name="LINK_BEFORE"/>Læs mere<ph name="LINK_AFTER"/></translation>
 <translation id="5416893287862792505">Avanceret Styring</translation>
-<translation id="1299672573512347813">Disse indstillinger påvirker webkompatibiliteten på denne side.</translation>
 <translation id="9204041448536398473">Globale skjoldindstillinger</translation>
-<translation id="7637771346619326580">Redigér globale skjoldstandarder</translation>
-<translation id="3520486481604057261">Tilpas Adblock-lister</translation>
-<translation id="3146531623184244174">Forbindelsesopgradering til HTTPS</translation>
+<translation id="3570081523466826008">Opgrader forbindelser til HTTPS</translation>
 <translation id="131231380815754440">Aktivér HTTPS</translation>
-<translation id="7461425058443653485">Scripts blokeret</translation>
+<translation id="4824468494729001999">Bloker scripts</translation>
 <translation id="3246600097575692802">Aktivér Scripts blokeret</translation>
 <translation id="3603525299146223354">Trackers &amp; reklamer</translation>
 <translation id="1146309636943354181">Trackere &amp; reklamer blokeret (standard)</translation>
 <translation id="5973258875089964805">Trackere &amp; reklamer blokeret (aggressivt)</translation>
-<translation id="5544888475837817215">Tillad alle trackere og reklamer</translation>
+<translation id="7384778069178817075">Tillad alle trackere &amp; reklamer</translation>
 <translation id="6203697265754637264">Cross-site-cookies blokeret</translation>
 <translation id="4627427111733173920">Cookies blokeret</translation>
 <translation id="3972324600756617403">Alle cookies tilladt</translation>

@@ -134,7 +134,6 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="5536657158619734169">Pasiekiama nauja „Brave“ versija.</translation>
 <translation id="239760341987199724">Nustatyti „Brave“ kaip numatytąją naršyklę</translation>
 <translation id="1403270718080126244">„<ph name="PAGE_TITLE"/>“ – „Brave Beta“</translation>
-<translation id="707769633889902835">„Brave“ OS negali atidaryti šio puslapio.</translation>
 <translation id="696826782632239602">„Brave“ reikia leidimo, kad galėtų naudoti jūsų vietovės informaciją ir bendrinti ją su šia svetaine</translation>
 <translation id="1744365871163268756">Palaukite, kol „Brave“ įdiegs naujausius sistemos naujinius.</translation>
 <translation id="3861679447659630159">„Brave“ bando redaguoti slaptažodžius. Įveskite „Windows“ slaptažodį, kad tai leistumėte.</translation>
@@ -197,7 +196,7 @@ Kai kurios funkcijos gali būti nepasiekiamos. Nurodykite kitą profilio katalog
 <translation id="8291513491595858997">Jūsų tėvai išjungė svetainių, programų ir plėtinių leidimus sistemoje „Brave“. Neleidžiama įgalinti šio <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8211837073776713955">„Brave“ praneš, jei slaptažodžiai bus pažeisti</translation>
 <translation id="7830723774663008396">„Brave“ – „<ph name="PAGE_TITLE"/>“</translation>
-<translation id="5253815230176279256">„Brave Pay“ (nukopijuota į „Brave“)</translation>
+<translation id="2049565899730874086">„Google Pay“ (nukopijuota į „Brave“)</translation>
 <translation id="3028928628792374067">„Brave“ aptiko kenkėjišką programą plėtinyje „<ph name="EXTENSION_NAME"/>“</translation>
 <translation id="2301993384336631869">„Brave“ atnaujinta, bet jos nenaudojote mažiausiai 30 dienų.</translation>
 <translation id="8828443087767259398">„Brave“ reikia pasiekti „Bluetooth“, kad galėtų sieti 
@@ -292,6 +291,12 @@ Kai kurios funkcijos gali būti nepasiekiamos. Nurodykite kitą profilio katalog
 <translation id="4484434718272972655">Kas naudoja „Brave“?</translation>
 <translation id="7173394303099002355">Patikimiausios „Brave“ saugos užtikrinimas</translation>
 <translation id="8992261409816268381">„Brave“ autoriai</translation>
+<translation id="479793348545936567">Jei šią paskyrą norite naudoti tik vieną kartą, galite naudoti „Brave“ naršyklės svečio režimą. Jei norite pridėti paskyrą kam nors kitam, <ph name="LINK_BEGIN"/>pridėkite naują profilį<ph name="LINK_END"/> prie savo <ph name="DEVICE_TYPE"/>.
+
+Šiai paskyrai gali būti taikomi leidimai, kuriuos jau davėte svetainėms ir programėlėms. Savo „Brave“ sinchronizavimo grandinę galite valdyti <ph name="SETTINGS_LINK_BEGIN"/>Nustatymai<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Jei šią paskyrą norite naudoti tik vieną kartą, galite naudoti „Brave“ naršyklės <ph name="GUEST_LINK_BEGIN"/>svečio režimą<ph name="GUEST_LINK_END"/> Jei norite pridėti paskyrą kam nors kitam, <ph name="LINK_BEGIN"/>pridėkite naują profilį<ph name="LINK_END"/> prie savo <ph name="DEVICE_TYPE"/>.
+
+Šiai paskyrai gali būti taikomi leidimai, kuriuos jau davėte svetainėms ir programėlėms. Savo „Brave“ sinchronizavimo grandinę galite valdyti <ph name="SETTINGS_LINK_BEGIN"/>Nustatymai<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Įspėjimas: „Brave“ negali neleisti plėtiniams įrašyti naršymo istorijos. Jei norite išjungti šį plėtinį inkognito režimu, panaikinkite šios parinkties pasirinkimą.</translation>
 <translation id="1448049584457347995">Kad „Brave“ padarytume saugesnę, išjungėme kai kuriuos plėtinius, kurių nėra „<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>“ sąraše ir kurie galėjo būti pridėti be jūsų žinios.</translation>
 <translation id="8848045066928358658">Kad „Brave“ būtų saugesnė, išjungėme toliau nurodytą plėtinį, kuris nepateiktas <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> sąraše ir tikriausiai buvo pridėtas be jūsų žinios.</translation>

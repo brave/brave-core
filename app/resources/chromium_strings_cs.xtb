@@ -134,7 +134,6 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="5536657158619734169">K dispozici je nová verze prohlížeče Brave.</translation>
 <translation id="239760341987199724">Nastavit Brave jako výchozí prohlížeč</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
-<translation id="707769633889902835">Chrome OS tuto stránku nedokáže otevřít</translation>
 <translation id="696826782632239602">Prohlížeč Brave potřebuje přístup k vaší poloze, aby ji mohl sdílet s tímto webem</translation>
 <translation id="1744365871163268756">Počkejte prosím, než Brave nainstaluje nejnovější aktualizace systému.</translation>
 <translation id="3861679447659630159">Brave se pokouší upravit hesla. Tato akce vyžaduje zadání hesla systému Windows.</translation>
@@ -197,7 +196,7 @@ Některé funkce mohou být nedostupné. Zadejte prosím jiný adresář profilu
 <translation id="8291513491595858997">Tvůj rodič pro prohlížeč Brave vypnul možnost Oprávnění pro weby, aplikace a rozšíření. Aktivace tohoto <ph name="EXTENSION_TYPE_PARAMETER"/> není povolena.</translation>
 <translation id="8211837073776713955">Pokud vaše hesla někdo prolomí, Brave vás o tom bude informovat</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (zkopírováno do prohlížeče Brave)</translation>
+<translation id="2049565899730874086">Google Pay (zkopírováno do prohlížeče Brave)</translation>
 <translation id="3028928628792374067">Prohlížeč Brave zjistil, že rozšíření <ph name="EXTENSION_NAME"/> obsahuje malware</translation>
 <translation id="2301993384336631869">Prohlížeč Brave byl aktualizován, ale minimálně po 30 dnů jste jej nepoužili.</translation>
 <translation id="8828443087767259398">Brave potřebuje přístup k Bluetooth, aby bylo možné
@@ -291,6 +290,12 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="4484434718272972655">Kdo Brave používá?</translation>
 <translation id="7173394303099002355">Aktivujte si v prohlížeči Brave maximální zabezpečení</translation>
 <translation id="8992261409816268381">Autoři prohlížeče Brave</translation>
+<translation id="479793348545936567">Pokud chcete tento účet použít pouze jednorázově, můžete v prohlížeči Brave použít režim pro hosty. Pokud chcete vytvořit účet pro někoho jiného, <ph name="LINK_BEGIN"/> vytvořte nový profil<ph name="LINK_END"/> na vašem zařízení <ph name="DEVICE_TYPE"/>.
+
+Na tento účet se mohou vztahovat oprávnění, která jste již udělili webovým stránkám a aplikacím. Synchronizační řetězce Brave můžete spravovat v <ph name="SETTINGS_LINK_BEGIN"/>Nastavení<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Pokud chcete tento účet použít pouze jednorázově, můžete použít <ph name="GUEST_LINK_BEGIN"/>Režim pro hosty<ph name="GUEST_LINK_END"/> v prohlížeči Brave. Pokud chcete vytvořit účet pro někoho jiného, <ph name="LINK_BEGIN"/>vytvořte nový profil<ph name="LINK_END"/> na vašem zařízení <ph name="DEVICE_TYPE"/>.
+
+Na tento účet se mohou vztahovat oprávnění, která jste již udělili webovým stránkám a aplikacím. Synchronizační řetězce Brave můžete spravovat v <ph name="SETTINGS_LINK_BEGIN"/>Nastavení<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Varování: Brave nedokáže zabránit rozšířením, aby zaznamenávala historii procházení. Chcete-li toto rozšíření v soukromém režimu zakázat, zrušte zaškrtnutí této možnosti.</translation>
 <translation id="1448049584457347995">Aby bylo Brave bezpečnější, deaktivovali jsme některá rozšíření, která nejsou uvedena na webu <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> a mohla být přidána bez vašeho vědomí.</translation>
 <translation id="8848045066928358658">Aby byl prohlížeč Brave bezpečnější, deaktivovali jsme následující rozšíření, které není uvedeno na webu <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> a pravděpodobně bylo přidáno bez vašeho vědomí.</translation>

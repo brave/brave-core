@@ -62,7 +62,7 @@
     "message": "ऑटो-योगदान को शामिल करें",
     "description": ""
   },
-  "monthlyContribution": {
+  "monthlyTip": {
     "message": "मासिक योगदान",
     "description": ""
   },
@@ -235,10 +235,6 @@
     "message": "मासिक टिप्स",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "सत्यापित है",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "1- टाइम टिप्स",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "इनामों का संक्षिप्त विवरण ",
     "description": ""
   },
-  "walletVerified": {
-    "message": "सत्यापित है",
+  "walletUnverified": {
+    "message": "वेरिफ़ाई नहीं किया गया है",
     "description": ""
   },
-  "walletVerify": {
-    "message": "सत्यापित करें",
+  "walletVerified": {
+    "message": "सत्यापित है",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "अपर्याप्त धनराशि के कारण आपका ऑटो-कॉन्ट्रिब्यूट और मासिक कॉन्ट्रिब्यूशन के लिए निर्धारित मासिक भुगतान  पूरा नहीं हो सका। हम 30 दिनों में पुनः प्रयास करेंगे।",
+    "message": "अपर्याप्त धन के कारण ऑटो-योगदान और मासिक टिप्स के लिए आपका निर्धारित मासिक भुगतान पूरा नहीं किया जा सका। हम 30 दिनों में दोबारा प्रयास करेंगे.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "मासिक योगदान नहीं हो पाया",
+    "message": "मासिक योगदान नहीं दिया जा सका",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "आपके मासिक योगदान को प्रोसेस किया गया.",
+    "message": "आपका मासिक योगदान प्रोसेस हो गया है.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

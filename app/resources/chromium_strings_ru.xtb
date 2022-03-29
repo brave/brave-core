@@ -130,7 +130,6 @@
 <translation id="5536657158619734169">Доступна новая версия Brave.</translation>
 <translation id="239760341987199724">Сделать Brave браузером по умолчанию</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave (бета-версия)</translation>
-<translation id="707769633889902835">Brave OS не может открыть эту страницу</translation>
 <translation id="696826782632239602">Для этого сайта Brave запрашивает доступ к данным о вашем местоположении.</translation>
 <translation id="1744365871163268756">Подождите, пока Brave устанавливает последние обновления системы</translation>
 <translation id="3861679447659630159">Brave пытается изменить пароли. Чтобы разрешить это действие, введите свой пароль Windows.</translation>
@@ -193,7 +192,7 @@
 <translation id="8291513491595858997">Родители отключили в Brave параметр "Разрешения для сайтов, приложений и расширений". Включать это <ph name="EXTENSION_TYPE_PARAMETER"/> запрещено.</translation>
 <translation id="8211837073776713955">Brave сообщит вам, если возникнет проблема с безопасностью ваших паролей.</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (скопирована в Brave)</translation>
+<translation id="2049565899730874086">Google Pay (скопирована в Brave)</translation>
 <translation id="3028928628792374067">Браузер Brave обнаружил, что расширение "<ph name="EXTENSION_NAME"/>" содержит вредоносное ПО.</translation>
 <translation id="2301993384336631869">Brave был обновлен, однако вы не использовали его в течение последних 30 дней.</translation>
 <translation id="8828443087767259398">Чтобы продолжить подключение, предоставьте браузеру Brave доступ к Bluetooth. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -284,6 +283,12 @@
 <translation id="4484434718272972655">Кто использует Brave?</translation>
 <translation id="7173394303099002355">Обеспечьте максимальную защиту в Brave</translation>
 <translation id="8992261409816268381">Авторы Brave</translation>
+<translation id="479793348545936567">Если вы планируете использовать этот аккаунт только один раз, войдите в Brave в качестве гостя. Чтобы создать постоянный аккаунт для другого пользователя, <ph name="LINK_BEGIN"/>добавьте новый профиль<ph name="LINK_END"/> в <ph name="DEVICE_TYPE"/>.
+
+Для этого аккаунта могут действовать разрешения, уже предоставленные сайтам и приложениям. Управлять синхронизацией в Brave можно в <ph name="SETTINGS_LINK_BEGIN"/>настройках<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Если вы планируете использовать этот аккаунт только один раз, войдите в Brave в качестве <ph name="GUEST_LINK_BEGIN"/>гостя<ph name="GUEST_LINK_END"/>. Чтобы создать постоянный аккаунт для другого пользователя, <ph name="LINK_BEGIN"/>добавьте новый профиль<ph name="LINK_END"/> в <ph name="DEVICE_TYPE"/>.
+
+Для этого аккаунта могут действовать разрешения, уже предоставленные сайтам и приложениям. Управлять синхронизацией в Brave можно в <ph name="SETTINGS_LINK_BEGIN"/>настройках<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Внимание! Brave не может запретить расширениям записывать историю просмотров. Чтобы отключить данное расширение в Личном режиме, снимите этот флажок.</translation>
 <translation id="1448049584457347995">Чтобы обеспечить безопасность ваших данных, некоторые расширения Brave были отключены, так как <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> не содержит сведений о них, то есть эти компоненты могли быть установлены без вашего ведома.</translation>
 <translation id="8848045066928358658">Чтобы обеспечить безопасность ваших данных, некоторые расширения были отключены, так как <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> не содержит сведений о них (то есть они могли быть установлены без вашего ведома).</translation>

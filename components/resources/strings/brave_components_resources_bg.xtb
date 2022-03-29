@@ -189,8 +189,6 @@
 <translation id="905529390827000221">4 реклами на час</translation>
 <translation id="7694167481321619202">5 реклами на час</translation>
 <translation id="3705420658531870884">10 реклами на час</translation>
-<translation id="8576106690599421723">Насочване на реклами на ниво държава</translation>
-<translation id="4775297407519948063">Това позволява на Brave да ви показва реклами, предназначени специално за вашата страна.</translation>
 <translation id="8446884382197647889">Научете повече</translation>
 <translation id="6209514229703649203">Автоматично открит като [[adsSubdivisionTarget]]</translation>
 <translation id="8010081455002666927">Автоматично откриване</translation>
@@ -204,9 +202,7 @@
 <translation id="2365740070488517695">Дарения</translation>
 <translation id="5810507495128831593">Вижте еднократните дарения, които сте дали на уебсайтове и създатели.</translation>
 <translation id="9147550766164257963">Научете повече за даренията.</translation>
-<translation id="5012991400231464322">Месечни приноси</translation>
-<translation id="2084351799622920487">Настройте периодични месечни приноси, за да можете да поддържате сайтове непрекъснато.</translation>
-<translation id="8150772404570015166">Все още няма настроени месечни приноси.</translation>
+<translation id="7577100371127227294">Ежемесечни дарения</translation>
 <translation id="1617202384704994799">Очаквайте скоро.</translation>
 <translation id="2241248417273918295">Печалбите се изплащат всеки месец.</translation>
 <translation id="68906705461077250">Задайте желаната честота, за да увеличите или намалите печалбите.</translation>
@@ -214,7 +210,6 @@
 <translation id="4129489167302464118">Вашите месечни плащания се разпределят по посетените от вас сайтове.</translation>
 <translation id="4898632353264854950">Докато сърфирате, ще се появяват сайтове</translation>
 <translation id="3024485967181749006">Общо бакшиши този месец</translation>
-<translation id="5055577484189948413">Общо приноси за този месец</translation>
 <translation id="4153752809523809915">Днес дали ли сте дарение на любимия си създател на съдържание?</translation>
 <translation id="7286722244752781970">Минимално време на страницата преди отчитане като посещение</translation>
 <translation id="4424486208397124985">Минимално количество посещения за съответствие на издателя</translation>
@@ -234,7 +229,6 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="7841456038054167122">Въведете отново ключовете или опитайте с различни ключове.</translation>
 <translation id="1911900517212490188">Въведеният ключ за възстановяване вече не се поддържа. Посетете <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> за да получите нов ключ.</translation>
-<translation id="5549059668721746831">Следваща месечна дата на принос</translation>
 <translation id="6231182869178328516">Преди малко дадох бакшиш на <ph name="NAME"/> използвайки Brave браузър. Вижте го на https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="3082557070674409251">Щракнат</translation>
@@ -357,13 +351,8 @@
 <translation id="3248185426436836442">Предстоящо</translation>
 <translation id="5906820630265272615">BAT средства</translation>
 <translation id="5814098892838785557">Наистина ли искате да спрете да подкрепяте този създател?</translation>
-<translation id="3922777918343537463">Отмяна на месечния принос</translation>
 <translation id="9087994290002662101">Промяна на сумата</translation>
-<translation id="1969724076378550685">Потвърдете анулирането на Ежемесечно</translation>
-<translation id="6238322297266927861">Сума на приноса:</translation>
-<translation id="1723857724166389190">Вашата месечна вноска за този създател е отменена.</translation>
 <translation id="534368327994110883">В момента подкрепяте този създател</translation>
-<translation id="2621124276654521177">Текуща месечна вноска</translation>
 <translation id="7723816962634734185">Персонализирана сума</translation>
 <translation id="7286679368056222644">Месечната ви поддръжка ще бъде</translation>
 <translation id="4088764345615745058">Персонализирана сума за възнаграждение</translation>
@@ -374,8 +363,6 @@
 <translation id="8994556588732085585">Затворете и отворете отново банера за подпомагане, за да опитате отново.</translation>
 <translation id="8987454605694983241">e.g. <ph name="AMOUNT"/></translation>
 <translation id="4492470488449820476">Минималното възнаграждение е <ph name="AMOUNT"/> <ph name="CURRENCY"/></translation>
-<translation id="4371618764691059036">Месечното ппащане беше зададено.</translation>
-<translation id="6356822617569064293">Дата на следващо плащане:</translation>
 <translation id="3593485149443019592">Недостатъчен брой жетони. <ph name="LINK_BEGIN"/>Добавете средства<ph name="LINK_END"/>.</translation>
 <translation id="3586352807094428968">Brave събира 5% от сумата на бакшиша като такса за обработка.</translation>
 <translation id="207268487070188114">Еднократно дарение</translation>
@@ -416,15 +403,15 @@
 <translation id="6897083627729802351">Кога получавате награди?</translation>
 <translation id="310863932297733723">Спечелените от вас токени от Brave Private Ads през текущия месец ще пристигнат на 5-то число на следващия месец.</translation>
 <translation id="7712287524451429139">Връщане без усилие</translation>
-<translation id="105037569026952831">Създателите получават вашите приноси с токени автоматично въз основа на нивата ви на ангажираност, които измерваме като „Внимание“.</translation>
+<translation id="105037569026952831">Създателите получават вашите внесени токени автоматично въз основа на нивата ви на ангажираност, които измерваме като „Внимание“.</translation>
 <translation id="5323267338679539010">Кажете благодаря, като подпомагате</translation>
 <translation id="6042317056594735519">Подпомагането е начин за лично насърчаване и подкрепа на съдържание или създатели, които много харесвате. Подпомагайте!</translation>
 <translation id="7509452925943421624">Какво можете да направите с токени?</translation>
 <translation id="5876169128756792273">Токените могат да се използват не само за подкрепа на създателите. Можете да купувате цифрово съдържание и други стоки, когато търговците се качат на борда.</translation>
-<translation id="1402530520078693620">И накрая, нека направим основните ви настройки</translation>
+<translation id="1402530520078693620">И накрая, нека Ви помогнем да зададете основните настройки</translation>
 <translation id="3494356595346329740">Можете да промените това по-късно.</translation>
 <translation id="827315274423079662">Еха, всичко е готово!</translation>
-<translation id="8268038362451312235">Използвайки Brave награди, вие помагате да направим мрежата по-добро място за всички. И това е страхотно!</translation>
+<translation id="8268038362451312235">Използвайки Brave Rewards, вие помагате да направим мрежата по-добро място за всички. И това е страхотно!</translation>
 <translation id="6518133107902771759">Потвърждаване</translation>
 <translation id="2318949593486441832">За да изтеглите BAT, които сте спечелили за гледане на реклами, е необходимо да потвърдите Brave награди.</translation>
 <translation id="9168436347345867845">Остави за по-късно</translation>
@@ -459,7 +446,7 @@
 <translation id="3866249974567520381">Описание</translation>
 <translation id="8605272644314973683">Brave награди е</translation>
 <translation id="1346059596910821859">Бакшиш</translation>
-<translation id="6045860799501892362">Задайте месечен принос</translation>
+<translation id="7277134233385925078">Задаване на месечно дарение</translation>
 <translation id="298067735430872465">Приходи от реклами</translation>
 <translation id="1418534671788496616">Преглед на хронологията на депозиране</translation>
 <translation id="3412655388715513818">Изключи този сайт</translation>
@@ -467,8 +454,8 @@
 <translation id="8802504113265057166">[[currency]], които не са използвани до датата на изтичане, ще бъдат автоматично върнати в Запаса за растеж на Brave потребителя.</translation>
 <translation id="279567716178902927">Дата на изтичане на субсидията</translation>
 <translation id="1389143276807887637">внасяне</translation>
-<translation id="1038407494348068191">Управление на портфейла ви</translation>
-<translation id="5737831580668469027">Месечни приноси!</translation>
+<translation id="6302422639282249274">Управление на  Brave Rewards</translation>
+<translation id="211044356803193224">Месечни дарения!</translation>
 <translation id="2487641031722095938">Това е щастливият ви ден!</translation>
 <translation id="6255773350565723852">Субсидията на вашия жетон е на път.</translation>
 <translation id="3453206261112715431">Безплатна субсидия жетон</translation>
@@ -476,7 +463,6 @@
 <translation id="4677106999274433911">Успешно заявихте награда за реклами</translation>
 <translation id="8304661078305276044">Награди за реклами</translation>
 <translation id="1770001816413426741">Период на награди</translation>
-<translation id="2280319752798785157">Месечен принос</translation>
 <translation id="8307851765167460403">Все още няма активност…</translation>
 <translation id="3630697955794050612">изкл</translation>
 <translation id="4921250468871504777">ok</translation>
@@ -487,19 +473,18 @@
 <translation id="156591572855748524">30-дневна хронология на рекламите</translation>
 <translation id="4923459931733593730">Плащане</translation>
 <translation id="3138528956349114724">Фиксираните сайтове сега са</translation>
-<translation id="2337632028350283479">Ето как работят месечните приноси:</translation>
-<translation id="6457273203091513039">Месечните приноси не излизат от плащането ви с Auto-Contribute. Те са отделни.</translation>
+<translation id="7562713189950710660">Ето как се извършват месечните дарения:</translation>
+<translation id="1404790274772315264">Месечните дарения не са част от плащането ви за автоматичен принос. Те се извършват отделно.</translation>
 <translation id="9099396904827413228">Всеки сайт получава определена сума месечно.</translation>
-<translation id="5051110132941857169">Месечните приноси се изплащат наведнъж, всеки месец. Ако използвате Auto-Contribute, бакшишите излизат едновременно с месечното ви плащане с Auto-Contribute.</translation>
-<translation id="3374483782662414143">Можете да премахнете всеки сайт, който получава месечни приноси от вътрешната страна на панела Бакшиши.</translation>
+<translation id="7018976623064894683">Месечните дарения се изплащат наведнъж и всеки месец. Ако използвате функцията за автоматичен принос, даренията се извършват по едно и също време с месечното ви плащане за автоматичен принос.</translation>
+<translation id="1135093233619227159">От панела с дарения можете да премахнете всеки един от сайтовете, които получават месечни дарения.</translation>
 <translation id="5082474983463379713">Обърнете внимание:</translation>
 <translation id="1430915738399379752">Печат</translation>
 <translation id="135956957367307069">Вашата заявка се обработва, изчакайте.</translation>
 <translation id="8725066075913043281">Нов опит</translation>
 <translation id="2600847485413879104">Възнаграждения BAT</translation>
-<translation id="8006596443377585072">bitFlyer портфейл</translation>
-<translation id="2770577461149798369">Gemini портфейл</translation>
-<translation id="8108350286444475334">Портфейл в Uphold</translation>
+<translation id="8533411848724153701">Gemini</translation>
+<translation id="6569877533335686968">Одобрявам</translation>
 <translation id="6977372887576114613">Депозирани BAT</translation>
 <translation id="194625454574835815">Ключ за възстановяване</translation>
 <translation id="6354568176665589146">Повтарящ се</translation>
@@ -543,7 +528,7 @@
 <translation id="3535654229833214438">Транзакции</translation>
 <translation id="8772672608371898774">Brave проверен издател</translation>
 <translation id="5050370287908180130">Преглед на месечното извлечение за подробности</translation>
-<translation id="348711787499592128">Активност в Brave награди</translation>
+<translation id="7853202427316060426">Дейност</translation>
 <translation id="7232682712743566408">Баланс на наградите</translation>
 <translation id="1910721550319506122">Добре дошли!</translation>
 <translation id="4258022280942725182">Вашите Brave награди</translation>
@@ -563,6 +548,7 @@
 <translation id="4862817811647633830">сайтове от Auto-Contribute.</translation>
 <translation id="923467487918828349">Показване на всички</translation>
 <translation id="5113531205597573951">Прегледани Сайтове</translation>
+<translation id="4450893287417543264">Не показвай повече</translation>
 <translation id="3656941797339037856">Свържете Rewards към Gemini!</translation>
 <translation id="31532096120351460">Търгувайте над 50 криптовалути, включително BAT в Gemini. Това е защитена платформа, в която да съхранявате вашите криптовалути. Освен това можете да печелите лихва в US, HK и SG.</translation>
 <translation id="7404779623219601861">Осребряване на карти за подаръци</translation>
@@ -639,7 +625,7 @@
 <translation id="824449983246282560">Нямате салдо по сметката си. Посетете Gemini, за да купите нещо.</translation>
 <translation id="8624961452383848703">Искам да конвертирам...</translation>
 <translation id="616639131065447379">Добре дошли в Brave Crypto Wallets</translation>
-<translation id="1740464057879304704">Crypto Wallets ви позволява да работите с криптовалута и свързани активи в Brave. Crypto Wallets поддържа токени на Ethereum като ETH и BAT, както и колекционерски артикули и ви позволява да работите с приложения и други смарт договори. Всичко това е предназначено за хора, които са запознати с Ethereum и други блокчейн системи или са въодушевени да научат.</translation>
+<translation id="1740464057879304704">Crypto Wallets ви позволява да работите с криптовалута и свързани активи в Brave. Crypto Wallets поддържа токени на Ethereum като ETH и BAT, както и колекционерски елементи, и ви позволява да работите с Ðapps и други интелигентни договори. Всичко това е предназначено за хора, които са запознати с Ethereum и други блокчейн системи — или са развълнувани да научат.</translation>
 <translation id="4855440621031541830">Използвайте Crypto Wallets, само ако приемате, че единствено вие носите отговорност за целия риск, свързан с тази употреба, и че Brave Software не носи отговорност или задължение за загуби, включително случайни или последващи загуби, които бихте могли да понесете в резултат на тази употреба.</translation>
 <translation id="3187473319809074178">Всичко това е напълно отделно от</translation>
 <translation id="8327818101454798856">Така че, ако искате да подкрепите любимите си сайтове, вместо това се насочете към тях.</translation>
@@ -760,10 +746,8 @@
 <translation id="6080167751812750226">Прекъсване на връзката с<ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Прогнозни печалби</translation>
 <translation id="4244985009709452836">Влезте в своя акаунт в <ph name="PROVIDER"/></translation>
-<translation id="7577100371127227294">Ежемесечни дарения</translation>
 <translation id="2613359062756190460">Еднократни дарения</translation>
 <translation id="590733288489975971">Награди от реклами</translation>
-<translation id="4989163558385430922">Преглед на всички</translation>
 <translation id="3026978804849658576">Преглед на изявлението</translation>
 <translation id="8494748383523030337">Вашият баланс</translation>
 <translation id="1187367336925051518">Награди за <ph name="MONTH"/>: <ph name="AMOUNT"/></translation>
@@ -893,7 +877,7 @@
 <translation id="5242300593039211344">Заключване на портфейл</translation>
 <translation id="765834632354589737">Архивен портфейл</translation>
 <translation id="1108298724135935307">Свързани сайтове</translation>
-<translation id="722307450061393855">Архивирайте портфейла си сега, за да защитите криптоактивите си и да сте сигурни, че няма да загубите достъп.</translation>
+<translation id="163697698769819510">Архивирайте портфейла си сега, за да защитите криптоактивите си и да сте сигурни, че няма да загубите достъп.</translation>
 <translation id="1018806299114415224">Архивиране сега</translation>
 <translation id="5234764350956374838">Отхвърляне</translation>
 <translation id="4075073132992924258">Портфейлът в Brave не е зададен по подразбиране и няма да отговаря на децентрализирани приложения web3. Отворете настройките, за да промените портфейла по подразбиране.</translation>
@@ -997,6 +981,9 @@
 <translation id="3474375934783434676">Подписване на свой собствен риск</translation>
 <translation id="5488357322146334497">Съобщение</translation>
 <translation id="3586752056660754651">Подпис</translation>
+<translation id="3340247553212049934">Осигуряване</translation>
+<translation id="714506544401754321">Дешифриране на съобщението</translation>
+<translation id="5039804452771397117">Позволи</translation>
 <translation id="9032898664193335413">Разрешаване на това приложение да похарчи вашите <ph name="TOKEN_SYMBOL"/>?</translation>
 <translation id="854606191596163710">Предоставяйки това разрешение, позволявате на това приложение да изтегли вашите <ph name="VALUE"/> и да автоматизира трансакциите за вас.</translation>
 <translation id="8786100550345425552">Редактиране на разрешенията</translation>
@@ -1108,8 +1095,6 @@
 <translation id="6825399159373612149">Домейнът <ph name="DOMAIN_NAME"/> не е регистриран</translation>
 <translation id="8971278306757462297">Адресът на получаване е вашият собствен адрес</translation>
 <translation id="3506416339268164412">Адресът на получаване е адресът на договора на токена</translation>
-<translation id="5517732667776806421">Липсва информация за контролната сума</translation>
-<translation id="4006711930669471508">Невалидна информация за контролната сума</translation>
 <translation id="4667144295226514387">Липсва ограничение за газ</translation>
 <translation id="862585889767884824">на</translation>
 <translation id="9106265941552476098">Отхвърляне на <ph name="TRANSACTION_LENGTH"/> трансакции</translation>
@@ -1157,22 +1142,17 @@
 <translation id="1671503397662036257">Състояние на връзката Tor</translation>
 <translation id="6024292492796847324">Напредък на инициализацията на Tor</translation>
 <translation id="8458987127502506209">Активиране на щитове на Brave</translation>
-<translation id="640898327002833127">Щитове на Brave <ph name="LINK_BEFORE"/>АКТИВИРАНИ<ph name="LINK_AFTER"/></translation>
-<translation id="8676609116485287125">Ако този сайт изглежда повреден, опитайте с изключени щитове. Забележка: това може да намали защитата на поверителността на Brave.</translation>
 <translation id="8377155647357436161">Проследяващите елементи, рекламите и други елементи са блокирани<ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
 <translation id="5416893287862792505">Допълнително управление</translation>
-<translation id="1299672573512347813">Тези настройки засягат уеб съвместимостта на този сайт.</translation>
 <translation id="9204041448536398473">Настройки на глобалния щит</translation>
-<translation id="7637771346619326580">Промяна на настройките на глобалния щит по подразбиране</translation>
-<translation id="3520486481604057261">Персонализиране на списъците за блокиране на реклами</translation>
-<translation id="3146531623184244174">Връзките надградени към HTTPS</translation>
+<translation id="3570081523466826008">Надстройване на връзките към HTTPS</translation>
 <translation id="131231380815754440">Активиране на HTTPS</translation>
-<translation id="7461425058443653485">Скриптовете са блокирани</translation>
+<translation id="4824468494729001999">Блокиране на скриптове</translation>
 <translation id="3246600097575692802">Разширяване на блокирани скриптове</translation>
 <translation id="3603525299146223354">Проследяващи елементи и реклами</translation>
 <translation id="1146309636943354181">Проследяването и рекламите са блокирани (стандартно)</translation>
 <translation id="5973258875089964805">Проследяването и рекламите са блокирани (агресивно)</translation>
-<translation id="5544888475837817215">Позволяване на всички проследяващи елементи и реклами</translation>
+<translation id="7384778069178817075">Разрешаване на всички проследявания и реклами</translation>
 <translation id="6203697265754637264">Бисквитките между сайтове бяха блокирани</translation>
 <translation id="4627427111733173920">Блокирани бисквитки</translation>
 <translation id="3972324600756617403">Всички „бисквитки“ са разрешени</translation>

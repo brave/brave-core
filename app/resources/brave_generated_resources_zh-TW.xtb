@@ -51,6 +51,8 @@
 <translation id="1643029991199044105">使用 Ctrl-Tab 循環瀏覽最近使用的分頁</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">文章會自動以閱讀器模式載入，節省您的時間</translation>
+<translation id="5510493033031835532">自動重新導向 AMP 頁面</translation>
+<translation id="5197219128592971597">務必前往原始 (非 AMP) 頁面的 URL，而非使用 Google 的 Accelerated Mobile Page 版本</translation>
 <translation id="5802665280774361839">在網址列顯示自動完成</translation>
 <translation id="597020512043916976">在自動完成建議中顯示熱門網站</translation>
 <translation id="264150068416846820">在自動完成建議中顯示 Brave 建議的網站</translation>
@@ -218,10 +220,6 @@
 <translation id="2414886740292270097">暗</translation>
 <translation id="1360441190790440400">與 Linux 相同</translation>
 <translation id="1336940801687497203">與 Windows 相同</translation>
-<translation id="5919209812221905840">預設的 Microsoft Edge 通訊協定處理常式</translation>
-<translation id="5239541974656019812">將 Brave 設為 Microsoft Edge 通訊協定處理常式</translation>
-<translation id="7136694880210472378">設為預設</translation>
-<translation id="1751388324499810661">Brave 是預設的 Microsoft Edge 通訊協定處理常式</translation>
 <translation id="8721331068159819483">與 macOS 相同</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在瀏覽器顯示種子檔案。支援種子檔案和磁力連結。</translation>
 <translation id="8488282162676695335">Brave 錢包</translation>
@@ -233,6 +231,7 @@
 <translation id="4718664830805652430">預設基礎貨幣</translation>
 <translation id="7992507032049865603">預設基礎加密貨幣</translation>
 <translation id="1834467296210148203">在工具列上顯示 Brave Wallet 圖示</translation>
+<translation id="4613486011786721686">隱藏工具列上的 Brave 錢包圖示</translation>
 <translation id="8239147115686034860">自動鎖定 Brave 錢包</translation>
 <translation id="414639769490080648">Brave 錢包自動鎖定前等待的分鐘數</translation>
 <translation id="6864914031231797928">允許延伸套件登入 Google</translation>
@@ -394,7 +393,7 @@
 <translation id="8712637175834984815">我瞭解了</translation>
 <translation id="4394049700291259645">停用</translation>
 <translation id="7142548388914389999">允許保護私隱的產品分析 (P3A)</translation>
-<translation id="609106526832379947">此完全匿名之資訊有助於 Brave 估計某些功能的整體使用情況，並更好地為您服務。</translation>
+<translation id="8286082624639565868">這項完全匿名的資訊能協助 Brave 評估特定功能的整體使用情形，並加以改善。</translation>
 <translation id="1947672064022327074">您想開啟加密錢包以支援乙太坊嗎？</translation>
 <translation id="7583735190612229830">設定 Crypto Wallets 以與此應用程式和其他類似的應用程式互動。</translation>
 <translation id="8731422418734770661">設定加密錢包</translation>
@@ -438,6 +437,10 @@
 <translation id="2808630562319398131">重設 Brave 獎勵資料…</translation>
 <translation id="2273851479262317744">將 Brave 設為預設瀏覽器</translation>
 <translation id="8581710194025054669">若要享有最優質的網路隱私，不妨考慮將 Brave 設為您電腦上的預設瀏覽器。這麼做的話，每當您點選任何網頁連結，Brave 都會在開啟連結時一併啟動隱私防護機制。</translation>
+<translation id="1968543937259008435">準備好迎接最佳網路隱私防護了嗎？</translation>
+<translation id="6817415381278637662">快將 Brave 設為預設瀏覽器，在開啟每個網頁時享有 Brave 提供的隱私防護。</translation>
+<translation id="8722651357687610395">將 Brave 設為預設值</translation>
+<translation id="2370739752330685659">稍後再說</translation>
 <translation id="1241283133946520352">網路</translation>
 <translation id="8205945804087322170">新增網路</translation>
 <translation id="2156993118928861787">錯誤的位址</translation>

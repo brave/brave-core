@@ -189,8 +189,8 @@
 <translation id="905529390827000221">4 quảng cáo mỗi giờ</translation>
 <translation id="7694167481321619202">5 quảng cáo mỗi giờ</translation>
 <translation id="3705420658531870884">10 quảng cáo mỗi giờ</translation>
-<translation id="8576106690599421723">Nhắm mục tiêu quảng cáo cấp tiểu bang</translation>
-<translation id="4775297407519948063">Điều này cho phép Brave hiển thị cho bạn quảng cáo dành riêng cho tiểu bang của bạn.</translation>
+<translation id="2356652719351432565">Mức độ liên quan của quảng cáo theo vùng</translation>
+<translation id="3216275550298493597">Điều này cho phép Brave hiển thị cho bạn những quảng cáo dành riêng cho khu vực của bạn.</translation>
 <translation id="8446884382197647889">Tìm hiểu thêm</translation>
 <translation id="6209514229703649203">Được tự động phát hiện như là [[adsSubdivisionTarget]]</translation>
 <translation id="8010081455002666927">Tự động phát hiện</translation>
@@ -204,9 +204,9 @@
 <translation id="2365740070488517695">Tiền boa</translation>
 <translation id="5810507495128831593">Xem tiền thưởng một lần bạn đã cung cấp cho các trang web và người tạo nội dung.</translation>
 <translation id="9147550766164257963">Tìm hiểu thêm về thưởng tiền.</translation>
-<translation id="5012991400231464322">Khoản đóng góp hàng tháng</translation>
-<translation id="2084351799622920487">Thiết lập khoản đóng góp định kỳ hàng tháng để bạn có thể liên tục hỗ trợ các trang web.</translation>
-<translation id="8150772404570015166">Chưa thiết lập khoản đóng góp hàng tháng nào.</translation>
+<translation id="7577100371127227294">Tiền tip Hàng tháng</translation>
+<translation id="178390304006113804">Thiết lập tiền thưởng hàng tháng để bạn có thể liên tục hỗ trợ những người tạo nội dung yêu thích của mình.</translation>
+<translation id="3302159320447117425">Chưa có tiền thưởng hàng tháng.</translation>
 <translation id="1617202384704994799">Sắp có.</translation>
 <translation id="2241248417273918295">Thu nhập được trả mỗi tháng.</translation>
 <translation id="68906705461077250">Đặt tần suất mong muốn của bạn để tăng hoặc giảm thu nhập.</translation>
@@ -214,7 +214,7 @@
 <translation id="4129489167302464118">Thu nhập hàng tháng của bạn được phân phối khắp các trang web mà bạn truy cập.</translation>
 <translation id="4898632353264854950">Các trang web sẽ xuất hiện khi bạn duyệt</translation>
 <translation id="3024485967181749006">Tổng tiền tip tháng này</translation>
-<translation id="5055577484189948413">Tổng đóng góp tháng này</translation>
+<translation id="8183455888546367148">Tổng tiền thưởng hàng tháng của tháng này</translation>
 <translation id="4153752809523809915">Hôm nay bạn đã gửi tiền tip cho nhà sáng tạo nội dung mà bạn ưa thích chưa?</translation>
 <translation id="7286722244752781970">Thời gian xem trang tối thiểu trước khi lưu lại lượt truy cập</translation>
 <translation id="4424486208397124985">Số lượt truy cập tối thiểu đối với nhà xuất bản liên quan</translation>
@@ -234,7 +234,7 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="7841456038054167122">Vui lòng nhập lại khóa hoặc thử khóa khác.</translation>
 <translation id="1911900517212490188">Khóa khôi phục đã nhập không được hỗ trợ nữa. Vui lòng truy cập <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> để lấy khóa mới.</translation>
-<translation id="5549059668721746831">Ngày đóng góp hàng tháng tiếp theo</translation>
+<translation id="7583327070390027131">Ngày tiền thưởng hàng tháng tiếp theo</translation>
 <translation id="6231182869178328516">Tôi vừa thưởng <ph name="NAME"/> thông qua Trình duyệt Brave. Xem thêm tại https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="3082557070674409251">Đã nhấp</translation>
@@ -243,6 +243,11 @@
 <translation id="8826352442759228526">Không thể xác thực Phần thưởng Brave của bạn vì bạn đã dùng hết giới hạn tối đa thiết bị được xác thực.</translation>
 <translation id="1221593978088944142">Lỗi: Đã đạt đến giới hạn của thiết bị</translation>
 <translation id="3113653894794167793">Rất tiếc, đã xảy ra sự cố khi xử lý yêu cầu của bạn, xin vui lòng thử lại.</translation>
+<translation id="3509185560119586847">Rất tiếc, hồ sơ Brave Phần thưởng của bạn đã bị gắn cờ và bạn không thể xác minh với người giám hộ vào lúc này. Cờ này đôi khi có thể là do hoạt động Brave Quảng cáo không thường xuyên mặc dù đó cũng có thể là do nhầm lẫn.</translation>
+<translation id="5031451251720571882">Lưu ý rằng khi hồ sơ Brave Phần thưởng của bạn bị gắn cờ, bạn sẽ không thể xác minh.</translation>
+<translation id="7301759045821910866">Bạn không cần làm gì. Hồ sơ Brave Phần thưởng của bạn sẽ được tự động đánh giá lại thường xuyên để xác định thời điểm (hoặc liệu) cờ được gỡ. Vui lòng thử lại thường xuyên để xem cờ đã được gỡ chưa.</translation>
+<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Tìm hiểu thêm về quy trình gắn cờ hồ sơ Phần thưởng của Brave.<ph name="END_LINK"/></translation>
+<translation id="5028274575541726856">Lỗi: Hồ sơ Brave Phần thưởng bị gắn cờ</translation>
 <translation id="2607420597216860026">Vui lòng thử lại sau khi bạn đã hoàn thành việc xác thực ID trên <ph name="PROVIDER"/>.</translation>
 <translation id="3183954159462541696">Lỗi: Bạn cần một tài khoản đã xác minh để đăng nhập</translation>
 <translation id="5260522591743022748">Rất tiếc, có vẻ như Phần thưởng Brave của bạn đã được xác minh bằng tài khoản <ph name="PROVIDER"/> khác. Vui lòng thử xác minh lại bằng tài khoản trước đó của bạn.</translation>
@@ -273,6 +278,7 @@
 <translation id="2359808026110333948">Tiếp tục</translation>
 <translation id="5112354605357157725">Tiếp tục đến đăng nhập</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> yêu cầu số dư tối thiểu là <ph name="AMOUNT"/> BAT để tạo tài khoản. Nếu bạn đã kết nối một tài khoản trước đó,</translation>
+<translation id="1892970806832316900">Chờ xử lý cho đến <ph name="DATE"/></translation>
 <translation id="752216563428219524">Quảng cáo chưa được khởi tạo, vui lòng làm mới trang.</translation>
 <translation id="7422678632904904341">Số lượng:</translation>
 <translation id="6969783933307596818">Tự động làm mới sau mỗi 5 giây</translation>
@@ -357,13 +363,13 @@
 <translation id="3248185426436836442">Đang chờ xử lý</translation>
 <translation id="5906820630265272615">Tiền BAT</translation>
 <translation id="5814098892838785557">Bạn có chắc chắn muốn ngừng hỗ trợ nhà sáng tạo này không?</translation>
-<translation id="3922777918343537463">Hủy Khoản đóng góp Hàng tháng</translation>
+<translation id="6582097696555842139">Hủy tiền thưởng hàng tháng</translation>
 <translation id="9087994290002662101">Thay đổi Số lượng</translation>
-<translation id="1969724076378550685">Xác nhận Hủy Hàng tháng</translation>
-<translation id="6238322297266927861">Số tiền đóng góp:</translation>
-<translation id="1723857724166389190">Khoản đóng góp hàng tháng của bạn cho nhà sáng tạo này đã bị hủy.</translation>
+<translation id="2521187434582281933">Xác nhận hủy tiền thưởng hàng tháng</translation>
+<translation id="915758461293673891">Số tiền thưởng:</translation>
+<translation id="78017292973022384">Tiền thưởng hàng tháng của bạn cho người tạo nội dung này đã bị hủy.</translation>
 <translation id="534368327994110883">Bạn hiện đang hỗ trợ nhà sáng tạo này</translation>
-<translation id="2621124276654521177">Khoản đóng góp hàng tháng hiện tại</translation>
+<translation id="3524380957621081353">Tiền thưởng hàng tháng hiện tại</translation>
 <translation id="7723816962634734185">Số tiền tùy chỉnh</translation>
 <translation id="7286679368056222644">Hỗ trợ hàng tháng của bạn sẽ là</translation>
 <translation id="4088764345615745058">Số tiền cho đi tùy chỉnh</translation>
@@ -374,8 +380,8 @@
 <translation id="8994556588732085585">Xin vui lòng đóng và mở lại biểu ngữ tặng tiền để thử lại.</translation>
 <translation id="8987454605694983241">ví dụ <ph name="AMOUNT"/></translation>
 <translation id="4492470488449820476">Số tiền cho đi tối thiểu là <ph name="AMOUNT"/> <ph name="CURRENCY"/></translation>
-<translation id="4371618764691059036">Đã thiết lập khoản đóng góp hàng tháng.</translation>
-<translation id="6356822617569064293">Ngày đóng góp tiếp theo:</translation>
+<translation id="9088057605518918276">Đã thiết lập tiền thưởng hàng tháng</translation>
+<translation id="6306631474379759382">Ngày tiền thưởng tiếp theo:</translation>
 <translation id="3593485149443019592">Không đủ token. Vui lòng <ph name="LINK_BEGIN"/>thêm tiền<ph name="LINK_END"/>.</translation>
 <translation id="3586352807094428968">Brave thu 5% số tiền thưởng làm phí xử lý.</translation>
 <translation id="207268487070188114">Tiền thưởng một lần</translation>
@@ -416,7 +422,7 @@
 <translation id="6897083627729802351">Khi nào bạn nhận được phần thưởng?</translation>
 <translation id="310863932297733723">Các token mà bạn kiếm được từ Brave Private Ads trong suốt tháng này sẽ đến vào ngày 5 của tháng sau.</translation>
 <translation id="7712287524451429139">Tặng lại một cách dễ dàng</translation>
-<translation id="105037569026952831">Người sáng tạo tự động nhận được các khoản đóng góp token của bạn dựa trên mức độ tương tác của bạn mà chúng tôi đo lường là "Sự chú ý".</translation>
+<translation id="105037569026952831">Những nhà sáng tạo tự động nhận được các khoản đóng góp token của bạn dựa trên mức độ tương tác của bạn mà chúng tôi đánh giá dưới dạng "Chú ý".</translation>
 <translation id="5323267338679539010">Cảm ơn bằng cách tặng tiền</translation>
 <translation id="6042317056594735519">Tặng tiền là một cách để bạn đích thân khuyến khích và hỗ trợ cho nội dung hoặc người sáng tạo mà bạn yêu thích. Bắt đầu tặng tiền!</translation>
 <translation id="7509452925943421624">Bạn có thể làm gì với token?</translation>
@@ -459,7 +465,7 @@
 <translation id="3866249974567520381">Mô tả</translation>
 <translation id="8605272644314973683">Phần thưởng Brave là</translation>
 <translation id="1346059596910821859">Tiền tip</translation>
-<translation id="6045860799501892362">Đặt khoản đóng góp hàng tháng</translation>
+<translation id="7277134233385925078">Thiết lập tiền tip hàng tháng</translation>
 <translation id="298067735430872465">Tiền kiếm được từ Quảng cáo</translation>
 <translation id="1418534671788496616">Xem lịch sử nạp tiền</translation>
 <translation id="3412655388715513818">Loại trừ trang web này</translation>
@@ -467,8 +473,8 @@
 <translation id="8802504113265057166">[[currency]] không được sử dụng trước ngày hết hạn sẽ được tự động trả lại Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Ngày Khoản thưởng Hết hạn</translation>
 <translation id="1389143276807887637">nhập</translation>
-<translation id="1038407494348068191">Quản lý ví của bạn</translation>
-<translation id="5737831580668469027">Các khoản đóng góp hàng tháng!</translation>
+<translation id="6302422639282249274">Quản lý Phần thưởng Brave</translation>
+<translation id="211044356803193224">Tiền boa hàng tháng!</translation>
 <translation id="2487641031722095938">Hôm nay là ngày may mắn của bạn!</translation>
 <translation id="6255773350565723852">Khoản thưởng token của bạn đang đến.</translation>
 <translation id="3453206261112715431">Khoản thưởng Token Miễn phí</translation>
@@ -476,7 +482,7 @@
 <translation id="4677106999274433911">Bạn đã nhận phần thưởng quảng cáo thành công.</translation>
 <translation id="8304661078305276044">Phần thưởng quảng cáo</translation>
 <translation id="1770001816413426741">Thời hạn phần thưởng</translation>
-<translation id="2280319752798785157">Khoản đóng góp hàng tháng</translation>
+<translation id="5419313241771906800">Tiền thưởng hàng tháng</translation>
 <translation id="8307851765167460403">Chưa có hoạt động nào…</translation>
 <translation id="3630697955794050612">tắt</translation>
 <translation id="4921250468871504777">ok</translation>
@@ -487,19 +493,19 @@
 <translation id="156591572855748524">Lịch sử quảng cáo 30 ngày</translation>
 <translation id="4923459931733593730">Thanh toán</translation>
 <translation id="3138528956349114724">Các trang được ghim giờ đã</translation>
-<translation id="2337632028350283479">Đây là cách hoạt động của các khoản đóng góp hàng tháng:</translation>
-<translation id="6457273203091513039">Các khoản đóng góp hàng tháng không nằm trong khoản thanh toán Tự động đóng góp của bạn. Đây là các khoản riêng biệt.</translation>
+<translation id="7562713189950710660">Đây là cách thức hoạt động của tiền boa hàng tháng:</translation>
+<translation id="1404790274772315264">Tiền boa hàng tháng không đến từ khoản thanh toán Tự động đóng góp của bạn. Chúng riêng biệt.</translation>
 <translation id="9099396904827413228">Mỗi trang được trả một số tiền cố định hàng tháng.</translation>
-<translation id="5051110132941857169">Các khoản đóng góp hàng tháng được xuất chi cùng một lần vào mỗi tháng. Nếu bạn đang sử dụng tính năng Tự động đóng góp, các khoản tiền tip cũng sẽ được chi cùng lúc với khoản thanh toán Tự động đóng góp hàng tháng của bạn.</translation>
-<translation id="3374483782662414143">Bạn có thể xóa bất kỳ trang web nào nhận các khoản đóng góp hàng tháng từ bên trong bảng Tips.</translation>
+<translation id="7018976623064894683">Tiền boa hàng tháng được trả đồng thời, mỗi tháng. Nếu bạn đang sử dụng Tự động đóng góp, tiền boa sẽ được trả cùng một lúc với thanh toán Tự động đóng góp hàng tháng của bạn.</translation>
+<translation id="1135093233619227159">Bạn có thể xóa bất cứ trang nhận tiền boa hàng tháng nào từ bên trong bảng Tiền boa.</translation>
 <translation id="5082474983463379713">Xin lưu ý:</translation>
 <translation id="1430915738399379752">In</translation>
 <translation id="135956957367307069">Yêu cầu của bạn đang được xử lý, vui lòng chờ.</translation>
 <translation id="8725066075913043281">Thử lại</translation>
 <translation id="2600847485413879104">Phần thưởng BAT</translation>
-<translation id="8006596443377585072">Ví bitFlyer</translation>
-<translation id="2770577461149798369">Ví Gemini</translation>
-<translation id="8108350286444475334">Duy trì Ví</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
+<translation id="8533411848724153701">Gemini</translation>
+<translation id="6569877533335686968">Uphold</translation>
 <translation id="6977372887576114613">BAT đã lưu ký</translation>
 <translation id="194625454574835815">Khoá Khôi phục</translation>
 <translation id="6354568176665589146">Tái diễn</translation>
@@ -543,7 +549,7 @@
 <translation id="3535654229833214438">Giao dịch</translation>
 <translation id="8772672608371898774">Nhà sản xuất Chứng thực bởi Brave</translation>
 <translation id="5050370287908180130">Xem Sao kê Hàng tháng để biết Chi tiết</translation>
-<translation id="348711787499592128">Hoạt động Phần thưởng Brave</translation>
+<translation id="7853202427316060426">Hoạt động</translation>
 <translation id="7232682712743566408">Số dư Phần thưởng</translation>
 <translation id="1910721550319506122">Chào mừng!</translation>
 <translation id="4258022280942725182">Phần thưởng Brave của bạn</translation>
@@ -563,6 +569,8 @@
 <translation id="4862817811647633830">các website từ phần Tự động Đóng góp.</translation>
 <translation id="923467487918828349">Hiển thị Tất cả</translation>
 <translation id="5113531205597573951">Các trang đã xem</translation>
+<translation id="4450893287417543264">Không hiển thị lại</translation>
+<translation id="422369484771082705">Xác minh là không bắt buộc. Tuy nhiên, khi xác minh bạn có thể trực tiếp rút BAT kiếm được từ Brave Phần thưởng vào ví lưu ký.</translation>
 <translation id="3656941797339037856">Liên kết Rewards với Gemini!</translation>
 <translation id="31532096120351460">Giao dịch hơn 50 loại tiền điện tử, bao gồm cả BAT, trên Gemini. Đó là một nền tảng an toàn để lưu trữ tiền điện tử của bạn. Ngoài ra, bạn có thể kiếm được tiền lãi ở Mỹ, Hồng Kông và Singapore.</translation>
 <translation id="7404779623219601861">Đổi BAT lấy Thẻ quà tặng</translation>
@@ -639,7 +647,7 @@
 <translation id="824449983246282560">Bạn không không còn tiền trong tài khoản. Hãy truy cập Gemini để mua.</translation>
 <translation id="8624961452383848703">Tôi muốn chuyển đổi...</translation>
 <translation id="616639131065447379">Chào mừng bạn đến với Ví Tiền điện tử Brave</translation>
-<translation id="1740464057879304704">Ví Tiền điện tử cho phép bạn làm việc với tiền điện tử và các tài sản liên quan trong Brave. Ví Tiền điện tử hỗ trợ các token Ethereum như ETH và BAT, cũng như các bộ sưu tập tiền điện tử, và cho phép bạn làm việc với các ứng dụng và hợp đồng thông minh khác. Tất cả điều này dành cho những người quen thuộc với Ethereum và các hệ thống blockchain khác hoặc hào hứng tìm hiểu.</translation>
+<translation id="1740464057879304704">Ví Tiền điện tử giúp bạn có thể làm việc với tiền điện tử và các tài sản liên quan trong Brave. Ví Tiền điện tử hỗ trợ các token Ethereum như ETH và BAT, cũng như các vật phẩm sưu tập (collectible), đồng thời cho phép bạn làm việc với Dapp và các hợp đồng thông minh khác. Tất cả điều này là dành cho những người đã quen thuộc với Ethereum và các hệ thống blockchain khác — hoặc thích tìm hiểu.</translation>
 <translation id="4855440621031541830">Chỉ sử dụng Ví Tiền điện tử nếu bạn chấp nhận rằng một mình bạn chịu trách nhiệm cho mọi rủi ro liên quan đến việc sử dụng này và Phần mềm Brave không chịu trách nhiệm hoặc nghĩa vụ đối với bất kỳ tổn thất nào kể cả tổn thất ngẫu nhiên hoặc do hậu quả mà bạn có thể phải chịu do việc sử dụng này.</translation>
 <translation id="3187473319809074178">Tất cả điều này là hoàn toàn tách biệt với</translation>
 <translation id="8327818101454798856">Vì vậy, nếu bạn đang tìm cách hỗ trợ các trang web yêu thích của mình, hãy truy cập các trang đó.</translation>
@@ -759,10 +767,9 @@
 <translation id="6080167751812750226">Ngắt kết nối khỏi <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Thu nhập ước tính</translation>
 <translation id="4244985009709452836">Đăng nhập vào tài khoản <ph name="PROVIDER"/> của bạn</translation>
-<translation id="7577100371127227294">Tiền tip Hàng tháng</translation>
 <translation id="2613359062756190460">Tiền tip Một lần</translation>
 <translation id="590733288489975971">Rewards từ Ads</translation>
-<translation id="4989163558385430922">Xem tất cả</translation>
+<translation id="6181762795539107980">Chưa xác minh</translation>
 <translation id="3026978804849658576">Xem sao kê</translation>
 <translation id="8494748383523030337">Số dư của bạn</translation>
 <translation id="1187367336925051518">Phần thưởng <ph name="MONTH"/>: <ph name="AMOUNT"/></translation>
@@ -892,7 +899,7 @@
 <translation id="5242300593039211344">Khóa Ví</translation>
 <translation id="765834632354589737">Sao lưu Ví</translation>
 <translation id="1108298724135935307">Các website đã kết nối</translation>
-<translation id="722307450061393855">Sao lưu ví của bạn ngay để bảo vệ tài sản tiền mã hóa của bạn và bảo đảm rằng bạn không bao giờ bị mất quyền truy cập.</translation>
+<translation id="163697698769819510">Sao lưu ví của bạn ngay bây giờ để bảo vệ tài sản của bạn và đảm bảo bạn không bao giờ mất quyền truy cập.</translation>
 <translation id="1018806299114415224">Sao lưu ngay</translation>
 <translation id="5234764350956374838">Dismiss</translation>
 <translation id="4075073132992924258">Ví Brave không được đặt làm ví mặc định của bạn và sẽ không phản hồi với các ứng dụng phi tập trung web 3. Hãy vào cài đặt để thay đổi ví mặc định của bạn.</translation>
@@ -996,6 +1003,12 @@
 <translation id="3474375934783434676">Tự chịu trách nhiệm khi ký</translation>
 <translation id="5488357322146334497">Tin nhắn</translation>
 <translation id="3586752056660754651">Ký nhận</translation>
+<translation id="3484981968509595506">DApp đang yêu cầu khóa mã hóa công khai của bạn</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> đang yêu cầu khóa mã hóa công khai ví của bạn. Nếu bạn đồng ý cung cấp khóa này thì trang web có thể soạn tin nhắn được mã hóa cho bạn.</translation>
+<translation id="3340247553212049934">Cung cấp</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> muốn đọc tin nhắn này để hoàn thành yêu cầu của bạn</translation>
+<translation id="714506544401754321">Giải mã tin nhắn</translation>
+<translation id="5039804452771397117">Cho phép</translation>
 <translation id="9032898664193335413">Cho phép ứng dụng này chi tiêu <ph name="TOKEN_SYMBOL"/>của bạn?</translation>
 <translation id="854606191596163710">Với việc cấp quyền này, bạn đang cho phép ứng dụng này rút <ph name="VALUE"/> của bạn và tự động hóa các giao dịch cho bạn.</translation>
 <translation id="8786100550345425552">Sửa quyền</translation>
@@ -1098,6 +1111,7 @@
 <translation id="7400927223938424379">Đặt gợi ý</translation>
 <translation id="8179605702342645418">Giao dịch có thể không được truyền trong mạng.</translation>
 <translation id="9100765901046053179">Cài đặt nâng cao</translation>
+<translation id="1924965034964265193">Nhập giá trị số giao dịch tùy chỉnh</translation>
 <translation id="4220062530885628403">Số giao dịch</translation>
 <translation id="2749584096020594976">Giá trị số giao dịch sẽ được tự động xác định nếu trường này không được chỉ định.</translation>
 <translation id="1599636444563952897">Quyền giới hạn chi tiêu cho phép <ph name="SITE_ORIGIN"/> rút và chi tiêu tối đa số tiền sau:</translation>
@@ -1107,9 +1121,11 @@
 <translation id="6825399159373612149">Tên miền <ph name="DOMAIN_NAME"/> chưa được đăng ký</translation>
 <translation id="8971278306757462297">Địa chỉ nhận là địa chỉ của riêng bạn</translation>
 <translation id="3506416339268164412">Địa chỉ nhận là địa chỉ hợp đồng của một token</translation>
-<translation id="5517732667776806421">Thiếu thông tin tổng kiểm</translation>
-<translation id="4006711930669471508">Thông tin tổng kiểm không hợp lệ</translation>
+<translation id="2975056993833847787">Địa chỉ này không thể xác minh (thiếu tổng kiểm tra). Tiếp tục?</translation>
+<translation id="6320252966164556855">Địa chỉ không vượt qua bước xác minh (tổng kiểm tra không hợp lệ). Vui lòng thử lại, thay thế các chữ cái thường bằng chữ hoa.</translation>
 <translation id="4667144295226514387">Thiếu giới hạn gas</translation>
+<translation id="2021522108838444624">Số tiền phải lớn hơn 0</translation>
+<translation id="8464365289405373974">Địa chỉ đến là bắt buộc</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098">Từ chối <ph name="TRANSACTION_LENGTH"/> giao dịch</translation>
 <translation id="1118876217803190221">Số dư không đủ</translation>
@@ -1147,6 +1163,9 @@
 <translation id="2962388922926051374">Yêu cầu phương pháp 'eth_chainId' trên <ph name="URL"/> không thành công</translation>
 <translation id="8325036459845654666">Mạng này đã được thêm.</translation>
 <translation id="554350381160981853">Ký dữ liệu đã nhập chỉ được hỗ trợ trên Trezor Model One với Firmware 1.10.5 trở lên</translation>
+<translation id="1752214435563414457">Brave Swap-stakes</translation>
+<translation id="7829441065063984927">Quà tặng tiền điện tử trong 7 ngày, giải thưởng trị giá ~500k đô la.</translation>
+<translation id="8292716346768453265">Tham gia ngay!</translation>
 <translation id="3155170474926428993">Trình chạy Tor</translation>
 <translation id="3745016858329272300">Thông tin Chung</translation>
 <translation id="4045404575593562245">Sự kiện Kiểm soát Tor</translation>
@@ -1156,22 +1175,24 @@
 <translation id="1671503397662036257">Trạng thái Kết nối Tor</translation>
 <translation id="6024292492796847324">Quá trình Khởi tạo Tor</translation>
 <translation id="8458987127502506209">Bật Lá chắn Brave</translation>
-<translation id="640898327002833127">Lá chắn Brave <ph name="LINK_BEFORE"/>BẬT<ph name="LINK_AFTER"/></translation>
-<translation id="8676609116485287125">Nếu trang này có vẻ bị hỏng, hãy thử hạ Lá chắn xuống. Lưu ý: điều này có thể làm giảm khả năng bảo vệ sự riêng tư của Brave.</translation>
+<translation id="7509914170164691086">Lá chắn đã BẬT <ph name="LINK_BEFORE"/>cho<ph name="LINK_AFTER"/></translation>
+<translation id="260764436039299868">Lá chắn đã TẮT <ph name="LINK_BEFORE"/>trong<ph name="LINK_AFTER"/></translation>
+<translation id="7709075156958117386">Nếu trang web này có vẻ bị hỏng thì hãy thử tắt Lá chắn. 
+   <ph name="LINK_BEFORE"/>Lưu ý: điều này có thể làm giảm các khả năng bảo vệ quyền riêng tư của Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Đã chặn trình theo dõi, quảng cáo và nhiều hơn nữa <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="5416893287862792505">Kiểm soát cao cấp</translation>
-<translation id="1299672573512347813">Những cài đặt này ảnh hưởng đến khả năng tương thích web trên trang này.</translation>
+<translation id="5799940914270080805">Thay đổi các cài đặt này có thể làm hỏng các trang web.</translation>
 <translation id="9204041448536398473">Cài đặt Lá chắn toàn cục</translation>
-<translation id="7637771346619326580">Thay đổi cài đặt mặc định Lá chắn toàn cục</translation>
-<translation id="3520486481604057261">Tùy biến danh sách chặn quảng cáo</translation>
-<translation id="3146531623184244174">Kết nối đã được nâng cấp lên HPPTS</translation>
+<translation id="2108334320919763866">Mặc định toàn cầu</translation>
+<translation id="1928321796986970424">Danh sách bộ lọc</translation>
+<translation id="3570081523466826008">Nâng cấp các kết nối thành HTTPS</translation>
 <translation id="131231380815754440">Bật HTTPS</translation>
-<translation id="7461425058443653485">Đã chặn Tập lệnh</translation>
+<translation id="4824468494729001999">Chặn các tập lệnh script</translation>
 <translation id="3246600097575692802">Bật mã lệnh bị chặn</translation>
 <translation id="3603525299146223354">Trình theo dõi &amp; quảng cáo</translation>
 <translation id="1146309636943354181">Trình theo dõi và quảng cáo đã bị chặn (tiêu chuẩn)</translation>
 <translation id="5973258875089964805">Trình theo dõi và quảng cáo đã bị chặn (tích cực)</translation>
-<translation id="5544888475837817215">Cho phép tất cả trình theo dõi và quảng cáo</translation>
+<translation id="7384778069178817075">Cho phép tất cả trình theo dõi và quảng cáo</translation>
 <translation id="6203697265754637264">Đã chặn cookie trên mọi website</translation>
 <translation id="4627427111733173920">Đã chặn cookie</translation>
 <translation id="3972324600756617403">Đã cho phép toàn bộ cookie</translation>
@@ -1179,6 +1200,10 @@
 <translation id="5582686930349810484">Vân tay bị chặn (tiêu chuẩn)</translation>
 <translation id="6696441392507885865">Lấy dấu vân tay bị chặn (nghiêm ngặt, các trang có thể bị hỏng)</translation>
 <translation id="5882733945883311404">Cho phép tất cả lấy dấu vân tay</translation>
+<translation id="1992750560347846445">Báo cáo trang</translation>
+<translation id="2387532482048804818">Hãy cho chúng tôi biết nếu trang web không hoạt động bình thường khi bật Lá chắn.</translation>
+<translation id="9167355841012806439">Bạn đang xem trang web này mà không có sự bảo vệ riêng tư của Brave</translation>
+<translation id="6835073906252142271">Brave Lá chắn <ph name="NUMBER"/> Trình theo dõi, quảng cáo và hơn thế nữa bị chặn</translation>
 <translation id="1742469581923031760">Đang kết nối…</translation>
 <translation id="1287487756047817908">Đang ngắt kết nối…</translation>
 <translation id="2325196879156848326">Kết nối không thành công</translation>
