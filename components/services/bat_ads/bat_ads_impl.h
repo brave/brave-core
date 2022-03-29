@@ -117,7 +117,7 @@ class BatAdsImpl :
                   const double to_timestamp,
                   GetHistoryCallback callback) override;
 
-  void GetAccountStatement(GetAccountStatementCallback callback) override;
+  void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
   void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
 
@@ -180,8 +180,8 @@ class BatAdsImpl :
         CallbackHolder<RemoveAllHistoryCallback>* holder,
         const bool success);
 
-    static void OnGetAccountStatement(
-        CallbackHolder<GetAccountStatementCallback>* holder,
+    static void OnGetStatementOfAccounts(
+        CallbackHolder<GetStatementOfAccountsCallback>* holder,
         const bool success,
         const ads::StatementInfo& statement);
 

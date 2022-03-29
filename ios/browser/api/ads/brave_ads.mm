@@ -664,8 +664,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->GetAccountStatement(^(const bool success,
-                             const ads::StatementInfo& list) {
+  ads->GetStatementOfAccounts(^(const bool success,
+                                const ads::StatementInfo& list) {
     if (!success) {
       completion(0, 0, nil);
       return;

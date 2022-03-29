@@ -194,7 +194,8 @@ class ADS_EXPORT Ads {
   // argument - |StatementInfo| which contains next payment date, ads received
   // this month, earnings this month, earnings last month, cleared transactions
   // and uncleared transactions
-  virtual void GetAccountStatement(GetAccountStatementCallback callback) = 0;
+  virtual void GetStatementOfAccounts(
+      GetStatementOfAccountsCallback callback) = 0;
 
   // Should be called to get ad diagnostics for rewards internals page.
   virtual void GetAdDiagnostics(GetAdDiagnosticsCallback callback) = 0;

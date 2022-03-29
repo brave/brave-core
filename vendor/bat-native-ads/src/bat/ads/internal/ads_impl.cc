@@ -428,7 +428,7 @@ AdsHistoryInfo AdsImpl::GetHistory(const AdsHistoryFilterType filter_type,
   return history::Get(filter_type, sort_type, from, to);
 }
 
-void AdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
+void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
   if (!IsInitialized() || !ShouldRewardUser()) {
     callback(/* success */ false, {});
     return;

@@ -1530,7 +1530,7 @@ void RewardsDOMHandler::OnPublisherListNormalized(
 
 void RewardsDOMHandler::GetStatement(base::Value::ConstListView args) {
   AllowJavascript();
-  ads_service_->GetAccountStatement(base::BindOnce(
+  ads_service_->GetStatementOfAccounts(base::BindOnce(
       &RewardsDOMHandler::OnGetStatement, weak_factory_.GetWeakPtr()));
 }
 
@@ -1547,14 +1547,14 @@ void RewardsDOMHandler::OnGetStatement(const bool success,
     return;
   }
 
-  base::DictionaryValue history;
+  base::DictionaryValue statement;
 
-  history.SetDouble("adsNextPaymentDate", next_payment_date * 1000);
-  history.SetInteger("adsReceivedThisMonth", ads_received_this_month);
-  history.SetDouble("adsEarningsThisMonth", earnings_this_month);
-  history.SetDouble("adsEarningsLastMonth", earnings_last_month);
+  statement.SetDouble("adsNextPaymentDate", next_payment_date * 1000);
+  statement.SetInteger("adsReceivedThisMonth", ads_received_this_month);
+  statement.SetDouble("adsEarningsThisMonth", earnings_this_month);
+  statement.SetDouble("adsEarningsLastMonth", earnings_last_month);
 
-  CallJavascriptFunction("brave_rewards.statement", history);
+  CallJavascriptFunction("brave_rewards.statement", statement);
 }
 
 void RewardsDOMHandler::OnStatementChanged(
@@ -1565,7 +1565,7 @@ void RewardsDOMHandler::OnStatementChanged(
 }
 
 void RewardsDOMHandler::OnAdRewardsChanged() {
-  ads_service_->GetAccountStatement(base::BindOnce(
+  ads_service_->GetStatementOfAccounts(base::BindOnce(
       &RewardsDOMHandler::OnGetStatement, weak_factory_.GetWeakPtr()));
 }
 

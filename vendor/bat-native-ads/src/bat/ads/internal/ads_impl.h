@@ -198,7 +198,7 @@ class AdsImpl final : public Ads,
                             const double from_timestamp,
                             const double to_timestamp) override;
 
-  void GetAccountStatement(GetAccountStatementCallback callback) override;
+  void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
   void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
 

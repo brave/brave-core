@@ -287,7 +287,7 @@ void BraveRewardsNativeWorker::GetAdsAccountStatement(JNIEnv* env) {
   if (!ads_service) {
     return;
   }
-  ads_service->GetAccountStatement(
+  ads_service->GetStatementOfAccounts(
       base::BindOnce(&BraveRewardsNativeWorker::OnGetAdsAccountStatement,
                      weak_factory_.GetWeakPtr()));
 }

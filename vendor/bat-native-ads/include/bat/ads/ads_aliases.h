@@ -26,7 +26,7 @@ using GetNewTabPageAdCallback =
 using GetInlineContentAdCallback = std::function<
     void(const bool, const std::string&, const InlineContentAdInfo&)>;
 
-using GetAccountStatementCallback =
+using GetStatementOfAccountsCallback =
     std::function<void(const bool, const StatementInfo&)>;
 
 using GetAdDiagnosticsCallback =
