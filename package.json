@@ -349,6 +349,7 @@
     "@types/parse-torrent": "^5.8.3",
     "@types/react-router-dom": "^5.1.9",
     "@types/webtorrent": "^0.109.0",
+    "@solana/web3.js": "1.36.0",
     "array-move": "^2.2.1",
     "bignumber.js": "^9.0.2",
     "bluebird": "^3.5.1",

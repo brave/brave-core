@@ -1,0 +1,29 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BRAVE_WALLET_CONSTANTS_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BRAVE_WALLET_CONSTANTS_H_
+
+namespace brave_wallet {
+
+constexpr int kSolanaKeypairSize = 64;
+constexpr int kSolanaSignatureSize = 64;
+constexpr int kSolanaPrikeySize = 32;
+constexpr int kSolanaPubkeySize = 32;
+constexpr int kSolanaBlockhashSize = 32;
+// 1232 = 1280(IPv6 minimum MTU) - 40(size of the IPv6 header) - 8(size of the
+// fragment header)
+constexpr size_t kSolanaMaxTxSize = 1232;
+constexpr char kSolanaSystemProgramId[] = "11111111111111111111111111111111";
+constexpr char kSolanaTokenProgramId[] =
+    "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+constexpr char kSolanaAssociatedTokenProgramId[] =
+    "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
+constexpr char kSolanaSysvarRentProgramId[] =
+    "SysvarRent111111111111111111111111111111111";
+
+}  // namespace brave_wallet
+
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BRAVE_WALLET_CONSTANTS_H_

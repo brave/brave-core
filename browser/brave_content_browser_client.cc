@@ -52,6 +52,7 @@
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
@@ -297,6 +298,14 @@ void MaybeBindBraveWalletProvider(
       std::move(receiver));
 }
 
+void MaybeBindSolanaProvider(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<brave_wallet::mojom::SolanaProvider> receiver) {
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<brave_wallet::SolanaProviderImpl>(),
+      std::move(receiver));
+}
+
 void BindBraveSearchFallbackHost(
     int process_id,
     mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
@@ -477,6 +486,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
           render_frame_host->GetBrowserContext())) {
     map->Add<brave_wallet::mojom::BraveWalletProvider>(
         base::BindRepeating(&MaybeBindBraveWalletProvider));
+    map->Add<brave_wallet::mojom::SolanaProvider>(
+        base::BindRepeating(&MaybeBindSolanaProvider));
   }
 
   map->Add<skus::mojom::SkusService>(

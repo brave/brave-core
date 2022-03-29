@@ -9,13 +9,29 @@
   }
   var EventEmitter = require('events')
   var BraveWeb3ProviderEventEmitter = new EventEmitter()
-  window.ethereum.on = BraveWeb3ProviderEventEmitter.on
-  window.ethereum.emit = BraveWeb3ProviderEventEmitter.emit
-  window.ethereum.removeListener =
-      BraveWeb3ProviderEventEmitter.removeListener
-  window.ethereum.removeAllListeners =
-      BraveWeb3ProviderEventEmitter.removeAllListeners
-  window.ethereum.isMetaMask = true
+  Object.defineProperties(window.ethereum, {
+    on: {
+      value: BraveWeb3ProviderEventEmitter.on,
+      writable: false
+    },
+    emit: {
+      value: BraveWeb3ProviderEventEmitter.emit,
+      writable: false
+    },
+    removeListener: {
+      value: BraveWeb3ProviderEventEmitter.removeListener,
+      writable: false
+    },
+    removeAllListeners: {
+      value: BraveWeb3ProviderEventEmitter.removeAllListeners,
+      writable: false
+    },
+    isMetaMask: {
+      value: true,
+      writable: false
+    }
+  })
+
   Object.defineProperty(window, 'ethereum', {
     value: new Proxy(window.ethereum, {
       get: (...args) => {

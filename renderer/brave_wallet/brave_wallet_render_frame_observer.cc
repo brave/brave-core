@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/feature_list.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/web/web_local_frame.h"
@@ -40,18 +42,32 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
   auto dynamic_params = get_dynamic_params_callback_.Run();
   if (!dynamic_params.brave_use_native_wallet) {
     native_javascript_handle_.reset();
+    js_solana_provider_.reset();
     return;
   }
 
   if (!native_javascript_handle_) {
     native_javascript_handle_.reset(new BraveWalletJSHandler(
         render_frame(), dynamic_params.brave_use_native_wallet,
-        dynamic_params.allow_overwrite_window_ethereum));
+        dynamic_params.allow_overwrite_window_web3_provider));
   }
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);
   native_javascript_handle_->ConnectEvent();
   native_javascript_handle_->AllowOverwriteWindowEthereum(
-      dynamic_params.allow_overwrite_window_ethereum);
+      dynamic_params.allow_overwrite_window_web3_provider);
+
+  if (base::FeatureList::IsEnabled(
+          brave_wallet::features::kBraveWalletSolanaFeature)) {
+    if (!js_solana_provider_) {
+      js_solana_provider_ = JSSolanaProvider::Install(
+          dynamic_params.brave_use_native_wallet,
+          dynamic_params.allow_overwrite_window_web3_provider, render_frame(),
+          context);
+    } else {
+      js_solana_provider_->Init(
+          context, dynamic_params.allow_overwrite_window_web3_provider);
+    }
+  }
 }
 
 void BraveWalletRenderFrameObserver::OnDestruct() {
