@@ -33,11 +33,9 @@ import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 
-// Utils
-import { GetBuyOrFaucetUrl } from '../utils/buy-asset-url'
-
 import {
   getBalance,
+  getBuyAssetUrl,
   onConnectHardwareWallet
 } from '../common/async/lib'
 
@@ -93,8 +91,9 @@ function Container (props: Props) {
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
   const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
   const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
+  const [selectedBuyOption, setSelectedBuyOption] = React.useState<BraveWallet.OnRampProvider>(BraveWallet.OnRampProvider.kRamp)
 
-  const { buyAssetOptions } = useAssets()
+  const { buyAssetOptions, wyreAssetOptions, rampAssetOptions } = useAssets()
 
   const onToggleShowRestore = React.useCallback(() => {
     if (walletLocation === WalletRoutes.Restore) {
@@ -180,9 +179,15 @@ function Container (props: Props) {
   }
 
   const onSubmitBuy = (asset: BraveWallet.BlockchainToken) => {
-    GetBuyOrFaucetUrl(selectedNetwork.chainId, asset, selectedAccount, buyAmount)
-      .then(url => window.open(url, '_blank'))
-      .catch(e => console.error(e))
+    getBuyAssetUrl({
+      asset,
+      onRampProvider: selectedBuyOption,
+      chainId: selectedNetwork.chainId,
+      address: selectedAccount.address,
+      amount: buyAmount
+    })
+    .then(url => window.open(url, '_blank'))
+    .catch(e => console.error(e))
   }
 
   const onAddHardwareAccounts = (selected: BraveWallet.HardwareWalletAccount[]) => {
@@ -417,6 +422,10 @@ function Container (props: Props) {
             onSubmitBuy={onSubmitBuy}
             onSelectAccount={onSelectAccount}
             onSelectTab={setSelectedWidgetTab}
+            selectedBuyOption={selectedBuyOption}
+            onSelectBuyOption={setSelectedBuyOption}
+            wyreAssetOptions={wyreAssetOptions}
+            rampAssetOptions={rampAssetOptions}
           />
           <SweepstakesBanner />
         </WalletWidgetStandIn>

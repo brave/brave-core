@@ -23,6 +23,10 @@ export interface Props {
   onSelectAccount: (account: UserAccountType) => void
   onSetBuyAmount: (value: string) => void
   onSelectTab: (tab: BuySendSwapTypes) => void
+  selectedBuyOption: BraveWallet.OnRampProvider
+  onSelectBuyOption: (optionId: BraveWallet.OnRampProvider) => void
+  wyreAssetOptions: BraveWallet.BlockchainToken[]
+  rampAssetOptions: BraveWallet.BlockchainToken[]
 }
 
 function BuySendSwap (props: Props) {
@@ -33,7 +37,11 @@ function BuySendSwap (props: Props) {
     onSubmitBuy,
     onSelectAccount,
     onSetBuyAmount,
-    onSelectTab
+    onSelectTab,
+    selectedBuyOption,
+    onSelectBuyOption,
+    rampAssetOptions,
+    wyreAssetOptions
   } = props
 
   // redux
@@ -92,6 +100,10 @@ function BuySendSwap (props: Props) {
           selectedNetwork={selectedNetwork}
           showHeader={true}
           assetOptions={buyAssetOptions}
+          wyreAssetOptions={wyreAssetOptions}
+          rampAssetOptions={rampAssetOptions}
+          selectedBuyOption={selectedBuyOption}
+          onSelectBuyOption={onSelectBuyOption}
         />
       }
     </Layout>

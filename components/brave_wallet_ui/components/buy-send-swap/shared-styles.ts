@@ -12,6 +12,7 @@ export const BubbleContainer = styled.div`
   background-color: ${(p) => p.theme.color.background02};
   border: ${(p) => `1px solid ${p.theme.color.divider01}`};
   margin-bottom: 12px;
+  box-sizing: border-box;
 `
 
 export const SelectWrapper = styled.div`

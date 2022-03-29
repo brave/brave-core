@@ -365,6 +365,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [buyAmount, setBuyAmount] = React.useState('')
   const [selectedTransaction, setSelectedTransaction] = React.useState<BraveWallet.TransactionInfo | undefined>(transactionList[1][0])
+  const [selectedBuyOption, setSelectedBuyOption] = React.useState(BraveWallet.OnRampProvider.kRamp)
 
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
@@ -507,6 +508,10 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     console.log(selectedTransaction)
   }
 
+  const onSelectBuyOption = (option: BraveWallet.OnRampProvider) => {
+    setSelectedBuyOption(option)
+  }
+
   return (
     <Provider store={store}>
       <StyledExtensionWrapper>
@@ -613,7 +618,10 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                           buyAmount={buyAmount}
                           selectedNetwork={selectedNetwork}
                           networkList={[]}
-                        />
+                          selectedBuyOption={selectedBuyOption}
+                          onSelectBuyOption={onSelectBuyOption}
+                          rampAssetOptions={mockAccountAssetOptions}
+                          wyreAssetOptions={mockAccountAssetOptions}/>
                       }
                       {selectedPanel === 'sitePermissions' &&
                         <SitePermissions

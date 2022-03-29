@@ -134,14 +134,23 @@ export async function findHardwareAccountInfo (address: string): Promise<Account
   return false
 }
 
-export async function getBuyAssetUrl (address: string, symbol: string, amount: string) {
+export async function getBuyAssetUrl (args: {
+  asset: BraveWallet.BlockchainToken
+  onRampProvider: BraveWallet.OnRampProvider
+  chainId: string
+  address: string
+  amount: string
+}) {
+  const _buyAmount = (args.onRampProvider === BraveWallet.OnRampProvider.kRamp
+    ? new Amount(args.amount).multiplyByDecimals(args.asset.decimals).value?.toString(10)
+    : args.amount) || ''
   const { blockchainRegistry } = getAPIProxy()
   const { url, error } = await blockchainRegistry.getBuyUrl(
-    BraveWallet.OnRampProvider.kWyre,
-    BraveWallet.MAINNET_CHAIN_ID,
-    address,
-    symbol,
-    amount
+    args.onRampProvider,
+    args.chainId,
+    args.address,
+    args.asset.symbol,
+    _buyAmount
   )
 
   if (error) {
@@ -151,11 +160,11 @@ export async function getBuyAssetUrl (address: string, symbol: string, amount: s
   return url
 }
 
-export async function getBuyAssets () {
+export async function getBuyAssets (onRampProvider: BraveWallet.OnRampProvider, chainId: string) {
   const { blockchainRegistry } = getAPIProxy()
   return (await blockchainRegistry.getBuyTokens(
-    BraveWallet.OnRampProvider.kWyre,
-    BraveWallet.MAINNET_CHAIN_ID)).tokens
+    onRampProvider,
+    chainId)).tokens
 }
 
 export function getKeyringIdFromCoin (coin: BraveWallet.CoinType): BraveKeyrings {
