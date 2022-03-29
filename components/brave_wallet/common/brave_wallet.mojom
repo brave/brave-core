@@ -717,7 +717,7 @@ interface JsonRpcService {
   SetCustomNetworkForTesting(string chain_id, CoinType coin, url.mojom.Url provider_url);
 
   // Obtains the owner of a contract's ERC721 token ID
-  GetERC721OwnerOf(string contract, string token_id) => (string owner_address, ProviderError error, string error_message);
+  GetERC721OwnerOf(string contract, string token_id, string chain_id) => (string owner_address, ProviderError error, string error_message);
 
   // Obtains the balance of a contract's ERC721 token ID for an address
   // Balance is 0x1 if current selected account is the same as token owner's
