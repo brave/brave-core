@@ -189,6 +189,7 @@
 		270E5F3226F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */; };
 		2710C12A27CE876C00391304 /* BasicMarkdownParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2710C12927CE876C00391304 /* BasicMarkdownParsing.swift */; };
 		2710C13727CE87FF00391304 /* Markdown in Frameworks */ = {isa = PBXBuildFile; productRef = 2710C13627CE87FF00391304 /* Markdown */; };
+		27117A5527DBDD6D002CF57B /* LegacyCoinTypeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27117A5427DBDD6D002CF57B /* LegacyCoinTypeExtensions.swift */; };
 		27180150273ABD3A00F683E3 /* BiometricsPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718014F273ABD3A00F683E3 /* BiometricsPromptView.swift */; };
 		2718018E272C7DBB0047EB15 /* AssetDetailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718018D272C7DBB0047EB15 /* AssetDetailStore.swift */; };
 		27187808216526090006036E /* AlertPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187807216526090006036E /* AlertPopupView.swift */; };
@@ -1856,6 +1857,7 @@
 		270E5F1226F29C320024C70E /* UIKitNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitNavigationView.swift; sourceTree = "<group>"; };
 		270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveWalletSwiftUIExtensions.swift; sourceTree = "<group>"; };
 		2710C12927CE876C00391304 /* BasicMarkdownParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicMarkdownParsing.swift; sourceTree = "<group>"; };
+		27117A5427DBDD6D002CF57B /* LegacyCoinTypeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyCoinTypeExtensions.swift; sourceTree = "<group>"; };
 		2718014F273ABD3A00F683E3 /* BiometricsPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsPromptView.swift; sourceTree = "<group>"; };
 		2718018D272C7DBB0047EB15 /* AssetDetailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailStore.swift; sourceTree = "<group>"; };
 		27187807216526090006036E /* AlertPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPopupView.swift; sourceTree = "<group>"; };
@@ -3802,6 +3804,7 @@
 				7DC52B11273D99E70067E237 /* WalletArrayExtension.swift */,
 				2792CBC7275951B10055151E /* UIPasteboardExtensions.swift */,
 				7DC054C127A9CCA400BBA042 /* KeyringServiceExtensions.swift */,
+				27117A5427DBDD6D002CF57B /* LegacyCoinTypeExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -7971,6 +7974,7 @@
 				7DF9113D275AC86100EF0D8B /* WalletLoadingButton.swift in Sources */,
 				7DE5B6E427BEBA86000DA8E4 /* MockEthTxManagerProxy.swift in Sources */,
 				7DC054AE27A200F300BBA042 /* CustomNetworkListView.swift in Sources */,
+				27117A5527DBDD6D002CF57B /* LegacyCoinTypeExtensions.swift in Sources */,
 				271F68B326EBD27E00AA2A50 /* RecoveryPhraseGrid.swift in Sources */,
 				2792CBC8275951B10055151E /* UIPasteboardExtensions.swift in Sources */,
 				271F689D26EBD27E00AA2A50 /* AssetSearchView.swift in Sources */,

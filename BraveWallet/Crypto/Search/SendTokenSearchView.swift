@@ -9,11 +9,11 @@ import struct Shared.Strings
 
 struct SendTokenSearchView: View {
   @ObservedObject var sendTokenStore: SendTokenStore
-
+  
   @Environment(\.presentationMode) @Binding private var presentationMode
-
-  var network: BraveWallet.EthereumChain
-
+  
+  var network: BraveWallet.NetworkInfo
+  
   var body: some View {
     TokenList(tokens: sendTokenStore.userAssets.filter({ $0.isErc20 || $0.symbol == network.symbol })) { token in
       Button(action: {

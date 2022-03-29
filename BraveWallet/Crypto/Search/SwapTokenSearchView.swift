@@ -18,7 +18,7 @@ struct SwapTokenSearchView: View {
   }
 
   var searchType: SwapSearchType
-  var network: BraveWallet.EthereumChain
+  var network: BraveWallet.NetworkInfo
 
   var body: some View {
     let excludedToken = searchType == .fromToken ? swapTokenStore.selectedToToken : swapTokenStore.selectedFromToken

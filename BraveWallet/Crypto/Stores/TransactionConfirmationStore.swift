@@ -49,7 +49,7 @@ public class TransactionConfirmationStore: ObservableObject {
   private let walletService: BraveWalletBraveWalletService
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private let keyringService: BraveWalletKeyringService
-  private var selectedChain: BraveWallet.EthereumChain = .init()
+  private var selectedChain: BraveWallet.NetworkInfo = .init()
 
   init(
     assetRatioService: BraveWalletAssetRatioService,
@@ -87,7 +87,8 @@ public class TransactionConfirmationStore: ObservableObject {
         decimals: Int(selectedChain.decimals)
       ) ?? ""
     if !self.state.gasValue.isEmpty {
-      rpcService.balance(transaction.fromAddress, coin: .eth) { [weak self] weiBalance, status, _ in
+      rpcService.chainId(.eth) { [weak self] chainId in
+        self?.rpcService.balance(transaction.fromAddress, coin: .eth, chainId: chainId) { [weak self] weiBalance, status, _ in
         guard let self = self, status == .success else { return }
         let formatter = WeiFormatter(decimalFormatStyle: .balance)
         guard
@@ -103,6 +104,7 @@ public class TransactionConfirmationStore: ObservableObject {
         self.state.isBalanceSufficient = true
       }
     }
+  }
   }
 
   func fetchDetails(for transaction: BraveWallet.TransactionInfo) {

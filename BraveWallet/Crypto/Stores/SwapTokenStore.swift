@@ -184,7 +184,7 @@ public class SwapTokenStore: ObservableObject {
 
   private func swapParameters(
     for base: SwapParamsBase,
-    in network: BraveWallet.EthereumChain
+    in network: BraveWallet.NetworkInfo
   ) -> BraveWallet.SwapParams? {
     guard
       let accountInfo = accountInfo,
@@ -471,7 +471,7 @@ public class SwapTokenStore: ObservableObject {
     // Get ETH balance for this account because gas can only be paid in ETH
     rpcService.network { [weak self] network in
       guard let self = self else { return }
-      self.rpcService.balance(accountInfo.address, coin: .eth) { balance, status, _ in
+      self.rpcService.balance(accountInfo.address, coin: .eth, chainId: network.chainId) { balance, status, _ in
         if status == BraveWallet.ProviderError.success {
           let fee = gasLimit * gasPrice
           let balanceFormatter = WeiFormatter(decimalFormatStyle: .balance)
@@ -590,7 +590,7 @@ public class SwapTokenStore: ObservableObject {
   func prepare(with accountInfo: BraveWallet.AccountInfo, completion: (() -> Void)? = nil) {
     self.accountInfo = accountInfo
 
-    func updateSelectedTokens(in network: BraveWallet.EthereumChain) {
+    func updateSelectedTokens(in network: BraveWallet.NetworkInfo) {
       if let fromToken = selectedFromToken {  // refresh balance
         rpcService.balance(for: fromToken, in: accountInfo) { [weak self] balance in
           self?.selectedFromTokenBalance = BDouble(balance ?? 0)
@@ -703,7 +703,7 @@ extension SwapTokenStore: BraveWalletKeyringServiceObserver {
 }
 
 extension SwapTokenStore: BraveWalletJsonRpcServiceObserver {
-  public func chainChangedEvent(_ chainId: String) {
+  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
     guard
       let accountInfo = accountInfo,
       chainId == BraveWallet.MainnetChainId || chainId == BraveWallet.RopstenChainId

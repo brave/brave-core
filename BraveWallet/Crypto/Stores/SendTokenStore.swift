@@ -152,7 +152,7 @@ public class SendTokenStore: ObservableObject {
       self.rpcService.network { network in
         // Get balance for ETH token
         if token.symbol == network.symbol {
-          self.rpcService.balance(accountAddress, coin: .eth) { balance, status, _ in
+          self.rpcService.balance(accountAddress, coin: .eth, chainId: network.chainId) { balance, status, _ in
             guard status == .success else {
               self.selectedSendTokenBalance = nil
               return
@@ -164,7 +164,8 @@ public class SendTokenStore: ObservableObject {
         else if token.isErc20 {
           self.rpcService.erc20TokenBalance(
             token.contractAddress,
-            address: accountAddress
+            address: accountAddress,
+            chainId: network.chainId
           ) { balance, status, _ in
             guard status == .success else {
               self.selectedSendTokenBalance = nil
@@ -178,7 +179,8 @@ public class SendTokenStore: ObservableObject {
           self.rpcService.erc721TokenBalance(
             token.contractAddress,
             tokenId: token.id,
-            accountAddress: accountAddress
+            accountAddress: accountAddress,
+            chainId: network.chainId
           ) { balance, status, _ in
             guard status == .success else {
               self.selectedSendTokenBalance = nil
@@ -318,7 +320,7 @@ extension SendTokenStore: BraveWalletKeyringServiceObserver {
 }
 
 extension SendTokenStore: BraveWalletJsonRpcServiceObserver {
-  public func chainChangedEvent(_ chainId: String) {
+  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
     // nil `selectedSendToken` to force refresh `selectedSendToken` in `fetchAssets()`
     selectedSendToken = nil
     fetchAssets()

@@ -94,7 +94,7 @@ extension BraveWallet.TransactionInfo {
   }
 }
 
-extension BraveWallet.EthereumChain: Identifiable {
+extension BraveWallet.NetworkInfo: Identifiable {
   public var id: String {
     chainId
   }
@@ -110,7 +110,8 @@ extension BraveWallet.EthereumChain: Identifiable {
       decimals: decimals,
       visible: false,
       tokenId: "",
-      coingeckoId: ""
+      coingeckoId: "",
+      chainId: ""
     )
   }
 
@@ -132,7 +133,7 @@ extension BraveWallet.BlockchainToken: Identifiable {
     symbol.lowercased()
   }
 
-  public func contractAddress(in network: BraveWallet.EthereumChain) -> String {
+  public func contractAddress(in network: BraveWallet.NetworkInfo) -> String {
     // ETH special swap address
     // Only checking token.symbol with selected network.symbol is sufficient
     // since there is no swap support for custom networks.

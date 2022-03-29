@@ -7,7 +7,7 @@ import SwiftUI
 import BraveCore
 import struct Shared.Strings
 
-extension BraveWallet.EthereumChain {
+extension BraveWallet.NetworkInfo {
   var shortChainName: String {
     chainName.split(separator: " ").first?.capitalized ?? chainName
   }
@@ -15,12 +15,12 @@ extension BraveWallet.EthereumChain {
 
 struct NetworkPicker: View {
   @ObservedObject var networkStore: NetworkStore
-  @Binding var selectedNetwork: BraveWallet.EthereumChain
+  @Binding var selectedNetwork: BraveWallet.NetworkInfo
   @State private var isPresentingAddNetwork: Bool = false
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.buySendSwapDestination) @Binding private var buySendSwapDestination
-
-  private var availableChains: [BraveWallet.EthereumChain] {
+  
+  private var availableChains: [BraveWallet.NetworkInfo] {
     networkStore.ethereumChains.filter({
       if let destination = buySendSwapDestination {
         if destination.kind != .send {
@@ -30,7 +30,7 @@ struct NetworkPicker: View {
       return true
     })
   }
-
+  
   var body: some View {
     Menu {
       Picker(
