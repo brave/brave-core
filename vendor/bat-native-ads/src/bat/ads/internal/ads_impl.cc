@@ -414,10 +414,10 @@ void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
   callback(/* success */ true);
 }
 
-AdsHistoryInfo AdsImpl::GetAdsHistory(const AdsHistoryFilterType filter_type,
-                                      const AdsHistorySortType sort_type,
-                                      const double from_timestamp,
-                                      const double to_timestamp) {
+AdsHistoryInfo AdsImpl::GetHistory(const AdsHistoryFilterType filter_type,
+                                   const AdsHistorySortType sort_type,
+                                   const double from_timestamp,
+                                   const double to_timestamp) {
   if (!IsInitialized()) {
     return {};
   }
