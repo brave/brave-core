@@ -283,7 +283,7 @@ public class BraveNewTabPageLayout
         ntpWidgetViewPager.setAdapter(ntpWidgetAdapter);
         mComesFromNewTab = false;
         mTouchScroll = false;
-        
+
         ntpWidgetViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(
@@ -1029,7 +1029,7 @@ public class BraveNewTabPageLayout
 
             boolean isFeedLoaded = BraveActivity.getBraveActivity().isLoadedFeed();
             boolean isFromNewTab = BraveActivity.getBraveActivity().isComesFromNewTab();
-            
+
             CopyOnWriteArrayList<FeedItemsCard> existingNewsFeedObject =
                     BraveActivity.getBraveActivity().getNewsItemsFeedCards();
             Tab tab = BraveActivity.getBraveActivity().getActivityTab();
