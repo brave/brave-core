@@ -2,7 +2,7 @@ include_rules = [
   "+services/network/public/cpp",
   "+third_party/boringssl",
   "+third_party/re2",
-  "+brave/build/brave_buildflags.h",
+  "+brave/common/brave_services_key.h",
   "+brave/third_party/bitcoin-core/src/src/base58.h",
   "+brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h",
   "+brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1.h",

@@ -13,10 +13,10 @@ static_library("browser") {
 
   deps = [
     "//base",
-    "//brave/build:brave_buildflags",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/version_info",
     "//chrome/browser/extensions:extensions",
+    "//components/update_client",
     "//components/version_info",
     "//content/public/browser",
     "//content/public/common",

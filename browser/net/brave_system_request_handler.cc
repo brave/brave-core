@@ -8,7 +8,7 @@
 #include "brave/browser/net/brave_block_safebrowsing_urls.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
 #include "brave/browser/net/brave_static_redirect_network_delegate_helper.h"
-#include "brave/build/brave_buildflags.h"
+#include "brave/common/brave_services_key.h"
 #include "brave/common/brave_service_key_helper.h"
 #include "brave/common/network_constants.h"
 #include "extensions/common/url_pattern.h"

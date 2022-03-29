@@ -12,7 +12,7 @@
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/build/brave_buildflags.h"
+#include "brave/common/brave_services_key.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"

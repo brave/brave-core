@@ -5,7 +5,7 @@
 
 #include "components/update_client/protocol_serializer.h"
 
-#include "brave/build/brave_buildflags.h"
+#include "brave/common/brave_services_key.h"
 
 #define BuildUpdateCheckExtraRequestHeaders \
   BuildUpdateCheckExtraRequestHeaders_ChromiumImpl

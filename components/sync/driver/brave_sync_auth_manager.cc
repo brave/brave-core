@@ -8,7 +8,7 @@
 #include "base/base64.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/build/brave_buildflags.h"
+#include "brave/common/brave_services_key.h"
 #include "brave/common/network_constants.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/network_time_helper.h"

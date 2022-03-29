@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "base/environment.h"
-#include "brave/build/brave_buildflags.h"
+#include "brave/common/brave_services_key.h"
 #include "brave/components/brave_wallet/browser/brave_infura_buildflags.h"
 
 namespace extensions {

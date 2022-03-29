@@ -11,7 +11,7 @@
 #include "base/strings/strcat.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
-#include "brave/build/brave_buildflags.h"
+#include "brave/common/brave_services_key.h"
 #include "brave/common/network_constants.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "components/signin/public/identity_manager/identity_test_environment.h"

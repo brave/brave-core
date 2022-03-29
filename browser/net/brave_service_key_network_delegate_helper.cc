@@ -10,8 +10,8 @@
 #include <vector>
 
 #include "base/no_destructor.h"
-#include "brave/build/brave_buildflags.h"
 #include "brave/common/network_constants.h"
+#include "brave/components/update_client/buildflags.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
 #include "url/gurl.h"
