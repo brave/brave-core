@@ -9,6 +9,7 @@
 #include "src/ios/chrome/browser/net/ios_chrome_network_delegate.cc"
 #undef IOSChromeNetworkDelegate
 
+#include "brave/build/brave_buildflags.h"
 #include "brave/common/brave_service_key_helper.h"
 #include "brave/common/network_constants.h"
 

@@ -1,0 +1,12 @@
+diff --git a/ios/chrome/browser/net/BUILD.gn b/ios/chrome/browser/net/BUILD.gn
+index 3d53bb341fb204e3d03bf1fdc9484cc9523902ab..72145eefa2ffa7851255c26d65bbe71344886c8d 100644
+--- a/ios/chrome/browser/net/BUILD.gn
++++ b/ios/chrome/browser/net/BUILD.gn
+@@ -42,6 +42,7 @@ source_set("net") {
+     ":crurl",
+     ":net_types",
+   ]
++  import("//brave/ios/browser/net/sources.gni") deps += brave_ios_chrome_browser_net_deps
+   allow_circular_includes_from = [ "//ios/chrome/browser" ]
+ }
+ 

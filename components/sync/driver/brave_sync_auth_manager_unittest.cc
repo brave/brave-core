@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/callback_helpers.h"
+#include "base/strings/strcat.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/build/brave_buildflags.h"
@@ -101,12 +102,12 @@ TEST_F(BraveSyncAuthManagerTest, GetAccessToken) {
   auth_manager->DeriveSigningKeys(kSyncCode);
   auth_manager->ConnectionOpened();
 
-  const std::string kBraveServerKeyHeaderString =
-      std::string(kBraveServicesKeyHeader) + ": " +
-      BUILDFLAG(BRAVE_SERVICES_KEY);
+  const std::string kBraveServerKeyHeaderString = base::StrCat(
+      {kBraveServicesKeyHeader, ": ", BUILDFLAG(BRAVE_SERVICES_KEY)});
 
   ASSERT_EQ(auth_manager->GetCredentials().access_token,
-            std::string(kAccessToken) + "\r\n" + kBraveServerKeyHeaderString);
+            base::StrCat({kAccessToken, "\r\n", kBraveServerKeyHeaderString}));
+
   EXPECT_TRUE(auth_manager->GetActiveAccountInfo().is_sync_consented);
   EXPECT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
             CoreAccountId::FromString(kAccountId));

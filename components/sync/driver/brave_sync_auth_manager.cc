@@ -6,6 +6,7 @@
 #include "brave/components/sync/driver/brave_sync_auth_manager.h"
 
 #include "base/base64.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/build/brave_buildflags.h"
 #include "brave/common/network_constants.h"
@@ -16,8 +17,8 @@ namespace syncer {
 
 namespace {
 std::string AppendBraveServiceKeyHeaderString() {
-  return std::string("\r\n") + kBraveServicesKeyHeader + ": " +
-         BUILDFLAG(BRAVE_SERVICES_KEY);
+  return base::StrCat(
+      {"\r\n", kBraveServicesKeyHeader, ": ", BUILDFLAG(BRAVE_SERVICES_KEY)});
 }
 }  // namespace
 
