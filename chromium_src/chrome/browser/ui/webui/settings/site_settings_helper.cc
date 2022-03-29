@@ -22,14 +22,17 @@
   {ContentSettingsType::BRAVE_REFERRERS, nullptr},                 \
   {ContentSettingsType::BRAVE_COOKIES, nullptr},                   \
   {ContentSettingsType::BRAVE_SPEEDREADER, nullptr},               \
-  {ContentSettingsType::BRAVE_ETHEREUM, nullptr},
+  {ContentSettingsType::BRAVE_ETHEREUM, nullptr},                  \
+  {ContentSettingsType::BRAVE_SOLANA, nullptr},
 // clang-format on
 
 #define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME \
   if (name == "autoplay")                                                \
     return ContentSettingsType::AUTOPLAY;                                \
   if (name == "ethereum")                                                \
-    return ContentSettingsType::BRAVE_ETHEREUM;
+    return ContentSettingsType::BRAVE_ETHEREUM;                          \
+  if (name == "solana")                                                \
+    return ContentSettingsType::BRAVE_SOLANA;
 
 #include "src/chrome/browser/ui/webui/settings/site_settings_helper.cc"
 
@@ -46,6 +49,8 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
     return true;
   if (type == ContentSettingsType::BRAVE_ETHEREUM)
     return true;
+  if (type == ContentSettingsType::BRAVE_SOLANA)
+    return true;
   return HasRegisteredGroupName_ChromiumImpl(type);
 }
 
@@ -54,6 +59,8 @@ base::StringPiece ContentSettingsTypeToGroupName(ContentSettingsType type) {
     return "autoplay";
   if (type == ContentSettingsType::BRAVE_ETHEREUM)
     return "ethereum";
+  if (type == ContentSettingsType::BRAVE_SOLANA)
+    return "solana";
   return ContentSettingsTypeToGroupName_ChromiumImpl(type);
 }
 
@@ -61,6 +68,7 @@ const std::vector<ContentSettingsType>& GetVisiblePermissionCategories() {
   static base::NoDestructor<std::vector<ContentSettingsType>> types{{
       ContentSettingsType::AUTOPLAY,
       ContentSettingsType::BRAVE_ETHEREUM,
+      ContentSettingsType::BRAVE_SOLANA,
   }};
   static bool initialized = false;
   if (!initialized) {

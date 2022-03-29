@@ -280,6 +280,16 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_SETTINGS_SITE_SETTINGS_ETHEREUM_BLOCK" desc="Label for ethereum site settings.">
         Block sites from accessing the Ethereum provider API
       </message>
+      <!-- Solana -->
+      <message name="IDS_SETTINGS_SITE_SETTINGS_SOLANA" desc="Label for solana site settings.">
+        Solana
+      </message>
+      <message name="IDS_SETTINGS_SITE_SETTINGS_SOLANA_ASK" desc="Label for solana site settings.">
+        Ask when a site wants to access the Solana provider API
+      </message>
+      <message name="IDS_SETTINGS_SITE_SETTINGS_SOLANA_BLOCK" desc="Label for solana site settings.">
+        Block sites from accessing the Solana provider API
+      </message>
       <!-- Extensions -->
       <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Brave. Asks the user if they want to install a particular extension or app.">
         Brave does not review extensions for security and safety. Only install this extension if you trust the developer.

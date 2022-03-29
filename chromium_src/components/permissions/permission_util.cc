@@ -17,6 +17,8 @@ std::string PermissionUtil::GetPermissionString(
   switch (content_type) {
     case ContentSettingsType::BRAVE_ETHEREUM:
       return "BraveEthereum";
+    case ContentSettingsType::BRAVE_SOLANA:
+      return "BraveSolana";
     default:
       return PermissionUtil_ChromiumImpl::GetPermissionString(content_type);
   }
@@ -25,7 +27,8 @@ std::string PermissionUtil::GetPermissionString(
 // static
 bool PermissionUtil::GetPermissionType(ContentSettingsType type,
                                        content::PermissionType* out) {
-  if (type == ContentSettingsType::BRAVE_ETHEREUM) {
+  if (type == ContentSettingsType::BRAVE_ETHEREUM ||
+      type == ContentSettingsType::BRAVE_SOLANA) {
     *out = PermissionType::WINDOW_PLACEMENT;
     return true;
   }
@@ -37,6 +40,7 @@ bool PermissionUtil::GetPermissionType(ContentSettingsType type,
 bool PermissionUtil::IsPermission(ContentSettingsType type) {
   switch (type) {
     case ContentSettingsType::BRAVE_ETHEREUM:
+    case ContentSettingsType::BRAVE_SOLANA:
       return true;
     default:
       return PermissionUtil_ChromiumImpl::IsPermission(type);

@@ -16,9 +16,10 @@
 #define IsDuplicateOf IsDuplicateOf_ChromiumImpl
 
 // `kWidevine` handled by an override in `WidevinePermissionRequest` and the
-// Brave Ethereum permission has its own permission request prompt.
+// Brave Ethereum/Solana permission has its own permission request prompt.
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH \
   case RequestType::kBraveEthereum: \
+  case RequestType::kBraveSolana:   \
     NOTREACHED();                   \
     return std::u16string();        \
   case RequestType::kWidevine:      \
