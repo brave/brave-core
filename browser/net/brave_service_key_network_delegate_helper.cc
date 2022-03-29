@@ -21,10 +21,9 @@ int OnBeforeStartTransaction_BraveServiceKey(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  const base::StringPiece allowed_domains[] = {
-      base::StringPiece(kExtensionUpdaterDomain),
-      GURL(BUILDFLAG(UPDATER_DEV_ENDPOINT)).host_piece(),
-      GURL(BUILDFLAG(UPDATER_PROD_ENDPOINT)).host_piece()};
+  const std::string allowed_domains[] = {
+      kExtensionUpdaterDomain, GURL(BUILDFLAG(UPDATER_DEV_ENDPOINT)).host(),
+      GURL(BUILDFLAG(UPDATER_PROD_ENDPOINT)).host()};
 
   const GURL& url = ctx->request_url;
 
