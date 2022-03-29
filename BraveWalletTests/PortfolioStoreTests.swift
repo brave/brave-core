@@ -16,7 +16,7 @@ class PortfolioStoreTests: XCTestCase {
     // config test
     let mockAccountInfos: [BraveWallet.AccountInfo] = [.previewAccount]
     let chainId = BraveWallet.MainnetChainId
-    let network: BraveWallet.EthereumChain = .mainnet
+    let network: BraveWallet.NetworkInfo = .mainnet
     let mockUserAssets: [BraveWallet.BlockchainToken] = [.previewToken.then { $0.visible = true }]
     let mockDecimalBalance: Double = 0.0896
     let numDecimals = Int(mockUserAssets[0].decimals)
@@ -43,9 +43,9 @@ class PortfolioStoreTests: XCTestCase {
     keyringService._isLocked = { $0(false) }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
-    rpcService._chainId = { $0(chainId) }
-    rpcService._network = { $0(network) }
-    rpcService._balance = { _, _, completion in
+    rpcService._chainId = { $1(chainId) }
+    rpcService._network = { $1(network) }
+    rpcService._balance = { _, _, _, completion in
       completion(mockBalanceWei, .success, "")
     }
     let walletService = BraveWallet.TestBraveWalletService()

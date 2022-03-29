@@ -227,7 +227,7 @@ extension PortfolioStore: BraveWalletJsonRpcServiceObserver {
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
   }
 
-  public func chainChangedEvent(_ chainId: String) {
+  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
     update()
   }
 }

@@ -128,7 +128,9 @@ struct AddCustomAssetView: View {
       decimals: Int32(decimalsInput) ?? 18,
       visible: true,
       tokenId: "",
-      coingeckoId: "")
+      coingeckoId: "",
+      chainId: ""
+    )
     userAssetStore.addUserAsset(token: token) { [self] success in
       if success {
         presentationMode.dismiss()

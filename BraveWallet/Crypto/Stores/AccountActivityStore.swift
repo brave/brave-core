@@ -96,7 +96,7 @@ class AccountActivityStore: ObservableObject {
 }
 
 extension AccountActivityStore: BraveWalletJsonRpcServiceObserver {
-  func chainChangedEvent(_ chainId: String) {
+  func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
       // Handle small gap between chain changing and txController having the correct chain Id
       self.update()

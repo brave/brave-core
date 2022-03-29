@@ -222,7 +222,7 @@ extension AssetDetailStore: BraveWalletKeyringServiceObserver {
 }
 
 extension AssetDetailStore: BraveWalletJsonRpcServiceObserver {
-  func chainChangedEvent(_ chainId: String) {
+  func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
     fetchAccountBalances()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
       // There's some async gap between the chain changing and the EthTxService having the the correct

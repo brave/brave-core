@@ -30,13 +30,13 @@ struct CustomNetworkListView: View {
 
   private struct CustomNetworkDetails: Identifiable {
     var isEditMode: Bool
-    var network: BraveWallet.EthereumChain?
+    var network: BraveWallet.NetworkInfo?
     var id: String {
       "\(isEditMode)"
     }
   }
 
-  private func removeNetwork(_ network: BraveWallet.EthereumChain) {
+  private func removeNetwork(_ network: BraveWallet.NetworkInfo) {
     networkStore.removeCustomNetwork(network) { _ in }
   }
 

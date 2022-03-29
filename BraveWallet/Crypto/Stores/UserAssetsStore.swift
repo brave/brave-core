@@ -75,7 +75,7 @@ public class UserAssetsStore: ObservableObject {
     fetchVisibleAssets()
   }
 
-  private func updateSelectedAssets(_ network: BraveWallet.EthereumChain) {
+  private func updateSelectedAssets(_ network: BraveWallet.NetworkInfo) {
     walletService.userAssets(network.chainId) { [self] userAssets in
       let visibleAssetIds = userAssets.filter(\.visible).map(\.id)
       blockchainRegistry.allTokens(network.chainId) { [self] registryTokens in
@@ -153,7 +153,7 @@ public class UserAssetsStore: ObservableObject {
 }
 
 extension UserAssetsStore: BraveWalletJsonRpcServiceObserver {
-  public func chainChangedEvent(_ chainId: String) {
+  public func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType) {
     rpcService.network { [weak self] network in
       self?.updateSelectedAssets(network)
     }

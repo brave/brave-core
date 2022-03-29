@@ -8,12 +8,12 @@ import BraveCore
 import struct Shared.Strings
 
 struct BuySendSwapView: View {
-  var network: BraveWallet.EthereumChain
+  var network: BraveWallet.NetworkInfo
   var action: (BuySendSwapDestination) -> Void
   var destinations: [BuySendSwapDestination]
 
   init(
-    network: BraveWallet.EthereumChain,
+    network: BraveWallet.NetworkInfo,
     action: @escaping (BuySendSwapDestination) -> Void
   ) {
     self.network = network

@@ -36,7 +36,7 @@ class SendSwapStoreTests: XCTestCase {
   }
 
   func testDefaultSellBuyTokensOnMainnetWithPrefilledToken() {
-    let batToken: BraveWallet.BlockchainToken = .init(contractAddress: "", name: "Brave BAT", logo: "", isErc20: true, isErc721: false, symbol: "BAT", decimals: 18, visible: false, tokenId: "", coingeckoId: "")
+    let batToken: BraveWallet.BlockchainToken = .init(contractAddress: "", name: "Brave BAT", logo: "", isErc20: true, isErc721: false, symbol: "BAT", decimals: 18, visible: false, tokenId: "", coingeckoId: "", chainId: "")
     let store = SwapTokenStore(
       keyringService: MockKeyringService(),
       blockchainRegistry: MockBlockchainRegistry(),
@@ -95,7 +95,7 @@ class SendSwapStoreTests: XCTestCase {
   }
 
   func testDefaultSellBuyTokensOnRopstenWithPrefilledToken() {
-    let daiToken: BraveWallet.BlockchainToken = .init(contractAddress: "", name: "DAI Stablecoin", logo: "", isErc20: true, isErc721: false, symbol: "DAI", decimals: 18, visible: false, tokenId: "", coingeckoId: "")
+    let daiToken: BraveWallet.BlockchainToken = .init(contractAddress: "", name: "DAI Stablecoin", logo: "", isErc20: true, isErc721: false, symbol: "DAI", decimals: 18, visible: false, tokenId: "", coingeckoId: "", chainId: "")
     let rpcService = MockJsonRpcService()
     let store = SwapTokenStore(
       keyringService: MockKeyringService(),

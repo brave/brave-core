@@ -9,6 +9,9 @@ import BraveCore
 #if DEBUG
 
 class MockTxService: BraveWalletTxService {
+  func transactionInfo(_ coinType: BraveWallet.CoinType, txMetaId: String, completion: @escaping (BraveWallet.TransactionInfo?) -> Void) {
+    completion(nil)
+  }
 
   func addUnapprovedTransaction(_ txData: BraveWallet.TxDataUnion, from: String, completion: @escaping (Bool, String, String) -> Void) {
     completion(true, "txMetaId", "")
@@ -48,8 +51,8 @@ class MockTxService: BraveWalletTxService {
     completion("Mock transaction message")
   }
 
-  func approveTransaction(_ coinType: BraveWallet.CoinType, txMetaId: String, completion: @escaping (Bool, BraveWallet.ProviderError, String) -> Void) {
-    completion(false, .internalError, "Error Message")
+  func approveTransaction(_ coinType: BraveWallet.CoinType, txMetaId: String, completion: @escaping (Bool, BraveWallet.ProviderErrorUnion, String) -> Void) {
+    completion(false, .init(providerError: .internalError), "Error Message")
   }
 }
 
