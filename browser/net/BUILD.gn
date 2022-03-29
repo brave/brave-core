@@ -2,12 +2,25 @@ import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
+
+declare_args() {
+  brave_google_api_key = ""
+  brave_google_api_endpoint = ""
+}
+
+buildflag_header("geolocation") {
+  header = "brave_geolocation_buildflags.h"
+
+  flags =
+      [ "GOOGLEAPIS_URL=\"$brave_google_api_endpoint$brave_google_api_key\"" ]
+}
 
 source_set("net") {
   # Remove when https://github.com/brave/brave-browser/issues/10659 is resolved
   check_includes = false
-  configs += [ "//brave/build/geolocation" ]
+
   sources = [
     "brave_ad_block_csp_network_delegate_helper.cc",
     "brave_ad_block_csp_network_delegate_helper.h",
@@ -44,6 +57,7 @@ source_set("net") {
   ]
 
   deps = [
+    ":geolocation",
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
