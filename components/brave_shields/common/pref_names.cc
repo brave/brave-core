@@ -18,6 +18,7 @@ const char kAdBlockListSubscriptions[] = "brave.ad_block.list_subscriptions";
 const char kFBEmbedControlType[] = "brave.fb_embed_default";
 const char kTwitterEmbedControlType[] = "brave.twitter_embed_default";
 const char kLinkedInEmbedControlType[] = "brave.linkedin_embed_default";
+const char kReduceLanguageEnabled[] = "brave.reduce_language";
 
 }  // namespace prefs
 }  // namespace brave_shields

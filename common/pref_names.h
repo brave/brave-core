@@ -39,7 +39,6 @@ extern const char kReferralHeaders[];
 extern const char kReferralAndroidFirstRunTimestamp[];
 extern const char kHTTPSEVerywhereControlType[];
 extern const char kNoScriptControlType[];
-extern const char kReduceLanguageEnabled[];
 extern const char kShieldsAdvancedViewEnabled[];
 extern const char kShieldsStatsBadgeVisible[];
 extern const char kAdControlType[];

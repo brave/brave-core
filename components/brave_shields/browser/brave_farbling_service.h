@@ -11,6 +11,10 @@
 
 class GURL;
 
+namespace user_prefs {
+class PrefRegistrySyncable;
+}
+
 namespace brave {
 
 class BraveFarblingService {
@@ -23,6 +27,8 @@ class BraveFarblingService {
   bool MakePseudoRandomGeneratorForURL(const GURL& url,
                                        bool is_off_the_record,
                                        std::mt19937_64* prng);
+
+  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
  private:
   uint64_t session_token_;

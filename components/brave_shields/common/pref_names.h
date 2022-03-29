@@ -17,6 +17,7 @@ extern const char kAdBlockListSubscriptions[];
 extern const char kFBEmbedControlType[];
 extern const char kTwitterEmbedControlType[];
 extern const char kLinkedInEmbedControlType[];
+extern const char kReduceLanguageEnabled[];
 
 }  // namespace prefs
 }  // namespace brave_shields

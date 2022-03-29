@@ -8,6 +8,8 @@
 #include <string>
 
 #include "base/rand_util.h"
+#include "brave/components/brave_shields/common/pref_names.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "crypto/hmac.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
@@ -50,6 +52,13 @@ bool BraveFarblingService::MakePseudoRandomGeneratorForURL(
   uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key);
   *prng = std::mt19937_64(seed);
   return true;
+}
+
+// static
+void BraveFarblingService::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterBooleanPref(brave_shields::prefs::kReduceLanguageEnabled,
+                                true);
 }
 
 }  // namespace brave

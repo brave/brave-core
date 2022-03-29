@@ -10,31 +10,23 @@
 #include "base/bind.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/common/brave_renderer_configuration.mojom.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_process_host.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
 BraveRendererUpdater::BraveRendererUpdater(Profile* profile)
-    : profile_(profile),
-      is_wallet_allowed_for_context_(false),
-      reduce_language_(false) {
+    : profile_(profile), is_wallet_allowed_for_context_(false) {
   PrefService* pref_service = profile->GetPrefs();
   brave_wallet_web3_provider_.Init(kDefaultWallet2, pref_service);
 
   pref_change_registrar_.Init(pref_service);
   pref_change_registrar_.Add(
       kDefaultWallet2,
-      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      kReduceLanguageEnabled,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
 }
@@ -46,9 +38,7 @@ void BraveRendererUpdater::InitializeRenderer(
   auto renderer_configuration = GetRendererConfiguration(render_process_host);
   Profile* profile =
       Profile::FromBrowserContext(render_process_host->GetBrowserContext());
-  PrefService* pref_service = profile->GetPrefs();
   is_wallet_allowed_for_context_ = brave_wallet::IsAllowedForContext(profile);
-  reduce_language_ = pref_service->GetBoolean(kReduceLanguageEnabled);
   UpdateRenderer(&renderer_configuration);
 }
 
@@ -114,6 +104,5 @@ void BraveRendererUpdater::UpdateRenderer(
 
   (*renderer_configuration)
       ->SetConfiguration(brave::mojom::DynamicParams::New(
-          brave_use_native_wallet, allow_overwrite_window_ethereum,
-          reduce_language_));
+          brave_use_native_wallet, allow_overwrite_window_web3_provider));
 }

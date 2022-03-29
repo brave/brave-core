@@ -111,9 +111,6 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   g_browser_process = this;
   g_brave_browser_process = this;
 
-  // early initialize brave farbling
-  brave_farbling_service();
-
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   // early initialize referrals
   brave_referrals_service();
