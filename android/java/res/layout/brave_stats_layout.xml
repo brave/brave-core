@@ -11,7 +11,7 @@
     android:id="@+id/ntp_stats_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/ntp_stats_bg_color"
+    android:background="@drawable/rounded_dark_bg_alpha"
     android:orientation="vertical">
 
     <LinearLayout
@@ -51,6 +51,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_marginTop="8dp"
+        android:paddingBottom="16dp"
         android:orientation="horizontal"
         android:baselineAligned="false">
 
@@ -93,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="12sp"
-                android:textColor="@color/ntp_stats_text_color"
+                android:textColor="@color/brave_state_time_count_color"
                 android:text="@string/ads_trackers_text" />
 
         </LinearLayout>
@@ -136,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="12sp"
-                android:textColor="@color/ntp_stats_text_color"
+                android:textColor="@color/brave_state_time_count_color"
                 android:text="@string/brave_stats_text_data_saved" />
 
         </LinearLayout>
@@ -178,7 +179,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="12sp"
-                android:textColor="@color/ntp_stats_text_color"
+                android:textColor="@color/brave_state_time_count_color"
                 android:text="@string/brave_stats_text_time" />
 
         </LinearLayout>

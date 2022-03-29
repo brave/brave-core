@@ -123,10 +123,11 @@
     <color name="brave_stats_text_color">#212529</color>
     <color name="brave_stats_text_light_color">#212529</color>
     <color name="brave_stats_text_dark_color">#F0F2FF</color>
-    <color name="ntp_stats_bg_color">#212529</color>
-    <color name="ntp_stats_text_color">#C2C4CF</color>
+    <!-- <color name="ntp_stats_bg_color">#212529</color> -->
+    <!-- <color name="ntp_stats_text_color">#C2C4CF</color> -->
 
     <color name="brave_stats_bg_color">#FFFFFF</color>
+    <!-- <color name="brave_bg_transparent">#0000003D</color> -->
     <color name="brave_stats_bg_color_20_alpha">#33212529</color>
     <color name="brave_stats_close_button_color">#495057</color>
     <color name="brave_stats_radio_group_bg">#E9E9F4</color>
@@ -146,7 +147,6 @@
     <color name="binance_theme_color_alpha_50">#80F0B90B</color>
     <color name="binance_text_color">#F8F9FA</color>
     <color name="binance_bottom_sheet_bg_color">#1F1F1F</color>
-    <color name="binance_widget_bg_color">#17171F</color>
     <color name="white_alpha_50">#80FFFFFF</color>
     <color name="binance_divider_color">#C0C0C0</color>
 
