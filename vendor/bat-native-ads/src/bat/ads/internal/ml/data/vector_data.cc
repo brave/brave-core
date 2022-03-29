@@ -19,11 +19,16 @@ VectorData::VectorData() : Data(DataType::kVector) {}
 
 VectorData::VectorData(const VectorData& vector_data)
     : Data(DataType::kVector) {
-  dimension_count_ = vector_data.GetDimensionCount();
-  data_ = vector_data.GetRawData();
+  dimension_count_ = vector_data.dimension_count_;
+  data_ = vector_data.data_;
 }
 
-VectorData::VectorData(const std::vector<double>& data)
+VectorData::VectorData(VectorData&& vector_data) : Data(DataType::kVector) {
+  dimension_count_ = vector_data.dimension_count_;
+  data_ = std::move(vector_data.data_);
+}
+
+VectorData::VectorData(const std::vector<float>& data)
     : Data(DataType::kVector) {
   dimension_count_ = static_cast<int>(data.size());
   data_.resize(dimension_count_);
@@ -46,7 +51,13 @@ VectorData::~VectorData() = default;
 
 VectorData& VectorData::operator=(const VectorData& vector_data) {
   dimension_count_ = vector_data.GetDimensionCount();
-  data_ = vector_data.GetRawData();
+  data_ = vector_data.data_;
+  return *this;
+}
+
+VectorData& VectorData::operator=(VectorData&& vector_data) {
+  dimension_count_ = vector_data.dimension_count_;
+  data_ = std::move(vector_data.data_);
   return *this;
 }
 
@@ -64,7 +75,8 @@ double operator*(const VectorData& lhs, const VectorData& rhs) {
   size_t rhs_index = 0;
   while (lhs_index < lhs.data_.size() && rhs_index < rhs.data_.size()) {
     if (lhs.data_[lhs_index].first == rhs.data_[rhs_index].first) {
-      dot_product += lhs.data_[lhs_index].second * rhs.data_[rhs_index].second;
+      dot_product += static_cast<double>(lhs.data_[lhs_index].second) *
+                     rhs.data_[rhs_index].second;
       ++lhs_index;
       ++rhs_index;
     } else {
@@ -80,7 +92,7 @@ double operator*(const VectorData& lhs, const VectorData& rhs) {
 }
 
 void VectorData::Normalize() {
-  const double vector_length = sqrt(std::accumulate(
+  const auto vector_length = sqrt(std::accumulate(
       data_.cbegin(), data_.cend(), 0.0,
       [](const double& lhs, const SparseVectorElement& rhs) -> double {
         return lhs + rhs.second * rhs.second;
