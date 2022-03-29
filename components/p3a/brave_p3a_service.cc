@@ -56,7 +56,6 @@ constexpr char kP3AServerUrl[] = "https://p3a.brave.com/";
 constexpr char kP2AServerUrl[] = "https://p2a.brave.com/";
 
 constexpr char kP3AJsonServerUrl[] = "https://p3a-json.brave.com/";
-constexpr char kP2AJsonServerUrl[] = "https://p2a-json.brave.com/";
 
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 
@@ -292,8 +291,8 @@ void BraveP3AService::Init(
       url_loader_factory, upload_server_url_, GURL(kP2AServerUrl),
       base::BindRepeating(&BraveP3AService::OnLogUploadComplete, this)));
 
-  new_uploader_.reset(new BraveP3ANewUploader(
-      url_loader_factory, GURL(kP3AJsonServerUrl), GURL(kP2AJsonServerUrl)));
+  new_uploader_.reset(
+      new BraveP3ANewUploader(url_loader_factory, GURL(kP3AJsonServerUrl)));
 
   upload_scheduler_.reset(new BraveP3AScheduler(
       base::BindRepeating(&BraveP3AService::StartScheduledUpload, this),

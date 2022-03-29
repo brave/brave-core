@@ -27,8 +27,7 @@ class BraveP3ANewUploader {
  public:
   BraveP3ANewUploader(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      const GURL& p3a_endpoint,
-      const GURL& p2a_endpoint);
+      const GURL& p3a_endpoint);
 
   BraveP3ANewUploader(const BraveP3ANewUploader&) = delete;
   BraveP3ANewUploader& operator=(const BraveP3ANewUploader&) = delete;
@@ -44,7 +43,6 @@ class BraveP3ANewUploader {
  private:
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   const GURL p3a_endpoint_;
-  const GURL p2a_endpoint_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
 };
 
