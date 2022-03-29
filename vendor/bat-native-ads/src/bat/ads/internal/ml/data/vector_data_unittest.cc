@@ -25,7 +25,7 @@ class BatAdsVectorDataTest : public UnitTestBase {
 
 TEST_F(BatAdsVectorDataTest, DenseVectorDataInitialization) {
   // Arrange
-  const std::vector<double> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
+  const std::vector<float> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
   const VectorData dense_data_vector_5(v_5);
 
   // Act
@@ -51,13 +51,13 @@ TEST_F(BatAdsVectorDataTest, DenseDenseProduct) {
   // Arrange
   const double kTolerance = 1e-6;
 
-  const std::vector<double> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
+  const std::vector<float> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
   const VectorData dense_data_vector_5(v_5);
 
-  const std::vector<double> v_3{1.0, 2.0, 3.0};
+  const std::vector<float> v_3{1.0, 2.0, 3.0};
   const VectorData dense_data_vector_3(v_3);
 
-  const std::vector<double> v_3_1{1.0, 1.0, 1.0};
+  const std::vector<float> v_3_1{1.0, 1.0, 1.0};
   const VectorData dense_data_vector_3_1(v_3_1);
 
   // Act
@@ -96,10 +96,10 @@ TEST_F(BatAdsVectorDataTest, SparseDenseProduct) {
   // Arrange
   const double kTolerance = 1e-6;
 
-  const std::vector<double> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
+  const std::vector<float> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
   const VectorData dense_data_vector_5(v_5);
 
-  const std::vector<double> v_3{1.0, 2.0, 3.0};
+  const std::vector<float> v_3{1.0, 2.0, 3.0};
   const VectorData dense_data_vector_3(v_3);
 
   // Dense equivalent is [1, 0, 2]
@@ -129,10 +129,10 @@ TEST_F(BatAdsVectorDataTest, SparseDenseProduct) {
 
 TEST_F(BatAdsVectorDataTest, NonsenseProduct) {
   // Arrange
-  const std::vector<double> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
+  const std::vector<float> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
   const VectorData dense_data_vector_5(v_5);
 
-  const std::vector<double> v_3{1.0, 2.0, 3.0};
+  const std::vector<float> v_3{1.0, 2.0, 3.0};
   const VectorData dense_data_vector_3(v_3);
 
   // Dense equivalent is [1, 0, 2]
