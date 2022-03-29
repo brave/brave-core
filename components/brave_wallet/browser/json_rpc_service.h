@@ -207,6 +207,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void GetERC721OwnerOf(const std::string& contract,
                         const std::string& token_id,
+                        const std::string& chain_id,
                         GetERC721OwnerOfCallback callback) override;
 
   void GetERC721TokenBalance(const std::string& contract_address,
