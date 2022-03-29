@@ -49,7 +49,7 @@ class EligibleAdsV1 final : public EligibleAdsBase {
       const BrowsingHistoryList& browsing_history,
       GetEligibleAdsCallback<CreativeInlineContentAdList> callback);
 
-  void GetForParentChildSegments(
+  void GetForChildSegments(
       const ad_targeting::UserModelInfo& user_model,
       const std::string& dimensions,
       const AdEventList& ad_events,

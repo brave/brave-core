@@ -36,7 +36,7 @@ class BatAdsEligibleAdNotificationsV1Test : public UnitTestBase {
   std::unique_ptr<database::table::CreativeAdNotifications> database_table_;
 };
 
-TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForParentChildSegment) {
+TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForChildSegment) {
   // Arrange
   CreativeAdNotificationList creative_ads;
 

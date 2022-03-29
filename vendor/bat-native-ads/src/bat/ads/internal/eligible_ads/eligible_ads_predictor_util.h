@@ -61,7 +61,7 @@ AdPredictorInfo<T> ComputePredictorFeatures(
   AdPredictorInfo<T> mutable_ad_predictor = ad_predictor;
 
   const SegmentList intent_child_segments_intersection = SetIntersection(
-      ad_targeting::GetTopParentChildPurchaseIntentSegments(user_model),
+      ad_targeting::GetTopChildPurchaseIntentSegments(user_model),
       ad_predictor.segments);
   mutable_ad_predictor.does_match_intent_child_segments =
       intent_child_segments_intersection.empty() ? false : true;
@@ -72,9 +72,9 @@ AdPredictorInfo<T> ComputePredictorFeatures(
   mutable_ad_predictor.does_match_intent_parent_segments =
       intent_parent_segments_intersection.empty() ? false : true;
 
-  const SegmentList interest_child_segments_intersection = SetIntersection(
-      ad_targeting::GetTopParentChildInterestSegments(user_model),
-      ad_predictor.segments);
+  const SegmentList interest_child_segments_intersection =
+      SetIntersection(ad_targeting::GetTopChildInterestSegments(user_model),
+                      ad_predictor.segments);
   mutable_ad_predictor.does_match_interest_child_segments =
       interest_child_segments_intersection.empty() ? false : true;
 

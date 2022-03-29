@@ -65,22 +65,21 @@ void EligibleAdsV1::GetEligibleAds(
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     GetEligibleAdsCallback<CreativeAdNotificationList> callback) {
-  GetForParentChildSegments(user_model, ad_events, browsing_history, callback);
+  GetForChildSegments(user_model, ad_events, browsing_history, callback);
 }
 
-void EligibleAdsV1::GetForParentChildSegments(
+void EligibleAdsV1::GetForChildSegments(
     const ad_targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
     GetEligibleAdsCallback<CreativeAdNotificationList> callback) {
-  const SegmentList& segments =
-      ad_targeting::GetTopParentChildSegments(user_model);
+  const SegmentList& segments = ad_targeting::GetTopChildSegments(user_model);
   if (segments.empty()) {
     GetForParentSegments(user_model, ad_events, browsing_history, callback);
     return;
   }
 
-  BLOG(1, "Get eligible ads for parent-child segments:");
+  BLOG(1, "Get eligible ads for child segments:");
   for (const auto& segment : segments) {
     BLOG(1, "  " << segment);
   }
@@ -90,7 +89,7 @@ void EligibleAdsV1::GetForParentChildSegments(
       segments, [=](const bool success, const SegmentList& segments,
                     const CreativeAdNotificationList& creative_ads) {
         if (!success) {
-          BLOG(1, "Failed to get ads for parent-child segments");
+          BLOG(1, "Failed to get ads for child segments");
           callback(/* had_opportunity */ false, {});
           return;
         }
@@ -98,9 +97,8 @@ void EligibleAdsV1::GetForParentChildSegments(
         const CreativeAdNotificationList& eligible_creative_ads =
             FilterCreativeAds(creative_ads, ad_events, browsing_history);
         if (eligible_creative_ads.empty()) {
-          BLOG(1, "No eligible ads out of "
-                      << creative_ads.size()
-                      << " ads for parent-child segments");
+          BLOG(1, "No eligible ads out of " << creative_ads.size()
+                                            << " ads for child segments");
           GetForParentSegments(user_model, ad_events, browsing_history,
                                callback);
           return;
@@ -108,7 +106,7 @@ void EligibleAdsV1::GetForParentChildSegments(
 
         BLOG(1, eligible_creative_ads.size()
                     << " eligible ads out of " << creative_ads.size()
-                    << " ads for parent-child segments");
+                    << " ads for child segments");
 
         callback(/* had_opportunity */ true, eligible_creative_ads);
       });
