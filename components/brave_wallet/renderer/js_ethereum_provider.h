@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_BRAVE_WALLET_JS_HANDLER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_BRAVE_WALLET_JS_HANDLER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_JS_ETHEREUM_PROVIDER_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_JS_ETHEREUM_PROVIDER_H_
 
 #include <memory>
 #include <string>
@@ -23,12 +23,12 @@
 
 namespace brave_wallet {
 
-class BraveWalletJSHandler : public mojom::EventsListener {
+class JSEthereumProvider : public mojom::EventsListener {
  public:
-  explicit BraveWalletJSHandler(content::RenderFrame* render_frame,
-                                bool brave_use_native_wallet,
-                                bool allow_overwrite_window_ethereum);
-  ~BraveWalletJSHandler() override;
+  explicit JSEthereumProvider(content::RenderFrame* render_frame,
+                              bool brave_use_native_wallet,
+                              bool allow_overwrite_window_ethereum);
+  ~JSEthereumProvider() override;
 
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
   void FireEvent(const std::string& event, base::Value event_args);
@@ -102,9 +102,9 @@ class BraveWalletJSHandler : public mojom::EventsListener {
   bool is_connected_;
   std::string chain_id_;
   std::string first_allowed_account_;
-  base::WeakPtrFactory<BraveWalletJSHandler> weak_ptr_factory_{this};
+  base::WeakPtrFactory<JSEthereumProvider> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_BRAVE_WALLET_JS_HANDLER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_JS_ETHEREUM_PROVIDER_H_

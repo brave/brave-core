@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "brave/components/brave_wallet/renderer/resource_helper.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "components/grit/brave_components_strings.h"
@@ -33,15 +34,6 @@ namespace brave_wallet {
 namespace {
 
 static base::NoDestructor<std::string> g_provider_script("");
-
-std::string LoadDataResource(const int id) {
-  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
-  if (resource_bundle.IsGzipped(id)) {
-    return resource_bundle.LoadDataResourceString(id);
-  }
-
-  return std::string(resource_bundle.GetRawDataResource(id));
-}
 
 }  // namespace
 
@@ -167,7 +159,7 @@ void JSSolanaProvider::AccountChangedEvent(
               .ToLocal(&v8_public_key));
     args.push_back(std::move(v8_public_key));
   }
-  FireEvent(kAccountChangedEvent, std::move(args));
+  FireEvent(solana::kAccountChangedEvent, std::move(args));
 }
 
 void JSSolanaProvider::InjectInitScript(bool allow_overwrite_window_solana) {

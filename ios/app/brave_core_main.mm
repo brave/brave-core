@@ -337,7 +337,8 @@ static bool CustomLogHandler(int severity,
 
 - (NSString*)walletProviderJS {
   if (!_walletProviderJS) {
-    auto resource_id = IDR_BRAVE_WALLET_SCRIPT_BRAVE_WALLET_SCRIPT_BUNDLE_JS;
+    auto resource_id =
+        IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS;
     // The resource bundle is not available until after WebMainParts is setup
     auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
     std::string resource_string = "";
