@@ -22,7 +22,7 @@ import {
 import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
-import { getNetworkInfo, getNetworksByCoinType } from '../../utils/network-utils'
+import { getNetworkInfo, getNetworksByCoinType, getTokensCoinType } from '../../utils/network-utils'
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
 
@@ -33,6 +33,7 @@ import { GetAccountsHardwareOperationResult } from '../hardware/types'
 import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
+import { AllNetworksOption } from '../../options/network-filter-options'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -368,14 +369,25 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
     const apiProxy = getAPIProxy()
     const { assetRatioService } = apiProxy
 
-    const { wallet: { accounts, defaultCurrencies, userVisibleTokensInfo } } = getState()
+    const { wallet: { accounts, defaultCurrencies, userVisibleTokensInfo, selectedNetworkFilter, networkList } } = getState()
+
+    // By default we do not fetch Price history for Test Networks Tokens if
+    // Selected Network Filter is all
+    const filteredTokenInfo = selectedNetworkFilter.chainId === AllNetworksOption.chainId
+      ? userVisibleTokensInfo.filter((token) => !SupportedTestNetworks.includes(token.chainId))
+      // If chainId is Localhost we also do a check for coinType to only
+      // fetch Price History for for the correct tokens
+      : selectedNetworkFilter.chainId === BraveWallet.LOCALHOST_CHAIN_ID
+        ? userVisibleTokensInfo.filter((token) =>
+          token.chainId === selectedNetworkFilter.chainId &&
+          getTokensCoinType(networkList, token) === selectedNetworkFilter.coin)
+        // Fetch Price History for Tokens by Selected Network Filter's chainId
+        : userVisibleTokensInfo.filter((token) => token.chainId === selectedNetworkFilter.chainId)
 
     // Get all Price History
-    const priceHistory = await Promise.all(getFlattenedAccountBalances(accounts, userVisibleTokensInfo)
+    const priceHistory = await Promise.all(getFlattenedAccountBalances(accounts, filteredTokenInfo)
       // If a tokens balance is 0 we do not make an unnecessary api call for price history of that token
-      // Will remove testnetwork filter when this is implemented
-      // https://github.com/brave/brave-browser/issues/20780
-      .filter(({ token, balance }) => !token.isErc721 && balance > 0 && !SupportedTestNetworks.includes(token.chainId))
+      .filter(({ token, balance }) => !token.isErc721 && balance > 0)
       .map(async ({ token }) => ({
         // If a visible asset has a contractAddress of ''
         // it is a native asset so we use a symbol instead.
@@ -388,10 +400,8 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
 
     // Combine Price History and Balances
     const priceHistoryWithBalances = accounts.map((account) => {
-      return userVisibleTokensInfo
-        // Will remove testnetwork filter when this is implemented
-        // https://github.com/brave/brave-browser/issues/20780
-        .filter((token) => !token.isErc721 && !SupportedTestNetworks.includes(token.chainId))
+      return filteredTokenInfo
+        .filter((token) => !token.isErc721)
         .map((token) => {
           const balance = token.contractAddress
             ? account.tokenBalanceRegistry[token.contractAddress.toLowerCase()]

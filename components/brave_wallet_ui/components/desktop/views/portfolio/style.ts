@@ -245,3 +245,11 @@ export const ShowBalanceButton = styled(WalletButton) <Partial<StyleProps>>`
   mask-image: url(${(p) => p.hideBalances ? EyeOffIcon : EyeOnIcon});
   mask-size: cover;
 `
+
+export const FilterTokenRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+`

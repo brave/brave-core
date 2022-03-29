@@ -19,7 +19,8 @@ import {
   IconsWrapper,
   NetworkIconWrapper,
   NameColumn,
-  Spacer
+  Spacer,
+  NetworkDescriptionText
 } from './style'
 import { withPlaceholderIcon, CreateNetworkIcon, LoadingSkeleton } from '../../shared'
 import { WithHideBalancePlaceholder } from '../'
@@ -144,7 +145,7 @@ const PortfolioAssetItem = (props: Props) => {
                         : ''
                     }
                   </AssetName>
-                  <AssetName>{NetworkDescription}</AssetName>
+                  <NetworkDescriptionText>{NetworkDescription}</NetworkDescriptionText>
                 </>
               }
             </NameColumn>

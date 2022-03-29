@@ -1,5 +1,6 @@
 import { mockNetwork } from '../../common/constants/mocks'
 import { BraveWallet, WalletAccountType, WalletState } from '../../constants/types'
+import { AllNetworksOption } from '../../options/network-filter-options'
 
 const mockAccount: WalletAccountType = {
   accountType: 'Primary',
@@ -277,5 +278,6 @@ export const mockWalletState: WalletState = {
   transactionProviderErrorRegistry: {},
   defaultNetworks: [mockNetwork],
   isTestNetworksEnabled: true,
-  selectedCoin: BraveWallet.CoinType.ETH
+  selectedCoin: BraveWallet.CoinType.ETH,
+  selectedNetworkFilter: AllNetworksOption
 }

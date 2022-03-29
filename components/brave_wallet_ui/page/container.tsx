@@ -34,6 +34,7 @@ import {
 import BuySendSwap from '../stories/screens/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
+import { AllNetworksOption } from '../options/network-filter-options'
 
 // Utils
 import Amount from '../utils/amount'
@@ -96,7 +97,8 @@ function Container (props: Props) {
     isMetaMaskInstalled,
     defaultCurrencies,
     fullTokenList,
-    userVisibleTokensInfo
+    userVisibleTokensInfo,
+    selectedNetworkFilter
   } = props.wallet
 
   // Page Props
@@ -297,11 +299,25 @@ function Container (props: Props) {
 
   // This looks at the users asset list and returns the full balance for each asset
   const userAssetList = React.useMemo(() => {
-    return userVisibleTokensInfo.map((asset) => ({
+    const allAssets = userVisibleTokensInfo.map((asset) => ({
       asset: asset,
       assetBalance: fullAssetBalance(asset)
     }) as UserAssetInfoType)
-  }, [userVisibleTokensInfo, fullAssetBalance])
+    // By default we dont show any testnetwork assets
+    if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
+      return allAssets.filter((asset) => !SupportedTestNetworks.includes(asset.asset.chainId))
+    }
+    // If chainId is Localhost we also do a check for coinType to return
+    // the correct asset
+    if (selectedNetworkFilter.chainId === BraveWallet.LOCALHOST_CHAIN_ID) {
+      return allAssets.filter((asset) =>
+        asset.asset.chainId === selectedNetworkFilter.chainId &&
+        getTokensCoinType(networkList, asset.asset) === selectedNetworkFilter.coin
+      )
+    }
+    // Filter by all other assets by chainId's
+    return allAssets.filter((asset) => asset.asset.chainId === selectedNetworkFilter.chainId)
+  }, [userVisibleTokensInfo, selectedNetworkFilter, fullAssetBalance, networkList])
 
   const onSelectAsset = (asset: BraveWallet.BlockchainToken) => {
     props.walletPageActions.selectAsset({ asset: asset, timeFrame: selectedTimeline })
@@ -309,13 +325,10 @@ function Container (props: Props) {
 
   // This will scrape all of the user's accounts and combine the fiat value for every asset
   const fullPortfolioBalance = React.useMemo(() => {
-    // Will remove testnetwork filter when this is implemented
-    // https://github.com/brave/brave-browser/issues/20780
     const visibleAssetOptions = userAssetList
       .filter((token) =>
         token.asset.visible &&
-        !token.asset.isErc721 &&
-        !SupportedTestNetworks.includes(token.asset.chainId)
+        !token.asset.isErc721
       )
 
     if (visibleAssetOptions.length === 0) {

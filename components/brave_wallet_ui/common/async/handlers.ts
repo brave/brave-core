@@ -590,4 +590,10 @@ handler.on(WalletActions.expandWalletNetworks.getType(), async (store) => {
   })
 })
 
+handler.on(WalletActions.setSelectedNetworkFilter.getType(), async (store: Store, payload: BraveWallet.NetworkInfo) => {
+  const state = getWalletState(store)
+  const { selectedPortfolioTimeline } = state
+  await store.dispatch(refreshTokenPriceHistory(selectedPortfolioTimeline))
+})
+
 export default handler.middleware
