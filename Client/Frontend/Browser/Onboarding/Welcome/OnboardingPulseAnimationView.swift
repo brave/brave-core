@@ -8,11 +8,14 @@ import BraveUI
 
 class RadialPulsingAnimation: UIView {
   private var pulseLayers = [CAShapeLayer]()
+  private var isBreathing: Bool
+  
+  public var animationViewPressed: (() -> Void)?
 
-  init(ringCount: Int) {
+  init(ringCount: Int, isBreathing: Bool = false) {
+    self.isBreathing = isBreathing
     super.init(frame: .zero)
-    isUserInteractionEnabled = false
-
+    
     // [1, 4] => {Y ∈ ℝ: 1 <= Y <= 4} where Y = Thicc, X = amount of rings
     let idealThicc = 1.5
 
@@ -49,8 +52,6 @@ class RadialPulsingAnimation: UIView {
   }
 
   func animate() {
-    let isBreathing = false
-
     if isBreathing {
       let animation = CABasicAnimation(keyPath: "transform.scale")
       animation.toValue = 1.2
@@ -88,7 +89,10 @@ class RadialPulsingAnimation: UIView {
 
   func present(icon: UIImage?, from view: UIView, on popoverController: PopoverController, browser: BrowserViewController) {
     let origin = browser.view.convert(view.center, from: view.superview)
-    popoverController.view.insertSubview(self, aboveSubview: popoverController.backgroundOverlayView)
+    popoverController.view.insertSubview(self, aboveSubview: popoverController.view)
+    
+    let tap = UITapGestureRecognizer(target: self, action: #selector(onPresentShields(_:)))
+    addGestureRecognizer(tap)
 
     if let icon = icon {
       let imageView = UIImageView().then {
@@ -110,5 +114,10 @@ class RadialPulsingAnimation: UIView {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
       self.animate()
     }
+  }
+  
+  @objc
+  private func onPresentShields(_ tap: UITapGestureRecognizer) {
+    animationViewPressed?()
   }
 }
