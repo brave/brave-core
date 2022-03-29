@@ -12,9 +12,13 @@
 namespace ads {
 namespace user_data {
 
+namespace {
+constexpr char kSystemTimestampKey[] = "systemTimestamp";
+}  // namespace
+
 base::DictionaryValue GetSystemTimestamp() {
   base::DictionaryValue user_data;
-  user_data.SetStringKey("systemTimestamp",
+  user_data.SetStringKey(kSystemTimestampKey,
                          TimeToPrivacyPreservingISO8601(base::Time::Now()));
 
   return user_data;

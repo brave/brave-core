@@ -12,9 +12,13 @@
 namespace ads {
 namespace user_data {
 
+namespace {
+constexpr char kCreatedAtTimestampKey[] = "createdAtTimestamp";
+}  // namespace
+
 base::DictionaryValue GetCreatedAtTimestamp(const base::Time time) {
   base::DictionaryValue user_data;
-  user_data.SetStringKey("createdAtTimestamp",
+  user_data.SetStringKey(kCreatedAtTimestampKey,
                          TimeToPrivacyPreservingISO8601(time));
 
   return user_data;

@@ -13,15 +13,22 @@
 namespace ads {
 namespace user_data {
 
+namespace {
+
+constexpr char kCatalogKey[] = "catalog";
+constexpr char kIdKey[] = "id";
+
+}  // namespace
+
 base::DictionaryValue GetCatalog() {
   base::ListValue list;
 
   base::DictionaryValue dictionary;
-  dictionary.SetStringKey("id", GetCatalogId());
+  dictionary.SetStringKey(kIdKey, GetCatalogId());
   list.Append(std::move(dictionary));
 
   base::DictionaryValue user_data;
-  user_data.SetKey("catalog", std::move(list));
+  user_data.SetKey(kCatalogKey, std::move(list));
 
   return user_data;
 }

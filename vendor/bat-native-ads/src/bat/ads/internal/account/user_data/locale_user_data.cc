@@ -16,6 +16,11 @@
 namespace ads {
 namespace user_data {
 
+namespace {
+constexpr char kCountryCodeKey[] = "countryCode";
+constexpr char kOtherCountryCode[] = "??";
+}  // namespace
+
 base::DictionaryValue GetLocale() {
   base::DictionaryValue user_data;
 
@@ -28,10 +33,10 @@ base::DictionaryValue GetLocale() {
 
   if (locale::IsMemberOfAnonymitySet(locale)) {
     const std::string country_code = brave_l10n::GetCountryCode(locale);
-    user_data.SetStringKey("countryCode", country_code);
+    user_data.SetStringKey(kCountryCodeKey, country_code);
   } else {
     if (locale::ShouldClassifyAsOther(locale)) {
-      user_data.SetStringKey("countryCode", "??");
+      user_data.SetStringKey(kCountryCodeKey, kOtherCountryCode);
     }
   }
 

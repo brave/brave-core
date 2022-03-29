@@ -13,12 +13,16 @@
 namespace ads {
 namespace user_data {
 
+namespace {
+constexpr char kPlatformKey[] = "platform";
+}  // namespace
+
 base::DictionaryValue GetPlatform() {
   base::DictionaryValue user_data;
 
   const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
   if (!platform.empty()) {
-    user_data.SetStringKey("platform", platform);
+    user_data.SetStringKey(kPlatformKey, platform);
   }
 
   return user_data;
