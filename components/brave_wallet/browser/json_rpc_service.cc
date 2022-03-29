@@ -12,6 +12,7 @@
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/build/brave_buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
@@ -212,11 +213,11 @@ void JsonRpcService::RequestInternal(const std::string& json_payload,
   }
 
   std::unique_ptr<base::Environment> env(base::Environment::Create());
-  std::string brave_key(BRAVE_SERVICES_KEY);
+  std::string brave_key(BUILDFLAG(BRAVE_SERVICES_KEY));
   if (env->HasVar("BRAVE_SERVICES_KEY")) {
     env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
   }
-  request_headers["x-brave-key"] = brave_key;
+  request_headers["x-brave-key"] = std::move(brave_key);
 
   api_request_helper_->Request("POST", network_url, json_payload,
                                "application/json", auto_retry_on_network_change,

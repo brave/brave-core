@@ -27,6 +27,7 @@
 #include "base/task/task_runner_util.h"
 #include "base/values.h"
 #include "base/version.h"
+#include "brave/build/brave_buildflags.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_component_updater/browser/switches.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
@@ -102,13 +103,11 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   if (!command_line.HasSwitch(brave_component_updater::kUseGoUpdateDev) &&
       !base::FeatureList::IsEnabled(
           brave_component_updater::kUseDevUpdaterUrl)) {
-    crypto::SHA256HashString(UPDATER_DEV_ENDPOINT + script_name,
-                             raw,
+    crypto::SHA256HashString(BUILDFLAG(UPDATER_DEV_ENDPOINT) + script_name, raw,
                              crypto::kSHA256Length);
   } else {
-    crypto::SHA256HashString(UPDATER_PROD_ENDPOINT + script_name,
-                             raw,
-                             crypto::kSHA256Length);
+    crypto::SHA256HashString(BUILDFLAG(UPDATER_PROD_ENDPOINT) + script_name,
+                             raw, crypto::kSHA256Length);
   }
   base::Base64Encode(base::StringPiece(raw, crypto::kSHA256Length), &key);
 

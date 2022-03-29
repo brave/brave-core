@@ -7,6 +7,7 @@
 
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/build/brave_buildflags.h"
 #include "brave/common/network_constants.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/network_time_helper.h"
@@ -16,7 +17,7 @@ namespace syncer {
 namespace {
 std::string AppendBraveServiceKeyHeaderString() {
   return std::string("\r\n") + kBraveServicesKeyHeader + ": " +
-         BRAVE_SERVICES_KEY;
+         BUILDFLAG(BRAVE_SERVICES_KEY);
 }
 }  // namespace
 

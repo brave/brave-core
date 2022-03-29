@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/environment.h"
+#include "brave/build/brave_buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_infura_buildflags.h"
 
 namespace extensions {
@@ -37,7 +38,7 @@ std::string GetInfuraProjectID() {
 }
 
 std::string GetBraveKey() {
-  std::string brave_key(BRAVE_SERVICES_KEY);
+  std::string brave_key(BUILDFLAG(BRAVE_SERVICES_KEY));
   std::unique_ptr<base::Environment> env(base::Environment::Create());
 
   if (env->HasVar("BRAVE_SERVICES_KEY")) {

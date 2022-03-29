@@ -10,6 +10,7 @@
 #include "base/callback_helpers.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "brave/build/brave_buildflags.h"
 #include "brave/common/network_constants.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "components/signin/public/identity_manager/identity_test_environment.h"
@@ -101,7 +102,8 @@ TEST_F(BraveSyncAuthManagerTest, GetAccessToken) {
   auth_manager->ConnectionOpened();
 
   const std::string kBraveServerKeyHeaderString =
-    std::string(kBraveServicesKeyHeader) + ": " + BRAVE_SERVICES_KEY;
+      std::string(kBraveServicesKeyHeader) + ": " +
+      BUILDFLAG(BRAVE_SERVICES_KEY);
 
   ASSERT_EQ(auth_manager->GetCredentials().access_token,
             std::string(kAccessToken) + "\r\n" + kBraveServerKeyHeaderString);

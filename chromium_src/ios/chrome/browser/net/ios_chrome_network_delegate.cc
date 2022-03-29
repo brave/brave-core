@@ -16,8 +16,9 @@ namespace {
 
 void AddBraveServicesKeyHeader(net::URLRequest* request) {
   if (brave::ShouldAddBraveServicesKeyHeader(request->url())) {
-    request->SetExtraRequestHeaderByName(
-        kBraveServicesKeyHeader, BRAVE_SERVICES_KEY, true /* overrwrite */);
+    request->SetExtraRequestHeaderByName(kBraveServicesKeyHeader,
+                                         BUILDFLAG(BRAVE_SERVICES_KEY),
+                                         true /* overrwrite */);
   }
 }
 

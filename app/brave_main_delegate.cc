@@ -16,6 +16,7 @@
 #include "base/time/time.h"
 #include "brave/app/brave_command_line_helper.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/build/brave_buildflags.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/resource_bundle_helper.h"
 #include "brave/components/brave_component_updater/browser/features.h"
@@ -55,9 +56,9 @@ std::string GetUpdateURLHost() {
   if (!command_line.HasSwitch(brave_component_updater::kUseGoUpdateDev) &&
       !base::FeatureList::IsEnabled(
           brave_component_updater::kUseDevUpdaterUrl)) {
-    return UPDATER_PROD_ENDPOINT;
+    return BUILDFLAG(UPDATER_PROD_ENDPOINT);
   }
-  return UPDATER_DEV_ENDPOINT;
+  return BUILDFLAG(UPDATER_DEV_ENDPOINT);
 }
 
 }  // namespace

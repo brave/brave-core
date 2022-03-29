@@ -5,10 +5,11 @@
 
 #include "brave/browser/net/brave_service_key_network_delegate_helper.h"
 
-#include <memory>
+#include <iterator>
 #include <string>
-#include <vector>
 
+#include "base/strings/string_piece.h"
+#include "brave/build/brave_buildflags.h"
 #include "brave/common/network_constants.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
@@ -20,17 +21,19 @@ int OnBeforeStartTransaction_BraveServiceKey(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  const std::vector<std::string> allowed_domains = {
-      kExtensionUpdaterDomain, GURL(UPDATER_DEV_ENDPOINT).host(),
-      GURL(UPDATER_PROD_ENDPOINT).host()};
+  const base::StringPiece allowed_domains[] = {
+      base::StringPiece(kExtensionUpdaterDomain),
+      GURL(BUILDFLAG(UPDATER_DEV_ENDPOINT)).host_piece(),
+      GURL(BUILDFLAG(UPDATER_PROD_ENDPOINT)).host_piece()};
 
-  const GURL url = ctx->request_url;
+  const GURL& url = ctx->request_url;
 
   if (url.SchemeIs(url::kHttpsScheme)) {
     if (std::any_of(
-            allowed_domains.begin(), allowed_domains.end(),
-            [&url](std::string domain) { return url.DomainIs(domain); })) {
-      headers->SetHeader(kBraveServicesKeyHeader, BRAVE_SERVICES_KEY);
+            std::begin(allowed_domains), std::end(allowed_domains),
+            [&url](const auto& domain) { return url.DomainIs(domain); })) {
+      headers->SetHeader(kBraveServicesKeyHeader,
+                         BUILDFLAG(BRAVE_SERVICES_KEY));
     }
   }
   return net::OK;

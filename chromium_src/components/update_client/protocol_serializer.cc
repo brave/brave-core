@@ -5,6 +5,8 @@
 
 #include "components/update_client/protocol_serializer.h"
 
+#include "brave/build/brave_buildflags.h"
+
 #define BuildUpdateCheckExtraRequestHeaders \
   BuildUpdateCheckExtraRequestHeaders_ChromiumImpl
 #include "src/components/update_client/protocol_serializer.cc"
@@ -19,7 +21,7 @@ base::flat_map<std::string, std::string> BuildUpdateCheckExtraRequestHeaders(
     bool is_foreground) {
   auto headers = BuildUpdateCheckExtraRequestHeaders_ChromiumImpl(
       prod_id, browser_version, ids, is_foreground);
-  headers.insert({"BraveServiceKey", BRAVE_SERVICES_KEY});
+  headers.insert({"BraveServiceKey", BUILDFLAG(BRAVE_SERVICES_KEY)});
   return headers;
 }
 

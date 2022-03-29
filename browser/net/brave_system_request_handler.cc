@@ -8,6 +8,7 @@
 #include "brave/browser/net/brave_block_safebrowsing_urls.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
 #include "brave/browser/net/brave_static_redirect_network_delegate_helper.h"
+#include "brave/build/brave_buildflags.h"
 #include "brave/common/brave_service_key_helper.h"
 #include "brave/common/network_constants.h"
 #include "extensions/common/url_pattern.h"
@@ -17,13 +18,13 @@
 namespace brave {
 
 std::string BraveServicesKeyForTesting() {
-  return BRAVE_SERVICES_KEY;
+  return BUILDFLAG(BRAVE_SERVICES_KEY);
 }
 
 void AddBraveServicesKeyHeader(network::ResourceRequest* url_request) {
   if (brave::ShouldAddBraveServicesKeyHeader(url_request->url)) {
     url_request->headers.SetHeaderIfMissing(kBraveServicesKeyHeader,
-                                            BRAVE_SERVICES_KEY);
+                                            BUILDFLAG(BRAVE_SERVICES_KEY));
   }
   return;
 }
