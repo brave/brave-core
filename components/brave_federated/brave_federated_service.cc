@@ -33,7 +33,7 @@ BraveFederatedService::BraveFederatedService(
       browser_context_path_(browser_context_path),
       url_loader_factory_(url_loader_factory) {
   InitPrefChangeRegistrar();
-  Start();
+  Init();
 }
 
 BraveFederatedService::~BraveFederatedService() {}
@@ -41,6 +41,28 @@ BraveFederatedService::~BraveFederatedService() {}
 void BraveFederatedService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   OperationalPatterns::RegisterPrefs(registry);
 }
+
+void BraveFederatedService::Init() {
+
+  base::FilePath db_path(
+      browser_context_path_.AppendASCII("data_store.sqlite"));
+  data_store_service_.reset(new DataStoreService(db_path));
+  data_store_service_->Init();
+
+  eligibility_service_.reset(new EligibilityService());
+
+  operational_patterns_.reset(
+      new OperationalPatterns(prefs_, url_loader_factory_));
+  MaybeStartOperationalPatterns();
+  MaybeStopOperationalPatterns();
+}
+
+DataStoreService* BraveFederatedService::GetDataStoreService() const {
+  DCHECK(data_store_service_);
+  return data_store_service_.get();
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 void BraveFederatedService::InitPrefChangeRegistrar() {
   local_state_change_registrar_.Init(local_state_);
@@ -50,41 +72,10 @@ void BraveFederatedService::InitPrefChangeRegistrar() {
                           base::Unretained(this)));
 }
 
-void BraveFederatedService::Start() {
-  base::FilePath db_path(
-      browser_context_path_.AppendASCII("data_store.sqlite"));
-
-  data_store_service_.reset(new DataStoreService(db_path));
-  data_store_service_->Init();
-
-  eligibility_service_.reset(new EligibilityService());
-
-  if (ShouldStartOperationalPatterns()) {
-    operational_patterns_.reset(
-        new OperationalPatterns(prefs_, url_loader_factory_));
-    operational_patterns_->Start();
-  }
-}
-
-DataStoreService* BraveFederatedService::GetDataStoreService() const {
-  DCHECK(data_store_service_);
-  return data_store_service_.get();
-}
-
-bool BraveFederatedService::ShouldStartOperationalPatterns() {
-  return IsP3AEnabled() && IsOperationalPatternsEnabled();
-}
-
 void BraveFederatedService::OnPreferenceChanged(const std::string& key) {
-  if (operational_patterns_) {
-    if (ShouldStartOperationalPatterns()) {
-      operational_patterns_->Start();
-    } else {
-      operational_patterns_->Stop();
-    }
-  } else {
-    Start();
-  }
+  DCHECK(operational_patterns_);
+  MaybeStartOperationalPatterns();
+  MaybeStopOperationalPatterns();
 }
 
 bool BraveFederatedService::IsFederatedLearningEnabled() {
@@ -93,6 +84,22 @@ bool BraveFederatedService::IsFederatedLearningEnabled() {
 
 bool BraveFederatedService::IsOperationalPatternsEnabled() {
   return brave_federated::features::IsOperationalPatternsEnabled();
+}
+
+bool BraveFederatedService::ShouldStartOperationalPatterns() {
+  return IsP3AEnabled() && IsOperationalPatternsEnabled();
+}
+
+void BraveFederatedService::MaybeStartOperationalPatterns() {
+  if (!operational_patterns_->IsRunning() && ShouldStartOperationalPatterns()) {
+    operational_patterns_->Start();
+  }
+}
+
+void BraveFederatedService::MaybeStopOperationalPatterns() {
+  if (operational_patterns_->IsRunning() && !ShouldStartOperationalPatterns()) {
+    operational_patterns_->Stop();
+  }
 }
 
 bool BraveFederatedService::IsP3AEnabled() {

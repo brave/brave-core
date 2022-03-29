@@ -80,9 +80,14 @@ void OperationalPatterns::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kCollectionIdExpirationPrefName, base::Time());
 }
 
+bool OperationalPatterns::IsRunning() {
+  return is_running_operational_patterns_;
+}
+
 void OperationalPatterns::Start() {
   DCHECK(!simulate_local_training_step_timer_);
   DCHECK(!collection_slot_periodic_timer_);
+  is_running_operational_patterns_ = true;
 
   LoadPrefs();
   MaybeResetCollectionId();
@@ -109,6 +114,7 @@ void OperationalPatterns::Stop() {
   collection_slot_periodic_timer_.reset();
 
   SendDelete();
+  is_running_operational_patterns_ = false;
 }
 
 void OperationalPatterns::LoadPrefs() {

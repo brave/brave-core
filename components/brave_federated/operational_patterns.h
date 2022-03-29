@@ -58,6 +58,7 @@ class OperationalPatterns final {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
+  bool IsRunning();
   void Start();
   void Stop();
 
@@ -94,6 +95,7 @@ class OperationalPatterns final {
   base::Time collection_id_expiration_time_;
   int current_collected_slot_ = 0;
   int last_checked_slot_ = 0;
+  bool is_running_operational_patterns_ = false;
   std::string collection_id_;
 };
 
