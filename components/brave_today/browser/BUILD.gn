@@ -5,6 +5,8 @@ static_library("browser") {
   sources = [
     "brave_news_controller.cc",
     "brave_news_controller.h",
+    "brave_news_p3a.cc",
+    "brave_news_p3a.h",
     "direct_feed_controller.cc",
     "direct_feed_controller.h",
     "feed_building.cc",
