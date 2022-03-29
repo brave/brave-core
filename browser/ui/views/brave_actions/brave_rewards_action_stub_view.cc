@@ -80,8 +80,14 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
   // Create badge-and-image source like an extension icon would
   auto preferred_size = GetPreferredSize();
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
+
+  const auto* const color_provider =
+      ui::ColorProviderManager::Get().GetColorProviderFor(
+          ui::NativeTheme::GetInstanceForNativeUi()->GetColorProviderKey(
+              nullptr));
+
   std::unique_ptr<IconWithBadgeImageSource> image_source(
-      new BraveActionIconWithBadgeImageSource(preferred_size));
+      new BraveActionIconWithBadgeImageSource(preferred_size, color_provider));
   // Set icon on badge using actual extension icon resource
   gfx::ImageSkia image;
   const SkBitmap bitmap = rb.GetImageNamed(IDR_BRAVE_REWARDS_ICON_64)

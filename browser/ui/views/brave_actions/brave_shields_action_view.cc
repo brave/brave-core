@@ -120,9 +120,17 @@ SkPath BraveShieldsActionView::GetHighlightPath() const {
 std::unique_ptr<IconWithBadgeImageSource>
 BraveShieldsActionView::GetImageSource() {
   auto preferred_size = GetPreferredSize();
-  std::unique_ptr<IconWithBadgeImageSource> image_source(
-      new BraveActionIconWithBadgeImageSource(preferred_size));
   auto* web_contents = tab_strip_model_->GetActiveWebContents();
+
+  const auto* const color_provider =
+      web_contents
+          ? &web_contents->GetColorProvider()
+          : ui::ColorProviderManager::Get().GetColorProviderFor(
+                ui::NativeTheme::GetInstanceForNativeUi()->GetColorProviderKey(
+                    nullptr));
+
+  std::unique_ptr<IconWithBadgeImageSource> image_source(
+      new BraveActionIconWithBadgeImageSource(preferred_size, color_provider));
   std::unique_ptr<IconWithBadgeImageSource::Badge> badge;
   bool is_enabled = false;
   std::string badge_text;
