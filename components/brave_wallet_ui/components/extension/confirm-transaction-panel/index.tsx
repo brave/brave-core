@@ -39,7 +39,6 @@ import {
   NetworkText,
   TransactionAmountBig,
   TransactionFiatAmountBig,
-  GrandTotalText,
   MessageBox,
   TransactionTitle,
   TransactionTypeText,
@@ -50,18 +49,14 @@ import {
   FromToRow,
   Divider,
   SectionRow,
-  SectionRightColumn,
   EditButton,
   FavIcon,
   URLText,
   QueueStepText,
   QueueStepRow,
   QueueStepButton,
-  TopColumn,
   AssetIcon,
   ErrorText,
-  SectionColumn,
-  SingleRow,
   WarningBox,
   WarningIcon,
   WarningTitle,
@@ -261,6 +256,28 @@ function ConfirmTransactionPanel (props: Props) {
     )
   }, [transactionDetails])
 
+  /**
+   * This will need updating if we ever switch to using per-locale formatting,
+   * since `.` isnt always the decimal seperator
+  */
+  const transactionValueParts = ((transactionInfo.txType !== BraveWallet.TransactionType.ERC721SafeTransferFrom &&
+    transactionInfo.txType !== BraveWallet.TransactionType.ERC721TransferFrom)
+    ? new Amount(transactionDetails.valueExact)
+      .format(undefined, true)
+    : transactionDetails.valueExact).split('.')
+
+  /**
+   * Inserts a <wbr /> tag between the integer and decimal portions of the value for wrapping
+   * This will need updating if we ever switch to using per-locale formatting
+   */
+  const transactionValueText = <span>
+    {transactionValueParts.map((part, i, { length }) => [
+        part,
+        ...(i < (length - 1) ? ['.'] : []), // dont add a '.' if last part
+        <wbr />
+    ])}
+  </span>
+
   if (isEditing) {
     return (
       <EditGas
@@ -402,99 +419,98 @@ function ConfirmTransactionPanel (props: Props) {
           <>
             {transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve &&
               <>
-                <TopColumn>
+                <SectionRow>
+                  <TransactionTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionTitle>
                   <EditButton onClick={onToggleEditGas}>{getLocale('braveWalletAllowSpendEditButton')}</EditButton>
-                  <SectionRow>
-                    <TransactionTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionTitle>
-                    <TransactionTypeText>
-                      {
-                        new Amount(transactionDetails.gasFee)
-                          .divideByDecimals(selectedNetwork.decimals)
-                          .formatAsAsset(6, selectedNetwork.symbol)
-                      }
-                    </TransactionTypeText>
-                  </SectionRow>
-                  <TransactionText
-                    hasError={transactionDetails.insufficientFundsError}
-                  >
-                    {transactionDetails.insufficientFundsError ? `${getLocale('braveWalletSwapInsufficientBalance')} ` : ''}
-                    {new Amount(transactionDetails.gasFeeFiat)
-                      .formatAsFiat(defaultCurrencies.fiat)}
-                  </TransactionText>
-                </TopColumn>
-                <Divider />
-                <SectionRow>
-                  <TransactionTitle>{getLocale('braveWalletAllowSpendCurrentAllowance')}</TransactionTitle>
-                  <SectionRightColumn>
-                    <TransactionTypeText>{currentTokenAllowance} {transactionDetails.symbol}</TransactionTypeText>
-                    <TransactionText />
-                  </SectionRightColumn>
                 </SectionRow>
+                <TransactionTypeText>
+                  {
+                    new Amount(transactionDetails.gasFee)
+                      .divideByDecimals(selectedNetwork.decimals)
+                      .formatAsAsset(6, selectedNetwork.symbol)
+                  }
+                </TransactionTypeText>
+                <TransactionText
+                  hasError={transactionDetails.insufficientFundsError}
+                >
+                  {transactionDetails.insufficientFundsError ? `${getLocale('braveWalletSwapInsufficientBalance')} ` : ''}
+                  {new Amount(transactionDetails.gasFeeFiat)
+                    .formatAsFiat(defaultCurrencies.fiat)}
+                </TransactionText>
+
                 <Divider />
-                <SectionRow>
-                  <TransactionTitle>{getLocale('braveWalletAllowSpendProposedAllowance')}</TransactionTitle>
-                  <SectionRightColumn>
-                    <TransactionTypeText>
-                      {
-                        transactionDetails.isApprovalUnlimited
-                          ? getLocale('braveWalletTransactionApproveUnlimited')
-                          : new Amount(transactionDetails.valueExact)
-                              .formatAsAsset(undefined, transactionDetails.symbol)
-                      }
-                    </TransactionTypeText>
-                    <TransactionText />
-                  </SectionRightColumn>
-                </SectionRow>
+
+                <TransactionTitle>{getLocale('braveWalletAllowSpendCurrentAllowance')}</TransactionTitle>
+                <TransactionTypeText>{currentTokenAllowance} {transactionDetails.symbol}</TransactionTypeText>
+
+                <Divider />
+
+                <TransactionTitle>{getLocale('braveWalletAllowSpendProposedAllowance')}</TransactionTitle>
+                <TransactionTypeText>
+                  {
+                    transactionDetails.isApprovalUnlimited
+                      ? getLocale('braveWalletTransactionApproveUnlimited')
+                      : new Amount(transactionDetails.valueExact)
+                          .formatAsAsset(undefined, transactionDetails.symbol)
+                  }
+                </TransactionTypeText>
+
               </>
             }
+
             {transactionInfo.txType !== BraveWallet.TransactionType.ERC20Approve &&
               <>
                 <SectionRow>
-                  <TransactionTitle>{getLocale('braveWalletConfirmTransactionGasFee')}</TransactionTitle>
-                  <SectionRightColumn>
+                    <TransactionTitle>{getLocale('braveWalletConfirmTransactionGasFee')}</TransactionTitle>
                     <EditButton onClick={onToggleEditGas}>{getLocale('braveWalletAllowSpendEditButton')}</EditButton>
-                    <TransactionTypeText>
-                      {
-                        new Amount(transactionDetails.gasFee)
-                          .divideByDecimals(selectedNetwork.decimals)
-                          .formatAsAsset(6, selectedNetwork.symbol)
-                      }
-                    </TransactionTypeText>
-                    <TransactionText>
-                      {
-                        new Amount(transactionDetails.gasFeeFiat)
-                          .formatAsFiat(defaultCurrencies.fiat)
-                      }
-                    </TransactionText>
-                  </SectionRightColumn>
                 </SectionRow>
-                <Divider />
-                <SectionColumn>
-                  <TransactionText>{getLocale('braveWalletConfirmTransactionAmountGas')}</TransactionText>
-                  <SingleRow>
-                    <TransactionTitle>{getLocale('braveWalletConfirmTransactionTotal')}</TransactionTitle>
-                    <GrandTotalText>
-                      {(transactionInfo.txType !== BraveWallet.TransactionType.ERC721SafeTransferFrom &&
-                        transactionInfo.txType !== BraveWallet.TransactionType.ERC721TransferFrom)
-                        ? new Amount(transactionDetails.valueExact)
-                          .format(undefined, true)
-                        : transactionDetails.valueExact
-                      } {transactionDetails.symbol} + {new Amount(transactionDetails.gasFee).divideByDecimals(selectedNetwork.decimals).formatAsAsset(6, selectedNetwork.symbol)}
-                    </GrandTotalText>
-                  </SingleRow>
-                  <TransactionText
-                    hasError={transactionDetails.insufficientFundsError}
-                  >
-                    {transactionDetails.insufficientFundsError
-                      ? `${getLocale('braveWalletSwapInsufficientBalance')} `
-                      : ''}
-                    {transactionDetails.fiatTotal
-                      .formatAsFiat(defaultCurrencies.fiat)}
-                  </TransactionText>
 
-                </SectionColumn>
+                <TransactionTypeText>
+                  {
+                    new Amount(transactionDetails.gasFee)
+                      .divideByDecimals(selectedNetwork.decimals)
+                      .formatAsAsset(6, selectedNetwork.symbol)
+                  }
+                </TransactionTypeText>
+
+                <TransactionText>
+                  {
+                    new Amount(transactionDetails.gasFeeFiat)
+                      .formatAsFiat(defaultCurrencies.fiat)
+                  }
+                </TransactionText>
+
+                <Divider />
+
+                <WarningTitleRow>
+                  <TransactionTitle>
+                    {getLocale('braveWalletConfirmTransactionTotal')}{' '}({getLocale('braveWalletConfirmTransactionAmountGas')})
+                  </TransactionTitle>
+                </WarningTitleRow>
+
+                <TransactionTypeText>
+                  {transactionValueText} {transactionDetails.symbol} +
+                </TransactionTypeText>
+                <TransactionTypeText>
+                  {
+                    new Amount(transactionDetails.gasFee)
+                      .divideByDecimals(selectedNetwork.decimals)
+                      .formatAsAsset(6, selectedNetwork.symbol)
+                    }
+                </TransactionTypeText>
+
+                <TransactionText
+                  hasError={transactionDetails.insufficientFundsError}
+                >
+                  {transactionDetails.insufficientFundsError
+                    ? `${getLocale('braveWalletSwapInsufficientBalance')} `
+                    : ''}
+                  {transactionDetails.fiatTotal
+                    .formatAsFiat(defaultCurrencies.fiat)}
+                </TransactionText>
               </>
             }
+
           </>
         ) : <TransactionDetailBox transactionInfo={transactionInfo} />}
       </MessageBox>

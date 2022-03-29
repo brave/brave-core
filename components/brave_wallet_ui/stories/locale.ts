@@ -328,6 +328,8 @@ provideStrings({
   braveWalletConfirmTransactionNext: 'next',
   braveWalletConfirmTransactionFrist: 'first',
   braveWalletConfirmTransactions: 'transactions',
+  braveWalletAllowSpendCurrentAllowance: 'Current allowance',
+  braveWalletAllowSpendProposedAllowance: 'Proposed allowance',
 
   // Wallet Main Panel
   braveWalletPanelTitle: 'Brave Wallet',
