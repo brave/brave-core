@@ -9,14 +9,15 @@
 
 #include "brave/components/brave_federated/operational_patterns.h"
 
-#include "base/json/json_writer.h"
-#include "base/strings/string_util.h"
+#include "base/i18n/time_formatting.h"
+#include "base/logging.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_federated/features.h"
-#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "brave/components/brave_federated/operational_patterns_util.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -25,21 +26,21 @@
 
 namespace {
 
-constexpr int kDefaultResponseCode = -1;
+static constexpr char kCollectionEndpoint[] = "https://fl.brave.com/";
 
-static constexpr char federatedLearningUrl[] = "https://fl.brave.com/";
-
-constexpr char kLastCheckedSlotPrefName[] = "brave.federated.last_checked_slot";
+constexpr char kLastSentSlotPrefName[] = "brave.federated.last_checked_slot";
 constexpr char kCollectionIdPrefName[] = "brave.federated.collection_id";
 constexpr char kCollectionIdExpirationPrefName[] =
     "brave.federated.collection_id_expiration";
 
-constexpr int kMinutesBeforeRetry = 5;
+constexpr int kLastSentSlotInitValue = -1;
+
+constexpr int kSecondsBeforeRetry = 60;
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("operational_pattern", R"(
         semantics {
-          sender: "Operational Patterns Service"
+          sender: "Operational Patterns"
           description:
             "Report of anonymized engagement statistics. For more info see "
             "https://github.com/brave/brave-browser/wiki/Operational-Patterns"
@@ -53,14 +54,15 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
         policy {
           cookies_allowed: NO
           setting:
-            "This service is enabled only when P3A is enabled."
+            "This service is enabled only when opted in to ads and having "
+            "P3A is enabled."
           policy_exception_justification:
             "Not implemented."
         }
     )");
 }
 
-}  // anonymous namespace
+}  // namespace
 
 namespace brave_federated {
 
@@ -75,197 +77,302 @@ OperationalPatterns::OperationalPatterns(
 OperationalPatterns::~OperationalPatterns() {}
 
 void OperationalPatterns::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterIntegerPref(kLastCheckedSlotPrefName, kDefaultResponseCode);
+  registry->RegisterIntegerPref(kLastSentSlotPrefName, kLastSentSlotInitValue);
   registry->RegisterStringPref(kCollectionIdPrefName, {});
   registry->RegisterTimePref(kCollectionIdExpirationPrefName, base::Time());
 }
 
-bool OperationalPatterns::IsRunning() {
-  return is_running_operational_patterns_;
-}
-
 void OperationalPatterns::Start() {
-  DCHECK(!simulate_local_training_step_timer_);
-  DCHECK(!collection_slot_periodic_timer_);
-  is_running_operational_patterns_ = true;
+  DCHECK(!mock_task_timer_);
+  DCHECK(!collection_timer_);
+
+  const int collection_id_lifetime =
+      brave_federated::features::GetCollectionIdLifetimeInSeconds();
+  const int collection_slot_size =
+      brave_federated::features::GetCollectionSlotSizeInSeconds();
+  const int collection_timer_interval =
+      brave_federated::features::GetCollectionTimerIntervalInSeconds();
+  const int mock_training_duration =
+      brave_federated::features::GetMockTaskDurationInSeconds();
+  const bool mock_collection_requests = features::MockCollectionRequests();
+
+  VLOG(1) << "Starting operational patterns with:\n"
+          << " collection_id_lifetime=" << collection_id_lifetime << "s\n"
+          << " collection_slot_size=" << collection_slot_size << "s\n"
+          << " collection_timer_interval=" << collection_timer_interval << "s\n"
+          << " mock_training_duration=" << mock_training_duration << "s\n"
+          << " mock_collection_requests=" << mock_collection_requests;
+
+  is_running_ = true;
 
   LoadPrefs();
+
   MaybeResetCollectionId();
 
-  simulate_local_training_step_timer_ =
-      std::make_unique<base::RetainingOneShotTimer>();
-  simulate_local_training_step_timer_->Start(
-      FROM_HERE,
-      base::Seconds(brave_federated::features::
-                        GetSimulateLocalTrainingStepDurationValue() *
-                    60),
-      this, &OperationalPatterns::OnSimulateLocalTrainingStepTimerFired);
-
-  collection_slot_periodic_timer_ = std::make_unique<base::RepeatingTimer>();
-  collection_slot_periodic_timer_->Start(
-      FROM_HERE,
-      base::Seconds(brave_federated::features::GetCollectionSlotSizeValue() *
-                    60 / 2),
-      this, &OperationalPatterns::OnCollectionSlotStartTimerFired);
+  StartRepeatingCollectionTimer();
+  StartMockTaskTimer();
 }
 
 void OperationalPatterns::Stop() {
-  simulate_local_training_step_timer_.reset();
-  collection_slot_periodic_timer_.reset();
+  DCHECK(mock_task_timer_);
+  DCHECK(collection_timer_);
 
-  SendDelete();
-  is_running_operational_patterns_ = false;
+  VLOG(1) << "Stopping operational patterns";
+  is_running_ = false;
+
+  StopRepeatingCollectionTimer();
+  StopMockTaskTimer();
+
+  SendDeletePing();
 }
 
+bool OperationalPatterns::IsRunning() {
+  return is_running_;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
 void OperationalPatterns::LoadPrefs() {
-  last_checked_slot_ = pref_service_->GetInteger(kLastCheckedSlotPrefName);
+  VLOG(2) << "Loading preferences";
+
+  last_sent_slot_ = pref_service_->GetInteger(kLastSentSlotPrefName);
   collection_id_ = pref_service_->GetString(kCollectionIdPrefName);
   collection_id_expiration_time_ =
       pref_service_->GetTime(kCollectionIdExpirationPrefName);
 }
 
 void OperationalPatterns::SavePrefs() {
-  pref_service_->SetInteger(kLastCheckedSlotPrefName, last_checked_slot_);
+  VLOG(2) << "Saving preferences";
+
+  pref_service_->SetInteger(kLastSentSlotPrefName, last_sent_slot_);
   pref_service_->SetString(kCollectionIdPrefName, collection_id_);
   pref_service_->SetTime(kCollectionIdExpirationPrefName,
                          collection_id_expiration_time_);
 }
 
 void OperationalPatterns::ClearPrefs() {
-  pref_service_->ClearPref(kLastCheckedSlotPrefName);
+  VLOG(2) << "Clearing preferences";
+
+  pref_service_->ClearPref(kLastSentSlotPrefName);
   pref_service_->ClearPref(kCollectionIdPrefName);
   pref_service_->ClearPref(kCollectionIdExpirationPrefName);
 }
 
-void OperationalPatterns::OnCollectionSlotStartTimerFired() {
-  simulate_local_training_step_timer_->Reset();
+// Repeating Collection Timer -------------------------------------------------
+
+void OperationalPatterns::StartRepeatingCollectionTimer() {
+  const int collection_slot = GetCollectionSlot();
+  VLOG(2) << "Start Repeating Collection Timer in slot " << collection_slot;
+
+  const int collection_timer_interval_in_seconds =
+      brave_federated::features::GetCollectionTimerIntervalInSeconds();
+  collection_timer_ = std::make_unique<base::RepeatingTimer>();
+  collection_timer_->Start(
+      FROM_HERE, base::Seconds(collection_timer_interval_in_seconds), this,
+      &OperationalPatterns::OnRepeatingCollectionTimerFired);
 }
 
-void OperationalPatterns::OnSimulateLocalTrainingStepTimerFired() {
-  SendCollectionSlot();
-}
-
-void OperationalPatterns::PrepareSend(
-    std::unique_ptr<network::ResourceRequest> resource_request,
-    std::string payload) {
-  url_loader_ = network::SimpleURLLoader::Create(
-      std::move(resource_request), GetNetworkTrafficAnnotationTag());
-  url_loader_->AttachStringForUpload(payload, "application/json");
-}
-
-void OperationalPatterns::SendCollectionSlot() {
-  current_collected_slot_ = GetCurrentCollectionSlot();
-  if (current_collected_slot_ == last_checked_slot_) {
-    return;
-  }
+void OperationalPatterns::OnRepeatingCollectionTimerFired() {
+  const int collection_slot = GetCollectionSlot();
+  VLOG(1) << base::TimeFormatShortDateAndTime(base::Time::Now())
+          << " Repeating Collection Timer Fired in slot " << collection_slot;
 
   MaybeResetCollectionId();
 
-  auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = GURL(federatedLearningUrl);
-  resource_request->headers.SetHeader("X-Brave-FL-Operational-Patterns", "?1");
-  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  resource_request->method = "POST";
+  MaybeRestartMockTaskTimer();
+}
 
-  PrepareSend(std::move(resource_request), BuildPayload());
+void OperationalPatterns::StopRepeatingCollectionTimer() {
+  DCHECK(collection_timer_);
 
+  VLOG(2) << "Stop Repeating Collection Timer";
+
+  collection_timer_.reset();
+}
+
+// Mock Task Timer ------------------------------------------------------------
+
+void OperationalPatterns::StartMockTaskTimer() {
+  const int collection_slot = GetCollectionSlot();
+  VLOG(2) << "Start Mock Task Timer in slot " << collection_slot;
+
+  const int mock_training_duration_in_seconds =
+      brave_federated::features::GetMockTaskDurationInSeconds();
+  mock_task_timer_ = std::make_unique<base::RetainingOneShotTimer>();
+  mock_task_timer_->Start(FROM_HERE,
+                          base::Seconds(mock_training_duration_in_seconds),
+                          this, &OperationalPatterns::OnMockTaskTimerFired);
+}
+
+void OperationalPatterns::OnMockTaskTimerFired() {
+  const int collection_slot = GetCollectionSlot();
+  if (last_sent_slot_ == collection_slot) {
+    VLOG(1) << base::TimeFormatShortDateAndTime(base::Time::Now())
+            << " Mock Task Timer Fired in slot " << collection_slot
+            << ", but Collection Ping already sent";
+    return;
+  }
+
+  VLOG(1) << base::TimeFormatShortDateAndTime(base::Time::Now())
+          << " Mock Task Timer Fired in slot " << collection_slot;
+
+  SendCollectionPing(collection_slot);
+}
+
+void OperationalPatterns::StopMockTaskTimer() {
+  DCHECK(mock_task_timer_);
+
+  VLOG(2) << "Stop Mock Task Timer";
+
+  mock_task_timer_.reset();
+}
+
+void OperationalPatterns::MaybeRestartMockTaskTimer() {
+  DCHECK(mock_task_timer_);
+
+  if (mock_task_timer_->IsRunning()) {
+    VLOG(2) << "Mock Task Timer already running";
+    return;
+  }
+
+  const int collection_slot = GetCollectionSlot();
+  VLOG(2) << "Restart Mock Task Timer in slot " << collection_slot;
+
+  mock_task_timer_->Reset();
+}
+
+// Collection Ping ------------------------------------------------------------
+
+void OperationalPatterns::SendCollectionPing(int slot) {
+  auto request = std::make_unique<network::ResourceRequest>();
+  request->url = GURL(kCollectionEndpoint);
+  request->headers.SetHeader("X-Brave-FL-Operational-Patterns", "?1");
+  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  request->method = net::HttpRequestHeaders::kPostMethod;
+
+  VLOG(2) << "Send Collection Ping " << request->method << " " << request->url;
+
+  sending_slot_ = slot;
+  const std::string payload =
+      BuildCollectionPingPayload(collection_id_, sending_slot_);
+
+  VLOG(2) << "Payload " << payload;
+
+  if (brave_federated::features::MockCollectionRequests()) {
+    OnCollectionPingSendSuccess();
+    return;
+  }
+
+  url_loader_ = network::SimpleURLLoader::Create(
+      std::move(request), GetNetworkTrafficAnnotationTag());
+  url_loader_->AttachStringForUpload(payload, "application/json");
   url_loader_->DownloadHeadersOnly(
       url_loader_factory_.get(),
-      base::BindOnce(&OperationalPatterns::OnCollectionSlotUploadComplete,
+      base::BindOnce(&OperationalPatterns::OnCollectionPingSend,
                      base::Unretained(this)));
 }
 
-void OperationalPatterns::SendDelete() {
-  auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = GURL(federatedLearningUrl);
-  resource_request->headers.SetHeader("X-Brave-FL-Operational-Patterns", "?1");
-  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  resource_request->method = "DELETE";
+void OperationalPatterns::OnCollectionPingSend(
+    scoped_refptr<net::HttpResponseHeaders> headers) {
+  if (!headers) {
+    VLOG(1) << "Failed to send collection ping";
+    return;
+  }
 
-  PrepareSend(std::move(resource_request), BuildDeletePayload());
+  int response_code = headers->response_code();
+  if (response_code == net::HTTP_OK) {
+    OnCollectionPingSendSuccess();
+    return;
+  }
 
+  VLOG(1) << "Failed to send collection ping with HTTP " << response_code;
+}
+
+void OperationalPatterns::OnCollectionPingSendSuccess() {
+  VLOG(1) << "Successfully sent collection ping for slot " << sending_slot_;
+
+  last_sent_slot_ = sending_slot_;
+  SavePrefs();
+}
+
+// Delete Ping ---------------------------------------------------------------
+
+void OperationalPatterns::SendDeletePing() {
+  auto request = std::make_unique<network::ResourceRequest>();
+  request->url = GURL(kCollectionEndpoint);
+  request->headers.SetHeader("X-Brave-FL-Operational-Patterns", "?1");
+  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  request->method = net::HttpRequestHeaders::kDeleteMethod;
+
+  VLOG(2) << "Send Delete Ping " << request->method << " " << request->url;
+
+  const std::string payload = BuildDeletePingPayload(collection_id_);
+
+  VLOG(2) << "Payload " << payload;
+
+  if (brave_federated::features::MockCollectionRequests()) {
+    OnDeletePingSendSuccess();
+    return;
+  }
+
+  url_loader_ = network::SimpleURLLoader::Create(
+      std::move(request), GetNetworkTrafficAnnotationTag());
+  url_loader_->AttachStringForUpload(payload, "application/json");
   url_loader_->DownloadHeadersOnly(
       url_loader_factory_.get(),
-      base::BindOnce(&OperationalPatterns::OnDeleteUploadComplete,
+      base::BindOnce(&OperationalPatterns::OnDeletePingSend,
                      base::Unretained(this)));
 }
 
-void OperationalPatterns::OnCollectionSlotUploadComplete(
+void OperationalPatterns::OnDeletePingSend(
     scoped_refptr<net::HttpResponseHeaders> headers) {
-  int response_code = kDefaultResponseCode;
-  if (headers)
-    response_code = headers->response_code();
-  if (response_code == net::HTTP_OK) {
-    last_checked_slot_ = current_collected_slot_;
-    SavePrefs();
+  if (!headers) {
+    VLOG(1) << "Failed to send delete ping";
+    return;
   }
-}
 
-void OperationalPatterns::OnDeleteUploadComplete(
-    scoped_refptr<net::HttpResponseHeaders> headers) {
-  int response_code = kDefaultResponseCode;
-  if (headers)
-    response_code = headers->response_code();
+  int response_code = headers->response_code();
   if (response_code == net::HTTP_OK) {
-    ClearPrefs();
-  } else {
-    auto retry_timer = std::make_unique<base::RetainingOneShotTimer>();
-    retry_timer->Start(FROM_HERE, base::Seconds(kMinutesBeforeRetry * 60), this,
-                       &OperationalPatterns::SendDelete);
+    OnDeletePingSendSuccess();
+    return;
   }
+
+  VLOG(1) << "Failed to send delete ping with HTTP " << response_code;
+
+  auto retry_timer = std::make_unique<base::OneShotTimer>();
+  retry_timer->Start(FROM_HERE, base::Seconds(kSecondsBeforeRetry), this,
+                     &OperationalPatterns::SendDeletePing);
+
+  VLOG(1) << "Retry in " << kSecondsBeforeRetry << "s";
 }
 
-std::string OperationalPatterns::BuildPayload() const {
-  base::Value root(base::Value::Type::DICTIONARY);
+void OperationalPatterns::OnDeletePingSendSuccess() {
+  VLOG(1) << "Successfully sent delete ping";
 
-  root.SetKey("collection_id", base::Value(collection_id_));
-  root.SetKey("platform", base::Value(brave_stats::GetPlatformIdentifier()));
-  root.SetKey("collection_slot", base::Value(current_collected_slot_));
-  root.SetKey("wiki-link", base::Value("https://github.com/brave/brave-browser/"
-                                       "wiki/Operational-Patterns"));
-
-  std::string result;
-  base::JSONWriter::Write(root, &result);
-
-  return result;
+  ClearPrefs();
 }
 
-std::string OperationalPatterns::BuildDeletePayload() const {
-  base::Value root(base::Value::Type::DICTIONARY);
-
-  root.SetKey("collection_id", base::Value(collection_id_));
-  root.SetKey("wiki-link", base::Value("https://github.com/brave/brave-browser/"
-                                       "wiki/Operational-Patterns"));
-
-  std::string result;
-  base::JSONWriter::Write(root, &result);
-
-  return result;
-}
-
-int OperationalPatterns::GetCurrentCollectionSlot() const {
-  base::Time::Exploded now;
-  base::Time::Now().LocalExplode(&now);
-
-  return ((now.day_of_month - 1) * 24 * 60 + now.hour * 60 + now.minute) /
-         brave_federated::features::GetCollectionSlotSizeValue();
-}
+// Collection ID --------------------------------------------------------------
 
 void OperationalPatterns::MaybeResetCollectionId() {
-  const base::Time now = base::Time::Now();
-  if (collection_id_.empty() || (!collection_id_expiration_time_.is_null() &&
-                                 now > collection_id_expiration_time_)) {
-    ResetCollectionId();
+  if (!ShouldResetCollectionId(collection_id_,
+                               collection_id_expiration_time_)) {
+    return;
   }
+
+  ResetCollectionId();
 }
 
 void OperationalPatterns::ResetCollectionId() {
-  const base::Time now = base::Time::Now();
-  collection_id_ =
-      base::ToUpperASCII(base::UnguessableToken::Create().ToString());
+  collection_id_ = CreateCollectionId();
+  const int collection_id_lifetime_in_seconds =
+      brave_federated::features::GetCollectionIdLifetimeInSeconds();
   collection_id_expiration_time_ =
-      now + base::Seconds(brave_federated::features::GetCollectionIdLifetime() *
-                          24 * 60 * 60);
+      base::Time::Now() + base::Seconds(collection_id_lifetime_in_seconds);
+
+  VLOG(1) << base::TimeFormatShortDateAndTime(base::Time::Now())
+          << " Reset collection ID to " << collection_id_;
+
   SavePrefs();
 }
 

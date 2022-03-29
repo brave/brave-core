@@ -6,6 +6,7 @@
 #include "brave/components/brave_federated/features.h"
 
 #include "base/metrics/field_trial_params.h"
+#include "base/time/time.h"
 
 namespace brave_federated {
 namespace features {
@@ -18,17 +19,29 @@ const char kFieldTrialParameterOperationalPatternsEnabled[] =
     "operational_patterns_enabled";
 const bool kDefaultOperationalPatternsEnabled = false;
 
-const char kFieldTrialParameterCollectionSlotSizeInMinutes[] =
-    "collection_slot_size_in_minutes";
-const int kDefaultCollectionSlotSizeInMinutes = 30;
+const char kFieldTrialParameterCollectionIDLifetimeInSeconds[] =
+    "collection_id_lifetime_in_seconds";
+const int kDefaultCollectionIdLifetimeInSeconds = 1 * base::Time::kHoursPerDay *
+                                                  base::Time::kMinutesPerHour *
+                                                  base::Time::kSecondsPerMinute;
 
-const char kFieldTrialParameterSimulateLocalTrainingStepDurationInMinutes[] =
-    "simulate_local_training_step_duration_in_minutes";
-const int kDefaultSimulateLocalTrainingStepDurationInMinutes = 5;
+const char kFieldTrialParameterCollectionSlotSizeInSeconds[] =
+    "collection_slot_size_in_seconds";
+const int kDefaultCollectionSlotSizeInSeconds =
+    30 * base::Time::kSecondsPerMinute;
 
-const char kFieldTrialParameterCollectionIDLifetimeInDays[] =
-    "collection_id_lifetime_in_days";
-const int kDefaultCollectionIDLifetimeInDays = 1;
+const char kFieldTrialParameterCollectionTimerIntervalInSeconds[] =
+    "collection_timer_interval_in_seconds";
+const int kDefaultCollectionTimerIntervalInSeconds =
+    1 * base::Time::kSecondsPerMinute;
+
+const char kFieldTrialParameterMockTaskDurationInSeconds[] =
+    "mock_task_duration_in_seconds";
+const int kDefaultMockTaskDurationInSeconds = 2 * base::Time::kSecondsPerMinute;
+
+const char kFieldTrialParameterMockCollectionRequests[] =
+    "mock_collection_requests";
+const bool kDefaultMockCollectionRequests = false;
 
 }  // namespace
 
@@ -45,23 +58,34 @@ bool IsOperationalPatternsEnabled() {
       kDefaultOperationalPatternsEnabled);
 }
 
-int GetCollectionSlotSizeValue() {
+int GetCollectionIdLifetimeInSeconds() {
   return GetFieldTrialParamByFeatureAsInt(
-      kFederatedLearning, kFieldTrialParameterCollectionSlotSizeInMinutes,
-      kDefaultCollectionSlotSizeInMinutes);
+      kFederatedLearning, kFieldTrialParameterCollectionIDLifetimeInSeconds,
+      kDefaultCollectionIdLifetimeInSeconds);
 }
 
-int GetSimulateLocalTrainingStepDurationValue() {
+int GetCollectionSlotSizeInSeconds() {
   return GetFieldTrialParamByFeatureAsInt(
-      kFederatedLearning,
-      kFieldTrialParameterSimulateLocalTrainingStepDurationInMinutes,
-      kDefaultSimulateLocalTrainingStepDurationInMinutes);
+      kFederatedLearning, kFieldTrialParameterCollectionSlotSizeInSeconds,
+      kDefaultCollectionSlotSizeInSeconds);
 }
 
-int GetCollectionIdLifetime() {
+int GetCollectionTimerIntervalInSeconds() {
   return GetFieldTrialParamByFeatureAsInt(
-      kFederatedLearning, kFieldTrialParameterCollectionIDLifetimeInDays,
-      kDefaultCollectionIDLifetimeInDays);
+      kFederatedLearning, kFieldTrialParameterCollectionTimerIntervalInSeconds,
+      kDefaultCollectionTimerIntervalInSeconds);
+}
+
+int GetMockTaskDurationInSeconds() {
+  return GetFieldTrialParamByFeatureAsInt(
+      kFederatedLearning, kFieldTrialParameterMockTaskDurationInSeconds,
+      kDefaultMockTaskDurationInSeconds);
+}
+
+bool MockCollectionRequests() {
+  return GetFieldTrialParamByFeatureAsBool(
+      kFederatedLearning, kFieldTrialParameterMockCollectionRequests,
+      kDefaultMockCollectionRequests);
 }
 
 }  // namespace features

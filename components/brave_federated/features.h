@@ -16,10 +16,13 @@ extern const base::Feature kFederatedLearning;
 
 bool IsFederatedLearningEnabled();
 
+// Operational Patterns
 bool IsOperationalPatternsEnabled();
-int GetCollectionSlotSizeValue();
-int GetSimulateLocalTrainingStepDurationValue();
-int GetCollectionIdLifetime();
+int GetCollectionIdLifetimeInSeconds();
+int GetCollectionSlotSizeInSeconds();
+int GetCollectionTimerIntervalInSeconds();
+int GetMockTaskDurationInSeconds();
+bool MockCollectionRequests();
 
 }  // namespace features
 

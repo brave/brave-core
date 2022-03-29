@@ -3,22 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-//-------------------------------------------------------------------------------
-// |OperationalPatterns| is a class for handling the collection of
-// operational patterns, which are are anonymous, minimal representations of how
-// users engage with the browser over a collection period. A collection period
-// is divided into collection slots (i.e. 30m intervals). Two timers are
-// instatiated at startup:
-// 1. |collection_slot_periodic_timer_| fires every |collection_slot_size_|/2
-// minutes (at most twice per collection slot) and starts the next timer.
-// 2. |simulate_local_training_step_timer_| fires a set number of minutes after
-// the |collection_slot_periodic_timer_|. When this timer fires, a ping is sent
-// to the server.
-//
-// For more information see
+// ----------------------------------------------------------------------------
+// |OperationalPatterns| handle the collection of anonymous pings with the goal
+// of estimating client availability for federated tasks. The collection period
+// is divided into descrete slots. The periodic |collection_timer_| will start
+// the |mock_task_timer_|, so as to emulate the duration of some federated task.
+// If the client is available for the duration of the mock task as indicated by
+// the |mock_task_timer_|, the colleciton ping for that slot is sent.
+// Pings only contain the minimal amount of information necessary to analyse
+// client participation on population level. For more information see
 // https://github.com/brave/brave-browser/wiki/Operational-Patterns
-//
-//-------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_OPERATIONAL_PATTERNS_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_OPERATIONAL_PATTERNS_H_
@@ -58,45 +53,51 @@ class OperationalPatterns final {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-  bool IsRunning();
   void Start();
   void Stop();
+  bool IsRunning();
 
  private:
-  void OnCollectionSlotStartTimerFired();
-  void OnSimulateLocalTrainingStepTimerFired();
-  void OnCollectionSlotUploadComplete(
-      scoped_refptr<net::HttpResponseHeaders> headers);
-  void OnDeleteUploadComplete(scoped_refptr<net::HttpResponseHeaders> headers);
-
-  void PrepareSend(std::unique_ptr<network::ResourceRequest> resource_request,
-                   std::string payload);
-  void SendCollectionSlot();
-  void SendDelete();
-
   void LoadPrefs();
   void SavePrefs();
   void ClearPrefs();
 
-  std::string BuildPayload() const;
-  std::string BuildDeletePayload() const;
-  int GetCurrentCollectionSlot() const;
+  void StartRepeatingCollectionTimer();
+  void OnRepeatingCollectionTimerFired();
+  void StopRepeatingCollectionTimer();
 
-  void ResetCollectionId();
+  void StartMockTaskTimer();
+  void OnMockTaskTimerFired();
+  void StopMockTaskTimer();
+  void MaybeRestartMockTaskTimer();
+
+  void SendCollectionPing(int slot);
+  void OnCollectionPingSend(scoped_refptr<net::HttpResponseHeaders> headers);
+  void OnCollectionPingSendSuccess();
+
+  void SendDeletePing();
+  void OnDeletePingSend(scoped_refptr<net::HttpResponseHeaders> headers);
+  void OnDeletePingSendSuccess();
+
   void MaybeResetCollectionId();
+  void ResetCollectionId();
 
-  raw_ptr<PrefService> pref_service_ = nullptr;
-  std::unique_ptr<base::RepeatingTimer> collection_slot_periodic_timer_;
-  std::unique_ptr<base::RetainingOneShotTimer>
-      simulate_local_training_step_timer_;
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  raw_ptr<PrefService> pref_service_ = nullptr;  // NOT OWNED
+  scoped_refptr<network::SharedURLLoaderFactory>
+      url_loader_factory_;  // NOT OWNED
+
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
 
-  base::Time collection_id_expiration_time_;
-  int current_collected_slot_ = 0;
-  int last_checked_slot_ = 0;
-  bool is_running_operational_patterns_ = false;
+  std::unique_ptr<base::RepeatingTimer> collection_timer_;
+  std::unique_ptr<base::RetainingOneShotTimer> mock_task_timer_;
+
+  bool is_running_ = false;
+
   std::string collection_id_;
+  base::Time collection_id_expiration_time_;
+
+  int sending_slot_ = -1;
+  int last_sent_slot_ = -1;
 };
 
 }  // namespace brave_federated

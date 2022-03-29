@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests -filter=BraveFederatedLearningFeaturesTest*
@@ -71,7 +72,7 @@ TEST(BraveFederatedLearningFeaturesTest, OperationalPatternsEnabled) {
             operational_patterns_enabled);
 }
 
-TEST(BraveFederatedLearningFeaturesTest, DefaultCollectionSlotSizeInMinutes) {
+TEST(BraveFederatedLearningFeaturesTest, DefaultCollectionSlotSizeInSeconds) {
   // Arrange
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
@@ -82,21 +83,21 @@ TEST(BraveFederatedLearningFeaturesTest, DefaultCollectionSlotSizeInMinutes) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
   // Act
-  const int collection_slot_size = features::GetCollectionSlotSizeValue();
+  const int collection_slot_size = features::GetCollectionSlotSizeInSeconds();
 
   // Assert
-  const int expected_collection_slot_size = 30;
+  const int expected_collection_slot_size = 30 * base::Time::kSecondsPerMinute;
   EXPECT_EQ(expected_collection_slot_size, collection_slot_size);
 }
 
-TEST(BraveFederatedLearningFeaturesTest, CollectionSizeInMinutes) {
+TEST(BraveFederatedLearningFeaturesTest, CollectionSizeInSeconds) {
   // Arrange
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kFederatedLearningParameters;
-  const char kFieldTrialParameterCollectionSlotSizeInMinutes[] =
-      "collection_slot_size_in_minutes";
+  const char kFieldTrialParameterCollectionSlotSizeInSeconds[] =
+      "collection_slot_size_in_seconds";
   kFederatedLearningParameters
-      [kFieldTrialParameterCollectionSlotSizeInMinutes] = "15";
+      [kFieldTrialParameterCollectionSlotSizeInSeconds] = "420";
   enabled_features.push_back(
       {features::kFederatedLearning, kFederatedLearningParameters});
 
@@ -106,15 +107,14 @@ TEST(BraveFederatedLearningFeaturesTest, CollectionSizeInMinutes) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
   // Act
-  const int collection_slot_size = features::GetCollectionSlotSizeValue();
+  const int collection_slot_size = features::GetCollectionSlotSizeInSeconds();
 
   // Assert
-  const int expected_collection_slot_size = 15;
+  const int expected_collection_slot_size = 420;
   EXPECT_EQ(expected_collection_slot_size, collection_slot_size);
 }
 
-TEST(BraveFederatedLearningFeaturesTest,
-     DefaultSimulateLocalTrainingStepDuration) {
+TEST(BraveFederatedLearningFeaturesTest, DefaultMockTaskDuration) {
   // Arrange
   const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
       enabled_features;
@@ -125,23 +125,66 @@ TEST(BraveFederatedLearningFeaturesTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
   // Act
-  const int local_training_step_duration =
-      features::GetSimulateLocalTrainingStepDurationValue();
+  const int mock_task_duration = features::GetMockTaskDurationInSeconds();
 
   // Assert
-  const int expected_local_training_step_duration = 5;
-  EXPECT_EQ(expected_local_training_step_duration,
-            local_training_step_duration);
+  const int expected_mock_task_duration = 2 * base::Time::kSecondsPerMinute;
+  EXPECT_EQ(expected_mock_task_duration, mock_task_duration);
 }
 
-TEST(BraveFederatedLearningFeaturesTest, SimulateLocalTrainingStepDuration) {
+TEST(BraveFederatedLearningFeaturesTest, MockTaskDuration) {
   // Arrange
   std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
   base::FieldTrialParams kFederatedLearningParameters;
-  const char kFieldTrialParameterSimulateLocalTrainingStepDurationInMinutes[] =
-      "simulate_local_training_step_duration_in_minutes";
+  const char kFieldTrialParameterMockTaskDurationInSeconds[] =
+      "mock_task_duration_in_seconds";
+  kFederatedLearningParameters[kFieldTrialParameterMockTaskDurationInSeconds] =
+      "600";
+  enabled_features.push_back(
+      {features::kFederatedLearning, kFederatedLearningParameters});
+
+  const std::vector<base::Feature> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+  // Act
+  const int mock_task_duration = features::GetMockTaskDurationInSeconds();
+
+  // Assert
+  const int expected_mock_task_duration = 10 * base::Time::kSecondsPerMinute;
+  EXPECT_EQ(expected_mock_task_duration, mock_task_duration);
+}
+
+TEST(BraveFederatedLearningFeaturesTest, DefaultCollectionIdLifetimeInSeconds) {
+  // Arrange
+  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
+      enabled_features;
+
+  const std::vector<base::Feature> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+  // Act
+  const int collection_id_lifetime =
+      features::GetCollectionIdLifetimeInSeconds();
+
+  // Assert
+  const int expected_collection_id_lifetime = 1 * base::Time::kHoursPerDay *
+                                              base::Time::kMinutesPerHour *
+                                              base::Time::kSecondsPerMinute;
+  EXPECT_EQ(expected_collection_id_lifetime, collection_id_lifetime);
+}
+
+TEST(BraveFederatedLearningFeaturesTest, CollectionIdLifetimeInSeconds) {
+  // Arrange
+  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  base::FieldTrialParams kFederatedLearningParameters;
+  const char kFieldTrialParameterCollectionIdLifetimeInSeconds[] =
+      "collection_id_lifetime_in_seconds";
   kFederatedLearningParameters
-      [kFieldTrialParameterSimulateLocalTrainingStepDurationInMinutes] = "10";
+      [kFieldTrialParameterCollectionIdLifetimeInSeconds] = "2592000";
   enabled_features.push_back(
       {features::kFederatedLearning, kFederatedLearningParameters});
 
@@ -151,55 +194,24 @@ TEST(BraveFederatedLearningFeaturesTest, SimulateLocalTrainingStepDuration) {
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
   // Act
-  const int local_training_step_duration =
-      features::GetSimulateLocalTrainingStepDurationValue();
+  const int collection_id_lifetime =
+      features::GetCollectionIdLifetimeInSeconds();
 
   // Assert
-  const int expected_local_training_step_duration = 10;
-  EXPECT_EQ(expected_local_training_step_duration,
-            local_training_step_duration);
-}
-
-TEST(BraveFederatedLearningFeaturesTest, DefaultCollectionIDLifetimeInDays) {
-  // Arrange
-  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
-      enabled_features;
-
-  const std::vector<base::Feature> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-  // Act
-  const int collection_id_lifetime = features::GetCollectionIdLifetime();
-
-  // Assert
-  const int expected_collection_id_lifetime = 1;
+  const int expected_collection_id_lifetime = 30 * base::Time::kHoursPerDay *
+                                              base::Time::kMinutesPerHour *
+                                              base::Time::kSecondsPerMinute;
   EXPECT_EQ(expected_collection_id_lifetime, collection_id_lifetime);
 }
 
-TEST(BraveFederatedLearningFeaturesTest, CollectionIDLifetimeInDays) {
+TEST(BraveFederatedLearningFeaturesTest, DefaultMockCollectionRequests) {
   // Arrange
-  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
-  base::FieldTrialParams kFederatedLearningParameters;
-  const char kFieldTrialParameterCollectionIDLifetimeInDays[] =
-      "collection_id_lifetime_in_days";
-  kFederatedLearningParameters[kFieldTrialParameterCollectionIDLifetimeInDays] =
-      "30";
-  enabled_features.push_back(
-      {features::kFederatedLearning, kFederatedLearningParameters});
 
-  const std::vector<base::Feature> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
   // Act
-  const int collection_id_lifetime = features::GetCollectionIdLifetime();
+  const bool mock_collection_requests = features::MockCollectionRequests();
 
   // Assert
-  const int expected_collection_id_lifetime = 30;
-  EXPECT_EQ(expected_collection_id_lifetime, collection_id_lifetime);
+  EXPECT_FALSE(mock_collection_requests);
 }
 
 }  // namespace brave_federated
