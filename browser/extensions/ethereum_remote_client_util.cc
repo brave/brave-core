@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/environment.h"
+#include "brave/components/brave_wallet/browser/brave_infura_buildflags.h"
 
 namespace extensions {
 
@@ -25,7 +26,7 @@ bool HasInfuraProjectID() {
 }
 
 std::string GetInfuraProjectID() {
-  std::string project_id(BRAVE_INFURA_PROJECT_ID);
+  std::string project_id(BUILDFLAG(BRAVE_INFURA_PROJECT_ID));
   std::unique_ptr<base::Environment> env(base::Environment::Create());
 
   if (env->HasVar("BRAVE_INFURA_PROJECT_ID")) {

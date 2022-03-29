@@ -1,7 +1,13 @@
 import("//brave/build/config.gni")
 import("//brave/components/bls/buildflags.gni")
 import("//brave/components/brave_wallet/browser/config.gni")
+import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
+
+buildflag_header("brave_infura_buildflags") {
+  header = "brave_infura_buildflags.h"
+  flags = [ "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"" ]
+}
 
 static_library("browser") {
   sources = [
@@ -143,10 +149,6 @@ static_library("browser") {
   ]
 }
 
-config("infura_config") {
-  defines = [ "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"" ]
-}
-
 static_library("ethereum_permission_utils") {
   sources = [
     "ethereum_permission_utils.cc",
@@ -184,8 +186,6 @@ source_set("pref_names") {
 }
 
 source_set("utils") {
-  configs += [ ":infura_config" ]
-
   sources = [
     "brave_wallet_utils.cc",
     "brave_wallet_utils.h",
@@ -195,6 +195,7 @@ source_set("utils") {
     ":constants",
     ":pref_names",
     "//base",
+    "//brave/components/brave_wallet/browser:brave_infura_buildflags",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//components/prefs",
