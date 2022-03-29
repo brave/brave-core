@@ -1,4 +1,4 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
@@ -21,9 +21,12 @@ export default function useBalance (networks: BraveWallet.NetworkInfo[]) {
     const tokensCoinType = getTokensCoinType(networks, token)
     // Return native asset balance
     if (
-      token.contractAddress === '' &&
-      !token.isErc20 &&
-
+      (
+        token.contractAddress === '' ||
+        // 0xeee... is used as a contractAddress
+        // of native assets in our Swap Widget and used for the 0x API.
+        token.contractAddress === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+      ) &&
       // Since all coinTypes share the same chainId for localHost networks,
       // we want to make sure we return the right balance for that token.
       account.coin === tokensCoinType
