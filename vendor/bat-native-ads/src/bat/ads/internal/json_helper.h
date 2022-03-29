@@ -25,12 +25,8 @@ namespace ads {
 
 struct AdContentInfo;
 struct AdHistoryInfo;
-struct AdNotificationInfo;
 struct AdPreferencesInfo;
-struct AdsHistoryInfo;
 struct CategoryContentInfo;
-struct ClientInfo;
-struct NewTabPageAdInfo;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
