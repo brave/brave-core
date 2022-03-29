@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "brave/browser/permissions/brave_ethereum_permission_prompt_dialog_controller_android.h"
-#include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
-#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "components/permissions/android/permission_prompt_android.h"
 #include "content/public/browser/web_contents.h"
 
@@ -29,14 +29,14 @@ void BraveEthereumPermissionPrompt::ConnectToSite(
     const std::vector<std::string>& accounts) {
   has_interacted_with_dialog_ = true;
   dialog_controller_.reset();
-  permissions::BraveEthereumPermissionContext::AcceptOrCancel(accounts,
-                                                              web_contents_);
+  permissions::BraveWalletPermissionContext::AcceptOrCancel(accounts,
+                                                            web_contents_);
 }
 
 void BraveEthereumPermissionPrompt::CancelConnectToSite() {
   has_interacted_with_dialog_ = true;
   dialog_controller_.reset();
-  permissions::BraveEthereumPermissionContext::Cancel(web_contents_);
+  permissions::BraveWalletPermissionContext::Cancel(web_contents_);
 }
 
 void BraveEthereumPermissionPrompt::OnDialogDismissed() {
@@ -48,7 +48,7 @@ void BraveEthereumPermissionPrompt::OnDialogDismissed() {
   // If |has_interacted_with_dialog_| is true, |ConnectToSite| or
   // |CancelConnectToSite| should be recorded instead.
   if (!has_interacted_with_dialog_) {
-    permissions::BraveEthereumPermissionContext::Cancel(web_contents_);
+    permissions::BraveWalletPermissionContext::Cancel(web_contents_);
   }
 }
 

@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/request_type.h"
@@ -105,6 +105,7 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
   for (auto* request : manager->Requests()) {
     std::string account;
     if (!brave_wallet::ParseRequestingOriginFromSubRequest(
+            request->request_type(),
             url::Origin::Create(request->requesting_origin()),
             &requesting_origin, &account)) {
       continue;

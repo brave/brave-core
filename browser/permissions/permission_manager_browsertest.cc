@@ -8,9 +8,9 @@
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -108,10 +108,9 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer* https_server() { return &https_server_; }
   PermissionManager* permission_manager() { return permission_manager_; }
 
-  bool IsPendingGroupedRequestsEmpty() {
+  bool IsPendingGroupedRequestsEmpty(ContentSettingsType type) {
     PermissionContextBase* context =
-        permission_manager()->GetPermissionContextForTesting(
-            ContentSettingsType::BRAVE_ETHEREUM);
+        permission_manager()->GetPermissionContextForTesting(type);
     return context->IsPendingGroupedRequestsEmptyForTesting();
   }
 
@@ -123,166 +122,204 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
-                       RequestEthereumPermissions) {
+IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
   const GURL& url = https_server()->GetURL("a.test", "/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   auto* permission_request_manager = GetPermissionRequestManager();
   EXPECT_FALSE(permission_request_manager->IsRequestInProgress());
-  EXPECT_TRUE(IsPendingGroupedRequestsEmpty());
+  struct {
+    std::vector<std::string> addresses;
+    ContentSettingsType type;
+  } cases[] = {{{"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
+                 "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"},
+                ContentSettingsType::BRAVE_ETHEREUM},
+               {{"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+                 "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
+                ContentSettingsType::BRAVE_SOLANA}};
+  for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+    const std::vector<std::string>& addresses = cases[i].addresses;
+    RequestType request_type = ContentSettingsTypeToRequestType(cases[i].type);
+    EXPECT_TRUE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
-  std::vector<std::string> addresses = {
-      "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
-      "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"};
-  std::vector<ContentSettingsType> types(addresses.size(),
-                                         ContentSettingsType::BRAVE_ETHEREUM);
-  std::vector<url::Origin> sub_request_origins(addresses.size());
-  for (size_t i = 0; i < addresses.size(); i++) {
-    ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
-        GetLastCommitedOrigin(), addresses[i], &sub_request_origins[i]));
-  }
+    std::vector<ContentSettingsType> types(addresses.size(), cases[i].type);
+    std::vector<url::Origin> sub_request_origins(addresses.size());
+    for (size_t j = 0; j < addresses.size(); ++j) {
+      ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
+          request_type, GetLastCommitedOrigin(), addresses[j],
+          &sub_request_origins[j]))
+          << "case: " << i << ", address: " << j;
+    }
 
-  url::Origin origin;
-  ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
-      GetLastCommitedOrigin(), addresses, &origin));
+    url::Origin origin;
+    ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
+        GetLastCommitedOrigin(), addresses, &origin));
 
-  auto observer = std::make_unique<PermissionRequestManagerObserver>(
-      permission_request_manager);
+    auto observer = std::make_unique<PermissionRequestManagerObserver>(
+        permission_request_manager);
 
-  permission_manager()->RequestPermissions(
-      types, web_contents()->GetMainFrame(), origin.GetURL(), true,
-      base::DoNothing());
+    permission_manager()->RequestPermissions(
+        types, web_contents()->GetMainFrame(), origin.GetURL(), true,
+        base::DoNothing());
 
-  content::RunAllTasksUntilIdle();
+    content::RunAllTasksUntilIdle();
 
-  EXPECT_TRUE(permission_request_manager->IsRequestInProgress());
-  EXPECT_TRUE(observer->IsShowingBubble());
-  EXPECT_FALSE(IsPendingGroupedRequestsEmpty());
+    EXPECT_TRUE(permission_request_manager->IsRequestInProgress())
+        << "case: " << i;
+    EXPECT_TRUE(observer->IsShowingBubble()) << "case: " << i;
+    EXPECT_FALSE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
-  // Check sub-requests are created as expected.
-  EXPECT_EQ(permission_request_manager->Requests().size(), addresses.size());
-  for (size_t i = 0; i < permission_request_manager->Requests().size(); i++) {
-    EXPECT_EQ(permission_request_manager->Requests()[i]->request_type(),
-              RequestType::kBraveEthereum);
-    EXPECT_EQ(sub_request_origins[i].GetURL(),
-              permission_request_manager->Requests()[i]->requesting_origin());
-  }
+    // Check sub-requests are created as expected.
+    EXPECT_EQ(permission_request_manager->Requests().size(), addresses.size());
+    for (size_t j = 0; j < permission_request_manager->Requests().size(); ++j) {
+      EXPECT_EQ(permission_request_manager->Requests()[j]->request_type(),
+                request_type)
+          << "case: " << i << ", address: " << j;
+      EXPECT_EQ(sub_request_origins[j].GetURL(),
+                permission_request_manager->Requests()[j]->requesting_origin())
+          << "case: " << i << ", address: " << j;
+    }
 
-  // Test dismissing request.
-  permissions::BraveEthereumPermissionContext::Cancel(web_contents());
-  EXPECT_TRUE(observer->IsRequestsFinalized());
-  EXPECT_TRUE(!observer->IsShowingBubble());
-  EXPECT_TRUE(IsPendingGroupedRequestsEmpty());
+    // Test dismissing request.
+    permissions::BraveWalletPermissionContext::Cancel(web_contents());
+    EXPECT_TRUE(observer->IsRequestsFinalized()) << "case: " << i;
+    EXPECT_TRUE(!observer->IsShowingBubble()) << "case: " << i;
+    EXPECT_TRUE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
-  for (size_t i = 0; i < addresses.size(); i++) {
-    EXPECT_EQ(
-        host_content_settings_map()->GetContentSetting(
-            sub_request_origins[i].GetURL(), GetLastCommitedOrigin().GetURL(),
-            ContentSettingsType::BRAVE_ETHEREUM),
-        ContentSetting::CONTENT_SETTING_ASK);
-  }
+    for (size_t j = 0; j < addresses.size(); ++j) {
+      EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                    sub_request_origins[j].GetURL(),
+                    GetLastCommitedOrigin().GetURL(), cases[i].type),
+                ContentSetting::CONTENT_SETTING_ASK)
+          << "case: " << i << ", address: " << j;
+    }
 
-  observer->Reset();
-  permission_manager()->RequestPermissions(
-      types, web_contents()->GetMainFrame(), origin.GetURL(), true,
-      base::DoNothing());
+    observer->Reset();
+    permission_manager()->RequestPermissions(
+        types, web_contents()->GetMainFrame(), origin.GetURL(), true,
+        base::DoNothing());
 
-  content::RunAllTasksUntilIdle();
-  EXPECT_TRUE(permission_request_manager->IsRequestInProgress());
-  EXPECT_TRUE(observer->IsShowingBubble());
-  EXPECT_FALSE(IsPendingGroupedRequestsEmpty());
+    content::RunAllTasksUntilIdle();
+    EXPECT_TRUE(permission_request_manager->IsRequestInProgress())
+        << "case: " << i;
+    EXPECT_TRUE(observer->IsShowingBubble()) << "case: " << i;
+    EXPECT_FALSE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
-  // Check sub-requests are created as expected.
-  EXPECT_EQ(permission_request_manager->Requests().size(), addresses.size());
-  for (size_t i = 0; i < permission_request_manager->Requests().size(); i++) {
-    EXPECT_EQ(permission_request_manager->Requests()[i]->request_type(),
-              RequestType::kBraveEthereum);
-    EXPECT_EQ(sub_request_origins[i].GetURL(),
-              permission_request_manager->Requests()[i]->requesting_origin());
-  }
+    // Check sub-requests are created as expected.
+    EXPECT_EQ(permission_request_manager->Requests().size(), addresses.size());
+    for (size_t j = 0; j < permission_request_manager->Requests().size(); ++j) {
+      EXPECT_EQ(permission_request_manager->Requests()[j]->request_type(),
+                request_type)
+          << "case: " << i << ", address: " << j;
+      EXPECT_EQ(sub_request_origins[j].GetURL(),
+                permission_request_manager->Requests()[j]->requesting_origin())
+          << "case: " << i << ", address: " << j;
+    }
 
-  // Test accepting request with one of the address.
-  permissions::BraveEthereumPermissionContext::AcceptOrCancel(
-      std::vector<std::string>{addresses[1]}, web_contents());
-  std::vector<ContentSetting> expected_settings(
-      {ContentSetting::CONTENT_SETTING_ASK,
-       ContentSetting::CONTENT_SETTING_ALLOW});
-  EXPECT_TRUE(observer->IsRequestsFinalized());
-  EXPECT_TRUE(!observer->IsShowingBubble());
-  EXPECT_TRUE(IsPendingGroupedRequestsEmpty());
+    // Test accepting request with one of the address.
+    permissions::BraveWalletPermissionContext::AcceptOrCancel(
+        std::vector<std::string>{addresses[1]}, web_contents());
+    std::vector<ContentSetting> expected_settings(
+        {ContentSetting::CONTENT_SETTING_ASK,
+         ContentSetting::CONTENT_SETTING_ALLOW});
+    EXPECT_TRUE(observer->IsRequestsFinalized()) << "case: " << i;
+    EXPECT_TRUE(!observer->IsShowingBubble()) << "case: " << i;
+    EXPECT_TRUE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
-  for (size_t i = 0; i < addresses.size(); i++) {
-    EXPECT_EQ(
-        host_content_settings_map()->GetContentSetting(
-            sub_request_origins[i].GetURL(), GetLastCommitedOrigin().GetURL(),
-            ContentSettingsType::BRAVE_ETHEREUM),
-        expected_settings[i]);
+    for (size_t j = 0; j < addresses.size(); ++j) {
+      EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                    sub_request_origins[j].GetURL(),
+                    GetLastCommitedOrigin().GetURL(), cases[i].type),
+                expected_settings[j])
+          << "case: " << i << ", address: " << j;
+    }
   }
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
-                       RequestEthereumPermissionsTabClosed) {
+                       RequestPermissionsTabClosed) {
   const GURL& url = https_server()->GetURL("a.test", "/empty.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  auto* permission_request_manager = GetPermissionRequestManager();
-  EXPECT_FALSE(permission_request_manager->IsRequestInProgress());
-  EXPECT_TRUE(IsPendingGroupedRequestsEmpty());
+  struct {
+    std::vector<std::string> addresses;
+    ContentSettingsType type;
+  } cases[] = {{{"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8C",
+                 "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8D"},
+                ContentSettingsType::BRAVE_ETHEREUM},
+               {{"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+                 "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
+                ContentSettingsType::BRAVE_SOLANA}};
+  for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+    ASSERT_TRUE(AddTabAtIndexToBrowser(browser(), 0, url,
+                                       ui::PAGE_TRANSITION_TYPED, true));
+    auto* permission_request_manager = GetPermissionRequestManager();
+    EXPECT_FALSE(permission_request_manager->IsRequestInProgress());
+    const std::vector<std::string>& addresses = cases[i].addresses;
+    RequestType request_type = ContentSettingsTypeToRequestType(cases[i].type);
+    EXPECT_TRUE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
 
-  std::vector<std::string> addresses = {
-      "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8C",
-      "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8D"};
-  std::vector<ContentSettingsType> types(addresses.size(),
-                                         ContentSettingsType::BRAVE_ETHEREUM);
-  std::vector<url::Origin> sub_request_origins(addresses.size());
-  for (size_t i = 0; i < addresses.size(); i++) {
-    ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
-        GetLastCommitedOrigin(), addresses[i], &sub_request_origins[i]));
+    std::vector<ContentSettingsType> types(addresses.size(), cases[i].type);
+    std::vector<url::Origin> sub_request_origins(addresses.size());
+    for (size_t j = 0; j < addresses.size(); ++j) {
+      ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
+          request_type, GetLastCommitedOrigin(), addresses[j],
+          &sub_request_origins[j]))
+          << "case: " << i << ", address: " << j;
+    }
+
+    url::Origin origin;
+    ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
+        GetLastCommitedOrigin(), addresses, &origin))
+        << "case: " << i;
+
+    auto observer = std::make_unique<PermissionRequestManagerObserver>(
+        permission_request_manager);
+
+    permission_manager()->RequestPermissions(
+        types, web_contents()->GetMainFrame(), origin.GetURL(), true,
+        base::DoNothing());
+
+    content::RunAllTasksUntilIdle();
+
+    EXPECT_TRUE(permission_request_manager->IsRequestInProgress())
+        << "case: " << i;
+    EXPECT_TRUE(observer->IsShowingBubble()) << "case: " << i;
+    EXPECT_FALSE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
+
+    // Check sub-requests are created as expected.
+    EXPECT_EQ(permission_request_manager->Requests().size(), addresses.size());
+    for (size_t j = 0; j < permission_request_manager->Requests().size(); ++j) {
+      EXPECT_EQ(permission_request_manager->Requests()[j]->request_type(),
+                request_type)
+          << "case: " << i << ", address: " << j;
+      EXPECT_EQ(sub_request_origins[j].GetURL(),
+                permission_request_manager->Requests()[j]->requesting_origin())
+          << "case: " << i << ", address: " << j;
+    }
+
+    // Remove the observer before closing the tab.
+    observer.reset();
+
+    // Close tab with active request pending.
+    content::WebContentsDestroyedWatcher tab_destroyed_watcher(web_contents());
+    browser()->tab_strip_model()->CloseWebContentsAt(0,
+                                                     TabStripModel::CLOSE_NONE);
+    tab_destroyed_watcher.Wait();
+    EXPECT_TRUE(IsPendingGroupedRequestsEmpty(cases[i].type));
   }
-
-  url::Origin origin;
-  ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
-      GetLastCommitedOrigin(), addresses, &origin));
-
-  auto observer = std::make_unique<PermissionRequestManagerObserver>(
-      permission_request_manager);
-
-  permission_manager()->RequestPermissions(
-      types, web_contents()->GetMainFrame(), origin.GetURL(), true,
-      base::DoNothing());
-
-  content::RunAllTasksUntilIdle();
-
-  EXPECT_TRUE(permission_request_manager->IsRequestInProgress());
-  EXPECT_TRUE(observer->IsShowingBubble());
-  EXPECT_FALSE(IsPendingGroupedRequestsEmpty());
-
-  // Check sub-requests are created as expected.
-  EXPECT_EQ(permission_request_manager->Requests().size(), addresses.size());
-  for (size_t i = 0; i < permission_request_manager->Requests().size(); i++) {
-    EXPECT_EQ(permission_request_manager->Requests()[i]->request_type(),
-              RequestType::kBraveEthereum);
-    EXPECT_EQ(sub_request_origins[i].GetURL(),
-              permission_request_manager->Requests()[i]->requesting_origin());
-  }
-
-  // Remove the observer before closing the tab.
-  observer.reset();
-
-  // Close tab with active request pending.
-  content::WebContentsDestroyedWatcher tab_destroyed_watcher(web_contents());
-  browser()->tab_strip_model()->CloseWebContentsAt(0,
-                                                   TabStripModel::CLOSE_NONE);
-  tab_destroyed_watcher.Wait();
-  EXPECT_TRUE(IsPendingGroupedRequestsEmpty());
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
-                       RequestEthereumPermissionsBlock3PIframe) {
-  std::vector<std::string> addresses = {
-      "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
-      "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"};
+                       RequestPermissionsBlock3PIframe) {
+  struct {
+    std::vector<std::string> addresses;
+    ContentSettingsType type;
+  } cases[] = {{{"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
+                 "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"},
+                ContentSettingsType::BRAVE_ETHEREUM},
+               {{"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+                 "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
+                ContentSettingsType::BRAVE_SOLANA}};
 
   GURL top_url(https_server()->GetURL("a.test", "/iframe.html"));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), top_url));
@@ -291,34 +328,45 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
 
   auto* iframe_rfh = ChildFrameAt(web_contents()->GetMainFrame(), 0);
 
-  // Will return empty responses without prompt.
-  BraveEthereumPermissionContext::RequestPermissions(
-      iframe_rfh, addresses,
-      base::BindOnce([](const std::vector<ContentSetting>& responses) {
-        EXPECT_TRUE(responses.empty());
-      }));
+  for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+    // Will return empty responses without prompt.
+    BraveWalletPermissionContext::RequestPermissions(
+        cases[i].type, iframe_rfh, cases[i].addresses,
+        base::BindOnce([](const std::vector<ContentSetting>& responses) {
+          EXPECT_TRUE(responses.empty());
+        }));
 
-  content::RunAllTasksUntilIdle();
-  EXPECT_TRUE(IsPendingGroupedRequestsEmpty());
+    content::RunAllTasksUntilIdle();
+    EXPECT_TRUE(IsPendingGroupedRequestsEmpty(cases[i].type)) << "case: " << i;
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, GetCanonicalOrigin) {
   const GURL& url = https_server()->GetURL("a.test", "/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  std::vector<std::string> addresses = {
-      "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
-      "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"};
-  url::Origin origin;
-  ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
-      GetLastCommitedOrigin(), addresses, &origin));
+  struct {
+    std::vector<std::string> addresses;
+    ContentSettingsType type;
+  } cases[] = {{{"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
+                 "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"},
+                ContentSettingsType::BRAVE_ETHEREUM},
+               {{"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+                 "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV"},
+                ContentSettingsType::BRAVE_SOLANA}};
+  for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+    url::Origin origin;
+    ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
+        GetLastCommitedOrigin(), cases[i].addresses, &origin))
+        << "case: " << i;
 
-  EXPECT_EQ(origin.GetURL(),
-            permission_manager()->GetCanonicalOrigin(
-                ContentSettingsType::BRAVE_ETHEREUM, origin.GetURL(),
-                GetLastCommitedOrigin().GetURL()))
-      << "GetCanonicalOrigin should return requesting_origin for Ethereum "
-         "permission.";
+    EXPECT_EQ(origin.GetURL(), permission_manager()->GetCanonicalOrigin(
+                                   cases[i].type, origin.GetURL(),
+                                   GetLastCommitedOrigin().GetURL()))
+        << "GetCanonicalOrigin should return requesting_origin for Ethereum "
+           "permission. case: "
+        << i;
+  }
 }
 
 }  // namespace permissions

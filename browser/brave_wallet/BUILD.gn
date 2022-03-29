@@ -124,7 +124,7 @@ source_set("tab_helper") {
 
   deps = [
     "//brave/common",
-    "//brave/components/brave_wallet/browser:ethereum_permission_utils",
+    "//brave/components/brave_wallet/browser:permission_utils",
     "//components/permissions",
     "//components/sessions",
     "//content/public/browser",
@@ -156,8 +156,8 @@ source_set("unit_tests") {
     "//brave/components/bls/rs:cxx_gen",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
-    "//brave/components/brave_wallet/browser:ethereum_permission_utils",
     "//brave/components/brave_wallet/browser:hd_keyring",
+    "//brave/components/brave_wallet/browser:permission_utils",
     "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/browser:transaction",
     "//brave/components/brave_wallet/browser:utils",

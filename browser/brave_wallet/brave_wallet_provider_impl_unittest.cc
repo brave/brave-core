@@ -31,16 +31,16 @@
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
-#include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
-#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/prefs/browser_prefs.h"
@@ -397,8 +397,9 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
 
   void ResetEthereumPermission(const url::Origin& origin,
                                size_t from_index = 0) {
-    permissions::BraveEthereumPermissionContext::ResetEthereumPermission(
-        browser_context(), origin, from(from_index));
+    permissions::BraveWalletPermissionContext::ResetPermission(
+        ContentSettingsType::BRAVE_ETHEREUM, browser_context(), origin,
+        from(from_index));
   }
 
   void Web3ClientVersion(std::string* version,

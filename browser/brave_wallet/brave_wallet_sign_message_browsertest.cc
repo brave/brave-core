@@ -16,7 +16,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -87,12 +87,12 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
   }
   void UserGrantPermission(bool granted) {
     if (granted)
-      permissions::BraveEthereumPermissionContext::AcceptOrCancel(
+      permissions::BraveWalletPermissionContext::AcceptOrCancel(
           std::vector<std::string>{
               "0x084DCb94038af1715963F149079cE011C4B22961"},
           web_contents());
     else
-      permissions::BraveEthereumPermissionContext::Cancel(web_contents());
+      permissions::BraveWalletPermissionContext::Cancel(web_contents());
     ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractBool(),

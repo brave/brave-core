@@ -11,7 +11,7 @@
 
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "build/build_config.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/request_type.h"
@@ -33,8 +33,10 @@ bool ChromePermissionsClient::BraveCanBypassEmbeddingOriginCheck(
   // and let it bypass the origin check from Chromium when the original
   // requesting_origin & embedding_origin are the same.
   url::Origin original_requesting_origin;
-  if (type == ContentSettingsType::BRAVE_ETHEREUM &&
+  if ((type == ContentSettingsType::BRAVE_ETHEREUM ||
+       type == ContentSettingsType::BRAVE_SOLANA) &&
       brave_wallet::ParseRequestingOriginFromSubRequest(
+          permissions::ContentSettingsTypeToRequestType(type),
           url::Origin::Create(requesting_origin), &original_requesting_origin,
           nullptr) &&
       original_requesting_origin == url::Origin::Create(embedding_origin)) {

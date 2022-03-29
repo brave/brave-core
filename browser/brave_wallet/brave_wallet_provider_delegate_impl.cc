@@ -14,7 +14,7 @@
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/render_frame_host.h"
@@ -123,8 +123,8 @@ void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(
     RequestEthereumPermissionsCallback callback) {
   // Check if there's already a permission request in progress
   auto* rfh = content::RenderFrameHost::FromID(host_id_);
-  if (rfh &&
-      permissions::BraveEthereumPermissionContext::HasRequestsInProgress(rfh)) {
+  if (rfh && permissions::BraveWalletPermissionContext::HasRequestsInProgress(
+                 rfh, permissions::RequestType::kBraveEthereum)) {
     std::move(callback).Run(
         std::vector<std::string>(), mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
@@ -186,7 +186,8 @@ void BraveWalletProviderDelegateImpl::
     return;
   }
 
-  permissions::BraveEthereumPermissionContext::RequestPermissions(
+  permissions::BraveWalletPermissionContext::RequestPermissions(
+      ContentSettingsType::BRAVE_ETHEREUM,
       content::RenderFrameHost::FromID(host_id_), addresses,
       base::BindOnce(&OnRequestEthereumPermissions, addresses,
                      keyring_service_->GetSelectedAccount(mojom::CoinType::ETH),
@@ -211,7 +212,8 @@ void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
               addresses.push_back(account_info->address);
             }
 
-            permissions::BraveEthereumPermissionContext::GetAllowedAccounts(
+            permissions::BraveWalletPermissionContext::GetAllowedAccounts(
+                ContentSettingsType::BRAVE_ETHEREUM,
                 content::RenderFrameHost::FromID(host_id), addresses,
                 base::BindOnce(&OnGetAllowedAccounts,
                                include_accounts_when_locked, selected_account,

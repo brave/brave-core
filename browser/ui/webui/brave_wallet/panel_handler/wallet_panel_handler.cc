@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/callback.h"
-#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 
 WalletPanelHandler::WalletPanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
@@ -42,8 +42,7 @@ void WalletPanelHandler::ConnectToSite(
   if (!contents)
     return;
 
-  permissions::BraveEthereumPermissionContext::AcceptOrCancel(accounts,
-                                                              contents);
+  permissions::BraveWalletPermissionContext::AcceptOrCancel(accounts, contents);
 }
 
 void WalletPanelHandler::CancelConnectToSite() {
@@ -51,7 +50,7 @@ void WalletPanelHandler::CancelConnectToSite() {
   if (!contents)
     return;
 
-  permissions::BraveEthereumPermissionContext::Cancel(contents);
+  permissions::BraveWalletPermissionContext::Cancel(contents);
 }
 
 void WalletPanelHandler::SetCloseOnDeactivate(bool close) {

@@ -16,26 +16,40 @@ TEST_F(PermissionsClientUnitTest, BraveCanBypassEmbeddingOriginCheck) {
   auto* client = PermissionsClient::Get();
   ASSERT_TRUE(client);
 
-  GURL requesting_origin(
-      "https://test.com0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A");
-  GURL embedding_origin("https://test.com");
-  EXPECT_TRUE(client->BraveCanBypassEmbeddingOriginCheck(
-      requesting_origin, embedding_origin,
-      ContentSettingsType::BRAVE_ETHEREUM));
+  struct {
+    GURL requesting_origin;
+    GURL requesting_origin_with_port;
+    ContentSettingsType type;
+  } cases[] = {
+      {GURL("https://test.com0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A"),
+       GURL("https://test.com0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A:123"),
+       ContentSettingsType::BRAVE_ETHEREUM},
+      {GURL("https://test.com__BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8"),
+       GURL("https://"
+            "test.com__BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8:123"),
+       ContentSettingsType::BRAVE_SOLANA}};
 
-  GURL requesting_origin_with_port(
-      "https://test.com0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A:123");
-  GURL embedding_origin_with_port("https://test.com:123");
-  EXPECT_TRUE(client->BraveCanBypassEmbeddingOriginCheck(
-      requesting_origin_with_port, embedding_origin_with_port,
-      ContentSettingsType::BRAVE_ETHEREUM));
+  for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
+    GURL embedding_origin("https://test.com");
+    EXPECT_TRUE(client->BraveCanBypassEmbeddingOriginCheck(
+        cases[i].requesting_origin, embedding_origin, cases[i].type))
+        << "case: " << i;
 
-  EXPECT_FALSE(client->BraveCanBypassEmbeddingOriginCheck(
-      requesting_origin, GURL("https://test1.com"),
-      ContentSettingsType::BRAVE_ETHEREUM));
+    GURL embedding_origin_with_port("https://test.com:123");
+    EXPECT_TRUE(client->BraveCanBypassEmbeddingOriginCheck(
+        cases[i].requesting_origin_with_port, embedding_origin_with_port,
+        cases[i].type))
+        << "case: " << i;
 
-  EXPECT_FALSE(client->BraveCanBypassEmbeddingOriginCheck(
-      requesting_origin, embedding_origin, ContentSettingsType::GEOLOCATION));
+    EXPECT_FALSE(client->BraveCanBypassEmbeddingOriginCheck(
+        cases[i].requesting_origin, GURL("https://test1.com"), cases[i].type))
+        << "case: " << i;
+
+    EXPECT_FALSE(client->BraveCanBypassEmbeddingOriginCheck(
+        cases[i].requesting_origin, embedding_origin,
+        ContentSettingsType::GEOLOCATION))
+        << "case: " << i;
+  }
 }
 
 }  // namespace permissions

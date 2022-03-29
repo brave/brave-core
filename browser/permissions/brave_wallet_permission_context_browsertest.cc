@@ -7,9 +7,9 @@
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -46,15 +46,15 @@ void OnGetAllowedAccountsResult(
 
 }  // namespace
 
-class BraveEthereumPermissionContextBrowserTest : public InProcessBrowserTest {
+class BraveWalletPermissionContextBrowserTest : public InProcessBrowserTest {
  public:
-  BraveEthereumPermissionContextBrowserTest()
+  BraveWalletPermissionContextBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     scoped_feature_list_.InitAndEnableFeature(
         brave_wallet::features::kNativeBraveWalletFeature);
   }
 
-  ~BraveEthereumPermissionContextBrowserTest() override = default;
+  ~BraveWalletPermissionContextBrowserTest() override = default;
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
@@ -100,7 +100,7 @@ class BraveEthereumPermissionContextBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveEthereumPermissionContextBrowserTest,
+IN_PROC_BROWSER_TEST_F(BraveWalletPermissionContextBrowserTest,
                        GetAllowedAccounts) {
   std::vector<std::string> addresses = {
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
@@ -109,8 +109,8 @@ IN_PROC_BROWSER_TEST_F(BraveEthereumPermissionContextBrowserTest,
 
   // Fail if rfh is null.
   bool was_called = false;
-  BraveEthereumPermissionContext::GetAllowedAccounts(
-      nullptr /* rfh */, addresses,
+  BraveWalletPermissionContext::GetAllowedAccounts(
+      ContentSettingsType::BRAVE_ETHEREUM, nullptr /* rfh */, addresses,
       base::BindOnce(&OnGetAllowedAccountsResult, &was_called, false,
                      std::vector<std::string>()));
   content::RunAllTasksUntilIdle();
@@ -121,8 +121,9 @@ IN_PROC_BROWSER_TEST_F(BraveEthereumPermissionContextBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   // No allowed accounts before setting permissions.
-  BraveEthereumPermissionContext::GetAllowedAccounts(
-      web_contents()->GetMainFrame(), addresses,
+  BraveWalletPermissionContext::GetAllowedAccounts(
+      ContentSettingsType::BRAVE_ETHEREUM, web_contents()->GetMainFrame(),
+      addresses,
       base::BindOnce(&OnGetAllowedAccountsResult, &was_called, true,
                      std::vector<std::string>()));
 
@@ -136,21 +137,23 @@ IN_PROC_BROWSER_TEST_F(BraveEthereumPermissionContextBrowserTest,
   for (const auto& account : expected_allowed_accounts) {
     url::Origin sub_request_origin;
     ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
-        GetLastCommitedOrigin(), account, &sub_request_origin));
+        permissions::RequestType::kBraveEthereum, GetLastCommitedOrigin(),
+        account, &sub_request_origin));
     host_content_settings_map()->SetContentSettingDefaultScope(
         sub_request_origin.GetURL(), GetLastCommitedOrigin().GetURL(),
         ContentSettingsType::BRAVE_ETHEREUM,
         ContentSetting::CONTENT_SETTING_ALLOW);
   }
-  BraveEthereumPermissionContext::GetAllowedAccounts(
-      web_contents()->GetMainFrame(), addresses,
+  BraveWalletPermissionContext::GetAllowedAccounts(
+      ContentSettingsType::BRAVE_ETHEREUM, web_contents()->GetMainFrame(),
+      addresses,
       base::BindOnce(&OnGetAllowedAccountsResult, &was_called, true,
                      expected_allowed_accounts));
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(was_called);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveEthereumPermissionContextBrowserTest,
+IN_PROC_BROWSER_TEST_F(BraveWalletPermissionContextBrowserTest,
                        GetAllowedAccountsBlock3PIframe) {
   std::vector<std::string> addresses = {
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
@@ -163,8 +166,8 @@ IN_PROC_BROWSER_TEST_F(BraveEthereumPermissionContextBrowserTest,
 
   bool was_called = false;
   auto* iframe_rfh = ChildFrameAt(web_contents()->GetMainFrame(), 0);
-  BraveEthereumPermissionContext::GetAllowedAccounts(
-      iframe_rfh, addresses,
+  BraveWalletPermissionContext::GetAllowedAccounts(
+      ContentSettingsType::BRAVE_ETHEREUM, iframe_rfh, addresses,
       base::BindOnce(&OnGetAllowedAccountsResult, &was_called, false,
                      std::vector<std::string>()));
   content::RunAllTasksUntilIdle();

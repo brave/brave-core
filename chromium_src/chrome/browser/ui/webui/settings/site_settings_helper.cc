@@ -31,7 +31,7 @@
     return ContentSettingsType::AUTOPLAY;                                \
   if (name == "ethereum")                                                \
     return ContentSettingsType::BRAVE_ETHEREUM;                          \
-  if (name == "solana")                                                \
+  if (name == "solana")                                                  \
     return ContentSettingsType::BRAVE_SOLANA;
 
 #include "src/chrome/browser/ui/webui/settings/site_settings_helper.cc"

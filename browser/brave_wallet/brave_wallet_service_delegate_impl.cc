@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -117,9 +117,8 @@ void BraveWalletServiceDelegateImpl::AddEthereumPermission(
     const url::Origin& origin,
     const std::string& account,
     AddEthereumPermissionCallback callback) {
-  bool success =
-      permissions::BraveEthereumPermissionContext::AddEthereumPermission(
-          context_, origin, account);
+  bool success = permissions::BraveWalletPermissionContext::AddPermission(
+      ContentSettingsType::BRAVE_ETHEREUM, context_, origin, account);
   std::move(callback).Run(success);
 }
 
@@ -128,9 +127,9 @@ void BraveWalletServiceDelegateImpl::HasEthereumPermission(
     const std::string& account,
     HasEthereumPermissionCallback callback) {
   bool has_permission = false;
-  bool success =
-      permissions::BraveEthereumPermissionContext::HasEthereumPermission(
-          context_, origin, account, &has_permission);
+  bool success = permissions::BraveWalletPermissionContext::HasPermission(
+      ContentSettingsType::BRAVE_ETHEREUM, context_, origin, account,
+      &has_permission);
   std::move(callback).Run(success, has_permission);
 }
 
@@ -138,9 +137,8 @@ void BraveWalletServiceDelegateImpl::ResetEthereumPermission(
     const url::Origin& origin,
     const std::string& account,
     ResetEthereumPermissionCallback callback) {
-  bool success =
-      permissions::BraveEthereumPermissionContext::ResetEthereumPermission(
-          context_, origin, account);
+  bool success = permissions::BraveWalletPermissionContext::ResetPermission(
+      ContentSettingsType::BRAVE_ETHEREUM, context_, origin, account);
   std::move(callback).Run(success);
 }
 

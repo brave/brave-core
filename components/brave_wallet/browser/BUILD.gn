@@ -149,18 +149,21 @@ static_library("browser") {
   ]
 }
 
-static_library("ethereum_permission_utils") {
-  sources = [
-    "ethereum_permission_utils.cc",
-    "ethereum_permission_utils.h",
-  ]
+if (!is_ios) {
+  static_library("permission_utils") {
+    sources = [
+      "permission_utils.cc",
+      "permission_utils.h",
+    ]
 
-  deps = [
-    ":utils",
-    "//base",
-    "//third_party/re2",
-    "//url",
-  ]
+    deps = [
+      ":utils",
+      "//base",
+      "//components/permissions:permissions_common",
+      "//third_party/re2",
+      "//url",
+    ]
+  }
 }
 
 source_set("constants") {
