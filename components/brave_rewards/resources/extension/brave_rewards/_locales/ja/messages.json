@@ -62,8 +62,8 @@
     "message": "自動支援の対象にする",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "毎月の支援",
+  "monthlyTip": {
+    "message": "毎月のチップ",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "毎月のチップ",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "認証済み",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "一度だけチップを送る",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "リワードのサマリ",
     "description": ""
   },
-  "walletVerified": {
-    "message": "認証済み",
+  "walletUnverified": {
+    "message": "未認証",
     "description": ""
   },
-  "walletVerify": {
-    "message": "認証する",
+  "walletVerified": {
+    "message": "認証済み",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "資金が不足しているため、予定されていた月次の自動支援の支払いと毎月の支援が完了できませんでした。30日以内に再試行します。",
+    "message": "自動寄付のためにスケジュールされた毎月の支払いと毎月のチップは、残高不足のため完了できませんでした。30日後に再実行します。",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "毎月の支援ができませんでした",
+    "message": "毎月のチップの処理に失敗しました",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "毎月の定期支援が処理されました。",
+    "message": "あなたの毎月のチップが処理されました。",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

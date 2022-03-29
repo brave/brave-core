@@ -50,6 +50,8 @@
 <translation id="1643029991199044105">Pārlūkojiet pēdējā laikā lietotās cilnes, izmantojot Ctrl-Tab</translation>
 <translation id="1013121820689882118">Ātrais lasītājs</translation>
 <translation id="2025435450953474282">Raksti tiek automātiski ielādēti lasītāja režīmā, ietaupot jūsu laiku</translation>
+<translation id="5510493033031835532">Automātiski novirzīt AMP lapas</translation>
+<translation id="5197219128592971597">Vienmēr apmeklējiet sākotnējo (kas nav AMP) lapu URL, nevis Google paātrināto mobilo lapu versijas</translation>
 <translation id="5802665280774361839">Parādīt automātiskās pabeigšanas ierakstus adreses joslā</translation>
 <translation id="597020512043916976">Rādīt populārākās vietnes automātiskās pabeigšanas ieteikumos</translation>
 <translation id="264150068416846820">Rādīt Brave ieteiktās vietnes automātiskās pabeigšanas ieteikumos</translation>
@@ -217,10 +219,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="2414886740292270097">Tumšs</translation>
 <translation id="1360441190790440400">Tāds pats kā Linux</translation>
 <translation id="1336940801687497203">Tāds pats kā Windows</translation>
-<translation id="5919209812221905840">Microsoft Edge protokola noklusējuma apdarinātājs</translation>
-<translation id="5239541974656019812">Padarīt Brave par Microsoft Edge protokola apdarinātāju</translation>
-<translation id="7136694880210472378">Iestatīt par noklusējumu</translation>
-<translation id="1751388324499810661">Brave ir Microsoft Edge protokola noklusējuma apdarinātājs</translation>
 <translation id="8721331068159819483">Tāds pats kā macOS</translation>
 <translation id="2896916411183256228">Izmanto programmu WebTorrent, lai torentus parādītu uzreiz pārlūkprogrammā. Atbalsta torentu failus un magnētiskās saites.</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -232,6 +230,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="4718664830805652430">Noklusējuma pamata valūta</translation>
 <translation id="7992507032049865603">Noklusējuma pamata kriptovalūta</translation>
 <translation id="1834467296210148203">Rādīt Brave maka ikonu rīkjoslā</translation>
+<translation id="4613486011786721686">Paslēpt Brave maka ikonu rīkjoslā</translation>
 <translation id="8239147115686034860">Automātiski bloķēt Brave maku</translation>
 <translation id="414639769490080648">Minūšu skaits, kas jāgaida, līdz Brave maks tiek automātiski bloķēts.</translation>
 <translation id="6864914031231797928">Atļaut Google pieteikšanos paplašinājumiem</translation>
@@ -393,7 +392,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="8712637175834984815">Sapratu!</translation>
 <translation id="4394049700291259645">Atspējot</translation>
 <translation id="7142548388914389999">Atļaut privātuma nodrošināšanas produktu analīzi (P3A)</translation>
-<translation id="609106526832379947">Šī pilnībā anonimizētā informācija palīdz Brave aprēķināt atsevišķu funkciju kopējo lietojumu un uzlabot tās.</translation>
+<translation id="8286082624639565868">Šī pilnībā anonimizētā informācija palīdz Brave aprēķināt atsevišķu funkciju kopējo lietojumu un uzlabot tās.</translation>
 <translation id="1947672064022327074">Vai vēlaties palaist kripto makus Ethereum atbalstam?</translation>
 <translation id="7583735190612229830">Iestatiet kripto makus, lai tie mijiedarbotos ar šo lietotni un citām tai līdzīgām lietotnēm.</translation>
 <translation id="8731422418734770661">Iestatīt Crypto Wallets</translation>
@@ -437,6 +436,10 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="2808630562319398131">Atiestatīt Brave Rewards datus...</translation>
 <translation id="2273851479262317744">Iestatīt Brave kā noklusējuma pārlūku</translation>
 <translation id="8581710194025054669">Lai tiešsaistē nodrošinātu augstāko privātuma līmeni, apsveriet iespēju iestatīt Brave kā datora noklusējuma pārlūku. Izmantojot Brave kā noklusējuma pārlūku, jebkura tīmekļa saite, uz kuras noklikšķināsiet, tiks atvērta, piemērojot Brave privātuma aizsardzību.</translation>
+<translation id="1968543937259008435">Vai esat gatavs izbaudīt drošāko privātumu tiešsaistē?</translation>
+<translation id="6817415381278637662">Iestatiet Brave kā savu noklusējuma pārlūku, lai saņemtu Brave privātuma aizsardzību ikvienā tīmekļa lapā, kuru atverat.</translation>
+<translation id="8722651357687610395">Iestatīt Brave kā noklusējuma pārlūku</translation>
+<translation id="2370739752330685659">Varbūt vēlāk</translation>
 <translation id="1241283133946520352">Tīkli</translation>
 <translation id="8205945804087322170">Pievienot jaunu tīklu</translation>
 <translation id="2156993118928861787">Nederīga adrese</translation>

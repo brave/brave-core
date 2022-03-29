@@ -62,8 +62,8 @@
     "message": "Automatikus Hozzájárulással",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "Havi hozzájárulás",
+  "monthlyTip": {
+    "message": "Havi borravaló",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "Havi juttatások",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Ellenőrzött",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Egyszeri adományok",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Jutalmak összefoglalója",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Ellenőrzött",
+  "walletUnverified": {
+    "message": "Nincs ellenőrizve",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Ellenőrzés",
+  "walletVerified": {
+    "message": "Ellenőrzött",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "A tervezett havi fizetését és az automatikus hozzájárulást nem lehet kifizetni fedezethiány miatt. 30 nap múlva újrapróbáljuk.",
+    "message": "Fedezethiány miatt az ütemezett havi automatikus hozzájárulást nem lehetett végrehajtani. 30 nap múlva újra megpróbáljuk.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Havi hozzájárulás sikertelen",
+    "message": "A havi borravaló küldése nem sikerült",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "A havi hozzájárulásaidat feldolgoztuk.",
+    "message": "Havi borravalóit feldolgoztuk.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

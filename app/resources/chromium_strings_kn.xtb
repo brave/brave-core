@@ -130,7 +130,6 @@
 <translation id="5536657158619734169">Brave ನ ಹೊಸ ಆವೃತ್ತಿ ಲಭ್ಯವಿದೆ.</translation>
 <translation id="239760341987199724">Brave ಅನ್ನು ನಿಮ್ಮ ಡಿಫಾಲ್ಟ್ ಬ್ರೌಸರ್‌ ರೂಪದಲ್ಲಿ ಹೊಂದಿಸಿ</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave ಬೀಟಾ</translation>
-<translation id="707769633889902835">Chrome OS ಗೆ ಈ ಪುಟ ತೆರೆಯಲಾಗುವುದಿಲ್ಲ.</translation>
 <translation id="696826782632239602">ಈ ಸೈಟ್‌ ಜೊತೆಗೆ ನಿಮ್ಮ ಸ್ಥಳವನ್ನು ಹಂಚಿಕೊಳ್ಳಲು Brave ಗೆ ನಿಮ್ಮ ಸ್ಥಳವನ್ನು ಪ್ರವೇಶಿಸುವ ಅಗತ್ಯವಿದೆ</translation>
 <translation id="1744365871163268756">ದಯವಿಟ್ಟು ಇತ್ತೀಚಿನ ಸಿಸ್ಟಂ ನವೀಕರಣಗಳನ್ನು Brave ಸ್ಥಾಪಿಸುವಾಗ ಕಾಯಿರಿ.</translation>
 <translation id="3861679447659630159">Brave, ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ಎಡಿಟ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದೆ. ಇದನ್ನು ಅನುಮತಿಸಲು ನಿಮ್ಮ Windows ಪಾಸ್‌ವರ್ಡ್‌ ಅನ್ನು ಟೈಪ್ ಮಾಡಿ.</translation>
@@ -191,7 +190,7 @@
 <translation id="8291513491595858997">ನಿಮ್ಮ ಪೋಷಕರು Brave ನಲ್ಲಿ "ಸೈಟ್‌ಗಳು, ಆ್ಯಪ್‌ಗಳು ಮತ್ತು ವಿಸ್ತರಣೆಗಳಿಗಾಗಿ ಅನುಮತಿಗಳನ್ನು" ಆಫ್ ಮಾಡಿದ್ದಾರೆ. ಈ <ph name="EXTENSION_TYPE_PARAMETER"/> ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ಅನುಮತಿಯಿಲ್ಲ.</translation>
 <translation id="8211837073776713955">ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್‌ಗಳು ಎಂದಾದರೂ ಹ್ಯಾಕ್‌ ಆಗಿವೆಯೇ ಎಂಬುದನ್ನು Brave ನಿಮಗೆ ತಿಳಿಸುತ್ತದೆ</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (Brave ಗೆ ನಕಲಿಸಲಾಗಿದೆ)</translation>
+<translation id="2049565899730874086">Google Pay (Brave ಗೆ ನಕಲಿಸಲಾಗಿದೆ)</translation>
 <translation id="3028928628792374067">"<ph name="EXTENSION_NAME"/>" ನಲ್ಲಿ ಮಾಲ್‌ವೇರ್ ಇರುವುದನ್ನು Brave ಪತ್ತೆಹಚ್ಚಿದೆ</translation>
 <translation id="2301993384336631869">Brave ಅಪ್‌ಡೇಟ್‌ ಮಾಡಲಾಗಿದೆ, ಆದರೆ ನೀವು ಕನಿಷ್ಠ 30 ದಿನಗಳವರೆಗಾದರೂ ಇದನ್ನು ಬಳಸಿರಲಿಕ್ಕಿಲ್ಲ.</translation>
 <translation id="8828443087767259398">ಜೋಡಣೆಯನ್ನು ಮುಂದುವರಿಸಲು Brave ಗೆ ಬ್ಲೂಟೂತ್ ಪ್ರವೇಶದ ಅಗತ್ಯವಿದೆ. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -282,6 +281,12 @@
 <translation id="4484434718272972655">Brave ಅನ್ನು ಯಾರು ಬಳಸುತ್ತಿದ್ದಾರೆ?</translation>
 <translation id="7173394303099002355">Brave ನ ಪ್ರಬಲ ಭದ್ರತೆಯನ್ನು ಪಡೆಯಿರಿ</translation>
 <translation id="8992261409816268381">Brave ಲೇಖಕರು</translation>
+<translation id="479793348545936567">ಈ ಖಾತೆಯನ್ನು ಒಂದು ಬಾರಿ ಮಾತ್ರ ನೀವು ಬಳಸಲು ಬಯಸಿದರೆ, Brave ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಅತಿಥಿ ಮೋಡ್ ಅನ್ನು ನೀವು ಬಳಸಬಹುದು. ಇತರ ಯಾರಿಗೋ ನೀವು ಖಾತೆಯನ್ನು ಸೇರಿಸಲು ಬಯಸಿದರೆ, ನಿಮ್ಮ <ph name="DEVICE_TYPE"/> ಗೆ <ph name="LINK_BEGIN"/>ಹೊಸ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಸೇರಿಸಿ<ph name="LINK_END"/>.
+
+ನೀವು ಈಗಾಗಲೇ ಅನುಮತಿ ನೀಡಿರುವ ವೆಬ್‌ಸೈಟ್‌ಗಳು ಮತ್ತು ಆ್ಯಪ್‌ಗಳು ಈ ಖಾತೆಗೆ ಅನ್ವಯಿಸಬಹುದು. <ph name="SETTINGS_LINK_BEGIN"/>ಸೆಟ್ಟಿಂಗ್ಸ್‌ನಲ್ಲಿ<ph name="SETTINGS_LINK_END"/> ನಿಮ್ಮ Brave ಸಿಂಕ್‌ ಚೈನ್‌ಗಳನ್ನು ನೀವು ನಿರ್ವಹಿಸಬಹುದು.</translation>
+<translation id="5359574361379286250">ಈ ಖಾತೆಯನ್ನು ಒಂದು ಬಾರಿ ಮಾತ್ರ ನೀವು ಬಳಸಲು ಬಯಸಿದರೆ, Brave ಬ್ರೌಸರ್‌ನಲ್ಲಿ <ph name="GUEST_LINK_BEGIN"/>ಅತಿಥಿ ಮೋಡ್<ph name="GUEST_LINK_END"/> ಅನ್ನು ನೀವು ಬಳಸಬಹುದು. ಇತರ ಯಾರಿಗೋ ನೀವು ಖಾತೆಯನ್ನು ಸೇರಿಸಲು ಬಯಸಿದರೆ, ನಿಮ್ಮ <ph name="DEVICE_TYPE"/> ಗೆ <ph name="LINK_BEGIN"/>ಹೊಸ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಸೇರಿಸಿ.<ph name="LINK_END"/>
+
+ನೀವು ಈಗಾಗಲೇ ಅನುಮತಿ ನೀಡಿರುವ ವೆಬ್‌ಸೈಟ್‌ಗಳು ಮತ್ತು ಆ್ಯಪ್‌ಗಳು ಈ ಖಾತೆಗೆ ಅನ್ವಯಿಸಬಹುದು. <ph name="SETTINGS_LINK_BEGIN"/>ಸೆಟ್ಟಿಂಗ್ಸ್‌ನಲ್ಲಿ<ph name="SETTINGS_LINK_END"/> ನಿಮ್ಮ Brave ಸಿಂಕ್‌ ಚೈನ್‌ಗಳನ್ನು ನೀವು ನಿರ್ವಹಿಸಬಹುದು.</translation>
 <translation id="1299765473362724475">ಎಚ್ಚರಿಕೆ: ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್‌ ಇತಿಹಾಸದಲ್ಲಿ ರೆಕಾರ್ಡಿಂಗ್‌ನಿಂದ ವಿಸ್ತರಣೆಗಳನ್ನು ತಡೆಯುವುದಿಲ್ಲ. ಅಜ್ಞಾತ ಮೋಡ್‌ನಲ್ಲಿ ವಿಸ್ತರಣೆಯನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲು ಈ ಆಯ್ಕೆಯನ್ನು ಆರಿಸಬೇಡಿ.</translation>
 <translation id="1448049584457347995">Brave  ಅನ್ನು ಸುರಕ್ಷಿತವಾಗಿರಿಸಲು, <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ನಲ್ಲಿ ನಾವು ಪಟ್ಟಿ ಮಾಡಲಾದ ಕೆಲವು ವಿಸ್ತರಣೆಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿದ್ದೇವೆ ಮತ್ತು ಇದು ಗಮನಕ್ಕೆ ಬಾರದೇ ಸೇರಿಸಿರಬಹುದು.</translation>
 <translation id="8848045066928358658">Brave ಅನ್ನು ಸುರಕ್ಷಿತವಾಗಿರಿಸಲು, <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ನಲ್ಲಿ ಪಟ್ಟಿ ಮಾಡದಿರುವ ಕೆಳಗಿನ ವಿಸ್ತರಣೆಯನ್ನು ನಾವು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿದ್ದೇವೆ ಮತ್ತು ಇದು ನಿಮ್ಮ ಗಮನಕ್ಕೆ ಬಾರದೇ ಸೇರಿಸಲಾಗಿರಬಹುದು.</translation>

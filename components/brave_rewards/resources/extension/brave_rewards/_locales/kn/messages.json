@@ -62,8 +62,8 @@
     "message": "ಸ್ವಯಂ-ಕೊಡುಗೆಯಲ್ಲಿ ಸೇರಿ",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "ಮಾಸಿಕ ಕೊಡುಗೆ",
+  "monthlyTip": {
+    "message": "ಮಾಸಿಕ ಸಲಹೆ",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "ಮಾಸಿಕ ಇನಾಮು",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "ಒಂದು ಬಾರಿಯ ಸಲಹೆಗಳು",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "ಪುರಸ್ಕಾರಗಳ ಸಾರಾಂಶ",
     "description": ""
   },
-  "walletVerified": {
-    "message": "ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
+  "walletUnverified": {
+    "message": "ಪರಿಶೀಲಿಸಿಲ್ಲ",
     "description": ""
   },
-  "walletVerify": {
-    "message": "ಪರಿಶೀಲಿಸಿ",
+  "walletVerified": {
+    "message": "ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "ಸ್ವಯಂ ಕೊಡುಗೆಗಾಗಿ ನಿಮ್ಮ ನಿಗದಿತ ಮಾಸಿಕ ಪಾವತಿಯನ್ನು ಮತ್ತು ಮಾಸಿಕ ಕೊಡುಗೆಗಳನ್ನು ಸಾಕಷ್ಟು ಹಣವಿಲ್ಲದ ಕಾರಣದಿಂದಾಗಿ ಪೂರ್ಣಗೊಳಿಸಲಾಗಲಿಲ್ಲ. ನಾವು 30 ದಿನಗಳಲ್ಲಿ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸುತ್ತೇವೆ.",
+    "message": "ನೀವು ಸ್ವಯಂ ಪೂರ್ಣತೆಗಾಗಿ ಮಾಸಿಕ ಪಾವತಿಯನ್ನು ನಿಗದಿಪಡಿಸಿರುವಿರಿ ಮತ್ತು ಸಾಕಷ್ಟು ಹಣವಿಲ್ಲದ ಕಾರಣದಿಂದಾಗಿ ಮಾಸಿಕ ಟಿಪ್‌ಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಲಾಗುತ್ತಿಲ್ಲ. ನಾವು 30 ದಿನಗಳಲ್ಲಿ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸುತ್ತೇವೆ.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "ಮಾಸಿಕ ಕೊಡುಗೆ ವಿಫಲಗೊಂಡಿದೆ",
+    "message": "ಮಾಸಿಕ ಸಲಹೆ ವಿಫಲವಾಗಿದೆ",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "ನಿಮ್ಮ ಮಾಸಿಕ ಕೊಡುಗೆಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲಾಗಿದೆ.",
+    "message": "ನಿಮ್ಮ ಮಾಸಿಕ ಸಲಹೆಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲಾಗಿದೆ.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

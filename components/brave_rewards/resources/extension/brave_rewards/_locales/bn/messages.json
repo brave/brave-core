@@ -62,8 +62,8 @@
     "message": "স্বয়ংক্রিয়ভাবে অবদান রাখায় অন্তর্ভুক্ত করুন",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "মাসিক অবদান",
+  "monthlyTip": {
+    "message": "পুনরাবৃত্তি হওয়া দান",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "মাসিক পরামর্শ",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "যাচাইকৃত",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "একবারের দান/পরামর্শ",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "রিওয়ার্ডসের সংক্ষিপ্তসার",
     "description": ""
   },
-  "walletVerified": {
-    "message": "যাচাইকৃত",
+  "walletUnverified": {
+    "message": "যাচাই করা হয়নি",
     "description": ""
   },
-  "walletVerify": {
-    "message": "যাচাই করুন",
+  "walletVerified": {
+    "message": "যাচাইকৃত",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "পর্যাপ্ত ফান্ড না থাকার কারণে আপনার স্বতঃ-প্রদান এবং মাসিক অবদানগুলির জন্য আপনার নির্ধারিত মাসিক অর্থপ্রদান সম্পূর্ণ করা যায়নি৷ আমরা 30 দিনের মধ্যে আবার চেষ্টা করব।",
+    "message": "পর্যাপ্ত ফান্ড না থাকার জন্য স্বতঃ-প্রদান এবং মাসিক টিপগুলির জন্য আপনার সময় নির্ধারিত মাসিক অর্থপ্রদান সম্পূর্ণ করা যায়নি। আমরা 30 দিনের মধ্যে আবার চেষ্টা করব।",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "মাসিক অনুদান ব্যর্থ হয়েছে",
+    "message": "মাসিক বখশিশ ব্যর্থ হয়েছে",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "আপনার মাসিক অনুদানগুলোর প্রক্রিয়াকরণ করা হয়েছে।",
+    "message": "আপনার মাসিক টিপ-গুলির প্রক্রিয়া করা হয়েছে।",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

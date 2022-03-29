@@ -131,7 +131,6 @@
 <translation id="5536657158619734169">‏نسخه جدیدی از Brave موجود است.</translation>
 <translation id="239760341987199724">‏تنظیم Brave به عنوان مرورگر پیش‌فرضتان</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
-<translation id="707769633889902835">‏Chrome OS نمی‌تواند این صفحه را باز کند.</translation>
 <translation id="696826782632239602">‏Brave برای هم‌رسانی مکانتان با این سایت باید به مکان شما دسترسی داشته باشد</translation>
 <translation id="1744365871163268756">‏وقتی Brave جدیدترین به‌روزرسانی‌های سیستم را نصب می‌کند، لطفاً صبر کنید.</translation>
 <translation id="3861679447659630159">‏Brave می‌خواهد گذرواژه‌ها را ویرایش کند. برای اینکه اجازه دهید این کار انجام شود، گذرواژه Windows خود را تایپ کنید.</translation>
@@ -194,7 +193,7 @@
 <translation id="8291513491595858997">‏ولی‌تان «اجازه‌های مربوط به سایت‌ها، برنامه‌ها، و افزونه‌ها» را برای Brave خاموش کرده است. فعال کردن این <ph name="EXTENSION_TYPE_PARAMETER"/> مجاز نیست.</translation>
 <translation id="8211837073776713955">‏Brave می‌تواند، اگر گذرواژه‌هایتان در معرض خطر باشد، مطلعتان کند</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">‏Brave Pay (در Brave کپی شد)</translation>
+<translation id="2049565899730874086">‏Google Pay (در Brave کپی شد)</translation>
 <translation id="3028928628792374067">‏Brave متوجه شده است که «<ph name="EXTENSION_NAME"/>» حاوی بدافزار است</translation>
 <translation id="2301993384336631869">‏Brave به‌روز شده است اما حداقل ۳۰ روز از آن استفاده نکرده‌اید.</translation>
 <translation id="8828443087767259398">‏Brave باید برای ادامه مرتبط‌سازی به بلوتوث
@@ -288,6 +287,10 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="4484434718272972655">‏چه‌کسی از Brave استفاده می‌کند؟</translation>
 <translation id="7173394303099002355">‏دریافت قوی‌ترین امنیت Brave</translation>
 <translation id="8992261409816268381">Brave Authors</translation>
+<translation id="479793348545936567">اگر می‌خواهید فقط یک‌بار از این حساب استفاده کنید، می‌توانید از «حالت مهمان» در مرورگر Brave استفاده کنید. اگر می‌خواهید برای فردی دیگر حسابی اضافه کنید، <ph name="LINK_BEGIN"/>  نمایه‌ای جدید <ph name="LINK_END"/> به <ph name="DEVICE_TYPE"/> خود اضافه کنید.
+مجوزهایی که قبلاً به وب‌سایت‌ها و برنامه‌ها داده‌اید ممکن است در این حساب اعمال شوند. می‌توانید در <ph name="SETTINGS_LINK_BEGIN"/>تنظیمات<ph name="SETTINGS_LINK_END"/>، زنجیره‌های همگام‌سازی Brave خود را مدیریت کنید.</translation>
+<translation id="5359574361379286250">اگر می‌خواهید فقط یک‌بار از این حساب استفاده کنید، می‌توانید از <ph name="GUEST_LINK_BEGIN"/>حالت مهمان<ph name="GUEST_LINK_END"/> در مرورگر Brave استفاده کنید. اگر می‌خواهید برای فردی دیگر حسابی اضافه کنید، <ph name="LINK_BEGIN"/>نمایه‌ای جدید<ph name="LINK_END"/> به <ph name="DEVICE_TYPE"/> خود اضافه کنید.
+مجوزهایی که قبلاً به وب‌سایت‌ها و برنامه‌ها داده‌اید ممکن است در این حساب اعمال شوند. می‌توانید در <ph name="SETTINGS_LINK_BEGIN"/>تنظیمات<ph name="SETTINGS_LINK_END"/>، زنجیره‌های همگام‌سازی Brave خود را مدیریت کنید.</translation>
 <translation id="1299765473362724475">‏هشدار: Brave نمی‌تواند مانع از ثبت سابقه مرورتان توسط افزونه‌ها شود. برای غیرفعال کردن این افزونه در «حالت خصوصی»، این گزینه را لغو انتخاب کنید.</translation>
 <translation id="1448049584457347995">‏برای ایمن‌تر کردن Brave، برخی از افزونه‌هایی را که در <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> فهرست شده‌اند و ممکن است بدون اطلاع شما اضافه شده باشند، غیرفعال کردیم.</translation>
 <translation id="8848045066928358658">‏برای ایمن‌تر کردن Brave، افزونه زیر را که در <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> فهرست نشده است و ممکن است بدون اطلاع شما اضافه شده باشد، غیرفعال کردیم.</translation>

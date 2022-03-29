@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Any tip you make will remain pending and retry automatically for 90 days. $link_begin$Learn more$link_end$",
+    "message": "Wszystkie przekazane napiwki będą miały status oczekujących i ich wysłanie będzie automatycznie ponawiane przez 90 dni. $link_begin$Dowiedz się więcej$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "This creator is currently not configured to receive tips from your Rewards custodial wallet service.",
+    "message": "Obecna konfiguracja tego twórcy uniemożliwia otrzymywanie napiwków z usługi portfela powierniczego nagród.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -62,8 +62,8 @@
     "message": "Uwzględnij w wsparciu automatycznym",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "Miesięczny wkład",
+  "monthlyTip": {
+    "message": "Monthly Tip",
     "description": ""
   },
   "ok": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Your Reward is on its way.",
+    "message": "Twoja nagroda jest już w drodze.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -235,10 +235,6 @@
     "message": "Miesięczne napiwki",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Zweryfikowany",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Jednorazowe napiwki",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Podsumowanie nagród",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Zweryfikowany",
+  "walletUnverified": {
+    "message": "Unverified",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Weryfikuj",
+  "walletVerified": {
+    "message": "Zweryfikowany",
     "description": ""
   },
   "walletYourBalance": {
@@ -276,11 +272,11 @@
     "description": ""
   },
   "notificationClaimRewards": {
-    "message": "Claim Rewards",
+    "message": "Odbierz nagrody",
     "description": ""
   },
   "notificationClaimTokens": {
-    "message": "Claim Tokens",
+    "message": "Odbierz tokeny",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,11 +301,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Back up Brave Rewards",
+    "message": "Zrób kopię zapasową nagród Brave",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Please back up your Brave Rewards.",
+    "message": "Zrób kopię zapasową nagród Brave.",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -317,7 +313,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "You are logged out",
+    "message": "Wylogowano Cię",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Your Brave Rewards is verified!",
+    "message": "Twoje nagrody Brave zostały zweryfikowane!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Your Brave Rewards was successfully verified with $provider$.",
+    "message": "Twoje nagrody Brave zostały pomyślnie zweryfikowane przez $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,11 +338,11 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "A token grant is available!",
+    "message": "Dostępna jest subwencja tokenów!",
     "description": ""
   },
   "notificationAdGrantAmount": {
-    "message": "$month$ Rewards: $amount$",
+    "message": "$month$ Nagrody: $amount$",
     "description": "",
     "placeholders": {
       "month": {
@@ -358,7 +354,7 @@
     }
   },
   "notificationAdGrantTitle": {
-    "message": "Your $month$ Ad Rewards are here!",
+    "message": "Otrzymano nagrody za reklamy $month$!",
     "description": "",
     "placeholders": {
       "month": {
@@ -367,7 +363,7 @@
     }
   },
   "notificationGrantDaysRemaining": {
-    "message": "You have $days$ left to claim",
+    "message": "Pozostało do odebrania: $days$",
     "description": "",
     "placeholders": {
       "days": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Twoje zaplanowane miesięczne płatności, w celu realizacji automatycznego wsparcia nie mogły zostać przetworzone, ponieważ w Twoim portfelu brakuje środków. Spróbujemy ponownie za 30 dni.",
+    "message": "Twoje zaplanowane miesięczne płatności, w celu realizacji automatycznego wsparcia i comiesięcznych napiwków nie mogły zostać przetworzone, ponieważ w Twoim portfelu brakuje środków. Spróbujemy ponownie za 30 dni.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Nie udało się przetworzyć miesięcznego wkładu",
+    "message": "Monthly tip failed",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Twoje miesięczne wsparcie zostało przetworzone.",
+    "message": "Your monthly tips have been processed.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {
@@ -559,7 +555,7 @@
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "In order to withdraw the BAT you earn for viewing ads, you’ll need to verify Brave Rewards.",
+    "message": "Aby wycofać BAT otrzymane za oglądanie reklam, konieczne jest zweryfikowanie nagród Brave.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +563,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Verify Brave Rewards",
+    "message": "Weryfikuj nagrody Brave",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +571,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "By verifying your Brave Rewards and linking it to a bitFlyer account, you will be able to store and manage the BAT you have earned through Brave Rewards more easily",
+    "message": "Poprzez zweryfikowanie nagród Brave i połączenie ich z kontem bitFlyer otrzymasz możliwość przechowywania tokenów BAT otrzymanych z nagród Brave i łatwiejszego nimi zarządzania.",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {
@@ -607,7 +603,7 @@
     "description": ""
   },
   "captchaContactSupport": {
-    "message": "Skontaktuj się z działem pomocy technicznej!",
+    "message": "Skontaktuj się z pomocą techniczną",
     "description": ""
   },
   "captchaDismiss": {
