@@ -62,8 +62,8 @@
     "message": "ራስን አስተዋጽኦ ማድረግ መጨመር",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "ወርሐዊ መዋጮ",
+  "monthlyTip": {
+    "message": "Monthly Tip",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "ወርሓዊ መረጃዎች ",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "ተረጋግጧል",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "የአንድ ግዜ ምክሮች",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "የሽልማት ማጠቃለያ",
     "description": ""
   },
-  "walletVerified": {
-    "message": "ተረጋግጧል",
+  "walletUnverified": {
+    "message": "Unverified",
     "description": ""
   },
-  "walletVerify": {
-    "message": "አረጋግጥ",
+  "walletVerified": {
+    "message": "ተረጋግጧል",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "በቂ ገንዘብ ባለመኖሩ ምክንያት የእርስዎ መርሃ ግብር ለራስ-አስተዋፅኦ እና ለወርሃዊ መዋጮዎች ወርሃዊ ክፍያዎ መጠናቀቅ አልቻለም። በ 30 ቀናት ውስጥ እንደገና እንሞክራለን።",
+    "message": "\nበቂ ገንዘብ ባለመኖሩ ምክንያት የእርስዎ መርሃ ግብር ለራስ-አስተዋፅዖ እና ለወርሃዊ ምክሮች ወርሃዊ ክፍያዎ መጠናቀቅ አልቻለም. በ 30 ቀኖች ውስጥ እንደገና እንሞክራለን::",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "ወርሀዊ መዋጮዎ አልተሳካም",
+    "message": "Monthly tip failed",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "ወርሃዊ መዋጮዎችዎ ተካሂደዋል።",
+    "message": "Your monthly tips have been processed.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

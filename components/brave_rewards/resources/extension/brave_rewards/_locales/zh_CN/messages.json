@@ -62,8 +62,8 @@
     "message": "包含在自动贡献中",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "每月捐款",
+  "monthlyTip": {
+    "message": "每月打赏",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "每月赏金",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "已验证",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "一次赏金",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "奖励摘要",
     "description": ""
   },
-  "walletVerified": {
-    "message": "已验证",
+  "walletUnverified": {
+    "message": "未经验证",
     "description": ""
   },
-  "walletVerify": {
-    "message": "验证",
+  "walletVerified": {
+    "message": "已验证",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "由于资金不足，您安排的对自动捐赠和每月捐赠的每月支付无法完成。我们将会在30天后重试。",
+    "message": "由于资金不足，您无法完成预定的每月自动付款和每月打赏。我们会在30天后重试。",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "发送月供时失败",
+    "message": "每月打赏失败",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "您的每月供款已处理完毕。",
+    "message": "你的每月打赏已处理完毕。",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

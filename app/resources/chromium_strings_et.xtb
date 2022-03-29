@@ -132,7 +132,6 @@
 <translation id="5536657158619734169">Bravei uus versioon on saadaval.</translation>
 <translation id="239760341987199724">Määra Brave vaikebrauseriks</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Bravei beetaversioon</translation>
-<translation id="707769633889902835">Chrome OS ei saa seda lehte avada.</translation>
 <translation id="696826782632239602">Brave vajab juurdepääsu teie asukohale, et seda selle saidiga jagada</translation>
 <translation id="1744365871163268756">Oodake, kuni Brave installib uusimad süsteemivärskendused.</translation>
 <translation id="3861679447659630159">Brave püüab paroole muuta. Selle lubamiseks sisestage Windowsi parool.</translation>
@@ -195,7 +194,7 @@ On võimalik, et mõni funktsioon ei ole saadaval. Määrake muu profiilikataloo
 <translation id="8291513491595858997">Sinu vanem lülitas valiku „Saitide, rakenduste ja laienduste load” Bravei puhul välja. Laienduse <ph name="EXTENSION_TYPE_PARAMETER"/> lubamine on keelatud.</translation>
 <translation id="8211837073776713955">Brave annab teile teada, kui teie paroolid ohtu satuvad</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (kopeeritud Bravei)</translation>
+<translation id="2049565899730874086">Google Pay (kopeeritud Bravei)</translation>
 <translation id="3028928628792374067">Brave leidis, et laiendus „<ph name="EXTENSION_NAME"/>“ sisaldab pahavara</translation>
 <translation id="2301993384336631869">Bravei on värskendatud, kuid te ei ole seda kasutanud vähemalt 30 päeva.</translation>
 <translation id="8828443087767259398">Brave vajab sidumise jätkamiseks juurdepääsu Bluetoothile. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -289,6 +288,12 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="4484434718272972655">Kes kasutab Bravei?</translation>
 <translation id="7173394303099002355">Hankige Bravei parimad turbefunktsioonid</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="479793348545936567">Kui soovite kasutada seda kontot ainult ühel korral, võite kasutada Brave'i brauseris külalise režiimi. Kui soovite lisada konto kellegi teise jaoks, <ph name="LINK_BEGIN"/> lisage uus profiil<ph name="LINK_END"/> oma seadmesse <ph name="DEVICE_TYPE"/>.
+
+Selle konto suhtes võivad kehtida õigused, mille olete veebisaitidele ja rakendustele juba andnud. Oma Brave'i sünkroonimisahelaid saate hallata lehel <ph name="SETTINGS_LINK_BEGIN"/>Seaded<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Kui soovite kasutada seda kontot ainult ühel korral, võite kasutada Brave'i brauseris <ph name="GUEST_LINK_BEGIN"/>külalise režiimi<ph name="GUEST_LINK_END"/>. Kui soovite lisada konto kellegi teise jaoks, <ph name="LINK_BEGIN"/> lisage uus profiil<ph name="LINK_END"/> oma seadmesse <ph name="DEVICE_TYPE"/>.
+
+Selle konto suhtes võivad kehtida õigused, mille olete veebisaitidele ja rakendustele juba andnud. Oma Brave'i sünkroonimisahelaid saate hallata lehel <ph name="SETTINGS_LINK_BEGIN"/>Seaded<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Hoiatus. Brave ei saa takistada laiendustel teie sirvimisajalugu salvestada. Kui soovite laienduse Privaatses režiimis keelata, tühistage see valik.</translation>
 <translation id="1448049584457347995">Bravei turvalisemaks muutmiseks keelasime mõned laiendused, mida ei leidu veebipoes <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ja mille lisamisest te ei pruugi teadlik olla.</translation>
 <translation id="8848045066928358658">Bravei turvalisemaks muutmiseks keelasime järgmise laienduse, mida ei leidu veebipoes <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ja mis võidi lisada teie teadmata.</translation>

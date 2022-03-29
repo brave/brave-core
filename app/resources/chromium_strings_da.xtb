@@ -14,12 +14,18 @@
 <translation id="5147525139567260139">Del en Brave-fane</translation>
 <translation id="1530633922026945685">Brave skal have adgangstilladelse til dit kamera for at oprette et 3D-kort over dine omgivelser</translation>
 <translation id="4449148723378534338">Gennemgå vigtige privatlivs- og sikkerhedsindstillinger i Brave</translation>
+<translation id="5359574361379286250">Hvis du kun vil bruge denne konto én gang, kan du anvende <ph name="GUEST_LINK_BEGIN"/>Gæstetilstand<ph name="GUEST_LINK_END"/> i Brave-browseren. Hvis du vil tilføje en konto for en anden person, kan du <ph name="LINK_BEGIN"/>føje en ny person<ph name="LINK_END"/> til din <ph name="DEVICE_TYPE"/>.
+
+De tilladelser, du har givet til websites og apps, gælder muligvis for denne konto. Du kan administrere dine Brave-konti under <ph name="SETTINGS_LINK_BEGIN"/>Indstillinger<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="5616153642055197778">Der findes en ny og mere sikker version af Brave.</translation>
 <translation id="6797402139308059782">Lad Brave køre i baggrunden</translation>
 <translation id="5875673934455379806">Geninstaller Brave</translation>
 <translation id="4528406859989804913">Du er ved at logge ind med en managerstyret konto og give dens administrator kontrol over din profil i Brave. Dine Brave-data, f.eks. dine apps, bogmærker, historikdata, adgangskoder og andre indstillinger, knyttes permanent til <ph name="USER_NAME"/>. Du kan slette disse data via kontrolpanelet for Brave Konti, men du kan ikke knytte disse data til en anden konto. Du kan eventuelt oprette en ny profil for at holde dine Brave-data adskilt. <ph name="LEARN_MORE"/></translation>
 <translation id="1649714546770135458">Når du deaktiverer denne indstilling, kan du logge ind på Brave-websites som f.eks. Gmail uden at logge ind i Brave</translation>
 <translation id="189297655255130768">Brave svarer ikke. Vil du genstarte nu?</translation>
+<translation id="479793348545936567">Hvis du kun vil bruge denne konto én gang, kan du anvende Gæstetilstand i Brave-browseren. Hvis du vil tilføje en konto for en anden person, kan du <ph name="LINK_BEGIN"/>føje en ny person<ph name="LINK_END"/> til din <ph name="DEVICE_TYPE"/>.
+
+De tilladelser, du har givet til websites og apps, gælder muligvis for denne konto. Du kan administrere dine Brave-konti under <ph name="SETTINGS_LINK_BEGIN"/>Indstillinger<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1775322105159056176">Brave kan ikke fastlægge eller angive standardbrowseren</translation>
 <translation id="7665553140559834626">Genstart og opdater &amp;Chrome OS</translation>
 <translation id="9220324636239049437">Denne handling sletter ét element på denne enhed. Hvis du senere vil hente dine data igen, skal du logge ind på Brave som <ph name="USER_EMAIL"/>.</translation>
@@ -132,7 +138,6 @@
 <translation id="5536657158619734169">Der er en ny version af Brave til rådighed.</translation>
 <translation id="239760341987199724">Angiv Brave som din standardbrowser</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave beta</translation>
-<translation id="707769633889902835">Chrome OS kan ikke åbne denne side.</translation>
 <translation id="696826782632239602">Brave skal have adgang til din lokation for at dele din lokation med dette website</translation>
 <translation id="1744365871163268756">Vent, mens Brave installerer de nyeste systemopdateringer.</translation>
 <translation id="3861679447659630159">Brave forsøger at redigere adgangskoder. Angiv din Windows-adgangskode for at tillade dette.</translation>
@@ -195,7 +200,7 @@ Visse funktioner kan være utilgængelige. Angiv en anden profilmappe, eller bru
 <translation id="8291513491595858997">Din forælder har deaktiveret "Tilladelser til websites, apps og udvidelser" for Brave. Det er ikke tilladt at aktivere denne <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8211837073776713955">Brave giver dig besked, hvis dine adgangskoder kompromitteres</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (kopieret til Brave)</translation>
+<translation id="2049565899730874086">Google Pay (kopieret til Brave)</translation>
 <translation id="3028928628792374067">Brave har registreret malware i "<ph name="EXTENSION_NAME"/>"</translation>
 <translation id="2301993384336631869">Brave er blevet opdateret, men du har ikke brugt den i 30 dage.</translation>
 <translation id="8828443087767259398">Brave skal have adgang til Bluetooth for at fortsætte 

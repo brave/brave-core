@@ -132,7 +132,6 @@
 <translation id="5536657158619734169">En nyere versjon av Brave er tilgjengelig.</translation>
 <translation id="239760341987199724">Bruk Brave som standard nettleser</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – betaversjon av Brave</translation>
-<translation id="707769633889902835">Chrome OS kan ikke åpne denne siden.</translation>
 <translation id="696826782632239602">Brave trenger tilgang til posisjonen din for å kunne dele den med dette nettstedet</translation>
 <translation id="1744365871163268756">Vent mens Brave installerer de nyeste systemoppdateringene.</translation>
 <translation id="3861679447659630159">Brave prøver å redigere passord. Skriv inn Windows-passordet ditt for å tillate dette.</translation>
@@ -195,7 +194,7 @@ Det er mulig at enkelte funksjoner ikke er tilgjengelige. Angi en annen profilka
 <translation id="8291513491595858997">Forelderen din har slått av «Tillatelser for nettsteder, apper og utvidelser» for Brave. Du har ikke tillatelse til å slå på denne <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8211837073776713955">Med Brave får du beskjed hvis passordene dine noensinne utsettes for sikkerhetsbrudd</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (kopiert til Brave)</translation>
+<translation id="2049565899730874086">Google Pay (kopiert til Brave)</translation>
 <translation id="3028928628792374067">Brave har oppdaget at «<ph name="EXTENSION_NAME"/>» inneholder skadelig programvare</translation>
 <translation id="2301993384336631869">Brave har blitt oppdatert, men du har ikke brukt den på minst 30 dager.</translation>
 <translation id="8828443087767259398">Brave trenger Bluetooth-tilgang for å fortsette tilkoblingen. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -289,6 +288,11 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="4484434718272972655">Hvem bruker Brave?</translation>
 <translation id="7173394303099002355">Få den sterkeste sikkerheten i Brave</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="479793348545936567">Hvis du vil bruke denne kontoen bare én gang, kan du bruke Gjest-modusen i Brave-nettleseren. Hvis du vil legge til en konto for noen andre, <ph name="LINK_BEGIN"/>legger du til en ny profil<ph name="LINK_END"/> i <ph name="DEVICE_TYPE"/>-en din.
+Tillatelser du allerede har gitt til nettsteder og apper kan også være gjeldende for denne kontoen. Du kan administrere Brave-synkroniseringskjedene dine under <ph name="SETTINGS_LINK_BEGIN"/>Innstillinger<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Hvis du bare vil bruke denne kontoen én gang,  kan du bruke <ph name="GUEST_LINK_BEGIN"/>Gjest-modusen<ph name="GUEST_LINK_END"/> i Brave-nettleseren. Hvis du vil legge til en konto for noen andre, <ph name="LINK_BEGIN"/>legger du til en ny profil<ph name="LINK_END"/> i <ph name="DEVICE_TYPE"/>-en din.
+
+Tillatelser du allerede har gitt til nettsteder og apper kan også være gjeldende for denne kontoen. Du kan administrere Brave-synkroniseringskjedene dine under <ph name="SETTINGS_LINK_BEGIN"/>Innstillinger<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Advarsel: Brave kan ikke forhindre utvidelser fra å lagre søkehistorikken din. For å deaktivere disse utvidelsene i privat modus, opphev merking av dette valget.</translation>
 <translation id="1448049584457347995">For å gjøre Brave tryggere, har vi deaktivert noen utvidelser som ikke er oppført i <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>, og som kan ha blitt lagt uten at du har vært klar over det.</translation>
 <translation id="8848045066928358658">For å gjøre Brave tryggere har vi slått av følgende utvidelse som ikke finnes i <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>, og som kan ha blitt lagt til uten at du vet det.</translation>

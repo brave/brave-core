@@ -62,8 +62,8 @@
     "message": "Automatisch unterstützen",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "Monatlicher Beitrag",
+  "monthlyTip": {
+    "message": "Monatliches Trinkgeld",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "Monatliche Spenden",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Verifiziert",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Einmalige Spenden",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Übersicht der Spenden",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Verifiziert",
+  "walletUnverified": {
+    "message": "Nicht verifiziert",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Überprüfen",
+  "walletVerified": {
+    "message": "Verifiziert",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Ihr Guthaben reicht nicht aus, um Ihre geplanten monatliche Zahlungen und Spenden zu verarbeiten. Deshalb werden wir es in 30 Tagen erneut versuchen.",
+    "message": "Ihre geplanten monatlichen automatischen Beiträge und Trinkgelder konnten aufgrund mangelnden Guthabens nicht gezahlt werden. Wir versuchen es in 30 Tagen erneut.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Monatlicher Beitrag fehlgeschlagen",
+    "message": "Monatliches Trinkgeld fehlgeschlagen",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Ihre monatlichen Beiträge wurden abgewickelt.",
+    "message": "Ihre monatlichen Trinkgelder wurden abgerechnet.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {
