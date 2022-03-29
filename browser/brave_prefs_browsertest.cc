@@ -66,8 +66,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       kHTTPSEVerywhereControlType));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kNoScriptControlType));
-  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      kReduceLanguageEnabled));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kShieldsAdvancedViewEnabled));
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
@@ -82,6 +80,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       brave_shields::prefs::kTwitterEmbedControlType));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       brave_shields::prefs::kLinkedInEmbedControlType));
+  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      brave_shields::prefs::kReduceLanguageEnabled));
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kWebTorrentEnabled));
