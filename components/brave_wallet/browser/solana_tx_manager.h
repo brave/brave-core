@@ -58,6 +58,8 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       mojom::SolanaTxManagerProxy::MakeSystemProgramTransferTxDataCallback;
   using MakeTokenProgramTransferTxDataCallback =
       mojom::SolanaTxManagerProxy::MakeTokenProgramTransferTxDataCallback;
+  using GetEstimatedTxFeeCallback =
+      mojom::SolanaTxManagerProxy::GetEstimatedTxFeeCallback;
   void MakeSystemProgramTransferTxData(
       const std::string& from,
       const std::string& to,
@@ -69,6 +71,8 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       const std::string& to_wallet_address,
       uint64_t amount,
       MakeTokenProgramTransferTxDataCallback callback);
+  void GetEstimatedTxFee(const std::string& tx_meta_id,
+                         GetEstimatedTxFeeCallback callback);
 
   std::unique_ptr<SolanaTxMeta> GetTxForTesting(const std::string& tx_meta_id);
 
@@ -104,6 +108,16 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                         absl::optional<SolanaAccountInfo> account_info,
                         mojom::SolanaProviderError error,
                         const std::string& error_message);
+  void OnGetLatestBlockhashForGetEstimatedTxFee(
+      std::unique_ptr<SolanaTxMeta> meta,
+      GetEstimatedTxFeeCallback callback,
+      const std::string& latest_blockhash,
+      mojom::SolanaProviderError error,
+      const std::string& error_message);
+  void OnGetFeeForMessage(GetEstimatedTxFeeCallback callback,
+                          uint64_t tx_fee,
+                          mojom::SolanaProviderError error,
+                          const std::string& error_message);
 
   // SolanaBlockTracker::Observer
   void OnLatestBlockhashUpdated(const std::string& blockhash) override;

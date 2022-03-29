@@ -347,6 +347,51 @@ void SolanaTxManager::OnGetAccountInfo(
                           mojom::SolanaProviderError::kSuccess, "");
 }
 
+void SolanaTxManager::GetEstimatedTxFee(const std::string& tx_meta_id,
+                                        GetEstimatedTxFeeCallback callback) {
+  std::unique_ptr<SolanaTxMeta> meta =
+      GetSolanaTxStateManager()->GetSolanaTx(tx_meta_id);
+  if (!meta) {
+    DCHECK(false) << "Transaction should be found";
+    std::move(callback).Run(
+        false, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
+
+  GetSolanaBlockTracker()->GetLatestBlockhash(
+      base::BindOnce(&SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(meta),
+                     std::move(callback)),
+      true);
+}
+
+void SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee(
+    std::unique_ptr<SolanaTxMeta> meta,
+    GetEstimatedTxFeeCallback callback,
+    const std::string& latest_blockhash,
+    mojom::SolanaProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::SolanaProviderError::kSuccess) {
+    std::move(callback).Run(0, error, error_message);
+    return;
+  }
+
+  const std::string base64_encoded_message =
+      meta->tx()->GetBase64EncodedMessage(latest_blockhash);
+  json_rpc_service_->GetSolanaFeeForMessage(
+      base64_encoded_message,
+      base::BindOnce(&SolanaTxManager::OnGetFeeForMessage,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void SolanaTxManager::OnGetFeeForMessage(GetEstimatedTxFeeCallback callback,
+                                         uint64_t tx_fee,
+                                         mojom::SolanaProviderError error,
+                                         const std::string& error_message) {
+  std::move(callback).Run(tx_fee, error, error_message);
+}
+
 void SolanaTxManager::OnLatestBlockhashUpdated(const std::string& blockhash) {
   UpdatePendingTransactions();
 }
