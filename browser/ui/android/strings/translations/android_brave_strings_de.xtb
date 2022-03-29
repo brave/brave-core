@@ -43,6 +43,9 @@
 <translation id="1276592121036104130">Neue Inhalte laden</translation>
 <translation id="3189348785087463371">Befördert</translation>
 <translation id="7554145152551782675">Mehr Brave-Angebote</translation>
+<translation id="1717242776111689224">Brave Nachrichten aktivieren</translation>
+<translation id="4732255422524275223">Ihre Quellen</translation>
+<translation id="152579389256498990">Feed- oder Website-URL</translation>
 <translation id="4975944254857623648">Standardquellen</translation>
 <translation id="253886574765651454">Quelle hinzufügen</translation>
 <translation id="5787084571334399599">Verhindert, dass der Browser einen Fingerabdruck erstellt</translation>
@@ -270,22 +273,24 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2927095357213611519">Sie können Ersteller von Web-Inhalten mit Token unterstützen.\nVerdienen Sie Token, indem Sie sich Werbung ansehen, die Ihre Privatsphäre respektiert.</translation>
 <translation id="213787746370741250">Tabs in Benutzerdefinierte Tabs öffnen</translation>
 <translation id="8030169304546394654">Verbindung getrennt</translation>
-<translation id="8267327690882073581">Wallet verifizieren</translation>
+<translation id="6181762795539107980">Nicht verifiziert</translation>
 <translation id="543510923939676996">Wallet verifiziert</translation>
 <translation id="8673913984316081937">Die Verifizierung Ihres Wallets ist optional</translation>
 <translation id="8558636200953226885">Aber wenn Sie sich verifizieren, können Sie …</translation>
 <translation id="8697510149346635496">BAT abheben, die Sie mit dem Ansehen von Werbung verdienen, die Ihre Privatsphäre respektiert.</translation>
 <translation id="1481480653609649134">Kaufen Sie zusätzlich BAT mit Kreditkarten und anderen Quellen</translation>
 <translation id="9096003370755878766">Heben Sie die BAT ab, die Sie unter Umständen zu Ihrer Brave Rewards-Wallet hinzugefügt haben.</translation>
+<translation id="8267327690882073581">Wallet verifizieren</translation>
 <translation id="1554282356558968486">Unser Wallet-Service wird bereitgestellt von</translation>
 <translation id="6569877533335686968">Aufrechterhalten</translation>
 <translation id="734105583050813665">Bitflyer</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Uphold fordert Sie möglicherweise auf, Ihre Identität zu verifizieren. Dies beruht auf den von Ihnen angeforderten Services.</translation>
 <translation id="3200197118442451932">Brave Software Inc. verarbeitet, speichert oder greift auf keine der persönlichen Informationen zu, die Sie <ph name="WALLET_PROVIDER"/> zur Verfügung stellen, wenn Sie dort ein Konto einrichten.</translation>
 <translation id="3699674790322420653">Wallet-Verifizierung abschließen</translation>
 <translation id="2193391216824305230">Benutzer-Wallet</translation>
 <translation id="1665118090708049096">Zu meinem <ph name="WALLET_PROVIDER"/>-Konto wechseln</translation>
-<translation id="9200453331904391567">Verbindung zu Brave Rewards trennen</translation>
+<translation id="1948959999802743233">Trennen von <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Geld abheben</translation>
 <translation id="8874184842967597500">Nicht verbunden</translation>
 <translation id="3368922792935385530">Verbunden</translation>
@@ -401,12 +406,12 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="7427567994475794038">Aktivieren Sie Privatsphäreberichte, um zu sehen, wie viele Tracker &amp; Werbeanzeigen in den letzten 3 Stunden blockiert wurden.</translation>
 <translation id="2053891538879944400">Sie haben <ph name="DATA"/> <ph name="DATA_TEXT"/> Daten mit dem Brave Browser gespart.</translation>
 <translation id="8640064498452534195">Aktivieren Sie die Privatsphäreberichte, um zu sehen, wie viele Daten Sie gespart haben.</translation>
-<translation id="2252497442547961651">Brave Browser verbraucht im Durchschnitt 40 % weniger Akku.&#128267;</translation>
+<translation id="2252497442547961651">Brave Browser verbraucht im Durchschnitt 40 % weniger Akku.🔋</translation>
 <translation id="1945330434665345785">Letzte Wochen haben Sie <ph name="COUNT"/> Tracker &amp; Werbeanzeigen mit dem Brave Browser blockiert.</translation>
 <translation id="2883868922264431515">Verdienen Sie Tokens, indem Sie Werbung ansehen, die die Privatsphäre respektiert, und unterstützen Sie Ihre Lieblingswebsites.</translation>
-<translation id="5678925890616256956">Toll! Sie haben 250 Tracker und Anzeigen mit Brave Browser blockiert.&#128293;</translation>
-<translation id="9199047775708635708">Toll! Sie haben 10 MB mit Brave Browser gespart.&#128267;</translation>
-<translation id="1880168210969863408">Toll! Sie haben 10 Minuten Ladezeit mit Brave Browser gespart.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Toll! Sie haben 250 Tracker und Anzeigen mit Brave Browser blockiert.🔥</translation>
+<translation id="9199047775708635708">Toll! Sie haben 10 MB mit Brave Browser gespart.🔋</translation>
+<translation id="1880168210969863408">Toll! Sie haben 10 Minuten Ladezeit mit Brave Browser gespart.💨💨</translation>
 <translation id="7408493389591475748">Fangen Sie an, zu browsen, um den Privatsphärebericht zu sehen</translation>
 <translation id="9080777565335515917">Legen Sie für privates und sicheres Browsen Brave als Ihren Standardbrowser fest.</translation>
 <translation id="1390943217516275883">Brave erlauben, Ihre Privatsphärestatistik anzuzeigen</translation>
@@ -473,12 +478,12 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="6897083627729802351">Wann erhalten Sie Belohnungen?</translation>
 <translation id="310863932297733723">Ihre im aktuellen Monat  von Brave Private Ads verdienten Tokens werden am 5. des nächsten Monats ankommen.</translation>
 <translation id="7712287524451429139">Andere Unterstützen leicht gemacht</translation>
-<translation id="105037569026952831">Ersteller erhalten die von Ihnen vergebenen Token automatisch basierend auf Ihrer Aktivität, die wir als ‘Aufmerksamkeit’ messen.</translation>
+<translation id="105037569026952831">Inhaltsersteller erhalten Token-Beiträge automatisch auf Grund Ihrer Engagementlevel, die wir als „Aufmerksamkeit“ messen.</translation>
 <translation id="5323267338679539010">Sagen Sie durch Spenden Danke</translation>
 <translation id="6730444165801605682">Trinkgelder sind eine Methode, Content oder Ersteller, die Sie absolut lieben, persönlich zu ermutigen und zu unterstützen. Geben Sie Trinkgelder!</translation>
 <translation id="7509452925943421624">Was können Sie mit Token tun?</translation>
 <translation id="5876169128756792273">Tokens können auch für andere Zwecke als die Unterstützung von Inhaltserstellern genutzt werden. Sie können digitalen Content und andere Waren kaufen, wenn Händler an Bord kommen.</translation>
-<translation id="1402530520078693620">Zu guter Letzt sollten wir Ihre Grundeinstellungen einrichten</translation>
+<translation id="1402530520078693620">Zuletzt möchten wir Sie mit den Grundeinstellungen vertraut machen</translation>
 <translation id="3494356595346329740">Sie können das später ändern.</translation>
 <translation id="3115702351969988294">Wie oft möchten Sie Anzeigen sehen?</translation>
 <translation id="3474670199029510295">(Anzeigen pro Stunde)</translation>
@@ -499,7 +504,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="7307847920988946894">Rewards aktivieren</translation>
 <translation id="7872993190040589450">Durch die Aktivierung stimmen Sie den <ph name="TERMS_OF_SERVICE"/> und der <ph name="PRIVACY_POLICY"/> zu.</translation>
 <translation id="6128511569382736135">Um einen kostenlosen Anruf zu starten, aktivieren Sie Brave Private Ads</translation>
-<translation id="7930006085154756245">Mit Brave Private Ads verdienen Sie Token für das Anzeigen privater Anzeigen (Ihre Daten sind sicher). Verwandeln Sie diese Token in Bargeld, Geschenkkarten … oder geben Sie sogar den Websites, die Sie lieben, Trinkgeld. Kein Tracking. Keine Verlangsamungen.</translation>
+<translation id="7930006085154756245">Mit Brave Private Ads verdienen Sie Token für das Anzeigen privater Anzeigen (Ihre Daten sind sicher). Verwandeln Sie diese Token in Bargeld, Geschenkkarten … oder geben Sie sogar den Websites, die Sie lieben, Trinkgeld. Keine Verfolgung. Keine Verlangsamungen.</translation>
 <translation id="4992617448154987397">Brave Private Ads aktivieren</translation>
 <translation id="3415016869273103668">Sie können jetzt einen kostenlosen Anruf starten</translation>
 <translation id="7073631403665023390">Klicken oder tippen Sie auf eine beliebige Stelle auf dem Bildschirm, um mit Brave Talk fortzufahren.</translation>
@@ -654,6 +659,9 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="414639769490080648">Die Anzahl der Minuten, die gewartet werden soll, bis die Brave Wallet automatisch gesperrt wird</translation>
 <translation id="4993345308607970390">Brave Wallet zurücksetzen</translation>
 <translation id="6369495274982305511">Möchten Sie Ihre Wallet wirklich zurücksetzen? Wenn Ihre Wallet nicht gesichert wird, führt das Zurücksetzen dazu, dass alle Ihre Kontodaten (einschließlich zugehöriger Geldmittel) verloren gehen. Geben Sie zur Bestätigung "<ph name="CONFIRMATION_PHRASE"/>" ein.</translation>
+<translation id="4862812525895306758">Transaktion löschen &amp; Nonce-Info</translation>
+<translation id="5693968582510626466">Das Löschen von Transaktionen kann für Entwickler oder beim Löschen des Status auf einem lokalen Server nützlich sein</translation>
+<translation id="5421107279168565467">Möchten Sie die Transaktions- und Nonce-Informationen wirklich zurücksetzen? Diese Option wird hauptsächlich von Entwicklern verwendet, die einen lokalen Testserver betreiben. Geben Sie zur Bestätigung "<ph name="CONFIRMATION_PHRASE"/>" ein.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# Minute} other {# Minuten}}</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">Führen Sie ein Upgrade auf ein VPN durch, um Ihre Verbindung zu schützen und invasive Tracker überall zu blockieren.</translation>
@@ -737,6 +745,11 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="1634828734222219955">Gesamt</translation>
 <translation id="7995708795274219641">Betrag + Gas</translation>
 <translation id="1950052789869821983">Transaktion</translation>
+<translation id="2304783958703511257">Erweiterte Einstellungen</translation>
+<translation id="4220062530885628403">Nonce</translation>
+<translation id="1924965034964265193">Geben Sie einen benutzerdefinierten Nonce-Wert ein</translation>
+<translation id="5317780077021120954">Speichern</translation>
+<translation id="4979796155378508955">Die Transaktion wird möglicherweise nicht an das Netzwerk weitergegeben, wenn der benutzerdefinierte Nonce-Wert nicht sequenziell ist oder andere Fehler aufweist.</translation>
 <translation id="6122742277607781713">Portfolio</translation>
 <translation id="750843150060816463">Gaspreis (Gwei)</translation>
 <translation id="1426320910664514906">Gaslimit</translation>
@@ -818,7 +831,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="1346059596910821859">Spenden</translation>
 <translation id="1549705559752367917">Trinkgeld senden</translation>
 <translation id="6727102863431372879">Festlegen</translation>
-<translation id="381822214767083050">Monatlicher Beitrag</translation>
+<translation id="6413162919383874653">Monatliches Trinkgeld</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Autovervollständigung in der Adressleiste anzeigen</translation>
@@ -844,6 +857,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="2156993118928861787">Ungültige Adresse</translation>
 <translation id="6889920539620318793">Als aktiv setzen</translation>
 <translation id="2653659639078652383">Senden</translation>
+<translation id="4945690646623486292">Netzwerk auswählen</translation>
 <translation id="8853725596990766789">Betrag ändern</translation>
 <translation id="5233638681132016545">Neuer Tab</translation>
 </translationbundle>

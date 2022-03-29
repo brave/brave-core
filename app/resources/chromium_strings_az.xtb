@@ -16,13 +16,18 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="5147525139567260139">Brave tabı paylaşın</translation>
 <translation id="1530633922026945685">Brave ətrafınızın 3D xəritəsini yaratmaq üçün kameranıza giriş icazəsi tələb edir</translation>
 <translation id="4449148723378534338">Brave'da əsas məxfilik və təhlükəsizlik nəzarətlərini nəzərdən keçirin</translation>
+<translation id="5359574361379286250">Bu hesabı sadəcə bir dəfə istifadə etmək istəyirsinizsə, Brave brauzerində <ph name="GUEST_LINK_BEGIN"/>Qonaq rejimindən<ph name="GUEST_LINK_END"/> istifadə edə bilərsiniz. Başqa birisi üçün hesab əlavə etmək istəyirsinizsə, <ph name="DEVICE_TYPE"/> cihazınıza <ph name="LINK_BEGIN"/>yeni şəxs əlavə edin<ph name="LINK_END"/>.
+
+Hazırda veb saytlar və tətbiqlərə verdiyiniz icazələr bu hesaba tətbiq oluna bilər. Brave Hesablarınızı <ph name="SETTINGS_LINK_BEGIN"/>Ayarlarda<ph name="SETTINGS_LINK_END"/> idarə edə bilərsiniz.</translation>
 <translation id="5616153642055197778">Yeni, daha güvənli Brave versiyası əlçatandır.</translation>
 <translation id="6797402139308059782">Brave'a fonda işləməyə icazə verin</translation>
 <translation id="5875673934455379806">Brave'u yenidən quraşdırın</translation>
-<translation id="2176087127109773485">Daxil olunmuş Brave Hesablarını idarə edə bilərsiniz. Brave Hesablarınız Brave brauzeri, Play Market, Gmail və digər xidmətlər üçün istifadə olunur. Ailə üzvü kimi başqası üçün bir hesab əlavə etmək istəyirsinizsə, əvəzində <ph name="DEVICE_TYPE"/> cihazınıza yeni bir şəxs əlavə edin. <ph name="LINK_BEGIN"/>Ətraflı məlumat<ph name="LINK_END"/></translation>
 <translation id="4528406859989804913">Nəzarət olunan hesabla daxil olursunuz və hesabın administratoruna Brave profiliniz üzərində nəzarət etmək imkanı verirsiniz. Tətbiqləriniz, əlfəcinləriniz, tarixçəniz, parollarınız və digər ayarlarınız <ph name="USER_NAME"/> adına həmişəlik bağlı qalacaq. Bu datanı Brave Hesab İdarə Paneli vasitəsilə silə biləcəksiniz, lakin bu datanı digər hesabla əlaqələndirə bilməyəcəksiniz. Mövcud Brave datanızı ayrı saxlamaq üçün yeni profil yarada bilərsiniz. <ph name="LEARN_MORE"/></translation>
 <translation id="1649714546770135458">Bunu deaktiv etməklə Brave'a giriş etmədən Gmail kimi Brave saytlarına daxil ola bilərsiniz</translation>
 <translation id="189297655255130768">Brave cavab vermir. İndi yenidən başladılsın?</translation>
+<translation id="479793348545936567">Bu hesabı sadəcə bir dəfə istifadə etmək istəyirsinizsə, Brave brauzerində Qonaq rejimindən istifadə edə bilərsiniz. Başqa birisi üçün hesab əlavə etmək istəyirsinizsə, <ph name="DEVICE_TYPE"/> cihazınıza <ph name="LINK_BEGIN"/>yeni şəxs əlavə edin<ph name="LINK_END"/>.
+
+Hazırda veb saytlar və tətbiqlərə verdiyiniz icazələr bu hesaba tətbiq oluna bilər. Brave Hesablarınızı <ph name="SETTINGS_LINK_BEGIN"/>Ayarlarda<ph name="SETTINGS_LINK_END"/> idarə edə bilərsiniz.</translation>
 <translation id="1775322105159056176">Brave defolt brauzeri müəyyən edə və ya ayarlaya bilmir</translation>
 <translation id="7665553140559834626">&amp;Chrome OS'i güncəlləmək üçün yenidən başladın</translation>
 <translation id="9220324636239049437">1 element cihazdan silinəcək. Sonradan datanızı bərpa etmək üçün <ph name="USER_EMAIL"/> kimi Bravea daxil olun.</translation>
@@ -134,7 +139,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="5536657158619734169">Brave'um yeni versiyası əlçatandır.</translation>
 <translation id="239760341987199724">Brave'u defolt brauzer təyin edin</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
-<translation id="707769633889902835">Chrome OS bu səhifəni aça bilməz.</translation>
 <translation id="696826782632239602">Brave məkanı bu saytla paylaşmaq üçün ona giriş tələb edir</translation>
 <translation id="1744365871163268756">Brave'um ən son sistem güncəlləşmələrini quraşdırmasını gözləyin.</translation>
 <translation id="3861679447659630159">Brave parolları redaktə etməyə çalışır. Buna icazə vermək üçün Windows parolunuzu yazın.</translation>
@@ -197,7 +201,7 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="8291513491595858997">Valideyniniz Brave üçün "Saytlar, tətbiqlər və artırmalar üçün icazələri" deaktiv edib. Bu <ph name="EXTENSION_TYPE_PARAMETER"/> artırmasının aktiv edilməsinə icazə verilmir.</translation>
 <translation id="8211837073776713955">Brave parollarınızın oğurlanıb-oğurlanmadığı haqqında Sizə məlumat verir</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (Brave'a kopyalandı)</translation>
+<translation id="2049565899730874086">Google Pay (Brave'a kopyalandı)</translation>
 <translation id="3028928628792374067">Brave "<ph name="EXTENSION_NAME"/>" artırmasında zərərli proqram olduğunu aşkar edib</translation>
 <translation id="2301993384336631869">Xrom yeniləndi, lakin ən azı 30 gün üçün istifadə etməmişlər.</translation>
 <translation id="8828443087767259398">Brave birləşməyə davam etmək üçün Bluetooth'a giriş tələb edir. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -297,4 +301,5 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="8274659559228306809">{COUNT,plural, =0{Brave üçün yeni güncəlləmə əlçatandır. Brave yenidən işə başladıqdan sonra tətbiq ediləcək.}=1{Brave üçün yeni güncəlləmə əlçatandır. Brave yenidən işə başladıqdan sonra tətbiq ediləcək. Anonim pəncərəniz yenidən açılmayacaq.}other{Brave üçün yeni güncəlləmə əlçatandır. Brave yenidən işə başladıqdan sonra tətbiq ediləcək. # Anonim pəncərəniz yenidən açılmayacaq.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administrator bu güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir}=1{Administrator bu güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir. Anonim pəncərəniz yenidən açılmayacaq.}other{Administrator bu güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir. # Anonim pəncərəniz yenidən açılmayacaq.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administrator güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir}=1{Administrator güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir. Anonim pəncərəniz yenidən açılmayacaq.}other{Administrator güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir. # Anonim pəncərəniz yenidən açılmayacaq.}}</translation>
+<translation id="2176087127109773485">Daxil olunmuş Brave Hesablarını idarə edə bilərsiniz. Brave Hesablarınız Brave brauzeri, Play Market, Gmail və digər xidmətlər üçün istifadə olunur. Ailə üzvü kimi başqası üçün bir hesab əlavə etmək istəyirsinizsə, əvəzində <ph name="DEVICE_TYPE"/> cihazınıza yeni bir şəxs əlavə edin. <ph name="LINK_BEGIN"/>Ətraflı məlumat<ph name="LINK_END"/></translation>
 </translationbundle>

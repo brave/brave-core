@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Any tip you make will remain pending and retry automatically for 90 days. $link_begin$Learn more$link_end$",
+    "message": "Усі зроблені чайові залишаться у вашому гаманці, а оплату буде автоматично повторено через 90 днів. $link_begin$Докладніше$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "This creator is currently not configured to receive tips from your Rewards custodial wallet service.",
+    "message": "Наразі налаштування цього автора не дають можливості залишати чайові з вашого депозитного гаманця Rewards.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -62,8 +62,8 @@
     "message": "Включити в автоматичний внесок",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "Щомісячний внесок",
+  "monthlyTip": {
+    "message": "Щомісячні чайові",
     "description": ""
   },
   "ok": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Your Reward is on its way.",
+    "message": "Ваша винагорода скоро надійде.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -235,10 +235,6 @@
     "message": "Щомісячні відрахування",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Верифіковано",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Разові чайові",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Підсумок винагород",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Верифіковано",
+  "walletUnverified": {
+    "message": "Не підтверджено",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Підтвердити",
+  "walletVerified": {
+    "message": "Верифіковано",
     "description": ""
   },
   "walletYourBalance": {
@@ -276,11 +272,11 @@
     "description": ""
   },
   "notificationClaimRewards": {
-    "message": "Claim Rewards",
+    "message": "Забрати винагороди",
     "description": ""
   },
   "notificationClaimTokens": {
-    "message": "Claim Tokens",
+    "message": "Забрати токени",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,11 +301,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Back up Brave Rewards",
+    "message": "Створіть резервну копію Brave Rewards",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Please back up your Brave Rewards.",
+    "message": "Створіть резервну копію профілю Brave Rewards.",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -317,7 +313,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "You are logged out",
+    "message": "Ви вийшли з облікового запису",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Your Brave Rewards is verified!",
+    "message": "Ваш профіль Brave Rewards перевірено!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Your Brave Rewards was successfully verified with $provider$.",
+    "message": "Ваш профіль Brave Rewards підтверджено за допомогою $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,11 +338,11 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "A token grant is available!",
+    "message": "Доступне пожертвування з токенів!",
     "description": ""
   },
   "notificationAdGrantAmount": {
-    "message": "$month$ Rewards: $amount$",
+    "message": "Винагороди за $month$: $amount$",
     "description": "",
     "placeholders": {
       "month": {
@@ -358,7 +354,7 @@
     }
   },
   "notificationAdGrantTitle": {
-    "message": "Your $month$ Ad Rewards are here!",
+    "message": "Ваші винагороди за рекламу за $month$ тут!",
     "description": "",
     "placeholders": {
       "month": {
@@ -367,7 +363,7 @@
     }
   },
   "notificationGrantDaysRemaining": {
-    "message": "You have $days$ left to claim",
+    "message": "У вас залишилося $days$, щоб забрати",
     "description": "",
     "placeholders": {
       "days": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Ваш плановий щомісячний платіж для автоматичних та щомісячних внесків неможливо виконати через недостатню кількість коштів. Ми спробуємо знову через 30 днів.",
+    "message": "Ваш запланований щомісячний платіж за автоматичний внесок та щомісячні чайові не вдалося виконати через брак коштів. Ми спробуємо ще раз через 30 днів.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Не вдалося зробити щомісячні внески",
+    "message": "Не вдалося виплатити щомісячні чайові",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Ваші щомісячні внески обробляються!",
+    "message": "Ваші місячні чайові оброблено.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {
@@ -559,7 +555,7 @@
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "In order to withdraw the BAT you earn for viewing ads, you’ll need to verify Brave Rewards.",
+    "message": "Щоб зняти BAT за перегляд реклами, виконайте перевірку профілю Brave Rewards.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +563,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Verify Brave Rewards",
+    "message": "Виконайте перевірку Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +571,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "By verifying your Brave Rewards and linking it to a bitFlyer account, you will be able to store and manage the BAT you have earned through Brave Rewards more easily",
+    "message": "Виконавши перевірку профілю Brave Rewards і прив’язавши його до облікового запису bitFlyer, ви зможете зберігати зароблені за допомогою Brave Rewards токени й легко керувати ними",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

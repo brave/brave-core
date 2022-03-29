@@ -62,8 +62,8 @@
     "message": "Включено в автоматичния принос",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "Месечен принос",
+  "monthlyTip": {
+    "message": "Monthly Tip",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "Ежемесечни дарения",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Потвърдено",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Еднократни дарения",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Резюме на наградите",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Потвърдено",
+  "walletUnverified": {
+    "message": "Unverified",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Потвърждаване",
+  "walletVerified": {
+    "message": "Потвърдено",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Планираното ви месечно плащане за Auto-Contribute и месечните приноси не може да бъде извършено поради недостатъчни средства. Ще опитаме отново след 30 дни.",
+    "message": "Зададеното Ви ежемесечно плащане за автоматично дарение и месечните дарения не могат да бъдат завършени поради недостиг на средства. Ще опитаме отново след 30 дни.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Неуспешна месечна вноска",
+    "message": "Monthly tip failed",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Вашите месечни вноски са обработени.",
+    "message": "Your monthly tips have been processed.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

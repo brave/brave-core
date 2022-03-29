@@ -62,8 +62,8 @@
     "message": "لحاظ کردن در کمک خودکار",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "کمک ماهانه",
+  "monthlyTip": {
+    "message": "انعام ماهانه",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "انعام ماهانه",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "تأیید شد",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "انعام یک‌باره",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "خلاصه پاداش‌ها",
     "description": ""
   },
-  "walletVerified": {
-    "message": "تأیید شد",
+  "walletUnverified": {
+    "message": "تأییدنشده",
     "description": ""
   },
-  "walletVerify": {
-    "message": "تأیید",
+  "walletVerified": {
+    "message": "تأیید شد",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "به‌دلیل کافی نبودن وجه، انجام دادن پرداخت ماهیانه زمان‌بندی‌شده شما برای کمک خودکار و کمک‌های ماهانه امکان‌پذیر نبود. 30 روز دیگر دوباره تلاش خواهیم کرد.",
+    "message": "پرداخت ماهانه را برای کمک خودکار زمان‌بندی کرده‌اید و انعام ماهانه به‌دلیل سرمایه ناکافی قابل پرداخت نیست. ظرف ۳۰ روز دیگر دوباره امتحان می‌کنیم.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "کمک ماهانه انجام نشد",
+    "message": "انعام ماهانه انجام نشد",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "کمک‌های ماهانه شما پردازش شده است!",
+    "message": "انعام‌های ماهانه شما پردازش شده‌اند.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

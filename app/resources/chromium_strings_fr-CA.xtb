@@ -134,7 +134,6 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="5536657158619734169">Une nouvelle version de Brave est maintenant offerte.</translation>
 <translation id="239760341987199724">Faire de Brave le navigateur par défaut</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave bêta</translation>
-<translation id="707769633889902835">Brave OS ne peut pas ouvrir cette page.</translation>
 <translation id="696826782632239602">Brave a besoin d'accéder à votre position afin de la partager avec ce site</translation>
 <translation id="1744365871163268756">Veuillez patienter pendant que Brave installe les dernières mises à jour système.</translation>
 <translation id="3861679447659630159">Brave essaie de modifier des mots de passe. Pour autoriser cette action, entrez votre mot de passe Windows.</translation>
@@ -197,7 +196,7 @@ Certaines fonctionnalités seront peut-être inaccessibles. Veuillez spécifier 
 <translation id="8291513491595858997">Ton parent a désactivé le paramètre « Autorisations pour les sites, les applications et les extensions » dans Brave. L'activation de ce <ph name="EXTENSION_TYPE_PARAMETER"/> n'est pas autorisée.</translation>
 <translation id="8211837073776713955">Brave vous informera si jamais vos mots de passe sont compromis</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (copiée dans Brave)</translation>
+<translation id="2049565899730874086">Google Pay (copiée dans Brave)</translation>
 <translation id="3028928628792374067">Brave a constaté que « <ph name="EXTENSION_NAME"/> » contient un logiciel malveillant</translation>
 <translation id="2301993384336631869">Brave a été mis à jour, mais vous ne l'avez pas utilisé depuis au moins 30 jours.</translation>
 <translation id="8828443087767259398">Brave nécessite l'accès au Bluetooth pour continuer l'association. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -290,6 +289,12 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="4484434718272972655">Qui utilise Brave?</translation>
 <translation id="7173394303099002355">Profiter de la sécurité la plus robuste de Brave</translation>
 <translation id="8992261409816268381">Les auteurs de Brave</translation>
+<translation id="479793348545936567">Si vous souhaitez utiliser ce compte une seule fois, vous pouvez utiliser le mode invité du navigateur Brave. Si vous voulez ajouter un compte pour quelqu'un d'autre,, <ph name="LINK_BEGIN"/>ajoutez un nouveau profil<ph name="LINK_END"/> à votre <ph name="DEVICE_TYPE"/>.
+
+Les autorisations que vous avez déjà accordées aux sites Web et aux applications peuvent s'appliquer à ce compte. Vous pouvez gérer vos chaînes de synchronisation Brave dans <ph name="SETTINGS_LINK_BEGIN"/>Paramètres<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Si vous voulez utiliser ce compte une seule fois, vous pouvez utiliser le   <ph name="GUEST_LINK_BEGIN"/>mode Invité<ph name="GUEST_LINK_END"/> dans le navigateur Brave. Si vous voulez ajouter un compte pour quelqu'un d'autre, <ph name="LINK_BEGIN"/>ajoutez un nouveau profil <ph name="LINK_END"/> à votre <ph name="DEVICE_TYPE"/>.
+
+Les autorisations que vous avez déjà accordées aux sites Web et aux applications peuvent s'appliquer à ce compte. Vous pouvez gérer vos chaînes de synchronisation Brave dans <ph name="SETTINGS_LINK_BEGIN"/>Paramètres<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Avertissement : Brave ne peut pas empêcher les extensions d'enregistrer votre historique de navigation. Pour désactiver cette extension en mode navigation privée, désélectionnez-la.</translation>
 <translation id="1448049584457347995">Afin de rendre Brave plus sûr, nous avons désactivé certaines extensions qui ne sont pas répertoriées dans la boutique <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> et qui ont pu être ajoutées à votre insu.</translation>
 <translation id="8848045066928358658">Afin de rendre Brave plus sûr, nous avons désactivé l'extension suivante qui n'est pas répertoriée dans <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> et a pu être ajoutée à votre insu.</translation>

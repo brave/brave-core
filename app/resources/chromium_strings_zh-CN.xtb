@@ -132,7 +132,6 @@
 <translation id="5536657158619734169">Brave 现已推出新版本。</translation>
 <translation id="239760341987199724">将Brave设为默认浏览器</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave 测试版</translation>
-<translation id="707769633889902835">Brave 操作系统无法打开此网页。</translation>
 <translation id="696826782632239602">Brave 需要获得位置权限，才能将您的位置信息共享给此网站</translation>
 <translation id="1744365871163268756">Brave正在安装最新的系统更新，请稍候。</translation>
 <translation id="3861679447659630159">Brave 正在尝试修改密码。请输入您的 Windows 密码以允许此操作。</translation>
@@ -195,7 +194,7 @@
 <translation id="8291513491595858997">您的家长已为 Brave 停用“网站、应用和扩展程序的权限”。因此，您无法启用该<ph name="EXTENSION_TYPE_PARAMETER"/>。</translation>
 <translation id="8211837073776713955">Brave 会让您知道您的密码是否曾被泄露</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay（已复制到 Brave）</translation>
+<translation id="2049565899730874086">Google Pay（已复制到 Brave）</translation>
 <translation id="3028928628792374067">Brave 发现“<ph name="EXTENSION_NAME"/>”包含恶意软件</translation>
 <translation id="2301993384336631869">Brave 已更新，但您已经至少 30 天未使用它了。</translation>
 <translation id="8828443087767259398">Brave 需获得蓝牙使用权限才能继续配对。<ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -289,6 +288,12 @@ Brave 无法恢复您的设置。</translation>
 <translation id="4484434718272972655">谁在使用 Brave？</translation>
 <translation id="7173394303099002355">获享 Brave 的最强安全保护</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="479793348545936567">如果你只想一次性使用此账户，可以使用 Brave 浏览器访客模式。如果你想为他人添加账户, <ph name="LINK_BEGIN"/>添加一个个人资料文件<ph name="LINK_END"/>到你的 <ph name="DEVICE_TYPE"/>。
+
+你已给予网站和应用的权限可应用于此账户。你可以在<ph name="SETTINGS_LINK_BEGIN"/>设置<ph name="SETTINGS_LINK_END"/>中管理你的 Brave 同步链。</translation>
+<translation id="5359574361379286250">如果你只想一次性使用此账户，你可以使用 Brave 浏览器中的<ph name="GUEST_LINK_BEGIN"/>访客模式<ph name="GUEST_LINK_END"/>如果你想为他人添加账户， <ph name="LINK_BEGIN"/>添加一个个人资料文件<ph name="LINK_END"/>到你的 <ph name="DEVICE_TYPE"/>。
+
+你已给予网站和应用的权限可应用于此账户。你可以在<ph name="SETTINGS_LINK_BEGIN"/>设置<ph name="SETTINGS_LINK_END"/>中管理你的 Brave 同步链。</translation>
 <translation id="1299765473362724475">警告:Brave不能阻止扩展记录您的浏览历史。要在私人模式禁用此扩展，取消选择此选项。</translation>
 <translation id="1448049584457347995">为了提高 Brave 的安全性，系统停用了一些未列在 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>中、可能是在您不知情的情况下添加的扩展程序。</translation>
 <translation id="8848045066928358658">为了提高 Brave 的安全性，我们停用了以下扩展程序（该扩展程序未列在<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>中，并且可能是在您不知情的情况下添加的）。</translation>

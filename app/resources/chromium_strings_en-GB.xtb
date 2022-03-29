@@ -134,7 +134,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="5536657158619734169">There is a new version of Brave available.</translation>
 <translation id="239760341987199724">Set Brave as your default browser</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Beta</translation>
-<translation id="707769633889902835">Chrome OS can't open this page.</translation>
 <translation id="696826782632239602">Brave needs access to your location to share your location with this site</translation>
 <translation id="1744365871163268756">Please wait while Brave installs the latest system updates.</translation>
 <translation id="3861679447659630159">Brave is trying to edit passwords. Type your Windows password to allow this.</translation>
@@ -197,7 +196,7 @@ Some features may be unavailable. Please specify a different profile directory o
 <translation id="8291513491595858997">Your parent has turned off 'Permissions for sites, apps and extensions' for Brave. Enabling this <ph name="EXTENSION_TYPE_PARAMETER"/> is not allowed.</translation>
 <translation id="8211837073776713955">Brave lets you know if your passwords are ever compromised</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (copied to Brave)</translation>
+<translation id="2049565899730874086">Google Pay (copied to Brave)</translation>
 <translation id="3028928628792374067">Brave found that '<ph name="EXTENSION_NAME"/>' contains malware</translation>
 <translation id="2301993384336631869">Brave has been updated, but you haven't used it for 30 days or more.</translation>
 <translation id="8828443087767259398">Brave needs Bluetooth access to continue pairing. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -291,6 +290,12 @@ Brave is unable to recover your settings.</translation>
 <translation id="4484434718272972655">Who's using Brave?</translation>
 <translation id="7173394303099002355">Get Brave's strongest security</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="479793348545936567">If you want to use this account one-time only, you can use Guest mode in Brave browser. If you want to add an account for someone else, <ph name="LINK_BEGIN"/>add a new profile<ph name="LINK_END"/> to your <ph name="DEVICE_TYPE"/>.
+
+Permissions you've already given to websites and apps may apply to this account. You can manage your Brave sync chains in <ph name="SETTINGS_LINK_BEGIN"/>Settings<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">If you want to use this account one-time only, you can use <ph name="GUEST_LINK_BEGIN"/>Guest mode<ph name="GUEST_LINK_END"/> in Brave browser. If you want to add an account for someone else, <ph name="LINK_BEGIN"/>add a new profile<ph name="LINK_END"/> to your <ph name="DEVICE_TYPE"/>.
+
+Permissions you've already given to websites and apps may apply to this account. You can manage your Brave sync chains in <ph name="SETTINGS_LINK_BEGIN"/>Settings<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Warning: Brave cannot prevent extensions from recording your browsing history. To disable this extension in Private mode, unselect this option.</translation>
 <translation id="1448049584457347995">To make Brave safer, we disabled some extensions that aren't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> and may have been added without your knowledge.</translation>
 <translation id="8848045066928358658">To make Brave safer, we disabled the following extension that isn't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> and may have been added without your knowledge.</translation>
