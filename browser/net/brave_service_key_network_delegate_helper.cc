@@ -5,11 +5,11 @@
 
 #include "brave/browser/net/brave_service_key_network_delegate_helper.h"
 
-#include <iterator>
 #include <string>
 #include <vector>
 
 #include "base/no_destructor.h"
+#include "brave/common/brave_services_key.h"
 #include "brave/common/network_constants.h"
 #include "brave/components/update_client/buildflags.h"
 #include "net/base/net_errors.h"
@@ -30,7 +30,7 @@ int OnBeforeStartTransaction_BraveServiceKey(
 
   if (url.SchemeIs(url::kHttpsScheme)) {
     if (std::any_of(
-            std::begin(*allowed_domains), std::end(*allowed_domains),
+            allowed_domains->begin(), allowed_domains->end(),
             [&url](const auto& domain) { return url.DomainIs(domain); })) {
       headers->SetHeader(kBraveServicesKeyHeader,
                          BUILDFLAG(BRAVE_SERVICES_KEY));

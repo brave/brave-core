@@ -1,14 +1,4 @@
-import("//brave/build/config.gni")
-import("//build/buildflag_header.gni")
 import("//extensions/buildflags/buildflags.gni")
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [
-    "UPDATER_DEV_ENDPOINT=\"$updater_dev_endpoint\"",
-    "UPDATER_PROD_ENDPOINT=\"$updater_prod_endpoint\"",
-  ]
-}
 
 static_library("browser") {
   sources = [

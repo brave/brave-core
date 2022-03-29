@@ -9,7 +9,7 @@
 
 #include "base/environment.h"
 #include "brave/common/brave_services_key.h"
-#include "brave/components/brave_wallet/browser/brave_infura_buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags.h"
 
 namespace extensions {
 

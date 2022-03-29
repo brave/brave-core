@@ -10,7 +10,7 @@
 #undef IOSChromeNetworkDelegate
 
 #include "brave/common/brave_services_key.h"
-#include "brave/common/brave_service_key_helper.h"
+#include "brave/common/brave_services_key_helper.h"
 #include "brave/common/network_constants.h"
 
 namespace {

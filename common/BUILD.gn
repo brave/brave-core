@@ -5,7 +5,7 @@ import("//extensions/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 buildflag_header("brave_services_key") {
-  header = "brave_services_key"
+  header = "brave_services_key.h"
   flags = [ "BRAVE_SERVICES_KEY=\"$brave_services_key\"" ]
 }
 
@@ -121,8 +121,8 @@ source_set("common") {
     "brave_features.h",
     "brave_paths.cc",
     "brave_paths.h",
-    "brave_service_key_helper.cc",
-    "brave_service_key_helper.h",
+    "brave_services_key_helper.cc",
+    "brave_services_key_helper.h",
     "resource_bundle_helper.cc",
     "resource_bundle_helper.h",
     "url_constants.cc",
