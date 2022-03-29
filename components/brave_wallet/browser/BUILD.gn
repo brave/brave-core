@@ -120,7 +120,6 @@ static_library("browser") {
     ":transaction",
     ":utils",
     "//base",
-    "//brave/build:brave_buildflags",
     "//brave/components/api_request_helper",
     "//brave/components/bls:buildflags",
     "//brave/components/bls/rs:cxx",

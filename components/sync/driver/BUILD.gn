@@ -20,7 +20,6 @@ source_set("unit_tests") {
 
   deps = [
     "//base/test:test_support",
-    "//brave/build:brave_buildflags",
     "//brave/common:network_constants",
     "//brave/components/brave_sync:crypto",
     "//brave/components/brave_sync:network_time_helper",

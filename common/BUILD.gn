@@ -131,7 +131,7 @@ source_set("common") {
     "webui_url_constants.h",
   ]
 
-  public_deps = [ ":brave_servives_key" ]
+  public_deps = [ ":brave_services_key" ]
 
   if (!is_android && !is_ios) {
     deps += [ "//brave/common/importer" ]
@@ -152,7 +152,7 @@ source_set("common") {
       "//extensions/common:common_constants",
     ]
 
-    public_deps = [ "extensions/api" ]
+    public_deps += [ "extensions/api" ]
   }
 
   deps += [

@@ -120,7 +120,6 @@ source_set("extensions") {
 
     deps += [
       "//brave/browser/ethereum_remote_client",
-      "//brave/build:brave_buildflags",
       "//brave/components/brave_wallet/browser",
       "//brave/components/brave_wallet/browser:brave_infura_buildflags",
       "//components/infobars/content",
