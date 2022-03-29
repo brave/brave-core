@@ -18,7 +18,10 @@
 #endif
 
 int main(int argc, char **argv) {
-  content::UnitTestTestSuite test_suite(new BraveUnitTestSuite(argc, argv));
+  content::UnitTestTestSuite test_suite(
+      new BraveUnitTestSuite(argc, argv),
+      base::BindRepeating(
+          content::UnitTestTestSuite::CreateTestContentClients));
 
   base::TestIOThread test_io_thread(base::TestIOThread::kAutoStart);
   mojo::core::ScopedIPCSupport ipc_support(
