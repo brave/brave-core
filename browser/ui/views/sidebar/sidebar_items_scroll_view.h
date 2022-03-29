@@ -58,10 +58,7 @@ class SidebarItemsScrollView : public views::View,
                       std::set<ui::ClipboardFormatType>* format_types) override;
   bool CanDrop(const OSExchangeData& data) override;
   int OnDragUpdated(const ui::DropTargetEvent& event) override;
-  void OnDragExited() override;
   views::View::DropCallback GetDropCallback(
-      const ui::DropTargetEvent& event) override;
-  ui::mojom::DragOperation OnPerformDrop(
       const ui::DropTargetEvent& event) override;
 
   // views::BoundsAnimatorObserver overrides:
