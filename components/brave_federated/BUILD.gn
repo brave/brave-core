@@ -33,8 +33,9 @@ static_library("brave_federated") {
   ]
 }
 
-source_set("brave_ad_notification_timing_data_store_unit_tests") {
+source_set("brave_federated_tests") {
   testonly = true
+
   sources = [
     "data_stores/ad_notification_timing_data_store_unittest.cc",
     "data_stores/data_store_unittest.cc",

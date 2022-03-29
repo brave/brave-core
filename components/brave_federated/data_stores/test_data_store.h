@@ -24,7 +24,7 @@ struct TestTaskLog {
 
   int id;
   bool label;
-  const base::Time creation_date;
+  base::Time creation_date;
 };
 
 class TestDataStore final : public DataStore {
@@ -35,7 +35,7 @@ class TestDataStore final : public DataStore {
   TestDataStore(const TestDataStore&) = delete;
   TestDataStore& operator=(const TestDataStore&) = delete;
 
-  typedef base::flat_map<int, TestTaskLog> IdToTestTaskLogMap;
+  typedef base::flat_map<int, TestTaskLog> TestTaskLogMap;
 
   bool Init(const int task_id,
             const std::string& task_name,
@@ -46,7 +46,7 @@ class TestDataStore final : public DataStore {
   using DataStore::DeleteLogs;
 
   bool AddLog(const TestTaskLog& log);
-  void LoadLogs(IdToTestTaskLogMap* test_logs);
+  void LoadLogs(TestTaskLogMap* test_task_logs);
   bool EnsureTable() override;
 };
 

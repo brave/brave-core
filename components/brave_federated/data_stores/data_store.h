@@ -10,10 +10,14 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/gtest_prod_util.h"
 #include "base/sequence_checker.h"
 #include "sql/database.h"
 
 namespace brave_federated {
+
+FORWARD_DECLARE_TEST(AdNotificationTimingDataStoreTest,
+                     CheckSchemaColumnExistence);
 
 class DataStore {
  public:
@@ -32,6 +36,11 @@ class DataStore {
   virtual ~DataStore();
 
  protected:
+  friend class DataStoreTest;
+  friend class AdNotificationTimingDataStoreTest;
+  FRIEND_TEST_ALL_PREFIXES(AdNotificationTimingDataStoreTest,
+                           CheckSchemaColumnExistence);
+
   sql::Database db_;
   base::FilePath database_path_;
 

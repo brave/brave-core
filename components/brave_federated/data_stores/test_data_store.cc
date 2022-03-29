@@ -66,21 +66,21 @@ bool TestDataStore::AddLog(const TestTaskLog& log) {
   return s.Run();
 }
 
-void TestDataStore::LoadLogs(IdToTestTaskLogMap* test_logs) {
-  DCHECK(test_logs);
+void TestDataStore::LoadLogs(TestTaskLogMap* test_task_logs) {
+  DCHECK(test_task_logs);
   sql::Statement s(db_.GetUniqueStatement(
       base::StringPrintf("SELECT id, label, creation_date FROM %s",
                          task_name_.c_str())
           .c_str()));
 
-  test_logs->clear();
+  test_task_logs->clear();
   while (s.Step()) {
-    TestTaskLog ntl(
+    TestTaskLog test_task_log(
         s.ColumnInt(0),                                    // id
         s.ColumnBool(1),                                   // label
         base::Time::FromInternalValue(s.ColumnInt64(2)));  // creation_date
 
-    test_logs->insert(std::make_pair(s.ColumnInt(0), ntl));
+    test_task_logs->insert(std::make_pair(s.ColumnInt(0), test_task_log));
   }
 }
 
