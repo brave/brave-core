@@ -1144,7 +1144,7 @@ BraveRewardsGetAdsAccountStatementFunction::Run() {
 
   AddRef();  // Balanced in OnGetAdsAccountStatement().
 
-  ads_service->GetAccountStatement(base::BindOnce(
+  ads_service->GetStatementOfAccounts(base::BindOnce(
       &BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement,
       this));
   return RespondLater();

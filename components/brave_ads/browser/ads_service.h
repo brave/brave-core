@@ -52,7 +52,7 @@ using OnToggleFlaggedAdCallback = base::OnceCallback<void(const std::string&)>;
 using OnGetInlineContentAdCallback = base::OnceCallback<
     void(const bool, const std::string&, const base::DictionaryValue&)>;
 
-using GetAccountStatementCallback = base::OnceCallback<
+using GetStatementOfAccountsCallback = base::OnceCallback<
     void(const bool, const double, const int, const double, const double)>;
 
 using GetAdDiagnosticsCallback =
@@ -147,7 +147,8 @@ class AdsService : public KeyedService {
                           const double to_timestamp,
                           OnGetHistoryCallback callback) = 0;
 
-  virtual void GetAccountStatement(GetAccountStatementCallback callback) = 0;
+  virtual void GetStatementOfAccounts(
+      GetStatementOfAccountsCallback callback) = 0;
 
   virtual void GetAdDiagnostics(GetAdDiagnosticsCallback callback) = 0;
 

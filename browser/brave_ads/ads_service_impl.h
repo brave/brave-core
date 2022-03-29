@@ -181,7 +181,7 @@ class AdsServiceImpl : public AdsService,
                   const double to_timestamp,
                   OnGetHistoryCallback callback) override;
 
-  void GetAccountStatement(GetAccountStatementCallback callback) override;
+  void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
   void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
 
@@ -283,9 +283,9 @@ class AdsServiceImpl : public AdsService,
 
   void OnGetHistory(OnGetHistoryCallback callback, const std::string& json);
 
-  void OnGetAccountStatement(GetAccountStatementCallback callback,
-                             const bool success,
-                             const std::string& json);
+  void OnGetStatementOfAccounts(GetStatementOfAccountsCallback callback,
+                                const bool success,
+                                const std::string& json);
 
   void OnGetAdDiagnostics(GetAdDiagnosticsCallback callback,
                           const bool success,
