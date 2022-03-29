@@ -20,6 +20,7 @@
 #include "brave/components/brave_sync/qr_code_data.h"
 #include "brave/components/brave_sync/qr_code_validator.h"
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
+#include "brave/components/brave_sync/time_limited_words.h"
 #include "brave/components/sync/driver/brave_sync_service_impl.h"
 
 #include "chrome/browser/profiles/profile.h"
@@ -349,6 +350,47 @@ int JNI_BraveSyncWorker_GetQrCodeValidationResult(
   DCHECK(!str_json_qr.empty());
   return static_cast<int>(
       brave_sync::QrCodeDataValidator::ValidateQrDataJson(str_json_qr));
+}
+
+int JNI_BraveSyncWorker_GetWordsValidationResult(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& time_limited_words) {
+  std::string str_time_limited_words =
+      base::android::ConvertJavaStringToUTF8(time_limited_words);
+  DCHECK(!str_time_limited_words.empty());
+  std::string pure_words_stub;
+  return static_cast<int>(brave_sync::TimeLimitedWords::Validate(
+      str_time_limited_words, &pure_words_stub));
+}
+
+static base::android::ScopedJavaLocalRef<jstring>
+JNI_BraveSyncWorker_GetPureWordsFromTimeLimited(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& time_limited_words) {
+  std::string str_time_limited_words =
+      base::android::ConvertJavaStringToUTF8(time_limited_words);
+  DCHECK(!str_time_limited_words.empty());
+
+  std::string pure_words;
+  auto validation_result = brave_sync::TimeLimitedWords::Validate(
+      str_time_limited_words, &pure_words);
+  DCHECK_EQ(validation_result, brave_sync::WordsValidationResult::kValid);
+
+  return base::android::ConvertUTF8ToJavaString(env, pure_words);
+}
+
+static base::android::ScopedJavaLocalRef<jstring>
+JNI_BraveSyncWorker_GetTimeLimitedWordsFromPure(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& pure_words) {
+  std::string str_pure_words =
+      base::android::ConvertJavaStringToUTF8(pure_words);
+  DCHECK(!str_pure_words.empty());
+
+  std::string time_limited_words =
+      brave_sync::TimeLimitedWords::GenerateForNow(str_pure_words);
+
+  return base::android::ConvertUTF8ToJavaString(env, time_limited_words);
 }
 
 static base::android::ScopedJavaLocalRef<jstring>
