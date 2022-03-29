@@ -160,6 +160,7 @@ class TransifexAPIV3Wrapper(TransifexAPIV2Wrapper):
         r = requests.get(url)
         assert r.status_code >= 200 and r.status_code <= 299, \
             f'Aborting. Status code {r.status_code}: {r.content}'
+        r.encoding = 'utf-8'
         content = r.text.encode('utf-8')
         return content
 
@@ -184,6 +185,7 @@ class TransifexAPIV3Wrapper(TransifexAPIV2Wrapper):
         r = requests.get(url)
         assert r.status_code >= 200 and r.status_code <= 299, \
             f'Aborting. Status code {r.status_code}: {r.content}'
+        r.encoding = 'utf-8'
         content = r.text.encode('utf-8')
         return content
 
