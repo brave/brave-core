@@ -346,7 +346,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Show top sites in autocomplete suggestions
       </message>
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES" desc="The label for settings switch controlling whether or not Brave suggested sites show up in autocomplete">
-        Show Brave suggested sites in autocomplete suggestions
+        Show suggested sites in autocomplete suggestions
       </message>
       <message name="IDS_SETTINGS_TABS_SEARCH_SHOW" desc="The button for searching tabs on the left of tab strip region.">
         Show tab search button
