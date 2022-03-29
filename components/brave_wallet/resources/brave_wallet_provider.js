@@ -29,6 +29,10 @@
     isMetaMask: {
       value: true,
       writable: false
+    },
+    isBraveWallet: {
+      value: true,
+      writable: false
     }
   })
 
