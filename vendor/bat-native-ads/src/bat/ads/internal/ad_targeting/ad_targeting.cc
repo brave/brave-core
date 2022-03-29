@@ -12,7 +12,7 @@
 namespace ads {
 namespace ad_targeting {
 
-SegmentList GetTopParentChildSegments(const UserModelInfo& user_model) {
+SegmentList GetTopChildSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model, /* parent_only */ false);
 }
 
@@ -20,7 +20,7 @@ SegmentList GetTopParentSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model, /* parent_only */ true);
 }
 
-SegmentList GetTopParentChildInterestSegments(const UserModelInfo& user_model) {
+SegmentList GetTopChildInterestSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model.interest_segments, kTopInterestSegmentsCount,
                         /* parent_only */ false);
 }
@@ -30,8 +30,7 @@ SegmentList GetTopParentInterestSegments(const UserModelInfo& user_model) {
                         /* parent_only */ true);
 }
 
-SegmentList GetTopParentChildLatentInterestSegments(
-    const UserModelInfo& user_model) {
+SegmentList GetTopChildLatentInterestSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model.latent_interest_segments,
                         kTopLatentInterestSegmentsCount,
                         /* parent_only */ false);
@@ -44,8 +43,7 @@ SegmentList GetTopParentLatentInterestSegments(
                         /* parent_only */ true);
 }
 
-SegmentList GetTopParentChildPurchaseIntentSegments(
-    const UserModelInfo& user_model) {
+SegmentList GetTopChildPurchaseIntentSegments(const UserModelInfo& user_model) {
   return GetTopSegments(user_model.purchase_intent_segments,
                         kTopPurchaseIntentSegmentsCount,
                         /* parent_only */ false);

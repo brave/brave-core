@@ -128,7 +128,7 @@ void AdServing::MaybeServeAd() {
                       const CreativeAdNotificationList& creative_ads) {
         if (had_opportunity) {
           const SegmentList& segments =
-              ad_targeting::GetTopParentChildSegments(user_model);
+              ad_targeting::GetTopChildSegments(user_model);
           p2a::RecordAdOpportunityForSegments(AdType::kAdNotification,
                                               segments);
         }

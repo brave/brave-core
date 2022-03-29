@@ -20,7 +20,7 @@ class BatAdsAdTargetingUtilTest : public UnitTestBase {
   ~BatAdsAdTargetingUtilTest() override = default;
 };
 
-TEST_F(BatAdsAdTargetingUtilTest, GetTopParentChildSegments) {
+TEST_F(BatAdsAdTargetingUtilTest, GetTopChildSegments) {
   // Arrange
   UserModelInfo user_model;
   user_model.interest_segments = {"interest-1", "interest-2"};
@@ -41,7 +41,7 @@ TEST_F(BatAdsAdTargetingUtilTest, GetTopParentChildSegments) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST_F(BatAdsAdTargetingUtilTest, GetTopParentChildSegmentsForEmptyUserModel) {
+TEST_F(BatAdsAdTargetingUtilTest, GetTopChildSegmentsForEmptyUserModel) {
   // Arrange
   const UserModelInfo user_model;
 
