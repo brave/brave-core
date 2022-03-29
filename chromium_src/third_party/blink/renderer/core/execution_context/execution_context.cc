@@ -25,6 +25,7 @@
 #include "third_party/blink/renderer/platform/network/network_utils.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+#include "third_party/icu/source/common/unicode/locid.h"
 
 namespace {
 
@@ -270,14 +271,19 @@ WTF::String BraveSessionCache::FarbledUserAgent(WTF::String real_user_agent) {
 bool BraveSessionCache::AllowFontFamily(
     blink::WebContentSettingsClient* settings,
     const AtomicString& family_name) {
-  if (!kRestrictFontFamiliesOnThisPlatform || !farbling_enabled_ || !settings)
+  if (!CanRestrictFontFamiliesOnThisPlatform() || !farbling_enabled_ ||
+      !settings)
     return true;
   switch (settings->GetBraveFarblingLevel()) {
     case BraveFarblingLevel::OFF:
       break;
     case BraveFarblingLevel::BALANCED:
     case BraveFarblingLevel::MAXIMUM: {
-      if (kAllowedFontFamilies.contains(family_name.Utf8()))
+      const icu::Locale& locale = icu::Locale::getDefault();
+      std::string locale_language = locale.getLanguage();
+      if ((GetAllowedFontFamilies().contains(family_name.Utf8())) ||
+          (GetAdditionalAllowedFontFamiliesByLocale(locale_language)
+               .contains(family_name.Utf8())))
         return true;
       std::mt19937_64 prng = MakePseudoRandomGenerator();
       prng.discard(family_name.Impl()->GetHash() % 16);

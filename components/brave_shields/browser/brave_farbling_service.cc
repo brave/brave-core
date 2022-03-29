@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_shields/browser/brave_farbling_service.h"
 
+#include <string>
+
 #include "base/rand_util.h"
 #include "crypto/hmac.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
