@@ -21,7 +21,7 @@ import {
   WalletState
 } from '../../constants/types'
 import { SwapParamsPayloadType } from '../constants/action_types'
-import { MAX_UINT256, NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../constants/magics'
+import { MAX_UINT256 } from '../constants/magics'
 
 // Options
 import { SlippagePresetOptions } from '../../options/slippage-preset-options'
@@ -36,7 +36,6 @@ import getAPIProxy from '../async/bridge'
 import { hexStrToNumberArray } from '../../utils/hex-utils'
 
 // Hooks
-import useAssetManagement from './assets-management'
 import useBalance from './balance'
 import usePreset from './select-preset'
 import { useIsMounted } from './useIsMounted'
@@ -100,18 +99,9 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   // custom hooks
   const isMounted = useIsMounted()
   const getBalance = useBalance(networkList)
-  const { makeTokenVisible } = useAssetManagement()
   const { getIsSwapSupported, getERC20Allowance } = useLib()
 
   // Callbacks / methods
-  const setToAssetAndMakeVisible = React.useCallback((token?: BraveWallet.BlockchainToken) => {
-    setToAsset(token)
-
-    if (token) {
-      makeTokenVisible(token)
-    }
-  }, [])
-
   const fetchSwapQuote = React.useCallback(async (payload: SwapParamsPayloadType) => {
     if (!isMounted) {
       return
@@ -133,8 +123,8 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       takerAddress: accountAddress,
       sellAmount: fromAssetAmount || '',
       buyAmount: toAssetAmount || '',
-      buyToken: toAsset.contractAddress || NATIVE_ASSET_CONTRACT_ADDRESS_0X,
-      sellToken: fromAsset.contractAddress || NATIVE_ASSET_CONTRACT_ADDRESS_0X,
+      buyToken: toAsset.contractAddress || toAsset.symbol,
+      sellToken: fromAsset.contractAddress || fromAsset.symbol,
       slippagePercentage: slippageTolerance.slippage / 100,
       gasPrice: ''
     }
@@ -366,7 +356,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
 
   const flipSwapAssets = React.useCallback(() => {
     setFromAsset(toAsset)
-    setToAssetAndMakeVisible(fromAsset)
+    setToAsset(fromAsset)
 
     clearPreset()
 
@@ -476,7 +466,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
     if (toOrFrom === 'from') {
       setFromAsset(asset)
     } else {
-      setToAssetAndMakeVisible(asset)
+      setToAsset(asset)
       setToAmount('0')
     }
 
@@ -542,18 +532,26 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
     return gasPriceWrapped.times(gasWrapped)
   }, [swapQuote])
 
+  const assetsByNetwork = React.useMemo(() => {
+    if (!userVisibleTokensInfo) {
+      return []
+    }
+
+    return userVisibleTokensInfo.filter((token) => token.chainId === selectedNetwork.chainId)
+  }, [userVisibleTokensInfo, selectedNetwork])
+
   const swapAssetOptions: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     return [
       nativeAsset,
       ...fullTokenList.filter((asset) => asset.symbol.toUpperCase() === 'BAT'),
-      ...userVisibleTokensInfo
+      ...assetsByNetwork
         .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase())),
       ...fullTokenList
         .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase()))
-        .filter(asset => !userVisibleTokensInfo
+        .filter(asset => !assetsByNetwork
           .some(token => token.symbol.toUpperCase() === asset.symbol.toUpperCase()))
     ].filter(asset => asset.chainId === selectedNetwork.chainId)
-  }, [fullTokenList, userVisibleTokensInfo, nativeAsset, selectedNetwork])
+  }, [fullTokenList, nativeAsset, assetsByNetwork])
 
   const swapValidationError: SwapValidationErrorType | undefined = React.useMemo(() => {
     if (!fromAsset || !toAsset) {
@@ -578,6 +576,8 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       .multiplyByDecimals(fromAsset.decimals)
 
     if (fromAmountWeiWrapped.gt(fromAssetBalance)) {
+      console.log(fromAmountWeiWrapped.format())
+      console.log(fromAssetBalance)
       return 'insufficientBalance'
     }
 
@@ -644,32 +644,12 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
     toAsset
   ])
 
-  const hasToken = React.useCallback((token: BraveWallet.BlockchainToken) =>
-    swapAssetOptions.some(option =>
-      option.chainId === token.chainId &&
-      option.contractAddress.toLowerCase() === token.contractAddress.toLowerCase()),
-    [swapAssetOptions])
-
   // Effects
   React.useEffect(() => {
-    // This hook is triggered whenever swapAssetOptions changes, updating
-    // the from/to assets, typically when userVisibleTokensInfo is updated
-    // in the following three ways:
-    //   1. Redux initialisation.
-    //   2. User updates Visible Assets.
-    //   3. User selects a taker asset that is not part of
-    //      userVisibleTokensInfo.
-
     setFilteredAssetList(swapAssetOptions)
-
-    if (!fromAsset || !hasToken(fromAsset)) {
-      setFromAsset(swapAssetOptions[0])
-    }
-
-    if (!toAsset || !hasToken(toAsset)) {
-      setToAsset(swapAssetOptions[1])
-    }
-  }, [swapAssetOptions, fromAsset, toAsset])
+    setFromAsset(swapAssetOptions[0])
+    setToAsset(swapAssetOptions[1])
+  }, [swapAssetOptions])
 
   React.useEffect(() => {
     let isSubscribed = true // track if the component is mounted

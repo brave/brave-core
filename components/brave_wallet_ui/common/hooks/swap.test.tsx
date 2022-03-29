@@ -33,6 +33,15 @@ const store = createStore(combineReducers({
   page: createPageReducer(mockPageState)
 }))
 
+const renderHookOptions = {
+  wrapper: ({ children }: { children?: React.ReactChildren }) =>
+    <Provider store={store}>
+      <LibContext.Provider value={MockedLib as any}>
+        {children}
+      </LibContext.Provider>
+    </Provider>
+}
+
 function renderHookOptionsWithCustomStore (store: any) {
   return {
     wrapper: ({ children }: { children?: React.ReactChildren }) =>
@@ -43,8 +52,6 @@ function renderHookOptionsWithCustomStore (store: any) {
     </Provider>
   }
 }
-
-const renderHookOptions = renderHookOptionsWithCustomStore(store)
 
 const mockQuote = {
   allowanceTarget: '',

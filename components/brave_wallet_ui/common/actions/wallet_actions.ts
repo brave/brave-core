@@ -1,4 +1,4 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -15,7 +15,9 @@ import {
   DefaultWalletChanged,
   DefaultBaseCurrencyChanged,
   DefaultBaseCryptocurrencyChanged,
+  AddUserAssetPayloadType,
   SetUserAssetVisiblePayloadType,
+  RemoveUserAssetPayloadType,
   UpdateUnapprovedTransactionGasFieldsType,
   SitePermissionsPayloadType,
   RemoveSitePermissionPayloadType,
@@ -48,9 +50,9 @@ export const unlockWallet = createAction<UnlockWalletPayloadType>('unlockWallet'
 export const addFavoriteApp = createAction<BraveWallet.AppItem>('addFavoriteApp')
 export const removeFavoriteApp = createAction<BraveWallet.AppItem>('removeFavoriteApp')
 export const hasIncorrectPassword = createAction<boolean>('hasIncorrectPassword')
-export const addUserAsset = createAction<BraveWallet.BlockchainToken>('addUserAsset')
+export const addUserAsset = createAction<AddUserAssetPayloadType>('addUserAsset')
 export const addUserAssetError = createAction<boolean>('addUserAssetError')
-export const removeUserAsset = createAction<BraveWallet.BlockchainToken>('removeUserAsset')
+export const removeUserAsset = createAction<RemoveUserAssetPayloadType>('removeUserAsset')
 export const setUserAssetVisible = createAction<SetUserAssetVisiblePayloadType>('setUserAssetVisible')
 export const setVisibleTokensInfo = createAction<BraveWallet.BlockchainToken[]>('setVisibleTokensInfo')
 export const selectAccount = createAction<WalletAccountType>('selectAccount')
