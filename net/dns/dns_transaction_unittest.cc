@@ -318,7 +318,7 @@ class TransactionHelper {
                         bool secure,
                         ResolveContext* context) {
     std::unique_ptr<DnsTransaction> transaction = factory->CreateTransaction(
-        hostname, qtype, CompletionCallback(),
+        hostname, qtype,
         NetLogWithSource::Make(net::NetLog::Get(), net::NetLogSourceType::NONE),
         secure, factory->GetSecureDnsModeForTest(), context,
         true /* fast_timeout */);
@@ -331,7 +331,8 @@ class TransactionHelper {
     EXPECT_FALSE(transaction_);
     transaction_ = std::move(transaction);
     qtype_ = transaction_->GetType();
-    transaction_->Start();
+    transaction_->Start(base::BindOnce(
+        &TransactionHelper::OnTransactionComplete, base::Unretained(this)));
   }
 
   void Cancel() {
@@ -339,17 +340,10 @@ class TransactionHelper {
     transaction_.reset(nullptr);
   }
 
-  DnsTransactionFactory::CallbackType CompletionCallback() {
-    return base::BindOnce(&TransactionHelper::OnTransactionComplete,
-                          base::Unretained(this));
-  }
-
-  void OnTransactionComplete(DnsTransaction* t,
-                             int rv,
+  void OnTransactionComplete(int rv,
                              const DnsResponse* response,
                              absl::optional<std::string> doh_provider_id) {
     EXPECT_FALSE(completed_);
-    EXPECT_EQ(transaction_.get(), t);
 
     completed_ = true;
     response_ = response;
