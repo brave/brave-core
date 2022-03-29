@@ -36,6 +36,15 @@ TxServiceFactory::GetEthTxManagerProxyForBrowserState(
 }
 
 // static
+mojo::PendingRemote<mojom::SolanaTxManagerProxy>
+TxServiceFactory::GetSolanaTxManagerProxyForBrowserState(
+    ChromeBrowserState* browser_state) {
+  return static_cast<TxService*>(
+             GetInstance()->GetServiceForBrowserState(browser_state, true))
+      ->MakeSolanaTxManagerProxyRemote();
+}
+
+// static
 TxService* TxServiceFactory::GetServiceForState(
     ChromeBrowserState* browser_state) {
   return static_cast<TxService*>(

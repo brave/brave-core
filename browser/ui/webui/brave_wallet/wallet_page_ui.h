@@ -51,6 +51,8 @@ class WalletPageUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_wallet::mojom::TxService> tx_service,
       mojo::PendingReceiver<brave_wallet::mojom::EthTxManagerProxy>
           eth_tx_manager_proxy,
+      mojo::PendingReceiver<brave_wallet::mojom::SolanaTxManagerProxy>
+          solana_tx_manager_proxy,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
           brave_wallet_service) override;
 

@@ -9,6 +9,7 @@ import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
+import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -57,6 +58,19 @@ public class TxServiceFactory {
         return ethTxManagerProxy;
     }
 
+    public SolanaTxManagerProxy getSolanaTxManagerProxy(
+            ConnectionErrorHandler connectionErrorHandler) {
+        Profile profile = Utils.getProfile(false); // always use regular profile
+        int nativeHandle = TxServiceFactoryJni.get().getInterfaceToSolanaTxManagerProxy(profile);
+        MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
+        SolanaTxManagerProxy solanaTxManagerProxy =
+                SolanaTxManagerProxy.MANAGER.attachProxy(handle, 0);
+        Handler handler = ((Interface.Proxy) solanaTxManagerProxy).getProxyHandler();
+        handler.setErrorHandler(connectionErrorHandler);
+
+        return solanaTxManagerProxy;
+    }
+
     private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
@@ -65,5 +79,6 @@ public class TxServiceFactory {
     interface Natives {
         int getInterfaceToTxService(Profile profile);
         int getInterfaceToEthTxManagerProxy(Profile profile);
+        int getInterfaceToSolanaTxManagerProxy(Profile profile);
     }
 }
