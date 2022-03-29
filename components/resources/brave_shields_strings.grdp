@@ -118,6 +118,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ICON_TOOLTIP" desc="The message shown on hover of the shields lion icon">
-    Brave Shields <ph name="NUMBER">$1</ph> Trackers, ads, and more blocked
+    Brave Shields
+<ph name="NUMBER">$1</ph> Trackers, ads, and more blocked
   </message>
 </grit-part>
