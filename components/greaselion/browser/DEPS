@@ -8,6 +8,7 @@ include_rules = [
 # Existing exceptions
 specific_include_rules = {
   "greaselion_service_impl.cc": [
+    "+brave/build/brave_buildflags.h",
     "+chrome/browser/extensions/extension_service.h",
   ],
 }

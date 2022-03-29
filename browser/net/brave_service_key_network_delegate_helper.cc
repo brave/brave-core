@@ -7,8 +7,9 @@
 
 #include <iterator>
 #include <string>
+#include <vector>
 
-#include "base/strings/string_piece.h"
+#include "base/no_destructor.h"
 #include "brave/build/brave_buildflags.h"
 #include "brave/common/network_constants.h"
 #include "net/base/net_errors.h"
@@ -21,15 +22,15 @@ int OnBeforeStartTransaction_BraveServiceKey(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  const std::string allowed_domains[] = {
-      kExtensionUpdaterDomain, GURL(BUILDFLAG(UPDATER_DEV_ENDPOINT)).host(),
-      GURL(BUILDFLAG(UPDATER_PROD_ENDPOINT)).host()};
+  static const base::NoDestructor<std::vector<std::string>> allowed_domains{
+      {kExtensionUpdaterDomain, GURL(BUILDFLAG(UPDATER_DEV_ENDPOINT)).host(),
+       GURL(BUILDFLAG(UPDATER_PROD_ENDPOINT)).host()}};
 
   const GURL& url = ctx->request_url;
 
   if (url.SchemeIs(url::kHttpsScheme)) {
     if (std::any_of(
-            std::begin(allowed_domains), std::end(allowed_domains),
+            std::begin(*allowed_domains), std::end(*allowed_domains),
             [&url](const auto& domain) { return url.DomainIs(domain); })) {
       headers->SetHeader(kBraveServicesKeyHeader,
                          BUILDFLAG(BRAVE_SERVICES_KEY));

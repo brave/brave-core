@@ -93,6 +93,9 @@ include_rules = [
   "-ios",
   "-brave/third_party/bitcoin-core",
   "-brave/third_party/argon2",
+
+  # File's rules
+  "-brave/build/brave_buildflags.h",
 ]
 
 # Temporary workaround for massive nummber of incorrect test includes

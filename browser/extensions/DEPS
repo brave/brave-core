@@ -1,0 +1,5 @@
+specific_include_rules = {
+  "ethereum_remote_client_util.cc": [
+    "+brave/build/brave_buildflags.h",
+  ],
+}

@@ -1,0 +1,8 @@
+specific_include_rules = {
+  "brave_service_key_network_delegate_helper.cc": [
+    "+brave/build/brave_buildflags.h",
+  ],
+  "brave_system_request_handler.cc": [
+    "+brave/build/brave_buildflags.h",
+  ],
+}

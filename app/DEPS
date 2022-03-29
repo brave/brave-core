@@ -1,5 +1,6 @@
 include_rules = [
   "+brave/browser",
+  "+brave/build/brave_buildflags.h",
   "+brave/common",
   "+brave/renderer/brave_content_renderer_client.h",
   "+chrome/app",
