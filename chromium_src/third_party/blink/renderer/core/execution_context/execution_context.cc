@@ -294,19 +294,22 @@ bool BraveSessionCache::AllowFontFamily(
     blink::WebContentSettingsClient* settings,
     const AtomicString& family_name) {
   if (!CanRestrictFontFamiliesOnThisPlatform() || !farbling_enabled_ ||
-      !settings)
+      !settings || !settings->IsReduceLanguageEnabled())
     return true;
   switch (settings->GetBraveFarblingLevel()) {
     case BraveFarblingLevel::OFF:
       break;
     case BraveFarblingLevel::BALANCED:
     case BraveFarblingLevel::MAXIMUM: {
+      if (GetAllowedFontFamilies().contains(family_name.Utf8()))
+        return true;
+#if BUILDFLAG(IS_WIN)
       const icu::Locale& locale = icu::Locale::getDefault();
       std::string locale_language = locale.getLanguage();
-      if ((GetAllowedFontFamilies().contains(family_name.Utf8())) ||
-          (GetAdditionalAllowedFontFamiliesByLocale(locale_language)
-               .contains(family_name.Utf8())))
+      if (GetAdditionalAllowedFontFamiliesByLocale(locale_language)
+              .contains(family_name.Utf8()))
         return true;
+#endif
       std::mt19937_64 prng = MakePseudoRandomGenerator();
       prng.discard(family_name.Impl()->GetHash() % 16);
       return ((prng() % 2) == 0);

@@ -12,7 +12,6 @@
 
 #include "base/bind.h"
 #include "base/json/json_reader.h"
-#include "base/rand_util.h"
 #include "base/system/sys_info.h"
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"

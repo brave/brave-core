@@ -53,7 +53,7 @@ const base::Feature kBraveExtensionNetworkBlocking{
     "BraveExtensionNetworkBlocking", base::FEATURE_DISABLED_BY_DEFAULT};
 // When enabled, language headers and APIs may be altered by Brave Shields.
 const base::Feature kBraveReduceLanguage{"BraveReduceLanguage",
-                                         base::FEATURE_DISABLED_BY_DEFAULT};
+                                         base::FEATURE_ENABLED_BY_DEFAULT};
 // When enabled, Brave will always report Light in Fingerprinting: Strict mode
 const base::Feature kBraveDarkModeBlock{"BraveDarkModeBlock",
                                         base::FEATURE_ENABLED_BY_DEFAULT};

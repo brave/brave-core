@@ -30,7 +30,7 @@ void RegisterAllowFontFamilyCallback(AllowFontFamilyCallback callback) {
 
 #define BRAVE_GET_FONT_DATA                         \
   if (brave::GetAllowFontFamilyCallback() &&        \
-      brave::GetAllowFontFamilyCallback()->Run(     \
+      !brave::GetAllowFontFamilyCallback()->Run(    \
           GetFontSelector()->GetExecutionContext(), \
           curr_family->FamilyName()))               \
     result = nullptr;
