@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_UTILS_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_UTILS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SOLANA_UTILS_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SOLANA_UTILS_H_
 
 #include <string>
 #include <vector>
@@ -25,4 +25,4 @@ std::string Base58Encode(const std::vector<uint8_t>& bytes);
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_UTILS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SOLANA_UTILS_H_

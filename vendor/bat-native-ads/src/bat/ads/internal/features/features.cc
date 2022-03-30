@@ -20,7 +20,7 @@ namespace ads {
 namespace features {
 
 namespace {
-const char kAdsTrialTag[] = "BraveAds";
+constexpr char kAdsTrialTag[] = "BraveAds";
 }  // namespace
 
 base::FieldTrial::ActiveGroups GetStudies() {

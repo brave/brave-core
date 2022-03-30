@@ -87,23 +87,21 @@ void RebuildAdEventsFromDatabase() {
 }
 
 void RecordAdEvent(const AdEventInfo& ad_event) {
-  const std::string ad_type_as_string = std::string(ad_event.type);
+  const std::string& id = GetInstanceId();
 
-  const std::string confirmation_type_as_string =
-      std::string(ad_event.confirmation_type);
+  const AdType& ad_type = ad_event.type;
+  const ConfirmationType& confirmation_type = ad_event.confirmation_type;
 
   const double timestamp = ad_event.created_at.ToDoubleT();
 
-  const std::string& id = GetInstanceId();
-
   AdsClientHelper::Get()->RecordAdEventForId(
-      id, ad_type_as_string, confirmation_type_as_string, timestamp);
+      id, ad_type.ToString(), confirmation_type.ToString(), timestamp);
 }
 
 std::deque<base::Time> GetAdEvents(const AdType& ad_type,
                                    const ConfirmationType& confirmation_type) {
-  const std::vector<double>& history =
-      AdsClientHelper::Get()->GetAdEvents(ad_type, confirmation_type);
+  const std::vector<double>& history = AdsClientHelper::Get()->GetAdEvents(
+      ad_type.ToString(), confirmation_type.ToString());
 
   std::deque<base::Time> deque;
 

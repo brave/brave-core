@@ -19,8 +19,10 @@ namespace ads {
 namespace security {
 
 namespace {
-const size_t kCryptoBoxPublicKeyBytes = crypto_box_PUBLICKEYBYTES;
-const size_t kCryptoBoxSecretKeyBytes = crypto_box_SECRETKEYBYTES;
+
+constexpr size_t kCryptoBoxPublicKeyBytes = crypto_box_PUBLICKEYBYTES;
+constexpr size_t kCryptoBoxSecretKeyBytes = crypto_box_SECRETKEYBYTES;
+
 }  // namespace
 
 TEST(BatAdsSecurityCryptoUtilsTest, Sign) {

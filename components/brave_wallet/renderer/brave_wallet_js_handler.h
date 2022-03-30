@@ -60,7 +60,6 @@ class BraveWalletJSHandler : public mojom::EventsListener {
   bool EnsureConnected();
   void OnRemoteDisconnect();
   void InjectInitScript();
-  void ExecuteScript(const std::string script);
 
   // Functions to be called from JS
   v8::Local<v8::Promise> Request(v8::Isolate* isolate,

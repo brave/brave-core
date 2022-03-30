@@ -27,7 +27,7 @@ class BatAdsUnblindedTokensTest : public UnitTestBase {
 
 TEST_F(BatAdsUnblindedTokensTest, GetToken) {
   // Arrange
-  privacy::SetUnblindedTokens(10);
+  SetUnblindedTokens(10);
 
   // Act
   const UnblindedTokenInfo& unblinded_token =
@@ -45,7 +45,7 @@ TEST_F(BatAdsUnblindedTokensTest, GetToken) {
 
 TEST_F(BatAdsUnblindedTokensTest, GetAllTokens) {
   // Arrange
-  privacy::SetUnblindedTokens(8);
+  SetUnblindedTokens(8);
 
   // Act
   const UnblindedTokenList& unblinded_tokens =
@@ -77,7 +77,7 @@ TEST_F(BatAdsUnblindedTokensTest, GetAllTokens) {
 
 TEST_F(BatAdsUnblindedTokensTest, GetTokensAsList) {
   // Arrange
-  privacy::SetUnblindedTokens(8);
+  SetUnblindedTokens(8);
 
   // Act
   const base::Value& list = get_unblinded_tokens()->GetTokensAsList();
@@ -208,7 +208,7 @@ TEST_F(BatAdsUnblindedTokensTest, SetTokensFromListWithEmptyList) {
 
 TEST_F(BatAdsUnblindedTokensTest, AddTokens) {
   // Arrange
-  privacy::SetUnblindedTokens(3);
+  SetUnblindedTokens(3);
 
   // Act
   const UnblindedTokenList& unblinded_tokens = GetRandomUnblindedTokens(5);
@@ -226,7 +226,7 @@ TEST_F(BatAdsUnblindedTokensTest, AddTokens) {
 
 TEST_F(BatAdsUnblindedTokensTest, DoNotAddDuplicateTokens) {
   // Arrange
-  privacy::SetUnblindedTokens(3);
+  SetUnblindedTokens(3);
 
   // Act
   const UnblindedTokenList& duplicate_unblinded_tokens = GetUnblindedTokens(1);
@@ -239,7 +239,7 @@ TEST_F(BatAdsUnblindedTokensTest, DoNotAddDuplicateTokens) {
 
 TEST_F(BatAdsUnblindedTokensTest, AddTokensCount) {
   // Arrange
-  privacy::SetUnblindedTokens(5);
+  SetUnblindedTokens(5);
 
   // Act
   const UnblindedTokenList& random_unblinded_tokens =
@@ -253,7 +253,7 @@ TEST_F(BatAdsUnblindedTokensTest, AddTokensCount) {
 
 TEST_F(BatAdsUnblindedTokensTest, AddTokensWithEmptyList) {
   // Arrange
-  privacy::SetUnblindedTokens(3);
+  SetUnblindedTokens(3);
 
   // Act
   const UnblindedTokenList& empty_unblinded_tokens = {};
@@ -266,7 +266,7 @@ TEST_F(BatAdsUnblindedTokensTest, AddTokensWithEmptyList) {
 
 TEST_F(BatAdsUnblindedTokensTest, RemoveTokenCount) {
   // Arrange
-  privacy::SetUnblindedTokens(3);
+  SetUnblindedTokens(3);
 
   // Act
   const std::string unblinded_token_base64 =
@@ -285,7 +285,7 @@ TEST_F(BatAdsUnblindedTokensTest, RemoveTokenCount) {
 
 TEST_F(BatAdsUnblindedTokensTest, RemoveToken) {
   // Arrange
-  privacy::SetUnblindedTokens(3);
+  SetUnblindedTokens(3);
 
   // Act
   std::string unblinded_token_base64 =
@@ -303,7 +303,7 @@ TEST_F(BatAdsUnblindedTokensTest, RemoveToken) {
 
 TEST_F(BatAdsUnblindedTokensTest, DoNotRemoveTokensThatDoNotExist) {
   // Arrange
-  privacy::SetUnblindedTokens(3);
+  SetUnblindedTokens(3);
 
   // Act
   std::string unblinded_token_base64 =
@@ -321,7 +321,7 @@ TEST_F(BatAdsUnblindedTokensTest, DoNotRemoveTokensThatDoNotExist) {
 
 TEST_F(BatAdsUnblindedTokensTest, DoNotRemoveTheSameTokenTwice) {
   // Arrange
-  privacy::SetUnblindedTokens(3);
+  SetUnblindedTokens(3);
 
   // Act
   std::string unblinded_token_base64 =
@@ -341,7 +341,7 @@ TEST_F(BatAdsUnblindedTokensTest, DoNotRemoveTheSameTokenTwice) {
 
 TEST_F(BatAdsUnblindedTokensTest, RemoveMatchingTokens) {
   // Arrange
-  UnblindedTokenList unblinded_tokens = privacy::SetUnblindedTokens(3);
+  UnblindedTokenList unblinded_tokens = SetUnblindedTokens(3);
   UnblindedTokenInfo unblinded_token = unblinded_tokens.back();
   unblinded_tokens.pop_back();
 
@@ -362,7 +362,7 @@ TEST_F(BatAdsUnblindedTokensTest, RemoveMatchingTokens) {
 
 TEST_F(BatAdsUnblindedTokensTest, RemoveAllTokens) {
   // Arrange
-  privacy::SetUnblindedTokens(7);
+  SetUnblindedTokens(7);
 
   // Act
   get_unblinded_tokens()->RemoveAllTokens();
@@ -385,7 +385,7 @@ TEST_F(BatAdsUnblindedTokensTest, RemoveAllTokensWithEmptyList) {
 
 TEST_F(BatAdsUnblindedTokensTest, TokenExists) {
   // Arrange
-  privacy::SetUnblindedTokens(3);
+  SetUnblindedTokens(3);
 
   // Act
   std::string unblinded_token_base64 =
@@ -403,7 +403,7 @@ TEST_F(BatAdsUnblindedTokensTest, TokenExists) {
 
 TEST_F(BatAdsUnblindedTokensTest, TokenDoesNotExist) {
   // Arrange
-  privacy::SetUnblindedTokens(3);
+  SetUnblindedTokens(3);
 
   // Act
   std::string unblinded_token_base64 =
@@ -420,7 +420,7 @@ TEST_F(BatAdsUnblindedTokensTest, TokenDoesNotExist) {
 
 TEST_F(BatAdsUnblindedTokensTest, Count) {
   // Arrange
-  privacy::SetUnblindedTokens(6);
+  SetUnblindedTokens(6);
 
   // Act
   const int count = get_unblinded_tokens()->Count();
@@ -441,7 +441,7 @@ TEST_F(BatAdsUnblindedTokensTest, IsEmpty) {
 
 TEST_F(BatAdsUnblindedTokensTest, IsNotEmpty) {
   // Arrange
-  privacy::SetUnblindedTokens(9);
+  SetUnblindedTokens(9);
 
   // Act
   const bool is_empty = get_unblinded_tokens()->IsEmpty();

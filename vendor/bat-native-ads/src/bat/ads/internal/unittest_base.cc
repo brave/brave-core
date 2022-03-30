@@ -22,7 +22,7 @@ using ::testing::NiceMock;
 namespace ads {
 
 namespace {
-const char kDatabaseFilename[] = "database.sqlite";
+constexpr char kDatabaseFilename[] = "database.sqlite";
 }  // namespace
 
 UnitTestBase::UnitTestBase()
@@ -107,12 +107,15 @@ AdsImpl* UnitTestBase::GetAds() const {
   return ads_.get();
 }
 
-void UnitTestBase::FastForwardClockBy(const base::TimeDelta& time_delta) {
+void UnitTestBase::FastForwardClockBy(const base::TimeDelta time_delta) {
   task_environment_.FastForwardBy(time_delta);
 }
 
-void UnitTestBase::FastForwardClockTo(const base::Time& time) {
+void UnitTestBase::FastForwardClockTo(const base::Time time) {
   const base::TimeDelta time_delta = time - Now();
+  CHECK(time_delta.is_positive())
+      << "You Can't Travel Back in Time, Scientists Say! Unless, of course, "
+         "you are travelling at 88 mph";
 
   FastForwardClockBy(time_delta);
 }
@@ -124,13 +127,16 @@ void UnitTestBase::AdvanceClockToMidnightUTC() {
   return AdvanceClock(time_delta);
 }
 
-void UnitTestBase::AdvanceClock(const base::Time& time) {
+void UnitTestBase::AdvanceClock(const base::Time time) {
   const base::TimeDelta time_delta = time - Now();
+  CHECK(time_delta.is_positive())
+      << "You Can't Travel Back in Time, Scientists Say! Unless, of course, "
+         "you are travelling at 88 mph";
 
   return AdvanceClock(time_delta);
 }
 
-void UnitTestBase::AdvanceClock(const base::TimeDelta& time_delta) {
+void UnitTestBase::AdvanceClock(const base::TimeDelta time_delta) {
   task_environment_.AdvanceClock(time_delta);
 }
 

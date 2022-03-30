@@ -28,8 +28,6 @@ class AdNotification final : public AdNotificationObserver {
                  const mojom::AdNotificationEventType event_type);
 
  private:
-  base::ObserverList<AdNotificationObserver> observers_;
-
   void NotifyAdNotificationEvent(
       const AdNotificationInfo& ad,
       const mojom::AdNotificationEventType event_type) const;
@@ -43,6 +41,8 @@ class AdNotification final : public AdNotificationObserver {
   void NotifyAdNotificationEventFailed(
       const std::string& uuid,
       const mojom::AdNotificationEventType event_type) const;
+
+  base::ObserverList<AdNotificationObserver> observers_;
 };
 
 }  // namespace ads

@@ -1321,14 +1321,14 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     }
 
     @Override
-    public void OnTxApprovedRejected(boolean approved, String accountName, String txId) {
+    public void onTxApprovedRejected(boolean approved, String accountName, String txId) {
         if (approved) {
             finish();
         }
     }
 
     @Override
-    public void OnTxPending(String accountName, String txId) {}
+    public void onTxPending(String accountName, String txId) {}
 
     public void showSwapButtonText() {
         mBtnBuySendSwap.setText(getString(R.string.swap));

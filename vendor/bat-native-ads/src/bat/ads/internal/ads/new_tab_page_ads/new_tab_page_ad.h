@@ -29,8 +29,6 @@ class NewTabPageAd final : public NewTabPageAdObserver {
                  const mojom::NewTabPageAdEventType event_type);
 
  private:
-  base::ObserverList<NewTabPageAdObserver> observers_;
-
   void FireEvent(const NewTabPageAdInfo& ad,
                  const std::string& uuid,
                  const std::string& creative_instance_id,
@@ -48,6 +46,8 @@ class NewTabPageAd final : public NewTabPageAdObserver {
       const std::string& uuid,
       const std::string& creative_instance_id,
       const mojom::NewTabPageAdEventType event_type) const;
+
+  base::ObserverList<NewTabPageAdObserver> observers_;
 };
 
 }  // namespace ads

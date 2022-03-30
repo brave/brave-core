@@ -135,8 +135,10 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForUnseenAdvertiser) {
 
 TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTime) {
   // Arrange
-  const std::string advertiser_1 = base::GenerateGUID();
-  const std::string advertiser_2 = base::GenerateGUID();
+  const std::string advertiser_1 =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
+  const std::string advertiser_2 =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
 
   CreativeAdNotificationInfo creative_ad_1 = BuildCreativeAdNotification();
   creative_ad_1.advertiser_id = advertiser_1;

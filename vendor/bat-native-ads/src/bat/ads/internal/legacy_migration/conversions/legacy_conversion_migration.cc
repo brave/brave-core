@@ -24,12 +24,12 @@ namespace conversions {
 
 namespace {
 
-const char kFilename[] = "ad_conversions.json";
+constexpr char kFilename[] = "ad_conversions.json";
 
-const char kListKey[] = "ad_conversions";
-const char kTimestampKey[] = "timestamp";
-const char kCreativeSetIdKey[] = "creative_set_id";
-const char kCreativeInstanceIdKey[] = "uuid";
+constexpr char kListKey[] = "ad_conversions";
+constexpr char kTimestampKey[] = "timestamp";
+constexpr char kCreativeSetIdKey[] = "creative_set_id";
+constexpr char kCreativeInstanceIdKey[] = "uuid";
 
 absl::optional<ConversionQueueItemInfo> GetFromDictionary(
     const base::DictionaryValue* dictionary) {

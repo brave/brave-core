@@ -64,6 +64,12 @@ class ExclusionRulesBase {
                           ExclusionRule<CreativeAdInfo>* exclusion_rule);
 
  private:
+  bool IsCached(const CreativeAdInfo& creative_ad) const;
+  void AddToCache(const std::string& uuid);
+
+  ExclusionRulesBase(const ExclusionRulesBase&) = delete;
+  ExclusionRulesBase& operator=(const ExclusionRulesBase&) = delete;
+
   std::unique_ptr<AntiTargetingExclusionRule> anti_targeting_exclusion_rule_;
   std::unique_ptr<ConversionExclusionRule> conversion_exclusion_rule_;
   std::unique_ptr<DailyCapExclusionRule> daily_cap_exclusion_rule_;
@@ -82,12 +88,6 @@ class ExclusionRulesBase {
       subdivision_targeting_exclusion_rule_;
   std::unique_ptr<TotalMaxExclusionRule> total_max_exclusion_rule_;
   std::unique_ptr<TransferredExclusionRule> transferred_exclusion_rule_;
-
-  bool IsCached(const CreativeAdInfo& creative_ad) const;
-  void AddToCache(const std::string& uuid);
-
-  ExclusionRulesBase(const ExclusionRulesBase&) = delete;
-  ExclusionRulesBase& operator=(const ExclusionRulesBase&) = delete;
 };
 
 }  // namespace ads

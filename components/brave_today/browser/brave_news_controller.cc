@@ -13,13 +13,13 @@
 
 #include "base/bind.h"
 #include "base/guid.h"
-#include "base/metrics/histogram_macros.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
+#include "brave/components/brave_today/browser/brave_news_p3a.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/network.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
@@ -28,7 +28,6 @@
 #include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "brave/components/weekly_storage/weekly_storage.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -54,11 +53,8 @@ void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kBraveTodayOptedIn, false);
   registry->RegisterDictionaryPref(prefs::kBraveTodaySources);
   registry->RegisterDictionaryPref(prefs::kBraveTodayDirectFeeds);
-  // P3A
-  registry->RegisterListPref(prefs::kBraveTodayWeeklySessionCount);
-  registry->RegisterListPref(prefs::kBraveTodayWeeklyCardViewsCount);
-  registry->RegisterListPref(prefs::kBraveTodayWeeklyCardVisitsCount);
-  registry->RegisterListPref(prefs::kBraveTodayWeeklyDisplayAdViewedCount);
+
+  p3a::RegisterProfilePrefs(registry);
 }
 
 BraveNewsController::BraveNewsController(
@@ -87,6 +83,8 @@ BraveNewsController::BraveNewsController(
       prefs::kBraveTodayOptedIn,
       base::BindRepeating(&BraveNewsController::ConditionallyStartOrStopTimer,
                           base::Unretained(this)));
+
+  p3a::RecordAtStart(prefs);
   // Monitor kBraveTodaySources and update feed / publisher cache
   // Start timer of updating feeds, if applicable
   ConditionallyStartOrStopTimer();
@@ -188,6 +186,9 @@ void BraveNewsController::SubscribeToNewDirectFeed(
                     },
                     std::move(callback)),
                 true);
+
+            p3a::RecordDirectFeedsTotal(controller->prefs_);
+            p3a::RecordWeeklyAddedDirectFeedsCount(controller->prefs_, 1);
           },
           feed_url, std::move(callback), base::Unretained(this)));
 }
@@ -195,8 +196,12 @@ void BraveNewsController::SubscribeToNewDirectFeed(
 void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
   DictionaryPrefUpdate update(prefs_, prefs::kBraveTodayDirectFeeds);
   update->RemoveKey(publisher_id);
+
   // Mark feed as requiring update
   publishers_controller_.EnsurePublishersIsUpdating();
+
+  p3a::RecordDirectFeedsTotal(prefs_);
+  p3a::RecordWeeklyAddedDirectFeedsCount(prefs_, -1);
 }
 
 void BraveNewsController::GetImageData(const GURL& padded_image_url,
@@ -335,36 +340,14 @@ void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
 }
 
 void BraveNewsController::OnInteractionSessionStarted() {
-  // Track if user has ever scrolled to Brave Today.
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.HasEverInteracted", 1, 1);
-  // Track how many times in the past week
-  // user has scrolled to Brave Today.
-  WeeklyStorage session_count_storage(prefs_,
-                                      prefs::kBraveTodayWeeklySessionCount);
-  session_count_storage.AddDelta(1);
-  uint64_t total_session_count = session_count_storage.GetWeeklySum();
-  constexpr int kSessionCountBuckets[] = {0, 1, 3, 7, 12, 18, 25, 1000};
-  const int* it_count =
-      std::lower_bound(kSessionCountBuckets, std::end(kSessionCountBuckets),
-                       total_session_count);
-  int answer = it_count - kSessionCountBuckets;
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklySessionCount", answer,
-                             base::size(kSessionCountBuckets) + 1);
+  p3a::RecordEverInteracted();
+  p3a::RecordWeeklySessionCount(prefs_, true);
 }
 
 void BraveNewsController::OnSessionCardVisitsCountChanged(
     uint16_t cards_visited_session_total_count) {
-  // Track how many Brave Today cards have been viewed per session
-  // (each NTP / NTP Message Handler is treated as 1 session).
-  WeeklyStorage storage(prefs_, prefs::kBraveTodayWeeklyCardVisitsCount);
-  storage.ReplaceTodaysValueIfGreater(cards_visited_session_total_count);
-  // Send the session with the highest count of cards viewed.
-  uint64_t total = storage.GetHighestValueInWeek();
-  constexpr int kBuckets[] = {0, 1, 3, 6, 10, 15, 100};
-  const int* it_count = std::lower_bound(kBuckets, std::end(kBuckets), total);
-  int answer = it_count - kBuckets;
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyMaxCardVisitsCount", answer,
-                             base::size(kBuckets) + 1);
+  p3a::RecordWeeklyMaxCardVisitsCount(prefs_,
+                                      cards_visited_session_total_count);
 }
 
 void BraveNewsController::OnPromotedItemView(
@@ -389,17 +372,7 @@ void BraveNewsController::OnPromotedItemVisit(
 
 void BraveNewsController::OnSessionCardViewsCountChanged(
     uint16_t cards_viewed_session_total_count) {
-  // Track how many Brave Today cards have been viewed per session
-  // (each NTP / NTP Message Handler is treated as 1 session).
-  WeeklyStorage storage(prefs_, prefs::kBraveTodayWeeklyCardViewsCount);
-  storage.ReplaceTodaysValueIfGreater(cards_viewed_session_total_count);
-  // Send the session with the highest count of cards viewed.
-  uint64_t total = storage.GetHighestValueInWeek();
-  constexpr int kBuckets[] = {0, 1, 4, 12, 20, 40, 80, 1000};
-  const int* it_count = std::lower_bound(kBuckets, std::end(kBuckets), total);
-  int answer = it_count - kBuckets;
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyMaxCardViewsCount", answer,
-                             base::size(kBuckets) + 1);
+  p3a::RecordWeeklyMaxCardViewsCount(prefs_, cards_viewed_session_total_count);
 }
 
 void BraveNewsController::OnDisplayAdVisit(
@@ -450,16 +423,8 @@ void BraveNewsController::OnDisplayAdView(
   ads_service_->OnInlineContentAdEvent(
       item_id, creative_instance_id,
       ads::mojom::InlineContentAdEventType::kViewed);
-  // Let p3a know an ad was viewed
-  WeeklyStorage storage(prefs_, prefs::kBraveTodayWeeklyCardViewsCount);
-  storage.AddDelta(1u);
-  // Store current weekly total in p3a, ready to send on the next upload
-  uint64_t total = storage.GetWeeklySum();
-  constexpr int kBuckets[] = {0, 1, 4, 8, 14, 30, 60, 120};
-  const int* it_count = std::lower_bound(kBuckets, std::end(kBuckets), total);
-  int answer = it_count - kBuckets;
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyDisplayAdsViewedCount", answer,
-                             base::size(kBuckets) + 1);
+
+  p3a::RecordWeeklyDisplayAdsViewedCount(prefs_, true);
 }
 
 void BraveNewsController::CheckForPublishersUpdate() {

@@ -33,7 +33,7 @@ namespace {
 
 ConfirmationsState* g_confirmations_state = nullptr;
 
-const char kConfirmationsFilename[] = "confirmations.json";
+constexpr char kConfirmationsFilename[] = "confirmations.json";
 
 }  // namespace
 
@@ -240,11 +240,10 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
     confirmation_dictionary.SetStringKey("creative_instance_id",
                                          confirmation.creative_instance_id);
 
-    std::string type = std::string(confirmation.type);
-    confirmation_dictionary.SetStringKey("type", type);
+    confirmation_dictionary.SetStringKey("type", confirmation.type.ToString());
 
-    std::string ad_type = std::string(confirmation.ad_type);
-    confirmation_dictionary.SetStringKey("ad_type", ad_type);
+    confirmation_dictionary.SetStringKey("ad_type",
+                                         confirmation.ad_type.ToString());
 
     base::Value token_info_dictionary(base::Value::Type::DICTIONARY);
     const std::string unblinded_token_base64 =
@@ -331,7 +330,8 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
         confirmation_dictionary->FindStringKey("transaction_id");
     if (!transaction_id) {
       // Migrate legacy confirmations
-      confirmation.transaction_id = base::GenerateGUID();
+      confirmation.transaction_id =
+          base::GUID::GenerateRandomV4().AsLowercaseString();
     } else {
       confirmation.transaction_id = *transaction_id;
     }

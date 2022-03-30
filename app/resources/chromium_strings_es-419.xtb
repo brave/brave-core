@@ -130,7 +130,6 @@
 <translation id="5536657158619734169">Hay una nueva versión de Brave disponible.</translation>
 <translation id="239760341987199724">Establecer Brave como navegador predeterminado</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/>: Versión Beta de Brave</translation>
-<translation id="707769633889902835">El Sistema operativo Brave no puede abrir esta página.</translation>
 <translation id="696826782632239602">Brave necesita acceder a tu ubicación para compartirla con este sitio</translation>
 <translation id="1744365871163268756">Espera mientras Brave instala las últimas actualizaciones del sistema.</translation>
 <translation id="3861679447659630159">Brave está intentando editar contraseñas. Para permitirlo, ingresa tu contraseña de Windows.</translation>
@@ -191,7 +190,7 @@
 <translation id="8291513491595858997">Tu padre o madre desactivaron la opción "Permisos para sitios, apps y extensiones" para Brave. No se permite habilitar esta <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8211837073776713955">Brave te informará si tus contraseñas se ven comprometidas</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (copiada en Brave)</translation>
+<translation id="2049565899730874086">Brave Pay (copiada en Brave)</translation>
 <translation id="3028928628792374067">Brave detectó que "<ph name="EXTENSION_NAME"/>" contiene software malicioso.</translation>
 <translation id="2301993384336631869">Brave fue actualizado, pero no lo has utilizado en los últimos 30 días.</translation>
 <translation id="8828443087767259398">Brave necesita acceso a la conexión Bluetooth para continuar con la 
@@ -284,6 +283,13 @@
 <translation id="4484434718272972655">¿Quién usa Brave?</translation>
 <translation id="7173394303099002355">Obtén la seguridad más sólida de Brave</translation>
 <translation id="8992261409816268381">Los creadores de Brave</translation>
+<translation id="479793348545936567">Si solo quieres utilizar esta cuenta una vez, puedes usar el navegador de Brave en modo invitado. Si quieres añadir una cuenta para otra persona, <ph name="LINK_BEGIN"/> añade un nuevo perfil<ph name="LINK_END"/> a tu <ph name="DEVICE_TYPE"/>.
+
+Es posible que los permisos para sitios web y aplicaciones que ya hayas concedido se apliquen a esta cuenta. Puedes gestionar tus cadenas de sincronización de Brave en <ph name="SETTINGS_LINK_BEGIN"/>Configuración
+<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Si solo quieres utilizar esta cuenta una vez, puedes usar el navegador de Brave en <ph name="GUEST_LINK_BEGIN"/>modo invitado<ph name="GUEST_LINK_END"/>. Si quieres añadir una cuenta para otra persona, <ph name="LINK_BEGIN"/>añade un nuevo perfil<ph name="LINK_END"/> a tu <ph name="DEVICE_TYPE"/>.
+
+Es posible que los permisos para sitios web y aplicaciones que ya hayas concedido se apliquen a esta cuenta. Puedes gestionar tus cadenas de sincronización de Brave en <ph name="SETTINGS_LINK_BEGIN"/>Configuración<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Advertencia: Brave no puede evitar que las extensiones registren tu historial de búsqueda. Para desactivar esta extensión en modo de navegación incógnito, desmarca la casilla de esta opción.</translation>
 <translation id="1448049584457347995">Para que Brave sea más seguro, inhabilitamos algunas extensiones que no figuran en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> y que posiblemente se hayan agregado sin tu conocimiento.</translation>
 <translation id="8848045066928358658">Para que Brave sea más seguro, inhabilitamos algunas extensiones que no aparecen en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> y que posiblemente se hayan agregado sin tu conocimiento.</translation>

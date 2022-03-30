@@ -25,9 +25,9 @@ namespace table {
 
 namespace {
 
-const char kTableName[] = "conversion_queue";
+constexpr char kTableName[] = "conversion_queue";
 
-const int kDefaultBatchSize = 50;
+constexpr int kDefaultBatchSize = 50;
 
 int BindParameters(mojom::DBCommand* command,
                    const ConversionQueueItemList& conversion_queue_items) {

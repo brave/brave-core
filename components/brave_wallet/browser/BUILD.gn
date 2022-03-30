@@ -78,6 +78,8 @@ static_library("browser") {
     "solana_instruction_builder.h",
     "solana_message.cc",
     "solana_message.h",
+    "solana_provider_impl.cc",
+    "solana_provider_impl.h",
     "solana_requests.cc",
     "solana_requests.h",
     "solana_response_parser.cc",
@@ -109,7 +111,6 @@ static_library("browser") {
     ":constants",
     ":hd_keyring",
     ":pref_names",
-    ":solana_utils",
     ":transaction",
     ":utils",
     "//base",
@@ -122,6 +123,7 @@ static_library("browser") {
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/common:solana_utils",
     "//brave/components/json/rs:cxx",
     "//brave/components/json/rs:cxx_gen",
     "//brave/components/resources:strings_grit",
@@ -205,18 +207,6 @@ source_set("utils") {
   public_deps = [ "//brave/components/brave_wallet/common" ]
 }
 
-source_set("solana_utils") {
-  sources = [
-    "solana_utils.cc",
-    "solana_utils.h",
-  ]
-
-  deps = [
-    "//base",
-    "//brave/third_party/bitcoin-core",  # for base58
-  ]
-}
-
 source_set("hd_keyring") {
   sources = [
     "ethereum_keyring.cc",
@@ -230,8 +220,6 @@ source_set("hd_keyring") {
   ]
 
   deps = [
-    ":constants",
-    ":solana_utils",
     ":transaction",
     "internal:hd_key",
     "//base",
@@ -239,7 +227,9 @@ source_set("hd_keyring") {
     "//brave/components/bls/rs:cxx",
     "//brave/components/bls/rs:cxx_gen",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/common:solana_utils",
     "//crypto",
   ]
 

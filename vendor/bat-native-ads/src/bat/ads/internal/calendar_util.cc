@@ -50,7 +50,7 @@ int GetDayOfWeek(int year, int month, int day) {
          7;
 }
 
-int GetDayOfWeek(const base::Time& time, const bool is_local) {
+int GetDayOfWeek(const base::Time time, const bool is_local) {
   base::Time::Exploded exploded;
 
   if (is_local) {

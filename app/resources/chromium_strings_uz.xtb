@@ -14,13 +14,18 @@
 <translation id="5147525139567260139">Brave sahifasini namoyish qilish</translation>
 <translation id="1530633922026945685">Brave atrofingiz 3D xaritasini yaratishi uchun unga kamera ruxsati zarur</translation>
 <translation id="4449148723378534338">Brave ichida asosiy maxfiylik va xavfsizlik boshqaruvini tekshiring</translation>
+<translation id="5359574361379286250">Bu hisobdan bir marta foydalanish uchun Brave brauzerida <ph name="GUEST_LINK_BEGIN"/>Mehmon rejimidan<ph name="GUEST_LINK_END"/> foydalanishingiz mumkin. Biror kishi uchun hisob qoʻshmoqchi boʻlsangiz, <ph name="LINK_BEGIN"/>yangi shaxsni<ph name="LINK_END"/> <ph name="DEVICE_TYPE"/> qurilmasiga qoʻshing.
+
+Sayt va ilovalarga berilgan ruxsatlar bu hisobga tatbiq etilishi mumkin. Brave hisoblarini <ph name="SETTINGS_LINK_BEGIN"/>Sozlamalar<ph name="SETTINGS_LINK_END"/> orqali boshqarish mumkin.</translation>
 <translation id="5616153642055197778">Brave brauzerining yangi, yanada xavfsiz versiyasi chiqdi.</translation>
 <translation id="6797402139308059782">Brave fonda ishlashiga ruxsat</translation>
 <translation id="5875673934455379806">Brave brauzerini qayta o‘rnatish</translation>
-<translation id="2176087127109773485">Kirilgan Brave hisoblaringizni boshqarishingiz mumkin. Brave hisoblaringizdan Brave brauzeri, Play Market va Gmail kabilardan foydalaniladi. Oila aʼzosi kabi biror kishi uchun hisob qoʻshmoqchi boʻlsangiz, yangi shaxsni <ph name="DEVICE_TYPE"/> qurilmasiga qoʻshing. <ph name="LINK_BEGIN"/>Batafsil<ph name="LINK_END"/></translation>
 <translation id="4528406859989804913">Siz boshqariladigan hisob bilan tizimga kirmoqdasiz va uning administratoriga Brave profilingiz ustidan nazoratni topshirmoqdasiz. Sizning Brave ma’lumotlaringiz, masalan, ilovalar, xatcho‘plar, tarix, parollar va boshqa sozlamalar butunlay <ph name="USER_NAME"/>’ga biriktiriladi. Bu ma’lumotlarni Brave hisoblari asboblar panelidan o‘chirishingiz mumkin bo‘ladi, ammo ularni boshqa hisobga biriktira olmaysiz. Mavjud Brave ma’lumotlarini alohida saqlash uchun yangi profil yaratish imkoningiz bor. <ph name="LEARN_MORE"/></translation>
 <translation id="1649714546770135458">Agar bu faolsizlantirilsa, Gmail kabi Brave saytlarida hisobingizga kirganingizda Brave hisobingizga kirilmaydi</translation>
 <translation id="189297655255130768">Brave javob bermayapti. Qaytadan ishga tushirilsinmi?</translation>
+<translation id="479793348545936567">Bu hisobdan bir marta foydalanish uchun Brave brauzerida Mehmon rejimidan foydalanishingiz mumkin. Biror kishi uchun hisob qoʻshmoqchi boʻlsangiz, <ph name="LINK_BEGIN"/>yangi shaxsni<ph name="LINK_END"/> <ph name="DEVICE_TYPE"/> qurilmasiga qoʻshing.
+
+Sayt va ilovalarga berilgan ruxsatlar bu hisobga tatbiq etilishi mumkin. Brave hisoblarini <ph name="SETTINGS_LINK_BEGIN"/>Sozlamalar<ph name="SETTINGS_LINK_END"/> orqali boshqarish mumkin.</translation>
 <translation id="1775322105159056176">Brave asosiy brauzerni aniqlay olmadi yoki tayinlay olmadi.</translation>
 <translation id="7665553140559834626">&amp;Chrome OS tizimini yangilash uchun qayta ishga tushiring</translation>
 <translation id="9220324636239049437">Bu qurilmadagi 1 elementni tozalaydi. Ma’lumotlaringizni keyinroq olish uchun Brave brauzeriga <ph name="USER_EMAIL"/> sifatida kiring.</translation>
@@ -132,7 +137,6 @@
 <translation id="5536657158619734169">Brave brauzerining yangi versiyasi chiqdi.</translation>
 <translation id="239760341987199724">Brave‘ni standart brauzer sifatida tayinlash.</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
-<translation id="707769633889902835">Chrome OS bu sahifani ocha olmaydi.</translation>
 <translation id="696826782632239602">Bu sayt manzilingizdan foydalanishi uchun Brave brauzeriga ruxsat berishingiz lozim</translation>
 <translation id="1744365871163268756">Brave tizimning oxirgi yangilanishlarini o‘rnatib olgunicha kutib turing.</translation>
 <translation id="3861679447659630159">Brave parollarni tahrirlashga urinmoqda. Ruxsat berish uchun Windows parolingizni kiriting.</translation>
@@ -195,7 +199,7 @@ Ba’zi imkoniyatlar ishlamasligi mumkin. Profilni saqlash uchun boshqa jild tay
 <translation id="8291513491595858997">Bravedagi “Sayt, ilova va kengaytmalarga ruxsat” ota-onangiz tomonidan faolsizlantirilgan. Bu <ph name="EXTENSION_TYPE_PARAMETER"/> yoqilishi taqiqlangan.</translation>
 <translation id="8211837073776713955">Parollaringiz oshkor etilsa, Brave bu haqida xabar qiladi</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (Brave brauzeriga nusxalandi)</translation>
+<translation id="2049565899730874086">Google Pay (Brave brauzeriga nusxalandi)</translation>
 <translation id="3028928628792374067">Brave “<ph name="EXTENSION_NAME"/>” kengaytmasi tarkibida zararli dastur aniqladi</translation>
 <translation id="2301993384336631869">Brave yangilandi, lekin siz undan 30 kun davomida foydalanmadingiz.</translation>
 <translation id="8828443087767259398">Brave ulanishi uchun Bluetooth orqali kirish ruxsati 
@@ -298,4 +302,5 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Brave uchun yangilanish mavjud va brauzer qayta ishga tushirilganda oʻrnatiladi.}=1{Brave uchun yangilanish mavjud va brauzer qayta ishga tushirilganda oʻrnatiladi. Inkognito oynalar qayta ochilmaydi.}other{Brave uchun yangilanish mavjud va brauzer qayta ishga tushirilganda oʻrnatiladi. # ta inkognito oyna qayta ochilmaydi.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni soʻramoqda}=1{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni soʻramoqda Inkognito oynalar qayta ochilmaydi.}other{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni soʻramoqda # ta inkognito oyna qayta ochilmaydi.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni talab qilmoqda}=1{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni talab qilmoqda Inkognito oynalar qayta ochilmaydi.}other{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni talab qilmoqda # ta inkognito oyna qayta ochilmaydi.}}</translation>
+<translation id="2176087127109773485">Kirilgan Brave hisoblaringizni boshqarishingiz mumkin. Brave hisoblaringizdan Brave brauzeri, Play Market va Gmail kabilardan foydalaniladi. Oila aʼzosi kabi biror kishi uchun hisob qoʻshmoqchi boʻlsangiz, yangi shaxsni <ph name="DEVICE_TYPE"/> qurilmasiga qoʻshing. <ph name="LINK_BEGIN"/>Batafsil<ph name="LINK_END"/></translation>
 </translationbundle>

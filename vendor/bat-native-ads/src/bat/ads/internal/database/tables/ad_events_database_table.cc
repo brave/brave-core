@@ -22,7 +22,7 @@ namespace table {
 
 namespace {
 
-const char kTableName[] = "ad_events";
+constexpr char kTableName[] = "ad_events";
 
 int BindParameters(mojom::DBCommand* command, const AdEventList& ad_events) {
   DCHECK(command);
@@ -32,8 +32,8 @@ int BindParameters(mojom::DBCommand* command, const AdEventList& ad_events) {
   int index = 0;
   for (const auto& ad_event : ad_events) {
     BindString(command, index++, ad_event.uuid);
-    BindString(command, index++, ad_event.type);
-    BindString(command, index++, ad_event.confirmation_type);
+    BindString(command, index++, ad_event.type.ToString());
+    BindString(command, index++, ad_event.confirmation_type.ToString());
     BindString(command, index++, ad_event.campaign_id);
     BindString(command, index++, ad_event.creative_set_id);
     BindString(command, index++, ad_event.creative_instance_id);

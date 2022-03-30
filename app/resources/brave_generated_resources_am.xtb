@@ -218,10 +218,6 @@
 <translation id="2414886740292270097">ጨለማ</translation>
 <translation id="1360441190790440400">ከ Linux ጋር ተመሳሳይ</translation>
 <translation id="1336940801687497203">ልክ እንደ Windows</translation>
-<translation id="5919209812221905840">ነባሪ የማይክሮሶፍት-ኤጅ ፕሮቶኮል ተቆጣጣሪ</translation>
-<translation id="5239541974656019812">Braveን ነባሪ የማይክሮሶፍት-ኤጅ ፕሮቶኮል ተቆጣጣሪ ያድርጉት</translation>
-<translation id="7136694880210472378">ነባሪ አድርግ</translation>
-<translation id="1751388324499810661">Brave ነባሪ የማይክሮሶፍት-ኤጅ ፕሮቶኮል ተቆጣጣሪ ነው</translation>
 <translation id="8721331068159819483">ከ macOS ጋር ተመሳሳይ</translation>
 <translation id="2896916411183256228">WebTorrent ን በመጠቀም በቀጥታ ቶረንቶችን ማሰሻ ላይ ያሳያል። ለቶረንት ፋይሎች እና ማግኔት ሊንኮች ድጋፍ ያደርጋል።</translation>
 <translation id="8488282162676695335">የBrave ዋሌት</translation>
@@ -394,7 +390,7 @@
 <translation id="8712637175834984815">ገባኝ</translation>
 <translation id="4394049700291259645">አሰናክል</translation>
 <translation id="7142548388914389999">የግል ምርት ትንታኔዎች ጠባቂዎች (P3A) ይፍቀዱ።</translation>
-<translation id="609106526832379947">ይህ ሙሉ ለሙሉ ስም አልባ መረጃ Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም እንዲገምት የሚያግዝ ሆኖ ለእርስዎም የተሻለ እንዲሆን ለማድረግ ያስችለዋል።</translation>
+<translation id="8286082624639565868">ይህ ሙሉ ለሙሉ ስም አልባ መረጃ Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም እንዲገምት የሚያግዝ ሆኖ ለእርስዎም የተሻለ እንዲሆን ለማድረግ ያስችለዋል።</translation>
 <translation id="1947672064022327074">የ Crypto ዋሌቶችን ለ Ethereum ድጋፍ ማስጀመር ይፈልጋሉ?</translation>
 <translation id="7583735190612229830">ከዚህ መተግበሪያና ከሌሎች ተመሳሳይ መተግበሪያዎች ጋር ለመገናኘት የ Crypto ዋሌቶችን አዘጋጅ።</translation>
 <translation id="8731422418734770661">የCrypto Wallets ን ያዋቅሩ</translation>
@@ -438,6 +434,7 @@
 <translation id="2808630562319398131">የ Brave ሽልማቶች ውሂብን ዳግም ያስጀምሩ...</translation>
 <translation id="2273851479262317744">Brave ን እንደ ነባሪ አሳሽ ያዘጋጁ</translation>
 <translation id="8581710194025054669">በኦንላይን ላይ ምርጥ ግላዊነትን ለማረጋገጥ፣ በኮምፒተርዎ ላይ Brave ን እንደ ነባሪ አሳሽ ያቀናብሩ። Brave ነባሪ አሳሽ ከተደረገ፣ እርስዎ ጠቅ የሚያደርጉት ማንኛውም የድር ማስፈንጠሪያ በ Brave የግላዊነት ጥበቃዎች ይከፈታል።</translation>
+<translation id="8722651357687610395">Braveን እንደ ነባሪ አድርገው ያቀናብሩት</translation>
 <translation id="1241283133946520352">አውታረ መረቦች</translation>
 <translation id="8205945804087322170">አዲስ አውታረ መረብ ያክሉ</translation>
 <translation id="2156993118928861787">ልክ ያልሆነ አድራሻ</translation>

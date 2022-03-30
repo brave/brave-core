@@ -29,11 +29,11 @@ class PurchaseIntent final : public Resource<ad_targeting::PurchaseIntentInfo> {
   ad_targeting::PurchaseIntentInfo get() const override;
 
  private:
+  bool FromJson(const std::string& json);
+
   bool is_initialized_ = false;
 
   ad_targeting::PurchaseIntentInfo purchase_intent_;
-
-  bool FromJson(const std::string& json);
 };
 
 }  // namespace resource

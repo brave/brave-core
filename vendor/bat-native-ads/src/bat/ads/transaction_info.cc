@@ -51,7 +51,7 @@ void TransactionInfo::ToDictionary(base::Value* dictionary) const {
 
   dictionary->SetDoubleKey("estimated_redemption_value", value);
 
-  dictionary->SetStringKey("confirmation_type", std::string(confirmation_type));
+  dictionary->SetStringKey("confirmation_type", confirmation_type.ToString());
 
   dictionary->SetStringKey("reconciled_at",
                            base::NumberToString(reconciled_at));

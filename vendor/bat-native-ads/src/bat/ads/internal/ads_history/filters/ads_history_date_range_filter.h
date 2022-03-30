@@ -22,8 +22,8 @@ class AdsHistoryDateRangeFilter final {
   ~AdsHistoryDateRangeFilter();
 
   std::deque<AdHistoryInfo> Apply(const std::deque<AdHistoryInfo>& history,
-                                  const base::Time& from,
-                                  const base::Time& to) const;
+                                  const base::Time from,
+                                  const base::Time to) const;
 };
 
 }  // namespace ads

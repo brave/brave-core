@@ -19,7 +19,7 @@ int GetLastDayOfMonth(const int year, const int month);
 // of month (1-31)
 int GetDayOfWeek(int year, int month, int day);
 
-int GetDayOfWeek(const base::Time& time, const bool is_local);
+int GetDayOfWeek(const base::Time time, const bool is_local);
 
 }  // namespace ads
 

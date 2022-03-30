@@ -22,11 +22,11 @@ namespace ads {
 AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
                          const AdType& ad_type,
                          const ConfirmationType& confirmation_type,
-                         const base::Time& created_at) {
+                         const base::Time created_at) {
   AdEventInfo ad_event;
   ad_event.type = ad_type;
   ad_event.confirmation_type = confirmation_type;
-  ad_event.uuid = base::GenerateGUID();
+  ad_event.uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
   ad_event.campaign_id = creative_ad.campaign_id;
   ad_event.creative_set_id = creative_ad.creative_set_id;
   ad_event.creative_instance_id = creative_ad.creative_instance_id;
@@ -55,7 +55,7 @@ AdEventInfo BuildAdEvent(const std::string& uuid,
 
 AdEventInfo BuildAdEvent(const std::string& creative_set_id,
                          const ConfirmationType& confirmation_type) {
-  const std::string uuid = base::GenerateGUID();
+  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
   return BuildAdEvent(uuid, creative_set_id, confirmation_type);
 }
 

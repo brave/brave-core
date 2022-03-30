@@ -31,7 +31,7 @@ std::string GetFieldTrialParamByFeatureAsString(
 base::TimeDelta GetFieldTrialParamByFeatureAsTimeDelta(
     const base::Feature& feature,
     const std::string& param_name,
-    const base::TimeDelta& default_value) {
+    const base::TimeDelta default_value) {
   const std::string value_as_string =
       GetFieldTrialParamValueByFeature(feature, param_name);
 

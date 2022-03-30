@@ -123,6 +123,8 @@ class AdsClientMock : public AdsClient {
                void(const std::string& path, const uint64_t value));
 
   MOCK_METHOD1(ClearPref, void(const std::string& path));
+
+  MOCK_CONST_METHOD1(HasPrefPath, bool(const std::string& path));
 };
 
 }  // namespace ads

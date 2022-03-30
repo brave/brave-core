@@ -30,13 +30,13 @@ namespace ads {
 
 namespace {
 
-const int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
+constexpr int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
 
-const int64_t kNextTokenRedemptionAfterSeconds =
+constexpr int64_t kNextTokenRedemptionAfterSeconds =
     24 * base::Time::kSecondsPerHour;
-const int64_t kDebugNextTokenRedemptionAfterSeconds =
+constexpr int64_t kDebugNextTokenRedemptionAfterSeconds =
     25 * base::Time::kSecondsPerMinute;
-const int64_t kExpiredNextTokenRedemptionAfterSeconds =
+constexpr int64_t kExpiredNextTokenRedemptionAfterSeconds =
     1 * base::Time::kSecondsPerMinute;
 
 }  // namespace
@@ -67,7 +67,7 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
 
   const base::TimeDelta delay = CalculateTokenRedemptionDelay();
 
-  const base::Time& time =
+  const base::Time time =
       timer_.Start(delay, base::BindOnce(&RedeemUnblindedPaymentTokens::Redeem,
                                          base::Unretained(this)));
 
@@ -154,7 +154,7 @@ void RedeemUnblindedPaymentTokens::OnFailedToRedeemUnblindedPaymentTokens() {
 }
 
 void RedeemUnblindedPaymentTokens::ScheduleNextTokenRedemption() {
-  const base::Time& next_token_redemption_at =
+  const base::Time next_token_redemption_at =
       CalculateNextTokenRedemptionDate();
 
   AdsClientHelper::Get()->SetDoublePref(prefs::kNextTokenRedemptionAt,
@@ -173,7 +173,7 @@ void RedeemUnblindedPaymentTokens::Retry() {
     delegate_->OnWillRetryRedeemingUnblindedPaymentTokens();
   }
 
-  const base::Time& time = retry_timer_.StartWithPrivacy(
+  const base::Time time = retry_timer_.StartWithPrivacy(
       base::Seconds(kRetryAfterSeconds),
       base::BindOnce(&RedeemUnblindedPaymentTokens::OnRetry,
                      base::Unretained(this)));
@@ -193,10 +193,10 @@ void RedeemUnblindedPaymentTokens::OnRetry() {
 }
 
 base::TimeDelta RedeemUnblindedPaymentTokens::CalculateTokenRedemptionDelay() {
-  const base::Time& next_token_redemption_at = base::Time::FromDoubleT(
+  const base::Time next_token_redemption_at = base::Time::FromDoubleT(
       AdsClientHelper::Get()->GetDoublePref(prefs::kNextTokenRedemptionAt));
 
-  const base::Time& now = base::Time::Now();
+  const base::Time now = base::Time::Now();
 
   base::TimeDelta delay;
   if (now >= next_token_redemption_at) {
@@ -210,7 +210,7 @@ base::TimeDelta RedeemUnblindedPaymentTokens::CalculateTokenRedemptionDelay() {
 }
 
 base::Time RedeemUnblindedPaymentTokens::CalculateNextTokenRedemptionDate() {
-  const base::Time& now = base::Time::Now();
+  const base::Time now = base::Time::Now();
 
   int64_t delay;
 

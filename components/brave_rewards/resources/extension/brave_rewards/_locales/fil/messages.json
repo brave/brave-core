@@ -62,8 +62,8 @@
     "message": "Isama sa Awtomatikong Pag-ambag",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "Buwanang Kontribusyon",
+  "monthlyTip": {
+    "message": "Buwanang Tip",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "Mga Buwanang Tip",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Na-verify",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Isang Beses na Pagbibigay ng Mga Tip",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Buod ng Mga Reward",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Na-verify",
+  "walletUnverified": {
+    "message": "Hindi na-verify",
     "description": ""
   },
-  "walletVerify": {
-    "message": "I-verify",
+  "walletVerified": {
+    "message": "Na-verify",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Hindi makukumpleto ang iyong nakaiskedyul na buwanang pagbabayad para sa Awtomatikong Pag-ambag at mga buwanang kontribusyon dahil hindi sapat ang pondo. Susubukan namin ulit pagkalipas ng 30 araw.",
+    "message": "Hindi makukumpleto ang iyong nakaiskedyul na buwanang pagbabayad para sa Awtomatikong Pag-ambag at mga buwanang tip dahil sa hindi sapat na pondo. Susubukan naming muli makalipas ang 30 araw.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Hindi naiproseso ang buwanang kontribusyon",
+    "message": "Hindi naiproseso ang buwanang tip",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Naiproseso na ang iyong mga buwanang kontribusyon",
+    "message": "Naiproseso ang iyong mga buwanang tip.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

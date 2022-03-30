@@ -190,22 +190,23 @@ void BatAdsImpl::OnWalletUpdated(
   ads_->OnWalletUpdated(payment_id, seed);
 }
 
-void BatAdsImpl::GetAdsHistory(const double from_timestamp,
-                               const double to_timestamp,
-                               GetAdsHistoryCallback callback) {
-  ads::AdsHistoryInfo history = ads_->GetAdsHistory(
+void BatAdsImpl::GetHistory(const double from_timestamp,
+                            const double to_timestamp,
+                            GetHistoryCallback callback) {
+  ads::AdsHistoryInfo history = ads_->GetHistory(
       ads::AdsHistoryFilterType::kConfirmationType,
       ads::AdsHistorySortType::kDescendingOrder, from_timestamp, to_timestamp);
 
   std::move(callback).Run(history.ToJson());
 }
 
-void BatAdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
-  auto* holder = new CallbackHolder<GetAccountStatementCallback>(
+void BatAdsImpl::GetStatementOfAccounts(
+    GetStatementOfAccountsCallback callback) {
+  auto* holder = new CallbackHolder<GetStatementOfAccountsCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ads_->GetAccountStatement(
-      std::bind(BatAdsImpl::OnGetAccountStatement, holder, _1, _2));
+  ads_->GetStatementOfAccounts(
+      std::bind(BatAdsImpl::OnGetStatementOfAccounts, holder, _1, _2));
 }
 
 void BatAdsImpl::GetAdDiagnostics(GetAdDiagnosticsCallback callback) {
@@ -316,8 +317,8 @@ void BatAdsImpl::OnRemoveAllHistory(
   delete holder;
 }
 
-void BatAdsImpl::OnGetAccountStatement(
-    CallbackHolder<GetAccountStatementCallback>* holder,
+void BatAdsImpl::OnGetStatementOfAccounts(
+    CallbackHolder<GetStatementOfAccountsCallback>* holder,
     const bool success,
     const ads::StatementInfo& statement) {
   if (holder->is_valid()) {

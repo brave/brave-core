@@ -10,11 +10,11 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
-#include "brave/components/brave_wallet/browser/solana_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/solana_utils.h"
 
 namespace brave_wallet {
 

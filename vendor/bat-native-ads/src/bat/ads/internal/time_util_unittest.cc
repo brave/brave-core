@@ -78,7 +78,7 @@ class BatAdsTimeUtilTest : public UnitTestBase,
 
 TEST_P(BatAdsTimeUtilTest, GetLocalTimeAsMinutes) {
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("November 18 2020 12:34:56", /* is_local */ true);
 
   // Act
@@ -91,16 +91,16 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAsMinutes) {
 
 TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfPreviousMonth) {
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
   AdvanceClock(time);
 
   // Act
-  const base::Time& adjusted_time =
+  const base::Time adjusted_time =
       AdjustLocalTimeToBeginningOfPreviousMonth(time);
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("October 1 2020 00:00:00.000", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
@@ -108,16 +108,16 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfPreviousMonth) {
 
 TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfPreviousMonthOnCusp) {
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("January 1 2020 00:00:00.000", /* is_local */ true);
   AdvanceClock(time);
 
   // Act
-  const base::Time& adjusted_time =
+  const base::Time adjusted_time =
       AdjustLocalTimeToBeginningOfPreviousMonth(time);
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("December 1 2019 00:00:00.000", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
@@ -125,15 +125,15 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfPreviousMonthOnCusp) {
 
 TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfPreviousMonth) {
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
   AdvanceClock(time);
 
   // Act
-  const base::Time& adjusted_time = AdjustLocalTimeToEndOfPreviousMonth(time);
+  const base::Time adjusted_time = AdjustLocalTimeToEndOfPreviousMonth(time);
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("October 31 2020 23:59:59.999", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
@@ -141,15 +141,15 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfPreviousMonth) {
 
 TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfPreviousMonthOnTheCusp) {
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("January 1 2020 00:00:00.000", /* is_local */ true);
   AdvanceClock(time);
 
   // Act
-  const base::Time& adjusted_time = AdjustLocalTimeToEndOfPreviousMonth(time);
+  const base::Time adjusted_time = AdjustLocalTimeToEndOfPreviousMonth(time);
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("December 31 2019 23:59:59.999", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
@@ -157,15 +157,15 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfPreviousMonthOnTheCusp) {
 
 TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfMonth) {
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
   AdvanceClock(time);
 
   // Act
-  const base::Time& adjusted_time = AdjustLocalTimeToBeginningOfMonth(time);
+  const base::Time adjusted_time = AdjustLocalTimeToBeginningOfMonth(time);
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("November 1 2020 00:00:00.000", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
@@ -173,15 +173,15 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfMonth) {
 
 TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfMonth) {
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
   AdvanceClock(time);
 
   // Act
-  const base::Time& adjusted_time = AdjustLocalTimeToEndOfMonth(time);
+  const base::Time adjusted_time = AdjustLocalTimeToEndOfMonth(time);
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("November 30 2020 23:59:59.999", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
@@ -189,15 +189,15 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfMonth) {
 
 TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtBeginningOfLastMonth) {
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
   AdvanceClock(time);
 
   // Act
-  const base::Time& adjusted_time = GetLocalTimeAtBeginningOfLastMonth();
+  const base::Time adjusted_time = GetLocalTimeAtBeginningOfLastMonth();
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("October 1 2020 00:00:00.000", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
@@ -205,15 +205,15 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtBeginningOfLastMonth) {
 
 TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtBeginningOfLastMonthOnTheCusp) {
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("January 1 2020 00:00:00.000", /* is_local */ true);
   AdvanceClock(time);
 
   // Act
-  const base::Time& adjusted_time = GetLocalTimeAtBeginningOfLastMonth();
+  const base::Time adjusted_time = GetLocalTimeAtBeginningOfLastMonth();
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("December 1 2019 00:00:00.000", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
@@ -221,15 +221,15 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtBeginningOfLastMonthOnTheCusp) {
 
 TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtEndOfLastMonth) {
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
   AdvanceClock(time);
 
   // Act
-  const base::Time& adjusted_time = GetLocalTimeAtEndOfLastMonth();
+  const base::Time adjusted_time = GetLocalTimeAtEndOfLastMonth();
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("October 31 2020 23:59:59.999", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
@@ -237,15 +237,15 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtEndOfLastMonth) {
 
 TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtEndOfLastMonthOnTheCusp) {
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("January 1 2020 00:00:00.000", /* is_local */ true);
   AdvanceClock(time);
 
   // Act
-  const base::Time& adjusted_time = GetLocalTimeAtEndOfLastMonth();
+  const base::Time adjusted_time = GetLocalTimeAtEndOfLastMonth();
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("December 31 2019 23:59:59.999", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
@@ -253,15 +253,15 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtEndOfLastMonthOnTheCusp) {
 
 TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtBeginningOfThisMonth) {
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
   AdvanceClock(time);
 
   // Act
-  const base::Time& adjusted_time = GetLocalTimeAtBeginningOfThisMonth();
+  const base::Time adjusted_time = GetLocalTimeAtBeginningOfThisMonth();
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("November 1 2020 00:00:00.000", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
@@ -269,15 +269,15 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtBeginningOfThisMonth) {
 
 TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtEndOfThisMonth) {
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("November 18 2020 12:34:56.789", /* is_local */ true);
   AdvanceClock(time);
 
   // Act
-  const base::Time& adjusted_time = GetLocalTimeAtEndOfThisMonth();
+  const base::Time adjusted_time = GetLocalTimeAtEndOfThisMonth();
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("November 30 2020 23:59:59.999", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
@@ -285,7 +285,7 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtEndOfThisMonth) {
 
 TEST_P(BatAdsTimeUtilTest, TimeToPrivacyPreservingISO8601) {
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("November 18 2020 23:45:12.345", /* is_local */ false);
   AdvanceClock(time);
 
@@ -303,21 +303,21 @@ TEST_P(BatAdsTimeUtilTest, TimeToPrivacyPreservingISO8601) {
 TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightUSPacificTimezone) {
   ScopedLibcTZ scoped_libc_tz("US/Pacific");
   // Arrange
-  const base::Time& daylight_saving_started_day =
+  const base::Time daylight_saving_started_day =
       TimeFromString("March 14 2021 23:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_day =
+  const base::Time daylight_saving_ended_day =
       TimeFromString("November 7 2021 23:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_daylight_saving_started_day =
+  const base::Time adjusted_daylight_saving_started_day =
       GetLocalMidnight(daylight_saving_started_day);
-  const base::Time& adjusted_daylight_saving_ended_day =
+  const base::Time adjusted_daylight_saving_ended_day =
       GetLocalMidnight(daylight_saving_ended_day);
 
   // Assert
-  const base::Time& expected_daylight_saving_started_day =
+  const base::Time expected_daylight_saving_started_day =
       TimeFromString("March 14 2021 0:0:0.000", /* is_local */ true);
-  const base::Time& expected_daylight_saving_ended_day =
+  const base::Time expected_daylight_saving_ended_day =
       TimeFromString("November 7 2021 0:0:0.000", /* is_local */ true);
 
   EXPECT_EQ(expected_daylight_saving_started_day,
@@ -329,21 +329,21 @@ TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightUSPacificTimezone) {
 TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightEuropeLondonTimezone) {
   ScopedLibcTZ scoped_libc_tz("Europe/London");
   // Arrange
-  const base::Time& daylight_saving_started_day =
+  const base::Time daylight_saving_started_day =
       TimeFromString("March 28 2021 23:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_day =
+  const base::Time daylight_saving_ended_day =
       TimeFromString("October 31 2021 23:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_daylight_saving_started_day =
+  const base::Time adjusted_daylight_saving_started_day =
       GetLocalMidnight(daylight_saving_started_day);
-  const base::Time& adjusted_daylight_saving_ended_day =
+  const base::Time adjusted_daylight_saving_ended_day =
       GetLocalMidnight(daylight_saving_ended_day);
 
   // Assert
-  const base::Time& expected_daylight_saving_started_day =
+  const base::Time expected_daylight_saving_started_day =
       TimeFromString("March 28 2021 0:0:0.000", /* is_local */ true);
-  const base::Time& expected_daylight_saving_ended_day =
+  const base::Time expected_daylight_saving_ended_day =
       TimeFromString("October 31 2021 0:0:0.000", /* is_local */ true);
 
   EXPECT_EQ(expected_daylight_saving_started_day,
@@ -355,21 +355,21 @@ TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightEuropeLondonTimezone) {
 TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightAustaliaSydneyTimezone) {
   ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
   // Arrange
-  const base::Time& daylight_saving_started_day =
+  const base::Time daylight_saving_started_day =
       TimeFromString("October 3 2021 12:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_day =
+  const base::Time daylight_saving_ended_day =
       TimeFromString("April 4 2021 12:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_daylight_saving_started_day =
+  const base::Time adjusted_daylight_saving_started_day =
       GetLocalMidnight(daylight_saving_started_day);
-  const base::Time& adjusted_daylight_saving_ended_day =
+  const base::Time adjusted_daylight_saving_ended_day =
       GetLocalMidnight(daylight_saving_ended_day);
 
   // Assert
-  const base::Time& expected_daylight_saving_started_day =
+  const base::Time expected_daylight_saving_started_day =
       TimeFromString("October 3 2021 0:0:0.000", /* is_local */ true);
-  const base::Time& expected_daylight_saving_ended_day =
+  const base::Time expected_daylight_saving_ended_day =
       TimeFromString("April 4 2021 0:0:0.000", /* is_local */ true);
 
   EXPECT_EQ(expected_daylight_saving_started_day,
@@ -381,14 +381,14 @@ TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightAustaliaSydneyTimezone) {
 TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightNoDSTTimezone) {
   ScopedLibcTZ scoped_libc_tz("America/Cayman");
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("November 7 2021 23:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_time = GetLocalMidnight(time);
+  const base::Time adjusted_time = GetLocalMidnight(time);
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("November 7 2021 0:0:0.000", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
@@ -398,29 +398,29 @@ TEST_P(BatAdsTimeUtilTest,
        AdjustLocalTimeToBeginningOfMonthForUSPacificTimezone) {
   ScopedLibcTZ scoped_libc_tz("US/Pacific");
   // Arrange
-  const base::Time& daylight_saving_started_time1 =
+  const base::Time daylight_saving_started_time1 =
       TimeFromString("March 20 2021 00:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_started_time2 =
+  const base::Time daylight_saving_started_time2 =
       TimeFromString("March 20 2021 23:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_time1 =
+  const base::Time daylight_saving_ended_time1 =
       TimeFromString("November 18 2021 00:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_time2 =
+  const base::Time daylight_saving_ended_time2 =
       TimeFromString("November 18 2021 23:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_daylight_saving_started_time1 =
+  const base::Time adjusted_daylight_saving_started_time1 =
       AdjustLocalTimeToBeginningOfMonth(daylight_saving_started_time1);
-  const base::Time& adjusted_daylight_saving_started_time2 =
+  const base::Time adjusted_daylight_saving_started_time2 =
       AdjustLocalTimeToBeginningOfMonth(daylight_saving_started_time2);
-  const base::Time& adjusted_daylight_saving_ended_time1 =
+  const base::Time adjusted_daylight_saving_ended_time1 =
       AdjustLocalTimeToBeginningOfMonth(daylight_saving_ended_time1);
-  const base::Time& adjusted_daylight_saving_ended_time2 =
+  const base::Time adjusted_daylight_saving_ended_time2 =
       AdjustLocalTimeToBeginningOfMonth(daylight_saving_ended_time2);
 
   // Assert
-  const base::Time& expected_daylight_saving_started_time =
+  const base::Time expected_daylight_saving_started_time =
       TimeFromString("March 1 2021 00:00:00.000", /* is_local */ true);
-  const base::Time& expected_daylight_saving_ended_time =
+  const base::Time expected_daylight_saving_ended_time =
       TimeFromString("November 1 2021 00:00:00.000", /* is_local */ true);
 
   EXPECT_EQ(expected_daylight_saving_started_time,
@@ -437,29 +437,29 @@ TEST_P(BatAdsTimeUtilTest,
        AdjustLocalTimeToBeginningOfMonthForEuropeLondonTimezone) {
   ScopedLibcTZ scoped_libc_tz("Europe/London");
   // Arrange
-  const base::Time& daylight_saving_started_time1 =
+  const base::Time daylight_saving_started_time1 =
       TimeFromString("March 30 2021 00:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_started_time2 =
+  const base::Time daylight_saving_started_time2 =
       TimeFromString("March 30 2021 23:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_time1 =
+  const base::Time daylight_saving_ended_time1 =
       TimeFromString("October 31 2021 12:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_time2 =
+  const base::Time daylight_saving_ended_time2 =
       TimeFromString("October 31 2021 23:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_daylight_saving_started_time1 =
+  const base::Time adjusted_daylight_saving_started_time1 =
       AdjustLocalTimeToBeginningOfMonth(daylight_saving_started_time1);
-  const base::Time& adjusted_daylight_saving_started_time2 =
+  const base::Time adjusted_daylight_saving_started_time2 =
       AdjustLocalTimeToBeginningOfMonth(daylight_saving_started_time2);
-  const base::Time& adjusted_daylight_saving_ended_time1 =
+  const base::Time adjusted_daylight_saving_ended_time1 =
       AdjustLocalTimeToBeginningOfMonth(daylight_saving_ended_time1);
-  const base::Time& adjusted_daylight_saving_ended_time2 =
+  const base::Time adjusted_daylight_saving_ended_time2 =
       AdjustLocalTimeToBeginningOfMonth(daylight_saving_ended_time2);
 
   // Assert
-  const base::Time& expected_daylight_saving_started_time =
+  const base::Time expected_daylight_saving_started_time =
       TimeFromString("March 1 2021 00:00:00.000", /* is_local */ true);
-  const base::Time& expected_daylight_saving_ended_time =
+  const base::Time expected_daylight_saving_ended_time =
       TimeFromString("October 1 2021 00:00:00.000", /* is_local */ true);
 
   EXPECT_EQ(expected_daylight_saving_started_time,
@@ -476,29 +476,29 @@ TEST_P(BatAdsTimeUtilTest,
        AdjustLocalTimeToBeginningOfMonthForAustraliaSydneyTimezone) {
   ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
   // Arrange
-  const base::Time& daylight_saving_started_time1 =
+  const base::Time daylight_saving_started_time1 =
       TimeFromString("October 3 2021 00:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_started_time2 =
+  const base::Time daylight_saving_started_time2 =
       TimeFromString("October 3 2021 23:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_time1 =
+  const base::Time daylight_saving_ended_time1 =
       TimeFromString("April 4 2021 12:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_time2 =
+  const base::Time daylight_saving_ended_time2 =
       TimeFromString("April 4 2021 23:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_daylight_saving_started_time1 =
+  const base::Time adjusted_daylight_saving_started_time1 =
       AdjustLocalTimeToBeginningOfMonth(daylight_saving_started_time1);
-  const base::Time& adjusted_daylight_saving_started_time2 =
+  const base::Time adjusted_daylight_saving_started_time2 =
       AdjustLocalTimeToBeginningOfMonth(daylight_saving_started_time2);
-  const base::Time& adjusted_daylight_saving_ended_time1 =
+  const base::Time adjusted_daylight_saving_ended_time1 =
       AdjustLocalTimeToBeginningOfMonth(daylight_saving_ended_time1);
-  const base::Time& adjusted_daylight_saving_ended_time2 =
+  const base::Time adjusted_daylight_saving_ended_time2 =
       AdjustLocalTimeToBeginningOfMonth(daylight_saving_ended_time2);
 
   // Assert
-  const base::Time& expected_daylight_saving_started_time =
+  const base::Time expected_daylight_saving_started_time =
       TimeFromString("October 1 2021 00:00:00.000", /* is_local */ true);
-  const base::Time& expected_daylight_saving_ended_time =
+  const base::Time expected_daylight_saving_ended_time =
       TimeFromString("April 1 2021 00:00:00.000", /* is_local */ true);
 
   EXPECT_EQ(expected_daylight_saving_started_time,
@@ -514,14 +514,14 @@ TEST_P(BatAdsTimeUtilTest,
 TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfMonthForNoDSTTimezone) {
   ScopedLibcTZ scoped_libc_tz("America/Cayman");
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("November 7 2021 23:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_time = AdjustLocalTimeToBeginningOfMonth(time);
+  const base::Time adjusted_time = AdjustLocalTimeToBeginningOfMonth(time);
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("November 1 2021 0:0:0.000", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
@@ -530,29 +530,29 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToBeginningOfMonthForNoDSTTimezone) {
 TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfMonthForUSPacificTimezone) {
   ScopedLibcTZ scoped_libc_tz("US/Pacific");
   // Arrange
-  const base::Time& daylight_saving_started_time1 =
+  const base::Time daylight_saving_started_time1 =
       TimeFromString("March 3 2021 12:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_started_time2 =
+  const base::Time daylight_saving_started_time2 =
       TimeFromString("March 20 2021 12:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_time1 =
+  const base::Time daylight_saving_ended_time1 =
       TimeFromString("November 3 2021 12:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_time2 =
+  const base::Time daylight_saving_ended_time2 =
       TimeFromString("November 20 2021 12:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_daylight_saving_started_time1 =
+  const base::Time adjusted_daylight_saving_started_time1 =
       AdjustLocalTimeToEndOfMonth(daylight_saving_started_time1);
-  const base::Time& adjusted_daylight_saving_started_time2 =
+  const base::Time adjusted_daylight_saving_started_time2 =
       AdjustLocalTimeToEndOfMonth(daylight_saving_started_time2);
-  const base::Time& adjusted_daylight_saving_ended_time1 =
+  const base::Time adjusted_daylight_saving_ended_time1 =
       AdjustLocalTimeToEndOfMonth(daylight_saving_ended_time1);
-  const base::Time& adjusted_daylight_saving_ended_time2 =
+  const base::Time adjusted_daylight_saving_ended_time2 =
       AdjustLocalTimeToEndOfMonth(daylight_saving_ended_time2);
 
   // Assert
-  const base::Time& expected_daylight_saving_started_time =
+  const base::Time expected_daylight_saving_started_time =
       TimeFromString("March 31 2021 23:59:59.999", /* is_local */ true);
-  const base::Time& expected_daylight_saving_ended_time =
+  const base::Time expected_daylight_saving_ended_time =
       TimeFromString("November 30 2021 23:59:59.999", /* is_local */ true);
 
   EXPECT_EQ(expected_daylight_saving_started_time,
@@ -568,29 +568,29 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfMonthForUSPacificTimezone) {
 TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfMonthForEuropeLondonTimezone) {
   ScopedLibcTZ scoped_libc_tz("Europe/London");
   // Arrange
-  const base::Time& daylight_saving_started_time1 =
+  const base::Time daylight_saving_started_time1 =
       TimeFromString("March 3 2021 12:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_started_time2 =
+  const base::Time daylight_saving_started_time2 =
       TimeFromString("March 29 2021 12:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_time1 =
+  const base::Time daylight_saving_ended_time1 =
       TimeFromString("October 3 2021 12:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_time2 =
+  const base::Time daylight_saving_ended_time2 =
       TimeFromString("October 31 2021 12:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_daylight_saving_started_time1 =
+  const base::Time adjusted_daylight_saving_started_time1 =
       AdjustLocalTimeToEndOfMonth(daylight_saving_started_time1);
-  const base::Time& adjusted_daylight_saving_started_time2 =
+  const base::Time adjusted_daylight_saving_started_time2 =
       AdjustLocalTimeToEndOfMonth(daylight_saving_started_time2);
-  const base::Time& adjusted_daylight_saving_ended_time1 =
+  const base::Time adjusted_daylight_saving_ended_time1 =
       AdjustLocalTimeToEndOfMonth(daylight_saving_ended_time1);
-  const base::Time& adjusted_daylight_saving_ended_time2 =
+  const base::Time adjusted_daylight_saving_ended_time2 =
       AdjustLocalTimeToEndOfMonth(daylight_saving_ended_time2);
 
   // Assert
-  const base::Time& expected_daylight_saving_started_time =
+  const base::Time expected_daylight_saving_started_time =
       TimeFromString("March 31 2021 23:59:59.999", /* is_local */ true);
-  const base::Time& expected_daylight_saving_ended_time =
+  const base::Time expected_daylight_saving_ended_time =
       TimeFromString("October 31 2021 23:59:59.999", /* is_local */ true);
 
   EXPECT_EQ(expected_daylight_saving_started_time,
@@ -606,29 +606,29 @@ TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfMonthForEuropeLondonTimezone) {
 TEST_P(BatAdsTimeUtilTest,
        AdjustLocalTimeToEndOfMonthForAustraliaSydneyTimezone) {
   ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
-  const base::Time& daylight_saving_started_time1 =
+  const base::Time daylight_saving_started_time1 =
       TimeFromString("October 1 2021 00:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_started_time2 =
+  const base::Time daylight_saving_started_time2 =
       TimeFromString("October 1 2021 23:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_time1 =
+  const base::Time daylight_saving_ended_time1 =
       TimeFromString("April 1 2021 12:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_time2 =
+  const base::Time daylight_saving_ended_time2 =
       TimeFromString("April 1 2021 23:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_daylight_saving_started_time1 =
+  const base::Time adjusted_daylight_saving_started_time1 =
       AdjustLocalTimeToEndOfMonth(daylight_saving_started_time1);
-  const base::Time& adjusted_daylight_saving_started_time2 =
+  const base::Time adjusted_daylight_saving_started_time2 =
       AdjustLocalTimeToEndOfMonth(daylight_saving_started_time2);
-  const base::Time& adjusted_daylight_saving_ended_time1 =
+  const base::Time adjusted_daylight_saving_ended_time1 =
       AdjustLocalTimeToEndOfMonth(daylight_saving_ended_time1);
-  const base::Time& adjusted_daylight_saving_ended_time2 =
+  const base::Time adjusted_daylight_saving_ended_time2 =
       AdjustLocalTimeToEndOfMonth(daylight_saving_ended_time2);
 
   // Assert
-  const base::Time& expected_daylight_saving_started_time =
+  const base::Time expected_daylight_saving_started_time =
       TimeFromString("October 31 2021 23:59:59.999", /* is_local */ true);
-  const base::Time& expected_daylight_saving_ended_time =
+  const base::Time expected_daylight_saving_ended_time =
       TimeFromString("April 30 2021 23:59:59.999", /* is_local */ true);
 
   EXPECT_EQ(expected_daylight_saving_started_time,
@@ -644,14 +644,14 @@ TEST_P(BatAdsTimeUtilTest,
 TEST_P(BatAdsTimeUtilTest, AdjustLocalTimeToEndOfMonthForNoDSTTimezone) {
   ScopedLibcTZ scoped_libc_tz("America/Cayman");
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("November 7 2021 23:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_time = AdjustLocalTimeToEndOfMonth(time);
+  const base::Time adjusted_time = AdjustLocalTimeToEndOfMonth(time);
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("November 30 2021 23:59:59.999", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
@@ -661,21 +661,21 @@ TEST_P(BatAdsTimeUtilTest,
        AdjustLocalTimeToBeginningOfLastMonthForUSPacificTimezone) {
   ScopedLibcTZ scoped_libc_tz("US/Pacific");
   // Arrange
-  const base::Time& daylight_saving_started_time =
+  const base::Time daylight_saving_started_time =
       TimeFromString("April 5 2021 12:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_time =
+  const base::Time daylight_saving_ended_time =
       TimeFromString("December 20 2021 12:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_daylight_saving_started_time =
+  const base::Time adjusted_daylight_saving_started_time =
       AdjustLocalTimeToBeginningOfPreviousMonth(daylight_saving_started_time);
-  const base::Time& adjusted_daylight_saving_ended_time =
+  const base::Time adjusted_daylight_saving_ended_time =
       AdjustLocalTimeToBeginningOfPreviousMonth(daylight_saving_ended_time);
 
   // Assert
-  const base::Time& expected_daylight_saving_started_time =
+  const base::Time expected_daylight_saving_started_time =
       TimeFromString("March 1 2021 00:00:00.000", /* is_local */ true);
-  const base::Time& expected_daylight_saving_ended_time =
+  const base::Time expected_daylight_saving_ended_time =
       TimeFromString("November 1 2021 00:00:00.000", /* is_local */ true);
 
   EXPECT_EQ(expected_daylight_saving_started_time,
@@ -688,21 +688,21 @@ TEST_P(BatAdsTimeUtilTest,
        AdjustLocalTimeToBeginningOfLastMonthForEuropeLondonTimezone) {
   ScopedLibcTZ scoped_libc_tz("Europe/London");
   // Arrange
-  const base::Time& daylight_saving_started_time =
+  const base::Time daylight_saving_started_time =
       TimeFromString("April 5 2021 12:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_time =
+  const base::Time daylight_saving_ended_time =
       TimeFromString("November 20 2021 12:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_daylight_saving_started_time =
+  const base::Time adjusted_daylight_saving_started_time =
       AdjustLocalTimeToBeginningOfPreviousMonth(daylight_saving_started_time);
-  const base::Time& adjusted_daylight_saving_ended_time =
+  const base::Time adjusted_daylight_saving_ended_time =
       AdjustLocalTimeToBeginningOfPreviousMonth(daylight_saving_ended_time);
 
   // Assert
-  const base::Time& expected_daylight_saving_started_time =
+  const base::Time expected_daylight_saving_started_time =
       TimeFromString("March 1 2021 00:00:00.000", /* is_local */ true);
-  const base::Time& expected_daylight_saving_ended_time =
+  const base::Time expected_daylight_saving_ended_time =
       TimeFromString("October 1 2021 00:00:00.000", /* is_local */ true);
 
   EXPECT_EQ(expected_daylight_saving_started_time,
@@ -715,21 +715,21 @@ TEST_P(BatAdsTimeUtilTest,
        AdjustLocalTimeToBeginningOfLastMonthForAustraliaSydneyTimezone) {
   ScopedLibcTZ scoped_libc_tz("Australia/Sydney");
   // Arrange
-  const base::Time& daylight_saving_started_time =
+  const base::Time daylight_saving_started_time =
       TimeFromString("November 5 2021 12:34:56.789", /* is_local */ true);
-  const base::Time& daylight_saving_ended_time =
+  const base::Time daylight_saving_ended_time =
       TimeFromString("May 20 2021 12:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_daylight_saving_started_time =
+  const base::Time adjusted_daylight_saving_started_time =
       AdjustLocalTimeToBeginningOfPreviousMonth(daylight_saving_started_time);
-  const base::Time& adjusted_daylight_saving_ended_time =
+  const base::Time adjusted_daylight_saving_ended_time =
       AdjustLocalTimeToBeginningOfPreviousMonth(daylight_saving_ended_time);
 
   // Assert
-  const base::Time& expected_daylight_saving_started_time =
+  const base::Time expected_daylight_saving_started_time =
       TimeFromString("October 1 2021 00:00:00.000", /* is_local */ true);
-  const base::Time& expected_daylight_saving_ended_time =
+  const base::Time expected_daylight_saving_ended_time =
       TimeFromString("April 1 2021 00:00:00.000", /* is_local */ true);
 
   EXPECT_EQ(expected_daylight_saving_started_time,
@@ -742,15 +742,15 @@ TEST_P(BatAdsTimeUtilTest,
        AdjustLocalTimeToBeginningOfLastMonthForNoDSTTimezone) {
   ScopedLibcTZ scoped_libc_tz("America/Cayman");
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("November 7 2021 23:34:56.789", /* is_local */ true);
 
   // Act
-  const base::Time& adjusted_time =
+  const base::Time adjusted_time =
       AdjustLocalTimeToBeginningOfPreviousMonth(time);
 
   // Assert
-  const base::Time& expected_adjusted_time =
+  const base::Time expected_adjusted_time =
       TimeFromString("October 1 2021 00:00:00.000", /* is_local */ true);
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);

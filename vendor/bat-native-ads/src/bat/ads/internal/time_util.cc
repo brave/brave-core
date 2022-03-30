@@ -18,7 +18,7 @@ bool g_from_local_exploded_failed = false;
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time CorrectLocalMidnightForDaylightSaving(const base::Time& midnight,
+base::Time CorrectLocalMidnightForDaylightSaving(const base::Time midnight,
                                                  int expected_day_of_month) {
   // Check for errors due to daylight saving time change.
   base::Time::Exploded midnight_exploded;
@@ -38,7 +38,7 @@ base::Time CorrectLocalMidnightForDaylightSaving(const base::Time& midnight,
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time CalculateBeginningOfMonth(const base::Time& time) {
+base::Time CalculateBeginningOfMonth(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
@@ -52,7 +52,7 @@ base::Time CalculateBeginningOfMonth(const base::Time& time) {
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time CalculateBeginningOfNextMonth(const base::Time& time) {
+base::Time CalculateBeginningOfNextMonth(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
@@ -67,7 +67,7 @@ base::Time CalculateBeginningOfNextMonth(const base::Time& time) {
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time CalculateEndOfPreviousMonth(const base::Time& time) {
+base::Time CalculateEndOfPreviousMonth(const base::Time time) {
   base::Time adjusted_time = CalculateBeginningOfMonth(time);
   adjusted_time -= base::Milliseconds(1);
   return adjusted_time;
@@ -75,14 +75,14 @@ base::Time CalculateEndOfPreviousMonth(const base::Time& time) {
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time CalculateBeginningOfPreviousMonth(const base::Time& time) {
+base::Time CalculateBeginningOfPreviousMonth(const base::Time time) {
   const base::Time end_previous_month = CalculateEndOfPreviousMonth(time);
   return CalculateBeginningOfMonth(end_previous_month);
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time CalculateEndOfMonth(const base::Time& time) {
+base::Time CalculateEndOfMonth(const base::Time time) {
   base::Time adjusted_time = CalculateBeginningOfNextMonth(time);
   adjusted_time -= base::Milliseconds(1);
   return adjusted_time;
@@ -92,7 +92,7 @@ base::Time CalculateEndOfMonth(const base::Time& time) {
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time GetLocalMidnight(const base::Time& time) {
+base::Time GetLocalMidnight(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
@@ -104,7 +104,7 @@ base::Time GetLocalMidnight(const base::Time& time) {
   return CorrectLocalMidnightForDaylightSaving(midnight, exploded.day_of_month);
 }
 
-int GetLocalTimeAsMinutes(const base::Time& time) {
+int GetLocalTimeAsMinutes(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
@@ -112,7 +112,7 @@ int GetLocalTimeAsMinutes(const base::Time& time) {
   return (exploded.hour * base::Time::kMinutesPerHour) + exploded.minute;
 }
 
-base::Time AdjustLocalTimeToBeginningOfPreviousMonth(const base::Time& time) {
+base::Time AdjustLocalTimeToBeginningOfPreviousMonth(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
@@ -142,7 +142,7 @@ base::Time AdjustLocalTimeToBeginningOfPreviousMonth(const base::Time& time) {
   return adjusted_time;
 }
 
-base::Time AdjustLocalTimeToEndOfPreviousMonth(const base::Time& time) {
+base::Time AdjustLocalTimeToEndOfPreviousMonth(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
@@ -172,7 +172,7 @@ base::Time AdjustLocalTimeToEndOfPreviousMonth(const base::Time& time) {
   return adjusted_time;
 }
 
-base::Time AdjustLocalTimeToBeginningOfMonth(const base::Time& time) {
+base::Time AdjustLocalTimeToBeginningOfMonth(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
@@ -196,7 +196,7 @@ base::Time AdjustLocalTimeToBeginningOfMonth(const base::Time& time) {
   return adjusted_time;
 }
 
-base::Time AdjustLocalTimeToEndOfMonth(const base::Time& time) {
+base::Time AdjustLocalTimeToEndOfMonth(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
@@ -225,26 +225,26 @@ base::Time GetTimeInDistantPast() {
 }
 
 base::Time GetLocalTimeAtBeginningOfLastMonth() {
-  const base::Time& now = base::Time::Now();
+  const base::Time now = base::Time::Now();
   return AdjustLocalTimeToBeginningOfPreviousMonth(now);
 }
 
 base::Time GetLocalTimeAtEndOfLastMonth() {
-  const base::Time& now = base::Time::Now();
+  const base::Time now = base::Time::Now();
   return AdjustLocalTimeToEndOfPreviousMonth(now);
 }
 
 base::Time GetLocalTimeAtBeginningOfThisMonth() {
-  const base::Time& now = base::Time::Now();
+  const base::Time now = base::Time::Now();
   return AdjustLocalTimeToBeginningOfMonth(now);
 }
 
 base::Time GetLocalTimeAtEndOfThisMonth() {
-  const base::Time& now = base::Time::Now();
+  const base::Time now = base::Time::Now();
   return AdjustLocalTimeToEndOfMonth(now);
 }
 
-std::string TimeToPrivacyPreservingISO8601(const base::Time& time) {
+std::string TimeToPrivacyPreservingISO8601(const base::Time time) {
   base::Time::Exploded exploded;
   time.UTCExplode(&exploded);
 

@@ -38,7 +38,7 @@ std::string InlineContentAdsPerHourPermissionRule::GetLastMessage() const {
 
 bool InlineContentAdsPerHourPermissionRule::DoesRespectCap(
     const std::deque<base::Time>& history) {
-  const base::TimeDelta& time_constraint = base::Hours(1);
+  const base::TimeDelta time_constraint = base::Hours(1);
 
   const int cap = features::GetMaximumInlineContentAdsPerHour();
 

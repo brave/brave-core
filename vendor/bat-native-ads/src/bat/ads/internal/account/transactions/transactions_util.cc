@@ -14,8 +14,8 @@
 namespace ads {
 
 TransactionList GetTransactionsForDateRange(const TransactionList& transactions,
-                                            const base::Time& from_time,
-                                            const base::Time& to_time) {
+                                            const base::Time from_time,
+                                            const base::Time to_time) {
   const double from_timestamp = from_time.ToDoubleT();
   const double to_timestamp = to_time.ToDoubleT();
 

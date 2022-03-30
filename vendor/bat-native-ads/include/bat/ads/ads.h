@@ -183,18 +183,19 @@ class ADS_EXPORT Ads {
   // set to |false|
   virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
 
-  // Should be called to get ads history for a specified date range. Returns
+  // Should be called to get history for a specified date range. Returns
   // |AdsHistoryInfo|
-  virtual AdsHistoryInfo GetAdsHistory(const AdsHistoryFilterType filter_type,
-                                       const AdsHistorySortType sort_type,
-                                       const double from_timestamp,
-                                       const double to_timestamp) = 0;
+  virtual AdsHistoryInfo GetHistory(const AdsHistoryFilterType filter_type,
+                                    const AdsHistorySortType sort_type,
+                                    const double from_timestamp,
+                                    const double to_timestamp) = 0;
 
   // Should be called to get the statement of accounts. The callback takes one
   // argument - |StatementInfo| which contains next payment date, ads received
   // this month, earnings this month, earnings last month, cleared transactions
   // and uncleared transactions
-  virtual void GetAccountStatement(GetAccountStatementCallback callback) = 0;
+  virtual void GetStatementOfAccounts(
+      GetStatementOfAccountsCallback callback) = 0;
 
   // Should be called to get ad diagnostics for rewards internals page.
   virtual void GetAdDiagnostics(GetAdDiagnosticsCallback callback) = 0;
@@ -233,7 +234,6 @@ class ADS_EXPORT Ads {
   virtual bool ToggleFlaggedAd(const std::string& json) = 0;
 
  private:
-  // Not copyable, not assignable
   Ads(const Ads&) = delete;
   Ads& operator=(const Ads&) = delete;
 };

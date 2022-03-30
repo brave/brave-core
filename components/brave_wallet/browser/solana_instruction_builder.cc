@@ -8,9 +8,9 @@
 #include <type_traits>
 #include <utility>
 
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "build/build_config.h"
 

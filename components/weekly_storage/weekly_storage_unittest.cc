@@ -47,6 +47,32 @@ TEST_F(WeeklyStorageTest, AddsSavings) {
   EXPECT_EQ(state_->GetWeeklySum(), saving * 3);
 }
 
+TEST_F(WeeklyStorageTest, SubDelta) {
+  state_->AddDelta(5000);
+  clock_->Advance(base::Days(1));
+  state_->AddDelta(3000);
+  clock_->Advance(base::Days(1));
+  state_->AddDelta(1000);
+  clock_->Advance(base::Days(1));
+
+  state_->SubDelta(500);
+  EXPECT_EQ(state_->GetWeeklySum(), 8500U);
+  state_->SubDelta(4000);
+  EXPECT_EQ(state_->GetWeeklySum(), 4500U);
+
+  clock_->Advance(base::Days(4));
+  // First day value should expire
+  EXPECT_EQ(state_->GetWeeklySum(), 0U);
+
+  // If subtracting by an amount greater than the current sum,
+  // the sum should not become negative or underflow.
+  state_->AddDelta(3000);
+  state_->SubDelta(5000);
+  EXPECT_EQ(state_->GetWeeklySum(), 0U);
+  state_->SubDelta(100000);
+  EXPECT_EQ(state_->GetWeeklySum(), 0U);
+}
+
 TEST_F(WeeklyStorageTest, ForgetsOldSavings) {
   uint64_t saving = 10000;
   state_->AddDelta(saving);

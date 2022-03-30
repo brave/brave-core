@@ -8,8 +8,7 @@ import {
   WalletAccountType,
   UserAssetInfoType,
   DefaultCurrencies,
-  AddAccountNavTypes,
-  SupportedTestNetworks
+  AddAccountNavTypes
 } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
 import { CurrencySymbols } from '../../../../utils/currency-symbols'
@@ -135,17 +134,10 @@ const Portfolio = (props: Props) => {
     foundTokenInfoByContractAddress
   } = props
 
-  // This will be removed once Network Filtering is integrated here
-  // https://github.com/brave/brave-browser/issues/20780
-  const mainnetAssets = React.useMemo(() => {
-    return userAssetList.filter((asset) => !SupportedTestNetworks.includes(asset.asset.chainId))
-  }, [userAssetList])
-
-  const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(mainnetAssets)
+  const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(userAssetList)
   const [fullPortfolioFiatBalance, setFullPortfolioFiatBalance] = React.useState<string>(portfolioBalance)
   const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hoverPrice, setHoverPrice] = React.useState<string>()
-  const [showNetworkDropdown, setShowNetworkDropdown] = React.useState<boolean>(false)
   const [hideBalances, setHideBalances] = React.useState<boolean>(false)
   const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
 
@@ -160,8 +152,8 @@ const Portfolio = (props: Props) => {
   }, [portfolioBalance])
 
   React.useEffect(() => {
-    setfilteredAssetList(mainnetAssets)
-  }, [mainnetAssets])
+    setfilteredAssetList(userAssetList)
+  }, [userAssetList])
 
   const portfolioHistory = React.useMemo(() => {
     return portfolioPriceHistory
@@ -174,7 +166,7 @@ const Portfolio = (props: Props) => {
 
   const goBack = () => {
     onSelectAsset(undefined)
-    setfilteredAssetList(mainnetAssets)
+    setfilteredAssetList(userAssetList)
     toggleNav()
   }
 
@@ -191,12 +183,6 @@ const Portfolio = (props: Props) => {
       } else {
         setHoverPrice(undefined)
       }
-    }
-  }
-
-  const onHideNetworkDropdown = () => {
-    if (showNetworkDropdown) {
-      setShowNetworkDropdown(false)
     }
   }
 
@@ -275,7 +261,7 @@ const Portfolio = (props: Props) => {
   }, [selectedAsset, networkList])
 
   return (
-    <StyledWrapper onClick={onHideNetworkDropdown}>
+    <StyledWrapper>
       <TopRow>
         <BalanceRow>
           {!selectedAsset ? (
@@ -384,7 +370,7 @@ const Portfolio = (props: Props) => {
       {!selectedAsset &&
         <TokenLists
           defaultCurrencies={defaultCurrencies}
-          userAssetList={mainnetAssets}
+          userAssetList={userAssetList}
           filteredAssetList={filteredAssetList}
           tokenPrices={transactionSpotPrices}
           networks={networkList}

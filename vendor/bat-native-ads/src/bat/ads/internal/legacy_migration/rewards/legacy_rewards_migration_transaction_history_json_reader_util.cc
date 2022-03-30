@@ -21,17 +21,17 @@ namespace JSONReader {
 
 namespace {
 
-const char kTransactionHistoryKey[] = "transaction_history";
-const char kTransactionListKey[] = "transactions";
-const char kCreatedAtKey[] = "timestamp_in_seconds";
-const char kValueKey[] = "estimated_redemption_value";
-const char kConfirmationTypeKey[] = "confirmation_type";
+constexpr char kTransactionHistoryKey[] = "transaction_history";
+constexpr char kTransactionListKey[] = "transactions";
+constexpr char kCreatedAtKey[] = "timestamp_in_seconds";
+constexpr char kValueKey[] = "estimated_redemption_value";
+constexpr char kConfirmationTypeKey[] = "confirmation_type";
 
 absl::optional<TransactionInfo> ParseTransaction(const base::Value& value) {
   TransactionInfo transaction;
 
   // Id
-  transaction.id = base::GenerateGUID();
+  transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Created at
   const std::string* created_at = value.FindStringKey(kCreatedAtKey);

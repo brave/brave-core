@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Any tip you make will remain pending and retry automatically for 90 days. $link_begin$Learn more$link_end$",
+    "message": "כל טיפ שתיתן יישאר בהמתנה וינסה שוב אוטומטית למשך 90 יום. $link_begin$למד עוד$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "This creator is currently not configured to receive tips from your Rewards custodial wallet service.",
+    "message": "יוצר זה אינו מוגדר כעת לקבל טיפים משירות ארנק המשמורת שלך ב-Rewards.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -62,8 +62,8 @@
     "message": "כלול בתרומות העצמיות",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "תרומה חודשית",
+  "monthlyTip": {
+    "message": "Monthly Tip",
     "description": ""
   },
   "ok": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Your Reward is on its way.",
+    "message": "הפרס שלך בדרך.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -235,10 +235,6 @@
     "message": "טיפים חודשיים",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "מאומת",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "טיפ חד-פעמי",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "סיכום תגמולים",
     "description": ""
   },
-  "walletVerified": {
-    "message": "מאומת",
+  "walletUnverified": {
+    "message": "Unverified",
     "description": ""
   },
-  "walletVerify": {
-    "message": "אימות",
+  "walletVerified": {
+    "message": "מאומת",
     "description": ""
   },
   "walletYourBalance": {
@@ -276,11 +272,11 @@
     "description": ""
   },
   "notificationClaimRewards": {
-    "message": "Claim Rewards",
+    "message": "תבע תגמולים",
     "description": ""
   },
   "notificationClaimTokens": {
-    "message": "Claim Tokens",
+    "message": "תבע אסימונים",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,11 +301,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Back up Brave Rewards",
+    "message": "גבה את Brave Rewards",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Please back up your Brave Rewards.",
+    "message": "נא לגבות את Brave Rewards.",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -317,7 +313,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "You are logged out",
+    "message": "אתה מנותק",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Your Brave Rewards is verified!",
+    "message": "שלך Brave Rewards מאומת!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Your Brave Rewards was successfully verified with $provider$.",
+    "message": "ה-Brave Rewards שלך אומת בהצלחה עם$provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,11 +338,11 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "A token grant is available!",
+    "message": "מענק סמלי זמין!",
     "description": ""
   },
   "notificationAdGrantAmount": {
-    "message": "$month$ Rewards: $amount$",
+    "message": "$month$ תגמולים: $amount$",
     "description": "",
     "placeholders": {
       "month": {
@@ -358,7 +354,7 @@
     }
   },
   "notificationAdGrantTitle": {
-    "message": "Your $month$ Ad Rewards are here!",
+    "message": "שֶׁלְךָ $month$ פרסומת פרסומות כבר כאן!!",
     "description": "",
     "placeholders": {
       "month": {
@@ -367,7 +363,7 @@
     }
   },
   "notificationGrantDaysRemaining": {
-    "message": "You have $days$ left to claim",
+    "message": "יש לך $days$ נותר לתבוע",
     "description": "",
     "placeholders": {
       "days": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "לא ניתן היה להשלים את התשלום החודשי המתוכנן שלכם עבור תרומה אוטומטית ותרומות חודשיות בשל חוסר בכסף. אנו ננסה שוב בעוד 30 יום.",
+    "message": "התשלום החודשי הקבוע שלכם תמורת התרומות העצמיות והטיפים החודשיים לא התבצע בשל מחסור באמצעי מימון. אנו ננסה שוב בעוד 30 יום.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "התרומה החודשית נכשלה",
+    "message": "Monthly tip failed",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "התרומות החודשיות שלך עובדו.",
+    "message": "Your monthly tips have been processed.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {
@@ -559,7 +555,7 @@
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "In order to withdraw the BAT you earn for viewing ads, you’ll need to verify Brave Rewards.",
+    "message": "כדי למשוך את ה-BAT שאתה מרוויח עבור צפייה במודעות, תצטרך לאמת את Brave Rewards.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +563,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Verify Brave Rewards",
+    "message": "אמת את Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +571,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "By verifying your Brave Rewards and linking it to a bitFlyer account, you will be able to store and manage the BAT you have earned through Brave Rewards more easily",
+    "message": "על ידי אימות Brave Rewards שלך וקישורו לחשבון bitFlyer, תוכל לאחסן ולנהל את ה-BAT שצברת דרך Brave Rewards ביתר קלות",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

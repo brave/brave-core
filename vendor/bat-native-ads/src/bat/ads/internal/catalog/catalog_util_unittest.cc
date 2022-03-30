@@ -23,6 +23,25 @@ class BatAdsCatalogUtilTest : public UnitTestBase {
   ~BatAdsCatalogUtilTest() override = default;
 };
 
+TEST_F(BatAdsCatalogUtilTest, ResetCatalog) {
+  // Arrange
+  AdsClientHelper::Get()->SetStringPref(prefs::kCatalogId,
+                                        "150a9518-4db8-4fba-b104-0c420a1d9c0c");
+  AdsClientHelper::Get()->SetIntegerPref(prefs::kCatalogVersion, 1);
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kCatalogPing, 1000);
+  AdsClientHelper::Get()->SetDoublePref(prefs::kCatalogLastUpdated,
+                                        NowAsTimestamp());
+
+  // Act
+  ResetCatalog();
+
+  // Assert
+  EXPECT_TRUE(!AdsClientHelper::Get()->HasPrefPath(prefs::kCatalogId) &&
+              !AdsClientHelper::Get()->HasPrefPath(prefs::kCatalogVersion) &&
+              !AdsClientHelper::Get()->HasPrefPath(prefs::kCatalogPing) &&
+              !AdsClientHelper::Get()->HasPrefPath(prefs::kCatalogLastUpdated));
+}
+
 TEST_F(BatAdsCatalogUtilTest, CatalogExists) {
   // Arrange
   AdsClientHelper::Get()->SetIntegerPref(prefs::kCatalogVersion, 1);

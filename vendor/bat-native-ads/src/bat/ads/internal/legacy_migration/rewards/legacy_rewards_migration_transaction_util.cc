@@ -24,8 +24,8 @@ namespace {
 TransactionList GetUnreconciledTransactionsForDateRange(
     const TransactionList& transactions,
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
-    const base::Time& from_time,
-    const base::Time& to_time) {
+    const base::Time from_time,
+    const base::Time to_time) {
   const size_t unblinded_payment_token_count = unblinded_payment_tokens.size();
 
   if (transactions.size() < unblinded_payment_token_count) {
@@ -45,8 +45,8 @@ TransactionList GetUnreconciledTransactionsForDateRange(
 TransactionList GetAllUnreconciledTransactions(
     const TransactionList& transactions,
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
-  const base::Time& from_time = GetTimeInDistantPast();
-  const base::Time& to_time = GetLocalTimeAtEndOfThisMonth();
+  const base::Time from_time = GetTimeInDistantPast();
+  const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
 
   TransactionList unreconciled_transactions =
       GetUnreconciledTransactionsForDateRange(
@@ -54,7 +54,7 @@ TransactionList GetAllUnreconciledTransactions(
 
   for (auto& transaction : unreconciled_transactions) {
     // |created_at|, |value| and |confirmation_type| are set from legacy state
-    transaction.id = base::GenerateGUID();
+    transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
     transaction.creative_instance_id = kMigrationUnreconciledTransactionId;
     transaction.ad_type = AdType::kAdNotification;
   }
@@ -77,16 +77,18 @@ BuildTransactionsForReconciledTransactionsThisMonth(
     return absl::nullopt;
   }
 
-  const base::Time& time = GetLocalTimeAtBeginningOfThisMonth();
+  const base::Time time = GetLocalTimeAtBeginningOfThisMonth();
   const double timestamp = time.ToDoubleT();
 
   TransactionList reconciled_transactions;
 
   // Add a transaction with the payment balance for this month as the value
   TransactionInfo reconciled_transaction;
-  reconciled_transaction.id = base::GenerateGUID();
+  reconciled_transaction.id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
   reconciled_transaction.created_at = timestamp;
-  reconciled_transaction.creative_instance_id = base::GenerateGUID();
+  reconciled_transaction.creative_instance_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
   reconciled_transaction.value = payment.balance;
   reconciled_transaction.ad_type = AdType::kAdNotification;
   reconciled_transaction.confirmation_type = ConfirmationType::kViewed;
@@ -97,9 +99,11 @@ BuildTransactionsForReconciledTransactionsThisMonth(
   // received this month
   for (int i = 0; i < payment.transaction_count - 1; i++) {
     TransactionInfo reconciled_transaction;
-    reconciled_transaction.id = base::GenerateGUID();
+    reconciled_transaction.id =
+        base::GUID::GenerateRandomV4().AsLowercaseString();
     reconciled_transaction.created_at = timestamp;
-    reconciled_transaction.creative_instance_id = base::GenerateGUID();
+    reconciled_transaction.creative_instance_id =
+        base::GUID::GenerateRandomV4().AsLowercaseString();
     reconciled_transaction.value = 0.0;
     reconciled_transaction.ad_type = AdType::kAdNotification;
     reconciled_transaction.confirmation_type = ConfirmationType::kViewed;
@@ -125,13 +129,15 @@ BuildTransactionForReconciledTransactionsLastMonth(
     return absl::nullopt;
   }
 
-  const base::Time& time = GetLocalTimeAtBeginningOfLastMonth();
+  const base::Time time = GetLocalTimeAtBeginningOfLastMonth();
   const double timestamp = time.ToDoubleT();
 
   TransactionInfo reconciled_transaction;
-  reconciled_transaction.id = base::GenerateGUID();
+  reconciled_transaction.id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
   reconciled_transaction.created_at = timestamp;
-  reconciled_transaction.creative_instance_id = base::GenerateGUID();
+  reconciled_transaction.creative_instance_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
   reconciled_transaction.value = payment.balance;
   reconciled_transaction.ad_type = AdType::kAdNotification;
   reconciled_transaction.confirmation_type = ConfirmationType::kViewed;

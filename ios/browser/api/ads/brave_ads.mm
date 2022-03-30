@@ -496,9 +496,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   const double from_timestamp = std::numeric_limits<double>::min();
   const double to_timestamp = std::numeric_limits<double>::max();
 
-  const auto history = ads->GetAdsHistory(ads::AdsHistoryFilterType::kNone,
-                                          ads::AdsHistorySortType::kNone,
-                                          from_timestamp, to_timestamp);
+  const auto history = ads->GetHistory(ads::AdsHistoryFilterType::kNone,
+                                       ads::AdsHistorySortType::kNone,
+                                       from_timestamp, to_timestamp);
 
   const auto dates = [[NSMutableArray<NSDate*> alloc] init];
   for (const auto& item : history.items) {
@@ -664,8 +664,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->GetAccountStatement(^(const bool success,
-                             const ads::StatementInfo& list) {
+  ads->GetStatementOfAccounts(^(const bool success,
+                                const ads::StatementInfo& list) {
     if (!success) {
       completion(0, 0, nil);
       return;
@@ -1402,6 +1402,11 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   const auto key = base::SysUTF8ToNSString(path);
   [self.prefs removeObjectForKey:key];
   [self savePref:key];
+}
+
+- (bool)hasPrefPath:(const std::string&)path {
+  const auto key = base::SysUTF8ToNSString(path);
+  return [self.prefs objectForKey:key] != nil;
 }
 
 #pragma mark - Ads Resources Paths

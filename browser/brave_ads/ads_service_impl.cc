@@ -410,26 +410,27 @@ void AdsServiceImpl::OnGetBraveWallet(ledger::type::BraveWalletPtr wallet) {
                             base::Base64Encode(wallet->recovery_seed));
 }
 
-void AdsServiceImpl::GetAdsHistory(const double from_timestamp,
-                                   const double to_timestamp,
-                                   OnGetAdsHistoryCallback callback) {
+void AdsServiceImpl::GetHistory(const double from_timestamp,
+                                const double to_timestamp,
+                                OnGetHistoryCallback callback) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->GetAdsHistory(from_timestamp, to_timestamp,
-                          base::BindOnce(&AdsServiceImpl::OnGetAdsHistory,
-                                         AsWeakPtr(), std::move(callback)));
+  bat_ads_->GetHistory(from_timestamp, to_timestamp,
+                       base::BindOnce(&AdsServiceImpl::OnGetHistory,
+                                      AsWeakPtr(), std::move(callback)));
 }
 
-void AdsServiceImpl::GetAccountStatement(GetAccountStatementCallback callback) {
+void AdsServiceImpl::GetStatementOfAccounts(
+    GetStatementOfAccountsCallback callback) {
   if (!connected()) {
     std::move(callback).Run(/* success */ false, 0, 0, 0.0, 0.0);
     return;
   }
 
-  bat_ads_->GetAccountStatement(
-      base::BindOnce(&AdsServiceImpl::OnGetAccountStatement, AsWeakPtr(),
+  bat_ads_->GetStatementOfAccounts(
+      base::BindOnce(&AdsServiceImpl::OnGetStatementOfAccounts, AsWeakPtr(),
                      std::move(callback)));
 }
 
@@ -1292,8 +1293,8 @@ void AdsServiceImpl::OnGetInlineContentAd(OnGetInlineContentAdCallback callback,
   std::move(callback).Run(success, dimensions, dictionary);
 }
 
-void AdsServiceImpl::OnGetAdsHistory(OnGetAdsHistoryCallback callback,
-                                     const std::string& json) {
+void AdsServiceImpl::OnGetHistory(OnGetHistoryCallback callback,
+                                  const std::string& json) {
   ads::AdsHistoryInfo ads_history;
   ads_history.FromJson(json);
 
@@ -1330,9 +1331,10 @@ bool AdsServiceImpl::CanShowBackgroundNotifications() const {
   return NotificationHelper::GetInstance()->CanShowBackgroundNotifications();
 }
 
-void AdsServiceImpl::OnGetAccountStatement(GetAccountStatementCallback callback,
-                                           const bool success,
-                                           const std::string& json) {
+void AdsServiceImpl::OnGetStatementOfAccounts(
+    GetStatementOfAccountsCallback callback,
+    const bool success,
+    const std::string& json) {
   if (!success) {
     std::move(callback).Run(success, 0, 0, 0.0, 0.0);
     return;
@@ -2365,6 +2367,10 @@ void AdsServiceImpl::SetUint64Pref(const std::string& path,
 void AdsServiceImpl::ClearPref(const std::string& path) {
   profile_->GetPrefs()->ClearPref(path);
   OnPrefChanged(path);
+}
+
+bool AdsServiceImpl::HasPrefPath(const std::string& path) const {
+  return profile_->GetPrefs()->HasPrefPath(path);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

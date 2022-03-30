@@ -91,6 +91,7 @@ public class NTPUtil {
 
     public static int correctImageCreditLayoutTopPosition(NTPImage ntpImage) {
         int imageCreditCorrection = 0;
+        int widgetCompensation = 0;
         boolean isCompensate = false;
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
@@ -109,6 +110,9 @@ public class NTPUtil {
             // Correction defaults to tablet BackgroundImage
             imageCreditCorrection = isLandscape ? (int) (pxHeight * (isCompensate ? 0.48 : 0.54))
                                                 : (int) (pxHeight * (isCompensate ? 0.60 : 0.30));
+
+            widgetCompensation = dpToPx(activity, 80);
+
             if (ntpImage instanceof BackgroundImage) {
                 if (!isTablet) {
                     imageCreditCorrection = isLandscape
@@ -133,7 +137,9 @@ public class NTPUtil {
                 }
             }
         }
-        return imageCreditCorrection;
+        int correction = imageCreditCorrection - widgetCompensation;
+
+        return correction;
     }
 
     public static void updateOrientedUI(
@@ -164,18 +170,7 @@ public class NTPUtil {
             parentLayout.addView(newsRecyclerLayout);
         }
 
-        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(context);
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
-        CardView widgetLayout = (CardView) view.findViewById(R.id.ntp_widget_cardview_layout);
-        LinearLayout.LayoutParams widgetLayoutParams = new LinearLayout.LayoutParams(
-                (isTablet ? (int) (dpWidth * 0.75)
-                          : (ConfigurationUtils.isLandscape(context)
-                                          ? (int) (displayMetrics.widthPixels * 0.75)
-                                          : (int) (displayMetrics.widthPixels * 0.93))),
-                dpToPx(context, 140));
-        widgetLayout.setLayoutParams(widgetLayoutParams);
+        int widgetCompensation = dpToPx(context, 140);
 
         LinearLayout.LayoutParams mainLayoutLayoutParams =
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);

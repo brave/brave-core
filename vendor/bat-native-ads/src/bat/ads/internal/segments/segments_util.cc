@@ -20,7 +20,7 @@ namespace ads {
 
 namespace {
 
-const char kSegmentSeparator[] = "-";
+constexpr char kSegmentSeparator[] = "-";
 
 std::vector<std::string> SplitSegment(const std::string& segment) {
   DCHECK(!segment.empty());
@@ -128,7 +128,7 @@ bool ShouldFilterSegment(const std::string& segment) {
       filtered_segments.cbegin(), filtered_segments.cend(),
       [&segment](const FilteredCategoryInfo& filtered_segment) {
         if (HasChildSegment(filtered_segment.name)) {
-          // Filter against parent-child, i.e. "technology & computing-linux"
+          // Filter against child, i.e. "technology & computing-linux"
           return segment == filtered_segment.name;
         } else {
           // Filter against parent, i.e. "technology & computing"

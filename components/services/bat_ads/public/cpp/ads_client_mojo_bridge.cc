@@ -398,4 +398,9 @@ void AdsClientMojoBridge::ClearPref(
   ads_client_->ClearPref(path);
 }
 
+void AdsClientMojoBridge::HasPrefPath(const std::string& path,
+                                      HasPrefPathCallback callback) {
+  std::move(callback).Run(ads_client_->HasPrefPath(path));
+}
+
 }  // namespace bat_ads

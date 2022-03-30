@@ -21,12 +21,12 @@ class RedeemUnblindedPaymentTokensUserDataBuilder final
   void Build(UserDataBuilderCallback callback) const override;
 
  private:
-  privacy::UnblindedPaymentTokenList unblinded_payment_tokens_;
-
   RedeemUnblindedPaymentTokensUserDataBuilder(
       const RedeemUnblindedPaymentTokensUserDataBuilder&) = delete;
   RedeemUnblindedPaymentTokensUserDataBuilder& operator=(
       const RedeemUnblindedPaymentTokensUserDataBuilder&) = delete;
+
+  privacy::UnblindedPaymentTokenList unblinded_payment_tokens_;
 };
 
 }  // namespace ads

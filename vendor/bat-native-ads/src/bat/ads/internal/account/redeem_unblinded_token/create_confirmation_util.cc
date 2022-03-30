@@ -41,8 +41,7 @@ std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation) {
     dto.SetKey("blindedPaymentTokens", std::move(list));
   }
 
-  const std::string type = std::string(confirmation.type);
-  dto.SetStringKey("type", type);
+  dto.SetStringKey("type", confirmation.type.ToString());
 
   const std::string public_key =
       confirmation.unblinded_token.public_key.encode_base64();

@@ -16,7 +16,7 @@ namespace ads {
 
 std::string ToString(const int value);
 std::string ToString(const bool value);
-std::string ToString(const base::Time& time);
+std::string ToString(const base::Time time);
 
 }  // namespace ads
 

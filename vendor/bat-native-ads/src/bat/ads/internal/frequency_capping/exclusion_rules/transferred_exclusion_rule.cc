@@ -14,7 +14,7 @@
 namespace ads {
 
 namespace {
-const int kTransferredCap = 1;
+constexpr int kTransferredCap = 1;
 }  // namespace
 
 TransferredExclusionRule::TransferredExclusionRule(const AdEventList& ad_events)
@@ -47,9 +47,9 @@ std::string TransferredExclusionRule::GetLastMessage() const {
 bool TransferredExclusionRule::DoesRespectCap(
     const AdEventList& ad_events,
     const CreativeAdInfo& creative_ad) {
-  const base::Time& now = base::Time::Now();
+  const base::Time now = base::Time::Now();
 
-  const base::TimeDelta& time_constraint =
+  const base::TimeDelta time_constraint =
       features::frequency_capping::ExcludeAdIfTransferredWithinTimeWindow();
 
   const int count = std::count_if(

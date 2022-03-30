@@ -37,6 +37,16 @@ class AdTransfer final {
   void Cancel(const int32_t tab_id);
 
  private:
+  void TransferAd(const int32_t tab_id,
+                  const std::vector<std::string>& redirect_chain);
+  void OnTransferAd(const int32_t tab_id,
+                    const std::vector<std::string>& redirect_chain);
+
+  void NotifyWillTransferAd(const AdInfo& ad, const base::Time time) const;
+  void NotifyDidTransferAd(const AdInfo& ad) const;
+  void NotifyCancelledAdTransfer(const AdInfo& ad, const int32_t tab_id) const;
+  void NotifyFailedToTransferAd(const AdInfo& ad) const;
+
   base::ObserverList<AdTransferObserver> observers_;
 
   int32_t transferring_ad_tab_id_ = 0;
@@ -44,16 +54,6 @@ class AdTransfer final {
   Timer timer_;
 
   AdInfo last_clicked_ad_;
-
-  void TransferAd(const int32_t tab_id,
-                  const std::vector<std::string>& redirect_chain);
-  void OnTransferAd(const int32_t tab_id,
-                    const std::vector<std::string>& redirect_chain);
-
-  void NotifyWillTransferAd(const AdInfo& ad, const base::Time& time) const;
-  void NotifyDidTransferAd(const AdInfo& ad) const;
-  void NotifyCancelledAdTransfer(const AdInfo& ad, const int32_t tab_id) const;
-  void NotifyFailedToTransferAd(const AdInfo& ad) const;
 };
 
 }  // namespace ads

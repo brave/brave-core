@@ -36,7 +36,7 @@ class BatAdsEligibleNewTabPageAdsV1Test : public UnitTestBase {
   std::unique_ptr<database::table::CreativeNewTabPageAds> database_table_;
 };
 
-TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForParentChildSegment) {
+TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetAdsForChildSegment) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 

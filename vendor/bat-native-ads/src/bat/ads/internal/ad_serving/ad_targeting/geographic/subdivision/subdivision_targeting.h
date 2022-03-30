@@ -35,13 +35,7 @@ class SubdivisionTargeting final {
   void OnPrefChanged(const std::string& path);
 
  private:
-  Timer timer_;
-  BackoffTimer retry_timer_;
-
-  mutable absl::optional<std::string> auto_detected_subdivision_code_optional_;
   std::string GetLazyAutoDetectedSubdivisionCode() const;
-
-  mutable absl::optional<std::string> subdivision_code_optional_;
   std::string GetLazySubdivisionCode() const;
 
   bool IsSupportedLocale(const std::string& locale) const;
@@ -54,6 +48,12 @@ class SubdivisionTargeting final {
   bool ParseJson(const std::string& json);
   void Retry();
   void FetchAfterDelay();
+
+  Timer timer_;
+  BackoffTimer retry_timer_;
+
+  mutable absl::optional<std::string> auto_detected_subdivision_code_optional_;
+  mutable absl::optional<std::string> subdivision_code_optional_;
 };
 
 }  // namespace geographic

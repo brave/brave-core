@@ -34,8 +34,7 @@ class PrefRegistrySyncable;
 
 namespace brave_ads {
 
-using OnGetAdsHistoryCallback =
-    base::OnceCallback<void(const base::ListValue&)>;
+using OnGetHistoryCallback = base::OnceCallback<void(const base::ListValue&)>;
 
 using OnToggleAdThumbUpCallback = base::OnceCallback<void(const std::string&)>;
 using OnToggleAdThumbDownCallback =
@@ -53,7 +52,7 @@ using OnToggleFlaggedAdCallback = base::OnceCallback<void(const std::string&)>;
 using OnGetInlineContentAdCallback = base::OnceCallback<
     void(const bool, const std::string&, const base::DictionaryValue&)>;
 
-using GetAccountStatementCallback = base::OnceCallback<
+using GetStatementOfAccountsCallback = base::OnceCallback<
     void(const bool, const double, const int, const double, const double)>;
 
 using GetAdDiagnosticsCallback =
@@ -144,11 +143,12 @@ class AdsService : public KeyedService {
   virtual void PurgeOrphanedAdEventsForType(
       const ads::mojom::AdType ad_type) = 0;
 
-  virtual void GetAdsHistory(const double from_timestamp,
-                             const double to_timestamp,
-                             OnGetAdsHistoryCallback callback) = 0;
+  virtual void GetHistory(const double from_timestamp,
+                          const double to_timestamp,
+                          OnGetHistoryCallback callback) = 0;
 
-  virtual void GetAccountStatement(GetAccountStatementCallback callback) = 0;
+  virtual void GetStatementOfAccounts(
+      GetStatementOfAccountsCallback callback) = 0;
 
   virtual void GetAdDiagnostics(GetAdDiagnosticsCallback callback) = 0;
 

@@ -31,10 +31,11 @@ namespace geographic {
 
 namespace {
 
-const int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
+constexpr int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
 
-const int64_t kFetchSubdivisionTargetingPing = 24 * base::Time::kSecondsPerHour;
-const int64_t kDebugFetchSubdivisionTargetingPing =
+constexpr int64_t kFetchSubdivisionTargetingPing =
+    24 * base::Time::kSecondsPerHour;
+constexpr int64_t kDebugFetchSubdivisionTargetingPing =
     5 * base::Time::kSecondsPerMinute;
 
 }  // namespace

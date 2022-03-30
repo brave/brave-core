@@ -170,13 +170,16 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& info) {
   writer->String("seenAds");
   writer->StartObject();
   for (const auto& seen_ads : info.seen_ads) {
-    const std::string type = std::string(seen_ads.first);
-    writer->String(type.c_str());
+    const std::string& ad_type = seen_ads.first;
+    writer->String(ad_type.c_str());
     writer->StartObject();
 
     for (const auto& seen_ad : seen_ads.second) {
-      writer->String(seen_ad.first.c_str());
-      writer->Bool(seen_ad.second);
+      const std::string& creative_instance_id = seen_ad.first;
+      writer->String(creative_instance_id.c_str());
+
+      const bool was_seen = seen_ad.second;
+      writer->Bool(was_seen);
     }
 
     writer->EndObject();
@@ -186,13 +189,16 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& info) {
   writer->String("seenAdvertisers");
   writer->StartObject();
   for (const auto& seen_advertisers : info.seen_advertisers) {
-    const std::string type = std::string(seen_advertisers.first);
-    writer->String(type.c_str());
+    const std::string& ad_type = seen_advertisers.first;
+    writer->String(ad_type.c_str());
     writer->StartObject();
 
     for (const auto& seen_advertiser : seen_advertisers.second) {
-      writer->String(seen_advertiser.first.c_str());
-      writer->Bool(seen_advertiser.second);
+      const std::string& advertiser_id = seen_advertiser.first;
+      writer->String(advertiser_id.c_str());
+
+      const bool was_seen = seen_advertiser.second;
+      writer->Bool(was_seen);
     }
 
     writer->EndObject();

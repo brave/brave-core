@@ -44,15 +44,15 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
 
   AdvanceClock(TimeFromString("1 February 2020", /* is_local */ false));
 
-  const base::Time& next_token_redemption_at =
+  const base::Time next_token_redemption_at =
       TimeFromString("5 February 2020", /* is_local */ false);
 
   // Act
-  const base::Time& next_payment_date =
+  const base::Time next_payment_date =
       CalculateNextPaymentDate(next_token_redemption_at, transactions);
 
   // Assert
-  const base::Time& expected_next_payment_date =
+  const base::Time expected_next_payment_date =
       TimeFromString("5 February 2020 23:59:59.999", /* is_local */ false);
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -71,15 +71,15 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
 
   const TransactionList transactions;
 
-  const base::Time& next_token_redemption_at =
+  const base::Time next_token_redemption_at =
       TimeFromString("5 February 2020", /* is_local */ false);
 
   // Act
-  const base::Time& next_payment_date =
+  const base::Time next_payment_date =
       CalculateNextPaymentDate(next_token_redemption_at, transactions);
 
   // Assert
-  const base::Time& expected_next_payment_date =
+  const base::Time expected_next_payment_date =
       TimeFromString("5 March 2020 23:59:59.999", /* is_local */ false);
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -101,15 +101,15 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
       BuildTransaction(0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction);
 
-  const base::Time& next_token_redemption_at =
+  const base::Time next_token_redemption_at =
       TimeFromString("5 February 2020", /* is_local */ false);
 
   // Act
-  const base::Time& next_payment_date =
+  const base::Time next_payment_date =
       CalculateNextPaymentDate(next_token_redemption_at, transactions);
 
   // Assert
-  const base::Time& expected_next_payment_date =
+  const base::Time expected_next_payment_date =
       TimeFromString("5 February 2020 23:59:59.999", /* is_local */ false);
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -129,15 +129,15 @@ TEST_F(
 
   const TransactionList transactions;
 
-  const base::Time& next_token_redemption_at =
+  const base::Time next_token_redemption_at =
       TimeFromString("31 January 2020", /* is_local */ false);
 
   // Act
-  const base::Time& next_payment_date =
+  const base::Time next_payment_date =
       CalculateNextPaymentDate(next_token_redemption_at, transactions);
 
   // Assert
-  const base::Time& expected_next_payment_date =
+  const base::Time expected_next_payment_date =
       TimeFromString("5 February 2020 23:59:59.999", /* is_local */ false);
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
@@ -157,15 +157,15 @@ TEST_F(
 
   const TransactionList transactions;
 
-  const base::Time& next_token_redemption_at =
+  const base::Time next_token_redemption_at =
       TimeFromString("5 February 2020", /* is_local */ false);
 
   // Act
-  const base::Time& next_payment_date =
+  const base::Time next_payment_date =
       CalculateNextPaymentDate(next_token_redemption_at, transactions);
 
   // Assert
-  const base::Time& expected_next_payment_date =
+  const base::Time expected_next_payment_date =
       TimeFromString("5 March 2020 23:59:59.999", /* is_local */ false);
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }

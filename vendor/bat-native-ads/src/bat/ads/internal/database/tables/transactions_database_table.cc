@@ -25,7 +25,7 @@ namespace table {
 
 namespace {
 
-const char kTableName[] = "transactions";
+constexpr char kTableName[] = "transactions";
 
 int BindParameters(mojom::DBCommand* command,
                    const TransactionList& transactions) {
@@ -39,8 +39,8 @@ int BindParameters(mojom::DBCommand* command,
     BindDouble(command, index++, transaction.created_at);
     BindString(command, index++, transaction.creative_instance_id);
     BindDouble(command, index++, transaction.value);
-    BindString(command, index++, std::string(transaction.ad_type));
-    BindString(command, index++, std::string(transaction.confirmation_type));
+    BindString(command, index++, transaction.ad_type.ToString());
+    BindString(command, index++, transaction.confirmation_type.ToString());
     BindDouble(command, index++, transaction.reconciled_at);
 
     count++;
@@ -121,8 +121,8 @@ void Transactions::GetAll(GetTransactionsCallback callback) {
                                         std::placeholders::_1, callback));
 }
 
-void Transactions::GetForDateRange(const base::Time& from_time,
-                                   const base::Time& to_time,
+void Transactions::GetForDateRange(const base::Time from_time,
+                                   const base::Time to_time,
                                    GetTransactionsCallback callback) {
   const std::string query = base::StringPrintf(
       "SELECT "

@@ -219,6 +219,7 @@ export interface WalletState {
   defaultCurrencies: DefaultCurrencies
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   defaultNetworks: BraveWallet.NetworkInfo[]
+  selectedNetworkFilter: BraveWallet.NetworkInfo
 }
 
 export interface PanelState {
@@ -371,7 +372,7 @@ interface BaseTransactionParams {
   coin: BraveWallet.CoinType
 }
 
-interface BaseEthTransactionParams extends BaseTransactionParams{
+interface BaseEthTransactionParams extends BaseTransactionParams {
   gas?: string
 
   // Legacy gas pricing

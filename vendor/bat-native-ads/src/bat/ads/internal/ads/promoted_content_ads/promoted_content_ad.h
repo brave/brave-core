@@ -29,8 +29,6 @@ class PromotedContentAd final : public PromotedContentAdObserver {
                  const mojom::PromotedContentAdEventType event_type);
 
  private:
-  base::ObserverList<PromotedContentAdObserver> observers_;
-
   void FireEvent(const PromotedContentAdInfo& ad,
                  const std::string& uuid,
                  const std::string& creative_instance_id,
@@ -48,6 +46,8 @@ class PromotedContentAd final : public PromotedContentAdObserver {
       const std::string& uuid,
       const std::string& creative_instance_id,
       const mojom::PromotedContentAdEventType event_type) const;
+
+  base::ObserverList<PromotedContentAdObserver> observers_;
 };
 
 }  // namespace ads

@@ -17,8 +17,8 @@ namespace ads {
 namespace {
 
 bool HasReconciledTransactionsForDateRange(const TransactionList& transactions,
-                                           const base::Time& from_time,
-                                           const base::Time& to_time) {
+                                           const base::Time from_time,
+                                           const base::Time to_time) {
   const int count =
       std::count_if(transactions.cbegin(), transactions.cend(),
                     [&from_time, &to_time](const TransactionInfo& transaction) {
@@ -36,36 +36,36 @@ bool HasReconciledTransactionsForDateRange(const TransactionList& transactions,
 }  // namespace
 
 bool DidReconcileTransaction(const TransactionInfo& transaction) {
-  const base::Time& reconciled_at =
+  const base::Time reconciled_at =
       base::Time::FromDoubleT(transaction.reconciled_at);
 
   return !reconciled_at.is_null();
 }
 
 bool DidReconcileTransactionsLastMonth(const TransactionList& transactions) {
-  const base::Time& from_time = GetLocalTimeAtBeginningOfLastMonth();
-  const base::Time& to_time = GetLocalTimeAtEndOfLastMonth();
+  const base::Time from_time = GetLocalTimeAtBeginningOfLastMonth();
+  const base::Time to_time = GetLocalTimeAtEndOfLastMonth();
 
   return HasReconciledTransactionsForDateRange(transactions, from_time,
                                                to_time);
 }
 
 bool DidReconcileTransactionsThisMonth(const TransactionList& transactions) {
-  const base::Time& from_time = GetLocalTimeAtBeginningOfThisMonth();
-  const base::Time& to_time = GetLocalTimeAtEndOfThisMonth();
+  const base::Time from_time = GetLocalTimeAtBeginningOfThisMonth();
+  const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
 
   return HasReconciledTransactionsForDateRange(transactions, from_time,
                                                to_time);
 }
 
 bool DidReconcileTransactionWithinDateRange(const TransactionInfo& transaction,
-                                            const base::Time& from_time,
-                                            const base::Time& to_time) {
+                                            const base::Time from_time,
+                                            const base::Time to_time) {
   if (!DidReconcileTransaction(transaction)) {
     return false;
   }
 
-  const base::Time& reconciled_at =
+  const base::Time reconciled_at =
       base::Time::FromDoubleT(transaction.reconciled_at);
   if (reconciled_at < from_time || reconciled_at > to_time) {
     return false;

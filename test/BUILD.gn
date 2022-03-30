@@ -161,6 +161,7 @@ test("brave_unit_tests") {
     "//brave/browser/first_run:unit_tests",
     "//brave/browser/metrics:brave_metrics_unit_tests",
     "//brave/browser/net",
+    "//brave/browser/net:geolocation",
     "//brave/browser/new_tab:unittest",
     "//brave/browser/permissions:unit_tests",
     "//brave/browser/profiles:profiles",
@@ -181,6 +182,7 @@ test("brave_unit_tests") {
     "//brave/common:network_constants",
     "//brave/common:pref_names",
     "//brave/components/adblock_rust_ffi",
+    "//brave/components/api_request_helper:api_request_helper_unit_tests",
     "//brave/components/brave_adaptive_captcha/buildflags",
     "//brave/components/brave_ads/test:brave_ads_unit_tests",
     "//brave/components/brave_component_updater/browser",
@@ -286,8 +288,6 @@ test("brave_unit_tests") {
   }
 
   data = [ "data/" ]
-
-  configs += [ "//brave/build/geolocation" ]
 
   public_deps = [
     ":brave_test_support_unit",
@@ -643,6 +643,7 @@ if (!is_android) {
       "//brave/browser/brave_wallet/brave_wallet_sign_message_browsertest.cc",
       "//brave/browser/brave_wallet/brave_wallet_tab_helper_browsertest.cc",
       "//brave/browser/brave_wallet/send_transaction_browsertest.cc",
+      "//brave/browser/brave_wallet/solana_provider_browsertest.cc",
       "//brave/browser/brave_wallet/wallet_watch_asset_browsertest.cc",
       "//brave/browser/content_settings/brave_content_settings_registry_browsertest.cc",
       "//brave/browser/debounce/debounce_browsertest.cc",
@@ -778,7 +779,9 @@ if (!is_android) {
       "//brave/components/brave_wallet/browser:pref_names",
       "//brave/components/brave_wallet/browser:utils",
       "//brave/components/brave_wallet/common",
+      "//brave/components/brave_wallet/common:common_constants",
       "//brave/components/brave_wallet/common:mojom",
+      "//brave/components/brave_wallet/common:solana_utils",
       "//brave/components/de_amp/browser/test:browser_tests",
       "//brave/components/debounce/browser",
       "//brave/components/debounce/common",
@@ -790,6 +793,7 @@ if (!is_android) {
       "//brave/vendor/bat-native-ledger",
       "//brave/vendor/bat-native-ledger:publishers_proto",
       "//chrome/browser",
+      "//components/lens",
       "//components/metrics_services_manager",
       "//components/optimization_guide/core",
       "//components/permissions:permissions_common",
@@ -1096,6 +1100,7 @@ if (!is_android) {
       "//components/externalauth/android:google_delegate_public_impl_java",
       "//components/language/android:ulp_delegate_public_java",
       "//components/language/core/common",
+      "//components/lens",
       "//components/network_time",
       "//components/optimization_guide/core",
       "//components/privacy_sandbox",

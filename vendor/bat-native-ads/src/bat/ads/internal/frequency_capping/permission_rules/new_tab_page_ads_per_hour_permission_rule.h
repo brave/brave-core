@@ -27,14 +27,14 @@ class NewTabPageAdsPerHourPermissionRule final : public PermissionRule {
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap(const std::deque<base::Time>& history);
 
   NewTabPageAdsPerHourPermissionRule(
       const NewTabPageAdsPerHourPermissionRule&) = delete;
   NewTabPageAdsPerHourPermissionRule& operator=(
       const NewTabPageAdsPerHourPermissionRule&) = delete;
+
+  std::string last_message_;
 };
 
 }  // namespace ads

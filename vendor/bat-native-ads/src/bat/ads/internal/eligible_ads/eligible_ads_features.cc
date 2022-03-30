@@ -15,8 +15,9 @@ namespace features {
 
 namespace {
 
-const char kFeatureName[] = "EligibleAds";
-const char kFieldTrialParameterAdPredictorWeights[] = "ad_predictor_weights";
+constexpr char kFeatureName[] = "EligibleAds";
+constexpr char kFieldTrialParameterAdPredictorWeights[] =
+    "ad_predictor_weights";
 const AdPredictorWeights kDefaultWeights = {
     /* kDoesMatchIntentChildSegmentsIndex */ 1.0,
     /* kDoesMatchIntentParentSegmentsIndex */ 1.0,

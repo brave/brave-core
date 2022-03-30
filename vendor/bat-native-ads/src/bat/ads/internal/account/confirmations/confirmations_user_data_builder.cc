@@ -15,11 +15,12 @@
 #include "bat/ads/internal/account/user_data/platform_user_data.h"
 #include "bat/ads/internal/account/user_data/studies_user_data.h"
 #include "bat/ads/internal/account/user_data/system_timestamp_user_data.h"
+#include "bat/ads/internal/account/user_data/version_number_user_data.h"
 
 namespace ads {
 
 ConfirmationsUserDataBuilder::ConfirmationsUserDataBuilder(
-    const base::Time& time,
+    const base::Time time,
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type)
     : time_(time),
@@ -59,6 +60,10 @@ void ConfirmationsUserDataBuilder::Build(
         const base::DictionaryValue system_timestamp_user_data =
             user_data::GetSystemTimestamp();
         user_data.MergeDictionary(&system_timestamp_user_data);
+
+        const base::DictionaryValue version_number_user_data =
+            user_data::GetVersionNumber();
+        user_data.MergeDictionary(&version_number_user_data);
 
         callback(user_data);
       });

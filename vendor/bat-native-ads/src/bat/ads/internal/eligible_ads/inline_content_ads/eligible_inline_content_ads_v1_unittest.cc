@@ -36,7 +36,7 @@ class BatAdsEligibleInlineContentAdsV1Test : public UnitTestBase {
   std::unique_ptr<database::table::CreativeInlineContentAds> database_table_;
 };
 
-TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForParentChildSegment) {
+TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 

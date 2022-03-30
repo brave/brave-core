@@ -13,6 +13,14 @@
 namespace ads {
 namespace user_data {
 
+namespace {
+
+constexpr char kStudiesKey[] = "studies";
+constexpr char kNameKey[] = "name";
+constexpr char kGroupKey[] = "group";
+
+}  // namespace
+
 base::DictionaryValue GetStudies() {
   base::ListValue list;
 
@@ -20,14 +28,14 @@ base::DictionaryValue GetStudies() {
   for (const auto& study : studies) {
     base::Value dictionary(base::Value::Type::DICTIONARY);
 
-    dictionary.SetStringKey("name", study.trial_name);
-    dictionary.SetStringKey("group", study.group_name);
+    dictionary.SetStringKey(kNameKey, study.trial_name);
+    dictionary.SetStringKey(kGroupKey, study.group_name);
 
     list.Append(std::move(dictionary));
   }
 
   base::DictionaryValue user_data;
-  user_data.SetKey("studies", std::move(list));
+  user_data.SetKey(kStudiesKey, std::move(list));
 
   return user_data;
 }

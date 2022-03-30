@@ -9,7 +9,6 @@
 
 #include "base/check.h"
 #include "base/hash/hash.h"
-#include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_notification_info.h"
@@ -415,10 +414,10 @@ void AdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
   callback(/* success */ true);
 }
 
-AdsHistoryInfo AdsImpl::GetAdsHistory(const AdsHistoryFilterType filter_type,
-                                      const AdsHistorySortType sort_type,
-                                      const double from_timestamp,
-                                      const double to_timestamp) {
+AdsHistoryInfo AdsImpl::GetHistory(const AdsHistoryFilterType filter_type,
+                                   const AdsHistorySortType sort_type,
+                                   const double from_timestamp,
+                                   const double to_timestamp) {
   if (!IsInitialized()) {
     return {};
   }
@@ -429,7 +428,7 @@ AdsHistoryInfo AdsImpl::GetAdsHistory(const AdsHistoryFilterType filter_type,
   return history::Get(filter_type, sort_type, from, to);
 }
 
-void AdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
+void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
   if (!IsInitialized() || !ShouldRewardUser()) {
     callback(/* success */ false, {});
     return;
@@ -775,10 +774,9 @@ void AdsImpl::OnDidProcessDeposit(const TransactionInfo& transaction) {
   DCHECK(transaction.IsValid());
 
   BLOG(3, "Successfully processed deposit for "
-              << std::string(transaction.ad_type)
-              << " with creative instance id "
+              << transaction.ad_type << " with creative instance id "
               << transaction.creative_instance_id << " and "
-              << std::string(transaction.confirmation_type) << " valued at "
+              << transaction.confirmation_type << " valued at "
               << transaction.value);
 }
 
@@ -786,10 +784,9 @@ void AdsImpl::OnFailedToProcessDeposit(
     const std::string& creative_instance_id,
     const AdType& ad_type,
     const ConfirmationType& confirmation_type) {
-  BLOG(0, "Failed to process deposit for " << std::string(ad_type)
-                                           << " with creative instance id "
-                                           << creative_instance_id << " and "
-                                           << std::string(confirmation_type));
+  BLOG(0, "Failed to process deposit for "
+              << ad_type << " with creative instance id "
+              << creative_instance_id << " and " << confirmation_type);
 }
 
 void AdsImpl::OnStatementOfAccountsDidChange() {
@@ -932,7 +929,7 @@ void AdsImpl::OnInlineContentAdEventFailed(
               << " and creative instance id " << creative_instance_id);
 }
 
-void AdsImpl::OnWillTransferAd(const AdInfo& ad, const base::Time& time) {
+void AdsImpl::OnWillTransferAd(const AdInfo& ad, const base::Time time) {
   BLOG(1,
        "Transfer ad for " << ad.target_url << " " << FriendlyDateAndTime(time));
 }

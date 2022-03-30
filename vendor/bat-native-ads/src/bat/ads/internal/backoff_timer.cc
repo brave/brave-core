@@ -22,7 +22,7 @@ void BackoffTimer::SetTimerForTesting(
   timer_.SetTimerForTesting(std::move(timer));
 }
 
-base::Time BackoffTimer::Start(const base::TimeDelta& delay,
+base::Time BackoffTimer::Start(const base::TimeDelta delay,
                                base::OnceClosure user_task) {
   timer_.Stop();
 
@@ -30,7 +30,7 @@ base::Time BackoffTimer::Start(const base::TimeDelta& delay,
   return timer_.Start(backoff_delay, std::move(user_task));
 }
 
-base::Time BackoffTimer::StartWithPrivacy(const base::TimeDelta& delay,
+base::Time BackoffTimer::StartWithPrivacy(const base::TimeDelta delay,
                                           base::OnceClosure user_task) {
   timer_.Stop();
 
@@ -54,7 +54,7 @@ bool BackoffTimer::Stop() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-base::TimeDelta BackoffTimer::CalculateDelay(const base::TimeDelta& delay) {
+base::TimeDelta BackoffTimer::CalculateDelay(const base::TimeDelta delay) {
   int64_t delay_in_seconds = delay.InSeconds();
   delay_in_seconds <<= backoff_count_++;
 

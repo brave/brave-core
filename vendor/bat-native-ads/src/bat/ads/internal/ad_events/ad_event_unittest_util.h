@@ -24,7 +24,7 @@ struct CreativeAdInfo;
 AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
                          const AdType& ad_type,
                          const ConfirmationType& confirmation_type,
-                         const base::Time& created_at);
+                         const base::Time created_at);
 AdEventInfo BuildAdEvent(const std::string& uuid,
                          const std::string& creative_set_id,
                          const ConfirmationType& confirmation_type);

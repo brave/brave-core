@@ -21,7 +21,7 @@ namespace rewards {
 
 namespace {
 
-std::string GetFormattedBalanceDate(const base::Time& time) {
+std::string GetFormattedBalanceDate(const base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
@@ -30,7 +30,7 @@ std::string GetFormattedBalanceDate(const base::Time& time) {
 }
 
 absl::optional<PaymentInfo> GetPaymentForMonth(const PaymentList& payments,
-                                               const base::Time& time) {
+                                               const base::Time time) {
   const std::string& formatted_date = GetFormattedBalanceDate(time);
 
   const auto iter = std::find_if(payments.cbegin(), payments.cend(),
@@ -50,13 +50,13 @@ absl::optional<PaymentInfo> GetPaymentForMonth(const PaymentList& payments,
 
 absl::optional<PaymentInfo> GetPaymentForThisMonth(
     const PaymentList& payments) {
-  const base::Time& time = GetLocalTimeAtBeginningOfThisMonth();
+  const base::Time time = GetLocalTimeAtBeginningOfThisMonth();
   return GetPaymentForMonth(payments, time);
 }
 
 absl::optional<PaymentInfo> GetPaymentForLastMonth(
     const PaymentList& payments) {
-  const base::Time& time = GetLocalTimeAtBeginningOfLastMonth();
+  const base::Time time = GetLocalTimeAtBeginningOfLastMonth();
   return GetPaymentForMonth(payments, time);
 }
 

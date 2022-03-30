@@ -51,6 +51,8 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1643029991199044105">Bläddra igenom de senast använda flikarna med Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Artiklar läses in automatiskt i läsarläget, vilket sparar tid</translation>
+<translation id="5510493033031835532">Automatiskt omdirigerade AMP-sidor</translation>
+<translation id="5197219128592971597">Besök alltid ursprungliga (icke-AMP) sidadresser i stället för Googles Accelerated Mobile Page-versioner</translation>
 <translation id="5802665280774361839">Visa textförslag i adressfältet</translation>
 <translation id="597020512043916976">Vissa toppsajter i förslagen</translation>
 <translation id="264150068416846820">Visa av Brave föreslagna sajter i automatiska förslag.</translation>
@@ -218,10 +220,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="2414886740292270097">Mörk</translation>
 <translation id="1360441190790440400">Samma som Linux</translation>
 <translation id="1336940801687497203">Samma som Windows</translation>
-<translation id="5919209812221905840">Standardhanterare för microsoft-edge-protokollet</translation>
-<translation id="5239541974656019812">Gör Brave till hanteraren för microsoft-edge-protokollet</translation>
-<translation id="7136694880210472378">Ange som standard</translation>
-<translation id="1751388324499810661">Brave är standardhanterare för microsoft-edge-protokollet</translation>
 <translation id="8721331068159819483">Samma som MacOS</translation>
 <translation id="2896916411183256228">Använder WebTorrent för att visa torrenter direkt i webbläsaren. Stödjer torrentfiler och magnetlänkar.</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -233,6 +231,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="4718664830805652430">Standard basvaluta</translation>
 <translation id="7992507032049865603">Standard baskryptovaluta</translation>
 <translation id="1834467296210148203">Visa Brave Wallet-ikon i verktygsfältet</translation>
+<translation id="4613486011786721686">Dölj Brave Wallet-ikonen på verktygsfältet</translation>
 <translation id="8239147115686034860">Lås automatiskt Brave Wallet</translation>
 <translation id="414639769490080648">Antalet minuter att vänta tills Brave Wallet automatiskt låses</translation>
 <translation id="6864914031231797928">Tillåt Google-inloggning för tillägg</translation>
@@ -394,7 +393,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="8712637175834984815">Uppfattat</translation>
 <translation id="4394049700291259645">Inaktivera</translation>
 <translation id="7142548388914389999">Tillåt integritetsbevarande produktanalys (P3A)</translation>
-<translation id="609106526832379947">Denna helt anonymiserade information hjälper Brave att beräkna den totala användningen av vissa funktioner och göra dem bättre för dig.</translation>
+<translation id="8286082624639565868">Denna helt anonymiserade information hjälper Brave att beräkna den totala användningen av vissa funktioner och göra dem bättre för dig.</translation>
 <translation id="1947672064022327074">Vill du starta kryptoplånböcker för Ethereum-support?</translation>
 <translation id="7583735190612229830">Ställ in Crypto Wallets för att interagera med denna app och andra som den.</translation>
 <translation id="8731422418734770661">Ställ in Crypto Wallets</translation>
@@ -438,6 +437,10 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="2808630562319398131">Återställ data för Brave Rewards...</translation>
 <translation id="2273851479262317744">Ange Brave som standardwebbläsare</translation>
 <translation id="8581710194025054669">För att säkerställa bästa integritet online bör du överväga att ange Brave som standardwebbläsare på din dator. Med Brave som standard öppnas alla webblänkar du klickar på med Braves integritetsskydd.</translation>
+<translation id="1968543937259008435">Är du redo för den bästa sekretessen online?</translation>
+<translation id="6817415381278637662">Ange Brave som standardwebbläsare för att få Braves sekretesskydd på varje webbsida du öppnar.</translation>
+<translation id="8722651357687610395">Ställ in Brave som ordinarie.</translation>
+<translation id="2370739752330685659">Kanske senare</translation>
 <translation id="1241283133946520352">Nätverk</translation>
 <translation id="8205945804087322170">Lägg till nytt nätverk</translation>
 <translation id="2156993118928861787">Ogiltig adress</translation>

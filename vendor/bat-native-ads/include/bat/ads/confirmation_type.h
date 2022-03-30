@@ -6,6 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_CONFIRMATION_TYPE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_CONFIRMATION_TYPE_H_
 
+#include <iostream>
 #include <string>
 
 namespace ads {
@@ -37,7 +38,6 @@ class ConfirmationType final {
   explicit ConfirmationType(const std::string& value);
 
   Value value() const;
-  operator std::string() const;
   std::string ToString() const;
 
   bool operator==(const ConfirmationType& rhs) const;
@@ -46,6 +46,8 @@ class ConfirmationType final {
  private:
   Value value_ = kUndefined;
 };
+
+std::ostream& operator<<(std::ostream& os, const ConfirmationType& type);
 
 }  // namespace ads
 

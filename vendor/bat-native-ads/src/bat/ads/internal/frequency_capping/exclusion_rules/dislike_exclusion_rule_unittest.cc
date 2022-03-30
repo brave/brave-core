@@ -15,7 +15,7 @@
 namespace ads {
 
 namespace {
-const char kAdvertiserId[] = "1d3349f6-6713-4324-a135-b377237450a4";
+constexpr char kAdvertiserId[] = "1d3349f6-6713-4324-a135-b377237450a4";
 }  // namespace
 
 class BatAdsDislikeExclusionRuleTest : public UnitTestBase {

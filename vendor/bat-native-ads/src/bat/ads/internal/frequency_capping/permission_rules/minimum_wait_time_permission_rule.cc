@@ -18,7 +18,7 @@
 namespace ads {
 
 namespace {
-const int kMinimumWaitTimeFrequencyCap = 1;
+constexpr int kMinimumWaitTimeFrequencyCap = 1;
 }  // namespace
 
 MinimumWaitTimePermissionRule::MinimumWaitTimePermissionRule() = default;
@@ -54,7 +54,7 @@ bool MinimumWaitTimePermissionRule::DoesRespectCap(
     return false;
   }
 
-  const base::TimeDelta& time_constraint =
+  const base::TimeDelta time_constraint =
       base::Seconds(base::Time::kSecondsPerHour / ads_per_hour);
 
   return DoesHistoryRespectCapForRollingTimeConstraint(

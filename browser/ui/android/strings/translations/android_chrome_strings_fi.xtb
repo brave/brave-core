@@ -23,21 +23,21 @@
 <translation id="8577410793886633063">Braven käyttösi, valitsemasi asetukset, tiedot Braven kaatumisista</translation>
 <translation id="1295971429974142731">Ei suojaa sinua vaarallisilta sivustoilta, latauksilta ja laajennuksilta. Voit silti käyttää Selaussuojaa muissa Braven palveluissa, joissa se on saatavilla, kuten Gmailissa ja Haussa.</translation>
 <translation id="1129510026454351943">Tiedot: <ph name="ERROR_DESCRIPTION"/></translation>
-<translation id="1141800923049248244">{FILE_COUNT,plural, =1{1 lataus odottaa}other{# latausta odottaa}}</translation>
 <translation id="1142732900304639782">Älä ehdota näiden sivustojen kääntämistä</translation>
 <translation id="1145536944570833626">Poistaa olemassa olevat tiedot.</translation>
 <translation id="1146678959555564648">Siirry VR-tilaan</translation>
 <translation id="114825011539563458">Löydät tärkeimmät yksityisyys- ja suojausasetukset yhdestä paikasta</translation>
 <translation id="1149401351239820326">Viimeinen voimassaolokuukausi</translation>
 <translation id="1154704303112745282">Sivu ei saatavilla offline-tilassa: <ph name="VIOLATED_URL"/></translation>
-<translation id="116280672541001035">Käytetty</translation>
 <translation id="1171770572613082465">Katso suositut sivustot napauttamalla Suosituimmat sivustot ‑painiketta</translation>
 <translation id="1173894706177603556">Muuta nimeä</translation>
 <translation id="1177863135347784049">Muokattu</translation>
+<translation id="1181037720776840403">Poista</translation>
 <translation id="1197267115302279827">Siirrä kirjanmerkkejä</translation>
 <translation id="1201402288615127009">Seuraava</translation>
 <translation id="1202892408424955784">Seuratut tuotteet</translation>
 <translation id="1204037785786432551">Lataa linkin kohde</translation>
+<translation id="7196655759099928465">Brave-toimintopainike: <ph name="ACTION"/></translation>
 <translation id="1206892813135768548">Kopioi linkin teksti</translation>
 <translation id="1208340532756947324">Ota synkronointi käyttöön, niin sisältö synkronoidaan ja yksilöidään eri laitteilla</translation>
 <translation id="1209206284964581585">Piilota toistaiseksi</translation>
@@ -45,6 +45,7 @@
 <translation id="1231733316453485619">Otetaanko synkronointi käyttöön?</translation>
 <translation id="123724288017357924">Päivitä nykyinen sivu, ohita välimuistin sisältö</translation>
 <translation id="1239792311949352652">Jaa sivu nopeasti. Voit muokata pikakuvaketta asetuksista.</translation>
+<translation id="3251315496493761426">Vinkkejä Braven käyttöön</translation>
 <translation id="1240288207750131269">Ladataan: <ph name="LANG"/></translation>
 <translation id="1242883863226959074">laitteella</translation>
 <translation id="124678866338384709">Sulje nykyinen välilehti</translation>
@@ -72,13 +73,12 @@
 <translation id="1376578503827013741">Lasketaan…</translation>
 <translation id="1382912999714108023">Eivätkö tietosi ole ajan tasalla? Ota yhteyttä pankkiin ja päivitä ne.</translation>
 <translation id="1383876407941801731">Haku</translation>
-<translation id="6742797871341508947">Käännä kuva Brave Lensillä <ph name="BEGIN_NEW"/>Uusi<ph name="END_NEW"/></translation>
+<translation id="1384704387250346179">Käännä kuva Google Lensilla <ph name="BEGIN_NEW"/>Uusi<ph name="END_NEW"/></translation>
 <translation id="1386674309198842382">Aktiivinen <ph name="LAST_UPDATED"/> päivää sitten</translation>
 <translation id="1397811292916898096">Hae nimellä <ph name="PRODUCT_NAME"/></translation>
 <translation id="1406000523432664303">Do Not Track</translation>
 <translation id="1407069428457324124">Tumma teema</translation>
 <translation id="1407135791313364759">Avaa kaikki</translation>
-<translation id="1409426117486808224">Yksinkertaisempi avoimien välilehtien näkymä</translation>
 <translation id="1409879593029778104">Tiedoston <ph name="FILE_NAME"/> lataus estettiin, koska tiedosto on jo olemassa.</translation>
 <translation id="1853026300647876496">Otetaan yhteyttä Braveen. Tämä voi kestää hetken…</translation>
 <translation id="1416550906796893042">Sovellusversio</translation>
@@ -113,10 +113,11 @@
 <translation id="1670399744444387456">Perusasetukset</translation>
 <translation id="1671236975893690980">Lataus odottaa…</translation>
 <translation id="1672586136351118594">Älä näytä uudelleen</translation>
-<translation id="297583746595929792">Osta kuvasta Lensillä <ph name="BEGIN_NEW"/>Uusi<ph name="END_NEW"/></translation>
+<translation id="1680919990519905526">Osta kuvasta Lensilla <ph name="BEGIN_NEW"/>Uusi<ph name="END_NEW"/></translation>
 <translation id="1682195225331129001">Kokeile nyt</translation>
 <translation id="1697284962337958118">Lisää…</translation>
 <translation id="1702543251015153180">Muutetaanko tumman teeman asetuksia?</translation>
+<translation id="1702907158640575240">Hallinnoitu selain</translation>
 <translation id="1718835860248848330">Viimeinen tunti</translation>
 <translation id="1724977129262658800">Avaa lukitus muokataksesi salasanaasi</translation>
 <translation id="6493900814829428590">Voit selata ja hakea nopeammin, kun Brave esilataa sivuja, joita saatat sen mukaan avata</translation>
@@ -127,7 +128,6 @@
 <translation id="1754404134430936718">Teksti kopioitu</translation>
 <translation id="1772137089884020309">Kirjanmerkkikansioiden lista on suljettu</translation>
 <translation id="1779766957982586368">Sulje ikkuna</translation>
-<translation id="1782483593938241562">Päättymispäivä: <ph name="DATE"/></translation>
 <translation id="1791662854739702043">Asennettu</translation>
 <translation id="1792959175193046959">Muuta oletuslataussijaintia milloin tahansa</translation>
 <translation id="2368444735104192323">Braven ja Brave-käyttöjärjestelmän lisäkäyttöehdot</translation>
@@ -135,9 +135,6 @@
 <translation id="1810845389119482123">Synkronoinnin alkumääritys ei valmis</translation>
 <translation id="1829244130665387512">Haku sivulta</translation>
 <translation id="1832459821645506983">Kyllä</translation>
-<translation id="4056661250746096955">Anna Brave Haun käyttää nykyistä sivua, jotta saat parempia käännöksiä</translation>
-<translation id="1856325424225101786">Palautetaanko yksinkertaistettu tila?</translation>
-<translation id="5817715962196959877">Brave lataa tiedostot nyt nopeammin</translation>
 <translation id="5173820533850252773">Brave on vanhentunut</translation>
 <translation id="1883903952484604915">Omat tiedostot</translation>
 <translation id="189358972401248634">Muut kielet</translation>
@@ -162,10 +159,10 @@
 <translation id="1974060860693918893">Lisäasetukset</translation>
 <translation id="1984417487208496350">Ei suojausta (ei suositella)</translation>
 <translation id="1986685561493779662">Nimi on jo käytössä</translation>
-<translation id="1987739130650180037"><ph name="MESSAGE"/> <ph name="LINK_NAME"/>-painike</translation>
 <translation id="2000419248597011803">Lähettää joitakin osoitekentän ja hakukentän kautta tehtyjä hakuja sekä joitakin evästeitä oletushakukoneellesi</translation>
 <translation id="6968892567705775281">Sisällytetäänkö ympäröivä teksti Brave-hakuihin?</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# tiedosto}other{# tiedostoa}}</translation>
+<translation id="2185841461857887156"><ph name="APP_NAME"/> avautuu Bravessa. Jatkamalla hyväksyt <ph name="BEGIN_LINK1"/>Braven käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>Braven ja Brave-käyttöjärjestelmän lisäkäyttöehdot<ph name="END_LINK2"/>. Myös <ph name="BEGIN_LINK3"/>tietosuojakäytäntöä<ph name="END_LINK3"/> sovelletaan.</translation>
 <translation id="2020309681647789787">Historia löytyy kaikilta synkronoiduilta laitteilta, joten voit jatkaa samasta kohdasta</translation>
 <translation id="2021896219286479412">Ohjaimet koko näytön tilassa</translation>
 <translation id="2038563949887743358">Ota käyttöön Käytä tietokoneversiota</translation>
@@ -195,14 +192,13 @@ Hae napauttamalla sanaa. Jos haluat tarkentaa hakuasi, valitse enemmän tai väh
 <translation id="6516933364477884970">Valitse, mitä olet valmis jakamaan Bravelle. Jakamasi mittarit auttavat parantamaan Braven ominaisuuksia, toimintaa ja vakautta.</translation>
 <translation id="2149973817440762519">Muokkaa kirjanmerkkiä</translation>
 <translation id="2154484045852737596">Muokkaa korttia</translation>
-<translation id="2154710561487035718">Kopioi URL-osoite</translation>
-<translation id="2156074688469523661">Jäljellä olevat sivustot (<ph name="NUMBER_OF_SITES"/>)</translation>
 <translation id="6162454065885854378">Jos haluat jakaa jotakin puhelimelta toiselle laitteelle, ota synkronointi käyttöön molempien laitteiden Brave-asetuksista</translation>
 <translation id="4162910516440006395">Brave ei voinut tarkistaa kaikkia salasanoja</translation>
 <translation id="2169830938017475061">Nyt</translation>
 <translation id="2172688499998841696">Kuvaselitykset ovat poissa päältä</translation>
 <translation id="2172905120685242547">Suljetaanko ikkuna?</translation>
 <translation id="2175927920773552910">QR-koodi</translation>
+<translation id="2176767904800337188">Virtuaalinen kortti salaa käyttämäsi kortin. Näin saat paremman suojauksen mahdollisia petoksia vastaan. <ph name="BEGIN_LINK1"/>Lue lisää virtuaalisista korteista<ph name="END_LINK1"/></translation>
 <translation id="218608176142494674">Jakaminen</translation>
 <translation id="2194856509914051091">Huomioitavaa</translation>
 <translation id="2200113223741723867">Valitse käyttödatan jakamisasetukset</translation>
@@ -215,25 +211,22 @@ Hae napauttamalla sanaa. Jos haluat tarkentaa hakuasi, valitse enemmän tai väh
 <translation id="2259659629660284697">Vie salasanat…</translation>
 <translation id="781982477617612877">Kirjaudu Brave-tilillesi tarkistaaksesi salasanasi</translation>
 <translation id="2278052315791335171">Vaikka poistat salasanan, tiliäsi (<ph name="SITE"/>) ei poisteta</translation>
+<translation id="2279146068164892489">Avataanko <ph name="APPNAME"/>?</translation>
 <translation id="2286841657746966508">Laskutusosoite</translation>
 <translation id="228704530595896923">Jakamisvaihtoehtojen lista.</translation>
 <translation id="230115972905494466">Yhteensopivia laitteita ei löytynyt.</translation>
 <translation id="230155349749732438">Käyttääksesi tätä asetusta <ph name="BEGIN_LINK"/>Paranna hakuja ja selausta<ph name="END_LINK"/> ‑toiminnon on oltava päällä</translation>
 <translation id="2318045970523081853">Soita napauttamalla</translation>
 <translation id="2321086116217818302">Valmistellaan salasanoja…</translation>
-<translation id="2321958826496381788">Vedä liukusäädintä, kunnes voit lukea tämän mukavasti. Tekstin tulisi olla vähintään näin suurta kaksoisnapautettuasi kappaletta.</translation>
 <translation id="2323763861024343754">Sivustotietoja tallennettu</translation>
 <translation id="2328985652426384049">Kirjautuminen epäonnistui</translation>
-<translation id="7933118606988682110">Vinkit Braven käyttöön:</translation>
 <translation id="234265804618409743">Kameraa ei voi avata. Jotain meni pieleen.</translation>
-<translation id="2345671828921229300">Hae koskettamalla sanaa pitkään</translation>
 <translation id="3587672679800759167">Braven käyttämän tallennustilan kokonaismäärä, mukaan lukien tilit, kirjanmerkit ja tallennetut asetukset.</translation>
 <translation id="2353636109065292463">Internetyhteyttäsi tarkistetaan</translation>
 <translation id="2767094839186957509">Braven tietosuojakäytäntö</translation>
 <translation id="2359808026110333948">Jatka</translation>
 <translation id="2369533728426058518">Avoimet välilehdet</translation>
 <translation id="2386938421315164605">Piilota ja näytä aiheita</translation>
-<translation id="2387895666653383613">Tekstin skaalaus</translation>
 <translation id="2390510615457643724">Haluatko, että <ph name="FILE_NAME"/> (<ph name="FILE_SIZE"/>) ladataan uudelleen?</translation>
 <translation id="2394602618534698961">Lataamasi tiedostot näkyvät tässä</translation>
 <translation id="801672626447970525">Tämä ominaisuus otetaan käyttöön, kun kirjaudut Brave-tilillesi</translation>
@@ -273,14 +266,13 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="2567385386134582609">KUVA</translation>
 <translation id="2567545343356994513">Nopeampi, proaktiivinen suojaus vaarallisia sivustoja, latauksia ja laajennuksia vastaan</translation>
 <translation id="5079947353572974060">Tarjoudu lähettämään muunkielisiä sivuja Brave Kääntäjälle</translation>
+<translation id="6995512410824092085">Katso, miten voit valita Braven oletusselaimeksi</translation>
 <translation id="2324920234469020158">Evästeet, välimuisti ja muut Braven vähemmän tärkeinä pitämät sivustotiedot poistetaan.</translation>
 <translation id="2587052924345400782">Uudempi versio on saatavilla.</translation>
 <translation id="2593272815202181319">Monospace</translation>
 <translation id="2604446170045642109">Voit laittaa sivustojen tumman teeman pois päältä asetuksista.</translation>
 <translation id="2612676031748830579">Kortin numero</translation>
 <translation id="2625189173221582860">Salasana kopioitu</translation>
-<translation id="2631006050119455616">Säästetty</translation>
-<translation id="2634905176438867146">Katso, miten voit valita Braven oletusselaimeksi</translation>
 <translation id="2645657967708199252">Yhteytesi (<ph name="CONNECTION_TYPE"/>) saattaa hidastaa lataamista</translation>
 <translation id="2647434099613338025">Lisää kieli</translation>
 <translation id="2649068648233607930"><ph name="DOMAIN"/> ylläpitää selaintasi</translation>
@@ -289,7 +281,6 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="2651091186440431324">{FILE_COUNT,plural, =1{# äänitiedosto}other{# äänitiedostoa}}</translation>
 <translation id="265156376773362237">Vakioesilataus</translation>
 <translation id="2656405586795711023">Verkkosovellukset</translation>
-<translation id="4550860619133710557">Käyttämällä Bravea hyväksyt <ph name="BEGIN_LINK1"/>Braven käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>Braven ja Brave-käyttöjärjestelmän lisäkäyttöehdot<ph name="END_LINK2"/>. Myös <ph name="BEGIN_LINK3"/>Family Linkillä ylläpidettyjen Brave-tilien tietosuojailmoitusta<ph name="END_LINK3"/> sovelletaan.</translation>
 <translation id="2702516483241149200">Uutta: jaa linkki, joka vie tähän tekstiin</translation>
 <translation id="2704606927547763573">Kopioitu</translation>
 <translation id="2707726405694321444">Päivitä sivu</translation>
@@ -297,10 +288,8 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="2718352093833049315">Vain Wi-Fillä</translation>
 <translation id="2718846868787000099">Avaamasi sivustot voivat nähdä asetuksesi, jotta ne voivat näyttää sisältöä haluamillasi kielillä</translation>
 <translation id="2723001399770238859">ääni</translation>
-<translation id="2728754400939377704">Lajittele sivuston mukaan</translation>
 <translation id="2732063072010454421">Parempi kokemus puhehaulla</translation>
 <translation id="2739256783402597439">2G</translation>
-<translation id="2744248271121720757">Napauta sanaa etsiäksesi välittömästi tai nähdäksesi asiaan liittyviä toimia.</translation>
 <translation id="2760989362628427051">Ota tumma teema käyttöön, kun laitteen tumma teema tai virransäästö on käytössä</translation>
 <translation id="2762000892062317888">äsken</translation>
 <translation id="276969039800130567">Kirjautunut osoitteella <ph name="USER_EMAIL_ADDRESS"/>.</translation>
@@ -337,6 +326,7 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="2923908459366352541">Nimi on virheellinen</translation>
 <translation id="6355102470683871794">Tallennustila: Brave <ph name="APP_NAME"/></translation>
 <translation id="2932222164150889403">Tämä ei vaikuta näppäimistöön</translation>
+<translation id="6537665929855787038">Braven ilmoitukset tekevät asioista helpompia</translation>
 <translation id="2942036813789421260">Esikatseluvälilehti on suljettu</translation>
 <translation id="4700262879698141140">Päivitetään Brave, jotta voit yhdistää muihin laitteisiin</translation>
 <translation id="2951071800649516099">Lisää sivuja lukulistalle myöhempää käyttöä varten</translation>
@@ -360,6 +350,7 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="3029276696788198026">Ei esilatausta</translation>
 <translation id="3029704984691124060">Tunnuslauseet eivät vastaa toisiaan.</translation>
 <translation id="3031225630520268969">Assistantin puhehaun suostumus-UI</translation>
+<translation id="3034163383943672781">Lataus alkaa <ph name="DATE"/>.</translation>
 <translation id="3036750288708366620"><ph name="BEGIN_LINK"/>Tutustu ohjeisiin<ph name="END_LINK"/></translation>
 <translation id="3037177537145227281">Hintaa seurataan</translation>
 <translation id="3251012123600267109">Näytä kehotteet kirjautua Braveen</translation>
@@ -373,10 +364,10 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="3091010850649238832">Näytä leikepöydän sisältö</translation>
 <translation id="821565628224723530">Jotkin kuvat lähetetään Bravelle, jotta näkemiäsi kuvauksia voidaan parantaa</translation>
 <translation id="3114507951000454849">Lue päivän uutiset <ph name="NEWS_ICON"/></translation>
+<translation id="311958134571892113">linkitetty:</translation>
 <translation id="3123734510202723619">Ilmoitukset</translation>
 <translation id="3134784203083076891">"</translation>
 <translation id="5063487983358782016">Braven etusivu</translation>
-<translation id="3157842584138209013">Lisäasetukset-painiketta klikkaamalla voit katsoa, kuinka paljon dataa olet säästänyt.</translation>
 <translation id="3166827708714933426">Välilehti- ja ikkunapikanäppäimet</translation>
 <translation id="7249949543831830993">Brave on jo käynnissä täällä.</translation>
 <translation id="3169472444629675720">Discover</translation>
@@ -402,7 +393,6 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="3264259168916048410">Tietokoneesi pyytää tämän laitteen käyttämistä sivustolle kirjautumiseen</translation>
 <translation id="3265534588625245297">Valitse seurattavat sivustot</translation>
 <translation id="3269093882174072735">Lataa kuva</translation>
-<translation id="3269956123044984603">Ota tietojen automaattinen synkronointi käyttöön Androidin tiliasetuksissa, niin voit käyttää välilehtiäsi kaikilla laitteilla.</translation>
 <translation id="3280562213547448728">Puhehaku</translation>
 <translation id="82609232232243542">Kirjaudu Braveen</translation>
 <translation id="3284510035090979597">Proaktiivinen avustus</translation>
@@ -412,11 +402,9 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="3297344142967351106">Ääniapu</translation>
 <translation id="3303414029551471755">Jatketaanko sisällön lataamiseen?</translation>
 <translation id="3334729583274622784">Vaihdetaanko tiedostotunniste?</translation>
-<translation id="3341058695485821946">Katso paljonko dataa olet säästänyt</translation>
 <translation id="3341262203274374114">Ei voi seurata. Jotain meni pieleen.</translation>
 <translation id="3359667936385849800">Käytä nykyistä palveluasi</translation>
 <translation id="3367813778245106622">Aloita synkronointi kirjautumalla uudelleen sisään.</translation>
-<translation id="337236281855091893">Hae koskettamalla sanaa pitkään napauttamisen sijaan</translation>
 <translation id="2746024117903470217">Jos haluat jakaa tämän sivun toiselle laitteelle, ota synkronointi käyttöön toisen laitteen Brave-asetuksista</translation>
 <translation id="8801234437789558906">Kirjanmerkkejä, historiaa, salasanoja tai muuta Brave-dataa ei enää synkronoida Brave-tilille.</translation>
 <translation id="3384347053049321195">Jaa kuva</translation>
@@ -430,13 +418,13 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="5265419033369521352">Pitää sinut turvassa Bravessa ja voi parantaa suojaustasi muissa Brave-sovelluksissa, kun olet sisäänkirjautuneena</translation>
 <translation id="3429160811076349561">Kokeiluominaisuudet ovat poissa käytöstä</translation>
 <translation id="3435465986463792564">Onko monta ikkunaa auki? Voit ylläpitää niitä täältä</translation>
-<translation id="3440975416244667276">Katso lisää olennaisia tietoja koskettamalla pitkään</translation>
 <translation id="3443221991560634068">Päivitä nykyinen sivu</translation>
 <translation id="3444179773590444986">Haluatko antaa palautetta sivustojen tummasta teemasta?</translation>
 <translation id="3469665409713263828">{FILE_COUNT,plural, =1{1 lataus ajoitettu}other{# latausta ajoitettu}}</translation>
 <translation id="3478363558367712427">Voit valita hakukoneen</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Lue lisätietoja<ph name="END_LINK"/> suositellusta sisällöstä.</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
+<translation id="5067649501056343732">Käyttämällä Bravea hyväksyt <ph name="BEGIN_TOS_LINK"/>Braven käyttöehdot<ph name="END_TOS_LINK"/> sekä <ph name="BEGIN_ATOS_LINK"/>Braven ja Brave-käyttöjärjestelmän lisäkäyttöehdot<ph name="END_ATOS_LINK"/>.</translation>
 <translation id="3507132249039706973">Perustason suojaus on päällä</translation>
 <translation id="8669829441518807650">Offline-tilassa. Brave ei voi tarkistaa päivityksiä.</translation>
 <translation id="3513704683820682405">Lisätty todellisuus</translation>
@@ -460,10 +448,8 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="3622349720008044802">Hallitse ikkunoita</translation>
 <translation id="3624977496395967031">Klikkaa avataksesi lajitteluvaihtoehdot</translation>
 <translation id="3631987586758005671">Jaetaan: <ph name="DEVICE_NAME"/></translation>
-<translation id="3632295766818638029">Paljasta salasana</translation>
 <translation id="363596933471559332">Kirjaudu automaattisesti verkkosivustoille käyttämällä tallennettuja kirjautumistietoja. Jos tämä toiminto ei ole käytössä, sinua pyydetään vahvistamaan kirjautuminen aina, kun kirjaudut sivustolle.</translation>
 <translation id="3653111872753786013"><ph name="WEBSITE_TITLE"/>: <ph name="WEBSITE_URL"/></translation>
-<translation id="3658159451045945436">Nollaaminen tyhjentää datansäästöhistoriasi, mukaan lukien luettelon paikoista, joissa olet käynyt.</translation>
 <translation id="3677911431265050325">Pyydä mobiilisivustoa</translation>
 <translation id="3687645719033307815">Katselet tämän sivun esikatselua</translation>
 <translation id="3690369331356918524">Varoittaa, jos salasanoja vaarantuu tietosuojaloukkauksessa</translation>
@@ -473,6 +459,7 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="5805364706385912897">Tämä sivu käyttää liikaa muistia, joten Brave keskeytti sen.</translation>
 <translation id="8397843425685839889">Sinä ja Brave</translation>
 <translation id="3737319253362202215">Käännösasetukset</translation>
+<translation id="3737402728074743863">Jos haluat käyttää laitetta suojausavaimena, ota näytön lukitus käyttöön</translation>
 <translation id="3738139272394829648">Koskettamalla hakeminen</translation>
 <translation id="3739899004075612870">Lisätty kirjanmerkkeihin: <ph name="PRODUCT_NAME"/></translation>
 <translation id="3740525748616366977">Puhehaku ei ole käytettävissä tällä laitteella</translation>
@@ -493,7 +480,6 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="3861633093716975811">Suositut videot</translation>
 <translation id="3892148308691398805">Kopioi teksti</translation>
 <translation id="3894427358181296146">Lisää kansio</translation>
-<translation id="3895926599014793903">Ota zoomaus käyttöön</translation>
 <translation id="3908308510347173149">Päivitä <ph name="PRODUCT_NAME"/></translation>
 <translation id="3912508018559818924">Haetaan verkon parasta sisältöä…</translation>
 <translation id="3924911262913579434"><ph name="SAFE_BROWSING_MODE"/> on päällä</translation>
@@ -504,16 +490,13 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="395377504920307820">Käytä ilman tiliä</translation>
 <translation id="6945986954012067786">{NUM_IN_PROGRESS,plural, =1{Brave lataa sivusi, kun se on valmis}other{Brave lataa sivusi, kun ne ovat valmiina}}</translation>
 <translation id="3962119236270174787">Perustason suojaus vaaralliseksi tiedettyjä sivustoja, latauksia ja laajennuksia vastaan</translation>
-<translation id="3962957115499249330">Näet ilmoituksen, kun tämä lataus alkaa Wi-Fin kautta.</translation>
-<translation id="8997474919031554666">Brave Payn maksutapoja tai osoitteita ei salata tunnuslauseella. Salattua dataa voidaan lukea vain tunnuslauseesi avulla. Tunnuslausetta ei lähetetä Bravelle eikä Brave tallenna sitä. Jos unohdat tunnuslauseesi tai haluat muokata tätä asetusta, synkronointi täytyy nollata. <ph name="BEGIN_LINK"/>Lisätietoja<ph name="END_LINK"/></translation>
+<translation id="4908545308856135643">Google Payn maksutapoja tai osoitteita ei salata tunnuslauseella. Salattua dataa voidaan lukea vain tunnuslauseesi avulla. Tunnuslausetta ei lähetetä Bravelle eikä Brave tallenna sitä. Jos unohdat tunnuslauseesi tai haluat muokata tätä asetusta, synkronointi täytyy nollata. <ph name="BEGIN_LINK"/>Lisätietoja<ph name="END_LINK"/></translation>
 <translation id="1453002554835005700">Brave ei voi tarkistaa salasanojasi</translation>
 <translation id="3969863827134279083">Siirrä ylös</translation>
-<translation id="7961941514656597723"><ph name="APP_NAME"/> avautuu Bravessa. Jatkamalla hyväksyt <ph name="BEGIN_LINK1"/>Braven käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>Braven ja Brave-käyttöjärjestelmän lisäkäyttöehdot<ph name="END_LINK2"/>. Myös <ph name="BEGIN_LINK3"/>Family Linkillä ylläpidettyjen Brave-tilien tietosuojailmoitusta<ph name="END_LINK3"/> sovelletaan.</translation>
 <translation id="397583555483684758">Synkronointi on lakannut toimimasta.</translation>
 <translation id="3976396876660209797">Poista tämä pikakuvake ja luo se uudelleen.</translation>
 <translation id="3985215325736559418">Haluatko ladata tiedoston <ph name="FILE_NAME"/> uudelleen?</translation>
 <translation id="3987993985790029246">Kopioi linkki</translation>
-<translation id="3988466920954086464">Näytä Instant-hakutulokset tässä paneelissa</translation>
 <translation id="4000212216660919741">Offline-etusivu</translation>
 <translation id="4016425174436051808">Ei voi seurata. Jotain meni pieleen.</translation>
 <translation id="4034817413553209278">{HOURS,plural, =1{# h}other{# h}}</translation>
@@ -535,11 +518,9 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="4135200667068010335">Välilehden jakamisen laiteluettelo on suljettu.</translation>
 <translation id="4137746084635924146">Laitteen kieli</translation>
 <translation id="4159350418181625094">Tutustu Braveen</translation>
-<translation id="4149994727733219643">Yksinkertaisempi sivunäkymä</translation>
 <translation id="4162867837470729563">Jakamisvaihtoehtojen lista koko näytön kokoisena.</translation>
 <translation id="4165986682804962316">Sivustoasetukset</translation>
 <translation id="4170011742729630528">Palvelu ei ole käytettävissä. Yritä myöhemmin uudelleen.</translation>
-<translation id="4179980317383591987"><ph name="AMOUNT"/> käytetty</translation>
 <translation id="4181841719683918333">Kielet</translation>
 <translation id="4195643157523330669">Avaa uudelle välilehdelle</translation>
 <translation id="4196597275619698563">Luo kortti</translation>
@@ -569,10 +550,11 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="4402611456429872546"><ph name="LANG"/> – Ladataan…</translation>
 <translation id="4404568932422911380">Ei kirjanmerkkejä</translation>
 <translation id="4405224443901389797">Siirrä…</translation>
+<translation id="4405636711880428279">Poistetaanko virtuaalinen kortti?</translation>
 <translation id="4409271659088619928">Hakukoneesi on <ph name="DSE"/>. Katso tarvittaessa hakukoneen ohjeet hakuhistorian poistamiselle.</translation>
-<translation id="4411535500181276704">Yksinkertaistettu tila</translation>
 <translation id="5749788945734786627">Ylläpidä Brave-tiliäsi</translation>
 <translation id="4425140285732600465">Hintaa seurataan. Voit saada ilmoituksen, jos hinta laskee jollakin sivustolla.</translation>
+<translation id="442518031075347249">Et voi tämän jälkeen käyttää virtuaalista korttia Google Payssa. <ph name="BEGIN_LINK1"/>Lue lisää virtuaalisista korteista<ph name="END_LINK1"/></translation>
 <translation id="5416254130611941860">Braven hakutulokset.</translation>
 <translation id="4452411734226507615">Sulje välilehti <ph name="TAB_TITLE"/></translation>
 <translation id="4452548195519783679">Lisätty kirjanmerkiksi kansioon <ph name="FOLDER_NAME"/></translation>
@@ -591,9 +573,9 @@ Hae sanaa koskettamalla sitä pitkään. Jos haluat tarkentaa hakuasi, valitse e
 <translation id="1664855196866195614">Valitut tiedot on poistettu Bravesta ja synkronoiduilta laitteilta.
 
 Brave-tililläsi voi olla muita selaushistoriatietoja, kuten hakuja ja toimintaa muista Brave-palveluista. Voit katsella tietoja osoitteessa <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="452750746583162491">Tarkista synkronoitu datasi</translation>
 <translation id="4532845899244822526">Valitse kansio</translation>
 <translation id="4549903594034243526">chrome_emotion_gif_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
-<translation id="4550003330909367850">Aseta laitteelle näytön lukitus, niin voit nähdä ja kopioida salasanasi tässä.</translation>
 <translation id="4554077758708533499">Yhdistetty USB-johdolla</translation>
 <translation id="4557685098773234337">Lisää tämä sivu aloitusnäytölle, niin pääset tähän nopeammin</translation>
 <translation id="4558311620361989323">Verkkosivun pikanäppäimet</translation>
@@ -622,12 +604,12 @@ Brave-tililläsi voi olla muita selaushistoriatietoja, kuten hakuja ja toimintaa
 <translation id="4695891336199304370">{SHIPPING_OPTIONS,plural, =1{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 ja <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> muu}other{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 ja <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> muuta}}</translation>
 <translation id="4696983787092045100">Lähetä teksti laitteillesi</translation>
 <translation id="4699172675775169585">Välimuistissa olevat kuvat ja tiedostot</translation>
-<translation id="2255101560330785621">Jatkamalla hyväksyt <ph name="BEGIN_TOS_LINK"/>käyttöehdot<ph name="END_TOS_LINK"/> ja <ph name="BEGIN_PRIVACY_LINK"/>tietosuojakäytännön<ph name="END_PRIVACY_LINK"/>.\nBrave lähettää käyttö- ja kaatumisdataa Bravelle sovelluksen kehittämiseksi. <ph name="BEGIN_UMA_LINK"/>Muuta asetuksia<ph name="END_UMA_LINK"/></translation>
 <translation id="4719927025381752090">Tarjoudu kääntämään</translation>
 <translation id="4720023427747327413">Avaa kohteessa <ph name="PRODUCT_NAME"/></translation>
 <translation id="4939482511480190003">Auta parantamaan Bravea. <ph name="BEGIN_LINK"/>Vastaa kyselyyn.<ph name="END_LINK"/></translation>
 <translation id="47217992755561375">Katso suositut sivustosi</translation>
 <translation id="4732120983431207637">Pinon tyhjentäjä</translation>
+<translation id="4736934858538408121">Virtuaalinen kortti</translation>
 <translation id="4738836084190194332">Viimeisin synkronointi: <ph name="WHEN"/></translation>
 <translation id="4741753828624614066">Näet parempia ehdotuksia osoitepalkissa</translation>
 <translation id="4742970037960872810">Poista korostus</translation>
@@ -635,12 +617,10 @@ Brave-tililläsi voi olla muita selaushistoriatietoja, kuten hakuja ja toimintaa
 <translation id="4758061975920522644">Jaa vain kuva</translation>
 <translation id="4759238208242260848">Lataukset</translation>
 <translation id="4763480195061959176">video</translation>
-<translation id="4763829664323285145">{FILE_COUNT,plural, =1{1 lataus on valmis}other{# latausta on valmiina}}</translation>
 <translation id="4766678251456904326">Lisää tili laitteelle</translation>
-<translation id="4767937498890654900">{FILE_COUNT,plural, =1{1 lataus ajoitettu}other{# latausta ajoitettu}}</translation>
 <translation id="4791358705705538979">Auttaa hoitamaan asioita verkossa, esim. maksamaan</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
-<translation id="5149495116300586333">Brave Payn maksutapoja tai osoitteita ei salata tunnuslauseella.
+<translation id="4802417911091824046">Google Payn maksutapoja tai osoitteita ei salata tunnuslauseella.
 
 Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name="END_LINK"/>.</translation>
 <translation id="4807098396393229769">Kortissa oleva nimi</translation>
@@ -668,7 +648,6 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="4909709702739934280">Järjestelmänvalvoja ylläpitää selaintasi</translation>
 <translation id="4910889077668685004">Maksusovellukset</translation>
 <translation id="4912413785358399818">Siirrä välilehti</translation>
-<translation id="4913161338056004800">Nollaa tilastot</translation>
 <translation id="4913169188695071480">Lopeta päivittäminen</translation>
 <translation id="4921180162323349895">{FILE_COUNT,plural, =1{# sivu}other{# sivua}}</translation>
 <translation id="4925120120285606924">Kuvakaappaus <ph name="CURRENT_DATE_ISO"/></translation>
@@ -682,7 +661,7 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="4961107849584082341">Käännä sivu mille tahansa kielelle</translation>
 <translation id="7307583170263691471">Nopeampi, proaktiivinen suojaus vaarallisia sivustoja, latauksia ja laajennuksia vastaan. Varoittaa sinua salasanarikkomuksista. Edellyttää selaustietojen lähettämistä Bravelle.</translation>
 <translation id="497421865427891073">Siirry eteenpäin</translation>
-<translation id="4988210275050210843">Ladataan tiedostoa (<ph name="MEGABYTES"/>)</translation>
+<translation id="4987271110129728827">Sivua ei löydy. Tarkista oikeinkirjoitus tai kokeile verkkohakua.</translation>
 <translation id="4988526792673242964">Sivut</translation>
 <translation id="5001388021414335527">Seuraa sivustoa valitsemalla tämä</translation>
 <translation id="6447211988989208781">Brave-toimintojen hallinta</translation>
@@ -708,7 +687,6 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="5142281402488957685">Päivitä sisältö vetämällä alas, niin näet uusia juttuja</translation>
 <translation id="5152843274749979095">Ei asennettuja tuettuja sovelluksia</translation>
 <translation id="5161254044473106830">Nimike vaaditaan</translation>
-<translation id="5162754098604580781">{FILE_COUNT,plural, =1{1 lataus epäonnistui}other{# latausta epäonnistui}}</translation>
 <translation id="5170568018924773124">Näytä kansiossa</translation>
 <translation id="5171045022955879922">Kirjoita hakusanoja tai URL-osoite</translation>
 <translation id="517734441743343109">Jatkamalla hyväksyt <ph name="BEGIN_TOS_LINK"/>käyttöehdot<ph name="END_TOS_LINK"/> ja <ph name="BEGIN_PRIVACY_LINK"/>tietosuojakäytännön<ph name="END_PRIVACY_LINK"/>.</translation>
@@ -717,19 +695,17 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="5191251636205085390">Lue lisää uusista teknologioista, joilla on tarkoitus korvata kolmannen osapuolen evästeet, ja tee haluamasi valinnat</translation>
 <translation id="5193988420012215838">Kopioitu leikepöydälle</translation>
 <translation id="5199929503336119739">Työprofiili</translation>
-<translation id="5201464744567315552">Näet ilmoituksen, kun tämä lataus alkaa klo <ph name="TIME"/>.</translation>
 <translation id="5204967432542742771">Lisää salasana</translation>
 <translation id="5206168361184759344">{FILE_COUNT,plural, =1{Ladataan tiedostoa…}other{Ladataan # tiedostoa…}}</translation>
 <translation id="5210286577605176222">Siirry edelliselle välilehdelle</translation>
 <translation id="5210365745912300556">Sulje välilehti</translation>
 <translation id="5213672942202814946">Puhehaun käyttäminen</translation>
-<translation id="1051285409463218679">Maksutavat ja osoitteet Brave Paysta</translation>
+<translation id="5215116848420601511">Maksutavat ja osoitteet Google Paysta</translation>
 <translation id="5222676887888702881">Kirjaudu ulos</translation>
 <translation id="5227554086496586518">Katso hakutulokset napauttamalla</translation>
 <translation id="5233638681132016545">Uusi välilehti</translation>
 <translation id="5235196193381275927">Jotain meni pieleen sisäänkirjautumisen aikana</translation>
 <translation id="5246093389635966745">Muokkaa työkalupalkin pikakuvaketta</translation>
-<translation id="5262378156578470238">Näet ilmoituksen, kun tämä lataus alkaa <ph name="DATE"/>.</translation>
 <translation id="526421993248218238">Sivun lataaminen epäonnistui</translation>
 <translation id="5271967389191913893">Laite ei voi avata ladattavaa sisältöä.</translation>
 <translation id="5292796745632149097">Lähetä:</translation>
@@ -742,8 +718,9 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="5329858041417644019">Selainta ei ylläpidetä</translation>
 <translation id="5342314432463739672">Käyttöoikeuspyynnöt</translation>
 <translation id="5355191726083956201">Parannettu suojaus on päällä</translation>
+<translation id="9148151251783962691">Voit selata yksityisesti tällä laitteella incognito-tilassa</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> avoin välilehti, vaihda välilehteä napauttamalla}other{<ph name="OPEN_TABS_MANY"/> avointa välilehteä, vaihda välilehteä napauttamalla}}</translation>
-<translation id="1271180036744122948">Hae kuvaa Brave Lensillä <ph name="BEGIN_NEW"/>Uusi<ph name="END_NEW"/></translation>
+<translation id="5375577065097716013">Hae kuvaa Google Lensilla <ph name="BEGIN_NEW"/>Uusi<ph name="END_NEW"/></translation>
 <translation id="5403644198645076998">Salli vain tietyt sivustot</translation>
 <translation id="5409881200985013443">Lähetetäänkö <ph name="ONE_TIME_CODE"/> (<ph name="CLIENT_NAME"/>)?</translation>
 <translation id="5414836363063783498">Vahvistetaan…</translation>
@@ -751,12 +728,10 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="5424588387303617268"><ph name="GIGABYTES"/> Gt käytettävissä</translation>
 <translation id="543338862236136125">Muokkaa salasanaa</translation>
 <translation id="5433691172869980887">Käyttäjänimi kopioitu</translation>
-<translation id="543509235395288790">Ladataan <ph name="COUNT"/> tiedostoa (<ph name="MEGABYTES"/>)</translation>
 <translation id="5438292632479953702">Lataa uudelleen</translation>
 <translation id="5441466871879044658">Käännä tälle kielelle</translation>
 <translation id="5441522332038954058">Siirry osoitepalkkiin</translation>
 <translation id="544776284582297024">Välilehtipainikkeella voit avata välilehtiä ja selata useita sivuja yhtä aikaa.</translation>
-<translation id="545042621069398927">Lataustasi nopeutetaan</translation>
 <translation id="5454166040603940656">palvelulla <ph name="PROVIDER"/></translation>
 <translation id="5456381639095306749">Lataa sivu</translation>
 <translation id="5458366071038729214">Löydät seuraamasi sivustot täältä</translation>
@@ -770,7 +745,6 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="5515439363601853141">Avaa lukitus nähdäksesi salasanan</translation>
 <translation id="5517095782334947753">Tililläsi <ph name="FROM_ACCOUNT"/> on kirjanmerkkejä, salasanoja ja muita asetuksia.</translation>
 <translation id="5524843473235508879">Uudelleenohjaus estetty</translation>
-<translation id="5534640966246046842">Sivusto kopioitu</translation>
 <translation id="5548606607480005320">Turvatarkistus</translation>
 <translation id="5555525474779371165">Valitse haluamasi Selaussuoja</translation>
 <translation id="5556459405103347317">Lataa uudelleen</translation>
@@ -792,7 +766,6 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="5655963694829536461">Hae omista latauksistasi</translation>
 <translation id="5659593005791499971">Sähköposti</translation>
 <translation id="5665379678064389456">Luo tapahtuma sovelluksessa <ph name="APP_NAME"/></translation>
-<translation id="5668404140385795438">Ohita sivuston zoomauksen estämispyyntö</translation>
 <translation id="5668833306439455813">Brave ei voi tarkistaa päivityksiä</translation>
 <translation id="5686790454216892815">Tiedoston nimi on liian pitkä</translation>
 <translation id="569536719314091526">Käännä sivu mille tahansa kielelle Lisävalinnat-painikkeella</translation>
@@ -834,7 +807,6 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="5860033963881614850">Pois päältä</translation>
 <translation id="5860491529813859533">Ota käyttöön</translation>
 <translation id="5862731021271217234">Ota synkronointi käyttöön, niin voit käyttää välilehtiä muilta laitteiltasi</translation>
-<translation id="5864174910718532887">Lisätiedot: Lajiteltu sivuston nimen mukaan</translation>
 <translation id="5864419784173784555">Odottaa toista latausta…</translation>
 <translation id="6538479075382111079">Lähettää automaattisesti käyttötilastoja ja virheraportteja Bravelle</translation>
 <translation id="5869522115854928033">Tallennetut salasanat</translation>
@@ -844,8 +816,6 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="1985257319311245640">Sivustojen URL-osoitteiden avulla Brave Assistantia voi auttaa sinua tekemään asioita. Voit poistaa Assistantin käytöstä Braven asetuksissa.</translation>
 <translation id="5916664084637901428">Päällä</translation>
 <translation id="5919204609460789179">Aloita synkronointi päivittämällä <ph name="PRODUCT_NAME"/></translation>
-<translation id="5937580074298050696"><ph name="AMOUNT"/> säästetty</translation>
-<translation id="5939518447894949180">Tyhjennä</translation>
 <translation id="6103327872225198548">Hakukoneena käytetään Bravea.</translation>
 <translation id="5945035219773565305">Tämänhetkinen suositus:  <ph name="RECOMMENDATION"/></translation>
 <translation id="5951119116059277034">Katsotaan live-sivua</translation>
@@ -879,7 +849,6 @@ Privacy Sandbox ‑kokeiluja kehitetään yhä aktiivisesti, ja ne ovat saatavil
 <translation id="60923314841986378"><ph name="HOURS"/> tuntia jäljellä</translation>
 <translation id="4726571606794511368">Jos Brave on lisäksi oletushakukone, näet parempia ja asiayhteyteen sopivampia ehdotuksia</translation>
 <translation id="6108923351542677676">Synkronointia valmistellaan…</translation>
-<translation id="6111020039983847643">dataa käytetty</translation>
 <translation id="6112702117600201073">Sivun päivittäminen</translation>
 <translation id="6122831415929794347">Laitetaanko Selaussuoja pois päältä?</translation>
 <translation id="6127379762771434464">Kohde poistettu</translation>
@@ -891,11 +860,11 @@ Privacy Sandbox ‑kokeiluja kehitetään yhä aktiivisesti, ja ne ovat saatavil
 <translation id="614940544461990577">Kokeile seuraavia toimenpiteitä:</translation>
 <translation id="6150320133806434356">Kirjanmerkki tallennettu</translation>
 <translation id="6154478581116148741">Ota näytön lukitus käyttöön asetuksista viedäksesi salasanoja laitteelta.</translation>
-<translation id="6159335304067198720"><ph name="PERCENT"/> vähemmän tiedonsiirtoa</translation>
 <translation id="6159729262978459665">Tyhjentää kaikkien synkronoitujen laitteiden historian.</translation>
 <translation id="7087658909840709934">Esilataa sivuja, joita Braven mukaan avaat todennäköisesti.</translation>
 <translation id="6186394685773237175">Vaarantuneita salasanoja ei löytynyt</translation>
 <translation id="6192907950379606605">Muodosta kuvaselitykset</translation>
+<translation id="620197886010707372">Avataanko <ph name="APPNAME"/> Google Playlla?</translation>
 <translation id="6203593061661911168">Lataus alkaa, kun yhdistät Wi-Fi-verkkoon</translation>
 <translation id="6210748933810148297">Etkö ole <ph name="EMAIL"/>?</translation>
 <translation id="6211386937064921208">Tätä sivua esikatsellaan</translation>
@@ -907,14 +876,12 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="6277522088822131679">Sivua tulostettaessa tapahtui virhe. Yritä uudelleen.</translation>
 <translation id="6277722725779679269">Hinnan seurantaa ei voitu päivittää</translation>
 <translation id="6278428485366576908">Teema</translation>
-<translation id="7766792282581704663">Käyttämällä Bravea hyväksyt <ph name="BEGIN_LINK1"/>Braven käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>Braven ja Brave-käyttöjärjestelmän lisäkäyttöehdot<ph name="END_LINK2"/>.</translation>
 <translation id="7918815962568992845">Voit lähettää välilehtiä laitteiden välillä, jos olet kirjautuneena niillä samalle Brave-tilille</translation>
 <translation id="6297765934698848803">Laitettasi ylläpitävä organisaatio on poistanut kamerasi käytöstä.</translation>
 <translation id="6301525844455696527">Katso, mitä lukulistaltasi löytyy</translation>
 <translation id="6303969859164067831">Kirjaudu ulos ja poista synkronointi käytöstä</translation>
 <translation id="6312687380483398334">Verkkosovellukset (hiljainen)</translation>
 <translation id="6316139424528454185">Android-versiota ei tueta</translation>
-<translation id="6324034347079777476">Android-järjestelmän synkronointi poistettu käytöstä</translation>
 <translation id="6324916366299863871">Muokkaa pikanäppäintä</translation>
 <translation id="6324977638108296054">Korostuksen linkittäminen ei onnistu</translation>
 <translation id="6324997754869598316">(Virhe <ph name="ERROR_CODE"/>)</translation>
@@ -926,7 +893,6 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="6345878117466430440">Merkitse luetuksi</translation>
 <translation id="6363990818884053551">Aloita synkronointi todentamalla henkilöllisyytesi</translation>
 <translation id="6364438453358674297">Poistetaanko ehdotus historiasta?</translation>
-<translation id="6378173571450987352">Lisätiedot: Lajiteltu käytetyn datan mukaan</translation>
 <translation id="4993481112200507346"><ph name="APP_NAME"/> avautuu Bravessa. Jatkamalla hyväksyt <ph name="BEGIN_LINK1"/>Braven käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>Braven ja Brave-käyttöjärjestelmän lisäkäyttöehdot<ph name="END_LINK2"/>.</translation>
 <translation id="806493401838431801">Esilataa useammin sivuja, joita Braven mukaan avaat todennäköisesti. Asetus voi saada datankäytön lisääntymään.</translation>
 <translation id="6395288395575013217">LINKITÄ</translation>
@@ -989,7 +955,6 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="7939692063031538305">Brave lähettää käyttö- ja kaatumisdataa Bravelle sovelluksen kehittämiseksi. <ph name="BEGIN_UMA_LINK"/>Muokkaa<ph name="END_UMA_LINK"/></translation>
 <translation id="6640207029842583248">Estä aina</translation>
 <translation id="6643016212128521049">Tyhjennä</translation>
-<translation id="6643649862576733715">Lajittele säästetyn datan määrän mukaan</translation>
 <translation id="6645629752388991326">Hallitse, mitkä laitteet voivat kirjautua sisään käyttämällä tätä laitetta suojausavaimena.</translation>
 <translation id="6678472970290886941">Järjestelmänvalvoja voi muuttaa selaimen määrityksiä etäyhteydellä. Toimintaa tällä laitteella saatetaan ylläpitää myös Braven ulkopuolelta.</translation>
 <translation id="6648977384226967773">{CONTACT,plural, =1{<ph name="CONTACT_PREVIEW"/>\u2026 ja <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> muu}other{<ph name="CONTACT_PREVIEW"/>\u2026 ja <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> muuta}}</translation>
@@ -1002,7 +967,6 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="6674571176963658787">Aloita synkronointi lisäämällä tunnuslause</translation>
 <translation id="8581481290581777242">Poistetaanko Brave-data tältä laitteelta?</translation>
 <translation id="3385384709865894288">Entistä parempi Brave</translation>
-<translation id="6698801883190606802">Hallinnoi synkronoituja tietoja</translation>
 <translation id="670498945988402717">Tarkistettu eilen</translation>
 <translation id="6710213216561001401">Edellinen</translation>
 <translation id="671481426037969117">Ajastimesta (<ph name="FQDN"/>) loppui aika. Se alkaa alusta huomenna.</translation>
@@ -1042,19 +1006,16 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="6900532703269623216">Parannettu suojaus</translation>
 <translation id="6903907808598579934">Ota synkronointi käyttöön</translation>
 <translation id="6909589135458168665">Sivujen esilataus</translation>
-<translation id="6929699136511445623">Synkronoi Android-järjestelmä</translation>
 <translation id="6942665639005891494">Muuta oletuslataussijaintia milloin tahansa Asetukset-valikon kautta</translation>
 <translation id="694267552845942083">Valitset parhaillaan synkronointiasetuksia. Viimeistele synkronoinnin käyttöönotto napauttamalla näytön alaosasta Vahvista-painiketta. Siirry ylös</translation>
 <translation id="6945221475159498467">Valitse</translation>
 <translation id="6955535239952325894">Tämä asetus on poistettu käytöstä ylläpidetyillä selaimilla</translation>
 <translation id="6963766334940102469">Poista kirjanmerkkejä</translation>
 <translation id="6979737339423435258">Kaikki</translation>
-<translation id="6981982820502123353">Esteettömyys</translation>
 <translation id="6995899638241819463">Varoita, jos salasanoja vaarantuu tietosuojaloukkauksessa</translation>
 <translation id="7001056293070445572">Tämä tiedosto on suuri (<ph name="FILE_SIZE"/>)</translation>
 <translation id="7020741890149022655">Lisää lukulistaan <ph name="BEGIN_NEW"/>Uusi<ph name="END_NEW"/></translation>
 <translation id="7022756207310403729">Avaa selaimessa</translation>
-<translation id="702463548815491781">Suositellaan käytettäväksi, kun TalkBack tai Kytkimen käyttö on päällä</translation>
 <translation id="7027549951530753705"><ph name="ITEM_TITLE"/> palautettu</translation>
 <translation id="7029390216614421513">Aseta QR- tai viivakoodi tämän kehyksen sisälle.</translation>
 <translation id="7029809446516969842">Salasanat</translation>
@@ -1089,6 +1050,7 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="7191430249889272776">Välilehti avattiin taustalla.</translation>
 <translation id="7196215469483532480">Yksityisyysoppaan selitys kokonaan avattuna</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{1 lataus odottaa}other{# latausta odottaa}}</translation>
+<translation id="7256686223798862196">Käyttämällä Bravea hyväksyt <ph name="BEGIN_TOS_LINK"/>Braven käyttöehdot<ph name="END_TOS_LINK"/> ja <ph name="BEGIN_ATOS_LINK"/>Braven ja Brave-käyttöjärjestelmän lisäkäyttöehdot<ph name="END_ATOS_LINK"/>. Myös <ph name="BEGIN_PRIVACY_LINK"/>tietosuojakäytäntöä<ph name="END_PRIVACY_LINK"/> sovelletaan.</translation>
 <translation id="7242755609445462077">Tyylitelty korostus <ph name="CURRENT_DATE"/></translation>
 <translation id="8287068819750208230">Varmista, että <ph name="TARGET_DEVICE_NAME"/> käyttää synkronointia Bravessa</translation>
 <translation id="7252076891734325316">Aseta puhelin tietokoneen lähelle</translation>
@@ -1100,10 +1062,8 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="7291910923717764901">Kuvaselitykset lisätty tälle sivulle</translation>
 <translation id="7293429513719260019">Valitse kieli</translation>
 <translation id="729975465115245577">Laitteella ei ole sovellusta, johon salasanatiedoston voisi tallentaa.</translation>
-<translation id="7302081693174882195">Lisätiedot: Lajiteltu säästetyn datan mukaan</translation>
 <translation id="1382596880054356475">Offline-tilassa. Brave ei voi tarkistaa salasanojasi.</translation>
 <translation id="7313188324932846546">Ota synkronointi käyttöön napauttamalla</translation>
-<translation id="3252158532344029638">Yksinkertaistetussa tilassa Brave lataa sivuja nopeammin ja käyttää jopa 60 prosenttia vähemmän dataa.</translation>
 <translation id="7332075081379534664">Sisäänkirjautuminen onnistui</translation>
 <translation id="7333031090786104871">Edellisen sivuston lisääminen kesken</translation>
 <translation id="7339898014177206373">Uusi ikkuna</translation>
@@ -1117,11 +1077,9 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="7376560087009844242">Voit saada parempia tuloksia käyttäessäsi Koskettamalla hakemista, jos sisällytät enemmän tekstiä sivulta. Voit muuttaa tätä milloin tahansa <ph name="BEGIN_LINK"/>asetuksista<ph name="END_LINK"/>.</translation>
 <translation id="7379900596734708416">Sivustojen tumma teema on saatavilla</translation>
 <translation id="4541178433047068373">Sivuston yhteys on suojattu, ellei Brave ilmoita toisin.</translation>
-<translation id="7396940094317457632"><ph name="FILE_NAME"/>.</translation>
 <translation id="7400418766976504921">URL-osoite</translation>
 <translation id="724102042129299115">Braven ensimmäinen käyttökerta</translation>
 <translation id="741204030948306876">Kyllä</translation>
-<translation id="7413229368719586778">Alkamispäivä: <ph name="DATE"/></translation>
 <translation id="7419565702166471774">Käytä aina suojattuja yhteyksiä</translation>
 <translation id="7431991332293347422">Määritä, miten selaushistoria personoi Hakua ja muita</translation>
 <translation id="7435356471928173109">Järjestelmänvalvojasi on ottanut tämän pois päältä</translation>
@@ -1136,20 +1094,18 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="7475688122056506577">SD-korttia ei löydy. Osa tiedostoista voi puuttua.</translation>
 <translation id="7479104141328977413">Välilehtien ylläpito</translation>
 <translation id="7481312909269577407">Seuraava</translation>
-<translation id="7481864133709957613">Voit hakea tältä sivulta koskettamalla sanoja pitkään napauttamisen sijaan</translation>
 <translation id="7482656565088326534">Esikatseluvälilehti</translation>
 <translation id="7484997419527351112">Discover – pois päältä</translation>
 <translation id="7485033510383818941">Voit päivittää fiidin sisällön vetämällä sivua alas</translation>
-<translation id="6538930346869172273">Brave Lens ei ole käytettävissä tällä laitteella.</translation>
+<translation id="749294055653435199">Google Lens ei ole käytettävissä tällä laitteella.</translation>
 <translation id="7493994139787901920"><ph name="VERSION"/> (päivitettiin <ph name="TIME_SINCE_UPDATE"/>)</translation>
-<translation id="7494974237137038751">dataa säästetty</translation>
 <translation id="7498271377022651285">Odota…</translation>
 <translation id="750228856503700085">Päivityksiä ei saatavilla</translation>
 <translation id="7507207699631365376">Katso tämän palveluntarjoajan <ph name="BEGIN_LINK"/>tietosuojakäytäntö<ph name="END_LINK"/></translation>
 <translation id="7514365320538308">Lataa</translation>
 <translation id="751961395872307827">Yhteyden muodostaminen sivustoon epäonnistui</translation>
 <translation id="752220631458524187">Katkaise yhteys, kun olet valmis</translation>
-<translation id="6503785562431782631">Hae kameran avulla Brave Lensissä</translation>
+<translation id="7523960634226602883">Hae kameran avulla Google Lensissa</translation>
 <translation id="753225086557513863">Ajoitettu myöhemmäksi</translation>
 <translation id="8838416103414218040">Tyhjentää kaikkien synkronoitujen laitteiden historian. Brave-tililläsi voi olla muita selaushistoriatietoja osoitteessa <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="7562080006725997899">Selaustietoja poistetaan</translation>
@@ -1159,7 +1115,6 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="7581273696622423628">Vastaa kyselyyn</translation>
 <translation id="7583262514280211622">Näet lukulistasi täällä</translation>
 <translation id="7588219262685291874">Ota tumma teema käyttöön, kun laitteen virransäästö on käytössä</translation>
-<translation id="3235722914093408050">Avaa Android-asetukset ja ota järjestelmän synkronointi uudelleen käyttöön.</translation>
 <translation id="7594687499944811403">Salli, että <ph name="EMBEDDED_ORIGIN"/> todentaa henkilöllisyytesi: <ph name="TOP_ORIGIN"/></translation>
 <translation id="7596558890252710462">Käyttöjärjestelmä</translation>
 <translation id="7605594153474022051">Synkronointi ei toimi</translation>
@@ -1181,6 +1136,7 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="2667018639405889513">Jotkin avaamistasi sivuista ovat esiladattuja. Sivut on mahdollisesti esiladattu Braven palvelimien kautta, kun niihin on linkitetty Braven sivustolta.</translation>
 <translation id="7698359219371678927">Luo sähköposti sovelluksessa <ph name="APP_NAME"/></translation>
 <translation id="7704317875155739195">Täydennä automaattisesti hakuja ja URL-osoitteita</translation>
+<translation id="770741401784017797">Luodaan GIFiä</translation>
 <translation id="7707922173985738739">Käytä mobiilidataa</translation>
 <translation id="7725024127233776428">Kirjanmerkeiksi lisätyt sivut näkyvät tässä</translation>
 <translation id="7757787379047923882"><ph name="DEVICE_NAME"/> jakoi tekstin</translation>
@@ -1201,7 +1157,6 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="7808889146555843082">Vaikka poistat salasanan, tiliäsi (<ph name="SITE"/>) ei poisteta. Vaihda salasana tai poista tili (<ph name="SITE"/>), jotta se pysyy turvassa muilta.</translation>
 <translation id="7810647596859435254">Avaa sovelluksessa…</translation>
 <translation id="7815484226266492798">Pitkä kuvakaappaus</translation>
-<translation id="7821588508402923572">Datasäästösi näkyvät täällä</translation>
 <translation id="78270725016672455">Tietokoneesi pyytää tämän laitteen rekisteröintiä sivustolle kirjautumista varten</translation>
 <translation id="7844171778363018843">Synkronoitavaa dataa ei ole valittu</translation>
 <translation id="7068829570137757602">Braven palvelut</translation>
@@ -1214,13 +1169,11 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="7875915731392087153">Luo sähköposti</translation>
 <translation id="7876243839304621966">Poista kaikki</translation>
 <translation id="7879130110979560610">{READING_LIST_REMINDER_NOTIFICATION_SUBTITLE,plural, =1{Sinulla on <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_ONE"/> lukematon sivu}other{Sinulla on <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY"/> lukematonta sivua}}</translation>
-<translation id="7882131421121961860">Historiaa ei löytynyt.</translation>
 <translation id="6143689084714664628">Käynnissä Bravessa</translation>
 <translation id="7887334752153342268">Monista</translation>
 <translation id="5570166585033664196">Miten Bravea käytetään</translation>
 <translation id="7903184275147100332">Tämä voi kestää hetken</translation>
 <translation id="7919123827536834358">Käännä nämä kielet automaattisesti</translation>
-<translation id="7925590027513907933">{FILE_COUNT,plural, =1{Ladataan tiedostoa}other{Ladataan # tiedostoa}}</translation>
 <translation id="7926975587469166629">Kortin lyhytnimi</translation>
 <translation id="7929962904089429003">Avaa valikko</translation>
 <translation id="7930998711684428189">Varoittaa, jos salasanoja vaarantuu tietosuojaloukkauksessa</translation>
@@ -1293,14 +1246,13 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="8274165955039650276">Näytä lataukset</translation>
 <translation id="8281886186245836920">Ohita</translation>
 <translation id="8282297628636750033">Käytä tummaa teemaa sivustoilla</translation>
-<translation id="8284326494547611709">Tekstitykset</translation>
 <translation id="829672787777123339">Muodostetaan yhteyttä laitteeseen…</translation>
 <translation id="8310344678080805313">Tavalliset välilehdet</translation>
 <translation id="831192587911042850">Lisää nykyisen verkkosivuston seuraamiesi sivustojen luetteloon.</translation>
 <translation id="834313815369870491">Älä koskaan käännä näitä sivustoja</translation>
-<translation id="8349013245300336738">Lajittele käytetyn datan määrän mukaan</translation>
 <translation id="8352996530981010042">Reaktioiden lataaminen ei onnistunut. Yritä uudelleen.</translation>
 <translation id="8354977102499939946">Hae nopeasti äänikomennoilla. Voit muokata pikakuvaketta asetuksista.</translation>
+<translation id="3488655102287645931">Voit helposti hallita esimerkiksi mediaohjaimia, incognito-käyttökertoja ja latauksia</translation>
 <translation id="835847953965672673"><ph name="NUMBER_OF_DOWNLOADS"/> latausta palautettu</translation>
 <translation id="8364299278605033898">Katso suositut sivustot</translation>
 <translation id="8368001212524806591">Seuraa hintaa</translation>
@@ -1430,13 +1382,13 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="9065203028668620118">Muokkaa</translation>
 <translation id="5496925146144075335">Tallennettu data, jota Brave ei pidä tärkeänä (esim. sivustot, joilla ei ole tallennettuja asetuksia tai joilla et käy usein)</translation>
 <translation id="906781307897697745">paikka: <ph name="PRODUCT_NAME"/></translation>
+<translation id="9069543557624799859">Lataus alkaa klo <ph name="TIME"/>.</translation>
 <translation id="9069999660519089861">Ei sivuja lukematta</translation>
 <translation id="9070377983101773829">Aloita puhehaku</translation>
 <translation id="8494430740943879273">Kirjaudu sisään ja ota synkronointi käyttöön, niin näet Braven suosittelemaa yksilöllistä sisältöä</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9086302186042011942">Synkronoidaan</translation>
 <translation id="9086455579313502267">Ei yhteyttä verkkoon.</translation>
-<translation id="9100505651305367705">Tarjoa yksinkertaistettua näkymää, jos artikkeli tukee sitä</translation>
 <translation id="9100610230175265781">Tunnuslause tarvitaan</translation>
 <translation id="9101137867221042551">Hallinta</translation>
 <translation id="9102803872260866941">Esikatseluvälilehti on avattu</translation>
@@ -1453,6 +1405,7 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="9169507124922466868">Navigointihistoria on puoliksi auki</translation>
 <translation id="9199368092038462496">{NUM_MINS,plural, =1{Tarkistettu 1 minuutti sitten}other{Tarkistettu # minuuttia sitten}}</translation>
 <translation id="9204836675896933765">1 tiedosto jäljellä</translation>
+<translation id="9205933215779845960">Sivua ei löydy. Tarkista oikeinkirjoitus tai kokeile hakea tällä: <ph name="SEARCH_ENGINE"/>.</translation>
 <translation id="9206873250291191720">A</translation>
 <translation id="9209888181064652401">Puheluiden soittaminen ei onnistu</translation>
 <translation id="9212845824145208577">Alemmas ei pääse. Kokeile aloittaa alempaa sivulta.</translation>
@@ -1479,7 +1432,6 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="1014490034578104945">Tarkastele avoimia yksityisiä välilehtiä lukitulla näytöllä</translation>
 <translation id="7721367250891727403">Estä, kun käytät yksityisiä välilehtiä</translation>
 <translation id="4785410057733147746">Kun olet yksityisessä tilassa, sivustot eivät näe selaustoimintaasi eri sivustoilla evästeiden kautta esim. personoidakseen mainoksia. Joidenkin sivustojen ominaisuudet saattavat lakata toimimasta.</translation>
-<translation id="1438581767753657407">Kun kevyt tila on käytössä, Brave käyttää Brave-palvelimia saadakseen sivut latautumaan nopeammin. Kevyt tila pakottaa hyvin hitaat sivut lataamaan vain keskeisimmän sisällön. Kevyt tila ei vaikuta yksityisten välilehtien toimintaan.</translation>
 <translation id="8967534220319593484">Yksityisessä tilassa lataamasi tiedostot näkyvät edelleen kaikille tämän laitteen käyttäjille.</translation>
 <translation id="2633278372998075009">Yksityiset välilehdet</translation>
 <translation id="8737444348664175738">Siirryttiin Yksityisiin välilehtiin</translation>
@@ -1492,7 +1444,6 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="4660964651149493586">Avaa yksityiset</translation>
 <translation id="3763131702135887799">Auta tekemään Brave paremmaksi profiileille, jotka käyttävät sitä kuten sinä</translation>
 <translation id="4167670741834902166">Uusi Yksityinen välilehti</translation>
-<translation id="5903027613721000610">Kokeile yksityistilaa, jos haluat selata tallentamatta aktiviteettia laitteeseesi</translation>
 <translation id="8355284051444779553">Avaa valikko, jos haluat avata uuden yksityisen välilehden</translation>
 <translation id="8120164982795455341">Uusi Yksityinen välilehti</translation>
 <translation id="6464648082977038075">Sulje Yksityiset välilehdet</translation>

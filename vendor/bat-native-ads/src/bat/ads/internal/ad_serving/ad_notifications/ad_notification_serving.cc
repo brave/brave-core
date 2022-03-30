@@ -128,7 +128,7 @@ void AdServing::MaybeServeAd() {
                       const CreativeAdNotificationList& creative_ads) {
         if (had_opportunity) {
           const SegmentList& segments =
-              ad_targeting::GetTopParentChildSegments(user_model);
+              ad_targeting::GetTopChildSegments(user_model);
           p2a::RecordAdOpportunityForSegments(AdType::kAdNotification,
                                               segments);
         }
@@ -210,7 +210,12 @@ base::TimeDelta AdServing::CalculateDelayBeforeServingAnAd() const {
     return kMinimumDelayBeforeServingAnAd;
   }
 
-  return Client::Get()->GetServeAdAt() - base::Time::Now();
+  base::TimeDelta delay = Client::Get()->GetServeAdAt() - base::Time::Now();
+  if (delay.is_negative()) {
+    delay = base::TimeDelta();
+  }
+
+  return delay;
 }
 
 void AdServing::MaybeServeAdAtNextRegularInterval() {

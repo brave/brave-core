@@ -177,11 +177,11 @@ class AdsServiceImpl : public AdsService,
 
   void PurgeOrphanedAdEventsForType(const ads::mojom::AdType ad_type) override;
 
-  void GetAdsHistory(const double from_timestamp,
-                     const double to_timestamp,
-                     OnGetAdsHistoryCallback callback) override;
+  void GetHistory(const double from_timestamp,
+                  const double to_timestamp,
+                  OnGetHistoryCallback callback) override;
 
-  void GetAccountStatement(GetAccountStatementCallback callback) override;
+  void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
   void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
 
@@ -281,12 +281,11 @@ class AdsServiceImpl : public AdsService,
                             const std::string& dimensions,
                             const std::string& json);
 
-  void OnGetAdsHistory(OnGetAdsHistoryCallback callback,
-                       const std::string& json);
+  void OnGetHistory(OnGetHistoryCallback callback, const std::string& json);
 
-  void OnGetAccountStatement(GetAccountStatementCallback callback,
-                             const bool success,
-                             const std::string& json);
+  void OnGetStatementOfAccounts(GetStatementOfAccountsCallback callback,
+                                const bool success,
+                                const std::string& json);
 
   void OnGetAdDiagnostics(GetAdDiagnosticsCallback callback,
                           const bool success,
@@ -463,6 +462,8 @@ class AdsServiceImpl : public AdsService,
   void SetUint64Pref(const std::string& path, const uint64_t value) override;
 
   void ClearPref(const std::string& path) override;
+
+  bool HasPrefPath(const std::string& path) const override;
 
   // BackgroundHelper::Observer implementation
   void OnBackground() override;

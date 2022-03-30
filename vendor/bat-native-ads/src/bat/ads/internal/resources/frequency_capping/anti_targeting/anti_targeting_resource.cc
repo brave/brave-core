@@ -19,7 +19,7 @@ namespace ads {
 namespace resource {
 
 namespace {
-const char kResourceId[] = "mkdhnfmjhklfnamlheoliekgeohamoig";
+constexpr char kResourceId[] = "mkdhnfmjhklfnamlheoliekgeohamoig";
 }  // namespace
 
 AntiTargeting::AntiTargeting() = default;

@@ -13,12 +13,17 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @interface NSURL (Utilities)
 
+/// Returns the domain registry
+///  google.co.uk -> co.uk
+///  google.com -> com
+@property(readonly) NSString* brave_registry NS_SWIFT_NAME(registry);
+
 /// Returns the eTLD+1 including private registries.
-@property(readonly, nullable)
+@property(readonly)
     NSString* brave_domainAndRegistry NS_SWIFT_NAME(domainAndRegistry);
 
 /// Returns the eTLD+1 not including private registries.
-@property(readonly, nullable)
+@property(readonly)
     NSString* brave_domainAndRegistryExcludingPrivateRegistries NS_SWIFT_NAME(
         domainAndRegistryExcludingPrivateRegistries);
 

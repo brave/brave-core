@@ -67,7 +67,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const base::Time& time = Now();
+  const base::Time time = Now();
   ads_client_mock_->SetDoublePref(prefs::kNextTokenRedemptionAt,
                                   time.ToDoubleT());
 
@@ -141,7 +141,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const base::Time& time = Now();
+  const base::Time time = Now();
   ads_client_mock_->SetDoublePref(prefs::kNextTokenRedemptionAt,
                                   time.ToDoubleT());
 
@@ -199,7 +199,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const base::Time& time = Now();
+  const base::Time time = Now();
   ads_client_mock_->SetDoublePref(prefs::kNextTokenRedemptionAt,
                                   time.ToDoubleT());
 
@@ -258,7 +258,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const base::Time& time = Now();
+  const base::Time time = Now();
   ads_client_mock_->SetDoublePref(prefs::kNextTokenRedemptionAt,
                                   time.ToDoubleT());
 
@@ -319,7 +319,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const base::Time& time = Now();
+  const base::Time time = Now();
   ads_client_mock_->SetDoublePref(prefs::kNextTokenRedemptionAt,
                                   time.ToDoubleT());
 
@@ -374,7 +374,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const base::Time& time = Now();
+  const base::Time time = Now();
   ads_client_mock_->SetDoublePref(prefs::kNextTokenRedemptionAt,
                                   time.ToDoubleT());
 

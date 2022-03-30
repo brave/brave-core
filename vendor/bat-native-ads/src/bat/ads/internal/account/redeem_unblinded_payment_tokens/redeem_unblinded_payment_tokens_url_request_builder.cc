@@ -119,7 +119,7 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePaymentRequestDTO(
 
     payment_credential.SetStringKey(
         "confirmationType",
-        std::string(unblinded_payment_token.confirmation_type));
+        unblinded_payment_token.confirmation_type.ToString());
 
     payment_credential.SetStringKey(
         "publicKey", unblinded_payment_token.public_key.encode_base64());

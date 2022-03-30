@@ -38,8 +38,8 @@ base::Value UnblindedPaymentTokens::GetTokensAsList() {
   for (const auto& unblinded_payment_token : unblinded_payment_tokens_) {
     base::Value dictionary(base::Value::Type::DICTIONARY);
 
-    dictionary.SetStringKey(
-        "transaction_id", std::string(unblinded_payment_token.transaction_id));
+    dictionary.SetStringKey("transaction_id",
+                            unblinded_payment_token.transaction_id);
 
     dictionary.SetStringKey("unblinded_token",
                             unblinded_payment_token.value.encode_base64());
@@ -49,10 +49,10 @@ base::Value UnblindedPaymentTokens::GetTokensAsList() {
 
     dictionary.SetStringKey(
         "confirmation_type",
-        std::string(unblinded_payment_token.confirmation_type));
+        unblinded_payment_token.confirmation_type.ToString());
 
     dictionary.SetStringKey("ad_type",
-                            std::string(unblinded_payment_token.ad_type));
+                            unblinded_payment_token.ad_type.ToString());
 
     list.Append(std::move(dictionary));
   }
@@ -82,7 +82,8 @@ void UnblindedPaymentTokens::SetTokensFromList(const base::Value& list) {
         dictionary->FindStringKey("transaction_id");
     if (!transaction_id_value) {
       // Migrate legacy confirmations
-      unblinded_payment_token.transaction_id = base::GenerateGUID();
+      unblinded_payment_token.transaction_id =
+          base::GUID::GenerateRandomV4().AsLowercaseString();
     } else {
       unblinded_payment_token.transaction_id = *transaction_id_value;
     }

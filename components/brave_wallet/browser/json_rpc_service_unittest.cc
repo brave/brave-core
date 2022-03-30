@@ -31,6 +31,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -578,6 +579,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
@@ -1834,7 +1836,7 @@ TEST_F(JsonRpcServiceUnitTest, IsValidDomain) {
 TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
   bool callback_called = false;
   json_rpc_service_->GetERC721OwnerOf(
-      "", "0x1",
+      "", "0x1", mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
@@ -1844,7 +1846,17 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
 
   callback_called = false;
   json_rpc_service_->GetERC721OwnerOf(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "",
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "", mojom::kMainnetChainId,
+      base::BindOnce(&OnStringResponse, &callback_called,
+                     mojom::ProviderError::kInvalidParams,
+                     l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
+                     ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  json_rpc_service_->GetERC721OwnerOf(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1", "",
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
@@ -1861,6 +1873,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
   callback_called = false;
   json_rpc_service_->GetERC721OwnerOf(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      mojom::kMainnetChainId,
       base::BindOnce(
           &OnStringResponse, &callback_called, mojom::ProviderError::kSuccess,
           "",
@@ -1871,6 +1884,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->GetERC721OwnerOf(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
@@ -1880,6 +1894,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
   SetInvalidJsonInterceptor();
   json_rpc_service_->GetERC721OwnerOf(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
@@ -1889,6 +1904,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
   SetLimitExceededJsonErrorResponse();
   json_rpc_service_->GetERC721OwnerOf(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
                      "Request exceeds defined limit", ""));

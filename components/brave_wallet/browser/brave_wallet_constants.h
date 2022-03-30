@@ -626,7 +626,10 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_SWEEPSTAKES_DESCRIPTION},
     {"braveWalletSweepstakesCallToAction",
      IDS_BRAVE_WALLET_SWEEPSTAKES_CALL_TO_ACTION},
-    {"braveWalletNotValidFilAddress", IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS}};
+    {"braveWalletNotValidFilAddress", IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS},
+    {"braveWalletNetworkFilterAll", IDS_BRAVE_WALLET_NETWORK_FILTER_ALL},
+    {"braveWalletNetworkFilterSecondary",
+     IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY}};
 
 // Swap constants
 const char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
@@ -651,21 +654,6 @@ constexpr char kCryptoEthAddressKey[] = "crypto.ETH.address";
 
 // ERC-165 identifier for ERC721 interface.
 constexpr char kERC721InterfaceId[] = "0x80ac58cd";
-
-constexpr int kSolanaKeypairSize = 64;
-constexpr int kSolanaPrikeySize = 32;
-constexpr int kSolanaPubkeySize = 32;
-constexpr int kSolanaBlockhashSize = 32;
-// 1232 = 1280(IPv6 minimum MTU) - 40(size of the IPv6 header) - 8(size of the
-// fragment header)
-constexpr size_t kSolanaMaxTxSize = 1232;
-constexpr char kSolanaSystemProgramId[] = "11111111111111111111111111111111";
-constexpr char kSolanaTokenProgramId[] =
-    "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
-constexpr char kSolanaAssociatedTokenProgramId[] =
-    "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
-constexpr char kSolanaSysvarRentProgramId[] =
-    "SysvarRent111111111111111111111111111111111";
 
 constexpr char kEthereumPrefKey[] = "ethereum";
 constexpr char kFilecoinPrefKey[] = "filecoin";

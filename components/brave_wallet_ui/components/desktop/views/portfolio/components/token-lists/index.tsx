@@ -14,7 +14,8 @@ import { getLocale } from '../../../../../../../common/locale'
 import { SearchBar } from '../../../../../shared'
 import {
   PortfolioAssetItem,
-  AddButton
+  AddButton,
+  NetworkFilterSelector
 } from '../../../../'
 
 // Styled Components
@@ -22,7 +23,8 @@ import {
   ButtonRow,
   DividerText,
   SubDivider,
-  Spacer
+  Spacer,
+  FilterTokenRow
 } from '../../style'
 
 export interface Props {
@@ -72,7 +74,10 @@ const TokenLists = (props: Props) => {
 
   return (
     <>
-      <SearchBar placeholder={getLocale('braveWalletSearchText')} action={onFilterAssets} />
+      <FilterTokenRow>
+        <SearchBar placeholder={getLocale('braveWalletSearchText')} action={onFilterAssets} />
+        <NetworkFilterSelector />
+      </FilterTokenRow>
       {filteredAssetList.filter((asset) => !asset.asset.isErc721).map((item) =>
         <PortfolioAssetItem
           spotPrices={tokenPrices}

@@ -27,7 +27,7 @@ void Timer::SetTimerForTesting(std::unique_ptr<base::OneShotTimer> timer) {
   timer_ = std::move(timer);
 }
 
-base::Time Timer::Start(const base::TimeDelta& delay,
+base::Time Timer::Start(const base::TimeDelta delay,
                         base::OnceClosure user_task) {
   Stop();
 
@@ -38,7 +38,7 @@ base::Time Timer::Start(const base::TimeDelta& delay,
   return time;
 }
 
-base::Time Timer::StartWithPrivacy(const base::TimeDelta& delay,
+base::Time Timer::StartWithPrivacy(const base::TimeDelta delay,
                                    base::OnceClosure user_task) {
   const int64_t delay_in_seconds = delay.InSeconds();
 

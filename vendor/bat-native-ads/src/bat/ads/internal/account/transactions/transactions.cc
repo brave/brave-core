@@ -26,7 +26,7 @@ TransactionInfo Add(const std::string& creative_instance_id,
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
 
   TransactionInfo transaction;
-  transaction.id = base::GenerateGUID();
+  transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
   transaction.created_at = base::Time::Now().ToDoubleT();
   transaction.creative_instance_id = creative_instance_id;
   transaction.ad_type = ad_type;
@@ -46,8 +46,8 @@ TransactionInfo Add(const std::string& creative_instance_id,
   return transaction;
 }
 
-void GetForDateRange(const base::Time& from_time,
-                     const base::Time& to_time,
+void GetForDateRange(const base::Time from_time,
+                     const base::Time to_time,
                      GetTransactionsCallback callback) {
   database::table::Transactions database_table;
   database_table.GetForDateRange(

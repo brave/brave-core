@@ -12,7 +12,7 @@ namespace new_tab_page_ads {
 namespace features {
 
 namespace {
-const char kFeatureName[] = "NewTabPageAds";
+constexpr char kFeatureName[] = "NewTabPageAds";
 }  // namespace
 
 const base::Feature kFeature{kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT};

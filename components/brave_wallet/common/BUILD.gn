@@ -50,10 +50,23 @@ static_library("common") {
 
 source_set("common_constants") {
   sources = [
+    "brave_wallet_constants.h",
     "web3_provider_constants.cc",
     "web3_provider_constants.h",
   ]
   deps = [ ":mojom" ]
+}
+
+source_set("solana_utils") {
+  sources = [
+    "solana_utils.cc",
+    "solana_utils.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/third_party/bitcoin-core",  # for base58
+  ]
 }
 
 preprocess_if_expr("preprocess_mojo") {
@@ -82,13 +95,16 @@ source_set("unit_tests") {
     "hash_utils_unittest.cc",
     "hex_utils_unittest.cc",
     "mem_utils_unittest.cc",
+    "solana_utils_unittest.cc",
     "string_utils_unittest.cc",
     "value_conversion_utils_unittest.cc",
   ]
 
   deps = [
     ":common",
+    ":common_constants",
     ":mojom",
+    ":solana_utils",
     "//base/test:test_support",
     "//testing/gtest",
     "//url",

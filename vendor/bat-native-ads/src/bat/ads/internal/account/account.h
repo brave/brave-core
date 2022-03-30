@@ -59,15 +59,6 @@ class Account final : public ConfirmationsDelegate,
   void ProcessClearingCycle();
 
  private:
-  base::ObserverList<AccountObserver> observers_;
-
-  std::unique_ptr<Confirmations> confirmations_;
-  std::unique_ptr<Issuers> issuers_;
-  std::unique_ptr<RedeemUnblindedPaymentTokens>
-      redeem_unblinded_payment_tokens_;
-  std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
-  std::unique_ptr<Wallet> wallet_;
-
   void ProcessDeposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
                       const ConfirmationType& confirmation_type,
@@ -110,6 +101,15 @@ class Account final : public ConfirmationsDelegate,
   void OnDidRefillUnblindedTokens() override;
   void OnCaptchaRequiredToRefillUnblindedTokens(
       const std::string& captcha_id) override;
+
+  base::ObserverList<AccountObserver> observers_;
+
+  std::unique_ptr<Confirmations> confirmations_;
+  std::unique_ptr<Issuers> issuers_;
+  std::unique_ptr<RedeemUnblindedPaymentTokens>
+      redeem_unblinded_payment_tokens_;
+  std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
+  std::unique_ptr<Wallet> wallet_;
 };
 
 }  // namespace ads

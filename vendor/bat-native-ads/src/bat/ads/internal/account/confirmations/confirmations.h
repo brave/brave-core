@@ -46,21 +46,13 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   void ProcessRetryQueue();
 
  private:
-  raw_ptr<ConfirmationsDelegate> delegate_ = nullptr;
-
-  raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
-      nullptr;  // NOT OWNED
-
-  std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
-
-  ConfirmationInfo CreateConfirmation(const base::Time& time,
+  ConfirmationInfo CreateConfirmation(const base::Time time,
                                       const std::string& transaction_id,
                                       const std::string& creative_instance_id,
                                       const ConfirmationType& confirmation_type,
                                       const AdType& ad_type,
                                       const base::Value& user_data) const;
 
-  BackoffTimer retry_timer_;
   void Retry();
   void OnRetry();
   void StopRetrying();
@@ -79,6 +71,15 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
                                      unblinded_payment_token) override;
   void OnFailedToRedeemUnblindedToken(const ConfirmationInfo& confirmation,
                                       const bool should_retry) override;
+
+  raw_ptr<ConfirmationsDelegate> delegate_ = nullptr;
+
+  raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
+      nullptr;  // NOT OWNED
+
+  std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
+
+  BackoffTimer retry_timer_;
 };
 
 }  // namespace ads

@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/account/user_data/created_at_timestamp_user_data.h"
 
-#include <string>
-
 #include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/internal/time_util.h"
@@ -14,11 +12,14 @@
 namespace ads {
 namespace user_data {
 
-base::DictionaryValue GetCreatedAtTimestamp(const base::Time& time) {
-  const std::string timestamp = TimeToPrivacyPreservingISO8601(time);
+namespace {
+constexpr char kCreatedAtTimestampKey[] = "createdAtTimestamp";
+}  // namespace
 
+base::DictionaryValue GetCreatedAtTimestamp(const base::Time time) {
   base::DictionaryValue user_data;
-  user_data.SetKey("createdAtTimestamp", base::Value(timestamp));
+  user_data.SetStringKey(kCreatedAtTimestampKey,
+                         TimeToPrivacyPreservingISO8601(time));
 
   return user_data;
 }

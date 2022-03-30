@@ -23,9 +23,9 @@ class FetchPaymentTokenUrlRequestBuilder final : UrlRequestBuilder {
   mojom::UrlRequestPtr Build() override;
 
  private:
-  ConfirmationInfo confirmation_;
-
   std::string BuildUrl() const;
+
+  ConfirmationInfo confirmation_;
 };
 
 }  // namespace ads

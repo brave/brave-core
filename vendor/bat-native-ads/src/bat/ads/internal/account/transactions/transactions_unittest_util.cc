@@ -24,12 +24,13 @@ void SaveTransactions(const TransactionList& transactions) {
 
 TransactionInfo BuildTransaction(const double value,
                                  const ConfirmationType& confirmation_type,
-                                 const base::Time& reconciled_at) {
+                                 const base::Time reconciled_at) {
   TransactionInfo transaction;
 
-  transaction.id = base::GenerateGUID();
+  transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
   transaction.created_at = NowAsTimestamp();
-  transaction.creative_instance_id = base::GenerateGUID();
+  transaction.creative_instance_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
   transaction.value = value;
   transaction.ad_type = AdType::kAdNotification;
   transaction.confirmation_type = confirmation_type;

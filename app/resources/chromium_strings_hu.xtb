@@ -132,7 +132,6 @@
 <translation id="5536657158619734169">Elérhető a Brave új verziója.</translation>
 <translation id="239760341987199724">A Brave beállítása alapértelmezett böngészőként</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Béta</translation>
-<translation id="707769633889902835">A Chrome OS nem tudja megnyitni ezt az oldalt.</translation>
 <translation id="696826782632239602">A Bravenak a helyadatokhoz való hozzáférésre van szüksége ahhoz, hogy megoszthassa az Ön tartózkodási helyét a webhellyel</translation>
 <translation id="1744365871163268756">Kérjük, várjon, amíg a Brave telepíti a legutóbbi rendszerfrissítéseket.</translation>
 <translation id="3861679447659630159">A Brave szerkeszteni próbálja a jelszavakat. Az engedélyezéshez adja meg Windows-jelszavát.</translation>
@@ -193,7 +192,7 @@
 <translation id="8291513491595858997">Szülőd kikapcsolta a Brave „Engedélyek webhelyek, alkalmazások és bővítmények számára” beállítását. A(z) <ph name="EXTENSION_TYPE_PARAMETER"/> nem engedélyezhető.</translation>
 <translation id="8211837073776713955">A Brave tájékoztatja arról, ha jelszavai illetéktelen kezekbe kerülnek</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (a Braveba másolva)</translation>
+<translation id="2049565899730874086">Google Pay (a Braveba másolva)</translation>
 <translation id="3028928628792374067">A Brave kártékony programot talált a következőben: „<ph name="EXTENSION_NAME"/>”</translation>
 <translation id="2301993384336631869">A Brave frissítése megtörtént, de nem használta a böngészőt legalább 30 napja.</translation>
 <translation id="8828443087767259398">A Bravenak Bluetooth-hozzáférésre van szükséges a párosítás 
@@ -287,6 +286,12 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="4484434718272972655">Ki használja a Braveot?</translation>
 <translation id="7173394303099002355">Állítsa be a Brave legerősebb védelmét</translation>
 <translation id="8992261409816268381">A Brave szerzői</translation>
+<translation id="479793348545936567">Ha ezt a fiókot csak egyszer szeretné használni, használhatja a vendég üzemmódot a Brave böngészőben. Ha másvalaki számára szeretne fiókot hozzáadni, <ph name="LINK_BEGIN"/>adjon hozzá új profilt <ph name="LINK_END"/><ph name="DEVICE_TYPE"/> eszközéhez.
+
+A webhelyeknek és alkalmazásoknak már megadott engedélyek vonatkozhatnak erre a fiókra is. A Brave szinkronizálási láncait a <ph name="SETTINGS_LINK_BEGIN"/>Beállításokban<ph name="SETTINGS_LINK_END"/> kezelheti.</translation>
+<translation id="5359574361379286250">Ha ezt a fiókot csak egyszer szeretné használni, használhatja a <ph name="GUEST_LINK_BEGIN"/>Vendég üzemmódot<ph name="GUEST_LINK_END"/> a Brave böngészőben. Ha másvalaki számára szeretne fiókot hozzáadni, <ph name="LINK_BEGIN"/>adjon hozzá új profilt<ph name="LINK_END"/> <ph name="DEVICE_TYPE"/> eszközéhez.
+
+A webhelyeknek és alkalmazásoknak már megadott engedélyek vonatkozhatnak erre a fiókra is. A Brave szinkronizálási láncait a <ph name="SETTINGS_LINK_BEGIN"/>Beállításokban<ph name="SETTINGS_LINK_END"/> kezelheti.</translation>
 <translation id="1299765473362724475">Figyelmeztetés: a Brave nem tudja megakadályozni, hogy a bővítmények rögzítsék a böngészési előzményeket. A bővítmény privát módban való használatának letiltásához töröld a lehetőség bejelölését.</translation>
 <translation id="1448049584457347995">A Brave biztonságosabbá tétele érdekében kikapcsoltunk néhány bővítményt, amelyek nem a(z) <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> szolgáltatásból származnak, és előfordulhat, hogy az Ön tudta nélkül lettek telepítve.</translation>
 <translation id="8848045066928358658">A Brave biztonságosabbá tétele érdekében kikapcsoltuk a következő bővítményt, amely nem a(z) <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> szolgáltatásból származik, és előfordulhat, hogy az Ön tudta nélkül lett telepítve.</translation>

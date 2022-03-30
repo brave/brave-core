@@ -27,7 +27,7 @@ namespace model {
 
 namespace {
 
-const size_t kTopArmCount = 3;
+constexpr size_t kTopArmCount = 3;
 
 using ArmBucketMap =
     base::flat_map<double, std::vector<EpsilonGreedyBanditArmInfo>>;

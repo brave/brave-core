@@ -62,8 +62,8 @@
     "message": "Bao gồm trong Tự động Đóng góp",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "Khoản đóng góp hàng tháng",
+  "monthlyTip": {
+    "message": "Tiền thưởng hàng tháng",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "Tiền tip Hàng tháng",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Đã xác thực",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Tiền tip Một lần",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Tóm tắt Tiền thưởng",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Đã xác thực",
+  "walletUnverified": {
+    "message": "Chưa xác minh",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Xác minh",
+  "walletVerified": {
+    "message": "Đã xác thực",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Không thể hoàn tất khoản thanh toán hàng tháng theo lịch cho Tự động đóng góp và các khoản đóng góp hàng tháng của bạn do không đủ tiền. Chúng tôi sẽ thử lại sau 30 ngày.",
+    "message": "Khoản thanh toán định kỳ hàng tháng của bạn dành cho phần Tự động Đóng góp và tiền boa hàng tháng không thể hoàn tất do không đủ tiền. Chúng tôi sẽ thử lại trong 30 ngày.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Đóng góp hàng tháng không thành công",
+    "message": "Gửi tiền thưởng hàng tháng không thành công",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Các khoản đóng góp hàng tháng của bạn đã được xử lý.",
+    "message": "Các khoản tiền thưởng hàng tháng của bạn đã được xử lý.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

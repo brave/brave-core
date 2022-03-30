@@ -56,7 +56,7 @@ mojom::TrainingCovariatesPtr CovariateLogs::GetTrainingCovariates() const {
 }
 
 void CovariateLogs::SetAdNotificationImpressionServedAt(
-    const base::Time& impression_served_at) {
+    const base::Time impression_served_at) {
   auto impression_served_at_covariate_log_entry =
       std::make_unique<AdNotificationImpressionServedAtCovariateLogEntry>();
   impression_served_at_covariate_log_entry->SetLastImpressionAt(

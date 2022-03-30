@@ -18,7 +18,7 @@ namespace ads {
 namespace resource {
 
 namespace {
-const char kResourceId[] = "feibnmjhecfbjpeciancnchbmlobenjn";
+constexpr char kResourceId[] = "feibnmjhecfbjpeciancnchbmlobenjn";
 }  // namespace
 
 TextClassification::TextClassification() {

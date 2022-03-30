@@ -27,9 +27,6 @@ class RequestSignedTokensUrlRequestBuilder final : UrlRequestBuilder {
   mojom::UrlRequestPtr Build() override;
 
  private:
-  WalletInfo wallet_;
-  std::vector<BlindedToken> blinded_tokens_;
-
   std::string BuildUrl() const;
 
   std::vector<std::string> BuildHeaders(const std::string& body) const;
@@ -37,6 +34,9 @@ class RequestSignedTokensUrlRequestBuilder final : UrlRequestBuilder {
   std::string BuildSignatureHeaderValue(const std::string& body) const;
 
   std::string BuildBody() const;
+
+  WalletInfo wallet_;
+  std::vector<BlindedToken> blinded_tokens_;
 };
 
 }  // namespace ads

@@ -62,8 +62,8 @@
     "message": "தானியங்கு-பங்களிப்பில் சேர்",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "மாதாந்திர பங்களிப்பு",
+  "monthlyTip": {
+    "message": "Monthly Tip",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "மாதாந்திர துணுக்குதவிகள்",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Verified",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "One-Time Tips",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "வெகுமதிகள் சுருக்கம்",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Verified",
+  "walletUnverified": {
+    "message": "Unverified",
     "description": ""
   },
-  "walletVerify": {
-    "message": "சரிபார்",
+  "walletVerified": {
+    "message": "Verified",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Your scheduled monthly payment for Auto-Contribute and monthly contributions could not be completed due to insufficient funds. We’ll try again in 30 days.",
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Monthly contribution failed",
+    "message": "Monthly tip failed",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Your monthly contributions have been processed.",
+    "message": "Your monthly tips have been processed.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

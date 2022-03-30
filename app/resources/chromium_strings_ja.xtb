@@ -132,7 +132,6 @@
 <translation id="5536657158619734169">Brave の最新バージョンをぜひお試しください。</translation>
 <translation id="239760341987199724">Brave をデフォルト ブラウザに設定する</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
-<translation id="707769633889902835">Chrome OS ではこのページを開けません。</translation>
 <translation id="696826782632239602">このサイトで現在地を共有するには、Brave で位置情報の使用を許可する必要があります</translation>
 <translation id="1744365871163268756">Brave は最新のシステム アップデートをインストールしています。しばらくお待ちください。</translation>
 <translation id="3861679447659630159">Brave でパスワードを編集しようとしています。続行するには、Windows のパスワードを入力してください。</translation>
@@ -195,7 +194,7 @@
 <translation id="8291513491595858997">保護者が Brave の「サイト、アプリ、拡張機能の権限」をオフにしました。この <ph name="EXTENSION_TYPE_PARAMETER"/> を有効にすることはできません。</translation>
 <translation id="8211837073776713955">Brave では、特定のパスワードが侵害された事実の有無がわかります</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay（Brave にコピー）</translation>
+<translation id="2049565899730874086">Google Pay（Brave にコピー）</translation>
 <translation id="3028928628792374067">Brave で「<ph name="EXTENSION_NAME"/>」に不正なソフトウェアが含まれていることが検出されました</translation>
 <translation id="2301993384336631869">Brave が更新されましたが、30 日以上使用されていません。</translation>
 <translation id="8828443087767259398">Brave でペアリングを続行するには、Bluetooth へのアクセスが必要です。<ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -289,6 +288,12 @@
 <translation id="4484434718272972655">Brave はどなたが使用しますか？</translation>
 <translation id="7173394303099002355">Brave の最高のセキュリティ強度で保護</translation>
 <translation id="8992261409816268381">Brave 開発者</translation>
+<translation id="479793348545936567">このアカウントを一度だけ使用したい場合は、Braveブラウザのゲストモードを使用することができます。他のユーザー用にアカウントを追加したい場合は、<ph name="DEVICE_TYPE"/>に<ph name="LINK_BEGIN"/>新しいプロフィールを追加<ph name="LINK_END"/>してください。
+
+ウェブサイトやアプリに既に権限が付与されている場合は、このアカウントにも適用される場合があります。Braveの同期チェーンは「<ph name="SETTINGS_LINK_BEGIN"/>設定<ph name="SETTINGS_LINK_END"/>」で管理することができます。</translation>
+<translation id="5359574361379286250">このアカウントを一度だけ使用したい場合は、Braveブラウザの<ph name="GUEST_LINK_BEGIN"/>ゲストモード<ph name="GUEST_LINK_END"/>を使用することができます。他のユーザー用にアカウントを追加したい場合は、<ph name="DEVICE_TYPE"/>に<ph name="LINK_BEGIN"/>新しいプロフィールを追加<ph name="LINK_END"/>してください。
+
+ウェブサイトやアプリに既に権限が付与されている場合は、このアカウントにも適用される場合があります。Braveの同期チェーンは「<ph name="SETTINGS_LINK_BEGIN"/>設定<ph name="SETTINGS_LINK_END"/>」で管理することができます。</translation>
 <translation id="1299765473362724475">警告: 拡張機能による閲覧履歴の記録を Brave で停止することはできません。プライベートモードでこの拡張機能を無効にするには、このオプションの選択を解除してください。</translation>
 <translation id="1448049584457347995">Brave をより安全にご利用いただくため、<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>で提供していない一部の拡張機能を無効にしました。これらは知らないうちに追加された可能性があります。</translation>
 <translation id="8848045066928358658">Brave をより安全にご利用いただくために、<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>で提供していない次の拡張機能を無効にしました。これは知らないうちに追加された可能性があります。</translation>

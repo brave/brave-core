@@ -20,6 +20,12 @@ interface EventsListener {
   AccountsChangedEvent(array<string> accounts);
 };
 
+interface SolanaEventsListener {
+  // base58 encoded account, account would be null when switching to an about to
+  // be created account
+  AccountChangedEvent(string? account);
+};
+
 // Pre-defined error codes specified in
 // https://www.jsonrpc.org/specification#error_object
 enum JsonRpcError {
@@ -67,6 +73,9 @@ enum ProviderError {
 
 enum SolanaProviderError {
   kSuccess = ProviderError.kSuccess,  // No error
+
+  kUserRejectedRequest = ProviderError.kUserRejectedRequest,
+  kUnauthorized = ProviderError.kUnauthorized,
 
   // Pre-defined error codes specified in
   // https://www.jsonrpc.org/specification#error_object
@@ -117,6 +126,54 @@ interface BraveWalletProvider {
 
   // Determines if the keyring is locked.
   IsLocked() => (bool isLocked);
+};
+
+interface SolanaProvider {
+  // Initializes an SolanaEventsListener
+  Init(pending_remote<SolanaEventsListener> events_listener);
+
+  // Optional {onlyIfTrusted: true}, when that flag is enable, we will only
+  // connect and emit a connect event if the application is trusted.
+  // It will returns base58 encoded public key when success
+  Connect(mojo_base.mojom.DictionaryValue? arg)
+    => (SolanaProviderError error, string error_message, string public_key);
+  Disconnect();
+  [Sync]
+  IsConnected() => (bool is_connected);
+  // return base58 encoded public key
+  [Sync]
+  GetPublicKey() => (string public_key);
+  // It takes a base58 encoded serialized Message and return a serialized
+  // Transaction with signature in wire format.
+  SignTransaction(string encoded_serialized_msg)
+    => (SolanaProviderError error, string error_message,
+        array<uint8> serialized_tx);
+  SignAllTransactions(array<string> encoded_serialized_msg)
+    => (SolanaProviderError error, string error_message,
+        array<array<uint8>> serialized_txs);
+  // It takes a base58 encoded serialized Message and return an object
+  // containing both base58 encoded public key and signature as
+  // { publicKey: <base58 encoded string>,
+  //   signature:  <base58 encoded string>
+  // }
+  SignAndSendTransaction(string encoded_serialized_msg)
+    => (SolanaProviderError error, string error_message,
+        mojo_base.mojom.DictionaryValue result);
+  // It takes a base58 encoded message and an optional display encoding for
+  // users and returns an object as
+  // { publicKey: <base58 encoded string>,
+  //   signature:  <base58 encoded string>
+  // }
+  SignMessage(string encoded_msg, string? display_encoding)
+    => (SolanaProviderError error, string error_message,
+        mojo_base.mojom.DictionaryValue result);
+
+  // Arg is {method: <string>, params: {...}}
+  // returns a dictionary result to be converted into a v8 object
+  Request(mojo_base.mojom.DictionaryValue arg)
+    => (SolanaProviderError error, string error_message,
+        mojo_base.mojom.DictionaryValue result);
+
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
@@ -660,7 +717,7 @@ interface JsonRpcService {
   SetCustomNetworkForTesting(string chain_id, CoinType coin, url.mojom.Url provider_url);
 
   // Obtains the owner of a contract's ERC721 token ID
-  GetERC721OwnerOf(string contract, string token_id) => (string owner_address, ProviderError error, string error_message);
+  GetERC721OwnerOf(string contract, string token_id, string chain_id) => (string owner_address, ProviderError error, string error_message);
 
   // Obtains the balance of a contract's ERC721 token ID for an address
   // Balance is 0x1 if current selected account is the same as token owner's
@@ -941,11 +998,11 @@ interface BraveWalletService {
 };
 
 enum DefaultWallet {
-  AskDeprecated,
-  None,
-  CryptoWallets,
-  BraveWalletPreferExtension,
-  BraveWallet
+  AskDeprecated = 0,
+  None = 1,
+  CryptoWallets = 2,
+  BraveWalletPreferExtension = 3,
+  BraveWallet = 4
 };
 
 struct EncryptionKeyRequest {

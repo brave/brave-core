@@ -59,41 +59,6 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ntp_widget_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginBottom="12dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/ntp_widget_cardview_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="140dp"
-                    android:layout_gravity="center_horizontal"
-                    app:cardCornerRadius="12dp">
-
-                    <org.chromium.chrome.browser.custom_layout.VerticalViewPager
-                        android:id="@+id/ntp_widget_view_pager"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
-                </androidx.cardview.widget.CardView>
-
-                <LinearLayout
-                    android:id="@+id/indicator_layout"
-                    android:layout_width="12dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/ntp_widget_indicator_bg"
-                    android:padding="2dp"
-                    android:orientation="vertical"/>
-
-            </LinearLayout>
-
             <!-- Search box -->
             <include layout="@layout/fake_search_box_layout"/>
 

@@ -72,20 +72,20 @@ class UnitTestBase : public testing::Test {
   // |time_delta| to be executed in their natural order before this returns. For
   // debugging purposes use |task_environment_.DescribePendingMainThreadTasks()|
   // to dump information about pending tasks
-  void FastForwardClockBy(const base::TimeDelta& time_delta);
+  void FastForwardClockBy(const base::TimeDelta time_delta);
 
   // Fast-forwards virtual time to |time|, causing all tasks on the main thread
   // and thread pool with a remaining delay less than or equal to |time| to be
   // executed in their natural order before this returns. For debugging purposes
   // use |task_environment_.DescribePendingMainThreadTasks()| to dump
   // information about pending tasks
-  void FastForwardClockTo(const base::Time& time);
+  void FastForwardClockTo(const base::Time time);
 
   // Unlike |FastForwardClockBy|, |FastForwardClockTo| and |FastForwardBy|
   // AdvanceClock does not run tasks
   void AdvanceClockToMidnightUTC();
-  void AdvanceClock(const base::Time& time);
-  void AdvanceClock(const base::TimeDelta& time_delta);
+  void AdvanceClock(const base::Time time);
+  void AdvanceClock(const base::TimeDelta time_delta);
 
   // Returns the delay until the next pending task of the main thread's
   // TaskRunner if there is one, otherwise it returns TimeDelta::Max()

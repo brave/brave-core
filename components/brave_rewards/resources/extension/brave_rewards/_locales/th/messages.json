@@ -62,8 +62,8 @@
     "message": "รวมไว้ในการบริจาคแบบอัตโนมัติ",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "การสนับสนุนรายเดือน",
+  "monthlyTip": {
+    "message": "การให้ทิปรายเดือน",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "การให้ทิปรายเดือน",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "ยืนยันแล้ว",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "ทิปครั้งเดียว",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "สรุปรางวัล",
     "description": ""
   },
-  "walletVerified": {
-    "message": "ยืนยันแล้ว",
+  "walletUnverified": {
+    "message": "ยังไม่ยืนยัน",
     "description": ""
   },
-  "walletVerify": {
-    "message": "ยืนยัน",
+  "walletVerified": {
+    "message": "ยืนยันแล้ว",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "การชำระเงินรายเดือนตามกำหนดของคุณสำหรับการให้เงินสนับสนุนอัตโนมัติและเงินสนับสนุนรายเดือนนั้นดำเนินการไม่สำเร็จเนื่องจากมีเงินไม่เพียงพอ เราจะทำรายการอีกครั้งในอีก 30 วัน",
+    "message": "ไม่สามารถดำเนินการชำระเงินรายเดือนตามกำหนดเวลาของคุณสำหรับการบริจาคอัตโนมัติและการให้ทิปรายเดือนเนื่องจากมีเงินไม่เพียงพอ เราจะลองใหม่ใน 30 วัน",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "การสนับสนุนรายเดือนล้มเหลว",
+    "message": "การให้ทิปรายเดือนล้มเหลว",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "การสนับสนุนรายเดือนของคุณได้รับการดำเนินการแล้ว",
+    "message": "ดำเนินการให้ทิปรายเดือนของคุณเรียบร้อยแล้ว",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

@@ -29,9 +29,9 @@ namespace ads {
 
 namespace {
 
-const int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
+constexpr int64_t kRetryAfterSeconds = 1 * base::Time::kSecondsPerMinute;
 
-const int64_t kDebugCatalogPing = 15 * base::Time::kSecondsPerMinute;
+constexpr int64_t kDebugCatalogPing = 15 * base::Time::kSecondsPerMinute;
 
 }  // namespace
 
@@ -115,6 +115,10 @@ void AdServer::OnFetch(const mojom::UrlResponse& url_response) {
 }
 
 void AdServer::SaveCatalog(const Catalog& catalog) {
+  const double catalog_last_updated = base::Time::Now().ToDoubleT();
+  AdsClientHelper::Get()->SetDoublePref(prefs::kCatalogLastUpdated,
+                                        catalog_last_updated);
+
   const std::string last_catalog_id =
       AdsClientHelper::Get()->GetStringPref(prefs::kCatalogId);
 
@@ -133,10 +137,6 @@ void AdServer::SaveCatalog(const Catalog& catalog) {
 
   const int64_t catalog_ping = catalog.GetPing();
   AdsClientHelper::Get()->SetInt64Pref(prefs::kCatalogPing, catalog_ping);
-
-  const double catalog_last_updated = base::Time::Now().ToDoubleT();
-  AdsClientHelper::Get()->SetDoublePref(prefs::kCatalogLastUpdated,
-                                        catalog_last_updated);
 
   Bundle bundle;
   bundle.BuildFromCatalog(catalog);

@@ -183,6 +183,10 @@ void AdsClientIOS::ClearPref(const std::string& path) {
   [bridge_ clearPref:path];
 }
 
+bool AdsClientIOS::HasPrefPath(const std::string& path) const {
+  return [bridge_ hasPrefPath:path];
+}
+
 void AdsClientIOS::RecordP2AEvent(const std::string& name,
                                   const ads::mojom::P2AEventType type,
                                   const std::string& value) {

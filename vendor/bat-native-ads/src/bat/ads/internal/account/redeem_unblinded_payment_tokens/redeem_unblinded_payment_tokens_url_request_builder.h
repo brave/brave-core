@@ -32,10 +32,6 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final : UrlRequestBuilder {
   mojom::UrlRequestPtr Build() override;
 
  private:
-  WalletInfo wallet_;
-  privacy::UnblindedPaymentTokenList unblinded_payment_tokens_;
-  base::Value user_data_;
-
   std::string BuildUrl() const;
 
   std::vector<std::string> BuildHeaders() const;
@@ -49,6 +45,10 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final : UrlRequestBuilder {
   base::Value CreateCredential(
       const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token,
       const std::string& payload) const;
+
+  WalletInfo wallet_;
+  privacy::UnblindedPaymentTokenList unblinded_payment_tokens_;
+  base::Value user_data_;
 };
 
 }  // namespace ads

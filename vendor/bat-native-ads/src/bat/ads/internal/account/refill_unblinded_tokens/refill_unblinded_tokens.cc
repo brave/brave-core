@@ -45,10 +45,10 @@ using challenge_bypass_ristretto::UnblindedToken;
 
 namespace {
 
-const int64_t kRetryAfterSeconds = 15;
+constexpr int64_t kRetryAfterSeconds = 15;
 
-const int kMinimumUnblindedTokens = 20;
-const int kMaximumUnblindedTokens = 50;
+constexpr int kMinimumUnblindedTokens = 20;
+constexpr int kMaximumUnblindedTokens = 50;
 
 }  // namespace
 
@@ -357,7 +357,7 @@ void RefillUnblindedTokens::Retry() {
     delegate_->OnWillRetryRefillingUnblindedTokens();
   }
 
-  const base::Time& time = retry_timer_.StartWithPrivacy(
+  const base::Time time = retry_timer_.StartWithPrivacy(
       base::Seconds(kRetryAfterSeconds),
       base::BindOnce(&RefillUnblindedTokens::OnRetry, base::Unretained(this)));
 

@@ -17,10 +17,8 @@ namespace ads {
 namespace p2a {
 
 void RecordAdImpression(const AdInfo& ad) {
-  const std::string type_as_string = std::string(ad.type);
-
   const std::string name =
-      base::StringPrintf("%s_impression", type_as_string.c_str());
+      base::StringPrintf("%s_impression", ad.type.ToString().c_str());
 
   const std::vector<std::string> questions =
       CreateAdImpressionQuestions(ad.segment);

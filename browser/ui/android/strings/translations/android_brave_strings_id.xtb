@@ -272,22 +272,22 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="2927095357213611519">Anda dapat mendukung pencipta web dengan token.\nDapatkan token dengan melihat iklan yang menghormati privasi.</translation>
 <translation id="213787746370741250">Buka tab di Tab Kustom</translation>
 <translation id="8030169304546394654">Terputus</translation>
-<translation id="8267327690882073581">Verifikasi Dompet</translation>
 <translation id="543510923939676996">Dompet Terverifikasi</translation>
 <translation id="8673913984316081937">Memverifikasi dompet Anda adalah opsional</translation>
 <translation id="8558636200953226885">Tetapi dengan memverifikasi, Anda bisa...</translation>
 <translation id="8697510149346635496">Tarik BAT yang Anda dapat dari melihat iklan yang menghormati privasi</translation>
 <translation id="1481480653609649134">Beli BAT tambahan dengan kartu kredit dan sumber lain</translation>
 <translation id="9096003370755878766">Tarik BAT yang mungkin sudah pernah Anda masukkan ke dompet Imbalan Brave Anda</translation>
+<translation id="8267327690882073581">Verifikasi Dompet</translation>
 <translation id="1554282356558968486">Layanan dompet kami disediakan oleh</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="734105583050813665">Bitflyer</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Uphold mungkin memerlukan verifikasi identitas Anda berdasarkan layanan yang diminta.</translation>
 <translation id="3200197118442451932">Brave Software Inc. tidak memproses, menyimpan, atau mengakses informasi pribadi apa pun yang Anda sediakan ke <ph name="WALLET_PROVIDER"/> saat Anda membuat akun di situs mereka.</translation>
 <translation id="3699674790322420653">Selesaikan verifikasi dompet</translation>
 <translation id="2193391216824305230">Dompet Pengguna</translation>
 <translation id="1665118090708049096">Buka akun <ph name="WALLET_PROVIDER"/> saya</translation>
-<translation id="9200453331904391567">Putuskan dari Brave Reward</translation>
 <translation id="6239274080752256452">Tarik Dana</translation>
 <translation id="8874184842967597500">Tidak tersambung</translation>
 <translation id="3368922792935385530">Tersambung</translation>
@@ -403,12 +403,12 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="7427567994475794038">Nyalakan Pelaporan Privasi untuk melihat berapa banyak pelacak &amp; iklan yang sudah diblokir dalam 3 jam terakhir.</translation>
 <translation id="2053891538879944400">Anda menghemat <ph name="DATA"/> <ph name="DATA_TEXT"/> data dengan peramban Brave.</translation>
 <translation id="8640064498452534195">Nyalakan Pelaporan Privasi untuk melihat berapa besar data yang Anda hemat.</translation>
-<translation id="2252497442547961651">Peramban Brave rata-rata memakai baterai 40% lebih sedikit.&#128267;</translation>
+<translation id="2252497442547961651">Peramban Brave rata-rata memakai baterai 40% lebih sedikit.🔋</translation>
 <translation id="1945330434665345785">Anda memblokir <ph name="COUNT"/> trackers &amp; iklan dengan peramban Brave minggu kemarin.</translation>
 <translation id="2883868922264431515">Dapatkan token dengan melihat iklan yang menghormati privasi dan dukung website favorit Anda.</translation>
-<translation id="5678925890616256956">Bagus! Anda telah memblokir 250 pelacak &amp; iklan dengan peramban Brave.&#128293;</translation>
-<translation id="9199047775708635708">Bagus! Anda telah menghemat 10MB dengan peramban Brave.&#128267;</translation>
-<translation id="1880168210969863408">Bagus! Anda telah menghemat waktu pemuatan 10 menit waktu dengan peramban Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Bagus! Anda telah memblokir 250 pelacak &amp; iklan dengan peramban Brave.🔥</translation>
+<translation id="9199047775708635708">Bagus! Anda telah menghemat 10MB dengan peramban Brave.🔋</translation>
+<translation id="1880168210969863408">Bagus! Anda telah menghemat waktu pemuatan 10 menit waktu dengan peramban Brave.💨💨</translation>
 <translation id="7408493389591475748">Mulailah meramban untuk melihat pelaporan privasi</translation>
 <translation id="9080777565335515917">Atur Brave sebagai peramban default untuk meramban privat dan aman.</translation>
 <translation id="1390943217516275883">Izinkan Brave untuk menunjukkan statistik privasi Anda</translation>
@@ -475,7 +475,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="6897083627729802351">Kapan Anda menerima imbalan?</translation>
 <translation id="310863932297733723">Token yang Anda peroleh dari Iklan Privat Brave sepanjang bulan ini akan tiba tanggal 5 bulan berikutnya.</translation>
 <translation id="7712287524451429139">Jadi mudah untuk memberi balik</translation>
-<translation id="105037569026952831">Pencipta menerima kontribusi token Anda secara otomatis berdasarkan tingkat interaksi Anda yang kami ukur sebagai ‘Perhatian’.</translation>
+<translation id="105037569026952831">Kreator menerima kontribusi token Anda secara otomatis berdasarkan tingkat keterlibatan Anda yang kami ukur sebagai 'Atensi'.</translation>
 <translation id="5323267338679539010">Ucapkan terima kasih dengan tip</translation>
 <translation id="6730444165801605682">Memberi tip adalah cara yang personal untuk mendorong dan mendukung konten atau kreator yang Anda sukai. Selamat memberi!</translation>
 <translation id="7509452925943421624">Apa yang dapat Anda lakukan dengan token?</translation>
@@ -501,7 +501,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="7307847920988946894">Aktifkan Imbalan</translation>
 <translation id="7872993190040589450">Dengan mengaktifkan, Anda menyetujui  <ph name="TERMS_OF_SERVICE"/> dan <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="6128511569382736135">Untuk memulai panggilan gratis, aktifkan Brave Private Ads</translation>
-<translation id="7930006085154756245">Dengan Brave Private Ads, Anda mendapatkan token untuk melihat iklan privat (data Anda tetap aman). Tukarkan token dengan uang tunai, kartu hadiah…atau bahkan memberikan tip ke situs web yang Anda sukai. Tanpa pelacakan. Tanpa pelambatan.</translation>
+<translation id="7930006085154756245">Dengan Brave Private Ads, Anda mendapatkan token untuk melihat iklan privat (data Anda tetap aman). Tukarkan token dengan uang tunai, kartu hadiah…atau bahkan berikan tip ke situs web yang Anda sukai. Tanpa pelacakan. Tanpa pelambatan.</translation>
 <translation id="4992617448154987397">Aktifkan Brave Private Ads</translation>
 <translation id="3415016869273103668">Kini Anda dapat mulai melakukan panggilan gratis</translation>
 <translation id="7073631403665023390">Klik atau ketuk layar di mana pun untuk melanjutkan ke Brave Talk.</translation>
@@ -656,6 +656,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="414639769490080648">Jumlah menit untuk menunggu hingga Brave Wallet terkunci secara otomatis</translation>
 <translation id="4993345308607970390">Atur Ulang Brave Wallet</translation>
 <translation id="6369495274982305511">Anda yakin ingin mengatur ulang dompet Anda? Jika dompet Anda tidak dicadangkan, mengatur ulang akan menyebabkan Anda kehilangan semua data akun (termasuk dana terkait). Ketik <ph name="CONFIRMATION_PHRASE"/> untuk mengonfirmasi.</translation>
+<translation id="5693968582510626466">Menghapus transaksi dapat berguna bagi pengembang atau saat menghapus kondisi pada peladen lokal</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# menit} other {# menit}}</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">Tingkatkan ke VPN untuk melindungi koneksi Anda dan memblokir pelacak yang menyerbu di mana pun.</translation>
@@ -739,6 +740,8 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Nominal + Bensin</translation>
 <translation id="1950052789869821983">Transaksi</translation>
+<translation id="4220062530885628403">Saat ini</translation>
+<translation id="5317780077021120954">Simpan</translation>
 <translation id="6122742277607781713">Portofolio</translation>
 <translation id="750843150060816463">Harga Bensin (Gwei)</translation>
 <translation id="1426320910664514906">Batas Gas</translation>
@@ -820,7 +823,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1346059596910821859">Tip</translation>
 <translation id="1549705559752367917">Kirim Tip</translation>
 <translation id="6727102863431372879">Set</translation>
-<translation id="381822214767083050">Kontribusi bulanan</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> Dolar AS</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Tampilkan melengkapi-otomatis di bilah alamat</translation>

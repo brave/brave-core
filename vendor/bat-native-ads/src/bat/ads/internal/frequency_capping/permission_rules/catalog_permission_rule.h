@@ -22,12 +22,12 @@ class CatalogPermissionRule final : public PermissionRule {
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap();
 
   CatalogPermissionRule(const CatalogPermissionRule&) = delete;
   CatalogPermissionRule& operator=(const CatalogPermissionRule&) = delete;
+
+  std::string last_message_;
 };
 
 }  // namespace ads

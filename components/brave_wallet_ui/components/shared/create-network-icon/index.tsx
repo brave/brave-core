@@ -16,10 +16,11 @@ import { makeNetworkAsset } from '../../../options/asset-options'
 interface Props {
   network: BraveWallet.NetworkInfo
   marginRight: number
+  size?: 'big' | 'small'
 }
 
 function CreateNetworkIcon (props: Props) {
-  const { network, marginRight } = props
+  const { network, marginRight, size } = props
   if (!network) {
     return null
   }
@@ -79,6 +80,7 @@ function CreateNetworkIcon (props: Props) {
       isTestnet={SupportedTestNetworks.includes(network.chainId)}
     >
       <NetworkIcon
+        size={size}
         icon={
           nativeAsset.logo
             ? nativeAsset.logo

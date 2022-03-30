@@ -156,55 +156,21 @@ export const ArrowIcon = styled(ArrowRightIcon)`
 `
 
 export const Divider = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
   width: 100%;
   height: 1px;
   background-color: ${(p) => p.theme.color.divider01};
+  border: 1px solid ${(p) => p.theme.color.divider01};
+  margin-top: 6px;
+  margin-bottom: 6px;
 `
 
 export const SectionRow = styled.div`
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  flex-direction: row;
   width: 100%;
   height: inherit;
-`
-
-export const SectionColumn = styled.div`
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  height: inherit;
-`
-
-export const SingleRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 100%;
-  gap: 5px;
-`
-
-export const SectionRightColumn = styled.div`
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  flex-direction: column;
-`
-
-export const TopColumn = styled.div`
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
 `
 
 export const EditButton = styled(WalletButton)`
@@ -229,32 +195,7 @@ export const TransactionText = styled.span<Partial<StyleProps>>`
   line-height: 18px;
   letter-spacing: 0.01em;
   color: ${(p) => p.hasError ? p.theme.color.errorText : p.theme.color.text03};
-`
-
-export const GrandTotalText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
-  font-weight: 600;
-`
-
-export const MessageBoxRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 100%;
-  padding-top: 6px;
-`
-
-export const FiatRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-direction: row;
-  width: 100%;
+  text-align: right;
 `
 
 export const URLText = styled.span`

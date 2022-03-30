@@ -12,11 +12,15 @@
 namespace ads {
 namespace user_data {
 
+namespace {
+constexpr char kBuildChannelKey[] = "buildChannel";
+}  // namespace
+
 base::DictionaryValue GetBuildChannel() {
   base::DictionaryValue user_data;
 
   DCHECK(!BuildChannel().name.empty());
-  user_data.SetStringKey("buildChannel", BuildChannel().name);
+  user_data.SetStringKey(kBuildChannelKey, BuildChannel().name);
   return user_data;
 }
 

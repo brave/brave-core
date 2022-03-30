@@ -63,7 +63,7 @@ TEST(BatAdsCalendarUtilTest, GetDayOfWeekForYearMonthAndDay) {
 
 TEST(BatAdsCalendarUtilTest, GetDayOfWeek) {
   // Arrange
-  const base::Time& time =
+  const base::Time time =
       TimeFromString("November 18 1970", /* is_local */ false);
 
   // Act

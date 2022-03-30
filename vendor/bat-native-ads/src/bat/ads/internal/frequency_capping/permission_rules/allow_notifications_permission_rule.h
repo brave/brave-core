@@ -22,14 +22,14 @@ class AllowNotificationsPermissionRule final : public PermissionRule {
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap();
 
   AllowNotificationsPermissionRule(const AllowNotificationsPermissionRule&) =
       delete;
   AllowNotificationsPermissionRule& operator=(
       const AllowNotificationsPermissionRule&) = delete;
+
+  std::string last_message_;
 };
 
 }  // namespace ads

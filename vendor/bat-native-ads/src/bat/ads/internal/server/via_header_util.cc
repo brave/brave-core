@@ -12,7 +12,7 @@ namespace ads {
 namespace server {
 
 namespace {
-const int kVersion = 1;
+constexpr int kVersion = 1;
 }  // namespace
 
 std::string BuildViaHeader() {

@@ -328,6 +328,8 @@ provideStrings({
   braveWalletConfirmTransactionNext: 'next',
   braveWalletConfirmTransactionFrist: 'first',
   braveWalletConfirmTransactions: 'transactions',
+  braveWalletAllowSpendCurrentAllowance: 'Current allowance',
+  braveWalletAllowSpendProposedAllowance: 'Proposed allowance',
 
   // Wallet Main Panel
   braveWalletPanelTitle: 'Brave Wallet',
@@ -477,5 +479,9 @@ provideStrings({
   // Sweepstakes
   braveWalletSweepstakesTitle: 'Brave Swap-stakes',
   braveWalletSweepstakesDescription: '7 days of crypto giveaways, ~$500k in prizes.',
-  braveWalletSweepstakesCallToAction: 'Enter now!'
+  braveWalletSweepstakesCallToAction: 'Enter now!',
+
+  // Network Filter
+  braveWalletNetworkFilterAll: 'All Networks',
+  braveWalletNetworkFilterSecondary: 'Secondary Networks'
 })

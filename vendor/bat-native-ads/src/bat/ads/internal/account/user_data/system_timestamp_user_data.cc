@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/account/user_data/system_timestamp_user_data.h"
 
-#include <string>
-
 #include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ads/internal/time_util.h"
@@ -14,12 +12,14 @@
 namespace ads {
 namespace user_data {
 
-base::DictionaryValue GetSystemTimestamp() {
-  const std::string timestamp =
-      TimeToPrivacyPreservingISO8601(base::Time::Now());
+namespace {
+constexpr char kSystemTimestampKey[] = "systemTimestamp";
+}  // namespace
 
+base::DictionaryValue GetSystemTimestamp() {
   base::DictionaryValue user_data;
-  user_data.SetKey("systemTimestamp", base::Value(timestamp));
+  user_data.SetStringKey(kSystemTimestampKey,
+                         TimeToPrivacyPreservingISO8601(base::Time::Now()));
 
   return user_data;
 }

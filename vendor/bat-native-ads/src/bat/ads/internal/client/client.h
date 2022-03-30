@@ -91,7 +91,7 @@ class Client final {
                                    const AdType& type);
   void ResetAllSeenAdvertisersForType(const AdType& type);
 
-  void SetServeAdAt(const base::Time& time);
+  void SetServeAdAt(const base::Time time);
   base::Time GetServeAdAt();
 
   void AppendTextClassificationProbabilitiesToHistory(
@@ -105,10 +105,6 @@ class Client final {
   void RemoveAllHistory();
 
  private:
-  bool is_initialized_ = false;
-
-  InitializeCallback callback_;
-
   void Save();
   void OnSaved(const bool success);
 
@@ -118,6 +114,10 @@ class Client final {
   bool FromJson(const std::string& json);
 
   std::unique_ptr<ClientInfo> client_;
+
+  bool is_initialized_ = false;
+
+  InitializeCallback callback_;
 };
 
 }  // namespace ads

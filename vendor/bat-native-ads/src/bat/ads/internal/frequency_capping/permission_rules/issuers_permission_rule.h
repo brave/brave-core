@@ -22,12 +22,12 @@ class IssuersPermissionRule : public PermissionRule {
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap();
 
   IssuersPermissionRule(const IssuersPermissionRule&) = delete;
   IssuersPermissionRule& operator=(const IssuersPermissionRule&) = delete;
+
+  std::string last_message_;
 };
 
 }  // namespace ads

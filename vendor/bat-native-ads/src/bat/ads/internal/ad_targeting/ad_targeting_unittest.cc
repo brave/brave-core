@@ -37,8 +37,8 @@ namespace ad_targeting {
 
 namespace {
 
-const char kTextClassificationFeatureName[] = "TextClassification";
-const char kEpsilonGreedyBanditFeatureName[] = "EpsilonGreedyBandit";
+constexpr char kTextClassificationFeatureName[] = "TextClassification";
+constexpr char kEpsilonGreedyBanditFeatureName[] = "EpsilonGreedyBandit";
 
 struct ModelCombinationsParamInfo final {
   bool epsilon_greedy_bandits_enabled;
@@ -194,7 +194,7 @@ TEST_P(BatAdsAdTargetingTest, GetSegments) {
 
   // Act
   const UserModelInfo user_model = BuildUserModel();
-  const SegmentList segments = GetTopParentChildSegments(user_model);
+  const SegmentList segments = GetTopChildSegments(user_model);
 
   // Assert
   EXPECT_EQ(param.number_of_segments, segments.size());
@@ -253,7 +253,7 @@ TEST_F(BatAdsAdTargetingTest, GetSegmentsForAllModelsIfPreviouslyProcessed) {
 
   // Act
   const UserModelInfo user_model = BuildUserModel();
-  const SegmentList segments = GetTopParentChildSegments(user_model);
+  const SegmentList segments = GetTopChildSegments(user_model);
 
   // Assert
   const SegmentList expected_segments = {
@@ -292,7 +292,7 @@ TEST_F(BatAdsAdTargetingTest, GetSegmentsForFieldTrialParticipationPath) {
 
   // Act
   const UserModelInfo user_model = BuildUserModel();
-  const SegmentList segments = GetTopParentChildSegments(user_model);
+  const SegmentList segments = GetTopChildSegments(user_model);
 
   // Assert
   // Even though text classification has been processed we don't expect

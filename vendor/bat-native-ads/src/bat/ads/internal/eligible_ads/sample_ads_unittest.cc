@@ -36,15 +36,18 @@ TEST(BatAdsSampleAdsTest, CalculateNormalisingConstant) {
 
   AdPredictorInfo<CreativeAdNotificationInfo> ad_predictor_1;
   ad_predictor_1.score = 1.1;
-  creative_ad_predictors[base::GenerateGUID()] = ad_predictor_1;
+  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+      ad_predictor_1;
 
   AdPredictorInfo<CreativeAdNotificationInfo> ad_predictor_2;
   ad_predictor_2.score = 2.2;
-  creative_ad_predictors[base::GenerateGUID()] = ad_predictor_2;
+  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+      ad_predictor_2;
 
   AdPredictorInfo<CreativeAdNotificationInfo> ad_predictor_3;
   ad_predictor_3.score = 3.3;
-  creative_ad_predictors[base::GenerateGUID()] = ad_predictor_3;
+  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+      ad_predictor_3;
 
   // Act
   const double normalising_constant =
@@ -62,15 +65,18 @@ TEST(BatAdsSampleAdsTest, SampleAdFromPredictorsWithZeroScores) {
 
   AdPredictorInfo<CreativeAdNotificationInfo> ad_predictor_1;
   ad_predictor_1.score = 0;
-  creative_ad_predictors[base::GenerateGUID()] = ad_predictor_1;
+  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+      ad_predictor_1;
 
   AdPredictorInfo<CreativeAdNotificationInfo> ad_predictor_2;
   ad_predictor_2.score = 0;
-  creative_ad_predictors[base::GenerateGUID()] = ad_predictor_2;
+  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+      ad_predictor_2;
 
   AdPredictorInfo<CreativeAdNotificationInfo> ad_predictor_3;
   ad_predictor_3.score = 0;
-  creative_ad_predictors[base::GenerateGUID()] = ad_predictor_3;
+  creative_ad_predictors[base::GUID::GenerateRandomV4().AsLowercaseString()] =
+      ad_predictor_3;
 
   // Act
   const absl::optional<CreativeAdNotificationInfo> creative_ad_optional =

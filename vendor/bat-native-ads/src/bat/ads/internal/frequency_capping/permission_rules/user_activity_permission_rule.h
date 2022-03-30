@@ -22,13 +22,13 @@ class UserActivityPermissionRule final : public PermissionRule {
   std::string GetLastMessage() const override;
 
  private:
-  std::string last_message_;
-
   bool DoesRespectCap();
 
   UserActivityPermissionRule(const UserActivityPermissionRule&) = delete;
   UserActivityPermissionRule& operator=(const UserActivityPermissionRule&) =
       delete;
+
+  std::string last_message_;
 };
 
 }  // namespace ads
