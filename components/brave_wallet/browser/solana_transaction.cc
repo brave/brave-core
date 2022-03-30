@@ -73,6 +73,17 @@ std::string SolanaTransaction::GetSignedTransaction(
   return base::Base64Encode(transaction_bytes);
 }
 
+std::string SolanaTransaction::GetBase64EncodedMessage(
+    const std::string& recent_blockhash) {
+  if (!recent_blockhash.empty())
+    message_.SetRecentBlockHash(recent_blockhash);
+  auto message_bytes = message_.Serialize(nullptr /* signers */);
+  if (!message_bytes)
+    return "";
+
+  return base::Base64Encode(*message_bytes);
+}
+
 mojom::SolanaTxDataPtr SolanaTransaction::ToSolanaTxData() const {
   auto solana_tx_data = message_.ToSolanaTxData();
   solana_tx_data->to_wallet_address = to_wallet_address_;

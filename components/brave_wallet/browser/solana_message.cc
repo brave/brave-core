@@ -119,10 +119,17 @@ absl::optional<std::vector<uint8_t>> SolanaMessage::Serialize(
     if (account_meta.is_signer) {
       if (signers)
         signers->push_back(account_meta.pubkey);
+      if (num_required_signatures == UINT8_MAX)
+        return absl::nullopt;
       num_required_signatures++;
-      if (!account_meta.is_writable)
+      if (!account_meta.is_writable) {
+        if (num_readonly_signed_accounts == UINT8_MAX)
+          return absl::nullopt;
         num_readonly_signed_accounts++;
+      }
     } else if (!account_meta.is_writable) {
+      if (num_readonly_unsigned_accounts == UINT8_MAX)
+        return absl::nullopt;
       num_readonly_unsigned_accounts++;
     }
   }

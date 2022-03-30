@@ -149,6 +149,8 @@ class TxService : public KeyedService,
       const std::string& to_wallet_address,
       uint64_t amount,
       MakeTokenProgramTransferTxDataCallback callback) override;
+  void GetEstimatedTxFee(const std::string& tx_meta_id,
+                         GetEstimatedTxFeeCallback callback) override;
 
  private:
   friend class EthTxManagerUnitTest;

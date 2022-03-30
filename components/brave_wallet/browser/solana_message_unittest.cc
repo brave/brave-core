@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_message.h"
 
+#include <utility>
 #include <vector>
 
 #include "base/json/json_reader.h"
@@ -73,6 +74,45 @@ TEST(SolanaMessageUnitTest, Serialize) {
       2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0  // data
   };
   EXPECT_EQ(message_bytes.value(), expected_bytes);
+
+  SolanaMessage message_without_blockhash("", kFromAccount, {instruction});
+  EXPECT_FALSE(message_without_blockhash.Serialize(nullptr));
+}
+
+TEST(SolanaMessageUnitTest, SerializeNumOfAccountMaxSize) {
+  std::vector<SolanaAccountMeta> accounts_exceed_signer_account_max;
+  for (size_t i = 0; i <= UINT8_MAX; ++i) {
+    SolanaAccountMeta meta("pubkey" + std::to_string(i), true, false);
+    accounts_exceed_signer_account_max.push_back(meta);
+  }
+
+  SolanaInstruction instruction(kSolanaSystemProgramId,
+                                std::move(accounts_exceed_signer_account_max),
+                                {});
+  SolanaMessage message(kRecentBlockhash, kFromAccount, {instruction});
+  EXPECT_FALSE(message.Serialize(nullptr));
+
+  std::vector<SolanaAccountMeta> accounts_exceed_writable_account_max;
+  for (size_t i = 0; i <= UINT8_MAX; ++i) {
+    SolanaAccountMeta meta("pubkey" + std::to_string(i), false, true);
+    accounts_exceed_writable_account_max.push_back(meta);
+  }
+  SolanaInstruction instruction2(
+      kSolanaSystemProgramId, std::move(accounts_exceed_writable_account_max),
+      {});
+  SolanaMessage message2(kRecentBlockhash, kFromAccount, {instruction});
+  EXPECT_FALSE(message.Serialize(nullptr));
+
+  std::vector<SolanaAccountMeta> accounts_exceed_readonly_account_max;
+  for (size_t i = 0; i <= UINT8_MAX; ++i) {
+    SolanaAccountMeta meta("pubkey" + std::to_string(i), false, true);
+    accounts_exceed_readonly_account_max.push_back(meta);
+  }
+  SolanaInstruction instruction3(
+      kSolanaSystemProgramId, std::move(accounts_exceed_readonly_account_max),
+      {});
+  SolanaMessage message3(kRecentBlockhash, kFromAccount, {instruction});
+  EXPECT_FALSE(message.Serialize(nullptr));
 }
 
 TEST(SolanaMessageUnitTest, GetUniqueAccountMetas) {

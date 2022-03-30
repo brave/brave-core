@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/solana_message.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -33,9 +34,13 @@ class SolanaTransaction {
   ~SolanaTransaction();
   bool operator==(const SolanaTransaction&) const;
 
-  // Serialize the message and sign it.
+  // Serialize the message and sign it. latest_blockhash_ will be updated if
+  // non-empty recent_blockhash is passed.
   std::string GetSignedTransaction(KeyringService* keyring_service,
                                    const std::string& recent_blockhash);
+  // Serialize and encode the message in Base64, latest_blockhash_ will be
+  // updated if non-empty recent_blockhash is passed.
+  std::string GetBase64EncodedMessage(const std::string& recent_blockhash);
 
   mojom::SolanaTxDataPtr ToSolanaTxData() const;
   base::Value ToValue() const;
@@ -61,6 +66,7 @@ class SolanaTransaction {
   void set_amount(uint64_t amount) { amount_ = amount; }
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(SolanaTransactionUnitTest, GetBase64EncodedMessage);
   SolanaMessage message_;
 
   // Data fields to be used for UI, they are filled currently when we create

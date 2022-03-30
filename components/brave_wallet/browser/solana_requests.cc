@@ -73,6 +73,10 @@ std::string getAccountInfo(const std::string& pubkey) {
   return GetJSON(dictionary);
 }
 
+std::string getFeeForMessage(const std::string& message) {
+  return GetJsonRpc1Param("getFeeForMessage", message);
+}
+
 }  // namespace solana
 
 }  // namespace brave_wallet

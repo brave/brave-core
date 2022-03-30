@@ -276,4 +276,9 @@ void TxService::MakeTokenProgramTransferTxData(
       std::move(callback));
 }
 
+void TxService::GetEstimatedTxFee(const std::string& tx_meta_id,
+                                  GetEstimatedTxFeeCallback callback) {
+  GetSolanaTxManager()->GetEstimatedTxFee(tx_meta_id, std::move(callback));
+}
+
 }  // namespace brave_wallet

@@ -872,6 +872,8 @@ interface SolanaTxManagerProxy {
       string to_wallet_address,
       uint64 amount)
       => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
+
+  GetEstimatedTxFee(string tx_meta_id) => (uint64 fee, SolanaProviderError error, string error_message);
 };
 
 interface BraveWalletServiceObserver {
