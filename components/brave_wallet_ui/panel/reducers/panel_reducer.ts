@@ -52,7 +52,13 @@ const defaultState: PanelState = {
   }],
   getEncryptionPublicKeyRequest: {
     address: '',
-    message: '',
+    origin: {
+      url: ''
+    }
+  },
+  decryptRequest: {
+    address: '',
+    unsafeMessage: '',
     origin: {
       url: ''
     }
@@ -106,6 +112,13 @@ export const createPanelReducer = (initialState: PanelState) => {
     return {
       ...state,
       getEncryptionPublicKeyRequest: request
+    }
+  })
+
+  reducer.on(PanelActions.decrypt, (state: any, request: BraveWallet.DecryptRequest) => {
+    return {
+      ...state,
+      decryptRequest: request
     }
   })
 
