@@ -22,6 +22,7 @@
 #include "third_party/blink/renderer/platform/graphics/static_bitmap_image.h"
 #include "third_party/blink/renderer/platform/graphics/unaccelerated_static_bitmap_image.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
+#include "third_party/blink/renderer/platform/language.h"
 #include "third_party/blink/renderer/platform/network/network_utils.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
@@ -302,10 +303,9 @@ bool BraveSessionCache::AllowFontFamily(
       if (GetAllowedFontFamilies().contains(family_name.Utf8()))
         return true;
 #if BUILDFLAG(IS_WIN)
-      const icu::Locale& locale = icu::Locale::getDefault();
-      std::string locale_language = locale.getLanguage();
-      if (GetAdditionalAllowedFontFamiliesByLocale(locale_language)
-              .contains(family_name.Utf8()))
+      WTF::String locale = blink::DefaultLanguage().GetString().Left(2);
+      if (GetAdditionalAllowedFontFamiliesByLocale(locale).contains(
+              family_name.Utf8()))
         return true;
 #endif
       std::mt19937_64 prng = MakePseudoRandomGenerator();

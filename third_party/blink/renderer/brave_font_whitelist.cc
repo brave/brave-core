@@ -692,11 +692,6 @@ base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesLO =
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesML =
     base::MakeFlatSet<base::StringPiece>(
         std::vector<base::StringPiece>{"Kartika", "Kartika Bold"});
-
-base::flat_set<base::StringPiece> kLocalesWithAdditionalFontFamilies =
-    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
-        "ar", "fa", "ur", "as", "iu", "hi", "mr", "am", "ti", "gu", "pa", "zh",
-        "he", "ja", "kn", "km", "ko", "lo", "ml"});
 #endif
 }  // namespace
 
@@ -717,10 +712,8 @@ const base::flat_set<base::StringPiece>& GetAllowedFontFamilies() {
 }
 
 const base::flat_set<base::StringPiece>&
-GetAdditionalAllowedFontFamiliesByLocale(base::StringPiece locale_language) {
+GetAdditionalAllowedFontFamiliesByLocale(WTF::String locale_language) {
 #if BUILDFLAG(IS_WIN)
-  if (!kLocalesWithAdditionalFontFamilies.contains(locale_language))
-    return kEmptyFontSet;
   if (locale_language == "ar" || locale_language == "fa" ||
       locale_language == "ur")
     return kAdditionalAllowedFontFamiliesAR;

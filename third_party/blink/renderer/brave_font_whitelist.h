@@ -10,6 +10,7 @@
 
 #include "base/containers/flat_set.h"
 #include "base/strings/string_piece.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave {
 
@@ -18,7 +19,7 @@ const base::flat_set<base::StringPiece>& GetAllowedFontFamilies();
 
 // This takes a 2-character language code.
 const base::flat_set<base::StringPiece>&
-GetAdditionalAllowedFontFamiliesByLocale(base::StringPiece locale_language);
+GetAdditionalAllowedFontFamiliesByLocale(WTF::String locale_language);
 
 }  // namespace brave
 
