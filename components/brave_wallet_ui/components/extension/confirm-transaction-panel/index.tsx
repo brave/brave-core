@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 
-import { BraveWallet, WalletState } from '../../../constants/types'
+import { WalletState } from '../../../constants/types'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
@@ -17,7 +17,7 @@ import { CreateSiteOrigin } from '../../shared'
 
 // Components
 import { NavButton, PanelTab, TransactionDetailBox } from '../'
-import EditGas from '../edit-gas'
+import EditGas, { MaxPriorityPanels } from '../edit-gas'
 import EditAllowance from '../edit-allowance'
 import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/button'
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
@@ -93,11 +93,10 @@ function ConfirmTransactionPanel ({
     isERC20Approve,
     isERC721SafeTransferFrom,
     isERC721TransferFrom,
-    maxPriorityPanel,
+    isSolanaSystemTransfer,
     onEditAllowanceSave,
     queueNextTransaction,
     rejectAllTransactions,
-    setMaxPriorityPanel,
     suggestedMaxPriorityFeeChoices,
     toOrb,
     transactionDetails,
@@ -115,6 +114,7 @@ function ConfirmTransactionPanel ({
   const [isEditing, setIsEditing] = React.useState<boolean>(false)
   const [isEditingAllowance, setIsEditingAllowance] = React.useState<boolean>(false)
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] = React.useState<boolean>(false)
+  const [maxPriorityPanel, setMaxPriorityPanel] = React.useState<MaxPriorityPanels>(MaxPriorityPanels.setSuggested)
 
   // methods
   const onSelectTab = (tab: confirmPanelTabs) => () => setSelectedTab(tab)
@@ -270,7 +270,7 @@ function ConfirmTransactionPanel ({
           onSubmit={onSelectTab('details')}
           text='Details'
         />
-        {transactionInfo.txType !== BraveWallet.TransactionType.SolanaSystemTransfer &&
+        {!isSolanaSystemTransfer &&
           <AdvancedTransactionSettingsButton
             onSubmit={onToggleAdvancedTransactionSettings}
           />

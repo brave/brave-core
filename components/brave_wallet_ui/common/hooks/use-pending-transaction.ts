@@ -20,7 +20,6 @@ import usePricing from './pricing'
 import useTokenInfo from './token'
 import { useLib } from './useLib'
 
-import { MaxPriorityPanels } from '../../components/extension/edit-gas'
 import { WalletState, BraveWallet } from '../../constants/types'
 import { UpdateUnapprovedTransactionGasFieldsType, UpdateUnapprovedTransactionNonceType } from '../constants/action_types'
 import { getNetworkFromTXDataUnion } from '../../utils/network-utils'
@@ -66,7 +65,6 @@ export const usePendingTransactions = () => {
   } = useTokenInfo(getBlockchainTokenInfo, visibleTokens, fullTokenList, transactionsNetwork)
 
   // state
-  const [maxPriorityPanel, setMaxPriorityPanel] = React.useState<MaxPriorityPanels>(MaxPriorityPanels.setSuggested)
   const [suggestedMaxPriorityFeeChoices, setSuggestedMaxPriorityFeeChoices] = React.useState<string[]>([
     transactionGasEstimates?.slowMaxPriorityFeePerGas || '0',
     transactionGasEstimates?.avgMaxPriorityFeePerGas || '0',
@@ -82,6 +80,7 @@ export const usePendingTransactions = () => {
   const isERC20Approve = transactionInfo?.txType === BraveWallet.TransactionType.ERC20Approve
   const isERC721SafeTransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC20Transfer
   const isERC721TransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC20Transfer
+  const isSolanaSystemTransfer = transactionInfo?.txType === BraveWallet.TransactionType.SolanaSystemTransfer
 
   // methods
   const findAccountName = (address: string) => {
@@ -220,11 +219,10 @@ export const usePendingTransactions = () => {
     isERC20Approve,
     isERC721SafeTransferFrom,
     isERC721TransferFrom,
-    maxPriorityPanel,
+    isSolanaSystemTransfer,
     onEditAllowanceSave,
     queueNextTransaction,
     rejectAllTransactions,
-    setMaxPriorityPanel,
     suggestedMaxPriorityFeeChoices,
     toOrb,
     transactionDetails,
