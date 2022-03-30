@@ -72,4 +72,9 @@ bool ParseFilEstimateGas(const std::string& raw_json,
   return true;
 }
 
+bool ParseSendFilecoinTransaction(const std::string& json,
+                                  std::string* tx_hash) {
+  return true;
+}
+
 }  // namespace brave_wallet

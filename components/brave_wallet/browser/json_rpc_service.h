@@ -101,6 +101,12 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               GetTxCountCallback callback);
   void GetFilTransactionCount(const std::string& address,
                               GetFilTxCountCallback callback);
+  using SendFilecoinTransactionCallback =
+      base::OnceCallback<void(const std::string& tx_hash,
+                              mojom::FilecoinProviderError error,
+                              const std::string& error_message)>;
+  void SendFilecoinTransaction(const std::string& signed_tx,
+                               SendFilecoinTransactionCallback callback);
 
   using GetTxReceiptCallback =
       base::OnceCallback<void(TransactionReceipt result,
@@ -334,6 +340,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const base::flat_map<std::string, std::string>& headers);
   void OnFilGetTransactionCount(
       GetFilTxCountCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+  void OnSendFilecoinTransaction(
+      SendFilecoinTransactionCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);

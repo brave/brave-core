@@ -651,6 +651,7 @@ export async function sendFilTransaction (payload: SendFilTransactionParams) {
     gasLimit: payload.gasLimit || '',
     maxFee: payload.maxFee || '0',
     to: payload.to,
+    from: payload.from,
     value: payload.value,
     cid: payload.cid || ''
   }

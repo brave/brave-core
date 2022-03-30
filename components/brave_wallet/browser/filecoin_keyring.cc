@@ -11,6 +11,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/bls/buildflags.h"
+#include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #if BUILDFLAG(ENABLE_RUST_BLS)
@@ -144,6 +145,17 @@ std::string FilecoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
              hd_key->GetUncompressedPublicKey(),
              mojom::FilecoinAddressProtocol::SECP256K1, mojom::kFilecoinTestnet)
       .EncodeAsString();
+}
+
+std::string FilecoinKeyring::SignTransaction(FilTransaction* tx) {
+  if (!tx)
+    return std::string();
+  HDKey* hd_key =
+      static_cast<HDKey*>(GetHDKeyFromAddress(tx->from().EncodeAsString()));
+  if (!hd_key)
+    return std::string();
+  std::string private_key = base::Base64Encode(hd_key->private_key());
+  return tx->GetSignedTransaction(private_key);
 }
 
 }  // namespace brave_wallet

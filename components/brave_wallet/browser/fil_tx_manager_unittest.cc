@@ -174,9 +174,10 @@ TEST_F(FilTxManagerUnitTest,
   base::ReplaceSubstringsAfterOffset(&gas_response, 0, "{from}", from_account);
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
                  "Filecoin.GasEstimateMessageGas", gas_response);
-  auto tx_data = mojom::FilTxData::New(
-      "" /* nonce */, "" /* gas_premium */, "" /* gas_fee_cap */,
-      "" /* gas_limit */, "" /* max_fee */, to_account, "11", "bafy");
+  auto tx_data = mojom::FilTxData::New("" /* nonce */, "" /* gas_premium */,
+                                       "" /* gas_fee_cap */, "" /* gas_limit */,
+                                       "" /* max_fee */, to_account,
+                                       from_account, "11", "bafy");
   auto tx = FilTransaction::FromTxData(tx_data.Clone());
   std::string meta_id1;
   AddUnapprovedTransaction(tx_data.Clone(), from_account, &meta_id1);

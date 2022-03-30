@@ -69,6 +69,10 @@ std::string getEstimateGas(const std::string& from_address,
           .c_str());
 }
 
+std::string getSendTransaction(const std::string& signed_tx) {
+  return "";
+}
+
 }  // namespace fil
 
 }  // namespace brave_wallet
