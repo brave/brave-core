@@ -155,9 +155,6 @@ public class PortfolioFragment
                 NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 String chainId = Utils.getNetworkConst(
                         getActivity(), mSelectedChainNetworkName, customNetworks);
-                if (chainId.equals(chain_id) && !mSelectedChainNetworkName.isEmpty()) {
-                    return;
-                }
                 mSelectedChainNetworkName =
                         Utils.getNetworkText(requireActivity(), chain_id, customNetworks)
                                 .toString();
@@ -411,12 +408,12 @@ public class PortfolioFragment
     }
 
     @Override
-    public void OnTxPending(String accountName, String txId) {
-        updatePortfolioGetPendingTx(true);
+    public void onTxPending(String accountName, String txId) {
+        updateNetwork();
     }
 
     @Override
-    public void OnTxApprovedRejected(boolean approved, String accountName, String txId) {
+    public void onTxApprovedRejected(boolean approved, String accountName, String txId) {
         assert mPendingTxInfos != null;
         if (!hasPendingTx()) {
             return;

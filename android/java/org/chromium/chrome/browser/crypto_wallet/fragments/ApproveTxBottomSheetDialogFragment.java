@@ -80,8 +80,6 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         mChainDecimals = 18;
     }
 
-    // TODO: This needs to be changed to something that broadcasts to all classes implementing
-    // ApprovedTxObserver.
     public void setApprovedTxObserver(ApprovedTxObserver approvedTxObserver) {
         mApprovedTxObserver = approvedTxObserver;
     }
@@ -150,9 +148,9 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         super.onDismiss(dialog);
         if (mApprovedTxObserver != null) {
             if (mRejected || mApproved) {
-                mApprovedTxObserver.OnTxApprovedRejected(mApproved, mAccountName, mTxInfo.id);
+                mApprovedTxObserver.onTxApprovedRejected(mApproved, mAccountName, mTxInfo.id);
             } else {
-                mApprovedTxObserver.OnTxPending(mAccountName, mTxInfo.id);
+                mApprovedTxObserver.onTxPending(mAccountName, mTxInfo.id);
             }
         }
     }
