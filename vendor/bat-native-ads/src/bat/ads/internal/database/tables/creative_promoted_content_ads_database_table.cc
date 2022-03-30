@@ -110,14 +110,23 @@ CreativePromotedContentAdMap GroupCreativeAdsFromResponse(
       continue;
     }
 
-    // Creative instance already exists, so append the geo targets and dayparts
+    // Creative instance already exists, so append new geo targets and dayparts
     // to the existing creative ad
-    iter->second.geo_targets.insert(creative_ad.geo_targets.begin(),
-                                    creative_ad.geo_targets.end());
+    for (const auto& geo_target : creative_ad.geo_targets) {
+      const auto geo_target_iter = iter->second.geo_targets.find(geo_target);
+      if (geo_target_iter == iter->second.geo_targets.end()) {
+        iter->second.geo_targets.insert(geo_target);
+      }
+    }
 
-    iter->second.dayparts.insert(iter->second.dayparts.end(),
-                                 creative_ad.dayparts.begin(),
-                                 creative_ad.dayparts.end());
+    for (const auto& daypart : creative_ad.dayparts) {
+      const auto daypart_iter =
+          std::find(iter->second.dayparts.cbegin(),
+                    iter->second.dayparts.cend(), daypart);
+      if (daypart_iter == iter->second.dayparts.end()) {
+        iter->second.dayparts.push_back(daypart);
+      }
+    }
   }
 
   return creative_ads;

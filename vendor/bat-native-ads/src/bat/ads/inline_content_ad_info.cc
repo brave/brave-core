@@ -20,9 +20,9 @@ InlineContentAdInfo::InlineContentAdInfo(const InlineContentAdInfo& info) =
 InlineContentAdInfo::~InlineContentAdInfo() = default;
 
 bool InlineContentAdInfo::operator==(const InlineContentAdInfo& rhs) const {
-  return title == rhs.title && description == rhs.description &&
-         image_url == rhs.image_url && dimensions == rhs.dimensions &&
-         cta_text == rhs.cta_text;
+  return AdInfo::operator==(rhs) && title == rhs.title &&
+         description == rhs.description && image_url == rhs.image_url &&
+         dimensions == rhs.dimensions && cta_text == rhs.cta_text;
 }
 
 bool InlineContentAdInfo::operator!=(const InlineContentAdInfo& rhs) const {

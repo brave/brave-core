@@ -339,6 +339,15 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   // Arrange
   CreativePromotedContentAdList creative_promoted_content_ads;
 
+  CreativeDaypartInfo daypart_info_1;
+  daypart_info_1.dow = "0";
+  daypart_info_1.start_minute = 0;
+  daypart_info_1.end_minute = 719;
+  CreativeDaypartInfo daypart_info_2;
+  daypart_info_2.dow = "1";
+  daypart_info_2.start_minute = 720;
+  daypart_info_2.end_minute = 1439;
+
   CreativePromotedContentAdInfo info;
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -354,9 +363,8 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   info.total_max = 6;
   info.value = 1.0;
   info.segment = "technology & computing-software";
-  CreativeDaypartInfo daypart_info;
-  info.dayparts.push_back(daypart_info);
-  info.dayparts.push_back(daypart_info);
+  info.dayparts.push_back(daypart_info_1);
+  info.dayparts.push_back(daypart_info_2);
   info.geo_targets = {"US-FL", "US-CA"};
   info.target_url = "https://brave.com";
   info.title = "Test Ad 1 Title";

@@ -10,7 +10,7 @@
 
 namespace ads {
 
-struct IssuersInfo {
+struct IssuersInfo final {
   IssuersInfo();
   IssuersInfo(const IssuersInfo& info);
   ~IssuersInfo();

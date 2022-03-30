@@ -18,7 +18,7 @@ CatalogCreativeInlineContentAdInfo::~CatalogCreativeInlineContentAdInfo() =
 
 bool CatalogCreativeInlineContentAdInfo::operator==(
     const CatalogCreativeInlineContentAdInfo& rhs) const {
-  return payload == rhs.payload;
+  return CatalogCreativeInfo::operator==(rhs) && payload == rhs.payload;
 }
 
 bool CatalogCreativeInlineContentAdInfo::operator!=(

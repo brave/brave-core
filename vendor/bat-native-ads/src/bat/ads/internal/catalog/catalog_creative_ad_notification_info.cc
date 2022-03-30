@@ -18,7 +18,7 @@ CatalogCreativeAdNotificationInfo::~CatalogCreativeAdNotificationInfo() =
 
 bool CatalogCreativeAdNotificationInfo::operator==(
     const CatalogCreativeAdNotificationInfo& rhs) const {
-  return payload == rhs.payload;
+  return CatalogCreativeInfo::operator==(rhs) && payload == rhs.payload;
 }
 
 bool CatalogCreativeAdNotificationInfo::operator!=(

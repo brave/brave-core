@@ -153,7 +153,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_type_inline_content_ad_type.name = "inline_content";
     catalog_type_inline_content_ad_type.platform = "all";
     catalog_type_inline_content_ad_type.version = 1;
-    catalog_creative_promoted_content_ad.type =
+    catalog_creative_inline_content_ad.type =
         catalog_type_inline_content_ad_type;
     catalog_creative_inline_content_ad.payload.title = "Inline Content 1";
     catalog_creative_inline_content_ad.payload.description =
@@ -356,7 +356,7 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_type_inline_content_ad_type.name = "inline_content";
     catalog_type_inline_content_ad_type.platform = "all";
     catalog_type_inline_content_ad_type.version = 1;
-    catalog_creative_promoted_content_ad.type =
+    catalog_creative_inline_content_ad.type =
         catalog_type_inline_content_ad_type;
     catalog_creative_inline_content_ad.payload.title = "Inline Content 2";
     catalog_creative_inline_content_ad.payload.description =

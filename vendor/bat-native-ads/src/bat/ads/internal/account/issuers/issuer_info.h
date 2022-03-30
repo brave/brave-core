@@ -11,7 +11,7 @@
 
 namespace ads {
 
-struct IssuerInfo {
+struct IssuerInfo final {
   IssuerInfo();
   IssuerInfo(const IssuerInfo& info);
   ~IssuerInfo();
