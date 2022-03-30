@@ -19,6 +19,10 @@ import { CreateSiteOrigin } from '../../shared'
 import { NavButton, PanelTab, TransactionDetailBox } from '../'
 import EditGas from '../edit-gas'
 import EditAllowance from '../edit-allowance'
+import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/button'
+import AdvancedTransactionSettings from '../advanced-transaction-settings'
+import { Erc20ApproveTransactionInfo } from './erc-twenty-transaction-info'
+import { TransactionInfo } from './transaction-info'
 
 // Styled Components
 import {
@@ -31,15 +35,11 @@ import {
   TransactionAmountBig,
   TransactionFiatAmountBig,
   MessageBox,
-  TransactionTitle,
   TransactionTypeText,
-  TransactionText,
   ButtonRow,
   AccountCircleWrapper,
   ArrowIcon,
   FromToRow,
-  Divider,
-  SectionRow,
   EditButton,
   FavIcon,
   QueueStepText,
@@ -62,8 +62,6 @@ import {
   AddressText,
   URLText
 } from '../shared-panel-styles'
-import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/button'
-import AdvancedTransactionSettings from '../advanced-transaction-settings'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
@@ -87,7 +85,6 @@ function ConfirmTransactionPanel ({
   const {
     AssetIconWithPlaceholder,
     baseFeePerGas,
-    currentTokenAllowance,
     findAssetPrice,
     foundTokenInfoByContractAddress,
     fromAccountName,
@@ -136,29 +133,6 @@ function ConfirmTransactionPanel ({
       <Skeleton width={'100%'} height={'100%'} enableAnimation />
     </StyledWrapper>
   }
-
-  /**
-   * This will need updating if we ever switch to using per-locale formatting,
-   * since `.` isnt always the decimal seperator
-  */
-  const transactionValueParts = (
-    (!isERC721SafeTransferFrom && !isERC721TransferFrom)
-    ? new Amount(transactionDetails.valueExact)
-      .format(undefined, true)
-    : transactionDetails.valueExact
-  ).split('.')
-
-  /**
-   * Inserts a <wbr /> tag between the integer and decimal portions of the value for wrapping
-   * This will need updating if we ever switch to using per-locale formatting
-   */
-  const transactionValueText = <span>
-    {transactionValueParts.map((part, i, { length }) => [
-      part,
-      ...(i < (length - 1) ? ['.'] : []), // dont add a '.' if last part
-      <wbr />
-    ])}
-  </span>
 
   if (isEditing) {
     return (
@@ -309,108 +283,8 @@ function ConfirmTransactionPanel ({
       >
         {selectedTab === 'transaction' ? (
           <>
-            {isERC20Approve &&
-              <>
-                <SectionRow>
-                  <TransactionTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionTitle>
-                  <EditButton onClick={onToggleEditGas}>{getLocale('braveWalletAllowSpendEditButton')}</EditButton>
-                </SectionRow>
-
-                <TransactionTypeText>
-                  {
-                    new Amount(transactionDetails.gasFee)
-                      .divideByDecimals(transactionsNetwork.decimals)
-                      .formatAsAsset(6, transactionsNetwork.symbol)
-                  }
-                </TransactionTypeText>
-
-                <TransactionText
-                  hasError={transactionDetails.insufficientFundsError}
-                >
-                  {transactionDetails.insufficientFundsError ? `${getLocale('braveWalletSwapInsufficientBalance')} ` : ''}
-                  {new Amount(transactionDetails.gasFeeFiat)
-                    .formatAsFiat(defaultCurrencies.fiat)}
-                </TransactionText>
-
-                <Divider />
-
-                <TransactionTitle>{getLocale('braveWalletAllowSpendCurrentAllowance')}</TransactionTitle>
-                <TransactionTypeText>{currentTokenAllowance} {transactionDetails.symbol}</TransactionTypeText>
-
-                <Divider />
-
-                <TransactionTitle>{getLocale('braveWalletAllowSpendProposedAllowance')}</TransactionTitle>
-                <TransactionTypeText>
-                  {
-                    transactionDetails.isApprovalUnlimited
-                      ? getLocale('braveWalletTransactionApproveUnlimited')
-                      : new Amount(transactionDetails.valueExact)
-                        .formatAsAsset(undefined, transactionDetails.symbol)
-                  }
-                </TransactionTypeText>
-
-              </>
-            }
-
-            {!isERC20Approve &&
-              <>
-
-                <SectionRow>
-                  <TransactionTitle>
-                    {transactionInfo.txType === BraveWallet.TransactionType.SolanaSystemTransfer
-                      ? getLocale('braveWalletConfirmTransactionTransactionFee')
-                      : getLocale('braveWalletConfirmTransactionGasFee')}
-                  </TransactionTitle>
-                  {transactionInfo.txType !== BraveWallet.TransactionType.SolanaSystemTransfer &&
-                    <EditButton onClick={onToggleEditGas}>{getLocale('braveWalletAllowSpendEditButton')}</EditButton>
-                  }
-                </SectionRow>
-                <TransactionTypeText>
-                  {
-                    new Amount(transactionDetails.gasFee)
-                      .divideByDecimals(transactionsNetwork.decimals)
-                      .formatAsAsset(6, transactionsNetwork.symbol)
-                  }
-                </TransactionTypeText>
-                <TransactionText>
-                  {
-                    new Amount(transactionDetails.gasFeeFiat)
-                      .formatAsFiat(defaultCurrencies.fiat)
-                  }
-                </TransactionText>
-                <Divider />
-                <WarningTitleRow>
-                  <TransactionTitle>
-                    {getLocale('braveWalletConfirmTransactionTotal')}
-                    {' '}
-                    ({transactionInfo.txType === BraveWallet.TransactionType.SolanaSystemTransfer
-                      ? getLocale('braveWalletConfirmTransactionAmountFee')
-                      : getLocale('braveWalletConfirmTransactionAmountGas')})
-                  </TransactionTitle>
-                </WarningTitleRow>
-                <TransactionTypeText>
-                  {transactionValueText} {transactionDetails.symbol} +
-                </TransactionTypeText>
-                <TransactionTypeText>
-                  {
-                    new Amount(transactionDetails.gasFee)
-                      .divideByDecimals(transactionsNetwork.decimals)
-                      .formatAsAsset(6, transactionsNetwork.symbol)
-                  }
-                </TransactionTypeText>
-
-                <TransactionText
-                  hasError={transactionDetails.insufficientFundsError}
-                >
-                  {transactionDetails.insufficientFundsError
-                    ? `${getLocale('braveWalletSwapInsufficientBalance')} `
-                    : ''}
-                  {transactionDetails.fiatTotal
-                    .formatAsFiat(defaultCurrencies.fiat)}
-                </TransactionText>
-              </>
-            }
-
+            {isERC20Approve && <Erc20ApproveTransactionInfo onToggleEditGas={onToggleEditGas} />}
+            {!isERC20Approve && <TransactionInfo onToggleEditGas={onToggleEditGas} /> }
           </>
         ) : <TransactionDetailBox transactionInfo={transactionInfo} />}
       </MessageBox>
@@ -424,22 +298,12 @@ function ConfirmTransactionPanel ({
         </QueueStepButton>
       }
 
-      {transactionDetails.contractAddressError &&
-        <ErrorText>
-          {transactionDetails.contractAddressError}
-        </ErrorText>
-      }
-
-      {transactionDetails.sameAddressError &&
-        <ErrorText>
-          {transactionDetails.sameAddressError}
-        </ErrorText>
-      }
-
-      {transactionDetails.missingGasLimitError &&
-        <ErrorText>
-          {transactionDetails.missingGasLimitError}
-        </ErrorText>
+      {
+        [
+          transactionDetails.contractAddressError,
+          transactionDetails.sameAddressError,
+          transactionDetails.missingGasLimitError
+        ].map(error => <ErrorText>{error}</ErrorText>)
       }
 
       <ButtonRow>
