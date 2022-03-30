@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/files/file_util.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
@@ -34,22 +35,29 @@ bool TextClassification::IsInitialized() const {
 }
 
 void TextClassification::Load() {
-  AdsClientHelper::Get()->LoadAdsResource(
+  AdsClientHelper::Get()->LoadAdsFileResource(
       kResourceId, features::GetTextClassificationResourceVersion(),
-      [=](const bool success, const std::string& json) {
+      [=](base::File file) {
         text_processing_pipeline_.reset(
             ml::pipeline::TextProcessing::CreateInstance());
 
-        if (!success) {
+        if (!file.IsValid()) {
           BLOG(1, "Failed to load " << kResourceId
                                     << " text classification resource");
+          return;
+        }
+
+        std::string json;
+        // TODO(atuchin): move reading from utilty main to blocking pool.
+        base::ScopedFILE stream(base::FileToFILE(std::move(file), "rb"));
+        if (!base::ReadStreamToString(stream.get(), &json)) {
           return;
         }
 
         BLOG(1, "Successfully loaded " << kResourceId
                                        << " text classification resource");
 
-        if (!text_processing_pipeline_->FromJson(json)) {
+        if (!text_processing_pipeline_->FromJson(std::move(json))) {
           BLOG(1, "Failed to initialize " << kResourceId
                                           << " text classification resource");
           return;

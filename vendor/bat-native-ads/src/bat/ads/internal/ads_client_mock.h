@@ -64,6 +64,11 @@ class AdsClientMock : public AdsClient {
                     const int version,
                     LoadCallback callback));
 
+  MOCK_METHOD3(LoadAdsFileResource,
+               void(const std::string& id,
+                    const int version,
+                    LoadFileCallback callback));
+
   MOCK_METHOD3(GetBrowsingHistory,
                void(const int max_count,
                     const int days_ago,

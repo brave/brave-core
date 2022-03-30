@@ -120,6 +120,7 @@ absl::optional<model::Linear> ParsePipelineClassifier(
   }
 
   std::vector<std::string> classes;
+  classes.reserve(specified_classes->GetList().size());
   for (const base::Value& class_name : specified_classes->GetList()) {
     if (!class_name.is_string()) {
       return absl::nullopt;
@@ -144,9 +145,13 @@ absl::optional<model::Linear> ParsePipelineClassifier(
     if (!this_class) {
       return absl::nullopt;
     }
+
+    // Consume the list to save memory.
+    const auto list = std::move(this_class->GetList());
+
     std::vector<float> class_coef_weights;
-    class_coef_weights.reserve(this_class->GetList().size());
-    for (const base::Value& weight : this_class->GetList()) {
+    class_coef_weights.reserve(list.size());
+    for (const base::Value& weight : list) {
       if (weight.is_double() || weight.is_int()) {
         class_coef_weights.push_back(weight.GetDouble());
       } else {
@@ -183,8 +188,10 @@ absl::optional<model::Linear> ParsePipelineClassifier(
 
 }  // namespace
 
-absl::optional<PipelineInfo> ParsePipelineJSON(const std::string& json) {
+absl::optional<PipelineInfo> ParsePipelineJSON(std::string json) {
   absl::optional<base::Value> root = base::JSONReader::Read(json);
+
+  json = std::string();  // Free memory, because |json| can be ~10Mb.
 
   if (!root) {
     return absl::nullopt;

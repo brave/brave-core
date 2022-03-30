@@ -60,8 +60,9 @@ void TextProcessing::SetInfo(const PipelineInfo& info) {
   transformations_ = GetTransformationVectorDeepCopy(info.transformations);
 }
 
-bool TextProcessing::FromJson(const std::string& json) {
-  absl::optional<PipelineInfo> pipeline_info = ParsePipelineJSON(json);
+bool TextProcessing::FromJson(std::string json) {
+  absl::optional<PipelineInfo> pipeline_info =
+      ParsePipelineJSON(std::move(json));
 
   if (pipeline_info.has_value()) {
     SetInfo(pipeline_info.value());

@@ -1147,6 +1147,16 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   callback(/* success */ false, "");
 }
 
+- (void)loadAdsFileResource:(const std::string&)id
+                    version:(const int)version
+                   callback:(ads::LoadFileCallback)callback {
+  NSString* bridgedId = base::SysUTF8ToNSString(id);
+
+  BLOG(1, @"Loading %@ ads resource descriptor", bridgedId);
+  base::File file(file_path, base::File::FLAG_OPEN | base::File::FLAG_APPEND);
+  callback(file);
+}
+
 - (void)clearScheduledCaptcha {
   // Adaptive captcha not supported on iOS
 }
