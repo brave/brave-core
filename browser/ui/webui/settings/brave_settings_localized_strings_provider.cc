@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
+#include <string>
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
@@ -453,6 +454,34 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"walletNetworkEdit", IDS_BRAVE_WALLET_NETWORK_EDIT},
     {"walletNetworkRemove", IDS_BRAVE_WALLET_NETWORK_REMOVE},
     {"walletNetworkSetAsActive", IDS_BRAVE_WALLET_NETWORK_SET_AS_ACTIVE},
+    {"adblockContentFilteringLabel", IDS_BRAVE_ADBLOCK_CONTENT_FILTERING_LABEL},
+    {"adblockContentFilteringDesc", IDS_BRAVE_ADBLOCK_CONTENT_FILTERING_DESC},
+    {"adblockAddCustomFiltersListsLabel",
+     IDS_BRAVE_ADBLOCK_ADD_CUSTOM_FILTERS_LISTS_LABEL},
+    {"adblockContentFilterLabelDesc", IDS_BRAVE_ADBLOCK_CONTENT_FILTER_LABEL_DESCRIPTION},
+    {"adblockAddCustomFiltersListsDesc",
+     IDS_BRAVE_ADBLOCK_ADD_CUSTOM_FILTERS_LISTS_DESC},
+     {"adblockAddCustomFiltersListsNote",
+     IDS_BRAVE_ADBLOCK_ADD_CUSTOM_FILTERS_LISTS_NOTE},
+    {"adblockCustomFiltersLabel", IDS_BRAVE_ADBLOCK_CUSTOM_FILTERS_LABEL},
+    {"adblockCustomFiltersDesc", IDS_BRAVE_ADBLOCK_CUSTOM_FILTERS_DESC},
+    {"adblockAddListsButtonLabel", IDS_BRAVE_ADBLOCK_ADD_LISTS_BUTTON_LABEL},
+    {"adblockShowFullListsButtonLabel", IDS_BRAVE_ADBLOCK_SHOW_FULL_LISTS_BUTTON_LABEL},
+    {"adblockFilterListsTableUrlHeader",
+     IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_URL_HEADER},
+    {"adblockFilterListsTableUpdatedHeader",
+     IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_UPDATED_HEADER},
+    {"adblockUpdateNowButtonLabel", IDS_BRAVE_ADBLOCK_UPDATE_NOW_BUTTON_LABEL},
+    {"adblockViewSourceButtonLabel",
+     IDS_BRAVE_ADBLOCK_VIEW_SOURCE_BUTTON_LABEL},
+    {"adblockUnsubscribeButtonLabel",
+     IDS_BRAVE_ADBLOCK_UNSUBSCRIBE_BUTTON_LABEL},
+    {"adblockSaveChangesButtonLabel", IDS_BRAVE_ADBLOCK_SAVE_BUTTON_LABEL},
+    {"adblockTrackingFiltersLabel", IDS_BRAVE_ADBLOCK_TRACKING_FILTERS_LABEL},
+    {"adblockTrackingFiltersDesc", IDS_BRAVE_ADBLOCK_TRACKING_FILTERS_DESC},
+    {"adblockSubscribeUrlDownloadFailed", IDS_BRAVE_ADBLOCK_SUBSCRIBE_URL_DOWNLOAD_FAILED},
+    {"adblockSubscribeUrlUpdateFailed", IDS_BRAVE_ADBLOCK_SUBSCRIBE_URL_UPDATE_FAILED},
+    {"adblockCustomListsLabel", IDS_BRAVE_ADBLOCK_CUSTOM_LISTS_LABEL},
   };
 
   html_source->AddLocalizedStrings(localized_strings);

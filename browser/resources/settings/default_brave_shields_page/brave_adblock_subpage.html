@@ -1,0 +1,203 @@
+<style include="cr-shared-style settings-shared iron-flex">
+  :root {
+    --brave-primary-hover: #ff977d;
+    font-family: Poppins;
+  }
+
+  .label.shields-primary-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 24px 0 8px 0;
+  }
+
+  .label.shields-primary-title-sm {
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .label.shields-secondary-title {
+    margin-bottom: 16px;
+  }
+
+  .flex {
+    align-self: center;
+    flex: 1 1 auto;
+  }
+
+  .flex-container {
+    display: flex;
+    padding: 8px 1em;
+  }
+
+  .filter-list-box {
+    height: 134px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+
+  .filter-list-box.expanded-true {
+    height: auto;
+    overflow: unset;
+  }
+
+  .filter-list-item {
+    margin-bottom: 5px;
+  }
+
+  .show-list-button-box {
+    margin-bottom: 10px;
+  }
+
+  .subscribe-url-form {
+    display: grid;
+    grid-template-columns: 1fr 80px;
+    grid-gap: 10px;
+    align-items: flex-start;
+  }
+
+  .subscribe-url-item {
+    display: grid;
+    grid-template-columns: 26px 1fr 0.5fr 50px;
+    grid-gap: 5px;
+    align-items: center;
+  }
+
+  .subscribe-url-item.header {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .subscribe-url-item-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 40ch;
+  }
+
+  .subscribe-url-list-title {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .subscribe-url-list-th-name { grid-column: 2; }
+  .subscribe-url-list-th-updated { grid-column: 3; }
+
+  .subscribe-url-list {
+    padding: 10px;
+  }
+
+  #search-box {
+    padding: 5px;
+  }
+
+  #search-box iron-icon {
+    --iron-icon-fill-color: var(--google-grey-500);
+  }
+</style>
+
+<div id="adblock-section">
+  <div class="settings-box">
+    <div class="flex">
+        <div class="label shields-primary-title">$i18n{adblockContentFilteringLabel}</div>
+        <div class="label secondary shields-secondary-title" inner-h-t-m-l="[[getStringHtml_('adblockContentFilteringDesc', 'https://support.brave.com/hc/en-us/articles/6449369961741')]]"></div>
+        <div class="label shields-primary-title-sm">$i18n{adblockTrackingFiltersLabel}</div>
+        <div class="label secondary shields-secondary-title" inner-h-t-m-l="[[getStringHtml_('adblockTrackingFiltersDesc', 'https://support.brave.com/hc/en-us/articles/6449369961741')]]"></div>
+        <cr-input
+          type="text"
+          placeholder="Filter lists"
+          min="1"
+          max="100"
+          value="{{filterListTitle}}"
+        >
+          <span id="search-box" slot="inline-suffix">
+            <iron-icon icon="brave_leo:magnifying-glass"></iron-icon>
+          </span>
+        </cr-input>
+        <div class$="filter-list-box expanded-[[hasListExpanded_]]">
+          <template is="dom-repeat" items="[[filterList_]]"
+          filter="{{searchListBy_(filterListTitle)}}" observe="val" initial-count="10">
+            <div class="filter-list-item">
+              <cr-checkbox checked="{{item.enabled}}" on-change="handleFilterListItemToggle_">
+                <div>[[item.title]]</div>
+              </cr-checkbox>
+            </div>
+          </template>
+        </div>
+        <template is="dom-if" if="[[!hasListExpanded_]]">
+          <div class="show-list-button-box">
+            <cr-button on-click="handleShowList_">Show full list</cr-button>
+          </div>
+        </template>
+    </div>
+  </div>
+  <div class="settings-box">
+    <div class="flex">
+      <div class="label shields-primary-title">
+        $i18n{adblockAddCustomFiltersListsLabel}
+      </div>
+      <div class="label secondary shields-secondary-title">
+        $i18n{adblockAddCustomFiltersListsDesc}
+        <div>$i18n{adblockAddCustomFiltersListsNote}</div>
+      </div>
+      <div class="subscribe-url-form">
+        <cr-input
+          type="url"
+          spellcheck="false"
+          placeholder="Enter URL"
+          min="1"
+          max="500"
+          value="{{subscribeUrl_}}"
+          on-keyup="onKeyUp_"
+        >
+        </cr-input>
+        <cr-button type="submit" on-click="handleSubmitUrl_">
+          $i18n{adblockAddListsButtonLabel}
+        </cr-button>
+      </div>
+      <template is="dom-if" if="[[subscriptionList_.length]]">
+        <div class="label shields-primary-title-sm">$i18n{adblockCustomListsLabel}</div>
+        <div class="subscribe-url-list">
+          <div class="subscribe-url-item header">
+            <span class="subscribe-url-list-th-name">
+              $i18n{adblockFilterListsTableUrlHeader}
+            </span>
+            <span class="subscribe-url-list-th-updated">
+              $i18n{adblockFilterListsTableUpdatedHeader}
+            </span>
+          </div>
+          <template is="dom-repeat" items="[[subscriptionList_]]" initial-count="10">
+            <div class="subscribe-url-item">
+              <cr-checkbox 
+                checked="{{item.enabled}}"
+                on-change="handleSubscribeUrlItemItemToggle_"
+              ></cr-checkbox>
+              <span title="[[item.subscription_url]]" class="subscribe-url-item-name">
+                [[item.subscription_url]]
+              </span>
+              <span>[[getStatus_(
+                item.last_update_attempt,
+                item.last_successful_update_attempt,
+                item.last_updated_pretty_text)]]</span>
+              <adblock-subscribe-dropdown
+                on-update-subscription="handleUpdateSubscription_"
+                on-view-subscription="handleViewSubscription_"
+                on-delete-subscription="handleDeleteSubscription_"
+              ></adblock-subscribe-dropdown>
+            </div>
+          </template>
+        </div>
+      </template>
+    </div>
+</div>
+<div class="settings-box">
+  <div class="flex">
+    <div class="label shields-primary-title">
+      $i18n{adblockCustomFiltersLabel}
+    </div>
+    <div class="label secondary shields-secondary-title" inner-h-t-m-l="[[getStringHtml_('adblockCustomFiltersDesc', 'https://support.brave.com/hc/en-us/articles/6449369961741')]]"></div>
+    <adblock-filter-editor
+      value="{{customFilters_}}"
+      on-save="handleSave_"
+    ></adblock-filter-editor>
+  </div>
+</div>

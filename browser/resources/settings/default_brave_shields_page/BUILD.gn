@@ -4,98 +4,28 @@
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//third_party/closure_compiler/compile_js.gni")
+import("//tools/polymer/html_to_js.gni")
 import("//tools/polymer/polymer.gni")
 import("//ui/webui/resources/tools/js_modulizer.gni")
 import("../settings.gni")
 
-# HTML Imports compatible compiles
-
-js_type_check("closure_compile") {
-  deps = [
-    ":default_brave_shields_browser_proxy",
-    ":default_brave_shields_page",
-  ]
-}
-
-js_library("default_brave_shields_browser_proxy") {
-  deps = [
-    "//ui/webui/resources/js:cr",
-  ]
-  externs_list = [
-    "$externs_path/chrome_send.js",
-  ]
-}
-
-js_library("default_brave_shields_page") {
-  deps = [
-    ":default_brave_shields_browser_proxy",
-    "//ui/webui/resources/js:cr",
-    "//ui/webui/resources/js:load_time_data",
-  ]
-  externs_list = [
-    "$externs_path/settings_private.js",
-  ]
-}
-
-# ES Module compatible compiles
-
-js_type_check("closure_compile_module") {
-  is_polymer3 = true
-  deps = [
-    ":default_brave_shields_browser_proxy.m",
-    ":default_brave_shields_page.m",
-  ]
-}
-
-js_library("default_brave_shields_browser_proxy.m") {
-  deps = [
-    "//ui/webui/resources/js:cr.m",
-  ]
-  externs_list = [
-    "$externs_path/chrome_send.js",
-  ]
-  extra_deps = [
-    ":default_brave_shields_browser_proxy_module",
-  ]
-}
-
-js_library("default_brave_shields_page.m") {
-  deps = [
-    ":default_brave_shields_browser_proxy.m",
-    "//ui/webui/resources/js:cr.m",
-    "//ui/webui/resources/js:load_time_data.m",
-  ]
-  externs_list = [
-    "$externs_path/settings_private.js",
-  ]
-  extra_deps = [
-    ":default_brave_shields_page_module",
-  ]
-}
-
-# ES Module conversion from HTML Imports code
-
 group("web_modules") {
   public_deps = [
-    ":default_brave_shields_page_module",
-    ":default_brave_shields_browser_proxy_module",
+    ":modules",
+    ":templatize",
   ]
 }
 
-polymer_modulizer("default_brave_shields_page") {
-  js_file = "default_brave_shields_page.js"
-  html_file = "default_brave_shields_page.html"
-  html_type = "dom-module"
-  auto_imports = settings_auto_imports + [
-                   "brave/browser/resources/settings/default_brave_shields_page/default_brave_shields_browser_proxy.html|DefaultBraveShieldsBrowserProxy, DefaultBraveShieldsBrowserProxyImpl",
-                 ]
+js_modulizer("modules") {
+  input_files = [ "default_brave_shields_browser_proxy.js" ]
   namespace_rewrites = settings_namespace_rewrites
 }
 
-js_modulizer("default_brave_shields_browser_proxy_module") {
-  input_files = [
-    "default_brave_shields_browser_proxy.js",
+html_to_js("templatize") {
+  js_files = [
+    "default_brave_shields_page.js",
+    "brave_adblock_subpage.js",
+    "components/brave_adblock_subscribe_dropdown.js",
+    "components/brave_adblock_editor.js",
   ]
-  namespace_rewrites = settings_namespace_rewrites
 }
-
