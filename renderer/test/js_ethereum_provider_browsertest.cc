@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
+#include "base/strings/stringprintf.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "build/build_config.h"
@@ -19,6 +20,19 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "url/gurl.h"
+
+namespace {
+std::string NonWriteableScript(const std::string& method,
+                               const std::string& args) {
+  return base::StringPrintf(
+      R"(window.ethereum.%s = () => { return "brave" }
+         if (window.ethereum.%s%s === "brave")
+           window.domAutomationController.send(false)
+         else
+           window.domAutomationController.send(true))",
+      method.c_str(), method.c_str(), args.c_str());
+}
+}  // namespace
 
 class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
  public:
@@ -49,6 +63,16 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
     return web_contents()->GetMainFrame();
   }
 
+  void NavigateToURLAndWaitForLoadStop(const GURL& url) {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url)) << ":" << url;
+    ASSERT_TRUE(WaitForLoadStop(web_contents())) << ":" << url;
+  }
+
+  void ReloadAndWaitForLoadStop() {
+    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
+  }
+
  protected:
   net::EmbeddedTestServer https_server_;
 };
@@ -57,7 +81,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
   brave_wallet::SetDefaultWallet(browser()->profile()->GetPrefs(),
                                  brave_wallet::mojom::DefaultWallet::None);
   const GURL url = https_server_.GetURL("/simple.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  NavigateToURLAndWaitForLoadStop(url);
 
   std::string command = "window.ethereum.isMetaMask";
   EXPECT_TRUE(content::EvalJs(main_frame(), command)
@@ -67,8 +91,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
   brave_wallet::SetDefaultWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
-  chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
-  EXPECT_TRUE(content::WaitForLoadStop(web_contents()));
+  ReloadAndWaitForLoadStop();
   auto result = content::EvalJs(main_frame(), command);
   EXPECT_EQ(result.error, "");
   ASSERT_TRUE(result.ExtractBool());
@@ -80,8 +103,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
   brave_wallet::SetDefaultWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
-  chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
-  EXPECT_TRUE(content::WaitForLoadStop(web_contents()));
+  ReloadAndWaitForLoadStop();
   // overwrite successfully
   EXPECT_EQ(content::EvalJs(main_frame(), overwrite).ExtractString(), "test");
 }
@@ -90,8 +112,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        DoNotAttachToChromePages) {
   brave_wallet::SetDefaultWallet(browser()->profile()->GetPrefs(),
                                  brave_wallet::mojom::DefaultWallet::None);
-  ASSERT_TRUE(
-      ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab/")));
+  NavigateToURLAndWaitForLoadStop(GURL("chrome://newtab/"));
 
   std::string command = "window.ethereum.isMetaMask";
   EXPECT_TRUE(content::EvalJs(main_frame(), command,
@@ -103,12 +124,39 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
   brave_wallet::SetDefaultWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
-  chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
-  EXPECT_TRUE(content::WaitForLoadStop(web_contents()));
+  ReloadAndWaitForLoadStop();
   EXPECT_TRUE(content::EvalJs(main_frame(), command,
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_TRANSLATE)
                   .error.find("Cannot read properties of undefined") !=
               std::string::npos);
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+}
+
+IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
+  const GURL url = https_server_.GetURL("/simple.html");
+  NavigateToURLAndWaitForLoadStop(url);
+
+  // window.ethereum.*
+  auto result =
+      EvalJs(web_contents(), NonWriteableScript("on", R"(('connect', ()=>{}))"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  LOG(ERROR) << result.error;
+  EXPECT_EQ(base::Value(true), result.value);
+
+  auto result2 =
+      EvalJs(web_contents(), NonWriteableScript("emit", R"(('connect'))"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result2.value);
+
+  auto result3 =
+      EvalJs(web_contents(),
+             NonWriteableScript("removeListener", R"(('connect', ()=>{}))"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result3.value);
+
+  auto result4 =
+      EvalJs(web_contents(), NonWriteableScript("removeAllListeners", R"(())"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(true), result4.value);
 }
