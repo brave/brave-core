@@ -38,6 +38,7 @@
 #include "third_party/blink/renderer/core/frame/navigator_language.h"
 
 using brave_shields::ControlType;
+using content::TitleWatcher;
 
 namespace {
 const char kNavigatorLanguagesScript[] = "navigator.languages.toString()";
@@ -188,6 +189,45 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   NavigateToURLUntilLoadStop(url2);
   EXPECT_EQ(strict_languages,
             EvalJs(web_contents(), kNavigatorLanguagesScript));
+}
+
+// Tests that web workers inherit the farbled navigator.languages
+IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
+                       FarbleLanguagesWebWorker) {
+  std::u16string expected_title(u"pass");
+  std::string domain = "b.test";
+  GURL url = https_server_.GetURL(domain, "/navigator/workers-languages.html");
+
+  // Farbling level: off
+  AllowFingerprinting(domain);
+  NavigateToURLUntilLoadStop(url);
+  TitleWatcher watcher1(web_contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher1.WaitAndGetTitle());
+
+  // Farbling level: default
+  SetFingerprintingDefault(domain);
+  NavigateToURLUntilLoadStop(url);
+  TitleWatcher watcher2(web_contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher2.WaitAndGetTitle());
+
+  // Farbling level: maximum
+  BlockFingerprinting(domain);
+  NavigateToURLUntilLoadStop(url);
+  TitleWatcher watcher3(web_contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher3.WaitAndGetTitle());
+}
+
+// Tests that service workers inherit the farbled navigator.languages
+IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
+                       FarbleLanguagesServiceWorker) {
+  std::u16string expected_title(u"pass");
+  std::string domain = "b.test";
+  GURL url = https_server_.GetURL(domain, "/navigator/service-workers-languages.html");
+  // Farbling level: default
+  SetFingerprintingDefault(domain);
+  NavigateToURLUntilLoadStop(url);
+  TitleWatcher watcher2(web_contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher2.WaitAndGetTitle());
 }
 
 // Tests results of farbling user agent

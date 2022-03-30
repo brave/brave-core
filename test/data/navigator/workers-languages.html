@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!-- navigator.languages test from workers -->
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+</head>
+<body>
+  <script>
+    var worker = function() {
+      postMessage(navigator.languages.toString());
+    }
+
+    var workerBlob = new Blob(['(' + worker.toString() + ')()'], {
+        type: "text/javascript"
+    });
+
+    worker = new Worker(window.URL.createObjectURL(workerBlob));
+    worker.onmessage = function (e) {
+      if (navigator.languages == e.data) {
+        document.title = "pass";
+      } else {
+        document.title = e.data;
+      }
+    };
+  </script>
+</body>
+</html>
