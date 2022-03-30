@@ -81,7 +81,7 @@ BraveFirstRunDialog::BraveFirstRunDialog(base::RepeatingClosure quit_runloop)
 
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical,
-      gfx::Insets(kTopPadding, kPadding, kBottomPadding, kPadding),
+      gfx::Insets::TLBR(kTopPadding, kPadding, kBottomPadding, kPadding),
       kChildSpacing));
 
   constexpr int kHeaderFontSize = 16;

@@ -142,7 +142,7 @@ class OnionLocationButtonView : public views::LabelButton {
 }  // namespace
 
 OnionLocationView::OnionLocationView(Profile* profile) {
-  SetBorder(views::CreateEmptyBorder(gfx::Insets(3, 3)));
+  SetBorder(views::CreateEmptyBorder(gfx::Insets::VH(3, 3)));
   SetVisible(false);
   // automatic layout
   auto vertical_container_layout = std::make_unique<views::BoxLayout>(

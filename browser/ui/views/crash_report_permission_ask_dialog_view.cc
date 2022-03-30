@@ -161,7 +161,7 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
   auto* contents = AddChildView(std::make_unique<views::View>());
   contents->SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical,
-      gfx::Insets{0, kPadding + kChildSpacing, 0, 0}, 5));
+      gfx::Insets::TLBR(0, kPadding + kChildSpacing, 0, 0), 5));
   constexpr int kContentsTextFontSize = 13;
   auto* contents_label = contents->AddChildView(std::make_unique<views::Label>(
       brave_l10n::GetLocalizedResourceUTF16String(
@@ -183,7 +183,7 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
   auto* footnote_layout =
       footnote->SetLayoutManager(std::make_unique<views::BoxLayout>(
           views::BoxLayout::Orientation::kHorizontal,
-          gfx::Insets{kFootnoteVerticalPadding, 0}));
+          gfx::Insets::VH(kFootnoteVerticalPadding, 0)));
   footnote_layout->set_main_axis_alignment(
       views::BoxLayout::MainAxisAlignment::kCenter);
   footnote->SetBackground(
@@ -234,7 +234,7 @@ bool CrashReportPermissionAskDialogView::ShouldShowWindowTitle() const {
 }
 
 void CrashReportPermissionAskDialogView::OnWidgetInitialized() {
-  SetButtonRowInsets(gfx::Insets(0, 0, 18, 24));
+  SetButtonRowInsets(gfx::Insets::TLBR(0, 0, 18, 24));
 }
 
 void CrashReportPermissionAskDialogView::OnAcceptButtonClicked() {

@@ -95,7 +95,7 @@ void WebDiscoveryDialogView::CreateChildViews() {
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical)
       .SetMainAxisAlignment(views::LayoutAlignment::kStart)
-      .SetInteriorMargin(gfx::Insets(0, 36, 24, 36));
+      .SetInteriorMargin(gfx::Insets::TLBR(0, 36, 24, 36));
 
   auto& bundle = ui::ResourceBundle::GetSharedInstance();
   AddChildView(std::make_unique<views::ImageView>(
@@ -113,7 +113,7 @@ void WebDiscoveryDialogView::CreateChildViews() {
           IDS_WEB_DISCOVERY_DIALOG_HEADER_TEXT),
       header_font));
   header_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-  header_label->SetProperty(views::kMarginsKey, gfx::Insets(22, 0, 0, 0));
+  header_label->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(22, 0, 0, 0));
 
   size_t learn_more_offset;
   const std::u16string learn_more_text =
@@ -126,7 +126,8 @@ void WebDiscoveryDialogView::CreateChildViews() {
   auto* contents_label = AddChildView(std::make_unique<views::StyledLabel>());
   contents_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
   contents_label->SetText(contents_text);
-  contents_label->SetProperty(views::kMarginsKey, gfx::Insets(8, 0, 25, 0));
+  contents_label->SetProperty(views::kMarginsKey,
+                              gfx::Insets::TLBR(8, 0, 25, 0));
 
   // Apply link style to learn more link text.
   views::StyledLabel::RangeStyleInfo learn_more_style =

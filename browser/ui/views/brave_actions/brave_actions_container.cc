@@ -98,8 +98,8 @@ void BraveActionsContainer::Init() {
                                     kSeparatorWidth + kSeparatorMargin*2,
                                     GetLayoutConstant(LOCATION_BAR_ICON_SIZE)));
   // separator left & right margin
-  brave_button_separator_->SetBorder(
-      views::CreateEmptyBorder(0, kSeparatorMargin, 0, kSeparatorMargin));
+  brave_button_separator_->SetBorder(views::CreateEmptyBorder(
+      gfx::Insets::TLBR(0, kSeparatorMargin, 0, kSeparatorMargin)));
   // Just in case the extensions load before this function does (not likely!)
   // make sure separator is at index 0
   AddChildViewAt(brave_button_separator_, 0);

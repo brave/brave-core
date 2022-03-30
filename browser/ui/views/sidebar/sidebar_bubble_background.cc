@@ -28,7 +28,7 @@ void SidebarBubbleBackground::Paint(gfx::Canvas* canvas,
   gfx::RectF bounds(view->GetLocalBounds());
   bounds.Inset(gfx::Insets(border_->GetInsets()));
   // Fill the background except arrow area in this bubble.
-  bounds.Inset(
-      gfx::Insets(0, BubbleBorderWithArrow::kBubbleArrowBoundsWidth, 0, 0));
+  bounds.Inset(gfx::Insets::TLBR(
+      0, BubbleBorderWithArrow::kBubbleArrowBoundsWidth, 0, 0));
   canvas->DrawRoundRect(bounds, border_->corner_radius(), flags);
 }

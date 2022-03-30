@@ -120,7 +120,7 @@ void SidebarControlView::UpdateBackgroundAndBorder() {
     SetBackground(views::CreateSolidBackground(
         theme_provider->GetColor(ThemeProperties::COLOR_TOOLBAR)));
     SetBorder(views::CreateSolidSidedBorder(
-        0, 0, 0, kBorderThickness,
+        gfx::Insets::TLBR(0, 0, 0, kBorderThickness),
         theme_provider->GetColor(
             ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR)));
   }

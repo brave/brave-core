@@ -107,7 +107,7 @@ SkPath BraveShieldsActionView::GetHighlightPath() const {
   // Set the highlight path for the toolbar button,
   // making it inset so that the badge can show outside it in the
   // fake margin on the right that we are creating.
-  gfx::Insets highlight_insets(0, 0, 0, kBraveActionRightMargin);
+  auto highlight_insets = gfx::Insets::TLBR(0, 0, 0, kBraveActionRightMargin);
   gfx::Rect rect(GetPreferredSize());
   rect.Inset(highlight_insets);
   const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
@@ -211,7 +211,7 @@ std::unique_ptr<views::LabelButtonBorder>
 BraveShieldsActionView::CreateDefaultBorder() const {
   std::unique_ptr<views::LabelButtonBorder> border =
       LabelButton::CreateDefaultBorder();
-  border->set_insets(gfx::Insets(0, 0, 0, 0));
+  border->set_insets(gfx::Insets::TLBR(0, 0, 0, 0));
   return border;
 }
 

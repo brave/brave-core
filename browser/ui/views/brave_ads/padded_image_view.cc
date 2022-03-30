@@ -17,7 +17,7 @@ namespace {
 
 constexpr SkColor kBackgroundColor = SK_ColorTRANSPARENT;
 
-constexpr gfx::Insets kBorderInset(
+constexpr auto kBorderInset = gfx::Insets::TLBR(
     /* top */ 2,
     /* left */ 6,
     /* bottom */ 0,
