@@ -238,10 +238,16 @@ function ConfirmTransactionPanel ({
             <ArrowIcon />
             <AccountNameText>{reduceAddress(transactionDetails.recipient)}</AccountNameText>
           </FromToRow>
+
           <TransactionTypeText>{transactionTitle}</TransactionTypeText>
+
           {(isERC721TransferFrom || isERC721SafeTransferFrom) &&
-            <AssetIconWithPlaceholder asset={transactionDetails.erc721BlockchainToken} network={transactionsNetwork} />
+            <AssetIconWithPlaceholder
+              asset={transactionDetails.erc721BlockchainToken}
+              network={transactionsNetwork}
+            />
           }
+
           <TransactionAmountBig>
             {(isERC721TransferFrom || isERC721SafeTransferFrom)
               ? transactionDetails.erc721BlockchainToken?.name + ' ' + transactionDetails.erc721TokenId
@@ -249,6 +255,7 @@ function ConfirmTransactionPanel ({
                 .formatAsAsset(undefined, transactionDetails.symbol)
             }
           </TransactionAmountBig>
+
           {(!isERC721TransferFrom && !isERC721SafeTransferFrom) &&
             <TransactionFiatAmountBig>
               {
@@ -303,7 +310,7 @@ function ConfirmTransactionPanel ({
           transactionDetails.contractAddressError,
           transactionDetails.sameAddressError,
           transactionDetails.missingGasLimitError
-        ].map(error => <ErrorText>{error}</ErrorText>)
+        ].map(error => <ErrorText key={error}>{error}</ErrorText>)
       }
 
       <ButtonRow>

@@ -78,8 +78,8 @@ export const usePendingTransactions = () => {
   const transactionQueueNumber = pendingTransactions.findIndex(tx => tx.id === transactionInfo?.id) + 1
   const transactionsQueueLength = pendingTransactions.length
   const isERC20Approve = transactionInfo?.txType === BraveWallet.TransactionType.ERC20Approve
-  const isERC721SafeTransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC20Transfer
-  const isERC721TransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC20Transfer
+  const isERC721SafeTransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
+  const isERC721TransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC721TransferFrom
   const isSolanaSystemTransfer = transactionInfo?.txType === BraveWallet.TransactionType.SolanaSystemTransfer
 
   // methods

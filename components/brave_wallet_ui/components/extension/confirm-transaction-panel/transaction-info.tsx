@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { WalletState } from '../../../constants/types'
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
-import { usePendingTransactions } from 'components/brave_wallet_ui/common/hooks/use-pending-transaction'
+import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
 import {
   TransactionTitle,
   TransactionTypeText,
