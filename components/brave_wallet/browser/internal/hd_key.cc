@@ -18,6 +18,7 @@
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
 #include "crypto/encryptor.h"
+#include "crypto/random.h"
 #include "crypto/sha2.h"
 #include "crypto/symmetric_key.h"
 #include "third_party/boringssl/src/include/openssl/hmac.h"
@@ -428,6 +429,35 @@ std::vector<uint8_t> HDKey::GetPublicKeyFromX25519_XSalsa20_Poly1305() const {
                                               private_key_.data()) != 0)
     return std::vector<uint8_t>();
   return public_key;
+}
+
+std::vector<uint8_t> HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
+    const std::string& version,
+    const std::vector<uint8_t>& nonce,
+    const std::vector<uint8_t>& ephemeral_public_key,
+    const std::vector<uint8_t>& ciphertext) const {
+  // Only x25519-xsalsa20-poly1305 is supported by MM at the time of writing
+  if (version != "x25519-xsalsa20-poly1305")
+    return std::vector<uint8_t>();
+  if (nonce.size() != crypto_box_curve25519xsalsa20poly1305_tweet_NONCEBYTES)
+    return std::vector<uint8_t>();
+  if (ephemeral_public_key.size() !=
+      crypto_box_curve25519xsalsa20poly1305_tweet_PUBLICKEYBYTES)
+    return std::vector<uint8_t>();
+  if (private_key_.size() !=
+      crypto_box_curve25519xsalsa20poly1305_tweet_SECRETKEYBYTES)
+    return std::vector<uint8_t>();
+
+  std::vector<uint8_t> padded_ciphertext = ciphertext;
+  padded_ciphertext.insert(padded_ciphertext.begin(), 16, 0);
+  std::vector<uint8_t> padded_plaintext(ciphertext.size() + 32);
+  if (crypto_box_open(padded_plaintext.data(), padded_ciphertext.data(),
+                      padded_ciphertext.size(), nonce.data(),
+                      ephemeral_public_key.data(), private_key_.data()) != 0)
+    return std::vector<uint8_t>();
+  std::vector<uint8_t> plaintext(padded_plaintext.cbegin() + 32,
+                                 padded_plaintext.cend() - 16);
+  return plaintext;
 }
 
 void HDKey::SetChainCode(const std::vector<uint8_t>& value) {

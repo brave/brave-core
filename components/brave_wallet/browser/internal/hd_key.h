@@ -49,6 +49,11 @@ class HDKey : public HDKeyBase {
   std::string GetPublicExtendedKey() const;
   std::vector<uint8_t> GetUncompressedPublicKey() const;
   std::vector<uint8_t> GetPublicKeyFromX25519_XSalsa20_Poly1305() const;
+  std::vector<uint8_t> DecryptCipherFromX25519_XSalsa20_Poly1305(
+      const std::string& version,
+      const std::vector<uint8_t>& nonce,
+      const std::vector<uint8_t>& ephemeral_public_key,
+      const std::vector<uint8_t>& ciphertext) const;
 
   void SetChainCode(const std::vector<uint8_t>& value);
 

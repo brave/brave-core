@@ -138,9 +138,26 @@ bool EthereumKeyring::GetPublicKeyFromX25519_XSalsa20_Poly1305(
     return false;
   const std::vector<uint8_t> public_key =
       hd_key->GetPublicKeyFromX25519_XSalsa20_Poly1305();
-  if (!public_key.size())
+  if (public_key.empty())
     return false;
   *key = base::Base64Encode(public_key);
+  return true;
+}
+
+bool EthereumKeyring::DecryptCipherFromX25519_XSalsa20_Poly1305(
+    const std::string& version,
+    const std::vector<uint8_t>& nonce,
+    const std::vector<uint8_t>& ephemeral_public_key,
+    const std::vector<uint8_t>& ciphertext,
+    const std::string& address,
+    std::vector<uint8_t>* message) {
+  HDKey* hd_key = static_cast<HDKey*>(GetHDKeyFromAddress(address));
+  if (!hd_key)
+    return false;
+  *message = hd_key->DecryptCipherFromX25519_XSalsa20_Poly1305(
+      version, nonce, ephemeral_public_key, ciphertext);
+  if (message->empty())
+    return false;
   return true;
 }
 
