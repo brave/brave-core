@@ -3,14 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/bls/buildflags.gni")
-import("//build/buildflag_header.gni")
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [ "ENABLE_RUST_BLS=$enable_rust_bls" ]
-}
-
 group("rust_lib") {
   visibility = [ "//brave/build/rust:*" ]
   deps = [ "rs:rust_lib" ]

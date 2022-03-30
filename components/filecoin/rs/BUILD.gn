@@ -6,11 +6,13 @@
 import("//brave/build/rust/rust_cxx.gni")
 
 rust_crate("rust_lib") {
-  visibility = [ "//brave/components/bls:rust_lib" ]
+  visibility = [ "//brave/components/filecoin:rust_lib" ]
 
   inputs = [
     "Cargo.toml",
+    "src/message.rs",
     "src/lib.rs",
+    "src/signature.rs",
   ]
 }
 
