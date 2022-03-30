@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/update_client/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/common/chrome_features.h"
@@ -63,7 +64,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest,
       switches::kComponentUpdater));
   EXPECT_EQ(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
                 switches::kComponentUpdater),
-            "url-source=" UPDATER_PROD_ENDPOINT);
+            std::string("url-source=") + BUILDFLAG(UPDATER_PROD_ENDPOINT));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableHyperlinkAuditing) {
