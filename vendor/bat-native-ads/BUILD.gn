@@ -815,7 +815,6 @@ source_set("ads") {
     "src/bat/ads/internal/ml/data/text_data.h",
     "src/bat/ads/internal/ml/data/vector_data.cc",
     "src/bat/ads/internal/ml/data/vector_data.h",
-    "src/bat/ads/internal/ml/data/vector_data_aliases.h",
     "src/bat/ads/internal/ml/ml_aliases.h",
     "src/bat/ads/internal/ml/ml_prediction_util.cc",
     "src/bat/ads/internal/ml/ml_prediction_util.h",

@@ -42,10 +42,12 @@ TEST_F(BatAdsHashedNGramsTest, HashingTest) {
 
   // Assert
   // 10000 is the default size
-  ASSERT_EQ(kDefaultBucketCount, hashed_vect_data->GetDimensionCount());
+  ASSERT_EQ(kDefaultBucketCount,
+            hashed_vect_data->GetDimensionCountForTesting());
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
-  EXPECT_EQ(kExpectedElementCount, hashed_vect_data->GetRawData().size());
+  EXPECT_EQ(kExpectedElementCount,
+            hashed_vect_data->GetValuesForTesting().size());
 }
 
 TEST_F(BatAdsHashedNGramsTest, CustomHashingTest) {
@@ -67,9 +69,9 @@ TEST_F(BatAdsHashedNGramsTest, CustomHashingTest) {
       static_cast<VectorData*>(hashed_data.get());
 
   // Assert
-  ASSERT_EQ(kHashBucketCount, hashed_vect_data->GetDimensionCount());
+  ASSERT_EQ(kHashBucketCount, hashed_vect_data->GetDimensionCountForTesting());
   EXPECT_EQ(kHashBucketCount,
-            static_cast<int>(hashed_vect_data->GetRawData().size()));
+            static_cast<int>(hashed_vect_data->GetValuesForTesting().size()));
 }
 
 }  // namespace ml
