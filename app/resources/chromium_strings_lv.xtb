@@ -132,7 +132,6 @@
 <translation id="5536657158619734169">Pieejama jauna Brave versija.</translation>
 <translation id="239760341987199724">Iestatīt Brave kā noklusējuma pārlūku</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> — Brave beta versija</translation>
-<translation id="707769633889902835">Brave OS nevar atvērt šo lapu.</translation>
 <translation id="696826782632239602">Pārlūkam Brave ir nepieciešama piekļuve jūsu atrašanās vietas datiem, lai varētu tos kopīgot ar šo vietni.</translation>
 <translation id="1744365871163268756">Lūdzu, uzgaidiet, kamēr Brave instalē jaunākos sistēmas atjauninājumus.</translation>
 <translation id="3861679447659630159">Brave mēģina rediģēt paroles. Lai to atļautu, ierakstiet savu Windows paroli.</translation>
@@ -195,7 +194,7 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="8291513491595858997">Viens no jūsu vecākiem ir izslēdzis “Atļaujas vietnēm, lietotnēm un paplašinājumiem” pārlūkam Brave. Nav atļauts iespējot šo: <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8211837073776713955">Ja jūsu paroles kādreiz tiks apdraudētas, pārlūkā Brave saņemsiet paziņojumu</translation>
 <translation id="7830723774663008396">Brave — <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (kopēts pārlūkā Brave)</translation>
+<translation id="2049565899730874086">Brave Pay (kopēts pārlūkā Brave)</translation>
 <translation id="3028928628792374067">Pārlūkā Brave tika konstatēts, ka paplašinājums “<ph name="EXTENSION_NAME"/>” satur ļaunprātīgu programmatūru.</translation>
 <translation id="2301993384336631869">Pārlūks Brave ir atjaunināts, bet jūs neesat to izmantojis vismaz 30 dienas.</translation>
 <translation id="8828443087767259398">Pārlūkam Brave ir nepieciešama Bluetooth piekļuve, lai turpinātu savienošanu pārī. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -287,6 +286,12 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="4484434718272972655">Kas izmanto pārlūku Brave?</translation>
 <translation id="7173394303099002355">Visaugstākais Brave drošības līmenis</translation>
 <translation id="8992261409816268381">Brave autori</translation>
+<translation id="479793348545936567">Ja vēlaties šo kontu izmantot tikai vienreiz, Brave pārlūkā varat izmantot viesa režīmu. Ja vēlaties pievienot kontu kādam citam, <ph name="LINK_BEGIN"/>pievienojiet jaunu profilu<ph name="LINK_END"/> savam profilam <ph name="DEVICE_TYPE"/>.
+
+Atļaujas, ko jau esat piešķīris vietnēm un lietotnēm, var attiekties uz šo kontu. Brave sinhronizācijas ķēdes varat pārvaldīt <ph name="SETTINGS_LINK_BEGIN"/>Iestatījumos<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Ja vēlaties šo kontu izmantot tikai vienreiz, Brave pārlūkā varat izmantot <ph name="GUEST_LINK_BEGIN"/>viesa režīmu<ph name="GUEST_LINK_END"/>. Ja vēlaties pievienot kontu kādam citam, <ph name="LINK_BEGIN"/>pievienojiet jaunu profilu<ph name="LINK_END"/> savam profilam <ph name="DEVICE_TYPE"/>.
+
+Atļaujas, ko jau esat piešķīris vietnēm un lietotnēm, var attiekties uz šo kontu. Brave sinhronizācijas ķēdes varat pārvaldīt <ph name="SETTINGS_LINK_BEGIN"/>Iestatījumos<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">BRĪDINĀJUMS! Brave nevar novērst, ka paplašinājumi reģistrē jūsu pārlūkošanas vēsturi. Lai atspējotu šo paplašinājumu inkognito režīmā, atceliet tā atlasi.</translation>
 <translation id="1448049584457347995">Lai uzlabotu Brave drošību, mēs atspējojām dažus paplašinājumus, kas nav norādīti vietnē <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> un, iespējams, tika pievienoti, jums nezinot.</translation>
 <translation id="8848045066928358658">Lai uzlabotu Brave drošību, mēs atspējojām tālāk norādīto paplašinājumu, kas nav norādīts vietnē <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> un, iespējams, tika pievienots, jums nezinot.</translation>

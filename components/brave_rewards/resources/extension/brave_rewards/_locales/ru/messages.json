@@ -62,8 +62,8 @@
     "message": "Включить в автоматический взнос",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "Ежемесячное пожертвование",
+  "monthlyTip": {
+    "message": "Ежемесячный платеж",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "Ежемесячные чаевые",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Верифицирован",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Разовые чаевые",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Суммарное вознаграждение",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Верифицирован",
+  "walletUnverified": {
+    "message": "Не подтвержден",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Подтвердить",
+  "walletVerified": {
+    "message": "Верифицирован",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Запланированные вами ежемесячные взносы не могут быть обработаны из-за недостатка средств. Мы попробуем снова через 30 дней.",
+    "message": "Ваш запланированный ежемесячный платеж (Автоматический Взнос) и ежемесячное пожертвование не завершены из-за недостатка средств. Мы попробуем еще раз через 30 дней.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Не удалось списать ежемесячный взнос.",
+    "message": "Ежемесячный платеж не прошел",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Ваши ежемесячные взносы были обработаны.",
+    "message": "Ваш ежемесячный платеж обработан.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

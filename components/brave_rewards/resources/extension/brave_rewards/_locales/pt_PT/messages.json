@@ -62,8 +62,8 @@
     "message": "Incluir na Contribuição Automática",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "Contribuição Mensal",
+  "monthlyTip": {
+    "message": "Gratificação mensal",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "Gratificações Mensais",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Verificado",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Contribuições Únicas",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Resumo de Recompensas",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Verificado",
+  "walletUnverified": {
+    "message": "Por verificar",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Verificar",
+  "walletVerified": {
+    "message": "Verificado",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Não foi possível concluir o agendamento do seu pagamento mensal para o Auto-Contribute e das contribuições mensais devido a insuficiência de fundos. Tentaremos novamente dentro de 30 dias.",
+    "message": "Não foi possível concluir o seu pagamento mensal agendado para contribuições automáticas e mensais, por motivo de insuficiência de fundos. Tentaremos novamente dentro de 30 dias.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Falha na contribuição mensal",
+    "message": "Falha na gratificação mensal",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "As suas contribuições mensais foram processadas.",
+    "message": "As gratificações mensais foram processadas.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

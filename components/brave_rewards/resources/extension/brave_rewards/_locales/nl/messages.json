@@ -62,7 +62,7 @@
     "message": "Deelname aan Auto-Contributie",
     "description": ""
   },
-  "monthlyContribution": {
+  "monthlyTip": {
     "message": "Maandelijkse bijdrage",
     "description": ""
   },
@@ -235,10 +235,6 @@
     "message": "Maandelijkse Fooien",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Geverifieerd",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Eenmalige tips",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Overzicht van de Beloningen",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Geverifieerd",
+  "walletUnverified": {
+    "message": "Niet-geverifieerd",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Verifieer",
+  "walletVerified": {
+    "message": "Geverifieerd",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Je geplande maandelijkse betaling voor Auto-Contribute en maandelijkse bijdragen kan niet worden verwerkt dankzij een te laag saldo. We proberen het opnieuw over 30 dagen. ",
+    "message": "Je geplande maandelijkse bijdrage voor Auto-Contribute en maandelijkse tips kon wegens onvoldoende saldo niet worden geïnd. We zullen het over 30 dagen opnieuw proberen.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Je maandelijkse bijdragen zijn verwerkt.",
+    "message": "Uw maandelijkse bijdragen zijn verwerkt.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

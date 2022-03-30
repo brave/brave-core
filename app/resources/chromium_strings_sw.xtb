@@ -134,7 +134,6 @@ Baadhi ya vipengele huenda visipatikane na mabadiliko katika mapendeleo hayatahi
 <translation id="5536657158619734169">Kuna toleo jipya la Brave linalopatikana.</translation>
 <translation id="239760341987199724">Weka Brave kuwa kivinjari chako chaguomsingi</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Beta ya Brave</translation>
-<translation id="707769633889902835">Mfumo wa Uendeshaji wa Brave hauwezi kufungua ukurasa huu.</translation>
 <translation id="696826782632239602">Brave inahitaji kufikia maelezo ya mahali ulipo ili kushiriki mahali ulipo na tovuti hii</translation>
 <translation id="1744365871163268756">Tafadhali subiri Brave inaposakinisha sasisho mpya ya mfumo.</translation>
 <translation id="3861679447659630159">Brave inajaribu kubadilisha manenosiri. Andika nenosiri lako la Windows ili uiruhusu.</translation>
@@ -197,7 +196,7 @@ Baadhi ya vipengele huenda visipatikane. Tafadhali bainisha saraka tofauti ya wa
 <translation id="8291513491595858997">Mzazi wako amezima "Ruhusa za tovuti, programu na viendelezi" kwenye Brave. Huruhusiwi kuwasha <ph name="EXTENSION_TYPE_PARAMETER"/> hii.</translation>
 <translation id="8211837073776713955">Brave hukuruhusu ujue iwapo manenosiri yako yameathiriwa</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (imenakiliwa kwenye Brave)</translation>
+<translation id="2049565899730874086">Google Pay (imenakiliwa kwenye Brave)</translation>
 <translation id="3028928628792374067">Brave imegundua kwamba "<ph name="EXTENSION_NAME"/>" ina programu hasidi</translation>
 <translation id="2301993384336631869">Brave imesasishwa, lakini hujaitumia angalau kwa siku 30.</translation>
 <translation id="8828443087767259398">Brave inahitaji ruhusa ya kufikia Bluetooth ili iendelee 
@@ -292,6 +291,12 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="4484434718272972655">Ni nani anayetumia Brave?</translation>
 <translation id="7173394303099002355">Pata usalama thabiti zaidi kutoka Brave</translation>
 <translation id="8992261409816268381">Waandishi wa Brave</translation>
+<translation id="479793348545936567">Ikiwa ungependa kutumia akaunti hii mara moja pekee, unaweza kutumia modi ya Mgeni katika kivinjari cha Brave. Ikiwa unataka kuongeza akaunti ya mtu mwingine, <ph name="LINK_BEGIN"/>ongeza wasifu mpya<ph name="LINK_END"/>kwenye <ph name="DEVICE_TYPE"/> yako.
+
+Ruhusa ambazo tayari umetoa kwa tovuti na programu zinaweza kutumika katika akaunti hii. Unaweza kudhibiti mitungo yako ya kulandanisha ya Brave kwenye <ph name="SETTINGS_LINK_BEGIN"/>Mipangilio<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Ikiwa ungependa kutumia akaunti hii mara moja pekee, unaweza kutumia <ph name="GUEST_LINK_BEGIN"/>modi ya Mgeni<ph name="GUEST_LINK_END"/> kwenye kivinjari cha Brave. Ikiwa unataka kuongeza akaunti ya mtu mwingine, <ph name="LINK_BEGIN"/>ongeza wasifu mpya <ph name="LINK_END"/> kwenye<ph name="DEVICE_TYPE"/> yako.
+
+Ruhusa ambazo tayari umetoa kwa tovuti na programu zinaweza kutumika katika akaunti hii. Unaweza kudhibiti mitungo yako ya kulandanisha ya Brave kwenye <ph name="SETTINGS_LINK_BEGIN"/>Mipangilio<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Onyo: Brave haiwezi kuzuia viendelezi kurekodi historia yako ya kuvinjari. Ili kuzima kiendelezi hiki katika hali ya Faragha, batilisha chaguo hili.</translation>
 <translation id="1448049584457347995">Ili kufanya Brave salama zaidi, tumezima baadhi ya viendelezi ambavyo havijaorodheshwa katika <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> na ambavyo huendwa viliongezwa pasipo ridhaa yako.</translation>
 <translation id="8848045066928358658">Ili kufanya Brave salama zaidi, tumezima kiendelezi kinachofuata ambacho hakijaorodheshwa katika <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> na huenda kimeongezwa bila ridhaa yako.</translation>

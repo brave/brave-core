@@ -133,7 +133,6 @@ Certaines fonctionnalités ne seront peut-être pas disponibles, et les modifica
 <translation id="5536657158619734169">Une nouvelle version de Brave est disponible.</translation>
 <translation id="239760341987199724">Définir Brave comme navigateur par défaut</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Bêta</translation>
-<translation id="707769633889902835">Brave OS ne peut pas ouvrir cette page</translation>
 <translation id="696826782632239602">Brave a besoin d'accéder à votre position pour la partager avec ce site</translation>
 <translation id="1744365871163268756">Veuillez patienter pendant que Brave installe les dernières mises à jour du système.</translation>
 <translation id="3861679447659630159">Brave tente de modifier les mots de passe. Saisissez votre mot de passe Windows pour autoriser cette opération.</translation>
@@ -196,7 +195,7 @@ Certaines fonctionnalités seront peut-être indisponibles. Veuillez spécifier 
 <translation id="8291513491595858997">Ton parent a désactivé l'option "Autorisations des sites, applications et extensions" pour Brave. Tu ne peux pas activer cette <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8211837073776713955">Brave vous indique si vos mots de passe ont été piratés</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (copiée dans Brave)</translation>
+<translation id="2049565899730874086">Brave Pay (copiée dans Brave)</translation>
 <translation id="3028928628792374067">Brave a détecté que <ph name="EXTENSION_NAME"/> contient un logiciel malveillant</translation>
 <translation id="2301993384336631869">Brave a été mis à jour, mais vous ne l'avez pas utilisé pendant au moins 30 jours.</translation>
 <translation id="8828443087767259398">Brave a besoin d'accéder au Bluetooth pour continuer 
@@ -290,6 +289,12 @@ Brave ne peut pas récupérer vos paramètres.</translation>
 <translation id="4484434718272972655">Qui utilise Brave ?</translation>
 <translation id="7173394303099002355">Renforcer la sécurité de Brave</translation>
 <translation id="8992261409816268381">Auteurs de Brave</translation>
+<translation id="479793348545936567">Si vous souhaitez utiliser ce compte une seule fois, vous pouvez utiliser le mode Invité dans le navigateur Brave. Si vous souhaitez ajouter un compte pour quelqu'un d'autre, <ph name="LINK_BEGIN"/>ajoutez un profil<ph name="LINK_END"/> à votre <ph name="DEVICE_TYPE"/>.
+
+Les autorisations que vous avez déjà accordées à des sites Web et à des applications peuvent s'appliquer à ce compte. Vous pouvez gérer vos chaînes de synchronisation Brave dans <ph name="SETTINGS_LINK_BEGIN"/>Paramètres<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Si vous souhaitez utiliser ce compte une seule fois, vous pouvez utiliser le <ph name="GUEST_LINK_BEGIN"/>mode Invité<ph name="GUEST_LINK_END"/> dans le navigateur Brave. Si vous souhaitez ajouter un compte pour quelqu'un d'autre, <ph name="LINK_BEGIN"/>ajoutez un profil<ph name="LINK_END"/> à votre <ph name="DEVICE_TYPE"/>.
+
+Les autorisations que vous avez déjà accordées à des sites Web et à des applications peuvent s'appliquer à ce compte. Vous pouvez gérer vos chaînes de synchronisation Brave dans <ph name="SETTINGS_LINK_BEGIN"/>Paramètres<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Avertissement : Brave ne peut pas empêcher les extensions d'enregistrer votre historique de navigation. Pour désactiver cette extension en mode navigation privée, désélectionnez-la.</translation>
 <translation id="1448049584457347995">Afin de rendre Brave plus sûr, nous avons désactivé certaines extensions qui ne sont pas répertoriées sur le <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> et qui ont pu être ajoutées à votre insu.</translation>
 <translation id="8848045066928358658">Afin de rendre Brave plus sûr, nous avons désactivé l'extension suivante qui n'est pas répertoriée sur le <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> et qui a pu être ajoutée à votre insu.</translation>

@@ -5,6 +5,7 @@
 <translation id="3570081523466826008">Aggiorna le connessioni a HTTPS</translation>
 <translation id="2278950434998763147">Apre alcuni siti usando una connessione sicura HTTPS invece che HTTP.</translation>
 <translation id="94154759592465111">Blocca gli Script</translation>
+<translation id="7714773920987474116">Blocca JavaScript (potrebbe non far funzionare alcuni siti)</translation>
 <translation id="6052725679982758334">Blocco dei social media</translation>
 <translation id="7498695072878479744">Permetti pulsante di accesso Google su siti di terze parti</translation>
 <translation id="863171915776379000">Consenti accessi a Facebook e post incorporati</translation>
@@ -42,6 +43,9 @@
 <translation id="1276592121036104130">Carica nuovo commento</translation>
 <translation id="3189348785087463371">Sponsorizzato</translation>
 <translation id="7554145152551782675">Altre offerte di Brave</translation>
+<translation id="1717242776111689224">Abilita le News Brave</translation>
+<translation id="4732255422524275223">Le tue fonti</translation>
+<translation id="152579389256498990">Feed o URL del sito</translation>
 <translation id="4975944254857623648">Fonti predefinite</translation>
 <translation id="253886574765651454">Aggiungi fonte</translation>
 <translation id="5787084571334399599">Impedisce al browser di rilevare le impronte digitali</translation>
@@ -97,6 +101,7 @@
 <translation id="2070991379950719711">Inizia a usare Brave Rewards</translation>
 <translation id="48520986898237073">Prosegui per il portafoglio</translation>
 <translation id="3570367516044491911">Imposta come browser predefinito</translation>
+<translation id="6800338374677644736">Imposta come browser predefinito</translation>
 <translation id="19715420010996093">Scegli il browser Brave e premi su 'Sempre'</translation>
 <translation id="3546439402724649282">Brave è già impostato come browser predefinito.</translation>
 <translation id="8389661903259423907">Hai già impostato un browser predefinito. Puoi cambiare il browser predefinito nelle impostazioni della tua applicazione.</translation>
@@ -116,6 +121,8 @@
 <translation id="3250511771491660127">Rendilo mensile</translation>
 <translation id="7658239707568436148">Annulla</translation>
 <translation id="1201402288615127009">Avanti</translation>
+<translation id="8481779960444041069">Per migliorare la privacy, imposta Brave come browser predefinito</translation>
+<translation id="1938402585819943124">Scegli Brave nella prossima schermata.</translation>
 <translation id="8926389886865778422">Non visualizzare più questo avviso</translation>
 <translation id="6639570430554986719">GENNAIO</translation>
 <translation id="1807352595146144483">FEBBRAIO</translation>
@@ -268,22 +275,24 @@ Confermi di voler procedere?</translation>
 <translation id="2927095357213611519">Puoi sostenere i creatori web con i token.\nGuadagna token visionando pubblicità rispettose della tua privacy.</translation>
 <translation id="213787746370741250">Aprire le schede in schede personalizzate</translation>
 <translation id="8030169304546394654">Disconnesso</translation>
-<translation id="8267327690882073581">Verifica il Portafoglio</translation>
+<translation id="6181762795539107980">Non verificato</translation>
 <translation id="543510923939676996">Portafoglio verificato</translation>
 <translation id="8673913984316081937">La verifica del portafoglio è facoltativa</translation>
 <translation id="8558636200953226885">Ma se completi la verifica, puoi...</translation>
 <translation id="8697510149346635496">Preleva i BAT che guadagni visualizzando annunci che rispettano la privacy</translation>
 <translation id="1481480653609649134">Acquista BAT aggiuntivi con carta di credito e altre fonti</translation>
 <translation id="9096003370755878766">Preleva BAT che potresti aver aggiunto in precedenza al tuo portafoglio Ricompense di Brave</translation>
+<translation id="8267327690882073581">Verifica il Portafoglio</translation>
 <translation id="1554282356558968486">Il nostro servizio di portafoglio è fornito da</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="734105583050813665">Bitflyer</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Uphold potrebbe richiedere di verificare la tua identità in base ai servizi richiesti.</translation>
 <translation id="3200197118442451932">Brave Software Inc. non esegue il trattamento dei dati personali da te forniti a <ph name="WALLET_PROVIDER"/> durante la creazione dell’account, non memorizza questi dati e non accede a nessuno di essi.</translation>
 <translation id="3699674790322420653">Completa verifica del portafoglio</translation>
 <translation id="2193391216824305230">Portafoglio utente</translation>
 <translation id="1665118090708049096">Vai al mio account <ph name="WALLET_PROVIDER"/></translation>
-<translation id="9200453331904391567">Scollegati da Brave Rewards</translation>
+<translation id="1948959999802743233">Scollega da <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Preleva i Fondi</translation>
 <translation id="8874184842967597500">Non connessa</translation>
 <translation id="3368922792935385530">Connessa</translation>
@@ -399,12 +408,12 @@ Confermi di voler procedere?</translation>
 <translation id="7427567994475794038">Attiva il Report Privacy per vedere quanti tracker &amp;ad sono state bloccate nelle ultime 3 ore.</translation>
 <translation id="2053891538879944400">Hai risparmiato <ph name="DATA"/> <ph name="DATA_TEXT"/> dati con Brave browser.</translation>
 <translation id="8640064498452534195">Attiva il Report Privacy per vedere quanti dati hai risparmiato.</translation>
-<translation id="2252497442547961651">Il browser Brave usa 40% in meno di batteria in media.&#128267;</translation>
+<translation id="2252497442547961651">Il browser Brave usa 40% in meno di batteria in media.🔋</translation>
 <translation id="1945330434665345785">Hai bloccato <ph name="COUNT"/> tracker &amp; ad con Brave browser la scorsa settimana.</translation>
 <translation id="2883868922264431515">Guadagna token guardando ad tutela-privacy e supporta i tuoi siti preferiti.</translation>
-<translation id="5678925890616256956">Ottimo! Hai bloccato 250 localizzatori &amp; pubblicità con il browser Brave.&#128293;</translation>
-<translation id="9199047775708635708">Ottimo! Hai risparmiato 10MB con il browser Brave.&#128267;</translation>
-<translation id="1880168210969863408">Ottimo! Hai risparmiato 10 minuti di tempo di carimento con il browser Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Ottimo! Hai bloccato 250 localizzatori &amp; pubblicità con il browser Brave.🔥</translation>
+<translation id="9199047775708635708">Ottimo! Hai risparmiato 10MB con il browser Brave.🔋</translation>
+<translation id="1880168210969863408">Ottimo! Hai risparmiato 10 minuti di tempo di carimento con il browser Brave.💨💨</translation>
 <translation id="7408493389591475748">Comincia a navigare per visualizzare il report sulla privacy</translation>
 <translation id="9080777565335515917">Imposta Brave come browser di default per una navigazione privata e sicura.</translation>
 <translation id="1390943217516275883">Permette a Brave di mostrare le tue statistiche in tema di privacy</translation>
@@ -471,12 +480,12 @@ Confermi di voler procedere?</translation>
 <translation id="6897083627729802351">Quando ricevi le ricompense?</translation>
 <translation id="310863932297733723">I gettoni guadagnati da Brave Private Ads durante il mese corrente arriveranno il 5 del mese successivo.</translation>
 <translation id="7712287524451429139">Dare qualcosa indietro senza sforzo</translation>
-<translation id="105037569026952831">I creatori ricevono automaticamente i tuoi contributi in gettoni in base ai tuoi livelli di coinvolgimento che misuriamo come ‘Attenzione’.</translation>
+<translation id="105037569026952831">I creatori ricevono automaticamente i tuoi contributi simbolici in base ai tuoi livelli di coinvolgimento che misuriamo come "Attenzione".</translation>
 <translation id="5323267338679539010">Dì grazie con una mancia</translation>
 <translation id="6730444165801605682">Dare una mancia è un modo per incoraggiare e supportare personalmente i contenuti o i creatori che adori. Datti da fare con le mance!</translation>
 <translation id="7509452925943421624">Cosa puoi fare con questo gettone?</translation>
 <translation id="5876169128756792273">I token possono essere utilizzati in vari modi, oltre a supportare i creatori. Puoi acquistare contenuti digitali e altri beni man mano che si aggiungono altri venditori.</translation>
-<translation id="1402530520078693620">Infine, spieghiamoti due cose sulle impostazioni</translation>
+<translation id="1402530520078693620">Per finire, configuriamo le impostazioni di base</translation>
 <translation id="3494356595346329740">Puoi modificarlo in seguito</translation>
 <translation id="3115702351969988294">Quanto spesso vuoi vedere gli annunci?</translation>
 <translation id="3474670199029510295">(Annunci pubblicitari all'ora)</translation>
@@ -523,6 +532,7 @@ Confermi di voler procedere?</translation>
 <translation id="5187052478998910855">Serve un ripasso su Rewards?</translation>
 <translation id="8622329973403382303">Fai un breve tour per rinfrescare la memoria su come funziona per passare alla storia come una rockstar di Rewards!</translation>
 <translation id="7625138338483121345">Imposta Brave come browser predefinito</translation>
+<translation id="4511485286950743564">Se Brave è il browser predefinito, tutti i link si aprono con le protezioni per la privacy di Brave.</translation>
 <translation id="9218430445555521422">Imposta di defult</translation>
 <translation id="3479552764303398839">Non adesso</translation>
 <translation id="4956847150856741762">1</translation>
@@ -564,6 +574,8 @@ Confermi di voler procedere?</translation>
 <translation id="375882617301124395">Esegui il backup al tuo portafoglio di criptovalute</translation>
 <translation id="8289942708804097960">Acquista delle criptovalute con carta di credito e debito.</translation>
 <translation id="841880029259839903">Invia cripto o trasferiscile da un account a un altro.</translation>
+<translation id="8226778393040773102">Cambia token e asset</translation>
+<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> utilizzerà l’indirizzo Ethereum e l’indirizzo IP per completare le transazioni (richieste di quotazioni incluse). <ph name="DEX_PROVIDER"/> userà questi dati SOLO per gestire le transazioni.</translation>
 <translation id="1783600039044302171">Metti al sicuro le tue cripto con una password</translation>
 <translation id="3726490322412361740">Inserisci password</translation>
 <translation id="3038243139480464605">Verifica la password</translation>
@@ -649,6 +661,9 @@ Confermi di voler procedere?</translation>
 <translation id="414639769490080648">Il numero di minuti di attesa per il blocco automatico del portafoglio Brave</translation>
 <translation id="4993345308607970390">Ripristina il portafoglio di Brave</translation>
 <translation id="6369495274982305511">Vuoi davvero ripristinare il portafoglio? Se non hai eseguito un backup, perderai tutti i dati dell’account (inclusi tutti i fondi associati). Digita “<ph name="CONFIRMATION_PHRASE"/>” per confermare.</translation>
+<translation id="4862812525895306758">Cancella dati su transazioni e nonce</translation>
+<translation id="5693968582510626466">Cancellare le transazioni può essere utile per gli sviluppatori o per cancellare lo stato su un server locale</translation>
+<translation id="5421107279168565467">Vuoi davvero ripristinare tutti i dati relativi al nonce e alle transazioni? Questa opzione in genere viene usata dagli sviluppatori su server di prova locali. Per confermare scrivi “<ph name="CONFIRMATION_PHRASE"/>”.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minuto} other {# minuti}}</translation>
 <translation id="4449475351935531438">Firewall + VPN Brave</translation>
 <translation id="719977489961414786">Passa a VPN per proteggere la tua connessione e bloccare ovunque i tracker invasivi.</translation>
@@ -732,6 +747,11 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="1634828734222219955">Totale</translation>
 <translation id="7995708795274219641">Importo + Gas</translation>
 <translation id="1950052789869821983">Transazione</translation>
+<translation id="2304783958703511257">Impostazioni avanzate</translation>
+<translation id="4220062530885628403">Nonce</translation>
+<translation id="1924965034964265193">Inserisci il valore nonce personalizzato</translation>
+<translation id="5317780077021120954">Salva</translation>
+<translation id="4979796155378508955">La transazione potrebbe non essere propagata nella rete se il valore nonce non è sequenziale o se contiene altri errori.</translation>
 <translation id="6122742277607781713">Portfolio</translation>
 <translation id="750843150060816463">Prezzo del Gas (Gwei)</translation>
 <translation id="1426320910664514906">Gas Limite</translation>
@@ -813,7 +833,7 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="1346059596910821859">Donazione</translation>
 <translation id="1549705559752367917">Invia mancia</translation>
 <translation id="6727102863431372879">Imposta</translation>
-<translation id="381822214767083050">Contributo mensile</translation>
+<translation id="6413162919383874653">Donazione mensile</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Mostra i suggerimenti del completamento automatico nella barra dell’indirizzo</translation>
@@ -833,11 +853,13 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="665660671251623018">Decimali della valuta della catena</translation>
 <translation id="182619028057179895">Formato non valido, i decimali della valuta sono un numero positivo</translation>
 <translation id="2978054488731497946">Inserisci i decimali della valuta</translation>
+<translation id="7642841516562576649">URL icona</translation>
 <translation id="4693057234255364395">URL dell'esploratore di blocchi</translation>
 <translation id="7059127752542505809">Inserisci l’URL</translation>
 <translation id="2156993118928861787">Indirizzo non valido</translation>
 <translation id="6889920539620318793">Imposta come attivo</translation>
 <translation id="2653659639078652383">Invia</translation>
+<translation id="4945690646623486292">Seleziona la rete</translation>
 <translation id="8853725596990766789">Modifica l’importo</translation>
 <translation id="5233638681132016545">Nuova scheda</translation>
 </translationbundle>

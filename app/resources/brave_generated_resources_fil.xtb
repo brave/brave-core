@@ -51,6 +51,8 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="1643029991199044105">Magpalipat-lipat sa mga pinakakamakailang ginamit na tab gamit ang Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Awtomatikong malo-load ang mga artikulo sa reader mode, na makakatipid ng oras para sa iyo</translation>
+<translation id="5510493033031835532">Mag-auto-redirect ng mga AMP page</translation>
+<translation id="5197219128592971597">Palaging bisitahin ang mga orihinal (non-AMP) na URL ng page, sa halip ng mga Accelerated Mobile Page na bersyon ng Google</translation>
 <translation id="5802665280774361839">Ipakita ang awtomatikong pagkumpleto sa address bar.</translation>
 <translation id="597020512043916976">Ipakita ang mga nangungunang site sa mga iminumungkahi ng autocomplete</translation>
 <translation id="264150068416846820">Ipakita ang mga iminumungkahing site ng Brave sa mga iminumungkahi ng autocomplete</translation>
@@ -218,10 +220,6 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="2414886740292270097">Dark</translation>
 <translation id="1360441190790440400">Pareho sa Linux</translation>
 <translation id="1336940801687497203">Pareho sa Windows</translation>
-<translation id="5919209812221905840">Default na handler para sa protocol ng microsoft-edge</translation>
-<translation id="5239541974656019812">Gawing Brave ang handler para sa protocol ng microsoft-edge</translation>
-<translation id="7136694880210472378">Gawing default</translation>
-<translation id="1751388324499810661">Ang Brave ay ang default na handler para sa protocol ng microsoft-edge</translation>
 <translation id="8721331068159819483">Kapareho ng macOS</translation>
 <translation id="2896916411183256228">Ginagamit ang WebTorrent upang direktang ipakita sa browser ang mga torrent. Sinusuportahan ang mga torrent file at magnet link.</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -233,6 +231,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="4718664830805652430">Default na base currency</translation>
 <translation id="7992507032049865603">Default na base currency</translation>
 <translation id="1834467296210148203">Ipakita ang icon ng Brave Wallet sa toolbar</translation>
+<translation id="4613486011786721686">Itago ang icon ng Brave Wallet sa toolbar</translation>
 <translation id="8239147115686034860">Awtomatikong i-lock ang Brave Wallet</translation>
 <translation id="414639769490080648">Ang bilang ng minutong hihintayin hanggang awtomatikong ma-lock ang Brave Wallet</translation>
 <translation id="6864914031231797928">Payagan ang mga pag-log in sa Google para sa mga extension</translation>
@@ -394,7 +393,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="8712637175834984815">Nakuha ko</translation>
 <translation id="4394049700291259645">Huwag paganahin</translation>
 <translation id="7142548388914389999">Payagan ang privacy-preserving product analytics (P3A)</translation>
-<translation id="609106526832379947">Nakakatulong sa Brave ang ganap na naka-anonymize na impormasyong ito na matantiya ang pangkalahatang paggamit ng ilang partikular na feature at mapahusay ang mga ito para sa iyo.</translation>
+<translation id="8286082624639565868">Nakakatulong sa Brave ang ganap na naka-anonymize na impormasyong ito na matantiya ang pangkalahatang paggamit ng ilang partikular na feature at mapahusay ang mga ito para sa iyo.</translation>
 <translation id="1947672064022327074">Gusto mo bang simulan ang Crypto Wallets para sa suporta sa Ethereum?</translation>
 <translation id="7583735190612229830">I-set up ang Crypto Wallets para makaugnayan ang app na ito at ang iba pang tulad nito.</translation>
 <translation id="8731422418734770661">I-set up ang Crypto Wallets</translation>
@@ -438,6 +437,10 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="2808630562319398131">I-reset ang data ng Mga Reward ng Brave...</translation>
 <translation id="2273851479262317744">I-set ang Brave bilang default na browser</translation>
 <translation id="8581710194025054669">Para tiyakin ang pinakamaigting na privacy online, pag-isipang i-set ang Brave bilang default na browser sa iyong computer. Gamit ang Brave bilang default, ang anumang web link na kini-click mo ay magbubukas nang may mga proteksyon sa privacy ng Brave.</translation>
+<translation id="1968543937259008435">Handa na para sa pinakamahusay na privacy online?</translation>
+<translation id="6817415381278637662">Itakda ang Brave bilang default mong browser para makuha ang mga privacy protection ng Brave sa bawat web page na bubuksan mo.</translation>
+<translation id="8722651357687610395">Itakda ang Brave bilang default</translation>
+<translation id="2370739752330685659">Sa ibang pagkakataon siguro</translation>
 <translation id="1241283133946520352">Mga Network</translation>
 <translation id="8205945804087322170">Magdagdag ng bagong network</translation>
 <translation id="2156993118928861787">Hindi valid ang address</translation>

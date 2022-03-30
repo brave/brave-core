@@ -64,6 +64,7 @@
 <translation id="3849957491997306859">זוהה אוטומטית</translation>
 <translation id="8798099450830957504">ברירת מחדל</translation>
 <translation id="4176463684765177261">מושבת</translation>
+<translation id="4851215387785619212">מודעות פרטיות Brave.</translation>
 <translation id="7808122468353671181">הרוויחו tokens על ידי הצגת  Brave Ads. הפרסומות המוצגות מבוססות על תחומי העניין שלכם, כפי שניתן להסיק מהרגלי הגלישה שלכם. אף נתונים אישיים או היסטוריית גלישה לא יעזבו את הדפדפן שלכם.</translation>
 <translation id="1758947220824279023">מספר מרבי של המודעות הניתנות להצגה</translation>
 <translation id="8578912649458880781">מיקוד פרסומות ברמת המדינה</translation>
@@ -98,6 +99,7 @@
 <translation id="1725356094208762656">פתח ב-Tor</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">פרסם והחזר קבצים מ-IPFS</translation>
+<translation id="7398397225367092613">.בצל</translation>
 <translation id="406832631167785034">לפתוח באמצעות כתובת onion.</translation>
 <translation id="4901618511712685702">יבוא אל IPFS</translation>
 <translation id="6794469945030154569">עמוד זה</translation>
@@ -111,11 +113,20 @@
 <translation id="1434416574322382019">חלון גלישה פרטי עם תור</translation>
 <translation id="4703780849509456860">פתחו קישור בחלון פרטי בעזרת Tor</translation>
 <translation id="3488584642074079080">פתיחת קישור בחלון גלישה פרטית של Brave עם Tor</translation>
+<translation id="186554175479803110">ייבוא ושתף קובץ</translation>
+<translation id="3036649622769666520">קבצים פתוחים</translation>
+<translation id="4408880250587950158">ייבוא ושתף ספריה</translation>
+<translation id="8396273373598682323">עם קובץ</translation>
+<translation id="518600784989889917">עם ספרייה</translation>
+<translation id="8147987711042435221">עדכן IPNS</translation>
 <translation id="4491895534716990473">ייבוא טקסט שנבחר אל IPFS</translation>
 <translation id="8883166554766780543">יבוא והעתקה של קישור לתמונת IPFS</translation>
+<translation id="709253338301411121">ייבוא ושתף קובץ</translation>
+<translation id="7068360136237591149">קבצים פתוחים</translation>
 <translation id="6313675821927505581">חלון פרטי חדש ב-Tor</translation>
 <translation id="2638041073279639246">פתח קישור בחלון פרטי ב-Tor</translation>
 <translation id="3425600262621021599">פתח קישור בחלון פרטי ב-Tor</translation>
+<translation id="3229091547987707389">ייבוא ושתף ספרייה</translation>
 <translation id="2515126961943087659">שירות Bat Ads</translation>
 <translation id="7924918279836988121">שירות יומן BAT</translation>
 <translation id="4472575034687746823">תחילת העבודה</translation>
@@ -204,10 +215,6 @@
 <translation id="2414886740292270097">כהה</translation>
 <translation id="1360441190790440400">כמו לינוקס</translation>
 <translation id="1336940801687497203">כמו Windows</translation>
-<translation id="5919209812221905840">מטפל בפרוטוקול של Miscrosoft Edge שהוא ברירת המחדל</translation>
-<translation id="5239541974656019812">קבע את Brave כמטפל ברירת מחדל בפרוטוקול Miscrosoft Edge</translation>
-<translation id="7136694880210472378">הפוך לברירת מחדל</translation>
-<translation id="1751388324499810661">Brave הוגדר כמטפל בפרוטוקול של Microsoft Edge כבררת מחדל</translation>
 <translation id="8721331068159819483">כמו macOS</translation>
 <translation id="2896916411183256228">משתמש ב-WebTorrent להצגת טורנטים ישירות בדפדפן. תומך בקבצי torrent וקישורי מגנט.</translation>
 <translation id="8488282162676695335">ארנק Brave</translation>
@@ -364,10 +371,13 @@
 <translation id="59174027418879706">מופעל</translation>
 <translation id="8258999165172757081">הוסף</translation>
 <translation id="6959315322491671328">לחיצה ימנית כדי לזוז</translation>
+<translation id="495046168593986294">לגלול מעלה</translation>
+<translation id="4021716437419160885">גלול מטה</translation>
 <translation id="4651504163033753423">האם ברצונך להפעיל את ה-Speedreader?</translation>
 <translation id="9089090017461255038">הפעל את ה-Speedreader</translation>
 <translation id="312393675740711187">מאמרים ייטענו במצב קריאה באופן אוטומטי, כדי לחסוך לך בזמן.</translation>
 <translation id="3234744217174488546">הפעל/כבה את מצב הקריאה עבור אתר זה בלבד. לכיבוי ה-Speedreader בפרופיל הדפדפן כולו, בקר</translation>
+<translation id="8597690239474328831">החלף כדי להפעיל/לכבות את מצב הקורא רק עבור אתר זה.</translation>
 <translation id="7839742507462737706">ב-Speedreader</translation>
 <translation id="8490082094734500369">כבה מצב קורא</translation>
 <translation id="2036503787657622020">הפעל מצב קורא</translation>
@@ -378,7 +388,6 @@
 <translation id="8712637175834984815">הבנתי</translation>
 <translation id="4394049700291259645">השבת</translation>
 <translation id="7142548388914389999">אפשר ניתוח מוצרים השומר על פרטיות (P3A)</translation>
-<translation id="609106526832379947">המידע הזה הוא אנונימי לחלוטין ומסייע ל-Brave להעריך את השימוש הכולל בתכונות מסוימות כדי לשפר אותן עבורך.</translation>
 <translation id="1947672064022327074">רוצה לפתוח ארנקי קריפטו לקבלת תמיכה ל-Ethereum?</translation>
 <translation id="7583735190612229830">הגדר/י ארנקי קריפטו כדי לקיים אינטראקציה עם אפליקציה זו ואחרות כמוה.</translation>
 <translation id="8731422418734770661">הגדר ארנקי קריפטו</translation>
@@ -421,6 +430,7 @@
 <translation id="2808630562319398131">אפס נתוני Brave Rewards...</translation>
 <translation id="2273851479262317744">הגדירו את Brave כדפדפן ברירת המחדל</translation>
 <translation id="8581710194025054669">להבטחת הפרטיות הטובה ביותר באינטרנט, שקול להגדיר את Brave כדפדפן ברירת המחדל במחשב שלך. עם Brave כברירת מחדל, כל קישור אינטרנט שתלחץ עליו ייפתח עם הגנות הפרטיות של Brave</translation>
+<translation id="8722651357687610395">הגדר/י את Brave כברירת מחדל</translation>
 <translation id="1241283133946520352">רשתות</translation>
 <translation id="8205945804087322170">הוסף רשת חדשה</translation>
 <translation id="2156993118928861787">כתובת לא חוקית</translation>

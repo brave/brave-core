@@ -62,8 +62,8 @@
     "message": "包含在自動捐獻中",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "每月貢獻",
+  "monthlyTip": {
+    "message": "每月小費",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "每月小費",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "已驗證",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "一次性小費",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Rewards 摘要",
     "description": ""
   },
-  "walletVerified": {
-    "message": "已驗證",
+  "walletUnverified": {
+    "message": "未驗證",
     "description": ""
   },
-  "walletVerify": {
-    "message": "驗證",
+  "walletVerified": {
+    "message": "已驗證",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "由於資金不足，您無法完成每月自動捐款與每月捐款。我們會在30天重試。",
+    "message": "由於資金不足，您無法完成預定的每月自動捐款和每月打賞。 我們會在 30 天後再試一次。",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "每月捐款失敗",
+    "message": "每月小費支付失敗",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "您的每月捐款已處理。",
+    "message": "您的每月小費已進入處理程序。",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

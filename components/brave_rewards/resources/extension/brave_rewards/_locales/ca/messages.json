@@ -62,8 +62,8 @@
     "message": "Inclou a Auto-Contribució",
     "description": ""
   },
-  "monthlyContribution": {
-    "message": "Contribució Mensual",
+  "monthlyTip": {
+    "message": "Propina mensual",
     "description": ""
   },
   "ok": {
@@ -235,10 +235,6 @@
     "message": "Propines Mensuals",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Verificat",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Propines d'una sola vegada",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Resum de recompenses",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Verificat",
+  "walletUnverified": {
+    "message": "Sense verificar",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Verifica",
+  "walletVerified": {
+    "message": "Verificat",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "No s'han pogut completar el cobrament per la Contribució Automàtica i les contribucions mensuals degut a fons insuficients. Ho tornarem a provar d'aquí a 30 dies.",
+    "message": "No s'ha pogut completar el teu pagament mensual programat per a la Contribució automàtica i les propines mensuals perquè no tens fons suficients. Ho tornarem a intentar d'aquí a 30 dies.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "S'ha produït un error en la contribució mensual",
+    "message": "S'ha produït un error en la propina mensual",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "S'han processat les teves contribucions mensuals.",
+    "message": "Les vostres propines mensuals s'han processat.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {
