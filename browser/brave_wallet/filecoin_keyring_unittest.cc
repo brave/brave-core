@@ -7,12 +7,9 @@
 
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/bls/buildflags.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/filecoin/rs/src/lib.rs.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#if BUILDFLAG(ENABLE_RUST_BLS)
-#include "brave/components/bls/rs/src/lib.rs.h"
-#endif
 
 namespace brave_wallet {
 
@@ -22,7 +19,7 @@ std::vector<uint8_t> GetPublicKey(const std::string& private_key_hex) {
   base::HexStringToBytes(private_key_hex, &private_key);
   std::array<uint8_t, 32> payload;
   std::copy_n(private_key.begin(), 32, payload.begin());
-  auto result = bls::fil_private_key_public_key(payload);
+  auto result = filecoin::bls_private_key_to_public_key(payload);
   std::vector<uint8_t> public_key(result.begin(), result.end());
   return public_key;
 }
@@ -110,7 +107,6 @@ TEST(FilecoinKeyring, ImportFilecoinSECP) {
   EXPECT_EQ(keyring.GetImportedAccountsNumber(), size_t(1));
 }
 
-#if BUILDFLAG(ENABLE_RUST_BLS)
 TEST(FilecoinKeyring, ImportFilecoinBLS) {
   std::string private_key_hex =
       "7b2254797065223a22626c73222c22507269766174654b6579223a2270536e7752332f38"
@@ -171,6 +167,5 @@ TEST(FilecoinKeyring, fil_private_key_public_key) {
   ASSERT_TRUE(std::all_of(zero_key.begin(), zero_key.end(),
                           [](int i) { return i == 0; }));
 }
-#endif
 
 }  // namespace brave_wallet

@@ -14,7 +14,6 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/components/bls/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
@@ -2731,7 +2730,6 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
      "6a7761773d227d",
      "t1zvggbhs5sxyeifzcrmik5oljbley7lvo57ovusy",
      "wNSfwtQM/FkfS4B34IjGWP45STk/st40LrCyC9Ujwaw="}
-#if BUILDFLAG(ENABLE_RUST_BLS)
     ,
     {"Imported Filecoin account 4",
      "7b2254797065223a22626c73222c22507269766174654b6579223a2270536e7752332f385"
@@ -2740,7 +2738,6 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
      "t3wwtato54ee5aod7j5uv2n75jpyn4hpwx3f2kx5cijtoxgytiul2dczrak3ghlbt5zjnj574"
      "y3snhcb5bthva",
      "pSnwR3/8UakSQowxXt+4Zu92WXmBMRntqmdHia6rHSE="}
-#endif
   };
   auto amount = sizeof(imported_accounts) / sizeof(imported_accounts[0]);
   for (size_t i = 0; i < amount; ++i) {
@@ -2803,13 +2800,11 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
         EXPECT_EQ(keyring_info->account_infos[1]->name,
                   imported_accounts[2].name);
         EXPECT_TRUE(keyring_info->account_infos[1]->is_imported);
-#if BUILDFLAG(ENABLE_RUST_BLS)
         EXPECT_EQ(keyring_info->account_infos[2]->address,
                   imported_accounts[3].address);
         EXPECT_EQ(keyring_info->account_infos[2]->name,
                   imported_accounts[3].name);
         EXPECT_TRUE(keyring_info->account_infos[2]->is_imported);
-#endif
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();

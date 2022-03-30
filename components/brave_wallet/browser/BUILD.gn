@@ -126,8 +126,6 @@ static_library("browser") {
     "//base",
     "//brave/common:brave_services_key",
     "//brave/components/api_request_helper",
-    "//brave/components/bls:buildflags",
-    "//brave/components/bls/rs:cxx",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_stats/browser",
     "//brave/components/brave_wallet/common",
@@ -135,6 +133,7 @@ static_library("browser") {
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:solana_utils",
+    "//brave/components/filecoin/rs:cxx",
     "//brave/components/ipfs",
     "//brave/components/json/rs:cxx",
     "//brave/components/json/rs:cxx_gen",
@@ -238,13 +237,12 @@ source_set("hd_keyring") {
     ":transaction",
     "internal:hd_key",
     "//base",
-    "//brave/components/bls:buildflags",
-    "//brave/components/bls/rs:cxx",
-    "//brave/components/bls/rs:cxx_gen",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:solana_utils",
+    "//brave/components/filecoin/rs:cxx",
+    "//brave/components/filecoin/rs:cxx_gen",
     "//crypto",
   ]
 
@@ -271,5 +269,9 @@ source_set("transaction") {
     "//base",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/filecoin/rs:cxx",
+    "//brave/components/filecoin/rs:cxx_gen",
+    "//brave/components/json/rs:cxx",
+    "//brave/components/json/rs:cxx_gen",
   ]
 }

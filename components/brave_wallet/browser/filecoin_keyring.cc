@@ -7,15 +7,14 @@
 
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/bls/buildflags.h"
+#include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
-#if BUILDFLAG(ENABLE_RUST_BLS)
-#include "brave/components/bls/rs/src/lib.rs.h"
-#endif
+#include "brave/components/filecoin/rs/src/lib.rs.h"
 
 namespace brave_wallet {
 
@@ -24,19 +23,16 @@ bool GetBLSPublicKey(const std::vector<uint8_t>& private_key,
                      std::vector<uint8_t>* public_key_out) {
   if (private_key.size() != 32 || !public_key_out)
     return false;
-#if BUILDFLAG(ENABLE_RUST_BLS)
+
   std::array<uint8_t, 32> payload;
   std::copy_n(private_key.begin(), 32, payload.begin());
-  auto result = bls::fil_private_key_public_key(payload);
+  auto result = filecoin::bls_private_key_to_public_key(payload);
   std::vector<uint8_t> public_key(result.begin(), result.end());
   if (std::all_of(public_key.begin(), public_key.end(),
                   [](int i) { return i == 0; }))
     return false;
   *public_key_out = public_key;
   return true;
-#else
-  return false;
-#endif
 }
 }  // namespace
 

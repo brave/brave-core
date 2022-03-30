@@ -84,6 +84,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:solana_utils",
+    "//brave/components/filecoin/rs:cxx_gen",
     "//brave/components/ipfs",
     "//brave/components/resources:strings_grit",
     "//components/prefs",
