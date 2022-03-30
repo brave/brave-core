@@ -1,9 +1,9 @@
 import { getTokenParam, getFlattenedAccountBalances } from './api-utils'
-import { AccountAssetOptions } from '../options/asset-options'
 import { mockAccount } from '../common/constants/mocks'
+import { mockEthToken, mockBasicAttentionToken } from '../stories/mock-data/mock-asset-options'
 
-const ethToken = AccountAssetOptions[0]
-const batToken = AccountAssetOptions[1]
+const ethToken = mockEthToken
+const batToken = mockBasicAttentionToken
 
 describe('Check token param', () => {
   test('Value should return contract address', () => {

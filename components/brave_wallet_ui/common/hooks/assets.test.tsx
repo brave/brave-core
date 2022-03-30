@@ -11,7 +11,6 @@ import {
   mockAssetPrices,
   mockNetwork
 } from '../constants/mocks'
-import { AccountAssetOptions } from '../../options/asset-options'
 import useAssets from './assets'
 import { WalletAccountType } from '../../constants/types'
 import { setMockedBuyAssets } from '../async/__mocks__/lib'
@@ -21,28 +20,29 @@ import { createPageReducer } from '../../page/reducers/page_reducer'
 import { mockPageState } from '../../stories/mock-data/mock-page-state'
 import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
 import { createWalletReducer } from '../reducers/wallet_reducer'
+import { mockBasicAttentionToken, mockEthToken } from '../../stories/mock-data/mock-asset-options'
 
 const mockAccounts = [
   {
     ...mockAccount,
     tokenBalanceRegistry: {
-      [AccountAssetOptions[0].contractAddress.toLowerCase()]: '238699740940532500',
-      [AccountAssetOptions[1].contractAddress.toLowerCase()]: '0'
+      [mockEthToken.contractAddress.toLowerCase()]: '238699740940532500',
+      [mockBasicAttentionToken.contractAddress.toLowerCase()]: '0'
     }
   } as WalletAccountType,
   {
     ...mockAccount,
     balance: '',
     tokenBalanceRegistry: {
-      [AccountAssetOptions[0].contractAddress.toLowerCase()]: '0',
-      [AccountAssetOptions[1].contractAddress.toLowerCase()]: '0'
+      [mockEthToken.contractAddress.toLowerCase()]: '0',
+      [mockBasicAttentionToken.contractAddress.toLowerCase()]: '0'
     }
   } as WalletAccountType
 ]
 
 const mockVisibleList = [
-  AccountAssetOptions[0],
-  AccountAssetOptions[1]
+  mockEthToken,
+  mockBasicAttentionToken
 ]
 
 const store = createStore(combineReducers({

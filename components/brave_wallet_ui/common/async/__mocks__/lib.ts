@@ -1,4 +1,4 @@
-import { AccountAssetOptions } from '../../../options/asset-options'
+import { mockBasicAttentionToken, mockEthToken } from '../../../stories/mock-data/mock-asset-options'
 import { BraveWallet } from '../../../constants/types'
 
 let mockedAllowance = '1000000000000000000' // 1 unit
@@ -20,15 +20,15 @@ export const getIsSwapSupported = (network: BraveWallet.NetworkInfo) => new Prom
   resolve(mockedIsSwapSupported)
 })
 
-let mockBuyAssetList = [
-  AccountAssetOptions[0],
-  AccountAssetOptions[1]
+let mockBuyAssetList: BraveWallet.BlockchainToken[] = [
+  mockEthToken,
+  mockBasicAttentionToken
 ]
 
-export const getBuyAssets = () => new Promise<typeof AccountAssetOptions>((resolve) => {
+export const getBuyAssets = () => new Promise<BraveWallet.BlockchainToken[]>((resolve) => {
   resolve(mockBuyAssetList)
 })
 
-export const setMockedBuyAssets = (newList: typeof AccountAssetOptions) => {
+export const setMockedBuyAssets = (newList: BraveWallet.BlockchainToken[]) => {
   mockBuyAssetList = newList
 }

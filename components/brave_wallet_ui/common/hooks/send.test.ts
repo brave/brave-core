@@ -8,14 +8,14 @@ import {
 } from '../../constants/types'
 
 import { mockAccount } from '../constants/mocks'
-import { AccountAssetOptions, NewAssetOptions } from '../../options/asset-options'
 
 import useSend from './send'
+import { mockBasicAttentionToken, mockBinanceCoinErc20Token, mockEthToken, mockMoonCatNFT, mockNewAssetOptions } from '../../stories/mock-data/mock-asset-options'
 
 const mockSendAssetOptions = [
-  AccountAssetOptions[1],
-  AccountAssetOptions[2],
-  NewAssetOptions[6]
+  mockBasicAttentionToken,
+  mockBinanceCoinErc20Token,
+  mockMoonCatNFT
 ]
 
 const mockENSValues = [
@@ -90,7 +90,7 @@ describe('useSend hook', () => {
     // Sets values here
     act(() => {
       result.current.onSetToAddressOrUrl('bravey.eth')
-      result.current.onSelectSendAsset(AccountAssetOptions[0])
+      result.current.onSelectSendAsset(mockEthToken)
       result.current.onSetSendAmount('10')
     })
     await act(async () => {
@@ -99,7 +99,7 @@ describe('useSend hook', () => {
 
     // Expected return values
     expect(result.current.toAddress).toEqual('mockAddress3')
-    expect(result.current.selectedSendAsset).toEqual(AccountAssetOptions[0])
+    expect(result.current.selectedSendAsset).toEqual(mockEthToken)
     expect(result.current.sendAmount).toEqual('10')
     expect(result.current.addressError).toEqual('')
     expect(result.current.addressWarning).toEqual('')
@@ -137,7 +137,7 @@ describe('useSend hook', () => {
     // Sets values here
     act(() => {
       result.current.onSetToAddressOrUrl('brave.crypto')
-      result.current.onSelectSendAsset(AccountAssetOptions[1])
+      result.current.onSelectSendAsset(mockBasicAttentionToken)
       result.current.onSetSendAmount('300')
     })
     await act(async () => {
@@ -146,7 +146,7 @@ describe('useSend hook', () => {
 
     // Expected return values
     expect(result.current.toAddress).toEqual('mockAddress2')
-    expect(result.current.selectedSendAsset).toEqual(AccountAssetOptions[1])
+    expect(result.current.selectedSendAsset).toEqual(mockBasicAttentionToken)
     expect(result.current.sendAmount).toEqual('300')
     expect(result.current.addressError).toEqual('')
     expect(result.current.addressWarning).toEqual('')
@@ -157,7 +157,7 @@ describe('useSend hook', () => {
     // Expected transaction calls here
     expect(sendERC20TransferSpy).toBeCalledWith(
       {
-        contractAddress: AccountAssetOptions[1].contractAddress,
+        contractAddress: mockBasicAttentionToken.contractAddress,
         from: 'mockAddress',
         to: 'mockAddress2',
         value: '0x1043561a8829300000',
@@ -185,7 +185,7 @@ describe('useSend hook', () => {
     // Sets values here
     act(() => {
       result.current.onSetToAddressOrUrl('brave.eth')
-      result.current.onSelectSendAsset(NewAssetOptions[6])
+      result.current.onSelectSendAsset(mockNewAssetOptions[6])
     })
     await act(async () => {
       await waitForNextUpdate()
@@ -193,7 +193,7 @@ describe('useSend hook', () => {
 
     // Expected return values
     expect(result.current.toAddress).toEqual('mockAddress2')
-    expect(result.current.selectedSendAsset).toEqual(NewAssetOptions[6])
+    expect(result.current.selectedSendAsset).toEqual(mockNewAssetOptions[6])
     expect(result.current.sendAmount).toEqual('1')
     expect(result.current.addressError).toEqual('')
     expect(result.current.addressWarning).toEqual('')
@@ -204,7 +204,7 @@ describe('useSend hook', () => {
     // Expected transaction calls here
     expect(sendERC721TransferFromSpy).toBeCalledWith(
       {
-        contractAddress: NewAssetOptions[6].contractAddress,
+        contractAddress: mockNewAssetOptions[6].contractAddress,
         from: 'mockAddress',
         to: 'mockAddress2',
         tokenId: '0x42a5',

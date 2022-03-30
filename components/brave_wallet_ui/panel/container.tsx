@@ -66,8 +66,7 @@ import { getNetworkInfo } from '../utils/network-utils'
 import {
   findENSAddress,
   findUnstoppableDomainAddress,
-  getChecksumEthAddress,
-  getERC20Allowance
+  getChecksumEthAddress
 } from '../common/async/lib'
 import { isHardwareAccount } from '../utils/address-utils'
 import { useAssets, useBalance, useSwap, useSend, usePreset } from '../common/hooks'
@@ -106,10 +105,8 @@ function Container (props: Props) {
     isWalletCreated,
     networkList,
     transactionSpotPrices,
-    gasEstimates,
     connectedAccounts,
     activeOrigin,
-    pendingTransactions,
     defaultCurrencies,
     transactions,
     userVisibleTokensInfo
@@ -414,13 +411,6 @@ function Container (props: Props) {
     }
   }
 
-  const onRejectAllTransactions = () => {
-    props.walletActions.rejectAllTransactions()
-  }
-
-  const onQueueNextTransaction = () => {
-    props.walletActions.queueNextTransaction()
-  }
   const retryHardwareOperation = () => {
     // signMessageData by default initialized as [{ id: -1, address: '', message: '' }]
     if (signMessageData && signMessageData.length && signMessageData[0].id !== -1) {
@@ -604,25 +594,8 @@ function Container (props: Props) {
       <PanelWrapper isLonger={true}>
         <LongWrapper>
           <ConfirmTransactionPanel
-            defaultCurrencies={defaultCurrencies}
-            originInfo={activeOrigin}
             onConfirm={onConfirmTransaction}
             onReject={onRejectTransaction}
-            onRejectAllTransactions={onRejectAllTransactions}
-            onQueueNextTransaction={onQueueNextTransaction}
-            transactionQueueNumber={pendingTransactions.findIndex(tx => tx.id === selectedPendingTransaction.id) + 1}
-            transactionsQueueLength={pendingTransactions.length}
-            accounts={accounts}
-            selectedNetwork={getNetworkInfo(selectedNetwork.chainId, networkList)}
-            transactionInfo={selectedPendingTransaction}
-            transactionSpotPrices={transactionSpotPrices}
-            visibleTokens={userVisibleTokensInfo}
-            getERC20Allowance={getERC20Allowance}
-            updateUnapprovedTransactionGasFields={props.walletActions.updateUnapprovedTransactionGasFields}
-            updateUnapprovedTransactionSpendAllowance={props.walletActions.updateUnapprovedTransactionSpendAllowance}
-            updateUnapprovedTransactionNonce={props.walletActions.updateUnapprovedTransactionNonce}
-            gasEstimates={gasEstimates}
-            fullTokenList={props.wallet.fullTokenList}
           />
         </LongWrapper>
       </PanelWrapper>
