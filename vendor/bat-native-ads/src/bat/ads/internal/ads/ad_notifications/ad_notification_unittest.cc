@@ -27,7 +27,7 @@
 namespace ads {
 
 namespace {
-constexpr char kUuid[] = "d2ef9bb0-a0dc-472c-bc49-62105bb6da68";
+constexpr char kPlacementId[] = "d2ef9bb0-a0dc-472c-bc49-62105bb6da68";
 }  // namespace
 
 class BatAdsAdNotificationTest : public AdNotificationObserver,
@@ -109,7 +109,8 @@ TEST_F(BatAdsAdNotificationTest, FireServedEvent) {
   const AdNotificationInfo& ad = BuildAndSaveAdNotification();
 
   // Act
-  ad_notification_->FireEvent(ad.uuid, mojom::AdNotificationEventType::kServed);
+  ad_notification_->FireEvent(ad.placement_id,
+                              mojom::AdNotificationEventType::kServed);
 
   // Assert
   EXPECT_TRUE(did_serve_ad_);
@@ -119,7 +120,7 @@ TEST_F(BatAdsAdNotificationTest, FireServedEvent) {
   EXPECT_FALSE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_TRUE(AdNotifications::Get()->Exists(ad.uuid));
+  EXPECT_TRUE(AdNotifications::Get()->Exists(ad.placement_id));
 
   ExpectAdEventCountEquals(ConfirmationType::kServed, 1);
 }
@@ -129,7 +130,8 @@ TEST_F(BatAdsAdNotificationTest, FireViewedEvent) {
   const AdNotificationInfo& ad = BuildAndSaveAdNotification();
 
   // Act
-  ad_notification_->FireEvent(ad.uuid, mojom::AdNotificationEventType::kViewed);
+  ad_notification_->FireEvent(ad.placement_id,
+                              mojom::AdNotificationEventType::kViewed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);
@@ -139,7 +141,7 @@ TEST_F(BatAdsAdNotificationTest, FireViewedEvent) {
   EXPECT_FALSE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_TRUE(AdNotifications::Get()->Exists(ad.uuid));
+  EXPECT_TRUE(AdNotifications::Get()->Exists(ad.placement_id));
 
   ExpectAdEventCountEquals(ConfirmationType::kViewed, 1);
 }
@@ -149,7 +151,7 @@ TEST_F(BatAdsAdNotificationTest, FireClickedEvent) {
   const AdNotificationInfo& ad = BuildAndSaveAdNotification();
 
   // Act
-  ad_notification_->FireEvent(ad.uuid,
+  ad_notification_->FireEvent(ad.placement_id,
                               mojom::AdNotificationEventType::kClicked);
 
   // Asser
@@ -160,7 +162,7 @@ TEST_F(BatAdsAdNotificationTest, FireClickedEvent) {
   EXPECT_FALSE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_FALSE(AdNotifications::Get()->Exists(ad.uuid));
+  EXPECT_FALSE(AdNotifications::Get()->Exists(ad.placement_id));
 
   ExpectAdEventCountEquals(ConfirmationType::kClicked, 1);
 }
@@ -170,7 +172,7 @@ TEST_F(BatAdsAdNotificationTest, FireDismissedEvent) {
   const AdNotificationInfo& ad = BuildAndSaveAdNotification();
 
   // Act
-  ad_notification_->FireEvent(ad.uuid,
+  ad_notification_->FireEvent(ad.placement_id,
                               mojom::AdNotificationEventType::kDismissed);
 
   // Assert
@@ -181,7 +183,7 @@ TEST_F(BatAdsAdNotificationTest, FireDismissedEvent) {
   EXPECT_FALSE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_FALSE(AdNotifications::Get()->Exists(ad.uuid));
+  EXPECT_FALSE(AdNotifications::Get()->Exists(ad.placement_id));
 
   ExpectAdEventCountEquals(ConfirmationType::kDismissed, 1);
 }
@@ -191,7 +193,7 @@ TEST_F(BatAdsAdNotificationTest, FireTimedOutEvent) {
   const AdNotificationInfo& ad = BuildAndSaveAdNotification();
 
   // Act
-  ad_notification_->FireEvent(ad.uuid,
+  ad_notification_->FireEvent(ad.placement_id,
                               mojom::AdNotificationEventType::kTimedOut);
 
   // Assert
@@ -202,14 +204,15 @@ TEST_F(BatAdsAdNotificationTest, FireTimedOutEvent) {
   EXPECT_TRUE(did_time_out_ad_);
   EXPECT_FALSE(did_fail_to_fire_event_);
   EXPECT_EQ(ad, ad_);
-  EXPECT_FALSE(AdNotifications::Get()->Exists(ad.uuid));
+  EXPECT_FALSE(AdNotifications::Get()->Exists(ad.placement_id));
 }
 
 TEST_F(BatAdsAdNotificationTest, DoNotFireEventIfUuidWasNotFound) {
   // Arrange
 
   // Act
-  ad_notification_->FireEvent(kUuid, mojom::AdNotificationEventType::kViewed);
+  ad_notification_->FireEvent(kPlacementId,
+                              mojom::AdNotificationEventType::kViewed);
 
   // Assert
   EXPECT_FALSE(did_serve_ad_);

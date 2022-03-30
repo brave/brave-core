@@ -22,6 +22,7 @@ base::Time TimestampToTime(const double timestamp);
 base::Time MinTime();
 base::Time MaxTime();
 
+double DistantPastAsTimestamp();
 base::Time DistantPast();
 std::string DistantPastAsISO8601();
 
@@ -29,6 +30,7 @@ double NowAsTimestamp();
 base::Time Now();
 std::string NowAsISO8601();
 
+double DistantFutureAsTimestamp();
 base::Time DistantFuture();
 std::string DistantFutureAsISO8601();
 

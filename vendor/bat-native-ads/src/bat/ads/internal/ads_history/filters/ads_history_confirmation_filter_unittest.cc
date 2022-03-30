@@ -115,7 +115,7 @@ TEST(BatAdsHistoryConfirmationFilterTest, FilterUnsupportedActions) {
 
   AdHistoryInfo ad7;  // Dismiss
   ad7.ad_content.uuid = "1ec4f1ba-4255-4ecf-8701-8e550744cdf8";
-  ad7.ad_content.type = AdType::kPromotedContentAd;
+  ad7.ad_content.type = AdType::kSearchResultAd;
   ad7.ad_content.creative_instance_id = "d5d47c90-5c6b-4aa2-bd05-582ff6e4a03e";
   ad7.ad_content.confirmation_type = ConfirmationType::kDismissed;
 

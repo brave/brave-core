@@ -98,11 +98,15 @@ class BatAdsImpl :
 
   void GetInlineContentAd(const std::string& dimensions,
                           GetInlineContentAdCallback callback) override;
-
   void OnInlineContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
       const ads::mojom::InlineContentAdEventType event_type) override;
+
+  void TriggerSearchResultAdEvent(
+      ads::mojom::SearchResultAdPtr ad_mojom,
+      const ads::mojom::SearchResultAdEventType event_type,
+      TriggerSearchResultAdEventCallback callback) override;
 
   void PurgeOrphanedAdEventsForType(const ads::mojom::AdType ad_type) override;
 
@@ -175,6 +179,12 @@ class BatAdsImpl :
         const bool success,
         const std::string& dimensions,
         const ads::InlineContentAdInfo& ad);
+
+    static void OnTriggerSearchResultAdEvent(
+        CallbackHolder<TriggerSearchResultAdEventCallback>* holder,
+        const bool success,
+        const std::string& placement_id,
+        const ads::mojom::SearchResultAdEventType event_type);
 
     static void OnRemoveAllHistory(
         CallbackHolder<RemoveAllHistoryCallback>* holder,

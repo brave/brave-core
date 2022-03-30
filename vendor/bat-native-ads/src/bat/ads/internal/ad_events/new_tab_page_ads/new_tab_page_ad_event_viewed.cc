@@ -18,9 +18,9 @@ AdEventViewed::AdEventViewed() = default;
 AdEventViewed::~AdEventViewed() = default;
 
 void AdEventViewed::FireEvent(const NewTabPageAdInfo& ad) {
-  BLOG(3, "Viewed new tab page ad with uuid " << ad.uuid
-                                              << " and creative instance id "
-                                              << ad.creative_instance_id);
+  BLOG(3, "Viewed new tab page ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
 
   LogAdEvent(ad, ConfirmationType::kViewed, [](const bool success) {
     if (!success) {

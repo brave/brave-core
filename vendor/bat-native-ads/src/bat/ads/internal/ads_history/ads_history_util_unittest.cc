@@ -30,7 +30,7 @@ TEST_F(BatAdsAdsHistoryUtilTest, BuildAd) {
   // Arrange
   AdInfo ad;
   ad.type = AdType::kAdNotification;
-  ad.uuid = "cdc6855f-d76d-4eb4-9b91-64247fed2f66";
+  ad.placement_id = "56b604b7-5eeb-4b7f-84cc-bf965556a550";
   ad.creative_instance_id = "c7a368fd-572d-4af8-be4c-3966475a29b3";
   ad.creative_set_id = "121e5e50-4397-4128-ae38-47525bc1d421";
   ad.campaign_id = "e0fc8a2d-db96-44fb-8522-d299cb98559e";
@@ -47,7 +47,7 @@ TEST_F(BatAdsAdsHistoryUtilTest, BuildAd) {
 
   expected_ad_history.timestamp = NowAsTimestamp();
   expected_ad_history.ad_content.type = ad.type;
-  expected_ad_history.ad_content.uuid = ad.uuid;
+  expected_ad_history.ad_content.uuid = ad.placement_id;
   expected_ad_history.ad_content.creative_instance_id = ad.creative_instance_id;
   expected_ad_history.ad_content.creative_set_id = ad.creative_set_id;
   expected_ad_history.ad_content.campaign_id = ad.campaign_id;

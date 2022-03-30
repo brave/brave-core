@@ -21,13 +21,13 @@ AdEventClicked::AdEventClicked() = default;
 AdEventClicked::~AdEventClicked() = default;
 
 void AdEventClicked::FireEvent(const AdNotificationInfo& ad) {
-  BLOG(3, "Clicked ad notification with uuid " << ad.uuid
-                                               << " and creative instance id "
-                                               << ad.creative_instance_id);
+  BLOG(3, "Clicked ad notification with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
 
-  AdNotifications::Get()->Remove(ad.uuid);
+  AdNotifications::Get()->Remove(ad.placement_id);
 
-  AdsClientHelper::Get()->CloseNotification(ad.uuid);
+  AdsClientHelper::Get()->CloseNotification(ad.placement_id);
 
   LogAdEvent(ad, ConfirmationType::kClicked, [](const bool success) {
     if (!success) {

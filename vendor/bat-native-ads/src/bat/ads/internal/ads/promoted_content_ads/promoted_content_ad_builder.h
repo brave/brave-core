@@ -18,7 +18,7 @@ PromotedContentAdInfo BuildPromotedContentAd(
 
 PromotedContentAdInfo BuildPromotedContentAd(
     const CreativePromotedContentAdInfo& creative_promoted_content_ad,
-    const std::string& uuid);
+    const std::string& placement_id);
 
 }  // namespace ads
 

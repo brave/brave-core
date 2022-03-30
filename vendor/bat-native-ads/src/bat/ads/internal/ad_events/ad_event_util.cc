@@ -17,7 +17,7 @@ bool HasFiredAdViewedEvent(const AdInfo& ad, const AdEventList& ad_events) {
   const auto iter = std::find_if(
       ad_events.cbegin(), ad_events.cend(), [&ad](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type == ConfirmationType::kViewed &&
-               ad_event.uuid == ad.uuid;
+               ad_event.uuid == ad.placement_id;
       });
 
   if (iter == ad_events.end()) {

@@ -27,4 +27,13 @@ bool ConversionInfo::operator!=(const ConversionInfo& rhs) const {
   return !(*this == rhs);
 }
 
+bool ConversionInfo::IsValid() const {
+  if (creative_set_id.empty() || type.empty() || url_pattern.empty() ||
+      expire_at.is_null()) {
+    return false;
+  }
+
+  return true;
+}
+
 }  // namespace ads

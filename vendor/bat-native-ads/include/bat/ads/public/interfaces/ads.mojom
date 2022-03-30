@@ -23,7 +23,16 @@ enum AdType {
   kAdNotification,
   kNewTabPageAd,
   kPromotedContentAd,
-  kInlineContentAd
+  kInlineContentAd,
+  kSearchResultAd
+};
+
+struct Conversion {
+  string type;
+  string url_pattern;
+  string advertiser_public_key;
+  int32 observation_window;
+  double expire_at;
 };
 
 enum AdNotificationEventType {
@@ -47,6 +56,26 @@ enum PromotedContentAdEventType {
 };
 
 enum InlineContentAdEventType {
+  kServed = 0,
+  kViewed,
+  kClicked
+};
+
+struct SearchResultAd {
+  AdType type = kSearchResultAd;
+  string placement_id;
+  string creative_instance_id;
+  string creative_set_id;
+  string campaign_id;
+  string advertiser_id;
+  string target_url;
+  string headline_text;
+  string description;
+  double value;
+  Conversion conversion;
+};
+
+enum SearchResultAdEventType {
   kServed = 0,
   kViewed,
   kClicked

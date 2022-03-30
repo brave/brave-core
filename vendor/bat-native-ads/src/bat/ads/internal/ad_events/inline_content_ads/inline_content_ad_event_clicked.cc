@@ -18,9 +18,9 @@ AdEventClicked::AdEventClicked() = default;
 AdEventClicked::~AdEventClicked() = default;
 
 void AdEventClicked::FireEvent(const InlineContentAdInfo& ad) {
-  BLOG(3, "Clicked inline content ad with uuid " << ad.uuid
-                                                 << " and creative instance id "
-                                                 << ad.creative_instance_id);
+  BLOG(3, "Clicked inline content ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
 
   LogAdEvent(ad, ConfirmationType::kClicked, [](const bool success) {
     if (!success) {

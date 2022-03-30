@@ -32,7 +32,7 @@
 - (instancetype)initWithInlineContentAdInfo:
     (const ads::InlineContentAdInfo&)info {
   if ((self = [super init])) {
-    self.uuid = base::SysUTF8ToNSString(info.uuid);
+    self.uuid = base::SysUTF8ToNSString(info.placement_id);
     self.creativeInstanceID =
         base::SysUTF8ToNSString(info.creative_instance_id);
     self.creativeSetID = base::SysUTF8ToNSString(info.creative_set_id);
