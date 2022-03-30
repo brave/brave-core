@@ -491,7 +491,27 @@ class TabManager: NSObject {
     if flushToDisk && !zombie && !isPrivate {
       saveTab(tab, saveOrder: true)
     }
-
+    
+    // When the state of the page changes, we debounce a call to save the screenshots and tab information
+    // This fixes pages that have dynamic URL via changing history
+    // as well as regular pages that load DOM normally.
+    var debounce_timer: Timer?
+    tab.onPageReadyStateChanged = { [weak self] state in
+      guard let self = self else { return }
+      
+      debounce_timer?.invalidate()
+      debounce_timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
+        debounce_timer?.invalidate()
+        
+        if state == .complete || state == .loaded || state == .pushstate || state == .popstate {
+          // Saving Tab Private Mode - not supported yet.
+          if !tab.isPrivate {
+            self.preserveScreenshots()
+            self.saveTab(tab)
+          }
+        }
+      }
+    }
   }
 
   func indexOfWebView(_ webView: WKWebView) -> UInt? {

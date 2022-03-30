@@ -1057,6 +1057,8 @@
 		CA225DF72795D1A80024C104 /* MainFrameAtDocumentEndSandboxed.js in Resources */ = {isa = PBXBuildFile; fileRef = CA225DF52795D1A80024C104 /* MainFrameAtDocumentEndSandboxed.js */; };
 		CA225DF92795D7690024C104 /* WKContentWorld+Sandbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA225DF82795D7690024C104 /* WKContentWorld+Sandbox.swift */; };
 		CA29F2F3273DAEA100C391C3 /* PlaylistOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA29F2F2273DAEA100C391C3 /* PlaylistOnboardingView.swift */; };
+		CA2CA1B127F4B50300B25646 /* ReadyState.js in Resources */ = {isa = PBXBuildFile; fileRef = CA2CA1B027F4B50300B25646 /* ReadyState.js */; };
+		CA2CA1CF27F4B93400B25646 /* ReadyStateScriptHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2CA1CE27F4B93400B25646 /* ReadyStateScriptHelper.swift */; };
 		CA2EE0A527349E970089C75F /* disconnect-entitylist.json in Resources */ = {isa = PBXBuildFile; fileRef = CA2EE09927349E970089C75F /* disconnect-entitylist.json */; };
 		CA2EE0A727349F760089C75F /* OnboardingAdblockDisconnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2EE0A627349F760089C75F /* OnboardingAdblockDisconnect.swift */; };
 		CA439A5925E6F29D00FE9150 /* VideoPlayerInfoBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A5825E6F29D00FE9150 /* VideoPlayerInfoBar.swift */; };
@@ -3014,6 +3016,8 @@
 		CA225DF52795D1A80024C104 /* MainFrameAtDocumentEndSandboxed.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = MainFrameAtDocumentEndSandboxed.js; sourceTree = "<group>"; };
 		CA225DF82795D7690024C104 /* WKContentWorld+Sandbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKContentWorld+Sandbox.swift"; sourceTree = "<group>"; };
 		CA29F2F2273DAEA100C391C3 /* PlaylistOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistOnboardingView.swift; sourceTree = "<group>"; };
+		CA2CA1B027F4B50300B25646 /* ReadyState.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ReadyState.js; sourceTree = "<group>"; };
+		CA2CA1CE27F4B93400B25646 /* ReadyStateScriptHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyStateScriptHelper.swift; sourceTree = "<group>"; };
 		CA2EE09927349E970089C75F /* disconnect-entitylist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "disconnect-entitylist.json"; sourceTree = "<group>"; };
 		CA2EE0A627349F760089C75F /* OnboardingAdblockDisconnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAdblockDisconnect.swift; sourceTree = "<group>"; };
 		CA439A5825E6F29D00FE9150 /* VideoPlayerInfoBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerInfoBar.swift; sourceTree = "<group>"; };
@@ -4833,6 +4837,7 @@
 				D31F95E81AC226CB005C9F3B /* ScreenshotHelper.swift */,
 				F35B8D2C1D6383E9008E3D61 /* SessionRestoreHelper.swift */,
 				5E4845C122DE3DF800372022 /* WindowRenderHelperScript.swift */,
+				CA2CA1CE27F4B93400B25646 /* ReadyStateScriptHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -6064,6 +6069,7 @@
 				5EC2C0E425C0B321005EA984 /* PlaylistDetector.js */,
 				5EC0017D260129AC005DDE4A /* PlaylistSwizzler.js */,
 				CA55048F269DED8F00C19917 /* MediaBackgrounding.js */,
+				CA2CA1B027F4B50300B25646 /* ReadyState.js */,
 			);
 			path = UserScripts;
 			sourceTree = "<group>";
@@ -7732,6 +7738,7 @@
 				CA225DF22795CECE0024C104 /* MainFrame.js in Resources */,
 				4481F23626CBD27B00658EAC /* GlobalSignRootCA_E46.cer in Resources */,
 				4422D55221BFFB7E00BF1855 /* make_unicode_casefold.py in Resources */,
+				CA2CA1B127F4B50300B25646 /* ReadyState.js in Resources */,
 				5E4E078324A0E4D700B01720 /* YoutubeAdblock.js in Resources */,
 				445ABC962731DDFF0089710D /* NewYorkMedium-Bold.otf in Resources */,
 				E4B7B7791A793CF20022C5E0 /* FiraSans-Light.ttf in Resources */,
@@ -8440,6 +8447,7 @@
 				27FD2CAB2146C31C00A5A779 /* RequestDesktopSiteActivity.swift in Sources */,
 				3BCE6D3C1CEB9E4D0080928C /* ThirdPartySearchAlerts.swift in Sources */,
 				4422D55A21BFFB7F00BF1855 /* regexp.cc in Sources */,
+				CA2CA1CF27F4B93400B25646 /* ReadyStateScriptHelper.swift in Sources */,
 				0A7B5D722269E7AD00AADF22 /* BookmarkEditMode.swift in Sources */,
 				4422D4DC21BFFB7600BF1855 /* block_builder.cc in Sources */,
 				27201EFE24539B5500C19DD1 /* NewTabPageBackground.swift in Sources */,

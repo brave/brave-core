@@ -363,6 +363,31 @@ class UserScriptManager {
       forMainFrameOnly: true,
       in: .defaultClient)
   }()
+  
+  private let ReadyStateScript: WKUserScript? = {
+    guard let path = Bundle.main.path(forResource: "ReadyState", ofType: "js"), let source = try? String(contentsOfFile: path) else {
+      log.error("Failed to load ReadyState.js")
+      return nil
+    }
+
+    var alteredSource = source
+    let token = UserScriptManager.securityTokenString
+
+    let replacements = [
+      "$<security_token>": token,
+      "$<handler>": "ReadyState_\(messageHandlerTokenString)",
+    ]
+
+    replacements.forEach({
+      alteredSource = alteredSource.replacingOccurrences(of: $0.key, with: $0.value, options: .literal)
+    })
+
+    return WKUserScript.create(
+      source: alteredSource,
+      injectionTime: .atDocumentStart,
+      forMainFrameOnly: true,
+      in: .page)
+  }()
 
   private func reloadUserScripts() {
     tab?.webView?.configuration.userContentController.do {
@@ -401,6 +426,10 @@ class UserScriptManager {
       }
 
       if isNightModeEnabled, let script = NightModeScript {
+        $0.addUserScript(script)
+      }
+      
+      if let script = ReadyStateScript {
         $0.addUserScript(script)
       }
 

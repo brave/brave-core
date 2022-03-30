@@ -2046,6 +2046,7 @@ extension BrowserViewController: TabDelegate {
 
     tab.addContentScript(RewardsReporting(rewards: rewards, tab: tab), name: RewardsReporting.name(), contentWorld: .page)
     tab.addContentScript(AdsMediaReporting(rewards: rewards, tab: tab), name: AdsMediaReporting.name(), contentWorld: .defaultClient)
+    tab.addContentScript(ReadyStateScriptHelper(tab: tab), name: ReadyStateScriptHelper.name(), contentWorld: .page)
   }
 
   func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
