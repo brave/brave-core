@@ -235,10 +235,6 @@
     "message": "Månedlige tips",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Verifisert",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Engangstips",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Sammendrag av belønninger",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Verifisert",
+  "walletUnverified": {
+    "message": "Ikke verifisert",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Bekreft",
+  "walletVerified": {
+    "message": "Verifisert",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Den planlagte månedlige betalingen din for autobidrag og månedlige bidrag kunne ikke fullføres på grunn av utilstrekkelige midler. Vi prøver igjen om 30 dager.",
+    "message": "Den månedlige betalingen din for auto-bidrag og månedlige tips kunne ikke gjennomføres på grunn av utilstrekkelige midler. Vi vil forsøke igjen om 30 dager.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Det månedlige bidraget mislyktes",
+    "message": "En feil oppstod med den månedlige tipsen",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "De månedlige bidragene dine er behandlet.",
+    "message": "Den månedlige tipsen er behandlet.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

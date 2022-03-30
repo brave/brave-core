@@ -51,6 +51,8 @@
 <translation id="1643029991199044105">Переходьте між вкладками, які використовувались зовсім недавно за допомогою Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Статті автоматично завантажуються в режимі читання, заощаджуючи ваш час</translation>
+<translation id="5510493033031835532">Автоматичне переспрямування сторінок AMP</translation>
+<translation id="5197219128592971597">Завжди відвідуйте оригінальні (не AMP) URL-адреси сторінок, а не мобільні версії сторінок з прискоренням Google</translation>
 <translation id="5802665280774361839">Показати автозаповнення в адресному рядку</translation>
 <translation id="597020512043916976">Показувати найпопулярніші сайти в пропозиціях щодо автозаповнення</translation>
 <translation id="264150068416846820">Показувати запропоновані сайти Brave як варіанти автозаповнення</translation>
@@ -100,6 +102,7 @@
 <translation id="1725356094208762656">Відкрити в Tor</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Опублікування та отримання файлів від системи IPFS</translation>
+<translation id="7398397225367092613">.onion</translation>
 <translation id="406832631167785034">Відкрити за допомогою адреси .onion</translation>
 <translation id="4901618511712685702">Імпортувати до IPFS</translation>
 <translation id="6794469945030154569">Ця сторінка</translation>
@@ -113,11 +116,20 @@
 <translation id="1434416574322382019">Нове Приватне вікно з Tor</translation>
 <translation id="4703780849509456860">Відкрити посилання у Приватному вікні з Tor</translation>
 <translation id="3488584642074079080">Відкрити посилання у Приватному вікні Brave з Tor</translation>
+<translation id="186554175479803110">Імпорт і поширення файлу</translation>
+<translation id="3036649622769666520">Відкриття файлів</translation>
+<translation id="4408880250587950158">Імпорт і поширення каталогу</translation>
+<translation id="8396273373598682323">Із файлом</translation>
+<translation id="518600784989889917">Із каталогом</translation>
+<translation id="8147987711042435221">Оновлення IPNS</translation>
 <translation id="4491895534716990473">Імпортувати обраний текст до IPFS</translation>
 <translation id="8883166554766780543">Імпорт і копіювання посилання на миттєвий знімок IPFS</translation>
+<translation id="709253338301411121">Імпорт і поширення файлу</translation>
+<translation id="7068360136237591149">Відкриття файлів</translation>
 <translation id="6313675821927505581">Нове приватне вікно з Tor</translation>
 <translation id="2638041073279639246">Відкрийте посилання у приватномі вікні з Tor</translation>
 <translation id="3425600262621021599">Відкрийте посилання у приватномі вікні  Brave з Tor</translation>
+<translation id="3229091547987707389">Імпорт і поширення каталогу</translation>
 <translation id="2515126961943087659">Сервіс реклами з використанням BAT</translation>
 <translation id="7924918279836988121">Сервіс реєстраційного журналу Bat</translation>
 <translation id="4472575034687746823">Початок роботи</translation>
@@ -208,10 +220,6 @@
 <translation id="2414886740292270097">Темна</translation>
 <translation id="1360441190790440400">Така ж, як Linux</translation>
 <translation id="1336940801687497203">Такаж як Windows</translation>
-<translation id="5919209812221905840">Обробник протоколу microsoft-edge за замовчуванням</translation>
-<translation id="5239541974656019812">Зробити Brave обробником протоколу microsoft-edge</translation>
-<translation id="7136694880210472378">Установити за умовчанням</translation>
-<translation id="1751388324499810661">Brave є обробником протоколу microsoft-edge за замовчуванням</translation>
 <translation id="8721331068159819483">Як і в macOS</translation>
 <translation id="2896916411183256228">Використовує WebTorrent, щоб показувати торренти безпосередньо у браузері. Підтримує торрент файли та magnet посилання.</translation>
 <translation id="8488282162676695335">Гаманець Brave</translation>
@@ -223,6 +231,7 @@
 <translation id="4718664830805652430">Базова валюта за замовчуванням</translation>
 <translation id="7992507032049865603">Базова криптовалюта за замовчуванням</translation>
 <translation id="1834467296210148203">Показувати значок Brave Wallet на панелі інструментів</translation>
+<translation id="4613486011786721686">Приховувати значок Brave Wallet на панелі інструментів</translation>
 <translation id="8239147115686034860">Автоматично блокувати гаманець Brave</translation>
 <translation id="414639769490080648">Кількість хвилин до автоматичного блокування гаманця Brave</translation>
 <translation id="6864914031231797928">Дозволити вхід через Google для розширень</translation>
@@ -367,10 +376,13 @@
 <translation id="59174027418879706">Увімкнено</translation>
 <translation id="8258999165172757081">Додано</translation>
 <translation id="6959315322491671328">Клацніть правою кнопкою, щоб вилучити</translation>
+<translation id="495046168593986294">Прокручування вгору</translation>
+<translation id="4021716437419160885">Прокручування вниз</translation>
 <translation id="4651504163033753423">Увімкнути Speedreader?</translation>
 <translation id="9089090017461255038">Увімкнути Speedreader</translation>
 <translation id="312393675740711187">Статті автоматично завантажуються в режимі читання, заощаджуючи ваш час.</translation>
 <translation id="3234744217174488546">Увімкніть/вимкніть режим читання тільки для цього сайту. Щоб вимкнути Speedreader для всього профілю браузеру, відкрийте</translation>
+<translation id="8597690239474328831">Вмикайте / вимикайте режим читання лише для цього вебсайту.</translation>
 <translation id="7839742507462737706">у Speedreader</translation>
 <translation id="8490082094734500369">Вимкнути режим читання</translation>
 <translation id="2036503787657622020">Увімкнути режим читання</translation>
@@ -381,7 +393,7 @@
 <translation id="8712637175834984815">Виконано</translation>
 <translation id="4394049700291259645">Вимкнути</translation>
 <translation id="7142548388914389999">Дозволити аналітику продуктів зі збереженням конфіденційності (P3A)</translation>
-<translation id="609106526832379947">Ця повністю анонімна інформація допомагає Brave оцінити загальне використання певних функцій і покращити їх для вас.</translation>
+<translation id="8286082624639565868">Ця повністю анонімна інформація допомагає Brave оцінити загальне використання певних функцій і покращити їх для вас.</translation>
 <translation id="1947672064022327074">Бажаєте відкрити криптогаманці для підтримки Ethereum?</translation>
 <translation id="7583735190612229830">Налаштувати Крипто-гаманці для взаємозв'язку з цим додатком та іншими схожими.</translation>
 <translation id="8731422418734770661">Налаштувати Crypto Wallets</translation>
@@ -425,6 +437,10 @@
 <translation id="2808630562319398131">Скинути дані Винагород Brave...</translation>
 <translation id="2273851479262317744">Установити Brave як браузер за замовчуванням</translation>
 <translation id="8581710194025054669">Для забезпечення конфіденційності онлайн установіть Brave як браузер за замовчуванням на вашому комп’ютері. Так будь-яке посилання відкриватиметься із засобами безпеки Brave.</translation>
+<translation id="1968543937259008435">Готові до найкращої приватності онлайн?</translation>
+<translation id="6817415381278637662">Установіть браузер Brave за замовчуванням, щоб отримати захист конфіденційності Brave на кожній вебсторінці, яку ви відкриваєте.</translation>
+<translation id="8722651357687610395">Встановіть Brave  за замовчуванням</translation>
+<translation id="2370739752330685659">Можливо, пізніше</translation>
 <translation id="1241283133946520352">Мережі</translation>
 <translation id="8205945804087322170">Додавання нової мережі</translation>
 <translation id="2156993118928861787">Недійсна адреса</translation>
@@ -451,4 +467,5 @@
 <translation id="1062463687579789365">Індивідуальне налаштування мереж гаманця</translation>
 <translation id="2234108191702901162">Неможливо додати мережу</translation>
 <translation id="2618193846561624884">Ви хочете оновити існуючу мережу?</translation>
+<translation id="609106526832379947">Ця повністю анонімна інформація допомагає Brave оцінити загальне використання певних функцій і покращити їх для вас.</translation>
 </translationbundle>

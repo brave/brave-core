@@ -51,6 +51,8 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1643029991199044105">Lawati semula tab yang terakhir digunakan dengan Ctrl-Tab</translation>
 <translation id="1013121820689882118">Pembaca laju</translation>
 <translation id="2025435450953474282">Artikel dimuatkan secara automatik dalam mod pembaca, menjimatkan masa anda</translation>
+<translation id="5510493033031835532">Auto ubah hala halaman AMP</translation>
+<translation id="5197219128592971597">Sentiasa layari URL halaman (bukan AMP) asal dan bukannya versi Halaman Mudah Alih Dipercepatkan Google</translation>
 <translation id="5802665280774361839">Tunjukkan autolengkap dalam bar alamat</translation>
 <translation id="597020512043916976">Paparkan laman-laman teratas dari segi cadangan autolengkap</translation>
 <translation id="264150068416846820">Tunjukkan laman-laman yang dicadangkan oleh Brave dalam cadangan autolengkap</translation>
@@ -218,10 +220,6 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="2414886740292270097">Gelap</translation>
 <translation id="1360441190790440400">Sama seperti Linux</translation>
 <translation id="1336940801687497203">Sama seperti Windows</translation>
-<translation id="5919209812221905840">Pengendali protokol microsoft-edge lalai</translation>
-<translation id="5239541974656019812">Jadikan Brave sebagai pengendali protokol microsoft-edge</translation>
-<translation id="7136694880210472378">Jadikan lalai</translation>
-<translation id="1751388324499810661">Brave ialah pengendali protokol microsoft-edge lalai</translation>
 <translation id="8721331068159819483">Sama seperti macOS</translation>
 <translation id="2896916411183256228">Menggunakan WebTorrent untuk memaparkan torrent secara langsung dalam penyemak imbas. Menyokong fail torrent dan pautan magnet.</translation>
 <translation id="8488282162676695335">Dompet Brave</translation>
@@ -233,6 +231,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="4718664830805652430">Mata wang asas lalai</translation>
 <translation id="7992507032049865603">Mata wang kripto asas lalai</translation>
 <translation id="1834467296210148203">Tunjukkan ikon Dompet Brave pada bar alat</translation>
+<translation id="4613486011786721686">Sembunyikan ikon Brave Wallet pada bar alat</translation>
 <translation id="8239147115686034860">Kunci Brave Wallet secara automatik</translation>
 <translation id="414639769490080648">Bilangan minit untuk menunggu sehingga Brave Wallet dikunci secara automatik</translation>
 <translation id="6864914031231797928">Benarkan log masuk Google untuk sambungan</translation>
@@ -394,7 +393,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="8712637175834984815">Faham</translation>
 <translation id="4394049700291259645">Lumpuhkan</translation>
 <translation id="7142548388914389999">Benarkan analitik produk pengekalan privasi (P3A)</translation>
-<translation id="609106526832379947">Maklumat tanpa nama sepenuhnya ini membantu Brave mengira keseluruhan penggunaan ciri tertentu dan menjadikannya lebih baik untuk anda.</translation>
+<translation id="8286082624639565868">Maklumat tanpa nama sepenuhnya ini membantu Brave menganggarkan penggunaan keseluruhan ciri tertentu dan menambah baik ciri itu untuk anda.</translation>
 <translation id="1947672064022327074">Adakah anda ingin memulakan Dompet Kripto untuk sokongan Ethereum?</translation>
 <translation id="7583735190612229830">Sediakan Dompet Crypto untuk berinteraksi dengan aplikasi ini dan aplikasi lain sepertinya.</translation>
 <translation id="8731422418734770661">Menetapkan Dompet Kripto</translation>
@@ -438,6 +437,10 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="2808630562319398131">Setkan semula data Ganjaran Brave...</translation>
 <translation id="2273851479262317744">Tetapkan Brave sebagai pelayar lalai</translation>
 <translation id="8581710194025054669">Untuk memastikan privasi terbaik dalam talian, pertimbangkan untuk menetapkan Brave sebagai pelayar lalai pada komputer anda. Dengan Brave sebagai lalai, mana-mana pautan web yang anda klik akan dibuka dengan perlindungan privasi Brave.</translation>
+<translation id="1968543937259008435">Bersedia untuk privasi terbaik dalam talian?</translation>
+<translation id="6817415381278637662">Tetapkan Brave sebagai pelayar lalai anda bagi mendapatkan perlindungan privasi Brave pada setiap halaman web yang anda layari.</translation>
+<translation id="8722651357687610395">Tetapkan Brave sebagai lalai</translation>
+<translation id="2370739752330685659">Mungkin kemudian</translation>
 <translation id="1241283133946520352">Rangkaian</translation>
 <translation id="8205945804087322170">Tambah rangkaian baharu</translation>
 <translation id="2156993118928861787">Alamat tidak sah</translation>
@@ -464,4 +467,5 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="1062463687579789365">Penyesuaian rangkaian dompet</translation>
 <translation id="2234108191702901162">Tidak dapat menambah rangkaian</translation>
 <translation id="2618193846561624884">Adakah anda mahu mengemas kini rangkaian sedia ada?</translation>
+<translation id="609106526832379947">Maklumat tanpa nama sepenuhnya ini membantu Brave mengira keseluruhan penggunaan ciri tertentu dan menjadikannya lebih baik untuk anda.</translation>
 </translationbundle>

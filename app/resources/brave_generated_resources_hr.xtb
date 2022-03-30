@@ -51,6 +51,8 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="1643029991199044105">Pregledajte zadnje upotrijebljene kartice putem Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Članci se automatski učitavaju u načinu rada čitača i tim se štedi na vremenu</translation>
+<translation id="5510493033031835532">Automatski preusmjeri stranice AMP</translation>
+<translation id="5197219128592971597">Uvijek posjetite izvorne URL-ove stranice (ne AMP-ove) umjesto Googleovih inačica ubrzanih stranica za mobilne uređaje</translation>
 <translation id="5802665280774361839">Prikaži automatsko završavanje u adresnoj traci</translation>
 <translation id="597020512043916976">Prikaži glavna mrežna mjesta u prijedlozima koji se samostalno ispunjavanju</translation>
 <translation id="264150068416846820">Prikaži glavna mrežna mjesta Brave u prijedlozima koji se samostalno ispunjavanju</translation>
@@ -218,10 +220,6 @@ Sigurno želite to napraviti?</translation>
 <translation id="2414886740292270097">Tama</translation>
 <translation id="1360441190790440400">Isto kao Linux</translation>
 <translation id="1336940801687497203">Isto kao Windows</translation>
-<translation id="5919209812221905840">Zadani rukovatelj protokolom za microsoft-edge</translation>
-<translation id="5239541974656019812">Neka preglednik Brave bude zadani rukovatelj protokolom za microsoft-edge</translation>
-<translation id="7136694880210472378">Postavi kao zadano</translation>
-<translation id="1751388324499810661">Preglednik Brave zadani je rukovatelj protokolom za microsoft-edge</translation>
 <translation id="8721331068159819483">Kao na operativnom sustavu macOS</translation>
 <translation id="2896916411183256228">Upotrijebite WebTorrent za prikazivanje torenta izravno u pregledniku. Podržava datoteke i magnetne poveznice za torente.</translation>
 <translation id="8488282162676695335">Novčanik Brave</translation>
@@ -233,6 +231,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="4718664830805652430">Zadana osnovna valuta</translation>
 <translation id="7992507032049865603">Zadana osnovna kriptovaluta</translation>
 <translation id="1834467296210148203">Prikaži ikonu novčanika preglednika Brave na alatnoj traci</translation>
+<translation id="4613486011786721686">Sakrij ikonu novčanika preglednika Brave na alatnoj traci</translation>
 <translation id="8239147115686034860">Automatski zaključaj novčanik preglednika Brave</translation>
 <translation id="414639769490080648">Broj minuta čekanja dok se novčanik preglednika Brave automatski ne zaključa</translation>
 <translation id="6864914031231797928">Dopusti prijavu uslugom Google za proširenja</translation>
@@ -394,7 +393,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="8712637175834984815">Shvaćam</translation>
 <translation id="4394049700291259645">Onemogući</translation>
 <translation id="7142548388914389999">Dopusti analitiku proizvoda kojom se čuva privatnost (P3A)</translation>
-<translation id="609106526832379947">Ovim potpuno anonimnim informacijama omogućuje se Braveu procjenjivanje i poboljšavanje ukupne uporabe određenih značajki.</translation>
+<translation id="8286082624639565868">Ovim se potpuno anonimnim informacijama omogućuje procjenjivanje ukupne uporabe određenih značajki i njihovo poboljšavanje za Vas putem preglednika Brave.</translation>
 <translation id="1947672064022327074">Želite li pokrenuti kriptovalutne novčanike za podršku Ethereum?</translation>
 <translation id="7583735190612229830">Postavite kriptovalutne novčanike koji ostvaruju interakciju s ovom aplikacijom, a koji se drugima sviđaju.</translation>
 <translation id="8731422418734770661">Postavi Crypto Wallets</translation>
@@ -438,6 +437,10 @@ Sigurno želite to napraviti?</translation>
 <translation id="2808630562319398131">Ponovno postavite podatke za Brave Rewards...</translation>
 <translation id="2273851479262317744">Postavi preglednik Brave kao zadani preglednik</translation>
 <translation id="8581710194025054669">Za jamčenje najbolje privatnosti na mreži razmotrite postavljanje preglednika Brave kao zadanog preglednika na svom računalu. Ako je preglednik Brave vaš zadani preglednik, bilo koja mrežna poveznica na koju kliknete otvara se uz zaštite privatnosti preglednika Brave.</translation>
+<translation id="1968543937259008435">Spremni za najvišu razinu privatnosti na mreži?</translation>
+<translation id="6817415381278637662">Postavite preglednik Brave kao zadani preglednik da biste imali njegovu zaštitu privatnosti na svakoj mrežnoj stranici.</translation>
+<translation id="8722651357687610395">Postavi preglednik Brave kao zadan</translation>
+<translation id="2370739752330685659">Možda kasnije</translation>
 <translation id="1241283133946520352">Mreže</translation>
 <translation id="8205945804087322170">Dodaj novu mrežu</translation>
 <translation id="2156993118928861787">Nevaljana adresa</translation>
@@ -464,4 +467,5 @@ Sigurno želite to napraviti?</translation>
 <translation id="1062463687579789365">Prilagođavanje mreža novčanika</translation>
 <translation id="2234108191702901162">Nije moguće dodati mrežu</translation>
 <translation id="2618193846561624884">Želite li ažurirati postojeću mrežu?</translation>
+<translation id="609106526832379947">Ovim potpuno anonimnim informacijama omogućuje se Braveu procjenjivanje i poboljšavanje ukupne uporabe određenih značajki.</translation>
 </translationbundle>

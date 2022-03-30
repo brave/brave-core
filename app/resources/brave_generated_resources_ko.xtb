@@ -51,6 +51,8 @@
 <translation id="1643029991199044105">Ctrl-Tab을 사용하여 가장 최근에 사용한 탭 순환</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">기사가 리더 모드로 자동 로드되어 시간 절약</translation>
+<translation id="5510493033031835532">AMP 페이지 자동 리디렉션</translation>
+<translation id="5197219128592971597">항상 Google AMP(Accelerated Mobile Page) 버전이 아닌 원본(비AMP) 페이지 URL을 방문하세요.</translation>
 <translation id="5802665280774361839">주소 표시줄에 자동 완성 표시</translation>
 <translation id="597020512043916976">자동 완성 제안에 인기 사이트 표시</translation>
 <translation id="264150068416846820">자동 완성 제안에 Brave 추천 사이트 표시</translation>
@@ -218,10 +220,6 @@
 <translation id="2414886740292270097">어두움</translation>
 <translation id="1360441190790440400">Linux와 동일</translation>
 <translation id="1336940801687497203">Windows와 동일</translation>
-<translation id="5919209812221905840">기본 microsoft-edge 프로토콜 핸들러</translation>
-<translation id="5239541974656019812">Brave를 기본 microsoft-edge 프로토콜 핸들러로 설정합니다.</translation>
-<translation id="7136694880210472378">기본으로 설정</translation>
-<translation id="1751388324499810661">Brave가 기본 microsoft-edge 프로토콜 핸들러입니다.</translation>
 <translation id="8721331068159819483">macOS와 동일</translation>
 <translation id="2896916411183256228">브라우저에 직접 토렌트를 표시하려면 웹 토렌트를 사용하세요. 토렌트 파일들과 마그넷 링크들을 지원하세요.</translation>
 <translation id="8488282162676695335">Brave 월렛</translation>
@@ -233,6 +231,7 @@
 <translation id="4718664830805652430">기본 기준 통화</translation>
 <translation id="7992507032049865603">기본 기준 암호화폐</translation>
 <translation id="1834467296210148203">툴바에 Brave 월렛 아이콘 표시</translation>
+<translation id="4613486011786721686">툴바에서 Brave 월렛 아이콘 숨기기</translation>
 <translation id="8239147115686034860">Brave 월렛 자동 잠금</translation>
 <translation id="414639769490080648">동작이 없을 때 Brave 월렛이 자동으로 잠길 때까지의 시간(분)</translation>
 <translation id="6864914031231797928">확장 프로그램에 대한 Google 로그인 허용</translation>
@@ -394,7 +393,7 @@
 <translation id="8712637175834984815">확인</translation>
 <translation id="4394049700291259645">사용 중지</translation>
 <translation id="7142548388914389999">프라이버시 보호 제품 분석(P3A) 허용</translation>
-<translation id="609106526832379947">이 완전히 자동화된 정보를 통해 Brave가 특정 기능의 총 사용량을 산정하고 맞춤 구성합니다.</translation>
+<translation id="8286082624639565868">이 완전히 익명화된 정보는 Brave가 특정 기능의 총 사용량을 산정하고 기능을 개선하는 용도로 사용됩니다.</translation>
 <translation id="1947672064022327074">이더리움 지원을 위해 암호 화폐 지갑을 시작하시겠습니까?</translation>
 <translation id="7583735190612229830">크립토 월렛을 설정하여 이 앱 및 기타 비슷한 앱과 소통하십시오.</translation>
 <translation id="8731422418734770661">Crypto 월렛 설정</translation>
@@ -438,6 +437,10 @@
 <translation id="2808630562319398131">Brave 리워드 데이터 재설정...</translation>
 <translation id="2273851479262317744">Brave를 기본 브라우저로 설정</translation>
 <translation id="8581710194025054669">온라인 프라이버시를 최대한 확보하려면 Brave를 컴퓨터의 기본 브라우저로 설정하세요. Brave를 기본 브라우저로 설정하면 웹 링크를 클릭하여 열 때 Brave의 프라이버시 보호가 적용됩니다.</translation>
+<translation id="1968543937259008435">가장 철저한 온라인 프라이버시를 접할 준비가 되셨나요?</translation>
+<translation id="6817415381278637662">Brave를 기본 브라우저로 설정하여, 모든 웹페이지에서 Brave의 프라이버시 보호 기능을 마음껏 누리세요.</translation>
+<translation id="8722651357687610395">Brave를 기본으로 설정</translation>
+<translation id="2370739752330685659">나중에</translation>
 <translation id="1241283133946520352">네트워크</translation>
 <translation id="8205945804087322170">새 네트워크 추가</translation>
 <translation id="2156993118928861787">올바르지 않은 주소</translation>
@@ -464,4 +467,5 @@
 <translation id="1062463687579789365">월렛 네트워크 사용자 지정</translation>
 <translation id="2234108191702901162">네트워크를 추가할 수 없음</translation>
 <translation id="2618193846561624884">기존 네트워크를 업데이트하시겠습니까?</translation>
+<translation id="609106526832379947">이 완전히 자동화된 정보를 통해 Brave가 특정 기능의 총 사용량을 산정하고 맞춤 구성합니다.</translation>
 </translationbundle>

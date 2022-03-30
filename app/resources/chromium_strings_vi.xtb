@@ -132,7 +132,6 @@
 <translation id="5536657158619734169">Hiện đã có phiên bản Brave mới.</translation>
 <translation id="239760341987199724">Đặt Brave là trình duyệt mặc định của bạn</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave phiên bản beta</translation>
-<translation id="707769633889902835">Chrome OS không thể mở trang này.</translation>
 <translation id="696826782632239602">Brave cần quyền truy cập vào vị trí của bạn để chia sẻ thông tin vị trí với trang web này</translation>
 <translation id="1744365871163268756">Vui lòng đợi khi Brave cài đặt các bản cập nhật hệ thống mới nhất.</translation>
 <translation id="3861679447659630159">Brave đang cố gắng chỉnh sửa mật khẩu. Hãy nhập mật khẩu Windows của bạn để cho phép việc này.</translation>
@@ -195,7 +194,7 @@ Một số tính năng có thể không khả dụng. Hãy chỉ định thư m�
 <translation id="8291513491595858997">Cha mẹ bạn đã tắt tùy chọn "Quyền của các trang web, ứng dụng và tiện ích" đối với Brave. Bạn không được phép bật <ph name="EXTENSION_TYPE_PARAMETER"/> này.</translation>
 <translation id="8211837073776713955">Brave cho bạn biết mật khẩu của bạn có bị đánh cắp hay không</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (đã sao chép vào Brave)</translation>
+<translation id="2049565899730874086">Google Pay (đã sao chép vào Brave)</translation>
 <translation id="3028928628792374067">Brave nhận thấy rằng "<ph name="EXTENSION_NAME"/>" chứa phần mềm độc hại</translation>
 <translation id="2301993384336631869">Brave đã được cập nhật nhưng bạn đã không sử dụng trình duyệt này trong ít nhất 30 ngày.</translation>
 <translation id="8828443087767259398">Brave cần có quyền truy cập Bluetooth để tiếp tục 
@@ -290,6 +289,12 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="4484434718272972655">Ai đang sử dụng Brave?</translation>
 <translation id="7173394303099002355">Có được chế độ bảo mật mạnh nhất của Brave</translation>
 <translation id="8992261409816268381">Tác giả Brave</translation>
+<translation id="479793348545936567">Nếu bạn chỉ muốn sử dụng tài khoản này một lần, bạn có thể sử dụng chế độ Khách trong trình duyệt Brave. Nếu bạn muốn thêm tài khoản cho người khác, <ph name="LINK_BEGIN"/>thêm hồ sơ mới<ph name="LINK_END"/> vào <ph name="DEVICE_TYPE"/> của bạn.
+
+Các quyền bạn đã cấp cho các trang web và ứng dụng có thể áp dụng cho tài khoản này. Bạn có thể quản lý chuỗi đồng bộ hóa Brave của mình trong <ph name="SETTINGS_LINK_BEGIN"/>Cài đặt<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Nếu bạn chỉ muốn sử dụng tài khoản này một lần, bạn có thể sử dụng <ph name="GUEST_LINK_BEGIN"/>chế độ Khách<ph name="GUEST_LINK_END"/> trong trình duyệt Brave. Nếu bạn muốn thêm tài khoản cho người khác, <ph name="LINK_BEGIN"/>thêm hồ sơ<ph name="LINK_END"/> vào <ph name="DEVICE_TYPE"/> của bạn.
+
+Các quyền bạn đã cấp cho các trang web và ứng dụng có thể áp dụng cho tài khoản này. Bạn có thể quản lý chuỗi đồng bộ hóa Brave của mình trong <ph name="SETTINGS_LINK_BEGIN"/>Cài đặt<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Cảnh báo: Brave không thể ngăn các tiện ích mở rộng ghi lại lịch sử duyệt web của bạn. Để tắt tiện ích này ở chế độ Riêng tư, hãy bỏ chọn tùy chọn này.</translation>
 <translation id="1448049584457347995">Để làm cho Brave an toàn hơn, chúng tôi đã vô hiệu hóa một số tiện ích không được liệt kê trong <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> và có thể đã được thêm mà bạn không biết.</translation>
 <translation id="8848045066928358658">Để làm cho Brave an toàn hơn, chúng tôi đã vô hiệu hóa tiện ích không được liệt kê trong <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> và có thể đã được thêm mà bạn không biết.</translation>

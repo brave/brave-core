@@ -51,6 +51,8 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="1643029991199044105">Ga door de meest  recent gebruikte tabbladen met Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Artikels worden automatisch in lezermodus geladen, waardoor je tijd kunt besparen</translation>
+<translation id="5510493033031835532">AMP-pagina's automatisch omleiden</translation>
+<translation id="5197219128592971597">Bezoek altijd originele (niet-AMP) pagina-URL's in plaats van mobiele paginaversies van Google Accelerated</translation>
 <translation id="5802665280774361839">Autocomplete weergeven in adresbalk</translation>
 <translation id="597020512043916976">Toon topsites in de 
 suggesties voor automatisch aanvullen</translation>
@@ -219,10 +221,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2414886740292270097">Donker</translation>
 <translation id="1360441190790440400">Hetzelfde als Linux</translation>
 <translation id="1336940801687497203">Hetzelfde als Windows</translation>
-<translation id="5919209812221905840">Standaard Microsoft Edge-protocolhandler</translation>
-<translation id="5239541974656019812">Maak Brave de Microsoft Edge-protocolhandler</translation>
-<translation id="7136694880210472378">Instellen als standaard</translation>
-<translation id="1751388324499810661">Brave is de standaard Microsoft Edge-protocolhandler</translation>
 <translation id="8721331068159819483">Zelfde als macOS</translation>
 <translation id="2896916411183256228">Gebruikt WebTorrent om torrents rechtstreeks in je browser weer te geven. Ondersteunt torrentbestanden en magnetlinks.</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -234,6 +232,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="4718664830805652430">Standaard basisvaluta</translation>
 <translation id="7992507032049865603">Standaard cryptobasisvaluta</translation>
 <translation id="1834467296210148203">Brave Wallet-pictogram in werkbalk tonen</translation>
+<translation id="4613486011786721686">Brave Wallet-pictogram verbergen op werkbalk</translation>
 <translation id="8239147115686034860">Brave-wallet automatisch vergrendelen</translation>
 <translation id="414639769490080648">Het aantal minuten dat je moet wachten voordat de Brave-wallet automatisch wordt vergrendeld</translation>
 <translation id="6864914031231797928">Google-login voor extensies toestaan</translation>
@@ -395,7 +394,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8712637175834984815">Begrepen</translation>
 <translation id="4394049700291259645">Uitschakelen</translation>
 <translation id="7142548388914389999">Productanalyse met privacybescherming (P3A) toestaan</translation>
-<translation id="609106526832379947">Deze volledige geanonimiseerde info helpt Brave om het algehele gebruik van bepaalde functies in te schatten en voor jou te verbeteren.</translation>
+<translation id="8286082624639565868">Deze volledige geanonimiseerde info helpt Brave om het algehele gebruik van bepaalde functies in te schatten en voor u te verbeteren.</translation>
 <translation id="1947672064022327074">Wilt u de ondersteuning voor crypto-portemonnee voor Ethereum starten?</translation>
 <translation id="7583735190612229830">Stel Crypto Wallets in om te communiceren met deze en vergelijkbare apps.</translation>
 <translation id="8731422418734770661">Crypto wallets instellen</translation>
@@ -439,6 +438,10 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2808630562319398131">Brave Rewards-gegevens resetten...</translation>
 <translation id="2273851479262317744">Brave instellen als standaardbrowser</translation>
 <translation id="8581710194025054669">Om je privacy online zo goed mogelijk te beschermen, kun je Brave instellen als standaardbrowser op je computer. Met Brave als standaardbrowser worden de privacyfuncties van Brave geopend voor elke koppeling waar je op klikt.</translation>
+<translation id="1968543937259008435">Klaar voor de beste privacy online?</translation>
+<translation id="6817415381278637662">Stel Brave in als je standaardbrowser om gebruik te kunnen maken van de privacybescherming van Brave op elke webpagina die je opent.</translation>
+<translation id="8722651357687610395">Stel Brave in als standaard</translation>
+<translation id="2370739752330685659">Misschien later</translation>
 <translation id="1241283133946520352">netwerken</translation>
 <translation id="8205945804087322170">Nieuw netwerk toevoegen</translation>
 <translation id="2156993118928861787">Ongeldig adres</translation>
@@ -465,4 +468,5 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1062463687579789365">Wallet-netwerken aanpassen</translation>
 <translation id="2234108191702901162">Kan netwerk niet toevoegen</translation>
 <translation id="2618193846561624884">Wil je het bestaande netwerk bijwerken?</translation>
+<translation id="609106526832379947">Deze volledige geanonimiseerde info helpt Brave om het algehele gebruik van bepaalde functies in te schatten en voor jou te verbeteren.</translation>
 </translationbundle>

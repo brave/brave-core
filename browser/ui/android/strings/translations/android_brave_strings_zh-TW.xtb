@@ -43,6 +43,9 @@
 <translation id="1276592121036104130">載入新內容</translation>
 <translation id="3189348785087463371">推廣</translation>
 <translation id="7554145152551782675">更多 Brave 優惠</translation>
+<translation id="1717242776111689224">啟用 Brave News</translation>
+<translation id="4732255422524275223">您的來源</translation>
+<translation id="152579389256498990">動態或網站 URL</translation>
 <translation id="4975944254857623648">預設來源</translation>
 <translation id="253886574765651454">新增來源</translation>
 <translation id="5787084571334399599">防止瀏覽器存取指紋</translation>
@@ -270,22 +273,24 @@
 <translation id="2927095357213611519">您可以使用代幣來支持網路創作者。\n透過觀看隱私保護的廣告來賺取代幣。</translation>
 <translation id="213787746370741250">在自訂分頁中開啟分頁</translation>
 <translation id="8030169304546394654">已取消連結</translation>
-<translation id="8267327690882073581">驗證錢包</translation>
+<translation id="6181762795539107980">未驗證</translation>
 <translation id="543510923939676996">電子錢包已驗證</translation>
 <translation id="8673913984316081937">驗證您的錢包為非必要項目</translation>
 <translation id="8558636200953226885">但如果您進行驗證，您可以……</translation>
 <translation id="8697510149346635496">提領您從瀏覽支援隱私廣告賺取的 BAT（注意力代幣）</translation>
 <translation id="1481480653609649134">以信用卡或其他來源購買其他 BAT（注意力代幣）</translation>
 <translation id="9096003370755878766">提領您可能先前新增至您的 Brave 獎勵電子錢包的 BAT (注意力代幣)</translation>
+<translation id="8267327690882073581">驗證錢包</translation>
 <translation id="1554282356558968486">我的錢包服務提供由</translation>
 <translation id="6569877533335686968">維持</translation>
 <translation id="734105583050813665">Bitflyer</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">根據服務要求，Uphold 可能需要您驗證身分識別</translation>
 <translation id="3200197118442451932">Brave Software Inc. 不會處理、儲存或存取任何您在設定帳戶時提供給 <ph name="WALLET_PROVIDER"/> 的個人資料。</translation>
 <translation id="3699674790322420653">完成電子錢包驗證</translation>
 <translation id="2193391216824305230">使用者錢包</translation>
 <translation id="1665118090708049096">前往我的 <ph name="WALLET_PROVIDER"/> 帳戶</translation>
-<translation id="9200453331904391567">從 Brave Rewards 取消連結</translation>
+<translation id="1948959999802743233">從 <ph name="WALLET_PROVIDER"/> 中斷連線</translation>
 <translation id="6239274080752256452">提款</translation>
 <translation id="8874184842967597500">未連線</translation>
 <translation id="3368922792935385530">已連線</translation>
@@ -401,12 +406,12 @@
 <translation id="7427567994475794038">開啟隱私權報告來觀看在過去 3 小時已經封鎖多少追蹤裝置 &amp; 廣告。</translation>
 <translation id="2053891538879944400">您以 Brave 瀏覽器節省了 <ph name="DATA"/> <ph name="DATA_TEXT"/> 資料。</translation>
 <translation id="8640064498452534195">開啟隱私權報告來觀看您已節省多少資料。</translation>
-<translation id="2252497442547961651">Brave 瀏覽器使用的電量平均減少 40%。&#128267;</translation>
+<translation id="2252497442547961651">Brave 瀏覽器使用的電量平均減少 40%。🔋</translation>
 <translation id="1945330434665345785">您上週以 Brave 瀏覽器封鎖了 <ph name="COUNT"/> 追蹤裝置 &amp; 廣告。</translation>
 <translation id="2883868922264431515">藉檢視尊重隱私權廣告來賺取代幣並且支持您最喜愛的網站。</translation>
-<translation id="5678925890616256956">不錯！您已經以 Brave 瀏覽器封鎖 250 個追蹤程式和廣告。&#128293;</translation>
-<translation id="9199047775708635708">不錯！您已經以 Brave 瀏覽器節省 10MB。&#128267;</translation>
-<translation id="1880168210969863408">不錯！您已經以 Brave 瀏覽器節省 10 分鐘的載入時間。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">不錯！您已經以 Brave 瀏覽器封鎖 250 個追蹤程式和廣告。🔥</translation>
+<translation id="9199047775708635708">不錯！您已經以 Brave 瀏覽器節省 10MB。🔋</translation>
+<translation id="1880168210969863408">不錯！您已經以 Brave 瀏覽器節省 10 分鐘的載入時間。💨💨</translation>
 <translation id="7408493389591475748">開始瀏覽來觀看隱私權報告</translation>
 <translation id="9080777565335515917">將 Brave 設定為您的預設瀏覽器供私密和穩妥的瀏覽。</translation>
 <translation id="1390943217516275883">容許 Brave 來顯示您的隱私權統計數字</translation>
@@ -473,7 +478,7 @@
 <translation id="6897083627729802351">您何時獲得獎勵？</translation>
 <translation id="310863932297733723">本月您從 Brave 的私人廣告賺取的代幣，將在下個月的 5 日抵達。</translation>
 <translation id="7712287524451429139">回饋毫不費力</translation>
-<translation id="105037569026952831">創作者會根據您對我們的參與程度（「關注度」）自動收到您的代幣捐款。</translation>
+<translation id="105037569026952831">創作者會根據您的參與程度，我們將其衡量為「注意力」，自動收到您的代幣捐款。</translation>
 <translation id="5323267338679539010">用小費說謝謝</translation>
 <translation id="6730444165801605682">給小費是一種親自鼓勵和支持您所熱愛的內容或創作者的方式。取得秘訣！</translation>
 <translation id="7509452925943421624">您可以使用代幣做什麼？</translation>
@@ -495,11 +500,11 @@
 <translation id="6912901278692845878">快速瀏覽</translation>
 <translation id="1080013038789678738">算我一份！</translation>
 <translation id="8037420924417098685">要開始免費通話，請開啟 Brave Rewards</translation>
-<translation id="8961724619078500274">使用 Brave 獎勵，您可以透過檢視私人廣告獲得代幣（您的資料是安全的）。把這些代幣變成現金、禮品卡，或是給您喜歡的網站小費。沒有追蹤。不會拖慢網站速度。</translation>
+<translation id="8961724619078500274">使用 Brave Rewards，您可以透過檢視私人廣告獲得代幣（您的資料是安全的）。把這些代幣變成現金、禮品卡……或是給您喜歡的網站小費。沒有追蹤。不會拖慢網站速度。</translation>
 <translation id="7307847920988946894">開啟 Rewards</translation>
 <translation id="7872993190040589450">啟用即表示您同意 <ph name="TERMS_OF_SERVICE"/> 和 <ph name="PRIVACY_POLICY"/>。</translation>
 <translation id="6128511569382736135">要開始免費通話，請開啟 Brave Private Ads</translation>
-<translation id="7930006085154756245">使用 Brave 私人廣告，您可以透過檢視私人廣告獲得代幣（您的資料是安全的）。把這些代幣變成現金、禮品卡，或是給您喜歡的網站小費。沒有追蹤。不會拖慢網站速度。</translation>
+<translation id="7930006085154756245">使用 Brave Private Ads，您可以透過檢視私人廣告獲得代幣（您的資料是安全的）。把這些代幣變成現金、禮品卡……或是給您喜歡的網站小費。沒有追蹤。不會拖慢網站速度。</translation>
 <translation id="4992617448154987397">開啟 Brave Private Ads</translation>
 <translation id="3415016869273103668">您現在可以開始免費通話了</translation>
 <translation id="7073631403665023390">點擊或輕按螢幕上的任何位置以繼續 Brave 通話。</translation>
@@ -654,6 +659,9 @@
 <translation id="414639769490080648">Brave 錢包自動鎖定前等待的分鐘數</translation>
 <translation id="4993345308607970390">重設 Brave 錢包</translation>
 <translation id="6369495274982305511">您確定要重設您的錢包嗎？若您沒有備份錢包，重設將會導致所有帳戶資料 (包含任何相關聯的資金) 遺失。輸入「<ph name="CONFIRMATION_PHRASE"/>」以確認。</translation>
+<translation id="4862812525895306758">清除交易和 Nonce 資訊</translation>
+<translation id="5693968582510626466">清除交易對開發人員或清除本機伺服器上的狀態而言很實用</translation>
+<translation id="5421107279168565467">確定要重設交易和 Nonce 資訊嗎？這個選項最常供執行本機測試伺服器的開發人員使用。輸入「<ph name="CONFIRMATION_PHRASE"/>」即可確認。</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# 分鐘} other {# 分鐘}}</translation>
 <translation id="4449475351935531438">Brave 防火牆 + VPN</translation>
 <translation id="719977489961414786">升級至 VPN 來保護您的連線並封鎖無所不在的追蹤程式。</translation>
@@ -737,6 +745,11 @@
 <translation id="1634828734222219955">總量</translation>
 <translation id="7995708795274219641">數量 + Gas</translation>
 <translation id="1950052789869821983">交易</translation>
+<translation id="2304783958703511257">進階設定</translation>
+<translation id="4220062530885628403">Nonce</translation>
+<translation id="1924965034964265193">輸入自訂的 Nonce 值</translation>
+<translation id="5317780077021120954">儲存</translation>
+<translation id="4979796155378508955">如果自訂的 Nonce 值並非連續數值，或具有其他錯誤，交易可能無法傳輸至網路。</translation>
 <translation id="6122742277607781713">投資組合</translation>
 <translation id="750843150060816463">Gas 價格 (Gwei)</translation>
 <translation id="1426320910664514906">Gas 上限</translation>
@@ -818,7 +831,7 @@
 <translation id="1346059596910821859">小費</translation>
 <translation id="1549705559752367917">傳送小費</translation>
 <translation id="6727102863431372879">設定</translation>
-<translation id="381822214767083050">每月貢獻</translation>
+<translation id="6413162919383874653">每月小費</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">在網址列顯示自動完成</translation>
@@ -844,6 +857,9 @@
 <translation id="2156993118928861787">網址無效</translation>
 <translation id="6889920539620318793">設定為啟用</translation>
 <translation id="2653659639078652383">提交</translation>
+<translation id="4945690646623486292">選取網路</translation>
 <translation id="8853725596990766789">變更金額</translation>
 <translation id="5233638681132016545">新增分頁</translation>
+<translation id="9200453331904391567">從 Brave Rewards 取消連結</translation>
+<translation id="381822214767083050">每月貢獻</translation>
 </translationbundle>

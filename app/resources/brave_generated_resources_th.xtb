@@ -51,6 +51,8 @@
 <translation id="1643029991199044105">ย้อนกลับไปแท็บที่ใช้ไปล่าสุดด้วย Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">โหลดบทความโดยอัตโนมัติในโหมดผู้อ่านเพื่อประหยัดเวลาของคุณ</translation>
+<translation id="5510493033031835532">เปลี่ยนเส้นทางหน้า AMP อัตโนมัติ</translation>
+<translation id="5197219128592971597">ไปที่ URL หน้าเดิม (ที่ไม่ใช่ AMP) เสมอแทนเวอร์ชัน Accelerated Mobile Page ของ Google</translation>
 <translation id="5802665280774361839">แสดงรายการที่ดำเนินการอัตโนมัติในแถบแอดเดรส</translation>
 <translation id="597020512043916976">แสดงเว็บยอดนิยมในช่องแนะนำกรอกอัตโนมัติ</translation>
 <translation id="264150068416846820">แสดงเว็บที่แนะนำของ Brave ในช่องแนะนำแบบกรอกอัตโนมัติ</translation>
@@ -218,10 +220,6 @@
 <translation id="2414886740292270097">มืด</translation>
 <translation id="1360441190790440400">เหมือน Linux</translation>
 <translation id="1336940801687497203">เหมือน Windows</translation>
-<translation id="5919209812221905840">โปรโตคอลตัวจัดการ Microsoft Edge เริ่มต้น</translation>
-<translation id="5239541974656019812">ทำให้ Brave เป็นโปรโตคอลตัวจัดการ Microsoft Edge</translation>
-<translation id="7136694880210472378">ทำให้เป็นค่าเริ่มต้น</translation>
-<translation id="1751388324499810661">Brave เป็นโปรโตคอลตัวจัดการ Microsoft Edge เริ่มต้น</translation>
 <translation id="8721331068159819483">เหมือนกับ macOS</translation>
 <translation id="2896916411183256228">ใช้ WebTorrent สำหรับแสดงทอร์เรนต์ในเบราว์เซอร์โดยตรง รองรับไฟล์ทอร์เรนต์และแม็กเน็ตลิงก์</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -233,6 +231,7 @@
 <translation id="4718664830805652430">สกุลเงินพื้นฐานเริ่มต้น</translation>
 <translation id="7992507032049865603">สกุลเงินคริปโตพื้นฐานเริ่มต้น</translation>
 <translation id="1834467296210148203">แสดงไอคอน Brave Wallet บนแถบเครื่องมือ</translation>
+<translation id="4613486011786721686">ซ่อนไอคอน Brave Wallet บนแถบเครื่องมือ</translation>
 <translation id="8239147115686034860">ล็อค Brave วอลเล็ตโดยอัตโนมัติ</translation>
 <translation id="414639769490080648">จำนวนนาทีที่ต้องรอจนกว่า Brave วอลเล็ตจะล็อคโดยอัตโนมัติ</translation>
 <translation id="6864914031231797928">อนุญาตการล็อกอินด้วย Google สำหรับส่วนขยาย</translation>
@@ -394,7 +393,7 @@
 <translation id="8712637175834984815">สำเร็จ</translation>
 <translation id="4394049700291259645">ปิดการใช้งาน</translation>
 <translation id="7142548388914389999">อนุญาตการวิเคราะห์ผลิตภัณฑ์โดยรักษาความเป็นส่วนตัว (P3A)</translation>
-<translation id="609106526832379947">ข้อมูลที่ไม่เปิดเผยชื่อโดยสมบูรณ์นี้จะช่วยให้ Brave ประเมินการใช้งานโดยรวมของบางฟีเจอร์และปรับให้ดียิ่งขึ้นสำหรับคุณ</translation>
+<translation id="8286082624639565868">ข้อมูลที่ไม่เปิดเผยชื่อโดยสมบูรณ์นี้จะช่วยให้ Brave ประเมินการใช้งานโดยรวมของบางฟีเจอร์และปรับให้เหมาะกับคุณมากยิ่งขึ้น</translation>
 <translation id="1947672064022327074">คุณต้องการเริ่มต้น Crypto Wallets สำหรับรองรับ Ethereum หรือไม่</translation>
 <translation id="7583735190612229830">ตั้งค่ากระเป๋าสตางค์ดิจิตอลเพื่อโต้ตอบกับแอปนี้และแอปอื่นๆ ที่คล้ายกันนี้</translation>
 <translation id="8731422418734770661">ตั้งค่ากระเป๋าเงินดิจิตอล</translation>
@@ -438,6 +437,10 @@
 <translation id="2808630562319398131">รีเซ็ตข้อมูล Brave Rewards...</translation>
 <translation id="2273851479262317744">ตั้ง Brave เป็นเบราว์เซอร์เริ่มต้น</translation>
 <translation id="8581710194025054669">เพื่อให้มั่นใจว่ากิจกรรมออนไลน์ได้รับความเป็นส่วนตัวที่ดีที่สุด ให้ตั้งค่า Brave เป็นเบราว์เซอร์เริ่มต้นบนคอมพิวเตอร์ของคุณ และเมื่อ Brave เป็นเบราว์เซอร์เริ่มต้น ลิงก์ของเว็บใดๆ ที่คุณคลิกจะเปิดขึ้นพร้อมกับการปกป้องความเป็นส่วนตัวของ Brave</translation>
+<translation id="1968543937259008435">พร้อมท่องโลกออนไลน์แบบส่วนตัวที่สุดแล้วหรือยัง</translation>
+<translation id="6817415381278637662">ตั้งค่าให้ Brave เป็นเบราว์เซอร์เริ่มต้นของคุณเพื่อรับการป้องกันความเป็นส่วนตัวของ Brave ในทุกหน้าเว็บที่คุณเปิด</translation>
+<translation id="8722651357687610395">ตั้งค่า Brave เป็นค่าเริ่มต้น</translation>
+<translation id="2370739752330685659">ภายหลัง</translation>
 <translation id="1241283133946520352">เครือข่าย</translation>
 <translation id="8205945804087322170">เพิ่มเครือข่ายใหม่</translation>
 <translation id="2156993118928861787">แอดแดรสไม่ถูกต้อง</translation>
@@ -464,4 +467,5 @@
 <translation id="1062463687579789365">การปรับแต่งเครือข่ายกระเป๋าเงิน</translation>
 <translation id="2234108191702901162">ไม่สามารถเพิ่มเครือข่ายได้</translation>
 <translation id="2618193846561624884">คุณต้องการอัปเดตเครือข่ายที่มีอยู่หรือไม่</translation>
+<translation id="609106526832379947">ข้อมูลที่ไม่เปิดเผยชื่อโดยสมบูรณ์นี้จะช่วยให้ Brave ประเมินการใช้งานโดยรวมของบางฟีเจอร์และปรับให้ดียิ่งขึ้นสำหรับคุณ</translation>
 </translationbundle>

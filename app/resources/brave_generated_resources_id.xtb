@@ -218,10 +218,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="2414886740292270097">Gelap</translation>
 <translation id="1360441190790440400">Sama seperti Linux</translation>
 <translation id="1336940801687497203">Sama seperti Windows</translation>
-<translation id="5919209812221905840">Pengelola bawaan dari protokol Microsoft-Edge</translation>
-<translation id="5239541974656019812">Jadikan Brave pengelola protokol Microsoft-Edge</translation>
-<translation id="7136694880210472378">Jadikan baku</translation>
-<translation id="1751388324499810661">Brave adalah pengelola bawaan dari protokol Microsoft-Edge</translation>
 <translation id="8721331068159819483">Sama seperti macOS</translation>
 <translation id="2896916411183256228">Menggunakan WebTorrent untuk menampilkan torrent langsung di peramban. Mendukung file torrent dan tautan magnet.</translation>
 <translation id="8488282162676695335">Dompet Brave.</translation>
@@ -394,7 +390,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="8712637175834984815">Mengerti</translation>
 <translation id="4394049700291259645">Nonaktifkan</translation>
 <translation id="7142548388914389999">Memungkinkan analitik produk yang menjaga privasi (P3A)</translation>
-<translation id="609106526832379947">Info yang sepenuhnya dianonimkan ini membantu Brave memperkirakan seluruh penggunaan fitur tertentu dan menjadikan fitur-fitur ini lebih baik bagi Anda.</translation>
 <translation id="1947672064022327074">Apakah Anda ingin memulai Dompet Kripto untuk dukungan Ethereum?</translation>
 <translation id="7583735190612229830">Atur agar Dompet Kripto berinteraksi dengan aplikasi ini dan lainnya yang serupa.</translation>
 <translation id="8731422418734770661">Atur Dompet Kripto</translation>
@@ -438,6 +433,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="2808630562319398131">Atur ulang data Brave Reward...</translation>
 <translation id="2273851479262317744">Tetapkan Brave sebagai peramban bawaan</translation>
 <translation id="8581710194025054669">Untuk memastikan daring dengan privasi terbaik, pertimbangkan untuk menetapkan Brave sebagai peramban bawaan di komputer Anda. Dengan Brave sebagai bawaan, tautan web apa pun yang Anda klik akan terbuka dengan perlindungan privasi Brave.</translation>
+<translation id="8722651357687610395">Setel Brave sebagai peramban baku</translation>
 <translation id="1241283133946520352">Jaringan</translation>
 <translation id="8205945804087322170">Tambahkan jaringan baru</translation>
 <translation id="2156993118928861787">Alamat tidak sah</translation>
@@ -464,4 +460,5 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="1062463687579789365">Kustomisasi jaringan dompet</translation>
 <translation id="2234108191702901162">Tidak dapat menambahkan jaringan</translation>
 <translation id="2618193846561624884">Anda ingin memperbarui jaringan yang ada?</translation>
+<translation id="609106526832379947">Info yang sepenuhnya dianonimkan ini membantu Brave memperkirakan seluruh penggunaan fitur tertentu dan menjadikan fitur-fitur ini lebih baik bagi Anda.</translation>
 </translationbundle>

@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="tr">
-<translation id="5288293905681750318">İzleyiciler &amp; reklamlar engellendi</translation>
+<translation id="5288293905681750318">İzleyici &amp; reklam engellendi</translation>
 <translation id="2313532038420432247">HTTPS Yükseltmeleri</translation>
-<translation id="788493840831967104">Zaman kaydedildi</translation>
+<translation id="788493840831967104">Kazanıldı</translation>
 <translation id="2318592590318590295">Bant genişliği kaydedildi</translation>
 <translation id="5206618227023752085">En iyi site kaldırıldı.</translation>
 <translation id="2079545284768500474">Geri al</translation>
@@ -12,7 +12,7 @@
 <translation id="3022168349636134570">saniye</translation>
 <translation id="8664519043722036194">saniyeler</translation>
 <translation id="755854589635502953">dakika</translation>
-<translation id="7210211103303402262">dakikalar</translation>
+<translation id="7210211103303402262">dakika</translation>
 <translation id="679011980069501619">saat</translation>
 <translation id="8344569602005188545">saat</translation>
 <translation id="7100907433458266664">gün</translation>
@@ -189,8 +189,8 @@
 <translation id="905529390827000221">Saatte 4 reklam</translation>
 <translation id="7694167481321619202">Saatte 5 reklam</translation>
 <translation id="3705420658531870884">Saatte 10 reklam</translation>
-<translation id="8576106690599421723">Devlet düzetinde reklam hedefleme</translation>
-<translation id="4775297407519948063">Bu, Brave'in sizin devletinize özel reklamları göstermesine izin verir.</translation>
+<translation id="2356652719351432565">Bölgesel reklam uygunluğu düzeyi</translation>
+<translation id="3216275550298493597">Bu, Brave'in size bölgeniz için özel olarak tasarlanmış reklamları göstermesine olanak tanır.</translation>
 <translation id="8446884382197647889">Daha Fazla Bilgi Edinin</translation>
 <translation id="6209514229703649203">Otomatik olarak [[adsSubdivisionTarget]] tespit edildi</translation>
 <translation id="8010081455002666927">Otomatik bul</translation>
@@ -204,9 +204,9 @@
 <translation id="2365740070488517695">Bahşişler</translation>
 <translation id="5810507495128831593">Web sitelerine ve içerik oluşturuculara verdiğiniz tek seferlik bahşişleri görün.</translation>
 <translation id="9147550766164257963">Bahşiş verme hakkında daha fazla bilgi edinin.</translation>
-<translation id="5012991400231464322">Aylık Katkılar</translation>
-<translation id="2084351799622920487">Siteleri sürekli olarak destekleyebilmeniz için yineleyen aylık katkılar ayarlayın.</translation>
-<translation id="8150772404570015166">Henüz hiç aylık katkı ayarlanmadı.</translation>
+<translation id="7577100371127227294">Aylık Bahşişler</translation>
+<translation id="178390304006113804">Favori içerik oluşturucularınızı sürekli olarak destekleyebilmeniz için yinelenen aylık bahşiş sistemini etkinleştirin.</translation>
+<translation id="3302159320447117425">Henüz hiç aylık bahşiş ayarlanmadı.</translation>
 <translation id="1617202384704994799">Yakında.</translation>
 <translation id="2241248417273918295">Kazançlar her ay ödenir.</translation>
 <translation id="68906705461077250">Kazanç artırmak veya azaltmak için istediğiniz sıklığı ayarlayın.</translation>
@@ -214,7 +214,7 @@
 <translation id="4129489167302464118">Aylık ödemeniz ziyaret ettiğiniz siteler arasında dağıtılmaktadır.</translation>
 <translation id="4898632353264854950">Siteler göz gezdirdiğiniz sürece gözükecek</translation>
 <translation id="3024485967181749006">Bu ayki toplam bahşiş</translation>
-<translation id="5055577484189948413">Bu aydaki toplam katkı</translation>
+<translation id="8183455888546367148">Bu ay yapılan verilen toplam bahşiş</translation>
 <translation id="4153752809523809915">En beğendiğiniz içerik yaratıcısına bugün bahşiş verdiniz mi?</translation>
 <translation id="7286722244752781970">Bir ziyareti kaydetmeden önce minimum sayfa zamanı</translation>
 <translation id="4424486208397124985">Yayıncı alaka düzeyi için minimum ziyaret sayısı</translation>
@@ -234,7 +234,7 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="7841456038054167122">Lütfen anahtarları yeniden girin ya da başka anahtarlar deneyin.</translation>
 <translation id="1911900517212490188">Girilen geri yükleme anahtarı artık desteklenmiyor. Yeni bir anahtar edinmek için lütfen Please <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> adresini ziyaret edin.</translation>
-<translation id="5549059668721746831">Sonraki aylık bağış tarihi</translation>
+<translation id="7583327070390027131">Sonraki aylık bahşiş tarihi</translation>
 <translation id="6231182869178328516">Az önce Brave Tarayıcısı'nı kullanarak <ph name="NAME"/>'a bahşiş verdim. https://brave.com/tips 'ten göz at.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="3082557070674409251">Tıklandı</translation>
@@ -243,6 +243,11 @@
 <translation id="8826352442759228526">Brave Ödülleriniz doğrulanamıyor çünkü en fazla doğrulanmış cihaz limitine ulaştınız.</translation>
 <translation id="1221593978088944142">Hata: Cihaz limitine ulaşıldı</translation>
 <translation id="3113653894794167793">Üzgünüz, isteğinizi işlemekle ilgili bir sorun oluştu, lütfen tekrar deneyin.</translation>
+<translation id="3509185560119586847">Ne yazık ki, Brave Ödülleri profiliniz işaretlendi ve şu anda bir emanete dayalı cüzdan ile doğrulama yapamazsınız. Bu işaretleme bazen düzensiz Brave Reklamları etkinliğinden kaynaklanabilir ancak yanlış bir işaretleme de olabilir.</translation>
+<translation id="5031451251720571882">Brave Ödülleri profiliniz işaretlendiğinde, doğrulama yapamayacağınızı unutmayın.</translation>
+<translation id="7301759045821910866">Sizin tarafınızdan herhangi bir işlem yapılmasına gerek yoktur. Brave Ödülleri profiliniz, işaretlemenin ne zaman kaldırılabileceğini (veya kaldırılıp kaldırılamayacağını) belirlemek için düzenli aralıklarla otomatik olarak yeniden değerlendirilecektir. İşaretlemenin kaldırılıp kaldırılmadığını görmek için lütfen arada bir tekrar deneyin.</translation>
+<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Brave'in Ödüller profillerini işaretleme süreci hakkında daha fazla bilgi edinin.<ph name="END_LINK"/></translation>
+<translation id="5028274575541726856">Hata: Brave Ödülleri profili işaretlendi</translation>
 <translation id="2607420597216860026">Lütfen <ph name="PROVIDER"/> üzerinde kimlik doğrulamayı tamamlandıktan sonra tekrar deneyin.</translation>
 <translation id="3183954159462541696">Hata: Giriş yapabilmek için doğrulanmış bir hesaba ihtiyacınız var</translation>
 <translation id="5260522591743022748">Brave Ödülleriniz halihazırda başka bir <ph name="PROVIDER"/> hesabıyla doğrulanmış gibi görünüyor. Lütfen önceki hesabınızı kullanarak tekrar doğrulamayı deneyin.</translation>
@@ -273,6 +278,7 @@
 <translation id="2359808026110333948">Devam et</translation>
 <translation id="5112354605357157725">Oturum açmak için ilerle</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/>, bir hesap oluşturmak için minimum <ph name="AMOUNT"/> BAT bakiye gerektiriyor. Daha önce bir hesap bağlantısı yaptıysanız,</translation>
+<translation id="1892970806832316900"><ph name="DATE"/> tarihine kadar beklemede</translation>
 <translation id="752216563428219524">Reklamlar başlatılmadı, lütfen sayfayı yenileyin.</translation>
 <translation id="7422678632904904341">Tutar:</translation>
 <translation id="6969783933307596818">5 saniyede bir otomatik yenile</translation>
@@ -357,13 +363,13 @@
 <translation id="3248185426436836442">Beklemede</translation>
 <translation id="5906820630265272615">BAT Fonları</translation>
 <translation id="5814098892838785557">Bu yaratıcıyı desteklemeyi bırakmak istediğinizden emin misiniz?</translation>
-<translation id="3922777918343537463">Aylık Katkıyı İptal Et</translation>
+<translation id="6582097696555842139">Aylık Bahşişi İptal Et</translation>
 <translation id="9087994290002662101">Miktarı değiştir</translation>
-<translation id="1969724076378550685">Aylık İptal Etmeyi Onaylayın</translation>
-<translation id="6238322297266927861">Katkı miktarı:</translation>
-<translation id="1723857724166389190">Bu yaratıcıya aylık katkınız iptal edildi.</translation>
+<translation id="2521187434582281933">Aylık Bahşiş İptalini Onayla</translation>
+<translation id="915758461293673891">Bahşiş miktarı:</translation>
+<translation id="78017292973022384">Bu içerik oluşturucuya verdiğiniz aylık bahşiş iptal edildi.</translation>
 <translation id="534368327994110883">Şu an’ bu yaratıcıyı destekliyorsunuz</translation>
-<translation id="2621124276654521177">Şimdiki aylık katkı</translation>
+<translation id="3524380957621081353">Mevcut aylık bahşiş</translation>
 <translation id="7723816962634734185">Özel Miktar</translation>
 <translation id="7286679368056222644">Aylık desteğiniz şu olacaktır:</translation>
 <translation id="4088764345615745058">Özel bahşiş miktarı</translation>
@@ -374,8 +380,8 @@
 <translation id="8994556588732085585">Lütfen tekrar denemek için bahşiş menüsünü kapatıp yeniden açın.</translation>
 <translation id="8987454605694983241">örn. <ph name="AMOUNT"/></translation>
 <translation id="4492470488449820476">Minimum bahşiş miktarı <ph name="AMOUNT"/> <ph name="CURRENCY"/></translation>
-<translation id="4371618764691059036">Aylık katkı ayarlandı.</translation>
-<translation id="6356822617569064293">Gelecek katkı tarihi:</translation>
+<translation id="9088057605518918276">Aylık bahşiş ayarlandı.</translation>
+<translation id="6306631474379759382">Sonraki bahşiş tarihi:</translation>
 <translation id="3593485149443019592">Yeterli token yok. Lütfen <ph name="LINK_BEGIN"/>fon ekleyin<ph name="LINK_END"/>.</translation>
 <translation id="3586352807094428968">Brave, bahşiş tutarının %5'ini işlem ücreti olarak alır.</translation>
 <translation id="207268487070188114">Tek Seferlik Bahşiş</translation>
@@ -416,12 +422,12 @@
 <translation id="6897083627729802351">Ödülleri ne zaman alırsınız?</translation>
 <translation id="310863932297733723">Mevcut ay boyunca Brave Private Ads'ten kazanılan jetonlarınız sonraki ayın 5'inde gelecektir.</translation>
 <translation id="7712287524451429139">Geri vermek zahmetsiz hale geldi</translation>
-<translation id="105037569026952831">İçerik üreticiler, ‘Dikkat’ olarak ölçtüğümüz etkileşim düzeylerinize göre jeton katkılarınızı otomatik olarak alır</translation>
+<translation id="105037569026952831">Üreticiler, bizin 'Dikkat' olarak ölçtüğümüz katılım seviyelerinize dayalı olarak jeton katkılarınızı otomatik bir şekilde alır.</translation>
 <translation id="5323267338679539010">Bahşiş vererek teşekkür et</translation>
 <translation id="6042317056594735519">Bahşiş, sevdiğiniz içeriği veya içerik üreticilerini kişisel olarak teşvik etmenin ve desteklemenin bir yoludur. Bahşiş vermeye başlayın!</translation>
 <translation id="7509452925943421624">Jetonlarla neler yapabilirsiniz?</translation>
 <translation id="5876169128756792273">Jetonlar yaratıcıları desteklemenin ötesinde de kullanılabilir. Satıcılar katıldıkça dijital içerik ve diğer ürünleri satın alabilirsiniz.</translation>
-<translation id="1402530520078693620">Son olarak, hadi size temel ayarları yapalım</translation>
+<translation id="1402530520078693620">Son olarak, temel ayarları yapalım.</translation>
 <translation id="3494356595346329740">Bunu daha sonra değiştirebilirsiniz.</translation>
 <translation id="827315274423079662">Yaşasın, her şey tamam!</translation>
 <translation id="8268038362451312235">Brave Rewards kullanarak webin herkes için daha iyi bir yer haline gelmesine yardım ediyorsunuz. Ve bu harika!</translation>
@@ -459,7 +465,7 @@
 <translation id="3866249974567520381">Açıklama</translation>
 <translation id="8605272644314973683">Brave Rewards</translation>
 <translation id="1346059596910821859">Bahşiş</translation>
-<translation id="6045860799501892362">Aylık bağış belirle</translation>
+<translation id="7277134233385925078">Aylık Bahşiş Belirle</translation>
 <translation id="298067735430872465">Reklam Kazançları</translation>
 <translation id="1418534671788496616">Yatırma geçmişini görüntüle</translation>
 <translation id="3412655388715513818">Bu siteyi hariç tut</translation>
@@ -467,8 +473,8 @@
 <translation id="8802504113265057166">Son kullanma tarihine kadar kullanılmayan [[currency]] otomatik olarak Brave User Growth Pool'a iade edilecektir.</translation>
 <translation id="279567716178902927">Bağış Bitiş Tarihi</translation>
 <translation id="1389143276807887637">içeri aktar</translation>
-<translation id="1038407494348068191">Cüzdanınızı yönetin</translation>
-<translation id="5737831580668469027">Aylık Bağışlar!</translation>
+<translation id="6302422639282249274">Brave Ödülllerini Yönet</translation>
+<translation id="211044356803193224">Aylık Bahşişler!</translation>
 <translation id="2487641031722095938">Bugün şanslı gününüz!</translation>
 <translation id="6255773350565723852">Token bağışınız yolda.</translation>
 <translation id="3453206261112715431">Ücretsiz Token Bağışı</translation>
@@ -476,8 +482,8 @@
 <translation id="4677106999274433911">Reklam ödüllerini başarıyla aldınız.</translation>
 <translation id="8304661078305276044">Reklam Ödülleri</translation>
 <translation id="1770001816413426741">Ödül Periyodu</translation>
-<translation id="2280319752798785157">Aylık Katkı</translation>
-<translation id="8307851765167460403">Henüz aktivite yok…</translation>
+<translation id="5419313241771906800">Aylık Bahşiş</translation>
+<translation id="8307851765167460403">Henüz aktivite yok...</translation>
 <translation id="3630697955794050612">kapalı</translation>
 <translation id="4921250468871504777">tamam</translation>
 <translation id="7866482334467279021">Açık</translation>
@@ -487,19 +493,19 @@
 <translation id="156591572855748524">30 Günlük Reklam Geçmişi</translation>
 <translation id="4923459931733593730">Ödeme</translation>
 <translation id="3138528956349114724">Sabitlenmiş siteler şu anda</translation>
-<translation id="2337632028350283479">Aylık bağışlar şu şekilde çalışır:</translation>
-<translation id="6457273203091513039">Aylık bağışlarınız Auto-Contribute ödemelerinizden gelmez. Onlar ayrıdır.</translation>
+<translation id="7562713189950710660">İşte aylık bahşiş sistemi:</translation>
+<translation id="1404790274772315264">Aylık bahşişler Otomatik Katkı ödemenizden gelmez. Bunlar ayrıdır.</translation>
 <translation id="9099396904827413228">Her siteye aylık sabit bir miktar ödenir.</translation>
-<translation id="5051110132941857169">Aylık bağışlar her ay, hep beraber ödenir. Eğer Auto-Contribute kullanıyorsanız, bahşişler aylık Auto-Contribute ödemeniz ile aynı anda gider.</translation>
-<translation id="3374483782662414143">Bahşişler panelinin içinden aylık bağış alan herhangi bir siteyi kaldırabilirsiniz.</translation>
+<translation id="7018976623064894683">Aylık bahşişler her ay toplu olarak ödenir. Otomatik Katkı kullanıyorsanız, bahşişler aylık Otomatik Katkı ödemenizle aynı anda gider.</translation>
+<translation id="1135093233619227159">Aylık bahşiş alan siteleri Bahşişler panelinin içinden kaldırabilirsiniz.</translation>
 <translation id="5082474983463379713">Lütfen unutmayın:</translation>
 <translation id="1430915738399379752">Yazdır</translation>
 <translation id="135956957367307069">İsteminiz halen işlenmektedir, lütfen bekleyin.</translation>
 <translation id="8725066075913043281">Tekrar dene</translation>
 <translation id="2600847485413879104">Ödüller BAT</translation>
-<translation id="8006596443377585072">bitFlyer Cüzdanı</translation>
-<translation id="2770577461149798369">Gemini Cüzdan</translation>
-<translation id="8108350286444475334">Cüzdanı Muhafaza Et</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
+<translation id="8533411848724153701">Gemini</translation>
+<translation id="6569877533335686968">Onayla</translation>
 <translation id="6977372887576114613">Yatırılan BAT</translation>
 <translation id="194625454574835815">Yedekleme Anahtarı</translation>
 <translation id="6354568176665589146">Tekrar eden</translation>
@@ -543,7 +549,7 @@
 <translation id="3535654229833214438">İşlemler</translation>
 <translation id="8772672608371898774">Brave Onaylı Yayıncı</translation>
 <translation id="5050370287908180130">Ayrıntılar için Aylık Bildirimi Görüntüle</translation>
-<translation id="348711787499592128">Brave Ödülleri Etkinliği</translation>
+<translation id="7853202427316060426">Eylem</translation>
 <translation id="7232682712743566408">Ödüller bakiyesi</translation>
 <translation id="1910721550319506122">Hoş geldiniz!</translation>
 <translation id="4258022280942725182">Brave Ödülleriniz</translation>
@@ -563,6 +569,8 @@
 <translation id="4862817811647633830">Auto-Contribute'ten siteler.</translation>
 <translation id="923467487918828349">Tümünü Göster</translation>
 <translation id="5113531205597573951">Görüntülenen Siteler</translation>
+<translation id="4450893287417543264">Tekrar gösterme</translation>
+<translation id="422369484771082705">Doğrulama isteğe bağlıdır. Ancak, doğrulama yaparak Brave Ödülleri'nden kazandığınız BAT'ınızı doğrudan bir emanete dayalı cüzdana aktarabileceksiniz.</translation>
 <translation id="3656941797339037856">Rewards'u Gemini'a bağlayın!</translation>
 <translation id="31532096120351460">BAT de dahil olmak üzere, 50'den fazla kripto varlığı Gemini'da alıp satın. Gemini, kriptolarınızı saklamak için güvenli bir platformdur. Ayrıca ABD, Hong Kong ve Singapur'da faiz de kazanabilirsiniz.</translation>
 <translation id="7404779623219601861">Hediye Kartları için BAT Kullanın</translation>
@@ -639,7 +647,7 @@
 <translation id="824449983246282560">Hesabınızda bakiye yok. Satın almak için Gemini'ı ziyaret edin.</translation>
 <translation id="8624961452383848703">Dönüştürmek istiyorum...</translation>
 <translation id="616639131065447379">Brave Kripto Cüzdan'a Hoşgeldiniz</translation>
-<translation id="1740464057879304704">Kripto Cüzdan, Brave'de kripto para birimi ve ilgili varlıklar ile çalışmanızı sağlar. Kripto Cüzdan, tahsil edilebilenler kadar ETH ve BAT gibi Ethereum jetonlarını da destekler ve Ðuygulamalr ile diğer akıllı kontratlar ile çalışmanıza izin verir. Bunların hepsi Ethereum'a ve diğer blok zinciri sistemlerine — aşina olanlar ile öğrenmeye hevesli olanlar içindir.</translation>
+<translation id="1740464057879304704">Kripto Cüzdanlar, Brave'deki kripto para biriminiz ve ilgili varlıklarınızı yönetmenize izin verir. Kripto Cüzdanlar, koleksiyonların yanı sıra ETH ve BAT gibi Ethereum paralarını destekler ve Dapps ile diğer akıllı kontratları yönetmenize imkan sağlar. Bunların hepsi, Ethereum'a ve diğer blok zinciri sistemlerine aşina olanlar — veya öğrenmeye istekli olanlar içindir.</translation>
 <translation id="4855440621031541830">Kripto Cüzdanı, bu kullanımdan doğabilecek tüm risklerden sadece kendinizin sorumlu olduğunu ve Brave Yazılımının, tesadüfen veya sonunda bu kullanımdan yaşayabileceğiniz zararlar dahil, hiçbir sorumluluk ya da yükümlülük taşımadığını kabul ediyorsanız kullanın.</translation>
 <translation id="3187473319809074178">Bunların tamamı şundan tamamen ayrıdır:</translation>
 <translation id="8327818101454798856">Favori sitelerinizi desteklemek istediyseniz, o sitelere yönelin.</translation>
@@ -759,10 +767,9 @@
 <translation id="6080167751812750226"><ph name="PROVIDER"/> konumuyla bağlantıyı kes</translation>
 <translation id="3600355176618429948">Tahmini Kazanç</translation>
 <translation id="4244985009709452836"><ph name="PROVIDER"/> hesabınızda oturum açın</translation>
-<translation id="7577100371127227294">Aylık Bahşişler</translation>
 <translation id="2613359062756190460">Tek-Seferlik Bahşiş</translation>
 <translation id="590733288489975971">Ads Ödülleri</translation>
-<translation id="4989163558385430922">Tümünü gör</translation>
+<translation id="6181762795539107980">Doğrulanmamış</translation>
 <translation id="3026978804849658576">Bildirimi görüntüle</translation>
 <translation id="8494748383523030337">Bakiyeniz</translation>
 <translation id="1187367336925051518"><ph name="MONTH"/> Ayı Ödülleri: <ph name="AMOUNT"/></translation>
@@ -892,7 +899,7 @@
 <translation id="5242300593039211344">Cüzdanı Kilitle</translation>
 <translation id="765834632354589737">Cüzdanı Yedekle</translation>
 <translation id="1108298724135935307">Bağlı siteler</translation>
-<translation id="722307450061393855">Kripto varlıklarınızı korumak ve erişimi asla kaybetmeyeceğinizden emin olmak için cüzdanınızı hemen yedekleyin.</translation>
+<translation id="163697698769819510">Varlıklarınızı korumak ve erişimi asla kaybetmediğinizden emin olmak için cüzdanınızı hemen yedekleyin.</translation>
 <translation id="1018806299114415224">Şimdi yedekleyin</translation>
 <translation id="5234764350956374838">Dismiss</translation>
 <translation id="4075073132992924258">Brave Cüzdan varsayılan cüzdanınız olarak ayarlanmamış ve web3 DApps'e yanıt vermeyecek. Varsayılan cüzdanınızı değiştirmek için ayarları ziyaret edin.</translation>
@@ -996,6 +1003,12 @@
 <translation id="3474375934783434676">İmza riski size aittir</translation>
 <translation id="5488357322146334497">Mesaj</translation>
 <translation id="3586752056660754651">İmza</translation>
+<translation id="3484981968509595506">Bir DApp, açık şifreleme anahtarınızı istiyor</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/>cüzdanlarınızın açık şifreleme anahtarını istiyor. Bu anahtarı sağlamayı kabul ederseniz, web sitesi size şifrelenmiş mesajlar gönderebilecektir.</translation>
+<translation id="3340247553212049934">Ver</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> isteğinizi tamamlamak için bu mesajı okumak istiyor.</translation>
+<translation id="714506544401754321">Mesajı çöz</translation>
+<translation id="5039804452771397117">İzin ver</translation>
 <translation id="9032898664193335413">Bu uygulamanın size ait <ph name="TOKEN_SYMBOL"/> parasını harcamasına izin vermek istiyor musunuz?</translation>
 <translation id="854606191596163710">Bu izni vererek, bu uygulamanın hesabınızdaki <ph name="VALUE"/> parasını çekmesine ve sizin için işlemleri otomatikleştirmesine izin vermiş olursunuz.</translation>
 <translation id="8786100550345425552">İzinleri düzenle</translation>
@@ -1098,6 +1111,7 @@
 <translation id="7400927223938424379">Şunun için önerilen değer ayarla:</translation>
 <translation id="8179605702342645418">İşlem ağda tekrarlanamaz.</translation>
 <translation id="9100765901046053179">Gelişmiş ayarlar</translation>
+<translation id="1924965034964265193">Özel nonce değerini girin</translation>
 <translation id="4220062530885628403">Tek seferlik anahtar</translation>
 <translation id="2749584096020594976">Bu alan belirtilmezse tek seferlik anahtar değeri otomatik olarak belirlenecektir.</translation>
 <translation id="1599636444563952897">Harcama limiti izni, <ph name="SITE_ORIGIN"/> sitesinin aşağıdaki miktara kadar çekim ve harcama yapmasına izin verir:</translation>
@@ -1107,9 +1121,11 @@
 <translation id="6825399159373612149"><ph name="DOMAIN_NAME"/> etki alanı kaydedilmemiş</translation>
 <translation id="8971278306757462297">Alıcı adresi kendi adresiniz</translation>
 <translation id="3506416339268164412">Alıcı adresi bir token'ın kontrat adresi</translation>
-<translation id="5517732667776806421">Eksik sağlama toplamı bilgisi</translation>
-<translation id="4006711930669471508">Geçersiz sağlama toplamı bilgisi</translation>
+<translation id="2975056993833847787">Bu adres doğrulanamıyor (sağlama toplamı eksik). Devam edilsin mi?</translation>
+<translation id="6320252966164556855">Adres, doğrulama işlemini geçemedi (geçersiz sağlama toplamı). Lütfen küçük harfleri büyük harflerle değiştirerek tekrar deneyin.</translation>
 <translation id="4667144295226514387">GAS limiti eksik</translation>
+<translation id="2021522108838444624">Tutar 0'dan büyük olmalıdır</translation>
+<translation id="8464365289405373974">Gönderim adresi gerekli</translation>
 <translation id="862585889767884824">of</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> işlemi reddet</translation>
 <translation id="1118876217803190221">Yetersiz bakiye</translation>
@@ -1147,6 +1163,9 @@
 <translation id="2962388922926051374"><ph name="URL"/> üzerindeki "eth_chainId" metodu talebi başarısız oldu</translation>
 <translation id="8325036459845654666">Bu ağ zaten ekli.</translation>
 <translation id="554350381160981853">Yazılan verilerin imzalanması yalnızca Donanım Yazılımı 1.10.5 veya üzerine sahip Trezor Model One'da desteklenir</translation>
+<translation id="1752214435563414457">Brave Swap-stake</translation>
+<translation id="7829441065063984927">7 günlük kripto çekilişi, yaklaşık 500 bin dolar ödül.</translation>
+<translation id="8292716346768453265">Hemen katılın!</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Genel Bilgi</translation>
 <translation id="4045404575593562245">Tor Denetimi Olayları</translation>
@@ -1156,22 +1175,24 @@
 <translation id="1671503397662036257">Tor Bağlantı Durumu</translation>
 <translation id="6024292492796847324">Tor Başlatma İlerlemesi</translation>
 <translation id="8458987127502506209">Brave Kalkanlarını Etkinleştir</translation>
-<translation id="640898327002833127">Brave Kalkanları <ph name="LINK_BEFORE"/>AÇIK<ph name="LINK_AFTER"/></translation>
-<translation id="8676609116485287125">Bu site bozuk görünüyorsa, Kalkanları kapatmayı deneyin. Not: Bu, Brave gizlilik korumalarını azaltabilir.</translation>
+<translation id="7509914170164691086">Kalkanlar <ph name="LINK_BEFORE"/>AÇIK<ph name="LINK_AFTER"/></translation>
+<translation id="260764436039299868">Kalkanlar <ph name="LINK_BEFORE"/>KAPALI<ph name="LINK_AFTER"/></translation>
+<translation id="7709075156958117386">Bu web sitesi bozuk görünüyorsa Kalkanları kapatmayı deneyin. 
+    <ph name="LINK_BEFORE"/>Not: Bu Brave'in gizlilik korumalarını azaltabilir.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">İzleyiciler, reklamlar ve daha fazlası engellendi <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
 <translation id="5416893287862792505">Gelişmiş Kontroller</translation>
-<translation id="1299672573512347813">Bu ayarlar, bu sitedeki web uyumluluğunu etkiler.</translation>
+<translation id="5799940914270080805">Bu ayarları değiştirmek web siteleri uyumluluğunu etkiler.</translation>
 <translation id="9204041448536398473">Genel Kalkan ayarları</translation>
-<translation id="7637771346619326580">Genel Kalkan varsayılanlarını değiştir</translation>
-<translation id="3520486481604057261">Adblock Listelerini Özelleştir</translation>
-<translation id="3146531623184244174">Bağlantılar HTTPS'e yükseltildi</translation>
+<translation id="2108334320919763866">Genel varsayılan ayarlar</translation>
+<translation id="1928321796986970424">Filtre Listeleri</translation>
+<translation id="3570081523466826008">Bağlantıları HTTPS'e yükselt</translation>
 <translation id="131231380815754440">HTTPS'yi etkinleştir</translation>
-<translation id="7461425058443653485">Betikler Engellendi</translation>
+<translation id="4824468494729001999">Script'leri engelle</translation>
 <translation id="3246600097575692802">Engellenen Betikler Bölümünü Etkinleştir</translation>
 <translation id="3603525299146223354">İzleyiciler &amp; reklamlar</translation>
-<translation id="1146309636943354181">İzleyiciler &amp; reklamlar engellendi (standart)</translation>
-<translation id="5973258875089964805">İzleyiciler &amp; reklamlar engellendi (agresif)</translation>
-<translation id="5544888475837817215">Tüm izleyici ve reklamlara izin ver</translation>
+<translation id="1146309636943354181">İzleyici &amp; reklam engellendi (standart)</translation>
+<translation id="5973258875089964805">İzleyici &amp; reklam engellendi (katı)</translation>
+<translation id="7384778069178817075">Tüm izleyicilere &amp; reklamlara izin ver</translation>
 <translation id="6203697265754637264">Siteler arası çerezler engellendi</translation>
 <translation id="4627427111733173920">Çerezler engellendi</translation>
 <translation id="3972324600756617403">Tüm çerezlere izin verildi</translation>
@@ -1179,6 +1200,10 @@
 <translation id="5582686930349810484">Parmak izi engelli (standart)</translation>
 <translation id="6696441392507885865">Parmak izi engelli (katı, siteleri bozabilir)</translation>
 <translation id="5882733945883311404">Tüm Parmak İzlerine izin ver</translation>
+<translation id="1992750560347846445">Web sitesini raporla</translation>
+<translation id="2387532482048804818">Kalkanlar açık durumdayken web sitesi düzgün çalışmıyorsa bunu bize bildirin.</translation>
+<translation id="9167355841012806439">Bu web sitesini Brave'in gizlilik koruması olmadan görüntülüyorsunuz</translation>
+<translation id="6835073906252142271">Brave Kalkanları <ph name="NUMBER"/> İzleyiciler, reklamlar ve daha fazlası engellendi</translation>
 <translation id="1742469581923031760">Bağlanıyor…</translation>
 <translation id="1287487756047817908">Bağlantı kesiliyor…</translation>
 <translation id="2325196879156848326">Bağlantı Başarısız Oldu</translation>
@@ -1218,4 +1243,35 @@
 <translation id="778096729652828897">Tor ile Özel Pencere hakkında daha fazla bilgi edin</translation>
 <translation id="3149306599361260465">%[[percentage]] başlatılıyor</translation>
 <translation id="3258793718986637767">Tor ile sorun mu yaşıyorsunuz? <ph name="BEGIN_LINK"/>Tor ile gizli pencereyi devre dışı bırakıp<ph name="END_LINK"/> tekrar açmayı deneyin.</translation>
+<translation id="8576106690599421723">Devlet düzetinde reklam hedefleme</translation>
+<translation id="4775297407519948063">Bu, Brave'in sizin devletinize özel reklamları göstermesine izin verir.</translation>
+<translation id="5012991400231464322">Aylık Katkılar</translation>
+<translation id="2084351799622920487">Siteleri sürekli olarak destekleyebilmeniz için yineleyen aylık katkılar ayarlayın.</translation>
+<translation id="8150772404570015166">Henüz hiç aylık katkı ayarlanmadı.</translation>
+<translation id="5055577484189948413">Bu aydaki toplam katkı</translation>
+<translation id="5549059668721746831">Sonraki aylık bağış tarihi</translation>
+<translation id="3922777918343537463">Aylık Katkıyı İptal Et</translation>
+<translation id="1969724076378550685">Aylık İptal Etmeyi Onaylayın</translation>
+<translation id="6238322297266927861">Katkı miktarı:</translation>
+<translation id="1723857724166389190">Bu yaratıcıya aylık katkınız iptal edildi.</translation>
+<translation id="2621124276654521177">Şimdiki aylık katkı</translation>
+<translation id="4371618764691059036">Aylık katkı ayarlandı.</translation>
+<translation id="6356822617569064293">Gelecek katkı tarihi:</translation>
+<translation id="6045860799501892362">Aylık bağış belirle</translation>
+<translation id="5737831580668469027">Aylık Bağışlar!</translation>
+<translation id="2280319752798785157">Aylık Katkı</translation>
+<translation id="2337632028350283479">Aylık bağışlar şu şekilde çalışır:</translation>
+<translation id="6457273203091513039">Aylık bağışlarınız Auto-Contribute ödemelerinizden gelmez. Onlar ayrıdır.</translation>
+<translation id="5051110132941857169">Aylık bağışlar her ay, hep beraber ödenir. Eğer Auto-Contribute kullanıyorsanız, bahşişler aylık Auto-Contribute ödemeniz ile aynı anda gider.</translation>
+<translation id="3374483782662414143">Bahşişler panelinin içinden aylık bağış alan herhangi bir siteyi kaldırabilirsiniz.</translation>
+<translation id="4989163558385430922">Tümünü gör</translation>
+<translation id="722307450061393855">Kripto varlıklarınızı korumak ve erişimi asla kaybetmeyeceğinizden emin olmak için cüzdanınızı hemen yedekleyin.</translation>
+<translation id="640898327002833127">Brave Kalkanları <ph name="LINK_BEFORE"/>AÇIK<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Bu site bozuk görünüyorsa, Kalkanları kapatmayı deneyin. Not: Bu, Brave gizlilik korumalarını azaltabilir.</translation>
+<translation id="1299672573512347813">Bu ayarlar, bu sitedeki web uyumluluğunu etkiler.</translation>
+<translation id="7637771346619326580">Genel Kalkan varsayılanlarını değiştir</translation>
+<translation id="3520486481604057261">Adblock Listelerini Özelleştir</translation>
+<translation id="3146531623184244174">Bağlantılar HTTPS'e yükseltildi</translation>
+<translation id="7461425058443653485">Betikler Engellendi</translation>
+<translation id="5544888475837817215">Tüm izleyici ve reklamlara izin ver</translation>
 </translationbundle>

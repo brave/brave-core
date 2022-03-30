@@ -235,10 +235,6 @@
     "message": "Dons Mensuels",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Vérifié",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Contributions Ponctuelles",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Résumé des récompenses",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Vérifié",
+  "walletUnverified": {
+    "message": "Non vérifié",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Valider",
+  "walletVerified": {
+    "message": "Vérifié",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Votre versement mensuel programmé pour l'Auto-contribution et les contributions mensuelles n'ont pas pu être effectués en raison de fonds insuffisants. Nous réessayerons dans 30 jours.",
+    "message": "Votre paiement mensuel de vos Contributions Automatiques et de vos pourboires mensuels n'a pas pu être réalisé en raison de l'insuffisance de vos fonds. Nous réessaierons dans 30 jours.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {

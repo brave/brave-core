@@ -235,10 +235,6 @@
     "message": "Μηνιαία Tips",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Επαληθεύτηκε",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Φιλοδώρημα για μια φορά",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Σύνοψη Ανταμοιβών",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Επαληθεύτηκε",
+  "walletUnverified": {
+    "message": "Ανεπιβεβαίωτο",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Επαλήθευση",
+  "walletVerified": {
+    "message": "Επαληθεύτηκε",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Η προγραμματισμένη μηνιαία πληρωμή σας για την Αυτόματη-Συνεισφορά και οι μηνιαίες συνεισφορές δεν ήταν δυνατόν να ολοκληρωθούν λόγω ανεπαρκών κεφαλαίων. Θα προσπαθήσουμε ξανά σε 30 ημέρες.",
+    "message": "Η προγραμματισμένη σου μηνιαία πληρωμή για το Auto-Contribute και τα μηνιαία tips δεν ήταν δυνατόν να ολοκληρωθεί λόγω ανεπαρκών πόρων. Θα προσπαθήσουμε ξανά μετά από 30 ημέρες.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Η μηνιαία συνεισφορά απέτυχε",
+    "message": "Το μηνιαίο μηνιαίο φιλοδώρημα απέτυχε",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Έγινε επεξεργασία των μηνιαίων συνεισφορών σας.",
+    "message": "Τα μηνιαία φιλοδωρήματα σας έχουν υποβληθεί σε επεξεργασία.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

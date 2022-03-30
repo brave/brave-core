@@ -235,10 +235,6 @@
     "message": "Månedlige donationer",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Godkendt",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Engangsdonationer",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Belønningsoversigt",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Godkendt",
+  "walletUnverified": {
+    "message": "Unverified",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Bekræft",
+  "walletVerified": {
+    "message": "Godkendt",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Din planlagte månedlige betaling til automatiske bidrag og månedlige bidrag kunne ikke gennemføres på grund af utilstrækkelige midler. Vi prøver igen om 30 dage.",
+    "message": "Din aftalte månedlige betaling for Auto-Contribute og månedlige donationer kunne ikke gennemføres på grund af utilstrækkelige midler. Vi prøver igen om 30 dage.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Månedligt bidrag mislykkedes",
+    "message": "Monthly tip failed",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Dine månedlige bidrag er blevet behandlet.",
+    "message": "Your monthly tips have been processed.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

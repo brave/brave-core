@@ -51,6 +51,8 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="1643029991199044105">Faites défiler les onglets les plus récemment utilisés avec Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Les articles se chargent automatiquement en mode Lecteur, ce qui vous permet de gagner du temps.</translation>
+<translation id="5510493033031835532">Redirection automatique des pages AMP</translation>
+<translation id="5197219128592971597">Visitez toujours les URL des pages originales (non AMP), au lieu des versions accélérées des pages mobiles de Google</translation>
 <translation id="5802665280774361839">Afficher la saisie semi-automatique dans la barre d'adresse</translation>
 <translation id="597020512043916976">Afficher les meilleurs sites dans les suggestions autocomplètes</translation>
 <translation id="264150068416846820">Afficher les sites suggérés par Brave dans les suggestions autocomplètes</translation>
@@ -218,10 +220,6 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="2414886740292270097">Foncé</translation>
 <translation id="1360441190790440400">Comme pour Linux</translation>
 <translation id="1336940801687497203">Comme Windows</translation>
-<translation id="5919209812221905840">Gestionnaire par défaut du protocole microsoft-edge</translation>
-<translation id="5239541974656019812">Utiliser Brave pour gérer le protocole microsoft-edge</translation>
-<translation id="7136694880210472378">Utiliser par défaut</translation>
-<translation id="1751388324499810661">Brave est utilisé pour gérer le protocole microsoft-edge par défaut</translation>
 <translation id="8721331068159819483">Même chose que pour Mac OS</translation>
 <translation id="2896916411183256228">Utilise WebTorrent pour afficher les torrents directement dans le navigateur. Prend en charge les fichiers torrents et les liens magnétiques.</translation>
 <translation id="8488282162676695335">Portefeuille Brave</translation>
@@ -233,6 +231,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="4718664830805652430">Devise de base par défaut</translation>
 <translation id="7992507032049865603">Cryptomonnaie de base par défaut</translation>
 <translation id="1834467296210148203">Afficher l'icône Portefeuille Brave dans la barre d'outils</translation>
+<translation id="4613486011786721686">Masquer l'icône Portefeuille Brave dans la barre d'outils</translation>
 <translation id="8239147115686034860">Verrouiller automatiquement le portefeuille Brave</translation>
 <translation id="414639769490080648">Le nombre de minutes à attendre avant que le portefeuille Brave soit automatiquement verrouillé</translation>
 <translation id="6864914031231797928">Autoriser la connexion à Google pour les extensions</translation>
@@ -394,7 +393,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="8712637175834984815">OK</translation>
 <translation id="4394049700291259645">Désactiver</translation>
 <translation id="7142548388914389999">Autoriser l'analyse de produits respectueuse de la vie privée (P3A)</translation>
-<translation id="609106526832379947">Ces renseignements entièrement anonymes permettent à Brave d'estimer l'utilisation globale de certaines fonctionnalités et de les améliorer.</translation>
+<translation id="8286082624639565868">Ces renseignements entièrement anonymes permettent à Brave d'estimer l'utilisation globale de certaines fonctionnalités et de les améliorer.</translation>
 <translation id="1947672064022327074">Souhaitez-vous ouvrir des portefeuilles de cryptomonnaie pour la prise en charge d'Ethereum?</translation>
 <translation id="7583735190612229830">Configurer Crypto Wallets pour interagir avec cette application et d'autres similaires.</translation>
 <translation id="8731422418734770661">Configurer Crypto Wallets</translation>
@@ -438,6 +437,10 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="2808630562319398131">Reconfigurer les données de récompenses de Brave...</translation>
 <translation id="2273851479262317744">Définir Brave comme navigateur par défaut</translation>
 <translation id="8581710194025054669">Pour garantir le meilleur de la confidentialité en ligne, nous vous conseillons de définir Brave comme navigateur par défaut sur votre ordinateur. De cette façon, les liens sur lesquels vous cliquerez s'ouvriront avec les protections de confidentialité de Brave.</translation>
+<translation id="1968543937259008435">Prêt pour le meilleur de la confidentialité en ligne?</translation>
+<translation id="6817415381278637662">Définissez Brave comme votre navigateur par défaut pour bénéficier des protections de confidentialité de Brave sur chaque page Web que vous ouvrez.</translation>
+<translation id="8722651357687610395">Définir Brave par défaut</translation>
+<translation id="2370739752330685659">Peut-être plus tard</translation>
 <translation id="1241283133946520352">Réseaux</translation>
 <translation id="8205945804087322170">Ajouter un nouveau réseau</translation>
 <translation id="2156993118928861787">Adresse invalide</translation>
@@ -464,4 +467,5 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="1062463687579789365">Personnalisation des réseaux du portefeuille</translation>
 <translation id="2234108191702901162">Impossible d'ajouter le réseau</translation>
 <translation id="2618193846561624884">Voulez-vous mettre à jour le réseau existant?</translation>
+<translation id="609106526832379947">Ces renseignements entièrement anonymes permettent à Brave d'estimer l'utilisation globale de certaines fonctionnalités et de les améliorer.</translation>
 </translationbundle>

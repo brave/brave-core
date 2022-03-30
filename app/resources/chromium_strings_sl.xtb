@@ -134,7 +134,6 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="5536657158619734169">Na voljo je nova različica Bravea.</translation>
 <translation id="239760341987199724">Nastavitev Bravea za privzeti brskalnik</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – različica beta Bravea</translation>
-<translation id="707769633889902835">OS Brave ne more odpreti te strani.</translation>
 <translation id="696826782632239602">Brave potrebuje dostop do vaše lokacije, da jo bo lahko delil s tem spletnim mestom</translation>
 <translation id="1744365871163268756">Počakajte, da Brave namesti najnovejše sistemske posodobitve.</translation>
 <translation id="3861679447659630159">Brave poskuša urejati gesla. Če želite to omogočiti, vnesite geslo za Windows.</translation>
@@ -197,7 +196,7 @@ Nekatere funkcije morda ne bodo na voljo. Določite drug imenik profila ali upor
 <translation id="8291513491595858997">Tvoj starš je izklopil »Dovoljenja za spletna mesta, aplikacije in razširitve« za Brave. Omogočanje tega ni dovoljeno: <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8211837073776713955">Brave vam sporoči, ali so gesla ogrožena</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (kopirano v Brave)</translation>
+<translation id="2049565899730874086">Google Pay (kopirano v Brave)</translation>
 <translation id="3028928628792374067">Brave je ugotovil, da razširitev »<ph name="EXTENSION_NAME"/>« vsebuje zlonamerno programsko opremo.</translation>
 <translation id="2301993384336631869">Brave je posodobljen, vendar ga niste uporabljali najmanj 30 dni.</translation>
 <translation id="8828443087767259398">Brave potrebuje dostop do Bluetootha za nadaljevanje 
@@ -292,6 +291,12 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="4484434718272972655">Kdo uporablja Brave?</translation>
 <translation id="7173394303099002355">Prejmite Braveovo najmočnejšo varnost</translation>
 <translation id="8992261409816268381">Ustvarjalci Bravea</translation>
+<translation id="479793348545936567">Če želite ta račun uporabiti le enkrat, lahko v brskalniku Brave uporabite način za goste. Če želite dodati račun za nekoga drugega, <ph name="LINK_BEGIN"/>dodajte profil<ph name="LINK_END"/> za vaš <ph name="DEVICE_TYPE"/>.
+
+Za ta račun lahko veljajo dovoljenja, ki ste jih že dali spletnim mestom in aplikacijam. Sinhronizacijske verige Brave lahko upravljate v <ph name="SETTINGS_LINK_BEGIN"/>Settings<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Če želite ta račun uporabiti samo enkrat, lahko v brskalniku Brave uporabite <ph name="GUEST_LINK_BEGIN"/>Način za goste<ph name="GUEST_LINK_END"/>. Če želite dodati račun za drugo osebo, <ph name="LINK_BEGIN"/>dodajte nov profil<ph name="LINK_END"/> za vaš <ph name="DEVICE_TYPE"/>.
+
+Za ta račun lahko veljajo dovoljenja, ki ste jih že dali spletnim mestom in aplikacijam. Sinhronizacijske verige Brave lahko upravljate v <ph name="SETTINGS_LINK_BEGIN"/>Nastavitvah<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Opozorilo: brskalnik Brave ne more preprečiti, da bi vtičniki beležili zgodovino vašega brskanja. Če želite ta vtičnik v načinu brez beleženja zgodovine onemogočiti, odznačite to možnost.</translation>
 <translation id="1448049584457347995">Zaradi večje varnosti smo v Braveu onemogočili nekatere razširitve, ki niso navedene v storitvi <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> in so bile morda dodane brez vaše vednosti.</translation>
 <translation id="8848045066928358658">Zaradi večje varnosti smo v Braveu onemogočili razširitve, ki niso navedene v storitvi <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> in so bile morda dodane brez vaše vednosti.</translation>

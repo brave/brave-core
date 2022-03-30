@@ -43,6 +43,9 @@
 <translation id="1276592121036104130">Naloži novo vsebino</translation>
 <translation id="3189348785087463371">Promovirano</translation>
 <translation id="7554145152551782675">Več ponudb Brave</translation>
+<translation id="1717242776111689224">Omogoči novice Brave News</translation>
+<translation id="4732255422524275223">Vaši viri</translation>
+<translation id="152579389256498990">URL naslov vira</translation>
 <translation id="4975944254857623648">Privzeti viri</translation>
 <translation id="253886574765651454">Dodaj vir</translation>
 <translation id="5787084571334399599">Preprečuje strežniku ustvarjanje prstnih odtisov</translation>
@@ -272,22 +275,24 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="2927095357213611519">Spletne ustvarjalce lahko podprete z žetoni.\nZaslužite žetone z ogledom oglasov, ki spoštujejo vašo zasebnost.</translation>
 <translation id="213787746370741250">Odpri zavihke v Zavihkih po meri</translation>
 <translation id="8030169304546394654">Prekinjeno</translation>
-<translation id="8267327690882073581">Preveri denarnico</translation>
+<translation id="6181762795539107980">Nepotrjeno</translation>
 <translation id="543510923939676996">Denarnica preverjena</translation>
 <translation id="8673913984316081937">Potrditev veljavnosti denarnice ni obvezna</translation>
 <translation id="8558636200953226885">Če pa potrdite, lahko...</translation>
 <translation id="8697510149346635496">Umaknite BAT, ki ste ga zaslužili z ogledom oglasov, ki spoštujejo zasebnost</translation>
 <translation id="1481480653609649134">Nakup dodatnih BAT s kreditnimi karticami in drugimi viri</translation>
 <translation id="9096003370755878766">Umaknite BAT, ki ste ga morda že dodali v svojo denarnico Brave Rewards</translation>
+<translation id="8267327690882073581">Preveri denarnico</translation>
 <translation id="1554282356558968486">Našo denarno storitev zagotovi</translation>
 <translation id="6569877533335686968">Podpri</translation>
 <translation id="734105583050813665">Bitflyer</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="8465442795593991224">Platforma Uphold lahko zahteva, da preverite svojo identiteto na podlagi zahtevanih storitev.</translation>
 <translation id="3200197118442451932">Brave Software Inc. ne obdeluje, ne shranjuje in ne dostopa do nobenih osebnih podatkov, ki jih posredujete <ph name="WALLET_PROVIDER"/>ob ustvaritvi računa.</translation>
 <translation id="3699674790322420653">Zaključi preverjanje denarnice</translation>
 <translation id="2193391216824305230">Uporabnikova denarnica</translation>
 <translation id="1665118090708049096">Pojdi v moj račun <ph name="WALLET_PROVIDER"/></translation>
-<translation id="9200453331904391567">Prekinite povezavo z Brave Rewards</translation>
+<translation id="1948959999802743233">Prekini povezavo z <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Dvig sredstev</translation>
 <translation id="8874184842967597500">Povezava ni vzpostavljena</translation>
 <translation id="3368922792935385530">Povezano</translation>
@@ -403,12 +408,12 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="7427567994475794038">Vključite prejemanje poročil o zasebnosti in preverite, koliko sledilnikov &amp; oglasov ste blokirali v zadnjih 3 urah.</translation>
 <translation id="2053891538879944400">Z brskalnikom Brave ste prihranili <ph name="DATA"/> <ph name="DATA_TEXT"/> podatkov.</translation>
 <translation id="8640064498452534195">Vključite prejemanje poročil o zasebnosti in preverite, kolikšno količino podatkov ste prihranili.</translation>
-<translation id="2252497442547961651">Brskalnik Brave v povprečju porabi 40% manj baterije.&#128267;</translation>
+<translation id="2252497442547961651">Brskalnik Brave v povprečju porabi 40% manj baterije.🔋</translation>
 <translation id="1945330434665345785">Z brskalnikom Brave ste v zadnjem tednu blokirali <ph name="COUNT"/> sledilnikov &amp; oglasov.</translation>
 <translation id="2883868922264431515">Zaslužite z ogledom oglasov, ki spoštujejo zasebnost, in podprite svoja najljubša spletna mesta.</translation>
-<translation id="5678925890616256956">Lepo! Blokirali ste 250 sledilcev &amp; oglasov z brskalnikom Brave browser.&#128293;</translation>
-<translation id="9199047775708635708">Lepo! Z brskalnikom Brave ste prihranili 10 MB.&#128267;</translation>
-<translation id="1880168210969863408">Lepo! Z brskalnikom Brave ste prihranili 10 minut časa nalaganja.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Lepo! Blokirali ste 250 sledilcev &amp; oglasov z brskalnikom Brave browser.🔥</translation>
+<translation id="9199047775708635708">Lepo! Z brskalnikom Brave ste prihranili 10 MB.🔋</translation>
+<translation id="1880168210969863408">Lepo! Z brskalnikom Brave ste prihranili 10 minut časa nalaganja.💨💨</translation>
 <translation id="7408493389591475748">Začnite z brskanjem, da lahko pridobite poročilo o zasebnosti</translation>
 <translation id="9080777565335515917">Za zasebno in varno brskanje nastavite Brave kot privzeti brskalnik.</translation>
 <translation id="1390943217516275883">Storitvi Brave omogoča prikaz vaših statistik zasebnosti</translation>
@@ -475,18 +480,18 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="6897083627729802351">Kdaj prejmete nagrade?</translation>
 <translation id="310863932297733723">Zahvaljujoč Brave Private Ads ste si prislužili žetone, ki bodo za ves tekoči mesec prispeli 5. dne v naslednjem mesecu.</translation>
 <translation id="7712287524451429139">Podpora je zares enostavna</translation>
-<translation id="105037569026952831">Ustvarjalci samodejno prejmejo vaše prispevane žetone glede na vašo stopnjo angažiranosti, ki jo merimo kot ‘pozornost’.</translation>
+<translation id="105037569026952831">Ustvarjalci samodejno prejmejo vaše prispevke žetonov na podlagi vaših ravni angažiranosti, ki jih merimo kot »Pozornost«.</translation>
 <translation id="5323267338679539010">Zahvalite se z vašo podporo</translation>
 <translation id="6730444165801605682">Prispevki so način, kako osebno spodbuditi in podpreti vsebino ali ustvarjalce, ki so vam zelo všeč. Pa kar pogumno k prispevkom!</translation>
 <translation id="7509452925943421624">Kaj lahko storite z žetoni?</translation>
 <translation id="5876169128756792273">Žetone je mogoče uporabiti poleg podpore ustvarjalcem. Ko se trgovci pojavijo na krovu, lahko kupite digitalno vsebino in drugo blago.</translation>
-<translation id="1402530520078693620">Nenazadne, pojdimo zdaj na osnovne nastavitve</translation>
+<translation id="1402530520078693620">V zadnjem koraku si oglejmo še vaše nastavitve.</translation>
 <translation id="3494356595346329740">To lahko spremenite pozneje.</translation>
 <translation id="3115702351969988294">Kako pogosto si želite ogledati oglase?</translation>
 <translation id="3474670199029510295">(Oglasi na uro)</translation>
 <translation id="66599604460581068">Koliko podpore želite dati svojim najljubšim ustvarjalcem?</translation>
 <translation id="3164498053837913829">(od zaslužka od oglasov)</translation>
-<translation id="827315274423079662">Juhu, vse je pripravljeno!</translation>
+<translation id="827315274423079662">Hura, vse je pripravljeno!</translation>
 <translation id="3895246934788932488">Z uporabo Brave Rewards ščitite svojo zasebnost in pomagate izboljšati splet za vse. To je super!</translation>
 <translation id="5705882733397021510">Pojdi nazaj</translation>
 <translation id="3985567919248057638">Pojdimo na hiter ogled</translation>
@@ -497,11 +502,11 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="6912901278692845878">Kratka tura</translation>
 <translation id="1080013038789678738">Pa dajmo!</translation>
 <translation id="8037420924417098685">Če želite klicati brezplačno, vklopite Brave Rewards</translation>
-<translation id="8961724619078500274">Z Brave Rewards si prislužite žetone za ogled zasebnih oglasov (vaši podatki so varni). Pretvorite te žetone v gotovino, darilne kartice ali celo napnite priljubljena spletna mesta. Brez sledenja. Brez upočasnitev.</translation>
+<translation id="8961724619078500274">Z nagradami Brave Rewards si prislužite žetone za ogled zasebnih oglasov (vaši podatki so varni). Pretvarjajte te žetone v gotovino, darilne kartice... ali jih dajte kot prispevek za spletna mesta, ki jih imate radi. Brez sledenja. Brez upočasnitev.</translation>
 <translation id="7307847920988946894">Vklopite storitev Rewards</translation>
 <translation id="7872993190040589450">Z omogočanjem se strinjate z <ph name="TERMS_OF_SERVICE"/> in <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="6128511569382736135">Če želite klicati brezplačno, omogočite Brave Private Ads</translation>
-<translation id="7930006085154756245">Z zasebnimi oglasi Brave Private Ads si prislužite žetone za ogled zasebnih oglasov (vaši podatki so varni). Pretvorite te žetone v gotovino, darilne kartice ali celo napnite priljubljena spletna mesta. Brez sledenja. Brez upočasnitev.</translation>
+<translation id="7930006085154756245">Z zasebnimi oglasi Brave Private Ads si prislužite žetone za ogled zasebnih oglasov (vaši podatki so varni). Pretvarjajte te žetone v gotovino, darilne kartice... ali jih dajte kot prispevek za spletna mesta, ki jih imate radi. Brez sledenja. Brez upočasnitev.</translation>
 <translation id="4992617448154987397">Vklopi zasebne oglase Brave Private Ads</translation>
 <translation id="3415016869273103668">Zdaj lahko kličete brezplačno</translation>
 <translation id="7073631403665023390">Kliknite ali tapnite kjer koli na zaslonu, da nadaljujete na Brave Talk.</translation>
@@ -656,6 +661,9 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="414639769490080648">Število minut čakanja, da se Brave  denarnica samodejno zaklene</translation>
 <translation id="4993345308607970390">Ponastavi denarnico Brave</translation>
 <translation id="6369495274982305511">Ali ste prepričani, da želite ponastaviti denarnico? Če vaša denarnica ni varnostno kopirana, bo ponastavitev povzročila, da izgubite vse podatke o računu (vključno z vsemi povezanimi sredstvi). Za potrditev vnesite "<ph name="CONFIRMATION_PHRASE"/>".</translation>
+<translation id="4862812525895306758">Počisti informacije o transakkciji &amp; nonce</translation>
+<translation id="5693968582510626466">Transakcije brisanja so lahko uporabne za razvijalce ali pri čiščenju stanja na lokalnem strežniku</translation>
+<translation id="5421107279168565467">Ali ste prepričani, da želite ponastaviti informacije o transakciji in nonce? To možnost večinoma uporabljajo razvijalci, ki uporabljajo lokalni testni strežnik. Vnesite "<ph name="CONFIRMATION_PHRASE"/>" za potrditev.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minuta} other {# minut}}</translation>
 <translation id="4449475351935531438">Brave požarni zid + VPN</translation>
 <translation id="719977489961414786">Nadgradite na VPN, da zaščitite svojo povezavo in blokirate invazivne sledilce na vsakem koraku.</translation>
@@ -739,6 +747,11 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="1634828734222219955">Skupno</translation>
 <translation id="7995708795274219641">Znesek + Gas</translation>
 <translation id="1950052789869821983">Transakcija</translation>
+<translation id="2304783958703511257">Napredne nastavitve</translation>
+<translation id="4220062530885628403">Žeton</translation>
+<translation id="1924965034964265193">Vnesite vrednost nonce po meri</translation>
+<translation id="5317780077021120954">Shrani</translation>
+<translation id="4979796155378508955">Transakcija se morda ne bo razširila v omrežje, če vrednost nonce po meri ni zaporedna ali ima druge napake.</translation>
 <translation id="6122742277607781713">Portfelj</translation>
 <translation id="750843150060816463">Cena plina (Gwei)</translation>
 <translation id="1426320910664514906">Gas Limit</translation>
@@ -820,7 +833,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="1346059596910821859">Donacija</translation>
 <translation id="1549705559752367917">Pošlji nasvet</translation>
 <translation id="6727102863431372879">Nastavi</translation>
-<translation id="381822214767083050">Mesečni prispevek</translation>
+<translation id="6413162919383874653">Mesečni prispevek</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Pokaži samodokončanje v naslovni vrstici.</translation>
@@ -846,6 +859,9 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="2156993118928861787">Neveljaven naslov</translation>
 <translation id="6889920539620318793">Nastavi kot aktivno</translation>
 <translation id="2653659639078652383">Pošlji</translation>
+<translation id="4945690646623486292">Izberite omrežje</translation>
 <translation id="8853725596990766789">Spremenite količino</translation>
 <translation id="5233638681132016545">Nov zavihek</translation>
+<translation id="9200453331904391567">Prekinite povezavo z Brave Rewards</translation>
+<translation id="381822214767083050">Mesečni prispevek</translation>
 </translationbundle>

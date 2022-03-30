@@ -235,10 +235,6 @@
     "message": "Månatliga dricks",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Verifierad",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Engångsdricks",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Sammanfattning av Rewards",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Verifierad",
+  "walletUnverified": {
+    "message": "Ej verifierad",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Verifiera",
+  "walletVerified": {
+    "message": "Verifierad",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Din planerade månatliga betalning för Autobidrag och månatliga bidrag kan inte genomföras på grund av otillräckliga medel. Vi försöker på nytt om 30 dagar.",
+    "message": "Din schemalagda månadsbetalning för automatbidrag och månatliga dricks kunde inte genomföras på grund av otillräckliga medel. Vi försöker igen om 30 dagar.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Månatligt bidrag misslyckades",
+    "message": "Månatlig dricks misslyckades",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Dina månatliga bidrag har behandlats.",
+    "message": "Din månatliga dricks har behandlats.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

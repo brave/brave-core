@@ -51,6 +51,8 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="1643029991199044105">Paskiausiai naudotas korteles perjunkite klavišais Ctrl + Tab</translation>
 <translation id="1013121820689882118">Spartusis skaitlys</translation>
 <translation id="2025435450953474282">Straipsniai automatiškai įkeliami skaitymo režimu, kad sutaupytumėte laiko</translation>
+<translation id="5510493033031835532">Automatiškai peradresuoti AMP puslapius</translation>
+<translation id="5197219128592971597">Visada naudoti originalius (ne AMP) puslapių URL adresus, o ne „Google Accelerated Mobile Page“ versijas</translation>
 <translation id="5802665280774361839">Rodyti automatinį užbaigimą adreso juostoje</translation>
 <translation id="597020512043916976">Rodyti populiariausias svetaines automatinio užbaigimo pasiūlymuose</translation>
 <translation id="264150068416846820">Rodyti „Brave“ siūlomas svetaines automatinio užbaigimo pasiūlymuose</translation>
@@ -218,10 +220,6 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="2414886740292270097">Tamsu</translation>
 <translation id="1360441190790440400">Atitinka „Linux“</translation>
 <translation id="1336940801687497203">Atitinka „Windows“</translation>
-<translation id="5919209812221905840">Numatytoji „Microsoft Edge“ protokolo apdorojimo programa</translation>
-<translation id="5239541974656019812">Padaryti „Brave“ numatytąja „Microsoft Edge“ protokolo apdorojimo programa</translation>
-<translation id="7136694880210472378">Padaryti numatytuoju</translation>
-<translation id="1751388324499810661">„Brave“ yra numatytoji „Microsoft Edge“ protokolo apdorojimo programa</translation>
 <translation id="8721331068159819483">Atitinka „MacOS“</translation>
 <translation id="2896916411183256228">Naudoja WebTorrent rodyti srautus tiesiogiai naršyklėje. Palaiko srauto failus ir magneto saitus.</translation>
 <translation id="8488282162676695335">„Brave“ piniginė</translation>
@@ -233,6 +231,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="4718664830805652430">Numatytoji bazinė valiuta</translation>
 <translation id="7992507032049865603">Numatytoji bazinė kriptovaliuta</translation>
 <translation id="1834467296210148203">Rodyti „Brave Wallet“ piktogramą įrankių juostoje</translation>
+<translation id="4613486011786721686">Slėpti „Brave“ piniginės piktogramą įrankių juostoje</translation>
 <translation id="8239147115686034860">Automatiškai užrakinti „Brave“ piniginę</translation>
 <translation id="414639769490080648">Skaičius minučių, kiek reikia palaukti, kol automatiškai užrakinama „Brave“ piniginė</translation>
 <translation id="6864914031231797928">Leisti „Google“ prisijungti prie plėtinių</translation>
@@ -394,7 +393,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="8712637175834984815">Supratau</translation>
 <translation id="4394049700291259645">Neleisti</translation>
 <translation id="7142548388914389999">Leisti privatumo nepažeidžiančią produktų analizę (P3A)</translation>
-<translation id="609106526832379947">Ši visiškai nuasmeninta informacija padeda „Brave“ įvertinti bendrą tam tikrų funkcijų naudojimą ir jas patobulinti.</translation>
+<translation id="8286082624639565868">Ši visiškai nuasmeninta informacija padeda „Brave“ įvertinti bendrą tam tikrų funkcijų naudojimą ir jas patobulinti.</translation>
 <translation id="1947672064022327074">Ar norėtumėte paleisti kriptovaliutų pinigines „Ethereum“ palaikyti?</translation>
 <translation id="7583735190612229830">Nustatykite, kad kriptovaliutų piniginės sąveikautų su šia programa ir kitomis panašiomis programomis.</translation>
 <translation id="8731422418734770661">Nustatyti „Crypto Wallets“</translation>
@@ -438,6 +437,10 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="2808630562319398131">Iš naujo nustatyti „Brave Rewards“ duomenis...</translation>
 <translation id="2273851479262317744">Nustatyti „Brave“ kaip numatytąją naršyklę</translation>
 <translation id="8581710194025054669">Siekdami geriausiai užtikrinti privatumą internete, apsvarstykite galimybę savo kompiuteryje nustatyti „Brave“ kaip numatytąją naršyklę. Nustačius „Brave“ kaip numatytąją naršyklę, bet kokia jūsų spustelėta nuoroda bus atverta taikant „Brave“ privatumo apsaugos nuostatas.</translation>
+<translation id="1968543937259008435">Pasirengę geriausiam privatumui internete?</translation>
+<translation id="6817415381278637662">Nustatykite „Brave“ kaip savo numatytąją naršyklę, kad galėtumėte pasinaudoti „Brave“ privatumo apsauga visuose tinklalapiuose, kuriuos atveriate.</translation>
+<translation id="8722651357687610395">Nustatyti „Brave“ kaip numatytąją</translation>
+<translation id="2370739752330685659">Gal vėliau</translation>
 <translation id="1241283133946520352">Tinklai</translation>
 <translation id="8205945804087322170">Pridėti naują tinklą</translation>
 <translation id="2156993118928861787">Netinkamas adresas</translation>
@@ -464,4 +467,5 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="1062463687579789365">Piniginės tinklų tinkinimas</translation>
 <translation id="2234108191702901162">Nepavyko pridėti tinklo</translation>
 <translation id="2618193846561624884">Ar norite atnaujinti esamą tinklą?</translation>
+<translation id="609106526832379947">Ši visiškai nuasmeninta informacija padeda „Brave“ įvertinti bendrą tam tikrų funkcijų naudojimą ir jas patobulinti.</translation>
 </translationbundle>

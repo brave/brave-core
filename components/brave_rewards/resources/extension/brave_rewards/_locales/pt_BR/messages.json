@@ -235,10 +235,6 @@
     "message": "Doações Mensais",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Verificado",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Doações Únicas",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Resumo de Recompensas",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Verificado",
+  "walletUnverified": {
+    "message": "Não verificado",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Confirmar",
+  "walletVerified": {
+    "message": "Verificado",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Não foi possível concluir seu pagamento mensal agendado para Contribuição Automática e contribuições mensais devido a fundos insuficientes. Tentaremos novamente em 30 dias.",
+    "message": "Seu pagamento mensal agendado para Contribuição Automática e doações mensais não pôde ser concluído devido a fundos insuficientes. Nós tentaremos novamente em 30 dias.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {

@@ -51,6 +51,8 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1643029991199044105">Cerqueu per les pestanyes més utilitzades recentment amb Ctrl-Tab</translation>
 <translation id="1013121820689882118">Lector de velocitat</translation>
 <translation id="2025435450953474282">Els articles es carreguen automàticament en el mode de lector, fet que estalvia temps</translation>
+<translation id="5510493033031835532">Redirigeix automàticament les pàgines AMP</translation>
+<translation id="5197219128592971597">Visiteu sempre les URL de pàgina originals (que no són d'AMP) en lloc de les versions d'Accelerated Mobile Pages de Google</translation>
 <translation id="5802665280774361839">Mostra Autocompletar a la barra d'adreces</translation>
 <translation id="597020512043916976">Mostreu els llocs principals en suggeriments de complet automàtic</translation>
 <translation id="264150068416846820">Mostreu els llocs suggerits de Brave en suggeriments de complet automàtic</translation>
@@ -219,10 +221,6 @@ Segur que vols continuar?</translation>
 <translation id="2414886740292270097">Fosc</translation>
 <translation id="1360441190790440400">Mateix que Linux</translation>
 <translation id="1336940801687497203">Mateix que Windows</translation>
-<translation id="5919209812221905840">Gestor de protocol microsoft-edge per defecte</translation>
-<translation id="5239541974656019812">Fes que Brave sigui el gestor de protocol microsoft-edge</translation>
-<translation id="7136694880210472378">Estableix com a predeterminat</translation>
-<translation id="1751388324499810661">Brave és el gestor de protocol microsoft-edge per defecte</translation>
 <translation id="8721331068159819483">Mateix que MacOS</translation>
 <translation id="2896916411183256228">Fa servir WebTorrent per mostrar torrents directament al navegador. Accepta arxius de torrent i magnet links.</translation>
 <translation id="8488282162676695335">Cartera Brave</translation>
@@ -234,6 +232,7 @@ Segur que vols continuar?</translation>
 <translation id="4718664830805652430">Moneda base predeterminada</translation>
 <translation id="7992507032049865603">Criptomoneda base predeterminada</translation>
 <translation id="1834467296210148203">Mostra la icona de Brave Wallet a la barra d'eines</translation>
+<translation id="4613486011786721686">Oculta la icona de Cartera del Brave a la barra d'eines</translation>
 <translation id="8239147115686034860">Bloquegeu la cartera de Brave de forma automàtica</translation>
 <translation id="414639769490080648">El nombre de minuts que s'esperarà abans que es bloquegi automàticament la cartera de Brave</translation>
 <translation id="6864914031231797928">Permetre l'accés a Google per obtenir extensions</translation>
@@ -395,7 +394,7 @@ Segur que vols continuar?</translation>
 <translation id="8712637175834984815">D'acord</translation>
 <translation id="4394049700291259645">Desactiva</translation>
 <translation id="7142548388914389999">Permet l'anàlisi de productes que preserven la privacitat (P3A)</translation>
-<translation id="609106526832379947">Aquesta informació completament anònima ajuda a Brave a calcular l'ús total de determinades funcions i a millorar-les.</translation>
+<translation id="8286082624639565868">Aquesta informació completament anònima ajuda a Brave a calcular l'ús total de determinades funcions i a millorar-les.</translation>
 <translation id="1947672064022327074">Voleu iniciar Crypto Wallets amb compatibilitat amb Ethereum?</translation>
 <translation id="7583735190612229830">Estableix criptomoneders per interactuar amb aquesta app i d'altres similars.</translation>
 <translation id="8731422418734770661">Configura Crypto Wallets</translation>
@@ -439,6 +438,10 @@ Segur que vols continuar?</translation>
 <translation id="2808630562319398131">Restableix les dades de Brave Rewards...</translation>
 <translation id="2273851479262317744">Defineix Brave com a navegador predeterminat</translation>
 <translation id="8581710194025054669">Per tal de garantir la millor privadesa en línia, pensa a definir Brave com el navegador predeterminat del teu ordinador. Si Brave és el navegador per defecte, qualsevol enllaç web en el qual facis clic s'obrirà amb les proteccions de privacitat de Brave.</translation>
+<translation id="1968543937259008435">Preparat per a la millor privadesa en línia?</translation>
+<translation id="6817415381278637662">Definiu el Brave com a navegador per defecte per obtenir les proteccions de privadesa de Brave a totes les pàgines web que obriu.</translation>
+<translation id="8722651357687610395">Estableix Brave com a predeterminat</translation>
+<translation id="2370739752330685659">Potser més tard</translation>
 <translation id="1241283133946520352">Xarxes</translation>
 <translation id="8205945804087322170">Afegir nova xarxa</translation>
 <translation id="2156993118928861787">Adreça no vàlida</translation>
@@ -465,4 +468,5 @@ Segur que vols continuar?</translation>
 <translation id="1062463687579789365">Personalització de les xarxes del moneder</translation>
 <translation id="2234108191702901162">No s'ha pogut afegir la xarxa</translation>
 <translation id="2618193846561624884">Vols actualtzar la xarxa existent?</translation>
+<translation id="609106526832379947">Aquesta informació completament anònima ajuda a Brave a calcular l'ús total de determinades funcions i a millorar-les.</translation>
 </translationbundle>

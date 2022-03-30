@@ -51,6 +51,8 @@
 <translation id="1643029991199044105">تنقل عبر آخر علامات التبويب المستخدمة باستخدام Ctrl-Tab</translation>
 <translation id="1013121820689882118">قارئ السرعة</translation>
 <translation id="2025435450953474282">يتم تحميل المقالات تلقائيًا في وضع القارئ، مما يوفر لك الوقت</translation>
+<translation id="5510493033031835532">إعادة توجيه صفحات AMP تلقائيًا</translation>
+<translation id="5197219128592971597">قم دائمًا بزيارة عناوين URL للصفحة الأصلية (التي ليست بتنسيق AMP)، بدلاً من إصدارات صفحات الجوال المسرَّعة من Google</translation>
 <translation id="5802665280774361839">إظهار الإكمال التلقائي في شريط العناوين</translation>
 <translation id="597020512043916976">عرض أهم المواقع في اقتراحات الإكمال التلقائي</translation>
 <translation id="264150068416846820">إظهار مواقع Brave المقترحة ضمن اقتراحات الإكمال التلقائي</translation>
@@ -214,10 +216,6 @@
 <translation id="2414886740292270097">داكن</translation>
 <translation id="1360441190790440400">كنظام تشغيل Linux</translation>
 <translation id="1336940801687497203">كنظام تشغيل Windows</translation>
-<translation id="5919209812221905840">معالج بروتوكول متصفح microsoft-edge الافتراضي</translation>
-<translation id="5239541974656019812">اجعل Brave معالج بروتوكول متصفح microsoft-edge الافتراضي</translation>
-<translation id="7136694880210472378">تعيين كافتراضي</translation>
-<translation id="1751388324499810661">Brave هو معالج بروتوكول متصفح Microsoft-edge الافتراضي</translation>
 <translation id="8721331068159819483">تماماً مثل ماك</translation>
 <translation id="2896916411183256228">استخدم WebTorrent لعرض ملفات التورنت مباشرة في المتصفح. تدعم ملفات التورنت والروابط المغناطيسية.</translation>
 <translation id="8488282162676695335">محفظة Brave</translation>
@@ -229,6 +227,7 @@
 <translation id="4718664830805652430">العملة الأساسية الافتراضية</translation>
 <translation id="7992507032049865603">العملة المشفرة الأساسية الافتراضية</translation>
 <translation id="1834467296210148203">إظهار رمز Brave Wallet على شريط الأدوات</translation>
+<translation id="4613486011786721686">إخفاء أيقونة Brave Wallet من شريط الأدوات</translation>
 <translation id="8239147115686034860">قفل Brave Wallet تلقائيًا</translation>
 <translation id="414639769490080648">عدد دقائق الانتظار حتى يتم قفل Brave Wallet تلقائيًا</translation>
 <translation id="6864914031231797928">قم بالسماح بتسجيل الدخول إلى Google للحصول على الإضافات</translation>
@@ -391,7 +390,7 @@
 <translation id="8712637175834984815">تم</translation>
 <translation id="4394049700291259645">إيقاف</translation>
 <translation id="7142548388914389999">السماح بتحليلات المنتج التي تحافظ على الخصوصية (P3A)</translation>
-<translation id="609106526832379947">تساعد هذه المعلومات مجهولة المصدر تمامًا متصفح Brave على تقدير الاستخدام العام لميزات معينة وتحسينها لك.</translation>
+<translation id="8286082624639565868">تساعد هذه المعلومات مجهولة المصدر تمامًا متصفح Brave على تقدير الاستخدام العام لميزات معينة وتحسينها لك.</translation>
 <translation id="1947672064022327074">هل ترغب في بدء استخدام المحافظ المشفرة (Crypto Wallets) للحصول على دعم إيثريوم ؟</translation>
 <translation id="7583735190612229830">قم بإعداد Crypto Wallets للتفاعل مع هذا التطبيق وما يماثله من التطبيقات الأخرى.</translation>
 <translation id="8731422418734770661">قم بإعداد المحافظ المشفرة</translation>
@@ -435,6 +434,10 @@
 <translation id="2808630562319398131">إعادة تعيين بيانات مكافآت Brave...</translation>
 <translation id="2273851479262317744">تعيين Brave كمتصفح افتراضي</translation>
 <translation id="8581710194025054669">حتى تضمن أفضل خصوصية عبر الإنترنت، قم بتعيين Brave كمتصفح افتراضي على جهاز الكمبيوتر الخاص بك، باستخدامك متصفح Brave كمتصفح افتراضي، سيتم فتح أي رابط ويب تنقر عليه مع وسائل حماية خصوصية Brave.</translation>
+<translation id="1968543937259008435">هل أنت جاهز لخوض أفضل تجربة خصوصية عبر الإنترنت؟</translation>
+<translation id="6817415381278637662">قم بتعيين Brave كمتصفحك الافتراضي للحصول على حماية خصوصية Brave على كل صفحة ويب تفتحها.</translation>
+<translation id="8722651357687610395">تعيين Brave كمتصفح افتراضي</translation>
+<translation id="2370739752330685659">ربما لاحقًا</translation>
 <translation id="1241283133946520352">الشبكات</translation>
 <translation id="8205945804087322170">أضف شبكة جديدة</translation>
 <translation id="2156993118928861787">عنوان غير صالح</translation>
@@ -461,4 +464,5 @@
 <translation id="1062463687579789365">تخصيص شبكات المحفظة</translation>
 <translation id="2234108191702901162">تعذر إضافة الشبكة</translation>
 <translation id="2618193846561624884">هل تريد تحديث الشبكة الموجودة؟</translation>
+<translation id="609106526832379947">تساعد هذه المعلومات مجهولة المصدر تمامًا متصفح Brave على تقدير الاستخدام العام لميزات معينة وتحسينها لك.</translation>
 </translationbundle>

@@ -235,10 +235,6 @@
     "message": "Zawadi za Kila Mwezi",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Imethibitishwa",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Michango ya Mara Moja",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Muhtasari wa Zawadi",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Imethibitishwa",
+  "walletUnverified": {
+    "message": "Haijathibitishwa",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Thibitisha",
+  "walletVerified": {
+    "message": "Imethibitishwa",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Uliratibu malipo ya kila mwezi ya Auto-Contribute na michango ya kila mwezi haikukamilishwa kutokana na kutokuwepo fedha za kutosha. Tutajaribu tena baada ya siku 30.",
+    "message": "Malipo yako yaliyopangwa ya kila mwezi ya Auto-Contribute na michango ya kila mwezi haikuweza kukamilishwa kwa sababu fedha hazitoshi. Tutajaribu tena ndani ya siku 30.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Mchango wa kila mwezi haujafaulu",
+    "message": "Bahashishi ya kila mwezi haijafaulu",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Michango yako ya kila mwezi imechakatwa.",
+    "message": "Bahashishi zako za kila mwezi zimechakatwa.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

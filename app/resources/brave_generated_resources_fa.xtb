@@ -50,6 +50,8 @@
 <translation id="1643029991199044105">با Ctrl-Tab بین آخرین برگه‌های استفاده‌شده جابه‌جا شوید</translation>
 <translation id="1013121820689882118">تندخوان</translation>
 <translation id="2025435450953474282">مقالات به‌طور خودکار در حالت پرونده‌خوان بارگیری می‌شوند و در زمان شما صرفه‌جویی می‌شود</translation>
+<translation id="5510493033031835532">تغییر مسیر خودکار صفحات AMP</translation>
+<translation id="5197219128592971597">به‌جای نسخه‌های صفحه تلفن همراه تسریع‌شده Google، همیشه از نشانی‌های وب صفحه اصلی (غیر AMP) بازدید کنید</translation>
 <translation id="5802665280774361839">نشان دادن تکمیل خودکار در نوار نشانی</translation>
 <translation id="597020512043916976">نشان دادن سایت‌های برتر در پیشنهادهای تکمیل خودکار</translation>
 <translation id="264150068416846820">نشان دادن سایت‌های پیشنهادی Brave در پیشنهادهای تکمیل خودکار</translation>
@@ -217,10 +219,6 @@
 <translation id="2414886740292270097">تاریک</translation>
 <translation id="1360441190790440400">مشابه Linux</translation>
 <translation id="1336940801687497203">مشابه Windows</translation>
-<translation id="5919209812221905840">ناظر پیش‌فرض پروتکل microsoft-edge</translation>
-<translation id="5239541974656019812">Brave را به ناظر پروتکل microsoft-edge تبدیل کنید</translation>
-<translation id="7136694880210472378">پیش‌فرض قرار دادن</translation>
-<translation id="1751388324499810661">Brave ناظر پیش‌فرض پروتکل microsoft-edge است.</translation>
 <translation id="8721331068159819483">مشابه macOS</translation>
 <translation id="2896916411183256228">از WebTorrent برای نمایش مستقیم تورنت‌ها در مرورگر استفاده می‌کند. از فایل‌های تورنت و پیوندهای آهنربایی پشتیبانی می‌کند.</translation>
 <translation id="8488282162676695335">کیف پول Brave</translation>
@@ -232,6 +230,7 @@
 <translation id="4718664830805652430">ارز پایه پیش‌فرض</translation>
 <translation id="7992507032049865603">رمزارز پایه پیش‌فرض</translation>
 <translation id="1834467296210148203">نمایش آیکون «کیف پول Brave» در نوار ابزار</translation>
+<translation id="4613486011786721686">پنهان کردن نماد «کیف پول Brave» در نوار ابزار</translation>
 <translation id="8239147115686034860">کیف پول Brave به‌طور خودکار قفل شود</translation>
 <translation id="414639769490080648">تعداد دقایقی که باید منتظر بمانید تا کیف پول Brave به‌طور خودکار قفل شود</translation>
 <translation id="6864914031231797928">مجاز کردن ورود به سیستم Google برای افزونه‌ها</translation>
@@ -393,7 +392,7 @@
 <translation id="8712637175834984815">متوجه شدم</translation>
 <translation id="4394049700291259645">غیر فعال کردن</translation>
 <translation id="7142548388914389999">مجاز کردن تجزیه‌وتحلیل‌های محصول حفاظت‌کننده از حریم‌خصوصی (P3A)</translation>
-<translation id="609106526832379947">این اطلاعات که کاملاً به شکل ناشناس درآمده است به Brave کمک می‌کند استفاده کلی از برخی ویژگی‌ها را تخمین بزند و آنها را برایتان بهبود ببخشد.</translation>
+<translation id="8286082624639565868">این اطلاعات که کاملاً به شکل ناشناس درآمده است به Brave کمک می‌کند استفاده کلی از برخی ویژگی‌ها را تخمین بزند و آن‌ها را برایتان بهبود ببخشد.</translation>
 <translation id="1947672064022327074">مایل هستید «کیف پول‌های رمزگذاری‌شده» را برای پشتیبانی از Ethereum راه‌اندازی کنید؟</translation>
 <translation id="7583735190612229830">برای داشتن تعامل با این برنامه و برنامه‌های دیگر مشابه آن، «کیف پول رمزنگاری‌شده» را تنظیم کنید.</translation>
 <translation id="8731422418734770661">راه‌اندازی Crypto Wallets</translation>
@@ -437,6 +436,10 @@
 <translation id="2808630562319398131">بازنشانی داده‌های Brave Rewards…</translation>
 <translation id="2273851479262317744">تنظیم Brave به‌عنوان مرورگر پیش‌فرض</translation>
 <translation id="8581710194025054669">برای اطمینان از داشتن بهترین حریم‌خصوصی آنلاین، Brave را به‌عنوان مرورگر پیش‌فرض در رایانه‌تان تنظیم کنید. با Brave، روی هر پیوند وبی که کلیک کنید به‌طور پیش‌فرض با محافظت‌های حریم‌خصوصی Brave باز می‌شود.</translation>
+<translation id="1968543937259008435">برای بهترین حریم خصوصی آنلاین آماده‌اید؟</translation>
+<translation id="6817415381278637662">Brave را به‌عنوان مرورگر پیش‌فرضتان تنظیم کنید تا در هر صفحه وبی که باز می‌کنید از قابلیت‌های حفاظت حریم خصوصی Brave بهره‌مند شوید.</translation>
+<translation id="8722651357687610395">Brave را به‌عنوان پیش فرض تنظیم کنید</translation>
+<translation id="2370739752330685659">شاید بعداً</translation>
 <translation id="1241283133946520352">شبکه ها</translation>
 <translation id="8205945804087322170">افزودن شبکه جدید</translation>
 <translation id="2156993118928861787">آدرس نامعتبر</translation>
@@ -463,4 +466,5 @@
 <translation id="1062463687579789365">سفارشی‌سازی شبکه‌های کیف پول</translation>
 <translation id="2234108191702901162">افزودن شبکه امکان‌پذیر نیست</translation>
 <translation id="2618193846561624884">می‌خواهید شبکه موجود را به‌روزرسانی کنید؟</translation>
+<translation id="609106526832379947">این اطلاعات که کاملاً به شکل ناشناس درآمده است به Brave کمک می‌کند استفاده کلی از برخی ویژگی‌ها را تخمین بزند و آنها را برایتان بهبود ببخشد.</translation>
 </translationbundle>

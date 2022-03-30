@@ -235,10 +235,6 @@
     "message": "Tip Bulanan",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Terverifikasi",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Tip Satu Kali",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Ringkasan Rewards",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Terverifikasi",
+  "walletUnverified": {
+    "message": "Unverified",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Verifikasi",
+  "walletVerified": {
+    "message": "Terverifikasi",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Pembayaran bulanan berjadwal Anda untuk Kontribusi Otomatis dan kontribusi bulanan tidak dapat diselesaikan karena dana tidak mencukupi. Kami akan mencoba lagi dalam 30 hari.",
+    "message": "Pembayaran bulanan terjadwal Anda untuk Kontribusi Otomatis dan tip bulanan tak dapat diproses karena dana kurang. Kami akan mencoba kembali dalam 30 hari.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Kontribusi bulanan gagal",
+    "message": "Monthly tip failed",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Kontribusi bulanan Anda telah diproses.",
+    "message": "Your monthly tips have been processed.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

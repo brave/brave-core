@@ -85,6 +85,8 @@ Binance
 <translation id="1643029991199044105">Ctrl-Tab के साथ सबसे हाल ही में इस्तेमाल किए गए टैब के माध्यम से साइकिल</translation>
 <translation id="1013121820689882118">स्पीडरीडर</translation>
 <translation id="2025435450953474282">लेख अपने आप रीडर मोड में लोड होते हैं, जिससे आपका समय बचता है</translation>
+<translation id="5510493033031835532">AMP पेज को ऑटो-रीडाइरेक्ट करें</translation>
+<translation id="5197219128592971597">Google के एक्सीलरेटेड मोबाइल पेज वर्ज़न के बजाय, हमेशा असली (नॉन-AMP) पेज के URL पर जाएँ</translation>
 <translation id="5802665280774361839">पता बार में ऑटोकम्पलीट दिखाएँ</translation>
 <translation id="597020512043916976">ऑटोकम्पलीट सुझावों में शीर्ष साइटें दिखाएँ</translation>
 <translation id="264150068416846820">ऑटोकम्पलीट सुझावों में Brave द्वारा सुझाए गए साइट दिखाएँ</translation>
@@ -252,10 +254,6 @@ Binance
 <translation id="2414886740292270097">गाढ़ा</translation>
 <translation id="1360441190790440400">Linux के जैसे ही</translation>
 <translation id="1336940801687497203">Windows के जैसे ही</translation>
-<translation id="5919209812221905840">डिफ़ॉल्ट microsoft-edge प्रोटोकॉल हैंडलर</translation>
-<translation id="5239541974656019812">Brave को microsoft-edge प्रोटोकॉल हैंडलर बनाएं</translation>
-<translation id="7136694880210472378">डिफ़ॉल्ट बनाएं</translation>
-<translation id="1751388324499810661">Brave डिफ़ॉल्ट microsoft-edge प्रोटोकॉल हैंडलर है</translation>
 <translation id="8721331068159819483">MacOS के जैसे ही</translation>
 <translation id="2896916411183256228">टोरेंट को सीधे अपने ब्राउज़र में देखने के लिए WebTorrent का उपयोग करें। टोरेंट फाइलों और मैग्नेट लिंक के लिए समर्थित।</translation>
 <translation id="8488282162676695335">Brave वॉलेट</translation>
@@ -267,6 +265,7 @@ Binance
 <translation id="4718664830805652430">डिफ़ॉल्ट बेस करेंसी</translation>
 <translation id="7992507032049865603">डिफ़ॉल्ट बेस क्रिप्टोकरेंसी</translation>
 <translation id="1834467296210148203">टूलबार पर Brave वॉलेट आइकन दिखाएं</translation>
+<translation id="4613486011786721686">टूल बार पर Brave वॉलेट के आइकन को छिपाएँ</translation>
 <translation id="8239147115686034860">Brave Wallet को अपने आप लॉक करें</translation>
 <translation id="414639769490080648">Brave Wallet को अपने आप लॉक होने तक इंतज़ार करने के लिए मिनटों की संख्या</translation>
 <translation id="6864914031231797928">एक्सटेंशन के लिए Google लॉगिन की अनुमति दें</translation>
@@ -428,7 +427,7 @@ Binance
 <translation id="8712637175834984815">समझ लिया</translation>
 <translation id="4394049700291259645">बंद करें</translation>
 <translation id="7142548388914389999">गोपनीयता-संरक्षण प्रोडक्ट एनालिटिक्स की अनुमति दें (P3A)</translation>
-<translation id="609106526832379947">यह अज्ञात जानकारी केवल Brave को कुछ फ़ीचर्स के समग्र उपयोग का अनुमान लगाने देती है और इन्हें आपके लिए बेहतर बनाने देती हैं.</translation>
+<translation id="8286082624639565868">यह पूरी तरह से गुमनाम जानकारी, Brave को कुछ सुविधाओं के इस्तेमाल का अनुमान लगाकर उन्हें आपके लिए बेहतर बनाने में मदद करती है.</translation>
 <translation id="1947672064022327074">क्या आप एथेरियम सहायता के लिए क्रिप्टो वॉलेट शुरू करना चाहते हैं?</translation>
 <translation id="7583735190612229830">इस ऐप और इसके जैसे अन्य ऐप के साथ जुड़ने के लिए क्रिप्टो वॉलेट सेट करें।</translation>
 <translation id="8731422418734770661">क्रिप्टो वॉलेट् सेट करें</translation>
@@ -472,6 +471,10 @@ Binance
 <translation id="2808630562319398131">Brave रिवॉर्ड डेटा रीसेट करें ...</translation>
 <translation id="2273851479262317744">Brave को अपने डिफ़ॉल्ट ब्राउज़र में सेट करें</translation>
 <translation id="8581710194025054669">ऑनलाइन सर्वश्रेष्ठ गोपनीयता सुनिश्चित करने के लिए, अपने कंप्यूटर पर Brave को डिफ़ॉल्ट ब्राउज़र के रूप में सेट करने के बारे में सोचें. डिफ़ॉल्ट रूप से Brave के साथ, आपके द्वारा क्लिक किया गया कोई भी वेब लिंक Brave की गोपनीयता सुरक्षा के साथ खुल जाएगी.</translation>
+<translation id="1968543937259008435">बेहतरीन ऑनलाइन गोपनीयता के लिए तैयार हैं?</translation>
+<translation id="6817415381278637662">Brave को अपने डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें ताकि आपको सभी वेब पेज पर Brave की गोपनीयता सुरक्षा मिले.</translation>
+<translation id="8722651357687610395">Brave को डिफ़ॉल्ट के रूप में सेट करें</translation>
+<translation id="2370739752330685659">शायद बाद में</translation>
 <translation id="1241283133946520352">नेटवर्क</translation>
 <translation id="8205945804087322170">नया नेटवर्क जोड़ें</translation>
 <translation id="2156993118928861787">अमान्य पता</translation>
@@ -498,4 +501,5 @@ Binance
 <translation id="1062463687579789365">वॉलेट नेटवर्क में मनचाहे बदलाव</translation>
 <translation id="2234108191702901162">नेटवर्क नहीं जोड़ा जा सका</translation>
 <translation id="2618193846561624884">क्या आप मौजूदा नेटवर्क को अपडेट करना चाहते हैं?</translation>
+<translation id="609106526832379947">यह अज्ञात जानकारी केवल Brave को कुछ फ़ीचर्स के समग्र उपयोग का अनुमान लगाने देती है और इन्हें आपके लिए बेहतर बनाने देती हैं.</translation>
 </translationbundle>

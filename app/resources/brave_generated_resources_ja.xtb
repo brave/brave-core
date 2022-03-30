@@ -51,6 +51,8 @@
 <translation id="1643029991199044105">Ctrl-Tabを使用し、最近使用したタブを繰り替えす</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">記事が自動的にリーダーモードで読み込まれるため、時間を節約できます</translation>
+<translation id="5510493033031835532">AMPページを自動でリダイレクト</translation>
+<translation id="5197219128592971597">GoogleのAccelerated Mobile Pageバージョンではなく、常にオリジナルの (AMPでない) ページURLにアクセスしてください。</translation>
 <translation id="5802665280774361839">アドレス入力時にオートコンプリートを表示</translation>
 <translation id="597020512043916976">トップサイトをオートコンプリートでリコメンド</translation>
 <translation id="264150068416846820">Braveの推奨サイトをオートコンプリートで表示</translation>
@@ -192,9 +194,9 @@
 <translation id="6527776448555649991">「同期コードをスキャンする」</translation>
 <translation id="1400862780574843709">カメラで以下の QR コードをスキャンしてください。</translation>
 <translation id="5086223971958279691">チェーンコードの同期</translation>
-<translation id="2899261497479389619">目的のコンピューターで、設定からBrave 同期に行き、ボタンをクリックして下さい</translation>
-<translation id="4827439149833241990">「同期コードを持っています。」</translation>
-<translation id="8299617838343103908">以下に表示された同期チェーンコードワードを入力する。</translation>
+<translation id="2899261497479389619">同期先のコンピューターで、設定から「Brave Sync」に行き、</translation>
+<translation id="4827439149833241990">「同期コードを持っています。」のボタンをクリックしてください。</translation>
+<translation id="8299617838343103908">その後、以下に表示された同期チェーンコードワードを入力してください。</translation>
 <translation id="4485276108749547761">このコードはパスワードのように厳重に扱ってください。第三者に入手された場合、第三者があなたの同期されたデータを読み取って変更することが可能になります。</translation>
 <translation id="3034163433136515805">QR コードを見る</translation>
 <translation id="5373825572723282843">同期コードを入力</translation>
@@ -219,10 +221,6 @@
 <translation id="2414886740292270097">ダーク</translation>
 <translation id="1360441190790440400">Linuxと同じ</translation>
 <translation id="1336940801687497203">Windowsと同じ</translation>
-<translation id="5919209812221905840">Microsoft Edgeのデフォルトのプロトコルハンドラー</translation>
-<translation id="5239541974656019812">BraveをMicrosoft Edgeのデフォルトのプロトコルハンドラーに設定する</translation>
-<translation id="7136694880210472378">デフォルトに設定</translation>
-<translation id="1751388324499810661">BraveはMicrosoft Edgeのデフォルトのプロトコルハンドラーです</translation>
 <translation id="8721331068159819483">Mac OS と同様</translation>
 <translation id="2896916411183256228">WebTorrentを有効にして、直接Torrentファイルやマグネットリンクを表示</translation>
 <translation id="8488282162676695335">Braveウォレット</translation>
@@ -234,6 +232,7 @@
 <translation id="4718664830805652430">デフォルトのベース通貨</translation>
 <translation id="7992507032049865603">デフォルトのベース暗号資産</translation>
 <translation id="1834467296210148203">Brave Walletのアイコンをツールバーに表示</translation>
+<translation id="4613486011786721686">Brave Walletのアイコンをツールバーで非表示</translation>
 <translation id="8239147115686034860">Brave Wallet を自動的にロック</translation>
 <translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
 <translation id="6864914031231797928">拡張機能のGoogleログインを許可する</translation>
@@ -395,7 +394,7 @@
 <translation id="8712637175834984815">閉じる</translation>
 <translation id="4394049700291259645">無効にする</translation>
 <translation id="7142548388914389999">プライバシーを保護したプロダクト分析 (P3A) を許可する</translation>
-<translation id="609106526832379947">この完全に匿名化された情報は、Braveが特定の機能の全体的な使用状況を推定し、ユーザーエクスペリエンスを向上するために役立ちます。</translation>
+<translation id="8286082624639565868">この完全に匿名化された情報は、Braveが特定の機能の全体的な使用状況を推定し、ユーザーエクスペリエンスを向上するために役立ちます。</translation>
 <translation id="1947672064022327074">イーサリアムに対応した暗号資産ウォレットを使ってみますか？</translation>
 <translation id="7583735190612229830">暗号資産ウォレットを設定して、このアプリやそれと類似の他のアプリとやり取りをします。</translation>
 <translation id="8731422418734770661">暗号資産ウォレットを設定</translation>
@@ -439,6 +438,10 @@
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
 <translation id="2273851479262317744">Braveをデフォルトのブラウザとして設定</translation>
 <translation id="8581710194025054669">オンラインでのプライバシーを確保するには、Braveをコンピューターのデフォルトブラウザとして設定しましょう。Braveをデフォルトにすると、クリックしたすべてのウェブリンクがBraveでプライバシー保護されて開きます。</translation>
+<translation id="1968543937259008435">オンラインで最高のプライバシーを確保しましょう</translation>
+<translation id="6817415381278637662">Braveをデフォルトブラウザに設定すると、開いたすべてのWebページでBraveのプライバシー保護機能が利用できます。</translation>
+<translation id="8722651357687610395">Braveをデフォルトに設定</translation>
+<translation id="2370739752330685659">今はしない</translation>
 <translation id="1241283133946520352">ネットワーク</translation>
 <translation id="8205945804087322170">新しいネットワークを追加</translation>
 <translation id="2156993118928861787">アドレスが無効です。</translation>
@@ -465,4 +468,5 @@
 <translation id="1062463687579789365">ウォレットネットワークのカスタマイズ</translation>
 <translation id="2234108191702901162">ネットワークを追加できません</translation>
 <translation id="2618193846561624884">既存のネットワークを更新しますか？</translation>
+<translation id="609106526832379947">この完全に匿名化された情報は、Braveが特定の機能の全体的な使用状況を推定し、ユーザーエクスペリエンスを向上するために役立ちます。</translation>
 </translationbundle>

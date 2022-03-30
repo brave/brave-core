@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Any tip you make will remain pending and retry automatically for 90 days. $link_begin$Learn more$link_end$",
+    "message": "Kõik saadetud preemiad jäävad ootele ja neid proovitakse 90 päeva jooksul automaatselt uuesti saata. $link_begin$Lisateave$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "This creator is currently not configured to receive tips from your Rewards custodial wallet service.",
+    "message": "See looja ei ole praegu konfigureeritud teie Preemiate kolmandast osapoolest krüptorahakoti teenusest preemiaid saama.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Your Reward is on its way.",
+    "message": "Teie preemia on teel.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -235,10 +235,6 @@
     "message": "Igakuised preemiad",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Kinnitatud",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Ühekordsed preemiad",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Preemiate kokkuvõte",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Kinnitatud",
+  "walletUnverified": {
+    "message": "Kinnitamata",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Kinnita",
+  "walletVerified": {
+    "message": "Kinnitatud",
     "description": ""
   },
   "walletYourBalance": {
@@ -276,11 +272,11 @@
     "description": ""
   },
   "notificationClaimRewards": {
-    "message": "Claim Rewards",
+    "message": "Võta preemiad vastu",
     "description": ""
   },
   "notificationClaimTokens": {
-    "message": "Claim Tokens",
+    "message": "Võta tokenid vastu",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,11 +301,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Back up Brave Rewards",
+    "message": "Varunda Brave'i Preemiad",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Please back up your Brave Rewards.",
+    "message": "Varundage oma Brave'i Preemiad.",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -317,7 +313,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "You are logged out",
+    "message": "Olete välja logitud",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Your Brave Rewards is verified!",
+    "message": "Teie Brave'i Preemiad on kinnitatud!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Your Brave Rewards was successfully verified with $provider$.",
+    "message": "Teie Brave'i Preemiate kinnitamine teenusepakkuja $provider$ juures õnnestus.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,11 +338,11 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "A token grant is available!",
+    "message": "Tokenivõimalus on saadaval!",
     "description": ""
   },
   "notificationAdGrantAmount": {
-    "message": "$month$ Rewards: $amount$",
+    "message": "Kuu $month$ preemiad: $amount$",
     "description": "",
     "placeholders": {
       "month": {
@@ -358,7 +354,7 @@
     }
   },
   "notificationAdGrantTitle": {
-    "message": "Your $month$ Ad Rewards are here!",
+    "message": "Teie reklaamide preemiad kuu $month$ eest on laekunud!",
     "description": "",
     "placeholders": {
       "month": {
@@ -367,7 +363,7 @@
     }
   },
   "notificationGrantDaysRemaining": {
-    "message": "You have $days$ left to claim",
+    "message": "Vastuvõtmiseks jäänud aeg: $days$",
     "description": "",
     "placeholders": {
       "days": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Automaatse panustamise ja igakuise panuse plaanilist makset ei saanud teha ebapiisavate vahendite tõttu. Proovime uuesti 30 päeva pärast.",
+    "message": "Automaatsete panustamiste ja igakuiste preemiate kavandatud maksed ei saanud ebapiisavate vahendite tõttu teostada. Proovime uuesti 30 päeva pärast.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Igakuine panustamine nurjus",
+    "message": "Igakuine preemia nurjus",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Teie igakuised panused on töödeldud.",
+    "message": "Teie igakuised preemiad on töödeldud.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {
@@ -559,7 +555,7 @@
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "In order to withdraw the BAT you earn for viewing ads, you’ll need to verify Brave Rewards.",
+    "message": "Reklaamide vaatamise eest teenitud BAT-ide väljavõtmiseks peate kinnitama Brave'i Preemiad.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +563,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Verify Brave Rewards",
+    "message": "Kinnita Brave'i Preemiad",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +571,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "By verifying your Brave Rewards and linking it to a bitFlyer account, you will be able to store and manage the BAT you have earned through Brave Rewards more easily",
+    "message": "Kui kinnitate oma Brave'i Preemiate konto ning seote selle bitFlyeri kontoga, saate Brave'i Preemiate kaudu teenitud BAT-e lihtsamalt säilitada ja hallata.",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

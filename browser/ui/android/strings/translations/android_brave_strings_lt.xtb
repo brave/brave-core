@@ -43,6 +43,9 @@
 <translation id="1276592121036104130">Įkelti naują turinį</translation>
 <translation id="3189348785087463371">Reklamuojama</translation>
 <translation id="7554145152551782675">Daugiau „Brave“ pasiūlymų</translation>
+<translation id="1717242776111689224">Aktyvinti „Brave“ naujienas</translation>
+<translation id="4732255422524275223">Jūsų šaltiniai</translation>
+<translation id="152579389256498990">Srauto ar svetainės URL adresas</translation>
 <translation id="4975944254857623648">Numatytieji šaltiniai</translation>
 <translation id="253886574765651454">Pridėti šaltinį</translation>
 <translation id="5787084571334399599">Naršyklei neleidžia naudoti kontrolinių kodų</translation>
@@ -277,22 +280,24 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="2927095357213611519">Žetonais galite paremti interneto turinio kūrėjus.\nUžsidirbkite žetonų žiūrėdami privatumo nepažeidžiančias reklamas.</translation>
 <translation id="213787746370741250">Atverti korteles Adaptuotose kortelėse</translation>
 <translation id="8030169304546394654">Atsijungta</translation>
-<translation id="8267327690882073581">Patvirtinti piniginę</translation>
+<translation id="6181762795539107980">Nepatvirtinta</translation>
 <translation id="543510923939676996">Piniginė patvirtinta</translation>
 <translation id="8673913984316081937">Piniginės patvirtinimas neprivalomas</translation>
 <translation id="8558636200953226885">Tačiau patvirtinę galite...</translation>
 <translation id="8697510149346635496">Išmokėti BAT, kuriuos pelnėte už privatumą gerbiančių reklamų peržiūrą</translation>
 <translation id="1481480653609649134">Įsigyti papildomų BAT, sumokant kreditine kortele ir iš kitų šaltinių</translation>
 <translation id="9096003370755878766">Išmokėti BAT, kuriuos anksčiau pridėjote į savo „Brave Rewards“ piniginę</translation>
+<translation id="8267327690882073581">Patvirtinti piniginę</translation>
 <translation id="1554282356558968486">Mūsų piniginės paslaugą teikia</translation>
 <translation id="6569877533335686968">„Uphold“</translation>
 <translation id="734105583050813665">„Bitflyer“</translation>
+<translation id="8533411848724153701">„Gemini“</translation>
 <translation id="8465442795593991224">Atsižvelgiant į prašomas paslaugas, „Uphold“ gali pareikalauti jūsų patvirtinti savo tapatybę.</translation>
 <translation id="3200197118442451932">„Brave Software Inc.“ netvarko, nelaiko ir nepasiekia jokios asmeninės informacijos, kurią teikiate <ph name="WALLET_PROVIDER"/>, kai ten susikuriate paskyrą.</translation>
 <translation id="3699674790322420653">Baigti piniginės patvirtinimą</translation>
 <translation id="2193391216824305230">Naudotojo piniginė</translation>
 <translation id="1665118090708049096">Eiti į mano <ph name="WALLET_PROVIDER"/> paskyrą</translation>
-<translation id="9200453331904391567">Atsijungti nuo „Brave Rewards“</translation>
+<translation id="1948959999802743233">Atsijungti nuo <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Išimti lėšų</translation>
 <translation id="8874184842967597500">Neprisijungta</translation>
 <translation id="3368922792935385530">Prijungta</translation>
@@ -408,12 +413,12 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="7427567994475794038">Įjunkite privatumo ataskaitas ir matykite, kiek sekiklių ir reklamų užblokavote per pastarąsias 3 valandas.</translation>
 <translation id="2053891538879944400">Naudodami „Brave“ naršyklę sutaupėte <ph name="DATA"/> <ph name="DATA_TEXT"/> duomenų.</translation>
 <translation id="8640064498452534195">Įjunkite privatumo ataskaitas ir matykite, kiek duomenų sutaupėte.</translation>
-<translation id="2252497442547961651">„Brave“ naršyklė naudoja vidutiniškai 40 % mažiau baterijos energijos.&#128267;</translation>
+<translation id="2252497442547961651">„Brave“ naršyklė naudoja vidutiniškai 40 % mažiau baterijos energijos.🔋</translation>
 <translation id="1945330434665345785">Praėjusią savaitę „Brave“ naršyklėje užblokavote tiek sekiklių ir reklamų: <ph name="COUNT"/>.</translation>
 <translation id="2883868922264431515">Gaukite žetonų už privatumo nepažeidžiančių reklamų peržiūrą ir paremkite mėgstamas svetaines.</translation>
-<translation id="5678925890616256956">Puiku! „Brave“ naršyklėje užblokavote 250 sekiklių ir reklamų.&#128293;</translation>
-<translation id="9199047775708635708">Puiku! Naudodami „Brave“ naršyklę sutaupėte 10 MB.&#128267;</translation>
-<translation id="1880168210969863408">Puiku! Naudodami „Brave“ naršyklę sutaupėte 10 minučių įkėlimo laiko.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Puiku! „Brave“ naršyklėje užblokavote 250 sekiklių ir reklamų.🔥</translation>
+<translation id="9199047775708635708">Puiku! Naudodami „Brave“ naršyklę sutaupėte 10 MB.🔋</translation>
+<translation id="1880168210969863408">Puiku! Naudodami „Brave“ naršyklę sutaupėte 10 minučių įkėlimo laiko.💨💨</translation>
 <translation id="7408493389591475748">Pradėkite naršyti, kad pamatytumėte privatumo ataskaitas</translation>
 <translation id="9080777565335515917">Nustatykite „Brave“ kaip numatytąją naršyklę, kad galėtumėte naršyti privačiai ir saugiai.</translation>
 <translation id="1390943217516275883">Suteikia „Brave“ galimybę rodyti jūsų privatumo statistiką</translation>
@@ -480,7 +485,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="6897083627729802351">Kada gaunate atlygį?</translation>
 <translation id="310863932297733723">Žetonai, kuriuos iš „Brave Private Ads“ gavote per einamąjį mėnesį, jus pasieks kito mėnesio 5 dieną.</translation>
 <translation id="7712287524451429139">Atsilyginti dabar paprasta</translation>
-<translation id="105037569026952831">Kūrėjai jūsų skiriamus žetonus gauna automatiškai pagal jūsų susidomėjimo lygį, kurį matuojame kaip „dėmesį“.</translation>
+<translation id="105037569026952831">Kūrėjai jūsų skiriamus žetonus gauna automatiškai pagal jūsų susidomėjimo lygį, kurį mes vadiname „Dėmesys“.</translation>
 <translation id="5323267338679539010">Padėkokite skirdami arbatpinigių</translation>
 <translation id="6730444165801605682">Arbatpinigių skyrimas yra būdas asmeniškai paskatinti ir paremti ypač mėgstamą turinį arba kūrėjus. Tapkite rėmėju!</translation>
 <translation id="7509452925943421624">Ką galite daryti su žetonais?</translation>
@@ -662,6 +667,9 @@ pasiūlymų gavimą). <ph name="DEX_PROVIDER"/> šiuos duomenis naudos TIK sando
 <translation id="414639769490080648">Skaičius minučių, kiek reikia palaukti, kol automatiškai užrakinama „Brave“ piniginė</translation>
 <translation id="4993345308607970390">Atkurti „Brave“ piniginę</translation>
 <translation id="6369495274982305511">Ar tikrai norite atkurti savo piniginę? Jei neturite savo piniginės atsarginės kopijos, atkurdami prarasite visus sąskaitos duomenis (įskaitant susijusias lėšas). Jei norite patvirtinti, įrašykite „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
+<translation id="4862812525895306758">Išvalyti operacijų ir operacijų numerių informaciją</translation>
+<translation id="5693968582510626466">Operacijų išvalymas gali būti naudingas kūrėjams arba norint išvalyti būseną vietiniame serveryje</translation>
+<translation id="5421107279168565467">Ar tikrai norite iš naujo nustatyti operacijų ir operacijų numerių informaciją? Šią parinktį dažniausiai naudoja kūrėjai, turintys vietinį testavimo serverį. Jei norite patvirtinti, įrašykite „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# min.} other {# min.}}</translation>
 <translation id="4449475351935531438">„Brave“ užkarda ir VPN</translation>
 <translation id="719977489961414786">Pradėkite naudoti VPN ir apsaugokite ryšį bei užblokuokite invazinius sekiklius, kad ir kur būtumėte.</translation>
@@ -745,6 +753,11 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="1634828734222219955">Iš viso</translation>
 <translation id="7995708795274219641">Suma + dujos</translation>
 <translation id="1950052789869821983">Operacija</translation>
+<translation id="2304783958703511257">Išplėstiniai nustatymai</translation>
+<translation id="4220062530885628403">Operacijos numeris</translation>
+<translation id="1924965034964265193">Įveskite tinkintą operacijos numerio reikšmę</translation>
+<translation id="5317780077021120954">Išsaugoti</translation>
+<translation id="4979796155378508955">Operacija gali būti neužpildyta tinkle, jei tinkinta operacijos numerio reikšmė neturi sekos arba yra kitų klaidų.</translation>
 <translation id="6122742277607781713">Portfelis</translation>
 <translation id="750843150060816463">Energijos kaina (Gwei)</translation>
 <translation id="1426320910664514906">Dujų apribojimas</translation>
@@ -827,7 +840,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="1346059596910821859">Arbatpinigiai</translation>
 <translation id="1549705559752367917">Siųsti arbatpinigių</translation>
 <translation id="6727102863431372879">Nustatyti</translation>
-<translation id="381822214767083050">Mėnesinis indėlis</translation>
+<translation id="6413162919383874653">Mėnesiniai arbatpinigiai</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Rodyti automatinį užbaigimą adreso juostoje</translation>
@@ -853,6 +866,9 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="2156993118928861787">Netinkamas adresas</translation>
 <translation id="6889920539620318793">Nustatyti kaip aktyvų</translation>
 <translation id="2653659639078652383">Pateikti</translation>
+<translation id="4945690646623486292">Pasirinkti tinklą</translation>
 <translation id="8853725596990766789">Keisti sumą</translation>
 <translation id="5233638681132016545">Naujas skirtukas</translation>
+<translation id="9200453331904391567">Atsijungti nuo „Brave Rewards“</translation>
+<translation id="381822214767083050">Mėnesinis indėlis</translation>
 </translationbundle>

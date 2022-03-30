@@ -132,7 +132,6 @@
 <translation id="5536657158619734169">‏يتوفر إصدار جديد من Brave.</translation>
 <translation id="239760341987199724">‏تعيين Brave المتصفح التلقائي</translation>
 <translation id="1403270718080126244">‏<ph name="PAGE_TITLE"/> - الإصدار التجريبي من Brave</translation>
-<translation id="707769633889902835">‏يتعذر على نظام التشغيل Brave فتح هذه الصفحة.</translation>
 <translation id="696826782632239602">‏يحتاج Brave للوصول إلى موقعك الجغرافي لمشاركته مع هذا الموقع.</translation>
 <translation id="1744365871163268756">‏يُرجى الانتظار أثناء تثبيت Brave لآخر تحديثات النظام.</translation>
 <translation id="3861679447659630159">‏يحاول Brave تعديل كلمات المرور. للسماح بذلك، يُرجى كتابة كلمة مرور Windows الخاصة بك.</translation>
@@ -195,7 +194,7 @@
 <translation id="8291513491595858997">‏أوقفَ أحد والدَيك "أذونات المواقع الإلكترونية والتطبيقات والإضافات" لمتصفِّح Brave. ولا يمكن تفعيل <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="8211837073776713955">‏يتم إعلامك من خلال Brave في حال تم اختراق كلمات المرور في أي وقت.</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">‏Brave Pay (تم النسخ إلى Brave)</translation>
+<translation id="2049565899730874086">‏Google Pay (تم النسخ إلى Brave)</translation>
 <translation id="3028928628792374067">‏رصد Brave أنّ الإضافة "<ph name="EXTENSION_NAME"/>" تحتوي على برامج ضارة.</translation>
 <translation id="2301993384336631869">‏تم تحديث متصفح Brave، ولكنك لم تستخدمه منذ أكثر من 30 يومًا.</translation>
 <translation id="8828443087767259398">‏يجب منح Brave الإذن بالوصول إلى البلوتوث لمواصلة عملية 
@@ -290,6 +289,12 @@
 <translation id="4484434718272972655">‏مَن يستخدم Brave؟</translation>
 <translation id="7173394303099002355">‏الحصول على أعلى مستوى من الأمان في متصفِّح Brave</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="479793348545936567">إذا كنت تريد استخدام هذا الحساب لمرة واحدة فقط، فيمكنك استخدام وضع الضيف في متصفح Brave. وإذا كنت تريد إضافة حساب لشخص آخر،<ph name="LINK_BEGIN"/> أضف ملف تعريفي جديد<ph name="LINK_END"/> إلى<ph name="DEVICE_TYPE"/> الخاص بك.
+
+قد تنطبق الأذونات التي منحتها بالفعل لمواقع الويب والتطبيقات على هذا الحساب. يمكنك إدارة سلاسل مزامنة Brave الخاصة بك بتنسيق<ph name="SETTINGS_LINK_BEGIN"/> الإعدادات<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">إذا كنت تريد استخدام هذا الحساب لمرة واحدة فقط، فيمكنك استخدام <ph name="GUEST_LINK_BEGIN"/>وضع الضيف<ph name="GUEST_LINK_END"/> في متصفح Brave، وإذا كنت تريد إضافة حساب لشخص آخر،<ph name="LINK_BEGIN"/> أضف ملف تعريفي جديد<ph name="LINK_END"/> إلى<ph name="DEVICE_TYPE"/> الخاص بك.
+
+تنطبق الأذونات التي منحتها بالفعل لمواقع الويب والتطبيقات على هذا الحساب. يمكنك إدارة سلاسل مزامنة Brave الخاصة بك بتنسيق<ph name="SETTINGS_LINK_BEGIN"/> الإعدادات<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">‏تحذير: يتعذّر على Brave منع الإضافات من تسجيل سجل التصفح. لإيقاف هذه الإضافة في وضع التصفح المتخفي، ألغِ تحديد هذا الخيار.</translation>
 <translation id="1448049584457347995">‏لجعل Brave أكثر أمانًا، تم إيقاف بعض الإضافات غير المدرجة في <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> والتي ربما تمت إضافتها بدون علمك.</translation>
 <translation id="8848045066928358658">‏لجعل Brave أكثر أمنًا، أوقفنا الإضافة التالية التي لم تُدرج في <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> وربما تكون قد أضيفت دون علمك.</translation>

@@ -235,10 +235,6 @@
     "message": "المكافآت الشهرية",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "محقَّق",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "تلميحات لمرة واحدة",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "ملخص المكافآت",
     "description": ""
   },
-  "walletVerified": {
-    "message": "محقَّق",
+  "walletUnverified": {
+    "message": "غير مُتحقق منه",
     "description": ""
   },
-  "walletVerify": {
-    "message": "تحقق",
+  "walletVerified": {
+    "message": "محقَّق",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "تعذّر إتمام دفعتك الشهرية المجدولة للاشتراك التلقائي والاشتراكات الشهرية نظراً لعدم كفاية المبلغ. سنحاول مرة أخرى خلال 30 يوماً.",
+    "message": "تعذر إكمال دفعتك الشهرية المجدولة للمشاركة التلقائية والتلميحات الشهرية بسبب عدم كفاية الأموال. حاول مجدداً خلال 30 يوماً.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "فشل الإسهام الشهري",
+    "message": "فشل المكافأة الشهرية",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "جرت معالجة إسهاماتك الشهرية.",
+    "message": "تمت معالجة مكافآتك الشهرية.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

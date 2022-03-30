@@ -134,7 +134,6 @@
 <translation id="5536657158619734169">Brave의 새 버전이 출시되었습니다.</translation>
 <translation id="239760341987199724">Brave을 기본 브라우저로 설정</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave 베타</translation>
-<translation id="707769633889902835">Chrome OS에서 이 페이지를 열 수 없음</translation>
 <translation id="696826782632239602">이 사이트와 위치를 공유하려면 Brave에 내 위치 액세스 권한이 있어야 합니다</translation>
 <translation id="1744365871163268756">Brave에서 최신 시스템 업데이트를 설치하는 동안 잠시 기다려 주세요.</translation>
 <translation id="3861679447659630159">Brave에서 비밀번호를 수정하려고 합니다. 허용하려면 Windows 비밀번호를 입력하세요.</translation>
@@ -197,7 +196,7 @@
 <translation id="8291513491595858997">부모님이 Brave의 ‘사이트, 앱, 확장 프로그램에 대한 권한’을 사용 중지하셨습니다. 이 <ph name="EXTENSION_TYPE_PARAMETER"/> 사용은 허용되지 않습니다.</translation>
 <translation id="8211837073776713955">비밀번호가 유출되면 Brave에서 알려줍니다.</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay(Brave에 복사됨)</translation>
+<translation id="2049565899730874086">Google Pay(Brave에 복사됨)</translation>
 <translation id="3028928628792374067">Brave에서 "<ph name="EXTENSION_NAME"/>"에 멀웨어가 포함된 것을 발견했습니다.</translation>
 <translation id="2301993384336631869">Brave이 업데이트되었지만, 최소 30일 동안 사용하지 않았습니다.</translation>
 <translation id="8828443087767259398">페어링을 계속하려면 Brave에서 블루투스 액세스 권한이
@@ -292,6 +291,12 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="4484434718272972655">Brave 사용자 선택</translation>
 <translation id="7173394303099002355">Brave의 가장 강력한 보안 기능을 이용하세요</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="479793348545936567">이 계정을 일회성으로만 사용하려면 Brave 브라우저에서 게스트 모드를 사용해주세요. 다른 사람의 계정을 추가하려면 <ph name="DEVICE_TYPE"/>에 <ph name="LINK_BEGIN"/>프로필을 새로 추가<ph name="LINK_END"/>하세요.
+
+웹사이트 및 앱에 이미 부여한 권한이 이 계정에 그대로 적용됩니다. Brave 동기화 체인은 <ph name="SETTINGS_LINK_BEGIN"/>설정<ph name="SETTINGS_LINK_END"/>에서 관리할 수 있습니다.</translation>
+<translation id="5359574361379286250">이 계정을 일회성으로만 사용하려면 Brave 브라우저에서 <ph name="GUEST_LINK_BEGIN"/>게스트 모드<ph name="GUEST_LINK_END"/>를 사용해주세요. 다른 사람의 계정을 추가하려면 <ph name="DEVICE_TYPE"/>에 <ph name="LINK_BEGIN"/>프로필을 새로 추가<ph name="LINK_END"/>하세요.
+
+웹사이트 및 앱에 이미 부여한 권한이 이 계정에 그대로 적용됩니다. Brave 동기화 체인은 <ph name="SETTINGS_LINK_BEGIN"/>설정<ph name="SETTINGS_LINK_END"/>에서 관리할 수 있습니다.</translation>
 <translation id="1299765473362724475">경고: Brave은 확장 프로그램이 인터넷 방문 기록을 저장하지 못하도록 할 수 없습니다. 시크릿 모드에서 이 확장 프로그램을 사용 중지하려면 옵션을 선택 취소하세요.</translation>
 <translation id="1448049584457347995">Brave Software에서는 Brave의 보안을 강화하기 위해 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>에 표시되지 않고 사용자 모르게 추가되었을 수 있는 일부 확장 프로그램의 사용을 중지했습니다.</translation>
 <translation id="8848045066928358658">Brave Software에서는 Brave의 보안을 강화하기 위해 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>에 표시되지 않고 사용자가 모르게 추가되었을 수 있는 다음 확장 프로그램의 사용을 중지했습니다.</translation>

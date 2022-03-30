@@ -51,6 +51,8 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1643029991199044105">Krećite se kroz najčešće korišćene kartice pomoću Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Članci se automatski učitavaju u režimu čitača, što vam štedi vreme</translation>
+<translation id="5510493033031835532">Automatsko preusmeravanje AMP stranica</translation>
+<translation id="5197219128592971597">Uvek posećujte URL-ove originalnih (ne AMP) stranica, umesto verzije Accelerated Mobile Page kompanije Google</translation>
 <translation id="5802665280774361839">Na traci sa adresama prikaži automatsko dovršavanje</translation>
 <translation id="597020512043916976">Prikaži najpopularnije veb stranice u predlozima za automatsko dovršavanje</translation>
 <translation id="264150068416846820">Prikažite Brave predložene veb stranice u automatskom dovršavanju</translation>
@@ -218,10 +220,6 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="2414886740292270097">Tamno</translation>
 <translation id="1360441190790440400">Isto kao Linux</translation>
 <translation id="1336940801687497203">Isto kao Windows</translation>
-<translation id="5919209812221905840">Podrazumevani rukovalac protokola za microsoft-edge</translation>
-<translation id="5239541974656019812">Postavi Brave kao rukovaoca protokolom za microsoft-edge</translation>
-<translation id="7136694880210472378">Постави као подразумевано</translation>
-<translation id="1751388324499810661">Brave je podrazumevani rukovalac protokola za microsoft-edge</translation>
 <translation id="8721331068159819483">Isto kao macOS</translation>
 <translation id="2896916411183256228">Koristi WebTorrent da prikazuje torrente direktno u pretraživaču. Podržava torrent fajlove i magnetne veze.</translation>
 <translation id="8488282162676695335">Brave novčanik</translation>
@@ -233,6 +231,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="4718664830805652430">Podrazumevana osnovna valuta</translation>
 <translation id="7992507032049865603">Podrazumevana osnovna kriptovaluta</translation>
 <translation id="1834467296210148203">Prikazati ikonicu Brave novčanika na traci sa alatkama</translation>
+<translation id="4613486011786721686">Sakriti ikonicu Brave novčanika na traci sa alatkama</translation>
 <translation id="8239147115686034860">Automatsko zaključavanje za Brave novčanik</translation>
 <translation id="414639769490080648">Broj minuta koliko treba sačekati da se Brave novčanik automatski zaključa</translation>
 <translation id="6864914031231797928">Dozvolite Google prijavu za proširenja</translation>
@@ -277,6 +276,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="1327977588028644528">Мрежни пролаз</translation>
 <translation id="1195880978080389104">Brave lokalno IPFS čvorište</translation>
 <translation id="4927734062756955434">Adresa IPFS javnog mrežnog prolaza</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Saznajte više<ph name="END_LINK_MPL"/> o razmatranjima Braveovog IPFS lokalnog čvora i privatnosti mrežnog prilaza.</translation>
 <translation id="8425213833346101688">Промени</translation>
 <translation id="557281710253742286">Postavite IPFS mrežni prolaz</translation>
 <translation id="8571837315037233299">Adresa mrežnog prolaza</translation>
@@ -393,7 +393,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="8712637175834984815">Важи</translation>
 <translation id="4394049700291259645">Онемогући</translation>
 <translation id="7142548388914389999">Dopušta analitiku proizvoda koji čuva privatnost (P3A)</translation>
-<translation id="609106526832379947">Ove potpuno anonimizovane informacije pomažu Brave-u da proceni sveukupno korišćenje određenih funkcija i da ih unapredi za vas.</translation>
+<translation id="8286082624639565868">Ove potpuno anonimizovane informacije pomažu Brave-u da proceni sveukupno korišćenje određenih funkcija i da ih unapredi za vas.</translation>
 <translation id="1947672064022327074">Da li želite da pokrenete Kripto Novčanike za podršku Ethereumu?</translation>
 <translation id="7583735190612229830">Podesi kripto novčanik za interakciju sa ovom aplikacijom i nekim drugim sličnim aplikacijama.</translation>
 <translation id="8731422418734770661">Podesite kripto novčanike</translation>
@@ -437,6 +437,10 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="2808630562319398131">Ponovo postavi Brave Rewards podatke...</translation>
 <translation id="2273851479262317744">Podesi Brave kao podrazumevani pretraživač</translation>
 <translation id="8581710194025054669">Da biste obezbedili najbolju privatnost na internetu, podesite Brave kao podrazumevani pregledač na vašem računaru. Tako će svaki veb-link na koji budete kliknuli biti otvoren u skladu sa Brave zaštitom privatnosti.</translation>
+<translation id="1968543937259008435">Da li ste spremni za najbolju onlajn privatnost?</translation>
+<translation id="6817415381278637662">Podesite Brave kao podrazumevani pretraživač kako biste dobili Brave zaštite privatnosti na svakoj veb-stranici koju otvorite.</translation>
+<translation id="8722651357687610395">Postavite Brave kao podrazumevani</translation>
+<translation id="2370739752330685659">Možda kasnije</translation>
 <translation id="1241283133946520352">Mreže</translation>
 <translation id="8205945804087322170">Dodati novu mrežu</translation>
 <translation id="2156993118928861787">Nevažeća adresa</translation>
@@ -463,4 +467,5 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="1062463687579789365">Prilagođavanje mreže novčanika</translation>
 <translation id="2234108191702901162">Nije moguće dodati mrežu</translation>
 <translation id="2618193846561624884">Da li želite da ažurirate postojeću mrežu?</translation>
+<translation id="609106526832379947">Ove potpuno anonimizovane informacije pomažu Brave-u da proceni sveukupno korišćenje određenih funkcija i da ih unapredi za vas.</translation>
 </translationbundle>

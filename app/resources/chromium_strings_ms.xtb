@@ -132,7 +132,6 @@
 <translation id="5536657158619734169">Terdapat versi baharu Brave tersedia.</translation>
 <translation id="239760341987199724">Tetapkan Brave sebagai penyemak imbas lalai anda</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
-<translation id="707769633889902835">OS Brave tidak boleh membuka halaman ini.</translation>
 <translation id="696826782632239602">Brave memerlukan akses kepada lokasi anda untuk berkongsi lokasi dengan tapak ini</translation>
 <translation id="1744365871163268756">Sila tunggu sementara Brave memasang kemas kini sistem terkini.</translation>
 <translation id="3861679447659630159">Brave cuba mengedit kata laluan. Taip kata laluan Windows anda untuk membenarkan tindakan ini.</translation>
@@ -195,7 +194,7 @@ Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbez
 <translation id="8291513491595858997">Ibu/bapa anda telah mematikan "Kebenaran untuk laman web, apl dan sambungan" untuk Brave. Tindakan mendayakan <ph name="EXTENSION_TYPE_PARAMETER"/> ini tidak dibenarkan.</translation>
 <translation id="8211837073776713955">Brave akan memberitahu anda sekiranya kata laluan anda terjejas</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (disalin ke Brave)</translation>
+<translation id="2049565899730874086">Google Pay (disalin ke Brave)</translation>
 <translation id="3028928628792374067">Brave mendapati bahawa "<ph name="EXTENSION_NAME"/>" mengandungi perisian hasad</translation>
 <translation id="2301993384336631869">Brave telah dikemas kini, tetapi anda belum menggunakannya untuk sekurang-kurangnya 30 hari.</translation>
 <translation id="8828443087767259398">Brave memerlukan akses Bluetooth untuk meneruskan 
@@ -290,6 +289,12 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="4484434718272972655">Siapakah yang sedang menggunakan Brave?</translation>
 <translation id="7173394303099002355">Dapatkan keselamatan Brave yang paling kukuh</translation>
 <translation id="8992261409816268381">Pengarang Brave</translation>
+<translation id="479793348545936567">Jika anda mahu menggunakan akaun ini sekali sahaja, anda boleh menggunakan mod Tetamu dalam pelayar Brave. Jika anda mahu menambah akaun untuk orang lain, <ph name="LINK_BEGIN"/>tambahkan profil baharu<ph name="LINK_END"/> pada <ph name="DEVICE_TYPE"/> anda.
+
+Keizinan yang telah anda berikan pada laman web dan apl mungkin digunakan pada akaun ini. Anda boleh mengurus rantaian penyegerakan Brave anda dalam<ph name="SETTINGS_LINK_BEGIN"/>Tetapan<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Jika anda mahu menggunakan akaun ini sekali sahaja, anda boleh menggunakan <ph name="GUEST_LINK_BEGIN"/>mod Tetamu<ph name="GUEST_LINK_END"/> dalam pelayar Brave. Jika anda mahu menambah akaun untuk orang lain, <ph name="LINK_BEGIN"/>tambahkan profil baharu<ph name="LINK_END"/> pada <ph name="DEVICE_TYPE"/> anda.
+
+Keizinan yang telah anda berikan kepada laman web dan apl mungkin digunakan pada akaun ini. Anda boleh mengurus rantaian penyegerakan Brave anda dalam<ph name="SETTINGS_LINK_BEGIN"/>Tetapan<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Amaran: Brave tidak dapat menghalang sambungan daripada merakamkan sejarah penyemakan imbas anda. Untuk melumpuhkan sambungan ini dalam mod Peribadi, nyahpilih pilihan ini.</translation>
 <translation id="1448049584457347995">Untuk menjadikan Brave lebih selamat, kami melumpuhkan beberapa sambungan yang tidak disenaraikan dalam <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dan mungkin telah ditambahkan tanpa pengetahuan anda.</translation>
 <translation id="8848045066928358658">Untuk menjadikan Brave lebih selamat, kami melumpuhkan sambungan berikut yang tidak disenaraikan dalam  <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dan mungkin telah ditambahkan tanpa pengetahuan anda.</translation>

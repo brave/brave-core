@@ -235,10 +235,6 @@
     "message": "Ikmēneša dzeramnaudas",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Pārbaudīts",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Vienreizējās dzeramnaudas",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Balvu kopsavilkums",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Pārbaudīts",
+  "walletUnverified": {
+    "message": "Neapstiprināts",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Pārbaudīt",
+  "walletVerified": {
+    "message": "Pārbaudīts",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Jūsu ieplānotais ikmēneša maksājums automātiskai ziedošanai un ikmēneša ziedojums nevarēja tikt izpildīts nepietiekamu līdzekļu dēļ. Mēs mēģināsim vēlreiz pēc 30 dienām. ",
+    "message": "Jūsu ieplānotais ikmēneša maksājums automātiskai ziedošanai un ikmēneša dzeramnauda nevarēja tikt iedota nepietiekamu līdzekļu dēļ. Mēs mēģināsim vēlreiz pēc 30 dienām.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Ikmēneša ziedojumu veikt neizdevās",
+    "message": "Neizdevās nosūtīt ikmēneša dzeramnaudu",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Jūsu ikmēneša ziedojumi ir apstrādāti.",
+    "message": "Jūsu ikmēneša dzeramnaudas ir apstrādātas.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

@@ -51,6 +51,8 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1643029991199044105">Bla gjennom de sist brukte fanene med Ctrl-Tab</translation>
 <translation id="1013121820689882118">Hurtigleser</translation>
 <translation id="2025435450953474282">Artikler lastes automatisk inn i lesermodus, hvilket sparer deg tid</translation>
+<translation id="5510493033031835532">Videresend automatisk AMP-sider</translation>
+<translation id="5197219128592971597">Gå alltid til originale (ikke AMP) sidenettadresser i stedet for Googles Accelerated Mobile Page-versjoner.</translation>
 <translation id="5802665280774361839">Vis autofullføring i adressefeltet</translation>
 <translation id="597020512043916976">Vis toppsider med autofullførte forslag</translation>
 <translation id="264150068416846820">Vis Brave-foreslåtte side med autofullførte forslag</translation>
@@ -218,10 +220,6 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="2414886740292270097">Mørkt</translation>
 <translation id="1360441190790440400">Samme som Linux</translation>
 <translation id="1336940801687497203">Samme som Windows</translation>
-<translation id="5919209812221905840">Standard protokollbehandler for Microsoft Edge</translation>
-<translation id="5239541974656019812">Gjør Brave til standard protokollbehandler for Microsoft Edge</translation>
-<translation id="7136694880210472378">Bruk som standard</translation>
-<translation id="1751388324499810661">Brave er standard protokollbehandler for Microsoft Edge</translation>
 <translation id="8721331068159819483">Samme som macOS</translation>
 <translation id="2896916411183256228">Bruker WebTorrent til å vise torrents direkte i nettleseren. Støtter torrent-filer og magnetlenker.</translation>
 <translation id="8488282162676695335">Brave-lommebok</translation>
@@ -233,6 +231,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="4718664830805652430">Standard basisvaluta</translation>
 <translation id="7992507032049865603">Standard basiskryptovaluta</translation>
 <translation id="1834467296210148203">Vis Brave Wallet-ikonet i sidefelt</translation>
+<translation id="4613486011786721686">Skjul Brave Wallet-ikonet på verktøylinjen</translation>
 <translation id="8239147115686034860">Lås Brave-lommeboken automatisk</translation>
 <translation id="414639769490080648">Antall minutter før Brave-lommeboken automatisk låses</translation>
 <translation id="6864914031231797928">Tillat Google-pålogging for utvidelser</translation>
@@ -394,7 +393,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="8712637175834984815">Skjønner</translation>
 <translation id="4394049700291259645">Slå av</translation>
 <translation id="7142548388914389999">Tillat produktanalyse som ivaretar personvern (P3A)</translation>
-<translation id="609106526832379947">Denne fullstendig anonyme informasjonen hjelper Brave med å estimere samlet bruk av bestemte funksjoner og forbedre dem.</translation>
+<translation id="8286082624639565868">Denne fullstendig anonyme informasjonen hjelper Brave med å beregne den samlede bruken av bestemte funksjoner og forbedre dem.</translation>
 <translation id="1947672064022327074">Vil du starte støtte for kryptolommebøker for Ethereum?</translation>
 <translation id="7583735190612229830">Konfigurer Crypto Wallets til å fungere sammen med denne og lignende apper.</translation>
 <translation id="8731422418734770661">Konfigurer kryptolommebøker</translation>
@@ -438,6 +437,10 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="2808630562319398131">Tilbakestill Brave Rewards-data …</translation>
 <translation id="2273851479262317744">Angi Brave som standard nettleser</translation>
 <translation id="8581710194025054669">For å sikre best mulig personvern, bør du vurdere å angi Brave som standard nettleser på datamaskinen din. Med Brave som standard, åpnes alle lenker du klikker med Braves personvernbeskyttelse.</translation>
+<translation id="1968543937259008435">Er du klar for å få de kraftigste funksjonene for privatliv på nettet?</translation>
+<translation id="6817415381278637662">Sett Brave som standardnettleser for å benytte deg av Braves personvernbeskyttelse på alle nettsider du åpner.</translation>
+<translation id="8722651357687610395">Sett Brave som standard</translation>
+<translation id="2370739752330685659">Kanskje senere</translation>
 <translation id="1241283133946520352">Nettverk</translation>
 <translation id="8205945804087322170">Legg til nytt nettverk</translation>
 <translation id="2156993118928861787">Ugyldig adresse</translation>
@@ -464,4 +467,5 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="1062463687579789365">Tilpasning av lommeboknettverk</translation>
 <translation id="2234108191702901162">Kunne ikke legge til nettverk</translation>
 <translation id="2618193846561624884">Vil du oppdatere det eksisterende nettverket?</translation>
+<translation id="609106526832379947">Denne fullstendig anonyme informasjonen hjelper Brave med å estimere samlet bruk av bestemte funksjoner og forbedre dem.</translation>
 </translationbundle>

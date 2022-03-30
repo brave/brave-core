@@ -235,10 +235,6 @@
     "message": "Propinas mensuales",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Verificada",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Propinas por única vez",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Resumen de recompensas",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Verificada",
+  "walletUnverified": {
+    "message": "Sin verificar",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Verificar",
+  "walletVerified": {
+    "message": "Verificada",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Tu pago mensual programado de contribución automática y las contribuciones mensuales no pudieron enviarse debido a fondos insuficientes. Lo intentaremos de nuevo en 30 días.",
+    "message": "El pago mensual programado de la función de contribución automática  y las propinas mensuales no pudieron enviarse debido a la ausencia de fondos suficientes. Volveremos a intentarlo dentro de 30 días.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Error en la contribución mensual",
+    "message": "Error en la propina mensual",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Tus contribuciones mensuales se han procesado.",
+    "message": "Se han procesado tus propinas mensuales.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

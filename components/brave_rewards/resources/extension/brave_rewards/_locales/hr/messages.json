@@ -235,10 +235,6 @@
     "message": "Mjesečne napojnice",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Provjereno",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Jednokratne napojnice",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Sažetak o nagradama",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Provjereno",
+  "walletUnverified": {
+    "message": "Nepotvrđeno",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Potvrdi",
+  "walletVerified": {
+    "message": "Provjereno",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Nije moguće obaviti plaćanje mjesečnih doprinosa ili automatskog doprinosa zbog nedovoljnih raspoloživih sredstava. Pokušavamo ponovno za 30 dana.",
+    "message": "Nije moguće provesti mjesečnu donaciju ili zakazano mjesečno plaćanje automatskog doprinosa zbog nedovoljnih sredstava. Pokušat ćemo ponovno za 30 dana.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Neuspješan mjesečni doprinos",
+    "message": "Neuspješna mjesečna napojnica",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Obrađeni su vaši mjesečni doprinosi.",
+    "message": "Vaše su mjesečne napojnice obrađene.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

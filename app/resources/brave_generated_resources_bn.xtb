@@ -51,6 +51,8 @@
 <translation id="1643029991199044105">Ctrl-Tab দিয়ে অতি সম্প্রতি ব্যবহৃত ট্যাবগুলিতে ঘুরে বেরান</translation>
 <translation id="1013121820689882118">স্পীডরিডার</translation>
 <translation id="2025435450953474282">রিডার মোডে নিবন্ধগুলি স্বয়ংক্রিয়ভাবে লোড হয় যা আপনার সময় বাঁচায়</translation>
+<translation id="5510493033031835532">AMP পৃষ্ঠাগুলি অটো-রিডাইরেক্ট করুন</translation>
+<translation id="5197219128592971597">Google-এর অ্যাক্সিলারেটেড মোবাইল পৃষ্ঠা সংস্করণের পরিবর্তে সর্বদা আসল (নন-AMP) পৃষ্ঠার URL দেখুন</translation>
 <translation id="5802665280774361839">ঠিকানা বারে স্বতঃসম্পূর্ণ দেখান</translation>
 <translation id="597020512043916976">স্বয়ংক্রিয়ভাবে সম্পূর্ণ পরামর্শগুলিতে শীর্ষ সাইটগুলি দেখান</translation>
 <translation id="264150068416846820">স্বয়ংক্রিয়ভাবে সম্পূর্ণ পরামর্শগুলিতে ব্রেভ কর্তৃক প্রস্তাবিত সাইটগুলি দেখান</translation>
@@ -218,10 +220,6 @@
 <translation id="2414886740292270097">অন্ধকার</translation>
 <translation id="1360441190790440400">Linux এর মতো</translation>
 <translation id="1336940801687497203">Windows এর মতো</translation>
-<translation id="5919209812221905840">ডিফল্ট microsoft-edge প্রোটকল হ্যান্ডেলার</translation>
-<translation id="5239541974656019812">Brave-কে microsoft-edge প্রোটকল হ্যান্ডেলার বানান</translation>
-<translation id="7136694880210472378">ডিফল্ট করুন</translation>
-<translation id="1751388324499810661">Brave হল ডিফল্ট microsoft-edge প্রোটকল হ্যান্ডেলার</translation>
 <translation id="8721331068159819483">macOS এর মত একইরকমের</translation>
 <translation id="2896916411183256228">সরাসরি ব্রাউজারে torrents প্রদর্শন করতে WebTorrent ব্যবহার করে। torrent ফাইলগুলি এবং magnet লিঙ্কগুলিকে সমর্থন করে।</translation>
 <translation id="8488282162676695335">Brave ওয়ালেট</translation>
@@ -233,6 +231,7 @@
 <translation id="4718664830805652430">ডিফল্ট বেস মুদ্রা</translation>
 <translation id="7992507032049865603">ডিফল্ট বেস ক্রিপ্টোকারেন্সি</translation>
 <translation id="1834467296210148203">টুলবারে Brave ওয়ালেট আইকন দেখান</translation>
+<translation id="4613486011786721686">টুলবারে Brave ওয়ালেট আইকন লুকান</translation>
 <translation id="8239147115686034860">স্বয়ংক্রিয়ভাবে Brave ওয়ালেট লক করুন</translation>
 <translation id="414639769490080648">Brave ওয়ালেট স্বয়ং স্বয়ংক্রিয়ভাবে লক না হওয়া অবধি অপেক্ষারত মিনিটের সংখ্যা</translation>
 <translation id="6864914031231797928">এক্সটেনশনগুলির জন্য Google লগইন এর অনুমতি দিন</translation>
@@ -394,7 +393,7 @@
 <translation id="8712637175834984815">বুঝেছি</translation>
 <translation id="4394049700291259645">অক্ষম</translation>
 <translation id="7142548388914389999">গোপনীয়তা-রক্ষাকারী পণ্য বিশ্লেষককে (P3A) অনুমতি দিন</translation>
-<translation id="609106526832379947">এই সম্পূর্ন নামহীন তথ্য Brave কে নির্দিষ্ট কিছু বৈশিষ্ট্যের সামগ্রিক ব্যবহার অনুমান করতে এবং আপনার জন্য আরও উন্নত করে তুলতে সহায়তা করে।</translation>
+<translation id="8286082624639565868">এই সম্পূর্ন নামহীন তথ্য Brave কে নির্দিষ্ট কিছু বৈশিষ্ট্যের সামগ্রিক ব্যবহার অনুমান করতে এবং আপনার জন্য আরও উন্নত করে তুলতে সহায়তা করে।</translation>
 <translation id="1947672064022327074">আপনি কি ইথেরিয়াম সমর্থনের জন্য Crypto ওয়ালেটগুলি শুরু করতে চান?</translation>
 <translation id="7583735190612229830">এই অ্যাপটি এবং এটির মতন অন্যান্য অ্যাপের সাথে ইন্টারঅ্যাক্ট করতে Crypto Wallets সেট আপ করুন৷</translation>
 <translation id="8731422418734770661">ক্রিপ্টো ওয়ালেট সেট আপ করুন</translation>
@@ -438,6 +437,10 @@
 <translation id="2808630562319398131">Brave Rewards এর ডেটা রিসেট করুন...</translation>
 <translation id="2273851479262317744">Brave-কে ডিফল্ট ব্রাউজার হিসেবে সেট করুন</translation>
 <translation id="8581710194025054669">অনলাইনে সর্বাধিক গোপনীয়তা সুনিশ্চিত করতে, আপনার কম্পিউটারে Brave-কে ডিফল্ট ব্রাউজার হিসেবে সেট করা বিবেচনা করুন। ডিফল্ট হিসেবে Brave থাকলে, আপনার ক্লিক করা যে কোনও লিঙ্ক Brave এর গোপনীয়তা সুরক্ষা সহ খুলবে।</translation>
+<translation id="1968543937259008435">অনলাইন সেরা গোপনীয়তার জন্য প্রস্তুত?</translation>
+<translation id="6817415381278637662">আপনার খোলা প্রতিটি ওয়েব পৃষ্ঠাতে Brave-এর গোপনীয়তা সুরক্ষা পেতে, Brave-কে আপনার ডিফল্ট ব্রাউজার হিসাবে সেট করুন।</translation>
+<translation id="8722651357687610395">Brave কে ডিফল্ট হিসাবে সেট করুন</translation>
+<translation id="2370739752330685659">সম্ভবত পরে</translation>
 <translation id="1241283133946520352">নেটওয়ার্কসমূহ</translation>
 <translation id="8205945804087322170">নতুন নেটওয়ার্ক যোগ করুন</translation>
 <translation id="2156993118928861787">অবৈধ ঠিকানা</translation>
@@ -464,4 +467,5 @@
 <translation id="1062463687579789365">ওয়ালেট নেটওয়ার্ক কাস্টমাইজেশন</translation>
 <translation id="2234108191702901162">নেটওয়ার্ক যোগ করা যায়নি</translation>
 <translation id="2618193846561624884">আপনি কি বিদ্যমান নেটওয়ার্ক আপডেট করতে চান?</translation>
+<translation id="609106526832379947">এই সম্পূর্ন নামহীন তথ্য Brave কে নির্দিষ্ট কিছু বৈশিষ্ট্যের সামগ্রিক ব্যবহার অনুমান করতে এবং আপনার জন্য আরও উন্নত করে তুলতে সহায়তা করে।</translation>
 </translationbundle>

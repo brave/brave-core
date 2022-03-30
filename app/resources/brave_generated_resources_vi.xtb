@@ -51,6 +51,8 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1643029991199044105">Chuyển qua các tab được sử dụng gần đây nhất bằng Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Các bài viết tự động tải ở chế độ đọc, tiết kiệm thời gian cho bạn</translation>
+<translation id="5510493033031835532">Tự động chuyển hướng các trang AMP</translation>
+<translation id="5197219128592971597">Luôn truy cập các URL trang gốc (không phải AMP), thay vì các phiên bản Trang dành cho thiết bị di động được tăng tốc của Google</translation>
 <translation id="5802665280774361839">Hiện đề xuất tự động hoàn thành trên thanh địa chỉ</translation>
 <translation id="597020512043916976">Hiển thị các trang web hàng đầu trong các đề xuất tự động hoàn thành</translation>
 <translation id="264150068416846820">Hiển thị các trang web được đề xuất của Brave trong các đề xuất tự động hoàn thành</translation>
@@ -218,10 +220,6 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="2414886740292270097">Tối</translation>
 <translation id="1360441190790440400">Giống như Linux</translation>
 <translation id="1336940801687497203">Giống như Windows</translation>
-<translation id="5919209812221905840">Bộ xử lý giao thức microsoft-edge mặc định</translation>
-<translation id="5239541974656019812">Đặt Brave làm bộ xử lý giao thức microsoft-edge</translation>
-<translation id="7136694880210472378">Đặt làm mặc định</translation>
-<translation id="1751388324499810661">Brave là bộ xử lý giao thức microsoft-edge mặc định</translation>
 <translation id="8721331068159819483">Giống như macOS</translation>
 <translation id="2896916411183256228">Sử dụng WebTorrent để hiển thị torrent trực tiếp trong trình duyệt. Hỗ trợ các tập tin torrent và liên kết nam châm (magnet).</translation>
 <translation id="8488282162676695335">Ví Brave</translation>
@@ -233,6 +231,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="4718664830805652430">Tiền tệ cơ sở mặc định</translation>
 <translation id="7992507032049865603">Tiền mã hóa cơ sở mặc định</translation>
 <translation id="1834467296210148203">Hiển thị biểu tượng Ví Brave trên thanh công cụ</translation>
+<translation id="4613486011786721686">Ẩn biểu tượng Ví Brave trên thanh công cụ</translation>
 <translation id="8239147115686034860">Tự động khóa Ví Brave</translation>
 <translation id="414639769490080648">Số phút phải chờ cho đến khi Ví Brave được tự động khóa lại</translation>
 <translation id="6864914031231797928">Cho phép đăng nhập bằng Google cho các tiện ích mở rộng</translation>
@@ -394,7 +393,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="8712637175834984815">Bỏ qua</translation>
 <translation id="4394049700291259645">Vô hiệu hóa</translation>
 <translation id="7142548388914389999">Cho phép phân tích sản phẩm bảo toàn quyền riêng tư (P3A)</translation>
-<translation id="609106526832379947">Thông tin hoàn toàn ẩn danh này giúp Brave ước tính mức sử dụng tổng thể của một số tính năng nhất định và làm cho chúng tốt hơn cho bạn.</translation>
+<translation id="8286082624639565868">Thông tin hoàn toàn ẩn danh này giúp Brave ước tính mức sử dụng tổng thể của một số tính năng nhất định và làm cho chúng tốt hơn cho bạn.</translation>
 <translation id="1947672064022327074">Bạn có muốn bắt đầu Ví tiền Điện tử để được hỗ trợ Ethereum không?</translation>
 <translation id="7583735190612229830">Thiết lập Crypto Wallets để tương tác với ứng dụng này và các ứng dụng khác giống như vậy.</translation>
 <translation id="8731422418734770661">Thiết lập Ví tiền Crypto</translation>
@@ -438,6 +437,10 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="2808630562319398131">Thiết lập lại dữ liệu Brave Rewards...</translation>
 <translation id="2273851479262317744">Đặt Brave làm trình duyệt mặc định</translation>
 <translation id="8581710194025054669">Để đảm bảo quyền riêng tư trực tuyến tốt nhất, hãy cân nhắc đặt Brave làm trình duyệt mặc định trên máy tính của bạn. Với Brave làm trình duyệt mặc định, bất kỳ liên kết web nào bạn nhấp vào sẽ mở ra kèm theo các biện pháp bảo vệ quyền riêng tư của Brave.</translation>
+<translation id="1968543937259008435">Sẵn sàng cho sự riêng tư trực tuyến tốt nhất?</translation>
+<translation id="6817415381278637662">Đặt Brave làm trình duyệt mặc định của bạn để nhận các biện pháp bảo vệ quyền riêng tư của Brave trên mọi trang web bạn mở.</translation>
+<translation id="8722651357687610395">Đặt Brave làm trình duyệt mặc định</translation>
+<translation id="2370739752330685659">Có lẽ để sau</translation>
 <translation id="1241283133946520352">Các mạng lưới</translation>
 <translation id="8205945804087322170">Thêm mạng mới</translation>
 <translation id="2156993118928861787">Địa chỉ không hợp lệ</translation>
@@ -464,4 +467,5 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="1062463687579789365">Tùy biến mạng ví</translation>
 <translation id="2234108191702901162">Không thể thêm mạng</translation>
 <translation id="2618193846561624884">Bạn có muốn cập nhật mạng hiện có không?</translation>
+<translation id="609106526832379947">Thông tin hoàn toàn ẩn danh này giúp Brave ước tính mức sử dụng tổng thể của một số tính năng nhất định và làm cho chúng tốt hơn cho bạn.</translation>
 </translationbundle>

@@ -235,10 +235,6 @@
     "message": "Mėnesiniai arbatpinigiai",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Jūsų piniginė patvirtinta",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Vienkartiniai arbatpinigiai",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "„Rewards“ suvestinė",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Jūsų piniginė patvirtinta",
+  "walletUnverified": {
+    "message": "Nepatvirtinta",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Patvirtinti",
+  "walletVerified": {
+    "message": "Jūsų piniginė patvirtinta",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Jūsų suplanuotas automatinio indėlio mėnesinis mokėjimas ir mėnesiniai indėliai nesumokėti, nes nepakako lėšų. Bandysime dar kartą po 30 dienų.",
+    "message": "Jūsų suplanuotas automatinio indėlio mėnesinis mokėjimas ir mėnesiniai arbatpinigiai nesumokėti, nes nepakako lėšų. Bandysime dar kartą po 30 dienų.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Mėnesinis indėlis nepavyko",
+    "message": "Mėnesinių arbatpinigių sumokėti nepavyko",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Jūsų mėnesiniai indėliai apdoroti.",
+    "message": "Jūsų mėnesiniai arbatpinigiai apdoroti.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

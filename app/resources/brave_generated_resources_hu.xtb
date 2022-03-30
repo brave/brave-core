@@ -51,6 +51,8 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="1643029991199044105">Nézd át a legújabban használt ablakokat a Ctrl-Tab billentyűkkel</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">A cikkek automatikusan olvasási módban fognak betölteni, ezzel időt spórolva Önnek</translation>
+<translation id="5510493033031835532">AMP-oldalak automatikus átirányítása</translation>
+<translation id="5197219128592971597">A weblapok eredeti (nem AMP) URL-címeinek felkeresése minden esetben, a Google gyorsított mobilweblap (AMP) változatai helyett</translation>
 <translation id="5802665280774361839">Mutassa az automatikus kiegészítést a címsorban</translation>
 <translation id="597020512043916976">A legjobb oldalak mutatása az automatikus kiegészítési javaslatokban</translation>
 <translation id="264150068416846820">Brave által javasolt oldalak mutatása az automatikus kiegészítési javaslatokban</translation>
@@ -218,10 +220,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2414886740292270097">Sötét</translation>
 <translation id="1360441190790440400">Olyan, mint a Linux</translation>
 <translation id="1336940801687497203">Olyan, mint a Windows</translation>
-<translation id="5919209812221905840">Alapértelmezett microsoft-edge protokollkezelő</translation>
-<translation id="5239541974656019812">Legyen a Brave a microsoft-edge protokollkezelő</translation>
-<translation id="7136694880210472378">Legyen alapértelmezett</translation>
-<translation id="1751388324499810661">A Brave az alapértelmezett microsoft-edge protokollkezelő</translation>
 <translation id="8721331068159819483">Ugyanaz, mint macOS-en</translation>
 <translation id="2896916411183256228">WebTorrentet használ torrentek megjelenítésére közvetlenül a böngészőben. Támogatja a torrentfájlokat és mágneslinkeket.</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -233,6 +231,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="4718664830805652430">Alapértelmezés szerinti alap pénznem</translation>
 <translation id="7992507032049865603">Alapértelmezés szerinti alap kriptopénznem</translation>
 <translation id="1834467296210148203">A Brave Wallet ikon megjelenítése az eszköztárban</translation>
+<translation id="4613486011786721686">Brave pénztárca ikon elrejtése az eszköztáron</translation>
 <translation id="8239147115686034860">Brave pénztárca automatikus zárolása</translation>
 <translation id="414639769490080648">Ennyi percbe telik, amíg a Brave pénztárca automatikusan zárolva lesz</translation>
 <translation id="6864914031231797928">Google bejelentkezés engedélyezése a bővítmények számára</translation>
@@ -394,7 +393,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="8712637175834984815">Sikerült</translation>
 <translation id="4394049700291259645">Kikapcsolás</translation>
 <translation id="7142548388914389999">Az adatvédelmet megőrző termékelemzés (P3A) engedélyezése</translation>
-<translation id="609106526832379947">Ez a teljes mértékben anonimizált adat segít a Brave-nek megbecsülni bizonyos funkciók használatát, valamint fejleszteni a szolgáltatást.</translation>
+<translation id="8286082624639565868">Ezek a teljesen névtelenített adatok segítenek a Brave-nek felmérni egyes funkciók összesített használatát, és fejleszteni azokat.</translation>
 <translation id="1947672064022327074">El szeretné indítani a Crypto Wallets szolgáltatást az Ethereum támogatásához?</translation>
 <translation id="7583735190612229830">Állítsa be, hogy a Crypto Wallets együttműködjön ezzel és más hasonló alkalmazásokkal.</translation>
 <translation id="8731422418734770661">Állítsd be a Crypto Wallets-et</translation>
@@ -438,6 +437,10 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2808630562319398131">Brave Rewards adatok újraállítása...</translation>
 <translation id="2273851479262317744">A Brave beállítása alapértelmezett böngészőként</translation>
 <translation id="8581710194025054669">A lehető legjobb online adatvédelem biztosítása érdekében fontolja meg a Brave alapértelmezett böngészőként való beállítását számítógépén. Ha a Brave az alapértelmezett böngésző, bármely webes hivatkozás, amelyre rákattint, a Brave adatvédelmi beállításainak védelmével fog megnyílni.</translation>
+<translation id="1968543937259008435">Készen áll a legjobb online adatvédelemre?</translation>
+<translation id="6817415381278637662">A Brave alapértelmezett böngészőként való beállításával a Brave adatvédelmét élvezheti minden megnyitott webhelyen.</translation>
+<translation id="8722651357687610395">Tedd a Brave-et alapértelmezetté</translation>
+<translation id="2370739752330685659">Talán később</translation>
 <translation id="1241283133946520352">Hálózatok</translation>
 <translation id="8205945804087322170">Új hálózat hozzáadása</translation>
 <translation id="2156993118928861787">Helytelen cím</translation>
@@ -464,4 +467,5 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="1062463687579789365">Wallet hálózatok testreszabása</translation>
 <translation id="2234108191702901162">Nem sikerült hozzáadni a hálózatot</translation>
 <translation id="2618193846561624884">Szeretné frissíteni a meglévő hálózatot?</translation>
+<translation id="609106526832379947">Ez a teljes mértékben anonimizált adat segít a Brave-nek megbecsülni bizonyos funkciók használatát, valamint fejleszteni a szolgáltatást.</translation>
 </translationbundle>

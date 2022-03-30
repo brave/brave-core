@@ -235,10 +235,6 @@
     "message": "Tip Bulanan",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Disahkan",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "Tip Sekali Guna",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Ringkasan Ganjaran",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Disahkan",
+  "walletUnverified": {
+    "message": "Tidak disahkan",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Sahkan",
+  "walletVerified": {
+    "message": "Disahkan",
     "description": ""
   },
   "walletYourBalance": {
@@ -376,7 +372,7 @@
     }
   },
   "notificationInsufficientFundsText": {
-    "message": "Bayaran bulanan anda yang dijadualkan untuk Auto-Contribute dan sumbangan bulanan tidak dapat dilakukan kerana dana tidak mencukupi. Kami akan cuba lagi dalam masa 30 hari.",
+    "message": "Bayaran bulanan berjadual anda untuk Auto-Sumbang dan tip bulanan tidak dapat dilengkapkan kerana kekurangan dana. Kami akan mencuba lagi dalam tempoh 30 hari.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -384,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Sumbangan bulanan gagal",
+    "message": "Tip bulanan gagal",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -392,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Sumbangan bulanan anda telah diproses.",
+    "message": "Tip bulanan anda telah diproses.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {
