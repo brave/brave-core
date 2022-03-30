@@ -1243,9 +1243,35 @@
 <translation id="778096729652828897">Lisateave Tor'iga privaatsete akende kohta</translation>
 <translation id="3149306599361260465">Lähtestamine, [[percentage]]%</translation>
 <translation id="3258793718986637767">Kas on probleemid Tor-iga? Proovi <ph name="BEGIN_LINK"/>Tor-i privaataken välja<ph name="END_LINK"/> ning uuesti sisse lülitada.</translation>
-<translation id="4105411033440701818">Märkus. Selle veebisaidi aadress esitatakse koos teie Brave’i versiooninumbri ja teie IP-aadressiga (mida ei salvestata).</translation>
-<translation id="5810507495128831593">Toetage sisuloojaid otse lehitsemise ajal preemiate paneelist või kasutades reasisest toetamise nuppu erinevatel veebilehtedel, sealhulgas Twitteris, Redditis ja GitHubis.</translation>
-<translation id="9013419433042554094">Võta tokenid vastu</translation>
-<translation id="2221902203895354376">Saadaolevad tokenid</translation>
-<translation id="5592304751234049046">Otsi kontot 0x</translation>
+<translation id="8576106690599421723">Riigi tasemel reklaami sihtimine</translation>
+<translation id="4775297407519948063">See võimaldab Brave'il näidata spetsiaalselt teie riigi jaoks mõeldud reklaame.</translation>
+<translation id="5012991400231464322">Igakuised panused</translation>
+<translation id="2084351799622920487">Määrake korduvad igakuised panused, et saaksite veebisaite automaatselt toetada.</translation>
+<translation id="8150772404570015166">Igakuiseid panuseid pole määratud.</translation>
+<translation id="5055577484189948413">Panused kokku sellel kuul.</translation>
+<translation id="5549059668721746831">Järgmine igakuise panustamise kuupäev</translation>
+<translation id="3922777918343537463">Tühista igakuised panused</translation>
+<translation id="1969724076378550685">Kinnita igakuiste panuste tühistamine</translation>
+<translation id="6238322297266927861">Panuse summa:</translation>
+<translation id="1723857724166389190">Teie igakuised panused sellele loojale on tühistatud.</translation>
+<translation id="2621124276654521177">Praegune igakuine panus</translation>
+<translation id="4371618764691059036">Igakuised panused on määratud.</translation>
+<translation id="6356822617569064293">Järgmine panustamise kuupäev:</translation>
+<translation id="6045860799501892362">Määra igakuine panus</translation>
+<translation id="5737831580668469027">Igakuised panused!</translation>
+<translation id="2280319752798785157">Igakuised panused</translation>
+<translation id="2337632028350283479">Igakuised panused töötavad nii:</translation>
+<translation id="6457273203091513039">igakuised panused ei tule automaatse toetuse maksetest, vaid on sellest eraldiseisvad.</translation>
+<translation id="5051110132941857169">Igakuised panused makstakse igal kuul välja korraga. Kui kasutate automaatset toetust, makstakse preemiad välja automaatse toetuse maksega samal ajal.</translation>
+<translation id="3374483782662414143">Saate eemaldada mis tahes igakuist toetust saava saidi toetuste paneeli alt.</translation>
+<translation id="4989163558385430922">Kuva kõik</translation>
+<translation id="722307450061393855">Varundage rahakott kohe, et kaitsta oma krüptovarasid ja tagada, et teie juurdepääs ei kaoks.</translation>
+<translation id="640898327002833127">Brave'i kaitsed <ph name="LINK_BEFORE"/>PEAL<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Kui tundub, et sait on ei toimi, proovige kaitsed maha võtta. Märkus: see võib vähendada Brave'i privaatsuse kaitset.</translation>
+<translation id="1299672573512347813">Need seaded mõjutavad selle veebisaidi ühilduvust.</translation>
+<translation id="7637771346619326580">Muuda globaalse kaitse vaikeseadeid</translation>
+<translation id="3520486481604057261">Kohanda Adblocki loendeid</translation>
+<translation id="3146531623184244174">Ühendused täiendatud HTTPS-ile</translation>
+<translation id="7461425058443653485">Blokeeritud skriptid</translation>
+<translation id="5544888475837817215">Luba kõik jälgijad ja reklaamid</translation>
 </translationbundle>

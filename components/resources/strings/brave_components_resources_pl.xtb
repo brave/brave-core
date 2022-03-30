@@ -1196,9 +1196,35 @@
 <translation id="778096729652828897">Dowiedz się więcej na temat korzystania z okna prywatnego z obsługą sieci Tor</translation>
 <translation id="3149306599361260465">Inicjowanie [[percentage]]%</translation>
 <translation id="3258793718986637767">Masz problemy z Tor? Spróbuj <ph name="BEGIN_LINK"/>wyłączyć prywatne okno z Tor<ph name="END_LINK"/> i włączyć je ponownie.</translation>
-<translation id="4105411033440701818">Uwaga: przesłany zostanie adres niniejszej witryny wraz z numerem wersji Brave i Twoim adresem IP (który nie zostanie zapisany).</translation>
-<translation id="5810507495128831593">Przekazuj napiwki twórcom treści bezpośrednio podczas przeglądania, korzystając z panelu nagród lub wbudowanego przycisku napiwku w różnych witrynach, jak Twitter, Reddit czy GitHub.</translation>
-<translation id="9013419433042554094">Wypłać tokeny</translation>
-<translation id="2221902203895354376">Dostępne tokeny</translation>
-<translation id="5592304751234049046">Wyszukaj konto 0x</translation>
+<translation id="8576106690599421723">Poziom kierowania reklam</translation>
+<translation id="4775297407519948063">Dzięki temu Brave może wyświetlać reklamy skierowanie dla Ciebie.</translation>
+<translation id="5012991400231464322">Miesięczne wkłady</translation>
+<translation id="2084351799622920487">Określ comiesięczne wkłady, by regularnie wspierać strony.</translation>
+<translation id="8150772404570015166">Nie określono jeszcze miesięcznych wkładów.</translation>
+<translation id="5055577484189948413">Wszystkie wkłady w tym miesiącu</translation>
+<translation id="5549059668721746831">Data kolejnego miesięcznego wsparcia</translation>
+<translation id="3922777918343537463">Anuluj miesięczny wkład</translation>
+<translation id="1969724076378550685">Potwierdź anulowanie miesięczne</translation>
+<translation id="6238322297266927861">Kwota wkładu:</translation>
+<translation id="1723857724166389190">Twój miesięczny wkład na rzecz tego twórcy został anulowany.</translation>
+<translation id="2621124276654521177">Aktualny miesięczny wkład</translation>
+<translation id="4371618764691059036">Wysłano miesięczny wkład.</translation>
+<translation id="6356822617569064293">Następna data wniesienia wkładu:</translation>
+<translation id="6045860799501892362">Ustaw miesięczne wsparcie</translation>
+<translation id="5737831580668469027">Miesięczne wsparcia!</translation>
+<translation id="2280319752798785157">Miesięczny wkład</translation>
+<translation id="2337632028350283479">Oto jak działają comiesięczne datki:</translation>
+<translation id="6457273203091513039">Comiesięczne datki nie pochodzą z Twojej wpłaty automatycznej i są od niej niezależne.</translation>
+<translation id="5051110132941857169">Comiesięczne datki wypłacane są co miesiąc, wszystkie naraz. Jeśli korzystasz z opcji automatycznej wpłaty, datki wypłacane są w tym samym terminie co Twoja comiesięczna automatyczna wpłata.</translation>
+<translation id="3374483782662414143">Możesz usunąć dowolną witrynę otrzymującą comiesięczne wpłaty z poziomu panelu Datki.</translation>
+<translation id="4989163558385430922">Pokaż wszystko</translation>
+<translation id="722307450061393855">Utwórz kopię zapasową portfela, aby chronić swoje kryptoaktywa i nigdy nie utracić do nich dostępu.</translation>
+<translation id="640898327002833127"><ph name="LINK_BEFORE"/>WŁĄCZ<ph name="LINK_AFTER"/> Tarcze Brave</translation>
+<translation id="8676609116485287125">Jeśli strona wygląda na uszkodzoną, spróbuj wyłączyć Tarcze. Uwaga: może to ograniczyć ochronę prywatności Brave.</translation>
+<translation id="1299672573512347813">Te ustawienia mogą wpłynąć na poprawność wyświetlania tej strony.</translation>
+<translation id="7637771346619326580">Zmień globalne domyślne ustawienia Tarczy</translation>
+<translation id="3520486481604057261">Dostosuj listy Adblock</translation>
+<translation id="3146531623184244174">Aktualizacje HTTPS</translation>
+<translation id="7461425058443653485">Zablokowane skrypty</translation>
+<translation id="5544888475837817215">Zezwalaj na skrypty śledzące i reklamy</translation>
 </translationbundle>

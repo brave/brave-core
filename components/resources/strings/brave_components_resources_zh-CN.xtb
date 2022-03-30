@@ -1244,4 +1244,35 @@
 <translation id="778096729652828897">了解有关用 Tor 打开私人窗口的更多信息</translation>
 <translation id="3149306599361260465">初始化完成比例为 [[percentage]]%</translation>
 <translation id="3258793718986637767">使用 Tor 遇到问题？请尝试<ph name="BEGIN_LINK"/> 禁用 Tor 私密窗口<ph name="END_LINK"/>，然后再次开启。</translation>
+<translation id="8576106690599421723">状态级别广告靶向</translation>
+<translation id="4775297407519948063">这将允许 Brave 向你显示你所在州内的广告。</translation>
+<translation id="5012991400231464322">每月捐款</translation>
+<translation id="2084351799622920487">设置每月定期捐款，由此您可以持续支持网站。</translation>
+<translation id="8150772404570015166">尚未设置每月捐款。</translation>
+<translation id="5055577484189948413">本月捐款总金额</translation>
+<translation id="5549059668721746831">下一个每月捐赠日期</translation>
+<translation id="3922777918343537463">取消每月供款</translation>
+<translation id="1969724076378550685">确认每月取消</translation>
+<translation id="6238322297266927861">捐款金额：</translation>
+<translation id="1723857724166389190">您给该创作者的每月捐款已被取消。</translation>
+<translation id="2621124276654521177">目前每月捐款</translation>
+<translation id="4371618764691059036">每月供款已设置。</translation>
+<translation id="6356822617569064293">下一个捐款日期：</translation>
+<translation id="6045860799501892362">设定每月捐赠</translation>
+<translation id="5737831580668469027">每月捐赠!</translation>
+<translation id="2280319752798785157">每月捐款</translation>
+<translation id="2337632028350283479">这里是每月捐赠工作原理:</translation>
+<translation id="6457273203091513039">每月捐赠和你的自动捐赠付款无关。它们是互相独立的。</translation>
+<translation id="5051110132941857169">每月捐赠在每个月全部一次性支付。如果您使用自动捐赠，打赏会在你的每月自动捐助付款的同时发出。</translation>
+<translation id="3374483782662414143">你可以从打赏面板中移除任何接受每月捐赠的站点。</translation>
+<translation id="4989163558385430922">查看全部</translation>
+<translation id="722307450061393855">立即备份您的钱包，以保护您的加密资产，并确保您永远不会失去访问权限。</translation>
+<translation id="640898327002833127">Brave 盾牌 <ph name="LINK_BEFORE"/>开启<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">如果这个网站无法正常工作，试试关闭 Brave 盾牌。注意：这可能会削弱 Brave 的隐私保护。</translation>
+<translation id="1299672573512347813">这些设置会影响网站的兼容性。</translation>
+<translation id="7637771346619326580">更改全局默认值</translation>
+<translation id="3520486481604057261">自定义广告拦截列表</translation>
+<translation id="3146531623184244174">连接已升级至 HTTPS</translation>
+<translation id="7461425058443653485">脚本已拦截</translation>
+<translation id="5544888475837817215">允许所有跟踪器和广告</translation>
 </translationbundle>

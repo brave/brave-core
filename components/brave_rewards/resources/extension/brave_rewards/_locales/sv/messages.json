@@ -62,8 +62,8 @@
     "message": "Inkludera i automatiska bidrag",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Månatlig dricks",
+  "monthlyContribution": {
+    "message": "Månatligt bidrag",
     "description": ""
   },
   "ok": {

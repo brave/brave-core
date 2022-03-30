@@ -62,8 +62,8 @@
     "message": "Includeți în contribuție automată",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Monthly Tip",
+  "monthlyContribution": {
+    "message": "Contribuție lunară",
     "description": ""
   },
   "ok": {

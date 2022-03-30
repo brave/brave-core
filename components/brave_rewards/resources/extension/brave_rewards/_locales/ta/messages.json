@@ -62,8 +62,8 @@
     "message": "தானியங்கு-பங்களிப்பில் சேர்",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Monthly Tip",
+  "monthlyContribution": {
+    "message": "மாதாந்திர பங்களிப்பு",
     "description": ""
   },
   "ok": {

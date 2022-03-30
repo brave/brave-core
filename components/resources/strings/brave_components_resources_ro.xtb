@@ -1196,10 +1196,35 @@
 <translation id="778096729652828897">Aflați mai multe despre Ferestrele Private cu Tor</translation>
 <translation id="3149306599361260465">Se inițializează [[percentage]]%</translation>
 <translation id="3258793718986637767">Aveți probleme cu Tor? Încercați <ph name="BEGIN_LINK"/>să dezactivați fereastra incognito Tor<ph name="END_LINK"/> și să o deschideți din nou.</translation>
-<translation id="4105411033440701818">Notă: Această adresă de site va fi trimisă împreună cu numărul versiunii Brave și adresa dvs. IP (care nu va fi stocată).</translation>
-<translation id="4851215387785619212">Brave Private Ads</translation>
-<translation id="5810507495128831593">Recompensați-i pe creatorii de conținut direct în timp ce navigați folosind Panoul Recompense sau folosind butonul de recompense intern pe diverse siteuri, incluzând Twitter, Reddit și GitHub.</translation>
-<translation id="9013419433042554094">Revendicați token-uri</translation>
-<translation id="2221902203895354376">Token-uri disponibile</translation>
-<translation id="5592304751234049046">Căutare cont 0x</translation>
+<translation id="8576106690599421723">Orientare reclame la nivel de stat</translation>
+<translation id="4775297407519948063">Astfel, Brave poate afișa reclame destinate în mod specific statului dvs.</translation>
+<translation id="5012991400231464322">Contribuții lunare</translation>
+<translation id="2084351799622920487">Configurați contribuții lunare recurente ca să puteți să sprijiniți site-uri încontinuu.</translation>
+<translation id="8150772404570015166">Nu au fost încă setate contribuții lunare.</translation>
+<translation id="5055577484189948413">Totalul contribuțiilor luna aceasta</translation>
+<translation id="5549059668721746831">Următoarea dată a contribuției lunare</translation>
+<translation id="3922777918343537463">Anulează contribuția lunară</translation>
+<translation id="1969724076378550685">Confirmați anularea lunar</translation>
+<translation id="6238322297266927861">Suma contribuției:</translation>
+<translation id="1723857724166389190">Contribuția dumneavoastră lunară la acest creator a fost anulată.</translation>
+<translation id="2621124276654521177">Contribuție lunară curentă</translation>
+<translation id="4371618764691059036">Contribuția lunară a fost setată.</translation>
+<translation id="6356822617569064293">Data următoarei contribuții:</translation>
+<translation id="6045860799501892362">Stabiliți contribuția lunară</translation>
+<translation id="5737831580668469027">Contribuții lunare!</translation>
+<translation id="2280319752798785157">Contribuție lunară</translation>
+<translation id="2337632028350283479">Iată cum funcționează contribuțiile lunare:</translation>
+<translation id="6457273203091513039">Contribuțiile lunare nu se scad din plata dvs. pentru Contribuția automată. Acestea sunt separate.</translation>
+<translation id="5051110132941857169">Contribuțiile lunare sunt plătite simultan, în fiecare lună. Dacă folosiți Contribuția automată, bacșișurile sunt trimise în același timp cu plata dvs. lunară pentru Contribuția automată.</translation>
+<translation id="3374483782662414143">Puteți elimina orice site care primește contribuții lunare din interiorul panoului Bacșișuri.</translation>
+<translation id="4989163558385430922">Vedeți tot</translation>
+<translation id="722307450061393855">Realizați o copie de rezervă după portofelul dvs. pentru a vă proteja activele și a vă asigura că nu pierdeți accesul niciodată.</translation>
+<translation id="640898327002833127">Scuturi Brave<ph name="LINK_BEFORE"/> SUS <ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Dacă acest site pare deteriorat, încercați să închideți scuturile. Notă: acest lucru poate reduce protecția confidențialității Brave.</translation>
+<translation id="1299672573512347813">Aceste setări afectează compatibilitatea web pe acest site.</translation>
+<translation id="7637771346619326580">Modificați valorile implicite ale scuturilor globale</translation>
+<translation id="3520486481604057261">Personalizați listele pentru Adblock</translation>
+<translation id="3146531623184244174">Conexiuni actualizate la HTTPS</translation>
+<translation id="7461425058443653485">Scripturi blocate</translation>
+<translation id="5544888475837817215">Permiteți toți urmăritorii și toate reclamele</translation>
 </translationbundle>

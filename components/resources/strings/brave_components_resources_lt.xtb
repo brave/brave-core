@@ -1249,4 +1249,35 @@ Window with Tor“ ir vėl įjunkite. Vis dar turite problemų?</translation>
 <translation id="778096729652828897">Daugiau sužinokite apie privačius langus su „Tor“</translation>
 <translation id="3149306599361260465">Inicijuojama [[percentage]] %</translation>
 <translation id="3258793718986637767">Kilo sunkumų naudojant „Tor“? Pabandykite <ph name="BEGIN_LINK"/>išjungti inkognito langą su „Tor“<ph name="END_LINK"/> ir vėl jį įjungti.</translation>
+<translation id="8576106690599421723">Būsenos lygio reklamos tikslingumas</translation>
+<translation id="4775297407519948063">Dėl to „Brave“ jums gali rodyti specialiai jūsų būsenai skirtas reklamas.</translation>
+<translation id="5012991400231464322">Mėnesiniai indėliai</translation>
+<translation id="2084351799622920487">Nustatykite pasikartojančius mėnesinius indėlius, kad galėtumėte nuolat paremti svetaines.</translation>
+<translation id="8150772404570015166">Dar nenustatyta jokių mėnesinių indėlių.</translation>
+<translation id="5055577484189948413">Iš viso indėlių šį mėnesį</translation>
+<translation id="5549059668721746831">Kito mėnesinio indėlio data</translation>
+<translation id="3922777918343537463">Atšaukti mėnesinį indėlį</translation>
+<translation id="1969724076378550685">Patvirtinti mėnesinį atšaukimą</translation>
+<translation id="6238322297266927861">Indėlio suma:</translation>
+<translation id="1723857724166389190">Jūsų mėnesinis indėlis šiam kūrėjui buvo atšauktas.</translation>
+<translation id="2621124276654521177">Dabartinis mėnesinis indėlis</translation>
+<translation id="4371618764691059036">Mėnesinis indėlis nustatytas.</translation>
+<translation id="6356822617569064293">Kito indėlio data:</translation>
+<translation id="6045860799501892362">Nustatyti mėnesinį indėlį</translation>
+<translation id="5737831580668469027">Mėnesiniai indėliai!</translation>
+<translation id="2280319752798785157">Mėnesinis indėlis</translation>
+<translation id="2337632028350283479">Mėnesinių indėlių veikimo principas:</translation>
+<translation id="6457273203091513039">Mėnesiniai indėliai nuskaičiuojami ne iš jūsų automatinio indėlio. Jie yra atskiri.</translation>
+<translation id="5051110132941857169">Mėnesiniai indėliai kas mėnesį sumokami visi iš karto. Jei naudojate automatinį indėlį, arbatpinigiai nuskaičiuojami tuo pačiu metu, kaip ir automatinio indėlio mokėjimas.</translation>
+<translation id="3374483782662414143">Skydelyje „Arbatpinigiai“ galite pašalinti bet kurią svetainę, gaunančią mėnesinius indėlius.</translation>
+<translation id="4989163558385430922">Žr. viską</translation>
+<translation id="722307450061393855">Susikurkite atsarginę piniginės kopiją dabar, kad apsaugotumėte kriptoaktyvus ir užtikrintumėte, jog niekada neprarasite prieigos.</translation>
+<translation id="640898327002833127">„Brave“ skydai <ph name="LINK_BEFORE"/>įjungti<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Jei svetainė neveikia, pabandykite išjungti skydus. Pastaba: dėl to gali sumažėti „Brave“ privatumo apsauga.</translation>
+<translation id="1299672573512347813">Šios nuostatos turės įtakos žiniatinklio suderinamumui šioje svetainėje.</translation>
+<translation id="7637771346619326580">Keisti visuotinio skydo numatytąsias nuostatas</translation>
+<translation id="3520486481604057261">Tinkinti reklamos blokavimo sąrašus</translation>
+<translation id="3146531623184244174">Ryšiai pakeisti į HTTPS</translation>
+<translation id="7461425058443653485">Užblokuoti scenarijai</translation>
+<translation id="5544888475837817215">Leisti visus sekiklius ir reklamas</translation>
 </translationbundle>

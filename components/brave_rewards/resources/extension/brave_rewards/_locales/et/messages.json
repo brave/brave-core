@@ -62,8 +62,8 @@
     "message": "Kaasa automaatsesse panustamisse",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Igakuine preemia",
+  "monthlyContribution": {
+    "message": "Igakuine panus",
     "description": ""
   },
   "ok": {

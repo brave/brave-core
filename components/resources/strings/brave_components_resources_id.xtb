@@ -1197,4 +1197,35 @@
 <translation id="778096729652828897">Pelajari lebih lanjut tentang Jendela Pribadi dengan Tor</translation>
 <translation id="3149306599361260465">Menginisialisasi [[percentage]]%</translation>
 <translation id="3258793718986637767">Bermasalah dengan Tor? Silakan <ph name="BEGIN_LINK"/>nonaktifkan jendela privat dengan Tor<ph name="END_LINK"/> dan kemudian aktifkan kembali.</translation>
+<translation id="8576106690599421723">Penargetan iklan tingkat wilayah</translation>
+<translation id="4775297407519948063">Ini mengizinkan Brave menampilkan iklan yang ditujukan khusus untuk wilayah Anda.</translation>
+<translation id="5012991400231464322">Kontribusi Bulanan</translation>
+<translation id="2084351799622920487">Tetapkan kontribusi bulanan sehingga Anda dapat mendukung situs secara terus-menerus.</translation>
+<translation id="8150772404570015166">Belum menetapkan kontribusi bulanan.</translation>
+<translation id="5055577484189948413">Total kontribusi bulan ini</translation>
+<translation id="5549059668721746831">Tanggal kontribusi bulanan berikutnya</translation>
+<translation id="3922777918343537463">Batalkan Kontribusi Bulanan</translation>
+<translation id="1969724076378550685">Konfirmasikan Pembatalan Bulanan</translation>
+<translation id="6238322297266927861">Jumlah kontribusi:</translation>
+<translation id="1723857724166389190">Kontribusi bulanan Anda untuk kreator ini telah dibatalkan.</translation>
+<translation id="2621124276654521177">Kontribusi bulanan terkini</translation>
+<translation id="4371618764691059036">Kontribusi bulanan telah ditetapkan.</translation>
+<translation id="6356822617569064293">Tanggal kontribusi berikutnya:</translation>
+<translation id="6045860799501892362">Tetapkan kontribusi bulanan</translation>
+<translation id="5737831580668469027">Kontribusi Bulanan!</translation>
+<translation id="2280319752798785157">Kontribusi Bulanan</translation>
+<translation id="2337632028350283479">Inilah cara kerja kontribusi bulanan:</translation>
+<translation id="6457273203091513039">Kontribusi bulanan tidak berasal dari pembayaran Kontribusi Otomatis Anda. Keduanya terpisah.</translation>
+<translation id="5051110132941857169">Kontribusi bulanan dibayarkan sekaligus, setiap bulan. Apabila Anda menggunakan Kontribusi Otomatis, tips akan dikirimkan pada saat yang sama dengan saat pembayaran Kontribusi Otomatis bulanan Anda.</translation>
+<translation id="3374483782662414143">Anda dapat menghapus situs mana pun yang menerima kontribusi bulanan dari dalam panel Tip.</translation>
+<translation id="4989163558385430922">Lihat semua</translation>
+<translation id="722307450061393855">Cadangkan dompet Anda sekarang untuk melindungi aset kripto Anda dan memastikan bahwa Anda tidak akan pernah kehilangan akses.</translation>
+<translation id="640898327002833127">Brave Shield <ph name="LINK_BEFORE"/>DIAKTIFKAN<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Jika situs ini terlihat rusak, coba nonaktifkan Shield. Catatan: ini akan mengurangi perlindungan privasi Brave.</translation>
+<translation id="1299672573512347813">Pengaturan ini memengaruhi kompatibilitas web di situs ini.</translation>
+<translation id="7637771346619326580">Ubah bawaan Shield global</translation>
+<translation id="3520486481604057261">Sesuaikan Daftar AdBlock</translation>
+<translation id="3146531623184244174">Sambungan ditingkatkan ke HTTPS</translation>
+<translation id="7461425058443653485">Skrip Diblokir</translation>
+<translation id="5544888475837817215">Loloskan semua pelacak dan iklan</translation>
 </translationbundle>

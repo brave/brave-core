@@ -1243,9 +1243,35 @@
 <translation id="778096729652828897">Scopri di più sulle finestre private con Tor</translation>
 <translation id="3149306599361260465">Inizializzazione [[percentage]]%</translation>
 <translation id="3258793718986637767">Hai dei problemi con Tor? Prova a <ph name="BEGIN_LINK"/>disattivare la finestra privata con Tor<ph name="END_LINK"/> e poi riattivala.</translation>
-<translation id="4105411033440701818">Nota: l'indirizzo di questo sito verrà inviato assieme al numero della tua versione di Brave e il tuo indirizzo IP (che non verrà conservato).</translation>
-<translation id="5810507495128831593">Contribuisci direttamente mentre navighi usando il Pannello Premi, o usando il tasto TIP su vari siti inclusi Twitter, Reddit e GitHub.</translation>
-<translation id="9013419433042554094">Richiedi token</translation>
-<translation id="2221902203895354376">Token disponibili</translation>
-<translation id="5592304751234049046">Cerca account 0x</translation>
+<translation id="8576106690599421723">Targeting pubblicitario a livello statale</translation>
+<translation id="4775297407519948063">Questo consente a Brave di mostrarti annunci pensati appositamente per il tuo stato.</translation>
+<translation id="5012991400231464322">Contributi mensili</translation>
+<translation id="2084351799622920487">Imposta contributi mensili ricorrenti in modo da poter supportare i siti in modo continuo.</translation>
+<translation id="8150772404570015166">Non sono ancora stati istituiti contributi mensili.</translation>
+<translation id="5055577484189948413">Contributi totali di questo mese</translation>
+<translation id="5549059668721746831">Data del prossimo contributo mensile</translation>
+<translation id="3922777918343537463">Annulla il contributo mensile</translation>
+<translation id="1969724076378550685">Conferma la cancellazione mensile</translation>
+<translation id="6238322297266927861">Importo del contributo:</translation>
+<translation id="1723857724166389190">Il tuo contributo mensile per questo creatore è stato annullato.</translation>
+<translation id="2621124276654521177">Contributo mensile attuale</translation>
+<translation id="4371618764691059036">È stato impostato il contributo mensile.</translation>
+<translation id="6356822617569064293">Prossima data del contributo:</translation>
+<translation id="6045860799501892362">Imposta contributo mensile</translation>
+<translation id="5737831580668469027">Contributi mensili!</translation>
+<translation id="2280319752798785157">Contributo mensile</translation>
+<translation id="2337632028350283479">Ecco come funzionano i contributi mensili:</translation>
+<translation id="6457273203091513039">I contributi mensili non provengono dal pagamento dei contributi automatici; sono separati.</translation>
+<translation id="5051110132941857169">I contributi mensili vengono pagati tutti insieme, ogni mese. Se stai utilizzando i contributi automatici, le mance vengono emesse contemporaneamente al pagamento mensile di questi ultimi.</translation>
+<translation id="3374483782662414143">Puoi rimuovere qualsiasi sito ricevendo contributi mensili dall'interno del pannello Mance.</translation>
+<translation id="4989163558385430922">Visualizza tutto</translation>
+<translation id="722307450061393855">Esegui subito il backup del tuo portafoglio per proteggere le tue criptovalute e assicurarti di non perdere mai l'accesso.</translation>
+<translation id="640898327002833127">Protezioni Brave <ph name="LINK_BEFORE"/>ATTIVE<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Se il sito sembra non funzionare, prova a disattivare le Protezioni. N.B.: questo potrebbe indebolire la tutela della privacy offerta da Brave.</translation>
+<translation id="1299672573512347813">Queste impostazioni influiscono sulla compatibilità con il web per questo sito.</translation>
+<translation id="7637771346619326580">Cambia le impostazioni predefinite per la protezione globale</translation>
+<translation id="3520486481604057261">Personalizza le liste Adblock</translation>
+<translation id="3146531623184244174">Connessioni aggiornate a HTTPS</translation>
+<translation id="7461425058443653485">Script bloccati</translation>
+<translation id="5544888475837817215">Consenti tutti i tracker e gli annunci pubblicitari</translation>
 </translationbundle>

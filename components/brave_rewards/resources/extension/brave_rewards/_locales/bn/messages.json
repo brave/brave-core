@@ -62,8 +62,8 @@
     "message": "স্বয়ংক্রিয়ভাবে অবদান রাখায় অন্তর্ভুক্ত করুন",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "পুনরাবৃত্তি হওয়া দান",
+  "monthlyContribution": {
+    "message": "মাসিক অবদান",
     "description": ""
   },
   "ok": {

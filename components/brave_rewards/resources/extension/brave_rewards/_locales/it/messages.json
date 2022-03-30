@@ -62,8 +62,8 @@
     "message": "Includi in Auto-contributo",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Donazione mensile",
+  "monthlyContribution": {
+    "message": "Contributo mensile",
     "description": ""
   },
   "ok": {

@@ -62,8 +62,8 @@
     "message": "Συμπερίληψη στο Auto-Contribute",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Μηνιαίο Φιλοδώρημα",
+  "monthlyContribution": {
+    "message": "Μηνιαία Συνεισφορά",
     "description": ""
   },
   "ok": {

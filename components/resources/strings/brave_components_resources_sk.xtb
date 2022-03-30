@@ -1243,9 +1243,35 @@
 <translation id="778096729652828897">Dozveďte sa viac o súkromných oknách s Torom</translation>
 <translation id="3149306599361260465">Inicializuje sa [[percentage]] %</translation>
 <translation id="3258793718986637767">Máte problémy so softvérom Tor? Skúste <ph name="BEGIN_LINK"/>zablokovať súkromné okno pomocou softvéru Tor<ph name="END_LINK"/> a znova ho zapnite.</translation>
-<translation id="4105411033440701818">Poznámka: Táto adresa stránky sa odošle s vaším číslom verzie Brave a vašou IP adresou (ktorá sa neuloží).</translation>
-<translation id="5810507495128831593">Prispejte tvorcovi priamo počas prehliadania pomocou Panelu odmien alebo prostredníctvom tlačidla príspevkov na lište na Twitteri, Reddite, GitHube a ďalších iných stránkach.</translation>
-<translation id="9013419433042554094">Získať tokeny</translation>
-<translation id="2221902203895354376">Dostupné tokeny</translation>
-<translation id="5592304751234049046">Vyhľadať účet 0x</translation>
+<translation id="8576106690599421723">Zacielenie reklamy na úrovni štátu</translation>
+<translation id="4775297407519948063">Toto umožňuje Brave ukazovať Vám reklamy cielené špecificky pre Vašu krajinu.</translation>
+<translation id="5012991400231464322">Mesačné príspevky</translation>
+<translation id="2084351799622920487">Ak chcete niektoré stránky podporovať opakovane, nastavte pravidelné mesačné príspevky.</translation>
+<translation id="8150772404570015166">Zatiaľ neboli stanovené žiadne mesačné príspevky.</translation>
+<translation id="5055577484189948413">Celkové príspevky za tento mesiac</translation>
+<translation id="5549059668721746831">Dátum nasledujúceho mesačného príspevku</translation>
+<translation id="3922777918343537463">Zrušiť mesačný príspevok</translation>
+<translation id="1969724076378550685">Potvrdiť zrušenie mesašného prispievania</translation>
+<translation id="6238322297266927861">Hodnota príspevku:</translation>
+<translation id="1723857724166389190">Vaše mesačné prispievanie tomuto tvorcovi bolo zrušené.</translation>
+<translation id="2621124276654521177">Aktuálny mesačný príspevok</translation>
+<translation id="4371618764691059036">Mesačný príspevok bol odoslaný.</translation>
+<translation id="6356822617569064293">Najbližší termín príspevku:</translation>
+<translation id="6045860799501892362">Nastaviť mesačný príspevok</translation>
+<translation id="5737831580668469027">Mesačné príspevky!</translation>
+<translation id="2280319752798785157">Mesačný príspevok</translation>
+<translation id="2337632028350283479">Takto fungujú mesačné príspevky:</translation>
+<translation id="6457273203091513039">Mesačné príspevky sú separátne a nevyplývajú z vašej platby Auto-Contribute.</translation>
+<translation id="5051110132941857169">Mesačné príspevky sa vyplácajú každý mesiac naraz. Ak používate Auto-Contribute, súčasne s vašou mesačnou platbou idú aj dary.</translation>
+<translation id="3374483782662414143">Každú stránku, ktorá dostáva mesačné príspevky môžete odstrániť z panela Dary.</translation>
+<translation id="4989163558385430922">Zobraziť všetko</translation>
+<translation id="722307450061393855">Zálohujte si svoju peňaženku a ochráňte si tak svoje kryptoaktíva a zaistite, že nikdy neprídete o prístup.</translation>
+<translation id="640898327002833127">Štíty Brave sú <ph name="LINK_BEFORE"/>AKTÍVNE<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Ak je táto stránka viditeľne rozbitá, vyskúšajte vypnúť štíty. Poznámka: toto môže znížiť ochrany súkromia Brave</translation>
+<translation id="1299672573512347813">Tieto nastavenia majú vplyv na webovú kompatibilitu na tejto stránke.</translation>
+<translation id="7637771346619326580">Zmeniť predvolené položky globálnych štítov</translation>
+<translation id="3520486481604057261">Prispôsobiť zoznamy Adblock</translation>
+<translation id="3146531623184244174">Pripojenia aktualizované na HTTPS</translation>
+<translation id="7461425058443653485">Skripty blokované</translation>
+<translation id="5544888475837817215">Povoliť všetky sledovače a reklamy</translation>
 </translationbundle>

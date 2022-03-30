@@ -62,8 +62,8 @@
     "message": "包含在自动贡献中",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "每月打赏",
+  "monthlyContribution": {
+    "message": "每月捐款",
     "description": ""
   },
   "ok": {

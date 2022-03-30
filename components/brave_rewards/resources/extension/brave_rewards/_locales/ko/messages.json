@@ -62,8 +62,8 @@
     "message": "자동 기부에 포함하기",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "월간 팁",
+  "monthlyContribution": {
+    "message": "매월 기부금",
     "description": ""
   },
   "ok": {

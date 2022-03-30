@@ -62,8 +62,8 @@
     "message": "Automatisch unterstützen",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Monatliches Trinkgeld",
+  "monthlyContribution": {
+    "message": "Monatlicher Beitrag",
     "description": ""
   },
   "ok": {

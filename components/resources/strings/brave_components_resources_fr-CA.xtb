@@ -1243,4 +1243,35 @@
 <translation id="778096729652828897">En savoir plus sur les fenêtres privées avec Tor</translation>
 <translation id="3149306599361260465">Initialisation [[percentage]] %</translation>
 <translation id="3258793718986637767">Vous rencontrez un problème avec Tor? Essayez de <ph name="BEGIN_LINK"/>désactiver la fenêtre de navigation privée avec Tor<ph name="END_LINK"/>, puis de la réactiver.</translation>
+<translation id="8576106690599421723">Ciblage des publicités au niveau de l'État</translation>
+<translation id="4775297407519948063">Cela permet à Brave de vous montrer des publicités spécialement destinée à votre état.</translation>
+<translation id="5012991400231464322">Contributions mensuelles</translation>
+<translation id="2084351799622920487">Configurez des contributions mensuelles récurrentes afin de pouvoir aider des sites sans interruption.</translation>
+<translation id="8150772404570015166">Aucune contribution mensuelle n'a encore été mise en place.</translation>
+<translation id="5055577484189948413">Total des contributions de ce mois</translation>
+<translation id="5549059668721746831">Date de la prochaine contribution mensuelle</translation>
+<translation id="3922777918343537463">Annuler la contribution mensuelle</translation>
+<translation id="1969724076378550685">Confirmer l'annulation mensuelle</translation>
+<translation id="6238322297266927861">Montant de la contribution :</translation>
+<translation id="1723857724166389190">Votre contribution mensuelle à ce créateur a été annulée.</translation>
+<translation id="2621124276654521177">Contribution mensuelle actuelle</translation>
+<translation id="4371618764691059036">La contribution mensuelle a été définie.</translation>
+<translation id="6356822617569064293">Prochaine date de contribution :</translation>
+<translation id="6045860799501892362">Fixer la contribution mensuelle</translation>
+<translation id="5737831580668469027">Contributions mensuelles !</translation>
+<translation id="2280319752798785157">Contribution mensuelle</translation>
+<translation id="2337632028350283479">Voici comment fonctionnent les contributions mensuelles :</translation>
+<translation id="6457273203091513039">Les cotisations mensuelles ne sont pas déduites de votre paiement automatique. Elles sont séparées.</translation>
+<translation id="5051110132941857169">Les contributions mensuelles sont versées tous les mois en une seule fois. Si vous utilisez le système de contribution automatique, les pourboires sont envoyés en même temps que votre paiement mensuel de cotisation automatique.</translation>
+<translation id="3374483782662414143">Vous pouvez supprimer tout site recevant des contributions mensuelles de l'intérieur du panneau des pourboires.</translation>
+<translation id="4989163558385430922">Tout voir</translation>
+<translation id="722307450061393855">Sauvegardez votre portefeuille maintenant afin de protéger vos actifs cryptos et de vous assurer de ne jamais en perdre l'accès.</translation>
+<translation id="640898327002833127">Boucliers Brave <ph name="LINK_BEFORE"/>ACTIVÉS<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Si ce site ne fonctionne pas correctement, essayez de désactiver les boucliers. Remarque : cette action risque de limiter les protections de confidentialité de Brave.</translation>
+<translation id="1299672573512347813">Ces paramètres affectent la compatibilité web sur ce site.</translation>
+<translation id="7637771346619326580">Modifier les paramètres par défaut globaux des boucliers</translation>
+<translation id="3520486481604057261">Personnaliser les listes Adblock</translation>
+<translation id="3146531623184244174">Connexions mises à niveau vers HTTPS</translation>
+<translation id="7461425058443653485">Scripts bloqués</translation>
+<translation id="5544888475837817215">Autoriser tous les traqueurs et toutes les annonces</translation>
 </translationbundle>

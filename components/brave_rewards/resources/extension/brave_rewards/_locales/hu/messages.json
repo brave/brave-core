@@ -62,8 +62,8 @@
     "message": "Automatikus Hozzájárulással",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Havi borravaló",
+  "monthlyContribution": {
+    "message": "Havi hozzájárulás",
     "description": ""
   },
   "ok": {

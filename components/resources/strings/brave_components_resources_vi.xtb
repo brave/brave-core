@@ -1243,4 +1243,35 @@
 <translation id="778096729652828897">Tìm hiểu thêm về Cửa sổ Riêng tư với Tor</translation>
 <translation id="3149306599361260465">Đang khởi tạo [[percentage]]%</translation>
 <translation id="3258793718986637767">Gặp sự cố với Tor? Thử <ph name="BEGIN_LINK"/>tắt cửa sổ riêng với Tor<ph name="END_LINK"/> và bật lại lần nữa.</translation>
+<translation id="8576106690599421723">Nhắm mục tiêu quảng cáo cấp tiểu bang</translation>
+<translation id="4775297407519948063">Điều này cho phép Brave hiển thị cho bạn quảng cáo dành riêng cho tiểu bang của bạn.</translation>
+<translation id="5012991400231464322">Khoản đóng góp hàng tháng</translation>
+<translation id="2084351799622920487">Thiết lập khoản đóng góp định kỳ hàng tháng để bạn có thể liên tục hỗ trợ các trang web.</translation>
+<translation id="8150772404570015166">Chưa thiết lập khoản đóng góp hàng tháng nào.</translation>
+<translation id="5055577484189948413">Tổng đóng góp tháng này</translation>
+<translation id="5549059668721746831">Ngày đóng góp hàng tháng tiếp theo</translation>
+<translation id="3922777918343537463">Hủy Khoản đóng góp Hàng tháng</translation>
+<translation id="1969724076378550685">Xác nhận Hủy Hàng tháng</translation>
+<translation id="6238322297266927861">Số tiền đóng góp:</translation>
+<translation id="1723857724166389190">Khoản đóng góp hàng tháng của bạn cho nhà sáng tạo này đã bị hủy.</translation>
+<translation id="2621124276654521177">Khoản đóng góp hàng tháng hiện tại</translation>
+<translation id="4371618764691059036">Đã thiết lập khoản đóng góp hàng tháng.</translation>
+<translation id="6356822617569064293">Ngày đóng góp tiếp theo:</translation>
+<translation id="6045860799501892362">Đặt khoản đóng góp hàng tháng</translation>
+<translation id="5737831580668469027">Các khoản đóng góp hàng tháng!</translation>
+<translation id="2280319752798785157">Khoản đóng góp hàng tháng</translation>
+<translation id="2337632028350283479">Đây là cách hoạt động của các khoản đóng góp hàng tháng:</translation>
+<translation id="6457273203091513039">Các khoản đóng góp hàng tháng không nằm trong khoản thanh toán Tự động đóng góp của bạn. Đây là các khoản riêng biệt.</translation>
+<translation id="5051110132941857169">Các khoản đóng góp hàng tháng được xuất chi cùng một lần vào mỗi tháng. Nếu bạn đang sử dụng tính năng Tự động đóng góp, các khoản tiền tip cũng sẽ được chi cùng lúc với khoản thanh toán Tự động đóng góp hàng tháng của bạn.</translation>
+<translation id="3374483782662414143">Bạn có thể xóa bất kỳ trang web nào nhận các khoản đóng góp hàng tháng từ bên trong bảng Tips.</translation>
+<translation id="4989163558385430922">Xem tất cả</translation>
+<translation id="722307450061393855">Sao lưu ví của bạn ngay để bảo vệ tài sản tiền mã hóa của bạn và bảo đảm rằng bạn không bao giờ bị mất quyền truy cập.</translation>
+<translation id="640898327002833127">Lá chắn Brave <ph name="LINK_BEFORE"/>BẬT<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Nếu trang này có vẻ bị hỏng, hãy thử hạ Lá chắn xuống. Lưu ý: điều này có thể làm giảm khả năng bảo vệ sự riêng tư của Brave.</translation>
+<translation id="1299672573512347813">Những cài đặt này ảnh hưởng đến khả năng tương thích web trên trang này.</translation>
+<translation id="7637771346619326580">Thay đổi cài đặt mặc định Lá chắn toàn cục</translation>
+<translation id="3520486481604057261">Tùy biến danh sách chặn quảng cáo</translation>
+<translation id="3146531623184244174">Kết nối đã được nâng cấp lên HPPTS</translation>
+<translation id="7461425058443653485">Đã chặn Tập lệnh</translation>
+<translation id="5544888475837817215">Cho phép tất cả trình theo dõi và quảng cáo</translation>
 </translationbundle>

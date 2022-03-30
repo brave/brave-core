@@ -62,8 +62,8 @@
     "message": "Jumuisha kwenye Auto-Contribute",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Bahashishi ya Kila Mwezi",
+  "monthlyContribution": {
+    "message": "Mchango wa kila Mwezi",
     "description": ""
   },
   "ok": {

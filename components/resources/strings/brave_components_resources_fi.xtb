@@ -1196,10 +1196,35 @@
 <translation id="778096729652828897">Lisätietoa yksityisistä ikkunoista Tor-verkossa</translation>
 <translation id="3149306599361260465">Alustetaan [[percentage]]%</translation>
 <translation id="3258793718986637767">Onko sinulla ongelmia Torin kanssa? Kokeile <ph name="BEGIN_LINK"/>poistaa yksityinen ikkuna käytöstä Torin avulla<ph name="END_LINK"/> ja ottaa se uudelleen käyttöön.</translation>
-<translation id="4105411033440701818">Huom. Tämän sivuston osoite lähetetään yhdessä Brave-versiosi numeron ja IP-osoitteesi (jota ei tallenneta) kanssa.</translation>
-<translation id="4851215387785619212">Brave Private Ads</translation>
-<translation id="5810507495128831593">Anna sisällönluojille tippi suoraan selatessasi käyttämällä palkintopaneelia tai käyttämällä tekstiin sidottua tippipainiketta tietyillä sivustoilla, esimerkkeinä Twitter, Reddit ja GitHub.</translation>
-<translation id="9013419433042554094">Lunasta tokenit</translation>
-<translation id="2221902203895354376">Käytettävissä olevat tokenit</translation>
-<translation id="5592304751234049046">Hae tili 0x</translation>
+<translation id="8576106690599421723">Tilatason mainoksenkohdennus</translation>
+<translation id="4775297407519948063">Tämän avulla Brave voi näyttää juuri tilaasi sopivia mainoksia.</translation>
+<translation id="5012991400231464322">Kuukausittaiset avustukset</translation>
+<translation id="2084351799622920487">Aseta toistuvat kuukausittaiset avustukset, niin voit tukea sivustoja jatkuvalta pohjalta.</translation>
+<translation id="8150772404570015166">Kuukausittaisia avustuksia ei ole vielä asetettu.</translation>
+<translation id="5055577484189948413">Avustukset yhteensä tässä kuussa</translation>
+<translation id="5549059668721746831">Seuraava tukimaksupäivä</translation>
+<translation id="3922777918343537463">Peru kuukausittainen lahjoitus</translation>
+<translation id="1969724076378550685">Vahvista peruminen kuukausittain</translation>
+<translation id="6238322297266927861">Lahjoitussumma:</translation>
+<translation id="1723857724166389190">Kuukausittaiset lahjoituksesi tälle tuottajalle on peruttu.</translation>
+<translation id="2621124276654521177">Nykyiset kuukausittaiset lahjoitukset</translation>
+<translation id="4371618764691059036">Kuukausittainen lahjoitus on asetettu.</translation>
+<translation id="6356822617569064293">Seuraava lahjoituspäivämäärä:</translation>
+<translation id="6045860799501892362">Aseta kuukausittainen tukimaksu</translation>
+<translation id="5737831580668469027">Kuukausittaiset tukimaksut!</translation>
+<translation id="2280319752798785157">Kuukausittainen avustus</translation>
+<translation id="2337632028350283479">Näin kuukausittaiset tukimaksut toimivat:</translation>
+<translation id="6457273203091513039">Kuukausittaisia tukimaksuja ei oteta asettamastasi Auto-Contribute-maksusta. Ne ovat erilliset.</translation>
+<translation id="5051110132941857169">Kaikki kuukausittaiset tukimaksut maksetaan kerralla jokaisena kuukautena. Jos käytät Auto-Contribute-toimintoa, tipit maksetaan samaan aikaan kuin kuukausittainen Auto-Contribute-maksusi.</translation>
+<translation id="3374483782662414143">Voit poistaa sivuston, jolle et halua enää maksaa kuukausittaista tukimaksua, Tipit-paneelista (Tips).</translation>
+<translation id="4989163558385430922">Näytä kaikki</translation>
+<translation id="722307450061393855">Varmuuskopioi lompakkosi nyt suojataksesi kryptovarojasi ja varmistaaksesi, ettet koskaan menetä pääsyä.</translation>
+<translation id="640898327002833127">Brave-suojaus <ph name="LINK_BEFORE"/>KÄYTÖSSÄ<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Jos tämä sivusto näyttää olevan rikki, kokeile poistaa suojaus käytöstä. Huomaa: tämä voi vähentää Braven tietosuojaa.</translation>
+<translation id="1299672573512347813">Nämä asetukset vaikuttavat tämän sivuston verkkoyhteensopivuuteen.</translation>
+<translation id="7637771346619326580">Muuta yleiset suojauksen oletusasetukset</translation>
+<translation id="3520486481604057261">Mukauta Adblock-luettelot</translation>
+<translation id="3146531623184244174">Yhteys päivitetty HTTPS:ään</translation>
+<translation id="7461425058443653485">Komentosarjat estetty</translation>
+<translation id="5544888475837817215">Salli kaikki seurannat ja mainokset</translation>
 </translationbundle>

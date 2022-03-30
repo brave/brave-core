@@ -1243,4 +1243,35 @@
 <translation id="778096729652828897">Saznajte više o privatnom Vindousu sa Torom</translation>
 <translation id="3149306599361260465">Pokretanje [[percentage]]%</translation>
 <translation id="3258793718986637767">Imate problema s Tor-om? Pokušajte <ph name="BEGIN_LINK"/>da onemogućite privatni prozor s Tor-om<ph name="END_LINK"/> i da ga ponovo omogućite.</translation>
+<translation id="8576106690599421723">Formuliši nivo reklamnog targetiranja</translation>
+<translation id="4775297407519948063">Ovo omogućava da vam Brave pokaže reklame koje su posebno namenjenje vašoj državi.</translation>
+<translation id="5012991400231464322">Mesečni doprinosi</translation>
+<translation id="2084351799622920487">Postavite ponavljajuće mesečne doprinose da biste mogli u kontinuitetu da podržavate veb lokacije.</translation>
+<translation id="8150772404570015166">Još uvek nisu postavljeni mesečni doprinosi.</translation>
+<translation id="5055577484189948413">Ukupni doprinosi za ovaj mesec</translation>
+<translation id="5549059668721746831">Sledeći mesečni datum za doprinose</translation>
+<translation id="3922777918343537463">Otkažite mesečni doprinos</translation>
+<translation id="1969724076378550685">Potvrdite mesečno otkazivanje</translation>
+<translation id="6238322297266927861">Iznos doprinosa:</translation>
+<translation id="1723857724166389190">Otkazan je Vaš mesečni doprinos ovom autoru.</translation>
+<translation id="2621124276654521177">Trenutni mesečni doprinos</translation>
+<translation id="4371618764691059036">Mesečni doprinos je poslat.</translation>
+<translation id="6356822617569064293">Datum sledećeg doprinosa:</translation>
+<translation id="6045860799501892362">Postavi mesečni doprinos</translation>
+<translation id="5737831580668469027">Mesečni doprinosi!</translation>
+<translation id="2280319752798785157">Mesečni doprinos</translation>
+<translation id="2337632028350283479">Evo kako mesečni doprinosi funkcionišu:</translation>
+<translation id="6457273203091513039">Mesečni doprinosi ne dolaze iz vaše Automatski doprinosi uplate. To je odvojeno.</translation>
+<translation id="5051110132941857169">Mesečni doprinosi se isplaćuju u celosti jednom, svakog meseca. Ako koristite opciju Automatski doprinos, bakšiš odlazi u isto vreme kao i vaša uplata putem Automatskog doprinosa.</translation>
+<translation id="3374483782662414143">Možete ukloniti bilo koju lokaciju koja prima mesečne doprinose, iz vašeg Panela za bakšiš.</translation>
+<translation id="4989163558385430922">Prikaži sve</translation>
+<translation id="722307450061393855">Napravite rezervnu kopiju novčanika da biste zaštitili svoja kripto sredstva i da nikada ne biste izgubili pristup.</translation>
+<translation id="640898327002833127">Brave štitovi <ph name="LINK_BEFORE"/>PODIGNUTI<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Ako vam se čini da je ovaj sajt pokvaren, pokušajte da spustite štitove. Napomena: na taj način se može smanjiti Brave zaštita privatnosti.</translation>
+<translation id="1299672573512347813">Ova podešavanja utiču na kompatibilnost sa vebom na ovom sajtu.</translation>
+<translation id="7637771346619326580">Promenite podrazumevane vrednosti globalnog štita</translation>
+<translation id="3520486481604057261">Prilagodite bloker oglasa</translation>
+<translation id="3146531623184244174">Veze su nadograđene u HTTPS</translation>
+<translation id="7461425058443653485">Blokirane skripte</translation>
+<translation id="5544888475837817215">Dozvoli sve tragače i oglase</translation>
 </translationbundle>

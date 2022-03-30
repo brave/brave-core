@@ -62,8 +62,8 @@
     "message": "Iekļaut automātiskajā ziedošanā",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Ikmēneša dzeramnauda",
+  "monthlyContribution": {
+    "message": "Ikmēneša ieguldījums",
     "description": ""
   },
   "ok": {

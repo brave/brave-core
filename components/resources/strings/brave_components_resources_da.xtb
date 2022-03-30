@@ -1197,4 +1197,35 @@
 <translation id="778096729652828897">Få mere at vide om private vinduer med Tor</translation>
 <translation id="3149306599361260465">Initialiserer [[percentage]] %</translation>
 <translation id="3258793718986637767">Har du problemer med Tor? Prøv <ph name="BEGIN_LINK"/>at slå privat vindue fra med Tor<ph name="END_LINK"/>, og slå det til igen.</translation>
+<translation id="8576106690599421723">Reklametilpasning på statsniveau</translation>
+<translation id="4775297407519948063">Dette lader Brave vise dig reklamer som er særligt tilpasset til din stat.</translation>
+<translation id="5012991400231464322">Månedlige bidrag</translation>
+<translation id="2084351799622920487">Opret tilbagevendende månedlige bidrag, så du kan støtte sider kontinuerligt.</translation>
+<translation id="8150772404570015166">Ingen månedlige bidrag er oprettet endnu.</translation>
+<translation id="5055577484189948413">Samlede bidrag i denne måned</translation>
+<translation id="5549059668721746831">Næste månedlige bidragsdato</translation>
+<translation id="3922777918343537463">Annullér månedligt bidrag</translation>
+<translation id="1969724076378550685">Bekræft annullering af månedlig</translation>
+<translation id="6238322297266927861">Bidragsbeløb:</translation>
+<translation id="1723857724166389190">Dit månedlige bidrag til denne skaber er blevet annulleret.</translation>
+<translation id="2621124276654521177">Nuværende månedligt bidrag</translation>
+<translation id="4371618764691059036">Månedligt bidrag er indstillet.</translation>
+<translation id="6356822617569064293">Næste bidragsdato:</translation>
+<translation id="6045860799501892362">Fastsæt månedligt bidrag</translation>
+<translation id="5737831580668469027">Månedlige bidrag!</translation>
+<translation id="2280319752798785157">Månedligt bidrag</translation>
+<translation id="2337632028350283479">Sådan fungerer månedlige bidrag:</translation>
+<translation id="6457273203091513039">Månedlige bidrag bliver ikke trukket fra din automatiske bidragsbetaling. De er adskilte.</translation>
+<translation id="5051110132941857169">Månedlige bidrag bliver udbetalt på én gang hver måned. Hvis du bruger automatiske bidrag, går donationer ud på samme tid som din månedlige automatiske bidragsbetaling.</translation>
+<translation id="3374483782662414143">Du kan fjerne enhver side der modtager månedlige bidrag inde fra donationspanelet.</translation>
+<translation id="4989163558385430922">Se alle</translation>
+<translation id="722307450061393855">Backup din wallet nu for at beskytte dine crypto-aktiver, så du aldrig mister adgangen.</translation>
+<translation id="640898327002833127">Brave-skjolde <ph name="LINK_BEFORE"/>OPPE<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Hvis siden ser forkert ud, så prøv at deaktivere skjolde. Bemærk: Dette vil reducere Braves privatlivsbeskyttelse.</translation>
+<translation id="1299672573512347813">Disse indstillinger påvirker webkompatibiliteten på denne side.</translation>
+<translation id="7637771346619326580">Redigér globale skjoldstandarder</translation>
+<translation id="3520486481604057261">Tilpas Adblock-lister</translation>
+<translation id="3146531623184244174">Forbindelsesopgradering til HTTPS</translation>
+<translation id="7461425058443653485">Scripts blokeret</translation>
+<translation id="5544888475837817215">Tillad alle trackere og reklamer</translation>
 </translationbundle>

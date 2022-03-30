@@ -62,8 +62,8 @@
     "message": "Sertakan dalam Kontribusi Otomatis",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Monthly Tip",
+  "monthlyContribution": {
+    "message": "Kontribusi Bulanan",
     "description": ""
   },
   "ok": {

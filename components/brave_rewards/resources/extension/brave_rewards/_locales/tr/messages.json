@@ -62,8 +62,8 @@
     "message": "Otomatik-Katkıya Dahil",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Aylık Bahşiş",
+  "monthlyContribution": {
+    "message": "Aylık Katkı",
     "description": ""
   },
   "ok": {

@@ -62,8 +62,8 @@
     "message": "Включити в автоматичний внесок",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Щомісячні чайові",
+  "monthlyContribution": {
+    "message": "Щомісячний внесок",
     "description": ""
   },
   "ok": {

@@ -1243,4 +1243,35 @@
 <translation id="778096729652828897">Več o zasebnih oknih v brskalniku Tor</translation>
 <translation id="3149306599361260465">Inicializacija [[percentage]]%</translation>
 <translation id="3258793718986637767">Imate težave s Tor-om? Poskusite <ph name="BEGIN_LINK"/>onemogočiti zasebno okno s sistemom Tor<ph name="END_LINK"/> in ga znova vklopiti.</translation>
+<translation id="8576106690599421723">Ciljani oglasi na ravni države</translation>
+<translation id="4775297407519948063">To omogoča programu Brave, da vam prikaže oglase, namenjene posebej za vašo državo.</translation>
+<translation id="5012991400231464322">Mesečni prispevki</translation>
+<translation id="2084351799622920487">Ponavljajoče mesečne prispevke nastavite tako, da boste lahko spletne strani podpirali neprekinjeno.</translation>
+<translation id="8150772404570015166">Mesečni prispevki še niso vzpostavljeni.</translation>
+<translation id="5055577484189948413">Skupni znesek prispevkov v tem mesecu</translation>
+<translation id="5549059668721746831">Datum naslednjega mesečnega prispevka</translation>
+<translation id="3922777918343537463">Prekliči mesečni prispevek</translation>
+<translation id="1969724076378550685">Potrdite preklic mesečno</translation>
+<translation id="6238322297266927861">Znesek prispevka:</translation>
+<translation id="1723857724166389190">Vaš mesečni prispevek za tega ustvarjalca je bil preklican.</translation>
+<translation id="2621124276654521177">Trenutni mesečni prispevek</translation>
+<translation id="4371618764691059036">Mesečni prispevek je določen.</translation>
+<translation id="6356822617569064293">Datum naslednjega prispevka:</translation>
+<translation id="6045860799501892362">Nastavite mesečni prispevek</translation>
+<translation id="5737831580668469027">Mesečni prispevki!</translation>
+<translation id="2280319752798785157">Mesečni prispevek</translation>
+<translation id="2337632028350283479">Opis poteka mesečnih prispevkov:</translation>
+<translation id="6457273203091513039">Mesečni prispevki niso del samodejnih prispevkov, temveč so ločeni.</translation>
+<translation id="5051110132941857169">Mesečni prispevek je izplačan naenkrat in vsak mesec. Če ste uporabnik samodejnih prispevkov, se donacije posredujejo spletnim mestom istočasno kot vaši samodejni prispevki.</translation>
+<translation id="3374483782662414143">Mesta, ki prejemajo mesečne prispevke, lahko odstranite s seznama v nadzorni plošči za donacije.</translation>
+<translation id="4989163558385430922">Pokaži vse</translation>
+<translation id="722307450061393855">Rezervirajte denarnico zdaj, da zaščitite svoja kripto sredstva in zagotovite, da nikoli ne izgubite dostopa.</translation>
+<translation id="640898327002833127">Ščiti Brave <ph name="LINK_BEFORE"/>OMOGUČENI<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Če to spletno mesto ne deluje, poskusite izklopiti zaščito. Opomba: to lahko zmanjša zaščito zasebnosti Brave.</translation>
+<translation id="1299672573512347813">Te nastavitve vplivajo na spletno združljivost tega spletnega mesta.</translation>
+<translation id="7637771346619326580">Spremeni privzete nastavitve splošne zaščite</translation>
+<translation id="3520486481604057261">Prilagodi sezname za blokiranje oglasov</translation>
+<translation id="3146531623184244174">Povezave posodobljene na HTTPS</translation>
+<translation id="7461425058443653485">Blokirani skripti</translation>
+<translation id="5544888475837817215">Dovoli vse sledilnike in oglase</translation>
 </translationbundle>

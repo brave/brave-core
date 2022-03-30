@@ -1243,4 +1243,35 @@
 <translation id="778096729652828897">Saiba mais sobre as «Janelas Privadas» com Tor</translation>
 <translation id="3149306599361260465">A iniciar [[percentage]]%</translation>
 <translation id="3258793718986637767">Está com problemas com o Tor? Experimente <ph name="BEGIN_LINK"/>desativar a janela privada com o Tor<ph name="END_LINK"/> e a ativar novamente.</translation>
+<translation id="8576106690599421723">Escolha de anúncios ao nível estatal</translation>
+<translation id="4775297407519948063">Isto permite a apresentação de que anúncios relevantes e específicos para o seu estado pela Brave.</translation>
+<translation id="5012991400231464322">Contribuições Mensais</translation>
+<translation id="2084351799622920487">Configure contribuições mensais recorrentes para que possa apoiar websites de forma contínua.</translation>
+<translation id="8150772404570015166">Ainda nenhuma contribuição mensal configurada.</translation>
+<translation id="5055577484189948413">Total de contribuições este mês</translation>
+<translation id="5549059668721746831">Data da próxima contribuição mensal</translation>
+<translation id="3922777918343537463">Cancelar Contribuição Mensal</translation>
+<translation id="1969724076378550685">Confirmar cancelamento de contribuição mensal</translation>
+<translation id="6238322297266927861">Valor da contribuição:</translation>
+<translation id="1723857724166389190">A sua contribuição mensal para este criador foi cancelada.</translation>
+<translation id="2621124276654521177">Contribuição mensal atual</translation>
+<translation id="4371618764691059036">A contribuição mensal foi enviada.</translation>
+<translation id="6356822617569064293">Data da próxima contribuição:</translation>
+<translation id="6045860799501892362">Definir contribuição mensal</translation>
+<translation id="5737831580668469027">Contribuições mensais!</translation>
+<translation id="2280319752798785157">Contribuição Mensal</translation>
+<translation id="2337632028350283479">Eis como funcionam as contribuições mensais:</translation>
+<translation id="6457273203091513039">As contribuições mensais não saem do seu pagamento do Auto-Contribute. Elas são separadas.</translation>
+<translation id="5051110132941857169">As contribuições mensais são pagas de uma só vez, todos os meses. Se estiver a usar o Auto-Contribute, as dicas serão exibidas ao mesmo tempo que o pagamento mensal do Auto-Contribute.</translation>
+<translation id="3374483782662414143">Pode remover qualquer site que receba contribuições mensais dentro do painel Dicas.</translation>
+<translation id="4989163558385430922">Ver tudo</translation>
+<translation id="722307450061393855">Faça cópia de segurança da sua carteira agora para proteger os seus ativos cripto e assegure-se de que nunca perde o acesso.</translation>
+<translation id="640898327002833127">Proteções do Brave <ph name="LINK_BEFORE"/>PARA<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Se este website não parecer bem, experimente baixar as Proteções. Nota: esta ação poderá reduzir as proteções de privacidade do Brave.</translation>
+<translation id="1299672573512347813">Estas definições afetam a compatibilidade neste website.</translation>
+<translation id="7637771346619326580">Alterar as predefinições da proteção global</translation>
+<translation id="3520486481604057261">Personalizar listas do Adblock</translation>
+<translation id="3146531623184244174">Ligações atualizadas para HTTPS</translation>
+<translation id="7461425058443653485">Scripts bloqueados</translation>
+<translation id="5544888475837817215">Permitir todos os rastreadores e anúncios</translation>
 </translationbundle>

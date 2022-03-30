@@ -62,8 +62,8 @@
     "message": "Isama sa Awtomatikong Pag-ambag",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Buwanang Tip",
+  "monthlyContribution": {
+    "message": "Buwanang Kontribusyon",
     "description": ""
   },
   "ok": {

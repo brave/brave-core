@@ -1243,4 +1243,35 @@
 <translation id="778096729652828897">Uzzināt vairāk par inkognito logiem Tor</translation>
 <translation id="3149306599361260465">Inicializē [[percentage]] %</translation>
 <translation id="3258793718986637767">Radušās problēmas ar Tor? Mēģiniet <ph name="BEGIN_LINK"/>atspējot inkognito logu ar Tor<ph name="END_LINK"/> un to atkal ieslēgt.</translation>
+<translation id="8576106690599421723">Valsts līmeņa reklāmu adresēšana</translation>
+<translation id="4775297407519948063">Tas atļauj Brave rādīt reklāmas, kas ir paredzētas tieši jūsu valstij.</translation>
+<translation id="5012991400231464322">Ikmēneša ieguldījums</translation>
+<translation id="2084351799622920487">Iestatiet periodisku ikmēneša ieguldījumu, lai nepārtraukti atbalstītu vietnes.</translation>
+<translation id="8150772404570015166">Nav iestatīts neviens ikmēneša ieguldījums.</translation>
+<translation id="5055577484189948413">Kopējie ziedojumi šomēnes</translation>
+<translation id="5549059668721746831">Nākamais ikmēneša ziedošanas datums</translation>
+<translation id="3922777918343537463">Atcelt ikmēneša ziedojumu</translation>
+<translation id="1969724076378550685">Apstiprināt ikmēneša atcelšanu</translation>
+<translation id="6238322297266927861">Ziedojuma apmērs:</translation>
+<translation id="1723857724166389190">Jūsu ikmēneša ziedojums šim satura veidotājam ir atcelts.</translation>
+<translation id="2621124276654521177">Pašreizējais ikmēneša ziedojums</translation>
+<translation id="4371618764691059036">Ikmēneša ziedojums iestatīts.</translation>
+<translation id="6356822617569064293">Nākamais ziedošanas datums:</translation>
+<translation id="6045860799501892362">Iestatīt ikmēneša ziedojumu</translation>
+<translation id="5737831580668469027">Ikmēneša ziedojumi!</translation>
+<translation id="2280319752798785157">Ikmēneša ieguldījums</translation>
+<translation id="2337632028350283479">Ikmēneša ziedojumi darbojas šādi.</translation>
+<translation id="6457273203091513039">Ikmēneša ziedojumi netiek ņemti no automātiskās ziedošanas maksājuma. Tie ir atsevišķi.</translation>
+<translation id="5051110132941857169">Visi ikmēneša ziedojumi katru mēnesi tiek maksāti vienlaikus. Ja izmantojat automātisko ziedošanu, dzeramnaudas tiek izmaksātas tajā pašā laikā, kad ikmēneša automātiskie ziedojumi.</translation>
+<translation id="3374483782662414143">Jūs varat noņemt vietni no ikmēneša ziedojumu saņemšanas Dzeramnaudu panelī.</translation>
+<translation id="4989163558385430922">Skatīt visu</translation>
+<translation id="722307450061393855">Dublējiet maku tagad, lai aizsargātu savus kriptovalūtas līdzekļus un nepieļautu piekļuves zaudēšanu.</translation>
+<translation id="640898327002833127">Brave aizsargi <ph name="LINK_BEFORE"/> UP <ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Ja vietne šķiet nederīga, izmēģiniet samazināt aizsargus. Piezīme: tas var samazināt Brave privātuma aizsardzību.</translation>
+<translation id="1299672573512347813">Šie iestatījumi ietekmē vietnes saderību ar tīmekli.</translation>
+<translation id="7637771346619326580">Mainīt globālo aizsargu noklusējuma iestatījumus</translation>
+<translation id="3520486481604057261">Pielāgot Adblock sarakstus</translation>
+<translation id="3146531623184244174">Savienojumi jaunināti uz HTTPS</translation>
+<translation id="7461425058443653485">Bloķētie skripti</translation>
+<translation id="5544888475837817215">Atļaut visus izsekotājus un reklāmas</translation>
 </translationbundle>

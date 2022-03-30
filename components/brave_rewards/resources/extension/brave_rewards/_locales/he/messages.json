@@ -62,8 +62,8 @@
     "message": "כלול בתרומות העצמיות",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Monthly Tip",
+  "monthlyContribution": {
+    "message": "תרומה חודשית",
     "description": ""
   },
   "ok": {

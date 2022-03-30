@@ -62,8 +62,8 @@
     "message": "Bao gồm trong Tự động Đóng góp",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Tiền thưởng hàng tháng",
+  "monthlyContribution": {
+    "message": "Khoản đóng góp hàng tháng",
     "description": ""
   },
   "ok": {

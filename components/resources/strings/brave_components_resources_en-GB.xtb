@@ -1243,9 +1243,35 @@
 <translation id="778096729652828897">Learn more about Private Windows with Tor</translation>
 <translation id="3149306599361260465">Initialising [[percentage]]%</translation>
 <translation id="3258793718986637767">Having problems with Tor? Try <ph name="BEGIN_LINK"/>disabling private window with Tor<ph name="END_LINK"/> and turning it back on again.</translation>
-<translation id="4105411033440701818">Note: This site address will be submitted with your Brave version number and your IP address (which will not be stored).</translation>
-<translation id="5810507495128831593">Tip content creators directly as you browse by using the Rewards Panel, or by using the inline tip button on various sites including Twitter, Reddit and GitHub.</translation>
-<translation id="9013419433042554094">Claim tokens</translation>
-<translation id="2221902203895354376">Tokens available</translation>
-<translation id="5592304751234049046">Search account 0x</translation>
+<translation id="8576106690599421723">Location level ad targeting</translation>
+<translation id="4775297407519948063">This allows Brave to show you ads meant specifically for your location.</translation>
+<translation id="5012991400231464322">Monthly Contributions</translation>
+<translation id="2084351799622920487">Set up recurring monthly contributions so you can support sites continuously.</translation>
+<translation id="8150772404570015166">No monthly contributions set up yet.</translation>
+<translation id="5055577484189948413">Total contributions this month</translation>
+<translation id="5549059668721746831">Next monthly contribution date</translation>
+<translation id="3922777918343537463">Cancel Monthly Contribution</translation>
+<translation id="1969724076378550685">Confirm Canceling Monthly</translation>
+<translation id="6238322297266927861">Contribution amount:</translation>
+<translation id="1723857724166389190">Your monthly contribution to this creator has been canceled.</translation>
+<translation id="2621124276654521177">Current monthly contribution</translation>
+<translation id="4371618764691059036">Monthly contribution has been set.</translation>
+<translation id="6356822617569064293">Next contribution date:</translation>
+<translation id="6045860799501892362">Set monthly contribution</translation>
+<translation id="5737831580668469027">Monthly contributions!</translation>
+<translation id="2280319752798785157">Monthly Contribution</translation>
+<translation id="2337632028350283479">Here's how monthly contributions work:</translation>
+<translation id="6457273203091513039">Monthly contributions do not come out of your Auto-Contribute payment. They're separate.</translation>
+<translation id="5051110132941857169">Monthly contributions are paid out all at once, each month. If you're using Auto-Contribute, tips go out at the same time as your monthly Auto-Contribute payment.</translation>
+<translation id="3374483782662414143">You can remove any site receiving monthly contributions from inside of the Tips panel.</translation>
+<translation id="4989163558385430922">See all</translation>
+<translation id="722307450061393855">Back up your wallet now to protect your crypto assets and ensure you never lose access.</translation>
+<translation id="640898327002833127">Brave Shields <ph name="LINK_BEFORE"/>UP<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">If this site seems broken, try Shields down. Note: this may reduce Brave privacy protections.</translation>
+<translation id="1299672573512347813">These settings affect web compatibility on this site.</translation>
+<translation id="7637771346619326580">Change global Shield defaults</translation>
+<translation id="3520486481604057261">Customise Adblock lists</translation>
+<translation id="3146531623184244174">Connections upgraded to HTTPS</translation>
+<translation id="7461425058443653485">Scripts Blocked</translation>
+<translation id="5544888475837817215">Allow all trackers and ads</translation>
 </translationbundle>

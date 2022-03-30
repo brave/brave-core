@@ -1243,4 +1243,35 @@
 <translation id="778096729652828897">Matuto pa tungkol sa mga Pribadong Window na may Tor</translation>
 <translation id="3149306599361260465">Sinisimulan [[percentage]]%</translation>
 <translation id="3258793718986637767">Nagkakaproblema sa Tor? Subukang <ph name="BEGIN_LINK"/>i-disable ang pribadong window sa Tor<ph name="END_LINK"/> at i-on ulit ito.</translation>
+<translation id="8576106690599421723">State level ad targeting</translation>
+<translation id="4775297407519948063">Pinapayagan nito ang Brave na magpakita sa iyo ng ads na partikular na inilaan para sa iyong estado.</translation>
+<translation id="5012991400231464322">Mga Buwanang Kontribusyon</translation>
+<translation id="2084351799622920487">Mag-set up ng mga umuulit na buwanang kontribusyon upang patuloy mong masuportahan ang mga site.</translation>
+<translation id="8150772404570015166">Wala pang nase-set up na buwanang kontribusyon.</translation>
+<translation id="5055577484189948413">Kabuuang dami ng mga kontribusyon ngayong buwan</translation>
+<translation id="5549059668721746831">Petsa ng susunod na buwanang kontribusyon</translation>
+<translation id="3922777918343537463">Kanselahin ang Buwanang Kontribusyon</translation>
+<translation id="1969724076378550685">Kumpirmahin ang Pagkensala ng Buwan-buwan</translation>
+<translation id="6238322297266927861">Halaga ng kontribusyon:</translation>
+<translation id="1723857724166389190">Nakansela ang iyong buwanang kontribusyon sa creator na ito.</translation>
+<translation id="2621124276654521177">Kasalukuyang buwanang kontribusyon</translation>
+<translation id="4371618764691059036">Naitakda na ang buwanang kontribusyon.</translation>
+<translation id="6356822617569064293">Petsa ng susunod na kontribusyon:</translation>
+<translation id="6045860799501892362">Itakda ang buwanang kontribusyon</translation>
+<translation id="5737831580668469027">Mga Buwanang Kontribusyon!</translation>
+<translation id="2280319752798785157">Buwanang Kontribusyon</translation>
+<translation id="2337632028350283479">Ganito gumagana ang mga buwanang kontribusyon:</translation>
+<translation id="6457273203091513039">Ang mga buwanang kontribusyon ay hindi nagmumula sa iyong pagbabayad sa Awtomatikong Pag-ambag. Magkahiwalay ang mga ito.</translation>
+<translation id="5051110132941857169">Kada buwan, binabayaran ang mga buwanang kontribusyon nang sabay-sabay. Kung gumagamit ka ng Awtomatikong Pag-ambag, ibinibigay ang mga tip kasabay ng iyong buwanang pagbabayad sa Awtomatikong Pag-ambag.</translation>
+<translation id="3374483782662414143">Sa loob ng panel ng Mga Tip, puwede kang mag-alis ng anumang site na nakakatanggap ng mga buwanang kontribusyon.</translation>
+<translation id="4989163558385430922">Tingnan ang lahat</translation>
+<translation id="722307450061393855">I-back up ang iyong wallet ngayon para protektahan ang iyong mga asset ng cryptocurrency at tiyaking hindi ka kailanman mawawalan ng access.</translation>
+<translation id="640898327002833127"><ph name="LINK_BEFORE"/>NAKA-ENABLE<ph name="LINK_AFTER"/> ang Shields ng Brave</translation>
+<translation id="8676609116485287125">Kung mukhang sira ang site na ito, subukang i-disable ang Shield. Tandaan: posibleng mabawasan nito ang mga proteksyon sa privacy ng Brave.</translation>
+<translation id="1299672573512347813">Naaapektuhan ng mga setting na ito ang compatibility ng web sa site na ito.</translation>
+<translation id="7637771346619326580">Baguhin ang mga pangkalahatang default ng Shield</translation>
+<translation id="3520486481604057261">I-customize ang Mga Listahan ng Adblock</translation>
+<translation id="3146531623184244174">Na-upgrade sa HTTPS ang mga koneksyon</translation>
+<translation id="7461425058443653485">Mga Script na Na-block</translation>
+<translation id="5544888475837817215">Payagan ang lahat ng tracker at ad</translation>
 </translationbundle>

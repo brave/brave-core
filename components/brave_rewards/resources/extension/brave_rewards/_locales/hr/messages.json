@@ -62,8 +62,8 @@
     "message": "Uključi u sustav automatskih doprinosa",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Mjesečna napojnica",
+  "monthlyContribution": {
+    "message": " Mjesečni doprinos",
     "description": ""
   },
   "ok": {

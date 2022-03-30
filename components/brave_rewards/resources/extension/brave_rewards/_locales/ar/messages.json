@@ -62,8 +62,8 @@
     "message": "تضمين في المساهمة التلقائية",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "مكافأة شهرية",
+  "monthlyContribution": {
+    "message": "المساهمة الشهرية",
     "description": ""
   },
   "ok": {

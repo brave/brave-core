@@ -62,8 +62,8 @@
     "message": "Masukkan dalam Sumbangan Automatik",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Tip Bulanan",
+  "monthlyContribution": {
+    "message": "Sumbangan Bulanan",
     "description": ""
   },
   "ok": {

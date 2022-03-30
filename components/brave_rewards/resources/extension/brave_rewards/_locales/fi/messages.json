@@ -62,8 +62,8 @@
     "message": "Lisää automaattisesti osallistuvaksi",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Monthly Tip",
+  "monthlyContribution": {
+    "message": "Kuukausittainen avustus",
     "description": ""
   },
   "ok": {

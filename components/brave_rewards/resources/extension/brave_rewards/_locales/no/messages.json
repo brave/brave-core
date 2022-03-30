@@ -62,8 +62,8 @@
     "message": "Inkluder i auto-bidrag",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Månedlig tips",
+  "monthlyContribution": {
+    "message": "Månedlig bidrag",
     "description": ""
   },
   "ok": {

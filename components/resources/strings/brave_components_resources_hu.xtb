@@ -1243,4 +1243,35 @@
 <translation id="778096729652828897">Tudj meg többet a Tor Privát ablakokról</translation>
 <translation id="3149306599361260465">Betöltés [[percentage]]%</translation>
 <translation id="3258793718986637767">Problémákba ütközik a Torral? Próbálja meg <ph name="BEGIN_LINK"/>a privát ablak letiltását a Torral<ph name="END_LINK"/>, majd kapcsolja be újra.</translation>
+<translation id="8576106690599421723">Állami szintű hirdetéscélzás</translation>
+<translation id="4775297407519948063">Ennek segítségével a Brave olyan hirdetéseket mutathat, amiket csak az ön államának szántak.</translation>
+<translation id="5012991400231464322">Havi hozzájárulások</translation>
+<translation id="2084351799622920487">Állíts be rendszeres havi hozzájárulást, hogy folyamatosan támogathasd az oldalakat.</translation>
+<translation id="8150772404570015166">Még nem állítottál be havi hozzájárulást.</translation>
+<translation id="5055577484189948413">Összes ehavi hozzájárulás</translation>
+<translation id="5549059668721746831">A következő havi hozzájárulás dátuma</translation>
+<translation id="3922777918343537463">Havi hozzájárulás megvonása</translation>
+<translation id="1969724076378550685">A havi törlésének megerősítése</translation>
+<translation id="6238322297266927861">Hozzájárulás összege:</translation>
+<translation id="1723857724166389190">Az alkotónak adott havi támogatásod törölve lett.</translation>
+<translation id="2621124276654521177">Jelenlegi havi hozzájárulás</translation>
+<translation id="4371618764691059036">A havi hozzájárulás be lett állítva.</translation>
+<translation id="6356822617569064293">Következő hozzájárulás dátuma:</translation>
+<translation id="6045860799501892362">Állítson be havi hozzájárulást</translation>
+<translation id="5737831580668469027">Havi hozzájárulások!</translation>
+<translation id="2280319752798785157">Havi hozzájárulás</translation>
+<translation id="2337632028350283479">Így működnek a havi hozzájárulások:</translation>
+<translation id="6457273203091513039">A havi kiadások nem az automatikus hozzájárulásból származnak. Ezek külön dolgok.</translation>
+<translation id="5051110132941857169">A havi hozzájárulásokat minden hónapban egy összegben fizetjük ki. Automatikus hozzájárulás használata esetén a borravalók a havi automatikus hozzájárulással egy időben mennek ki.</translation>
+<translation id="3374483782662414143">A Borravalók résznél bármely oldalt kitilthatja a havi hozzájárulásokból.</translation>
+<translation id="4989163558385430922">Az összes megtekintése</translation>
+<translation id="722307450061393855">Készítsen biztonsági mentést a tárcájáról, hogy megvédje a kriptoeszközeit, és biztosítsa, hogy ne veszítse el azokhoz a hozzáférést.</translation>
+<translation id="640898327002833127">Brave pajzsok <ph name="LINK_BEFORE"/>ENGEDÉLYEZVE<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Ha az oldal sérültnek tűnik, próbálja kikapcsolni a pajzsokat. Megjegyzés: ez csökkentheti a Brave által nyújtott adatvédelmet.</translation>
+<translation id="1299672573512347813">Ezek a beállítások hatással vannak az oldal webes kompatibilitására.</translation>
+<translation id="7637771346619326580">Globális pajzs alapbeállítások módosítása</translation>
+<translation id="3520486481604057261">Adblock listák személyre szabása</translation>
+<translation id="3146531623184244174">Kapcsolat HTTPS-re bővítve</translation>
+<translation id="7461425058443653485">Scriptek blokkolva</translation>
+<translation id="5544888475837817215">Összes nyomkövető és hirdetés engedélyezése</translation>
 </translationbundle>

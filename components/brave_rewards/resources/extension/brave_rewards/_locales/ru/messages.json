@@ -62,8 +62,8 @@
     "message": "Включить в автоматический взнос",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Ежемесячный платеж",
+  "monthlyContribution": {
+    "message": "Ежемесячное пожертвование",
     "description": ""
   },
   "ok": {

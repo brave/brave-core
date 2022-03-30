@@ -1243,4 +1243,35 @@
 <translation id="778096729652828897">Saber més sobre Finestres Privades amb Tor</translation>
 <translation id="3149306599361260465">S'està inicialitzant [[percentage]]%</translation>
 <translation id="3258793718986637767">Tens problemes amb Tor? Prova de <ph name="BEGIN_LINK"/>deshabilitar la finestra privada amb Tor<ph name="END_LINK"/> i tornar-la a obrir.</translation>
+<translation id="8576106690599421723">Orientació del anuncis a nivell estatal</translation>
+<translation id="4775297407519948063">Això permet que Brave us ensenyi anuncis especialment significatius pel vostre estat.</translation>
+<translation id="5012991400231464322">Contribucions Mensuals</translation>
+<translation id="2084351799622920487">Configureu contribucions mensuals periòdiques i així podreu donar suport als llocs de manera continuada.</translation>
+<translation id="8150772404570015166">Encara no s'han configurat contribucions mensuals.</translation>
+<translation id="5055577484189948413">Contribucions totals aquest mes</translation>
+<translation id="5549059668721746831">Data de la propera contribució mensual</translation>
+<translation id="3922777918343537463">Cancel·leu la Contribució Mensual</translation>
+<translation id="1969724076378550685">Confirmeu la Cancel·lació Mensual</translation>
+<translation id="6238322297266927861">Import de la contribució:</translation>
+<translation id="1723857724166389190">S'ha cancel·lat la vostra contribució mensual a aquest creador.</translation>
+<translation id="2621124276654521177">Contribució mensual actual</translation>
+<translation id="4371618764691059036">S'ha establert la contribució mensual.</translation>
+<translation id="6356822617569064293">Data de la propera contribució:</translation>
+<translation id="6045860799501892362">Fes una contribució mensual</translation>
+<translation id="5737831580668469027">Contribucions mensuals!</translation>
+<translation id="2280319752798785157">Contribució Mensual</translation>
+<translation id="2337632028350283479">Així és com funcionen les contribucions mensuals:</translation>
+<translation id="6457273203091513039">Les vostres contribucions mensuals no provenen del pagament de la Contribució Automàtica. Van per separat.</translation>
+<translation id="5051110132941857169">Les contribucions mensuales es cobren de cop cada mes. Si feu servir la funció de Contribució Automàtica, rebreu les propines junt amb el cobrament de la vostra Contribució Automàtica mensual.</translation>
+<translation id="3374483782662414143">Podeu eliminar qualsevol lloc web rebent contribucions mensuals al panell de Propines.</translation>
+<translation id="4989163558385430922">Mostra-ho tot</translation>
+<translation id="722307450061393855">Feu una còpia de seguretat de la vostra cartera ara per protegir els vostres actius en criptomoneda i assegurar-vos que mai perdeu l'accés.</translation>
+<translation id="640898327002833127">Protectors de Brave <ph name="LINK_BEFORE"/>FINS<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Si sembla que aquest lloc està trencat, prova amb els Protectors. Nota: això pot reduir les proteccions de privadesa de Brave.</translation>
+<translation id="1299672573512347813">Aquests paràmetres afecten la compatibilitat web en aquest lloc.</translation>
+<translation id="7637771346619326580">Canvia els paràmetres per defecte de l’escut global</translation>
+<translation id="3520486481604057261">Personalitza les llistes de bloqueig d'anuncis</translation>
+<translation id="3146531623184244174">Connexions actualitzades a HTTPS</translation>
+<translation id="7461425058443653485">Scripts bloquejats</translation>
+<translation id="5544888475837817215">Permet tots els rastrejadors i anuncis</translation>
 </translationbundle>

@@ -1243,4 +1243,35 @@
 <translation id="778096729652828897">Tor를 이용한 비공개 창에 관하여 자세히 알아보십시오</translation>
 <translation id="3149306599361260465">초기화 중 [[percentage]]%</translation>
 <translation id="3258793718986637767">Tor에 문제가 있습니까? Try <ph name="BEGIN_LINK"/>Tor를 사용한 시크릿 창을 비활성화<ph name="END_LINK"/>한 다음 다시 활성화해 보세요.</translation>
+<translation id="8576106690599421723">주 수준 광고 표적화</translation>
+<translation id="4775297407519948063">이것은 Brave가 귀하의 주를 위해 특별히 의도한 광고를 보여주게 합니다.</translation>
+<translation id="5012991400231464322">매월 기부금</translation>
+<translation id="2084351799622920487">사이트를 계속해서 지원할 수 있도록 매월 정기 기부금을 설정해보세요.</translation>
+<translation id="8150772404570015166">매월 기부금이 아직 설정되지 않았습니다.</translation>
+<translation id="5055577484189948413">이번 달 총 기부금</translation>
+<translation id="5549059668721746831">다음 월 기부금 날짜</translation>
+<translation id="3922777918343537463">월간 기부 취소</translation>
+<translation id="1969724076378550685">월간 취소 확인</translation>
+<translation id="6238322297266927861">기부 금액:</translation>
+<translation id="1723857724166389190">이 작성자에 대한 월간 기부가 취소되었습니다.</translation>
+<translation id="2621124276654521177">현재 월간 기부</translation>
+<translation id="4371618764691059036">월간 기부가 설정되었습니다.</translation>
+<translation id="6356822617569064293">다음 기부 날짜:</translation>
+<translation id="6045860799501892362">월 기부금 설정</translation>
+<translation id="5737831580668469027">월 기부금!</translation>
+<translation id="2280319752798785157">매월 기부금</translation>
+<translation id="2337632028350283479">월 기부금의 작동 방식:</translation>
+<translation id="6457273203091513039">월 기부금은 자동 기부 결제에 포함되지 않습니다. 이 둘은 별개입니다.</translation>
+<translation id="5051110132941857169">월 기부금은 매달 일제히 결제됩니다. 자동 기부를 사용하는 경우에는 월간 자동 기부 결제와 동시에 팁도 결제됩니다.</translation>
+<translation id="3374483782662414143">팁 패널 내에서 월 기부금을 받는 사이트를 제거할 수 있습니다.</translation>
+<translation id="4989163558385430922">모두 보기</translation>
+<translation id="722307450061393855">지금 월렛을 백업하여 암호화폐 자산을 보호하고 액세스를 잃어버리지 마세요.</translation>
+<translation id="640898327002833127">Brave Shields <ph name="LINK_BEFORE"/>활성화됨<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">사이트가 깨진 것 같습니다. Shields를 비활성화해 보세요. 참고: 이렇게 하면 Brave 프라이버시 보호 성능이 줄어들 수 있습니다.</translation>
+<translation id="1299672573512347813">이들 설정은 사이트 웹 호환성에 영향을 줄 수 있습니다.</translation>
+<translation id="7637771346619326580">전역 Shield 기본값 변경</translation>
+<translation id="3520486481604057261">Adblock 목록 사용자 지정</translation>
+<translation id="3146531623184244174">HTTPS로 연결 업그레이됨</translation>
+<translation id="7461425058443653485">차단된 스크립트</translation>
+<translation id="5544888475837817215">모든 트래커 및 광고 허용</translation>
 </translationbundle>

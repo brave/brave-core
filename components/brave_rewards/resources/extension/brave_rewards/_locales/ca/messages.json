@@ -62,8 +62,8 @@
     "message": "Inclou a Auto-Contribució",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Propina mensual",
+  "monthlyContribution": {
+    "message": "Contribució Mensual",
     "description": ""
   },
   "ok": {

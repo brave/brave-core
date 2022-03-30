@@ -1244,4 +1244,35 @@
 <translation id="778096729652828897">تعرف على المزيد حول النوافذ الخاصة مع Tor</translation>
 <translation id="3149306599361260465">جارِ التهيئة [[percentage]]%</translation>
 <translation id="3258793718986637767">هل تواجه مشكلة مع ميزة Tor؟ حاول <ph name="BEGIN_LINK"/>تعطيل نافذة التصفح الخاصة المفعلة فيها ميزة Tor<ph name="END_LINK"/> وإعادة تشغيل هذه النافذة مرة أخرى.</translation>
+<translation id="8576106690599421723">مرحلة استهداف الاعلانات</translation>
+<translation id="4775297407519948063">يتيح هذا الخيار Brave أن يظهر لك إعلانات خاصة بحالتك</translation>
+<translation id="5012991400231464322">المساهمات الشهرية</translation>
+<translation id="2084351799622920487">قم بإعداد مساهمات شهرية متكررة حتى تتمكن من دعم المواقع بشكل مستمر.</translation>
+<translation id="8150772404570015166">لم يتم إعداد مساهمات شهرية حتى الآن.</translation>
+<translation id="5055577484189948413">مجموع المساهمات هذا الشهر</translation>
+<translation id="5549059668721746831">تاريخ المساهمة الشهرية التالية</translation>
+<translation id="3922777918343537463">إلغاء المساهمة الشهرية</translation>
+<translation id="1969724076378550685">تأكيد الإلغاء شهرياً</translation>
+<translation id="6238322297266927861">مبلغ المساهمة:</translation>
+<translation id="1723857724166389190">لقد تم إلغاء مساهمتك الشهرية لهذا المنشئ.</translation>
+<translation id="2621124276654521177">المساهمة الشهرية الحالية</translation>
+<translation id="4371618764691059036">تم تحديد المساهمة الشهرية.</translation>
+<translation id="6356822617569064293">تاريخ المساهمة التالي:</translation>
+<translation id="6045860799501892362">تعيين مساهمة شهرية</translation>
+<translation id="5737831580668469027">المساهمات الشهرية!</translation>
+<translation id="2280319752798785157">المساهمة الشهرية</translation>
+<translation id="2337632028350283479">إليك آلية عمل المساهمات الشهرية:</translation>
+<translation id="6457273203091513039">لا تتم الاشتراكات الشهرية من خلال دفع اشتراكك التلقائي. فهما منفصلان.</translation>
+<translation id="5051110132941857169">يتم دفع الاشتراكات الشهرية دفعة واحدة، كل شهر. إذا كنت تستخدم الاشتراك التلقائي، فسوف تظهر لك الإرشادات في نفس وقت دفع الاشتراك التلقائي الشهري.</translation>
+<translation id="3374483782662414143">يمكنك إزالة أي موقع يتلقى اشتراكات شهرية من داخل لوحة الإرشادات.</translation>
+<translation id="4989163558385430922">عرض الكل</translation>
+<translation id="722307450061393855">انسخ محفظتك احتياطيًا الآن لحماية أصول التشفير الخاصة بك والتأكد من أنك لن تفقد إمكانية الوصول أبدًا.</translation>
+<translation id="640898327002833127">دروع حماية  Brave<ph name="LINK_BEFORE"/>حتى <ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">إن كان من الواضح تعطل الموقع، فجرب تعطيل دروع الحماية (Shields dow). انتبه: قد يقلل ذلك من حماية الخصوصية لـ Brave.</translation>
+<translation id="1299672573512347813">تؤثر هذه الإعدادات على توافق الويب لهذا الموقع.</translation>
+<translation id="7637771346619326580">تغيير القيم الافتراضية لدروع الحماية العالمية</translation>
+<translation id="3520486481604057261">تخصيص قوائم مانع الإعلانات (Adblock)</translation>
+<translation id="3146531623184244174">تم تحديث الاتصالات إلى بروتوكول HTTPS المحمي</translation>
+<translation id="7461425058443653485">تم حظر النصوص</translation>
+<translation id="5544888475837817215">السماح بجميع أدوات التتبع والإعلانات</translation>
 </translationbundle>

@@ -1243,4 +1243,35 @@
 <translation id="778096729652828897">Tor ile Özel Pencere hakkında daha fazla bilgi edin</translation>
 <translation id="3149306599361260465">%[[percentage]] başlatılıyor</translation>
 <translation id="3258793718986637767">Tor ile sorun mu yaşıyorsunuz? <ph name="BEGIN_LINK"/>Tor ile gizli pencereyi devre dışı bırakıp<ph name="END_LINK"/> tekrar açmayı deneyin.</translation>
+<translation id="8576106690599421723">Devlet düzetinde reklam hedefleme</translation>
+<translation id="4775297407519948063">Bu, Brave'in sizin devletinize özel reklamları göstermesine izin verir.</translation>
+<translation id="5012991400231464322">Aylık Katkılar</translation>
+<translation id="2084351799622920487">Siteleri sürekli olarak destekleyebilmeniz için yineleyen aylık katkılar ayarlayın.</translation>
+<translation id="8150772404570015166">Henüz hiç aylık katkı ayarlanmadı.</translation>
+<translation id="5055577484189948413">Bu aydaki toplam katkı</translation>
+<translation id="5549059668721746831">Sonraki aylık bağış tarihi</translation>
+<translation id="3922777918343537463">Aylık Katkıyı İptal Et</translation>
+<translation id="1969724076378550685">Aylık İptal Etmeyi Onaylayın</translation>
+<translation id="6238322297266927861">Katkı miktarı:</translation>
+<translation id="1723857724166389190">Bu yaratıcıya aylık katkınız iptal edildi.</translation>
+<translation id="2621124276654521177">Şimdiki aylık katkı</translation>
+<translation id="4371618764691059036">Aylık katkı ayarlandı.</translation>
+<translation id="6356822617569064293">Gelecek katkı tarihi:</translation>
+<translation id="6045860799501892362">Aylık bağış belirle</translation>
+<translation id="5737831580668469027">Aylık Bağışlar!</translation>
+<translation id="2280319752798785157">Aylık Katkı</translation>
+<translation id="2337632028350283479">Aylık bağışlar şu şekilde çalışır:</translation>
+<translation id="6457273203091513039">Aylık bağışlarınız Auto-Contribute ödemelerinizden gelmez. Onlar ayrıdır.</translation>
+<translation id="5051110132941857169">Aylık bağışlar her ay, hep beraber ödenir. Eğer Auto-Contribute kullanıyorsanız, bahşişler aylık Auto-Contribute ödemeniz ile aynı anda gider.</translation>
+<translation id="3374483782662414143">Bahşişler panelinin içinden aylık bağış alan herhangi bir siteyi kaldırabilirsiniz.</translation>
+<translation id="4989163558385430922">Tümünü gör</translation>
+<translation id="722307450061393855">Kripto varlıklarınızı korumak ve erişimi asla kaybetmeyeceğinizden emin olmak için cüzdanınızı hemen yedekleyin.</translation>
+<translation id="640898327002833127">Brave Kalkanları <ph name="LINK_BEFORE"/>AÇIK<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Bu site bozuk görünüyorsa, Kalkanları kapatmayı deneyin. Not: Bu, Brave gizlilik korumalarını azaltabilir.</translation>
+<translation id="1299672573512347813">Bu ayarlar, bu sitedeki web uyumluluğunu etkiler.</translation>
+<translation id="7637771346619326580">Genel Kalkan varsayılanlarını değiştir</translation>
+<translation id="3520486481604057261">Adblock Listelerini Özelleştir</translation>
+<translation id="3146531623184244174">Bağlantılar HTTPS'e yükseltildi</translation>
+<translation id="7461425058443653485">Betikler Engellendi</translation>
+<translation id="5544888475837817215">Tüm izleyici ve reklamlara izin ver</translation>
 </translationbundle>

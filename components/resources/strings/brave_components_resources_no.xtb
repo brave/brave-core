@@ -1242,4 +1242,35 @@
 <translation id="778096729652828897">Lær mer om private vinduer med Tor</translation>
 <translation id="3149306599361260465">Starter [[percentage]]%</translation>
 <translation id="3258793718986637767">Har du problemer med Tor? Prøv å <ph name="BEGIN_LINK"/>deaktivere et privat vindu med Tor<ph name="END_LINK"/> og skru det på igjen.</translation>
+<translation id="8576106690599421723">Statusnivå og målrettede annonser</translation>
+<translation id="4775297407519948063">Dette lar Brave vise deg annonser som er ment for landet du befinner deg i.</translation>
+<translation id="5012991400231464322">Månedlige bidrag</translation>
+<translation id="2084351799622920487">Konfigurer gjentakende månedlige bidrag, slik at du kan støtte nettsteder kontinuerlig.</translation>
+<translation id="8150772404570015166">Ingen månedlige bidrag er konfigurert ennå.</translation>
+<translation id="5055577484189948413">Totalt antall bidrag denne måneden</translation>
+<translation id="5549059668721746831">Neste dato for månedlig bidrag</translation>
+<translation id="3922777918343537463">Kanseller månedlig bidrag</translation>
+<translation id="1969724076378550685">Bekreft kansellering av månedlig</translation>
+<translation id="6238322297266927861">Bidragsbeløp:</translation>
+<translation id="1723857724166389190">Ditt månedlige bidrag til denne skaperen er kansellert.</translation>
+<translation id="2621124276654521177">Nåværende månedlig bidrag</translation>
+<translation id="4371618764691059036">Månedlig bidrag er angitt.</translation>
+<translation id="6356822617569064293">Neste bidragsdato:</translation>
+<translation id="6045860799501892362">Angi månedlig bidrag</translation>
+<translation id="5737831580668469027">Månedlige bidrag!</translation>
+<translation id="2280319752798785157">Månedlig bidrag</translation>
+<translation id="2337632028350283479">Slik virker månedlige bidrag:</translation>
+<translation id="6457273203091513039">Månedlige bidrag trekkes ikke fra autobidrag-betalingen din. De er separate.</translation>
+<translation id="5051110132941857169">Alle månedlige bidrag utbetales på en gang, hver måned. Hvis du bruker autobidrag, sendes tips ut samtidig som den månedlig autobidrag-betalingen din.</translation>
+<translation id="3374483782662414143">Du kan fjerne alle nettsteder som mottar månedlige bidrag, i Tips-panelet.</translation>
+<translation id="4989163558385430922">Se alle</translation>
+<translation id="722307450061393855">Sikkerhetskopier lommeboken din nå for å beskytte kryptoverdiene dine og sikre at du aldri mister tilgang</translation>
+<translation id="640898327002833127">Brave Shields <ph name="LINK_BEFORE"/>OPP<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Hvis denne siden virker ødelagt, kan du prøve med Shields nede. Merk: Dette kan redusere personvernbeskyttelsen på Brave.</translation>
+<translation id="1299672573512347813">Disse innstillingene påvirker nettkompatibiliteten på denne siden.</translation>
+<translation id="7637771346619326580">Endre globale Shield-standarder</translation>
+<translation id="3520486481604057261">Tilpass Adblock-lister</translation>
+<translation id="3146531623184244174">Tilkoblinger oppgradert til HTTPS</translation>
+<translation id="7461425058443653485">Blokkerte skript</translation>
+<translation id="5544888475837817215">Tillat alle sporinger og annonser</translation>
 </translationbundle>

@@ -62,8 +62,8 @@
     "message": "ಸ್ವಯಂ-ಕೊಡುಗೆಯಲ್ಲಿ ಸೇರಿ",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "ಮಾಸಿಕ ಸಲಹೆ",
+  "monthlyContribution": {
+    "message": "ಮಾಸಿಕ ಕೊಡುಗೆ",
     "description": ""
   },
   "ok": {

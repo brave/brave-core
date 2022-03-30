@@ -1243,4 +1243,35 @@
 <translation id="778096729652828897">Saber más sobre Ventanas Privadas con Tor</translation>
 <translation id="3149306599361260465">Iniciando [[percentage]] %</translation>
 <translation id="3258793718986637767">¿Tienes problemas con Tor? Prueba a <ph name="BEGIN_LINK"/>desactivar la ventana privada con Tor<ph name="END_LINK"/> y volver a activarla.</translation>
+<translation id="8576106690599421723">Orientación de anuncios a nivel de estado</translation>
+<translation id="4775297407519948063">Esto permite a Brave mostrarte anuncios destinados específicamente a tu país.</translation>
+<translation id="5012991400231464322">Contribuciones mensuales</translation>
+<translation id="2084351799622920487">Puedes configurar contribuciones mensuales periódicas para ayudar a tus sitios favoritos de manera continuada.</translation>
+<translation id="8150772404570015166">Aún no se han establecido las contribuciones mensuales.</translation>
+<translation id="5055577484189948413">Contribuciones totales en el mes actual</translation>
+<translation id="5549059668721746831">Fecha de la próxima contribución mensual</translation>
+<translation id="3922777918343537463">Cancelar la contribución mensual</translation>
+<translation id="1969724076378550685">Confirmar la cancelación mensual</translation>
+<translation id="6238322297266927861">Cantidad de la contribución:</translation>
+<translation id="1723857724166389190">Tu contribución mensual a este creador ha sido cancelada.</translation>
+<translation id="2621124276654521177">Contribución mensual actual</translation>
+<translation id="4371618764691059036">Se ha establecido una contribución mensual.</translation>
+<translation id="6356822617569064293">Próxima fecha de contribución:</translation>
+<translation id="6045860799501892362">Establecer contribución mensual</translation>
+<translation id="5737831580668469027">¡Contribuciones Mensuales!</translation>
+<translation id="2280319752798785157">Contribución Mensual</translation>
+<translation id="2337632028350283479">Así es como funcionan las contribuciones mensuales:</translation>
+<translation id="6457273203091513039">Las contribuciones mensuales no proceden del pago de tu Contribución Automática. Son independientes.</translation>
+<translation id="5051110132941857169">Las contribuciones mensuales se pagan de una vez, todos los meses. Si utilizas la Contribución Automática, las propinas se pagan al mismo tiempo que el pago mensual de tu Contribución Automática.</translation>
+<translation id="3374483782662414143">Puedes eliminar cualquier sitio que reciba contribuciones mensuales desde el panel de "Propinas".</translation>
+<translation id="4989163558385430922">Ver todos</translation>
+<translation id="722307450061393855">Haz una copia de seguridad de tu monedero para proteger tus criptoactivos y asegurarte de no quedarte nunca sin acceso.</translation>
+<translation id="640898327002833127">Protecciones de Brave <ph name="LINK_BEFORE"/>ACTIVAS<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Si este sitio no funciona correctamente, desactiva Protecciones. Ten en cuenta que esto puede reducir la protección de privacidad de Brave.</translation>
+<translation id="1299672573512347813">Esta configuración interfiere en la compatibilidad web de este sitio.</translation>
+<translation id="7637771346619326580">Cambiar los valores predeterminados globales de Protecciones</translation>
+<translation id="3520486481604057261">Personalizar las listas de Adblock</translation>
+<translation id="3146531623184244174">Conexiones mejoradas a HTTPS</translation>
+<translation id="7461425058443653485">Scripts Bloqueados</translation>
+<translation id="5544888475837817215">Permitir todos los rastreadores y anuncios</translation>
 </translationbundle>

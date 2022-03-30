@@ -1243,4 +1243,35 @@
 <translation id="778096729652828897">更多關於使用 Tor 的隱私視窗的資訊</translation>
 <translation id="3149306599361260465">正在初始化 [[percentage]]%</translation>
 <translation id="3258793718986637767">有 Tor 方面的問題嗎？試試看 <ph name="BEGIN_LINK"/> 停用使用 Tor 的隱私視窗 <ph name="END_LINK"/>，然後重新開啟吧。</translation>
+<translation id="8576106690599421723">國家級廣告定位</translation>
+<translation id="4775297407519948063">這讓 Brave 可以為您顯示針對您國家的廣告。</translation>
+<translation id="5012991400231464322">每月貢獻</translation>
+<translation id="2084351799622920487">設定每月自動捐款，讓您可以持續支持網站。</translation>
+<translation id="8150772404570015166">尚未設定每月貢獻。</translation>
+<translation id="5055577484189948413">本月總貢獻</translation>
+<translation id="5549059668721746831">下一個每月捐款日期</translation>
+<translation id="3922777918343537463">取消每月捐款</translation>
+<translation id="1969724076378550685">確認取消每月</translation>
+<translation id="6238322297266927861">捐款金額</translation>
+<translation id="1723857724166389190">您對此創作者的每月捐款已取消。</translation>
+<translation id="2621124276654521177">目前每月捐款</translation>
+<translation id="4371618764691059036">已設定每月捐款。</translation>
+<translation id="6356822617569064293">下次捐款日期：</translation>
+<translation id="6045860799501892362">設定每月捐款</translation>
+<translation id="5737831580668469027">每月捐款！</translation>
+<translation id="2280319752798785157">每月貢獻</translation>
+<translation id="2337632028350283479">這裡是每月捐款的運作方式：</translation>
+<translation id="6457273203091513039">每月捐款與您的自動捐款不同。它們是分開的。</translation>
+<translation id="5051110132941857169">每月捐款會每個月一次付清當次的捐款。如果您使用自動捐款，則小費會與您的每月自動捐款同時出帳。</translation>
+<translation id="3374483782662414143">您可以從「小費」面板中移除任何要收到每月捐款的網站。</translation>
+<translation id="4989163558385430922">查看所有</translation>
+<translation id="722307450061393855">立即備份您的錢包，以保護您的加密資產，並確保您永遠不會失去存取權限。</translation>
+<translation id="640898327002833127">Brave 防護 <ph name="LINK_BEFORE"/>開啟<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">如果此網站似乎損壞，請嘗試關閉防護。注意：這可能降低 Brave 隱私保護。</translation>
+<translation id="1299672573512347813">這些設定會影響此網站的網路相容性。</translation>
+<translation id="7637771346619326580">變更全域防護預設值</translation>
+<translation id="3520486481604057261">自訂廣告封鎖清單</translation>
+<translation id="3146531623184244174">條已升級到 HTTPS 的連線</translation>
+<translation id="7461425058443653485">封鎖指令稿</translation>
+<translation id="5544888475837817215">允許所有追蹤程式與廣告</translation>
 </translationbundle>

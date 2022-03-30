@@ -1243,9 +1243,35 @@
 <translation id="778096729652828897">Zjistěte více o soukromých oknech s vyhledávačem Tor</translation>
 <translation id="3149306599361260465">Inicializace [[percentage]] %</translation>
 <translation id="3258793718986637767">Máte problém s Tor? Zkuste <ph name="BEGIN_LINK"/>zakázat soukromé okno s Tor<ph name="END_LINK"/> a opět jej znovu zapnout.</translation>
-<translation id="4105411033440701818">Poznámka: adresa těchto stránek bude odeslána s číslem verze vašeho Brave a vaší IP adresou (tento údaj se neukládá).</translation>
-<translation id="5810507495128831593">Posílejte tvůrcům příspěvky přímo při prohlížení. Stačí použít panel odměn nebo tlačítko pro zaslání příspěvku uvedené přímo na různých stránkách, mezi které patří Twitter, Reddit a GitHub.</translation>
-<translation id="9013419433042554094">Vybrat tokeny</translation>
-<translation id="2221902203895354376">Dostupné tokeny</translation>
-<translation id="5592304751234049046">Vyhledávání účtu 0x</translation>
+<translation id="8576106690599421723">Uveďte úroveň zacílení reklamy</translation>
+<translation id="4775297407519948063">To umožňuje, aby vám Brave ukazoval reklamy určené přesně pro váš stav.</translation>
+<translation id="5012991400231464322">Měsíční příspěvky</translation>
+<translation id="2084351799622920487">Nastavte opakující se měsíční příspěvky, abyste mohli stránky průběžně podporovat.</translation>
+<translation id="8150772404570015166">Zatím nebyly nastaveny žádné měsíční příspěvky</translation>
+<translation id="5055577484189948413">Celkem příspěvků tento měsíc</translation>
+<translation id="5549059668721746831">Datum příštího měsíčního příspěvku</translation>
+<translation id="3922777918343537463">Zrušit měsíční příspěvek</translation>
+<translation id="1969724076378550685">Potvrdit zrušení měsíčních</translation>
+<translation id="6238322297266927861">Částka příspěvku:</translation>
+<translation id="1723857724166389190">Váš měsíční příspěvek pro tohoto tvůrce byl zrušen.</translation>
+<translation id="2621124276654521177">Aktuální měsíční příspěvek</translation>
+<translation id="4371618764691059036">Měsíční příspěvek byl nastaven.</translation>
+<translation id="6356822617569064293">Datum příštího příspěvku:</translation>
+<translation id="6045860799501892362">Nastavit měsíční příspěvek</translation>
+<translation id="5737831580668469027">Měsíční příspěvky!</translation>
+<translation id="2280319752798785157">Měsíční příspěvek</translation>
+<translation id="2337632028350283479">Měsíční příspěvky fungují následovně:</translation>
+<translation id="6457273203091513039">Měsíční příspěvky nespadají pod vaše automatické příspěvky. Jsou oddělené.</translation>
+<translation id="5051110132941857169">Měsíční příspěvky jsou placeny najednou a každý měsíc. Pokud používáte funkci automatických příspěvků, příspěvky jsou odesílány ve stejnou chvíli, jako vaše měsíční platba automatických příspěvků.</translation>
+<translation id="3374483782662414143">Z panelu Příspěvky můžete odstranit libovolný web, kterému posíláte měsíční příspěvky.</translation>
+<translation id="4989163558385430922">Zobrazit vše</translation>
+<translation id="722307450061393855">Zálohujte si peněženku, abyste ochránili svá kryptoaktiva a zajistili, že k nim nikdy neztratíte přístup.</translation>
+<translation id="640898327002833127">Štíty Brave <ph name="LINK_BEFORE"/>ZAPNUTY<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">Pokud se stránky nezobrazují správně, zkuste vypnout štíty. Poznámka: Může tím být omezena ochrana osobních údajů Brave.</translation>
+<translation id="1299672573512347813">Tato nastavení mají vliv na kompatibilitu a tím i fungování této stránky.</translation>
+<translation id="7637771346619326580">Změnit výchozí nastavení globálního štítu</translation>
+<translation id="3520486481604057261">Přizpůsobit seznamy rozšíření Adblock</translation>
+<translation id="3146531623184244174">připojení aktualizována pro HTTPS</translation>
+<translation id="7461425058443653485">Skripty blokovány</translation>
+<translation id="5544888475837817215">Povolit všechny sledovače a reklamy</translation>
 </translationbundle>

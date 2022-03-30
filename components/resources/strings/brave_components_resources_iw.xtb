@@ -1199,10 +1199,35 @@
 <translation id="778096729652828897">למד עוד על חלונות גלישה פרטית של Tor</translation>
 <translation id="3149306599361260465">מאתחל [[percentage]]%</translation>
 <translation id="3258793718986637767">נתקלים בתקלות עם Tor? נסו <ph name="BEGIN_LINK"/>השבתת חלון פרטי עם Tor Tor<ph name="END_LINK"/> והפעילו אותו חזרה.</translation>
-<translation id="4105411033440701818">תשומת לבך: כתובת אתר זה תשלח ביחד עם מספר גרסת Brave  שלך וכתובת ה-IP שלך (שלא יישמרו).</translation>
-<translation id="4851215387785619212">Brave Private Ads</translation>
-<translation id="5810507495128831593">תן/י ליוצרי התוכן טיפ ישירות תוך כדי גלישה באמצעות פנל התגמולים, או לחצן הטיפים שמופיע באתרים שונים, בהם טוויטר, Reddit ו-GitHub.</translation>
-<translation id="9013419433042554094">תביעת אסימונים</translation>
-<translation id="2221902203895354376">טוקנים זמינים</translation>
-<translation id="5592304751234049046">חיפוש בחשבון 0x</translation>
+<translation id="8576106690599421723">מיקוד פרסומות ברמת המדינה</translation>
+<translation id="4775297407519948063">זה מאפשר ל-Brave להציג בפניך פרסומות המיועדות במיוחד למדינה שלך.</translation>
+<translation id="5012991400231464322">תרומות חודשיות</translation>
+<translation id="2084351799622920487">הגדירו תרומות חודשיות נשנות כדי שתוכלו לתמוך באתרים באופן רציף.</translation>
+<translation id="8150772404570015166">טרם נקבעו תרומות חודשיות.</translation>
+<translation id="5055577484189948413">סך התרומות החודש</translation>
+<translation id="5549059668721746831">תאריך התרומה החודשית הבא</translation>
+<translation id="3922777918343537463">בטל תרומה חודשית</translation>
+<translation id="1969724076378550685">אשר ביטול חודשי</translation>
+<translation id="6238322297266927861">סכום תרומה:</translation>
+<translation id="1723857724166389190">התרומה החודשית שלך ליוצר זה בוטלה.</translation>
+<translation id="2621124276654521177">תרומה חודשית נוכחית</translation>
+<translation id="4371618764691059036">נקבעה תרומה חודשית.</translation>
+<translation id="6356822617569064293">תאריך התרומה הבא:</translation>
+<translation id="6045860799501892362">קבעו תרומה חודשית</translation>
+<translation id="5737831580668469027">תרומות חודשיות!</translation>
+<translation id="2280319752798785157">תרומה חודשית</translation>
+<translation id="2337632028350283479">להלן האופן בו תרומות חודשיות עובדות:</translation>
+<translation id="6457273203091513039">התרומות החודשיות אינן יוצאות מתוך תשלום התרומה האוטומטית שלכם. הן נפרדות.</translation>
+<translation id="5051110132941857169">התשלומים החודשיים משולמים בבת אחת, בכל חודש. אם הנכם עושים שימוש בתרומה אוטומטית, הטיפים יוצאים במקביל לתשלום התרומה האוטומטית החודשית שלכם.</translation>
+<translation id="3374483782662414143">באפשרותכם להסיר כל אתר שמקבל תרומות חודשיות מתוך חלונית הטיפים.</translation>
+<translation id="4989163558385430922">הצג הגל</translation>
+<translation id="722307450061393855">גבה כעת את הארנק שלך כדי להגן על נכסי הקריפטו שלך ולהבטיח שלעולם לא תאבד את הגישה.</translation>
+<translation id="640898327002833127">Brave מגנים <ph name="LINK_BEFORE"/>לְמַעלָה<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">אם האתר הזה נראה מקולקל, נסה את מגנים למטה. הערה: זה עשוי להפחית את הגנת הפרטיות של Brave.</translation>
+<translation id="1299672573512347813">הגדרות אלה משפיעות על תאימות החיבוריות בנושא זה</translation>
+<translation id="7637771346619326580">שנה ברירות מחדל גלובליות של מגנים</translation>
+<translation id="3520486481604057261">התאם אישית את רשימות חסימת המודעות</translation>
+<translation id="3146531623184244174">החיבורים שודרגו ל-HTTPS</translation>
+<translation id="7461425058443653485">סקריפטים חסומים</translation>
+<translation id="5544888475837817215">אפשר את כל העוקבים והמודעות</translation>
 </translationbundle>

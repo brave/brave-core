@@ -62,8 +62,8 @@
     "message": "Включено в автоматичния принос",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Monthly Tip",
+  "monthlyContribution": {
+    "message": "Месечен принос",
     "description": ""
   },
   "ok": {

@@ -62,8 +62,8 @@
     "message": "Uključi u Samo-doprinos",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Mesečna napojnica",
+  "monthlyContribution": {
+    "message": "Mesečni doprinos",
     "description": ""
   },
   "ok": {

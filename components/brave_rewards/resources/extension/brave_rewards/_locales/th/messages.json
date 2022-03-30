@@ -62,8 +62,8 @@
     "message": "รวมไว้ในการบริจาคแบบอัตโนมัติ",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "การให้ทิปรายเดือน",
+  "monthlyContribution": {
+    "message": "การสนับสนุนรายเดือน",
     "description": ""
   },
   "ok": {

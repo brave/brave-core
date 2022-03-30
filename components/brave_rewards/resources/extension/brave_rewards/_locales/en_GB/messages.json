@@ -62,8 +62,8 @@
     "message": "Include in Auto-Contribute",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "Monthly tip",
+  "monthlyContribution": {
+    "message": "Monthly Contribution",
     "description": ""
   },
   "ok": {

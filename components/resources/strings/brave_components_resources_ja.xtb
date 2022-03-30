@@ -1245,4 +1245,35 @@
 <translation id="778096729652828897">プライベートウィンドウ+Tor の詳細について</translation>
 <translation id="3149306599361260465">[[percentage]]%初期化中</translation>
 <translation id="3258793718986637767">Torに問題がある場合は、<ph name="BEGIN_LINK"/>Torを使用したプライベートウィンドウを無効に<ph name="END_LINK"/>してからもう一度開きます。</translation>
+<translation id="8576106690599421723">州/都道府県レベルの広告ターゲティング</translation>
+<translation id="4775297407519948063">Braveがあなたの居住地域に合わせた広告を表示できるようになります</translation>
+<translation id="5012991400231464322">毎月の支援額</translation>
+<translation id="2084351799622920487">サイトを継続して支援するために、毎月支援を行うように設定します。</translation>
+<translation id="8150772404570015166">毎月の支援額が設定されていません。</translation>
+<translation id="5055577484189948413">今月の総支援額</translation>
+<translation id="5549059668721746831">次の毎月の支援日</translation>
+<translation id="3922777918343537463">毎月の寄付をキャンセルする</translation>
+<translation id="1969724076378550685">毎月の支援のキャンセルを確認</translation>
+<translation id="6238322297266927861">寄付額：</translation>
+<translation id="1723857724166389190">このクリエイターへの毎月の寄付はキャンセルされました。</translation>
+<translation id="2621124276654521177">現在の毎月の寄付</translation>
+<translation id="4371618764691059036">毎月の寄付が設定されています。</translation>
+<translation id="6356822617569064293">次の寄付日：</translation>
+<translation id="6045860799501892362">毎月の支援を設定する</translation>
+<translation id="5737831580668469027">毎月の支援！</translation>
+<translation id="2280319752798785157">毎月の支援</translation>
+<translation id="2337632028350283479">毎月の支援の仕組み：</translation>
+<translation id="6457273203091513039">毎月自動支払いと自動支援は別です。それぞれに設定した金額が支払われます。</translation>
+<translation id="5051110132941857169">月々の支援は毎月一度に支払われます。「Auto-Contribute (自動支援)」を用いている場合、チップはあなたの毎月の自動支援の支払いと同時に送られます。</translation>
+<translation id="3374483782662414143">チップパネル内から毎月の支援を受け取るサイトを削除することができます。</translation>
+<translation id="4989163558385430922">すべてを見る</translation>
+<translation id="722307450061393855">今すぐウォレットをバックアップして、暗号資産を保護し、アクセスを失うことが無いようにしましょう。</translation>
+<translation id="640898327002833127">Brave Shields <ph name="LINK_BEFORE"/>オン<ph name="LINK_AFTER"/></translation>
+<translation id="8676609116485287125">サイトが正常に表示されていないと思われる場合は、Shieldsをオフにしてみてください。注: これにより、Braveによるプライバシー保護の効果が減少する場合があります。</translation>
+<translation id="1299672573512347813">この設定は、このサイトでのWeb互換性に影響を与えます。</translation>
+<translation id="7637771346619326580">Shieldのデフォルト設定を変更</translation>
+<translation id="3520486481604057261">Adblockリストをカスタマイズ</translation>
+<translation id="3146531623184244174">接続がHTTPSにアップグレードされました</translation>
+<translation id="7461425058443653485">ブロック済みのスクリプト</translation>
+<translation id="5544888475837817215">すべてのトラッカーと広告を許可</translation>
 </translationbundle>

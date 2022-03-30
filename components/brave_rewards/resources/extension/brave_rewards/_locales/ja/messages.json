@@ -62,8 +62,8 @@
     "message": "自動支援の対象にする",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "毎月のチップ",
+  "monthlyContribution": {
+    "message": "毎月の支援",
     "description": ""
   },
   "ok": {

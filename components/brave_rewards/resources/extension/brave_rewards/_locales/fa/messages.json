@@ -62,8 +62,8 @@
     "message": "لحاظ کردن در کمک خودکار",
     "description": ""
   },
-  "monthlyTip": {
-    "message": "انعام ماهانه",
+  "monthlyContribution": {
+    "message": "کمک ماهانه",
     "description": ""
   },
   "ok": {
