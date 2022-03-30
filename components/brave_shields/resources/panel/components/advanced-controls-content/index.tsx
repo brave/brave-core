@@ -17,7 +17,7 @@ const adBlockModeOptions = [
 const cookieBlockModeOptions = [
   { value: CookieBlockMode.CROSS_SITE_BLOCKED, text: getLocale('braveShieldsCrossCookiesBlocked') },
   { value: CookieBlockMode.BLOCKED, text: getLocale('braveShieldsCookiesBlocked') },
-  { value: CookieBlockMode.ALLOW, text: getLocale('braveShieldsCookiesBlockedAll') }
+  { value: CookieBlockMode.ALLOW, text: getLocale('braveShieldsCookiesAllowedAll') }
 ]
 
 const fingerprintModeOptions = [
