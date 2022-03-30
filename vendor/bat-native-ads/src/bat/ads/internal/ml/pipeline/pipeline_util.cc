@@ -7,6 +7,7 @@
 
 #include <map>
 #include <memory>
+#include <utility>
 #include <vector>
 
 #include "base/json/json_reader.h"
@@ -143,7 +144,8 @@ absl::optional<model::Linear> ParsePipelineClassifier(
     if (!this_class) {
       return absl::nullopt;
     }
-    std::vector<double> class_coef_weights;
+    std::vector<float> class_coef_weights;
+    class_coef_weights.reserve(this_class->GetList().size());
     for (const base::Value& weight : this_class->GetList()) {
       if (weight.is_double() || weight.is_int()) {
         class_coef_weights.push_back(weight.GetDouble());
@@ -151,7 +153,7 @@ absl::optional<model::Linear> ParsePipelineClassifier(
         return absl::nullopt;
       }
     }
-    weights[class_string] = VectorData(class_coef_weights);
+    weights[class_string] = VectorData(std::move(class_coef_weights));
   }
 
   std::map<std::string, double> specified_biases;

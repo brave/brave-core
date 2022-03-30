@@ -12,7 +12,7 @@
 namespace ads {
 namespace ml {
 
-using SparseVectorElement = std::pair<uint32_t, double>;
+using SparseVectorElement = std::pair<uint32_t, float>;
 
 }  // namespace ml
 }  // namespace ads

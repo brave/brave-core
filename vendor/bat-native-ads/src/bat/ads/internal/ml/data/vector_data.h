@@ -20,13 +20,18 @@ class VectorData final : public Data {
  public:
   VectorData();
   VectorData(const VectorData& vector_data);
-  explicit VectorData(const std::vector<double>& data);
+  VectorData(VectorData&& vector_data);
+
+  explicit VectorData(const std::vector<float>& data);
+
+  // double is used for backward compatibility with the current code.
   VectorData(const int dimension_count, const std::map<uint32_t, double>& data);
   ~VectorData() override;
 
-  // Explicit copy assignment operator is required because the class
+  // Explicit copy assignment && move operators is required because the class
   // inherits const member type_ that cannot be copied by default
   VectorData& operator=(const VectorData& vector_data);
+  VectorData& operator=(VectorData&& vector_data);
 
   friend double operator*(const VectorData& lhs, const VectorData& rhs);
 
