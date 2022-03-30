@@ -36,7 +36,7 @@ ReduceLanguageNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle,
     HostContentSettingsMap* content_settings) {
   content::BrowserContext* context =
-    navigation_handle->GetWebContents()->GetBrowserContext();
+      navigation_handle->GetWebContents()->GetBrowserContext();
   PrefService* pref_service = user_prefs::UserPrefs::Get(context);
   if (!IsReduceLanguageEnabledForProfile(pref_service))
     return nullptr;
@@ -73,7 +73,7 @@ void ReduceLanguageNavigationThrottle::UpdateHeaders() {
   content::NavigationHandle* handle = navigation_handle();
   GURL url = handle->GetURL();
   content::BrowserContext* context =
-    handle->GetWebContents()->GetBrowserContext();
+      handle->GetWebContents()->GetBrowserContext();
   PrefService* pref_service = user_prefs::UserPrefs::Get(context);
 
   if (!brave_shields::ShouldDoReduceLanguage(content_settings_, url,
