@@ -41,7 +41,7 @@ class VectorDataStorage {
   size_t GetSize() const { return values_.size(); }
 
   uint32_t GetPointAt(size_t index) const {
-    DCHECK_GE(index, 0);
+    DCHECK_GE(index, 0u);
     DCHECK_LT(index, values_.size());
     if (points_.empty())  // The "dense" case, see the description.
       return index;
