@@ -41,14 +41,6 @@ class BraveVpnNativeWorker {
 
   void OnGetHostnamesForRegion(const std::string& hostname_json, bool success);
 
-  void GetProfileCredentials(
-      JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& subscriber_credential,
-      const base::android::JavaParamRef<jstring>& hostname);
-
-  void OnGetProfileCredentials(const std::string& profile_credentials_json,
-                               bool success);
-
   void GetWireguardProfileCredentials(
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& subscriber_credential,

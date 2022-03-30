@@ -58,7 +58,7 @@ index 616c88364d599be02afacc8d0d73f00bad374a82..2c6d081ef5be5adf6fd1b999c9832372
  
    # More deps for DFMs.
    if (dfmify_dev_ui) {
-@@ -2743,6 +2752,7 @@ template("monochrome_public_apk_or_module_tmpl") {
+@@ -2782,6 +2791,7 @@ template("monochrome_public_apk_or_module_tmpl") {
          deps += [ "//weblayer/browser/java:upstream_java" ]
        }
      }

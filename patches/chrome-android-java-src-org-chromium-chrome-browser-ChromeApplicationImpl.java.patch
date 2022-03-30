@@ -1,29 +1,20 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeApplicationImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeApplicationImpl.java
-index 0e9a18837999ea2aef6e8275cf55cab392a30a47..64e64e3426f1461af9969eb311da25c34878564c 100644
+index 346488166d3082195308895b56e69270166ea321..8db0fc6f2122e47e8b7f95ac3e8f2e904e48138d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeApplicationImpl.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeApplicationImpl.java
-@@ -34,6 +34,10 @@ import org.chromium.components.module_installer.util.ModuleUtil;
+@@ -34,6 +34,7 @@ import org.chromium.components.module_installer.util.ModuleUtil;
  import org.chromium.components.version_info.Channel;
  import org.chromium.components.version_info.VersionConstants;
  import org.chromium.url.GURL;
-+import androidx.core.content.ContextCompat;
-+import org.chromium.base.Log;
-+import com.wireguard.android.backend.GoBackend;
-+import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
++import androidx.core.content.ContextCompat;import com.wireguard.android.backend.GoBackend;import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
  
  /**
   * Basic application functionality that should be shared among all browser applications that use
-@@ -78,6 +82,13 @@ public class ChromeApplicationImpl extends SplitCompatApplication.Impl {
+@@ -78,6 +79,7 @@ public class ChromeApplicationImpl extends SplitCompatApplication.Impl {
              PartitionResolverSupplier.setInstance(new ProfileResolver());
  
              AppHooks.get().getChimeDelegate().initialize();
-+            GoBackend.setAlwaysOnCallback(new GoBackend.AlwaysOnCallback() {
-+                @Override
-+                public void alwaysOnTriggered() {
-+                    Log.v("BraveVPN", "setAlwaysOnCallback");
-+                    BraveVpnProfileUtils.getInstance().startVpn(getApplication());
-+                }
-+        });
++            GoBackend.setAlwaysOnCallback(new GoBackend.AlwaysOnCallback() {@Override public void alwaysOnTriggered() { BraveVpnProfileUtils.getInstance().startVpn(getApplication()); }});
          }
      }
  

@@ -88,6 +88,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 braveVpnCheckedSubMenuItem.setChecked(
                         BraveVpnProfileUtils.getInstance().isBraveVPNConnected(mContext));
             }
+        } else {
+            menu.findItem(R.id.request_brave_vpn_row_menu_id).setVisible(false);
+            menu.findItem(R.id.divider_line_id).setVisible(false);
         }
 
         // Brave's items are only visible for page menu.

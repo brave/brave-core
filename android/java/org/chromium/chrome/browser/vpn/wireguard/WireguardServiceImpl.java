@@ -24,12 +24,13 @@ import com.wireguard.android.backend.Statistics;
 import com.wireguard.android.backend.Tunnel;
 import com.wireguard.config.Config;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
-import org.chromium.base.ContextUtils;
 
-public class WireguardServiceImpl extends WireguardService.Impl implements TunnelModel.TunnelStateUpdateListener {
+public class WireguardServiceImpl
+        extends WireguardService.Impl implements TunnelModel.TunnelStateUpdateListener {
     private final IBinder mBinder = new WireguardServiceBinder();
 
     private Backend mBackend;
@@ -64,7 +65,7 @@ public class WireguardServiceImpl extends WireguardService.Impl implements Tunne
         }.start();
         getService().startForeground(BraveChannelDefinitions.ChannelId.BRAVE_BROWSER_CHANNEL_INT,
                 BraveVpnUtils.getBraveVpnNotification(ContextUtils.getApplicationContext()));
-        return getService().START_NOT_STICKY;
+        return Service.START_NOT_STICKY;
     }
 
     private void startVpn() throws Exception {

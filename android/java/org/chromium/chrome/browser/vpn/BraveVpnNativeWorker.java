@@ -95,13 +95,6 @@ public class BraveVpnNativeWorker {
     }
 
     @CalledByNative
-    public void onGetProfileCredentials(String jsonProfileCredentials, boolean isSuccess) {
-        for (BraveVpnObserver observer : mObservers) {
-            observer.onGetProfileCredentials(jsonProfileCredentials, isSuccess);
-        }
-    }
-
-    @CalledByNative
     public void onGetWireguardProfileCredentials(
             String jsonWireguardProfileCredentials, boolean isSuccess) {
         for (BraveVpnObserver observer : mObservers) {
@@ -149,11 +142,6 @@ public class BraveVpnNativeWorker {
         BraveVpnNativeWorkerJni.get().getHostnamesForRegion(mNativeBraveVpnNativeWorker, region);
     }
 
-    public void getProfileCredentials(String subscriberCredential, String hostname) {
-        BraveVpnNativeWorkerJni.get().getProfileCredentials(
-                mNativeBraveVpnNativeWorker, subscriberCredential, hostname);
-    }
-
     public void getWireguardProfileCredentials(
             String subscriberCredential, String publicKey, String hostname) {
         BraveVpnNativeWorkerJni.get().getWireguardProfileCredentials(
@@ -191,8 +179,6 @@ public class BraveVpnNativeWorker {
         void getAllServerRegions(long nativeBraveVpnNativeWorker);
         void getTimezonesForRegions(long nativeBraveVpnNativeWorker);
         void getHostnamesForRegion(long nativeBraveVpnNativeWorker, String region);
-        void getProfileCredentials(
-                long nativeBraveVpnNativeWorker, String subscriberCredential, String hostname);
         void getWireguardProfileCredentials(long nativeBraveVpnNativeWorker,
                 String subscriberCredential, String publicKey, String hostname);
         void verifyCredentials(long nativeBraveVpnNativeWorker, String hostname, String clientId,

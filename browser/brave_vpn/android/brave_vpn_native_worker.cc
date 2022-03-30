@@ -105,30 +105,6 @@ void BraveVpnNativeWorker::OnGetHostnamesForRegion(
       base::android::ConvertUTF8ToJavaString(env, hostnames_json), success);
 }
 
-void BraveVpnNativeWorker::GetProfileCredentials(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& subscriber_credential,
-    const base::android::JavaParamRef<jstring>& hostname) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
-  if (brave_vpn_service) {
-    brave_vpn_service->GetProfileCredentials(
-        base::BindOnce(&BraveVpnNativeWorker::OnGetProfileCredentials,
-                       weak_factory_.GetWeakPtr()),
-        base::android::ConvertJavaStringToUTF8(env, subscriber_credential),
-        base::android::ConvertJavaStringToUTF8(env, hostname));
-  }
-}
-
-void BraveVpnNativeWorker::OnGetProfileCredentials(
-    const std::string& profile_credentials_json,
-    bool success) {
-  JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveVpnNativeWorker_onGetProfileCredentials(
-      env, weak_java_brave_vpn_native_worker_.get(env),
-      base::android::ConvertUTF8ToJavaString(env, profile_credentials_json),
-      success);
-}
-
 void BraveVpnNativeWorker::GetWireguardProfileCredentials(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& subscriber_credential,

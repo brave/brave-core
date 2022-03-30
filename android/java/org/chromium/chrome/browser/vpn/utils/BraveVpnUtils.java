@@ -33,7 +33,6 @@ import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnAlwaysOnErrorDialogFragment;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnConfirmDialogFragment;
-import org.chromium.chrome.browser.vpn.models.BraveVpnProfileCredentials;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.models.BraveVpnWireguardProfileCredentials;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -90,12 +89,9 @@ public class BraveVpnUtils {
     }
 
     public static void dismissProgressDialog() {
-        Log.e("BraveVPN", "dismissProgressDialog : 1");
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            Log.e("BraveVPN", "dismissProgressDialog : 2");
             mProgressDialog.dismiss();
         }
-        Log.e("BraveVPN", "dismissProgressDialog : 3");
     }
 
     public static String getRegionForTimeZone(String jsonTimezones, String currentTimezone) {
@@ -146,22 +142,6 @@ public class BraveVpnUtils {
         return new Pair<String, String>("", "");
     }
 
-    public static BraveVpnProfileCredentials getProfileCredentials(String jsonProfileCredentials) {
-        try {
-            JSONObject profileCredentials = new JSONObject(jsonProfileCredentials);
-            BraveVpnProfileCredentials braveVpnProfileCredentials =
-                    new BraveVpnProfileCredentials(profileCredentials.getString("api-auth-token"),
-                            profileCredentials.getString("eap-username"),
-                            profileCredentials.getString("eap-password"));
-            // BraveVpnPrefUtils.setUsername(braveVpnProfileCredentials.getUsername());
-            BraveVpnPrefUtils.setApiAuthToken(braveVpnProfileCredentials.getApiAuthToken());
-            return braveVpnProfileCredentials;
-        } catch (JSONException e) {
-            Log.e("BraveVPN", "BraveVpnUtils -> getProfileCredentials JSONException error " + e);
-        }
-        return null;
-    }
-
     public static BraveVpnWireguardProfileCredentials getWireguardProfileCredentials(
             String jsonWireguardProfileCredentials) {
         try {
@@ -174,8 +154,6 @@ public class BraveVpnUtils {
                             wireguardProfileCredentials.getString("mapped-ipv4-address"),
                             wireguardProfileCredentials.getString("mapped-ipv6-address"),
                             wireguardProfileCredentials.getString("server-public-key"));
-            // BraveVpnPrefUtils.setUsername(braveVpnWireguardProfileCredentials.getUsername());
-            // BraveVpnPrefUtils.setApiAuthToken(braveVpnWireguardProfileCredentials.getApiAuthToken());
             return braveVpnWireguardProfileCredentials;
         } catch (JSONException e) {
             Log.e("BraveVPN",
@@ -266,24 +244,12 @@ public class BraveVpnUtils {
         try {
             WireguardConfigUtils.deleteConfig(activity);
         } catch (Exception ex) {
-            Log.e("BraveVPN", "resetProfileConfiguration");
+            Log.e("BraveVPN", "resetProfileConfiguration : " + ex.getMessage());
         }
         BraveVpnPrefUtils.setHostname("");
         BraveVpnPrefUtils.setHostnameDisplay("");
         BraveVpnPrefUtils.setServerRegion(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
         BraveVpnPrefUtils.setResetConfiguration(true);
-    }
-
-    public static AlwaysOnVpnType getAlwaysOnVpn(Context context) {
-        String alwaysOnPackage =
-                Settings.Secure.getString(context.getContentResolver(), "always_on_vpn_app");
-        Log.e("BraveVPN", "alwaysOnPackage : " + alwaysOnPackage);
-        if (alwaysOnPackage != null) {
-            return context.getPackageName().equals(alwaysOnPackage) ? AlwaysOnVpnType.BRAVE_VPN
-                                                                    : AlwaysOnVpnType.OTHER_VPN;
-        } else {
-            return AlwaysOnVpnType.NONE;
-        }
     }
 
     public static void showVpnAlwaysOnErrorDialog(Activity activity) {

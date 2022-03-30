@@ -14,12 +14,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -174,7 +170,6 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.wireguard.TunnelModel;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
-import org.chromium.chrome.browser.vpn.wireguard.WireguardService;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardUtils;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceAccountBalance;
 import org.chromium.chrome.browser.widget.crypto.binance.BinanceWidgetManager;
@@ -259,8 +254,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public boolean mComesFromNewTab;
     public CopyOnWriteArrayList<FeedItemsCard> mNewsItemsFeedCards;
 
-    private WireguardService wireguardService;
-
     @SuppressLint("VisibleForTests")
     public BraveActivity() {
         // Disable key checker to avoid asserts on Brave keys in debug
@@ -317,12 +310,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (id == R.id.brave_news_id) {
             openBraveNewsSettings();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
-            Log.e("BraveVPN", "Brave Vpn Menu");
             if (!InternetConnection.isNetworkAvailable(BraveActivity.this)) {
                 Toast.makeText(BraveActivity.this, R.string.no_internet, Toast.LENGTH_SHORT).show();
             } else {
                 if (BraveVpnProfileUtils.getInstance().isBraveVPNConnected(BraveActivity.this)) {
-                    Log.e("BraveVPN", "Brave Vpn Menu : VPN is already connected.");
                     BraveVpnUtils.showProgressDialog(BraveActivity.this,
                             getResources().getString(R.string.vpn_disconnect_text));
                     BraveVpnProfileUtils.getInstance().stopVpn(BraveActivity.this);
@@ -330,11 +321,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 } else {
                     BraveVpnUtils.showProgressDialog(BraveActivity.this,
                             getResources().getString(R.string.vpn_connect_text));
-                    Log.e("BraveVPN", "Brave Vpn Menu : Check if already subscribed.");
                     if (BraveVpnPrefUtils.isSubscriptionPurchase()) {
                         verifySubscription();
                     } else {
-                        Log.e("BraveVPN", "Brave Vpn Menu : not subscribed.");
                         BraveVpnUtils.dismissProgressDialog();
                         BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
                     }
@@ -494,16 +483,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     private void verifySubscription() {
         List<Purchase> purchases = InAppPurchaseWrapper.getInstance().queryPurchases();
-        Log.e("BraveVPN", "verifySubscription : 1");
         if (purchases != null && purchases.size() == 1) {
-            Log.e("BraveVPN", "verifySubscription : 2");
             Purchase purchase = purchases.get(0);
             mPurchaseToken = purchase.getPurchaseToken();
             mProductId = purchase.getSkus().get(0).toString();
             BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken, mProductId,
                     BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
         } else {
-            Log.e("BraveVPN", "verifySubscription : 3");
             BraveVpnApiResponseUtils.queryPurchaseFailed(BraveActivity.this);
             if (!mIsVerification) {
                 BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
@@ -513,22 +499,17 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     @Override
     public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
-        Log.e("BraveVPN", "onVerifyPurchaseToken : 1");
         if (isSuccess) {
-            Log.e("BraveVPN", "onVerifyPurchaseToken : 2");
             Long purchaseExpiry = BraveVpnUtils.getPurchaseExpiryDate(jsonResponse);
             if (purchaseExpiry > 0 && purchaseExpiry >= System.currentTimeMillis()) {
-                Log.e("BraveVPN", "onVerifyPurchaseToken : 3");
                 BraveVpnPrefUtils.setPurchaseToken(mPurchaseToken);
                 BraveVpnPrefUtils.setProductId(mProductId);
                 BraveVpnPrefUtils.setPurchaseExpiry(purchaseExpiry);
                 BraveVpnPrefUtils.setSubscriptionPurchase(true);
                 if (BraveVpnPrefUtils.isResetConfiguration()) {
-                    Log.e("BraveVPN", "onVerifyPurchaseToken : 4");
                     BraveVpnUtils.dismissProgressDialog();
                     BraveVpnUtils.openBraveVpnProfileActivity(BraveActivity.this);
                 } else {
-                    Log.e("BraveVPN", "onVerifyPurchaseToken : 5");
                     if (!mIsVerification) {
                         Intent intent = GoBackend.VpnService.prepare(BraveActivity.this);
                         if (intent != null
@@ -539,7 +520,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         }
                         BraveVpnProfileUtils.getInstance().startVpn(BraveActivity.this);
                     } else {
-                        Log.e("BraveVPN", "onVerifyPurchaseToken : 6");
                         mIsVerification = false;
                         if (BraveVpnProfileUtils.getInstance().isBraveVPNConnected(
                                     BraveActivity.this)
@@ -557,7 +537,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                     BraveVpnUtils.dismissProgressDialog();
                 }
             } else {
-                Log.e("BraveVPN", "onVerifyPurchaseToken : 7");
                 BraveVpnApiResponseUtils.queryPurchaseFailed(BraveActivity.this);
                 if (!mIsVerification) {
                     BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
@@ -567,7 +546,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             mPurchaseToken = "";
             mProductId = "";
         } else {
-            Log.e("BraveVPN", "onVerifyPurchaseToken : 8");
             BraveVpnApiResponseUtils.queryPurchaseFailed(BraveActivity.this);
             if (!mIsVerification) {
                 BraveVpnUtils.openBraveVpnPlansActivity(BraveActivity.this);
@@ -578,9 +556,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     @Override
     public void onVerifyCredentials(String jsonVerifyCredentials, boolean isSuccess) {
-        Log.e("BraveVPN", "onVerifyCredentials : 1");
         if (!isSuccess) {
-            Log.e("BraveVPN", "onVerifyCredentials : 2");
             if (BraveVpnProfileUtils.getInstance().isBraveVPNConnected(BraveActivity.this)) {
                 BraveVpnProfileUtils.getInstance().stopVpn(BraveActivity.this);
             }
