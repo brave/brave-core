@@ -37,9 +37,11 @@ class FilTransaction {
   int64_t gas_limit() const { return gas_limit_; }
   std::string max_fee() const { return max_fee_; }
   FilAddress to() const { return to_; }
+  FilAddress from() const { return from_; }
   std::string value() const { return value_; }
 
   void set_to(FilAddress to) { to_ = to; }
+  void set_from(FilAddress from) { from_ = from; }
   void set_value(const std::string& value) { value_ = value; }
   void set_nonce(absl::optional<uint64_t> nonce) { nonce_ = nonce; }
   void set_gas_premium(const std::string& gas_premium) {
@@ -54,10 +56,12 @@ class FilTransaction {
   std::string GetMessageToSign() const;
   base::Value ToValue() const;
   mojom::FilTxDataPtr ToFilTxData() const;
+  absl::optional<std::string> GetSignedTransaction(const std::string& private_key_base64) const;
   static absl::optional<FilTransaction> FromValue(const base::Value& value);
 
  private:
   bool IsEqual(const FilTransaction& tx) const;
+  base::Value GetMessageToSignAsValue() const;
 
   absl::optional<uint64_t> nonce_;
   std::string gas_premium_;
@@ -66,6 +70,7 @@ class FilTransaction {
   std::string max_fee_;
   std::string cid_;
   FilAddress to_;
+  FilAddress from_;
   std::string value_;
 
   std::string signature_;
@@ -77,6 +82,7 @@ class FilTransaction {
                  int64_t gas_limit,
                  const std::string& max_fee,
                  const FilAddress& to,
+                 const FilAddress& from,
                  const std::string& value,
                  const std::string& cid);
 };

@@ -31,24 +31,35 @@ bool ValidatePayload(const std::string& payload_hex,
 }  // namespace
 
 TEST(FilAddressUnitTest, From) {
+  // Valid secp256k1 address Testnet
   std::string address = "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
-  EXPECT_EQ(FilAddress::FromAddress(address).EncodeAsString(), address);
+  auto fil_address = FilAddress::FromAddress(address);
+  EXPECT_EQ(fil_address.EncodeAsString(), address);
+  EXPECT_FALSE(fil_address.IsEmpty());
+  EXPECT_EQ(fil_address.protocol(), mojom::FilecoinAddressProtocol::SECP256K1);
 
-  // Valid BLS address
+  // Valid secp256k1 address Mainnet
   address = "f1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
-  EXPECT_EQ(FilAddress::FromAddress(address).EncodeAsString(), address);
-  EXPECT_FALSE(FilAddress::FromAddress(address).IsEmpty());
+  fil_address = FilAddress::FromAddress(address);
+  EXPECT_EQ(fil_address.EncodeAsString(), address);
+  EXPECT_FALSE(fil_address.IsEmpty());
+  EXPECT_EQ(fil_address.protocol(), mojom::FilecoinAddressProtocol::SECP256K1);
 
-  // Valid secp256k1 address
+  // Valid BLS address Testnet
   address =
       "t3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2"
       "oz4o4tpa4mvigcrayh4a";
-  EXPECT_EQ(FilAddress::FromAddress(address).EncodeAsString(), address);
+  fil_address = FilAddress::FromAddress(address);
+  EXPECT_EQ(fil_address.EncodeAsString(), address);
+  EXPECT_EQ(fil_address.protocol(), mojom::FilecoinAddressProtocol::BLS);
 
+  // Valid BLS address Mainnet
   address =
       "f3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2"
       "oz4o4tpa4mvigcrayh4a";
-  EXPECT_EQ(FilAddress::FromAddress(address).EncodeAsString(), address);
+  fil_address = FilAddress::FromAddress(address);
+  EXPECT_EQ(fil_address.EncodeAsString(), address);
+  EXPECT_EQ(fil_address.protocol(), mojom::FilecoinAddressProtocol::BLS);
 
   address =
       "t3yaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"

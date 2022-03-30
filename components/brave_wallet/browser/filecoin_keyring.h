@@ -14,9 +14,12 @@
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "fil_transaction.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
+
+class FilTransaction;
 
 class FilecoinKeyring : public HDKeyring {
  public:
