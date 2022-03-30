@@ -14,7 +14,7 @@ import '../brave_rewards_page/brave_rewards_page.js'
 import '../brave_search_engines_page/brave_search_engines_page.m.js'
 import '../brave_sync_page/brave_sync_page.js'
 import '../brave_wallet_page/brave_wallet_page.js'
-import '../default_brave_shields_page/default_brave_shields_page.m.js'
+import '../default_brave_shields_page/default_brave_shields_page.js'
 import '../getting_started_page/getting_started.js'
 import '../social_blocking_page/social_blocking_page.m.js'
 

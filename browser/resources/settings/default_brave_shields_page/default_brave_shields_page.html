@@ -1,115 +1,102 @@
-<link rel="import" href="chrome://resources/html/polymer.html">
-
-<link rel="import" href="chrome://resources/html/i18n_behavior.html">
-<link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
-<link rel="import" href="default_brave_shields_browser_proxy.html">
-<script type="module" src="../settings_shared_css.js"></script>
-<script type="module" src="../settings_vars_css.js"></script>
-
-<dom-module id="settings-default-brave-shields-page">
-  <template>
-    <style include="settings-shared md-select iron-flex">
-      .label.shields-primary-title
-      {
-        font-weight: 700;
-        padding-top: 1em;
-        font-size: 1.05em;
-      }
-      .label.shields-secondary-title {
-        padding-bottom: 1em;
-      }
-      .flex-center {
-        display: flex;
-        align-items: center;
-      }
-      .shields-view-col {
-        margin: 16px 0 24px;
-        padding: 0 24px;
-        height: 98px;
-        border-radius: 6px;
-        border: var(--cr-section_-_border-top);
-        width: calc(50% - 58px);
-        float: left;
-      }
-      .shields-view-col:last-of-type {
-        margin: 16px 0 24px 16px;
-      }
-      .shields-view-label {
-        margin: 0 20px;
-        cursor: pointer;
-      }
-    </style>
-    <div class="settings-box first">
-      <div class="flex">
-        <div class="label shields-primary-title">$i18n{braveShieldsDefaultsSectionTitle}</div>
-        <div class="label secondary shields-secondary-title">
-          <p>$i18n{braveShieldsDefaultsSectionDescription1}</p>
-          <p>$i18n{braveShieldsDefaultsSectionDescription2} <a href="chrome://rewards" target="_blank">Brave Rewards</a> $i18n{braveShieldsDefaultsSectionDescription3}</p>
-        </div>
-      </div>
+<style include="settings-shared md-select iron-flex">
+  .label.shields-primary-title
+  {
+    font-weight: 700;
+    padding-top: 1em;
+    font-size: 1.05em;
+  }
+  .label.shields-secondary-title {
+    padding-bottom: 1em;
+  }
+  .flex-center {
+    display: flex;
+    align-items: center;
+  }
+  .shields-view-col {
+    margin: 16px 0 24px;
+    padding: 0 24px;
+    height: 98px;
+    border-radius: 6px;
+    border: var(--cr-section_-_border-top);
+    width: calc(50% - 58px);
+    float: left;
+  }
+  .shields-view-col:last-of-type {
+    margin: 16px 0 24px 16px;
+  }
+  .shields-view-label {
+    margin: 0 20px;
+    cursor: pointer;
+  }
+</style>
+<div class="settings-box first">
+  <div class="flex">
+    <div class="label shields-primary-title">$i18n{braveShieldsDefaultsSectionTitle}</div>
+    <div class="label secondary shields-secondary-title">
+      <p>$i18n{braveShieldsDefaultsSectionDescription1}</p>
+      <p>$i18n{braveShieldsDefaultsSectionDescription2} <a href="chrome://rewards" target="_blank">Brave Rewards</a> $i18n{braveShieldsDefaultsSectionDescription3}</p>
     </div>
-    <div class="settings-box">
-      <div class="label shields-primary-title">$i18n{shieldsLookFeelTitle}</div>
-    </div>
-    <settings-toggle-button
-        class="continuation"
-        pref="{{prefs.brave.shields.stats_badge_visible}}"
-        label="$i18n{showStatsBlockedBadgeLabel}">
-    </settings-toggle-button>
-    <div class="settings-box">
-      <div class="start">$i18n{adControlLabel}</div>
-      <select id="adControlType" class="md-select"
-          on-change="onAdControlChange_">
-        <template is="dom-repeat" items="[[adControlTypes_]]">
-          <option value="[[item.value]]"
-              selected="[[controlEqual(item.value, adControlType_)]]">
-            [[item.name]]
-          </option>
-        </template>
-      </select>
-    </div>
-    <settings-toggle-button id="httpsEverywhereControlType"
-        class="cr-row"
-        pref="{{prefs.brave.https_everywhere_default}}"
-        label="$i18n{httpsEverywhereControlLabel}"
-        on-settings-boolean-control-change="onHTTPSEverywhereControlChange_">
-    </settings-toggle-button>
-    <settings-toggle-button id="noScriptControlType"
-        class="cr-row"
-        pref="{{prefs.brave.no_script_default}}"
-        label="$i18n{noScriptControlLabel}"
-        on-settings-boolean-control-change="onNoScriptControlChange_">
-    </settings-toggle-button>
-    <div class="settings-box">
-      <div class="start">$i18n{fingerprintingControlLabel}</div>
-      <select id="fingerprintingControlType" class="md-select"
-          on-change="onFingerprintingControlChange_">
-        <template is="dom-repeat" items="[[fingerprintingControlTypes_]]">
-          <option value="[[item.value]]"
-              selected="[[controlEqual(item.value, fingerprintingControlType_)]]">
-            [[item.name]]
-          </option>
-        </template>
-      </select>
-    </div>
-    <div class="settings-box">
-      <div class="start">$i18n{cookieControlLabel}</div>
-      <select id="cookieControlType" class="md-select"
-          on-change="onCookieControlChange_">
-        <template is="dom-repeat" items="[[cookieControlTypes_]]">
-          <option value="[[item.value]]"
-              selected="[[controlEqual(item.value, cookieControlType_)]]">
-            [[item.name]]
-          </option>
-        </template>
-      </select>
-    </div>
-    <settings-toggle-button
-        class="cr-row"
-        pref="{{prefs.brave.reduce_language}}"
-        label="$i18n{reduceLanguageControlLabel}"
-        sub-label="$i18n{reduceLanguageDesc}"
-    </settings-toggle-button>
-  </template>
-  <script src="default_brave_shields_page.js"></script>
-</dom-module>
+  </div>
+</div>
+<div class="settings-box">
+  <div class="label shields-primary-title">$i18n{shieldsLookFeelTitle}</div>
+</div>
+<settings-toggle-button
+    class="continuation"
+    pref="{{prefs.brave.shields.stats_badge_visible}}"
+    label="$i18n{showStatsBlockedBadgeLabel}">
+</settings-toggle-button>
+<div class="settings-box">
+  <div class="start">$i18n{adControlLabel}</div>
+  <select id="adControlType" class="md-select"
+      on-change="onAdControlChange_">
+    <template is="dom-repeat" items="[[adControlTypes_]]">
+      <option value="[[item.value]]"
+          selected="[[controlEqual(item.value, adControlType_)]]">
+        [[item.name]]
+      </option>
+    </template>
+  </select>
+</div>
+<settings-toggle-button id="httpsEverywhereControlType"
+    class="cr-row"
+    pref="{{prefs.brave.https_everywhere_default}}"
+    label="$i18n{httpsEverywhereControlLabel}"
+    on-settings-boolean-control-change="onHTTPSEverywhereControlChange_">
+</settings-toggle-button>
+<settings-toggle-button id="noScriptControlType"
+    class="cr-row"
+    pref="{{prefs.brave.no_script_default}}"
+    label="$i18n{noScriptControlLabel}"
+    on-settings-boolean-control-change="onNoScriptControlChange_">
+</settings-toggle-button>
+<div class="settings-box">
+  <div class="start">$i18n{fingerprintingControlLabel}</div>
+  <select id="fingerprintingControlType" class="md-select"
+      on-change="onFingerprintingControlChange_">
+    <template is="dom-repeat" items="[[fingerprintingControlTypes_]]">
+      <option value="[[item.value]]"
+          selected="[[controlEqual(item.value, fingerprintingControlType_)]]">
+        [[item.name]]
+      </option>
+    </template>
+  </select>
+</div>
+<div class="settings-box">
+  <div class="start">$i18n{cookieControlLabel}</div>
+  <select id="cookieControlType" class="md-select"
+      on-change="onCookieControlChange_">
+    <template is="dom-repeat" items="[[cookieControlTypes_]]">
+      <option value="[[item.value]]"
+          selected="[[controlEqual(item.value, cookieControlType_)]]">
+        [[item.name]]
+      </option>
+    </template>
+  </select>
+</div>
+<settings-toggle-button
+  class="cr-row"
+  pref="{{prefs.brave.reduce_language}}"
+  label="$i18n{reduceLanguageControlLabel}"
+  sub-label="$i18n{reduceLanguageDesc}">
+</settings-toggle-button>

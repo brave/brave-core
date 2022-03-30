@@ -177,7 +177,7 @@ preprocess_if_expr("preprocess_generated") {
     "brave_wallet_page/brave_wallet_page.js",
     "brave_wallet_page/wallet_networks_subpage.js",
     "default_brave_shields_page/default_brave_shields_browser_proxy.m.js",
-    "default_brave_shields_page/default_brave_shields_page.m.js",
+    "default_brave_shields_page/default_brave_shields_page.js",
     "getting_started_page/getting_started.js",
     "social_blocking_page/social_blocking_page.m.js",
   ]
