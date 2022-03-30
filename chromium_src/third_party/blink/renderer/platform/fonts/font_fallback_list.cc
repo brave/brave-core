@@ -28,6 +28,9 @@ void RegisterAllowFontFamilyCallback(AllowFontFamilyCallback callback) {
 
 }  // namespace brave
 
+// This only runs if the relevant font selector (CSS or offscreen)
+// does NOT find a matching font, because we want to allow web fonts
+// unconditionally.
 #define BRAVE_GET_FONT_DATA                         \
   if (brave::GetAllowFontFamilyCallback() &&        \
       !brave::GetAllowFontFamilyCallback()->Run(    \

@@ -251,15 +251,22 @@ bool ShouldDoDebouncing(HostContentSettingsMap* map, const GURL& url) {
   return true;
 }
 
-bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
-                            const GURL& url,
-                            PrefService* pref_service) {
+bool IsReduceLanguageEnabledForProfile(PrefService* pref_service) {
   // Don't reduce language if feature is disabled
   if (!base::FeatureList::IsEnabled(features::kBraveReduceLanguage))
     return false;
 
   // Don't reduce language if user preference is unchecked
   if (!pref_service->GetBoolean(brave_shields::prefs::kReduceLanguageEnabled))
+    return false;
+
+  return true;
+}
+
+bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
+                            const GURL& url,
+                            PrefService* pref_service) {
+  if (!IsReduceLanguageEnabledForProfile(pref_service))
     return false;
 
   // Don't reduce language if Brave Shields is down (this also handles cases

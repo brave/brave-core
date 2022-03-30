@@ -111,9 +111,7 @@ void BraveShieldsWebContentsObserver::RenderFrameCreated(RenderFrameHost* rfh) {
     if (content::BrowserContext* context = rfh->GetBrowserContext()) {
       if (PrefService* pref_service = user_prefs::UserPrefs::Get(context)) {
         GetBraveShieldsRemote(rfh)->SetReduceLanguageEnabled(
-            base::FeatureList::IsEnabled(features::kBraveReduceLanguage) &&
-            pref_service->GetBoolean(
-                brave_shields::prefs::kReduceLanguageEnabled));
+            brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
       }
     }
   }
@@ -295,10 +293,8 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
               if (PrefService* pref_service =
                       user_prefs::UserPrefs::Get(context)) {
                 observer->GetBraveShieldsRemote(rfh)->SetReduceLanguageEnabled(
-                    base::FeatureList::IsEnabled(
-                        features::kBraveReduceLanguage) &&
-                    pref_service->GetBoolean(
-                        brave_shields::prefs::kReduceLanguageEnabled));
+                    brave_shields::IsReduceLanguageEnabledForProfile(
+                        pref_service));
               }
             }
           },
