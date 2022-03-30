@@ -9,6 +9,12 @@
   }
   var EventEmitter = require('events')
   var BraveWeb3ProviderEventEmitter = new EventEmitter()
+  window.ethereum.on = BraveWeb3ProviderEventEmitter.on
+  window.ethereum.emit = BraveWeb3ProviderEventEmitter.emit
+  window.ethereum.removeListener =
+      BraveWeb3ProviderEventEmitter.removeListener
+  window.ethereum.removeAllListeners =
+      BraveWeb3ProviderEventEmitter.removeAllListeners
   Object.defineProperties(window.ethereum, {
     on: {
       value: BraveWeb3ProviderEventEmitter.on,
