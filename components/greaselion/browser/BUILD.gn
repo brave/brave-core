@@ -14,9 +14,9 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/update_client:buildflags",
     "//brave/components/version_info",
     "//chrome/browser/extensions:extensions",
-    "//components/update_client",
     "//components/version_info",
     "//content/public/browser",
     "//content/public/common",
