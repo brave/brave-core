@@ -26,18 +26,18 @@ namespace brave_wallet {
 class JSEthereumProvider : public mojom::EventsListener {
  public:
   explicit JSEthereumProvider(content::RenderFrame* render_frame,
-                              bool brave_use_native_wallet,
-                              bool allow_overwrite_window_ethereum);
+                              bool brave_use_native_wallet);
   ~JSEthereumProvider() override;
 
-  void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
+  void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context,
+                                  bool allow_overwrite_window_ethereum,
+                                  bool is_main_world);
   void FireEvent(const std::string& event, base::Value event_args);
   void ConnectEvent();
   void OnGetChainId(const std::string& chain_id);
   void DisconnectEvent(const std::string& message);
   void AccountsChangedEvent(const std::vector<std::string>& accounts) override;
   void ChainChangedEvent(const std::string& chain_id) override;
-  void AllowOverwriteWindowEthereum(bool allow);
 
  private:
   void BindFunctionsToObject(v8::Isolate* isolate,
@@ -59,7 +59,8 @@ class JSEthereumProvider : public mojom::EventsListener {
                             v8::Local<v8::Context> context);
   bool EnsureConnected();
   void OnRemoteDisconnect();
-  void InjectInitScript();
+  void InjectInitScript(bool allow_overwrite_window_ethereum,
+                        bool is_main_world);
 
   // Functions to be called from JS
   v8::Local<v8::Promise> Request(v8::Isolate* isolate,
@@ -96,7 +97,6 @@ class JSEthereumProvider : public mojom::EventsListener {
 
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   bool brave_use_native_wallet_;
-  bool allow_overwrite_window_ethereum_;
   mojo::Remote<mojom::BraveWalletProvider> brave_wallet_provider_;
   mojo::Receiver<mojom::EventsListener> receiver_{this};
   bool is_connected_;

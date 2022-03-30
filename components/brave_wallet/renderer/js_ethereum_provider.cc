@@ -99,11 +99,9 @@ void JSEthereumProvider::SendResponse(
 }
 
 JSEthereumProvider::JSEthereumProvider(content::RenderFrame* render_frame,
-                                       bool brave_use_native_wallet,
-                                       bool allow_overwrite_window_ethereum)
+                                       bool brave_use_native_wallet)
     : render_frame_(render_frame),
       brave_use_native_wallet_(brave_use_native_wallet),
-      allow_overwrite_window_ethereum_(allow_overwrite_window_ethereum),
       is_connected_(false) {
   if (g_provider_script->empty()) {
     *g_provider_script = LoadDataResource(
@@ -113,10 +111,6 @@ JSEthereumProvider::JSEthereumProvider(content::RenderFrame* render_frame,
 }
 
 JSEthereumProvider::~JSEthereumProvider() = default;
-
-void JSEthereumProvider::AllowOverwriteWindowEthereum(bool allow) {
-  allow_overwrite_window_ethereum_ = allow;
-}
 
 bool JSEthereumProvider::EnsureConnected() {
   if (brave_use_native_wallet_ && !brave_wallet_provider_.is_bound()) {
@@ -138,7 +132,9 @@ void JSEthereumProvider::OnRemoteDisconnect() {
 }
 
 void JSEthereumProvider::AddJavaScriptObjectToFrame(
-    v8::Local<v8::Context> context) {
+    v8::Local<v8::Context> context,
+    bool allow_overwrite_window_ethereum,
+    bool is_main_world) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
   if (context.IsEmpty())
@@ -148,8 +144,10 @@ void JSEthereumProvider::AddJavaScriptObjectToFrame(
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
-  CreateEthereumObject(isolate, context);
-  InjectInitScript();
+  if (is_main_world) {
+    CreateEthereumObject(isolate, context);
+  }
+  InjectInitScript(allow_overwrite_window_ethereum, is_main_world);
 }
 
 void JSEthereumProvider::CreateEthereumObject(v8::Isolate* isolate,
@@ -527,12 +525,15 @@ v8::Local<v8::Promise> JSEthereumProvider::IsUnlocked() {
   return resolver.ToLocalChecked()->GetPromise();
 }
 
-void JSEthereumProvider::InjectInitScript() {
+void JSEthereumProvider::InjectInitScript(bool allow_overwrite_window_ethereum,
+                                          bool is_main_world) {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  if (!allow_overwrite_window_ethereum_) {
+  if (!allow_overwrite_window_ethereum) {
     SetProviderNonWritable(web_frame, "ethereum");
   }
-  ExecuteScript(web_frame, *g_provider_script);
+  if (is_main_world) {
+    ExecuteScript(web_frame, *g_provider_script);
+  }
 }
 
 void JSEthereumProvider::FireEvent(const std::string& event,
