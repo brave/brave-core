@@ -22,11 +22,11 @@ class VectorData final : public Data {
   VectorData(const VectorData& vector_data);
   VectorData(VectorData&& vector_data);
 
-  // Make a "trivial" DataVector with points 0..n-1 (n = data.size()):
+  // Make a "dense" DataVector with points 0..n-1 (n = data.size()):
   // ({0, data[0]}, {1, data[0]}, .., {n-1, data[n-1]}}
   explicit VectorData(std::vector<float> data);
 
-  // Make a general DataVector using points from data.
+  // Make a "sparse" DataVector using points from |data|.
   // double is used for backward compatibility with the current code.
   VectorData(int dimension_count, const std::map<uint32_t, double>& data);
   ~VectorData() override;
