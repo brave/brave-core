@@ -170,14 +170,7 @@ function Container (props: Props) {
   const {
     onAddCustomAsset,
     onUpdateVisibleAssets
-  } = useAssetManagement(
-    props.walletActions.addUserAsset,
-    props.walletActions.setUserAssetVisible,
-    props.walletActions.removeUserAsset,
-    props.walletActions.refreshBalancesAndPriceHistory,
-    fullTokenList,
-    userVisibleTokensInfo
-  )
+  } = useAssetManagement()
 
   const { computeFiatAmount } = usePricing(transactionSpotPrices)
   const getAccountBalance = useBalance(networkList)
