@@ -18,6 +18,7 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 #include "third_party/blink/renderer/platform/bindings/script_state.h"
+#include "third_party/blink/renderer/platform/fonts/font_fallback_list.h"
 #include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
 #include "third_party/blink/renderer/platform/graphics/static_bitmap_image.h"
 #include "third_party/blink/renderer/platform/graphics/unaccelerated_static_bitmap_image.h"
@@ -108,6 +109,22 @@ bool AllowFingerprinting(ExecutionContext* context) {
   return true;
 }
 
+bool AllowFontFamily(ExecutionContext* context,
+                     const AtomicString& family_name) {
+  if (!context)
+    return true;
+
+  auto* settings = brave::GetContentSettingsClientFor(context);
+  if (!settings)
+    return true;
+
+  if (!brave::BraveSessionCache::From(*context).AllowFontFamily(settings,
+                                                                family_name))
+    return false;
+
+  return true;
+}
+
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     : Supplement<ExecutionContext>(context) {
   farbling_enabled_ = false;
@@ -151,6 +168,11 @@ BraveSessionCache& BraveSessionCache::From(ExecutionContext& context) {
     ProvideTo(context, cache);
   }
   return *cache;
+}
+
+// static
+void BraveSessionCache::Init() {
+  RegisterAllowFontFamilyCallback(base::BindRepeating(&brave::AllowFontFamily));
 }
 
 AudioFarblingCallback BraveSessionCache::GetAudioFarblingCallback(

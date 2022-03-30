@@ -3,8 +3,36 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#define BRAVE_FONT_FALLBACK_LIST                                      \
-  if (!GetFontSelector()->AllowFontFamily(curr_family->FamilyName())) \
+#include "third_party/blink/renderer/platform/fonts/font_fallback_list.h"
+
+#include "base/no_destructor.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/platform/fonts/font_selector.h"
+#include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
+
+namespace brave {
+
+namespace {
+
+AllowFontFamilyCallback* GetAllowFontFamilyCallback() {
+  static base::NoDestructor<AllowFontFamilyCallback> callback;
+  return callback.get();
+}
+
+}  // namespace
+
+void RegisterAllowFontFamilyCallback(AllowFontFamilyCallback callback) {
+  DCHECK(GetAllowFontFamilyCallback()->is_null());
+  *GetAllowFontFamilyCallback() = std::move(callback);
+}
+
+}  // namespace brave
+
+#define BRAVE_GET_FONT_DATA                         \
+  if (brave::GetAllowFontFamilyCallback() &&        \
+      brave::GetAllowFontFamilyCallback()->Run(     \
+          GetFontSelector()->GetExecutionContext(), \
+          curr_family->FamilyName()))               \
     result = nullptr;
 
 #include "src/third_party/blink/renderer/platform/fonts/font_fallback_list.cc"

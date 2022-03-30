@@ -6,12 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_EXECUTION_CONTEXT_EXECUTION_CONTEXT_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_EXECUTION_CONTEXT_EXECUTION_CONTEXT_H_
 
-#include "src/third_party/blink/renderer/core/execution_context/execution_context.h"
-
 #include <random>
 
 #include "base/callback.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "src/third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/core/core_export.h"
+#include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
 namespace blink {
 class WebContentSettingsClient;
@@ -32,6 +33,8 @@ CORE_EXPORT BraveFarblingLevel
 GetBraveFarblingLevelFor(ExecutionContext* context,
                          BraveFarblingLevel default_value);
 CORE_EXPORT bool AllowFingerprinting(ExecutionContext* context);
+CORE_EXPORT bool AllowFontFamily(ExecutionContext* context,
+                                 const AtomicString& family_name);
 
 class CORE_EXPORT BraveSessionCache final
     : public GarbageCollected<BraveSessionCache>,
@@ -43,6 +46,7 @@ class CORE_EXPORT BraveSessionCache final
   virtual ~BraveSessionCache() = default;
 
   static BraveSessionCache& From(ExecutionContext&);
+  static void Init();
 
   AudioFarblingCallback GetAudioFarblingCallback(
       blink::WebContentSettingsClient* settings);
