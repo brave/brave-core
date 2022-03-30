@@ -14,6 +14,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/first_run/first_run.h"
+#include "chrome/browser/first_run/first_run_dialog.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/chromium_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -45,7 +46,7 @@ void ShowBraveFirstRunDialogViews(Profile* profile) {
 void ShowFirstRunDialog(Profile* profile) {
 #if BUILDFLAG(IS_MAC)
   if (base::FeatureList::IsEnabled(features::kViewsFirstRunDialog))
-    ShowFirstRunDialogViews(profile);
+    ShowBraveFirstRunDialogViews(profile);
   else
     ShowFirstRunDialogCocoa(profile);
 #else

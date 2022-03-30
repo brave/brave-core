@@ -10,6 +10,7 @@ source_set("unit_tests") {
 
     deps = [
       "//chrome/browser",
+      "//chrome/browser/ui",
       "//testing/gtest",
     ]
   }

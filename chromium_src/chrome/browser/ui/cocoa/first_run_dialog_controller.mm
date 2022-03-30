@@ -19,75 +19,79 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/l10n/l10n_util_mac.h"
 
-namespace {
-
-// Return the internationalized message |message_id|, with the product name
-// substituted in for $1.
-NSString* NSStringWithProductName(int message_id) {
-  return l10n_util::GetNSStringF(message_id,
-                                 l10n_util::GetStringUTF16(IDS_PRODUCT_NAME));
-}
-
-// Reflows buttons. Requires them to be passed in vertical order, top down.
-CGFloat VerticallyReflowButtons(NSArray<NSButton*>* buttons) {
-  CGFloat localVerticalShift = 0;
-  for (NSButton* button in buttons) {
-    [GTMUILocalizerAndLayoutTweaker wrapButtonTitleForWidth:button];
-
-    NSRect oldFrame = button.frame;
-    [button sizeToFit];
-    NSRect newFrame = button.frame;
-    // -[NSControl sizeToFit], with no layout constraints, like here, will end
-    // up horizontally resizing and keeping the upper left corner in place.
-    // That wrecks RTL, and because all that's really needed is vertical
-    // resizing, reset the horizontal size.
-    newFrame.size.width = NSWidth(oldFrame);
-    button.frame = newFrame;
-
-    localVerticalShift += NSHeight(newFrame) - NSHeight(oldFrame);
-    if (localVerticalShift) {
-      NSPoint origin = button.frame.origin;
-      origin.y -= localVerticalShift;
-      [button setFrameOrigin:origin];
-    }
-  }
-  return localVerticalShift;
-}
-
-void MoveViewsVertically(NSArray* views, CGFloat distance) {
-  for (NSView* view : views) {
-    NSRect frame = view.frame;
-    frame.origin.y += distance;
-    [view setFrame:frame];
-  }
-}
-
-// Center |view| vertically within its own superview, so its horizontal
-// centerline is the same as its superview's horizontal centerline.
-void CenterVertically(NSView* view) {
-  NSView* superview = view.superview;
-  NSRect frame = view.frame;
-  NSRect superframe = superview.frame;
-  frame.origin.y = (NSHeight(superframe) - NSHeight(frame)) / 2.0;
-  [view setFrame:frame];
-}
-
-}  // namespace
-
 @implementation FirstRunDialogViewController {
-  // These are owned by the NSView hierarchy:
-  NSButton* _defaultBrowserCheckbox;
+  BOOL _setAsDefaultBrowser;
 }
 
 - (instancetype)initWithStatsCheckboxInitiallyChecked:(BOOL)checked
                         defaultBrowserCheckboxVisible:(BOOL)visible {
-  // We always make default checkbox visible.
-  DCHECK(visible);
-  return [super init];
+  if ((self = [super init])) {
+    _setAsDefaultBrowser = NO;
+  }
+  return self;
 }
 
 - (void)loadView {
-  const int kDialogWidth = 480;
+  constexpr int kDialogWidth = 400;
+  constexpr int kPadding = 24;
+  constexpr int kLabelSpacing = 16;
+  constexpr int kContentsWidth = kDialogWidth - (2 * kPadding);
+  constexpr int kTopPadding = 20;
+  constexpr int kButtonTopMargin = 40;
+  constexpr int kButtonBottomMargin = 20;
+  constexpr int kButtonHorizontalMargin = 20;
+
+  // After calculating all controls' proper height based on |kContentsWidth|,
+  // window's height will be calculated.
+  std::u16string headerString =
+      l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_HEADER_TEXT);
+  base::i18n::AdjustStringForLocaleDirection(&headerString);
+  NSTextField* headerLabel =
+      [TextFieldUtils labelWithString:base::SysUTF16ToNSString(headerString)];
+  [headerLabel setFont:[NSFont systemFontOfSize:16.0
+                                         weight:NSFontWeightSemibold]];
+  [headerLabel sizeToFit];
+  int defaultHeight = NSHeight(headerLabel.frame);
+  int numOfLines =
+      static_cast<int>(NSWidth(headerLabel.frame)) / kContentsWidth + 1;
+  [headerLabel
+      setFrame:NSMakeRect(0, 0, kContentsWidth, defaultHeight * numOfLines)];
+
+  std::u16string contentsString =
+      l10n_util::GetStringUTF16(IDS_FIRSTRUN_DLG_CONTENTS_TEXT);
+  base::i18n::AdjustStringForLocaleDirection(&contentsString);
+  NSTextField* contentsLabel =
+      [TextFieldUtils labelWithString:base::SysUTF16ToNSString(contentsString)];
+  [contentsLabel setFont:[NSFont systemFontOfSize:15.0
+                                           weight:NSFontWeightRegular]];
+  [contentsLabel sizeToFit];
+  defaultHeight = NSHeight(contentsLabel.frame);
+  numOfLines =
+      static_cast<int>(NSWidth(contentsLabel.frame)) / kContentsWidth + 1;
+  [contentsLabel
+      setFrame:NSMakeRect(0, 0, kContentsWidth, defaultHeight * numOfLines)];
+
+  NSButton* maybeLaterButton =
+      [ButtonUtils buttonWithTitle:l10n_util::GetNSString(
+                                       IDS_FIRSTRUN_DLG_CANCEL_BUTTON_LABEL)
+                            action:@selector(cancel:)
+                            target:self];
+  [maybeLaterButton setKeyEquivalent:kKeyEquivalentEscape];
+  [maybeLaterButton sizeToFit];
+
+  NSButton* makeDefaultButton = [ButtonUtils
+      buttonWithTitle:l10n_util::GetNSString(IDS_FIRSTRUN_DLG_OK_BUTTON_LABEL)
+               action:@selector(ok:)
+               target:self];
+  [makeDefaultButton setKeyEquivalent:kKeyEquivalentReturn];
+  [makeDefaultButton sizeToFit];
+
+  // It's time to calculate window's height as we can get all controls' final
+  // heights.
+  const int windowHeight = kTopPadding + NSHeight(headerLabel.frame) +
+                           kLabelSpacing + NSHeight(contentsLabel.frame) +
+                           kButtonTopMargin + NSHeight(maybeLaterButton.frame) +
+                           kButtonBottomMargin;
 
   BOOL isDarkMode = NO;
   if (@available(macOS 10.14, *)) {
@@ -97,97 +101,51 @@ void CenterVertically(NSView* view) {
         ]];
     isDarkMode = [appearance isEqual:NSAppearanceNameDarkAqua];
   }
-  NSColor* topBoxColor = isDarkMode
-                             ? [NSColor colorWithCalibratedRed:0x32 / 255.0
-                                                         green:0x36 / 255.0
-                                                          blue:0x39 / 255.0
-                                                         alpha:1.0]
-                             : [NSColor whiteColor];
+  NSColor* backgroundColor = isDarkMode
+                                 ? [NSColor colorWithCalibratedRed:0x32 / 255.0
+                                                             green:0x36 / 255.0
+                                                              blue:0x39 / 255.0
+                                                             alpha:1.0]
+                                 : [NSColor whiteColor];
 
-  NSBox* topBox = [[[NSBox alloc]
-      initWithFrame:NSMakeRect(0, 110, kDialogWidth, 90)] autorelease];
-  [topBox setFillColor:topBoxColor];
-  [topBox setBoxType:NSBoxCustom];
-  [topBox setBorderType:NSNoBorder];
-  [topBox setContentViewMargins:NSZeroSize];
-
-  // This string starts with the app name, which is strongly LTR, so force the
-  // correct layout.
-  std::u16string completeInstallationString = l10n_util::GetStringUTF16(
-      IDS_FIRSTRUN_DLG_COMPLETE_INSTALLATION_LABEL_BRAVE);
-  base::i18n::AdjustStringForLocaleDirection(&completeInstallationString);
-  NSTextField* completionLabel = [TextFieldUtils
-      labelWithString:base::SysUTF16ToNSString(completeInstallationString)];
-  [completionLabel setFrame:NSMakeRect(13, 25, kDialogWidth - 2 * 13, 60)];
-
-  _defaultBrowserCheckbox = [ButtonUtils
-      checkboxWithTitle:l10n_util::GetNSString(
-                            IDS_FR_CUSTOMIZE_DEFAULT_BROWSER_BRAVE)];
-  [_defaultBrowserCheckbox
-      setFrame:NSMakeRect(45, 80, kDialogWidth - 2 * 45, 18)];
-  [_defaultBrowserCheckbox setState:NSOnState];
-
-  NSButton* startChromeButton =
-      [ButtonUtils buttonWithTitle:NSStringWithProductName(
-                                       IDS_FIRSTRUN_DLG_MAC_START_CHROME_BUTTON)
-                            action:@selector(ok:)
-                            target:self];
-  [startChromeButton setFrame:NSMakeRect(161, 12, 306, 32)];
-  [startChromeButton setKeyEquivalent:kKeyEquivalentReturn];
-
-  NSBox* topSeparator = [[[NSBox alloc]
-      initWithFrame:NSMakeRect(0, 109, kDialogWidth, 1)] autorelease];
-  [topSeparator setBoxType:NSBoxSeparator];
-
-  NSBox* bottomSeparator = [[[NSBox alloc]
-      initWithFrame:NSMakeRect(0, 55, kDialogWidth, 5)] autorelease];
-  [bottomSeparator setBoxType:NSBoxSeparator];
-
-  [topBox addSubview:completionLabel];
-  CenterVertically(completionLabel);
-
-  base::scoped_nsobject<NSView> content_view(
-      [[NSView alloc] initWithFrame:NSMakeRect(0, 0, kDialogWidth, 200)]);
+  base::scoped_nsobject<NSView> content_view([[NSView alloc]
+      initWithFrame:NSMakeRect(0, 0, kDialogWidth, windowHeight)]);
   self.view = content_view.get();
-  [self.view addSubview:topBox];
-  [self.view addSubview:topSeparator];
-  [self.view addSubview:_defaultBrowserCheckbox];
-  [self.view addSubview:bottomSeparator];
-  [self.view addSubview:startChromeButton];
+  [self.view setValue:backgroundColor forKey:@"backgroundColor"];
+  [self.view addSubview:headerLabel];
+  [self.view addSubview:contentsLabel];
+  [self.view addSubview:maybeLaterButton];
+  [self.view addSubview:makeDefaultButton];
 
-  // Now that the content view is constructed, fix the layout. The first step is
-  // to reflow the browser and stats checkbox texts, which can be quite lengthy
-  // in some locales. They may wrap onto additional lines, and in doing so cause
-  // the rest of the dialog to need to be rearranged.
-  {
-    CGFloat delta = VerticallyReflowButtons(@[ _defaultBrowserCheckbox ]);
-    if (delta) {
-      // If reflowing the checkboxes produced a height delta, move the
-      // checkboxes and the items above them in the content view upward, then
-      // grow the content view to match. This has the effect of moving
-      // everything visually-below the checkboxes downwards and expanding the
-      // window, leaving the vertical space the checkboxes need for their text.
-      MoveViewsVertically(@[ _defaultBrowserCheckbox, topSeparator, topBox ],
-                          delta);
-      NSRect frame = [self.view frame];
-      frame.size.height += delta;
-      [self.view setAutoresizesSubviews:NO];
-      [self.view setFrame:frame];
-      [self.view setAutoresizesSubviews:YES];
-    }
+  // Set each control's position
+  NSRect frame = headerLabel.frame;
+  frame.origin.x = kPadding;
+  frame.origin.y = windowHeight - kTopPadding - NSHeight(frame);
+  [headerLabel setFrame:frame];
+
+  frame = contentsLabel.frame;
+  frame.origin.x = kPadding;
+  frame.origin.y = NSMinY(headerLabel.frame) - kLabelSpacing - NSHeight(frame);
+  [contentsLabel setFrame:frame];
+
+  frame = makeDefaultButton.frame;
+  frame.origin.x = kDialogWidth - kButtonHorizontalMargin - NSWidth(frame);
+  if (base::i18n::IsRTL()) {
+    frame.origin.x = kButtonHorizontalMargin;
   }
+  frame.origin.y =
+      NSMinY(contentsLabel.frame) - kButtonTopMargin - NSHeight(frame);
+  [makeDefaultButton setFrame:frame];
 
-  // The "Start Chrome" button needs to be sized to fit the localized string
-  // inside it, but it should still be at the right-most edge of the dialog, so
-  // any width added or subtracted by |sizeToFit| is added to its x coord, which
-  // keeps its right edge where it was.
-  CGFloat oldWidth = NSWidth([startChromeButton frame]);
-  [startChromeButton sizeToFit];
-  NSRect frame = [startChromeButton frame];
-  frame.origin.x += oldWidth - NSWidth([startChromeButton frame]);
-  if (base::i18n::IsRTL())
-    frame.origin.x = kDialogWidth - NSMaxX(frame);
-  [startChromeButton setFrame:frame];
+  constexpr int kButtonSpacing = 3;
+  frame = maybeLaterButton.frame;
+  frame.origin.x =
+      NSMinX(makeDefaultButton.frame) - kButtonSpacing - NSWidth(frame);
+  if (base::i18n::IsRTL()) {
+    frame.origin.x = NSMaxX(makeDefaultButton.frame) + kButtonSpacing;
+  }
+  frame.origin.y = NSMinY(makeDefaultButton.frame);
+  [maybeLaterButton setFrame:frame];
 }
 
 - (NSString*)windowTitle {
@@ -200,10 +158,16 @@ void CenterVertically(NSView* view) {
 }
 
 - (BOOL)isMakeDefaultBrowserEnabled {
-  return [_defaultBrowserCheckbox state] == NSOnState;
+  return _setAsDefaultBrowser;
 }
 
 - (void)ok:(id)sender {
+  _setAsDefaultBrowser = YES;
+  [[[self view] window] close];
+  [NSApp stopModal];
+}
+
+- (void)cancel:(id)sender {
   [[[self view] window] close];
   [NSApp stopModal];
 }
