@@ -502,10 +502,11 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
   void TestSendSolanaTransaction(const std::string& expected_tx_id,
                                  mojom::SolanaProviderError expected_error,
-                                 const std::string& expected_error_message) {
+                                 const std::string& expected_error_message,
+                                 const std::string& signed_tx = "signed_tx") {
     base::RunLoop run_loop;
     json_rpc_service_->SendSolanaTransaction(
-        "signed_tx",
+        signed_tx,
         base::BindLambdaForTesting([&](const std::string& tx_id,
                                        mojom::SolanaProviderError error,
                                        const std::string& error_message) {
@@ -2205,6 +2206,11 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenAccountBalance) {
 }
 
 TEST_F(JsonRpcServiceUnitTest, SendSolanaTransaction) {
+  TestSendSolanaTransaction(
+      "", mojom::SolanaProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
+      "" /* signed_tx */);
+
   SetInterceptor(
       "sendTransaction", "",
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
