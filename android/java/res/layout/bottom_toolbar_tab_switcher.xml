@@ -19,7 +19,7 @@
         android:id="@+id/bottom_toolbar_buttons"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/default_bg_color" >
+        android:background="@color/default_bg_color_baseline" >
 
         <LinearLayout
             android:orientation="horizontal"
