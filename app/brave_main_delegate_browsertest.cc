@@ -102,7 +102,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kCssSelectorFragmentAnchor,
     &blink::features::kFencedFrames,
     &blink::features::kFledge,
-    &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
     &blink::features::kInterestGroupStorage,
     &blink::features::kParakeet,
     &blink::features::kPrerender2,
