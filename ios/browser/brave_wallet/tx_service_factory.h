@@ -30,6 +30,8 @@ class TxServiceFactory : public BrowserStateKeyedServiceFactory {
       ChromeBrowserState* browser_state);
   static mojo::PendingRemote<mojom::EthTxManagerProxy>
   GetEthTxManagerProxyForBrowserState(ChromeBrowserState* browser_state);
+  static mojo::PendingRemote<mojom::SolanaTxManagerProxy>
+  GetSolanaTxManagerProxyForBrowserState(ChromeBrowserState* browser_state);
   static TxService* GetServiceForState(ChromeBrowserState* browser_state);
 
   static TxServiceFactory* GetInstance();

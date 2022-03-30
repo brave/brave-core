@@ -33,5 +33,15 @@ static jint JNI_TxServiceFactory_GetInterfaceToEthTxManagerProxy(
   return static_cast<jint>(pending.PassPipe().release().value());
 }
 
+static jint JNI_TxServiceFactory_GetInterfaceToSolanaTxManagerProxy(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& profile_android) {
+  auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
+  auto pending = brave_wallet::TxServiceFactory::GetInstance()
+                     ->GetSolanaTxManagerProxyForContext(profile);
+
+  return static_cast<jint>(pending.PassPipe().release().value());
+}
+
 }  // namespace android
 }  // namespace chrome

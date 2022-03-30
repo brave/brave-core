@@ -189,6 +189,7 @@ interface PanelHandlerFactory {
                      pending_receiver<BlockchainRegistry> blockchain_registry,
                      pending_receiver<TxService> tx_service,
                      pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
+                     pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
                      pending_receiver<BraveWalletService> brave_wallet_service);
 };
 
@@ -204,6 +205,7 @@ interface PageHandlerFactory {
                     pending_receiver<BlockchainRegistry> blockchain_registry,
                     pending_receiver<TxService> tx_service,
                     pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
+                    pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
                     pending_receiver<BraveWalletService> brave_wallet_service);
 
 };

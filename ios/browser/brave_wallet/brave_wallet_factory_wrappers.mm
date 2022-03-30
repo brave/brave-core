@@ -68,6 +68,19 @@
 }
 @end
 
+@implementation BraveWalletSolanaTxManagerProxyFactory
++ (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
+  auto proxy =
+      brave_wallet::TxServiceFactory::GetSolanaTxManagerProxyForBrowserState(
+          browserState);
+  if (!proxy) {
+    return nil;
+  }
+  return [[BraveWalletSolanaTxManagerProxyMojoImpl alloc]
+      initWithSolanaTxManagerProxy:std::move(proxy)];
+}
+@end
+
 @implementation BraveWalletKeyringServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
   auto service =
