@@ -42,7 +42,6 @@ lazy_static! {
     static ref SEPARATORS: Regex = Regex::new(r#"\s+[\|\\/>»]\s+"#).unwrap();
     static ref END_DASH: Regex = Regex::new(r#"\s+(:?[—\-–])\s+.*$"#).unwrap();
     static ref JSONLD_SCHEMA: Regex = Regex::new(r#"^https?://schema\.org$"#).unwrap();
-    static ref DECODED_HTML_TAGS: Regex = Regex::new(r"<[^>]*>").unwrap();
 }
 
 #[derive(Debug)]
@@ -249,6 +248,10 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     );
 
     post_process(&mut dom, top_candidate.clone(), &meta);
+
+    if dom::text_len(&top_candidate) < 100 {
+        return Err(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Too small output"));
+    }
 
     // Calls html5ever::serialize() with IncludeNode for us.
     let mut content: String = match top_candidate.as_element() {

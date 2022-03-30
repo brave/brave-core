@@ -80,7 +80,6 @@ lazy_static! {
     static ref UNLIKELY: Regex = Regex::new(UNLIKELY_CANDIDATES).unwrap();
     static ref POSITIVE: Regex = Regex::new(POSITIVE_CANDIDATES).unwrap();
     static ref NEGATIVE: Regex = Regex::new(NEGATIVE_CANDIDATES).unwrap();
-    static ref DECODED_HTML_TAGS: Regex = Regex::new(HTML_TAGS).unwrap();
 }
 
 pub struct TopCandidate {
@@ -117,21 +116,6 @@ impl PartialEq for TopCandidate {
 }
 
 impl Eq for TopCandidate {}
-
-/// Add https:// to the img src, if missing.
-pub fn fix_img_path(data: &ElementData, url: &Url) -> Option<Url> {
-    if let Some(src) = data.attributes.borrow().get(local_name!("src")) {
-        if !src.starts_with("//") && !src.starts_with("http://") && src.starts_with("https://") {
-            let new_url = url.join(&src);
-            new_url.ok()
-        } else {
-            // all OK
-            None
-        }
-    } else {
-        None
-    }
-}
 
 bitflags::bitflags! {
     pub struct ImageLoadedMask: u8 {
