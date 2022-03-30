@@ -32,6 +32,8 @@ std::string getEstimateGas(const std::string& from_address,
 std::string getChainHead();
 // Returns Filecoin.StateSearchMsgLimited request.
 std::string getStateSearchMsgLimited(const std::string& cid, uint64_t period);
+// Returns Filecoin.MPoolPush request.
+std::string getSendTransaction(const std::string& signed_tx);
 }  // namespace fil
 
 }  // namespace brave_wallet

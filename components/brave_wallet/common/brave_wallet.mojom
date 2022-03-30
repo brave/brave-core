@@ -811,6 +811,7 @@ struct FilTxData {
   string gas_limit;
   string max_fee;
   string to;
+  string from;
   string value;
 };
 

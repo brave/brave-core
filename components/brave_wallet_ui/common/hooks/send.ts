@@ -243,7 +243,16 @@ export default function useSend () {
       setSendAmount('')
       return
     }
-
+    if (selectedAccount.coin === BraveWallet.CoinType.FIL) {
+      dispatch(WalletActions.sendTransaction({
+        from: selectedAccount.address,
+        to: toAddress,
+        value: new Amount(sendAmount)
+        .multiplyByDecimals(1).toNumber().toString(),
+        coin: selectedAccount.coin
+      } as SendFilTransactionParams))
+      return
+    }
     if (selectedSendAsset.isErc721 || selectedSendAsset.isErc20) { return }
 
     dispatch(WalletActions.sendTransaction({

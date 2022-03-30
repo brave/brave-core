@@ -190,9 +190,9 @@ const brave_wallet::mojom::NetworkInfo kKnownSolNetworks[] = {
 const brave_wallet::mojom::NetworkInfo kKnownFilNetworks[] = {
     {brave_wallet::mojom::kFilecoinMainnet,
      "Filecoin Mainnet",
-     {"https://api.node.glif.io/rpc/v0"},
+     {"https://latest.filecoin.node.devnet.zondax.net/rpc/v0"},
      {},
-     {"https://api.node.glif.io/rpc/v0"},
+     {"https://latest.filecoin.node.devnet.zondax.net/rpc/v0"},
      "FIL",
      "Filecoin",
      18,

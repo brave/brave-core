@@ -176,15 +176,62 @@ void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
   meta->tx()->set_nonce(static_cast<uint64_t>(nonce));
   DCHECK(!keyring_service_->IsLocked());
   meta->set_status(mojom::TransactionStatus::Approved);
-  tx_state_manager_->AddOrUpdateTx(*meta);
 
-  // TODO(spylogsster): Publish transaction
-  std::move(callback).Run(false,
-                          mojom::ProviderErrorUnion::NewFilecoinProviderError(
-                              mojom::FilecoinProviderError::kInternalError),
-                          std::string());
+  GetFilTxStateManager()->AddOrUpdateTx(*meta);
+  auto signed_tx =
+      keyring_service_->SignTransactionByFilecoinKeyring(meta->tx());
+  if (!signed_tx) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewFilecoinProviderError(
+            mojom::FilecoinProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_FIL_TRANSACTION_SIGN_ERROR));
+    return;
+  }
+  json_rpc_service_->SendFilecoinTransaction(
+      signed_tx.value(),
+      base::BindOnce(&FilTxManager::OnSendFilecoinTransaction,
+                     weak_factory_.GetWeakPtr(), meta->id(),
+                     std::move(callback)));
 }
 
+void FilTxManager::OnSendFilecoinTransaction(
+    const std::string& tx_meta_id,
+    ApproveTransactionCallback callback,
+    const std::string& tx_hash,
+    mojom::FilecoinProviderError error,
+    const std::string& error_message) {
+  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(tx_meta_id);
+  if (!meta) {
+    DCHECK(false) << "Transaction should be found";
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewFilecoinProviderError(
+            mojom::FilecoinProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
+
+  bool success = error == mojom::FilecoinProviderError::kSuccess;
+
+  if (success) {
+    meta->set_status(mojom::TransactionStatus::Submitted);
+    meta->set_submitted_time(base::Time::Now());
+    meta->set_tx_hash(tx_hash);
+  } else {
+    meta->set_status(mojom::TransactionStatus::Error);
+  }
+
+  tx_state_manager_->AddOrUpdateTx(*meta);
+
+  if (success)
+    UpdatePendingTransactions();
+  DLOG(INFO) << "error_message:" << error_message;
+  std::move(callback).Run(
+      error_message.empty(),
+      mojom::ProviderErrorUnion::NewFilecoinProviderError(error),
+      error_message);
+}
 void FilTxManager::GetAllTransactionInfo(
     const std::string& from,
     GetAllTransactionInfoCallback callback) {

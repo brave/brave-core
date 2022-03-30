@@ -70,6 +70,11 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                       ApproveTransactionCallback callback,
                       bool success,
                       uint256_t nonce);
+  void OnSendFilecoinTransaction(const std::string& tx_meta_id,
+                                 ApproveTransactionCallback callback,
+                                 const std::string& tx_hash,
+                                 mojom::FilecoinProviderError error,
+                                 const std::string& error_message);
   void ContinueAddUnapprovedTransaction(
       const std::string& from,
       const absl::optional<url::Origin>& origin,
