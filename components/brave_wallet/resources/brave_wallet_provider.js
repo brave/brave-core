@@ -16,6 +16,7 @@
   window.ethereum.removeAllListeners =
       BraveWeb3ProviderEventEmitter.removeAllListeners
   window.ethereum.isMetaMask = true
+  window.ethereum.isBraveWallet = true
   Object.defineProperty(window, 'ethereum', {
     value: new Proxy(window.ethereum, {
       get: (...args) => {
