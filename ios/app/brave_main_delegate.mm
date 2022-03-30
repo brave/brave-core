@@ -14,6 +14,7 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_component_updater/browser/switches.h"
+#include "brave/components/update_client/buildflags.h"
 #include "components/browser_sync/browser_sync_switches.h"
 #include "components/component_updater/component_updater_switches.h"
 #include "components/sync/base/command_line_switches.h"
@@ -33,9 +34,9 @@ std::string GetUpdateURLHost() {
   if (!command_line.HasSwitch(brave_component_updater::kUseGoUpdateDev) &&
       !base::FeatureList::IsEnabled(
           brave_component_updater::kUseDevUpdaterUrl)) {
-    return UPDATER_PROD_ENDPOINT;
+    return BUILDFLAG(UPDATER_PROD_ENDPOINT);
   }
-  return UPDATER_DEV_ENDPOINT;
+  return BUILDFLAG(UPDATER_DEV_ENDPOINT);
 }
 
 }  // namespace
