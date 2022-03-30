@@ -6,7 +6,7 @@ import { mockAccount } from '../constants/mocks'
 import { BraveWallet } from '../../constants/types'
 
 // Options
-import { AccountAssetOptions } from '../../options/asset-options'
+import { AccountAssetOptions, makeNetworkAsset } from '../../options/asset-options'
 
 // Hooks
 import { TextEncoder, TextDecoder } from 'util'
@@ -66,8 +66,6 @@ const mockQuote = {
   buyTokenToEthRate: '1'
 } as BraveWallet.SwapResponse
 
-const mockedBAT = AccountAssetOptions[1]
-
 describe('useSwap hook', () => {
   it('should initialize From and To assets', async () => {
     const { result, waitForNextUpdate } = renderHook(() => useSwap(), renderHookOptions)
@@ -79,8 +77,21 @@ describe('useSwap hook', () => {
 
     await waitForNextUpdate()
 
-    expect(result.current.fromAsset).toEqual(AccountAssetOptions[0])
-    expect(result.current.toAsset).toEqual(AccountAssetOptions[1])
+    expect(result.current.fromAsset).toEqual(makeNetworkAsset(mockWalletState.selectedNetwork))
+
+    expect(result.current.toAsset).toEqual({
+      coingeckoId: 'usd-coin',
+      contractAddress: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
+      decimals: 6,
+      isErc20: true,
+      isErc721: false,
+      logo: 'chrome://erc-token-images/usdc.png',
+      name: 'USD Coin',
+      symbol: 'USDC',
+      tokenId: '',
+      visible: true,
+      chainId: BraveWallet.ROPSTEN_CHAIN_ID
+    })
   })
 
   it('should return if network supports swap or not', async () => {
@@ -111,16 +122,18 @@ describe('useSwap hook', () => {
     it('should not query allowance if no quote', async () => {
       const { waitForNextUpdate, result, waitFor } = renderHook(() => useSwap(), renderHookOptions)
 
-      await waitForNextUpdate()
-
       // set from-asset to a non-native asset
+      const USDC = result.current.swapAssetOptions[1]
       act(() => {
         result.current.setSwapQuote(undefined)
-        result.current.setFromAsset(mockedBAT)
+        result.current.setFromAsset(USDC)
       })
 
+      await waitForNextUpdate()
+
       await waitFor(() => {
-        expect(result.current.fromAsset?.contractAddress).toBe(mockedBAT.contractAddress)
+        expect(result.current.fromAsset?.contractAddress)
+          .toBe(USDC.contractAddress)
       })
 
       expect(mockFn).not.toHaveBeenCalled()
@@ -132,19 +145,17 @@ describe('useSwap hook', () => {
         allowanceTarget: 'mockAllowanceTarget'
       }
 
-      const { result, waitForNextUpdate } = renderHook(() => useSwap(), renderHookOptions)
-
-      await waitForNextUpdate()
+      const { result } = renderHook(() => useSwap(), renderHookOptions)
 
       // set from-asset to a non-native asset
+      const USDC = result.current.swapAssetOptions[1]
       await act(async () => {
-        result.current.setFromAsset(mockedBAT)
+        result.current.setFromAsset(USDC)
         result.current.setSwapQuote(quote)
-        await waitForNextUpdate()
       })
 
       expect(mockFn).toBeCalledWith(
-        mockedBAT.contractAddress,
+        USDC.contractAddress,
         mockWalletState.accounts[0].address,
         quote.allowanceTarget
       )
@@ -329,7 +340,12 @@ describe('useSwap hook', () => {
       const mockStore = createStore(combineReducers({
         wallet: createWalletReducer({
           ...mockWalletState,
-          selectedAccount: mockAccount // Balance: 123456 Wei
+          selectedAccount: {
+            ...mockAccount,
+            nativeBalanceRegistry: {
+              [mockWalletState.selectedNetwork.chainId]: '123456' // 123456 Wei
+            }
+          }
         }),
         page: createPageReducer(mockPageState)
       }))
@@ -368,7 +384,7 @@ describe('useSwap hook', () => {
           selectedAccount: {
             ...mockAccount,
             nativeBalanceRegistry: {
-              [BraveWallet.MAINNET_CHAIN_ID]: '1234560' // 1234560 Wei
+              [mockWalletState.selectedNetwork.chainId]: '1234560' // 1234560 Wei
             }
           }
         }),
@@ -380,10 +396,10 @@ describe('useSwap hook', () => {
       act(() => {
         result.current.setFromAsset(AccountAssetOptions[0])
         result.current.setSwapQuote({
-            ...mockQuote,
-            gasPrice: '10',
-            gas: '100000',
-            sellAmount: '234561' // 0.000000000000234561 ETH
+          ...mockQuote,
+          gasPrice: '10',
+          gas: '100000',
+          sellAmount: '234561' // 0.000000000000234561 ETH
         })
       })
 
@@ -413,10 +429,20 @@ describe('useSwap hook', () => {
 
     it('should return error if not enough allowance', async () => {
       // Step 1: Initialize the useSwap hook with the following parameters.
-      //    From asset:  BAT
-      //    From amount: 10 BAT
+      //    From asset:  USDC
+      //    From amount: 10 USDC
       //    Quote fees:  0.000000000001 ETH
-      //    Balance:     20 BAT
+      //    Balance:     20 USDC
+
+      const ETH = {
+        ...mockWalletState.userVisibleTokensInfo[0],
+        chainId: mockWalletState.selectedNetwork.chainId
+      }
+      const USDC = {
+        ...mockWalletState.userVisibleTokensInfo[1],
+        chainId: mockWalletState.selectedNetwork.chainId
+      }
+
       const mockStore = createStore(combineReducers({
         wallet: createWalletReducer({
           ...mockWalletState,
@@ -427,7 +453,7 @@ describe('useSwap hook', () => {
               [BraveWallet.ROPSTEN_CHAIN_ID]: '1000000000000000000' // 1 ETH
             },
             tokenBalanceRegistry: {
-              [mockedBAT.contractAddress.toLowerCase()]: '20000000000000000000' // 20 BAT
+              [USDC.contractAddress.toLowerCase()]: '20000000000000000000' // 20 BAT
             }
           }
         }),
@@ -436,8 +462,8 @@ describe('useSwap hook', () => {
 
       const { result, waitFor, waitForValueToChange } = renderHook(
         () => useSwap({
-          fromAsset: AccountAssetOptions[1],
-          toAsset: AccountAssetOptions[0]
+          fromAsset: USDC,
+          toAsset: ETH
         }),
         renderHookOptionsWithCustomStore(mockStore)
       )
@@ -446,20 +472,11 @@ describe('useSwap hook', () => {
       // in the middle of a future update.
       await waitForValueToChange(() => result.current.isSwapSupported)
 
-      // set from asset to BAT
-      act(() => {
-        result.current.setFromAsset(mockedBAT) // From asset is BAT
-        jest.advanceTimersByTime(1001)
-      })
-      await waitFor(() => {
-        expect(result.current.fromAsset?.contractAddress.toLowerCase()).toBe(mockedBAT.contractAddress.toLowerCase())
-      })
-
       // Step 3: Set a From amount, such that the value is greater than
       // token allowance, and wait for at least 1000ms to avoid debouncing.
       // set from-amount
       act(() => {
-        result.current.onSwapInputChange('19', 'from') // From amount is 19 BAT
+        result.current.onSwapInputChange('19', 'from') // From amount is 19 USDC
         jest.advanceTimersByTime(1001)
       })
       await waitFor(() => {
