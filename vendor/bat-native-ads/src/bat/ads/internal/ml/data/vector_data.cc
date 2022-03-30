@@ -18,8 +18,8 @@ namespace {
 constexpr double kMinimumVectorLength = 1e-7;
 }  // namespace
 
-// A actual storage. Wrapped to a struct to make simple copy/move code.
-// Two vectors is used to save the memory (see above how), because some models
+// An actual storage. Wrapped to a struct to make simple copy/move code.
+// Two vectors are used to save the memory (see above how), because some models
 // can consume a lot.
 // There is two types of DataVectors:
 // 1. The "dense" case: ({0, v0}, {1, v1}, .., {n, vn}}.
@@ -41,10 +41,10 @@ class VectorDataStorage {
   size_t GetSize() const { return values_.size(); }
 
   uint32_t GetPointAt(size_t index) const {
-    DCHECK_GE(index, 0u);
     DCHECK_LT(index, values_.size());
-    if (points_.empty())  // The "dense" case, see the description.
+    if (points_.empty()) {  // The "dense" case, see the description.
       return index;
+    }
     return points_[index];
   }
 
