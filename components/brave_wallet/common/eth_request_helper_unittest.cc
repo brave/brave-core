@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
@@ -35,6 +36,14 @@ TEST(EthRequestHelperUnitTest, CommonParseErrors) {
     EXPECT_FALSE(
         ParsePersonalEcRecoverParams(error_case, &message, &signature));
     EXPECT_FALSE(ParseEthGetEncryptionPublicKeyParams(error_case, &address));
+    std::string untrusted_json;
+    EXPECT_FALSE(ParseEthDecryptParams(error_case, &untrusted_json, &address));
+    std::string version;
+    std::vector<uint8_t> nonce;
+    std::vector<uint8_t> ephemeral_public_key;
+    std::vector<uint8_t> ciphertext;
+    EXPECT_FALSE(ParseEthDecryptData(error_case, &version, &nonce,
+                                     &ephemeral_public_key, &ciphertext));
   }
 }
 
@@ -485,6 +494,58 @@ TEST(EthResponseHelperUnitTest, ParseEthGetEncryptionPublicKeyParams) {
 
   EXPECT_TRUE(ParseEthGetEncryptionPublicKeyParams(json_extra_entry, &address));
   EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
+}
+
+TEST(EthResponseHelperUnitTest, ParseEthDecryptParams) {
+  const std::string json(
+      R"({
+        "params": [
+          "0x7b2276657273696f6e223a227832353531392d7873616c736132302d706f6c7931333035222c226e6f6e6365223a224f702f7353626241455474506d704c42337a4933686430693969486e62682f38222c22657068656d5075626c69634b6579223a22474e62315a4d635436335235687962483034563344537551677137674d4d5937705a61354235546b66446f3d222c2263697068657274657874223a224b454a72325564686d4237663838514b7a6a413151666a3650586932784f34357a3377766d673d3d227d",
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
+        ]
+      })");
+  const std::string json_extra_entry(
+      R"({
+        "params": [
+          "0x7b2276657273696f6e223a227832353531392d7873616c736132302d706f6c7931333035222c226e6f6e6365223a224f702f7353626241455474506d704c42337a4933686430693969486e62682f38222c22657068656d5075626c69634b6579223a22474e62315a4d635436335235687962483034563344537551677137674d4d5937705a61354235546b66446f3d222c2263697068657274657874223a224b454a72325564686d4237663838514b7a6a413151666a3650586932784f34357a3377766d673d3d227d",
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83",
+          null,
+          123
+        ]
+      })");
+
+  std::string untrusted_json;
+  std::string address;
+  EXPECT_TRUE(ParseEthDecryptParams(json, &untrusted_json, &address));
+  EXPECT_EQ(
+      untrusted_json,
+      R"({"version":"x25519-xsalsa20-poly1305","nonce":"Op/sSbbAETtPmpLB3zI3hd0i9iHnbh/8","ephemPublicKey":"GNb1ZMcT63R5hybH04V3DSuQgq7gMMY7pZa5B5TkfDo=","ciphertext":"KEJr2UdhmB7f88QKzjA1Qfj6PXi2xO45z3wvmg=="})");
+  EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
+
+  EXPECT_TRUE(
+      ParseEthDecryptParams(json_extra_entry, &untrusted_json, &address));
+  EXPECT_EQ(
+      untrusted_json,
+      R"({"version":"x25519-xsalsa20-poly1305","nonce":"Op/sSbbAETtPmpLB3zI3hd0i9iHnbh/8","ephemPublicKey":"GNb1ZMcT63R5hybH04V3DSuQgq7gMMY7pZa5B5TkfDo=","ciphertext":"KEJr2UdhmB7f88QKzjA1Qfj6PXi2xO45z3wvmg=="})");
+  EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
+}
+
+TEST(EthResponseHelperUnitTest, ParseEthDecryptData) {
+  const std::string json(
+      R"({"version":"x25519-xsalsa20-poly1305","nonce":"Op/sSbbAETtPmpLB3zI3hd0i9iHnbh/8","ephemPublicKey":"GNb1ZMcT63R5hybH04V3DSuQgq7gMMY7pZa5B5TkfDo=","ciphertext":"KEJr2UdhmB7f88QKzjA1Qfj6PXi2xO45z3wvmg=="})");
+
+  std::string version;
+  std::vector<uint8_t> nonce;
+  std::vector<uint8_t> ephemeral_public_key;
+  std::vector<uint8_t> ciphertext;
+  ASSERT_TRUE(ParseEthDecryptData(json, &version, &nonce, &ephemeral_public_key,
+                                  &ciphertext));
+  EXPECT_EQ(version, "x25519-xsalsa20-poly1305");
+  EXPECT_EQ(base::Base64Encode(nonce), "Op/sSbbAETtPmpLB3zI3hd0i9iHnbh/8");
+  EXPECT_EQ(base::Base64Encode(ephemeral_public_key),
+            "GNb1ZMcT63R5hybH04V3DSuQgq7gMMY7pZa5B5TkfDo=");
+  EXPECT_EQ(base::Base64Encode(ciphertext),
+            "KEJr2UdhmB7f88QKzjA1Qfj6PXi2xO45z3wvmg==");
 }
 
 TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
