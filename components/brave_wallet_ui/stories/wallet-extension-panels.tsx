@@ -177,10 +177,6 @@ export const _ConfirmTransaction = () => {
     alert('Will queue next transaction in line')
   }
 
-  const refreshGasEstimates = () => {
-    // do nothing
-  }
-
   const updateUnapprovedTransactionGasFields = (payload: UpdateUnapprovedTransactionGasFieldsType) => {
     alert('Updated gas fields')
   }
@@ -213,7 +209,6 @@ export const _ConfirmTransaction = () => {
         transactionInfo={transactionInfo}
         visibleTokens={NewAssetOptions}
         transactionSpotPrices={transactionSpotPrices}
-        refreshGasEstimates={refreshGasEstimates}
         updateUnapprovedTransactionGasFields={updateUnapprovedTransactionGasFields}
         updateUnapprovedTransactionSpendAllowance={updateUnapprovedTransactionSpendAllowance}
         updateUnapprovedTransactionNonce={updateUnapprovedTransactionNonce}
@@ -234,7 +229,6 @@ export const _ConfirmErcApproveTransaction = () => {
   const onRejectTransaction = () => alert('Rejected Transaction')
   const onRejectAllTransactions = () => alert('Rejected All Transaction')
   const onQueueNextTransaction = () => alert('Will queue next transaction in line')
-  const refreshGasEstimates = () => { }
   const updateUnapprovedTransactionGasFields = () => alert('Updated gas fields')
   const updateUnapprovedTransactionSpendAllowance = () => alert('Updated spending allowance')
   const updateUnapprovedTransactionNonce = () => alert('Updated nonce')
@@ -256,7 +250,6 @@ export const _ConfirmErcApproveTransaction = () => {
         transactionInfo={erc20ApproveTransactionInfo}
         visibleTokens={NewAssetOptions}
         transactionSpotPrices={transactionSpotPrices}
-        refreshGasEstimates={refreshGasEstimates}
         updateUnapprovedTransactionGasFields={updateUnapprovedTransactionGasFields}
         updateUnapprovedTransactionSpendAllowance={updateUnapprovedTransactionSpendAllowance}
         updateUnapprovedTransactionNonce={updateUnapprovedTransactionNonce}

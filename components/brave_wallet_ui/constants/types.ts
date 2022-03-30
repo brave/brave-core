@@ -185,6 +185,10 @@ export interface DefaultCurrencies {
   crypto: string
 }
 
+export interface SolFeeEstimates {
+  fee: bigint
+}
+
 export interface WalletState {
   hasInitialized: boolean
   isFilecoinEnabled: boolean
@@ -212,6 +216,7 @@ export interface WalletState {
   addUserAssetError: boolean
   defaultWallet: BraveWallet.DefaultWallet
   activeOrigin: OriginInfo
+  solFeeEstimates?: SolFeeEstimates
   gasEstimates?: BraveWallet.GasEstimation1559
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean
@@ -394,11 +399,14 @@ export interface SendFilTransactionParams extends BaseTransactionParams {
   cid?: string
 }
 
+export interface SendSolTransactionParams extends BaseTransactionParams {
+}
+
 export interface SendEthTransactionParams extends BaseEthTransactionParams {
   data?: number[]
 }
 
-export type SendTransactionParams = SendEthTransactionParams | SendFilTransactionParams
+export type SendTransactionParams = SendEthTransactionParams | SendFilTransactionParams | SendSolTransactionParams
 
 export interface ER20TransferParams extends BaseEthTransactionParams {
   contractAddress: string

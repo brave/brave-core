@@ -139,7 +139,13 @@ const Portfolio = (props: Props) => {
   const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hoverPrice, setHoverPrice] = React.useState<string>()
   const [hideBalances, setHideBalances] = React.useState<boolean>(false)
-  const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
+  const selectedAssetsNetwork = React.useMemo(() => {
+    if (!selectedAsset) {
+      return selectedNetwork
+    }
+    return getTokensNetwork(networkList, selectedAsset)
+  }, [selectedNetwork, selectedAsset, networkList])
+  const parseTransaction = useTransactionParser(selectedAssetsNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
 
   const onSetFilteredAssetList = (filteredList: UserAssetInfoType[]) => {
     setfilteredAssetList(filteredList)
@@ -198,14 +204,19 @@ const Portfolio = (props: Props) => {
     }
   }, [portfolioHistory, portfolioBalance])
 
-  const selectedAssetTransactions = React.useMemo((): BraveWallet.TransactionInfo[] => {
-    const filteredTransactions = Object.values(transactions).flatMap((txInfo) =>
-      txInfo.flatMap((tx) =>
-        parseTransaction(tx).symbol === selectedAsset?.symbol ? tx : []
-      ))
+  const transactionsByNetwork = React.useMemo(() => {
+    const accountsByNetwork = accounts.filter((account) => account.coin === selectedAssetsNetwork.coin)
+    return accountsByNetwork.map((account) => {
+      return transactions[account.address]
+    }).flat(1)
+  }, [accounts, transactions, selectedAssetsNetwork])
 
+  const selectedAssetTransactions = React.useMemo((): BraveWallet.TransactionInfo[] => {
+    const filteredTransactions = transactionsByNetwork.filter((tx) => {
+      return parseTransaction(tx).symbol === selectedAsset?.symbol ? tx : []
+    })
     return sortTransactionByDate(filteredTransactions, 'descending')
-  }, [selectedAsset, transactions])
+  }, [selectedAsset, transactionsByNetwork])
 
   const fullAssetBalances = React.useMemo(() => {
     if (selectedAsset?.contractAddress === '') {
@@ -252,13 +263,6 @@ const Portfolio = (props: Props) => {
     const coinType = getTokensCoinType(networkList, selectedAsset)
     return accounts.filter((account) => account.coin === coinType)
   }, [networkList, accounts, selectedAsset])
-
-  const selectedAssetsNetwork = React.useMemo(() => {
-    if (!selectedAsset) {
-      return
-    }
-    return getTokensNetwork(networkList, selectedAsset)
-  }, [selectedAsset, networkList])
 
   return (
     <StyledWrapper>

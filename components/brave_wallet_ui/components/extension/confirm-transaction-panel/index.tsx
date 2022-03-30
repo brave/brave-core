@@ -1,11 +1,14 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
+import { useSelector, useDispatch } from 'react-redux'
+import { WalletActions } from '../../../common/actions'
 
 import {
   BraveWallet,
   WalletAccountType,
   DefaultCurrencies,
-  OriginInfo
+  OriginInfo,
+  WalletState
 } from '../../../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
@@ -15,7 +18,7 @@ import {
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
-import { reduceNetworkDisplayName } from '../../../utils/network-utils'
+import { reduceNetworkDisplayName, getNetworkFromTXDataUnion } from '../../../utils/network-utils'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import Amount from '../../../utils/amount'
 
@@ -94,7 +97,6 @@ export interface Props {
   onConfirm: () => void
   onReject: () => void
   onRejectAllTransactions: () => void
-  refreshGasEstimates: () => void
   getERC20Allowance: (recipient: string, sender: string, approvalTarget: string) => Promise<string>
   updateUnapprovedTransactionGasFields: (payload: UpdateUnapprovedTransactionGasFieldsType) => void
   updateUnapprovedTransactionSpendAllowance: (payload: UpdateUnapprovedTransactionSpendAllowanceType) => void
@@ -118,12 +120,20 @@ function ConfirmTransactionPanel (props: Props) {
     onConfirm,
     onReject,
     onRejectAllTransactions,
-    refreshGasEstimates,
     getERC20Allowance,
     updateUnapprovedTransactionGasFields,
     updateUnapprovedTransactionSpendAllowance,
     updateUnapprovedTransactionNonce
   } = props
+  const {
+    solFeeEstimates,
+    defaultNetworks
+  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const dispatch = useDispatch()
+
+  const transactionsNetwork = React.useMemo(() => {
+    return getNetworkFromTXDataUnion(transactionInfo.txDataUnion, defaultNetworks, selectedNetwork)
+  }, [defaultNetworks, transactionInfo, selectedNetwork])
 
   const transactionGasEstimates = transactionInfo.txDataUnion.ethTxData1559?.gasEstimation
 
@@ -143,22 +153,22 @@ function ConfirmTransactionPanel (props: Props) {
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] = React.useState<boolean>(false)
 
   const { findAssetPrice } = usePricing(transactionSpotPrices)
-  const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens, fullTokenList)
+  const parseTransaction = useTransactionParser(transactionsNetwork, accounts, transactionSpotPrices, visibleTokens, fullTokenList, solFeeEstimates)
   const transactionDetails = parseTransaction(transactionInfo)
 
   const {
     onFindTokenInfoByContractAddress,
     foundTokenInfoByContractAddress
-  } = useTokenInfo(getBlockchainTokenInfo, visibleTokens, fullTokenList, selectedNetwork)
+  } = useTokenInfo(getBlockchainTokenInfo, visibleTokens, fullTokenList, transactionsNetwork)
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      refreshGasEstimates()
+      dispatch(WalletActions.refreshGasEstimates(transactionInfo))
     }, 15000)
 
-    refreshGasEstimates()
+    dispatch(WalletActions.refreshGasEstimates(transactionInfo))
     return () => clearInterval(interval)
-  }, [])
+  }, [transactionInfo])
 
   React.useEffect(
     () => {
@@ -285,8 +295,8 @@ function ConfirmTransactionPanel (props: Props) {
       <EditGas
         transactionInfo={transactionInfo}
         onCancel={onToggleEditGas}
-        networkSpotPrice={findAssetPrice(selectedNetwork.symbol)}
-        selectedNetwork={selectedNetwork}
+        networkSpotPrice={findAssetPrice(transactionsNetwork.symbol)}
+        selectedNetwork={transactionsNetwork}
         baseFeePerGas={baseFeePerGas}
         suggestedMaxPriorityFeeChoices={suggestedMaxPriorityFeeChoices}
         updateUnapprovedTransactionGasFields={updateUnapprovedTransactionGasFields}
@@ -325,7 +335,7 @@ function ConfirmTransactionPanel (props: Props) {
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</NetworkText>
+        <NetworkText>{reduceNetworkDisplayName(transactionsNetwork.chainName)}</NetworkText>
         {transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve &&
           <AddressAndOrb>
             <AddressText>{reduceAddress(transactionDetails.recipient)}</AddressText>
@@ -384,7 +394,7 @@ function ConfirmTransactionPanel (props: Props) {
           <TransactionTypeText>{transactionTitle}</TransactionTypeText>
           {(transactionInfo.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
             transactionInfo.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom) &&
-            <AssetIconWithPlaceholder asset={transactionDetails.erc721BlockchainToken} network={selectedNetwork} />
+            <AssetIconWithPlaceholder asset={transactionDetails.erc721BlockchainToken} network={transactionsNetwork} />
           }
           <TransactionAmountBig>
             {transactionInfo.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
@@ -415,10 +425,11 @@ function ConfirmTransactionPanel (props: Props) {
           onSubmit={onSelectTab('details')}
           text='Details'
         />
-
-        <AdvancedTransactionSettingsButton
-          onSubmit={onToggleAdvancedTransactionSettings}
-        />
+        {transactionInfo.txType !== BraveWallet.TransactionType.SolanaSystemTransfer &&
+          <AdvancedTransactionSettingsButton
+            onSubmit={onToggleAdvancedTransactionSettings}
+          />
+        }
       </TabRow>
       <MessageBox isDetails={selectedTab === 'details'} isApprove={transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve}>
         {selectedTab === 'transaction' ? (
@@ -432,8 +443,8 @@ function ConfirmTransactionPanel (props: Props) {
                 <TransactionTypeText>
                   {
                     new Amount(transactionDetails.gasFee)
-                      .divideByDecimals(selectedNetwork.decimals)
-                      .formatAsAsset(6, selectedNetwork.symbol)
+                      .divideByDecimals(transactionsNetwork.decimals)
+                      .formatAsAsset(6, transactionsNetwork.symbol)
                   }
                 </TransactionTypeText>
                 <TransactionText
@@ -466,42 +477,48 @@ function ConfirmTransactionPanel (props: Props) {
 
             {transactionInfo.txType !== BraveWallet.TransactionType.ERC20Approve &&
               <>
-                <SectionRow>
-                  <TransactionTitle>{getLocale('braveWalletConfirmTransactionGasFee')}</TransactionTitle>
-                  <EditButton onClick={onToggleEditGas}>{getLocale('braveWalletAllowSpendEditButton')}</EditButton>
-                </SectionRow>
 
+                <SectionRow>
+                  <TransactionTitle>
+                    {transactionInfo.txType === BraveWallet.TransactionType.SolanaSystemTransfer
+                      ? getLocale('braveWalletConfirmTransactionTransactionFee')
+                      : getLocale('braveWalletConfirmTransactionGasFee')}
+                  </TransactionTitle>
+                  {transactionInfo.txType !== BraveWallet.TransactionType.SolanaSystemTransfer &&
+                    <EditButton onClick={onToggleEditGas}>{getLocale('braveWalletAllowSpendEditButton')}</EditButton>
+                  }
+                </SectionRow>
                 <TransactionTypeText>
                   {
                     new Amount(transactionDetails.gasFee)
-                      .divideByDecimals(selectedNetwork.decimals)
-                      .formatAsAsset(6, selectedNetwork.symbol)
+                      .divideByDecimals(transactionsNetwork.decimals)
+                      .formatAsAsset(6, transactionsNetwork.symbol)
                   }
                 </TransactionTypeText>
-
                 <TransactionText>
                   {
                     new Amount(transactionDetails.gasFeeFiat)
                       .formatAsFiat(defaultCurrencies.fiat)
                   }
                 </TransactionText>
-
                 <Divider />
-
                 <WarningTitleRow>
                   <TransactionTitle>
-                    {getLocale('braveWalletConfirmTransactionTotal')}{' '}({getLocale('braveWalletConfirmTransactionAmountGas')})
+                    {getLocale('braveWalletConfirmTransactionTotal')}
+                    {' '}
+                    ({transactionInfo.txType === BraveWallet.TransactionType.SolanaSystemTransfer
+                      ? getLocale('braveWalletConfirmTransactionAmountFee')
+                      : getLocale('braveWalletConfirmTransactionAmountGas')})
                   </TransactionTitle>
                 </WarningTitleRow>
-
                 <TransactionTypeText>
                   {transactionValueText} {transactionDetails.symbol} +
                 </TransactionTypeText>
                 <TransactionTypeText>
                   {
                     new Amount(transactionDetails.gasFee)
-                      .divideByDecimals(selectedNetwork.decimals)
-                      .formatAsAsset(6, selectedNetwork.symbol)
+                      .divideByDecimals(transactionsNetwork.decimals)
+                      .formatAsAsset(6, transactionsNetwork.symbol)
                   }
                 </TransactionTypeText>
 

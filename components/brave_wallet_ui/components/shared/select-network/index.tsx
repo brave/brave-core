@@ -1,6 +1,7 @@
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 import SelectNetworkItem from '../select-network-item'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, WalletState } from '../../../constants/types'
 
 export interface Props {
   networks: BraveWallet.NetworkInfo[]
@@ -9,19 +10,29 @@ export interface Props {
 }
 
 function SelectNetwork (props: Props) {
+  // redux
+  const {
+    accounts
+  } = useSelector((state: { wallet: WalletState }) => state.wallet)
   const { networks, onSelectNetwork, selectedNetwork } = props
 
-  // MULTICHAIN: Remove me once we support SOL and FIL transaction creation.
-  // Will be implemented in these 2 issues
-  // https://github.com/brave/brave-browser/issues/20698
-  // https://github.com/brave/brave-browser/issues/20893
+  const hasSolAccount = React.useMemo(() => { return accounts.some(account => account.coin === BraveWallet.CoinType.SOL) }, [accounts])
+  const hasFilAccount = React.useMemo(() => { return accounts.some(account => account.coin === BraveWallet.CoinType.FIL) }, [accounts])
+
   const networkList = React.useMemo(() => {
-    return networks.filter(
-      (network) =>
-        network.coin !== BraveWallet.CoinType.SOL &&
-        network.coin !== BraveWallet.CoinType.FIL
-    )
-  }, [networks])
+    if (!hasSolAccount && !hasFilAccount) {
+      return networks.filter((network) =>
+        network.coin !== BraveWallet.CoinType.FIL &&
+        network.coin !== BraveWallet.CoinType.SOL)
+    }
+    if (hasSolAccount && !hasFilAccount) {
+      return networks.filter((network) => network.coin !== BraveWallet.CoinType.FIL)
+    }
+    if (!hasSolAccount && hasFilAccount) {
+      return networks.filter((network) => network.coin !== BraveWallet.CoinType.SOL)
+    }
+    return networks
+  }, [networks, hasSolAccount, hasFilAccount])
 
   return (
     <>
