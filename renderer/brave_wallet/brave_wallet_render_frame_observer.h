@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "brave/common/brave_renderer_configuration.mojom.h"
-#include "brave/components/brave_wallet/renderer/brave_wallet_js_handler.h"
+#include "brave/components/brave_wallet/renderer/js_ethereum_provider.h"
 #include "brave/components/brave_wallet/renderer/js_solana_provider.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -41,7 +41,7 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
   void OnDestruct() override;
 
   // Handle to "handler" JavaScript object functionality.
-  std::unique_ptr<BraveWalletJSHandler> native_javascript_handle_;
+  std::unique_ptr<JSEthereumProvider> js_ethereum_provider_;
 
   std::unique_ptr<JSSolanaProvider> js_solana_provider_ = nullptr;
 

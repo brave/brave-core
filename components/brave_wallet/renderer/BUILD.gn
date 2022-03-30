@@ -1,9 +1,11 @@
 source_set("renderer") {
   sources = [
-    "brave_wallet_js_handler.cc",
-    "brave_wallet_js_handler.h",
+    "js_ethereum_provider.cc",
+    "js_ethereum_provider.h",
     "js_solana_provider.cc",
     "js_solana_provider.h",
+    "resource_helper.cc",
+    "resource_helper.h",
     "v8_helper.cc",
     "v8_helper.h",
   ]

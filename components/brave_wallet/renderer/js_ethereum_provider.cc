@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/renderer/brave_wallet_js_handler.h"
+#include "brave/components/brave_wallet/renderer/js_ethereum_provider.h"
 
 #include <limits>
 #include <tuple>
@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "brave/components/brave_wallet/renderer/resource_helper.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "content/public/renderer/render_frame.h"
@@ -28,27 +29,17 @@
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "ui/base/resource/resource_bundle.h"
 #include "url/origin.h"
 
 namespace {
 
 static base::NoDestructor<std::string> g_provider_script("");
 
-std::string LoadDataResource(const int id) {
-  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
-  if (resource_bundle.IsGzipped(id)) {
-    return resource_bundle.LoadDataResourceString(id);
-  }
-
-  return std::string(resource_bundle.GetRawDataResource(id));
-}
-
 }  // namespace
 
 namespace brave_wallet {
 
-void BraveWalletJSHandler::OnIsUnlocked(
+void JSEthereumProvider::OnIsUnlocked(
     v8::Global<v8::Context> global_context,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
@@ -64,7 +55,7 @@ void BraveWalletJSHandler::OnIsUnlocked(
   std::ignore = resolver->Resolve(context, local_result);
 }
 
-void BraveWalletJSHandler::SendResponse(
+void JSEthereumProvider::SendResponse(
     base::Value id,
     v8::Global<v8::Context> global_context,
     std::unique_ptr<v8::Global<v8::Function>> global_callback,
@@ -107,46 +98,46 @@ void BraveWalletJSHandler::SendResponse(
   }
 }
 
-BraveWalletJSHandler::BraveWalletJSHandler(content::RenderFrame* render_frame,
-                                           bool brave_use_native_wallet,
-                                           bool allow_overwrite_window_ethereum)
+JSEthereumProvider::JSEthereumProvider(content::RenderFrame* render_frame,
+                                       bool brave_use_native_wallet,
+                                       bool allow_overwrite_window_ethereum)
     : render_frame_(render_frame),
       brave_use_native_wallet_(brave_use_native_wallet),
       allow_overwrite_window_ethereum_(allow_overwrite_window_ethereum),
       is_connected_(false) {
   if (g_provider_script->empty()) {
-    *g_provider_script =
-        LoadDataResource(IDR_BRAVE_WALLET_SCRIPT_BRAVE_WALLET_SCRIPT_BUNDLE_JS);
+    *g_provider_script = LoadDataResource(
+        IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS);
   }
   EnsureConnected();
 }
 
-BraveWalletJSHandler::~BraveWalletJSHandler() = default;
+JSEthereumProvider::~JSEthereumProvider() = default;
 
-void BraveWalletJSHandler::AllowOverwriteWindowEthereum(bool allow) {
+void JSEthereumProvider::AllowOverwriteWindowEthereum(bool allow) {
   allow_overwrite_window_ethereum_ = allow;
 }
 
-bool BraveWalletJSHandler::EnsureConnected() {
+bool JSEthereumProvider::EnsureConnected() {
   if (brave_use_native_wallet_ && !brave_wallet_provider_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         brave_wallet_provider_.BindNewPipeAndPassReceiver());
     brave_wallet_provider_->Init(receiver_.BindNewPipeAndPassRemote());
     brave_wallet_provider_.set_disconnect_handler(
-        base::BindOnce(&BraveWalletJSHandler::OnRemoteDisconnect,
+        base::BindOnce(&JSEthereumProvider::OnRemoteDisconnect,
                        weak_ptr_factory_.GetWeakPtr()));
   }
 
   return brave_wallet_provider_.is_bound();
 }
 
-void BraveWalletJSHandler::OnRemoteDisconnect() {
+void JSEthereumProvider::OnRemoteDisconnect() {
   brave_wallet_provider_.reset();
   receiver_.reset();
   EnsureConnected();
 }
 
-void BraveWalletJSHandler::AddJavaScriptObjectToFrame(
+void JSEthereumProvider::AddJavaScriptObjectToFrame(
     v8::Local<v8::Context> context) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
@@ -161,9 +152,8 @@ void BraveWalletJSHandler::AddJavaScriptObjectToFrame(
   InjectInitScript();
 }
 
-void BraveWalletJSHandler::CreateEthereumObject(
-    v8::Isolate* isolate,
-    v8::Local<v8::Context> context) {
+void JSEthereumProvider::CreateEthereumObject(v8::Isolate* isolate,
+                                              v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
   v8::Local<v8::Object> ethereum_obj;
   v8::Local<v8::Object> metamask_obj;
@@ -188,7 +178,7 @@ void BraveWalletJSHandler::CreateEthereumObject(
   }
 }
 
-void BraveWalletJSHandler::UpdateAndBindJSProperties() {
+void JSEthereumProvider::UpdateAndBindJSProperties() {
   v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
@@ -205,7 +195,7 @@ void BraveWalletJSHandler::UpdateAndBindJSProperties() {
   }
 }
 
-void BraveWalletJSHandler::UpdateAndBindJSProperties(
+void JSEthereumProvider::UpdateAndBindJSProperties(
     v8::Isolate* isolate,
     v8::Local<v8::Context> context,
     v8::Local<v8::Object> ethereum_obj) {
@@ -248,33 +238,33 @@ void BraveWalletJSHandler::UpdateAndBindJSProperties(
   }
 }
 
-void BraveWalletJSHandler::BindFunctionsToObject(
+void JSEthereumProvider::BindFunctionsToObject(
     v8::Isolate* isolate,
     v8::Local<v8::Context> context,
     v8::Local<v8::Object> ethereum_object,
     v8::Local<v8::Object> metamask_object) {
   BindFunctionToObject(isolate, ethereum_object, "request",
-                       base::BindRepeating(&BraveWalletJSHandler::Request,
+                       base::BindRepeating(&JSEthereumProvider::Request,
                                            base::Unretained(this), isolate));
   BindFunctionToObject(isolate, ethereum_object, "isConnected",
-                       base::BindRepeating(&BraveWalletJSHandler::IsConnected,
+                       base::BindRepeating(&JSEthereumProvider::IsConnected,
                                            base::Unretained(this)));
-  BindFunctionToObject(isolate, ethereum_object, "enable",
-                       base::BindRepeating(&BraveWalletJSHandler::Enable,
-                                           base::Unretained(this)));
+  BindFunctionToObject(
+      isolate, ethereum_object, "enable",
+      base::BindRepeating(&JSEthereumProvider::Enable, base::Unretained(this)));
   BindFunctionToObject(isolate, ethereum_object, "sendAsync",
-                       base::BindRepeating(&BraveWalletJSHandler::SendAsync,
+                       base::BindRepeating(&JSEthereumProvider::SendAsync,
                                            base::Unretained(this)));
   BindFunctionToObject(
       isolate, ethereum_object, "send",
-      base::BindRepeating(&BraveWalletJSHandler::Send, base::Unretained(this)));
+      base::BindRepeating(&JSEthereumProvider::Send, base::Unretained(this)));
   BindFunctionToObject(isolate, metamask_object, "isUnlocked",
-                       base::BindRepeating(&BraveWalletJSHandler::IsUnlocked,
+                       base::BindRepeating(&JSEthereumProvider::IsUnlocked,
                                            base::Unretained(this)));
 }
 
 template <typename Sig>
-void BraveWalletJSHandler::BindFunctionToObject(
+void JSEthereumProvider::BindFunctionToObject(
     v8::Isolate* isolate,
     v8::Local<v8::Object> javascript_object,
     const std::string& name,
@@ -300,7 +290,7 @@ void BraveWalletJSHandler::BindFunctionToObject(
 //
 // 3) ethereum.send(payload: JsonRpcRequest): unknown;
 // Only valid for: eth_accounts, eth_coinbase, eth_uninstallFilter, etc.
-v8::Local<v8::Promise> BraveWalletJSHandler::Send(gin::Arguments* args) {
+v8::Local<v8::Promise> JSEthereumProvider::Send(gin::Arguments* args) {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
   v8::Isolate* isolate = args->isolate();
@@ -386,14 +376,14 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Send(gin::Arguments* args) {
       method, std::move(*params),
       url::Origin(render_frame_->GetWebFrame()->GetSecurityOrigin())
           .Serialize(),
-      base::BindOnce(&BraveWalletJSHandler::OnRequestOrSendAsync,
+      base::BindOnce(&JSEthereumProvider::OnRequestOrSendAsync,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      nullptr, std::move(promise_resolver), isolate, true));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
 
-void BraveWalletJSHandler::SendAsync(gin::Arguments* args) {
+void JSEthereumProvider::SendAsync(gin::Arguments* args) {
   if (!EnsureConnected())
     return;
   v8::Isolate* isolate = args->isolate();
@@ -417,13 +407,13 @@ void BraveWalletJSHandler::SendAsync(gin::Arguments* args) {
       url::Origin(render_frame_->GetWebFrame()->GetSecurityOrigin())
           .Serialize(),
       base::BindOnce(
-          &BraveWalletJSHandler::BraveWalletJSHandler::OnRequestOrSendAsync,
+          &JSEthereumProvider::JSEthereumProvider::OnRequestOrSendAsync,
           weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
           std::move(global_callback), v8::Global<v8::Promise::Resolver>(),
           isolate, true));
 }
 
-v8::Local<v8::Value> BraveWalletJSHandler::IsConnected() {
+v8::Local<v8::Value> JSEthereumProvider::IsConnected() {
   v8::Isolate* isolate = v8::Isolate::GetCurrent();
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context =
@@ -435,9 +425,8 @@ v8::Local<v8::Value> BraveWalletJSHandler::IsConnected() {
   return v8::Boolean::New(isolate, is_connected_);
 }
 
-v8::Local<v8::Promise> BraveWalletJSHandler::Request(
-    v8::Isolate* isolate,
-    v8::Local<v8::Value> input) {
+v8::Local<v8::Promise> JSEthereumProvider::Request(v8::Isolate* isolate,
+                                                   v8::Local<v8::Value> input) {
   if (!input->IsObject())
     return v8::Local<v8::Promise>();
   std::unique_ptr<base::Value> input_value =
@@ -462,14 +451,14 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
       url::Origin(render_frame_->GetWebFrame()->GetSecurityOrigin())
           .Serialize(),
       base::BindOnce(
-          &BraveWalletJSHandler::BraveWalletJSHandler::OnRequestOrSendAsync,
+          &JSEthereumProvider::JSEthereumProvider::OnRequestOrSendAsync,
           weak_ptr_factory_.GetWeakPtr(), std::move(global_context), nullptr,
           std::move(promise_resolver), isolate, false));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
 
-void BraveWalletJSHandler::OnRequestOrSendAsync(
+void JSEthereumProvider::OnRequestOrSendAsync(
     v8::Global<v8::Context> global_context,
     std::unique_ptr<v8::Global<v8::Function>> global_callback,
     v8::Global<v8::Promise::Resolver> promise_resolver,
@@ -490,7 +479,7 @@ void BraveWalletJSHandler::OnRequestOrSendAsync(
       base::Value::ToUniquePtrValue(std::move(formed_response)), !reject);
 }
 
-v8::Local<v8::Promise> BraveWalletJSHandler::Enable() {
+v8::Local<v8::Promise> JSEthereumProvider::Enable() {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
 
@@ -508,14 +497,14 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Enable() {
   auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
 
   brave_wallet_provider_->Enable(
-      base::BindOnce(&BraveWalletJSHandler::OnRequestOrSendAsync,
+      base::BindOnce(&JSEthereumProvider::OnRequestOrSendAsync,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      nullptr, std::move(promise_resolver), isolate, false));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
 
-v8::Local<v8::Promise> BraveWalletJSHandler::IsUnlocked() {
+v8::Local<v8::Promise> JSEthereumProvider::IsUnlocked() {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
 
@@ -532,13 +521,13 @@ v8::Local<v8::Promise> BraveWalletJSHandler::IsUnlocked() {
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
   brave_wallet_provider_->IsLocked(base::BindOnce(
-      &BraveWalletJSHandler::OnIsUnlocked, weak_ptr_factory_.GetWeakPtr(),
+      &JSEthereumProvider::OnIsUnlocked, weak_ptr_factory_.GetWeakPtr(),
       std::move(global_context), std::move(promise_resolver), isolate));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
 
-void BraveWalletJSHandler::InjectInitScript() {
+void JSEthereumProvider::InjectInitScript() {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
   if (!allow_overwrite_window_ethereum_) {
     SetProviderNonWritable(web_frame, "ethereum");
@@ -546,8 +535,8 @@ void BraveWalletJSHandler::InjectInitScript() {
   ExecuteScript(web_frame, *g_provider_script);
 }
 
-void BraveWalletJSHandler::FireEvent(const std::string& event,
-                                     base::Value event_args) {
+void JSEthereumProvider::FireEvent(const std::string& event,
+                                   base::Value event_args) {
   base::Value args_list = base::Value(base::Value::Type::LIST);
   args_list.Append(event);
   args_list.Append(std::move(event_args));
@@ -564,15 +553,15 @@ void BraveWalletJSHandler::FireEvent(const std::string& event,
                      std::move(args));
 }
 
-void BraveWalletJSHandler::ConnectEvent() {
+void JSEthereumProvider::ConnectEvent() {
   if (!EnsureConnected())
     return;
 
   brave_wallet_provider_->GetChainId(base::BindOnce(
-      &BraveWalletJSHandler::OnGetChainId, weak_ptr_factory_.GetWeakPtr()));
+      &JSEthereumProvider::OnGetChainId, weak_ptr_factory_.GetWeakPtr()));
 }
 
-void BraveWalletJSHandler::OnGetChainId(const std::string& chain_id) {
+void JSEthereumProvider::OnGetChainId(const std::string& chain_id) {
   base::DictionaryValue event_args;
   event_args.SetStringKey("chainId", chain_id);
   FireEvent(kConnectEvent, std::move(event_args));
@@ -581,20 +570,20 @@ void BraveWalletJSHandler::OnGetChainId(const std::string& chain_id) {
   UpdateAndBindJSProperties();
 }
 
-void BraveWalletJSHandler::DisconnectEvent(const std::string& message) {
+void JSEthereumProvider::DisconnectEvent(const std::string& message) {
   // FireEvent(kDisconnectEvent, message);
 }
 
-void BraveWalletJSHandler::ChainChangedEvent(const std::string& chain_id) {
+void JSEthereumProvider::ChainChangedEvent(const std::string& chain_id) {
   if (chain_id_ == chain_id)
     return;
 
-  FireEvent(kChainChangedEvent, base::Value(chain_id));
+  FireEvent(ethereum::kChainChangedEvent, base::Value(chain_id));
   chain_id_ = chain_id;
   UpdateAndBindJSProperties();
 }
 
-void BraveWalletJSHandler::AccountsChangedEvent(
+void JSEthereumProvider::AccountsChangedEvent(
     const std::vector<std::string>& accounts) {
   base::ListValue event_args;
   for (const std::string& account : accounts) {
@@ -605,7 +594,7 @@ void BraveWalletJSHandler::AccountsChangedEvent(
     first_allowed_account_ = accounts[0];
   }
   UpdateAndBindJSProperties();
-  FireEvent(kAccountsChangedEvent, std::move(event_args));
+  FireEvent(ethereum::kAccountsChangedEvent, std::move(event_args));
 }
 
 }  // namespace brave_wallet

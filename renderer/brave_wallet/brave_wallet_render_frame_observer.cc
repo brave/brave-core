@@ -41,19 +41,19 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
     return;
   auto dynamic_params = get_dynamic_params_callback_.Run();
   if (!dynamic_params.brave_use_native_wallet) {
-    native_javascript_handle_.reset();
+    js_ethereum_provider_.reset();
     js_solana_provider_.reset();
     return;
   }
 
-  if (!native_javascript_handle_) {
-    native_javascript_handle_.reset(new BraveWalletJSHandler(
+  if (!js_ethereum_provider_) {
+    js_ethereum_provider_.reset(new JSEthereumProvider(
         render_frame(), dynamic_params.brave_use_native_wallet,
         dynamic_params.allow_overwrite_window_web3_provider));
   }
-  native_javascript_handle_->AddJavaScriptObjectToFrame(context);
-  native_javascript_handle_->ConnectEvent();
-  native_javascript_handle_->AllowOverwriteWindowEthereum(
+  js_ethereum_provider_->AddJavaScriptObjectToFrame(context);
+  js_ethereum_provider_->ConnectEvent();
+  js_ethereum_provider_->AllowOverwriteWindowEthereum(
       dynamic_params.allow_overwrite_window_web3_provider);
 
   if (base::FeatureList::IsEnabled(

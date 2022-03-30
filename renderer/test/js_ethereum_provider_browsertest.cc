@@ -20,9 +20,9 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "url/gurl.h"
 
-class BraveWalletJSHandlerBrowserTest : public InProcessBrowserTest {
+class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
  public:
-  BraveWalletJSHandlerBrowserTest()
+  JSEthereumProviderBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
@@ -31,7 +31,7 @@ class BraveWalletJSHandlerBrowserTest : public InProcessBrowserTest {
     https_server_.ServeFilesFromDirectory(test_data_dir);
   }
 
-  ~BraveWalletJSHandlerBrowserTest() override = default;
+  ~JSEthereumProviderBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -53,7 +53,7 @@ class BraveWalletJSHandlerBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer https_server_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveWalletJSHandlerBrowserTest, AttachOnReload) {
+IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
   brave_wallet::SetDefaultWallet(browser()->profile()->GetPrefs(),
                                  brave_wallet::mojom::DefaultWallet::None);
   const GURL url = https_server_.GetURL("/simple.html");
@@ -86,7 +86,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletJSHandlerBrowserTest, AttachOnReload) {
   EXPECT_EQ(content::EvalJs(main_frame(), overwrite).ExtractString(), "test");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveWalletJSHandlerBrowserTest,
+IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        DoNotAttachToChromePages) {
   brave_wallet::SetDefaultWallet(browser()->profile()->GetPrefs(),
                                  brave_wallet::mojom::DefaultWallet::None);

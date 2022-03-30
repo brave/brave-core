@@ -12,9 +12,15 @@ namespace brave_wallet {
 
 extern const char kConnectEvent[];
 extern const char kDisconnectEvent[];
+
+namespace ethereum {
 extern const char kChainChangedEvent[];
 extern const char kAccountsChangedEvent[];
+}  // namespace ethereum
+
+namespace solana {
 extern const char kAccountChangedEvent[];
+}  // namespace solana
 
 constexpr char kEthAccounts[] = "eth_accounts";
 constexpr char kEthRequestAccounts[] = "eth_requestAccounts";
