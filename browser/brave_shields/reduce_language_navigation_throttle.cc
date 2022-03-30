@@ -56,30 +56,30 @@ ReduceLanguageNavigationThrottle::~ReduceLanguageNavigationThrottle() {
 
 content::NavigationThrottle::ThrottleCheckResult
 ReduceLanguageNavigationThrottle::WillStartRequest() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   UpdateHeaders();
   return content::NavigationThrottle::PROCEED;
 }
 
 content::NavigationThrottle::ThrottleCheckResult
 ReduceLanguageNavigationThrottle::WillRedirectRequest() {
-  return WillStartRequest();
+  UpdateHeaders();
+  return content::NavigationThrottle::PROCEED;
 }
 
 void ReduceLanguageNavigationThrottle::UpdateHeaders() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   content::NavigationHandle* handle = navigation_handle();
-  GURL visible_url = handle->GetWebContents()->GetVisibleURL();
+  GURL url = handle->GetURL();
   content::BrowserContext* context =
       handle->GetWebContents()->GetBrowserContext();
   PrefService* pref_service = user_prefs::UserPrefs::Get(context);
 
-  if (!brave_shields::ShouldDoReduceLanguage(content_settings_, visible_url,
+  if (!brave_shields::ShouldDoReduceLanguage(content_settings_, url,
                                              pref_service))
     return;
 
   ControlType fingerprinting_control_type =
-      brave_shields::GetFingerprintingControlType(content_settings_,
-                                                  visible_url);
+      brave_shields::GetFingerprintingControlType(content_settings_, url);
 
   // If fingerprint blocking is maximum, set Accept-Language header to
   // static value regardless of other preferences.
@@ -94,13 +94,14 @@ void ReduceLanguageNavigationThrottle::UpdateHeaders() {
   std::string languages =
       pref_service->Get(language::prefs::kAcceptLanguages)->GetString();
   std::string first_language = language::GetFirstLanguage(languages);
+  // Potentially add a fake q value after the language code.
   std::vector<std::string> q_values = {";q=0.5", ";q=0.6", ";q=0.7",
                                        ";q=0.8", ";q=0.9", ""};
   std::mt19937_64 prng;
   auto* profile = Profile::FromBrowserContext(context);
   if (g_brave_browser_process->brave_farbling_service()
           ->MakePseudoRandomGeneratorForURL(
-              visible_url, profile && !profile->IsOffTheRecord(), &prng)) {
+              url, profile && !profile->IsOffTheRecord(), &prng)) {
     first_language += q_values[prng() % q_values.size()];
   }
   handle->SetRequestHeader(net::HttpRequestHeaders::kAcceptLanguage,

@@ -6,6 +6,8 @@
 #include "third_party/blink/renderer/bindings/core/v8/binding_security.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 
-#define BindingSecurity brave::BraveSessionCache::Init(); BindingSecurity
+#define BindingSecurity             \
+  brave::BraveSessionCache::Init(); \
+  BindingSecurity
 
 #include "src/third_party/blink/renderer/core/core_initializer.cc"

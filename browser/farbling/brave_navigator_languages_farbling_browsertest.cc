@@ -222,7 +222,8 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
                        FarbleLanguagesServiceWorker) {
   std::u16string expected_title(u"pass");
   std::string domain = "b.test";
-  GURL url = https_server_.GetURL(domain, "/navigator/service-workers-languages.html");
+  GURL url =
+      https_server_.GetURL(domain, "/navigator/service-workers-languages.html");
   // Farbling level: default
   SetFingerprintingDefault(domain);
   NavigateToURLUntilLoadStop(url);
