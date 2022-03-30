@@ -548,6 +548,49 @@ void BraveWalletProviderImpl::GetEncryptionPublicKey(const std::string& address,
                      std::move(id), address));
 }
 
+void BraveWalletProviderImpl::Decrypt(
+    const std::string& untrusted_encrypted_data_json,
+    const std::string& address,
+    RequestCallback callback,
+    base::Value id) {
+  data_decoder::JsonSanitizer::Sanitize(
+      untrusted_encrypted_data_json,
+      base::BindOnce(&BraveWalletProviderImpl::ContinueDecryptWithSanitizedJson,
+                     weak_factory_.GetWeakPtr(), std::move(callback),
+                     std::move(id), address));
+}
+
+void BraveWalletProviderImpl::ContinueDecryptWithSanitizedJson(
+    RequestCallback callback,
+    base::Value id,
+    const std::string& address,
+    data_decoder::JsonSanitizer::Result result) {
+  if (result.error || !result.value.has_value()) {
+    SendErrorOnRequest(mojom::ProviderError::kInvalidParams,
+                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
+                       std::move(callback), std::move(id));
+    return;
+  }
+  std::string validated_encrypted_data_json = result.value.value();
+  std::string version;
+  std::vector<uint8_t> nonce;
+  std::vector<uint8_t> ephemeral_public_key;
+  std::vector<uint8_t> ciphertext;
+  if (!ParseEthDecryptData(validated_encrypted_data_json, &version, &nonce,
+                           &ephemeral_public_key, &ciphertext)) {
+    SendErrorOnRequest(mojom::ProviderError::kInvalidParams,
+                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
+                       std::move(callback), std::move(id));
+    return;
+  }
+
+  GetAllowedAccounts(
+      false, base::BindOnce(
+                 &BraveWalletProviderImpl::ContinueDecryptWithAllowedAccounts,
+                 weak_factory_.GetWeakPtr(), std::move(callback), std::move(id),
+                 version, nonce, ephemeral_public_key, ciphertext, address));
+}
+
 void BraveWalletProviderImpl::ContinueGetEncryptionPublicKey(
     RequestCallback callback,
     base::Value id,
@@ -576,6 +619,57 @@ void BraveWalletProviderImpl::ContinueGetEncryptionPublicKey(
   // Only show bubble when there is no immediate error
   brave_wallet_service_->AddGetPublicKeyRequest(
       address, delegate_->GetOrigin(), std::move(callback), std::move(id));
+  delegate_->ShowPanel();
+}
+
+void BraveWalletProviderImpl::ContinueDecryptWithAllowedAccounts(
+    RequestCallback callback,
+    base::Value id,
+    const std::string& version,
+    const std::vector<uint8_t>& nonce,
+    const std::vector<uint8_t>& ephemeral_public_key,
+    const std::vector<uint8_t>& ciphertext,
+    const std::string& address,
+    const std::vector<std::string>& allowed_accounts,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess) {
+    std::unique_ptr<base::Value> formed_response;
+    formed_response = GetProviderErrorDictionary(error, error_message);
+    std::move(callback).Run(std::move(id), std::move(*formed_response), false,
+                            "", false);
+    return;
+  }
+
+  if (!CheckAccountAllowed(address, allowed_accounts)) {
+    std::unique_ptr<base::Value> formed_response;
+    formed_response = GetProviderErrorDictionary(
+        mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    std::move(callback).Run(std::move(id), std::move(*formed_response), false,
+                            "", false);
+    return;
+  }
+
+  std::vector<uint8_t> message_bytes;
+  if (!keyring_service_
+           ->DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
+               version, nonce, ephemeral_public_key, ciphertext, address,
+               &message_bytes)) {
+    std::unique_ptr<base::Value> formed_response;
+    formed_response = GetProviderErrorDictionary(
+        mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    std::move(callback).Run(std::move(id), std::move(*formed_response), false,
+                            "", false);
+    return;
+  }
+
+  std::string message(message_bytes.begin(), message_bytes.end());
+  auto request =
+      mojom::DecryptRequest::New(delegate_->GetOrigin(), address, message);
+  brave_wallet_service_->AddDecryptRequest(std::move(request),
+                                           std::move(callback), std::move(id));
   delegate_->ShowPanel();
 }
 
@@ -948,6 +1042,17 @@ void BraveWalletProviderImpl::CommonRequestOrSendAsync(
       return;
     }
     GetEncryptionPublicKey(address, std::move(callback), std::move(id));
+  } else if (method == kEthDecrypt) {
+    std::string untrusted_encrypted_data_json;
+    std::string address;
+    if (!ParseEthDecryptParams(normalized_json_request,
+                               &untrusted_encrypted_data_json, &address)) {
+      SendErrorOnRequest(error, error_message, std::move(callback),
+                         std::move(id));
+      return;
+    }
+    Decrypt(untrusted_encrypted_data_json, address, std::move(callback),
+            std::move(id));
   } else if (method == kWalletWatchAsset || method == kMetamaskWatchAsset) {
     mojom::BlockchainTokenPtr token;
     if (!ParseWalletWatchAssetParams(normalized_json_request, &token,
