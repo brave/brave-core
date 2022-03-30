@@ -8,7 +8,6 @@
 #include "base/command_line.h"
 #include "base/sequence_checker.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_util.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 #include "crypto/hmac.h"
@@ -26,7 +25,6 @@
 #include "third_party/blink/renderer/platform/network/network_utils.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
-#include "third_party/icu/source/common/unicode/locid.h"
 
 namespace {
 

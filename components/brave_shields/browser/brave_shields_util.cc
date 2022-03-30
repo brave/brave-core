@@ -9,7 +9,6 @@
 
 #include "base/feature_list.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"

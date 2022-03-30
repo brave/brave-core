@@ -77,6 +77,7 @@ static_library("browser") {
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
     "//components/prefs",
+    "//components/pref_registry:pref_registry",
     "//components/security_interstitials/content:security_interstitial_page",
     "//components/security_interstitials/core",
     "//components/user_prefs",

@@ -25,8 +25,6 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "net/http/http_util.h"
-#include "third_party/blink/renderer/platform/language.h"
-#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace brave_shields {
 
