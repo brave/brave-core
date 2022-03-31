@@ -51,18 +51,6 @@ async function applyPatches() {
   }
 }
 
-const restoreBraveCoreGitUrlIfGitCacheEnabled = () => {
-  const gitCachePath = util.runGit(config.braveCoreDir, ['config', 'cache.cachepath'], true)
-  if (!gitCachePath) {
-    return
-  }
-  const gitBraveCoreRemoteUrl = util.runGit(config.braveCoreDir, ['remote', 'get-url', 'origin'], true)
-  const gitBraveCoreRemotePushUrl = util.runGit(config.braveCoreDir, ['remote', 'get-url', '--push', 'origin'], true)
-  if (gitBraveCoreRemoteUrl != gitBraveCoreRemotePushUrl) {
-    util.runGit(config.braveCoreDir, ['remote', 'set-url', 'origin', gitBraveCoreRemotePushUrl], true)
-  }
-}
-
 const util = {
 
   runProcess: (cmd, args = [], options = {}) => {
@@ -178,7 +166,9 @@ const util = {
       {
         managed: "%False%",
         name: "src/brave",
-        url: config.braveCoreRepo
+        // We do not use gclient to manage brave-core, so this should
+        // not actually get used.
+        url: 'https://github.com/brave/brave-core.git'
       }
     ]
 
@@ -673,7 +663,7 @@ const util = {
     return needsUpdate
   },
 
-  gclientSync: (forceReset = false, cleanup = false, braveCoreRef = null, shouldCheckChromiumVersion = true, options = {}) => {
+  gclientSync: (forceReset = false, cleanup = false, shouldCheckChromiumVersion = true, options = {}) => {
     let reset = forceReset
 
     // base args
@@ -683,37 +673,6 @@ const util = {
 
     let args = [...initialArgs]
     let didUpdateChromium = false
-
-    if (forceReset || braveCoreRef) {
-      if (!braveCoreRef) {
-        // Use current branch (sync will then pull latest) or current exact hash
-        // if we're not in a branch.
-        braveCoreRef = util.runGit(config.braveCoreDir, ['rev-parse', '--abbrev-ref', 'HEAD'])
-        if (braveCoreRef === 'HEAD') {
-          // get the rev hash if we're not in a branch
-          braveCoreRef = util.runGit(config.braveCoreDir, ['rev-parse', 'HEAD'])
-        }
-      }
-
-      // re-checkout as the commit ref because otherwise gclient sync clobbers
-      // the branch for braveCoreRef and doesn't set it to the correct commit
-      // for some reason
-      if (fs.existsSync(config.braveCoreDir)) {
-        const braveCoreSha = util.runGit(config.braveCoreDir, ['rev-parse', 'HEAD'])
-        Log.progress(`Resetting brave core to "${braveCoreSha}"...`)
-        util.runGit(config.braveCoreDir, ['reset', '--hard', 'HEAD'], true)
-        let checkoutResult = util.runGit(config.braveCoreDir, ['checkout', braveCoreSha], true)
-        // Handle checkout failure
-        if (checkoutResult === null) {
-          Log.error('Could not checkout: ' + braveCoreSha)
-        }
-        // Checkout was successful
-        Log.progress(`...brave core is now at commit ID ${braveCoreSha}`)
-      }
-
-      args = args.concat(['--revision', 'src/brave@' + braveCoreRef])
-      reset = true
-    }
 
     if (!shouldCheckChromiumVersion) {
       const chromiumNeedsUpdate = util.shouldUpdateChromium()
@@ -739,14 +698,9 @@ const util = {
     }
 
     runGClient(args, options)
-    // When git cache is enabled, gclient sync will use a local directory as a
-    // git remote url. This will break non gclient-triggered git operations, so
-    // after gclient is done, we restore the remote url here.
-    restoreBraveCoreGitUrlIfGitCacheEnabled()
 
     return {
-      didUpdateChromium,
-      braveCoreRef
+      didUpdateChromium
     }
   },
 
