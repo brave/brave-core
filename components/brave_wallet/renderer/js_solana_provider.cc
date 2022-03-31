@@ -86,37 +86,43 @@ bool JSSolanaProvider::V8ConverterStrategy::FromV8ArrayBuffer(
 std::unique_ptr<JSSolanaProvider> JSSolanaProvider::Install(
     bool use_native_wallet,
     bool allow_overwrite_window_solana,
+    bool is_main_world,
     content::RenderFrame* render_frame,
     v8::Local<v8::Context> context) {
   std::unique_ptr<JSSolanaProvider> js_solana_provider(
       new JSSolanaProvider(use_native_wallet, render_frame));
-  if (!js_solana_provider->Init(context, allow_overwrite_window_solana))
+  if (!js_solana_provider->Init(context, allow_overwrite_window_solana,
+                                is_main_world))
     return nullptr;
 
   return js_solana_provider;
 }
 
 bool JSSolanaProvider::Init(v8::Local<v8::Context> context,
-                            bool allow_overwrite_window_solana) {
+                            bool allow_overwrite_window_solana,
+                            bool is_main_world) {
   v8::Isolate* isolate = context->GetIsolate();
   v8::Local<v8::Object> global = context->Global();
   v8::Local<v8::Value> solana_value;
-  if (!global->Get(context, gin::StringToV8(isolate, "solana"))
-           .ToLocal(&solana_value) ||
-      !solana_value->IsObject()) {
-    gin::Handle<JSSolanaProvider> provider = gin::CreateHandle(isolate, this);
-    if (provider.IsEmpty())
-      return false;
-    global
-        ->Set(context, gin::StringToSymbol(isolate, "solana"), provider.ToV8())
-        .Check();
-    InjectInitScript(allow_overwrite_window_solana);
-  } else {
-    render_frame_->GetWebFrame()->AddMessageToConsole(
-        blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
-                                 "Brave Wallet will not insert window.solana "
-                                 "because it already exists!"));
+  if (is_main_world) {
+    if (!global->Get(context, gin::StringToV8(isolate, "solana"))
+             .ToLocal(&solana_value) ||
+        !solana_value->IsObject()) {
+      gin::Handle<JSSolanaProvider> provider = gin::CreateHandle(isolate, this);
+      if (provider.IsEmpty())
+        return false;
+      global
+          ->Set(context, gin::StringToSymbol(isolate, "solana"),
+                provider.ToV8())
+          .Check();
+    } else {
+      render_frame_->GetWebFrame()->AddMessageToConsole(
+          blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
+                                   "Brave Wallet will not insert window.solana "
+                                   "because it already exists!"));
+    }
   }
+  InjectInitScript(allow_overwrite_window_solana, is_main_world);
   return true;
 }
 
@@ -162,11 +168,15 @@ void JSSolanaProvider::AccountChangedEvent(
   FireEvent(solana::kAccountChangedEvent, std::move(args));
 }
 
-void JSSolanaProvider::InjectInitScript(bool allow_overwrite_window_solana) {
+void JSSolanaProvider::InjectInitScript(bool allow_overwrite_window_solana,
+                                        bool is_main_world) {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  if (!allow_overwrite_window_solana)
+  if (!allow_overwrite_window_solana) {
     SetProviderNonWritable(web_frame, "solana");
-  ExecuteScript(web_frame, *g_provider_script);
+  }
+  if (is_main_world) {
+    ExecuteScript(web_frame, *g_provider_script);
+  }
 }
 
 bool JSSolanaProvider::EnsureConnected() {

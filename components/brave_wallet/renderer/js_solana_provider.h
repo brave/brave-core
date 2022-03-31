@@ -43,10 +43,13 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   static std::unique_ptr<JSSolanaProvider> Install(
       bool use_native_wallet,
       bool allow_overwrite_window_solana,
+      bool is_main_world,
       content::RenderFrame* render_frame,
       v8::Local<v8::Context> context);
 
-  bool Init(v8::Local<v8::Context> context, bool allow_overwrite_window_solana);
+  bool Init(v8::Local<v8::Context> context,
+            bool allow_overwrite_window_solana,
+            bool is_main_world);
 
   // gin::WrappableBase
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
@@ -59,7 +62,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
  private:
   JSSolanaProvider(bool use_native_wallet, content::RenderFrame* render_frame);
 
-  void InjectInitScript(bool allow_overwrite_window_solana);
+  void InjectInitScript(bool allow_overwrite_window_solana, bool is_main_world);
   bool EnsureConnected();
   void OnRemoteDisconnect();
 
