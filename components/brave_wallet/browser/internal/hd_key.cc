@@ -451,9 +451,11 @@ std::vector<uint8_t> HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
   std::vector<uint8_t> padded_ciphertext = ciphertext;
   padded_ciphertext.insert(padded_ciphertext.begin(), 16, 0);
   std::vector<uint8_t> padded_plaintext(ciphertext.size() + 32);
+
+  const uint8_t* private_key_ptr = private_key_.data();
   if (crypto_box_open(padded_plaintext.data(), padded_ciphertext.data(),
                       padded_ciphertext.size(), nonce.data(),
-                      ephemeral_public_key.data(), private_key_.data()) != 0)
+                      ephemeral_public_key.data(), private_key_ptr) != 0)
     return std::vector<uint8_t>();
   std::vector<uint8_t> plaintext(padded_plaintext.cbegin() + 32,
                                  padded_plaintext.cend() - 16);

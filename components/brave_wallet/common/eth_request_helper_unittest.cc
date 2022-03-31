@@ -513,6 +513,14 @@ TEST(EthResponseHelperUnitTest, ParseEthDecryptParams) {
           123
         ]
       })");
+  const std::string json_extra_first_entry(
+      R"({
+        "params": [
+          "extra_front",
+          "0x7b2276657273696f6e223a227832353531392d7873616c736132302d706f6c7931333035222c226e6f6e6365223a224f702f7353626241455474506d704c42337a4933686430693969486e62682f38222c22657068656d5075626c69634b6579223a22474e62315a4d635436335235687962483034563344537551677137674d4d5937705a61354235546b66446f3d222c2263697068657274657874223a224b454a72325564686d4237663838514b7a6a413151666a3650586932784f34357a3377766d673d3d227d",
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83",
+        ]
+      })");
 
   std::string untrusted_json;
   std::string address;
@@ -528,6 +536,8 @@ TEST(EthResponseHelperUnitTest, ParseEthDecryptParams) {
       untrusted_json,
       R"({"version":"x25519-xsalsa20-poly1305","nonce":"Op/sSbbAETtPmpLB3zI3hd0i9iHnbh/8","ephemPublicKey":"GNb1ZMcT63R5hybH04V3DSuQgq7gMMY7pZa5B5TkfDo=","ciphertext":"KEJr2UdhmB7f88QKzjA1Qfj6PXi2xO45z3wvmg=="})");
   EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
+  EXPECT_FALSE(
+      ParseEthDecryptParams(json_extra_first_entry, &untrusted_json, &address));
 }
 
 TEST(EthResponseHelperUnitTest, ParseEthDecryptData) {
