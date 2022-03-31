@@ -9,18 +9,6 @@ export const StyledWrapper = styled.div`
   padding-top: 25px;
 `
 
-export const URLText = styled.span`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 13px;
-  line-height: 20px;
-  text-align: center;
-  letter-spacing: 0.01em;
-  margin-bottom: 11px;
-  color: ${(p) => p.theme.color.text02};
-`
-
 export const PanelTitle = styled.span`
   font-family: Poppins;
   font-style: normal;
@@ -30,6 +18,7 @@ export const PanelTitle = styled.span`
   text-align: center;
   letter-spacing: 0.04em;
   color: ${(p) => p.theme.color.text01};
+  margin-top: 5px;
 `
 
 export const FavIcon = styled.img`

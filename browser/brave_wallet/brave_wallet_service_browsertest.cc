@@ -9,6 +9,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -27,8 +28,11 @@ namespace {
 
 void OnGetActiveOrigin(bool* callback_called,
                        const std::string& expected_active_origin,
-                       const std::string& active_origin) {
+                       const std::string& expected_etld_plus_one,
+                       const std::string& active_origin,
+                       const std::string& etld_plus_one) {
   EXPECT_EQ(expected_active_origin, active_origin);
+  EXPECT_EQ(expected_etld_plus_one, etld_plus_one);
   *callback_called = true;
 }
 
@@ -45,11 +49,14 @@ class TestBraveWalletServiceObserver
       const std::string& cryptocurrency) override {}
   void OnNetworkListChanged() override {}
 
-  void OnActiveOriginChanged(const std::string& origin) override {
+  void OnActiveOriginChanged(const std::string& origin,
+                             const std::string& etld_plus_one) override {
     active_origin_ = origin;
+    etld_plus_one_ = etld_plus_one;
   }
 
   std::string active_origin() { return active_origin_; }
+  std::string etld_plus_one() { return etld_plus_one_; }
 
   mojo::PendingRemote<brave_wallet::mojom::BraveWalletServiceObserver>
   GetReceiver() {
@@ -60,6 +67,7 @@ class TestBraveWalletServiceObserver
 
  private:
   std::string active_origin_;
+  std::string etld_plus_one_;
   mojo::Receiver<brave_wallet::mojom::BraveWalletServiceObserver>
       observer_receiver_{this};
 };
@@ -98,51 +106,63 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   GURL url = https_server()->GetURL("a.test", "/simple.html");
   std::string expected_origin = url::Origin::Create(url).Serialize();
+  std::string expected_etld_plus_one = eTLDPlusOne(url);
   TestBraveWalletServiceObserver observer;
   wallet_service()->AddObserver(observer.GetReceiver());
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   bool callback_called = false;
   wallet_service()->GetActiveOrigin(
-      base::BindOnce(&OnGetActiveOrigin, &callback_called, expected_origin));
+      base::BindOnce(&OnGetActiveOrigin, &callback_called, expected_origin,
+                     expected_etld_plus_one));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(observer.active_origin(), expected_origin);
+  EXPECT_EQ(observer.etld_plus_one(), expected_etld_plus_one);
 
   url = https_server()->GetURL("b.test", "/simple.html");
   expected_origin = url::Origin::Create(url).Serialize();
+  expected_etld_plus_one = eTLDPlusOne(url);
   callback_called = false;
   observer.Reset();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   wallet_service()->GetActiveOrigin(
-      base::BindOnce(&OnGetActiveOrigin, &callback_called, expected_origin));
+      base::BindOnce(&OnGetActiveOrigin, &callback_called, expected_origin,
+                     expected_etld_plus_one));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(observer.active_origin(), expected_origin);
+  EXPECT_EQ(observer.etld_plus_one(), expected_etld_plus_one);
 
   url = https_server()->GetURL("c.test", "/simple.html");
   expected_origin = url::Origin::Create(url).Serialize();
+  expected_etld_plus_one = eTLDPlusOne(url);
   observer.Reset();
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   wallet_service()->GetActiveOrigin(
-      base::BindOnce(&OnGetActiveOrigin, &callback_called, expected_origin));
+      base::BindOnce(&OnGetActiveOrigin, &callback_called, expected_origin,
+                     expected_etld_plus_one));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(observer.active_origin(), expected_origin);
+  EXPECT_EQ(observer.etld_plus_one(), expected_etld_plus_one);
 
   url = https_server()->GetURL("d.test", "/simple.html");
   expected_origin = url::Origin::Create(url).Serialize();
+  expected_etld_plus_one = eTLDPlusOne(url);
   observer.Reset();
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_WINDOW,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   wallet_service()->GetActiveOrigin(
-      base::BindOnce(&OnGetActiveOrigin, &callback_called, expected_origin));
+      base::BindOnce(&OnGetActiveOrigin, &callback_called, expected_origin,
+                     expected_etld_plus_one));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(observer.active_origin(), expected_origin);
+  EXPECT_EQ(observer.etld_plus_one(), expected_etld_plus_one);
 }
 
 }  // namespace brave_wallet

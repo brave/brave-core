@@ -198,18 +198,6 @@ export const TransactionText = styled.span<Partial<StyleProps>>`
   text-align: right;
 `
 
-export const URLText = styled.span`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 13px;
-  line-height: 20px;
-  text-align: center;
-  letter-spacing: 0.01em;
-  margin-bottom: 6px;
-  color: ${(p) => p.theme.color.text02};
-`
-
 export const FavIcon = styled.img`
   width: 48px;
   height: 48px;

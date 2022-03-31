@@ -127,7 +127,8 @@ class BraveWalletService : public KeyedService,
                                           const GURL& origin) override;
 
   // BraveWalletServiceDelegate::Observer:
-  void OnActiveOriginChanged(const std::string& origin) override;
+  void OnActiveOriginChanged(const std::string& origin,
+                             const std::string& etld_plus_one) override;
 
   // Resets things back to the original state of BraveWalletService.
   // To be used when the Wallet is reset / erased

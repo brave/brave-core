@@ -627,7 +627,7 @@ void BraveWalletService::GetActiveOrigin(GetActiveOriginCallback callback) {
   if (delegate_)
     delegate_->GetActiveOrigin(std::move(callback));
   else
-    std::move(callback).Run("");
+    std::move(callback).Run("", "");
 }
 
 void BraveWalletService::GetPendingSignMessageRequests(
@@ -683,9 +683,11 @@ void BraveWalletService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
-void BraveWalletService::OnActiveOriginChanged(const std::string& origin) {
+void BraveWalletService::OnActiveOriginChanged(
+    const std::string& origin,
+    const std::string& etld_plus_one) {
   for (const auto& observer : observers_) {
-    observer->OnActiveOriginChanged(origin);
+    observer->OnActiveOriginChanged(origin, etld_plus_one);
   }
 }
 

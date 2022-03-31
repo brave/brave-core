@@ -211,7 +211,7 @@ export interface WalletState {
   transactionSpotPrices: BraveWallet.AssetPrice[]
   addUserAssetError: boolean
   defaultWallet: BraveWallet.DefaultWallet
-  activeOrigin: string
+  activeOrigin: OriginInfo
   gasEstimates?: BraveWallet.GasEstimation1559
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean
@@ -224,7 +224,7 @@ export interface WalletState {
 
 export interface PanelState {
   hasInitialized: boolean
-  connectToSiteOrigin: string
+  connectToSiteOrigin: OriginInfo
   selectedPanel: PanelTypes
   panelTitle: string
   connectingAccounts: string[]
@@ -624,4 +624,9 @@ export enum CoinTypesMap {
   ETH = BraveWallet.CoinType.ETH,
   FIL = BraveWallet.CoinType.FIL,
   SOL = BraveWallet.CoinType.SOL
+}
+
+export type OriginInfo = {
+  origin: string
+  eTldPlusOne: string
 }

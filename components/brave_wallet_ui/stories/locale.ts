@@ -287,9 +287,9 @@ provideStrings({
 
   // Encryption Key Panel
   braveWalletProvideEncryptionKeyTitle: 'A DApp is requesting your public encryption key',
-  braveWalletProvideEncryptionKeyDescription: '$1 is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.',
+  braveWalletProvideEncryptionKeyDescription: '$1$url$2 is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.',
   braveWalletProvideEncryptionKeyButton: 'Provide',
-  braveWalletReadEncryptedMessageTitle: '$1 would like to read this message to complete your request',
+  braveWalletReadEncryptedMessageTitle: 'This DApp would like to read this message to complete your request',
   braveWalletReadEncryptedMessageDecryptButton: 'Decrypt message',
   braveWalletReadEncryptedMessageButton: 'Allow',
 

@@ -1,7 +1,10 @@
 import * as React from 'react'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, OriginInfo } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
+
+// Components
 import { NavButton, PanelTab } from '..'
+import { CreateSiteOrigin } from '../../shared'
 
 // Styled Components
 import {
@@ -11,7 +14,6 @@ import {
   DetailsButton,
   ButtonRow,
   FavIcon,
-  URLText,
   NetworkDetail,
   TabRow
 } from './style'
@@ -20,13 +22,14 @@ import {
   StyledWrapper,
   CenterColumn,
   Description,
-  PanelTitle
+  PanelTitle,
+  URLText
 } from '../shared-panel-styles'
 
 export type tabs = 'network' | 'details'
 
 export interface Props {
-  siteOrigin: string
+  originInfo: OriginInfo
   networkPayload: BraveWallet.NetworkInfo
   panelType: 'add' | 'change'
   onCancel: () => void
@@ -37,7 +40,7 @@ export interface Props {
 
 function AllowAddChangeNetworkPanel (props: Props) {
   const {
-    siteOrigin,
+    originInfo,
     networkPayload,
     panelType,
     onCancel,
@@ -56,8 +59,12 @@ function AllowAddChangeNetworkPanel (props: Props) {
   return (
     <StyledWrapper>
       <CenterColumn>
-        <FavIcon src={`chrome://favicon/size/64@1x/${siteOrigin}`} />
-        <URLText>{siteOrigin}</URLText>
+        <FavIcon src={`chrome://favicon/size/64@1x/${originInfo.origin}`} />
+        <URLText>
+          <CreateSiteOrigin
+            originInfo={originInfo}
+          />
+        </URLText>
         <PanelTitle>
           {panelType === 'change'
             ? getLocale('braveWalletAllowChangeNetworkTitle')

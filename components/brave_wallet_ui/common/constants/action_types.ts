@@ -52,10 +52,6 @@ export type SwapParamsPayloadType = {
   full: boolean
 }
 
-export type ActiveOriginChanged = {
-  origin: string
-}
-
 export type UpdateUnapprovedTransactionGasFieldsType = {
   txMetaId: string
   gasLimit: string

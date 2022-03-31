@@ -54,11 +54,13 @@ export const AddressScrollContainer = styled.div`
 export const SiteOriginTitle = styled.span`
   font-family: Poppins;
   font-style: normal;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 12px;
+  line-height: 18px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
   margin-bottom: 2px;
+  margin-right: 10px;
+  word-break: break-word;
 `
 
 export const AccountsTitle = styled.span`
@@ -68,6 +70,7 @@ export const AccountsTitle = styled.span`
   line-height: 18px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
+  margin-top: 4px;
 `
 
 export const FavIcon = styled.img`

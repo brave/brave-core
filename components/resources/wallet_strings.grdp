@@ -242,9 +242,9 @@
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_MESSAGE_TITLE" desc="Sign panel message title">Message</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_BUTTON" desc="Sign panel sign button">Sign</message>
   <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_TITLE" desc="Provide Encryption Key Panel Title">A DApp is requesting your public encryption key</message>
-  <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide Encryption Key Panel Details"><ph name="SITE_ORIGIN"><ex>https://app.skiff.org</ex>$1</ph> is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</message>
+  <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_DESCRIPTION" desc="Provide Encryption Key Panel Details"><ph name="URL_BEFORE">$1</ph>$url<ph name="URL_AFTER">$2</ph> is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.</message>
   <message name="IDS_BRAVE_WALLET_PROVIDE_ENCRYPTION_KEY_BUTTON" desc="Provide Encryption Key Panel Provide Button">Provide</message>
-  <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_TITLE" desc="Read Encrypted Message Panel Title"><ph name="SITE_ORIGIN"><ex>https://app.skiff.org</ex>$1</ph> would like to read this message to complete your request</message>
+  <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_TITLE" desc="Read Encrypted Message Panel Title">This DApp would like to read this message to complete your request</message>
   <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_DECRYPT_BUTTON" desc="Read Encrypted Message Panel Decrypt Button">Decrypt message</message>
   <message name="IDS_BRAVE_WALLET_READ_ENCRYPTED_MESSAGE_BUTTON" desc="Read Encrypted Message Panel Allow Button">Allow</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_TITLE" desc="Allow spend panel Title">Allow this app to spend your <ph name="TOKEN_SYMBOL"><ex>ETH</ex>$1</ph>?</message>

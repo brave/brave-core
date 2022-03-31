@@ -161,7 +161,8 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
   if (url.hash === '#connectWithSite') {
     const accounts = url.searchParams.getAll('addr') || []
     const origin = url.searchParams.get('origin') || ''
-    store.dispatch(PanelActions.showConnectToSite({ accounts, origin }))
+    const eTldPlusOne = url.searchParams.get('etld-plus-one') || ''
+    store.dispatch(PanelActions.showConnectToSite({ accounts, origin: { origin, eTldPlusOne } }))
     return
   } else {
     const unlockRequest = await hasPendingUnlockRequest()

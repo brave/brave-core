@@ -30,7 +30,8 @@ import {
   WalletAccountType,
   PanelTypes,
   AppsListType,
-  BuySendSwapViewTypes
+  BuySendSwapViewTypes,
+  OriginInfo
 } from '../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
@@ -60,6 +61,11 @@ export default {
   argTypes: {
     locked: { control: { type: 'boolean', lock: false } }
   }
+}
+
+const originInfo: OriginInfo = {
+  origin: 'https://app.uniswap.org/With_A_Really_Looooooong_Site_Name/fixme',
+  eTldPlusOne: 'uniswap.org'
 }
 
 const accounts: WalletAccountType[] = [
@@ -195,7 +201,7 @@ export const _ConfirmTransaction = () => {
     <StyledExtensionWrapperLonger>
       <ConfirmTransactionPanel
         defaultCurrencies={mockDefaultCurrencies}
-        siteURL='https://app.uniswap.org'
+        originInfo={originInfo}
         selectedNetwork={mockNetworks[0]}
         onQueueNextTransaction={onQueueNextTransaction}
         onRejectAllTransactions={onRejectAllTransactions}
@@ -228,7 +234,7 @@ export const _ConfirmErcApproveTransaction = () => {
   const onRejectTransaction = () => alert('Rejected Transaction')
   const onRejectAllTransactions = () => alert('Rejected All Transaction')
   const onQueueNextTransaction = () => alert('Will queue next transaction in line')
-  const refreshGasEstimates = () => {}
+  const refreshGasEstimates = () => { }
   const updateUnapprovedTransactionGasFields = () => alert('Updated gas fields')
   const updateUnapprovedTransactionSpendAllowance = () => alert('Updated spending allowance')
   const updateUnapprovedTransactionNonce = () => alert('Updated nonce')
@@ -238,7 +244,7 @@ export const _ConfirmErcApproveTransaction = () => {
     <StyledExtensionWrapperLonger>
       <ConfirmTransactionPanel
         defaultCurrencies={mockDefaultCurrencies}
-        siteURL='https://app.uniswap.org'
+        originInfo={originInfo}
         selectedNetwork={mockNetworks[0]}
         onQueueNextTransaction={onQueueNextTransaction}
         onRejectAllTransactions={onRejectAllTransactions}
@@ -282,7 +288,7 @@ export const _AllowAddChangeNetwork = () => {
   return (
     <StyledExtensionWrapperLonger>
       <AllowAddChangeNetworkPanel
-        siteOrigin='https://app.uniswap.org'
+        originInfo={originInfo}
         panelType='change'
         onApproveAddNetwork={onApprove}
         onApproveChangeNetwork={onApprove}
@@ -335,7 +341,7 @@ const encryptionKeyMockPayload = {
   address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
   message: 'This is a test message.',
   origin: {
-    url: 'https://app.skiff.org'
+    url: originInfo.origin
   }
 }
 
@@ -357,6 +363,7 @@ export const _ProvideEncryptionKey = () => {
         selectedNetwork={mockNetworks[0]}
         onCancel={onCancel}
         onProvideOrAllow={onProvide}
+        eTldPlusOne={originInfo.eTldPlusOne}
       />
     </StyledExtensionWrapperLonger>
   )
@@ -384,6 +391,7 @@ export const _ReadEncryptedMessage = () => {
         selectedNetwork={mockNetworks[0]}
         onCancel={onCancel}
         onProvideOrAllow={onAllow}
+        eTldPlusOne={originInfo.eTldPlusOne}
       />
     </StyledExtensionWrapperLonger>
   )
@@ -398,7 +406,6 @@ export const _ConnectWithSite = () => {
     accounts[0]
   ])
   const [readyToConnect, setReadyToConnect] = React.useState<boolean>(false)
-  const url = 'https://app.uniswap.org'
   const selectAccount = (account: WalletAccountType) => {
     const newList = [...selectedAccounts, account]
     setSelectedAccounts(newList)
@@ -410,7 +417,7 @@ export const _ConnectWithSite = () => {
     setSelectedAccounts(newList)
   }
   const onSubmit = () => {
-    alert(`Connecting to ${url} using: ${JSON.stringify(selectedAccounts)}`)
+    alert(`Connecting to ${originInfo.origin} using: ${JSON.stringify(selectedAccounts)}`)
   }
   const primaryAction = () => {
     if (!readyToConnect) {
@@ -429,7 +436,7 @@ export const _ConnectWithSite = () => {
   return (
     <StyledExtensionWrapperLonger>
       <ConnectWithSite
-        siteURL={url}
+        originInfo={originInfo}
         isReady={readyToConnect}
         accounts={accounts}
         primaryAction={primaryAction}
@@ -675,7 +682,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
               navAction={navigateTo}
               onLockWallet={onLockWallet}
               onOpenSettings={onOpenSettings}
-              activeOrigin=''
+              originInfo={originInfo}
               isSwapSupported={true}
             />
           ) : (
@@ -780,7 +787,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                     {selectedPanel === 'sitePermissions' &&
                       <SitePermissions
                         selectedAccount={selectedAccount}
-                        siteURL='https://app.uniswap.org'
+                        originInfo={originInfo}
                         onDisconnect={onDisconnectFromOrigin}
                         connectedAccounts={connectedAccounts}
                         accounts={accounts}

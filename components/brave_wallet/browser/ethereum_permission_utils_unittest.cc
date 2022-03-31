@@ -146,13 +146,13 @@ TEST(EthereumPermissionUtilsUnitTest, GetConnectWithSiteWebUIURL) {
   std::vector<std::string> addrs = {
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"};
-  std::string origin = "https://test.com:123";
+  std::string origin = "https://a.test.com:123";
   GURL url_out = GetConnectWithSiteWebUIURL(base_url, addrs, origin);
   EXPECT_EQ(url_out.spec(),
             "chrome://wallet-panel.top-chrome/"
             "?addr=0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A&addr="
             "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B&origin=https://"
-            "test.com:123#connectWithSite");
+            "a.test.com:123&etld-plus-one=test.com#connectWithSite");
 }
 
 }  // namespace brave_wallet

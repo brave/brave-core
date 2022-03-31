@@ -86,8 +86,8 @@ export default class WalletApiProxy {
 
   addBraveWalletServiceObserver (store: Store) {
     const braveWalletServiceObserverReceiver = new BraveWallet.BraveWalletServiceObserverReceiver({
-      onActiveOriginChanged: function (origin) {
-        store.dispatch(WalletActions.activeOriginChanged({ origin }))
+      onActiveOriginChanged: function (origin, eTldPlusOne) {
+        store.dispatch(WalletActions.activeOriginChanged({ origin, eTldPlusOne }))
       },
       onDefaultWalletChanged: function (defaultWallet) {
         store.dispatch(WalletActions.defaultWalletChanged({ defaultWallet }))

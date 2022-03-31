@@ -129,7 +129,8 @@ class TestBraveWalletServiceObserver
     default_wallet_ = wallet;
     defaultWalletChangedFired_ = true;
   }
-  void OnActiveOriginChanged(const std::string& origin) override {}
+  void OnActiveOriginChanged(const std::string& origin,
+                             const std::string& etld_plus_one) override {}
   void OnDefaultBaseCurrencyChanged(const std::string& currency) override {
     currency_ = currency;
     defaultBaseCurrencyChangedFired_ = true;

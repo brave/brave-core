@@ -62,7 +62,7 @@ export const PanelTitle = styled.span`
   text-align: center;
   color: ${(p) => p.theme.color.text01};
   font-weight: 600;
-  margin-bottom: 15px;
+  margin-bottom: 6px;
 `
 
 export const MessageBox = styled.div<Partial<StyleProps>>`

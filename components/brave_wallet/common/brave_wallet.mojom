@@ -877,8 +877,8 @@ interface SolanaTxManagerProxy {
 };
 
 interface BraveWalletServiceObserver {
-  // Fired when the active origin is changed
-  OnActiveOriginChanged(string origin);
+  // Fired when the active origin is changed along with its eTLD+1
+  OnActiveOriginChanged(string origin, string e_tld_plus_one);
 
   // Fired when the default wallet setting changes
   OnDefaultWalletChanged(DefaultWallet wallet);
@@ -976,8 +976,8 @@ interface BraveWalletService {
   // Resets the Ethereum permission for the account
   ResetEthereumPermission(string origin, string account) => (bool success);
 
-  // Obtains the active origin
-  GetActiveOrigin() => (string origin);
+  // Obtains the active origin and eTLD+1 of it
+  GetActiveOrigin() => (string origin, string e_tld_plus_one);
 
   // These are used for UI notifying native when the user approve/reject SignMessage[Hardware]Request
   NotifySignMessageRequestProcessed(bool approved, int32 id);

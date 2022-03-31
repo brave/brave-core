@@ -1,5 +1,8 @@
 import * as React from 'react'
 
+// Types
+import { OriginInfo, WalletAccountType } from '../../../constants/types'
+
 // Components
 import {
   DividerLine,
@@ -26,11 +29,10 @@ import {
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
-import { WalletAccountType } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 
 export interface Props {
-  siteURL: string
+  originInfo: OriginInfo
   accounts: WalletAccountType[]
   primaryAction: () => void
   secondaryAction: () => void
@@ -45,7 +47,7 @@ function ConnectWithSite (props: Props) {
     secondaryAction,
     removeAccount,
     selectAccount,
-    siteURL,
+    originInfo,
     accounts,
     isReady,
     selectedAccounts
@@ -87,7 +89,7 @@ function ConnectWithSite (props: Props) {
 
   return (
     <StyledWrapper>
-      <ConnectHeader url={siteURL} />
+      <ConnectHeader originInfo={originInfo} />
       <MiddleWrapper>
         {isReady ? (
           <AccountListWrapper>
