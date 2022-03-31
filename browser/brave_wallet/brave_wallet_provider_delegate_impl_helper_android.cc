@@ -8,15 +8,13 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "content/public/browser/web_contents.h"
 
-#include "base/notreached.h"
-
 namespace brave_wallet {
 
 void ShowPanel(content::WebContents* web_contents) {
   BraveWalletService* brave_wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
           web_contents->GetBrowserContext());
-  DCHECK(brave_wallet_service);
+  CHECK(brave_wallet_service);
   brave_wallet_service->ShowPanel();
 }
 
@@ -24,7 +22,7 @@ void ShowWalletOnboarding(content::WebContents* web_contents) {
   BraveWalletService* brave_wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
           web_contents->GetBrowserContext());
-  DCHECK(brave_wallet_service);
+  CHECK(brave_wallet_service);
   brave_wallet_service->ShowWalletOnboarding();
 }
 

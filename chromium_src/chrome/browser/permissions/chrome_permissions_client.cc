@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/request_type.h"
@@ -49,7 +48,6 @@ ChromePermissionsClient::MaybeCreateMessageUI(
     content::WebContents* web_contents,
     ContentSettingsType type,
     base::WeakPtr<permissions::PermissionPromptAndroid> prompt) {
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   std::vector<permissions::PermissionRequest*> requests =
       prompt->delegate()->Requests();
   if (requests.size() != 0 &&
@@ -59,7 +57,6 @@ ChromePermissionsClient::MaybeCreateMessageUI(
     return std::make_unique<BraveEthereumPermissionPrompt>(web_contents,
                                                            std::move(delegate));
   }
-#endif
 
   return MaybeCreateMessageUI_ChromiumImpl(web_contents, type,
                                            std::move(prompt));

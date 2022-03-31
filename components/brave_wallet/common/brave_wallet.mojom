@@ -891,10 +891,11 @@ interface BraveWalletServiceObserver {
 
   // Fired when the list of networks changes
   OnNetworkListChanged();
-};
 
-interface BraveWalletServiceDappObserver {
+  // Used on Android to show a panel from a dapp call
   OnShowPanel();
+
+  // Used on Android to show an onboarding from a dapp call
   OnShowWalletOnboarding();
 };
 
@@ -923,9 +924,6 @@ struct AddSuggestTokenRequest {
 interface BraveWalletService {
   // Adds an observer for BraveWalletService
   AddObserver(pending_remote<BraveWalletServiceObserver> observer);
-
-  // Adds a Dapp observer for BraveWalletService. Used on mobile only for now
-  AddDappObserver(pending_remote<BraveWalletServiceDappObserver> observer);
 
   // Obtains the user assets for the specified chain ID
   GetUserAssets(string chain_id) => (array<BlockchainToken> tokens);

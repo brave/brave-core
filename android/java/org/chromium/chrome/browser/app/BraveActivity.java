@@ -74,7 +74,7 @@ import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.BraveWalletServiceDappObserver;
+import org.chromium.brave_wallet.mojom.BraveWalletServiceObserver;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
@@ -190,7 +190,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public abstract class BraveActivity<C extends ChromeActivityComponent>
         extends ChromeActivity implements BrowsingDataBridge.OnClearBrowsingDataListener,
                                           BraveVpnObserver, OnBraveSetDefaultBrowserListener,
-                                          ConnectionErrorHandler, BraveWalletServiceDappObserver {
+                                          ConnectionErrorHandler, BraveWalletServiceObserver {
     public static final int SITE_BANNER_REQUEST_CODE = 33;
     public static final int VERIFY_WALLET_ACTIVITY_REQUEST_CODE = 34;
     public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;
@@ -354,7 +354,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         }
 
         mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
-        mBraveWalletService.addDappObserver(this);
+        mBraveWalletService.addObserver(this);
     }
 
     private void InitKeyringService() {
