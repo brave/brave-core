@@ -62,7 +62,7 @@ export const ButtonText = styled.button`
   font-family: ${(p) => p.theme.fontFamily.heading};
   font-size: 13px;
   font-weight: 600;
-  padding: 6px 4px;
+  padding: 13px 4px;
   background: transparent;
   cursor: pointer;
   border: 2px solid var(--border-color);

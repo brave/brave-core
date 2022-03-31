@@ -7,7 +7,11 @@ import { getLocale } from '../../../../../common/locale'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
 
-function ErrorPanel () {
+interface Props {
+  showContactSupport: React.MouseEventHandler<HTMLButtonElement>
+}
+
+function ErrorPanel (props: Props) {
   const dispatch = useDispatch()
   const currentRegion = useSelector(state => state.currentRegion)
 
@@ -45,6 +49,9 @@ function ErrorPanel () {
           </Button>
           <S.ButtonText onClick={handleChooseServer}>
             {getLocale('braveVpnChooseAnotherServer')}
+          </S.ButtonText>
+          <S.ButtonText onClick={props.showContactSupport}>
+            {getLocale('braveVpnContactSupport')}
           </S.ButtonText>
         </S.ActionArea>
       </S.PanelContent>

@@ -58,7 +58,7 @@ export const _Main = () => {
 export const _Error = () => {
   return (
     <S.PanelFrame>
-      <ErrorPanel />
+      <ErrorPanel showContactSupport={() => {}} />
     </S.PanelFrame>
   )
 }
