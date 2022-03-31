@@ -1,0 +1,21 @@
+diff --git a/build/toolchain/cc_wrapper.gni b/build/toolchain/cc_wrapper.gni
+index 6186070e3d045e10ab8378d162ec757aaa9cc721..03ed3913238d68e14d9cb625d33152bfb9745dc6 100644
+--- a/build/toolchain/cc_wrapper.gni
++++ b/build/toolchain/cc_wrapper.gni
+@@ -35,6 +35,16 @@ import("//build/toolchain/rbe.gni")
+ declare_args() {
+   # Set to "ccache", "icecc" or "distcc".  Probably doesn't work on windows.
+   cc_wrapper = ""
++
++  # Target name of cc_wrapper executable built as a part of build process.
++  # Should include toolchain name to not depend on a default toolchain.
++  cc_wrapper_dep = "//brave/tools/redirect_cc(//brave/tools/redirect_cc/toolchain:redirect_cc)"
++}
++
++if (cc_wrapper_dep != "" && cc_wrapper == "" && !use_goma && !use_remoteexec) {
++  _cc_wrapper_out_dir = get_label_info(cc_wrapper_dep, "root_out_dir")
++  _cc_wrapper_name = get_label_info(cc_wrapper_dep, "name")
++  cc_wrapper = rebase_path(_cc_wrapper_out_dir + "/" + _cc_wrapper_name)
+ }
+ 
+ assert(!use_goma || cc_wrapper == "",

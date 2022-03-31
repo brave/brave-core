@@ -1,12 +1,14 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 7b9ce0172eedf2b55fe7f3de7baee2f2028f4a7b..2782abb40b4b722710de88bbcbf619a47ab0424a 100644
+index 7b9ce0172eedf2b55fe7f3de7baee2f2028f4a7b..854ceeda07a161868ba349a4a2198f4cc59158a2 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
-@@ -1681,6 +1681,7 @@ config("chromium_code") {
+@@ -1681,6 +1681,9 @@ config("chromium_code") {
        cflags += [ "-Wextra-semi" ]
      }
    }
-+  cflags -= brave_removed_chromium_code_cflags
++  if (defined(cflags)) {
++    cflags -= brave_removed_chromium_code_cflags
++  }
  
    configs = [
      ":default_warnings",

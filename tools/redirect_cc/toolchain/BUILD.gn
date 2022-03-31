@@ -31,4 +31,20 @@ if (host_os == "linux") {
       is_debug = false
     }
   }
+} else if (host_os == "win") {
+  import("//brave/build/win/toolchain.gni")
+
+  win_toolchains("redirect_cc") {
+    toolchain_arch = host_cpu
+    cl_toolchain_prefix = "cl_"
+    clang_toolchain_prefix = ""
+    toolchain_args = {
+      current_cpu = host_cpu
+      current_os = host_os
+      cc_wrapper = ""
+      use_goma = false
+      is_component_build = false
+      is_debug = false
+    }
+  }
 }
