@@ -273,6 +273,7 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
     case type::Result::NOT_FOUND:  // KYC required
     case type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE:
     case type::Result::FLAGGED_WALLET:
+    case type::Result::REGION_NOT_SUPPORTED:
       // Entering NOT_CONNECTED.
       ledger_->uphold()->DisconnectWallet("");
       ledger_->database()->SaveEventLog(

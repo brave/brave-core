@@ -80,6 +80,7 @@ declare namespace Rewards {
         | 'hide'
         | 'kycRequiredModal'
         | 'mismatchedProviderAccountsModal'
+        | 'regionNotSupportedModal'
         | 'show'
         | 'upholdBATNotAllowedModal'
         | 'upholdBlockedUserModal'
