@@ -66,8 +66,12 @@
   };
   
   // Hide the pushState trampoline
-  History.prototype.pushState.toString = pushState.toString;
+  History.prototype.pushState.toString = function() {
+    return "function () { [native code]; }";
+  };
   
   // Hide the replaceState trampoline
-  History.prototype.replaceState.toString = replaceState.toString;
+  History.prototype.replaceState.toString = function() {
+      return "function () { [native code]; }";
+  };
 })();
