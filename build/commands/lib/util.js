@@ -514,18 +514,22 @@ const util = {
     console.log('building redirect-cc.exe...')
     // Path to MSBuild.exe
     const { vsPath, vsVersion } = util.getVisualStudioInfo()
-    let msBuild = ''
+    let msBuild = path.join(vsPath, 'MSBuild', 'Current', 'Bin', 'MSBuild.exe')
     if (vsVersion === '2017') {
       msBuild = path.join(vsPath, 'MSBuild', '15.0', 'Bin', 'MSBuild.exe')
-    } else if (vsVersion === '2019') {
-      msBuild = path.join(vsPath, 'MSBuild', 'Current', 'Bin', 'MSBuild.exe')
-    } else {
-      throw 'Error: unexpected version of Visual Studio: ' + vsVersion
     }
 
     // Build redirect-cc.sln
     const arch = process.arch === 'x32' ? 'x86' : process.arch
-    const toolset = vsVersion === '2017' ? 'v141' : 'v142'
+    const toolsetMap = {
+      '2017': 'v141',
+      '2019': 'v142',
+      '2022': 'v143'
+    }
+    const toolset = toolsetMap[vsVersion]
+    if (!toolset) {
+      throw 'Error: unexpected version of Visual Studio: ' + vsVersion
+    }
     const msBuildArgs = [
       path.join(config.braveCoreDir, 'buildtools', 'win', 'redirect-cc', 'redirect-cc.sln'),
       '/p:Configuration=Release',
