@@ -6,9 +6,9 @@
 source_set("renderer") {
   sources = [
     "brave_farbling_constants.h",
+    "brave_font_whitelist.cc",
+    "brave_font_whitelist.h",
   ]
 
-  deps = [
-    "//brave/components/brave_drm:brave_drm_blink",
-  ]
+  deps = [ "//brave/components/brave_drm:brave_drm_blink" ]
 }

@@ -132,6 +132,12 @@ brave_ads::ResourceComponent* TestingBraveBrowserProcess::resource_component() {
   return nullptr;
 }
 
+brave::BraveFarblingService*
+TestingBraveBrowserProcess::brave_farbling_service() {
+  NOTREACHED();
+  return nullptr;
+}
+
 void TestingBraveBrowserProcess::SetAdBlockService(
     std::unique_ptr<brave_shields::AdBlockService> service) {
   ad_block_service_ = std::move(service);

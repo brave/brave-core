@@ -245,7 +245,7 @@
         </message>
       </if>
       <message name="IDS_WIDEVINE_INSTALL_MESSAGE" desc="Bubble info text when Widevine is not installed. 'Widevine' is the name of a plugin and should not be translated.">
-        Widevine is sometimes needed to play media on a webpage. It's a Google extension loaded from Google servers, which Brave cannot inspect. By installing, you'll agree to Google's terms of use. 
+        Widevine is sometimes needed to play media on a webpage. It's a Google extension loaded from Google servers, which Brave cannot inspect. By installing, you'll agree to Google's terms of use.
       </message>
       <message name="IDS_WIDEVINE_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT" desc="Message shown on the bottom of the widevine permissions bubble.">
         <ph name="LEARN_MORE_ABOUT_WIDEVINE">$1<ex>Learn more about Widevine</ex></ph>.
@@ -337,7 +337,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Auto-redirect AMP pages
       </message>
       <message name="IDS_SETTINGS_DE_AMP_SUB_LABEL" desc="The sub-label describing De-AMP feature">
-        Always visit original (non-AMP) page URLs, instead of Google's Accelerated Mobile Page versions 
+        Always visit original (non-AMP) page URLs, instead of Google's Accelerated Mobile Page versions
       </message>
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="The label for settings switch controlling the showing of autocomplete in address bar">
         Show autocomplete in address bar
@@ -652,6 +652,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL" desc="Default Brave fingerprinting control setting label">
         Block fingerprinting
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_CONTROL_LABEL" desc="Default Brave reduce language control setting label">
+        Prevent sites from fingerprinting me based on my language preferences
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_SUBITEM" desc="Description that shows under main toggle setting for reduce language control setting label">
+        Enabling this setting reduces how much web sites can learn about your language preferences.
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL" desc="Default Brave upgrade connections to HTTPS control setting label">
         Upgrade connections to HTTPS

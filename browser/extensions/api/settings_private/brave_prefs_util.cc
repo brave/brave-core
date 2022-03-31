@@ -114,6 +114,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[brave_shields::prefs::kLinkedInEmbedControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[brave_shields::prefs::kReduceLanguageEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
   // Rewards/Ads prefs
   (*s_brave_allowlist)[ads::prefs::kEnabled] =

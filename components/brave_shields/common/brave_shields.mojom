@@ -16,4 +16,8 @@ interface BraveShields {
   // Tell the associated RenderFrame(s) to temporary allow scripts from a list
   // of origins once.
   SetAllowScriptsFromOriginsOnce(array<string> origins);
+
+  // Tell the associated RenderFrame(s) whether "reduce language
+  // identifiability" is enabled.
+  SetReduceLanguageEnabled(bool enabled);
 };

@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 
+#include <string>
 #include <utility>
 
 #include "base/bind.h"
@@ -27,6 +28,7 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/debounce/browser/debounce_component_installer.h"
@@ -47,6 +49,7 @@
 #include "content/public/browser/child_process_security_policy.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -381,3 +384,9 @@ ipfs::BraveIpfsClientUpdater* BraveBrowserProcessImpl::ipfs_client_updater() {
   return ipfs_client_updater_.get();
 }
 #endif  // BUILDFLAG(ENABLE_IPFS)
+
+brave::BraveFarblingService* BraveBrowserProcessImpl::brave_farbling_service() {
+  if (!brave_farbling_service_)
+    brave_farbling_service_ = std::make_unique<brave::BraveFarblingService>();
+  return brave_farbling_service_.get();
+}

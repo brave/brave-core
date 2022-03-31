@@ -16,6 +16,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/common/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/renderer_configuration.mojom.h"
@@ -23,6 +24,7 @@
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
@@ -104,6 +106,14 @@ void BraveShieldsWebContentsObserver::RenderFrameCreated(RenderFrameHost* rfh) {
   if (rfh && allowed_script_origins_.size()) {
     GetBraveShieldsRemote(rfh)->SetAllowScriptsFromOriginsOnce(
         allowed_script_origins_);
+  }
+  if (rfh) {
+    if (content::BrowserContext* context = rfh->GetBrowserContext()) {
+      if (PrefService* pref_service = user_prefs::UserPrefs::Get(context)) {
+        GetBraveShieldsRemote(rfh)->SetReduceLanguageEnabled(
+            brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
+      }
+    }
   }
 
   WebContents* web_contents = WebContents::FromRenderFrameHost(rfh);
@@ -279,6 +289,14 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
             observer->GetBraveShieldsRemote(rfh)
                 ->SetAllowScriptsFromOriginsOnce(
                     observer->allowed_script_origins_);
+            if (content::BrowserContext* context = rfh->GetBrowserContext()) {
+              if (PrefService* pref_service =
+                      user_prefs::UserPrefs::Get(context)) {
+                observer->GetBraveShieldsRemote(rfh)->SetReduceLanguageEnabled(
+                    brave_shields::IsReduceLanguageEnabledForProfile(
+                        pref_service));
+              }
+            }
           },
           base::Unretained(this)));
 }

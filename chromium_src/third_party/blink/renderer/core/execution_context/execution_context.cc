@@ -6,7 +6,10 @@
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 
 #include "base/command_line.h"
+#include "base/sequence_checker.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 #include "crypto/hmac.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/dom/document.h"
@@ -14,10 +17,12 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 #include "third_party/blink/renderer/platform/bindings/script_state.h"
+#include "third_party/blink/renderer/platform/fonts/font_fallback_list.h"
 #include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
 #include "third_party/blink/renderer/platform/graphics/static_bitmap_image.h"
 #include "third_party/blink/renderer/platform/graphics/unaccelerated_static_bitmap_image.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
+#include "third_party/blink/renderer/platform/language.h"
 #include "third_party/blink/renderer/platform/network/network_utils.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
@@ -103,6 +108,22 @@ bool AllowFingerprinting(ExecutionContext* context) {
   return true;
 }
 
+bool AllowFontFamily(ExecutionContext* context,
+                     const AtomicString& family_name) {
+  if (!context)
+    return true;
+
+  auto* settings = brave::GetContentSettingsClientFor(context);
+  if (!settings)
+    return true;
+
+  if (!brave::BraveSessionCache::From(*context).AllowFontFamily(settings,
+                                                                family_name))
+    return false;
+
+  return true;
+}
+
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     : Supplement<ExecutionContext>(context) {
   farbling_enabled_ = false;
@@ -127,10 +148,17 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
           .Utf8();
   if (domain.empty())
     return;
+
   base::CommandLine* cmd_line = base::CommandLine::ForCurrentProcess();
-  DCHECK(cmd_line->HasSwitch(kBraveSessionToken));
-  base::StringToUint64(cmd_line->GetSwitchValueASCII(kBraveSessionToken),
-                       &session_key_);
+  base::StringToUint64(
+      cmd_line->HasSwitch(kBraveSessionToken)
+          ? cmd_line->GetSwitchValueASCII(kBraveSessionToken)
+          // https://github.com/brave/brave-browser/issues/22021
+          : "23456",  // this is intentionally different from the test default
+                      // of 12345 so we can still detect any switch issues in
+                      // our farbling tests
+      &session_key_);
+
   crypto::HMAC h(crypto::HMAC::SHA256);
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
                sizeof session_key_));
@@ -146,6 +174,11 @@ BraveSessionCache& BraveSessionCache::From(ExecutionContext& context) {
     ProvideTo(context, cache);
   }
   return *cache;
+}
+
+// static
+void BraveSessionCache::Init() {
+  RegisterAllowFontFamilyCallback(base::BindRepeating(&brave::AllowFontFamily));
 }
 
 AudioFarblingCallback BraveSessionCache::GetAudioFarblingCallback(
@@ -261,6 +294,35 @@ WTF::String BraveSessionCache::FarbledUserAgent(WTF::String real_user_agent) {
   for (int i = 0; i < extra; i++)
     result.Append(" ");
   return result.ToString();
+}
+
+bool BraveSessionCache::AllowFontFamily(
+    blink::WebContentSettingsClient* settings,
+    const AtomicString& family_name) {
+  if (!CanRestrictFontFamiliesOnThisPlatform() || !farbling_enabled_ ||
+      !settings || !settings->IsReduceLanguageEnabled())
+    return true;
+  switch (settings->GetBraveFarblingLevel()) {
+    case BraveFarblingLevel::OFF:
+      break;
+    case BraveFarblingLevel::BALANCED:
+    case BraveFarblingLevel::MAXIMUM: {
+      if (GetAllowedFontFamilies().contains(family_name.Utf8()))
+        return true;
+#if BUILDFLAG(IS_WIN)
+      WTF::String locale = blink::DefaultLanguage().GetString().Left(2);
+      if (GetAdditionalAllowedFontFamiliesByLocale(locale).contains(
+              family_name.Utf8()))
+        return true;
+#endif
+      std::mt19937_64 prng = MakePseudoRandomGenerator();
+      prng.discard(family_name.Impl()->GetHash() % 16);
+      return ((prng() % 2) == 0);
+    }
+    default:
+      NOTREACHED();
+  }
+  return true;
 }
 
 std::mt19937_64 BraveSessionCache::MakePseudoRandomGenerator() {

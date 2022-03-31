@@ -21,6 +21,7 @@
 namespace brave {
 class BraveReferralsService;
 class BraveP3AService;
+class BraveFarblingService;
 }  // namespace brave
 
 namespace brave_component_updater {
@@ -104,6 +105,7 @@ class BraveBrowserProcess {
   speedreader_rewriter_service() = 0;
 #endif
   virtual brave_ads::ResourceComponent* resource_component() = 0;
+  virtual brave::BraveFarblingService* brave_farbling_service() = 0;
 };
 
 extern BraveBrowserProcess* g_brave_browser_process;

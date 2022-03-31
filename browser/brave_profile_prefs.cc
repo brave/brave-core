@@ -23,6 +23,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
+#include "brave/components/brave_shields/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
@@ -436,6 +437,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Disable Raw sockets API (see github.com/brave/brave-browser/issues/11546).
   registry->SetDefaultPrefValue(policy::policy_prefs::kEnableDirectSockets,
                                 base::Value(false));
+
+  BraveFarblingService::RegisterProfilePrefs(registry);
 
   RegisterProfilePrefsForMigration(registry);
 }

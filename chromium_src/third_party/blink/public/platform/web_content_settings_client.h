@@ -23,6 +23,7 @@ class GURL;
   virtual BraveFarblingLevel GetBraveFarblingLevel() {                      \
     return BraveFarblingLevel::OFF;                                         \
   }                                                                         \
+  virtual bool IsReduceLanguageEnabled() { return true; }                   \
   virtual blink::WebSecurityOrigin GetEphemeralStorageOriginSync() {        \
     return blink::WebSecurityOrigin();                                      \
   }                                                                         \
