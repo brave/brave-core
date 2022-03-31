@@ -364,6 +364,11 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
+      if (data.result === 45) { // type::Result::REGION_NOT_SUPPORTED
+        ui.modalRedirect = 'regionNotSupportedModal'
+        break
+      }
+
       if (data.result !== 0) {
         ui.modalRedirect = 'error'
         break

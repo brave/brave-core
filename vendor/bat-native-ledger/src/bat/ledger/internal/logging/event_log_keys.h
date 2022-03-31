@@ -20,6 +20,7 @@ const char kMismatchedProviderAccounts[] = "mismatched_provider_accounts";
 const char kPromotionsClaimed[] = "promotion_claimed";
 const char kRecurringTipAdded[] = "recurring_tip_added";
 const char kRecurringTipRemoved[] = "recurring_tip_removed";
+const char kRegionNotSupported[] = "region_not_supported";
 const char kRequestSignatureVerificationFailure[] =
     "request_signature_verification_failure";
 const char kTransactionVerificationFailure[] =

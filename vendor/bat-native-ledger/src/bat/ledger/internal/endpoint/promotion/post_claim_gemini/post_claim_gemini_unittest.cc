@@ -88,6 +88,27 @@ TEST_F(PostClaimGeminiTest, ServerError400FlaggedWallet) {
   });
 }
 
+TEST_F(PostClaimGeminiTest, ServerError400RegionNotSupported) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = net::HTTP_BAD_REQUEST;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "region not supported: failed to validate account: invalid country",
+    "code": 400
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request("mock_linking_info", "id", [](type::Result result) {
+    EXPECT_EQ(result, type::Result::REGION_NOT_SUPPORTED);
+  });
+}
+
 TEST_F(PostClaimGeminiTest, ServerError400UnknownMessage) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(

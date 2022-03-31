@@ -275,6 +275,17 @@ class SettingsPage extends React.Component<Props, State> {
             onClick={this.actions.hideRedirectModal}
           />
         )
+      case 'regionNotSupportedModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-region-not-supported'}
+            errorText={[getLocale('redirectModalRegionNotSupportedText')]}
+            titleText={getLocale('redirectModalRegionNotSupportedTitle')}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
       case 'show':
         return (
           <ModalRedirect

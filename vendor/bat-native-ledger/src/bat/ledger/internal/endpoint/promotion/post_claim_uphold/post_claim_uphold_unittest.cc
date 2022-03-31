@@ -84,6 +84,29 @@ TEST_F(PostClaimUpholdTest, ServerError400FlaggedWallet) {
                   });
 }
 
+TEST_F(PostClaimUpholdTest, ServerError400RegionNotSupported) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 400;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "region not supported: failed to validate account: invalid country",
+    "code": 400
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request(30.0, "address",
+                  [](type::Result result, const std::string& address) {
+                    EXPECT_EQ(result, type::Result::REGION_NOT_SUPPORTED);
+                    EXPECT_EQ(address, kExpectedAddress);
+                  });
+}
+
 TEST_F(PostClaimUpholdTest, ServerError400UnknownMessage) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
