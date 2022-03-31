@@ -654,18 +654,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                         } // end page loop
                         processFeed();
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mParentScrollView.scrollTo(0, 0);
-                                mRecyclerView.scrollToPosition(0);
-                                if (mImageCreditLayout != null) {
-                                    mImageCreditLayout.setVisibility(View.VISIBLE);
-                                    mImageCreditLayout.setAlpha(1);
-                                }
-                            }
-                        }, 300);
-
                         BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
                         BraveActivity.getBraveActivity().setLoadedFeed(true);
                     } catch (Exception e) {
@@ -1001,8 +989,17 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                mParentScrollView.scrollTo(0, 0);
-                                                mRecyclerView.scrollToPosition(0);
+                                                if (!ConfigurationUtils.isTablet(mActivity)
+                                                        && ConfigurationUtils.isLandscape(
+                                                                mActivity)) {
+                                                    mParentScrollView.smoothScrollTo(0, 0);
+                                                } else {
+                                                    mParentScrollView.smoothScrollTo(0,
+                                                            mRecyclerView.getHeight()
+                                                                    - mParentScrollView
+                                                                              .getMaxScrollAmount()
+                                                                    + dpToPx(getContext(), 90));
+                                                }
                                             }
                                         }, 300);
 
