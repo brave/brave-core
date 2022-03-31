@@ -9,6 +9,7 @@ import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
@@ -21,26 +22,19 @@ import org.chromium.mojo.system.impl.CoreImpl;
 public class KeyringServiceFactory {
     private static final Object lock = new Object();
     private static KeyringServiceFactory instance;
-    private Profile mProfile;
 
-    public static KeyringServiceFactory getInstance(Profile profile) {
+    public static KeyringServiceFactory getInstance() {
         synchronized (lock) {
             if (instance == null) {
-                instance = new KeyringServiceFactory(profile);
+                instance = new KeyringServiceFactory();
             }
         }
         return instance;
     }
 
-    public KeyringServiceFactory(Profile profile) {
-        mProfile = profile;
-        if (mProfile == null) {
-            mProfile = Profile.getLastUsedRegularProfile();
-        }
-    }
-
     public KeyringService getKeyringService(ConnectionErrorHandler connectionErrorHandler) {
-        int nativeHandle = KeyringServiceFactoryJni.get().getInterfaceToKeyringService(mProfile);
+        Profile profile = Utils.getProfile(false); // Always use regular profile
+        int nativeHandle = KeyringServiceFactoryJni.get().getInterfaceToKeyringService(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         KeyringService keyringService = KeyringService.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) keyringService).getProxyHandler();

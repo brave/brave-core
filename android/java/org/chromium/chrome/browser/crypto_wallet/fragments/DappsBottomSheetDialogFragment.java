@@ -27,7 +27,6 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -170,8 +169,7 @@ public class DappsBottomSheetDialogFragment extends BottomSheetDialogFragment
             return;
         }
 
-        mKeyringService =
-                KeyringServiceFactory.getInstance(Utils.getProfile(false)).getKeyringService(this);
+        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
         updateView(getView());
     }
 }

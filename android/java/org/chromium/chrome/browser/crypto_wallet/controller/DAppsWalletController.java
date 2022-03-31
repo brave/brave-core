@@ -142,8 +142,7 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
             return;
         }
 
-        mKeyringService =
-                KeyringServiceFactory.getInstance(Utils.getProfile(false)).getKeyringService(this);
+        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
     }
 
     private void InitJsonRpcService() {

@@ -213,7 +213,7 @@ public class BraveEthereumPermissionPromptDialog
             return;
         }
 
-        mKeyringService = KeyringServiceFactory.getInstance(null).getKeyringService(this);
+        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
     }
 
     @NativeMethods
