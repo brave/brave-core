@@ -7,16 +7,17 @@
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SYNC_HANDLER_H_
 
 #include "base/memory/weak_ptr.h"
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "base/values.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "chrome/services/qrcode_generator/public/cpp/qrcode_generator_service.h"
+#include "chrome/services/qrcode_generator/public/mojom/qrcode_generator.mojom.h"
 #include "components/sync_device_info/device_info_tracker.h"
 
 namespace syncer {
 class DeviceInfoTracker;
 class LocalDeviceInfoProvider;
-class BraveProfileSyncService;
+class BraveSyncServiceImpl;
 }  // namespace syncer
 class Profile;
 
@@ -24,6 +25,8 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
                          public syncer::DeviceInfoTracker::Observer {
  public:
   BraveSyncHandler();
+  BraveSyncHandler(const BraveSyncHandler&) = delete;
+  BraveSyncHandler& operator=(const BraveSyncHandler&) = delete;
   ~BraveSyncHandler() override;
 
   // syncer::DeviceInfoTracker::Observer
@@ -36,17 +39,17 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   void OnJavascriptDisallowed() override;
 
   // Custom message handlers:
-  void HandleGetDeviceList(const base::ListValue* args);
-  void HandleGetSyncCode(const base::ListValue* args);
-  void HandleSetSyncCode(const base::ListValue* args);
-  void HandleGetQRCode(const base::ListValue* args);
-  void HandleReset(const base::ListValue* args);
-  void HandleDeleteDevice(const base::ListValue* args);
+  void HandleGetDeviceList(base::Value::ConstListView args);
+  void HandleGetSyncCode(base::Value::ConstListView args);
+  void HandleSetSyncCode(base::Value::ConstListView args);
+  void HandleGetQRCode(base::Value::ConstListView args);
+  void HandleReset(base::Value::ConstListView args);
+  void HandleDeleteDevice(base::Value::ConstListView args);
 
   void OnResetDone(base::Value callback_id);
 
   base::Value GetSyncDeviceList();
-  syncer::BraveProfileSyncService* GetSyncService() const;
+  syncer::BraveSyncServiceImpl* GetSyncService() const;
   syncer::DeviceInfoTracker* GetDeviceInfoTracker() const;
   syncer::LocalDeviceInfoProvider* GetLocalDeviceInfoProvider() const;
 
@@ -62,12 +65,11 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   Profile* profile_ = nullptr;
 
   // Manages observer lifetimes.
-  ScopedObserver<syncer::DeviceInfoTracker, syncer::DeviceInfoTracker::Observer>
+  base::ScopedObservation<syncer::DeviceInfoTracker,
+                          syncer::DeviceInfoTracker::Observer>
       device_info_tracker_observer_{this};
 
   base::WeakPtrFactory<BraveSyncHandler> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveSyncHandler);
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SYNC_HANDLER_H_

@@ -11,7 +11,7 @@
 namespace ads {
 namespace security {
 
-struct VerifiableConversionEnvelopeInfo {
+struct VerifiableConversionEnvelopeInfo final {
   VerifiableConversionEnvelopeInfo();
   VerifiableConversionEnvelopeInfo(
       const VerifiableConversionEnvelopeInfo& info);

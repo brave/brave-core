@@ -11,7 +11,7 @@
   static std::vector<std::unique_ptr<ContentSettingImageModel>> \
       GenerateContentSettingImageModels
 
-#include "../../../../../../chrome/browser/ui/content_settings/content_setting_image_model.h"
+#include "src/chrome/browser/ui/content_settings/content_setting_image_model.h"
 #undef GenerateContentSettingImageModels
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_CONTENT_SETTINGS_CONTENT_SETTING_IMAGE_MODEL_H_

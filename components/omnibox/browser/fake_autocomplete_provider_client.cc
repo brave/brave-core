@@ -9,11 +9,14 @@
 #include "components/prefs/pref_registry_simple.h"
 
 FakeAutocompleteProviderClient::FakeAutocompleteProviderClient() {
-  auto* registry = pref_service_.registry();
+  pref_service_ = std::make_unique<TestingPrefServiceSimple>();
+  auto* registry = pref_service_->registry();
   registry->RegisterBooleanPref(kTopSiteSuggestionsEnabled, true);
   registry->RegisterBooleanPref(kBraveSuggestedSiteSuggestionsEnabled, true);
 }
 
-PrefService* FakeAutocompleteProviderClient::GetPrefs() {
-  return &pref_service_;
+FakeAutocompleteProviderClient::~FakeAutocompleteProviderClient() = default;
+
+PrefService* FakeAutocompleteProviderClient::GetPrefs() const {
+  return pref_service_.get();
 }

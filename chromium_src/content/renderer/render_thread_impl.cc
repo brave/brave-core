@@ -29,4 +29,4 @@
   WebString ipns_scheme(WebString::FromASCII("ipns"));                         \
   WebSecurityPolicy::RegisterURLSchemeAsSupportingFetchAPI(ipns_scheme);
 
-#include "../../../../content/renderer/render_thread_impl.cc"
+#include "src/content/renderer/render_thread_impl.cc"

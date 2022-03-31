@@ -8,7 +8,7 @@
 
 namespace ads {
 
-template <class T>
+template <typename T>
 class AdEvent {
  public:
   virtual ~AdEvent() = default;

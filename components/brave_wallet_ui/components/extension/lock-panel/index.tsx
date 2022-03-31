@@ -3,26 +3,25 @@ import * as React from 'react'
 import {
   StyledWrapper,
   Title,
-  Input,
   Column,
-  PageIcon,
-  IconBackground
+  PanelIcon,
+  RestoreButton
 } from './style'
+import { PasswordInput } from '../../shared'
 import { NavButton } from '../'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 
 export interface Props {
+  value?: string
   onSubmit: () => void
   onPasswordChanged: (value: string) => void
+  onClickRestore: () => void
+  hasPasswordError: boolean
   disabled: boolean
 }
 
 function LockPanel (props: Props) {
-  const { onSubmit, onPasswordChanged, disabled } = props
-
-  const inputPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onPasswordChanged(event.target.value)
-  }
+  const { value, onSubmit, onPasswordChanged, onClickRestore, disabled, hasPasswordError } = props
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && !disabled) {
@@ -32,25 +31,26 @@ function LockPanel (props: Props) {
 
   return (
     <StyledWrapper>
-      <IconBackground>
-        <PageIcon />
-      </IconBackground>
-      <Title>{locale.lockScreenTitle}</Title>
+      <PanelIcon />
+      <Title>{getLocale('braveWalletLockScreenTitle')}</Title>
       <Column>
-        <Input
-          type='password'
-          placeholder={locale.createPasswordInput}
-          onChange={inputPassword}
+        <PasswordInput
+          placeholder={getLocale('braveWalletCreatePasswordInput')}
+          onChange={onPasswordChanged}
           onKeyDown={handleKeyDown}
+          error={getLocale('braveWalletLockScreenError')}
+          hasError={hasPasswordError}
           autoFocus={true}
+          value={value}
         />
       </Column>
       <NavButton
         buttonType='primary'
-        text={locale.lockScreenButton}
+        text={getLocale('braveWalletLockScreenButton')}
         onSubmit={onSubmit}
         disabled={disabled}
       />
+      <RestoreButton onClick={onClickRestore}>{getLocale('braveWalletWelcomeRestoreButton')}</RestoreButton>
     </StyledWrapper>
   )
 }

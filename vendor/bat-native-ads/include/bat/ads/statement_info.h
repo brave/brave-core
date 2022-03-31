@@ -9,13 +9,12 @@
 #include <cstdint>
 #include <string>
 
-#include "base/values.h"
 #include "bat/ads/export.h"
-#include "bat/ads/transaction_info.h"
+#include "bat/ads/transaction_info_aliases.h"
 
 namespace ads {
 
-struct ADS_EXPORT StatementInfo {
+struct ADS_EXPORT StatementInfo final {
   StatementInfo();
   StatementInfo(const StatementInfo& info);
   ~StatementInfo();
@@ -26,37 +25,10 @@ struct ADS_EXPORT StatementInfo {
   std::string ToJson() const;
   bool FromJson(const std::string& json);
 
-  double estimated_pending_rewards = 0.0;
-  int64_t next_payment_date = 0;
-  int ads_received_this_month = 0;
+  double next_payment_date = 0;
   double earnings_this_month = 0.0;
   double earnings_last_month = 0.0;
-  TransactionList transactions;
-  TransactionList uncleared_transactions;
-
- private:
-  double GetEstimatedPendingRewardsFromDictionary(
-      base::DictionaryValue* dictionary) const;
-
-  uint64_t GetNextPaymentDateFromDictionary(
-      base::DictionaryValue* dictionary) const;
-
-  uint64_t GetAdsReceivedThisMonthFromDictionary(
-      base::DictionaryValue* dictionary) const;
-
-  double GetEarningsThisMonthFromDictionary(
-      base::DictionaryValue* dictionary) const;
-
-  double GetEarningsLastMonthFromDictionary(
-      base::DictionaryValue* dictionary) const;
-
-  base::Value GetTransactionsAsList() const;
-  TransactionList GetTransactionsFromDictionary(
-      base::DictionaryValue* dictionary) const;
-
-  base::Value GetUnclearedTransactionsAsList() const;
-  TransactionList GetUnclearedTransactionsFromDictionary(
-      base::DictionaryValue* dictionary) const;
+  int ads_received_this_month = 0;
 };
 
 }  // namespace ads

@@ -5,7 +5,7 @@
 import * as bluebird from 'bluebird'
 
 import './background/greaselion'
-import './background/today'
+import './background/webDiscoveryProject'
 
 // workaround https://github.com/DefinitelyTyped/DefinitelyTyped/issues/42084
 global.Promise = bluebird as any
@@ -44,3 +44,14 @@ require('./background/store')
 if (chrome.test) {
   chrome.test.sendMessage('brave-extension-enabled')
 }
+
+function cleanUp () {
+  // 2021-10 Removes Brave News local storage now that backend has migrated
+  // to browser.
+  chrome.storage.local.remove(['today', 'todayEtag', 'todayLastRemoteUpdateCheck', 'todayPublishers'])
+}
+
+chrome.runtime.onStartup.addListener(function () {
+  // No need to do storage cleanup immediately on startup
+  setTimeout(cleanUp, 60000)
+})

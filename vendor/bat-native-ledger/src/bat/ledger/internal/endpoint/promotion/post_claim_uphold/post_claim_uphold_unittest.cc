@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -41,12 +41,12 @@ class PostClaimUpholdTest : public testing::Test {
   }
 };
 
+const char kExpectedAddress[] = "address";
+
 TEST_F(PostClaimUpholdTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -54,59 +54,179 @@ TEST_F(PostClaimUpholdTest, ServerOK) {
             callback(response);
           }));
 
-  claim_->Request(
-      30.0,
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_OK);
-      });
+  claim_->Request(30.0, "address",
+                  [](const type::Result result, const std::string& address) {
+                    EXPECT_EQ(result, type::Result::LEDGER_OK);
+                    EXPECT_EQ(address, kExpectedAddress);
+                  });
 }
 
-TEST_F(PostClaimUpholdTest, ServerError400) {
+TEST_F(PostClaimUpholdTest, ServerError400FlaggedWallet) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
-            response.body = "";
+            response.body = R"(
+{
+    "message": "unable to link - unusual activity",
+    "code": 400
+}
+            )";
             callback(response);
           }));
 
-  claim_->Request(
-      30.0,
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  claim_->Request(30.0, "address",
+                  [](type::Result result, const std::string& address) {
+                    EXPECT_EQ(result, type::Result::FLAGGED_WALLET);
+                    EXPECT_EQ(address, kExpectedAddress);
+                  });
 }
 
-TEST_F(PostClaimUpholdTest, ServerError403) {
+TEST_F(PostClaimUpholdTest, ServerError400RegionNotSupported) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 400;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "region not supported: failed to validate account: invalid country",
+    "code": 400
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request(30.0, "address",
+                  [](type::Result result, const std::string& address) {
+                    EXPECT_EQ(result, type::Result::REGION_NOT_SUPPORTED);
+                    EXPECT_EQ(address, kExpectedAddress);
+                  });
+}
+
+TEST_F(PostClaimUpholdTest, ServerError400UnknownMessage) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 400;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "unknown message",
+    "code": 400
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request(30.0, "address",
+                  [](type::Result result, const std::string& address) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                    EXPECT_EQ(address, kExpectedAddress);
+                  });
+}
+
+TEST_F(PostClaimUpholdTest, ServerError403KYCRequired) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 403;
             response.url = request->url;
-            response.body = "";
+            response.body = R"(
+{
+    "message": "error linking wallet: KYC required: user kyc did not pass",
+    "code": 403
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request(30.0, "address",
+                  [](type::Result result, const std::string& address) {
+                    EXPECT_EQ(result, type::Result::NOT_FOUND);
+                    EXPECT_EQ(address, kExpectedAddress);
+                  });
+}
+
+TEST_F(PostClaimUpholdTest, ServerError403MismatchedProviderAccounts) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 403;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "error linking wallet: unable to link wallets: mismatched provider accounts: wallets do not match",
+    "code": 403
+}
+            )";
             callback(response);
           }));
 
   claim_->Request(
-      30.0,
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+      30.0, "address", [](type::Result result, const std::string& address) {
+        EXPECT_EQ(result, type::Result::MISMATCHED_PROVIDER_ACCOUNTS);
+        EXPECT_EQ(address, kExpectedAddress);
       });
+}
+
+TEST_F(PostClaimUpholdTest, ServerError403TransactionVerificationFailure) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 403;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "error linking wallet: transaction verification failure: failed to verify transaction",
+    "code": 403
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request(
+      30.0, "address", [](type::Result result, const std::string& address) {
+        EXPECT_EQ(result,
+                  type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE);
+        EXPECT_EQ(address, kExpectedAddress);
+      });
+}
+
+TEST_F(PostClaimUpholdTest, ServerError403UnknownMessage) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 403;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "unknown message",
+    "code": 403
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request(30.0, "address",
+                  [](type::Result result, const std::string& address) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                    EXPECT_EQ(address, kExpectedAddress);
+                  });
 }
 
 TEST_F(PostClaimUpholdTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 404;
             response.url = request->url;
@@ -114,19 +234,17 @@ TEST_F(PostClaimUpholdTest, ServerError404) {
             callback(response);
           }));
 
-  claim_->Request(
-      30.0,
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::NOT_FOUND);
-      });
+  claim_->Request(30.0, "address",
+                  [](const type::Result result, const std::string& address) {
+                    EXPECT_EQ(result, type::Result::NOT_FOUND);
+                    EXPECT_EQ(address, kExpectedAddress);
+                  });
 }
 
 TEST_F(PostClaimUpholdTest, ServerError409) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 409;
             response.url = request->url;
@@ -134,19 +252,17 @@ TEST_F(PostClaimUpholdTest, ServerError409) {
             callback(response);
           }));
 
-  claim_->Request(
-      30.0,
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::ALREADY_EXISTS);
-      });
+  claim_->Request(30.0, "address",
+                  [](const type::Result result, const std::string& address) {
+                    EXPECT_EQ(result, type::Result::DEVICE_LIMIT_REACHED);
+                    EXPECT_EQ(address, kExpectedAddress);
+                  });
 }
 
 TEST_F(PostClaimUpholdTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
@@ -154,19 +270,17 @@ TEST_F(PostClaimUpholdTest, ServerError500) {
             callback(response);
           }));
 
-  claim_->Request(
-      30.0,
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  claim_->Request(30.0, "address",
+                  [](const type::Result result, const std::string& address) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                    EXPECT_EQ(address, kExpectedAddress);
+                  });
 }
 
 TEST_F(PostClaimUpholdTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](
-              type::UrlRequestPtr request,
-              client::LoadURLCallback callback) {
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
@@ -174,11 +288,11 @@ TEST_F(PostClaimUpholdTest, ServerErrorRandom) {
             callback(response);
           }));
 
-  claim_->Request(
-      30.0,
-      [](const type::Result result) {
-        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
-      });
+  claim_->Request(30.0, "address",
+                  [](const type::Result result, const std::string& address) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                    EXPECT_EQ(address, kExpectedAddress);
+                  });
 }
 
 }  // namespace promotion

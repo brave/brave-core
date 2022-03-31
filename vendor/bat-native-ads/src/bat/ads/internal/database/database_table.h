@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace database {
@@ -17,9 +17,10 @@ class Table {
  public:
   virtual ~Table() = default;
 
-  virtual std::string get_table_name() const = 0;
+  virtual std::string GetTableName() const = 0;
 
-  virtual void Migrate(DBTransaction* transaction, const int to_version) = 0;
+  virtual void Migrate(mojom::DBTransaction* transaction,
+                       const int to_version) = 0;
 };
 
 }  // namespace database

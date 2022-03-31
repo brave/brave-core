@@ -1,0 +1,13 @@
+diff --git a/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java b/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java
+index 645a041d9ac32120178a1988b90a4fb3d2ab450a..8835a49169e19d1cf328cc22e401b8e571ddac77 100644
+--- a/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java
++++ b/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java
+@@ -26,7 +26,7 @@ import java.util.zip.GZIPOutputStream;
+  */
+ public class MinidumpUploader {
+     /* package */
+-    static final String CRASH_URL_STRING = "https://clients2.google.com/cr/report";
++    static final String CRASH_URL_STRING = "https://cr.brave.com";
+     /* package */
+     static final String CONTENT_TYPE_TMPL = "multipart/form-data; boundary=%s";
+ 

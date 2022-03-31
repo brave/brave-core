@@ -28,6 +28,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
+import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.feature_engagement.TrackerFactory;
 import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
@@ -37,6 +38,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tasks.ReturnToChromeExperimentsUtil;
+import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
@@ -84,6 +86,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private BookmarksButton mBookmarksButton;
     private SearchAccelerator mSearchAccelerator;
     private BottomToolbarNewTabButton mNewTabButton;
+    private View mBottomContainerTopShadow;
 
     private final Context mContext = ContextUtils.getApplicationContext();
 
@@ -118,6 +121,9 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         mBottomControlsMediator = bottomControlsMediator;
         mOriginalHomeButtonRunnable = openHomepageAction;
         mScrollingBottomView = (BraveScrollingBottomViewResourceFrameLayout) scrollingBottomView;
+
+        mBottomContainerTopShadow =
+                mScrollingBottomView.findViewById(R.id.bottom_container_top_shadow);
     }
 
     /**
@@ -157,9 +163,11 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 topToolbarRoot, incognitoStateProvider, mThemeColorProvider, newTabClickListener,
                 closeTabsClickListener, mMenuButtonHelperSupplier, tabCountProvider);
 
+        ChromeActivity activity = BraveActivity.getBraveActivity();
         // Do not change bottom bar if StartSurface Single Pane is enabled and HomePage is not
         // customized.
-        if (!ReturnToChromeExperimentsUtil.shouldShowStartSurfaceAsTheHomePage()
+        if (!ReturnToChromeExperimentsUtil.shouldShowStartSurfaceAsTheHomePage(
+                    activity != null ? activity : mContext)
                 && BottomToolbarVariationManager.shouldBottomToolbarBeVisibleInOverviewMode()) {
             mLayoutStateObserver = new LayoutStateProvider.LayoutStateObserver() {
                 @Override
@@ -185,6 +193,8 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                     if (BottomToolbarVariationManager.isNewTabButtonOnBottom()) {
                         browsingModeCoordinator.getNewTabButtonParent().setVisibility(View.VISIBLE);
                     }
+
+                    mBottomContainerTopShadow.setVisibility(View.GONE);
                 }
 
                 @Override
@@ -213,6 +223,8 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                     if (BottomToolbarVariationManager.isNewTabButtonOnBottom()) {
                         browsingModeCoordinator.getNewTabButtonParent().setVisibility(View.GONE);
                     }
+
+                    mBottomContainerTopShadow.setVisibility(View.VISIBLE);
                 }
             };
         }
@@ -228,6 +240,9 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
             final OnClickListener homeButtonListener = v -> {
                 if (HomepageManager.isHomepageEnabled()) {
+                    if (BraveActivity.getBraveActivity() != null) {
+                        BraveActivity.getBraveActivity().setComesFromNewTab(true);
+                    }
                     mOriginalHomeButtonRunnable.run();
                 } else {
                     newTabClickListener.onClick(v);
@@ -252,10 +267,10 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             mNewTabButton.setOnLongClickListener(this);
         }
 
-        ChromeActivity activity = BraveActivity.getBraveActivity();
         if (mScrollingBottomView != null && activity != null) {
+            Supplier<CompositorViewHolder> cvh = activity.getCompositorViewHolderSupplier();
             mScrollingBottomView.setSwipeDetector(
-                    activity.getCompositorViewHolder().getLayoutManager().getToolbarSwipeHandler());
+                    cvh.get().getLayoutManager().getToolbarSwipeHandler());
         }
     }
 
@@ -264,7 +279,10 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
      */
     void setBottomToolbarVisible(boolean isVisible) {
         if (mTabSwitcherModeCoordinator != null) {
-            mTabSwitcherModeCoordinator.showToolbarOnTop(!isVisible);
+            ChromeActivity activity = BraveActivity.getBraveActivity();
+            mTabSwitcherModeCoordinator.showToolbarOnTop(!isVisible,
+                    TabUiFeatureUtilities.isGridTabSwitcherEnabled(
+                            activity != null ? activity : mContext));
         }
         mBrowsingModeCoordinator.onVisibilityChanged(isVisible);
     }

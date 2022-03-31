@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
-#include "brave/common/brave_paths.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/common/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -66,14 +67,20 @@ class BraveShieldsWebContentsObserverBrowserTest : public InProcessBrowserTest {
         HostContentSettingsMapFactory::GetForProfile(browser()->profile());
 
     // We can't simply create a new BraveShieldsWebContentsObserver for the same
-    // WebContents, as that class will instatiate a WebContentsFrameReceiverSet
-    // and we can't have two at the same time for the same mojo interface. Thus,
-    // we need to remove the one created along with the initialization of the
-    // browser process before creating the one we need for testing.
-    content::RemoveWebContentsReceiverSet(
-        GetWebContents(), brave_shields::mojom::BraveShieldsHost::Name_);
+    // WebContents, as that class will instatiate a RenderFrameHostReceiverSet
+    // and we won't be able to intercept the mojo messages received for the
+    // brave_shields::mojom::BraveShieldsHost interface for testing purposes.
+    // Instead we call SetReceiverImplForTesting() to make sure that the mojo
+    // receiver will be bound to our TestBraveShieldsWebContentsObserver class,
+    // allowing us to intercept any message we are interested in.
     brave_shields_web_contents_observer_ =
         new TestBraveShieldsWebContentsObserver(GetWebContents());
+    BraveShieldsWebContentsObserver::SetReceiverImplForTesting(
+        brave_shields_web_contents_observer_);
+  }
+
+  void TearDownOnMainThread() override {
+    BraveShieldsWebContentsObserver::SetReceiverImplForTesting(nullptr);
   }
 
   content::WebContents* GetWebContents() {
@@ -87,8 +94,9 @@ class BraveShieldsWebContentsObserverBrowserTest : public InProcessBrowserTest {
   }
 
  private:
-  HostContentSettingsMap* content_settings_;
-  TestBraveShieldsWebContentsObserver* brave_shields_web_contents_observer_;
+  raw_ptr<HostContentSettingsMap> content_settings_ = nullptr;
+  raw_ptr<TestBraveShieldsWebContentsObserver>
+      brave_shields_web_contents_observer_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
@@ -119,7 +127,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
   brave_shields_web_contents_observer()->Reset();
   GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
   EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
-  EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 1);
+  EXPECT_GT(brave_shields_web_contents_observer()->block_javascript_count(), 0);
 
   // Disable JavaScript blocking again now.
   content_settings()->SetContentSettingCustomScope(
@@ -130,10 +138,30 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
   EXPECT_EQ(CONTENT_SETTING_ALLOW, block_javascript_setting);
 
   // Reload the test page now that JavaScript has been allowed again.
+  // Do it twice, because first reload will still trigger blocked events as
+  // renderer caches AllowScript results in
+  // ContentSettingsAgentImpl::cached_script_permissions_.
+  GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+
   brave_shields_web_contents_observer()->Reset();
   GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
   EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
   EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 0);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
+                       EmbeddedJavaScriptTriggersBlockedEvent) {
+  // Enable JavaScript blocking globally.
+  content_settings()->SetContentSettingCustomScope(
+      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
+
+  // Load a simple HTML that attempts to run some JavaScript.
+  EXPECT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), embedded_test_server()->GetURL("a.com", "/embedded_js.html")));
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+  EXPECT_GT(brave_shields_web_contents_observer()->block_javascript_count(), 0);
 }
 
 }  // namespace brave_shields

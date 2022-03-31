@@ -14,8 +14,9 @@ declare namespace RewardsInternals {
     promotions: Promotion[]
     log: string
     fullLog: string
-    externalWallet: ExternalWallet,
+    externalWallet: ExternalWallet
     eventLogs: EventLog[]
+    adDiagnostics: AdDiagnosticsEntry[]
   }
 
   export interface ContributionInfo {
@@ -53,7 +54,7 @@ declare namespace RewardsInternals {
     version: number
   }
 
-  export type WalletType = 'anonymous' | 'uphold' | 'bitflyer'
+  export type WalletType = 'anonymous' | 'uphold' | 'bitflyer' | 'gemini'
 
   export enum WalletStatus {
     NOT_CONNECTED = 0,
@@ -66,7 +67,9 @@ declare namespace RewardsInternals {
 
   export interface ExternalWallet {
     address: string
+    memberId: string
     status: WalletStatus
+    type: WalletType | ''
   }
 
   export interface EventLog {
@@ -74,5 +77,10 @@ declare namespace RewardsInternals {
     key: string
     value: string
     createdAt: number
+  }
+
+  export interface AdDiagnosticsEntry {
+    key: string
+    value: string
   }
 }

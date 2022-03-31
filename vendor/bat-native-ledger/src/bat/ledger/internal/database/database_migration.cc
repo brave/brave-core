@@ -36,6 +36,8 @@
 #include "bat/ledger/internal/database/migration/migration_v30.h"
 #include "bat/ledger/internal/database/migration/migration_v31.h"
 #include "bat/ledger/internal/database/migration/migration_v32.h"
+#include "bat/ledger/internal/database/migration/migration_v33.h"
+#include "bat/ledger/internal/database/migration/migration_v34.h"
 #include "bat/ledger/internal/database/migration/migration_v4.h"
 #include "bat/ledger/internal/database/migration/migration_v5.h"
 #include "bat/ledger/internal/database/migration/migration_v6.h"
@@ -58,6 +60,8 @@ using std::placeholders::_1;
 namespace ledger {
 namespace database {
 
+uint32_t DatabaseMigration::test_target_version_ = 0;
+
 DatabaseMigration::DatabaseMigration(LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
@@ -73,7 +77,9 @@ void DatabaseMigration::Start(
 
   auto transaction = type::DBTransaction::New();
   int migrated_version = table_version;
-  const uint32_t target_version = database::GetCurrentVersion();
+  const uint32_t target_version = ledger::is_testing && test_target_version_
+                                      ? test_target_version_
+                                      : database::GetCurrentVersion();
 
   if (target_version == table_version) {
     callback(type::Result::LEDGER_OK);
@@ -125,7 +131,9 @@ void DatabaseMigration::Start(
                                           migration::v29,
                                           migration_v30,
                                           migration::v31,
-                                          migration_v32};
+                                          migration_v32,
+                                          migration::v33,
+                                          migration::v34};
 
   DCHECK_LE(target_version, mappings.size());
 
@@ -169,6 +177,10 @@ void DatabaseMigration::Start(
 
         callback(type::Result::LEDGER_ERROR);
       });
+}
+
+void DatabaseMigration::SetTargetVersionForTesting(uint32_t version) {
+  test_target_version_ = version;
 }
 
 void DatabaseMigration::GenerateCommand(

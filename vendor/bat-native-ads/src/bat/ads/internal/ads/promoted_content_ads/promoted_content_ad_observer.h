@@ -8,8 +8,8 @@
 
 #include <string>
 
-#include "base/observer_list.h"
-#include "bat/ads/mojom.h"
+#include "base/observer_list_types.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -17,6 +17,9 @@ struct PromotedContentAdInfo;
 
 class PromotedContentAdObserver : public base::CheckedObserver {
  public:
+  // Invoked when a promoted content ad is served
+  virtual void OnPromotedContentAdServed(const PromotedContentAdInfo& ad) {}
+
   // Invoked when a promoted content ad is viewed
   virtual void OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) {}
 
@@ -27,7 +30,7 @@ class PromotedContentAdObserver : public base::CheckedObserver {
   virtual void OnPromotedContentAdEventFailed(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const PromotedContentAdEventType event_type) {}
+      const mojom::PromotedContentAdEventType event_type) {}
 
  protected:
   ~PromotedContentAdObserver() override = default;

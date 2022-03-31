@@ -5,19 +5,18 @@
 
 #include "bat/ads/internal/resources/conversions/conversions_resource.h"
 
-#include <utility>
-
 #include "base/json/json_reader.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/result.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace resource {
 
 namespace {
-const char kResourceId[] = "nnqccijfhvzwyrxpxwjrpmynaiazctqb";
-const char kVersionId = 1;
+constexpr char kResourceId[] = "nnqccijfhvzwyrxpxwjrpmynaiazctqb";
+constexpr int kVersionId = 1;
 }  // namespace
 
 Conversions::Conversions() = default;
@@ -31,8 +30,8 @@ bool Conversions::IsInitialized() const {
 void Conversions::Load() {
   AdsClientHelper::Get()->LoadAdsResource(
       kResourceId, kVersionId,
-      [=](const Result result, const std::string& json) {
-        if (result != SUCCESS) {
+      [=](const bool success, const std::string& json) {
+        if (!success) {
           BLOG(1, "Failed to load resource " << kResourceId);
           is_initialized_ = false;
           return;
@@ -61,13 +60,13 @@ ConversionIdPatternMap Conversions::get() const {
 bool Conversions::FromJson(const std::string& json) {
   ConversionIdPatternMap conversion_id_patterns;
 
-  base::Optional<base::Value> root = base::JSONReader::Read(json);
+  absl::optional<base::Value> root = base::JSONReader::Read(json);
   if (!root) {
     BLOG(1, "Failed to load from JSON, root missing");
     return false;
   }
 
-  if (base::Optional<int> version = root->FindIntPath("version")) {
+  if (absl::optional<int> version = root->FindIntKey("version")) {
     if (kVersionId != *version) {
       BLOG(1, "Failed to load from JSON, version missing");
       return false;
@@ -75,38 +74,26 @@ bool Conversions::FromJson(const std::string& json) {
   }
 
   base::Value* conversion_id_patterns_value =
-      root->FindDictPath("conversion_id_patterns");
+      root->FindDictKey("conversion_id_patterns");
   if (!conversion_id_patterns_value) {
     BLOG(1, "Failed to load from JSON, conversion patterns missing");
     return false;
   }
 
-  if (!conversion_id_patterns_value->is_dict()) {
-    BLOG(1, "Failed to load from JSON, conversion patterns not of type dict");
-    return false;
-  }
-
-  base::DictionaryValue* dict;
-  if (!conversion_id_patterns_value->GetAsDictionary(&dict)) {
-    BLOG(1, "Failed to load from JSON, get conversion patterns as dict");
-    return false;
-  }
-
-  for (base::DictionaryValue::Iterator iter(*dict); !iter.IsAtEnd();
-       iter.Advance()) {
-    if (!iter.value().is_dict()) {
+  for (const auto value : conversion_id_patterns_value->DictItems()) {
+    if (!value.second.is_dict()) {
       BLOG(1, "Failed to load from JSON, conversion pattern not of type dict")
       return false;
     }
 
-    const std::string* id_pattern = iter.value().FindStringKey("id_pattern");
-    if (id_pattern->empty()) {
+    const std::string* id_pattern = value.second.FindStringKey("id_pattern");
+    if (!id_pattern || id_pattern->empty()) {
       BLOG(1, "Failed to load from JSON, pattern id_pattern missing");
       return false;
     }
 
-    const std::string* search_in = iter.value().FindStringKey("search_in");
-    if (search_in->empty()) {
+    const std::string* search_in = value.second.FindStringKey("search_in");
+    if (!search_in || search_in->empty()) {
       BLOG(1, "Failed to load from JSON, pattern search_in missing");
       return false;
     }
@@ -114,7 +101,7 @@ bool Conversions::FromJson(const std::string& json) {
     ConversionIdPatternInfo info;
     info.id_pattern = *id_pattern;
     info.search_in = *search_in;
-    info.url_pattern = iter.key();
+    info.url_pattern = value.first;
     conversion_id_patterns.insert({info.url_pattern, info});
   }
 

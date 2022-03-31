@@ -6,7 +6,6 @@
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 namespace brave_perf_predictor {

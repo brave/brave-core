@@ -19,7 +19,4 @@ const base::Feature kSpeedreaderFeature {
 #endif
 };
 
-const base::Feature kSpeedreaderLegacyBackend{
-    "Speedreader Legacy Backend", base::FEATURE_DISABLED_BY_DEFAULT};
-
 }  // namespace speedreader

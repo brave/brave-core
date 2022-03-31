@@ -1,0 +1,13 @@
+diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
+index 49deee4a8ca6835eda1d8d433be447ca8075a198..7d77731725be20ef64ee84ac3531208a6184d7c7 100755
+--- a/build/android/gyp/dex.py
++++ b/build/android/gyp/dex.py
+@@ -53,7 +53,7 @@ _IGNORE_WARNINGS = (
+ _SKIPPED_CLASS_FILE_NAMES = (
+     'module-info.class',  # Explicitly skipped by r8/utils/FileUtils#isClassFile
+ )
+-
++_IGNORE_WARNINGS += ( r'.Brave', )
+ 
+ def _ParseArgs(args):
+   args = build_utils.ExpandFileArgs(args)

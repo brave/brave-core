@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.notifications.retention;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -15,12 +16,12 @@ import android.util.Pair;
 import androidx.core.app.NotificationCompat;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
-import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
 import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -48,6 +49,10 @@ public class RetentionNotificationUtil {
     public static final String DEFAULT_BROWSER_2 = "default_browser_2";
     public static final String DEFAULT_BROWSER_3 = "default_browser_3";
 
+    public static final String DORMANT_USERS_DAY_14 = "dormant_users_days_14";
+    public static final String DORMANT_USERS_DAY_25 = "dormant_users_days_25";
+    public static final String DORMANT_USERS_DAY_40 = "dormant_users_days_40";
+
     private static Map<String, RetentionNotification> mNotificationMap = new HashMap<String, RetentionNotification>() {
         {
             put(HOUR_3,
@@ -64,9 +69,28 @@ public class RetentionNotificationUtil {
             put(BRAVE_STATS_ADS_TRACKERS, new RetentionNotification(14, 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
             put(BRAVE_STATS_DATA, new RetentionNotification(15, 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
             put(BRAVE_STATS_TIME, new RetentionNotification(16, 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(DEFAULT_BROWSER_1, new RetentionNotification(17, 48 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(DEFAULT_BROWSER_1,
+                    new RetentionNotification(17, 3 * 24 * 60,
+                            BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
             put(DEFAULT_BROWSER_2, new RetentionNotification(18, 6 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(DEFAULT_BROWSER_3, new RetentionNotification(19, 20 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(DEFAULT_BROWSER_3,
+                    new RetentionNotification(19, 30 * 24 * 60,
+                            BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(DORMANT_USERS_DAY_14,
+                    new RetentionNotification(20, 14 * 24 * 60,
+                            BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                            ContextUtils.getApplicationContext().getResources().getString(
+                                    R.string.dormant_users_engagement_notification_text_1)));
+            put(DORMANT_USERS_DAY_25,
+                    new RetentionNotification(21, 25 * 24 * 60,
+                            BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                            ContextUtils.getApplicationContext().getResources().getString(
+                                    R.string.dormant_users_engagement_notification_text_2)));
+            put(DORMANT_USERS_DAY_40,
+                    new RetentionNotification(22, 40 * 24 * 60,
+                            BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                            ContextUtils.getApplicationContext().getResources().getString(
+                                    R.string.dormant_users_engagement_notification_text_3)));
         }
     };
 
@@ -84,13 +108,19 @@ public class RetentionNotificationUtil {
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(notificationText));
         builder.setSmallIcon(R.drawable.ic_chrome);
         builder.setAutoCancel(true);
-        if (notificationType.equals(DEFAULT_BROWSER_1)
-                || notificationType.equals(DEFAULT_BROWSER_2)
-                || notificationType.equals(DEFAULT_BROWSER_3)) {
-            builder.setContentIntent(BraveSetDefaultBrowserNotificationService.getDefaultAppSettingsIntent(context));
-        } else {
-            builder.setContentIntent(getRetentionNotificationActionIntent(context, notificationType));
-        }
+
+        Intent launchIntent =
+                context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+        launchIntent.putExtra(NOTIFICATION_TYPE, notificationType);
+        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(context,
+                retentionNotification.getNotificationId(), launchIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+                        | IntentUtils.getPendingIntentMutabilityFlag(true));
+
+        builder.setContentIntent(resultPendingIntent);
+
         return builder.build();
     }
 
@@ -141,6 +171,15 @@ public class RetentionNotificationUtil {
         case DEFAULT_BROWSER_2:
         case DEFAULT_BROWSER_3:
             return context.getResources().getString(R.string.set_brave_as_your);
+        case DORMANT_USERS_DAY_14:
+            return context.getResources().getString(
+                    R.string.dormant_users_engagement_notification_body_1);
+        case DORMANT_USERS_DAY_25:
+            return context.getResources().getString(
+                    R.string.dormant_users_engagement_notification_body_2);
+        case DORMANT_USERS_DAY_40:
+            return context.getResources().getString(
+                    R.string.dormant_users_engagement_notification_body_3);
         }
         return "";
     }
@@ -149,14 +188,19 @@ public class RetentionNotificationUtil {
         Intent intent = new Intent(context, RetentionNotificationPublisher.class);
         intent.setAction(RetentionNotificationPublisher.RETENTION_NOTIFICATION_ACTION);
         intent.putExtra(NOTIFICATION_TYPE, notificationType);
-        return PendingIntent.getBroadcast(context, getNotificationObject(notificationType).getNotificationId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(context,
+                getNotificationObject(notificationType).getNotificationId(), intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+                        | IntentUtils.getPendingIntentMutabilityFlag(true));
     }
 
     public static void scheduleNotification(Context context, String notificationType) {
         RetentionNotification retentionNotification = getNotificationObject(notificationType);
         Intent notificationIntent = new Intent(context, RetentionNotificationPublisher.class);
         notificationIntent.putExtra(NOTIFICATION_TYPE, notificationType);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, retentionNotification.getNotificationId(), notificationIntent, 0);
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(context, retentionNotification.getNotificationId(),
+                        notificationIntent, 0 | IntentUtils.getPendingIntentMutabilityFlag(true));
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.add(Calendar.MINUTE, retentionNotification.getNotificationTime());
@@ -164,7 +208,20 @@ public class RetentionNotificationUtil {
         Date date = calendar.getTime();
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert alarmManager != null;
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, date.getTime(), pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, date.getTime(), pendingIntent);
+    }
+
+    public static void scheduleNotificationWithTime(
+            Context context, String notificationType, long timeInMilliseconds) {
+        RetentionNotification retentionNotification = getNotificationObject(notificationType);
+        Intent notificationIntent = new Intent(context, RetentionNotificationPublisher.class);
+        notificationIntent.putExtra(NOTIFICATION_TYPE, notificationType);
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(context, retentionNotification.getNotificationId(),
+                        notificationIntent, 0 | IntentUtils.getPendingIntentMutabilityFlag(true));
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        assert alarmManager != null;
+        alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMilliseconds, pendingIntent);
     }
 
     public static void scheduleNotificationForEverySunday(Context context, String notificationType) {
@@ -180,9 +237,23 @@ public class RetentionNotificationUtil {
 
         Intent notificationIntent = new Intent(context, RetentionNotificationPublisher.class);
         notificationIntent.putExtra(NOTIFICATION_TYPE, notificationType);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, retentionNotification.getNotificationId(), notificationIntent, 0);
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(context, retentionNotification.getNotificationId(),
+                        notificationIntent, 0 | IntentUtils.getPendingIntentMutabilityFlag(true));
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert am != null;
         am.setRepeating(AlarmManager.RTC_WAKEUP, currentDate.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+    }
+
+    public static void scheduleDormantUsersNotifications(Context context) {
+        scheduleNotificationWithTime(context, DORMANT_USERS_DAY_14,
+                OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                        DORMANT_USERS_DAY_14));
+        RetentionNotificationUtil.scheduleNotificationWithTime(context, DORMANT_USERS_DAY_25,
+                OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                        DORMANT_USERS_DAY_25));
+        RetentionNotificationUtil.scheduleNotificationWithTime(context, DORMANT_USERS_DAY_40,
+                OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                        DORMANT_USERS_DAY_40));
     }
 }

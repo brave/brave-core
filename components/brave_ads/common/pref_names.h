@@ -23,6 +23,7 @@ extern const int kSupportedCountryCodesSchemaVersionNumber;
 
 extern const char kAdNotificationLastScreenPositionX[];
 extern const char kAdNotificationLastScreenPositionY[];
+extern const char kAdNotificationDidFallbackToCustom[];
 
 extern const char kVersion[];
 extern const int kCurrentVersionNumber;

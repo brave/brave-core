@@ -14,7 +14,7 @@
 namespace ads {
 namespace resource {
 
-class PurchaseIntent : public Resource<PurchaseIntentInfo> {
+class PurchaseIntent final : public Resource<ad_targeting::PurchaseIntentInfo> {
  public:
   PurchaseIntent();
   ~PurchaseIntent() override;
@@ -26,14 +26,14 @@ class PurchaseIntent : public Resource<PurchaseIntentInfo> {
 
   void Load();
 
-  PurchaseIntentInfo get() const override;
+  ad_targeting::PurchaseIntentInfo get() const override;
 
  private:
+  bool FromJson(const std::string& json);
+
   bool is_initialized_ = false;
 
-  PurchaseIntentInfo purchase_intent_;
-
-  bool FromJson(const std::string& json);
+  ad_targeting::PurchaseIntentInfo purchase_intent_;
 };
 
 }  // namespace resource

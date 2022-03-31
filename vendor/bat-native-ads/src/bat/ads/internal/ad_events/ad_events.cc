@@ -11,11 +11,13 @@
 #include "base/time/time.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/ad_type.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
+#include "bat/ads/internal/instance_id_util.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
@@ -30,7 +32,7 @@ void LogAdEvent(const AdInfo& ad,
   ad_event.creative_set_id = ad.creative_set_id;
   ad_event.creative_instance_id = ad.creative_instance_id;
   ad_event.advertiser_id = ad.advertiser_id;
-  ad_event.timestamp = static_cast<int64_t>(base::Time::Now().ToDoubleT());
+  ad_event.created_at = base::Time::Now();
 
   LogAdEvent(ad_event, callback);
 }
@@ -40,22 +42,43 @@ void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
 
   database::table::AdEvents database_table;
   database_table.LogEvent(
-      ad_event, [callback](const Result result) { callback(result); });
+      ad_event, [callback](const bool success) { callback(success); });
 }
 
 void PurgeExpiredAdEvents(AdEventCallback callback) {
   database::table::AdEvents database_table;
-  database_table.PurgeExpired(
-      [callback](const Result result) { callback(result); });
+  database_table.PurgeExpired([callback](const bool success) {
+    if (success) {
+      RebuildAdEventsFromDatabase();
+    }
+
+    callback(success);
+  });
+}
+
+void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
+                           AdEventCallback callback) {
+  database::table::AdEvents database_table;
+  database_table.PurgeOrphaned(ad_type, [callback](const bool success) {
+    if (success) {
+      RebuildAdEventsFromDatabase();
+    }
+
+    callback(success);
+  });
 }
 
 void RebuildAdEventsFromDatabase() {
   database::table::AdEvents database_table;
-  database_table.GetAll([=](const Result result, const AdEventList& ad_events) {
-    if (result != Result::SUCCESS) {
+  database_table.GetAll([=](const bool success, const AdEventList& ad_events) {
+    if (!success) {
       BLOG(1, "Failed to get ad events");
       return;
     }
+
+    const std::string& id = GetInstanceId();
+
+    AdsClientHelper::Get()->ResetAdEventsForId(id);
 
     for (const auto& ad_event : ad_events) {
       RecordAdEvent(ad_event);
@@ -64,27 +87,30 @@ void RebuildAdEventsFromDatabase() {
 }
 
 void RecordAdEvent(const AdEventInfo& ad_event) {
-  const std::string ad_type_as_string = std::string(ad_event.type);
+  const std::string& id = GetInstanceId();
 
-  const std::string confirmation_type_as_string =
-      std::string(ad_event.confirmation_type);
+  const AdType& ad_type = ad_event.type;
+  const ConfirmationType& confirmation_type = ad_event.confirmation_type;
 
-  AdsClientHelper::Get()->RecordAdEvent(ad_type_as_string,
-                                        confirmation_type_as_string,
-                                        ad_event.timestamp);
+  const double timestamp = ad_event.created_at.ToDoubleT();
+
+  AdsClientHelper::Get()->RecordAdEventForId(
+      id, ad_type.ToString(), confirmation_type.ToString(), timestamp);
 }
 
-std::deque<uint64_t> GetAdEvents(const AdType& ad_type,
-                                 const ConfirmationType& confirmation_type) {
-  const std::string ad_type_as_string = std::string(ad_type);
+std::deque<base::Time> GetAdEvents(const AdType& ad_type,
+                                   const ConfirmationType& confirmation_type) {
+  const std::vector<double>& history = AdsClientHelper::Get()->GetAdEvents(
+      ad_type.ToString(), confirmation_type.ToString());
 
-  const std::string confirmation_type_as_string =
-      std::string(confirmation_type);
+  std::deque<base::Time> deque;
 
-  const std::vector<uint64_t> ad_events =
-      AdsClientHelper::Get()->GetAdEvents(ad_type, confirmation_type);
+  for (const auto& timestamp : history) {
+    const base::Time time = base::Time::FromDoubleT(timestamp);
+    deque.push_back(time);
+  }
 
-  return VectorToDeque(ad_events);
+  return deque;
 }
 
 }  // namespace ads

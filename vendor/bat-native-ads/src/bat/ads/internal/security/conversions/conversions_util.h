@@ -8,7 +8,10 @@
 
 #include <string>
 
-#include "base/optional.h"
+namespace absl {
+template <typename T>
+class optional;
+}  // namespace absl
 
 namespace ads {
 
@@ -18,7 +21,7 @@ namespace security {
 
 struct VerifiableConversionEnvelopeInfo;
 
-base::Optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
+absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
     const VerifiableConversionInfo& verifiable_conversion);
 
 }  // namespace security

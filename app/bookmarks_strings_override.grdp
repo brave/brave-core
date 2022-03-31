@@ -11,14 +11,14 @@
   <if expr="use_titlecase">
     </if>
   <if expr="not use_titlecase">
-    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_COUNT_INCOGNITO" desc="Menu description for opening all urls in a bookmark folder in a private window">
+    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_COUNT_INCOGNITO" desc="Menu description for opening all urls in a bookmark folder in a Private window">
         {COUNT, plural,
-          =0 {Open all in &amp;private window}
-          =1 {Open in &amp;private window}
-          other {Open all ({COUNT}) in &amp;private window}}
+          =0 {Open all in &amp;Private window}
+          =1 {Open in &amp;Private window}
+          other {Open all ({COUNT}) in &amp;Private window}}
     </message>
-    <message name="IDS_BOOKMARK_BAR_OPEN_INCOGNITO" desc="Menu description for opening bookmark in private window">
-      Open in &amp;private window
+    <message name="IDS_BOOKMARK_BAR_OPEN_INCOGNITO" desc="Menu description for opening bookmark in Private window">
+      Open in &amp;Private window
     </message>
     <if expr="not is_android">
       <message name="IDS_SHOW_BOOKMARK_BAR" desc="The toggle to show the bookmark bar">
@@ -27,13 +27,13 @@
     </if>
   </if>
   <if expr="use_titlecase">
-    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_COUNT_INCOGNITO" desc="In Title Case: Menu description for opening all urls in a bookmark folder in a private window">
+    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_COUNT_INCOGNITO" desc="In Title Case: Menu description for opening all urls in a bookmark folder in a Private window">
         {COUNT, plural,
           =0 {Open All in &amp;Private Window}
           =1 {Open in &amp;Private Window}
           other {Open All ({COUNT}) in &amp;Private Window}}
     </message>
-    <message name="IDS_BOOKMARK_BAR_OPEN_INCOGNITO" desc="In Title Case: Menu description for opening bookmark in private window">
+    <message name="IDS_BOOKMARK_BAR_OPEN_INCOGNITO" desc="In Title Case: Menu description for opening bookmark in Private window">
       Open in &amp;Private Window
     </message>
     <if expr="not is_android">
@@ -58,14 +58,14 @@
     </if>
   <if expr="use_titlecase">
     </if>
-  <message name="IDS_BOOKMARK_MANAGER_MENU_OPEN_ALL_INCOGNITO" desc="Menu description for opening all urls in a bookmark folder in a private window">
-    Open all in private window
+  <message name="IDS_BOOKMARK_MANAGER_MENU_OPEN_ALL_INCOGNITO" desc="Menu description for opening all urls in a bookmark folder in a Private window">
+    Open all in Private window
   </message>
-  <message name="IDS_BOOKMARK_MANAGER_MENU_OPEN_ALL_INCOGNITO_WITH_COUNT" desc="Menu description for opening all urls in a bookmark folder in a private window, which includes a count of urls">
-    Open all (<ph name="URL_COUNT">$1<ex>5</ex></ph>) in private window
+  <message name="IDS_BOOKMARK_MANAGER_MENU_OPEN_ALL_INCOGNITO_WITH_COUNT" desc="Menu description for opening all urls in a bookmark folder in a Private window, which includes a count of urls">
+    Open all (<ph name="URL_COUNT">$1<ex>5</ex></ph>) in Private window
   </message>
-  <message name="IDS_BOOKMARK_MANAGER_MENU_OPEN_INCOGNITO" desc="Menu description for opening a bookmark in private window">
-    Open in private window
+  <message name="IDS_BOOKMARK_MANAGER_MENU_OPEN_INCOGNITO" desc="Menu description for opening a bookmark in Private window">
+    Open in Private window
   </message>
   <if expr="not use_titlecase">
     </if>

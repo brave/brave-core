@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/process/process.h"
 #include "base/sequence_checker.h"
@@ -39,6 +40,7 @@ class TorLauncherImpl : public tor::mojom::TorLauncher {
   std::unique_ptr<brave::ChildProcessMonitor> child_monitor_;
   mojo::Receiver<tor::mojom::TorLauncher> receiver_;
   bool in_shutdown_ = false;
+  base::FilePath tor_watch_path_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

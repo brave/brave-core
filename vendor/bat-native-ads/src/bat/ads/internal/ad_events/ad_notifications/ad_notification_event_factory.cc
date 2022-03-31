@@ -6,8 +6,10 @@
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_factory.h"
 
 #include "bat/ads/ad_notification_info.h"
+#include "bat/ads/internal/ad_events/ad_event.h"
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_clicked.h"
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_dismissed.h"
+#include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_served.h"
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_timed_out.h"
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_viewed.h"
 
@@ -15,21 +17,25 @@ namespace ads {
 namespace ad_notifications {
 
 std::unique_ptr<AdEvent<AdNotificationInfo>> AdEventFactory::Build(
-    const AdNotificationEventType event_type) {
+    const mojom::AdNotificationEventType event_type) {
   switch (event_type) {
-    case AdNotificationEventType::kViewed: {
+    case mojom::AdNotificationEventType::kServed: {
+      return std::make_unique<AdEventServed>();
+    }
+
+    case mojom::AdNotificationEventType::kViewed: {
       return std::make_unique<AdEventViewed>();
     }
 
-    case AdNotificationEventType::kClicked: {
+    case mojom::AdNotificationEventType::kClicked: {
       return std::make_unique<AdEventClicked>();
     }
 
-    case AdNotificationEventType::kDismissed: {
+    case mojom::AdNotificationEventType::kDismissed: {
       return std::make_unique<AdEventDismissed>();
     }
 
-    case AdNotificationEventType::kTimedOut: {
+    case mojom::AdNotificationEventType::kTimedOut: {
       return std::make_unique<AdEventTimedOut>();
     }
   }

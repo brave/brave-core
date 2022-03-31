@@ -16,20 +16,23 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/common/constants.h"
 #include "third_party/skia/include/core/SkBitmap.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/gfx/image/canvas_image_source.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/image/image_skia_rep_default.h"
-#include "ui/gfx/image/canvas_image_source.h"
-#include "ui/views/view.h"
-#include "ui/views/view_class_properties.h"
 #include "ui/views/animation/ink_drop_impl.h"
 #include "ui/views/controls/button/label_button_border.h"
 #include "ui/views/controls/highlight_path_generator.h"
+#include "ui/views/view.h"
+#include "ui/views/view_class_properties.h"
 
 namespace {
 
@@ -39,15 +42,16 @@ class BraveRewardsActionStubViewHighlightPathGenerator
       : public views::HighlightPathGenerator {
  public:
   BraveRewardsActionStubViewHighlightPathGenerator() = default;
+  BraveRewardsActionStubViewHighlightPathGenerator(
+      const BraveRewardsActionStubViewHighlightPathGenerator&) = delete;
+  BraveRewardsActionStubViewHighlightPathGenerator& operator=(
+      const BraveRewardsActionStubViewHighlightPathGenerator&) = delete;
 
   // HighlightPathGenerator
   SkPath GetHighlightPath(const views::View* view) override {
     return static_cast<const BraveRewardsActionStubView*>(view)
         ->GetHighlightPath();
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveRewardsActionStubViewHighlightPathGenerator);
 };
 
 }  // namespace
@@ -61,10 +65,16 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
           std::u16string()),
       profile_(profile),
       delegate_(delegate) {
-  SetInkDropMode(InkDropMode::ON);
+  auto* ink_drop = views::InkDrop::Get(this);
+  ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
+  ink_drop->SetBaseColorCallback(base::BindRepeating(
+      [](views::View* host) { return GetToolbarInkDropBaseColor(host); },
+      this));
+
+  SetAccessibleName(l10n_util::GetStringUTF16(IDS_BRAVE_UI_BRAVE_REWARDS));
   SetHasInkDropActionOnClick(true);
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
-  SetInkDropVisibleOpacity(kToolbarInkDropVisibleOpacity);
+  ink_drop->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
   // Create badge-and-image source like an extension icon would
   auto preferred_size = GetPreferredSize();
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
@@ -89,7 +99,6 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
           SK_ColorWHITE,
           kRewardsBadgeBg));
   image_source->SetBadge(std::move(badge));
-  image_source->set_paint_page_action_decoration(false);
   gfx::ImageSkia icon(gfx::Image(
       gfx::ImageSkia(
           std::move(image_source),
@@ -143,13 +152,4 @@ std::unique_ptr<views::LabelButtonBorder> BraveRewardsActionStubView::
   border->set_insets(
       gfx::Insets(0, 0, 0, 0));
   return border;
-}
-
-SkColor BraveRewardsActionStubView::GetInkDropBaseColor() const {
-  return GetToolbarInkDropBaseColor(this);
-}
-
-std::unique_ptr<views::InkDropHighlight>
-BraveRewardsActionStubView::CreateInkDropHighlight() const {
-  return CreateToolbarInkDropHighlight(this);
 }

@@ -6,28 +6,30 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_HISTORY_ADS_HISTORY_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_HISTORY_ADS_HISTORY_H_
 
-#include <cstdint>
+#include "bat/ads/ads_history_filter_types.h"
+#include "bat/ads/ads_history_sort_types.h"
 
-#include "bat/ads/ads_history_info.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/ads_per_day_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_day_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/promoted_content_ads_per_day_frequency_cap.h"
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 
 class ConfirmationType;
 struct AdNotificationInfo;
+struct AdsHistoryInfo;
+struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
 struct PromotedContentAdInfo;
 
 namespace history {
 
-const int kForDays = 7;
+const int kForDays = 30;
 
-AdsHistoryInfo Get(const AdsHistoryInfo::FilterType filter_type,
-                   const AdsHistoryInfo::SortType sort_type,
-                   const uint64_t from_timestamp,
-                   const uint64_t to_timestamp);
+AdsHistoryInfo Get(const AdsHistoryFilterType filter_type,
+                   const AdsHistorySortType sort_type,
+                   const base::Time from,
+                   const base::Time to);
 
 void AddAdNotification(const AdNotificationInfo& ad,
                        const ConfirmationType& confirmation_type);
@@ -37,6 +39,9 @@ void AddNewTabPageAd(const NewTabPageAdInfo& ad,
 
 void AddPromotedContentAd(const PromotedContentAdInfo& ad,
                           const ConfirmationType& confirmation_type);
+
+void AddInlineContentAd(const InlineContentAdInfo& ad,
+                        const ConfirmationType& confirmation_type);
 
 }  // namespace history
 }  // namespace ads

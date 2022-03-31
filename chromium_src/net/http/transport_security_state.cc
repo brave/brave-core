@@ -7,7 +7,7 @@
 
 #include "build/build_config.h"
 
-#if !defined(OS_ANDROID) && !defined(OS_IOS)
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 #define BRAVE_ENABLE_STATIC_PINS \
   enable_static_pins_ = true;    \
@@ -21,4 +21,4 @@
 
 #endif
 
-#include "../../../../net/http/transport_security_state.cc"
+#include "src/net/http/transport_security_state.cc"

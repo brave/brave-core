@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 type EventsStorage = {
-  [eventName: string]: Listener<unknown>[]
+  [eventName: string]: Array<Listener<unknown>>
 }
 
 type Listener<T> = (arg: T) => any

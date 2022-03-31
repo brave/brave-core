@@ -10,17 +10,15 @@
 #include <memory>
 #include <string>
 
-#include "bat/ads/internal/catalog/catalog_campaign_info.h"
+#include "bat/ads/internal/catalog/catalog_campaign_info_aliases.h"
 
 namespace ads {
 
-struct CatalogState;
-struct CatalogIssuersInfo;
+struct CatalogInfo;
 
-class Catalog {
+class Catalog final {
  public:
   Catalog();
-
   ~Catalog();
 
   bool FromJson(const std::string& json);
@@ -30,11 +28,10 @@ class Catalog {
   std::string GetId() const;
   int GetVersion() const;
   int64_t GetPing() const;
-  CatalogIssuersInfo GetIssuers() const;
   CatalogCampaignList GetCampaigns() const;
 
  private:
-  std::unique_ptr<CatalogState> catalog_state_;
+  std::unique_ptr<CatalogInfo> catalog_;
 };
 
 }  // namespace ads

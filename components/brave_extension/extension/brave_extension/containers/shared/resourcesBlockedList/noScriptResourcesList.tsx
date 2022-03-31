@@ -32,7 +32,7 @@ import {
 } from '../../../helpers/noScriptUtils'
 
 interface Props {
-  noScriptInfo: Array<any>
+  noScriptInfo: any[]
   maybeBlock: boolean
   allowScriptOriginsOnce: AllowScriptOriginsOnce
   setScriptBlockedCurrentState: SetScriptBlockedCurrentState
@@ -70,7 +70,7 @@ export default class NoScriptList extends React.PureComponent<Props, {}> {
     )
   }
 
-  getNestedOrSingleScriptsLoop = (modifiedNoScriptInfo: Array<any>, maybeNested: boolean, maybeBlock: boolean) => {
+  getNestedOrSingleScriptsLoop = (modifiedNoScriptInfo: any[], maybeNested: boolean, maybeBlock: boolean) => {
     return (
       modifiedNoScriptInfo.map((script: NoScriptEntry, key: number) => {
         const url = script[0]

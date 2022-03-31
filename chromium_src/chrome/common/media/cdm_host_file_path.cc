@@ -14,7 +14,7 @@
 #include "build/build_config.h"
 #include "chrome/common/chrome_version.h"
 
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
 #include "base/mac/bundle_locations.h"
 #include "chrome/common/chrome_constants.h"
 #endif
@@ -24,4 +24,4 @@
 
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
-#include "../../../../../chrome/common/media/cdm_host_file_path.cc"  // NOLINT
+#include "src/chrome/common/media/cdm_host_file_path.cc"

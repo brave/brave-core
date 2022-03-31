@@ -6,6 +6,7 @@
 #include "brave/browser/importer/brave_importer_p3a.h"
 
 #include "base/metrics/histogram_macros.h"
+#include "build/build_config.h"
 
 namespace {
 // Note: append-only enumeration! Never remove any existing values, as this enum
@@ -29,7 +30,7 @@ void RecordImporterP3A(importer::ImporterType type) {
   case importer::TYPE_UNKNOWN:
     metric = ImporterSource::kNone;
     break;
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   case importer::TYPE_IE:
     metric = ImporterSource::kIE;
     break;
@@ -40,7 +41,7 @@ void RecordImporterP3A(importer::ImporterType type) {
   case importer::TYPE_FIREFOX:
     metric = ImporterSource::kFirefox;
     break;
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
   case importer::TYPE_SAFARI:
     metric = ImporterSource::kSafari;
     break;

@@ -64,11 +64,11 @@ export default class CoreFeature extends React.PureComponent<Props, {}> {
   }
 
   blockOrAllowAll (blockOrAllow: boolean) {
-    return
+
   }
 
   setFinalScriptsBlockedState = () => {
-    return
+
   }
 
   getBlockAllText (shouldBlock: boolean) {

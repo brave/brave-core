@@ -9,6 +9,7 @@
 #include "base/gtest_prod_util.h"
 #include "components/permissions/permission_request.h"
 
+#include "base/memory/raw_ptr.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -19,6 +20,11 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
  public:
   WidevinePermissionRequest(content::WebContents* web_contents,
                             bool for_restart);
+
+  WidevinePermissionRequest(const WidevinePermissionRequest&) = delete;
+  WidevinePermissionRequest& operator=(const WidevinePermissionRequest&) =
+      delete;
+
   ~WidevinePermissionRequest() override;
 
   std::u16string GetExplanatoryMessageText() const;
@@ -33,16 +39,12 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
 
   // PermissionRequest overrides:
   std::u16string GetMessageTextFragment() const override;
-  GURL GetOrigin() const override;
-  void PermissionGranted(bool is_one_time) override;
-  void PermissionDenied() override;
-  void Cancelled() override;
-  void RequestFinished() override;
-  permissions::RequestType GetRequestType() const override;
+  void PermissionDecided(ContentSetting result, bool is_one_time);
+  void DeleteRequest();
 
   // It's safe to use this raw |web_contents_| because this request is deleted
   // by PermissionManager that is tied with this |web_contents_|.
-  content::WebContents* web_contents_;
+  raw_ptr<content::WebContents> web_contents_ = nullptr;
 
   bool dont_ask_widevine_install_ = false;
 
@@ -51,8 +53,6 @@ class WidevinePermissionRequest : public permissions::PermissionRequest {
   // installation to ask user about restarting because installed widevine can
   // only be used after re-launch.
   bool for_restart_ = false;
-
-  DISALLOW_COPY_AND_ASSIGN(WidevinePermissionRequest);
 };
 
 #endif  // BRAVE_BROWSER_WIDEVINE_WIDEVINE_PERMISSION_REQUEST_H_

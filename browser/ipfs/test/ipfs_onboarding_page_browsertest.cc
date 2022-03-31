@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/components/ipfs/features.h"
@@ -150,7 +151,7 @@ class IpfsOnboardingPageBrowserTest : public InProcessBrowserTest {
 
  private:
   std::unique_ptr<net::EmbeddedTestServer> test_server_;
-  IpfsService* ipfs_service_;
+  raw_ptr<IpfsService> ipfs_service_ = nullptr;
   base::test::ScopedFeatureList feature_list_;
   GURL ipfs_url_;
   GURL gateway_url_;
@@ -167,7 +168,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, ShowAndUseLocalNode) {
 
   // Navigate to IPFS URL and check if we'll show the interstitial when there
   // are no connected peers.
-  ui_test_utils::NavigateToURL(browser(), ipfs_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -185,7 +186,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, ShowAndUseLocalNode) {
 
   // Navigate to that URL again and see if we auto fallback to gateway this
   // time without interstitials.
-  ui_test_utils::NavigateToURL(browser(), ipfs_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
   EXPECT_EQ(nullptr, GetInterstitialType(web_contents));
@@ -202,7 +203,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, ShowAndUseGateway) {
 
   // Navigate to IPFS URL and check if we'll show the interstitial when there
   // are no connected peers.
-  ui_test_utils::NavigateToURL(browser(), ipfs_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -219,7 +220,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, ShowAndUseGateway) {
 
   // Navigate to that URL again and see if we auto fallback to gateway this
   // time without interstitials.
-  ui_test_utils::NavigateToURL(browser(), ipfs_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetMainFrame()));
   EXPECT_EQ(nullptr, GetInterstitialType(web_contents));
@@ -236,7 +237,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, LearnMore) {
 
   // Navigate to IPFS URL and check if we'll show the interstitial when there
   // are no connected peers.
-  ui_test_utils::NavigateToURL(browser(), ipfs_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -265,7 +266,7 @@ IN_PROC_BROWSER_TEST_F(IpfsOnboardingPageBrowserTest, OpenSettings) {
 
   // Navigate to IPFS URL and check if we'll show the interstitial when there
   // are no connected peers.
-  ui_test_utils::NavigateToURL(browser(), ipfs_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ipfs_url()));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 

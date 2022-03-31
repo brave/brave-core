@@ -32,6 +32,10 @@ export function init () {
   // Setup badge color
   chrome.browserAction.setBadgeBackgroundColor({
     color: '#636473'
+  }, () => {
+    if (chrome.runtime.lastError) {
+      console.warn('browserAction.setBadgeBackgroundColor failed: ' + chrome.runtime.lastError.message)
+    }
   })
   // Initial / default icon
   chrome.browserAction.setIcon({
@@ -40,7 +44,11 @@ export function init () {
   // By default, icon is disabled,
   // so that we do not enable the icon in a new tab and then disable it
   // when the context is not http(s).
-  chrome.browserAction.disable()
+  chrome.browserAction.disable(undefined, () => {
+    if (chrome.runtime.lastError) {
+      console.error('browserAction.disable failed: ' + chrome.runtime.lastError.message)
+    }
+  })
 }
 
 /**
@@ -52,6 +60,10 @@ export const setBadgeText = (tabId: number, text: string) => {
     chrome.browserAction.setBadgeText({
       tabId,
       text: String(text)
+    }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('browserAction.setBadgeText failed: ' + chrome.runtime.lastError.message)
+      }
     })
   }
 }
@@ -60,7 +72,6 @@ export const setBadgeText = (tabId: number, text: string) => {
  * Updates the shields icon based on shields state
  */
 export const setIcon = (url: string, tabId: number, shieldsOn: boolean) => {
-
   const actionIsDisabled = !isHttpOrHttps(url)
   if (chrome.browserAction) {
     chrome.browserAction.setIcon({
@@ -68,9 +79,17 @@ export const setIcon = (url: string, tabId: number, shieldsOn: boolean) => {
       tabId
     })
     if (actionIsDisabled) {
-      chrome.browserAction.disable(tabId)
+      chrome.browserAction.disable(tabId, () => {
+        if (chrome.runtime.lastError) {
+          console.error('browserAction.disable failed: ' + chrome.runtime.lastError.message)
+        }
+      })
     } else {
-      chrome.browserAction.enable(tabId)
+      chrome.browserAction.enable(tabId, () => {
+        if (chrome.runtime.lastError) {
+          console.error('browserAction.enable failed: ' + chrome.runtime.lastError.message)
+        }
+      })
     }
   }
 }

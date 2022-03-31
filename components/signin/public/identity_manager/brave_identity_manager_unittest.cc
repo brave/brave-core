@@ -8,6 +8,7 @@
 
 #include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/task_environment.h"
 #include "build/build_config.h"
@@ -33,7 +34,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "components/signin/internal/identity_manager/child_account_info_fetcher_android.h"
 #endif
 
@@ -140,7 +141,7 @@ class BraveIdentityManagerTest : public testing::Test {
             primary_account_manager.get(), &pref_service_,
             AccountConsistencyMethod::kDisabled);
 
-#if defined(OS_ANDROID) || defined(OS_IOS)
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
     init_params.device_accounts_synchronizer =
         std::make_unique<DeviceAccountsSynchronizerImpl>(
             token_service->GetDelegate());
@@ -190,7 +191,7 @@ class BraveIdentityManagerTest : public testing::Test {
   std::unique_ptr<IdentityManager> identity_manager_;
   std::unique_ptr<TestIdentityManagerObserver> identity_manager_observer_;
   CoreAccountId primary_account_id_;
-  GaiaCookieManagerService* gaia_cookie_manager_service_;
+  raw_ptr<GaiaCookieManagerService> gaia_cookie_manager_service_ = nullptr;
 };
 
 TEST_F(BraveIdentityManagerTest, GetAccountsInCookieJarWithNoAccounts) {

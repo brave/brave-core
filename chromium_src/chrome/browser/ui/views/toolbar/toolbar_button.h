@@ -8,7 +8,7 @@
 
 #define SetHighlight virtual SetHighlight
 #define UpdateColorsAndInsets virtual UpdateColorsAndInsets
-#include "../../../../../../../chrome/browser/ui/views/toolbar/toolbar_button.h"
+#include "src/chrome/browser/ui/views/toolbar/toolbar_button.h"
 #undef SetHighlight
 #undef UpdateColorsAndInsets
 

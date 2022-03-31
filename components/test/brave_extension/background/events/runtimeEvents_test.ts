@@ -10,10 +10,10 @@ import * as tabTypes from '../../../../brave_extension/extension/brave_extension
 import { ChromeEvent } from '../../../testData'
 
 interface InputWindows {
-  id: number,
-  tabs: {
+  id: number
+  tabs: Array<{
     id: number
-  }[]
+  }>
 }
 
 interface RuntimeEvent extends chrome.events.Event<() => void>, ChromeEvent {}

@@ -33,9 +33,8 @@ DatabaseEventLog::~DatabaseEventLog() = default;
 void DatabaseEventLog::Insert(
     const std::string& key,
     const std::string& value) {
-  if (key.empty() || value.empty()) {
-    BLOG_IF(1, key.empty(), "Key is empty");
-    BLOG_IF(1, value.empty(), "Value is empty");
+  if (key.empty()) {
+    BLOG(0, "Key is empty");
     return;
   }
 
@@ -79,12 +78,10 @@ void DatabaseEventLog::InsertRecords(
 
   std::string query = base_query;
   for (const auto& record : records) {
-    query += base::StringPrintf(
-        R"(("%s","%s","%s",%u),)",
-        base::GenerateGUID().c_str(),
-        record.first.c_str(),
-        record.second.c_str(),
-        static_cast<uint32_t>(time));
+    query +=
+        base::StringPrintf(R"(('%s','%s','%s',%u),)",
+                           base::GenerateGUID().c_str(), record.first.c_str(),
+                           record.second.c_str(), static_cast<uint32_t>(time));
   }
 
   query.pop_back();

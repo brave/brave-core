@@ -6,11 +6,13 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_USER_ACTIVITY_PAGE_TRANSITION_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_USER_ACTIVITY_PAGE_TRANSITION_UTIL_H_
 
-#include <string>
-
-#include "base/optional.h"
 #include "bat/ads/internal/user_activity/user_activity_event_types.h"
 #include "bat/ads/page_transition_types.h"
+
+namespace absl {
+template <typename T>
+class optional;
+}  // namespace absl
 
 namespace ads {
 
@@ -24,7 +26,7 @@ bool DidNavigateToHomePage(const PageTransitionType type);
 
 bool DidTransitionFromExternalApplication(const PageTransitionType type);
 
-base::Optional<UserActivityEventType> ToUserActivityEventType(
+absl::optional<UserActivityEventType> ToUserActivityEventType(
     const PageTransitionType page_transition);
 
 }  // namespace ads

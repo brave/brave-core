@@ -8,24 +8,19 @@
 
 #include <string>
 
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/conversions/conversion_info.h"
+#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/internal/conversions/conversion_info_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
-#include "bat/ads/mojom.h"
-#include "bat/ads/result.h"
+#include "bat/ads/internal/database/tables/conversions_database_table_aliases.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-
-using GetConversionsCallback =
-    std::function<void(const Result, const ConversionList&)>;
-
 namespace database {
 namespace table {
 
-class Conversions : public Table {
+class Conversions final : public Table {
  public:
   Conversions();
-
   ~Conversions() override;
 
   void Save(const ConversionList& conversions, ResultCallback callback);
@@ -34,29 +29,24 @@ class Conversions : public Table {
 
   void PurgeExpired(ResultCallback callback);
 
-  std::string get_table_name() const override;
+  std::string GetTableName() const override;
 
-  void Migrate(DBTransaction* transaction, const int to_version) override;
+  void Migrate(mojom::DBTransaction* transaction,
+               const int to_version) override;
 
  private:
-  void InsertOrUpdate(DBTransaction* transaction,
+  void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const ConversionList& conversion);
 
-  int BindParameters(DBCommand* command, const ConversionList& conversion);
-
-  std::string BuildInsertOrUpdateQuery(DBCommand* command,
+  std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const ConversionList& conversions);
 
-  void OnGetConversions(DBCommandResponsePtr response,
+  void OnGetConversions(mojom::DBCommandResponsePtr response,
                         GetConversionsCallback callback);
 
-  ConversionInfo GetConversionFromRecord(DBRecord* record) const;
-
-  void CreateTableV1(DBTransaction* transaction);
-  void CreateIndexV1(DBTransaction* transaction);
-  void MigrateToV1(DBTransaction* transaction);
-
-  void MigrateToV11(DBTransaction* transaction);
+  void MigrateToV1(mojom::DBTransaction* transaction);
+  void MigrateToV10(mojom::DBTransaction* transaction);
+  void MigrateToV20(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

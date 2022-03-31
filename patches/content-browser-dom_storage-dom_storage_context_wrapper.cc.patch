@@ -1,0 +1,12 @@
+diff --git a/content/browser/dom_storage/dom_storage_context_wrapper.cc b/content/browser/dom_storage/dom_storage_context_wrapper.cc
+index 698e0dabd6b211dbfe5e98f1527633c97ae83a74..964c62c0c9ca57131b0be46f5da463e12593479d 100644
+--- a/content/browser/dom_storage/dom_storage_context_wrapper.cc
++++ b/content/browser/dom_storage/dom_storage_context_wrapper.cc
+@@ -300,6 +300,7 @@ bool DOMStorageContextWrapper::IsRequestValid(
+       return false;
+     }
+     host_storage_key_did_not_match = host->storage_key() != storage_key;
++    BRAVE_DOM_STORAGE_CONTEXT_WRAPPER_IS_REQUEST_VALID
+   }
+   if (!security_policy_handle.CanAccessDataForOrigin(storage_key.origin())) {
+     const std::string type_string =

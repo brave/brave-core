@@ -38,14 +38,16 @@ export interface DetailRow {
   adDetailRows: AdDetailRow[]
 }
 
-export type AdAction = 'click' | 'dismiss' | 'view' | 'landed'
+export type AdType = '' | 'ad_notification' | 'new_tab_page_ad' | 'promoted_content_ad' | 'inline_content_ad'
+
+export type AdAction = 'view' | 'click' | 'dismiss' | 'landed'
 
 interface AdContent {
+  adType: AdType
   brand: string
   brandInfo: string
-  brandLogo: string
-  brandUrl: string
   brandDisplayUrl: string
+  brandUrl: string
   likeAction: number
   adAction: AdAction
   savedAd: boolean
@@ -60,8 +62,8 @@ interface AdContent {
 interface CategoryContent {
   category: string
   optAction: number
-  onOptInAction?: () => void
-  onOptOutAction?: () => void
+  onOptIn?: () => void
+  onOptOut?: () => void
 }
 
 export interface AdDetailRow {
@@ -85,8 +87,8 @@ export default class TableAdsHistory extends React.PureComponent<Props, {}> {
     return (
       <StyledTable>
         {
-          header ?
-            <thead>
+          header
+            ? <thead>
               <tr>
                 {
                   this.getHeader(header)
@@ -122,8 +124,8 @@ export default class TableAdsHistory extends React.PureComponent<Props, {}> {
     return rows.map((row: DetailRow, i: number) => {
       const detailRows = this.getDetailRows(row.adDetailRows)
       return (
-        detailRows && detailRows.length > 0 ?
-          <AdRowsDetails key={i} row={row} rowIndex={i} detailRows={detailRows} />
+        detailRows && detailRows.length > 0
+          ? <AdRowsDetails key={i} row={row} rowIndex={i} detailRows={detailRows} />
           : null
       )
     })
@@ -138,8 +140,8 @@ export default class TableAdsHistory extends React.PureComponent<Props, {}> {
         <StyledCategoryActions>
           <CategoryLikePicker
             optAction={content.optAction}
-            onOptIn={content.onOptInAction}
-            onOptOut={content.onOptOutAction}
+            onOptIn={content.onOptIn}
+            onOptOut={content.onOptOut}
           />
         </StyledCategoryActions>
       </StyledCategoryContentDiv>
@@ -151,12 +153,11 @@ export default class TableAdsHistory extends React.PureComponent<Props, {}> {
       <StyledAdContentDiv>
         <StyledAdLink href={content.brandUrl} target={'_blank'}>
           {
-            content.logoUrl ?
-              <StyledLogoDiv>
+            content.logoUrl
+              ? <StyledLogoDiv>
                 <StyledLogo src={content.logoUrl} />
               </StyledLogoDiv>
-              :
-              <StyledNoLogoDiv />
+              : <StyledNoLogoDiv />
           }
           <StyledAdInfoDiv>
             <StyledAdBrand>{content.brand}</StyledAdBrand>
@@ -230,10 +231,9 @@ export default class TableAdsHistory extends React.PureComponent<Props, {}> {
     return (
       <div id={id} data-test-id={testId} key={id}>
       {
-        rows ?
-          this.getAdsHistoryTable(header, rows)
-          :
-          <StyledNoAdHistoryDiv>
+        rows
+          ? this.getAdsHistoryTable(header, rows)
+          : <StyledNoAdHistoryDiv>
             {
               getLocale('noAdsHistory')
             }

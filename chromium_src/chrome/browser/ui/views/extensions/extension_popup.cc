@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "build/build_config.h"
 #include "chrome/browser/extensions/extension_view_host.h"
 #include "extensions/common/constants.h"
 
 namespace {
 bool IsBraveExtension(extensions::ExtensionViewHost* host) {
   // Clipping issue is not present on linux.
-#if defined(OS_MAC) || defined(OS_WIN)
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
   const auto extensionId = host->extension()->id();
   return (extensionId == brave_extension_id ||
           extensionId == brave_rewards_extension_id);
@@ -28,5 +29,5 @@ bool IsBraveExtension(extensions::ExtensionViewHost* host) {
                          ? 0                       \
                          : GetBubbleFrameView()->GetCornerRadius();
 
-#include "../../../../../../../chrome/browser/ui/views/extensions/extension_popup.cc"
+#include "src/chrome/browser/ui/views/extensions/extension_popup.cc"
 #undef BRAVE_ADDED_TO_WIDGET

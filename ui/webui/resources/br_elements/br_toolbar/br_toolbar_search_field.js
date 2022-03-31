@@ -3,10 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {CrSearchFieldBehavior} from 'chrome://resources/cr_elements/cr_search_field/cr_search_field_behavior.js';
 
 Polymer({
   is: 'br-toolbar-search-field',
+
+  _template: html`{__html_template__}`,
 
   behaviors: [CrSearchFieldBehavior],
 
@@ -166,4 +169,4 @@ Polymer({
     this.setValue('')
     this.getSearchInput().blur()
   },
-})
+});

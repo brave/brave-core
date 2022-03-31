@@ -1,11 +1,11 @@
 diff --git a/components/permissions/BUILD.gn b/components/permissions/BUILD.gn
-index 2faa3caadfea14878ec7a833fb61a4499a0bd556..07d6897832f4d45858c3793653c71b69387f2b12 100644
+index 8cbc3d9fbf84eca788acb3337abc0d3283a3be62..59a184e45e388425014c240b123961cd953323e2 100644
 --- a/components/permissions/BUILD.gn
 +++ b/components/permissions/BUILD.gn
-@@ -98,6 +98,7 @@ source_set("permissions") {
-     "//ui/base",
-     "//url",
-   ]
+@@ -135,6 +135,7 @@ source_set("permissions") {
+       "contexts/geolocation_permission_context_mac.h",
+     ]
+   }
 +  import("//brave/components/permissions/sources.gni") sources += brave_components_permissions_sources deps += brave_components_permissions_deps
    if (is_android) {
      sources += [

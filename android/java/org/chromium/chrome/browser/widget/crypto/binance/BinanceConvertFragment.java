@@ -87,7 +87,8 @@ public class BinanceConvertFragment extends Fragment {
 
     private double convertAmount;
     private String convertedAmount;
-    private CryptoWidgetBottomSheetDialogFragment.BinanceBottomSheetListener mBinanceBottomSheetListener;
+    private CryptoWidgetBottomSheetDialogFragment
+            .BinanceBottomSheetListener mBinanceBottomSheetListener;
 
     private static final String ZERO_BALANCE = "0.000000";
 
@@ -117,7 +118,9 @@ public class BinanceConvertFragment extends Fragment {
         super.onDestroyView();
     }
 
-    public void setBinanceBottomSheetListener(CryptoWidgetBottomSheetDialogFragment.BinanceBottomSheetListener binanceBottomSheetListener) {
+    public void setBinanceBottomSheetListener(
+            CryptoWidgetBottomSheetDialogFragment
+                    .BinanceBottomSheetListener binanceBottomSheetListener) {
         mBinanceBottomSheetListener = binanceBottomSheetListener;
     }
 
@@ -257,14 +260,13 @@ public class BinanceConvertFragment extends Fragment {
                 String quoteId, String quotePrice, String totalFee, String totalAmount) {
             convertLayout.setVisibility(View.GONE);
             confirmLayout.setVisibility(View.VISIBLE);
-            convertedAmount = !TextUtils.isEmpty(totalAmount) ? String.format(
-                            Locale.getDefault(), "%.6f", Double.parseDouble(totalAmount))
-                                                    : ZERO_BALANCE;
+            convertedAmount = !TextUtils.isEmpty(totalAmount)
+                    ? String.format(Locale.getDefault(), "%.6f", Double.parseDouble(totalAmount))
+                    : ZERO_BALANCE;
             convertCurrencyText.setText(String.format(
                     getActivity().getResources().getString(R.string.convert_stat_text),
-                    convertAmount != 0.0 ? String.format(
-                            Locale.getDefault(), "%.6f", convertAmount)
-                                                   : ZERO_BALANCE,
+                    convertAmount != 0.0 ? String.format(Locale.getDefault(), "%.6f", convertAmount)
+                                         : ZERO_BALANCE,
                     selectedCrypto1));
             convertFeeText.setText(String.format(
                     getActivity().getResources().getString(R.string.convert_stat_text),
@@ -274,8 +276,7 @@ public class BinanceConvertFragment extends Fragment {
                     selectedCrypto1));
             convertBalanceText.setText(String.format(
                     getActivity().getResources().getString(R.string.convert_stat_text),
-                    convertedAmount,
-                    selectedCrypto2.getAsset()));
+                    convertedAmount, selectedCrypto2.getAsset()));
             startTimer();
 
             confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -296,8 +297,11 @@ public class BinanceConvertFragment extends Fragment {
                         .show();
             } else {
                 successLayout.setVisibility(View.VISIBLE);
-                if (successText != null) successText.setText(String.format(getActivity().getResources().getString(R.string.convert_success), convertAmount, selectedCrypto1,
-                            convertedAmount, selectedCrypto2.getAsset()));
+                if (successText != null)
+                    successText.setText(String.format(
+                            getActivity().getResources().getString(R.string.convert_success),
+                            convertAmount, selectedCrypto1, convertedAmount,
+                            selectedCrypto2.getAsset()));
             }
             cancelTimer();
         };

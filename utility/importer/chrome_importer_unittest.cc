@@ -13,6 +13,7 @@
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/brave_paths.h"
+#include "build/build_config.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/common/importer/importer_data_types.h"
@@ -22,7 +23,6 @@
 #include "components/os_crypt/os_crypt_mocker.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using base::ASCIIToUTF16;
 using base::UTF16ToASCII;
 using ::testing::_;
 
@@ -108,7 +108,7 @@ TEST_F(ChromeImporterTest, ImportBookmarks) {
   EXPECT_EQ("", bookmarks[1].url.spec());
   EXPECT_TRUE(bookmarks[1].in_toolbar);
   EXPECT_TRUE(bookmarks[1].is_folder);
-  EXPECT_EQ(ASCIIToUTF16("Empty"), bookmarks[1].title);
+  EXPECT_EQ(u"Empty", bookmarks[1].title);
 
   EXPECT_EQ("https://brave.com/", bookmarks[2].url.spec());
   EXPECT_FALSE(bookmarks[2].in_toolbar);
@@ -139,7 +139,7 @@ TEST_F(ChromeImporterTest, ImportFavicons) {
 
 // The mock keychain only works on macOS, so only run this test on macOS (for
 // now)
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
 TEST_F(ChromeImporterTest, ImportPasswords) {
   // Use mock keychain on mac to prevent blocking permissions dialogs.
   OSCryptMocker::SetUp();

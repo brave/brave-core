@@ -1,26 +1,23 @@
 import styled from 'styled-components'
-import { MoreVertRIcon } from 'brave-ui/components/icons'
+import More from '../../extension/assets/actions.svg'
+import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   margin-bottom: 20px;
 `
 
 export const MoreRow = styled.div`
+  flex: 1;
   display: flex;
-  width: 100%;
   align-items: flex-end;
   justify-content: center;
   flex-direction: column;
-  cursor: pointer;
-  outline: none;
   padding: 10px 0px 0px 0px;
-  border: none;
-  background: none;
 `
 
 export const Line = styled.div`
@@ -30,8 +27,8 @@ export const Line = styled.div`
   background: ${(p) => p.theme.color.divider01};
 `
 
-export const MoreButton = styled.button`
-  display: flex;;
+export const MoreButton = styled(WalletButton)`
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -45,9 +42,17 @@ export const MoreButton = styled.button`
   padding: 0px;
 `
 
-export const MoreIcon = styled(MoreVertRIcon)`
+export const EmptyPadding = styled.div`
   width: 20px;
-  transform: rotate(90deg);
   height: 20px;
-  color: ${(p) => p.theme.color.interactive07};
+  margin-bottom: 10px;
+`
+
+export const MoreIcon = styled.div`
+  width: 18px;
+  height: 18px;
+  background-color: ${(p) => p.theme.color.interactive07};
+  -webkit-mask-image: url(${More});
+  mask-image: url(${More});
+  mask-size: cover;
 `

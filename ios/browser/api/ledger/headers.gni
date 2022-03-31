@@ -1,0 +1,8 @@
+ledger_public_headers = [
+  "//brave/ios/browser/api/ledger/brave_ledger.h",
+  "//brave/ios/browser/api/ledger/brave_ledger_observer.h",
+  "//brave/ios/browser/api/ledger/rewards_notification.h",
+  "//brave/ios/browser/api/ledger/promotion_solution.h",
+  "$root_gen_dir/brave/ios/browser/api/ledger/ledger.mojom.objc.h",
+]
+ledger_public_deps = [ "//brave/ios/browser/api/ledger:ledger_mojom_wrappers" ]

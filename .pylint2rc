@@ -60,7 +60,7 @@ confidence=
 # --enable=similarities". If you want to run only the classes checker, but have
 # no Warning level messages displayed, use"--disable=all --enable=classes
 # --disable=W"
-disable=import-star-module-level,old-octal-literal,oct-method,print-statement,unpacking-in-except,parameter-unpacking,backtick,old-raise-syntax,old-ne-operator,long-suffix,dict-view-method,dict-iter-method,metaclass-assignment,next-method-called,raising-string,indexing-exception,raw_input-builtin,long-builtin,file-builtin,execfile-builtin,coerce-builtin,cmp-builtin,buffer-builtin,basestring-builtin,apply-builtin,filter-builtin-not-iterating,using-cmp-argument,useless-suppression,raw-checker-failed,range-builtin-not-iterating,suppressed-message,invalid-name,no-absolute-import,old-division,cmp-method,bad-inline-option,reload-builtin,zip-builtin-not-iterating,intern-builtin,unichr-builtin,reduce-builtin,standarderror-builtin,unicode-builtin,xrange-builtin,coerce-method,delslice-method,getslice-method,setslice-method,input-builtin,round-builtin,file-ignored,locally-disabled,hex-method,nonzero-method,map-builtin-not-iterating,deprecated-pragma,missing-docstring,missing-module-docstring,raise-missing-from,invalid-name
+disable=import-star-module-level,old-octal-literal,oct-method,print-statement,unpacking-in-except,parameter-unpacking,backtick,old-raise-syntax,old-ne-operator,long-suffix,dict-view-method,dict-iter-method,metaclass-assignment,next-method-called,raising-string,indexing-exception,raw_input-builtin,long-builtin,file-builtin,execfile-builtin,coerce-builtin,cmp-builtin,buffer-builtin,basestring-builtin,apply-builtin,filter-builtin-not-iterating,using-cmp-argument,useless-suppression,raw-checker-failed,range-builtin-not-iterating,suppressed-message,invalid-name,no-absolute-import,old-division,cmp-method,bad-inline-option,reload-builtin,zip-builtin-not-iterating,intern-builtin,unichr-builtin,reduce-builtin,standarderror-builtin,unicode-builtin,xrange-builtin,coerce-method,delslice-method,getslice-method,setslice-method,input-builtin,round-builtin,file-ignored,locally-disabled,hex-method,nonzero-method,map-builtin-not-iterating,deprecated-pragma,missing-docstring,missing-module-docstring,raise-missing-from,invalid-name,superfluous-parens,
 
 
 [REPORTS]
@@ -93,7 +93,7 @@ evaluation=10.0 - ((float(5 * error + warning + refactor + convention) / stateme
 [FORMAT]
 
 # Maximum number of characters on a single line.
-max-line-length=100
+max-line-length=80
 
 # Regexp for a line that is allowed to be longer than the limit.
 ignore-long-lines=^\s*(# )?<?https?://\S+>?$
@@ -320,7 +320,7 @@ exclude-protected=_asdict,_fields,_replace,_source,_make
 [IMPORTS]
 
 # Deprecated modules which should not be used, separated by a comma
-deprecated-modules=optparse,tkinter.tix
+deprecated-modules=tkinter.tix
 
 # Create a graph of every (i.e. internal and external) dependencies in the
 # given file (report RP0402 must not be disabled)

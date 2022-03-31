@@ -6,15 +6,16 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_AD_EVENTS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_EVENTS_AD_EVENTS_H_
 
-#include <cstdint>
 #include <deque>
-#include <functional>
 
-#include "bat/ads/result.h"
+#include "bat/ads/internal/ad_events/ad_events_aliases.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
-
-using AdEventCallback = std::function<void(const Result)>;
 
 class AdType;
 class ConfirmationType;
@@ -28,13 +29,15 @@ void LogAdEvent(const AdInfo& ad,
 void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback);
 
 void PurgeExpiredAdEvents(AdEventCallback callback);
+void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
+                           AdEventCallback callback);
 
 void RebuildAdEventsFromDatabase();
 
 void RecordAdEvent(const AdEventInfo& ad_event);
 
-std::deque<uint64_t> GetAdEvents(const AdType& ad_type,
-                                 const ConfirmationType& confirmation_type);
+std::deque<base::Time> GetAdEvents(const AdType& ad_type,
+                                   const ConfirmationType& confirmation_type);
 
 }  // namespace ads
 

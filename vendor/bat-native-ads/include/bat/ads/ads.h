@@ -7,40 +7,32 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_ADS_H_
 
 #include <cstdint>
-#include <memory>
 #include <string>
 #include <vector>
 
-#include "bat/ads/ad_content_info.h"
-#include "bat/ads/ad_notification_info.h"
-#include "bat/ads/ads_client.h"
-#include "bat/ads/ads_history_info.h"
-#include "bat/ads/category_content_info.h"
+#include "bat/ads/ad_content_action_types.h"
+#include "bat/ads/ads_aliases.h"
+#include "bat/ads/ads_history_filter_types.h"
+#include "bat/ads/ads_history_sort_types.h"
+#include "bat/ads/category_content_action_types.h"
 #include "bat/ads/export.h"
-#include "bat/ads/mojom.h"
-#include "bat/ads/promoted_content_ad_info.h"
-#include "bat/ads/result.h"
-#include "bat/ads/statement_info.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
-using InitializeCallback = std::function<void(const Result)>;
-using ShutdownCallback = std::function<void(const Result)>;
-
-using RemoveAllHistoryCallback = std::function<void(const Result)>;
-
-using GetAccountStatementCallback =
-    std::function<void(const bool, const StatementInfo&)>;
+class AdsClient;
+struct AdsHistoryInfo;
+struct AdNotificationInfo;
 
 // |g_environment| indicates that URL requests should use production, staging or
 // development servers but can be overridden via command-line arguments
-extern Environment g_environment;
+extern mojom::Environment g_environment;
 
-// |g_sys_info| contains the hardware |manufacturer| and |model|
-extern SysInfo g_sys_info;
+// Returns the reference to the hardware |manufacturer| and |model|
+mojom::SysInfo& SysInfo();
 
-// |g_build_channel| indicates the build channel
-extern BuildChannel g_build_channel;
+// Returns the reference to the build channel
+mojom::BuildChannel& BuildChannel();
 
 // |g_is_debug| indicates that the next catalog download should be reduced from
 // ~1 hour to ~25 seconds. This value should be set to false on production
@@ -54,10 +46,6 @@ extern const char g_catalog_schema_resource_id[];
 // Returns true if the locale is supported otherwise returns false
 bool IsSupportedLocale(const std::string& locale);
 
-// Returns true if the locale is newly supported otherwise returns false
-bool IsNewlySupportedLocale(const std::string& locale,
-                            const int last_schema_version);
-
 class ADS_EXPORT Ads {
  public:
   Ads() = default;
@@ -66,13 +54,13 @@ class ADS_EXPORT Ads {
   static Ads* CreateInstance(AdsClient* ads_client);
 
   // Should be called to initialize ads when launching the browser or when ads
-  // is enabled by a user. The callback takes one argument - |Result| should be
-  // set to |SUCCESS| if successful otherwise should be set to |FAILED|
+  // is enabled by a user. The callback takes one argument - |bool| should be
+  // set to |true| if successful otherwise should be set to |false|
   virtual void Initialize(InitializeCallback callback) = 0;
 
   // Should be called to shutdown ads when a user disables ads. The callback
-  // takes one argument - |Result| should be set to |SUCCESS| if successful
-  // otherwise should be set to |FAILED|
+  // takes one argument - |bool| should be set to |true| if successful
+  // otherwise should be set to |false|
   virtual void Shutdown(ShutdownCallback callback) = 0;
 
   // Should be called when the user changes the locale of their operating
@@ -159,86 +147,93 @@ class ADS_EXPORT Ads {
   // or an ad notification times out
   virtual void OnAdNotificationEvent(
       const std::string& uuid,
-      const AdNotificationEventType event_type) = 0;
+      const mojom::AdNotificationEventType event_type) = 0;
+
+  // Should be called to get an eligible new tab page ad
+  virtual void GetNewTabPageAd(GetNewTabPageAdCallback callback) = 0;
 
   // Should be called when a user views or clicks a new tab page ad
-  virtual void OnNewTabPageAdEvent(const std::string& uuid,
-                                   const std::string& creative_instance_id,
-                                   const NewTabPageAdEventType event_type) = 0;
+  virtual void OnNewTabPageAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const mojom::NewTabPageAdEventType event_type) = 0;
 
   // Should be called when a user views or clicks a promoted content ad
   virtual void OnPromotedContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const PromotedContentAdEventType event_type) = 0;
+      const mojom::PromotedContentAdEventType event_type) = 0;
+
+  // Should be called to get an eligible inline content ad for the specified
+  // size
+  virtual void GetInlineContentAd(const std::string& dimensions,
+                                  GetInlineContentAdCallback callback) = 0;
+
+  // Should be called when a user views or clicks an inline content ad
+  virtual void OnInlineContentAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const mojom::InlineContentAdEventType event_type) = 0;
+
+  // Purge orphaned ad events for the specified |ad_type|
+  virtual void PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) = 0;
 
   // Should be called to remove all cached history. The callback takes one
-  // argument - |Result| should be set to |SUCCESS| if successful otherwise
-  // should be set to |FAILED|
+  // argument - |bool| should be set to |true| if successful otherwise should be
+  // set to |false|
   virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
 
-  // Should be called to reconcile ad rewards with the server, i.e. after an
-  // ad grant is claimed
-  virtual void ReconcileAdRewards() = 0;
-
-  // Should be called to get ads history for a specified date range. Returns
+  // Should be called to get history for a specified date range. Returns
   // |AdsHistoryInfo|
-  virtual AdsHistoryInfo GetAdsHistory(
-      const AdsHistoryInfo::FilterType filter_type,
-      const AdsHistoryInfo::SortType sort_type,
-      const uint64_t from_timestamp,
-      const uint64_t to_timestamp) = 0;
+  virtual AdsHistoryInfo GetHistory(const AdsHistoryFilterType filter_type,
+                                    const AdsHistorySortType sort_type,
+                                    const double from_timestamp,
+                                    const double to_timestamp) = 0;
 
   // Should be called to get the statement of accounts. The callback takes one
-  // argument - |StatementInfo| which contains estimated pending rewards, next
-  // payment date, ads received this month, pending rewards, cleared
-  // transactions and uncleared transactions
-  virtual void GetAccountStatement(GetAccountStatementCallback callback) = 0;
+  // argument - |StatementInfo| which contains next payment date, ads received
+  // this month, earnings this month, earnings last month, cleared transactions
+  // and uncleared transactions
+  virtual void GetStatementOfAccounts(
+      GetStatementOfAccountsCallback callback) = 0;
+
+  // Should be called to get ad diagnostics for rewards internals page.
+  virtual void GetAdDiagnostics(GetAdDiagnosticsCallback callback) = 0;
 
   // Should be called to indicate interest in the specified ad. This is a
   // toggle, so calling it again returns the setting to the neutral state
-  virtual AdContentInfo::LikeAction ToggleAdThumbUp(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const AdContentInfo::LikeAction& action) = 0;
+  virtual AdContentLikeActionType ToggleAdThumbUp(const std::string& json) = 0;
 
   // Should be called to indicate a lack of interest in the specified ad. This
   // is a toggle, so calling it again returns the setting to the neutral state
-  virtual AdContentInfo::LikeAction ToggleAdThumbDown(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const AdContentInfo::LikeAction& action) = 0;
+  virtual AdContentLikeActionType ToggleAdThumbDown(
+      const std::string& json) = 0;
 
   // Should be called to opt-in to the specified ad category. This is a toggle,
-  // so calling it again neutralizes the ad category. Returns |OptAction" with
-  // the current status
-  virtual CategoryContentInfo::OptAction ToggleAdOptInAction(
+  // so calling it again neutralizes the ad category. Returns
+  // |CategoryContentOptActionType| with the current status
+  virtual CategoryContentOptActionType ToggleAdOptIn(
       const std::string& category,
-      const CategoryContentInfo::OptAction& action) = 0;
+      const CategoryContentOptActionType& action) = 0;
 
   // Should be called to opt-out of the specified ad category. This is a toggle,
-  // so calling it again neutralizes the ad category. Returns |OptAction" with
-  // the current status
-  virtual CategoryContentInfo::OptAction ToggleAdOptOutAction(
+  // so calling it again neutralizes the ad category. Returns
+  // |CategoryContentOptActionType| with the current status
+  virtual CategoryContentOptActionType ToggleAdOptOut(
       const std::string& category,
-      const CategoryContentInfo::OptAction& action) = 0;
+      const CategoryContentOptActionType& action) = 0;
 
   // Should be called to save an ad for later viewing. This is a toggle, so
   // calling it again removes the ad from the saved list. Returns true if the ad
   // was saved otherwise should return false
-  virtual bool ToggleSaveAd(const std::string& creative_instance_id,
-                            const std::string& creative_set_id,
-                            const bool saved) = 0;
+  virtual bool ToggleSavedAd(const std::string& json) = 0;
 
   // Should be called to flag an ad as inappropriate. This is a toggle, so
   // calling it again unflags the ad. Returns true if the ad was flagged
   // otherwise returns false
-  virtual bool ToggleFlagAd(const std::string& creative_instance_id,
-                            const std::string& creative_set_id,
-                            const bool flagged) = 0;
+  virtual bool ToggleFlaggedAd(const std::string& json) = 0;
 
  private:
-  // Not copyable, not assignable
   Ads(const Ads&) = delete;
   Ads& operator=(const Ads&) = delete;
 };

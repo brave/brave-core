@@ -43,10 +43,9 @@ TEST(AccountConsistencyDisabledTest, NewProfile) {
             /*managed_prefs=*/new TestingPrefStore(),
             /*supervised_user_prefs=*/new TestingPrefStore(),
             /*extension_prefs=*/new TestingPrefStore(),
-            user_prefs,
+            /*standalone_browser_prefs=*/new TestingPrefStore(), user_prefs,
             /*recommended_prefs=*/new TestingPrefStore(),
-            new user_prefs::PrefRegistrySyncable(),
-            new PrefNotifierImpl());
+            new user_prefs::PrefRegistrySyncable(), new PrefNotifierImpl());
     RegisterUserProfilePrefs(pref_service->registry());
     profile_builder.SetPrefService(std::move(pref_service));
   }
@@ -69,7 +68,7 @@ TEST(AccountConsistencyDisabledTest, DiceFixAuthErrorsForAllProfiles) {
 
     // Incognito profile.
     Profile* incognito_profile = profile.GetOffTheRecordProfile(
-        Profile::OTRProfileID::PrimaryID());
+        Profile::OTRProfileID::PrimaryID(), /*create_if_needed=*/true);
     EXPECT_FALSE(AccountConsistencyModeManager::IsDiceEnabledForProfile(
         incognito_profile));
     EXPECT_FALSE(

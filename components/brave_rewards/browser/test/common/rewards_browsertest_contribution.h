@@ -10,12 +10,14 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
 
 namespace rewards_browsertest {
@@ -86,6 +88,13 @@ class RewardsBrowserTestContribution
       const ledger::type::WalletStatus status =
         ledger::type::WalletStatus::VERIFIED);
 
+#if BUILDFLAG(ENABLE_GEMINI_WALLET)
+  void SetUpGeminiWallet(brave_rewards::RewardsServiceImpl* rewards_service,
+                         const double balance,
+                         const ledger::type::WalletStatus status =
+                             ledger::type::WalletStatus::VERIFIED);
+#endif
+
   std::vector<ledger::type::Result> GetMultipleTipStatus();
 
   ledger::type::Result GetTipStatus();
@@ -145,8 +154,9 @@ class RewardsBrowserTestContribution
   ledger::type::Result ac_reconcile_status_ =
       ledger::type::Result::LEDGER_ERROR;
 
-  Browser* browser_;  // NOT OWNED
-  brave_rewards::RewardsServiceImpl* rewards_service_;  // NOT OWNED
+  raw_ptr<Browser> browser_ = nullptr;  // NOT OWNED
+  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ =
+      nullptr;  // NOT OWNED
   std::unique_ptr<RewardsBrowserTestContextHelper> context_helper_;
 };
 

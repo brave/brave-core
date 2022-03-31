@@ -190,6 +190,7 @@ export const ToggleRow = styled('div')<StyleProps>`
 `
 
 export const ToggleHeader = styled('div')<StyleProps>`
+  padding: ${p => p.detailView ? '16px' : '0'} 0;
   width: 100%;
   display: flex;
   align-items: center;
@@ -240,7 +241,6 @@ export const MobileListWrapper = styled('div')<{}>`
 
 export const Alert = styled('div')<{}>`
   background: ${p => {
-    // @ts-ignore This property does not exist on the theme,
     // but the error was found during a typescript / styled-components refactor.
     return p.theme.color.infoBackground
   }};

@@ -9,24 +9,22 @@
 #include <string>
 #include <vector>
 
-#include "base/values.h"
-#include "bat/ads/ads.h"
-#include "bat/ads/internal/account/confirmations/confirmations.h"
-#include "bat/ads/internal/ad_events/ad_event_info.h"
-#include "bat/ads/internal/conversions/conversion_info.h"
-#include "bat/ads/internal/conversions/conversion_queue_item_info.h"
+#include "base/observer_list.h"
+#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/internal/conversions/conversion_info_aliases.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
-#include "bat/ads/internal/conversions/verifiable_conversion_info.h"
-#include "bat/ads/internal/resources/conversions/conversion_id_pattern_info.h"
-#include "bat/ads/internal/security/conversions/verifiable_conversion_envelope_info.h"
+#include "bat/ads/internal/resources/conversions/conversion_id_pattern_info_aliases.h"
 #include "bat/ads/internal/timer.h"
 
 namespace ads {
 
-class Conversions {
+struct AdEventInfo;
+struct ConversionQueueItemInfo;
+struct VerifiableConversionInfo;
+
+class Conversions final {
  public:
   Conversions();
-
   ~Conversions();
 
   void AddObserver(ConversionsObserver* observer);
@@ -41,10 +39,6 @@ class Conversions {
   void StartTimerIfReady();
 
  private:
-  base::ObserverList<ConversionsObserver> observers_;
-
-  Timer timer_;
-
   void CheckRedirectChain(const std::vector<std::string>& redirect_chain,
                           const std::string& html,
                           const ConversionIdPatternMap& conversion_id_patterns);
@@ -60,16 +54,29 @@ class Conversions {
   void AddItemToQueue(const AdEventInfo& ad_event,
                       const VerifiableConversionInfo& verifiable_conversion);
 
-  bool RemoveItemFromQueue(
-      const ConversionQueueItemInfo& conversion_queue_item);
   void ProcessQueueItem(const ConversionQueueItemInfo& queue_item);
   void ProcessQueue();
 
-  void StartTimer(const ConversionQueueItemInfo& queue_item);
-  void NotifyConversion(const ConversionQueueItemInfo& conversion_queue_item);
-
-  void NotifyConversionFailed(
+  void RemoveInvalidQueueItem(
+      const ConversionQueueItemInfo& conversion_queue_item,
+      ResultCallback callback);
+  void MarkQueueItemAsProcessed(
+      const ConversionQueueItemInfo& conversion_queue_item,
+      ResultCallback callback);
+  void FailedToConvertQueueItem(
       const ConversionQueueItemInfo& conversion_queue_item);
+  void ConvertedQueueItem(const ConversionQueueItemInfo& conversion_queue_item);
+
+  void StartTimer(const ConversionQueueItemInfo& queue_item);
+
+  void NotifyConversion(
+      const ConversionQueueItemInfo& conversion_queue_item) const;
+  void NotifyConversionFailed(
+      const ConversionQueueItemInfo& conversion_queue_item) const;
+
+  base::ObserverList<ConversionsObserver> observers_;
+
+  Timer timer_;
 };
 
 }  // namespace ads

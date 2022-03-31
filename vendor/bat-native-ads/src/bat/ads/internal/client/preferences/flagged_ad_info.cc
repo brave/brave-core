@@ -12,7 +12,7 @@ namespace ads {
 
 FlaggedAdInfo::FlaggedAdInfo() = default;
 
-FlaggedAdInfo::FlaggedAdInfo(const FlaggedAdInfo& ad) = default;
+FlaggedAdInfo::FlaggedAdInfo(const FlaggedAdInfo& info) = default;
 
 FlaggedAdInfo::~FlaggedAdInfo() = default;
 
@@ -22,34 +22,27 @@ std::string FlaggedAdInfo::ToJson() const {
   return json;
 }
 
-Result FlaggedAdInfo::FromJson(const std::string& json) {
+bool FlaggedAdInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return FAILED;
-  }
-
-  if (document.HasMember("uuid")) {
-    creative_instance_id = document["uuid"].GetString();
+    return false;
   }
 
   if (document.HasMember("creative_set_id")) {
     creative_set_id = document["creative_set_id"].GetString();
   }
 
-  return SUCCESS;
+  return true;
 }
 
-void SaveToJson(JsonWriter* writer, const FlaggedAdInfo& ad) {
+void SaveToJson(JsonWriter* writer, const FlaggedAdInfo& info) {
   writer->StartObject();
 
-  writer->String("uuid");
-  writer->String(ad.creative_instance_id.c_str());
-
   writer->String("creative_set_id");
-  writer->String(ad.creative_set_id.c_str());
+  writer->String(info.creative_set_id.c_str());
 
   writer->EndObject();
 }

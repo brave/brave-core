@@ -20,7 +20,7 @@ base::Time ParseExpirationTime(const std::string& key_str) {
     return base::Time();
   }
   return base::Time::FromDeltaSinceWindowsEpoch(
-      base::TimeDelta::FromMicroseconds(expiration_time));
+      base::Microseconds(expiration_time));
 }
 
 std::string ExpirationTimeToStr(base::Time expiration_time) {

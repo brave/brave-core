@@ -57,7 +57,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest,
   GURL url = GURL(std::string(kChromeExtensionScheme) + "://" +
                   extension->id() + "/blocking.html");
 
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -83,7 +83,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {
   GURL url = GURL(std::string(kChromeExtensionScheme) + "://" +
                   extension->id() + "/blocking.html");
 
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -107,7 +107,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanSetCookies) {
   GURL url = GURL(std::string(kChromeExtensionScheme) + "://" +
                   extension->id() + "/blocking.html");
 
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));

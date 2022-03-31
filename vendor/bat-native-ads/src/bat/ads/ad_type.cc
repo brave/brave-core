@@ -5,7 +5,7 @@
 
 #include "bat/ads/ad_type.h"
 
-#include "bat/ads/internal/logging.h"
+#include "base/notreached.h"
 
 namespace ads {
 
@@ -13,10 +13,11 @@ namespace {
 
 // Do not change the following string values as they are used for persisting and
 // restoring state
-const char kUndefinedType[] = "";
-const char kAdNotificationType[] = "ad_notification";
-const char kNewTabPageAdType[] = "new_tab_page_ad";
-const char kPromotedContentAdType[] = "promoted_content_ad";
+constexpr char kUndefinedType[] = "";
+constexpr char kAdNotificationType[] = "ad_notification";
+constexpr char kNewTabPageAdType[] = "new_tab_page_ad";
+constexpr char kPromotedContentAdType[] = "promoted_content_ad";
+constexpr char kInlineContentAdType[] = "inline_content_ad";
 
 }  // namespace
 
@@ -29,8 +30,39 @@ AdType::AdType(const std::string& value) {
     value_ = kNewTabPageAd;
   } else if (value == kPromotedContentAdType) {
     value_ = kPromotedContentAd;
+  } else if (value == kInlineContentAdType) {
+    value_ = kInlineContentAd;
   } else {
     NOTREACHED();
+  }
+}
+
+AdType::AdType(const mojom::AdType value) {
+  switch (value) {
+    case mojom::AdType::kUndefined: {
+      value_ = kUndefined;
+      break;
+    }
+
+    case mojom::AdType::kAdNotification: {
+      value_ = kAdNotification;
+      break;
+    }
+
+    case mojom::AdType::kNewTabPageAd: {
+      value_ = kNewTabPageAd;
+      break;
+    }
+
+    case mojom::AdType::kPromotedContentAd: {
+      value_ = kPromotedContentAd;
+      break;
+    }
+
+    case mojom::AdType::kInlineContentAd: {
+      value_ = kInlineContentAd;
+      break;
+    }
   }
 }
 
@@ -38,7 +70,7 @@ AdType::Value AdType::value() const {
   return value_;
 }
 
-AdType::operator std::string() const {
+std::string AdType::ToString() const {
   switch (value_) {
     case kUndefined: {
       return kUndefinedType;
@@ -55,6 +87,10 @@ AdType::operator std::string() const {
     case kPromotedContentAd: {
       return kPromotedContentAdType;
     }
+
+    case kInlineContentAd: {
+      return kInlineContentAdType;
+    }
   }
 }
 
@@ -64,6 +100,11 @@ bool AdType::operator==(const AdType& rhs) const {
 
 bool AdType::operator!=(const AdType& rhs) const {
   return value_ != rhs.value_;
+}
+
+std::ostream& operator<<(std::ostream& os, const AdType& type) {
+  os << type.ToString();
+  return os;
 }
 
 }  // namespace ads

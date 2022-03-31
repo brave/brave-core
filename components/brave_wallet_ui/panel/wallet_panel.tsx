@@ -6,13 +6,16 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-
+import { initLocale } from 'brave-ui'
+import { loadTimeData } from '../../common/loadTimeData'
 import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import store from './store'
 import * as WalletActions from '../common/actions/wallet_actions'
 import Container from './container'
+import { LibContext } from '../common/context/lib.context'
+import * as Lib from '../common/async/lib'
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
@@ -22,19 +25,22 @@ function App () {
   return (
     <Provider store={store}>
       {initialThemeType &&
-      <BraveCoreThemeProvider
-        initialThemeType={initialThemeType}
-        dark={walletDarkTheme}
-        light={walletLightTheme}
-      >
-        <Container />
-      </BraveCoreThemeProvider>
+        <BraveCoreThemeProvider
+          initialThemeType={initialThemeType}
+          dark={walletDarkTheme}
+          light={walletLightTheme}
+        >
+          <LibContext.Provider value={Lib}>
+            <Container />
+          </LibContext.Provider>
+        </BraveCoreThemeProvider>
       }
     </Provider>
   )
 }
 
 function initialize () {
+  initLocale(loadTimeData.data_)
   store.dispatch(WalletActions.initialize())
   render(<App />, document.getElementById('mountPoint'))
 }

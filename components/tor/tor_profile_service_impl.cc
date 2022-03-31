@@ -45,6 +45,8 @@ class NewTorCircuitTracker : public WebContentsObserver {
  public:
   explicit NewTorCircuitTracker(content::WebContents* web_contents)
       : WebContentsObserver(web_contents) {}
+  NewTorCircuitTracker(const NewTorCircuitTracker&) = delete;
+  NewTorCircuitTracker& operator=(const NewTorCircuitTracker&) = delete;
   ~NewTorCircuitTracker() override {}
 
   void NewIdentityLoaded(bool success) {
@@ -59,13 +61,13 @@ class NewTorCircuitTracker : public WebContentsObserver {
       }
     }
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(NewTorCircuitTracker);
 };
 
 class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
  public:
+  TorProxyLookupClient(const TorProxyLookupClient&) = delete;
+  TorProxyLookupClient& operator=(const TorProxyLookupClient&) = delete;
+
   static mojo::PendingRemote<network::mojom::ProxyLookupClient>
   CreateTorProxyLookupClient(NewTorCircuitCallback callback) {
     auto* lookup_client = new TorProxyLookupClient(std::move(callback));
@@ -86,26 +88,24 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
              content::BrowserTaskType::kPreconnect}));
     receiver_.set_disconnect_handler(base::BindOnce(
         &TorProxyLookupClient::OnProxyLookupComplete, base::Unretained(this),
-        net::ERR_ABORTED, base::nullopt));
+        net::ERR_ABORTED, absl::nullopt));
     return pending_remote;
   }
 
   // network::mojom::ProxyLookupClient:
   void OnProxyLookupComplete(
       int32_t net_error,
-      const base::Optional<net::ProxyInfo>& proxy_info) override {
+      const absl::optional<net::ProxyInfo>& proxy_info) override {
     std::move(callback_).Run(proxy_info);
     delete this;
   }
 
   NewTorCircuitCallback callback_;
   mojo::Receiver<network::mojom::ProxyLookupClient> receiver_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(TorProxyLookupClient);
 };
 
 void OnNewTorCircuit(std::unique_ptr<NewTorCircuitTracker> tracker,
-                     const base::Optional<net::ProxyInfo>& proxy_info) {
+                     const absl::optional<net::ProxyInfo>& proxy_info) {
   tracker->NewIdentityLoaded(proxy_info.has_value() &&
                              !proxy_info->is_direct());
 }
@@ -148,13 +148,18 @@ void TorProfileServiceImpl::OnExecutableReady(const base::FilePath& path) {
 }
 
 void TorProfileServiceImpl::LaunchTor() {
-  tor::mojom::TorConfig config(GetTorExecutablePath(), GetTorDataPath(),
-                               GetTorWatchPath());
+  tor::mojom::TorConfig config(GetTorExecutablePath(), GetTorrcPath(),
+                               GetTorDataPath(), GetTorWatchPath());
   tor_launcher_factory_->LaunchTorProcess(config);
 }
 
 base::FilePath TorProfileServiceImpl::GetTorExecutablePath() const {
   return tor_client_updater_ ? tor_client_updater_->GetExecutablePath()
+                             : base::FilePath();
+}
+
+base::FilePath TorProfileServiceImpl::GetTorrcPath() const {
+  return tor_client_updater_ ? tor_client_updater_->GetTorrcPath()
                              : base::FilePath();
 }
 
@@ -193,11 +198,9 @@ void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
 
   // Force lookup to erase the old circuit and also get a callback
   // so we know when it is safe to reload the tab
-  auto* storage_partition =
-      BrowserContext::GetStoragePartitionForUrl(context_, url, false);
+  auto* storage_partition = context_->GetStoragePartitionForUrl(url, false);
   if (!storage_partition) {
-    storage_partition =
-        content::BrowserContext::GetDefaultStoragePartition(context_);
+    storage_partition = context_->GetDefaultStoragePartition();
   }
   auto proxy_lookup_client =
       TorProxyLookupClient::CreateTorProxyLookupClient(std::move(callback));

@@ -43,33 +43,18 @@ class WalletButtonButtonBrowserTest : public InProcessBrowserTest {
     return static_cast<BraveBrowserView*>(browser_view())->GetWalletButton();
   }
 
-  WebUIBubbleManager* bubble_manager() {
-    return wallet_button()->webui_bubble_manager_for_testing();
-  }
-
-  void RunUntilBubbleWidgetDestroyed() {
-    ASSERT_NE(nullptr, bubble_manager()->GetBubbleWidget());
-    base::RunLoop run_loop;
-    base::ThreadTaskRunnerHandle::Get()->PostTask(FROM_HERE,
-                                                  run_loop.QuitClosure());
-    run_loop.Run();
-    ASSERT_EQ(nullptr, bubble_manager()->GetBubbleWidget());
-  }
-
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(WalletButtonButtonBrowserTest,
                        ButtonClickCreatesBubble) {
-  ASSERT_EQ(nullptr, bubble_manager()->GetBubbleWidget());
+  ASSERT_FALSE(wallet_button()->IsShowingBubble());
   views::test::ButtonTestApi(wallet_button()).NotifyClick(GetDummyEvent());
-  ASSERT_NE(nullptr, bubble_manager()->GetBubbleWidget());
+  ASSERT_TRUE(wallet_button()->IsShowingBubble());
 
   wallet_button()->CloseWalletBubble();
-  ASSERT_TRUE(bubble_manager()->GetBubbleWidget()->IsClosed());
-
-  RunUntilBubbleWidgetDestroyed();
+  ASSERT_TRUE(wallet_button()->IsBubbleClosedForTesting());
 }
 
 class WalletButtonBrowserUITest : public DialogBrowserTest {

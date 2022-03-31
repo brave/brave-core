@@ -37,33 +37,23 @@ void DatabaseServerPublisherLinks::InsertOrUpdate(
     return;
   }
 
-  std::string value_list;
   for (auto& link : server_info.banner->links) {
-    if (link.second.empty()) {
+    if (link.first.empty() || link.second.empty())
       continue;
-    }
-    value_list += base::StringPrintf(
-        R"(("%s","%s","%s"),)",
-        server_info.publisher_key.c_str(),
-        link.first.c_str(),
-        link.second.c_str());
+
+    auto command = type::DBCommand::New();
+    command->type = type::DBCommand::Type::RUN;
+    command->command = base::StringPrintf(
+        "INSERT OR REPLACE INTO %s (publisher_key, provider, link) "
+        "VALUES (?, ?, ?)",
+        kTableName);
+
+    BindString(command.get(), 0, server_info.publisher_key);
+    BindString(command.get(), 1, link.first);
+    BindString(command.get(), 2, link.second);
+
+    transaction->commands.push_back(std::move(command));
   }
-
-  if (value_list.empty()) {
-    return;
-  }
-
-  // Remove trailing comma
-  value_list.pop_back();
-
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
-  command->command = base::StringPrintf(
-      "INSERT OR REPLACE INTO %s VALUES %s",
-      kTableName,
-      value_list.c_str());
-
-  transaction->commands.push_back(std::move(command));
 }
 
 void DatabaseServerPublisherLinks::DeleteRecords(

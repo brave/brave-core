@@ -7,7 +7,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/catalog/catalog.h"
-#include "bat/ads/internal/catalog/catalog_version.h"
+#include "bat/ads/internal/catalog/catalog_constants.h"
 #include "bat/ads/internal/server/ads_server_util.h"
 
 namespace ads {
@@ -18,10 +18,10 @@ GetCatalogUrlRequestBuilder::~GetCatalogUrlRequestBuilder() = default;
 
 // GET /v#/catalog
 
-UrlRequestPtr GetCatalogUrlRequestBuilder::Build() {
-  UrlRequestPtr url_request = UrlRequest::New();
+mojom::UrlRequestPtr GetCatalogUrlRequestBuilder::Build() {
+  mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
   url_request->url = BuildUrl();
-  url_request->method = UrlRequestMethod::GET;
+  url_request->method = mojom::UrlRequestMethod::kGet;
 
   return url_request;
 }
@@ -30,7 +30,7 @@ UrlRequestPtr GetCatalogUrlRequestBuilder::Build() {
 
 std::string GetCatalogUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v%d/catalog", server::GetHost().c_str(),
-         kCurrentCatalogVersion);
+                            kCatalogVersion);
 }
 
 }  // namespace ads

@@ -5,7 +5,17 @@
 
 module network.mojom;
 
+import "services/network/public/mojom/site_for_cookies.mojom";
+import "url/mojom/origin.mojom";
+
 [BraveExtend]
 struct CookieDeletionFilter {
   string? ephemeral_storage_domain;
+};
+
+[BraveExtend]
+struct CookieOptions {
+  SiteForCookies site_for_cookies;
+  url.mojom.Origin? top_frame_origin;
+  bool should_use_ephemeral_storage = false;
 };

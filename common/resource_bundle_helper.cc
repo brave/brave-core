@@ -9,27 +9,28 @@
 
 #include "base/command_line.h"
 #include "base/path_service.h"
-#include "chrome/common/chrome_paths.h"
+#include "build/build_config.h"
 #include "ui/base/resource/resource_bundle.h"
 
-#if !defined(OS_IOS)
+#if !BUILDFLAG(IS_IOS)
+#include "chrome/common/chrome_paths.h"
 #include "content/public/common/content_switches.h"
 #endif
 
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
 #include "base/mac/foundation_util.h"
 #include "base/strings/sys_string_conversions.h"
 #endif
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "ui/base/resource/resource_bundle_android.h"
 #endif
 
 namespace {
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 base::FilePath GetResourcesPakFilePath() {
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
   return base::mac::PathForFrameworkBundleResource(
       CFSTR("brave_resources.pak"));
 #else
@@ -41,15 +42,15 @@ base::FilePath GetResourcesPakFilePath() {
 }
 #endif  // OS_ANDROID
 
-#if !defined(OS_ANDROID)
-base::FilePath GetScaledResourcesPakFilePath(ui::ScaleFactor scale_factor) {
-  DCHECK(scale_factor == ui::SCALE_FACTOR_100P ||
-         scale_factor == ui::SCALE_FACTOR_200P);
+#if !BUILDFLAG(IS_ANDROID)
+base::FilePath GetScaledResourcesPakFilePath(
+    ui::ResourceScaleFactor scale_factor) {
+  DCHECK(scale_factor == ui::k100Percent || scale_factor == ui::k200Percent);
 
-  const char* pak_file =
-      (scale_factor == ui::SCALE_FACTOR_100P) ? "brave_100_percent.pak"
-                                              : "brave_200_percent.pak";
-#if defined(OS_MAC)
+  const char* pak_file = (scale_factor == ui::k100Percent)
+                             ? "brave_100_percent.pak"
+                             : "brave_200_percent.pak";
+#if BUILDFLAG(IS_MAC)
   base::ScopedCFTypeRef<CFStringRef> pak_file_mac(
       base::SysUTF8ToCFStringRef(pak_file));
   return base::mac::PathForFrameworkBundleResource(pak_file_mac);
@@ -60,26 +61,26 @@ base::FilePath GetScaledResourcesPakFilePath(ui::ScaleFactor scale_factor) {
   return pak_path;
 #endif  // OS_MAC
 }
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace
 
 namespace brave {
 
 void InitializeResourceBundle() {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   ui::BraveLoadMainAndroidPackFile("assets/brave_resources.pak",
                                    base::FilePath());
   ui::BraveLoadBrave100PercentPackFile("assets/brave_100_percent.pak",
                                        base::FilePath());
 #else
   auto& rb = ui::ResourceBundle::GetSharedInstance();
-  rb.AddDataPackFromPath(GetResourcesPakFilePath(), ui::SCALE_FACTOR_NONE);
-  rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::SCALE_FACTOR_100P),
-                         ui::SCALE_FACTOR_100P);
-  if (ui::ResourceBundle::IsScaleFactorSupported(ui::SCALE_FACTOR_200P)) {
-    rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::SCALE_FACTOR_200P),
-                           ui::SCALE_FACTOR_200P);
+  rb.AddDataPackFromPath(GetResourcesPakFilePath(), ui::kScaleFactorNone);
+  rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::k100Percent),
+                         ui::k100Percent);
+  if (ui::ResourceBundle::IsScaleFactorSupported(ui::k200Percent)) {
+    rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::k200Percent),
+                           ui::k200Percent);
   }
 #endif  // OS_ANDROID
 }
@@ -88,24 +89,24 @@ void InitializeResourceBundle() {
 // and resources loaded.
 bool SubprocessNeedsResourceBundle() {
   auto cmd = *base::CommandLine::ForCurrentProcess();
-#if defined(OS_IOS)
+#if BUILDFLAG(IS_IOS)
   return false;
 #else
   std::string process_type = cmd.GetSwitchValueASCII(switches::kProcessType);
   return
-#if defined(OS_POSIX) && !defined(OS_MAC)
+#if BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_MAC)
       // The zygote process opens the resources for the renderers.
       process_type == switches::kZygoteProcess ||
-#endif  // defined(OS_POSIX) && !defined(OS_MAC)
-#if defined(OS_MAC)
+#endif  // BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_MAC)
+#if BUILDFLAG(IS_MAC)
       // Mac needs them too for scrollbar related images and for sandbox
       // profiles.
       process_type == switches::kPpapiPluginProcess ||
       process_type == switches::kGpuProcess ||
-#endif  // defined(OS_MAC)
+#endif  // BUILDFLAG(IS_MAC)
       process_type == switches::kRendererProcess ||
       process_type == switches::kUtilityProcess;
-#endif  // defined(OS_IOS)
+#endif  // BUILDFLAG(IS_IOS)
 }
 
 }  // namespace brave

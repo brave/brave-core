@@ -21,7 +21,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
 #include "components/user_prefs/user_prefs.h"
-#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -36,7 +35,7 @@ const int kMinimalPeersRetryIntervalMs = 50;
 const int kPeersRetryRate = 3;
 
 base::TimeDelta CalculatePeersRetryTime() {
-  return base::TimeDelta::FromMilliseconds(
+  return base::Milliseconds(
       base::RandInt(kMinimalPeersRetryIntervalMs,
                     kPeersRetryRate * kMinimalPeersRetryIntervalMs));
 }
@@ -46,26 +45,26 @@ class IPFSWebContentsLifetimeHelper
     : public content::WebContentsUserData<IPFSWebContentsLifetimeHelper> {
  public:
   explicit IPFSWebContentsLifetimeHelper(content::WebContents* web_contents)
-      : web_contents_(web_contents) {}
+      : content::WebContentsUserData<IPFSWebContentsLifetimeHelper>(
+            *web_contents) {}
 
   base::WeakPtr<IPFSWebContentsLifetimeHelper> GetWeakPtr() {
     return weak_factory_.GetWeakPtr();
   }
 
   void NavigateTo(const content::OpenURLParams& url_params) {
-    web_contents_->OpenURL(url_params);
+    GetWebContents().OpenURL(url_params);
   }
 
  private:
   friend class content::WebContentsUserData<IPFSWebContentsLifetimeHelper>;
 
-  content::WebContents* const web_contents_;
   base::WeakPtrFactory<IPFSWebContentsLifetimeHelper> weak_factory_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(IPFSWebContentsLifetimeHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(IPFSWebContentsLifetimeHelper);
 
 }  // namespace
 
@@ -76,24 +75,23 @@ std::unique_ptr<IpfsNavigationThrottle>
 IpfsNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle,
     IpfsService* ipfs_service,
+    PrefService* pref_service,
     const std::string& locale) {
   if (!ipfs_service)
     return nullptr;
-  return std::make_unique<IpfsNavigationThrottle>(navigation_handle,
-                                                  ipfs_service, locale);
+  return std::make_unique<IpfsNavigationThrottle>(
+      navigation_handle, ipfs_service, pref_service, locale);
 }
 
 IpfsNavigationThrottle::IpfsNavigationThrottle(
     content::NavigationHandle* navigation_handle,
     IpfsService* ipfs_service,
+    PrefService* pref_service,
     const std::string& locale)
     : content::NavigationThrottle(navigation_handle),
       ipfs_service_(ipfs_service),
-      locale_(locale) {
-  content::BrowserContext* context =
-      navigation_handle->GetWebContents()->GetBrowserContext();
-  pref_service_ = user_prefs::UserPrefs::Get(context);
-}
+      pref_service_(pref_service),
+      locale_(locale) {}
 
 IpfsNavigationThrottle::~IpfsNavigationThrottle() = default;
 
@@ -194,8 +192,11 @@ IpfsNavigationThrottle::ShowIPFSOnboardingInterstitial() {
   // Get the page content before giving up ownership of |page|.
   std::string page_content = page->GetHTMLContents();
 
-  security_interstitials::SecurityInterstitialTabHelper::AssociateBlockingPage(
-      web_contents, handle->GetNavigationId(), std::move(page));
+  // An interstitial should not be shown in a prerendered page.
+  if (handle->IsInPrimaryMainFrame()) {
+    security_interstitials::SecurityInterstitialTabHelper::
+        AssociateBlockingPage(handle, std::move(page));
+  }
   return content::NavigationThrottle::ThrottleCheckResult(
       content::NavigationThrottle::CANCEL, net::ERR_BLOCKED_BY_CLIENT,
       page_content);
@@ -215,7 +216,7 @@ void IpfsNavigationThrottle::ShowInterstitial() {
   std::string page_content = page->GetHTMLContents();
 
   security_interstitials::SecurityInterstitialTabHelper::AssociateBlockingPage(
-      web_contents, handle->GetNavigationId(), std::move(page));
+      handle, std::move(page));
 
   CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
       content::NavigationThrottle::CANCEL, net::ERR_BLOCKED_BY_CLIENT,
@@ -227,8 +228,8 @@ void IpfsNavigationThrottle::LoadPublicGatewayURL() {
   if (!web_contents)
     return;
 
-  const GURL url = ToPublicGatewayURL(navigation_handle()->GetURL(),
-                                      web_contents->GetBrowserContext());
+  const GURL url =
+      ToPublicGatewayURL(navigation_handle()->GetURL(), pref_service_);
   if (url.is_empty())
     return;
 

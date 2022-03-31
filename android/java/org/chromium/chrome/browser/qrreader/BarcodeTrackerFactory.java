@@ -15,8 +15,6 @@
  */
 package org.chromium.chrome.browser.qrreader;
 
-import androidx.preference.PreferenceFragmentCompat;
-
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -26,9 +24,9 @@ import com.google.android.gms.vision.barcode.Barcode;
  * multi-processor uses this factory to create barcode trackers as needed -- one for each barcode.
  */
 public class BarcodeTrackerFactory implements MultiProcessor.Factory<Barcode> {
-    private PreferenceFragmentCompat mContext;
+    private BarcodeTracker.BarcodeGraphicTrackerCallback mContext;
 
-    public BarcodeTrackerFactory(PreferenceFragmentCompat context) {
+    public BarcodeTrackerFactory(BarcodeTracker.BarcodeGraphicTrackerCallback context) {
         mContext = context;
     }
 

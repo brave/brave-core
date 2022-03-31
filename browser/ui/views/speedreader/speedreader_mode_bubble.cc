@@ -13,7 +13,9 @@
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_util.h"
+#include "brave/browser/ui/views/speedreader/speedreader_dancing_books.h"
 #include "brave/common/url_constants.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
@@ -25,15 +27,17 @@
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/common/referrer.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/theme_provider.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/events/event.h"
+#include "ui/gfx/geometry/insets.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/button/toggle_button.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/link.h"
 #include "ui/views/controls/styled_label.h"
 #include "ui/views/layout/box_layout.h"
-#include "ui/views/metadata/metadata_impl_macros.h"
 #include "ui/views/view.h"
 
 namespace {
@@ -41,10 +45,6 @@ namespace {
 constexpr int kBubbleWidth = 324;  // width is 324 pixels
 
 constexpr int kFontSizeSiteTitle = 14;  // site title font size
-
-constexpr SkColor kColorButtonTrack = SkColorSetRGB(0xe1, 0xe2, 0xf6);
-
-constexpr SkColor kColorButtonThumb = SkColorSetRGB(0x4c, 0x54, 0xd2);
 
 }  // anonymous namespace
 
@@ -55,6 +55,9 @@ SpeedreaderModeBubble::SpeedreaderModeBubble(views::View* anchor_view,
     : LocationBarBubbleDelegateView(anchor_view, nullptr),
       tab_helper_(tab_helper) {
   SetButtons(ui::DialogButton::DIALOG_BUTTON_NONE);
+  gfx::Insets m = margins();
+  m.set_bottom(kBubbleBottomMargin);
+  set_margins(m);
 }
 
 void SpeedreaderModeBubble::Show() {
@@ -102,7 +105,7 @@ void SpeedreaderModeBubble::Init() {
   DCHECK(!host.empty());
   auto site = base::ASCIIToUTF16(host);
   auto offset = site.length();
-  site.append(base::ASCIIToUTF16(kSpeedreaderSeparator));
+  site.append(kSpeedreaderSeparator);
   site.append(l10n_util::GetStringUTF16(IDS_PAGE_IS_DISTILLED));
   auto site_title_label = std::make_unique<views::StyledLabel>();
   site_title_label->SetText(site);
@@ -127,10 +130,9 @@ void SpeedreaderModeBubble::Init() {
   auto site_toggle_button =
       std::make_unique<views::ToggleButton>(base::BindRepeating(
           &SpeedreaderModeBubble::OnButtonPressed, base::Unretained(this)));
-  // TODO(keur): We shoud be able to remove these once brave overrides
-  // views::ToggleButton globally with our own theme
-  site_toggle_button->SetThumbOnColor(kColorButtonThumb);
-  site_toggle_button->SetTrackOnColor(kColorButtonTrack);
+  site_toggle_button->SetIsOn(tab_helper_->IsEnabledForSite());
+  site_toggle_button->SetAccessibleName(l10n_util::GetStringUTF16(
+      IDS_ACCNAME_SPEEDREADER_DISABLE_THIS_SITE_TOGGLE));
   site_toggle_button_ =
       site_toggle_view->AddChildView(std::move(site_toggle_button));
 
@@ -142,19 +144,43 @@ void SpeedreaderModeBubble::Init() {
       base::BindRepeating(&SpeedreaderModeBubble::OnLinkClicked,
                           base::Unretained(this)));
   site_toggle_explanation_ = AddChildView(std::move(site_toggle_explanation));
+
+  // Speedreader Graphic
+  AddChildView(std::make_unique<SpeedreaderDancingBooks>());
+}
+
+void SpeedreaderModeBubble::UpdateColors() {
+  if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
+    // TODO(keur): We shoud be able to remove these once brave overrides
+    // views::ToggleButton globally with our own theme
+    site_toggle_button_->SetThumbOnColor(theme_provider->GetColor(
+        BraveThemeProperties::COLOR_SPEEDREADER_TOGGLE_THUMB));
+    site_toggle_button_->SetTrackOnColor(theme_provider->GetColor(
+        BraveThemeProperties::COLOR_SPEEDREADER_TOGGLE_TRACK));
+  }
+}
+
+void SpeedreaderModeBubble::AddedToWidget() {
+  UpdateColors();
+}
+
+void SpeedreaderModeBubble::OnThemeChanged() {
+  views::BubbleDialogDelegateView::OnThemeChanged();
+  UpdateColors();
 }
 
 void SpeedreaderModeBubble::OnButtonPressed(const ui::Event& event) {
-  // FIXME: Tie up this logic to the speedreader service. Disable just this
-  // domain.
-  NOTIMPLEMENTED();
+  const bool on = site_toggle_button_->GetIsOn();
+  tab_helper_->MaybeToggleEnabledForSite(on);
+  CloseBubble();
 }
 
 void SpeedreaderModeBubble::OnLinkClicked(const ui::Event& event) {
-  tab_helper_->web_contents()->OpenURL(
-      content::OpenURLParams(GURL("chrome://settings"), content::Referrer(),
-                             WindowOpenDisposition::NEW_FOREGROUND_TAB,
-                             ui::PAGE_TRANSITION_LINK, false));
+  auto label = l10n_util::GetStringUTF8(IDS_SETTINGS_SPEEDREADER_LABEL);
+  tab_helper_->web_contents()->OpenURL(content::OpenURLParams(
+      GURL("brave://settings?search=" + label), content::Referrer(),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB, ui::PAGE_TRANSITION_LINK,
+      false));
 }
 
 BEGIN_METADATA(SpeedreaderModeBubble, LocationBarBubbleDelegateView)

@@ -6,7 +6,7 @@
 #include "chrome/common/chrome_paths_internal.h"
 
 #define GetDefaultUserDataDirectory GetDefaultUserDataDirectory_Disabled
-#include "../../../../chrome/common/chrome_paths_linux.cc"
+#include "src/chrome/common/chrome_paths_linux.cc"
 #undef GetDefaultUserDataDirectory
 
 #include "brave/common/brave_channel_info_posix.h"

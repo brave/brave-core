@@ -1,5 +1,4 @@
 include_rules = [
-  "+../../../../../../components/content_settings/core/browser",
-  "+components/content_settings/core/browser",
-  "+components/content_settings/core/common",
+  "+brave/components/content_settings/core/browser",
+  "+brave/components/brave_shields/common",
 ]

@@ -9,9 +9,8 @@
 #include <string>
 
 #include "base/strings/string_util.h"
+#include "brave/browser/net/brave_geolocation_buildflags.h"
 #include "brave/browser/net/url_context.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
-#include "brave/common/translate_network_constants.h"
 #include "components/component_updater/component_updater_url_constants.h"
 #include "net/base/net_errors.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -32,7 +31,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, NoModifyTypicalURL) {
 TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGeoURL) {
   const GURL url(
       "https://www.googleapis.com/geolocation/v1/geolocate?key=2_3_5_7");
-  const GURL expected_url(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY);
+  const GURL expected_url(BUILDFLAG(GOOGLEAPIS_URL));
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
@@ -46,7 +45,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet1) {
       "https://dl.google.com/release2/chrome_component/AJ4r388iQSJq_4819/"
       "4819_all_crl-set-5934829738003798040.data.crx3");
   const GURL expected_url(
-      "https://crlsets.brave.com/release2/chrome_component/"
+      "https://redirector.brave.com/release2/chrome_component/"
       "AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040.data.crx3");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -62,7 +61,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet2) {
       "chrome_component/AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040"
       ".data.crx3");
   const GURL expected_url(
-      "https://crlsets.brave.com/edgedl/release2/chrome_compone"
+      "https://redirector.brave.com/edgedl/release2/chrome_compone"
       "nt/AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040.data.crx3");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -74,10 +73,12 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet2) {
 
 TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet3) {
   const GURL url(
-      "https://www.google.com/dl/release2/chrome_component/LLjIBPPmveI_4988/"
+      "https://www.google.com/dl/release2/chrome_component/"
+      "LLjIBPPmveI_4988/"
       "4988_all_crl-set-6296993568184466307.data.crx3");
   const GURL expected_url(
-      "https://crlsets.brave.com/dl/release2/chrome_component/LLjIBPPmveI_4988/"
+      "https://redirector.brave.com/dl/release2/chrome_component/"
+      "LLjIBPPmveI_4988/"
       "4988_all_crl-set-6296993568184466307.data.crx3");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -115,7 +116,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet1_http) {
       "http://dl.google.com/release2/chrome_component/AJ4r388iQSJq_4819/"
       "4819_all_crl-set-5934829738003798040.data.crx3");
   const GURL expected_url(
-      "https://crlsets.brave.com/release2/chrome_component/"
+      "https://redirector.brave.com/release2/chrome_component/"
       "AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040.data.crx3");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -131,7 +132,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet2_http) {
       "chrome_component/AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040"
       ".data.crx3");
   const GURL expected_url(
-      "https://crlsets.brave.com/edgedl/release2/chrome_compone"
+      "https://redirector.brave.com/edgedl/release2/chrome_compone"
       "nt/AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040.data.crx3");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -146,7 +147,8 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet3_http) {
       "http://www.google.com/dl/release2/chrome_component/LLjIBPPmveI_4988/"
       "4988_all_crl-set-6296993568184466307.data.crx3");
   const GURL expected_url(
-      "https://crlsets.brave.com/dl/release2/chrome_component/LLjIBPPmveI_4988/"
+      "https://redirector.brave.com/dl/release2/chrome_component/"
+      "LLjIBPPmveI_4988/"
       "4988_all_crl-set-6296993568184466307.data.crx3");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -284,35 +286,3 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest,
   EXPECT_EQ(request_info->new_url_spec, expected_url);
   EXPECT_EQ(rc, net::OK);
 }
-
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-TEST(BraveStaticRedirectNetworkDelegateHelperTest, RedirectTranslate) {
-  const std::string query_string(
-      "?cb=cr.googleTranslate.onTranslateElementLoad&aus=true&"
-      "clc=cr.googleTranslate.onLoadCSS&"
-      "jlc=cr.googleTranslate.onLoadJavascript&hl=en&key=DUMMY_KEY");
-  const std::string path_string("/translate_a/element.js");
-  const std::string google_host_string("https://translate.googleapis.com");
-  const GURL url(google_host_string + path_string + query_string);
-  const GURL expected_url(kBraveTranslateServer + path_string + query_string);
-
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  int rc =
-      OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
-  EXPECT_EQ(rc, net::OK);
-}
-
-TEST(BraveStaticRedirectNetworkDelegateHelperTest, RedirectTranslateLanguage) {
-  const GURL url(
-      "https://translate.googleapis.com/translate_a/l?"
-      "client=chrome&hl=en&key=DUMMY_KEY");
-  const GURL expected_url(kBraveTranslateLanguageEndpoint);
-
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  int rc =
-      OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
-  EXPECT_EQ(rc, net::OK);
-}
-#endif

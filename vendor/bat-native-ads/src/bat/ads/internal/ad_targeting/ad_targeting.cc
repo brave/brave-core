@@ -5,47 +5,55 @@
 
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
 
-#include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model.h"
-#include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model.h"
-#include "bat/ads/internal/ad_serving/ad_targeting/models/contextual/text_classification/text_classification_model.h"
-#include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"
-#include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
-#include "bat/ads/internal/features/text_classification/text_classification_features.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_constants.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
+#include "bat/ads/internal/ad_targeting/ad_targeting_util.h"
 
 namespace ads {
+namespace ad_targeting {
 
-AdTargeting::AdTargeting() = default;
-
-AdTargeting::~AdTargeting() = default;
-
-SegmentList AdTargeting::GetSegments() const {
-  SegmentList segments;
-
-  if (features::IsTextClassificationEnabled()) {
-    const ad_targeting::model::TextClassification text_classification_model;
-    const SegmentList text_classification_segments =
-        text_classification_model.GetSegments();
-    segments.insert(segments.end(), text_classification_segments.begin(),
-                    text_classification_segments.end());
-  }
-
-  if (features::IsPurchaseIntentEnabled()) {
-    const ad_targeting::model::PurchaseIntent purchase_intent_model;
-    const SegmentList purchase_intent_segments =
-        purchase_intent_model.GetSegments();
-    segments.insert(segments.end(), purchase_intent_segments.begin(),
-                    purchase_intent_segments.end());
-  }
-
-  if (features::IsEpsilonGreedyBanditEnabled()) {
-    const ad_targeting::model::EpsilonGreedyBandit epsilon_greedy_bandit_model;
-    const SegmentList epsilon_greedy_bandit_segments =
-        epsilon_greedy_bandit_model.GetSegments();
-    segments.insert(segments.end(), epsilon_greedy_bandit_segments.begin(),
-                    epsilon_greedy_bandit_segments.end());
-  }
-
-  return segments;
+SegmentList GetTopChildSegments(const UserModelInfo& user_model) {
+  return GetTopSegments(user_model, /* parent_only */ false);
 }
 
+SegmentList GetTopParentSegments(const UserModelInfo& user_model) {
+  return GetTopSegments(user_model, /* parent_only */ true);
+}
+
+SegmentList GetTopChildInterestSegments(const UserModelInfo& user_model) {
+  return GetTopSegments(user_model.interest_segments, kTopInterestSegmentsCount,
+                        /* parent_only */ false);
+}
+
+SegmentList GetTopParentInterestSegments(const UserModelInfo& user_model) {
+  return GetTopSegments(user_model.interest_segments, kTopInterestSegmentsCount,
+                        /* parent_only */ true);
+}
+
+SegmentList GetTopChildLatentInterestSegments(const UserModelInfo& user_model) {
+  return GetTopSegments(user_model.latent_interest_segments,
+                        kTopLatentInterestSegmentsCount,
+                        /* parent_only */ false);
+}
+
+SegmentList GetTopParentLatentInterestSegments(
+    const UserModelInfo& user_model) {
+  return GetTopSegments(user_model.latent_interest_segments,
+                        kTopLatentInterestSegmentsCount,
+                        /* parent_only */ true);
+}
+
+SegmentList GetTopChildPurchaseIntentSegments(const UserModelInfo& user_model) {
+  return GetTopSegments(user_model.purchase_intent_segments,
+                        kTopPurchaseIntentSegmentsCount,
+                        /* parent_only */ false);
+}
+
+SegmentList GetTopParentPurchaseIntenSegments(const UserModelInfo& user_model) {
+  return GetTopSegments(user_model.purchase_intent_segments,
+                        kTopPurchaseIntentSegmentsCount,
+                        /* parent_only */ true);
+}
+
+}  // namespace ad_targeting
 }  // namespace ads

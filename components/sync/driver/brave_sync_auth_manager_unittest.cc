@@ -8,8 +8,10 @@
 #include <memory>
 
 #include "base/callback_helpers.h"
+#include "base/strings/strcat.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "brave/common/brave_services_key.h"
 #include "brave/common/network_constants.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "components/signin/public/identity_manager/identity_test_environment.h"
@@ -100,12 +102,13 @@ TEST_F(BraveSyncAuthManagerTest, GetAccessToken) {
   auth_manager->DeriveSigningKeys(kSyncCode);
   auth_manager->ConnectionOpened();
 
-  const std::string kBraveServerKeyHeaderString =
-    std::string(kBraveServicesKeyHeader) + ": " + BRAVE_SERVICES_KEY;
+  const std::string kBraveServerKeyHeaderString = base::StrCat(
+      {kBraveServicesKeyHeader, ": ", BUILDFLAG(BRAVE_SERVICES_KEY)});
 
   ASSERT_EQ(auth_manager->GetCredentials().access_token,
-            std::string(kAccessToken) + "\r\n" + kBraveServerKeyHeaderString);
-  EXPECT_TRUE(auth_manager->GetActiveAccountInfo().is_primary);
+            base::StrCat({kAccessToken, "\r\n", kBraveServerKeyHeaderString}));
+
+  EXPECT_TRUE(auth_manager->GetActiveAccountInfo().is_sync_consented);
   EXPECT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
             CoreAccountId::FromString(kAccountId));
   EXPECT_EQ(auth_manager->GetActiveAccountInfo().account_info.email,
@@ -127,7 +130,7 @@ TEST_F(BraveSyncAuthManagerTest, Reset) {
 
   auth_manager->ResetKeys();
   EXPECT_TRUE(auth_manager->GetCredentials().access_token.empty());
-  EXPECT_FALSE(auth_manager->GetActiveAccountInfo().is_primary);
+  EXPECT_FALSE(auth_manager->GetActiveAccountInfo().is_sync_consented);
   EXPECT_TRUE(
       auth_manager->GetActiveAccountInfo().account_info.account_id.empty());
 }

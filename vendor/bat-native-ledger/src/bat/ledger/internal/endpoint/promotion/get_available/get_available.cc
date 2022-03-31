@@ -79,7 +79,7 @@ type::Result GetAvailable::ParseBody(
     std::vector<std::string>* corrupted_promotions) {
   DCHECK(list && corrupted_promotions);
 
-  base::Optional<base::Value> value = base::JSONReader::Read(body);
+  absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return type::Result::LEDGER_ERROR;
@@ -152,6 +152,14 @@ type::Result GetAvailable::ParseBody(
       promotion->status = type::PromotionStatus::OVER;
     }
 
+    promotion->created_at = base::Time::Now().ToDoubleT();
+    if (auto* created_at = item.FindStringKey("createdAt")) {
+      base::Time time;
+      if (base::Time::FromUTCString(created_at->c_str(), &time)) {
+        promotion->created_at = time.ToDoubleT();
+      }
+    }
+
     auto* expires_at = item.FindStringKey("expiresAt");
     if (!expires_at) {
       corrupted_promotions->push_back(promotion->id);
@@ -162,6 +170,14 @@ type::Result GetAvailable::ParseBody(
     bool success = base::Time::FromUTCString((*expires_at).c_str(), &time);
     if (success) {
       promotion->expires_at = time.ToDoubleT();
+    }
+
+    auto* claimable_until = item.FindStringKey("claimableUntil");
+    if (claimable_until) {
+      base::Time time;
+      if (base::Time::FromUTCString(claimable_until->c_str(), &time)) {
+        promotion->claimable_until = time.ToDoubleT();
+      }
     }
 
     auto* public_keys = item.FindListKey("publicKeys");

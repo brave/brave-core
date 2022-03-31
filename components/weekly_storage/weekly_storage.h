@@ -36,6 +36,7 @@ class WeeklyStorage {
   WeeklyStorage& operator=(const WeeklyStorage&) = delete;
 
   void AddDelta(uint64_t delta);
+  void SubDelta(uint64_t delta);
   void ReplaceTodaysValueIfGreater(uint64_t value);
   uint64_t GetWeeklySum() const;
   uint64_t GetHighestValueInWeek() const;

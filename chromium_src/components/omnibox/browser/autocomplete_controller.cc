@@ -10,6 +10,6 @@
   providers_.push_back(new TopSitesProvider(provider_client_.get())); \
   providers_.push_back(new SuggestedSitesProvider(provider_client_.get()));
 
-#include "../../../../../components/omnibox/browser/autocomplete_controller.cc"
+#include "src/components/omnibox/browser/autocomplete_controller.cc"
 #undef BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER
 

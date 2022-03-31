@@ -9,10 +9,11 @@
 #include "base/path_service.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/brave_drm_tab_helper.h"
+#include "brave/browser/widevine/constants.h"
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
 #include "chrome/browser/profiles/profile.h"
@@ -29,7 +30,7 @@ using content::BrowserThread;
 
 namespace {
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 constexpr char kWidevineInvalidVersion[] = "";
 
 // Added 11/2020.
@@ -88,11 +89,11 @@ void DisableWidevineCdmComponent() {
 
   SetWidevineOptedIn(false);
   g_browser_process->component_updater()->UnregisterComponent(
-      BraveDrmTabHelper::kWidevineComponentId);
+      kWidevineComponentId);
 }
 
 int GetWidevinePermissionRequestTextFrangmentResourceId(bool for_restart) {
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   return for_restart
              ? IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER
              : IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL;
@@ -148,14 +149,14 @@ void MigrateWidevinePrefs(Profile* profile) {
 }
 
 void RegisterWidevineLocalstatePrefsForMigration(PrefRegistrySimple* registry) {
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   registry->RegisterStringPref(kWidevineInstalledVersion,
                                kWidevineInvalidVersion);
 #endif
 }
 
 void MigrateObsoleteWidevineLocalStatePrefs(PrefService* local_state) {
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   // If local state doesn't have default value, it means we've used old
   // widevine binary. Delete old widevine binary.
   if (!local_state->FindPreference(kWidevineInstalledVersion)

@@ -1,6 +1,5 @@
 import { getLocale } from '../api/localeAPI'
 import { addSiteCosmeticFilter, openFilterManagementPage } from '../api/cosmeticFilterAPI'
-import shieldsPanelActions from '../actions/shieldsPanelActions'
 
 export let rule = {
   host: '',
@@ -15,6 +14,11 @@ export const applyCosmeticFilter = (host: string, selector: string) => {
       chrome.tabs.insertCSS({
         code: `${s} {display: none !important;}`,
         cssOrigin: 'user'
+      }, () => {
+        if (chrome.runtime.lastError) {
+          console.error('[applyCosmeticFilter] tabs.insertCSS failed: ' +
+            chrome.runtime.lastError.message)
+        }
       })
 
       addSiteCosmeticFilter(host, s)
@@ -53,38 +57,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       rule.host = msg.baseURI
       break
     }
-    case 'hiddenClassIdSelectors': {
-      const tab = sender.tab
-      if (tab === undefined) {
-        break
-      }
-      const tabId = tab.id
-      if (tabId === undefined) {
-        break
-      }
-      shieldsPanelActions.generateClassIdStylesheet(tabId, msg.classes, msg.ids)
-      break
-    }
-    case 'contentScriptsLoaded': {
-      const tab = sender.tab
-      if (tab === undefined) {
-        break
-      }
-      const tabId = tab.id
-      if (tabId === undefined) {
-        break
-      }
-      const url = msg.location.href
-      if (url === undefined) {
-        break
-      }
-      const frameId = sender.frameId
-      if (frameId === undefined) {
-        break
-      }
-      shieldsPanelActions.contentScriptsLoaded(tabId, frameId, url)
-      break
-    }
     case 'cosmeticFilterCreate': {
       const { host, selector } = msg
       applyCosmeticFilter(host, selector)
@@ -107,7 +79,7 @@ export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab
       break
     }
     default: {
-      console.warn('[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}')
+      console.warn(`[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}`)
     }
   }
 }

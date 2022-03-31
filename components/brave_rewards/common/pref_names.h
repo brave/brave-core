@@ -9,8 +9,11 @@
 namespace brave_rewards {
 namespace prefs {
 
-extern const char kHideButton[];
+extern const char kHideButton[];  // DEPRECATED
+extern const char kShowButton[];
 extern const char kEnabled[];  // DEPRECATED
+extern const char kAdsEnabledTimeDelta[];
+extern const char kAdsEnabledTimestamp[];
 extern const char kNotifications[];
 extern const char kNotificationTimerInterval[];
 extern const char kBackupNotificationInterval[];
@@ -22,6 +25,7 @@ extern const char kNotificationStartupDelay[];
 extern const char kExternalWallets[];  // DEPRECATED
 extern const char kBadgeText[];
 extern const char kUseRewardsStagingServer[];
+extern const char kExternalWalletType[];
 
 // Defined in native-ledger
 extern const char kServerPublisherListStamp[];
@@ -55,6 +59,7 @@ extern const char kEmptyBalanceChecked[];
 extern const char kWalletBrave[];
 extern const char kWalletUphold[];
 extern const char kWalletBitflyer[];
+extern const char kWalletGemini[];
 
 }  // namespace prefs
 }  // namespace brave_rewards

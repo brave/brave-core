@@ -14,12 +14,12 @@ const style = {
     left: 0;
     bottom: 0;
     right: 0;
+    overflow: auto;
     background: rgba(0, 0, 0, 0.33);
     z-index: 9999;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 20px;
   `,
 
   topSpacer: styled.div`

@@ -5,6 +5,7 @@
 
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
 
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
@@ -16,8 +17,9 @@
 #include "chrome/common/channel_info.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/content_mock_cert_verifier.h"
+#include "net/base/net_errors.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 
@@ -36,6 +38,7 @@ class IpnsManagerBrowserTest : public InProcessBrowserTest {
         IpfsServiceFactory::GetInstance()->GetForContext(browser()->profile());
     ASSERT_TRUE(ipfs_service_);
     ipfs_service_->SetAllowIpfsLaunchForTest(true);
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     InProcessBrowserTest::SetUpOnMainThread();
   }
 
@@ -43,7 +46,6 @@ class IpnsManagerBrowserTest : public InProcessBrowserTest {
       const net::EmbeddedTestServer::HandleRequestCallback& callback) {
     test_server_.reset(new net::EmbeddedTestServer(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS));
-    test_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     test_server_->RegisterRequestHandler(callback);
     ASSERT_TRUE(test_server_->Start());
     ipfs_service_->GetIpnsKeysManager()->SetServerEndpointForTest(
@@ -59,9 +61,18 @@ class IpnsManagerBrowserTest : public InProcessBrowserTest {
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    // HTTPS server only serves a valid cert for localhost, so this is needed
-    // to load pages from other hosts without an error.
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   std::unique_ptr<net::test_server::HttpResponse> HandleKeysRequests(
@@ -88,9 +99,10 @@ class IpnsManagerBrowserTest : public InProcessBrowserTest {
   IpfsService* ipfs_service() { return ipfs_service_; }
 
  private:
+  content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<base::RunLoop> wait_for_request_;
   std::unique_ptr<net::EmbeddedTestServer> test_server_;
-  IpfsService* ipfs_service_;
+  raw_ptr<IpfsService> ipfs_service_ = nullptr;
   base::test::ScopedFeatureList feature_list_;
 };
 
@@ -208,6 +220,39 @@ IN_PROC_BROWSER_TEST_F(IpnsManagerBrowserTest, RemoveKey) {
   run_loop->Run();
   ASSERT_FALSE(ipns_manager->KeyExists("MyNewKey"));
   ASSERT_FALSE(ipns_manager->KeyExists("self"));
+}
+
+IN_PROC_BROWSER_TEST_F(IpnsManagerBrowserTest, ImportKey) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  base::ScopedTempDir temp_dir;
+  ASSERT_TRUE(temp_dir.CreateUniqueTempDir());
+  base::FilePath fake_key_file(temp_dir.GetPath().AppendASCII("key_file"));
+  base::RunLoop run_loop;
+  auto* ipns_manager = ipfs_service()->GetIpnsKeysManager();
+  ipns_manager->ImportKey(
+      fake_key_file, "test",
+      base::BindOnce(
+          [](base::OnceCallback<void(void)> launch_callback,
+             const std::string& name, const std::string& value, bool success) {
+            if (launch_callback)
+              std::move(launch_callback).Run();
+          },
+          run_loop.QuitClosure()));
+  run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(IpnsManagerBrowserTest, LoadKeysRetry) {
+  base::RunLoop run_loop;
+  auto* ipns_manager = ipfs_service()->GetIpnsKeysManager();
+  ipns_manager->LoadKeys(base::BindOnce(
+      [](base::OnceCallback<void(void)> launch_callback, const bool success) {
+        ASSERT_FALSE(success);
+        if (launch_callback)
+          std::move(launch_callback).Run();
+      },
+      run_loop.QuitClosure()));
+  run_loop.Run();
+  EXPECT_EQ(ipns_manager->GetLastLoadRetryForTest(), 0);
 }
 
 }  // namespace ipfs

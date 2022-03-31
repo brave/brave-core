@@ -15,6 +15,7 @@ import LegacyApp from './components/legacy_app'
 import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
 import BraveCoreThemeProvider from '../../../../components/common/BraveCoreThemeProvider'
+import { loadTimeData } from '../../../../components/common/loadTimeData'
 
 function initialize () {
   chrome.braveWallet.shouldPromptForSetup((prompt: boolean) => {
@@ -31,10 +32,7 @@ function initialize () {
 function renderUI () {
   new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
   .then((themeType: chrome.braveTheme.ThemeType) => {
-    window.i18nTemplate.process(window.document, window.loadTimeData)
-    if (window.loadTimeData && window.loadTimeData.data_) {
-      initLocale(window.loadTimeData.data_)
-    }
+    initLocale(loadTimeData.data_)
 
     render(
       <BraveCoreThemeProvider

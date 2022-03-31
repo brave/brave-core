@@ -12,6 +12,8 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_source.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -27,7 +29,8 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
     NTPBackgroundImagesService::RegisterLocalStatePrefs(registry);
     brave::RegisterPrefsForBraveReferralsService(registry);
     service_.reset(new NTPBackgroundImagesService(nullptr, &local_pref_));
-    source_.reset(new NTPBackgroundImagesSource(service_.get()));
+    source_.reset(new NTPSponsoredImagesSource(service_.get()));
+    bg_source_.reset(new NTPBackgroundImagesSource(service_.get()));
     local_pref_.Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
                     base::Value(base::Value::Type::DICTIONARY));
   }
@@ -35,10 +38,11 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
   base::test::SingleThreadTaskEnvironment task_environment;
   TestingPrefServiceSimple local_pref_;
   std::unique_ptr<NTPBackgroundImagesService> service_;
-  std::unique_ptr<NTPBackgroundImagesSource> source_;
+  std::unique_ptr<NTPSponsoredImagesSource> source_;
+  std::unique_ptr<NTPBackgroundImagesSource> bg_source_;
 };
 
-TEST_F(NTPBackgroundImagesSourceTest, BasicTest) {
+TEST_F(NTPBackgroundImagesSourceTest, SponsoredImagesTest) {
   const std::string test_json_string_referral = R"(
       {
         "schemaVersion": 1,
@@ -62,25 +66,80 @@ TEST_F(NTPBackgroundImagesSourceTest, BasicTest) {
           }
         ]
       })";
-  service_->OnGetComponentJsonData(false, test_json_string_referral);
+  service_->OnGetSponsoredComponentJsonData(false, test_json_string_referral);
   EXPECT_FALSE(source_->AllowCaching());
-  EXPECT_TRUE(source_->IsWallpaperPath("sponsored-images/wallpaper-1.jpg"));
+  EXPECT_TRUE(source_->IsValidPath("sponsored-images/logo.png"));
+  EXPECT_TRUE(source_->IsValidPath("sponsored-images/background-1.jpg"));
+  EXPECT_TRUE(source_->IsValidPath("sponsored-images/background-2.jpg"));
+  EXPECT_TRUE(source_->IsValidPath("sponsored-images/background-3.jpg"));
   EXPECT_FALSE(source_->IsValidPath("super-duper/brave.png"));
   EXPECT_FALSE(source_->IsValidPath("sponsored-images/abcd.png"));
-  EXPECT_EQ("image/png", source_->GetMimeType("sponsored-images/logo.png"));
-  EXPECT_EQ(
-      "image/jpg", source_->GetMimeType("sponsored-images/wallpaper-2.jpg"));
-  EXPECT_EQ(
-      0,
-      source_->GetWallpaperIndexFromPath("sponsored-images/wallpaper-0.jpg"));
-  EXPECT_EQ(
-      -1,
-      source_->GetWallpaperIndexFromPath("sponsored-images/wallpaper-3.jpg"));
+
+  EXPECT_EQ("image/jpeg", source_->GetMimeType("wallpaper-0.jpg"));
+  EXPECT_EQ("image/jpeg", source_->GetMimeType("wallpaper-0.jpeg"));
+  EXPECT_EQ("image/webp", source_->GetMimeType("wallpaper-0.webp"));
+  EXPECT_EQ("image/png", source_->GetMimeType("wallpaper-0.png"));
+  EXPECT_EQ("image/avif", source_->GetMimeType("wallpaper-0.avif"));
+}
+
+TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesFormatTest) {
+  EXPECT_EQ("image/jpeg", bg_source_->GetMimeType("wallpaper-0.jpg"));
+  EXPECT_EQ("image/webp", bg_source_->GetMimeType("wallpaper-0.webp"));
+  EXPECT_EQ("image/png", bg_source_->GetMimeType("wallpaper-0.png"));
+  EXPECT_EQ("image/avif", bg_source_->GetMimeType("wallpaper-0.avif"));
+}
+
+TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesTest) {
+  const std::string test_json_string = R"(
+      {
+        "schemaVersion": 1,
+        "images": [
+          {
+            "name": "background-1.jpg",
+            "source": "brave-bg-1.webp",
+            "author": "Brave software",
+            "link": "https://www.brave.com/",
+            "originalUrl": "Contributor sent the hi-res version",
+            "license": "used with permission"
+          },
+          {
+            "name": "background-2.jpg",
+            "source": "brave-bg-2.webp",
+            "author": "Brave software",
+            "link": "https://www.brave.com/",
+            "originalUrl": "Contributor sent the hi-res version",
+            "license": "used with permission"
+          },
+          {
+            "name": "background-3.jpg",
+            "source": "brave-bg-3.webp",
+            "author": "Brave software",
+            "link": "https://www.brave.com/",
+            "originalUrl": "Contributor sent the hi-res version",
+            "license": "used with permission"
+          },
+          {
+            "name": "background-4.jpg",
+            "source": "brave-bg-4.webp",
+            "author": "Brave software",
+            "link": "https://www.brave.com/",
+            "originalUrl": "Contributor sent the hi-res version",
+            "license": "used with permission"
+          }
+        ]
+      })";
+  service_->OnGetComponentJsonData(test_json_string);
+  EXPECT_TRUE(bg_source_->AllowCaching());
+  EXPECT_EQ(0, bg_source_->GetWallpaperIndexFromPath("brave-bg-1.webp"));
+  EXPECT_EQ(1, bg_source_->GetWallpaperIndexFromPath("brave-bg-2.webp"));
+  EXPECT_EQ(2, bg_source_->GetWallpaperIndexFromPath("brave-bg-3.webp"));
+  EXPECT_EQ(3, bg_source_->GetWallpaperIndexFromPath("brave-bg-4.webp"));
+  EXPECT_EQ(-1, bg_source_->GetWallpaperIndexFromPath("wallpaper-3.jpg"));
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
-#if !defined(OS_LINUX)
+#if !BUILDFLAG(IS_LINUX)
 TEST_F(NTPBackgroundImagesSourceTest, BasicSuperReferralDataTest) {
   // Valid super referral component json data.
   const std::string test_json_string_referral = R"(
@@ -124,21 +183,15 @@ TEST_F(NTPBackgroundImagesSourceTest, BasicSuperReferralDataTest) {
           }
         ]
       })";
-  service_->OnGetComponentJsonData(true, test_json_string_referral);
+  service_->OnGetSponsoredComponentJsonData(true, test_json_string_referral);
   EXPECT_FALSE(source_->AllowCaching());
-  EXPECT_TRUE(source_->IsTopSiteFaviconPath("super-referral/bat.png"));
-  EXPECT_FALSE(source_->IsTopSiteFaviconPath("super-referral/logo.png"));
-  EXPECT_TRUE(source_->IsWallpaperPath("super-referral/wallpaper-1.jpg"));
+  EXPECT_TRUE(source_->IsValidPath("super-referral/bat.png"));
+  EXPECT_TRUE(source_->IsValidPath("super-referral/logo.png"));
+  EXPECT_TRUE(source_->IsValidPath("super-referral/background-1.jpg"));
   EXPECT_TRUE(source_->IsValidPath("super-referral/brave.png"));
+  EXPECT_FALSE(source_->IsValidPath("sponsored-images/logo.png"));
   EXPECT_FALSE(source_->IsValidPath("super-duper/brave.png"));
   EXPECT_FALSE(source_->IsValidPath("super-referral/abcd.png"));
-  EXPECT_EQ("image/png", source_->GetMimeType("super-referral/logo.png"));
-  EXPECT_EQ(
-      "image/jpg", source_->GetMimeType("super-referral/wallpaper-2.jpg"));
-  EXPECT_EQ(
-      0, source_->GetWallpaperIndexFromPath("super-referral/wallpaper-0.jpg"));
-  EXPECT_EQ(
-      -1, source_->GetWallpaperIndexFromPath("super-referral/wallpaper-3.jpg"));
 }
 #endif
 

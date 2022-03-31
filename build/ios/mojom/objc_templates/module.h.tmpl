@@ -1,0 +1,74 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+{%- set header_guard = "%s_OBJC_H_"|format(
+        module.path|upper|replace("/","_")|replace(".","_")|
+            replace("-", "_")) %}
+
+#ifndef {{header_guard}}
+#define {{header_guard}}
+
+#import <Foundation/Foundation.h>
+
+#if !defined(__has_feature) || !__has_feature(objc_arc)
+#error "This file requires ARC support."
+#endif
+
+{% for import in imports %}
+#include "{{import|objc_import_module_name}}.objc.h"
+{% endfor %}
+#include "base_values.h"
+
+{# Enum Decls #}
+{%- for enum in all_enums %}
+{%   include "enum.tmpl" %}
+{% endfor %}
+
+{#--- Class Decls #}
+{% if structs %}
+@class {%- for struct in structs %} {{class_prefix}}{{struct.name}}{% if struct != structs|last -%},{%- endif -%}{%- endfor -%};
+{% endif %}
+
+{#--- Union Decls #}
+{% if unions %}
+@class {%- for union in unions %} {{class_prefix}}{{union.name}}{% if union != unions|last -%},{%- endif -%}{%- endfor -%};
+{% endif %}
+
+NS_ASSUME_NONNULL_BEGIN
+
+{# Constants #}
+{%- for const in constants %}
+{%-   set name = const.name|objc_enum_formatter -%}
+OBJC_EXPORT {{const.kind|objc_wrapper_type}} const {{class_prefix}}{{name}} NS_SWIFT_NAME({{class_prefix}}.{{name}});
+{% endfor -%}
+
+{# Define a namespace class for Swift types to use.
+   We have to define the type as unique to this module even though the renamed Swift type will be
+   the same for all wrappers that use the same namespace #}
+OBJC_EXPORT
+NS_SWIFT_NAME({{class_prefix}})
+@interface _{{class_prefix}}{{module_name|replace(".mojom","Mojom")|under_to_camel}} : NSObject
+- (instancetype)init NS_UNAVAILABLE;
+@end
+
+{%- for struct in structs %}
+{%    include "struct_declaration.tmpl" %}
+{%- endfor %}
+
+{%- for union in unions %}
+{%    include "union_declaration.tmpl" %}
+{%- endfor %}
+
+{%- for interface in interfaces %}
+{%    include "interface_declaration.tmpl" %}
+{%- endfor %}
+
+{% for interface in interfaces %}
+{%    include "test_interface_declaration.tmpl" %}
+{%- endfor %}
+
+NS_ASSUME_NONNULL_END
+
+#endif  // {{header_guard}}

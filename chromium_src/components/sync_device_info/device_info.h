@@ -12,7 +12,7 @@
   ToValue_ChromiumImpl() const; \
   std::unique_ptr<base::DictionaryValue> ToValue
 
-#include "../../../../components/sync_device_info/device_info.h"
+#include "src/components/sync_device_info/device_info.h"
 #undef ToValue
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DEVICE_INFO_DEVICE_INFO_H_

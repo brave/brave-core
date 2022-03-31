@@ -7,8 +7,10 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_NOTIFICATIONS_NOTIFICATION_HANDLER_H_
 
 #define NotificationHandler NotificationHandler_ChromiumImpl
-#include "../../../../../chrome/browser/notifications/notification_handler.h"
+#include "src/chrome/browser/notifications/notification_handler.h"
 #undef NotificationHandler
+
+#include "base/check.h"
 
 class NotificationHandler : public NotificationHandler_ChromiumImpl {
  public:
@@ -26,13 +28,14 @@ class NotificationHandler : public NotificationHandler_ChromiumImpl {
     NEARBY_SHARE = 8,
     BRAVE_ADS = 9,
     NOTIFICATIONS_MUTED = 10,
-    MAX = NOTIFICATIONS_MUTED,
+    TAILORED_SECURITY = 11,
+    MAX = TAILORED_SECURITY,
   };
 
   // Make sure we know if the original enum gets changed.
   NotificationHandler() {
     DCHECK(static_cast<int>(NotificationHandler_ChromiumImpl::Type::MAX) + 1 ==
-           static_cast<int>(Type::NOTIFICATIONS_MUTED));
+           static_cast<int>(Type::TAILORED_SECURITY));
   }
 };
 

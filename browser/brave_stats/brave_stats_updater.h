@@ -10,10 +10,11 @@
 #include <string>
 
 #include "base/callback.h"
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
 
 class BraveStatsUpdaterBrowserTest;
@@ -42,6 +43,8 @@ class BraveStatsUpdaterParams;
 class BraveStatsUpdater : public ProfileManagerObserver {
  public:
   explicit BraveStatsUpdater(PrefService* pref_service);
+  BraveStatsUpdater(const BraveStatsUpdater&) = delete;
+  BraveStatsUpdater& operator=(const BraveStatsUpdater&) = delete;
   ~BraveStatsUpdater() override;
 
   void Start();
@@ -54,6 +57,10 @@ class BraveStatsUpdater : public ProfileManagerObserver {
       StatsUpdatedCallback* stats_updated_callback);
   static void SetStatsThresholdCallbackForTesting(
       StatsUpdatedCallback* stats_threshold_callback);
+  void SetURLLoaderFactoryForTesting(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  void SetUsageServerForTesting(const std::string& usage_server);
+  void SetProfilePrefsForTesting(raw_ptr<PrefService> prefs);
 
  private:
   // ProfileManagerObserver
@@ -87,12 +94,15 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   bool HasDoneThresholdPing();
   void DisableThresholdPing();
 
+  network::mojom::URLLoaderFactory* GetURLLoaderFactory();
+  PrefService* GetProfilePrefs();
+
   friend class ::BraveStatsUpdaterBrowserTest;
 
   int threshold_score_ = 0;
   ProcessArch arch_ = ProcessArch::kArchSkip;
   bool stats_startup_complete_ = false;
-  PrefService* pref_service_;
+  raw_ptr<PrefService> pref_service_ = nullptr;
   std::string usage_server_;
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
   std::unique_ptr<base::OneShotTimer> server_ping_startup_timer_;
@@ -100,7 +110,8 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   base::RepeatingClosure stats_preconditions_barrier_;
 
-  DISALLOW_COPY_AND_ASSIGN(BraveStatsUpdater);
+  scoped_refptr<network::SharedURLLoaderFactory> testing_url_loader_factory_;
+  raw_ptr<PrefService> testing_profile_prefs_;
 };
 
 // Registers the preferences used by BraveStatsUpdater

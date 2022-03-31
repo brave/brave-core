@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
+import { WalletButton } from '../../../shared/style'
+import CheckMark from '../../../../assets/svg-icons/big-checkmark.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -28,13 +30,12 @@ export const Description = styled.span`
   line-height: 22px;
   font-weight: 300;
   color: ${(p) => p.theme.color.text02};
-  max-width: 380px;
-  height: 64px;
+  max-width: 450px;
   text-align: center;
   margin-bottom: 18px;
 `
 
-export const CopyButton = styled.button`
+export const CopyButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,7 +51,6 @@ export const CopyButton = styled.button`
   line-height: 20px;
   color: ${(p) => p.theme.color.interactive07};
   margin-top: 16px;
-  margin-bottom: 26px;
 `
 
 export const TermsRow = styled.div`
@@ -58,6 +58,7 @@ export const TermsRow = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: row;
+  margin-top: 26px;
   margin-bottom: 30px;
 `
 
@@ -129,4 +130,12 @@ export const RecoveryBubbleText = styled.span`
   line-height: 22px;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
+`
+export const BigCheckMark = styled.div`
+  width: 14px;
+  height: 14px;
+  background-color: ${(p) => p.theme.color.interactive07};
+  -webkit-mask-image: url(${CheckMark});
+  mask-image: url(${CheckMark});
+  margin-right: 4px;
 `

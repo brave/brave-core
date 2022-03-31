@@ -1,0 +1,33 @@
+import { provideStrings } from '../../../../../.storybook/locale'
+
+provideStrings({
+  braveShields: 'Brave Shields',
+  braveShieldsEnable: 'Enable Brave Shields',
+  braveShieldsUp: 'Shields are UP $1for$2',
+  braveShieldsDown: 'Shields are DOWN $1for$2',
+  braveShieldsBroken: 'If this site seems broken, try Shields down. $1Note: this may reduce Brave\'s privacy protections.$2',
+  braveShieldsBlockedNote: 'Trackers, ads, and more blocked $1Learn more$2',
+  braveShieldsAdvancedCtrls: 'Advanced Controls',
+  braveShieldSettingsDescription: 'Changing these settings might break sites.',
+  braveShieldsGlobalSettingsTitle: 'Global Shield settings',
+  braveShieldsChangeDefaults: 'Global defaults',
+  braveShieldsCustomizeAdblockLists: 'Filter lists',
+  braveShieldsConnectionsUpgraded: 'Upgrade connections to HTTPS',
+  braveShieldsHTTPSEnable: 'Enable HTTPS',
+  braveShieldsScriptsBlocked: 'Block scripts',
+  braveShieldsScriptsBlockedEnable: 'Enable Scripts Blocked',
+  braveShieldsTrackersAndAds: 'Trackers & ads',
+  braveShieldsTrackersAndAdsBlockedStd: 'Block trackers & ads',
+  braveShieldsTrackersAndAdsBlockedAgg: 'Aggressively block trackers & ads',
+  braveShieldsTrackersAndAdsAllowAll: 'Allow all trackers & ads',
+  braveShieldsCrossCookiesBlocked: 'Block cross-site cookies',
+  braveShieldsCookiesBlocked: 'Block all cookies',
+  braveShieldsCookiesAllowedAll: 'Allow all cookies',
+  braveShieldsFingerprintingBlocked: 'Fingerprinting blocked',
+  braveShieldsFingerprintingBlockedStd: 'Block fingerprinting',
+  braveShieldsFingerprintingBlockedAgg: 'Aggressively block fingerprinting',
+  braveShieldsFingerprintingAllowAll: 'Allow fingerprinting',
+  braveShieldsReportSite: 'Report site',
+  braveShieldsReportSiteDesc: 'Tell us if the site wasn\'t working properly with Shields up.',
+  braveShieldsDownDesc: 'You are viewing this site without Brave\'s privacy protection'
+})

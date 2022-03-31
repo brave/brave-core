@@ -13,5 +13,5 @@
 #undef IDR_WEBUI_CSS_TEXT_DEFAULTS_MD_CSS
 #define IDR_WEBUI_CSS_TEXT_DEFAULTS_MD_CSS IDR_BRAVE_WEBUI_CSS_TEXT_DEFAULTS_MD
 
-#include "../../../../../ui/base/webui/web_ui_util.cc"
+#include "src/ui/base/webui/web_ui_util.cc"
 #undef IDR_WEBUI_CSS_TEXT_DEFAULTS_MD_CSS

@@ -4,13 +4,12 @@ import {
   StyledWrapper,
   Title,
   Description,
-  IconBackground,
-  PageIcon,
   TermsRow,
-  SkipButton
+  SkipButton,
+  PageIcon
 } from './style'
 import { NavButton } from '../../../extension'
-import locale from '../../../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
 import { Checkbox } from 'brave-ui'
 
 export interface Props {
@@ -19,25 +18,24 @@ export interface Props {
   isOnboarding: boolean
   onSubmitTerms: (key: string, selected: boolean) => void
   onCancel: () => void
+  recoveryPhraseLength: number
 }
 
 function OnboardingRecovery (props: Props) {
-  const { onSubmit, isBackupTermsAccepted, isOnboarding, onSubmitTerms, onCancel } = props
+  const { onSubmit, isBackupTermsAccepted, isOnboarding, onSubmitTerms, onCancel, recoveryPhraseLength } = props
 
   return (
     <StyledWrapper>
-      <IconBackground>
-        <PageIcon />
-      </IconBackground>
-      <Title>{locale.backupIntroTitle}</Title>
-      <Description>{locale.backupIntroDescription}</Description>
+      <PageIcon />
+      <Title>{getLocale('braveWalletBackupIntroTitle')}</Title>
+      <Description>{getLocale('braveWalletBackupIntroDescription').replace('$1', recoveryPhraseLength.toString())}</Description>
       <TermsRow>
         <Checkbox value={{ backupTerms: isBackupTermsAccepted }} onChange={onSubmitTerms}>
-          <div data-key='backupTerms'>{locale.backupIntroTerms}</div>
+          <div data-key='backupTerms'>{getLocale('braveWalletBackupIntroTerms')}</div>
         </Checkbox>
       </TermsRow>
-      <NavButton disabled={!isBackupTermsAccepted} buttonType='primary' text={locale.buttonContinue} onSubmit={onSubmit} />
-      <SkipButton onClick={onCancel}>{isOnboarding ? locale.backupButtonSkip : locale.backupButtonCancel}</SkipButton>
+      <NavButton disabled={!isBackupTermsAccepted} buttonType='primary' text={getLocale('braveWalletButtonContinue')} onSubmit={onSubmit} />
+      <SkipButton onClick={onCancel}>{isOnboarding ? getLocale('braveWalletBackupButtonSkip') : getLocale('braveWalletBackupButtonCancel')}</SkipButton>
     </StyledWrapper>
   )
 }

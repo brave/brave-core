@@ -49,7 +49,7 @@ export default function CardError () {
           Oops…
         </Heading>
         <Card.Paragraph>
-          Brave Today is experiencing some issues. Try again.
+          Brave News is experiencing some issues. Try again.
         </Card.Paragraph>
       </Content>
     </Card.Intro>

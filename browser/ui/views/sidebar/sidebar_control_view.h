@@ -9,7 +9,8 @@
 #include <memory>
 #include <string>
 
-#include "base/scoped_observer.h"
+#include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 #include "ui/base/models/simple_menu_model.h"
@@ -25,6 +26,10 @@ namespace views {
 class MenuRunner;
 }  // namespace views
 
+namespace sidebar {
+class SidebarBrowserTest;
+}  // namespace sidebar
+
 // This view includes all sidebar buttons such as sidebar item buttons, add and
 // settings button.
 class SidebarControlView : public views::View,
@@ -33,6 +38,7 @@ class SidebarControlView : public views::View,
                            public SidebarButtonView::Delegate,
                            public sidebar::SidebarModel::Observer {
  public:
+  METADATA_HEADER(SidebarControlView);
   explicit SidebarControlView(BraveBrowser* browser);
   ~SidebarControlView() override;
 
@@ -68,6 +74,8 @@ class SidebarControlView : public views::View,
   bool IsBubbleWidgetVisible() const;
 
  private:
+  friend class sidebar::SidebarBrowserTest;
+
   void AddChildViews();
 
   void OnButtonPressed(views::View* view);
@@ -77,13 +85,14 @@ class SidebarControlView : public views::View,
   void UpdateSettingsButtonState();
   void UpdateBackgroundAndBorder();
 
-  BraveBrowser* browser_ = nullptr;
-  SidebarItemsScrollView* sidebar_items_view_ = nullptr;
-  SidebarItemAddButton* sidebar_item_add_view_ = nullptr;
-  SidebarButtonView* sidebar_settings_view_ = nullptr;
+  raw_ptr<BraveBrowser> browser_ = nullptr;
+  raw_ptr<SidebarItemsScrollView> sidebar_items_view_ = nullptr;
+  raw_ptr<SidebarItemAddButton> sidebar_item_add_view_ = nullptr;
+  raw_ptr<SidebarButtonView> sidebar_settings_view_ = nullptr;
   std::unique_ptr<ui::SimpleMenuModel> context_menu_model_;
   std::unique_ptr<views::MenuRunner> context_menu_runner_;
-  ScopedObserver<sidebar::SidebarModel, sidebar::SidebarModel::Observer>
+  base::ScopedObservation<sidebar::SidebarModel,
+                          sidebar::SidebarModel::Observer>
       sidebar_model_observed_{this};
 };
 

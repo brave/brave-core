@@ -7,10 +7,14 @@
 
 #include <string>
 
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
+#include "bat/ads/internal/catalog/catalog.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/segments/segments_json_reader.h"
+#include "bat/ads/internal/segments/segments_json_writer.h"
+#include "bat/ads/internal/segments/segments_util.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {
@@ -22,7 +26,7 @@ SegmentList GetSegments() {
   const std::string json = AdsClientHelper::Get()->GetStringPref(
       prefs::kEpsilonGreedyBanditEligibleSegments);
 
-  return DeserializeSegments(json);
+  return JSONReader::ReadSegments(json);
 }
 
 }  // namespace
@@ -35,35 +39,20 @@ bool EpsilonGreedyBandit::IsInitialized() const {
   return is_initialized_;
 }
 
-void EpsilonGreedyBandit::LoadFromDatabase() {
-  database::table::CreativeAdNotifications database_table;
-  database_table.GetAll([=](const Result result, const SegmentList& segments,
-                            const CreativeAdNotificationList& ads) {
-    if (result != SUCCESS) {
-      BLOG(2, "Failed to load epsilon greedy bandit segments");
+void EpsilonGreedyBandit::LoadFromCatalog(const Catalog& catalog) {
+  const SegmentList segments = GetSegments(catalog);
+  const SegmentList parent_segments = GetParentSegments(segments);
+  const std::string json = JSONWriter::WriteSegments(parent_segments);
 
-      is_initialized_ = false;
+  AdsClientHelper::Get()->SetStringPref(
+      prefs::kEpsilonGreedyBanditEligibleSegments, json);
 
-      AdsClientHelper::Get()->SetStringPref(
-          prefs::kEpsilonGreedyBanditEligibleSegments, "");
+  BLOG(2, "Successfully loaded epsilon greedy bandit segments:");
+  for (const auto& segment : parent_segments) {
+    BLOG(2, "  " << segment);
+  }
 
-      return;
-    }
-
-    const SegmentList parent_segments = GetParentSegments(segments);
-
-    const std::string json = SerializeSegments(parent_segments);
-
-    AdsClientHelper::Get()->SetStringPref(
-        prefs::kEpsilonGreedyBanditEligibleSegments, json);
-
-    BLOG(2, "Successfully loaded epsilon greedy bandit segments:");
-    for (const auto& segment : parent_segments) {
-      BLOG(2, "  " << segment);
-    }
-
-    is_initialized_ = true;
-  });
+  is_initialized_ = true;
 }
 
 SegmentList EpsilonGreedyBandit::get() const {

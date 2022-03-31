@@ -8,7 +8,8 @@ export {
   ModalLayout,
   PaddedButton,
   TextSection,
-  IconTitle
+  IconTitle,
+  FieldCtr
 } from './structure'
 
 export {
@@ -17,5 +18,8 @@ export {
   InfoText,
   DisclaimerText,
   NonInteractiveURL,
-  SuccessIcon
+  SuccessIcon,
+  Input,
+  TextArea,
+  InputLabel
 } from './display'

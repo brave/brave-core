@@ -9,7 +9,10 @@ namespace brave_rewards {
 namespace prefs {
 
 const char kHideButton[] = "brave.hide_brave_rewards_button";
+const char kShowButton[] = "brave.show_brave_rewards_button";
 const char kEnabled[] = "brave.rewards.enabled";
+const char kAdsEnabledTimeDelta[] = "brave.rewards.ads_enabled_time_delta";
+const char kAdsEnabledTimestamp[] = "brave.rewards.ads_enabled_timestamp";
 const char kNotifications[] = "brave.rewards.notifications";
 const char kNotificationTimerInterval[]=
     "brave.rewards.notification_timer_interval";
@@ -29,6 +32,7 @@ const char kUpholdAnonAddress[] =
     "brave.rewards.uphold_anon_address";
 const char kBadgeText[] = "brave.rewards.badge_text";
 const char kUseRewardsStagingServer[] = "brave.rewards.use_staging_server";
+const char kExternalWalletType[] = "brave.rewards.external_wallet_type";
 const char kPromotionLastFetchStamp[] =
     "brave.rewards.promotion_last_fetch_stamp";
 const char kPromotionCorruptedMigrated[] =
@@ -69,6 +73,7 @@ const char kWalletBrave[] =
 const char kWalletUphold[] =
     "brave.rewards.wallets.uphold";
 const char kWalletBitflyer[] = "brave.rewards.wallets.bitflyer";
+const char kWalletGemini[] = "brave.rewards.wallets.gemini";
 
 }  // namespace prefs
 }  // namespace brave_rewards

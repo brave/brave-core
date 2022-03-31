@@ -32,9 +32,11 @@ export default class AdsTrackersControl extends React.PureComponent<{}, State> {
     super(props)
     this.state = { dummyThirdPartyTrackersBlockedOpen: false }
   }
+
   onClickFakeThirdPartyTrackersBlocked = () => {
     this.setState({ dummyThirdPartyTrackersBlockedOpen: !this.state.dummyThirdPartyTrackersBlockedOpen })
   }
+
   render () {
     const { dummyThirdPartyTrackersBlockedOpen } = this.state
     return (

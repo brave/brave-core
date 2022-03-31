@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <cmath>
-#include <fstream>
+#include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
+
+#include <map>
 #include <vector>
 
 #include "bat/ads/internal/ml/data/data.h"
@@ -12,12 +13,11 @@
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/model/linear/linear.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
-#include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 #include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
 #include "bat/ads/internal/ml/transformation/transformation.h"
-
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_file_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -27,16 +27,20 @@ namespace ml {
 
 namespace {
 
-const char kValidSegmentClassificationPipeline[] =
+constexpr char kValidSegmentClassificationPipeline[] =
     "ml/pipeline/text_processing/valid_segment_classification_min.json";
 
-const char kInvalidSpamClassificationPipeline[] =
+constexpr char kEmptySegmentClassificationPipeline[] =
+    "ml/pipeline/text_processing/empty_segment_classification.json";
+
+constexpr char kInvalidSpamClassificationPipeline[] =
     "ml/pipeline/text_processing/invalid_spam_classification.json";
 
-const char kValidSpamClassificationPipeline[] =
+constexpr char kValidSpamClassificationPipeline[] =
     "ml/pipeline/text_processing/valid_spam_classification.json";
 
-const char kTextCMCCrash[] = "ml/pipeline/text_processing/text_cmc_crash.txt";
+constexpr char kTextCMCCrash[] =
+    "ml/pipeline/text_processing/text_cmc_crash.txt";
 
 }  // namespace
 
@@ -62,9 +66,9 @@ TEST_F(BatAdsTextProcessingPipelineTest, BuildSimplePipeline) {
       std::make_unique<HashedNGramsTransformation>(hashed_ngrams));
 
   const std::map<std::string, VectorData> weights = {
-      {"class_1", VectorData(std::vector<double>{1.0, 2.0, 3.0})},
-      {"class_2", VectorData(std::vector<double>{3.0, 2.0, 1.0})},
-      {"class_3", VectorData(std::vector<double>{2.0, 2.0, 2.0})}};
+      {"class_1", VectorData({1.0, 2.0, 3.0})},
+      {"class_2", VectorData({3.0, 2.0, 1.0})},
+      {"class_3", VectorData({2.0, 2.0, 2.0})}};
 
   const std::map<std::string, double> biases = {
       {"class_1", 0.0}, {"class_2", 0.0}, {"class_3", 0.0}};
@@ -73,7 +77,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, BuildSimplePipeline) {
   const pipeline::TextProcessing pipeline =
       pipeline::TextProcessing(transformations, linear_model);
 
-  const VectorData data_point_3(std::vector<double>{1.0, 0.0, 0.0});
+  const VectorData data_point_3({1.0, 0.0, 0.0});
 
   // Act
   const PredictionMap data_point_3_predictions =
@@ -98,7 +102,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromJson) {
   const std::vector<std::string> train_labels = {"spam", "spam", "ham", "ham",
                                                  "junk"};
 
-  const base::Optional<std::string> json_optional =
+  const absl::optional<std::string> json_optional =
       ReadFileFromTestPathToString(kValidSpamClassificationPipeline);
   pipeline::TextProcessing text_processing_pipeline;
 
@@ -130,7 +134,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromJson) {
 TEST_F(BatAdsTextProcessingPipelineTest, InitValidModelTest) {
   // Arrange
   pipeline::TextProcessing text_processing_pipeline;
-  const base::Optional<std::string> json_optional =
+  const absl::optional<std::string> json_optional =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
 
   // Act
@@ -145,13 +149,28 @@ TEST_F(BatAdsTextProcessingPipelineTest, InitValidModelTest) {
 TEST_F(BatAdsTextProcessingPipelineTest, InvalidModelTest) {
   // Arrange
   pipeline::TextProcessing text_processing_pipeline;
-  const base::Optional<std::string> json_optional =
+  const absl::optional<std::string> json_optional =
       ReadFileFromTestPathToString(kInvalidSpamClassificationPipeline);
 
   // Act
   ASSERT_TRUE(json_optional.has_value());
   const std::string json = json_optional.value();
   bool loaded_successfully = text_processing_pipeline.FromJson(json);
+
+  // Assert
+  EXPECT_FALSE(loaded_successfully);
+}
+
+TEST_F(BatAdsTextProcessingPipelineTest, EmptySegmentModelTest) {
+  // Arrange
+  pipeline::TextProcessing text_processing_pipeline;
+  const absl::optional<std::string> json_optional =
+      ReadFileFromTestPathToString(kEmptySegmentClassificationPipeline);
+
+  // Act
+  ASSERT_TRUE(json_optional.has_value());
+  const std::string json = json_optional.value();
+  const bool loaded_successfully = text_processing_pipeline.FromJson(json);
 
   // Assert
   EXPECT_FALSE(loaded_successfully);
@@ -188,7 +207,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, TopPredUnitTest) {
   const size_t kMaxPredictionsSize = 100;
   const std::string kTestPage = "ethereum bitcoin bat zcash crypto tokens!";
   pipeline::TextProcessing text_processing_pipeline;
-  const base::Optional<std::string> json_optional =
+  const absl::optional<std::string> json_optional =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
 
   // Act
@@ -213,14 +232,14 @@ TEST_F(BatAdsTextProcessingPipelineTest, TextCMCCrashTest) {
   const size_t kMaxPredictionsSize = 100;
   pipeline::TextProcessing text_processing_pipeline;
 
-  const base::Optional<std::string> json_optional =
+  const absl::optional<std::string> json_optional =
       ReadFileFromTestPathToString(kValidSegmentClassificationPipeline);
   ASSERT_TRUE(json_optional.has_value());
 
   const std::string json = json_optional.value();
   ASSERT_TRUE(text_processing_pipeline.FromJson(json));
 
-  const base::Optional<std::string> text_optional =
+  const absl::optional<std::string> text_optional =
       ReadFileFromTestPathToString(kTextCMCCrash);
 
   // Act

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/settings.ts b/chrome/browser/resources/settings/settings.ts
+index e038d2b56fbd6b4239ecee8f75fb3b4859840a7b..26b37e53a65bccc226172bf8cb947766f3aecd6e 100644
+--- a/chrome/browser/resources/settings/settings.ts
++++ b/chrome/browser/resources/settings/settings.ts
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++import './brave_overrides/index.js';
+ import './settings_ui/settings_ui.js';
+ 
+ export {CrActionMenuElement} from 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js';

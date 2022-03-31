@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <if expr="ipfs_enabled">
+  <if expr="enable_ipfs">
     <message name="IDS_IPFS_CONNECTED_PEERS_TITLE" desc="Number of peers connected">Connected peers:</message>
     <message name="IDS_IPFS_ADDRESSES_CONFIG_TITLE" desc="Title of addresses config section">Addresses</message>
     <message name="IDS_IPFS_REPO_STATS_TITLE" desc="Title of repo stats section">Repo Stats</message>
@@ -49,7 +49,7 @@
       IPFS Not Connected
     </message>
     <message name="IDS_IPFS_NOT_CONNECTED_HEADING" desc="Heading of IPFS not connected interstitial page.">
-      Can't load IPFS resources using local node
+      Can't load IPFS resources using Brave local IPFS node
     </message>
     <message name="IDS_IPFS_NOT_CONNECTED_PRIMARY_PARAGRAPH" desc="Main paragraph of IPFS not connected interstitial page.">
       Failed to use the local IPFS node to load the requested IPFS resources. Click the "Proceed" button to use the public gateway instead, and to fall back automatically to the public gateway in the future.
@@ -64,7 +64,7 @@
       Hide Advanced
     </message>
     <message name="IDS_IPFS_NOT_CONNECTED_EXPLANATION" desc="The text of the IPFS not connected interstitial that will be displayed when the user presses the 'Advanced' button for additional information.">
-      Brave cannot load the requested IPFS resources either because the local node did not start, or because there are no connected peers available at the moment. If you choose "Proceed", Brave will automatically fall back to the default public gateway whenever using the local node fails. You can change this behavior at any point in Brave settings.
+      Brave cannot load the requested IPFS resources either because the Brave local IPFS node did not start, or because there are no connected peers available at the moment. If you choose "Proceed", Brave will automatically fall back to the default public gateway whenever using the Brave local IPFS node fails. You can change this behavior at any point in Brave settings.
     </message>
     <message name="IDS_IPFS_ONBOARDING_TITLE" desc="Title of IPFS onboarding interstitial page.">
       IPFS Preference
@@ -72,8 +72,8 @@
     <message name="IDS_IPFS_ONBOARDING_HEADING" desc="Heading of IPFS onboarding interstitial page.">
       Set your IPFS preference
     </message>
-    <message name="IDS_IPFS_ONBOARDING_LOCAL_NODE_BUTTON" desc="The text for the button that enables a local node to work with IPFS.">
-      Use a local node
+    <message name="IDS_IPFS_ONBOARDING_LOCAL_NODE_BUTTON" desc="The text for the button that enables a Brave local IPFS node to work with IPFS.">
+      Use a Brave local IPFS node
     </message>
     <message name="IDS_IPFS_ONBOARDING_PUBLIC_GATEWAY_BUTTON" desc="The text for the button that enables a public gateway to work with IPFS.">
       Use a public gateway
@@ -120,6 +120,24 @@
     <message name="IDS_PAGE_INFO_IPFS_BUBBLE_TEXT" desc="The text for ips page info bubble.">
       InterPlanetary File System (IPFS) is a public network for peer-to-peer data storage and delivery. You can learn more about Brave's integration or configure your IPFS settings at any time.
     </message>
+    <message name="IDS_PAGE_INFO_IPFS_SETTINGS_BUTTON_TEXT" desc="The text for ips page info bubble IPFS Settings button.">
+      IPFS settings
+    </message>
+    <message name="IDS_PAGE_INFO_IPFS_SETTINGS_BUTTON_TOOLTIP_TEXT" desc="The text for ips page info bubble IPFS Settings button tooltip text.">
+      Go to the IPFS settings page
+    </message>
+    <message name="IDS_PAGE_INFO_IPFS_DIAGNOSTICS_BUTTON_TEXT" desc="The text for ips page info bubble ipfs diagnostic button text.">
+      IPFS diagnostics
+    </message>
+    <message name="IDS_PAGE_INFO_IPFS_DIAGNOSTICS_BUTTON_TOOLTIP_TEXT" desc="The text for ips page info bubble diagnostic button tooltip text.">
+      Go to the IPFS diagnostics page
+    </message>
+    <message name="IDS_PAGE_INFO_IPFS_DOCS_BUTTON_TEXT" desc="The text for ips page info bubble ipfs diagnostic button text.">
+      IPFS docs
+    </message>
+    <message name="IDS_PAGE_INFO_IPFS_DOCS_BUTTON_TEXT_TOOLTIP_TEXT" desc="The text for ips page info bubble docs button tooltip text.">
+      Go to the IPFS docs page
+    </message>
     <message name="IDS_IPFS_IMPORT_NOTIFICATION_TITLE" desc="The title for ips import error notification.">
       IPFS import completed
     </message>
@@ -140,6 +158,9 @@
     </message>
     <message name="IDS_IPFS_IMPORT_PARTLY_COMPLETED_NOTIFICATION_BODY" desc="The title for ips import error notification.">
       The data was successfully uploaded but not moved to the brave-import directory. You can do this manually on the import settings page.
+    </message>
+    <message name="IDS_IPFS_ROTATE_IDENTITY_TITLE" desc="The title for the link to rotate identity on ipfs diagnostic page.">
+      Manage Peer ID and IPNS keys
     </message>
   </if>
 </grit-part>

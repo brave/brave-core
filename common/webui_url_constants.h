@@ -23,8 +23,11 @@ extern const char kBraveUIWebcompatReporterURL[];
 extern const char kBraveUITipHost[];
 extern const char kBraveUITipURL[];
 extern const char kBraveUIWalletURL[];
+extern const char kBraveUIWalletOnboardingURL[];
 extern const char kBraveUIWalletPanelURL[];
 extern const char kWalletPanelHost[];
+extern const char kVPNPanelURL[];
+extern const char kVPNPanelHost[];
 extern const char kBraveUIWalletPageURL[];
 extern const char kWalletPageHost[];
 extern const char kExtensionSettingsURL[];
@@ -32,5 +35,10 @@ extern const char kWalletSettingsURL[];
 extern const char kBraveSyncPath[];
 extern const char kBraveSyncSetupPath[];
 extern const char kTorInternalsHost[];
+extern const char kUntrustedTrezorHost[];
+extern const char kUntrustedTrezorURL[];
+extern const char kShieldsPanelURL[];
+extern const char kShieldsPanelHost[];
+extern const char kSidebarBookmarksHost[];
 
 #endif  // BRAVE_COMMON_WEBUI_URL_CONSTANTS_H_

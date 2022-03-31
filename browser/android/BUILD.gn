@@ -5,53 +5,36 @@ source_set("android_browser_process") {
   check_includes = false
 
   sources = [
+    "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
     "brave_feature_list.cc",
     "brave_relaunch_utils.cc",
     "brave_shields_content_settings.cc",
     "brave_shields_content_settings.h",
+    "brave_sync_worker.cc",
+    "brave_sync_worker.h",
   ]
 
   deps = [
     "//base",
     "//brave/browser/android/preferences",
+    "//brave/browser/brave_ads/android:jni_headers",
     "//brave/build/android:jni_headers",
+    "//brave/components/brave_ads/browser",
     "//brave/components/brave_shields/browser",
+    "//brave/components/brave_sync",
+    "//brave/components/brave_sync:crypto",
+    "//brave/components/brave_sync:prefs",
+    "//brave/components/brave_sync:sync_service_impl_helper",
+    "//brave/components/l10n/browser",
     "//chrome/android:jni_headers",
     "//chrome/common",
     "//components/content_settings/core/browser",
     "//components/flags_ui",
     "//components/ntp_tiles",
+    "//components/sync",
     "//components/translate/core/browser",
+    "//components/unified_consent",
+    "//third_party/leveldatabase",
     "//url",
   ]
-
-  if (brave_ads_enabled) {
-    sources +=
-        [ "//brave/browser/brave_ads/android/brave_ads_native_helper.cc" ]
-
-    deps += [
-      "//brave/browser/brave_ads/android:jni_headers",
-      "//brave/components/brave_ads/browser",
-      "//brave/components/l10n/browser",
-    ]
-  }
-
-  if (enable_brave_sync) {
-    sources += [
-      "//brave/browser/sync/brave_sync_devices_android.cc",
-      "//brave/browser/sync/brave_sync_devices_android.h",
-      "brave_sync_worker.cc",
-      "brave_sync_worker.h",
-    ]
-    deps += [
-      "//brave/components/brave_sync",
-      "//brave/components/brave_sync:crypto",
-      "//brave/components/brave_sync:prefs",
-      "//brave/components/brave_sync:profile_sync_service_helper",
-      "//components/sync",
-      "//components/sync_device_info",
-      "//components/unified_consent",
-      "//third_party/leveldatabase",
-    ]
-  }
 }

@@ -8,13 +8,13 @@
 
 #include <string>
 
-#include "bat/ads/internal/resources/conversions/conversion_id_pattern_info.h"
+#include "bat/ads/internal/resources/conversions/conversion_id_pattern_info_aliases.h"
 #include "bat/ads/internal/resources/resource.h"
 
 namespace ads {
 namespace resource {
 
-class Conversions : public Resource<ConversionIdPatternMap> {
+class Conversions final : public Resource<ConversionIdPatternMap> {
  public:
   Conversions();
   ~Conversions() override;
@@ -29,11 +29,11 @@ class Conversions : public Resource<ConversionIdPatternMap> {
   ConversionIdPatternMap get() const override;
 
  private:
+  bool FromJson(const std::string& json);
+
   bool is_initialized_ = false;
 
   ConversionIdPatternMap conversion_id_patterns_;
-
-  bool FromJson(const std::string& json);
 };
 
 }  // namespace resource

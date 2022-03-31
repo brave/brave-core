@@ -29,7 +29,6 @@ export interface Props {
 }
 
 export default class ModalContribute extends React.PureComponent<Props, {}> {
-
   get headers () {
     return [
       getLocale('site'),

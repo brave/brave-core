@@ -69,5 +69,4 @@ export class ExpiryFormat {
     }
     return ''
   }
-
 }

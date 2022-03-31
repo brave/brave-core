@@ -18,6 +18,9 @@
 #include "bat/ledger/internal/endpoint/bitflyer/bitflyer_server.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
+#include "bat/ledger/internal/notifications/notification_keys.h"
+#include "bat/ledger/internal/state/state_keys.h"
+#include "bat/ledger/internal/wallet/wallet_util.h"
 #include "brave_base/random.h"
 
 using std::placeholders::_1;
@@ -161,14 +164,12 @@ void Bitflyer::DisconnectWallet(const bool manual) {
   }
 
   BLOG(1, "Disconnecting wallet");
-  if (!wallet->address.empty()) {
-    ledger_->database()->SaveEventLog(
-        log::kWalletDisconnected,
-        static_cast<std::string>(constant::kWalletBitflyer) + "/" +
-            wallet->address.substr(0, 5));
-  }
+  ledger_->database()->SaveEventLog(log::kWalletDisconnected,
+                                    std::string(constant::kWalletBitflyer) +
+                                        (!wallet->address.empty() ? "/" : "") +
+                                        wallet->address.substr(0, 5));
 
-  wallet = ResetWallet(std::move(wallet));
+  wallet = ::ledger::wallet::ResetWallet(std::move(wallet));
   if (manual) {
     wallet->status = type::WalletStatus::NOT_CONNECTED;
   }
@@ -176,8 +177,8 @@ void Bitflyer::DisconnectWallet(const bool manual) {
   const bool shutting_down = ledger_->IsShuttingDown();
 
   if (!manual && !shutting_down) {
-    ledger_->ledger_client()->ShowNotification("wallet_disconnected", {},
-                                               [](type::Result _) {});
+    ledger_->ledger_client()->ShowNotification(
+        ledger::notifications::kWalletDisconnected, {}, [](type::Result) {});
   }
 
   SetWallet(wallet->Clone());
@@ -205,8 +206,7 @@ void Bitflyer::StartTransferFeeTimer(const std::string& fee_id,
                                      const int attempts) {
   DCHECK(!fee_id.empty());
 
-  base::TimeDelta delay =
-      util::GetRandomizedDelay(base::TimeDelta::FromSeconds(45));
+  base::TimeDelta delay = util::GetRandomizedDelay(base::Seconds(45));
 
   BLOG(1, "Bitflyer transfer fee timer set for " << delay);
 
@@ -266,11 +266,12 @@ void Bitflyer::OnTransferFeeTimerElapsed(const std::string& id,
 }
 
 type::ExternalWalletPtr Bitflyer::GetWallet() {
-  return ::ledger::bitflyer::GetWallet(ledger_);
+  return ::ledger::wallet::GetWallet(ledger_, constant::kWalletBitflyer);
 }
 
 bool Bitflyer::SetWallet(type::ExternalWalletPtr wallet) {
-  return ::ledger::bitflyer::SetWallet(ledger_, std::move(wallet));
+  return ::ledger::wallet::SetWallet(ledger_, std::move(wallet),
+                                     state::kWalletBitflyer);
 }
 
 void Bitflyer::RemoveTransferFee(const std::string& contribution_id) {

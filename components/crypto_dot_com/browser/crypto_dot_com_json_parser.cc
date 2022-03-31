@@ -31,8 +31,9 @@ bool CryptoDotComJSONParser::GetTickerInfoFromJSON(
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
 
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
@@ -84,8 +85,9 @@ bool CryptoDotComJSONParser::GetChartDataFromJSON(
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
 
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
@@ -109,7 +111,7 @@ bool CryptoDotComJSONParser::GetChartDataFromJSON(
 
   bool success = true;
 
-  for (const base::Value &point : data_arr->GetList()) {
+  for (const base::Value& point : data_arr->GetList()) {
     std::map<std::string, std::string> data_point;
     const base::Value* t = point.FindKey("t");
     const base::Value* o = point.FindKey("o");
@@ -150,8 +152,9 @@ bool CryptoDotComJSONParser::GetPairsFromJSON(
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
 
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
@@ -173,7 +176,7 @@ bool CryptoDotComJSONParser::GetPairsFromJSON(
     return false;
   }
 
-  for (const base::Value &instrument : instruments->GetList()) {
+  for (const base::Value& instrument : instruments->GetList()) {
     std::map<std::string, std::string> instrument_data;
     const base::Value* pair = instrument.FindKey("instrument_name");
     const base::Value* quote = instrument.FindKey("quote_currency");
@@ -204,8 +207,9 @@ bool CryptoDotComJSONParser::GetRankingsFromJSON(
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
 
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
@@ -234,7 +238,7 @@ bool CryptoDotComJSONParser::GetRankingsFromJSON(
     return false;
   }
 
-  for (const base::Value &ranking : rankings_list->GetList()) {
+  for (const base::Value& ranking : rankings_list->GetList()) {
     std::map<std::string, std::string> ranking_data;
     const base::Value* pair = ranking.FindKey("instrument_name");
     const base::Value* change = ranking.FindKey("percent_change");

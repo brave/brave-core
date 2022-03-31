@@ -31,7 +31,7 @@ ExtensionFunction::ResponseAction BraveThemeGetBraveThemeTypeFunction::Run() {
 
 ExtensionFunction::ResponseAction BraveThemeSetBraveThemeTypeFunction::Run() {
   std::unique_ptr<brave_theme::SetBraveThemeType::Params> params(
-      brave_theme::SetBraveThemeType::Params::Create(*args_));
+      brave_theme::SetBraveThemeType::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   dark_mode::SetBraveDarkModeType(params->type);

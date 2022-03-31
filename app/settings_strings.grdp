@@ -12,6 +12,14 @@
     More actions
   </message>
 
+  <if expr="not chromeos">
+    <message name="IDS_RELAUNCH_CONFIRMATION_DIALOG_BODY" desc="The body of the modal dialog that we show when users click on relaunch and they have open Private windows. The dialog serves to warn the users about losing their Private windows if they proceed with the relaunch.">
+      {COUNT, plural,
+      =1 {Your Private window won't open after you relaunch}
+      other {Your {COUNT} Private windows won't reopen after you relaunch}}
+    </message>
+  </if>
+
   <!-- About Page -->
   <message name="IDS_SETTINGS_ABOUT_PAGE_BROWSER_VERSION" desc="The text label describing the version of the browser, example: Version 57.0.2937.0 (Developer Build) unknown (64-bit)">
     Version <ph name="PRODUCT_VERSION">$1<ex>15.0.865.0</ex></ph> (<ph name="PRODUCT_CHANNEL">$2<ex>Developer Build</ex></ph>) <ph name="PRODUCT_MODIFIER">$3</ph> <ph name="PRODUCT_VERSION_BITS">$4</ph>
@@ -114,7 +122,7 @@
   <message name="IDS_SETTINGS_HOME_BUTTON_DISABLED" desc="Sub label for the Show home button setting when disabled.">
     Disabled
   </message>
-  <if expr="chromeos or lacros">
+  <if expr="chromeos_ash or chromeos_lacros">
     <message name="IDS_SETTINGS_THEMES" desc="Name of the control which allows the user to get a theme for the browser.">
       Browser themes
     </message>
@@ -138,7 +146,7 @@
       Use Classic
     </message>
   </if>
-  <if expr="not is_linux or chromeos or lacros">
+  <if expr="not is_linux or chromeos_ash or chromeos_lacros or is_fuchsia">
     <message name="IDS_SETTINGS_RESET_TO_DEFAULT_THEME" desc="Name of the control which resets the browser theme back to the default theme.">
       Reset to default
     </message>
@@ -193,7 +201,7 @@
     Search settings
   </message>
   <message name="IDS_SETTINGS_SEARCH_NO_RESULTS_HELP" desc="Help text for a search that has no results.">
-    Go to <ph name="BEGIN_LINK_CHROMIUM">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Brave help<ph name="END_LINK_CHROMIUM">&lt;/a&gt;</ph> if you can't find what you're looking for
+    Go to <ph name="BEGIN_LINK_CHROMIUM">&lt;a target="_blank" href="$1"&gt;</ph>Brave help<ph name="END_LINK_CHROMIUM">&lt;/a&gt;</ph> if you can't find what you're looking for
   </message>
   <message name="IDS_SETTINGS_SETTINGS" desc="The settings page title.">
     Settings
@@ -229,8 +237,11 @@
   <message name="IDS_SETTINGS_EDIT" desc="Label used on a menu item or button, used in different contexts to edit an item.">
     Edit
   </message>
+  <message name="IDS_SETTINGS_END_TIME" desc="The label of the end time bubble of settings-scheduler-slider">
+    End time <ph name="TIME">$1<ex>5:00 AM</ex></ph>
+  </message>
   <message name="IDS_SETTINGS_NOT_VALID" desc="Text indicating that an input is not valid.">
-   Not valid
+    Not valid
   </message>
   <message name="IDS_SETTINGS_NOT_VALID_WEB_ADDRESS" desc="Text indicating that the Web address entered by the user is invalid.">
     Not a valid web address
@@ -239,18 +250,21 @@
     Origin must be secure
   </message>
   <message name="IDS_SETTINGS_RETRY" desc="The label text of the retry button because there is an error.">
-   Retry
+    Retry
   </message>
   <message name="IDS_SETTINGS_SLIDER_MIN_MAX_ARIA_ROLE_DESCRIPTION" desc="A label to be read aloud by screen readers when a user focuses on a slider. A settings slider generally has a minimum value, a maximum value, and a fixed range of values in between. This label gives the user context for what the minimum and maximum values represent for that particular slider.">
     Slider: <ph name="MIN_LABEL">$1<ex>Slowest</ex></ph> to <ph name="MAX_LABEL">$2<ex>Fastest</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_START_TIME" desc="The label of the start time bubble of settings-scheduler-slider">
+    Start time <ph name="TIME">$1<ex>9:06 PM</ex></ph>
   </message>
 
   <!-- Autofill Page -->
   <message name="IDS_SETTINGS_AUTOFILL" desc="Name of the settings page which allows managing passwords, payment methods and addresses settings.">
     Autofill
   </message>
-  <message name="IDS_SETTINGS_GOOGLE_PAYMENTS" desc="Label used to differentiate when an address or credit card entry comes from Brave Pay. This should follow the casing of the 'Brave Pay' brand. 'Brave Pay' should not be translated as it is the product name.">
-    Brave Pay
+  <message name="IDS_SETTINGS_GOOGLE_PAYMENTS" desc="Label used to differentiate when an address or credit card entry comes from Google Pay. This should follow the casing of the 'Google Pay' brand. 'Google Pay' should not be translated as it is the product name.">
+    Google Pay
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_ADDRESSES_ADD_TITLE" desc="This is the title for the 'Add address' dialog. This dialog allows a user to create a new address.">
     Add address
@@ -267,7 +281,7 @@
   <message name="IDS_SETTINGS_AUTOFILL_ADDRESSES_EMAIL" desc="This is the label for the field that lets a user modify the email address that will be used when auto-filling forms on the web.">
     Email
   </message>
-  <message name="IDS_SETTINGS_AUTOFILL_ADDRESS_HONORIFIC_LABEL" desc="This is the label for the field that lets the user modify their honorific for an address. A honorific is an optional, title like Mr, Dr, etc, which can accompany one's name.">
+  <message name="IDS_SETTINGS_AUTOFILL_ADDRESS_HONORIFIC_LABEL" desc="This is the label for the field that lets the user modify the title that will be used when auto-filling forms on the web. A 'Title' field in a web form could be a prefix like Ms., Mx., or Dr. or a position held, like Captain or Rabbi." meaning="Honorific">
     Title
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_CREDIT_CARD_TYPE_COLUMN_LABEL" desc="Label for the column containing the type of credit card that is saved. The type is in the format: `Visa ****1234`.">
@@ -275,6 +289,36 @@
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_DETAIL" desc="Description of what toggling the 'Autofill' setting does. Immediately underneath IDS_SETTINGS_AUTOFILL">
     Enable Autofill to fill out forms in a single click
+  </message>
+  <message name="IDS_SETTINGS_AUTOFILL_MORE_ACTIONS_FOR_ADDRESS" desc="The (accessibility) title of a button, which brings up a menu of actions that can be taken on a stored autofill address. The address is described by the name of the recipient and usually the beginning of the address (i.e. street name and building number). The name and the address are separated by comma.">
+    More actions for <ph name="ADDRESS_SUMMARY">$1<ex>John Doe, 123 Main Street</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_AUTOFILL_MORE_ACTIONS_FOR_CREDIT_CARD" desc="The (accessibility) title of a button, which brings up a menu of actions that can be taken on a stored credit card. The credit card is described by the credit card nickname or the credit card network and last 4 digits of the card number.">
+    More actions for <ph name="CARD_DESCRIPTION">$1<ex>My main card</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_AUTOFILL_MORE_ACTIONS_CARD_DESCRIPTION" desc="The (accessibility) credit card description from the network of the card and last 4 digits of the card number.">
+    <ph name="NETWORK_NAME">$1<ex>Visa</ex></ph> ending in <ph name="LAST_FOUR_DIGITS">$2<ex>1234</ex></ph>
+  </message>
+  <message name="IDS_AUTOFILL_ADD_VIRTUAL_CARD" desc="The text shown in the secondary action menu button to enroll a card in the virtual card feature. Virtual cards are credit cards generated from the actual cards and provide extra security.">
+    Add virtual card
+  </message>
+  <message name="IDS_AUTOFILL_REMOVE_VIRTUAL_CARD" desc="The text shown in the secondary action menu button to unenroll a card from the virtual card feature. Virtual cards are credit cards generated from the actual cards and provide extra security.">
+    Remove virtual card
+  </message>
+  <message name="IDS_AUTOFILL_EDIT_SERVER_CREDIT_CARD" desc="The text shown in the secondary action menu button to direct users to pay.google.com to edit the information of credit cards stored in Google Payments.">
+    Edit in Google Pay
+  </message>
+  <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENABLED_LABEL" desc="The text shown next to the card summary to indicate that a virtual card has been generated for the credit card and is enabled. Virtual cards are credit cards generated from the actual cards and provide extra security.">
+    (Virtual card enabled)
+  </message>
+  <message name="IDS_AUTOFILL_VIRTUAL_CARD_UNENROLL_DIALOG_TITLE" desc="The text shown as the title of the virtual card unenroll dialog.">
+    Remove your virtual card
+  </message>
+  <message name="IDS_AUTOFILL_VIRTUAL_CARD_UNENROLL_DIALOG_LABEL" desc="The text shown inside the virtual card unenroll dialog. Has a link.">
+    You will no longer be able to use your virtual card with Google Pay. <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>Learn about virtual cards<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_AUTOFILL_VIRTUAL_CARD_UNENROLL_DIALOG_CONFIRM_BUTTON_LABEL" desc="The text shown in the confirm button of the virtual card unenroll dialog.">
+    Remove
   </message>
   <message name="IDS_SETTINGS_ADDRESS_REMOVE" desc="Label for a context menu item that removes the selected address." meaning="Remove selected address.">
     Remove
@@ -288,14 +332,14 @@
   <message name="IDS_SETTINGS_CREDIT_CARD_REMOVE" desc="Label for a context menu item that removes the selected credit card." meaning="Remove selected credit card.">
     Remove
   </message>
-  <message name="IDS_SETTINGS_CREDIT_CARD_CLEAR" desc="Label for a context menu item clears the locally cached credit card that is also saved on Brave Payments. Clicking this will NOT remove the credit card from Brave Payments.">
+  <message name="IDS_SETTINGS_CREDIT_CARD_CLEAR" desc="Label for a context menu item clears the locally cached credit card that is also saved on Google Payments. Clicking this will NOT remove the credit card from Google Payments.">
     Clear copy
   </message>
   <message name="IDS_SETTINGS_EDIT_CREDIT_CARD_TITLE" desc="The title for the dialog that's shown when editing a card. This can be either credit, debit, or prepaid card..">
     Edit card
   </message>
   <message name="IDS_SETTINGS_PAYMENTS_MANAGE_CREDIT_CARDS" desc="Shown in the payments section of settings. Descriptive text to inform the user that credit cards can be accessed online. Has a link.">
-   To add or manage Brave Pay payment methods, visit your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
+   To add or manage Google Pay payment methods, visit your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
     <message name="IDS_SETTINGS_PAYMENTS_SAVED_TO_THIS_DEVICE_ONLY" desc="Shown in the payments section of settings. Descriptive text to inform the user that this credit card will be saved to local device only.">
    This card will be saved to this device only
@@ -303,17 +347,17 @@
   <message name="IDS_SETTINGS_ADD_CREDIT_CARD_TITLE" desc="The title for the dialog that's shown when entering the information for a new card. This can be either credit, debit, or prepaid card.">
     Add card
   </message>
-  <message name="IDS_SETTINGS_MIGRATABLE_CARDS_LABEL" desc="Label for the field to migrate the locally cached credit card to Brave Payments. Clicking this will upload migratable credit cards to Brave Payments.">
+  <message name="IDS_SETTINGS_MIGRATABLE_CARDS_LABEL" desc="Label for the field to migrate the locally cached credit card to Google Payments. Clicking this will upload migratable credit cards to Google Payments.">
     Save cards in your Brave sync chain
   </message>
-  <message name="IDS_SETTINGS_SINGLE_MIGRATABLE_CARD_INFO" desc="Display text under the save cards to Brave Pay label. This text indicates one of local cards can only be used on this device.">
+  <message name="IDS_SETTINGS_SINGLE_MIGRATABLE_CARD_INFO" desc="Display text under the save cards to Google Pay label. This text indicates one of local cards can only be used on this device.">
     Right now, you have one card that can only be used on this device
   </message>
-  <message name="IDS_SETTINGS_MULTIPLE_MIGRATABLE_CARDS_INFO" desc="Display text under the save cards to Brave Pay label. This text indicates user has multiple migratable cards on this device.">
+  <message name="IDS_SETTINGS_MULTIPLE_MIGRATABLE_CARDS_INFO" desc="Display text under the save cards to Google Pay label. This text indicates user has multiple migratable cards on this device.">
     Right now, you have some cards that can only be used on this device
   </message>
   <message name="IDS_SETTINGS_REMOTE_CREDIT_CARD_LINK_LABEL" desc="The title and ARIA (accessibility) label for a link in chrome://settings/payments that opens the credit card settings on https://pay.google.com. Note that the ARIA role and the link icon already convey that this is a link that will be opened when you click on it. Therefore, the message does not contain a verb.">
-    Your payment methods in Brave Pay
+    Your payment methods in Google Pay
   </message>
   <message name="IDS_SETTINGS_NAME_ON_CREDIT_CARD" desc="The title for the input that lets users modify the name on the credit card.">
     Name on card
@@ -420,6 +464,9 @@
   <message name="IDS_SETTINGS_COMPROMISED_PASSWORDS_ADVICE" desc="Description of what user should do after compromised passwords are found.">
     Change these passwords immediately to keep your account safe:
   </message>
+  <message name="IDS_SETTINGS_MUTED_PASSWORDS" desc="Text for a label showing how many passwords were discarded / muted from compromised strings warnings.">
+    Dismissed warnings (<ph name="MUTED_PASSWORDS">$1<ex>2</ex></ph>)
+  </message>
   <message name="IDS_SETTINGS_WEAK_PASSWORDS" desc="Title for list of weak credentials after passwords bulk check.">
     Weak passwords
   </message>
@@ -450,6 +497,12 @@
   <message name="IDS_SETTINGS_COMPROMISED_PASSWORD_REMOVE" desc="Action menu item for a row which displays a compromised password. It will open a confirmation dialog for deleting the password.">
     Remove password
   </message>
+  <message name="IDS_SETTINGS_COMPROMISED_PASSWORD_MUTE" desc="Action menu item for a row which displays a compromised password. It will mute/dismiss the compromised password warning.">
+    Dismiss warning
+  </message>
+  <message name="IDS_SETTINGS_COMPROMISED_PASSWORD_UNMUTE" desc="Action menu item for a row which displays a muted/dismissed compromised password. It will unmute/restore the compromised password and reenable the warning.">
+    Restore warning
+  </message>
   <message name="IDS_SETTINGS_REMOVE_COMPROMISED_PASSWORD_CONFIRMATION_TITLE" desc="Compromised password remove dialog conformation title.">
     Remove password?
   </message>
@@ -475,7 +528,7 @@
     Auto Sign-in
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_AUTOSIGNIN_CHECKBOX_DESC" desc="Text that describes the 'Auto Sign-in' functionality to users.">
-    Automatically sign in to websites using stored credentials. If disabled, you will be asked for confirmation every time before signing in to a website.
+    Automatically sign in to sites and apps using stored credentials. If turned off, you'll be asked for confirmation every time before signing in to a site or app.
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_LEAK_DETECTION_LABEL" desc="Label for a checkbox that allows users to choose whether chrome should check that credentials have been part of a leak.">
     Warn you if passwords are exposed in a data breach
@@ -501,12 +554,6 @@
   <message name="IDS_SETTINGS_PASSWORD_SEARCH" desc="Placeholder/label for the text input field that allows a user to filter saved passwords.">
     Search passwords
   </message>
-  <message name="IDS_SETTINGS_PASSWORD_SHOW" desc="A tool tip on a button that reveals the saved password.">
-    Show password
-  </message>
-  <message name="IDS_SETTINGS_PASSWORD_HIDE" desc="A tool tip on a button that hides the saved password that is being shown.">
-    Hide password
-  </message>
   <message name="IDS_SETTINGS_PASSWORDS_VIEW_DETAILS_TITLE" desc="Title for the dialog that shows password details. This dialog lets a user see a saved password and copy the username.">
     Password details
   </message>
@@ -523,13 +570,31 @@
     Make sure the password you are saving matches your password for <ph name="WEBSITE">$1<ex>airbnb.com</ex></ph>
   </message>
   <message name="IDS_SETTINGS_PASSWORD_USERNAME_ALREADY_USED" desc="An error message when user tried editing the username to a value which is already used for the same site.">
-    You already saved this username for this site
+    You already saved a password with this username for <ph name="WEBSITE">$1<ex>website.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_VIEW_EXISTING_PASSWORD" desc="A link text shown together with an error message when user tried editing the username to a value which is already used for the same site. On click shows existing password editor.">
+    View password
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_VIEW_EXISTING_PASSWORD_ARIA_DESCRIPTION" desc="An accessibility description for a link text shown together with an error message when user tried editing the username to a value which is already used for the same site. On click shows existing password editor.">
+    View password with username <ph name="USERNAME">$1<ex>username</ex></ph> for <ph name="WEBSITE">$2<ex>website.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_MISSING_TLD" desc="An error message when user entered a URL without a top-level domain as a site for a new password. It suggests to use the same value but with common top level domain." meaning="Suggesting user to add the top-level domain in the website text.">
+    Did you mean <ph name="WEBSITE">$1<ex>twitter.com</ex></ph>?
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_ADD_TITLE" desc="The title for a dialog, which allows a user to add a new password. This dialog includes other details, such as username and website.">
+    Add password
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_ADD_FOOTNOTE" desc="A footnote for the dialog which allows the user to add a new password.">
+    Make sure you're saving your current password for this site
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_ADD_STORE_OPTION_ACCOUNT" desc="An option of the store picker shown in the add password dialog if saving to the account">
+    Save in your Brave sync chain (<ph name="EMAIL">$1<ex>username@gmail.com</ex></ph>)
   </message>
   <message name="IDS_SETTINGS_PASSWORD_COPY" desc="Label for a context menu item that allows to copy the selected password into clipboard.">
     Copy password
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_WEBSITE" desc="Label for the website a password is for when editing a password.">
-    Website
+    Site
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_ANDROID_APP" desc="Label for the app a password is for when displaying a credential and the real app display name could not be obtained.">
       App (<ph name="ANDROID_PACKAGE_NAME">$1<ex>com.netflix.mediaclient</ex></ph>)
@@ -575,6 +640,9 @@
   </message>
   <message name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD_FROM_ACCOUNT_AND_DEVICE" desc="Label for an undo tooltip following deletion of a password from the account and the device.">
     Password deleted from this device and your Brave sync chain
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_COPIED_TO_CLIPBOARD" desc="Label for a tooltip following copying a password to the clipboard.">
+    Password copied to clipboard
   </message>
   <message name="IDS_SETTINGS_PASSWORD_MOVE_PASSWORDS_TO_ACCOUNT" desc="Message displayed in the moving multiple passwords to the user Brave sync chain banner.">
     To easily use them on all your devices, you can move them to your Brave sync chain
@@ -636,19 +704,19 @@
     See and manage passwords saved on this device
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_MANAGE_PASSWORDS" desc="Shown in the passwords section of settings. Descriptive text to inform that passwords can be accessed online. Has a link.">
-    View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
+    View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_MANAGE_PASSWORDS_PLAINTEXT" desc="Shown in the passwords section of settings. Descriptive text to inform that passwords can be accessed online.">
     View and manage saved passwords in your Brave sync chain
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_OPT_IN_ACCOUNT_STORAGE_BODY" desc="Description before a button in the passwords section of settings which triggers opt in to the account-scoped password storage.">
-    You can also show passwords from your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph> here
+    You can also show passwords from your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph> here
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_OPT_IN_ACCOUNT_STORAGE_LABEL" desc="Label for a button in the passwords section of settings which triggers opt in to the account-scoped password storage.">
     Show
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_OPT_OUT_ACCOUNT_STORAGE_BODY" desc="Description before a button in the passwords section of settings which triggers opt out of the account-scoped password storage.">
-    Showing passwords from your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
+    Showing passwords from your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_OPT_OUT_ACCOUNT_STORAGE_LABEL" desc="Label for a button in the passwords section of settings which triggers opt out of the account-scoped password storage.">
     Remove from device
@@ -689,7 +757,21 @@
   <message name="IDS_SETTINGS_PASSWORD_ROW_FEDERATED_MORE_ACTIONS" desc="The ARIA (accessibility) message for the More Actions button, which sits in every row of the password list. For this row does not include a password, only information of the account. It opens a menu with a list of actions, which apply to the account presented on this row.">
     More actions, saved account for <ph name="USERNAME">$1<ex>example@gmail.com</ex></ph> on <ph name="DOMAIN">$2<ex>www.google.com</ex></ph>
   </message>
-
+  <message name="IDS_SETTINGS_TRUSTED_VAULT_BANNER_LABEL" desc="Label for the on-device encryption banner in settings.">
+    On-device encryption
+  </message>
+  <message name="IDS_SETTINGS_TRUSTED_VAULT_BANNER_SUB_LABEL_OFFER_OPT_IN" desc="Sub-label for the on-device encryption banner in settings, when the user is being offered to opt in.">
+    For added safety, encrypt passwords on your device before they‘re saved to Brave Password Manager
+  </message>
+  <message name="IDS_SETTINGS_TRUSTED_VAULT_BANNER_SUB_LABEL_OPTED_IN" desc="Sub-label for the on-device encryption banner in settings, when the user is already opted in.">
+    Your passwords are encrypted on your device before they‘re saved to Brave Password Manager
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_SHOW_PASSWORD_A11Y" desc="The ARIA (accessibility) message for the 'Show Password' button, which sits in every row of the password list. For this row does not include a password, only information of the account. Reveals password when clicked.">
+    Show password for <ph name="USERNAME">$1<ex>example@gmail.com</ex></ph> on <ph name="DOMAIN">$2<ex>www.google.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_HIDE_PASSWORD_A11Y" desc="The ARIA (accessibility) message for the 'Hide Password' button, which sits in every row of the password list. For this row does not include a password, only information of the account. Hides password when clicked.">
+    Hide password for <ph name="USERNAME">$1<ex>example@gmail.com</ex></ph> on <ph name="DOMAIN">$2<ex>www.google.com</ex></ph>
+  </message>
 
   <!-- Default Browser Page -->
   <if expr="not chromeos and not lacros">
@@ -936,16 +1018,16 @@
     Time range
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC" desc="Description in the footer of the Clear Browsing Data dialog when the user is syncing.">
-    To clear browsing data from this device only, while keeping it in your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank" rel="noopener noreferrer"&gt;</ph>sign out<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from this device only, while keeping it in your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>sign out<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC_ERROR" desc="Description in the footer of the Clear Browsing Data dialog when there is a sync error.">
-    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank" rel="noopener noreferrer"&gt;</ph>visit sync settings<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>visit sync settings<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC_PASSPHRASE_ERROR" desc="Description in the footer of the Clear Browsing Data dialog when there is a sync passphrase error.">
-    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank" rel="noopener noreferrer"&gt;</ph>enter your passphrase<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>enter your passphrase<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC_PAUSED" desc="Description in the footer of the Clear Browsing Data dialog when sync is paused.">
-    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank" rel="noopener noreferrer"&gt;</ph>sign in<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>sign in<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY" desc="Checkbox for deleting Browsing History">
     Browsing history
@@ -957,13 +1039,28 @@
     Signs you out of most sites. You'll stay signed in to your Brave sync chain so your synced data can be cleared.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY" desc="A subtext for the basic tab explaining browsing history.">
-    Clears history and autocompletions in the address bar.
+    Clears history, including in the search box
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SIGNED_IN" desc="A description explaining other forms of activity for signed in users.">
-    Clears history and autocompletions in the address bar. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Clears history in the search box. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SIGNED_IN_NO_LINK" desc="A description explaining from which devices history will be cleared.">
+    Clears history from all synced devices
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SYNCED" desc="A description for the basic tab explaining browsing history for users with history sync.">
     Clears history from all signed-in devices. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_CLEAR_GOOGLE_SEARCH_HISTORY_GOOGLE_DSE" desc="A description explaining that search history and other forms of activity can be cleared through the Brave account.">
+    <ph name="BEGIN_LINK_SEARCH">&lt;a target="_blank" href="$1"&gt;</ph>Search history<ph name="END_LINK_SEARCH">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" href="$2"&gt;</ph>other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Brave sync chain when you're signed in. You can delete them anytime.
+  </message>
+  <message name="IDS_SETTINGS_CLEAR_GOOGLE_SEARCH_HISTORY_NON_GOOGLE_DSE" desc="A description explaining that other forms of activity can be cleared through the Brave account.">
+    <ph name="BEGIN_LINK_GOOGLE">&lt;a target="_blank" href="$1"&gt;</ph>Other forms of activity<ph name="END_LINK_GOOGLE">&lt;/a&gt;</ph> may be saved in your Brave sync chain when you're signed in. You can delete them anytime.
+  </message>
+  <message name="IDS_SETTINGS_CLEAR_NON_GOOGLE_SEARCH_HISTORY_PREPOPULATED_DSE" desc="A description informing the user about the way to clear their search history when their Default Search Engine is not Brave.">
+    Your search engine is <ph name="DSE">$1<ex>Bing</ex></ph>. See their instructions for deleting your search history, if applicable.
+  </message>
+  <message name="IDS_SETTINGS_CLEAR_NON_GOOGLE_SEARCH_HISTORY_NON_PREPOPULATED_DSE" desc="A description informing the user about the way to clear their search history when their Default Search Engine is not Brave.">
+    See your search engine's instructions for deleting your search history, if applicable
   </message>
   <message name="IDS_SETTINGS_CLEAR_DOWNLOAD_HISTORY" desc="Checkbox for deleting Download History">
     Download history
@@ -1025,6 +1122,35 @@
     Open certain file types automatically after downloading
   </message>
 
+  <!-- Downloads Page: Web Drive Connection -->
+  <message name="IDS_SETTINGS_DOWNLOAD_CONNECTION_TITLE" desc="Label for the checkbox which enables a prompt for the user to choose a download location for each download instead of using the default.">
+    <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph> Connection
+  </message>
+  <message name="IDS_SETTINGS_DOWNLOAD_CONNECTION_LEARN_MORE" desc="Text to be displayed to take user to relevant CBCM article.">
+    Learn more
+  </message>
+  <message name="IDS_SETTINGS_DOWNLOAD_CONNECTION_UNLINKED_MESSAGE" desc="Meesage to be displayed when downloads are set to be routed to web drive by CBCM policy but the user has not linked a web drive account yet.">
+    For data safety and security, your organization requries all eligible downloads to be saved to your organization's <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph> account.
+  </message>
+<message name="IDS_SETTINGS_DOWNLOAD_CONNECTION_SIGN_IN_BUTTON" desc="Label for the checkbox which enables a prompt for the user to choose a download location for each download instead of using the default.">
+    Sign in to <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_DOWNLOAD_CONNECTION_LINKED_MESSAGE" desc="Meesage to be displayed when downloads are set to be routed to web drive by CBCM policy and the user has linked a web drive account already.">
+    All eligible downloads are routed to your organization's <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph> account.
+  </message>
+  <message name="IDS_SETTINGS_DOWNLOAD_CONNECTION_SIGN_OUT_BUTTON" desc="Label for the checkbox which enables a prompt for the user to choose a download location for each download instead of using the default.">
+    Unlink Account
+  </message>
+  <message name="IDS_SETTINGS_DOWNLOAD_CONNECTION_ACCOUNT_TITLE" desc="Label for the checkbox which enables a prompt for the user to choose a download location for each download instead of using the default.">
+    Account
+  </message>
+  <message name="IDS_SETTINGS_DOWNLOAD_WEB_DRIVE_LOCATION" desc="Label for the input which allows the user to specify the default download directory, if the file system connector is enabled." meaning="File location">
+    <ph name="WEB_DRIVE">$1<ex>Google Drive</ex></ph> Location
+  </message>
+  <message name="IDS_SETTINGS_DOWNLOAD_LOCAL_LOCATION" desc="Label for the input which allows the user to specify the default download directory, if the file system connector is enabled." meaning="File location">
+    Local Location
+  </message>
+
   <!-- On Startup Page -->
   <message name="IDS_SETTINGS_ON_STARTUP" desc="Name of the on startup page.">
     On startup
@@ -1037,6 +1163,9 @@
   </message>
   <message name="IDS_SETTINGS_ON_STARTUP_OPEN_SPECIFIC" desc="Radio button option to open a specific set of pages.">
     Open a specific page or set of pages
+  </message>
+  <message name="IDS_SETTINGS_ON_STARTUP_CONTINUE_AND_OPEN_SPECIFIC" desc="Radio button option to continue where you left off and open a specific set of pages.">
+    Continue where you left off and open a specific set of pages
   </message>
   <message name="IDS_SETTINGS_ON_STARTUP_USE_CURRENT" desc="Button to use current pages.">
     Use current pages
@@ -1067,28 +1196,9 @@
   <message name="IDS_SETTINGS_LANGUAGES_PAGE_TITLE" desc="Name of the settings page which displays language preferences.">
     Languages
   </message>
-  <message name="IDS_SETTINGS_LANGUAGES_LANGUAGES_LIST_TITLE" desc="Title for the currently used language in the header for the collapsible list of languages.">
-    Language
-  </message>
   <message name="IDS_SETTINGS_LANGUAGE_SEARCH" desc="Placeholder/label for the text input field that allows a user to filter languages.">
     Search languages
   </message>
-  <message name="IDS_SETTINGS_LANGUAGES_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing the language options. Only visible by screen reader software.">
-    Show language options
-  </message>
-  <if expr="chromeos">
-    <message name="IDS_SETTINGS_LANGUAGES_BROWSER_LANGUAGES_LIST_ORDERING_INSTRUCTIONS" desc="Explanatory message about ordering the list of languages.">
-      Add languages or reorder list.
-    </message>
-  <message name="IDS_SETTINGS_LANGUAGES_OPEN_CHROME_OS_SETTINGS_LABEL" desc="Label for the section that allow users to open languages settings in Chrome OS.">
-    Manage languages in Chrome OS settings
-  </message>
-  </if>
-  <if expr="not chromeos">
-    <message name="IDS_SETTINGS_LANGUAGES_BROWSER_LANGUAGES_LIST_ORDERING_INSTRUCTIONS" desc="Explanatory message about ordering the list of languages.">
-      Order languages based on your preference
-    </message>
-  </if>
   <message name="IDS_SETTINGS_LANGUAGES_LANGUAGES_LIST_MOVE_TO_TOP" desc="Label for the menu item that moves the language up to the top of the list of languages.">
     Move to the top
   </message>
@@ -1104,86 +1214,110 @@
   <message name="IDS_SETTINGS_LANGUAGES_LANGUAGES_ADD" desc="Button under the list of enabled languages which opens a dialog that lets the user enable additional languages.">
     Add languages
   </message>
-  <message name="IDS_SETTINGS_LANGUAGES_OFFER_TO_TRANSLATE_IN_THIS_LANGUAGE" desc="The label for a checkbox which indicates whether or not pages in this language should be translated by default.">
-    Offer to translate pages in this language
-  </message>
-  <message name="IDS_SETTINGS_LANGUAGES_OFFER_TO_ENABLE_TRANSLATE" desc="The label of the check-box that enables the prompt to translate a page.">
-    Offer to translate pages that aren't in a language you read
-  </message>
-  <message name="IDS_SETTINGS_LANGUAGES_TRANSLATE_TARGET" desc="The label under a language's name in a list of enabled languages indicating that pages will be translated to this language.">
-    This language is used when translating pages
-  </message>
-  <message name="IDS_SETTINGS_LANGUAGES_MANAGED_DIALOG_TITLE" desc="Title text for the dialog informing users that the language they tried modifying is managed.">
-    Language is set by your Organization
-  </message>
-  <message name="IDS_SETTINGS_LANGUAGES_MANAGED_DIALOG_BODY" desc="Body text for the dialog informing users that the language they tried modifying is managed.">
-    Your administrator has set a default language which cannot be modified.
-  </message>
-  <if expr="chromeos">
-    <message name="IDS_SETTINGS_LANGUAGES_KEYBOARD_APPS" desc="Title for the list of keyboard apps installed via Play Store by the user.">
-      Keyboard apps
-    </message>
-  </if>
   <message name="IDS_SETTINGS_LANGUAGES_MANAGE_LANGUAGES_TITLE" desc="Name of the settings dialog which allows enabling additional languages.">
     Add languages
   </message>
-  <message name="IDS_SETTINGS_LANGUAGES_ALL_LANGUAGES" desc="Header for the list of all supported languages, which the user can use to enable languages, on the Manage Languages page.">
-    All languages
-  </message>
-  <message name="IDS_SETTINGS_LANGUAGES_ENABLED_LANGUAGES" desc="Header for the list of enabled languages, which the user can use to disable languages, on the Manage Languages page.">
-    Enabled languages
-  </message>
-  <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_TITLE" desc="Title for the section containing all the options for spell check settings. The options include picking between using the system's spell check or using Brave's web service and a list of the enabled languages which support spell checking.">
-    Spell check
-  </message>
-  <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_BASIC_LABEL" desc="Label for a type of spell check that only relies on the local built-in spell check and does not rely on sending data to Brave for suggestions.">
-    Basic spell check
-  </message>
-  <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_LABEL" desc="Label for a type of spell check that sends the text the user types to Brave for spelling suggestions.">
-    Enhanced spell check
-  </message>
-  <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_DESCRIPTION" desc="Description for the type of spell check that sends the text the user types to Brave for spelling suggestions. It is important that it is communicated that the text the user types in the browser will be sent to Brave.">
-    Uses the same spell checker that’s used in Brave search. Text you type in the browser is sent to Brave.
-  </message>
-  <if expr="not is_macosx">
-    <message name="IDS_SETTING_LANGUAGES_SPELL_CHECK_DISABLED_REASON" desc="Text that indicates to the user that spell check options are disabled because none of the languages they have added have spell check support.">
-      Spell check isn’t supported for the languages you selected
+  <if expr="not chromeos">
+    <message name="IDS_SETTINGS_LANGUAGES_LANGUAGES_LIST_TITLE" desc="Title for the currently used language in the header for the collapsible list of languages.">
+      Language
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_LANGUAGES_LIST_TITLE" desc="Title for the list of languages that support spell check, from which users can enable or disable spell check for.">
-      Use spell check for
+    <message name="IDS_SETTINGS_LANGUAGES_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing the language options. Only visible by screen reader software.">
+      Show language options
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_MANAGE" desc="Button under the dropdown of spell check languages which opens a sub-page that lets the user add or remove words to the custom list of words for spell checking.">
-      Customize spell check
+    <message name="IDS_SETTINGS_LANGUAGES_BROWSER_LANGUAGES_LIST_ORDERING_INSTRUCTIONS" desc="Explanatory message about ordering the list of languages.">
+      Order languages based on your preference
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_EDIT_DICTIONARY_TITLE" desc="Name of the settings sub-page which allows adding and remove custom words from the custom spell check dictionary.">
-      Manage spell check
+    <message name="IDS_SETTINGS_LANGUAGES_OFFER_TO_TRANSLATE_IN_THIS_LANGUAGE" desc="The label for a checkbox which indicates whether or not pages in this language should be translated by default.">
+      Offer to translate pages in this language
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_ADD_DICTIONARY_WORD" desc="Label for the text input used to add a new word to the custom spell check dictionary.">
-      Add a new word
+    <message name="IDS_SETTINGS_LANGUAGES_OFFER_TO_ENABLE_TRANSLATE" desc="The label of the check-box that enables the prompt to translate a page.">
+      Offer to translate pages that aren't in a language you read
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_ADD_DICTIONARY_WORD_BUTTON" desc="Button next to the 'add word' text input used to add the word typed by the user to the custom spell check dictionary.">
-      Add word
+    <message name="IDS_SETTINGS_LANGUAGES_TRANSLATE_TARGET" desc="The label under a language's name in a list of enabled languages indicating that pages will be translated to this language.">
+      This language is used when translating pages
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_ADD_DICTIONARY_WORD_DUPLICATE_ERROR" desc="Error message displayed to the user when the word is duplicated in the text input used to add a new word to the custom spell check dictionary.">
-      Already added
+    <message name="IDS_SETTINGS_LANGUAGES_MANAGED_DIALOG_TITLE" desc="Title text for the dialog informing users that the language they tried modifying is managed.">
+      Language is set by your Organization
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_ADD_DICTIONARY_WORD_LENGTH_ERROR" desc="Error message displayed to the user when the word is too long in the text input used to add a new word to the custom spell check dictionary.">
-      Cannot exceed 99 letters
+    <message name="IDS_SETTINGS_LANGUAGES_MANAGED_DIALOG_BODY" desc="Body text for the dialog informing users that the language they tried modifying is managed.">
+      Your administrator has set a default language which cannot be modified.
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_DELETE_DICTIONARY_WORD_BUTTON" desc="Message shown over the button to delete a custom word.">
-      Delete word
+    <message name="IDS_SETTINGS_LANGUAGES_NO_LANGUAGES_ADDED" desc="Placeholder for language list settings when no languages have been added, on the Manage Languages page.">
+      No languages added
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_DICTIONARY_WORDS" desc="Header for the list of custom dictionary words used for spell check.">
-      Custom words
+    <message name="IDS_SETTINGS_LANGUAGES_AUTOMATIC_TRANSLATE" desc="Title of Translation settings that lists languages that should be automatically translated.">
+      Automatically translate these languages
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_DICTIONARY_WORDS_NONE" desc="Placeholder that is shown when there are no custom words in the list of saved custom words dictionary.">
-      Saved custom words will appear here
+    <message name="IDS_SETTINGS_LANGUAGES_NEVER_LANGUAGES" desc="Title of Translation settings that lists languages that should never be offered to translate.">
+      Don’t offer to translate these languages
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_DICTIONARY_DOWNLOAD_FAILED" desc="Error message when spell dictionary download fails.">
-      Spell check dictionary download failed.
+    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_TITLE" desc="Title for the section containing all the options for spell check settings. The options include picking between using the system's spell check or using Brave's web service and a list of the enabled languages which support spell checking.">
+      Spell check
     </message>
-    <message name="IDS_SETTINGS_LANGUAGES_DICTIONARY_DOWNLOAD_FAILED_HELP" desc="Error message when spell dictionary download fails more than once possibly due to a network policy or configuration.">
-      Please check with your network administrator to make sure that the firewall is not blocking downloads from Brave servers.
+    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_BASIC_LABEL" desc="Label for a type of spell check that only relies on the local built-in spell check and does not rely on sending data to Brave for suggestions.">
+      Basic spell check
+    </message>
+    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_LABEL" desc="Label for a type of spell check that sends the text the user types to Brave for spelling suggestions.">
+      Enhanced spell check
+    </message>
+    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_DESCRIPTION" desc="Description for the type of spell check that sends the text the user types to Brave for spelling suggestions. It is important that it is communicated that the text the user types in the browser will be sent to Brave.">
+      Uses the same spell checker that’s used in Brave search. Text you type in the browser is sent to Brave.
+    </message>
+    <if expr="not is_macosx">
+      <message name="IDS_SETTING_LANGUAGES_SPELL_CHECK_DISABLED_REASON" desc="Text that indicates to the user that spell check options are disabled because none of the languages they have added have spell check support.">
+        Spell check isn’t supported for the languages you selected
+      </message>
+      <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_LANGUAGES_LIST_TITLE" desc="Title for the list of languages that support spell check, from which users can enable or disable spell check for.">
+        Use spell check for
+      </message>
+      <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_MANAGE" desc="Button under the dropdown of spell check languages which opens a sub-page that lets the user add or remove words to the custom list of words for spell checking.">
+        Customize spell check
+      </message>
+      <message name="IDS_SETTINGS_LANGUAGES_EDIT_DICTIONARY_TITLE" desc="Name of the settings sub-page which allows adding and remove custom words from the custom spell check dictionary.">
+        Manage spell check
+      </message>
+      <message name="IDS_SETTINGS_LANGUAGES_ADD_DICTIONARY_WORD" desc="Label for the text input used to add a new word to the custom spell check dictionary.">
+        Add a new word
+      </message>
+      <message name="IDS_SETTINGS_LANGUAGES_ADD_DICTIONARY_WORD_BUTTON" desc="Button next to the 'add word' text input used to add the word typed by the user to the custom spell check dictionary.">
+        Add word
+      </message>
+      <message name="IDS_SETTINGS_LANGUAGES_ADD_DICTIONARY_WORD_DUPLICATE_ERROR" desc="Error message displayed to the user when the word is duplicated in the text input used to add a new word to the custom spell check dictionary.">
+        Already added
+      </message>
+      <message name="IDS_SETTINGS_LANGUAGES_ADD_DICTIONARY_WORD_LENGTH_ERROR" desc="Error message displayed to the user when the word is too long in the text input used to add a new word to the custom spell check dictionary.">
+        Cannot exceed 99 letters
+      </message>
+      <message name="IDS_SETTINGS_LANGUAGES_DELETE_DICTIONARY_WORD_BUTTON" desc="Message shown over the button to delete a custom word.">
+        Delete word
+      </message>
+      <message name="IDS_SETTINGS_LANGUAGES_DICTIONARY_WORDS" desc="Header for the list of custom dictionary words used for spell check.">
+        Custom words
+      </message>
+      <message name="IDS_SETTINGS_LANGUAGES_DICTIONARY_WORDS_NONE" desc="Placeholder that is shown when there are no custom words in the list of saved custom words dictionary.">
+        Saved custom words will appear here
+      </message>
+      <message name="IDS_SETTINGS_LANGUAGES_DICTIONARY_DOWNLOAD_FAILED" desc="Error message when spell dictionary download fails.">
+        Spell check dictionary download failed.
+      </message>
+      <message name="IDS_SETTINGS_LANGUAGES_DICTIONARY_DOWNLOAD_FAILED_HELP" desc="Error message when spell dictionary download fails more than once possibly due to a network policy or configuration.">
+        Please check with your network administrator to make sure that the firewall is not blocking downloads from Brave servers.
+      </message>
+    </if>
+  </if>
+  <if expr="chromeos">
+    <if expr="reven">
+      <message name="IDS_SETTINGS_LANGUAGES_OPEN_CHROME_OS_SETTINGS_LABEL" desc="Label for the section that allow users to open languages settings in CloudReady 2.0.">
+        Manage languages in CloudReady 2.0 settings
+      </message>
+    </if>
+    <if expr="not reven">
+      <message name="IDS_SETTINGS_LANGUAGES_OPEN_CHROME_OS_SETTINGS_LABEL" desc="Label for the section that allow users to open languages settings in Chrome OS.">
+        Manage languages in Chrome OS settings
+      </message>
+    </if>
+    <message name="IDS_SETTINGS_LANGUAGES_KEYBOARD_APPS" desc="Title for the list of keyboard apps installed via Play Store by the user.">
+      Keyboard apps
     </message>
   </if>
 
@@ -1197,6 +1331,18 @@
   <message name="IDS_SETTINGS_PRIVACY_MORE" desc="Label on the expansion button to show more privacy settings.">
     More
   </message>
+  <if expr="chromeos_ash or chromeos_lacros">
+    <if expr="reven">
+      <message name="IDS_SETTINGS_SECURE_DNS_OPEN_CHROME_OS_SETTINGS_LABEL" desc="Label for the section that allow users to open Secure DNS settings in CloudReady 2.0.">
+        Manage secure DNS in CloudReady 2.0 settings
+      </message>
+    </if>
+    <if expr="not reven">
+      <message name="IDS_SETTINGS_SECURE_DNS_OPEN_CHROME_OS_SETTINGS_LABEL" desc="Label for the section that allow users to open Secure DNS settings in Chrome OS.">
+        Manage secure DNS in Chrome OS settings
+      </message>
+    </if>
+  </if>
 
   <!-- Privacy Sandbox -->
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_TITLE" desc="The title of the Privacy Sandbox page. 'Privacy Sandbox' is a noun phrase (title case).">
@@ -1205,29 +1351,23 @@
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_HEADING" desc="The heading displayed at the top of the Privacy Sandbox page. 'Privacy Sandbox' is a noun phrase (title case).">
     About Privacy Sandbox
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_EXPLANATION1" desc="Part 1 of the explanation of the Privacy Sandbox, shown on the Privacy Sandbox Page.">
-    Privacy Sandbox is an ongoing initiative to preserve the open web that will help safeguard you from tracking mechanisms.
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_EXPLANATION1_PHASE2" desc="Part 1 of the phase 2 explanation of the Privacy Sandbox, shown on the Privacy Sandbox Page. The 'Privacy Sandbox' link navigates the user to a page with more details.">
+    With <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Privacy Sandbox<ph name="END_LINK">&lt;/a&gt;</ph>, Brave is developing new technologies to safeguard you from cross-site tracking while preserving the open web.
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_EXPLANATION2" desc="Part 2 of the explanation of the Privacy Sandbox, shown on the Privacy Sandbox Page.">
-    Today, websites rely on many technologies, like third-party cookies, for important services like showing relevant ads and measuring a site’s performance.
-  </message>
-  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_EXPLANATION3" desc="Part 3 of the explanation of the Privacy Sandbox, shown on the Privacy Sandbox Page.">
-    Privacy Sandbox preserves the vitality of the open web by creating better ways to perform these services—without breaking sites, and while preventing you from being surreptitiously tracked across the web.
-  </message>
-  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_EXPLANATION4" desc="Part 4 of the explanation of the Privacy Sandbox, shown on the Privacy Sandbox Page. The 'Learn more' link navigates the user to a page with more details.">
-    Privacy Sandbox is still in active development and is available in selected regions. For now, sites may try out Privacy Sandbox while continuing to use current web technologies like third-party cookies. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_EXPLANATION2_PHASE2" desc="Part 2 of the phase 2 explanation of the Privacy Sandbox, shown on the Privacy Sandbox Page. The 'Privacy Sandbox' link navigates the user to a page with more details.">
+   Privacy Sandbox trials are still in active development and are available in selected regions. For now, sites may try out Privacy Sandbox while continuing to use current web technologies like third-party cookies.
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_SETTING_TITLE" desc="Title of the description of the setting to enable or disable the Privacy Sandbox.">
     Privacy Sandbox trials
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_SETTING_EXPLANATION1" desc="Part 1 of the explanation of the setting to enable or disable the Privacy Sandbox.">
-    When enabled, sites may use the privacy-preserving techniques shown here to provide their content and services. These include alternatives to cross-site tracking. More trials may be added over time.
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_SETTING_EXPLANATION1_PHASE2" desc="Part 1 of the phase 2 explanation of the setting to enable or disable the Privacy Sandbox.">
+    When on, sites may use the privacy-preserving techniques shown here to provide their content and services. These include alternatives to cross-site tracking. More trials may be added over time.
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_SETTING_EXPLANATION2" desc="Part 2 of the explanation of the setting to enable or disable the Privacy Sandbox.">
-    Advertisers can learn when thousands of users share a similar interest—like a crowd at a concert—and select ads for the crowd, rather than an individual profile.
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_SETTING_EXPLANATION2_PHASE2" desc="Part 2 of the phase 2 explanation of the setting to enable or disable the Privacy Sandbox.">
+    Advertisers and publishers can use FLoC, described later on this page.
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_SETTING_EXPLANATION3" desc="Part 3 of the explanation of the setting to enable or disable the Privacy Sandbox.">
-    Advertisers can study the effectiveness of ads in a way that does not track you across sites.
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_SETTING_EXPLANATION3_PHASE2" desc="Part 2 of the phase 2 explanation of the setting to enable or disable the Privacy Sandbox.">
+    Advertisers and publishers can study the effectiveness of ads in a way that does not track you across sites.
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_DETAILS" desc="Label of a button in the Privacy Sandbox page that leads the user to more details about the Privacy Sandbox.">
     Details
@@ -1238,11 +1378,240 @@
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_TRIALS_DISABLED" desc="A short description that informs the user that the Privacy Sandbox trial features are disabled.">
     Trial features are off
   </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_HEADING" desc="The heading of the card which displays the user's Federated Learning of Cohorts (FLoC) settings">
+    FLoC
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_EXPLANATION" desc="Explanation of Federated Learning of Cohorts (FLoC) which appears at the top of the FLoC settings card. The some regions link goes to a site indicating where FLoC is currently available">
+    When on and the status is active, Brave uses your browsing history over 7 days to determine a group, or “cohort”, that you’re in. Advertisers can select ads for the group. Your browsing history is kept private on your device. This trial is active only in
+    <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>some regions<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_FLOC_TRIAL_ACTIVE" desc="Sentence indicating that FLoC is only available in some regions, including a link to a page that describes exactly what regions it is available. This will only every appear directly after another sentence.">
+    This trial is active only in <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>some regions<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_STATUS" desc="The text used to label the user's current Federated Learning of Cohorts (FLoC) trial status">
+    Status
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_COHORT" desc="The text used to label the user's current Federated Learning of Cohorts (FLoC) cohort">
+    Group number
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_COHORT_NEXT_UPDATE" desc="The text used to label when the user's current Federated Learning of Cohorts (FLoC) cohort will next be updated">
+    Next update
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_PAGE_FLOC_RESET_COHORT" desc="The text used to label the button which allows a user to reset their Federated Learning of Cohorts (FLoC) cohort identifier">
+    Reset group
+  </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_COOKIES_DIALOG" desc="Text of a dialog shown to users when they interacted with cookies to make them aware of the Privacy Sandbox.">
     Learn about and control new technologies that aim to replace third-party cookies
   </message>
   <message name="IDS_SETTINGS_PRIVACY_SANDBOX_COOKIES_DIALOG_MORE" desc="Label on the button in the dialog shown to users when they interacted with cookies to make them aware of the Privacy Sandbox.">
     More
+  </message>
+  <!-- TODO(crbug.com/1286276) These strings are not final yet and therefore marked as translateable="false" -->
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_TRIALS_TITLE" translateable="false" desc="Title of the Trails section of the privacy sandbox settings.">
+    Trials
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_TRIALS_SUMMARY" translateable="false" desc="Summary of the Trails section of the privacy sandbox settings.">
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_PERSONALIZATION_TITLE" translateable="false" desc="Title of the Ad Personalization section of the privacy sandbox settings.">
+    Browser-based ad personalization
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_PERSONALIZATION_SUMMARY" translateable="false" desc="Summary of the Ad Personalization section of the privacy sandbox settings.">
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_MEASUREMENT_TITLE" translateable="false" desc="Title of the Ad Measurement section of the privacy sandbox settings.">
+    Ad measurement
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_MEASUREMENT_SUMMARY" translateable="false" desc="Summary of the Ad Measurement section of the privacy sandbox settings.">
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_SPAM_AND_FRAUD_TITLE" translateable="false" desc="Title of the Spam and Fraud section of the privacy sandbox settings.">
+    Spam &amp; fraud reduction
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_SPAM_AND_FRAUD_SUMMARY" translateable="false" desc="Summary of the Spam and Fraud section of the privacy sandbox settings.">
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_TITLE" translateable="false" desc="Title of the dialog to learn more about ad personalization.">
+    About Browser-based ad personalization
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_BROWSER_INTERESTS" translateable="false" desc="Title of the browser-based interests section of the dialog to learn more about ad personalization.">
+    Your interests as estimated by your browser
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_WEBSITE_INTERESTS" translateable="false" desc="Title of the website-based interests section of the dialog to learn more about ad personalization.">
+    Your interests as defined by sites you visit
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_DATA_TYPES" translateable="false" desc="Title of the data types subsection of the dialog to learn more about ad personalization.">
+    What data is used:
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_DATA_USAGE" translateable="false" desc="Title of the data usage subsection of the dialog to learn more about ad personalization.">
+    How we use this data:
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_LEARN_MORE_DIALOG_DATA_MANAGEMENT" translateable="false" desc="Title of the data management subsection of the dialog to learn more about ad personalization.">
+    How you can manage your data:
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_PERSONALIZATION_DIALOG_TITLE" translateable="false" desc="Title of the 'ad personalization' dialog.">
+    Browser-based ad personalization
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_PERSONALIZATION_DIALOG_DESCRIPTION" translateable="false" desc="Description of the 'ad personalization' dialog.">
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_PERSONALIZATION_DIALOG_BROWSER_INTERESTS" translateable="false" desc="Title of the browser-based interests section of the 'ad personalization' dialog.">
+    Your interests as estimated by your browser
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_PERSONALIZATION_DIALOG_BROWSER_INTERESTS_EMPTY" translateable="false" desc="Description of the empty state of the browser-based interests section of the 'ad personalization' dialog.">
+    A list of interests will appear here as you browse the web
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_PERSONALIZATION_DIALOG_WEBSITE_INTERESTS" translateable="false" desc="Title of the website-based interests section of the 'ad personalization' dialog.">
+    Sites you visit that define your interests
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_PERSONALIZATION_DIALOG_WEBSITE_INTERESTS_EMPTY" translateable="false" desc="Description of the empty state of the website-based interests section of the 'ad personalization' dialog.">
+    A list of sites you've visited will appear here as you browse the web
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_MEASUREMENT_DIALOG_TITLE" translateable="false" desc="Title of the 'ad measurement' dialog.">
+    Ad measurement
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_MEASUREMENT_DIALOG_DESCRIPTION" translateable="false" desc="Main description of the 'ad measurement' dialog.">
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_AD_MEASUREMENT_DIALOG_CONTROL_MEASUREMENT" translateable="false" desc="Control measurement description of the 'ad measurement' dialog.">
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>browsing history<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_SPAM_AND_FRAUD_DIALOG_TITLE" translateable="false" desc="Title of the 'spam and fraud reduction' dialog.">
+    Spam and fraud reduction
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_SPAM_AND_FRAUD_DIALOG_DESCRIPTION1" translateable="false" desc="First description of the 'spam and fraud reduction' dialog.">
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_SPAM_AND_FRAUD_DIALOG_DESCRIPTION2" translateable="false" desc="Second description of the 'spam and fraud reduction' dialog.">
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_SANDBOX_SPAM_AND_FRAUD_DIALOG_DESCRIPTION3" translateable="false" desc="Third description of the 'spam and fraud reduction' dialog.">
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+  </message>
+
+  <!-- Privacy Guide -->
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_LABEL" desc="Label of the row in the Brave privacy and security settings page that leads to the privacy guide.">
+    Privacy Guide
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_SUBLABEL" desc="Sublabel of the row in the Brave privacy and security of Brave settings that leads to the privacy guide.">
+    Review key privacy and security controls
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_PROMO_HEADER" desc="Text of a button on a card in the settings page that starts the privacy guide feature.">
+    Take the Privacy Guide
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_PROMO_START_BUTTON" desc="Text of a button on a card in the settings page that starts the privacy guide feature.">
+    Get started
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_BACK_BUTTON" desc="Text of a button in the privacy guide that reverses to the previous step in the privacy guide.">
+    Back
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_STEPS" is_accessibility_with_no_ui="true" desc="Spoken by screenreaders indicating what step the user is in and how many steps there are in total.">
+    Step <ph name="CURRENT_STEP">$1<ex>1</ex></ph> of <ph name="TOTAL_STEPS">$2<ex>2</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_NEXT_BUTTON" desc="Text of a button in the privacy guide that advances to the next step in the privacy guide.">
+    Next
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_FEATURE_DESCRIPTION_HEADER" desc="Header of a description text that describes the behavior of a particular feature. This description is shown to users alongside the feature itself in the privacy guide.">
+    When on
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_THINGS_TO_CONSIDER" desc="Header of a text column that describes things users should consider about a feature. This description is shown to users alongside the feature itself in the privacy guide.">
+    Things to consider
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_WELCOME_CARD_HEADER" desc="A header shown at the top of the welcome card in the privacy guide, explaining to users what privacy guide is.">
+    A guide of your privacy choices
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_WELCOME_CARD_SUB_HEADER" desc="A subheader shown at on the welcome card in the privacy guide, explaining to users what privacy guide is.">
+    Take a guided tour of key privacy and security controls. For more options, go to individual settings.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_HEADER" desc="A header shown at the top of the completion card in the privacy guide that informs users that they completed the privacy guide.">
+    Review complete
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_SUB_HEADER" desc="A subheader shown at the top of the completion card in the privacy guide that informs users that they can explore more settings or complete the privacy guide.">
+    Explore more settings below or finish now
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_LEAVE_BUTTON" desc="Text of a button in the completion card in the privacy guide that leads the user back to Brave settings.">
+    Done
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_PRIVACY_SANDBOX_LABEL" desc="Text of the Privacy Sandbox label in the completion card of the privacy guide.">
+    Privacy Sandbox trial
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_WAA_LABEL" desc="Text of the Web and App Activity label in the completion card of the privacy guide.">
+    Web &amp; App Activity
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_MSBB_CARD_HEADER" desc="Header of the 'make searches and browsing better' card in the privacy guide.">
+    Choose your search and browsing quality
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_MSBB_FEATURE_DESCRIPTION1" desc="A part of the feature description of 'make searches and browsing better' in the privacy guide.">
+    You'll browse faster because content is proactively loaded based on your current webpage visit
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_MSBB_FEATURE_DESCRIPTION2" desc="A part of the feature description of 'make searches and browsing better' in the privacy guide.">
+    You'll get improved suggestions in the address bar
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_MSBB_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of 'make searches and browsing better' in the privacy guide.">
+    URLs you visit are sent to Brave to predict what sites you might visit next
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_CLEAR_ON_EXIT_CARD_HEADER" desc="Header of the 'clear cookies on exit' card in the privacy guide.">
+    Review automatic data clearing
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_HISTORY_SYNC_CARD_HEADER" desc="Header of the history sync card in the privacy guide.">
+    Choose whether to sync history
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_HISTORY_SYNC_SETTING_LABEL" desc="Label of the history sync settings toggle in the privacy guide.">
+    History sync
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_HISTORY_SYNC_FEATURE_DESCRIPTION1" desc="A part of the feature description of history sync in the privacy guide.">
+    You'll have your history on all your synced devices so you can continue what you were doing
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_HISTORY_SYNC_FEATURE_DESCRIPTION2" desc="A part of the feature description of history sync in the privacy guide.">
+    If Brave is also your default search engine, you'll see better, contextually relevant suggestions
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_HISTORY_SYNC_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of history sync in the privacy guide.">
+    The URLs you visit are saved to your Brave sync chain
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_HEADER" desc="Header of the cookies card in the privacy guide.">
+    Choose your third-party cookie preferences
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_SUBHEADER" desc="A subheader for the cookies card of the privacy guide, for blocking third party cookies in private.">
+    Block third-party cookies in Private
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_FEATURE_DESCRIPTION1" desc="A part of the feature description of the third party cookie blocking in private section of the cookies card in the privacy guide.">
+    Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_FEATURE_DESCRIPTION2" desc="A part of the feature description of the third party cookie blocking in private section of the cookies card in the privacy guide.">
+    Features on some sites may not work in Private
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of the third party cookie blocking in private section of the cookies card in the privacy guide.">
+    Sites can use cookies to see your browsing activity across different sites, for example, to personalize ads
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_PRIVACY_DESCRIPTION2" desc="A part of the privacy description of the third party cookie blocking in private section of the cookies card in the privacy guide.">
+    When you’re in Private mode, sites can only use cookies to see your browsing activity on their own site. Cookies are deleted at the end of the Private session.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_SUBHEADER" desc="A subheader for the cookies card of the privacy guide, for blocking third party cookies.">
+    Block all third-party cookies
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_FEATURE_DESCRIPTION1" desc="A part of the feature description of the third party cookie blocking section of the cookies card in the privacy guide.">
+    Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_FEATURE_DESCRIPTION2" desc="A part of the feature description of the third party cookie blocking section of the cookies card in the privacy guide.">
+    Features on some sites may not work
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of the third party cookie blocking section of the cookies card in the privacy guide.">
+    Sites can only use cookies to see your browsing activity on their own site
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_SAFE_BROWSING_CARD_HEADER" desc="Header of the safe browsing card in the privacy guide.">
+    Choose your Safe Browsing protection
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_SAFE_BROWSING_CARD_ENHANCED_PROTECTION_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of the enhanced protection section of the safe browsing card in the privacy guide.">
+    Sends URLs to Safe Browsing to check them
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_SAFE_BROWSING_CARD_ENHANCED_PROTECTION_PRIVACY_DESCRIPTION2" desc="A part of the privacy description of the enhanced protection section of the safe browsing card in the privacy guide.">
+    Also sends a small sample of pages, downloads, extension activity, and system information to help discover new threats
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_SAFE_BROWSING_CARD_ENHANCED_PROTECTION_PRIVACY_DESCRIPTION3" desc="A part of the privacy description of the enhanced protection section of the safe browsing card in the privacy guide.">
+    Temporarily links this data to your Brave sync chain when you're signed in, to protect you across Brave apps
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_SAFE_BROWSING_CARD_STANDARD_PROTECTION_FEATURE_DESCRIPTION1" desc="A part of the feature description of the standard protection section of the safe browsing card in the privacy guide.">
+    Detects and warns you about dangerous events when they happen
   </message>
 
   <!-- Safety check -->
@@ -1316,7 +1685,7 @@
     Updates
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_UPDATES_DISABLED_BY_ADMIN" desc="This text describes that updates are managed by the administrator.">
-    Updates are managed by <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>your administrator<ph name="END_LINK">&lt;/a&gt;</ph>
+    Updates are managed by <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>your administrator<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_PASSWORDS_PRIMARY_LABEL" desc="'Passwords' is an element in safety check that allows users to check for their passwords being compromised.">
     Passwords
@@ -1340,7 +1709,7 @@
     Enhanced Protection is on
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_SAFE_BROWSING_DISABLED_BY_ADMIN" desc="This text points out that Safe Browsing is disabled by an administrator.">
-    <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Your administrator<ph name="END_LINK">&lt;/a&gt;</ph> has turned off Safe Browsing
+    <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Your administrator<ph name="END_LINK">&lt;/a&gt;</ph> has turned off Safe Browsing
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_SAFE_BROWSING_DISABLED_BY_EXTENSION" desc="This text points out that Safe Browsing is disabled by an extension.">
     An extension has turned off Safe Browsing
@@ -1416,7 +1785,7 @@
       Brave is removing harmful software from your computer...
     </message>
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_DISABLED_BY_ADMIN" desc="This text describes that Brave can't check for unwanted software because an administrator disabled the feature.">
-      <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Your administrator<ph name="END_LINK">&lt;/a&gt;</ph> has turned off checking for harmful software
+      <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Your administrator<ph name="END_LINK">&lt;/a&gt;</ph> has turned off checking for harmful software
     </message>
     <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_ERROR" desc="This text describes that Brave can't check for unwanted software due to an error.">
       Something went wrong. Click for more details.
@@ -1430,16 +1799,13 @@
     Uses cookies to remember your preferences, even if you don’t visit those pages
   </message>
   <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_DESC_COOKIES_PAGE" desc="On the cookies page, the secondary text next to the checkbox that enables prediction of network actions.">
-    Pre-fetches information from pages, including pages you have not yet visited. Information fetched may include cookies, if you allow cookies.
+    Preloads pages that Brave thinks you might visit. To do this, Brave may use cookies, if you allow cookies, and may encrypt and send pages through Brave to hide your identity from sites.
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION" desc="The section title of 'Protects you and your device from dangerous sites'">
     Google Safe Browsing (protects you and your device from dangerous sites)
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION_DESC" desc="Checkbox label: should Brave protect user and user's device from dangerous sites">
     Sends URLs of some pages you visit to Google, when your security is at risk
-  </message>
-  <message name="IDS_SETTINGS_SAFEBROWSING_ENABLE_REPORTING" desc="The section title of the extended safe browsing checkbox to help improve safe browsing">
-    Help improve Brave security
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLE_REPORTING_DESC" desc="Description for extended safe browsing">
     Sends URLs of some pages you visit, limited system information, and some page content to Brave, to help discover new threats and protect everyone on the web.
@@ -1459,9 +1825,6 @@
   <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_BULLET_ONE" desc="First bullet point under the safe browsing enhanced protection mode">
     Predicts and warns you about dangerous events before they happen
   </message>
-  <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_BULLET_TWO" desc="Second bullet point under the safe browsing enhanced protection mode">
-    Keeps you safe on Brave and may be used to improve your security in other Brave apps when you are signed in
-  </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_BULLET_THREE" desc="Third bullet point under the safe browsing enhanced protection mode">
     Improves security for you and everyone on the web
   </message>
@@ -1475,16 +1838,13 @@
     Standard protection
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_STANDARD_DESC" desc="Description for safe browsing standard protection mode">
-    Standard protection against websites, downloads, and extensions that are known to be dangerous.
+    Standard protection against websites, downloads, and extensions that are known to be dangerous
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_STANDARD_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing the detailed description of safe browsing standard protection. Only visible by screen reader software.">
     Show standard protection details
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_ONE" desc="First bullet point under the safe browsing standard protection mode">
     Detects and warns you about dangerous events when they happen
-  </message>
-  <message name="IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_TWO" desc="First bullet point under the safe browsing standard protection mode">
-    Checks URLs with a list of unsafe sites stored in Brave. If a site tries to steal your password, or when you download a harmful file, Brave may also send URLs, including bits of page content, to Safe Browsing.
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_STANDARD_HELP_IMPROVE" desc="The name of the toggle to enable reporting to help improve safe browsing">
     Help improve security on the web for everyone
@@ -1511,7 +1871,7 @@
     Do Not Track
   </message>
   <message name="IDS_SETTINGS_ENABLE_DO_NOT_TRACK_DIALOG_TEXT" desc="The text of a confirmation dialog that confirms that the user want to send the 'Do Not Track' header">
-    Enabling "Do Not Track" means that a request will be included with your browsing traffic. Any effect depends on whether a website responds to the request, and how the request is interpreted. For example, some websites may respond to this request by showing you ads that aren't based on other websites you've visited. Many websites will still collect and use your browsing data - for example to improve security, to provide content, services, ads and recommendations on their websites, and to generate reporting statistics. <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
+    Enabling "Do Not Track" means that a request will be included with your browsing traffic. Any effect depends on whether a website responds to the request, and how the request is interpreted. For example, some websites may respond to this request by showing you ads that aren't based on other websites you've visited. Many websites will still collect and use your browsing data - for example to improve security, to provide content, services, ads and recommendations on their websites, and to generate reporting statistics. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>
   </message>
   <message name="IDS_SETTINGS_PERMISSIONS" desc="Name of the settings page which allows users to manage permissions and site content settings">
     Permissions and content settings
@@ -1530,6 +1890,12 @@
   </message>
   <message name="IDS_SETTINGS_ADVANCED_PROTECTION_PROGRAM_DESC" desc="Description of the Brave     Advanced Protection Program">
     Safeguards the personal Brave sync chains of anyone at risk of targeted attacks
+  </message>
+  <message name="IDS_SETTINGS_HTTPS_ONLY_MODE" desc="Text for HTTPS-Only Mode toggle in Security settings">
+    Always use secure connections
+  </message>
+  <message name="IDS_SETTINGS_HTTPS_ONLY_MODE_DESCRIPTION" desc="Secondary, continued explanation of HTTPS-Only Mode in Security settings">
+    Upgrade navigations to HTTPS and warn you before loading sites that don't support it
   </message>
   <message name="IDS_SETTINGS_MANAGE_CERTIFICATES" desc="Text for manage certificates button in Privacy options">
     Manage certificates
@@ -1559,7 +1925,7 @@
     With
   </message>
   <message name="IDS_SETTINGS_SECURE_DROPDOWN_MODE_PRIVACY_POLICY" desc="Text that displays a link to the privacy policy of the resolver selected from a dropdown menu">
-    See this provider's <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1<ex>https://google.com/</ex>"&gt;</ph>privacy policy<ph name="END_LINK">&lt;/a&gt;</ph>
+    See this provider's <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>privacy policy<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_SECURE_DNS_DISABLED_FOR_MANAGED_ENVIRONMENT" desc="Substring of the secure DNS setting when secure DNS is disabled due to detection of a managed environment">
     This setting is disabled on managed browsers
@@ -1677,10 +2043,19 @@
   <message name="IDS_SETTINGS_SEARCH_MANAGE_SEARCH_ENGINES" desc="Label for the Manage Search Engines button.">
     Manage search engines
   </message>
+  <message name="IDS_SETTINGS_SEARCH_MANAGE_SEARCH_ENGINES_AND_SITE_SEARCH" desc="Label for the Manage Search Engines and Site Search button.">
+    Manage search engines and site search
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_MANAGE_SEARCH_ENGINES_EXPLANATION" desc="Explanation for the Manage Search Engines button.">
+    Create shortcuts for searching sites and manage your search engine
+  </message>
 
   <!-- Search Engines Page -->
   <message name="IDS_SETTINGS_SEARCH_ENGINES" desc="Name of the settings page which manages search engines.">
     Search Engines
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_PAGE_EXPLANATION" desc="Explanation of the Manage Search Engines page">
+    You can use shortcuts in the address bar to quickly search a specific site or to use a different search engine
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_SEARCH" desc="Label for a text input placeholder allowing the user to search/filter the displayed search engines">
     Search
@@ -1691,8 +2066,38 @@
   <message name="IDS_SETTINGS_SEARCH_ENGINES_EDIT_SEARCH_ENGINE" desc="Title for a dialog that allows editing an existing search engine.">
     Edit search engine
   </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_DELETE_CONFIRMATION_TITLE" desc="Title for a dialog that confirms that a user wants to delete an existing search engine.">
+    Delete search engine
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_DELETE_CONFIRMATION_DESCRIPTION" desc="Description text for a dialog that confirms that a user wants to delete an existing search engine.">
+    Are you sure you want to delete this search engine?
+  </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_DEFAULT_ENGINES" desc="Label for 'default' Search Engines section">
     Default search engines
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_SEARCH_ENGINES" desc="Label for 'Search Engines' section">
+    Search engines
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_SEARCH_ENGINES_EXPLANATION" desc="Explanation for 'Search Engines' section">
+    To use a search engine other than the default, type its shortcut in the address bar followed by your preferred keyboard shortcut. You can also change your default search engine here.
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH" desc="Label for 'Site Search' section">
+    Site search
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION" desc="Explanation for 'Site Search' section. Used interchangeably with IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION_STARTER_PACK">
+    To search a specific site or part of Brave, type its shortcut in the address bar, followed by your preferred keyboard shortcut.
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION_STARTER_PACK" desc="Explanation for 'Site Search' section">
+    To search a specific site or part of Brave, type its shortcut in the address bar, followed by your preferred keyboard shortcut. For example, to search only Bookmarks, type "@bookmarks", then press Tab or Space.
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_NO_SITES_ADDED" desc="Text shown when the 'Site Search' section is empty">
+    No sites added
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_INACTIVE_SHORTCUTS" desc="Label for 'Inactive shortcuts' section">
+    Inactive shortcuts
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_NO_INACTIVE_SHORTCUTS" desc="Text shown when the 'Inactive Shortcuts' section is empty">
+    No inactive shortcuts
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_OTHER_ENGINES" desc="Label for 'other' Search Engines section">
     Other search engines
@@ -1701,13 +2106,25 @@
     Other saved search engines will appear here
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_EXTENSION_ENGINES" desc="Label for a section that displays search engines added by extensions">
-    Search engines added by extensions
+    Extensions
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_EXTENSION_ENGINES_EXPLANATION" desc="Explanation for a section that displays search engines added by extensions">
+    Some extensions can add search engines to Brave
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_SEARCH_ENGINE" desc="Label for a table column that holds the name of a search engine">
     Search engine
   </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_SITE_OR_PAGE" desc="Label for a table column that holds the name of a site or page in the 'Site search' section">
+    Site or page
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_INACTIVE_SITE" desc="Label for a table column that holds the name of a site or page in the 'Inactive shortcuts' section">
+    Inactive sites
+  </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYWORD" desc="Label for Keyword column header for a search engine">
     Keyword
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_SHORTCUT" desc="Label for Shortcut column header for a search engine or site search entry">
+    Shortcut
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_QUERY_URL" desc="Label for Query URL column header for a search engine">
     Query URL
@@ -1718,11 +2135,41 @@
   <message name="IDS_SETTINGS_SEARCH_ENGINES_MAKE_DEFAULT" desc="Text of the button that makes the selected engine the default search engine">
     Make default
   </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_ACTIVATE" desc="Text of the button that activates a search engine">
+    Activate
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_DEACTIVATE" desc="Text of the button that deactivates a search engine">
+    Deactivate
+  </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_REMOVE_FROM_LIST" desc="Label for a button that removes a search engine from the list of search engines">
     Remove from list
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_MANAGE_EXTENSION" desc="Text displayed for a button that allows the user to manage a Brave extension">
     Manage
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_TITLE" desc="Label for scoped search mode trigger options section">
+    Keyboard shortcut
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_DESCRIPTION" desc="Text explaining how to use keyword mode">
+    In the address bar, use this keyboard shortcut with shortcuts for search engines and site search
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_DESCRIPTION_STARTER_PACK" desc="Text explaining how to use keyboard mode, if scoped search starter pack is enabled">
+    In the address bar, enter the shortcut for the site you want to search, such as "@bookmarks". Then, press your preferred keyboard shortcut, and enter your search term.
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_SPACE_OR_TAB" desc="Label for setting that toggles whether scoped search mode can be triggered by space">
+    Space or Tab
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_TAB" desc="Label for setting that toggles whether scoped search mode can be triggered by space">
+    Tab
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_ADDITIONAL_SITES" desc="Label for button that expands the Site Search list of search engines to show all entries">
+    Additional sites
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_ADDITIONAL_INACTIVE_SITES" desc="Label for button that expands the Inactive Sites list of search engines to show all entries">
+    Additional inactive sites
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_ADDITIONAL_EXTENSIONS" desc="Label for button that expands the list of extensions to show all entries">
+    Additional extensions
   </message>
 
   <!-- Site Settings Page -->
@@ -1753,8 +2200,11 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALL_SITES_SORT_METHOD_STORAGE" desc="A selection menu option to sort the All Sites list by the sites that use the most disk space.">
     Data stored
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_ALL_SITES_SORT_METHOD_NAME" desc="A selection menu option to sort the All Sites list by the name of the site, which is derived from its URL.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_ALL_SITES_SORT_METHOD_NAME" desc="A selection menu option to sort the All Sites list by the name of the site, which is derived from its URL." meaning="Name of an inanimate object">
     Name
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_ENTRY_PARTITIONED_LABEL" desc="The label which is applied to site entries which are partitioned. These entries represent data whose access scope is limited to the site the labeled entry appears under">
+    Partitioned
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_REPRESENTATION_SEPARATOR" desc="The separator used to split up the display of a URL into host and scheme/protocol, when the scheme is not HTTPS. For example, it will be used in a string that looks like 'google.co.uk — http'.">
       —
@@ -1771,6 +2221,9 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_CUSTOMIZED_BEHAVIORS_DESCRIPTION" desc="Description for the site settings exceptions.">
     Sites listed below follow a custom setting instead of the default
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_CUSTOMIZED_BEHAVIORS_DESCRIPTION_SHORT" desc="Short description for the site settings exceptions.">
+    Sites listed below follow a custom setting
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_DESCRIPTION" desc="Description of the ads content setting.">
     Sites usually show ads so they can provide content or services for free. But, some sites are known to show intrusive or misleading ads.
   </message>
@@ -1778,7 +2231,7 @@
     All sites can show any ads to you
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_BLOCKED" desc="Label for the disabled option of the ads content setting.">
-    Block ads on sites that show intrusive or misleading ads (recommended)
+    Block ads on sites that show intrusive or misleading ads
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the ads content setting.">
     Allowed to show any ads
@@ -1805,7 +2258,7 @@
     Sites might automatically download related files together to save you time
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOADS_ALLOWED" desc="Label for the enabled option of the automatic downloads content setting.">
-    Sites can ask to automatically download multiple files (recommended)
+    Sites can ask to automatically download multiple files
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOADS_BLOCKED" desc="Label for the disabled option of the automatic downloads content setting.">
     Don't allow sites to automatically download multiple files
@@ -1820,10 +2273,13 @@
     After you leave a site, it can keep syncing to finish tasks, like uploading photos or sending a chat message
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BACKGROUND_SYNC_ALLOWED" desc="Label for the enabled option of the background sync content setting.">
-    Recently closed sites can finish sending and receiving data (recommended)
+    Recently closed sites can finish sending and receiving data
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BACKGROUND_SYNC_BLOCKED" desc="Label for the disabled option of the background sync content setting.">
     Don't allow closed sites to finish sending or receiving data
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BACKGROUND_SYNC_BLOCKED_SUB_LABEL" desc="Sub label for the disabled option of the background sync content setting.">
+    After closing a page, tasks you started might not finish
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BACKGROUND_SYNC_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the background sync content setting.">
     Allowed to finish sending and receiving data
@@ -1844,7 +2300,7 @@
     Sites usually use your video camera for communication features like video chatting
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_ALLOWED" desc="Label for the enabled option of the camera content setting.">
-    Sites can ask to use your camera (recommended)
+    Sites can ask to use your camera
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_BLOCKED" desc="Label for the disabled option of the camera content setting.">
     Don't allow sites to use your camera
@@ -1888,26 +2344,11 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_DEVICE_USE_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the device use content setting.">
     Not allowed to know when you're actively using your device
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_DESCRIPTION" desc="Description of the file handling content setting.">
-    Web apps typically ask to open certain types of files so you can work on those files where you want, like opening documents in your preferred word processor
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_ALLOWED" desc="Label for the enabled option of the file handling content setting.">
-    Web apps can ask to open types of files
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_BLOCKED" desc="Label for the disabled option of the file handling content setting.">
-    Don't allow web apps to open types of files
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the file handling content setting.">
-    Allowed to open types of files
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the file handling content setting.">
-    Not allowed to open types of files
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_DESCRIPTION" desc="Description of the file system write content setting.">
     Sites usually access files and folders on your device for features like automatically saving your work
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_ALLOWED" desc="Label for the enabled option of the file system write content setting.">
-    Sites can ask to edit files and folders on your device (recommended)
+    Sites can ask to edit files and folders on your device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_BLOCKED" desc="Label for the disabled option of the file system write content setting.">
     Don't allow sites to edit files or folders on your device
@@ -1943,10 +2384,13 @@
     Sites usually show images to provide illustration, like photos for online stores or news articles
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES_ALLOWED" desc="Label for the enabled option of the images content setting.">
-    Sites can show images (recommended)
+    Sites can show images
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES_BLOCKED" desc="Label for the disabled option of the images content setting.">
     Don't allow sites to show images
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES_BLOCKED_SUB_LABEL" desc="Sub label for the disabled option of the images content setting.">
+    Features that need images won't work
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the images content setting.">
     Allowed to show images
@@ -1967,7 +2411,7 @@
     Sites usually use Javascript to display interactive features, like video games or web forms
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_ALLOWED" desc="Label for the enabled option of the Javascript content setting.">
-    Sites can use Javascript (recommended)
+    Sites can use Javascript
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_BLOCKED" desc="Label for the disabled option of the Javascript content setting.">
     Don't allow sites to use Javascript
@@ -1982,7 +2426,7 @@
     Sites usually use your location for relevant features or info, like local news or nearby shops
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_ALLOWED" desc="Label for the enabled option of the location content setting.">
-    Sites can ask for your location (recommended)
+    Sites can ask for your location
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_BLOCKED" desc="Label for the disabled option of the location content setting.">
     Don't allow sites to see your location
@@ -2000,7 +2444,7 @@
     Sites usually use your microphone for communication features like video chatting
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_ALLOWED" desc="Label for the enabled option of the microphone content setting.">
-    Sites can ask to use your microphone (recommended)
+    Sites can ask to use your microphone
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_BLOCKED" desc="Label for the disabled option of the microphone content setting.">
     Don't allow sites to use your microphone
@@ -2075,7 +2519,7 @@
     Sites usually install payment handlers for shopping features like easier checkout
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLERS_ALLOWED" desc="Label for the enabled option of the payment handlers content setting.">
-    Sites can install payment handlers (recommended)
+    Sites can install payment handlers
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLERS_BLOCKED" desc="Label for the disabled option of the payment handlers content setting.">
     Don't allow sites to install payment handlers
@@ -2099,7 +2543,7 @@
     Sites can send pop-ups and use redirects
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS_BLOCKED" desc="Label for the disabled option of the pop-ups content setting.">
-    Don't allow sites to send pop-ups or use redirects (recommended)
+    Don't allow sites to send pop-ups or use redirects
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the pop-ups content setting.">
     Allowed to send pop-ups and use redirects
@@ -2107,21 +2551,44 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the pop-ups content setting.">
     Not allowed to send pop-ups or use redirects
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_ENABLE" desc="Label for the toggle enabling protected content.">
+    Allow sites to play protected content (recommended)
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_DESCRIPTION" desc="Description of the protected content content setting.">
-    When a site plays content protected by copyright, it might ask to recognize your device
+    To play content protected by copyright, sites may need to use a content protection service
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_ALLOWED" desc="Label for the enabled option of the protected content content setting.">
-    Sites can ask to play protected content (recommended)
+    Sites can play protected content
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_BLOCKED" desc="Label for the disabled option of the protected content content setting.">
     Don't allow sites to play protected content
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the protected content content setting.">
-    Allowed to play protected content
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_BLOCKED_SUB_LABEL" desc="Sub label for the disabled option of the protected content content setting.">
+    Media with a copyright might not play
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the protected content content setting.">
-    Not allowed to play protected content
-  </message>
+  <if expr="chromeos or is_win">
+    <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_EXPLANATION" desc="Text that is displayed on the Protected Content section of Content Settings. This text explains that enabling protected content may require using a uniquely identifiable machine identifier.">
+      Sites may also need to recognize your device using an identifier
+    </message>
+    <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_ENABLE_IDENTIFIERS" desc="The label of the checkbox for enabling machine identifiers to uniquely identiy the user for protected content.">
+      Allow identifiers for protected content (computer restart may be required)
+    </message>
+    <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_ALLOWED" desc="Label for the enabled option of the protected content content setting.">
+      Sites can use identifiers to play protected content
+    </message>
+    <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_BLOCKED" desc="Label for the disabled option of the protected content content setting.">
+      Don't allow sites to use identifiers to play protected content
+    </message>
+    <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_BLOCKED_SUB_LABEL" desc="Sub label for the disabled option of the protected content content setting.">
+      Media quality may be reduced
+    </message>
+    <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the protected content content setting.">
+      Allowed to use identifiers to play protected content
+    </message>
+    <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the protected content content setting.">
+      Not allowed to use identifiers to play protected content
+    </message>
+  </if>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PROTOCOL_HANDLERS_DESCRIPTION" desc="Description of the protocol handlers content setting.">
     Sites can handle special tasks when you click on certain types of links, like creating a new message in your email client or adding new events to your online calendar
   </message>
@@ -2147,10 +2614,13 @@
     Sites might play sound to provide audio for music, videos, and other media
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_ALLOWED" desc="Label for the enabled option of the sound content setting.">
-    Sites can play sound (recommended)
+    Sites can play sound
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_BLOCKED" desc="Label for the disabled option of the sound content setting.">
     Don't allow sites to play sound
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_BLOCKED_SUB_LABEL" desc=" Sub label for the disabled option of the sound content setting.">
+    Features that need sound won't work
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the sound content setting.">
     Allowed to play sound
@@ -2185,18 +2655,6 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_ZOOM_LEVELS_DESCRIPTION" desc="Description of the zoom levels content setting.">
     You can set how much you zoom in or out on certain websites
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_ADS" desc="Label for the ads site settings.">
-    Ads
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_ADS_MID_SENTENCE" desc="Label for the ads site setting when used mid-sentence.">
-    ads
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_AR" desc="Label for the AR site settings.">
-    Augmented reality
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_AR_MID_SENTENCE" desc="Label for the AR site setting when used mid-sentence.">
-    augmented reality
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AR_ASK" desc="The ask label for the AR feature in site settings.">
     Ask when a site wants to create a 3D map of your surroundings or track camera position
   </message>
@@ -2205,33 +2663,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AR_BLOCK" desc="The block label for the AR feature in site settings.">
     Do not allow sites to create a 3D map of your surroundings or track camera position
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOADS" desc="Label for the automatic downloads site settings.">
-    Automatic downloads
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOADS_MID_SENTENCE" desc="Label for the automatic downloads site setting when used mid-sentence.">
-    automatic downloads
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_BACKGROUND_SYNC" desc="Label for the background sync site settings.">
-    Background sync
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_BACKGROUND_SYNC_MID_SENTENCE" desc="Label for the background sync site setting when used mid-sentence.">
-    background sync
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA" desc="Label for the camera site settings.">
-    Camera
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_MID_SENTENCE" desc="Label for the camera site setting when used mid-sentence">
-    camera
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_CAMERA_LABEL" desc="The accessibility label of the 'camera device' select menu">
-    Camera
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD" desc="Label for the clipboard site settings.">
-    Clipboard
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD_MID_SENTENCE" desc="Label for the clipboard site setting when used mid-sentence.">
-    clipboard
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLIPBOARD_ASK" desc="The ask label for clipboard access in site settings.">
     Ask when a site wants to see text and images copied to the clipboard
@@ -2251,32 +2682,44 @@
   <message name="IDS_SETTINGS_COOKIES_ALLOW_ALL" desc="Label for allow all cookies radio toggle">
     Allow all cookies
   </message>
+  <message name="IDS_SETTINGS_COOKIES_ALLOW_ALL_EXPAND_A11Y_LABEL" desc="Label for the button that toggles showing the detailed description of allowing all cookies. Only visible by screen reader software.">
+    Show details about allowing all cookies
+  </message>
   <message name="IDS_SETTINGS_COOKIES_ALLOW_ALL_BULLET_ONE" desc="Description for the first bullet of allow all cookies radio toggle">
     Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
   </message>
   <message name="IDS_SETTINGS_COOKIES_ALLOW_ALL_BULLET_TWO" desc="Description for the first bullet of allow all cookies radio toggle">
     Sites can use cookies to see your browsing activity across different sites, for example, to personalize ads
   </message>
-  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="Label for block third party cookies in private radio toggle">
+  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="Label for block third party cookies in Private radio toggle">
     Block third-party cookies in Private
   </message>
-  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_ONE" desc="Description for the first bullet of block third party cookies in private radio toggle">
+  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_EXPAND_A11Y_LABEL" desc="Label for the button that toggles showing the detailed description of blocking third party cookies in Private. Only visible by screen reader software.">
+    Show details about blocking third-party cookies in Private
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_ONE" desc="Description for the first bullet of block third party cookies in Private radio toggle">
     Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
   </message>
-  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_TWO" desc="Description for the first bullet of block third party cookies in private radio toggle">
-    While in private, sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
+  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_TWO" desc="Description for the first bullet of block third party cookies in Private radio toggle">
+    While in Private, sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may not work.
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY" desc="Label for block third party cookies radio toggle">
     Block third-party cookies
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_EXPAND_A11Y_LABEL" desc="Label for the button that toggles showing the detailed description of blocking third party cookies. Only visible by screen reader software.">
+    Show details about blocking third-party cookies
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_BULLET_ONE" desc="Description for the first bullet of block third party cookies radio toggle">
     Sites can use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_BULLET_TWO" desc="Description for the first bullet of block third party cookies radio toggle">
-    Sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
+    Sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may not work.
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_ALL" desc="Label for block all cookies radio toggle">
     Block all cookies (not recommended)
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_BLOCK_ALL_EXPAND_A11Y_LABEL" desc="Label for the button that toggles showing the detailed description of blocking all cookies. Only visible by screen reader software.">
+    Show details about blocking all cookies
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_ALL_BULLET_ONE" desc="Description for the first bullet of block all cookies radio toggle">
     Sites can't use cookies to improve your browsing experience, for example, to keep you signed in or to remember items in your shopping cart
@@ -2285,10 +2728,13 @@
     Sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads
   </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_ALL_BULLET_THREE" desc="Description for the third bullet of block all cookies radio toggle">
-    Features on many sites may break
+    Features on many sites may not work
   </message>
   <message name="IDS_SETTINGS_COOKIES_CLEAR_ON_EXIT" desc="Label for the toggle that allows the user to automatically delete their cookies and site data when they close all browser windows.">
     Clear cookies and site data when you close all windows
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_ALL_SITES_LINK" desc="Label for the link row which takes the user to the page listing all sites with storage and permissions">
+    See all site data and permissions
   </message>
   <message name="IDS_SETTINGS_COOKIES_SITE_SPECIFIC_EXCEPTIONS" desc="Title of cookies page section for managing site specific cookie settings">
     Manage site specific exceptions
@@ -2302,44 +2748,14 @@
   <message name="IDS_SETTINGS_COOKIES_BLOCK_EXCEPTIONS" desc="Title of the list containing site exceptions always blocking them from using cookies">
     Sites that can never use cookies
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES" desc="Label for the cookies and site data site settings.">
-    Cookies and site data
+  <message name="IDS_SETTINGS_SITE_SETTINGS_APP_PROTOCOL_HANDLERS" desc="Label for the app protocol handlers (e.g. mailto) in site settings.">
+    Apps
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_MID_SENTENCE" desc="Label for the cookies and site data setting when used mid-sentence">
-    cookies and site data
+  <message name="IDS_SETTINGS_SITE_SETTINGS_APP_ALLOWED_PROTOCOL_HANDLERS_DESCRIPTION" desc="Description of the allowed protocol handlers list registered with the OS, where the user has previously permitted the app to handle the protocol.">
+    Apps listed below can handle protocol links as well. Other apps will ask for permission.
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_HANDLERS" desc="Label for the protocol handlers (e.g. mailto) in site settings.">
-    Handlers
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_HANDLERS_MID_SENTENCE" desc="Label for the protocol handlers (e.g. mailto) site setting when used mid-sentence">
-    handlers
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION" desc="Label for the geolocation site settings." meaning="Geolocation">
-    Location
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_MID_SENTENCE" desc="Label for the geolocation site setting when used mid-sentence." meaning="Geolocation">
-    location
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_MIC" desc="Label for the microphone site settings.">
-    Microphone
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_MID_SENTENCE" desc="Label for the microphone site setting when used mid-sentence.">
-    microphone
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_MIC_LABEL" desc="The accessibility label of the 'microphone device' select menu">
-    Microphone
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS" desc="Label for notifications sites site settings.">
-    Notifications
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_MID_SENTENCE" desc="Label for notifications sites site settings when used mid-sentence">
-    notifications
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_HID_DEVICES" desc="Label for HID devices in site settings.">
-    HID devices
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_HID_DEVICES_MID_SENTENCE" desc="Label for HID devices in site settings when used mid-sentence.">
-    HID devices
+  <message name="IDS_SETTINGS_SITE_SETTINGS_APP_DISALLOWED_PROTOCOL_HANDLERS_DESCRIPTION" desc="Description of the disallowed protocol handlers list. The user has previously diallowed the launch of these apps.">
+    Apps listed below will never handle protocol links.
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_HID_DEVICES_ASK" desc="The ask label for HID devices in site settings.">
     Ask when a site wants to access HID devices
@@ -2350,32 +2766,8 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_HID_DEVICES_BLOCK" desc="The block label for HID devices in site settings.">
     Do not allow any sites to access HID devices
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES" desc="Label for the images site settings.">
-    Images
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES_MID_SENTENCE" desc="Label for the images site setting when used mid-sentence.">
-    images
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_INSECURE_CONTENT" desc="Label for the insecure content site settings. This setting controls whether HTTP content will be displayed on HTTPS sites.">
-    Insecure content
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_INSECURE_CONTENT_MID_SENTENCE" desc="Label for the insecure content site settings when used mid-sentence. This setting controls whether HTTP content will be displayed on HTTPS sites.">
-    insecure content
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_INSECURE_CONTENT_BLOCK" desc="Label explaining that insecure content is blocked by default in secure sites. Insecure content refers to content served over HTTP, secure sites refers to sites served over HTTPS.">
     Insecure content is blocked by default on secure sites
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT" desc="Label for the javascript site settings.">
-    JavaScript
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_MID_SENTENCE" desc="Label for the javascript site setting when used mid-sentence.">
-    Javascript
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLER" desc="Label for the payment handler site settings.">
-    Payment handlers
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLER_MID_SENTENCE" desc="Label for the payment handler site setting when used mid-sentence.">
-    payment handlers
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLER_ALLOW" desc="The allow label for payment handler installation in site settings.">
     Allow sites to install payment handlers
@@ -2386,35 +2778,8 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_PAYMENT_HANDLER_BLOCK" desc="The block label for payment handler installation access in site settings.">
     Do not allow any site to install payment handlers
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_PDF_DOCUMENTS" desc="Label for the PDF documents site settings.">
-    PDF documents
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PDF_DOWNLOAD_PDFS" desc="Label for downloading PDF documents instead of automatically opening them in Brave.">
     Download PDF files instead of automatically opening them in Brave
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS" desc="Label for the pop-ups and redirects site settings.">
-    Pop-ups and redirects
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS_MID_SENTENCE" desc="Label for the pop-ups and redirects site setting when     used mid-sentence.">
-    pop-ups and redirects
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT" desc="Label for the protected content site settings.">
-    Protected content
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_MID_SENTENCE" desc="Label for the protected content site settings when used mid-sentence.">
-    protected content
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS" desc="Label for the permission to allow a site to use unique identifiers to access protected content in site details.">
-    Protected content identifiers
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_ENABLE" desc="Label for the toggle enabling protected content.">
-    Allow sites to play protected content (recommended)
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_VR" desc="Label for the VR site settings.">
-    Virtual reality
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_VR_MID_SENTENCE" desc="Label for the VR site setting when used mid-sentence.">
-    virtual reality
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_VR_ASK" desc="The ask label for the VR feature in site settings.">
     Ask when a site wants to use your virtual reality devices and data
@@ -2425,22 +2790,8 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_VR_BLOCK" desc="The block label for the VR feature in site settings.">
     Do not allow sites to use your virtual reality devices and data
   </message>
-  <if expr="chromeos or is_win">
-    <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_IDENTIFIERS_EXPLANATION" desc="Text that is displayed on the Protected Content section of Content Settings. This text explains that enabling protected content may require using a uniquely identifiable machine identifier.">
-      Some content services use unique identifiers for the purposes of authorizing access to protected content
-    </message>
-    <message name="IDS_SETTINGS_SITE_SETTINGS_PROTECTED_CONTENT_ENABLE_IDENTIFIERS" desc="The label of the checkbox for enabling machine identifiers to uniquely identiy the user for protected content.">
-      Allow identifiers for protected content (computer restart may be required)
-    </message>
-  </if>
   <message name="IDS_SETTINGS_SITE_SETTINGS_RECENT_ACTIVITY" desc="Label for the section which contains the user's recent permissions changes">
     Recent activity
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_DEVICES" desc="Label for the MIDI devices in site settings.">
-    MIDI devices
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_DEVICES_MID_SENTENCE" desc="Label for the MIDI devices in site settings when used mid-sentence.">
-    MIDI devices
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_DEVICES_ASK" desc="The ask label for MIDI devices in site settings.">
     Ask when a site wants to use system exclusive messages to access MIDI devices
@@ -2451,30 +2802,6 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_MIDI_DEVICES_BLOCK" desc="The block label for MIDI devices in site settings.">
     Do not allow any sites to use system exclusive messages to access MIDI devices
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND" desc="Label for the sound site settings.">
-    Sound
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SOUND_MID_SENTENCE" desc="Label for the sound site setting when used mid-sentence">
-    sound
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SENSORS" desc="Label for the sensors permission in Site Settings. Sensors are motion and light sensors, specifically accelerometers, gyroscope, magnetometers, and ambient-light sensors">
-    Motion or light sensors
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SENSORS_MID_SENTENCE" desc="Label for the sensors permission in Site Settings when used mid-sentence. Sensors are motion and light sensors, specifically accelerometers, gyroscope, magnetometers, and ambient-light sensors">
-    motion or light sensors
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_SENSORS" desc="Label for the motion sensors permission in Site Settings. Motion sensors are accelerometers, gyroscopes and magnetometers.">
-    Motion sensors
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_SENSORS_MID_SENTENCE" desc="Label for the motion sensors permission in Site Settings when used mid-sentence. Motion sensors are accelerometers, gyroscopes and magnetometers.">
-    motion sensors
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_DEVICES" desc="Label for Bluetooth devices in site settings.">
-    Bluetooth devices
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_DEVICES_MID_SENTENCE" desc="Label for Bluetooth devices in site settings when used mid-sentence.">
-    Bluetooth devices
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_DEVICES_ASK" desc="The ask label for Bluetooth devices in site settings.">
     Ask when a site wants to access Bluetooth devices
   </message>
@@ -2483,12 +2810,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_DEVICES_BLOCK" desc="The block label for Bluetooth devices in site settings.">
     Do not allow any sites to access Bluetooth devices
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_USB_DEVICES" desc="Label for USB devices in site settings.">
-    USB devices
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_USB_DEVICES_MID_SENTENCE" desc="Label for USB devices in site settings when used mid-sentence.">
-    USB devices
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_USB_DEVICES_ASK" desc="The ask label for USB devices in site settings.">
     Ask when a site wants to access USB devices
@@ -2499,12 +2820,6 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_USB_DEVICES_BLOCK" desc="The block label for USB devices in site settings.">
     Do not allow any sites to access USB devices
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS" desc="Label for serial ports in site settings.">
-    Serial ports
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS_MID_SENTENCE" desc="Label for serial ports in site settings when used mid-sentence.">
-    serial ports
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS_ASK" desc="The ask label for serial ports in site settings.">
     Ask when a site wants to access serial ports
   </message>
@@ -2513,12 +2828,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS_BLOCK" desc="The block label for serial ports in site settings.">
     Do not allow any sites to access serial ports
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_ACCESS_WRITE" desc="Label for File System Access write permission, which enables sites to save changes to the original files that were selected by the user.">
-    File editing
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_ACCESS_WRITE_MID_SENTENCE" desc="Label for File System Access write permission when used mid-sentence, which enables sites to save changes to the original files that were selected by the user.">
-    file editing
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_ACCESS_WRITE_ASK" desc="The ask label for File System Access write permission in site settings.">
     Ask when a site wants to edit files or folders on your device
@@ -2531,12 +2840,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_ZOOM_LEVEL" desc="Title tooltip and accessibility text for the button to remove zoom levels in site settings">
     Remove zoom level
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_ZOOM_LEVELS" desc="Label for the Zoom levels category in site settings.">
-    Zoom levels
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_ZOOM_LEVELS_MID_SENTENCE" desc="Label for the Zoom levels category in site settings when used mid-sentence">
-    zoom levels
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_MAY_SAVE_COOKIES" desc="Label for the cookies option description site settings.">
     Sites can save and read cookie data
@@ -2601,7 +2904,7 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_BLOCK_THIRD_PARTY" desc="The sub-label for links to manage cookies when the current cookie setting is to block third party cookies.">
     Third-party cookies are blocked
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="The sub-label for links to manage cookies when the current cookie setting is to block third party cookies in private.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="The sub-label for links to manage cookies when the current cookie setting is to block third party cookies in Private.">
     Third-party cookies are blocked in Private mode
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_ALLOW_SITES" desc="The 'allow cookies' label in site settings.">
@@ -2664,23 +2967,20 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOAD_BLOCK" desc="The block label for automatic download in site settings.">
     Do not allow any site to download multiple files automatically
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT" desc="Label for the window placement site settings.">
-    Window placement
+  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_DESCRIPTION" desc="Description of the window placement site setting.">
+    Sites usually open and place windows to show additional documents or fullscreen content on your screens
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_MID_SENTENCE" desc="Label for the window placement site setting when use mid sentence">
-    window placement
+  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_ASK" desc="Label for the enabled option of the window placement site setting.">
+    Sites can ask to use info about your screens to open and place windows
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_ASK" desc="The ask label for the window placement site settings.">
-    Ask when a site wants to open and place windows on your screens
+  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_BLOCKED" desc="Label for the disabled option of the window placement site setting.">
+    Don't allow sites use info about your screens to open and place windows
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_ASK_RECOMMENDED" desc="The ask label for the window placement site settings (with the 'recommended' suffix).">
-    Ask when a site wants to open and place windows on your screens (recommended)
+  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_ASK_EXCEPTIONS" desc="Label for the enabled exceptions site list of the window placement site setting.">
+    Allowed to use info about your screens to open and place windows
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_BLOCK" desc="The block label for the window placement site settings.">
-    Block sites from opening and placing windows on your screens
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FONT_ACCESS_MID_SENTENCE" desc="The label for the local font access site setting when used mid-sentence.">
-    fonts
+  <message name="IDS_SETTINGS_SITE_SETTINGS_WINDOW_PLACEMENT_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the window placement site setting.">
+    Not allowed to use info about your screens to open and place windows
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FONT_ACCESS_ASK" desc="The ask label for the local font access site settings.">
     Ask when a site wants to use fonts installed on your device
@@ -2688,29 +2988,11 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_FONT_ACCESS_BLOCK" desc="The block label for the local font access site settings.">
     Block sites from using fonts installed on your device
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_IDLE_DETECTION" desc="Label for the idle detection site settings.">
-    Your device use
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_IDLE_DETECTION_MID_SENTENCE" desc="Label for the idle detection site setting when used mid-sentence.">
-    your device use
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IDLE_DETECTION_ASK" desc="The ask label for the idle detection site settings.">
     Ask when a site wants to know when you're actively using this device
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IDLE_DETECTION_BLOCK" desc="The block label for the idle detection site settings.">
     Block sites from knowing when you're actively using this device
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING" desc="Label for the file handling site settings.">
-    File handlers
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_MID_SENTENCE" desc="Label for the file handling site setting when used mid-sentence.">
-    file handlers
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_ASK" desc="The ask label for the file handling site settings.">
-    Ask when a web app wants to open types of files
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_BLOCK" desc="The block label for the file handling site settings.">
-    Block web apps from opening types of files
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOWED" desc="A generic Allowed label to show in Site Settings when Allow is NOT the recommended option.">
     Allowed
@@ -2790,9 +3072,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CONTENT_MORE" desc="The text on the button used to toggle the display of additional content settings.">
     Additional content settings
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SOURCE_DRM_DISABLED" desc="A label shown when the protected content / protected media identifier permission on the Site Details page is disabled because the user has turned off using unique identifiers to access protected content.">
-    To change this setting, first <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>turn on identifiers<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOWLISTED" desc="A subtitle for the ‘Allowlisted’ setting, shown if a WebUI's permission is internally allowlisted by Brave.">
     Allowlisted internally
@@ -2935,6 +3214,39 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIE_REMOVE_MULTIPLE" desc="Text for the dialog that warns about deleting all site data.">
     This will delete any data stored on your device for all the sites shown. Do you want to continue?
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_ORIGIN_DIALOG_TITLE" desc="Title of the confirmation dialog when a user selects to remove a specific origin">
+    Clear site data and permissions for <ph name="SITE_NAME">$1<ex>www.example.com</ex></ph>?
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_ORIGIN_APP_DIALOG_TITLE" desc="Title of the confirmation dialog when a user selects to remove a specific origin, and that origin also has an installed web app">
+    Clear site data and permissions for <ph name="SITE_NAME">$1<ex>www.example.com</ex></ph> and its installed app?
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_ORIGIN_PARTITIONED_DIALOG_TITLE" desc="Title of the confirmation dialog when a user selects to remove a specific origins partitioned data. That data will be partitioned on a specific eTLD +1.">
+    Clear site data for <ph name="SITE_NAME">$1<ex>www.ad-tech.com</ex></ph> partitioned on <ph name="PARTITION_SITE_NAME">$2<ex>www.publisher.com</ex></ph>?
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_GROUP_DIALOG_TITLE" desc="Title of the confirmation dialog when a user selects to remove a group of sites">
+    Clear site data and permissions for <ph name="SITE_NAME">$1<ex>www.example.com</ex></ph> and all sites under it?
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_GROUP_APP_DIALOG_TITLE" desc="Title of the confirmation dialog when a user selects to remove a group of sites, and one of those sites has an installed web app">
+    Clear site data and permissions for <ph name="SITE_NAME">$1<ex>www.example.com</ex></ph>, all sites under it, and its installed app?
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_GROUP_APP_PLURAL_DIALOG_TITLE" desc="Title of the confirmation dialog when a user selects to remove a group of sites, and multiple of those sites have installed web apps">
+    Clear site data and permissions for <ph name="SITE_NAME">$1<ex>www.example.com</ex></ph>, all sites under it, and installed apps?
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_ORIGIN_LOGOUT" desc="Bullet point which indicates that the user will be signed out of the site they are remove">
+    You'll be signed out of this site, including in open tabs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_GROUP_LOGOUT" desc="Bullet point which indicates that the user will be signed out of the group of sites they are removing">
+    You'll be signed out of these sites, including in open tabs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_OFFLINE_DATA" desc="Bullet point which indicates that any offline data will be cleared when the users removes the site">
+    Any offline data will be cleared
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_PERMISSIONS" desc="Bullet point which indicates that the users chosen permissions will be reset when they remove a site">
+    Your chosen permissions will be reset
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_CONFIRM" desc="Text on the button to confirm removing a site">
+    Clear
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIE_REMOVE_SITE" desc="Label for the trashcan button to delete all cookies and site data for a specific site (ex: all the cookies set on google.com).">
     Remove <ph name="SITE">$1<ex>google.com</ex></ph>
   </message>
@@ -2959,10 +3271,10 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE" desc="A label for the action of removing (deleting) a certain handler.">
     Remove
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_ONLY" desc="A label for the checkbox to make the rule apply to the current private session only.">
-    Current private session only
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_ONLY" desc="A label for the checkbox to make the rule apply to the current Private session only.">
+    Current Private session only
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_SITE_EXCEPTION_DESC" desc="The text displayed in order to explain to a user that a content setting only applies to the current private session.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_SITE_EXCEPTION_DESC" desc="The text displayed in order to explain to a user that a content setting only applies to the current Private session.">
     This custom setting will be removed when you close all your Private windows
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_NO_ZOOMED_SITES" desc="A label explaining that no sites have a configured zoom in/out value.">
@@ -2979,12 +3291,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_NO_SITES_FOUND" desc="Explanation shown when there are no matching search results on All Sites page.">
     No sites found
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_SCANNING" desc="The label that is used to show the Bluetooth scanning site settings to the user.">
-    Bluetooth scanning
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_SCANNING_MID_SENTENCE" desc="The label that is used to show the Bluetooth scanning site settings to the user when used mid-sentence.">
-    Bluetooth scanning
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_BLUETOOTH_SCANNING_ASK" desc="The label that is used to show the Bluetooth scanning setting is set to ask in site settings.">
     Ask when a site wants to discover nearby Bluetooth devices
@@ -3019,12 +3325,12 @@
   </message>
   <if expr="chromeos">
     <message name="IDS_SETTINGS_ANDROID_SMS_NOTE" desc="Special note shown below Messages for Android entry in notification permissions to indicate use in BraveOS Multidevice features.">
-      Allows Android Messages to relay texts from your phone to your Bravebook
+      Allows Android Messages to relay texts from your phone to your Chromebook
     </message>
   </if>
 
   <!-- Cookies Window -->
-  <message name="IDS_SETTINGS_COOKIES_COOKIE_NAME_LABEL" desc="The Cookie Name label">
+  <message name="IDS_SETTINGS_COOKIES_COOKIE_NAME_LABEL" desc="The Cookie Name label" meaning="Name of an inanimate object">
     Name
   </message>
   <message name="IDS_SETTINGS_COOKIES_COOKIE_CONTENT_LABEL" desc="The Cookie Content label">
@@ -3048,16 +3354,9 @@
   <message name="IDS_SETTINGS_COOKIES_COOKIE_EXPIRES_LABEL" desc="The Cookie Expires label">
     Expires
   </message>
-  <message name="IDS_SETTINGS_COOKIES_APPLICATION_CACHE" desc="The text shown when there is an Application Cache (name of an HTML standard) in the Cookies table">
-    Application cache
-  </message>
   <message name="IDS_SETTINGS_COOKIES_FLASH_LSO" desc="The text shown when Flash has Local Shared Objects (informally known as 'Flash cookies') stored">
     Flash data
   </message>
-  <message name="IDS_SETTINGS_COOKIES_APPLICATION_CACHE_MANIFEST_LABEL" desc="The Manifest label (manifest is a URL specified by the application cache)">
-    Manifest
-  </message>
-
   <message name="IDS_SETTINGS_SITE_SETTINGS_NUM_COOKIES" desc="A label showing the number of cookies set on a site.">
     {NUM_COOKIES, plural,
         =1 {1 cookie}
@@ -3115,10 +3414,7 @@
     Sign in
   </message>
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_MANAGED_PROFILE_EXPLANATION" desc="The text to display in the 'Sign out of Brave' dialog to stop syncing for managed profiles.">
-    Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>, your bookmarks, history, passwords, and other settings will be cleared from this device. However, your data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank" rel="noopener noreferrer"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
-  </message>
-  <message name="IDS_SETTINGS_EDIT_PERSON" desc="Title of the edit profile subpage. This is a subpage to edit the name and icon of a Brave Profile.">
-    Edit profile
+    Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>, your bookmarks, history, passwords, and other settings will be cleared from this device. However, your data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_TURN_OFF_SYNC_AND_SIGN_OUT_DIALOG_TITLE" desc="The text to display on the title of the dialog to turn off sync and sign out.">
     Turn off sync and personalization?
@@ -3134,7 +3430,7 @@
   </message>
 
   <if expr="not chromeos">
-    <message name="IDS_SETTINGS_PROFILE_NAME_INPUT_LABEL" desc="Aria label of the input field where the user can edit the name associated with the profile.">
+    <message name="IDS_SETTINGS_PROFILE_NAME_INPUT_LABEL" desc="Aria label of the input field where the user can edit the name associated with the profile." meaning="Name of a person">
       Name
     </message>
     <message name="IDS_SETTINGS_PROFILE_SHORTCUT_TOGGLE_LABEL" desc="Label of the toggle that creates or removes a desktop shortcut for the profile.">
@@ -3158,7 +3454,7 @@
   </if>
 
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_EXPLANATION" desc="The text to display in the Sign out of Brave dialog to stop syncing for non-managed profiles.">
-    Changes to your bookmarks, history, passwords, and other settings will no longer be synced to your Brave sync chain. However, your existing data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Changes to your bookmarks, history, passwords, and other settings will no longer be synced to your Brave sync chain. However, your existing data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_AND_SIGN_OUT_EXPLANATION" desc="The text to display in the Sign out of Brave dialog to stop syncing and sign-out for non-managed profiles.">
     This will sign you out of your Brave sync chains. Your bookmarks, history, passwords, and more will no longer be synced.
@@ -3185,25 +3481,25 @@
     Manage synced data on Brave Dashboard
   </message>
   <message name="IDS_SETTINGS_ENCRYPT_WITH_SYNC_PASSPHRASE_LABEL" desc="Label for the radio button which, when selected, causes synced settings to be encrypted with a user-provided password.">
-    Encrypt synced data with your own <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>sync passphrase<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>. This doesn't include payment methods and addresses from Brave Pay.
+    Encrypt synced data with your own <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>sync passphrase<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>. This doesn't include payment methods and addresses from Google Pay.
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_EXPLANATION_TEXT" desc="Message shown when explicit passphrase is selected.">
-    Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting, you'll need to <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting, you'll need to <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_RESET_HINT_ENCRYPTION" desc="Informs user how to change their encryption setting.">
-    To change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> to remove your sync passphrase
+    To change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> to remove your sync passphrase
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_RESET_HINT_TOGGLE" desc="Informs user how to change their encryption setting when unified consent is enabled.">
-    To turn this on, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> to remove your sync passphrase
+    To turn this on, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> to remove your sync passphrase
   </message>
   <message name="IDS_SETTINGS_PASSPHRASE_RECOVER" desc="Message about how to recover from a lost passphrase.">
-    If you forgot your passphrase or want to change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    If you forgot your passphrase or want to change this setting, <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>reset sync<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_PERSONALIZE_GOOGLE_SERVICES_TITLE" desc="Title of the personalize Brave services section. When clicked, takes the user to the Brave Activity Controls.">
-    Control how your browsing history is used to personalize Search, ads, and more
+    Control how your browsing history is used to personalize Search and more
   </message>
 
-  <if expr="not chromeos">
+  <if expr="not chromeos and not lacros">
     <!-- Import Settings Dialog -->
     <message name="IDS_SETTINGS_IMPORT_SETTINGS_TITLE" desc="Dialog title for import dialog.">
       Import bookmarks and settings
@@ -3419,9 +3715,6 @@
     <message name="IDS_SETTINGS_RESET_CLEANUP_LOGS_PERMISSION_PREF" desc="A checkbox label for the 'Report harmful software removal details' preference.">
       Report details to Brave about harmful software, system settings, and processes that were found on your computer during this cleanup
     </message>
-    <message name="IDS_SETTINGS_RESET_CLEANUP_EXPLANTION_NOTIFICATION_PERMISSION" desc="A checkbox label for showing a notification dialog to users once the Brave scan for harmful software completed.">
-      Notify me when Brave has finished searching for harmful software
-    </message>
     <message name="IDS_SETTINGS_RESET_CLEANUP_TITLE_CLEANUP_UNAVAILABLE" desc="Title of error message that could appear before the cleanup of harmful software because Brave failed to contact the server. This message will only appear on Windows desktop/laptop computers.">
       Cleanup is currently unavailable
     </message>
@@ -3446,7 +3739,7 @@
         other {To ensure that you can keep browsing the web, ask your administrator to remove these applications.}}
     </message>
     <message name="IDS_SETTINGS_INCOMPATIBLE_APPLICATIONS_SUBPAGE_LEARN_HOW" desc="Following the subtitle, this is a link to a help center article that explains how to update any program.">
-      <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Learn how to update applications<ph name="END_LINK">&lt;/a&gt;</ph>
+      <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn how to update applications<ph name="END_LINK">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_INCOMPATIBLE_APPLICATIONS_LIST_TITLE" desc="This is the title for the list of incompatible applications.">
       {NUM_APLLICATIONS, plural,
@@ -3591,17 +3884,32 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_LABEL" desc="The label for a menu item that when clicked lets the user view and erase credentials on their security key (an authentication hardware device).">
     Sign-in data
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DESC" desc="The description for a menu item that when clicked lets the user view and erase credentials on their security key (an authentication hardware device).">
-    View and delete sign-in data stored on your security key
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_USERNAME_LABEL" desc="A column heading of a table that lists sign-in data stored on a security key (an authentication hardware device). This column contains the user name (e.g. exampleuser@google.com) for each credential.">
+    Username
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DIALOG_TITLE" desc="The title of a dialog that lets users view and erase credentials on their security key (an authentication hardware device).">
-    Security key sign-in data
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_DISPLAYNAME_LABEL" desc="A column heading of a table that lists sign-in data stored on a security key (an authentication hardware device). This column contains the display name (e.g. John Smith) for each credential.">
+    Name
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_WEBSITE" desc="A column heading of a table that lists credentials stored on a security key (an authentication hardware device). This column contains the domain name (e.g. google.com) for each credential.">
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_WEBSITE_LABEL" desc="A column heading of a table that lists sign-in data stored on a security key (an authentication hardware device). This column contains the domain name (e.g. google.com) for each credential.">
     Website
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_USERNAME" desc="A column heading of a table that lists credentials stored on a security key (an authentication hardware device). This column contains the user name (e.g. exampleuser@google.com) for each credential.">
-    Username
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DESC" desc="The description for a menu item that when clicked lets the user view, edit, and erase credentials on their security key (an authentication hardware device).">
+    Manage sign-in data stored on your security key
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DIALOG_TITLE" desc="The title of a dialog that lets users manage sign-in data on their security key (an authentication hardware device).">
+    Security key sign-in data
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_UPDATE_CREDENTIAL_DIALOG_TITLE" desc="The title of a dialog that lets users update sign-in data on their security key (an authentication hardware device).">
+    Edit sign-in data
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_CONFIRM_DELETE_TITLE" desc="The title of a prompt that asks users to confirm whether they want to delete the selected sign-in data on their security key (an authentication hardware device).">
+    Delete sign-in data
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_CONFIRM_DELETE_CREDENTIAL" desc="A confirmation message shown to confirm the user wants to delete the selected sign-in data. Security keys are external devices used to authenticate people.">
+    Are you sure you want to delete the selected sign-in data?
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_INPUT_ERROR_TOO_LONG" desc="A validation error shown beneath a text box where the user is expected to enter a username or displayname for a security key. Security keys are external devices used to authenticate people.">
+    Input must be at most 62 characters
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_NO_CREDENTIALS" desc="An error message shown when a user attempts to view the credentials on their security key (an authentication hardware device) but no such credentials exist.">
     This security key does not have any sign-in data
@@ -3618,11 +3926,17 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_ERROR" desc="An error message shown when a user attempts to view the credentials on their security key (an authentication hardware device), but an error with the device was encountered.">
     Your security key couldn't be read
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_SUCCESS" desc="A confirmation message shown when a user deletes an individual credential on their security key (an authentication hardware device).">
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DELETE_SUCCESS" desc="A confirmation message shown when a user deletes an individual credential on their security key (an authentication hardware device) and succeeds.">
     Your sign-in data was deleted
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_FAILED" desc="An error message shown when a user attempts to delete an individual credential on their security key (an authentication hardware device).">
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DELETE_FAILED" desc="An error message shown when a user attempts to delete an individual credential on their security key (an authentication hardware device) and fails.">
     Your sign-in data couldn't be deleted
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_UPDATE_SUCCESS" desc="A confirmation message shown when a user updates an individual credential on their security key (an authentication hardware device) and succeeds.">
+    Your sign-in data was updated
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_UPDATE_FAILED" desc="An error message shown when a user attempts to update an individual credential on their security key (an authentication hardware device) and fails.">
+    Your sign-in data couldn't be updated
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_SUBPAGE_LABEL" desc="The label for a menu item that when clicked lets the user view, add, rename, and delete fingerprints on their security key (an authentication hardware device).">
     Fingerprints
@@ -3639,8 +3953,11 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_CHOOSE_NAME" desc="A label instructing the user to provide a descriptive name for a fingerprint enrolled to a security key.">
     Enter a name for this fingerprint
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_NAME_LABEL" desc="A label for a text input field containing a descriptive name for a fingerprint enrolled to a security key.">
+  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_NAME_LABEL" desc="A label for a text input field containing a descriptive name for a fingerprint enrolled to a security key." meaning="Name of an inanimate object">
     Name
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_NAME_LABEL_TOO_LONG" desc="A validation error shown beneath a text box where the user is expected to enter a descriptive name for a fingerprint enrolled to a security key.">
+    Try a shorter name
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_NO_ENROLLMENTS_LABEL" desc="A label informing the user that there are no fingerprints stored on their security key (authentication hardware device).">
     Your security key has no fingerprints stored
@@ -3669,6 +3986,9 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_NO_PIN" desc="An error message shown when a user attempts to enroll a fingerprint on their security key (an authentication hardware device), but the user has not set up a PIN (short, often numeric codes that are often used with, for example, ATM cards) for that security key.">
     Your security key is not protected with a PIN. To manage fingerprints, first create a PIN.
   </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_STORAGE_FULL" desc="An error message shown when a user attempts to enroll a fingerprint on their security key (an authentication hardware device), but the security key's internal storage for fingerprints is exhausted.">
+    Your security key can't store any more fingerprints. To add a new one, first delete an existing fingerprint.
+  </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_TOUCH_TO_CONTINUE" desc="A label instructing the user to physically touch the activation button on their security key (an authentication hardware device).">
     To continue, insert and touch your security key
   </message>
@@ -3677,5 +3997,26 @@
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_FORCE_PIN_CHANGE" desc="An error message shown when a user attempts to use a security key (an authentication hardware device) that has a default PIN (short, often numeric codes that are often used with, for example, ATM cards) set. Before using the key, the user needs to change the PIN to a new code.">
     To use your new security key, set a new PIN
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PHONE_EDIT_DIALOG_TITLE" desc="The title of a dialog that is shown when a user chooses to edit details of a phone that can be used to sign-in with.">
+    Edit phone
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_YOUR_DEVICES" desc="The title of a section on a settings page that lists phoens that are signed into (and syncing with) the user's Brave account.">
+    Your devices
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_SYNCED_DESC" desc="The description of a section on a settings page that lists phoens that are signed into (and syncing with) the user's Brave account.">
+    You're signed in to Brave on these devices, so you can use them as security keys.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_LINKED_DEVICES" desc="The title of a section on a settings page that lists phoens that can be used for signing into websites. The word 'linked' was picked to be distinct from 'paired', as in 'Bluetooth pairing'. The technology does use Bluetooth, but is distinct from Bluetooth pairing.">
+    Linked devices
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_LINKED_DESC" desc="The description of a section on a settings page that lists phoens that can be used for signing into websites. The word 'linked' was picked to be distinct from 'paired', as in 'Bluetooth pairing'. The technology does use Bluetooth, but is distinct from Bluetooth pairing.">
+    You linked these devices by scanning a QR code.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_MANAGE" desc="The title of an option in Brave's privacy settings for managing phones that can be used to sign into websites.">
+    Manage phones
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PHONES_MANAGE_DESC" desc="The description of an option in Brave's privacy settings for managing phones that can be used for signing into websites. A 'security key' is typically a USB peripherial used to secure sign-ins. In this case a phone can be used as a security key.">
+    Control which phones you use as security keys
   </message>
 </grit-part>

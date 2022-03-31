@@ -1,9 +1,8 @@
-use crate::{dom, scorer, util};
-use chrono::DateTime;
+use crate::{dom, nlp, scorer, util};
 use html5ever::parse_document;
 use html5ever::tendril::TendrilSink;
-use html5ever::tree_builder::NodeOrText;
-use html5ever::tree_builder::TreeSink;
+use html5ever::tree_builder::{ElementFlags, NodeOrText, TreeSink};
+use html5ever::QualName;
 use kuchiki::NodeRef as Handle;
 use kuchiki::Sink;
 use regex::Regex;
@@ -11,6 +10,9 @@ use std::collections::{HashMap, HashSet};
 use std::default::Default;
 use std::io::Read;
 use thiserror::Error;
+use time::format_description::well_known::Rfc3339;
+use time::macros::format_description;
+use time::OffsetDateTime;
 use url::Url;
 use util::StringUtils;
 
@@ -59,9 +61,8 @@ where
         .and_then(|url| Url::parse(url).ok())
         .unwrap_or_else(|| Url::parse("https://example.com").unwrap());
 
-    let mut dom: Sink = parse_document(Sink::default(), Default::default())
-        .from_utf8()
-        .read_from(input)?;
+    let mut dom: Sink =
+        parse_document(Sink::default(), Default::default()).from_utf8().read_from(input)?;
 
     extract_dom(&mut dom, &url, &HashMap::new())
 }
@@ -72,18 +73,24 @@ pub struct Meta {
     pub author: Option<String>,
     pub description: Option<String>,
     pub charset: Option<String>,
-    pub last_modified: Option<DateTime<chrono::offset::FixedOffset>>,
+    pub last_modified: Option<OffsetDateTime>,
 }
 
 impl Meta {
-    /// Performs a merge of two meta structs, always preferencing self.
+    /// Performs a merge of two meta structs, preferencing self except description.
+    /// The shortest description will be taken.
     /// Takes ownership of both structs and returns the merged metadata.
     pub fn merge(mut self, other: Self) -> Meta {
         if self.title.is_empty() {
             self.title = other.title;
         }
         self.author = self.author.or(other.author);
-        self.description = self.description.or(other.description);
+        self.description = match (self.description, other.description) {
+            (None, None) => None,
+            (Some(x), None) | (None, Some(x)) => Some(x),
+            (Some(x), Some(y)) if x.len() < y.len() => Some(x),
+            (Some(_), Some(y)) => Some(y),
+        };
         self.charset = self.charset.or(other.charset);
         self.last_modified = self.last_modified.or(other.last_modified);
         self
@@ -134,8 +141,11 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
         if data.name.local != local_name!("meta") {
             continue;
         }
-        if let Some(property) = data.attributes.borrow().get(local_name!("property")) {
-            if let Some(ref content) = data.attributes.borrow().get(local_name!("content")) {
+        let attribute = data.attributes.borrow();
+        if let Some(property) =
+            attribute.get(local_name!("property")).or(attribute.get(local_name!("name")))
+        {
+            if let Some(ref content) = attribute.get(local_name!("content")) {
                 match property {
                     "dc:title"
                     | "dcterm:title"
@@ -153,13 +163,13 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
                     | "weibo:article:description"
                     | "weibo:webpage:description"
                     | "twitter:description" => {
-                        meta_tags.description = Some(
-                            content
-                                .find(". ")
-                                .map(|pos| &content[..pos])
-                                .unwrap_or(content)
-                                .to_string(),
-                        );
+                        if let Some(ref desc) = meta_tags.description {
+                            if content.chars().count() < desc.chars().count() {
+                                meta_tags.description = Some(content.to_string());
+                            }
+                        } else {
+                            meta_tags.description = Some(content.to_string());
+                        }
                     }
                     "dc:creator" | "dcterm:creator" | "author" => {
                         meta_tags.author = Some(content.to_string());
@@ -167,16 +177,14 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
                     _ => (),
                 }
             }
-        } else if let Some(charset) = data.attributes.borrow().get(local_name!("charset")) {
+        } else if let Some(charset) = attribute.get(local_name!("charset")) {
             meta_tags.charset = Some(charset.to_string());
-        } else if data
-            .attributes
-            .borrow()
+        } else if attribute
             .get(local_name!("http-equiv"))
             .map(|e| e.to_ascii_lowercase() == "content-type")
             .unwrap_or(false)
         {
-            if let Some(content) = data.attributes.borrow().get(local_name!("content")) {
+            if let Some(content) = attribute.get(local_name!("content")) {
                 if let Some(charset) = content.split("charset=").nth(1) {
                     meta_tags.charset = Some(charset.trim().to_string());
                 }
@@ -195,24 +203,15 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
         }
     }
 
-    // Clean title of html encoded attributes
+    // HTML decode title, author, and description
     if !meta.title.is_empty() {
-        if let Some(ref inner) = dom::parse_inner(&meta.title) {
-            let title = dom::extract_text_from_node(inner, true, true);
-            if !title.is_empty() {
-                meta.title = title;
-            }
-        }
+        meta.title = dom::html_decode(&meta.title).unwrap_or(meta.title);
     }
-
-    // Clean description of html encoded attributes
+    if let Some(ref author) = meta.author {
+        meta.author = dom::html_decode(author).or(meta.author);
+    }
     if let Some(ref description) = meta.description {
-        if let Some(ref inner) = dom::parse_inner(description) {
-            let desc = dom::extract_text_from_node(inner, true, true);
-            if !desc.is_empty() {
-                meta.description = Some(desc);
-            }
-        }
+        meta.description = dom::html_decode(description).or(meta.description);
     }
 
     meta
@@ -252,7 +251,18 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
     post_process(&mut dom, top_candidate.clone(), &meta);
 
     // Calls html5ever::serialize() with IncludeNode for us.
-    let mut content: String = top_candidate.to_string();
+    let mut content: String = match top_candidate.as_element() {
+        Some(x) if x.name.local == local_name!("span") => {
+            let name = QualName::new(None, ns!(), local_name!("div"));
+            let div = dom.create_element(name, vec![], ElementFlags::default());
+            dom.reparent_children(&top_candidate, &div);
+
+            // Our CSS formats based on id="article".
+            dom::set_attr("id", "article", div.clone(), true);
+            div.to_string()
+        },
+        _ => { top_candidate.to_string() }
+    };
 
     if let Some(ref charset) = meta.charset {
         // Since we strip out the entire head, we need to include charset if one
@@ -261,13 +271,14 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         let charset_blob = format!("<meta charset=\"{}\"/>", charset);
         content = charset_blob + &content;
     }
+    if !meta.title.is_empty() {
+        let title_blob = format!("<title>{}</title>", &meta.title);
+        content = title_blob + &content;
+    }
     Ok(Product { meta, content })
 }
 
 pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
-    // Our CSS formats based on id="article".
-    dom::set_attr("id", "article", root.clone(), true);
-
     if let Some(first_child) = root.first_child() {
         // Add in the title
         if !meta.title.is_empty() {
@@ -277,7 +288,17 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
         }
         // Add in the description
         if let Some(ref text) = meta.description {
-            let description = dom::create_element_simple(dom, "p", "subhead metadata", Some(text));
+            let slice_offset = if text.chars().count() > 200 {
+                nlp::first_sentence_boundary(text).unwrap_or_else(|| text.len())
+            } else {
+                text.len()
+            };
+            let description = dom::create_element_simple(
+                dom,
+                "p",
+                "subhead metadata",
+                Some(&text[..slice_offset]),
+            );
             dom.append_before_sibling(&first_child, NodeOrText::AppendNode(description));
         }
 
@@ -290,11 +311,14 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
 
         // Add in last modified datetime
         if let Some(ref last_modified) = meta.last_modified {
-            let formatted = last_modified
-                .format("Updated %b. %d, %Y %H:%M %P")
-                .to_string();
-            let modified = dom::create_element_simple(dom, "p", "metadata date", Some(&formatted));
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(modified));
+            let format = format_description!(
+                "Updated [month repr:short]. [day], [year] [hour repr:12]:[minute] [period]"
+            );
+            if let Some(formatted) = last_modified.format(format).ok() {
+                let modified =
+                    dom::create_element_simple(dom, "p", "metadata date", Some(&formatted));
+                dom.append_before_sibling(&first_child, NodeOrText::AppendNode(modified));
+            }
         }
 
         // Vertical split
@@ -306,6 +330,9 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
             let splitter = dom::create_element_simple(dom, "hr", "", None);
             dom.append_before_sibling(&first_child, NodeOrText::AppendNode(splitter));
         }
+
+        // Our CSS formats based on id="article".
+        dom::set_attr("id", "article", root, true);
     }
 }
 
@@ -346,12 +373,7 @@ pub fn clean_title(dom: &Sink, title: String) -> String {
         // Less than 3 words in the title. Try first colon.
         if cur_title.split_whitespace().count() < 3 {
             cur_title = title.substring(title.find(':').unwrap() + 1, title.len());
-        } else if title
-            .substring(0, title.find(':').unwrap_or(0))
-            .split_whitespace()
-            .count()
-            > 5
-        {
+        } else if title.substring(0, title.find(':').unwrap_or(0)).split_whitespace().count() > 5 {
             return title;
         }
         cur_title.trim().to_string()
@@ -393,20 +415,14 @@ fn try_parse_author(v: &serde_json::Value) -> Option<String> {
         }
         serde_json::Value::Array(a) => {
             if !a.is_empty() {
-                Some(
-                    a.iter()
-                        .filter_map(|e| try_parse_author(e))
-                        .collect::<Vec<_>>()
-                        .join(", "),
-                )
+                Some(a.iter().filter_map(|e| try_parse_author(e)).collect::<Vec<_>>().join(", "))
             } else {
                 None
             }
         }
-        serde_json::Value::Object(o) => o
-            .get("name")
-            .and_then(|name| name.as_str())
-            .map(|x| x.to_string()),
+        serde_json::Value::Object(o) => {
+            o.get("name").and_then(|name| name.as_str()).map(|x| x.to_string())
+        }
         _ => None,
     }
 }
@@ -452,10 +468,8 @@ fn try_parse_untyped_jsonld(content: &str, meta: &mut Meta) -> Result<(), JsonLd
                 .unwrap_or(Err(JsonLdError::MissingType))?;
 
             // Get article title
-            if let Some(title) = o
-                .get("name")
-                .or_else(|| o.get("headline"))
-                .and_then(from_json_string)
+            if let Some(title) =
+                o.get("name").or_else(|| o.get("headline")).and_then(from_json_string)
             {
                 meta.title = title;
             }
@@ -471,12 +485,10 @@ fn try_parse_untyped_jsonld(content: &str, meta: &mut Meta) -> Result<(), JsonLd
             }
 
             // Get article modified date
-            if let Some(timestamp) = o
-                .get("dateModified")
-                .or_else(|| o.get("datePublished"))
-                .and_then(from_json_string)
+            if let Some(timestamp) =
+                o.get("dateModified").or_else(|| o.get("datePublished")).and_then(from_json_string)
             {
-                meta.last_modified = chrono::DateTime::parse_from_rfc3339(&timestamp).ok();
+                meta.last_modified = OffsetDateTime::parse(&timestamp, &Rfc3339).ok();
             }
         }
 
@@ -491,20 +503,15 @@ mod tests {
     use std::io::Cursor;
 
     fn normalize_output(input: &str) -> String {
-        return input
-            .lines()
-            .map(|line| line.trim())
-            .filter(|line| !line.is_empty())
-            .collect();
+        return input.lines().map(|line| line.trim()).filter(|line| !line.is_empty()).collect();
     }
 
     fn preprocess<R>(input: &mut R) -> Result<Product, std::io::Error>
     where
         R: Read,
     {
-        let mut dom: Sink = parse_document(Sink::default(), Default::default())
-            .from_utf8()
-            .read_from(input)?;
+        let mut dom: Sink =
+            parse_document(Sink::default(), Default::default()).from_utf8().read_from(input)?;
 
         let mut meta = extract_metadata(&dom);
         meta.title = clean_title(&dom, meta.title);
@@ -562,6 +569,18 @@ mod tests {
     }
 
     #[test]
+    fn test_byline_html_decode() {
+        let input = r#"
+        <head>
+        <meta property="author" content="Geek&#039;s Guide to the Galaxy"/>
+        </head>
+        "#;
+        let mut cursor = Cursor::new(input);
+        let meta = preprocess(&mut cursor).unwrap().meta;
+        assert_eq!("Geek's Guide to the Galaxy", meta.author.expect("No author extracted"),);
+    }
+
+    #[test]
     fn unwrap_noscript_img_simple() {
         let input = r#"
         <body>
@@ -579,14 +598,12 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
     fn unwrap_noscript_img_delete_preceding() {
+        // Based on https://www.bbc.com/news/world-australia-56307356
         let input = r#"
         <body>
           <img src="https://example.com/image.png">
@@ -602,10 +619,30 @@ mod tests {
         </html>"#;
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
+    }
+
+    #[test]
+    fn unwrap_noscript_img_delete_following() {
+        // Based on https://www.dutchnews.nl/features/2021/08/the-region-revolutionising-the-dutch-diet/
+        let input = r#"
+        <body>
+          <noscript>
+            <img src="https://example.com/image.png">
+          </noscript>
+          <img src="https://example.com/image.png">
+          <p>This is the image caption</p>
+        </body>"#;
+        let expected = r#"
+        <html><head></head>
+        <body>
+          <img src="https://example.com/image.png">
+          <p>This is the image caption</p>
+        </body>
+        </html>"#;
+        let mut cursor = Cursor::new(input);
+        let product = preprocess(&mut cursor).unwrap();
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -628,10 +665,7 @@ mod tests {
 
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -656,10 +690,7 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -682,10 +713,7 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -707,10 +735,7 @@ mod tests {
 
         let mut cursor = Cursor::new(input);
         let product = extract(&mut cursor, None).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -731,10 +756,7 @@ mod tests {
 
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -763,10 +785,7 @@ mod tests {
 
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -785,10 +804,7 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content),
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content),);
     }
 
     #[test]
@@ -807,10 +823,7 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(input);
         let product = preprocess(&mut cursor).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content),
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content),);
     }
 
     #[test]
@@ -839,10 +852,7 @@ mod tests {
         "#;
         let mut cursor = Cursor::new(input);
         let product = extract(&mut cursor, None).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -876,10 +886,7 @@ mod tests {
 
         let mut cursor = Cursor::new(input);
         let product = extract(&mut cursor, None).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -904,10 +911,7 @@ mod tests {
 
         let mut cursor = Cursor::new(input);
         let product = extract(&mut cursor, None).unwrap();
-        assert_eq!(
-            normalize_output(expected),
-            normalize_output(&product.content)
-        );
+        assert_eq!(normalize_output(expected), normalize_output(&product.content));
     }
 
     #[test]
@@ -928,10 +932,7 @@ mod tests {
             large_p_node.push_str("</p>");
             p_blob.push_str(&large_p_node);
         }
-        let input = format!(
-            r#"<html><body><div class="sidebar">{}</div></body></html>"#,
-            p_blob
-        );
+        let input = format!(r#"<html><body><div class="sidebar">{}</div></body></html>"#, p_blob);
         let mut cursor = Cursor::new(input);
         let product = extract(&mut cursor, None).unwrap();
         assert!(product.content.len() > 150);
@@ -1119,9 +1120,6 @@ mod tests {
             "An inquest into Eloise Parry's death has been adjourned until July.",
             meta.description.expect("No description extracted")
         );
-        assert!(
-            meta.last_modified.is_some(),
-            "Could not parse dateModified field"
-        );
+        assert!(meta.last_modified.is_some(), "Could not parse dateModified field");
     }
 }

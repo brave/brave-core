@@ -13,19 +13,16 @@
 namespace ads {
 namespace ml {
 
-class TextData : public Data {
+class TextData final : public Data {
  public:
   TextData();
-
   TextData(const TextData& text_data);
+  explicit TextData(const std::string& text);
+  ~TextData() override;
 
   // Explicit copy assignment operator is required because the class
   // inherits const member type_ that cannot be copied by default
   TextData& operator=(const TextData& text_data);
-
-  explicit TextData(const std::string& text);
-
-  ~TextData() override;
 
   std::string GetText() const;
 

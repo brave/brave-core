@@ -8,57 +8,24 @@
 #include <map>
 #include <string>
 
-#include "bat/ads/ads_history_info.h"
-#include "bat/ads/internal/logging.h"
+#include "base/notreached.h"
+#include "bat/ads/ad_history_info.h"
 
 namespace ads {
 
-AdsHistoryConfirmationFilter::AdsHistoryConfirmationFilter() = default;
+namespace {
 
-AdsHistoryConfirmationFilter::~AdsHistoryConfirmationFilter() = default;
-
-std::deque<AdHistoryInfo> AdsHistoryConfirmationFilter::Apply(
-    const std::deque<AdHistoryInfo>& history) const {
-  std::map<std::string, AdHistoryInfo> filtered_ads_history_map;
-
-  for (const auto& ad : history) {
-    const ConfirmationType ad_action = ad.ad_content.ad_action;
-    if (ShouldFilterAction(ad_action)) {
-      continue;
-    }
-
-    const std::string uuid = ad.ad_content.uuid;
-
-    const auto it = filtered_ads_history_map.find(uuid);
-    if (it == filtered_ads_history_map.end()) {
-      filtered_ads_history_map.insert({uuid, ad});
-    } else {
-      AdHistoryInfo filtered_ad = it->second;
-      if (filtered_ad.ad_content.ad_action.value() > ad_action.value()) {
-        filtered_ads_history_map[uuid] = ad;
-      }
-    }
-  }
-
-  std::deque<AdHistoryInfo> filtered_ads_history;
-  for (const auto& filtered_ad : filtered_ads_history_map) {
-    const AdHistoryInfo ad = filtered_ad.second;
-    filtered_ads_history.push_back(ad);
-  }
-
-  return filtered_ads_history;
-}
-
-bool AdsHistoryConfirmationFilter::ShouldFilterAction(
-    const ConfirmationType& confirmation_type) const {
+bool ShouldFilterConfirmationType(const ConfirmationType& confirmation_type) {
   switch (confirmation_type.value()) {
-    case ConfirmationType::kClicked:
     case ConfirmationType::kViewed:
+    case ConfirmationType::kClicked:
     case ConfirmationType::kDismissed: {
       return false;
     }
 
+    case ConfirmationType::kServed:
     case ConfirmationType::kTransferred:
+    case ConfirmationType::kSaved:
     case ConfirmationType::kFlagged:
     case ConfirmationType::kUpvoted:
     case ConfirmationType::kDownvoted:
@@ -71,6 +38,45 @@ bool AdsHistoryConfirmationFilter::ShouldFilterAction(
       return true;
     }
   }
+}
+
+}  // namespace
+
+AdsHistoryConfirmationFilter::AdsHistoryConfirmationFilter() = default;
+
+AdsHistoryConfirmationFilter::~AdsHistoryConfirmationFilter() = default;
+
+std::deque<AdHistoryInfo> AdsHistoryConfirmationFilter::Apply(
+    const std::deque<AdHistoryInfo>& history) const {
+  std::map<std::string, AdHistoryInfo> filtered_ads_history_map;
+
+  for (const auto& ad : history) {
+    const ConfirmationType confirmation_type = ad.ad_content.confirmation_type;
+    if (ShouldFilterConfirmationType(confirmation_type)) {
+      continue;
+    }
+
+    const std::string uuid = ad.ad_content.uuid;
+
+    const auto it = filtered_ads_history_map.find(uuid);
+    if (it == filtered_ads_history_map.end()) {
+      filtered_ads_history_map.insert({uuid, ad});
+    } else {
+      const AdHistoryInfo filtered_ad = it->second;
+      if (filtered_ad.ad_content.confirmation_type.value() >
+          confirmation_type.value()) {
+        filtered_ads_history_map[uuid] = ad;
+      }
+    }
+  }
+
+  std::deque<AdHistoryInfo> filtered_ads_history;
+  for (const auto& filtered_ad : filtered_ads_history_map) {
+    const AdHistoryInfo ad = filtered_ad.second;
+    filtered_ads_history.push_back(ad);
+  }
+
+  return filtered_ads_history;
 }
 
 }  // namespace ads

@@ -9,12 +9,13 @@
 #include <string>
 #include <utility>
 
+#include "base/rand_util.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_json_parser.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
-#include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/base/mime_util.h"
@@ -23,18 +24,43 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "storage/browser/blob/blob_data_builder.h"
 #include "storage/browser/blob/blob_data_handle.h"
 
+namespace {
+
+// Retry after some time If local node responded with error.
+// The keys are often called immediately after startup
+// and node initialization may take some time.
+constexpr int kDefaultRetries = 5;
+
+// Used to retry requests if we got error from ipfs node,
+// it may fail requests sometimes right after launch,
+// Actual value will be generated randomly in range
+// (kMinimalRequestRetryIntervalMs,
+//  kRequestsRetryRate*kMinimalRequestRetryIntervalMs)
+const int kMinimalRequestRetryIntervalMs = 350;
+const int kRequestsRetryRate = 3;
+
+base::TimeDelta CalculateKeysRetryTime() {
+  return base::Milliseconds(
+      base::RandInt(kMinimalRequestRetryIntervalMs,
+                    kRequestsRetryRate * kMinimalRequestRetryIntervalMs));
+}
+
+}  // namespace
+
 namespace ipfs {
 
-IpnsKeysManager::IpnsKeysManager(content::BrowserContext* context,
-                                 const GURL& server_endpoint)
-    : context_(context), server_endpoint_(server_endpoint) {
-  DCHECK(context_);
-  url_loader_factory_ =
-      content::BrowserContext::GetDefaultStoragePartition(context)
-          ->GetURLLoaderFactoryForBrowserProcess();
+IpnsKeysManager::IpnsKeysManager(
+    BlobContextGetterFactory* context_factory,
+    network::mojom::URLLoaderFactory* url_loader_factory,
+    const GURL& server_endpoint)
+    : blob_context_getter_factory_(context_factory),
+      url_loader_factory_(url_loader_factory),
+      server_endpoint_(server_endpoint) {
+  DCHECK(blob_context_getter_factory_);
 }
 
 IpnsKeysManager::~IpnsKeysManager() {}
@@ -42,17 +68,13 @@ IpnsKeysManager::~IpnsKeysManager() {}
 void IpnsKeysManager::ImportKey(const base::FilePath& upload_file_path,
                                 const std::string& name,
                                 ImportKeyCallback callback) {
-  auto blob_storage_context_getter =
-      content::BrowserContext::GetBlobStorageContext(context_);
-
   auto upload_callback =
       base::BindOnce(&IpnsKeysManager::UploadData, weak_factory_.GetWeakPtr(),
                      std::move(callback), name);
   auto filename = upload_file_path.BaseName().MaybeAsASCII();
-  auto file_request_callback =
-      base::BindOnce(&CreateRequestForFile, upload_file_path,
-                     std::move(blob_storage_context_getter),
-                     ipfs::kFileMimeType, filename, std::move(upload_callback));
+  auto file_request_callback = base::BindOnce(
+      &CreateRequestForFile, upload_file_path, blob_context_getter_factory_,
+      ipfs::kFileMimeType, filename, std::move(upload_callback));
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&CalculateFileSize, upload_file_path),
@@ -80,7 +102,7 @@ void IpnsKeysManager::RemoveKey(const std::string& name,
 
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
+      url_loader_factory_,
       base::BindOnce(&IpnsKeysManager::OnKeyRemoved, weak_factory_.GetWeakPtr(),
                      iter, name, std::move(callback)));
 }
@@ -128,7 +150,7 @@ void IpnsKeysManager::GenerateNewKey(const std::string& name,
 
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
+      url_loader_factory_,
       base::BindOnce(&IpnsKeysManager::OnKeyCreated, weak_factory_.GetWeakPtr(),
                      iter, std::move(callback)));
 }
@@ -167,14 +189,17 @@ void IpnsKeysManager::LoadKeys(LoadKeysCallback callback) {
   if (callback)
     pending_load_callbacks_.push(std::move(callback));
 
+  LoadKeysInternal(kDefaultRetries);
+}
+
+void IpnsKeysManager::LoadKeysInternal(int retries) {
   auto url_loader =
       CreateURLLoader(server_endpoint_.Resolve(kAPIKeyListEndpoint), "POST");
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
+      url_loader_factory_,
       base::BindOnce(&IpnsKeysManager::OnKeysLoaded, weak_factory_.GetWeakPtr(),
-                     iter));
+                     iter, retries));
 }
 
 void IpnsKeysManager::UploadData(
@@ -191,10 +216,9 @@ void IpnsKeysManager::UploadData(
   auto url_loader = CreateURLLoader(url, "POST", std::move(request));
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_factory_.get(),
-      base::BindOnce(&IpnsKeysManager::OnKeyImported,
-                     weak_factory_.GetWeakPtr(), iter, std::move(callback),
-                     name));
+      url_loader_factory_, base::BindOnce(&IpnsKeysManager::OnKeyImported,
+                                          weak_factory_.GetWeakPtr(), iter,
+                                          std::move(callback), name));
 }
 
 void IpnsKeysManager::OnKeyImported(
@@ -231,6 +255,7 @@ void IpnsKeysManager::OnIpfsShutdown() {
 }
 
 void IpnsKeysManager::OnKeysLoaded(SimpleURLLoaderList::iterator iter,
+                                   int retry_number,
                                    std::unique_ptr<std::string> response_body) {
   auto* url_loader = iter->get();
   int error_code = url_loader->NetError();
@@ -238,6 +263,15 @@ void IpnsKeysManager::OnKeysLoaded(SimpleURLLoaderList::iterator iter,
   if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
     response_code = url_loader->ResponseInfo()->headers->response_code();
   url_loaders_.erase(iter);
+  last_load_retry_value_for_test_ = retry_number;
+  if (error_code == net::ERR_CONNECTION_REFUSED && retry_number) {
+    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&IpnsKeysManager::LoadKeysInternal,
+                       weak_factory_.GetWeakPtr(), retry_number - 1),
+        CalculateKeysRetryTime());
+    return;
+  }
 
   bool success = (error_code == net::OK && response_code == net::HTTP_OK);
   std::unordered_map<std::string, std::string> new_keys;
@@ -250,6 +284,10 @@ void IpnsKeysManager::OnKeysLoaded(SimpleURLLoaderList::iterator iter,
             << " response_code = " << response_code;
   }
   NotifyKeysLoaded(success);
+}
+
+int IpnsKeysManager::GetLastLoadRetryForTest() const {
+  return last_load_retry_value_for_test_;
 }
 
 void IpnsKeysManager::SetLoadCallbackForTest(LoadKeysCallback callback) {

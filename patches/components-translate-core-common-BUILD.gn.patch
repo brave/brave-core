@@ -1,0 +1,13 @@
+diff --git a/components/translate/core/common/BUILD.gn b/components/translate/core/common/BUILD.gn
+index 01627c321e5f91ee244582e2e2adfd3b72f02089..a1708339d73ee8ce74b4e5f0cdcb4f3d6acaea4c 100644
+--- a/components/translate/core/common/BUILD.gn
++++ b/components/translate/core/common/BUILD.gn
+@@ -26,6 +26,8 @@ static_library("common") {
+     "//third_party/metrics_proto",
+     "//url",
+   ]
++
++  import("//brave/components/translate/core/common/sources.gni") sources += brave_components_translate_core_common_sources public_deps = brave_components_translate_core_common_public_deps
+ }
+ 
+ source_set("unit_tests") {

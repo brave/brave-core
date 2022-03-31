@@ -5,6 +5,7 @@ import {
   ConnectedBottomNav,
   ConnectedHeader
 } from '../'
+import { Tooltip, SelectNetworkButton } from '../../shared'
 
 // Styled Components
 import {
@@ -15,70 +16,166 @@ import {
   AccountAddressText,
   AccountNameText,
   CenterColumn,
-  SwapIcon,
   OvalButton,
   OvalButtonText,
-  ConnectedIcon,
-  NotConnectedIcon,
-  CaratDownIcon,
+  BigCheckMark,
   StatusRow,
-  BalanceColumn
+  BalanceColumn,
+  SwitchIcon,
+  MoreAssetsButton
 } from './style'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
-import { WalletAccountType, PanelTypes } from '../../../constants/types'
+import { copyToClipboard } from '../../../utils/copy-to-clipboard'
+import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
+import Amount from '../../../utils/amount'
+
+// Hooks
+import { useExplorer, usePricing } from '../../../common/hooks'
+
+import {
+  WalletAccountType,
+  PanelTypes,
+  BraveWallet,
+  BuySupportedChains,
+  DefaultCurrencies
+} from '../../../constants/types'
 import { create, background } from 'ethereum-blockies'
+import { getLocale } from '../../../../common/locale'
 
 export interface Props {
+  spotPrices: BraveWallet.AssetPrice[]
   selectedAccount: WalletAccountType
+  selectedNetwork: BraveWallet.NetworkInfo
   isConnected: boolean
-  connectAction: () => void
+  activeOrigin: string
+  isSwapSupported: boolean
+  defaultCurrencies: DefaultCurrencies
   navAction: (path: PanelTypes) => void
+  onLockWallet: () => void
+  onOpenSettings: () => void
 }
 
 const ConnectedPanel = (props: Props) => {
-  const { connectAction, isConnected, navAction, selectedAccount } = props
+  const {
+    spotPrices,
+    onLockWallet,
+    onOpenSettings,
+    isConnected,
+    isSwapSupported,
+    navAction,
+    selectedAccount,
+    selectedNetwork,
+    activeOrigin,
+    defaultCurrencies
+  } = props
+  const [showMore, setShowMore] = React.useState<boolean>(false)
 
   const navigate = (path: PanelTypes) => () => {
     navAction(path)
   }
 
+  const onExpand = () => {
+    navAction('expanded')
+  }
+
+  const onShowSitePermissions = () => {
+    navAction('sitePermissions')
+  }
+
+  const onShowMore = () => {
+    setShowMore(true)
+  }
+
+  const onHideMore = () => {
+    if (showMore) {
+      setShowMore(false)
+    }
+  }
+
+  const onCopyToClipboard = async () => {
+    await copyToClipboard(selectedAccount.address)
+  }
+
   const bg = React.useMemo(() => {
-    return background({ seed: selectedAccount.address })
+    return background({ seed: selectedAccount.address.toLowerCase() })
   }, [selectedAccount.address])
 
   const orb = React.useMemo(() => {
-    return create({ seed: selectedAccount.address, size: 8, scale: 16 }).toDataURL()
+    return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [selectedAccount.address])
 
-  const FiatBalance = selectedAccount.balance * 2000
+  const isBuyDisabled = React.useMemo(() => {
+    return !BuySupportedChains.includes(selectedNetwork.chainId)
+  }, [BuySupportedChains, selectedNetwork])
+
+  const formattedAssetBalance = new Amount(selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId] ?? '')
+    .divideByDecimals(selectedNetwork.decimals)
+    .formatAsAsset(6, selectedNetwork.symbol)
+
+  const { computeFiatAmount } = usePricing(spotPrices)
+
+  const selectedAccountFiatBalance = React.useMemo(() => computeFiatAmount(
+    selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId], selectedNetwork.symbol, selectedNetwork.decimals
+  ), [computeFiatAmount, selectedNetwork, selectedAccount])
+
+  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+
   return (
-    <StyledWrapper panelBackground={bg}>
-      <ConnectedHeader action={navAction} />
+    <StyledWrapper onClick={onHideMore} panelBackground={bg}>
+      <ConnectedHeader
+        onExpand={onExpand}
+        onClickLock={onLockWallet}
+        onClickSetting={onOpenSettings}
+        onClickMore={onShowMore}
+        onClickViewOnBlockExplorer={onClickViewOnBlockExplorer('address', selectedAccount.address)}
+        showMore={showMore}
+      />
       <CenterColumn>
         <StatusRow>
-          <OvalButton onClick={connectAction}>
-            {isConnected ? (<ConnectedIcon />) : (<NotConnectedIcon />)}
-            <OvalButtonText>{isConnected ? 'Connected' : 'Not Connected'}</OvalButtonText>
-          </OvalButton>
-          <OvalButton onClick={navigate('networks')}>
-            <OvalButtonText>Mainnet</OvalButtonText>
-            <CaratDownIcon />
-          </OvalButton>
+          {!activeOrigin.startsWith('chrome://') ? (
+            <OvalButton onClick={onShowSitePermissions}>
+              {isConnected && <BigCheckMark />}
+              <OvalButtonText>{isConnected ? getLocale('braveWalletPanelConnected') : getLocale('braveWalletPanelNotConnected')}</OvalButtonText>
+            </OvalButton>
+          ) : (
+            <div />
+          )}
+          <Tooltip
+            text={selectedNetwork.chainName}
+            positionRight={true}
+          >
+            <SelectNetworkButton
+              onClick={navigate('networks')}
+              selectedNetwork={selectedNetwork}
+              isPanel={true}
+            />
+          </Tooltip>
         </StatusRow>
         <BalanceColumn>
-          <AccountCircle orb={orb} />
-          <AccountNameText>{selectedAccount.name}</AccountNameText>
-          <AccountAddressText>{reduceAddress(selectedAccount.address)}</AccountAddressText>
+          <AccountCircle orb={orb} onClick={navigate('accounts')}>
+            <SwitchIcon />
+          </AccountCircle>
+          <AccountNameText>{reduceAccountDisplayName(selectedAccount.name, 14)}</AccountNameText>
+          <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
+            <AccountAddressText onClick={onCopyToClipboard}>{reduceAddress(selectedAccount.address)}</AccountAddressText>
+          </Tooltip>
         </BalanceColumn>
-        <OvalButton onClick={navigate('swap')}><SwapIcon /></OvalButton>
         <BalanceColumn>
-          <AssetBalanceText>{selectedAccount.balance} {selectedAccount.asset.toUpperCase()}</AssetBalanceText>
-          <FiatBalanceText>${FiatBalance.toFixed(2)}</FiatBalanceText>
+          <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
+          <FiatBalanceText>
+            {selectedAccountFiatBalance.formatAsFiat(defaultCurrencies.fiat)}
+          </FiatBalanceText>
         </BalanceColumn>
+        <MoreAssetsButton onClick={navigate('assets')}>{getLocale('braveWalletPanelViewAccountAssets')}</MoreAssetsButton>
       </CenterColumn>
-      <ConnectedBottomNav action={navAction} />
+      <ConnectedBottomNav
+        selectedNetwork={selectedNetwork}
+        isBuyDisabled={isBuyDisabled}
+        isSwapDisabled={!isSwapSupported}
+        onNavigate={navAction}
+      />
     </StyledWrapper>
   )
 }

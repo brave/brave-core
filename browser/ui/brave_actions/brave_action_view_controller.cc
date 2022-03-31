@@ -9,24 +9,68 @@
 #include <string>
 #include <utility>
 
-#include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
+#include "base/memory/ptr_util.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
+#include "chrome/browser/extensions/extension_context_menu_model.h"
 #include "chrome/browser/extensions/extension_view_host.h"
 #include "chrome/browser/extensions/extension_view_host_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/extensions/extension_popup_types.h"
+#include "chrome/browser/ui/extensions/extensions_container.h"
 #include "chrome/browser/ui/toolbar/toolbar_action_view_delegate.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "components/vector_icons/vector_icons.h"
 #include "extensions/browser/extension_action.h"
+#include "extensions/browser/extension_action_manager.h"
+#include "extensions/browser/extension_registry.h"
+#include "extensions/common/api/extension_action/action_info.h"
 #include "extensions/common/constants.h"
+#include "extensions/common/extension.h"
+#include "extensions/common/manifest_constants.h"
+#include "extensions/common/permissions/api_permission.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/image/canvas_image_source.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/scoped_canvas.h"
+
+// static
+std::unique_ptr<BraveActionViewController> BraveActionViewController::Create(
+    const extensions::ExtensionId& extension_id,
+    Browser* browser,
+    ExtensionsContainer* extensions_container) {
+  DCHECK(browser);
+
+  auto* registry = extensions::ExtensionRegistry::Get(browser->profile());
+  scoped_refptr<const extensions::Extension> extension =
+      registry->enabled_extensions().GetByID(extension_id);
+  DCHECK(extension);
+  extensions::ExtensionAction* extension_action =
+      extensions::ExtensionActionManager::Get(browser->profile())
+          ->GetExtensionAction(*extension);
+  DCHECK(extension_action);
+
+  // WrapUnique() because the constructor is private.
+  return base::WrapUnique(new BraveActionViewController(
+      std::move(extension), browser, extension_action, registry,
+      extensions_container));
+}
+
+BraveActionViewController::BraveActionViewController(
+    scoped_refptr<const extensions::Extension> extension,
+    Browser* browser,
+    extensions::ExtensionAction* extension_action,
+    extensions::ExtensionRegistry* extension_registry,
+    ExtensionsContainer* extensions_container)
+    : ExtensionActionViewController(std::move(extension),
+                                    browser,
+                                    extension_action,
+                                    extension_registry,
+                                    extensions_container) {}
 
 bool BraveActionViewController::IsEnabled(
     content::WebContents* web_contents) const {
@@ -37,21 +81,18 @@ bool BraveActionViewController::IsEnabled(
   return is_enabled;
 }
 
-bool BraveActionViewController::DisabledClickOpensMenu() const {
-  // disabled is a per-tab state
-  return false;
-}
-
-ui::MenuModel* BraveActionViewController::GetContextMenu() {
+ui::MenuModel* BraveActionViewController::GetContextMenu(
+    extensions::ExtensionContextMenuModel::ContextMenuSource
+        context_menu_source) {
   // no context menu for brave actions button
   return nullptr;
 }
 
-bool BraveActionViewController::ExecuteActionUI(
-    std::string relative_path) {
-  return TriggerPopupWithUrl(PopupShowAction::SHOW_POPUP,
-      extension()->GetResourceURL(relative_path),
-      true);
+void BraveActionViewController::ExecuteActionUI(
+    const std::string& relative_path) {
+  TriggerPopupWithUrl(PopupShowAction::kShow,
+                      extension()->GetResourceURL(relative_path),
+                      /*grant_tab_permissions=*/true, ShowPopupCallback());
 }
 
 ExtensionActionViewController*
@@ -59,10 +100,39 @@ BraveActionViewController::GetPreferredPopupViewController() {
   return this;
 }
 
-bool BraveActionViewController::TriggerPopupWithUrl(
+void BraveActionViewController::TriggerPopup(PopupShowAction show_action,
+                                             bool grant_tab_permissions,
+                                             ShowPopupCallback callback) {
+  content::WebContents* const web_contents =
+      view_delegate_->GetCurrentWebContents();
+  if (!web_contents)
+    return;
+
+  const int tab_id = sessions::SessionTabHelper::IdForTab(web_contents).id();
+  TriggerPopupWithUrl(show_action, extension_action_->GetPopupUrl(tab_id),
+                      grant_tab_permissions, std::move(callback));
+}
+
+void BraveActionViewController::OnPopupClosed() {
+  DCHECK(popup_host_observation_.IsObservingSource(popup_host_));
+  popup_host_observation_.Reset();
+  popup_host_ = nullptr;
+  extensions_container_->SetPopupOwner(nullptr);
+  view_delegate_->OnPopupClosed();
+}
+
+gfx::Image BraveActionViewController::GetIcon(
+    content::WebContents* web_contents,
+    const gfx::Size& size) {
+  return gfx::Image(
+      gfx::ImageSkia(GetIconImageSource(web_contents, size), size));
+}
+
+void BraveActionViewController::TriggerPopupWithUrl(
     PopupShowAction show_action,
     const GURL& popup_url,
-    bool grant_tab_permissions) {
+    bool grant_tab_permissions,
+    ShowPopupCallback callback) {
   // If this extension is currently showing a popup, hide it. This behavior is
   // a bit different than ExtensionActionViewController, which will hide any
   // popup, regardless of extension. Consider duplicating the original behavior.
@@ -72,25 +142,13 @@ bool BraveActionViewController::TriggerPopupWithUrl(
       extensions::ExtensionViewHostFactory::CreatePopupHost(popup_url,
                                                             browser_);
   if (!host)
-    return false;
+    return;
 
   popup_host_ = host.get();
-  popup_host_observer_.Add(popup_host_);
-  ShowPopup(std::move(host), grant_tab_permissions, show_action);
-  return true;
-}
-
-void BraveActionViewController::OnPopupClosed() {
-  popup_host_observer_.Remove(popup_host_);
-  popup_host_ = nullptr;
-  view_delegate_->OnPopupClosed();
-}
-
-gfx::Image BraveActionViewController::GetIcon(
-    content::WebContents* web_contents,
-    const gfx::Size& size) {
-  return gfx::Image(
-      gfx::ImageSkia(GetIconImageSource(web_contents, size), size));
+  popup_host_observation_.Observe(popup_host_);
+  extensions_container_->SetPopupOwner(this);
+  ShowPopup(std::move(host), grant_tab_permissions, show_action,
+            std::move(callback));
 }
 
 std::unique_ptr<BraveActionIconWithBadgeImageSource>
@@ -116,6 +174,5 @@ BraveActionViewController::GetIconImageSource(
   // If the extension doesn't want to run on the active web contents, we
   // grayscale it to indicate that.
   image_source->set_grayscale(!IsEnabled(web_contents));
-  image_source->set_paint_page_action_decoration(false);
   return image_source;
 }

@@ -11,6 +11,7 @@
 import './brave_sync_code_dialog.js';
 
 import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
 
 import {BraveSyncBrowserProxy} from './brave_sync_browser_proxy.js';
 
@@ -18,6 +19,10 @@ Polymer({
   is: 'settings-brave-sync-setup',
 
   _template: html`{__html_template__}`,
+
+  behaviors: [
+    I18nBehavior,
+  ],
 
   properties: {
     syncCode: {
@@ -65,6 +70,14 @@ Polymer({
   },
 
   handleSyncCodeDialogDone_: function (e) {
+    if (this.syncCodeDialogType_ === 'input') {
+      const messageText = this.i18n('braveSyncFinalSecurityWarning')
+      const shouldProceed = confirm(messageText)
+      if (!shouldProceed) {
+        return
+      }
+    }
+
     this.submitSyncCode_()
   },
 

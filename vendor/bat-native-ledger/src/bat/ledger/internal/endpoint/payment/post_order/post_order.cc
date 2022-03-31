@@ -76,7 +76,7 @@ type::Result PostOrder::ParseBody(
     type::SKUOrder* order) {
   DCHECK(order);
 
-  base::Optional<base::Value> dictionary = base::JSONReader::Read(body);
+  absl::optional<base::Value> dictionary = base::JSONReader::Read(body);
   if (!dictionary || !dictionary->is_dict()) {
     BLOG(0, "Invalid JSON");
     return type::Result::LEDGER_ERROR;

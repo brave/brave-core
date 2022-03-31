@@ -97,7 +97,7 @@ export const Content = styled('section')<ContentProps>`
     see https://github.com/brave/brave-browser/issues/5504
   */
   > * {
-    display: ${p => p.active === false && 'none'};
+    display: ${p => !p.active && 'none'};
   }
 
   ${p => p.active && css`
@@ -115,7 +115,7 @@ export const Page = styled('div')<PageProps>`
   height: inherit;
   background: ${p => p.theme.color.panelBackground};
   overflow-x: hidden;
-  overflow-y: ${p => p.shouldUpdateElementOverflow ? 'initial' : 'hidden' };
+  overflow-y: ${p => p.shouldUpdateElementOverflow ? 'initial' : 'hidden'};
 `
 
 export const Panel = styled('div')`

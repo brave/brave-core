@@ -7,10 +7,12 @@
 
 #include "base/path_service.h"
 #include "brave/browser/brave_drm_tab_helper.h"
+#include "brave/browser/widevine/constants.h"
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/ssl/cert_verifier_browser_test.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -30,7 +32,7 @@
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 #include "components/component_updater/component_updater_service.h"
 #endif
 
@@ -167,7 +169,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   EXPECT_FALSE(observer.bubble_added_);
 }
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 // On linux, additional permission request is used to ask restarting.
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
                        TriggerTwoPermissionTest) {
@@ -181,10 +183,9 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   content::RunAllTasksUntilIdle();
 
   WidevinePermissionRequest::is_test_ = true;
-  GetBraveDrmTabHelper()->OnEvent(
-      component_updater::ComponentUpdateService::Observer
-          ::Events::COMPONENT_UPDATED,
-      BraveDrmTabHelper::kWidevineComponentId);
+  GetBraveDrmTabHelper()->OnEvent(component_updater::ComponentUpdateService::
+                                      Observer ::Events::COMPONENT_UPDATED,
+                                  kWidevineComponentId);
   content::RunAllTasksUntilIdle();
 
   // Check two permission bubble are created.
@@ -218,6 +219,7 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
   }
 
   void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
+    CertVerifierBrowserTest::SetUpDefaultCommandLine(command_line);
     command_line->AppendSwitchASCII(
         "enable-blink-features",
         "EncryptedMediaEncryptionSchemeQuery");
@@ -260,7 +262,7 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
                        SuggestPermissionIfWidevineDetected) {
   // In this test, we just want to know whether permission bubble is shown.
   GURL url = https_server_.GetURL("a.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_FALSE(IsPermissionBubbleShown());
 
   const std::string drm_js =
@@ -284,7 +286,7 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
 
   // Navigate to a page with some videos.
   url = https_server_.GetURL("a.com", "/media/youtube.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::RunAllTasksUntilIdle();
   EXPECT_FALSE(IsPermissionBubbleShown());
   ResetBubbleState();

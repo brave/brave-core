@@ -1,8 +1,4 @@
 include_rules = [
-  "+../../../base",
-  "+../../../../base/debug",
-  "+../../../../base/mac",
-  "+../../../../base/threading",
 ]
 
 # Existing exceptions

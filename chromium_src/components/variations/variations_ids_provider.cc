@@ -6,5 +6,5 @@
 #include "components/variations/variations_ids_provider.h"
 
 #define GetClientDataHeaders GetClientDataHeaders_Chromium
-#include "../../../../components/variations/variations_ids_provider.cc"
+#include "src/components/variations/variations_ids_provider.cc"
 #undef GetClientDataHeaders

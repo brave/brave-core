@@ -1,19 +1,21 @@
 <style include="settings-shared iron-flex">
+  .settings-box.bottom-border {
+    border-top: none;
+    border-bottom: var(--cr-separator-line);
+  }
 </style>
-<template is="dom-if" if="[[isSidebarFeatureEnabled_]]">
-  <div class="settings-box">
-    <div class="flex" id="labelWrapper" aria-hidden="true">
-      <div class="label">$i18n{appearanceSettingsShowOptionTitle}</div>
-      <div class="secondary label" id="sub-label">
-        <span id="sub-label-text" aria-hidden="true">
-          [[sidebarShowEnabledLabel_]]
-        </span>
-      </div>
+<div class="settings-box bottom-border">
+  <div class="flex" id="labelWrapper" aria-hidden="true">
+    <div class="label">$i18n{appearanceSettingsShowOptionTitle}</div>
+    <div class="secondary label" id="sub-label">
+      <span id="sub-label-text" aria-hidden="true">
+        [[sidebarShowEnabledLabel_]]
+      </span>
     </div>
-    <settings-dropdown-menu
-      pref="{{prefs.brave.sidebar.sidebar_show_option}}"
-      on-settings-control-change="onShowOptionChanged_"
-      menu-options="[[sidebarShowOptions_]]">
-    </settings-toggle-button>
   </div>
-</template>
+  <settings-dropdown-menu
+    pref="{{prefs.brave.sidebar.sidebar_show_option}}"
+    on-settings-control-change="onShowOptionChanged_"
+    menu-options="[[sidebarShowOptions_]]">
+  </settings-toggle-button>
+</div>

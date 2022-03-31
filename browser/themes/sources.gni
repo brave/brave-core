@@ -28,8 +28,12 @@ if (!is_android) {
     "//brave/app:brave_generated_resources_grit",
     "//brave/common:pref_names",
     "//brave/common:switches",
+    "//brave/components/brave_vpn/buildflags",
+    "//brave/components/sidebar/buildflags",
     "//chrome/common",
-    "//components/prefs",
     "//components/pref_registry",
+    "//components/prefs",
+    "//ui/gfx",
+    "//ui/native_theme",
   ]
 }

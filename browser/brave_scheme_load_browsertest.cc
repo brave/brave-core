@@ -9,9 +9,12 @@
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_navigator.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/omnibox/browser/location_bar_model.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/browser/notification_types.h"
 #include "content/public/common/url_constants.h"
@@ -50,8 +53,8 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
 
   bool NavigateToURLUntilLoadStop(const std::string& origin,
                                   const std::string& path) {
-    ui_test_utils::NavigateToURL(browser(),
-                                 embedded_test_server()->GetURL(origin, path));
+    EXPECT_TRUE(ui_test_utils::NavigateToURL(
+        browser(), embedded_test_server()->GetURL(origin, path)));
     return WaitForLoadStop(active_contents());
   }
 

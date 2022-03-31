@@ -7,8 +7,8 @@ import { CardType } from './cardType'
 import { ExpiryFormat } from './expiryFormat'
 
 interface InputDictionary {
-  cardNumber: HTMLInputElement,
-  expiry: HTMLInputElement,
+  cardNumber: HTMLInputElement
+  expiry: HTMLInputElement
   securityCode: HTMLInputElement
 }
 
@@ -16,7 +16,7 @@ interface BehaviorsInit {
 
   // A dictionary containing references to credit card <input>
   // elements.
-  inputs: InputDictionary,
+  inputs: InputDictionary
 
   // Called when the inferred credit card type has changed.
   onCardTypeChange?: (cardType: CardType | null) => void
@@ -76,7 +76,7 @@ export class Behaviors {
     }
   }
 
-  validate (): Array<CreditCardError> {
+  validate (): CreditCardError[] {
     return [
       ...this._validateCardNumber(),
       ...this._validateExpiry(),
@@ -212,7 +212,7 @@ export class Behaviors {
   _runValidator (
     element: HTMLInputElement,
     fn: (value: string) => CreditCardErrorType
-  ): Array<CreditCardError> {
+  ): CreditCardError[] {
     const error = { type: fn(element.value), element }
     const { onInputValidation } = this
     if (onInputValidation) {
@@ -220,5 +220,4 @@ export class Behaviors {
     }
     return error.type ? [error] : []
   }
-
 }

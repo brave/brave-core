@@ -113,13 +113,11 @@ export default class ThumbLikePicker extends React.PureComponent<Props, State> {
 
   render () {
     return (
-      this.state.itemSelected === 1 ?
-        this.showCategoryLike()
-      :
-        this.state.itemSelected === 2 ?
-          this.showCategoryBlock()
-      :
-        this.showCategoryUnselected()
+      this.state.itemSelected === 1
+        ? this.showCategoryLike()
+      : this.state.itemSelected === 2
+          ? this.showCategoryBlock()
+      : this.showCategoryUnselected()
     )
   }
 }

@@ -7,6 +7,8 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
+#include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/brave_paths.h"
@@ -113,11 +115,11 @@ class RewardsContributionBrowserTest : public InProcessBrowserTest {
 
   void RefreshPublisherListUsingRewardsPopup() {
     rewards_browsertest_util::WaitForElementThenClick(
-        context_helper_->OpenRewardsPopup(),
+        context_helper_->OpenRewardsPopup().get(),
         "[data-test-id='unverified-check-button']");
   }
 
-  brave_rewards::RewardsServiceImpl* rewards_service_;
+  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<RewardsBrowserTestContribution> contribution_;
   std::unique_ptr<RewardsBrowserTestPromotion> promotion_;
@@ -144,9 +146,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, AutoContribution) {
   contribution_->IsBalanceCorrect();
 
   rewards_browsertest_util::WaitForElementToContain(
-      contents(),
-      "[color=contribute]",
-      "-20.000BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "-20.00 BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -187,9 +187,7 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->IsBalanceCorrect();
 
   rewards_browsertest_util::WaitForElementToContain(
-      contents(),
-      "[color=contribute]",
-      "-20.000BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "-20.00 BAT");
 
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsInternalsUrl());
 
@@ -254,9 +252,7 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->IsBalanceCorrect();
 
   rewards_browsertest_util::WaitForElementToContain(
-      contents(),
-      "[color=contribute]",
-      "-20.000BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "-20.00 BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -354,9 +350,8 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 // Check pending contributions
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    PendingContributionTip) {
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       DISABLED_PendingContributionTip) {
   const std::string publisher = "example.com";
   rewards_browsertest_util::StartProcess(rewards_service_);
   rewards_browsertest_util::CreateWallet(rewards_service_);
@@ -380,9 +375,8 @@ IN_PROC_BROWSER_TEST_F(
       publisher);
 }
 
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    ProcessPendingContributions) {
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       DISABLED_ProcessPendingContributions) {
   rewards_browsertest_util::StartProcess(rewards_service_);
   rewards_browsertest_util::CreateWallet(rewards_service_);
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
@@ -441,8 +435,7 @@ IN_PROC_BROWSER_TEST_F(
 
   // Check that wallet summary shows the appropriate tip amount
   rewards_browsertest_util::WaitForElementToEqual(
-      contents(),
-      "[data-test-id=summary-tips] [color=contribute] span span",
+      contents(), "[data-test-id=rewards-summary-ac]",
       ExpectedTipSummaryAmountString());
 
   // Make sure that pending contribution box shows the correct
@@ -450,25 +443,21 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->IsPendingBalanceCorrect();
 
   // Open the Rewards popup
-  content::WebContents* popup_contents = context_helper_->OpenRewardsPopup();
+  base::WeakPtr<content::WebContents> popup_contents =
+      context_helper_->OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
 
   // Check if verified notification is shown
-  rewards_browsertest_util::WaitForElementToContain(
-      popup_contents,
-      "#root",
-      "3zsistemi.si");
+  rewards_browsertest_util::WaitForElementToContain(popup_contents.get(),
+                                                    "#root", "3zsistemi.si");
 
   // Close notification
   rewards_browsertest_util::WaitForElementThenClick(
-      popup_contents,
-      "[data-test-id=notification-close]");
+      popup_contents.get(), "[data-test-id=notification-close]");
 
   // Check if insufficient funds notification is shown
   rewards_browsertest_util::WaitForElementToContain(
-      popup_contents,
-      "#root",
-      "Insufficient Funds");
+      popup_contents.get(), "#root", "Insufficient Funds");
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -555,34 +544,6 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->VerifyTip(amount, true, false, true);
 }
 
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    TipConnectedPublisherConnected) {
-  response_->SetVerifiedWallet(true);
-  rewards_browsertest_util::StartProcess(rewards_service_);
-  rewards_browsertest_util::CreateWallet(rewards_service_);
-  contribution_->SetUpUpholdWallet(
-      rewards_service_,
-      50.0,
-      ledger::type::WalletStatus::CONNECTED);
-  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
-
-  const double amount = 5.0;
-  contribution_->TipViaCode(
-      "bumpsmack.com",
-      amount,
-      ledger::type::PublisherStatus::CONNECTED,
-      0);
-
-  contribution_->IsBalanceCorrect();
-
-  // Make sure that tips table is empty
-  rewards_browsertest_util::WaitForElementToEqual(
-      contents(),
-      "#tips-table > div > div",
-      "Have you tipped your favorite content creator today?");
-}
-
 // https://github.com/brave/brave-browser/issues/12985
 IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
@@ -615,7 +576,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipNonIntegralAmount) {
   context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
-  rewards_service_->OnTip("duckduckgo.com", 2.5, false);
+  rewards_service_->OnTip("duckduckgo.com", 2.5, false, base::DoNothing());
   contribution_->WaitForTipReconcileCompleted();
   ASSERT_EQ(contribution_->GetTipStatus(), ledger::type::Result::LEDGER_OK);
   ASSERT_EQ(contribution_->GetReconcileTipTotal(), 2.5);
@@ -636,7 +597,7 @@ IN_PROC_BROWSER_TEST_F(
       rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
       verified);
 
-  rewards_service_->OnTip("duckduckgo.com", 2.5, true);
+  rewards_service_->OnTip("duckduckgo.com", 2.5, true, base::DoNothing());
   rewards_service_->StartMonthlyContributionForTest();
   contribution_->WaitForTipReconcileCompleted();
   ASSERT_EQ(contribution_->GetTipStatus(), ledger::type::Result::LEDGER_OK);
@@ -684,9 +645,7 @@ IN_PROC_BROWSER_TEST_F(
 
   // Check that summary table shows the appropriate contribution
   rewards_browsertest_util::WaitForElementToContain(
-      contents(),
-      "[color='contribute']",
-      "-5.000BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "-5.00 BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -734,14 +693,12 @@ IN_PROC_BROWSER_TEST_F(
 
   // Check that summary table shows the appropriate contribution
   rewards_browsertest_util::WaitForElementToContain(
-      contents(),
-      "[color='contribute']",
-      "-5.000BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "-5.00 BAT");
 }
 
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    SplitProcessorAutoContribution) {
+// TODO(zenparsing): Reimplement this as a unit test (#20473)
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       DISABLED_SplitProcessorAutoContribution) {
   response_->SetVerifiedWallet(true);
   rewards_browsertest_util::StartProcess(rewards_service_);
   rewards_browsertest_util::CreateWallet(rewards_service_);
@@ -786,11 +743,10 @@ IN_PROC_BROWSER_TEST_F(
 
   // Wait for UI to update with contribution
   rewards_browsertest_util::WaitForElementToContain(
-      contents(), "[color=contribute]", "-50.000BAT");
+      contents(), "[data-test-id=rewards-summary-ac]", "-50.00 BAT");
 
   rewards_browsertest_util::WaitForElementThenClick(
-      contents(),
-      "[data-test-id='showMonthlyReport']");
+      contents(), "[data-test-id=view-statement-button]");
 
   rewards_browsertest_util::WaitForElementToAppear(
       contents(),
@@ -873,9 +829,9 @@ IN_PROC_BROWSER_TEST_F(
   run_loop_second.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    SplitProcessOneTimeTip) {
+// TODO(zenparsing): Reimplement this as a unit test (#20473)
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       DISABLED_SplitProcessOneTimeTip) {
   response_->SetVerifiedWallet(true);
   rewards_browsertest_util::StartProcess(rewards_service_);
   rewards_browsertest_util::CreateWallet(rewards_service_);
@@ -896,11 +852,10 @@ IN_PROC_BROWSER_TEST_F(
 
   // Wait for UI to update with contribution
   rewards_browsertest_util::WaitForElementToContain(
-      contents(), "[color='contribute']", "-50.000BAT");
+      contents(), "[data-test-id=rewards-summary-one-time]", "-50.00 BAT");
 
   rewards_browsertest_util::WaitForElementThenClick(
-      contents(),
-      "[data-test-id='showMonthlyReport']");
+      contents(), "[data-test-id=view-statement-button]");
 
   rewards_browsertest_util::WaitForElementThenClick(
       contents(),
@@ -938,9 +893,10 @@ IN_PROC_BROWSER_TEST_F(
                             true);
 
   // Verify current tip amount displayed on panel
-  content::WebContents* popup = context_helper_->OpenRewardsPopup();
+  base::WeakPtr<content::WebContents> popup =
+      context_helper_->OpenRewardsPopup();
   const double tip_amount =
-      rewards_browsertest_util::GetRewardsPopupMonthlyTipValue(popup);
+      rewards_browsertest_util::GetRewardsPopupMonthlyTipValue(popup.get());
   ASSERT_EQ(tip_amount, 10.0);
 }
 
@@ -963,21 +919,18 @@ IN_PROC_BROWSER_TEST_F(
                             true);
 
   // Verify "Change amount" opens monthly tip form
-  content::WebContents* banner = context_helper_->OpenSiteBanner(
+  base::WeakPtr<content::WebContents> banner = context_helper_->OpenSiteBanner(
       rewards_browsertest_util::TipAction::ChangeMonthly);
 
   rewards_browsertest_util::WaitForElementToContain(
-      banner,
-      "[data-test-id=form-submit-button]",
-      "Set monthly contribution");
+      banner.get(), "[data-test-id=form-submit-button]", "Set monthly tip");
 
   // Verify "Cancel" opens cancel confirmation form
   banner = context_helper_->OpenSiteBanner(
       rewards_browsertest_util::TipAction::ClearMonthly);
 
   rewards_browsertest_util::WaitForElementToContain(
-      banner,
-      "[data-test-id=form-submit-button]",
+      banner.get(), "[data-test-id=form-submit-button]",
       "Confirm Canceling Monthly");
 }
 

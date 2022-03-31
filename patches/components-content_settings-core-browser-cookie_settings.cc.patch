@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/browser/cookie_settings.cc b/components/content_settings/core/browser/cookie_settings.cc
+index 101b01f953117f24f82eedc59a310ac50ceaa49d..e2ed125091a2bf4cd6f33dda3db89476b4dc9036 100644
+--- a/components/content_settings/core/browser/cookie_settings.cc
++++ b/components/content_settings/core/browser/cookie_settings.cc
+@@ -191,6 +191,7 @@ ContentSetting CookieSettings::GetCookieSettingInternal(
+   DCHECK(value.is_int());
+   ContentSetting setting = ValueToContentSetting(value);
+   bool block = block_third && is_third_party_request;
++  BRAVE_COOKIE_SETTINGS_GET_COOKIES_SETTINGS_INTERNAL
+ 
+   if (!block) {
+     FireStorageAccessHistogram(

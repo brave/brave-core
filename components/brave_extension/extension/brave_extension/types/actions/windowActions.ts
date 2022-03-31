@@ -5,31 +5,25 @@
 import * as types from '../constants/windowTypes'
 
 interface WindowFocusChangedReturn {
-  type: types.WINDOW_FOCUS_CHANGED,
+  type: types.WINDOW_FOCUS_CHANGED
   windowId: number
 }
 
-export interface WindowFocusChanged {
-  (windowId: number): WindowFocusChangedReturn
-}
+export type WindowFocusChanged = (windowId: number) => WindowFocusChangedReturn
 
 interface WindowCreatedReturn {
-  type: types.WINDOW_CREATED,
+  type: types.WINDOW_CREATED
   window: chrome.windows.Window
 }
 
-export interface WindowCreated {
-  (window: chrome.windows.Window): WindowCreatedReturn
-}
+export type WindowCreated = (window: chrome.windows.Window) => WindowCreatedReturn
 
 interface WindowRemovedReturn {
-  type: types.WINDOW_REMOVED,
+  type: types.WINDOW_REMOVED
   windowId: number
 }
 
-export interface WindowRemoved {
-  (windowId: number): WindowRemovedReturn
-}
+export type WindowRemoved = (windowId: number) => WindowRemovedReturn
 
 export type windowActions =
   WindowFocusChangedReturn |

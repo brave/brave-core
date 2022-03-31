@@ -11,16 +11,16 @@ class BraveActionIconWithBadgeImageSource;
 #define BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_            \
  private:                                                \
   friend class BraveActionIconWithBadgeImageSource;      \
-  virtual base::Optional<int> GetCustomGraphicSize();    \
-  virtual base::Optional<int> GetCustomGraphicXOffset(); \
-  virtual base::Optional<int> GetCustomGraphicYOffset(); \
+  virtual absl::optional<int> GetCustomGraphicSize();    \
+  virtual absl::optional<int> GetCustomGraphicXOffset(); \
+  virtual absl::optional<int> GetCustomGraphicYOffset(); \
                                                          \
  public:                                                 \
-// #define BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_
+  // #define BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_
 
 #define PaintBadge virtual PaintBadge
 #define GetIconAreaRect virtual GetIconAreaRect
-#include "../../../../../../chrome/browser/ui/extensions/icon_with_badge_image_source.h"
+#include "src/chrome/browser/ui/extensions/icon_with_badge_image_source.h"
 #undef GetIconAreaRect
 #undef PaintBadge
 #undef BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_

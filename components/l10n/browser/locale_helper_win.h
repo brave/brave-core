@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_L10N_BROWSER_LOCALE_HELPER_WIN_H_
 #define BRAVE_COMPONENTS_L10N_BROWSER_LOCALE_HELPER_WIN_H_
 
-#include <windows.h>
 #include <string>
 
 #include "brave/components/l10n/browser/locale_helper.h"

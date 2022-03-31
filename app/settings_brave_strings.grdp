@@ -2,6 +2,12 @@
 <!-- Settings-specific Brave strings (included from chromium_strings.grd). -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
+  <!-- Shared across multiple page -->
+  <if expr="not chromeos">
+    <message name="IDS_RELAUNCH_CONFIRMATION_DIALOG_TITLE" desc="The title of the modal dialog that we show when users click on relaunch and they have open Private windows. The dialog serves to warn the users about losing their Private windows if they proceed with the relaunch.">
+      Relaunch Brave?
+    </message>
+  </if>
   <!-- About Page -->
   <message name="IDS_SETTINGS_ABOUT_PROGRAM" desc="Menu title for the About Brave page.">
     About Brave
@@ -17,7 +23,7 @@
       Updating Brave (<ph name="PROGRESS_PERCENT">$1<ex>90%</ex></ph>)
     </message>
     <message name="IDS_SETTINGS_UPGRADE_SUCCESSFUL_RELAUNCH" desc="Status label: Successfully updated Brave">
-      Nearly up to date! Relaunch Brave to finish updating. Private windows won't reopen.
+      Nearly up to date! Relaunch Brave to finish updating.
     </message>
     <message name="IDS_SETTINGS_UPGRADE_UP_TO_DATE" desc="Status label: Already up to date (Brave)">
       Brave is up to date
@@ -38,14 +44,9 @@
     </message>
   </if>
 
-  <!-- Cookie Settings Page -->
-  <message name="IDS_SETTINGS_SITE_SETTINGS_DELETE_DATA_POST_SESSION" desc="Label for the checkbox that allows the user to automatically delete their cookies and site data at the end of the browser session.">
-    Clear cookies and site data when you quit Brave
-  </message>
-
   <!-- Autofill Page -->
-  <message name="IDS_SETTINGS_GOOGLE_PAYMENTS_CACHED" desc="Label that will be used to show that a credit card comes from Brave Pay and is saved locally. This should follow the casing of the 'Brave Pay' and 'Brave' brands. 'Copied to Brave' is short for 'The credit card is copied to Brave'. 'Brave Pay' should not be translated as it is the product name.">
-    Brave Pay (copied to Brave)
+  <message name="IDS_SETTINGS_GOOGLE_PAYMENTS_CACHED" desc="Label that will be used to show that a credit card comes from Google Pay and is saved locally. This should follow the casing of the 'Google Pay' and 'Brave' brands. 'Copied to Brave' is short for 'The credit card is copied to Brave'. 'Google Pay' should not be translated as it is the product name.">
+    Google Pay (copied to Brave)
   </message>
   <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_OFFLINE" desc="Error message when the password check can't be completed because the user is offline.">
     Brave can't check your passwords. Try checking your internet connection.
@@ -57,7 +58,7 @@
     No saved passwords. Brave can check your passwords when you save them.
   </message>
   <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_QUOTA_LIMIT_GOOGLE_ACCOUNT" desc="Error message when the password check can't be completed since the user hit the quota limit, but the user is able to check their passwords in their Brave account.">
-    Brave can't check your passwords. Try again after 24 hours or <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" rel="noopener noreferrer"&gt;</ph>check passwords in your Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>.
+    Brave can't check your passwords. Try again after 24 hours or <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>check passwords in your Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CHECK_PASSWORDS_ERROR_QUOTA_LIMIT" desc="Error message when the password check can't be completed since the user hit the quota limit.">
     Brave can't check your passwords. Try again after 24 hours.
@@ -97,7 +98,7 @@
   </if>
 
   <!-- Main Page -->
-  <if expr="chromeos or lacros">
+  <if expr="chromeos_ash or chromeos_lacros">
     <!-- No target="_blank" because OS settings opens its own window. -->
     <message name="IDS_SETTINGS_OS_SETTINGS_BANNER" desc="Banner displayed in browser settings page that links to OS settings.">
       If a setting doesn't show on this page, look in your <ph name="LINK_BEGIN">&lt;a href="$1<ex>https://google.com/</ex>"&gt;</ph>
@@ -112,16 +113,48 @@
   <message name="IDS_SETTINGS_RESTART_TO_APPLY_CHANGES" desc="Description in the snackbar to restart Brave and apply changes.">
     To apply your changes, relaunch Brave
   </message>
-  <message name="IDS_SETTINGS_SIGNIN_ALLOWED" desc="The title of the preference to allow to sign-in to Brave">
+
+  <if expr="not chromeos and not lacros">
+    <message name="IDS_SETTINGS_SIGNIN_ALLOWED" desc="The title of the preference to allow to sign-in to Brave">
     Allow Brave sign-in
-  </message>
-  <message name="IDS_SETTINGS_SIGNIN_ALLOWED_DESC" desc="The description of the preference to allow to sign-in to Brave">
+    </message>
+    <message name="IDS_SETTINGS_SIGNIN_ALLOWED_DESC" desc="The description of the preference to allow to sign-in to Brave">
     By turning this off, you can sign in to Brave sites like Gmail without signing in to Brave
-  </message>
+    </message>
+  </if>
 
   <!-- Site Settings -->
   <message name="IDS_SETTINGS_SITE_SETTINGS_PDFS_BLOCKED" desc="Label for the disabled option of the pdfs content setting.">
     Open PDFs in Brave
+  </message>
+
+  <!-- Privacy Guide -->
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_PROMO_BODY" desc="Body text of a card in the settings page that explains what the privacy guide feature is.">
+    Review key privacy and security controls in Brave
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_CLEAR_ON_EXIT_FEATURE_DESCRIPTION1" desc="A part of the feature description of 'clear cookies on exit' card in the privacy guide.">
+    When you close all Brave windows, cookies and site data are automatically cleared
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_CLEAR_ON_EXIT_FEATURE_DESCRIPTION2" desc="A part of the feature description of 'clear cookies on exit' card in the privacy guide.">
+    You will be <ph name="BEGIN_BOLD">&lt;b&gt;</ph>signed out of most sites<ph name="END_BOLD">&lt;/b&gt;</ph> when you close Brave. If sync is off, you will also be <ph name="BEGIN_BOLD">&lt;b&gt;</ph>signed out of Brave services and Brave<ph name="END_BOLD">&lt;/b&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_CLEAR_ON_EXIT_FEATURE_DESCRIPTION3" desc="A part of the feature description of 'clear cookies on exit' card in the privacy guide.">
+    Sites you visit remember your information until you close Brave
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_SAFE_BROWSING_CARD_STANDARD_PROTECTION_FEATURE_DESCRIPTION2" desc="A part of the feature description of the standard protection section of the safe browsing card in the privacy guide.">
+    Checks URLs with a list of unsafe sites stored in Brave
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_SAFE_BROWSING_CARD_STANDARD_PROTECTION_PRIVACY_DESCRIPTION1" desc="A part of the privacy description of the standard protection section of the safe browsing card in the privacy guide.">
+    If a site tries to steal your password, or when you download a harmful file, Brave may also send URLs, including bits of page content, to Safe Browsing
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_PRIVACY_SANDBOX_SUB_LABEL" desc="Text of the Privacy Sandbox sublabel in the completion card of the privacy guide.">
+    Brave is exploring new features that allow sites to deliver the same browsing experience using less of your data
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_WAA_SUB_LABEL" desc="Text of the Web and App Activity sublabel in the completion card of the privacy guide.">
+    Choose whether to include Brave history for more personalized experiences in Brave services
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_MSBB_PRIVACY_DESCRIPTION2" desc="A part of the privacy description of 'make searches and browsing better' in the privacy guide.">
+    If you also share Brave usage reports, those reports include the URLs you visit
   </message>
 
   <!-- Safety check -->
@@ -132,7 +165,7 @@
     Brave can't check for updates. Try checking your internet connection.
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_UPDATES_FAILED" desc="This text describes that Brave cannot update due to an unknown error.">
-    Brave didn't update, something went wrong. <ph name="BEGIN_LINK">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Fix Brave update problems and failed updates.<ph name="END_LINK">&lt;/a&gt;</ph>
+    Brave didn't update, something went wrong. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Fix Brave update problems and failed updates.<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_UPDATES_UNKNOWN" desc="This text displays the installed version of Brave when it is not possible to check for updates on non-Brave branded browsers.">
     Brave version <ph name="PRODUCT_VERSION">$1<ex>15.0.865.0</ex></ph> is installed
@@ -143,8 +176,13 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_SAFE_BROWSING_DISABLED" desc="This text points out that Safe Browsing is disabled and that the user is not protected.">
     Safe Browsing is off. Brave recommends turning it on.
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_EXTENSIONS_ERROR" desc="This text describes that safety check could not check extensions for an unkown reason.">
-    Brave can't check your extensions. Try again later.
+
+  <!-- Safe Browsing -->
+  <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_BULLET_TWO" desc="Second bullet point under the safe browsing enhanced protection mode">
+    Keeps you safe on Brave and may be used to improve your security in other Brave apps when you are signed in
+  </message>
+  <message name="IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_TWO" desc="First bullet point under the safe browsing standard protection mode">
+    Checks URLs with a list of unsafe sites stored in Brave. If a site tries to steal your password, or when you download a harmful file, Brave may also send URLs, including bits of page content, to Safe Browsing.
   </message>
 
   <!-- Profiles Page -->
@@ -170,7 +208,7 @@
   </message>
 <if expr="chromeos">
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_DESCRIPTION_V2" desc="Description of the Account Manager Settings page. Shown just below the title of the page.">
-    This page allows you to manage your signed-in Brave accounts. These accounts will be available in Brave browser and Play Store apps, as well as services like Gmail, Drive, and YouTube. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    You can manage your signed-in Brave sync chains. Your Brave sync chains are used for Brave browser, Play Store, Gmail, and more. If you want to add an account for someone else, like a family member, add a new profile to your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> instead. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
 </if>
 
@@ -189,8 +227,7 @@
   </message>
 
   <!-- Languages Page -->
-  <!-- Chrome OS string is in settings_strings.grdp. -->
-  <if expr="not chromeos">
+  <if expr="is_win">
     <message name="IDS_SETTINGS_LANGUAGES_IS_DISPLAYED_IN_THIS_LANGUAGE" desc="The label for a language that is currently used as the UI display language.">
       This language is used to display the Brave UI
     </message>
@@ -208,6 +245,6 @@
 
   <!-- Reset Page -->
   <message name="IDS_SETTINGS_RESET_PROFILE_FEEDBACK" desc="Feedback label in the Reset Profile Settings dialog">
-    Help make Brave better by reporting the <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank" rel="noopener noreferrer"&gt;</ph>current settings<ph name="END_LINK">&lt;/a&gt;</ph>
+    Help make Brave better by reporting the <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank"&gt;</ph>current settings<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
 </grit-part>

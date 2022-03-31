@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 
-#include <cstdint>
 #include <map>
 #include <string>
 
+#include "base/cxx17_backports.h"
 #include "base/metrics/histogram_functions.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/weekly_storage/weekly_storage.h"
@@ -16,6 +16,7 @@
 #include "components/prefs/pref_service.h"
 
 namespace brave_ads {
+
 namespace {
 
 constexpr const char* kP2AQuestionNameList[] = {
@@ -122,6 +123,8 @@ void EmitP2AHistogramAnswer(const std::string& name, uint16_t count_value) {
 }
 
 void SuspendP2AHistograms() {
+  // Record "special value" to prevent sending this week's data to P2A server.
+  // Matches INT_MAX - 1 for |kSuspendedMetricValue| in |brave_p3a_service.cc|
   for (const char* question_name : kP2AQuestionNameList) {
     base::UmaHistogramExactLinear(question_name, INT_MAX,
                                   base::size(kIntervalBuckets) + 1);

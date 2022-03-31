@@ -36,7 +36,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include "base/win/win_util.h"
 #include "chrome/installer/util/google_update_settings.h"
 #endif
@@ -103,10 +103,6 @@ std::string BraveConfigurator::GetChannel() const {
   return std::string("stable");
 }
 
-std::string BraveConfigurator::GetBrand() const {
-  return std::string();
-}
-
 std::string BraveConfigurator::GetLang() const {
   return std::string();
 }
@@ -170,10 +166,6 @@ bool BraveConfigurator::EnabledDeltas() const {
   return configurator_impl_.EnabledDeltas();
 }
 
-bool BraveConfigurator::EnabledComponentUpdates() const {
-  return pref_service_->GetBoolean(prefs::kComponentUpdatesEnabled);
-}
-
 bool BraveConfigurator::EnabledBackgroundDownloader() const {
   return configurator_impl_.EnabledBackgroundDownloader();
 }
@@ -198,6 +190,18 @@ bool BraveConfigurator::IsPerUserInstall() const {
 std::unique_ptr<update_client::ProtocolHandlerFactory>
 BraveConfigurator::GetProtocolHandlerFactory() const {
   return configurator_impl_.GetProtocolHandlerFactory();
+}
+
+absl::optional<bool> BraveConfigurator::IsMachineExternallyManaged() const {
+  return absl::nullopt;
+}
+
+update_client::UpdaterStateProvider BraveConfigurator::GetUpdaterStateProvider()
+    const {
+  // TODO(crbug.com/1286378) - add a dependency on //chrome/updater and
+  // implement this function so that it picks up that updater state, in
+  // addition to Omaha or Keystone updater states.
+  return configurator_impl_.GetUpdaterStateProvider();
 }
 
 }  // namespace component_updater

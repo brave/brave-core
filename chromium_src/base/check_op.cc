@@ -12,4 +12,4 @@
 #define NACL_TC_REV 1
 #endif
 #endif
-#include "../../../base/check_op.cc"
+#include "src/base/check_op.cc"

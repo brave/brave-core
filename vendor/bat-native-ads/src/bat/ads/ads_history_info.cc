@@ -23,13 +23,13 @@ std::string AdsHistoryInfo::ToJson() const {
   return json;
 }
 
-Result AdsHistoryInfo::FromJson(const std::string& json) {
+bool AdsHistoryInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return FAILED;
+    return false;
   }
 
   if (document.HasMember("ads_history")) {
@@ -37,22 +37,21 @@ Result AdsHistoryInfo::FromJson(const std::string& json) {
       AdHistoryInfo ad_history;
       rapidjson::StringBuffer buffer;
       rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-      if (item.Accept(writer) &&
-          ad_history.FromJson(buffer.GetString()) == SUCCESS) {
+      if (item.Accept(writer) && ad_history.FromJson(buffer.GetString())) {
         items.push_back(ad_history);
       }
     }
   }
 
-  return SUCCESS;
+  return true;
 }
 
-void SaveToJson(JsonWriter* writer, const AdsHistoryInfo& ads_history) {
+void SaveToJson(JsonWriter* writer, const AdsHistoryInfo& info) {
   writer->StartObject();
 
   writer->String("ads_history");
   writer->StartArray();
-  for (const auto& item : ads_history.items) {
+  for (const auto& item : info.items) {
     SaveToJson(writer, item);
   }
   writer->EndArray();

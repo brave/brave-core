@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
-index 1d02e801f97bf2e51bb66a235420479262ccd750..1027f33ff22f43915f19ef7db3485de2da2091e4 100644
+index 613b9a6c78090691c37909e70849a7d7aa17f02b..f4a74a9f8bf5968dac7e058f7aeb2df14dadb67e 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
-@@ -82,6 +82,7 @@ class ChromeBrowsingDataRemoverDelegate
+@@ -89,6 +89,7 @@ class ChromeBrowsingDataRemoverDelegate
    void OverrideDomainReliabilityClearerForTesting(
        DomainReliabilityClearer clearer);
  
@@ -10,13 +10,12 @@ index 1d02e801f97bf2e51bb66a235420479262ccd750..1027f33ff22f43915f19ef7db3485de2
   private:
    using WebRtcEventLogManager = webrtc_event_logging::WebRtcEventLogManager;
  
-@@ -129,7 +130,8 @@ class ChromeBrowsingDataRemoverDelegate
-     kAccountPasswordsSynced = 38,
-     kAccountCompromisedCredentials = 39,
-     kFaviconCacheExpiration = 40,
--    kMaxValue = kFaviconCacheExpiration,
-+    kIPFSCache = 41,
-+    kMaxValue = kIPFSCache,
+@@ -139,7 +140,7 @@ class ChromeBrowsingDataRemoverDelegate
+     kSecurePaymentConfirmationCredentials = 41,
+     kWebAppHistory = 42,
+     kWebAuthnCredentials = 43,
+-    kMaxValue = kWebAuthnCredentials,
++    kIPFSCache = 44, kMaxValue = kIPFSCache,
    };
  
    // Called by CreateTaskCompletionClosure().

@@ -1,0 +1,30 @@
+{%- set objc_class_name = "%s%s"|format(class_prefix, union.name) %}
+{%- set tag_enum_name = "%sTag"|format(objc_class_name)%}
+
+typedef NS_ENUM(NSInteger, {{tag_enum_name}}) {
+  {{tag_enum_name}}Null = 0,
+{%- for field in union.fields %}
+  {{tag_enum_name}}{{field.name|objc_enum_formatter}},
+{%- endfor %}
+} NS_SWIFT_NAME({{class_prefix}}.{{union.name}}Tag);
+
+OBJC_EXPORT
+NS_SWIFT_NAME({{class_prefix}}.{{union.name}})
+@interface {{objc_class_name}} : NSObject <NSCopying>
+@property (readonly) {{tag_enum_name}} tag;
+- (instancetype)init;
+{%- for field in union.fields %}
+- (instancetype)initWith
+{%-   set nullable = field.kind|objc_argument_modifiers -%}
+{%-   set type = "%s%s"|format(nullable + " " if nullable, field.kind|objc_wrapper_type) -%}
+{%-   set name = field.name|objc_property_formatter -%}
+{{field.name|under_to_camel(lower_initial=False)}}:({{type}}){{name}};
+{%- endfor %}
+{#- Class properties #}
+{%-  for field in union.fields %}
+{%-   set type = field.kind|objc_wrapper_type %}
+{%-   set property_modifiers = field.kind|objc_property_modifiers(inside_union=True) %}
+{%-   set name = field.name|objc_property_formatter %}
+@property ({{property_modifiers}}) {{type}} {{name}};
+{%- endfor %}
+@end

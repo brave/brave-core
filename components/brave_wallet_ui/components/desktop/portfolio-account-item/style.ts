@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { MoreVertRIcon } from 'brave-ui/components/icons'
+import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
   orb: string
@@ -12,6 +13,7 @@ export const StyledWrapper = styled.div`
   flex-direction: row;
   width: 100%;
   margin: 10px 0px;
+  position: relative;
 `
 
 export const NameAndIcon = styled.div`
@@ -21,7 +23,7 @@ export const NameAndIcon = styled.div`
   flex-direction: row;
 `
 
-export const AccountAndAddress = styled.button`
+export const AccountAndAddress = styled(WalletButton)`
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -89,7 +91,7 @@ export const AccountCircle = styled.div<StyleProps>`
   margin-right: 12px;
 `
 
-export const MoreButton = styled.button`
+export const MoreButton = styled(WalletButton)`
   display: flex;;
   align-items: center;
   justify-content: center;

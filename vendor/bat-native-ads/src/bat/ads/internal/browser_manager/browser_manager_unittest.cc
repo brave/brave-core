@@ -6,6 +6,7 @@
 #include "bat/ads/internal/browser_manager/browser_manager.h"
 
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/internal/user_activity/user_activity_event_info.h"
 
@@ -50,14 +51,13 @@ TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsActiveUserActivityEvent) {
   BrowserManager::Get()->OnActive();
 
   // Assert
-  const UserActivityEvents events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kBrowserWindowIsActive;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -82,14 +82,13 @@ TEST_F(BatAdsBrowserManagerTest, BrowserWindowIsInactiveUserActivityEvent) {
   BrowserManager::Get()->OnInactive();
 
   // Assert
-  const UserActivityEvents events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kBrowserWindowIsInactive;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -113,14 +112,13 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidBecomeActiveUserActivityEvent) {
   BrowserManager::Get()->OnActive();
 
   // Assert
-  const UserActivityEvents events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kBrowserWindowIsActive;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -145,14 +143,13 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterBackgroundUserActivityEvent) {
   BrowserManager::Get()->OnBackgrounded();
 
   // Assert
-  const UserActivityEvents events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kBrowserDidEnterBackground;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);

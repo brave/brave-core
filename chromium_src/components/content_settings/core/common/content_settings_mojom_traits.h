@@ -11,7 +11,7 @@
 
 #define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
 
-#include "../../../../../../components/content_settings/core/common/content_settings_mojom_traits.h"
+#include "src/components/content_settings/core/common/content_settings_mojom_traits.h"
 
 #undef RendererContentSettingRules
 
@@ -35,6 +35,10 @@ struct StructTraits<
   static const std::vector<ContentSettingPatternSource>& brave_shields_rules(
       const RendererContentSettingRules& r) {
     return r.brave_shields_rules;
+  }
+  static const std::vector<ContentSettingPatternSource>&
+  cosmetic_filtering_rules(const RendererContentSettingRules& r) {
+    return r.cosmetic_filtering_rules;
   }
 
   static bool Read(

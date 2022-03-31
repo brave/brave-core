@@ -4,10 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #define BRAVE_INIT BraveInit();
-#include "../../../../../../components/content_settings/core/browser/content_settings_registry.cc"
+#include "src/components/content_settings/core/browser/content_settings_registry.cc"
 #undef BRAVE_INIT
 
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+
 namespace content_settings {
 
 namespace {
@@ -64,6 +65,17 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::PERSISTENT,
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
+  Register(ContentSettingsType::BRAVE_SPEEDREADER, "braveSpeedreader",
+           CONTENT_SETTING_ALLOW, WebsiteSettingsInfo::SYNCABLE,
+           AllowlistedSchemes(),
+           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
+           WebsiteSettingsInfo::SINGLE_ORIGIN_ONLY_SCOPE,
+           WebsiteSettingsRegistry::DESKTOP |
+               WebsiteSettingsRegistry::PLATFORM_ANDROID,
+           ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+           ContentSettingsInfo::PERSISTENT,
+           ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+
   // Register Brave-specific types, defaulting them to CONTENT_SETTING_BLOCK.
   for (auto brave_type : kBraveContentSettingstypes)
     RegisterBraveContentSettingsTypes(brave_type.type, brave_type.name);
@@ -88,6 +100,19 @@ void ContentSettingsRegistry::BraveInit() {
   Register(ContentSettingsType::SENSORS, "sensors", CONTENT_SETTING_BLOCK,
            WebsiteSettingsInfo::UNSYNCABLE, AllowlistedSchemes(),
            ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK),
+           WebsiteSettingsInfo::SINGLE_ORIGIN_ONLY_SCOPE,
+           WebsiteSettingsRegistry::DESKTOP |
+               WebsiteSettingsRegistry::PLATFORM_ANDROID,
+           ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+           ContentSettingsInfo::PERSISTENT,
+           ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+
+  // Register ethereum default value as Ask.
+  Register(ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum",
+           CONTENT_SETTING_ASK, WebsiteSettingsInfo::UNSYNCABLE,
+           AllowlistedSchemes(),
+           ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK,
+                         CONTENT_SETTING_ASK),
            WebsiteSettingsInfo::SINGLE_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,

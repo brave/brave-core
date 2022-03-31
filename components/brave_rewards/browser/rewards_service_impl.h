@@ -17,6 +17,7 @@
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/one_shot_event.h"
@@ -29,6 +30,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#include "build/build_config.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/browser_thread.h"
@@ -37,8 +39,12 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "ui/gfx/image/image.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "brave/components/safetynet/safetynet_check.h"
+#endif
+
+#if BUILDFLAG(ENABLE_GREASELION)
+#include "brave/components/greaselion/browser/greaselion_service.h"
 #endif
 
 namespace base {
@@ -61,12 +67,6 @@ namespace network {
 class SimpleURLLoader;
 }  // namespace network
 
-#if BUILDFLAG(ENABLE_GREASELION)
-namespace greaselion {
-class GreaselionService;
-}  // namespace greaselion
-#endif
-
 class Profile;
 class RewardsFlagBrowserTest;
 
@@ -79,7 +79,8 @@ using GetEnvironmentCallback =
     base::OnceCallback<void(ledger::type::Environment)>;
 using GetDebugCallback = base::OnceCallback<void(bool)>;
 using GetReconcileIntervalCallback = base::OnceCallback<void(int32_t)>;
-using GetShortRetriesCallback = base::OnceCallback<void(bool)>;
+using GetGeminiRetriesCallback = base::OnceCallback<void(int32_t)>;
+using GetRetryIntervalCallback = base::OnceCallback<void(int32_t)>;
 using GetTestResponseCallback = base::RepeatingCallback<void(
     const std::string& url,
     int32_t method,
@@ -96,6 +97,9 @@ using StopLedgerCallback = base::OnceCallback<void(ledger::type::Result)>;
 
 class RewardsServiceImpl : public RewardsService,
                            public ledger::LedgerClient,
+#if BUILDFLAG(ENABLE_GREASELION)
+                           public greaselion::GreaselionService::Observer,
+#endif
                            public base::SupportsWeakPtr<RewardsServiceImpl> {
  public:
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -105,6 +109,8 @@ class RewardsServiceImpl : public RewardsService,
 #else
   explicit RewardsServiceImpl(Profile* profile);
 #endif
+  RewardsServiceImpl(const RewardsServiceImpl&) = delete;
+  RewardsServiceImpl& operator=(const RewardsServiceImpl&) = delete;
   ~RewardsServiceImpl() override;
 
   // KeyedService:
@@ -190,6 +196,8 @@ class RewardsServiceImpl : public RewardsService,
   void SetPublisherExclude(
       const std::string& publisher_key,
       bool exclude) override;
+  void SetExternalWalletType(const std::string& wallet_type) override;
+
   RewardsNotificationService* GetNotificationService() const override;
   void SetBackupCompleted() override;
   void GetRewardsInternalsInfo(
@@ -200,10 +208,12 @@ class RewardsServiceImpl : public RewardsService,
   void GetEnvironment(GetEnvironmentCallback callback);
   void SetDebug(bool debug);
   void GetDebug(GetDebugCallback callback);
+  void SetGeminiRetries(const int32_t retries);
+  void GetGeminiRetries(GetGeminiRetriesCallback callback);
   void SetReconcileInterval(const int32_t interval);
   void GetReconcileInterval(GetReconcileIntervalCallback callback);
-  void SetShortRetries(bool short_retries);
-  void GetShortRetries(GetShortRetriesCallback callback);
+  void SetRetryInterval(int32_t interval);
+  void GetRetryInterval(GetRetryIntervalCallback callback);
 
   void GetAutoContributeProperties(
       GetAutoContributePropertiesCallback callback) override;
@@ -216,13 +226,10 @@ class RewardsServiceImpl : public RewardsService,
       RefreshPublisherCallback callback) override;
   void OnAdsEnabled(bool ads_enabled) override;
 
-  void OnSaveRecurringTip(
-      SaveRecurringTipCallback callback,
-      const ledger::type::Result result);
-  void SaveRecurringTip(
-      const std::string& publisher_key,
-      const double amount,
-      SaveRecurringTipCallback callback) override;
+  void OnSaveRecurringTip(OnTipCallback callback, ledger::type::Result result);
+  void SaveRecurringTip(const std::string& publisher_key,
+                        double amount,
+                        OnTipCallback callback) override;
 
   const RewardsNotificationService::RewardsNotificationsMap&
     GetAllNotifications() override;
@@ -278,18 +285,24 @@ class RewardsServiceImpl : public RewardsService,
       const bool recurring,
       ledger::type::PublisherInfoPtr publisher) override;
 
-  void OnTip(
-      const std::string& publisher_key,
-      const double amount,
-      const bool recurring) override;
+  void OnTip(const std::string& publisher_key,
+             double amount,
+             bool recurring,
+             OnTipCallback callback) override;
 
   void SetPublisherMinVisitTime(int duration_in_seconds) const override;
+
+  bool IsAutoContributeSupported() const override;
 
   void FetchBalance(FetchBalanceCallback callback) override;
 
   std::string GetLegacyWallet() override;
 
   void GetExternalWallet(GetExternalWalletCallback callback) override;
+
+  std::string GetExternalWalletType() const override;
+
+  const std::vector<std::string> GetExternalWalletProviders() const override;
 
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
@@ -300,6 +313,8 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& path,
       const std::string& query,
       ProcessRewardsPageUrlCallback callback) override;
+
+  void RequestAdsEnabledPopupClosed(bool ads_enabled) override;
 
   void DisconnectWallet() override;
 
@@ -326,11 +341,9 @@ class RewardsServiceImpl : public RewardsService,
 
   void StopLedger(StopLedgerCallback callback);
 
-  std::string GetEncryptedStringState(const std::string& name) override;
+  absl::optional<std::string> EncryptString(const std::string& value) override;
 
-  bool SetEncryptedStringState(
-      const std::string& name,
-      const std::string& value) override;
+  absl::optional<std::string> DecryptString(const std::string& value) override;
 
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 
@@ -357,6 +370,13 @@ class RewardsServiceImpl : public RewardsService,
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
+#if BUILDFLAG(ENABLE_GREASELION)
+  void EnableGreaseLion();
+
+  // GreaselionService::Observer:
+  void OnRulesReady(greaselion::GreaselionService* greaselion_service) override;
+#endif
+
   void OnConnectionClosed(const ledger::type::Result result);
 
   void InitPrefChangeRegistrar();
@@ -366,10 +386,6 @@ class RewardsServiceImpl : public RewardsService,
   void CheckPreferences();
 
   void StartLedgerProcessIfNecessary();
-
-  void EnableGreaseLion();
-
-  std::string GetExternalWalletType() const;
 
   void OnStopLedger(
       StopLedgerCallback callback,
@@ -694,6 +710,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void RecordBackendP3AStats();
 
+  bool IsAdsEnabled() const;
+
   void OnRecordBackendP3AStatsRecurring(ledger::type::PublisherInfoList list);
 
   void OnRecordBackendP3AStatsContributions(
@@ -746,7 +764,11 @@ class RewardsServiceImpl : public RewardsService,
       GetBraveWalletCallback callback,
       ledger::type::BraveWalletPtr wallet);
 
-#if defined(OS_ANDROID)
+  bool IsBitFlyerRegion() const;
+
+  bool IsValidWalletType(const std::string& wallet_type) const;
+
+#if BUILDFLAG(IS_ANDROID)
   ledger::type::Environment GetServerEnvironmentForAndroid();
   void GrantAttestationResult(
       const std::string& promotion_id, bool result,
@@ -754,9 +776,10 @@ class RewardsServiceImpl : public RewardsService,
   safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
 #endif
 
-  Profile* profile_;  // NOT OWNED
+  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
 #if BUILDFLAG(ENABLE_GREASELION)
-  greaselion::GreaselionService* greaselion_service_;  // NOT OWNED
+  raw_ptr<greaselion::GreaselionService> greaselion_service_ =
+      nullptr;  // NOT OWNED
 #endif
   mojo::AssociatedReceiver<bat_ledger::mojom::BatLedgerClient>
       bat_ledger_client_receiver_;
@@ -794,7 +817,6 @@ class RewardsServiceImpl : public RewardsService,
   GetTestResponseCallback test_response_callback_;
 
   SEQUENCE_CHECKER(sequence_checker_);
-  DISALLOW_COPY_AND_ASSIGN(RewardsServiceImpl);
 };
 
 }  // namespace brave_rewards

@@ -7,55 +7,70 @@ package org.chromium.chrome.browser.feed;
 
 import android.app.Activity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.feed.shared.FeedSurfaceDelegate;
+import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
+import org.chromium.chrome.browser.feed.hooks.FeedHooks;
+import org.chromium.chrome.browser.feed.sections.SectionHeaderView;
+import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncher;
 import org.chromium.chrome.browser.native_page.NativePageNavigationDelegate;
-import org.chromium.chrome.browser.ntp.ScrollableContainerDelegate;
-import org.chromium.chrome.browser.ntp.SnapScrollHelper;
-import org.chromium.chrome.browser.ntp.snippets.SectionHeaderView;
+import org.chromium.chrome.browser.ntp.NewTabPageLaunchOrigin;
+import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.toolbar.top.Toolbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.WindowAndroid;
 
 public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
-    private Activity mActivity;
-    private ScrollView mScrollViewForPolicy;
+    // To delete in bytecode, members from parent class will be used instead.
     private View mNtpHeader;
     private FrameLayout mRootView;
 
+    // Own members.
+    private @Nullable ScrollView mScrollViewForPolicy;
+
     public BraveFeedSurfaceCoordinator(Activity activity, SnackbarManager snackbarManager,
             WindowAndroid windowAndroid, @Nullable SnapScrollHelper snapScrollHelper,
-            @Nullable View ntpHeader, @Nullable SectionHeaderView sectionHeaderView,
-            boolean showDarkBackground, FeedSurfaceDelegate delegate,
-            @Nullable NativePageNavigationDelegate pageNavigationDelegate, Profile profile,
-            boolean isPlaceholderShownInitially, BottomSheetController bottomSheetController,
+            @Nullable View ntpHeader, @Px int toolbarHeight, boolean showDarkBackground,
+            FeedSurfaceDelegate delegate, Profile profile, boolean isPlaceholderShownInitially,
+            BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier,
-            @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate) {
-        super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader,
-                sectionHeaderView, showDarkBackground, delegate, pageNavigationDelegate, profile,
-                isPlaceholderShownInitially, bottomSheetController, shareDelegateSupplier,
-                externalScrollableContainerDelegate);
+            @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate,
+            @NewTabPageLaunchOrigin int launchOrigin,
+            PrivacyPreferencesManagerImpl privacyPreferencesManager,
+            @NonNull Supplier<Toolbar> toolbarSupplier,
+            FeedLaunchReliabilityLoggingState launchReliabilityLoggingState,
+            @Nullable FeedSwipeRefreshLayout swipeRefreshLayout, boolean overScrollDisabled,
+            @Nullable ViewGroup viewportView, FeedActionDelegate actionDelegate,
+            HelpAndFeedbackLauncher helpAndFeedbackLauncher) {
+        super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader, toolbarHeight,
+                showDarkBackground, delegate, profile, isPlaceholderShownInitially,
+                bottomSheetController, shareDelegateSupplier, externalScrollableContainerDelegate,
+                launchOrigin, privacyPreferencesManager, toolbarSupplier,
+                launchReliabilityLoggingState, swipeRefreshLayout, overScrollDisabled, viewportView,
+                actionDelegate, helpAndFeedbackLauncher);
     }
 
-    @Override
-    void createScrollViewForPolicy() {
-        super.createScrollViewForPolicy();
+    public void createScrollViewForPolicy() {
+        assert mScrollViewForPolicy == null : "mScrollViewForPolicy should be created only once!";
 
-        // Remove previous view to recreate it a way we need for our NTP.
-        UiUtils.removeViewFromParent(mScrollViewForPolicy);
-        // Here we need to get rid of resizer and call setFillViewport.
+        // Remove all previously added views.
+        mRootView.removeAllViews();
+
         mScrollViewForPolicy = new ScrollView(mActivity);
         mScrollViewForPolicy.setBackgroundColor(
                 ApiCompatibilityUtils.getColor(mActivity.getResources(), R.color.default_bg_color));
@@ -77,7 +92,11 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
         mScrollViewForPolicy.requestFocus();
     }
 
-    public boolean isEnhancedProtectionPromoEnabled() {
+    public ScrollView getScrollViewForPolicy() {
+        return mScrollViewForPolicy;
+    }
+
+    public boolean isReliabilityLoggingEnabled() {
         return false;
     }
 }

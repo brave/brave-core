@@ -8,7 +8,10 @@
 #include <functional>
 #include <utility>
 
+#include "base/check.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/catalog/catalog_util.h"
 #include "bat/ads/internal/database/database_util.h"
 #include "bat/ads/internal/database/database_version.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
@@ -17,11 +20,14 @@
 #include "bat/ads/internal/database/tables/conversions_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
+#include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
+#include "bat/ads/internal/database/tables/creative_new_tab_page_ad_wallpapers_database_table.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/database/tables/creative_promoted_content_ads_database_table.h"
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/database/tables/segments_database_table.h"
+#include "bat/ads/internal/database/tables/transactions_database_table.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
@@ -34,11 +40,15 @@ Migration::~Migration() = default;
 void Migration::FromVersion(const int from_version, ResultCallback callback) {
   const int to_version = version();
   if (to_version == from_version) {
-    callback(Result::SUCCESS);
+    callback(/* success */ true);
     return;
   }
 
-  DBTransactionPtr transaction = DBTransaction::New();
+  // TODO(https://github.com/brave/brave-browser/issues/14728): Decouple catalog
+  // business logic once we have implemented database observers
+  ResetCatalog();
+
+  mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   for (int i = from_version + 1; i <= to_version; i++) {
     ToVersion(transaction.get(), i);
   }
@@ -46,8 +56,8 @@ void Migration::FromVersion(const int from_version, ResultCallback callback) {
   BLOG(1, "Migrated database from version " << from_version << " to version "
                                             << to_version);
 
-  DBCommandPtr command = DBCommand::New();
-  command->type = DBCommand::Type::MIGRATE;
+  mojom::DBCommandPtr command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::MIGRATE;
 
   transaction->version = to_version;
   transaction->compatible_version = compatible_version();
@@ -58,7 +68,8 @@ void Migration::FromVersion(const int from_version, ResultCallback callback) {
       std::bind(&OnResultCallback, std::placeholders::_1, callback));
 }
 
-void Migration::ToVersion(DBTransaction* transaction, const int to_version) {
+void Migration::ToVersion(mojom::DBTransaction* transaction,
+                          const int to_version) {
   DCHECK(transaction);
 
   table::Conversions conversions_database_table;
@@ -70,6 +81,9 @@ void Migration::ToVersion(DBTransaction* transaction, const int to_version) {
   table::AdEvents ad_events_database_table;
   ad_events_database_table.Migrate(transaction, to_version);
 
+  table::Transactions transactions_database_table;
+  transactions_database_table.Migrate(transaction, to_version);
+
   table::Campaigns campaigns_database_table;
   campaigns_database_table.Migrate(transaction, to_version);
 
@@ -79,8 +93,16 @@ void Migration::ToVersion(DBTransaction* transaction, const int to_version) {
   table::CreativeAdNotifications creative_ad_notifications_database_table;
   creative_ad_notifications_database_table.Migrate(transaction, to_version);
 
+  table::CreativeInlineContentAds creative_inline_content_ads_database_table;
+  creative_inline_content_ads_database_table.Migrate(transaction, to_version);
+
   table::CreativeNewTabPageAds creative_new_tab_page_ads_database_table;
   creative_new_tab_page_ads_database_table.Migrate(transaction, to_version);
+
+  table::CreativeNewTabPageAdWallpapers
+      creative_new_tab_page_ad_wallpapers_database_table;
+  creative_new_tab_page_ad_wallpapers_database_table.Migrate(transaction,
+                                                             to_version);
 
   table::CreativePromotedContentAds
       creative_promoted_content_ads_database_table;

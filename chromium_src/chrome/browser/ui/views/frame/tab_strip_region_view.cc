@@ -8,6 +8,6 @@
 
 #define NewTabButton BraveNewTabButton
 #define TabSearchButton BraveTabSearchButton
-#include "../../../../../../../chrome/browser/ui/views/frame/tab_strip_region_view.cc"
+#include "src/chrome/browser/ui/views/frame/tab_strip_region_view.cc"
 #undef TabSearchButton
 #undef NewTabButton

@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_TEST_BASE_TESTING_PROFILE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_TEST_BASE_TESTING_PROFILE_H_
 
-#include "../../../../../chrome/test/base/testing_profile.h"
+#include "src/chrome/test/base/testing_profile.h"
 
 #include "brave/test/base/brave_testing_profile.h"
 

@@ -5,9 +5,11 @@
 
 #include "bat/ads/internal/ad_targeting/processors/contextual/text_classification/text_classification_processor.h"
 
+#include "base/check.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
+#include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 
 namespace ads {
 namespace ad_targeting {
@@ -17,12 +19,10 @@ namespace {
 
 std::string GetTopSegmentFromPageProbabilities(
     const TextClassificationProbabilitiesMap& probabilities) {
-  if (probabilities.empty()) {
-    return "";
-  }
+  DCHECK(!probabilities.empty());
 
   const auto iter =
-      std::max_element(probabilities.begin(), probabilities.end(),
+      std::max_element(probabilities.cbegin(), probabilities.cend(),
                        [](const SegmentProbabilityPair& lhs,
                           const SegmentProbabilityPair& rhs) -> bool {
                          return lhs.second < rhs.second;
@@ -59,6 +59,7 @@ void TextClassification::Process(const std::string& text) {
   }
 
   const std::string segment = GetTopSegmentFromPageProbabilities(probabilities);
+  DCHECK(!segment.empty());
   BLOG(1, "Classified text with the top segment as " << segment);
 
   Client::Get()->AppendTextClassificationProbabilitiesToHistory(probabilities);

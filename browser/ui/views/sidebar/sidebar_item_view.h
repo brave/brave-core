@@ -6,11 +6,15 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_VIEW_H_
 
+#include <string>
+
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 
 class SidebarItemView : public SidebarButtonView {
  public:
-  explicit SidebarItemView(Delegate* delegate);
+  METADATA_HEADER(SidebarItemView);
+  explicit SidebarItemView(Delegate* delegate,
+                           const std::u16string& accessible_name);
   ~SidebarItemView() override;
 
   SidebarItemView(const SidebarItemView&) = delete;
@@ -28,6 +32,7 @@ class SidebarItemView : public SidebarButtonView {
   // views::ImageButton overrides:
   void OnPaintBackground(gfx::Canvas* canvas) override;
   void OnPaintBorder(gfx::Canvas* canvas) override;
+  bool IsTriggerableEvent(const ui::Event& e) override;
 
  private:
   bool draw_highlight_ = false;

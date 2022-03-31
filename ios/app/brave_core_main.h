@@ -8,18 +8,78 @@
 
 #import <Foundation/Foundation.h>
 
+@class BraveBookmarksAPI;
+@class BraveHistoryAPI;
+@class BravePasswordAPI;
+@class BraveSyncAPI;
+@class BraveSyncProfileServiceIOS;
+@class BraveStats;
+
+@protocol BraveWalletBlockchainRegistry;
+@protocol BraveWalletBraveWalletProvider;
+@protocol BraveWalletProviderDelegate;
+
 NS_ASSUME_NONNULL_BEGIN
+
+typedef NSString* BraveCoreSwitch NS_STRING_ENUM;
+/// Overrides the component updater source. Defaults to the CI provided value
+///
+/// Expected value: url-source={url}
+OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchComponentUpdater;
+/// Overrides Chromium VLOG verbosity. Defaults to only printing from folders
+/// existing within a `brave` subfolder up to level 5.
+///
+/// Expected value: {folder-expression}={level}
+OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchVModule;
+/// Overrides the sync service base URL. Defaults to the CI provided value
+///
+/// Expected value: A URL string
+OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchSyncURL;
+/// Overrides the SKUs environment. Defaults to production (when not provided)
+///
+/// Expected value: `production`, `development`, or `staging`
+OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchSkusEnvironment;
+
+typedef bool (^BraveCoreLogHandler)(int severity,
+                                    NSString* file,
+                                    int line,
+                                    size_t messageStart,
+                                    NSString* formattedMessage);
 
 OBJC_EXPORT
 @interface BraveCoreMain : NSObject
 
-- (instancetype)init;
+@property(nonatomic, readonly) BraveBookmarksAPI* bookmarksAPI;
 
-- (instancetype)initWithSyncServiceURL:(NSString*)syncServiceURL;
+@property(nonatomic, readonly) BraveHistoryAPI* historyAPI;
+
+@property(nonatomic, readonly) BraveSyncAPI* syncAPI;
+
+@property(nonatomic, readonly) BraveSyncProfileServiceIOS* syncProfileService;
+
+@property(nonatomic, readonly) BravePasswordAPI* passwordAPI;
+
++ (void)setLogHandler:(nullable BraveCoreLogHandler)logHandler;
+
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithUserAgent:(NSString*)userAgent;
+
+- (instancetype)initWithUserAgent:(NSString*)userAgent
+               additionalSwitches:(NSDictionary<BraveCoreSwitch, NSString*>*)
+                                      additionalSwitches;
 
 - (void)scheduleLowPriorityStartupTasks;
 
-- (void)setUserAgent:(NSString*)userAgent;
+@property(class, readonly) id<BraveWalletBlockchainRegistry> blockchainRegistry;
+
+- (nullable id<BraveWalletBraveWalletProvider>)
+    walletProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
+             isPrivateBrowsing:(bool)isPrivateBrowsing;
+
+@property(readonly) NSString* walletProviderJS;
+
+@property(readonly) BraveStats* braveStats;
 
 @end
 

@@ -8,15 +8,16 @@
 
 #include <memory>
 
-#include "bat/ads/ads_history_info.h"
-#include "bat/ads/internal/ads_history/filters/ads_history_filter.h"
+#include "bat/ads/ads_history_filter_types.h"
 
 namespace ads {
 
-class AdsHistoryFilterFactory {
+class AdsHistoryFilter;
+
+class AdsHistoryFilterFactory final {
  public:
   static std::unique_ptr<AdsHistoryFilter> Build(
-      const AdsHistoryInfo::FilterType type);
+      const AdsHistoryFilterType type);
 };
 
 }  // namespace ads

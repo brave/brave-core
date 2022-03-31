@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wallet_bg"
+    android:orientation="vertical"
+    tools:context=".browser.crypto_wallet.activities.AdvanceTxSettingActivity">
+
+    <include layout="@layout/brave_wallet_toolbar" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="12dp">
+
+        <TextView
+            android:id="@+id/import_account_nonce_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/brave_wallet_nonce_label"
+            android:textColor="@color/wallet_text_color"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/activity_advance_setting_et_nonce"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_wallet_edittext"
+            android:hint="@string/brave_wallet_advanced_settings_nonce_hint"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:layout_marginTop="8dp"
+            android:paddingStart="18dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/wallet_text_color"
+            android:textColorHint="@color/brave_theme_hint_text"
+            android:textCursorDrawable="@null"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/import_account_nonce_title"
+            tools:ignore="TextContrastCheck" />
+
+        <TextView
+            android:id="@+id/activity_advance_setting_tv_tx_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/brave_wallet_tx_propogation_warning"
+            android:textColor="@color/wallet_text_color"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_advance_setting_et_nonce" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/activity_advance_setting_btn_save"
+            style="@style/BraveWalletButton"
+            android:layout_marginTop="42dp"
+            android:text="@string/brave_wallet_advanced_settings_save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_advance_setting_tv_tx_info" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

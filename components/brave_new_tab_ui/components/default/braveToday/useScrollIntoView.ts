@@ -5,26 +5,28 @@
 
 import * as React from 'react'
 
-export default function useScrollIntoView (shouldScrollIntoView: boolean) {
+export default function useScrollIntoView<T extends HTMLElement = HTMLAnchorElement> (shouldScrollIntoView: boolean) {
   // If we need to scroll the article in to view after render,
   // do so after the element has been mounted.
-  const cardRef = React.useRef<HTMLAnchorElement>(null)
+  const cardRef = React.useRef<T>(null)
   React.useEffect(() => {
     if (shouldScrollIntoView && cardRef.current) {
       cardRef.current.scrollIntoView({ block: 'center' })
+    } else if (shouldScrollIntoView) {
+      console.warn('Brave News: attempted to scroll to a card that was not rendered')
     }
-  }, []) // empty array so only runs on first render
+  }, [cardRef.current]) // only re-run if the ref element changesa
   return [cardRef]
 }
 
-type useScrollIntoViewReturn = [React.RefObject<HTMLAnchorElement>, () => any]
+type useScrollIntoViewReturn = [React.RefObject<HTMLElement>, () => any]
 
 export function userScrollIntoViewAfterImagesLoaded (shouldScrollIntoView: boolean): useScrollIntoViewReturn {
   // If we need to scroll the article in to view after render,
   // do so after the image has been loaded. Assume that all the other
   // previous images are loaded and the articles are occupying
   // the size they would do with images.
-  const cardRef = React.useRef<HTMLAnchorElement>(null)
+  const cardRef = React.useRef<HTMLElement>(null)
   const hasScrolled = React.useRef<boolean>(false)
   const hasImageLoaded = React.useRef<boolean>(false)
   const scrollIntoViewConditionally = function () {

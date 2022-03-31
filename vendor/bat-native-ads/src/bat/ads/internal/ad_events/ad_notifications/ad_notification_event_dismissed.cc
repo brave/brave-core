@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_dismissed.h"
 
-#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
@@ -26,8 +25,8 @@ void AdEventDismissed::FireEvent(const AdNotificationInfo& ad) {
 
   AdNotifications::Get()->Remove(ad.uuid);
 
-  LogAdEvent(ad, ConfirmationType::kDismissed, [](const Result result) {
-    if (result != Result::SUCCESS) {
+  LogAdEvent(ad, ConfirmationType::kDismissed, [](const bool success) {
+    if (!success) {
       BLOG(1, "Failed to log ad notification dismissed event");
       return;
     }

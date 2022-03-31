@@ -20,7 +20,7 @@
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 
 #define GetDefaultWebClientSetPermission GetDefaultWebClientSetPermission_Unused
-#include "../../../../chrome/browser/shell_integration_mac.mm"  // NOLINT
+#include "src/chrome/browser/shell_integration_mac.mm"
 #undef GetDefaultWebClientSetPermission
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 

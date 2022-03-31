@@ -6,7 +6,7 @@
 
 #define KeystoneEnabled KeystoneEnabled_ChromiumImpl
 #define CurrentlyInstalledVersion CurrentlyInstalledVersion_ChromiumImpl
-#include "../../../../../chrome/browser/mac/keystone_glue.mm"  // NOLINT
+#include "src/chrome/browser/mac/keystone_glue.mm"
 #undef KeystoneEnabled
 #undef CurrentlyInstalledVersion
 

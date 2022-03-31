@@ -13,10 +13,9 @@
 namespace ads {
 namespace ml {
 
-class NormalizationTransformation : public Transformation {
+class NormalizationTransformation final : public Transformation {
  public:
   NormalizationTransformation();
-
   ~NormalizationTransformation() override;
 
   std::unique_ptr<Data> Apply(

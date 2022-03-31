@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_funnel_keyword_info.h"
 
 namespace ads {
+namespace ad_targeting {
 
 PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo() = default;
 
@@ -14,6 +15,10 @@ PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo(
     const uint16_t weight)
     : keywords(keywords), weight(weight) {}
 
+PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo(
+    const PurchaseIntentFunnelKeywordInfo& info) = default;
+
 PurchaseIntentFunnelKeywordInfo::~PurchaseIntentFunnelKeywordInfo() = default;
 
+}  // namespace ad_targeting
 }  // namespace ads

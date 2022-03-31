@@ -144,17 +144,14 @@ base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
     fetch_time = now;
   }
 
-  fetch_time += base::TimeDelta::FromSeconds(interval_sec);
-  return fetch_time < now
-      ? base::TimeDelta::FromSeconds(0)
-      : fetch_time - now;
+  fetch_time += base::Seconds(interval_sec);
+  return fetch_time < now ? base::Seconds(0) : fetch_time - now;
 }
 
 base::TimeDelta PublisherPrefixListUpdater::GetRetryAfterFailureDelay() {
   return util::GetRandomizedDelayWithBackoff(
-      base::TimeDelta::FromSeconds(kRetryAfterFailureDelay),
-      base::TimeDelta::FromSeconds(kMaxRetryAfterFailureDelay),
-      retry_count_++);
+      base::Seconds(kRetryAfterFailureDelay),
+      base::Seconds(kMaxRetryAfterFailureDelay), retry_count_++);
 }
 
 }  // namespace publisher

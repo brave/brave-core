@@ -69,7 +69,7 @@ TEST(BatAdsPageTransitionTest, ToUserActivityClickedLinkEventType) {
   // Arrange
 
   // Act
-  base::Optional<UserActivityEventType> event_type =
+  absl::optional<UserActivityEventType> event_type =
       ToUserActivityEventType(kPageTransitionLink);
 
   // Assert
@@ -80,7 +80,7 @@ TEST(BatAdsPageTransitionTest, ToUserActivityTypedUrlEventType) {
   // Arrange
 
   // Act
-  base::Optional<UserActivityEventType> event_type =
+  absl::optional<UserActivityEventType> event_type =
       ToUserActivityEventType(kPageTransitionTyped);
 
   // Assert
@@ -91,7 +91,7 @@ TEST(BatAdsPageTransitionTest, ToUserActivityClickedBookmarkEventType) {
   // Arrange
 
   // Act
-  base::Optional<UserActivityEventType> event_type =
+  absl::optional<UserActivityEventType> event_type =
       ToUserActivityEventType(kPageTransitionAutoBookmark);
 
   // Assert
@@ -102,7 +102,7 @@ TEST(BatAdsPageTransitionTest, ToUserActivityTypedAndSelectedNonUrlEventType) {
   // Arrange
 
   // Act
-  base::Optional<UserActivityEventType> event_type =
+  absl::optional<UserActivityEventType> event_type =
       ToUserActivityEventType(kPageTransitionGenerated);
 
   // Assert
@@ -113,7 +113,7 @@ TEST(BatAdsPageTransitionTest, ToUserActivitySubmittedFormEventType) {
   // Arrange
 
   // Act
-  base::Optional<UserActivityEventType> event_type =
+  absl::optional<UserActivityEventType> event_type =
       ToUserActivityEventType(kPageTransitionFormSubmit);
 
   // Assert
@@ -124,7 +124,7 @@ TEST(BatAdsPageTransitionTest, ToUserActivityClickedReloadButtonEventType) {
   // Arrange
 
   // Act
-  base::Optional<UserActivityEventType> event_type =
+  absl::optional<UserActivityEventType> event_type =
       ToUserActivityEventType(kPageTransitionReload);
 
   // Assert
@@ -136,7 +136,7 @@ TEST(BatAdsPageTransitionTest,
   // Arrange
 
   // Act
-  base::Optional<UserActivityEventType> event_type =
+  absl::optional<UserActivityEventType> event_type =
       ToUserActivityEventType(kPageTransitionKeyword);
 
   // Assert
@@ -148,7 +148,7 @@ TEST(BatAdsPageTransitionTest, ToUserActivityGeneratedKeywordEventType) {
   // Arrange
 
   // Act
-  base::Optional<UserActivityEventType> event_type =
+  absl::optional<UserActivityEventType> event_type =
       ToUserActivityEventType(kPageTransitionKeywordGenerated);
 
   // Assert

@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/user_activity/user_activity_trigger_info.h"
 
+#include "bat/ads/internal/number_util.h"
+
 namespace ads {
 
 UserActivityTriggerInfo::UserActivityTriggerInfo() = default;
@@ -16,7 +18,7 @@ UserActivityTriggerInfo::~UserActivityTriggerInfo() = default;
 
 bool UserActivityTriggerInfo::operator==(
     const UserActivityTriggerInfo& rhs) const {
-  return event_sequence == rhs.event_sequence && score == rhs.score;
+  return event_sequence == rhs.event_sequence && DoubleEquals(score, rhs.score);
 }
 
 bool UserActivityTriggerInfo::operator!=(

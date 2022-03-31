@@ -225,7 +225,8 @@ class ContributeBox extends React.Component<Props, State> {
       enabledContribute,
       reconcileStamp,
       autoContributeList,
-      excludedList
+      excludedList,
+      externalWallet
     } = this.props.rewardsData
     const monthlyList: MonthlyChoice[] = utils.generateContributionMonthly(parameters)
     const contributeRows = this.getContributeRows(autoContributeList)
@@ -234,6 +235,11 @@ class ContributeBox extends React.Component<Props, State> {
     const numRows = contributeRows && contributeRows.length
     const numExcludedRows = excludedRows && excludedRows.length
     const allSites = !(excludedRows.length > 0 || numRows > 5)
+
+    // Hide AC options from bitFlyer wallet regions.
+    if (externalWallet && externalWallet.type === 'bitflyer') {
+      return null
+    }
 
     return (
       <BoxMobile
@@ -248,12 +254,12 @@ class ContributeBox extends React.Component<Props, State> {
         {
           this.state.modalContribute
           ? <ModalContribute
-            rows={contributeRows}
-            onRestore={this.onRestore}
-            excludedRows={excludedRows}
-            activeTabId={this.state.activeTabId}
-            onTabChange={this.onTabChange}
-            onClose={this.onModalContributeToggle}
+              rows={contributeRows}
+              onRestore={this.onRestore}
+              excludedRows={excludedRows}
+              activeTabId={this.state.activeTabId}
+              onTabChange={this.onTabChange}
+              onClose={this.onModalContributeToggle}
           />
           : null
         }

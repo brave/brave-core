@@ -5,12 +5,11 @@
 
 #include "bat/ads/ad_notification_info.h"
 
+#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
-
-struct ConfirmationType;
 
 AdNotificationInfo::AdNotificationInfo() = default;
 
@@ -37,13 +36,13 @@ std::string AdNotificationInfo::ToJson() const {
   return json;
 }
 
-Result AdNotificationInfo::FromJson(const std::string& json) {
+bool AdNotificationInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return FAILED;
+    return false;
   }
 
   if (document.HasMember("type")) {
@@ -86,15 +85,14 @@ Result AdNotificationInfo::FromJson(const std::string& json) {
     target_url = document["target_url"].GetString();
   }
 
-  return SUCCESS;
+  return true;
 }
 
 void SaveToJson(JsonWriter* writer, const AdNotificationInfo& info) {
   writer->StartObject();
 
   writer->String("type");
-  const std::string type = std::string(info.type);
-  writer->String(type.c_str());
+  writer->String(info.type.ToString().c_str());
 
   writer->String("uuid");
   writer->String(info.uuid.c_str());

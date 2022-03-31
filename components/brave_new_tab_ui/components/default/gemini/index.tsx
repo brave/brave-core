@@ -24,7 +24,6 @@ import {
   ListItem,
   ListIcon,
   ListImg,
-  ListLabel,
   AssetIconWrapper,
   AssetIcon,
   SearchInput,
@@ -83,6 +82,9 @@ import {
 } from '../exchangeWidget/shared-assets'
 import GeminiLogo from './assets/gemini-logo'
 import { CaratLeftIcon, CaratDownIcon } from 'brave-ui/components/icons'
+
+import * as S from '../../../widgets/shared/styles'
+import IconAsset from '../../../widgets/shared/iconAsset'
 
 // Utils
 import geminiData from './data'
@@ -345,7 +347,7 @@ class Gemini extends React.PureComponent<Props, State> {
     }
 
     if ('USD' in accountBalances) {
-      USDValue += parseFloat(accountBalances['USD'])
+      USDValue += parseFloat(accountBalances.USD)
     }
 
     return USDValue.toFixed(2)
@@ -365,11 +367,11 @@ class Gemini extends React.PureComponent<Props, State> {
 
   renderIconAsset = (key: string, isDetail: boolean = false) => {
     const iconColor = cryptoColors[key] || '#fff'
-    const styles = { color: '#000' }
+    const styles = { color: '#000', marginTop: '0', marginLeft: '0' }
 
     if (this.props.selectedView === 'balance') {
-      styles['marginTop'] = '5px'
-      styles['marginLeft'] = '5px'
+      styles.marginTop = '5px'
+      styles.marginLeft = '5px'
     }
 
     return (
@@ -473,6 +475,7 @@ class Gemini extends React.PureComponent<Props, State> {
       accountBalances
     } = this.props
     const accountUSDValue = this.getAccountUSDValue()
+    const balanceKeys = Object.keys(accountBalances)
 
     return (
       <>
@@ -496,28 +499,32 @@ class Gemini extends React.PureComponent<Props, State> {
             </TradeLabel>
           </ListInfo>
         </AccountSummary>
-        {geminiData.currencies.map((asset: string) => {
-          const assetAccountBalance = accountBalances[asset] || '0'
-          const assetBalance = this.formatCryptoBalance(assetAccountBalance)
-
-          return (
-            <ListItem key={`list-${asset}`}>
-              <ListInfo isAsset={true} position={'left'}>
-                <ListIcon>
-                  {this.renderIconAsset(asset.toLowerCase())}
-                </ListIcon>
-                <ListLabel>
-                  {geminiData.currencyNames[asset]}
-                </ListLabel>
-              </ListInfo>
-              <ListInfo position={'right'}>
-                <Balance isSummary={false} hideBalance={hideBalance}>
-                  {assetBalance} {asset}
-                </Balance>
-              </ListInfo>
-            </ListItem>
-          )
-        })}
+        {balanceKeys.length !== 0
+        ? <>
+          {balanceKeys.map((asset: string) => {
+            const assetAccountBalance = accountBalances[asset]
+            const assetBalance = this.formatCryptoBalance(assetAccountBalance)
+            return (
+              <S.ListItem key={`list-${asset}`} isFlex={true} $p={10}>
+                <S.FlexItem $mr={10} $w={25} $h={25}>
+                  <IconAsset iconKey={asset.toLowerCase()} />
+                </S.FlexItem>
+                <S.FlexItem>
+                  <S.Text>{geminiData.currencyNames[asset]}</S.Text>
+                </S.FlexItem>
+                <S.FlexItem textAlign='right' flex={1}>
+                  <S.Balance hideBalance={hideBalance}>
+                    <S.Text lineHeight={1.15}>{assetBalance} {asset}</S.Text>
+                  </S.Balance>
+                </S.FlexItem>
+              </S.ListItem>
+            )
+          })}
+        </>
+        : <S.Balance hideBalance={hideBalance}>
+            <S.Text lineHeight={1.15} $p={12}>{getLocale('geminiWidgetSummaryNoBalance')}</S.Text>
+          </S.Balance>
+        }
       </>
     )
   }
@@ -639,7 +646,7 @@ class Gemini extends React.PureComponent<Props, State> {
     }
 
     const compare = currentTradeMode === 'buy'
-      ? (accountBalances['USD'] || '0')
+      ? (accountBalances.USD || '0')
       : (accountBalances[currentTradeAsset] || '0')
 
     if (parseFloat(currentTradeQuantity) >= parseFloat(compare)) {
@@ -800,7 +807,7 @@ class Gemini extends React.PureComponent<Props, State> {
     } = this.state
     const { accountBalances } = this.props
     const currentAssetBalance = this.formatCryptoBalance(accountBalances[currentTradeAsset] || '0')
-    const accountUSDBalance = accountBalances['USD'] || '0.00'
+    const accountUSDBalance = accountBalances.USD || '0.00'
     const availableAmount = currentTradeMode === 'buy' ? accountUSDBalance : currentAssetBalance
     const availableLabel = currentTradeMode === 'buy' ? 'USD' : currentTradeAsset
 
@@ -848,10 +855,10 @@ class Gemini extends React.PureComponent<Props, State> {
             className={'asset-dropdown'}
             onClick={this.handleTradeAssetChange}
           >
+            <DropdownIcon>
+              <IconAsset iconKey={currentTradeAsset.toLowerCase()} size={15} />
+            </DropdownIcon>
             <AssetDropdownLabel>
-              <DropdownIcon>
-                {this.renderSmallIconAsset(currentTradeAsset.toLowerCase())}
-              </DropdownIcon>
               {currentTradeAsset}
             </AssetDropdownLabel>
             <CaratDropdown>
@@ -873,7 +880,7 @@ class Gemini extends React.PureComponent<Props, State> {
                       onClick={this.setCurrentTradeAsset.bind(this, asset)}
                     >
                       <DropdownIcon>
-                        {this.renderSmallIconAsset(asset.toLowerCase())}
+                        <IconAsset iconKey={asset.toLowerCase()} size={15} />
                       </DropdownIcon>
                       {asset}
                     </AssetItem>
@@ -907,7 +914,7 @@ class Gemini extends React.PureComponent<Props, State> {
               />
             </BackArrow>
             <DetailIconWrapper>
-              {this.renderIconAsset(currentDepositAsset.toLowerCase(), true)}
+              <IconAsset iconKey={currentDepositAsset.toLowerCase()} />
             </DetailIconWrapper>
           </DetailIcons>
           <AssetTicker>
@@ -986,23 +993,28 @@ class Gemini extends React.PureComponent<Props, State> {
           const lowerName = cleanName.toLowerCase()
           const lowerSearch = currentDepositSearch.toLowerCase()
 
-          if (lowerAsset.indexOf(lowerSearch) < 0 &&
+          if (!lowerAsset.includes(lowerSearch) &&
               lowerName.indexOf(lowerSearch) < 0 && currentDepositSearch) {
             return null
           }
 
           return (
-            <ListItem
+            <S.ListItem
               key={`list-${asset}`}
+              isFlex={true}
+              justify='flex-start'
+              $p={10}
               onClick={this.setCurrentDepositAsset.bind(this, asset)}
             >
-              <ListIcon>
-                {this.renderIconAsset(asset.toLowerCase())}
-              </ListIcon>
-              <ListLabel clickable={true}>
-                {`${asset} (${cleanName})`}
-              </ListLabel>
-            </ListItem>
+              <S.FlexItem $mr={10} $w={25} $h={25}>
+                <IconAsset iconKey={lowerAsset} />
+              </S.FlexItem>
+              <S.FlexItem>
+                <S.Text $fontSize={12}>
+                  {`${asset} (${cleanName})`}
+                </S.Text>
+              </S.FlexItem>
+            </S.ListItem>
           )
         })}
       </>

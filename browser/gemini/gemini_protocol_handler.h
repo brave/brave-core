@@ -8,8 +8,8 @@
 
 #include <string>
 
-#include "base/optional.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
@@ -19,7 +19,7 @@ void HandleGeminiProtocol(const GURL& url,
                           content::WebContents::OnceGetter web_contents_getter,
                           ui::PageTransition page_transition,
                           bool has_user_gesture,
-                          const base::Optional<url::Origin>& initiator);
+                          const absl::optional<url::Origin>& initiator);
 
 bool IsGeminiProtocol(const GURL& url);
 

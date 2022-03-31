@@ -9,7 +9,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -22,7 +22,7 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom.h"
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #endif
 
@@ -34,11 +34,12 @@ namespace brave_rewards {
 
 RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
+      content::WebContentsUserData<RewardsTabHelper>(*web_contents),
       tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
   if (!tab_id_.is_valid())
     return;
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   BrowserList::AddObserver(this);
 #endif
   Profile* profile =
@@ -51,7 +52,7 @@ RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
 RewardsTabHelper::~RewardsTabHelper() {
   if (rewards_service_)
     rewards_service_->RemoveObserver(this);
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   BrowserList::RemoveObserver(this);
 #endif
 }
@@ -62,7 +63,7 @@ void RewardsTabHelper::DidFinishLoad(
   if (!rewards_service_ || render_frame_host->GetParent())
     return;
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   auto ipns_url = web_contents()->GetURL();
   if (ipns_url.SchemeIs(ipfs::kIPNSScheme)) {
     rewards_service_->OnLoad(tab_id_, ipns_url);
@@ -125,7 +126,7 @@ void RewardsTabHelper::WebContentsDestroyed() {
     rewards_service_->OnUnload(tab_id_);
 }
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 void RewardsTabHelper::OnBrowserSetLastActive(Browser* browser) {
   if (!rewards_service_)
     return;
@@ -137,7 +138,7 @@ void RewardsTabHelper::OnBrowserSetLastActive(Browser* browser) {
 }
 #endif
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 void RewardsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
   if (!rewards_service_)
     return;
@@ -149,6 +150,6 @@ void RewardsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
 }
 #endif
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(RewardsTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(RewardsTabHelper);
 
 }  // namespace brave_rewards

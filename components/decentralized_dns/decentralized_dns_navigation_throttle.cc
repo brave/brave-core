@@ -83,7 +83,7 @@ void DecentralizedDnsNavigationThrottle::ShowInterstitial() {
   std::string page_content = page->GetHTMLContents();
 
   security_interstitials::SecurityInterstitialTabHelper::AssociateBlockingPage(
-      web_contents, handle->GetNavigationId(), std::move(page));
+      handle, std::move(page));
 
   CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
       content::NavigationThrottle::CANCEL, net::ERR_BLOCKED_BY_CLIENT,

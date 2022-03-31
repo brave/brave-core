@@ -24,4 +24,4 @@ void AddAndroidWidevine(
 }  // namespace cdm
 #endif  // BUILDFLAG(ENABLE_WIDEVINE)
 
-#include "../../../../android_webview/renderer/aw_key_systems.cc"
+#include "src/android_webview/renderer/aw_key_systems.cc"

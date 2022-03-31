@@ -34,9 +34,15 @@ class AutofillExperimentsTest : public testing::Test {
 
   bool IsCreditCardUploadEnabled(const std::string& user_email,
                                  const AutofillSyncSigninState sync_state) {
+    return IsCreditCardUploadEnabled(user_email, "US", sync_state);
+  }
+
+  bool IsCreditCardUploadEnabled(const std::string& user_email,
+                                 const std::string& user_country,
+                                 const AutofillSyncSigninState sync_state) {
     return autofill::IsCreditCardUploadEnabled(&pref_service_, &sync_service_,
-                                               user_email, sync_state,
-                                               log_manager_.get());
+                                               user_email, user_country,
+                                               sync_state, log_manager_.get());
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -66,7 +72,7 @@ TEST_F(
       /*disable_features=*/{});
   // When we have no primary account, Sync will start in Transport-only mode
   // (if allowed).
-  sync_service_.SetIsAuthenticatedAccountPrimary(false);
+  sync_service_.SetHasSyncConsent(false);
 
   // Update the active types to only include Wallet. This disables all other
   // types, including profiles.

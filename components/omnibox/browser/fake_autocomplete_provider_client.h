@@ -6,17 +6,23 @@
 #ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_FAKE_AUTOCOMPLETE_PROVIDER_CLIENT_H_
 #define BRAVE_COMPONENTS_OMNIBOX_BROWSER_FAKE_AUTOCOMPLETE_PROVIDER_CLIENT_H_
 
+#include <memory>
+
 #include "components/omnibox/browser/mock_autocomplete_provider_client.h"
 #include "components/prefs/testing_pref_service.h"
 
 class FakeAutocompleteProviderClient : public MockAutocompleteProviderClient {
  public:
   FakeAutocompleteProviderClient();
-  PrefService* GetPrefs() override;
+  FakeAutocompleteProviderClient(const FakeAutocompleteProviderClient&) =
+      delete;
+  FakeAutocompleteProviderClient& operator=(
+      const FakeAutocompleteProviderClient&) = delete;
+  ~FakeAutocompleteProviderClient() override;
+  PrefService* GetPrefs() const override;
 
  private:
-  TestingPrefServiceSimple pref_service_;
-  DISALLOW_COPY_AND_ASSIGN(FakeAutocompleteProviderClient);
+  std::unique_ptr<TestingPrefServiceSimple> pref_service_;
 };
 
 #endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_FAKE_AUTOCOMPLETE_PROVIDER_CLIENT_H_

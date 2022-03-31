@@ -9,18 +9,18 @@
 #include <string>
 
 #include "bat/ads/internal/server/url_request_builder.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace ad_targeting {
 namespace geographic {
 
-class GetSubdivisionUrlRequestBuilder : UrlRequestBuilder {
+class GetSubdivisionUrlRequestBuilder final : UrlRequestBuilder {
  public:
   GetSubdivisionUrlRequestBuilder();
-
   ~GetSubdivisionUrlRequestBuilder() override;
 
-  UrlRequestPtr Build() override;
+  mojom::UrlRequestPtr Build() override;
 
  private:
   std::string BuildUrl() const;

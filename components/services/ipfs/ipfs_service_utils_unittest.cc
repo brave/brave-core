@@ -65,4 +65,45 @@ TEST_F(IPFSServiceUtils, UpdateConfigJSONTest) {
   EXPECT_EQ(updated, "");
 }
 
+TEST_F(IPFSServiceUtils, GetVerisonFromNodeFilename) {
+  EXPECT_EQ(
+      ipfs::GetVersionFromNodeFilename("go-ipfs_v0.9.0-rc1_windows-amd64"),
+      "0.9.0");
+  EXPECT_EQ(
+      ipfs::GetVersionFromNodeFilename("go-ipfs_v0.9.0-rc12_windows-amd64"),
+      "0.9.0");
+  EXPECT_EQ(ipfs::GetVersionFromNodeFilename("go-ipfs_v0.9.0_windows-amd64"),
+            "0.9.0");
+
+  EXPECT_EQ(
+      ipfs::GetVersionFromNodeFilename("go-ipfs_v0.10.0-rc1_darwin-amd64"),
+      "0.10.0");
+  EXPECT_EQ(
+      ipfs::GetVersionFromNodeFilename("go-ipfs_v0.10.0-rc12_darwin-amd64"),
+      "0.10.0");
+  EXPECT_EQ(ipfs::GetVersionFromNodeFilename("go-ipfs_v0.10.0_darwin-amd64"),
+            "0.10.0");
+
+  EXPECT_EQ(
+      ipfs::GetVersionFromNodeFilename("go-ipfs_v0.10.0-rc1_darwin-arm64"),
+      "0.10.0");
+  EXPECT_EQ(
+      ipfs::GetVersionFromNodeFilename("go-ipfs_v0.10.0-rc12_darwin-arm64"),
+      "0.10.0");
+  EXPECT_EQ(ipfs::GetVersionFromNodeFilename("go-ipfs_v0.10.0_darwin-arm64"),
+            "0.10.0");
+
+  EXPECT_EQ(ipfs::GetVersionFromNodeFilename("go-ipfs_v0.10.0-rc1_linux-amd64"),
+            "0.10.0");
+  EXPECT_EQ(
+      ipfs::GetVersionFromNodeFilename("go-ipfs_v0.10.0-rc12_linux-amd64"),
+      "0.10.0");
+  EXPECT_EQ(ipfs::GetVersionFromNodeFilename("go-ipfs_v0.10.0_linux-amd64"),
+            "0.10.0");
+
+  EXPECT_EQ(ipfs::GetVersionFromNodeFilename("go-ipfs_v0.10.0_linux"), "");
+  EXPECT_EQ(ipfs::GetVersionFromNodeFilename(""), "");
+  EXPECT_EQ(ipfs::GetVersionFromNodeFilename("ipfs.exe"), "");
+}
+
 }  // namespace ipfs

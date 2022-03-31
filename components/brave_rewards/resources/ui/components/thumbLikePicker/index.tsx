@@ -46,8 +46,8 @@ export default class ThumbLikePicker extends React.PureComponent<Props, State> {
     return (
       <>
       {
-        this.state.itemSelected === 1 ?
-          <>
+        this.state.itemSelected === 1
+          ? <>
             <StyledAdStatThumbUpFilledIcon onClick={this.props.onThumbUpPress}>
               <ThumbsupSIcon />
             </StyledAdStatThumbUpFilledIcon>
@@ -55,9 +55,8 @@ export default class ThumbLikePicker extends React.PureComponent<Props, State> {
               <ThumbsdownLIcon />
             </StyledAdStatThumbDownIcon>
           </>
-        :
-        this.state.itemSelected === 2 ?
-          <>
+        : this.state.itemSelected === 2
+          ? <>
             <StyledAdStatThumbUpIcon onClick={this.props.onThumbUpPress}>
               <ThumbsupLIcon />
             </StyledAdStatThumbUpIcon>
@@ -65,8 +64,7 @@ export default class ThumbLikePicker extends React.PureComponent<Props, State> {
               <ThumbsdownSIcon />
             </StyledAdStatThumbDownFilledIcon>
           </>
-        :
-          <>
+        : <>
             <StyledAdStatThumbUpIcon onClick={this.props.onThumbUpPress}>
               <ThumbsupLIcon />
             </StyledAdStatThumbUpIcon>

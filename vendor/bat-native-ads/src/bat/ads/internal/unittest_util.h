@@ -6,21 +6,21 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_UNITTEST_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_UNITTEST_UTIL_H_
 
-#include <cstdint>
-#include <map>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "base/files/file_path.h"
-#include "base/optional.h"
-#include "base/time/time.h"
-#include "bat/ads/ads.h"
-#include "bat/ads/database.h"
+#include "base/containers/flat_map.h"
+#include "base/files/scoped_temp_dir.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
-#include "brave/components/l10n/browser/locale_helper_mock.h"
+#include "bat/ads/internal/unittest_util_types.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+namespace brave_l10n {
+class LocaleHelperMock;
+}  // namespace brave_l10n
 
 namespace ads {
 
@@ -72,25 +72,16 @@ namespace ads {
 
 using URLEndpointResponse = std::pair<int, std::string>;
 using URLEndpointResponses = std::vector<URLEndpointResponse>;
-using URLEndpoints = std::map<std::string, URLEndpointResponses>;
+using URLEndpoints = base::flat_map<std::string, URLEndpointResponses>;
 
 class AdsClientMock;
+class Database;
 
-base::FilePath GetTestPath();
+void SetEnvironment(const mojom::Environment environment);
 
-base::Optional<std::string> ReadFileFromTestPathToString(
-    const std::string& name);
+void SetSysInfo(const mojom::SysInfo& sys_info);
 
-base::FilePath GetResourcesPath();
-
-base::Optional<std::string> ReadFileFromResourcePathToString(
-    const std::string& name);
-
-void SetEnvironment(const Environment environment);
-
-void SetSysInfo(const SysInfo& sys_info);
-
-void SetBuildChannel(const bool is_release, const std::string& name);
+void SetBuildChannel(const BuildChannelType type);
 
 void MockLocaleHelper(const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,
                       const std::string& locale);
@@ -112,22 +103,19 @@ void MockShouldShowNotifications(const std::unique_ptr<AdsClientMock>& mock,
                                  const bool should_show);
 
 void MockShowNotification(const std::unique_ptr<AdsClientMock>& mock);
-
 void MockCloseNotification(const std::unique_ptr<AdsClientMock>& mock);
 
-void MockRecordAdEvent(const std::unique_ptr<AdsClientMock>& mock);
-
+void MockRecordAdEventForId(const std::unique_ptr<AdsClientMock>& mock);
 void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock);
+void MockResetAdEventsForId(const std::unique_ptr<AdsClientMock>& mock);
+
+void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockSave(const std::unique_ptr<AdsClientMock>& mock);
-
-void MockLoad(const std::unique_ptr<AdsClientMock>& mock);
 void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
-              const std::string& name,
-              const std::string& filename);
+              const base::ScopedTempDir& temp_dir);
 
 void MockLoadAdsResource(const std::unique_ptr<AdsClientMock>& mock);
-
 void MockLoadResourceForId(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
@@ -137,21 +125,6 @@ void MockRunDBTransaction(const std::unique_ptr<AdsClientMock>& mock,
                           const std::unique_ptr<Database>& database);
 
 void MockPrefs(const std::unique_ptr<AdsClientMock>& mock);
-
-int64_t TimestampFromDateString(const std::string& date);
-base::Time TimeFromDateString(const std::string& date);
-
-int64_t DistantPastAsTimestamp();
-base::Time DistantPast();
-std::string DistantPastAsISO8601();
-
-int64_t NowAsTimestamp();
-base::Time Now();
-std::string NowAsISO8601();
-
-int64_t DistantFutureAsTimestamp();
-base::Time DistantFuture();
-std::string DistantFutureAsISO8601();
 
 }  // namespace ads
 

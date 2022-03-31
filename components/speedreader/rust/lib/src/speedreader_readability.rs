@@ -28,9 +28,9 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
                     parser.process(tendril);
                     Ok(())
                 }
-                Err(_) => Err(SpeedReaderError::DocumentParseError(
-                    "Could not write tendril".to_owned(),
-                )),
+                Err(_) => {
+                    Err(SpeedReaderError::DocumentParseError("Could not write tendril".to_owned()))
+                }
             }
         } else {
             Err(SpeedReaderError::ProcessorClosed)
@@ -41,9 +41,7 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
         if let Some(parser) = self.parser.take() {
             let mut dom: Sink = parser.finish();
             if let Some(features) = statistics::collect_statistics(&dom) {
-                if features.moz_score > 30.0
-                    || features.is_open_graph_article && features.moz_score > 20.0
-                {
+                if features.moz_score > 20.0 {
                     let extracted = extractor::extract_dom(&mut dom, &self.url, &HashMap::new())?;
                     self.output_sink.handle_chunk(extracted.content.as_bytes());
                     Ok(())
@@ -53,9 +51,7 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
                     ))
                 }
             } else {
-                Err(SpeedReaderError::RewritingError(
-                    "Could not score document".to_owned(),
-                ))
+                Err(SpeedReaderError::RewritingError("Could not score document".to_owned()))
             }
         } else {
             Err(SpeedReaderError::ProcessorClosed)
@@ -74,11 +70,7 @@ impl<O: OutputSink> SpeedReaderReadability<O> {
 
         if scheme == "http" || scheme == "https" {
             let parser = html5ever::parse_document(Sink::default(), ParseOpts::default());
-            Ok(SpeedReaderReadability {
-                parser: Some(parser),
-                url,
-                output_sink,
-            })
+            Ok(SpeedReaderReadability { parser: Some(parser), url, output_sink })
         } else {
             Err(SpeedReaderError::InvalidUrl(url.to_string()))
         }

@@ -8,7 +8,7 @@
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 
 #define GetEngineType GetEngineType_ChromiumImpl
-#include "../../../../components/search_engines/search_engine_utils.cc"
+#include "src/components/search_engines/search_engine_utils.cc"
 #undef GetEngineType
 
 namespace SearchEngineUtils {

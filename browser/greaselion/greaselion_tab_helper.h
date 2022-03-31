@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_GREASELION_GREASELION_TAB_HELPER_H_
 #define BRAVE_BROWSER_GREASELION_GREASELION_TAB_HELPER_H_
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -22,6 +23,8 @@ class GreaselionTabHelper
       public content::WebContentsUserData<GreaselionTabHelper> {
  public:
   explicit GreaselionTabHelper(content::WebContents*);
+  GreaselionTabHelper(const GreaselionTabHelper&) = delete;
+  GreaselionTabHelper& operator=(const GreaselionTabHelper&) = delete;
   ~GreaselionTabHelper() override;
 
  private:
@@ -30,10 +33,9 @@ class GreaselionTabHelper
   // GreaselionDownloadService::Observer implementation
   void OnRulesReady(GreaselionDownloadService* download_service) override;
 
-  GreaselionDownloadService* download_service_;  // NOT OWNED
+  raw_ptr<GreaselionDownloadService> download_service_ = nullptr;  // NOT OWNED
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
-  DISALLOW_COPY_AND_ASSIGN(GreaselionTabHelper);
 };
 
 }  // namespace greaselion

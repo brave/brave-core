@@ -1,18 +1,6 @@
 import("//extensions/buildflags/buildflags.gni")
 
-declare_args() {
-  updater_dev_endpoint = ""
-  updater_prod_endpoint = ""
-}
-
-config("updater_config") {
-  defines = [
-    "UPDATER_DEV_ENDPOINT=\"$updater_dev_endpoint\"",
-    "UPDATER_PROD_ENDPOINT=\"$updater_prod_endpoint\"",
-  ]
-}
-
-source_set("browser") {
+static_library("browser") {
   sources = [
     "brave_component.cc",
     "brave_component.h",
@@ -29,7 +17,6 @@ source_set("browser") {
     "switches.h",
   ]
 
-  public_configs = [ ":updater_config" ]
   deps = [
     "//base",
     "//components/component_updater:component_updater",
@@ -41,9 +28,6 @@ source_set("browser") {
       "extension_whitelist_service.h",
     ]
 
-    deps += [
-      "//brave/vendor/extension-whitelist/brave:extension-whitelist",
-      "//extensions/common",
-    ]
+    deps += [ "//brave/vendor/extension-whitelist/brave:extension-whitelist" ]
   }
 }

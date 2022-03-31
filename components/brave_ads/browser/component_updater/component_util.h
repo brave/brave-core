@@ -8,12 +8,12 @@
 
 #include <string>
 
-#include "base/optional.h"
 #include "brave/components/brave_ads/browser/component_updater/component_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-base::Optional<ComponentInfo> GetComponentInfo(const std::string& id);
+absl::optional<ComponentInfo> GetComponentInfo(const std::string& id);
 
 }  // namespace brave_ads
 

@@ -8,7 +8,7 @@
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
 
-#include "../../../../../../../chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.cc"
+#include "src/chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.cc"
 
 BraveAvatarToolbarButtonDelegate::BraveAvatarToolbarButtonDelegate(
     AvatarToolbarButton* button,
@@ -17,7 +17,7 @@ BraveAvatarToolbarButtonDelegate::BraveAvatarToolbarButtonDelegate(
 
 AvatarToolbarButton::State BraveAvatarToolbarButtonDelegate::GetState() const {
   AvatarToolbarButton::State state = AvatarToolbarButtonDelegate::GetState();
-  if (state == AvatarToolbarButton::State::kGenericProfile) {
+  if (state == AvatarToolbarButton::State::kNormal) {
     ProfileAttributesEntry* entry =
         g_browser_process->profile_manager()
             ->GetProfileAttributesStorage()

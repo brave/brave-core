@@ -15,6 +15,10 @@ namespace extensions {
 
 class BraveExtensionsAPIClientTests : public ChromeRenderViewHostTestHarness {
  public:
+  BraveExtensionsAPIClientTests(const BraveExtensionsAPIClientTests&) = delete;
+  BraveExtensionsAPIClientTests& operator=(
+      const BraveExtensionsAPIClientTests&) = delete;
+
   bool ShouldHideBrowserNetworkRequest(const WebRequestInfo& request_info) {
     return client_.ShouldHideBrowserNetworkRequest(browser_context(),
                                                    request_info);
@@ -25,8 +29,6 @@ class BraveExtensionsAPIClientTests : public ChromeRenderViewHostTestHarness {
 
  private:
   BraveExtensionsAPIClient client_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveExtensionsAPIClientTests);
 };
 
 TEST_F(BraveExtensionsAPIClientTests, IsBraveProtectedUrlUphold) {

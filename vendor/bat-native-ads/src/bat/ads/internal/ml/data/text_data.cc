@@ -8,24 +8,24 @@
 namespace ads {
 namespace ml {
 
-TextData::TextData() : Data(DataType::TEXT_DATA) {}
+TextData::TextData() : Data(DataType::kText) {}
 
-TextData::TextData(const TextData& text_data) : Data(DataType::TEXT_DATA) {
+TextData::TextData(const TextData& text_data) : Data(DataType::kText) {
   text_ = text_data.GetText();
 }
 
-TextData& TextData::operator=(const TextData& text_data) {
-  text_ = text_data.GetText();
-  return *this;
+TextData::TextData(const std::string& text)
+    : Data(DataType::kText), text_(text) {}
+
+std::string TextData::GetText() const {
+  return text_;
 }
 
 TextData::~TextData() = default;
 
-TextData::TextData(const std::string& text)
-    : Data(DataType::TEXT_DATA), text_(text) {}
-
-std::string TextData::GetText() const {
-  return text_;
+TextData& TextData::operator=(const TextData& text_data) {
+  text_ = text_data.GetText();
+  return *this;
 }
 
 }  // namespace ml

@@ -43,7 +43,7 @@ GURL FixupWaybackQueryURL(const GURL& url) {
   std::vector<std::string> query_parts;
   std::string fragment;
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
-    std::string key = it.GetKey();
+    std::string key = std::string(it.GetKey());
     url::RawCanonOutputW<1024> canonOutput;
     url::DecodeURLEscapeSequences(key.c_str(), key.length(),
                                   url::DecodeURLMode::kUTF8OrIsomorphic,
@@ -54,8 +54,8 @@ GURL FixupWaybackQueryURL(const GURL& url) {
     if (decoded_key == kTimeStampKey || decoded_key == kCallbackKey)
       continue;
 
-    query_parts.push_back(base::StringPrintf("%s=%s", it.GetKey().c_str(),
-                                             it.GetValue().c_str()));
+    query_parts.push_back(base::StringPrintf(
+        "%s=%s", key.c_str(), std::string(it.GetValue()).c_str()));
   }
 
   std::string query = base::JoinString(query_parts, "&");

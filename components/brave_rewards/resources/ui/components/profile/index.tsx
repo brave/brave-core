@@ -37,7 +37,7 @@ export interface Props {
   id?: string
   src?: string
   title: string
-  type?: 'big' | 'small'
+  type?: 'big' | 'small' | 'mobile'
   provider?: Provider
   verified?: boolean
   tableCell?: boolean
@@ -75,7 +75,7 @@ export default class Profile extends React.PureComponent<Props, {}> {
   }
 
   getSrc (src?: string) {
-    return src ? src : ''
+    return src || ''
   }
 
   getVerifiedInfo = () => {
@@ -169,12 +169,11 @@ export default class Profile extends React.PureComponent<Props, {}> {
     } = this.props
 
     return (
-      !refreshingPublisher && !publisherRefreshed ?
-        this.getDefaultVerifiedPanelWrap()
-    : !publisherRefreshed && refreshingPublisher ?
-        this.getVerifiedPanelWrapRefreshing()
-    :
-      this.getVerifiedPanelWrapRefreshFinished()
+      !refreshingPublisher && !publisherRefreshed
+        ? this.getDefaultVerifiedPanelWrap()
+    : !publisherRefreshed && refreshingPublisher
+        ? this.getVerifiedPanelWrapRefreshing()
+    : this.getVerifiedPanelWrapRefreshFinished()
     )
   }
 
@@ -267,12 +266,11 @@ export default class Profile extends React.PureComponent<Props, {}> {
     } = this.props
 
     return (
-      !publisherRefreshed && !refreshingPublisher ?
-        this.getDefaultUnverifiedPanelWrap()
-      : !publisherRefreshed && refreshingPublisher ?
-        this.getUnverifiedPanelWrapRefreshing()
-      :
-        this.getUnverifiedPanelWrapRefreshFinished()
+      !publisherRefreshed && !refreshingPublisher
+        ? this.getDefaultUnverifiedPanelWrap()
+      : !publisherRefreshed && refreshingPublisher
+        ? this.getUnverifiedPanelWrapRefreshing()
+      : this.getUnverifiedPanelWrapRefreshFinished()
     )
   }
 
@@ -288,7 +286,7 @@ export default class Profile extends React.PureComponent<Props, {}> {
     } = this.props
 
     return (
-      <StyledWrapper id={id}>
+      <StyledWrapper id={id} type={type}>
         <StyledImageWrapper type={type}>
           <StyledImage src={this.getSrc(src)} />
           {verified && type === 'small' ? (
@@ -297,8 +295,8 @@ export default class Profile extends React.PureComponent<Props, {}> {
             </StyledVerified>
           ) : null}
         </StyledImageWrapper>
-        <StyledContent>
-          <StyledTitleWrap>
+        <StyledContent type={type}>
+          <StyledTitleWrap type={type}>
             <StyledTitle type={type}>{title}</StyledTitle>
             {provider ? (
               <StyledProvider type={type}>

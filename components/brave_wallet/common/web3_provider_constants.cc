@@ -9,7 +9,14 @@ namespace brave_wallet {
 
 const char kConnectEvent[] = "connect";
 const char kDisconnectEvent[] = "disconnect";
+
+namespace ethereum {
 const char kChainChangedEvent[] = "chainChanged";
 const char kAccountsChangedEvent[] = "accountsChanged";
+}  // namespace ethereum
+
+namespace solana {
+const char kAccountChangedEvent[] = "accountChanged";
+}  // namespace solana
 
 }  // namespace brave_wallet

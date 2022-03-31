@@ -169,4 +169,30 @@ TEST(BatAdsUrlUtilTest, NotSameDomainOrHostForUrlWithRef) {
   EXPECT_FALSE(is_same_site);
 }
 
+TEST(BatAdsUrlUtilTest, DomainOrHostExists) {
+  // Arrange
+  const std::vector<std::string> urls = {"https://foo.com", "https://bar.com"};
+
+  const std::string url = "https://bar.com/foo";
+
+  // Act
+  const bool does_exist = DomainOrHostExists(urls, url);
+
+  // Assert
+  EXPECT_TRUE(does_exist);
+}
+
+TEST(BatAdsUrlUtilTest, DomainOrHostDoesNotExist) {
+  // Arrange
+  const std::vector<std::string> urls = {"https://foo.com", "https://bar.com"};
+
+  const std::string url = "https://baz.com/qux";
+
+  // Act
+  const bool does_exist = DomainOrHostExists(urls, url);
+
+  // Assert
+  EXPECT_FALSE(does_exist);
+}
+
 }  // namespace ads

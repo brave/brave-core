@@ -19,12 +19,12 @@ export interface Props {
   currentScreen: number
   onClick: () => void
   changeDefaultSearchProvider: (searchProvider: string) => void
-  searchProviders: Array<Welcome.SearchEngineEntry>
+  searchProviders: Welcome.SearchEngineEntry[]
 }
 
 interface State {
-  searchEngineSelected: boolean,
-  isDefaultSearchGoogle: boolean,
+  searchEngineSelected: boolean
+  isDefaultSearchGoogle: boolean
 }
 
 export default class SearchEngineBox extends React.PureComponent<Props, State> {
@@ -45,7 +45,7 @@ export default class SearchEngineBox extends React.PureComponent<Props, State> {
     this.setState({ searchEngineSelected: true })
   }
 
-  getDefaultSearchProvider = (searchEngineEntries: Array<Welcome.SearchEngineEntry>): Welcome.SearchEngineEntry => {
+  getDefaultSearchProvider = (searchEngineEntries: Welcome.SearchEngineEntry[]): Welcome.SearchEngineEntry => {
     const defaultSearchProvider = searchEngineEntries
       .filter((searchEngine: Welcome.SearchEngineEntry) => searchEngine.default)
     return defaultSearchProvider[0]
@@ -56,17 +56,12 @@ export default class SearchEngineBox extends React.PureComponent<Props, State> {
     ? `${searchProvider.name} (${getLocale('default')})`
     : searchProvider.name
 
-  getBodyText = (searchProviderName: string): string =>
-    searchProviderName === 'Google'
-      ? `${getLocale('chooseSearchEngine')} ${getLocale('privateExperience')}`
-      : getLocale('chooseSearchEngine')
-
   render () {
     const { index, currentScreen, onClick, searchProviders } = this.props
     const { searchEngineSelected } = this.state
     const defaultProvider = this.getDefaultSearchProvider(searchProviders)
     const bodyText = defaultProvider
-      ? this.getBodyText(defaultProvider.name) || ''
+      ? getLocale('chooseSearchEngine') || ''
       : ''
 
     return (

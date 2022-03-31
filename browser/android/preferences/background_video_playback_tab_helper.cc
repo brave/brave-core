@@ -16,14 +16,14 @@
 #include "content/browser/web_contents/web_contents_impl.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/web_contents.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 
 namespace {
-const char k_youtube_background_playback_script[] =
-    "(function() {"
+const char16_t k_youtube_background_playback_script[] =
+    u"(function() {"
     "    if (document._addEventListener === undefined) {"
     "        document._addEventListener = document.addEventListener;"
     "        document.addEventListener = function(a,b,c) {"
@@ -58,11 +58,11 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
 
 BackgroundVideoPlaybackTabHelper::BackgroundVideoPlaybackTabHelper(
     content::WebContents* contents)
-    : WebContentsObserver(contents) {
-}
+    : WebContentsObserver(contents),
+      content::WebContentsUserData<BackgroundVideoPlaybackTabHelper>(
+          *contents) {}
 
-BackgroundVideoPlaybackTabHelper::~BackgroundVideoPlaybackTabHelper() {
-}
+BackgroundVideoPlaybackTabHelper::~BackgroundVideoPlaybackTabHelper() {}
 
 void BackgroundVideoPlaybackTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
@@ -72,9 +72,8 @@ void BackgroundVideoPlaybackTabHelper::DidFinishNavigation(
   }
   if (IsBackgroundVideoPlaybackEnabled(web_contents())) {
     web_contents()->GetMainFrame()->ExecuteJavaScript(
-        base::UTF8ToUTF16(k_youtube_background_playback_script),
-        base::NullCallback());
+        k_youtube_background_playback_script, base::NullCallback());
   }
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BackgroundVideoPlaybackTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(BackgroundVideoPlaybackTabHelper);

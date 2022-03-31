@@ -5,6 +5,9 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 
+#include <string>
+
+#include "base/bind.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
 #include "brave/app/vector_icons/vector_icons.h"
@@ -16,12 +19,16 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
+#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/clipboard_format_type.h"
 #include "ui/base/dragdrop/drag_drop_types.h"
 #include "ui/base/dragdrop/mojom/drag_drop_types.mojom.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/theme_provider.h"
 #include "ui/events/event.h"
 #include "ui/gfx/canvas.h"
@@ -37,11 +44,13 @@ constexpr char kSidebarItemDragType[] = "brave/sidebar-item";
 
 class SidebarItemsArrowView : public views::ImageButton {
  public:
-  SidebarItemsArrowView() {
+  METADATA_HEADER(SidebarItemsArrowView);
+  explicit SidebarItemsArrowView(const std::u16string& accessible_name) {
     SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
     SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
     DCHECK(GetInstallFocusRingOnFocus());
-    focus_ring()->SetColor(gfx::kBraveBlurple300);
+    views::FocusRing::Get(this)->SetColor(gfx::kBraveBlurple300);
+    SetAccessibleName(accessible_name);
   }
 
   ~SidebarItemsArrowView() override = default;
@@ -53,8 +62,8 @@ class SidebarItemsArrowView : public views::ImageButton {
 
   void OnPaintBackground(gfx::Canvas* canvas) override {
     if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
-      const SkColor background_color = theme_provider->GetColor(
-          BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND);
+      const SkColor background_color =
+          theme_provider->GetColor(ThemeProperties::COLOR_TOOLBAR);
       gfx::Rect bounds = GetContentsBounds();
       canvas->FillRect(bounds, background_color);
 
@@ -74,6 +83,9 @@ class SidebarItemsArrowView : public views::ImageButton {
   }
 };
 
+BEGIN_METADATA(SidebarItemsArrowView, views::ImageButton)
+END_METADATA
+
 }  // namespace
 
 SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
@@ -83,16 +95,20 @@ SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
           std::make_unique<views::BoundsAnimator>(this)),
       scroll_animator_for_smooth_(
           std::make_unique<views::BoundsAnimator>(this)) {
-  model_observed_.Add(browser->sidebar_controller()->model());
-  bounds_animator_observed_.Add(scroll_animator_for_new_item_.get());
-  bounds_animator_observed_.Add(scroll_animator_for_smooth_.get());
+  model_observed_.Observe(browser->sidebar_controller()->model());
+  bounds_animator_observed_.AddObservation(scroll_animator_for_new_item_.get());
+  bounds_animator_observed_.AddObservation(scroll_animator_for_smooth_.get());
   contents_view_ =
       AddChildView(std::make_unique<SidebarItemsContentsView>(browser_, this));
-  up_arrow_ = AddChildView(std::make_unique<SidebarItemsArrowView>());
+  up_arrow_ = AddChildView(
+      std::make_unique<SidebarItemsArrowView>(l10n_util::GetStringUTF16(
+          IDS_SIDEBAR_ITEMS_SCROLL_UP_BUTTON_ACCESSIBLE_NAME)));
   up_arrow_->SetCallback(
       base::BindRepeating(&SidebarItemsScrollView::OnButtonPressed,
                           base::Unretained(this), up_arrow_));
-  down_arrow_ = AddChildView(std::make_unique<SidebarItemsArrowView>());
+  down_arrow_ = AddChildView(
+      std::make_unique<SidebarItemsArrowView>(l10n_util::GetStringUTF16(
+          IDS_SIDEBAR_ITEMS_SCROLL_DOWN_BUTTON_ACCESSIBLE_NAME)));
   down_arrow_->SetCallback(
       base::BindRepeating(&SidebarItemsScrollView::OnButtonPressed,
                           base::Unretained(this), down_arrow_));
@@ -405,21 +421,33 @@ void SidebarItemsScrollView::OnDragExited() {
   drag_context_->set_drag_indicator_index(-1);
 }
 
+views::View::DropCallback SidebarItemsScrollView::GetDropCallback(
+    const ui::DropTargetEvent& event) {
+  return base::BindOnce(&SidebarItemsScrollView::PerformDrop,
+                        weak_ptr_.GetWeakPtr());
+}
+
 ui::mojom::DragOperation SidebarItemsScrollView::OnPerformDrop(
     const ui::DropTargetEvent& event) {
-  auto ret = ui::mojom::DragOperation::kNone;
+  ui::mojom::DragOperation drag_op;
+  PerformDrop(event, drag_op);
+  return drag_op;
+}
 
+void SidebarItemsScrollView::PerformDrop(
+    const ui::DropTargetEvent& event,
+    ui::mojom::DragOperation& output_drag_op) {
+  output_drag_op = ui::mojom::DragOperation::kNone;
   if (drag_context_->ShouldMoveItem()) {
+    output_drag_op = ui::mojom::DragOperation::kMove;
     auto* service =
         sidebar::SidebarServiceFactory::GetForProfile(browser_->profile());
     service->MoveItem(drag_context_->source_index(),
                       drag_context_->GetTargetIndex());
-    ret = ui::mojom::DragOperation::kMove;
   }
 
   contents_view_->ClearDragIndicator();
   drag_context_->Reset();
-  return ret;
 }
 
 void SidebarItemsScrollView::WriteDragDataForView(views::View* sender,
@@ -459,3 +487,10 @@ bool SidebarItemsScrollView::IsItemReorderingInProgress() const {
 bool SidebarItemsScrollView::IsBubbleVisible() const {
   return contents_view_->IsBubbleVisible();
 }
+
+void SidebarItemsScrollView::Update() {
+  contents_view_->Update();
+}
+
+BEGIN_METADATA(SidebarItemsScrollView, views::View)
+END_METADATA

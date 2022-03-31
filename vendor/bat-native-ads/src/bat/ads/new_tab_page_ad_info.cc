@@ -10,8 +10,6 @@
 
 namespace ads {
 
-struct ConfirmationType;
-
 NewTabPageAdInfo::NewTabPageAdInfo() = default;
 
 NewTabPageAdInfo::NewTabPageAdInfo(const NewTabPageAdInfo& info) = default;
@@ -23,7 +21,8 @@ bool NewTabPageAdInfo::IsValid() const {
     return false;
   }
 
-  if (company_name.empty() || alt.empty()) {
+  if (company_name.empty() || image_url.empty() || alt.empty() ||
+      wallpapers.empty()) {
     return false;
   }
 
@@ -36,13 +35,13 @@ std::string NewTabPageAdInfo::ToJson() const {
   return json;
 }
 
-Result NewTabPageAdInfo::FromJson(const std::string& json) {
+bool NewTabPageAdInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return FAILED;
+    return false;
   }
 
   if (document.HasMember("type")) {
@@ -77,23 +76,29 @@ Result NewTabPageAdInfo::FromJson(const std::string& json) {
     company_name = document["company_name"].GetString();
   }
 
+  if (document.HasMember("image_url")) {
+    image_url = document["image_url"].GetString();
+  }
+
   if (document.HasMember("alt")) {
     alt = document["alt"].GetString();
   }
+
+  // TODO(https://github.com/brave/brave-browser/issues/14015): Read wallpapers
+  // JSON
 
   if (document.HasMember("target_url")) {
     target_url = document["target_url"].GetString();
   }
 
-  return SUCCESS;
+  return true;
 }
 
 void SaveToJson(JsonWriter* writer, const NewTabPageAdInfo& info) {
   writer->StartObject();
 
   writer->String("type");
-  const std::string type = std::string(info.type);
-  writer->String(type.c_str());
+  writer->String(info.type.ToString().c_str());
 
   writer->String("uuid");
   writer->String(info.uuid.c_str());
@@ -116,8 +121,14 @@ void SaveToJson(JsonWriter* writer, const NewTabPageAdInfo& info) {
   writer->String("company_name");
   writer->String(info.company_name.c_str());
 
+  writer->String("image_url");
+  writer->String(info.image_url.c_str());
+
   writer->String("alt");
   writer->String(info.alt.c_str());
+
+  // TODO(https://github.com/brave/brave-browser/issues/14015): Write wallpapers
+  // JSON
 
   writer->String("target_url");
   writer->String(info.target_url.c_str());

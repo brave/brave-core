@@ -45,7 +45,7 @@ TEST(SpeedreaderUtilTest, URLHasHints) {
       GURL("https://blog.twitter.com/engineering/en_us/topics/open-source/2021/"
            "dropping-cache-didnt-drop-cache.html")));
 
-  // "story" is final component (no trailing "/")
+  // Has politics in component
   EXPECT_TRUE(URLReadableHintExtractor::GetInstance()->HasHints(GURL(
       "https://abcnews.go.com/Politics/"
       "state-dept-ends-policy-denying-us-citizenship-children/"
@@ -54,5 +54,9 @@ TEST(SpeedreaderUtilTest, URLHasHints) {
   // 'b' follows "story"
   EXPECT_FALSE(URLReadableHintExtractor::GetInstance()->HasHints(
       GURL("https://fake.com/storyboard")));
+
+  // Has news in component, but is trailing entry
+  EXPECT_FALSE(URLReadableHintExtractor::GetInstance()->HasHints(
+      GURL("https://search.brave.com/news?q=stuff&source=web")));
 }
 }  // namespace speedreader

@@ -15,15 +15,10 @@ public class BraveFeedSurfaceCoordinatorClassAdapter extends BraveClassVisitor {
 
     public BraveFeedSurfaceCoordinatorClassAdapter(ClassVisitor visitor) {
         super(visitor);
-        makePublicMethod(sFeedSurfaceCoordinatorClassName, "isEnhancedProtectionPromoEnabled");
-        addMethodAnnotation(sBraveFeedSurfaceCoordinatorClassName,
-                "isEnhancedProtectionPromoEnabled", "Ljava/lang/Override;");
 
-        deleteField(sBraveFeedSurfaceCoordinatorClassName, "mActivity");
-        makeProtectedField(sFeedSurfaceCoordinatorClassName, "mActivity");
-
-        deleteField(sBraveFeedSurfaceCoordinatorClassName, "mScrollViewForPolicy");
-        makeProtectedField(sFeedSurfaceCoordinatorClassName, "mScrollViewForPolicy");
+        makePublicMethod(sFeedSurfaceCoordinatorClassName, "isReliabilityLoggingEnabled");
+        addMethodAnnotation(sBraveFeedSurfaceCoordinatorClassName, "isReliabilityLoggingEnabled",
+                "Ljava/lang/Override;");
 
         deleteField(sBraveFeedSurfaceCoordinatorClassName, "mNtpHeader");
         makeProtectedField(sFeedSurfaceCoordinatorClassName, "mNtpHeader");

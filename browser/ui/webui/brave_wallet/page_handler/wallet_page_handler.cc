@@ -7,58 +7,29 @@
 
 #include <utility>
 
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
-#include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_ui.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_finder.h"
 
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
-
-namespace {
-
-brave_wallet::BraveWalletService* GetBraveWalletService(
-    content::BrowserContext* context) {
-  return brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
-      context);
-}
-
-}  // namespace
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#endif
 
 WalletPageHandler::WalletPageHandler(
-    mojo::PendingReceiver<wallet_ui::mojom::PageHandler> receiver,
-    mojo::PendingRemote<wallet_ui::mojom::Page> page,
-    content::WebUI* web_ui,
-    ui::MojoWebUIController* webui_controller)
-    : receiver_(this, std::move(receiver)),
-      page_(std::move(page)),
-      web_ui_(web_ui) {
-  Observe(web_ui_->GetWebContents());
-}
+    mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver,
+    Profile* profile)
+    : profile_(profile),
+      receiver_(this, std::move(receiver)),
+      weak_ptr_factory_(this) {}
 
 WalletPageHandler::~WalletPageHandler() = default;
 
-void WalletPageHandler::CreateWallet(const std::string& password,
-                                     CreateWalletCallback callback) {
-  auto* browser_context = web_ui_->GetWebContents()->GetBrowserContext();
-  auto* keyring_controller =
-      GetBraveWalletService(browser_context)->keyring_controller();
-  auto* keyring = keyring_controller->CreateDefaultKeyring(password);
-  if (keyring) {
-    keyring->AddAccounts();
+void WalletPageHandler::ShowApprovePanelUI() {
+#if defined(TOOLKIT_VIEWS)
+  Browser* browser = chrome::FindBrowserWithProfile(profile_);
+  if (browser) {
+    brave::ShowApproveWalletBubble(browser);
   }
-  std::move(callback).Run(keyring_controller->GetMnemonicForDefaultKeyring());
-}
-
-void WalletPageHandler::GetRecoveryWords(GetRecoveryWordsCallback callback) {
-  auto* browser_context = web_ui_->GetWebContents()->GetBrowserContext();
-  auto* keyring_controller =
-      GetBraveWalletService(browser_context)->keyring_controller();
-  keyring_controller->GetMnemonicForDefaultKeyring();
-  std::move(callback).Run(keyring_controller->GetMnemonicForDefaultKeyring());
-}
-
-void WalletPageHandler::OnVisibilityChanged(content::Visibility visibility) {
-  webui_hidden_ = visibility == content::Visibility::HIDDEN;
+#endif
 }

@@ -5,17 +5,25 @@
 
 package org.chromium.chrome.browser.ui.appmenu;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Rect;
+import android.view.Menu;
 import android.view.View;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.ui.appmenu.internal.R;
 import org.chromium.ui.base.DeviceFormFactor;
 
-class BraveAppMenu {
+class BraveAppMenu extends AppMenu {
     private static final String BRAVE_IS_MENU_FROM_BOTTOM = "brave_is_menu_from_bottom";
 
+    BraveAppMenu(int itemRowHeight, AppMenuHandlerImpl handler, Resources res) {
+        super(itemRowHeight, handler, res);
+    }
+
+    @SuppressLint("VisibleForTests")
     public static int[] getPopupPosition(int[] tempLocation, boolean isByPermanentButton,
             int negativeSoftwareVerticalOffset, int negativeVerticalOffsetNotTopAnchored,
             int screenRotation, Rect appRect, Rect padding, View anchorView, int popupWidth,
@@ -35,11 +43,15 @@ class BraveAppMenu {
     }
 
     public static int getAnimationStyle() {
-        return isMenuFromBottom() ? R.style.OverflowMenuAnimBottom : R.style.OverflowMenuAnim;
+        return isMenuFromBottom() ? R.style.EndIconMenuAnimBottom : R.style.EndIconMenuAnim;
     }
 
     private static boolean isMenuFromBottom() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         return sharedPreferences.getBoolean(BRAVE_IS_MENU_FROM_BOTTOM, false);
+    }
+
+    public void runMenuItemEnterAnimations() {
+        // We do nothing here as we don't want any fancy animation for the menu.
     }
 }

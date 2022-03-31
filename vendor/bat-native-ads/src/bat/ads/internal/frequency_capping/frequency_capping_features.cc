@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 
+#include "base/metrics/field_trial_params.h"
+#include "base/time/time.h"
 #include "bat/ads/internal/features/features_util.h"
 
 namespace ads {
@@ -13,37 +15,38 @@ namespace frequency_capping {
 
 namespace {
 
-const char kFeatureName[] = "FrequencyCapping";
+constexpr char kFeatureName[] = "FrequencyCapping";
 
-const char kFieldTrialParameterShouldExcludeAdIfConverted[] =
+constexpr char kFieldTrialParameterShouldExcludeAdIfConverted[] =
     "should_exclude_ad_if_converted";
-const bool kDefaultShouldExcludeAdIfConverted = true;
+constexpr bool kDefaultShouldExcludeAdIfConverted = true;
 
-const char kFieldTrialParameterExcludeAdIfDismissedWithinTimeWindow[] =
+constexpr char kFieldTrialParameterExcludeAdIfDismissedWithinTimeWindow[] =
     "exclude_ad_if_dismissed_within_time_window";
-const base::TimeDelta kDefaultExcludeAdIfDismissedWithinTimeWindow =
-    base::TimeDelta::FromDays(2);
+constexpr base::TimeDelta kDefaultExcludeAdIfDismissedWithinTimeWindow =
+    base::Days(2);
 
-const char kFieldTrialParameterExcludeAdIfTransferredWithinTimeWindow[] =
+constexpr char kFieldTrialParameterExcludeAdIfTransferredWithinTimeWindow[] =
     "exclude_ad_if_transferred_within_time_window";
-const base::TimeDelta kDefaultExcludeAdIfTransferredWithinTimeWindow =
-    base::TimeDelta::FromDays(2);
+constexpr base::TimeDelta kDefaultExcludeAdIfTransferredWithinTimeWindow =
+    base::Days(2);
 
-const char kFieldTrialParameterShouldOnlyServeAdsInWindowedMode[] =
+constexpr char kFieldTrialParameterShouldOnlyServeAdsInWindowedMode[] =
     "should_only_serve_ads_in_windowed_mode";
-const bool kDefaultShouldOnlyServeAdsInWindowedMode = true;
+constexpr bool kDefaultShouldOnlyServeAdsInWindowedMode = true;
 
-const char kFieldTrialParameterShouldOnlyServeAdsWithValidInternetConnection[] =
-    "should_only_serve_ads_with_valid_internet_connection";
-const bool kDefaultShouldOnlyServeAdsWithValidInternetConnection = true;
+constexpr char
+    kFieldTrialParameterShouldOnlyServeAdsWithValidInternetConnection[] =
+        "should_only_serve_ads_with_valid_internet_connection";
+constexpr bool kDefaultShouldOnlyServeAdsWithValidInternetConnection = true;
 
-const char kFieldTrialParameterShouldOnlyServeAdsIfMediaIsNotPlaying[] =
+constexpr char kFieldTrialParameterShouldOnlyServeAdsIfMediaIsNotPlaying[] =
     "should_only_serve_ads_if_media_is_not_playing";
-const bool kDefaultShouldOnlyServeAdsIfMediaIsNotPlaying = true;
+constexpr bool kDefaultShouldOnlyServeAdsIfMediaIsNotPlaying = true;
 
-const char kFieldTrialParameterShouldOnlyServeAdsIfBrowserIsActive[] =
+constexpr char kFieldTrialParameterShouldOnlyServeAdsIfBrowserIsActive[] =
     "should_only_serve_ads_if_browser_is_active";
-const bool kDefaultShouldOnlyServeAdsIfBrowserIsActive = true;
+constexpr bool kDefaultShouldOnlyServeAdsIfBrowserIsActive = true;
 
 }  // namespace
 

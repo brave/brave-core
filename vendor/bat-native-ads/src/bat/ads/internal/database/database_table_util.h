@@ -6,47 +6,42 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_DATABASE_TABLE_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_DATABASE_TABLE_UTIL_H_
 
-#include <map>
 #include <string>
 #include <vector>
 
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace database {
 namespace table {
 namespace util {
 
-void Drop(DBTransaction* transaction, const std::string& table_name);
-
-void Delete(DBTransaction* transaction, const std::string& table_name);
-
-std::string BuildInsertQuery(const std::string& from,
-                             const std::string& to,
-                             const std::map<std::string, std::string>& columns,
-                             const std::string& group_by);
-
-void Migrate(DBTransaction* transaction,
-             const std::string& from,
-             const std::string& to,
-             const std::map<std::string, std::string>& columns,
-             const bool should_drop,
-             const std::string& group_by = "");
-
-void Migrate(DBTransaction* transaction,
-             const std::string& from,
-             const std::string& to,
-             const std::vector<std::string>& columns,
-             const bool should_drop,
-             const std::string& group_by = "");
-
-void Rename(DBTransaction* transaction,
-            const std::string& from,
-            const std::string& to);
-
-void CreateIndex(DBTransaction* transaction,
+void CreateIndex(mojom::DBTransaction* transaction,
                  const std::string& table_name,
                  const std::string& key);
+
+void Drop(mojom::DBTransaction* transaction, const std::string& table_name);
+
+void Delete(mojom::DBTransaction* transaction, const std::string& table_name);
+
+void CopyColumns(mojom::DBTransaction* transaction,
+                 const std::string& from,
+                 const std::string& to,
+                 const std::vector<std::string>& from_columns,
+                 const std::vector<std::string>& to_columns,
+                 const bool should_drop,
+                 const std::string& group_by = "");
+
+void CopyColumns(mojom::DBTransaction* transaction,
+                 const std::string& from,
+                 const std::string& to,
+                 const std::vector<std::string>& columns,
+                 const bool should_drop,
+                 const std::string& group_by = "");
+
+void Rename(mojom::DBTransaction* transaction,
+            const std::string& from,
+            const std::string& to);
 
 }  // namespace util
 }  // namespace table

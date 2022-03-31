@@ -43,12 +43,6 @@ static_assert(static_cast<size_t>(RecordKeys::MAX_RECORD_KEY) + 1u ==
                   sizeof(kRecordKeys) / sizeof(kRecordKeys[0]),
               "Size should match between RecordKeys and kRecordKeys.");
 
-constexpr char kProxyReaderContractAddress[] =
-    "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5";
-
-constexpr char kEnsRegistryContractAddress[] =
-    "0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41";
-
 }  // namespace decentralized_dns
 
 #endif  // BRAVE_COMPONENTS_DECENTRALIZED_DNS_CONSTANTS_H_

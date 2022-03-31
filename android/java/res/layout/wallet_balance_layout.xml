@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rewards_settings_gradient_bg"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:visibility="gone"
+            tools:ignore="UseCompoundDrawables">
+
+            <TextView
+                android:id="@+id/my_wallet_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:drawablePadding="4dp"
+                android:text="@string/my_wallet"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_regular"
+                app:drawableEndCompat="@drawable/ic_uphold" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@null"
+                app:srcCompat="@drawable/ic_arrow_down" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/btn_verify_wallet"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:background="@drawable/wallet_verify_button"
+            android:drawablePadding="8dp"
+            android:paddingStart="16dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="6dp"
+            android:text="@string/brave_ui_wallet_button_unverified"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:gravity="center_vertical"
+            android:fontFamily="@font/poppins_regular"
+            app:drawableEndCompat="@drawable/ic_wallet_arrow" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:paddingBottom="8dp"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_gravity="bottom"
+            android:paddingStart="32dp">
+
+            <LinearLayout
+                android:id="@+id/wallet_balance_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.65"
+                    android:text="@string/your_balance"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/bat_balance_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.65"
+                        android:text="@string/bat_text"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/usd_balance_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.65"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginTop="-8dp"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/wallet_balance_progress"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5">
+
+            <LinearLayout
+                android:id="@+id/ads_statement_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingEnd="32dp">
+
+                <TextView
+                    android:id="@+id/ads_monthly_statement_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.65"
+                    android:text="@string/estimated_earnings"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/bat_balance_ads_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.65"
+                        android:text="@string/bat_text"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/usd_balance_ads_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.65"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginTop="-8dp"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/ads_statement_progress"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/brave_rewards_panel_summary_layout_id"
+        layout="@layout/brave_rewards_panel_summary_layout" />
+
+</LinearLayout>

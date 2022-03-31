@@ -5,18 +5,23 @@
 
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 
-#include <cstdint>
 #include <utility>
 
+#include "base/check_op.h"
+#include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
-#include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
+#include "base/values.h"
+#include "bat/ads/ads_client.h"
+#include "bat/ads/internal/account/issuers/issuers_value_util.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/legacy_migration/legacy_migration_util.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
+#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "wrapper.hpp"
 
 namespace ads {
@@ -28,16 +33,14 @@ namespace {
 
 ConfirmationsState* g_confirmations_state = nullptr;
 
-const char kConfirmationsFilename[] = "confirmations.json";
+constexpr char kConfirmationsFilename[] = "confirmations.json";
 
 }  // namespace
 
-ConfirmationsState::ConfirmationsState(AdRewards* ad_rewards)
-    : ad_rewards_(ad_rewards),
-      unblinded_tokens_(std::make_unique<privacy::UnblindedTokens>()),
-      unblinded_payment_tokens_(std::make_unique<privacy::UnblindedTokens>()) {
-  DCHECK(ad_rewards_);
-
+ConfirmationsState::ConfirmationsState()
+    : unblinded_tokens_(std::make_unique<privacy::UnblindedTokens>()),
+      unblinded_payment_tokens_(
+          std::make_unique<privacy::UnblindedPaymentTokens>()) {
   DCHECK_EQ(g_confirmations_state, nullptr);
 
   g_confirmations_state = this;
@@ -69,9 +72,8 @@ void ConfirmationsState::Load() {
   BLOG(3, "Loading confirmations state");
 
   AdsClientHelper::Get()->Load(
-      kConfirmationsFilename,
-      [=](const Result result, const std::string& json) {
-        if (result != SUCCESS) {
+      kConfirmationsFilename, [=](const bool success, const std::string& json) {
+        if (!success) {
           BLOG(3, "Confirmations state does not exist, creating default state");
 
           is_initialized_ = true;
@@ -83,7 +85,7 @@ void ConfirmationsState::Load() {
 
             BLOG(3, "Failed to parse confirmations state: " << json);
 
-            callback_(FAILED);
+            callback_(/* success */ false);
             return;
           }
 
@@ -92,7 +94,7 @@ void ConfirmationsState::Load() {
           is_initialized_ = true;
         }
 
-        callback_(SUCCESS);
+        callback_(/* success */ true);
       });
 }
 
@@ -105,8 +107,8 @@ void ConfirmationsState::Save() {
 
   const std::string json = ToJson();
   AdsClientHelper::Get()->Save(
-      kConfirmationsFilename, json, [](const Result result) {
-        if (result != SUCCESS) {
+      kConfirmationsFilename, json, [](const bool success) {
+        if (!success) {
           BLOG(0, "Failed to save confirmations state");
           return;
         }
@@ -115,35 +117,29 @@ void ConfirmationsState::Save() {
       });
 }
 
-CatalogIssuersInfo ConfirmationsState::get_catalog_issuers() const {
-  return catalog_issuers_;
-}
-
-void ConfirmationsState::set_catalog_issuers(
-    const CatalogIssuersInfo& catalog_issuers) {
-  DCHECK(is_initialized_);
-  catalog_issuers_ = catalog_issuers;
-}
-
-ConfirmationList ConfirmationsState::get_failed_confirmations() const {
+ConfirmationList ConfirmationsState::GetFailedConfirmations() const {
   DCHECK(is_initialized_);
   return failed_confirmations_;
 }
 
-void ConfirmationsState::append_failed_confirmation(
+void ConfirmationsState::AppendFailedConfirmation(
     const ConfirmationInfo& confirmation) {
+  DCHECK(confirmation.IsValid());
+
   DCHECK(is_initialized_);
   failed_confirmations_.push_back(confirmation);
 }
 
-bool ConfirmationsState::remove_failed_confirmation(
+bool ConfirmationsState::RemoveFailedConfirmation(
     const ConfirmationInfo& confirmation) {
+  DCHECK(confirmation.IsValid());
+
   DCHECK(is_initialized_);
 
   const auto iter =
-      std::find_if(failed_confirmations_.begin(), failed_confirmations_.end(),
+      std::find_if(failed_confirmations_.cbegin(), failed_confirmations_.cend(),
                    [&confirmation](const ConfirmationInfo& info) {
-                     return (info.id == confirmation.id);
+                     return info.id == confirmation.id;
                    });
 
   if (iter == failed_confirmations_.end()) {
@@ -155,66 +151,19 @@ bool ConfirmationsState::remove_failed_confirmation(
   return true;
 }
 
-TransactionList ConfirmationsState::get_transactions() const {
-  DCHECK(is_initialized_);
-  return transactions_;
-}
-
-void ConfirmationsState::add_transaction(const TransactionInfo& transaction) {
-  DCHECK(is_initialized_);
-  transactions_.push_back(transaction);
-}
-
-base::Time ConfirmationsState::get_next_token_redemption_date() const {
-  DCHECK(is_initialized_);
-  return next_token_redemption_date_;
-}
-
-void ConfirmationsState::set_next_token_redemption_date(
-    const base::Time& next_token_redemption_date) {
-  DCHECK(is_initialized_);
-  next_token_redemption_date_ = next_token_redemption_date;
-}
-
-privacy::UnblindedTokens* ConfirmationsState::get_unblinded_tokens() const {
-  DCHECK(is_initialized_);
-  return unblinded_tokens_.get();
-}
-
-privacy::UnblindedTokens* ConfirmationsState::get_unblinded_payment_tokens()
-    const {
-  DCHECK(is_initialized_);
-  return unblinded_payment_tokens_.get();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string ConfirmationsState::ToJson() {
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
-  // Catalog issuers
-  base::Value catalog_issuers_dictionary = catalog_issuers_.ToDictionary();
-  dictionary.SetKey("catalog_issuers", std::move(catalog_issuers_dictionary));
-
-  // Next token redemption date
-  dictionary.SetKey("next_token_redemption_date_in_seconds",
-                    base::Value(std::to_string(static_cast<uint64_t>(
-                        next_token_redemption_date_.ToDoubleT()))));
+  // Issuers
+  base::Value issuers = IssuerListToValue(issuers_);
+  dictionary.SetKey("issuers", std::move(issuers));
 
   // Confirmations
   base::Value failed_confirmations =
       GetFailedConfirmationsAsDictionary(failed_confirmations_);
   dictionary.SetKey("confirmations", std::move(failed_confirmations));
-
-  // Ad rewards
-  if (ad_rewards_) {
-    base::Value ad_rewards = ad_rewards_->GetAsDictionary();
-    dictionary.SetKey("ads_rewards", std::move(ad_rewards));
-  }
-
-  // Transaction history
-  base::Value transactions = GetTransactionsAsDictionary(transactions_);
-  dictionary.SetKey("transaction_history", std::move(transactions));
 
   // Unblinded tokens
   base::Value unblinded_tokens = unblinded_tokens_->GetTokensAsList();
@@ -234,7 +183,7 @@ std::string ConfirmationsState::ToJson() {
 }
 
 bool ConfirmationsState::FromJson(const std::string& json) {
-  base::Optional<base::Value> value = base::JSONReader::Read(json);
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     return false;
   }
@@ -244,24 +193,12 @@ bool ConfirmationsState::FromJson(const std::string& json) {
     return false;
   }
 
-  if (!ParseCatalogIssuersFromDictionary(dictionary)) {
-    BLOG(1, "Failed to parse catalog issuers");
-  }
-
-  if (!ParseNextTokenRedemptionDateFromDictionary(dictionary)) {
-    BLOG(1, "Failed to parse next token redemption date");
+  if (!ParseIssuersFromDictionary(dictionary)) {
+    BLOG(1, "Failed to parse issuers");
   }
 
   if (!ParseFailedConfirmationsFromDictionary(dictionary)) {
     BLOG(1, "Failed to parse failed confirmations");
-  }
-
-  if (!ParseAdRewardsFromDictionary(dictionary)) {
-    BLOG(1, "Failed to parse ad rewards");
-  }
-
-  if (!ParseTransactionsFromDictionary(dictionary)) {
-    BLOG(1, "Failed to parse transactions");
   }
 
   if (!ParseUnblindedTokensFromDictionary(dictionary)) {
@@ -275,21 +212,14 @@ bool ConfirmationsState::FromJson(const std::string& json) {
   return true;
 }
 
-bool ConfirmationsState::ParseCatalogIssuersFromDictionary(
-    base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
+void ConfirmationsState::SetIssuers(const IssuerList& issuers) {
+  DCHECK(is_initialized_);
+  issuers_ = issuers;
+}
 
-  base::Value* catalog_issuers_dictionary =
-      dictionary->FindDictKey("catalog_issuers");
-  if (!catalog_issuers_dictionary) {
-    return false;
-  }
-
-  if (!catalog_issuers_.FromDictionary(catalog_issuers_dictionary)) {
-    return false;
-  }
-
-  return true;
+IssuerList ConfirmationsState::GetIssuers() const {
+  DCHECK(is_initialized_);
+  return issuers_;
 }
 
 base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
@@ -298,41 +228,46 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
 
   base::Value list(base::Value::Type::LIST);
   for (const auto& confirmation : confirmations) {
+    DCHECK(confirmation.IsValid());
+
     base::Value confirmation_dictionary(base::Value::Type::DICTIONARY);
 
-    confirmation_dictionary.SetKey("id", base::Value(confirmation.id));
+    confirmation_dictionary.SetStringKey("id", confirmation.id);
 
-    confirmation_dictionary.SetKey(
-        "creative_instance_id", base::Value(confirmation.creative_instance_id));
+    confirmation_dictionary.SetStringKey("transaction_id",
+                                         confirmation.transaction_id);
 
-    std::string type = std::string(confirmation.type);
-    confirmation_dictionary.SetKey("type", base::Value(type));
+    confirmation_dictionary.SetStringKey("creative_instance_id",
+                                         confirmation.creative_instance_id);
+
+    confirmation_dictionary.SetStringKey("type", confirmation.type.ToString());
+
+    confirmation_dictionary.SetStringKey("ad_type",
+                                         confirmation.ad_type.ToString());
 
     base::Value token_info_dictionary(base::Value::Type::DICTIONARY);
     const std::string unblinded_token_base64 =
         confirmation.unblinded_token.value.encode_base64();
-    token_info_dictionary.SetKey("unblinded_token",
-                                 base::Value(unblinded_token_base64));
+    token_info_dictionary.SetStringKey("unblinded_token",
+                                       unblinded_token_base64);
     const std::string public_key_base64 =
         confirmation.unblinded_token.public_key.encode_base64();
-    token_info_dictionary.SetKey("public_key", base::Value(public_key_base64));
+    token_info_dictionary.SetStringKey("public_key", public_key_base64);
     confirmation_dictionary.SetKey("token_info",
                                    std::move(token_info_dictionary));
 
     const std::string payment_token_base64 =
         confirmation.payment_token.encode_base64();
-    confirmation_dictionary.SetKey("payment_token",
-                                   base::Value(payment_token_base64));
+    confirmation_dictionary.SetStringKey("payment_token", payment_token_base64);
 
     const std::string blinded_payment_token_base64 =
         confirmation.blinded_payment_token.encode_base64();
-    confirmation_dictionary.SetKey("blinded_payment_token",
-                                   base::Value(blinded_payment_token_base64));
+    confirmation_dictionary.SetStringKey("blinded_payment_token",
+                                         blinded_payment_token_base64);
 
-    confirmation_dictionary.SetKey("credential",
-                                   base::Value(confirmation.credential));
+    confirmation_dictionary.SetStringKey("credential", confirmation.credential);
 
-    base::Optional<base::Value> user_data =
+    absl::optional<base::Value> user_data =
         base::JSONReader::Read(confirmation.user_data);
     if (user_data && user_data->is_dict()) {
       base::DictionaryValue* user_data_dictionary = nullptr;
@@ -342,12 +277,11 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
       }
     }
 
-    confirmation_dictionary.SetKey(
+    confirmation_dictionary.SetStringKey(
         "timestamp_in_seconds",
-        base::Value(std::to_string(confirmation.timestamp)));
+        base::NumberToString(confirmation.created_at.ToDoubleT()));
 
-    confirmation_dictionary.SetKey("created",
-                                   base::Value(confirmation.created));
+    confirmation_dictionary.SetBoolKey("created", confirmation.was_created);
 
     list.Append(std::move(confirmation_dictionary));
   }
@@ -391,6 +325,17 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
     }
     confirmation.id = *id;
 
+    // Transaction id
+    const std::string* transaction_id =
+        confirmation_dictionary->FindStringKey("transaction_id");
+    if (!transaction_id) {
+      // Migrate legacy confirmations
+      confirmation.transaction_id =
+          base::GUID::GenerateRandomV4().AsLowercaseString();
+    } else {
+      confirmation.transaction_id = *transaction_id;
+    }
+
     // Creative instance id
     const std::string* creative_instance_id =
         confirmation_dictionary->FindStringKey("creative_instance_id");
@@ -411,6 +356,17 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
     ConfirmationType confirmation_type(*type);
     confirmation.type = confirmation_type;
 
+    // Ad type
+    const std::string* ad_type =
+        confirmation_dictionary->FindStringKey("ad_type");
+    if (ad_type) {
+      confirmation.ad_type = AdType(*ad_type);
+    } else {
+      // Migrate legacy confirmations, this value is not used right now so safe
+      // to set to |kAdNotification|
+      confirmation.ad_type = AdType::kAdNotification;
+    }
+
     // Token info
     const base::Value* token_info_dictionary =
         confirmation_dictionary->FindDictKey("token_info");
@@ -419,6 +375,7 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
       continue;
     }
 
+    // Unblinded token
     const std::string* unblinded_token_base64 =
         token_info_dictionary->FindStringKey("unblinded_token");
     if (!unblinded_token_base64) {
@@ -426,12 +383,14 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
       BLOG(0, "Token info missing unblinded_token");
       continue;
     }
-    confirmation.unblinded_token.value =
-        UnblindedToken::decode_base64(*unblinded_token_base64);
-    if (privacy::ExceptionOccurred()) {
-      BLOG(0, "Invalid unblinded token");
-      NOTREACHED();
-      continue;
+    if (!unblinded_token_base64->empty()) {
+      confirmation.unblinded_token.value =
+          UnblindedToken::decode_base64(*unblinded_token_base64);
+      if (privacy::ExceptionOccurred()) {
+        BLOG(0, "Invalid unblinded token");
+        NOTREACHED();
+        continue;
+      }
     }
 
     const std::string* public_key_base64 =
@@ -441,12 +400,14 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
       BLOG(0, "Token info missing public_key");
       continue;
     }
-    confirmation.unblinded_token.public_key =
-        PublicKey::decode_base64(*public_key_base64);
-    if (privacy::ExceptionOccurred()) {
-      BLOG(0, "Invalid public key");
-      NOTREACHED();
-      continue;
+    if (!public_key_base64->empty()) {
+      confirmation.unblinded_token.public_key =
+          PublicKey::decode_base64(*public_key_base64);
+      if (privacy::ExceptionOccurred()) {
+        BLOG(0, "Invalid public key");
+        NOTREACHED();
+        continue;
+      }
     }
 
     // Payment token
@@ -457,7 +418,14 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
       BLOG(0, "Confirmation missing payment_token");
       continue;
     }
-    confirmation.payment_token = Token::decode_base64(*payment_token_base64);
+    if (!payment_token_base64->empty()) {
+      confirmation.payment_token = Token::decode_base64(*payment_token_base64);
+      if (privacy::ExceptionOccurred()) {
+        BLOG(0, "Invalid payment token");
+        NOTREACHED();
+        continue;
+      }
+    }
 
     // Blinded payment token
     const std::string* blinded_payment_token_base64 =
@@ -467,8 +435,15 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
       BLOG(0, "Confirmation missing blinded_payment_token");
       continue;
     }
-    confirmation.blinded_payment_token =
-        BlindedToken::decode_base64(*blinded_payment_token_base64);
+    if (!blinded_payment_token_base64->empty()) {
+      confirmation.blinded_payment_token =
+          BlindedToken::decode_base64(*blinded_payment_token_base64);
+      if (privacy::ExceptionOccurred()) {
+        BLOG(0, "Invalid blinded payment token");
+        NOTREACHED();
+        continue;
+      }
+    }
 
     // Credential
     const std::string* credential =
@@ -493,22 +468,47 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
     const std::string* timestamp =
         confirmation_dictionary->FindStringKey("timestamp_in_seconds");
     if (timestamp) {
-      int64_t timestamp_as_int64;
-      if (!base::StringToInt64(*timestamp, &timestamp_as_int64)) {
+      double timestamp_as_double;
+      if (!base::StringToDouble(*timestamp, &timestamp_as_double)) {
         continue;
       }
-      confirmation.timestamp = timestamp_as_int64;
+
+      confirmation.created_at = base::Time::FromDoubleT(timestamp_as_double);
     }
 
     // Created
-    base::Optional<bool> created =
+    absl::optional<bool> created =
         confirmation_dictionary->FindBoolKey("created");
-    confirmation.created = created.value_or(true);
+    confirmation.was_created = created.value_or(true);
+
+    if (!confirmation.IsValid()) {
+      BLOG(0, "Invalid confirmation");
+      continue;
+    }
 
     new_failed_confirmations.push_back(confirmation);
   }
 
   *confirmations = new_failed_confirmations;
+
+  return true;
+}
+
+bool ConfirmationsState::ParseIssuersFromDictionary(
+    base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
+  base::Value* value = dictionary->FindListKey("issuers");
+  if (!value || !value->is_list()) {
+    return false;
+  }
+
+  const absl::optional<IssuerList>& issuers = ValueToIssuerList(*value);
+  if (!issuers) {
+    return false;
+  }
+
+  issuers_ = issuers.value();
 
   return true;
 }
@@ -527,156 +527,6 @@ bool ConfirmationsState::ParseFailedConfirmationsFromDictionary(
                                             &failed_confirmations_)) {
     return false;
   }
-
-  return true;
-}
-
-base::Value ConfirmationsState::GetTransactionsAsDictionary(
-    const TransactionList& transactions) const {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-
-  base::Value list(base::Value::Type::LIST);
-  for (const auto& transaction : transactions) {
-    base::Value transaction_dictionary(base::Value::Type::DICTIONARY);
-
-    transaction_dictionary.SetKey(
-        "timestamp_in_seconds",
-        base::Value(std::to_string(transaction.timestamp)));
-
-    transaction_dictionary.SetKey(
-        "estimated_redemption_value",
-        base::Value(transaction.estimated_redemption_value));
-
-    transaction_dictionary.SetKey("confirmation_type",
-                                  base::Value(transaction.confirmation_type));
-
-    list.Append(std::move(transaction_dictionary));
-  }
-
-  dictionary.SetKey("transactions", std::move(list));
-
-  return dictionary;
-}
-
-bool ConfirmationsState::GetTransactionsFromDictionary(
-    base::Value* dictionary,
-    TransactionList* transactions) {
-  DCHECK(dictionary);
-  DCHECK(transactions);
-
-  // Transaction
-  const base::Value* transactions_list =
-      dictionary->FindListKey("transactions");
-  if (!transactions_list) {
-    BLOG(0, "Transactions history dictionary missing transactions");
-    return false;
-  }
-
-  TransactionList new_transactions;
-
-  for (const auto& value : transactions_list->GetList()) {
-    const base::DictionaryValue* transaction_dictionary = nullptr;
-    if (!value.GetAsDictionary(&transaction_dictionary)) {
-      BLOG(0, "Transaction should be a dictionary");
-      continue;
-    }
-
-    TransactionInfo transaction;
-
-    // Timestamp
-    const std::string* timestamp =
-        transaction_dictionary->FindStringKey("timestamp_in_seconds");
-    if (timestamp) {
-      int64_t timestamp_as_int64;
-      if (!base::StringToInt64(*timestamp, &timestamp_as_int64)) {
-        continue;
-      }
-
-      transaction.timestamp = MigrateTimestampToDoubleT(timestamp_as_int64);
-    } else {
-      // timestamp missing, fallback to default
-      transaction.timestamp =
-          static_cast<int64_t>(base::Time::Now().ToDoubleT());
-    }
-
-    // Estimated redemption value
-    const base::Optional<double> estimated_redemption_value =
-        transaction_dictionary->FindDoubleKey("estimated_redemption_value");
-    if (!estimated_redemption_value) {
-      continue;
-    }
-    transaction.estimated_redemption_value = *estimated_redemption_value;
-
-    // Confirmation type (>= 0.63.8)
-    const std::string* confirmation_type =
-        transaction_dictionary->FindStringKey("confirmation_type");
-    if (confirmation_type) {
-      transaction.confirmation_type = *confirmation_type;
-    } else {
-      // confirmation type missing, fallback to default
-      ConfirmationType type(ConfirmationType::kViewed);
-      transaction.confirmation_type = std::string(type);
-    }
-
-    new_transactions.push_back(transaction);
-  }
-
-  *transactions = new_transactions;
-
-  return true;
-}
-
-bool ConfirmationsState::ParseTransactionsFromDictionary(
-    base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
-  base::Value* transactions_dictionary =
-      dictionary->FindDictKey("transaction_history");
-  if (!transactions_dictionary) {
-    return false;
-  }
-
-  if (!GetTransactionsFromDictionary(transactions_dictionary, &transactions_)) {
-    return false;
-  }
-
-  return true;
-}
-
-bool ConfirmationsState::ParseNextTokenRedemptionDateFromDictionary(
-    base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
-  const std::string* value =
-      dictionary->FindStringKey("next_token_redemption_date_in_seconds");
-  if (!value) {
-    return false;
-  }
-
-  uint64_t value_as_uint64;
-  if (!base::StringToUint64(*value, &value_as_uint64)) {
-    return false;
-  }
-
-  next_token_redemption_date_ = base::Time::FromDoubleT(value_as_uint64);
-
-  return true;
-}
-
-bool ConfirmationsState::ParseAdRewardsFromDictionary(
-    base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
-  if (!ad_rewards_) {
-    return false;
-  }
-
-  base::Value* ad_rewards_dictionary = dictionary->FindDictKey("ads_rewards");
-  if (!ad_rewards_dictionary) {
-    return false;
-  }
-
-  ad_rewards_->SetFromDictionary(ad_rewards_dictionary);
 
   return true;
 }

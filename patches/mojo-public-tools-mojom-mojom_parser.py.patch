@@ -1,8 +1,8 @@
 diff --git a/mojo/public/tools/mojom/mojom_parser.py b/mojo/public/tools/mojom/mojom_parser.py
-index 417accf2352e371d62f2e6c588fd6216a3ea9ab3..dcc2cf7ef795cfc16438cc5a61c0c4775d043893 100755
+index a4ec886ee8fb1895886799110a0df989eb14eeb9..d045c92baf7ec1b8c7e15288d456bb54ad716e2d 100755
 --- a/mojo/public/tools/mojom/mojom_parser.py
 +++ b/mojo/public/tools/mojom/mojom_parser.py
-@@ -176,6 +176,7 @@ def _ParseAstHelper(args):
+@@ -186,6 +186,7 @@ def _ParseAstHelper(mojom_abspath, enabled_features):
    with codecs.open(mojom_abspath, encoding='utf-8') as f:
      ast = parser.Parse(f.read(), mojom_abspath)
      conditional_features.RemoveDisabledDefinitions(ast, enabled_features)

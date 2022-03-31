@@ -10,6 +10,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -30,6 +31,7 @@
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "url/origin.h"
 
 using brave_shields::ControlType;
 
@@ -55,7 +57,7 @@ const char kGetImageDataScript[] =
     "domAutomationController.send(ctx.getImageData(0, 0, canvas.width, "
     "canvas.height).data.reduce(adder));";
 
-const int kExpectedImageDataHashFarblingBalanced = 204;
+const int kExpectedImageDataHashFarblingBalanced = 172;
 const int kExpectedImageDataHashFarblingOff = 0;
 const int kExpectedImageDataHashFarblingMaximum =
     kExpectedImageDataHashFarblingBalanced;
@@ -66,18 +68,22 @@ const char kEmptyCookie[] = "";
 
 const char kTestCookie[] = COOKIE_STR;
 
-const char kCookieScript[] =
-    "document.cookie = '" COOKIE_STR "'"
-    "; document.cookie;";
+const char kCookieScript[] = "document.cookie = '" COOKIE_STR
+                             "'"
+                             "; document.cookie;";
 
-const char kCookie3PScript[] =
-    "document.cookie = '" COOKIE_STR ";SameSite=None;Secure'"
-    "; document.cookie;";
+const char kCookie3PScript[] = "document.cookie = '" COOKIE_STR
+                               ";SameSite=None;Secure'"
+                               "; document.cookie;";
 
 const char kReferrerScript[] =
     "domAutomationController.send(document.referrer);";
 
 const char kTitleScript[] = "domAutomationController.send(document.title);";
+
+GURL GetOriginURL(const GURL& url) {
+  return url::Origin::Create(url).GetURL();
+}
 
 }  // namespace
 
@@ -101,6 +107,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server_.ServeFilesFromDirectory(test_data_dir);
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
     content::SetupCrossSiteRedirector(&https_server_);
@@ -110,32 +117,23 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
     ASSERT_TRUE(https_server_.Start());
 
-    url_ = https_server_.GetURL("a.com", "/iframe.html");
-    cross_site_url_ = https_server_.GetURL("b.com", "/simple.html");
-    cross_site_image_url_ =
-        https_server_.GetURL("b.com", "/logo.png");
-    link_url_ = https_server_.GetURL("a.com", "/simple_link.html");
-    redirect_to_cross_site_url_ = https_server_.GetURL(
-        "a.com", "/cross-site/b.com/simple.html");
+    url_ = https_server_.GetURL("a.test", "/iframe.html");
+    cross_site_url_ = https_server_.GetURL("b.test", "/simple.html");
+    cross_site_image_url_ = https_server_.GetURL("b.test", "/logo.png");
+    link_url_ = https_server_.GetURL("a.test", "/simple_link.html");
+    redirect_to_cross_site_url_ =
+        https_server_.GetURL("a.test", "/cross-site/b.test/simple.html");
     redirect_to_cross_site_image_url_ =
-        https_server_.GetURL("a.com", "/cross-site/b.com/logo.png");
-    same_site_url_ =
-        https_server_.GetURL("sub.a.com", "/simple.html");
-    same_origin_url_ = https_server_.GetURL("a.com", "/simple.html");
-    same_origin_image_url_ =
-        https_server_.GetURL("a.com", "/logo.png");
-    top_level_page_url_ = https_server_.GetURL("a.com", "/");
+        https_server_.GetURL("a.test", "/cross-site/b.test/logo.png");
+    same_site_url_ = https_server_.GetURL("sub.a.test", "/simple.html");
+    same_origin_url_ = https_server_.GetURL("a.test", "/simple.html");
+    same_origin_image_url_ = https_server_.GetURL("a.test", "/logo.png");
+    top_level_page_url_ = https_server_.GetURL("a.test", "/");
     top_level_page_pattern_ =
-        ContentSettingsPattern::FromString("https://a.com/*");
-    iframe_pattern_ = ContentSettingsPattern::FromString("https://b.com/*");
+        ContentSettingsPattern::FromString("https://a.test/*");
+    iframe_pattern_ = ContentSettingsPattern::FromString("https://b.test/*");
     first_party_pattern_ =
         ContentSettingsPattern::FromString("https://firstParty/*");
-  }
-
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    InProcessBrowserTest::SetUpCommandLine(command_line);
-    // This is needed to load pages from "domain.com" without an interstitial.
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
   }
 
   void SaveReferrer(const net::test_server::HttpRequest& request) {
@@ -246,24 +244,22 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   }
 
   void BlockCookies() {
-    brave_shields::SetCookieControlType(
-        content_settings(), ControlType::BLOCK, top_level_page_url());
+    brave_shields::SetCookieControlType(content_settings(), ControlType::BLOCK,
+                                        top_level_page_url());
   }
 
   void AllowCookies() {
-    brave_shields::SetCookieControlType(
-        content_settings(), ControlType::ALLOW, top_level_page_url());
+    brave_shields::SetCookieControlType(content_settings(), ControlType::ALLOW,
+                                        top_level_page_url());
   }
 
   void ShieldsDown() {
-    brave_shields::SetBraveShieldsEnabled(content_settings(),
-                                          false,
+    brave_shields::SetBraveShieldsEnabled(content_settings(), false,
                                           top_level_page_url());
   }
 
   void ShieldsUp() {
-    brave_shields::SetBraveShieldsEnabled(content_settings(),
-                                          true,
+    brave_shields::SetBraveShieldsEnabled(content_settings(), true,
                                           top_level_page_url());
   }
 
@@ -284,9 +280,8 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   }
 
   void SetFingerprintingDefault() {
-    brave_shields::SetFingerprintingControlType(content_settings(),
-                                                ControlType::DEFAULT,
-                                                top_level_page_url());
+    brave_shields::SetFingerprintingControlType(
+        content_settings(), ControlType::DEFAULT, top_level_page_url());
   }
 
   void BlockScripts() {
@@ -320,7 +315,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     const std::string link_query =
         referrer_policy.empty() ? "" : "?policy=" + referrer_policy;
     GURL link(link_url().spec() + link_query);
-    ui_test_utils::NavigateToURL(browser(), link);
+    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), link));
 
     std::string clickLink =
         "domAutomationController.send(clickLink('" + url.spec() + "'));";
@@ -340,8 +335,8 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   }
 
   void NavigateToPageWithIframe() {
-    ui_test_utils::NavigateToURL(browser(), url());
-    ASSERT_EQ(contents()->GetAllFrames().size(), 2u)
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url()));
+    ASSERT_EQ(CollectAllRenderFrameHosts(contents()).size(), 2u)
         << "Two frames (main + iframe) should be created.";
     content::RenderFrameHost* main_frame = contents()->GetMainFrame();
     EXPECT_EQ(main_frame->GetLastCommittedURL(), url());
@@ -349,8 +344,8 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
   void NavigateToURLUntilLoadStop(const std::string& origin,
                                   const std::string& path) {
-    ui_test_utils::NavigateToURL(browser(),
-                                 https_server().GetURL(origin, path));
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(
+        browser(), https_server().GetURL(origin, path)));
   }
 
   void NavigateIframe(const GURL& url) {
@@ -480,9 +475,16 @@ class BraveContentSettingsAgentImplV2BrowserTest
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
+// This test currently fails on Linux platforms due to an upstream bug when
+// SwANGLE is used, see upstream bug at http://crbug.com/1192632.
+#if BUILDFLAG(IS_LINUX)
+#define MAYBE_WebGLReadPixels DISABLED_WebGLReadPixels
+#else
+#define MAYBE_WebGLReadPixels WebGLReadPixels
+#endif
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
-                       WebGLReadPixels) {
-  std::string origin = "a.com";
+                       MAYBE_WebGLReadPixels) {
+  std::string origin = "a.test";
   std::string path = "/webgl/readpixels.html";
 
   // Farbling level: maximum
@@ -622,7 +624,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(
       ExecScriptGetStr(create_image_script(cross_site_image_url()), contents()),
       cross_site_image_url().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_image_url()), url().GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
+            GetOriginURL(url()).spec());
 
   // Same-origin iframe navigations get the page URL as referrer.
   NavigateIframe(same_origin_url());
@@ -632,8 +635,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   // Cross-site iframe navigations should follow the default referrer policy.
   NavigateIframe(cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
-            url().GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()), url().GetOrigin().spec());
+            GetOriginURL(url()).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()).spec());
 
   // Same-origin navigations get the original page origin as the referrer.
   NavigateDirectlyToPageWithLink(same_origin_url());
@@ -644,14 +647,14 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   // referrer.
   NavigateDirectlyToPageWithLink(same_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            link_url().GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(same_site_url()), link_url().GetOrigin().spec());
+            GetOriginURL(link_url()).spec());
+  EXPECT_EQ(GetLastReferrer(same_site_url()), GetOriginURL(link_url()).spec());
 
   // Cross-site navigations should follow the default referrer policy.
   NavigateDirectlyToPageWithLink(cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            link_url().GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()), link_url().GetOrigin().spec());
+            GetOriginURL(link_url()).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(link_url()).spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -673,22 +676,22 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
       ExecScriptGetStr(create_image_script(redirect_to_cross_site_image_url()),
                        contents()),
       redirect_to_cross_site_image_url().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_image_url()), url().GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
+            GetOriginURL(url()).spec());
 
   // Cross-site iframe navigations should follow the default referrer policy.
   NavigateCrossSiteRedirectIframe();
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
-            url().GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()), url().GetOrigin().spec());
+            GetOriginURL(url()).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()).spec());
 
   // Cross-site navigations  should follow the default referrer policy.
   RedirectToPageWithLink(redirect_to_cross_site_url(), cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            redirect_to_cross_site_url().GetOrigin().spec());
+            GetOriginURL(redirect_to_cross_site_url()).spec());
   EXPECT_EQ(GetLastReferrer(cross_site_url()),
-            redirect_to_cross_site_url().GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()),
-            link_url().spec());
+            GetOriginURL(redirect_to_cross_site_url()).spec());
+  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()), link_url().spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -711,7 +714,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(
       ExecScriptGetStr(create_image_script(cross_site_image_url()), contents()),
       cross_site_image_url().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_image_url()), url().GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
+            GetOriginURL(url()).spec());
 
   // Same-origin iframe navigations get the page URL as referrer.
   NavigateIframe(same_origin_url());
@@ -721,8 +725,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   // Cross-site iframe navigations should follow the default referrer policy.
   NavigateIframe(cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
-            url().GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()), url().GetOrigin().spec());
+            GetOriginURL(url()).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()).spec());
 
   // Same-origin navigations get the original page URL as the referrer.
   NavigateDirectlyToPageWithLink(same_origin_url());
@@ -731,7 +735,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
   // Same-site but cross-origin navigations get the original page origin as the
   // referrer.
-  const std::string expected_referrer = link_url().GetOrigin().spec();
+  const std::string expected_referrer = GetOriginURL(link_url()).spec();
   NavigateDirectlyToPageWithLink(same_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), expected_referrer);
   EXPECT_EQ(GetLastReferrer(same_site_url()), expected_referrer);
@@ -777,23 +781,23 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
       ExecScriptGetStr(create_image_script(redirect_to_cross_site_image_url()),
                        contents()),
       redirect_to_cross_site_image_url().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_image_url()), url().GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
+            GetOriginURL(url()).spec());
 
   // Cross-site iframe navigations should follow the default referrer policy.
   NavigateCrossSiteRedirectIframe();
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
-            url().GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()), url().GetOrigin().spec());
+            GetOriginURL(url()).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()).spec());
 
   // Cross-site navigations should follow the default referrer policy.
   RedirectToPageWithLink(redirect_to_cross_site_url(), cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            redirect_to_cross_site_url().GetOrigin().spec());
+            GetOriginURL(redirect_to_cross_site_url()).spec());
   EXPECT_EQ(GetLastReferrer(cross_site_url()),
-            redirect_to_cross_site_url().GetOrigin().spec());
+            GetOriginURL(redirect_to_cross_site_url()).spec());
   // Intermidiate same-origin navigation gets full referrer.
-  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()),
-            link_url().spec());
+  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()), link_url().spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -809,27 +813,28 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(
       ExecScriptGetStr(create_image_script(cross_site_image_url()), contents()),
       cross_site_image_url().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_image_url()), url().GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
+            GetOriginURL(url()).spec());
 
   // A cross-site iframe navigation gets the origin of the first one as
   // referrer.
   NavigateIframe(cross_site_url());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()), url().GetOrigin());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()));
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
-            url().GetOrigin().spec());
+            GetOriginURL(url()).spec());
 
   // Same-site but cross-origin navigations get the original page origin as the
   // referrer.
   NavigateDirectlyToPageWithLink(same_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            link_url().GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(same_site_url()), link_url().GetOrigin().spec());
+            GetOriginURL(link_url()).spec());
+  EXPECT_EQ(GetLastReferrer(same_site_url()), GetOriginURL(link_url()).spec());
 
   // Cross-site navigations get origin as a referrer.
   NavigateDirectlyToPageWithLink(cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            url().GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()), url().GetOrigin().spec());
+            GetOriginURL(url()).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()).spec());
 
   // Check that a less restrictive policy is respected.
   GURL link = NavigateDirectlyToPageWithLink(cross_site_url(),
@@ -858,24 +863,24 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   // Check that "strict-origin" policy is respected.
   link = NavigateDirectlyToPageWithLink(same_site_url(), "strict-origin");
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            link.GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(same_site_url()), link.GetOrigin().spec());
+            GetOriginURL(link).spec());
+  EXPECT_EQ(GetLastReferrer(same_site_url()), GetOriginURL(link).spec());
 
   NavigateDirectlyToPageWithLink(same_origin_url(), "strict-origin");
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            link.GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(same_origin_url()), link.GetOrigin().spec());
+            GetOriginURL(link).spec());
+  EXPECT_EQ(GetLastReferrer(same_origin_url()), GetOriginURL(link).spec());
 
   NavigateDirectlyToPageWithLink(cross_site_url(), "strict-origin");
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            link.GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()), link.GetOrigin().spec());
+            GetOriginURL(link).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(link).spec());
 
   // Check cross-site navigations with redirect.
   RedirectToPageWithLink(redirect_to_cross_site_url(), cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            link.GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()), link.GetOrigin().spec());
+            GetOriginURL(link).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(link).spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -892,20 +897,21 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(
       ExecScriptGetStr(create_image_script(cross_site_image_url()), contents()),
       cross_site_image_url().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_image_url()), url().GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
+            GetOriginURL(url()).spec());
 
   // A cross-origin iframe navigation gets the origin of the first one as
   // referrer.
   NavigateIframe(cross_site_url());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()), url().GetOrigin());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()));
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
-            url().GetOrigin().spec());
+            GetOriginURL(url()).spec());
 
   // Cross-site navigations get origin as a referrer.
   NavigateDirectlyToPageWithLink(cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            url().GetOrigin().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()), url().GetOrigin().spec());
+            GetOriginURL(url()).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()).spec());
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -1120,28 +1126,28 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
   // Throws when used on a data url.
   const GURL data_url("data:text/html,<title>Data URL</title>");
-  ui_test_utils::NavigateToURL(browser(), data_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), data_url));
   CheckLocalStorageThrows(contents());
 
   // Throws in a sandboxed iframe.
   const GURL sandboxed(
-      https_server().GetURL("a.com", "/sandboxed_iframe.html"));
-  ui_test_utils::NavigateToURL(browser(), sandboxed);
+      https_server().GetURL("a.test", "/sandboxed_iframe.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), sandboxed));
   CheckLocalStorageThrows(child_frame());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, BlockScripts) {
   BlockScripts();
 
-  NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html");
-  EXPECT_EQ(contents()->GetAllFrames().size(), 1u);
+  NavigateToURLUntilLoadStop("a.test", "/load_js_from_origins.html");
+  EXPECT_EQ(CollectAllRenderFrameHosts(contents()).size(), 1u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, AllowScripts) {
   AllowScripts();
 
-  NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html");
-  EXPECT_EQ(contents()->GetAllFrames().size(), 4u);
+  NavigateToURLUntilLoadStop("a.test", "/load_js_from_origins.html");
+  EXPECT_EQ(CollectAllRenderFrameHosts(contents()).size(), 4u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -1149,19 +1155,19 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   BlockScripts();
   ShieldsDown();
 
-  NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html");
-  EXPECT_EQ(contents()->GetAllFrames().size(), 4u);
+  NavigateToURLUntilLoadStop("a.test", "/load_js_from_origins.html");
+  EXPECT_EQ(CollectAllRenderFrameHosts(contents()).size(), 4u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        BlockScriptsShieldsDownInOtherTab) {
-  // Turn off shields in a.com.
+  // Turn off shields in a.test.
   ShieldsDown();
-  // Block scripts in b.com.
+  // Block scripts in b.test.
   content_settings()->SetContentSettingCustomScope(
       iframe_pattern(), ContentSettingsPattern::Wildcard(),
       ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
 
-  NavigateToURLUntilLoadStop("b.com", "/load_js_from_origins.html");
-  EXPECT_EQ(contents()->GetAllFrames().size(), 1u);
+  NavigateToURLUntilLoadStop("b.test", "/load_js_from_origins.html");
+  EXPECT_EQ(CollectAllRenderFrameHosts(contents()).size(), 1u);
 }

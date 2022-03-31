@@ -11,6 +11,6 @@
 
 #define IncognitoMenuView BraveIncognitoMenuView
 #define ProfileMenuView BraveProfileMenuView
-#include "../../../../../../../chrome/browser/ui/views/profiles/profile_menu_view_base.cc"  // NOLINT
+#include "src/chrome/browser/ui/views/profiles/profile_menu_view_base.cc"
 #undef IncognitoMenuView
 #undef ProfileMenuView

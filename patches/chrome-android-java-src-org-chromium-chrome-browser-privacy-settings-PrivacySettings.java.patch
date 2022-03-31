@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-index f337e39e4addeaf7e75f1f5cdcccb310bf1d7baa..6da893faea1a5746ef83d61679b858728ee96da6 100644
+index c0ae26c3261180258f6520843a9ba01cbdc2a33b..30137f15c6a439c20304d811a2f920c7ff6850a7 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-@@ -47,7 +47,7 @@ import org.chromium.ui.text.SpanApplier;
+@@ -51,7 +51,7 @@ import org.chromium.ui.text.SpanApplier;
   * Fragment to keep track of the all the privacy related preferences.
   */
  public class PrivacySettings
 -        extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 +        extends org.chromium.chrome.browser.settings.BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
      private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
-     private static final String PREF_NETWORK_PREDICTIONS = "preload_pages";
-     private static final String PREF_SECURE_DNS = "secure_dns";
-@@ -242,6 +242,7 @@ public class PrivacySettings
+     private static final String PREF_PRELOAD_PAGES = "preload_pages";
+     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
+@@ -266,6 +266,7 @@ public class PrivacySettings
      @Override
      public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
          menu.clear();
@@ -19,11 +19,12 @@ index f337e39e4addeaf7e75f1f5cdcccb310bf1d7baa..6da893faea1a5746ef83d61679b85872
          MenuItem help =
                  menu.add(Menu.NONE, R.id.menu_id_targeted_help, Menu.NONE, R.string.menu_help);
          help.setIcon(VectorDrawableCompat.create(
-@@ -256,6 +257,6 @@ public class PrivacySettings
+@@ -280,7 +281,7 @@ public class PrivacySettings
                      null);
              return true;
          }
 -        return false;
 +        return super.onOptionsItemSelected(item);
      }
- }
+ 
+     public void setDialogContainer(ViewGroup dialogContainer) {

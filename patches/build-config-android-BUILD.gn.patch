@@ -1,12 +1,12 @@
 diff --git a/build/config/android/BUILD.gn b/build/config/android/BUILD.gn
-index 14151e4306f9e42e3986130937f5aaa281fc29bd..80d7fca0bcc401d1934f13a2b79f4ebcca2e16be 100644
+index 4fc5565e27a596fe4aa1a093cfc0567fbd24b2a0..893b3ed9478b34de60352070259642bae938973b 100644
 --- a/build/config/android/BUILD.gn
 +++ b/build/config/android/BUILD.gn
-@@ -50,6 +50,7 @@ config("compiler") {
+@@ -46,6 +46,7 @@ config("compiler") {
      # http://crbug.com/448386
      "-Wl,--exclude-libs=libvpx_assembly_arm.a",
    ]
 +  ldflags += ["-Wl,--allow-multiple-definition"] # Resolve conflict between libgcc++ and rustup symbols (e.g. __divdi3)
  
-   # TODO(crbug.com/1184398): Move to compiler-rt when we are ready.
-   ldflags += [ "--rtlib=libgcc" ]
+   if (current_cpu == "arm64") {
+     if (arm_control_flow_integrity == "standard") {

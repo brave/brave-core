@@ -2,83 +2,83 @@ import { PriceDataObjectType } from '../../constants/types'
 
 export const PriceHistoryMockData: PriceDataObjectType[] = [
   {
-    date: '1:00am',
-    close: 125
+    date: 1624896280042,
+    close: 22974.27
   },
   {
-    date: '2:00am',
-    close: 185
+    date: 1624896636796,
+    close: 24414.64
   },
   {
-    date: '3:00am',
-    close: 149
+    date: 1624896896602,
+    close: 23724.18
   },
   {
-    date: '4:00am',
-    close: 211
+    date: 1624897229773,
+    close: 26467.57
   },
   {
-    date: '5:00am',
-    close: 159
+    date: 1624897481185,
+    close: 26112.32
   },
   {
-    date: '6:00am',
-    close: 300
+    date: 1624897855568,
+    close: 30587.75
   },
   {
-    date: '7:00am',
-    close: 246
+    date: 1624898094238,
+    close: 37837.55
   },
   {
-    date: '8:00am',
-    close: 369
+    date: 1624898397798,
+    close: 36475.14
   },
   {
-    date: '9:00am',
-    close: 211
+    date: 1624898699553,
+    close: 39718.63
   },
   {
-    date: '10:00am',
-    close: 312
+    date: 1624899026690,
+    close: 38761.84
   },
   {
-    date: '11:00am',
-    close: 115
+    date: 1624899281816,
+    close: 40027.72
   },
   {
-    date: '12:00pm',
-    close: 185
+    date: 1624899635355,
+    close: 41354.02
   },
   {
-    date: '1:00pm',
-    close: 300
+    date: 1624899893561,
+    close: 40987.67
   },
   {
-    date: '2:00pm',
-    close: 316
+    date: 1624900232081,
+    close: 42827.44
   },
   {
-    date: '3:00pm',
-    close: 384
+    date: 1624900497140,
+    close: 43287.28
   },
   {
-    date: '4:00pm',
-    close: 357
+    date: 1624900797788,
+    close: 42687.67
   },
   {
-    date: '5:00pm',
-    close: 364
+    date: 1624901100928,
+    close: 44618.49
   },
   {
-    date: '6:00pm',
-    close: 428
+    date: 1624901387791,
+    close: 45527.92
   },
   {
-    date: '7:00pm',
-    close: 386
+    date: 1624901999205,
+    close: 45898.26
   },
   {
-    date: '8:00pm',
-    close: 428
+    date: 1624902278495,
+    close: 46414.67
   }
 ]

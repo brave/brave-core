@@ -6,5 +6,5 @@
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h"
 
 #define AvatarToolbarButtonDelegate BraveAvatarToolbarButtonDelegate
-#include "../../../../../../../chrome/browser/ui/views/profiles/avatar_toolbar_button.cc"
+#include "src/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc"
 #undef AvatarToolbarButtonDelegate

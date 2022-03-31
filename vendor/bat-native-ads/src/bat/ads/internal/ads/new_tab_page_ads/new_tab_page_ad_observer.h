@@ -8,8 +8,8 @@
 
 #include <string>
 
-#include "base/observer_list.h"
-#include "bat/ads/mojom.h"
+#include "base/observer_list_types.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -17,6 +17,9 @@ struct NewTabPageAdInfo;
 
 class NewTabPageAdObserver : public base::CheckedObserver {
  public:
+  // Invoked when a new tab page ad is served
+  virtual void OnNewTabPageAdServed(const NewTabPageAdInfo& ad) {}
+
   // Invoked when a new tab page ad is viewed
   virtual void OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {}
 
@@ -27,7 +30,7 @@ class NewTabPageAdObserver : public base::CheckedObserver {
   virtual void OnNewTabPageAdEventFailed(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const NewTabPageAdEventType event_type) {}
+      const mojom::NewTabPageAdEventType event_type) {}
 
  protected:
   ~NewTabPageAdObserver() override = default;

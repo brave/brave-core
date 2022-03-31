@@ -3,8 +3,8 @@ static_library("ethash") {
   configs += [ "//build/config/compiler:no_chromium_code" ]
   include_dirs = [ "src/include" ]
   sources = [
-    "keccak_override.c",
     "src/include/ethash/hash_types.h",
     "src/include/ethash/keccak.h",
+    "src/lib/keccak/keccak.c",
   ]
 }

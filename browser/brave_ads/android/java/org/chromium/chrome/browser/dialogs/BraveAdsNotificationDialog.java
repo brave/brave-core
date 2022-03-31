@@ -6,6 +6,7 @@
 
 package org.chromium.chrome.browser.dialogs;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -29,19 +30,93 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 
 public class BraveAdsNotificationDialog {
+    private static AlertDialog mAdsDialog;
+    private static String mNotificationId;
 
-    static AlertDialog mAdsDialog;
-    static String mNotificationId;
-    static final int MIN_DISTANCE_FOR_DISMISS = 20;
-    static final int MAX_DISTANCE_FOR_TAP = 5;
+    private static class AdsNotificationTouchListener implements View.OnTouchListener {
+        private static final int MIN_DISTANCE_FOR_DISMISS = 40;
+        private static final int MAX_DISTANCE_FOR_TAP = 5;
 
-    // Track when touch events on the dialog are down and when they are up
-    static float mYDown;
+        private Context mContext;
+        private final String mOrigin;
+        private WindowManager.LayoutParams mLayoutParams;
+        private ValueAnimator mAnimator;
+        // Track when touch events on the dialog are down and when they are up
+        private int mXDown;
+        private int mWindowInitialPos;
+
+        public AdsNotificationTouchListener(Context context, final String origin) {
+            mContext = context;
+            mOrigin = origin;
+            mLayoutParams = mAdsDialog.getWindow().getAttributes();
+            mWindowInitialPos = mLayoutParams.x;
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            float deltaXDp;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    if (mAnimator != null) mAnimator.cancel();
+                    mXDown = mLayoutParams.x - (int) event.getRawX();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    updateWindowPosition((int) event.getRawX() + mXDown);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    v.performClick();
+                    if (mXDown != 0) {
+                        deltaXDp = pxToDp(event.getRawX() + mXDown - mWindowInitialPos,
+                                mContext.getResources().getDisplayMetrics());
+                    } else {
+                        return false;
+                    }
+                    if (Math.abs(deltaXDp) > MIN_DISTANCE_FOR_DISMISS) {
+                        mAdsDialog.dismiss();
+                        mAdsDialog = null;
+                        BraveAdsNativeHelper.nativeOnCloseAdNotification(
+                                Profile.getLastUsedRegularProfile(), mNotificationId, true);
+                        mNotificationId = null;
+                    } else if (Math.abs(deltaXDp) <= MAX_DISTANCE_FOR_TAP) {
+                        adsDialogTapped(mOrigin);
+                    } else {
+                        translateWindowToOrigin();
+                    }
+                    break;
+            }
+            return true;
+        }
+
+        private void updateWindowPosition(int x) {
+            mLayoutParams.x = x;
+            if (mAdsDialog != null) mAdsDialog.getWindow().setAttributes(mLayoutParams);
+        }
+
+        private void translateWindowToOrigin() {
+            mAnimator = ValueAnimator.ofInt(mLayoutParams.x, mWindowInitialPos);
+            mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    updateWindowPosition((int) valueAnimator.getAnimatedValue());
+                }
+            });
+            mAnimator.start();
+        }
+
+        /**
+         * Converts a px value to a dp value.
+         */
+        private int pxToDp(float value, DisplayMetrics metrics) {
+            return Math.round(
+                    value / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
+        }
+    };
 
     public static void showAdNotification(Context context, final String notificationId,
             final String origin, final String title, final String body) {
@@ -57,7 +132,11 @@ public class BraveAdsNotificationDialog {
         mNotificationId = notificationId;
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        b.setView(inflater.inflate(R.layout.brave_ads_custom_notification, null));
+        if (shouldUseDarkModeTheme()) {
+            b.setView(inflater.inflate(R.layout.brave_ads_custom_notification_dark, null));
+        } else {
+            b.setView(inflater.inflate(R.layout.brave_ads_custom_notification, null));
+        }
         mAdsDialog = b.create();
 
         if (mNotificationId != null) {
@@ -72,7 +151,8 @@ public class BraveAdsNotificationDialog {
 
         wlp.gravity = Gravity.TOP;
         wlp.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 
         mAdsDialog.setCanceledOnTouchOutside(false);
         mAdsDialog.setCancelable(false);
@@ -87,48 +167,7 @@ public class BraveAdsNotificationDialog {
 
         mNotificationId = notificationId;
         mAdsDialog.findViewById(R.id.brave_ads_custom_notification_popup)
-                .setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        float deltaY;
-                        float deltaYDp;
-                        float y;
-                        switch (event.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                mYDown = v.getY() - event.getRawY();
-                                break;
-                            case MotionEvent.ACTION_MOVE:
-                                deltaY = event.getRawY() + mYDown;
-                                if (deltaY > 0) {
-                                    deltaY = 0;
-                                }
-                                v.animate().y(deltaY).setDuration(0).start();
-                                break;
-                            case MotionEvent.ACTION_UP:
-                                if (mYDown != 0.0f) {
-                                    deltaYDp = pxToDp(event.getRawY() + mYDown,
-                                            context.getResources().getDisplayMetrics());
-                                } else {
-                                    return false;
-                                }
-                                if (deltaYDp < -1 * MIN_DISTANCE_FOR_DISMISS) {
-                                    mAdsDialog.dismiss();
-                                    mAdsDialog = null;
-                                    BraveAdsNativeHelper.nativeOnCloseAdNotification(
-                                            Profile.getLastUsedRegularProfile(), mNotificationId,
-                                            false);
-                                    mNotificationId = null;
-                                } else if (deltaYDp <= MAX_DISTANCE_FOR_TAP
-                                        && deltaYDp >= (-1 * MAX_DISTANCE_FOR_TAP)) {
-                                    adsDialogTapped(origin);
-                                } else {
-                                    v.animate().translationY(0);
-                                }
-                                break;
-                        }
-                        return true;
-                    }
-                });
+                .setOnTouchListener(new AdsNotificationTouchListener(context, origin));
     }
 
     private static void adsDialogTapped(final String origin) {
@@ -150,19 +189,18 @@ public class BraveAdsNotificationDialog {
     }
 
     @CalledByNative
-    public static void showAdNotification(final String notificationId,
-            final String origin, final String title, final String body) {
+    public static void showAdNotification(final String notificationId, final String origin,
+            final String title, final String body) {
         Activity activity = ApplicationStatus.getLastTrackedFocusedActivity();
         assert activity != null;
         // We want to show ads only when activity is in started or resumed
         // state
         int state = ApplicationStatus.getStateForActivity(activity);
-        if (activity == null || (state != ActivityState.STARTED &&
-                    state != ActivityState.RESUMED))
+        if (activity == null || (state != ActivityState.STARTED && state != ActivityState.RESUMED))
             return;
 
-        BraveAdsNotificationDialog.showAdNotification(activity, notificationId,
-            origin, title, body);
+        BraveAdsNotificationDialog.showAdNotification(
+                activity, notificationId, origin, title, body);
     }
 
     @CalledByNative
@@ -170,19 +208,16 @@ public class BraveAdsNotificationDialog {
         try {
             if (mNotificationId != null && mNotificationId.equals(notificationId) && mAdsDialog != null) {
                 mAdsDialog.dismiss();
+                mAdsDialog = null;
                 BraveAdsNativeHelper.nativeOnCloseAdNotification(
                         Profile.getLastUsedRegularProfile(), mNotificationId, false);
-                mAdsDialog = null;
             }
         } catch (IllegalArgumentException e) {
             mAdsDialog = null;
         }
     }
 
-    /**
-     * Converts a px value to a dp value.
-     */
-    private static int pxToDp(float value, DisplayMetrics metrics) {
-        return Math.round(value / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
+    private static boolean shouldUseDarkModeTheme() {
+        return GlobalNightModeStateProviderHolder.getInstance().isInNightMode();
     }
 }

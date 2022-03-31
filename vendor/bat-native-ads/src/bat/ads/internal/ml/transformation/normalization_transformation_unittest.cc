@@ -10,7 +10,6 @@
 
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
-#include "bat/ads/internal/ml/data/vector_data_aliases.h"
 #include "bat/ads/internal/ml/ml_aliases.h"
 #include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
@@ -45,15 +44,15 @@ TEST_F(BatAdsNormalizationTest, NormalizationTest) {
 
   data = normalization.Apply(data);
 
-  ASSERT_EQ(DataType::VECTOR_DATA, data->GetType());
+  ASSERT_EQ(DataType::kVector, data->GetType());
 
   const VectorData* norm_data = static_cast<VectorData*>(data.release());
 
   std::vector<double> components;
   double s = 0.0;
-  for (SparseVectorElement const& x : norm_data->GetRawData()) {
-    components.push_back(x.second);
-    s += x.second * x.second;
+  for (double x : norm_data->GetValuesForTesting()) {
+    components.push_back(x);
+    s += x * x;
   }
 
   // Assert
@@ -89,14 +88,14 @@ TEST_F(BatAdsNormalizationTest, ChainingTest) {
     data = chain[i]->Apply(data);
   }
 
-  ASSERT_EQ(DataType::VECTOR_DATA, data->GetType());
+  ASSERT_EQ(DataType::kVector, data->GetType());
   const VectorData* vect_data = static_cast<VectorData*>(data.get());
 
   // Assert
-  EXPECT_EQ(kDefaultBucketCount, vect_data->GetDimensionCount());
+  EXPECT_EQ(kDefaultBucketCount, vect_data->GetDimensionCountForTesting());
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
-  EXPECT_EQ(kExpectedElementCount, vect_data->GetRawData().size());
+  EXPECT_EQ(kExpectedElementCount, vect_data->GetValuesForTesting().size());
 }
 
 }  // namespace ml

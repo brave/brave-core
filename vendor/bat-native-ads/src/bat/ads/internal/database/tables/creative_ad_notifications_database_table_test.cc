@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 
+#include <vector>
+
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "net/http/http_status_code.h"
@@ -30,7 +32,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableIntegrationTest,
        GetCreativeAdNotificationsFromCatalogEndpoint) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v7/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -39,15 +41,14 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableIntegrationTest,
   // Act
 
   // Assert
-  const std::vector<std::string> segments = {"Technology & Computing"};
+  const std::vector<std::string> segments = {"technology & computing"};
 
-  database::table::CreativeAdNotifications creative_ad_notifications;
-  creative_ad_notifications.GetForSegments(
-      segments,
-      [](const Result result, const SegmentList& segments,
-         const CreativeAdNotificationList& creative_ad_notifications) {
-        EXPECT_EQ(Result::SUCCESS, result);
-        EXPECT_EQ(2UL, creative_ad_notifications.size());
+  database::table::CreativeAdNotifications creative_ads;
+  creative_ads.GetForSegments(
+      segments, [](const bool success, const SegmentList& segments,
+                   const CreativeAdNotificationList& creative_ads) {
+        EXPECT_TRUE(success);
+        EXPECT_EQ(2UL, creative_ads.size());
       });
 }
 

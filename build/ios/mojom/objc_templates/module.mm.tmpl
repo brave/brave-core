@@ -1,0 +1,51 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#import <Foundation/Foundation.h>
+#import "{{module_name}}.objc+private.h"
+#include "base/containers/flat_map.h"
+#include "base/strings/sys_string_conversions.h"
+#include "base/time/time.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote.h"
+#include "net/base/mac/url_conversions.h"
+
+{% for import in imports %}
+#include "{{import|objc_import_module_name}}.objc+private.h"
+{% endfor %}
+
+#if !defined(__has_feature) || !__has_feature(objc_arc)
+#error "This file requires ARC support."
+#endif
+
+{# Constants #}
+{%- for const in constants %}
+{%-   set name = const.name|objc_enum_formatter %}
+{{const.kind|objc_wrapper_type}} const {{class_prefix}}{{name}} = {{const|const_objc_assign}};
+{% endfor %}
+
+@implementation _{{class_prefix}}{{module_name|replace(".mojom","Mojom")|under_to_camel}}
+@end
+
+{%- for struct in structs %}
+{%    include "private_struct_implementation.tmpl" %}
+{%- endfor %}
+
+{%- for union in unions %}
+{%    include "private_union_implementation.tmpl" %}
+{%- endfor %}
+
+{%- for interface in interfaces %}
+{%    include "private_interface_implementation.tmpl" %}
+{%- endfor %}
+
+{%- for interface in interface_bridges %}
+{%    include "private_interface_bridge_implementation.tmpl" %}
+{%- endfor %}
+
+{% for interface in interfaces %}
+{%    include "test_interface_implementation.tmpl" %}
+{%- endfor %}

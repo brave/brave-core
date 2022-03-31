@@ -1,10 +1,15 @@
 include_rules = [
-  "+../../../../chrome/app",
-  "+../../../../../chrome/app/android",
   "+brave/app",
   "+brave/browser",
   "+brave/common",
-  "+chrome/app",
   "+chrome/browser",
   "+chrome/common",
 ]
+
+specific_include_rules = {
+  "chrome_main_delegate.cc": [
+    "+brave/build/android/jni_headers/BraveQAPreferences_jni.h",
+    "+components/signin/public/base/account_consistency_method.h",
+    "+components/sync/base/command_line_switches.h",
+  ],
+}

@@ -4,3 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+
+namespace brave_wallet {
+
+const char kAssetRatioBaseURL[] = "https://ratios.rewards.brave.com/";
+
+}  // namespace brave_wallet

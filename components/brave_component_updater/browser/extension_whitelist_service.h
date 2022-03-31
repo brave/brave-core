@@ -22,10 +22,6 @@ class ExtensionWhitelistParser;
 class BraveExtensionProviderTest;
 class BravePDFDownloadTest;
 
-namespace extensions {
-class Extension;
-}
-
 namespace brave_component_updater {
 
 // The brave shields service in charge of extension whitelist
@@ -37,12 +33,14 @@ class ExtensionWhitelistService : public LocalDataFilesObserver {
   explicit ExtensionWhitelistService(
       LocalDataFilesService* local_data_files_service,
       const std::vector<std::string>& whitelist);
+  ExtensionWhitelistService(const ExtensionWhitelistService&) = delete;
+  ExtensionWhitelistService& operator=(const ExtensionWhitelistService&) =
+      delete;
   ~ExtensionWhitelistService() override;
 
   bool IsWhitelisted(const std::string& extension_id) const;
   bool IsBlacklisted(const std::string& extension_id) const;
   bool IsVetted(const std::string& extension_id) const;
-  bool IsVetted(const extensions::Extension* extension) const;
 
   // implementation of LocalDataFilesObserver
   void OnComponentReady(const std::string& component_id,
@@ -60,8 +58,6 @@ class ExtensionWhitelistService : public LocalDataFilesObserver {
   brave_component_updater::DATFileDataBuffer buffer_;
   std::vector<std::string> whitelist_;
   base::WeakPtrFactory<ExtensionWhitelistService> weak_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(ExtensionWhitelistService);
 };
 
 // Creates the ExtensionWhitelistService

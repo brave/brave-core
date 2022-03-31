@@ -58,6 +58,7 @@ program
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--target_android_base <target_android_base>', 'target Android OS apk (classic, modern, mono)', 'classic')
+  .option('--target_environment <target_environment>', 'target environment (device, catalyst, simulator)')
   .arguments('[build_config]')
   .action(gnCheck)
 
@@ -73,6 +74,7 @@ program
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--target_android_base <target_android_base>', 'target Android SDK level for apk or aab  (classic, modern, mono)', 'classic')
   .option('--target_android_output_format <target_android_output_format>', 'target Android output format (apk, aab)')
+  .option('--target_environment <target_environment>', 'target environment (device, catalyst, simulator)')
   .option('--android_override_version_name <android_override_version_name>', 'Android version number')
   .option('--mac_signing_identifier <id>', 'The identifier to use for signing')
   .option('--mac_signing_keychain <keychain>', 'The identifier to use for signing', 'login')
@@ -102,7 +104,8 @@ program
   .option('--brave_safetynet_api_key <brave_safetynet_api_key>')
   .option('--is_asan', 'is asan enabled')
   .option('--use_goma', 'whether to use Goma for building')
-  .option('--auto_gn_gen', 'use gn gen only if required')
+  .option('--force_gn_gen', 'always run gn gen')
+  .option('--target <target>', 'Custom target to build, instead of the default browser target')
   .arguments('[build_config]')
   .action(build)
 
@@ -145,7 +148,7 @@ program
   .option('--universal', 'build a universal binary distribution')
   .option('--is_asan', 'is asan enabled')
   .option('--use_goma', 'whether to use Goma for building')
-  .option('--auto_gn_gen', 'use gn gen only if required')
+  .option('--force_gn_gen', 'always run gn gen')
   .arguments('[build_config]')
   .action(createDist)
 
@@ -173,7 +176,6 @@ program
   .option('--brave_ads_staging', 'ads staging')
   .option('--brave_ads_debug', 'ads debug')
   .option('--single_process', 'use a single process')
-  .option('--network_log', 'log network activity to network_log.json')
   .option('--output_path [pathname]', 'use the Brave binary located at [pathname]')
   .arguments('[build_config]')
   .action(start.bind(null, parsedArgs.unknown))
@@ -182,6 +184,7 @@ program
   .command('pull_l10n')
   .option('--extension <extension>', 'Scope this command to localize a Brave extension such as ethereum-remote-client')
   .option('--grd_path <grd_path>', `Relative path to match end of full GRD path, e.g: 'generated_resources.grd'.`)
+  .option('--debug', `Dumps downloaded content for one language into TransifexCurrent.txt file in the temp directory.`)
   .action(pullL10n)
 
 program
@@ -234,6 +237,7 @@ program
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--run_disabled_tests', 'run disabled tests')
   .option('--manual_android_test_device', 'indicates that Android test device is run manually')
+  .option('--use_goma', 'whether to use Goma for building')
   .arguments('[build_config]')
   .action(test.bind(null, parsedArgs.unknown))
 

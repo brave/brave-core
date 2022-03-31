@@ -8,24 +8,24 @@
  * continuously before calling a provided function.
  */
 export default class VisibilityTimer {
-  private element?: HTMLElement
+  private readonly element?: HTMLElement
   private timerId?: number = undefined
   private isIntersecting: boolean
-  private viewTimeMs: number = 0
-  private onTimerExpired: Function
-  private intersectionObserver?: IntersectionObserver
+  private readonly viewTimeMs: number = 0
+  private readonly onTimerExpired: Function
+  private readonly intersectionObserver?: IntersectionObserver
 
   constructor (onTimerExpired: Function, viewTimeMs: number, elementToObserve?: HTMLElement) {
     this.element = elementToObserve
     this.onTimerExpired = onTimerExpired
     this.viewTimeMs = viewTimeMs
-    this.isIntersecting = elementToObserve ? false : true
+    this.isIntersecting = !elementToObserve
     if (elementToObserve) {
       this.intersectionObserver = new IntersectionObserver(entries => {
         this.isIntersecting = entries.some(entry => entry.isIntersecting)
         this.handleVisibility()
       }, {
-        threshold: 1.0
+        threshold: 0.5
       })
     }
   }
@@ -53,7 +53,7 @@ export default class VisibilityTimer {
     }
   }
 
-  private handleVisibility = () => {
+  private readonly handleVisibility = () => {
     if (document.visibilityState === 'visible' && this.isIntersecting) {
       if (!this.timerId) {
         // Start the timer again
@@ -69,7 +69,7 @@ export default class VisibilityTimer {
     if (this.timerId) {
       return
     }
-    this.timerId = setTimeout(() => {
+    this.timerId = window.setTimeout(() => {
       // If we made it here, then we have received enough uninterupted time
       // and we can call the provided function.
       this.stopTracking()
@@ -78,7 +78,7 @@ export default class VisibilityTimer {
   }
 
   private resetTimer () {
-    clearTimeout(this.timerId)
+    window.clearTimeout(this.timerId)
     this.timerId = undefined
   }
 }

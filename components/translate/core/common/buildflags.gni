@@ -1,0 +1,9 @@
+import("//brave/build/config.gni")
+
+declare_args() {
+  enable_brave_translate_go = true
+}
+
+declare_args() {
+  enable_brave_translate_extension = !is_android && !is_ios
+}

@@ -8,13 +8,10 @@
 
 #include <string>
 
-#include "base/values.h"
-#include "bat/ads/internal/ml/ml_aliases.h"
-#include "bat/ads/internal/ml/model/linear/linear.h"
-#include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
-#include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
-#include "bat/ads/internal/ml/transformation/normalization_transformation.h"
-#include "bat/ads/internal/ml/transformation/transformation.h"
+namespace absl {
+template <typename T>
+class optional;
+}  // namespace absl
 
 namespace ads {
 namespace ml {
@@ -22,13 +19,7 @@ namespace pipeline {
 
 struct PipelineInfo;
 
-base::Optional<TransformationVector> ParseTransformationsJSON(
-    base::Value* transformations_value);
-
-base::Optional<model::Linear> ParseClassifierJSON(
-    base::Value* classifier_value);
-
-base::Optional<PipelineInfo> ParsePipelineJSON(const std::string& json);
+absl::optional<PipelineInfo> ParsePipelineJSON(const std::string& json);
 
 }  // namespace pipeline
 }  // namespace ml

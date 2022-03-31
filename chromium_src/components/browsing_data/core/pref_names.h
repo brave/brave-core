@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_BROWSING_DATA_CORE_PREF_NAMES_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_BROWSING_DATA_CORE_PREF_NAMES_H_
 
-#include "../../../../../components/browsing_data/core/pref_names.h"
+#include "src/components/browsing_data/core/pref_names.h"
 
 namespace browsing_data {
 

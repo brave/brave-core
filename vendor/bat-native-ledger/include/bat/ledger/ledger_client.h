@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_LEDGER_LEDGER_CLIENT_H_
-#define BAT_LEDGER_LEDGER_CLIENT_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_LEDGER_CLIENT_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_LEDGER_CLIENT_H_
 
 #include <functional>
 #include <memory>
@@ -12,8 +12,9 @@
 #include <string>
 #include <map>
 
-#include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/export.h"
+#include "bat/ledger/mojom_structs.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 namespace client {
@@ -153,13 +154,13 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void DeleteLog(client::ResultCallback callback) = 0;
 
-  virtual bool SetEncryptedStringState(
-      const std::string& name,
+  virtual absl::optional<std::string> EncryptString(
       const std::string& value) = 0;
 
-  virtual std::string GetEncryptedStringState(const std::string& name) = 0;
+  virtual absl::optional<std::string> DecryptString(
+      const std::string& value) = 0;
 };
 
 }  // namespace ledger
 
-#endif  // BAT_LEDGER_LEDGER_CLIENT_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_INCLUDE_BAT_LEDGER_LEDGER_CLIENT_H_

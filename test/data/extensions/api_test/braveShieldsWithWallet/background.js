@@ -6,41 +6,12 @@ function testBasics() {
   chrome.test.runTests([
     function braveShieldsHasWalletAccessButNotSeed() {
       if (chrome.braveWallet && !chrome.braveWallet.getWalletSeed &&
-          !chrome.braveWallet.getBitGoSeed &&
           !chrome.braveWallet.getProjectID &&
           !chrome.braveWallet.getBraveKey) {
         chrome.test.succeed();
       } else {
         chrome.test.fail();
       }
-    },
-  ]);
-}
-
-function testNoDappCheck() {
-  chrome.test.runTests([
-    function testNotENabled() {
-      chrome.braveWallet.shouldCheckForDapps((dappDetection) => {
-        if (dappDetection) {
-          chrome.test.fail();
-        } else {
-          chrome.test.succeed();
-        }
-      })
-    },
-  ]);
-}
-
-function testDappCheck() {
-  chrome.test.runTests([
-    function testNotENabled() {
-      chrome.braveWallet.shouldCheckForDapps((dappDetection) => {
-        if (dappDetection) {
-          chrome.test.succeed();
-        } else {
-          chrome.test.fail();
-        }
-      })
     },
   ]);
 }

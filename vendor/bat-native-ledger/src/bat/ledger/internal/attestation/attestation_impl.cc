@@ -6,11 +6,12 @@
 #include <memory>
 #include <utility>
 
-#include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/attestation/attestation_androidx.h"
 #include "bat/ledger/internal/attestation/attestation_desktop.h"
 #include "bat/ledger/internal/attestation/attestation_impl.h"
 #include "bat/ledger/internal/attestation/attestation_iosx.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "build/build_config.h"
 #include "net/http/http_status_code.h"
 
 namespace ledger {
@@ -18,13 +19,13 @@ namespace attestation {
 
 AttestationImpl::AttestationImpl(LedgerImpl* ledger) :
     Attestation(ledger) {
-  #if defined(OS_IOS)
-    platform_instance_ = std::make_unique<AttestationIOS>(ledger);
-  #elif defined(OS_ANDROID)
-    platform_instance_ = std::make_unique<AttestationAndroid>(ledger);
-  #else
-    platform_instance_ = std::make_unique<AttestationDesktop>(ledger);
-  #endif
+#if BUILDFLAG(IS_IOS)
+  platform_instance_ = std::make_unique<AttestationIOS>(ledger);
+#elif BUILDFLAG(IS_ANDROID)
+  platform_instance_ = std::make_unique<AttestationAndroid>(ledger);
+#else
+  platform_instance_ = std::make_unique<AttestationDesktop>(ledger);
+#endif
 }
 
 AttestationImpl::~AttestationImpl() = default;

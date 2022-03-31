@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/callback_helpers.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
@@ -26,13 +28,12 @@
 #include "content/public/test/test_utils.h"
 #include "extensions/common/constants.h"
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#include "brave/components/brave_rewards/common/pref_names.h"
-#endif
-
 class BraveActionsContainerTest : public InProcessBrowserTest {
  public:
   BraveActionsContainerTest() = default;
+  BraveActionsContainerTest(const BraveActionsContainerTest&) = delete;
+  BraveActionsContainerTest& operator=(const BraveActionsContainerTest&) =
+      delete;
   ~BraveActionsContainerTest() override = default;
 
   void SetUpOnMainThread() override { Init(browser()); }
@@ -55,37 +56,35 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
   }
 
  protected:
-  BraveActionsContainer* brave_actions_;
-  PrefService* prefs_;
-  DISALLOW_COPY_AND_ASSIGN(BraveActionsContainerTest);
+  raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
 };
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, HideBraveRewardsAction) {
   // By default the action should be shown.
-  EXPECT_FALSE(prefs_->GetBoolean(brave_rewards::prefs::kHideButton));
+  EXPECT_TRUE(prefs_->GetBoolean(brave_rewards::prefs::kShowButton));
   CheckBraveRewardsActionShown(true);
 
   // Set to hide.
-  prefs_->SetBoolean(brave_rewards::prefs::kHideButton, true);
+  prefs_->SetBoolean(brave_rewards::prefs::kShowButton, false);
   CheckBraveRewardsActionShown(false);
 
   // Set to show.
-  prefs_->SetBoolean(brave_rewards::prefs::kHideButton, false);
+  prefs_->SetBoolean(brave_rewards::prefs::kShowButton, true);
   CheckBraveRewardsActionShown(true);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
                        BraveRewardsActionHiddenInGuestSession) {
   // By default the action should be shown.
-  EXPECT_FALSE(prefs_->GetBoolean(brave_rewards::prefs::kHideButton));
+  EXPECT_TRUE(prefs_->GetBoolean(brave_rewards::prefs::kShowButton));
   CheckBraveRewardsActionShown(true);
 
   // Open a Guest window.
   EXPECT_EQ(1U, BrowserList::GetInstance()->size());
   ui_test_utils::BrowserChangeObserver browser_creation_observer(
       nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
-  profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
+  profiles::SwitchToGuestProfile(base::DoNothing());
   base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();
   EXPECT_EQ(2U, BrowserList::GetInstance()->size());
@@ -104,4 +103,30 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
   Init(browser);
   CheckBraveRewardsActionShown(false);
 }
-#endif
+
+IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, ShowRewardsIconForPanel) {
+  prefs_->SetBoolean(brave_rewards::prefs::kShowButton, false);
+  CheckBraveRewardsActionShown(false);
+
+  // Simulate pressing the "stub" button to ensure that the extension is loaded.
+  brave_actions_->OnRewardsStubButtonClicked();
+  base::RunLoop().RunUntilIdle();
+
+  // Simulate an action from the brave actions API to open the rewards panel.
+  extensions::BraveActionAPI::Observer* action_observer = brave_actions_;
+  action_observer->OnBraveActionShouldTrigger(brave_rewards_extension_id,
+                                              nullptr);
+
+  base::RunLoop().RunUntilIdle();
+
+  // Rewards action should be shown while popup is open.
+  CheckBraveRewardsActionShown(true);
+
+  // Close the rewards popup.
+  static_cast<ExtensionsContainer*>(brave_actions_)->HideActivePopup();
+
+  base::RunLoop().RunUntilIdle();
+
+  // Rewards action should be hidden after popup is closed.
+  CheckBraveRewardsActionShown(false);
+}

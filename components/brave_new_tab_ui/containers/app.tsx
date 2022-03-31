@@ -13,6 +13,7 @@ import NewTabPage from './newTab'
 
 // Utils
 import * as PreferencesAPI from '../api/preferences'
+import getBraveNewsController from '../api/brave_news'
 import { getActionsForDispatch } from '../api/getActions'
 
 // Types
@@ -30,6 +31,10 @@ interface Props {
   // redux / widget state to the components, instead of collecting and passing
   // through all these layers.
   ftx: FTXState
+}
+
+const getBraveNewsDisplayAd = function GetBraveNewsDisplayAd () {
+  return getBraveNewsController().getDisplayAd()
 }
 
 function DefaultPage (props: Props) {
@@ -53,13 +58,14 @@ function DefaultPage (props: Props) {
         saveShowStats={PreferencesAPI.saveShowStats}
         saveShowToday={PreferencesAPI.saveShowToday}
         saveShowRewards={PreferencesAPI.saveShowRewards}
-        saveShowTogether={PreferencesAPI.saveShowTogether}
+        saveShowBraveTalk={PreferencesAPI.saveShowBraveTalk}
         saveShowBinance={PreferencesAPI.saveShowBinance}
         saveShowGemini={PreferencesAPI.saveShowGemini}
         saveShowCryptoDotCom={PreferencesAPI.saveShowCryptoDotCom}
         saveShowFTX={PreferencesAPI.saveShowFTX}
         saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
         saveSetAllStackWidgets={PreferencesAPI.saveSetAllStackWidgets}
+        getBraveNewsDisplayAd={getBraveNewsDisplayAd}
       />
     )
 }

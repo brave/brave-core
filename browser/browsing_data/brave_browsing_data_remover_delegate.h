@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BROWSING_DATA_BRAVE_BROWSING_DATA_REMOVER_DELEGATE_H_
 #define BRAVE_BROWSER_BROWSING_DATA_BRAVE_BROWSING_DATA_REMOVER_DELEGATE_H_
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -47,12 +48,12 @@ class BraveBrowsingDataRemoverDelegate
                           override;
 
   void ClearShieldsSettings(base::Time begin_time, base::Time end_time);
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   void ClearIPFSCache();
   void WaitForIPFSRepoGC(base::Process process);
 #endif
 
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
   base::WeakPtrFactory<BraveBrowsingDataRemoverDelegate> weak_ptr_factory_{
       this};
 };

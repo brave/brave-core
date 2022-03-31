@@ -14,7 +14,7 @@ bool IsIpfsImportDownloadCreated(content::WebContents* web_contents,
     return;                                              \
   }                                                      \
   RecordDownloadStartPerProfileType
-#include "../../../../../chrome/browser/download/download_ui_controller.cc"
+#include "src/chrome/browser/download/download_ui_controller.cc"
 #undef RecordDownloadStartPerProfileType
 
 bool IsIpfsImportDownloadCreated(content::WebContents* web_contents,

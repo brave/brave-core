@@ -6,36 +6,40 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_OBSERVER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_OBSERVER_H_
 
-#include "base/observer_list.h"
+#include <string>
+
+#include "base/observer_list_types.h"
 
 namespace ads {
 
-struct CatalogIssuersInfo;
+class AdType;
+class ConfirmationType;
+struct TransactionInfo;
 struct WalletInfo;
 
 class AccountObserver : public base::CheckedObserver {
  public:
-  // Invoked when the wallet has changed
-  virtual void OnWalletChanged(const WalletInfo& wallet) {}
+  // Invoked when the wallet has updated
+  virtual void OnWalletDidUpdate(const WalletInfo& wallet) {}
 
-  // Invoked when a wallet is restored
-  virtual void OnWalletRestored(const WalletInfo& wallet) {}
+  // Invoked when a wallet has changed
+  virtual void OnWalletDidChange(const WalletInfo& wallet) {}
 
   // Invoked if the wallet is invalid
-  virtual void OnWalletInvalid() {}
+  virtual void OnInvalidWallet() {}
 
-  // Invoked when the catalog issuers have changed
-  virtual void OnCatalogIssuersChanged(
-      const CatalogIssuersInfo& catalog_issuers) {}
+  // Invoked after successfully processing a deposit
+  virtual void OnDidProcessDeposit(const TransactionInfo& transaction) {}
 
-  // Invoked when ad rewards have changed
-  virtual void OnAdRewardsChanged() {}
+  // Invoked after failing to process a deposit for |creative_instance_id|,
+  // |ad_type| and |confirmation_type|
+  virtual void OnFailedToProcessDeposit(
+      const std::string& creative_instance_id,
+      const AdType& ad_type,
+      const ConfirmationType& confirmation_type) {}
 
-  // Invoked when transactions have changed
-  virtual void OnTransactionsChanged() {}
-
-  // Invoked when uncleared transactions have been processed
-  virtual void OnUnclearedTransactionsProcessed() {}
+  // Invoked when the statement of accounts has changed
+  virtual void OnStatementOfAccountsDidChange() {}
 
  protected:
   ~AccountObserver() override = default;

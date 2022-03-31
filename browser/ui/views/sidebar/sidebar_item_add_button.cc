@@ -11,20 +11,36 @@
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
 
-SidebarItemAddButton::SidebarItemAddButton(BraveBrowser* browser)
-    : SidebarButtonView(nullptr), browser_(browser) {
+SidebarItemAddButton::SidebarItemAddButton(
+    BraveBrowser* browser,
+    const std::u16string& accessible_name)
+    : SidebarButtonView(nullptr, accessible_name), browser_(browser) {
   UpdateButtonImages();
 
   on_enabled_changed_subscription_ =
       AddEnabledChangedCallback(base::BindRepeating(
           &SidebarItemAddButton::UpdateButtonImages, base::Unretained(this)));
+
+  SetCallback(base::BindRepeating(&SidebarItemAddButton::OnButtonPressed,
+                                  base::Unretained(this)));
 }
 
 SidebarItemAddButton::~SidebarItemAddButton() = default;
+
+void SidebarItemAddButton::OnButtonPressed() {
+  if (IsBubbleVisible())
+    return;
+
+  if (timer_.IsRunning())
+    timer_.Stop();
+
+  DoShowBubble();
+}
 
 void SidebarItemAddButton::OnMouseEntered(const ui::MouseEvent& event) {
   SidebarButtonView::OnMouseEntered(event);
@@ -45,6 +61,12 @@ void SidebarItemAddButton::OnGestureEvent(ui::GestureEvent* event) {
   }
 }
 
+void SidebarItemAddButton::OnThemeChanged() {
+  View::OnThemeChanged();
+
+  UpdateButtonImages();
+}
+
 void SidebarItemAddButton::AddedToWidget() {
   UpdateButtonImages();
 }
@@ -61,8 +83,7 @@ void SidebarItemAddButton::ShowBubbleWithDelay() {
     timer_.Stop();
 
   constexpr int kBubbleLaunchDelayInMS = 200;
-  timer_.Start(FROM_HERE,
-               base::TimeDelta::FromMilliseconds(kBubbleLaunchDelayInMS), this,
+  timer_.Start(FROM_HERE, base::Milliseconds(kBubbleLaunchDelayInMS), this,
                &SidebarItemAddButton::DoShowBubble);
 }
 
@@ -105,3 +126,6 @@ void SidebarItemAddButton::UpdateButtonImages() {
              gfx::CreateVectorIcon(kSidebarAddItemIcon, button_disabled_color));
   }
 }
+
+BEGIN_METADATA(SidebarItemAddButton, SidebarButtonView)
+END_METADATA

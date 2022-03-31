@@ -9,7 +9,7 @@
 #include "media/base/key_system_properties.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
-#if defined(OS_ANDROID) && !BUILDFLAG(ENABLE_WIDEVINE)
+#if BUILDFLAG(IS_ANDROID) && !BUILDFLAG(ENABLE_WIDEVINE)
 namespace cdm {
 // Fix upstream build failure with widevine disabled on android.
 // chrome_key_systems.cc calls cdm::AddAndroidWidevine() regardless of
@@ -22,4 +22,4 @@ void AddAndroidWidevine(
 }  // namespace cdm
 #endif
 
-#include "../../../../../chrome/renderer/media/chrome_key_systems.cc"  // NOLINT
+#include "src/chrome/renderer/media/chrome_key_systems.cc"

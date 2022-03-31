@@ -1,6 +1,6 @@
 import("//brave/build/cargo.gni")
 import("//brave/build/config.gni")
-import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//build/config/zip.gni")
 import("//build/util/process_version.gni")
@@ -25,7 +25,7 @@ if (is_linux) {
 }
 
 declare_args() {
-  audit_dev_deps = false
+  audit_dev_deps = true
 }
 
 if (!is_ios) {
@@ -57,16 +57,16 @@ if (!is_ios) {
 
 if (is_win) {
   # create_installer_archive.py assumes that last_chrome_installer folder has
-  # courgette.exe.
+  # courgette.exe. The original courgette.exe runs out of memory on Brave's
+  # binaries. As of January 2022, this seems to be a known issue and was
+  # confirmed by Chromium developers. The recommended workaround is to use
+  # another tool, Zucchini, as a drop-in replacement.
   if (build_delta_installer) {
-    copy("copy_courgette_binary") {
+    copy("copy_zucchini_binary_as_courgette") {
       visibility = [ ":mini_installer_dependencies" ]
-      sources = [ "$root_out_dir/courgette.exe" ]
-      outputs = [ "$root_out_dir/$last_chrome_installer/{{source_file_part}}" ]
-      deps = [
-        "//courgette",
-        "//courgette:copy_courgette_binaries",
-      ]
+      sources = [ "$root_out_dir/zucchini.exe" ]
+      outputs = [ "$root_out_dir/$last_chrome_installer/courgette.exe" ]
+      deps = [ "//components/zucchini:zucchini" ]
     }
   }
 
@@ -74,7 +74,7 @@ if (is_win) {
     deps = [ ":brave" ]
 
     if (build_delta_installer) {
-      deps += [ ":copy_courgette_binary" ]
+      deps += [ ":copy_zucchini_binary_as_courgette" ]
     }
   }
 }
@@ -113,30 +113,19 @@ if (is_android) {
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/privacy_protection.json",
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/save_data_and_battery.json",
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/website_loads_faster.json",
+      "//brave/android/java/org/chromium/chrome/browser/vpn/brave_vpn_confirm.json",
     ]
     deps = [ "//brave:browser_dependencies" ]
     disable_compression = true
   }
 }
 
-config("rust_link") {
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1188030#c14
-  if (!is_component_build) {
-    ldflags = [ "-Wl,-no_compact_unwind" ]
-  }
-}
-
 if (is_mac) {
   group("framework_bundle_data") {
-    # this only seems to work correctly when applied to
-    # the chrome_framework target so we add it here
-    public_configs = [ ":rust_link" ]
-    deps = [ "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data" ]
-    if (brave_rewards_enabled) {
-      deps += [
-        "components/brave_rewards/resources/extension:framework_bundle_data",
-      ]
-    }
+    deps = [
+      "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data",
+      "components/brave_rewards/resources/extension:framework_bundle_data",
+    ]
   }
 }
 
@@ -146,11 +135,8 @@ group("unpacked_resources") {
     if (enable_extensions) {
       deps = [
         "//brave/components/brave_extension/extension/brave_extension:locales",
+        "//brave/components/brave_rewards/resources/extension:locales",
       ]
-      if (brave_rewards_enabled) {
-        deps +=
-            [ "//brave/components/brave_rewards/resources/extension:locales" ]
-      }
     }
   }
 }
@@ -163,7 +149,10 @@ if (!is_ios) {
     deps = [ "test:brave_unit_tests" ]
 
     if (!is_android) {
-      deps += [ "test:brave_browser_tests" ]
+      deps += [
+        "test:brave_browser_tests",
+        "test:brave_network_audit_tests",
+      ]
     }
   }
 }
@@ -182,12 +171,21 @@ if (!is_ios) {
 branding_dir = "//chrome/app/theme/$branding_path_component"
 copy("theme_files") {
   visibility = [ ":*" ]
-  sources = [
-    "$branding_dir/product_logo_128_beta.png",
-    "$branding_dir/product_logo_128_dev.png",
-    "$branding_dir/product_logo_128_development.png",
-    "$branding_dir/product_logo_128_nightly.png",
-  ]
+  if (is_linux) {
+    sources = [
+      "$branding_dir/linux/product_logo_128_beta.png",
+      "$branding_dir/linux/product_logo_128_dev.png",
+      "$branding_dir/linux/product_logo_128_development.png",
+      "$branding_dir/linux/product_logo_128_nightly.png",
+    ]
+  } else {
+    sources = [
+      "$branding_dir/product_logo_128_beta.png",
+      "$branding_dir/product_logo_128_dev.png",
+      "$branding_dir/product_logo_128_development.png",
+      "$branding_dir/product_logo_128_nightly.png",
+    ]
+  }
   outputs = [ "$root_out_dir/installer/theme/{{source_file_part}}" ]
 }
 
@@ -195,12 +193,15 @@ group("create_dist") {
   deps = []
   if (is_android) {
     deps += [ "build/android:sign_app" ]
-  } else if (is_linux) {
-    # zip will be created along with installer
-    deps += [ ":create_symbols_dist" ]
   } else {
+    deps += [ ":create_symbols_dist" ]
+  }
+
+  # for linux zip will be created along with installer
+  if (!is_linux) {
     deps += [ ":create_dist_zips" ]
   }
+
   if (is_win) {
     deps += [ "build/win:create_signed_installer" ]
 
@@ -229,7 +230,7 @@ if (!is_mac && !is_android && !is_ios) {
     deps = [ "//chrome:packed_resources" ]
 
     sources = []
-    foreach(locale, locales) {
+    foreach(locale, platform_pak_locales) {
       sources += [ "$root_out_dir/locales/$locale.pak" ]
     }
     outputs = [ "$brave_dist_dir/locales/{{source_file_part}}" ]
@@ -239,32 +240,27 @@ if (!is_mac && !is_android && !is_ios) {
     group("brave_extensions_locale_dist_resources") {
       deps = [
         "//brave/components/brave_extension/extension/brave_extension:locales",
+        "//brave/components/brave_rewards/resources/extension:locales",
       ]
-      if (brave_rewards_enabled) {
-        deps +=
-            [ "//brave/components/brave_rewards/resources/extension:locales" ]
-      }
 
       public_deps = []
-      foreach(locale, locales) {
+      foreach(locale, platform_pak_locales) {
         # public_deps is used intentionaly because ":create_dist_zip" needs the all dependency
         # of all locale files.
-        public_deps += [ ":brave_shields_locales_${locale}" ]
-        if (brave_rewards_enabled) {
-          public_deps += [ ":brave_rewards_locales_${locale}" ]
-        }
+        public_deps += [
+          ":brave_rewards_locales_${locale}",
+          ":brave_shields_locales_${locale}",
+        ]
       }
     }
 
-    foreach(locale, locales) {
-      if (brave_rewards_enabled) {
-        copy("brave_rewards_locales_${locale}") {
-          deps = [ "//brave/components/brave_rewards/resources/extension:locales_$locale" ]
+    foreach(locale, platform_pak_locales) {
+      copy("brave_rewards_locales_${locale}") {
+        deps = [ "//brave/components/brave_rewards/resources/extension:locales_$locale" ]
 
-          locale = string_replace(locale, "-", "_")
-          sources = [ "$root_out_dir/resources/brave_rewards/_locales/$locale/messages.json" ]
-          outputs = [ "$brave_dist_dir/resources/brave_rewards/_locales/$locale/{{source_file_part}}" ]
-        }
+        locale = string_replace(locale, "-", "_")
+        sources = [ "$root_out_dir/resources/brave_rewards/_locales/$locale/messages.json" ]
+        outputs = [ "$brave_dist_dir/resources/brave_rewards/_locales/$locale/{{source_file_part}}" ]
       }
       copy("brave_shields_locales_${locale}") {
         deps = [ "//brave/components/brave_extension/extension/brave_extension:locales_$locale" ]
@@ -341,102 +337,134 @@ if (target_cpu == "x86") {
   target_arch = target_cpu
 }
 
-action("create_symbols_dist") {
-  output = "$brave_dist_dir/$brave_project_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
+template("create_dist_template") {
+  action(target_name) {
+    inputs = get_target_outputs(":brave_license_dist_resources")
 
-  script = "//brave/script/create-dist.py"
+    file_inputs = []
+    foreach(input, inputs) {
+      file_inputs += [ rebase_path(input, brave_dist_dir) ]
+    }
 
-  inputs = get_target_outputs(":brave_license_dist_resources")
-  dir_inputs = [ "$brave_project_name.breakpad.syms" ]
+    rebase_base_dir = rebase_path(brave_dist_dir)
 
-  file_inputs = []
-  foreach(input, inputs) {
-    file_inputs += [ rebase_path(input, brave_dist_dir) ]
+    outputs = [ invoker.output ]
+    rebase_output = rebase_path(invoker.output)
+
+    dir_inputs = invoker.dir_inputs
+
+    script = "//brave/script/create-dist.py"
+
+    deps = [ ":brave_license_dist_resources" ]
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
+    }
+
+    args = [
+      "--base-dir=$rebase_base_dir",
+      "--inputs=$file_inputs",
+      "--dir-inputs=$dir_inputs",
+      "--output=$rebase_output",
+    ]
+  }
+}
+
+create_dist_template("create_native_symbols_dist") {
+  output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.zip"
+  dir_inputs = [ "$brave_product_name.pdb.syms" ]
+  deps = [ "app/$current_os:symbol_dist_resources" ]
+}
+
+create_dist_template("create_symbols_dist") {
+  if (is_android) {
+    output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_android_base-$target_cpu-symbols-$target_android_output_format.zip"
+  } else {
+    output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
   }
 
-  rebase_output = rebase_path(output)
-  rebase_base_dir = rebase_path(brave_dist_dir)
+  deps = [ "app/$current_os:symbol_dist_resources" ]
+  if (brave_debug_symbol_level == 2 && is_win) {
+    deps += [ ":create_native_symbols_dist" ]
+  }
 
-  args = [
-    "--base-dir=$rebase_base_dir",
-    "--inputs=$file_inputs",
-    "--dir-inputs=$dir_inputs",
-    "--output=$rebase_output",
-  ]
-
-  outputs = [ output ]
-
-  deps = [
-    ":brave_license_dist_resources",
-    "app/$current_os:symbol_dist_resources",
-  ]
+  dir_inputs = [ "$brave_product_name.breakpad.syms" ]
 }
 
 action("create_dist_zips") {
-  output = "$brave_dist_dir/$brave_project_name-v$brave_version-$brave_platform-$target_arch.zip"
+  output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch.zip"
+  outputs = [ output ]
 
-  script = "//brave/script/create-dist.py"
+  if (is_win) {
+    # Repack a Chrome release archive to the Brave format.
+    # Besides changing from 7z to zip, the directory structure is a bit different.
+    # TODO(atuchin): support other platforms.
 
-  inputs = get_target_outputs(":brave_license_dist_resources")
+    script = "//brave/script/repack-archive.py"
+    deps = [ "//chrome/installer/mini_installer:mini_installer_archive" ]
 
-  if (!is_mac && !is_android && !is_ios) {
-    inputs += get_target_outputs(":brave_dist_resources")
-    inputs += get_target_outputs(":brave_locale_dist_resources")
-    if (enable_extensions) {
-      foreach(locale, locales) {
-        inputs += get_target_outputs(":brave_shields_locales_${locale}")
-        if (brave_rewards_enabled) {
+    input = "$root_out_dir/chrome.7z"
+    inputs = [ input ]
+
+    args = [
+      "--input=" + rebase_path(input),
+      "--output=" + rebase_path(output),
+      "--target_dir=Chrome-bin",
+    ]
+  } else {  # !is_win
+    script = "//brave/script/create-dist.py"
+
+    inputs = get_target_outputs(":brave_license_dist_resources")
+
+    if (!is_mac && !is_android && !is_ios) {
+      inputs += get_target_outputs(":brave_dist_resources")
+      inputs += get_target_outputs(":brave_locale_dist_resources")
+      if (enable_extensions) {
+        foreach(locale, platform_pak_locales) {
+          inputs += get_target_outputs(":brave_shields_locales_${locale}")
           inputs += get_target_outputs(":brave_rewards_locales_${locale}")
         }
       }
     }
-  }
 
-  if (is_win) {
-    inputs += [ "$brave_dist_dir/chrome_elf.dll" ]
-  }
+    file_inputs = []
+    foreach(input, inputs) {
+      file_inputs += [ rebase_path(input, brave_dist_dir) ]
+    }
 
-  file_inputs = []
-  foreach(input, inputs) {
-    file_inputs += [ rebase_path(input, brave_dist_dir) ]
-  }
+    dir_inputs = []
+    if (is_mac) {
+      dir_inputs += [ "$brave_exe" ]
+    }
 
-  dir_inputs = []
-  if (is_mac) {
-    dir_inputs += [ "$brave_exe" ]
-  }
-
-  outputs = [ output ]
-
-  deps = [
-    ":brave_license_dist_resources",
-    ":create_symbols_dist",
-    "app/$current_os:dist_resources",
-  ]
-
-  if (!is_mac && !is_android && !is_ios) {
-    deps += [
-      ":brave_dist_resources",
-      ":brave_locale_dist_resources",
+    deps = [
+      ":brave_license_dist_resources",
+      "app/$current_os:dist_resources",
     ]
 
-    if (enable_extensions) {
-      deps += [ ":brave_extensions_locale_dist_resources" ]
-    }
-  }
+    if (!is_mac && !is_android && !is_ios) {
+      deps += [
+        ":brave_dist_resources",
+        ":brave_locale_dist_resources",
+      ]
 
-  rebase_output = rebase_path(output)
-  if (is_mac) {
-    rebase_base_dir = rebase_path(root_out_dir)
-  } else {
-    rebase_base_dir = rebase_path(brave_dist_dir, root_out_dir)
-  }
-  args = [
-    "--base-dir=$rebase_base_dir",
-    "--inputs=$file_inputs",
-    "--dir-inputs=$dir_inputs",
-    "--output=$rebase_output",
-  ]
+      if (enable_extensions) {
+        deps += [ ":brave_extensions_locale_dist_resources" ]
+      }
+    }
+
+    rebase_output = rebase_path(output)
+    if (is_mac) {
+      rebase_base_dir = rebase_path(root_out_dir)
+    } else {
+      rebase_base_dir = rebase_path(brave_dist_dir, root_out_dir)
+    }
+    args = [
+      "--base-dir=$rebase_base_dir",
+      "--inputs=$file_inputs",
+      "--dir-inputs=$dir_inputs",
+      "--output=$rebase_output",
+    ]
+  }  # !is_win
 }
 
 if (is_mac) {
@@ -491,4 +519,14 @@ action("audit_deps") {
   if (audit_dev_deps) {
     args += [ "--audit_dev_deps" ]
   }
+}
+
+group("tools") {
+  if (enable_brave_vpn) {
+    deps = [ "//brave/components/brave_vpn:vpntool" ]
+  }
+}
+
+group("storybook") {
+  deps = [ "//brave/.storybook:storybook" ]
 }

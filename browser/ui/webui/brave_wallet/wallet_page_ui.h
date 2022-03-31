@@ -8,10 +8,9 @@
 
 #include <memory>
 
-#include "base/macros.h"
 #include "brave/browser/ui/webui/brave_wallet/common_handler/wallet_handler.h"
 #include "brave/browser/ui/webui/brave_wallet/page_handler/wallet_page_handler.h"
-#include "brave/components/brave_wallet_ui/wallet_ui.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
@@ -22,7 +21,7 @@
 #include "ui/webui/mojo_web_ui_controller.h"
 
 class WalletPageUI : public ui::MojoWebUIController,
-                     public wallet_ui::mojom::PageHandlerFactory {
+                     public brave_wallet::mojom::PageHandlerFactory {
  public:
   explicit WalletPageUI(content::WebUI* web_ui);
   WalletPageUI(const WalletPageUI&) = delete;
@@ -32,21 +31,36 @@ class WalletPageUI : public ui::MojoWebUIController,
   // Instantiates the implementor of the mojom::PageHandlerFactory mojo
   // interface passing the pending receiver that will be internally bound.
   void BindInterface(
-      mojo::PendingReceiver<wallet_ui::mojom::PageHandlerFactory> receiver);
+      mojo::PendingReceiver<brave_wallet::mojom::PageHandlerFactory> receiver);
 
  private:
-  // wallet_ui::mojom::PageHandlerFactory:
+  // brave_wallet::mojom::PageHandlerFactory:
   void CreatePageHandler(
-      mojo::PendingRemote<wallet_ui::mojom::Page> page,
-      mojo::PendingReceiver<wallet_ui::mojom::PageHandler> page_receiver,
-      mojo::PendingReceiver<wallet_ui::mojom::WalletHandler> wallet_receiver)
-      override;
+      mojo::PendingRemote<brave_wallet::mojom::Page> page,
+      mojo::PendingReceiver<brave_wallet::mojom::PageHandler> page_receiver,
+      mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
+      mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>
+          json_rpc_service,
+      mojo::PendingReceiver<brave_wallet::mojom::SwapService> swap_service,
+      mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
+          asset_ratio_service,
+      mojo::PendingReceiver<brave_wallet::mojom::KeyringService>
+          keyring_service,
+      mojo::PendingReceiver<brave_wallet::mojom::BlockchainRegistry>
+          blockchain_registry,
+      mojo::PendingReceiver<brave_wallet::mojom::TxService> tx_service,
+      mojo::PendingReceiver<brave_wallet::mojom::EthTxManagerProxy>
+          eth_tx_manager_proxy,
+      mojo::PendingReceiver<brave_wallet::mojom::SolanaTxManagerProxy>
+          solana_tx_manager_proxy,
+      mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
+          brave_wallet_service) override;
 
   std::unique_ptr<WalletPageHandler> page_handler_;
   std::unique_ptr<WalletHandler> wallet_handler_;
 
-  mojo::Receiver<wallet_ui::mojom::PageHandlerFactory> page_factory_receiver_{
-      this};
+  mojo::Receiver<brave_wallet::mojom::PageHandlerFactory>
+      page_factory_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

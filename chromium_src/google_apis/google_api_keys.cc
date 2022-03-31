@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/chromium_src/google_apis/google_api_keys.h"
-#include "../../../google_apis/google_api_keys.cc" // NOLINT
+#include "src/google_apis/google_api_keys.cc"
 
 namespace google_apis {
 

@@ -6,8 +6,10 @@
 #include "brave/browser/ipfs/import/ipfs_import_controller.h"
 
 #include "base/path_service.h"
+#include "brave/browser/ipfs/ipfs_blob_context_getter_factory.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
+#include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -27,11 +29,19 @@ namespace {
 
 class FakeIpfsService : public ipfs::IpfsService {
  public:
-  FakeIpfsService(content::BrowserContext* context,
-                  ipfs::BraveIpfsClientUpdater* updater,
-                  const base::FilePath& user_dir,
-                  version_info::Channel channel)
-      : ipfs::IpfsService(context, updater, user_dir, channel) {}
+  FakeIpfsService(
+      PrefService* prefs,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      ipfs::BlobContextGetterFactoryPtr blob_context_getter_factory,
+      ipfs::BraveIpfsClientUpdater* updater,
+      const base::FilePath& user_dir,
+      version_info::Channel channel)
+      : ipfs::IpfsService(prefs,
+                          url_loader_factory,
+                          std::move(blob_context_getter_factory),
+                          updater,
+                          user_dir,
+                          channel) {}
   ~FakeIpfsService() override {}
   void ImportTextToIpfs(const std::string& text,
                         const std::string& host,
@@ -93,6 +103,12 @@ class IpfsImportControllerBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(embedded_test_server()->Start());
     display_service_ = std::make_unique<NotificationDisplayServiceTester>(
         Profile::FromBrowserContext(active_contents()->GetBrowserContext()));
+    base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
+    auto context_getter = std::make_unique<IpfsBlobContextGetterFactory>(
+        active_contents()->GetBrowserContext());
+    fake_service_ = std::make_unique<FakeIpfsService>(
+        nullptr, nullptr, std::move(context_getter), nullptr, user_dir,
+        chrome::GetChannel());
   }
 
   content::WebContents* active_contents() {
@@ -106,8 +122,11 @@ class IpfsImportControllerBrowserTest : public InProcessBrowserTest {
     return notifications.size() == 1u;
   }
 
+  FakeIpfsService* fake_ipfs_service() { return fake_service_.get(); }
+
  private:
   std::unique_ptr<NotificationDisplayServiceTester> display_service_;
+  std::unique_ptr<FakeIpfsService> fake_service_;
 };
 
 IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest, ImportFileToIpfs) {
@@ -118,9 +137,7 @@ IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest, ImportFileToIpfs) {
   if (!helper)
     return;
   base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
-  auto* context = active_contents()->GetBrowserContext();
-  std::unique_ptr<FakeIpfsService> ipfs_service(
-      new FakeIpfsService(context, nullptr, user_dir, chrome::GetChannel()));
+  auto* ipfs_service = fake_ipfs_service();
   ipfs::ImportedData data;
   data.hash = "QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU";
   data.filename = "google.com";
@@ -129,7 +146,7 @@ IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest, ImportFileToIpfs) {
   data.state = ipfs::IPFS_IMPORT_SUCCESS;
   ipfs_service->SetImportData(data);
   auto* controller = helper->GetImportController();
-  controller->SetIpfsServiceForTesting(ipfs_service.get());
+  controller->SetIpfsServiceForTesting(ipfs_service);
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
   controller->ImportFileToIpfs(base::FilePath(FILE_PATH_LITERAL("fake.file")),
                                std::string());
@@ -152,9 +169,7 @@ IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest, ImportTextToIpfs) {
   if (!helper)
     return;
   base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
-  auto* context = active_contents()->GetBrowserContext();
-  std::unique_ptr<FakeIpfsService> ipfs_service(
-      new FakeIpfsService(context, nullptr, user_dir, chrome::GetChannel()));
+  auto* ipfs_service = fake_ipfs_service();
   ipfs::ImportedData data;
   data.hash = "QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU";
   data.filename = "google.com";
@@ -163,7 +178,7 @@ IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest, ImportTextToIpfs) {
   data.state = ipfs::IPFS_IMPORT_SUCCESS;
   ipfs_service->SetImportData(data);
   auto* controller = helper->GetImportController();
-  controller->SetIpfsServiceForTesting(ipfs_service.get());
+  controller->SetIpfsServiceForTesting(ipfs_service);
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
   controller->ImportTextToIpfs("test");
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 2);
@@ -185,9 +200,7 @@ IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest, ImportLinkToIpfs) {
   if (!helper)
     return;
   base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
-  auto* context = active_contents()->GetBrowserContext();
-  std::unique_ptr<FakeIpfsService> ipfs_service(
-      new FakeIpfsService(context, nullptr, user_dir, chrome::GetChannel()));
+  auto* ipfs_service = fake_ipfs_service();
   ipfs::ImportedData data;
   data.hash = "QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU";
   data.filename = "google.com";
@@ -196,7 +209,7 @@ IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest, ImportLinkToIpfs) {
   data.state = ipfs::IPFS_IMPORT_SUCCESS;
   ipfs_service->SetImportData(data);
   auto* controller = helper->GetImportController();
-  controller->SetIpfsServiceForTesting(ipfs_service.get());
+  controller->SetIpfsServiceForTesting(ipfs_service);
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
   controller->ImportLinkToIpfs(GURL("test.com"));
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 2);
@@ -218,9 +231,8 @@ IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest, ImportDirectoryToIpfs) {
   if (!helper)
     return;
   base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
-  auto* context = active_contents()->GetBrowserContext();
-  std::unique_ptr<FakeIpfsService> ipfs_service(
-      new FakeIpfsService(context, nullptr, user_dir, chrome::GetChannel()));
+
+  auto* ipfs_service = fake_ipfs_service();
   ipfs::ImportedData data;
   data.hash = "QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU";
   data.filename = "google.com";
@@ -229,7 +241,7 @@ IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest, ImportDirectoryToIpfs) {
   data.state = ipfs::IPFS_IMPORT_SUCCESS;
   ipfs_service->SetImportData(data);
   auto* controller = helper->GetImportController();
-  controller->SetIpfsServiceForTesting(ipfs_service.get());
+  controller->SetIpfsServiceForTesting(ipfs_service);
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
   controller->ImportDirectoryToIpfs(
       base::FilePath(FILE_PATH_LITERAL("test.file")), std::string());
@@ -253,9 +265,7 @@ IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest,
   if (!helper)
     return;
   base::FilePath user_dir = base::FilePath(FILE_PATH_LITERAL("test"));
-  auto* context = active_contents()->GetBrowserContext();
-  std::unique_ptr<FakeIpfsService> ipfs_service(
-      new FakeIpfsService(context, nullptr, user_dir, chrome::GetChannel()));
+  auto* ipfs_service = fake_ipfs_service();
   ipfs::ImportedData data;
   data.hash = "QmYbK4SLaSvTKKAKvNZMwyzYPy4P3GqBPN6CZzbS73FxxU";
   data.filename = "google.com";
@@ -266,7 +276,7 @@ IN_PROC_BROWSER_TEST_F(IpfsImportControllerBrowserTest,
   base::RunLoop run_loop;
   ipfs_service->SetDirectoryCallback(run_loop.QuitClosure());
   auto* controller = helper->GetImportController();
-  controller->SetIpfsServiceForTesting(ipfs_service.get());
+  controller->SetIpfsServiceForTesting(ipfs_service);
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
   controller->ImportCurrentPageToIpfs();
   run_loop.Run();

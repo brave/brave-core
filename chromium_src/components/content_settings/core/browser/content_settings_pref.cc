@@ -5,7 +5,7 @@
 
 #include "build/build_config.h"
 
-#if !defined(OS_IOS)
+#if !BUILDFLAG(IS_IOS)
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 
 #define BRAVE_SET_WEBSITE_SETTING \
@@ -14,6 +14,6 @@
 #define BRAVE_SET_WEBSITE_SETTING
 #endif
 
-#include "../../../../../../components/content_settings/core/browser/content_settings_pref.cc"
+#include "src/components/content_settings/core/browser/content_settings_pref.cc"
 
 #undef BRAVE_SET_WEBSITE_SETTING

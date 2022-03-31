@@ -9,10 +9,10 @@
 
 #include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/internal/features/user_activity/user_activity_features.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
+#include "bat/ads/internal/user_activity/user_activity_features.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -87,8 +87,7 @@ TEST_F(BatAdsUserActivityScoringUtilTest,
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 
   const base::TimeDelta elapsed_time_window =
-      features::user_activity::GetTimeWindow() +
-      base::TimeDelta::FromSeconds(1);
+      features::user_activity::GetTimeWindow() + base::Seconds(1);
   AdvanceClock(elapsed_time_window);
 
   // Act

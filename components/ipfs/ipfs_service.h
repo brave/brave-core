@@ -14,10 +14,13 @@
 #include <vector>
 
 #include "base/containers/queue.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
 #include "brave/components/ipfs/addresses_config.h"
+#include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_p3a.h"
@@ -30,12 +33,10 @@
 #include "url/gurl.h"
 
 namespace base {
+class CommandLine;
+class Process;
 class SequencedTaskRunner;
 }  // namespace base
-
-namespace content {
-class BrowserContext;
-}  // namespace content
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -49,16 +50,21 @@ namespace ipfs {
 class BraveIpfsClientUpdater;
 class IpfsServiceDelegate;
 class IpfsServiceObserver;
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 class IpfsImportWorkerBase;
 class IpnsKeysManager;
-
+#endif
 class IpfsService : public KeyedService,
                     public BraveIpfsClientUpdater::Observer {
  public:
-  IpfsService(content::BrowserContext* context,
+  IpfsService(PrefService* prefs,
+              scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+              BlobContextGetterFactoryPtr blob_context_getter_factory,
               ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
               const base::FilePath& user_data_dir,
               version_info::Channel channel);
+  IpfsService(const IpfsService&) = delete;
+  IpfsService& operator=(const IpfsService&) = delete;
   ~IpfsService() override;
 
   using GetConnectedPeersCallback =
@@ -72,8 +78,7 @@ class IpfsService : public KeyedService,
   using GarbageCollectionCallback =
       base::OnceCallback<void(bool, const std::string&)>;
 
-  using LaunchDaemonCallback = base::OnceCallback<void(bool)>;
-  using ShutdownDaemonCallback = base::OnceCallback<void(bool)>;
+  using BoolCallback = base::OnceCallback<void(bool)>;
   using GetConfigCallback = base::OnceCallback<void(bool, const std::string&)>;
 
   // Retry after some time If local node responded with error.
@@ -97,6 +102,12 @@ class IpfsService : public KeyedService,
   void Shutdown() override;
 
   void RestartDaemon();
+  void RotateKey(const std::string& oldkey, BoolCallback callback);
+  void ValidateGateway(const GURL& url, BoolCallback callback);
+
+  virtual void PreWarmShareableLink(const GURL& url);
+
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   virtual void ImportFileToIpfs(const base::FilePath& path,
                                 const std::string& key,
                                 ipfs::ImportCompletedCallback callback);
@@ -109,16 +120,18 @@ class IpfsService : public KeyedService,
   virtual void ImportTextToIpfs(const std::string& text,
                                 const std::string& host,
                                 ImportCompletedCallback callback);
-  virtual void PreWarmShareableLink(const GURL& url);
-
   void OnImportFinished(ipfs::ImportCompletedCallback callback,
                         size_t key,
                         const ipfs::ImportedData& data);
+  void ExportKey(const std::string& key,
+                 const base::FilePath& target_path,
+                 BoolCallback callback);
+#endif
   void GetConnectedPeers(GetConnectedPeersCallback callback,
                          int retries = kPeersDefaultRetries);
   void GetAddressesConfig(GetAddressesConfigCallback callback);
-  virtual void LaunchDaemon(LaunchDaemonCallback callback);
-  void ShutdownDaemon(ShutdownDaemonCallback callback);
+  virtual void LaunchDaemon(BoolCallback callback);
+  void ShutdownDaemon(BoolCallback callback);
   void StartDaemonAndLaunch(base::OnceCallback<void(void)> callback);
   void GetConfig(GetConfigCallback);
   void GetRepoStats(GetRepoStatsCallback callback);
@@ -137,9 +150,9 @@ class IpfsService : public KeyedService,
   void SetPreWarmCalbackForTesting(base::OnceClosure callback) {
     prewarm_callback_for_testing_ = std::move(callback);
   }
-
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   IpnsKeysManager* GetIpnsKeysManager() { return ipns_keys_manager_.get(); }
-
+#endif
  protected:
   void OnConfigLoaded(GetConfigCallback, const std::pair<bool, std::string>&);
 
@@ -147,7 +160,10 @@ class IpfsService : public KeyedService,
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
-  FRIEND_TEST_ALL_PREFIXES(IpfsServiceBrowserTest, UpdaterRegistration);
+  FRIEND_TEST_ALL_PREFIXES(IpfsServiceBrowserTest,
+                           UpdaterRegistrationSuccessLaunch);
+  FRIEND_TEST_ALL_PREFIXES(IpfsServiceBrowserTest,
+                           UpdaterRegistrationServiceNotLaunched);
   // BraveIpfsClientUpdater::Observer
   void OnExecutableReady(const base::FilePath& path) override;
   void OnInstallationEvent(ComponentUpdaterEvents event) override;
@@ -160,7 +176,17 @@ class IpfsService : public KeyedService,
   void NotifyIpnsKeysLoaded(bool result);
   // Launches the ipfs service in an utility process.
   void LaunchIfNotRunning(const base::FilePath& executable_path);
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+  static bool WaitUntilExecutionFinished(base::Process process);
+  void ExecuteNodeCommand(const base::CommandLine& command_line,
+                          const base::FilePath& data,
+                          BoolCallback callback);
+#endif
   base::TimeDelta CalculatePeersRetryTime();
+  void OnGatewayValidationComplete(SimpleURLLoaderList::iterator iter,
+                                   BoolCallback callback,
+                                   const GURL& initial_url,
+                                   std::unique_ptr<std::string> response_body);
 
   void OnGetConnectedPeers(SimpleURLLoaderList::iterator iter,
                            GetConnectedPeersCallback,
@@ -187,13 +213,14 @@ class IpfsService : public KeyedService,
   mojo::Remote<ipfs::mojom::IpfsService> ipfs_service_;
 
   int64_t ipfs_pid_ = -1;
-  content::BrowserContext* context_;
   base::ObserverList<IpfsServiceObserver> observers_;
 
+  PrefService* prefs_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   SimpleURLLoaderList url_loaders_;
+  BlobContextGetterFactoryPtr blob_context_getter_factory_;
 
-  base::queue<LaunchDaemonCallback> pending_launch_callbacks_;
+  base::queue<BoolCallback> pending_launch_callbacks_;
 
   bool allow_ipfs_launch_for_test_ = false;
   bool skip_get_connected_peers_callback_for_test_ = false;
@@ -207,15 +234,15 @@ class IpfsService : public KeyedService,
   bool reentrancy_guard_ = false;
 
   base::FilePath user_data_dir_;
-  BraveIpfsClientUpdater* ipfs_client_updater_;
+  raw_ptr<BraveIpfsClientUpdater> ipfs_client_updater_ = nullptr;
   version_info::Channel channel_;
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   std::unordered_map<size_t, std::unique_ptr<IpfsImportWorkerBase>> importers_;
-  scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   std::unique_ptr<IpnsKeysManager> ipns_keys_manager_;
-  IpfsP3A ipfs_p3a;
+#endif
+  scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
+  IpfsP3A ipfs_p3a_;
   base::WeakPtrFactory<IpfsService> weak_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(IpfsService);
 };
 
 }  // namespace ipfs

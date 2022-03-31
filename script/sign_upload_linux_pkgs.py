@@ -35,7 +35,8 @@ def main():
         unmount = args.unmount
     if channel in ['release']:
         if not args.gpg_passphrase:
-            logging.error("Error: --gpg_passphrase required for channel {}".format(channel))
+            logging.error(
+                "Error: --gpg_passphrase required for channel {}".format(channel))
             exit(1)
         else:
             gpg_passphrase = args.gpg_passphrase
@@ -44,7 +45,8 @@ def main():
     if os.environ.get('BRAVE_CORE_DIR'):
         brave_core_dir = os.environ.get('BRAVE_CORE_DIR')
     else:
-        logging.error("Error: Required environment variable \'BRAVE_CORE_DIR\' not set! Exiting...")
+        logging.error(
+            "Error: Required environment variable \'BRAVE_CORE_DIR\' not set! Exiting...")
         exit(1)
 
     if args.debug:
@@ -116,7 +118,8 @@ def main():
     global exclude_patterns
     exclude_patterns = ['.*keyring.*']
 
-    logging.info("Performing removal of files older than 60 days in directory: {}".format(dist_dir))
+    logging.info(
+        "Performing removal of files older than 60 days in directory: {}".format(dist_dir))
 
     remove_files_older_x_days(dist_dir, delete_age, act=True)
 
@@ -142,7 +145,8 @@ def main():
             p1.stdout.close()
             (stdoutdata, stderrdata) = p2.communicate()
             if stderrdata is not None:
-                logging.error("subprocess.Popen.communicate() error: {}".format(stderrdata))
+                logging.error(
+                    "subprocess.Popen.communicate() error: {}".format(stderrdata))
             logging.info("gpg2 unlock signing key successful!")
         except Exception as e:
             logging.error("Error running command: \"{}\"".format(log_cmd))
@@ -203,16 +207,17 @@ def remove_files_older_x_days(dir, age, act=False):
                 logging.debug("Removing file: {}; "
                               " mtime: {}".format(i,
                                                   datetime.datetime.fromtimestamp(os.path.getmtime(
-                                                                                            os.path.join(dir, i)))))
+                                                      os.path.join(dir, i)))))
                 try:
                     os.remove(os.path.join(dir, i))
                 except Error as e:
-                    logging.error("Cannot remove file: {}; Error: {}".format(os.path.join(dir, i), e))
+                    logging.error("Cannot remove file: {}; Error: {}".format(
+                        os.path.join(dir, i), e))
             else:
                 logging.debug("Would remove file(act=False): {}; "
                               " mtime: {}".format(i,
                                                   datetime.datetime.fromtimestamp(os.path.getmtime(
-                                                                                            os.path.join(dir, i)))))
+                                                      os.path.join(dir, i)))))
 
 
 def get_files_older_x_days(dir, age):
@@ -320,7 +325,8 @@ def perform_github_download(asset_url, args, logging, filename, file_list):
 
 def remove_existing_file(filename, logging):
     if os.path.isfile(os.path.join(os.getcwd(), filename)):
-        logging.info("File \'{}\' already exists, removing...".format(filename))
+        logging.info(
+            "File \'{}\' already exists, removing...".format(filename))
         try:
             os.remove(filename)
         except Exception as e:
@@ -331,7 +337,8 @@ def remove_existing_file(filename, logging):
 def parse_args():
     desc = "Download Linux packages from GitHub, sign them, then upload to apt/rpm repositories"
 
-    parser = argparse.ArgumentParser(description=desc, formatter_class=RawTextHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description=desc, formatter_class=RawTextHelpFormatter)
     parser.add_argument('-c', '--channel', help='The Brave channel, i.e. \'nightly\', \'dev\', \'beta\', \'release\'',
                         required=True)
     parser.add_argument('-d', '--debug', action='store_true',

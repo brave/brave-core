@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/test/base/testing_brave_browser_process.h"
+
 #include <utility>
 
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/test/base/testing_brave_browser_process.h"
 
 namespace tor {
 class BraveTorClientUpdater;
@@ -48,18 +49,6 @@ brave_shields::AdBlockService* TestingBraveBrowserProcess::ad_block_service() {
   return ad_block_service_.get();
 }
 
-brave_shields::AdBlockCustomFiltersService*
-TestingBraveBrowserProcess::ad_block_custom_filters_service() {
-  NOTREACHED();
-  return nullptr;
-}
-
-brave_shields::AdBlockRegionalServiceManager*
-TestingBraveBrowserProcess::ad_block_regional_service_manager() {
-  NOTREACHED();
-  return nullptr;
-}
-
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 brave_component_updater::ExtensionWhitelistService*
 TestingBraveBrowserProcess::extension_whitelist_service() {
@@ -75,6 +64,12 @@ TestingBraveBrowserProcess::greaselion_download_service() {
   return nullptr;
 }
 #endif
+
+debounce::DebounceComponentInstaller*
+TestingBraveBrowserProcess::debounce_component_installer() {
+  NOTREACHED();
+  return nullptr;
+}
 
 brave_shields::HTTPSEverywhereService*
 TestingBraveBrowserProcess::https_everywhere_service() {
@@ -94,7 +89,7 @@ tor::BraveTorClientUpdater* TestingBraveBrowserProcess::tor_client_updater() {
 }
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 ipfs::BraveIpfsClientUpdater*
 TestingBraveBrowserProcess::ipfs_client_updater() {
   return nullptr;
@@ -132,12 +127,10 @@ TestingBraveBrowserProcess::speedreader_rewriter_service() {
 }
 #endif
 
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
 brave_ads::ResourceComponent* TestingBraveBrowserProcess::resource_component() {
   NOTREACHED();
   return nullptr;
 }
-#endif
 
 void TestingBraveBrowserProcess::SetAdBlockService(
     std::unique_ptr<brave_shields::AdBlockService> service) {

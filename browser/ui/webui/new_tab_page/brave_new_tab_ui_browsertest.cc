@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "brave/browser/extensions/brave_extension_functional_test.h"
 #include "brave/common/brave_paths.h"
@@ -36,7 +37,7 @@ class ObserverLogger : public RenderProcessHostObserver {
     observed_host_->RemoveObserver(this);
     EXPECT_EQ(info.exit_code, 0);
   }
-  RenderProcessHost* observed_host_;
+  raw_ptr<RenderProcessHost> observed_host_ = nullptr;
 };
 
 }  // namespace
@@ -59,11 +60,11 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, StartupURLTest) {
   ObserverLogger observer_logger(host);
 
   GURL new_tab_url(chrome::kChromeUINewTabURL);
-  ui_test_utils::NavigateToURL(browser(), new_tab_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), new_tab_url));
   WaitForLoadStop(contents);
 
   GURL simple_url = embedded_test_server()->GetURL("/simple.html");
-  ui_test_utils::NavigateToURL(browser(), simple_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), simple_url));
   WaitForLoadStop(contents);
 
   GoBack(contents);
@@ -76,7 +77,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, StartupURLTest) {
 IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, BraveNewTabIsDefault) {
   auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
   GURL new_tab_url(chrome::kChromeUINewTabURL);
-  ui_test_utils::NavigateToURL(browser(), new_tab_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), new_tab_url));
   WaitForLoadStop(contents);
   bool is_brave_new_tab = false;
   ASSERT_TRUE(content::ExecuteScriptAndExtractBool(
@@ -96,7 +97,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, NewTabPageLocationOverride) {
 
   auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
   GURL new_tab_url(chrome::kChromeUINewTabURL);
-  ui_test_utils::NavigateToURL(browser(), new_tab_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), new_tab_url));
   WaitForLoadStop(contents);
 
   std::string inner_text;

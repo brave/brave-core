@@ -5,10 +5,11 @@
 
 #include "bat/ads/internal/ad_events/ad_notifications/ad_notification_event_clicked.h"
 
-#include "bat/ads/ad_notification_info.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notifications.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/logging.h"
 
@@ -26,8 +27,10 @@ void AdEventClicked::FireEvent(const AdNotificationInfo& ad) {
 
   AdNotifications::Get()->Remove(ad.uuid);
 
-  LogAdEvent(ad, ConfirmationType::kClicked, [](const Result result) {
-    if (result != Result::SUCCESS) {
+  AdsClientHelper::Get()->CloseNotification(ad.uuid);
+
+  LogAdEvent(ad, ConfirmationType::kClicked, [](const bool success) {
+    if (!success) {
       BLOG(1, "Failed to log ad notification clicked event");
       return;
     }

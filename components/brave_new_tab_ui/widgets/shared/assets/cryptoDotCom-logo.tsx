@@ -5,7 +5,6 @@
 import * as React from 'react'
 
 export default class CryptoDotComLogo extends React.PureComponent {
-
   render () {
     return (
       <svg width='21' height='25' viewBox='0 0 21 25' fill='none' xmlns='http://www.w3.org/2000/svg'>

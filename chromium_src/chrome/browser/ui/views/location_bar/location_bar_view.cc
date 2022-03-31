@@ -13,7 +13,7 @@
   }
 
 #define ChromeOmniboxClient BraveOmniboxClientImpl
-#include "../../../../../../../chrome/browser/ui/views/location_bar/location_bar_view.cc"
+#include "src/chrome/browser/ui/views/location_bar/location_bar_view.cc"
 #undef ChromeOmniboxClient
 #undef BRAVE_LAYOUT_TRAILING_DECORATIONS
 

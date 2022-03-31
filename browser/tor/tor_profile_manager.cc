@@ -6,13 +6,14 @@
 #include "brave/browser/tor/tor_profile_manager.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/components/tor/tor_profile_service.h"
+#include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -21,7 +22,8 @@
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
+    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #include "components/translate/core/browser/translate_pref_names.h"
 #endif
 
@@ -43,18 +45,12 @@ TorProfileManager& TorProfileManager::GetInstance() {
 // static
 void TorProfileManager::SwitchToTorProfile(
     Profile* original_profile,
-    ProfileManager::CreateCallback callback) {
+    base::OnceCallback<void(Profile*)> callback) {
   Profile* tor_profile =
       TorProfileManager::GetInstance().GetTorProfile(original_profile);
-  tor::TorProfileService* service =
-      TorProfileServiceFactory::GetForContext(tor_profile);
-  DCHECK(service);
-  // TorLauncherFactory relies on OnExecutableReady to launch tor process so we
-  // need to make sure tor binary is there every time
-  service->RegisterTorClientUpdater();
-  profiles::OpenBrowserWindowForProfile(callback, false, false, false,
-                                        tor_profile,
-                                        Profile::CREATE_STATUS_INITIALIZED);
+  profiles::OpenBrowserWindowForProfile(
+      std::move(callback), /*always_create=*/false,
+      /*is_new_profile=*/false, /*unblock_extensions=*/false, tor_profile);
 }
 
 // static
@@ -73,9 +69,10 @@ TorProfileManager::~TorProfileManager() {
   BrowserList::RemoveObserver(this);
 }
 
-Profile* TorProfileManager::GetTorProfile(Profile* original_profile) {
-  Profile* tor_profile = original_profile->GetOffTheRecordProfile(
-      Profile::OTRProfileID(tor::kTorProfileID));
+Profile* TorProfileManager::GetTorProfile(Profile* profile) {
+  Profile* tor_profile = profile->GetOriginalProfile()->GetOffTheRecordProfile(
+      Profile::OTRProfileID(tor::kTorProfileID),
+      /*create_if_needed=*/true);
 
   const std::string context_id = tor_profile->UniqueId();
   auto it = tor_profiles_.find(context_id);
@@ -87,7 +84,19 @@ Profile* TorProfileManager::GetTorProfile(Profile* original_profile) {
   tor_profile->AddObserver(this);
   tor_profiles_[context_id] = tor_profile;
 
+  tor::TorProfileService* service =
+      TorProfileServiceFactory::GetForContext(tor_profile);
+  DCHECK(service);
+  // TorLauncherFactory relies on OnExecutableReady to launch tor process so we
+  // need to make sure tor binary is there every time
+  service->RegisterTorClientUpdater();
+
   return tor_profile;
+}
+
+void TorProfileManager::CloseAllTorWindows() {
+  for (const auto& it : tor_profiles_)
+    CloseTorProfileWindows(it.second);
 }
 
 void TorProfileManager::OnBrowserRemoved(Browser* browser) {
@@ -119,7 +128,8 @@ void TorProfileManager::InitTorProfileUserPrefs(Profile* profile) {
   // Disable the automatic translate bubble in Tor because we currently don't
   // support extensions in Tor mode and users cannot disable this through
   // settings page for Tor windows.
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-  pref_service->SetBoolean(prefs::kOfferTranslateEnabled, false);
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
+    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+  pref_service->SetBoolean(translate::prefs::kOfferTranslateEnabled, false);
 #endif
 }

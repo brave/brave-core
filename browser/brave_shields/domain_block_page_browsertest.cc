@@ -8,7 +8,8 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
+#include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
@@ -33,6 +34,8 @@ using brave_shields::features::kBraveDomainBlock;
 class DomainBlockTestBase : public AdBlockServiceTest {
  public:
   DomainBlockTestBase() {}
+  DomainBlockTestBase(const DomainBlockTestBase&) = delete;
+  DomainBlockTestBase& operator=(const DomainBlockTestBase&) = delete;
 
   void SetUp() override {
     request_count_ = 0;
@@ -60,7 +63,7 @@ class DomainBlockTestBase : public AdBlockServiceTest {
   }
 
   void NavigateTo(const GURL& url) {
-    ui_test_utils::NavigateToURL(browser(), url);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     content::RenderFrameHost* frame = web_contents()->GetMainFrame();
     ASSERT_TRUE(WaitForRenderFrameReady(frame));
   }
@@ -80,8 +83,6 @@ class DomainBlockTestBase : public AdBlockServiceTest {
 
  protected:
   int request_count_;
-
-  DISALLOW_COPY_AND_ASSIGN(DomainBlockTestBase);
 };
 
 class DomainBlockTest : public DomainBlockTestBase {
@@ -223,9 +224,9 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectNewTabs) {
   // by the domain block interstitial, because the permission we gave by
   // clicking "Proceed anyway" in the other tab is tab-specific.
   ui_test_utils::AllBrowserTabAddedWaiter new_tab;
-  ui_test_utils::NavigateToURLWithDisposition(
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   new_tab.Wait();
   ASSERT_TRUE(IsShowingInterstitial());
 }
@@ -263,9 +264,9 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, DontWarnAgainAndProceed) {
   // directly, because we previously saved the "don't warn again" choice for
   // this domain and are now respecting that choice.
   ui_test_utils::AllBrowserTabAddedWaiter new_tab;
-  ui_test_utils::NavigateToURLWithDisposition(
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   new_tab.Wait();
   ASSERT_FALSE(IsShowingInterstitial());
   EXPECT_EQ(web_contents()->GetURL().host(), "a.com");
@@ -304,9 +305,9 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoFetch) {
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
   BlockDomainByURL(url);
   ui_test_utils::AllBrowserTabAddedWaiter new_tab;
-  ui_test_utils::NavigateToURLWithDisposition(
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   new_tab.Wait();
 
   // Should be showing domain blocked interstitial page.
@@ -318,7 +319,8 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoFetch) {
 
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoThirdPartyInterstitial) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
-  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
+  ASSERT_TRUE(g_brave_browser_process->ad_block_service()
+                  ->custom_filters_provider()
                   ->UpdateCustomFilters("||b.com^$third-party"));
 
   GURL url = embedded_test_server()->GetURL("a.com", "/simple_link.html");
@@ -403,4 +405,44 @@ IN_PROC_BROWSER_TEST_F(DomainBlockDisabledTest, NoInterstitial) {
   std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
+
+IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectOtherDomains) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  GURL url_a = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
+                                  url_a);
+  GURL url_b = embedded_test_server()->GetURL("b.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
+                                  url_b);
+
+  // Navigate to a page on a.com. This should work normally.
+  NavigateTo(url_a);
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // Block a.com, then attempt to navigate to a page on a.com. This should be
+  // interrupted by the domain block interstitial.
+  BlockDomainByURL(url_a);
+  NavigateTo(url_a);
+  ASSERT_TRUE(IsShowingInterstitial());
+
+  // Simulate click on "Proceed anyway" button. This should navigate to the
+  // originally requested page.
+  ClickAndWaitForNavigation("primary-button");
+  ASSERT_FALSE(IsShowingInterstitial());
+  std::u16string expected_title(u"OK");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+
+  // Navigate to a page on b.com. This should work normally.
+  NavigateTo(url_b);
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // Block b.com, then attempt to navigate to a page on b.com. This should be
+  // interrupted by the domain block interstitial, because "proceed anyway"
+  // permission was only given to a.com and should not apply to other domains
+  // in the same tab.
+  BlockDomainByURL(url_b);
+  NavigateTo(url_b);
+  ASSERT_TRUE(IsShowingInterstitial());
 }

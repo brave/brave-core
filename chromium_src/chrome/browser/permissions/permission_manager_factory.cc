@@ -7,15 +7,17 @@
 
 #include "brave/browser/geolocation/brave_geolocation_permission_context_delegate.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
+#include "brave/components/permissions/brave_permission_manager.h"
 #include "brave/components/permissions/permission_lifetime_manager.h"
 #include "components/permissions/features.h"
+#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
 
 #define GeolocationPermissionContextDelegate \
   BraveGeolocationPermissionContextDelegate
 
 #define BuildServiceInstanceFor BuildServiceInstanceFor_ChromiumImpl
 
-#include "../../../../../chrome/browser/permissions/permission_manager_factory.cc"
+#include "src/chrome/browser/permissions/permission_manager_factory.cc"
 
 #undef GeolocationPermissionContextDelegate
 #undef BuildServiceInstanceFor
@@ -24,14 +26,19 @@ KeyedService* PermissionManagerFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   Profile* profile = Profile::FromBrowserContext(context);
   auto permission_contexts = CreatePermissionContexts(profile);
+
+  permission_contexts[ContentSettingsType::BRAVE_ETHEREUM] =
+      std::make_unique<permissions::BraveEthereumPermissionContext>(profile);
+
   if (base::FeatureList::IsEnabled(
           permissions::features::kPermissionLifetime)) {
-    auto* lifetime_manager =
-        PermissionLifetimeManagerFactory::GetInstance()->GetForProfile(profile);
+    auto factory =
+        base::BindRepeating(&PermissionLifetimeManagerFactory::GetForProfile);
     for (auto& permission_context : permission_contexts) {
-      permission_context.second->SetPermissionLifetimeManager(lifetime_manager);
+      permission_context.second->SetPermissionLifetimeManagerFactory(factory);
     }
   }
-  return new permissions::PermissionManager(profile,
-                                            std::move(permission_contexts));
+
+  return new permissions::BravePermissionManager(
+      profile, std::move(permission_contexts));
 }

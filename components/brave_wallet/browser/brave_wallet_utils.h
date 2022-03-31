@@ -10,37 +10,22 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
+class PrefService;
+namespace base {
+class Value;
+}  // namespace base
+
+class GURL;
 
 namespace brave_wallet {
 
 bool IsNativeWalletEnabled();
-// Equivalent to web3.utils.toHex(string);
-std::string ToHex(const std::string& data);
-// Equivalent to web3.utils.keccak256(string)
-std::string KeccakHash(const std::string& input, bool to_hex = true);
-std::vector<uint8_t> KeccakHash(const std::vector<uint8_t>& input);
-// Returns the hex encoding of the first 4 bytes of the hash.
-// For example: keccak('balanceOf(address)')
-std::string GetFunctionHash(const std::string& input);
-// Pads a hex encoded parameter to 32-bytes
-// i.e. 64 hex characters.
-// Input must be prefixed with 0x
-bool PadHexEncodedParameter(const std::string& hex_input, std::string* out);
-// Determines if the passed in hex string is valid
-bool IsValidHexString(const std::string& hex_input);
-// Takes 2 inputs prefixed by 0x and combines them into an output with a single
-// 0x. For example 0x1 and 0x2 would return 0x12.
-// Note thta this doesn't do any special casing like 0x and 0x will make 0x00
-// and not 0x.
-bool ConcatHexStrings(const std::string& hex_input1,
-                      const std::string& hex_input2,
-                      std::string* out);
-bool ConcatHexStrings(const std::vector<std::string>& hex_inputs,
-                      std::string* out);
-
-bool HexValueToUint256(const std::string& hex_input, uint256_t* out);
-std::string Uint256ValueToHex(uint256_t input);
+bool IsFilecoinEnabled();
+bool IsSolanaEnabled();
 
 // Generate mnemonic from random entropy following BIP39.
 // |entropy_size| should be specify in bytes
@@ -55,6 +40,10 @@ std::string GenerateMnemonicForTest(const std::vector<uint8_t>& entropy);
 std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
     const std::string& mnemonic,
     const std::string& passphrase);
+// This is mainly used for restoring legacy brave crypto wallet
+std::unique_ptr<std::vector<uint8_t>> MnemonicToEntropy(
+    const std::string& mnemonic);
+bool IsValidMnemonic(const std::string& mnemonic);
 
 bool EncodeString(const std::string& input, std::string* output);
 bool EncodeStringArray(const std::vector<std::string>& input,
@@ -64,15 +53,76 @@ bool DecodeString(size_t offset, const std::string& input, std::string* output);
 bool DecodeStringArray(const std::string& input,
                        std::vector<std::string>* output);
 
-// Implement namehash algorithm based on EIP-137 spec.
-// Used for converting domain names in the classic format (ex: brave.crypto) to
-// an ERC-721 token for ENS and Unstoppable Domains.
-std::string Namehash(const std::string& name);
+// Updates preferences for when the wallet is unlocked.
+// This is done in a utils function instead of in the KeyringService
+// because we call it both from the old extension and the new wallet when
+// it unlocks.
+void UpdateLastUnlockPref(PrefService* prefs);
 
-// When we call memset in end of function to clean local variables
-// for security reason, compiler optimizer can remove such call.
-// So we use our own function for this purpose.
-void SecureZeroData(void* data, size_t size);
+base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt);
+absl::optional<TransactionReceipt> ValueToTransactionReceipt(
+    const base::Value& value);
+
+void GetAllKnownEthChains(PrefService* prefs,
+                          std::vector<mojom::NetworkInfoPtr>* chains);
+const std::vector<mojom::NetworkInfoPtr> GetAllKnownNetworksForTesting();
+void GetAllEthCustomChains(PrefService* prefs,
+                           std::vector<mojom::NetworkInfoPtr>* result);
+GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls);
+void GetAllChains(PrefService* prefs,
+                  mojom::CoinType coin,
+                  std::vector<mojom::NetworkInfoPtr>* result);
+GURL GetNetworkURL(PrefService* prefs,
+                   const std::string& chain_id,
+                   mojom::CoinType coin);
+std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id);
+mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,
+                                       const std::string& chain_id);
+
+std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id);
+void GetAllKnownSolChains(std::vector<mojom::NetworkInfoPtr>* result);
+std::string GetKnownSolNetworkId(const std::string& chain_id);
+std::string GetKnownNetworkId(mojom::CoinType coin,
+                              const std::string& chain_id);
+std::string GetNetworkId(PrefService* prefs,
+                         mojom::CoinType coin,
+                         const std::string& chain_id);
+void SetDefaultWallet(PrefService* prefs, mojom::DefaultWallet default_wallet);
+mojom::DefaultWallet GetDefaultWallet(PrefService* prefs);
+void SetDefaultBaseCurrency(PrefService* prefs, const std::string& currency);
+std::string GetDefaultBaseCurrency(PrefService* prefs);
+void SetDefaultBaseCryptocurrency(PrefService* prefs,
+                                  const std::string& cryptocurrency);
+std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
+std::vector<std::string> GetAllKnownEthNetworkIds();
+std::string GetKnownEthNetworkId(const std::string& chain_id);
+
+std::string GetUnstoppableDomainsProxyReaderContractAddress(
+    const std::string& chain_id);
+std::string GetEnsRegistryContractAddress(const std::string& chain_id);
+
+// Append chain value to kBraveWalletCustomNetworks dictionary pref.
+void AddCustomNetwork(PrefService* prefs, mojom::NetworkInfoPtr chain);
+
+void RemoveCustomNetwork(PrefService* prefs,
+                         const std::string& chain_id_to_remove);
+
+// Get a specific chain from all chains for certain coin.
+mojom::NetworkInfoPtr GetChain(PrefService* prefs,
+                               const std::string& chain_id,
+                               mojom::CoinType coin);
+
+// Get the current chain ID for coin from kBraveWalletSelectedNetworks pref.
+std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin);
+
+// Returns the first URL to use that:
+// 1. Has no variables in it like ${INFURA_API_KEY}
+// 2. Is HTTP or HTTPS
+// Otherwise if there is a URL in the list, it returns the first one.
+// Otherwise returns an empty GURL
+GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls);
+
+absl::optional<std::string> GetPrefKeyForCoinType(mojom::CoinType coin);
 
 }  // namespace brave_wallet
 

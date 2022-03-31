@@ -12,6 +12,8 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/background.h"
 #include "ui/views/bubble/bubble_border.h"
@@ -29,9 +31,7 @@ SidebarItemAddedFeedbackBubble::SidebarItemAddedFeedbackBubble(
     views::View* anchor_view,
     views::View* items_contents_view)
     : BubbleDialogDelegateView(anchor_view, views::BubbleBorder::LEFT_CENTER),
-      animation_(base::TimeDelta::FromMilliseconds(kFadeoutDurationInMs),
-                 60,
-                 this) {
+      animation_(base::Milliseconds(kFadeoutDurationInMs), 60, this) {
   // This bubble uses same color for all themes.
   constexpr SkColor kBubbleBackground = SkColorSetRGB(0x33, 0x9A, 0xF0);
   set_color(kBubbleBackground);
@@ -42,7 +42,7 @@ SidebarItemAddedFeedbackBubble::SidebarItemAddedFeedbackBubble(
   SetButtons(ui::DIALOG_BUTTON_NONE);
 
   AddChildViews();
-  observed_.Add(items_contents_view);
+  observed_.Observe(items_contents_view);
 }
 
 SidebarItemAddedFeedbackBubble::~SidebarItemAddedFeedbackBubble() = default;
@@ -54,7 +54,7 @@ void SidebarItemAddedFeedbackBubble::OnWidgetVisibilityChanged(
   if (visible && !fade_timer_.IsRunning()) {
     constexpr int kFadeoutStartTimeInMs = 2500;
     fade_timer_.Start(
-        FROM_HERE, base::TimeDelta::FromMilliseconds(kFadeoutStartTimeInMs),
+        FROM_HERE, base::Milliseconds(kFadeoutStartTimeInMs),
         base::BindOnce(&gfx::Animation::Start, base::Unretained(&animation_)));
   }
 }
@@ -68,7 +68,6 @@ SidebarItemAddedFeedbackBubble::CreateNonClientFrameView(
       std::make_unique<BubbleBorderWithArrow>(arrow(), GetShadow(), color());
   constexpr int kFeedbackBubbleRadius = 6;
   border->SetCornerRadius(kFeedbackBubbleRadius);
-  border->set_md_shadow_color(SkColorSetARGB(0x5C, 0x63, 0x69, 0x6E));
   auto* border_ptr = border.get();
   frame->SetBubbleBorder(std::move(border));
   // Replace default background to draw arrow.
@@ -131,3 +130,6 @@ void SidebarItemAddedFeedbackBubble::AddChildViews() {
   label->SetAutoColorReadabilityEnabled(false);
   label->SetEnabledColor(SK_ColorWHITE);
 }
+
+BEGIN_METADATA(SidebarItemAddedFeedbackBubble, views::BubbleDialogDelegateView)
+END_METADATA

@@ -18,19 +18,19 @@ import sys
 
 
 def main(args):
-  parser = argparse.ArgumentParser(description=__doc__)
-  parser.add_argument('--stamp',
-                      required=True,
-                      help='Path to stamp to mark when finished.')
-  options = parser.parse_args(args)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--stamp',
+                        required=True,
+                        help='Path to stamp to mark when finished.')
+    options = parser.parse_args(args)
 
-  if options.stamp:
-    open(options.stamp, 'w').close()
-  else:
-    return 1
+    if options.stamp:
+        open(options.stamp, 'w').close()
+    else:
+        return 1
 
-  return 0
+    return 0
 
 
 if __name__ == '__main__':
-  sys.exit(main(sys.argv[1:]))
+    sys.exit(main(sys.argv[1:]))

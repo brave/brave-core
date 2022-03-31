@@ -48,7 +48,7 @@
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 #endif
-#include "../../../../../chrome/browser/extensions/install_verifier.cc"
+#include "src/chrome/browser/extensions/install_verifier.cc"
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #endif

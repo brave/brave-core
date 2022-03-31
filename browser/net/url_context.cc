@@ -16,9 +16,12 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/render_frame_host.h"
 #include "net/base/isolation_info.h"
+#include "services/network/public/cpp/resource_request.h"
+#include "url/origin.h"
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -105,9 +108,12 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
   // (See |BraveProxyingWebSocket|).
   if (ctx->tab_origin.is_empty()) {
-    ctx->tab_origin = brave_shields::BraveShieldsWebContentsObserver::
-                          GetTabURLFromRenderFrameInfo(ctx->frame_tree_node_id)
-                              .GetOrigin();
+    content::WebContents* contents =
+        content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
+    if (contents) {
+      ctx->tab_origin =
+          url::Origin::Create(contents->GetLastCommittedURL()).GetURL();
+    }
   }
 
   if (old_ctx) {
@@ -115,19 +121,18 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     ctx->redirect_source = old_ctx->redirect_source;
   }
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   auto* prefs = user_prefs::UserPrefs::Get(browser_context);
   ctx->ipfs_gateway_url =
-      ipfs::GetConfiguredBaseGateway(browser_context, chrome::GetChannel());
+      ipfs::GetConfiguredBaseGateway(prefs, chrome::GetChannel());
   ctx->ipfs_auto_fallback = prefs->GetBoolean(kIPFSAutoRedirectGateway);
 
   // ipfs:// navigations have no tab origin set, but we want it to be the tab
   // origin of the gateway so that ad-block in particular won't give up early.
-  if (ipfs::IsLocalGatewayConfigured(browser_context) &&
-      ctx->tab_origin.is_empty() &&
+  if (ipfs::IsLocalGatewayConfigured(prefs) && ctx->tab_origin.is_empty() &&
       ipfs::IsLocalGatewayURL(ctx->initiator_url)) {
     ctx->tab_url = ctx->initiator_url;
-    ctx->tab_origin = ctx->initiator_url.GetOrigin();
+    ctx->tab_origin = url::Origin::Create(ctx->initiator_url).GetURL();
   }
 #endif
 
@@ -137,6 +142,11 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
       brave_shields::GetBraveShieldsEnabled(map, ctx->tab_origin);
   ctx->allow_ads = brave_shields::GetAdControlType(map, ctx->tab_origin) ==
                    brave_shields::ControlType::ALLOW;
+  // Currently, "aggressive" mode is registered as a cosmetic filtering control
+  // type, even though it can also affect network blocking.
+  ctx->aggressive_blocking =
+      brave_shields::GetCosmeticFilteringControlType(map, ctx->tab_origin) ==
+      brave_shields::ControlType::BLOCK;
   ctx->allow_http_upgradable_resource =
       !brave_shields::GetHTTPSEverywhereEnabled(map, ctx->tab_origin);
 

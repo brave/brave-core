@@ -6,13 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 
-#include <map>
 #include <string>
 #include <vector>
 
 #include "base/callback_forward.h"
-#include "base/macros.h"
 #include "base/observer_list.h"
+#include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "build/build_config.h"
@@ -25,6 +24,7 @@ struct AdsHistoryInfo;
 }
 
 namespace base {
+class DictionaryValue;
 class ListValue;
 }
 
@@ -34,28 +34,29 @@ class PrefRegistrySyncable;
 
 namespace brave_ads {
 
-using OnGetAdsHistoryCallback =
-    base::OnceCallback<void(const base::ListValue&)>;
+using OnGetHistoryCallback = base::OnceCallback<void(const base::ListValue&)>;
 
-using OnToggleAdThumbUpCallback =
-    base::OnceCallback<void(const std::string&, int)>;
+using OnToggleAdThumbUpCallback = base::OnceCallback<void(const std::string&)>;
 using OnToggleAdThumbDownCallback =
-    base::OnceCallback<void(const std::string&, int)>;
-using OnToggleAdOptInActionCallback =
-    base::OnceCallback<void(const std::string&, int)>;
-using OnToggleAdOptOutActionCallback =
-    base::OnceCallback<void(const std::string&, int)>;
-using OnToggleSaveAdCallback =
-    base::OnceCallback<void(const std::string&, bool)>;
-using OnToggleFlagAdCallback =
-    base::OnceCallback<void(const std::string&, bool)>;
+    base::OnceCallback<void(const std::string&)>;
 
-using GetAccountStatementCallback = base::OnceCallback<void(const bool,
-                                                            const double,
-                                                            const int64_t,
-                                                            const int,
-                                                            const double,
-                                                            const double)>;
+using OnToggleAdOptInCallback =
+    base::OnceCallback<void(const std::string&, int)>;
+using OnToggleAdOptOutCallback =
+    base::OnceCallback<void(const std::string&, int)>;
+
+using OnToggleSavedAdCallback = base::OnceCallback<void(const std::string&)>;
+
+using OnToggleFlaggedAdCallback = base::OnceCallback<void(const std::string&)>;
+
+using OnGetInlineContentAdCallback = base::OnceCallback<
+    void(const bool, const std::string&, const base::DictionaryValue&)>;
+
+using GetStatementOfAccountsCallback = base::OnceCallback<
+    void(const bool, const double, const int, const double, const double)>;
+
+using GetAdDiagnosticsCallback =
+    base::OnceCallback<void(const bool, const std::string&)>;
 
 class AdsService : public KeyedService {
  public:
@@ -69,7 +70,6 @@ class AdsService : public KeyedService {
   void RemoveObserver(AdsServiceObserver* observer);
 
   virtual bool IsSupportedLocale() const = 0;
-  virtual bool IsNewlySupportedLocale() = 0;
 
   virtual bool IsEnabled() const = 0;
   virtual void SetEnabled(const bool is_enabled) = 0;
@@ -86,6 +86,12 @@ class AdsService : public KeyedService {
   virtual std::string GetAutoDetectedAdsSubdivisionTargetingCode() const = 0;
   virtual void SetAutoDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) = 0;
+
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+  virtual void ShowScheduledCaptcha(const std::string& payment_id,
+                                    const std::string& captcha_id) = 0;
+  virtual void SnoozeScheduledCaptcha() = 0;
+#endif
 
   virtual void OnShowAdNotification(const std::string& notification_id) = 0;
   virtual void OnCloseAdNotification(const std::string& notification_id,
@@ -119,44 +125,50 @@ class AdsService : public KeyedService {
   virtual void OnNewTabPageAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::mojom::BraveAdsNewTabPageAdEventType event_type) = 0;
+      const ads::mojom::NewTabPageAdEventType event_type) = 0;
 
   virtual void OnPromotedContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::mojom::BraveAdsPromotedContentAdEventType event_type) = 0;
+      const ads::mojom::PromotedContentAdEventType event_type) = 0;
 
-  virtual void ReconcileAdRewards() = 0;
+  virtual void GetInlineContentAd(const std::string& dimensions,
+                                  OnGetInlineContentAdCallback callback) = 0;
 
-  virtual void GetAdsHistory(const uint64_t from_timestamp,
-                             const uint64_t to_timestamp,
-                             OnGetAdsHistoryCallback callback) = 0;
+  virtual void OnInlineContentAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const ads::mojom::InlineContentAdEventType event_type) = 0;
 
-  virtual void GetAccountStatement(GetAccountStatementCallback callback) = 0;
+  virtual void PurgeOrphanedAdEventsForType(
+      const ads::mojom::AdType ad_type) = 0;
 
-  virtual void ToggleAdThumbUp(const std::string& creative_instance_id,
-                               const std::string& creative_set_id,
-                               const int action,
+  virtual void GetHistory(const double from_timestamp,
+                          const double to_timestamp,
+                          OnGetHistoryCallback callback) = 0;
+
+  virtual void GetStatementOfAccounts(
+      GetStatementOfAccountsCallback callback) = 0;
+
+  virtual void GetAdDiagnostics(GetAdDiagnosticsCallback callback) = 0;
+
+  virtual void ToggleAdThumbUp(const std::string& json,
                                OnToggleAdThumbUpCallback callback) = 0;
-  virtual void ToggleAdThumbDown(const std::string& creative_instance_id,
-                                 const std::string& creative_set_id,
-                                 const int action,
+  virtual void ToggleAdThumbDown(const std::string& json,
                                  OnToggleAdThumbDownCallback callback) = 0;
-  virtual void ToggleAdOptInAction(const std::string& category,
-                                   const int action,
-                                   OnToggleAdOptInActionCallback callback) = 0;
-  virtual void ToggleAdOptOutAction(
-      const std::string& category,
-      const int action,
-      OnToggleAdOptOutActionCallback callback) = 0;
-  virtual void ToggleSaveAd(const std::string& creative_instance_id,
-                            const std::string& creative_set_id,
-                            const bool saved,
-                            OnToggleSaveAdCallback callback) = 0;
-  virtual void ToggleFlagAd(const std::string& creative_instance_id,
-                            const std::string& creative_set_id,
-                            const bool flagged,
-                            OnToggleFlagAdCallback callback) = 0;
+
+  virtual void ToggleAdOptIn(const std::string& category,
+                             const int action,
+                             OnToggleAdOptInCallback callback) = 0;
+  virtual void ToggleAdOptOut(const std::string& category,
+                              const int action,
+                              OnToggleAdOptOutCallback callback) = 0;
+
+  virtual void ToggleSavedAd(const std::string& json,
+                             OnToggleSavedAdCallback callback) = 0;
+
+  virtual void ToggleFlaggedAd(const std::string& json,
+                               OnToggleFlaggedAdCallback callback) = 0;
 
   virtual void ResetAllState(const bool should_shutdown) = 0;
 

@@ -4,45 +4,86 @@
 <translation id="3333887201479867589">Premis de Brave</translation>
 <translation id="7942180974165298215">Blocatge d'anuncis de Brave</translation>
 <translation id="4615489450165434530">Informa d'una pàgina web inexistent</translation>
+<translation id="1209739344687072997">Informa d'una pàgina web inexistent</translation>
 <translation id="6406506848690869874">Sincronització</translation>
 <translation id="1544192797660353713">Cartera</translation>
 <translation id="2445484935443597917">Crea un perfil</translation>
+<translation id="744341768939279100">Crea un perfil nou</translation>
 <translation id="2666990579225592931">Obre la finestra de convidat</translation>
+<translation id="4986483413015198747">Obre la finestra de convidat</translation>
 <translation id="8275068909952022340">Més…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (amb identificador d'extensió "<ph name="EXTENSION_ID"/>") no es permet a Brave.</translation>
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="984275831282074731">Formes de pagament</translation>
-<translation id="3699882589215410581">Instal·la i executa Widevine</translation>
+<translation id="1990886731975529483">Instal·leu i executeu Google Widevine</translation>
 <translation id="8926389886865778422">No m'ho tornis a preguntar</translation>
 <translation id="5249433283143453448">Utilitza el component Widevine de gestió de drets digitals (DRM) per visualitzar vídeo en streaming protegit i altres continguts al navegador.</translation>
 <translation id="6241402707160226266">Finestra Privada amb Tor</translation>
 <translation id="8762452230727230396">Tor amaga la vostra adreça IP dels llocs que visiteu.</translation>
 <translation id="1369311132025451972">Redirigir automaticament els llocs .onion</translation>
-<translation id="81720820779436751">Brave obrirà el servei de ceba del lloc web quan estigui disponible o el domini .onion a la finestra Tor</translation>
-<translation id="8053096063396012732">Instal·la Widevine</translation>
-<translation id="4840334696217618631">Reinicia el navegador per activar Widevine</translation>
-<translation id="8410111618231938546">Google Widevine és una part del codi de Gestió de Drets Digitals (DRM) que a Brave Software no tenim i no podem inspeccionar. El codi de Google Widevine es carrega dels servidors de Google, no dels nostres servidors. Es carrega només quan habiliteu aquesta opció. No encoratgem la utilització del DRM, però respectem l'elecció de l'usuari i sabem que a alguns usuaris de Brave els agradaria poder utilitzar els serveis que ho requereixen.
-
-En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevine. Accepteu que Brave no es fa responsable dels danys o pèrdues relacionats amb el vostre ús de Google Widevine.</translation>
+<translation id="2843777623071353503">Brave obrirá el servei Onion a la pàgina web quan estigui disponible o el domini .onion a la finestra de Tor.</translation>
+<translation id="4900351245762303149">Instal·leu Google Widevine</translation>
+<translation id="2313383941300459392">Reinicieu el navegador per activar Google Widevine</translation>
+<translation id="2200626478572277092">De vegades es necessita Widevine per reproduir els arxius multimèdia en una pàgina web. És una extensió de Google carregada des dels servidors de Google, que Brave no pot inspeccionar. En instal·lar-la, accepteu els termes d'ús de Google.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Més informació sobre Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> us demana que</translation>
 <translation id="410351446219883937">Reproducció automàtica</translation>
 <translation id="3218385319396786393">Reproducció automàtica bloquejada en aquesta pàgina</translation>
 <translation id="4988333904713528597">Permet sempre la reproducció automàtica a <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continua bloquejant la reproducció automàtica</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Pregunta quan els llocs vulguin accedir a l'API del proveïdor d'Ethereum</translation>
+<translation id="7017590444693657895">Impedeix que els llocs accedeixin a l'API del proveïdor d'Ethereum</translation>
 <translation id="8988939298652262600">Brave no revisa la seguretat de les extensions. Instal·leu aquesta extensió només si confieu en el desenvolupador.</translation>
+<translation id="933652931229970927">Envieu informes de diagnòstic automàticament</translation>
+<translation id="1679356339067548863">Ajudeu a millorar l'estabilitat del producte de Brave enviant automàticament informes de diagnòstic quan el Navegador de Brave falla o es congela.</translation>
 <translation id="8081858229109418493">Nom de perfil i imatge</translation>
+<translation id="6438096877646138757">Llocs que esborren les galetes quan les tanques</translation>
+<translation id="2988792685798128092">Esborra en tancar el lloc</translation>
 <translation id="2044383478723007273">Colors de Brave</translation>
 <translation id="1692470335103807198">Obtén més temes</translation>
 <translation id="2906510232093002459">Imatges predeterminades de Brave</translation>
 <translation id="2814998458708016836">Fer servir una barra d'adreces ampla</translation>
-<translation id="6123134130710658846">Amaga el botó de Premis de Brave</translation>
+<translation id="6333347122924254968">Mostra la icona de Recompenses de Brave a la barra d'adreces</translation>
 <translation id="1811404036171336214">Mostrar sempre els marcadors a la nova pestanya</translation>
 <translation id="1643029991199044105">Cerqueu per les pestanyes més utilitzades recentment amb Ctrl-Tab</translation>
+<translation id="1013121820689882118">Lector de velocitat</translation>
+<translation id="2025435450953474282">Els articles es carreguen automàticament en el mode de lector, fet que estalvia temps</translation>
+<translation id="5510493033031835532">Redirigeix automàticament les pàgines AMP</translation>
+<translation id="5197219128592971597">Visiteu sempre les URL de pàgina originals (que no són d'AMP) en lloc de les versions d'Accelerated Mobile Pages de Google</translation>
 <translation id="5802665280774361839">Mostra Autocompletar a la barra d'adreces</translation>
 <translation id="597020512043916976">Mostreu els llocs principals en suggeriments de complet automàtic</translation>
 <translation id="264150068416846820">Mostreu els llocs suggerits de Brave en suggeriments de complet automàtic</translation>
+<translation id="5529693968082667490">Mostra el botó de cerca de pestanyes</translation>
 <translation id="6414370348346025511">La protecció estàndard està activada.</translation>
 <translation id="814018970995616154">Comprova els enllaços amb una llista de llocs no segurs emmagatzemats a Brave.</translation>
 <translation id="1144810021918451336">No us protegeix contra llocs web, descàrregues i extensions perilloses.</translation>
+<translation id="6285118765755298263">Indexa altres cercadors</translation>
+<translation id="919715748352669592">Indexa automàticament els llocs web que segueixen les especificacions d'OpenSearch</translation>
+<translation id="6821903322090655051">Brave Rewards està inhabilitat</translation>
+<translation id="413570371620795359">Obre el panell de recompenses per activar i començar</translation>
+<translation id="3849957491997306859">Detectat automàticament</translation>
+<translation id="8798099450830957504">Predeterminat</translation>
+<translation id="4176463684765177261">Desactivat</translation>
+<translation id="4851215387785619212">Anuncis privats de Brave</translation>
+<translation id="7808122468353671181">Guanya fitxes veient anuncis de Brave. Els anuncis que es mostren es basen en els teus interessos, segons es dedueix del teu comportament de navegació. No es recullen dades personals ni l'historial de navegació del teu navegador.</translation>
+<translation id="1758947220824279023">Nombre màxim d'anuncis per mostrar</translation>
+<translation id="8578912649458880781">Orientació dels anuncis a nivell estatal</translation>
+<translation id="3678362265519557511">Això permet que Brave et mostri anuncis segons el teu estat.
+<ph name="BEGIN_LINK"/> Més informació<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Auto-Contribució</translation>
+<translation id="9132509928968869844">Límit de contribució automàtica mensual</translation>
+<translation id="7286722244752781970">Temps mínim de pàgina oberta abans de registrar una visita</translation>
+<translation id="4424486208397124985">Visites mínimes per que l'editor mereixi rellevància</translation>
+<translation id="6248554379744796526">Mostra llocs no verificats en la llista</translation>
+<translation id="5510618543889994434">Permet contribucions per a vídeos</translation>
+<translation id="924777189963477634">En activar la contribució automàtica, acceptes les <ph name="BEGIN_LINK_TOS"/>Condicions del servei <ph name="END_LINK_TOS"/> i la <ph name="BEGIN_LINK_PP"/> Política de privacitat <ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Botons de propina</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="7781069478569868053">Pàgina de pestanyes nova</translation>
 <translation id="1988804048511540801">La nova pestanya mostra</translation>
 <translation id="2970343821770026391">Panell</translation>
@@ -55,34 +96,41 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="8612763432858587652">Sortiu de la Finestra Privada</translation>
 <translation id="8760415064721320867">Finestra Privada amb Tor</translation>
 <translation id="2055363275850890030">Finestra privada</translation>
-<translation id="8934172355414207733">Privat amb Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Això és una finestra privada amb Tor</translation>
 <translation id="1037341607922068025">Obrir una Finestra Privada amb Tor</translation>
 <translation id="1725356094208762656">Obrir a Tor</translation>
-<translation id="7643538479215207633">Obrir amb IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Publica i recupera fitxers de l'IPFS</translation>
-<translation id="1672270084584211506">Onion Disponible</translation>
+<translation id="7398397225367092613">.onion</translation>
+<translation id="406832631167785034">Obrir utilitzant l'adreça .onion</translation>
 <translation id="4901618511712685702">Importa a IPFS</translation>
 <translation id="6794469945030154569">Aquesta pàgina</translation>
 <translation id="5037852323412456577">Imatge seleccionada</translation>
 <translation id="2715839724138372481">Vídeo seleccionat</translation>
 <translation id="4227945450504703638">Àudio seleccionat</translation>
 <translation id="7895302206188277628">Contingut vinculat</translation>
-<translation id="4322612543319315652">Importa el text seleccionat a IPFS</translation>
-<translation id="8883166554766780543">Importa i copia l'enllaç a la captura d'IPFS</translation>
 <translation id="3654831858282189202">Publica amb clau IPNS</translation>
-<translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importa el text seleccionat a IPFS</translation>
+<translation id="6925604404524625582">Importa i copia l'enllaç a la captura d'IPFS</translation>
 <translation id="1434416574322382019">Nova finestra privada amb Tor</translation>
 <translation id="4703780849509456860">Obre l'enllaç a una finestra privada amb Tor</translation>
 <translation id="3488584642074079080">Obre l'enllaç a una finestra privada de Brave amb Tor</translation>
-<translation id="7475547933708221517">Comparteix el fitxer local mitjançant IPFS</translation>
-<translation id="2286177249736199435">Comparteix la carpeta local mitjançant IPFS</translation>
-<translation id="784573715436258741">Comparteix el fitxer local mitjançant IPFS</translation>
+<translation id="186554175479803110">Importa i comparteix un fitxer</translation>
+<translation id="3036649622769666520">Obre fitxers</translation>
+<translation id="4408880250587950158">Importa i comparteix un directori</translation>
+<translation id="8396273373598682323">Amb un fitxer</translation>
+<translation id="518600784989889917">Amb un directori</translation>
+<translation id="8147987711042435221">Actualitza IPNS</translation>
+<translation id="4491895534716990473">Importa el text seleccionat a IPFS</translation>
+<translation id="8883166554766780543">Importa i copia l'enllaç a la captura d'IPFS</translation>
+<translation id="709253338301411121">Importa i comparteix un fitxer</translation>
+<translation id="7068360136237591149">Obre fitxers</translation>
 <translation id="6313675821927505581">Nova finestra privada amb Tor</translation>
 <translation id="2638041073279639246">Obre l'enllaç a una finestra privada amb Tor</translation>
 <translation id="3425600262621021599">Obre l'enllaç a una finestra privada de Brave amb Tor</translation>
-<translation id="575838692088926391">Comparteix la carpeta local mitjançant IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
+<translation id="3229091547987707389">Importa i comparteix un directori</translation>
 <translation id="2515126961943087659">Servei d'anuncis de BAT</translation>
 <translation id="7924918279836988121">Servei de comptabilitat Bat</translation>
 <translation id="4472575034687746823">Comença</translation>
@@ -90,7 +138,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="6303294677342628402">Escuts</translation>
 <translation id="7133511168130368997">Bloquejar rastrejadors i anuncis que et segueixen pel web.</translation>
 <translation id="2761825942249694703">Aquests són els ajustos predeterminats de Brave. S'apliquen a tots els llocs web, llevat que en canviïs algun en concret al panell dels escuts d'un lloc particular. El fet de canviar-los no afectarà els ajustos existents per a la resta de llocs.</translation>
-<translation id="8754605759692119662">D'aquesta manera es bloquejaran la majoria dels anuncis als llocs web, no els anuncis privats de Brave, els quals es control·len a la</translation>
+<translation id="1485394570478670912">D'aquesta manera, es bloquejaran la majoria dels anuncis als llocs web, no els Brave Private Ads, els quals es controlen a la</translation>
 <translation id="6388201778088078932">ajustos.</translation>
 <translation id="9185018653595759199">Bloqueig de mitjans socials</translation>
 <translation id="7390783310074170337">Vista per defecte</translation>
@@ -109,13 +157,11 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="958971637207126733">Permet publicacions incrustades de LinkedIn</translation>
 <translation id="4078738236287221428">Agresiu</translation>
 <translation id="7740996059027112821">Estàndard</translation>
-<translation id="4176463684765177261">Desactivat</translation>
 <translation id="5770288601196774623">Només llocs creuats</translation>
 <translation id="3587482841069643663">Tots</translation>
 <translation id="5533533363827555308">Estricte, pot ser que trenqui llocs</translation>
 <translation id="8792121506918889955">Política de gestió d'IP WebRTC</translation>
 <translation id="6165508094623778733">Saber més</translation>
-<translation id="8798099450830957504">Predeterminat</translation>
 <translation id="1822560017823072927">Interfícies públiques i privades predeterminades</translation>
 <translation id="5825943197137337319">Només interfície pública predeterminada</translation>
 <translation id="1689062823386843231">Desactiva UDP que no sigui a través de proxy</translation>
@@ -162,6 +208,11 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="2339730291919608488">Deixa la cadena de sincronització</translation>
 <translation id="115699408012835975">Si restabliu la sincronització, haureu de tornar a introduir un codi de sincronització d'un altre dispositiu per a poder-lo sincronitzar. Esteu segurs que voleu continuar?</translation>
 <translation id="6092564993102418148">Estàs segur que vols eliminar el dispositiu seleccionat de la cadena de sincronització?</translation>
+<translation id="2936582902048232286">Avís: amb això es compartiran les teves dades de Brave, incloses les teves contrasenyes, amb el dispositiu que ha generat aquestes paraules de codi.
+
+Si us plau, revisa que aquests codis de paraules s'hagin generat a partir d'un dels teus dispositius.
+
+Segur que vols continuar?</translation>
 <translation id="3396347744975515056">Brave Sync s'ha actualitzat i requereix configuració</translation>
 <translation id="7473245612074035141">Comenceu la Configuració</translation>
 <translation id="3411013544209536575">Consells d'ajuda</translation>
@@ -175,48 +226,73 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="8488282162676695335">Cartera Brave</translation>
 <translation id="2356070529366658676">Pregunta-ho</translation>
 <translation id="7701040980221191251">Cap</translation>
-<translation id="5655621391922317800">Moneders Crypto</translation>
-<translation id="1696548911367097044">Extensió obsoleta de Crypto Wallets</translation>
-<translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Proveïdor d'Ethereum per utilitzar Dapps</translation>
-<translation id="5913089932885076110">Carregueu Moneders Crypto a l'inici</translation>
-<translation id="757886143331967039">Carregar l'extensió Crypto Wallets obsoleta a l'inici</translation>
+<translation id="1274962333945373242">Moneders de criptomoneda (obsolets)</translation>
+<translation id="3695088618483091287">Brave Wallet (extensions preferents)</translation>
+<translation id="9131889008937672866">Cartera de criptomoneda predeterminada</translation>
+<translation id="4718664830805652430">Moneda base predeterminada</translation>
+<translation id="7992507032049865603">Criptomoneda base predeterminada</translation>
 <translation id="1834467296210148203">Mostra la icona de Brave Wallet a la barra d'eines</translation>
+<translation id="4613486011786721686">Oculta la icona de Cartera del Brave a la barra d'eines</translation>
+<translation id="8239147115686034860">Bloquegeu la cartera de Brave de forma automàtica</translation>
+<translation id="414639769490080648">El nombre de minuts que s'esperarà abans que es bloquegi automàticament la cartera de Brave</translation>
 <translation id="6864914031231797928">Permetre l'accés a Google per obtenir extensions</translation>
 <translation id="5927916530277631319">Mètode per resoldre Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/> sobre DNS mitjançant HTTPS i consideracions de privacitat d'Ethereum.</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Saber-ne més<ph name="END_LINK"/> sobre DNS sobre HTTPS i les consideracions de privacitat d'Ethereum.</translation>
 <translation id="5248318250177143470">Mètode per resoldre el servei de noms Ethereum (ENS)</translation>
 <translation id="7024553202001112871">Configura les teves claus IPNS</translation>
 <translation id="951216659045543447">Signa contingut mitjançant la clau privada corresponent i publica'l a IPNS</translation>
 <translation id="7611728475758612204">Claus disponibles per a publicar</translation>
 <translation id="911363100236037920">Introdueix un nom per a la nova clau</translation>
 <translation id="6358469157239228181">Aquest nom no es pot utilitzar</translation>
-<translation id="8996633027318264334">Realment vols eliminar <ph name="KEY_NAME"/>?</translation>
+<translation id="5761731140570209168">Afegir una nova cadena de connexió de parells</translation>
+<translation id="2082206983920804886">Gira la clau</translation>
+<translation id="5078501082919354191">No s'ha pogut aturar el node local IPFS Brave</translation>
+<translation id="5687424953196903465">No s'ha pogut iniciar el node local IPFS Brave</translation>
+<translation id="6476061084931271248">Reinicia el node per aplicar els canvis</translation>
+<translation id="3754226427671882382">Reinicia el node</translation>
+<translation id="949667118776341807">Gira</translation>
+<translation id="1381002020878144739">ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="724513921936768901">Aquest nom no és vàlid</translation>
+<translation id="6758961763875471084">Modifica la llista de parells</translation>
+<translation id="1295874070797049002">Exporta la clau</translation>
+<translation id="3946479342297227860">Elimina la clau</translation>
+<translation id="1534091531114892221">Configura la descripció de parells d'ipfs</translation>
+<translation id="8996633027318264334">Vols suprimir <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">El node no s'ha executat</translation>
 <translation id="616058968889448209">Error d'inici del sistema IPFS, trobaràs més informació disponible a la <ph name="BEGIN_LINK"/>pàgina de diagnòstic<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">No ha estat possible importar la clau '<ph name="KEY_NAME"/>'</translation>
+<translation id="3364053282600191535">Error en l'exportació de la clau '<ph name="KEY_NAME"/>'</translation>
+<translation id="4993345308607970390">Reinicieu la Brave Wallet</translation>
+<translation id="5975930666279943472">Esborreu la transacció de la cartera i la informació del nonce</translation>
+<translation id="5693968582510626466">Esborrar les transaccions pot ser útil per als desenvolupadors o quan s'esborra l'estat en un servidor local</translation>
+<translation id="6369495274982305511">Segur que vols restablir el teu moneder? Si no en tens una còpia de seguretat, amb el restabliment perdràs totes les dades del compte (inclosos els fons associats). Escriu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar.</translation>
+<translation id="9216386092464743272">Confirmeu que voleu restablir totes les vostres transaccions de la cartera i la informació nonce? Aquesta opció l'utilitzen principalment els desenvolupadors que executen un servidor de proves local. Escriviu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar-ho.</translation>
+<translation id="3752403403443723332">S'ha restablert la cartera.</translation>
+<translation id="594766067816395072">S'ha restablert la informació de les transaccions de la cartera.</translation>
+<translation id="1426410128494586442">Sí</translation>
 <translation id="8275038454117074363">Importa</translation>
 <translation id="3654980960391973513">Genera</translation>
 <translation id="5531501313997312487">Node d'inici</translation>
 <translation id="9170907049676078643">Mètode per a resoldre els recursos IPFS</translation>
 <translation id="1327977588028644528">Passarel·la</translation>
-<translation id="80225669816651290">Node local</translation>
+<translation id="1195880978080389104">Node local IPFS Brave</translation>
 <translation id="4927734062756955434">Adreça d'entrada IPFS pública</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Més informació<ph name="END_LINK_MPL"/> sobre el node local IPFS i consideracions de privacitat de passarel·les..</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Més informació<ph name="END_LINK_MPL"/> sobre el node local IPFS Brave i les consideracions de privacitat de la passarel·la.</translation>
 <translation id="8425213833346101688">Canvia</translation>
 <translation id="557281710253742286">Configureu l'entrada IPFS</translation>
 <translation id="8571837315037233299">Adreça d'entrada</translation>
 <translation id="1251574393468476924">Mida màxima de memòria cau IPFS (GB)</translation>
 <translation id="2503497578400410320">Un límit superior suau per a la mida del magatzem de dades del repositori IPFS.</translation>
 <translation id="7703184801853248830">Direcció d'entrada no vàlida</translation>
+<translation id="7690058578502751948">A Brave només es pot utilitzar una passarel·la IPFS vàlida amb l’aïllament d’origen activat</translation>
 <translation id="585868419599255817">Tornar a la passarel·la pública IPFS</translation>
-<translation id="207763736230883589">Retirar-se automàticament a una entrada IPFS pública si el vostre node local no està disponible.</translation>
+<translation id="2618080188892567155">Tornar automàticament a la passarel·la pública IPFS quan no es pot accedir al node local IPFS Brave.</translation>
 <translation id="4107552920076294723">Redirigiu els recursos IPFS a l'entrada IPFS configurada</translation>
 <translation id="6494857428933042381">Utilitza automàticament l'entrada configurada per a resolucions IPFS quan es troba un recurs d'entrada IPFS.</translation>
 <translation id="8655170717758778983">Redirigeix automàticament a les pàgines IPFS mitjançant DNSLink quan sigui possible</translation>
 <translation id="2233724520223030977">Utilitza automàticament DNSLink per anar a la versió IPFS d'un lloc web quan sigui possible</translation>
 <translation id="6554397389149987360">Fa servir un component de Hangouts per permetre que es comparteixi la pantalla i altres característiques al navegador.</translation>
-<translation id="1765684547504191670">Fa servir el component Media Router per habilitar Chromecast al navegador.</translation>
+<translation id="7878791177459550035">L'encaminador multimèdia habilita la funció de transmissió al navegador.</translation>
 <translation id="9156965752763025780">Els canvis s'aplicaran la propera vegada que reinicieu Brave.</translation>
 <translation id="7179921470347911571">Rellançar Ara</translation>
 <translation id="8068526464562249859">Fa servir l'extensió d'IPFS Companion per a una ajuda millorada a Brave, incloent-hi accés a tasques comunes d'IPFS des de la vostra barra de navegació.</translation>
@@ -277,24 +353,49 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="1391855377994926460">Exploreu la web amb més rapidesa, fins a 6 vegades més ràpid en les pàgines web de notícies principals.</translation>
 <translation id="9218430445555521422">Estableix com a predeterminat</translation>
 <translation id="3479552764303398839">Ara no</translation>
+<translation id="732814027519296280">Voleu millorar el cercador de Brave encara més?</translation>
+<translation id="2677865600861971449">Apunteu-vos al projecte Web Discovery per aportar dades de cerca i navegació de forma anònima i perfeccionar els resultats de Brave Search per a tothom. Manté la vostra privadesa i no requereix cap esforç. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Activa</translation>
+<translation id="780301667611848630">No, gràcies</translation>
+<translation id="5039804452771397117">Permet</translation>
+<translation id="7053983685419859001">Bloqueja</translation>
+<translation id="660171790038410175">El <ph name="BROWSER_NAME"/> s'ha tancat de forma inesperada.</translation>
+<translation id="1324417023773393937">Navegador Brave</translation>
+<translation id="7276554663454265692">Podeu canviar <ph name="SETTING_TEXT"/> en qualsevol moment a les opcions del navegador .</translation>
+<translation id="6873781976650514089">aquesta configuració</translation>
 <translation id="6040143037577758943">Tanca</translation>
 <translation id="5600566490506283344">Notificació de Brave Ad</translation>
+<translation id="4174337572777167894">Projecte Web Discovery</translation>
+<translation id="8659271182272561965">Aporteu dades de cerca i navegació anònimes per perfeccionar el cercador de Brave.</translation>
+<translation id="1516554614404600536">Descripció emergent de Brave</translation>
 <translation id="4877147287319222750">Afegeix a la barra lateral</translation>
-<translation id="4233010476457917696">Mostra la barra lateral</translation>
 <translation id="5404213409401164238">Mostra la barra lateral</translation>
 <translation id="7561196759112975576">Sempre</translation>
 <translation id="7060352228894039151">En passar-hi el cursor per sobre</translation>
-<translation id="407173827865827707">En fer clic</translation>
 <translation id="7961015016161918242">Mai</translation>
+<translation id="8981254605840444865">Mostra la configuració</translation>
 <translation id="59174027418879706">Activat</translation>
 <translation id="8258999165172757081">Afegit</translation>
 <translation id="6959315322491671328">Clic dret per a esborrar</translation>
+<translation id="495046168593986294">Desplaça't cap amunt</translation>
+<translation id="4021716437419160885">Desplaça't cap avall</translation>
+<translation id="4651504163033753423">Vols activar el lector de velocitat?</translation>
+<translation id="9089090017461255038">Activa l'Speedreader</translation>
+<translation id="312393675740711187">Els articles es carreguen automàticament en el mode de lector, fet que estalvia temps.</translation>
+<translation id="3234744217174488546">Activa/desactiva el mode de lector només per aquesta pàgina web. Per desactivar el lector de velocitat per a tot el perfil del navegador, visita</translation>
+<translation id="8597690239474328831">Commuta per activar/desactivar el mode de lector només per a aquest lloc web.</translation>
+<translation id="7839742507462737706">a l'Speedreader</translation>
+<translation id="8490082094734500369">Desactiva el mode de lector</translation>
+<translation id="2036503787657622020">Activa el mode de lector</translation>
+<translation id="5226458915125328323">Configuració de l'Speedreader</translation>
+<translation id="6284218950354553099">Envieu automàticament el ping d'ús diari a Brave</translation>
+<translation id="5288333155754958121">Aquest ping anònim privat permet a Brave calcular els usuaris actius.</translation>
 <translation id="1872784258300710671">Brave fa servir analítiques dels seus productes totalment privades per a estimar l'ús global de determinades característiques</translation>
 <translation id="8712637175834984815">D'acord</translation>
 <translation id="4394049700291259645">Desactiva</translation>
-<translation id="6469509880167172749">Envieu analítiques de productes completament privades a Brave automàticament</translation>
-<translation id="7090566321964540749">Aquesta informació anònima només permet a Brave d'estimar l'ús global de determinades característiques.</translation>
-<translation id="1947672064022327074">Voleu iniciar Crypto Wallets per obtenir assistència a EtheSi ja disposeu d'un compte Uphold verificat, continueu per iniciar la sessió.reum?</translation>
+<translation id="7142548388914389999">Permet l'anàlisi de productes que preserven la privacitat (P3A)</translation>
+<translation id="8286082624639565868">Aquesta informació completament anònima ajuda a Brave a calcular l'ús total de determinades funcions i a millorar-les.</translation>
+<translation id="1947672064022327074">Voleu iniciar Crypto Wallets amb compatibilitat amb Ethereum?</translation>
 <translation id="7583735190612229830">Estableix criptomoneders per interactuar amb aquesta app i d'altres similars.</translation>
 <translation id="8731422418734770661">Configura Crypto Wallets</translation>
 <translation id="8199661191594897555">Comenceu els Crypto Moneders i torneu-ho a carregar</translation>
@@ -308,6 +409,24 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
         You can read <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instructions on how to download and build for yourself<ph name="END_LINK_BUILD_INSTRUCTIONS"/> the specific <ph name="BEGIN_LINK_SOURCE_CODE"/>source code used to create this copy<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Afegeix totes les pestanyes a les adreces d'interès...</translation>
 <translation id="2336228925368920074">Afegeix totes les pestanyes a les adreces d'interès...</translation>
+<translation id="4235920711083356755">Mostra el botó VPN</translation>
+<translation id="4070612712151038707">Mostra el botó VPN a la barra d'eines</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Activar/Desactivar VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Sobre Brave VPN</translation>
+<translation id="4378551569595875038">S'està connectant...</translation>
+<translation id="3368922792935385530">Connectat</translation>
+<translation id="1536754031901697553">S'està desconnectant...</translation>
+<translation id="8030169304546394654">Sense connexió</translation>
+<translation id="1863950594388384201">Mostra el botó VPN a la barra d'eines</translation>
+<translation id="5187139277471084437">Oculta el botó VPN a la barra d'eines</translation>
+<translation id="8041089156583427627">Envia suggeriments</translation>
+<translation id="4049186905514157504">Gestiona El meu pla</translation>
+<translation id="7570585565843385325">Mostra el botó VPN a la barra d'eines</translation>
+<translation id="5310426188697803101">Oculta el botó VPN a la barra d'eines</translation>
+<translation id="945522503751344254">Envia suggeriments</translation>
+<translation id="3015685033234401792">Gestiona el meu pla</translation>
 <translation id="796831669370432378">Per a afegir un marcador, cliqueu el botó del marcador al costat de la barra d'adreces</translation>
 <translation id="4989337484121655457">Es requereix accés complet al disc</translation>
 <translation id="8025559074845816210">Brave necessita un accés complet al disc per importar les vostres adreces d'interès des de Safari.</translation>
@@ -317,6 +436,36 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="8487693399751278191">Importeu ara les adreces d'interès...</translation>
 <translation id="2557899542277210112">Per accedir ràpidament, col·loqueu les adreces d'interès aquí a la barra d'adreces d'interès.</translation>
 <translation id="2808630562319398131">Restableix les dades de Brave Rewards...</translation>
-<translation id="1224064034972923114">Ajudeu a millorar Brave enviant automàticament informes d'errors</translation>
-<translation id="3738833060602717053">Ajudeu a millorar <ph name="PRODUCT_NAME"/> enviant informes d'errors automàticament</translation>
+<translation id="2273851479262317744">Defineix Brave com a navegador predeterminat</translation>
+<translation id="8581710194025054669">Per tal de garantir la millor privadesa en línia, pensa a definir Brave com el navegador predeterminat del teu ordinador. Si Brave és el navegador per defecte, qualsevol enllaç web en el qual facis clic s'obrirà amb les proteccions de privacitat de Brave.</translation>
+<translation id="1968543937259008435">Preparat per a la millor privadesa en línia?</translation>
+<translation id="6817415381278637662">Definiu el Brave com a navegador per defecte per obtenir les proteccions de privadesa de Brave a totes les pàgines web que obriu.</translation>
+<translation id="8722651357687610395">Estableix Brave com a predeterminat</translation>
+<translation id="2370739752330685659">Potser més tard</translation>
+<translation id="1241283133946520352">Xarxes</translation>
+<translation id="8205945804087322170">Afegir nova xarxa</translation>
+<translation id="2156993118928861787">Adreça no vàlida</translation>
+<translation id="2653659639078652383">Envia</translation>
+<translation id="2556708692502648323">Xarxes del moneder</translation>
+<translation id="1330032157352961756">La ID de la nova cadena</translation>
+<translation id="3423620355610881890">Un número decimal positiu</translation>
+<translation id="726121047592132939">El nom de la nova cadena</translation>
+<translation id="1034112277864078119">Introdueix el nom de la cadena</translation>
+<translation id="4672314527143443556">Nom de la moneda de la cadena</translation>
+<translation id="4652114030688989556">Introdueix el nom de la moneda</translation>
+<translation id="1079960017149736097">Símbol de la moneda de la cadena</translation>
+<translation id="1288105009659846362">Introduir el símbol de la moneda</translation>
+<translation id="665660671251623018">Decimals de la moneda de la cadena</translation>
+<translation id="2978054488731497946">Introdueix els decimals de la moneda</translation>
+<translation id="2727514928168763432">URL d'RPC</translation>
+<translation id="7059127752542505809">Introdueix URL</translation>
+<translation id="3047726704186619366">URL d'icona</translation>
+<translation id="2487558607408469181">Bloquejar URL de l'explorador</translation>
+<translation id="6301398959353668507">Aquest camp no pot estar buit.</translation>
+<translation id="7504462451153306677">Format no vàlid, l'ID de la cadena és un número positiu</translation>
+<translation id="650071759190249039">Error intern, no s'ha pogut afegir la xarxa.</translation>
+<translation id="868529041590572443">Emplena tota la informació sobre la moneda nativa</translation>
+<translation id="1062463687579789365">Personalització de les xarxes del moneder</translation>
+<translation id="2234108191702901162">No s'ha pogut afegir la xarxa</translation>
+<translation id="2618193846561624884">Vols actualtzar la xarxa existent?</translation>
 </translationbundle>

@@ -6,12 +6,14 @@
 import * as React from 'react'
 import { withKnobs, text } from '@storybook/addon-knobs'
 import ThemeProvider from '../../common/StorybookThemeProvider'
-// Components
 import BraveTodayLoadingCard from '../components/default/braveToday/cards/cardLoading'
 import BraveTodayErrorCard from '../components/default/braveToday/cards/cardError'
 import PublisherMeta from '../components/default/braveToday/cards/PublisherMeta'
+import DisplayAdCard from '../components/default/braveToday/cards/displayAd'
+import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
+import * as BraveNews from '../api/brave_news'
 
-const onClick = (() => alert('clicked'))
+const onClick = () => alert('clicked')
 
 export default {
   title: 'New Tab/Brave Today',
@@ -45,21 +47,25 @@ export const Publisher = () => (
   <>
     <PublisherMeta
       publisher={{
-        publisher_id: '123abc',
-        publisher_name: text('Publisher Name', 'small'),
-        category: 'Top News',
-        enabled: true,
-        user_enabled: null
+        publisherId: '123abc',
+        publisherName: text('Publisher Name', 'small'),
+        categoryName: 'Top News',
+        feedSource: { url: 'http://www.example.com/feed' },
+        type: BraveNews.PublisherType.COMBINED_SOURCE,
+        isEnabled: true,
+        userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
       }}
       onSetPublisherPref={onClick}
     />
     <PublisherMeta
       publisher={{
-        publisher_id: '123abcdef',
-        publisher_name: text('Publisher Name 2', 'The Miller Chronicle'),
-        category: 'Top News',
-        enabled: true,
-        user_enabled: null
+        publisherId: '123abcdef',
+        publisherName: text('Publisher Name 2', 'The Miller Chronicle'),
+        categoryName: 'Top News',
+        feedSource: { url: 'http://www.example.com/feed' },
+        type: BraveNews.PublisherType.COMBINED_SOURCE,
+        isEnabled: true,
+        userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
       }}
       onSetPublisherPref={onClick}
     />
@@ -72,4 +78,15 @@ export const Loading = () => (
 
 export const Error = () => (
   <BraveTodayErrorCard />
+)
+
+const handleDisplayAdVisit = () => alert('handle visit')
+const handleDisplayAdView = () => console.log('display ad viewed')
+
+export const DisplayAd = () => (
+  <DisplayAdCard
+    getContent={getBraveNewsDisplayAd.bind(undefined, true)}
+    onVisitDisplayAd={handleDisplayAdVisit}
+    onViewedDisplayAd={handleDisplayAdView}
+  />
 )

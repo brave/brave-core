@@ -8,5 +8,5 @@
 #include "components/omnibox/browser/autocomplete_controller.h"
 
 #define ChromeAutocompleteSchemeClassifier BraveAutocompleteSchemeClassifier
-#include "../../../../../../chrome/browser/android/omnibox/autocomplete_controller_android.cc"
+#include "src/chrome/browser/android/omnibox/autocomplete_controller_android.cc"
 #undef ChromeAutocompleteSchemeClassifier

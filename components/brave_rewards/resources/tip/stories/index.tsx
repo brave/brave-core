@@ -141,7 +141,7 @@ export default {
   title: 'Rewards'
 }
 
-export const TipDialog = () => {
+export function TipDialog () {
   const host = createHost()
   return (
     <HostContext.Provider value={host}>

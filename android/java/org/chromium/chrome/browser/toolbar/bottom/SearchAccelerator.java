@@ -32,8 +32,8 @@ class SearchAccelerator extends ChromeImageButton
     /** The gray pill background behind the search icon. */
     private final Drawable mBackground;
 
-    /** The {@link Resources} used to compute the background color. */
-    private final Resources mResources;
+    /** The {@link Context} used to compute the background color. */
+    private final Context mContext;
 
     /** A provider that notifies components when the theme color changes.*/
     private ThemeColorProvider mThemeColorProvider;
@@ -44,9 +44,10 @@ class SearchAccelerator extends ChromeImageButton
     public SearchAccelerator(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        mResources = context.getResources();
+        mContext = context;
 
-        mBackground = ApiCompatibilityUtils.getDrawable(mResources, R.drawable.ntp_search_box);
+        mBackground = ApiCompatibilityUtils.getDrawable(
+                mContext.getResources(), R.drawable.ntp_search_box);
         mBackground.mutate();
         setBackground(mBackground);
 
@@ -83,7 +84,7 @@ class SearchAccelerator extends ChromeImageButton
     }
 
     @Override
-    public void onTintChanged(ColorStateList tint, boolean useLight) {
+    public void onTintChanged(ColorStateList tint, int brandedColorScheme) {
         ApiCompatibilityUtils.setImageTintList(this, tint);
         updateBackground();
     }
@@ -97,9 +98,8 @@ class SearchAccelerator extends ChromeImageButton
         if (mThemeColorProvider == null || mIncognitoStateProvider == null) return;
 
         mBackground.setColorFilter(ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
-                                           mResources, mThemeColorProvider.getThemeColor(),
-                                           mIncognitoStateProvider.isIncognitoSelected()
-                                                   && mThemeColorProvider.useLight()),
+                                           mContext, mThemeColorProvider.getThemeColor(),
+                                           mIncognitoStateProvider.isIncognitoSelected()),
                 PorterDuff.Mode.SRC_IN);
     }
 }

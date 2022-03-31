@@ -9,7 +9,7 @@
 
 #define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
 
-#include "../../../../../../components/content_settings/core/common/content_settings_mojom_traits.cc"
+#include "src/components/content_settings/core/common/content_settings_mojom_traits.cc"
 
 #undef RendererContentSettingRules
 
@@ -24,7 +24,8 @@ bool StructTraits<content_settings::mojom::RendererContentSettingRulesDataView,
              RendererContentSettingRules_ChromiumImpl>::Read(data, out) &&
          data.ReadAutoplayRules(&out->autoplay_rules) &&
          data.ReadFingerprintingRules(&out->fingerprinting_rules) &&
-         data.ReadBraveShieldsRules(&out->brave_shields_rules);
+         data.ReadBraveShieldsRules(&out->brave_shields_rules) &&
+         data.ReadCosmeticFilteringRules(&out->cosmetic_filtering_rules);
 }
 
 }  // namespace mojo

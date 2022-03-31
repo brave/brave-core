@@ -9,9 +9,9 @@ chrome.braveRewards.onPublisherData.addListener((windowId: number, publisher: Re
 
   // Get publisher amounts
   if (publisher && publisher.publisherKey && publisher.status !== 0) {
-    chrome.braveRewards.getPublisherBanner(publisher.publisherKey, ((banner: RewardsExtension.PublisherBanner) => {
+    chrome.braveRewards.getPublisherBanner(publisher.publisherKey, (banner: RewardsExtension.PublisherBanner) => {
       rewardsPanelActions.onPublisherBanner(banner)
-    }))
+    })
   }
 })
 
@@ -35,9 +35,9 @@ chrome.rewardsNotifications.onAllNotificationsDeleted.addListener(() => {
 
 chrome.braveRewards.onPendingContributionSaved.addListener((result: number) => {
   if (result === 0) {
-    chrome.braveRewards.getPendingContributionsTotal(((amount: number) => {
+    chrome.braveRewards.getPendingContributionsTotal((amount: number) => {
       rewardsPanelActions.OnPendingContributionsTotal(amount)
-    }))
+    })
   }
 })
 

@@ -20,8 +20,9 @@ bool GeminiJSONParser::GetTokensFromJSON(
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
@@ -49,8 +50,9 @@ bool GeminiJSONParser::GetTickerPriceFromJSON(
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
@@ -74,8 +76,9 @@ bool GeminiJSONParser::GetAccountBalancesFromJSON(
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
 
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
@@ -87,7 +90,7 @@ bool GeminiJSONParser::GetAccountBalancesFromJSON(
     return false;
   }
 
-  for (const base::Value &val : pv_arr->GetList()) {
+  for (const base::Value& val : pv_arr->GetList()) {
     const base::Value* currency = val.FindKey("currency");
     const base::Value* available = val.FindKey("available");
 
@@ -112,8 +115,9 @@ bool GeminiJSONParser::GetDepositInfoFromJSON(
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
 
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
@@ -125,7 +129,7 @@ bool GeminiJSONParser::GetDepositInfoFromJSON(
     return false;
   }
 
-  const base::Value &val = pv_arr->GetList()[0];
+  const base::Value& val = pv_arr->GetList()[0];
   const base::Value* asset_address = val.FindKey("address");
 
   if (asset_address && asset_address->is_string()) {
@@ -145,8 +149,9 @@ bool GeminiJSONParser::GetOrderQuoteInfoFromJSON(
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
-  base::Optional<base::Value>& records_v = value_with_error.value;
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;

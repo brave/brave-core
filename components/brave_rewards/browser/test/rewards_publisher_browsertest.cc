@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
@@ -90,7 +91,7 @@ class RewardsPublisherBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  brave_rewards::RewardsServiceImpl* rewards_service_;
+  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<RewardsBrowserTestResponse> response_;
   std::unique_ptr<RewardsBrowserTestContextHelper> context_helper_;
@@ -108,20 +109,16 @@ IN_PROC_BROWSER_TEST_F(
       publisher);
 
   // Open the Rewards popup
-  content::WebContents* popup_contents =
+  base::WeakPtr<content::WebContents> popup_contents =
       context_helper_->OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
 
   // Retrieve the inner text of the wallet panel and verify that it
   // looks as expected
   rewards_browsertest_util::WaitForElementToContain(
-      popup_contents,
-      "[id='wallet-panel']",
-      "Brave Verified Creator");
+      popup_contents.get(), "[id='wallet-panel']", "Brave Verified Creator");
   rewards_browsertest_util::WaitForElementToContain(
-      popup_contents,
-      "[id='wallet-panel']",
-      publisher);
+      popup_contents.get(), "[id='wallet-panel']", publisher);
 
   // Retrieve the inner HTML of the wallet panel and verify that it
   // contains the expected favicon
@@ -129,9 +126,7 @@ IN_PROC_BROWSER_TEST_F(
     const std::string favicon =
         "chrome://favicon/size/64@1x/https://" + publisher;
     rewards_browsertest_util::WaitForElementToContainHTML(
-        popup_contents,
-        "#wallet-panel",
-        favicon);
+        popup_contents.get(), "#wallet-panel", favicon);
   }
 }
 

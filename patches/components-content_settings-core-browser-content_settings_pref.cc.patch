@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/core/browser/content_settings_pref.cc b/components/content_settings/core/browser/content_settings_pref.cc
-index dcfb882f82c9734aaa629c65d60f0382d65f2b2c..c8b5a71c38dc3a9f5b508b3752f7379f463fc038 100644
+index 1175f143557e901948308a5afd74b8ec4310e471..b1c9a190f1056876c8e5e2acb92be04714d37691 100644
 --- a/components/content_settings/core/browser/content_settings_pref.cc
 +++ b/components/content_settings/core/browser/content_settings_pref.cc
-@@ -160,6 +160,7 @@ bool ContentSettingsPref::SetWebsiteSetting(
+@@ -162,6 +162,7 @@ void ContentSettingsPref::SetWebsiteSetting(
    DCHECK(thread_checker_.CalledOnValidThread());
    DCHECK(prefs_);
    DCHECK(primary_pattern != ContentSettingsPattern::Wildcard() ||
 +         BRAVE_SET_WEBSITE_SETTING
           secondary_pattern != ContentSettingsPattern::Wildcard());
  
-   // At this point take the ownership of the |in_value|.
+   // Update in memory value map.

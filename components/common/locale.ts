@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { loadTimeData } from './loadTimeData'
+
 /**
  * Gets the localized string
  * @param {string} key - translation identifier
@@ -9,11 +11,11 @@
  * @returns {string} - the localized string
  */
 export const getLocale = (key: string, replacements?: Record<string, string>) => {
-  if (!key || !window.loadTimeData) {
+  if (!key) {
     return key
   }
 
-  let returnVal = window.loadTimeData.getString(key)
+  let returnVal = loadTimeData.getString(key)
   if (!returnVal) {
     return key
   }
@@ -95,7 +97,7 @@ export function splitStringForTag (text: string, tagStartNumber: number = 1): Sp
       duringTag = text.substring(tagStartIndex + tagOpenPlaceholder.length, tagEndIndex)
       afterTag = text.substring(tagEndIndex + tagClosePlaceholder.length)
     } else {
-      // Hande we have a single replacement block
+      // Handle we have a single replacement block
       afterTag = text.substring(tagStartIndex + tagOpenPlaceholder.length)
     }
   }

@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/resources/settings/site_settings/category_default_setting.ts b/chrome/browser/resources/settings/site_settings/category_default_setting.ts
+index fef6c68658c4de5b9ac7d2bfb1802af1c5b3faa9..6d0f279e5c19f67f4f62db6bf35df37c914083e7 100644
+--- a/chrome/browser/resources/settings/site_settings/category_default_setting.ts
++++ b/chrome/browser/resources/settings/site_settings/category_default_setting.ts
+@@ -175,6 +175,7 @@ class CategoryDefaultSettingElement extends CategoryDefaultSettingElementBase {
+      */
+     switch (this.category) {
+       case ContentSettingsTypes.ADS:
++      case ContentSettingsTypes.AUTOPLAY:
+       case ContentSettingsTypes.BACKGROUND_SYNC:
+       case ContentSettingsTypes.IMAGES:
+       case ContentSettingsTypes.JAVASCRIPT:
+@@ -208,6 +209,7 @@ class CategoryDefaultSettingElement extends CategoryDefaultSettingElementBase {
+       case ContentSettingsTypes.USB_DEVICES:
+       case ContentSettingsTypes.VR:
+       case ContentSettingsTypes.WINDOW_PLACEMENT:
++      case ContentSettingsTypes.ETHEREUM:
+         // "Ask" vs "Blocked".
+         this.browserProxy.setDefaultValueForContentType(
+             this.category,

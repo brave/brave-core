@@ -1,48 +1,68 @@
 import * as React from 'react'
+import { getLocale } from '../../../../common/locale'
+import PanelTooltip from '../panel-tooltip'
+import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 
 // Styled Components
 import {
   StyledWrapper,
-  AppsIcon,
+  TransactionsIcon,
   NavButton,
   NavButtonText,
   NavDivider,
-  NavOutline
+  NavOutline,
+  TransactionsButton
 } from './style'
 
-import { PanelTypes } from '../../../constants/types'
+import { BraveWallet, PanelTypes } from '../../../constants/types'
 
 export interface Props {
-  action: (path: PanelTypes) => void
+  onNavigate: (path: PanelTypes) => void
+  isSwapDisabled: boolean
+  isBuyDisabled: boolean
+  selectedNetwork: BraveWallet.NetworkInfo
 }
 
-export default class ConnectedBottomNav extends React.PureComponent<Props> {
+function ConnectedBottomNav (props: Props) {
+  const { onNavigate, isSwapDisabled, isBuyDisabled, selectedNetwork } = props
 
-  navigate = (path: PanelTypes) => () => {
-    this.props.action(path)
+  const navigate = (path: PanelTypes) => () => {
+    onNavigate(path)
   }
 
-  render () {
-    return (
-      <StyledWrapper>
-        <NavOutline>
-          <NavButton onClick={this.navigate('buy')}>
-            <NavButtonText>Buy</NavButtonText>
+  return (
+    <StyledWrapper>
+      <NavOutline>
+        <PanelTooltip
+          position='right'
+          isDisabled={isBuyDisabled}
+          text={getLocale('braveWalletBuyNotSupportedTooltip').replace('$1', reduceNetworkDisplayName(selectedNetwork.chainName))}
+        >
+          <NavButton disabled={isBuyDisabled} onClick={navigate('buy')}>
+            <NavButtonText disabled={isBuyDisabled}>{getLocale('braveWalletBuy')}</NavButtonText>
           </NavButton>
-          <NavDivider />
-          <NavButton onClick={this.navigate('send')}>
-            <NavButtonText>Send</NavButtonText>
+        </PanelTooltip>
+        <NavDivider />
+        <NavButton onClick={navigate('send')}>
+          <NavButtonText>{getLocale('braveWalletSend')}</NavButtonText>
+        </NavButton>
+        <NavDivider />
+        <PanelTooltip
+          position='left'
+          isDisabled={isSwapDisabled}
+          text={getLocale('braveWalletSwapNotSupportedTooltip').replace('$1', reduceNetworkDisplayName(selectedNetwork.chainName))}
+        >
+          <NavButton disabled={isSwapDisabled} onClick={navigate('swap')}>
+            <NavButtonText disabled={isSwapDisabled}>{getLocale('braveWalletSwap')}</NavButtonText>
           </NavButton>
-          <NavDivider />
-          <NavButton onClick={this.navigate('swap')}>
-            <NavButtonText>Swap</NavButtonText>
-          </NavButton>
-          <NavDivider />
-          <NavButton onClick={this.navigate('apps')}>
-            <AppsIcon />
-          </NavButton>
-        </NavOutline>
-      </StyledWrapper>
-    )
-  }
+        </PanelTooltip>
+        <NavDivider />
+        <TransactionsButton onClick={navigate('transactions')}>
+          <TransactionsIcon />
+        </TransactionsButton>
+      </NavOutline>
+    </StyledWrapper>
+  )
 }
+
+export default ConnectedBottomNav

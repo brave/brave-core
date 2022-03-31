@@ -9,14 +9,15 @@
 #include "chrome/browser/ui/views/profiles/profile_menu_view.h"
 
 class BraveProfileMenuView : public ProfileMenuView {
+ public:
+  BraveProfileMenuView(const BraveProfileMenuView&) = delete;
+  BraveProfileMenuView& operator=(const BraveProfileMenuView&) = delete;
+
  private:
   friend class ProfileMenuView;
 
   using ProfileMenuView::ProfileMenuView;
   ~BraveProfileMenuView() override = default;
-
-  // Button/link actions.
-  void OnExitProfileButtonClicked() override;
 
   // Helper methods for building the menu.
   void BuildIdentity() override;
@@ -24,8 +25,6 @@ class BraveProfileMenuView : public ProfileMenuView {
   void BuildSyncInfo() override;
   void BuildFeatureButtons() override;
   gfx::ImageSkia GetSyncIcon() const override;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveProfileMenuView);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PROFILES_BRAVE_PROFILE_MENU_VIEW_H_

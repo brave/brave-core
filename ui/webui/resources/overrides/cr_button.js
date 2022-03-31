@@ -35,6 +35,9 @@ export default html`
       border-radius: 100px !important; /* absurdly large to make sure is
                                           rounded at any height */
     }
+    :host([role='menuitem']) {
+      border-radius: 0px !important;
+    }
     :host(:not([style]):hover) {
       --text-color: var(--brave-brand-color) !important;
       --border-color: var(--text-color) !important;

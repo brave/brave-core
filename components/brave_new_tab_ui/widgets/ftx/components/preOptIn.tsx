@@ -21,7 +21,16 @@ type Props = {
 }
 
 export default function PreOptIn (props: Props) {
-  const [isDotUsSelected, setIsDotUsSelected] = React.useState(true)
+  // Start as null so that we can use the value from
+  // backend as the default (which is region based and is provided asynchronously),
+  // but still allow user selection.
+  const [userSetIsUSRegion, setUserSetIsUSRegion] = React.useState<boolean | null>(null)
+  // Initial value from backend
+  let isDotUsSelected = (props.ftx.ftxHost === 'ftx.us')
+  if (userSetIsUSRegion !== null) {
+    // User has chosen another value
+    isDotUsSelected = userSetIsUSRegion
+  }
 
   const startConnect = React.useCallback(() => {
     props.actions.startConnect({ isUS: isDotUsSelected })
@@ -32,13 +41,13 @@ export default function PreOptIn (props: Props) {
       <BasicBox isFlex={true} $gap={10} justify='flex-end'>
         <OptionButton
           isSelected={!isDotUsSelected}
-          onClick={setIsDotUsSelected.bind(undefined, false)}
+          onClick={setUserSetIsUSRegion.bind(undefined, false)}
         >
           .com
         </OptionButton>
         <OptionButton
           isSelected={isDotUsSelected}
-          onClick={setIsDotUsSelected.bind(undefined, true)}
+          onClick={setUserSetIsUSRegion.bind(undefined, true)}
         >
           .us
         </OptionButton>

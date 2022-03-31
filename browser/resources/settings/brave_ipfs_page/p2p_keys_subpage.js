@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 import {Router} from '../router.js';
 import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.m.js';
+import {assert} from 'chrome://resources/js/assert.m.js';
 
 (function() {
   'use strict';
@@ -47,18 +48,22 @@ Polymer({
       type: Boolean,
       value: false,
     },
-    importKeysError_: {
+    actionKeysError_: {
       type: Boolean,
       value: false,
     },
     showAddp2pKeyDialog_: {
       type: Boolean,
       value: false,
+    },
+    showRotatep2pKeyDialog_: {
+      type: Boolean,
+      value: false,
     }
   },
 
   browserProxy_: null,
-
+  actionItemName : String,
   /** @override */
   created: function() {
     this.browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance();
@@ -68,16 +73,25 @@ Polymer({
     this.addWebUIListener('brave-ipfs-keys-loaded', (success) => {
       this.updateKeys()
     })
+    this.addWebUIListener('brave-ipfs-key-exported', (key, success) => {
+      this.actionKeysError_ = !success
+      if (this.actionKeysError_ ) {
+        const errorLabel = (this.$$('#key-error'));
+        errorLabel.textContent = this.i18n('ipfsKeyExportError', key)
+        return;
+      }
+    })
     this.addWebUIListener('brave-ipfs-key-imported', (key, value, success) => {
-      this.importKeysError_ = !success
-      if (this.importKeysError_ ) {
-        const errorLabel = (this.$$('#key-import-error'));
+      this.actionKeysError_ = !success
+      if (this.actionKeysError_ ) {
+        const errorLabel = (this.$$('#key-error'));
         errorLabel.textContent = this.i18n('ipfsImporKeysError', key)
         return;
       }
       this.updateKeys();
     })
     window.addEventListener('load', this.onLoad_.bind(this));
+    this.browserProxy_.notifyIpfsNodeStatus();
   },
   onLoad_: function() {
     this.updateKeys();
@@ -92,7 +106,7 @@ Polymer({
   toggleUILayout: function(launched) {
     this.launchNodeButtonEnabled_ = !launched;
     this.localNodeLaunched = launched
-    this.importKeysError_ = false
+    this.actionKeysError_ = false
     if (launched) {
       this.localNodeLaunchError_ = false
     } else {
@@ -102,6 +116,7 @@ Polymer({
 
   onServiceLaunched: function(success) {
     this.toggleUILayout(success)
+    this.localNodeMethod = success
     if (success) {
       this.updateKeys();
     }
@@ -115,18 +130,22 @@ Polymer({
     });
   },
 
-  /*++++++
-  * @override */
-  ready: function() {
-    this.browserProxy_.notifyIpfsNodeStatus();
-  },
-
   isDefaultKey_: function(name) {
     return name == 'self';
   },
 
+  getIconForKey: function(name) {
+    return name == 'self' ? 'icon-button-self' : 'icon-button'
+  },
+  
+
   onAddKeyTap_: function(item) {
     this.showAddp2pKeyDialog_ = true
+  },
+
+  onRotateKeyDialogClosed_: function() {
+    this.showRotatep2pKeyDialog_ = false
+    this.updateKeys();
   },
 
   updateKeys: function() {
@@ -141,11 +160,21 @@ Polymer({
 
   onAddKeyDialogClosed_: function() {
     this.showAddp2pKeyDialog_ = false
+    this.actionItemName = ""
     this.updateKeys();
   },
 
+  onKeyActionTapped_: function(event) {
+    let name = event.model.item.name
+    if (name != 'self')
+      return;
+    this.showRotatep2pKeyDialog_ = true
+    return;
+  },
+
   onKeyDeleteTapped_: function(event) {
-    let name_to_remove = event.model.item.name
+    this.$$('cr-action-menu').close();
+    let name_to_remove = this.actionItemName
     var message = this.i18n('ipfsDeleteKeyConfirmation', name_to_remove)
     if (!window.confirm(message))
       return
@@ -157,6 +186,21 @@ Polymer({
         return;
       }
     });
+    this.actionItemName = ""
+  },
+  
+  onExportTap_: function(event) {
+    let name_to_export = this.actionItemName
+    this.$$('cr-action-menu').close();
+    this.browserProxy_.exportIPNSKey(name_to_export);
+    this.actionItemName = ""
+  },
+  
+  onKeyMenuTapped_: function(event) {
+    this.actionItemName = event.model.item.name
+    const actionMenu =
+        /** @type {!CrActionMenuElement} */ (this.$$('#key-menu').get());
+    actionMenu.showAt(event.target);
   }
 });
 })();

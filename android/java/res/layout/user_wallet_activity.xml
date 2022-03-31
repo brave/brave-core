@@ -77,7 +77,7 @@
             android:background="@color/user_wallet_background"
             android:contentDescription="@null"/>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/user_wallet_btn1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
             android:textAllCaps="false"
             android:textColor="@android:color/holo_blue_dark"
             android:padding="12dp">
-        </Button>
+        </android.widget.Button>
 
         <ImageView
             android:id="@+id/user_wallet_btn2_separator"
@@ -96,7 +96,7 @@
             android:contentDescription="@null"
             android:visibility="gone"/>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/user_wallet_btn2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
             android:textColor="@android:color/holo_blue_dark"
             android:padding="12dp"
             android:visibility="gone">
-        </Button>
+        </android.widget.Button>
 
         <ImageView
             android:layout_width="match_parent"
@@ -114,17 +114,16 @@
             android:background="@color/user_wallet_background"
             android:contentDescription="@null"/>
 
-        <Button
-            android:id="@+id/user_wallet_go_to_uphold"
+        <android.widget.Button
+            android:id="@+id/user_wallet_go_to_provider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/user_wallet_goto_uphold"
             android:background="?android:attr/selectableItemBackground"
             android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textColor="@android:color/holo_blue_dark"
             android:padding="12dp">
-        </Button>
+        </android.widget.Button>
     </LinearLayout>
 
     <LinearLayout
@@ -134,7 +133,7 @@
         android:layout_marginEnd="12dp"
         android:background="@drawable/rect_round_corners_12"
         android:backgroundTint="@color/cardview_light_background">
-        <Button
+        <android.widget.Button
             android:id="@+id/user_wallet_disconnect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -144,6 +143,6 @@
             android:textAllCaps="false"
             android:textColor="@android:color/holo_red_light"
             android:padding="12dp">
-        </Button>
+        </android.widget.Button>
     </LinearLayout>
 </LinearLayout>

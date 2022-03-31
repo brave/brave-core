@@ -13,6 +13,7 @@
 #include <vector>
 
 namespace ads {
+namespace ad_targeting {
 
 using TextClassificationProbabilitiesMap = std::map<std::string, double>;
 using TextClassificationProbabilitiesList =
@@ -22,6 +23,7 @@ using SegmentProbabilityPair = std::pair<std::string, double>;
 using SegmentProbabilitiesList = std::vector<SegmentProbabilityPair>;
 using SegmentProbabilitiesMap = std::map<std::string, double>;
 
+}  // namespace ad_targeting
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_ALIASES_H_

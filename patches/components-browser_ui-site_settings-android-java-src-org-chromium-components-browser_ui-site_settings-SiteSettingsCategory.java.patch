@@ -1,0 +1,26 @@
+diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
+index 0384465febc06f7d9beb74fc8672c27bd5e4ac7b..7e1eebb65006da113844b4d5e60502bdd59273ec 100644
+--- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
++++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
+@@ -42,7 +42,7 @@ public class SiteSettingsCategory {
+             Type.CLIPBOARD, Type.COOKIES, Type.IDLE_DETECTION, Type.DEVICE_LOCATION,
+             Type.JAVASCRIPT, Type.MICROPHONE, Type.NFC, Type.NOTIFICATIONS, Type.POPUPS,
+             Type.PROTECTED_MEDIA, Type.SENSORS, Type.SOUND, Type.USB, Type.VIRTUAL_REALITY,
+-            Type.USE_STORAGE, Type.AUTO_DARK_WEB_CONTENT, Type.REQUEST_DESKTOP_SITE})
++            Type.USE_STORAGE, Type.AUTO_DARK_WEB_CONTENT, Type.REQUEST_DESKTOP_SITE, Type.AUTOPLAY})
+     @Retention(RetentionPolicy.SOURCE)
+     public @interface Type {
+         // All updates here must also be reflected in {@link #preferenceKey(int)
+@@ -72,10 +72,11 @@ public class SiteSettingsCategory {
+         int USE_STORAGE = 22;
+         int AUTO_DARK_WEB_CONTENT = 23;
+         int REQUEST_DESKTOP_SITE = 24;
++        int AUTOPLAY = 25;
+         /**
+          * Number of handled categories used for calculating array sizes.
+          */
+-        int NUM_ENTRIES = 25;
++        int NUM_ENTRIES = 26;
+     }
+ 
+     private final BrowserContextHandle mBrowserContextHandle;

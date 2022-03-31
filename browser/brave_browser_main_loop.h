@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_MAIN_LOOP_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_MAIN_LOOP_H_
 
-#include "base/macros.h"
 #include "content/browser/browser_main_loop.h"
 
 namespace brave {
@@ -14,12 +13,12 @@ namespace brave {
 class BraveBrowserMainLoop : public content::BrowserMainLoop {
  public:
   using BrowserMainLoop::BrowserMainLoop;
+
+  BraveBrowserMainLoop(const BraveBrowserMainLoop&) = delete;
+  BraveBrowserMainLoop& operator=(const BraveBrowserMainLoop&) = delete;
   ~BraveBrowserMainLoop() override = default;
 
   void PreShutdown() override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowserMainLoop);
 };
 
 }  // namespace brave

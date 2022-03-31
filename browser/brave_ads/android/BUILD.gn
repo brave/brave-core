@@ -4,8 +4,9 @@ import("//build/config/android/rules.gni")
 generate_jni("jni_headers") {
   sources = [
     "java/org/chromium/chrome/browser/BraveAdsNativeHelper.java",
-    "java/org/chromium/chrome/browser/dialogs/BraveAdsSignupDialog.java",
     "java/org/chromium/chrome/browser/dialogs/BraveAdsNotificationDialog.java",
-    "java/org/chromium/chrome/browser/notifications/BraveAds.java"
+    "java/org/chromium/chrome/browser/dialogs/BraveAdsSignupDialog.java",
+    "java/org/chromium/chrome/browser/notifications/BraveAds.java",
+    "java/org/chromium/chrome/browser/onboarding/BraveAdsHostAndroid.java",
   ]
 }

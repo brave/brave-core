@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/scoped_observer.h"
+#include "base/scoped_multi_source_observation.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
 #include "chrome/browser/profiles/profile_observer.h"
@@ -18,6 +18,8 @@ class BraveProfileManager : public ProfileManager,
                             public ProfileObserver {
  public:
   explicit BraveProfileManager(const base::FilePath& user_data_dir);
+  BraveProfileManager(const BraveProfileManager&) = delete;
+  BraveProfileManager& operator=(const BraveProfileManager&) = delete;
   ~BraveProfileManager() override;
 
   void InitProfileUserPrefs(Profile* profile) override;
@@ -40,17 +42,17 @@ class BraveProfileManager : public ProfileManager,
 
  private:
   void MigrateProfileNames();
-  ScopedObserver<Profile, ProfileObserver> observed_profiles_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(BraveProfileManager);
+  base::ScopedMultiSourceObservation<Profile, ProfileObserver>
+      observed_profiles_{this};
 };
 
 class BraveProfileManagerWithoutInit : public BraveProfileManager {
  public:
+  BraveProfileManagerWithoutInit(const BraveProfileManagerWithoutInit&) =
+      delete;
+  BraveProfileManagerWithoutInit& operator=(
+      const BraveProfileManagerWithoutInit&) = delete;
   explicit BraveProfileManagerWithoutInit(const base::FilePath& user_data_dir);
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveProfileManagerWithoutInit);
 };
 
 #endif  // BRAVE_BROWSER_PROFILES_BRAVE_PROFILE_MANAGER_H_

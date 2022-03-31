@@ -189,6 +189,42 @@ void WalletBalance::OnFetchBalanceBitflyer(
     BLOG(0, "Can't get bitflyer balance");
   }
 
+  FetchBalanceGemini(std::move(info_ptr), callback);
+}
+
+void WalletBalance::FetchBalanceGemini(type::BalancePtr balance,
+                                       ledger::FetchBalanceCallback callback) {
+  if (!balance) {
+    BLOG(0, "Balance is null");
+    callback(type::Result::LEDGER_ERROR, std::move(balance));
+    return;
+  }
+
+  auto balance_callback = std::bind(&WalletBalance::OnFetchBalanceGemini, this,
+                                    *balance, callback, _1, _2);
+
+  auto wallet = ledger_->gemini()->GetWallet();
+  if (!wallet) {
+    balance_callback(type::Result::LEDGER_OK, 0);
+    return;
+  }
+
+  ledger_->gemini()->FetchBalance(balance_callback);
+}
+
+void WalletBalance::OnFetchBalanceGemini(type::Balance info,
+                                         ledger::FetchBalanceCallback callback,
+                                         type::Result result,
+                                         double balance) {
+  type::BalancePtr info_ptr = type::Balance::New(info);
+
+  if (result == type::Result::LEDGER_OK) {
+    info_ptr->wallets.insert(std::make_pair(constant::kWalletGemini, balance));
+    info_ptr->total += balance;
+  } else {
+    BLOG(0, "Can't get gemini balance");
+  }
+
   callback(result, std::move(info_ptr));
 }
 

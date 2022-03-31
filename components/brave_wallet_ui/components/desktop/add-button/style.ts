@@ -1,12 +1,14 @@
 import styled from 'styled-components'
+import { WalletButton } from '../../shared/style'
 import icon from '../../../assets/svg-icons/plus-icon.svg'
+import { EditOIcon } from 'brave-ui/components/icons'
 interface StyleProps {
   buttonType: 'primary' | 'secondary'
 }
 
 // Will need to change to brave-ui button
 
-export const StyledButton = styled.button<StyleProps>`
+export const StyledButton = styled(WalletButton) <StyleProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,4 +36,11 @@ export const PlusIcon = styled.div`
   height: 15px;
   background: url(${icon});
   margin-right: 10px;
+`
+
+export const EditIcon = styled(EditOIcon)`
+  width: 15px;
+  height: 15px;
+  color: ${(p) => p.theme.color.interactive07};
+  margin-right: 8px;
 `

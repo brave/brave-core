@@ -31,6 +31,8 @@ copy("rollup_resources") {
 
   sources = [ "polymer_overriding.js" ]
 
+  deps = [ "br_elements:polymer3_elements" ]
+
   outputs = [ "$root_gen_dir/brave/ui/webui/resources/{{source_file_part}}" ]
 }
 

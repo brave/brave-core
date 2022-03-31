@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/values.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 
@@ -25,8 +26,8 @@ std::vector<adblock::FilterList>::const_iterator FindAdBlockFilterListByLocale(
 std::vector<adblock::FilterList> RegionalCatalogFromJSON(
     const std::string& catalog_json);
 
-void MergeCspDirectiveInto(base::Optional<std::string> from,
-                           base::Optional<std::string>* into);
+void MergeCspDirectiveInto(absl::optional<std::string> from,
+                           absl::optional<std::string>* into);
 
 void MergeResourcesInto(base::Value from, base::Value* into, bool force_hide);
 

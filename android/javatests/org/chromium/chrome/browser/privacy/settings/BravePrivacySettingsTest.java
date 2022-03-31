@@ -9,9 +9,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
-import android.support.test.filters.SmallTest;
-
 import androidx.preference.Preference;
+import androidx.test.filters.SmallTest;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -19,7 +18,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.privacy.settings.PrivacySettings;
+import org.chromium.chrome.browser.prefetch.settings.PreloadPagesSettingsBridge;
+import org.chromium.chrome.browser.prefetch.settings.PreloadPagesState;
+import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.privacy_sandbox.PrivacySandboxBridge;
 import org.chromium.chrome.browser.privacy_sandbox.PrivacySandboxSettingsFragment;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
@@ -41,54 +42,62 @@ public class BravePrivacySettingsTest {
     private static final String PREF_SYNC_AND_SERVICES_LINK = "sync_and_services_link";
     private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
     private static final String PREF_PRIVACY_SANDBOX = "privacy_sandbox";
+    private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
+    private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
+    private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
 
-    // Ignore "usage_stats_reporting" and "privacy_sandbox"
-    private static int NUMBER_OF_ITEMS = 7;
+    private static int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 21;
+
+    private int mItemsLeft;
 
     @Rule
     public ChromeTabbedActivityTestRule mActivityTestRule = new ChromeTabbedActivityTestRule();
 
     @Rule
-    public SettingsActivityTestRule<PrivacySettings> mSettingsActivityTestRule =
-            new SettingsActivityTestRule<>(PrivacySettings.class);
-    private PrivacySettings mFragment;
+    public SettingsActivityTestRule<BravePrivacySettings> mSettingsActivityTestRule =
+            new SettingsActivityTestRule<>(BravePrivacySettings.class);
+    private BravePrivacySettings mFragment;
 
     @Before
     public void setUp() {
         mSettingsActivityTestRule.startSettingsActivity();
-        mFragment = (PrivacySettings) mSettingsActivityTestRule.getFragment();
+        mFragment = (BravePrivacySettings) mSettingsActivityTestRule.getFragment();
+        mItemsLeft = mFragment.getPreferenceScreen().getPreferenceCount();
     }
 
     @Test
     @SmallTest
-    public void testNumberOfItemsNotChanged() {
-        System.out.print("testNumberOfItemsNotChangedprn");
-        System.out.println("prefs count: " + mFragment.getPreferenceScreen().getPreferenceCount());
-        assertEquals(NUMBER_OF_ITEMS, mFragment.getPreferenceScreen().getPreferenceCount());
+    public void testParentItems() {
+        checkPreferenceExists(PREF_CAN_MAKE_PAYMENT);
+        checkPreferenceExists(PREF_CLEAR_BROWSING_DATA);
+        checkPreferenceExists(PREF_DO_NOT_TRACK);
+        checkPreferenceExists(PREF_HTTPS_FIRST_MODE);
+        checkPreferenceExists(PREF_SAFE_BROWSING);
+        checkPreferenceExists(PREF_SECURE_DNS);
+        checkPreferenceExists(PREF_INCOGNITO_LOCK);
+        checkPreferenceExists(PREF_PHONE_AS_A_SECURITY_KEY);
+
+        checkPreferenceRemoved(PREF_NETWORK_PREDICTIONS);
+        checkPreferenceRemoved(PREF_SYNC_AND_SERVICES_LINK);
+
+        assertEquals(BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS, mItemsLeft);
+    }
+
+    private void checkPreferenceExists(String pref) {
+        assertNotEquals(null, mFragment.findPreference(pref));
+        mItemsLeft--;
+    }
+
+    private void checkPreferenceRemoved(String pref) {
+        assertEquals(null, mFragment.findPreference(pref));
+        mItemsLeft--;
     }
 
     @Test
     @SmallTest
-    public void testExactSameItemsAreThere() {
-        assertNotEquals(null, mFragment.findPreference(PREF_CAN_MAKE_PAYMENT));
-        assertNotEquals(null, mFragment.findPreference(PREF_NETWORK_PREDICTIONS));
-        assertNotEquals(null, mFragment.findPreference(PREF_SECURE_DNS));
-        assertEquals(null, mFragment.findPreference(PREF_USAGE_STATS));
-        assertNotEquals(null, mFragment.findPreference(PREF_DO_NOT_TRACK));
-        assertNotEquals(null, mFragment.findPreference(PREF_SAFE_BROWSING));
-        assertNotEquals(null, mFragment.findPreference(PREF_SYNC_AND_SERVICES_LINK));
-        assertNotEquals(null, mFragment.findPreference(PREF_CLEAR_BROWSING_DATA));
-        assertEquals(null, mFragment.findPreference(PREF_PRIVACY_SANDBOX));
-    }
-
-    @Test
-    @SmallTest
-    public void testPrivacySandboxDefauktIsFalseAndNull() {
+    public void testDisabledOptions() {
         TestThreadUtils.runOnUiThreadBlocking(() -> {
-            assertFalse(PrivacySandboxBridge.isPrivacySandboxSettingsFunctional());
-            if (!PrivacySandboxBridge.isPrivacySandboxSettingsFunctional()) {
-                assertEquals(null, mFragment.findPreference(PREF_PRIVACY_SANDBOX));
-            }
+            assertFalse(PreloadPagesSettingsBridge.getState() != PreloadPagesState.NO_PRELOADING);
         });
     }
 }

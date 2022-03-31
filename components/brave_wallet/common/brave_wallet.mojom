@@ -1,14 +1,1039 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 module brave_wallet.mojom;
 
+import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
+import "url/mojom/url.mojom";
 
+// Used to notify the renderer of provider information for use in
+// window.ethereum events
 interface EventsListener {
+  // Fired when the current netowrk changes
   ChainChangedEvent(string chain_id);
+
+  // Fired when the accounts have changed such as when the wallet locked, the
+  // selected account changes, a new account is given permission, etc.
+  AccountsChangedEvent(array<string> accounts);
 };
 
+interface SolanaEventsListener {
+  // base58 encoded account, account would be null when switching to an about to
+  // be created account
+  AccountChangedEvent(string? account);
+};
+
+// Pre-defined error codes specified in
+// https://www.jsonrpc.org/specification#error_object
+enum JsonRpcError {
+  kParsingError = -32700,    // Parse error - Invalid JSON
+  kInvalidRequest = -32600,  // JSON is not a valid request object
+  kMethodNotFound = -32601,  // Method does not exist
+  kInvalidParams = -32602,   // Invalid method parameters
+  kInternalError = -32603,   // Internal JSON RPC error
+};
+
+// https://eips.ethereum.org/EIPS/eip-1193#provider-errors
+// https://eips.ethereum.org/EIPS/eip-1474#error-codes
+enum ProviderError {
+  kSuccess = 0,  // No error
+
+  kUserRejectedRequest = 4001,   // User rejected the request
+  kUnauthorized = 4100,          // The requested account and/or method has not
+                                 // been authorized by the user
+  kUnsupportedMethod = 4200,     // The requested method is not supported by this
+                                 // Ethereum provider
+  kDisconnected = 4900,          // The provider is disconnected from all chains
+  kChainDisconnected = 4901,     // The provider is disconnected from the
+                                 // specified chain
+  kUnknownChain = 4902,          // The provider doesn't know this chain
+
+  // Pre-defined error codes specified in
+  // https://www.jsonrpc.org/specification#error_object
+  kParsingError = JsonRpcError.kParsingError,      // Parse error - Invalid JSON
+  kInvalidRequest = JsonRpcError.kInvalidRequest,  // JSON is not a valid request object
+  kMethodNotFound = JsonRpcError.kMethodNotFound,  // Method does not exist
+  kInvalidParams = JsonRpcError.kInvalidParams,    // Invalid method parameters
+  kInternalError = JsonRpcError.kInternalError,    // Internal JSON RPC error
+
+  // Implementation-defined server-errors
+  kInvalidInput = -32000,        // Missing or invalid parameters
+  kResourceNotFound = -32001,    // Requested resource not found
+  kResourceUnavailable = -32002, // Requested resource not available
+  kTransactionRejected = -32003, // Transaction creation failed
+  kMethodNotSupported = -32004,  // Method is not implemented
+  kLimitExceeded = -32005,       // Request exceeds defined limit
+  kVersionNotSupported = -32006, // Version of JSON-RPC protocol is not supported
+
+  kUnknown = -1                 // Unknown error
+};
+
+enum SolanaProviderError {
+  kSuccess = ProviderError.kSuccess,  // No error
+
+  kUserRejectedRequest = ProviderError.kUserRejectedRequest,
+  kUnauthorized = ProviderError.kUnauthorized,
+
+  // Pre-defined error codes specified in
+  // https://www.jsonrpc.org/specification#error_object
+  kParsingError = JsonRpcError.kParsingError,      // Parse error - Invalid JSON
+  kInvalidRequest = JsonRpcError.kInvalidRequest,  // JSON is not a valid request object
+  kMethodNotFound = JsonRpcError.kMethodNotFound,  // Method does not exist
+  kInvalidParams = JsonRpcError.kInvalidParams,    // Invalid method parameters
+  kInternalError = JsonRpcError.kInternalError,    // Internal JSON RPC error
+
+  // Implementation defined RPC server errors
+  // https://docs.rs/solana-client/1.9.9/src/solana_client/rpc_custom_error.rs.html
+  kBlockCleanedUp = -32001,
+  kSendTransactionPreflightFailure = -32002,
+  kTransactionSignatureVerificationFailure = -32003,
+  kBlockNotAvailable = -32004,
+  kNodeUnhealthy = -32005,
+  kTransactionPrecompileVerificationFailure = -32006,
+  kSlotSkipped = -32007,
+  kNoSnapshot = -32008,
+  kLongTermStorageSlotSkipped = -32009,
+  kKeyExcludedFromSecondaryIndex = -32010,
+  kTransactionHistoryNotAvailable = -32011,
+  kScanError = -32012,
+  kTransactionSignatureLenMismatch = -32013,
+  kBlockStatusNotAvailableYet = -32014
+};
+
+union ProviderErrorUnion {
+  ProviderError provider_error;
+  SolanaProviderError solana_provider_error;
+};
+
+// There is one BraveWalletProvider per renderer, the renderer communicates
+// with this for window.ethereum usage.
 interface BraveWalletProvider {
+  // Initializes an EventsListener
   Init(pending_remote<EventsListener> events_listener);
-  Request(string json_payload) => (int32 http_code,
-                                   string response);
+
+  // Corresponds to window.ethereum.request
+  Request(mojo_base.mojom.Value input, string origin) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
+
+  // Corresponds to window.ethereum.enable and eth_requestAccounts
+  Enable() => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
+  Send(string method, mojo_base.mojom.Value params, string origin) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
+
+  // Used for the connect event
   GetChainId() => (string chain_id);
+
+  // Determines if the keyring is locked.
+  IsLocked() => (bool isLocked);
+};
+
+interface SolanaProvider {
+  // Initializes an SolanaEventsListener
+  Init(pending_remote<SolanaEventsListener> events_listener);
+
+  // Optional {onlyIfTrusted: true}, when that flag is enable, we will only
+  // connect and emit a connect event if the application is trusted.
+  // It will returns base58 encoded public key when success
+  Connect(mojo_base.mojom.DictionaryValue? arg)
+    => (SolanaProviderError error, string error_message, string public_key);
+  Disconnect();
+  [Sync]
+  IsConnected() => (bool is_connected);
+  // return base58 encoded public key
+  [Sync]
+  GetPublicKey() => (string public_key);
+  // It takes a base58 encoded serialized Message and return a serialized
+  // Transaction with signature in wire format.
+  SignTransaction(string encoded_serialized_msg)
+    => (SolanaProviderError error, string error_message,
+        array<uint8> serialized_tx);
+  SignAllTransactions(array<string> encoded_serialized_msg)
+    => (SolanaProviderError error, string error_message,
+        array<array<uint8>> serialized_txs);
+  // It takes a base58 encoded serialized Message and return an object
+  // containing both base58 encoded public key and signature as
+  // { publicKey: <base58 encoded string>,
+  //   signature:  <base58 encoded string>
+  // }
+  SignAndSendTransaction(string encoded_serialized_msg)
+    => (SolanaProviderError error, string error_message,
+        mojo_base.mojom.DictionaryValue result);
+  // It takes a base58 encoded message and an optional display encoding for
+  // users and returns an object as
+  // { publicKey: <base58 encoded string>,
+  //   signature:  <base58 encoded string>
+  // }
+  SignMessage(string encoded_msg, string? display_encoding)
+    => (SolanaProviderError error, string error_message,
+        mojo_base.mojom.DictionaryValue result);
+
+  // Arg is {method: <string>, params: {...}}
+  // returns a dictionary result to be converted into a v8 object
+  Request(mojo_base.mojom.DictionaryValue arg)
+    => (SolanaProviderError error, string error_message,
+        mojo_base.mojom.DictionaryValue result);
+
+};
+
+// Used by the WebUI page to bootstrap bidirectional communication.
+interface PanelHandlerFactory {
+  // The WebUI calls this method when the page is first initialized.
+  CreatePanelHandler(pending_remote<Page> page,
+                     pending_receiver<PanelHandler> panel_handler,
+                     pending_receiver<WalletHandler> wallet_handler,
+                     pending_receiver<JsonRpcService> json_rpc_service,
+                     pending_receiver<SwapService> swap_service,
+                     pending_receiver<AssetRatioService> asset_ratio_service,
+                     pending_receiver<KeyringService> keyring_service,
+                     pending_receiver<BlockchainRegistry> blockchain_registry,
+                     pending_receiver<TxService> tx_service,
+                     pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
+                     pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
+                     pending_receiver<BraveWalletService> brave_wallet_service);
+};
+
+interface PageHandlerFactory {
+  // The WebUI calls this method when the page is first initialized.
+  CreatePageHandler(pending_remote<Page> page,
+                    pending_receiver<PageHandler> page_handler,
+                    pending_receiver<WalletHandler> wallet_handler,
+                    pending_receiver<JsonRpcService> json_rpc_service,
+                    pending_receiver<SwapService> swap_service,
+                    pending_receiver<AssetRatioService> asset_ratio_service,
+                    pending_receiver<KeyringService> keyring_service,
+                    pending_receiver<BlockchainRegistry> blockchain_registry,
+                    pending_receiver<TxService> tx_service,
+                    pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
+                    pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
+                    pending_receiver<BraveWalletService> brave_wallet_service);
+
+};
+
+// Browser-side handler for requests from WebUI page.
+interface PanelHandler {
+  // Notify the backend that the UI is ready to be shown.
+  ShowUI();
+
+  // Notify the backend that the dialog should be closed.
+  CloseUI();
+
+  ConnectToSite(array<string> accounts, string origin);
+  CancelConnectToSite(string origin);
+  SetCloseOnDeactivate(bool close);
+};
+
+// Browser-side handler for requests from WebUI page.
+interface PageHandler {
+  // Used by the brave://wallet page to open up the approval panel
+  ShowApprovePanelUI();
+};
+
+struct AppItem {
+  string description;
+  string icon;
+  string name;
+  string url;
+};
+
+enum AssetPriceTimeframe {
+  Live,
+  OneDay,
+  OneWeek,
+  OneMonth,
+  ThreeMonths,
+  OneYear,
+  All
+};
+
+struct AssetTimePrice {
+  mojo_base.mojom.TimeDelta date;
+  string price;
+};
+
+struct AssetPrice {
+  string from_asset;
+  string to_asset;
+  string price;
+  string asset_timeframe_change;
+};
+
+struct SwapParams {
+  string taker_address;
+  string sell_amount;
+  string buy_amount;
+  string buy_token;
+  string sell_token;
+  double slippage_percentage;
+  string gas_price;
+};
+
+struct SwapResponse {
+  string price;
+  string guaranteed_price; // Unused for price quote response
+  string to;   // Unused for price quote response
+  string data; // Unused for price quote response
+  string value;
+  string gas;
+  string estimated_gas;
+  string gas_price;
+  string protocol_fee;
+  string minimum_protocol_fee;
+  string buy_token_address;
+  string sell_token_address;
+  string buy_amount;
+  string sell_amount;
+  string allowance_target;
+  string sell_token_to_eth_rate;
+  string buy_token_to_eth_rate;
+  // Note we could also expose "sources" later
+};
+
+const string kLedgerHardwareVendor = "Ledger";
+const string kTrezorHardwareVendor = "Trezor";
+
+const string kFilecoinKeyringId = "filecoin";
+const string kSolanaKeyringId = "solana";
+const string kDefaultKeyringId = "default";
+
+enum FilecoinAddressProtocol {
+  SECP256K1 = 1, // Represents the address SECP256K1 protocol
+  BLS = 3 // Represents the address BLS protocol
+};
+
+struct HardwareWalletAccount {
+  string address;
+  string derivation_path;
+  string name;
+  string hardware_vendor;
+  string device_id;
+  CoinType coin;
+};
+
+struct HardwareInfo {
+  string path;
+  string vendor;
+  string device_id;
+};
+
+struct AccountInfo {
+  string address;
+  string name;
+  bool is_imported;
+  HardwareInfo? hardware;
+  CoinType coin;
+};
+
+struct KeyringInfo {
+  string id;
+  bool is_keyring_created;
+  bool is_locked;
+  bool is_backed_up;
+  array<AccountInfo> account_infos;
+};
+
+// Browser-side handler for common panel / page things
+interface WalletHandler {
+  // Obtains basic information about the wallet that is needed for first render
+  GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,
+                      array<AppItem> favoriteApps,
+                      bool isWalletBackedUp,
+                      array<AccountInfo> accountInfos,
+                      bool isFilecoinEnabled,
+                      bool isSolanaEnabled);
+
+  // Adds a favorite app to the apps list
+  AddFavoriteApp(AppItem appItem);
+
+  // Removes a favorite app to the apps list
+  RemoveFavoriteApp(AppItem appItem);
+};
+
+struct BlockchainToken {
+  string contract_address;
+  string name;
+  string logo;
+  bool is_erc20;
+  bool is_erc721;
+  string symbol;
+  int32 decimals;
+  bool visible = true;
+  string token_id = "";  // Non-empty for ERC721 tokens.
+  string coingecko_id = "";
+  string chain_id;
+};
+
+// WebUI-side handler for requests from the browser.
+interface Page {
+};
+
+interface KeyringServiceObserver {
+  // Fired when a keyring is created
+  KeyringCreated(string keyring_id);
+
+  // Fired when a keyring is restored
+  KeyringRestored(string keyring_id);
+
+  // Fired when a keyring is reset
+  KeyringReset();
+
+  // Fired when a keyring is locked
+  Locked();
+
+  // Fired when a keyring is unlocked
+  Unlocked();
+
+  // Fired when a keyring is backed up
+  BackedUp();
+
+  // Fired when the accounts list changes
+  AccountsChanged();
+
+  // Fired when the autolock setting changes
+  AutoLockMinutesChanged();
+
+  // Fired when the selected account setting changes
+  SelectedAccountChanged(CoinType coin);
+};
+
+// List of tokens and coins that are supported.
+interface BlockchainRegistry {
+  // Obtains token information by a contract lookup
+  GetTokenByContract(string chain_id, string contract) => (BlockchainToken? token);
+
+  // Obtains token information by a symbol lookup
+  GetTokenBySymbol(string chain_id, string symbol) => (BlockchainToken? token);
+
+  // Obtains all tokens Send/Swap UI
+  GetAllTokens(string chain_id) => (array<BlockchainToken> tokens);
+
+  // Obtains all tokens for the Buy UI
+  GetBuyTokens(string chain_id) => (array<BlockchainToken> tokens);
+
+  // Obtains the URL used for buying assets
+  GetBuyUrl(string chain_id, string address, string symbol, string amount) => (string url);
+};
+
+// Implements the HD wallet, Ledger & Trezor integration, account management,
+// and signing.
+interface KeyringService {
+  // Creates a new wallet and encrypts it using the specified password
+  CreateWallet(string password) => (string mnemonic);
+
+  // Obtains the mnemonic code words for an already existing wallet
+  // TODO(darkdh): make result optional instead of using empty string indicated
+  // failure
+  GetMnemonicForDefaultKeyring() => (string mnemonic);
+
+  // Restores a wallet with the specified mnemonic and encrypts it with the
+  // new password provided. isLegacyBraveWallet can be used to restore the
+  // wallet using Brave's legacy derivation paths.
+  RestoreWallet(string mnemonic, string password, bool isLegacyBraveWallet)
+    => (bool isValidMnemonic);
+
+  // Locks the keyring.
+  Lock();
+
+  // Unlocks the keyring.
+  Unlock(string password) => (bool success);
+
+  // Determines if the keyring is locked.
+  IsLocked() => (bool isLocked);
+
+  // Adds an account to the keyring.
+  AddAccount(string accountName, CoinType coin ) => (bool success);
+
+  // Obtains the private key for the keyring.
+  GetPrivateKeyForKeyringAccount(string address, CoinType coin)
+    => (bool success, string privateKey);
+
+  // Imports an account with a specific private key to the corresponding keyring
+  // privateKey can be coin preferred encoding, ex. hex or base58
+  ImportAccount(string accountName, string privateKey, CoinType coin)
+    => (bool success, string address);
+
+  // Imports a filecoin account with a specific private key and network
+  ImportFilecoinAccount(string accountName, string privateKey, string network)
+      => (bool success, string address);
+  
+  // Imports an account via JSON
+  ImportAccountFromJson(string accountName, string password, string json)
+    => (bool success, string address);
+
+  // Obtains the private key for an imported account
+  GetPrivateKeyForImportedAccount(string address, CoinType coin)
+    => (bool success, string privateKey);
+
+  // Removes an imported account
+  RemoveImportedAccount(string address, CoinType coin) => (bool success);
+
+  // Determines if the keyring has been backed up
+  IsWalletBackedUp() => (bool backed_up);
+
+  // Informs the keyring that the wallet has been backed up
+  NotifyWalletBackupComplete();
+
+  // Obtains the keyring information
+  GetKeyringsInfo(array<string> keyrings) => (array<KeyringInfo> keyrings);
+  // Obtains the keyring information
+  GetKeyringInfo(string keyringId) => (KeyringInfo keyring);
+
+  // Adds a KeyringServiceObserver
+  AddObserver(pending_remote<KeyringServiceObserver> observer);
+
+  // Sets the account name for a derived account
+  SetKeyringDerivedAccountName(string keyring_id, string address, string name) => (bool success);
+
+  // Sets the account name for an imported account
+  SetKeyringImportedAccountName(string keyring_id, string address, string name) => (bool success);
+
+  // Sets the account name for a hardware account
+  SetHardwareAccountName(string address, string name, CoinType coin) => (bool success);
+
+  // Adds hardware accounts
+  AddHardwareAccounts(array<HardwareWalletAccount> info);
+
+  // Removes a hardware account
+  RemoveHardwareAccount(string address, CoinType coin);
+
+  // Informs the user that user interaction occurred so auto-lock doesn't occur
+  NotifyUserInteraction();
+
+  // Obtains the selected account
+  GetSelectedAccount(CoinType coin) => (string? address);
+
+  // Sets the selected account
+  SetSelectedAccount(string address, CoinType coin) => (bool success);
+
+  // Obtains the number of minutes that the keyring will auto-lock in
+  GetAutoLockMinutes() => (int32 minutes);
+
+  // Sets the number of minutes for keyring auto-lock
+  // Must be within the inclusive range [kAutoLockMinutesMin, kAutoLockMinutesMax]
+  SetAutoLockMinutes(int32 minutes) => (bool success);
+
+  // Returned result is true if the password is considered a strong password.
+  // We define a strong password to have:
+  // - At least one letter
+  // - At least one number
+  // - At least 7 characters
+  // - At least one non-alphanumeric character
+  IsStrongPassword(string password) => (bool result);
+
+  // Validate password for default keyring.
+  ValidatePassword(string password) => (bool result);
+
+  // Get the checksume'd EthAddress for the specified address
+  GetChecksumEthAddress(string address) => (string checksum_address);
+
+  // Obtains if there's a pending unlock request
+  // Note that there is no need for an API to notify unlocked
+  // because the KeyringServiceObserver Unlocked event can be used for that.
+  HasPendingUnlockRequest() => (bool pending);
+};
+
+// Used for cryptocurrency prices over time.
+interface AssetRatioService {
+  // Obtains the prices from a list of assets to a list of assets
+  // Each from asset is represented in the to asset and includes the timeframe
+  // change as well.
+  GetPrice(array<string> from_assets, array<string> to_assets, AssetPriceTimeframe timeframe) =>
+      (bool success, array<AssetPrice> values);
+
+  // Obtains the price history for a specific asset
+  GetPriceHistory(string asset, string vs_asset,
+      AssetPriceTimeframe timeframe) =>
+          (bool success, array<AssetTimePrice> values);
+
+  // Gas estimation APIs
+  GetEstimatedTime(string gas_price /* decimal string in wei */) =>
+      (bool success, string seconds);
+
+  // Obtain token info via contract address through etherscan API.
+  GetTokenInfo(string contract_address) => (BlockchainToken? token);
+};
+
+// Implements swapping related functionality through the 0x API.
+interface SwapService {
+  // Obtains a price quote for a swap
+  GetPriceQuote(SwapParams params) =>
+      (bool success, SwapResponse? response, string? error_response);
+
+  // Obtains transaction payload data for a swap
+  GetTransactionPayload(SwapParams params) =>
+      (bool success, SwapResponse? response, string? error_response);
+
+  // Obtains whether the given chain id supports swap
+  IsSwapSupported(string chain_id) => (bool result);
+};
+
+interface JsonRpcServiceObserver {
+  // Fired when the selected network changes
+  ChainChangedEvent(string chain_id, CoinType coin);
+
+  // Fired when a wallet_addEthereumChain request is completed
+  OnAddEthereumChainRequestCompleted(string chain_id, string error);
+
+  // Fired when a chain ID's 1559 status changes
+  OnIsEip1559Changed(string chain_id, bool is_eip1559);
+};
+
+struct TxData {
+  string nonce;
+  string gas_price;
+  string gas_limit;
+  string to;
+  string value;
+  array<uint8> data;
+};
+
+struct GasEstimation1559 {
+  string slow_max_priority_fee_per_gas;
+  string slow_max_fee_per_gas;
+  string avg_max_priority_fee_per_gas;
+  string avg_max_fee_per_gas;
+  string fast_max_priority_fee_per_gas;
+  string fast_max_fee_per_gas;
+  string base_fee_per_gas;
+};
+
+struct TxData1559 {
+  TxData base_data;
+  string chain_id;
+  string max_priority_fee_per_gas;
+  string max_fee_per_gas;
+  GasEstimation1559? gas_estimation;
+};
+
+const string kMainnetChainId = "0x1";
+const string kRinkebyChainId = "0x4";
+const string kRopstenChainId = "0x3";
+const string kGoerliChainId = "0x5";
+const string kKovanChainId = "0x2a";
+const string kLocalhostChainId = "0x539";
+const string kPolygonMainnetChainId = "0x89";
+const string kBinanceSmartChainMainnetChainId = "0x38";
+const string kAvalancheMainnetChainId = "0xa86a"; // Avalanche C-Chain
+const string kFantomMainnetChainId = "0xfa"; // Fantom Opera
+const string kCeloMainnetChainId = "0xa4ec";
+const string kOptimismMainnetChainId = "0xa";
+const string kSolanaMainnet = "0x65";
+const string kSolanaTestnet = "0x66";
+const string kSolanaDevnet = "0x67";
+const string kFilecoinTestnet = "t";
+const string kFilecoinMainnet = "f";
+
+enum CoinType {
+  ETH = 60,
+  FIL = 461,
+  SOL = 501
+};
+
+struct NetworkInfoDataETH {
+  bool is_eip1559;
+};
+
+union NetworkInfoData {
+  NetworkInfoDataETH eth_data;
+};
+
+struct NetworkInfo {
+  string chain_id;
+  string chain_name;
+  array<string> block_explorer_urls;
+  array<string> icon_urls;
+  array<string> rpc_urls;
+  string symbol;
+  string symbol_name;
+  int32 decimals;
+  CoinType coin;
+  NetworkInfoData? data;
+};
+
+struct SwitchChainRequest {
+  url.mojom.Url origin;
+  string chain_id;
+};
+
+struct GetEncryptionPublicKeyRequest {
+  url.mojom.Url origin;
+  string address;
+  // TODO(bbondy): This field is used in the front-end but will be removed soon
+  string? message;
+};
+
+// Deals with the ETH JSON RPC API, as well as things like the user's current
+// network.
+interface JsonRpcService {
+  // Checks the chain ID for an ethereum chain that should be added
+  AddEthereumChain(NetworkInfo chain) => (string chain_id, ProviderError error, string error_message);
+  AddEthereumChainForOrigin(NetworkInfo chain, url.mojom.Url origin) => (string chain_id, ProviderError error, string error_message);
+  AddEthereumChainRequestCompleted(string chain_id, bool approved);
+  RemoveEthereumChain(string chain_id) => (bool success);
+  GetPendingChainRequests() => (array<NetworkInfo> networks);
+
+  // This is used for UI notifying native when the user approves or
+  // rejects SwitchChainRequest
+  NotifySwitchChainRequestProcessed(bool approved, url.mojom.Url origin);
+  GetPendingSwitchChainRequests() => (array<SwitchChainRequest> requests);
+
+  SetNetwork(string chain_id, CoinType coin) => (bool success);
+  GetNetwork(CoinType coin) => (NetworkInfo network);
+  GetAllNetworks(CoinType coin) => (array<NetworkInfo> networks);
+
+  // Obtains the current network's chain ID
+  GetChainId(CoinType coin) => (string chain_id);
+
+  // Obtains the current network's block tracker URL
+  GetBlockTrackerUrl() => (string block_tracker_url);
+
+  // Obtains the current network's URL
+  GetNetworkUrl(CoinType coin) => (string network_url);
+
+  // Obtains the native balance (e.g. ETH for Ethereum) for the address
+  GetBalance(string address, CoinType coin, string chain_id) => (string balance, ProviderError error, string error_message);
+
+  // Obtains the contract's ERC20 compatible balance for an address
+  GetERC20TokenBalance(string contract,
+                       string address,
+                       string chain_id) => (string balance, ProviderError error, string error_message);
+
+  // Obtains the contract's ERC20 allowance for an owner and a spender
+  GetERC20TokenAllowance(string contract,
+                         string owner_address, string spender_address) => (string allowance, ProviderError error, string error_message);
+
+  // ENS lookups
+  EnsGetEthAddr(string domain) => (string address, ProviderError error, string error_message);
+
+  // Unstoppable Domains lookups
+  UnstoppableDomainsGetEthAddr(string domain) => (string address, ProviderError error, string error_message);
+
+  // Used for making requests to the currently selected EVM compatible node for
+  // coin ETH and other nodes with corresponding coin types 
+  Request(string json_payload, bool auto_retry_on_network_change, mojo_base.mojom.Value id, CoinType coin) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response, bool reject, string first_allowed_account, bool update_bind_js_properties);
+
+  // Adds an observer for the events of JsonRpcService
+  AddObserver(pending_remote<JsonRpcServiceObserver> observer);
+
+  // Sets a custom network for testing
+  SetCustomNetworkForTesting(string chain_id, CoinType coin, url.mojom.Url provider_url);
+
+  // Obtains the owner of a contract's ERC721 token ID
+  GetERC721OwnerOf(string contract, string token_id, string chain_id) => (string owner_address, ProviderError error, string error_message);
+
+  // Obtains the balance of a contract's ERC721 token ID for an address
+  // Balance is 0x1 if current selected account is the same as token owner's
+  // address, otherwise balance is 0x0.
+  GetERC721TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
+
+  // Solana JSON RPCs
+  // https://docs.solana.com/developing/clients/jsonrpc-api
+
+  // Returns the balance of the account of provided Pubkey.
+  GetSolanaBalance(string pubkey, string chain_id) =>
+      (uint64 balance, SolanaProviderError error, string error_message);
+  // Returns the token balance of an SPL Token account.
+  GetSPLTokenAccountBalance(string wallet_address, string token_mint_address, string chain_id) =>
+      (string amount, uint8 decimals, string uiAmountString,
+       SolanaProviderError error, string error_message);
+};
+
+enum TransactionStatus {
+  Unapproved = 0,
+  Approved = 1,
+  Rejected = 2,
+  Submitted = 3,
+  Confirmed = 4,
+  Error = 5
+};
+
+enum TransactionType {
+  ETHSend = 0,
+  ERC20Transfer = 1,
+  ERC20Approve = 2,
+  ERC721TransferFrom = 3,
+  ERC721SafeTransferFrom = 4,
+  Other = 5,
+  SolanaSystemTransfer = 6,  // transfering SOL
+  SolanaSPLTokenTransfer = 7,
+  SolanaSPLTokenTransferWithAssociatedTokenAccountCreation = 8
+};
+
+// TODO(spylogsster): Fill the struct with needed fields.
+struct FilTxData {
+};
+
+union TxDataUnion {
+  TxData eth_tx_data;
+  TxData1559 eth_tx_data_1559;
+  SolanaTxData solana_tx_data;
+  FilTxData fil_tx_data;
+};
+
+struct TransactionInfo {
+  string id;
+  string from_address;
+  string tx_hash;
+  TxDataUnion tx_data_union;
+  TransactionStatus tx_status;
+  TransactionType tx_type;
+  array<string> tx_params;
+  array<string> tx_args;
+  mojo_base.mojom.TimeDelta created_time;
+  mojo_base.mojom.TimeDelta submitted_time;
+  mojo_base.mojom.TimeDelta confirmed_time;
+};
+
+interface TxServiceObserver {
+  // Fired when a new unapproved transaction is encountered
+  OnNewUnapprovedTx(TransactionInfo tx_info);
+
+  // Fired when an unapproved transaction is updated, such as the gas
+  // properties change
+  OnUnapprovedTxUpdated(TransactionInfo tx_info);
+
+  // Fired when a transaction is updated
+  OnTransactionStatusChanged(TransactionInfo tx_info);
+};
+
+// For transaction management such as creation, broadcasting, and storing
+// transactions.
+interface TxService {
+  // Used to add a transaction
+  AddUnapprovedTransaction(TxDataUnion tx_data_union, string from) => (bool success, string tx_meta_id, string error_message);
+
+  // Used to approve a transaction
+  ApproveTransaction(CoinType coin_type, string tx_meta_id) => (bool status, ProviderErrorUnion error_union, string error_message);
+
+  // Used to reject a transaction
+  RejectTransaction(CoinType coin_type, string tx_meta_id) => (bool status);
+
+  // Used to get transaction info
+  GetTransactionInfo(CoinType coin_type, string tx_meta_id) => (TransactionInfo? transaction_info);
+
+  // Obtains a list of all transactions from an address.
+  // This returns different data depending on which network is currently selected in JsonRpcService
+  GetAllTransactionInfo(CoinType coin_type, string from) => (array<TransactionInfo> transaction_infos);
+
+  // Used to speed-up or cancel a transaction
+  SpeedupOrCancelTransaction(CoinType coin_type, string tx_meta_id, bool cancel) => (bool success, string tx_meta_id, string error_message);
+
+  // Used to retry a transaction
+  RetryTransaction(CoinType coin_type, string tx_meta_id) => (bool success, string tx_meta_id, string error_message);
+
+  GetTransactionMessageToSign(CoinType coin_type, string tx_meta_id) => (string? message);
+
+  // Adds an observer for TxService
+  AddObserver(pending_remote<TxServiceObserver> observer);
+
+  // Resets the keyring and the related preferences
+  Reset();
+};
+
+// Transaction related APIs specific to EVM.
+interface EthTxManagerProxy {
+  // Used for modifying transaction data
+  SetGasPriceAndLimitForUnapprovedTransaction(string tx_meta_id, string gas_price, string gas_limit) => (bool success);
+  SetGasFeeAndLimitForUnapprovedTransaction(string tx_meta_id, string max_priority_fee_per_gas, string max_fee_per_gas, string gas_limit) => (bool success);
+  SetDataForUnapprovedTransaction(string tx_meta_id, array<uint8> data) => (bool success);
+  SetNonceForUnapprovedTransaction(string tx_meta_id, string nonce) => (bool success);
+
+  // Used for creating transaction data
+  MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);
+  MakeERC20ApproveData(string spender_address, string amount) => (bool success, array<uint8> data);
+  MakeERC721TransferFromData(string from, string to, string token_id, string contract_address) => (bool success, array<uint8> data);
+
+  // Gas estimation API via eth_feeHistory API
+  GetGasEstimation1559() => (GasEstimation1559? estimation);
+
+  GetNonceForHardwareTransaction(string tx_meta_id) => (string? nonce);
+  ProcessHardwareSignature(string tx_meta_id, string v, string r, string s) => (bool status, ProviderError error, string error_message);
+};
+
+interface SolanaTxManagerProxy {
+  // Get transaction data for transfering SOL.
+  MakeSystemProgramTransferTxData(string from, string to, uint64 lamports)
+      => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
+
+  // Get transaction data for transfering SPL tokens from one associated token
+  // account to another.
+  //
+  // If the receiving associated token account exists on the chain, the created
+  // transaction will have one instruction which is the transfer instruction.
+  // If the receiving associated token account is not created yet, the created
+  // transaction will have two instructions, the first one is the instruction
+  // to create the associated token account for the receipient, and the second
+  // instruction is the transfer instruction. Note that sender will fund the
+  // creation (an additional cost) with the minimum balance for the new account
+  // to be rent exempt.
+  MakeTokenProgramTransferTxData(
+      string spl_token_mint_address,
+      string from_wallet_address,
+      string to_wallet_address,
+      uint64 amount)
+      => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
+
+  GetEstimatedTxFee(string tx_meta_id) => (uint64 fee, SolanaProviderError error, string error_message);
+};
+
+interface BraveWalletServiceObserver {
+  // Fired when the active origin is changed
+  OnActiveOriginChanged(string origin);
+
+  // Fired when the default wallet setting changes
+  OnDefaultWalletChanged(DefaultWallet wallet);
+
+  // Fired when the default base currency changes (e.g. USD -> CAD)
+  OnDefaultBaseCurrencyChanged(string currency);
+
+  // Fired when the default base currency changes (e.g. BTC -> ETH)
+  OnDefaultBaseCryptocurrencyChanged(string cryptocurrency);
+
+  // Fired when the list of networks changes
+  OnNetworkListChanged();
+};
+
+struct SignMessageRequest {
+  int32 id;
+  string address;
+  string message;
+  bool is_eip712;
+  // These fields are for hardware eip712 signing and
+  // Should be used only if is_eip712 is true
+  string? domain_hash;
+  string? primary_hash;
+};
+
+enum ExternalWalletType {
+  CryptoWallets,
+  MetaMask
+};
+
+struct AddSuggestTokenRequest {
+  BlockchainToken token;
+};
+
+// For default wallet setting, user assets, permission checks, importing
+// functionality and much more.
+interface BraveWalletService {
+  // Adds an observer for BraveWalletService
+  AddObserver(pending_remote<BraveWalletServiceObserver> observer);
+
+  // Obtains the user assets for the specified chain ID
+  GetUserAssets(string chain_id) => (array<BlockchainToken> tokens);
+
+  // Adds a user asset to the user asset list pref for the specified chain ID.
+  // This asset could be a token from BlockchainRegistry or a custom token.
+  AddUserAsset(BlockchainToken token, string chain_id) => (bool success);
+
+  // Removes a user asset from the user asset list pref for the specified chain
+  // ID. This asset could be a token from BlockchainRegistry or a custom token.
+  RemoveUserAsset(BlockchainToken token, string chain_id) => (bool success);
+
+  // Sets whether or not an asset is visible for the specified chain ID.
+  // This asset could be a token from BlockchainRegistry or a custom token.
+  SetUserAssetVisible(BlockchainToken token, string chain_id, bool visible) => (bool success);
+
+  // Check if the external wallet is installed (Only check installation state
+  // regardless of internal state)
+  IsExternalWalletInstalled(ExternalWalletType type) => (bool installed);
+
+  // Check if the external wallet is initialized (Used for knowing for knowing
+  // to present UI). If a external wallet is not installed, hence it is not
+  // initialized.
+  IsExternalWalletInitialized(ExternalWalletType type) => (bool initialized);
+
+  // Import from the external wallet
+  ImportFromExternalWallet(ExternalWalletType type,
+                           string password,
+                           string newPassword)
+    => (bool success, string? errorMessage);
+
+  // Obtains the default wallet setting
+  GetDefaultWallet() => (DefaultWallet default_wallet);
+
+  // Modifies the default wallet setting
+  SetDefaultWallet(DefaultWallet default_wallet);
+
+  // Obtains the default base currency
+  GetDefaultBaseCurrency() => (string currency);
+
+  // Sets the default base currency
+  SetDefaultBaseCurrency(string currency);
+
+  // Obtains the default base cryptocurrency
+  GetDefaultBaseCryptocurrency() => (string cryptocurrency);
+
+  // Sets the default base cryptocurrency
+  SetDefaultBaseCryptocurrency(string cryptocurrency);
+
+  // Adds the Ethereum permission for the account
+  AddEthereumPermission(string origin, string account) => (bool success);
+
+  // Checks if the Ethereum permission is allowed for the origin on the account
+  HasEthereumPermission(string origin, string account) => (bool success, bool has_permission);
+
+  // Resets the Ethereum permission for the account
+  ResetEthereumPermission(string origin, string account) => (bool success);
+
+  // Obtains the active origin
+  GetActiveOrigin() => (string origin);
+
+  // These are used for UI notifying native when the user approve/reject SignMessage[Hardware]Request
+  NotifySignMessageRequestProcessed(bool approved, int32 id);
+  // Obtains the pending sign message requests
+  GetPendingSignMessageRequests() => (array<SignMessageRequest> requests);
+  NotifySignMessageHardwareRequestProcessed(bool approved, int32 id, string signature, string error);
+
+  // Used for UI notifying native when the user apprrove/reject add suggest
+  // token requests.
+  NotifyAddSuggestTokenRequestsProcessed(bool approved, array<string> contract_addresses);
+  // Obtain the pending add suggest token requests for current chain, will be
+  // cleared when user switch networks.
+  GetPendingAddSuggestTokenRequests() => (array<AddSuggestTokenRequest> requests);
+
+  // This is used for UI notifying native when the user approves or
+  // rejects getting the public key for an origin
+  NotifyGetPublicKeyRequestProcessed(bool approved, url.mojom.Url origin);
+  GetPendingGetEncryptionPublicKeyRequests() => (array<GetEncryptionPublicKeyRequest> requests);
+
+  // Resets the keyring and the related preferences
+  Reset();
+};
+
+enum DefaultWallet {
+  AskDeprecated = 0,
+  None = 1,
+  CryptoWallets = 2,
+  BraveWalletPreferExtension = 3,
+  BraveWallet = 4
+};
+
+struct EncryptionKeyRequest {
+  string origin;
+  string address;
+  string? message;
+};
+
+struct SolanaAccountMeta {
+  string pubkey;
+  bool is_signer;
+  bool is_writable;
+};
+
+struct SolanaInstruction {
+  string program_id;
+  array<SolanaAccountMeta> account_metas;
+  array<uint8> data;
+};
+
+struct SolanaTxData {
+  string recent_blockhash;
+  string fee_payer;
+  string to_wallet_address;
+  string spl_token_mint_address;
+  uint64 lamports;
+  uint64 amount;
+  TransactionType tx_type;
+  array<SolanaInstruction> instructions;
 };

@@ -5,10 +5,15 @@ edition = "2018"
 
 [dependencies]
 adblock-ffi = { path = "../../components/adblock_rust_ffi" }
-challenge-bypass-ristretto-ffi = { path = "../../vendor/challenge_bypass_ristretto_ffi" }
+brave-wallet-cxx = { path = "../../components/brave_wallet/rust" }
+challenge-bypass-ristretto-ffi = { path = "../../components/challenge_bypass_ristretto" }
 speedreader-ffi = { path = "../../components/speedreader/rust/ffi" }
-[patch.crates-io]
-cssparser = { git = 'https://github.com/AndriusA/rust-cssparser', branch = "glibc" }
+skus-cxx = { path = "../../components/skus/browser/rs/cxx" }
+brave-news-cxx = { path = "../../components/brave_today/rust" }
+json-cxx = { path = "../../components/json/rs" }
+
+[target.'cfg(feature = "enable_rust_bls")'.dependencies]
+bls-cxx = { path = "../../components/bls/rs" }
 
 [lib]
 crate-type = [ "staticlib" ]

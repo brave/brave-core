@@ -18,7 +18,7 @@ export interface SliderSwitchOption<T> {
 }
 
 interface Props<T> {
-  options: SliderSwitchOption<T>[]
+  options: Array<SliderSwitchOption<T>>
   selectedValue: T
   onSelect: (value: T) => void
 }
@@ -31,8 +31,8 @@ export function SliderSwitch<T> (props: Props<T>) {
   return (
     <style.root>
       {
-        selectedIndex >= 0 ?
-          <style.bar
+        selectedIndex >= 0
+          ? <style.bar
             style={{
               left: `${selectedIndex * 100 / optionCount}%`,
               right: `${(optionCount - selectedIndex - 1) * 100 / optionCount}%`

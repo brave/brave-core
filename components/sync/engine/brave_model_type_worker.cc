@@ -30,26 +30,23 @@ namespace {
 
 size_t kFailuresToResetMarker = 7;
 // Allow reset progress marker for type not often than once in 30 minutes
-base::TimeDelta kMinimalTimeBetweenResetMarker =
-    base::TimeDelta::FromMinutes(30);
+base::TimeDelta kMinimalTimeBetweenResetMarker = base::Minutes(30);
 }  // namespace
 
 BraveModelTypeWorker::BraveModelTypeWorker(
     ModelType type,
     const sync_pb::ModelTypeState& initial_state,
-    bool trigger_initial_sync,
     Cryptographer* cryptographer,
+    bool encryption_enabled,
     PassphraseType passphrase_type,
     NudgeHandler* nudge_handler,
-    std::unique_ptr<ModelTypeProcessor> model_type_processor,
     CancelationSignal* cancelation_signal)
     : ModelTypeWorker(type,
                       initial_state,
-                      trigger_initial_sync,
                       cryptographer,
+                      encryption_enabled,
                       passphrase_type,
                       nudge_handler,
-                      std::move(model_type_processor),
                       cancelation_signal) {}
 
 BraveModelTypeWorker::~BraveModelTypeWorker() {}
@@ -113,7 +110,7 @@ bool BraveModelTypeWorker::IsResetProgressMarkerRequired(
 }
 
 void BraveModelTypeWorker::ResetProgressMarker() {
-  VLOG(1) << "Reset progress marker for type " << ModelTypeToString(type_);
+  VLOG(1) << "Reset progress marker for type " << ModelTypeToDebugString(type_);
   // Normal reset of progress marker due to 7th failure
   // P3A sample is 0
   base::UmaHistogramExactLinear("Brave.Sync.ProgressTokenEverReset", 0, 1);

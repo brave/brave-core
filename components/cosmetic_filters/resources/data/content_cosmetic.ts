@@ -9,7 +9,6 @@
 // - for cosmetic filters work with CSS and stylesheet. That work itself
 //   could call the script several times.
 
-const { parseDomain, ParseResultType } = require('parse-domain')
 // Start looking for things to unhide before at most this long after
 // the backend script is up and connected (eg backgroundReady = true),
 // or sooner if the thread is idle.
@@ -27,13 +26,15 @@ const queriedClasses = new Set<string>()
 // Each of these get setup once the mutation observer starts running.
 let notYetQueriedClasses: string[]
 let notYetQueriedIds: string[]
-let cosmeticObserver: MutationObserver | undefined = undefined
+let cosmeticObserver: MutationObserver | undefined
 
 window.content_cosmetic = window.content_cosmetic || {}
 const CC = window.content_cosmetic
 
 CC.cosmeticStyleSheet = CC.cosmeticStyleSheet || new CSSStyleSheet()
 CC.allSelectorsToRules = CC.allSelectorsToRules || new Map<string, number>()
+// Start from 1; valid indices must be nonzero.
+CC.nextRuleIndex = CC.nextRuleIndex || 1
 CC.observingHasStarted = CC.observingHasStarted || false
 // All new selectors go in `firstRunQueue`
 CC.firstRunQueue = CC.firstRunQueue || new Set<string>()
@@ -58,7 +59,7 @@ CC._startCheckingId = CC._startCheckingId || undefined
  * @param timeout max time to wait. at or after this time the function will be run regardless of thread noise
  */
 const idleize = (onIdle: Function, timeout: number) => {
-  let idleId: number | undefined = undefined
+  let idleId: number | undefined
   return function WillRunOnIdle () {
     if (idleId !== undefined) {
       return
@@ -90,17 +91,13 @@ const isHTMLElement = (node: Node): boolean => {
   return ('innerText' in node)
 }
 
-const asHTMLElement = (node: Node): HTMLElement | null => {
-  return isHTMLElement(node) ? node as HTMLElement : null
-}
-
 const fetchNewClassIdRules = () => {
   if ((!notYetQueriedClasses || notYetQueriedClasses.length === 0) &&
     (!notYetQueriedIds || notYetQueriedIds.length === 0)) {
     return
   }
   // Callback to c++ renderer process
-  // @ts-ignore
+  // @ts-expect-error
   cf_worker.hiddenClassIdSelectors(
       JSON.stringify({
         classes: notYetQueriedClasses, ids: notYetQueriedIds
@@ -118,7 +115,7 @@ const handleMutations: MutationCallback = (mutations: MutationRecord[]) => {
       switch (aMutation.attributeName) {
         case 'class':
           for (const aClassName of changedElm.classList.values()) {
-            if (queriedClasses.has(aClassName) === false) {
+            if (!queriedClasses.has(aClassName)) {
               notYetQueriedClasses.push(aClassName)
               queriedClasses.add(aClassName)
             }
@@ -127,7 +124,7 @@ const handleMutations: MutationCallback = (mutations: MutationRecord[]) => {
 
         case 'id':
           const mutatedId = changedElm.id
-          if (queriedIds.has(mutatedId) === false) {
+          if (!queriedIds.has(mutatedId)) {
             notYetQueriedIds.push(mutatedId)
             queriedIds.add(mutatedId)
           }
@@ -160,43 +157,14 @@ const handleMutations: MutationCallback = (mutations: MutationRecord[]) => {
   fetchNewClassIdRules()
 }
 
-const _parseDomainCache = Object.create(null)
-const getParsedDomain = (aDomain: string) => {
-  const cacheResult = _parseDomainCache[aDomain]
-  if (cacheResult !== undefined) {
-    return cacheResult
-  }
-
-  const newResult = parseDomain(aDomain)
-  _parseDomainCache[aDomain] = newResult
-  return newResult
-}
-
-const _parsedCurrentDomain = getParsedDomain(window.location.host)
 const isFirstPartyUrl = (url: string): boolean => {
   if (isRelativeUrl(url)) {
     return true
   }
 
-  const parsedTargetDomain = getParsedDomain(url)
-
-  if (parsedTargetDomain.type !== _parsedCurrentDomain.type) {
-    return false
-  }
-
-  if (parsedTargetDomain.type === ParseResultType.Listed) {
-    const isSameEtldP1 = (_parsedCurrentDomain.icann.topLevelDomains === parsedTargetDomain.icann.topLevelDomains &&
-      _parsedCurrentDomain.icann.domain === parsedTargetDomain.icann.domain)
-    return isSameEtldP1
-  }
-
-  const looksLikePrivateOrigin =
-    [ParseResultType.NotListed, ParseResultType.Ip, ParseResultType.Reserved].includes(parsedTargetDomain.type)
-  if (looksLikePrivateOrigin) {
-    return _parsedCurrentDomain.hostname === parsedTargetDomain.hostname
-  }
-
-  return false
+  // Callback to c++ renderer process
+  // @ts-expect-error
+  return cf_worker.isFirstPartyUrl(url)
 }
 
 const stripChildTagsFromText = (elm: HTMLElement, tagName: string, text: string): string => {
@@ -219,7 +187,7 @@ const stripChildTagsFromText = (elm: HTMLElement, tagName: string, text: string)
  * @see https://github.com/brave/brave-browser/issues/9955
  */
 const showsSignificantText = (elm: Element): boolean => {
-  if (isHTMLElement(elm) === false) {
+  if (!isHTMLElement(elm)) {
     return false
   }
 
@@ -248,8 +216,8 @@ const showsSignificantText = (elm: Element): boolean => {
 }
 
 interface IsFirstPartyQueryResult {
-  foundFirstPartyResource: boolean,
-  foundThirdPartyResource: boolean,
+  foundFirstPartyResource: boolean
+  foundThirdPartyResource: boolean
   foundKnownThirdPartyAd: boolean
 }
 
@@ -301,7 +269,7 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
     if (elm.hasAttribute('src')) {
       const elmSrc = elm.getAttribute('src') as string
       const elmSrcIsFirstParty = isFirstPartyUrl(elmSrc)
-      if (elmSrcIsFirstParty === true) {
+      if (elmSrcIsFirstParty) {
         queryResult.foundFirstPartyResource = true
         return true
       }
@@ -326,26 +294,26 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
 
   if (elm.firstChild) {
     isSubTreeFirstParty(elm.firstChild as Element, queryResult)
-    if (queryResult.foundKnownThirdPartyAd === true) {
+    if (queryResult.foundKnownThirdPartyAd) {
       return false
     }
-    if (queryResult.foundFirstPartyResource === true) {
+    if (queryResult.foundFirstPartyResource) {
       return true
     }
   }
 
   if (elm.nextSibling) {
     isSubTreeFirstParty(elm.nextSibling as Element, queryResult)
-    if (queryResult.foundKnownThirdPartyAd === true) {
+    if (queryResult.foundKnownThirdPartyAd) {
       return false
     }
-    if (queryResult.foundFirstPartyResource === true) {
+    if (queryResult.foundFirstPartyResource) {
       return true
     }
   }
 
-  if (isTopLevel === false) {
-    return (queryResult.foundThirdPartyResource === false)
+  if (!isTopLevel) {
+    return (!queryResult.foundThirdPartyResource)
   }
 
   if (queryResult.foundThirdPartyResource) {
@@ -365,32 +333,11 @@ const unhideSelectors = (selectors: Set<string>) => {
     .sort()
     .reverse()
   // Delete the rules
-  let lastIdx: number = CC.allSelectorsToRules.size - 1
   for (const ruleIdx of rulesToRemove) {
     // Safe to asset ruleIdx is a number because we've already filtered out
     // any `undefined` instances with the filter call above.
-    CC.cosmeticStyleSheet.deleteRule(ruleIdx as number)
-  }
-  // Re-sync the indexes
-  // TODO: Sync is hard, just re-build by iterating through the StyleSheet rules.
-  const ruleLookup = Array.from(CC.allSelectorsToRules.entries())
-  let countAtLastHighest = rulesToRemove.length
-  for (let i = lastIdx; i > 0; i--) {
-    const [selector, oldIdx] = ruleLookup[i]
-    // Is this one we removed?
-    if (rulesToRemove.includes(i)) {
-      CC.allSelectorsToRules.delete(selector)
-      countAtLastHighest--
-      if (countAtLastHighest === 0) {
-        break
-      }
-      continue
-    }
-    if (oldIdx !== i) {
-      // Probably out of sync
-      console.error('Cosmetic Filters: old index did not match lookup index', { selector, oldIdx, i })
-    }
-    CC.allSelectorsToRules.set(selector, oldIdx - countAtLastHighest)
+    // @ts-expect-error
+    cf_worker.uninjectStylesheet(ruleIdx as number)
   }
 }
 
@@ -408,7 +355,7 @@ let queueIsSleeping = false
  * 3. If we're looking at the 3rd queue, don't requeue any selectors.
  */
 const pumpCosmeticFilterQueues = () => {
-  if (queueIsSleeping === true) {
+  if (queueIsSleeping) {
     return
   }
 
@@ -444,14 +391,14 @@ const pumpCosmeticFilterQueues = () => {
       // anything, leave the selector as "hiding" and move on.
       // This element will likely be checked again on the next 'pump'
       // as long as another element from the selector does not match 1st party.
-      if (elmSubtreeIsFirstParty === false) {
+      if (!elmSubtreeIsFirstParty) {
         continue
       }
 
       // If the subtree doesn't have a significant amount of text (e.g., it
       // just says "Advertisement"), then no need to change anything; it should
       // stay hidden.
-      if (showsSignificantText(aMatchingElm) === false) {
+      if (!showsSignificantText(aMatchingElm)) {
         continue
       }
 
@@ -459,14 +406,14 @@ const pumpCosmeticFilterQueues = () => {
       // first party, so we need to figure out which selector from the combo
       // selector did the matching.
       for (const selector of currentWorkLoad) {
-        if (aMatchingElm.matches(selector) === false) {
+        if (!aMatchingElm.matches(selector)) {
           continue
         }
 
         // Similarly, if we already know a selector matches 1p content,
         // there is no need to notify the background script again, so
         // we don't need to consider further.
-        if (CC.alreadyUnhiddenSelectors.has(selector) === true) {
+        if (CC.alreadyUnhiddenSelectors.has(selector)) {
           continue
         }
 
@@ -482,7 +429,7 @@ const pumpCosmeticFilterQueues = () => {
       currentQueue.delete(aUsedSelector)
       // Don't requeue selectors we know identify first party content.
       const selectorMatchedFirstParty = newlyIdentifiedFirstPartySelectors.has(aUsedSelector)
-      if (nextQueue && selectorMatchedFirstParty === false) {
+      if (nextQueue && !selectorMatchedFirstParty) {
         nextQueue.add(aUsedSelector)
       }
     }
@@ -499,7 +446,6 @@ const pumpCosmeticFilterQueues = () => {
       // idle since all other calls to `pumpCosmeticFilterQueuesOnIdle` that occur during this time
       // will be ignored (and nothing else should be calling `pumpCosmeticFilterQueues` straight).
       queueIsSleeping = false
-      // tslint:disable-next-line:no-use-before-declare
       pumpCosmeticFilterQueuesOnIdle()
     }, pumpIntervalMinMs)
   }
@@ -542,7 +488,7 @@ const startObserving = () => {
 const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
   // Three states possible here.  First, the delay has already occurred.  If so,
   // pass through to pumpCosmeticFilterQueues immediately.
-  if (CC._hasDelayOcurred === true) {
+  if (CC._hasDelayOcurred) {
     pumpCosmeticFilterQueuesOnIdle()
     return
   }
@@ -564,9 +510,16 @@ const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
   }, { timeout: maxTimeMSBeforeStart })
 }
 
-if (!CC.observingHasStarted) {
-  CC.observingHasStarted = true
-  scheduleQueuePump(CC.hide1pContent, CC.generichide)
-} else {
-  scheduleQueuePump(false, false)
+const tryScheduleQueuePump = () => {
+  if (!CC.observingHasStarted) {
+    CC.observingHasStarted = true
+    scheduleQueuePump(CC.hide1pContent, CC.generichide)
+  } else {
+    scheduleQueuePump(false, false)
+  }
 }
+
+CC.tryScheduleQueuePump = CC.tryScheduleQueuePump || tryScheduleQueuePump
+CC.scheduleQueuePump = CC.scheduleQueuePump || scheduleQueuePump
+
+tryScheduleQueuePump()

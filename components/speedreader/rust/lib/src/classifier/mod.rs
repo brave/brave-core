@@ -5,14 +5,13 @@ use std::collections::HashMap;
 use model::predict;
 use model::N_FEATURES;
 
+/// Hold a set of feature measurements and use them to predict readability.
 pub struct Classifier {
     features_list: [f32; N_FEATURES],
 }
 
 impl Classifier {
     pub fn from_feature_map(features: &HashMap<String, u32>) -> Classifier {
-        //let features_list: [f32; N_FEATURES] = [0.0; N_FEATURES];
-
         let features_list = convert_map(features);
         Classifier { features_list }
     }
@@ -22,32 +21,41 @@ impl Classifier {
     }
 }
 
-// helpers
+/// Convert a feature map to a vector for model input.
 fn convert_map(map: &HashMap<String, u32>) -> [f32; N_FEATURES] {
     let mut slice: [f32; N_FEATURES] = [0.0; N_FEATURES];
 
-    slice[0] = map.get("img").cloned().unwrap_or(0) as f32;
-    slice[1] = map.get("a").cloned().unwrap_or(0) as f32;
-    slice[2] = map.get("script").cloned().unwrap_or(0) as f32;
-    slice[3] = map.get("text_blocks").cloned().unwrap_or(0) as f32;
-    slice[4] = map.get("words").cloned().unwrap_or(0) as f32;
-    slice[5] = map.get("blockquote").cloned().unwrap_or(0) as f32;
-    slice[6] = map.get("dl").cloned().unwrap_or(0) as f32;
-    slice[7] = map.get("div").cloned().unwrap_or(0) as f32;
-    slice[8] = map.get("ol").cloned().unwrap_or(0) as f32;
-    slice[9] = map.get("p").cloned().unwrap_or(0) as f32;
-    slice[10] = map.get("pre").cloned().unwrap_or(0) as f32;
-    slice[11] = map.get("table").cloned().unwrap_or(0) as f32;
-    slice[12] = map.get("ul").cloned().unwrap_or(0) as f32;
-    slice[13] = map.get("select").cloned().unwrap_or(0) as f32;
-    slice[14] = map.get("article").cloned().unwrap_or(0) as f32;
-    slice[15] = map.get("section").cloned().unwrap_or(0) as f32;
-    slice[16] = map.get("url_depth").cloned().unwrap_or(0) as f32;
-    slice[17] = map.get("amphtml").cloned().unwrap_or(0) as f32;
-    slice[18] = map.get("fb_pages").cloned().unwrap_or(0) as f32;
-    slice[19] = map.get("og_article").cloned().unwrap_or(0) as f32;
-    slice[20] = map.get("schema_org").cloned().unwrap_or(0) as f32;
-    //slice[21] = map.get("file_size").cloned().unwrap_or(0) as f32;
+    // These must be the same order as the data the model was trained on!
+    const KEYS: [&str; N_FEATURES] = [
+        "img",
+        "a",
+        "script",
+        "text_blocks",
+        "words",
+        "blockquote",
+        "dl",
+        "div",
+        "ol",
+        "p",
+        "pre",
+        "table",
+        "ul",
+        "select",
+        "article",
+        "section",
+        "url_depth",
+        "amphtml",
+        "fb_pages",
+        "og_article",
+        "schema_org",
+        /*"file_size",*/
+    ];
+
+    // Fill each slot in the features vector with the corresponding
+    // value from `map`.
+    for (feature_slot, key) in slice.iter_mut().zip(KEYS) {
+        *feature_slot = map.get(key).cloned().unwrap_or(0) as f32;
+    }
 
     slice
 }

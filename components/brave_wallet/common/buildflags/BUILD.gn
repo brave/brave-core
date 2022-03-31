@@ -1,7 +1,0 @@
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
-import("//build/buildflag_header.gni")
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [ "BRAVE_WALLET_ENABLED=$brave_wallet_enabled" ]
-}

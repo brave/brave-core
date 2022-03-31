@@ -119,7 +119,7 @@ std::string GetContentForMimeType(const std::string& mime_type) {
 
 }  // namespace
 
-void MakeStubResponse(const base::Optional<std::string>& data_url,
+void MakeStubResponse(const absl::optional<std::string>& data_url,
                       const network::ResourceRequest& request,
                       network::mojom::URLResponseHeadPtr* response,
                       std::string* data) {

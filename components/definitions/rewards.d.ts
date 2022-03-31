@@ -22,6 +22,7 @@ declare namespace Rewards {
   export type Address = { address: string, qr: string | null }
 
   export interface State {
+    version: number
     addresses?: Record<AddressesType, Address>
     adsData: AdsData
     adsHistory: AdsHistory[]
@@ -49,6 +50,9 @@ declare namespace Rewards {
       github: boolean
     }
     excludedList: ExcludedPublisher[]
+    externalWalletProviderList: string[]
+    // TODO(zenparsing): Remove |firstLoad| when Android settings page has been
+    // migrated to native.
     firstLoad: boolean | null
     monthlyReport: MonthlyReport
     monthlyReportIds: string[]
@@ -69,7 +73,21 @@ declare namespace Rewards {
       disconnectWalletError: boolean
       emptyWallet: boolean
       modalBackup: boolean
-      modalRedirect: 'show' | 'hide' | 'error' | 'notAllowed' | 'batLimit'
+      modalRedirect:
+          'deviceLimitReachedModal'
+        | 'error'
+        | 'flaggedWalletModal'
+        | 'hide'
+        | 'kycRequiredModal'
+        | 'mismatchedProviderAccountsModal'
+        | 'regionNotSupportedModal'
+        | 'show'
+        | 'upholdBATNotAllowedModal'
+        | 'upholdBlockedUserModal'
+        | 'upholdCustomerDueDiligenceRequiredModal'
+        | 'upholdPendingUserModal'
+        | 'upholdRestrictedUserModal'
+        | 'walletOwnershipVerificationFailureModal'
       paymentIdCheck: boolean
       promosDismissed?: {
         [key: string]: boolean
@@ -112,7 +130,8 @@ declare namespace Rewards {
     BRAVE_TOKENS = 1,
     UPHOLD = 2,
     BRAVE_USER_FUNDS = 3,
-    BITFLYER = 4
+    BITFLYER = 4,
+    GEMINI = 5
   }
 
   export interface TransactionReport {
@@ -147,6 +166,8 @@ declare namespace Rewards {
   export interface Promotion {
     promotionId: string
     amount: number
+    createdAt: number
+    claimableUntil: number
     expiresAt: number
     status: PromotionStatus
     type: PromotionTypes
@@ -175,7 +196,8 @@ declare namespace Rewards {
     NOT_VERIFIED = 0,
     CONNECTED = 1,
     UPHOLD_VERIFIED = 2,
-    BITFLYER_VERIFIED = 3
+    BITFLYER_VERIFIED = 3,
+    GEMINI_VERIFIED = 4
   }
 
   export interface Publisher {
@@ -190,6 +212,11 @@ declare namespace Rewards {
     id: string
     tipDate?: number
     weight: number
+  }
+
+  export interface ExternalWalletProvider {
+    type: string
+    name: string
   }
 
   export interface ExcludedPublisher {
@@ -233,7 +260,7 @@ declare namespace Rewards {
   export enum RewardsType {
     AUTO_CONTRIBUTE = 2,
     ONE_TIME_TIP = 8,
-    RECURRING_TIP = 21
+    RECURRING_TIP = 16
   }
 
   export interface ContributionSaved {
@@ -262,14 +289,15 @@ declare namespace Rewards {
     wallets: Record<string, number>
   }
 
-  export type WalletType = 'anonymous' | 'uphold' | 'bitflyer'
+  export type WalletType = 'anonymous' | 'uphold' | 'bitflyer' | 'gemini'
 
   export enum WalletStatus {
     NOT_CONNECTED = 0,
     CONNECTED = 1,
     VERIFIED = 2,
     DISCONNECTED_NOT_VERIFIED = 3,
-    DISCONNECTED_VERIFIED = 4
+    DISCONNECTED_VERIFIED = 4,
+    PENDING = 5
   }
 
   export interface ExternalWallet {
@@ -282,6 +310,7 @@ declare namespace Rewards {
     userName?: string
     accountUrl: string
     loginUrl: string
+    activityUrl: string
   }
 
   export interface ProcessRewardsPageUrl {
@@ -305,11 +334,11 @@ declare namespace Rewards {
   }
 
   export interface AdContent {
+    adType: '' | 'ad_notification' | 'new_tab_page_ad' | 'promoted_content_ad' | 'inline_content_ad'
     creativeInstanceId: string
     creativeSetId: string
     brand: string
     brandInfo: string
-    brandLogo: string
     brandDisplayUrl: string
     brandUrl: string
     likeAction: number
@@ -325,16 +354,16 @@ declare namespace Rewards {
   export interface CategoryContent {
     category: string
     optAction: number
-    onOptInAction?: () => void
-    onOptOutAction?: () => void
+    onOptIn?: () => void
+    onOptOut?: () => void
   }
 
-  export interface ToggleSaveAd {
+  export interface ToggleSavedAd {
     uuid: string
     saved: boolean
   }
 
-  export interface ToggleFlagAd {
+  export interface ToggleFlaggedAd {
     uuid: string
     flagged: boolean
   }

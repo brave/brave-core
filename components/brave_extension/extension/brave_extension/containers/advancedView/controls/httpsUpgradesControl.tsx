@@ -43,7 +43,7 @@ interface CommonProps {
 interface HTTPSUpgradesProps {
   httpsRedirected: number
   httpUpgradableResources: BlockOptions
-  httpsRedirectedResources: Array<string>
+  httpsRedirectedResources: string[]
   httpsEverywhereToggled: HttpsEverywhereToggled
 }
 

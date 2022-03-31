@@ -25,6 +25,9 @@ const getWalletName = (walletKey: string) => {
     case 'bitflyer': {
       return getLocale('processorBitflyer')
     }
+    case 'gemini': {
+      return getLocale('processorGemini')
+    }
   }
 
   return 'Missing wallet'

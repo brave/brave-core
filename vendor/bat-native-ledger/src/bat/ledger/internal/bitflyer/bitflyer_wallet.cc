@@ -24,7 +24,7 @@ BitflyerWallet::BitflyerWallet(LedgerImpl* ledger) : ledger_(ledger) {}
 BitflyerWallet::~BitflyerWallet() = default;
 
 void BitflyerWallet::Generate(ledger::ResultCallback callback) {
-  auto wallet = GetWallet(ledger_);
+  auto wallet = ledger_->bitflyer()->GetWallet();
   if (!wallet) {
     wallet = type::ExternalWallet::New();
     wallet->type = constant::kWalletBitflyer;

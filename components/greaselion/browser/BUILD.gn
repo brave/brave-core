@@ -1,6 +1,6 @@
 import("//brave/build/config.gni")
 
-source_set("browser") {
+static_library("browser") {
   sources = [
     "greaselion_download_service.cc",
     "greaselion_download_service.h",
@@ -14,12 +14,16 @@ source_set("browser") {
   deps = [
     "//base",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/update_client:buildflags",
     "//brave/components/version_info",
     "//chrome/browser/extensions:extensions",
     "//components/version_info",
     "//content/public/browser",
     "//content/public/common",
+    "//crypto",
     "//extensions/browser",
+    "//extensions/common",
+    "//third_party/abseil-cpp:absl",
     "//url",
   ]
 

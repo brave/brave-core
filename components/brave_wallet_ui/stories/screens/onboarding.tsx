@@ -2,107 +2,152 @@ import * as React from 'react'
 import {
   OnboardingWelcome,
   OnboardingCreatePassword,
-  OnboardingRestore
+  OnboardingImportMetaMaskOrLegacy
 } from '../../components/desktop'
+import {
+  WalletOnboardingSteps,
+  ImportWalletError
+} from '../../constants/types'
 import { BackButton } from '../../components/shared'
 import BackupWallet from './backup-wallet'
+import { OnboardingWrapper } from '../style'
 
 export interface Props {
   recoveryPhrase: string[]
+  isMetaMaskInitialized: boolean
+  isCryptoWalletsInitialized: boolean
+  importError: ImportWalletError
+  checkIsStrongPassword: (value: string) => Promise<boolean>
+  onSetImportError: (hasError: boolean) => void
   onPasswordProvided: (password: string) => void
-  onRestore: (phrase: string, password: string) => void
-  hasRestoreError?: boolean
+  onImportMetaMask: (password: string, newPassword: string) => void
+  onImportCryptoWallets: (password: string, newPassword: string) => void
   onSubmit: (recoveryVerified: boolean) => void
+  onShowRestore: () => void
 }
 
 function Onboarding (props: Props) {
-  const { recoveryPhrase, onPasswordProvided, onSubmit, onRestore, hasRestoreError } = props
-  const [onboardingStep, setOnboardingStep] = React.useState<number>(0)
+  const {
+    recoveryPhrase,
+    isMetaMaskInitialized,
+    isCryptoWalletsInitialized,
+    importError,
+    checkIsStrongPassword,
+    onSetImportError,
+    onPasswordProvided,
+    onSubmit,
+    onShowRestore,
+    onImportMetaMask,
+    onImportCryptoWallets
+  } = props
+  const [onboardingStep, setOnboardingStep] = React.useState<WalletOnboardingSteps>(WalletOnboardingSteps.OnboardingWelcome)
+  const [isStrongPassword, setIsStrongPassword] = React.useState<boolean>(false)
+  const [isStrongImportPassword, setIsStrongImportPassword] = React.useState<boolean>(false)
+  const [importPassword, setImportPassword] = React.useState<string>('')
   const [password, setPassword] = React.useState<string>('')
   const [confirmedPassword, setConfirmedPassword] = React.useState<string>('')
-  const [restorePhrase, setRestorePhrase] = React.useState<string>('')
-  const [isRestoring, setIsRestoring] = React.useState<boolean>(false)
+  const [useSamePassword, setUseSamePassword] = React.useState<boolean>(false)
+  const [needsNewPassword, setNeedsNewPassword] = React.useState<boolean>(false)
+  const [useSamePasswordVerified, setUseSamePasswordVerified] = React.useState<boolean>(false)
 
-  const onShowRestore = () => {
-    setIsRestoring(true)
-  }
+  React.useMemo(() => {
+    if (importError.hasError) {
+      setPassword('')
+      setConfirmedPassword('')
+      setUseSamePassword(false)
+      setNeedsNewPassword(false)
+      setUseSamePasswordVerified(false)
+    }
+  }, [importError])
 
   const nextStep = () => {
-    if (onboardingStep === 2) {
+    if (onboardingStep === WalletOnboardingSteps.OnboardingWelcome && isCryptoWalletsInitialized) {
+      setOnboardingStep(WalletOnboardingSteps.OnboardingImportCryptoWallets)
+      return
+    }
+    if (onboardingStep === WalletOnboardingSteps.OnboardingBackupWallet) {
       onSubmit(true)
       return
     }
-
-    if (onboardingStep === 1) {
+    if (onboardingStep === WalletOnboardingSteps.OnboardingCreatePassword) {
       onPasswordProvided(password)
     }
     setOnboardingStep(onboardingStep + 1)
   }
 
   const onBack = () => {
-    if (isRestoring) {
-      setIsRestoring(false)
-      setRestorePhrase('')
+    if (onboardingStep === WalletOnboardingSteps.OnboardingImportCryptoWallets ||
+      onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask) {
+      setOnboardingStep(WalletOnboardingSteps.OnboardingWelcome)
+      setPassword('')
+      setConfirmedPassword('')
+      setNeedsNewPassword(false)
+      setUseSamePassword(false)
       return
     }
     setOnboardingStep(onboardingStep - 1)
-  }
-
-  const onSubmitRestore = () => {
-    onRestore(restorePhrase, password)
   }
 
   const onSkipBackup = () => {
     onSubmit(false)
   }
 
-  const handlePasswordChanged = (value: string) => {
+  const handleImportPasswordChanged = async (value: string) => {
+    if (importError.hasError) {
+      onSetImportError(false)
+    }
+    if (needsNewPassword || useSamePasswordVerified) {
+      setNeedsNewPassword(false)
+      setUseSamePassword(false)
+    }
+    setImportPassword(value)
+    const isStrong = await checkIsStrongPassword(value)
+    setIsStrongImportPassword(isStrong)
+  }
+
+  const handlePasswordChanged = async (value: string) => {
     setPassword(value)
+    const isStrong = await checkIsStrongPassword(value)
+    setIsStrongPassword(isStrong)
   }
 
   const handleConfirmPasswordChanged = (value: string) => {
     setConfirmedPassword(value)
   }
 
-  const handleRecoveryPhraseChanged = (value: string) => {
-    const removeBegginingWhiteSpace = value.trimStart()
-    const removedDoubleSpaces = removeBegginingWhiteSpace.replace(/ +(?= )/g, '')
-    const removedSpecialCharacters = removedDoubleSpaces.replace(/[^a-zA-Z ]/g, '')
-    if (restorePhrase.split(' ').length === 12) {
-      setRestorePhrase(removedSpecialCharacters.trimEnd())
-    } else {
-      setRestorePhrase(removedSpecialCharacters)
-    }
+  const onClickImportMetaMask = () => {
+    setOnboardingStep(WalletOnboardingSteps.OnboardingImportMetaMask)
   }
 
-  const isValidRecoveryPhrase = React.useMemo(() => {
-    const phrase = restorePhrase.split(' ')
-    if (phrase.length === 12 && phrase[11] !== '') {
-      return false
+  const onImport = () => {
+    if (onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask) {
+      onImportMetaMask(importPassword, confirmedPassword)
     } else {
-      return true
+      onImportCryptoWallets(importPassword, confirmedPassword)
     }
-  }, [restorePhrase])
+  }
+  const onUseSamePassword = (selected: boolean) => {
+    setUseSamePassword(selected)
+  }
 
   const showBackButton = React.useMemo(() => {
-    if (onboardingStep === 1 || isRestoring) {
+    if (
+      onboardingStep === WalletOnboardingSteps.OnboardingCreatePassword ||
+      onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask ||
+      onboardingStep === WalletOnboardingSteps.OnboardingImportCryptoWallets
+    ) {
       return true
     } else {
       return false
     }
-  }, [onboardingStep, isRestoring])
+  }, [onboardingStep])
 
   const checkPassword = React.useMemo(() => {
-    const strongPassword = new RegExp('^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{7,})')
     if (password === '') {
       return false
-    } else {
-      if (!strongPassword.test(password)) {
-        return true
-      }
-      return false
     }
-  }, [password])
+    return !isStrongPassword
+  }, [password, isStrongPassword])
 
   const checkConfirmedPassword = React.useMemo(() => {
     if (confirmedPassword === '') {
@@ -112,53 +157,93 @@ function Onboarding (props: Props) {
     }
   }, [confirmedPassword, password])
 
+  const startNormalOnboarding = () => {
+    setOnboardingStep(WalletOnboardingSteps.OnboardingCreatePassword)
+  }
+
+  React.useEffect(() => {
+    if (useSamePassword) {
+      handlePasswordChanged(importPassword)
+      setConfirmedPassword(importPassword)
+      if (!isStrongImportPassword) {
+        setNeedsNewPassword(true)
+        setUseSamePasswordVerified(false)
+      } else {
+        setNeedsNewPassword(false)
+        setUseSamePasswordVerified(true)
+      }
+    } else {
+      setPassword('')
+      setConfirmedPassword('')
+      setNeedsNewPassword(false)
+      setUseSamePasswordVerified(false)
+      setIsStrongPassword(false)
+    }
+  }, [useSamePassword])
+
+  const isImporting = onboardingStep === WalletOnboardingSteps.OnboardingImportMetaMask ||
+    onboardingStep === WalletOnboardingSteps.OnboardingImportCryptoWallets
+
+  const isCreateWalletDisabled = checkConfirmedPassword || checkPassword || password === '' || confirmedPassword === ''
+  const isImportDisabled = isCreateWalletDisabled || importPassword === ''
+
   return (
-    <>
+    <OnboardingWrapper>
       {showBackButton &&
         <BackButton onSubmit={onBack} />
       }
-      {isRestoring ? (
-        <OnboardingRestore
-          onSubmit={onSubmitRestore}
-          disabled={isValidRecoveryPhrase || checkConfirmedPassword || checkPassword || password === '' || confirmedPassword === ''}
-          onRecoveryPhraseChanged={handleRecoveryPhraseChanged}
-          onPasswordChanged={handlePasswordChanged}
-          onConfirmPasswordChanged={handleConfirmPasswordChanged}
-          recoveryPhrase={restorePhrase}
-          hasRestoreError={hasRestoreError}
-          hasPasswordError={checkPassword}
-          hasConfirmPasswordError={checkConfirmedPassword}
-        />
-      ) : (
-        <>
-          {onboardingStep === 0 &&
-            <OnboardingWelcome
-              onRestore={onShowRestore}
-              onSetup={nextStep}
-            />
-          }
-          {onboardingStep === 1 &&
-            <OnboardingCreatePassword
-              onSubmit={nextStep}
-              onPasswordChanged={handlePasswordChanged}
-              onConfirmPasswordChanged={handleConfirmPasswordChanged}
-              disabled={checkConfirmedPassword || checkPassword || password === '' || confirmedPassword === ''}
-              hasPasswordError={checkPassword}
-              hasConfirmPasswordError={checkConfirmedPassword}
-            />
-          }
-          {onboardingStep === 2 &&
-            <BackupWallet
-              isOnboarding={true}
-              onCancel={onSkipBackup}
-              onSubmit={nextStep}
-              onBack={onBack}
-              recoveryPhrase={recoveryPhrase}
-            />
-          }
-        </>
-      )}
-    </>
+      <>
+        {onboardingStep === WalletOnboardingSteps.OnboardingWelcome &&
+          <OnboardingWelcome
+            onRestore={onShowRestore}
+            onSetup={nextStep}
+            onClickImportMetaMask={onClickImportMetaMask}
+            isMetaMaskInitialized={isMetaMaskInitialized}
+            isCryptoWalletsInitialized={isCryptoWalletsInitialized}
+          />
+        }
+        {onboardingStep === WalletOnboardingSteps.OnboardingCreatePassword &&
+          <OnboardingCreatePassword
+            onSubmit={nextStep}
+            onPasswordChanged={handlePasswordChanged}
+            onConfirmPasswordChanged={handleConfirmPasswordChanged}
+            disabled={isCreateWalletDisabled}
+            hasPasswordError={checkPassword}
+            hasConfirmPasswordError={checkConfirmedPassword}
+          />
+        }
+        {onboardingStep === WalletOnboardingSteps.OnboardingBackupWallet &&
+          <BackupWallet
+            isOnboarding={true}
+            onCancel={onSkipBackup}
+            onSubmit={nextStep}
+            onBack={onBack}
+            recoveryPhrase={recoveryPhrase}
+          />
+        }
+        {isImporting &&
+          <OnboardingImportMetaMaskOrLegacy
+            onSubmit={onImport}
+            onImportPasswordChanged={handleImportPasswordChanged}
+            onPasswordChanged={handlePasswordChanged}
+            onConfirmPasswordChanged={handleConfirmPasswordChanged}
+            disabled={isImportDisabled}
+            onboardingStep={onboardingStep}
+            importError={importError}
+            onClickLost={startNormalOnboarding}
+            hasPasswordError={checkPassword}
+            hasConfirmPasswordError={checkConfirmedPassword}
+            needsNewPassword={needsNewPassword}
+            useSamePassword={useSamePassword}
+            onUseSamePassword={onUseSamePassword}
+            importPassword={importPassword}
+            password={password}
+            confirmedPassword={confirmedPassword}
+            useSamePasswordVerified={useSamePasswordVerified}
+          />
+        }
+      </>
+    </OnboardingWrapper>
   )
 }
 

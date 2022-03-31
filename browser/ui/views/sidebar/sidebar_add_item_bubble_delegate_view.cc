@@ -21,8 +21,10 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
+#include "ui/gfx/canvas.h"
 #include "ui/views/bubble/bubble_frame_view.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/label.h"
@@ -41,6 +43,7 @@ sidebar::SidebarService* GetSidebarService(Browser* browser) {
 
 class SidebarAddItemButton : public views::LabelButton {
  public:
+  METADATA_HEADER(SidebarAddItemButton);
   // Get theme provider to use browser's theme color in this dialog.
   SidebarAddItemButton(bool bold, const ui::ThemeProvider* theme_provider)
       : theme_provider_(theme_provider) {
@@ -94,6 +97,9 @@ class SidebarAddItemButton : public views::LabelButton {
   const ui::ThemeProvider* theme_provider_;
 };
 
+BEGIN_METADATA(SidebarAddItemButton, views::LabelButton)
+END_METADATA
+
 }  // namespace
 
 SidebarAddItemBubbleDelegateView::SidebarAddItemBubbleDelegateView(
@@ -127,7 +133,6 @@ SidebarAddItemBubbleDelegateView::CreateNonClientFrameView(
       std::make_unique<BubbleBorderWithArrow>(arrow(), GetShadow(), color());
   constexpr int kRadius = 4;
   border->SetCornerRadius(kRadius);
-  border->set_md_shadow_color(SkColorSetARGB(0x2E, 0x63, 0x69, 0x6E));
   auto* border_ptr = border.get();
   frame->SetBubbleBorder(std::move(border));
   // Replace frame's background to draw arrow.
@@ -158,7 +163,6 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
         BraveThemeProperties::COLOR_SIDEBAR_ADD_BUBBLE_HEADER_TEXT));
   }
   header->SetAutoColorReadabilityEnabled(false);
-  header->SetPreferredSize(kAddItemBubbleEntrySize);
   constexpr gfx::Insets kHeaderInsets{10, 34, 4, 8};
   header->SetBorder(views::CreateEmptyBorder(kHeaderInsets));
   header->SetHorizontalAlignment(gfx::ALIGN_LEFT);
@@ -174,9 +178,9 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
         base::Unretained(this)));
   }
 
-  const auto not_added_default_items =
-      GetSidebarService(browser_)->GetNotAddedDefaultSidebarItems();
-  if (not_added_default_items.empty())
+  const auto hidden_default_items =
+      GetSidebarService(browser_)->GetHiddenDefaultSidebarItems();
+  if (hidden_default_items.empty())
     return;
 
   auto* separator = AddChildView(std::make_unique<views::Separator>());
@@ -185,12 +189,12 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
         BraveThemeProperties::COLOR_SIDEBAR_SEPARATOR));
   }
 
-  // |default_part| includes not added default items.
+  // |default_part| includes hidden default items.
   views::View* default_part = AddChildView(std::make_unique<views::View>());
   default_part->SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical, gfx::Insets(6, 4, 8, 4), 8));
 
-  for (const auto& item : not_added_default_items) {
+  for (const auto& item : hidden_default_items) {
     auto* button = default_part->AddChildView(
         std::make_unique<SidebarAddItemButton>(false, theme_provider));
     button->SetText(item.title);
@@ -203,16 +207,28 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
 void SidebarAddItemBubbleDelegateView::OnDefaultItemsButtonPressed(
     const sidebar::SidebarItem& item) {
   GetSidebarService(browser_)->AddItem(item);
-  RemoveAllChildViews(true);
-  AddChildViews();
-  if (children().size() == 1)
-    GetWidget()->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
+  CloseOrReLayoutAfterAddingItem();
 }
 
 void SidebarAddItemBubbleDelegateView::OnCurrentItemButtonPressed() {
   browser_->sidebar_controller()->AddItemWithCurrentTab();
-  RemoveAllChildViews(true);
-  AddChildViews();
-  if (children().size() == 1)
-    GetWidget()->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
+  CloseOrReLayoutAfterAddingItem();
 }
+
+void SidebarAddItemBubbleDelegateView::CloseOrReLayoutAfterAddingItem() {
+  // Close this bubble when there is no item candidate for adding.
+  if (GetSidebarService(browser_)->GetHiddenDefaultSidebarItems().empty() &&
+      !sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {
+    GetWidget()->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
+    return;
+  }
+
+  // Otherwise, relayout with candidates for adding.
+  RemoveAllChildViews();
+  AddChildViews();
+  GetWidget()->SetSize(GetWidget()->non_client_view()->GetPreferredSize());
+}
+
+BEGIN_METADATA(SidebarAddItemBubbleDelegateView,
+               views::BubbleDialogDelegateView)
+END_METADATA

@@ -7,16 +7,27 @@
 
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/sparkle_buildflags.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/browser/ui/views/toolbar/wallet_button.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/speedreader/buildflags.h"
+#include "brave/components/translate/core/common/buildflags.h"
+#include "chrome/browser/ui/frame/window_frame_util.h"
+#include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "chrome/browser/ui/views/tabs/tab_search_button.h"
+#include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ui/events/event_observer.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/event_monitor.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
+#include "brave/components/brave_vpn/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/brave_browser.h"
@@ -39,13 +50,9 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-#include "extensions/browser/extension_registry.h"
-#include "extensions/common/constants.h"
-#endif
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/browser/ui/views/toolbar/wallet_button.h"
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
+    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+#include "brave/browser/translate/brave_translate_utils.h"
 #endif
 
 class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
@@ -114,16 +121,32 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
     browser_view_->StopTabCycling();
   }
 
-  BraveBrowserView* browser_view_;
+  raw_ptr<BraveBrowserView> browser_view_ = nullptr;
   std::unique_ptr<views::EventMonitor> monitor_;
 };
 
 BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     : BrowserView(std::move(browser)) {
+  pref_change_registrar_.Init(GetProfile()->GetPrefs());
+  if (!WindowFrameUtil::IsWin10TabSearchCaptionButtonEnabled(browser_.get())) {
+    pref_change_registrar_.Add(
+        kTabsSearchShow,
+        base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
+                            base::Unretained(this)));
+    // Show the correct value in settings on initial start
+    UpdateSearchTabsButtonState();
+  }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  pref_change_registrar_.Add(
+      brave_vpn::prefs::kBraveVPNShowButton,
+      base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
+                          base::Unretained(this)));
+#endif
+
 #if BUILDFLAG(ENABLE_SIDEBAR)
   // Only normal window (tabbed) should have sidebar.
-  if (!sidebar::CanUseSidebar(browser_->profile()) ||
-      !browser_->is_type_normal()) {
+  if (!sidebar::CanUseSidebar(browser_.get())) {
     return;
   }
 
@@ -131,7 +154,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
   // Wrap |contents_container_| within our new |brave_contents_container_|.
   // |brave_contents_container_| also contains sidebar.
-  auto orignal_contents_container = RemoveChildViewT(contents_container_);
+  auto orignal_contents_container = RemoveChildViewT(contents_container_.get());
   sidebar_container_view_ = brave_contents_container->AddChildView(
       std::make_unique<SidebarContainerView>(
           static_cast<BraveBrowser*>(browser_.get())));
@@ -152,6 +175,30 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 #endif
 }
 
+void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
+  if (pref_name == kTabsSearchShow) {
+    UpdateSearchTabsButtonState();
+    return;
+  }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  if (pref_name == brave_vpn::prefs::kBraveVPNShowButton) {
+    vpn_panel_controller_.ResetBubbleManager();
+    return;
+  }
+#endif
+}
+
+void BraveBrowserView::UpdateSearchTabsButtonState() {
+  if (auto* button = tab_strip_region_view()->tab_search_button()) {
+    if (button) {
+      auto is_tab_search_visible =
+          GetProfile()->GetPrefs()->GetBoolean(kTabsSearchShow);
+      button->SetVisible(is_tab_search_visible);
+    }
+  }
+}
+
 BraveBrowserView::~BraveBrowserView() {
   tab_cycling_event_handler_.reset();
   DCHECK(!tab_cycling_event_handler_);
@@ -166,8 +213,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
 }
 
 ContentsLayoutManager* BraveBrowserView::GetContentsLayoutManager() const {
-  if (sidebar::CanUseSidebar(browser_->profile()) &&
-      browser_->is_type_normal()) {
+  if (sidebar::CanUseSidebar(browser_.get())) {
     return static_cast<ContentsLayoutManager*>(
         original_contents_container_->GetLayoutManager());
   }
@@ -175,6 +221,24 @@ ContentsLayoutManager* BraveBrowserView::GetContentsLayoutManager() const {
   return BrowserView::GetContentsLayoutManager();
 }
 #endif
+
+void BraveBrowserView::ShowBraveVPNBubble() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  vpn_panel_controller_.ShowBraveVPNPanel();
+#endif
+}
+
+views::View* BraveBrowserView::GetAnchorViewForBraveVPNPanel() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  auto* vpn_button =
+      static_cast<BraveToolbarView*>(toolbar())->brave_vpn_button();
+  if (vpn_button->GetVisible())
+    return vpn_button;
+  return toolbar()->app_menu_button();
+#else
+  return nullptr;
+#endif
+}
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
   BookmarkButton* button =
@@ -206,24 +270,16 @@ ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
     const std::string& target_language,
     translate::TranslateErrors::Type error_type,
     bool is_user_gesture) {
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  return BrowserView::ShowTranslateBubble(web_contents,
-                                          step,
-                                          source_language,
-                                          target_language,
-                                          error_type,
-                                          is_user_gesture);
-#elif BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-  if (!extensions::ExtensionRegistry::Get(GetProfile())
-      ->GetInstalledExtension(google_translate_extension_id)) {
-    return BrowserView::ShowTranslateBubble(web_contents,
-                                            step,
-                                            source_language,
-                                            target_language,
-                                            error_type,
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
+    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+  if (translate::ShouldOfferExtensionInstallation(GetProfile()) ||
+      translate::IsInternalTranslationEnabled(GetProfile())) {
+    return BrowserView::ShowTranslateBubble(web_contents, step, source_language,
+                                            target_language, error_type,
                                             is_user_gesture);
   }
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) ||
+        // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   return ShowTranslateBubbleResult::BROWSER_WINDOW_NOT_VALID;
 }
 
@@ -253,16 +309,23 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
 }
 
 WalletButton* BraveBrowserView::GetWalletButton() {
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   return static_cast<BraveToolbarView*>(toolbar())->wallet_button();
-#else
-  return nullptr;
-#endif
+}
+
+views::View* BraveBrowserView::GetWalletButtonAnchorView() {
+  return static_cast<BraveToolbarView*>(toolbar())
+      ->wallet_button()
+      ->GetAsAnchorView();
 }
 
 void BraveBrowserView::CreateWalletBubble() {
   DCHECK(GetWalletButton());
   GetWalletButton()->ShowWalletBubble();
+}
+
+void BraveBrowserView::CreateApproveWalletBubble() {
+  DCHECK(GetWalletButton());
+  GetWalletButton()->ShowApproveWalletBubble();
 }
 
 void BraveBrowserView::CloseWalletBubble() {

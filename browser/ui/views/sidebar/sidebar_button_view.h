@@ -6,10 +6,14 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_BUTTON_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_BUTTON_VIEW_H_
 
+#include <string>
+
+#include "base/memory/raw_ptr.h"
 #include "ui/views/controls/button/image_button.h"
 
 class SidebarButtonView : public views::ImageButton {
  public:
+  METADATA_HEADER(SidebarButtonView);
   static const int kSidebarButtonSize = 42;
 
   class Delegate {
@@ -20,7 +24,8 @@ class SidebarButtonView : public views::ImageButton {
     virtual ~Delegate() = default;
   };
 
-  explicit SidebarButtonView(Delegate* delegate);
+  explicit SidebarButtonView(Delegate* delegate,
+                             const std::u16string& accessible_name);
   ~SidebarButtonView() override;
 
   SidebarButtonView(const SidebarButtonView&) = delete;
@@ -31,7 +36,7 @@ class SidebarButtonView : public views::ImageButton {
   std::u16string GetTooltipText(const gfx::Point& p) const override;
 
  private:
-  Delegate* delegate_ = nullptr;
+  raw_ptr<Delegate> delegate_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_BUTTON_VIEW_H_

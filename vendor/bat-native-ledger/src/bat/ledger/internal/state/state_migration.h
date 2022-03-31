@@ -10,6 +10,8 @@
 #include <string>
 
 #include "bat/ledger/internal/state/state_migration_v1.h"
+#include "bat/ledger/internal/state/state_migration_v10.h"
+#include "bat/ledger/internal/state/state_migration_v11.h"
 #include "bat/ledger/internal/state/state_migration_v2.h"
 #include "bat/ledger/internal/state/state_migration_v3.h"
 #include "bat/ledger/internal/state/state_migration_v4.h"
@@ -51,6 +53,8 @@ class StateMigration {
   std::unique_ptr<StateMigrationV7> v7_;
   std::unique_ptr<StateMigrationV8> v8_;
   std::unique_ptr<StateMigrationV9> v9_;
+  std::unique_ptr<StateMigrationV10> v10_;
+  std::unique_ptr<StateMigrationV11> v11_;
   LedgerImpl* ledger_;  // NOT OWNED
 };
 

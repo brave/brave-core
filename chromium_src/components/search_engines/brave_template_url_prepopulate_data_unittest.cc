@@ -11,11 +11,9 @@
 
 #include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/macros.h"
 #include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/google/core/common/google_switches.h"
 #include "components/search_engines/search_engines_pref_names.h"
@@ -65,13 +63,13 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
     // Calling brave::RegisterProfilePrefs() causes some problems though
     auto* registry = prefs_.registry();
     registry->RegisterIntegerPref(
-        kBraveDefaultSearchVersion,
+        prefs::kBraveDefaultSearchVersion,
         TemplateURLPrepopulateData::kBraveCurrentDataVersion);
   }
 
   void CheckForCountry(char digit1, char digit2, const std::string& expected) {
     prefs_.SetInteger(kCountryIDAtInstall, digit1 << 8 | digit2);
-    prefs_.SetInteger(kBraveDefaultSearchVersion,
+    prefs_.SetInteger(prefs::kBraveDefaultSearchVersion,
                       TemplateURLPrepopulateData::kBraveCurrentDataVersion);
     size_t default_index;
     std::vector<std::unique_ptr<TemplateURLData>> t_urls =
@@ -153,29 +151,38 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, ProvidersFromPrepopulated) {
 
 // Verifies default search provider for locale
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForUSA) {
-  CheckForCountry('U', 'S', "Google");
+  CheckForCountry('U', 'S', "Brave");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForGermany) {
-  CheckForCountry('D', 'E', "DuckDuckGo");
+  CheckForCountry('D', 'E', "Brave");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForFrance) {
-  CheckForCountry('F', 'R', "Qwant");
+  CheckForCountry('F', 'R', "Brave");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest,
+       DefaultSearchProvidersForGreatBritain) {
+  CheckForCountry('G', 'B', "Brave");
+}
+
+TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForCanada) {
+  CheckForCountry('C', 'A', "Brave");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest,
        DefaultSearchProvidersForAustralia) {
-  CheckForCountry('A', 'U', "DuckDuckGo");
+  CheckForCountry('A', 'U', "Google");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest,
        DefaultSearchProvidersForNewZealand) {
-  CheckForCountry('N', 'Z', "DuckDuckGo");
+  CheckForCountry('N', 'Z', "Google");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest, DefaultSearchProvidersForIreland) {
-  CheckForCountry('I', 'E', "DuckDuckGo");
+  CheckForCountry('I', 'E', "Google");
 }
 
 TEST_F(BraveTemplateURLPrepopulateDataTest,

@@ -15,12 +15,11 @@
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
-#include "base/macros.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/task_runner_util.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
@@ -92,7 +91,7 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
                            const base::FilePath& messages_value,
                            const base::FilePath& resource_dir) {
   if (preconditions_value) {
-    for (const auto& kv : preconditions_value->DictItems()) {
+    for (const auto kv : preconditions_value->DictItems()) {
       GreaselionPreconditionValue condition = ParsePrecondition(kv.second);
       if (kv.first == kRewards) {
         preconditions_.rewards_enabled = condition;
@@ -282,7 +281,7 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
     LOG(ERROR) << "Could not obtain Greaselion configuration";
     return;
   }
-  base::Optional<base::Value> root = base::JSONReader::Read(contents);
+  absl::optional<base::Value> root = base::JSONReader::Read(contents);
   if (!root) {
     LOG(ERROR) << "Failed to parse Greaselion configuration";
     return;

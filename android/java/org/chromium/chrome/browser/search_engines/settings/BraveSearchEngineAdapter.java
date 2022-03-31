@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.search_engines.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.components.search_engines.TemplateUrl;
@@ -19,6 +20,8 @@ import org.chromium.components.search_engines.TemplateUrl;
 import java.util.List;
 
 public class BraveSearchEngineAdapter extends SearchEngineAdapter {
+    private static final String TAG = "BraveSearchEngineAdapter";
+
     public static final String PRIVATE_DSE_SHORTNAME = "private_dse_shortname";
     public static final String STANDARD_DSE_SHORTNAME = "standard_dse_shortname";
 
@@ -47,6 +50,14 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
         TemplateUrl dseTemplateUrl =
                 TemplateUrlServiceFactory.get().getDefaultSearchEngineTemplateUrl();
         if (dseTemplateUrl != null) defaultSearchEngineName = dseTemplateUrl.getShortName();
+
+        // TODO(sergz): A check, do we need to fetch a default SE from native and avoid
+        // overwrite.
+        if (BraveSearchEnginePrefHelper.getInstance().getFetchSEFromNative()) {
+            // Set it for normal tab only
+            setDSEPrefs(dseTemplateUrl, false);
+            BraveSearchEnginePrefHelper.getInstance().setFetchSEFromNative(false);
+        }
 
         return ContextUtils.getAppSharedPreferences().getString(
                 isPrivate ? PRIVATE_DSE_SHORTNAME : STANDARD_DSE_SHORTNAME,
@@ -85,7 +96,13 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
     @Override
     public void start() {
         updateActiveDSE(mIsPrivate);
-        super.start();
+        try {
+            super.start();
+        } catch (IllegalStateException e) {
+            // IllegalStateException indicates that search engine is not available anymore. We just
+            // log an error and allow user to choose another search engine instead.
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override

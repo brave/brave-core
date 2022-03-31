@@ -14,14 +14,11 @@
 namespace ads {
 namespace ml {
 
-class HashVectorizer {
+class HashVectorizer final {
  public:
   HashVectorizer();
-
   HashVectorizer(const HashVectorizer& other);
-
   HashVectorizer(const int n_buckets, const std::vector<int>& subgrams);
-
   ~HashVectorizer();
 
   std::map<uint32_t, double> GetFrequencies(const std::string& html) const;

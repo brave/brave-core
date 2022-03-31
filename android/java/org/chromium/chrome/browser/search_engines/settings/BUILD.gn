@@ -10,6 +10,7 @@ android_library("java") {
     "BraveBaseSearchEngineAdapter.java",
     "BravePrivateSearchEnginePreference.java",
     "BraveSearchEngineAdapter.java",
+    "BraveSearchEnginePrefHelper.java",
     "BraveSearchEnginePreference.java",
     "BraveStandardSearchEnginePreference.java",
   ]
@@ -21,7 +22,12 @@ android_library("java") {
     "//third_party/androidx:androidx_annotation_annotation_java",
   ]
 
+  annotation_processor_deps = [ "//base/android/jni_generator:jni_processor" ]
   resources_package = "org.chromium.chrome.browser.search_engines"
+}
+
+generate_jni("jni_headers") {
+  sources = [ "BraveSearchEnginePrefHelper.java" ]
 }
 
 android_resources("java_resources") {

@@ -1,5 +1,5 @@
 diff --git a/chrome/common/importer/importer_type.h b/chrome/common/importer/importer_type.h
-index bfd24902a506262e890566d7cfe2049614fe0274..651dd9aa5d95e4ece599ef52a377240287dfaf87 100644
+index 783aeeb86b265b9abf6c1d5c8a77c726daea277d..823bfed8c32487e7a33d00780b3b76aaef4d1fe2 100644
 --- a/chrome/common/importer/importer_type.h
 +++ b/chrome/common/importer/importer_type.h
 @@ -19,6 +19,8 @@ enum ImporterType {
@@ -9,5 +9,5 @@ index bfd24902a506262e890566d7cfe2049614fe0274..651dd9aa5d95e4ece599ef52a3772402
 +  // We use it for the Chrome profile importer now.
 +  TYPE_CHROME = 1,
    TYPE_FIREFOX = 2,
- #if defined(OS_MAC)
+ #if BUILDFLAG(IS_MAC)
    TYPE_SAFARI = 3,

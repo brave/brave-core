@@ -8,7 +8,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_wallet/browser/eth_address.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -42,7 +42,20 @@ TEST(EthAddressUnitTest, FromPublicKey) {
 TEST(EthAddressUnitTest, FromHex) {
   EthAddress address =
       EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
+  EthAddress address2 =
+      EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   EXPECT_EQ(address.ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
+  EXPECT_EQ(address2.ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
+  EXPECT_EQ(address, address2);
+  EthAddress address3 =
+      EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
+  EXPECT_EQ(address3.ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
+  EXPECT_NE(address, address3);
+
+  // checksum address
+  EthAddress address4 =
+      EthAddress::FromHex("0x3599689E6292b81B2d85451025146515070129Bb");
+  EXPECT_EQ(address4.ToHex(), "0x3599689e6292b81b2d85451025146515070129bb");
 
   address = EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb");
   EXPECT_TRUE(address.IsEmpty());
@@ -52,6 +65,21 @@ TEST(EthAddressUnitTest, FromHex) {
 
   address = EthAddress::FromHex("0x123");
   EXPECT_TRUE(address.IsEmpty());
+}
+
+TEST(EthAddressUnitTest, IsValidAddress) {
+  // 19 bytes
+  EXPECT_FALSE(
+      EthAddress::IsValidAddress("0x2f015c60e0be116b1f0cd534704db9c92118fb"));
+  // 21 bytes
+  EXPECT_FALSE(EthAddress::IsValidAddress(
+      "0x2f015c60e0be116b1f0cd534704db9c92118fb6a11"));
+  EXPECT_FALSE(EthAddress::IsValidAddress("0x1234"));
+  // checksum address
+  EXPECT_TRUE(
+      EthAddress::IsValidAddress("0x3599689E6292b81B2d85451025146515070129Bb"));
+  EXPECT_TRUE(
+      EthAddress::IsValidAddress("0x3599689e6292b81b2d85451025146515070129bb"));
 }
 
 TEST(EthAddressUnitTest, ToChecksumAddress) {
@@ -77,7 +105,7 @@ TEST(EthAddressUnitTest, ToChecksumAddress) {
 
   const struct {
     const char* address;
-    uint8_t chain_id;
+    uint256_t chain_id;
   } eip1191_cases[] = {
       // eth_mainnet
       {"0x27b1fdb04752bbc536007a920d24acb045561c26", 1},
@@ -93,6 +121,20 @@ TEST(EthAddressUnitTest, ToChecksumAddress) {
       {"0xdbF03B407c01E7cD3CBea99509d93f8DDDC8C6FB", 1},
       {"0xde709f2102306220921060314715629080e2fb77", 1},
       {"0xfB6916095ca1df60bB79Ce92cE3Ea74c37c5d359", 1},
+      // rinkeby
+      {"0x27b1fdb04752bbc536007a920d24acb045561c26", 4},
+      {"0x3599689E6292b81B2d85451025146515070129Bb", 4},
+      {"0x42712D45473476b98452f434e72461577D686318", 4},
+      {"0x52908400098527886E0F7030069857D2E4169EE7", 4},
+      {"0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed", 4},
+      {"0x6549f4939460DE12611948b3f82b88C3C8975323", 4},
+      {"0x66f9664f97F2b50F62D13eA064982f936dE76657", 4},
+      {"0x8617E340B3D01FA5F11F306F4090FD50E238070D", 4},
+      {"0x88021160C5C792225E4E5452585947470010289D", 4},
+      {"0xD1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb", 4},
+      {"0xdbF03B407c01E7cD3CBea99509d93f8DDDC8C6FB", 4},
+      {"0xde709f2102306220921060314715629080e2fb77", 4},
+      {"0xfB6916095ca1df60bB79Ce92cE3Ea74c37c5d359", 4},
       // rsk_mainnet
       {"0x27b1FdB04752BBc536007A920D24ACB045561c26", 30},
       {"0x3599689E6292B81B2D85451025146515070129Bb", 30},

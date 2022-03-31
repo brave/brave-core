@@ -18,6 +18,9 @@ class IpfsConfig;
 bool UpdateConfigJSON(const std::string& source,
                       const ipfs::mojom::IpfsConfig* config,
                       std::string* result);
+// Parses version from go-ipfs node filename as it has strong format like:
+// go-ipfs_v0.9.0-rc1_windows-amd64
+std::string GetVersionFromNodeFilename(const std::string& filename);
 
 }  // namespace ipfs
 

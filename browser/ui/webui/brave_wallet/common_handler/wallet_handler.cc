@@ -9,87 +9,90 @@
 #include <utility>
 #include <vector>
 
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "base/bind.h"
+#include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/profiles/profile.h"
-#include "content/public/browser/web_ui.h"
-
-namespace {
-
-brave_wallet::BraveWalletService* GetBraveWalletService(
-    content::BrowserContext* context) {
-  return brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
-      context);
-}
-
-}  // namespace
 
 WalletHandler::WalletHandler(
-    mojo::PendingReceiver<wallet_ui::mojom::WalletHandler> receiver,
-    mojo::PendingRemote<wallet_ui::mojom::Page> page,
-    content::WebUI* web_ui,
-    ui::MojoWebUIController* webui_controller)
+    mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> receiver,
+    Profile* profile)
     : receiver_(this, std::move(receiver)),
-      page_(std::move(page)),
-      web_ui_(web_ui) {}
+      profile_(profile),
+      weak_ptr_factory_(this) {}
 
 WalletHandler::~WalletHandler() = default;
 
-void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
-  auto* profile = Profile::FromWebUI(web_ui_);
-  std::vector<std::string> accounts;
-  auto* service = GetBraveWalletService(profile);
-  auto* keyring_controller = service->keyring_controller();
-  auto* default_keyring = keyring_controller->GetDefaultKeyring();
-  if (default_keyring) {
-    accounts = default_keyring->GetAccounts();
+void WalletHandler::EnsureConnected() {
+  if (!keyring_service_) {
+    auto pending =
+        brave_wallet::KeyringServiceFactory::GetInstance()->GetForContext(
+            profile_);
+    keyring_service_.Bind(std::move(pending));
   }
+  DCHECK(keyring_service_);
+  keyring_service_.set_disconnect_handler(base::BindOnce(
+      &WalletHandler::OnConnectionError, weak_ptr_factory_.GetWeakPtr()));
+}
 
-  std::vector<wallet_ui::mojom::AppItemPtr> favorite_apps_copy(
+void WalletHandler::OnConnectionError() {
+  keyring_service_.reset();
+  EnsureConnected();
+}
+
+void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
+  EnsureConnected();
+  std::vector<std::string> ids = {brave_wallet::mojom::kDefaultKeyringId};
+  if (brave_wallet::IsFilecoinEnabled())
+    ids.push_back(brave_wallet::mojom::kFilecoinKeyringId);
+  if (brave_wallet::IsSolanaEnabled())
+    ids.push_back(brave_wallet::mojom::kSolanaKeyringId);
+
+  keyring_service_->GetKeyringsInfo(
+      ids, base::BindOnce(&WalletHandler::OnGetWalletInfo,
+                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void WalletHandler::OnGetWalletInfo(
+    GetWalletInfoCallback callback,
+    std::vector<brave_wallet::mojom::KeyringInfoPtr> keyring_infos) {
+  std::vector<brave_wallet::mojom::AppItemPtr> favorite_apps_copy(
       favorite_apps.size());
   std::transform(
       favorite_apps.begin(), favorite_apps.end(), favorite_apps_copy.begin(),
-      [](const wallet_ui::mojom::AppItemPtr& favorite_app)
-          -> wallet_ui::mojom::AppItemPtr { return favorite_app.Clone(); });
-  std::move(callback).Run(keyring_controller->IsDefaultKeyringCreated(),
-                          keyring_controller->IsLocked(),
-                          std::move(favorite_apps_copy),
-                          service->IsWalletBackedUp(), accounts);
-}
-
-void WalletHandler::LockWallet() {
-  auto* profile = Profile::FromWebUI(web_ui_);
-  auto* keyring_controller =
-      GetBraveWalletService(profile)->keyring_controller();
-  keyring_controller->Lock();
-}
-
-void WalletHandler::UnlockWallet(const std::string& password,
-                                 UnlockWalletCallback callback) {
-  auto* profile = Profile::FromWebUI(web_ui_);
-  auto* keyring_controller =
-      GetBraveWalletService(profile)->keyring_controller();
-  bool result = keyring_controller->Unlock(password);
-  std::move(callback).Run(result);
+      [](const brave_wallet::mojom::AppItemPtr& favorite_app)
+          -> brave_wallet::mojom::AppItemPtr { return favorite_app.Clone(); });
+  DCHECK(keyring_infos.size()) << "Default keyring must be returned";
+  std::vector<brave_wallet::mojom::AccountInfoPtr> account_infos;
+  for (const auto& keyring_info : keyring_infos) {
+    account_infos.insert(
+        account_infos.end(),
+        std::make_move_iterator(keyring_info->account_infos.begin()),
+        std::make_move_iterator(keyring_info->account_infos.end()));
+  }
+  const auto& default_keyring = keyring_infos.front();
+  DCHECK_EQ(default_keyring->id, brave_wallet::mojom::kDefaultKeyringId);
+  std::move(callback).Run(
+      default_keyring->is_keyring_created, default_keyring->is_locked,
+      std::move(favorite_apps_copy), default_keyring->is_backed_up,
+      std::move(account_infos), brave_wallet::IsFilecoinEnabled(),
+      brave_wallet::IsSolanaEnabled());
 }
 
 void WalletHandler::AddFavoriteApp(
-    const wallet_ui::mojom::AppItemPtr app_item) {
+    const brave_wallet::mojom::AppItemPtr app_item) {
   favorite_apps.push_back(app_item->Clone());
 }
 
-void WalletHandler::RemoveFavoriteApp(wallet_ui::mojom::AppItemPtr app_item) {
+void WalletHandler::RemoveFavoriteApp(
+    brave_wallet::mojom::AppItemPtr app_item) {
   favorite_apps.erase(
       remove_if(favorite_apps.begin(), favorite_apps.end(),
-                [&app_item](const wallet_ui::mojom::AppItemPtr& it) -> bool {
+                [&app_item](const brave_wallet::mojom::AppItemPtr& it) -> bool {
                   return it->name == app_item->name;
                 }));
-}
-
-void WalletHandler::NotifyWalletBackupComplete() {
-  auto* profile = Profile::FromWebUI(web_ui_);
-  auto* service = GetBraveWalletService(profile);
-  service->NotifyWalletBackupComplete();
 }

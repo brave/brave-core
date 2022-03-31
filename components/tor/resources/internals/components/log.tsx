@@ -15,6 +15,7 @@ export class Log extends React.Component<Props, {}> {
   constructor (props: Props) {
     super(props)
   }
+
   render () {
     return (
       <LogTextArea value={this.props.log} readOnly={true}/>

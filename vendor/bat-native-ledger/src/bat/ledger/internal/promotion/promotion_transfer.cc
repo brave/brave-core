@@ -78,6 +78,11 @@ void PromotionTransfer::OnGetEligibleTokens(
     token_list.push_back(*item);
   }
 
+  if (token_list.empty()) {
+    callback(type::Result::LEDGER_OK, "");
+    return;
+  }
+
   credential::CredentialsRedeem redeem;
   redeem.type = type::RewardsType::TRANSFER;
   redeem.processor = type::ContributionProcessor::BRAVE_TOKENS;

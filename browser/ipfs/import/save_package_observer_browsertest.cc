@@ -63,9 +63,9 @@ class FakePackageDownloadItem : public content::FakeDownloadItem {
 IN_PROC_BROWSER_TEST_F(SavePackageFinishedObserverBrowserTest, Success) {
   GURL url =
       embedded_test_server()->GetURL("/save_page/brave-text-content.html");
-  ui_test_utils::NavigateToURL(browser(), url);
-  auto* download_manager = content::BrowserContext::GetDownloadManager(
-      web_contents()->GetBrowserContext());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  auto* download_manager =
+      web_contents()->GetBrowserContext()->GetDownloadManager();
   {
     base::RunLoop run_loop;
     auto completed_callback = base::BindOnce(

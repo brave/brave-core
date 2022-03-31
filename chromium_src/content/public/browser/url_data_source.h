@@ -10,7 +10,7 @@
   GetContentSecurityPolicy(network::mojom::CSPDirectiveName directive); \
   std::string GetContentSecurityPolicy_ChromiumImpl
 
-#include "../../../../../content/public/browser/url_data_source.h"
+#include "src/content/public/browser/url_data_source.h"
 #undef GetContentSecurityPolicy
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_URL_DATA_SOURCE_H_

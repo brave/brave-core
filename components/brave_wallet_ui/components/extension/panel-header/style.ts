@@ -1,5 +1,10 @@
 import styled from 'styled-components'
-import CloseIcon from '../assets/close.svg'
+import CloseIcon from '../../../assets/svg-icons/close.svg'
+import { WalletButton } from '../../shared/style'
+
+interface StyleProps {
+  hasSearch: boolean
+}
 
 export const HeaderTitle = styled.span`
   font-family: Poppins;
@@ -8,10 +13,9 @@ export const HeaderTitle = styled.span`
   font-weight: 600;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
-  text-transform: capitalize;
 `
 
-export const HeaderWrapper = styled.div`
+export const HeaderWrapper = styled.div<StyleProps>`
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -20,6 +24,7 @@ export const HeaderWrapper = styled.div`
   border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
   padding: 0px 12px;
   max-width: 300px;
+  margin-bottom: ${(p) => p.hasSearch ? '0px' : '8px'};
 `
 
 export const TopRow = styled.div`
@@ -31,7 +36,7 @@ export const TopRow = styled.div`
   justify-content: space-between;
 `
 
-export const CloseButton = styled.button`
+export const CloseButton = styled(WalletButton)`
   display: flex;;
   align-items: center;
   justify-content: center;

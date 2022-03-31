@@ -92,6 +92,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
 
       <if expr="is_win">
         </if>
+      <if expr="is_macosx or is_linux">
+        </if>
       <if expr="chromeos">
         </if>
       <if expr="is_win">
@@ -120,14 +122,24 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="is_win">
         </if>
-      <if expr="chromeos">
-        </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
         </if>
       <if expr="chromeos">
         </if>
+      <if expr="chromeos">
+        <message name="IDS_ACCOUNT_MANAGER_DIALOG_WELCOME_BODY_V2" desc="Text body for the Welcome screen in Chrome OS 'Add account' dialog.">
+If you want to use this account one-time only, you can use Guest mode in Brave browser. If you want to add an account for someone else, <ph name="LINK_BEGIN">&lt;a target="_blank" id="newPersonLink" href="$1<ex>https://google.com/</ex>"&gt;</ph>add a new profile<ph name="LINK_END">&lt;/a&gt;</ph> to your <ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph>.
+
+Permissions you've already given to websites and apps may apply to this account. You can manage your Brave sync chains in <ph name="SETTINGS_LINK_BEGIN">&lt;a id="osSettingsLink" href="$3<ex>https://google.com/</ex>"&gt;</ph>Settings<ph name="SETTINGS_LINK_END">&lt;/a&gt;</ph>.
+        </message>
+        <message name="IDS_ACCOUNT_MANAGER_DIALOG_WELCOME_BODY_V2_WITH_GUEST_MODE" desc="Text body for the Welcome screen in Chrome OS 'Add account' dialog.">
+If you want to use this account one-time only, you can use <ph name="GUEST_LINK_BEGIN">&lt;a id="guestModeLink" href="#"&gt;</ph>Guest mode<ph name="GUEST_LINK_END">&lt;/a&gt;</ph> in Brave browser. If you want to add an account for someone else, <ph name="LINK_BEGIN">&lt;a target="_blank" id="newPersonLink" href="$1<ex>https://google.com/</ex>"&gt;</ph>add a new profile<ph name="LINK_END">&lt;/a&gt;</ph> to your <ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph>.
+
+Permissions you've already given to websites and apps may apply to this account. You can manage your Brave sync chains in <ph name="SETTINGS_LINK_BEGIN">&lt;a id="osSettingsLink" href="$3<ex>https://google.com/</ex>"&gt;</ph>Settings<ph name="SETTINGS_LINK_END">&lt;/a&gt;</ph>.
+        </message>
+      </if>
       <if expr="is_win">
         </if>
       <if expr="is_macosx">
@@ -150,8 +162,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="enable_extensions">
         </if>
 
-      <message name="IDS_EXTENSIONS_INCOGNITO_WARNING" desc="Warns the user that Brave cannot prevent extensions from recording history in private mode. Displayed in extensions management UI after an extension is selected to be run in private mode.">
-        Warning: Brave cannot prevent extensions from recording your browsing history. To disable this extension in private mode, unselect this option.
+      <message name="IDS_EXTENSIONS_INCOGNITO_WARNING" desc="Warns the user that Brave cannot prevent extensions from recording history in Private mode. Displayed in extensions management UI after an extension is selected to be run in Private mode.">
+        Warning: Brave cannot prevent extensions from recording your browsing history. To disable this extension in Private mode, unselect this option.
       </message>
       <if expr="enable_extensions">
         <message name="IDS_EXTENSIONS_MULTIPLE_UNSUPPORTED_DISABLED_BODY" desc="Body of the dialog shown when multiple unsupported extensions have been disabled.">
@@ -178,10 +190,13 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="toolkit_views">
         </if>
 
-      <if expr="is_win or is_macosx or (is_linux and not chromeos)">
+      <if expr="is_win or is_macosx or is_fuchsia or (is_linux and not chromeos)">
         </if>
 
       <if expr="not chromeos">
+        </if>
+
+      <if expr="not chromeos and not is_android and not lacros">
         </if>
 
       <if expr="not chromeos and not is_android">
@@ -222,19 +237,19 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
 
       <if expr="not is_android">
         <if expr="not use_titlecase">
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="The name of the command to open a link in a private browser window when the user is in an app window">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="The name of the command to open a link in a Private browser window when the user is in an app window">
             Open link in Brave &amp;private window
           </message>
         </if>
         <if expr="use_titlecase">
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="In Title Case: The name of the command to open a link in a private browser window when the user is in an app window">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="In Title Case: The name of the command to open a link in a Private browser window when the user is in an app window">
             Open Link in Brave &amp;Private Window
           </message>
         </if>
       </if>
 
       <if expr="not chromeos">
-        <message name="IDS_UPDATE_RECOMMENDED" desc="The main text of the Update Recommended dialog with a count of open private windows.">
+        <message name="IDS_UPDATE_RECOMMENDED" desc="The main text of the Update Recommended dialog with a count of open Private windows.">
           {COUNT, plural,
           =0 {A new update for Brave is available and will be applied as soon as you relaunch.}
           =1 {A new update for Brave is available and will be applied as soon as you relaunch. Your Private window won't reopen.}
@@ -293,6 +308,10 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
 
       <if expr="not chromeos and not is_android">
+        <if expr="lacros">
+          </if>
+        <if expr="not lacros">
+          </if>
         </if>
 
       <if expr="chromeos">

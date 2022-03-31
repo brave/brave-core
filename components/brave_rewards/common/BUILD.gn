@@ -4,10 +4,13 @@ source_set("features") {
     "features.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//brave/components/brave_rewards/common/buildflags:buildflags",
+  ]
 }
 
-source_set("common") {
+static_library("common") {
   sources = [
     "pref_names.cc",
     "pref_names.h",

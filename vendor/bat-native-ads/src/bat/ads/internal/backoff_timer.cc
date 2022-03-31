@@ -7,20 +7,22 @@
 
 #include <utility>
 
+#include "base/timer/timer.h"
+
 namespace ads {
 
 BackoffTimer::BackoffTimer() {
-  max_backoff_delay_ = base::TimeDelta::FromHours(1);
+  max_backoff_delay_ = base::Hours(1);
 }
 
 BackoffTimer::~BackoffTimer() = default;
 
-void BackoffTimer::set_timer_for_testing(
+void BackoffTimer::SetTimerForTesting(
     std::unique_ptr<base::OneShotTimer> timer) {
-  timer_.set_timer_for_testing(std::move(timer));
+  timer_.SetTimerForTesting(std::move(timer));
 }
 
-base::Time BackoffTimer::Start(const base::TimeDelta& delay,
+base::Time BackoffTimer::Start(const base::TimeDelta delay,
                                base::OnceClosure user_task) {
   timer_.Stop();
 
@@ -28,7 +30,7 @@ base::Time BackoffTimer::Start(const base::TimeDelta& delay,
   return timer_.Start(backoff_delay, std::move(user_task));
 }
 
-base::Time BackoffTimer::StartWithPrivacy(const base::TimeDelta& delay,
+base::Time BackoffTimer::StartWithPrivacy(const base::TimeDelta delay,
                                           base::OnceClosure user_task) {
   timer_.Stop();
 
@@ -44,23 +46,19 @@ void BackoffTimer::FireNow() {
   return timer_.FireNow();
 }
 
-void BackoffTimer::Stop() {
-  timer_.Stop();
-
+bool BackoffTimer::Stop() {
   backoff_count_ = 0;
-}
 
-void BackoffTimer::set_max_backoff_delay(const base::TimeDelta& max_delay) {
-  max_backoff_delay_ = max_delay;
+  return timer_.Stop();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-base::TimeDelta BackoffTimer::CalculateDelay(const base::TimeDelta& delay) {
-  int64_t delay_as_int64 = static_cast<int64_t>(delay.InSeconds());
-  delay_as_int64 <<= backoff_count_++;
+base::TimeDelta BackoffTimer::CalculateDelay(const base::TimeDelta delay) {
+  int64_t delay_in_seconds = delay.InSeconds();
+  delay_in_seconds <<= backoff_count_++;
 
-  base::TimeDelta backoff_delay = base::TimeDelta::FromSeconds(delay_as_int64);
+  base::TimeDelta backoff_delay = base::Seconds(delay_in_seconds);
   if (backoff_delay > max_backoff_delay_) {
     backoff_delay = max_backoff_delay_;
   }

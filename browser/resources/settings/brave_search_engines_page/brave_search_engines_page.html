@@ -1,0 +1,23 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<link rel="import" href="chrome://resources/html/i18n_behavior.html">
+<script type="module" src="../settings_shared_css.js"></script>
+<script type="module" src="../settings_vars_css.js"></script>
+
+<dom-module id="settings-brave-search-page">
+  <template>
+    <style include="settings-shared iron-flex">
+      .settings-box {
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+    <settings-toggle-button id="otherSearchEnginesEnabled"
+        class="cr-row"
+        pref="{{prefs.brave.other_search_engines_enabled}}"
+        label="$i18n{otherSearchEnginesControlLabel}"
+        sub-label="$i18n{otherSearchEnginesControlDesc}">
+    </settings-toggle-button>
+  </template>
+  <script src="brave_search_engines_page.js"></script>
+</dom-module>

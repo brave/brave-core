@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_DOWNLOAD_BRAVE_DOWNLOAD_ITEM_VIEW_H_
 
 #include "brave/browser/download/brave_download_item_model.h"
+#include "chrome/browser/ui/download/download_item_mode.h"
 #include "chrome/browser/ui/views/download/download_item_view.h"
 
 // The purpose of this subclass is to add URL origin and lock icon to the
@@ -15,6 +16,8 @@ class BraveDownloadItemView : public DownloadItemView {
  public:
   BraveDownloadItemView(DownloadUIModel::DownloadUIModelPtr download,
       DownloadShelfView* parent, views::View* accessible_alert);
+  BraveDownloadItemView(const BraveDownloadItemView&) = delete;
+  BraveDownloadItemView& operator=(const BraveDownloadItemView&) = delete;
   ~BraveDownloadItemView() override;
 
   // views::View:
@@ -33,7 +36,7 @@ class BraveDownloadItemView : public DownloadItemView {
   static constexpr int kOriginURLIconRightPadding = 2;
 
   // Vertical padding between text lines.
-  static constexpr int kBraveVerticalTextPadding = 3;
+  static constexpr int kBraveVerticalTextPadding = 2;
 
   // These functions calculate the vertical coordinates for each text line.
   int GetYForFilenameText() const;
@@ -48,7 +51,14 @@ class BraveDownloadItemView : public DownloadItemView {
   gfx::ImageSkia GetLockIcon(int height);
 
   // Overrides the accessible name construction to reflect the origin URL.
-  void SetMode(Mode mode) override;
+  void SetMode(download::DownloadItemMode mode) override;
+  void UpdateLabels() override;
+  void OnMouseEntered(const ui::MouseEvent& event) override;
+  void OnMouseExited(const ui::MouseEvent& event) override;
+  void OnViewFocused(View* observed_view) override;
+  void OnViewBlurred(View* observed_view) override;
+
+  void SetOriginUrlVisible(bool visible);
 
   // Brave download item model.
   BraveDownloadItemModel brave_model_;
@@ -59,8 +69,7 @@ class BraveDownloadItemView : public DownloadItemView {
   // Origin url text.
   std::u16string origin_url_text_;
   bool is_origin_url_secure_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveDownloadItemView);
+  bool is_origin_url_visible_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_DOWNLOAD_BRAVE_DOWNLOAD_ITEM_VIEW_H_

@@ -32,6 +32,17 @@ enum ControlType {
   AGGRESSIVE
 };
 
+// List of possible blocking modes when accessing blocked websites.
+enum class DomainBlockingType {
+  // Don't block a website, open as is.
+  kNone,
+  // Proceed to a website, but use Ephemeral Storage for privacy-sensitive data
+  // (cookies, etc.).
+  k1PES,
+  // Show an interstitial before proceeding to as website.
+  kAggressive,
+};
+
 ContentSettingsPattern GetPatternFromURL(const GURL& url);
 std::string ControlTypeToString(ControlType type);
 ControlType ControlTypeFromString(const std::string& string);
@@ -41,8 +52,7 @@ void SetBraveShieldsEnabled(HostContentSettingsMap* map,
                             const GURL& url,
                             PrefService* local_state = nullptr);
 // reset to the default value
-void ResetBraveShieldsEnabled(HostContentSettingsMap* map,
-                              const GURL& url);
+void ResetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url);
 bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url);
 
 void SetAdControlType(HostContentSettingsMap* map,
@@ -57,11 +67,13 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                      PrefService* local_state = nullptr);
 ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                             const GURL& url);
-bool ShouldDoCosmeticFiltering(HostContentSettingsMap* map, const GURL& url);
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url);
 
-bool ShouldDoDomainBlocking(HostContentSettingsMap* map, const GURL& url);
+bool ShouldDoDebouncing(HostContentSettingsMap* map, const GURL& url);
+
+DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
+                                         const GURL& url);
 
 void SetCookieControlType(HostContentSettingsMap* map,
                           ControlType type,
@@ -85,8 +97,7 @@ void SetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
                                const GURL& url,
                                PrefService* local_state = nullptr);
 // reset to the default value
-void ResetHTTPSEverywhereEnabled(HostContentSettingsMap* map,
-                                 const GURL& url);
+void ResetHTTPSEverywhereEnabled(HostContentSettingsMap* map, const GURL& url);
 bool GetHTTPSEverywhereEnabled(HostContentSettingsMap* map, const GURL& url);
 
 void SetNoScriptControlType(HostContentSettingsMap* map,
@@ -98,13 +109,11 @@ ControlType GetNoScriptControlType(HostContentSettingsMap* map,
 
 bool IsSameOriginNavigation(const GURL& referrer, const GURL& target_url);
 
-bool MaybeChangeReferrer(
-    bool allow_referrers,
-    bool shields_up,
-    const GURL& current_referrer,
-    const GURL& target_url,
-    content::Referrer* output_referrer);
-
+bool MaybeChangeReferrer(bool allow_referrers,
+                         bool shields_up,
+                         const GURL& current_referrer,
+                         const GURL& target_url,
+                         content::Referrer* output_referrer);
 
 }  // namespace brave_shields
 

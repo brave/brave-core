@@ -13,7 +13,7 @@
   GetBrowserContextToUse_unused(content::BrowserContext* context) const; \
   content::BrowserContext* GetBrowserContextToUse
 
-#include "../../../../../chrome/browser/search_engines/template_url_service_factory.h"
+#include "src/chrome/browser/search_engines/template_url_service_factory.h"
 
 #undef GetBrowserContextToUse
 

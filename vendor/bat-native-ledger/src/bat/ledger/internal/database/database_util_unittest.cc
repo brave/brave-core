@@ -21,11 +21,11 @@ TEST(DatabaseUtil, GenerateStringInCase) {
 
   // one item
   result = GenerateStringInCase({"id_1"});
-  ASSERT_EQ(result, "\"id_1\"");
+  ASSERT_EQ(result, "'id_1'");
 
   // multiple items
   result = GenerateStringInCase({"id_1", "id_2", "id_3"});
-  ASSERT_EQ(result, "\"id_1\", \"id_2\", \"id_3\"");
+  ASSERT_EQ(result, "'id_1', 'id_2', 'id_3'");
 }
 
 }  // namespace database

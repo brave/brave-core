@@ -35,6 +35,9 @@ class SecurityIndicatorTest
  public:
   SecurityIndicatorTest() : InProcessBrowserTest(), cert_(nullptr) {}
 
+  SecurityIndicatorTest(const SecurityIndicatorTest&) = delete;
+  SecurityIndicatorTest& operator=(const SecurityIndicatorTest&) = delete;
+
   void SetUpInProcessBrowserTestFixture() override {
     cert_ =
         net::ImportCertFromFile(net::GetTestCertsDirectory(), "ok_cert.pem");
@@ -68,7 +71,8 @@ class SecurityIndicatorTest
     auto resource_response = network::mojom::URLResponseHead::New();
     resource_response->mime_type = "text/html";
     resource_response->ssl_info = ssl_info;
-    params->client->OnReceiveResponse(std::move(resource_response));
+    params->client->OnReceiveResponse(std::move(resource_response),
+                                      mojo::ScopedDataPipeConsumerHandle());
     // Send an empty response's body. This pipe is not filled with data.
     mojo::ScopedDataPipeProducerHandle producer_handle;
     mojo::ScopedDataPipeConsumerHandle consumer_handle;
@@ -85,8 +89,6 @@ class SecurityIndicatorTest
   scoped_refptr<net::X509Certificate> cert_;
 
   std::unique_ptr<content::URLLoaderInterceptor> url_loader_interceptor_;
-
-  DISALLOW_COPY_AND_ASSIGN(SecurityIndicatorTest);
 };
 
 IN_PROC_BROWSER_TEST_P(SecurityIndicatorTest, CheckIndicatorText) {
@@ -103,8 +105,8 @@ IN_PROC_BROWSER_TEST_P(SecurityIndicatorTest, CheckIndicatorText) {
 
   auto c = GetParam();
   SetUpInterceptor(c.cert_status);
-  ui_test_utils::NavigateToURL(
-      browser(), c.use_secure_url ? kMockSecureURL : kMockNonsecureURL);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), c.use_secure_url ? kMockSecureURL : kMockNonsecureURL));
   EXPECT_EQ(c.security_level, helper->GetSecurityLevel());
   EXPECT_EQ(c.should_show_text,
             location_bar_view->location_icon_view()->ShouldShowLabel());

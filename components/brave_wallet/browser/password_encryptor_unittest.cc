@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "base/strings/string_piece.h"
+#include "crypto/aead.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -76,6 +77,31 @@ TEST(PasswordEncryptorUnitTest, EncryptAndDecrypt) {
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
           "password", ToSpan("salt"), 200, 256);
   EXPECT_FALSE(encryptor4->Decrypt(ciphertext, nonce, &plaintext));
+}
+
+TEST(PasswordEncryptorUnitTest, DecryptForImporter) {
+  std::unique_ptr<PasswordEncryptor> encryptor =
+      PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
+          "password", ToSpan("salt"), 100, 256);
+  const std::vector<uint8_t> nonce_12(12, 0xAB);
+  const std::vector<uint8_t> nonce_16(16, 0xAB);
+
+  crypto::Aead aead(crypto::Aead::AES_256_GCM);
+  aead.Init(encryptor->key_);
+  std::vector<uint8_t> ciphertext;
+  ciphertext =
+      aead.Seal(ToSpan("importer12"), nonce_12, std::vector<uint8_t>());
+  std::vector<uint8_t> plaintext;
+  EXPECT_TRUE(encryptor->DecryptForImporter(ciphertext, nonce_12, &plaintext));
+  EXPECT_EQ(std::string(plaintext.begin(), plaintext.end()), "importer12");
+
+  ciphertext.clear();
+  plaintext.clear();
+  aead.OverrideNonceLength(16);
+  ciphertext =
+      aead.Seal(ToSpan("importer16"), nonce_16, std::vector<uint8_t>());
+  EXPECT_TRUE(encryptor->DecryptForImporter(ciphertext, nonce_16, &plaintext));
+  EXPECT_EQ(std::string(plaintext.begin(), plaintext.end()), "importer16");
 }
 
 }  // namespace brave_wallet

@@ -10,7 +10,7 @@
   friend class BraveExternalProcessImporterHost;
 
 #define NotifyImportEnded virtual NotifyImportEnded
-#include "../../../../../chrome/browser/importer/external_process_importer_host.h"
+#include "src/chrome/browser/importer/external_process_importer_host.h"
 #undef BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H
 #undef NotifyImportEnded
 

@@ -43,41 +43,12 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         break
       }
 
-      const promotions = payload.promotions
-
       state = { ...state }
+      const { rewardsState } = state
+      const dismissedNotifications = rewardsState.dismissedNotifications || []
 
-      if (!state.rewardsState.promotions) {
-        state.rewardsState.promotions = []
-      }
-
-      promotions.forEach((promotion: NewTab.Promotion) => {
-        if (!state || !state.rewardsState) {
-          return
-        }
-
-        if (!state.rewardsState.dismissedNotifications) {
-          state.rewardsState.dismissedNotifications = []
-        }
-
-        if (state.rewardsState.dismissedNotifications.indexOf(promotion.promotionId) > -1) {
-          return
-        }
-
-        const hasPromotion = state.rewardsState.promotions.find((promo: NewTab.Promotion) => {
-          return promo.promotionId === promotion.promotionId
-        })
-        if (hasPromotion) {
-          return
-        }
-
-        const updatedPromotions = state.rewardsState.promotions
-        updatedPromotions.push({
-          promotionId: promotion.promotionId,
-          type: promotion.type
-        })
-
-        state.rewardsState.promotions = updatedPromotions
+      rewardsState.promotions = payload.promotions.filter((promotion: any) => {
+        return !dismissedNotifications.includes(promotion.promotionId)
       })
 
       break
@@ -114,6 +85,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         ...state,
         rewardsState: {
           ...state.rewardsState,
+          rewardsEnabled: preInitialRewardsDataPayload.rewardsEnabled,
           enabledAds: preInitialRewardsDataPayload.enabledAds,
           adsSupported: preInitialRewardsDataPayload.adsSupported
         }
@@ -124,6 +96,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
       const initialRewardsDataPayload = payload as InitialRewardsData
       const newRewardsState = {
         balance: initialRewardsDataPayload.balance,
+        report: initialRewardsDataPayload.report,
         totalContribution: getTotalContributions(initialRewardsDataPayload.report),
         parameters: initialRewardsDataPayload.parameters
       } as any
@@ -146,6 +119,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
         ...state,
         rewardsState: {
           ...state.rewardsState,
+          rewardsEnabled: false,
           enabledAds: false
         }
       }

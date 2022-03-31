@@ -30,16 +30,15 @@ class SidebarModelData {
   SidebarModelData& operator=(const SidebarModelData&) = delete;
 
   content::WebContents* GetWebContents();
+
+  // nullptr if GetWebContents() is not called yet.
+  content::WebContents* web_contents() const { return contents_.get(); }
+
   void LoadURL(const GURL& url);
   bool IsLoaded() const;
-  bool need_favicon_update() const { return need_favicon_update_; }
-  void set_need_favicon_update(bool need_update) {
-    need_favicon_update_ = need_update;
-  }
 
  private:
   Profile* profile_ = nullptr;
-  bool need_favicon_update_ = false;
   std::unique_ptr<SidebarWebContentsDelegate> contents_delegate_;
   std::unique_ptr<content::WebContents> contents_;
 };

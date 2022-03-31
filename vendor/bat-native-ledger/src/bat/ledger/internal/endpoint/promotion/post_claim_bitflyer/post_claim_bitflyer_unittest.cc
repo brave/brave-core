@@ -47,7 +47,7 @@ class PostClaimBitflyerTest : public testing::Test {
       "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
       "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
     })";
-    ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletBrave))
+    ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
         .WillByDefault(testing::Return(wallet));
   }
 };
@@ -69,19 +69,135 @@ TEST_F(PostClaimBitflyerTest, ServerOK) {
                   });
 }
 
-TEST_F(PostClaimBitflyerTest, ServerError400) {
+TEST_F(PostClaimBitflyerTest, ServerError400FlaggedWallet) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
           [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
-            response.body = "";
+            response.body = R"(
+{
+    "message": "unable to link - unusual activity",
+    "code": 400
+}
+            )";
             callback(response);
           }));
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
-                  [](const type::Result result) {
+                  [](type::Result result) {
+                    EXPECT_EQ(result, type::Result::FLAGGED_WALLET);
+                  });
+}
+
+TEST_F(PostClaimBitflyerTest, ServerError400RegionNotSupported) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 400;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "region not supported: failed to validate account: invalid country",
+    "code": 400
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                  [](type::Result result) {
+                    EXPECT_EQ(result, type::Result::REGION_NOT_SUPPORTED);
+                  });
+}
+
+TEST_F(PostClaimBitflyerTest, ServerError400UnknownMessage) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 400;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "unknown message",
+    "code": 400
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                  [](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  });
+}
+
+TEST_F(PostClaimBitflyerTest, ServerError403MismatchedProviderAccounts) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 403;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "error linking wallet: unable to link wallets: mismatched provider accounts: wallets do not match",
+    "code": 403
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request(
+      "83b3b77b-e7c3-455b-adda-e476fa0656d2", [](type::Result result) {
+        EXPECT_EQ(result, type::Result::MISMATCHED_PROVIDER_ACCOUNTS);
+      });
+}
+
+TEST_F(PostClaimBitflyerTest,
+       ServerError403RequestSignatureVerificationFailure) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 403;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "request signature verification failure",
+    "code": 403
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request(
+      "83b3b77b-e7c3-455b-adda-e476fa0656d2", [](type::Result result) {
+        EXPECT_EQ(result, type::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE);
+      });
+}
+
+TEST_F(PostClaimBitflyerTest, ServerError403UnknownMessage) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 403;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "unknown message",
+    "code": 403
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                  [](type::Result result) {
                     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
                   });
 }
@@ -116,7 +232,7 @@ TEST_F(PostClaimBitflyerTest, ServerError409) {
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
                   [](const type::Result result) {
-                    EXPECT_EQ(result, type::Result::ALREADY_EXISTS);
+                    EXPECT_EQ(result, type::Result::DEVICE_LIMIT_REACHED);
                   });
 }
 

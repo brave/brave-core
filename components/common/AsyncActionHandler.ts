@@ -6,7 +6,7 @@
 import { MiddlewareAPI, Dispatch, Middleware, AnyAction } from 'redux'
 
 type Handler<T> = (store: MiddlewareAPI, payload: T) => void
-type Handlers = Map<string, Handler<unknown>[]>
+type Handlers = Map<string, Array<Handler<unknown>>>
 
 /**
  * Quick n easy redux middleware generator for async actions.

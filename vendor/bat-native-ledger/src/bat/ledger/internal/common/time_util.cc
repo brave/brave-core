@@ -39,7 +39,7 @@ uint64_t GetCurrentTimeStamp() {
 
 base::TimeDelta GetRandomizedDelay(base::TimeDelta delay) {
   uint64_t seconds = brave_base::random::Geometric(delay.InSecondsF());
-  return base::TimeDelta::FromSeconds(static_cast<int64_t>(seconds));
+  return base::Seconds(static_cast<int64_t>(seconds));
 }
 
 base::TimeDelta GetRandomizedDelayWithBackoff(

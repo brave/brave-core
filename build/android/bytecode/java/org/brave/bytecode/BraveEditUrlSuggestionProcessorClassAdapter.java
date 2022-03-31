@@ -16,6 +16,8 @@ public class BraveEditUrlSuggestionProcessorClassAdapter extends BraveClassVisit
     public BraveEditUrlSuggestionProcessorClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
+        redirectConstructor(sEditUrlSuggestionProcessor, sBraveEditUrlSuggestionProcessor);
+
         deleteField(sBraveEditUrlSuggestionProcessor, "mHasClearedOmniboxForFocus");
         makeProtectedField(sEditUrlSuggestionProcessor, "mHasClearedOmniboxForFocus");
     }

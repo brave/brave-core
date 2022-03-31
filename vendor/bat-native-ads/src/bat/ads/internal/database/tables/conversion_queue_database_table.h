@@ -8,29 +8,23 @@
 
 #include <string>
 
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/conversions/conversion_queue_item_info.h"
+#include "base/check_op.h"
+#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/internal/conversions/conversion_queue_item_info_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
-#include "bat/ads/mojom.h"
-#include "bat/ads/result.h"
+#include "bat/ads/internal/database/tables/conversion_queue_database_table_aliases.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
-using GetConversionQueueCallback =
-    std::function<void(const Result, const ConversionQueueItemList&)>;
-
-using GetConversionQueueForCreativeInstanceIdCallback =
-    std::function<void(const Result,
-                       const std::string& creative_instance_id,
-                       const ConversionQueueItemList&)>;
+struct ConversionQueueItemInfo;
 
 namespace database {
 namespace table {
 
-class ConversionQueue : public Table {
+class ConversionQueue final : public Table {
  public:
   ConversionQueue();
-
   ~ConversionQueue() override;
 
   void Save(const ConversionQueueItemList& conversion_queue_items,
@@ -39,43 +33,48 @@ class ConversionQueue : public Table {
   void Delete(const ConversionQueueItemInfo& conversion_queue_item,
               ResultCallback callback);
 
+  void Update(const ConversionQueueItemInfo& conversion_queue_item,
+              ResultCallback callback);
+
   void GetAll(GetConversionQueueCallback callback);
+
+  void GetUnprocessed(GetConversionQueueCallback callback);
 
   void GetForCreativeInstanceId(
       const std::string& creative_instance_id,
       GetConversionQueueForCreativeInstanceIdCallback callback);
 
-  void set_batch_size(const int batch_size);
+  void set_batch_size(const int batch_size) {
+    DCHECK_GT(batch_size, 0);
 
-  std::string get_table_name() const override;
+    batch_size_ = batch_size;
+  }
 
-  void Migrate(DBTransaction* transaction, const int to_version) override;
+  std::string GetTableName() const override;
+
+  void Migrate(mojom::DBTransaction* transaction,
+               const int to_version) override;
 
  private:
-  void InsertOrUpdate(DBTransaction* transaction,
+  void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const ConversionQueueItemList& conversion_queue_items);
 
-  int BindParameters(DBCommand* command,
-                     const ConversionQueueItemList& conversion_queue_items);
-
   std::string BuildInsertOrUpdateQuery(
-      DBCommand* command,
+      mojom::DBCommand* command,
       const ConversionQueueItemList& conversion_queue_items);
 
-  void OnGetAll(DBCommandResponsePtr response,
+  void OnGetAll(mojom::DBCommandResponsePtr response,
                 GetConversionQueueCallback callback);
 
   void OnGetForCreativeInstanceId(
-      DBCommandResponsePtr response,
+      mojom::DBCommandResponsePtr response,
       const std::string& creative_instance_id,
       GetConversionQueueForCreativeInstanceIdCallback callback);
 
-  ConversionQueueItemInfo GetFromRecord(DBRecord* record) const;
-
-  void CreateTableV10(DBTransaction* transaction);
-  void MigrateToV10(DBTransaction* transaction);
-
-  void MigrateToV11(DBTransaction* transaction);
+  void MigrateToV10(mojom::DBTransaction* transaction);
+  void MigrateToV11(mojom::DBTransaction* transaction);
+  void MigrateToV17(mojom::DBTransaction* transaction);
+  void MigrateToV21(mojom::DBTransaction* transaction);
 
   int batch_size_;
 };

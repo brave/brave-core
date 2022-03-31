@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <org.chromium.chrome.browser.settings.BraveWalletNetworksPreference
+        android:key="pref_brave_wallet_networks_add"
+        android:layout="@layout/brave_wallet_networks_preference_layout" />
+
+</PreferenceScreen>

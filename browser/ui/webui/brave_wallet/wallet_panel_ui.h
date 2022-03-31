@@ -8,10 +8,9 @@
 
 #include <memory>
 
-#include "base/macros.h"
 #include "brave/browser/ui/webui/brave_wallet/common_handler/wallet_handler.h"
 #include "brave/browser/ui/webui/brave_wallet/panel_handler/wallet_panel_handler.h"
-#include "brave/components/brave_wallet_ui/wallet_ui.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
@@ -22,7 +21,7 @@
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
 
 class WalletPanelUI : public ui::MojoBubbleWebUIController,
-                      public wallet_ui::mojom::PanelHandlerFactory {
+                      public brave_wallet::mojom::PanelHandlerFactory {
  public:
   explicit WalletPanelUI(content::WebUI* web_ui);
   WalletPanelUI(const WalletPanelUI&) = delete;
@@ -32,21 +31,42 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
   // Instantiates the implementor of the mojom::PanelHandlerFactory mojo
   // interface passing the pending receiver that will be internally bound.
   void BindInterface(
-      mojo::PendingReceiver<wallet_ui::mojom::PanelHandlerFactory> receiver);
+      mojo::PendingReceiver<brave_wallet::mojom::PanelHandlerFactory> receiver);
+  // The bubble disappears by default when Trezor opens a popup window
+  // from the wallet panel bubble. In order to prevent it we set a callback
+  // to modify panel deactivation flag when necessary.
+  void SetDeactivationCallback(
+      base::RepeatingCallback<void(bool)> deactivation_callback);
 
  private:
-  // wallet_ui::mojom::PanelHandlerFactory:
+  // brave_wallet::mojom::PanelHandlerFactory:
   void CreatePanelHandler(
-      mojo::PendingRemote<wallet_ui::mojom::Page> page,
-      mojo::PendingReceiver<wallet_ui::mojom::PanelHandler> panel_receiver,
-      mojo::PendingReceiver<wallet_ui::mojom::WalletHandler> wallet_receiver)
-      override;
+      mojo::PendingRemote<brave_wallet::mojom::Page> page,
+      mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver,
+      mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
+      mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>
+          json_rpc_service,
+      mojo::PendingReceiver<brave_wallet::mojom::SwapService> swap_service,
+      mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
+          asset_ratio_service,
+      mojo::PendingReceiver<brave_wallet::mojom::KeyringService>
+          keyring_service,
+      mojo::PendingReceiver<brave_wallet::mojom::BlockchainRegistry>
+          blockchain_registry,
+      mojo::PendingReceiver<brave_wallet::mojom::TxService> tx_service,
+      mojo::PendingReceiver<brave_wallet::mojom::EthTxManagerProxy>
+          eth_tx_manager_proxy,
+      mojo::PendingReceiver<brave_wallet::mojom::SolanaTxManagerProxy>
+          solana_tx_manager_proxy,
+      mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
+          brave_wallet_service) override;
 
   std::unique_ptr<WalletPanelHandler> panel_handler_;
   std::unique_ptr<WalletHandler> wallet_handler_;
 
-  mojo::Receiver<wallet_ui::mojom::PanelHandlerFactory> panel_factory_receiver_{
-      this};
+  base::RepeatingCallback<void(bool)> deactivation_callback_;
+  mojo::Receiver<brave_wallet::mojom::PanelHandlerFactory>
+      panel_factory_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

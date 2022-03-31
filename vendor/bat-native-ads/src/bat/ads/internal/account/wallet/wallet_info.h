@@ -10,7 +10,7 @@
 
 namespace ads {
 
-struct WalletInfo {
+struct WalletInfo final {
   WalletInfo();
   WalletInfo(const WalletInfo& info);
   ~WalletInfo();
@@ -18,7 +18,6 @@ struct WalletInfo {
   bool IsValid() const;
 
   bool operator==(const WalletInfo& rhs) const;
-
   bool operator!=(const WalletInfo& rhs) const;
 
   std::string id;

@@ -31,7 +31,7 @@ type PageProps = {
   showStats: boolean
   showRewards: boolean
   showBinance: boolean
-  showTogether: boolean
+  showBraveTalk: boolean
   showTopSites: boolean
   showBrandedWallpaper: boolean
 } & HasImageProps
@@ -128,8 +128,8 @@ export const Page: React.FunctionComponent<PageProps> = (props) => {
       if (scrollPast >= 1) {
         // Have blur effect amount follow scroll amount. Should
         // be fully blurred at 50% of viewport height
-        const blurUpperLimit = viewportHeight * .65
-        const blurLowerLimit = viewportHeight * .25
+        const blurUpperLimit = viewportHeight * 0.65
+        const blurLowerLimit = viewportHeight * 0.25
         const blurAmount = scrollPast > blurUpperLimit
           ? 1
           : scrollPast < blurLowerLimit
@@ -213,6 +213,8 @@ export const GridItemCredits = styled('section')`
 `
 
 export const GridItemBrandedLogo = styled(GridItemCredits)`
+  position: relative;
+
   --ntp-grid-item-credits-left-margin-narrow: 0;
   --ntp-grid-item-credits-bottom-margin-wide: -8px;
   --ntp-grid-item-credits-left-margin-wide: 22px;
@@ -227,6 +229,13 @@ export const GridItemBrandedLogo = styled(GridItemCredits)`
       left: 0;
     }
   }
+`
+
+export const BrandedWallpaperNotification = styled('div')`
+  position: absolute;
+  bottom: 100%;
+  left: 34px;
+  width: 248px;
 `
 
 export const GridItemNavigation = styled('section')`
@@ -274,17 +283,6 @@ export const FooterContent = styled('div')`
     align-items: center;
     flex-wrap: wrap;
   }
-`
-
-export const VisitableBackground = styled('a')`
-  z-index: -1;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: block;
-  cursor: pointer;
 `
 
 function getPageBackground (p: HasImageProps) {

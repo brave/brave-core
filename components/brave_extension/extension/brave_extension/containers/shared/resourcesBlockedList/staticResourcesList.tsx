@@ -11,7 +11,7 @@ import { BlockedListItem } from '../../../components'
 import { stripProtocolFromUrl } from '../../../helpers/urlUtils'
 
 interface Props {
-  list: Array<string>
+  list: string[]
 }
 
 export default class StaticResourcesList extends React.PureComponent<Props, {}> {

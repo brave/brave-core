@@ -1,0 +1,28 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/features.gni")
+import("//build/config/ui.gni")
+import("//testing/test.gni")
+import("//ui/base/ui_features.gni")
+
+source_set("brave_tooltips") {
+  sources = [
+    "bounds_util.cc",
+    "bounds_util.h",
+    "brave_tooltip.cc",
+    "brave_tooltip.h",
+    "brave_tooltip_attributes.cc",
+    "brave_tooltip_attributes.h",
+    "brave_tooltip_delegate.h",
+    "brave_tooltip_popup_handler.h",
+  ]
+
+  deps = [
+    "//base",
+    "//ui/display",
+    "//ui/gfx",
+  ]
+}

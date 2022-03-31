@@ -49,13 +49,13 @@ export class Log extends React.Component<Props, State> {
     })
 
     if (selected) {
-      this.interval = setInterval(() => {
+      this.interval = window.setInterval(() => {
         this.props.onGet()
       }, 5000)
       return
     }
 
-    clearInterval(this.interval)
+    window.clearInterval(this.interval)
   }
 
   downloadFile = (log: string) => {
@@ -71,48 +71,44 @@ export class Log extends React.Component<Props, State> {
     document.body.removeChild(element)
   }
 
-  preventDefault = (event: React.MouseEvent) => {
-    event.preventDefault()
-  }
-
   render () {
     return (
-      <>
-        <LogControls>
-          <Checkbox
+    <>
+      <LogControls>
+        <Checkbox
             value={{ 'auto': this.state.autoRefresh }}
             size={'small'}
             onChange={this.autoRefreshToggle}
             type={'light'}
-          >
-            <div data-key='auto'>{getLocale('autoRefresh')}</div>
-          </Checkbox>
-          <ButtonGroup>
-            <Button
-              text={getLocale('clearButton')}
-              size={'medium'}
-              type={'accent'}
-              onClick={this.props.onClear}
-            />
-            <Button
-              text={getLocale('refreshButton')}
-              size={'medium'}
-              type={'accent'}
-              onClick={this.props.onGet}
-            />
-            <Button
-              text={getLocale('downloadButton')}
-              size={'medium'}
-              type={'accent'}
-              onClick={this.props.onFullLog}
-            />
-          </ButtonGroup>
-        </LogControls>
-        <LogTextArea value={this.props.log} readOnly={true} onContextMenu={this.preventDefault}/>
-        <Notice>
-          {getLocale('logNotice', { numberOfLines: '5,000' })}
-        </Notice>
-      </>
+        >
+          <div data-key='auto'>{getLocale('autoRefresh')}</div>
+        </Checkbox>
+        <ButtonGroup>
+          <Button
+             text={getLocale('clearButton')}
+             size={'medium'}
+             type={'accent'}
+             onClick={this.props.onClear}
+          />
+          <Button
+             text={getLocale('refreshButton')}
+             size={'medium'}
+             type={'accent'}
+             onClick={this.props.onGet}
+          />
+          <Button
+             text={getLocale('downloadButton')}
+             size={'medium'}
+             type={'accent'}
+             onClick={this.props.onFullLog}
+          />
+        </ButtonGroup>
+      </LogControls>
+      <LogTextArea value={this.props.log} readOnly={true} />
+      <Notice>
+        {getLocale('logNotice', { numberOfLines: '5,000' })}
+      </Notice>
+    </>
     )
   }
 }

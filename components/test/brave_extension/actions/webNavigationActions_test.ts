@@ -29,5 +29,4 @@ describe('webNavigationActions', () => {
       isMainFrame
     })
   })
-
 })

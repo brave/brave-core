@@ -6,8 +6,7 @@
 #include <memory>
 #include <utility>
 
-#include "base/macros.h"
-#include "base/optional.h"
+#include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -25,6 +24,7 @@
 #include "services/preferences/public/cpp/dictionary_value_update.h"
 #include "services/preferences/public/cpp/scoped_pref_update.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace content_settings {
@@ -159,7 +159,7 @@ class ShieldsSetting {
     }
   }
 
-  BravePrefProvider* provider_;
+  raw_ptr<BravePrefProvider> provider_ = nullptr;
   const std::vector<GURLSourcePair> urls_;
 };
 
@@ -453,8 +453,9 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
   // Check migration for all the settings has been properly done.
   for (auto content_type : GetShieldsContentSettingsTypes()) {
     const base::DictionaryValue* brave_shields_dict =
-        pref_service->GetDictionary(GetShieldsSettingUserPrefsPath(
-            GetShieldsContentTypeName(content_type)));
+        &base::Value::AsDictionaryValue(
+            *pref_service->GetDictionary(GetShieldsSettingUserPrefsPath(
+                GetShieldsContentTypeName(content_type))));
     EXPECT_NE(brave_shields_dict, nullptr);
 
     if (content_type == ContentSettingsType::BRAVE_SHIELDS) {
@@ -514,11 +515,11 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromUnknownSettings) {
   // New Shields-specific content settings types should have been created due to
   // the migration, but all should be empty since only invalid data was fed.
   for (auto content_type : GetShieldsContentSettingsTypes()) {
-    const base::DictionaryValue* brave_shields_dict =
+    const base::Value* brave_shields_dict =
         pref_service->GetDictionary(GetShieldsSettingUserPrefsPath(
             GetShieldsContentTypeName(content_type)));
     EXPECT_NE(brave_shields_dict, nullptr);
-    EXPECT_TRUE(brave_shields_dict->empty());
+    EXPECT_TRUE(brave_shields_dict->DictEmpty());
   }
 
   provider.ShutdownOnUIThread();

@@ -87,14 +87,14 @@
   <message name="IDS_OS_SETTINGS_TAG_CELLULAR_TURN_OFF_ALT1" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with a toggle to turn off cellular. Alternate phrase for: 'Turn off cellular network'">
     Disable Cellular
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ADD_CELLULAR" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with an add cellular icon button. Alternate phrase for: 'Activate physical SIM', 'Set up eSIM'">
-    Add Cellular
+  <message name="IDS_OS_SETTINGS_TAG_ADD_ESIM" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with an add eSIM icon button. Alternate phrase for: 'Install eSIM profile', 'Download eSIM profile'">
+    Add eSIM profile
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ADD_CELLULAR_ALT1" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with an add cellular icon button. Alternate phrase for: 'Add Cellular', 'Set up eSIM'">
-    Activate physical SIM
+  <message name="IDS_OS_SETTINGS_TAG_ADD_ESIM_ALT1" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with an add eSIM icon button. Alternate phrase for: 'Add eSIM profile', 'Download eSIM profile'">
+    Install eSIM profile
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ADD_CELLULAR_ALT2" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with an add cellular icon button. Alternate phrase for: 'Add Cellular', 'Activate physical SIM'">
-    Set up eSIM
+  <message name="IDS_OS_SETTINGS_TAG_ADD_ESIM_ALT2" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with an add eSIM icon button. Alternate phrase for: 'Add eSIM profile', 'Install eSIM profile'">
+    Download eSIM profile
   </message>
   <message name="IDS_OS_SETTINGS_TAG_CELLULAR_TURN_ON" desc="Text for search result item which, when clicked, navigates the user to cellular network settings, with a toggle to turn on cellular. Alternate phrase for: 'Enable cellular'">
     Turn on Cellular network
@@ -117,19 +117,19 @@
   <message name="IDS_OS_SETTINGS_TAG_CELLULAR_RENAME_PROFILE_ALT1" desc="Text for search result item which, when clicked, navigates the user to the Cellular eSIM network settings, with a menu containing a button to rename the currently-connected eSIM Cellular network. Alternate phrase for: 'Rename eSIM Cellular network">
     Rename eSIM profile
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_INSTANT_MOBILE_NETWORKS" desc="Text for search result item which, when clicked, navigates the user to Instant Tethering settings (allows Bravebook to use mobile connection from phone).">
+  <message name="IDS_OS_SETTINGS_TAG_INSTANT_MOBILE_NETWORKS" desc="Text for search result item which, when clicked, navigates the user to Instant Tethering settings (allows Chromebook to use mobile connection from phone).">
     Mobile networks
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_INSTANT_TETHERING_TURN_OFF" desc="Text for search result item which, when clicked, navigates the user to Instant Tethering settings (allows Bravebook to use mobile connection from phone), with a toggle to turn off the feature. Alternate phrase for: 'Disable Instant Tethering'">
+  <message name="IDS_OS_SETTINGS_TAG_INSTANT_TETHERING_TURN_OFF" desc="Text for search result item which, when clicked, navigates the user to Instant Tethering settings (allows Chromebook to use mobile connection from phone), with a toggle to turn off the feature. Alternate phrase for: 'Disable Instant Tethering'">
     Turn off Instant Tethering
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_INSTANT_TETHERING_TURN_OFF_ALT1" desc="Text for search result item which, when clicked, navigates the user to Instant Tethering settings (allows Bravebook to use mobile connection from phone), with a toggle to turn off the feature. Alternate phrase for: 'Turn off Instant Tethering'">
+  <message name="IDS_OS_SETTINGS_TAG_INSTANT_TETHERING_TURN_OFF_ALT1" desc="Text for search result item which, when clicked, navigates the user to Instant Tethering settings (allows Chromebook to use mobile connection from phone), with a toggle to turn off the feature. Alternate phrase for: 'Turn off Instant Tethering'">
     Disable Instant Tethering
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_INSTANT_TETHERING_TURN_ON" desc="Text for search result item which, when clicked, navigates the user to Instant Tethering settings (allows Bravebook to use mobile connection from phone), with a toggle to turn on the feature. Alternate phrase for: 'Enable Instant Tethering'">
+  <message name="IDS_OS_SETTINGS_TAG_INSTANT_TETHERING_TURN_ON" desc="Text for search result item which, when clicked, navigates the user to Instant Tethering settings (allows Chromebook to use mobile connection from phone), with a toggle to turn on the feature. Alternate phrase for: 'Enable Instant Tethering'">
     Turn on Instant Tethering
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_INSTANT_TETHERING_TURN_ON_ALT1" desc="Text for search result item which, when clicked, navigates the user to Instant Tethering settings (allows Bravebook to use mobile connection from phone), with a toggle to turn on the feature. Alternate phrase for: 'Turn on Instant Tethering'">
+  <message name="IDS_OS_SETTINGS_TAG_INSTANT_TETHERING_TURN_ON_ALT1" desc="Text for search result item which, when clicked, navigates the user to Instant Tethering settings (allows Chromebook to use mobile connection from phone), with a toggle to turn on the feature. Alternate phrase for: 'Turn on Instant Tethering'">
     Enable Instant Tethering
   </message>
   <message name="IDS_OS_SETTINGS_TAG_INSTANT_TETHERING" desc="Text for search result item which, when clicked, navigates the user to Instant Tethering settings, which lists properties about the currently-connected Instant Tethering network. Alternate phrase for: 'Disconnect Instant Tethering network', 'Configure Wi-Fi'">
@@ -218,24 +218,36 @@
   <message name="IDS_OS_SETTINGS_TAG_BLUETOOTH_TURN_ON_ALT1" desc="Text for search result item which, when clicked, navigates the user to Bluetooth settings, with a toggle to turn on Bluetooth. Alternate phrase for: 'Turn on Bluetooth'">
     Enable Bluetooth
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_FAST_PAIR_TURN_ON" desc="Text for search result item which, when clicked, navigates the user to Bluetooth settings, with a toggle to turn on Fast Pair. Alternate phrase for: 'Enable Fast Pair'">
+    Turn on Fast Pair
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_FAST_PAIR_TURN_ON_ALT1" desc="Text for search result item which, when clicked, navigates the user to Bluetooth settings, with a toggle to turn on Fast Pair. Alternate phrase for: 'Turn on Fast Pair'">
+    Enable Fast Pair
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_FAST_PAIR_TURN_OFF" desc="Text for search result item which, when clicked, navigates the user to Bluetooth settings, with a toggle to turn off Fast Pair. Alternate phrase for: 'Disable Fast Pair'">
+    Turn off Fast Pair
+  </message>
+ <message name="IDS_OS_SETTINGS_TAG_FAST_PAIR_TURN_OFF_ALT1" desc="Text for search result item which, when clicked, navigates the user to Bluetooth settings, with a toggle to turn off Fast Pair. Alternate phrase for: 'Turn off Fast Pair'">
+    Disable Fast Pair
+  </message>
 
   <!-- MultiDevice section. -->
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE" desc="Text for search result item which, when clicked, navigates the user to multi-device settings (connects Android phone to Bravebook). Alternate phrase for: 'Phone'">
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE" desc="Text for search result item which, when clicked, navigates the user to multi-device settings (connects Android phone to Chromebook). Alternate phrase for: 'Phone'">
     Connected devices
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_ALT1" desc="Text for search result item which, when clicked, navigates the user to multi-device settings (connects Android phone to Bravebook). Alternate phrase for: 'Connected devices'">
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_ALT1" desc="Text for search result item which, when clicked, navigates the user to multi-device settings (connects Android phone to Chromebook). Alternate phrase for: 'Connected devices'">
     Phone
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_SMART_LOCK" desc="Text for search result item which, when clicked, navigates the user to Smart Lock settings (unlock Bravebook with Android phone).">
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_SMART_LOCK" desc="Text for search result item which, when clicked, navigates the user to Smart Lock settings (unlock Chromebook with Android phone).">
     Smart Lock
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_MESSAGES" desc="Text for search result item which, when clicked, navigates the user to Messages settings (sync SMS between Bravebook and Android phone). Alternate phrase for: 'Android messages'">
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_MESSAGES" desc="Text for search result item which, when clicked, navigates the user to Messages settings (sync SMS between Chromebook and Android phone). Alternate phrase for: 'Android messages'">
     Messages
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_MESSAGES_ALT1" desc="Text for search result item which, when clicked, navigates the user to Messages settings (sync SMS between Bravebook and Android phone). Alternate phrase for: 'Messages'">
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_MESSAGES_ALT1" desc="Text for search result item which, when clicked, navigates the user to Messages settings (sync SMS between Chromebook and Android phone). Alternate phrase for: 'Messages'">
     Android messages
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_SMART_LOCK_OPTIONS" desc="Text for search result item which, when clicked, navigates the user to Smart Lock screen lock settings (for signing into Bravebook with Android phone).">
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_SMART_LOCK_OPTIONS" desc="Text for search result item which, when clicked, navigates the user to Smart Lock screen lock settings (for signing into Chromebook with Android phone).">
     Smart Lock screen lock options
   </message>
   <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_FORGET" desc="Text for search result item which, when clicked, navigates the user to multi-device settings, which an option to disconnect the currently-connected Android phone. Alternate phrase for: 'Disconnect connected phone'">
@@ -277,16 +289,28 @@
   <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_DATA_USAGE" desc="Text for search result item which, when clicked, navigates the user to Nearby Share edit data usage button in settings.">
     Nearby Share data usage
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB" translateable="false" desc="Text for search result item which, when clicked, navigates the user to Phone Hub settings, with a toggle to enable/disable the feature. Phone hub provides the user with information about their Android phone and allows the user to perform phone-side actions directly in the Chrome OS UI.">
+  <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_DEVICES_NEARBY_SHARING_NOTIFICATION_OFF" desc="Text for search result item which, when clicked, navigates the user to Nearby Device is trying to share notification toggle.">
+    Turn on notification when devices are nearby
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_DEVICES_NEARBY_SHARING_NOTIFICATION_ON" desc="Text for search result item which, when clicked, navigates the user to Nearby Device is trying to share notification toggle.">
+    Turn off notification when devices are nearby
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB" desc="Text for search result item which, when clicked, navigates the user to Phone Hub settings, with a toggle to enable/disable the feature. Phone hub provides the user with information about their Android phone and allows the user to perform phone-side actions directly in the Chrome OS UI.">
     Phone Hub
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS" translateable="false" desc="Text for search result item which, when clicked, navigates the user to Phone Hub Notifications settings, with a toggle to enable/disable the feature. Phone Hub Notifications mirrors all standard notifications currently being shown on connected phone device.">
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL" desc="Text for search result item which, when clicked, navigates the user to Phone Hub photo settings, with a toggle to enable/disable the feature. Phone hub populates the 4 most recently updated photos/videos thumbnail in connected phone's camera roll on Chromebook, and give options to intereact with them.">
+    Recent Photos
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS" desc="Text for search result item which, when clicked, navigates the user to Phone Hub Notifications settings, with a toggle to enable/disable the feature. Phone Hub Notifications mirrors all standard notifications currently being shown on connected phone device.">
     Phone Hub notifications
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION" translateable="false" desc="Text for search result item which, when clicked, navigates the user to Phone Hub Notifications settings, with a toggle to enable/disable the feature. Phone Hub Task Continuation allows user to continue a task between connected device and Chrome OS">
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION" desc="Text for search result item which, when clicked, navigates the user to Phone Hub Notifications settings, with a toggle to enable/disable the feature. Phone Hub Task Continuation allows user to continue a task between connected device and Chrome OS">
     Phone Hub task continuation
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_WIFI_SYNC" translateable="false" desc="Text for search result item which, when clicked, navigates the user to Wi-Fi Sync V2 settings, with a toggle to enable/disable the feature. Wi-Fi Sync V2 allows user to sync network configurations between Chrome OS devices and a connected Android phone">
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB_APPS" desc="Text for search result item which, when clicked, navigates the user to Phone Hub Apps settings, with a toggle to enable/disable the feature. Phone Hub Aapps allows user to app streaming from connected phone device.">
+    Phone Hub apps
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_WIFI_SYNC" desc="Text for search result item which, when clicked, navigates the user to Wi-Fi Sync settings, with a toggle to enable/disable the feature. Wi-Fi Sync V2 allows user to sync network configurations between Chrome OS devices and a connected Android phone">
     Wi-Fi Sync
   </message>
 
@@ -312,9 +336,6 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_SYNC" desc="Text for search result item which, when clicked, navigates the user to sync settings.">
     Sync
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_LOCK_SCREEN" desc="Text for search result item which, when clicked, navigates the user to security and sign-in settings.">
-    Security and sign-in
   </message>
   <message name="IDS_OS_SETTINGS_TAG_LOCK_SCREEN_V2" desc="Text for search result item which, when clicked, navigates the user to security and sign-in settings.">
     Lock screen and sign-in
@@ -385,7 +406,7 @@
   <message name="IDS_OS_SETTINGS_TAG_PARENTAL_CONTROLS_ALT2" desc="Text for search result item which, when clicked, navigates the user to parental control settings. Alternate phrase for: 'Parental controls', 'Child accounts'">
     Family Link
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_SYNC_AND_GOOGLE_SERVICES" desc="Text for search result item which, when clicked, navigates the user to settings for Sync (syncs data between multiple Bravebooks) and Brave Services.">
+  <message name="IDS_OS_SETTINGS_TAG_SYNC_AND_GOOGLE_SERVICES" desc="Text for search result item which, when clicked, navigates the user to settings for Sync (syncs data between multiple Chromebooks) and Brave Services.">
     Sync and Brave services
   </message>
   <message name="IDS_OS_SETTINGS_TAG_SYNC_ENCRYPTION_OPTIONS" desc="Text for search result item which, when clicked, navigates the user to sync settings, with an option to choose whether synced data is encrypted with the user's Brave account password or with a custom password chosen by the user. Alternate phrase for: 'Sync encryption password'">
@@ -526,6 +547,12 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_TOUCHPAD_SPEED" desc="Text for search result item which, when clicked, navigates the user to touchpad settings, with a slider to set speed.">
     Touchpad speed
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_TOUCHPAD_HAPTIC_FEEDBACK" desc="Text for search result item which, when clicked, navigates the user to touchpad settings, with a toggle to enable/disable haptic feedback.">
+    Touchpad haptic feedback
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_TOUCHPAD_HAPTIC_CLICK_SENSITIVITY" translateable="false" desc="Text for search result item which, when clicked, navigates the user to touchpad settings, with a slider to adjust the haptic touchpad click sensitivity.">
+    Touchpad haptic click sensitivity
   </message>
   <message name="IDS_OS_SETTINGS_TAG_MOUSE" desc="Text for search result item which, when clicked, navigates the user to mouse settings.">
     Mouse
@@ -697,7 +724,7 @@
   <message name="IDS_OS_SETTINGS_TAG_AMBIENT_MODE_TURN_OFF_ALT1" desc="Text for search result item which, when clicked, navigates the user to ambient mode settings, with a toggle to enable/disable the feature. Alternate phrase for: 'Turn off Ambient mode'">
     Disable screen saver
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_AMBIENT_MODE_CHOOSE_SOURCE" desc="Text for search result item which, when clicked, navigates the user to ambient mode settings, with buttons to choose a source (e.g., photos from Brave Photos or an art gallery).">
+  <message name="IDS_OS_SETTINGS_TAG_AMBIENT_MODE_CHOOSE_SOURCE" desc="Text for search result item which, when clicked, navigates the user to ambient mode settings, with buttons to choose a source (e.g., photos from Google Photos or an art gallery).">
     Choose screen saver background
   </message>
   <message name="IDS_OS_SETTINGS_TAG_AMBIENT_MODE_TURN_ON" desc="Text for search result item which, when clicked, navigates the user to ambient mode settings, with a toggle to enable/disable the feature. Alternate phrase for: 'Enable Ambient mode'">
@@ -706,16 +733,109 @@
   <message name="IDS_OS_SETTINGS_TAG_AMBIENT_MODE_TURN_ON_ALT1" desc="Text for search result item which, when clicked, navigates the user to ambient mode settings, with a toggle to enable/disable the feature. Alternate phrase for: 'Turn on Ambient mode'">
     Enable screen saver
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_AMBIENT_MODE_GOOGLE_PHOTOS_ALBUM" desc="Text for search result item which, when clicked, navigates the user to ambient mode Brave Photos album settings, which allow the user to set Brave Photos albums to be displayed when the device is idle.">
-    Brave Photos album
+  <message name="IDS_OS_SETTINGS_TAG_AMBIENT_MODE_GOOGLE_PHOTOS_ALBUM" desc="Text for search result item which, when clicked, navigates the user to ambient mode Google Photos album settings, which allow the user to set Google Photos albums to be displayed when the device is idle.">
+    Google Photos album
   </message>
   <message name="IDS_OS_SETTINGS_TAG_AMBIENT_MODE_ART_GALLERY_ALBUM" desc="Text for search result item which, when clicked, navigates the user to ambient mode Art gallery album settings, which allow the user to set Art gallery albums to be displayed when the device is idle.">
     Art gallery album
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_SUBPAGE" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings. Alternate phrase for: 'Dark mode', 'Light mode', 'Light theme'">
+    Dark theme
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_SUBPAGE_ALT1" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings. Alternate phrase for: 'Dark theme', 'Light mode', 'Light theme'">
+    Dark mode
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_SUBPAGE_ALT2" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings. Alternate phrase for: 'Dark theme', 'Dark mode', 'Light mode'">
+    Light theme
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_SUBPAGE_ALT3" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings. Alternate phrase for: 'Dark theme', 'Dark mode', 'Light theme'">
+    Light mode
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_TURN_ON" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a toggle to turn on dark mode. Alternate phrase for: 'Enable dark theme', 'Turn dark mode on', 'Enable dark mode', 'Turn light theme off',  'Disable light theme'">
+    Turn dark theme on
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_TURN_ON_ALT1" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a toggle to turn on dark mode. Alternate phrase for: 'Turn dark theme on', 'Turn dark mode on', 'Enable dark mode', 'Turn light theme off',  'Disable light theme'">
+    Enable dark theme
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_TURN_ON_ALT2" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a toggle to turn on dark mode. Alternate phrase for: 'Turn dark theme on', 'Enable dark theme', 'Enable dark mode', 'Turn light theme off',  'Disable light theme'">
+    Turn dark mode on
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_TURN_ON_ALT3" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a toggle to turn on dark mode. Alternate phrase for: 'Turn dark theme on', 'Enable dark theme', 'Turn dark mode on', 'Turn light theme off',  'Disable light theme'">
+    Enable dark mode
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_TURN_ON_ALT4" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a toggle to turn on dark mode. Alternate phrase for: 'Turn dark theme on', 'Enable dark theme', 'Turn dark mode on', 'Enable dark mode',  'Disable light theme'">
+    Turn light theme off
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_TURN_ON_ALT5" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a toggle to turn on dark mode. Alternate phrase for: 'Turn dark theme on', 'Enable dark theme', 'Turn dark mode on', 'Enable dark mode', 'Turn light theme off'">
+    Disable light theme
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_TURN_OFF" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a toggle to turn off dark mode. Alternate phrase for: 'Disable dark theme', 'Turn dark mode off', 'Disable dark mode', 'Turn light theme on',  'Enable light theme'">
+    Turn dark theme off
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_TURN_OFF_ALT1" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a toggle to turn off dark mode. Alternate phrase for: 'Turn dark theme off', 'Turn dark mode off', 'Disable dark mode', 'Turn light theme on',  'Enable light theme'">
+    Disable dark theme
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_TURN_OFF_ALT2" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a toggle to turn off dark mode. Alternate phrase for: 'Turn dark theme off', 'Disable dark theme', 'Disable dark mode', 'Turn light theme on',  'Enable light theme'">
+    Turn dark mode off
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_TURN_OFF_ALT3" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a toggle to turn off dark mode. Alternate phrase for: 'Turn dark theme off', 'Disable dark theme', 'Turn dark mode off', 'Turn light theme on',  'Enable light theme'">
+    Disable dark mode
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_TURN_OFF_ALT4" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a toggle to turn off dark mode. Alternate phrase for: 'Turn dark theme off', 'Disable dark theme', 'Turn dark mode off', 'Disable dark mode',  'Enable light theme'">
+    Turn light theme on
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_TURN_OFF_ALT5" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a toggle to turn off dark mode. Alternate phrase for: 'Turn dark theme off', 'Disable dark theme', 'Turn dark mode off', 'Disable dark mode', 'Turn light theme on'">
+    Enable light theme
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_THEMED" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a radio button group to select theming. Alternate phrase for: 'Color mode', 'Color theme'">
+    Accent color
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_THEMED_ALT1" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a radio button group to select theming. Alternate phrase for: 'Accent color', 'Color theme'">
+    Color mode
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_THEMED_ALT2" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a radio button group to select theming. Alternate phrase for: 'Accent color', 'Color mode'">
+    Color theme
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_SCHEDULE" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a dropdown to select scheduling mode. Alternate phrase for: 'Dark mode schedule', 'Automatic dark mode', 'Automatic light mode', 'Automatic dark theme'">
+    Dark theme schedule
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_SCHEDULE_ALT1" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a dropdown to select scheduling mode. Alternate phrase for: 'Dark theme schedule','Automatic dark mode', 'Automatic light mode', 'Automatic dark theme'">
+    Dark mode schedule
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_SCHEDULE_ALT2" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a dropdown to select scheduling mode. Alternate phrase for: 'Dark theme schedule', 'Dark mode schedule', 'Automatic light mode', 'Automatic dark theme'">
+    Automatic dark mode
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_SCHEDULE_ALT3" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a dropdown to select scheduling mode. Alternate phrase for: 'Dark theme schedule', 'Dark mode schedule', 'Automatic dark mode', 'Automatic dark theme'">
+    Automatic light mode
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DARK_MODE_SCHEDULE_ALT4" desc="Text for search result item which, when clicked, navigates the user to dark mode subpage settings, with a dropdown to select scheduling mode. Alternate phrase for: 'Dark theme schedule', 'Dark mode schedule', 'Automatic dark mode', 'Automatic light mode'">
+    Automatic dark theme
   </message>
 
   <!-- Search and Assistant section. -->
   <message name="IDS_OS_SETTINGS_TAG_PREFERRED_SEARCH_ENGINE" desc="Text for search result item which, when clicked, navigates the user to search settings, with an option to set the user's preferred search engine.">
     Preferred search engine
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_QUICK_ANSWERS" desc="Text for search result item which, when clicked, navigates the user to Quick Answers settings, with a toggle to enable/disable the functionality. Alternate phrase for: 'Look up', 'Quick search', 'Right click card'">
+    Quick Answers
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_QUICK_ANSWERS_ALT1" desc="Text for search result item which, when clicked, navigates the user to Quick Answers settings, with a toggle to enable/disable the functionality. Alternate phrase for: 'Quick Answers', 'Quick search', 'Right click card'">
+    Look up
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_QUICK_ANSWERS_ALT2" desc="Text for search result item which, when clicked, navigates the user to Quick Answers settings, with a toggle to enable/disable the functionality. Alternate phrase for: 'Quick Answers', 'Look up', 'Right click card'">
+    Quick search
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_QUICK_ANSWERS_ALT3" desc="Text for search result item which, when clicked, navigates the user to Quick Answers settings, with a toggle to enable/disable the functionality. Alternate phrase for: 'Quick Answers', 'Look up', 'Quick search'">
+    Right click card
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_QUICK_ANSWERS_DEFINITION" desc="Text for search result item which, when clicked, navigates the user to Quick Answers settings, with a toggle to enable/disable the Quick Answers definition functionality.">
+    Quick Answers definition
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_QUICK_ANSWERS_TRANSLATION" desc="Text for search result item which, when clicked, navigates the user to Quick Answers settings, with a toggle to enable/disable the Quick Answers translation functionality.">
+    Quick Answers translation
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_QUICK_ANSWERS_UNIT_CONVERSION" desc="Text for search result item which, when clicked, navigates the user to Quick Answers settings, with a toggle to enable/disable the Quick Answers unit conversion functionality.">
+    Quick Answers unit conversion
   </message>
   <message name="IDS_OS_SETTINGS_TAG_ASSISTANT" desc="Text for search result item which, when clicked, navigates the user to Brave Assistant settings.">
     Brave Assistant
@@ -767,6 +887,21 @@
   <message name="IDS_OS_SETTINGS_TAG_APPS_MANAGEMENT_ALT1" desc="Text for search result item which, when clicked, navigates the user to app mangement settings. Alternate phrase for: 'Manage apps'">
     View installed apps
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_APP_NOTIFICATIONS" desc="Text for search result item which, when clicked, navigates the user to app notification settings.">
+    Notifications
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DO_NOT_DISTURB_TURN_ON" desc="Text for search result item which, when clicked, navigates the user to app notification settings, with toggle to silence notifications. Alternate phrase for: 'Mute Notificatons'">
+    Turn on Do Not Disturb
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DO_NOT_DISTURB_TURN_ON_ALT1" desc="Text for search result item which, when clicked, navigates the user to app notification settings with toggle to silence notifications. Alternate phrase for: 'Turn on Do Not Disturb'">
+    Mute Notifications
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DO_NOT_DISTURB_TURN_OFF" desc="Text for search result item which, when clicked, navigates the user to app notification settings, with toggle to silence notifications. Alternate phrase for: 'Unmute Notificatons'">
+    Turn off Do Not Disturb
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_DO_NOT_DISTURB_TURN_OFF_ALT1" desc="Text for search result item which, when clicked, navigates the user to app notification settings with toggle to silence notifications. Alternate phrase for: 'Turn off Do Not Disturb'">
+    Unmute Notifications
+  </message>
   <message name="IDS_OS_SETTINGS_TAG_REMOVE_PLAY_STORE" desc="Text for search result item which, when clicked, navigates the user to Android app settings, with a button to remove the Play Store (Android app store). Alternate phrase for: 'Uninstall Google Play Store'">
     Remove Google Play Store
   </message>
@@ -805,16 +940,16 @@
   <message name="IDS_OS_SETTINGS_TAG_CROSTINI_ALT2" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings. Alternate phrase for: 'Linux, Crostini'">
     Developers
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SHARED_FOLDERS" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with the option to share folders with the Bravebook. Alternate phrase for: 'Linux shared directories', 'Crostini shared folders', 'Crostini shared directories'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SHARED_FOLDERS" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with the option to share folders with the Chromebook. Alternate phrase for: 'Linux shared directories', 'Crostini shared folders', 'Crostini shared directories'">
     Linux shared folders
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SHARED_FOLDERS_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with the option to share folders with the Bravebook. Alternate phrase for: 'Linux shared folders', 'Crostini shared folders', 'Crostini shared directories'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SHARED_FOLDERS_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with the option to share folders with the Chromebook. Alternate phrase for: 'Linux shared folders', 'Crostini shared folders', 'Crostini shared directories'">
     Linux shared directories
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SHARED_FOLDERS_ALT2" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with the option to share folders with the Bravebook. Alternate phrase for: 'Linux shared folders', 'Linux shared directories', 'Crostini shared directories'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SHARED_FOLDERS_ALT2" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with the option to share folders with the Chromebook. Alternate phrase for: 'Linux shared folders', 'Linux shared directories', 'Crostini shared directories'">
     Crostini shared folders
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SHARED_FOLDERS_ALT3" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with the option to share folders with the Bravebook. Alternate phrase for: 'Linux shared folders', 'Linux shared directories', 'Crostini shared folders'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SHARED_FOLDERS_ALT3" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with the option to share folders with the Chromebook. Alternate phrase for: 'Linux shared folders', 'Linux shared directories', 'Crostini shared folders'">
     Crostini shared directories
   </message>
   <message name="IDS_OS_SETTINGS_TAG_CROSTINI_USB_PREFERENCES" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with the option to set USB preferences. Alternate phrase for: 'Crostini USB preferences'">
@@ -823,28 +958,28 @@
   <message name="IDS_OS_SETTINGS_TAG_CROSTINI_USB_PREFERENCES_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with the option to set USB preferences. Alternate phrase for: 'Linux USB preferences'">
     Crostini USB preferences
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_REMOVE" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to delete the Linux installation on Bravebook. Alternate phrase for: 'Remove Crostini', 'Uninstall Linux', 'Uninstall Crostini', 'Delete Linux', 'Delete Crostini'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_REMOVE" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to delete the Linux installation on Chromebook. Alternate phrase for: 'Remove Crostini', 'Uninstall Linux', 'Uninstall Crostini', 'Delete Linux', 'Delete Crostini'">
     Remove Linux
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_REMOVE_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to delete the Linux installation on Bravebook. Alternate phrase for: 'Remove Linux', 'Uninstall Linux', 'Uninstall Crostini', 'Delete Linux', 'Delete Crostini'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_REMOVE_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to delete the Linux installation on Chromebook. Alternate phrase for: 'Remove Linux', 'Uninstall Linux', 'Uninstall Crostini', 'Delete Linux', 'Delete Crostini'">
     Remove Crostini
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_REMOVE_ALT2" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to delete the Linux installation on Bravebook. Alternate phrase for: 'Remove Linux', 'Remove Crostini', 'Uninstall Crostini', 'Delete Linux', 'Delete Crostini'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_REMOVE_ALT2" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to delete the Linux installation on Chromebook. Alternate phrase for: 'Remove Linux', 'Remove Crostini', 'Uninstall Crostini', 'Delete Linux', 'Delete Crostini'">
     Uninstall Linux
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_REMOVE_ALT3" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to delete the Linux installation on Bravebook. Alternate phrase for: 'Remove Linux', 'Remove Crostini', 'Uninstall Linux', 'Delete Linux', 'Delete Crostini'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_REMOVE_ALT3" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to delete the Linux installation on Chromebook. Alternate phrase for: 'Remove Linux', 'Remove Crostini', 'Uninstall Linux', 'Delete Linux', 'Delete Crostini'">
     Uninstall Crostini
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_REMOVE_ALT4" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to delete the Linux installation on Bravebook. Alternate phrase for: 'Remove Linux', 'Remove Crostini', 'Uninstall Linux', 'Uninstall Crostini', 'Delete Crostini'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_REMOVE_ALT4" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to delete the Linux installation on Chromebook. Alternate phrase for: 'Remove Linux', 'Remove Crostini', 'Uninstall Linux', 'Uninstall Crostini', 'Delete Crostini'">
     Delete Linux
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_REMOVE_ALT5" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to delete the Linux installation on Bravebook. Alternate phrase for: 'Remove Linux', 'Remove Crostini', 'Uninstall Linux', 'Uninstall Crostini', 'Delete Linux'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_REMOVE_ALT5" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to delete the Linux installation on Chromebook. Alternate phrase for: 'Remove Linux', 'Remove Crostini', 'Uninstall Linux', 'Uninstall Crostini', 'Delete Linux'">
     Delete Crostini
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SETUP" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to set up Linux integration with Bravebook. Alternate phrase for: 'Set up Crostini'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SETUP" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to set up Linux integration with Chromebook. Alternate phrase for: 'Set up Crostini'">
     Set up Linux development environment
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SETUP_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to set up Linux integration with Bravebook. Alternate phrase for: 'Set up Linux development environment'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_SETUP_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to set up Linux integration with Chromebook. Alternate phrase for: 'Set up Linux development environment'">
     Set up Crostini
   </message>
   <message name="IDS_OS_SETTINGS_TAG_CROSTINI_BACKUP_RESTORE" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to back up and restore Linux apps/files. Alternate phrase for: 'Crostini backup'">
@@ -859,10 +994,10 @@
   <message name="IDS_OS_SETTINGS_TAG_CROSTINI_ANDROID_APPS_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with options for developing Android apps. Alternate phrase for: 'Linux Android app development'">
     Crostini Android app development
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_ANDROID_APPS_ADB" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with a toggle to enable/disable Android ADB (Android to Bravebook device bridge). Alternate phrase for: 'Crostini Android app ADB'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_ANDROID_APPS_ADB" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with a toggle to enable/disable Android ADB (Android to Chromebook device bridge). Alternate phrase for: 'Crostini Android app ADB'">
     Linux Android app ADB
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_ANDROID_APPS_ADB_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with a toggle to enable/disable Android ADB (Android to Bravebook device bridge). Alternate phrase for: 'Linux Android app ADB'">
+  <message name="IDS_OS_SETTINGS_TAG_CROSTINI_ANDROID_APPS_ADB_ALT1" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with a toggle to enable/disable Android ADB (Android to Chromebook device bridge). Alternate phrase for: 'Linux Android app ADB'">
     Crostini Android app ADB
   </message>
   <message name="IDS_OS_SETTINGS_TAG_CROSTINI_PORT_FORWARDING" desc="Text for search result item which, when clicked, navigates the user to Linux (a.k.a. Crostini) settings, with an option to set up port forwarding. Alternate phrase for: 'Crostini port forwarding'">
@@ -938,11 +1073,23 @@
   <message name="IDS_OS_SETTINGS_TAG_PRIVACY_PERIPHERAL_DATA_ACCESS_PROTECTION_ALT5" desc="Text for search result item which, when clicked, navigates the user to privacy settings, with a toggle to enable/disable peripheral data access protection. Alternate phrase for: 'Data access protection for peripherals', 'PCIe', 'Thunderbolt', 'USB', 'USB4'">
     USB-C
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_SMART_PRIVACY" desc="Text for search result item which, when clicked, navigates the user to the smart privacy subpage." translateable="false">
+    Smart privacy protections
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_SMART_PRIVACY_SNOOPING" desc="Text for search result item which, when clicked, navigates the user to the smart privacy subpage with a toggle to enable/disable snooping protection. Alternate phrase for: 'Shoulder surfing', 'Peeking'" translateable="false">
+    Snooping protection
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_SMART_PRIVACY_SNOOPING_ALT1" desc="Text for search result item which, when clicked, navigates the user to the smart privacy subpage with a toggle to enable/disable snooping protection. Alternate phrase for: 'Snooping protection', 'Peeking'" translateable="false">
+    Shoulder surfing
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_SMART_PRIVACY_SNOOPING_ALT2" desc="Text for search result item which, when clicked, navigates the user to the smart privacy subpage with a toggle to enable/disable snooping protection. Alternate phrase for: 'Snooping protection', 'Shoulder surfing'" translateable="false">
+    Peeking
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_SMART_PRIVACY_QUICK_DIM" desc="Text for search result item which, when clicked, navigates the user to the smart privacy subpage with a toggle to enable/disable quick dim." translateable="false">
+    Smart screen lock
+  </message>
 
   <!-- Languages and Input section. -->
-  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT" desc="Text for search result item which, when clicked, navigates the user to languages and input settings.">
-    Languages and inputs
-  </message>
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES" desc="Text for search result item which, when clicked, navigates the user to languages settings.">
     Languages
   </message>
@@ -967,9 +1114,6 @@
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_EDIT_DICTIONARY" desc="Text for search result item which, when clicked, navigates the user to edit dictionary page.">
     Customize spell check
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT_METHODS" desc="Text for search result item which, when clicked, navigates the user to input settings, with the option to enable/disable input in supported languages.">
-    Manage input methods
-  </message>
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT_INPUT_OPTIONS_SHELF" desc="Text for search result item which, when clicked, navigates the user to languages and input settings, with a toggle to enable/disable showing input options in the shelf. Alternate phrase for: 'Input options in toolbar'">
     Show input options in the shelf
   </message>
@@ -984,6 +1128,15 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_EMOJI_SUGGESTIONS" desc="Text for search result item which, when clicked, navigates the user to suggestions settings, with a section having a toggle to enable/disable showing emoji suggestions after an user types a word.">
     Emoji suggestions
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_PREDICTIVE_WRITING" desc="Text for search result item which, when clicked, navigates the user to suggestions settings, with a section having a toggle to enable/disable showing predictive writing suggestions after a user types a word.">
+    Predictive writing
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_PREDICTIVE_WRITING_ALT1" desc="Text for search result item which, when clicked, navigates the user to suggestions settings, with a section having a toggle to enable/disable showing predictive writing suggestions after a user types a word.">
+    Text suggestions
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_PREDICTIVE_WRITING_ALT2" desc="Text for search result item which, when clicked, navigates the user to suggestions settings, with a section having a toggle to enable/disable showing predictive writing suggestions after a user types a word.">
+    Next word prediction
   </message>
 
   <!-- Files section. -->
@@ -1202,6 +1355,12 @@
   <message name="IDS_OS_SETTINGS_TAG_ABOUT_TERMS_OF_SERVICE" desc="Text for search result item which, when clicked, navigates the user to 'About Chrome OS' settings, with a link to the Terms of Service.">
     Terms of Service
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_ABOUT_DEVICE_NAME" desc="Text for search result item which, when clicked, navigates the user to detailed build information settings, with a button to change the device name.">
+    Change device name
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_ABOUT_DEVICE_NAME_ALT1" desc="Text for search result item which, when clicked, navigates the user to detailed build information settings, with a button to change the device name.">
+    Change hostname
+  </message>
   <message name="IDS_OS_SETTINGS_TAG_ABOUT_DIAGNOSTICS" desc="Text for search result item which, when clicked, navigates the user to 'Diagnostics' settings, with a link which opens the Diagnostics App. Alternate phrase for 'Troubleshooting', 'Battery Health', 'CPU Usage', 'Memory Usage'">
     Diagnostics
   </message>
@@ -1216,6 +1375,9 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_ABOUT_DIAGNOSTICS_ALT4" desc="Text for search result item which, when clicked, navigates the user to 'Diagnostics' settings, with a link which opens the Diagnostics App. Alternate phrase for 'Diagnostics', 'Troubleshooting', 'Battery Health', 'CPU Usage'">
     Memory Usage
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_ABOUT_FIRMWARE_UPDATES" desc="Text for search result item which, when clicked, navigates the user to 'Firmware updates' settings, with a link which opens the 'Firmware updates' app.">
+    Firmware updates
   </message>
 
   <!-- On Startup section. -->

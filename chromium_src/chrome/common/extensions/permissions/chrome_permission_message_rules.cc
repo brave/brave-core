@@ -7,7 +7,7 @@
 #include "brave/grit/brave_generated_resources.h"
 
 #define GetAllRules GetAllRules_ChromiumImpl
-#include "../../../../../../chrome/common/extensions/permissions/chrome_permission_message_rules.cc"
+#include "src/chrome/common/extensions/permissions/chrome_permission_message_rules.cc"
 #undef GetAllRules
 
 namespace extensions {

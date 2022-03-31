@@ -72,7 +72,7 @@ std::string HeadersToString(
 
 }  // namespace
 
-std::string UrlRequestToString(const UrlRequestPtr& url_request) {
+std::string UrlRequestToString(const mojom::UrlRequestPtr& url_request) {
   std::string log = "URL Request:\n";
 
   log += base::StringPrintf("  URL: %s\n", url_request->url.c_str());
@@ -94,7 +94,7 @@ std::string UrlRequestToString(const UrlRequestPtr& url_request) {
   return log;
 }
 
-std::string UrlRequestHeadersToString(const UrlRequestPtr& url_request) {
+std::string UrlRequestHeadersToString(const mojom::UrlRequestPtr& url_request) {
   std::string log = "  Headers:\n";
 
   if (!url_request->headers.empty()) {
@@ -104,9 +104,7 @@ std::string UrlRequestHeadersToString(const UrlRequestPtr& url_request) {
   return log;
 }
 
-std::string UrlResponseToString(const UrlResponse& url_response) {
-  const std::string formatted_headers = HeadersToString(url_response.headers);
-
+std::string UrlResponseToString(const mojom::UrlResponse& url_response) {
   return base::StringPrintf(
       "URL Response:\n  URL: %s\n  Response "
       "Status Code: %d\n  Response: %s",
@@ -114,7 +112,7 @@ std::string UrlResponseToString(const UrlResponse& url_response) {
       url_response.body.c_str());
 }
 
-std::string UrlResponseHeadersToString(const UrlResponse& url_response) {
+std::string UrlResponseHeadersToString(const mojom::UrlResponse& url_response) {
   const std::string formatted_headers = HeadersToString(url_response.headers);
 
   return base::StringPrintf("  Headers:\n%s", formatted_headers.c_str());

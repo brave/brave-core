@@ -8,7 +8,9 @@ import { combineReducers } from 'redux'
 import pageReducer from './page_reducer'
 import walletReducer from '../../common/reducers/wallet_reducer'
 
-export default combineReducers({
+export const walletPageReducer = combineReducers({
   page: pageReducer,
   wallet: walletReducer
 })
+
+export default walletPageReducer

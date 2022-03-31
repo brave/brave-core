@@ -3,46 +3,86 @@
 <translationbundle lang="cs">
 <translation id="3333887201479867589">Odměny Brave</translation>
 <translation id="7942180974165298215">Blokování reklam Brave</translation>
-<translation id="4615489450165434530">Nahlásit porouchanou stránku</translation>
+<translation id="4615489450165434530">Nahlásit porouchané stránky</translation>
+<translation id="1209739344687072997">Nahlásit porouchané stránky</translation>
 <translation id="6406506848690869874">Synchronizace</translation>
 <translation id="1544192797660353713">Peněženka</translation>
 <translation id="2445484935443597917">Vytvořit nový profil</translation>
+<translation id="744341768939279100">Vytvořte si nový profil</translation>
 <translation id="2666990579225592931">Otevřít okno hosta</translation>
+<translation id="4986483413015198747">Otevřít okno pro hosty</translation>
 <translation id="8275068909952022340">Další...</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID rozšíření "<ph name="EXTENSION_ID"/>") není v Brave povoleno.</translation>
 <translation id="6786747875388722282">Rozšíření</translation>
 <translation id="984275831282074731">Platební metody</translation>
-<translation id="3699882589215410581">Nainstalovat a spustit Widevine</translation>
+<translation id="1990886731975529483">Nainstalovat a spustit Google Widevine</translation>
 <translation id="8926389886865778422">Dotaz již nezobrazovat</translation>
 <translation id="5249433283143453448">Používat k prohlížení chráněného streamovaného videa a dalšího obsahu v prohlížeči komponent Widevine pro správu digitálních práv (DRM).</translation>
 <translation id="6241402707160226266">Soukromé okno s Torem</translation>
 <translation id="8762452230727230396">Tor skryje vaši IP adresu před navštívenými weby.</translation>
 <translation id="1369311132025451972">Automaticky přesměrovávat weby .onion</translation>
-<translation id="81720820779436751">Brave otevře webovou službu onion, pokud je k dispozici, nebo doménu .onion v okně Tor</translation>
-<translation id="8053096063396012732">Instalovat Widevine</translation>
-<translation id="4840334696217618631">Restartujte prohlížeč, abyste povolili Widevine</translation>
-<translation id="8410111618231938546">Google Widevine je kód pro správu digitálních práv (DRM), který ve společnosti Brave Software nevlastníme a nemůžeme jej kontrolovat. Kód Google Widevine je nahráván ze serverů Google, ne z našich serverů. Nahraje se pouze po povolení této možnosti. Používání DRM nedoporučujeme, ale respektujeme volbu uživatele a uznáváme, že někteří uživatelé Brave by rádi využívali služby, které DRM vyžadují.
-
-Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Google Widevine. Souhlasíte s tím, že společnost Brave neodpovídá za škody ani ztráty související s používáním služby Google Widevine.</translation>
+<translation id="2843777623071353503">Brave otevře službu onion webové stránky, pokud je k dispozici, nebo doménu .onion v okně Tor.</translation>
+<translation id="4900351245762303149">Nainstalovat Google Widevine</translation>
+<translation id="2313383941300459392">Restartujte prohlížeč, abyste povolili Google Widevine</translation>
+<translation id="2200626478572277092">Widevine je někdy zapotřebí k přehrávání médií na webové stránce. Jedná se o rozšíření Google načtené ze serverů Google, které prohlížeč Brave nedokáže prověřit. Instalací poskytujete svůj souhlas s podmínkami používání Google.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Více informací o Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> vás žádá o</translation>
 <translation id="410351446219883937">Automatické přehrávání</translation>
 <translation id="3218385319396786393">Automatické přehrávání bylo na této stránce zablokováno</translation>
 <translation id="4988333904713528597">Vždy povolit automatické přehrávání na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Pokračovat v blokování automatického přehrávání</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Zeptat se, když chce web přistupovat k API rozhraní poskytovatele Etherea</translation>
+<translation id="7017590444693657895">Zablokovat přístup webů k API rozhraní poskytovatele Etherea</translation>
 <translation id="8988939298652262600">Brave nekontroluje bezpečnost rozšíření. Nainstalujte si toto rozšíření, jen pokud důvěřujete jeho vývojáři.</translation>
+<translation id="933652931229970927">Automaticky odesílat diagnostické zprávy</translation>
+<translation id="1679356339067548863">Pomozte vylepšit stabilitu produktu Brave automatickým odesíláním diagnostických zpráv, když prohlížeč Brave spadne nebo zmrzne.</translation>
 <translation id="8081858229109418493">Název profilu a ikona</translation>
+<translation id="6438096877646138757">Stránky, u kterých se při zavření vymažou soubory cookie</translation>
+<translation id="2988792685798128092">Vymazat při zavření stránky</translation>
 <translation id="2044383478723007273">Barvy Brave</translation>
 <translation id="1692470335103807198">Získejte další témata</translation>
 <translation id="2906510232093002459">Výchozí obrázky Brave</translation>
 <translation id="2814998458708016836">Použít široký adresní řádek</translation>
-<translation id="6123134130710658846">Skrýt tlačítko Brave Rewards</translation>
+<translation id="6333347122924254968">Zobrazit ikonu Odměny Brave v adresním řádku</translation>
 <translation id="1811404036171336214">Vždy na nové kartě zobrazit záložky</translation>
 <translation id="1643029991199044105">Přepínejte naposledy použité karty pomocí Ctrl+Tab</translation>
+<translation id="1013121820689882118">Speedreader</translation>
+<translation id="2025435450953474282">Články se automaticky načítají v režimu čtečky, což vám šetří čas</translation>
+<translation id="5510493033031835532">Automaticky přesměrovávat AMP stránky</translation>
+<translation id="5197219128592971597">Vždy navštěvujte původní adresy URL stránek (bez AMP) namísto zrychlených mobilních verzí stránek Google.</translation>
 <translation id="5802665280774361839">V adresním řádku používat automatické doplňování</translation>
 <translation id="597020512043916976">Ukazovat nejoblíbenější stránky v návrzích automatického dokončení</translation>
 <translation id="264150068416846820">Ukázat doporučené stránky Brave v návrzích automatického dokončování</translation>
+<translation id="5529693968082667490">Tlačítko Zobrazit záložky pro vyhledávání</translation>
 <translation id="6414370348346025511">Je zapnutá standardní ochrana.</translation>
 <translation id="814018970995616154">Kontroluje URL adresy pomocí seznamu nebezpečných webů, který je uložen v Brave.</translation>
 <translation id="1144810021918451336">Nechrání vás před nebezpečnými internetovými stránkami, staženými soubory a rozšířeními.</translation>
+<translation id="6285118765755298263">Indexovat ostatní vyhledávače</translation>
+<translation id="919715748352669592">Automaticky indexovat webové stránky, které se řídí specifikacemi OpenSearch.</translation>
+<translation id="6821903322090655051">Odměny Brave jsou vypnuté</translation>
+<translation id="413570371620795359">Otevřete panel Odměny pro aktivaci a začněte</translation>
+<translation id="3849957491997306859">Automatické rozpoznání</translation>
+<translation id="8798099450830957504">Výchozí</translation>
+<translation id="4176463684765177261">Zakázáno</translation>
+<translation id="4851215387785619212">Soukromé reklamy Brave</translation>
+<translation id="7808122468353671181">Získávejte tokeny zobrazováním reklam Brave. Zobrazované reklamy jsou založeny na vašich zájmech odvozených z vašeho chování při prohlížení. Vaše osobní údaje ani historie prohlížení nikdy neopustí váš prohlížeč.</translation>
+<translation id="1758947220824279023">Maximální počet zobrazovaných reklam</translation>
+<translation id="8578912649458880781">Cílení reklam na podle země</translation>
+<translation id="3678362265519557511">Díky tomu vám Brave může zobrazovat reklamy určené speciálně pro vaši zemi. <ph name="BEGIN_LINK"/>Více informací<ph name="END_LINK"/>.</translation>
+<translation id="6112368337882254910">Automatický příspěvek</translation>
+<translation id="9132509928968869844">Měsíční limit automatického příspěvku</translation>
+<translation id="7286722244752781970">Minimální doba přítomnosti na stránce před započítáním návštěvy</translation>
+<translation id="4424486208397124985">Minimální počet návštěv pro relevanci autora</translation>
+<translation id="6248554379744796526">Zobrazit neověřené stránky v seznamu</translation>
+<translation id="5510618543889994434">Povolit příspěvky k videím</translation>
+<translation id="924777189963477634">Zapnutím funkce automatického přispívání souhlasíte s <ph name="BEGIN_LINK_TOS"/>Podmínkami služby<ph name="END_LINK_TOS"/> a <ph name="BEGIN_LINK_PP"/>Zásadami ochrany osobních údajů<ph name="END_LINK_PP"/></translation>
+<translation id="5733490796524078528">Tlačítka tipů</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="7781069478569868053">Stránka nové karty</translation>
 <translation id="1988804048511540801">Nová karta zobrazuje</translation>
 <translation id="2970343821770026391">Ovládací panel</translation>
@@ -55,34 +95,41 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="8612763432858587652">Opustit Soukromé okno</translation>
 <translation id="8760415064721320867">Soukromé okno v prohlížeči Tor</translation>
 <translation id="2055363275850890030">Soukromé okno</translation>
-<translation id="8934172355414207733">Soukromé s Torem</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Toto je Soukromé okno s Torem</translation>
 <translation id="1037341607922068025">Otevřít Soukromé okno s Torem</translation>
 <translation id="1725356094208762656">Otevřít v Toru</translation>
-<translation id="7643538479215207633">Otevřít pomocí protokolu IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Zveřejnit a načíst soubory z IPFS</translation>
-<translation id="1672270084584211506">Cibule dostupná</translation>
+<translation id="7398397225367092613">.onion</translation>
+<translation id="406832631167785034">Otevřít pomocí adresy .onion</translation>
 <translation id="4901618511712685702">Importovat do IPFS</translation>
 <translation id="6794469945030154569">Tato stránka</translation>
 <translation id="5037852323412456577">Vybraný obrázek</translation>
 <translation id="2715839724138372481">Vybrané video</translation>
 <translation id="4227945450504703638">Vybrané audio</translation>
 <translation id="7895302206188277628">Související obsah</translation>
-<translation id="4322612543319315652">Importovat vybraný text do IPFS</translation>
-<translation id="8883166554766780543">Importovat a kopírovat odkaz do snímku IPFS</translation>
 <translation id="3654831858282189202">Zveřejnit s klíčem IPNS</translation>
-<translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importovat vybraný text do IPFS</translation>
+<translation id="6925604404524625582">Importovat a kopírovat odkaz na snímek IPFS</translation>
 <translation id="1434416574322382019">Nové soukromé okno v prohlížeči Tor</translation>
 <translation id="4703780849509456860">Otevřít odkaz v soukromém okně prohlížeče Tor</translation>
 <translation id="3488584642074079080">Otevřít odkaz v soukromém oknu Brave pomocí prohlížeče Tor</translation>
-<translation id="7475547933708221517">Sdílet místní soubor pomocí IPFS</translation>
-<translation id="2286177249736199435">Sdílet místní složku pomocí IPFS</translation>
-<translation id="784573715436258741">Sdílet místní soubor pomocí IPFS</translation>
+<translation id="186554175479803110">Importovat a sdílet soubor</translation>
+<translation id="3036649622769666520">Otevřít soubory</translation>
+<translation id="4408880250587950158">Importovat a sdílet složku</translation>
+<translation id="8396273373598682323">Se souborem</translation>
+<translation id="518600784989889917">Se složkou</translation>
+<translation id="8147987711042435221">Aktualizovat IPNS</translation>
+<translation id="4491895534716990473">Import vybraného textu do IPFS</translation>
+<translation id="8883166554766780543">Importovat a kopírovat odkaz do snímku IPFS</translation>
+<translation id="709253338301411121">Importovat a sdílet soubor</translation>
+<translation id="7068360136237591149">Otevřít soubory</translation>
 <translation id="6313675821927505581">Nové soukromé okno přes Tor</translation>
 <translation id="2638041073279639246">Otevřít odkaz v soukromém okně přes Tor</translation>
 <translation id="3425600262621021599">Otevřít odkaz v soukromém okně Brave přes Tor</translation>
-<translation id="575838692088926391">Sdílet místní složku pomocí IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
+<translation id="3229091547987707389">Importovat a sdílet složku</translation>
 <translation id="2515126961943087659">Služba reklam BAT</translation>
 <translation id="7924918279836988121">Služba účetní knihy Bat</translation>
 <translation id="4472575034687746823">Začít</translation>
@@ -90,7 +137,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="6303294677342628402">Štíty</translation>
 <translation id="7133511168130368997">Blokujte trackery a reklamy, které vás následují na internetu.</translation>
 <translation id="2761825942249694703">Toto jsou výchozí nastavení Štítů. Fungují na všech internetových stránkách, pokud něco nezměníte na panelu Štítů na určité stránce. Jejich změna neovlivní vaše existující nastavení u konkrétních stránek.</translation>
-<translation id="8754605759692119662">Toto zablokuje většinu reklam na internetových stránkách, nikoli soukromé reklamy Brave — ty jsou řízeny v</translation>
+<translation id="1485394570478670912">Tím zablokujete většinu reklam na webových stránkách, nikoli však Brave Private Ads; ty se ovládají v</translation>
 <translation id="6388201778088078932">nastavení.</translation>
 <translation id="9185018653595759199">Blokování sociálních médií</translation>
 <translation id="7390783310074170337">Výchozí zobrazení</translation>
@@ -109,13 +156,11 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="958971637207126733">Povolit příspěvky vložené na LinkedIn</translation>
 <translation id="4078738236287221428">Agresivní</translation>
 <translation id="7740996059027112821">Standardně</translation>
-<translation id="4176463684765177261">Zakázáno</translation>
 <translation id="5770288601196774623">Pouze napříč stránkami</translation>
 <translation id="3587482841069643663">Vše</translation>
 <translation id="5533533363827555308">Přísné, může znefunkčnit stránky</translation>
 <translation id="8792121506918889955">Pravidla WebRTC pro zacházení s IP</translation>
 <translation id="6165508094623778733">Zjistit více</translation>
-<translation id="8798099450830957504">Výchozí</translation>
 <translation id="1822560017823072927">Výchozí veřejná a soukromá rozhraní</translation>
 <translation id="5825943197137337319">Pouze výchozí veřejné rozhraní</translation>
 <translation id="1689062823386843231">Deaktivujte službu UDP bez proxy</translation>
@@ -162,6 +207,11 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="2339730291919608488">Opustit synchronizační skupinu</translation>
 <translation id="115699408012835975">Pokud resetujete synchronizaci, budete muset opětovně zadat synchronizační kód z jiného zařízení, abyste s ním provedli synchronizaci. Opravdu chcete pokračovat?</translation>
 <translation id="6092564993102418148">Jste si jisti, že chcete odstranit zvolené zařízení z řetězce synchronizace?</translation>
+<translation id="2936582902048232286">Upozornění: vaše data ve službě Brave, včetně potenciálních hesel, budou sdílena se zařízením, které tato kódová slova vygenerovalo.
+
+Zkontrolujte, zda byla tato kódová slova vygenerována zařízením, které vlastníte.
+
+Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3396347744975515056">Brave synchronizace byla aktualizována a vyžaduje nové nastavení</translation>
 <translation id="7473245612074035141">Začít nastavení</translation>
 <translation id="3411013544209536575">Asistenční tipy</translation>
@@ -175,13 +225,15 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="8488282162676695335">Peněženka Brave</translation>
 <translation id="2356070529366658676">Zeptat se</translation>
 <translation id="7701040980221191251">Žádné</translation>
-<translation id="5655621391922317800">Krypto peněženky</translation>
-<translation id="1696548911367097044">Rozšíření pro zastaralé krypto peněženky</translation>
-<translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Poskytovatel Etherea pro používání Dapps</translation>
-<translation id="5913089932885076110">Načíst Kryptopeněženky při zapnutí</translation>
-<translation id="757886143331967039">Načíst rozšíření pro zastaralé krypto peněženky při spuštění</translation>
+<translation id="1274962333945373242">Kryptopeněženky (zastaralé)</translation>
+<translation id="3695088618483091287">Peněženka Brave (upřednostnit rozšíření)</translation>
+<translation id="9131889008937672866">Výchozí kryptopeněženka</translation>
+<translation id="4718664830805652430">Výchozí základní měna</translation>
+<translation id="7992507032049865603">Výchozí základní kryptoměna</translation>
 <translation id="1834467296210148203">Zobrazit ikonu peněženky Brave na liště nástrojů</translation>
+<translation id="4613486011786721686">Skrýt ikonu peněženky Brave na liště nástrojů</translation>
+<translation id="8239147115686034860">Automatické zamykání peněženky Brave Wallet</translation>
+<translation id="414639769490080648">Počet minut, po kterých se peněženka Brave automaticky uzamkne.</translation>
 <translation id="6864914031231797928">Povolit rozšířením přihlášení pomocí Googlu</translation>
 <translation id="5927916530277631319">Způsob řešení služby Unstoppable Domains</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/> o ochraně osobních údajů pomocí protokolu DNS přes HTTPS a Ethereum.</translation>
@@ -191,32 +243,55 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="7611728475758612204">Klíče dostupné ke zveřejnění</translation>
 <translation id="911363100236037920">Zadejte název nového klíče</translation>
 <translation id="6358469157239228181">Tento název nelze použít</translation>
+<translation id="5761731140570209168">Přidat nový připojovací řetězec peer</translation>
+<translation id="2082206983920804886">Otáčení klíče</translation>
+<translation id="5078501082919354191">Nelze zastavit místní uzel Brave IPFS</translation>
+<translation id="5687424953196903465">Nelze spustit místní uzel Brave IPFS</translation>
+<translation id="6476061084931271248">Restartovat uzel k použití změn</translation>
+<translation id="3754226427671882382">Restartovat uzel</translation>
+<translation id="949667118776341807">Otáčení</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="724513921936768901">Tento název není platný</translation>
+<translation id="6758961763875471084">Upravit seznam peerů</translation>
+<translation id="1295874070797049002">Export klíče</translation>
+<translation id="3946479342297227860">Odstranění klíče</translation>
+<translation id="1534091531114892221">Nastavit popis IPFS peerů</translation>
 <translation id="8996633027318264334">Opravdu chcete odstranit <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Uzel není spuštěn</translation>
-<translation id="616058968889448209">Chyba spuštění služby IPFS, více informací je dostupných na <ph name="BEGIN_LINK"/>stránce diagnostiky<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">Chyba spuštění služby IPFS, více informací je dostupných na <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Import klíče '<ph name="KEY_NAME"/>' se nezdařil</translation>
+<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' export klíče se nezdařil</translation>
+<translation id="4993345308607970390">Resetovat peněženku Brave</translation>
+<translation id="5975930666279943472">Vymazat transakce peněženky a informace o nonce</translation>
+<translation id="5693968582510626466">Vymazání transakcí může být užitečné pro vývojáře nebo když mažete stav na místním serveru</translation>
+<translation id="6369495274982305511">Určitě chcete obnovit peněženku? Pokud vaše peněženka není zálohovaná, obnovení způsobí ztrátu všech údajů o účtu (včetně všech přidružených prostředků). Pro potvrzení napište „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
+<translation id="9216386092464743272">Určitě chcete obnovit všechny transakce peněženky a informace o nonce? Tuto možnost většinou používají vývojáři provozující místní testovací server. Pro potvrzení napište „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
+<translation id="3752403403443723332">Vaše peněženka byla resetována.</translation>
+<translation id="594766067816395072">Informace o transakcích vaší peněženky byly resetovány.</translation>
+<translation id="1426410128494586442">Ano</translation>
 <translation id="8275038454117074363">Nahrát</translation>
 <translation id="3654980960391973513">Generovat</translation>
-<translation id="5531501313997312487">Výchozí uzel</translation>
+<translation id="5531501313997312487">Spustit uzel</translation>
 <translation id="9170907049676078643">Metoda řešení prostředků IPFS</translation>
 <translation id="1327977588028644528">Brána</translation>
-<translation id="80225669816651290">Lokální uzel</translation>
+<translation id="1195880978080389104">Místní uzel Brave IPFS</translation>
 <translation id="4927734062756955434">Adresa veřejné brány IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Další informace<ph name="END_LINK_MPL"/> o ochraně osobních údajů místního uzlu IPFS a brány.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Další informace<ph name="END_LINK_MPL"/> o ochraně osobních údajů místního uzlu Brave IPFS a brány.</translation>
 <translation id="8425213833346101688">Změnit</translation>
 <translation id="557281710253742286">Nastavit bránu IFPS</translation>
 <translation id="8571837315037233299">Adresa brány</translation>
 <translation id="1251574393468476924">Maximální velikost mezipaměti IPFS (GB)</translation>
 <translation id="2503497578400410320">Mírný horní limit pro velikost úložiště dat protokolu IPFS.</translation>
 <translation id="7703184801853248830">Neplatná adresa brány</translation>
+<translation id="7690058578502751948">V systému Brave lze použít pouze platnou bránu IPFS s povolenou izolací Origin.</translation>
 <translation id="585868419599255817">Náhradní připojení pomocí veřejné brány IPFS</translation>
-<translation id="207763736230883589">Automaticky přejít zpět na veřejnou bránu IPFS, pokud nelze dosáhnout místního uzlu.</translation>
+<translation id="2618080188892567155">Automaticky přejít zpět na veřejnou bránu IPFS, pokud nelze dosáhnout místního uzlu Brave IPFS.</translation>
 <translation id="4107552920076294723">Přesměrujte prostředky IPFS na nakonfigurovanou bránu IPFS</translation>
 <translation id="6494857428933042381">Automaticky použije nakonfigurovanou bránu pro rozlišení IPFS, když je zjištěn prostředek brány IPFS.</translation>
 <translation id="8655170717758778983">Pokud je to možné, automaticky přesměrovávat na stránky využívající protokol IPFS prostřednictvím služby DNSLink</translation>
 <translation id="2233724520223030977">Když je to možné, automaticky používá službu DNSLink k přechodu na verzi webu využívající protokol IPFS</translation>
 <translation id="6554397389149987360">Používá komponentu Hangouts k umožnění sdílení obrazovek a dalších funkcí prohlížeče.</translation>
-<translation id="1765684547504191670">Využívá Media Router komponent umožňující Chromecast v prohlížeči.</translation>
+<translation id="7878791177459550035">Směrovač médií umožňuje funkci odesílání v prohlížeči.</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
 <translation id="7179921470347911571">Znovu spustit</translation>
 <translation id="8068526464562249859">Používá rozšíření IPFS Companion pro vylepšenou podporu IPFS v prohlížeči Brave, včetně přístupu k běžným úlohám IPFS z lišty prohlížeče.</translation>
@@ -277,23 +352,48 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="1391855377994926460">Procházejte web tak rychle i nadále – na hlavních zpravodajských webech až 6krát rychleji.</translation>
 <translation id="9218430445555521422">Nastavit jako výchozí</translation>
 <translation id="3479552764303398839">Teď ne</translation>
+<translation id="732814027519296280">Chcete pomoci vyhledávači Brave Search se ještě více zdokonalit?</translation>
+<translation id="2677865600861971449">Přihlaste se k projektu Web Discovery a anonymně přispějte některými údaji o vyhledávání a procházení a pomozte tak zlepšit výsledky vyhledávání Brave Search pro všechny. Zachování soukromí. A nulové nároky. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Zapnout</translation>
+<translation id="780301667611848630">Ne, děkuji</translation>
+<translation id="5039804452771397117">Povolit</translation>
+<translation id="7053983685419859001">Blokovat</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> byl neočekávaně ukončen.</translation>
+<translation id="1324417023773393937">Prohlížeč Brave</translation>
+<translation id="7276554663454265692"><ph name="SETTING_TEXT"/> můžete kdykoli změnit v nastavení prohlížeče.</translation>
+<translation id="6873781976650514089">Toto nastavení</translation>
 <translation id="6040143037577758943">Zavřít</translation>
 <translation id="5600566490506283344">Upozornění na reklamu Brave</translation>
+<translation id="4174337572777167894">Projekt Web Discovery</translation>
+<translation id="8659271182272561965">Přispějte anonymními údaji o vyhledávání a prohlížení ke zdokonalení služby Brave Search.</translation>
+<translation id="1516554614404600536">Popis Brave</translation>
 <translation id="4877147287319222750">Přidat na postranní panel</translation>
-<translation id="4233010476457917696">Zobrazit postranní lištu</translation>
 <translation id="5404213409401164238">Zobrazit postranní panel</translation>
 <translation id="7561196759112975576">Vždy</translation>
 <translation id="7060352228894039151">Po přejetí myší</translation>
-<translation id="407173827865827707">Při kliknutí</translation>
 <translation id="7961015016161918242">Nikdy</translation>
+<translation id="8981254605840444865">Zobrazit nastavení</translation>
 <translation id="59174027418879706">Povoleno</translation>
 <translation id="8258999165172757081">Přidáno</translation>
 <translation id="6959315322491671328">Kliknutím pravého tlačítka odstraníte</translation>
+<translation id="495046168593986294">Posunout nahoru</translation>
+<translation id="4021716437419160885">Posunout dolů</translation>
+<translation id="4651504163033753423">Chcete zapnout Speedreader?</translation>
+<translation id="9089090017461255038">Zapnout Speedreader</translation>
+<translation id="312393675740711187">Články se automaticky načítají v režimu čtečky, což vám šetří čas.</translation>
+<translation id="3234744217174488546">Zapnout/vypnout režim čtečky pouze pro tuto webovou stránku. Chcete-li vypnout Speedreader pro svůj celý profil prohlížeče, navštivte</translation>
+<translation id="8597690239474328831">Přepínání režimu čtení jen pro tuto webovou stránku</translation>
+<translation id="7839742507462737706">v Speedreader</translation>
+<translation id="8490082094734500369">Vypnutí režimu čtečky</translation>
+<translation id="2036503787657622020">Zapnutí režimu čtečky</translation>
+<translation id="5226458915125328323">Nastavení rychlého čtení</translation>
+<translation id="6284218950354553099">Automatické odesílání denního pingu do služby Brave</translation>
+<translation id="5288333155754958121">Tento anonymní, soukromý ping umožňuje společnosti Brave odhadnout počet aktivních uživatelů.</translation>
 <translation id="1872784258300710671">Brave používá zcela soukromé produktové analýzy pro odhad celkového využití určitých funkcí</translation>
 <translation id="8712637175834984815">Hotovo</translation>
 <translation id="4394049700291259645">Deaktivovat</translation>
-<translation id="6469509880167172749">Automaticky posílat zcela soukromé produktové analýzy společnosti Brave</translation>
-<translation id="7090566321964540749">Tyto anonymní informace prohlížeči Brave umožní pouze odhadnout celkové využití určitých funkcí.</translation>
+<translation id="7142548388914389999">Umožnit analýzu produktů se zachováním soukromí (P3A)</translation>
+<translation id="8286082624639565868">Tyto zcela anonymizované informace pomáhají společnosti Brave odhadnout celkové využití určitých funkcí a zdokonalovat je pro vás.</translation>
 <translation id="1947672064022327074">Chcete přidat kryptopeněženku pro podporu Etherea?</translation>
 <translation id="7583735190612229830">Pro vzájemné fungování s touto aplikací a dalšími podobnými si Nastavte peněženky Crypto.</translation>
 <translation id="8731422418734770661">Nastavte krypto peněženky</translation>
@@ -308,6 +408,24 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
         Můžete si sami přečíst <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>pokyny ke způsobu stahování a tvorby<ph name="END_LINK_BUILD_INSTRUCTIONS"/> specifického <ph name="BEGIN_LINK_SOURCE_CODE"/>zdrojového kódu používaného k vytváření této kopie<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Přidat do záložek všechny karty...</translation>
 <translation id="2336228925368920074">Přidat do záložek všechny karty...</translation>
+<translation id="4235920711083356755">Zobrazit tlačítko VPN</translation>
+<translation id="4070612712151038707">Zobrazit tlačítko VPN v panelu nástrojů</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Přepínání sítě VPN</translation>
+<translation id="3960619311638643872">VPN síť Brave</translation>
+<translation id="2345974803401546682">O VPN síti Brave</translation>
+<translation id="4378551569595875038">Connecting...</translation>
+<translation id="3368922792935385530">Připojeno</translation>
+<translation id="1536754031901697553">Odpojování...</translation>
+<translation id="8030169304546394654">Odpojeno</translation>
+<translation id="1863950594388384201">Zobrazit tlačítko VPN v panelu nástrojů</translation>
+<translation id="5187139277471084437">Skrýt tlačítko VPN v panelu nástrojů</translation>
+<translation id="8041089156583427627">Odeslat svůj názor</translation>
+<translation id="4049186905514157504">Spravovat můj plán</translation>
+<translation id="7570585565843385325">Zobrazit tlačítko VPN v panelu nástrojů</translation>
+<translation id="5310426188697803101">Skrýt tlačítko VPN v panelu nástrojů</translation>
+<translation id="945522503751344254">Odeslat zpětnou vazbu</translation>
+<translation id="3015685033234401792">Spravovat můj plán</translation>
 <translation id="796831669370432378">Chcete-li přidat záložku, klepněte na tlačítko záložky vedle adresního řádku</translation>
 <translation id="4989337484121655457">Vyžadován plný přístup k disku</translation>
 <translation id="8025559074845816210">Pro import záložek ze Safari potřebuje Brave plný přístup k disku.</translation>
@@ -317,6 +435,36 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="8487693399751278191">Importovat záložky ihned...</translation>
 <translation id="2557899542277210112">Pro rychlý přístup umístěte své záložky sem na lištu záložek.</translation>
 <translation id="2808630562319398131">Obnovit údaje o odměnách Brave Rewards...</translation>
-<translation id="1224064034972923114">Pomozte vylepšit Brave automatickým odesíláním zpráv o selhání</translation>
-<translation id="3738833060602717053">Pomozte vylepšit <ph name="PRODUCT_NAME"/> automatickým odesíláním zpráv o selhání</translation>
+<translation id="2273851479262317744">Nastavit Brave jako výchozí prohlížeč</translation>
+<translation id="8581710194025054669">Pokud chcete na internetu dosáhnout co nejvyššího soukromí, zvažte nastavení prohlížeče Brave jako výchozího prohlížeče v počítači. Pokud je Brave výchozím prohlížečem, každý webový odkaz, na který kliknete, se otevře s využitím ochrany soukromí Brave.</translation>
+<translation id="1968543937259008435">Jste připraveni na nejlepší ochranu soukromí online?</translation>
+<translation id="6817415381278637662">Nastavte si Brave jako výchozí prohlížet a získejte tak ochranu soukromí na všech stránkách, které navštívíte.</translation>
+<translation id="8722651357687610395">Nastavit Brave jako výchozí</translation>
+<translation id="2370739752330685659">Možná později</translation>
+<translation id="1241283133946520352">Sítě</translation>
+<translation id="8205945804087322170">Přidat novou síť</translation>
+<translation id="2156993118928861787">Neplatná adresa</translation>
+<translation id="2653659639078652383">Odeslat</translation>
+<translation id="2556708692502648323">Sítě peněženek</translation>
+<translation id="1330032157352961756">ID nového řetězce</translation>
+<translation id="3423620355610881890">Kladné desetinné číslo</translation>
+<translation id="726121047592132939">Název nového řetězce</translation>
+<translation id="1034112277864078119">Zadejte název řetězce</translation>
+<translation id="4672314527143443556">Název měny řetězce</translation>
+<translation id="4652114030688989556">Zadejte název měny</translation>
+<translation id="1079960017149736097">Symbol měny řetězce</translation>
+<translation id="1288105009659846362">Zadejte symbol měny</translation>
+<translation id="665660671251623018">Desetinná čísla měny řetězce</translation>
+<translation id="2978054488731497946">Zadejte desetinná místa měny</translation>
+<translation id="2727514928168763432">Adresy URL protokolu RPC</translation>
+<translation id="7059127752542505809">Zadejte adresu URL</translation>
+<translation id="3047726704186619366">URL adresy ikon</translation>
+<translation id="2487558607408469181">Blokování URL adres průzkumníka</translation>
+<translation id="6301398959353668507">Toto pole nesmí být prázdné.</translation>
+<translation id="7504462451153306677">Nesprávný formát, ID řetězce je kladné číslo</translation>
+<translation id="650071759190249039">Interní chyba, nelze přidat síť.</translation>
+<translation id="868529041590572443">Vyplňte všechny informace o domácí měně</translation>
+<translation id="1062463687579789365">Přizpůsobení sítí peněženek</translation>
+<translation id="2234108191702901162">Nelze přidat síť</translation>
+<translation id="2618193846561624884">Chcete aktualizovat stávající síť?</translation>
 </translationbundle>

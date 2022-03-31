@@ -5,6 +5,7 @@
 import welcomeReducer from '../../../brave_welcome_ui/reducers/welcome_reducer'
 import * as actions from '../../../brave_welcome_ui/actions/welcome_actions'
 import * as storage from '../../../brave_welcome_ui/storage'
+import { loadTimeData } from '../../../common/loadTimeData'
 import { types } from '../../../brave_welcome_ui/constants/welcome_types'
 import { mockSearchProviders, mockImportSources } from '../../testData'
 
@@ -22,10 +23,7 @@ describe('welcomeReducer', () => {
     })
     it('calls storage.load() when initial state is undefined', () => {
       const assertion = welcomeReducer(undefined, actions.closeTabRequested())
-      expect(assertion).toEqual({
-        searchProviders: [],
-        browserProfiles: []
-      })
+      expect(assertion).toEqual(storage.defaultState)
       expect(spy).toBeCalled()
       expect(spy.mock.calls[0][1]).toBe(undefined)
     })
@@ -124,11 +122,100 @@ describe('welcomeReducer', () => {
         type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
         payload: mockSearchProviders
       })
-      const expected = {
-        ...mockState,
-        searchProviders: mockSearchProviders
+      expect(result.searchProviders).toEqual(mockSearchProviders)
+    })
+
+    describe('with onboarding variables', () => {
+      const mockState = {
+        searchProviders: [],
+        browserProfiles: []
       }
-      expect(result).toEqual(expected)
+      const examplePayload = [
+        { name: 'Google', canBeRemoved: false },
+        { name: 'Brave Search beta', canBeRemoved: true }
+      ]
+      let countryString: string = 'US'
+      let showRewardsCard: boolean = true
+      // eslint-disable-next-line no-import-assign
+      loadTimeData = {
+        getString: (fieldName: string) => {
+          switch (fieldName) {
+            case 'countryString': return countryString
+          }
+          return undefined
+        },
+        getBoolean: (fieldName: string) => {
+          switch (fieldName) {
+            case 'showRewardsCard': return showRewardsCard
+          }
+          return undefined
+        }
+      }
+      let spy: jest.SpyInstance
+
+      beforeEach(() => {
+        spy = jest.spyOn(loadTimeData, 'getString')
+      })
+      afterEach(() => {
+        spy.mockRestore()
+      })
+
+      it('should get the country string', () => {
+        welcomeReducer(mockState, {
+          type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+          payload: examplePayload
+        })
+        expect(spy).toBeCalledWith('countryString')
+      })
+
+      describe('when user is in US/Canada/approved regions', () => {
+        it('should have the Brave engine', () => {
+          const result = welcomeReducer(mockState, {
+            type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+            payload: examplePayload
+          })
+          expect(result.searchProviders.length).toEqual(2)
+        })
+
+        it('should NOT show onboarding', () => {
+          const result = welcomeReducer(mockState, {
+            type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+            payload: examplePayload
+          })
+          expect(result.showSearchCard).toEqual(false)
+        })
+      })
+
+      describe('when user is NOT in US/Canada/approved regions', () => {
+        beforeEach(() => {
+          countryString = 'CN'
+        })
+        afterEach(() => {
+          countryString = 'US'
+        })
+
+        it('should show onboarding', () => {
+          const result = welcomeReducer(mockState, {
+            type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+            payload: [
+              { name: 'Google', canBeRemoved: true },
+              { name: 'Brave Search beta', canBeRemoved: true }
+            ]
+          })
+          expect(result.showSearchCard).toEqual(true)
+        })
+
+        it('should leave Brave in the list', () => {
+          const result = welcomeReducer(mockState, {
+            type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+            payload: [
+              { name: 'Google', canBeRemoved: true },
+              { name: 'Brave Search beta', canBeRemoved: true }
+            ]
+          })
+          expect(result.searchProviders.length).toEqual(2)
+        })
+      })
     })
   })
 

@@ -131,10 +131,10 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
 
     if (headerColor) {
       customStyle = {
-        border: 'none',
-        'border-bottom': `1px solid #696FDC`,
-        padding: '8px 0',
-        color: '#696FDC'
+        'border': 'none',
+        'border-bottom': '1px solid #696FDC',
+        'padding': '8px 0',
+        'color': '#696FDC'
       }
     }
 

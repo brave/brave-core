@@ -6,11 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SEARCH_ENGINES_SEARCH_ENGINES_PREF_NAMES_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SEARCH_ENGINES_SEARCH_ENGINES_PREF_NAMES_H_
 
-#include "../../../../components/search_engines/search_engines_pref_names.h"
+#include "src/components/search_engines/search_engines_pref_names.h"
 
 namespace prefs {
 
 extern const char kDefaultSearchProviderByExtension[];
+extern const char kAddOpenSearchEngines[];
+extern const char kBraveDefaultSearchVersion[];
 
 }  // namespace prefs
 

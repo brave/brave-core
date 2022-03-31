@@ -5,7 +5,9 @@
 
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_factory.h"
 
+#include "bat/ads/internal/ad_events/ad_event.h"
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_clicked.h"
+#include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_served.h"
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_viewed.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 
@@ -13,13 +15,17 @@ namespace ads {
 namespace new_tab_page_ads {
 
 std::unique_ptr<AdEvent<NewTabPageAdInfo>> AdEventFactory::Build(
-    const NewTabPageAdEventType event_type) {
+    const mojom::NewTabPageAdEventType event_type) {
   switch (event_type) {
-    case NewTabPageAdEventType::kViewed: {
+    case mojom::NewTabPageAdEventType::kServed: {
+      return std::make_unique<AdEventServed>();
+    }
+
+    case mojom::NewTabPageAdEventType::kViewed: {
       return std::make_unique<AdEventViewed>();
     }
 
-    case NewTabPageAdEventType::kClicked: {
+    case mojom::NewTabPageAdEventType::kClicked: {
       return std::make_unique<AdEventClicked>();
     }
   }

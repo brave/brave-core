@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView 
+        android:layout_width="match_parent"
+        app:cardBackgroundColor="@color/rewards_panel_bg_color"
+        android:layout_height="400dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <include
+                        android:id="@+id/brave_rewards_panel_notification_layout_id"
+                        layout="@layout/brave_rewards_panel_notification_layout" />
+
+                    <include
+                        android:id="@+id/brave_rewards_onboarding_modal_id"
+                        layout="@layout/brave_rewards_onboarding_modal"/>
+
+                    <include
+                        android:id="@+id/brave_rewards_onboarding_layout_id"
+                        layout="@layout/brave_rewards_onboarding_layout"/>
+
+                    <LinearLayout
+                        android:id="@+id/rewards_main_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.cardview.widget.CardView 
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp"
+                            android:layout_marginBottom="16dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="5dp">
+
+                            <include
+                                layout="@layout/wallet_balance_layout" />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <include
+                            android:id="@+id/brave_rewards_panel_tip_layout_id"
+                            layout="@layout/brave_rewards_panel_tip_layout" />
+
+                        <include
+                            layout="@layout/brave_rewards_panel_settings_layout" />
+
+                    </LinearLayout>
+
+                    <include
+                        android:id="@+id/brave_rewards_welcome_layout_id"
+                        layout="@layout/brave_rewards_welcome_layout"/>
+
+                </FrameLayout>
+
+            
+
+    </androidx.cardview.widget.CardView>
+
+</ScrollView>

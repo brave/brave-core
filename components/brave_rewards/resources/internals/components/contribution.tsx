@@ -38,6 +38,8 @@ const getProcessorString = (processor: number) => {
       return getLocale('processorBraveUserFunds')
     case 4:
       return getLocale('processorBitflyer')
+    case 5:
+      return getLocale('processorGemini')
   }
 
   return ''

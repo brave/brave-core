@@ -18,8 +18,7 @@ import PageWallet from './pageWallet'
 import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
 import TipBox from './tipsBox'
-import MonthlyContributionBox from './monthlyContributionBox'
-import QRBox from './qrBox'
+import MonthlyTipsBox from './monthlyTipsBox'
 import { SettingsOptInForm, RewardsTourModal, RewardsTourPromo } from '../../shared/components/onboarding'
 import { TourPromoWrapper } from './style'
 
@@ -28,7 +27,7 @@ import * as rewardsActions from '../actions/rewards_actions'
 import Promotion from './promotion'
 import { getLocale } from '../../../../common/locale'
 import { getActivePromos, getPromo, PromoType, Promo } from '../promos'
-import { upholdMinimumBalance } from '../../shared/lib/uphold'
+import { getWalletProviderName } from '../utils'
 
 interface Props extends Rewards.ComponentProps {
 }
@@ -68,14 +67,6 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    if (this.props.rewardsData.firstLoad === null) {
-      // First load ever
-      this.actions.onSettingSave('firstLoad', true, false)
-    } else if (this.props.rewardsData.firstLoad) {
-      // Second load ever
-      this.actions.onSettingSave('firstLoad', false, false)
-    }
-
     if (!this.props.rewardsData.initializing) {
       this.startRewards()
     }
@@ -123,32 +114,25 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   stopRewards () {
-    clearInterval(this.balanceTimerId)
+    window.clearInterval(this.balanceTimerId)
     this.balanceTimerId = -1
   }
 
   startRewards () {
-    if (this.props.rewardsData.firstLoad) {
-      this.actions.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear())
-      this.actions.getAdsData()
-      this.actions.getPendingContributions()
-      this.actions.getCountryCode()
-    } else {
-      // normal load
-      this.refreshActions()
-    }
+    this.refreshActions()
 
     this.actions.getRewardsParameters()
     this.actions.getContributionAmount()
     this.actions.getAutoContributeProperties()
     this.actions.getBalance()
-    this.balanceTimerId = setInterval(() => {
+    this.balanceTimerId = window.setInterval(() => {
       this.actions.getBalance()
     }, 60000)
 
     this.actions.fetchPromotions()
     this.actions.getExternalWallet()
     this.actions.getOnboardingStatus()
+    this.actions.getEnabledInlineTippingPlatforms()
 
     this.handleURL()
   }
@@ -226,60 +210,165 @@ class SettingsPage extends React.Component<Props, State> {
     const { externalWallet, ui } = this.props.rewardsData
     const walletType = externalWallet ? externalWallet.type : ''
 
-    if (ui.modalRedirect === 'show') {
-      return (
-        <ModalRedirect
-          id={'redirect-modal-show'}
-          titleText={getLocale('processingRequest')}
-          walletType={walletType}
-        />
-      )
+    switch (ui.modalRedirect) {
+      case 'deviceLimitReachedModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-device-limit-reached'}
+            errorText={[getLocale('redirectModalDeviceLimitReachedText')]}
+            titleText={getLocale('redirectModalDeviceLimitReachedTitle')}
+            learnMore={'https://support.brave.com/hc/en-us/articles/360056508071'}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'error':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-error'}
+            errorText={[getLocale('redirectModalError')]}
+            buttonText={getLocale('processingRequestButton')}
+            titleText={getLocale('processingRequest')}
+            walletType={walletType}
+            displayCloseButton={true}
+            onClick={this.onRedirectError}
+            onClose={this.actions.hideRedirectModal}
+          />
+        )
+      case 'flaggedWalletModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-flagged-wallet'}
+            errorText={[
+              getLocale('redirectModalFlaggedWalletText1'),
+              getLocale('redirectModalFlaggedWalletText2'),
+              getLocale('redirectModalFlaggedWalletText3'),
+              getLocale('redirectModalFlaggedWalletText4')]}
+            errorTextLink={'https://support.brave.com/hc/en-us/articles/4494596374925'}
+            titleText={getLocale('redirectModalFlaggedWalletTitle')}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'kycRequiredModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-id-verification-required'}
+            errorText={[getLocale('redirectModalKYCRequiredText').replace('$1', getWalletProviderName(externalWallet))]}
+            titleText={getLocale('redirectModalKYCRequiredTitle')}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'mismatchedProviderAccountsModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-mismatched-provider-accounts'}
+            errorText={[getLocale('redirectModalMismatchedProviderAccountsText').replace('$1', getWalletProviderName(externalWallet))]}
+            titleText={getLocale('redirectModalMismatchedProviderAccountsTitle')}
+            learnMore={'https://support.brave.com/hc/en-us/articles/360034841711-What-is-a-verified-wallet-'}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'regionNotSupportedModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-region-not-supported'}
+            errorText={[getLocale('redirectModalRegionNotSupportedText')]}
+            titleText={getLocale('redirectModalRegionNotSupportedTitle')}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'show':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-show'}
+            titleText={getLocale('processingRequest')}
+            walletType={walletType}
+          />
+        )
+      case 'upholdBATNotAllowedModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-uphold-bat-not-allowed'}
+            errorText={[getLocale('redirectModalUpholdBATNotAllowedText')]}
+            titleText={getLocale('redirectModalUpholdBATNotAllowedTitle')}
+            learnMore={'https://support.uphold.com/hc/en-us/articles/360033020351-Brave-BAT-and-US-availability'}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'upholdBlockedUserModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-uphold-blocked-user'}
+            errorText={[getLocale('redirectModalUpholdBlockedUserText')]}
+            titleText={getLocale('redirectModalUpholdBlockedUserTitle')}
+            learnMore={'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'upholdCustomerDueDiligenceRequiredModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-uphold-customer-due-diligence-required'}
+            errorText={[getLocale('redirectModalUpholdCustomerDueDiligenceRequiredText')]}
+            titleText={getLocale('redirectModalUpholdCustomerDueDiligenceRequiredTitle')}
+            learnMore={'https://wallet.uphold.com/customer-due-diligence'}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'upholdPendingUserModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-uphold-pending-user'}
+            errorText={[getLocale('redirectModalUpholdPendingUserText')]}
+            titleText={getLocale('redirectModalUpholdPendingUserTitle')}
+            learnMore={'https://support.uphold.com/hc/en-us/articles/206695986-How-do-I-sign-up-for-Uphold-Web-'}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'upholdRestrictedUserModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-uphold-restricted-user'}
+            errorText={[getLocale('redirectModalUpholdRestrictedUserText')]}
+            titleText={getLocale('redirectModalUpholdRestrictedUserTitle')}
+            learnMore={'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'walletOwnershipVerificationFailureModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-wallet-ownership-verification-failure'}
+            errorText={[getLocale('redirectModalWalletOwnershipVerificationFailureText').replace('$1', getWalletProviderName(externalWallet))]}
+            errorTextLink={'https://community.brave.com'}
+            titleText={getLocale('redirectModalWalletOwnershipVerificationFailureTitle')}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      default:
+        return null
     }
-
-    if (ui.modalRedirect === 'notAllowed') {
-      return (
-        <ModalRedirect
-          id={'redirect-modal-not-allowed'}
-          errorText={getLocale('redirectModalNotAllowed')}
-          titleText={getLocale('redirectModalErrorWallet')}
-          buttonText={getLocale('redirectModalClose')}
-          walletType={walletType}
-          onClick={this.actions.hideRedirectModal}
-        />
-      )
-    }
-
-    if (ui.modalRedirect === 'batLimit') {
-      // NOTE: The minimum BAT limit error is currently Uphold-specific
-      const text = getLocale('redirectModalBatLimitText')
-      return (
-        <ModalRedirect
-          id={'redirect-modal-bat-limit'}
-          titleText={getLocale('redirectModalBatLimitTitle')}
-          errorText={text.replace('$1', String(upholdMinimumBalance))}
-          buttonText={getLocale('redirectModalClose')}
-          walletType={walletType}
-          onClick={this.actions.hideRedirectModal}
-        />
-      )
-    }
-
-    if (ui.modalRedirect === 'error') {
-      return (
-        <ModalRedirect
-          id={'redirect-modal-error'}
-          errorText={getLocale('redirectModalError')}
-          buttonText={getLocale('processingRequestButton')}
-          titleText={getLocale('processingRequest')}
-          walletType={walletType}
-          displayCloseButton={true}
-          onClick={this.onRedirectError}
-          onClose={this.actions.hideRedirectModal}
-        />
-      )
-    }
-
-    return null
   }
 
   renderOnboardingPromo () {
@@ -353,14 +442,6 @@ class SettingsPage extends React.Component<Props, State> {
       parameters
     } = this.props.rewardsData
 
-    const externalWalletType = externalWallet ? externalWallet.type : ''
-
-    // Hide AC options in rewards onboarding for bitFlyer-associated regions.
-    let { autoContributeChoices } = parameters
-    if (externalWalletType === 'bitflyer') {
-      autoContributeChoices = []
-    }
-
     const onDone = () => {
       this.setState({ showRewardsTour: false, firstTimeSetup: false })
     }
@@ -385,8 +466,8 @@ class SettingsPage extends React.Component<Props, State> {
         firstTimeSetup={this.state.firstTimeSetup}
         adsPerHour={adsData.adsPerHour}
         autoContributeAmount={contributionMonthly}
-        autoContributeAmountOptions={autoContributeChoices}
-        externalWalletProvider={externalWalletType}
+        autoContributeAmountOptions={parameters.autoContributeChoices}
+        externalWalletProvider={externalWallet ? externalWallet.type : ''}
         onAdsPerHourChanged={onAdsPerHourChanged}
         onAutoContributeAmountChanged={onAcAmountChanged}
         onVerifyWalletClick={onVerifyClick}
@@ -421,11 +502,10 @@ class SettingsPage extends React.Component<Props, State> {
           onTOSClick={this.openTOS}
           onPrivacyClick={this.openPrivacyPolicy}
         />
-        <QRBox />
         <AdsBox />
         <ContributeBox />
-        <MonthlyContributionBox />
         <TipBox />
+        <MonthlyTipsBox />
       </>
     )
   }
@@ -440,7 +520,7 @@ class SettingsPage extends React.Component<Props, State> {
           </Column>
           <Column size={1} customStyle={{ flexDirection: 'column' }}>
             {this.getPromotionsClaims()}
-            <PageWallet />
+            <PageWallet showManageWalletButton={true} />
             {this.renderPromos()}
           </Column>
         </Grid>

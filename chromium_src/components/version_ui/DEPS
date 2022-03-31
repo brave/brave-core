@@ -1,4 +1,0 @@
-include_rules = [
-  "+../../../../components/version_ui",
-  "+components/version_ui",
-]

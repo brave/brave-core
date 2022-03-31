@@ -6,7 +6,7 @@
 #include "components/update_client/update_client.h"
 
 #define UpdateClientFactory UpdateClientFactory_ChromiumImpl
-#include "../../../../components/update_client/update_client.cc"
+#include "src/components/update_client/update_client.cc"
 #undef UpdateClientFactory
 
 #include "base/logging.h"

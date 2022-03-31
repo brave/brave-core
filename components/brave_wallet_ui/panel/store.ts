@@ -4,12 +4,27 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
 
 import reducers from './reducers'
 import walletPanelAsyncHandler from './async/wallet_panel_async_handler'
-import walletAsyncHandler from '../common/async/wallet_async_handler'
+import walletAsyncHandler from '../common/async/handlers'
+import getWalletPanelApiProxy from './wallet_panel_api_proxy'
 
-export default createStore(
+const middlewares = [
+  thunk,
+  walletAsyncHandler,
+  walletPanelAsyncHandler
+]
+
+const store = createStore(
     reducers,
-    applyMiddleware(walletAsyncHandler, walletPanelAsyncHandler)
+    applyMiddleware(...middlewares)
 )
+
+getWalletPanelApiProxy().addJsonRpcServiceObserver(store)
+getWalletPanelApiProxy().addKeyringServiceObserver(store)
+getWalletPanelApiProxy().addTxServiceObserver(store)
+getWalletPanelApiProxy().addBraveWalletServiceObserver(store)
+
+export default store

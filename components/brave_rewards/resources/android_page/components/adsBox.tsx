@@ -17,9 +17,7 @@ import {
   StyledTotalContent
 } from './style'
 
-import { MoneyBagIcon } from '../../shared/components/icons/money_bag'
-import { formatMessage } from '../../shared/lib/locale_context'
-import { getDaysUntilRewardsPayment } from '../../shared/lib/pending_rewards'
+import { PaymentStatusView } from '../../shared/components/payment_status_view'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -107,7 +105,7 @@ class AdsBox extends React.Component<Props, {}> {
     const subdivisionMap = new Map(subdivisions)
     const subdivision = subdivisionMap.get(automaticallyDetectedAdsSubdivisionTargeting) as string
     if (subdivision !== '' && adsSubdivisionTargeting === 'AUTO') {
-      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetectedAs', { adsSubdivisionTarget : subdivision })])
+      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetectedAs', { adsSubdivisionTarget: subdivision })])
     } else {
       subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetect')])
     }
@@ -156,8 +154,8 @@ class AdsBox extends React.Component<Props, {}> {
             </Select>
           </ControlWrapper>
         </Column>
-        { shouldAllowAdsSubdivisionTargeting ?
-          <>
+        { shouldAllowAdsSubdivisionTargeting
+          ? <>
             <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
               <ControlWrapper text={getLocale('adsSubdivisionTargetingTitle')}>
                 <Select
@@ -165,7 +163,7 @@ class AdsBox extends React.Component<Props, {}> {
                   onChange={this.onAdsSettingChange.bind(this, 'adsSubdivisionTargeting')}
                 >
                   {
-                    this.getAdsSubdivisions().map((subdivision: Array<String>) => {
+                    this.getAdsSubdivisions().map((subdivision: String[]) => {
                       return (
                         <div key={`${subdivision[0]}`} data-value={subdivision[0]}>
                           {`${subdivision[1]}`}
@@ -193,9 +191,11 @@ class AdsBox extends React.Component<Props, {}> {
     let adsReceivedThisMonth = 0
     let earningsThisMonth = 0
     let earningsLastMonth = 0
+    let adEarningsReceived = false
 
     const {
       adsData,
+      balanceReport,
       safetyNetFailed,
       parameters
     } = this.props.rewardsData
@@ -208,6 +208,10 @@ class AdsBox extends React.Component<Props, {}> {
       adsReceivedThisMonth = adsData.adsReceivedThisMonth || 0
       earningsThisMonth = adsData.adsEarningsThisMonth || 0
       earningsLastMonth = adsData.adsEarningsLastMonth || 0
+    }
+
+    if (balanceReport) {
+      adEarningsReceived = Number(balanceReport.ads || 0) > 0
     }
 
     // disabled / alert state
@@ -235,34 +239,29 @@ class AdsBox extends React.Component<Props, {}> {
     }
 
     const tokenString = getLocale('tokens')
-    const estimatedPendingDays = getDaysUntilRewardsPayment(nextPaymentDate)
 
     return (
       <BoxMobile
         title={getLocale('adsTitle')}
         type={'ads'}
-        description={getLocale('adsDesc', { currency : tokenString })}
+        description={getLocale('adsDesc', { currency: tokenString })}
         settingsChild={this.adsSettings(adsEnabled)}
         {...boxPropsExtra}
       >
-        {
-          earningsLastMonth > 0 && estimatedPendingDays &&
-            <StyledArrivingSoon>
-              <MoneyBagIcon />
-              {
-                formatMessage(getLocale('pendingRewardsMessage'), [
-                  <span className='amount' key='amount'>
-                    +{earningsLastMonth} BAT
-                  </span>,
-                  estimatedPendingDays
-                ])
-              }
-            </StyledArrivingSoon>
-        }
+        <StyledArrivingSoon>
+          <PaymentStatusView
+            earningsLastMonth={earningsLastMonth}
+            earningsReceived={adEarningsReceived}
+            nextPaymentDate={nextPaymentDate}
+          />
+        </StyledArrivingSoon>
         <List title={<StyledListContent>{getLocale('adsCurrentEarnings')}</StyledListContent>}>
           <StyledTotalContent>
             <Tokens
-              value={earningsThisMonth.toFixed(3)}
+              value={new Intl.NumberFormat(undefined, {
+                minimumFractionDigits: 3,
+                maximumFractionDigits: 3
+              }).format(earningsThisMonth)}
               converted={utils.convertBalance(earningsThisMonth, parameters.rate)}
             />
           </StyledTotalContent>

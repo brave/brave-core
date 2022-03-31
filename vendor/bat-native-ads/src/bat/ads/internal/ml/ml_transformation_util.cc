@@ -5,35 +5,36 @@
 
 #include "bat/ads/internal/ml/ml_transformation_util.h"
 
-#include <algorithm>
-#include <cmath>
-#include <limits>
 #include <memory>
 
 #include "base/notreached.h"
+#include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
+#include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
+#include "bat/ads/internal/ml/transformation/normalization_transformation.h"
+#include "bat/ads/internal/ml/transformation/transformation.h"
 
 namespace ads {
 namespace ml {
 
-// The function should always return unique_ptr to transformation copy
+// The function should always return unique_ptr to transformation copy.
 // NOTREACHED() is used to protect from handling unknown transformation types
 TransformationPtr GetTransformationCopy(
     const TransformationPtr& transformation_ptr) {
   switch (transformation_ptr->GetType()) {
-    case TransformationType::LOWERCASE: {
+    case TransformationType::kLowercase: {
       LowercaseTransformation* lowercase_ptr =
           static_cast<LowercaseTransformation*>(transformation_ptr.get());
       LowercaseTransformation lowercase_copy = *lowercase_ptr;
       return std::make_unique<LowercaseTransformation>(lowercase_copy);
     }
-    case TransformationType::HASHED_NGRAMS: {
+    case TransformationType::kHashedNGrams: {
       HashedNGramsTransformation* hashed_n_grams_ptr =
           static_cast<HashedNGramsTransformation*>(transformation_ptr.get());
       HashedNGramsTransformation hashed_n_grams_ptr_copy = *hashed_n_grams_ptr;
       return std::make_unique<HashedNGramsTransformation>(
           hashed_n_grams_ptr_copy);
     }
-    case TransformationType::NORMALIZATION: {
+    case TransformationType::kNormalization: {
       NormalizationTransformation* normalization_ptr =
           static_cast<NormalizationTransformation*>(transformation_ptr.get());
       NormalizationTransformation normalization_copy = *normalization_ptr;

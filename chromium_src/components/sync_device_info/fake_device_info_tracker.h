@@ -16,7 +16,7 @@
       const override;                                                        \
   void ForcePulseForTest
 
-#include "../../../../components/sync_device_info/fake_device_info_tracker.h"
+#include "src/components/sync_device_info/fake_device_info_tracker.h"
 
 #undef ForcePulseForTest
 

@@ -13,10 +13,10 @@ import sys
 try:
     from urllib2 import URLError
 except ImportError:  # For Py3 compatibility
-    from urllib.error import URLError
+    from urllib.error import URLError # pylint: disable=no-name-in-module,import-error
 
 import deps
-from rust_deps_config import RUST_DEPS_PACKAGES_URL, RUST_DEPS_PACKAGE_VERSION
+from deps_config import DEPS_PACKAGES_URL, RUST_DEPS_PACKAGE_VERSION
 
 BRAVE_CORE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -42,7 +42,7 @@ def get_url(platform):
         print('Exiting.')
         sys.exit(1)
 
-    return RUST_DEPS_PACKAGES_URL + "/" + filename
+    return DEPS_PACKAGES_URL + "/rust-deps/" + filename
 
 
 def should_download():
@@ -140,19 +140,26 @@ def cargo_install(tool):
     env['CARGO_HOME'] = RUSTUP_HOME
 
     rustup_bin = os.path.abspath(os.path.join(RUSTUP_HOME, 'bin'))
-    cargo_bin = os.path.join(rustup_bin, "cargo" if sys.platform != "win32" else "cargo.exe")
+    cargo_bin = os.path.join(
+        rustup_bin, "cargo" if sys.platform != "win32" else "cargo.exe")
 
     # Install the tool
     cargo_args = []
     cargo_args.append(cargo_bin)
     cargo_args.append("install")
     cargo_args.append(tool["name"])
+    if "path" in tool:
+        cargo_args.append("--path")
+        cargo_args.append(tool["path"])
+        cargo_args.append("--target-dir")
+        cargo_args.append(os.path.join(RUSTUP_HOME, ".build"))
     if "version" in tool:
         cargo_args.append("--version")
         cargo_args.append(tool["version"])
     if "features" in tool:
         cargo_args.append("--features")
         cargo_args.append(tool["features"])
+    cargo_args.append("--locked")
 
     try:
         subprocess.check_call(cargo_args, env=env)
@@ -172,10 +179,24 @@ def main():
     if args.platform == 'android':
         make_standalone_toolchain_for_android()
 
+    cxx_path = os.path.abspath(
+        os.path.join(BRAVE_CORE_ROOT, '..', 'third_party', 'rust', 'cxx', 'v1'))
+
+    with open(os.path.join(cxx_path, "README.chromium")) as readme_file:
+        _VERSION_PREFIX = "Version: "
+        for line in readme_file:
+            if not line.startswith(_VERSION_PREFIX):
+                continue
+            cxx_version = line[len(_VERSION_PREFIX):].strip()
+
     tools = [
         {
             "name": "cbindgen",
             "version": "0.14.2",
+        },
+        {
+            "name": "cxxbridge-cmd",
+            "version": cxx_version,
         },
         {
             "name": "cargo-audit",

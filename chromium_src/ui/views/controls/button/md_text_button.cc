@@ -5,6 +5,8 @@
 
 #include "ui/views/controls/button/md_text_button.h"
 
+#include "ui/color/color_id.h"
+#include "ui/color/color_provider.h"
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view_class_properties.h"
 
@@ -12,7 +14,7 @@
 #define BRAVE_MD_TEXT_BUTTON_UPDATE_COLORS UpdateColorsForBrave();
 
 #define MdTextButton MdTextButtonBase
-#include "../../../../../../ui/views/controls/button/md_text_button.cc"
+#include "src/ui/views/controls/button/md_text_button.cc"
 #undef MdTextButton
 
 namespace {
@@ -23,12 +25,13 @@ class BraveTextButtonHighlightPathGenerator
     : public views::HighlightPathGenerator {
  public:
   BraveTextButtonHighlightPathGenerator() = default;
+  BraveTextButtonHighlightPathGenerator(
+      const BraveTextButtonHighlightPathGenerator&) = delete;
+  BraveTextButtonHighlightPathGenerator& operator=(
+      const BraveTextButtonHighlightPathGenerator&) = delete;
 
   // HighlightPathGenerator
   SkPath GetHighlightPath(const views::View* view) override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveTextButtonHighlightPathGenerator);
 };
 
 }  // namespace
@@ -53,8 +56,7 @@ void MdTextButtonBase::UpdateColorsForBrave() {
     // First, get the same background fill color that MdTextButtonBase does.
     // It is undfortunate to copy these lines almost as-is. Consider otherwise
     // patching it in via a #define.
-    SkColor bg_color =
-        theme->GetSystemColor(ui::NativeTheme::kColorId_DialogBackground);
+    SkColor bg_color = GetColorProvider()->GetColor(ui::kColorDialogBackground);
     if (GetBgColorOverride()) {
       bg_color = *GetBgColorOverride();
     }
@@ -76,6 +78,19 @@ MdTextButton::MdTextButton(PressedCallback callback,
   SetCornerRadius(100);
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveTextButtonHighlightPathGenerator>());
+  auto* ink_drop = views::InkDrop::Get(this);
+  views::InkDrop::UseInkDropForFloodFillRipple(ink_drop,
+                                               /*highlight_on_hover=*/false,
+                                               /*highlight_on_focus=*/true);
+  ink_drop->SetCreateHighlightCallback(base::BindRepeating(
+      [](Button* host) {
+        const SkColor fill_color = SK_ColorTRANSPARENT;
+        gfx::RectF boundsF(host->GetLocalBounds());
+        return std::make_unique<InkDropHighlight>(
+            boundsF.size(), static_cast<MdTextButton*>(host)->GetCornerRadius(),
+            boundsF.CenterPoint(), fill_color);
+      },
+      this));
 }
 
 MdTextButton::~MdTextButton() = default;
@@ -105,26 +120,6 @@ void MdTextButton::OnPaintBackground(gfx::Canvas* canvas) {
     canvas->DrawRoundRect(gfx::RectF(GetLocalBounds()), GetCornerRadius(),
                           flags);
   }
-}
-
-std::unique_ptr<InkDrop> MdTextButton::CreateInkDrop() {
-  // We don't need a highlight on hover, the hover color
-  // is handled by the OnPaintBackground and brave-style doesn't
-  // have a shadow. Plus, it's very difficult (impossible?) to create
-  // a drop-shadow when clipping the ink drop to the rounded button.
-  std::unique_ptr<InkDrop> ink_drop = InkDropHostView::CreateInkDrop();
-  ink_drop->SetShowHighlightOnFocus(true);
-  ink_drop->SetShowHighlightOnHover(false);
-  return ink_drop;
-}
-
-std::unique_ptr<views::InkDropHighlight> MdTextButton::CreateInkDropHighlight()
-    const {
-  // Blank ink drop highlight, not needed
-  const SkColor fill_color = SK_ColorTRANSPARENT;
-  gfx::RectF boundsF(GetLocalBounds());
-  return std::make_unique<InkDropHighlight>(boundsF.size(), GetCornerRadius(),
-                                            boundsF.CenterPoint(), fill_color);
 }
 
 }  // namespace views

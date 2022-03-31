@@ -8,7 +8,7 @@
 
 namespace features {
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 //  Flag for Brave Rewards.
 #if defined(ARCH_CPU_X86_FAMILY) && defined(OFFICIAL_BUILD)
 const base::Feature kBraveRewards{"BraveRewards",
@@ -17,6 +17,6 @@ const base::Feature kBraveRewards{"BraveRewards",
 const base::Feature kBraveRewards{"BraveRewards",
                                   base::FEATURE_ENABLED_BY_DEFAULT};
 #endif
-#endif  // defined(OS_ANDROID)
+#endif  // BUILDFLAG(IS_ANDROID)
 
 }  // namespace features

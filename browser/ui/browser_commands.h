@@ -14,9 +14,14 @@ void NewOffTheRecordWindowTor(Browser*);
 void NewTorConnectionForSite(Browser*);
 void AddNewProfile();
 void OpenGuestProfile();
-void ToggleSpeedreader(Browser* browser);
 void ShowWalletBubble(Browser* browser);
+void ShowApproveWalletBubble(Browser* browser);
 void CloseWalletBubble(Browser* browser);
+void MaybeDistillAndShowSpeedreaderBubble(Browser* browser);
+void ShowBraveVPNBubble(Browser* browser);
+void ToggleBraveVPNButton(Browser* browser);
+void OpenBraveVPNUrls(Browser* browser, int command_id);
+void OpenIpfsFilesWebUI(Browser* browser);
 
 }  // namespace brave
 

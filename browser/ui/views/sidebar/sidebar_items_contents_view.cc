@@ -25,13 +25,20 @@
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/views/event_utils.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/default_style.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
+#include "ui/base/window_open_disposition.h"
+#include "ui/compositor/compositor.h"
+#include "ui/events/event.h"
+#include "ui/gfx/canvas.h"
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/gfx/vector_icon_types.h"
 #include "ui/views/background.h"
 #include "ui/views/controls/menu/menu_runner.h"
 #include "ui/views/controls/separator.h"
@@ -78,13 +85,19 @@ gfx::Size SidebarItemsContentsView::CalculatePreferredSize() const {
   if (children().empty())
     return {0, 0};
   const gfx::Size child_size = children()[0]->GetPreferredSize();
-  return {child_size.width() + GetInsets().width(),
-          children().size() * child_size.height() + GetInsets().height()};
+  return gfx::Size(
+      child_size.width() + GetInsets().width(),
+      children().size() * child_size.height() + GetInsets().height());
 }
 
 void SidebarItemsContentsView::OnThemeChanged() {
   View::OnThemeChanged();
 
+  // BuiltIn items use different icon set based on theme.
+  UpdateAllBuiltInItemsViewState();
+}
+
+void SidebarItemsContentsView::Update() {
   UpdateAllBuiltInItemsViewState();
 }
 
@@ -94,13 +107,25 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
   if (children().size() != items.size())
     return;
 
-  // BuiltIn items different colored images depends on theme.
   const int active_index = sidebar_model_->active_index();
-  int index = 0;
-  for (const auto& item : items) {
-    if (sidebar::IsBuiltInType(item))
-      UpdateItemViewStateAt(index, index == active_index);
-    index++;
+  const int items_num = items.size();
+  for (int item_index = 0; item_index < items_num; ++item_index) {
+    const auto item = items[item_index];
+    if (!sidebar::IsBuiltInType(item))
+      continue;
+
+    // If browser window has tab that loads brave talk, brave talk panel icon
+    // will use colored one for normal state also.
+    if (item.built_in_item_type ==
+        sidebar::SidebarItem::BuiltInItemType::kBraveTalk) {
+      UpdateItemViewStateAt(
+          item_index,
+          browser_->sidebar_controller()->DoesBrowserHaveOpenedTabForItem(
+              item));
+      continue;
+    }
+
+    UpdateItemViewStateAt(item_index, item_index == active_index);
   }
 }
 
@@ -197,8 +222,10 @@ void SidebarItemsContentsView::OnItemMoved(const sidebar::SidebarItem& item,
 void SidebarItemsContentsView::AddItemView(const sidebar::SidebarItem& item,
                                            int index,
                                            bool user_gesture) {
-  auto* item_view =
-      AddChildViewAt(std::make_unique<SidebarItemView>(this), index);
+  auto* item_view = AddChildViewAt(
+      std::make_unique<SidebarItemView>(
+          this, sidebar_model_->GetAllSidebarItems()[index].title),
+      index);
   item_view->set_context_menu_controller(this);
   item_view->set_paint_background_on_hovered(true);
   item_view->SetCallback(
@@ -351,17 +378,18 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(int index, bool active) {
     item_view->set_draw_highlight(active);
 
   if (sidebar::IsBuiltInType(item)) {
-    const GURL& url = item.url;
-    item_view->SetImage(views::Button::STATE_NORMAL,
-                        GetImageForBuiltInItems(url, active));
+    item_view->SetImage(
+        views::Button::STATE_NORMAL,
+        GetImageForBuiltInItems(item.built_in_item_type, active));
     item_view->SetImage(views::Button::STATE_HOVERED,
-                        GetImageForBuiltInItems(url, true));
+                        GetImageForBuiltInItems(item.built_in_item_type, true));
     item_view->SetImage(views::Button::STATE_PRESSED,
-                        GetImageForBuiltInItems(url, true));
+                        GetImageForBuiltInItems(item.built_in_item_type, true));
   }
 }
 
-void SidebarItemsContentsView::OnItemPressed(const views::View* item) {
+void SidebarItemsContentsView::OnItemPressed(const views::View* item,
+                                             const ui::Event& event) {
   auto* controller = browser_->sidebar_controller();
   const int index = GetIndexOf(item);
   if (controller->IsActiveIndex(index)) {
@@ -371,44 +399,56 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item) {
     return;
   }
 
-  controller->ActivateItemAt(index);
+  WindowOpenDisposition open_disposition = WindowOpenDisposition::CURRENT_TAB;
+  if (event_utils::IsPossibleDispositionEvent(event))
+    open_disposition = ui::DispositionFromEventFlags(event.flags());
+
+  controller->ActivateItemAt(index, open_disposition);
 }
 
 gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
-    const GURL& item_url,
+    sidebar::SidebarItem::BuiltInItemType type,
     bool focused) const {
   SkColor base_button_color = SK_ColorWHITE;
   if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
     base_button_color = theme_provider->GetColor(
         BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE);
   }
+  constexpr int kBuiltInIconSize = 16;
+  int focused_image_resource = -1;
+  const gfx::VectorIcon* normal_image_icon = nullptr;
   auto& bundle = ui::ResourceBundle::GetSharedInstance();
-  if (item_url == GURL("chrome://wallet/")) {
-    if (focused)
-      return *bundle.GetImageSkiaNamed(IDR_SIDEBAR_CRYPTO_WALLET_FOCUSED);
-    return gfx::CreateVectorIcon(kSidebarCryptoWalletIcon, base_button_color);
+  switch (type) {
+    case sidebar::SidebarItem::BuiltInItemType::kWallet:
+      focused_image_resource = IDR_SIDEBAR_CRYPTO_WALLET_FOCUSED;
+      normal_image_icon = &kSidebarCryptoWalletIcon;
+      break;
+    case sidebar::SidebarItem::BuiltInItemType::kBraveTalk:
+      focused_image_resource = IDR_SIDEBAR_BRAVE_TALK_FOCUSED;
+      normal_image_icon = &kSidebarBraveTalkIcon;
+      break;
+    case sidebar::SidebarItem::BuiltInItemType::kBookmarks:
+      focused_image_resource = IDR_SIDEBAR_BOOKMARKS_FOCUSED;
+      normal_image_icon = &kSidebarBookmarksIcon;
+      break;
+    case sidebar::SidebarItem::BuiltInItemType::kHistory:
+      focused_image_resource = IDR_SIDEBAR_HISTORY_FOCUSED;
+      normal_image_icon = &kSidebarHistoryIcon;
+      break;
+    default:
+      NOTREACHED();
+      return gfx::ImageSkia();
   }
 
-  if (item_url == GURL("https://together.brave.com/")) {
-    if (focused)
-      return *bundle.GetImageSkiaNamed(IDR_SIDEBAR_BRAVE_TOGETHER_FOCUSED);
-    return gfx::CreateVectorIcon(kSidebarBraveTogetherIcon, base_button_color);
+  if (focused) {
+    return gfx::ImageSkiaOperations::CreateResizedImage(
+        *bundle.GetImageSkiaNamed(focused_image_resource),
+        skia::ImageOperations::RESIZE_BEST,
+        gfx::Size{kBuiltInIconSize, kBuiltInIconSize});
   }
 
-  if (item_url == GURL("chrome://bookmarks/")) {
-    if (focused)
-      return *bundle.GetImageSkiaNamed(IDR_SIDEBAR_BOOKMARKS_FOCUSED);
-    return gfx::CreateVectorIcon(kSidebarBookmarksIcon, base_button_color);
-  }
-
-  if (item_url == GURL("chrome://history/")) {
-    if (focused)
-      return *bundle.GetImageSkiaNamed(IDR_SIDEBAR_HISTORY_FOCUSED);
-    return gfx::CreateVectorIcon(kSidebarHistoryIcon, base_button_color);
-  }
-
-  NOTREACHED();
-  return gfx::ImageSkia();
+  return gfx::CreateVectorIcon(*normal_image_icon, kBuiltInIconSize,
+                               base_button_color);
 }
 
 void SidebarItemsContentsView::OnWidgetDestroying(views::Widget* widget) {
@@ -424,3 +464,6 @@ bool SidebarItemsContentsView::IsBubbleVisible() const {
 
   return false;
 }
+
+BEGIN_METADATA(SidebarItemsContentsView, views::View)
+END_METADATA

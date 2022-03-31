@@ -13,9 +13,11 @@ namespace extensions {
 class BraveExtensionsBrowserClientImpl : public ChromeExtensionsBrowserClient {
  public:
   BraveExtensionsBrowserClientImpl();
+  BraveExtensionsBrowserClientImpl(const BraveExtensionsBrowserClientImpl&) =
+      delete;
+  BraveExtensionsBrowserClientImpl& operator=(
+      const BraveExtensionsBrowserClientImpl&) = delete;
   ~BraveExtensionsBrowserClientImpl() override = default;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveExtensionsBrowserClientImpl);
 };
 
 }  // namespace extensions

@@ -1,0 +1,77 @@
+<html>
+
+<script>
+  var permissionGranted = false
+  window.ethereum.enable().then(accounts => {
+      permissionGranted = true
+  }).catch(error => {
+      permissionGranted = false
+  })
+
+  function getPermissionGranted() {
+    window.domAutomationController.send(permissionGranted)
+  }
+
+  var signMessageResult
+  function signMessage(address, message) {
+    window.ethereum.request({
+      method: 'eth_sign',
+      params: [address, message]
+    }).then(result => {
+      signMessageResult = result
+    }).catch(error => {
+      signMessageResult = error.message
+    })
+  }
+
+  function signMessageViaSend(address, message) {
+    window.ethereum.send({
+      id: '1',
+      method: 'eth_sign',
+      params: [address, message]
+    }, (err, result) => {
+      if (err && err.error) {
+        signMessageResult = err.error.message
+        return
+      }
+      if (result && result.result) {
+        signMessageResult = result.result
+      }
+    })
+  }
+
+  function signMessageViaSend2(address, message) {
+    window.ethereum.send('eth_sign', [address, message]).then(result => {
+      signMessageResult = result.result
+    }).catch(error => {
+      signMessageResult = error.error.message
+    })
+  }
+
+  function signMessageViaSendAsync(address, message) {
+    window.ethereum.sendAsync({
+      id: '1',
+      method: 'eth_sign',
+      params: [address, message]
+    }, (err, result) => {
+      if (err && err.error) {
+        signMessageResult = err.error.message
+        return
+      }
+      if (result && result.result) {
+        signMessageResult = result.result
+      }
+    })
+  }
+
+  function getSignMessageResult() {
+    window.domAutomationController.send(signMessageResult)
+    // Reset signMessageResult
+    signMessageResult = undefined
+  }
+</script>
+
+<body>
+</body>
+</html>
+

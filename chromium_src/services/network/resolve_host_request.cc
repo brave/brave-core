@@ -9,5 +9,5 @@
         internal_request_->GetTextResults().value()); \
   }
 
-#include "../../../../services/network/resolve_host_request.cc"
+#include "src/services/network/resolve_host_request.cc"
 #undef BRAVE_START

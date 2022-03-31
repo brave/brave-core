@@ -13,7 +13,7 @@ namespace ads {
 namespace p2a {
 
 void RecordEvent(const std::string& name,
-                 const std::vector<std::string>& value);
+                 const std::vector<std::string>& questions);
 
 }  // namespace p2a
 }  // namespace ads

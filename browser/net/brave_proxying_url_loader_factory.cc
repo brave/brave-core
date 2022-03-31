@@ -14,6 +14,7 @@
 #include "base/task/post_task.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/components/brave_shields/browser/adblock_stub_response.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -29,6 +30,7 @@
 #include "net/url_request/url_request.h"
 #include "services/network/public/cpp/features.h"
 #include "services/network/public/cpp/parsed_headers.h"
+#include "services/network/public/mojom/early_hints.mojom.h"
 #include "url/origin.h"
 
 namespace {
@@ -58,7 +60,7 @@ net::RedirectInfo CreateRedirectInfo(
     const network::ResourceRequest& original_request,
     const GURL& new_url,
     int response_code,
-    const base::Optional<std::string>& referrer_policy_header) {
+    const absl::optional<std::string>& referrer_policy_header) {
   // Workaround for a bug in Chromium (crbug.com/1097681).
   // download_utils.cc do not set update_first_party_url_on_redirect to true
   // for new ResourceRequests, but we can mitigate it by looking at
@@ -175,7 +177,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::FollowRedirect(
     const std::vector<std::string>& removed_headers,
     const net::HttpRequestHeaders& modified_headers,
     const net::HttpRequestHeaders& modified_cors_exempt_headers,
-    const base::Optional<GURL>& new_url) {
+    const absl::optional<GURL>& new_url) {
   if (new_url)
     request_.url = new_url.value();
 
@@ -220,8 +222,10 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveEarlyHints(
     network::mojom::EarlyHintsPtr early_hints) {}
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveResponse(
-    network::mojom::URLResponseHeadPtr head) {
-  current_response_ = std::move(head);
+    network::mojom::URLResponseHeadPtr head,
+    mojo::ScopedDataPipeConsumerHandle body) {
+  current_response_head_ = std::move(head);
+  current_response_body_ = std::move(body);
   ctx_->internal_redirect = false;
   HandleResponseOrRedirectHeaders(
       base::BindRepeating(&InProgressRequest::ContinueToResponseStarted,
@@ -231,7 +235,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveResponse(
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveRedirect(
     const net::RedirectInfo& redirect_info,
     network::mojom::URLResponseHeadPtr head) {
-  current_response_ = std::move(head);
+  current_response_head_ = std::move(head);
   DCHECK(ctx_);
   ctx_->internal_redirect = false;
   HandleResponseOrRedirectHeaders(
@@ -294,7 +298,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 
   net::RedirectInfo redirect_info =
       CreateRedirectInfo(request_, redirect_url_, kInternalRedirectStatusCode,
-                         base::nullopt /* referrer_policy_header */);
+                         absl::nullopt /* referrer_policy_header */);
 
   network::mojom::URLResponseHeadPtr head =
       network::mojom::URLResponseHead::New();
@@ -322,7 +326,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
       net::HttpUtil::AssembleRawHeaders(headers));
   head->encoded_data_length = 0;
 
-  current_response_ = std::move(head);
+  current_response_head_ = std::move(head);
   ctx_->internal_redirect = true;
   ContinueToBeforeRedirect(redirect_info, net::OK);
 }
@@ -360,8 +364,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     brave_shields::MakeStubResponse(ctx_->mock_data_url, request_, &response,
                                     &response_data);
 
-    target_client_->OnReceiveResponse(std::move(response));
-
     // Create a data pipe for transmitting the response.
     mojo::ScopedDataPipeProducerHandle producer;
     mojo::ScopedDataPipeConsumerHandle consumer;
@@ -372,7 +374,14 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     }
 
     // Craft the response.
-    target_client_->OnStartLoadingResponseBody(std::move(consumer));
+    if (base::FeatureList::IsEnabled(network::features::kCombineResponseBody)) {
+      target_client_->OnReceiveResponse(std::move(response),
+                                        std::move(consumer));
+    } else {
+      target_client_->OnReceiveResponse(std::move(response),
+                                        mojo::ScopedDataPipeConsumerHandle());
+      target_client_->OnStartLoadingResponseBody(std::move(consumer));
+    }
 
     auto write_data = std::make_unique<WriteData>();
     write_data->client = weak_factory_.GetWeakPtr();
@@ -495,12 +504,12 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   }
 
   if (override_headers_) {
-    current_response_->headers = override_headers_;
+    current_response_head_->headers = override_headers_;
     // Since we overrode headers we should reparse them:
     // NavigationRequest::ComputePoliciesToCommit uses parsed headers to set
     // CSP, so if we don't reparse our CSP header changes won't work.
-    current_response_->parsed_headers = network::PopulateParsedHeaders(
-        current_response_->headers.get(), request_.url);
+    current_response_head_->parsed_headers = network::PopulateParsedHeaders(
+        current_response_head_->headers.get(), request_.url);
   }
 
   std::string redirect_location;
@@ -530,7 +539,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   }
 
   proxied_client_receiver_.Resume();
-  target_client_->OnReceiveResponse(std::move(current_response_));
+  target_client_->OnReceiveResponse(std::move(current_response_head_),
+                                    std::move(current_response_body_));
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToBeforeRedirect(
@@ -550,7 +560,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToBeforeRedirect(
     ctx_->redirect_source = request_.url;
   }
   target_client_->OnReceiveRedirect(redirect_info,
-                                    std::move(current_response_));
+                                    std::move(current_response_head_));
   request_.url = redirect_info.new_url;
   request_.method = redirect_info.new_method;
   request_.site_for_cookies = redirect_info.new_site_for_cookies;
@@ -576,15 +586,15 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   override_headers_ = nullptr;
   redirect_url_ = GURL();
 
-  net::CompletionRepeatingCallback copyable_callback =
-      base::AdaptCallbackForRepeating(std::move(continuation));
+  auto split_once_callback = base::SplitOnceCallback(std::move(continuation));
   if (request_.url.SchemeIsHTTPOrHTTPS()) {
     ctx_ = brave::BraveRequestInfo::MakeCTX(request_, render_process_id_,
                                             frame_tree_node_id_, request_id_,
                                             browser_context_, ctx_);
     int result = factory_->request_handler_->OnHeadersReceived(
-        ctx_, copyable_callback, current_response_->headers.get(),
-        &override_headers_, &redirect_url_);
+        ctx_, std::move(split_once_callback.first),
+        current_response_head_->headers.get(), &override_headers_,
+        &redirect_url_);
 
     if (result == net::ERR_BLOCKED_BY_CLIENT) {
       OnRequestError(network::URLLoaderCompletionStatus(result));
@@ -604,13 +614,23 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     DCHECK_EQ(net::OK, result);
   }
 
-  copyable_callback.Run(net::OK);
+  std::move(split_once_callback.second).Run(net::OK);
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnRequestError(
     const network::URLLoaderCompletionStatus& status) {
   if (!request_completed_) {
-    target_client_->OnComplete(status);
+    // Make a non-const copy of status so that |should_collapse_initiator| can
+    // be modified
+    network::URLLoaderCompletionStatus collapse_status(status);
+
+    if (base::FeatureList::IsEnabled(
+            ::brave_shields::features::kBraveAdblockCollapseBlockedElements) &&
+        ctx_->blocked_by == brave::kAdBlocked) {
+      collapse_status.should_collapse_initiator = true;
+    }
+
+    target_client_->OnComplete(collapse_status);
   }
 
   // Deletes |this|.

@@ -12,10 +12,9 @@
 
 namespace ads {
 
-class Wallet {
+class Wallet final {
  public:
   Wallet();
-
   ~Wallet();
 
   bool Set(const std::string& id, const std::string& seed);

@@ -9,9 +9,6 @@
   <message name="IDS_CHILD_INFO_TWO_CUSTODIANS" desc="Text which explains that a child user is managed by two parents.">
     This is an account for kids managed by <ph name="CUSTODIAN_EMAIL">$1<ex>John.Doe@gmail.com</ex></ph> and <ph name="SECOND_CUSTODIAN_EMAIL">$2<ex>Jane.Doe@gmail.com</ex></ph>.
   </message>
-  <message name="IDS_GENERIC_USER_AVATAR_LABEL" desc="Label shown for the user that is currently active, when there are multiple user accounts.">
-    Current user
-  </message>
   <message name="IDS_AVATAR_BUTTON_GUEST" desc="Short label for the avatar button when the user is in guest mode and the number of open guest windows if there are more than one guest window open. [ICU Syntax]" meaning="This window is browsing in guest mode and there are more than one guest windows open. The counter is not shown when there is only one guest window open.">
     {0, plural,
       =1 {Guest}
@@ -27,38 +24,29 @@
         other {# open guest windows}
       }
   </message>
-  <message name="IDS_INCOGNITO_BUBBLE_ACCESSIBLE_TITLE" desc="Accessible title of the avatar menu, opened in private mode. The message also shows the number of open private windows if they are more than one. [ICU Syntax]">
+  <message name="IDS_INCOGNITO_BUBBLE_ACCESSIBLE_TITLE" desc="Accessible title of the avatar menu, opened in Private mode. The message also shows the number of open Private windows if they are more than one. [ICU Syntax]">
       {0, plural,
         =1 {Private}
-        other {# open private windows}
+        other {# open Private windows}
       }
   </message>
-  <message name="IDS_AVATAR_BUTTON_INCOGNITO" desc="Short label for the avatar button when the user is in private mode and the number of open private windows if there are more than one private window open. [ICU Syntax]" meaning="This window is browsing in incognito mode and there are more than one incognito windows open. The counter is not shown when there is only one incognito window open.">
+  <message name="IDS_AVATAR_BUTTON_INCOGNITO" desc="Short label for the avatar button when the user is in Private mode and the number of open Private windows if there are more than one Private window open. [ICU Syntax]" meaning="This window is browsing in Incognito mode and there are more than one Incognito windows open. The counter is not shown when there is only one Incognito window open.">
     {0, plural,
       =1 {Private}
       other {Private (#)}
     }
   </message>
-  <message name="IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP" desc="Tooltip for the avatar button when the user is in private mode.">
-    This is a private window
+  <message name="IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP" desc="Tooltip for the avatar button when the user is in Private mode.">
+    You're Private
   </message>
   <message name="IDS_AVATAR_BUTTON_SYNC_ERROR" desc="Short label for the avatar button when there are sync errors for the current profile." meaning="An error has occurred during sync">
     Error
   </message>
   <message name="IDS_AVATAR_BUTTON_SYNC_ERROR_TOOLTIP" desc="Tooltip for the avatar button when there are sync errors for the current profile.">
-    <ph name="PROFILE_NAME">$1<ex>User</ex></ph>: Sync isn't working
-  </message>
-  <message name="IDS_AVATAR_BUTTON_SYNC_ERROR_PASSWORDS_TOOLTIP" desc="Tooltip for the avatar button when there are sync errors for the current profile affecting passwords sync specifically.">
-    <ph name="PROFILE_NAME">$1<ex>User</ex></ph>: Password sync isn't working
+    <ph name="PROFILE_NAME">$1<ex>User</ex></ph>: <ph name="ERROR_DESCRIPTION">$2<ex>Sync isn't working</ex></ph>
   </message>
   <message name="IDS_AVATAR_BUTTON_SYNC_PAUSED" desc="Short label for the avatar button when sync is paused for the current profile." meaning="Sync is paused">
     Paused
-  </message>
-  <message name="IDS_AVATAR_BUTTON_SYNC_PAUSED_TOOLTIP" desc="Tooltip for the avatar button when sync is paused for the current profile.">
-    <ph name="PROFILE_NAME">$1<ex>User</ex></ph>: Sync paused
-  </message>
-  <message name="IDS_CHILD_AVATAR_LABEL" desc="Label shown in the new avatar menu for a child user.">
-    <ph name="PROFILE_DISPLAY_NAME">$1<ex>Markus</ex></ph> (Account for kids)
   </message>
 
   <!-- Supervised User Block Interstitial data -->
@@ -68,9 +56,6 @@
   </message>
 
   <!-- Multi-profile -->
-  <message name="IDS_PROFILES_OPTIONS_GROUP_NAME" desc="The name of the sync group in the options dialog when using the new Profiles UI.">
-    Profiles
-  </message>
   <message name="IDS_PROFILES_MENU_NAME" desc="The name of menu for profiles (Mac and linux) and name for the launcher menu section (Mac).">
     Profiles
   </message>
@@ -142,9 +127,6 @@
     Addresses and more
   </message>
   <if expr="not use_titlecase">
-    <message name="IDS_PROFILES_OTHER_PROFILES_TITLE" desc="Title in the profile menu of the 'other profiles' section.">
-      Other profiles
-    </message>
     <message name="IDS_PROFILES_LIST_PROFILES_TITLE" desc="Title in the profile menu for the list of 'other profiles'.">
       Other profiles
     </message>
@@ -154,14 +136,8 @@
     <message name="IDS_PROFILES_PROFILE_HIDE_MANAGE_ACCOUNTS_BUTTON" desc="Button in the avatar menu bubble view used to hide the accounts for a profile.">
       Hide accounts
     </message>
-    <message name="IDS_PROFILES_MANAGE_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
-      Manage profiles
-    </message>
   </if>
   <if expr="use_titlecase">
-    <message name="IDS_PROFILES_OTHER_PROFILES_TITLE" desc="Title in the profile menu of the 'other profiles' section.">
-      Other Profiles
-    </message>
     <message name="IDS_PROFILES_LIST_PROFILES_TITLE" desc="Title in the profile menu for the list of 'other profiles'.">
       Other Profiles
     </message>
@@ -170,9 +146,6 @@
     </message>
     <message name="IDS_PROFILES_PROFILE_HIDE_MANAGE_ACCOUNTS_BUTTON" desc="Button in the avatar menu bubble view used to hide the accounts for a profile.">
       Hide Accounts
-    </message>
-    <message name="IDS_PROFILES_MANAGE_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
-      Manage Profiles
     </message>
   </if>
   <message name="IDS_PROFILES_MANAGE_PROFILES_BUTTON_TOOLTIP" desc="Button in the avatar menu bubble view for launching the profile picker.">
@@ -481,29 +454,16 @@
   <if expr="not is_android">
     <!-- User manager web UI -->
     <if expr="use_titlecase">
-      <if expr="chromeos">
-        <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_BUTTON" desc="Text shown on a button that confirms removal of a user.">
-          Remove This User
-        </message>
-      </if>
       <message name="IDS_SCREEN_LOCK_SIGN_OUT">
         Sign out
       </message>
     </if>
     <if expr="not use_titlecase">
-      <if expr="chromeos">
-        <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_BUTTON" desc="Text shown on a button that confirms removal of a user.">
-          Remove this user
-        </message>
-      </if>
       <message name="IDS_SCREEN_LOCK_SIGN_OUT">
         Sign out
       </message>
     </if>
     <if expr="chromeos">
-      <message name="IDS_SCREEN_LOCK_ACTIVE_USER">
-        Currently signed in
-      </message>
       <message name="IDS_LAUNCH_APP_BUTTON" desc="Text shown on the button that launches kiosk app from Chrome OS login UI">
         Launch app
       </message>
@@ -516,44 +476,11 @@
       <message name="IDS_PIN_KEYBOARD_DELETE_ACCESSIBLE_NAME" desc="Text to be spoken when the focus is set to the delete button of the PIN keyboard.">
         Delete
       </message>
-      <message name="IDS_FINGERPRINT_HINT_TEXT" desc="Text to display in the password field for user pod when user moves his mouse over the fingerprint icon.">
-        Touch to sign in
-      </message>
-      <message name="IDS_FINGERPRINT_LOGIN_TEXT" desc="Text to display in the password field for user pod when user is trying to login with fingerprint.">
-        Signing in...
-      </message>
-      <message name="IDS_FINGERPRINT_LOGIN_FAILED_TEXT" desc="Text to display in the password field for user pod when user failed to login with fingerprint.">
-        Not recognized
-      </message>
-      <message name="IDS_FINGERPRINT_ICON_MESSAGE" desc="Message to display when user moves his mouse over the fingerprint icon in the user pod.">
-        Place your finger on the fingerprint sensor to unlock the device.
-      </message>
       <message name="IDS_LOGIN_ERROR_FINGERPRINT_MAX_ATTEMPT" desc="Couldn't sign in because fingerprint unlock has reached maximum attempt">
         Sorry, your fingerprint is still not recognized. Please enter your password.
       </message>
       <message name="IDS_LOGIN_ERROR_AUTHENTICATING" desc="Couldn't sign in because password is invalid">
         Sorry, your password could not be verified. Please try again.
-      </message>
-      <message name="IDS_LOGIN_POD_EMPTY_PASSWORD_TEXT" desc="Text to display in the password field for user pod when no password has been entered.">
-        Password
-      </message>
-      <message name="IDS_LOGIN_POD_SIGNING_IN" desc="Text to display at the bottom of a user pod during signing in the user. The translation should be as short as possible because of limited UI space.">
-        Signing in
-      </message>
-      <message name="IDS_LOGIN_POD_PASSWORD_FIELD_ACCESSIBLE_NAME" desc="Text to be spoken when the focus is set to the password field of a user pod on the sign-in screen.">
-        Password for <ph name="USER_EMAIL_ADDRESS">$1<ex>john.doe@example.com</ex></ph>
-      </message>
-      <message name="IDS_LOGIN_POD_SUBMIT_BUTTON_ACCESSIBLE_NAME" desc="Text to be spoken when the focus is set to the submit button of a user pod on the sign-in screen.">
-        Submit
-      </message>
-      <message name="IDS_LOGIN_POD_MENU_BUTTON_ACCESSIBLE_NAME" desc="Text to be spoken when the focus is set to the menu button of the user pod on the login screen.">
-        Options menu for <ph name="USER_EMAIL_ADDRESS">$1<ex>john.doe@example.com</ex></ph>
-      </message>
-      <message name="IDS_LOGIN_POD_MENU_REMOVE_ITEM_ACCESSIBLE_NAME" desc="Text to be spoken when 'Remove user' item is selected on the pod menu.">
-        Remove this user
-      </message>
-      <message name="IDS_LOGIN_POD_NON_OWNER_USER_REMOVE_WARNING" desc="Text shown as a warning when attempting to remove non-owner user.">
-        All files and local data associated with this user will be permanently deleted once this user is removed. <ph name="USER_EMAIL">$1<ex>john.doe@example.com</ex></ph> can still sign in later.
       </message>
     </if>
   </if>
@@ -577,6 +504,9 @@
     <message name="IDS_ENTERPRISE_PROFILE_WELCOME_ACCOUNT_MANAGED_BY" desc="Subtitle of the enteprise profile welcome screen, informing that the account is managed by an administrator.">
       This account is managed by <ph name="PROFILE_NAME">$1<ex>example.com</ex></ph>
     </message>
+    <message name="IDS_ENTERPRISE_PROFILE_WELCOME_ACCOUNT_EMAIL_MANAGED_BY" desc="Subtitle of the enteprise profile welcome screen for a signin interception, informing that the account is managed by an administrator.">
+      This account (<ph name="USER_EMAIL_ADDRESS">$1<ex>john.doe@example.com</ex></ph>) is managed by <ph name="PROFILE_NAME">$2<ex>example.com</ex></ph>
+    </message>
     <message name="IDS_ENTERPRISE_PROFILE_WELCOME_DEVICE_MANAGED_BY" desc="Subtitle of the enteprise profile welcome screen, informing that the device is managed by an administrator.">
       Your device is managed by <ph name="PROFILE_NAME">$1<ex>example.com</ex></ph>
     </message>
@@ -588,6 +518,12 @@
     </message>
     <message name="IDS_ENTERPRISE_PROFILE_WELCOME_MANAGED_DESCRIPTION_WITHOUT_SYNC" desc="Disclaimer when creating a profile with a managed account (when sync is disabled by the administrator).">
       You’re adding a managed profile to this browser. Your administrator has control over the profile and can access its data.
+    </message>
+    <message name="IDS_ENTERPRISE_WELCOME_PROFILE_REQUIRED_TITLE" desc="Title of the enteprise profile welcome screen when a profile is required. It is shown after a user signs into a managed account outside of the profile creation flow.">
+      Your organization requires a profile
+    </message>
+    <message name="IDS_ENTERPRISE_PROFILE_WELCOME_CREATE_PROFILE_BUTTON" desc="Label of the proceed button on the enterprise profile welcome screen when a user signed in an enterprise account outside of the profile creation flow. The label informs the user that a profile will be created.">
+      Create
     </message>
 
     <!-- Profile Picker -->
@@ -621,23 +557,14 @@
     <message name="IDS_PROFILE_PICKER_PROFILE_MENU_CUSTOMIZE_TEXT" desc="Text of the customize button in profile card menu">
       Edit
     </message>
-    <message name="IDS_PROFILE_PICKER_PROFILE_MENU_INCOGNITO_TEXT" desc="Text of the private button in profile card menu">
+    <message name="IDS_PROFILE_PICKER_PROFILE_MENU_INCOGNITO_TEXT" desc="Text of the Private button in profile card menu">
       Private
     </message>
     <message name="IDS_PROFILE_PICKER_ASK_ON_STARTUP" desc="Text for the checkbox on the profile picker main view">
       Show on startup
     </message>
-    <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_SIGNED_IN_PROFILE_TITLE" desc="Title of the remove warning message shown for signed in profiles, shown when the user selects remove from the 3 dotted menu">
-      Delete this profile?
-    </message>
-    <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_SIGNED_IN_PROFILE" desc="Remove warning message shown for signed in profiles shown when the user selects remove from the 3 dotted menu">
-      This will permanently delete your browsing data from this device. To recover the data, turn on sync as
-    </message>
     <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_LOCAL_PROFILE_TITLE" desc="Title of the remove warning message shown for local profiles, shown when the user selects remove from the 3 dotted menu.">
       Delete this profile and its data?
-    </message>
-    <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_LOCAL_PROFILE" desc="Main text shown as a warning when attempting to remove an user.">
-      This will permanently delete your browsing data from this device.
     </message>
     <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_HISTORY" desc="The title of a statistic (browsing history) shown inside a table below the warning text when attempting to remove an user. A number is displayed next to it.">
       Browsing history
@@ -659,12 +586,6 @@
     </message>
     <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_NOT_NOW_BUTTON_LABEL" desc="Label for a button to decline a prompt to sign in">
       Continue without an account
-    </message>
-    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_DEVICE_MANAGED_BY_DESCRIPTION" desc="Disclaimer on the first profile creation screen, informing that the device is managed by an administrator.">
-      Your device is managed by <ph name="PROFILE_NAME">$1<ex>example.com</ex></ph>. Administrators can access the data in any profile on this device.
-    </message>
-    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_DEVICE_MANAGED_DESCRIPTION" desc="Disclaimer on the first profile creation screen, informing that the device is managed.">
-      Your device is managed by your organization. Administrators can access the data in any profile on this device.
     </message>
     <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_LOCAL_PROFILE_CREATION_CUSTOMIZE_AVATAR_BUTTON_LABEL" desc="Accessibility label for edit avatar button when the pencil icon is focused that is not rendered.">
       Customize avatar
@@ -711,5 +632,60 @@
     <message name="IDS_PROFILE_PICKER_PROFILE_SWITCH_SWITCH_BUTTON_LABEL" desc="Label of a button that switches user browsing to existing profile">
       Switch
     </message>
+
+    <if expr="not lacros">
+      <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_DEVICE_MANAGED_BY_DESCRIPTION" desc="Disclaimer on the first profile creation screen, informing that the device is managed by an administrator.">
+        Your device is managed by <ph name="PROFILE_NAME">$1<ex>example.com</ex></ph>. Administrators can access the data in any profile on this device.
+      </message>
+      <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_DEVICE_MANAGED_DESCRIPTION" desc="Disclaimer on the first profile creation screen, informing that the device is managed.">
+        Your device is managed by your organization. Administrators can access the data in any profile on this device.
+      </message>
+      <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_LOCAL_PROFILE" desc="Main text shown as a warning when attempting to remove an user.">
+        This will permanently delete your browsing data from this device.
+      </message>
+      <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_SIGNED_IN_PROFILE_TITLE" desc="Title of the remove warning message shown for signed in profiles, shown when the user selects remove from the 3 dotted menu">
+        Delete this profile?
+      </message>
+      <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_SIGNED_IN_PROFILE" desc="Remove warning message shown for signed in profiles shown when the user selects remove from the 3 dotted menu">
+        This will permanently delete your browsing data from this device. To recover the data, turn on sync as
+      </message>
+    </if>
+
+    <if expr="lacros">
+      <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_SESSION_MANAGED_BY_DESCRIPTION" desc="Disclaimer on the first profile creation screen, informing that the session is managed by an administrator.">
+        Your session is managed by <ph name="MANAGER_NAME">$1<ex>example.com</ex></ph>. Administrators can delete your profile and also monitor your network traffic.
+      </message>
+      <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_SESSION_MANAGED_DESCRIPTION" desc="Disclaimer on the first profile creation screen, informing that the session is managed.">
+        Your session is managed by your organization. Administrators can delete your profile and also monitor your network traffic.
+      </message>
+      <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_SIGNIN_BUTTON_LABEL_LACROS" desc="Label for a button that prompts user to sign in">
+        Next
+      </message>
+      <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_ACCOUNT_SELECTION_LACROS_TITLE" desc="Profile picker, account selection screen title">
+        Choose an account
+      </message>
+      <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_ACCOUNT_SELECTION_LACROS_OTHER_ACCOUNT_BUTTON_LABEL" desc="Label for a button to use another account for the new profile">
+        Use another account
+      </message>
+      <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_LACROS" desc="Profile picker main view title">
+        Choose a profile
+      </message>
+      <message name="IDS_PROFILE_PICKER_LACROS_PRIMARY_PROFILE_DELETION_WARNING_TITLE" desc="Title of a dialog which explains that the profile the user is trying to delete cannot be deleted, because it is the default profile.">
+        Can't delete this profile
+      </message>
+      <message name="IDS_PROFILE_PICKER_LACROS_PRIMARY_PROFILE_DELETION_WARNING" desc="Text of a dialog which explains that the profile the user is trying to delete cannot be deleted, because it is the default profile.">
+        <ph name="ACCOUNT_EMAIL">$1<ex>Jane.Doe@gmail.com</ex></ph> is the default account on your Chromebook
+      </message>
+      <message name="IDS_PROFILE_PICKER_LACROS_PRIMARY_PROFILE_DELETION_WARNING_CONFIRMATION" desc="Text of a button below a dialog which explains that the profile the user is trying to delete cannot be deleted, because it is the default profile. By clicking the button, the user closes the this dialog.">
+        Got it
+      </message>
+      <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_SIGNED_IN_PROFILE_TITLE_LACROS" desc="Title of the remove warning message shown for signed in profiles, shown when the user selects remove from the 3 dotted menu">
+        Delete this profile and browsing data?
+      </message>
+      <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_SIGNED_IN_PROFILE_LACROS" desc="Remove warning message shown for signed in profiles shown when the user selects remove from the 3 dotted menu">
+          This will permanently delete browsing data from this device. The Brave sync chains in this profile may be used by other apps on your Chromebook. You can remove these accounts in <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank"&gt;</ph><ph name="SETTING_SECTION">$1<ex>Settings</ex></ph> &gt; <ph name="ACCOUNTS_SECTION">$2<ex>Accounts</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>.
+      </message>
+    </if>
+
   </if>
 </grit-part>

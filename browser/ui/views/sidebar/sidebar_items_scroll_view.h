@@ -9,6 +9,10 @@
 #include <memory>
 #include <set>
 
+#include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
+#include "base/scoped_multi_source_observation.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/views/animation/bounds_animator.h"
@@ -20,6 +24,10 @@ namespace views {
 class BoundsAnimator;
 class ImageButton;
 }  // namespace views
+
+namespace sidebar {
+class SidebarBrowserTest;
+}  // namespace sidebar
 
 class BraveBrowser;
 class SidebarItemDragContext;
@@ -34,6 +42,7 @@ class SidebarItemsScrollView : public views::View,
                                public views::DragController,
                                public sidebar::SidebarModel::Observer {
  public:
+  METADATA_HEADER(SidebarItemsScrollView);
   explicit SidebarItemsScrollView(BraveBrowser* browser);
   ~SidebarItemsScrollView() override;
 
@@ -50,6 +59,8 @@ class SidebarItemsScrollView : public views::View,
   bool CanDrop(const OSExchangeData& data) override;
   int OnDragUpdated(const ui::DropTargetEvent& event) override;
   void OnDragExited() override;
+  views::View::DropCallback GetDropCallback(
+      const ui::DropTargetEvent& event) override;
   ui::mojom::DragOperation OnPerformDrop(
       const ui::DropTargetEvent& event) override;
 
@@ -79,8 +90,11 @@ class SidebarItemsScrollView : public views::View,
 
   bool IsItemReorderingInProgress() const;
   bool IsBubbleVisible() const;
+  void Update();
 
  private:
+  friend class sidebar::SidebarBrowserTest;
+
   void UpdateArrowViewsTheme();
   void UpdateArrowViewsEnabledState();
   // Return true if scroll view's area doesn't have enough bounds to show whole
@@ -92,20 +106,30 @@ class SidebarItemsScrollView : public views::View,
   gfx::Rect GetTargetScrollContentsViewRectTo(bool top);
   void ScrollContentsViewBy(int offset, bool animate);
 
+  // Put NOLINT here because our cpp linter complains -
+  // "make const or use a pointer: ui::mojom::DragOperation& output_drag_op"
+  // But can't avoid because View::DropCallback uses non const refererence
+  // as its parameter type.
+  void PerformDrop(const ui::DropTargetEvent& event,
+                   ui::mojom::DragOperation& output_drag_op);  // NOLINT
+
   // Returns true if |position| is in visible contents area.
   bool IsInVisibleContentsViewBounds(const gfx::Point& position) const;
 
-  BraveBrowser* browser_ = nullptr;
-  views::ImageButton* up_arrow_ = nullptr;
-  views::ImageButton* down_arrow_ = nullptr;
-  SidebarItemsContentsView* contents_view_ = nullptr;
+  raw_ptr<BraveBrowser> browser_ = nullptr;
+  raw_ptr<views::ImageButton> up_arrow_ = nullptr;
+  raw_ptr<views::ImageButton> down_arrow_ = nullptr;
+  raw_ptr<SidebarItemsContentsView> contents_view_ = nullptr;
   std::unique_ptr<SidebarItemDragContext> drag_context_;
   std::unique_ptr<views::BoundsAnimator> scroll_animator_for_new_item_;
   std::unique_ptr<views::BoundsAnimator> scroll_animator_for_smooth_;
-  ScopedObserver<sidebar::SidebarModel, sidebar::SidebarModel::Observer>
+  base::ScopedObservation<sidebar::SidebarModel,
+                          sidebar::SidebarModel::Observer>
       model_observed_{this};
-  ScopedObserver<views::BoundsAnimator, views::BoundsAnimatorObserver>
+  base::ScopedMultiSourceObservation<views::BoundsAnimator,
+                                     views::BoundsAnimatorObserver>
       bounds_animator_observed_{this};
+  base::WeakPtrFactory<SidebarItemsScrollView> weak_ptr_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEMS_SCROLL_VIEW_H_

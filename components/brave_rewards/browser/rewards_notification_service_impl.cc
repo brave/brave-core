@@ -12,11 +12,13 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/rand_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ledger/ledger.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 
@@ -96,9 +98,9 @@ void RewardsNotificationServiceImpl::DeleteAllNotifications(
     const bool delete_displayed) {
   bool displayed = delete_displayed;
 
-  #if defined(OS_ANDROID)
-    displayed = true;
-  #endif
+#if BUILDFLAG(IS_ANDROID)
+  displayed = true;
+#endif
 
   if (displayed) {
     rewards_notifications_displayed_.clear();
@@ -145,11 +147,11 @@ void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
       profile_->GetPrefs()->GetString(prefs::kNotifications);
   if (json.empty())
     return;
-  base::Optional<base::Value> dictionary = base::JSONReader::Read(json);
+  absl::optional<base::Value> dictionary = base::JSONReader::Read(json);
 
   // legacy read
   if (!dictionary || !dictionary->is_dict()) {
-    base::Optional<base::Value> list = base::JSONReader::Read(json);
+    absl::optional<base::Value> list = base::JSONReader::Read(json);
     if (!list || !list->is_list()) {
       LOG(ERROR) << "Failed to deserialize rewards notifications on startup";
       return;
@@ -175,7 +177,7 @@ void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
 }
 
 void RewardsNotificationServiceImpl::ReadRewardsNotifications(
-    base::Value::ConstListView root) {
+    const base::Value::List& root) {
   for (auto it = root.cbegin(); it != root.cend(); ++it) {
     if (!it->is_dict())
       continue;
@@ -228,7 +230,7 @@ void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
     dict->SetInteger("timestamp", item.second.timestamp_);
     auto args = std::make_unique<base::ListValue>();
     for (auto& arg : item.second.args_) {
-      args->AppendString(arg);
+      args->Append(arg);
     }
     dict->SetList("args", std::move(args));
     notifications->Append(std::move(dict));
@@ -236,7 +238,7 @@ void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
 
   auto displayed = std::make_unique<base::ListValue>();
   for (auto& item : rewards_notifications_displayed_) {
-    displayed->AppendString(item);
+    displayed->Append(item);
   }
 
   root.SetList("notifications", std::move(notifications));
@@ -345,11 +347,14 @@ void RewardsNotificationServiceImpl::OnFetchPromotions(
         : RewardsNotificationService::REWARDS_NOTIFICATION_GRANT;
 
     RewardsNotificationService::RewardsNotificationArgs args;
+    args.push_back(base::NumberToString(item->approximate_value));
+    args.push_back(base::NumberToString(item->created_at * 1000));
+    args.push_back(base::NumberToString(item->claimable_until * 1000));
 
     bool only_once = true;
-  #if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     only_once = false;
-  #endif
+#endif
 
     AddNotification(
         notification_type,

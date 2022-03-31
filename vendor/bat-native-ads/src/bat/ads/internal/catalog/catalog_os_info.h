@@ -7,11 +7,10 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_OS_INFO_H_
 
 #include <string>
-#include <vector>
 
 namespace ads {
 
-struct CatalogOsInfo {
+struct CatalogOsInfo final {
   CatalogOsInfo();
   CatalogOsInfo(const CatalogOsInfo& info);
   ~CatalogOsInfo();
@@ -22,8 +21,6 @@ struct CatalogOsInfo {
   std::string code;
   std::string name;
 };
-
-using CatalogOsList = std::vector<CatalogOsInfo>;
 
 }  // namespace ads
 

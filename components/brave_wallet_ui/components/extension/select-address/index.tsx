@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { WalletAccountType } from '../../../constants/types'
+import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { create } from 'ethereum-blockies'
 
 // Styled Components
@@ -27,7 +28,7 @@ const SelectAddress = (props: Props) => {
   const { account, isSelected, action } = props
 
   const orb = React.useMemo(() => {
-    return create({ seed: account.address, size: 8, scale: 16 }).toDataURL()
+    return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [account.address])
 
   return (
@@ -35,7 +36,7 @@ const SelectAddress = (props: Props) => {
       <LeftSide>
         <AccountCircle orb={orb} />
         <NameAndAddressColumn>
-          <AccountNameText>{account.name}</AccountNameText>
+          <AccountNameText>{reduceAccountDisplayName(account.name, 22)}</AccountNameText>
           <AccountAddressText>
             {reduceAddress(account.address)}
           </AccountAddressText>

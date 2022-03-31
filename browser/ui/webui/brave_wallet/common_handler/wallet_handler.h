@@ -9,43 +9,46 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_wallet_ui/wallet_ui.mojom.h"
-#include "content/public/browser/web_contents_observer.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
-#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "ui/webui/mojo_web_ui_controller.h"
 
-namespace content {
-class WebUI;
-}
+class Profile;
 
-class WalletHandler : public wallet_ui::mojom::WalletHandler {
+class WalletHandler : public brave_wallet::mojom::WalletHandler {
  public:
-  WalletHandler(mojo::PendingReceiver<wallet_ui::mojom::WalletHandler> receiver,
-                mojo::PendingRemote<wallet_ui::mojom::Page> page,
-                content::WebUI* web_ui,
-                ui::MojoWebUIController* webui_controller);
+  WalletHandler(
+      mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> receiver,
+      Profile* profile);
 
   WalletHandler(const WalletHandler&) = delete;
   WalletHandler& operator=(const WalletHandler&) = delete;
   ~WalletHandler() override;
 
-  // wallet_ui::mojom::WalletHandler:
+  // brave_wallet::mojom::WalletHandler:
   void GetWalletInfo(GetWalletInfoCallback) override;
-  void LockWallet() override;
-  void UnlockWallet(const std::string& password, UnlockWalletCallback) override;
-  void AddFavoriteApp(wallet_ui::mojom::AppItemPtr app_item) override;
-  void RemoveFavoriteApp(wallet_ui::mojom::AppItemPtr app_item) override;
-  void NotifyWalletBackupComplete() override;
+
+  void AddFavoriteApp(brave_wallet::mojom::AppItemPtr app_item) override;
+  void RemoveFavoriteApp(brave_wallet::mojom::AppItemPtr app_item) override;
 
  private:
+  void EnsureConnected();
+  void OnConnectionError();
+
+  void OnGetWalletInfo(
+      GetWalletInfoCallback callback,
+      std::vector<brave_wallet::mojom::KeyringInfoPtr> keyring_info);
+
+  mojo::Remote<brave_wallet::mojom::KeyringService> keyring_service_;
+
   // TODO(bbondy): This needs to be persisted in prefs
-  std::vector<wallet_ui::mojom::AppItemPtr> favorite_apps;
-  mojo::Receiver<wallet_ui::mojom::WalletHandler> receiver_;
-  mojo::Remote<wallet_ui::mojom::Page> page_;
-  content::WebUI* const web_ui_;
+  std::vector<brave_wallet::mojom::AppItemPtr> favorite_apps;
+  mojo::Receiver<brave_wallet::mojom::WalletHandler> receiver_;
+
+  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
+  base::WeakPtrFactory<WalletHandler> weak_ptr_factory_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_COMMON_HANDLER_WALLET_HANDLER_H_

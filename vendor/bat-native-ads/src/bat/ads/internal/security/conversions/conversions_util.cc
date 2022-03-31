@@ -9,14 +9,15 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/check_op.h"
 #include "base/rand_util.h"
 #include "bat/ads/internal/base64_util.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/security/conversions/verifiable_conversion_envelope_info.h"
 #include "bat/ads/internal/security/crypto_util.h"
 #include "bat/ads/internal/security/key_pair_info.h"
-#include "bat/ads/internal/string_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/re2/src/re2/re2.h"
 #include "tweetnacl.h"  // NOLINT
 
 namespace ads {
@@ -24,42 +25,46 @@ namespace security {
 
 namespace {
 
-const char kAlgorithm[] = "crypto_box_curve25519xsalsa20poly1305";
-const size_t kCryptoBoxZeroBytes = crypto_box_BOXZEROBYTES;
-const size_t kCryptoBoxPublicKeyBytes = crypto_box_PUBLICKEYBYTES;
-const size_t kVacCipherTextLength = 32;
-const size_t kVacMessageMaxLength = 30;
-const size_t kVacMessageMinLength = 1;
+constexpr char kAlgorithm[] = "crypto_box_curve25519xsalsa20poly1305";
+constexpr size_t kCryptoBoxZeroBytes = crypto_box_BOXZEROBYTES;
+constexpr size_t kCryptoBoxPublicKeyBytes = crypto_box_PUBLICKEYBYTES;
+constexpr size_t kVacCipherTextLength = 32;
+constexpr size_t kVacMessageMaxLength = 30;
+constexpr size_t kVacMessageMinLength = 1;
+
+bool IsConversionIdValid(const std::string& conversion_id) {
+  return RE2::FullMatch(conversion_id, "^[a-zA-Z0-9-]*$");
+}
 
 }  // namespace
 
-base::Optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
+absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
     const VerifiableConversionInfo& verifiable_conversion) {
   const std::string message = verifiable_conversion.id;
   const std::string public_key_base64 = verifiable_conversion.public_key;
 
   if (message.length() < kVacMessageMinLength ||
       message.length() > kVacMessageMaxLength) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
-  if (!IsLatinAlphaNumeric(message)) {
-    return base::nullopt;
+  if (!IsConversionIdValid(message)) {
+    return absl::nullopt;
   }
 
   // Protocol requires at least 2 trailing zero-padding bytes
-  std::vector<uint8_t> plaintext(message.begin(), message.end());
+  std::vector<uint8_t> plaintext(message.cbegin(), message.cend());
   plaintext.insert(plaintext.end(), kVacCipherTextLength - plaintext.size(), 0);
   DCHECK_EQ(kVacCipherTextLength, plaintext.size());
 
   const std::vector<uint8_t> public_key = Base64ToBytes(public_key_base64);
   if (public_key.size() != kCryptoBoxPublicKeyBytes) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   const KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();
   if (!ephemeral_key_pair.IsValid()) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   const std::vector<uint8_t> nonce = GenerateRandom192BitNonce();
@@ -70,7 +75,8 @@ base::Optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
   // The first 16 bytes of the resulting ciphertext is left as padding by the
   // C API and should be removed before sending out extraneously.
   const std::vector<uint8_t> ciphertext(
-      padded_ciphertext.begin() + kCryptoBoxZeroBytes, padded_ciphertext.end());
+      padded_ciphertext.cbegin() + kCryptoBoxZeroBytes,
+      padded_ciphertext.cend());
 
   VerifiableConversionEnvelopeInfo envelope;
   envelope.algorithm = kAlgorithm;
@@ -80,7 +86,7 @@ base::Optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
   envelope.nonce = base::Base64Encode(nonce);
 
   if (!envelope.IsValid()) {
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   return envelope;

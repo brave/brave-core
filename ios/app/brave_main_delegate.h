@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/macros.h"
 #include "ios/chrome/app/startup/ios_chrome_main_delegate.h"
 
 class BraveWebClient;
@@ -16,17 +15,15 @@ class BraveWebClient;
 class BraveMainDelegate : public IOSChromeMainDelegate {
  public:
   BraveMainDelegate();
+  BraveMainDelegate(const BraveMainDelegate&) = delete;
+  BraveMainDelegate& operator=(const BraveMainDelegate&) = delete;
   ~BraveMainDelegate() override;
-
-  void SetSyncServiceURL(const std::string& url);
 
  protected:
   // web::WebMainDelegate implementation:
   void BasicStartupComplete() override;
 
  private:
-  std::string brave_sync_service_url_;
-  DISALLOW_COPY_AND_ASSIGN(BraveMainDelegate);
 };
 
 #endif  // BRAVE_IOS_APP_BRAVE_MAIN_DELEGATE_H_

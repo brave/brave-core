@@ -1,11 +1,15 @@
+build/commands/ @bridiver
 patches/ @brave/patch-reviewers
-chromium_src/ @brave/patch-reviewers
+chromium_src/ @brave/chromium-src-reviewers
+script/audit_deps.py @brave/sec-team
 script/build-bisect.py @bsclifton
 script/uplift.py @bsclifton
-vendor/brave-ios/ @kylehickinson
 /README.md @bsclifton
-Jenkinsfile @mihaiplesa
-DEPS @bridiver
+Jenkinsfile @brave/devops-team
+DEPS @brave/deps-reviewers
+script/deps.py @brave/deps-reviewers
+package*.json @brave/js-deps-reviewers
+**/Cargo.* @brave/rust-deps-reviewers
 
 # Rewards
 browser/brave_rewards/ @brave/rewards-client
@@ -36,15 +40,16 @@ components/services/bat_ads/**/*.mm @brave/ads-client
 vendor/bat-native-ads/**/*.cc @brave/ads-client
 vendor/bat-native-ads/**/*.h @brave/ads-client
 vendor/bat-native-ads/**/*.mm @brave/ads-client
-vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.cc @brave/ads-client @fmarier
-vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.h @brave/ads-client @fmarier
-vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.mm @brave/ads-client @fmarier
-vendor/bat-native-ads/src/bat/ads/internal/security/**/*.cc @brave/ads-client @orspetol
-vendor/bat-native-ads/src/bat/ads/internal/security/**/*.h @brave/ads-client @orspetol
-vendor/bat-native-ads/src/bat/ads/internal/security/**/*.mm @brave/ads-client @orspetol
+vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.cc @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.h @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.mm @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/security/**/*.cc @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/security/**/*.h @brave/ads-client
+vendor/bat-native-ads/src/bat/ads/internal/security/**/*.mm @brave/ads-client
 
 # Network
 browser/net/ @iefremov
+chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc @brave/sec-team
 
 # Brave theme
 browser/themes @simonhong
@@ -99,8 +104,14 @@ build/android/bytecode/ @samartnik
 patches/*.java.patch @samartnik
 
 # Bitcoin-core
-third_party/bitcoin-core/BUILD.gn @orspetol
+third_party/bitcoin-core/BUILD.gn @brave/sec-team
+
+# Boost imports (i.e. config, multiprecision)
+third_party/boost @brave/deps-reviewers
 
 # Network auditor
-build/commands/lib/whitelistedUrlPatterns.js @brave/sec-team
-build/commands/lib/whitelistedUrlPrefixes.js @brave/sec-team
+browser/net/brave_network_audit_allowed_lists.h @brave/sec-team
+
+# iOS
+ios/ @brave/ios
+build/ios/ @brave/ios

@@ -4,6 +4,15 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 declare namespace NewTab {
+  // Type for custom background and brave background.
+  // Custom background uses only image url prop.
+  export type BackgroundWallpaper = {
+    wallpaperImageUrl: string
+    author?: string
+    link?: string
+    originalUrl?: string
+    license?: string
+  }
 
   export type BrandedWallpaperLogo = {
     image: string
@@ -12,25 +21,22 @@ declare namespace NewTab {
     destinationUrl: string
   }
 
-  export interface BrandedWallpaper {
-    isSponsored: boolean
+  export type BrandedWallpaper = {
     wallpaperImageUrl: string
+    isSponsored: boolean
     creativeInstanceId: string
     wallpaperId: string
     logo: BrandedWallpaperLogo
   }
+
+  export interface Wallpaper {
+    backgroundWallpaper?: BackgroundWallpaper
+    brandedWallpaper?: BrandedWallpaper
+  }
+
   export interface ApplicationState {
     newTabData: State | undefined
     gridSitesData: GridSitesState | undefined
-  }
-
-  export interface Image {
-    name: string
-    source: string
-    author: string
-    link: string
-    originalUrl: string
-    license: string
   }
 
   export interface Site {
@@ -60,7 +66,7 @@ declare namespace NewTab {
     url: string
   }
 
-  export type StackWidget = 'rewards' | 'binance' | 'together' | 'gemini' | 'bitcoinDotCom' | 'cryptoDotCom' | 'ftx' | ''
+  export type StackWidget = 'rewards' | 'binance' | 'braveTalk' | 'gemini' | 'bitcoinDotCom' | 'cryptoDotCom' | 'ftx' | ''
 
   export interface GridSitesState {
     removedSites: Site[]
@@ -77,8 +83,9 @@ declare namespace NewTab {
   }
 
   export interface PersistentState {
-    togetherPromptDismissed: boolean
-    togetherSupported: boolean
+    braveTalkPromptDismissed: boolean
+    braveTalkSupported: boolean
+    braveTalkPromptAutoDismissed: boolean
     geminiSupported: boolean
     binanceSupported: boolean
     bitcoinDotComSupported: boolean
@@ -89,7 +96,6 @@ declare namespace NewTab {
     currentStackWidget: StackWidget
     removedStackWidgets: StackWidget[]
     widgetStackOrder: StackWidget[]
-    savedWidgetStackOrder: StackWidget[]
     binanceState: BinanceWidgetState
     geminiState: GeminiWidgetState
     cryptoDotComState: CryptoDotComWidgetState
@@ -105,6 +111,12 @@ declare namespace NewTab {
     clockFormat: string
     showTopSites: boolean
     showRewards: boolean
+    showBraveTalk: boolean
+    showBinance: boolean
+    showGemini: boolean
+    showCryptoDotCom: boolean
+    showFTX: boolean
+    hideAllWidgets: boolean
     isBraveTodayOptedIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
   }
@@ -113,31 +125,32 @@ declare namespace NewTab {
     initialDataLoaded: boolean
     textDirection: string
     featureFlagBraveNTPSponsoredImagesWallpaper: boolean
+    featureFlagBraveNewsEnabled: boolean
+    featureCustomBackgroundEnabled: boolean
     isIncognito: boolean
     useAlternativePrivateSearchEngine: boolean
+    showAlternativePrivateSearchEngineToggle: boolean
     torCircuitEstablished: boolean,
     torInitProgress: string,
     isTor: boolean
     isQwant: boolean
-    backgroundImage?: Image
+    backgroundWallpaper?: BackgroundWallpaper
     gridLayoutSize?: 'small'
     showGridSiteRemovedNotification?: boolean
     showBackgroundImage: boolean
     customLinksEnabled: boolean
     customLinksNum: number
-    showTogether: boolean
-    showBinance: boolean
-    showGemini: boolean
     showBitcoinDotCom: boolean
-    showCryptoDotCom: boolean,
-    showFTX: boolean,
     stats: Stats,
-    brandedWallpaperData?: BrandedWallpaper
+    braveTalkPromptAllowed: boolean
+    brandedWallpaper?: BrandedWallpaper
   }
 
   export interface RewardsWidgetState {
+    rewardsEnabled: boolean
     adsSupported?: boolean
     balance: RewardsBalance
+    report?: RewardsBalanceReport
     adsAccountStatement: AdsAccountStatement
     dismissedNotifications: string[]
     enabledAds: boolean
@@ -244,6 +257,10 @@ declare namespace NewTab {
   export interface Promotion {
     type: PromotionTypes
     promotionId: string
+    createdAt: number
+    claimableUntil?: number
+    expiresAt?: number
+    amount: number
   }
 
   export interface RewardsBalance {
@@ -270,6 +287,10 @@ declare namespace NewTab {
     favicon: string
   }
 
+  interface StorybookStateExtras {
+    forceSettingsTab?: string // SettingsTabType
+  }
+
   // In-memory state is a superset of PersistentState
-  export type State = PersistentState & EphemeralState
+  export type State = PersistentState & EphemeralState & StorybookStateExtras
 }

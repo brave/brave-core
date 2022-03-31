@@ -1,5 +1,5 @@
 diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
-index 3c1179fbed54a57f3bcc1fdbe1382adc3d9a0679..42e0e60b2de66d9ac7a679d0cc8d3bebb5d7cb69 100644
+index f7b8a689a2539f8415d606b61e36e29ac724aac6..b73f49914179010e5ed0c2b6c9a0586488d39baf 100644
 --- a/chrome/common/extensions/chrome_extensions_client.cc
 +++ b/chrome/common/extensions/chrome_extensions_client.cc
 @@ -13,6 +13,7 @@
@@ -10,7 +10,7 @@ index 3c1179fbed54a57f3bcc1fdbe1382adc3d9a0679..42e0e60b2de66d9ac7a679d0cc8d3beb
  #include "chrome/common/chrome_resource_request_blocked_reason.h"
  #include "chrome/common/chrome_switches.h"
  #include "chrome/common/extensions/chrome_extensions_api_provider.h"
-@@ -56,6 +57,7 @@ const char kThumbsWhiteListedExtension[] = "khopmbdjffemhegeeobelklnbglcdgfh";
+@@ -54,6 +55,7 @@ const char kExtensionBlocklistHttpsUrlPrefix[] =
  ChromeExtensionsClient::ChromeExtensionsClient() {
    AddAPIProvider(std::make_unique<ChromeExtensionsAPIProvider>());
    AddAPIProvider(std::make_unique<CoreExtensionsAPIProvider>());

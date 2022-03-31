@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -48,6 +49,10 @@ class TestNetworkChangeNotifier {
   TestNetworkChangeNotifier()
       : mock_notifier_(net::test::MockNetworkChangeNotifier::Create()) {}
 
+  TestNetworkChangeNotifier(const TestNetworkChangeNotifier&) = delete;
+  TestNetworkChangeNotifier& operator=(const TestNetworkChangeNotifier&) =
+      delete;
+
   // Simulates a change of the connection type to |type|. This will notify any
   // objects that are NetworkChangeNotifiers.
   void SimulateNetworkConnectionChange(
@@ -70,8 +75,6 @@ class TestNetworkChangeNotifier {
 
  private:
   std::unique_ptr<net::test::MockNetworkChangeNotifier> mock_notifier_;
-
-  DISALLOW_COPY_AND_ASSIGN(TestNetworkChangeNotifier);
 };
 
 // A language model that just returns its instance variable.
@@ -94,14 +97,14 @@ struct ProfilePrefRegistration {
       sync_preferences::TestingPrefServiceSyncable* prefs) {
     language::LanguagePrefs::RegisterProfilePrefs(prefs->registry());
     prefs->SetString(translate::testing::accept_languages_prefs, std::string());
-#if defined(OS_CHROMEOS)
+#if BUILDFLAG(IS_CHROMEOS)
     prefs->SetString(
         translate::testing::preferred_languages_prefs, std::string());
 #endif
     TranslatePrefs::RegisterProfilePrefs(prefs->registry());
     // TODO(groby): Figure out RegisterProfilePrefs() should register this.
     prefs->registry()->RegisterBooleanPref(
-        prefs::kOfferTranslateEnabled, true,
+        translate::prefs::kOfferTranslateEnabled, true,
         user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
   }
 };
@@ -145,14 +148,6 @@ class TranslateManagerTest : public ::testing::Test {
               translate_manager_->GetLanguageState()->HasLanguageChanged());
   }
 
-  void SetLanguageTooOftenDenied(const std::string& language) {
-    translate_prefs_.UpdateLastDeniedTime(language);
-    translate_prefs_.UpdateLastDeniedTime(language);
-
-    EXPECT_TRUE(translate_prefs_.IsTooOftenDenied(language));
-    EXPECT_FALSE(translate_prefs_.IsTooOftenDenied("other_language"));
-  }
-
   // Required to instantiate a net::test::MockNetworkChangeNotifier, because it
   // uses ObserverListThreadSafe.
   base::test::TaskEnvironment task_environment_;
@@ -161,7 +156,7 @@ class TranslateManagerTest : public ::testing::Test {
   ProfilePrefRegistration registration_;
   // TODO(groby): request TranslatePrefs from |mock_translate_client_| instead.
   TranslatePrefs translate_prefs_;
-  TranslateDownloadManager* manager_;
+  raw_ptr<TranslateDownloadManager> manager_ = nullptr;
 
   TestNetworkChangeNotifier network_notifier_;
   translate::testing::MockTranslateDriver driver_;
@@ -184,9 +179,9 @@ TEST_F(TranslateManagerTest, CanManuallyTranslate_WithoutAPIKey) {
         &mock_translate_ranker_,
         &mock_language_model_));
 
-  prefs_.SetBoolean(prefs::kOfferTranslateEnabled, true);
+  prefs_.SetBoolean(translate::prefs::kOfferTranslateEnabled, true);
   ON_CALL(mock_translate_client_, IsTranslatableURL(GURL::EmptyGURL()))
-          .WillByDefault(Return(true));
+      .WillByDefault(Return(true));
   network_notifier_.SimulateOnline();
 
   translate_manager_->GetLanguageState()->LanguageDetermined("de", true);
@@ -206,9 +201,9 @@ TEST_F(TranslateManagerTest, CanManuallyTranslate_WithAPIKey) {
         &mock_translate_ranker_,
         &mock_language_model_));
 
-  prefs_.SetBoolean(prefs::kOfferTranslateEnabled, true);
+  prefs_.SetBoolean(translate::prefs::kOfferTranslateEnabled, true);
   ON_CALL(mock_translate_client_, IsTranslatableURL(GURL::EmptyGURL()))
-          .WillByDefault(Return(true));
+      .WillByDefault(Return(true));
   network_notifier_.SimulateOnline();
 
   translate_manager_->GetLanguageState()->LanguageDetermined("de", true);

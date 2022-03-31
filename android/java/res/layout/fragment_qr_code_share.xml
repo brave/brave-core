@@ -33,7 +33,7 @@
             android:layout_gravity="center"
             android:contentDescription="@null" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

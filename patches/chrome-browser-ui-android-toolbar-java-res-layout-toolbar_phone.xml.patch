@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
+index b21de2a2419e9d915ea25e00d326753cbf6b7753..63699b94f8b7ae2b72729b66069a2a452f28d101 100644
+--- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
++++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
+@@ -36,6 +36,7 @@
+         android:orientation="horizontal"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
++        android:layout_marginEnd="8dp"
+         android:layout_gravity="top|end" >
+ 
+         <ViewStub
+@@ -45,6 +46,7 @@
+             style="@style/ToolbarButton"
+             android:paddingStart="@dimen/toolbar_phone_optional_button_padding"
+             android:visibility="gone" />
++        <include layout="@layout/brave_toolbar" android:layout_height="wrap_content" android:layout_width="match_parent" />
+ 
+         <org.chromium.chrome.browser.toolbar.top.ToggleTabStackButton
+             android:id="@+id/tab_switcher_button"

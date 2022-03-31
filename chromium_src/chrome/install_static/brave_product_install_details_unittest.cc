@@ -7,7 +7,6 @@
 #include "base/base_paths.h"
 #include "base/files/file_path.h"
 #include "base/i18n/case_conversion.h"
-#include "base/macros.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/test_reg_util_win.h"
@@ -120,6 +119,10 @@ constexpr TestData kTestData[] = {
 
 // Test that MakeProductDetails properly sniffs out an install's details.
 class MakeProductDetailsTest : public testing::TestWithParam<TestData> {
+ public:
+  MakeProductDetailsTest(const MakeProductDetailsTest&) = delete;
+  MakeProductDetailsTest& operator=(const MakeProductDetailsTest&) = delete;
+
  protected:
   MakeProductDetailsTest()
       : test_data_(GetParam()),
@@ -174,8 +177,6 @@ class MakeProductDetailsTest : public testing::TestWithParam<TestData> {
   const TestData& test_data_;
   HKEY root_key_;
   nt::ROOT_KEY nt_root_key_;
-
-  DISALLOW_COPY_AND_ASSIGN(MakeProductDetailsTest);
 };
 
 // Test that the install mode is sniffed properly based on the path.
@@ -197,59 +198,6 @@ TEST_P(MakeProductDetailsTest, DefaultChannel) {
   std::unique_ptr<PrimaryInstallDetails> details(
       MakeProductDetails(test_data().path));
   EXPECT_THAT(details->channel(), StrEq(test_data().channel));
-}
-
-// Test that the channel name is properly parsed out of additional parameters.
-TEST_P(MakeProductDetailsTest, AdditionalParametersChannels) {
-  const std::pair<const wchar_t*, const wchar_t*> kApChannels[] = {
-      // stable
-      {L"", L""},
-      {L"-full", L""},
-      {L"x64-stable", L""},
-      {L"x64-stable-full", L""},
-      {L"baz-x64-stable", L""},
-      {L"foo-1.1-beta", L""},
-      {L"2.0-beta", L""},
-      {L"bar-2.0-dev", L""},
-      {L"1.0-dev", L""},
-      {L"fuzzy", L""},
-      {L"foo", L""},
-      {L"-multi-chrome", L""},                               // Legacy.
-      {L"x64-stable-multi-chrome", L""},                     // Legacy.
-      {L"-stage:ensemble_patching-multi-chrome-full", L""},  // Legacy.
-      {L"-multi-chrome-full", L""},                          // Legacy.
-      // beta
-      {L"1.1-beta", L"beta"},
-      {L"1.1-beta-full", L"beta"},
-      {L"x64-beta", L"beta"},
-      {L"x64-beta-full", L"beta"},
-      {L"1.1-bar", L"beta"},
-      {L"1n1-foobar", L"beta"},
-      {L"x64-Beta", L"beta"},
-      {L"bar-x64-beta", L"beta"},
-      // dev
-      {L"2.0-dev", L"dev"},
-      {L"2.0-dev-full", L"dev"},
-      {L"x64-dev", L"dev"},
-      {L"x64-dev-full", L"dev"},
-      {L"2.0-DEV", L"dev"},
-      {L"2.0-dev-eloper", L"dev"},
-      {L"2.0-doom", L"dev"},
-      {L"250-doom", L"dev"},
-  };
-
-  for (const auto& ap_and_channel : kApChannels) {
-    SetAp(ap_and_channel.first);
-    std::unique_ptr<PrimaryInstallDetails> details(
-        MakeProductDetails(test_data().path));
-    if (kInstallModes[test_data().index].channel_strategy ==
-        ChannelStrategy::ADDITIONAL_PARAMETERS) {
-      EXPECT_THAT(details->channel(), StrEq(ap_and_channel.second));
-    } else {
-      // "ap" is ignored for this mode.
-      EXPECT_THAT(details->channel(), StrEq(test_data().channel));
-    }
-  }
 }
 
 // Test that the "ap" value is cached during initialization.
@@ -300,8 +248,8 @@ TEST_P(MakeProductDetailsTest, UpdateCohortName) {
   }
 }
 
-INSTANTIATE_TEST_CASE_P(All,
-                        MakeProductDetailsTest,
-                        testing::ValuesIn(kTestData));
+INSTANTIATE_TEST_SUITE_P(All,
+                         MakeProductDetailsTest,
+                         testing::ValuesIn(kTestData));
 
 }  // namespace install_static

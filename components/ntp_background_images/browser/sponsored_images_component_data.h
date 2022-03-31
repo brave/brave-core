@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/optional.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ntp_background_images {
 
@@ -18,7 +18,7 @@ struct SponsoredImagesComponentData {
   std::string component_id;
 };
 
-base::Optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(
+absl::optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(
     const std::string& region);
 
 }  // namespace ntp_background_images

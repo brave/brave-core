@@ -16,8 +16,9 @@
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
-#include "chrome/common/webui_url_constants.h"
+#include "chrome/browser/themes/theme_properties.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -57,7 +58,7 @@ SidebarControlView::SidebarControlView(BraveBrowser* browser)
   UpdateItemAddButtonState();
   UpdateSettingsButtonState();
 
-  sidebar_model_observed_.Add(browser_->sidebar_controller()->model());
+  sidebar_model_observed_.Observe(browser_->sidebar_controller()->model());
 }
 
 void SidebarControlView::Layout() {
@@ -115,11 +116,12 @@ void SidebarControlView::OnThemeChanged() {
 void SidebarControlView::UpdateBackgroundAndBorder() {
   if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
     constexpr int kBorderThickness = 1;
-    SetBackground(views::CreateSolidBackground(theme_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND)));
+    SetBackground(views::CreateSolidBackground(
+        theme_provider->GetColor(ThemeProperties::COLOR_TOOLBAR)));
     SetBorder(views::CreateSolidSidedBorder(
         0, 0, 0, kBorderThickness,
-        theme_provider->GetColor(BraveThemeProperties::COLOR_SIDEBAR_BORDER)));
+        theme_provider->GetColor(
+            ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR)));
   }
 }
 
@@ -141,9 +143,6 @@ void SidebarControlView::ShowContextMenuForViewImpl(
   context_menu_model_->AddCheckItem(
       static_cast<int>(ShowSidebarOption::kShowOnMouseOver),
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER));
-  context_menu_model_->AddCheckItem(
-      static_cast<int>(ShowSidebarOption::kShowOnClick),
-      l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ONCLICK));
   context_menu_model_->AddCheckItem(
       static_cast<int>(ShowSidebarOption::kShowNever),
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_NEVER));
@@ -189,12 +188,13 @@ void SidebarControlView::AddChildViews() {
   sidebar_items_view_ =
       AddChildView(std::make_unique<SidebarItemsScrollView>(browser_));
 
-  sidebar_item_add_view_ =
-      AddChildView(std::make_unique<SidebarItemAddButton>(browser_));
+  sidebar_item_add_view_ = AddChildView(std::make_unique<SidebarItemAddButton>(
+      browser_, l10n_util::GetStringUTF16(IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE)));
   sidebar_item_add_view_->set_context_menu_controller(this);
 
-  sidebar_settings_view_ =
-      AddChildView(std::make_unique<SidebarButtonView>(this));
+  sidebar_settings_view_ = AddChildView(std::make_unique<SidebarButtonView>(
+      this, l10n_util::GetStringUTF16(IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP)));
+
   sidebar_settings_view_->SetCallback(
       base::BindRepeating(&SidebarControlView::OnButtonPressed,
                           base::Unretained(this), sidebar_settings_view_));
@@ -203,12 +203,14 @@ void SidebarControlView::AddChildViews() {
 void SidebarControlView::OnButtonPressed(views::View* view) {
   if (view == sidebar_settings_view_) {
     browser_->sidebar_controller()->LoadAtTab(
-        GURL(chrome::kChromeUISettingsURL));
+        GURL("brave://settings?search=" +
+             l10n_util::GetStringUTF8(IDS_SETTINGS_SIDEBAR_SHOW_OPTION_TITLE)));
   }
 }
 
 void SidebarControlView::Update() {
   UpdateItemAddButtonState();
+  sidebar_items_view_->Update();
 }
 
 void SidebarControlView::UpdateItemAddButtonState() {
@@ -257,3 +259,6 @@ bool SidebarControlView::IsBubbleWidgetVisible() const {
 
   return false;
 }
+
+BEGIN_METADATA(SidebarControlView, views::View)
+END_METADATA

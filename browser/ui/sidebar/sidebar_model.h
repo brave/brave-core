@@ -11,12 +11,13 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "base/optional.h"
-#include "base/scoped_observer.h"
+#include "base/observer_list_types.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/ui/sidebar/sidebar_model_data.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_service_observer.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class CancelableTaskTracker;
@@ -86,6 +87,8 @@ class SidebarModel : public SidebarService::Observer,
 
   // Don't cache web_contents. It can be deleted during the runtime.
   content::WebContents* GetWebContentsAt(int index);
+  // Returns true when |web_contents| is used by sidebar panel.
+  bool IsSidebarWebContents(const content::WebContents* web_contents) const;
 
   // Don't cache item list. list can be changed during the runtime.
   const std::vector<SidebarItem> GetAllSidebarItems() const;
@@ -134,9 +137,9 @@ class SidebarModel : public SidebarService::Observer,
   std::unique_ptr<base::CancelableTaskTracker> task_tracker_;
   base::ObserverList<Observer> observers_;
   std::vector<std::unique_ptr<SidebarModelData>> data_;
-  ScopedObserver<SidebarService, SidebarService::Observer> sidebar_observed_{
-      this};
-  ScopedObserver<history::HistoryService, HistoryServiceObserver>
+  base::ScopedObservation<SidebarService, SidebarService::Observer>
+      sidebar_observed_{this};
+  base::ScopedObservation<history::HistoryService, HistoryServiceObserver>
       history_observed_{this};
   base::WeakPtrFactory<SidebarModel> weak_ptr_factory_{this};
 };

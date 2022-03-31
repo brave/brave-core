@@ -6,16 +6,21 @@
 #ifndef BRAVE_COMPONENTS_IPFS_IPFS_P3A_H_
 #define BRAVE_COMPONENTS_IPFS_IPFS_P3A_H_
 
+#include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
-
-namespace content {
-class BrowserContext;
-}
+#include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
 
 namespace ipfs {
+
+constexpr char kDetectionPromptCountHistogramName[] =
+    "Brave.IPFS.DetectionPromptCount";
+constexpr char kGatewaySettingHistogramName[] = "Brave.IPFS.GatewaySetting";
+constexpr char kLocalNodeRetentionHistogramName[] =
+    "Brave.IPFS.LocalNodeRetention";
+constexpr char kDaemonRunTimeHistogramName[] = "Brave.IPFS.DaemonRunTime";
 
 class BraveIpfsClientUpdater;
 class IpfsService;
@@ -27,7 +32,8 @@ int GetDaemonUsageBucket(base::TimeDelta elapsed_time);
 // Maintains a timer to report in the amount of up time.
 class IpfsP3A : public IpfsServiceObserver {
  public:
-  IpfsP3A(IpfsService* service, content::BrowserContext* contex);
+  IpfsP3A(IpfsService* service,
+          PrefService* pref_service);
   ~IpfsP3A() override;
   IpfsP3A(const IpfsP3A&) = delete;
   IpfsP3A& operator=(IpfsP3A&) = delete;
@@ -41,11 +47,15 @@ class IpfsP3A : public IpfsServiceObserver {
   void RecordDaemonUsage();
   void RecordInitialIPFSP3AState();
   void FlushTimeDelta();
+
+  void OnIPFSResolveMethodChanged();
+
   base::RepeatingTimer timer_;
-  IpfsService* service_;
+  raw_ptr<IpfsService> service_ = nullptr;
   base::TimeTicks daemon_start_time_;
   base::TimeDelta elapsed_time_;
-  content::BrowserContext* context_;
+  PrefService* pref_service_ = nullptr;
+  PrefChangeRegistrar pref_change_registrar_;
 };
 
 }  // namespace ipfs

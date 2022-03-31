@@ -9,7 +9,8 @@
 #include <utility>
 
 #include "base/auto_reset.h"
-#include "base/stl_util.h"
+#include "base/containers/contains.h"
+#include "base/logging.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/permissions/permission_lifetime_pref_names.h"
 #include "components/content_settings/core/browser/content_settings_registry.h"
@@ -44,7 +45,7 @@ PermissionLifetimeManager::PermissionLifetimeManager(
       permission_origin_lifetime_monitor_(
           std::move(permission_origin_lifetime_monitor)),
       permission_expirations_(prefs_),
-      expiration_timer_(std::make_unique<util::WallClockTimer>()) {
+      expiration_timer_(std::make_unique<base::WallClockTimer>()) {
   DCHECK(host_content_settings_map_);
   // In incognito prefs_ is nullptr.
 
@@ -186,7 +187,7 @@ void PermissionLifetimeManager::OnContentSettingChanged(
 void PermissionLifetimeManager::RestartExpirationTimerForTesting() {
   StopExpirationTimer();
   // Recreate timer to acknowledge a new task runnner.
-  expiration_timer_ = std::make_unique<util::WallClockTimer>();
+  expiration_timer_ = std::make_unique<base::WallClockTimer>();
   UpdateExpirationTimer();
 }
 

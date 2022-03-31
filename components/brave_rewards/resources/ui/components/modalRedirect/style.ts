@@ -42,3 +42,10 @@ export const StyledButton = styled('div')<{}>`
   flex-direction: column;
   align-items: center;
 `
+
+export const StyledLink = styled('a')<{}>`
+  text-decoration: none;
+  cursor: pointer;
+  color: ${p => p.theme.palette.blurple500};
+  font-weight: 600;
+`

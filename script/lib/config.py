@@ -80,14 +80,9 @@ def product_name():
             brave_core_package()['name'].split('-')[0])
 
 
-def project_name():
-    return (os.environ.get('npm_config_brave_project_name') or
-            brave_core_package()['name'].split('-')[0])
-
-
 def get_chrome_version():
     version = (os.environ.get('npm_config_brave_version') or
-               brave_browser_package()['config']['projects']['chrome']['tag'])
+               brave_core_package()['config']['projects']['chrome']['tag'])
     return version
 
 
@@ -97,7 +92,7 @@ def get_brave_version():
 
 def get_raw_version():
     return (os.environ.get('npm_config_brave_version') or
-            brave_browser_package()['version'])
+            brave_core_package()['version'])
 
 
 def get_platform_key():

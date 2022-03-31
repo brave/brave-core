@@ -13,6 +13,7 @@
 #include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
+#include "build/build_config.h"
 
 namespace brave_stats {
 
@@ -24,20 +25,20 @@ std::string GetDateAsYMD(const base::Time& time) {
 }
 
 std::string GetPlatformIdentifier() {
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   if (base::SysInfo::OperatingSystemArchitecture() == "x86")
     return "winia32-bc";
   else
     return "winx64-bc";
-#elif defined(OS_MAC)
-  #if defined(ARCH_CPU_X86_64)
-    return "osx-bc";
-  #elif defined(ARCH_CPU_ARM64)
-    return "osxarm64-bc";
-  #endif
-#elif defined(OS_ANDROID)
+#elif BUILDFLAG(IS_MAC)
+#if defined(ARCH_CPU_X86_64)
+  return "osx-bc";
+#elif defined(ARCH_CPU_ARM64)
+  return "osxarm64-bc";
+#endif
+#elif BUILDFLAG(IS_ANDROID)
   return "android-bc";
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
   return "linux-bc";
 #else
   return std::string();
@@ -86,6 +87,49 @@ std::string GetAPIKey() {
     env->GetVar("BRAVE_STATS_API_KEY", &api_key);
 
   return api_key;
+}
+
+// This is a helper method for dealing with timestamps set by other services in
+// the browser. This method makes the assumption that enabling the service
+// required a user interaction, and thus the uasge ping for the current day has
+// already fired. All calculations for daily, weekly, and monthly can use a
+// caller-specified timestamp as a reference, to accomodate non-reactive
+// services (stats_updater).
+//
+// The method returns a bitstring with the following values according to the
+// timestamp. All unannotated fields are unused.
+//
+// 0b00000000
+//        |||
+//        |||_____ Daily
+//        ||______ Weekly
+//        |_______ Monthly
+uint8_t UsageBitfieldFromTimestamp(const base::Time& last_usage_time,
+                                   const base::Time& last_reported_usage_time) {
+  uint8_t result = kIsInactiveUser;
+
+  base::Time::Exploded usage_time_exp;
+  last_usage_time.LocalExplode(&usage_time_exp);
+
+  base::Time::Exploded report_time_exp;
+  last_reported_usage_time.LocalExplode(&report_time_exp);
+
+  bool is_year_diff = report_time_exp.year != usage_time_exp.year;
+  bool is_month_diff = report_time_exp.month != usage_time_exp.month;
+
+  if (is_year_diff || is_month_diff) {
+    result |= kIsMonthlyUser;
+  }
+  if (is_year_diff || GetIsoWeekNumber(last_usage_time) !=
+                          GetIsoWeekNumber(last_reported_usage_time)) {
+    result |= kIsWeeklyUser;
+  }
+  if (is_year_diff || is_month_diff ||
+      usage_time_exp.day_of_month != report_time_exp.day_of_month) {
+    result |= kIsDailyUser;
+  }
+
+  return result;
 }
 
 }  // namespace brave_stats

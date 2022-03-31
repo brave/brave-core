@@ -133,7 +133,7 @@ interface Props {
   binanceClientUrl: string
   assetDepositInfo: Record<string, any>
   assetDepoitQRCodeSrcs: Record<string, string>
-  convertAssets: Record<string, Record<string, string>[]>
+  convertAssets: Record<string, Array<Record<string, string>>>
   accountBTCValue: string
   accountBTCUSDValue: string
   disconnectInProgress: boolean
@@ -161,8 +161,8 @@ interface Props {
 }
 
 class Binance extends React.PureComponent<Props, State> {
-  private fiatList: string[]
-  private currencyNames: Record<string, string>
+  private readonly fiatList: string[]
+  private readonly currencyNames: Record<string, string>
   private convertTimer: any
   private refreshInterval: any
 
@@ -488,7 +488,7 @@ class Binance extends React.PureComponent<Props, State> {
       return item.asset === currentConvertTo
     })
 
-    const minAmount = (subSelector && subSelector['minAmount']) || '0.00'
+    const minAmount = (subSelector && subSelector.minAmount) || '0.00'
     const meetsMinimum = parseFloat(currentConvertAmount) >= parseFloat(minAmount)
 
     return {
@@ -911,8 +911,8 @@ class Binance extends React.PureComponent<Props, State> {
           const currencyName = currencyNames[asset] || false
           const nameString = currencyName ? `(${currencyName})` : ''
 
-          if (lowerAsset.indexOf(lowerSearch) < 0 &&
-              lowerName.indexOf(lowerSearch) < 0 && currentDepositSearch) {
+          if (!lowerAsset.includes(lowerSearch) &&
+              !lowerName.includes(lowerSearch) && currentDepositSearch) {
             return null
           }
 

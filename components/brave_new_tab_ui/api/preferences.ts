@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import { addWebUIListener, sendWithPromise } from 'chrome://resources/js/cr.m'
+
 //
 // Manages get and set of NTP preference data
 // Ensures everything to do with communication
@@ -13,7 +15,7 @@
 type PreferencesUpdatedHandler = (prefData: NewTab.Preferences) => void
 
 export function getPreferences (): Promise<NewTab.Preferences> {
-  return window.cr.sendWithPromise<NewTab.Preferences>('getNewTabPagePreferences')
+  return sendWithPromise('getNewTabPagePreferences')
 }
 
 function sendSavePref (key: string, value: any) {
@@ -44,8 +46,8 @@ export function saveShowRewards (value: boolean): void {
   sendSavePref('showRewards', value)
 }
 
-export function saveShowTogether (value: boolean): void {
-  sendSavePref('showTogether', value)
+export function saveShowBraveTalk (value: boolean): void {
+  sendSavePref('showBraveTalk', value)
 }
 
 export function saveShowBinance (value: boolean): void {
@@ -76,14 +78,10 @@ export function saveIsBraveTodayOptedIn (value: boolean): void {
   sendSavePref('isBraveTodayOptedIn', value)
 }
 
-export function saveSetAllStackWidgets (value: boolean): void {
-  sendSavePref('showRewards', value)
-  sendSavePref('showTogether', value)
-  sendSavePref('showBinance', value)
-  sendSavePref('showGemini', value)
-  sendSavePref('showCryptoDotCom', value)
+export function saveSetAllStackWidgets (visible: boolean): void {
+  sendSavePref('hideAllWidgets', !visible)
 }
 
 export function addChangeListener (listener: PreferencesUpdatedHandler): void {
-  window.cr.addWebUIListener('preferences-changed', listener)
+  addWebUIListener('preferences-changed', listener)
 }

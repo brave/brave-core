@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_GCM_DRIVER_GCM_DRIVER_DESKTOP_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_GCM_DRIVER_GCM_DRIVER_DESKTOP_H_
 
-#include "../../../../components/gcm_driver/gcm_driver_desktop.h"
+#include "src/components/gcm_driver/gcm_driver_desktop.h"
 
 namespace gcm {
 

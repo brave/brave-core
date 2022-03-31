@@ -4,6 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/brave_browser.h"
+#include "chrome/browser/search/search.h"
+#include "chrome/common/webui_url_constants.h"
+#include "content/public/common/url_constants.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/brave_browser_window.h"
@@ -16,7 +20,7 @@
 
 BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  if (!sidebar::CanUseSidebar(profile()) || !is_type_normal())
+  if (!sidebar::CanUseSidebar(this))
     return;
   // Below call order is important.
   // When reaches here, Sidebar UI is setup in BraveBrowserView but
@@ -49,6 +53,29 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
 #endif
 }
 
+bool BraveBrowser::ShouldDisplayFavicon(
+    content::WebContents* web_contents) const {
+  // Override to not show favicon for NTP in tab.
+
+  // Suppress the icon for the new-tab page, even if a navigation to it is
+  // not committed yet. Note that we're looking at the visible URL, so
+  // navigations from NTP generally don't hit this case and still show an icon.
+  GURL url = web_contents->GetVisibleURL();
+  if (url.SchemeIs(content::kChromeUIScheme) &&
+      url.host_piece() == chrome::kChromeUINewTabHost) {
+    return false;
+  }
+
+  // Also suppress instant-NTP. This does not use search::IsInstantNTP since
+  // it looks at the last-committed entry and we need to show icons for pending
+  // navigations away from it.
+  if (search::IsInstantNTPURL(url, profile())) {
+    return false;
+  }
+
+  return Browser::ShouldDisplayFavicon(web_contents);
+}
+
 void BraveBrowser::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
@@ -56,8 +83,13 @@ void BraveBrowser::OnTabStripModelChanged(
   Browser::OnTabStripModelChanged(tab_strip_model, change, selection);
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  // We need to update sidebar UI whenever active tab is changed.
-  if (selection.active_tab_changed() && sidebar_controller_)
+  if (!sidebar_controller_)
+    return;
+  // We need to update sidebar UI whenever active tab is changed or
+  // inactive tab is added/removed.
+  if (change.type() == TabStripModelChange::Type::kInserted ||
+      change.type() == TabStripModelChange::Type::kRemoved ||
+      selection.active_tab_changed())
     sidebar_controller_->sidebar()->UpdateSidebar();
 #endif
 }

@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace ads {
@@ -18,7 +19,6 @@ namespace ads {
 class AdsClientMock : public AdsClient {
  public:
   AdsClientMock();
-
   ~AdsClientMock() override;
 
   MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());
@@ -36,18 +36,21 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD1(CloseNotification, void(const std::string& uuid));
 
-  MOCK_CONST_METHOD3(RecordAdEvent,
-                     void(const std::string& type,
+  MOCK_CONST_METHOD4(RecordAdEventForId,
+                     void(const std::string& id,
+                          const std::string& type,
                           const std::string& confirmation_type,
-                          const uint64_t timestamp));
+                          const double timestamp));
 
-  MOCK_CONST_METHOD2(
-      GetAdEvents,
-      std::vector<uint64_t>(const std::string& ad_type,
-                            const std::string& confirmation_type));
+  MOCK_CONST_METHOD2(GetAdEvents,
+                     std::vector<double>(const std::string& ad_type,
+                                         const std::string& confirmation_type));
+
+  MOCK_CONST_METHOD1(ResetAdEventsForId, void(const std::string& id));
 
   MOCK_METHOD2(UrlRequest,
-               void(UrlRequestPtr url_request, UrlRequestCallback callback));
+               void(mojom::UrlRequestPtr url_request,
+                    UrlRequestCallback callback));
 
   MOCK_METHOD3(Save,
                void(const std::string& name,
@@ -68,15 +71,28 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD1(LoadResourceForId, std::string(const std::string& id));
 
+  MOCK_METHOD0(ClearScheduledCaptcha, void());
+
+  MOCK_METHOD2(GetScheduledCaptcha,
+               void(const std::string& payment_id,
+                    GetScheduledCaptchaCallback callback));
+
+  MOCK_METHOD2(ShowScheduledCaptchaNotification,
+               void(const std::string& payment_id,
+                    const std::string& captcha_id));
+
   MOCK_METHOD2(RunDBTransaction,
-               void(DBTransactionPtr, RunDBTransactionCallback));
+               void(mojom::DBTransactionPtr, RunDBTransactionCallback));
 
   MOCK_METHOD0(OnAdRewardsChanged, void());
 
   MOCK_METHOD3(RecordP2AEvent,
                void(const std::string& name,
-                    const ads::P2AEventType type,
+                    const mojom::P2AEventType type,
                     const std::string& value));
+
+  MOCK_METHOD1(LogTrainingCovariates,
+               void(const mojom::TrainingCovariatesPtr training_covariates));
 
   MOCK_METHOD4(Log,
                void(const char* file,
@@ -107,6 +123,8 @@ class AdsClientMock : public AdsClient {
                void(const std::string& path, const uint64_t value));
 
   MOCK_METHOD1(ClearPref, void(const std::string& path));
+
+  MOCK_CONST_METHOD1(HasPrefPath, bool(const std::string& path));
 };
 
 }  // namespace ads

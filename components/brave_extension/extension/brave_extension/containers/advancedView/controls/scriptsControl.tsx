@@ -152,8 +152,8 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
             <BlockedInfoRowText>{getLocale('scriptsBlocked')}</BlockedInfoRowText>
           </BlockedInfoRowData>
           {
-            this.shouldDisableResourcesRow === false
-              && (
+            !this.shouldDisableResourcesRow &&
+              (
                 <LinkAction
                   size='small'
                   onClick={this.onClickAllowScriptsOnce}

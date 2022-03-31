@@ -7,6 +7,7 @@
 
 package org.chromium.chrome.browser.onboarding.v2;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -27,7 +28,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
-import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.OnboardingV2PagerAdapter;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -36,17 +36,19 @@ import org.chromium.components.user_prefs.UserPrefs;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class HighlightDialogFragment extends DialogFragment {
     final public static String TAG_FRAGMENT = "HIGHLIGHT_FRAG";
+    private final static String NTP_TUTORIAL_PAGE = "https://brave.com/ja/android-ntp-tutorial";
 
     public interface HighlightDialogListener {
         void onNextPage();
         void onLearnMore();
     }
 
-    private static final List<Integer> highlightViews = Arrays.asList(R.id.brave_stats_ads,
-            R.id.brave_stats_data_saved, R.id.brave_stats_time, R.id.ntp_widget_cardview_layout);
+    private static final List<Integer> highlightViews =
+            Arrays.asList(R.id.brave_stats_ads, R.id.brave_stats_data_saved, R.id.brave_stats_time);
 
     private HighlightItem item;
     private HighlightView highlightView;
@@ -82,7 +84,7 @@ public class HighlightDialogFragment extends DialogFragment {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (positionOffset == 0) {
-                    highlightView(isFromStats ? 3 : position);
+                    highlightView(isFromStats ? 2 : position);
                 }
             }
 
@@ -101,6 +103,7 @@ public class HighlightDialogFragment extends DialogFragment {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkAndOpenNtpPage();
                 dismiss();
             }
         });
@@ -123,6 +126,7 @@ public class HighlightDialogFragment extends DialogFragment {
     }
 
     @Override
+    @SuppressLint("SourceLockedOrientationActivity")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -149,7 +153,7 @@ public class HighlightDialogFragment extends DialogFragment {
 
     private void highlightView(int position) {
         int viewId;
-        if (position == 3 && NTPWidgetManager.getInstance().getUsedWidgets().size() <= 0
+        if (position == 3
                 && !UserPrefs.get(Profile.getLastUsedRegularProfile())
                             .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
             viewId = R.id.ntp_stats_layout;
@@ -185,6 +189,7 @@ public class HighlightDialogFragment extends DialogFragment {
                         || isFromStats) {
                     dismiss();
                     BraveStatsUtil.showBraveStats();
+                    checkAndOpenNtpPage();
                 } else {
                     viewpager.setCurrentItem(currentPage + 1);
                 }
@@ -198,4 +203,11 @@ public class HighlightDialogFragment extends DialogFragment {
             ((BraveActivity)getActivity()).showOnboardingV2(false);
         }
     };
+
+    private void checkAndOpenNtpPage() {
+        String countryCode = Locale.getDefault().getCountry();
+        if (((BraveActivity) getActivity()) != null && countryCode.equals("JP")) {
+            ((BraveActivity) getActivity()).openNewOrSelectExistingTab(NTP_TUTORIAL_PAGE);
+        }
+    }
 }

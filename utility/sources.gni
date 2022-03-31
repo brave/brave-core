@@ -1,3 +1,5 @@
+import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/utility/importer/sources.gni")
 
 brave_utility_sources = [
@@ -6,8 +8,31 @@ brave_utility_sources = [
 ]
 brave_utility_sources += brave_utility_importer_sources
 
-brave_utility_deps = []
+brave_utility_deps = [
+  "//brave/components/ipfs/buildflags",
+  "//brave/components/services/bat_ads:lib",
+  "//brave/components/services/bat_ads/public/interfaces",
+  "//brave/components/services/bat_ledger:lib",
+  "//brave/components/services/bat_ledger/public/interfaces",
+  "//brave/components/tor/buildflags",
+  "//mojo/public/cpp/bindings",
+]
+
 brave_utility_deps += brave_utility_importer_deps
+
+if (enable_ipfs) {
+  brave_utility_deps += [
+    "//brave/components/services/ipfs",
+    "//brave/components/services/ipfs/public/mojom",
+  ]
+}
+
+if (enable_tor) {
+  brave_utility_deps += [
+    "//brave/components/services/tor",
+    "//brave/components/services/tor/public/interfaces",
+  ]
+}
 
 brave_utility_public_deps = []
 brave_utility_public_deps += brave_utility_importer_public_deps

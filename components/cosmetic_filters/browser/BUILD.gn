@@ -1,6 +1,6 @@
 import("//build/config/features.gni")
 
-source_set("browser") {
+static_library("browser") {
   sources = [
     "cosmetic_filters_resources.cc",
     "cosmetic_filters_resources.h",

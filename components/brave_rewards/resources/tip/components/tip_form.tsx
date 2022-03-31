@@ -22,7 +22,7 @@ import * as style from './tip_form.style'
 function getTipKindOptions (
   locale: Locale,
   showMonthlyStar: boolean
-): SliderSwitchOption<TipKind>[] {
+): Array<SliderSwitchOption<TipKind>> {
   let monthlyText = locale.getString('monthlyText')
   if (showMonthlyStar) {
     monthlyText = '* ' + monthlyText

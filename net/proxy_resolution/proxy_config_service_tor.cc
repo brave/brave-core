@@ -19,6 +19,7 @@
 #include "base/values.h"
 #include "crypto/random.h"
 #include "net/base/network_isolation_key.h"
+#include "net/base/proxy_string_util.h"
 #include "net/base/schemeful_site.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
@@ -29,6 +30,8 @@ namespace net {
 class TorProxyMap {
  public:
   TorProxyMap();
+  TorProxyMap(const TorProxyMap&) = delete;
+  TorProxyMap& operator=(const TorProxyMap&) = delete;
   ~TorProxyMap();
   std::string Get(const std::string& key);
   void Erase(const std::string& key);
@@ -43,7 +46,6 @@ class TorProxyMap {
   std::map<std::string, std::pair<std::string, base::Time>> map_;
   std::priority_queue<std::pair<base::Time, std::string>> queue_;
   base::OneShotTimer timer_;
-  DISALLOW_COPY_AND_ASSIGN(TorProxyMap);
 };
 
 namespace {
@@ -99,7 +101,7 @@ bool IsTorProxyConfig(const ProxyConfigWithAnnotation& config) {
 
 const int kTorPasswordLength = 16;
 // Default tor circuit life time is 10 minutes
-constexpr base::TimeDelta kTenMins = base::TimeDelta::FromMinutes(10);
+constexpr base::TimeDelta kTenMins = base::Minutes(10);
 
 ProxyConfigServiceTor::ProxyConfigServiceTor() {}
 
@@ -111,7 +113,7 @@ ProxyConfigServiceTor::~ProxyConfigServiceTor() {}
 
 void ProxyConfigServiceTor::UpdateProxyURI(const std::string& uri) {
   ProxyServer proxy_server =
-      ProxyServer::FromURI(uri, ProxyServer::SCHEME_SOCKS5);
+      net::ProxyUriToProxyServer(uri, ProxyServer::SCHEME_SOCKS5);
   DCHECK(proxy_server.is_valid());
   proxy_server_ = proxy_server;
 
@@ -140,7 +142,7 @@ std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
   const net::SchemefulSite url_site(url);
   const net::NetworkIsolationKey network_isolation_key(url_site, url_site);
 
-  const base::Optional<net::SchemefulSite>& schemeful_site =
+  const absl::optional<net::SchemefulSite>& schemeful_site =
       network_isolation_key.GetTopFrameSite();
   DCHECK(schemeful_site.has_value());
   std::string host = GURL(schemeful_site->Serialize()).host();
@@ -177,8 +179,8 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
   // Adding username & password to global sock://127.0.0.1:[port] config
   // without actually modifying it when resolving proxy for each url.
   const std::string username = CircuitIsolationKey(url);
-  const std::string& proxy_uri =
-      config.value().proxy_rules().single_proxies.Get().ToURI();
+  const std::string& proxy_uri = net::ProxyServerToProxyUri(
+      config.value().proxy_rules().single_proxies.Get());
   HostPortPair host_port_pair =
       config.value().proxy_rules().single_proxies.Get().host_port_pair();
 
@@ -187,9 +189,9 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
     if (host_port_pair.username() == username) {
       // password is a int64_t -> std::to_string in milliseconds
       int64_t time = strtoll(host_port_pair.password().c_str(), nullptr, 10);
-      map->MaybeExpire(host_port_pair.username(),
-          base::Time::FromDeltaSinceWindowsEpoch(
-              base::TimeDelta::FromMicroseconds(time)));
+      map->MaybeExpire(
+          host_port_pair.username(),
+          base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(time)));
     }
     host_port_pair.set_username(username);
     host_port_pair.set_password(map->Get(username));
@@ -222,7 +224,8 @@ ProxyConfigServiceTor::GetLatestProxyConfig(
 
   ProxyConfig proxy_config;
   proxy_config.proxy_rules().bypass_rules.AddRulesToSubtractImplicit();
-  proxy_config.proxy_rules().ParseFromString(proxy_server_.ToURI());
+  proxy_config.proxy_rules().ParseFromString(
+      net::ProxyServerToProxyUri(proxy_server_));
   *config =
       net::ProxyConfigWithAnnotation(proxy_config, kTorProxyTrafficAnnotation);
 

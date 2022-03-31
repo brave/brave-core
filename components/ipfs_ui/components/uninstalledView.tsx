@@ -19,6 +19,7 @@ export class UninstalledView extends React.Component<Props, {}> {
   constructor (props: Props) {
     super(props)
   }
+
   progress () {
     if (!this.props.daemonStatus.installing ||
         this.props.installationProgress.downloaded_bytes === -1 ||
@@ -33,10 +34,12 @@ export class UninstalledView extends React.Component<Props, {}> {
     const percentages = 100 * bytes / total
     return <span>{percentages.toFixed(2)}% </span>
   }
+
   disableInstallButton () {
     return this.props.daemonStatus.installing &&
            !this.props.daemonStatus.error.length
   }
+
   render () {
     return (
       <Section>

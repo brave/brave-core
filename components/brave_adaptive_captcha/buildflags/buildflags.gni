@@ -1,0 +1,3 @@
+declare_args() {
+  brave_adaptive_captcha_enabled = is_mac || is_linux || is_win
+}

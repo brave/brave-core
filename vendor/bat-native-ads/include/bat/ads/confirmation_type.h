@@ -6,11 +6,12 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_CONFIRMATION_TYPE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_CONFIRMATION_TYPE_H_
 
+#include <iostream>
 #include <string>
 
 namespace ads {
 
-class ConfirmationType {
+class ConfirmationType final {
  public:
   enum Value {
     // When adding new confirmation types they must be added with highest
@@ -19,8 +20,10 @@ class ConfirmationType {
     kClicked,
     kDismissed,
     kViewed,
+    kServed,
     kTransferred,
     kFlagged,
+    kSaved,
     kUpvoted,
     kDownvoted,
     kConversion
@@ -35,14 +38,16 @@ class ConfirmationType {
   explicit ConfirmationType(const std::string& value);
 
   Value value() const;
-  operator std::string() const;
+  std::string ToString() const;
 
   bool operator==(const ConfirmationType& rhs) const;
   bool operator!=(const ConfirmationType& rhs) const;
 
  private:
-  Value value_;
+  Value value_ = kUndefined;
 };
+
+std::ostream& operator<<(std::ostream& os, const ConfirmationType& type);
 
 }  // namespace ads
 

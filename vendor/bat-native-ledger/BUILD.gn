@@ -19,6 +19,10 @@ config("external_config") {
     "include",
     "$target_gen_dir/include",
   ]
+  defines = [
+    "GEMINI_OAUTH_STAGING_URL=\"$gemini_oauth_staging_url\"",
+    "BITFLYER_STAGING_URL=\"$bitflyer_staging_url\"",
+  ]
 }
 
 config("internal_config") {
@@ -34,6 +38,14 @@ config("internal_config") {
     "BITFLYER_STAGING_CLIENT_ID=\"$bitflyer_staging_client_id\"",
     "BITFLYER_STAGING_CLIENT_SECRET=\"$bitflyer_staging_client_secret\"",
     "BITFLYER_STAGING_URL=\"$bitflyer_staging_url\"",
+    "GEMINI_API_URL=\"$gemini_api_url\"",
+    "GEMINI_API_STAGING_URL=\"$gemini_api_staging_url\"",
+    "GEMINI_OAUTH_URL=\"$gemini_oauth_url\"",
+    "GEMINI_OAUTH_STAGING_URL=\"$gemini_oauth_staging_url\"",
+    "GEMINI_WALLET_CLIENT_ID=\"$gemini_wallet_client_id\"",
+    "GEMINI_WALLET_CLIENT_SECRET=\"$gemini_wallet_client_secret\"",
+    "GEMINI_WALLET_STAGING_CLIENT_ID=\"$gemini_wallet_staging_client_id\"",
+    "GEMINI_WALLET_STAGING_CLIENT_SECRET=\"$gemini_wallet_staging_client_secret\"",
     "UPHOLD_CLIENT_ID=\"$uphold_client_id\"",
     "UPHOLD_CLIENT_SECRET=\"$uphold_client_secret\"",
     "UPHOLD_STAGING_CLIENT_ID=\"$uphold_staging_client_id\"",
@@ -42,6 +54,15 @@ config("internal_config") {
   include_dirs = [
     "src",
     "$target_gen_dir/src",
+  ]
+}
+
+config("endpoints_config") {
+  visibility = [ ":*" ]
+  defines = [
+    "REWARDS_GRANT_DEV_ENDPOINT=\"$rewards_grant_dev_endpoint\"",
+    "REWARDS_GRANT_STAGING_ENDPOINT=\"$rewards_grant_staging_endpoint\"",
+    "REWARDS_GRANT_PROD_ENDPOINT=\"$rewards_grant_prod_endpoint\"",
   ]
 }
 
@@ -75,10 +96,14 @@ source_set("headers") {
     "//brave/browser/ui:ui",
     "//brave/components/brave_rewards/browser:browser",
     "//brave/components/brave_rewards/browser:testutil",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/payment",
     "//brave/vendor/brave-ios:rewards_db",
   ]
 
-  public_configs = [ ":external_config" ]
+  public_configs = [
+    ":endpoints_config",
+    ":external_config",
+  ]
 
   sources = [
     "include/bat/ledger/export.h",
@@ -102,7 +127,10 @@ proto_library("publishers_proto") {
 
 source_set("ledger") {
   visibility = [ ":*" ]
-  configs += [ ":internal_config" ]
+  configs += [
+    ":endpoints_config",
+    ":internal_config",
+  ]
 
   output_name = "bat_native_ledger"
 
@@ -267,6 +295,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/database/migration/migration_v30.h",
     "src/bat/ledger/internal/database/migration/migration_v31.h",
     "src/bat/ledger/internal/database/migration/migration_v32.h",
+    "src/bat/ledger/internal/database/migration/migration_v33.h",
+    "src/bat/ledger/internal/database/migration/migration_v34.h",
     "src/bat/ledger/internal/database/migration/migration_v4.h",
     "src/bat/ledger/internal/database/migration/migration_v5.h",
     "src/bat/ledger/internal/database/migration/migration_v6.h",
@@ -289,6 +319,24 @@ source_set("ledger") {
     "src/bat/ledger/internal/endpoint/bitflyer/post_oauth/post_oauth_bitflyer.h",
     "src/bat/ledger/internal/endpoint/bitflyer/post_transaction/post_transaction_bitflyer.cc",
     "src/bat/ledger/internal/endpoint/bitflyer/post_transaction/post_transaction_bitflyer.h",
+    "src/bat/ledger/internal/endpoint/gemini/gemini_server.cc",
+    "src/bat/ledger/internal/endpoint/gemini/gemini_server.h",
+    "src/bat/ledger/internal/endpoint/gemini/gemini_utils.cc",
+    "src/bat/ledger/internal/endpoint/gemini/gemini_utils.h",
+    "src/bat/ledger/internal/endpoint/gemini/get_transaction/get_transaction_gemini.cc",
+    "src/bat/ledger/internal/endpoint/gemini/get_transaction/get_transaction_gemini.h",
+    "src/bat/ledger/internal/endpoint/gemini/post_account/post_account_gemini.cc",
+    "src/bat/ledger/internal/endpoint/gemini/post_account/post_account_gemini.h",
+    "src/bat/ledger/internal/endpoint/gemini/post_balance/post_balance_gemini.cc",
+    "src/bat/ledger/internal/endpoint/gemini/post_balance/post_balance_gemini.h",
+    "src/bat/ledger/internal/endpoint/gemini/post_cancel_transaction/post_cancel_transaction_gemini.cc",
+    "src/bat/ledger/internal/endpoint/gemini/post_cancel_transaction/post_cancel_transaction_gemini.h",
+    "src/bat/ledger/internal/endpoint/gemini/post_oauth/post_oauth_gemini.cc",
+    "src/bat/ledger/internal/endpoint/gemini/post_oauth/post_oauth_gemini.h",
+    "src/bat/ledger/internal/endpoint/gemini/post_recipient_id/post_recipient_id_gemini.cc",
+    "src/bat/ledger/internal/endpoint/gemini/post_recipient_id/post_recipient_id_gemini.h",
+    "src/bat/ledger/internal/endpoint/gemini/post_transaction/post_transaction_gemini.cc",
+    "src/bat/ledger/internal/endpoint/gemini/post_transaction/post_transaction_gemini.h",
     "src/bat/ledger/internal/endpoint/payment/get_credentials/get_credentials.cc",
     "src/bat/ledger/internal/endpoint/payment/get_credentials/get_credentials.h",
     "src/bat/ledger/internal/endpoint/payment/payment_server.cc",
@@ -301,6 +349,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/endpoint/payment/post_order/post_order.h",
     "src/bat/ledger/internal/endpoint/payment/post_transaction_anon/post_transaction_anon.cc",
     "src/bat/ledger/internal/endpoint/payment/post_transaction_anon/post_transaction_anon.h",
+    "src/bat/ledger/internal/endpoint/payment/post_transaction_gemini/post_transaction_sku_gemini.cc",
+    "src/bat/ledger/internal/endpoint/payment/post_transaction_gemini/post_transaction_sku_gemini.h",
     "src/bat/ledger/internal/endpoint/payment/post_transaction_uphold/post_transaction_uphold.cc",
     "src/bat/ledger/internal/endpoint/payment/post_transaction_uphold/post_transaction_uphold.h",
     "src/bat/ledger/internal/endpoint/payment/post_votes/post_votes.cc",
@@ -323,6 +373,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/endpoint/promotion/get_recover_wallet/get_recover_wallet.h",
     "src/bat/ledger/internal/endpoint/promotion/get_signed_creds/get_signed_creds.cc",
     "src/bat/ledger/internal/endpoint/promotion/get_signed_creds/get_signed_creds.h",
+    "src/bat/ledger/internal/endpoint/promotion/get_wallet/get_wallet.cc",
+    "src/bat/ledger/internal/endpoint/promotion/get_wallet/get_wallet.h",
     "src/bat/ledger/internal/endpoint/promotion/get_wallet_balance/get_wallet_balance.cc",
     "src/bat/ledger/internal/endpoint/promotion/get_wallet_balance/get_wallet_balance.h",
     "src/bat/ledger/internal/endpoint/promotion/post_bat_loss/post_bat_loss.cc",
@@ -333,6 +385,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/endpoint/promotion/post_claim_bitflyer/post_claim_bitflyer.h",
     "src/bat/ledger/internal/endpoint/promotion/post_claim_brave/post_claim_brave.cc",
     "src/bat/ledger/internal/endpoint/promotion/post_claim_brave/post_claim_brave.h",
+    "src/bat/ledger/internal/endpoint/promotion/post_claim_gemini/post_claim_gemini.cc",
+    "src/bat/ledger/internal/endpoint/promotion/post_claim_gemini/post_claim_gemini.h",
     "src/bat/ledger/internal/endpoint/promotion/post_claim_uphold/post_claim_uphold.cc",
     "src/bat/ledger/internal/endpoint/promotion/post_claim_uphold/post_claim_uphold.h",
     "src/bat/ledger/internal/endpoint/promotion/post_clobbered_claims/post_clobbered_claims.cc",
@@ -385,6 +439,16 @@ source_set("ledger") {
     "src/bat/ledger/internal/endpoint/uphold/uphold_server.h",
     "src/bat/ledger/internal/endpoint/uphold/uphold_utils.cc",
     "src/bat/ledger/internal/endpoint/uphold/uphold_utils.h",
+    "src/bat/ledger/internal/gemini/gemini.cc",
+    "src/bat/ledger/internal/gemini/gemini.h",
+    "src/bat/ledger/internal/gemini/gemini_authorization.cc",
+    "src/bat/ledger/internal/gemini/gemini_authorization.h",
+    "src/bat/ledger/internal/gemini/gemini_transfer.cc",
+    "src/bat/ledger/internal/gemini/gemini_transfer.h",
+    "src/bat/ledger/internal/gemini/gemini_util.cc",
+    "src/bat/ledger/internal/gemini/gemini_util.h",
+    "src/bat/ledger/internal/gemini/gemini_wallet.cc",
+    "src/bat/ledger/internal/gemini/gemini_wallet.h",
     "src/bat/ledger/internal/ledger_database_impl.cc",
     "src/bat/ledger/internal/ledger_database_impl.h",
     "src/bat/ledger/internal/ledger_impl.cc",
@@ -431,10 +495,13 @@ source_set("ledger") {
     "src/bat/ledger/internal/legacy/wallet_info_state.cc",
     "src/bat/ledger/internal/legacy/wallet_info_state.h",
     "src/bat/ledger/internal/logging/event_log_keys.h",
+    "src/bat/ledger/internal/logging/event_log_util.cc",
+    "src/bat/ledger/internal/logging/event_log_util.h",
     "src/bat/ledger/internal/logging/logging.cc",
     "src/bat/ledger/internal/logging/logging.h",
     "src/bat/ledger/internal/logging/logging_util.cc",
     "src/bat/ledger/internal/logging/logging_util.h",
+    "src/bat/ledger/internal/notifications/notification_keys.h",
     "src/bat/ledger/internal/promotion/promotion.cc",
     "src/bat/ledger/internal/promotion/promotion.h",
     "src/bat/ledger/internal/promotion/promotion_transfer.cc",
@@ -481,6 +548,10 @@ source_set("ledger") {
     "src/bat/ledger/internal/state/state_migration.h",
     "src/bat/ledger/internal/state/state_migration_v1.cc",
     "src/bat/ledger/internal/state/state_migration_v1.h",
+    "src/bat/ledger/internal/state/state_migration_v10.cc",
+    "src/bat/ledger/internal/state/state_migration_v10.h",
+    "src/bat/ledger/internal/state/state_migration_v11.cc",
+    "src/bat/ledger/internal/state/state_migration_v11.h",
     "src/bat/ledger/internal/state/state_migration_v2.cc",
     "src/bat/ledger/internal/state/state_migration_v2.h",
     "src/bat/ledger/internal/state/state_migration_v3.cc",
@@ -515,12 +586,12 @@ source_set("ledger") {
     "src/bat/ledger/internal/wallet/wallet.h",
     "src/bat/ledger/internal/wallet/wallet_balance.cc",
     "src/bat/ledger/internal/wallet/wallet_balance.h",
-    "src/bat/ledger/internal/wallet/wallet_claim.cc",
-    "src/bat/ledger/internal/wallet/wallet_claim.h",
     "src/bat/ledger/internal/wallet/wallet_create.cc",
     "src/bat/ledger/internal/wallet/wallet_create.h",
     "src/bat/ledger/internal/wallet/wallet_recover.cc",
     "src/bat/ledger/internal/wallet/wallet_recover.h",
+    "src/bat/ledger/internal/wallet/wallet_util.cc",
+    "src/bat/ledger/internal/wallet/wallet_util.h",
     "src/bat/ledger/ledger.cc",
     "src/bat/ledger/ledger_database.cc",
   ]
@@ -533,6 +604,7 @@ source_set("ledger") {
     "//crypto",
     "//net:net",
     "//sql:sql",
+    "//third_party/abseil-cpp:absl",
     "//third_party/boringssl",
     "//third_party/brotli:dec",
     "//third_party/protobuf:protobuf_lite",

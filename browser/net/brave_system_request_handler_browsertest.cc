@@ -6,21 +6,28 @@
 #include <string>
 
 #include "brave/browser/net/brave_system_request_handler.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/simple_url_loader_test_helper.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/test/base/in_process_browser_test.h"
+#endif
+
 // Test to check if key is added for brave apis
-class SystemNetworkContextManagerBrowsertest : public InProcessBrowserTest {
+class SystemNetworkContextManagerBrowsertest : public PlatformBrowserTest {
  public:
   SystemNetworkContextManagerBrowsertest()
       : https_server_(net::test_server::EmbeddedTestServer::TYPE_HTTPS) {
@@ -32,8 +39,18 @@ class SystemNetworkContextManagerBrowsertest : public InProcessBrowserTest {
   ~SystemNetworkContextManagerBrowsertest() override {}
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    // This is needed to load pages from "domain.com" without an interstitial.
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
+    PlatformBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   scoped_refptr<network::SharedURLLoaderFactory> loader_factory() const {
@@ -41,6 +58,7 @@ class SystemNetworkContextManagerBrowsertest : public InProcessBrowserTest {
   }
 
   void SetUpOnMainThread() override {
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     ASSERT_TRUE(https_server_.Start());
 
@@ -69,6 +87,7 @@ class SystemNetworkContextManagerBrowsertest : public InProcessBrowserTest {
   }
 
   bool service_key_present_ = false;
+  content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
   scoped_refptr<network::SharedURLLoaderFactory> loader_factory_ = nullptr;
 };

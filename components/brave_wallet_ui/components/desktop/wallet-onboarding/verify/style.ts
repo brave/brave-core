@@ -1,9 +1,14 @@
 import styled from 'styled-components'
+import { WalletButton } from '../../../shared/style'
 
 interface StyleProps {
   isSelected: boolean
   error: boolean
+  numberOfRows: number
+  isInCorrectPosition: boolean
 }
+
+const selectedBubbleHeight = 34
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -45,8 +50,8 @@ export const SelectedPhraseContainer = styled.div<Partial<StyleProps>>`
   justify-content: ${(p) => p.error ? 'center' : 'flex-start'};
   flex-direction: row;
   flex-wrap: wrap;
-  width: 418px;
-  min-height: 112px;
+  width: 466px;
+  min-height: ${(p) => p.numberOfRows ? `${(p.numberOfRows * selectedBubbleHeight) + 10}px` : '112px'};
   margin-bottom: 40px;
   border: ${(p) => `1px solid ${p.theme.color.divider01}`};
   box-sizing: border-box;
@@ -64,8 +69,8 @@ export const RecoveryPhraseContainer = styled.div`
   margin-bottom: 40px;
 `
 
-export const RecoveryBubble = styled.button<Partial<StyleProps>>`
-  cursor: ${(p) => p.isSelected ? `default` : 'pointer'};
+export const RecoveryBubble = styled(WalletButton) <Partial<StyleProps>>`
+  cursor: ${(p) => p.isSelected ? 'default' : 'pointer'};
   outline: none;
   background: none;
   border: ${(p) => p.isSelected ? `1px solid ${p.theme.color.divider01}` : 'none'};
@@ -90,7 +95,7 @@ export const RecoveryBubbleText = styled.span<Partial<StyleProps>>`
   color: ${(p) => p.isSelected ? p.theme.color.background02 : p.theme.color.text01};
 `
 
-export const SelectedBubble = styled.button`
+export const SelectedBubble = styled(WalletButton)`
   cursor: pointer;
   outline: none;
   background: none;
@@ -99,20 +104,23 @@ export const SelectedBubble = styled.button`
   justify-content: center;
   flex-direction: column;
   background-color: ${(p) => p.theme.color.background01};
-  width: 94px;
+  width: 106px;
   margin-right: 8px;
   margin-bottom: 8px;
-  border: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  border: ${(p) => p.isDraggedOver
+    ? `1px solid ${p.theme.color.focusBorder}`
+    : `1px solid ${p.theme.color.divider01}`
+  };
   box-sizing: border-box;
   border-radius: 4px;
 `
 
-export const SelectedBubbleText = styled.span`
+export const SelectedBubbleText = styled.span<Partial<StyleProps>>`
   font-family: Poppins;
   font-size: 14px;
   line-height: 22px;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.isInCorrectPosition ? p.theme.color.text01 : p.theme.color.errorText};
 `
 
 export const ErrorContainer = styled.div`
@@ -131,4 +139,9 @@ export const ErrorText = styled.span`
   font-family: Poppins;
   font-size: 14px;
   color: ${(p) => p.theme.color.errorText};
+`
+
+export const PlaceholderBubble = styled.div`
+  width: 106px;
+  height: 2rem;
 `

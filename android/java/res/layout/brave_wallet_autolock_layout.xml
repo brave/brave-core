@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    style="@style/AlertDialogContent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/brave_wallet_settings_autolock_how_many_minutes" />
+    <org.chromium.components.browser_ui.widget.text.AlertDialogEditText
+        android:id="@+id/brave_wallet_autolock_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone" />
+
+</LinearLayout>

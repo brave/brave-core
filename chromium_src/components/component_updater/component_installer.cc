@@ -5,38 +5,40 @@
 
 #include "components/component_updater/component_installer.h"
 
-#include "components/crx_file/crx_verifier.h"
-#define CRX3_WITH_PUBLISHER_PROOF CRX3
-#define Register Register_ChromiumImpl
-#include "../../../../components/component_updater/component_installer.cc"
-#undef Register
-#undef CRX3_WITH_PUBLISHER_PROOF
+#include "build/build_config.h"
 
-#include "base/stl_util.h"
+#define Register Register_ChromiumImpl
+#include "src/components/component_updater/component_installer.cc"
+#undef Register
+
+#include "base/containers/contains.h"
 
 namespace component_updater {
 
 void ComponentInstaller::Register(ComponentUpdateService* cus,
-                                  base::OnceClosure callback) {
+                                  base::OnceClosure callback,
+                                  base::TaskPriority task_priority) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
   DCHECK(cus);
   Register(base::BindOnce(&ComponentUpdateService::RegisterComponent,
                           base::Unretained(cus)),
-           std::move(callback));
+           std::move(callback), task_priority);
 }
 
 void ComponentInstaller::Register(RegisterCallback register_callback,
-                                  base::OnceClosure callback) {
+                                  base::OnceClosure callback,
+                                  base::TaskPriority task_priority) {
   static std::string disallowed_components[] = {
     "bklopemakmnopmghhmccadeonafabnal",  // Legacy TLS Deprecation Config
     "cmahhnpholdijhjokonmfdjbfmklppij",  // Federated Learning of Cohorts
     "eeigpngbgcognadeebkilcpcaedhellh",  // Autofill States Data
     "gcmjkmgdlgnkkcocmoeiminaijmmjnii",  // Subresource Filter Rules
+    "imefjhfbkmcmebodilednhmaccmincoa",  // Client Side Phishing Detection
     "llkgjffcdpffmhiakmfcdcblohccpfmo",  // Origin Trials
     "ojhpjlocmbogdgmfpkhlaaeamibhnphh",  // Zxcvbn Data Dictionaries
     "gonpemdgkjcecdgbnaabipppbmgfggbe",  // First Party Sets
     "dhlpobdgcjafebgbbhjdnapejmpkgiie",  // Desktop Sharing Hub
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     "lmelglejhemejginpboagddgdfbepgmp",  // Optimization Hints
     "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest
 #endif
@@ -52,7 +54,8 @@ void ComponentInstaller::Register(RegisterCallback register_callback,
       return;
     }
   }
-  Register_ChromiumImpl(std::move(register_callback), std::move(callback));
+  Register_ChromiumImpl(std::move(register_callback), std::move(callback),
+                        task_priority);
 }
 
 }  // namespace component_updater

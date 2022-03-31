@@ -8,31 +8,39 @@
 #include "brave/browser/ipfs/import/ipfs_import_controller.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/translate/core/common/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/common/channel_info.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
+#include "net/base/filename_util.h"
 #include "ui/base/models/menu_separator_types.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+#include "brave/browser/translate/brave_translate_utils.h"
+#endif
+
 // Our .h file creates a masquerade for RenderViewContextMenu.  Switch
 // back to the Chromium one for the Chromium implementation.
 #undef RenderViewContextMenu
@@ -81,7 +89,7 @@ void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
 #define RegisterMenuShownCallbackForTesting \
   RegisterMenuShownCallbackForTesting_unused
 
-#include "../../../../../chrome/browser/renderer_context_menu/render_view_context_menu.cc"
+#include "src/chrome/browser/renderer_context_menu/render_view_context_menu.cc"
 
 #undef SpellingOptionsSubMenuObserver
 #undef RegisterMenuShownCallbackForTesting
@@ -90,11 +98,56 @@ void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
 #undef RenderViewContextMenu
 #undef BRAVE_APPEND_SEARCH_PROVIDER
 
+namespace {
+
+#if BUILDFLAG(ENABLE_TOR)
+bool HasAlreadyOpenedTorWindow(Profile* profile) {
+  for (Browser* browser : *BrowserList::GetInstance()) {
+    if (browser->profile()->IsTor() &&
+        browser->profile()->GetOriginalProfile() == profile)
+      return true;
+  }
+
+  return false;
+}
+
+// Modified OnProfileCreated() in render_view_context_menu.cc
+// to handle additional |use_new_tab| param.
+void OnTorProfileCreated(const GURL& link_url,
+                         bool use_new_tab,
+                         Profile* profile) {
+  Browser* browser = chrome::FindLastActiveWithProfile(profile);
+  /* |ui::PAGE_TRANSITION_TYPED| is used rather than
+     |ui::PAGE_TRANSITION_LINK| since this ultimately opens the link in
+     another browser. This parameter is used within the tab strip model of
+     the browser it opens in implying a link from the active tab in the
+     destination browser which is not correct. */
+  NavigateParams nav_params(browser, link_url, ui::PAGE_TRANSITION_TYPED);
+  if (use_new_tab) {
+    nav_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  } else {
+    // Stop current loading to show tab throbber wait spinning till tor is
+    // initialized.
+    if (auto* contents = browser->tab_strip_model()->GetActiveWebContents()) {
+      contents->Stop();
+      nav_params.disposition = WindowOpenDisposition::CURRENT_TAB;
+    }
+  }
+  nav_params.referrer =
+      content::Referrer(GURL(), network::mojom::ReferrerPolicy::kStrictOrigin);
+  nav_params.window_action = NavigateParams::SHOW_WINDOW;
+  Navigate(&nav_params);
+}
+
+#endif
+
+}  // namespace
+
 BraveRenderViewContextMenu::BraveRenderViewContextMenu(
-    content::RenderFrameHost* render_frame_host,
+    content::RenderFrameHost& render_frame_host,
     const content::ContextMenuParams& params)
     : RenderViewContextMenu_Chromium(render_frame_host, params)
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
       ,
       ipfs_submenu_model_(this)
 #endif
@@ -103,7 +156,7 @@ BraveRenderViewContextMenu::BraveRenderViewContextMenu(
 
 bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   switch (id) {
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS:
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE:
     case IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS:
@@ -128,7 +181,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }
 }
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id, int event_flags) {
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(source_web_contents_);
@@ -143,9 +196,16 @@ void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id, int event_flags) {
       break;
     case IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS:
     case IDC_CONTENT_CONTEXT_IMPORT_VIDEO_IPFS:
-    case IDC_CONTENT_CONTEXT_IMPORT_AUDIO_IPFS:
-      controller->ImportLinkToIpfs(params_.src_url);
-      break;
+    case IDC_CONTENT_CONTEXT_IMPORT_AUDIO_IPFS: {
+      if (params_.src_url.SchemeIsFile()) {
+        base::FilePath path;
+        if (net::FileURLToFilePath(params_.src_url, &path) && !path.empty()) {
+          controller->ImportFileToIpfs(path, std::string());
+        }
+      } else {
+        controller->ImportLinkToIpfs(params_.src_url);
+      }
+    }; break;
     case IDC_CONTENT_CONTEXT_IMPORT_LINK_IPFS:
       controller->ImportLinkToIpfs(params_.link_url);
       break;
@@ -158,7 +218,7 @@ void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id, int event_flags) {
 
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE:
     case IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS:
     case IDC_CONTENT_CONTEXT_IMPORT_VIDEO_IPFS:
@@ -168,14 +228,14 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       ExecuteIPFSCommand(id, event_flags);
       break;
 #endif
+#if BUILDFLAG(ENABLE_TOR)
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
       TorProfileManager::SwitchToTorProfile(
           GetProfile(),
-          base::BindRepeating(
-              OnProfileCreated, params_.link_url,
-              content::Referrer(
-                  GURL(), network::mojom::ReferrerPolicy::kStrictOrigin)));
+          base::BindRepeating(OnTorProfileCreated, params_.link_url,
+                              HasAlreadyOpenedTorWindow(GetProfile())));
       break;
+#endif
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
   }
@@ -197,9 +257,9 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
   // Suppress adding "Spellcheck->Ask Brave for suggestions" item.
 }
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 bool BraveRenderViewContextMenu::IsIPFSCommandIdEnabled(int command) const {
-  if (!ipfs::IsIpfsMenuEnabled(browser_context_))
+  if (!ipfs::IsIpfsMenuEnabled(GetProfile()->GetPrefs()))
     return false;
   switch (command) {
     case IDC_CONTENT_CONTEXT_IMPORT_IPFS:
@@ -234,7 +294,7 @@ void BraveRenderViewContextMenu::SeIpfsIconAt(int index) {
 }
 
 void BraveRenderViewContextMenu::BuildIPFSMenu() {
-  if (!ipfs::IsIpfsMenuEnabled(browser_context_))
+  if (!ipfs::IsIpfsMenuEnabled(GetProfile()->GetPrefs()))
     return;
   int index =
       menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);
@@ -253,8 +313,9 @@ void BraveRenderViewContextMenu::BuildIPFSMenu() {
   }
 
   auto page_url = source_web_contents_->GetURL();
+  url::Origin page_origin = url::Origin::Create(page_url);
   if (page_url.SchemeIsHTTPOrHTTPS() &&
-      !ipfs::IsAPIGateway(page_url.GetOrigin(), chrome::GetChannel())) {
+      !ipfs::IsAPIGateway(page_origin.GetURL(), chrome::GetChannel())) {
     ipfs_submenu_model_.AddItemWithStringId(
         IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE,
         IDS_CONTENT_CONTEXT_IMPORT_IPFS_PAGE);
@@ -294,9 +355,7 @@ void BraveRenderViewContextMenu::BuildIPFSMenu() {
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
-#if BUILDFLAG(ENABLE_TOR) || !BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   int index = -1;
-#endif
 #if BUILDFLAG(ENABLE_TOR)
   // Add Open Link with Tor
   if (!TorProfileServiceFactory::IsTorDisabled() &&
@@ -316,14 +375,23 @@ void BraveRenderViewContextMenu::InitMenu() {
   }
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   BuildIPFSMenu();
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+  const bool remove_translate =
+      !translate::IsInternalTranslationEnabled(GetProfile());
+#else
+  const bool remove_translate = true;
+#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+
   // Only show the translate item when go-translate is enabled.
-#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_TRANSLATE);
-  if (index != -1)
-    menu_model_.RemoveItemAt(index);
-#endif
+  // This removes menu item, but keeps the duplicated separator. The duplicated
+  // separator is removed in |BraveRenderViewContextMenuViews::Show|
+  if (remove_translate) {
+    index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_TRANSLATE);
+    if (index != -1)
+      menu_model_.RemoveItemAt(index);
+  }
 }

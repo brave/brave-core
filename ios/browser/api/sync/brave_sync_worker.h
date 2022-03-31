@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "base/scoped_observer.h"
+#include "base/scoped_observation.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
 #include "components/sync_device_info/device_info_sync_service.h"
@@ -20,10 +20,10 @@
 class ChromeBrowserState;
 
 namespace syncer {
-class BraveProfileSyncService;
+class BraveSyncServiceImpl;
 class DeviceInfo;
 class BraveDeviceInfo;
-class ProfileSyncService;
+class SyncServiceImpl;
 }  // namespace syncer
 
 class BraveSyncDeviceTracker : public syncer::DeviceInfoTracker::Observer {
@@ -37,13 +37,14 @@ class BraveSyncDeviceTracker : public syncer::DeviceInfoTracker::Observer {
 
   std::function<void()> on_device_info_changed_callback_;
 
-  ScopedObserver<syncer::DeviceInfoTracker, syncer::DeviceInfoTracker::Observer>
+  base::ScopedObservation<syncer::DeviceInfoTracker,
+                          syncer::DeviceInfoTracker::Observer>
       device_info_tracker_observer_{this};
 };
 
 class BraveSyncServiceTracker : public syncer::SyncServiceObserver {
  public:
-  BraveSyncServiceTracker(syncer::ProfileSyncService* profile_sync_service,
+  BraveSyncServiceTracker(syncer::SyncServiceImpl* sync_service_impl,
                           std::function<void()> on_state_changed_callback);
   ~BraveSyncServiceTracker() override;
 
@@ -52,13 +53,15 @@ class BraveSyncServiceTracker : public syncer::SyncServiceObserver {
 
   std::function<void()> on_state_changed_callback_;
 
-  ScopedObserver<syncer::SyncService, syncer::SyncServiceObserver>
+  base::ScopedObservation<syncer::SyncService, syncer::SyncServiceObserver>
       sync_service_observer_{this};
 };
 
 class BraveSyncWorker : public syncer::SyncServiceObserver {
  public:
   explicit BraveSyncWorker(ChromeBrowserState* browser_state_);
+  BraveSyncWorker(const BraveSyncWorker&) = delete;
+  BraveSyncWorker& operator=(const BraveSyncWorker&) = delete;
   ~BraveSyncWorker() override;
 
   bool SetSyncEnabled(bool enabled);
@@ -66,9 +69,10 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   bool IsValidSyncCode(const std::string& sync_code);
   bool SetSyncCode(const std::string& sync_code);
   std::string GetSyncCodeFromHexSeed(const std::string& hex_seed);
+  std::string GetHexSeedFromSyncCode(const std::string& code_words);
   const syncer::DeviceInfo* GetLocalDeviceInfo();
   std::vector<std::unique_ptr<syncer::BraveDeviceInfo>> GetDeviceList();
-  bool IsSyncEnabled();
+  bool CanSyncFeatureStart();
   bool IsSyncFeatureActive();
   bool IsFirstSetupComplete();
   void ResetSync();
@@ -77,7 +81,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
  private:
   // syncer::SyncServiceObserver implementation.
 
-  syncer::BraveProfileSyncService* GetSyncService() const;
+  syncer::BraveSyncServiceImpl* GetSyncService() const;
   void OnStateChanged(syncer::SyncService* service) override;
   void OnSyncShutdown(syncer::SyncService* service) override;
 
@@ -89,11 +93,9 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   std::string passphrase_;
 
   ChromeBrowserState* browser_state_;  // NOT OWNED
-  ScopedObserver<syncer::SyncService, syncer::SyncServiceObserver>
+  base::ScopedObservation<syncer::SyncService, syncer::SyncServiceObserver>
       sync_service_observer_{this};
   base::WeakPtrFactory<BraveSyncWorker> weak_ptr_factory_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(BraveSyncWorker);
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_SYNC_BRAVE_SYNC_WORKER_H_

@@ -220,6 +220,14 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getP3AEnabled();
     }
 
+    public void setStatsReportingEnabled(boolean value) {
+        BravePrefServiceBridgeJni.get().setStatsReportingEnabled(value);
+    }
+
+    public boolean getStatsReportingEnabled() {
+        return BravePrefServiceBridgeJni.get().getStatsReportingEnabled();
+    }
+
     public boolean hasPathP3AEnabled() {
         return BravePrefServiceBridgeJni.get().hasPathP3AEnabled();
     }
@@ -254,6 +262,22 @@ public class BravePrefServiceBridge {
 
     public int getWebrtcPolicy() {
         return BravePrefServiceBridgeJni.get().getWebrtcPolicy();
+    }
+
+    public void setNewsOptIn(boolean value) {
+        BravePrefServiceBridgeJni.get().setNewsOptIn(value);
+    }
+
+    public boolean getNewsOptIn() {
+        boolean getNewsOptIn = BravePrefServiceBridgeJni.get().getNewsOptIn();
+        return BravePrefServiceBridgeJni.get().getNewsOptIn();
+    }
+    public void setShowNews(boolean value) {
+        BravePrefServiceBridgeJni.get().setShowNews(value);
+    }
+
+    public boolean getShowNews() {
+        return BravePrefServiceBridgeJni.get().getShowNews();
     }
 
     @NativeMethods
@@ -320,6 +344,9 @@ public class BravePrefServiceBridge {
         void setP3ANoticeAcknowledged(boolean value);
         boolean getP3ANoticeAcknowledged();
 
+        void setStatsReportingEnabled(boolean value);
+        boolean getStatsReportingEnabled();
+
         void setUnstoppableDomainsResolveMethod(int method);
         void setENSResolveMethod(int method);
         int getUnstoppableDomainsResolveMethod();
@@ -327,5 +354,11 @@ public class BravePrefServiceBridge {
 
         void setWebrtcPolicy(int policy);
         int getWebrtcPolicy();
+
+        void setNewsOptIn(boolean value);
+        boolean getNewsOptIn();
+
+        void setShowNews(boolean value);
+        boolean getShowNews();
     }
 }

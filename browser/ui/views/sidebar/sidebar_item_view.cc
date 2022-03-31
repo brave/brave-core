@@ -7,12 +7,15 @@
 
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/ui/views/event_utils.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
 
-SidebarItemView::SidebarItemView(Delegate* delegate)
-    : SidebarButtonView(delegate) {}
+SidebarItemView::SidebarItemView(Delegate* delegate,
+                                 const std::u16string& accessible_name)
+    : SidebarButtonView(delegate, accessible_name) {}
 
 SidebarItemView::~SidebarItemView() = default;
 
@@ -59,6 +62,12 @@ void SidebarItemView::OnPaintBorder(gfx::Canvas* canvas) {
   }
 }
 
+bool SidebarItemView::IsTriggerableEvent(const ui::Event& e) {
+  return e.type() == ui::ET_GESTURE_TAP ||
+         e.type() == ui::ET_GESTURE_TAP_DOWN ||
+         event_utils::IsPossibleDispositionEvent(e);
+}
+
 void SidebarItemView::OnPaintBackground(gfx::Canvas* canvas) {
   SidebarButtonView::OnPaintBackground(canvas);
 
@@ -67,7 +76,10 @@ void SidebarItemView::OnPaintBackground(gfx::Canvas* canvas) {
       canvas->FillRect(
           GetLocalBounds(),
           theme_provider->GetColor(
-              BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND));
+              BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND_HOVERED));
     }
   }
 }
+
+BEGIN_METADATA(SidebarItemView, SidebarButtonView)
+END_METADATA

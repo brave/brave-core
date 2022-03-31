@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
@@ -23,6 +24,7 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/geometry/size.h"
+#include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/text_constants.h"
@@ -47,6 +49,8 @@ constexpr int kIconSize = 12;
 class HighlightPathGenerator : public views::HighlightPathGenerator {
  public:
   HighlightPathGenerator() = default;
+  HighlightPathGenerator(const HighlightPathGenerator&) = delete;
+  HighlightPathGenerator& operator=(const HighlightPathGenerator&) = delete;
 
   // views::HighlightPathGenerator:
   SkPath GetHighlightPath(const views::View* view) override {
@@ -55,9 +59,6 @@ class HighlightPathGenerator : public views::HighlightPathGenerator {
     const int corner_radius = view->height() / 2;
     return SkPath().addRoundRect(rect, corner_radius, corner_radius);
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(HighlightPathGenerator);
 };
 
 class IPFSLocationButtonView : public views::LabelButton {
@@ -77,16 +78,20 @@ class IPFSLocationButtonView : public views::LabelButton {
     SetEnabledTextColors(kTextColor);
     SetHorizontalAlignment(gfx::ALIGN_RIGHT);
     SetImageLabelSpacing(6);
-    SetInkDropMode(InkDropMode::ON);
+    auto* ink_drop = views::InkDrop::Get(this);
+    ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
     SetBorder(views::CreateEmptyBorder(
         GetLayoutInsets(LOCATION_BAR_ICON_INTERIOR_PADDING)));
     SetHasInkDropActionOnClick(true);
-    SetInkDropVisibleOpacity(kToolbarInkDropVisibleOpacity);
+    ink_drop->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
     UpdateBorder();
     // Ensure focus ring follows border
     views::HighlightPathGenerator::Install(
         this, std::make_unique<HighlightPathGenerator>());
   }
+
+  IPFSLocationButtonView(const IPFSLocationButtonView&) = delete;
+  IPFSLocationButtonView& operator=(const IPFSLocationButtonView&) = delete;
 
   ~IPFSLocationButtonView() override {}
 
@@ -115,10 +120,7 @@ class IPFSLocationButtonView : public views::LabelButton {
   }
 
   GURL ipfs_location_;
-  Profile* profile_;
-
-  IPFSLocationButtonView(const IPFSLocationButtonView&) = delete;
-  IPFSLocationButtonView& operator=(const IPFSLocationButtonView&) = delete;
+  raw_ptr<Profile> profile_ = nullptr;
 };
 
 }  // namespace

@@ -1,0 +1,6 @@
+import("//brave/build/config.gni")
+
+declare_args() {
+  # Keeping flag for some time because on x86 this can be unstable.
+  enable_rust_bls = true
+}

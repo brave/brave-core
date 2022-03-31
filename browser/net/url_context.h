@@ -14,6 +14,7 @@
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "net/url_request/referrer_policy.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
@@ -52,6 +53,8 @@ enum BlockedBy { kNotBlocked, kAdBlocked, kOtherBlocked };
 
 struct BraveRequestInfo {
   BraveRequestInfo();
+  BraveRequestInfo(const BraveRequestInfo&) = delete;
+  BraveRequestInfo& operator=(const BraveRequestInfo&) = delete;
 
   // For tests, should not be used directly.
   explicit BraveRequestInfo(const GURL& url);
@@ -69,12 +72,15 @@ struct BraveRequestInfo {
   GURL referrer;
   net::ReferrerPolicy referrer_policy =
       net::ReferrerPolicy::CLEAR_ON_TRANSITION_FROM_SECURE_TO_INSECURE;
-  base::Optional<GURL> new_referrer;
+  absl::optional<GURL> new_referrer;
 
   std::string new_url_spec;
   // TODO(iefremov): rename to shields_up.
   bool allow_brave_shields = true;
   bool allow_ads = false;
+  // Whether or not Shields "aggressive" mode was enabled where the request was
+  // initiated.
+  bool aggressive_blocking = false;
   bool allow_http_upgradable_resource = false;
   bool allow_referrers = false;
   bool is_webtorrent_disabled = false;
@@ -93,13 +99,14 @@ struct BraveRequestInfo {
 
   GURL* allowed_unsafe_redirect_url = nullptr;
   BraveNetworkDelegateEventType event_type = kUnknownEventType;
-  const base::ListValue* referral_headers_list = nullptr;
   BlockedBy blocked_by = kNotBlocked;
   std::string mock_data_url;
   GURL ipfs_gateway_url;
   bool ipfs_auto_fallback = false;
 
-  bool ShouldMockRequest() const { return !mock_data_url.empty(); }
+  bool ShouldMockRequest() const {
+    return blocked_by == kAdBlocked && !mock_data_url.empty();
+  }
 
   net::NetworkIsolationKey network_isolation_key = net::NetworkIsolationKey();
 
@@ -127,8 +134,6 @@ struct BraveRequestInfo {
   friend class ::BraveRequestHandler;
 
   GURL* new_url = nullptr;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveRequestInfo);
 };
 
 // ResponseListener

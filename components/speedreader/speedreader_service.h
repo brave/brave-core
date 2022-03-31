@@ -6,8 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_SERVICE_H_
 #define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_SERVICE_H_
 
-#include <memory>
-
+#include "base/memory/raw_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 class PrefRegistrySimple;
@@ -23,13 +22,16 @@ class SpeedreaderService : public KeyedService {
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   void ToggleSpeedreader();
+  void DisableSpeedreaderForTest();
   bool IsEnabled();
+  bool ShouldPromptUserToEnable() const;
+  void IncrementPromptCount();
 
   SpeedreaderService(const SpeedreaderService&) = delete;
   SpeedreaderService& operator=(const SpeedreaderService&) = delete;
 
  private:
-  PrefService* prefs_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
 };
 
 }  // namespace speedreader

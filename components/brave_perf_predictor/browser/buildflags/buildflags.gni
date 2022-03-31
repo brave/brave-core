@@ -1,3 +1,0 @@
-declare_args() {
-  enable_brave_perf_predictor = true
-}

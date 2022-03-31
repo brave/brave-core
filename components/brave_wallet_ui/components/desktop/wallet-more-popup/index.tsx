@@ -1,38 +1,70 @@
 import * as React from 'react'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
   StyledWrapper,
   PopupButton,
   PopupButtonText,
   SettingsIcon,
+  LockIcon,
+  ExplorerIcon,
   BackupIcon,
-  LockIcon
+  ConnectedSitesIcon
 } from './style'
 
 export interface Props {
-  onClickSetting: () => void
-  onClickLock: () => void
-  onClickBackup: () => void
+  onClickSetting?: () => void
+  onClickLock?: () => void
+  onClickViewOnBlockExplorer?: () => void
+  onClickBackup?: () => void
 }
 
 const WalletMorePopup = (props: Props) => {
-  const { onClickLock, onClickSetting, onClickBackup } = props
+  const {
+    onClickLock,
+    onClickSetting,
+    onClickViewOnBlockExplorer,
+    onClickBackup
+  } = props
+
+  const onClickConnectedSites = () => {
+    chrome.tabs.create({ url: 'brave://settings/content/ethereum' }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+  }
 
   return (
     <StyledWrapper>
-      <PopupButton buttonType='primary' onClick={onClickLock}>
-        <LockIcon />
-        <PopupButtonText>{locale.walletPopupLock}</PopupButtonText>
+      {onClickLock &&
+        <PopupButton onClick={onClickLock}>
+          <LockIcon />
+          <PopupButtonText>{getLocale('braveWalletWalletPopupLock')}</PopupButtonText>
+        </PopupButton>
+      }
+      {onClickBackup &&
+        <PopupButton onClick={onClickBackup}>
+          <BackupIcon />
+          <PopupButtonText>{getLocale('braveWalletBackupButton')}</PopupButtonText>
+        </PopupButton>
+      }
+      <PopupButton onClick={onClickConnectedSites}>
+        <ConnectedSitesIcon />
+        <PopupButtonText>{getLocale('braveWalletWalletPopupConnectedSites')}</PopupButtonText>
       </PopupButton>
-      <PopupButton buttonType='secondary' onClick={onClickSetting}>
-        <SettingsIcon />
-        <PopupButtonText>{locale.walletPopupSettings}</PopupButtonText>
-      </PopupButton>
-      <PopupButton buttonType='secondary' onClick={onClickBackup}>
-        <BackupIcon />
-        <PopupButtonText>{locale.walletPopupBackup}</PopupButtonText>
-      </PopupButton>
+      {onClickSetting &&
+        <PopupButton onClick={onClickSetting}>
+          <SettingsIcon />
+          <PopupButtonText>{getLocale('braveWalletWalletPopupSettings')}</PopupButtonText>
+        </PopupButton>
+      }
+      {onClickViewOnBlockExplorer &&
+        <PopupButton onClick={onClickViewOnBlockExplorer}>
+          <ExplorerIcon />
+          <PopupButtonText>{getLocale('braveWalletTransactionExplorer')}</PopupButtonText>
+        </PopupButton>
+      }
     </StyledWrapper>
   )
 }

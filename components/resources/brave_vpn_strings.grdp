@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_BRAVE_VPN" translateable="false" desc="Title for VPN the product">
+    Brave Firewall + VPN
+  </message>
+
+  <message name="IDS_BRAVE_VPN_CONNECT" desc="Button title to perform connect to a region">
+    Connect
+  </message>
+
+  <message name="IDS_BRAVE_VPN_CONNECTING" desc="Status label when VPN is in progress to connect">
+    Connecting…
+  </message>
+
+  <message name="IDS_BRAVE_VPN_CONNECTED" desc="Status label when VPN has connected to a region">
+    Connected
+  </message>
+
+  <message name="IDS_BRAVE_VPN_DISCONNECTING" desc="Status label when VPN is in progress to disconnect">
+    Disconnecting…
+  </message>
+
+  <message name="IDS_BRAVE_VPN_DISCONNECTED" desc="Status label when VPN has disconnected from a region">
+    Disconnected
+  </message>
+
+  <message name="IDS_BRAVE_VPN_CONNECTION_FAILED" desc="Status label when has failed to connect to a region">
+    Connection Failed
+  </message>
+
+  <message name="IDS_BRAVE_VPN_UNABLE_CONNECT_TO_SERVER" desc="Title to show user can't connect to a region's server">
+    Can't connect to server
+  </message>
+
+  <message name="IDS_BRAVE_VPN_TRY_AGAIN" desc="Button title to perform connect action again">
+    Try again
+  </message>
+
+  <message name="IDS_BRAVE_VPN_CHOOSE_ANOTHER_SERVER" desc="Button title to show a region list">
+    Choose another server
+  </message>
+
+  <message name="IDS_BRAVE_VPN_UNABLE_CONNECT_INFO" desc="Description of which region VPN couldn't connect to"><ph name="PRODUCT_NAME">$1<ex>Brave Firewall + VPN</ex></ph> couldn't connect to the <ph name="REGION_NAME">$2<ex>Tokyo</ex></ph> server. You can try again, or choose another</message>
+
+  <message name="IDS_BRAVE_VPN_BUY" desc="Button title to purchase vpn">
+    Buy
+  </message>
+
+  <message name="IDS_BRAVE_VPN_HAS_PURCHASED" desc="Link text to redirect the user to Brave account login page. Do not translate VPN.">Already purchased VPN?</message>
+
+  <message name="IDS_BRAVE_VPN_POWERED_BY" desc="Label to show next to Guardian logo">
+    Powered by
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SETTINGS" desc="Label to show the current panel the user is on">
+    Settings
+  </message>
+
+  <message name="IDS_BRAVE_VPN_STATUS" desc="Label to show the status of the user's subscription">
+    Status
+  </message>
+
+  <message name="IDS_BRAVE_VPN_EXPIRES" desc="Label to show which date user's subscription expires">
+    Expires
+  </message>
+
+  <message name="IDS_BRAVE_VPN_MANAGE_SUBSCRIPTION" desc="Link text to redirect user to manage account page">
+    Manage subscription
+  </message>
+
+  <message name="IDS_BRAVE_VPN_CONTACT_SUPPORT" desc="Link text to redirect user to support page">
+    Contact technical support
+  </message>
+
+  <message name="IDS_BRAVE_VPN_ABOUT" desc="Link text that prepends with the product name">
+    About
+  </message>
+
+  <message name="IDS_BRAVE_VPN_FEATURE_1" desc="Key feature for selling advertising">
+    Block trackers &amp; ads across all apps
+  </message>
+
+  <message name="IDS_BRAVE_VPN_FEATURE_2" desc="Key feature for selling advertising">
+    Protects you from unwanted network connections
+  </message>
+
+  <message name="IDS_BRAVE_VPN_FEATURE_3" desc="Key feature for selling advertising">
+    Choose your VPN location
+  </message>
+
+  <message name="IDS_BRAVE_VPN_FEATURE_4" desc="Key feature for selling advertising">
+    Fast and unlimited up to 100 Mbps
+  </message>
+
+  <message name="IDS_BRAVE_VPN_FEATURE_5" desc="Key feature for selling advertising">
+    24/7 support
+  </message>
+
+  <message name="IDS_BRAVE_VPN_LOADING" desc="Label to show below loader icon">
+    One moment while loading…
+  </message>
+</grit-part>

@@ -34,7 +34,7 @@ window.loadTimeData = {
   }
 }
 
-console.timeStamp = function (key: string) { return }
+console.timeStamp = function (key: string) { }
 
 if ((global as any).chrome === undefined) {
   (global as any).chrome = getMockChrome()

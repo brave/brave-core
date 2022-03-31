@@ -7,27 +7,21 @@
 
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/catalog/catalog_issuers_info.h"
-#include "bat/ads/internal/catalog/catalog_state.h"
+#include "bat/ads/internal/catalog/catalog_info.h"
 #include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 
-Catalog::Catalog() : catalog_state_(std::make_unique<CatalogState>()) {}
+Catalog::Catalog() : catalog_(std::make_unique<CatalogInfo>()) {}
 
 Catalog::~Catalog() = default;
 
 bool Catalog::FromJson(const std::string& json) {
   auto json_schema =
       AdsClientHelper::Get()->LoadResourceForId(g_catalog_schema_resource_id);
-  auto result = LoadFromJson(catalog_state_.get(), json, json_schema);
-  if (result != SUCCESS) {
-    return false;
-  }
-
-  return true;
+  return LoadFromJson(catalog_.get(), json, json_schema);
 }
 
 bool Catalog::HasChanged(const std::string& catalog_id) const {
@@ -36,7 +30,7 @@ bool Catalog::HasChanged(const std::string& catalog_id) const {
     return true;
   }
 
-  if (catalog_id != catalog_state_->catalog_id) {
+  if (catalog_id != catalog_->id) {
     return true;
   }
 
@@ -44,23 +38,19 @@ bool Catalog::HasChanged(const std::string& catalog_id) const {
 }
 
 std::string Catalog::GetId() const {
-  return catalog_state_->catalog_id;
+  return catalog_->id;
 }
 
 int Catalog::GetVersion() const {
-  return catalog_state_->version;
+  return catalog_->version;
 }
 
 int64_t Catalog::GetPing() const {
-  return catalog_state_->ping / base::Time::kMillisecondsPerSecond;
-}
-
-CatalogIssuersInfo Catalog::GetIssuers() const {
-  return catalog_state_->catalog_issuers;
+  return catalog_->ping / base::Time::kMillisecondsPerSecond;
 }
 
 CatalogCampaignList Catalog::GetCampaigns() const {
-  return catalog_state_->campaigns;
+  return catalog_->campaigns;
 }
 
 }  // namespace ads

@@ -10,16 +10,18 @@
 #include <map>
 #include <string>
 
-#include "base/optional.h"
+#include "bat/ads/internal/tab_manager/tab_info.h"
+
+namespace absl {
+template <typename T>
+class optional;
+}  // namespace absl
 
 namespace ads {
 
-struct TabInfo;
-
-class TabManager {
+class TabManager final {
  public:
   TabManager();
-
   ~TabManager();
 
   TabManager(const TabManager&) = delete;
@@ -43,21 +45,21 @@ class TabManager {
 
   bool IsPlayingMedia(const int32_t id) const;
 
-  base::Optional<TabInfo> GetVisible() const;
+  absl::optional<TabInfo> GetVisible() const;
 
-  base::Optional<TabInfo> GetLastVisible() const;
+  absl::optional<TabInfo> GetLastVisible() const;
 
-  base::Optional<TabInfo> GetForId(const int32_t id) const;
+  absl::optional<TabInfo> GetForId(const int32_t id) const;
 
  private:
+  void AddTab(const int32_t id, const TabInfo& tab);
+  void UpdateTab(const int32_t id, const TabInfo& tab);
+  void RemoveTab(const int32_t id);
+
   int32_t visible_tab_id_ = 0;
   int32_t last_visible_tab_id_ = 0;
 
   std::map<int32_t, TabInfo> tabs_;
-
-  void AddTab(const int32_t id, const TabInfo& tab);
-  void UpdateTab(const int32_t id, const TabInfo& tab);
-  void RemoveTab(const int32_t id);
 };
 
 }  // namespace ads

@@ -10,11 +10,10 @@ import { shallow } from 'enzyme'
 
 const fakeProps: Props = {
   isBlockedListOpen: true,
-  setBlockedListOpen: () => { return },
+  setBlockedListOpen: () => { },
   hostname: 'brave.com',
   favicon: '',
   ads: 'allow',
-  cosmeticFiltering: 'block_third_party',
   adsBlocked: 0,
   adsBlockedResources: [],
   trackers: 'allow',

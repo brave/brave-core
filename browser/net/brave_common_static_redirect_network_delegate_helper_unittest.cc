@@ -11,61 +11,12 @@
 #include "base/command_line.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
-#include "brave/components/brave_component_updater/browser/switches.h"
-#include "components/component_updater/component_updater_url_constants.h"
 #include "net/base/net_errors.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
 using brave::ResponseCallback;
-
-namespace {
-const char kComponentUpdaterProxy[] = "https://componentupdater.brave.com";
-}
-
-TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
-     ModifyComponentUpdaterURL) {
-  brave::SetUpdateURLHostForTesting(true);
-  const std::string query_string("?foo=bar");
-  const GURL url(component_updater::kUpdaterJSONDefaultUrl + query_string);
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  const GURL expected_url(
-      std::string(brave::kUpdaterTestingEndpoint + query_string));
-
-  int rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
-                                                       request_info);
-  EXPECT_EQ(GURL(request_info->new_url_spec), expected_url);
-  EXPECT_EQ(rc, net::OK);
-}
-
-TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
-     ModifyComponentUpdaterURLDev) {
-  brave::SetUpdateURLHostForTesting(true);
-  base::CommandLine::ForCurrentProcess()->AppendSwitch(
-      brave_component_updater::kUseGoUpdateDev);
-  const std::string query_string("?foo=bar");
-  const GURL url(component_updater::kUpdaterJSONDefaultUrl + query_string);
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-  const GURL expected_url(
-      std::string(brave::kUpdaterTestingEndpoint + query_string));
-
-  int rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
-                                                       request_info);
-  EXPECT_EQ(GURL(request_info->new_url_spec), expected_url);
-  EXPECT_EQ(rc, net::OK);
-}
-
-TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
-     NoModifyComponentUpdaterURL) {
-  const GURL url(kComponentUpdaterProxy);
-  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-
-  int rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
-                                                       request_info);
-  EXPECT_EQ(request_info->new_url_spec, GURL());
-  EXPECT_EQ(rc, net::OK);
-}
 
 TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
      RedirectChromecastDownload) {

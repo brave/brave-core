@@ -5,8 +5,8 @@
 
 #include "brave/browser/binance/binance_protocol_handler.h"
 
-#include <string>
 #include <map>
+#include <string>
 #include <utility>
 
 #include "base/strings/strcat.h"
@@ -19,17 +19,19 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/render_frame_host.h"
 #include "net/base/escape.h"
 #include "net/base/url_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/origin.h"
 
 namespace {
 
-void LoadNewTabURL(
-    const GURL& url,
-    content::WebContents::OnceGetter web_contents_getter,
-    ui::PageTransition page_transition,
-    bool has_user_gesture,
-    const base::Optional<url::Origin>& initiating_origin) {
+void LoadNewTabURL(const GURL& url,
+                   content::WebContents::OnceGetter web_contents_getter,
+                   ui::PageTransition page_transition,
+                   bool has_user_gesture,
+                   const absl::optional<url::Origin>& initiating_origin) {
   content::WebContents* web_contents = std::move(web_contents_getter).Run();
   if (!web_contents) {
     return;
@@ -42,28 +44,30 @@ void LoadNewTabURL(
 
   // We should only allow binance scheme to be used from
   // https://accounts.binance.com
-  GURL allowed_origin("https://accounts.binance.com");
-  if (web_contents->GetLastCommittedURL().GetOrigin() != allowed_origin ||
-      !initiating_origin.has_value() ||
-      initiating_origin.value().GetURL() != allowed_origin) {
+  url::Origin allowed_origin =
+      url::Origin::Create(GURL("https://accounts.binance.com"));
+  url::Origin last_committed_origin =
+      url::Origin::Create(web_contents->GetLastCommittedURL());
+  if (last_committed_origin != allowed_origin ||
+      !initiating_origin.has_value() || initiating_origin != allowed_origin) {
     return;
   }
 
   std::map<std::string, std::string> parts;
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
-    parts[it.GetKey()] = it.GetUnescapedValue();
+    parts[std::string(it.GetKey())] = it.GetUnescapedValue();
   }
   if (parts.find("code") != parts.end()) {
     std::string auth_token = parts["code"];
     Profile* profile =
         Profile::FromBrowserContext(web_contents->GetBrowserContext());
-    BinanceServiceFactory::GetInstance()
-      ->GetForProfile(profile)
-      ->SetAuthToken(auth_token);
+    BinanceServiceFactory::GetInstance()->GetForProfile(profile)->SetAuthToken(
+        auth_token);
   }
 
   web_contents->GetController().LoadURL(GURL("chrome://newtab?binanceAuth=1"),
-      content::Referrer(), page_transition, std::string());
+                                        content::Referrer(), page_transition,
+                                        std::string());
 }
 
 }  // namespace
@@ -74,7 +78,7 @@ void HandleBinanceProtocol(const GURL& url,
                            content::WebContents::OnceGetter web_contents_getter,
                            ui::PageTransition page_transition,
                            bool has_user_gesture,
-                           const base::Optional<url::Origin>& initiator) {
+                           const absl::optional<url::Origin>& initiator) {
   DCHECK(IsBinanceProtocol(url));
   base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},

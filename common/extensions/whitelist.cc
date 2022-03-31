@@ -6,7 +6,6 @@
 #include "brave/common/extensions/whitelist.h"
 
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "extensions/common/constants.h"
 
 // This is a hardcoded list of vetted extensions, mostly

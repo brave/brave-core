@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
-#include "base/scoped_observer.h"
 #include "brave/browser/crypto_dot_com/crypto_dot_com_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_service.h"
@@ -266,12 +265,14 @@ class CryptoDotComAPIBrowserTest : public InProcessBrowserTest {
   }
 
   bool NavigateToNewTabUntilLoadStop() {
-    ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab"));
+    EXPECT_TRUE(
+        ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab")));
     return WaitForLoadStop(active_contents());
   }
 
   bool NavigateToVersionTabUntilLoadStop() {
-    ui_test_utils::NavigateToURL(browser(), GURL("chrome://version"));
+    EXPECT_TRUE(
+        ui_test_utils::NavigateToURL(browser(), GURL("chrome://version")));
     return WaitForLoadStop(active_contents());
   }
 

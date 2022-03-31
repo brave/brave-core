@@ -115,5 +115,5 @@ const BraveClearBrowsingDataOnExitBehaviorImpl = {
 
 // Extend I18nBehavior so that we can use i18n.
 export const BraveClearBrowsingDataOnExitBehavior = [
-  I18nBehavior, BraveClearBrowsingDataOnExitBehaviorImpl
+  BraveClearBrowsingDataOnExitBehaviorImpl
 ]

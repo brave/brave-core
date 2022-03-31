@@ -1,8 +1,8 @@
 diff --git a/third_party/crashpad/crashpad/snapshot/win/process_snapshot_win.cc b/third_party/crashpad/crashpad/snapshot/win/process_snapshot_win.cc
-index 4be203326f93472916245c31d4dbe17eaf6f589d..696c01d5c2b2cf5222c89489dd556c7209e9a345 100644
+index fee843c76d3c69866d21839280e5a3b105d31d3e..7ef5d3218a4784fd14a34a4bda03522e49e575a9 100644
 --- a/third_party/crashpad/crashpad/snapshot/win/process_snapshot_win.cc
 +++ b/third_party/crashpad/crashpad/snapshot/win/process_snapshot_win.cc
-@@ -523,6 +523,7 @@ void ProcessSnapshotWin::AddMemorySnapshotForLdrLIST_ENTRY(
+@@ -520,6 +520,7 @@ void ProcessSnapshotWin::AddMemorySnapshotForLdrLIST_ENTRY(
  
  WinVMSize ProcessSnapshotWin::DetermineSizeOfEnvironmentBlock(
      WinVMAddress start_of_environment_block) {

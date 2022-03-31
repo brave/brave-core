@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_client.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
@@ -41,16 +42,17 @@ class BatAdsClientMojoBridge
   bool ShouldShowNotifications() override;
   void CloseNotification(const std::string& uuid) override;
 
-  void RecordAdEvent(const std::string& ad_type,
-                     const std::string& confirmation_type,
-                     const uint64_t timestamp) const override;
-  std::vector<uint64_t> GetAdEvents(
+  void RecordAdEventForId(const std::string& id,
+                          const std::string& ad_type,
+                          const std::string& confirmation_type,
+                          const double timestamp) const override;
+  std::vector<double> GetAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
+  void ResetAdEventsForId(const std::string& id) const override;
 
-  void UrlRequest(
-      ads::UrlRequestPtr url_request,
-      ads::UrlRequestCallback callback) override;
+  void UrlRequest(ads::mojom::UrlRequestPtr url_request,
+                  ads::UrlRequestCallback callback) override;
 
   void Save(
       const std::string& name,
@@ -64,10 +66,12 @@ class BatAdsClientMojoBridge
                           const int days_ago,
                           ads::GetBrowsingHistoryCallback callback) override;
 
-  void RecordP2AEvent(
-      const std::string& name,
-      const ads::P2AEventType type,
-      const std::string& value) override;
+  void RecordP2AEvent(const std::string& name,
+                      const ads::mojom::P2AEventType type,
+                      const std::string& value) override;
+
+  void LogTrainingCovariates(
+      ads::mojom::TrainingCovariatesPtr training_covariates) override;
 
   void Load(
       const std::string& name,
@@ -76,9 +80,15 @@ class BatAdsClientMojoBridge
   std::string LoadResourceForId(
       const std::string& id) override;
 
-  void RunDBTransaction(
-      ads::DBTransactionPtr transaction,
-      ads::RunDBTransactionCallback callback) override;
+  void ClearScheduledCaptcha() override;
+  void GetScheduledCaptcha(const std::string& payment_id,
+                           ads::GetScheduledCaptchaCallback callback) override;
+
+  void ShowScheduledCaptchaNotification(const std::string& payment_id,
+                                        const std::string& captcha_id) override;
+
+  void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
+                        ads::RunDBTransactionCallback callback) override;
 
   void OnAdRewardsChanged() override;
 
@@ -132,6 +142,8 @@ class BatAdsClientMojoBridge
 
   void ClearPref(
       const std::string& path) override;
+
+  bool HasPrefPath(const std::string& path) const override;
 
  private:
   bool connected() const;

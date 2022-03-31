@@ -8,8 +8,10 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "brave/browser/net/url_context.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "net/base/completion_once_callback.h"
 
 namespace decentralized_dns {
@@ -20,17 +22,19 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx);
 
-void OnBeforeURLRequest_DecentralizedDnsRedirectWork(
+void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx,
-    bool success,
-    const std::string& result);
+    const std::vector<std::string>& values,
+    brave_wallet::mojom::ProviderError error,
+    const std::string& error_message);
 
 void OnBeforeURLRequest_EnsRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx,
-    bool success,
-    const std::string& ipfs_uri);
+    const std::string& content_hash,
+    brave_wallet::mojom::ProviderError error,
+    const std::string& error_message);
 
 }  // namespace decentralized_dns
 

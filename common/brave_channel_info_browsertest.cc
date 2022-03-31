@@ -4,16 +4,22 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/environment.h"
+#include "build/build_config.h"
 #include "chrome/common/channel_info.h"
-#include "chrome/test/base/in_process_browser_test.h"
 #include "components/version_info/channel.h"
 #include "content/public/test/browser_test.h"
 
-using BraveChannelInfoBrowserTest = InProcessBrowserTest;
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/test/base/in_process_browser_test.h"
+#endif
+
+using BraveChannelInfoBrowserTest = PlatformBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(BraveChannelInfoBrowserTest, DefaultChannelTest) {
 #if defined(OFFICIAL_BUILD)
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   // Set channel info explicitly to test. Linux uses this env vars to determine
   // which channel is used.
   auto env = base::Environment::Create();

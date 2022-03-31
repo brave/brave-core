@@ -4,9 +4,17 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/sidebar/buildflags/buildflags.gni")
 
 group("ui") {
-  deps = [ "//brave/components/sidebar/buildflags" ]
+  deps = [
+    "//brave/components/brave_vpn/buildflags",
+    "//brave/components/sidebar/buildflags",
+  ]
+
+  if (enable_sidebar) {
+    deps += [ "//brave/components/sidebar" ]
+  }
 
   if (enable_brave_webtorrent) {
     deps += [

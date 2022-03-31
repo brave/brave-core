@@ -12,9 +12,13 @@
 
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_federated/brave_federated_service_factory.h"
+#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_today/common/features.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -40,7 +44,7 @@
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #endif
 
@@ -72,7 +76,8 @@ BraveProfileManager::~BraveProfileManager() {
   for (Profile* profile : profiles) {
     if (brave::IsSessionProfile(profile)) {
       // passing false for `success` removes the profile from the info cache
-      OnProfileCreated(profile, false, false);
+      OnProfileCreationFinished(profile, Profile::CREATE_MODE_ASYNCHRONOUS,
+                                false, false);
     }
   }
   RemoveObserver(this);
@@ -84,6 +89,25 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   // BravePrefProvider
   content_settings::BravePrefProvider::CopyPluginSettingsForMigration(
       profile->GetPrefs());
+
+// Chromecast is enabled by default on Android.
+#if !BUILDFLAG(IS_ANDROID)
+  auto* pref_service = profile->GetPrefs();
+  // At start, the value of kEnableMediaRouterOnRestart is updated to match
+  // kEnableMediaRouter so users don't lose their current setting
+  if (pref_service->FindPreference(kEnableMediaRouterOnRestart)
+          ->IsDefaultValue()) {
+    auto enabled = pref_service->GetBoolean(::prefs::kEnableMediaRouter);
+    pref_service->SetBoolean(kEnableMediaRouterOnRestart, enabled);
+  } else {
+    // For Desktop, kEnableMediaRouterOnRestart is used to track the current
+    // state of the media router switch in brave://settings/extensions. The
+    // value of kEnableMediaRouter is only updated to match
+    // kEnableMediaRouterOnRestart on restart
+    auto enabled = pref_service->GetBoolean(kEnableMediaRouterOnRestart);
+    pref_service->SetBoolean(::prefs::kEnableMediaRouter, enabled);
+  }
+#endif
 
   ProfileManager::InitProfileUserPrefs(profile);
   brave::RecordInitialP3AValues(profile);
@@ -97,7 +121,8 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
     return;
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-#if BUILDFLAG(IPFS_ENABLED)
+  brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsServiceFactory::GetForContext(profile);
 #endif
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
@@ -109,6 +134,10 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   DCHECK(status);
   status->UpdateGCMDriverStatus();
 #endif
+  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
+    brave_news::BraveNewsControllerFactory::GetForContext(profile);
+  }
+  brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(profile);
 }
 
 bool BraveProfileManager::IsAllowedProfilePath(
@@ -146,7 +175,7 @@ void BraveProfileManager::SetNonPersonalProfilePrefs(Profile* profile) {
 }
 
 void BraveProfileManager::MigrateProfileNames() {
-#if !defined(OS_ANDROID) && !defined(OS_CHROMEOS)
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
   // If any profiles have a default name using an
   // older version of the default name string format,
   // then name it with the new default name string format.
@@ -173,7 +202,7 @@ void BraveProfileManager::MigrateProfileNames() {
 void BraveProfileManager::OnProfileAdded(Profile* profile) {
   // Observe new profiles for creation of OTR profiles so that we can add our
   // shared resources to them.
-  observed_profiles_.Add(profile);
+  observed_profiles_.AddObservation(profile);
   AddBraveSharedResourcesDataSourceToProfile(profile);
 }
 
@@ -184,7 +213,7 @@ void BraveProfileManager::OnOffTheRecordProfileCreated(
 
 void BraveProfileManager::OnProfileWillBeDestroyed(Profile* profile) {
   if (!profile->IsOffTheRecord()) {
-    observed_profiles_.Remove(profile);
+    observed_profiles_.RemoveObservation(profile);
   }
 }
 

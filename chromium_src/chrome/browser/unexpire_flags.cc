@@ -4,24 +4,28 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/string_util.h"
+#include "brave/browser/brave_features_internal_names.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "chrome/common/channel_info.h"
 #include "components/version_info/version_info.h"
 
 #define IsFlagExpired IsFlagExpired_ChromiumImpl
-#include "../../../../chrome/browser/unexpire_flags.cc"
+#include "src/chrome/browser/unexpire_flags.cc"
 #undef IsFlagExpired
 
 namespace flags {
 
 bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
                    const char* internal_name) {
-  // Enable sidebar feature only for nightly/development.
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   version_info::Channel channel = chrome::GetChannel();
-  if (base::LowerCaseEqualsASCII("sidebar", internal_name) &&
+  // Enable VPN feature only for nightly/development.
+  if (base::LowerCaseEqualsASCII(kBraveVPNFeatureInternalName, internal_name) &&
       (channel == version_info::Channel::STABLE ||
        channel == version_info::Channel::BETA)) {
     return true;
   }
+#endif
 
   return IsFlagExpired_ChromiumImpl(storage, internal_name);
 }

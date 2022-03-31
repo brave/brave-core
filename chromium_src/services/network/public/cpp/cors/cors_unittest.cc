@@ -4,12 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "services/network/public/cpp/cors/cors.h"
-
-#include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace network {
 namespace cors {
-namespace {
 
 typedef testing::Test CorsTest;
 
@@ -20,6 +18,5 @@ TEST_F(CorsTest, SafelistedHeader) {
   EXPECT_TRUE(IsCorsSafelistedHeader("x-brave-partner", "foo"));
 }
 
-}  // namespace
 }  // namespace cors
 }  // namespace network

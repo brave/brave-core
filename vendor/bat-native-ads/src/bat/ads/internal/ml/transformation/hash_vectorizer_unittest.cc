@@ -5,11 +5,9 @@
 
 #include "bat/ads/internal/ml/transformation/hash_vectorizer.h"
 
-#include <cmath>
-#include <utility>
-
 #include "base/json/json_reader.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_file_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -18,9 +16,7 @@ namespace ads {
 namespace ml {
 
 namespace {
-
-const char kHashCheck[] = "ml/hash_vectorizer/hashing_validation.json";
-
+constexpr char kHashCheck[] = "ml/hash_vectorizer/hashing_validation.json";
 }  // namespace
 
 class BatAdsHashVectorizerTest : public UnitTestBase {
@@ -28,55 +24,55 @@ class BatAdsHashVectorizerTest : public UnitTestBase {
   BatAdsHashVectorizerTest() = default;
 
   ~BatAdsHashVectorizerTest() override = default;
-};
 
-void RunHashingExtractorTestCase(const std::string& test_case_name) {
-  // Arrange
-  const double kTolerance = 1e-7;
+  void RunHashingExtractorTestCase(const std::string& test_case_name) {
+    // Arrange
+    const double kTolerance = 1e-7;
 
-  const base::Optional<std::string> opt_value =
-      ReadFileFromTestPathToString(kHashCheck);
+    const absl::optional<std::string> opt_value =
+        ReadFileFromTestPathToString(kHashCheck);
 
-  // Act
-  ASSERT_TRUE(opt_value.has_value());
-  const std::string hash_check_json = opt_value.value();
+    // Act
+    ASSERT_TRUE(opt_value.has_value());
+    const std::string hash_check_json = opt_value.value();
 
-  const base::Optional<base::Value> root =
-      base::JSONReader::Read(hash_check_json);
-  ASSERT_TRUE(root);
+    const absl::optional<base::Value> root =
+        base::JSONReader::Read(hash_check_json);
+    ASSERT_TRUE(root);
 
-  const base::Value* case_params = root->FindDictKey(test_case_name);
-  ASSERT_TRUE(case_params);
+    const base::Value* case_params = root->FindDictKey(test_case_name);
+    ASSERT_TRUE(case_params);
 
-  const std::string* input = case_params->FindStringKey("input");
-  ASSERT_TRUE(input);
+    const std::string* input = case_params->FindStringKey("input");
+    ASSERT_TRUE(input);
 
-  const base::Value* idx = case_params->FindListKey("idx");
-  ASSERT_TRUE(idx);
+    const base::Value* idx = case_params->FindListKey("idx");
+    ASSERT_TRUE(idx);
 
-  const base::Value* count = case_params->FindListKey("count");
-  ASSERT_TRUE(count);
+    const base::Value* count = case_params->FindListKey("count");
+    ASSERT_TRUE(count);
 
-  const std::string input_value = *input;
-  const HashVectorizer vectorizer;
-  const std::map<unsigned, double> frequencies =
-      vectorizer.GetFrequencies(input_value);
-  auto idx_list = idx->GetList();
-  auto count_list = count->GetList();
+    const std::string input_value = *input;
+    const HashVectorizer vectorizer;
+    const std::map<unsigned, double> frequencies =
+        vectorizer.GetFrequencies(input_value);
+    const auto& idx_list = idx->GetList();
+    const auto& count_list = count->GetList();
 
-  // Assert
-  ASSERT_EQ(frequencies.size(), idx_list.size());
-  for (size_t i = 0; i < frequencies.size(); ++i) {
-    const base::Value& idx_val = idx_list[i];
-    const base::Value& count_val = count_list[i];
-    EXPECT_TRUE(count_val.GetInt() - frequencies.at(idx_val.GetInt()) <
-                kTolerance);
+    // Assert
+    ASSERT_EQ(frequencies.size(), idx_list.size());
+    for (size_t i = 0; i < frequencies.size(); ++i) {
+      const base::Value& idx_val = idx_list[i];
+      const base::Value& count_val = count_list[i];
+      EXPECT_TRUE(count_val.GetInt() - frequencies.at(idx_val.GetInt()) <
+                  kTolerance);
+    }
   }
-}
+};
 
 TEST_F(BatAdsHashVectorizerTest, ValidJsonScheme) {
   // Arrange
-  const base::Optional<base::Value> root = base::JSONReader::Read(
+  const absl::optional<base::Value> root = base::JSONReader::Read(
       "{"
       "  \"test\": {"
       "    \"foo\": true,"

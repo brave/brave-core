@@ -16,7 +16,7 @@
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #endif
 
@@ -51,7 +51,7 @@ BraveAutocompleteSchemeClassifier::GetInputTypeForScheme(
   }
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   if (base::IsStringASCII(scheme) &&
       (base::LowerCaseEqualsASCII(scheme, ipfs::kIPFSScheme) ||
        base::LowerCaseEqualsASCII(scheme, ipfs::kIPNSScheme))) {

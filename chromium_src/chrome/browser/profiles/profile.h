@@ -6,14 +6,19 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_H_
 
-#define PrimaryID PrimaryID(); static const OTRProfileID TorID
+#define PrimaryID                 \
+  PrimaryID();                    \
+  friend class TorProfileManager; \
+  static const OTRProfileID TorID
 #define HasPrimaryOTRProfile IsTor() const override; bool HasPrimaryOTRProfile
 #define IsIncognitoProfile                 \
   IsIncognitoProfile_ChromiumImpl() const; \
   bool IsIncognitoProfile
-#include "../../../../../chrome/browser/profiles/profile.h"
+
+#include "src/chrome/browser/profiles/profile.h"
+
 #undef IsIncognitoProfile
-#undef PrimaryID
 #undef HasPrimaryOTRProfile
+#undef PrimaryID
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_H_

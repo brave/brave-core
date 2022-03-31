@@ -5,7 +5,10 @@
 
 #include "bat/ads/internal/security/crypto_util.h"
 
+#include <cstdint>
+
 #include "base/base64.h"
+#include "base/containers/flat_map.h"
 #include "bat/ads/internal/security/key_pair_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "tweetnacl.h"  // NOLINT
@@ -16,13 +19,15 @@ namespace ads {
 namespace security {
 
 namespace {
-const size_t kCryptoBoxPublicKeyBytes = crypto_box_PUBLICKEYBYTES;
-const size_t kCryptoBoxSecretKeyBytes = crypto_box_SECRETKEYBYTES;
+
+constexpr size_t kCryptoBoxPublicKeyBytes = crypto_box_PUBLICKEYBYTES;
+constexpr size_t kCryptoBoxSecretKeyBytes = crypto_box_SECRETKEYBYTES;
+
 }  // namespace
 
 TEST(BatAdsSecurityCryptoUtilsTest, Sign) {
   // Arrange
-  const std::map<std::string, std::string> headers = {
+  const base::flat_map<std::string, std::string> headers = {
       {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
 
   const std::string key_id = "primary";
@@ -43,7 +48,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, Sign) {
 
 TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidheaders) {
   // Arrange
-  const std::map<std::string, std::string> headers = {};
+  const base::flat_map<std::string, std::string> headers = {};
 
   const std::string key_id = "primary";
 
@@ -62,7 +67,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidheaders) {
 
 TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidKeyId) {
   // Arrange
-  const std::map<std::string, std::string> headers = {
+  const base::flat_map<std::string, std::string> headers = {
       {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
 
   const std::string key_id = "";
@@ -82,7 +87,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidKeyId) {
 
 TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidSecretKey) {
   // Arrange
-  const std::map<std::string, std::string> headers = {
+  const base::flat_map<std::string, std::string> headers = {
       {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
 
   const std::string key_id = "primary";
@@ -197,7 +202,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, Encrypt) {
   KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();
   std::vector<uint8_t> nonce = GenerateRandom192BitNonce();
   const std::string message = "The quick brown fox jumps over the lazy dog";
-  std::vector<uint8_t> plaintext(message.begin(), message.end());
+  std::vector<uint8_t> plaintext(message.cbegin(), message.cend());
 
   // Act
   const std::vector<uint8_t> ciphertext = security::Encrypt(

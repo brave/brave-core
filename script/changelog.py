@@ -35,7 +35,8 @@ def main():
     tag = args.tag
 
     if not re.match(r'^refs/tags/', tag) and not re.match(r'^v', tag):
-        logging.error(" Tag prefix must contain {} or {}".format("\"refs/tags/\"", "\"v\""))
+        logging.error(" Tag prefix must contain {} or {}".format(
+            "\"refs/tags/\"", "\"v\""))
         exit(1)
 
     match = re.match(r'^refs/tags/(.*)$', tag)
@@ -65,11 +66,13 @@ def parse_args():
         description=desc, formatter_class=RawTextHelpFormatter)
     parser.add_argument('-d', '--debug', action='store_true',
                         help='Print debug statements')
-    parser.add_argument('-o', '--output', help='Output format: markdown or html (required)', required=True)
+    parser.add_argument(
+        '-o', '--output', help='Output format: markdown or html (required)', required=True)
     parser.add_argument('-t', '--tag',
                         help='Brave version tag (allowed format: "v1.5.45" or "refs/tags/v1.5.45") (required)',
                         required=True)
-    parser.add_argument('-u', '--url', help='URL for Brave Browser raw markdown file (required)', required=True)
+    parser.add_argument(
+        '-u', '--url', help='URL for Brave Browser raw markdown file (required)', required=True)
     return parser.parse_args()
 
 

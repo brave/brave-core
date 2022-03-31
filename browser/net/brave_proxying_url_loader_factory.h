@@ -16,10 +16,9 @@
 
 #include "base/callback.h"
 #include "base/containers/unique_ptr_adapters.h"
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted_delete_on_sequence.h"
 #include "base/memory/weak_ptr.h"
-#include "base/optional.h"
 #include "base/time/time.h"
 #include "brave/browser/net/resource_context_data.h"
 #include "brave/browser/net/url_context.h"
@@ -29,9 +28,12 @@
 #include "net/base/completion_once_callback.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/mojom/early_hints.mojom-forward.h"
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_loader_factory.mojom.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -62,6 +64,8 @@ class BraveProxyingURLLoaderFactory
         const net::MutableNetworkTrafficAnnotationTag& traffic_annotation,
         mojo::PendingReceiver<network::mojom::URLLoader> loader_receiver,
         mojo::PendingRemote<network::mojom::URLLoaderClient> client);
+    InProgressRequest(const InProgressRequest&) = delete;
+    InProgressRequest& operator=(const InProgressRequest&) = delete;
     ~InProgressRequest() override;
 
     void Restart();
@@ -71,7 +75,7 @@ class BraveProxyingURLLoaderFactory
         const std::vector<std::string>& removed_headers,
         const net::HttpRequestHeaders& modified_headers,
         const net::HttpRequestHeaders& modified_cors_exempt_headers,
-        const base::Optional<GURL>& new_url) override;
+        const absl::optional<GURL>& new_url) override;
     void SetPriority(net::RequestPriority priority,
                      int32_t intra_priority_value) override;
     void PauseReadingBodyFromNet() override;
@@ -80,8 +84,8 @@ class BraveProxyingURLLoaderFactory
     // network::mojom::URLLoaderClient:
     void OnReceiveEarlyHints(
         network::mojom::EarlyHintsPtr early_hints) override;
-    void OnReceiveResponse(
-        network::mojom::URLResponseHeadPtr response_head) override;
+    void OnReceiveResponse(network::mojom::URLResponseHeadPtr response_head,
+                           mojo::ScopedDataPipeConsumerHandle body) override;
     void OnReceiveRedirect(
         const net::RedirectInfo& redirect_info,
         network::mojom::URLResponseHeadPtr response_head) override;
@@ -123,7 +127,7 @@ class BraveProxyingURLLoaderFactory
     const int frame_tree_node_id_;
     const uint32_t options_;
 
-    content::BrowserContext* browser_context_;
+    raw_ptr<content::BrowserContext> browser_context_ = nullptr;
     const net::MutableNetworkTrafficAnnotationTag traffic_annotation_;
 
     // This is our proxy's receiver that will talk to the original client. It
@@ -144,7 +148,8 @@ class BraveProxyingURLLoaderFactory
     // ExtensionWebRequestEventRouter) through much of the request's lifetime.
     // That code supports both Network Service and non-Network Service behavior,
     // which is why this weirdness exists here.
-    network::mojom::URLResponseHeadPtr current_response_;
+    network::mojom::URLResponseHeadPtr current_response_head_;
+    mojo::ScopedDataPipeConsumerHandle current_response_body_;
     scoped_refptr<net::HttpResponseHeaders> override_headers_;
     GURL redirect_url_;
 
@@ -155,19 +160,17 @@ class BraveProxyingURLLoaderFactory
     // extensions made to headers in their callbacks.
     struct FollowRedirectParams {
       FollowRedirectParams();
+      FollowRedirectParams(const FollowRedirectParams&) = delete;
+      FollowRedirectParams& operator=(const FollowRedirectParams&) = delete;
       ~FollowRedirectParams();
       std::vector<std::string> removed_headers;
       net::HttpRequestHeaders modified_headers;
       net::HttpRequestHeaders modified_cors_exempt_headers;
-      base::Optional<GURL> new_url;
-
-      DISALLOW_COPY_AND_ASSIGN(FollowRedirectParams);
+      absl::optional<GURL> new_url;
     };
     std::unique_ptr<FollowRedirectParams> pending_follow_redirect_params_;
 
     base::WeakPtrFactory<InProgressRequest> weak_factory_;
-
-    DISALLOW_COPY_AND_ASSIGN(InProgressRequest);
   };
 
   // Constructor public for testing purposes. New instances should be created
@@ -181,6 +184,10 @@ class BraveProxyingURLLoaderFactory
       network::mojom::URLLoaderFactoryPtrInfo target_factory,
       scoped_refptr<RequestIDGenerator> request_id_generator,
       DisconnectCallback on_disconnect);
+
+  BraveProxyingURLLoaderFactory(const BraveProxyingURLLoaderFactory&) = delete;
+  BraveProxyingURLLoaderFactory& operator=(
+      const BraveProxyingURLLoaderFactory&) = delete;
 
   ~BraveProxyingURLLoaderFactory() override;
 
@@ -214,7 +221,7 @@ class BraveProxyingURLLoaderFactory
   void MaybeRemoveProxy();
 
   BraveRequestHandler* const request_handler_;
-  content::BrowserContext* browser_context_;
+  raw_ptr<content::BrowserContext> browser_context_ = nullptr;
   const int render_process_id_;
   const int frame_tree_node_id_;
 
@@ -229,8 +236,6 @@ class BraveProxyingURLLoaderFactory
   DisconnectCallback disconnect_callback_;
 
   base::WeakPtrFactory<BraveProxyingURLLoaderFactory> weak_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveProxyingURLLoaderFactory);
 };
 
 #endif  // BRAVE_BROWSER_NET_BRAVE_PROXYING_URL_LOADER_FACTORY_H_

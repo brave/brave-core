@@ -50,7 +50,7 @@ interface CookiesProps {
 interface FingerprintingProps {
   fingerprinting: BlockFPOptions
   fingerprintingBlocked: number
-  fingerprintingBlockedResources: Array<string>
+  fingerprintingBlockedResources: string[]
   blockFingerprinting: BlockFingerprinting
 }
 

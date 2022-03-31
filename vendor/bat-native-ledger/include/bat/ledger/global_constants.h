@@ -20,6 +20,7 @@ const char kWalletAnonymous[] = "anonymous";
 const char kWalletUphold[] = "uphold";
 const char kWalletUnBlinded[] = "blinded";
 const char kWalletBitflyer[] = "bitflyer";
+const char kWalletGemini[] = "gemini";
 
 }  // namespace constant
 }  // namespace ledger

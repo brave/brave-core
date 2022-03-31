@@ -20,7 +20,8 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/browser/website_settings_info.h"
 #include "components/content_settings/core/browser/website_settings_registry.h"
-#include "components/permissions/permission_request_impl.h"
+#include "components/permissions/permission_request.h"
+#include "components/permissions/request_type.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -36,8 +37,7 @@ namespace permissions {
 
 namespace {
 
-using PermissionDecidedCallback =
-    PermissionRequestImpl::PermissionDecidedCallback;
+using PermissionDecidedCallback = PermissionRequest::PermissionDecidedCallback;
 
 constexpr base::StringPiece kOneTypeOneExpirationPrefValue = R"({
   "$1": {
@@ -159,9 +159,9 @@ class PermissionLifetimeManagerTest : public testing::Test {
     manager_.reset();
   }
 
-  const util::WallClockTimer& timer() { return *manager()->expiration_timer_; }
+  const base::WallClockTimer& timer() { return *manager()->expiration_timer_; }
 
-  std::unique_ptr<PermissionRequestImpl> CreateRequestAndChooseContentSetting(
+  std::unique_ptr<PermissionRequest> CreateRequestAndChooseContentSetting(
       const GURL& origin,
       ContentSettingsType content_type,
       base::TimeDelta lifetime,
@@ -176,14 +176,14 @@ class PermissionLifetimeManagerTest : public testing::Test {
               content_setting);
     ExpectContentSetting(FROM_HERE, origin, content_type, content_setting);
 
-    auto request = std::make_unique<PermissionRequestImpl>(
-        origin, content_type, true, PermissionDecidedCallback(),
-        base::OnceClosure());
+    auto request = std::make_unique<PermissionRequest>(
+        origin, ContentSettingsTypeToRequestType(content_type), true,
+        PermissionDecidedCallback(), base::OnceClosure());
     request->SetLifetime(lifetime);
     return request;
   }
 
-  std::unique_ptr<PermissionRequestImpl> CreateRequestAndAllowContentSetting(
+  std::unique_ptr<PermissionRequest> CreateRequestAndAllowContentSetting(
       const GURL& origin,
       ContentSettingsType content_type,
       base::TimeDelta lifetime) {
@@ -229,8 +229,8 @@ class PermissionLifetimeManagerTest : public testing::Test {
  protected:
   const GURL kOrigin{"https://example.com"};
   const GURL kOrigin2{"https://brave.com"};
-  const base::TimeDelta kLifetime{base::TimeDelta::FromSeconds(5)};
-  const base::TimeDelta kOneSecond{base::TimeDelta::FromSeconds(1)};
+  const base::TimeDelta kLifetime{base::Seconds(5)};
+  const base::TimeDelta kOneSecond{base::Seconds(1)};
 
   content::BrowserTaskEnvironment browser_task_environment_;
   TestingProfile profile_;
@@ -371,8 +371,7 @@ TEST_F(PermissionLifetimeManagerTest, TwoPermissionsSameTime) {
 
 TEST_F(PermissionLifetimeManagerTest, TwoPermissionsBigTimeDifference) {
   auto request(CreateRequestAndAllowContentSetting(
-      kOrigin, ContentSettingsType::NOTIFICATIONS,
-      base::TimeDelta::FromDays(5)));
+      kOrigin, ContentSettingsType::NOTIFICATIONS, base::Days(5)));
   const base::Time expected_expiration_time =
       base::Time::Now() + *request->GetLifetime();
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
@@ -482,8 +481,7 @@ TEST_F(PermissionLifetimeManagerTest, ExpiredRestoreAfterRestart) {
 
 TEST_F(PermissionLifetimeManagerTest, PartiallyExpiredRestoreAfterRestart) {
   auto request(CreateRequestAndAllowContentSetting(
-      kOrigin, ContentSettingsType::NOTIFICATIONS,
-      base::TimeDelta::FromDays(5)));
+      kOrigin, ContentSettingsType::NOTIFICATIONS, base::Days(5)));
   const base::Time expected_expiration_time =
       base::Time::Now() + *request->GetLifetime();
   manager()->PermissionDecided(*request, kOrigin, kOrigin,

@@ -7,27 +7,13 @@
 
 #include "brave/components/brave_extension/grit/brave_extension_generated_map.h"
 #include "brave/components/brave_extension/grit/brave_extension_resources_map.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources_map.h"
+#include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_panel_generated_map.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_generated_map.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources_map.h"
-#endif
-
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources_map.h"
-#include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_panel_generated_map.h"
-#endif
-
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#define BRAVE_REWARDS_EXTENSION_RESOURCES                           \
-  AddComponentResourceEntries(kBraveRewardsExtensionResources,      \
-                              kBraveRewardsExtensionResourcesSize); \
-  AddComponentResourceEntries(kBraveRewardsPanelGenerated,          \
-                              kBraveRewardsPanelGeneratedSize);
-#else
-#define BRAVE_REWARDS_EXTENSION_RESOURCES
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -44,8 +30,11 @@
   AddComponentResourceEntries(kBraveExtension, kBraveExtensionSize); \
   AddComponentResourceEntries(kBraveExtensionGenerated,              \
                               kBraveExtensionGeneratedSize);         \
-  BRAVE_REWARDS_EXTENSION_RESOURCES                                  \
+  AddComponentResourceEntries(kBraveRewardsExtensionResources,       \
+                              kBraveRewardsExtensionResourcesSize);  \
+  AddComponentResourceEntries(kBraveRewardsPanelGenerated,           \
+                              kBraveRewardsPanelGeneratedSize);      \
   BRAVE_WEBTORRENT_RESOURCES
 
-#include "../../../../../chrome/browser/extensions/chrome_component_extension_resource_manager.cc"
+#include "src/chrome/browser/extensions/chrome_component_extension_resource_manager.cc"
 #undef BRAVE_CHROME_COMPONENT_EXTENSION_RESOURCE_MANAGER_DATA_DATA

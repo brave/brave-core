@@ -13,10 +13,11 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "bat/ads/ads.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/statement_info.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
-#include "bat/ads/ads.h"
-#include "bat/ads/statement_info.h"
 
 namespace ads {
 class Ads;
@@ -83,17 +84,27 @@ class BatAdsImpl :
       GetAdNotificationCallback callback) override;
   void OnAdNotificationEvent(
       const std::string& uuid,
-      const ads::AdNotificationEventType event_type) override;
+      const ads::mojom::AdNotificationEventType event_type) override;
 
   void OnNewTabPageAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::NewTabPageAdEventType event_type) override;
+      const ads::mojom::NewTabPageAdEventType event_type) override;
 
   void OnPromotedContentAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const ads::PromotedContentAdEventType event_type) override;
+      const ads::mojom::PromotedContentAdEventType event_type) override;
+
+  void GetInlineContentAd(const std::string& dimensions,
+                          GetInlineContentAdCallback callback) override;
+
+  void OnInlineContentAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const ads::mojom::InlineContentAdEventType event_type) override;
+
+  void PurgeOrphanedAdEventsForType(const ads::mojom::AdType ad_type) override;
 
   void RemoveAllHistory(
       RemoveAllHistoryCallback callback) override;
@@ -102,43 +113,31 @@ class BatAdsImpl :
       const std::string& payment_id,
       const std::string& seed) override;
 
-  void ReconcileAdRewards() override;
+  void GetHistory(const double from_timestamp,
+                  const double to_timestamp,
+                  GetHistoryCallback callback) override;
 
-  void GetAdsHistory(
-      const uint64_t from_timestamp,
-      const uint64_t to_timestamp,
-      GetAdsHistoryCallback callback) override;
+  void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  void GetAccountStatement(GetAccountStatementCallback callback) override;
+  void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
 
-  void ToggleAdThumbUp(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const int action,
-      ToggleAdThumbUpCallback callback) override;
-  void ToggleAdThumbDown(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const int action,
-      ToggleAdThumbUpCallback callback) override;
-  void ToggleAdOptInAction(
-      const std::string& category,
-      const int action,
-      ToggleAdOptInActionCallback callback) override;
-  void ToggleAdOptOutAction(
-      const std::string& category,
-      const int action,
-      ToggleAdOptOutActionCallback callback) override;
-  void ToggleSaveAd(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const bool saved,
-      ToggleSaveAdCallback callback) override;
-  void ToggleFlagAd(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const bool flagged,
-      ToggleFlagAdCallback callback) override;
+  void ToggleAdThumbUp(const std::string& json,
+                       ToggleAdThumbUpCallback callback) override;
+  void ToggleAdThumbDown(const std::string& json,
+                         ToggleAdThumbUpCallback callback) override;
+
+  void ToggleAdOptIn(const std::string& category,
+                     const int opt_action_type,
+                     ToggleAdOptInCallback callback) override;
+  void ToggleAdOptOut(const std::string& category,
+                      const int opt_action_type,
+                      ToggleAdOptOutCallback callback) override;
+
+  void ToggleSavedAd(const std::string& json,
+                     ToggleSavedAdCallback callback) override;
+
+  void ToggleFlaggedAd(const std::string& json,
+                       ToggleFlaggedAdCallback callback) override;
 
   void OnResourceComponentUpdated(const std::string& id) override;
 
@@ -165,25 +164,34 @@ class BatAdsImpl :
       Callback callback_;
     };
 
-  static void OnInitialize(
-      CallbackHolder<InitializeCallback>* holder,
-      const int32_t result);
+    static void OnInitialize(CallbackHolder<InitializeCallback>* holder,
+                             const bool success);
 
-  static void OnShutdown(
-      CallbackHolder<ShutdownCallback>* holder,
-      const int32_t result);
+    static void OnShutdown(CallbackHolder<ShutdownCallback>* holder,
+                           const bool success);
 
-  static void OnRemoveAllHistory(
-      CallbackHolder<RemoveAllHistoryCallback>* holder,
-      const int32_t result);
+    static void OnGetInlineContentAd(
+        CallbackHolder<GetInlineContentAdCallback>* holder,
+        const bool success,
+        const std::string& dimensions,
+        const ads::InlineContentAdInfo& ad);
 
-  static void OnGetAccountStatement(
-      CallbackHolder<GetAccountStatementCallback>* holder,
-      const bool success,
-      const ads::StatementInfo& statement);
+    static void OnRemoveAllHistory(
+        CallbackHolder<RemoveAllHistoryCallback>* holder,
+        const bool success);
 
-  std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
-  std::unique_ptr<ads::Ads> ads_;
+    static void OnGetStatementOfAccounts(
+        CallbackHolder<GetStatementOfAccountsCallback>* holder,
+        const bool success,
+        const ads::StatementInfo& statement);
+
+    static void OnGetAdDiagnostics(
+        CallbackHolder<GetAdDiagnosticsCallback>* holder,
+        const bool success,
+        const std::string& json);
+
+    std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
+    std::unique_ptr<ads::Ads> ads_;
 };
 
 }  // namespace bat_ads

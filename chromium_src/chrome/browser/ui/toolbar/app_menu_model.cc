@@ -7,6 +7,6 @@
 
 #define RecentTabsSubMenuModel BraveRecentTabsSubMenuModel
 
-#include "../../../../../../chrome/browser/ui/toolbar/app_menu_model.cc"
+#include "src/chrome/browser/ui/toolbar/app_menu_model.cc"
 
 #undef RecentTabsSubMenuModel

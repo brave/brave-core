@@ -17,6 +17,7 @@
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
+#include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/controls/button/menu_button.h"
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view.h"
@@ -28,14 +29,15 @@ class BraveActionViewHighlightPathGenerator
     : public views::HighlightPathGenerator {
  public:
   BraveActionViewHighlightPathGenerator() = default;
+  BraveActionViewHighlightPathGenerator(
+      const BraveActionViewHighlightPathGenerator&) = delete;
+  BraveActionViewHighlightPathGenerator& operator=(
+      const BraveActionViewHighlightPathGenerator&) = delete;
 
   // HighlightPathGenerator
   SkPath GetHighlightPath(const views::View* view) override {
     return static_cast<const BraveActionView*>(view)->GetHighlightPath();
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveActionViewHighlightPathGenerator);
 };
 
 }  // namespace

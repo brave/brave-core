@@ -6,11 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_EXECUTION_CONTEXT_EXECUTION_CONTEXT_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_EXECUTION_CONTEXT_EXECUTION_CONTEXT_H_
 
-#include "../../../../../../../third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "src/third_party/blink/renderer/core/execution_context/execution_context.h"
 
 #include <random>
 
 #include "base/callback.h"
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 
 namespace blink {
 class WebContentSettingsClient;
@@ -18,11 +19,8 @@ class WebContentSettingsClient;
 
 using blink::ExecutionContext;
 using blink::GarbageCollected;
-using blink::HeapObjectHeader;
 using blink::MakeGarbageCollected;
 using blink::Supplement;
-using blink::TraceDescriptor;
-using blink::TraceTrait;
 
 namespace brave {
 
@@ -30,6 +28,10 @@ typedef base::RepeatingCallback<float(float, size_t)> AudioFarblingCallback;
 
 CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(
     ExecutionContext* context);
+CORE_EXPORT BraveFarblingLevel
+GetBraveFarblingLevelFor(ExecutionContext* context,
+                         BraveFarblingLevel default_value);
+CORE_EXPORT bool AllowFingerprinting(ExecutionContext* context);
 
 class CORE_EXPORT BraveSessionCache final
     : public GarbageCollected<BraveSessionCache>,

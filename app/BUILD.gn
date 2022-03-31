@@ -1,3 +1,4 @@
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//build/config/features.gni")
@@ -12,6 +13,7 @@ grit("brave_generated_resources_grit") {
   defines = [
     "enable_sidebar=$enable_sidebar",
     "enable_speedreader=$enable_speedreader",
+    "enable_brave_vpn=$enable_brave_vpn",
   ]
   source = "brave_generated_resources.grd"
   output_dir = "$root_gen_dir/brave"

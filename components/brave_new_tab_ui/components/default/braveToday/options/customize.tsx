@@ -8,12 +8,15 @@ import styled from 'styled-components'
 import { getLocale } from '../../../../../common/locale'
 import { Button } from '../default'
 
-type Props = {
+type StyleProps = {
   show: boolean
+}
+
+type Props = StyleProps & {
   onCustomizeBraveToday: () => any
 }
 
-const Hideable = styled('div')<Props>`
+const Hideable = styled('div')<StyleProps>`
   pointer-events: ${p => p.show ? 'auto' : 'none'};
   position: fixed;
   right: 20px;
@@ -24,7 +27,7 @@ const Hideable = styled('div')<Props>`
 
 export default function Customize (props: Props) {
   return (
-    <Hideable {...props}>
+    <Hideable show={props.show}>
       <Button
         aria-hidden={!props.show}
         disabled={!props.show}

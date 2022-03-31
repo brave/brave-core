@@ -1,22 +1,25 @@
 import * as React from 'react'
+import { getLocale } from '../../../../common/locale'
 
 // Styled Components
 import { StyledWrapper, FavIcon, URLText, PanelTitle } from './style'
 
 export interface Props {
   url: string
+  hideTitle?: boolean
 }
 
-export default class ConnectHeader extends React.PureComponent<Props, {}> {
-  render () {
-    const { url } = this.props
-    return (
-      <StyledWrapper>
-        {/* FavIcon is a temp fill in until we add logic to fetch site metadata to display fav icons.*/}
-        <FavIcon />
-        <URLText>{url}</URLText>
-        <PanelTitle>Connect With Brave Wallet</PanelTitle>
-      </StyledWrapper>
-    )
-  }
+function ConnectHeader (props: Props) {
+  const { url, hideTitle } = props
+  return (
+    <StyledWrapper>
+      <FavIcon src={`chrome://favicon/size/64@1x/${url}`} />
+      <URLText>{url}</URLText>
+      {!hideTitle &&
+        <PanelTitle>{getLocale('braveWalletConnectWithSiteHeaderTitle')}</PanelTitle>
+      }
+    </StyledWrapper>
+  )
 }
+
+export default ConnectHeader

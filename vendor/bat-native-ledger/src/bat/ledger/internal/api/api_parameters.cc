@@ -52,22 +52,20 @@ void APIParameters::OnFetch(
     const type::RewardsParameters& parameters) {
   if (result == type::Result::RETRY_SHORT) {
     RunCallbacks();
-    SetRefreshTimer(base::TimeDelta::FromSeconds(90));
+    SetRefreshTimer(base::Seconds(90));
     return;
   }
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(1, "Couldn't parse response");
     RunCallbacks();
-    SetRefreshTimer(base::TimeDelta::FromMinutes(10));
+    SetRefreshTimer(base::Minutes(10));
     return;
   }
 
   ledger_->state()->SetRewardsParameters(parameters);
   RunCallbacks();
-  SetRefreshTimer(
-      base::TimeDelta::FromMinutes(10),
-      base::TimeDelta::FromHours(3));
+  SetRefreshTimer(base::Minutes(10), base::Hours(3));
 }
 
 void APIParameters::RunCallbacks() {

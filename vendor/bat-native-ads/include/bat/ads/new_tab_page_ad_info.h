@@ -10,11 +10,11 @@
 
 #include "bat/ads/ad_info.h"
 #include "bat/ads/export.h"
-#include "bat/ads/result.h"
+#include "bat/ads/new_tab_page_ad_wallpaper_info_aliases.h"
 
 namespace ads {
 
-struct ADS_EXPORT NewTabPageAdInfo : AdInfo {
+struct ADS_EXPORT NewTabPageAdInfo final : AdInfo {
   NewTabPageAdInfo();
   NewTabPageAdInfo(const NewTabPageAdInfo& info);
   ~NewTabPageAdInfo();
@@ -22,10 +22,12 @@ struct ADS_EXPORT NewTabPageAdInfo : AdInfo {
   bool IsValid() const;
 
   std::string ToJson() const;
-  Result FromJson(const std::string& json);
+  bool FromJson(const std::string& json);
 
   std::string company_name;
+  std::string image_url;
   std::string alt;
+  NewTabPageAdWallpaperList wallpapers;
 };
 
 }  // namespace ads

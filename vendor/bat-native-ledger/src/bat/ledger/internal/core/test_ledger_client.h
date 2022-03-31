@@ -14,12 +14,21 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "base/sequenced_task_runner.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
 #include "bat/ledger/internal/ledger_database_impl.h"
 #include "bat/ledger/ledger_client.h"
 
 namespace ledger {
+
+struct FakeEncryption {
+  static std::string EncryptString(const std::string& value);
+  static absl::optional<std::string> DecryptString(const std::string& value);
+
+  static std::string Base64EncryptString(const std::string& value);
+  static absl::optional<std::string> Base64DecryptString(
+      const std::string& value);
+};
 
 struct TestNetworkResult {
   TestNetworkResult(const std::string& url,
@@ -144,10 +153,9 @@ class TestLedgerClient : public LedgerClient {
 
   void DeleteLog(client::ResultCallback callback) override;
 
-  bool SetEncryptedStringState(const std::string& name,
-                               const std::string& value) override;
+  absl::optional<std::string> EncryptString(const std::string& value) override;
 
-  std::string GetEncryptedStringState(const std::string& name) override;
+  absl::optional<std::string> DecryptString(const std::string& value) override;
 
   // Test environment setup methods:
 
@@ -172,7 +180,6 @@ class TestLedgerClient : public LedgerClient {
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   std::unique_ptr<LedgerDatabaseImpl> ledger_database_;
   base::Value state_store_;
-  base::Value encrypted_state_store_;
   base::Value option_store_;
   std::list<TestNetworkResult> network_results_;
   LogCallback log_callback_;

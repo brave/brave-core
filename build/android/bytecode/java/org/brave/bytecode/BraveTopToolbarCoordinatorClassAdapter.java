@@ -16,8 +16,10 @@ public class BraveTopToolbarCoordinatorClassAdapter extends BraveClassVisitor {
     public BraveTopToolbarCoordinatorClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        deleteField(sBraveTopToolbarCoordinatorClassName, "mTabSwitcherModeCoordinatorPhone");
-        makeProtectedField(sTopToolbarCoordinatorClassName, "mTabSwitcherModeCoordinatorPhone");
+        redirectConstructor(sTopToolbarCoordinatorClassName, sBraveTopToolbarCoordinatorClassName);
+
+        deleteField(sBraveTopToolbarCoordinatorClassName, "mTabSwitcherModeCoordinator");
+        makeProtectedField(sTopToolbarCoordinatorClassName, "mTabSwitcherModeCoordinator");
 
         deleteField(sBraveTopToolbarCoordinatorClassName, "mOptionalButtonController");
         makeProtectedField(sTopToolbarCoordinatorClassName, "mOptionalButtonController");

@@ -1,4 +1,0 @@
-module Clang [extern_c] {
-  header "/usr/local/opt/llvm/include/clang-c/Index.h"
-  export *
-}

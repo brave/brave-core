@@ -9,71 +9,77 @@
 #include <memory>
 #include <string>
 
-#include "base/values.h"
-#include "bat/ads/ads.h"
-#include "bat/ads/internal/account/confirmations/confirmations_observer.h"
-#include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
-#include "bat/ads/internal/timer.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
-#include "bat/ads/result.h"
+#include "base/memory/raw_ptr.h"
+#include "bat/ads/internal/account/confirmations/confirmations_delegate.h"
+#include "bat/ads/internal/account/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
+#include "bat/ads/internal/backoff_timer.h"
+
+namespace base {
+class Time;
+class Value;
+}  // namespace base
 
 namespace ads {
 
-class AdRewards;
-class ConfirmationsState;
+class AdType;
+class ConfirmationType;
 class RedeemUnblindedToken;
-struct CatalogIssuersInfo;
-struct UnblindedTokenInfo;
+struct TransactionInfo;
 
-class Confirmations : public RedeemUnblindedTokenDelegate {
+namespace privacy {
+class TokenGeneratorInterface;
+struct UnblindedPaymentTokenInfo;
+}  // namespace privacy
+
+class Confirmations final : public RedeemUnblindedTokenDelegate {
  public:
-  Confirmations(privacy::TokenGeneratorInterface* token_generator,
-                AdRewards* ad_rewards);
-
+  explicit Confirmations(privacy::TokenGeneratorInterface* token_generator);
   ~Confirmations() override;
 
-  void AddObserver(ConfirmationsObserver* observer);
-  void RemoveObserver(ConfirmationsObserver* observer);
+  void set_delegate(ConfirmationsDelegate* delegate) {
+    DCHECK_EQ(delegate_, nullptr);
+    delegate_ = delegate;
+  }
 
-  void SetCatalogIssuers(const CatalogIssuersInfo& catalog_issuers);
+  void Confirm(const TransactionInfo& transaction);
 
-  void ConfirmAd(const std::string& creative_instance_id,
-                 const ConfirmationType& confirmation_type);
-
-  void RetryAfterDelay();
+  void ProcessRetryQueue();
 
  private:
-  base::ObserverList<ConfirmationsObserver> observers_;
+  ConfirmationInfo CreateConfirmation(const base::Time time,
+                                      const std::string& transaction_id,
+                                      const std::string& creative_instance_id,
+                                      const ConfirmationType& confirmation_type,
+                                      const AdType& ad_type,
+                                      const base::Value& user_data) const;
 
-  privacy::TokenGeneratorInterface* token_generator_;  // NOT OWNED
+  void Retry();
+  void OnRetry();
+  void StopRetrying();
 
-  std::unique_ptr<ConfirmationsState> confirmations_state_;
-  std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
-
-  ConfirmationInfo CreateConfirmation(
-      const std::string& creative_instance_id,
-      const ConfirmationType& confirmation_type,
-      const base::DictionaryValue& user_data) const;
-
-  Timer retry_timer_;
   void CreateNewConfirmationAndAppendToRetryQueue(
       const ConfirmationInfo& confirmation);
   void AppendToRetryQueue(const ConfirmationInfo& confirmation);
   void RemoveFromRetryQueue(const ConfirmationInfo& confirmation);
-  void Retry();
 
-  void NotifyConfirmAd(const double estimated_redemption_value,
-                       const ConfirmationInfo& confirmation);
-
-  void NotifyConfirmAdFailed(const ConfirmationInfo& confirmation);
-
-  // RedeemUnblindedTokenDelegate implementation
-  void OnDidRedeemUnblindedToken(
-      const ConfirmationInfo& confirmation,
-      const privacy::UnblindedTokenInfo& unblinded_payment_token) override;
-
+  // RedeemUnblindedTokenDelegate:
+  void OnDidSendConfirmation(const ConfirmationInfo& confirmation) override;
+  void OnFailedToSendConfirmation(const ConfirmationInfo& confirmation,
+                                  const bool should_retry) override;
+  void OnDidRedeemUnblindedToken(const ConfirmationInfo& confirmation,
+                                 const privacy::UnblindedPaymentTokenInfo&
+                                     unblinded_payment_token) override;
   void OnFailedToRedeemUnblindedToken(const ConfirmationInfo& confirmation,
                                       const bool should_retry) override;
+
+  raw_ptr<ConfirmationsDelegate> delegate_ = nullptr;
+
+  raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
+      nullptr;  // NOT OWNED
+
+  std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
+
+  BackoffTimer retry_timer_;
 };
 
 }  // namespace ads

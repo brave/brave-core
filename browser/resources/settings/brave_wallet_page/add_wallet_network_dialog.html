@@ -1,0 +1,163 @@
+<style include="settings-shared">
+  .icon-picture-button {
+    align-self: right;
+    margin-left: auto;
+    margin-right: 0;
+  }
+  .urls-list {
+    margin-left: 15px;
+  }
+  .button-separator {
+    border-top: var(--cr-separator-line);
+    margin-bottom: 15px;
+    padding-top: 15px;
+  }
+  .urls-button-container {
+    margin-bottom: 15px;
+  }
+  .error-text {
+    color: red;
+    margin-bottom: 15px;
+  }
+</style>
+<cr-dialog show-close-button show-on-attach>
+  <div slot="title">$i18n{walletAddNetworkDialogTitle}</div>
+  <div slot="body">
+    <cr-input id="chainId"
+              label="$i18n{walletAddNetworkDialogChainIdTitle}"
+              type="number"
+              min="1"
+              placeholder="$i18n{walletAddNetworkDialogChainIdPlaceholder}"
+              spellcheck="false"
+              error-message="{{invalidChainIdMessage_}}"
+              invalid="{{chainIdInvalid_}}"
+              class="mandatory"
+              on-input=chainIdChanged_
+              value="{{chainIdValue_}}"
+              autofocus>
+    </cr-input>
+    <cr-input id="chainName"
+              label="$i18n{walletAddNetworkDialogChainNameTitle}"
+              type="text"
+              placeholder="$i18n{walletAddNetworkDialogChainNamePlaceholder}"
+              spellcheck="false"
+              error-message="$i18n{walletAddNetworkMandarotyFieldError}"
+              invalid="{{chainNameInvalid_}}"
+              class="mandatory"
+              on-input=chainNameChanged_
+              value="{{chainNameValue_}}"
+              autofocus>
+    </cr-input>
+    <cr-input id="currencyName"
+              label="$i18n{walletAddNetworkDialogCurrencyNameTitle}"
+              type="text"
+              placeholder="$i18n{walletAddNetworkDialogCurrencyNamePlaceholder}"
+              error-message="$i18n{walletAddNetworkInvalidURLInput}"
+              spellcheck="false"
+              class="wallet-input"
+              on-input=nativeCurrencyChanged_
+              value="{{currencyNameValue_}}"
+              autofocus>
+    </cr-input>
+    <cr-input id="currencySymbol"
+              label="$i18n{walletAddNetworkDialogCurrencySymbolTitle}"
+              type="text"
+              placeholder="$i18n{walletAddNetworkDialogCurrencySymbolPlaceholder}"
+              error-message="$i18n{walletAddNetworkInvalidURLInput}"
+              spellcheck="false"
+              on-input=nativeCurrencyChanged_
+              class="wallet-input"
+              value="{{currencySymbolValue_}}"
+              autofocus>
+    </cr-input>
+    <cr-input id="currencyDecimals"
+              label="$i18n{walletAddNetworkDialogCurrencyDecimalsTitle}"
+              type="number"
+              placeholder="$i18n{walletAddNetworkDialogCurrencyDecimalsPlaceholder}"
+              error-message="$i18n{walletAddNetworkInvalidURLInput}"
+              spellcheck="false"
+              on-input=nativeCurrencyChanged_
+              class="wallet-input"
+              value="{{currencyDecimalsValue_}}"
+              autofocus>
+    </cr-input>
+    <div >
+      <div class="settings-row urls-button-container">
+        <span>$i18n{walletAddNetworkDialogRpcTitle}</span>
+        <cr-icon-button iron-icon="cr:add"
+                        class="icon-picture-button"
+                        id="rpc-plus-button"
+                        on-click="onAddRpcUrlTap_"
+                        hidden="{{isRpcPlusButtonDisabled_}}" ></cr-icon-button>
+      </div>
+      <iron-list items="[[rpcUrls]]" class="urls-list" id="rpc-urls-list" preserve-focus risk-selection>
+        <template>
+          <cr-input type="url"
+                    placeholder="$i18n{walletAddNetworkDialogUrlPlaceholder}"
+                    error-message="$i18n{walletAddNetworkInvalidURLInput}"
+                    spellcheck="false"
+                    on-input=urlChangedRpc_
+                    value="{{item.value}}"
+                    autofocus>
+          </cr-input>
+        </template>
+      </iron-list>
+    </div>
+    <div>
+      <div class="settings-row urls-button-container">
+        <span>$i18n{walletAddNetworkDialogIconsTitle}</span>
+        <cr-icon-button iron-icon="cr:add" class="icon-picture-button"
+                        id="icon-plus-button" on-click="onAddIconUrlTap_"
+                        hidden="{{isIconPlusButtonDisabled_}}"
+                        class="wallet-input"
+                        type="url"
+        ></cr-icon-button>
+      </div>
+      <iron-list items="[[iconUrls]]" class="urls-list" id="icon-urls-list"
+                 preserve-focus risk-selection>
+        <template >
+          <cr-input type="url"
+                    placeholder="$i18n{walletAddNetworkDialogUrlPlaceholder}"
+                    error-message="$i18n{walletAddNetworkInvalidURLInput}"
+                    spellcheck="false"
+                    on-input=urlChangedIcons_
+                    value="{{item.value}}"
+                    class="wallet-input"
+                    autofocus>
+          </cr-input>
+        </template>
+      </iron-list>
+    </div>
+    <div>
+      <div class="settings-row urls-button-container">
+        <span>$i18n{walletAddNetworkDialogBlocksTitle}</span>
+        <cr-icon-button iron-icon="cr:add"
+                        class="icon-picture-button"
+                        id="block-plus-button"
+                        on-click="onAddBlockUrlTap_"
+                        hidden="{{isBlockPlusButtonDisabled_}}"
+        ></cr-icon-button>
+      </div>
+      <iron-list items="[[blockUrls]]" class="urls-list" id="block-urls-list" preserve-focus risk-selection>
+        <template >
+          <cr-input type="text"
+                    placeholder="$i18n{walletAddNetworkDialogUrlPlaceholder}"
+                    error-message="$i18n{walletAddNetworkInvalidURLInput}"
+                    spellcheck="false"
+                    on-input=urlChangedBlock_
+                    value="{{item.value}}"
+                    class="wallet-input"
+                    type="url"
+                    autofocus>
+          </cr-input>
+        </template>
+      </iron-list>
+    </div>
+  <div slot="button-container" class="button-separator">
+    <div class="error-text" id="currency-error" hidden="{{isCurrencyErrorHidden_}}">$i18n{walletAddNetworkDialogFillNativeCurrencyInfo}</div>
+    <div class="error-text" id="submission-error" hidden="{{isSubmissionErrorHidden_}}">{{submissionErrorMessage_}}</div>
+    <cr-button class="action-button" on-click="onAddNetworkTap_" disabled="{{!isSubmitButtonEnabled_}}">
+      $i18n{walletNetworkAdd}
+    </cr-button>
+  </div>
+</cr-dialog>

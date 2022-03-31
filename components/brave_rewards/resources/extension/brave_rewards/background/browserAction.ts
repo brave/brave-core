@@ -37,10 +37,18 @@ export const setBadgeText = (state?: RewardsExtension.State, verified: boolean =
   chrome.browserAction.setBadgeBackgroundColor({
     color: getColor(tabId, verified, state),
     tabId: getTabId(tabId)
+  }, () => {
+    if (chrome.runtime.lastError) {
+      console.warn('browserAction.setBadgeBackgroundColor failed: ' + chrome.runtime.lastError.message)
+    }
   })
 
   chrome.browserAction.setBadgeText({
     text: getText(verified, tabId, state),
     tabId: getTabId(tabId)
+  }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('browserAction.setBadgeText failed: ' + chrome.runtime.lastError.message)
+    }
   })
 }

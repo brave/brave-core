@@ -8,19 +8,16 @@
 
 // Pull in all original includes: Init and GetState are too common - we don't
 // want to redefine them elsewhere.
-#include "base/macros.h"
 #include "base/memory/weak_ptr.h"
-#include "base/scoped_observer.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
-#include "chrome/browser/ui/avatar_button_error_controller_delegate.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "components/signin/public/identity_manager/identity_manager.h"
 #include "ui/gfx/image/image.h"
 
 #define GetState virtual GetState
-#include "../../../../../../../chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h"
+#include "src/chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h"
 #undef GetState
 
 class BraveAvatarToolbarButtonDelegate : public AvatarToolbarButtonDelegate {
@@ -28,6 +25,10 @@ class BraveAvatarToolbarButtonDelegate : public AvatarToolbarButtonDelegate {
   using AvatarToolbarButtonDelegate::AvatarToolbarButtonDelegate;
   BraveAvatarToolbarButtonDelegate(AvatarToolbarButton* button,
                                    Profile* profile);
+  BraveAvatarToolbarButtonDelegate(const BraveAvatarToolbarButtonDelegate&) =
+      delete;
+  BraveAvatarToolbarButtonDelegate& operator=(
+      const BraveAvatarToolbarButtonDelegate&) = delete;
   ~BraveAvatarToolbarButtonDelegate() override = default;
 
   gfx::Image GetGaiaAccountImage() const;
@@ -35,7 +36,6 @@ class BraveAvatarToolbarButtonDelegate : public AvatarToolbarButtonDelegate {
 
  private:
   Profile* const profile_ = nullptr;
-  DISALLOW_COPY_AND_ASSIGN(BraveAvatarToolbarButtonDelegate);
 };
 
 #undef BRAVE_PROFILE_MENU_VIEW_H

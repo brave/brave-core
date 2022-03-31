@@ -8,7 +8,7 @@
 
 #define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
 
-#include "../../../../../../components/content_settings/core/common/content_settings.h"
+#include "src/components/content_settings/core/common/content_settings.h"
 
 #undef RendererContentSettingRules
 
@@ -22,6 +22,14 @@ struct RendererContentSettingRules
   ContentSettingsForOneType autoplay_rules;
   ContentSettingsForOneType fingerprinting_rules;
   ContentSettingsForOneType brave_shields_rules;
+  ContentSettingsForOneType cosmetic_filtering_rules;
 };
+
+namespace content_settings {
+
+bool IsExplicitSetting(const ContentSettingPatternSource& setting);
+bool IsExplicitSetting(const SettingInfo& setting);
+
+}  // namespace content_settings
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_CONTENT_SETTINGS_H_

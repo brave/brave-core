@@ -1,8 +1,32 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index 3e81aacae5b091da6718b4394289605b86400c02..863f01c37945abb0219ea46bfb07370d6fb2bfe2 100644
+index 10435dc5e9458f7d7e5487755d1c6e439a57379f..e9c7db8dd09812d798d56e4ed20ebd0ef07f78be 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
-@@ -754,6 +754,7 @@ std::wstring GetTargetForDefaultAppsSettings(const wchar_t* protocol) {
+@@ -361,6 +361,7 @@ void GetChromeProgIdEntries(
+   app_info.delegate_clsid = install_static::GetLegacyCommandExecuteImplClsid();
+ 
+   GetProgIdEntries(app_info, entries);
++  BRAVE_GET_CHROME_PROG_ID_ENTRIES
+ 
+   if (!app_info.delegate_clsid.empty()) {
+     auto delegate_execute_entries =
+@@ -457,6 +458,7 @@ void GetShellIntegrationEntries(
+ 
+   const std::wstring html_prog_id(GetBrowserProgId(suffix));
+   for (int i = 0; ShellUtil::kPotentialFileAssociations[i] != nullptr; i++) {
++    BRAVE_GET_SHELL_INTEGRATION_ENTRIES
+     entries->push_back(std::make_unique<RegistryEntry>(
+         capabilities + L"\\FileAssociations",
+         ShellUtil::kPotentialFileAssociations[i], html_prog_id));
+@@ -481,6 +483,7 @@ void GetAppExtRegistrationEntries(
+   std::wstring key_name =
+       base::StrCat({ShellUtil::kRegClasses, kFilePathSeparator, ext,
+                     kFilePathSeparator, ShellUtil::kRegOpenWithProgids});
++  BRAVE_GET_APP_EXT_REGISTRATION_ENTRIES
+   entries->push_back(
+       std::make_unique<RegistryEntry>(key_name, prog_id, std::wstring()));
+ }
+@@ -720,6 +723,7 @@ std::wstring GetTargetForDefaultAppsSettings(const wchar_t* protocol) {
      return base::StringPrintf(kSystemSettingsDefaultAppsFormat, L"Browser");
    if (base::EqualsCaseInsensitiveASCII(protocol, L"mailto"))
      return base::StringPrintf(kSystemSettingsDefaultAppsFormat, L"Email");
@@ -10,14 +34,14 @@ index 3e81aacae5b091da6718b4394289605b86400c02..863f01c37945abb0219ea46bfb07370d
    return L"SettingsPageAppsDefaultsProtocolView";
  }
  
-@@ -1661,8 +1662,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
+@@ -1722,8 +1726,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
      L".htm", L".html",  L".pdf",  L".shtml", L".svg",
      L".xht", L".xhtml", L".webp", nullptr};
  const wchar_t* ShellUtil::kBrowserProtocolAssociations[] = {L"ftp", L"http",
-+                                                            BRAVE_IPFS, BRAVE_IPNS,
++                                                            BRAVE_BROWSER_PROTOCOL_ASSOCIATIONS
                                                              L"https", nullptr};
  const wchar_t* ShellUtil::kPotentialProtocolAssociations[] = {
-+    BRAVE_IPFS, BRAVE_IPNS,
++    BRAVE_POTENTIAL_PROTOCOL_ASSOCIATIONS
      L"ftp", L"http",  L"https", L"irc", L"mailto", L"mms",    L"news", L"nntp",
      L"sms", L"smsto", L"snews", L"tel", L"urn",    L"webcal", nullptr};
  const wchar_t* ShellUtil::kRegUrlProtocol = L"URL Protocol";

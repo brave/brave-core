@@ -8,11 +8,28 @@
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ui/brave_ads/ad_notification_delegate.h"
-#include "brave/browser/ui/brave_ads/ad_notification_popup.h"
+#include "brave/browser/ui/brave_ads/ad_notification_popup_handler.h"
+#include "chrome/browser/platform_util.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "ui/gfx/native_widget_types.h"
 
 namespace brave_ads {
 
 namespace {
+
+gfx::NativeWindow GetBrowserNativeWindow() {
+  gfx::NativeWindow browser_native_window = gfx::kNullNativeWindow;
+
+  if (Browser* last_active_browser = chrome::FindLastActive()) {
+    if (BrowserWindow* browser_window = last_active_browser->window()) {
+      browser_native_window = browser_window->GetNativeWindow();
+    }
+  }
+
+  return browser_native_window;
+}
 
 // An AdNotificationDelegate that passes through events to the ads service
 class PassThroughDelegate : public AdNotificationDelegate {
@@ -69,12 +86,16 @@ void AdNotificationPlatformBridge::ShowAdNotification(
   ad_notification.set_delegate(
       base::WrapRefCounted(new PassThroughDelegate(profile_, ad_notification)));
 
-  AdNotificationPopup::Show(profile_, ad_notification);
+  const gfx::NativeWindow browser_native_window = GetBrowserNativeWindow();
+  const gfx::NativeView browser_native_view =
+      platform_util::GetViewForWindow(browser_native_window);
+  AdNotificationPopupHandler::Show(profile_, ad_notification,
+                                   browser_native_window, browser_native_view);
 }
 
 void AdNotificationPlatformBridge::CloseAdNotification(
     const std::string& notification_id) {
-  AdNotificationPopup::Close(notification_id, /* by_user */ false);
+  AdNotificationPopupHandler::Close(notification_id, /* by_user */ false);
 }
 
 }  // namespace brave_ads

@@ -13,68 +13,18 @@
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
 #include "net/base/net_errors.h"
+#include "net/url_request/url_request_job.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/origin.h"
 
 using brave::ResponseCallback;
 
-TEST(BraveSiteHacksNetworkDelegateHelperTest, UAWhitelistedTest) {
+TEST(BraveSiteHacksNetworkDelegateHelperTest, UANotAllowedTest) {
   const std::vector<const GURL> urls(
-      {GURL("https://duckduckgo.com"), GURL("https://duckduckgo.com/something"),
-       GURL("https://netflix.com"), GURL("https://netflix.com/something"),
-       GURL("https://a.duckduckgo.com"),
-       GURL("https://a.netflix.com"),
-       GURL("https://a.duckduckgo.com/something"),
-       GURL("https://a.netflix.com/something")});
-  for (const auto& url : urls) {
-    net::HttpRequestHeaders headers;
-    headers.SetHeader(kUserAgentHeader,
-                      "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 "
-                      "(KHTML, like Gecko) Chrome/33.0.1750.117 Safari/537.36");
-    auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
-    int rc = brave::OnBeforeStartTransaction_SiteHacksWork(
-        &headers, ResponseCallback(), brave_request_info);
-    std::string user_agent;
-    headers.GetHeader(kUserAgentHeader, &user_agent);
-    EXPECT_EQ(rc, net::OK);
-    EXPECT_EQ(user_agent,
-              "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 "
-              "(KHTML, like Gecko) Brave Chrome/33.0.1750.117 Safari/537.36");
-  }
-}
-
-TEST(BraveSiteHacksNetworkDelegateHelperTest, ChangeUAOnlyOnce) {
-  const GURL whitelisted_url("https://netflix.com/");
-  net::HttpRequestHeaders headers;
-  headers.SetHeader(kUserAgentHeader,
-                    "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 "
-                    "(KHTML, like Gecko) Chrome/33.0.1750.117 Safari/537.36");
-  auto brave_request_info =
-      std::make_shared<brave::BraveRequestInfo>(whitelisted_url);
-
-  // Check once.
-  int rc = brave::OnBeforeStartTransaction_SiteHacksWork(
-      &headers, ResponseCallback(), brave_request_info);
-  std::string user_agent;
-  headers.GetHeader(kUserAgentHeader, &user_agent);
-  EXPECT_EQ(rc, net::OK);
-  EXPECT_EQ(user_agent,
-            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Brave Chrome/33.0.1750.117 Safari/537.36");
-
-  // Check twice.
-  rc = brave::OnBeforeStartTransaction_SiteHacksWork(
-      &headers, ResponseCallback(), brave_request_info);
-  headers.GetHeader(kUserAgentHeader, &user_agent);
-  EXPECT_EQ(rc, net::OK);
-  EXPECT_EQ(user_agent,
-            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Brave Chrome/33.0.1750.117 Safari/537.36");
-}
-
-TEST(BraveSiteHacksNetworkDelegateHelperTest, NOTUAWhitelistedTest) {
-  const std::vector<const GURL> urls({GURL("https://brianbondy.com"),
-                                      GURL("https://bravecombo.com"),
-                                      GURL("https://brave.example.com")});
+      {GURL("https://brianbondy.com"), GURL("https://bravecombo.com"),
+       GURL("https://brave.example.com"),
+       GURL("https://a.netflix.com/something"),
+       GURL("https://a.duckduckgo.com/something")});
   for (const auto& url : urls) {
     net::HttpRequestHeaders headers;
     headers.SetHeader(kUserAgentHeader,
@@ -127,7 +77,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, ReferrerTruncated) {
     EXPECT_TRUE(brave_request_info->new_url_spec.empty());
     EXPECT_TRUE(brave_request_info->new_referrer.has_value());
     EXPECT_EQ(brave_request_info->new_referrer.value(),
-              original_referrer.GetOrigin().spec());
+              url::Origin::Create(original_referrer).GetURL());
   }
 }
 
@@ -150,6 +100,23 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest,
     EXPECT_TRUE(brave_request_info->new_url_spec.empty());
     EXPECT_EQ(brave_request_info->referrer, original_referrer);
   }
+}
+
+TEST(BraveSiteHacksNetworkDelegateHelperTest, OnionReferrerStripped) {
+  const GURL original_referrer(
+      "https://"
+      "brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion/");
+  const GURL destination("https://brave.com");
+
+  // Cross-origin request from a .onion gets empty referrer.
+  auto url1 = net::URLRequestJob::ComputeReferrerForPolicy(
+      net::ReferrerPolicy::NEVER_CLEAR, original_referrer, destination);
+  EXPECT_EQ(url1, GURL());
+
+  // Cross-origin request to a .onion gets normal referrer.
+  auto url2 = net::URLRequestJob::ComputeReferrerForPolicy(
+      net::ReferrerPolicy::NEVER_CLEAR, destination, original_referrer);
+  EXPECT_EQ(url2, destination);
 }
 
 TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringUntouched) {

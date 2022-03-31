@@ -8,13 +8,14 @@
 # needed for checking of existence for bytecode manipulation
 -keepnames class org.chromium.chrome.browser.settings.MainSettings
 
--keep class org.chromium.chrome.browser.sync.AndroidSyncSettings {
-    *** updateCachedSettings(...);
-    *** setChromeSyncEnabled(...);
-    *** mIsSyncable;
-    *** mChromeSyncEnabled;
-    *** mMasterSyncEnabled;
-}
+# Do not obfuscate the above classes as we check on fields in tests
+-keep class org.chromium.brave_wallet.mojom.BlockchainToken { *; }
+-keep class org.chromium.brave_wallet.mojom.SwapParams { *; }
+-keep class org.chromium.brave_wallet.mojom.AccountInfo { *; }
+-keep class org.chromium.brave_wallet.mojom.TxData { *; }
+-keep class org.chromium.brave_wallet.mojom.GasEstimation1559 { *; }
+-keep class org.chromium.brave_wallet.mojom.TxData1559 { *; }
+-keep class org.chromium.brave_wallet.mojom.NetworkInfo { *; }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkBridge {
     *** extensiveBookmarkChangesBeginning(...);
@@ -41,31 +42,37 @@
     *** updateTileGridPlaceholderVisibility(...);
 }
 
--keep class org.chromium.chrome.browser.feed.FeedSurfaceCoordinator {
-    *** mActivity;
-    *** mScrollViewForPolicy;
-    *** mNtpHeader;
-    *** mRootView;
-}
-
 -keep class org.chromium.chrome.browser.ntp.NewTabPage {
+    public <init>(...);
+    *** mBrowserControlsStateProvider;
     *** mNewTabPageLayout;
     *** mFeedSurfaceProvider;
+    *** mToolbarSupplier;
+    *** updateSearchProviderHasLogo(...);
+}
+
+-keep class org.chromium.chrome.browser.ntp.BraveNewTabPage {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.EditUrlSuggestionProcessor {
+    public <init>(...);
     *** mHasClearedOmniboxForFocus;
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.BraveEditUrlSuggestionProcessor {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.sync.settings.ManageSyncSettings {
     *** mGoogleActivityControls;
     *** mSyncEncryption;
-    *** mManageSyncData;
+    *** mReviewSyncData;
     *** mSyncPaymentsIntegration;
+    *** mTurnOffSync;
 }
 
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
-    *** getPermissionsLinkMessage(...);
     *** getSearchEngineSourceType(...);
     *** sortAndFilterUnnecessaryTemplateUrl(...);
 }
@@ -80,7 +87,13 @@
 }
 
 -keep class org.chromium.chrome.browser.ui.appmenu.AppMenu {
+    public <init>(...);
     *** getPopupPosition(...);
+    *** runMenuItemEnterAnimations(...);
+}
+
+-keep class org.chromium.chrome.browser.ui.appmenu.BraveAppMenu {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator {
@@ -111,29 +124,42 @@
     *** mIncognitoStateProvider;
     *** mTabCountProvider;
     *** mTabGroupUi;
+    *** mBottomSheetController;
+    *** mActivityLifecycleDispatcher;
+    *** mIsWarmOnResumeSupplier;
+    *** mTabContentManager;
+    *** mTabCreatorManager;
+    *** mOverviewModeBehaviorSupplier;
+    *** mSnackbarManager;
     *** onOrientationChange(...);
-    *** updateButtonStatus(...);
     *** updateBookmarkButtonStatus(...);
     *** updateReloadState(...);
 }
 
 -keep class org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator {
-    *** mTabSwitcherModeCoordinatorPhone;
+    *** mTabSwitcherModeCoordinator;
     *** mOptionalButtonController;
+    public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTCoordinatorPhone {
+-keep class org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTCoordinator {
     *** mTabSwitcherModeToolbar;
 }
 
--keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTPhone {
+-keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTopToolbar {
     *** mNewTabViewButton;
     *** mNewTabImageButton;
     *** mToggleTabStackButton;
     *** mMenuButton;
     *** mShouldShowNewTabVariation;
+    *** mIsIncognito;
     *** updateNewTabButtonVisibility(...);
     *** shouldShowIncognitoToggle(...);
+    *** getToolbarColorForCurrentState(...);
 }
 
 -keep class org.chromium.chrome.browser.download.MimeUtils {
@@ -141,7 +167,7 @@
 }
 
 -keep class org.chromium.chrome.browser.app.ChromeActivity {
-    *** mTabModelProfileSupplier;
+    *** mBrowserControlsManagerSupplier;
 }
 
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedRootUiCoordinator {
@@ -178,14 +204,14 @@
 }
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BottomControlsMediator {
-    public <init>(...);
+    <init>(...);
     *** mBottomControlsHeight;
     *** mModel;
     *** mBrowserControlsSizer;
 }
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsMediator {
-    public <init>(...);
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.query_tiles.QueryTileSection {
@@ -247,6 +273,7 @@
 
 -keep class org.chromium.components.browser_ui.site_settings.SingleCategorySettings {
     public <init>(...);
+    *** onOptionsItemSelected(...);
 }
 
 -keep class org.chromium.chrome.browser.site_settings.ChromeSiteSettingsDelegate {
@@ -267,7 +294,7 @@
 
 -keep class org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar
 
--keep class org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout
+-keep class org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl
 
 -keep class org.chromium.chrome.browser.toolbar.top.ToolbarPhone
 
@@ -279,16 +306,149 @@
     *** getModel(...);
 }
 
--keep class org.chromium.chrome.browser.compositor.layouts.LayoutManagerChromePhone
-
--keep class org.chromium.chrome.browser.compositor.layouts.BraveLayoutManagerChrome
-
--keep class org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities {
-    *** isGridTabSwitcherEnabled(...);
-    *** isTabGroupsAndroidEnabled(...);
+-keep class org.chromium.components.browser_ui.notifications.NotificationManagerProxyImpl {
+    public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities {
-    *** isGridTabSwitcherEnabled(...);
-    *** isTabGroupsAndroidEnabled(...);
+-keep class org.chromium.chrome.browser.notifications.BraveNotificationManagerProxyImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.status.StatusMediator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.status.BraveStatusMediator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.feed.FeedSurfaceCoordinator {
+    *** mActivity;
+    *** mNtpHeader;
+    *** mRootView;
+    *** isReliabilityLoggingEnabled(...);
+}
+
+-keep class org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator {
+    *** mScrollViewForPolicy;
+    *** mNtpHeader;
+    *** mRootView;
+    *** isReliabilityLoggingEnabled(...);
+}
+
+-keep class org.chromium.chrome.browser.feed.FeedSurfaceMediator {
+    <init>(...);
+    *** mCoordinator;
+    *** mSnapScrollHelper;
+    *** destroyPropertiesForStream(...);
+}
+
+-keep class org.chromium.chrome.browser.feed.BraveFeedSurfaceMediator {
+    <init>(...);
+    *** mCoordinator;
+    *** mSnapScrollHelper;
+}
+
+-keep class org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.theme.ThemeUtils {
+    *** getTextBoxColorForToolbarBackgroundInNonNativePage(...);
+}
+
+-keep class org.chromium.chrome.browser.share.ShareDelegateImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.share.BraveShareDelegateImpl {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.ContentSettingsResources$ResourceItem {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.WebsitePermissionsFetcher {
+    *** getPermissionsType(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.SingleWebsiteSettings {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.BraveSingleWebsiteSettings {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.Website {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.BraveWebsite {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.BraveContentSettingsResources {
+    *** getResourceItem(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.FourStateCookieSettingsPreference {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.BraveFourStateCookieSettingsPreferenceBase {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.SiteSettings {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.BraveSiteSettingsPreferencesBase {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.TabUiThemeProvider {
+    *** getTitleTextColor(...);
+    *** getActionButtonTintList(...);
+    *** getCardViewBackgroundColor(...);
+}
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabUiThemeProvider {
+    *** getTitleTextColor(...);
+    *** getActionButtonTintList(...);
+    *** getCardViewBackgroundColor(...);
+}
+
+-keep class org.chromium.chrome.browser.autofill.AutofillPopupBridge {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.autofill.BraveAutofillPopupBridge {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.ui.default_browser_promo.BraveDefaultBrowserPromoUtils {
+    *** prepareLaunchPromoIfNeeded(...);
+}
+
+-keep class org.chromium.chrome.browser.ui.default_browser_promo.DefaultBrowserPromoUtils {
+    *** prepareLaunchPromoIfNeeded(...);
+}
+
+-keep class org.chromium.components.variations.firstrun.VariationsSeedFetcher {
+    *** get(...);
 }

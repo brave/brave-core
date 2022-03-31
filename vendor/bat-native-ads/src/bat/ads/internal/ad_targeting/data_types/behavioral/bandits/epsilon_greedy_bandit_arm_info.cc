@@ -5,7 +5,10 @@
 
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arm_info.h"
 
+#include "bat/ads/internal/number_util.h"
+
 namespace ads {
+namespace ad_targeting {
 
 EpsilonGreedyBanditArmInfo::EpsilonGreedyBanditArmInfo() = default;
 
@@ -16,7 +19,8 @@ EpsilonGreedyBanditArmInfo::~EpsilonGreedyBanditArmInfo() = default;
 
 bool EpsilonGreedyBanditArmInfo::operator==(
     const EpsilonGreedyBanditArmInfo& rhs) const {
-  return segment == rhs.segment && value == rhs.value && pulls == rhs.pulls;
+  return segment == rhs.segment && DoubleEquals(value, rhs.value) &&
+         pulls == rhs.pulls;
 }
 
 bool EpsilonGreedyBanditArmInfo::operator!=(
@@ -25,11 +29,12 @@ bool EpsilonGreedyBanditArmInfo::operator!=(
 }
 
 bool EpsilonGreedyBanditArmInfo::IsValid() const {
-  if (segment.empty() || value < 0 || value > 1.0 || pulls < 0) {
+  if (segment.empty() || value < 0.0 || value > 1.0 || pulls < 0) {
     return false;
   }
 
   return true;
 }
 
+}  // namespace ad_targeting
 }  // namespace ads

@@ -22,14 +22,14 @@ import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
+import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
-import org.chromium.components.user_prefs.UserPrefs;
 
 public class RetentionNotificationPublisher extends BroadcastReceiver {
     private static final String NOTIFICATION_CHANNEL_NAME = "brave";
@@ -56,16 +56,41 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                 case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
                 case RetentionNotificationUtil.BRAVE_STATS_DATA:
                 case RetentionNotificationUtil.BRAVE_STATS_TIME:
-                    if (braveActivity.getActivityTab() != null 
-                        && braveActivity.getActivityTab().getUrlString() != null
-                        && !UrlUtilities.isNTPUrl(braveActivity.getActivityTab().getUrlString())) {
-                        braveActivity.getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
+                    if (braveActivity.getActivityTab() != null
+                            && braveActivity.getActivityTab().getUrl().getSpec() != null
+                            && !UrlUtilities.isNTPUrl(
+                                    braveActivity.getActivityTab().getUrl().getSpec())) {
+                        braveActivity.getTabCreator(false).launchUrl(
+                                UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
                     }
                     break;
                 case RetentionNotificationUtil.DAY_10:
                 case RetentionNotificationUtil.DAY_30:
                 case RetentionNotificationUtil.DAY_35:
                     braveActivity.openRewardsPanel();
+                    break;
+                case RetentionNotificationUtil.DORMANT_USERS_DAY_14:
+                case RetentionNotificationUtil.DORMANT_USERS_DAY_25:
+                case RetentionNotificationUtil.DORMANT_USERS_DAY_40:
+                    if (System.currentTimeMillis()
+                            > OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                                    notificationType)) {
+                        braveActivity.showDormantUsersEngagementDialog(notificationType);
+                    } else {
+                        RetentionNotificationUtil.scheduleNotificationWithTime(context,
+                                notificationType,
+                                OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                                        notificationType));
+                    }
+                    break;
+                case RetentionNotificationUtil.DEFAULT_BROWSER_1:
+                case RetentionNotificationUtil.DEFAULT_BROWSER_2:
+                case RetentionNotificationUtil.DEFAULT_BROWSER_3:
+                    if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(braveActivity)
+                            && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
+                        BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(
+                                braveActivity, false);
+                    }
                     break;
                 }
             } else {
@@ -84,7 +109,8 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
             case RetentionNotificationUtil.DEFAULT_BROWSER_1:
             case RetentionNotificationUtil.DEFAULT_BROWSER_2:
             case RetentionNotificationUtil.DEFAULT_BROWSER_3:
-                if (!BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(context)) {
+                if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(context)
+                        && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
                     createNotification(context, intent);
                 }
                 break;
@@ -102,6 +128,22 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
             case RetentionNotificationUtil.EVERY_SUNDAY:
                 if (OnboardingPrefManager.getInstance().isBraveStatsNotificationEnabled()) {
                     createNotification(context, intent);
+                }
+                break;
+            case RetentionNotificationUtil.DORMANT_USERS_DAY_14:
+            case RetentionNotificationUtil.DORMANT_USERS_DAY_25:
+            case RetentionNotificationUtil.DORMANT_USERS_DAY_40:
+                if (System.currentTimeMillis()
+                                > OnboardingPrefManager.getInstance()
+                                          .getDormantUsersNotificationTime(notificationType)
+                        && !BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(braveActivity)
+                        && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
+                    createNotification(context, intent);
+                } else {
+                    RetentionNotificationUtil.scheduleNotificationWithTime(context,
+                            notificationType,
+                            OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
+                                    notificationType));
                 }
                 break;
             }

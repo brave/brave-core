@@ -7,7 +7,7 @@
 #include "components/signin/internal/identity_manager/primary_account_manager.h"
 
 #define RevokeSyncConsent RevokeSyncConsent_ChromiumImpl
-#include "../../../../../../components/signin/internal/identity_manager/primary_account_mutator_impl.cc"
+#include "src/components/signin/internal/identity_manager/primary_account_mutator_impl.cc"
 #undef RevokeSyncConsent
 
 namespace signin {

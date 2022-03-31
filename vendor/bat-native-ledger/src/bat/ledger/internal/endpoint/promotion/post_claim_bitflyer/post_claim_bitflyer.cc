@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/common/request_util.h"
@@ -57,10 +58,18 @@ std::string PostClaimBitflyer::GeneratePayload(
   return json;
 }
 
-type::Result PostClaimBitflyer::CheckStatusCode(const int status_code) {
+type::Result PostClaimBitflyer::ProcessResponse(
+    const type::UrlResponse& response) const {
+  const auto status_code = response.status_code;
+
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return type::Result::LEDGER_ERROR;
+    return ParseBody(response.body);
+  }
+
+  if (status_code == net::HTTP_FORBIDDEN) {
+    BLOG(0, "Forbidden");
+    return ParseBody(response.body);
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
@@ -70,7 +79,7 @@ type::Result PostClaimBitflyer::CheckStatusCode(const int status_code) {
 
   if (status_code == net::HTTP_CONFLICT) {
     BLOG(0, "Conflict");
-    return type::Result::ALREADY_EXISTS;
+    return type::Result::DEVICE_LIMIT_REACHED;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
@@ -84,6 +93,37 @@ type::Result PostClaimBitflyer::CheckStatusCode(const int status_code) {
   }
 
   return type::Result::LEDGER_OK;
+}
+
+type::Result PostClaimBitflyer::ParseBody(const std::string& body) const {
+  base::DictionaryValue* root = nullptr;
+  auto value = base::JSONReader::Read(body);
+  if (!value || !value->GetAsDictionary(&root)) {
+    BLOG(0, "Invalid body!");
+    return type::Result::LEDGER_ERROR;
+  }
+  DCHECK(root);
+
+  auto* message = root->FindStringKey("message");
+  if (!message) {
+    BLOG(0, "message is missing!");
+    return type::Result::LEDGER_ERROR;
+  }
+
+  if (message->find("mismatched provider accounts") != std::string::npos) {
+    return type::Result::MISMATCHED_PROVIDER_ACCOUNTS;
+  } else if (message->find("request signature verification failure") !=
+             std::string::npos) {
+    return type::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE;
+  } else if (message->find("unable to link - unusual activity") !=
+             std::string::npos) {
+    return type::Result::FLAGGED_WALLET;
+  } else if (message->find("region not supported") != std::string::npos) {
+    return type::Result::REGION_NOT_SUPPORTED;
+  } else {
+    BLOG(0, "Unknown message!");
+    return type::Result::LEDGER_ERROR;
+  }
 }
 
 void PostClaimBitflyer::Request(const std::string& linking_info,
@@ -116,7 +156,7 @@ void PostClaimBitflyer::Request(const std::string& linking_info,
 void PostClaimBitflyer::OnRequest(const type::UrlResponse& response,
                                   PostClaimBitflyerCallback callback) {
   ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  callback(ProcessResponse(response));
 }
 
 }  // namespace promotion

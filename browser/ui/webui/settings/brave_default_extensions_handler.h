@@ -17,7 +17,7 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
@@ -26,7 +26,7 @@
 class Profile;
 
 class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
     ,
                                       ipfs::IpfsServiceObserver,
                                       public ui::SelectFileDialog::Listener
@@ -34,6 +34,9 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
 {
  public:
   BraveDefaultExtensionsHandler();
+  BraveDefaultExtensionsHandler(const BraveDefaultExtensionsHandler&) = delete;
+  BraveDefaultExtensionsHandler& operator=(
+      const BraveDefaultExtensionsHandler&) = delete;
   ~BraveDefaultExtensionsHandler() override;
 
  private:
@@ -42,23 +45,24 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
 
-  void GetRestartNeeded(const base::ListValue* args);
-  void SetWebTorrentEnabled(const base::ListValue* args);
-  void SetHangoutsEnabled(const base::ListValue* args);
-  void SetIPFSCompanionEnabled(const base::ListValue* args);
-  void SetMediaRouterEnabled(const base::ListValue* args);
+  void GetRestartNeeded(base::Value::ConstListView args);
+  void SetWebTorrentEnabled(base::Value::ConstListView args);
+  void SetHangoutsEnabled(base::Value::ConstListView args);
+  void SetIPFSCompanionEnabled(base::Value::ConstListView args);
+  void SetMediaRouterEnabled(base::Value::ConstListView args);
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  void SetBraveWalletEnabled(const base::ListValue* args);
+  void SetBraveWalletEnabled(base::Value::ConstListView args);
 #endif
-  void SetTorEnabled(const base::ListValue* args);
-  void IsTorEnabled(const base::ListValue* args);
+  void SetTorEnabled(base::Value::ConstListView args);
+  void IsTorEnabled(base::Value::ConstListView args);
   void OnTorEnabledChanged();
-  void IsTorManaged(const base::ListValue* args);
-  void SetWidevineEnabled(const base::ListValue* args);
-  void IsWidevineEnabled(const base::ListValue* args);
+  void IsTorManaged(base::Value::ConstListView args);
+  void SetWidevineEnabled(base::Value::ConstListView args);
+  void IsWidevineEnabled(base::Value::ConstListView args);
   void OnWidevineEnabledChanged();
-  void IsDecentralizedDnsEnabled(const base::ListValue* args);
-  void GetDecentralizedDnsResolveMethodList(const base::ListValue* args);
+  void OnWalletTypeChanged();
+  void IsDecentralizedDnsEnabled(base::Value::ConstListView args);
+  void GetDecentralizedDnsResolveMethodList(base::Value::ConstListView args);
 
   void InitializePrefCallbacks();
 
@@ -67,15 +71,16 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
                        bool success,
                        const std::string& error,
                        extensions::webstore_install::Result result);
-
+  void ResetWallet(base::Value::ConstListView args);
+  void ResetTransactionInfo(base::Value::ConstListView args);
   void OnRestartNeededChanged();
-  void OnMediaRouterEnabledChanged();
   bool IsRestartNeeded();
 
-#if BUILDFLAG(IPFS_ENABLED)
-  void SetIPFSStorageMax(const base::ListValue* args);
-  void ImportIpnsKey(const base::ListValue* args);
-  void LaunchIPFSService(const base::ListValue* args);
+#if BUILDFLAG(ENABLE_IPFS)
+  void SetIPFSStorageMax(base::Value::ConstListView args);
+  void ImportIpnsKey(base::Value::ConstListView args);
+  void LaunchIPFSService(base::Value::ConstListView args);
+  void ExportIPNSKey(base::Value::ConstListView args);
 
   // ui::SelectFileDialog::Listener
   void FileSelected(const base::FilePath& path,
@@ -86,14 +91,16 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
   void OnKeyImported(const std::string& key,
                      const std::string& value,
                      bool success);
+  void OnKeyExported(const std::string& key, bool success);
   // ipfs::IpfsServiceObserver
   void OnIpfsLaunched(bool result, int64_t pid) override;
   void OnIpfsShutdown() override;
   void OnIpnsKeysLoaded(bool success) override;
-  void CheckIpfsNodeStatus(const base::ListValue* args);
+  void CheckIpfsNodeStatus(base::Value::ConstListView args);
   void NotifyNodeStatus();
 
   std::string dialog_key_;
+  ui::SelectFileDialog::Type dialog_type_ = ui::SelectFileDialog::SELECT_NONE;
   scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
 #endif
 
@@ -105,13 +112,11 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
 #if BUILDFLAG(ENABLE_TOR)
   PrefChangeRegistrar local_state_change_registrar_;
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   base::ScopedObservation<ipfs::IpfsService, ipfs::IpfsServiceObserver>
       ipfs_service_observer_{this};
 #endif
   base::WeakPtrFactory<BraveDefaultExtensionsHandler> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveDefaultExtensionsHandler);
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_HANDLER_H_

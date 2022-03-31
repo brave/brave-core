@@ -1,0 +1,115 @@
+<html>
+
+<script>
+  var permissionGranted = false
+
+  function ethereumEnable() {
+    window.ethereum.enable().then(accounts => {
+      permissionGranted = true
+    }).catch(error => {
+      permissionGranted = false
+    })
+  }
+
+  function getPermissionGranted() {
+    window.domAutomationController.send(permissionGranted)
+  }
+
+  var sendTransactionResult, sendTransactionError
+  function sendTransaction(is1559, method, from, to, value, data) {
+    const params = [{
+      from,
+      to,
+      value,
+      nonce: '0x12345'
+    }]
+
+    // Explicit check here so that undefined is also posible for neither gas fields
+    if (is1559 === true) {
+      params[0].maxPriorityFeePerGas = '0x00F38E9E00'
+      params[0].maxFeePerGas = '0x25F38E9E00'
+    } else if (is1559 === false) {
+      params[0].gasPrice = '0x25F38E9E00'
+    }
+
+    if (data) {
+      params[0].data = data
+    }
+
+    if (method == 'request') {
+      window.ethereum.request({
+        method: 'eth_sendTransaction',
+        params
+      }).then(result => {
+        sendTransactionResult = result
+        window.domAutomationController.send('result ready')
+      }).catch(error => {
+        sendTransactionError = error.message
+        window.domAutomationController.send('result ready')
+      })
+    } else if (method == 'send1') {
+      window.ethereum.send({
+        id: 'hello',
+        method: 'eth_sendTransaction',
+        params
+      }, (err, result) => {
+        sendTransactionError = err && err.error ? err.error.message : undefined
+        sendTransactionResult = result ? result.result : undefined
+        window.domAutomationController.send('result ready')
+      })
+    } else if (method == 'send2') {
+      window.ethereum.send('eth_sendTransaction', params)
+        .then(result => {
+          sendTransactionResult = result.result
+          window.domAutomationController.send('result ready')
+        }).catch(error => {
+          sendTransactionError = error.error.message
+          window.domAutomationController.send('result ready')
+        })
+    } else if (method == 'sendAsync') {
+      window.ethereum.sendAsync({
+        id: 'hello',
+        method: 'eth_sendTransaction',
+        params
+      }, (err, result) => {
+        sendTransactionError = err && err.error ? err.error.message : undefined
+        sendTransactionResult = result ? result.result : undefined
+        window.domAutomationController.send('result ready')
+      })
+    }
+  }
+
+  function getSendTransactionResult() {
+    window.domAutomationController.send(sendTransactionResult)
+  }
+  function getSendTransactionError() {
+    window.domAutomationController.send(sendTransactionError)
+  }
+  // window.ethereum.selectedAddress and not necessarily the selected account
+  function getSelectedAddress() {
+    window.domAutomationController.send(String(window.ethereum.selectedAddress))
+  }
+  function getChainId() {
+    window.domAutomationController.send(window.ethereum.chainId)
+  }
+  function getNetworkVersion() {
+    window.domAutomationController.send(String(window.ethereum.networkVersion))
+  }
+  function getIsUnlocked() {
+    window.ethereum._metamask.isUnlocked().then(result =>
+      window.domAutomationController.send(result))
+  }
+  function ensurePropertiesCantBeDeleted() {
+    // window.ethereum properties cannot be deleted AND they return true
+    // this is for web-compat, for example https://wallet.polygon.technology/
+    // fails otherwise as it uses a library which tries to delete
+    // window.ethereum.sendAsync and then uses it. Seriously.
+    window.domAutomationController.send(delete window.ethereum.sendAsync === true &&
+        typeof(window.ethereum.sendAsync) === 'function')
+  }
+</script>
+
+<body>
+</body>
+</html>
+

@@ -11,7 +11,6 @@
 #include "base/metrics/field_trial.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/scoped_mock_time_message_loop_task_runner.h"
 #include "base/test/test_mock_time_task_runner.h"
 #include "base/threading/sequenced_task_runner_handle.h"
@@ -38,6 +37,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "net/base/features.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -56,18 +56,28 @@ const char kPreTestDataFileName[] = "pre_test_data";
 class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
  public:
   PermissionLifetimeManagerBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    scoped_feature_list_.InitAndEnableFeature(features::kPermissionLifetime);
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   ~PermissionLifetimeManagerBrowserTest() override = default;
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
   }
 
   void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     PermissionRequestManager* manager = GetPermissionRequestManager();
     prompt_factory_.reset(new MockPermissionLifetimePromptFactory(manager));
 
@@ -95,7 +105,7 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
         active_web_contents()->GetBrowserContext());
   }
 
-  const util::WallClockTimer& permission_lifetime_timer() {
+  const base::WallClockTimer& permission_lifetime_timer() {
     return *permission_lifetime_manager()->expiration_timer_;
   }
 
@@ -134,7 +144,7 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
-  base::test::ScopedFeatureList scoped_feature_list_;
+  content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
   std::unique_ptr<MockPermissionLifetimePromptFactory> prompt_factory_;
   base::Value pre_test_data_{base::Value::Type::DICTIONARY};
@@ -142,7 +152,7 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {
   const GURL& url = https_server()->GetURL("/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
@@ -152,8 +162,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {
   EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
       .WillOnce(testing::Invoke([&](MockPermissionLifetimePrompt* prompt) {
         run_loop.Quit();
-        prompt->delegate()->Requests()[0]->SetLifetime(
-            base::TimeDelta::FromSeconds(30));
+        prompt->delegate()->Requests()[0]->SetLifetime(base::Seconds(30));
         scoped_mock_time_task_runner =
             std::make_unique<base::ScopedMockTimeMessageLoopTaskRunner>();
       }));
@@ -169,13 +178,11 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
-  scoped_mock_time_task_runner->task_runner()->FastForwardBy(
-      base::TimeDelta::FromSeconds(20));
+  scoped_mock_time_task_runner->task_runner()->FastForwardBy(base::Seconds(20));
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
-  scoped_mock_time_task_runner->task_runner()->FastForwardBy(
-      base::TimeDelta::FromSeconds(20));
+  scoped_mock_time_task_runner->task_runner()->FastForwardBy(base::Seconds(20));
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ASK);
@@ -186,13 +193,12 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
                        PRE_PermissionExpiredAfterRestart) {
   const GURL& url = https_server()->GetURL("/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
   EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
       .WillOnce(testing::Invoke([&](MockPermissionLifetimePrompt* prompt) {
-        prompt->delegate()->Requests()[0]->SetLifetime(
-            base::TimeDelta::FromSeconds(30));
+        prompt->delegate()->Requests()[0]->SetLifetime(base::Seconds(30));
       }));
 
   content::ExecuteScriptAsync(
@@ -225,15 +231,13 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
   EXPECT_TRUE(permission_lifetime_timer().IsRunning());
   EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
 
-  scoped_mock_time_task_runner.task_runner()->FastForwardBy(
-      base::TimeDelta::FromSeconds(10));
+  scoped_mock_time_task_runner.task_runner()->FastForwardBy(base::Seconds(10));
   EXPECT_TRUE(permission_lifetime_timer().IsRunning());
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
 
-  scoped_mock_time_task_runner.task_runner()->FastForwardBy(
-      base::TimeDelta::FromSeconds(60));
+  scoped_mock_time_task_runner.task_runner()->FastForwardBy(base::Seconds(60));
   EXPECT_FALSE(permission_lifetime_timer().IsRunning());
   EXPECT_TRUE(GetExpirationsPrefValue()->DictEmpty());
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
@@ -244,13 +248,12 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
                        ExpirationRemovedAfterManualReset) {
   const GURL& url = https_server()->GetURL("/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
   EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
       .WillOnce(testing::Invoke([&](MockPermissionLifetimePrompt* prompt) {
-        prompt->delegate()->Requests()[0]->SetLifetime(
-            base::TimeDelta::FromSeconds(30));
+        prompt->delegate()->Requests()[0]->SetLifetime(base::Seconds(30));
       }));
 
   content::ExecuteScriptAsync(
@@ -278,18 +281,14 @@ class PermissionLifetimeManagerWithOriginMonitorBrowserTest
  public:
   PermissionLifetimeManagerWithOriginMonitorBrowserTest() {
     ephemeral_storage::EphemeralStorageTabHelper::
-        SetKeepAliveTimeDelayForTesting(
-            base::TimeDelta::FromSeconds(kKeepAliveInterval));
+        SetKeepAliveTimeDelayForTesting(base::Seconds(kKeepAliveInterval));
   }
-
- protected:
-  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                        DomainPermissionReset) {
   const GURL& url = https_server()->GetURL("host.com", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
@@ -313,7 +312,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Navigate to another domain. It should not reset the permission.
   const GURL& other_url =
       https_server()->GetURL("other_host.com", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), other_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), other_url));
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -321,8 +320,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Permission Should be reset after the timeout
   base::RunLoop run_loop;
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(),
-      base::TimeDelta::FromSeconds(kKeepAliveInterval));
+      FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
   run_loop.Run();
 
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
@@ -334,7 +332,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                        FriendlyDomainPermissionKept) {
   const GURL& url = https_server()->GetURL("example.com", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
@@ -358,7 +356,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Navigate to a subdomain, permission should be kept.
   const GURL& sub_url =
       https_server()->GetURL("sub.example.com", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), sub_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), sub_url));
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -367,7 +365,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Navigate to another domain. It should keep the permission.
   const GURL& other_url =
       https_server()->GetURL("other_host.com", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), other_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), other_url));
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -376,8 +374,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Permission Should be reset after the timeout
   base::RunLoop run_loop;
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(),
-      base::TimeDelta::FromSeconds(kKeepAliveInterval));
+      FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
   run_loop.Run();
 
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
@@ -389,7 +386,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                        PublicSuffixListDomainPermissionReset) {
   const GURL& url = https_server()->GetURL("user.github.io", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
@@ -413,7 +410,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Navigate to a subdomain, permission should be kept.
   const GURL& sub_url =
       https_server()->GetURL("sub.user.github.io", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), sub_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), sub_url));
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -422,7 +419,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Navigate to another domain in PSL. It should keep the permission.
   const GURL& other_url =
       https_server()->GetURL("user2.github.io", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), other_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), other_url));
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
@@ -431,8 +428,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Permission Should be reset after the timeout
   base::RunLoop run_loop;
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(),
-      base::TimeDelta::FromSeconds(kKeepAliveInterval));
+      FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
   run_loop.Run();
 
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
@@ -444,7 +440,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                        PRE_DomainPermissionResetAfterRestart) {
   const GURL& url = https_server()->GetURL("example.com", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 

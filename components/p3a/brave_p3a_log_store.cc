@@ -119,7 +119,15 @@ const std::string& BraveP3ALogStore::staged_log() const {
   auto iter = log_.find(staged_entry_key_);
   DCHECK(iter != log_.end());
 
-  return staged_log_;
+  return staged_log_.legacy_log;
+}
+
+const std::string& BraveP3ALogStore::staged_json_log() const {
+  DCHECK(!staged_entry_key_.empty());
+  auto iter = log_.find(staged_entry_key_);
+  DCHECK(iter != log_.end());
+
+  return staged_log_.json_log;
 }
 
 std::string BraveP3ALogStore::staged_log_type() const {
@@ -142,6 +150,11 @@ const std::string& BraveP3ALogStore::staged_log_hash() const {
 const std::string& BraveP3ALogStore::staged_log_signature() const {
   NOTREACHED();
   return staged_log_signature_;
+}
+
+absl::optional<uint64_t> BraveP3ALogStore::staged_log_user_id() const {
+  NOTREACHED();
+  return absl::nullopt;
 }
 
 void BraveP3ALogStore::StageNextLog() {
@@ -194,7 +207,7 @@ void BraveP3ALogStore::LoadPersistedUnsentLogs() {
   DCHECK(unsent_entries_.empty());
 
   DictionaryPrefUpdate update(local_state_, kPrefName);
-  base::DictionaryValue* list = update.Get();
+  base::Value* list = update.Get();
   for (auto dict_item : list->DictItems()) {
     LogEntry entry;
     const std::string name = dict_item.first;

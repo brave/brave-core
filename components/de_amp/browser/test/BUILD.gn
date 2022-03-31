@@ -1,0 +1,37 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//testing/test.gni")
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "de_amp_util_unittest.cc" ]
+  deps = [
+    "///brave/components/de_amp/browser",
+    "//base/test:test_support",
+    "//components/prefs:test_support",
+  ]
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
+
+if (!is_android) {
+  source_set("browser_tests") {
+    testonly = true
+    sources = [ "de_amp_browsertest.cc" ]
+
+    deps = [
+      "///brave/components/de_amp/browser",
+      "///brave/components/de_amp/common",
+      "//chrome/browser:browser",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/ui:ui",
+      "//chrome/test:test_support_ui",
+      "//components/keep_alive_registry:keep_alive_registry",
+      "//components/prefs",
+      "//testing/gtest",
+    ]
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  }
+}

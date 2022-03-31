@@ -73,7 +73,7 @@ ExtensionFunction::ResponseAction FtxGetChartDataFunction::Run() {
   }
 
   std::unique_ptr<ftx::GetChartData::Params> params(
-      ftx::GetChartData::Params::Create(*args_));
+      ftx::GetChartData::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   bool data_request = service->GetChartData(
@@ -108,7 +108,7 @@ ExtensionFunction::ResponseAction FtxSetOauthHostFunction::Run() {
   }
 
   std::unique_ptr<ftx::SetOauthHost::Params> params(
-      ftx::SetOauthHost::Params::Create(*args_));
+      ftx::SetOauthHost::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   if (params->host != "ftx.us" && params->host != "ftx.com") {
@@ -197,7 +197,7 @@ ExtensionFunction::ResponseAction FtxGetConvertQuoteFunction::Run() {
   }
 
   std::unique_ptr<ftx::GetConvertQuote::Params> params(
-      ftx::GetConvertQuote::Params::Create(*args_));
+      ftx::GetConvertQuote::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   bool data_request = service->GetConvertQuote(
@@ -222,7 +222,7 @@ ExtensionFunction::ResponseAction FtxGetConvertQuoteInfoFunction::Run() {
   }
 
   std::unique_ptr<ftx::GetConvertQuoteInfo::Params> params(
-      ftx::GetConvertQuoteInfo::Params::Create(*args_));
+      ftx::GetConvertQuoteInfo::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   bool data_request = service->GetConvertQuoteInfo(
@@ -254,7 +254,7 @@ ExtensionFunction::ResponseAction FtxExecuteConvertQuoteFunction::Run() {
   }
 
   std::unique_ptr<ftx::ExecuteConvertQuote::Params> params(
-      ftx::ExecuteConvertQuote::Params::Create(*args_));
+      ftx::ExecuteConvertQuote::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   bool data_request = service->ExecuteConvertQuote(

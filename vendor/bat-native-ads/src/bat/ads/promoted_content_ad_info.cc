@@ -10,8 +10,6 @@
 
 namespace ads {
 
-struct ConfirmationType;
-
 PromotedContentAdInfo::PromotedContentAdInfo() = default;
 
 PromotedContentAdInfo::PromotedContentAdInfo(
@@ -37,13 +35,13 @@ std::string PromotedContentAdInfo::ToJson() const {
   return json;
 }
 
-Result PromotedContentAdInfo::FromJson(const std::string& json) {
+bool PromotedContentAdInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return FAILED;
+    return false;
   }
 
   if (document.HasMember("type")) {
@@ -86,15 +84,14 @@ Result PromotedContentAdInfo::FromJson(const std::string& json) {
     target_url = document["target_url"].GetString();
   }
 
-  return SUCCESS;
+  return true;
 }
 
 void SaveToJson(JsonWriter* writer, const PromotedContentAdInfo& info) {
   writer->StartObject();
 
   writer->String("type");
-  const std::string type = std::string(info.type);
-  writer->String(type.c_str());
+  writer->String(info.type.ToString().c_str());
 
   writer->String("uuid");
   writer->String(info.uuid.c_str());

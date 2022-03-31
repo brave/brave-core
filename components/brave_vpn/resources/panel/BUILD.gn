@@ -1,0 +1,25 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+transpile_web_ui("brave_vpn_panel_ui") {
+  entry_points = [ [
+        "brave_vpn_panel",
+        rebase_path("vpn_panel.tsx"),
+      ] ]
+  resource_name = "brave_vpn_panel"
+  deps = [
+    "//brave/components/brave_vpn:mojom_js",
+    "//brave/components/brave_vpn:preprocess_mojo",
+  ]
+}
+
+pack_web_resources("brave_vpn_panel_generated") {
+  resource_name = "brave_vpn_panel"
+  output_dir = "$root_gen_dir/brave/components/brave_vpn/resources/panel"
+  deps = [ ":brave_vpn_panel_ui" ]
+}

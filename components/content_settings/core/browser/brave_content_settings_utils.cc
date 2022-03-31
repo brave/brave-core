@@ -7,24 +7,16 @@
 
 #include <algorithm>
 
+#include "base/containers/contains.h"
+#include "base/no_destructor.h"
 #include "base/notreached.h"
-#include "base/optional.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace {
-
-const std::vector<ContentSettingsType> kShieldsContentSettingsTypes{
-    ContentSettingsType::BRAVE_ADS,
-    ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-    ContentSettingsType::BRAVE_TRACKERS,
-    ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
-    ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-    ContentSettingsType::BRAVE_SHIELDS,
-    ContentSettingsType::BRAVE_REFERRERS,
-    ContentSettingsType::BRAVE_COOKIES};
 
 bool CanPatternBeConvertedToWildcardSchemeAndPort(
     const ContentSettingsPattern& pattern) {
@@ -57,7 +49,19 @@ bool CanPatternBeConvertedToWildcardSchemeAndPort(
 namespace content_settings {
 
 const std::vector<ContentSettingsType>& GetShieldsContentSettingsTypes() {
-  return kShieldsContentSettingsTypes;
+  static const base::NoDestructor<std::vector<ContentSettingsType>>
+      kShieldsContentSettingsTypes({
+          ContentSettingsType::BRAVE_ADS,
+          ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+          ContentSettingsType::BRAVE_TRACKERS,
+          ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
+          ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+          ContentSettingsType::BRAVE_SHIELDS,
+          ContentSettingsType::BRAVE_REFERRERS,
+          ContentSettingsType::BRAVE_COOKIES,
+      });
+
+  return *kShieldsContentSettingsTypes;
 }
 
 std::string GetShieldsContentTypeName(const ContentSettingsType& content_type) {
@@ -82,31 +86,26 @@ std::string GetShieldsContentTypeName(const ContentSettingsType& content_type) {
       NOTREACHED();
       return std::string();
   }
-
-  NOTREACHED();
-  return std::string();
 }
 
 bool IsShieldsContentSettingsType(const ContentSettingsType& content_type) {
-  return std::find(kShieldsContentSettingsTypes.begin(),
-                   kShieldsContentSettingsTypes.end(),
-                   content_type) != kShieldsContentSettingsTypes.end();
+  return base::Contains(GetShieldsContentSettingsTypes(), content_type);
 }
 
 bool IsShieldsContentSettingsTypeName(const std::string& content_type_name) {
-  for (auto content_type : kShieldsContentSettingsTypes) {
+  for (auto content_type : GetShieldsContentSettingsTypes()) {
     if (GetShieldsContentTypeName(content_type) == content_type_name)
       return true;
   }
   return false;
 }
 
-base::Optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
+absl::optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
     const ContentSettingsPattern& pattern) {
   if (!CanPatternBeConvertedToWildcardSchemeAndPort(pattern))
-    return base::nullopt;
+    return absl::nullopt;
   DCHECK(!pattern.GetHost().empty());
-  base::Optional<ContentSettingsPattern> new_pattern =
+  absl::optional<ContentSettingsPattern> new_pattern =
       ContentSettingsPattern::FromString("*://" + pattern.GetHost() + "/*");
   return new_pattern;
 }
@@ -121,12 +120,11 @@ std::string GetShieldsSettingUserPrefsPath(const std::string& name) {
 // timestamp exists.
 base::Time GetTimeStampFromDictionary(const base::DictionaryValue* dictionary,
                                       const char* key) {
-  std::string timestamp_str;
-  dictionary->GetStringWithoutPathExpansion(key, &timestamp_str);
   int64_t timestamp = 0;
-  base::StringToInt64(timestamp_str, &timestamp);
-  base::Time last_modified = base::Time::FromDeltaSinceWindowsEpoch(
-      base::TimeDelta::FromMicroseconds(timestamp));
+  if (const std::string* timestamp_str = dictionary->FindStringKey(key))
+    base::StringToInt64(*timestamp_str, &timestamp);
+  base::Time last_modified =
+      base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(timestamp));
   return last_modified;
 }
 
@@ -135,16 +133,16 @@ base::Time GetTimeStampFromDictionary(const base::DictionaryValue* dictionary,
 content_settings::SessionModel GetSessionModelFromDictionary(
     const base::DictionaryValue* dictionary,
     const char* key) {
-  int model_int = 0;
-  dictionary->GetIntegerWithoutPathExpansion(key, &model_int);
-  if ((model_int >
+  absl::optional<int> model_int = dictionary->FindIntKey(key);
+  if (!model_int.has_value() ||
+      (model_int >
        static_cast<int>(content_settings::SessionModel::kMaxValue)) ||
       (model_int < 0)) {
     model_int = 0;
   }
 
   content_settings::SessionModel session_model =
-      static_cast<content_settings::SessionModel>(model_int);
+      static_cast<content_settings::SessionModel>(model_int.value());
   return session_model;
 }
 

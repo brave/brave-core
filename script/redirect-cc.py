@@ -13,11 +13,13 @@ def main():
     if 'CC_WRAPPER' in os.environ:
         args = [os.environ['CC_WRAPPER']] + args
     cc_retcode = subprocess.call(args)
-    # To check the redirected file timestamp, it should be marked as dependency for ninja.
+    # To check the redirected file timestamp, it should be marked as dependency
+    # for ninja.
     # Linux/MacOS gcc deps format includes this file properly.
     # Windows msvc deps format does not include it, so we do it manually here.
     if IS_WIN32 and cc_retcode == 0 and brave_path:
-        # This is a specially crafted string that ninja will look for to create deps.
+        # This is a specially crafted string that ninja will look for to create
+        # deps.
         sys.stderr.write('Note: including file: %s\n' % brave_path)
     return cc_retcode
 
@@ -29,11 +31,11 @@ def replace_cc_arg(args):
             index_c = args.index('/c')
         else:
             index_c = args.index('-c')
-    except Exception:
+    except ValueError:
         # no -c or /c so just skip
         return
 
-    if 0 == len(args) or index_c == len(args) - 1:
+    if len(args) == 0 or index_c == len(args) - 1:
         # Something wrong, we have -c but have no path in the next arg
         # Just then give all to cc as is
         return
@@ -49,9 +51,8 @@ def replace_cc_arg(args):
 
     # Get the original chromium dir location, triple parent of current
     # redirect-cc.py
-    chromium_original_dir = os.path.abspath(os.path.join(this_py_path,
-                                                         os.pardir, os.pardir,
-                                                         os.pardir))
+    chromium_original_dir = os.path.abspath(
+        os.path.join(this_py_path, os.pardir, os.pardir, os.pardir))
 
     if len(chromium_original_dir) >= len(abs_path_cc) + 1:
         # Could not get original chromium src dir
@@ -82,7 +83,9 @@ def replace_cc_arg(args):
                               rel_path)
     if os.path.isfile(brave_path):
         # Okay, we can replace
-        args[index_path] = os.path.relpath(brave_path, os.path.abspath('.'))
+        args[index_path] = os.path.relpath(brave_path,
+                                           os.path.abspath('.')).replace(
+                                               '\\', '/')
         return brave_path
 
 

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/bookmarks/bookmarks.ts b/chrome/browser/resources/bookmarks/bookmarks.ts
+index c37aa314fba3be1e10193c17b56cafac66d19832..0399a5e80b1f778cd652aa78388726f933135f58 100644
+--- a/chrome/browser/resources/bookmarks/bookmarks.ts
++++ b/chrome/browser/resources/bookmarks/bookmarks.ts
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++import './brave_overrides/index.js';
+ import './app.js';
+ 
+ export {changeFolderOpen, clearSearch, createBookmark, deselectItems, editBookmark, moveBookmark, removeBookmark, reorderChildren, selectFolder, SelectFolderAction, selectItem, SelectItemsAction, setSearchResults, setSearchTerm, updateAnchor} from './actions.js';

@@ -5,19 +5,20 @@
 
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 
-#include "base/feature_list.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
-#include "brave/components/sidebar/features.h"
+#include "brave/common/webui_url_constants.h"
+#include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
+#include "chrome/common/webui_url_constants.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/url_constants.h"
 
 namespace sidebar {
 
@@ -27,24 +28,22 @@ SidebarService* GetSidebarService(Browser* browser) {
   return SidebarServiceFactory::GetForProfile(browser->profile());
 }
 
-bool IsActiveTabNTP(Browser* browser) {
-  auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
+bool IsActiveTabNTP(content::WebContents* active_web_contents) {
   content::NavigationEntry* entry =
-      web_contents->GetController().GetLastCommittedEntry();
+      active_web_contents->GetController().GetLastCommittedEntry();
   if (!entry)
-    entry = web_contents->GetController().GetVisibleEntry();
+    entry = active_web_contents->GetController().GetVisibleEntry();
   if (!entry)
     return false;
   const GURL url = entry->GetURL();
   return NewTabUI::IsNewTab(url) || NewTabPageUI::IsNewTabPageOrigin(url) ||
-         search::NavEntryIsInstantNTP(web_contents, entry);
+         search::NavEntryIsInstantNTP(active_web_contents, entry);
 }
 
-bool IsActiveTabAlreadyAddedToSidebar(Browser* browser) {
-  auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
-  const GURL url = web_contents->GetVisibleURL();
-  for (const auto& item : GetSidebarService(browser)->items()) {
-    if (item.url == url)
+bool IsURLAlreadyAddedToSidebar(SidebarService* service, const GURL& url) {
+  const GURL converted_url = ConvertURLToBuiltInItemURL(url);
+  for (const auto& item : service->items()) {
+    if (item.url == converted_url)
       return true;
   }
 
@@ -53,26 +52,58 @@ bool IsActiveTabAlreadyAddedToSidebar(Browser* browser) {
 
 }  // namespace
 
-bool CanUseSidebar(Profile* profile) {
-  if (!base::FeatureList::IsEnabled(sidebar::kSidebarFeature))
+bool HiddenDefaultSidebarItemsContains(SidebarService* service,
+                                       const GURL& url) {
+  const auto not_added_default_items = service->GetHiddenDefaultSidebarItems();
+  if (not_added_default_items.empty())
     return false;
+  const GURL converted_url = ConvertURLToBuiltInItemURL(url);
+  for (const auto& item : not_added_default_items) {
+    if (item.url == converted_url)
+      return true;
+  }
+  return false;
+}
 
-  if (!profile)
-    return false;
+bool CanUseSidebar(Browser* browser) {
+  DCHECK(browser);
+  return browser->is_type_normal();
+}
 
-  // Temporarily enable only normal profile.
-  return !profile->IsOffTheRecord();
+// If url is relavant with bulitin items, use builtin item's url.
+// Ex, we don't need to add bookmarks manager as a sidebar shortcut
+// if sidebar panel already has bookmarks item.
+GURL ConvertURLToBuiltInItemURL(const GURL& url) {
+  if (url == GURL(chrome::kChromeUIBookmarksURL))
+    return GURL(kSidebarBookmarksURL);
+
+  if (url.host() == kBraveTalkHost)
+    return GURL(kBraveTalkURL);
+
+  if (url.SchemeIs(content::kChromeUIScheme) && url.host() == kWalletPageHost) {
+    return GURL(kBraveUIWalletPageURL);
+  }
+  return url;
 }
 
 bool CanAddCurrentActiveTabToSidebar(Browser* browser) {
-  auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
-  if (!web_contents)
+  auto* active_web_contents =
+      browser->tab_strip_model()->GetActiveWebContents();
+  if (!active_web_contents)
     return false;
 
-  if (IsActiveTabNTP(browser))
+  if (IsActiveTabNTP(active_web_contents))
     return false;
 
-  if (IsActiveTabAlreadyAddedToSidebar(browser))
+  const GURL url = active_web_contents->GetLastCommittedURL();
+  if (!url.is_valid())
+    return false;
+
+  auto* service = GetSidebarService(browser);
+  if (IsURLAlreadyAddedToSidebar(service, url))
+    return false;
+
+  if (HiddenDefaultSidebarItemsContains(service, url))
     return false;
 
   return true;

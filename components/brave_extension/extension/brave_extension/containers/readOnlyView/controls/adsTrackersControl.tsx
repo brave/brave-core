@@ -36,10 +36,10 @@ import { BlockOptions } from '../../../types/other/blockTypes'
 interface Props {
   ads: BlockOptions
   adsBlocked: number
-  adsBlockedResources: Array<string>
+  adsBlockedResources: string[]
   trackers: BlockOptions
   trackersBlocked: number
-  trackersBlockedResources: Array<string>
+  trackersBlockedResources: string[]
 }
 
 interface State {
@@ -61,7 +61,7 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
     return blockedResourcesSize(this.totalAdsTrackersBlocked)
   }
 
-  get totalAdsTrackersBlockedList (): Array<string> {
+  get totalAdsTrackersBlockedList (): string[] {
     const { adsBlockedResources, trackersBlockedResources } = this.props
     return mergeAdsAndTrackersResources(adsBlockedResources, trackersBlockedResources)
   }

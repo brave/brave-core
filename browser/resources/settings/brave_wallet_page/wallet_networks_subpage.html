@@ -1,0 +1,77 @@
+<style include="cr-shared-style settings-shared iron-flex">
+  .flex {
+    align-self: center;
+    flex: 1 1 auto;
+  }
+  .flex-container {
+    display: flex;
+    padding: 8px 1em;
+  }
+  #networks-section {
+    display: block;
+    background-color: var(--cr-card-background-color);
+    padding-block-end: 0;
+    padding-block-start: 0;
+    padding-inline-end: var(--cr-section-padding);
+    padding-inline-start: var(--cr-section-indent-padding);
+  }
+  .hovered {
+    cursor: pointer;
+  }
+</style>
+
+<div id="networks-section" class="flex-container">
+  <div class="flex">
+    <div class="settings-row">
+      <div class="flex cr-padded-text">
+          $i18n{walletNetworksListTitle}
+      </div>
+      <cr-button on-click=onAddNetworkTap_ >
+        $i18n{add}
+      </cr-button>
+    </div>
+    <div class="flex" id="listContainer">
+      <iron-list items="[[networks]]" class="flex" id="networksList"
+          preserve-focus risk-selection>
+        <template>
+          <div on-dblclick=onItemDoubleClick>
+            <div class="settings-box">
+              <div class$=[[getNetworkItemClass(item.chainId)]]>
+                <div><span hidden="[[hideNativeCurrencyInfo]]">({{item.nativeCurrency.name}}) </span>{{item.chainName}}</div>
+                <div class="secondary">[[getItemDescritionText(item)]]</div>
+              </div>
+              <cr-icon-button class="icon-more-vert"
+                              on-click="onNetworkMenuTapped_"
+                              itemName=[[item.name]]
+                              focus-type="menu">
+              </cr-icon-button>
+            </div>
+            <cr-lazy-render id="network-menu">
+              <template>
+                <cr-action-menu role-description="$i18n{menu}">
+                  <button class="dropdown-item" on-click="onEditTap_">
+                    $i18n{walletNetworkEdit}
+                  </button>
+                  <button class="dropdown-item" id="remove"
+                      hidden=[[isActiveNetwork]]
+                      on-click="onDeleteActionTapped_">
+                    $i18n{walletNetworkRemove}
+                  </button>
+                  <button class="dropdown-item" id="set-active"
+                      hidden=[[isActiveNetwork]]
+                      on-click="onSetAsActiveActionTapped_">
+                    $i18n{walletNetworkSetAsActive}
+                  </button>
+                </cr-action-menu>
+              </template>
+            </cr-lazy-render>
+          </div>
+        </template>
+      </iron-list>
+    </div>
+  </div>
+</div>
+<template is="dom-if" if="[[showAddWalletNetworkDialog_]]" restamp>
+  <add-wallet-network-dialog networks="[[networks]]" selected="{{selectedNetwork}}" on-close="onAddNetworkDialogClosed_" hidden="[[!showAddWalletNetworkDialog_]]" >
+  </add-wallet-network-dialog>
+</template>

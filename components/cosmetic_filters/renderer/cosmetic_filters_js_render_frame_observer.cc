@@ -6,7 +6,10 @@
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 
 #include "base/bind.h"
+#include "base/feature_list.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "content/public/renderer/render_frame.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/platform/web_isolated_world_info.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_local_frame.h"
@@ -18,7 +21,7 @@ namespace {
 const char kSecurityOrigin[] = "chrome://cosmetic_filters";
 
 void EnsureIsolatedWorldInitialized(int world_id) {
-  static base::Optional<int> last_used_world_id;
+  static absl::optional<int> last_used_world_id;
   if (last_used_world_id) {
     // Early return since the isolated world info. is already initialized.
     DCHECK_EQ(*last_used_world_id, world_id)
@@ -58,7 +61,7 @@ CosmeticFiltersJsRenderFrameObserver::~CosmeticFiltersJsRenderFrameObserver() {}
 
 void CosmeticFiltersJsRenderFrameObserver::DidStartNavigation(
     const GURL& url,
-    base::Optional<blink::WebNavigationType> navigation_type) {
+    absl::optional<blink::WebNavigationType> navigation_type) {
   url_ = url;
 }
 
@@ -78,15 +81,28 @@ void CosmeticFiltersJsRenderFrameObserver::ReadyToCommitNavigation(
   if (!url_.SchemeIsHTTPOrHTTPS())
     return;
 
-  native_javascript_handle_->ProcessURL(
-      url_, base::BindOnce(&CosmeticFiltersJsRenderFrameObserver::OnProcessURL,
-                           weak_factory_.GetWeakPtr()));
+  if (base::FeatureList::IsEnabled(
+          ::brave_shields::features::kCosmeticFilteringSyncLoad)) {
+    if (native_javascript_handle_->ProcessURL(url_, absl::nullopt)) {
+      ready_->Signal();
+    }
+  } else {
+    native_javascript_handle_->ProcessURL(
+        url_, absl::make_optional(base::BindOnce(
+                  &CosmeticFiltersJsRenderFrameObserver::OnProcessURL,
+                  weak_factory_.GetWeakPtr())));
+  }
 }
 
 void CosmeticFiltersJsRenderFrameObserver::RunScriptsAtDocumentStart() {
-  ready_->Post(FROM_HERE,
-               base::BindOnce(&CosmeticFiltersJsRenderFrameObserver::ApplyRules,
-                              weak_factory_.GetWeakPtr()));
+  if (ready_->is_signaled()) {
+    ApplyRules();
+  } else {
+    ready_->Post(
+        FROM_HERE,
+        base::BindOnce(&CosmeticFiltersJsRenderFrameObserver::ApplyRules,
+                       weak_factory_.GetWeakPtr()));
+  }
 }
 
 void CosmeticFiltersJsRenderFrameObserver::ApplyRules() {

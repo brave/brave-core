@@ -6,7 +6,7 @@
 
 #include <tuple>
 
-#include "base/macros.h"
+#include "base/cxx17_backports.h"
 #include "base/stl_util.h"
 #include "base/test/test_reg_util_win.h"
 #include "chrome/chrome_elf/nt_registry/nt_registry.h"
@@ -23,22 +23,6 @@ using ::testing::StrCaseEq;
 using version_info::Channel;
 
 namespace install_static {
-
-// Tests the MatchPattern function in the install_static library.
-TEST(InstallStaticTest, MatchPattern) {
-  EXPECT_TRUE(MatchPattern(L"", L""));
-  EXPECT_TRUE(MatchPattern(L"", L"*"));
-  EXPECT_FALSE(MatchPattern(L"", L"*a"));
-  EXPECT_FALSE(MatchPattern(L"", L"abc"));
-  EXPECT_TRUE(MatchPattern(L"Hello1234", L"He??o*1*"));
-  EXPECT_TRUE(MatchPattern(L"Foo", L"F*?"));
-  EXPECT_TRUE(MatchPattern(L"Foo", L"F*"));
-  EXPECT_FALSE(MatchPattern(L"Foo", L"F*b"));
-  EXPECT_TRUE(MatchPattern(L"abcd", L"*c*d"));
-  EXPECT_TRUE(MatchPattern(L"abcd", L"*?c*d"));
-  EXPECT_FALSE(MatchPattern(L"abcd", L"abcd*efgh"));
-  EXPECT_TRUE(MatchPattern(L"foobarabc", L"*bar*"));
-}
 
 // Tests the install_static::GetSwitchValueFromCommandLine function.
 TEST(InstallStaticTest, GetSwitchValueFromCommandLineTest) {
@@ -272,6 +256,10 @@ TEST(InstallStaticTest, BrowserProcessTest) {
 class InstallStaticUtilTest
     : public ::testing::TestWithParam<
           std::tuple<InstallConstantIndex, const char*>> {
+ public:
+  InstallStaticUtilTest(const InstallStaticUtilTest&) = delete;
+  InstallStaticUtilTest& operator=(const InstallStaticUtilTest&) = delete;
+
  protected:
   InstallStaticUtilTest()
       : system_level_(std::string(std::get<1>(GetParam())) != "user"),
@@ -343,8 +331,6 @@ class InstallStaticUtilTest
   const HKEY root_key_;
   const nt::ROOT_KEY nt_root_key_;
   registry_util::RegistryOverrideManager override_manager_;
-
-  DISALLOW_COPY_AND_ASSIGN(InstallStaticUtilTest);
 };
 
 TEST_P(InstallStaticUtilTest, GetChromeInstallSubDirectory) {
@@ -605,31 +591,31 @@ TEST_P(InstallStaticUtilTest, GetChromeChannel) {
 
 #if defined(OFFICIAL_BUILD)
 // Stable supports user and system levels.
-INSTANTIATE_TEST_CASE_P(Stable,
-                        InstallStaticUtilTest,
-                        testing::Combine(testing::Values(STABLE_INDEX),
-                                         testing::Values("user", "system")));
+INSTANTIATE_TEST_SUITE_P(Stable,
+                         InstallStaticUtilTest,
+                         testing::Combine(testing::Values(STABLE_INDEX),
+                                          testing::Values("user", "system")));
 // Beta supports user and system levels.
-INSTANTIATE_TEST_CASE_P(Beta,
-                        InstallStaticUtilTest,
-                        testing::Combine(testing::Values(BETA_INDEX),
-                                         testing::Values("user", "system")));
+INSTANTIATE_TEST_SUITE_P(Beta,
+                         InstallStaticUtilTest,
+                         testing::Combine(testing::Values(BETA_INDEX),
+                                          testing::Values("user", "system")));
 // Dev supports user and system levels.
-INSTANTIATE_TEST_CASE_P(Dev,
-                        InstallStaticUtilTest,
-                        testing::Combine(testing::Values(DEV_INDEX),
-                                         testing::Values("user", "system")));
+INSTANTIATE_TEST_SUITE_P(Dev,
+                         InstallStaticUtilTest,
+                         testing::Combine(testing::Values(DEV_INDEX),
+                                          testing::Values("user", "system")));
 // Canary is only at user level.
-INSTANTIATE_TEST_CASE_P(Nightly,
-                        InstallStaticUtilTest,
-                        testing::Combine(testing::Values(NIGHTLY_INDEX),
-                                         testing::Values("user")));
+INSTANTIATE_TEST_SUITE_P(Nightly,
+                         InstallStaticUtilTest,
+                         testing::Combine(testing::Values(NIGHTLY_INDEX),
+                                          testing::Values("user")));
 #else   // OFFICIAL_BUILD
 // Chromium supports user and system levels.
-INSTANTIATE_TEST_CASE_P(Development,
-                        InstallStaticUtilTest,
-                        testing::Combine(testing::Values(DEVELOPER_INDEX),
-                                         testing::Values("user", "system")));
+INSTANTIATE_TEST_SUITE_P(Development,
+                         InstallStaticUtilTest,
+                         testing::Combine(testing::Values(DEVELOPER_INDEX),
+                                          testing::Values("user", "system")));
 #endif  // !OFFICIAL_BUILD
 
 }  // namespace install_static

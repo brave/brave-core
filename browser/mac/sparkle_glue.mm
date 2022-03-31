@@ -116,16 +116,21 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
   static bool sTriedCreatingSharedSparkleGlue = false;
   static SparkleGlue* shared = nil;
 
-  if (brave::UpdateEnabled() && !sTriedCreatingSharedSparkleGlue) {
+  bool updateEnabled = brave::UpdateEnabled();
+  if (updateEnabled && !sTriedCreatingSharedSparkleGlue) {
     sTriedCreatingSharedSparkleGlue = true;
 
     shared = [[SparkleGlue alloc] init];
     [shared loadParameters];
-    if (![shared loadSparkleFramework]) {
+    if ([shared loadSparkleFramework]) {
+      VLOG(0) << "brave update: Loaded sparkle framework";
+    } else {
       VLOG(0) << "brave update: Failed to load sparkle framework";
       [shared release];
       shared = nil;
     }
+  } else if (!updateEnabled) {
+    VLOG(0) << "brave update is disabled";
   }
   return shared;
 }
@@ -190,9 +195,22 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
   // Background update check interval.
   constexpr NSTimeInterval kBraveUpdateCheckIntervalInSec = 3 * 60 * 60;
   [su_updater_ setUpdateCheckInterval:kBraveUpdateCheckIntervalInSec];
-  [su_updater_ setAutomaticallyChecksForUpdates:YES];
+
   [su_updater_ setAutomaticallyDownloadsUpdates:YES];
 
+  // We only want to perform automatic update checks if we have write
+  // access to the installation directory. Such access can be checked
+  // with SUSystemUpdateInfo:systemAllowsAutomaticUpdatesForHost.
+  // The following makes su_updater_ call this method for us because
+  // we setAutomaticallyDownloadUpdates:YES above.
+  if ([su_updater_ automaticallyDownloadsUpdates])
+    [su_updater_ setAutomaticallyChecksForUpdates:YES];
+  else
+    // Prevent Sparkle from asking the user "Check for updates automatically?".
+    // Also prevent local legacy settings from accidentally enabling
+    // auto-updates. Users can still update manually by going to
+    // brave://settings/help.
+    [su_updater_ setAutomaticallyChecksForUpdates:NO];
   [self updateStatus:kAutoupdateRegistered version:nil error:nil];
 }
 
@@ -229,7 +247,7 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 
   [self updateStatus:kAutoupdateChecking version:nil error:nil];
 
-  [su_updater_ checkForUpdatesInBackground];
+  [su_updater_ checkForUpdatesInBackgroundWithoutUi];
 }
 
 - (void)relaunch {
@@ -239,7 +257,7 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 
 - (void)checkForUpdatesInBackground {
   DCHECK(registered_);
-  [su_updater_ checkForUpdatesInBackground];
+  [su_updater_ checkForUpdatesInBackgroundWithoutUi];
 }
 
 - (void)updateStatus:(AutoupdateStatus)status

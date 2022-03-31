@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/browser/ads_service.h"
 
+#include "base/time/time.h"
 #include "bat/ads/pref_names.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -43,6 +44,8 @@ void AdsService::RegisterProfilePrefs(
 
   registry->RegisterIntegerPref(prefs::kAdNotificationLastScreenPositionX, 0);
   registry->RegisterIntegerPref(prefs::kAdNotificationLastScreenPositionY, 0);
+  registry->RegisterBooleanPref(prefs::kAdNotificationDidFallbackToCustom,
+                                false);
 
   registry->RegisterBooleanPref(ads::prefs::kShouldAllowConversionTracking,
                                 true);
@@ -61,13 +64,20 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterStringPref(ads::prefs::kCatalogId, "");
   registry->RegisterIntegerPref(ads::prefs::kCatalogVersion, 0);
   registry->RegisterInt64Pref(ads::prefs::kCatalogPing, 0);
-  registry->RegisterInt64Pref(ads::prefs::kCatalogLastUpdated, 0);
+  registry->RegisterDoublePref(ads::prefs::kCatalogLastUpdated,
+                               base::Time().ToDoubleT());
+
+  registry->RegisterIntegerPref(ads::prefs::kIssuerPing, 7200000);
 
   registry->RegisterStringPref(ads::prefs::kEpsilonGreedyBanditArms, "");
   registry->RegisterStringPref(ads::prefs::kEpsilonGreedyBanditEligibleSegments,
                                "");
 
+  registry->RegisterDoublePref(ads::prefs::kNextTokenRedemptionAt,
+                               base::Time::Now().ToDoubleT());
+
   registry->RegisterBooleanPref(ads::prefs::kHasMigratedConversionState, false);
+  registry->RegisterBooleanPref(ads::prefs::kHasMigratedRewardsState, false);
 }
 
 }  // namespace brave_ads

@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.brave_stats;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -53,7 +54,9 @@ import java.util.Locale;
 public class BraveStatsUtil {
     public static final short MILLISECONDS_PER_ITEM = 50;
     public static final int SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM = 3867;
+    public static final int SHARE_STATS_REQUEST_CODE = 4367;
     public static final String TAG = "BraveStatsUtil";
+    private static String shareStatsFile = "";
     /*
      * Gets string view of specific time in seconds for Brave stats
      */
@@ -172,16 +175,16 @@ public class BraveStatsUtil {
         try {
             Context context = ContextUtils.getApplicationContext();
             Bitmap bmp = convertToBitmap(view);
-            String path = "";
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                path = MediaStore.Images.Media.insertImage(
+                shareStatsFile = MediaStore.Images.Media.insertImage(
                         context.getContentResolver(), bmp, "tempimage", null);
             } else {
                 storeImage(bmp);
-                path = getOutputMediaFile().getAbsolutePath();
+                shareStatsFile = getOutputMediaFile().getAbsolutePath();
             }
 
-            Uri uri = Uri.parse(path);
+            Uri uri = Uri.parse(shareStatsFile);
 
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
@@ -193,9 +196,29 @@ public class BraveStatsUtil {
 
             Intent shareIntent = Intent.createChooser(sendIntent, " ");
             shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(shareIntent);
+
+            if (BraveActivity.getBraveActivity() != null) {
+                BraveActivity.getBraveActivity().startActivity(shareIntent);
+            }
         } catch (Exception e) {
-            Log.e(TAG, "exception :" + e);
+            e.printStackTrace();
+        }
+    }
+
+    public static void removeShareStatsFile() {
+        Context context = ContextUtils.getApplicationContext();
+        try {
+            if (shareStatsFile.startsWith("content://")) {
+                ContentResolver contentResolver = context.getContentResolver();
+                contentResolver.delete(Uri.parse(shareStatsFile), null, null);
+            } else {
+                File file = new File(shareStatsFile);
+                if (file.exists()) {
+                    file.delete();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -256,16 +279,21 @@ public class BraveStatsUtil {
     }
 
     public static boolean hasWritePermission(Activity activity) {
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            activity.requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM);
+            if (activity == null) {
+                return false;
+            }
+            if (activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                activity.requestPermissions(
+                        new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        SHARE_STATS_WRITE_EXTERNAL_STORAGE_PERM);
+                return false;
+            }
         }
-
-        return false;
+        return true;
     }
 
     public static void shareStats(int layout) {

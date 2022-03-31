@@ -25,7 +25,8 @@ enum ContributionProcessor {
   BRAVE_TOKENS = 1,
   UPHOLD = 2,
   BRAVE_USER_FUNDS = 3,
-  BITFLYER = 4
+  BITFLYER = 4,
+  GEMINI = 5
 };
 
 struct ContributionInfo {
@@ -83,7 +84,6 @@ struct PendingContribution {
   uint64 added_date;
   string viewing_id;
   RewardsType type;
-  ContributionProcessor processor = ContributionProcessor.NONE;
 };
 
 struct PendingContributionInfo {
@@ -100,7 +100,6 @@ struct PendingContributionInfo {
   uint64 added_date;
   string viewing_id;
   uint64 expiration_date;
-  ContributionProcessor processor = ContributionProcessor.NONE;
 };
 
 struct VisitData {
@@ -155,8 +154,10 @@ struct ExternalWallet {
   string one_time_string;
   string code_verifier;
   string user_name;
+  string member_id;
   string account_url;
   string login_url;
+  string activity_url;
   map<string, double> fees;
 };
 
@@ -228,7 +229,7 @@ enum Result {
   PENDING_NOT_ENOUGH_FUNDS = 22,
   RECURRING_TABLE_EMPTY = 23,
   EXPIRED_TOKEN = 24,
-  BAT_NOT_ALLOWED = 25,
+  UPHOLD_BAT_NOT_ALLOWED = 25,
   ALREADY_EXISTS = 26,
   SAFETYNET_ATTESTATION_FAILED = 27,
   DATABASE_INIT_FAILED = 28,
@@ -238,14 +239,26 @@ enum Result {
   CONTINUE = 32,
   IN_PROGRESS= 33,
   REWARDS_OFF = 34,
-  AC_OFF = 35
+  AC_OFF = 35,
+
+  DEVICE_LIMIT_REACHED = 36,
+  MISMATCHED_PROVIDER_ACCOUNTS = 37,
+  UPHOLD_BLOCKED_USER = 38,
+  UPHOLD_PENDING_USER = 39,
+  UPHOLD_RESTRICTED_USER = 40,
+  UPHOLD_TRANSACTION_VERIFICATION_FAILURE = 41,
+  REQUEST_SIGNATURE_VERIFICATION_FAILURE = 42,
+  UPHOLD_CUSTOMER_DUE_DILIGENCE_REQUIRED = 43,
+  FLAGGED_WALLET = 44,
+  REGION_NOT_SUPPORTED = 45
 };
 
 enum PublisherStatus {
   NOT_VERIFIED = 0,
   CONNECTED = 1,
   UPHOLD_VERIFIED = 2,
-  BITFLYER_VERIFIED = 3
+  BITFLYER_VERIFIED = 3,
+  GEMINI_VERIFIED = 4
 };
 
 enum DrainStatus {
@@ -363,6 +376,8 @@ struct Promotion {
   uint32 suggestions;
   double approximate_value;
   PromotionStatus status;
+  uint64 created_at;
+  uint64 claimable_until;
   uint64 expires_at;
   uint64 claimed_at;
   bool legacy_claimed;
@@ -496,7 +511,8 @@ enum SKUTransactionType {
   NONE = 0,
   UPHOLD = 1,
   ANONYMOUS_CARD = 2,
-  TOKENS = 3
+  TOKENS = 3,
+  GEMINI = 4
 };
 
 enum SKUTransactionStatus {

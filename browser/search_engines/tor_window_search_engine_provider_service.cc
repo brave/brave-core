@@ -9,6 +9,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
+#include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
 
@@ -17,9 +18,9 @@ TorWindowSearchEngineProviderService(Profile* otr_profile)
     : SearchEngineProviderService(otr_profile) {
   DCHECK(otr_profile->IsTor());
 
-  auto provider_data = GetInitialSearchEngineProvider(otr_profile->GetPrefs());
-  alternative_search_engine_url_for_tor_ =
-      std::make_unique<TemplateURL>(*provider_data);
+  auto provider_data = TemplateURLDataFromPrepopulatedEngine(
+      TemplateURLPrepopulateData::brave_search_tor);
+  default_template_url_for_tor_ = std::make_unique<TemplateURL>(*provider_data);
 
   ConfigureSearchEngineProvider();
 
@@ -43,37 +44,10 @@ void TorWindowSearchEngineProviderService::ConfigureSearchEngineProvider() {
     UseExtensionSearchProvider();
   } else {
     otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
-        alternative_search_engine_url_for_tor_.get());
+        default_template_url_for_tor_.get());
   }
 }
 
 void TorWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
   ConfigureSearchEngineProvider();
-}
-
-std::unique_ptr<TemplateURLData>
-TorWindowSearchEngineProviderService::GetInitialSearchEngineProvider(
-    PrefService* prefs) const {
-  std::unique_ptr<TemplateURLData> provider_data;
-
-  int initial_id = TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
-                       otr_profile_->GetPrefs())
-                       ->prepopulate_id;
-  switch (initial_id) {
-    case TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT:
-    case TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO:
-    case TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE:
-    case TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE:
-      break;
-
-    default:
-      initial_id =
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
-      break;
-  }
-  provider_data =
-      TemplateURLPrepopulateData::GetPrepopulatedEngine(prefs, initial_id);
-
-  DCHECK(provider_data);
-  return provider_data;
 }

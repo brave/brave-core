@@ -15,7 +15,6 @@
 #include <vector>
 
 #include "base/lazy_instance.h"
-#include "base/macros.h"
 #include "components/content_settings/core/browser/content_settings_info.h"
 #include "components/content_settings/core/browser/content_settings_utils.h"
 #include "components/content_settings/core/browser/website_settings_info.h"
@@ -28,7 +27,7 @@
                                          const std::string& name);        \
   void BraveInit
 
-#include "../../../../../../components/content_settings/core/browser/content_settings_registry.h"
+#include "src/components/content_settings/core/browser/content_settings_registry.h"
 #undef Init
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_CONTENT_SETTINGS_REGISTRY_H_

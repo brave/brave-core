@@ -1,25 +1,18 @@
 import { TopTabNavObjectType } from '../constants/types'
-import locale from '../constants/locale'
+import { getLocale } from '../../common/locale'
 
-export const TopNavOptions: TopTabNavObjectType[] = [
+export const TopNavOptions = (): TopTabNavObjectType[] => [
   {
     id: 'portfolio',
-    name: locale.topNavPortfolio
-  },
-  {
-    id: 'prices',
-    name: locale.topTabPrices
-  },
-  {
-    id: 'defi',
-    name: locale.topTabDefi
-  },
-  {
-    id: 'nfts',
-    name: locale.topNavNFTS
+    name: getLocale('braveWalletTopNavPortfolio')
   },
   {
     id: 'accounts',
-    name: locale.topNavAccounts
+    name: getLocale('braveWalletTopNavAccounts')
   }
+  // Temp commented out for MVP
+  // {
+  //   id: 'apps',
+  //   name: getLocale('braveWalletTopTabApps')
+  // }
 ]

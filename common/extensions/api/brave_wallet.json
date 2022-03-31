@@ -13,16 +13,6 @@
     ],
     "functions": [
       {
-        "name": "promptToEnableWallet",
-        "type": "function",
-        "description": "Called when website detects a Dapp",
-        "parameters": [
-          {
-            "name": "tabID",
-            "type": "integer"
-          }
-        ]
-      }, {
         "name": "ready",
         "type": "function",
         "description": "Called by Crypto Wallets when it is ready",
@@ -44,45 +34,14 @@
           }
         ]
       }, {
-        "name": "shouldCheckForDapps",
+        "name": "notifyWalletUnlock",
         "type": "function",
-        "description": "Called to determine if dapp detection should be performed",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "dappDetection",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
+        "description": "Called to notify Brave that the wallet was unlocked",
+        "parameters": []
       }, {
         "name": "getWalletSeed",
         "type": "function",
         "description": "Called when website detects a Dapp",
-        "parameters": [
-          {
-            "name": "key",
-            "type": "binary"
-          }, {
-            "name": "seedCallback",
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "seed",
-                "type": "binary"
-              }
-            ]
-          }
-        ]
-      }, {
-        "name": "getBitGoSeed",
-        "type": "function",
-        "description": "Called when setting up BitGo",
         "parameters": [
           {
             "name": "key",

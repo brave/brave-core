@@ -9,13 +9,14 @@
 #include <cstdint>
 #include <string>
 
-#include "bat/ads/result.h"
+#include "base/time/time.h"
 
 namespace ads {
+namespace ad_targeting {
 
-struct PurchaseIntentSignalHistoryInfo {
+struct PurchaseIntentSignalHistoryInfo final {
   PurchaseIntentSignalHistoryInfo();
-  PurchaseIntentSignalHistoryInfo(const int64_t timestamp_in_seconds,
+  PurchaseIntentSignalHistoryInfo(const base::Time created_at,
                                   const uint16_t weight);
   PurchaseIntentSignalHistoryInfo(const PurchaseIntentSignalHistoryInfo& info);
   ~PurchaseIntentSignalHistoryInfo();
@@ -24,12 +25,13 @@ struct PurchaseIntentSignalHistoryInfo {
   bool operator!=(const PurchaseIntentSignalHistoryInfo& rhs) const;
 
   std::string ToJson() const;
-  Result FromJson(const std::string& json);
+  bool FromJson(const std::string& json);
 
-  int64_t timestamp_in_seconds = 0;
+  base::Time created_at;
   uint16_t weight = 0;
 };
 
+}  // namespace ad_targeting
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SIGNAL_HISTORY_INFO_H_

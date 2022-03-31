@@ -43,19 +43,6 @@ void JNI_BraveAdsNativeHelper_SetAdsEnabled(
 }
 
 // static
-jboolean JNI_BraveAdsNativeHelper_IsNewlySupportedLocale(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& j_profile_android) {
-  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
-  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
-  if (!ads_service) {
-    return false;
-  }
-
-  return ads_service->IsNewlySupportedLocale();
-}
-
-// static
 jboolean JNI_BraveAdsNativeHelper_IsSupportedLocale(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android) {

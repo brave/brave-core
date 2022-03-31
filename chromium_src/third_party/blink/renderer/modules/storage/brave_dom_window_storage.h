@@ -12,7 +12,10 @@ namespace blink {
 
 class ExceptionState;
 class LocalDOMWindow;
+class SecurityOrigin;
 class StorageArea;
+
+const SecurityOrigin* GetEphemeralStorageOrigin(LocalDOMWindow* window);
 
 class BraveDOMWindowStorage final
     : public GarbageCollected<BraveDOMWindowStorage>,
@@ -33,7 +36,6 @@ class BraveDOMWindowStorage final
 
  private:
   StorageArea* ephemeralSessionStorage();
-  StorageArea* ephemeralLocalStorage();
 
   mutable Member<StorageArea> ephemeral_session_storage_;
   mutable Member<StorageArea> ephemeral_local_storage_;

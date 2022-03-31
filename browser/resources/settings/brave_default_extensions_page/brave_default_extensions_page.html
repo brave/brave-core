@@ -85,6 +85,18 @@
         sub-label="$i18n{hangoutsEnabledDesc}"
         on-settings-boolean-control-change="onHangoutsEnabledChange_">
     </settings-toggle-button>
+    <settings-toggle-button id="mediaRouterEnabled"
+        class="cr-row"
+        pref="{{prefs.brave.enable_media_router_on_restart}}"
+        label="Media Router"
+        sub-label="$i18n{mediaRouterEnabledDesc}">
+        <template is="dom-if" if="[[shouldShowRestartForMediaRouter_(
+          prefs.brave.enable_media_router_on_restart.value)]]">
+          <cr-button on-click="restartBrowser_" slot="more-actions">
+            $i18n{restart}
+          </cr-button>
+        </template>
+    </settings-toggle-button>
     <template is="dom-if" if="{{ decentralizedDnsEnabled_ }}">
       <div class="settings-box">
         <div class="flex cr-padded-text">
@@ -102,13 +114,6 @@
                                 menu-options="[[ensResolveMethod_]]">
       </div>
     </template>
-    <settings-toggle-button id="mediaRouterEnabled"
-        class="cr-row"
-        pref="{{prefs.brave.enable_media_router}}"
-        label="Media Router"
-        sub-label="$i18n{mediaRouterEnabledDesc}"
-        on-settings-boolean-control-change="onMediaRouterEnabledChange_">
-    </settings-toggle-button>
     <if expr="enable_tor">
     <settings-toggle-button id="torEnabled"
         class="cr-row"

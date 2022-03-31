@@ -11,28 +11,33 @@
 
 #include "base/android/jni_android.h"
 #include "base/compiler_specific.h"
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/singleton.h"
-#include "base/optional.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class Profile;
 
 namespace ntp_background_images {
 struct NTPBackgroundImagesData;
+struct NTPSponsoredImagesData;
 class ViewCounterService;
 }
 
 using ntp_background_images::NTPBackgroundImagesData;
 using ntp_background_images::NTPBackgroundImagesService;
+using ntp_background_images::NTPSponsoredImagesData;
 using ntp_background_images::ViewCounterService;
 
 class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
                                  public KeyedService {
  public:
   explicit NTPBackgroundImagesBridge(Profile* profile);
+  NTPBackgroundImagesBridge(const NTPBackgroundImagesBridge&) = delete;
+  NTPBackgroundImagesBridge& operator=(const NTPBackgroundImagesBridge&) =
+      delete;
   ~NTPBackgroundImagesBridge() override;
 
   void RegisterPageView(JNIEnv* env,
@@ -61,16 +66,17 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
 
  private:
   void OnUpdated(NTPBackgroundImagesData* data) override;
+  void OnUpdated(NTPSponsoredImagesData* data) override;
   void OnSuperReferralEnded() override;
 
-  base::android::ScopedJavaLocalRef<jobject> CreateWallpaper();
+  base::android::ScopedJavaLocalRef<jobject> CreateWallpaper(base::Value* data);
+  base::android::ScopedJavaLocalRef<jobject> CreateBrandedWallpaper(
+      base::Value* data);
 
-  Profile* profile_;
-  ViewCounterService* view_counter_service_;
-  NTPBackgroundImagesService* background_images_service_;
+  raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<ViewCounterService> view_counter_service_ = nullptr;
+  raw_ptr<NTPBackgroundImagesService> background_images_service_ = nullptr;
   base::android::ScopedJavaGlobalRef<jobject> java_object_;
-
-  DISALLOW_COPY_AND_ASSIGN(NTPBackgroundImagesBridge);
 };
 
 namespace ntp_background_images {
@@ -78,6 +84,11 @@ namespace ntp_background_images {
 class NTPBackgroundImagesBridgeFactory
     : public BrowserContextKeyedServiceFactory {
  public:
+  NTPBackgroundImagesBridgeFactory(const NTPBackgroundImagesBridgeFactory&) =
+      delete;
+  NTPBackgroundImagesBridgeFactory& operator=(
+      const NTPBackgroundImagesBridgeFactory&) = delete;
+
   static NTPBackgroundImagesBridgeFactory* GetInstance();
   static NTPBackgroundImagesBridge* GetForProfile(Profile* profile);
 
@@ -91,8 +102,6 @@ class NTPBackgroundImagesBridgeFactory
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
   bool ServiceIsCreatedWithBrowserContext() const override;
-
-  DISALLOW_COPY_AND_ASSIGN(NTPBackgroundImagesBridgeFactory);
 };
 
 }  // namespace ntp_background_images

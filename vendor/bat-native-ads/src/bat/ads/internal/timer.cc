@@ -8,6 +8,9 @@
 #include <cstdint>
 #include <utility>
 
+#include "base/check.h"
+#include "base/time/time.h"
+#include "base/timer/timer.h"
 #include "brave_base/random.h"
 
 namespace ads {
@@ -20,11 +23,11 @@ Timer::~Timer() {
   Stop();
 }
 
-void Timer::set_timer_for_testing(std::unique_ptr<base::OneShotTimer> timer) {
+void Timer::SetTimerForTesting(std::unique_ptr<base::OneShotTimer> timer) {
   timer_ = std::move(timer);
 }
 
-base::Time Timer::Start(const base::TimeDelta& delay,
+base::Time Timer::Start(const base::TimeDelta delay,
                         base::OnceClosure user_task) {
   Stop();
 
@@ -35,12 +38,14 @@ base::Time Timer::Start(const base::TimeDelta& delay,
   return time;
 }
 
-base::Time Timer::StartWithPrivacy(const base::TimeDelta& delay,
+base::Time Timer::StartWithPrivacy(const base::TimeDelta delay,
                                    base::OnceClosure user_task) {
-  const int64_t delay_as_int64 = static_cast<int64_t>(delay.InSeconds());
-  const uint64_t rand_delay = brave_base::random::Geometric(delay_as_int64);
+  const int64_t delay_in_seconds = delay.InSeconds();
 
-  return Start(base::TimeDelta::FromSeconds(rand_delay), std::move(user_task));
+  const int64_t rand_delay_in_seconds =
+      static_cast<int64_t>(brave_base::random::Geometric(delay_in_seconds));
+
+  return Start(base::Seconds(rand_delay_in_seconds), std::move(user_task));
 }
 
 bool Timer::IsRunning() const {
@@ -51,12 +56,14 @@ void Timer::FireNow() {
   return timer_->FireNow();
 }
 
-void Timer::Stop() {
+bool Timer::Stop() {
   if (!IsRunning()) {
-    return;
+    return false;
   }
 
   timer_->Stop();
+
+  return true;
 }
 
 }  // namespace ads

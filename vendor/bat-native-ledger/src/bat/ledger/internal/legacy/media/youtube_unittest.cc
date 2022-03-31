@@ -476,12 +476,12 @@ TEST(MediaYouTubeTest, GetVideoUrl) {
 // As per
 // https://source.chromium.org/chromium/chromium/src/+/master:base/test/gtest_util.h;l=23
 // Death tests misbehave on Android.
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   ::testing::FLAGS_gtest_death_test_style = "threadsafe";
   EXPECT_DEATH({
     YouTube::GetVideoUrl(media_id);
   }, "Check failed: !media_id.empty*");
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 #endif
 
   media_id = "FsC15IBOpxw";
@@ -513,12 +513,12 @@ TEST(MediaYouTubeTest, GetChannelUrl) {
 // As per
 // https://source.chromium.org/chromium/chromium/src/+/master:base/test/gtest_util.h;l=23
 // Death tests misbehave on Android.
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   ::testing::FLAGS_gtest_death_test_style = "threadsafe";
   EXPECT_DEATH({
     YouTube::GetChannelUrl(channel_id);
   }, "Check failed: !publisher_key.empty*");
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 #endif
 
   channel_id = "UCFNTTISby1c_H-rm5Ww5rZg";

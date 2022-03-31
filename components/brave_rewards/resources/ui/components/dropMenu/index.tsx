@@ -25,7 +25,7 @@ export interface Props {
 }
 
 export default class DropMenu extends React.PureComponent<Props, State> {
-  private container: React.RefObject<HTMLDivElement>
+  private readonly container: React.RefObject<HTMLDivElement>
   constructor (props: Props) {
     super(props)
     this.state = {
@@ -63,18 +63,17 @@ export default class DropMenu extends React.PureComponent<Props, State> {
         <div ref={this.container}>
           <MoreVertLIcon />
           {
-            this.state.menuOpen ?
-              <StyledAdMenuDropContent>
+            this.state.menuOpen
+              ? <StyledAdMenuDropContent>
                 <StyledAdMenuOptionDropContent>
                   {
-                    !currentlySaved ?
-                    <StyledAdMenuOptionDropContentText onClick={onMenuSave}>
+                    !currentlySaved
+                    ? <StyledAdMenuOptionDropContentText onClick={onMenuSave}>
                       {
                         getLocale('saveAd')
                       }
                     </StyledAdMenuOptionDropContentText>
-                    :
-                    <StyledAdMenuOptionDropContentText onClick={onMenuSave}>
+                    : <StyledAdMenuOptionDropContentText onClick={onMenuSave}>
                       {
                         getLocale('removeAdFromSaved')
                       }
@@ -83,14 +82,13 @@ export default class DropMenu extends React.PureComponent<Props, State> {
                 </StyledAdMenuOptionDropContent>
                 <StyledAdMenuOptionDropContent>
                   {
-                    !currentlyFlagged ?
-                    <StyledAdMenuOptionDropContentText onClick={onMenuFlag}>
+                    !currentlyFlagged
+                    ? <StyledAdMenuOptionDropContentText onClick={onMenuFlag}>
                       {
                         getLocale('markAsInappropriate')
                       }
                     </StyledAdMenuOptionDropContentText>
-                    :
-                    <StyledAdMenuOptionDropContentText onClick={onMenuFlag}>
+                    : <StyledAdMenuOptionDropContentText onClick={onMenuFlag}>
                       {
                         getLocale('markAsInappropriateChecked')
                       }
@@ -98,8 +96,7 @@ export default class DropMenu extends React.PureComponent<Props, State> {
                   }
                 </StyledAdMenuOptionDropContent>
               </StyledAdMenuDropContent>
-              :
-              null
+              : null
           }
         </div>
       </StyledAdStatBulletMenuIcon>

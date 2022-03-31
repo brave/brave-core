@@ -16,9 +16,9 @@ class IpfsService;
 }  // namespace ipfs
 
 template <>
-inline sandbox::policy::SandboxType
+inline sandbox::mojom::Sandbox
 content::GetServiceSandboxType<ipfs::mojom::IpfsService>() {
-  return sandbox::policy::SandboxType::kNoSandbox;
+  return sandbox::mojom::Sandbox::kNoSandbox;
 }
 
 #endif  // BRAVE_COMPONENTS_IPFS_SERVICE_SANDBOX_TYPE_H_

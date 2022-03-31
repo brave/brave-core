@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define IsMetricsReportingOptIn IsMetricsReportingOptIn_UnUsed
-#include "../../../../../chrome/browser/first_run/first_run.cc"
+#include "src/chrome/browser/first_run/first_run.cc"
 #undef IsMetricsReportingOptIn
 
 namespace first_run {

@@ -9,8 +9,8 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/common/pref_names.h"
 #include "bat/ads/pref_names.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
@@ -45,7 +45,7 @@ void RecordWalletState(const WalletState& state) {
       answer = 1;
     }
   }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.WalletState", answer, 5);
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.WalletState", answer, 6);
 }
 
 void RecordWalletBalance(bool wallet_created, bool rewards_enabled, size_t b) {
@@ -54,15 +54,17 @@ void RecordWalletBalance(bool wallet_created, bool rewards_enabled, size_t b) {
     answer = 1;
   } else if (rewards_enabled) {
     DCHECK(wallet_created);
-    if (b < 10) {
+    if (b == 0) {
       answer = 2;
-    } else if (10 <= b && b < 50) {
+    } else if (b < 10) {
       answer = 3;
-    } else if (50 <= b) {
+    } else if (10 <= b && b < 50) {
       answer = 4;
+    } else if (50 <= b) {
+      answer = 5;
     }
   }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.WalletBalance.2", answer, 4);
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.WalletBalance.3", answer, 6);
 }
 
 void RecordAutoContributionsState(AutoContributionsState state, int count) {
@@ -93,7 +95,7 @@ void RecordAutoContributionsState(AutoContributionsState state, int count) {
       NOTREACHED();
   }
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.AutoContributionsState.2", answer,
-                             5);
+                             6);
 }
 
 void RecordTipsState(bool wallet_created,
@@ -118,7 +120,7 @@ void RecordTipsState(bool wallet_created,
       answer = 4;
     }
   }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.TipsState.2", answer, 5);
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.TipsState.2", answer, 6);
 }
 
 void RecordAdsState(AdsState state) {
@@ -178,6 +180,57 @@ double CalcWalletBalance(base::flat_map<std::string, double> wallets,
   // wallet (ex: not grants).
   balance_minus_grant += user_funds;
   return balance_minus_grant;
+}
+
+void RecordAdsEnabledDuration(PrefService* prefs, bool ads_enabled) {
+  base::Time enabled_timestamp = prefs->GetTime(prefs::kAdsEnabledTimestamp);
+  base::TimeDelta enabled_time_delta =
+      prefs->GetTimeDelta(prefs::kAdsEnabledTimeDelta);
+  AdsEnabledDuration enabled_duration;
+
+  if (enabled_timestamp.is_null()) {
+    // No previous timestamp, so record one of the non-duration states.
+    if (ads_enabled) {
+      // Ads have been enabled.
+      // Remember when so we can measure the duration on later changes.
+      prefs->SetTime(prefs::kAdsEnabledTimestamp, base::Time::Now());
+    }
+  } else {
+    // Previous timestamp available.
+    if (!ads_enabled) {
+      // Ads have been disabled. Record the duration they were on.
+      enabled_time_delta = base::Time::Now() - enabled_timestamp;
+      VLOG(1) << "Rewards disabled after " << enabled_time_delta;
+      // Null the timestamp so we're ready for a fresh measurement.
+      // Store the enabled time delta so we can keep reporting the duration.
+      prefs->SetTime(prefs::kAdsEnabledTimestamp, base::Time());
+      prefs->SetTimeDelta(prefs::kAdsEnabledTimeDelta, enabled_time_delta);
+    }
+  }
+  // Set the threshold at three units so each bin represents the
+  // nominal value as an order-of-magnitude: more than three days
+  // is a week, more than three weeks is a month, and so on.
+  constexpr int threshold = 3;
+  constexpr int days_per_week = 7;
+  constexpr double days_per_month = 30.44;  // average length
+  if (ads_enabled) {
+    enabled_duration = AdsEnabledDuration::kStillEnabled;
+  } else if (enabled_time_delta.is_zero()) {
+    enabled_duration = AdsEnabledDuration::kNever;
+  } else if (enabled_time_delta < base::Hours(threshold)) {
+    enabled_duration = AdsEnabledDuration::kHours;
+  } else if (enabled_time_delta < base::Days(threshold)) {
+    enabled_duration = AdsEnabledDuration::kDays;
+  } else if (enabled_time_delta < base::Days(threshold * days_per_week)) {
+    enabled_duration = AdsEnabledDuration::kWeeks;
+  } else if (enabled_time_delta < base::Days(threshold * days_per_month)) {
+    enabled_duration = AdsEnabledDuration::kMonths;
+  } else {
+    enabled_duration = AdsEnabledDuration::kQuarters;
+  }
+
+  UMA_HISTOGRAM_ENUMERATION("Brave.Rewards.AdsEnabledDuration",
+                            enabled_duration);
 }
 
 void ExtractAndLogStats(const base::DictionaryValue& dict) {

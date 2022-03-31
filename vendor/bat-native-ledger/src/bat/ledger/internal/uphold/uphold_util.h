@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -16,7 +16,6 @@ namespace ledger {
 class LedgerImpl;
 
 namespace uphold {
-
 const char kUrlStaging[] = "https://wallet-sandbox.uphold.com";
 const char kUrlProduction[] = "https://uphold.com";
 const char kFeeAddressStaging[] = "1b2b466f-5c15-49bf-995e-c91777d3da93";
@@ -42,17 +41,19 @@ std::string GetWithdrawUrl(const std::string& address);
 
 std::string GetSecondStepVerify();
 
-type::ExternalWalletPtr GetWallet(LedgerImpl* ledger);
-
-bool SetWallet(LedgerImpl* ledger, type::ExternalWalletPtr wallet);
-
 std::string GetAccountUrl();
+
+std::string GetActivityUrl(const std::string& address);
 
 type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
 
 std::string GenerateVerifyLink(type::ExternalWalletPtr wallet);
 
-type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet);
+void OnWalletStatusChange(LedgerImpl* ledger,
+                          absl::optional<type::WalletStatus> from,
+                          type::WalletStatus to);
+
+bool ShouldShowNewlyVerifiedWallet();
 
 }  // namespace uphold
 }  // namespace ledger

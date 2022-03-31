@@ -9,6 +9,7 @@
 #include "base/path_service.h"
 #include "base/time/time.h"
 #include "brave/components/tor/tor_file_watcher.h"
+#include "build/build_config.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -16,43 +17,43 @@ namespace tor {
 namespace {
 
 constexpr char kInvalidControlport[] =
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     "invalid_controlport_win";
 #else
     "invalid_controlport";
 #endif
 constexpr char kValidControlportNotLocalhost[] =
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     "valid_controlport_not_localhost_win";
 #else
     "valid_controlport_not_localhost";
 #endif
 constexpr char kControlportTooLong[] =
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     "controlport_too_long_win";
 #else
     "controlport_too_long";
 #endif
 constexpr char kControlportMax[] =
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     "controlport_max_win";
 #else
     "controlport_max";
 #endif
 constexpr char kControlportOverflow[] =
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     "controlport_overflow_win";
 #else
     "controlport_overflow";
 #endif
 constexpr char kInvalidControlPortEnd[] =
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     "invalid_control_port_end_win";
 #else
     "invalid_control_port_end";
 #endif
 constexpr char kNormalControlport[] =
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     "normal_controlport_win";
 #else
     "normal_controlport";

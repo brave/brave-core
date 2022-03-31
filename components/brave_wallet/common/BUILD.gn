@@ -1,28 +1,119 @@
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/build/config.gni")
+import("//brave/components/brave_wallet/common/config.gni")
+import("//build/buildflag_header.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
+import("//testing/test.gni")
+import("//tools/grit/preprocess_if_expr.gni")
 
-source_set("common") {
-  public_deps = [ "buildflags" ]
+preprocess_folder = "preprocessed"
+preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"" ]
+}
+
+static_library("common") {
+  include_dirs = [ "//brave/third_party/ethash/src/include" ]
+
   sources = [
+    "brave_wallet_response_helpers.cc",
+    "brave_wallet_response_helpers.h",
+    "brave_wallet_types.cc",
+    "brave_wallet_types.h",
+    "eth_address.cc",
+    "eth_address.h",
+    "eth_request_helper.cc",
+    "eth_request_helper.h",
+    "eth_sign_typed_data_helper.cc",
+    "eth_sign_typed_data_helper.h",
     "features.cc",
     "features.h",
+    "fil_address.cc",
+    "fil_address.h",
+    "hash_utils.cc",
+    "hash_utils.h",
+    "hex_utils.cc",
+    "hex_utils.h",
+    "mem_utils.cc",
+    "mem_utils.h",
+    "string_utils.cc",
+    "string_utils.h",
+    "value_conversion_utils.cc",
+    "value_conversion_utils.h",
   ]
   deps = [
-    "//base",
     ":common_constants",
+    ":mojom__generator",
+    "//base",
+    "//brave/third_party/argon2",
+    "//brave/third_party/ethash",
+    "//components/base32",
+    "//url",
   ]
+
+  public_deps = [ "//brave/third_party/boost" ]
 }
 
 source_set("common_constants") {
   sources = [
+    "brave_wallet_constants.h",
     "web3_provider_constants.cc",
     "web3_provider_constants.h",
   ]
   deps = [ ":mojom" ]
 }
 
-mojom("mojom") {
-  sources = [ "brave_wallet.mojom" ]
+source_set("solana_utils") {
+  sources = [
+    "solana_utils.cc",
+    "solana_utils.h",
+  ]
 
-  deps = [ "//mojo/public/mojom/base" ]
+  deps = [
+    "//base",
+    "//brave/third_party/bitcoin-core",  # for base58
+  ]
 }
+
+preprocess_if_expr("preprocess_mojo") {
+  deps = [ "//brave/components/brave_wallet/common:mojom_js" ]
+  in_folder = "$target_gen_dir"
+  out_folder = "$target_gen_dir/$preprocess_folder"
+  out_manifest = "$target_gen_dir/$preprocess_mojo_manifest"
+  in_files = [ "brave_wallet.mojom-lite.js" ]
+}
+
+mojom("mojom") {
+  generate_java = true
+  sources = [ "brave_wallet.mojom" ]
+  deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "brave_wallet_types_unittest.cc",
+    "eth_request_helper_unittest.cc",
+    "eth_sign_typed_data_helper_unittest.cc",
+    "hash_utils_unittest.cc",
+    "hex_utils_unittest.cc",
+    "mem_utils_unittest.cc",
+    "solana_utils_unittest.cc",
+    "string_utils_unittest.cc",
+    "value_conversion_utils_unittest.cc",
+  ]
+
+  deps = [
+    ":common",
+    ":common_constants",
+    ":mojom",
+    ":solana_utils",
+    "//base/test:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
+}  # source_set("brave_wallet_common_unit_tests")

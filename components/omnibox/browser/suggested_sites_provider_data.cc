@@ -102,9 +102,8 @@ SuggestedSitesProvider::GetSuggestedSites() {
               GURL("https://www.binance.us/en/buy-sell-crypto"
                    "?fiat=USD&crypto=BTC&ref=35089877&utm_source=brave"),
               GURL("https://www.binance.us/en/buy-sell-crypto?crypto=BTC"),
-              base::ASCIIToUTF16(
-                  "binance.us/en/"
-                  "buy-sell-crypto?crypto=BTC&ref=35089877"))  // NOLINT
+              u"binance.us/en/"
+              u"buy-sell-crypto?crypto=BTC&ref=35089877")  // NOLINT
       },
       {
           SuggestedSitesMatch(
@@ -112,9 +111,8 @@ SuggestedSitesProvider::GetSuggestedSites() {
               GURL("https://www.binance.us/en/buy-sell-crypto"
                    "?fiat=USD&crypto=BTC&ref=35089877&utm_source=brave"),
               GURL("https://www.binance.us/en/buy-sell-crypto?crypto=BTC"),
-              base::ASCIIToUTF16(
-                  "binance.us/en/"
-                  "buy-sell-crypto?crypto=BTC&ref=35089877"))  // NOLINT
+              u"binance.us/en/"
+              u"buy-sell-crypto?crypto=BTC&ref=35089877")  // NOLINT
       },
       {
           SuggestedSitesMatch(
@@ -122,9 +120,8 @@ SuggestedSitesProvider::GetSuggestedSites() {
               GURL("https://www.binance.us/en/buy-sell-crypto"
                    "?fiat=USD&crypto=ETH&ref=35089877&utm_source=brave"),
               GURL("https://www.binance.us/en/buy-sell-crypto?crypto=ETH"),
-              base::ASCIIToUTF16(
-                  "binance.us/en/"
-                  "buy-sell-crypto?crypto=ETH&ref=35089877"))  // NOLINT
+              u"binance.us/en/"
+              u"buy-sell-crypto?crypto=ETH&ref=35089877")  // NOLINT
       },
       {
           SuggestedSitesMatch(
@@ -132,9 +129,8 @@ SuggestedSitesProvider::GetSuggestedSites() {
               GURL("https://www.binance.us/en/buy-sell-crypto"
                    "?fiat=USD&crypto=ETH&ref=35089877&utm_source=brave"),
               GURL("https://www.binance.us/en/buy-sell-crypto?crypto=ETH"),
-              base::ASCIIToUTF16(
-                  "binance.us/en/"
-                  "buy-sell-crypto?crypto=ETH&ref=35089877"))  // NOLINT
+              u"binance.us/en/"
+              u"buy-sell-crypto?crypto=ETH&ref=35089877")  // NOLINT
       },
       {
           SuggestedSitesMatch(
@@ -142,9 +138,8 @@ SuggestedSitesProvider::GetSuggestedSites() {
               GURL("https://www.binance.us/en/buy-sell-crypto"
                    "?fiat=USD&crypto=BNB&ref=35089877&utm_source=brave"),
               GURL("https://www.binance.us/en/buy-sell-crypto?crypto=BNB"),
-              base::ASCIIToUTF16(
-                  "binance.us/en/"
-                  "buy-sell-crypto?crypto=BNB&ref=35089877"))  // NOLINT
+              u"binance.us/en/"
+              u"buy-sell-crypto?crypto=BNB&ref=35089877")  // NOLINT
       }};
 
   return suggested_sites;

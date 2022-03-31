@@ -14,7 +14,7 @@
 #include <mutex>  // NOLINT
 
 #include "base/files/file_path.h"
-#include "base/sequenced_task_runner.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
@@ -25,19 +25,23 @@ namespace brave_shields {
 
 // The brave shields service in charge of checking brave shields like ad-block,
 // tracking protection, etc.
-class BaseBraveShieldsService : public BraveComponent {
+class BaseBraveShieldsService {
  public:
-  explicit BaseBraveShieldsService(BraveComponent::Delegate* delegate);
-  ~BaseBraveShieldsService() override;
+  explicit BaseBraveShieldsService(
+      scoped_refptr<base::SequencedTaskRunner> task_runner);
+  virtual ~BaseBraveShieldsService();
   bool Start();
   bool IsInitialized() const;
   virtual void ShouldStartRequest(const GURL& url,
                                   blink::mojom::ResourceType resource_type,
                                   const std::string& tab_host,
+                                  bool aggressive_blocking,
                                   bool* did_match_rule,
                                   bool* did_match_exception,
                                   bool* did_match_important,
                                   std::string* mock_data_url);
+
+  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
 
  protected:
   virtual bool Init() = 0;

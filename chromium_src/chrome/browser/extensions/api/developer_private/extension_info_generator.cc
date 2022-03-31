@@ -7,5 +7,5 @@
 
 #define BRAVE_CREATE_EXTENSION_INFO_HELPER \
   info->is_split_mode = IncognitoInfo::IsSplitMode(&extension);
-#include "../../../../../../../chrome/browser/extensions/api/developer_private/extension_info_generator.cc"
+#include "src/chrome/browser/extensions/api/developer_private/extension_info_generator.cc"
 #undef BRAVE_CREATE_EXTENSION_INFO_HELPER

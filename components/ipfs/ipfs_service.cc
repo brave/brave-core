@@ -15,37 +15,46 @@
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/task_runner_util.h"
-#include "brave/components/ipfs/import/ipfs_import_worker_base.h"
-#include "brave/components/ipfs/import/ipfs_link_import_worker.h"
+#include "brave/components/ipfs/blob_context_getter_factory.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_json_parser.h"
+#include "brave/components/ipfs/ipfs_network_utils.h"
 #include "brave/components/ipfs/ipfs_ports.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
 #include "brave/components/ipfs/ipfs_utils.h"
-#include "brave/components/ipfs/keys/ipns_keys_manager.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/ipfs/service_sandbox_type.h"
+#include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
-#include "content/public/browser/browser_context.h"
-#include "content/public/browser/browser_thread.h"
-#include "content/public/browser/service_process_host.h"
-#include "content/public/browser/storage_partition.h"
 #include "net/base/url_util.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl.h"
 
-namespace {
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+#include "base/threading/thread_restrictions.h"
+#include "brave/components/ipfs/import/ipfs_import_worker_base.h"
+#include "brave/components/ipfs/import/ipfs_link_import_worker.h"
+#include "brave/components/ipfs/keys/ipns_keys_manager.h"
+#include "content/public/browser/browser_thread.h"
+#include "content/public/browser/service_process_host.h"
+#include "content/public/browser/storage_partition.h"
+#endif
 
+namespace {
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 // Works similarly to base::AutoReset but checks for access from the wrong
 // thread as well as ensuring that the previous value of the re-entrancy guard
 // variable was false.
@@ -62,12 +71,15 @@ class ReentrancyCheck {
  private:
   bool* const guard_flag_;
 };
-
+#endif
 // Used to retry request if we got zero peers from ipfs service
 // Actual value will be generated randomly in range
 // (kMinimalPeersRetryIntervalMs, kPeersRetryRate*kMinimalPeersRetryIntervalMs)
 const int kMinimalPeersRetryIntervalMs = 350;
 const int kPeersRetryRate = 3;
+
+const char kGatewayValidationCID[] = "bafkqae2xmvwgg33nmuqhi3zajfiemuzahiwss";
+const char kGatewayValidationResult[] = "Welcome to IPFS :-)";
 
 std::pair<bool, std::string> LoadConfigFileOnFileTaskRunner(
     const base::FilePath& path) {
@@ -85,11 +97,16 @@ std::pair<bool, std::string> LoadConfigFileOnFileTaskRunner(
 
 namespace ipfs {
 
-IpfsService::IpfsService(content::BrowserContext* context,
-                         ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
-                         const base::FilePath& user_data_dir,
-                         version_info::Channel channel)
-    : context_(context),
+IpfsService::IpfsService(
+    PrefService* prefs,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    BlobContextGetterFactoryPtr blob_context_getter_factory,
+    ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
+    const base::FilePath& user_data_dir,
+    version_info::Channel channel)
+    : prefs_(prefs),
+      url_loader_factory_(url_loader_factory),
+      blob_context_getter_factory_(std::move(blob_context_getter_factory)),
       server_endpoint_(GetAPIServer(channel)),
       user_data_dir_(user_data_dir),
       ipfs_client_updater_(ipfs_client_updater),
@@ -97,12 +114,9 @@ IpfsService::IpfsService(content::BrowserContext* context,
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      ipfs_p3a(this, context),
+      ipfs_p3a_(this, prefs),
       weak_factory_(this) {
   DCHECK(!user_data_dir.empty());
-  url_loader_factory_ =
-      content::BrowserContext::GetDefaultStoragePartition(context)
-          ->GetURLLoaderFactoryForBrowserProcess();
 
   // Return early since g_brave_browser_process and ipfs_client_updater are not
   // available in unit tests.
@@ -110,16 +124,21 @@ IpfsService::IpfsService(content::BrowserContext* context,
     ipfs_client_updater_->AddObserver(this);
     OnExecutableReady(ipfs_client_updater_->GetExecutablePath());
   }
-  ipns_keys_manager_ =
-      std::make_unique<IpnsKeysManager>(context_, server_endpoint_);
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+  ipns_keys_manager_ = std::make_unique<IpnsKeysManager>(
+      blob_context_getter_factory_.get(), url_loader_factory.get(),
+      server_endpoint_);
   AddObserver(ipns_keys_manager_.get());
+#endif
 }
 
 IpfsService::~IpfsService() {
   if (ipfs_client_updater_) {
     ipfs_client_updater_->RemoveObserver(this);
   }
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   RemoveObserver(ipns_keys_manager_.get());
+#endif
   Shutdown();
 }
 
@@ -132,6 +151,7 @@ void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
   registry->RegisterBooleanPref(kIPFSAutoRedirectGateway, false);
   registry->RegisterBooleanPref(kIPFSAutoRedirectDNSLink, false);
+  registry->RegisterBooleanPref(kIPFSLocalNodeUsed, false);
   registry->RegisterIntegerPref(kIPFSInfobarCount, 0);
   registry->RegisterIntegerPref(kIpfsStorageMax, 1);
   registry->RegisterStringPref(kIPFSPublicGatewayAddress, kDefaultIPFSGateway);
@@ -139,8 +159,7 @@ void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 }
 
 base::FilePath IpfsService::GetIpfsExecutablePath() const {
-  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-  return prefs->GetFilePath(kIPFSBinaryPath);
+  return prefs_->GetFilePath(kIPFSBinaryPath);
 }
 
 void IpfsService::OnInstallationEvent(ComponentUpdaterEvents event) {
@@ -153,21 +172,17 @@ void IpfsService::OnExecutableReady(const base::FilePath& path) {
   if (path.empty())
     return;
 
-  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-  prefs->SetFilePath(kIPFSBinaryPath, path);
+  prefs_->SetFilePath(kIPFSBinaryPath, path);
 
-  if (ipfs_client_updater_) {
-    ipfs_client_updater_->RemoveObserver(this);
-  }
   LaunchIfNotRunning(path);
 }
 
 std::string IpfsService::GetStorageSize() {
-  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-  return std::to_string(prefs->GetInteger(kIpfsStorageMax)) + "GB";
+  return std::to_string(prefs_->GetInteger(kIpfsStorageMax)) + "GB";
 }
 
 void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   if (ipfs_service_.is_bound())
     return;
 
@@ -190,6 +205,7 @@ void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
   ipfs_service_->Launch(
       std::move(config),
       base::BindOnce(&IpfsService::OnIpfsLaunched, base::Unretained(this)));
+#endif
 }
 
 void IpfsService::RestartDaemon() {
@@ -198,7 +214,7 @@ void IpfsService::RestartDaemon() {
   auto launch_callback =
       base::BindOnce(&IpfsService::LaunchDaemon, base::Unretained(this));
   ShutdownDaemon(base::BindOnce(
-      [](base::OnceCallback<void(LaunchDaemonCallback)> launch_callback,
+      [](base::OnceCallback<void(BoolCallback)> launch_callback,
          const bool success) {
         if (!success) {
           VLOG(1) << "Unable to shutdown daemon";
@@ -233,11 +249,12 @@ base::FilePath IpfsService::GetConfigFilePath() const {
 
 void IpfsService::NotifyDaemonLaunched(bool result, int64_t pid) {
   bool success = result && pid > 0;
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   if (success && ipns_keys_manager_) {
     ipns_keys_manager_->LoadKeys(base::BindOnce(
         &IpfsService::NotifyIpnsKeysLoaded, weak_factory_.GetWeakPtr()));
   }
-
+#endif
   while (!pending_launch_callbacks_.empty()) {
     if (pending_launch_callbacks_.front())
       std::move(pending_launch_callbacks_.front()).Run(success);
@@ -248,20 +265,14 @@ void IpfsService::NotifyDaemonLaunched(bool result, int64_t pid) {
   }
 }
 
-void IpfsService::NotifyIpnsKeysLoaded(bool result) {
-  for (auto& observer : observers_) {
-    observer.OnIpnsKeysLoaded(result);
-  }
-}
-
 void IpfsService::OnIpfsLaunched(bool result, int64_t pid) {
   if (result) {
     ipfs_pid_ = pid;
-    RegisterIpfsClientUpdater();
   } else {
     VLOG(0) << "Failed to launch IPFS";
     Shutdown();
   }
+  RegisterIpfsClientUpdater();
   NotifyDaemonLaunched(result, pid);
 }
 
@@ -271,6 +282,83 @@ void IpfsService::Shutdown() {
   }
   ipfs_service_.reset();
   ipfs_pid_ = -1;
+}
+
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+// static
+bool IpfsService::WaitUntilExecutionFinished(base::Process process) {
+  bool exited = false;
+  int exit_code = 0;
+  base::ScopedAllowBaseSyncPrimitives allow_wait_for_process;
+  exited = process.WaitForExitWithTimeout(base::Seconds(10), &exit_code);
+  if (!exited)
+    process.Terminate(0, true);
+  return exited && !exit_code;
+}
+void IpfsService::RotateKey(const std::string& oldkey, BoolCallback callback) {
+  auto executable_path = GetIpfsExecutablePath();
+  if (IsDaemonLaunched() || executable_path.empty()) {
+    if (callback)
+      std::move(callback).Run(false);
+    return;
+  }
+  base::CommandLine cmdline(executable_path);
+  cmdline.AppendArg("key");
+  cmdline.AppendArg("rotate");
+  cmdline.AppendArg("--oldkey=" + oldkey);
+  ExecuteNodeCommand(cmdline, GetDataPath(), std::move(callback));
+}
+
+void IpfsService::ExportKey(const std::string& key,
+                            const base::FilePath& target_path,
+                            BoolCallback callback) {
+  base::FilePath path = GetIpfsExecutablePath();
+  if (path.empty())
+    return;
+
+  base::CommandLine cmdline(path);
+  cmdline.AppendArg("key");
+  cmdline.AppendArg("export");
+  cmdline.AppendArg("-o=" + target_path.MaybeAsASCII());
+  cmdline.AppendArg(key);
+  ExecuteNodeCommand(cmdline, GetDataPath(), std::move(callback));
+}
+void IpfsService::ExecuteNodeCommand(const base::CommandLine& command_line,
+                                     const base::FilePath& data,
+                                     BoolCallback callback) {
+  base::LaunchOptions options;
+#if BUILDFLAG(IS_WIN)
+  options.environment[L"IPFS_PATH"] = data.value();
+#else
+  options.environment["IPFS_PATH"] = data.value();
+#endif
+
+#if BUILDFLAG(IS_LINUX)
+  options.kill_on_parent_death = true;
+#endif
+#if BUILDFLAG(IS_WIN)
+  options.start_hidden = true;
+#endif
+  base::Process process = base::LaunchProcess(command_line, options);
+  if (!process.IsValid()) {
+    if (callback)
+      std::move(callback).Run(false);
+    return;
+  }
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      {base::MayBlock(), base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN,
+       base::TaskPriority::BEST_EFFORT},
+      base::BindOnce(&IpfsService::WaitUntilExecutionFinished,
+                     std::move(process)),
+      std::move(callback));
+}
+
+void IpfsService::NotifyIpnsKeysLoaded(bool result) {
+  for (auto& observer : observers_) {
+    observer.OnIpnsKeysLoaded(result);
+  }
 }
 
 void IpfsService::ImportFileToIpfs(const base::FilePath& path,
@@ -296,7 +384,8 @@ void IpfsService::ImportFileToIpfs(const base::FilePath& path,
       base::BindOnce(&IpfsService::OnImportFinished, weak_factory_.GetWeakPtr(),
                      std::move(callback), hash);
   importers_[hash] = std::make_unique<IpfsImportWorkerBase>(
-      context_, server_endpoint_, std::move(import_completed_callback), key);
+      blob_context_getter_factory_.get(), url_loader_factory_.get(),
+      server_endpoint_, std::move(import_completed_callback), key);
   importers_[hash]->ImportFile(path);
 }
 
@@ -323,7 +412,8 @@ void IpfsService::ImportLinkToIpfs(const GURL& url,
       base::BindOnce(&IpfsService::OnImportFinished, weak_factory_.GetWeakPtr(),
                      std::move(callback), hash);
   importers_[hash] = std::make_unique<IpfsLinkImportWorker>(
-      context_, server_endpoint_, std::move(import_completed_callback), url);
+      blob_context_getter_factory_.get(), url_loader_factory_.get(),
+      server_endpoint_, std::move(import_completed_callback), url);
 }
 
 void IpfsService::ImportDirectoryToIpfs(const base::FilePath& folder,
@@ -349,7 +439,8 @@ void IpfsService::ImportDirectoryToIpfs(const base::FilePath& folder,
       base::BindOnce(&IpfsService::OnImportFinished, weak_factory_.GetWeakPtr(),
                      std::move(callback), hash);
   importers_[hash] = std::make_unique<IpfsImportWorkerBase>(
-      context_, server_endpoint_, std::move(import_completed_callback), key);
+      blob_context_getter_factory_.get(), url_loader_factory_.get(),
+      server_endpoint_, std::move(import_completed_callback), key);
   importers_[hash]->ImportFolder(folder);
 }
 
@@ -375,7 +466,8 @@ void IpfsService::ImportTextToIpfs(const std::string& text,
       base::BindOnce(&IpfsService::OnImportFinished, weak_factory_.GetWeakPtr(),
                      std::move(callback), hash);
   importers_[hash] = std::make_unique<IpfsImportWorkerBase>(
-      context_, server_endpoint_, std::move(import_completed_callback));
+      blob_context_getter_factory_.get(), url_loader_factory_.get(),
+      server_endpoint_, std::move(import_completed_callback));
 
   importers_[hash]->ImportText(text, host);
 }
@@ -388,7 +480,7 @@ void IpfsService::OnImportFinished(ipfs::ImportCompletedCallback callback,
 
   importers_.erase(key);
 }
-
+#endif
 void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback,
                                     int retries) {
   if (!IsDaemonLaunched()) {
@@ -417,7 +509,7 @@ void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback,
 base::TimeDelta IpfsService::CalculatePeersRetryTime() {
   if (zero_peer_time_for_test_)
     return base::TimeDelta();
-  return base::TimeDelta::FromMilliseconds(
+  return base::Milliseconds(
       base::RandInt(kMinimalPeersRetryIntervalMs,
                     kPeersRetryRate * kMinimalPeersRetryIntervalMs));
 }
@@ -526,7 +618,7 @@ void IpfsService::StartDaemonAndLaunch(
       std::move(success_callback)));
 }
 
-void IpfsService::LaunchDaemon(LaunchDaemonCallback callback) {
+void IpfsService::LaunchDaemon(BoolCallback callback) {
   if (IsDaemonLaunched()) {
     if (callback)
       std::move(callback).Run(true);
@@ -550,7 +642,7 @@ void IpfsService::LaunchDaemon(LaunchDaemonCallback callback) {
   }
 }
 
-void IpfsService::ShutdownDaemon(ShutdownDaemonCallback callback) {
+void IpfsService::ShutdownDaemon(BoolCallback callback) {
   if (IsDaemonLaunched()) {
     Shutdown();
   }
@@ -560,7 +652,7 @@ void IpfsService::ShutdownDaemon(ShutdownDaemonCallback callback) {
   }
 
   if (callback)
-    std::move(callback).Run(true);
+    std::move(callback).Run(!IsDaemonLaunched());
 }
 
 void IpfsService::GetConfig(GetConfigCallback callback) {
@@ -628,9 +720,8 @@ bool IpfsService::WasConnectedPeersCalledForTest() const {
 }
 
 IPFSResolveMethodTypes IpfsService::GetIPFSResolveMethodType() const {
-  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   return static_cast<IPFSResolveMethodTypes>(
-      prefs->GetInteger(kIPFSResolveMethod));
+      prefs_->GetInteger(kIPFSResolveMethod));
 }
 
 void IpfsService::GetRepoStats(GetRepoStatsCallback callback) {
@@ -772,6 +863,54 @@ void IpfsService::OnPreWarmComplete(
   url_loaders_.erase(iter);
   if (prewarm_callback_for_testing_)
     std::move(prewarm_callback_for_testing_).Run();
+}
+
+void IpfsService::ValidateGateway(const GURL& url, BoolCallback callback) {
+  GURL::Replacements replacements;
+  std::string path = "/ipfs/";
+  path += kGatewayValidationCID;
+  replacements.SetPathStr(path);
+  GURL validationUrl = url.ReplaceComponents(replacements);
+  auto url_loader = CreateURLLoader(validationUrl, "GET");
+  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
+  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_factory_.get(),
+      base::BindOnce(&IpfsService::OnGatewayValidationComplete,
+                     base::Unretained(this), std::move(iter),
+                     std::move(callback), url));
+}
+
+void IpfsService::OnGatewayValidationComplete(
+    SimpleURLLoaderList::iterator iter,
+    BoolCallback callback,
+    const GURL& initial_url,
+    std::unique_ptr<std::string> response_body) {
+  auto* url_loader = iter->get();
+  auto final_url = url_loader->GetFinalURL();
+
+  int error_code = url_loader->NetError();
+  int response_code = -1;
+  if (url_loader->ResponseInfo() && url_loader->ResponseInfo()->headers)
+    response_code = url_loader->ResponseInfo()->headers->response_code();
+  url_loaders_.erase(iter);
+
+  bool success = (error_code == net::OK && response_code == net::HTTP_OK);
+  if (!success) {
+    VLOG(1) << "Fail to validate gateway, error_code = " << error_code
+            << " response_code = " << response_code;
+  }
+
+  if (success) {
+    std::string valid_host = base::StringPrintf(
+        "%s.ipfs.%s", kGatewayValidationCID, initial_url.host().c_str());
+    success = (*response_body == kGatewayValidationResult) &&
+              (initial_url.host() != final_url.host()) &&
+              (initial_url.scheme() == final_url.scheme()) &&
+              (final_url.host() == valid_host);
+  }
+
+  if (callback)
+    std::move(callback).Run(success);
 }
 
 }  // namespace ipfs

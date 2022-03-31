@@ -5,16 +5,27 @@
 
 #include "bat/ads/internal/catalog/catalog_util.h"
 
-#include <cstdint>
-
 #include "base/time/time.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/catalog/catalog.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {
 
 namespace {
-const int kCatalogLifespanInDays = 1;
+constexpr int kCatalogLifespanInDays = 1;
+}
+
+void ResetCatalog() {
+  AdsClientHelper::Get()->ClearPref(prefs::kCatalogId);
+  AdsClientHelper::Get()->ClearPref(prefs::kCatalogVersion);
+  AdsClientHelper::Get()->ClearPref(prefs::kCatalogPing);
+  AdsClientHelper::Get()->ClearPref(prefs::kCatalogLastUpdated);
+}
+
+std::string GetCatalogId() {
+  return AdsClientHelper::Get()->GetStringPref(prefs::kCatalogId);
 }
 
 bool DoesCatalogExist() {
@@ -24,12 +35,13 @@ bool DoesCatalogExist() {
 bool HasCatalogExpired() {
   const base::Time now = base::Time::Now();
 
-  const int64_t catalog_last_updated =
-      AdsClientHelper::Get()->GetInt64Pref(prefs::kCatalogLastUpdated);
+  const double catalog_last_updated_timestamp =
+      AdsClientHelper::Get()->GetDoublePref(prefs::kCatalogLastUpdated);
 
-  const base::Time time = base::Time::FromDoubleT(catalog_last_updated);
+  const base::Time time =
+      base::Time::FromDoubleT(catalog_last_updated_timestamp);
 
-  if (now < time + base::TimeDelta::FromDays(kCatalogLifespanInDays)) {
+  if (now < time + base::Days(kCatalogLifespanInDays)) {
     return false;
   }
 

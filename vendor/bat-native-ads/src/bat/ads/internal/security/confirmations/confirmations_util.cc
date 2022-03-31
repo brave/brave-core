@@ -5,13 +5,17 @@
 
 #include "bat/ads/internal/security/confirmations/confirmations_util.h"
 
+#include <string>
+
 #include "base/base64.h"
 #include "base/json/json_reader.h"
+#include "base/notreached.h"
 #include "base/values.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
+#include "bat/ads/internal/account/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace security {
@@ -24,7 +28,7 @@ bool Verify(const ConfirmationInfo& confirmation) {
   std::string credential;
   base::Base64Decode(confirmation.credential, &credential);
 
-  base::Optional<base::Value> value = base::JSONReader::Read(credential);
+  absl::optional<base::Value> value = base::JSONReader::Read(credential);
   if (!value || !value->is_dict()) {
     return false;
   }

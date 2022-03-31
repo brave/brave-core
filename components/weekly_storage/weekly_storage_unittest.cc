@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/simple_test_clock.h"
 #include "base/time/time.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -26,7 +27,7 @@ class WeeklyStorageTest : public ::testing::Test {
   }
 
  protected:
-  base::SimpleTestClock* clock_;
+  raw_ptr<base::SimpleTestClock> clock_ = nullptr;
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<WeeklyStorage> state_;
 };
@@ -46,12 +47,38 @@ TEST_F(WeeklyStorageTest, AddsSavings) {
   EXPECT_EQ(state_->GetWeeklySum(), saving * 3);
 }
 
+TEST_F(WeeklyStorageTest, SubDelta) {
+  state_->AddDelta(5000);
+  clock_->Advance(base::Days(1));
+  state_->AddDelta(3000);
+  clock_->Advance(base::Days(1));
+  state_->AddDelta(1000);
+  clock_->Advance(base::Days(1));
+
+  state_->SubDelta(500);
+  EXPECT_EQ(state_->GetWeeklySum(), 8500U);
+  state_->SubDelta(4000);
+  EXPECT_EQ(state_->GetWeeklySum(), 4500U);
+
+  clock_->Advance(base::Days(4));
+  // First day value should expire
+  EXPECT_EQ(state_->GetWeeklySum(), 0U);
+
+  // If subtracting by an amount greater than the current sum,
+  // the sum should not become negative or underflow.
+  state_->AddDelta(3000);
+  state_->SubDelta(5000);
+  EXPECT_EQ(state_->GetWeeklySum(), 0U);
+  state_->SubDelta(100000);
+  EXPECT_EQ(state_->GetWeeklySum(), 0U);
+}
+
 TEST_F(WeeklyStorageTest, ForgetsOldSavings) {
   uint64_t saving = 10000;
   state_->AddDelta(saving);
   EXPECT_EQ(state_->GetWeeklySum(), saving);
 
-  clock_->Advance(base::TimeDelta::FromDays(8));
+  clock_->Advance(base::Days(8));
 
   // More savings
   state_->AddDelta(saving);
@@ -63,7 +90,7 @@ TEST_F(WeeklyStorageTest, ForgetsOldSavings) {
 TEST_F(WeeklyStorageTest, RetrievesDailySavings) {
   uint64_t saving = 10000;
   for (int day = 0; day <= 7; day++) {
-    clock_->Advance(base::TimeDelta::FromDays(1));
+    clock_->Advance(base::Days(1));
     state_->AddDelta(saving);
   }
   EXPECT_EQ(state_->GetWeeklySum(), 7 * saving);
@@ -72,7 +99,7 @@ TEST_F(WeeklyStorageTest, RetrievesDailySavings) {
 TEST_F(WeeklyStorageTest, HandlesSkippedDay) {
   uint64_t saving = 10000;
   for (int day = 0; day < 7; day++) {
-    clock_->Advance(base::TimeDelta::FromDays(1));
+    clock_->Advance(base::Days(1));
     if (day == 3)
       continue;
     state_->AddDelta(saving);
@@ -83,7 +110,7 @@ TEST_F(WeeklyStorageTest, HandlesSkippedDay) {
 TEST_F(WeeklyStorageTest, IntermittentUsage) {
   uint64_t saving = 10000;
   for (int day = 0; day < 10; day++) {
-    clock_->Advance(base::TimeDelta::FromDays(2));
+    clock_->Advance(base::Days(2));
     state_->AddDelta(saving);
   }
   EXPECT_EQ(state_->GetWeeklySum(), 4 * saving);
@@ -92,7 +119,7 @@ TEST_F(WeeklyStorageTest, IntermittentUsage) {
 TEST_F(WeeklyStorageTest, InfrequentUsage) {
   uint64_t saving = 10000;
   state_->AddDelta(saving);
-  clock_->Advance(base::TimeDelta::FromDays(6));
+  clock_->Advance(base::Days(6));
   state_->AddDelta(saving);
   EXPECT_EQ(state_->GetWeeklySum(), 2 * saving);
 }
@@ -102,12 +129,12 @@ TEST_F(WeeklyStorageTest, GetHighestValueInWeek) {
   uint64_t low_value = 50;
   uint64_t high_value = 75;
   state_->AddDelta(low_value);
-  clock_->Advance(base::TimeDelta::FromDays(1));
+  clock_->Advance(base::Days(1));
   state_->AddDelta(high_value);
-  clock_->Advance(base::TimeDelta::FromDays(1));
+  clock_->Advance(base::Days(1));
   state_->AddDelta(lowest_value);
   EXPECT_EQ(state_->GetHighestValueInWeek(), high_value);
-  clock_->Advance(base::TimeDelta::FromDays(1));
+  clock_->Advance(base::Days(1));
   EXPECT_EQ(state_->GetHighestValueInWeek(), high_value);
 }
 
@@ -132,7 +159,7 @@ TEST_F(WeeklyStorageTest, GetsHighestValueInWeekFromReplacement) {
   uint64_t low_value = 50;
   uint64_t high_value = 75;
   state_->ReplaceTodaysValueIfGreater(high_value);
-  clock_->Advance(base::TimeDelta::FromDays(2));
+  clock_->Advance(base::Days(2));
   state_->ReplaceTodaysValueIfGreater(low_value);
   EXPECT_EQ(state_->GetHighestValueInWeek(), high_value);
   // Sanity check disparate days were not replaced

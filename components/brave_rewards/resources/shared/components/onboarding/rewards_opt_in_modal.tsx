@@ -13,7 +13,7 @@ import { MainButton } from './main_button'
 import * as style from './rewards_opt_in_modal.style'
 
 interface Props {
-  onClose: () => void
+  onClose?: () => void
   onTakeTour: () => void
   onEnable: () => void
 }
@@ -24,7 +24,7 @@ export function RewardsOptInModal (props: Props) {
   return (
     <Modal>
       <style.root>
-        <ModalCloseButton onClick={props.onClose} />
+        {props.onClose && <ModalCloseButton onClick={props.onClose} />}
         <style.header>
           <BatIcon />{getString('onboardingEarnHeader')}
         </style.header>

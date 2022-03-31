@@ -8,12 +8,17 @@
 
 #include <string>
 
+#include "bat/ads/category_content_action_types.h"
 #include "bat/ads/export.h"
-#include "bat/ads/result.h"
+
+namespace base {
+class DictionaryValue;
+class Value;
+}  // namespace base
 
 namespace ads {
 
-struct ADS_EXPORT CategoryContentInfo {
+struct ADS_EXPORT CategoryContentInfo final {
   CategoryContentInfo();
   CategoryContentInfo(const CategoryContentInfo& info);
   ~CategoryContentInfo();
@@ -21,13 +26,15 @@ struct ADS_EXPORT CategoryContentInfo {
   bool operator==(const CategoryContentInfo& rhs) const;
   bool operator!=(const CategoryContentInfo& rhs) const;
 
-  enum class OptAction { kNone = 0, kOptIn, kOptOut };
+  base::DictionaryValue ToValue() const;
+  bool FromValue(const base::Value& value);
 
   std::string ToJson() const;
-  Result FromJson(const std::string& json);
+  bool FromJson(const std::string& json);
 
   std::string category;
-  OptAction opt_action = OptAction::kNone;
+  CategoryContentOptActionType opt_action_type =
+      CategoryContentOptActionType::kNone;
 };
 
 }  // namespace ads

@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_info.h"
 
 namespace ads {
+namespace ad_targeting {
 
 PurchaseIntentInfo::PurchaseIntentInfo() = default;
 
@@ -14,4 +15,5 @@ PurchaseIntentInfo::PurchaseIntentInfo(const PurchaseIntentInfo& info) =
 
 PurchaseIntentInfo::~PurchaseIntentInfo() = default;
 
+}  // namespace ad_targeting
 }  // namespace ads

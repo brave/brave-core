@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.dialogs.BraveAdsNotificationDialog;
@@ -83,9 +84,8 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     public static PendingIntentProvider getDeepLinkIntent(Context context) {
         Intent intent = new Intent(context, BraveOnboardingNotification.class);
         intent.setAction(DEEP_LINK);
-        return new PendingIntentProvider(
-                PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT),
-                0, 0);
+        return PendingIntentProvider.getBroadcast(
+                context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT, true);
     }
 
     @Override
@@ -94,8 +94,8 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
         BraveActivity braveActivity = BraveActivity.getBraveActivity();
         if (action != null && action.equals(DEEP_LINK)) {
             if (braveActivity != null) {
-                braveActivity.openRewardsPanel();
-                Intent launchIntent = new Intent(Intent.ACTION_MAIN);
+                Intent launchIntent =
+                        new Intent(Intent.ACTION_VIEW, Uri.parse(getNotificationUrl()));
                 launchIntent.setPackage(context.getPackageName());
                 launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(launchIntent);

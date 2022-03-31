@@ -8,16 +8,15 @@ declare_args() {
   # "nightly" for nightly channel release.
   # "" for stable channel release.
   brave_channel = ""
-  is_release_channel = true
+  is_release_channel = false
   base_sparkle_update_url = ""
-  enable_sparkle = is_official_build && is_mac
+  enable_sparkle = !is_component_build && is_mac
 
   sparkle_dsa_private_key_file = ""
   sparkle_eddsa_private_key = ""
   sparkle_eddsa_public_key = ""
 
   brave_product_name = ""
-  brave_project_name = ""
   brave_exe = ""
   brave_version_major = ""
   brave_version_minor = ""
@@ -41,10 +40,21 @@ declare_args() {
   last_chrome_installer = ""
 }
 
+declare_args() {
+  if (is_official_build) {
+    # Generate all symbols (breakpad + native) for Release builds
+    brave_debug_symbol_level = 2
+  } else {
+    brave_debug_symbol_level = 0
+  }
+}
+
+should_generate_breakpad_symbols = brave_debug_symbol_level != 0
+
 brave_version = "$brave_version_major.$brave_version_minor.$brave_version_build"
 
 if (brave_exe == "") {
-  brave_exe = brave_project_name
+  brave_exe = brave_product_name
 }
 
 brave_dist_dir = "$root_out_dir/dist"
@@ -55,16 +65,21 @@ if (is_win) {
       "_$brave_version_minor" + "_$brave_version_build"
   _channel = ""
   brave_app_guid = "{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}"
-  if (is_official_build) {
+  if (brave_channel == "nightly") {
+    # Temporary support PR's non-Release builds on nightly channel.
+    # CI expect the installer files (*Setup.exe) in the output dir are
+    # correspond passed brave_channel. Therefore to make Static+nightly work
+    # we should set _channel to "Nightly".
+    # TODO(atuchin): revert after PRs start to use the development channel.
+    _channel = "Nightly"
+    brave_app_guid = "{C6CB981E-DB30-4876-8639-109F8933582C}"
+  } else if (is_official_build) {
     if (brave_channel == "beta") {
       _channel = "Beta"
       brave_app_guid = "{103BD053-949B-43A8-9120-2E424887DE11}"
     } else if (brave_channel == "dev") {
       _channel = "Dev"
       brave_app_guid = "{CB2150F2-595F-4633-891A-E39720CE0531}"
-    } else if (brave_channel == "nightly") {
-      _channel = "Nightly"
-      brave_app_guid = "{C6CB981E-DB30-4876-8639-109F8933582C}"
     } else {
       assert(brave_channel == "", "Unknown channel name")
     }
@@ -122,6 +137,8 @@ if (is_win) {
   brave_platform = "win32"
 } else if (is_linux) {
   brave_platform = "linux"
+} else if (is_android) {
+  brave_platform = "android"
 }
 
 is_release_channel = brave_channel == ""

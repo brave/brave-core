@@ -101,7 +101,7 @@ handler.on(Actions.initialize.getType(), async (store) => {
     // TODO(petemill): Have ftx service be observable and our page handler fire JS events.
     const authPending = (expectingNewAuth && authInvalid)
     if (authPending && attemptCountForInitRetry > 0) {
-      console.debug(`FTX: expecting connected, but state doesn't represent that yet, so re-requesting in a few seconds`)
+      console.debug('FTX: expecting connected, but state doesn\'t represent that yet, so re-requesting in a few seconds')
       attemptCountForInitRetry--
       setTimeout(function () {
         // Recursive for the current action

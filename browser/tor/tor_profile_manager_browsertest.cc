@@ -4,12 +4,15 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "base/path_service.h"
+#include "base/process/launch.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/brave_paths.h"
+#include "brave/common/brave_switches.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/mock_tor_launcher_factory.h"
 #include "brave/components/tor/tor_constants.h"
@@ -18,8 +21,10 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/bookmarks/test/bookmark_test_helpers.h"
@@ -38,9 +43,11 @@
 #include "extensions/common/extension_id.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #endif
+
+#include <algorithm>
 
 namespace {
 
@@ -48,27 +55,25 @@ namespace {
 // initialized.
 void OnUnblockOnProfileCreation(base::RunLoop* run_loop,
                                 TorLauncherFactory* factory,
-                                Profile* profile,
-                                Profile::CreateStatus status) {
-  if (status == Profile::CREATE_STATUS_INITIALIZED) {
-    tor::TorProfileService* service =
-        TorProfileServiceFactory::GetForContext(profile);
-    service->SetTorLauncherFactoryForTest(factory);
-    run_loop->Quit();
-  }
+                                Profile* profile) {
+  tor::TorProfileService* service =
+      TorProfileServiceFactory::GetForContext(profile);
+  service->SetTorLauncherFactoryForTest(factory);
+  run_loop->Quit();
 }
 
 Profile* SwitchToTorProfile(Profile* parent_profile,
-                            TorLauncherFactory* factory) {
+                            TorLauncherFactory* factory,
+                            size_t current_profile_num = 1) {
   base::RunLoop run_loop;
   TorProfileManager::SwitchToTorProfile(
       parent_profile,
-      base::BindRepeating(&OnUnblockOnProfileCreation, &run_loop, factory));
+      base::BindOnce(&OnUnblockOnProfileCreation, &run_loop, factory));
   run_loop.Run();
 
   BrowserList* browser_list = BrowserList::GetInstance();
-  EXPECT_EQ(2U, browser_list->size());
-  return browser_list->get(1)->profile();
+  EXPECT_EQ(current_profile_num + 1, browser_list->size());
+  return browser_list->get(current_profile_num)->profile();
 }
 
 }  // namespace
@@ -94,7 +99,35 @@ class TorProfileManagerTest : public InProcessBrowserTest {
   MockTorLauncherFactory* GetTorLauncherFactory() {
     return &MockTorLauncherFactory::GetInstance();
   }
+
+  void Relaunch(const base::CommandLine& new_command_line) {
+    base::LaunchProcess(new_command_line, base::LaunchOptionsForTest());
+  }
 };
+
+// We don't run this test on Mac because the function GetCommandLineForRelaunch
+// isn't defined there.
+#if !BUILDFLAG(IS_MAC)
+IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, LaunchWithTorUrl) {
+  // We should start with one normal window.
+  ASSERT_EQ(1u, chrome::GetTabbedBrowserCount(browser()->profile()));
+
+  // Run with --tor switch and a URL specified.
+  base::FilePath test_file_path = ui_test_utils::GetTestFilePath(
+      base::FilePath(), base::FilePath().AppendASCII("empty.html"));
+  base::CommandLine new_command_line(GetCommandLineForRelaunch());
+  new_command_line.AppendSwitch(switches::kTor);
+  new_command_line.AppendArgPath(test_file_path);
+
+  Relaunch(new_command_line);
+
+  // There should be one normal and one Tor window now.
+  Relaunch(new_command_line);
+  ui_test_utils::WaitForBrowserToOpen();
+  ASSERT_EQ(2u, chrome::GetTotalBrowserCount());
+  ASSERT_EQ(1u, chrome::GetTabbedBrowserCount(browser()->profile()));
+}
+#endif
 
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
                        SwitchToTorProfileShareBookmarks) {
@@ -161,7 +194,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
   EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(tor_profile),
             nullptr);
   EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(tor_profile), nullptr);
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   EXPECT_EQ(ipfs::IpfsServiceFactory::GetForContext(tor_profile), nullptr);
 #endif
 }
@@ -239,8 +272,10 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseLastTorWindow) {
   ASSERT_TRUE(profile_manager);
 
   Profile* parent_profile = ProfileManager::GetActiveUserProfile();
+  EXPECT_EQ(BrowserList::GetInstance()->size(), 1u);
   Profile* tor_profile =
       SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
+  EXPECT_EQ(BrowserList::GetInstance()->size(), 2u);
   ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
@@ -248,6 +283,54 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseLastTorWindow) {
   testing::Mock::AllowLeak(GetTorLauncherFactory());
   EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess).Times(1);
   TorProfileManager::CloseTorProfileWindows(tor_profile);
+  ui_test_utils::WaitForBrowserToClose();
+  BrowserList* browser_list = BrowserList::GetInstance();
+  ASSERT_EQ(browser_list->size(), 1u);
+  EXPECT_FALSE(browser_list->get(0)->profile()->IsTor());
+}
+
+IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseAllTorWindows) {
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  ASSERT_TRUE(profile_manager);
+  BrowserList* browser_list = BrowserList::GetInstance();
+
+  Profile* parent_profile1 = ProfileManager::GetActiveUserProfile();
+  ASSERT_NE(CreateIncognitoBrowser(parent_profile1), nullptr);
+  ASSERT_EQ(browser_list->size(), 2u);
+
+  // Create another profile.
+  base::FilePath dest_path = profile_manager->user_data_dir();
+  dest_path = dest_path.Append(FILE_PATH_LITERAL("Profile2"));
+  Profile* parent_profile2 = nullptr;
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    parent_profile2 = profile_manager->GetProfile(dest_path);
+  }
+  ASSERT_TRUE(parent_profile2);
+  ASSERT_NE(CreateBrowser(parent_profile2), nullptr);
+  ASSERT_EQ(browser_list->size(), 3u);
+
+  Profile* tor_profile1 = SwitchToTorProfile(
+      parent_profile1, GetTorLauncherFactory(), browser_list->size());
+  ASSERT_TRUE(tor_profile1->IsTor());
+  ASSERT_EQ(browser_list->size(), 4u);
+
+  Profile* tor_profile2 = SwitchToTorProfile(
+      parent_profile2, GetTorLauncherFactory(), browser_list->size());
+  ASSERT_TRUE(tor_profile2->IsTor());
+  ASSERT_EQ(browser_list->size(), 5u);
+
+  testing::Mock::AllowLeak(GetTorLauncherFactory());
+  EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess).Times(1);
+  TorProfileManager::GetInstance().CloseAllTorWindows();
+  // We cannot predict the order of which Tor browser get closed first
+  ui_test_utils::WaitForBrowserToClose();
+  ui_test_utils::WaitForBrowserToClose();
+  // only two regular windows and one private window left
+  ASSERT_EQ(browser_list->size(), 3u);
+  std::for_each(
+      browser_list->begin(), browser_list->end(),
+      [](Browser* browser) { EXPECT_FALSE(browser->profile()->IsTor()); });
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)

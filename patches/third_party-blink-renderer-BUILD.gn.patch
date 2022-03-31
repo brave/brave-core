@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/BUILD.gn b/third_party/blink/renderer/BUILD.gn
-index b06bf2b8e10772c0d9cbad71b8690f538dc82bcf..ba5b499f2050f6c60431cd813a95d408b2baee97 100644
+index 9d51629ab3be881408440254875c7b3c97f00631..3d3b69940f31f184a6f2505e4d804174cca865d2 100644
 --- a/third_party/blink/renderer/BUILD.gn
 +++ b/third_party/blink/renderer/BUILD.gn
 @@ -9,6 +9,7 @@ if (is_clang) {

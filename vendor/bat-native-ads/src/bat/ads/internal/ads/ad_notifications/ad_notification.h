@@ -8,39 +8,41 @@
 
 #include <string>
 
+#include "base/observer_list.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_observer.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
 struct AdNotificationInfo;
 
-class AdNotification : public AdNotificationObserver {
+class AdNotification final : public AdNotificationObserver {
  public:
   AdNotification();
-
   ~AdNotification() override;
 
   void AddObserver(AdNotificationObserver* observer);
   void RemoveObserver(AdNotificationObserver* observer);
 
   void FireEvent(const std::string& uuid,
-                 const AdNotificationEventType event_type);
+                 const mojom::AdNotificationEventType event_type);
 
  private:
-  base::ObserverList<AdNotificationObserver> observers_;
+  void NotifyAdNotificationEvent(
+      const AdNotificationInfo& ad,
+      const mojom::AdNotificationEventType event_type) const;
 
-  void NotifyAdNotificationEvent(const AdNotificationInfo& ad,
-                                 const AdNotificationEventType event_type);
-
-  void NotifyAdNotificationViewed(const AdNotificationInfo& ad);
-  void NotifyAdNotificationClicked(const AdNotificationInfo& ad);
-  void NotifyAdNotificationDismissed(const AdNotificationInfo& ad);
-  void NotifyAdNotificationTimedOut(const AdNotificationInfo& ad);
+  void NotifyAdNotificationServed(const AdNotificationInfo& ad) const;
+  void NotifyAdNotificationViewed(const AdNotificationInfo& ad) const;
+  void NotifyAdNotificationClicked(const AdNotificationInfo& ad) const;
+  void NotifyAdNotificationDismissed(const AdNotificationInfo& ad) const;
+  void NotifyAdNotificationTimedOut(const AdNotificationInfo& ad) const;
 
   void NotifyAdNotificationEventFailed(
       const std::string& uuid,
-      const AdNotificationEventType event_type);
+      const mojom::AdNotificationEventType event_type) const;
+
+  base::ObserverList<AdNotificationObserver> observers_;
 };
 
 }  // namespace ads

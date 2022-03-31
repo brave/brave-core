@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ads/internal/ml/data/vector_data.h"
+
 #include <map>
 #include <vector>
-
-#include "bat/ads/internal/ml/data/vector_data.h"
 
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -25,14 +25,14 @@ class BatAdsVectorDataTest : public UnitTestBase {
 
 TEST_F(BatAdsVectorDataTest, DenseVectorDataInitialization) {
   // Arrange
-  const std::vector<double> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
+  const std::vector<float> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
   const VectorData dense_data_vector_5(v_5);
 
   // Act
 
   // Assert
   EXPECT_EQ(static_cast<int>(v_5.size()),
-            dense_data_vector_5.GetDimensionCount());
+            dense_data_vector_5.GetDimensionCountForTesting());
 }
 
 TEST_F(BatAdsVectorDataTest, SparseVectorDataInitialization) {
@@ -44,20 +44,21 @@ TEST_F(BatAdsVectorDataTest, SparseVectorDataInitialization) {
   // Act
 
   // Assert
-  EXPECT_EQ(kDimensionCount, sparse_data_vector_6.GetDimensionCount());
+  EXPECT_EQ(kDimensionCount,
+            sparse_data_vector_6.GetDimensionCountForTesting());
 }
 
 TEST_F(BatAdsVectorDataTest, DenseDenseProduct) {
   // Arrange
   const double kTolerance = 1e-6;
 
-  const std::vector<double> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
+  const std::vector<float> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
   const VectorData dense_data_vector_5(v_5);
 
-  const std::vector<double> v_3{1.0, 2.0, 3.0};
+  const std::vector<float> v_3{1.0, 2.0, 3.0};
   const VectorData dense_data_vector_3(v_3);
 
-  const std::vector<double> v_3_1{1.0, 1.0, 1.0};
+  const std::vector<float> v_3_1{1.0, 1.0, 1.0};
   const VectorData dense_data_vector_3_1(v_3_1);
 
   // Act
@@ -96,10 +97,10 @@ TEST_F(BatAdsVectorDataTest, SparseDenseProduct) {
   // Arrange
   const double kTolerance = 1e-6;
 
-  const std::vector<double> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
+  const std::vector<float> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
   const VectorData dense_data_vector_5(v_5);
 
-  const std::vector<double> v_3{1.0, 2.0, 3.0};
+  const std::vector<float> v_3{1.0, 2.0, 3.0};
   const VectorData dense_data_vector_3(v_3);
 
   // Dense equivalent is [1, 0, 2]
@@ -129,10 +130,10 @@ TEST_F(BatAdsVectorDataTest, SparseDenseProduct) {
 
 TEST_F(BatAdsVectorDataTest, NonsenseProduct) {
   // Arrange
-  const std::vector<double> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
+  const std::vector<float> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
   const VectorData dense_data_vector_5(v_5);
 
-  const std::vector<double> v_3{1.0, 2.0, 3.0};
+  const std::vector<float> v_3{1.0, 2.0, 3.0};
   const VectorData dense_data_vector_3(v_3);
 
   // Dense equivalent is [1, 0, 2]
@@ -152,6 +153,23 @@ TEST_F(BatAdsVectorDataTest, NonsenseProduct) {
   // Assert
   EXPECT_TRUE(std::isnan(wrong_dd) && std::isnan(wrong_ss) &&
               std::isnan(wrong_sd) && std::isnan(wrong_ds));
+}
+
+TEST_F(BatAdsVectorDataTest, NormalizeDenseVector) {
+  VectorData dense_data_vector_5({1, 3, 5, 5, 2});
+  dense_data_vector_5.Normalize();
+  EXPECT_EQ(std::vector<float>({1. / 8, 3. / 8, 5. / 8, 5. / 8, 2. / 8}),
+            dense_data_vector_5.GetValuesForTesting());
+}
+
+TEST_F(BatAdsVectorDataTest, NormalizeSparseVector) {
+  const int kDimensionCount = 6;
+  const std::map<unsigned, double> s_5 = {
+      {0UL, 1.0}, {2UL, 3.0}, {3UL, -2.0}, {10UL, -1.0}, {30UL, 1.0}};
+  VectorData sparse_data_vector_5(kDimensionCount, s_5);
+  sparse_data_vector_5.Normalize();
+  EXPECT_EQ(std::vector<float>({1. / 4, 3. / 4, -2. / 4, -1. / 4, 1. / 4}),
+            sparse_data_vector_5.GetValuesForTesting());
 }
 
 }  // namespace ml

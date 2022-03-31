@@ -1,16 +1,23 @@
 source_set("renderer") {
   sources = [
-    "brave_wallet_js_handler.cc",
-    "brave_wallet_js_handler.h",
-    "brave_wallet_response_helpers.cc",
-    "brave_wallet_response_helpers.h",
+    "js_ethereum_provider.cc",
+    "js_ethereum_provider.h",
+    "js_solana_provider.cc",
+    "js_solana_provider.h",
+    "resource_helper.cc",
+    "resource_helper.h",
+    "v8_helper.cc",
+    "v8_helper.h",
   ]
 
   deps = [
     "//base",
+    "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/common:solana_utils",
     "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
+    "//brave/components/resources:strings_grit",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",

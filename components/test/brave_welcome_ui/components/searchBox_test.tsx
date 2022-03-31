@@ -10,7 +10,6 @@ import SearchBox, { Props } from '../../../../components/brave_welcome_ui/contai
 import { mockSearchProviders } from '../../testData'
 
 describe('searchBox component tests', () => {
-
   const mockProps: Props = {
     index: 3,
     currentScreen: 3,

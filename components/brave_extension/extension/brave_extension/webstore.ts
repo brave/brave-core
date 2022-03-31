@@ -1,5 +1,5 @@
 const config = { attributes: true, childList: true, subtree: true }
-const textToMatch: Array<string> = ['Add to Chrome', 'Remove from Chrome']
+const textToMatch: string[] = ['Add to Chrome', 'Remove from Chrome']
 
 const callback = (mutationsList: MutationRecord[], observer: MutationObserver) => {
   const buttons: NodeListOf<Element> = document.querySelectorAll('div.webstore-test-button-label')

@@ -14,8 +14,9 @@
 
 namespace brave_stats {
 
-BraveStatsTabHelper::BraveStatsTabHelper(content::WebContents *web_contents)
-    : content::WebContentsObserver(web_contents) {}
+BraveStatsTabHelper::BraveStatsTabHelper(content::WebContents* web_contents)
+    : content::WebContentsObserver(web_contents),
+      content::WebContentsUserData<BraveStatsTabHelper>(*web_contents) {}
 
 BraveStatsTabHelper::~BraveStatsTabHelper() = default;
 
@@ -45,6 +46,6 @@ void BraveStatsTabHelper::NotifyStatsUpdater() {
     web_contents()->RemoveUserData(UserDataKey());
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveStatsTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveStatsTabHelper);
 
 }  //  namespace brave_stats

@@ -14,6 +14,8 @@ namespace brave_wallet {
 namespace features {
 
 extern const base::Feature kNativeBraveWalletFeature;
+extern const base::Feature kBraveWalletFilecoinFeature;
+extern const base::Feature kBraveWalletSolanaFeature;
 
 }  // namespace features
 }  // namespace brave_wallet

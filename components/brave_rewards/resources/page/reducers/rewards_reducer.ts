@@ -162,8 +162,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.TOGGLE_AD_THUMB_UP: {
-      chrome.send('brave_rewards.toggleAdThumbUp',
-                  [action.payload.uuid, action.payload.creativeSetId, action.payload.likeAction])
+      chrome.send('brave_rewards.toggleAdThumbUp', [action.payload.adContent])
       break
     }
     case types.ON_TOGGLE_AD_THUMB_UP: {
@@ -171,47 +170,44 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.TOGGLE_AD_THUMB_DOWN: {
-      chrome.send('brave_rewards.toggleAdThumbDown',
-                  [action.payload.uuid, action.payload.creativeSetId, action.payload.likeAction])
+      chrome.send('brave_rewards.toggleAdThumbDown', [action.payload.adContent])
       break
     }
     case types.ON_TOGGLE_AD_THUMB_DOWN: {
       chrome.send('brave_rewards.getAdsHistory')
       break
     }
-    case types.TOGGLE_AD_OPT_IN_ACTION: {
-      chrome.send('brave_rewards.toggleAdOptInAction',
+    case types.TOGGLE_AD_OPT_IN: {
+      chrome.send('brave_rewards.toggleAdOptIn',
                   [action.payload.category, action.payload.optAction])
       break
     }
-    case types.ON_TOGGLE_AD_OPT_IN_ACTION: {
+    case types.ON_TOGGLE_AD_OPT_IN: {
       chrome.send('brave_rewards.getAdsHistory')
       break
     }
-    case types.TOGGLE_AD_OPT_OUT_ACTION: {
-      chrome.send('brave_rewards.toggleAdOptOutAction',
+    case types.TOGGLE_AD_OPT_OUT: {
+      chrome.send('brave_rewards.toggleAdOptOut',
                   [action.payload.category, action.payload.optAction])
       break
     }
-    case types.ON_TOGGLE_AD_OPT_OUT_ACTION: {
+    case types.ON_TOGGLE_AD_OPT_OUT: {
       chrome.send('brave_rewards.getAdsHistory')
       break
     }
-    case types.TOGGLE_SAVE_AD: {
-      chrome.send('brave_rewards.toggleSaveAd',
-                  [action.payload.uuid, action.payload.creativeSetId, action.payload.savedAd])
+    case types.TOGGLE_SAVED_AD: {
+      chrome.send('brave_rewards.toggleSavedAd', [action.payload.adContent])
       break
     }
-    case types.ON_TOGGLE_SAVE_AD: {
+    case types.ON_TOGGLE_SAVED_AD: {
       chrome.send('brave_rewards.getAdsHistory')
       break
     }
-    case types.TOGGLE_FLAG_AD: {
-      chrome.send('brave_rewards.toggleFlagAd',
-                  [action.payload.uuid, action.payload.creativeSetId, action.payload.flaggedAd])
+    case types.TOGGLE_FLAGGED_AD: {
+      chrome.send('brave_rewards.toggleFlaggedAd', [action.payload.adContent])
       break
     }
-    case types.ON_TOGGLE_FLAG_AD: {
+    case types.ON_TOGGLE_FLAGGED_AD: {
       chrome.send('brave_rewards.getAdsHistory')
       break
     }
@@ -253,6 +249,38 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.adsData.adsEarningsLastMonth = data.adsEarningsLastMonth
       break
     }
+    case types.GET_ENABLED_INLINE_TIPPING_PLATFORMS: {
+      chrome.send('brave_rewards.getEnabledInlineTippingPlatforms')
+      break
+    }
+    case types.ON_ENABLED_INLINE_TIPPING_PLATFORMS: {
+      const inlineTip = {
+        twitter: false,
+        reddit: false,
+        github: false
+      }
+
+      for (const platform of action.payload.platforms) {
+        switch (platform) {
+          case 'github':
+            inlineTip.github = true
+            break
+          case 'reddit':
+            inlineTip.reddit = true
+            break
+          case 'twitter':
+            inlineTip.twitter = true
+            break
+        }
+      }
+
+      state = {
+        ...state,
+        inlineTip
+      }
+
+      break
+    }
     case types.ON_INLINE_TIP_SETTINGS_CHANGE: {
       if (!state.inlineTip) {
         state.inlineTip = {
@@ -281,16 +309,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       break
     }
-    case types.ON_VERIFY_ONBOARDING_DISPLAYED: {
-      let ui = state.ui
-
-      ui.verifyOnboardingDisplayed = true
-      state = {
-        ...state,
-        ui
-      }
-      break
-    }
     case types.PROCESS_REWARDS_PAGE_URL: {
       const path = action.payload.path
       const query = action.payload.query
@@ -311,28 +329,43 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       chrome.send('brave_rewards.getExternalWallet')
 
-      // NOT_FOUND
-      if (data.result === 9) {
-        ui.modalRedirect = 'batLimit'
+      if (data.result === 9) { // type::Result::NOT_FOUND
+        ui.modalRedirect = 'kycRequiredModal'
         break
       }
 
-      // EXPIRED_TOKEN
-      if (data.result === 24) {
+      if (data.result === 24) { // type::Result::EXPIRED_TOKEN
         ui.modalRedirect = 'error'
         break
       }
 
-      // BAT_NOT_ALLOWED
-      if (data.result === 25) {
-        ui.modalRedirect = 'notAllowed'
+      if (data.result === 25) { // type::Result::UPHOLD_BAT_NOT_ALLOWED
+        ui.modalRedirect = 'upholdBATNotAllowedModal'
         break
       }
 
-      // ALREADY_EXISTS
-      if (data.result === 26) {
-        // User has reached device linking limit; no need to show modal, as we
-        // posted a notification for this
+      if (data.result === 36) { // type::Result::DEVICE_LIMIT_REACHED
+        ui.modalRedirect = 'deviceLimitReachedModal'
+        break
+      }
+
+      if (data.result === 37) { // type::Result::MISMATCHED_PROVIDER_ACCOUNTS
+        ui.modalRedirect = 'mismatchedProviderAccountsModal'
+        break
+      }
+
+      if (data.result === 42) { // type::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE
+        ui.modalRedirect = 'walletOwnershipVerificationFailureModal'
+        break
+      }
+
+      if (data.result === 44) { // type::Result::FLAGGED_WALLET
+        ui.modalRedirect = 'flaggedWalletModal'
+        break
+      }
+
+      if (data.result === 45) { // type::Result::REGION_NOT_SUPPORTED
+        ui.modalRedirect = 'regionNotSupportedModal'
         break
       }
 
@@ -341,11 +374,11 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
-      if (data.walletType === 'uphold' || data.walletType === 'bitflyer') {
+      if (data.walletType === 'uphold' || data.walletType === 'bitflyer' || data.walletType === 'gemini') {
         chrome.send('brave_rewards.fetchBalance')
 
         if (data.action === 'authorization') {
-          const url = data.args['redirect_url']
+          const url = data.args.redirect_url
           if (url && url.length > 0) {
             window.open(url, '_self')
           }
@@ -435,10 +468,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
-    case types.SET_FIRST_LOAD: {
-      state.firstLoad = action.payload.firstLoad
-      break
-    }
     case types.GET_ONBOARDING_STATUS: {
       chrome.send('brave_rewards.getOnboardingStatus')
       break
@@ -465,6 +494,17 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         ...state,
         showOnboarding: false
       }
+      break
+    }
+    case types.RESTART_BROWSER: {
+      chrome.send('brave_rewards.restartBrowser')
+      break
+    }
+    case types.ON_PREF_CHANGED: {
+      chrome.send('brave_rewards.getEnabledInlineTippingPlatforms')
+      chrome.send('brave_rewards.getContributionAmount')
+      chrome.send('brave_rewards.getAutoContributeProperties')
+      chrome.send('brave_rewards.getAdsData')
       break
     }
   }

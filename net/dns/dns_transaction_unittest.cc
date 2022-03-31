@@ -14,10 +14,10 @@
 #include "base/base64url.h"
 #include "base/bind.h"
 #include "base/containers/circular_deque.h"
-#include "base/optional.h"
+#include "base/cxx17_backports.h"
+#include "base/memory/raw_ptr.h"
 #include "base/rand_util.h"
 #include "base/run_loop.h"
-#include "base/stl_util.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/sys_byteorder.h"
@@ -40,13 +40,14 @@
 #include "net/dns/dns_socket_allocator.h"
 #include "net/dns/dns_test_util.h"
 #include "net/dns/dns_util.h"
+#include "net/dns/public/dns_over_https_config.h"
 #include "net/dns/public/dns_over_https_server_config.h"
 #include "net/dns/public/dns_protocol.h"
 #include "net/dns/resolve_context.h"
+#include "net/http/http_util.h"
 #include "net/log/net_log.h"
 #include "net/log/net_log_capture_mode.h"
 #include "net/log/net_log_with_source.h"
-#include "net/log/test_net_log.h"
 #include "net/proxy_resolution/proxy_config_service_fixed.h"
 #include "net/socket/socket_test_util.h"
 #include "net/test/gtest_util.h"
@@ -58,6 +59,7 @@
 #include "net/url_request/url_request_test_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 using net::test::IsOk;
 
@@ -65,7 +67,7 @@ namespace net {
 
 namespace {
 
-base::TimeDelta kFallbackPeriod = base::TimeDelta::FromSeconds(1);
+base::TimeDelta kFallbackPeriod = base::Seconds(1);
 
 const char kMockHostname[] = "mock.http";
 
@@ -107,6 +109,11 @@ class DnsSocketData {
                                 query_->io_buffer()->size(),
                                 num_reads_and_writes()));
   }
+
+  DnsSocketData(const DnsSocketData&) = delete;
+
+  DnsSocketData& operator=(const DnsSocketData&) = delete;
+
   ~DnsSocketData() = default;
 
   // All responses must be added before GetProvider.
@@ -203,8 +210,6 @@ class DnsSocketData {
   std::vector<MockWrite> writes_;
   std::vector<MockRead> reads_;
   std::unique_ptr<SequencedSocketData> provider_;
-
-  DISALLOW_COPY_AND_ASSIGN(DnsSocketData);
 };
 
 class TestSocketFactory;
@@ -214,13 +219,12 @@ class FailingUDPClientSocket : public MockUDPClientSocket {
  public:
   FailingUDPClientSocket(SocketDataProvider* data, net::NetLog* net_log)
       : MockUDPClientSocket(data, net_log) {}
+  FailingUDPClientSocket(const FailingUDPClientSocket&) = delete;
+  FailingUDPClientSocket& operator=(const FailingUDPClientSocket&) = delete;
   ~FailingUDPClientSocket() override = default;
   int Connect(const IPEndPoint& endpoint) override {
     return ERR_CONNECTION_REFUSED;
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(FailingUDPClientSocket);
 };
 
 // A variant of MockUDPClientSocket which notifies the factory OnConnect.
@@ -230,13 +234,13 @@ class TestUDPClientSocket : public MockUDPClientSocket {
                       SocketDataProvider* data,
                       net::NetLog* net_log)
       : MockUDPClientSocket(data, net_log), factory_(factory) {}
+  TestUDPClientSocket(const TestUDPClientSocket&) = delete;
+  TestUDPClientSocket& operator=(const TestUDPClientSocket&) = delete;
   ~TestUDPClientSocket() override = default;
   int Connect(const IPEndPoint& endpoint) override;
 
  private:
-  TestSocketFactory* factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(TestUDPClientSocket);
+  raw_ptr<TestSocketFactory> factory_ = nullptr;
 };
 
 // Creates TestUDPClientSockets and keeps endpoints reported via OnConnect.
@@ -279,8 +283,8 @@ class TestSocketFactory : public MockClientSocketFactory {
     explicit RemoteNameserver(DnsOverHttpsServerConfig secure_nameserver)
         : secure_nameserver(secure_nameserver) {}
 
-    base::Optional<IPEndPoint> insecure_nameserver;
-    base::Optional<DnsOverHttpsServerConfig> secure_nameserver;
+    absl::optional<IPEndPoint> insecure_nameserver;
+    absl::optional<DnsOverHttpsServerConfig> secure_nameserver;
   };
 
   std::vector<RemoteNameserver> remote_endpoints_;
@@ -314,8 +318,9 @@ class TransactionHelper {
                         ResolveContext* context) {
     std::unique_ptr<DnsTransaction> transaction = factory->CreateTransaction(
         hostname, qtype, CompletionCallback(),
-        NetLogWithSource::Make(&net_log_, net::NetLogSourceType::NONE), secure,
-        factory->GetSecureDnsModeForTest(), context, true /* fast_timeout */);
+        NetLogWithSource::Make(net::NetLog::Get(), net::NetLogSourceType::NONE),
+        secure, factory->GetSecureDnsModeForTest(), context,
+        true /* fast_timeout */);
     transaction->SetRequestPriority(DEFAULT_PRIORITY);
     EXPECT_EQ(qtype, transaction->GetType());
     StartTransaction(std::move(transaction));
@@ -341,7 +346,7 @@ class TransactionHelper {
   void OnTransactionComplete(DnsTransaction* t,
                              int rv,
                              const DnsResponse* response,
-                             base::Optional<std::string> doh_provider_id) {
+                             absl::optional<std::string> doh_provider_id) {
     EXPECT_FALSE(completed_);
     EXPECT_EQ(transaction_.get(), t);
 
@@ -363,7 +368,7 @@ class TransactionHelper {
       ASSERT_TRUE(response != nullptr);
       EXPECT_EQ(static_cast<unsigned>(expected_answer_count_),
                 response->answer_count());
-      EXPECT_EQ(qtype_, response->qtype());
+      EXPECT_EQ(qtype_, response->GetSingleQType());
 
       DnsRecordParser parser = response->Parser();
       DnsResourceRecord record;
@@ -377,7 +382,6 @@ class TransactionHelper {
 
   bool has_completed() const { return completed_; }
   const DnsResponse* response() const { return response_; }
-  NetLog* net_log() { return &net_log_; }
 
   // Runs until the completion callback is called. Transaction must have already
   // been started or this will never complete.
@@ -396,7 +400,6 @@ class TransactionHelper {
   bool cancel_in_callback_ = false;
   base::RunLoop transaction_complete_run_loop_;
   bool completed_ = false;
-  TestNetLog net_log_;
 };
 
 // Callback that allows a test to modify HttpResponseinfo
@@ -429,6 +432,10 @@ class URLRequestMockDohJob : public URLRequestJob, public AsyncSocket {
     data_provider_->Initialize(this);
     MatchQueryData(request, data_provider);
   }
+
+  URLRequestMockDohJob(const URLRequestMockDohJob&) = delete;
+
+  URLRequestMockDohJob& operator=(const URLRequestMockDohJob&) = delete;
 
   // Compare the query contained in either the POST body or the body
   // parameter of the GET query to the write data of the SocketDataProvider.
@@ -560,14 +567,12 @@ class URLRequestMockDohJob : public URLRequestJob, public AsyncSocket {
   const int content_length_;
   const char* leftover_data_;
   int leftover_data_len_;
-  SocketDataProvider* data_provider_;
+  raw_ptr<SocketDataProvider> data_provider_ = nullptr;
   const ResponseModifierCallback response_modifier_;
-  IOBuffer* pending_buf_;
+  raw_ptr<IOBuffer> pending_buf_ = nullptr;
   int pending_buf_size_;
 
   base::WeakPtrFactory<URLRequestMockDohJob> weak_factory_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(URLRequestMockDohJob);
 };
 
 class DnsTransactionTestBase : public testing::Test {
@@ -602,13 +607,15 @@ class DnsTransactionTestBase : public testing::Test {
     filter->AddHostnameInterceptor(url.scheme(), url.host(),
                                    std::make_unique<DohJobInterceptor>(this));
     CHECK_LE(num_doh_servers, 255u);
+    std::vector<string> templates;
+    templates.reserve(num_doh_servers);
+
     for (size_t i = 0; i < num_doh_servers; ++i) {
-      std::string server_template(URLRequestMockDohJob::GetMockHttpsUrl(
-                                      base::StringPrintf("doh_test_%zu", i)) +
-                                  "{?dns}");
-      config_.dns_over_https_servers.push_back(
-          DnsOverHttpsServerConfig(server_template, use_post));
+      templates.push_back(URLRequestMockDohJob::GetMockHttpsUrl(
+                              base::StringPrintf("doh_test_%zu", i)) +
+                          "{?dns}");
     }
+    config_.doh_config = *DnsOverHttpsConfig::FromStrings(std::move(templates));
     ConfigureFactory();
 
     if (make_available) {
@@ -764,7 +771,7 @@ class DnsTransactionTestBase : public testing::Test {
         EXPECT_EQ(
             socket_factory_->remote_endpoints_[i].secure_nameserver.value(),
             session_->config()
-                .dns_over_https_servers[servers[i] - num_insecure_nameservers]);
+                .doh_config.servers()[servers[i] - num_insecure_nameservers]);
       }
     }
   }
@@ -774,17 +781,17 @@ class DnsTransactionTestBase : public testing::Test {
     // configured servers, because it won't be there and we still want
     // to handle it.
     bool server_found = request->url().path() == "/redirect-destination";
-    for (auto server : config_.dns_over_https_servers) {
+    for (auto server : config_.doh_config.servers()) {
       if (server_found)
         break;
       std::string url_base =
-          GetURLFromTemplateWithoutParameters(server.server_template);
-      if (server.use_post && request->method() == "POST") {
+          GetURLFromTemplateWithoutParameters(server.server_template());
+      if (server.use_post() && request->method() == "POST") {
         if (url_base == request->url().spec()) {
           server_found = true;
           socket_factory_->remote_endpoints_.emplace_back(server);
         }
-      } else if (!server.use_post && request->method() == "GET") {
+      } else if (!server.use_post() && request->method() == "GET") {
         std::string prefix = url_base + "?dns=";
         auto mispair = std::mismatch(prefix.begin(), prefix.end(),
                                      request->url().spec().begin());
@@ -813,7 +820,7 @@ class DnsTransactionTestBase : public testing::Test {
     }
 
     EXPECT_FALSE(request->allow_credentials());
-    EXPECT_TRUE(request->disable_secure_dns());
+    EXPECT_EQ(SecureDnsPolicy::kBootstrap, request->secure_dns_policy());
 
     std::string accept;
     EXPECT_TRUE(request->extra_request_headers().GetHeader("Accept", &accept));
@@ -841,6 +848,8 @@ class DnsTransactionTestBase : public testing::Test {
   class DohJobInterceptor : public URLRequestInterceptor {
    public:
     explicit DohJobInterceptor(DnsTransactionTestBase* test) : test_(test) {}
+    DohJobInterceptor(const DohJobInterceptor&) = delete;
+    DohJobInterceptor& operator=(const DohJobInterceptor&) = delete;
     ~DohJobInterceptor() override {}
 
     // URLRequestInterceptor implementation:
@@ -850,9 +859,7 @@ class DnsTransactionTestBase : public testing::Test {
     }
 
    private:
-    DnsTransactionTestBase* test_;
-
-    DISALLOW_COPY_AND_ASSIGN(DohJobInterceptor);
+    raw_ptr<DnsTransactionTestBase> test_ = nullptr;
   };
 
   void SetResponseModifierCallback(ResponseModifierCallback response_modifier) {
@@ -956,25 +963,25 @@ class BraveDnsTransactionTest : public DnsTransactionTestBase,
     URLRequestFilter* filter = URLRequestFilter::GetInstance();
     filter->AddHostnameInterceptor(url.scheme(), url.host(),
                                    std::make_unique<DohJobInterceptor>(this));
-    config_.dns_over_https_servers.push_back(
-        {decentralized_dns::kUnstoppableDomainsDoHResolver, true});
+    std::vector<string> templates;
+    templates.push_back(decentralized_dns::kUnstoppableDomainsDoHResolver);
 
     url = GURL(decentralized_dns::kENSDoHResolver);
     filter->AddHostnameInterceptor(url.scheme(), url.host(),
                                    std::make_unique<DohJobInterceptor>(this));
-    config_.dns_over_https_servers.push_back(
-        {decentralized_dns::kENSDoHResolver, true});
+    templates.push_back(decentralized_dns::kENSDoHResolver);
 
     if (user_doh_server) {
       url = GURL("https://test.com/dns-query");
       filter->AddHostnameInterceptor(url.scheme(), url.host(),
                                      std::make_unique<DohJobInterceptor>(this));
-      config_.dns_over_https_servers.push_back({url.spec(), true});
+      templates.push_back(url.spec());
     }
 
+    config_.doh_config = *DnsOverHttpsConfig::FromStrings(std::move(templates));
     ConfigureFactory();
     for (size_t server_index = 0;
-         server_index < config_.dns_over_https_servers.size(); ++server_index) {
+         server_index < config_.doh_config.servers().size(); ++server_index) {
       resolve_context_->RecordServerSuccess(
           server_index, true /* is_doh_server */, session_.get());
     }

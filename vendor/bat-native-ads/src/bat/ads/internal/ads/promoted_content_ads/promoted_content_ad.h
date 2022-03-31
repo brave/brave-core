@@ -8,18 +8,17 @@
 
 #include <string>
 
-#include "bat/ads/internal/ad_events/ad_event_info.h"
+#include "base/observer_list.h"
 #include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad_observer.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
 struct PromotedContentAdInfo;
 
-class PromotedContentAd : public PromotedContentAdObserver {
+class PromotedContentAd final : public PromotedContentAdObserver {
  public:
   PromotedContentAd();
-
   ~PromotedContentAd() override;
 
   void AddObserver(PromotedContentAdObserver* observer);
@@ -27,30 +26,28 @@ class PromotedContentAd : public PromotedContentAdObserver {
 
   void FireEvent(const std::string& uuid,
                  const std::string& creative_instance_id,
-                 const PromotedContentAdEventType event_type);
+                 const mojom::PromotedContentAdEventType event_type);
 
  private:
-  base::ObserverList<PromotedContentAdObserver> observers_;
-
-  bool ShouldFireEvent(const PromotedContentAdInfo& ad,
-                       const AdEventList& ad_events);
-
   void FireEvent(const PromotedContentAdInfo& ad,
                  const std::string& uuid,
                  const std::string& creative_instance_id,
-                 const PromotedContentAdEventType event_type);
+                 const mojom::PromotedContentAdEventType event_type);
 
   void NotifyPromotedContentAdEvent(
       const PromotedContentAdInfo& ad,
-      const PromotedContentAdEventType event_type);
+      const mojom::PromotedContentAdEventType event_type) const;
 
-  void NotifyPromotedContentAdViewed(const PromotedContentAdInfo& ad);
-  void NotifyPromotedContentAdClicked(const PromotedContentAdInfo& ad);
+  void NotifyPromotedContentAdServed(const PromotedContentAdInfo& ad) const;
+  void NotifyPromotedContentAdViewed(const PromotedContentAdInfo& ad) const;
+  void NotifyPromotedContentAdClicked(const PromotedContentAdInfo& ad) const;
 
   void NotifyPromotedContentAdEventFailed(
       const std::string& uuid,
       const std::string& creative_instance_id,
-      const PromotedContentAdEventType event_type);
+      const mojom::PromotedContentAdEventType event_type) const;
+
+  base::ObserverList<PromotedContentAdObserver> observers_;
 };
 
 }  // namespace ads

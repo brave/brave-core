@@ -11,10 +11,14 @@
 class BraveIncognitoMenuView : public IncognitoMenuView {
  public:
   using IncognitoMenuView::IncognitoMenuView;
+
+  BraveIncognitoMenuView(const BraveIncognitoMenuView&) = delete;
+  BraveIncognitoMenuView& operator=(const BraveIncognitoMenuView&) = delete;
   ~BraveIncognitoMenuView() override = default;
 
   // ProfileMenuViewBase:
   void BuildMenu() override;
+  void AddedToWidget() override;
 
  private:
   friend class IncognitoMenuView;
@@ -27,8 +31,6 @@ class BraveIncognitoMenuView : public IncognitoMenuView {
 
   void AddTorButton();
   void OnTorProfileButtonClicked();
-
-  DISALLOW_COPY_AND_ASSIGN(BraveIncognitoMenuView);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PROFILES_BRAVE_INCOGNITO_MENU_VIEW_H_

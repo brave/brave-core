@@ -6,5 +6,5 @@
 #include "brave/browser/profiles/profile_util.h"
 
 #define BRAVE_BUILD_SERVICE_INSTANCE_FOR brave::IsSessionProfile(profile) ||
-#include "../../../../../chrome/browser/content_settings/host_content_settings_map_factory.cc"
+#include "src/chrome/browser/content_settings/host_content_settings_map_factory.cc"
 #undef  BRAVE_BUILD_SERVICE_INSTANCE_FOR

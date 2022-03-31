@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_DATABASE_MIGRATION_MIGRATION_V11_H_
-#define BRAVELEDGER_DATABASE_MIGRATION_MIGRATION_V11_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_MIGRATION_MIGRATION_V11_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_MIGRATION_MIGRATION_V11_H_
 
 namespace ledger {
 namespace database {
@@ -54,9 +54,9 @@ const char v11[] = R"(
   ALTER TABLE contribution_info_temp ADD amount DOUBLE;
 
   UPDATE contribution_info_temp SET
-  contribution_id = PRINTF("id_%s_%s", date, ABS(RANDOM())),
+  contribution_id = PRINTF('id_%s_%s', date, ABS(RANDOM())),
   amount = CAST(
-    PRINTF("%s.%s", SUBSTR(probi, 0, LENGTH(probi)-17),
+    PRINTF('%s.%s', SUBSTR(probi, 0, LENGTH(probi)-17),
     SUBSTR(SUBSTR(probi, LENGTH(probi)-17, LENGTH(probi)), 0, 2)) as decimal
   );
 
@@ -67,7 +67,7 @@ const char v11[] = R"(
   INSERT INTO contribution_info_publishers (contribution_id, publisher_key,
   total_amount, contributed_amount) SELECT contribution_id, publisher_id,
   amount, amount FROM contribution_info_temp WHERE publisher_id IS NOT NULL AND
-  publisher_id != "";
+  publisher_id != '';
 
   PRAGMA foreign_keys = off;
     DROP TABLE IF EXISTS contribution_info_temp;
@@ -78,4 +78,4 @@ const char v11[] = R"(
 }  // namespace database
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_DATABASE_MIGRATION_MIGRATION_V11_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_DATABASE_MIGRATION_MIGRATION_V11_H_

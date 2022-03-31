@@ -10,7 +10,7 @@
   BraveFarblingLevel GetBraveFarblingLevel() override; \
   bool AllowFingerprinting(bool enabled_per_settings) override;
 
-#include "../../../../chrome/renderer/worker_content_settings_client.h"
+#include "src/chrome/renderer/worker_content_settings_client.h"
 
 #undef BRAVE_WORKER_CONTENT_SETTINGS_CLIENT_H
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <include name="IDR_BRAVE_SHIELDS_ICON_64" file="../brave_extension/extension/brave_extension/assets/img/icon-64.png" type="BINDATA" />
+  <include name="IDR_SHIELDS_PANEL_HTML" file="../brave_shields/resources/panel/brave_shields.html" type="BINDATA" />
+  <include name="IDR_BRAVE_SHIELDS_ICON_64_DISABLED" file="../brave_extension/extension/brave_extension/assets/img/shields-off@3x.png" type="BINDATA" />
+</grit-part>

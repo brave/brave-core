@@ -8,29 +8,27 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 #include "bat/ads/ad_content_info.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/ads_history_filter_types.h"
 #include "bat/ads/ads_history_info.h"
+#include "bat/ads/ads_history_sort_types.h"
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/inline_content_ad_info.h"
+#include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
+using std::placeholders::_3;
 
 namespace bat_ads {
 
 namespace {
 
-ads::AdContentInfo::LikeAction ToAdsLikeAction(
-    const int action) {
-  return static_cast<ads::AdContentInfo::LikeAction>(action);
-}
-
-ads::CategoryContentInfo::OptAction ToAdsOptAction(
-    const int action) {
-  return static_cast<ads::CategoryContentInfo::OptAction>(action);
+ads::CategoryContentOptActionType ToCategoryContentOptActionType(
+    const int opt_action_type) {
+  return static_cast<ads::CategoryContentOptActionType>(opt_action_type);
 }
 
 }  // namespace
@@ -136,22 +134,44 @@ void BatAdsImpl::GetAdNotification(
 
 void BatAdsImpl::OnAdNotificationEvent(
     const std::string& uuid,
-    const ads::AdNotificationEventType event_type) {
+    const ads::mojom::AdNotificationEventType event_type) {
   ads_->OnAdNotificationEvent(uuid, event_type);
 }
 
 void BatAdsImpl::OnNewTabPageAdEvent(
     const std::string& uuid,
     const std::string& creative_instance_id,
-    const ads::NewTabPageAdEventType event_type) {
+    const ads::mojom::NewTabPageAdEventType event_type) {
   ads_->OnNewTabPageAdEvent(uuid, creative_instance_id, event_type);
 }
 
 void BatAdsImpl::OnPromotedContentAdEvent(
     const std::string& uuid,
     const std::string& creative_instance_id,
-    const ads::PromotedContentAdEventType event_type) {
+    const ads::mojom::PromotedContentAdEventType event_type) {
   ads_->OnPromotedContentAdEvent(uuid, creative_instance_id, event_type);
+}
+
+void BatAdsImpl::GetInlineContentAd(const std::string& dimensions,
+                                    GetInlineContentAdCallback callback) {
+  auto* holder = new CallbackHolder<GetInlineContentAdCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  auto get_inline_content_ads_callback =
+      std::bind(BatAdsImpl::OnGetInlineContentAd, holder, _1, _2, _3);
+  ads_->GetInlineContentAd(dimensions, get_inline_content_ads_callback);
+}
+
+void BatAdsImpl::OnInlineContentAdEvent(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const ads::mojom::InlineContentAdEventType event_type) {
+  ads_->OnInlineContentAdEvent(uuid, creative_instance_id, event_type);
+}
+
+void BatAdsImpl::PurgeOrphanedAdEventsForType(
+    const ads::mojom::AdType ad_type) {
+  ads_->PurgeOrphanedAdEventsForType(ad_type);
 }
 
 void BatAdsImpl::RemoveAllHistory(
@@ -170,86 +190,85 @@ void BatAdsImpl::OnWalletUpdated(
   ads_->OnWalletUpdated(payment_id, seed);
 }
 
-void BatAdsImpl::ReconcileAdRewards() {
-  ads_->ReconcileAdRewards();
-}
-
-void BatAdsImpl::GetAdsHistory(
-    const uint64_t from_timestamp,
-    const uint64_t to_timestamp,
-    GetAdsHistoryCallback callback) {
-  ads::AdsHistoryInfo history = ads_->GetAdsHistory(
-      ads::AdsHistoryInfo::FilterType::kConfirmationType,
-          ads::AdsHistoryInfo::SortType::kDescendingOrder, from_timestamp,
-              to_timestamp);
+void BatAdsImpl::GetHistory(const double from_timestamp,
+                            const double to_timestamp,
+                            GetHistoryCallback callback) {
+  ads::AdsHistoryInfo history = ads_->GetHistory(
+      ads::AdsHistoryFilterType::kConfirmationType,
+      ads::AdsHistorySortType::kDescendingOrder, from_timestamp, to_timestamp);
 
   std::move(callback).Run(history.ToJson());
 }
 
-void BatAdsImpl::GetAccountStatement(GetAccountStatementCallback callback) {
-  auto* holder = new CallbackHolder<GetAccountStatementCallback>(
+void BatAdsImpl::GetStatementOfAccounts(
+    GetStatementOfAccountsCallback callback) {
+  auto* holder = new CallbackHolder<GetStatementOfAccountsCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ads_->GetAccountStatement(
-      std::bind(BatAdsImpl::OnGetAccountStatement, holder, _1, _2));
+  ads_->GetStatementOfAccounts(
+      std::bind(BatAdsImpl::OnGetStatementOfAccounts, holder, _1, _2));
 }
 
-void BatAdsImpl::ToggleAdThumbUp(
-    const std::string& creative_instance_id,
-    const std::string& creative_set_id,
-    const int action,
-    ToggleAdThumbUpCallback callback) {
-  const ads::AdContentInfo::LikeAction like_action = ads_->ToggleAdThumbUp(
-      creative_instance_id, creative_set_id, ToAdsLikeAction(action));
-  std::move(callback).Run(creative_instance_id, static_cast<int>(like_action));
+void BatAdsImpl::GetAdDiagnostics(GetAdDiagnosticsCallback callback) {
+  auto* holder = new CallbackHolder<GetAdDiagnosticsCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ads_->GetAdDiagnostics(
+      std::bind(BatAdsImpl::OnGetAdDiagnostics, holder, _1, _2));
 }
 
-void BatAdsImpl::ToggleAdThumbDown(
-    const std::string& creative_instance_id,
-    const std::string& creative_set_id,
-    const int action,
-    ToggleAdThumbDownCallback callback) {
-  const ads::AdContentInfo::LikeAction like_action = ads_->ToggleAdThumbDown(
-      creative_instance_id, creative_set_id, ToAdsLikeAction(action));
-  std::move(callback).Run(creative_instance_id, static_cast<int>(like_action));
+void BatAdsImpl::ToggleAdThumbUp(const std::string& json,
+                                 ToggleAdThumbUpCallback callback) {
+  ads::AdContentInfo ad_content;
+  ad_content.FromJson(json);
+  ad_content.like_action_type = ads_->ToggleAdThumbUp(json);
+
+  std::move(callback).Run(ad_content.ToJson());
 }
 
-void BatAdsImpl::ToggleAdOptInAction(
-    const std::string& category,
-    const int action,
-    ToggleAdOptInActionCallback callback) {
-  const ads::CategoryContentInfo::OptAction opt_action =
-      ads_->ToggleAdOptInAction(category, ToAdsOptAction(action));
-  std::move(callback).Run(category, static_cast<int>(opt_action));
+void BatAdsImpl::ToggleAdThumbDown(const std::string& json,
+                                   ToggleAdThumbDownCallback callback) {
+  ads::AdContentInfo ad_content;
+  ad_content.FromJson(json);
+  ad_content.like_action_type = ads_->ToggleAdThumbDown(json);
+
+  std::move(callback).Run(ad_content.ToJson());
 }
 
-void BatAdsImpl::ToggleAdOptOutAction(
-    const std::string& category,
-    const int action,
-    ToggleAdOptOutActionCallback callback) {
-  const ads::CategoryContentInfo::OptAction opt_action =
-      ads_->ToggleAdOptOutAction(category, ToAdsOptAction(action));
-  std::move(callback).Run(category, static_cast<int>(opt_action));
+void BatAdsImpl::ToggleAdOptIn(const std::string& category,
+                               const int opt_action_type,
+                               ToggleAdOptInCallback callback) {
+  const ads::CategoryContentOptActionType toggled_opt_action_type =
+      ads_->ToggleAdOptIn(category,
+                          ToCategoryContentOptActionType(opt_action_type));
+  std::move(callback).Run(category, static_cast<int>(toggled_opt_action_type));
 }
 
-void BatAdsImpl::ToggleSaveAd(
-    const std::string& creative_instance_id,
-    const std::string& creative_set_id,
-    const bool saved,
-    ToggleSaveAdCallback callback) {
-  const bool saved_result =
-      ads_->ToggleSaveAd(creative_instance_id, creative_set_id, saved);
-  std::move(callback).Run(creative_instance_id, saved_result);
+void BatAdsImpl::ToggleAdOptOut(const std::string& category,
+                                const int opt_action_type,
+                                ToggleAdOptOutCallback callback) {
+  const ads::CategoryContentOptActionType toggled_opt_action_type =
+      ads_->ToggleAdOptOut(category,
+                           ToCategoryContentOptActionType(opt_action_type));
+  std::move(callback).Run(category, static_cast<int>(toggled_opt_action_type));
 }
 
-void BatAdsImpl::ToggleFlagAd(
-    const std::string& creative_instance_id,
-    const std::string& creative_set_id,
-    const bool flagged,
-    ToggleFlagAdCallback callback) {
-  bool flagged_result =
-      ads_->ToggleFlagAd(creative_instance_id, creative_set_id, flagged);
-  std::move(callback).Run(creative_instance_id, flagged_result);
+void BatAdsImpl::ToggleSavedAd(const std::string& json,
+                               ToggleSavedAdCallback callback) {
+  ads::AdContentInfo ad_content;
+  ad_content.FromJson(json);
+  ad_content.is_saved = ads_->ToggleSavedAd(json);
+
+  std::move(callback).Run(ad_content.ToJson());
+}
+
+void BatAdsImpl::ToggleFlaggedAd(const std::string& json,
+                                 ToggleFlaggedAdCallback callback) {
+  ads::AdContentInfo ad_content;
+  ad_content.FromJson(json);
+  ad_content.is_flagged = ads_->ToggleFlaggedAd(json);
+
+  std::move(callback).Run(ad_content.ToJson());
 }
 
 void BatAdsImpl::OnResourceComponentUpdated(const std::string& id) {
@@ -258,21 +277,31 @@ void BatAdsImpl::OnResourceComponentUpdated(const std::string& id) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void BatAdsImpl::OnInitialize(
-    CallbackHolder<InitializeCallback>* holder,
-    const int32_t result) {
+void BatAdsImpl::OnInitialize(CallbackHolder<InitializeCallback>* holder,
+                              const bool success) {
   if (holder->is_valid()) {
-    std::move(holder->get()).Run((ads::Result)result);
+    std::move(holder->get()).Run(success);
   }
 
   delete holder;
 }
 
-void BatAdsImpl::OnShutdown(
-    CallbackHolder<ShutdownCallback>* holder,
-    const int32_t result) {
+void BatAdsImpl::OnShutdown(CallbackHolder<ShutdownCallback>* holder,
+                            const bool success) {
   if (holder->is_valid()) {
-    std::move(holder->get()).Run((ads::Result)result);
+    std::move(holder->get()).Run(success);
+  }
+
+  delete holder;
+}
+
+void BatAdsImpl::OnGetInlineContentAd(
+    CallbackHolder<GetInlineContentAdCallback>* holder,
+    const bool success,
+    const std::string& dimensions,
+    const ads::InlineContentAdInfo& ad) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(success, dimensions, ad.ToJson());
   }
 
   delete holder;
@@ -280,20 +309,34 @@ void BatAdsImpl::OnShutdown(
 
 void BatAdsImpl::OnRemoveAllHistory(
     CallbackHolder<RemoveAllHistoryCallback>* holder,
-    const int32_t result) {
+    const bool success) {
   if (holder->is_valid()) {
-    std::move(holder->get()).Run((ads::Result)result);
+    std::move(holder->get()).Run(success);
   }
 
   delete holder;
 }
 
-void BatAdsImpl::OnGetAccountStatement(
-    CallbackHolder<GetAccountStatementCallback>* holder,
+void BatAdsImpl::OnGetStatementOfAccounts(
+    CallbackHolder<GetStatementOfAccountsCallback>* holder,
     const bool success,
     const ads::StatementInfo& statement) {
   if (holder->is_valid()) {
     const std::string json = statement.ToJson();
+    std::move(holder->get()).Run(success, json);
+  }
+
+  delete holder;
+}
+
+// static
+void BatAdsImpl::OnGetAdDiagnostics(
+    CallbackHolder<GetAdDiagnosticsCallback>* holder,
+    const bool success,
+    const std::string& json) {
+  DCHECK(holder);
+
+  if (holder->is_valid()) {
     std::move(holder->get()).Run(success, json);
   }
 

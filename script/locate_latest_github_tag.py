@@ -74,7 +74,8 @@ def main():
 
     items = get_github_tags(branch)
 
-    sorted_list = sorted(items, key=cmp_to_key(loose_version_cmp), reverse=True)
+    sorted_list = sorted(items, key=cmp_to_key(
+        loose_version_cmp), reverse=True)
     print(sorted_list[0])
 
 

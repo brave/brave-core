@@ -35,7 +35,7 @@ bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
 
 #define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_NULLOPT \
   if (!AllowFingerprintingForHost(Host()))         \
-    return base::nullopt;
+    return absl::nullopt;
 
 #define BRAVE_WEBGL_RENDERING_CONTEXT_BASE_ZERO \
   if (!AllowFingerprintingForHost(Host()))      \
@@ -80,7 +80,7 @@ bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
 
 #define getExtension getExtension_ChromiumImpl
 #define getSupportedExtensions getSupportedExtensions_ChromiumImpl
-#include "../../../../../../../third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc"
+#include "src/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc"
 #undef getSupportedExtensions
 #undef getExtension
 
@@ -88,11 +88,11 @@ namespace blink {
 
 // If fingerprinting is disallowed, claim that the only supported extension is
 // WebGLDebugRendererInfo.
-base::Optional<Vector<String>>
+absl::optional<Vector<String>>
 WebGLRenderingContextBase::getSupportedExtensions() {
-  base::Optional<Vector<String>> real_extensions =
+  absl::optional<Vector<String>> real_extensions =
       getSupportedExtensions_ChromiumImpl();
-  if (real_extensions == base::nullopt)
+  if (real_extensions == absl::nullopt)
     return real_extensions;
   if (AllowFingerprintingForHost(Host()))
     return real_extensions;

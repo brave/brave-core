@@ -8,24 +8,19 @@
 
 #include <string>
 
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/ad_events/ad_event_info.h"
+#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
-#include "bat/ads/mojom.h"
-#include "bat/ads/result.h"
+#include "bat/ads/internal/database/tables/ad_events_database_table_aliases.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-
-using GetAdEventsCallback =
-    std::function<void(const Result, const AdEventList&)>;
-
 namespace database {
 namespace table {
 
-class AdEvents : public Table {
+class AdEvents final : public Table {
  public:
   AdEvents();
-
   ~AdEvents() override;
 
   void LogEvent(const AdEventInfo& ad_event, ResultCallback callback);
@@ -34,32 +29,31 @@ class AdEvents : public Table {
 
   void GetAll(GetAdEventsCallback callback);
 
+  void GetForType(const mojom::AdType ad_type, GetAdEventsCallback callback);
+
   void PurgeExpired(ResultCallback callback);
+  void PurgeOrphaned(const mojom::AdType ad_type, ResultCallback callback);
 
-  std::string get_table_name() const override;
+  std::string GetTableName() const override;
 
-  void Migrate(DBTransaction* transaction, const int to_version) override;
+  void Migrate(mojom::DBTransaction* transaction,
+               const int to_version) override;
 
  private:
   void RunTransaction(const std::string& query, GetAdEventsCallback callback);
 
-  void InsertOrUpdate(DBTransaction* transaction, const AdEventList& ad_event);
+  void InsertOrUpdate(mojom::DBTransaction* transaction,
+                      const AdEventList& ad_event);
 
-  int BindParameters(DBCommand* command, const AdEventList& ad_events);
-
-  std::string BuildInsertOrUpdateQuery(DBCommand* command,
+  std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const AdEventList& ad_events);
 
-  void OnGetAdEvents(DBCommandResponsePtr response,
+  void OnGetAdEvents(mojom::DBCommandResponsePtr response,
                      GetAdEventsCallback callback);
 
-  AdEventInfo GetFromRecord(DBRecord* record) const;
-
-  void CreateTableV5(DBTransaction* transaction);
-  void MigrateToV5(DBTransaction* transaction);
-
-  void CreateTableV13(DBTransaction* transaction);
-  void MigrateToV13(DBTransaction* transaction);
+  void MigrateToV5(mojom::DBTransaction* transaction);
+  void MigrateToV13(mojom::DBTransaction* transaction);
+  void MigrateToV17(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

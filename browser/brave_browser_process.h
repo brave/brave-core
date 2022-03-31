@@ -11,7 +11,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 
-#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -33,8 +32,6 @@ class LocalDataFilesService;
 
 namespace brave_shields {
 class AdBlockService;
-class AdBlockCustomFiltersService;
-class AdBlockRegionalServiceManager;
 class HTTPSEverywhereService;
 }  // namespace brave_shields
 
@@ -47,6 +44,10 @@ namespace greaselion {
 class GreaselionDownloadService;
 #endif
 }  // namespace greaselion
+
+namespace debounce {
+class DebounceComponentInstaller;
+}  // namespace debounce
 
 namespace ntp_background_images {
 class NTPBackgroundImagesService;
@@ -74,10 +75,6 @@ class BraveBrowserProcess {
   virtual ~BraveBrowserProcess();
   virtual void StartBraveServices() = 0;
   virtual brave_shields::AdBlockService* ad_block_service() = 0;
-  virtual brave_shields::AdBlockCustomFiltersService*
-  ad_block_custom_filters_service() = 0;
-  virtual brave_shields::AdBlockRegionalServiceManager*
-  ad_block_regional_service_manager() = 0;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   virtual brave_component_updater::ExtensionWhitelistService*
   extension_whitelist_service() = 0;
@@ -86,13 +83,15 @@ class BraveBrowserProcess {
   virtual greaselion::GreaselionDownloadService*
   greaselion_download_service() = 0;
 #endif
+  virtual debounce::DebounceComponentInstaller*
+  debounce_component_installer() = 0;
   virtual brave_shields::HTTPSEverywhereService* https_everywhere_service() = 0;
   virtual brave_component_updater::LocalDataFilesService*
   local_data_files_service() = 0;
 #if BUILDFLAG(ENABLE_TOR)
   virtual tor::BraveTorClientUpdater* tor_client_updater() = 0;
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   virtual ipfs::BraveIpfsClientUpdater* ipfs_client_updater() = 0;
 #endif
   virtual brave::BraveP3AService* brave_p3a_service() = 0;
@@ -104,9 +103,7 @@ class BraveBrowserProcess {
   virtual speedreader::SpeedreaderRewriterService*
   speedreader_rewriter_service() = 0;
 #endif
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
   virtual brave_ads::ResourceComponent* resource_component() = 0;
-#endif
 };
 
 extern BraveBrowserProcess* g_brave_browser_process;

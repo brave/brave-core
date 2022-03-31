@@ -6,26 +6,34 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_
 
-#include <cstdint>
+#include <string>
 
-#include "base/time/time.h"
-#include "bat/ads/transaction_info.h"
+#include "bat/ads/internal/account/transactions/transactions_aliases.h"
+#include "bat/ads/internal/database/tables/transactions_database_table_aliases.h"
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 
-struct ConfirmationInfo;
+class AdType;
+class ConfirmationType;
+struct TransactionInfo;
 
 namespace transactions {
 
-TransactionList GetCleared(const int64_t from_timestamp,
-                           const int64_t to_timestamp);
+TransactionInfo Add(const std::string& creative_instance_id,
+                    const double value,
+                    const AdType& ad_type,
+                    const ConfirmationType& confirmation_type,
+                    AddTransactionCallback callback);
 
-TransactionList GetUncleared();
+void GetForDateRange(const base::Time from_time,
+                     const base::Time to_time,
+                     GetTransactionsCallback callback);
 
-uint64_t GetCountForMonth(const base::Time& time);
-
-void Add(const double estimated_redemption_value,
-         const ConfirmationInfo& confirmation);
+void RemoveAll(RemoveAllTransactionsCallback callback);
 
 }  // namespace transactions
 }  // namespace ads

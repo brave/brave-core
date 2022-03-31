@@ -7,12 +7,12 @@
 #include "base/task/post_task.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -31,12 +31,33 @@ const char kEmbeddedTestServerDirectory[] = "brave-wallet";
 std::string CheckForEventScript(const std::string& event_var) {
   return base::StringPrintf(R"(function waitForEvent() {
              if (%s) {
-              window.domAutomationController.send(true);
+               console.log('!!!send true')
+               window.domAutomationController.send(true);
              } else {
-              setTimeout(waitForEvent, 100);
+               if (window.ethereum) {
+                 if (!set_events_listeners) {
+                   console.log('!!!set events')
+                   set_events_listeners = true
+                   window.ethereum.on('connect', function(chainId) {
+                     received_connect_event = true
+                   });
+                   console.log('!!!set connect')
+                   window.ethereum.on('chainChanged', function(chainId) {
+                     received_chain_changed_event = chainId == '0x5'
+                   });
+                   console.log('!!!set chainChanged')
+                 }
+                 if (window.ethereum.isConnected()) {
+                   console.log('!!!isConnected')
+                   received_connect_event = true
+                   received_chain_changed_event = true
+                 }
+               }
              }
             }
-            waitForEvent();)",
+            console.log('!!!starting')
+            var set_events_listeners = false;
+            setInterval(waitForEvent, 100);)",
                             event_var.c_str());
 }
 
@@ -74,19 +95,18 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
 
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
-  brave_wallet::BraveWalletService* GetBraveWalletService() {
-    brave_wallet::BraveWalletService* service =
-        brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
-            browser()->profile());
-    EXPECT_TRUE(service);
-    return service;
-  }
-
-  brave_wallet::EthJsonRpcController* GetEthJsonRpcController() {
-    return GetBraveWalletService()->rpc_controller();
+  mojo::Remote<brave_wallet::mojom::JsonRpcService> GetJsonRpcService() {
+    if (!json_rpc_service_) {
+      auto pending =
+          brave_wallet::JsonRpcServiceFactory::GetInstance()->GetForContext(
+              browser()->profile());
+      json_rpc_service_.Bind(std::move(pending));
+    }
+    return std::move(json_rpc_service_);
   }
 
  private:
+  mojo::Remote<brave_wallet::mojom::JsonRpcService> json_rpc_service_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   base::test::ScopedFeatureList feature_list_;
 };
@@ -94,13 +114,14 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest, CheckForAConnectEvent) {
   GURL url =
       https_server()->GetURL("a.com", "/brave_wallet_event_emitter.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
 
-  auto result_first = EvalJsWithManualReply(
-      contents, CheckForEventScript("received_connect_event"));
+  auto result_first =
+      EvalJs(contents, CheckForEventScript("received_connect_event"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
@@ -108,14 +129,16 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
                        CheckForAChainChangedEvent) {
   GURL url =
       https_server()->GetURL("a.com", "/brave_wallet_event_emitter.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
-  auto* controller = GetEthJsonRpcController();
-  controller->SetNetwork(brave_wallet::Network::kGoerli);
+  auto service = GetJsonRpcService();
+  service->SetNetwork(brave_wallet::mojom::kGoerliChainId,
+                      brave_wallet::mojom::CoinType::ETH, base::DoNothing());
 
-  auto result_first = EvalJsWithManualReply(
-      contents, CheckForEventScript("received_chain_changed_event"));
+  auto result_first =
+      EvalJs(contents, CheckForEventScript("received_chain_changed_event"),
+             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result_first.value);
 }

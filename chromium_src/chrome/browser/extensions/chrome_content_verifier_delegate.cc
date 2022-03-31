@@ -22,9 +22,9 @@
 #include "build/branding_buildflags.h"
 #include "build/build_config.h"
 #include "build/chromeos_buildflags.h"
+#include "chrome/browser/extensions/corrupted_extension_reinstaller.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/install_verifier.h"
-#include "chrome/browser/extensions/policy_extension_reinstaller.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/extensions/extension_constants.h"
 #include "extensions/browser/disable_reason.h"
@@ -52,7 +52,7 @@
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 #endif
-#include "../../../../../chrome/browser/extensions/chrome_content_verifier_delegate.cc"
+#include "src/chrome/browser/extensions/chrome_content_verifier_delegate.cc"
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #endif

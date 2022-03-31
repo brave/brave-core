@@ -28,13 +28,13 @@ extern const char kDisableMachineId[];
 
 extern const char kDisableEncryptionWin[];
 
-extern const char kFastWidevineBundleUpdate[];
-
 extern const char kComponentUpdateIntervalInSec[];
 
 extern const char kDisableDnsOverHttps[];
 
 extern const char kUpdateFeedURL[];
+
+extern const char kTor[];
 }  // namespace switches
 
 #endif  // BRAVE_COMMON_BRAVE_SWITCHES_H_

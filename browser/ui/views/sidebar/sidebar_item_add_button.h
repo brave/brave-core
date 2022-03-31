@@ -6,6 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_ADD_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_ADD_BUTTON_H_
 
+#include <string>
+
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
@@ -17,7 +20,9 @@ class BraveBrowser;
 class SidebarItemAddButton : public SidebarButtonView,
                              public views::WidgetObserver {
  public:
-  explicit SidebarItemAddButton(BraveBrowser* browser);
+  METADATA_HEADER(SidebarItemAddButton);
+  explicit SidebarItemAddButton(BraveBrowser* browser,
+                                const std::u16string& accessible_name);
   ~SidebarItemAddButton() override;
 
   SidebarItemAddButton(const SidebarItemAddButton&) = delete;
@@ -28,6 +33,7 @@ class SidebarItemAddButton : public SidebarButtonView,
   void OnMouseExited(const ui::MouseEvent& event) override;
   void OnGestureEvent(ui::GestureEvent* event) override;
   void AddedToWidget() override;
+  void OnThemeChanged() override;
 
   // views::WidgetObserver overrides:
   void OnWidgetDestroying(views::Widget* widget) override;
@@ -39,8 +45,9 @@ class SidebarItemAddButton : public SidebarButtonView,
   void DoShowBubble();
 
   void UpdateButtonImages();
+  void OnButtonPressed();
 
-  BraveBrowser* browser_;
+  raw_ptr<BraveBrowser> browser_ = nullptr;
   base::OneShotTimer timer_;
   base::CallbackListSubscription on_enabled_changed_subscription_;
   base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{

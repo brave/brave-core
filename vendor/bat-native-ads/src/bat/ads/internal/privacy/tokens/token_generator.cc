@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
 
-#include "bat/ads/internal/logging.h"
-
 namespace ads {
 namespace privacy {
 

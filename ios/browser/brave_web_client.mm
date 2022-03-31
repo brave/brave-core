@@ -9,7 +9,10 @@
 
 #include "base/bind.h"
 #include "brave/ios/browser/brave_web_main_parts.h"
+#include "ios/chrome/browser/chrome_url_constants.h"
+#include "ios/components/webui/web_ui_url_constants.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -18,6 +21,15 @@
 BraveWebClient::BraveWebClient() : web_main_parts_(nullptr) {}
 
 BraveWebClient::~BraveWebClient() {
+}
+
+void BraveWebClient::AddAdditionalSchemes(Schemes* schemes) const {
+  schemes->standard_schemes.push_back(kChromeUIScheme);
+  schemes->secure_schemes.push_back(kChromeUIScheme);
+}
+
+bool BraveWebClient::IsAppSpecificURL(const GURL& url) const {
+  return url.SchemeIs(kChromeUIScheme);
 }
 
 std::unique_ptr<web::WebMainParts> BraveWebClient::CreateWebMainParts() {
@@ -36,7 +48,7 @@ std::string BraveWebClient::GetUserAgent(web::UserAgentType type) const {
 
 base::StringPiece BraveWebClient::GetDataResource(
     int resource_id,
-    ui::ScaleFactor scale_factor) const {
+    ui::ResourceScaleFactor scale_factor) const {
   return ui::ResourceBundle::GetSharedInstance().GetRawDataResourceForScale(
       resource_id, scale_factor);
 }
@@ -46,3 +58,6 @@ base::RefCountedMemory* BraveWebClient::GetDataResourceBytes(
   return ui::ResourceBundle::GetSharedInstance().LoadDataResourceBytes(
       resource_id);
 }
+
+void BraveWebClient::GetAdditionalWebUISchemes(
+    std::vector<std::string>* additional_schemes) {}

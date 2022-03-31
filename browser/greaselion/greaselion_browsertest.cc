@@ -4,8 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/scoped_observation.h"
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
@@ -41,9 +43,13 @@ class GreaselionDownloadServiceWaiter
  public:
   explicit GreaselionDownloadServiceWaiter(
       GreaselionDownloadService* download_service)
-      : download_service_(download_service), scoped_observer_(this) {
-    scoped_observer_.Add(download_service_);
+      : download_service_(download_service) {
+    scoped_observer_.Observe(download_service_);
   }
+  GreaselionDownloadServiceWaiter(const GreaselionDownloadServiceWaiter&) =
+      delete;
+  GreaselionDownloadServiceWaiter& operator=(
+      const GreaselionDownloadServiceWaiter&) = delete;
   ~GreaselionDownloadServiceWaiter() override = default;
 
   void Wait() { run_loop_.Run(); }
@@ -56,18 +62,19 @@ class GreaselionDownloadServiceWaiter
 
   GreaselionDownloadService* const download_service_;
   base::RunLoop run_loop_;
-  ScopedObserver<GreaselionDownloadService, GreaselionDownloadService::Observer>
-      scoped_observer_;
-
-  DISALLOW_COPY_AND_ASSIGN(GreaselionDownloadServiceWaiter);
+  base::ScopedObservation<GreaselionDownloadService,
+                          GreaselionDownloadService::Observer>
+      scoped_observer_{this};
 };
 
 class GreaselionServiceWaiter : public GreaselionService::Observer {
  public:
   explicit GreaselionServiceWaiter(GreaselionService* greaselion_service)
-      : greaselion_service_(greaselion_service), scoped_observer_(this) {
-    scoped_observer_.Add(greaselion_service_);
+      : greaselion_service_(greaselion_service) {
+    scoped_observer_.Observe(greaselion_service_);
   }
+  GreaselionServiceWaiter(const GreaselionServiceWaiter&) = delete;
+  GreaselionServiceWaiter& operator=(const GreaselionServiceWaiter&) = delete;
   ~GreaselionServiceWaiter() override = default;
 
   void Wait() {
@@ -85,10 +92,8 @@ class GreaselionServiceWaiter : public GreaselionService::Observer {
 
   GreaselionService* const greaselion_service_;
   base::RunLoop run_loop_;
-  ScopedObserver<GreaselionService, GreaselionService::Observer>
-      scoped_observer_;
-
-  DISALLOW_COPY_AND_ASSIGN(GreaselionServiceWaiter);
+  base::ScopedObservation<GreaselionService, GreaselionService::Observer>
+      scoped_observer_{this};
 };
 
 class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
@@ -178,10 +183,10 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
 
   std::unique_ptr<rewards_browsertest::RewardsBrowserTestResponse> response_;
   net::test_server::EmbeddedTestServer https_server_;
-  brave_rewards::RewardsServiceImpl* rewards_service_;
+  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
 };
 
-#if !defined(OS_MAC)
+#if !BUILDFLAG(IS_MAC)
 class GreaselionServiceLocaleTest : public GreaselionServiceTest {
  public:
   explicit GreaselionServiceLocaleTest(const std::string& locale)
@@ -232,7 +237,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ClearCache) {
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjection) {
   ASSERT_TRUE(InstallMockExtension());
   GURL url = embedded_test_server()->GetURL("www.a.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -249,7 +254,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjection) {
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentStart) {
   ASSERT_TRUE(InstallMockExtension());
   GURL url = embedded_test_server()->GetURL("runat1.b.com", "/intercept.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -266,7 +271,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentStart) {
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentEnd) {
   ASSERT_TRUE(InstallMockExtension());
   GURL url = embedded_test_server()->GetURL("runat2.b.com", "/intercept.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -283,7 +288,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentEnd) {
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionRunAtDefault) {
   ASSERT_TRUE(InstallMockExtension());
   GURL url = embedded_test_server()->GetURL("runat3.b.com", "/intercept.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -302,7 +307,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   ASSERT_TRUE(InstallMockExtension());
 
   GURL url = embedded_test_server()->GetURL("pre1.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -325,7 +330,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionWithPrecondition) {
   ASSERT_TRUE(InstallMockExtension());
 
   GURL url = embedded_test_server()->GetURL("pre1.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -371,7 +376,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-low-wild.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -392,7 +397,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-low-format.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -414,7 +419,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-match-wild.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -435,7 +440,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-match-exact.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -456,7 +461,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-high-wild.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -477,7 +482,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-high-exact.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -498,7 +503,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-empty.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -519,7 +524,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-bad-format.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -538,7 +543,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, CleanShutdown) {
   ASSERT_TRUE(InstallMockExtension());
 
   GURL url = embedded_test_server()->GetURL("www.a.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetURL());
@@ -554,14 +559,14 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, CleanShutdown) {
   ui_test_utils::WaitForBrowserToClose(browser());
 }
 
-#if !defined(OS_MAC)
+#if !BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestEnglish,
                        ScriptInjectionWithMessagesDefaultLocale) {
   ASSERT_TRUE(InstallMockExtension());
 
   const GURL url =
       embedded_test_server()->GetURL("messages.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -585,7 +590,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestGerman,
 
   const GURL url =
       embedded_test_server()->GetURL("messages.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -609,7 +614,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestFrench,
 
   const GURL url =
       embedded_test_server()->GetURL("messages.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));

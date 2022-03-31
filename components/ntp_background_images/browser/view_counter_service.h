@@ -10,14 +10,19 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
+#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
+
+namespace brave_ads {
+class AdsService;
+}  // namespace brave_ads
 
 namespace content {
 class WebUIDataSource;
@@ -31,13 +36,16 @@ class WeeklyStorage;
 
 namespace ntp_background_images {
 
+class NTPCustomBackgroundImagesService;
 struct NTPBackgroundImagesData;
+struct NTPSponsoredImagesData;
 struct TopSite;
 
 class ViewCounterService : public KeyedService,
                            public NTPBackgroundImagesService::Observer {
  public:
   ViewCounterService(NTPBackgroundImagesService* service,
+                     NTPCustomBackgroundImagesService* custom_service,
                      brave_ads::AdsService* ads_service,
                      PrefService* prefs,
                      PrefService* local_state,
@@ -61,8 +69,8 @@ class ViewCounterService : public KeyedService,
 
   base::Value GetCurrentWallpaperForDisplay() const;
   base::Value GetCurrentWallpaper() const;
-  std::vector<TopSite> GetTopSitesVectorForWebUI() const;
-  std::vector<TopSite> GetTopSitesVectorData() const;
+  base::Value GetCurrentBrandedWallpaper() const;
+  std::vector<TopSite> GetTopSitesData() const;
 
   bool IsSuperReferral() const;
   std::string GetSuperReferralThemeName() const;
@@ -70,10 +78,11 @@ class ViewCounterService : public KeyedService,
 
   void BrandedWallpaperWillBeDisplayed(const std::string& wallpaper_id);
 
+  NTPBackgroundImagesData* GetCurrentWallpaperData() const;
   // Gets the current data for branded wallpaper, if there
   // is a wallpaper active. Does not consider user opt-in
   // status, or consider whether the wallpaper should be shown.
-  NTPBackgroundImagesData* GetCurrentBrandedWallpaperData() const;
+  NTPSponsoredImagesData* GetCurrentBrandedWallpaperData() const;
 
   void InitializeWebUIDataSource(content::WebUIDataSource* html_source);
 
@@ -86,9 +95,9 @@ class ViewCounterService : public KeyedService,
 
   friend class NTPBackgroundImagesViewCounterTest;
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           NotActiveInitially);
+                           SINotActiveInitially);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           NotActiveWithBadData);
+                           SINotActiveWithBadData);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            NotActiveOptedOut);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
@@ -98,6 +107,16 @@ class ViewCounterService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            ActiveOptedInWithNTPBackgoundOption);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           BINotActiveInitially);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           BINotActiveWithBadData);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           BINotActiveWithNTPBackgoundOptionOptedOut);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           PrefsWithModelTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           GetCurrentWallpaperTest);
 
   void OnPreferenceChanged(const std::string& pref_name);
 
@@ -106,6 +125,7 @@ class ViewCounterService : public KeyedService,
 
   // NTPBackgroundImagesService::Observer
   void OnUpdated(NTPBackgroundImagesData* data) override;
+  void OnUpdated(NTPSponsoredImagesData* data) override;
   void OnSuperReferralEnded() override;
 
   void ResetNotificationState();
@@ -114,6 +134,8 @@ class ViewCounterService : public KeyedService,
   // Do we have a sponsored or referral wallpaper to show and has the user
   // opted-in to showing it at some time.
   bool IsBrandedWallpaperActive() const;
+  // Should we show background image.
+  bool IsBackgroundWallpaperActive() const;
   // Should we show the branded wallpaper right now, in addition
   // to the result from `IsBrandedWallpaperActive()`.
   bool ShouldShowBrandedWallpaper() const;
@@ -122,12 +144,15 @@ class ViewCounterService : public KeyedService,
 
   void UpdateP3AValues() const;
 
-  NTPBackgroundImagesService* service_ = nullptr;  // not owned
-  brave_ads::AdsService* ads_service_ = nullptr;  // not owned
-  PrefService* prefs_ = nullptr;  // not owned
+  raw_ptr<NTPBackgroundImagesService> service_ = nullptr;
+  raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
   bool is_supported_locale_ = false;
   PrefChangeRegistrar pref_change_registrar_;
   ViewCounterModel model_;
+
+  // Can be null if custom background is not supported.
+  raw_ptr<NTPCustomBackgroundImagesService> custom_bi_service_ = nullptr;
 
   // If P3A is enabled, these will track number of tabs created
   // and the ratio of those which are branded images.
@@ -138,4 +163,3 @@ class ViewCounterService : public KeyedService,
 }  // namespace ntp_background_images
 
 #endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_VIEW_COUNTER_SERVICE_H_
-

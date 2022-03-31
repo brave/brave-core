@@ -9,7 +9,7 @@
 // The definition is provided similarly by the override of
 // the header file.
 #define CreateLayoutProvider CreateLayoutProvider_ChromiumImpl
-#include "../../../../../../chrome/browser/ui/views/chrome_layout_provider.cc"
+#include "src/chrome/browser/ui/views/chrome_layout_provider.cc"
 #undef CreateLayoutProvider
 
 // static

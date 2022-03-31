@@ -12,13 +12,13 @@ namespace ads {
 namespace server {
 
 namespace {
-const int kVersion = 1;
+constexpr int kVersion = 1;
 }  // namespace
 
 std::string BuildViaHeader() {
   return base::StringPrintf(
       "Via: 1.%d brave, 1.1 ads-serve.brave.com (Apache/1.%d)",
-      g_sys_info.is_uncertain_future ? 1 : 0, kVersion);
+      SysInfo().is_uncertain_future ? 1 : 0, kVersion);
 }
 
 }  // namespace server

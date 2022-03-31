@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import * as Cr from 'chrome://resources/js/cr.m'
+
 //
 // Manages get and set of NTP private data
 // Ensures everything to do with communication
@@ -12,12 +14,13 @@
 
 export type PrivateTabData = {
   useAlternativePrivateSearchEngine: boolean
+  showAlternativePrivateSearchEngineToggle: boolean
 }
 
 type PrivateTabDataUpdatedHandler = (data: PrivateTabData) => void
 
 export function getPrivateTabData (): Promise<PrivateTabData> {
-  return window.cr.sendWithPromise<PrivateTabData>('getNewTabPagePrivateProperties')
+  return Cr.sendWithPromise('getNewTabPagePrivateProperties')
 }
 
 export function toggleAlternativePrivateSearchEngine (): void {
@@ -25,5 +28,5 @@ export function toggleAlternativePrivateSearchEngine (): void {
 }
 
 export function addChangeListener (listener: PrivateTabDataUpdatedHandler): void {
-  window.cr.addWebUIListener('private-tab-data-updated', listener)
+  Cr.addWebUIListener('private-tab-data-updated', listener)
 }

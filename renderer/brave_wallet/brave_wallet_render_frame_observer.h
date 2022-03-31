@@ -9,7 +9,8 @@
 #include <memory>
 
 #include "brave/common/brave_renderer_configuration.mojom.h"
-#include "brave/components/brave_wallet/renderer/brave_wallet_js_handler.h"
+#include "brave/components/brave_wallet/renderer/js_ethereum_provider.h"
+#include "brave/components/brave_wallet/renderer/js_solana_provider.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "third_party/blink/public/web/web_navigation_type.h"
@@ -20,15 +21,18 @@ namespace brave_wallet {
 
 class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
  public:
+  using GetDynamicParamsCallback =
+      base::RepeatingCallback<const brave::mojom::DynamicParams&()>;
+
   explicit BraveWalletRenderFrameObserver(
       content::RenderFrame* render_frame,
-      brave::mojom::DynamicParams dynamic_params);
+      GetDynamicParamsCallback get_dynamic_params_callback);
   ~BraveWalletRenderFrameObserver() override;
 
   // RenderFrameObserver implementation.
   void DidStartNavigation(
       const GURL& url,
-      base::Optional<blink::WebNavigationType> navigation_type) override;
+      absl::optional<blink::WebNavigationType> navigation_type) override;
   void DidCreateScriptContext(v8::Local<v8::Context> context,
                               int32_t world_id) override;
 
@@ -37,10 +41,12 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
   void OnDestruct() override;
 
   // Handle to "handler" JavaScript object functionality.
-  std::unique_ptr<BraveWalletJSHandler> native_javascript_handle_;
+  std::unique_ptr<JSEthereumProvider> js_ethereum_provider_;
+
+  std::unique_ptr<JSSolanaProvider> js_solana_provider_ = nullptr;
 
   GURL url_;
-  const brave::mojom::DynamicParams dynamic_params_;
+  GetDynamicParamsCallback get_dynamic_params_callback_;
 };
 
 }  // namespace brave_wallet

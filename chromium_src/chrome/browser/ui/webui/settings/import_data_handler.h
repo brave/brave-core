@@ -12,7 +12,7 @@
 
 #define StartImport virtual StartImport
 
-#include "../../../../../../../chrome/browser/ui/webui/settings/import_data_handler.h"
+#include "src/chrome/browser/ui/webui/settings/import_data_handler.h"
 
 #undef BRAVE_IMPORT_DATA_HANDLER_H
 #undef StartImport

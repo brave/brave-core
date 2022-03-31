@@ -8,6 +8,7 @@
 #include "base/values.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "build/build_config.h"
 #include "chrome/grit/theme_resources.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/native_theme/native_theme.h"
@@ -17,8 +18,8 @@ namespace profiles {
 
 struct IconResourceInfo;
 
-#if !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
-  constexpr size_t kBraveDefaultAvatarIconsCount = 34;
+#if !BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(IS_ANDROID)
+constexpr size_t kBraveDefaultAvatarIconsCount = 34;
 #else
   constexpr size_t kBraveDefaultAvatarIconsCount = 0;
 #endif
@@ -52,7 +53,7 @@ size_t GetBraveAvatarIconStartIndex();
 #define GetDefaultProfileAvatarIconAndLabel \
   GetDefaultProfileAvatarIconAndLabel_ChromiumImpl
 
-#include "../../../../../chrome/browser/profiles/profile_avatar_icon_util.cc"
+#include "src/chrome/browser/profiles/profile_avatar_icon_util.cc"
 #undef BRAVE_GET_DEFAULT_AVATAR_ICON_RESOURCE_INFO
 #undef BRAVE_GET_MODERN_AVATAR_ICON_START_INDEX
 #undef IsDefaultAvatarIconUrl
@@ -68,7 +69,7 @@ size_t GetBraveAvatarIconStartIndex() {
 
 const IconResourceInfo* GetBraveDefaultAvatarIconResourceInfo(
       size_t index) {
-#if defined(OS_CHROMEOS) || defined(OS_ANDROID)
+#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
   return nullptr;
 #else
   CHECK_LT(index, kBraveDefaultAvatarIconsCount);
@@ -170,11 +171,8 @@ bool IsDefaultAvatarIconUrl(const std::string& url, size_t* icon_index) {
 }
 
 ui::ImageModel GetGuestAvatar(int size) {
-  return ui::ImageModel::FromVectorIcon(
-      kUserMenuGuestIcon,
-      ui::NativeTheme::GetInstanceForNativeUi()->GetSystemColor(
-          ui::NativeTheme::kColorId_DefaultIconColor),
-      size);
+  return ui::ImageModel::FromVectorIcon(kUserMenuGuestIcon, ui::kColorIcon,
+                                        size);
 }
 
 gfx::Image GetPlaceholderAvatarIconWithColors(SkColor fill_color,
@@ -188,7 +186,7 @@ gfx::Image GetPlaceholderAvatarIconWithColors(SkColor fill_color,
 // GetPlaceholderAvatarIconWithColors function above which is used in this
 // function. Also, changes the label from "Default Avatar" to our placeholder
 // avatar name.
-std::unique_ptr<base::DictionaryValue> GetDefaultProfileAvatarIconAndLabel(
+base::flat_map<std::string, base::Value> GetDefaultProfileAvatarIconAndLabel(
     SkColor fill_color,
     SkColor stroke_color,
     bool selected) {

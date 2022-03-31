@@ -128,6 +128,30 @@
         ]
       },
       {
+        "name": "rotateKey",
+        "type": "function",
+        "description": "Rotate default ipns key",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "string",
+            "description": "The name of oldkey key"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called when key is rotated",
+            "parameters": [
+              {
+                "name": "result",
+                "type": "boolean",
+                "description": "json stringified created key information"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "removeIpnsKey",
         "type": "function",
         "description": "Removes existing ipns key",
@@ -285,6 +309,30 @@
               {
                 "name": "gateway",
                 "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "validateGatewayUrl",
+        "type": "function",
+        "description": "Validates gateway url",
+        "parameters": [
+          {
+            "name": "url",
+            "type": "string",
+            "description": "The url to validate"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called when url is validated",
+            "parameters": [
+              {
+                "name": "result",
+                "type": "boolean",
+                "description": "True if gateway is valid otherwise false"
               }
             ]
           }

@@ -6,7 +6,7 @@
 #include "net/base/lookup_string_in_fixed_set.h"
 
 #define LookupSuffixInReversedSet LookupSuffixInReversedSet_ChromiumImpl
-#include "../../../../net/base/lookup_string_in_fixed_set.cc"
+#include "src/net/base/lookup_string_in_fixed_set.cc"
 #undef LookupSuffixInReversedSet
 
 #include "base/strings/string_util.h"
@@ -51,6 +51,12 @@ int LookupSuffixInReversedSet(const unsigned char* graph,
   }
   if (base::EndsWith(host, decentralized_dns::kEthDomain)) {
     *suffix_length = strlen(decentralized_dns::kEthDomain) - 1;
+    return kDafsaFound;
+  }
+
+  if (include_private &&
+      base::EndsWith(host, decentralized_dns::kDNSForEthDomain)) {
+    *suffix_length = strlen(decentralized_dns::kDNSForEthDomain) - 1;
     return kDafsaFound;
   }
 

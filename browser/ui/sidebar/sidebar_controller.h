@@ -9,8 +9,10 @@
 #include <memory>
 #include <string>
 
-#include "base/scoped_observer.h"
+#include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "ui/base/window_open_disposition.h"
 
 class BraveBrowser;
 class GURL;
@@ -37,13 +39,21 @@ class SidebarController : public SidebarService::Observer {
   SidebarController(const SidebarController&) = delete;
   SidebarController& operator=(const SidebarController&) = delete;
 
-  void ActivateItemAt(int index);
+  // |disposition| is only valid for shortcut type. If |disposition| is not
+  // CURRENT_TAB, item at |index| is handled based on |disposition|.
+  void ActivateItemAt(
+      int index,
+      WindowOpenDisposition disposition = WindowOpenDisposition::CURRENT_TAB);
   void AddItemWithCurrentTab();
   // If current browser doesn't have a tab for |url|, active tab will load
   // |url|. Otherwise, existing tab will be activated.
+  // ShowSingletonTab() has similar functionality but it loads url in the
+  // new tab.
   void LoadAtTab(const GURL& url);
 
   bool IsActiveIndex(int index) const;
+
+  bool DoesBrowserHaveOpenedTabForItem(const SidebarItem& item) const;
 
   void SetSidebar(Sidebar* sidebar);
   Sidebar* sidebar() const { return sidebar_; }
@@ -58,12 +68,16 @@ class SidebarController : public SidebarService::Observer {
   void OnPreferenceChanged(const std::string& pref_name);
   void UpdateSidebarVisibility();
 
-  BraveBrowser* browser_ = nullptr;
+  // Iterate tabs by host (if tabs with host of URL exist).
+  // Otherwise, load URL in the active tab.
+  void IterateOrLoadAtActiveTab(const GURL& url);
+
+  raw_ptr<BraveBrowser> browser_ = nullptr;
   // Interface to view.
-  Sidebar* sidebar_ = nullptr;
+  raw_ptr<Sidebar> sidebar_ = nullptr;
 
   std::unique_ptr<SidebarModel> sidebar_model_;
-  ScopedObserver<SidebarService, SidebarService::Observer>
+  base::ScopedObservation<SidebarService, SidebarService::Observer>
       sidebar_service_observed_{this};
 };
 

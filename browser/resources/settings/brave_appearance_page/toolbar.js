@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {loadTimeData} from "../i18n_setup.js"
 import '../settings_shared_css.js';
 import '../settings_vars_css.js';
 
@@ -15,5 +16,9 @@ Polymer({
   is: 'settings-brave-appearance-toolbar',
 
   _template: html`{__html_template__}`,
+
+  showBraveVPNOption_: function() {
+    return loadTimeData.getBoolean('isBraveVPNEnabled');
+  },
 });
 

@@ -10,6 +10,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/path_service.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
 
@@ -52,52 +53,51 @@ std::vector<FilterList> RegionalCatalogFromJSON(
     const std::string& catalog_json) {
   std::vector<adblock::FilterList> catalog = std::vector<adblock::FilterList>();
 
-  base::Optional<base::Value> regional_lists =
+  absl::optional<base::Value> regional_lists =
       base::JSONReader::Read(catalog_json);
   if (!regional_lists) {
     LOG(ERROR) << "Could not load regional adblock catalog";
     return catalog;
   }
 
-  for (auto i = regional_lists->GetList().begin();
-          i < regional_lists->GetList().end(); i++) {
-    const auto* uuid = i->FindKey("uuid");
+  for (const auto& regional_list : regional_lists->GetList()) {
+    const auto* uuid = regional_list.FindKey("uuid");
     if (!uuid || !uuid->is_string()) {
       continue;
     }
-    const auto* url = i->FindKey("url");
+    const auto* url = regional_list.FindKey("url");
     if (!url || !url->is_string()) {
       continue;
     }
-    const auto* title = i->FindKey("title");
+    const auto* title = regional_list.FindKey("title");
     if (!title || !title->is_string()) {
       continue;
     }
     std::vector<std::string> langs = std::vector<std::string>();
-    const auto* langs_key = i->FindKey("langs");
+    const auto* langs_key = regional_list.FindKey("langs");
     if (!langs_key || !langs_key->is_list()) {
       continue;
     }
     for (auto lang = langs_key->GetList().begin();
-            lang < langs_key->GetList().end(); lang++) {
+         lang < langs_key->GetList().end(); lang++) {
       if (!lang->is_string()) {
         continue;
       }
       langs.push_back(lang->GetString());
     }
-    const auto* support_url = i->FindKey("support_url");
+    const auto* support_url = regional_list.FindKey("support_url");
     if (!support_url || !support_url->is_string()) {
       continue;
     }
-    const auto* component_id = i->FindKey("component_id");
+    const auto* component_id = regional_list.FindKey("component_id");
     if (!component_id || !component_id->is_string()) {
       continue;
     }
-    const auto* base64_public_key = i->FindKey("base64_public_key");
+    const auto* base64_public_key = regional_list.FindKey("base64_public_key");
     if (!base64_public_key || !base64_public_key->is_string()) {
       continue;
     }
-    const auto* desc = i->FindKey("desc");
+    const auto* desc = regional_list.FindKey("desc");
     if (!desc || !desc->is_string()) {
       continue;
     }
@@ -119,8 +119,8 @@ std::vector<FilterList> RegionalCatalogFromJSON(
 //
 // Distinct policies are merged with comma separators, according to
 // https://www.w3.org/TR/CSP2/#implementation-considerations
-void MergeCspDirectiveInto(base::Optional<std::string> from,
-                           base::Optional<std::string>* into) {
+void MergeCspDirectiveInto(absl::optional<std::string> from,
+                           absl::optional<std::string>* into) {
   DCHECK(into);
 
   if (!from) {
@@ -135,7 +135,7 @@ void MergeCspDirectiveInto(base::Optional<std::string> from,
   const std::string from_str = *from;
   const std::string into_str = **into;
 
-  *into = base::Optional<std::string>(from_str + ", " + into_str);
+  *into = absl::optional<std::string>(from_str + ", " + into_str);
 }
 
 // Merges the contents of the first UrlCosmeticResources Value into the second
@@ -158,10 +158,8 @@ void MergeResourcesInto(base::Value from, base::Value* into, bool force_hide) {
   base::Value* from_resources_hide_selectors =
       from.FindKey("hide_selectors");
   if (resources_hide_selectors && from_resources_hide_selectors) {
-    for (auto i = from_resources_hide_selectors->GetList().begin();
-            i < from_resources_hide_selectors->GetList().end();
-            i++) {
-      resources_hide_selectors->Append(std::move(*i));
+    for (auto& selector : from_resources_hide_selectors->GetList()) {
+      resources_hide_selectors->Append(std::move(selector));
     }
   }
 
@@ -173,10 +171,8 @@ void MergeResourcesInto(base::Value from, base::Value* into, bool force_hide) {
       base::Value* resources_entry =
           resources_style_selectors->FindKey(i.first);
       if (resources_entry) {
-        for (auto j = i.second.GetList().begin();
-                j < i.second.GetList().end();
-                j++) {
-          resources_entry->Append(std::move(*j));
+        for (auto& item : i.second.GetList()) {
+          resources_entry->Append(std::move(item));
         }
       } else {
         resources_style_selectors->SetKey(i.first, std::move(i.second));
@@ -187,10 +183,8 @@ void MergeResourcesInto(base::Value from, base::Value* into, bool force_hide) {
   base::Value* resources_exceptions = into->FindKey("exceptions");
   base::Value* from_resources_exceptions = from.FindKey("exceptions");
   if (resources_exceptions && from_resources_exceptions) {
-    for (auto i = from_resources_exceptions->GetList().begin();
-            i < from_resources_exceptions->GetList().end();
-            i++) {
-      resources_exceptions->Append(std::move(*i));
+    for (auto& exception : from_resources_exceptions->GetList()) {
+      resources_exceptions->Append(std::move(exception));
     }
   }
 

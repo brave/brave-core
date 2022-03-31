@@ -55,11 +55,12 @@ class IPFSOnboardingPage
   // Commands to send to the page to provide feedback to the user.
   enum IPFSOnboardingResponse {
     LOCAL_NODE_ERROR = 0,
-    THEME_CHANGED = 1,
-    LOCAL_NODE_LAUNCHED = 2,
-    NO_PEERS_AVAILABLE = 3,
-    NO_PEERS_LIMIT = 4,
-    INSTALLATION_ERROR = 5
+    LOCAL_NODE_LAUNCHED = 1,
+    NO_PEERS_AVAILABLE = 2,
+    NO_PEERS_LIMIT = 3,
+    INSTALLATION_ERROR = 4,
+    THEME_CHANGED_DARK = 5,
+    THEME_CHANGED_LIGHT = 6
   };
 
   explicit IPFSOnboardingPage(
@@ -93,14 +94,12 @@ class IPFSOnboardingPage
 
  protected:
   // SecurityInterstitialPage::
-  void PopulateInterstitialStrings(
-      base::DictionaryValue* load_time_data) override;
+  void PopulateInterstitialStrings(base::Value* load_time_data) override;
   int GetHTMLTemplateId() override;
 
  private:
   friend class IpfsNavigationThrottleBrowserTest;
 
-  std::string GetThemeType(ui::NativeTheme* theme) const;
   void SetupProtocolHandlers();
   void RespondToPage(IPFSOnboardingResponse command,
                      const std::u16string& text);

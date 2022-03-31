@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/downloads/downloads.ts b/chrome/browser/resources/downloads/downloads.ts
+index 5eb97207ad0a632d34a960f064c2a55be267baeb..a80a5062d53eea16434b65f5ecea8a69b8e96768 100644
+--- a/chrome/browser/resources/downloads/downloads.ts
++++ b/chrome/browser/resources/downloads/downloads.ts
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++import 'chrome://brave-resources/polymer_overriding.js'
+ import './manager.js';
+ 
+ export {CrToastManagerElement} from 'chrome://resources/cr_elements/cr_toast/cr_toast_manager.js';

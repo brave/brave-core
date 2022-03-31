@@ -4,45 +4,85 @@
 <translation id="3333887201479867589">Phần thưởng của Brave</translation>
 <translation id="7942180974165298215">Chặn Quảng cáo Brave</translation>
 <translation id="4615489450165434530">Báo cáo trang web bị hỏng</translation>
+<translation id="1209739344687072997">Báo cáo trang web bị hỏng</translation>
 <translation id="6406506848690869874">Đồng bộ</translation>
 <translation id="1544192797660353713">Ví</translation>
 <translation id="2445484935443597917">Tạo hồ sơ mới</translation>
+<translation id="744341768939279100">Tạo hồ sơ mới</translation>
 <translation id="2666990579225592931">Mở cửa sổ khách</translation>
+<translation id="4986483413015198747">Mở cửa sổ khách</translation>
 <translation id="8275068909952022340">Nhiều hơn...</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID phần mở rộng "<ph name="EXTENSION_ID"/>") không được phép trong Brave.</translation>
 <translation id="6786747875388722282">Tiện ích mở rộng</translation>
 <translation id="984275831282074731">Phương thức thanh toán</translation>
-<translation id="3699882589215410581">Cài và chạy Widevine</translation>
+<translation id="1990886731975529483">Cài đặt và chạy Google Widevine</translation>
 <translation id="8926389886865778422">Đừng hỏi lại</translation>
 <translation id="5249433283143453448">Sử dụng thành phần quản lý bản quyền kỹ thuật số Widevine (DRM) để xem video phát trực tuyến được bảo vệ và nội dung khác trong trình duyệt.</translation>
 <translation id="6241402707160226266">Cửa sổ riêng tư với Tor</translation>
 <translation id="8762452230727230396">Tor ẩn địa chỉ IP của bạn khỏi các trang web bạn truy cập.</translation>
 <translation id="1369311132025451972">Tự động chuyển hướng các trang .onion</translation>
-<translation id="81720820779436751">Brave sẽ mở dịch vụ onion của trang web này khi có sẵn hoặc tên miền .onion trong cửa sổ Tor</translation>
-<translation id="8053096063396012732">Cài đặt Widevine</translation>
-<translation id="4840334696217618631">Khởi động lại trình duyệt để bật Widevine</translation>
-<translation id="8410111618231938546">Google Widevine là một phần của mã Quản lý Quyền Kỹ thuật số (Digital Rights Management hay DRM) mà chúng tôi tại Brave Software không sở hữu và không thể kiểm tra. Mã Google Widevine được tải từ các máy chủ của Google chứ không phải từ các máy chủ của chúng tôi. Mã này chỉ được tải khi bạn bật tùy chọn này. Chúng tôi không khuyến khích sử dụng DRM, nhưng chúng tôi tôn trọng lựa chọn của người dùng và thừa nhận rằng một số người dùng Brave muốn sử dụng các dịch vụ cần tới mã đó.
-
-Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với các Điều khoản Sử dụng của Google Widevine. Bạn đồng ý rằng Brave không chịu trách nhiệm đối với bất kỳ thiệt hại hoặc tổn thất nào liên quan đến việc bạn sử dụng Google Widevine.</translation>
+<translation id="2843777623071353503">Brave sẽ mở dịch vụ onion của trang web này khi có sẵn hoặc tên miền .onion trong cửa sổ Tor.</translation>
+<translation id="4900351245762303149">Cài đặt Google Widevine</translation>
+<translation id="2313383941300459392">Khởi động lại trình duyệt để bật Google Widevine</translation>
+<translation id="2200626478572277092">Widevine đôi khi cần thiết để phát phương tiện trên trang web. Đó là một tiện ích mở rộng của Google được tải từ các máy chủ của Google mà Brave không thể kiểm tra. Bằng cách cài đặt, bạn đồng ý với các điều khoản sử dụng của Google.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Tìm hiểu thêm về Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> đang yêu cầu bạn</translation>
 <translation id="410351446219883937">Tự động phát</translation>
 <translation id="3218385319396786393">Tự động phát bị chặn trên trang này</translation>
 <translation id="4988333904713528597">Luôn cho phép tự động phát trên <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Tiếp tục chặn tự động phát</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Hỏi khi trang web muốn truy cập vào API của nhà cung cấp Ethereum</translation>
+<translation id="7017590444693657895">Chặn các trang web truy cập API của nhà cung cấp Ethereum</translation>
 <translation id="8988939298652262600">Brave không đánh giá tính bảo mật và an toàn của các tiện ích mở rộng. Chỉ nên cài đặt tiện ích mở rộng này nếu bạn tin tưởng nhà phát triển.</translation>
+<translation id="933652931229970927">Tự động gửi báo cáo chẩn đoán</translation>
+<translation id="1679356339067548863">Giúp cải thiện độ ổn định của sản phẩm Brave bằng cách tự động gửi báo cáo chẩn đoán khi Trình duyệt Brave gặp sự cố hoặc đóng băng.</translation>
 <translation id="8081858229109418493">Tên và ảnh đại diện hồ sơ</translation>
+<translation id="6438096877646138757">Các trang xóa cookie khi bạn đóng lại</translation>
+<translation id="2988792685798128092">Xóa khi đóng trang</translation>
 <translation id="2044383478723007273">Màu sắc của brave</translation>
 <translation id="1692470335103807198">Lấy thêm chủ đề</translation>
 <translation id="2906510232093002459">Hình ảnh mặc định của Brave</translation>
 <translation id="2814998458708016836">Dùng thanh địa chỉ rộng</translation>
-<translation id="6123134130710658846">Ẩn nút Tiền thưởng Brave</translation>
+<translation id="6333347122924254968">Hiển thị biểu tượng Brave Phần thưởng trên thanh địa chỉ</translation>
 <translation id="1811404036171336214">Luôn hiển thị dấu trang trên trang tab mới</translation>
 <translation id="1643029991199044105">Chuyển qua các tab được sử dụng gần đây nhất bằng Ctrl-Tab</translation>
+<translation id="1013121820689882118">Speedreader</translation>
+<translation id="2025435450953474282">Các bài viết tự động tải ở chế độ đọc, tiết kiệm thời gian cho bạn</translation>
+<translation id="5510493033031835532">Tự động chuyển hướng các trang AMP</translation>
+<translation id="5197219128592971597">Luôn truy cập các URL trang gốc (không phải AMP), thay vì các phiên bản Trang dành cho thiết bị di động được tăng tốc của Google</translation>
 <translation id="5802665280774361839">Hiện đề xuất tự động hoàn thành trên thanh địa chỉ</translation>
 <translation id="597020512043916976">Hiển thị các trang web hàng đầu trong các đề xuất tự động hoàn thành</translation>
 <translation id="264150068416846820">Hiển thị các trang web được đề xuất của Brave trong các đề xuất tự động hoàn thành</translation>
+<translation id="5529693968082667490">Hiển thị nút tìm kiếm tab</translation>
 <translation id="6414370348346025511">Chế độ bảo vệ tiêu chuẩn đang bật.</translation>
 <translation id="814018970995616154">Kiểm tra các URL với danh sách những trang web không an toàn được lưu trữ trong Brave.</translation>
 <translation id="1144810021918451336">Không bảo vệ bạn khỏi các trang web, nội dung tải xuống và tiện ích mở rộng nguy hiểm.</translation>
+<translation id="6285118765755298263">Lập chỉ mục các công cụ tìm kiếm khác</translation>
+<translation id="919715748352669592">Tự động lập chỉ mục các trang web tuân theo thông số OpenSearch.</translation>
+<translation id="6821903322090655051">Phần thưởng Brave bị tắt đi</translation>
+<translation id="413570371620795359">Mở khung Phần thưởng để bật và bắt đầu</translation>
+<translation id="3849957491997306859">Đã tự động phát hiện</translation>
+<translation id="8798099450830957504">Mặc định</translation>
+<translation id="4176463684765177261">Đã bị vô hiệu</translation>
+<translation id="4851215387785619212">Quảng cáo Riêng tư Brave</translation>
+<translation id="7808122468353671181">Kiếm token bằng cách xem Quảng cáo Brave. Quảng cáo được hiển thị dựa trên mối quan tâm của bạn, được suy ra từ hành vi duyệt web của bạn. Dữ liệu cá nhân hoặc lịch sử duyệt web sẽ không bao giờ ra khỏi trình duyệt của bạn.</translation>
+<translation id="1758947220824279023">Số lượng quảng cáo hiển thị tối đa</translation>
+<translation id="8578912649458880781">Nhắm mục tiêu quảng cáo cấp bang</translation>
+<translation id="3678362265519557511">Điều này cho phép Brave hiển thị trước bạn quảng cáo dành cho bang của bạn. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Tự động Đóng góp</translation>
+<translation id="9132509928968869844">Giới hạn tự động đóng góp hàng tháng</translation>
+<translation id="7286722244752781970">Thời gian xem trang tối thiểu trước khi lưu lại lượt truy cập</translation>
+<translation id="4424486208397124985">Số lượt truy cập tối thiểu đối với nhà xuất bản liên quan</translation>
+<translation id="6248554379744796526">Hiển thị các trang chưa xác thực trong danh sách</translation>
+<translation id="5510618543889994434">Cho phép đóng góp cho video</translation>
+<translation id="924777189963477634">Với việc bật Tự động đóng góp, bạn đồng ý với <ph name="BEGIN_LINK_TOS"/>Điều khoản Dịch vụ<ph name="END_LINK_TOS"/> và <ph name="BEGIN_LINK_PP"/>Chính sách Quyền riêng tư<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Nút tiền thưởng</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="7781069478569868053">Trang Tab Mới</translation>
 <translation id="1988804048511540801">Trang tab mới hiển thị</translation>
 <translation id="2970343821770026391">Bảng điều khiển</translation>
@@ -55,34 +95,41 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="8612763432858587652">Thoát khỏi Cửa sổ Riêng tư</translation>
 <translation id="8760415064721320867">Cửa sổ Riêng tư với Tor</translation>
 <translation id="2055363275850890030">Cửa sổ Riêng tư</translation>
-<translation id="8934172355414207733">Riêng tư với Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Đây là một cửa sổ riêng tư với Tor</translation>
 <translation id="1037341607922068025">Mở Cửa sổ Riêng tư với Tor</translation>
 <translation id="1725356094208762656">Mở trong Tor</translation>
-<translation id="7643538479215207633">Mở bằng IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Phát hành và truy xuất tệp từ IPFS</translation>
-<translation id="1672270084584211506">Onion Khả dụng</translation>
+<translation id="7398397225367092613">.onion</translation>
+<translation id="406832631167785034">Mở bằng địa chỉ .onion</translation>
 <translation id="4901618511712685702">Nhập vào IPFS</translation>
 <translation id="6794469945030154569">Trang này</translation>
 <translation id="5037852323412456577">Ảnh đã chọn</translation>
 <translation id="2715839724138372481">Video đã chọn</translation>
 <translation id="4227945450504703638">Âm thanh đã chọn</translation>
 <translation id="7895302206188277628">Nội dung liên kết</translation>
-<translation id="4322612543319315652">Nhập văn bản đã chọn vào IPFS</translation>
-<translation id="8883166554766780543">Nhập và sao chép liên kết tới ảnh chụp nhanh IPFS</translation>
 <translation id="3654831858282189202">Xuất bản bằng khóa IPNS</translation>
-<translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Nhập văn bản đã chọn vào IPFS</translation>
+<translation id="6925604404524625582">Nhập và sao chép liên kết đến ảnh chụp nhanh IPFS</translation>
 <translation id="1434416574322382019">Cửa sổ Riêng tư với Tor Mới</translation>
 <translation id="4703780849509456860">Mở Liên kết trong Cửa sổ Riêng tư với Tor</translation>
 <translation id="3488584642074079080">Mở Liên kết trong Cửa sổ Riêng tư với Tor của Brave</translation>
-<translation id="7475547933708221517">Chia sẻ tệp cục bộ sử dụng IPFS</translation>
-<translation id="2286177249736199435">Chia sẻ thư mục cục bộ bằng IPFS</translation>
-<translation id="784573715436258741">Chia sẻ tệp cục bộ sử dụng IPFS</translation>
+<translation id="186554175479803110">Nhập khẩu và chia sẻ tệp</translation>
+<translation id="3036649622769666520">Mở tệp</translation>
+<translation id="4408880250587950158">Nhập khẩu và Chia sẻ Thư mục</translation>
+<translation id="8396273373598682323">Với tệp</translation>
+<translation id="518600784989889917">Với Thư mục</translation>
+<translation id="8147987711042435221">Cập nhật IPNS</translation>
+<translation id="4491895534716990473">Nhập văn bản đã chọn vào IPFS</translation>
+<translation id="8883166554766780543">Nhập và sao chép liên kết tới ảnh chụp nhanh IPFS</translation>
+<translation id="709253338301411121">Nhập khẩu và chia sẻ tệp</translation>
+<translation id="7068360136237591149">Mở tệp</translation>
 <translation id="6313675821927505581">Mở cửa sổ cá nhân mới với công nghệ Tor</translation>
 <translation id="2638041073279639246">Mở liên kết trong cửa sổ cá nhân mới với công nghệ Tor</translation>
 <translation id="3425600262621021599">Mở liên kết trong cửa sổ cá nhân Brave với công nghệ Tor</translation>
-<translation id="575838692088926391">Chia sẻ thư mục cục bộ bằng IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
+<translation id="3229091547987707389">Nhập khẩu và chia sẻ thư mục</translation>
 <translation id="2515126961943087659">Dịch vụ Bat Ads</translation>
 <translation id="7924918279836988121">Dịch vụ Sổ cái Bat</translation>
 <translation id="4472575034687746823">Bắt đầu</translation>
@@ -90,7 +137,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="6303294677342628402">Lá chắn</translation>
 <translation id="7133511168130368997">Chặn các bộ theo dõi và quảng cáo bám theo bạn trên toàn mạng.</translation>
 <translation id="2761825942249694703">Đây là các cài đặt mặc định cho Lá chắn. Chúng áp dụng với mọi website trừ khi bạn thay đổi điều gì đó trong bảng điều khiển Lá chắn trên một website cụ thể. Việc thay đổi các cài đặt này sẽ không ảnh hưởng tới cài đặt mỗi trang hiện có của bạn.</translation>
-<translation id="8754605759692119662">Công cụ này sẽ chặn hầu hết quảng cáo trên các website chứ không phải các quảng cáo riêng của Brave, chúng được kiểm soát trong</translation>
+<translation id="1485394570478670912">Điều này sẽ chặn hầu hết các quảng cáo trên các trang web, không chặn Brave Private Ads, chúng được kiểm soát trong</translation>
 <translation id="6388201778088078932">cài đặt.</translation>
 <translation id="9185018653595759199">Chặn truyền thông xã hội</translation>
 <translation id="7390783310074170337">Chế độ xem mặc định</translation>
@@ -109,13 +156,11 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="958971637207126733">Cho phép các bài viết nhúng trên LinkedIn</translation>
 <translation id="4078738236287221428">Tích cực</translation>
 <translation id="7740996059027112821">Chuẩn</translation>
-<translation id="4176463684765177261">Đã bị vô hiệu</translation>
 <translation id="5770288601196774623">Chỉ có liên trang (cross-site)</translation>
 <translation id="3587482841069643663">Tất cả</translation>
 <translation id="5533533363827555308">Chặt chẽ, có thể khiến các website bị lỗi</translation>
 <translation id="8792121506918889955">Chính sách xử lý IP của WebRTC</translation>
 <translation id="6165508094623778733">Tìm hiểu thêm</translation>
-<translation id="8798099450830957504">Mặc định</translation>
 <translation id="1822560017823072927">Các giao diện công khai và riêng tư mặc định</translation>
 <translation id="5825943197137337319">Chỉ giao diện công khai mặc định</translation>
 <translation id="1689062823386843231">Cho phép UDP không proxy</translation>
@@ -162,6 +207,11 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="2339730291919608488">Rời chuỗi đồng bộ</translation>
 <translation id="115699408012835975">Nếu bạn đặt lại Đồng bộ hóa, bạn sẽ phải nhập lại mã đồng bộ hóa từ một thiết bị khác để đồng bộ hóa với thiết bị đó. Bạn có chắc muốn tiếp tục không?</translation>
 <translation id="6092564993102418148">Bạn có chắc chắn muốn gỡ thiết bị đã chọn khỏi chuỗi đồng bộ hóa không?</translation>
+<translation id="2936582902048232286">Cảnh báo: điều này sẽ chia sẻ dữ liệu Brave của bạn, bao gồm khả năng là mật khẩu của bạn, với thiết bị đã tạo ra những từ mã này.
+
+Vui lòng kiểm tra kỹ rằng những từ mã này được tạo ra bởi một thiết bị mà bạn sở hữu.
+
+Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="3396347744975515056">Brave Sync đã được nâng cấp và cần phải thiết lập</translation>
 <translation id="7473245612074035141">Bắt đầu Thiết lập</translation>
 <translation id="3411013544209536575">Lời khuyên trợ giúp</translation>
@@ -175,13 +225,15 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="8488282162676695335">Ví Brave</translation>
 <translation id="2356070529366658676">Yêu cầu</translation>
 <translation id="7701040980221191251">Không</translation>
-<translation id="5655621391922317800">Ví Điện tử</translation>
-<translation id="1696548911367097044">Phần mở rộng Không dùng đến của Ví tiền Crypto</translation>
-<translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Nhà cung cấp Ethereum để sử dụng Dapps</translation>
-<translation id="5913089932885076110">Tải Ví Tiền điện tử lúc khởi động</translation>
-<translation id="757886143331967039">Tải phần mở rộng không dùng đến của Ví tiền Crypto khi khởi động</translation>
+<translation id="1274962333945373242">Ví tiền mã hóa (Không còn dùng)</translation>
+<translation id="3695088618483091287">Ví Brave (Ưu tiên phần mở rộng)</translation>
+<translation id="9131889008937672866">Ví tiền mã hóa mặc định</translation>
+<translation id="4718664830805652430">Tiền tệ cơ sở mặc định</translation>
+<translation id="7992507032049865603">Tiền mã hóa cơ sở mặc định</translation>
 <translation id="1834467296210148203">Hiển thị biểu tượng Ví Brave trên thanh công cụ</translation>
+<translation id="4613486011786721686">Ẩn biểu tượng Ví Brave trên thanh công cụ</translation>
+<translation id="8239147115686034860">Tự động khóa Ví Brave</translation>
+<translation id="414639769490080648">Số phút phải chờ cho đến khi Ví Brave được tự động khóa lại</translation>
 <translation id="6864914031231797928">Cho phép đăng nhập bằng Google cho các tiện ích mở rộng</translation>
 <translation id="5927916530277631319">Phương thức phân giải tên miền Unstoppable Domains</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/> về DNS trên HTTPS và các cân nhắc quyền riêng tư của Ethereum.</translation>
@@ -191,32 +243,55 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="7611728475758612204">Các khóa có sẵn để xuất bản</translation>
 <translation id="911363100236037920">Nhập tên cho khóa mới</translation>
 <translation id="6358469157239228181">Tên này không thể sử dụng</translation>
-<translation id="8996633027318264334">Bạn có thực sự muốn xóa <ph name="KEY_NAME"/>?</translation>
+<translation id="5761731140570209168">Thêm chuỗi kết nối ngang hàng mới</translation>
+<translation id="2082206983920804886">Xoay khóa</translation>
+<translation id="5078501082919354191">Không thể tắt nút IPFS cục bộ Brave</translation>
+<translation id="5687424953196903465">Không thể khởi chạy nút IPFS cục bộ Brave</translation>
+<translation id="6476061084931271248">Khởi động lại nút để áp dụng các thay đổi</translation>
+<translation id="3754226427671882382">Khởi động lại nút</translation>
+<translation id="949667118776341807">Xoay</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="724513921936768901">Tên này không hợp lệ</translation>
+<translation id="6758961763875471084">Sửa đổi danh sách nút ngang hàng</translation>
+<translation id="1295874070797049002">Xuất khẩu khóa</translation>
+<translation id="3946479342297227860">Gỡ khóa</translation>
+<translation id="1534091531114892221">Thiết lập mô tả nút ngang hàng IPFS</translation>
+<translation id="8996633027318264334">Bạn có thực sự muốn xóa <ph name="KEY_NAME"/> không?</translation>
 <translation id="910215077892371264">Nút không được khởi chạy</translation>
 <translation id="616058968889448209">Lỗi khởi chạy dịch vụ IPFS, thông tin thêm có sẵn trên <ph name="BEGIN_LINK"/>trang chẩn đoán<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619"><ph name="KEY_NAME"/> nhập khóa không thành công</translation>
+<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' khóa xuất không thành công</translation>
+<translation id="4993345308607970390">Đặt lại Ví Brave</translation>
+<translation id="5975930666279943472">Xóa giao dịch ví và thông tin số giao dịch</translation>
+<translation id="5693968582510626466">Việc xóa các giao dịch có thể hữu ích cho các nhà phát triển hoặc khi xóa trạng thái trên máy chủ cục bộ</translation>
+<translation id="6369495274982305511">Bạn có chắc chắn muốn đặt lại ví của mình không? Nếu ví của bạn không được sao lưu, việc đặt lại sẽ khiến bạn mất tất cả dữ liệu tài khoản (bao gồm mọi khoản tiền liên kết). Gõ "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
+<translation id="9216386092464743272">Bạn có chắc chắn muốn đặt lại tất cả giao dịch ví và thông tin số giao dịch của mình không? Tùy chọn này chủ yếu được sử dụng bởi các nhà phát triển đang chạy máy chủ kiểm thử nội bộ. Nhập "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
+<translation id="3752403403443723332">Ví của bạn đã được đặt lại.</translation>
+<translation id="594766067816395072">Thông tin giao dịch ví của bạn đã được đặt lại.</translation>
+<translation id="1426410128494586442">Có</translation>
 <translation id="8275038454117074363">Nhập</translation>
 <translation id="3654980960391973513">Nhập khóa</translation>
 <translation id="5531501313997312487">Nút Bắt đầu</translation>
 <translation id="9170907049676078643">Phương thức giải quyết tài nguyên IPFS</translation>
 <translation id="1327977588028644528">Cổng vào</translation>
-<translation id="80225669816651290">Nút cục bộ</translation>
+<translation id="1195880978080389104">Nút IPFS cục bộ Brave</translation>
 <translation id="4927734062756955434">Địa chỉ cổng mạng IPFS công khai</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Tìm hiểu thêm<ph name="END_LINK_MPL"/> về nút cục bộ IPFS và các cân nhắc quyền riêng tư của cổng.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Tìm hiểu thêm<ph name="END_LINK_MPL"/> về nút IPFS cục bộ Brave và các cân nhắc về quyền riêng tư cổng.</translation>
 <translation id="8425213833346101688">Thay đổi</translation>
 <translation id="557281710253742286">Đặt cổng mạng IPFS</translation>
 <translation id="8571837315037233299">Địa chỉ cổng mạng</translation>
 <translation id="1251574393468476924">Kích thước bộ nhớ đệm tối đa của IPFS (GB)</translation>
 <translation id="2503497578400410320">Giới hạn mềm cận trên về kích thước kho dữ liệu của kho lưu trữ IPFS.</translation>
 <translation id="7703184801853248830">Địa chỉ cổng mạng không hợp lệ</translation>
+<translation id="7690058578502751948">Chỉ có một cổng IPFS hợp lệ với cô lập gốc được bật mới có thể sử dụng trong Brave</translation>
 <translation id="585868419599255817">Dự phòng cổng công khai IPFS</translation>
-<translation id="207763736230883589">Tự động quay trở lại cổng mạng IPFS công khai nếu không thể truy cập vào nút cục bộ của bạn.</translation>
+<translation id="2618080188892567155">Tự động quay lại cổng IPFS công khai nếu không thể truy cập vào nút IPFS cục bộ Brave của bạn.</translation>
 <translation id="4107552920076294723">Chuyển hướng tài nguyên IPFS đến cổng IPFS đã cấu hình</translation>
 <translation id="6494857428933042381">Tự động sử dụng cổng mạng đã được cấu hình đối với các giải pháp IPFS khi gặp tài nguyên cổng mạng IPFS.</translation>
 <translation id="8655170717758778983">Tự động chuyển hướng đến các trang IPFS thông qua DNSLink khi có thể</translation>
 <translation id="2233724520223030977">Tự động dùng DNSLink để điều hướng đến phiên bản IPFS của một website khi có thể</translation>
 <translation id="6554397389149987360">Sử dụng thành phần của Hangouts để cho phép chia sẻ màn hình và các tính năng khác trong trình duyệt.</translation>
-<translation id="1765684547504191670">Sử dụng cấu phần Bộ định tuyến Phương tiện để bật Chromecast trong trình duyệt.</translation>
+<translation id="7878791177459550035">Bộ định tuyến phương tiện cho phép tính năng truyền trong trình duyệt.</translation>
 <translation id="9156965752763025780">Các thay đổi của bạn sẽ có hiệu lực vào lần tới khi bạn chạy lại Brave.</translation>
 <translation id="7179921470347911571">Khởi chạy lại Ngay</translation>
 <translation id="8068526464562249859">Sử dụng tiện ích mở rộng IPFS Companion để tăng cường hỗ trợ IPFS trong Brave, bao gồm quyền truy cập các tác vụ IPFS phổ biến từ thanh trình duyệt của bạn.</translation>
@@ -277,23 +352,48 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="1391855377994926460">Hãy tiếp tục duyệt web nhanh hơn - nhanh hơn đến 6 lần trên những trang tin tức lớn.</translation>
 <translation id="9218430445555521422">Đặt làm mặc định</translation>
 <translation id="3479552764303398839">Không phải bây giờ</translation>
+<translation id="732814027519296280">Muốn làm cho Tìm kiếm Brave còn tốt hơn nữa?</translation>
+<translation id="2677865600861971449">Hãy tham gia Dự án Khám phá Web để đóng góp ẩn danh một số dữ liệu tìm kiếm &amp; duyệt web, và cải thiện kết quả của Tìm kiếm Brave cho tất cả mọi người. Và không mất công sức. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Bật</translation>
+<translation id="780301667611848630">Không, cảm ơn</translation>
+<translation id="5039804452771397117">Cho phép</translation>
+<translation id="7053983685419859001">Chặn</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> thoát đột ngột.</translation>
+<translation id="1324417023773393937">Trình duyệt Brave</translation>
+<translation id="7276554663454265692">Bạn có thể thay đổi <ph name="SETTING_TEXT"/> bất kỳ lúc nào trong cài đặt trình duyệt.</translation>
+<translation id="6873781976650514089">cài đặt này</translation>
 <translation id="6040143037577758943">Đóng</translation>
 <translation id="5600566490506283344">Thông báo quảng cáo Brave</translation>
+<translation id="4174337572777167894">Dự án Khám phá Web</translation>
+<translation id="8659271182272561965">Đóng góp một số dữ liệu tìm kiếm &amp; duyệt web ẩn danh để tinh chỉnh Tìm kiếm Brave.</translation>
+<translation id="1516554614404600536">Brave Chú giải công cụ</translation>
 <translation id="4877147287319222750">Thêm vào Thanh bên</translation>
-<translation id="4233010476457917696">Hiển thị thanh bên</translation>
 <translation id="5404213409401164238">Hiển thị Thanh bên</translation>
 <translation id="7561196759112975576">Luôn luôn</translation>
 <translation id="7060352228894039151">Khi di chuột qua</translation>
-<translation id="407173827865827707">Khi nhấp chuột</translation>
 <translation id="7961015016161918242">Không bao giờ</translation>
+<translation id="8981254605840444865">Hiển thị cài đặt</translation>
 <translation id="59174027418879706">Đã bật</translation>
 <translation id="8258999165172757081">Đã thêm</translation>
 <translation id="6959315322491671328">Bấm chuột phải để loại bỏ</translation>
+<translation id="495046168593986294">Cuộn lên</translation>
+<translation id="4021716437419160885">Cuộn xuống</translation>
+<translation id="4651504163033753423">Bạn có muốn bật Speedreader lên không?</translation>
+<translation id="9089090017461255038">Bật Speedreader</translation>
+<translation id="312393675740711187">Các bài viết tự động tải ở chế độ đọc, tiết kiệm thời gian cho bạn.</translation>
+<translation id="3234744217174488546">Chỉ bật/tắt chế độ đọc cho trang web này. Để tắt Speedreader cho toàn bộ cấu hình trình duyệt của bạn, hãy truy cập</translation>
+<translation id="8597690239474328831">Chuyển đổi để bật/tắt chế độ đọc chỉ dành cho trang web này.</translation>
+<translation id="7839742507462737706">trong Speedreader</translation>
+<translation id="8490082094734500369">Tắt chế độ đọc</translation>
+<translation id="2036503787657622020">Bật chế độ đọc</translation>
+<translation id="5226458915125328323">Cài đặt Speedreader</translation>
+<translation id="6284218950354553099">Tự động gửi ping sử dụng hàng ngày đến Brave</translation>
+<translation id="5288333155754958121">Ping ẩn danh, riêng tư này cho phép Brave ước tính người dùng đang hoạt động.</translation>
 <translation id="1872784258300710671">Brave sử dụng dữ liệu phân tích sản phẩm hoàn toàn riêng tư để ước tính mức độ sử dụng tổng thể của một số tính năng nhất định</translation>
 <translation id="8712637175834984815">Bỏ qua</translation>
 <translation id="4394049700291259645">Vô hiệu hóa</translation>
-<translation id="6469509880167172749">Tự động gửi dữ liệu phân tích sản phẩm hoàn toàn riêng tư đến Brave</translation>
-<translation id="7090566321964540749">Thông tin ẩn danh này chỉ cho phép Brave ước tính mức độ sử dụng tổng thể của một số tính năng nhất định.</translation>
+<translation id="7142548388914389999">Cho phép phân tích sản phẩm bảo toàn quyền riêng tư (P3A)</translation>
+<translation id="8286082624639565868">Thông tin hoàn toàn ẩn danh này giúp Brave ước tính mức sử dụng tổng thể của một số tính năng nhất định và làm cho chúng tốt hơn cho bạn.</translation>
 <translation id="1947672064022327074">Bạn có muốn bắt đầu Ví tiền Điện tử để được hỗ trợ Ethereum không?</translation>
 <translation id="7583735190612229830">Thiết lập Crypto Wallets để tương tác với ứng dụng này và các ứng dụng khác giống như vậy.</translation>
 <translation id="8731422418734770661">Thiết lập Ví tiền Crypto</translation>
@@ -308,6 +408,24 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
         Bạn có thể đọc <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>hướng dẫn cách tải xuống và tự xây dựng cho mình<ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/>mã nguồn cụ thể dùng để tạo bản sao này<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Đánh dấu tất cả các tab...</translation>
 <translation id="2336228925368920074">Đánh dấu trang Tất cả các Tab...</translation>
+<translation id="4235920711083356755">Hiển thị nút VPN</translation>
+<translation id="4070612712151038707">Hiển thị nút VPN trên Thanh công cụ</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Bật tắt VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Về Brave VPN</translation>
+<translation id="4378551569595875038">Connecting...</translation>
+<translation id="3368922792935385530">Đã kết nối</translation>
+<translation id="1536754031901697553">Đang ngắt kết nối...</translation>
+<translation id="8030169304546394654">Đã ngắt kết nối</translation>
+<translation id="1863950594388384201">Hiển thị nút VPN trên Thanh công cụ</translation>
+<translation id="5187139277471084437">Ẩn nút VPN trên Thanh công cụ</translation>
+<translation id="8041089156583427627">Gửi phản hồi</translation>
+<translation id="4049186905514157504">Quản lý gói của tôi</translation>
+<translation id="7570585565843385325">Hiển thị nút VPN trên Thanh công cụ</translation>
+<translation id="5310426188697803101">Ẩn nút VPN trên Thanh công cụ</translation>
+<translation id="945522503751344254">Gửi phản hồi</translation>
+<translation id="3015685033234401792">Quản lý gói của tôi</translation>
 <translation id="796831669370432378">Để thêm dấu trang, hãy nhấp vào nút dấu trang kế bên thanh địa chỉ</translation>
 <translation id="4989337484121655457">Cần được Truy cập Toàn bộ Ổ đĩa</translation>
 <translation id="8025559074845816210">Brave cần Truy cập Toàn bộ Ổ đĩa để có thể nhập các Dấu trang của bạn từ Safari.</translation>
@@ -317,6 +435,36 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="8487693399751278191">Nhập dấu trang ngay...</translation>
 <translation id="2557899542277210112">Để truy cập nhanh, hãy đặt dấu trang của bạn ở đây trên thanh dấu trang.</translation>
 <translation id="2808630562319398131">Thiết lập lại dữ liệu Brave Rewards...</translation>
-<translation id="1224064034972923114">Giúp cải thiện Brave bằng cách tự động gửi báo cáo sự cố</translation>
-<translation id="3738833060602717053">Giúp cải thiện <ph name="PRODUCT_NAME"/> bằng cách tự động gửi báo cáo sự cố</translation>
+<translation id="2273851479262317744">Đặt Brave làm trình duyệt mặc định</translation>
+<translation id="8581710194025054669">Để đảm bảo quyền riêng tư trực tuyến tốt nhất, hãy cân nhắc đặt Brave làm trình duyệt mặc định trên máy tính của bạn. Với Brave làm trình duyệt mặc định, bất kỳ liên kết web nào bạn nhấp vào sẽ mở ra kèm theo các biện pháp bảo vệ quyền riêng tư của Brave.</translation>
+<translation id="1968543937259008435">Sẵn sàng cho sự riêng tư trực tuyến tốt nhất?</translation>
+<translation id="6817415381278637662">Đặt Brave làm trình duyệt mặc định của bạn để nhận các biện pháp bảo vệ quyền riêng tư của Brave trên mọi trang web bạn mở.</translation>
+<translation id="8722651357687610395">Đặt Brave làm trình duyệt mặc định</translation>
+<translation id="2370739752330685659">Có lẽ để sau</translation>
+<translation id="1241283133946520352">Các mạng lưới</translation>
+<translation id="8205945804087322170">Thêm mạng mới</translation>
+<translation id="2156993118928861787">Địa chỉ không hợp lệ</translation>
+<translation id="2653659639078652383">Gửi</translation>
+<translation id="2556708692502648323">Mạng ví</translation>
+<translation id="1330032157352961756">ID của chuỗi mới</translation>
+<translation id="3423620355610881890">Một số thập phân dương</translation>
+<translation id="726121047592132939">Tên của chuỗi mới</translation>
+<translation id="1034112277864078119">Nhập tên chuỗi</translation>
+<translation id="4672314527143443556">Tên tiền tệ của chuỗi</translation>
+<translation id="4652114030688989556">Nhập tên tiền tệ</translation>
+<translation id="1079960017149736097">Ký hiệu tiền tệ của chuỗi</translation>
+<translation id="1288105009659846362">Nhập ký hiệu tiền tệ</translation>
+<translation id="665660671251623018">Số thập phân tiền tệ của chuỗi</translation>
+<translation id="2978054488731497946">Nhập số thập phân tiền tệ</translation>
+<translation id="2727514928168763432">URL RPC</translation>
+<translation id="7059127752542505809">Nhập URL</translation>
+<translation id="3047726704186619366">URL biểu tượng</translation>
+<translation id="2487558607408469181">Chặn URL trình khám phá</translation>
+<translation id="6301398959353668507">Trường này không được trống.</translation>
+<translation id="7504462451153306677">Định dạng không hợp lệ, ID chuỗi là một số dương</translation>
+<translation id="650071759190249039">Lỗi nội bộ, không thể thêm mạng.</translation>
+<translation id="868529041590572443">Vui lòng điền tất cả thông tin về đồng tiền nguyên bản</translation>
+<translation id="1062463687579789365">Tùy biến mạng ví</translation>
+<translation id="2234108191702901162">Không thể thêm mạng</translation>
+<translation id="2618193846561624884">Bạn có muốn cập nhật mạng hiện có không?</translation>
 </translationbundle>

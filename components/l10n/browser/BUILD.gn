@@ -1,7 +1,5 @@
-source_set("browser") {
-  deps = [
-    "//base",
-  ]
+static_library("browser") {
+  deps = [ "//base" ]
 
   sources = [
     "locale_helper.cc",

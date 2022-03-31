@@ -5,8 +5,9 @@
 
 #include <string>
 
-#include "brave/browser/ui/views/translate/brave_translate_bubble_view.h"
+#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/views/translate/brave_translate_bubble_view.h"
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "ui/events/keycodes/dom/dom_code.h"
 #include "ui/views/controls/button/button.h"
@@ -31,7 +32,7 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
         translation_declined_(false),
         original_language_index_on_translation_(-1),
         target_language_index_on_translation_(-1),
-        can_blocklist_site_(true) {}
+        can_add_site_to_never_prompt_list_(true) {}
 
   TranslateBubbleModel::ViewState GetViewState() const override {
     return view_state_transition_.view_state();
@@ -126,11 +127,15 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
            target_language_index_on_translation_ == target_language_index_;
   }
 
-  bool CanBlocklistSite() override { return can_blocklist_site_; }
+  bool CanAddSiteToNeverPromptList() override {
+    return can_add_site_to_never_prompt_list_;
+  }
 
   void ReportUIInteraction(translate::UIInteraction ui_interaction) override {}
 
-  void SetCanBlocklistSite(bool value) { can_blocklist_site_ = value; }
+  void SetCanAddSiteToNeverPromptList(bool value) {
+    can_add_site_to_never_prompt_list_ = value;
+  }
 
   TranslateBubbleViewStateTransition view_state_transition_;
   translate::TranslateErrors::Type error_type_;
@@ -146,7 +151,7 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
   bool translation_declined_;
   int original_language_index_on_translation_;
   int target_language_index_on_translation_;
-  bool can_blocklist_site_;
+  bool can_add_site_to_never_prompt_list_;
 };
 
 class MockBraveTranslateBubbleView : public BraveTranslateBubbleView {
@@ -226,8 +231,8 @@ class BraveTranslateBubbleViewTest : public ChromeViewsTestBase {
   }
 
   std::unique_ptr<views::Widget> anchor_widget_;
-  MockTranslateBubbleModel* mock_model_;
-  MockBraveTranslateBubbleView* bubble_;
+  raw_ptr<MockTranslateBubbleModel> mock_model_ = nullptr;
+  raw_ptr<MockBraveTranslateBubbleView> bubble_ = nullptr;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 

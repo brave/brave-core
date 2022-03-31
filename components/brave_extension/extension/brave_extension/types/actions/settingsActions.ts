@@ -6,17 +6,13 @@ import * as types from '../../constants/settingsTypes'
 import { Settings, SettingsData } from '../other/settingsTypes'
 
 interface SetStoreSettingsChangeReturn {
-  type: typeof types.SET_STORE_SETTINGS_CHANGE,
+  type: typeof types.SET_STORE_SETTINGS_CHANGE
   settingsData: Partial<SettingsData>
 }
 
-export interface SetStoreSettingsChange {
-  (settingsData: Partial<SettingsData>): SetStoreSettingsChangeReturn
-}
+export type SetStoreSettingsChange = (settingsData: Partial<SettingsData>) => SetStoreSettingsChangeReturn
 
-export interface SettingsDidChange {
-  (settings: Settings): SetStoreSettingsChangeReturn
-}
+export type SettingsDidChange = (settings: Settings) => SetStoreSettingsChangeReturn
 
 export type settingsActions =
   SetStoreSettingsChangeReturn

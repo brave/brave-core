@@ -82,6 +82,13 @@ const rewardsInternalsReducer: Reducer<RewardsInternals.State | undefined> = (st
       state.eventLogs = action.payload.logs
         .sort((a: RewardsInternals.EventLog, b: RewardsInternals.EventLog) => b.createdAt - a.createdAt)
       break
+    case types.GET_AD_DIAGNOSTICS:
+      chrome.send('brave_rewards_internals.getAdDiagnostics')
+      break
+    case types.ON_AD_DIAGNOSTICS:
+      state = { ...state }
+      state.adDiagnostics = action.payload.adDiagnostics
+      break
     default:
       break
   }

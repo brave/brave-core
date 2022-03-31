@@ -4,45 +4,86 @@
 <translation id="3333887201479867589">Brave Ödülleri</translation>
 <translation id="7942180974165298215">Brave Reklam Engelleme</translation>
 <translation id="4615489450165434530">Arızalı Bir Siteyi Bildir</translation>
+<translation id="1209739344687072997">Arızalı bir siteyi bildir</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="1544192797660353713">Cüzdan</translation>
 <translation id="2445484935443597917">Yeni Profil Oluştur</translation>
+<translation id="744341768939279100">Yeni profil oluşturun</translation>
 <translation id="2666990579225592931">Misafir Penceresi Aç</translation>
+<translation id="4986483413015198747">Konuk penceresi açın</translation>
 <translation id="8275068909952022340">Daha fazlası</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") Brave'de izin verilmiyor.</translation>
 <translation id="6786747875388722282">Uzantılar</translation>
 <translation id="984275831282074731">Ödeme yöntemleri</translation>
-<translation id="3699882589215410581">Widevine'ı yükle ve çalıştır</translation>
+<translation id="1990886731975529483">Google Widevine'ı yükle ve çalıştır</translation>
 <translation id="8926389886865778422">Bir daha sorma</translation>
 <translation id="5249433283143453448">Tarayıcıda korumalı video akışı ve diğer içerikleri görmek için dijital hak yönetim (DRM) bileşeni Widevine'ı kullan.</translation>
 <translation id="6241402707160226266">Tor ile özel pencere</translation>
 <translation id="8762452230727230396">Tor ziyaret ettiğiniz sitelerden IP adresinizi gizler.</translation>
 <translation id="1369311132025451972">.onion sitelerini otomatik olarak yeniden yönlendir</translation>
-<translation id="81720820779436751">Brave kullanılabilir olduğunda web sitesinin onion servisini veya Tor penceresinde .onion etki alanını açacak</translation>
-<translation id="8053096063396012732">Widevine'ı yükle</translation>
-<translation id="4840334696217618631">Widevine’ı etkinleştirmek için tarayıcıyı yeniden başlatın</translation>
-<translation id="8410111618231938546">Google Widevine, Brave Yazılım'da sahibi olmadığımız ve denetlemediğimiz bir Digital Rights Management (DRM) kodu parçasıdır. Google Widevine kodu bizim sunucularımızdan değil Google sunucularından yüklenir. Sadece bu seçeneği etkinleştirdiğinizde yüklenir. DRM kullanımını teşvik etmiyoruz, fakat kullanıcı tercihlerine saygı duyuyor ve bazı Brave kullanıcılarının bunu gerektiren hizmetleri kullanmak isteyebileceğini biliyoruz.
-
-Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş sayılırsınız. Brave'in, Google Widevine kullanımı ile oluşabilecek herhangi bir hasar ya da bağlantı kayıplarından sorumlu olmayacağını kabul etmiş sayılırsınız.</translation>
+<translation id="2843777623071353503">Brave, kullanılabilir olduğunda web sitesinin onion servisini veya Tor penceresinde .onion etki alanını açacaktır.</translation>
+<translation id="4900351245762303149">Google Widevine'ı yükle</translation>
+<translation id="2313383941300459392">Google Widevine'ı etkinleştirmek için tarayıcıyı yeniden başlatın</translation>
+<translation id="2200626478572277092">Bir web sayfasındaki medyaların oynatılması için bazen Widevine gerekir. Bu, Google sunucularından yüklenen bir Google eklentisidir ve Brave tarafından incelenemez. Yükleyerek, Google'ın kullanım koşullarını kabul etmiş sayılırsınız.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>
+.
+Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Widevine hakkında daha fazla bilgi edinin</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> sizden şunu istiyor:</translation>
 <translation id="410351446219883937">Otomatik oynat</translation>
 <translation id="3218385319396786393">Bu sayfada otomatik oynatma engellenmiş</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> her zaman otomatik oynatmaya izin ver</translation>
 <translation id="4150684676757176434">Oto-Oynatmayı engellemeye devam et</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Bir site, Ethereum sağlayıcı API'sine erişmek istediğinde sor</translation>
+<translation id="7017590444693657895">Sitelerin Ethereum sağlayıcı API'sine erişimini engelle</translation>
 <translation id="8988939298652262600">Brave uzantıları güvenlik ve emniyet bakımından gözden geçirmez. Yalnızca geliştiricisine güvendiğiniz uzantıları yükleyin.</translation>
+<translation id="933652931229970927">Tanı raporlarını otomatik olarak gönder</translation>
+<translation id="1679356339067548863">Brave Tarayıcı çöktüğünde veya donduğunda tanı raporlarını otomatik olarak göndererek, Brave'in ürün stabilitesini iyileştirmeye yardımcı olun.</translation>
 <translation id="8081858229109418493">Profil adı ve simgesi</translation>
+<translation id="6438096877646138757">Kapattığınız zaman çerezleri temizleyen siteler</translation>
+<translation id="2988792685798128092">Site kapandığında temizlenir</translation>
 <translation id="2044383478723007273">Brave renkleri</translation>
 <translation id="1692470335103807198">Daha fazla tema al</translation>
 <translation id="2906510232093002459">Brave varsayılan görselleri</translation>
 <translation id="2814998458708016836">Geniş adres çubuğu kullan</translation>
-<translation id="6123134130710658846">Brave Ödülleri butonunu gizle</translation>
+<translation id="6333347122924254968">Adres çubuğunda Brave Ödülleri simgesini göster</translation>
 <translation id="1811404036171336214">Yeni sekme sayfasında daima yer imleçlerini göster</translation>
 <translation id="1643029991199044105">Ctrl-Tab ile en son kullanılan sekmeler arasında gezinin</translation>
+<translation id="1013121820689882118">Speedreader</translation>
+<translation id="2025435450953474282">Okuyucu modunda makaleler otomatik yüklenerek size zaman kazandırır</translation>
+<translation id="5510493033031835532">AMP sayfalarını otomatik yönlendir</translation>
+<translation id="5197219128592971597">Google'ın Hızlandırılmış Mobil Sayfa sürümleri yerine her zaman orijinal (AMP olmayan) sayfa URL'lerini ziyaret et</translation>
 <translation id="5802665280774361839">Adres çubuğunda otomatik tamamlamayı göster</translation>
 <translation id="597020512043916976">Otomatik tamamlamalı önerilerde en popüler siteleri göster</translation>
 <translation id="264150068416846820">Otomatik tamamlamalı önerilerde Brave'in önerdiği siteleri göster</translation>
+<translation id="5529693968082667490">Sekme arama düğmesini göster</translation>
 <translation id="6414370348346025511">Standart koruma açık.</translation>
 <translation id="814018970995616154">URL'leri Brave'de kayıtlı güvenli olmayan sitelerin listesine göre kontrol eder.</translation>
 <translation id="1144810021918451336">Sizi tehlikeli web siteleri, indirmeler ve uzantılardan korumaz.</translation>
+<translation id="6285118765755298263">Diğer arama motorlarını indeksle</translation>
+<translation id="919715748352669592">OpenSearch özelliklerine uygun web siteleri otomatik olarak indeksler.</translation>
+<translation id="6821903322090655051">Brave Ödülleri devre dışı</translation>
+<translation id="413570371620795359">Etkinleştirmek ve başlamak için Ödüller panelini açın</translation>
+<translation id="3849957491997306859">Otomatik algılandı</translation>
+<translation id="8798099450830957504">Varsayılan</translation>
+<translation id="4176463684765177261">Devre dışı</translation>
+<translation id="4851215387785619212">Brave Özel Reklamları</translation>
+<translation id="7808122468353671181">Brave Reklamları sayesinde token kazanın. Gösterilen reklamlar, internette gezinme davranışlarınızdan yapılan çıkarımlara göre ilgi alanlarınızı yansıtır. Tarayıcınızdan hiçbir kişisel veri veya gezinme geçmişi alınmaz.</translation>
+<translation id="1758947220824279023">Gösterilecek maksimum reklam sayısı</translation>
+<translation id="8578912649458880781">Eyalet seviyesinde reklam hedefleme</translation>
+<translation id="3678362265519557511">Bu, Brave'in özellikle bulunduğunuz eyalet için hedeflenmiş reklamları göstermesine izin verir.<ph name="BEGIN_LINK"/>Daha fazla bilgi<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Otomatik-Katkı</translation>
+<translation id="9132509928968869844">Aylık otomatik katkı limiti</translation>
+<translation id="7286722244752781970">Bir ziyareti kaydetmeden önce minimum sayfa zamanı</translation>
+<translation id="4424486208397124985">Yayıncı alaka düzeyi için minimum ziyaret sayısı</translation>
+<translation id="6248554379744796526">Doğrulanmamış siteleri listede göster</translation>
+<translation id="5510618543889994434">Videolar için katkıları etkinleştir</translation>
+<translation id="924777189963477634">Otomatik Katkı'yı açarak, <ph name="BEGIN_LINK_TOS"/>Hizmet Koşullarını<ph name="END_LINK_TOS"/> ve <ph name="BEGIN_LINK_PP"/>Gizlilik İlkesini<ph name="END_LINK_PP"/> kabul etmiş olursunuz.</translation>
+<translation id="5733490796524078528">Bahşiş butonları</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="7781069478569868053">Yeni Sekme Sayfası</translation>
 <translation id="1988804048511540801">Yeni sekme sayfası gösteriyor</translation>
 <translation id="2970343821770026391">Pano</translation>
@@ -55,34 +96,41 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="8612763432858587652">Gizli Pencereden Çık</translation>
 <translation id="8760415064721320867">Tor içeren Özel Pencere</translation>
 <translation id="2055363275850890030">Özel Pencere</translation>
-<translation id="8934172355414207733">Tor ile Gizli</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Bu, Tor'a sahip özel bir penceredir</translation>
 <translation id="1037341607922068025">Tor ile Özel Pencereyi Aç</translation>
 <translation id="1725356094208762656">Tor'da aç</translation>
-<translation id="7643538479215207633">IPFS kullanarak açın</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">IPFS'den dosyalar yayınlama ve alma</translation>
-<translation id="1672270084584211506">Onion Kullanılabilir</translation>
+<translation id="7398397225367092613">.onion</translation>
+<translation id="406832631167785034">.onion adresi kullanarak açın</translation>
 <translation id="4901618511712685702">IPFS'ye aktar</translation>
 <translation id="6794469945030154569">Bu sayfa</translation>
 <translation id="5037852323412456577">Seçilen görüntü</translation>
 <translation id="2715839724138372481">Seçilen video</translation>
 <translation id="4227945450504703638">Seçilen ses</translation>
 <translation id="7895302206188277628">Bağlantılı içerik</translation>
-<translation id="4322612543319315652">Seçilen Metni IPFS'ye Aktar</translation>
-<translation id="8883166554766780543">IPFS anlık görüntü bağlantısını içe aktarın ve kopyalayın</translation>
 <translation id="3654831858282189202">IPNS anahtarıyla yayınlayın</translation>
-<translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Seçili Metni IPFS'ye Aktar</translation>
+<translation id="6925604404524625582">IPFS Anlık Görüntü Bağlantısını İçe Aktarın ve Kopyalayın</translation>
 <translation id="1434416574322382019">Yeni Tor ile Özel Pencere</translation>
 <translation id="4703780849509456860">Bağlantıyı Tor içeren Özel Pencereyle Aç</translation>
 <translation id="3488584642074079080">Tor ile Brave Özel Pencere Açma Linki</translation>
-<translation id="7475547933708221517">IPFS Kullanarak Yerel Dosya Paylaş</translation>
-<translation id="2286177249736199435">IPFS Kullanarak Yerel Klasör Paylaşın</translation>
-<translation id="784573715436258741">IPFS kullanarak yerel dosya paylaş</translation>
+<translation id="186554175479803110">Bir Dosyayı İçe Aktar ve Paylaş</translation>
+<translation id="3036649622769666520">Dosyaları Aç</translation>
+<translation id="4408880250587950158">Bir Dizini İçe Aktar ve Paylaş</translation>
+<translation id="8396273373598682323">Bir Dosya ile</translation>
+<translation id="518600784989889917">Bir Dizin ile</translation>
+<translation id="8147987711042435221">IPNS'yi Güncelle</translation>
+<translation id="4491895534716990473">Seçilen metni IPFS'ye aktar</translation>
+<translation id="8883166554766780543">IPFS anlık görüntü bağlantısını içe aktarın ve kopyalayın</translation>
+<translation id="709253338301411121">Bir dosyayı içe aktar ve paylaş</translation>
+<translation id="7068360136237591149">Dosyaları aç</translation>
 <translation id="6313675821927505581">Tor ile yeni özel pencere</translation>
 <translation id="2638041073279639246">Bağlantıyı Tor ile özel pencerede aç</translation>
 <translation id="3425600262621021599">Bağlantıyı Brave'de Tor ile özel pencerede aç</translation>
-<translation id="575838692088926391">IPFS kullanarak yerel klasör paylaşın</translation>
-<translation id="5410152065859052603">Tor</translation>
+<translation id="3229091547987707389">Bir dizini içe aktar ve paylaş</translation>
 <translation id="2515126961943087659">Bat Reklam Servisi</translation>
 <translation id="7924918279836988121">Bat Ledger Servisi</translation>
 <translation id="4472575034687746823">Başlayın</translation>
@@ -90,7 +138,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="6303294677342628402">Kalkanlar</translation>
 <translation id="7133511168130368997">İnternet üzerinde sizi takip eden iz sürücüleri ve reklamları engelleyin.</translation>
 <translation id="2761825942249694703">Bunlar varsayılan Shields ayarlarıdır. Belirli bir site için Shields panelinden bir şeyi değiştirmediğiniz sürece tüm websitelere uygulanırlar. Bu ayarları değiştirmek, herbir site için ayrı olarak yaptığınız mevcut ayarlarınızı değiştirmez.</translation>
-<translation id="8754605759692119662">Websitelerdeki çoğu reklam engellenecek; Brave özel reklamları engellenmeyecektir — bu reklamlar şuradan kontrol edilebilir:</translation>
+<translation id="1485394570478670912">Bu işlem web sitelerindeki çoğu reklamı engelleyecektir, ancak Brave Private Ads etkilenmeyecektir. Bunlar şurada kontrol edilmektedir:</translation>
 <translation id="6388201778088078932">ayarlar.</translation>
 <translation id="9185018653595759199">Sosyal medya bloke etme</translation>
 <translation id="7390783310074170337">Varsayılan görünün</translation>
@@ -107,15 +155,13 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="863171915776379000">Facebook ile giriş yapmaya ve gömülü gönderilere izin ver</translation>
 <translation id="5165042248369837294">Gömülü Twitter tweetlerine izin ver</translation>
 <translation id="958971637207126733">LinkedIn gömülü gönderilere izin ver</translation>
-<translation id="4078738236287221428">Agresif</translation>
+<translation id="4078738236287221428">Katı</translation>
 <translation id="7740996059027112821">Standart</translation>
-<translation id="4176463684765177261">Devre dışı</translation>
 <translation id="5770288601196774623">Sadece çapraz site</translation>
 <translation id="3587482841069643663">Tümü</translation>
 <translation id="5533533363827555308">Katı, siteleri kırabilir</translation>
 <translation id="8792121506918889955">WebRTC IP kullanım politikası</translation>
 <translation id="6165508094623778733">Daha fazla bilgi edin</translation>
-<translation id="8798099450830957504">Varsayılan</translation>
 <translation id="1822560017823072927">Varsayılan genel ve özel arabirimler</translation>
 <translation id="5825943197137337319">Sadece varsayılan genel arayüz</translation>
 <translation id="1689062823386843231">Non-proxied UDP'yi devre dışı bırak</translation>
@@ -162,6 +208,11 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="2339730291919608488">Senkronizasyon Zincirinden Ayrıl</translation>
 <translation id="115699408012835975">Eş Zamanlamayı sıfırlarsanız, başka bir cihaza eş zamanlamada bulunmak için o cihazdan bir eş zamanlama kodunu tekrar girmeniz gerekecek. Devam etmek istediğinize emin misiniz?</translation>
 <translation id="6092564993102418148">Seçilen cihazı senkronizasyon zincirinden kaldırmak istediğinizden emin misiniz?</translation>
+<translation id="2936582902048232286">Uyarı: Bu, potansiyel olarak şifrelerinizi de içeren Brave verilerinizi bu kod kelimelerini üretmiş olan cihazla paylaşacaktır.
+
+Lütfen bu kod kelimelerinin size ait bir cihaz tarafından üretildiğinden emin olun.
+
+Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="3396347744975515056">Brave Eş Zamanlama güncellendi ve kurulması gerekli</translation>
 <translation id="7473245612074035141">Kuruluma Başla</translation>
 <translation id="3411013544209536575">Yardım ipuçları</translation>
@@ -175,48 +226,73 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="8488282162676695335">Brave Cüzdan</translation>
 <translation id="2356070529366658676">Sor</translation>
 <translation id="7701040980221191251">Yok</translation>
-<translation id="5655621391922317800">Kripto Cüzdanlar</translation>
-<translation id="1696548911367097044">Onaylanmamış Kripto Cüzdanlar uzantısı</translation>
-<translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Dapps kullanmak için Ethereum sağlayıcı</translation>
-<translation id="5913089932885076110">Başlangıçta Kripto Cüzdanı Yükle</translation>
-<translation id="757886143331967039">Onaylanmamış Kripto Cüzdanlar uzantısını başlangıçta yükle</translation>
+<translation id="1274962333945373242">Kripto Cüzdanları (Kullanılmayan)</translation>
+<translation id="3695088618483091287">Brave Cüzdanı (Eklentileri tercih et)</translation>
+<translation id="9131889008937672866">Varsayılan kripto para cüzdanı</translation>
+<translation id="4718664830805652430">Varsayılan temel para birimi</translation>
+<translation id="7992507032049865603">Varsayılan temel kripto para</translation>
 <translation id="1834467296210148203">Brave Cüzdan simgesini araç çubuğunda göster</translation>
+<translation id="4613486011786721686">Araç çubuğunda Brave Cüzdanı simgesini gizle</translation>
+<translation id="8239147115686034860">Brave Cüzdan'ı otomatik olarak kilitle</translation>
+<translation id="414639769490080648">Brave Cüzdan'ın otomatik olarak kilitlenmesi için beklenilmesi gereken dakikalar</translation>
 <translation id="6864914031231797928">Uzantılar için Google ile oturum açmaya izin ver</translation>
 <translation id="5927916530277631319">Unstoppable Domains'i çözmenin yolu</translation>
-<translation id="8412057160793088103">HTTPS üzerinden DNS ve Ethereum gizliliğiyle ilgili hususlar hakkında <ph name="BEGIN_LINK"/>Daha Fazla Bilgi Edinin<ph name="END_LINK"/>.</translation>
+<translation id="8412057160793088103">HTTPS üzerinden DNS ve Ethereum gizlilik hususları hakkında <ph name="BEGIN_LINK"/>daha fazla bilgi edinin.<ph name="END_LINK"/></translation>
 <translation id="5248318250177143470">Ethereum Name Service (ENS) çözümlemesi için yol</translation>
 <translation id="7024553202001112871">IPNS anahtarlarınızı kurun</translation>
 <translation id="951216659045543447">İçeriği karşılık gelen özel anahtarla imzalayın ve IPNS'ye göndererek yayınlayın</translation>
 <translation id="7611728475758612204">Yayınlamaya uygun anahtarlar</translation>
 <translation id="911363100236037920">Yeni anahtar için bir isim girin</translation>
 <translation id="6358469157239228181">Bu isim kullanılamaz</translation>
-<translation id="8996633027318264334"><ph name="KEY_NAME"/> öğesini silmeyi gerçekten istiyor musunuz?</translation>
+<translation id="5761731140570209168">Yeni eş bağlantısı dizini ekleyin</translation>
+<translation id="2082206983920804886">Anahtarı döndür</translation>
+<translation id="5078501082919354191">Brave yerel IPFS düğümü durdurulamıyor</translation>
+<translation id="5687424953196903465">Brave yerel IPFS düğümü başlatılamıyor</translation>
+<translation id="6476061084931271248">Değişikliklerin uygulanması için düğümü yeniden başlatın</translation>
+<translation id="3754226427671882382">Düğümü yeniden başlat</translation>
+<translation id="949667118776341807">Döndür</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="724513921936768901">Bu ad geçerli değil</translation>
+<translation id="6758961763875471084">Eşler listesini değiştirin</translation>
+<translation id="1295874070797049002">Anahtarı dışa aktar</translation>
+<translation id="3946479342297227860">Anahtarı kaldır</translation>
+<translation id="1534091531114892221">Ipfs eşleri açıklamasını ayarla</translation>
+<translation id="8996633027318264334"><ph name="KEY_NAME"/> öğesini gerçekten silmek istiyor musunuz?</translation>
 <translation id="910215077892371264">Düğüm başlatılmadı</translation>
-<translation id="616058968889448209">IPFS hizmeti başlatma hatası, daha fazla bilgiye <ph name="BEGIN_LINK"/>tanılama sayfasından<ph name="END_LINK"/> ulaşılabilir</translation>
+<translation id="616058968889448209">IPFS hizmet başlatma hatası, daha fazla bilgi <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/> kısmında mevcuttur</translation>
 <translation id="6912148685459054619">"<ph name="KEY_NAME"/>" anahtarı içe aktarılamadı</translation>
+<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' anahtarı dışa aktarılamadı</translation>
+<translation id="4993345308607970390">Brave Cüzdan'ı Sıfırla</translation>
+<translation id="5975930666279943472">Cüzdan işlemlerini ve bir seferlik anahtar bilgilerini temizle</translation>
+<translation id="5693968582510626466">İşlemleri temizlemek geliştiriciler için veya yerel bir sunucudaki durumu temizlemek için faydalı olabilir</translation>
+<translation id="6369495274982305511">Cüzdanınızı sıfırlamak istediğinizden emin misiniz? Eğer cüzdanınız yedeklenmediyse, sıfırlamak (tüm ilişkili paralar da dahil olmak üzere) tüm hesap verilerinizi kaybetmenize sebep olabilir. Onaylamak için "<ph name="CONFIRMATION_PHRASE"/>" yazın.</translation>
+<translation id="9216386092464743272">Tüm cüzdan işlemlerinizi ve tek seferlik anahtar bilgilerinizi sıfırlamak istediğinizden emin misiniz? Bu seçenek en çok yerel bir test sunucusu çalıştıran geliştiriciler tarafından kullanılır. Onaylamak için "<ph name="CONFIRMATION_PHRASE"/>" yazın.</translation>
+<translation id="3752403403443723332">Cüzdanınız sıfırlandı.</translation>
+<translation id="594766067816395072">Cüzdan işlem bilgileriniz sıfırlandı.</translation>
+<translation id="1426410128494586442">Evet</translation>
 <translation id="8275038454117074363">Al</translation>
 <translation id="3654980960391973513">Oluştur</translation>
 <translation id="5531501313997312487">Düğümü başlat</translation>
 <translation id="9170907049676078643">IPFS kaynaklarını çözmek için yöntem</translation>
 <translation id="1327977588028644528">Ağ geçidi</translation>
-<translation id="80225669816651290">Yerel düğüm</translation>
+<translation id="1195880978080389104">Brave yerel IPFS düğümü</translation>
 <translation id="4927734062756955434">IPFS ortak ağ geçidi adresi</translation>
-<translation id="3399481770463167943">IPFS yerel düğüm ve ağ geçidi gizliliğiyle ilgili hususlar hakkında <ph name="BEGIN_LINK_MPL"/>Daha fazla bilgi edinin<ph name="END_LINK_MPL"/>.</translation>
+<translation id="2178402446227616866">Brave yerel IPFS düğümü ve ağ geçidi gizlilik hususları hakkında <ph name="BEGIN_LINK_MPL"/>daha fazla bilgi edinin.<ph name="END_LINK_MPL"/></translation>
 <translation id="8425213833346101688">Değiştir</translation>
 <translation id="557281710253742286">IPFS ağ geçidi belirleyin</translation>
 <translation id="8571837315037233299">Ağ geçidi adresi</translation>
 <translation id="1251574393468476924">En Yüksek IPFS önbellek boyutu (GB)</translation>
 <translation id="2503497578400410320">IPFS havuzunun veri deposu boyutu için yumuşak bir üst sınır</translation>
 <translation id="7703184801853248830">Geçersiz ağ geçidi adresi</translation>
+<translation id="7690058578502751948">Brave'de sadece Origin izolasyonu etkinleştirilmiş geçerli bir IPFS ağ geçidi kullanılabilir</translation>
 <translation id="585868419599255817">IPFS herkese açık ağ geçidi geri çekilmesi</translation>
-<translation id="207763736230883589">Yerel düğümünüze erişilemezse ortak IPFS ağ geçidine otomatik olarak geri düşün.</translation>
+<translation id="2618080188892567155">Brave yerel IPFS düğümünüze erişilemediğinde, otomatik olarak herkese açık IPFS geçidine çekilin.</translation>
 <translation id="4107552920076294723">IPFS kaynaklarını ayarlanmış IPFS ağ geçidine yeniden yönlendirin</translation>
 <translation id="6494857428933042381">Bir IPFS ağ geçidi kaynağıyla karşılaşıldığında IPFS çözümleri için ayarlı ağ geçidini otomatik olarak kullanır.</translation>
 <translation id="8655170717758778983">Mümkün olduğunda DNSLink ile IPFS sayfalarını otomatik olarak yeniden yönlendir</translation>
 <translation id="2233724520223030977">Mümkün olduğunda web sitenin IPFS versiyonuna gitmek için otomatik olarak DNSLink kullanır</translation>
 <translation id="6554397389149987360">Ekran paylaşımını ve tarayıcıdaki diğer özellikleri etkinleştirmek için Hangouts bileşenini kullanır.</translation>
-<translation id="1765684547504191670">Tarayıcıda Chromecast'i etkinleştirmek için Medya Yönlendiricisi bileşenini kullanır.</translation>
+<translation id="7878791177459550035">Medya yönlendiricisi tarayıcıda yayın özelliğini etkinleştirir.</translation>
 <translation id="9156965752763025780">Değişiklikleriniz, Brave tekrar başlatıldığında geçerli olacak.</translation>
 <translation id="7179921470347911571">Şimdi Tekrar Başlat</translation>
 <translation id="8068526464562249859">Tarayıcı çubuğunuzdan genel IPFS görevlerine erişim dahil, Brave'de gelişmiş IPFS desteği için IPFS Eşlikçisi uzantısını kullanır.</translation>
@@ -277,23 +353,48 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="1391855377994926460">Web'de daha hızlı gezinmeye devam edin. Başlıca haber sitelerinde 6 kata kadar daha hızlı gezinin.</translation>
 <translation id="9218430445555521422">Varsayılan olarak ayarla</translation>
 <translation id="3479552764303398839">Şimdi değil</translation>
+<translation id="732814027519296280">Brave Arama'yı olduğundan da iyi bir hale getirmek ister misiniz?</translation>
+<translation id="2677865600861971449">Anonim olarak bazı arama &amp; tarayıcı verilerinizle katkıda bulunarak Brave Arama sonuçlarını herkes için geliştirmek üzere Web Keşif Projesi'ne katılın. Gizliliğinizi korur. Hiç efor sarf etmezsiniz. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Etkinleştir</translation>
+<translation id="780301667611848630">Hayır, teşekkürler</translation>
+<translation id="5039804452771397117">İzin ver</translation>
+<translation id="7053983685419859001">Engelle</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> beklenmedik bir şekilde kapandı.</translation>
+<translation id="1324417023773393937">Brave Tarayıcı</translation>
+<translation id="7276554663454265692"><ph name="SETTING_TEXT"/>, tarayıcı ayarlarından istediğiniz zaman değiştirilebilir.</translation>
+<translation id="6873781976650514089">Bu ayarı</translation>
 <translation id="6040143037577758943">Kapat</translation>
 <translation id="5600566490506283344">Brave Reklam Bildirimi</translation>
+<translation id="4174337572777167894">Web Keşif Projesi</translation>
+<translation id="8659271182272561965">Brave Arama'yı daha iyi hale getirmek için anonim arama &amp; tarayıcı verilerinizle katkıda bulunun.</translation>
+<translation id="1516554614404600536">Brave Araç İpucu</translation>
 <translation id="4877147287319222750">Kenar çubuğuna ekle</translation>
-<translation id="4233010476457917696">Kenar çubuğunu göster</translation>
 <translation id="5404213409401164238">Kenar çubuğunu göster</translation>
 <translation id="7561196759112975576">Her zaman</translation>
 <translation id="7060352228894039151">Fare imleci üzerindeyken</translation>
-<translation id="407173827865827707">Tıklandığında</translation>
 <translation id="7961015016161918242">Hiçbir Zaman</translation>
+<translation id="8981254605840444865">Ayarları göster</translation>
 <translation id="59174027418879706">Etkin</translation>
 <translation id="8258999165172757081">Eklendi</translation>
 <translation id="6959315322491671328">Kaldırmak için sağ tıklayın</translation>
+<translation id="495046168593986294">Yukarı kaydır</translation>
+<translation id="4021716437419160885">Aşağı kaydır</translation>
+<translation id="4651504163033753423">Speedreader'ı açmak istiyor musunuz?</translation>
+<translation id="9089090017461255038">Speedreader'ı aç</translation>
+<translation id="312393675740711187">Okuyucu modunda makaleler otomatik yüklenerek size zaman kazandırır.</translation>
+<translation id="3234744217174488546">Okuyucu modunu yalnızca bu web sitesi için açın/kapatın. Speedreader'ı tüm tarayıcı profiliniz için kapatmak üzere şurayı ziyaret edin:</translation>
+<translation id="8597690239474328831">Yalnızca bu web sitesi için okuyucu modunu aç/kapat.</translation>
+<translation id="7839742507462737706">Speedreader'da</translation>
+<translation id="8490082094734500369">Okuyucu modunu kapat</translation>
+<translation id="2036503787657622020">Okuyucu modunu aç</translation>
+<translation id="5226458915125328323">Speedreader ayarları</translation>
+<translation id="6284218950354553099">Günlük kullanım ping'ini Brave'e otomatik olarak gönder</translation>
+<translation id="5288333155754958121">Bu anonim ve gizli ping, Brave'in aktif kullanıcıları tahmin etmesine olanak tanır.</translation>
 <translation id="1872784258300710671">Brave, belirli özelliklerin genel kullanımını tahmin etmek için tamamıyla gizli ürün analizi kullanır</translation>
 <translation id="8712637175834984815">Anlaşıldı</translation>
 <translation id="4394049700291259645">Devre dışı bırak</translation>
-<translation id="6469509880167172749">Brave'e otomatik olarak tamamıyla gizli ürün analizi gönder</translation>
-<translation id="7090566321964540749">Bu anonim bilgi, yalnızca Brave'in belirli özelliklerin genel kullanımını tahmin etmesine olanak tanır.</translation>
+<translation id="7142548388914389999">Gizlilik korumalı ürün analizine izin ver (P3A)</translation>
+<translation id="8286082624639565868">Bu tamamen anonim bilgi, Brave'in belirli özelliklerin genel kullanımını tahmin ederek sizin için daha iyi hale getirmesine yardımcı olur.</translation>
 <translation id="1947672064022327074">Ethereum desteği için Crypto Wallets'ı başlatmak ister misiniz?</translation>
 <translation id="7583735190612229830">Bu ve bunun gibi uygulamalarla etkileşime geçebilmesi için Kripto Cüzdanları ayarla.</translation>
 <translation id="8731422418734770661">Kripto Cüzdanları ayarlayın</translation>
@@ -308,6 +409,24 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
         <ph name="BEGIN_LINK_SOURCE_CODE"/>Bu kopyayı oluşturmak için kullanılan kaynak kodunu<ph name="END_LINK_SOURCE_CODE"/> <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>indirmek ve inşa etmek için talimatları<ph name="END_LINK_BUILD_INSTRUCTIONS"/> okuyabilirsiniz.</translation>
 <translation id="4474155171896946103">Tüm sekmelere yer işareti koy...</translation>
 <translation id="2336228925368920074">Tüm Sekmelere Yer İşareti Koy...</translation>
+<translation id="4235920711083356755">VPN düğmesini göster</translation>
+<translation id="4070612712151038707">VPN düğmesini araç çubuğunda gösterir</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">VPN'i aç/kapat</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">Brave VPN Hakkında</translation>
+<translation id="4378551569595875038">Connecting...</translation>
+<translation id="3368922792935385530">Bağlı</translation>
+<translation id="1536754031901697553">Bağlantı kesiliyor...</translation>
+<translation id="8030169304546394654">Bağlantı kesildi</translation>
+<translation id="1863950594388384201">VPN Düğmesini Araç Çubuğunda Göster</translation>
+<translation id="5187139277471084437">VPN Düğmesini Araç Çubuğunda Gizle</translation>
+<translation id="8041089156583427627">Görüş bildirin</translation>
+<translation id="4049186905514157504">Planımı Yönet</translation>
+<translation id="7570585565843385325">VPN düğmesini araç çubuğunda göster</translation>
+<translation id="5310426188697803101">VPN düğmesini araç çubuğunda gizle</translation>
+<translation id="945522503751344254">Geri bildirim gönder</translation>
+<translation id="3015685033234401792">Planımı yönet</translation>
 <translation id="796831669370432378">Bir yer işareti eklemek için, adres satırının yanında yer alan yer işareti butonuna tıklayın</translation>
 <translation id="4989337484121655457">Tam Disk Erişimi gereklidir</translation>
 <translation id="8025559074845816210">Safari'den Yer İmlerinizi aktarmak için Brave'in Tam Disk Erişimine ihtiyacı var.</translation>
@@ -317,6 +436,36 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="8487693399751278191">Yer imlerini şimdi içe aktar...</translation>
 <translation id="2557899542277210112">Hızlı erişim için, yer imlerinizi buradaki yer imi çubuğuna yerleştirin.</translation>
 <translation id="2808630562319398131">Brave Rewards verilerini yeniden ayarlayın...</translation>
-<translation id="1224064034972923114">Otomatik olarak çökme raporları göndererek Brave'in gelişmesine yardımcı olun</translation>
-<translation id="3738833060602717053">Otomatik olarak çökme raporları göndererek <ph name="PRODUCT_NAME"/> gelişmesine yardımcı olun.</translation>
+<translation id="2273851479262317744">Brave'i varsayılan tarayıcı olarak ayarlayın</translation>
+<translation id="8581710194025054669">En iyi çevrimiçi gizliliği sağlamak için Brave'i bilgisayarınızda varsayılan tarayıcı olarak ayarlamanız önerilir. Brave varsayılan tarayıcı olduğunda, tıkladığınız tüm web bağlantıları Brave'in gizlilik korumalarıyla açılacaktır.</translation>
+<translation id="1968543937259008435">Çevrimiçi ortamda en iyi gizliliğe hazır mısınız?</translation>
+<translation id="6817415381278637662">Açtığınız her web sayfasında Brave'in gizlilik korumalarını almak için Brave'i varsayılan tarayıcınız olarak ayarlayın.</translation>
+<translation id="8722651357687610395">Brave'i varsayılan yapın</translation>
+<translation id="2370739752330685659">Belki daha sonra</translation>
+<translation id="1241283133946520352">Ağlar</translation>
+<translation id="8205945804087322170">Yeni ağ ekle</translation>
+<translation id="2156993118928861787">Geçersiz adres</translation>
+<translation id="2653659639078652383">Gönder</translation>
+<translation id="2556708692502648323">Cüzdan ağları</translation>
+<translation id="1330032157352961756">Yeni zincirin kimliği</translation>
+<translation id="3423620355610881890">Pozitif bir ondalık sayı</translation>
+<translation id="726121047592132939">Yeni zincirin adı</translation>
+<translation id="1034112277864078119">Zincir adını girin</translation>
+<translation id="4672314527143443556">Zincirin para birimi ismi</translation>
+<translation id="4652114030688989556">Para birimi ismini girin</translation>
+<translation id="1079960017149736097">Zincirin para birimi sembolü</translation>
+<translation id="1288105009659846362">Para birimi sembolü girin</translation>
+<translation id="665660671251623018">Zincirin para birimi ondalıkları</translation>
+<translation id="2978054488731497946">Para birimi ondalıklarını girin</translation>
+<translation id="2727514928168763432">RPC URL'leri</translation>
+<translation id="7059127752542505809">URL girin</translation>
+<translation id="3047726704186619366">Simge URL'leri</translation>
+<translation id="2487558607408469181">Blok gezgini URL'leri</translation>
+<translation id="6301398959353668507">Bu alan boş olamaz.</translation>
+<translation id="7504462451153306677">Geçersiz biçim, zincir kimliği pozitif bir sayı</translation>
+<translation id="650071759190249039">İç Hata, ağ eklenemiyor.</translation>
+<translation id="868529041590572443">Lütfen asıl para birimiyle ilgili tüm bilgileri doldurun</translation>
+<translation id="1062463687579789365">Cüzdan ağları kişiselleştirme</translation>
+<translation id="2234108191702901162">Ağ eklenemiyor</translation>
+<translation id="2618193846561624884">Var olan ağı güncellemek istiyor musunuz?</translation>
 </translationbundle>

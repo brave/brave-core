@@ -1,0 +1,27 @@
+import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
+
+assert(brave_adaptive_captcha_enabled)
+
+source_set("tooltips") {
+  sources = [
+    "ads_captcha_tooltip.cc",
+    "ads_captcha_tooltip.h",
+    "ads_tooltips_controller.cc",
+    "ads_tooltips_controller.h",
+    "ads_tooltips_delegate_impl.cc",
+    "ads_tooltips_delegate_impl.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/profiles:util",
+    "//brave/browser/ui/brave_tooltips",
+    "//brave/components/brave_adaptive_captcha:brave_adaptive_captcha",
+    "//brave/components/brave_adaptive_captcha/buildflags:buildflags",
+    "//brave/components/brave_ads/browser:browser",
+    "//brave/components/brave_rewards/browser",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser/profiles:profile",
+    "//ui/base",
+  ]
+}

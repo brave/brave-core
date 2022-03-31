@@ -8,7 +8,8 @@
 
 #include <memory>
 
-#include "base/scoped_observer.h"
+#include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -19,11 +20,15 @@
 
 namespace views {
 class EventMonitor;
-class WebView;
 }  // namespace views
+
+namespace sidebar {
+class SidebarBrowserTest;
+}  // namespace sidebar
 
 class BraveBrowser;
 class SidebarControlView;
+class SidebarPanelWebView;
 
 // This view is the parent view of all sidebar ui.
 // Thi will include sidebar items button, add button, settings button and panel
@@ -34,6 +39,7 @@ class SidebarContainerView
       public SidebarShowOptionsEventDetectWidget::Delegate,
       public sidebar::SidebarModel::Observer {
  public:
+  METADATA_HEADER(SidebarContainerView);
   explicit SidebarContainerView(BraveBrowser* browser);
   ~SidebarContainerView() override;
 
@@ -46,6 +52,13 @@ class SidebarContainerView
   void SetSidebarShowOption(
       sidebar::SidebarService::ShowSidebarOption show_option) override;
   void UpdateSidebar() override;
+  void ShowCustomContextMenu(
+      const gfx::Point& point,
+      std::unique_ptr<ui::MenuModel> menu_model) override;
+  void HideCustomContextMenu() override;
+  bool HandleKeyboardEvent(
+      content::WebContents* source,
+      const content::NativeWebKeyboardEvent& event) override;
 
   // views::View overrides:
   void Layout() override;
@@ -56,17 +69,17 @@ class SidebarContainerView
 
   // SidebarShowOptionsEventDetectWidget::Delegate overrides:
   void ShowSidebar() override;
-  bool ShouldShowOnHover() override;
 
   // sidebar::SidebarModel::Observer overrides:
   void OnActiveIndexChanged(int old_index, int new_index) override;
 
  private:
+  friend class sidebar::SidebarBrowserTest;
+
   class BrowserWindowEventObserver;
 
   void AddChildViews();
   void UpdateBackgroundAndBorder();
-  void UpdateChildViewVisibility();
   void ShowOptionsEventDetectWidget(bool show);
   void ShowSidebar(bool show_sidebar, bool show_event_detect_widget);
   SidebarShowOptionsEventDetectWidget* GetEventDetectWidget();
@@ -88,16 +101,17 @@ class SidebarContainerView
 
   void DoHideSidebar(bool show_event_detect_widget);
 
-  BraveBrowser* browser_ = nullptr;
-  sidebar::SidebarModel* sidebar_model_ = nullptr;
-  views::WebView* sidebar_panel_view_ = nullptr;
-  SidebarControlView* sidebar_control_view_ = nullptr;
+  raw_ptr<BraveBrowser> browser_ = nullptr;
+  raw_ptr<sidebar::SidebarModel> sidebar_model_ = nullptr;
+  raw_ptr<SidebarPanelWebView> sidebar_panel_webview_ = nullptr;
+  raw_ptr<SidebarControlView> sidebar_control_view_ = nullptr;
   bool initialized_ = false;
   base::OneShotTimer sidebar_hide_timer_;
   std::unique_ptr<BrowserWindowEventObserver> browser_window_event_observer_;
   std::unique_ptr<views::EventMonitor> browser_window_event_monitor_;
   std::unique_ptr<SidebarShowOptionsEventDetectWidget> show_options_widget_;
-  ScopedObserver<sidebar::SidebarModel, sidebar::SidebarModel::Observer>
+  base::ScopedObservation<sidebar::SidebarModel,
+                          sidebar::SidebarModel::Observer>
       observed_{this};
 };
 

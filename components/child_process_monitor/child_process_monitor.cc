@@ -5,32 +5,33 @@
 
 #include "brave/components/child_process_monitor/child_process_monitor.h"
 
-#if defined(OS_POSIX)
+#if BUILDFLAG(IS_POSIX)
 #include <errno.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#elif defined(OS_WIN)
+#elif BUILDFLAG(IS_WIN)
 #include <windows.h>
 #endif
 
 #include <utility>
 
-#include "base/bind_post_task.h"
 #include "base/logging.h"
 #include "base/process/kill.h"
-#include "base/single_thread_task_runner.h"
+#include "base/task/bind_post_task.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/sequenced_task_runner_handle.h"
+#include "build/build_config.h"
 
 namespace brave {
 
 namespace {
 
-#if defined(OS_POSIX)
+#if BUILDFLAG(IS_POSIX)
 int pipehack[2];
 
 void SIGCHLDHandler(int signo) {
@@ -40,7 +41,7 @@ void SIGCHLDHandler(int signo) {
   errno = error;
 }
 
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
 void SetupFD(int fd) {
   int flags;
   if ((flags = fcntl(fd, F_GETFD)) == -1)
@@ -52,7 +53,7 @@ void SetupFD(int fd) {
 #endif
 
 void SetupPipeHack() {
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
   if (pipe(pipehack) == -1)
     VLOG(0) << "pipehack errno:" << errno;
   SetupFD(pipehack[0]);
@@ -93,7 +94,8 @@ void TearDownPipeHack() {
 void MonitorChild(base::ProcessHandle p_handle,
                   base::OnceCallback<void(base::ProcessId)> callback) {
   DCHECK(callback);
-#if defined(OS_POSIX)
+  base::ProcessId child_pid = base::GetProcId(p_handle);
+#if BUILDFLAG(IS_POSIX)
   char buf[PIPE_BUF];
 
   while (1) {
@@ -101,7 +103,7 @@ void MonitorChild(base::ProcessHandle p_handle,
       pid_t pid;
       int status;
 
-      if ((pid = waitpid(base::GetProcId(p_handle), &status, WNOHANG)) != -1) {
+      if ((pid = waitpid(child_pid, &status, WNOHANG)) != -1) {
         if (WIFSIGNALED(status)) {
           VLOG(0) << "child(" << pid << ") got terminated by signal "
                   << WTERMSIG(status);
@@ -119,9 +121,9 @@ void MonitorChild(base::ProcessHandle p_handle,
       break;
     }
   }
-#elif defined(OS_WIN)
+#elif BUILDFLAG(IS_WIN)
   WaitForSingleObject(p_handle, INFINITE);
-  std::move(callback).Run(base::GetProcId(p_handle));
+  std::move(callback).Run(child_pid);
 #else
 #error unsupported platforms
 #endif
@@ -133,7 +135,7 @@ ChildProcessMonitor::ChildProcessMonitor()
     : child_monitor_thread_(
           std::make_unique<base::Thread>("child_monitor_thread")) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-#if defined(OS_POSIX)
+#if BUILDFLAG(IS_POSIX)
   SetupPipeHack();
 #endif
   if (!child_monitor_thread_->Start()) {
@@ -143,13 +145,13 @@ ChildProcessMonitor::ChildProcessMonitor()
 
 ChildProcessMonitor::~ChildProcessMonitor() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-#if defined(OS_POSIX)
+#if BUILDFLAG(IS_POSIX)
   TearDownPipeHack();
 #endif
 
   if (child_process_.IsValid()) {
     child_process_.Terminate(0, true);
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
     // TODO(https://crbug.com/806451): The Mac implementation currently blocks
     // the calling thread for up to two seconds.
     base::ThreadPool::PostTask(

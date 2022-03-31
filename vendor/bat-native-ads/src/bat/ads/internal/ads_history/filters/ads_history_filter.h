@@ -8,9 +8,9 @@
 
 #include <deque>
 
-#include "bat/ads/ad_history_info.h"
-
 namespace ads {
+
+struct AdHistoryInfo;
 
 class AdsHistoryFilter {
  public:

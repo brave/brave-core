@@ -8,6 +8,10 @@
 
 #include "base/feature_list.h"
 
+namespace base {
+class TimeDelta;
+}  // namespace base
+
 namespace ads {
 namespace features {
 namespace frequency_capping {

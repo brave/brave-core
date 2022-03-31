@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index 86739218b10256a9bb8a19cefa9501844b4216de..fc6fc5d5028c31a218d6607915c192894a4928ed 100644
+index c73c004085240ed2106fe93c85692dd28b7639e7..9c932e5127924ff177b079e7ce6e707597aec202 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -243,6 +243,7 @@ enum class ContentSettingsType : int32_t {
-   // access files through drag & drop or clipboard paste operations.
-   FILE_HANDLING,
+@@ -281,6 +281,7 @@ enum class ContentSettingsType : int32_t {
+   // site instead of the mobile one.
+   REQUEST_DESKTOP_SITE,
  
 +  BRAVE_CONTENT_SETTINGS_TYPES_LIST,
    NUM_TYPES,

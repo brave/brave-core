@@ -119,11 +119,10 @@ class FTX extends React.PureComponent<Props, State> {
   }
 
   renderTitle () {
-    const selectedAsset = this.props.ftx.assetDetail?.currencyName
     const { showContent, widgetTitle } = this.props
     // Only show back arrow to go back to opt-in view
-    const shouldShowBackArrow = !selectedAsset &&
-      this.props.ftx.currentView !== ViewType.OptIn &&
+    const shouldShowBackArrow = showContent &&
+      this.props.ftx.currentView === ViewType.Markets &&
       !this.props.ftx.isConnected
 
     return (

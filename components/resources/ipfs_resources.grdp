@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <if expr="ipfs_enabled">
+  <if expr="enable_ipfs">
     <include name="IDR_IPFS_HTML" file="../ipfs_ui/ipfs.html" type="BINDATA" />
     <include name="IDR_IPFS_INTERSTITIAL_HTML" file="../ipfs/resources/ipfs_interstitial.html" flattenhtml="true" type="BINDATA" />
     <include name="IDR_IPFS_INTERSTITIAL_JS" file="../ipfs/resources/ipfs_interstitial.js" type="BINDATA" />

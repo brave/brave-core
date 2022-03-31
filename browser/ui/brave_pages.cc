@@ -14,7 +14,7 @@
 #include "chrome/common/webui_url_constants.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 #endif
 
@@ -50,6 +50,12 @@ void ShowWebcompatReporter(Browser* browser) {
 void ShowBraveWallet(Browser* browser) {
   NavigateParams params(
       GetSingletonTabNavigateParams(browser, GURL(kBraveUIWalletURL)));
+  ShowSingletonTabOverwritingNTP(browser, &params);
+}
+
+void ShowBraveWalletOnboarding(Browser* browser) {
+  NavigateParams params(GetSingletonTabNavigateParams(
+      browser, GURL(kBraveUIWalletOnboardingURL)));
   ShowSingletonTabOverwritingNTP(browser, &params);
 }
 

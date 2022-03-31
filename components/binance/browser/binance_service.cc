@@ -16,8 +16,8 @@
 #include "base/files/file_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/task_runner_util.h"
 #include "base/time/time.h"
 #include "base/token.h"
 #include "brave/common/pref_names.h"
@@ -33,9 +33,11 @@
 #include "content/public/browser/storage_partition.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/fetch_api.mojom-shared.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace {
 
@@ -81,9 +83,8 @@ BinanceService::BinanceService(content::BrowserContext* context)
       oauth_host_(oauth_host),
       gateway_host_(gateway_host),
       context_(context),
-      url_loader_factory_(
-          content::BrowserContext::GetDefaultStoragePartition(context_)
-              ->GetURLLoaderFactoryForBrowserProcess()),
+      url_loader_factory_(context_->GetDefaultStoragePartition()
+                              ->GetURLLoaderFactoryForBrowserProcess()),
       weak_factory_(this) {
   LoadTokensFromPrefs();
 }
@@ -208,8 +209,7 @@ bool BinanceService::OAuthRequest(const GURL &url,
           network::SimpleURLLoader::RetryMode::RETRY_NEVER);
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
 
-  auto* default_storage_partition =
-      content::BrowserContext::GetDefaultStoragePartition(context_);
+  auto* default_storage_partition = context_->GetDefaultStoragePartition();
   auto* url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess().get();
 

@@ -5,6 +5,7 @@
 
 import { createReducer } from 'redux-act'
 import * as Actions from '../../actions/today_actions'
+import * as BraveNews from '../../api/brave_news'
 
 export type BraveTodayState = {
   // Are we in the middle of checking for new data
@@ -16,9 +17,11 @@ export type BraveTodayState = {
   cardsViewed: number
   cardsVisited: number
   // Feed data
-  feed?: BraveToday.Feed
-  publishers?: BraveToday.Publishers
-  articleScrollTo?: BraveToday.FeedItem
+  feed?: BraveNews.Feed
+  publishers?: BraveNews.Publishers
+  articleScrollTo?: BraveNews.FeedItemMetadata
+  // Page number of ad to scroll to
+  displayAdToScrollTo?: number
 }
 
 function storeInHistoryState (data: Object) {
@@ -36,17 +39,21 @@ const defaultState: BraveTodayState = {
   cardsVisited: 0
 }
 // Get previously-clicked article from history state
-if (history.state && history.state.todayArticle) {
+if (history.state && (history.state.todayArticle || history.state.todayAdPosition)) {
   // TODO(petemill): Type this history.state data and put in an API module
   // see `async/today`.
   defaultState.currentPageIndex = history.state.todayPageIndex as number || 0
-  defaultState.articleScrollTo = history.state.todayArticle as BraveToday.FeedItem
+  defaultState.articleScrollTo = history.state.todayArticle
+  if (!defaultState.articleScrollTo) {
+    defaultState.displayAdToScrollTo = history.state.todayAdPosition as number | undefined
+  }
   defaultState.cardsVisited = history.state.todayCardsVisited as number || 0
   // Clear history state now that we have the info on app state
   storeInHistoryState({
-    todayArticle: null,
-    todayPageIndex: null,
-    todayCardsVisited: null
+    todayArticle: undefined,
+    todayPageIndex: undefined,
+    todayCardsVisited: undefined,
+    todayAdPosition: undefined
   })
 }
 
@@ -76,9 +83,10 @@ reducer.on(Actions.dataReceived, (state, payload) => {
   }
   if (payload.feed) {
     const isNewFeed = !state.feed || state.feed.hash !== payload.feed.hash
+    const shouldMaintainPageIndex = (state.articleScrollTo || state.displayAdToScrollTo)
     if (isNewFeed) {
       newState.feed = payload.feed
-      newState.currentPageIndex = state.articleScrollTo ? state.currentPageIndex : 0
+      newState.currentPageIndex = shouldMaintainPageIndex ? state.currentPageIndex : 0
       newState.isUpdateAvailable = false
     }
   }
@@ -123,13 +131,33 @@ reducer.on(Actions.setPublisherPref, (state, payload) => {
   if (publisher) {
     publisher = {
       ...publishers[payload.publisherId],
-      user_enabled: payload.enabled
+      // Don't worry about UserEnabled.NOT_MODIFIED
+      // here since that's a storage optimization
+      // on the backend.
+      userEnabledStatus: payload.enabled
+        ? BraveNews.UserEnabled.ENABLED
+        : BraveNews.UserEnabled.DISABLED
     }
     publishers = {
       ...publishers,
       [payload.publisherId]: publisher
     }
   }
+  return {
+    ...state,
+    publishers
+  }
+})
+
+reducer.on(Actions.removeDirectFeed, (state, { directFeed }) => {
+  const hasMatch = !!state.publishers?.[directFeed.publisherId]
+  if (!hasMatch) {
+    console.warn('Brave News: asked to remove direct feed which did not exist', directFeed)
+    return state
+  }
+  // Predict what backend will return when date is refreshed
+  const publishers = { ...state.publishers }
+  delete publishers[directFeed.publisherId]
   return {
     ...state,
     publishers

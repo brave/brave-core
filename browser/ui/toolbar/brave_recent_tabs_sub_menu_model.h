@@ -19,12 +19,13 @@ class BraveRecentTabsSubMenuModel : public RecentTabsSubMenuModel {
   BraveRecentTabsSubMenuModel(ui::AcceleratorProvider* accelerator_provider,
                          Browser* browser);
 
+  BraveRecentTabsSubMenuModel(const BraveRecentTabsSubMenuModel&) = delete;
+  BraveRecentTabsSubMenuModel& operator=(const BraveRecentTabsSubMenuModel&) =
+      delete;
+
   ~BraveRecentTabsSubMenuModel() override;
 
   void ExecuteCommand(int command_id, int event_flags) override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveRecentTabsSubMenuModel);
 };
 
 #endif  // BRAVE_BROWSER_UI_TOOLBAR_BRAVE_RECENT_TABS_SUB_MENU_MODEL_H_

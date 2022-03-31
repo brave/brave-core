@@ -6,10 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_INFO_H_
 
-#include <cstdint>
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_set.h"
+#include "base/time/time.h"
 #include "bat/ads/internal/bundle/creative_daypart_info.h"
 
 namespace ads {
@@ -19,28 +20,30 @@ struct CreativeAdInfo {
   CreativeAdInfo(const CreativeAdInfo& info);
   ~CreativeAdInfo();
 
+  bool operator==(const CreativeAdInfo& rhs) const;
+  bool operator!=(const CreativeAdInfo& rhs) const;
+
   std::string creative_instance_id;
   std::string creative_set_id;
   std::string campaign_id;
-  int64_t start_at_timestamp;
-  int64_t end_at_timestamp;
-  unsigned int daily_cap = 0;
   std::string advertiser_id;
-  unsigned int priority = 0;
+  base::Time start_at;
+  base::Time end_at;
+  int daily_cap = 0;
+  int priority = 0;
   double ptr = 0.0;
   bool conversion = false;
-  unsigned int per_day = 0;
-  unsigned int per_week = 0;
-  unsigned int per_month = 0;
-  unsigned int total_max = 0;
-  std::string split_test_group;
+  int per_day = 0;
+  int per_week = 0;
+  int per_month = 0;
+  int total_max = 0;
+  double value = 0.0;
   std::string segment;
-  std::vector<std::string> geo_targets;
-  std::string target_url;
+  std::string split_test_group;
   std::vector<CreativeDaypartInfo> dayparts;
+  base::flat_set<std::string> geo_targets;
+  std::string target_url;
 };
-
-using CreativeAdList = std::vector<CreativeAdInfo>;
 
 }  // namespace ads
 

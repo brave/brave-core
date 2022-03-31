@@ -8,26 +8,29 @@ import {
   StyledTitle,
   StyledLoader,
   StyledError,
+  StyledLink,
   StyledButton
 } from './style'
 import Modal from 'brave-ui/components/popupModals/modal/index'
 import { LoaderIcon } from 'brave-ui/components/icons'
 import { Button } from 'brave-ui/components'
-import { splitStringForTag } from '../../../../../common/locale'
+import { getLocale, splitStringForTag } from '../../../../../common/locale'
 
 export interface Props {
   id?: string
-  errorText?: string
+  errorText?: string[]
+  errorTextLink?: string
   buttonText?: string
   titleText?: string
+  learnMore?: string
   walletType?: string
   displayCloseButton?: boolean
+  isMobile?: boolean
   onClick?: () => void
   onClose?: () => void
 }
 
 export default class ModalRedirect extends React.PureComponent<Props, {}> {
-
   getButton = () => {
     const { onClick, buttonText } = this.props
     if (!onClick || !buttonText) {
@@ -42,48 +45,69 @@ export default class ModalRedirect extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, errorText, titleText, walletType, displayCloseButton, onClose } = this.props
-    let tags = null
-    if (errorText && errorText.includes('$1')) {
-      tags = splitStringForTag(errorText)
-    }
-
-    let supportURL = ''
-    if (walletType === 'uphold') {
-      supportURL = 'https://uphold.com/en/brave/support'
-    }
+    const {
+      id,
+      errorText,
+      errorTextLink,
+      titleText,
+      learnMore,
+      displayCloseButton,
+      isMobile,
+      onClose
+    } = this.props
 
     return (
-      <Modal id={id} displayCloseButton={!!displayCloseButton} onClose={onClose}>
+      <Modal
+        id={id}
+        displayCloseButton={!!displayCloseButton}
+        isMobile={isMobile}
+        onClose={onClose}
+      >
         <StyledWrapper>
           <StyledTitle>
             {titleText}
           </StyledTitle>
           {
             errorText
-            ? <StyledError>
-              <p>
-              {
-                tags
-                ? <>
-                  {
-                    supportURL
-                    ? <a href={supportURL} target='_blank' rel='noopener noreferrer'>
-                        {tags.duringTag}
-                      </a>
-                    : tags.duringTag
-                  }
-                  </>
-                : errorText
-              }
-              </p>
-              {this.getButton()}
-            </StyledError>
-            : <StyledLoader>
-              <LoaderIcon />
-            </StyledLoader>
-          }
+              ? <StyledError>
+                {
+                  errorText.map((line, index) => {
+                    let lineLinkTags = null
+                    if (line && line.includes('$2')) {
+                      lineLinkTags = splitStringForTag(line, 2)
+                    }
 
+                    return <p key={index}>
+                      {
+                        lineLinkTags
+                          ? <>
+                            {lineLinkTags.beforeTag}
+                            {
+                              errorTextLink
+                                ? <a href={errorTextLink} target='_blank' rel='noopener noreferrer'>
+                                  {lineLinkTags.duringTag}
+                                </a>
+                                : lineLinkTags.duringTag
+                            }
+                            {lineLinkTags.afterTag}
+                          </>
+                          : line
+                      }
+                    </p>
+                  })
+                }
+                {
+                  learnMore &&
+                  <StyledLink href={learnMore} target='_blank' rel='noopener noreferrer'>
+                    {getLocale('learnMore')}
+                  </StyledLink>
+                }
+                {this.getButton()}
+              </StyledError>
+              : <StyledLoader>
+                <LoaderIcon />
+              </StyledLoader>
+          }
         </StyledWrapper>
       </Modal>
     )

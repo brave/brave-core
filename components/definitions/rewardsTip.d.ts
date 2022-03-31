@@ -97,5 +97,6 @@ declare namespace RewardsTip {
     userName: string
     accountUrl: string
     loginUrl: string
+    activityUrl: string
   }
 }

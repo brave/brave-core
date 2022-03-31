@@ -9,7 +9,7 @@ import("//extensions/buildflags/buildflags.gni")
 brave_browser_ipfs_sources = []
 brave_browser_ipfs_deps = []
 
-if (ipfs_enabled) {
+if (enable_ipfs) {
   brave_browser_ipfs_sources += [
     "//brave/browser/ipfs/content_browser_client_helper.cc",
     "//brave/browser/ipfs/content_browser_client_helper.h",
@@ -17,6 +17,8 @@ if (ipfs_enabled) {
     "//brave/browser/ipfs/import/ipfs_import_controller.h",
     "//brave/browser/ipfs/import/save_package_observer.cc",
     "//brave/browser/ipfs/import/save_package_observer.h",
+    "//brave/browser/ipfs/ipfs_blob_context_getter_factory.cc",
+    "//brave/browser/ipfs/ipfs_blob_context_getter_factory.h",
     "//brave/browser/ipfs/ipfs_host_resolver.cc",
     "//brave/browser/ipfs/ipfs_host_resolver.h",
     "//brave/browser/ipfs/ipfs_service_factory.cc",
@@ -39,6 +41,7 @@ if (ipfs_enabled) {
     "//components/keyed_service/content",
     "//components/prefs",
     "//components/user_prefs",
+    "//content/public/browser",
     "//extensions/buildflags",
     "//ui/base/clipboard",
     "//ui/message_center/public/cpp",

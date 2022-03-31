@@ -12,7 +12,7 @@ import { Tab } from '../brave_extension/extension/brave_extension/types/state/sh
 import { BlockDetails } from '../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
 
 // Helpers
-import * as deepFreeze from 'deep-freeze-node'
+import deepFreeze from './deepFreeze'
 
 export class ChromeEvent {
   listeners: Array<() => void>
@@ -46,6 +46,7 @@ export const newTabInitialState: NewTab.ApplicationState = {
     showEmptyPage: false,
     isIncognito: new ChromeEvent(),
     useAlternativePrivateSearchEngine: false,
+    showAlternativePrivateSearchEngineToggle: false,
     torCircuitEstablished: false,
     torInitProgress: '',
     isTor: false,
@@ -115,12 +116,12 @@ type MockSettingsStore = {
 // TODO: do this in individual tests that rely on individual settings,
 //   using the `addMockSetting` function
 let mockSettings: MockSettingsStore = {
-  ['brave.shields.advanced_view_enabled']: {
+  'brave.shields.advanced_view_enabled': {
     key: 'brave.shields.advanced_view_enabled',
     type: 'BOOLEAN',
     value: false
   },
-  ['brave.shields.stats_badge_visible']: {
+  'brave.shields.stats_badge_visible': {
     key: 'brave.shields.stats_badge_visible',
     type: 'BOOLEAN',
     value: true
@@ -137,14 +138,14 @@ export function clearMockSettings () {
 
 export const getMockChrome = () => {
   let mock = {
-    send: (methodName: string, ...args: Array<any>) => undefined,
+    send: (methodName: string, ...args: any[]) => undefined,
     getVariableValue: () => undefined,
     braveRewards: {
       getPublisherData: (id: number, url: string, favicon: string) => undefined
     },
     braveTheme: {
       setBraveThemeType: function (theme: string) {
-        return
+
       }
     },
     runtime: {
@@ -162,19 +163,19 @@ export const getMockChrome = () => {
     },
     browserAction: {
       setBadgeBackgroundColor: function (properties: object) {
-        return
+
       },
       setBadgeText: function (textProperties: object) {
-        return
+
       },
       setIcon: function (iconProperties: object) {
-        return
+
       },
       enable: function (tabId?: number) {
-        return
+
       },
       disable: function (tabId?: number) {
-        return
+
       }
     },
     tabs: {
@@ -191,7 +192,7 @@ export const getMockChrome = () => {
         setImmediate(cb)
       },
       insertCSS: function (details: jest.SpyInstance) {
-        return
+
       },
       query: function (queryInfo: chrome.tabs.QueryInfo, callback: (result: chrome.tabs.Tab[]) => void) {
         return callback
@@ -213,14 +214,11 @@ export const getMockChrome = () => {
     },
     braveShields: {
       onBlocked: new ChromeEvent(),
-      allowScriptsOnce: function (origins: Array<string>, tabId: number, cb: () => void) {
+      allowScriptsOnce: function (origins: string[], tabId: number, cb: () => void) {
         setImmediate(cb)
       },
       getBraveShieldsEnabledAsync: function (url: string) {
         return Promise.resolve(false)
-      },
-      shouldDoCosmeticFilteringAsync: function (url: string) {
-        return Promise.resolve(true)
       },
       getAdControlTypeAsync: function (url: string) {
         return Promise.resolve('block')
@@ -264,16 +262,16 @@ export const getMockChrome = () => {
     },
     i18n: {
       getMessage: function (message: string) {
-        return
+
       }
     },
     storage: {
       local: {
         get: function (callback: (items: { [key: string]: any }) => void): void {
-          return
+
         },
         set: function (items: Object, callback?: () => void): void {
-          return
+
         }
       }
     },
@@ -287,13 +285,13 @@ export const getMockChrome = () => {
     },
     bookmarks: {
       create: function (bookmark: chrome.bookmarks.BookmarkCreateArg, callback?: (result: chrome.bookmarks.BookmarkTreeNode[]) => void) {
-        return
+
       },
       remove: function (id: string, callback?: Function) {
-        return
+
       },
       search: function (query: string, callback: (results: chrome.bookmarks.BookmarkTreeNode[]) => void) {
-        return
+
       }
     },
     contextMenus: {
@@ -301,7 +299,7 @@ export const getMockChrome = () => {
         return Promise.resolve()
       },
       onBlocked: new ChromeEvent(),
-      allowScriptsOnce: function (origins: Array<string>, tabId: number, cb: () => void) {
+      allowScriptsOnce: function (origins: string[], tabId: number, cb: () => void) {
         setImmediate(cb)
       },
       onClicked: new ChromeEvent()
@@ -343,7 +341,6 @@ export const window = () => {
 }
 
 export const initialState = deepFreeze({
-  dappDetection: {},
   runtime: {},
   shieldsPanel: {
     currentWindowId: -1,
@@ -385,42 +382,42 @@ export const mockSearchProviders = [
 
 export const mockImportSources = [
   {
-    autofillFormData : false,
-    cookies : true,
-    favorites : true,
-    history : true,
-    index : 1,
-    ledger : false,
-    name :  `Chrome Person 1`,
-    passwords : true,
-    search : false,
-    stats : false,
-    windows : false
+    autofillFormData: false,
+    cookies: true,
+    favorites: true,
+    history: true,
+    index: 1,
+    ledger: false,
+    name: 'Chrome Person 1',
+    passwords: true,
+    search: false,
+    stats: false,
+    windows: false
   },
   {
-    autofillFormData : false,
-    cookies : true,
-    favorites : true,
-    history : true,
-    index : 0,
-    ledger : false,
-    name :  `Safari`,
-    passwords : true,
-    search : false,
-    stats : false,
-    windows : false
+    autofillFormData: false,
+    cookies: true,
+    favorites: true,
+    history: true,
+    index: 0,
+    ledger: false,
+    name: 'Safari',
+    passwords: true,
+    search: false,
+    stats: false,
+    windows: false
   },
   {
-    autofillFormData : false,
-    cookies : true,
-    favorites : true,
-    history : true,
-    index : 2,
-    ledger : false,
-    name :  `Bookmarks HTML File`,
-    passwords : true,
-    search : false,
-    stats : false,
-    windows : false
+    autofillFormData: false,
+    cookies: true,
+    favorites: true,
+    history: true,
+    index: 2,
+    ledger: false,
+    name: 'Bookmarks HTML File',
+    passwords: true,
+    search: false,
+    stats: false,
+    windows: false
   }
 ]

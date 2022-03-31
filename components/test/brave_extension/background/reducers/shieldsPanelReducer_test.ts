@@ -24,7 +24,7 @@ import * as noScriptState from '../../../../brave_extension/extension/brave_exte
 
 // Utils
 import { initialState } from '../../../testData'
-import * as deepFreeze from 'deep-freeze-node'
+import deepFreeze from '../../../deepFreeze'
 import * as actions from '../../../../brave_extension/extension/brave_extension/actions/shieldsPanelActions'
 
 const origin = 'https://brave.com'
@@ -33,15 +33,17 @@ const tabId = 2
 
 const details: ShieldDetails = {
   id: tabId,
+  cosmeticBlocking: false,
   origin,
   hostname: 'brave.com',
   httpUpgradableResources: 'block',
   javascript: 'block',
   trackers: 'block',
   ads: 'block',
-  cosmeticFiltering: 'block_third_party',
   fingerprinting: 'block',
-  cookies: 'block'
+  cookies: 'block',
+  firstPartyCosmeticFiltering: false,
+  url: 'https://brave.com'
 }
 
 const tab: chrome.tabs.Tab = {
@@ -79,7 +81,16 @@ const state: State = deepFreeze({
       adsBlockedResources: [],
       fingerprintingBlockedResources: [],
       httpsRedirectedResources: [],
-      trackersBlockedResources: []
+      trackersBlockedResources: [],
+      hostname: 'brave.com',
+      url: 'https://brave.com',
+      ads: 'block',
+      trackers: 'block',
+      httpUpgradableResources: 'block',
+      javascript: 'block',
+      fingerprinting: 'block',
+      cookies: 'block',
+      firstPartyCosmeticFiltering: false
     }
   },
   windows: {
@@ -535,7 +546,7 @@ describe('braveShieldsPanelReducer', () => {
           2: {
             ...state.tabs[2],
             fingerprintingBlocked: 1,
-            fingerprintingBlockedResources: [ 'https://test.brave.com' ]
+            fingerprintingBlockedResources: ['https://test.brave.com']
           }
         }
       })
@@ -556,7 +567,7 @@ describe('braveShieldsPanelReducer', () => {
           2: {
             ...state.tabs[2],
             adsBlocked: 1,
-            adsBlockedResources: [ 'https://test.brave.com' ]
+            adsBlockedResources: ['https://test.brave.com']
           }
         }
       })
@@ -595,7 +606,7 @@ describe('braveShieldsPanelReducer', () => {
         }
       })
       expect(nextState.tabs[tabId].adsBlockedResources).toEqual(
-        [ 'https://test.brave.com' ]
+        ['https://test.brave.com']
       )
 
       nextState = shieldsPanelReducer(nextState, {
@@ -667,7 +678,7 @@ describe('braveShieldsPanelReducer', () => {
           2: {
             ...state.tabs[2],
             adsBlocked: 1,
-            adsBlockedResources: [ 'https://test.brave.com' ]
+            adsBlockedResources: ['https://test.brave.com']
           },
           3: {
             fingerprintingBlocked: 0,
@@ -679,7 +690,7 @@ describe('braveShieldsPanelReducer', () => {
             trackersBlocked: 0,
             trackersBlockedResources: [],
             adsBlocked: 1,
-            adsBlockedResources: [ 'https://test.brave.com' ]
+            adsBlockedResources: ['https://test.brave.com']
           }
         }
       })
@@ -700,7 +711,7 @@ describe('braveShieldsPanelReducer', () => {
           2: {
             ...state.tabs[2],
             adsBlocked: 1,
-            adsBlockedResources: [ 'https://test.brave.com' ]
+            adsBlockedResources: ['https://test.brave.com']
           }
         }
       })
@@ -722,8 +733,8 @@ describe('braveShieldsPanelReducer', () => {
             ...state.tabs[2],
             adsBlocked: 1,
             trackersBlocked: 1,
-            trackersBlockedResources: [ 'https://test.brave.com' ],
-            adsBlockedResources: [ 'https://test.brave.com' ]
+            trackersBlockedResources: ['https://test.brave.com'],
+            adsBlockedResources: ['https://test.brave.com']
           }
         }
       })
@@ -745,9 +756,9 @@ describe('braveShieldsPanelReducer', () => {
             adsBlocked: 1,
             trackersBlocked: 1,
             httpsRedirected: 1,
-            trackersBlockedResources: [ 'https://test.brave.com' ],
-            adsBlockedResources: [ 'https://test.brave.com' ],
-            httpsRedirectedResources: [ 'https://test.brave.com' ]
+            trackersBlockedResources: ['https://test.brave.com'],
+            adsBlockedResources: ['https://test.brave.com'],
+            httpsRedirectedResources: ['https://test.brave.com']
           }
         }
       })
@@ -772,9 +783,9 @@ describe('braveShieldsPanelReducer', () => {
             noScriptInfo: {
               'https://test.brave.com/index.js': { actuallyBlocked: true, willBlock: true, userInteracted: false }
             },
-            trackersBlockedResources: [ 'https://test.brave.com' ],
-            adsBlockedResources: [ 'https://test.brave.com' ],
-            httpsRedirectedResources: [ 'https://test.brave.com' ]
+            trackersBlockedResources: ['https://test.brave.com'],
+            adsBlockedResources: ['https://test.brave.com'],
+            httpsRedirectedResources: ['https://test.brave.com']
           }
         }
       })
@@ -800,10 +811,10 @@ describe('braveShieldsPanelReducer', () => {
             noScriptInfo: {
               'https://test.brave.com/index.js': { actuallyBlocked: true, willBlock: true, userInteracted: false }
             },
-            trackersBlockedResources: [ 'https://test.brave.com' ],
-            adsBlockedResources: [ 'https://test.brave.com' ],
-            fingerprintingBlockedResources: [ 'https://test.brave.com' ],
-            httpsRedirectedResources: [ 'https://test.brave.com' ]
+            trackersBlockedResources: ['https://test.brave.com'],
+            adsBlockedResources: ['https://test.brave.com'],
+            fingerprintingBlockedResources: ['https://test.brave.com'],
+            httpsRedirectedResources: ['https://test.brave.com']
           }
         }
       })

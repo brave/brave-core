@@ -6,8 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_UNBLINDED_TOKENS_UNBLINDED_TOKEN_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_PRIVACY_UNBLINDED_TOKENS_UNBLINDED_TOKEN_INFO_H_
 
-#include <vector>
-
 #include "wrapper.hpp"
 
 namespace ads {
@@ -16,7 +14,7 @@ namespace privacy {
 using challenge_bypass_ristretto::PublicKey;
 using challenge_bypass_ristretto::UnblindedToken;
 
-struct UnblindedTokenInfo {
+struct UnblindedTokenInfo final {
   UnblindedTokenInfo();
   UnblindedTokenInfo(const UnblindedTokenInfo& info);
   ~UnblindedTokenInfo();
@@ -27,8 +25,6 @@ struct UnblindedTokenInfo {
   UnblindedToken value;
   PublicKey public_key;
 };
-
-using UnblindedTokenList = std::vector<UnblindedTokenInfo>;
 
 }  // namespace privacy
 }  // namespace ads

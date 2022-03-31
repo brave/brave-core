@@ -1,18 +1,26 @@
-import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 
-# Refer to the keyed API spec for more details about the Brave Services Key
-defines = brave_service_key_defines
+declare_args() {
+  brave_google_api_key = ""
+  brave_google_api_endpoint = ""
+}
+
+buildflag_header("geolocation") {
+  header = "brave_geolocation_buildflags.h"
+
+  flags =
+      [ "GOOGLEAPIS_URL=\"$brave_google_api_endpoint$brave_google_api_key\"" ]
+}
 
 source_set("net") {
   # Remove when https://github.com/brave/brave-browser/issues/10659 is resolved
   check_includes = false
-  configs += [ "//brave/build/geolocation" ]
+
   sources = [
     "brave_ad_block_csp_network_delegate_helper.cc",
     "brave_ad_block_csp_network_delegate_helper.h",
@@ -30,6 +38,8 @@ source_set("net") {
     "brave_proxying_web_socket.h",
     "brave_request_handler.cc",
     "brave_request_handler.h",
+    "brave_service_key_network_delegate_helper.cc",
+    "brave_service_key_network_delegate_helper.h",
     "brave_site_hacks_network_delegate_helper.cc",
     "brave_site_hacks_network_delegate_helper.h",
     "brave_static_redirect_network_delegate_helper.cc",
@@ -47,26 +57,26 @@ source_set("net") {
   ]
 
   deps = [
+    ":geolocation",
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
-    "//brave/browser/translate/buildflags",
     "//brave/common",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_referrals/buildflags",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
-    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs/buildflags",
+    "//brave/components/update_client:buildflags",
     "//brave/extensions:common",
     "//components/content_settings/core/browser",
     "//components/prefs",
+    "//components/proxy_config",
     "//components/user_prefs",
     "//content/public/browser",
     "//content/public/common",
-    "//extensions/common:common_constants",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system",
     "//net",
@@ -79,7 +89,11 @@ source_set("net") {
     "//url",
   ]
 
-  if (ipfs_enabled) {
+  if (enable_extensions) {
+    deps += [ "//extensions/common:common_constants" ]
+  }
+
+  if (enable_ipfs) {
     sources += [
       "ipfs_redirect_network_delegate_helper.cc",
       "ipfs_redirect_network_delegate_helper.h",
@@ -111,14 +125,7 @@ source_set("net") {
     ]
   }
 
-  if (enable_brave_translate_go) {
-    sources += [
-      "brave_translate_redirect_network_delegate_helper.cc",
-      "brave_translate_redirect_network_delegate_helper.h",
-    ]
-  }
-
-  if (decentralized_dns_enabled && brave_wallet_enabled) {
+  if (decentralized_dns_enabled) {
     sources += [
       "decentralized_dns_network_delegate_helper.cc",
       "decentralized_dns_network_delegate_helper.h",
@@ -126,6 +133,7 @@ source_set("net") {
 
     deps += [
       "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/common",
       "//brave/components/decentralized_dns",
     ]
   }

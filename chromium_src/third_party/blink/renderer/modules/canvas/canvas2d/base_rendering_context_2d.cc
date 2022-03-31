@@ -14,16 +14,18 @@
   if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
     if (WebContentSettingsClient* settings =                              \
             brave::GetContentSettingsClientFor(context)) {                \
+      SkPixmap image_data_pixmap = image_data->GetSkPixmap();             \
       brave::BraveSessionCache::From(*context).PerturbPixels(             \
           settings,                                                       \
-          static_cast<const unsigned char*>(data_array->BaseAddress()),   \
-          data_array->byteLength());                                      \
+          static_cast<const unsigned char*>(                              \
+              image_data_pixmap.writable_addr()),                         \
+          image_data_pixmap.computeByteSize());                           \
     }                                                                     \
   }
 
 #define BRAVE_GET_IMAGE_DATA_PARAMS ScriptState *script_state,
 #define getImageData getImageData_Unused
-#include "../../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc"
+#include "src/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc"
 #undef getImageData
 #undef BRAVE_GET_IMAGE_DATA_PARAMS
 #undef BRAVE_GET_IMAGE_DATA
@@ -92,8 +94,8 @@ ImageData* BaseRenderingContext2D::getImageData(
     int sw,
     int sh,
     ExceptionState& exception_state) {
-  return getImageDataInternal(script_state, sx, sy, sw, sh, nullptr,
-                              exception_state);
+  return getImageDataInternal(script_state, sx, sy, sw, sh,
+                              /*image_data_settings=*/nullptr, exception_state);
 }
 
 ImageData* BaseRenderingContext2D::getImageData(

@@ -11,11 +11,12 @@ import {
   SettingsText
 } from '../../../../components/default'
 import { Toggle } from '../../../../components/toggle'
+import { Publishers } from '../../../../api/brave_news'
 import * as Styled from './style'
 import Sources from './sources'
 
 export interface Props {
-  publishers?: BraveToday.Publishers
+  publishers?: Publishers
   setPublisherPref: (publisherId: string, enabled: boolean) => any
   onDisplay: () => any
   onClearPrefs: () => any
@@ -41,6 +42,10 @@ export default function BraveTodayPrefs (props: Props) {
     }
   }, [props.onClearPrefs])
 
+  const shouldShowSources = !!(props.showToday &&
+    props.publishers &&
+    Object.keys(props.publishers).length !== 0)
+
   return (
     <Styled.Section>
       {!category && (
@@ -53,7 +58,7 @@ export default function BraveTodayPrefs (props: Props) {
           />
         </SettingsRow>
       )}
-      {props.showToday && props.publishers && Object.keys(props.publishers).length &&
+      {shouldShowSources &&
       <Sources category={category} setCategory={setCategory} {...props} />
       }
       {!category && (

@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_NET_COOKIES_COOKIE_MONSTER_H_
 
 #define CookieMonster ChromiumCookieMonster
-#include "../../../../net/cookies/cookie_monster.h"
+#include "src/net/cookies/cookie_monster.h"
 #undef CookieMonster
 
 namespace net {
@@ -16,10 +16,13 @@ class NET_EXPORT CookieMonster : public ChromiumCookieMonster {
  public:
   // These constructors and destructors must be kept in sync with those in
   // Chromium's CookieMonster.
-  CookieMonster(scoped_refptr<PersistentCookieStore> store, NetLog* net_log);
+  CookieMonster(scoped_refptr<PersistentCookieStore> store,
+                NetLog* net_log,
+                bool first_party_sets_enabled);
   CookieMonster(scoped_refptr<PersistentCookieStore> store,
                 base::TimeDelta last_access_threshold,
-                NetLog* net_log);
+                NetLog* net_log,
+                bool first_party_sets_enabled);
   ~CookieMonster() override;
 
   // CookieStore implementation.
@@ -37,15 +40,17 @@ class NET_EXPORT CookieMonster : public ChromiumCookieMonster {
   void SetCookieableSchemes(const std::vector<std::string>& schemes,
                             SetCookieableSchemesCallback callback) override;
 
-  void GetEphemeralCookieListWithOptionsAsync(const GURL& url,
-                                              const GURL& top_frame_url,
-                                              const CookieOptions& options,
-                                              GetCookieListCallback callback);
-  void SetEphemeralCanonicalCookieAsync(std::unique_ptr<CanonicalCookie> cookie,
-                                        const GURL& source_url,
-                                        const GURL& top_frame_url,
-                                        const CookieOptions& options,
-                                        SetCookiesCallback callback);
+  void SetCanonicalCookieAsync(
+      std::unique_ptr<CanonicalCookie> cookie,
+      const GURL& source_url,
+      const CookieOptions& options,
+      SetCookiesCallback callback,
+      const CookieAccessResult* cookie_access_result = nullptr) override;
+  void GetCookieListWithOptionsAsync(
+      const GURL& url,
+      const CookieOptions& options,
+      const CookiePartitionKeyCollection& cookie_partition_key_collection,
+      GetCookieListCallback callback) override;
 
  private:
   NetLogWithSource net_log_;

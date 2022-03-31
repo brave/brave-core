@@ -6,19 +6,19 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_SERVER_AD_SERVER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_SERVER_AD_SERVER_H_
 
+#include "base/observer_list.h"
 #include "bat/ads/internal/ad_server/ad_server_observer.h"
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/internal/timer.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
 class Catalog;
 
-class AdServer {
+class AdServer final {
  public:
   AdServer();
-
   ~AdServer();
 
   void AddObserver(AdServerObserver* observer);
@@ -27,25 +27,25 @@ class AdServer {
   void MaybeFetch();
 
  private:
+  void Fetch();
+  void OnFetch(const mojom::UrlResponse& url_response);
+
+  void SaveCatalog(const Catalog& catalog);
+
+  void FetchAfterDelay();
+
+  void Retry();
+  void OnRetry();
+
+  void NotifyCatalogUpdated(const Catalog& catalog) const;
+  void NotifyCatalogFailed() const;
+
   base::ObserverList<AdServerObserver> observers_;
 
   bool is_processing_ = false;
 
   Timer timer_;
-
-  void Fetch();
-  void OnFetch(const UrlResponse& url_response);
-
-  void SaveCatalog(const Catalog& catalog);
-
   BackoffTimer retry_timer_;
-  void Retry();
-  void OnRetry();
-
-  void FetchAfterDelay();
-
-  void NotifyCatalogUpdated(const Catalog& catalog);
-  void NotifyCatalogFailed();
 };
 
 }  // namespace ads

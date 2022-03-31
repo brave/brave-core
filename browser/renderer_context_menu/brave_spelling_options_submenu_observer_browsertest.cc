@@ -28,6 +28,10 @@ namespace {
 class BraveSpellingOptionsSubMenuObserverTest : public InProcessBrowserTest {
  public:
   BraveSpellingOptionsSubMenuObserverTest() {}
+  BraveSpellingOptionsSubMenuObserverTest(
+      const BraveSpellingOptionsSubMenuObserverTest&) = delete;
+  BraveSpellingOptionsSubMenuObserverTest& operator=(
+      const BraveSpellingOptionsSubMenuObserverTest&) = delete;
   ~BraveSpellingOptionsSubMenuObserverTest() override {}
 
   void Clear() {
@@ -42,7 +46,8 @@ class BraveSpellingOptionsSubMenuObserverTest : public InProcessBrowserTest {
                  BraveSpellingOptionsSubMenuObserver::GTEST_MODE_NORMAL) {
     Clear();
     menu_.reset(new BraveMockRenderViewContextMenu(
-        incognito ? browser()->profile()->GetPrimaryOTRProfile()
+        incognito ? browser()->profile()->GetPrimaryOTRProfile(
+                        /*create_if_needed=*/true)
                   : browser()->profile()));
     std::unique_ptr<BraveSpellingOptionsSubMenuObserver> observer =
         std::make_unique<BraveSpellingOptionsSubMenuObserver>(menu_.get(),
@@ -69,8 +74,10 @@ class BraveSpellingOptionsSubMenuObserverTest : public InProcessBrowserTest {
                                    enable_spellcheck);
     menu()->GetPrefs()->SetString(language::prefs::kAcceptLanguages,
                                   accept_languages);
-    base::ListValue dictionaries_value;
-    dictionaries_value.AppendStrings(dictionaries);
+    base::Value dictionaries_value(base::Value::Type::LIST);
+    for (auto dictionary : dictionaries) {
+      dictionaries_value.Append(dictionary);
+    }
     menu()->GetPrefs()->Set(spellcheck::prefs::kSpellCheckDictionaries,
                             dictionaries_value);
     observer()->InitMenu(content::ContextMenuParams());
@@ -94,8 +101,6 @@ class BraveSpellingOptionsSubMenuObserverTest : public InProcessBrowserTest {
  private:
   std::unique_ptr<BraveMockRenderViewContextMenu> menu_;
   std::unique_ptr<SpellingOptionsSubMenuObserver> observer_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveSpellingOptionsSubMenuObserverTest);
 };
 
 // Tests that "Ask Brave for suggestions" isn't shown in the menu and the menu

@@ -14,7 +14,7 @@
   GetContentsLayoutManager_Unused(); \
   virtual ContentsLayoutManager* GetContentsLayoutManager
 
-#include "../../../../../../../chrome/browser/ui/views/frame/browser_view.h"
+#include "src/chrome/browser/ui/views/frame/browser_view.h"
 #undef BRAVE_BROWSER_VIEW_H
 #undef BrowserWindow
 #undef GetContentsLayoutManager

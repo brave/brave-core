@@ -10,7 +10,7 @@
 
 namespace ads {
 
-struct VerifiableConversionInfo {
+struct VerifiableConversionInfo final {
   VerifiableConversionInfo();
   VerifiableConversionInfo(const VerifiableConversionInfo& info);
   ~VerifiableConversionInfo();

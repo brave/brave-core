@@ -67,3 +67,10 @@ export const getEventLogs = (type: RewardsInternals.WalletType) => action(types.
 export const onEventLogs = (logs: RewardsInternals.EventLog[]) => action(types.ON_EVENT_LOGS, {
   logs
 })
+
+export const getAdDiagnostics = () => action(types.GET_AD_DIAGNOSTICS)
+
+export const onAdDiagnostics = (adDiagnostics: RewardsInternals.AdDiagnosticsEntry[]) =>
+  action(types.ON_AD_DIAGNOSTICS, {
+    adDiagnostics
+  })

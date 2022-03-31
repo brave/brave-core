@@ -1,11 +1,11 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-/* global window */
 
 import { Reducer } from 'redux'
 
 // Constants
+import { loadTimeData } from '../../common/loadTimeData'
 import { types } from '../constants/welcome_types'
 
 // Utils
@@ -42,7 +42,16 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
       chrome.send('setDefaultSearchEngine', [modelIndex])
       break
     case types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS:
-      state = { ...state, searchProviders: payload }
+      // Regions approved for Brave Search will skip search welcome card
+      // Regions not approved show the card- but without Brave Search
+      const braveSearchApprovedRegion: boolean =
+          ['US', 'CA', 'DE', 'FR', 'GB'].includes(loadTimeData.getString('countryString'))
+      state = {
+        ...state,
+        searchProviders: payload,
+        showSearchCard: !braveSearchApprovedRegion,
+        showRewardsCard: loadTimeData.getBoolean('showRewardsCard')
+      }
       break
     case types.IMPORT_BROWSER_PROFILES_SUCCESS:
       state = { ...state, browserProfiles: payload }

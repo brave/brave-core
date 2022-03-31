@@ -11,9 +11,9 @@
 #    file under src tree (or grit).
 #
 # 2. Look for #defines that redefine symbols that aren't present in
-#    the overriden file.
+#    the overridden file.
 #
-# 3. Look for #include statements of the overriden file that have
+# 3. Look for #include statements of the overridden file that have
 #    incorrect number of ../ in the path.
 #
 # !!! This script does return false positives, but better check a
@@ -24,29 +24,32 @@ import re
 import os
 import sys
 
-"""
-Look for potential problems in chromium_src overrides.
-"""
+# Look for potential problems in chromium_src overrides.
 
 BRAVE_SRC = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 BRAVE_CHROMIUM_SRC = os.path.join(BRAVE_SRC, 'chromium_src')
 CHROMIUM_SRC = os.path.abspath(os.path.dirname(BRAVE_SRC))
 
+# pylint: disable-next=line-too-long
+NORMAL_DEFINITIONS_REGEXP = r'#define[\s\\]+([a-zA-Z0-9_]+[^\s\(]*)(?:[ \t]+\\\s*|[ \t])+([a-zA-Z0-9_]+[^\s\(]*)'
+# pylint: disable-next=line-too-long
+FUNCTION_LIKE_DEFINITIONS_REGEXP = r'#define[\s\\]+([a-zA-Z0-9_]+)[\s\\]*\(.*?\)(?:[ \t]+\\\s*|[ \t])([a-zA-Z0-9_]*[\s\\]*\(.*?\))'
 
 EXCLUDES = [
-    'CPPLINT.cfg',
+    '.*/BUILD.gn',
     '.*/DEPS',
     '.*/sources.gni',
-    '_(unit|browser)test(_mac)?.cc',
-    'third_party/blink/renderer/core/origin_trials/origin_trials.cc',
-    'third_party/blink/renderer/modules/battery/navigator_batterytest.cc',
-    'third_party/blink/renderer/modules/bluetooth/navigator_bluetoothtest.cc',
-    'third_party/blink/renderer/modules/quota/navigator_storagetest.cc',
-    'third_party/blink/renderer/modules/storage/brave_dom_window_storage.h',
+    'CPPLINT.cfg',
+    '_(unit|browser)test(_mac)?.(cc|mm)',
+    'base/feature_override.h',
     'chrome/installer/linux/common/brave-browser/chromium-browser.appdata.xml',
     'chrome/installer/linux/common/brave-browser/chromium-browser.info',
+    'chrome/installer/setup/brave_behaviors.cc',
     'content/browser/tld_ephemeral_lifetime.cc',
-    'content/public/browser/tld_ephemeral_lifetime.h'
+    'content/public/browser/tld_ephemeral_lifetime.h',
+    'third_party/blink/common/origin_trials/origin_trials.cc',
+    'third_party/blink/renderer/bindings/modules/v8/v8_navigator.cc',
+    'third_party/blink/renderer/modules/storage/brave_dom_window_storage.h',
 ]
 
 GRIT_EXCLUDES = [
@@ -54,16 +57,19 @@ GRIT_EXCLUDES = [
 ]
 
 GRIT_INCLUDES = [
-    'third_party/blink/renderer/core/origin_trials/origin_trials.cc'
+    'third_party/blink/common/origin_trials/origin_trials.cc',
+    'third_party/blink/renderer/bindings/modules/v8/v8_navigator.cc',
 ]
 
 
 def do_check_includes(override_filepath):
     """
-    Checks if |override_filepath| uses the correct number of ".." in the
-    include statement for the original file.
+    Warns if |override_filepath| uses relative includes and, if so, also checks
+    them for the correct number of ".." in the include statement for the
+    original file.
     """
     with open(override_filepath, mode='r', encoding='utf-8') as override_file:
+        normalized_override_filepath = override_filepath.replace('\\', '/')
         override_filename = os.path.basename(override_filepath)
         override_dirpath = os.path.dirname(override_filepath)
 
@@ -72,13 +78,31 @@ def do_check_includes(override_filepath):
         # +3 to get to chromium_src->brave->src.
         expected_count = len(override_dirpath.split(os.path.sep)) - 1 + 3
 
-        # Check relative includes go up the expected amount of steps.
         for line in override_file:
-            # We're only interested in include paths for parent directories.
-            regexp = r'^#include "(\.\./.*{})"'.format(override_filename)
+            # Check src/-prefixed includes
+            regexp = r'^#include "src/(.*)"'
+            line_match = re.search(regexp, line)
+            if line_match:
+                if line_match.group(1) != normalized_override_filepath:
+                    print(f"WARNING: {override_filepath} uses a src/-prefixed" +
+                          " include that doesn't point to the expected file:")
+                    print(f"         Include: {line}" +
+                          "         Expected include target: src/" +
+                          f"{normalized_override_filepath}")
+                    print("-------------------------")
+                continue
+
+            # Check relative includes go up the expected amount of steps.
+            # We're only interested in relative include paths.
+            regexp = rf'^#include "(\.\./.*{override_filename})"'
             line_match = re.search(regexp, line)
             if not line_match:
                 continue
+
+            print(f"WARNING: {override_filepath} uses a relative include:\n" +
+                  f"         {line}" +
+                  "         Switch to using a src/-prefixed include instead.")
+            print("-------------------------")
 
             # Count the number of '../' elements, but don't use the OS's path
             # separator here, since we're counting paths from a C++ include.
@@ -87,17 +111,17 @@ def do_check_includes(override_filepath):
 
             # Check actual vs expected.
             if actual_count != expected_count:
-                print("ERROR: while processing {}".format(override_filepath))
+                print(f"ERROR: while processing {override_filepath}")
 
                 # Sanity check
                 saved_cwd = os.getcwd()
                 os.chdir(override_dirpath)
                 if not os.path.isfile(include_path):
-                    print("       File {} doesn't exist".format(include_path))
+                    print(f"       File {include_path} doesn't exist")
                 os.chdir(saved_cwd)
 
-                print("       Expected {} \"..\"".format(expected_count))
-                print("       Found {} \"..\"".format(actual_count))
+                print(f"       Expected {expected_count} \"..\"")
+                print(f"       Found {actual_count} \"..\"")
                 print("-------------------------")
 
 
@@ -107,26 +131,43 @@ def do_check_defines(override_filepath, original_filepath):
     attempts to find the <TARGET> in the |original_filepath|.
     """
     with open(override_filepath, mode='r', encoding='utf-8') as override_file:
-        for line in override_file:
-            line_match = re.search(r'^#define\s*(\S*)\s*(\S*)', line)
-            if not line_match:
-                continue
-            target = line_match.group(1)
-            replacement = line_match.group(2)
+        content = override_file.read()
+        matches = []
+
+        # Search for all matches for normal definitions
+        # e.g. #define FooBar FooBar_ChromiumImpl
+        normal_matches = re.findall(NORMAL_DEFINITIONS_REGEXP, content)
+        matches += [{'value': m, 'is_func': False} for m in normal_matches]
+
+        # Search for all matches for function-like definitions
+        # e.g. #define FooBar(P1, P2) FooBar_ChromiumImpl(P1, P2, p3)
+        function_matches = re.findall(FUNCTION_LIKE_DEFINITIONS_REGEXP,
+                                      content, flags=re.DOTALL)
+        matches += [{'value': m, 'is_func': True} for m in function_matches]
+
+        if not matches:
+            return
+
+        for match in matches:
+            target = match['value'][0]
+            replacement = match['value'][1]
+
             if not replacement:
                 continue
 
-            # Adjust target name for BUILDFLAG_INTERNAL_*() cases.
-            if target.startswith('BUILDFLAG_INTERNAL_'):
-                buildflag_match = re.search(r'BUILDFLAG_INTERNAL_(\S*)\(\)',
-                                            target)
+            # Adjust target name for BUILDFLAG_INTERNAL_*() cases for
+            # function-like matches.
+            if match['is_func'] and target.startswith('BUILDFLAG_INTERNAL_'):
+                buildflag_match = re.search(
+                    r'BUILDFLAG_INTERNAL_(\S*)', target)
                 target = buildflag_match.group(1)
 
             # Report ERROR if target can't be found in the original file.
-            with open(original_filepath, mode='r', encoding='utf-8') as original_file:
+            with open(original_filepath, mode='r', encoding='utf-8') as \
+                original_file:
                 if target not in original_file.read():
-                    print("ERROR: Unable to find symbol {} in {}"
-                          .format(target, original_filepath))
+                    print(f"ERROR: Unable to find symbol {target}" +
+                          f" in {original_filepath}")
                     print("-------------------------")
 
 
@@ -136,13 +177,12 @@ def do_check_overrides(overrides_list, search_dir, check_includes=False):
     the passed in directory (|search_dir|), optionally checking includes too.
     """
     print("--------------------------------------------------")
-    print("Checking overrides in {} ...".format(search_dir))
+    print(f"Checking overrides in {search_dir} ...")
     print("--------------------------------------------------")
     for override_filepath in overrides_list:
         original_filepath = os.path.join(search_dir, override_filepath)
         if not os.path.isfile(original_filepath):
-            print("WARNING: No source for override {}"
-                  .format(override_filepath))
+            print(f"WARNING: No source for override {override_filepath}")
             print("-------------------------")
             continue
 
@@ -184,7 +224,8 @@ def filter_chromium_src_filepaths(include_regexp=None, exclude_regexp=None):
             # Normalize back slashes to forward slashes just in case we're in
             # Windows before trying to match them against a regular expression.
             normalized_path = relative_path.replace('\\', '/')
-            if include_regexp and not re.search(include_regexp, normalized_path):
+            if include_regexp and not re.search(
+                include_regexp, normalized_path):
                 continue
             if exclude_regexp and re.search(exclude_regexp, normalized_path):
                 continue
@@ -215,9 +256,9 @@ def main(args):
                                          options.arch)
 
     # Check that the required directories exist.
-    for dir in [BRAVE_SRC, gen_buildir]:
-        if not os.path.isdir(dir):
-            print("ERROR: {} is not a valid directory.".format(dir))
+    for directory in [BRAVE_SRC, gen_buildir]:
+        if not os.path.isdir(directory):
+            print(f"ERROR: {directory} is not a valid directory.")
             return 1
 
     # Change into the chromium_src directory for convenience.
@@ -233,6 +274,7 @@ def main(args):
         include_regexp='|'.join(GRIT_INCLUDES + ['.*grit.*']),
         exclude_regexp='|'.join(GRIT_EXCLUDES))
     do_check_overrides(grit_overrides, gen_buildir, False)
+    return 0
 
 
 if __name__ == '__main__':

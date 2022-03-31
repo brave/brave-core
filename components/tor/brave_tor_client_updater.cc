@@ -15,9 +15,9 @@
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/task/post_task.h"
+#include "base/task/task_runner.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/task_runner.h"
-#include "base/task_runner_util.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_switches.h"
 #include "components/prefs/pref_service.h"
@@ -29,48 +29,58 @@ namespace tor {
 
 namespace {
 
-base::FilePath InitExecutablePath(const base::FilePath& install_dir) {
+std::pair<base::FilePath, base::FilePath> InitTorPath(
+    const base::FilePath& install_dir) {
   base::FilePath executable_path;
+  base::FilePath torrc_path;
   base::FileEnumerator traversal(install_dir, false,
                                  base::FileEnumerator::FILES,
                                  FILE_PATH_LITERAL("tor-*"));
   for (base::FilePath current = traversal.Next(); !current.empty();
        current = traversal.Next()) {
     base::FileEnumerator::FileInfo file_info = traversal.GetInfo();
-    if (!RE2::FullMatch(file_info.GetName().MaybeAsASCII(),
-                        "tor-\\d+\\.\\d+\\.\\d+\\.\\d+-\\w+-brave-\\d+"))
-      continue;
-    executable_path = current;
-    break;
+    if (RE2::FullMatch(file_info.GetName().MaybeAsASCII(),
+                       "tor-\\d+\\.\\d+\\.\\d+\\.\\d+-\\w+-brave-\\d+"))
+      executable_path = current;
+    else if (file_info.GetName().MaybeAsASCII() == "tor-torrc")
+      torrc_path = current;
+
+    if (!executable_path.empty() && !torrc_path.empty())
+      break;
   }
 
-  if (executable_path.empty()) {
-    LOG(ERROR) << "Failed to locate Tor client executable in "
+  if (executable_path.empty() || torrc_path.empty()) {
+    LOG(ERROR) << "Failed to locate Tor client executable or torrc in "
                << install_dir.value().c_str();
-    return base::FilePath();
+    return std::make_pair(base::FilePath(), base::FilePath());
   }
 
-#if defined(OS_POSIX)
+#if BUILDFLAG(IS_POSIX)
   // Ensure that Tor client executable has appropriate file
   // permissions, as CRX unzipping does not preserve them.
   // See https://crbug.com/555011
   if (!base::SetPosixFilePermissions(executable_path, 0755)) {
     LOG(ERROR) << "Failed to set executable permission on "
                << executable_path.value().c_str();
-    return base::FilePath();
+    return std::make_pair(base::FilePath(), base::FilePath());
   }
-#endif  // defined(OS_POSIX)
+#endif  // BUILDFLAG(IS_POSIX)
 
-  return executable_path;
+  return std::make_pair(executable_path, torrc_path);
 }
 
 void DeleteDir(const base::FilePath& path) {
   base::DeletePathRecursively(path);
 }
 
+void DeleteFile(const base::FilePath& file) {
+  if (base::PathExists(file))
+    base::DeleteFile(file);
+}
+
 }  // namespace
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const char kTorClientComponentName[] = "Brave Tor Client Updater (Windows)";
 const char kTorClientComponentId[] = "cpoalefficncklhjfpglfiplenlpccdb";
 const char kTorClientComponentBase64PublicKey[] =
@@ -81,7 +91,7 @@ const char kTorClientComponentBase64PublicKey[] =
     "4Qa6VFmuoBhup54tTZvMv+ikoKKaQkHzkkjTa4hV5AzdnFDKO8C9qJb3T/Ef0+MO"
     "IuZjyySVzGNcOfASeHkhxhlwMQSQuhCN5mdFW5YBnVZ/5QWx8WzbhqBny/ZynS4e"
     "rQIDAQAB";
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
 const char kTorClientComponentName[] = "Brave Tor Client Updater (Mac)";
 const char kTorClientComponentId[] = "cldoidikboihgcjfkhdeidbpclkineef";
 const char kTorClientComponentBase64PublicKey[] =
@@ -92,7 +102,7 @@ const char kTorClientComponentBase64PublicKey[] =
     "jKVAy1hc9mApZSyt4oGvUu4SJZnxlYMrY4Ze+OWbDesi2JGy+6dA1ddL9IdnwCb3"
     "9CBOMNjaHeCVz0MKxdCWGPieQM0R7S1KvDCVqAkss6NAbLB6AVM0JulqxC9b+hr/"
     "xwIDAQAB";
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
 const char kTorClientComponentName[] = "Brave Tor Client Updater (Linux)";
 const char kTorClientComponentId[] = "biahpgbdmdkfgndcmfiipgcebobojjkp";
 const char kTorClientComponentBase64PublicKey[] =
@@ -120,7 +130,9 @@ BraveTorClientUpdater::BraveTorClientUpdater(
       registered_(false),
       local_state_(local_state),
       user_data_dir_(user_data_dir),
-      weak_ptr_factory_(this) {}
+      weak_ptr_factory_(this) {
+  RemoveObsoleteFiles();
+}
 
 BraveTorClientUpdater::~BraveTorClientUpdater() {}
 
@@ -133,8 +145,7 @@ void BraveTorClientUpdater::Register() {
     return;
   }
 
-  BraveComponent::Register(kTorClientComponentName,
-                           g_tor_client_component_id_,
+  BraveComponent::Register(kTorClientComponentName, g_tor_client_component_id_,
                            g_tor_client_component_base64_public_key_);
   registered_ = true;
 }
@@ -157,14 +168,26 @@ void BraveTorClientUpdater::Cleanup() {
                          base::BindOnce(&DeleteDir, GetTorWatchPath()));
 }
 
-void BraveTorClientUpdater::SetExecutablePath(const base::FilePath& path) {
-  executable_path_ = path;
+void BraveTorClientUpdater::RemoveObsoleteFiles() {
+  // tor log
+  base::FilePath tor_log = GetTorDataPath().AppendASCII("tor.log");
+  task_runner_->PostTask(FROM_HERE, base::BindOnce(&DeleteFile, tor_log));
+}
+
+void BraveTorClientUpdater::SetTorPath(
+    const std::pair<base::FilePath, base::FilePath>& paths) {
+  executable_path_ = paths.first;
+  torrc_path_ = paths.second;
   for (Observer& observer : observers_)
-    observer.OnExecutableReady(path);
+    observer.OnExecutableReady(paths.second);
 }
 
 base::FilePath BraveTorClientUpdater::GetExecutablePath() const {
   return executable_path_;
+}
+
+base::FilePath BraveTorClientUpdater::GetTorrcPath() const {
+  return torrc_path_;
 }
 
 base::FilePath BraveTorClientUpdater::GetTorDataPath() const {
@@ -179,14 +202,13 @@ base::FilePath BraveTorClientUpdater::GetTorWatchPath() const {
       .Append(FILE_PATH_LITERAL("watch"));
 }
 
-void BraveTorClientUpdater::OnComponentReady(
-    const std::string& component_id,
-    const base::FilePath& install_dir,
-    const std::string& manifest) {
+void BraveTorClientUpdater::OnComponentReady(const std::string& component_id,
+                                             const base::FilePath& install_dir,
+                                             const std::string& manifest) {
   base::PostTaskAndReplyWithResult(
       GetTaskRunner().get(), FROM_HERE,
-      base::BindOnce(&InitExecutablePath, install_dir),
-      base::BindOnce(&BraveTorClientUpdater::SetExecutablePath,
+      base::BindOnce(&InitTorPath, install_dir),
+      base::BindOnce(&BraveTorClientUpdater::SetTorPath,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 

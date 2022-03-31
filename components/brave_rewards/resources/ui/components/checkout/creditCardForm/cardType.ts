@@ -36,8 +36,8 @@ export class CardType {
   name: string
   pattern: RegExp
   validation: string = 'luhn'
-  gaps: Array<number> = [4, 8, 12]
-  lengths: Array<number> = [16]
+  gaps: number[] = [4, 8, 12]
+  lengths: number[] = [16]
   securityCodeLength: number = 3
 
   constructor (init: object) {
@@ -103,7 +103,7 @@ export class CardType {
   }
 }
 
-function registerTypes (initList: Array<object>) {
+function registerTypes (initList: object[]) {
   for (const init of initList) {
     const cardType = new CardType(init)
     cardTypes.set(cardType.id, cardType)

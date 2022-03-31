@@ -10,7 +10,7 @@
   GetDialogTitle_ChromiumImpl() const; \
   std::u16string GetDialogTitle
 
-#include "../../../../../chrome/browser/extensions/extension_install_prompt.h"
+#include "src/chrome/browser/extensions/extension_install_prompt.h"
 #undef GetDialogTitle
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_EXTENSIONS_EXTENSION_INSTALL_PROMPT_H_

@@ -7,14 +7,16 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_H_
 
 #define ScheduleUIUpdate virtual ScheduleUIUpdate
+#define ShouldDisplayFavicon virtual ShouldDisplayFavicon
 #define BRAVE_BROWSER_H              \
  private:                            \
   friend class BookmarkPrefsService; \
   friend class BraveBrowser;
 
-#include "../../../../../chrome/browser/ui/browser.h"  // NOLINT
+#include "src/chrome/browser/ui/browser.h"
 
 #undef BRAVE_BROWSER_H
 #undef ScheduleUIUpdate
+#undef ShouldDisplayFavicon
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_H_

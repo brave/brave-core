@@ -13,6 +13,8 @@
 #include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
+#include "bat/ledger/internal/logging/event_log_util.h"
+#include "bat/ledger/internal/notifications/notification_keys.h"
 #include "crypto/sha2.h"
 
 using std::placeholders::_1;
@@ -40,7 +42,7 @@ void BitflyerAuthorization::Authorize(
     return;
   }
 
-  auto bitflyer_wallet = GetWallet(ledger_);
+  auto bitflyer_wallet = ledger_->bitflyer()->GetWallet();
   if (!bitflyer_wallet) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR, {});
@@ -64,7 +66,9 @@ void BitflyerAuthorization::Authorize(
   if (it != args.end()) {
     const std::string message = args.at("error_description");
     BLOG(1, message);
-    if (message == "User does not meet minimum requirements") {
+    if (message == "User does not meet minimum requirements.") {
+      ledger_->database()->SaveEventLog(log::kKYCRequired,
+                                        constant::kWalletBitflyer);
       callback(type::Result::NOT_FOUND, {});
       return;
     }
@@ -176,27 +180,30 @@ void BitflyerAuthorization::OnClaimWallet(
     const std::string& address,
     const std::string& linking_info,
     ledger::ExternalWalletAuthorizationCallback callback) {
-  if (result == type::Result::ALREADY_EXISTS) {
-    BLOG(0, "Wallet linking limit reached");
-    ledger_->ledger_client()->ShowNotification("wallet_device_limit_reached",
-                                               {}, [](type::Result) {});
-
-    std::string event_text = "bitflyer";
-    if (auto wallet_ptr = GetWallet(ledger_))
-      event_text += "/" + wallet_ptr->address.substr(0, 5);
-
-    ledger_->database()->SaveEventLog(log::kDeviceLimitReached, event_text);
-    callback(result, {});
-    return;
+  auto wallet_ptr = ledger_->bitflyer()->GetWallet();
+  if (!wallet_ptr) {
+    BLOG(0, "bitFlyer wallet is null!");
+    return callback(type::Result::LEDGER_ERROR, {});
   }
 
-  if (result != type::Result::LEDGER_OK) {
-    BLOG(0, "Couldn't claim wallet");
-    callback(type::Result::LEDGER_ERROR, {});
-    return;
-  }
+  DCHECK(!address.empty());
 
-  auto wallet_ptr = GetWallet(ledger_);
+  switch (result) {
+    case type::Result::DEVICE_LIMIT_REACHED:
+    case type::Result::MISMATCHED_PROVIDER_ACCOUNTS:
+    case type::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:
+    case type::Result::FLAGGED_WALLET:
+    case type::Result::REGION_NOT_SUPPORTED:
+      ledger_->database()->SaveEventLog(
+          log::GetEventLogKeyForLinkingResult(result),
+          constant::kWalletBitflyer + std::string("/") + address.substr(0, 5));
+      return callback(result, {});
+    default:
+      if (result != type::Result::LEDGER_OK) {
+        BLOG(0, "Couldn't claim wallet!");
+        return callback(result, {});
+      }
+  }
 
   wallet_ptr->token = token;
   wallet_ptr->address = address;
@@ -211,8 +218,7 @@ void BitflyerAuthorization::OnClaimWallet(
       break;
   }
 
-  ledger_->bitflyer()->SetWallet(wallet_ptr->Clone());
-
+  ledger_->bitflyer()->SetWallet(std::move(wallet_ptr));
   callback(type::Result::LEDGER_OK, {});
 }
 

@@ -32,7 +32,6 @@ js_library("brave_appearance_browser_proxy") {
 js_library("brave_theme") {
   deps = [
     ":brave_appearance_browser_proxy",
-    "//chrome/browser/resources/settings:route",
     "//chrome/browser/resources/settings:router",
     "//ui/webui/resources/js:cr.m",
     "//ui/webui/resources/js:load_time_data.m",
@@ -44,7 +43,6 @@ js_library("brave_theme") {
 
 js_library("super_referral") {
   deps = [
-    "//chrome/browser/resources/settings:route",
     "//chrome/browser/resources/settings:router",
     "//ui/webui/resources/js:cr.m",
     "//ui/webui/resources/js:i18n_behavior.m",

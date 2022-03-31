@@ -67,6 +67,23 @@ function addImage(src) {
   });
 }
 
+// Adds an iframe to the DOM with the specified src
+function addFrame(src) {
+  return new Promise(resolve => {
+    const frame = document.createElement('iframe')
+    frame.src = src
+    frame.className = 'adFrame'
+
+    frame.addEventListener('load', () => {
+      resolve(onLoad())
+    })
+    frame.addEventListener('error', () => {
+      resolve(onLoad())
+    })
+    document.body.appendChild(frame)
+  });
+}
+
 function installBlockingServiceWorker() {
   return new Promise(resolve => {
     navigator.serviceWorker.addEventListener('message', msg => {

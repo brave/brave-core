@@ -1,10 +1,7 @@
 import styled from 'styled-components'
-import { SettingsAdvancedIcon } from 'brave-ui/components/icons'
-import { LockIconD, SafeIcon } from '../../../assets/svg-icons/nav-button-icons'
-
-interface StyleProps {
-  buttonType: 'primary' | 'secondary'
-}
+import { SettingsAdvancedIcon, OpenNewIcon } from 'brave-ui/components/icons'
+import { LockIconD, SafeIcon, InternetIcon } from '../../../assets/svg-icons/nav-button-icons'
+import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -16,28 +13,32 @@ export const StyledWrapper = styled.div`
   border-radius: 8px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   position: absolute;
-  top: 20px;
-  right: 0px;
-  z-index: 10;
+  top: 35px;
+  right: 15px;
+  z-index: 20;
  `
 
-export const PopupButton = styled.button<StyleProps>`
-  display: flex;;
+export const PopupButton = styled(WalletButton)`
+  display: flex;
   align-items: center;
   justify-content: flex-start;
+  text-align: left;
   cursor: pointer;
-  width: 200px;
+  width: 220px;
   border-radius: 8px;
   outline: none;
   border: none;
   background: none;
   padding: 10px 0px;
   margin: 0px;
-  background-color: ${(p) =>
-    p.buttonType === 'primary' ? `${p.theme.color.divider01}` : 'transparent'};
+  background-color: transparent;
+  &:hover {
+    background-color: ${(p) => p.theme.color.divider01};
+  }
 `
 
 export const PopupButtonText = styled.span`
+  flex: 1;
   font-family: Poppins;
   font-size: 13px;
   font-weight: 600;
@@ -47,6 +48,14 @@ export const PopupButtonText = styled.span`
 `
 
 export const SettingsIcon = styled(SettingsAdvancedIcon)`
+  width: 20px;
+  height: 20px;
+  color: ${(p) => p.theme.color.interactive07};
+  margin-right: 18px;
+  margin-left: 14px;
+`
+
+export const ExplorerIcon = styled(OpenNewIcon)`
   width: 20px;
   height: 20px;
   color: ${(p) => p.theme.color.interactive07};
@@ -72,4 +81,15 @@ export const BackupIcon = styled.div`
   background-color: ${(p) => p.theme.color.interactive07};
   -webkit-mask-image: url(${SafeIcon});
   mask-image: url(${SafeIcon});
+`
+
+export const ConnectedSitesIcon = styled.div`
+  width: 20px;
+  height: 20px;
+  margin-right: 18px;
+  margin-left: 14px;
+  background-color: ${(p) => p.theme.color.interactive07};
+  -webkit-mask-image: url(${InternetIcon});
+  mask-image: url(${InternetIcon});
+  mask-size: contain;
 `

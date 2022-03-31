@@ -8,6 +8,7 @@
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 
+#include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
 #include "base/threading/thread_restrictions.h"
@@ -15,15 +16,19 @@
 #include "bat/ads/pref_names.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_service.h"
+#include "net/base/url_util.h"
+#include "url/gurl.h"
 
 namespace brave_stats {
 
 base::Time BraveStatsUpdaterParams::g_current_time;
 bool BraveStatsUpdaterParams::g_force_first_run = false;
 static constexpr base::TimeDelta g_dtoi_delete_delta =
-    base::TimeDelta::FromSeconds(14 * 24 * 60 * 60);
+    base::Seconds(30 * 24 * 60 * 60);
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(
     PrefService* stats_pref_service,
@@ -100,12 +105,25 @@ std::string BraveStatsUpdaterParams::GetProcessArchParam() const {
   }
 }
 
+std::string BraveStatsUpdaterParams::GetWalletEnabledParam() const {
+  uint8_t usage_bitset = 0;
+  if (wallet_last_unlocked_ > last_reported_wallet_unlock_) {
+    usage_bitset = UsageBitfieldFromTimestamp(wallet_last_unlocked_,
+                                              last_reported_wallet_unlock_);
+  }
+  return std::to_string(usage_bitset);
+}
+
 void BraveStatsUpdaterParams::LoadPrefs() {
   last_check_ymd_ = stats_pref_service_->GetString(kLastCheckYMD);
   last_check_woy_ = stats_pref_service_->GetInteger(kLastCheckWOY);
   last_check_month_ = stats_pref_service_->GetInteger(kLastCheckMonth);
   first_check_made_ = stats_pref_service_->GetBoolean(kFirstCheckMade);
   week_of_installation_ = stats_pref_service_->GetString(kWeekOfInstallation);
+  wallet_last_unlocked_ =
+      profile_pref_service_->GetTime(kBraveWalletLastUnlockTime);
+  last_reported_wallet_unlock_ =
+      stats_pref_service_->GetTime(kBraveWalletPingReportedUnlockTime);
   if (week_of_installation_.empty())
     week_of_installation_ = GetLastMondayAsYMD();
 
@@ -131,6 +149,10 @@ void BraveStatsUpdaterParams::SavePrefs() {
   stats_pref_service_->SetInteger(kLastCheckMonth, month_);
   stats_pref_service_->SetBoolean(kFirstCheckMade, true);
   stats_pref_service_->SetString(kWeekOfInstallation, week_of_installation_);
+
+  last_reported_wallet_unlock_ = wallet_last_unlocked_;
+  stats_pref_service_->SetTime(kBraveWalletPingReportedUnlockTime,
+                               last_reported_wallet_unlock_);
 }
 
 std::string BraveStatsUpdaterParams::BooleanToString(bool bool_value) const {
@@ -165,8 +187,44 @@ int BraveStatsUpdaterParams::GetCurrentISOWeekNumber() const {
   return GetIsoWeekNumber(GetCurrentTimeNow());
 }
 
+base::Time BraveStatsUpdaterParams::GetReferenceTime() const {
+  return GetCurrentTimeNow() - base::Days(1);
+}
+
 base::Time BraveStatsUpdaterParams::GetCurrentTimeNow() const {
   return g_current_time.is_null() ? base::Time::Now() : g_current_time;
+}
+
+GURL BraveStatsUpdaterParams::GetUpdateURL(
+    const GURL& base_update_url,
+    const std::string platform_id,
+    const std::string channel_name,
+    const std::string full_brave_version) const {
+  GURL update_url(base_update_url);
+  update_url = net::AppendQueryParameter(update_url, "platform", platform_id);
+  update_url = net::AppendQueryParameter(update_url, "channel", channel_name);
+  update_url =
+      net::AppendQueryParameter(update_url, "version", full_brave_version);
+  update_url = net::AppendQueryParameter(update_url, "daily", GetDailyParam());
+  update_url =
+      net::AppendQueryParameter(update_url, "weekly", GetWeeklyParam());
+  update_url =
+      net::AppendQueryParameter(update_url, "monthly", GetMonthlyParam());
+  update_url =
+      net::AppendQueryParameter(update_url, "first", GetFirstCheckMadeParam());
+  update_url = net::AppendQueryParameter(update_url, "woi",
+                                         GetWeekOfInstallationParam());
+  update_url = net::AppendQueryParameter(update_url, "dtoi",
+                                         GetDateOfInstallationParam());
+  update_url =
+      net::AppendQueryParameter(update_url, "ref", GetReferralCodeParam());
+  update_url =
+      net::AppendQueryParameter(update_url, "adsEnabled", GetAdsEnabledParam());
+  update_url =
+      net::AppendQueryParameter(update_url, "arch", GetProcessArchParam());
+  update_url =
+      net::AppendQueryParameter(update_url, "wallet2", GetWalletEnabledParam());
+  return update_url;
 }
 
 // static
@@ -187,7 +245,7 @@ void BraveStatsUpdaterParams::SetFirstRunForTest(bool first_run) {
 
 // static
 base::Time BraveStatsUpdaterParams::GetFirstRunTime(PrefService* pref_service) {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   // Android doesn't use a sentinel to track first run, so we use a
   // preference instead. kReferralAndroidFirstRunTimestamp is used because
   // previously only referrals needed to know the first run value.
@@ -208,7 +266,7 @@ base::Time BraveStatsUpdaterParams::GetFirstRunTime(PrefService* pref_service) {
   // with the switches:kNoFirstRun flag, so we need to allow blocking for that.
   base::ScopedAllowBlockingForTesting allow_blocking;
   return first_run::GetFirstRunSentinelCreationTime();
-#endif  // #defined(OS_ANDROID)
+#endif  // #BUILDFLAG(IS_ANDROID)
 }
 
 }  // namespace brave_stats

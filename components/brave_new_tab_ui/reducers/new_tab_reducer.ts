@@ -15,7 +15,7 @@ import * as Actions from '../actions/new_tab_actions'
 // API
 import * as backgroundAPI from '../api/background'
 import { InitialData } from '../api/initialData'
-import { registerViewCount } from '../api/brandedWallpaper'
+import { registerViewCount } from '../api/wallpaper'
 import * as preferencesAPI from '../api/preferences'
 import * as storage from '../storage/new_tab_storage'
 import { setMostVisitedSettings } from '../api/topSites'
@@ -42,28 +42,38 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         initialDataLoaded: true,
         ...initialDataPayload.preferences,
         stats: initialDataPayload.stats,
-        brandedWallpaperData: initialDataPayload.brandedWallpaperData,
         ...initialDataPayload.privateTabData,
         ...initialDataPayload.torTabData,
-        togetherSupported: initialDataPayload.togetherSupported,
+        braveTalkSupported: initialDataPayload.braveTalkSupported,
         geminiSupported: initialDataPayload.geminiSupported,
         cryptoDotComSupported: initialDataPayload.cryptoDotComSupported,
         ftxSupported: initialDataPayload.ftxSupported,
-        binanceSupported: initialDataPayload.binanceSupported
+        binanceSupported: initialDataPayload.binanceSupported,
+        // Auto-dismiss of together prompt only
+        // takes effect on the next page view and not the
+        // page view that the action occured on.
+        braveTalkPromptDismissed: state.braveTalkPromptDismissed || state.braveTalkPromptAutoDismissed
       }
-      if (state.brandedWallpaperData && !state.brandedWallpaperData.isSponsored) {
+
+      if (initialDataPayload.wallpaperData) {
+        state = {
+          ...state,
+          backgroundWallpaper: initialDataPayload.wallpaperData.backgroundWallpaper,
+          brandedWallpaper: initialDataPayload.wallpaperData.brandedWallpaper
+        }
+      }
+
+      // It's super referral when backgound is false and it's not sponsored.
+      if (state.brandedWallpaper && !state.brandedWallpaper.isSponsored) {
         // Update feature flag if this is super referral wallpaper.
         state = {
           ...state,
           featureFlagBraveNTPSponsoredImagesWallpaper: false
         }
       }
-      // TODO(petemill): only get backgroundImage if no sponsored background this time.
-      // ...We would also have to set the value at the action
-      // the branded wallpaper is turned off. Since this is a cheap string API
-      // (no image will be downloaded), we can afford to leave this here for now.
-      if (initialDataPayload.preferences.showBackgroundImage) {
-        state.backgroundImage = backgroundAPI.randomBackgroundImage()
+      // Set default if we can't get both.
+      if (!state.backgroundWallpaper && !state.brandedWallpaper) {
+        state.backgroundWallpaper = backgroundAPI.randomBackgroundImage()
       }
       console.timeStamp('reducer initial data received')
 
@@ -93,11 +103,28 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       break
 
+    case types.CUSTOM_BACKGROUND_UPDATED:
+      // While customizing background, background has
+      // custom or brave default background. Branded wallpaper will
+      // be visible after reloading or new NTP after changing custom
+      // background option.
+      state = {
+        ...state,
+        brandedWallpaper: undefined
+      }
+      // Empty custom bg url means using brave background.
+      const url = payload.customBackground.url.url
+      state.backgroundWallpaper =
+          url === '' ? backgroundAPI.randomBackgroundImage()
+                     : { wallpaperImageUrl: url }
+      break
+
     case types.NEW_TAB_PRIVATE_TAB_DATA_UPDATED:
       const privateTabData = payload as PrivateTabData
       state = {
         ...state,
-        useAlternativePrivateSearchEngine: privateTabData.useAlternativePrivateSearchEngine
+        useAlternativePrivateSearchEngine: privateTabData.useAlternativePrivateSearchEngine,
+        showAlternativePrivateSearchEngineToggle: privateTabData.showAlternativePrivateSearchEngineToggle
       }
       break
 
@@ -136,19 +163,19 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // or refreshed.
       newState.isBrandedWallpaperNotificationDismissed = state.isBrandedWallpaperNotificationDismissed
       // Remove branded wallpaper when opting out or turning wallpapers off
-      const hasTurnedBrandedWallpaperOff = !preferences.brandedWallpaperOptIn && state.brandedWallpaperData
+      const hasTurnedBrandedWallpaperOff = !preferences.brandedWallpaperOptIn && state.brandedWallpaper
       const hasTurnedWallpaperOff = !preferences.showBackgroundImage && state.showBackgroundImage
       // We always show SR images regardless of background options state.
-      const isSuperReferral = state.brandedWallpaperData && !state.brandedWallpaperData.isSponsored
+      const isSuperReferral = state.brandedWallpaper && !state.brandedWallpaper.isSponsored
       if (!isSuperReferral &&
-          (hasTurnedBrandedWallpaperOff || (state.brandedWallpaperData && hasTurnedWallpaperOff))) {
-        newState.brandedWallpaperData = undefined
+          (hasTurnedBrandedWallpaperOff || (state.brandedWallpaper && hasTurnedWallpaperOff))) {
+        newState.brandedWallpaper = undefined
       }
       // Get a new wallpaper image if turning that feature on
       const shouldChangeBackgroundImage =
         !state.showBackgroundImage && preferences.showBackgroundImage
-      if (shouldChangeBackgroundImage) {
-        newState.backgroundImage = backgroundAPI.randomBackgroundImage()
+      if (shouldChangeBackgroundImage && !newState.backgroundWallpaper) {
+        newState.backgroundWallpaper = backgroundAPI.randomBackgroundImage()
       }
       // Handle updated widget prefs
       state = handleWidgetPrefsChange(newState, state)
@@ -189,10 +216,14 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       break
     }
 
-    case Actions.dismissTogetherPrompt.getType(): {
+    case Actions.dismissBraveTalkPrompt.getType(): {
+      const actionPayload = payload as Actions.DismissBraveTalkPromptPayload
+      const stateChange: Partial<NewTab.State> = actionPayload.isAutomatic
+        ? { braveTalkPromptAutoDismissed: true }
+        : { braveTalkPromptDismissed: true }
       state = {
         ...state,
-        togetherPromptDismissed: true
+        ...stateChange
       }
       break
     }

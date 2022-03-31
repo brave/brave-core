@@ -5,6 +5,7 @@
 
 #include "brave/components/weekly_storage/weekly_storage.h"
 
+#include <algorithm>
 #include <numeric>
 #include <utility>
 
@@ -45,6 +46,19 @@ void WeeklyStorage::AddDelta(uint64_t delta) {
   Save();
 }
 
+void WeeklyStorage::SubDelta(uint64_t delta) {
+  FilterToWeek();
+  for (DailyValue& daily_value : daily_values_) {
+    if (delta == 0) {
+      break;
+    }
+    uint64_t day_delta = std::min(daily_value.value, delta);
+    daily_value.value -= day_delta;
+    delta -= day_delta;
+  }
+  Save();
+}
+
 void WeeklyStorage::ReplaceTodaysValueIfGreater(uint64_t value) {
   FilterToWeek();
   DailyValue& today = daily_values_.front();
@@ -56,8 +70,7 @@ void WeeklyStorage::ReplaceTodaysValueIfGreater(uint64_t value) {
 
 uint64_t WeeklyStorage::GetWeeklySum() const {
   // We record only value for last N days.
-  const base::Time n_days_ago =
-      clock_->Now() - base::TimeDelta::FromDays(kDaysInWeek);
+  const base::Time n_days_ago = clock_->Now() - base::Days(kDaysInWeek);
   return std::accumulate(daily_values_.begin(), daily_values_.end(), 0ull,
                          [n_days_ago](const uint64_t acc, const auto& u2) {
                            uint64_t add = 0;
@@ -71,8 +84,7 @@ uint64_t WeeklyStorage::GetWeeklySum() const {
 
 uint64_t WeeklyStorage::GetHighestValueInWeek() const {
   // We record only value for last N days.
-  const base::Time n_days_ago =
-      clock_->Now() - base::TimeDelta::FromDays(kDaysInWeek);
+  const base::Time n_days_ago = clock_->Now() - base::Days(kDaysInWeek);
   std::list<DailyValue> last_weeks_daily_values(daily_values_.size());
   auto copied_it =
       std::copy_if(daily_values_.begin(), daily_values_.end(),
@@ -118,13 +130,13 @@ void WeeklyStorage::FilterToWeek() {
 
 void WeeklyStorage::Load() {
   DCHECK(daily_values_.empty());
-  const base::ListValue* list = prefs_->GetList(pref_name_);
+  const base::Value* list = prefs_->GetList(pref_name_);
   if (!list) {
     return;
   }
-  for (auto it = list->begin(); it != list->end(); ++it) {
-    const base::Value* day = it->FindKey("day");
-    const base::Value* value = it->FindKey("value");
+  for (auto& it : list->GetList()) {
+    const base::Value* day = it.FindKey("day");
+    const base::Value* value = it.FindKey("value");
     if (!day || !value || !day->is_double() || !value->is_double()) {
       continue;
     }
@@ -141,9 +153,9 @@ void WeeklyStorage::Save() {
   DCHECK_LE(daily_values_.size(), kDaysInWeek);
 
   ListPrefUpdate update(prefs_, pref_name_);
-  base::ListValue* list = update.Get();
+  base::Value* list = update.Get();
   // TODO(iefremov): Optimize if needed.
-  list->Clear();
+  list->ClearList();
   for (const auto& u : daily_values_) {
     base::DictionaryValue value;
     value.SetKey("day", base::Value(u.day.ToDoubleT()));

@@ -6,14 +6,14 @@ buildflag_header("buildflags") {
   flags = [ "BRAVE_P3A_ENABLED=$brave_p3a_enabled" ]
 }
 
-source_set("p3a") {
+static_library("p3a") {
   sources = [
-    "brave_histogram_rewrite.cc",
-    "brave_histogram_rewrite.h",
     "brave_p2a_protocols.cc",
     "brave_p2a_protocols.h",
     "brave_p3a_log_store.cc",
     "brave_p3a_log_store.h",
+    "brave_p3a_new_uploader.cc",
+    "brave_p3a_new_uploader.h",
     "brave_p3a_scheduler.cc",
     "brave_p3a_scheduler.h",
     "brave_p3a_service.cc",
@@ -22,13 +22,16 @@ source_set("p3a") {
     "brave_p3a_uploader.cc",
     "brave_p3a_uploader.h",
     "brave_p3a_utils.h",
+    "histograms_braveizer.cc",
+    "histograms_braveizer.h",
+    "p3a_message.cc",
+    "p3a_message.h",
     "pref_names.cc",
     "pref_names.h",
   ]
 
   deps = [
     "//base",
-    "//brave/components/brave_prochlo",
     "//brave/components/brave_prochlo:prochlo_proto",
     "//brave/components/brave_referrals/common",
     "//brave/components/brave_stats/browser",
@@ -41,6 +44,7 @@ source_set("p3a") {
     "//content/public/common",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
+    "//third_party/protobuf:protobuf_lite",
     "//url",
   ]
 }

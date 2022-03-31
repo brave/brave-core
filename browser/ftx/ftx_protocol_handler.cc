@@ -19,8 +19,10 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/render_frame_host.h"
 #include "net/base/escape.h"
 #include "net/base/url_util.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -28,7 +30,7 @@ void LoadNewTabURL(const GURL& url,
                    content::WebContents::OnceGetter web_contents_getter,
                    ui::PageTransition page_transition,
                    bool has_user_gesture,
-                   const base::Optional<url::Origin>& initiating_origin) {
+                   const absl::optional<url::Origin>& initiating_origin) {
   content::WebContents* web_contents = std::move(web_contents_getter).Run();
   if (!web_contents) {
     return;
@@ -39,23 +41,25 @@ void LoadNewTabURL(const GURL& url,
     return;
   }
 
-  GURL allowed_origin_one("https://ftx.us");
-  GURL allowed_origin_two("https://ftx.com");
+  url::Origin allowed_origin_one = url::Origin::Create(GURL("https://ftx.us"));
+  url::Origin allowed_origin_two = url::Origin::Create(GURL("https://ftx.com"));
 
   if (!initiating_origin.has_value()) {
     return;
   }
 
-  if (web_contents->GetLastCommittedURL().GetOrigin() != allowed_origin_one &&
-      web_contents->GetLastCommittedURL().GetOrigin() != allowed_origin_two &&
-      initiating_origin.value().GetURL() != allowed_origin_one &&
-      initiating_origin.value().GetURL() != allowed_origin_two) {
+  url::Origin last_committed_origin =
+      url::Origin::Create(web_contents->GetLastCommittedURL());
+  if (last_committed_origin != allowed_origin_one &&
+      last_committed_origin != allowed_origin_two &&
+      initiating_origin != allowed_origin_one &&
+      initiating_origin != allowed_origin_two) {
     return;
   }
 
   std::map<std::string, std::string> parts;
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
-    parts[it.GetKey()] = it.GetUnescapedValue();
+    parts[std::string(it.GetKey())] = it.GetUnescapedValue();
   }
   if (parts.find("code") != parts.end()) {
     std::string auth_token = parts["code"];
@@ -87,7 +91,7 @@ void HandleFTXProtocol(const GURL& url,
                        content::WebContents::OnceGetter web_contents_getter,
                        ui::PageTransition page_transition,
                        bool has_user_gesture,
-                       const base::Optional<url::Origin>& initiator) {
+                       const absl::optional<url::Origin>& initiator) {
   DCHECK(IsFTXProtocol(url));
   base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},

@@ -11,7 +11,7 @@
                const net::NetworkTrafficAnnotationTag& traffic_annotation); \
   RequestId RequestImage
 
-#include "../../../../../chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
+#include "src/chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #undef RequestImage
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BITMAP_FETCHER_BITMAP_FETCHER_SERVICE_H_

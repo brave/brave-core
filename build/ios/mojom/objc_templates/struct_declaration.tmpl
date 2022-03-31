@@ -1,0 +1,23 @@
+
+OBJC_EXPORT
+NS_SWIFT_NAME({{class_prefix}}.{{struct.name}})
+@interface {{class_prefix}}{{struct.name}} : NSObject <NSCopying>
+- (instancetype)init;
+{%- if struct.fields|length %}
+- (instancetype)initWith
+{%-  for field in struct.fields -%}
+{%-   set nullable = field.kind|objc_argument_modifiers -%}
+{%-   set type = "%s%s"|format(nullable + " " if nullable, field.kind|objc_wrapper_type) -%}
+{%-   set name = field.name|objc_property_formatter -%}
+{{field.name|under_to_camel(lower_initial=not loop.first)}}:({{type}}){{name}}
+{%-  if not loop.last %} {% else %};{%- endif %}
+{%-  endfor %}
+{%- endif %}
+{#- Class properties #}
+{%-  for field in struct.fields %}
+{%-   set type = field.kind|objc_wrapper_type %}
+{%-   set property_modifiers = field.kind|objc_property_modifiers %}
+{%-   set name = field.name|objc_property_formatter %}
+@property ({{property_modifiers}}) {{type}} {{name}};
+{%- endfor %}
+@end

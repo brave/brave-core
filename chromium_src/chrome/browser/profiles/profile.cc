@@ -10,7 +10,7 @@
 #define BRAVE_ALLOWS_BROWSER_WINDOWS *this == TorID() ||
 
 #define IsIncognitoProfile IsIncognitoProfile_ChromiumImpl
-#include "../../../../../chrome/browser/profiles/profile.cc"
+#include "src/chrome/browser/profiles/profile.cc"
 #undef IsIncognitoProfile
 
 // static

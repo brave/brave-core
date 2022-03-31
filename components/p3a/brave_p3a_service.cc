@@ -11,6 +11,7 @@
 
 #include "base/command_line.h"
 #include "base/i18n/timezone.h"
+#include "base/json/json_writer.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/metrics/histogram_samples.h"
 #include "base/metrics/metrics_hashes.h"
@@ -26,6 +27,7 @@
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/brave_p2a_protocols.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
+#include "brave/components/p3a/brave_p3a_new_uploader.h"
 #include "brave/components/p3a/brave_p3a_scheduler.h"
 #include "brave/components/p3a/brave_p3a_switches.h"
 #include "brave/components/p3a/brave_p3a_uploader.h"
@@ -53,6 +55,9 @@ constexpr char kLastRotationTimeStampPref[] = "p3a.last_rotation_timestamp";
 constexpr char kP3AServerUrl[] = "https://p3a.brave.com/";
 constexpr char kP2AServerUrl[] = "https://p2a.brave.com/";
 
+constexpr char kP3AJsonServerUrl[] = "https://p3a-json.brave.com/";
+constexpr char kP2AJsonServerUrl[] = "https://p2a-json.brave.com/";
+
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 
 // TODO(iefremov): Provide moar histograms!
@@ -78,20 +83,31 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Rewards.AdsState.2",
     "Brave.Rewards.AutoContributionsState.2",
     "Brave.Rewards.TipsState.2",
-    "Brave.Rewards.WalletBalance.2",
+    "Brave.Rewards.AdsEnabledDuration",
+    "Brave.Rewards.WalletBalance.3",
     "Brave.Rewards.WalletState",
     "Brave.Savings.BandwidthSavingsMB",
     "Brave.Search.DefaultEngine.4",
+    "Brave.Search.SwitchEngine",
     "Brave.Shields.UsageStatus",
+    "Brave.Shields.AdBlockSetting",
+    "Brave.Shields.FingerprintBlockSetting",
     "Brave.SpeedReader.Enabled",
     "Brave.SpeedReader.ToggleCount",
+    "Brave.Today.DirectFeedsTotal",
     "Brave.Today.HasEverInteracted",
-    "Brave.Today.WeeklySessionCount",
+    "Brave.Today.WeeklyDisplayAdsViewedCount",
     "Brave.Today.WeeklyMaxCardViewsCount",
     "Brave.Today.WeeklyMaxCardVisitsCount",
-    "Brave.Sync.Status",
+    "Brave.Today.WeeklySessionCount",
+    "Brave.Today.WeeklyAddedDirectFeedsCount",
+    "Brave.Sync.Status.2",
     "Brave.Sync.ProgressTokenEverReset",
     "Brave.Uptime.BrowserOpenMinutes",
+    "Brave.Wallet.DefaultWalletSetting",
+    "Brave.Wallet.KeyringCreated",
+    "Brave.Wallet.UsageDaysInWeek",
+    "Brave.Wallet.UsageMonthly.2",
     "Brave.Welcome.InteractionStatus",
 
     // IPFS
@@ -99,6 +115,7 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.IPFS.DetectionPromptCount",
     "Brave.IPFS.GatewaySetting",
     "Brave.IPFS.DaemonRunTime",
+    "Brave.IPFS.LocalNodeRetention",
 
     // P2A
     // Ad Opportunities
@@ -173,12 +190,12 @@ bool IsSuspendedMetric(base::StringPiece metric_name,
 
 base::TimeDelta GetRandomizedUploadInterval(
     base::TimeDelta average_upload_interval) {
-  const auto delta = base::TimeDelta::FromSecondsD(
+  const auto delta = base::Seconds(
       brave_base::random::Geometric(average_upload_interval.InSecondsF()));
   return delta;
 }
 
-base::TimeDelta TimeDeltaTillMonday(base::Time time) {
+base::Time NextMonday(base::Time time) {
   base::Time::Exploded exploded;
   time.LocalMidnight().LocalExplode(&exploded);
   // 1 stands for Monday, 0 for Sunday
@@ -189,8 +206,10 @@ base::TimeDelta TimeDeltaTillMonday(base::Time time) {
     days_till_monday = 1;
   }
 
-  base::TimeDelta result = base::TimeDelta::FromDays(days_till_monday) -
-                           (time - time.LocalMidnight());
+  // Adding few hours of padding to prevent potential problems with DST.
+  base::Time result =
+      (time.LocalMidnight() + base::Days(days_till_monday) + base::Hours(4))
+          .LocalMidnight();
   return result;
 }
 
@@ -217,9 +236,11 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry,
 
 void BraveP3AService::InitCallbacks() {
   for (const char* histogram_name : kCollectedHistograms) {
-    base::StatisticsRecorder::SetCallback(
-        histogram_name,
-        base::BindRepeating(&BraveP3AService::OnHistogramChanged, this));
+    histogram_sample_callbacks_.push_back(
+        std::make_unique<
+            base::StatisticsRecorder::ScopedHistogramSampleObserver>(
+            histogram_name,
+            base::BindRepeating(&BraveP3AService::OnHistogramChanged, this)));
   }
 }
 
@@ -228,8 +249,7 @@ void BraveP3AService::Init(
   // Init basic prefs.
   initialized_ = true;
 
-  average_upload_interval_ =
-      base::TimeDelta::FromSeconds(kDefaultUploadIntervalSeconds);
+  average_upload_interval_ = base::Seconds(kDefaultUploadIntervalSeconds);
 
   upload_server_url_ = GURL(kP3AServerUrl);
   MaybeOverrideSettingsFromCommandLine();
@@ -241,14 +261,14 @@ void BraveP3AService::Init(
           << ", upload_server_url_ = " << upload_server_url_.spec()
           << ", rotation_interval_ = " << rotation_interval_;
 
-  InitPyxisMeta();
+  InitMessageMeta();
 
   // Init log store.
   log_store_.reset(new BraveP3ALogStore(this, local_state_));
   log_store_->LoadPersistedUnsentLogs();
   // Store values that were recorded between calling constructor and |Init()|.
   for (const auto& entry : histogram_values_) {
-    HandleHistogramChange(entry.first.as_string(), entry.second);
+    HandleHistogramChange(std::string(entry.first), entry.second);
   }
   histogram_values_ = {};
   // Do rotation if needed.
@@ -257,10 +277,12 @@ void BraveP3AService::Init(
   if (last_rotation.is_null()) {
     DoRotation();
   } else {
-    const base::TimeDelta last_rotation_interval =
-        rotation_interval_.is_zero() ? TimeDeltaTillMonday(last_rotation)
-                                     : rotation_interval_;
-    if (base::Time::Now() - last_rotation > last_rotation_interval) {
+    if (!rotation_interval_.is_zero()) {
+      if (base::Time::Now() - last_rotation > rotation_interval_) {
+        DoRotation();
+      }
+    }
+    if (base::Time::Now() > NextMonday(last_rotation)) {
       DoRotation();
     }
   }
@@ -269,6 +291,9 @@ void BraveP3AService::Init(
   uploader_.reset(new BraveP3AUploader(
       url_loader_factory, upload_server_url_, GURL(kP2AServerUrl),
       base::BindRepeating(&BraveP3AService::OnLogUploadComplete, this)));
+
+  new_uploader_.reset(new BraveP3ANewUploader(
+      url_loader_factory, GURL(kP3AJsonServerUrl), GURL(kP2AJsonServerUrl)));
 
   upload_scheduler_.reset(new BraveP3AScheduler(
       base::BindRepeating(&BraveP3AService::StartScheduledUpload, this),
@@ -284,8 +309,9 @@ void BraveP3AService::Init(
   }
 }
 
-std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
-                                       uint64_t value) {
+BraveP3ALogStore::LogForJsonMigration BraveP3AService::Serialize(
+    base::StringPiece histogram_name,
+    uint64_t value) {
   // TRACE_EVENT0("brave_p3a", "SerializeMessage");
   // TODO(iefremov): Maybe we should store it in logs and pass here?
   // We cannot directly query |base::StatisticsRecorder::FindHistogram| because
@@ -293,16 +319,17 @@ std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
   // point when the actual histogram is not ready yet.
   const uint64_t histogram_name_hash = base::HashMetricName(histogram_name);
 
-  // TODO(iefremov): Restore when PROCHLO/PYXIS is ready.
-  //  brave_pyxis::PyxisMessage message;
-  //  prochlo::GenerateProchloMessage(histogram_name_hash, value, pyxis_meta_,
-  //                                  &message);
-
-  UpdatePyxisMeta();
+  UpdateMessageMeta();
   brave_pyxis::RawP3AValue message;
-  prochlo::GenerateP3AMessage(histogram_name_hash, value, pyxis_meta_,
-                              &message);
-  return message.SerializeAsString();
+  GenerateP3AMessage(histogram_name_hash, value, message_meta_, &message);
+
+  base::Value p3a_json_value =
+      GenerateP3AMessageDict(histogram_name, value, message_meta_);
+  std::string p3a_json_message;
+  const bool ok = base::JSONWriter::Write(p3a_json_value, &p3a_json_message);
+  DCHECK(ok);
+
+  return {message.SerializeAsString(), p3a_json_message};
 }
 
 bool
@@ -321,7 +348,7 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
         cmdline->GetSwitchValueASCII(switches::kP3AUploadIntervalSeconds);
     int64_t seconds;
     if (base::StringToInt64(seconds_str, &seconds) && seconds > 0) {
-      average_upload_interval_ = base::TimeDelta::FromSeconds(seconds);
+      average_upload_interval_ = base::Seconds(seconds);
     }
   }
 
@@ -334,7 +361,7 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
         cmdline->GetSwitchValueASCII(switches::kP3ARotationIntervalSeconds);
     int64_t seconds;
     if (base::StringToInt64(seconds_str, &seconds) && seconds > 0) {
-      rotation_interval_ = base::TimeDelta::FromSeconds(seconds);
+      rotation_interval_ = base::Seconds(seconds);
     }
   }
 
@@ -347,35 +374,37 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
   }
 }
 
-void BraveP3AService::InitPyxisMeta() {
-  pyxis_meta_.platform = brave_stats::GetPlatformIdentifier();
-  pyxis_meta_.channel = channel_;
-  pyxis_meta_.version =
+void BraveP3AService::InitMessageMeta() {
+  message_meta_.platform = brave_stats::GetPlatformIdentifier();
+  message_meta_.channel = channel_;
+  message_meta_.version =
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
 
   if (!week_of_install_.empty()) {
-    pyxis_meta_.date_of_install = brave_stats::GetYMDAsDate(week_of_install_);
+    message_meta_.date_of_install = brave_stats::GetYMDAsDate(week_of_install_);
   } else {
-    pyxis_meta_.date_of_install = base::Time::Now();
+    message_meta_.date_of_install = base::Time::Now();
   }
-  pyxis_meta_.woi = brave_stats::GetIsoWeekNumber(pyxis_meta_.date_of_install);
+  message_meta_.woi =
+      brave_stats::GetIsoWeekNumber(message_meta_.date_of_install);
 
-  pyxis_meta_.country_code =
+  message_meta_.country_code =
       base::ToUpperASCII(base::CountryCodeForCurrentTimezone());
-  pyxis_meta_.refcode = local_state_->GetString(kReferralPromoCode);
-  MaybeStripRefcodeAndCountry(&pyxis_meta_);
+  message_meta_.refcode = local_state_->GetString(kReferralPromoCode);
+  MaybeStripRefcodeAndCountry(&message_meta_);
 
-  UpdatePyxisMeta();
+  UpdateMessageMeta();
 
-  VLOG(2) << "Pyxis meta: " << pyxis_meta_.platform << " "
-          << pyxis_meta_.channel << " " << pyxis_meta_.version << " "
-          << pyxis_meta_.woi << " " << pyxis_meta_.wos << " "
-          << pyxis_meta_.country_code << " " << pyxis_meta_.refcode;
+  VLOG(2) << "Message meta: " << message_meta_.platform << " "
+          << message_meta_.channel << " " << message_meta_.version << " "
+          << message_meta_.woi << " " << message_meta_.wos << " "
+          << message_meta_.country_code << " " << message_meta_.refcode;
 }
 
-void BraveP3AService::UpdatePyxisMeta() {
-  pyxis_meta_.date_of_survey = base::Time::Now();
-  pyxis_meta_.wos = brave_stats::GetIsoWeekNumber(pyxis_meta_.date_of_survey);
+void BraveP3AService::UpdateMessageMeta() {
+  message_meta_.date_of_survey = base::Time::Now();
+  message_meta_.wos =
+      brave_stats::GetIsoWeekNumber(message_meta_.date_of_survey);
 }
 
 void BraveP3AService::StartScheduledUpload() {
@@ -401,6 +430,11 @@ void BraveP3AService::StartScheduledUpload() {
     VLOG(2) << "StartScheduledUpload - Uploading " << log.size() << " bytes "
             << "of type " << log_type;
     uploader_->UploadLog(log, log_type);
+
+    // We duplicate the uploads to test that the new approach works as fine
+    // as the legacy one. Once we are ready, we will remove the old
+    // uploader.
+    new_uploader_->UploadLog(log_store_->staged_json_log(), log_type);
   }
 }
 
@@ -409,7 +443,10 @@ void BraveP3AService::OnHistogramChanged(const char* histogram_name,
                                          base::HistogramBase::Sample sample) {
   std::unique_ptr<base::HistogramSamples> samples =
       base::StatisticsRecorder::FindHistogram(histogram_name)->SnapshotDelta();
-  DCHECK(!samples->Iterator()->Done());
+
+  // Stop now if there's nothing to do.
+  if (samples->Iterator()->Done())
+    return;
 
   // Shortcut for the special values, see |kSuspendedMetricValue|
   // description for details.
@@ -469,10 +506,10 @@ void BraveP3AService::OnHistogramChangedOnUI(const char* histogram_name,
 void BraveP3AService::HandleHistogramChange(base::StringPiece histogram_name,
                                             size_t bucket) {
   if (IsSuspendedMetric(histogram_name, bucket)) {
-    log_store_->RemoveValueIfExists(histogram_name.as_string());
+    log_store_->RemoveValueIfExists(std::string(histogram_name));
     return;
   }
-  log_store_->UpdateValue(histogram_name.as_string(), bucket);
+  log_store_->UpdateValue(std::string(histogram_name), bucket);
 }
 
 void BraveP3AService::OnLogUploadComplete(int response_code,
@@ -501,14 +538,19 @@ void BraveP3AService::DoRotation() {
 }
 
 void BraveP3AService::UpdateRotationTimer() {
-  base::TimeDelta next_rotation = rotation_interval_.is_zero()
-                                      ? TimeDeltaTillMonday(base::Time::Now())
-                                      : rotation_interval_;
+  base::Time now = base::Time::Now();
+  base::Time next_rotation =
+      rotation_interval_.is_zero() ? NextMonday(now) : now + rotation_interval_;
+  if (now >= next_rotation) {
+    // Should never happen, but let's stay on the safe side.
+    NOTREACHED();
+    return;
+  }
   rotation_timer_.Start(FROM_HERE, next_rotation, this,
                         &BraveP3AService::DoRotation);
 
-  VLOG(2) << "BraveP3AService new rotation timer will fire at "
-          << base::Time::Now() + next_rotation << " after " << next_rotation;
+  VLOG(2) << "BraveP3AService new rotation timer will fire at " << next_rotation
+          << " after " << next_rotation - now;
 }
 
 }  // namespace brave

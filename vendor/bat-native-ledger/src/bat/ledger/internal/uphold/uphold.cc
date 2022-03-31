@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -14,12 +14,15 @@
 #include "bat/ledger/internal/endpoint/uphold/uphold_server.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
+#include "bat/ledger/internal/notifications/notification_keys.h"
+#include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/uphold/uphold_authorization.h"
 #include "bat/ledger/internal/uphold/uphold_card.h"
 #include "bat/ledger/internal/uphold/uphold_transfer.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/uphold/uphold_wallet.h"
+#include "bat/ledger/internal/wallet/wallet_util.h"
 #include "brave_base/random.h"
 
 using std::placeholders::_1;
@@ -27,22 +30,21 @@ using std::placeholders::_2;
 using std::placeholders::_3;
 
 namespace {
-  const char kFeeMessage[] =
-      "5% transaction fee collected by Brave Software International";
+const char kFeeMessage[] =
+    "5% transaction fee collected by Brave Software International";
 }  // namespace
 
 namespace ledger {
 namespace uphold {
 
-Uphold::Uphold(LedgerImpl* ledger) :
-    transfer_(std::make_unique<UpholdTransfer>(ledger)),
-    card_(std::make_unique<UpholdCard>(ledger)),
-    user_(std::make_unique<UpholdUser>(ledger)),
-    authorization_(std::make_unique<UpholdAuthorization>(ledger)),
-    wallet_(std::make_unique<UpholdWallet>(ledger)),
-    uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)),
-    ledger_(ledger) {
-}
+Uphold::Uphold(LedgerImpl* ledger)
+    : transfer_(std::make_unique<UpholdTransfer>(ledger)),
+      card_(std::make_unique<UpholdCard>(ledger)),
+      user_(std::make_unique<UpholdUser>(ledger)),
+      authorization_(std::make_unique<UpholdAuthorization>(ledger)),
+      wallet_(std::make_unique<UpholdWallet>(ledger)),
+      uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)),
+      ledger_(ledger) {}
 
 Uphold::~Uphold() = default;
 
@@ -57,34 +59,23 @@ void Uphold::Initialize() {
   }
 }
 
-void Uphold::StartContribution(
-    const std::string& contribution_id,
-    type::ServerPublisherInfoPtr info,
-    const double amount,
-    ledger::ResultCallback callback) {
+void Uphold::StartContribution(const std::string& contribution_id,
+                               type::ServerPublisherInfoPtr info,
+                               const double amount,
+                               ledger::ResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher info is null");
-    ContributionCompleted(
-        type::Result::LEDGER_ERROR,
-        "",
-        contribution_id,
-        amount,
-        "",
-        callback);
+    ContributionCompleted(type::Result::LEDGER_ERROR, "", contribution_id,
+                          amount, "", callback);
     return;
   }
 
   const double fee = (amount * 1.05) - amount;
   const double reconcile_amount = amount - fee;
 
-  auto contribution_callback = std::bind(&Uphold::ContributionCompleted,
-      this,
-      _1,
-      _2,
-      contribution_id,
-      fee,
-      info->publisher_key,
-      callback);
+  auto contribution_callback =
+      std::bind(&Uphold::ContributionCompleted, this, _1, _2, contribution_id,
+                fee, info->publisher_key, callback);
 
   Transaction transaction;
   transaction.address = info->address;
@@ -93,21 +84,18 @@ void Uphold::StartContribution(
   transfer_->Start(transaction, contribution_callback);
 }
 
-void Uphold::ContributionCompleted(
-    const type::Result result,
-    const std::string& transaction_id,
-    const std::string& contribution_id,
-    const double fee,
-    const std::string& publisher_key,
-    ledger::ResultCallback callback) {
+void Uphold::ContributionCompleted(const type::Result result,
+                                   const std::string& transaction_id,
+                                   const std::string& contribution_id,
+                                   const double fee,
+                                   const std::string& publisher_key,
+                                   ledger::ResultCallback callback) {
   if (result == type::Result::LEDGER_OK) {
     SaveTransferFee(contribution_id, fee);
 
     if (!publisher_key.empty()) {
       ledger_->database()->UpdateContributionInfoContributedAmount(
-          contribution_id,
-          publisher_key,
-          callback);
+          contribution_id, publisher_key, callback);
       return;
     }
   }
@@ -116,57 +104,61 @@ void Uphold::ContributionCompleted(
 }
 
 void Uphold::FetchBalance(FetchBalanceCallback callback) {
-  const auto wallet = GetWallet();
-
-  if (!wallet ||
-      wallet->token.empty() ||
-      wallet->address.empty()) {
-    callback(type::Result::LEDGER_OK, 0.0);
-    return;
+  auto uphold_wallet = GetWallet();
+  if (!uphold_wallet) {
+    BLOG(1, "Uphold wallet is null.");
+    return callback(type::Result::LEDGER_OK, 0.0);
   }
 
-  if (wallet->status == type::WalletStatus::CONNECTED) {
-    BLOG(1, "Wallet is connected");
-    callback(type::Result::LEDGER_OK, 0.0);
-    return;
+  if (uphold_wallet->status != type::WalletStatus::VERIFIED) {
+    BLOG(1, "Uphold wallet is not VERIFIED.");
+    return callback(type::Result::LEDGER_OK, 0.0);
   }
 
-  auto url_callback = std::bind(&Uphold::OnFetchBalance,
-      this,
-      _1,
-      _2,
-      callback);
+  DCHECK(!uphold_wallet->token.empty());
+  DCHECK(!uphold_wallet->address.empty());
 
-  uphold_server_->get_card()->Request(
-      wallet->address,
-      wallet->token,
-      url_callback);
+  auto url_callback =
+      std::bind(&Uphold::OnFetchBalance, this, _1, _2, callback);
+
+  uphold_server_->get_card()->Request(uphold_wallet->address,
+                                      uphold_wallet->token, url_callback);
 }
 
-void Uphold::OnFetchBalance(
-    const type::Result result,
-    const double available,
-    FetchBalanceCallback callback) {
+void Uphold::OnFetchBalance(const type::Result result,
+                            const double available,
+                            FetchBalanceCallback callback) {
+  auto uphold_wallet = GetWallet();
+  if (!uphold_wallet) {
+    BLOG(0, "Uphold wallet is null!");
+    return callback(type::Result::LEDGER_ERROR, 0.0);
+  }
+
+  if (uphold_wallet->status != type::WalletStatus::VERIFIED) {
+    BLOG(0, "Wallet status should have been VERIFIED!");
+    return callback(type::Result::LEDGER_ERROR, 0.0);
+  }
+
+  DCHECK(!uphold_wallet->token.empty());
+  DCHECK(!uphold_wallet->address.empty());
+
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    DisconnectWallet();
-    callback(type::Result::EXPIRED_TOKEN, 0.0);
-    return;
+    DisconnectWallet(ledger::notifications::kWalletDisconnected);
+    return callback(type::Result::EXPIRED_TOKEN, 0.0);
   }
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get balance");
-    callback(type::Result::LEDGER_ERROR, 0.0);
-    return;
+    return callback(type::Result::LEDGER_ERROR, 0.0);
   }
 
   callback(type::Result::LEDGER_OK, available);
 }
 
-void Uphold::TransferFunds(
-    const double amount,
-    const std::string& address,
-    client::TransactionCallback callback) {
+void Uphold::TransferFunds(const double amount,
+                           const std::string& address,
+                           client::TransactionCallback callback) {
   Transaction transaction;
   transaction.address = address;
   transaction.amount = amount;
@@ -184,38 +176,41 @@ void Uphold::GenerateWallet(ledger::ResultCallback callback) {
 }
 
 void Uphold::CreateCard(CreateCardCallback callback) {
-  card_->CreateIfNecessary(callback);
+  card_->CreateBATCardIfNecessary(callback);
 }
 
-void Uphold::DisconnectWallet(const bool manual) {
+void Uphold::DisconnectWallet(const absl::optional<std::string>& notification) {
   auto wallet = GetWallet();
   if (!wallet) {
     return;
   }
 
   BLOG(1, "Disconnecting wallet");
-  if (!wallet->address.empty()) {
-    ledger_->database()->SaveEventLog(
-        log::kWalletDisconnected,
-        static_cast<std::string>(constant::kWalletUphold) + "/" +
-            wallet->address.substr(0, 5));
-  }
+  ledger_->database()->SaveEventLog(log::kWalletDisconnected,
+                                    std::string(constant::kWalletUphold) +
+                                        (!wallet->address.empty() ? "/" : "") +
+                                        wallet->address.substr(0, 5));
 
-  wallet = ResetWallet(std::move(wallet));
+  const bool manual = !notification.has_value();
+
+  const auto from = wallet->status;
+  wallet = ledger::wallet::ResetWallet(std::move(wallet));
   if (manual) {
     wallet->status = type::WalletStatus::NOT_CONNECTED;
   }
+  const auto to = wallet->status;
+
+  OnWalletStatusChange(ledger_, from, to);
 
   const bool shutting_down = ledger_->IsShuttingDown();
 
-  if (!manual && !shutting_down) {
-    ledger_->ledger_client()->ShowNotification(
-      "wallet_disconnected",
-      {},
-      [](type::Result _){});
+  if (!manual && !shutting_down && !notification->empty()) {
+    ledger_->ledger_client()->ShowNotification(*notification, {"Uphold"},
+                                               [](type::Result) {});
   }
 
-  SetWallet(wallet->Clone());
+  wallet = GenerateLinks(std::move(wallet));
+  SetWallet(std::move(wallet));
 
   if (!shutting_down) {
     ledger_->ledger_client()->WalletDisconnected(constant::kWalletUphold);
@@ -226,9 +221,8 @@ void Uphold::GetUser(GetUserCallback callback) {
   user_->Get(callback);
 }
 
-void Uphold::SaveTransferFee(
-    const std::string& contribution_id,
-    const double fee) {
+void Uphold::SaveTransferFee(const std::string& contribution_id,
+                             const double fee) {
   StartTransferFeeTimer(contribution_id, 1);
 
   auto wallet = GetWallet();
@@ -244,8 +238,7 @@ void Uphold::SaveTransferFee(
 void Uphold::StartTransferFeeTimer(const std::string& fee_id, int attempts) {
   DCHECK(!fee_id.empty());
 
-  base::TimeDelta delay = util::GetRandomizedDelay(
-      base::TimeDelta::FromSeconds(45));
+  base::TimeDelta delay = util::GetRandomizedDelay(base::Seconds(45));
 
   BLOG(1, "Uphold transfer fee timer set for " << delay);
 
@@ -304,11 +297,12 @@ void Uphold::OnTransferFeeTimerElapsed(const std::string& id, int attempts) {
 }
 
 type::ExternalWalletPtr Uphold::GetWallet() {
-  return ::ledger::uphold::GetWallet(ledger_);
+  return ::ledger::wallet::GetWallet(ledger_, constant::kWalletUphold);
 }
 
 bool Uphold::SetWallet(type::ExternalWalletPtr wallet) {
-  return ::ledger::uphold::SetWallet(ledger_, std::move(wallet));
+  return ::ledger::wallet::SetWallet(ledger_, std::move(wallet),
+                                     state::kWalletUphold);
 }
 
 void Uphold::RemoveTransferFee(const std::string& contribution_id) {

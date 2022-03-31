@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../../../../../chrome/browser/bitmap_fetcher/bitmap_fetcher_service.cc"
+#include "src/chrome/browser/bitmap_fetcher/bitmap_fetcher_service.cc"
 
 BitmapFetcherService::RequestId BitmapFetcherService::RequestImage(
     const GURL& url,

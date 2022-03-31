@@ -9,7 +9,7 @@
 #define GetAllRules           \
   GetAllRules_ChromiumImpl(); \
   static std::vector<ChromePermissionMessageRule> GetAllRules
-#include "../../../../../../chrome/common/extensions/permissions/chrome_permission_message_rules.h"
+#include "src/chrome/common/extensions/permissions/chrome_permission_message_rules.h"
 #undef GetAllRules
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_COMMON_EXTENSIONS_PERMISSIONS_CHROME_PERMISSION_MESSAGE_RULES_H_

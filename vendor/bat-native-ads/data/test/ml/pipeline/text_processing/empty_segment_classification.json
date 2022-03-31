@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "timestamp": "2019-03-13 17:33:31.708151",
+    "locale": "en",
+    "transformations": [
+      {
+        "transformation_type": "TO_LOWER"
+      },
+      {
+        "transformation_type": "HASHED_NGRAMS",
+        "params": {
+          "ngrams_range": [
+            1
+          ],
+          "num_buckets": 500
+        }
+      }
+    ],
+    "classifier": {
+      "classifier_type": "LINEAR",
+      "classes": [
+        "ham",
+        ""
+      ],
+      "class_weights": {
+        "ham": [
+          -6.0868
+        ],
+        "": [
+          2.45563
+        ]
+      },
+      "biases": [
+        -0.9163,
+        -1.6094
+      ]
+    }
+  }

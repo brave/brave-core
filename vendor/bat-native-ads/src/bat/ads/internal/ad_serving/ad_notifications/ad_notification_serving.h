@@ -6,18 +6,19 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_SERVING_AD_NOTIFICATIONS_AD_NOTIFICATION_SERVING_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_SERVING_AD_NOTIFICATIONS_AD_NOTIFICATION_SERVING_H_
 
-#include "base/gtest_prod_util.h"
-#include "base/time/time.h"
-#include "bat/ads/internal/ad_events/ad_event_info.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
-#include "bat/ads/internal/frequency_capping/frequency_capping_aliases.h"
+#include <memory>
+#include <string>
+
+#include "base/observer_list.h"
+#include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving_observer.h"
 #include "bat/ads/internal/timer.h"
-#include "bat/ads/result.h"
+
+namespace base {
+class Time;
+class TimeDelta;
+}  // namespace base
 
 namespace ads {
-
-struct AdNotificationInfo;
 
 namespace ad_targeting {
 namespace geographic {
@@ -29,87 +30,54 @@ namespace resource {
 class AntiTargeting;
 }  // namespace resource
 
+struct AdNotificationInfo;
+
 namespace ad_notifications {
 
-using MaybeServeAdForSegmentsCallback =
-    std::function<void(const Result, const AdNotificationInfo&)>;
+class EligibleAdsBase;
 
-class AdServing {
+class AdServing final {
  public:
   AdServing(
-      AdTargeting* ad_targeting,
       ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
-      resource::AntiTargeting* anti_targeting);
-
+      resource::AntiTargeting* anti_targeting_resource);
   ~AdServing();
 
-  void ServeAtRegularIntervals();
-  void StopServing();
-  void MaybeServe();
+  void AddObserver(AdNotificationServingObserver* observer);
+  void RemoveObserver(AdNotificationServingObserver* observer);
 
-  void OnAdsPerHourChanged();
+  void StartServingAdsAtRegularIntervals();
+  void StopServingAdsAtRegularIntervals();
+
+  void MaybeServeAd();
+
+  void OnPrefChanged(const std::string& path);
 
  private:
-  // TODO(https://github.com/brave/brave-browser/issues/12315): Update
-  // BatAdsAdNotificationPacingTest to test the contract, not the implementation
-  FRIEND_TEST_ALL_PREFIXES(BatAdsAdNotificationPacingTest,
-                           PacingDisableDelivery);
-  FRIEND_TEST_ALL_PREFIXES(BatAdsAdNotificationPacingTest, NoPacing);
-  FRIEND_TEST_ALL_PREFIXES(BatAdsAdNotificationPacingTest, SimplePacing);
-  FRIEND_TEST_ALL_PREFIXES(BatAdsAdNotificationPacingTest, NoPacingPrioritized);
-  FRIEND_TEST_ALL_PREFIXES(BatAdsAdNotificationPacingTest,
-                           PacingDisableDeliveryPrioritized);
-  FRIEND_TEST_ALL_PREFIXES(BatAdsAdNotificationPacingTest,
-                           PacingAndPrioritization);
+  bool IsSupported() const;
 
-  bool NextIntervalHasElapsed();
+  bool ShouldServeAdsAtRegularIntervals() const;
+  bool HasPreviouslyServedAnAd() const;
+  bool ShouldServeAd() const;
+  base::TimeDelta CalculateDelayBeforeServingAnAd() const;
+  void MaybeServeAdAtNextRegularInterval();
+  void RetryServingAdAtNextInterval();
+  base::Time MaybeServeAdAfter(const base::TimeDelta delay);
 
-  void MaybeServeNextAd();
+  bool ServeAd(const AdNotificationInfo& ad) const;
+  void FailedToServeAd();
+  void ServedAd(const AdNotificationInfo& ad);
 
-  base::Time MaybeServeAfter(const base::TimeDelta delay);
+  void NotifyDidServeAdNotification(const AdNotificationInfo& ad) const;
+  void NotifyFailedToServeAdNotification() const;
 
-  void MaybeServeAdForSegments(const SegmentList& segments,
-                               MaybeServeAdForSegmentsCallback callback);
+  base::ObserverList<AdNotificationServingObserver> observers_;
 
-  void MaybeServeAdForParentChildSegments(
-      const SegmentList& segments,
-      const AdEventList& ad_events,
-      const BrowsingHistoryList& history,
-      MaybeServeAdForSegmentsCallback callback);
-
-  void MaybeServeAdForParentSegments(const SegmentList& segments,
-                                     const AdEventList& ad_events,
-                                     const BrowsingHistoryList& history,
-                                     MaybeServeAdForSegmentsCallback callback);
-
-  void MaybeServeAdForUntargeted(const AdEventList& ad_events,
-                                 const BrowsingHistoryList& history,
-                                 MaybeServeAdForSegmentsCallback callback);
-
-  void MaybeServeAd(const CreativeAdNotificationList& ads,
-                    MaybeServeAdForSegmentsCallback callback);
-
-  CreativeAdNotificationList PaceAds(const CreativeAdNotificationList& ads);
-
-  void MaybeDeliverAd(const CreativeAdNotificationInfo& ad,
-                      MaybeServeAdForSegmentsCallback callback);
-
-  void FailedToDeliverAd();
-
-  void DeliveredAd();
-
-  void RecordAdOpportunityForSegments(const SegmentList& segments);
+  bool is_serving_ = false;
 
   Timer timer_;
 
-  CreativeAdInfo last_delivered_creative_ad_;
-
-  AdTargeting* ad_targeting_;  // NOT OWNED
-
-  ad_targeting::geographic::SubdivisionTargeting*
-      subdivision_targeting_;  // NOT OWNED
-
-  resource::AntiTargeting* anti_targeting_resource_;  // NOT OWNED
+  std::unique_ptr<EligibleAdsBase> eligible_ads_;
 };
 
 }  // namespace ad_notifications

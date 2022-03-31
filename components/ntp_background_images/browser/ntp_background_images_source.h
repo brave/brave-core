@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -8,9 +8,10 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/optional.h"
 #include "content/public/browser/url_data_source.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
 class FilePath;
@@ -32,9 +33,9 @@ class NTPBackgroundImagesSource : public content::URLDataSource {
       const NTPBackgroundImagesSource&) = delete;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BasicTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BackgroundImagesTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest,
-                           BasicSuperReferralDataTest);
+                           BackgroundImagesFormatTest);
 
   // content::URLDataSource overrides:
   std::string GetSource() override;
@@ -42,22 +43,14 @@ class NTPBackgroundImagesSource : public content::URLDataSource {
                         const content::WebContents::Getter& wc_getter,
                         GotDataCallback callback) override;
   std::string GetMimeType(const std::string& path) override;
-  bool AllowCaching() override;
 
   void GetImageFile(const base::FilePath& image_file_path,
                     GotDataCallback callback);
   void OnGotImageFile(GotDataCallback callback,
-                      base::Optional<std::string> input);
-  bool IsValidPath(const std::string& path) const;
-  bool IsLogoPath(const std::string& path) const;
-  bool IsDefaultLogoPath(const std::string& path) const;
-  int GetLogoIndexFromPath(const std::string& path) const;
-  bool IsWallpaperPath(const std::string& path) const;
+                      absl::optional<std::string> input);
   int GetWallpaperIndexFromPath(const std::string& path) const;
-  bool IsTopSiteFaviconPath(const std::string& path) const;
-  base::FilePath GetTopSiteFaviconFilePath(const std::string& path) const;
 
-  NTPBackgroundImagesService* service_;  // not owned
+  raw_ptr<NTPBackgroundImagesService> service_ = nullptr;  // not owned
   base::WeakPtrFactory<NTPBackgroundImagesSource> weak_factory_;
 };
 

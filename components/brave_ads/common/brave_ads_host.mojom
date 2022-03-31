@@ -1,0 +1,5 @@
+module brave_ads.mojom;
+
+interface BraveAdsHost {
+  RequestAdsEnabled() => (bool result);
+};

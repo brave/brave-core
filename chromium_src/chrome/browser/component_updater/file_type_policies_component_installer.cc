@@ -5,7 +5,7 @@
 
 #define RegisterFileTypePoliciesComponent \
   RegisterFileTypePoliciesComponent_ChromiumImpl
-#include "../../../../../chrome/browser/component_updater/file_type_policies_component_installer.cc"  // NOLINT
+#include "src/chrome/browser/component_updater/file_type_policies_component_installer.cc"
 #undef RegisterFileTypePoliciesComponent
 
 #include "chrome/browser/component_updater/component_updater_utils.h"

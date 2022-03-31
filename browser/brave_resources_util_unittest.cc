@@ -5,14 +5,13 @@
 
 #include <stddef.h>
 
-#include "base/macros.h"
-#include "base/stl_util.h"
+#include "base/cxx17_backports.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/resources_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include "brave/common/resource_bundle_helper.h"
 #include "chrome/grit/chromium_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -34,7 +33,7 @@ TEST(BraveResourcesUtil, CheckIds) {
     EXPECT_EQ(kCases[i].id, ResourcesUtil::GetThemeResourceId(kCases[i].name));
 }
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 TEST(BraveResourcesWinTest, CheckStringsForInstaller) {
   // Test whether strings for installer are filled.
   // This test is added because these strings are initially empty and filled

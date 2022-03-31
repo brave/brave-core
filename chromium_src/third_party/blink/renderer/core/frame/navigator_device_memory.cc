@@ -24,8 +24,8 @@ float FarbleDeviceMemory(blink::ExecutionContext* context) {
     return true_value;
 
   std::vector<float> valid_values = {0.25, 0.5, 1.0, 2.0, 4.0, 8.0};
-  int min_farbled_index;
-  int max_farbled_index;
+  size_t min_farbled_index;
+  size_t max_farbled_index;
   if (settings->GetBraveFarblingLevel() == BraveFarblingLevel::MAXIMUM) {
     // If anti-fingerprinting is at maximum, select a pseudo-random valid value
     // based on domain + sesson key.
@@ -37,7 +37,7 @@ float FarbleDeviceMemory(blink::ExecutionContext* context) {
     // which case just return that).
     auto true_it =
         std::find(valid_values.begin(), valid_values.end(), true_value);
-    int true_index;
+    size_t true_index;
     // Get index into |valid_values| of the true value. If it's not found,
     // assume the last index. (This should not happen, but it allows us to
     // fail closed instead of failing open.)

@@ -4,8 +4,6 @@ interface RuntimeDidStartupReturn {
   type: typeof types.RUNTIME_DID_STARTUP
 }
 
-export interface RuntimeDidStartup {
-  (): RuntimeDidStartupReturn
-}
+export type RuntimeDidStartup = () => RuntimeDidStartupReturn
 
 export type runtimeActions = RuntimeDidStartupReturn

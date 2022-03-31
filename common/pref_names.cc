@@ -5,6 +5,8 @@
 
 #include "brave/common/pref_names.h"
 
+#include "build/build_config.h"
+
 const char kAdsBlocked[] = "brave.stats.ads_blocked";
 // We no longer update this pref, but we keep it around for now because it's
 // added to kAdsBlocked when being displayed.
@@ -19,6 +21,8 @@ const char kFirstCheckMade[] = "brave.stats.first_check_made";
 // Set to true if the user met the threshold requirements and successfully
 // sent a ping to the stats-updater server.
 const char kThresholdCheckMade[] = "brave.stats.threshold_check_made";
+// Anonymous usage pings enabled
+const char kStatsReportingEnabled[] = "brave.stats.reporting_enabled";
 // Serialized query for to send to the stats-updater server. Needs to be saved
 // in the case that the user sends the standard usage ping, stops the browser,
 // meets the threshold requirements, and then starts the browser before the
@@ -29,6 +33,8 @@ const char kWidevineOptedIn[] = "brave.widevine_opted_in";
 const char kAskWidevineInstall[] = "brave.ask_widevine_install";
 const char kUseAlternativeSearchEngineProvider[] =
     "brave.use_alternate_private_search_engine";
+const char kShowAlternativeSearchEngineProviderToggle[] =
+    "brave.show_alternate_private_search_engine_toggle";
 const char kAlternativeSearchEngineProviderInTor[] =
     "brave.alternate_private_search_engine_in_tor";
 const char kLocationBarIsWide[] = "brave.location_bar_is_wide";
@@ -54,22 +60,15 @@ const char kIPFSCompanionEnabled[] = "brave.ipfs_companion_enabled";
 const char kNewTabPageShowClock[] = "brave.new_tab_page.show_clock";
 const char kNewTabPageClockFormat[] = "brave.new_tab_page.clock_format";
 const char kNewTabPageShowStats[] = "brave.new_tab_page.show_stats";
-const char kNewTabPageShowToday[] = "brave.new_tab_page.show_brave_today";
 const char kNewTabPageShowRewards[] = "brave.new_tab_page.show_rewards";
 const char kNewTabPageShowBinance[] = "brave.new_tab_page.show_binance";
 const char kNewTabPageShowGemini[] = "brave.new_tab_page.show_gemini";
-const char kNewTabPageShowTogether[] = "brave.new_tab_page.show_together";
+const char kNewTabPageShowBraveTalk[] = "brave.new_tab_page.show_together";
+const char kNewTabPageHideAllWidgets[] = "brave.new_tab_page.hide_all_widgets";
 const char kNewTabPageShowsOptions[] = "brave.new_tab_page.shows_options";
-const char kBraveTodaySources[] = "brave.today.sources";
+const char kNewTabPageCustomBackgroundEnabled[] =
+    "brave.new_tab_page.custom_background_enabled";
 const char kBraveTodayIntroDismissed[] = "brave.today.intro_dismissed";
-const char kBraveTodayOptedIn[] = "brave.today.opted_in";
-const char kBraveTodayWeeklySessionCount[] =
-    "brave.today.p3a_weekly_session_count";
-const char kBraveTodayWeeklyCardViewsCount[] =
-    "brave.today.p3a_weekly_card_views_count";
-const char kBraveTodayWeeklyCardVisitsCount[] =
-    "brave.today.p3a_weekly_card_visits_count";
-const char kBraveEnabledMediaRouter[] = "brave.enable_media_router";
 const char kBinanceAccessToken[] = "brave.binance.access_token";
 const char kBinanceRefreshToken[] = "brave.binance.refresh_token";
 const char kAlwaysShowBookmarkBarOnNTP[] =
@@ -83,14 +82,25 @@ const char kOtherBookmarksMigrated[] = "brave.other_bookmarks_migrated";
 const char kBraveShieldsSettingsVersion[] = "brave.shields_settings_version";
 const char kDefaultBrowserPromptEnabled[] =
     "brave.default_browser_prompt_enabled";
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+const char kWebDiscoveryEnabled[] = "brave.web_discovery_enabled";
+const char kDontAskEnableWebDiscovery[] = "brave.dont_ask_enable_web_discovery";
+const char kBraveSearchVisitCount[] = "brave.brave_search_visit_count";
+#endif
+
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 const char kBraveGCMChannelStatus[] = "brave.gcm.channel_status";
 #endif
 const char kImportDialogExtensions[] = "import_dialog_extensions";
 const char kImportDialogPayments[] = "import_dialog_payments";
 const char kMRUCyclingEnabled[] = "brave.mru_cycling_enabled";
+const char kTabsSearchShow[] = "brave.tabs_search_show";
+const char kDontAskForCrashReporting[] = "brave.dont_ask_for_crash_reporting";
+const char kEnableMediaRouterOnRestart[] =
+    "brave.enable_media_router_on_restart";
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 const char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";
 const char kPlayYTVideoInBrowserEnabled[] =
     "brave.play_yt_video_in_browser_enabled";
@@ -102,7 +112,6 @@ const char kSafetynetStatus[] = "safetynet.status";
 
 const char kDefaultBrowserLaunchingCount[] =
     "brave.default_browser.launching_count";
-const char kBraveDefaultSearchVersion[] = "brave.search.default_version";
 
 // deprecated
 const char kBraveThemeType[] = "brave.theme.type";

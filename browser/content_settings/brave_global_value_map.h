@@ -19,6 +19,8 @@ class RuleIterator;
 class BraveGlobalValueMap : public GlobalValueMap {
  public:
   BraveGlobalValueMap();
+  BraveGlobalValueMap(const BraveGlobalValueMap&) = delete;
+  BraveGlobalValueMap& operator=(const BraveGlobalValueMap&) = delete;
   ~BraveGlobalValueMap();
 
   // Returns nullptr to indicate the RuleIterator is empty.
@@ -27,9 +29,6 @@ class BraveGlobalValueMap : public GlobalValueMap {
   void SetContentSetting(ContentSettingsType content_type,
                          ContentSetting setting);
   ContentSetting GetContentSetting(ContentSettingsType content_type) const;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveGlobalValueMap);
 };
 
 }  // namespace content_settings

@@ -69,6 +69,8 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
       const toMilliseconds = 1000
       promotions = promotions.map((promotion: Rewards.Promotion) => {
         promotion.expiresAt = promotion.expiresAt * toMilliseconds
+        promotion.claimableUntil = promotion.claimableUntil * toMilliseconds
+        promotion.createdAt = promotion.createdAt * toMilliseconds
         return updatePromotion(promotion, state.promotions || [])
       })
 
@@ -84,7 +86,11 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
       if (!promotionId) {
         break
       }
-      chrome.send('brave_rewards.claimPromotion', [promotionId])
+
+      // The grant captcha "lives" in the Rewards panel. Open the Rewards panel
+      // with the grant ID specified in the URL.
+      chrome.braveRewards.openBrowserActionUI(
+        `brave_rewards_panel.html#grant_${promotionId}`)
       break
     }
     case types.ON_CLAIM_PROMOTION: {
@@ -222,6 +228,7 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
           }
 
           chrome.send('brave_rewards.fetchBalance')
+          chrome.send('brave_rewards.fetchPromotions')
           getCurrentBalanceReport()
           break
         case 6:

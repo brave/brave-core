@@ -4,7 +4,7 @@
     "description": "The name of the the extension."
   },
   "shields": {
-    "message": "Shields",
+    "message": "Shieldsはこのサイトに対して",
     "description": "The Shields feature name"
   },
   "up": {
@@ -16,7 +16,7 @@
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
-    "message": "このサイトに対して",
+    "message": "になっています",
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
@@ -84,7 +84,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "クロスサイト・クッキングをブロック",
+    "message": "クロスサイト・クッキーをブロック",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -176,7 +176,7 @@
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Block element",
+    "message": "要素を指定してブロック",
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {

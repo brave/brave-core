@@ -8,6 +8,9 @@ const locale: { [key: string]: string } = {
   reportModalTitle: 'Report a broken site',
   reportExplanation: 'Let Brave\'s developers know that this site doesn\'t work properly with Shields:',
   reportDisclaimer: 'Note: This site address will be submitted with your Brave version number and your IP address (which will not be stored).',
+  reportDetails: 'Additional details (optional)',
+  reportContactPlaceholder: 'Email, Twitter, etc.',
+  reportContactLabel: 'Contact me at: (optional)',
   cancel: 'Cancel',
   submit: 'Submit',
   // Confirmation modal

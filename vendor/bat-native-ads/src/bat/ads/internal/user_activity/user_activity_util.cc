@@ -10,11 +10,12 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "bat/ads/internal/user_activity/user_activity_trigger_info.h"
 
 namespace ads {
 
-UserActivityTriggers ToUserActivityTriggers(const std::string& param_value) {
-  UserActivityTriggers triggers;
+UserActivityTriggerList ToUserActivityTriggers(const std::string& param_value) {
+  UserActivityTriggerList triggers;
 
   const std::vector<std::string> components = base::SplitString(
       param_value, ";", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);

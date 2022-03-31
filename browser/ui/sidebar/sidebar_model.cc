@@ -66,10 +66,10 @@ void SidebarModel::Init(history::HistoryService* history_service) {
   for (const auto& item : GetAllSidebarItems())
     AddItem(item, -1, false);
 
-  sidebar_observed_.Add(GetSidebarService(profile_));
+  sidebar_observed_.Observe(GetSidebarService(profile_));
   // Can be null in test.
   if (history_service)
-    history_observed_.Add(history_service);
+    history_observed_.Observe(history_service);
 }
 
 void SidebarModel::AddObserver(Observer* observer) {
@@ -150,20 +150,22 @@ void SidebarModel::OnURLVisited(history::HistoryService* history_service,
                                 const history::URLRow& row,
                                 const history::RedirectList& redirects,
                                 base::Time visit_time) {
-  const int item_count = GetAllSidebarItems().size();
-  const auto items = GetAllSidebarItems();
-  for (int i = 0; i < item_count; ++i) {
+  for (const auto& item : GetAllSidebarItems()) {
+    // Don't try to update builtin items image. It uses bundled one.
+    if (IsBuiltInType(item))
+      continue;
+
     // If same url is added to history service, try to fetch favicon to update
     // for item.
-    if (items[i].url == row.url() && data_[i]->need_favicon_update()) {
+    if (item.url.host() == row.url().host()) {
       // Favicon seems cached after this callback.
       // TODO(simonhong): Find more deterministic method instead of using
       // delayed task.
       base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
           FROM_HERE,
           base::BindOnce(&SidebarModel::FetchFavicon,
-                         weak_ptr_factory_.GetWeakPtr(), items[i]),
-          base::TimeDelta::FromSeconds(2));
+                         weak_ptr_factory_.GetWeakPtr(), item),
+          base::Seconds(2));
     }
   }
 }
@@ -200,6 +202,16 @@ content::WebContents* SidebarModel::GetWebContentsAt(int index) {
   return data_[index]->GetWebContents();
 }
 
+bool SidebarModel::IsSidebarWebContents(
+    const content::WebContents* web_contents) const {
+  for (const auto& data : data_) {
+    if (data->web_contents() && data->web_contents() == web_contents)
+      return true;
+  }
+
+  return false;
+}
+
 const std::vector<SidebarItem> SidebarModel::GetAllSidebarItems() const {
   return GetSidebarService(profile_)->items();
 }
@@ -211,7 +223,7 @@ bool SidebarModel::IsLoadedAt(int index) const {
 }
 
 bool SidebarModel::IsSidebarHasAllBuiltiInItems() const {
-  return GetSidebarService(profile_)->GetNotAddedDefaultSidebarItems().empty();
+  return GetSidebarService(profile_)->GetHiddenDefaultSidebarItems().empty();
 }
 
 int SidebarModel::GetIndexOf(const SidebarItem& item) const {
@@ -270,8 +282,6 @@ void SidebarModel::OnGetLocalFaviconImage(
                     .AsImageSkia());
     }
   } else {
-    // Flaging to try to update favicon again.
-    data_[index]->set_need_favicon_update(true);
     FetchFaviconFromNetwork(item);
   }
 }

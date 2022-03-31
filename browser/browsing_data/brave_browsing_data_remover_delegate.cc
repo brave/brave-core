@@ -8,20 +8,19 @@
 #include <memory>
 #include <utility>
 
+#include "brave/browser/brave_news/brave_news_controller_factory.h"
+#include "brave/components/brave_today/browser/brave_news_controller.h"
+#include "brave/components/brave_today/common/features.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
+#include "build/build_config.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/buildflags.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/common/extensions/api/brave_today.h"
-#include "extensions/browser/event_router.h"
-#endif
-
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/process/launch.h"
@@ -63,25 +62,17 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS)
     ClearShieldsSettings(delete_begin, delete_end);
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   if (remove_mask & content::BrowsingDataRemover::DATA_TYPE_CACHE)
     ClearIPFSCache();
 #endif
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) {
-    auto* event_router = extensions::EventRouter::Get(profile_);
-    if (event_router) {
-      std::unique_ptr<base::ListValue> args(
-          extensions::api::brave_today::OnClearHistory::Create().release());
-      std::unique_ptr<extensions::Event> event(new extensions::Event(
-          extensions::events::BRAVE_START,
-          extensions::api::brave_today::OnClearHistory::kEventName,
-          std::move(args)));
-      event_router->BroadcastEvent(std::move(event));
+  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
+    // Brave News feed cache
+    if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) {
+      brave_news::BraveNewsControllerFactory::GetForContext(profile_)
+          ->ClearHistory();
     }
   }
-#endif
 }
 
 void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
@@ -108,13 +99,13 @@ void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
           (last_modified < end_time || end_time.is_null())) {
         provider->SetWebsiteSetting(setting.primary_pattern,
                                     setting.secondary_pattern, content_type,
-                                    nullptr, {});
+                                    base::Value(), {});
       }
     }
   }
 }
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 void BraveBrowsingDataRemoverDelegate::WaitForIPFSRepoGC(
     base::Process process) {
   bool exited = false;
@@ -126,8 +117,7 @@ void BraveBrowsingDataRemoverDelegate::WaitForIPFSRepoGC(
     // command should be finished in just a few seconds and we do not expect
     // this child process would hang forever. To be safe, we will wait for 30
     // seconds max here.
-    exited = process.WaitForExitWithTimeout(base::TimeDelta::FromSeconds(30),
-                                            nullptr);
+    exited = process.WaitForExitWithTimeout(base::Seconds(30), nullptr);
   }
 
   if (!exited)
@@ -154,15 +144,15 @@ void BraveBrowsingDataRemoverDelegate::ClearIPFSCache() {
 
   base::FilePath data_path = service->GetDataPath();
   base::LaunchOptions options;
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   options.environment[L"IPFS_PATH"] = data_path.value();
 #else
   options.environment["IPFS_PATH"] = data_path.value();
 #endif
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   options.kill_on_parent_death = true;
 #endif
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   options.start_hidden = true;
 #endif
 
@@ -179,4 +169,4 @@ void BraveBrowsingDataRemoverDelegate::ClearIPFSCache() {
                      weak_ptr_factory_.GetWeakPtr(), std::move(process)),
       CreateTaskCompletionClosure(TracingDataType::kIPFSCache));
 }
-#endif  // BUILDFLAG(IPFS_ENABLED)
+#endif  // BUILDFLAG(ENABLE_IPFS)

@@ -7,21 +7,22 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "base/strings/string_util.h"
-#include "base/values.h"
+#include "bat/ads/internal/ml/data/data.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 
 namespace ads {
 namespace ml {
 
 LowercaseTransformation::LowercaseTransformation()
-    : Transformation(TransformationType::LOWERCASE) {}
+    : Transformation(TransformationType::kLowercase) {}
 
 LowercaseTransformation::~LowercaseTransformation() = default;
 
 std::unique_ptr<Data> LowercaseTransformation::Apply(
     const std::unique_ptr<Data>& input_data) const {
-  DCHECK(input_data->GetType() == DataType::TEXT_DATA);
+  DCHECK(input_data->GetType() == DataType::kText);
 
   TextData* text_data = static_cast<TextData*>(input_data.get());
 

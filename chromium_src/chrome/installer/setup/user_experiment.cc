@@ -10,7 +10,7 @@
 #define BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION() (1)
 #endif
 
-#include "../../../../../chrome/installer/setup/user_experiment.cc"
+#include "src/chrome/installer/setup/user_experiment.cc"
 
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION

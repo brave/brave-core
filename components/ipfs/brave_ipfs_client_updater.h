@@ -12,9 +12,11 @@
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
-#include "base/sequenced_task_runner.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "build/build_config.h"
 #include "components/component_updater/component_updater_service.h"
 
 class BraveIpfsClientUpdaterTest;
@@ -23,7 +25,7 @@ using brave_component_updater::BraveComponent;
 
 namespace ipfs {
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 static const char kIpfsClientComponentName[] =
     "Brave IPFS Client Updater (Windows)";
 static const char kIpfsClientComponentId[] = "lnbclahgobmjphilkalbhebakmblnbij";
@@ -35,9 +37,20 @@ static const char kIpfsClientComponentBase64PublicKey[] =
     "5WFfljFxICOKeb7S/a1I0lWu2Y4Yv/ohbzktjcpAluefz6mE5d/sSBdQGdJzJIdo"
     "/CRfYgax5nMumx0x38CmVN53GVB+5TM0mw1bhU52ASysgZjAC0++Kbl1qXeSZuWM"
     "/QIDAQAB";
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
 static const char kIpfsClientComponentName[] =
     "Brave IPFS Client Updater (Mac)";
+#if defined(ARCH_CPU_ARM64)
+static const char kIpfsClientComponentId[] = "lejaflgbgglfaomemffoaappaihfligf";
+static const char kIpfsClientComponentBase64PublicKey[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2qqbXvEZP1dlJW7FhKLB"
+    "+8ZTRF4mZjxRwU9VMyPrymWhAyhurtp2eIaAY2YiFMAfg4v3Eragxlt4+fL0QETc"
+    "lkmRUTvZ4wm93HODXPfL8LvKoFDBsjv9vnsT+PDonnpQBKdgRGpVYxxDY3vYu4AI"
+    "KuLLY1tOGnC7XNiQWPSnagSycdQfTxdmPaiEwDde1jYcBVyIbZPkiE2F+np9jQah"
+    "SKJJOKGmBaL/YO9xmjIBfPopwVVyVJPAIH6SPxI+XQMpYA1zagih5ULm+wXBNYcq"
+    "Xn9W/KQPkB4HKZ0eVgcKKS6T8lwDhB2oYAaTtxRno5Fu6wlEQBGmdFxqJw8KNPu2"
+    "JQIDAQAB";
+#else
 static const char kIpfsClientComponentId[] = "nljcddpbnaianmglkpkneakjaapinabi";
 static const char kIpfsClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu4gvE67b2T0U0i5awN5Q"
@@ -47,7 +60,8 @@ static const char kIpfsClientComponentBase64PublicKey[] =
     "ryEr9a5YL0h4vkBF2x9qSEErNj/ksDAcvKS1S+GjKVwYzJpzRG5mgWlpaqXNRIYY"
     "59uo1UEJYwr+HQ0pvt/gEdns1ccUsGEm9PAMJRptvrGX/fauIMAASvByMRG7XC27"
     "gwIDAQAB";
-#elif defined(OS_LINUX)
+#endif
+#elif BUILDFLAG(IS_LINUX)
 static const char kIpfsClientComponentName[] =
     "Brave IPFS Client Updater (Linux)";
 static const char kIpfsClientComponentId[] = "oecghfpdmkjlhnfpmmjegjacfimiafjp";
@@ -59,8 +73,8 @@ static const char kIpfsClientComponentBase64PublicKey[] =
     "J9HIuxTzVft5v5Ys0S0Kqorn2xo+lFpVzZT7sV2orDHaLiVB5uqCMWhXehVixfRp"
     "BuPGdwSuzJsNkV5aGOObKfoLr1zUgstJYMLB0uWNXTfuKM4EibWUMLMqlCYVzs2R"
     "ewIDAQAB";
-#elif defined(OS_ANDROID)
-// Not used yet
+#else
+// Not used yet for Android/iOS
 static const char kIpfsClientComponentName[] = "";
 static const char kIpfsClientComponentId[] = "";
 static const char kIpfsClientComponentBase64PublicKey[] = "";
@@ -81,6 +95,8 @@ class BraveIpfsClientUpdater : public BraveComponent,
 
   explicit BraveIpfsClientUpdater(BraveComponent::Delegate* delegate,
                                   const base::FilePath& user_data_dir);
+  BraveIpfsClientUpdater(const BraveIpfsClientUpdater&) = delete;
+  BraveIpfsClientUpdater& operator=(const BraveIpfsClientUpdater&) = delete;
   ~BraveIpfsClientUpdater() override;
 
   void Register();
@@ -122,8 +138,6 @@ class BraveIpfsClientUpdater : public BraveComponent,
       updater_observer_{this};
 
   base::WeakPtrFactory<BraveIpfsClientUpdater> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveIpfsClientUpdater);
 };
 
 // Creates the BraveIpfsClientUpdater

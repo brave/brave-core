@@ -8,23 +8,22 @@
 
 #include <string>
 
-#include "bat/ads/internal/client/preferences/filtered_ad_info.h"
-#include "bat/ads/internal/client/preferences/filtered_category_info.h"
-#include "bat/ads/internal/client/preferences/flagged_ad_info.h"
-#include "bat/ads/internal/client/preferences/saved_ad_info.h"
-#include "bat/ads/result.h"
+#include "bat/ads/internal/client/preferences/filtered_advertiser_info_aliases.h"
+#include "bat/ads/internal/client/preferences/filtered_category_info_aliases.h"
+#include "bat/ads/internal/client/preferences/flagged_ad_info_aliases.h"
+#include "bat/ads/internal/client/preferences/saved_ad_info_aliases.h"
 
 namespace ads {
 
-struct AdPreferencesInfo {
+struct AdPreferencesInfo final {
   AdPreferencesInfo();
   AdPreferencesInfo(const AdPreferencesInfo& info);
   ~AdPreferencesInfo();
 
   std::string ToJson() const;
-  Result FromJson(const std::string& json);
+  bool FromJson(const std::string& json);
 
-  FilteredAdList filtered_ads;
+  FilteredAdvertiserList filtered_advertisers;
   FilteredCategoryList filtered_categories;
   SavedAdList saved_ads;
   FlaggedAdList flagged_ads;

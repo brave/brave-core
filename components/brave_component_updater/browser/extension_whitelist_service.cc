@@ -9,12 +9,9 @@
 
 #include "base/bind.h"
 #include "base/logging.h"
-#include "base/task_runner_util.h"
+#include "base/task/task_runner_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/vendor/extension-whitelist/extension_whitelist_parser.h"
-#include "extensions/common/extension.h"
-
-using extensions::Extension;
 
 namespace brave_component_updater {
 
@@ -44,10 +41,6 @@ bool ExtensionWhitelistService::IsBlacklisted(
   return extension_whitelist_client_->isBlacklisted(extension_id.c_str());
 }
 
-bool ExtensionWhitelistService::IsVetted(const Extension* extension) const {
-  return ExtensionWhitelistService::IsVetted(extension->id());
-}
-
 bool ExtensionWhitelistService::IsVetted(const std::string& id) const {
   if (std::find(whitelist_.begin(), whitelist_.end(), id) !=
       whitelist_.end())
@@ -61,13 +54,12 @@ void ExtensionWhitelistService::OnComponentReady(
     const base::FilePath& install_dir,
     const std::string& manifest) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  base::FilePath dat_file_path = install_dir
-      .AppendASCII(EXTENSION_DAT_FILE_VERSION)
-      .AppendASCII(EXTENSION_DAT_FILE);
+  base::FilePath dat_file_path =
+      install_dir.AppendASCII(EXTENSION_DAT_FILE_VERSION)
+          .AppendASCII(EXTENSION_DAT_FILE);
 
   base::PostTaskAndReplyWithResult(
-      local_data_files_service()->GetTaskRunner().get(),
-      FROM_HERE,
+      local_data_files_service()->GetTaskRunner().get(), FROM_HERE,
       base::BindOnce(
           &brave_component_updater::LoadDATFileData<ExtensionWhitelistParser>,
           dat_file_path),

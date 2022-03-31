@@ -41,15 +41,11 @@ std::string GetAddUrl();
 
 std::string GetWithdrawUrl();
 
-type::ExternalWalletPtr GetWallet(LedgerImpl* ledger);
-
-bool SetWallet(LedgerImpl* ledger, type::ExternalWalletPtr wallet);
-
 std::string GetAccountUrl();
 
-type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
+std::string GetActivityUrl();
 
-type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet);
+type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
 
 }  // namespace bitflyer
 }  // namespace ledger

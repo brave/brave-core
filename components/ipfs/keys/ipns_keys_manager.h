@@ -13,18 +13,18 @@
 
 #include "base/callback.h"
 #include "base/containers/queue.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "url/gurl.h"
 
-namespace content {
-class BrowserContext;
-}  // namespace content
-
 namespace network {
-class SharedURLLoaderFactory;
+namespace mojom {
+class URLLoaderFactory;
+}
 class SimpleURLLoader;
 struct ResourceRequest;
 }  // namespace network
@@ -35,7 +35,8 @@ namespace ipfs {
 // synchronize and remove p2p keys.
 class IpnsKeysManager : public IpfsServiceObserver {
  public:
-  IpnsKeysManager(content::BrowserContext* context,
+  IpnsKeysManager(BlobContextGetterFactory* blob_context_getter_factory,
+                  network::mojom::URLLoaderFactory* url_loader_factory,
                   const GURL& server_endpoint);
   ~IpnsKeysManager() override;
 
@@ -62,6 +63,11 @@ class IpnsKeysManager : public IpfsServiceObserver {
                  ImportKeyCallback callback);
   void SetServerEndpointForTest(const GURL& gurl);
   void SetLoadCallbackForTest(LoadKeysCallback callback);
+  int GetLastLoadRetryForTest() const;
+  void SetKeysForTest(
+      const std::unordered_map<std::string, std::string>& keys) {
+    keys_ = keys;
+  }
 
  private:
   using SimpleURLLoaderList =
@@ -81,19 +87,21 @@ class IpnsKeysManager : public IpfsServiceObserver {
                     RemoveKeyCallback callback,
                     std::unique_ptr<std::string> response_body);
   void OnKeysLoaded(SimpleURLLoaderList::iterator iter,
+                    int retry_number,
                     std::unique_ptr<std::string> response_body);
 
   void NotifyKeysLoaded(bool result);
-
+  void LoadKeysInternal(int retries);
   void UploadData(ImportKeyCallback callback,
                   const std::string& name,
                   std::unique_ptr<network::ResourceRequest> request);
 
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  int last_load_retry_value_for_test_ = -1;
+  BlobContextGetterFactory* blob_context_getter_factory_ = nullptr;
+  raw_ptr<network::mojom::URLLoaderFactory> url_loader_factory_ = nullptr;
   SimpleURLLoaderList url_loaders_;
   std::unordered_map<std::string, std::string> keys_;
   base::queue<LoadKeysCallback> pending_load_callbacks_;
-  content::BrowserContext* context_ = nullptr;
   GURL server_endpoint_;
   base::WeakPtrFactory<IpnsKeysManager> weak_factory_{this};
 };

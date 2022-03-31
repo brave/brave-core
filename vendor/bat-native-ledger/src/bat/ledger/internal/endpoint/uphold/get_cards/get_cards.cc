@@ -50,7 +50,7 @@ type::Result GetCards::ParseBody(
     std::string* id) {
   DCHECK(id);
 
-  base::Optional<base::Value> value = base::JSONReader::Read(body);
+  absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_list()) {
     BLOG(0, "Invalid JSON");
     return type::Result::LEDGER_ERROR;

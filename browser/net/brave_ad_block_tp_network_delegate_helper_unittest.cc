@@ -9,12 +9,21 @@
 #include <string>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
+#include "base/path_service.h"
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/test/base/testing_brave_browser_process.h"
+#include "chrome/browser/net/system_network_context_manager.h"
+#include "chrome/common/chrome_paths.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/net_errors.h"
 #include "net/dns/mock_host_resolver.h"
@@ -23,6 +32,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using brave::ResponseCallback;
+using brave_shields::TestFiltersProvider;
 
 namespace {
 
@@ -33,7 +43,8 @@ namespace {
 // "external" runner.
 class TestingBraveComponentUpdaterDelegate : public BraveComponent::Delegate {
  public:
-  TestingBraveComponentUpdaterDelegate() = default;
+  explicit TestingBraveComponentUpdaterDelegate(PrefService* local_state)
+      : local_state_(local_state) {}
   ~TestingBraveComponentUpdaterDelegate() override = default;
 
   TestingBraveComponentUpdaterDelegate(TestingBraveComponentUpdaterDelegate&) =
@@ -59,22 +70,41 @@ class TestingBraveComponentUpdaterDelegate : public BraveComponent::Delegate {
   }
 
   const std::string locale() const override { return "en"; }
-  PrefService* local_state() override {
-    NOTREACHED();
-    return nullptr;
-  }
+  PrefService* local_state() override { return local_state_; }
+
+ private:
+  raw_ptr<PrefService> local_state_ = nullptr;
 };
 
 }  // namespace
 
+void FakeAdBlockSubscriptionDownloadManagerGetter(
+    base::OnceCallback<
+        void(brave_shields::AdBlockSubscriptionDownloadManager*)>) {
+  // no-op, subscription services are not currently used in unit tests
+}
+
 class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
  protected:
   void SetUp() override {
-    brave_component_updater_delegate_ =
-        std::make_unique<TestingBraveComponentUpdaterDelegate>();
+    local_state_ = std::make_unique<ScopedTestingLocalState>(
+        TestingBrowserProcess::GetGlobal());
 
-    auto adblock_service = brave_shields::AdBlockServiceFactory(
-        brave_component_updater_delegate_.get());
+    brave_component_updater_delegate_ =
+        std::make_unique<TestingBraveComponentUpdaterDelegate>(
+            local_state_->Get());
+
+    base::FilePath user_data_dir;
+    DCHECK(base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir));
+    auto adblock_service = std::make_unique<brave_shields::AdBlockService>(
+        brave_component_updater_delegate_->local_state(),
+        brave_component_updater_delegate_->locale(), nullptr,
+        brave_component_updater_delegate_->GetTaskRunner(),
+        std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
+            brave_component_updater_delegate_->local_state(),
+            brave_component_updater_delegate_->GetTaskRunner(),
+            base::BindOnce(&FakeAdBlockSubscriptionDownloadManagerGetter),
+            user_data_dir));
 
     TestingBraveBrowserProcess::GetGlobal()->SetAdBlockService(
         std::move(adblock_service));
@@ -85,6 +115,11 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     resolver_wrapper_ = std::make_unique<network::HostResolver>(
         host_resolver_.get(), net::NetLog::Get());
     brave::SetAdblockCnameHostResolverForTesting(resolver_wrapper_.get());
+
+    stub_resolver_config_reader_ =
+        std::make_unique<StubResolverConfigReader>(local_state_->Get());
+    SystemNetworkContextManager::set_stub_resolver_config_reader_for_testing(
+        stub_resolver_config_reader_.get());
   }
 
   void TearDown() override {
@@ -93,10 +128,10 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     TestingBraveBrowserProcess::DeleteInstance();
   }
 
-  void ResetAdblockInstance(brave_shields::AdBlockBaseService* service,
-                            std::string rules,
-                            std::string resources) {
-    service->ResetForTest(rules, resources);
+  void ResetAdblockInstance(std::string rules, std::string resources) {
+    filters_provider_ = std::make_unique<TestFiltersProvider>(rules, resources);
+    g_brave_browser_process->ad_block_service()->UseSourceProvidersForTest(
+        filters_provider_.get(), filters_provider_.get());
   }
 
   // Returns true if the request handler deferred control back to the calling
@@ -113,12 +148,18 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     return rc == net::ERR_IO_PENDING;
   }
 
+  std::unique_ptr<ScopedTestingLocalState> local_state_;
+
   std::unique_ptr<TestingBraveComponentUpdaterDelegate>
       brave_component_updater_delegate_;
 
   content::BrowserTaskEnvironment task_environment_;
 
   std::unique_ptr<net::MockHostResolver> host_resolver_;
+
+  std::unique_ptr<StubResolverConfigReader> stub_resolver_config_reader_;
+
+  std::unique_ptr<TestFiltersProvider> filters_provider_;
 
  private:
   std::unique_ptr<network::HostResolver> resolver_wrapper_;
@@ -156,9 +197,21 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, DevToolURL) {
   EXPECT_TRUE(request_info->new_url_spec.empty());
 }
 
+TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RequestDataURL) {
+  const GURL url(
+      "data:image/gif;base64,R0lGODlhAQABAIAAAP///"
+      "wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==");
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  request_info->initiator_url = GURL("https://example.com");
+  request_info->resource_type = blink::mojom::ResourceType::kImage;
+
+  EXPECT_FALSE(CheckRequest(request_info));
+  EXPECT_EQ(request_info->blocked_by, brave::kNotBlocked);
+  EXPECT_TRUE(request_info->new_url_spec.empty());
+}
+
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
-  ResetAdblockInstance(g_brave_browser_process->ad_block_service(),
-                       "||brave.com/test.txt", "");
+  ResetAdblockInstance("||brave.com/test.txt", "");
 
   const GURL url("https://brave.com/test.txt");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);

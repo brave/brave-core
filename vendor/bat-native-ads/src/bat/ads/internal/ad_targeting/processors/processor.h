@@ -10,7 +10,7 @@ namespace ads {
 namespace ad_targeting {
 namespace processor {
 
-template <class T>
+template <typename T>
 class Processor {
  public:
   virtual ~Processor() = default;

@@ -20,5 +20,7 @@ export const enum types {
   GET_EXTERNAL_WALLET = '@@rewards_internals/GET_EXTERNAL_WALLET',
   ON_EXTERNAL_WALLET = '@@rewards_internals/ON_EXTERNAL_WALLET',
   GET_EVENT_LOGS = '@@rewards_internals/GET_EVENT_LOGS',
-  ON_EVENT_LOGS = '@@rewards_internals/ON_EVENT_LOGS'
+  ON_EVENT_LOGS = '@@rewards_internals/ON_EVENT_LOGS',
+  GET_AD_DIAGNOSTICS = '@@rewards_internals/GET_AD_DIAGNOSTICS',
+  ON_AD_DIAGNOSTICS = '@@rewards_internals/ON_AD_DIAGNOSTICS'
 }

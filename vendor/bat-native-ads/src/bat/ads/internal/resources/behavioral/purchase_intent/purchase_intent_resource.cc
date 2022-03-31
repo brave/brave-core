@@ -8,17 +8,18 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/result.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace resource {
 
 namespace {
-const char kResourceId[] = "bejenkminijgplakmkmcgkhjjnkelbld";
+constexpr char kResourceId[] = "bejenkminijgplakmkmcgkhjjnkelbld";
 }  // namespace
 
 PurchaseIntent::PurchaseIntent() = default;
@@ -32,8 +33,8 @@ bool PurchaseIntent::IsInitialized() const {
 void PurchaseIntent::Load() {
   AdsClientHelper::Get()->LoadAdsResource(
       kResourceId, features::GetPurchaseIntentResourceVersion(),
-      [=](const Result result, const std::string& json) {
-        if (result != SUCCESS) {
+      [=](const bool success, const std::string& json) {
+        if (!success) {
           BLOG(1,
                "Failed to load " << kResourceId << " purchase intent resource");
           is_initialized_ = false;
@@ -57,22 +58,22 @@ void PurchaseIntent::Load() {
       });
 }
 
-PurchaseIntentInfo PurchaseIntent::get() const {
+ad_targeting::PurchaseIntentInfo PurchaseIntent::get() const {
   return purchase_intent_;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 bool PurchaseIntent::FromJson(const std::string& json) {
-  PurchaseIntentInfo purchase_intent;
+  ad_targeting::PurchaseIntentInfo purchase_intent;
 
-  base::Optional<base::Value> root = base::JSONReader::Read(json);
+  absl::optional<base::Value> root = base::JSONReader::Read(json);
   if (!root) {
     BLOG(1, "Failed to load from JSON, root missing");
     return false;
   }
 
-  if (base::Optional<int> version = root->FindIntPath("version")) {
+  if (absl::optional<int> version = root->FindIntPath("version")) {
     if (features::GetPurchaseIntentResourceVersion() != *version) {
       BLOG(1, "Failed to load from JSON, version missing");
       return false;
@@ -100,8 +101,13 @@ bool PurchaseIntent::FromJson(const std::string& json) {
   }
 
   std::vector<std::string> segments;
-  for (auto& segment : *list3) {
-    segments.push_back(segment.GetString());
+  for (const auto& segment_value : list3->GetList()) {
+    const std::string segment = segment_value.GetString();
+    if (segment.empty()) {
+      BLOG(1, "Failed to load from JSON, empty segment found");
+      return false;
+    }
+    segments.push_back(segment);
   }
 
   // Parsing field: "segment_keywords"
@@ -125,9 +131,13 @@ bool PurchaseIntent::FromJson(const std::string& json) {
 
   for (base::DictionaryValue::Iterator it(*dict2); !it.IsAtEnd();
        it.Advance()) {
-    PurchaseIntentSegmentKeywordInfo info;
+    ad_targeting::PurchaseIntentSegmentKeywordInfo info;
     info.keywords = it.key();
     for (const auto& segment_ix : it.value().GetList()) {
+      if (static_cast<size_t>(segment_ix.GetInt()) >= segments.size()) {
+        BLOG(1, "Failed to load from JSON, segment keywords are ill-formed");
+        return false;
+      }
       info.segments.push_back(segments.at(segment_ix.GetInt()));
     }
 
@@ -153,7 +163,7 @@ bool PurchaseIntent::FromJson(const std::string& json) {
   }
 
   for (base::DictionaryValue::Iterator it(*dict); !it.IsAtEnd(); it.Advance()) {
-    PurchaseIntentFunnelKeywordInfo info;
+    ad_targeting::PurchaseIntentFunnelKeywordInfo info;
     info.keywords = it.key();
     info.weight = it.value().GetInt();
     purchase_intent.funnel_keywords.push_back(info);
@@ -178,7 +188,7 @@ bool PurchaseIntent::FromJson(const std::string& json) {
   }
 
   // For each set of sites and segments
-  for (auto& set : *list1) {
+  for (auto& set : list1->GetList()) {
     if (!set.is_dict()) {
       BLOG(1, "Failed to load from JSON, site set not of type dict");
       return false;
@@ -193,7 +203,7 @@ bool PurchaseIntent::FromJson(const std::string& json) {
     }
 
     std::vector<std::string> site_segments;
-    for (auto& seg : *seg_list) {
+    for (auto& seg : seg_list->GetList()) {
       site_segments.push_back(segments.at(seg.GetInt()));
     }
 
@@ -205,8 +215,8 @@ bool PurchaseIntent::FromJson(const std::string& json) {
       return false;
     }
 
-    for (const auto& site : *site_list) {
-      PurchaseIntentSiteInfo info;
+    for (const auto& site : site_list->GetList()) {
+      ad_targeting::PurchaseIntentSiteInfo info;
       info.segments = site_segments;
       info.url_netloc = site.GetString();
       info.weight = 1;

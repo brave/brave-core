@@ -37,10 +37,7 @@ const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefi
     case types.IPFS_ON_GET_CONNECTED_PEERS:
       state = {
         ...state,
-        connectedPeers: {
-          ...state.connectedPeers,
-          peerCount: action.payload.peerCount
-        }
+        connectedPeers: action.payload.connectedPeers
       }
       break
     case types.IPFS_GET_NODE_INFO:

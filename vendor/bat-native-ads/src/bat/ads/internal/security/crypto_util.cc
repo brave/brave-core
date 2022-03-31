@@ -8,16 +8,12 @@
 #include <openssl/digest.h>
 #include <openssl/hkdf.h>
 #include <openssl/sha.h>
-
 #include <algorithm>
 
 #include "base/base64.h"
-#include "base/json/json_reader.h"
+#include "base/cxx17_backports.h"
 #include "base/rand_util.h"
-#include "base/stl_util.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/values.h"
-#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/security/key_pair_info.h"
 #include "bat/ads/internal/string_util.h"
 #include "tweetnacl.h"  // NOLINT
@@ -28,9 +24,9 @@ namespace security {
 
 namespace {
 
-const int kHKDFSeedLength = 32;
+constexpr int kHKDFSeedLength = 32;
 
-const uint8_t kHKDFSalt[] = {
+constexpr uint8_t kHKDFSalt[] = {
     126, 244, 99,  158, 51,  68,  253, 80,  133, 183, 51,  180, 77,
     62,  74,  252, 62,  106, 96,  125, 241, 110, 134, 87,  190, 208,
     158, 84,  125, 69,  246, 207, 162, 247, 107, 172, 37,  34,  53,
@@ -43,7 +39,7 @@ std::vector<uint8_t> GetHKDF(const std::string& secret) {
   }
 
   std::vector<uint8_t> raw_secret;
-  raw_secret.assign(secret.begin(), secret.end());
+  raw_secret.assign(secret.cbegin(), secret.cend());
 
   std::vector<uint8_t> derived_key(kHKDFSeedLength);
 
@@ -63,7 +59,7 @@ std::vector<uint8_t> GetHKDF(const std::string& secret) {
 
 }  // namespace
 
-std::string Sign(const std::map<std::string, std::string>& headers,
+std::string Sign(const base::flat_map<std::string, std::string>& headers,
                  const std::string& key_id,
                  const std::string& secret_key) {
   if (headers.empty() || key_id.empty() || secret_key.empty()) {
@@ -102,8 +98,8 @@ std::string Sign(const std::map<std::string, std::string>& headers,
       concatenated_message.length(), &raw_secret_key.front());
 
   std::vector<uint8_t> signature(crypto_sign_BYTES);
-  std::copy(signed_message.begin(), signed_message.begin() + crypto_sign_BYTES,
-            signature.begin());
+  std::copy(signed_message.cbegin(),
+            signed_message.cbegin() + crypto_sign_BYTES, signature.begin());
 
   return "keyId=\"" + key_id + "\",algorithm=\"" + crypto_sign_PRIMITIVE +
          "\",headers=\"" + concatenated_header + "\",signature=\"" +
@@ -176,7 +172,7 @@ std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& plaintext,
                              const std::vector<uint8_t>& ephemeral_secret_key) {
   // API requires 32 leading zero-padding bytes
   std::vector<uint8_t> padded_plaintext = plaintext;
-  padded_plaintext.insert(padded_plaintext.begin(), crypto_box_ZEROBYTES, 0);
+  padded_plaintext.insert(padded_plaintext.cbegin(), crypto_box_ZEROBYTES, 0);
 
   std::vector<uint8_t> ciphertext(padded_plaintext.size());
   crypto_box(&ciphertext.front(), &padded_plaintext.front(),
@@ -196,7 +192,8 @@ std::vector<uint8_t> Decrypt(const std::vector<uint8_t>& ciphertext,
                   &ephemeral_public_key.front(), &secret_key.front());
 
   std::vector<uint8_t> plaintext(
-      padded_plaintext.begin() + crypto_box_ZEROBYTES, padded_plaintext.end());
+      padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
+      padded_plaintext.cend());
 
   return plaintext;
 }

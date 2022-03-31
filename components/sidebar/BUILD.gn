@@ -5,10 +5,9 @@
 
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 
-source_set("sidebar") {
+static_library("sidebar") {
   sources = [
-    "features.cc",
-    "features.h",
+    "constants.h",
     "pref_names.h",
     "sidebar_item.cc",
     "sidebar_item.h",
@@ -21,6 +20,7 @@ source_set("sidebar") {
     "//brave/components/resources:strings",
     "//components/keyed_service/core",
     "//components/prefs",
+    "//components/version_info",
     "//ui/base",
     "//url",
   ]
@@ -37,6 +37,7 @@ source_set("unit_tests") {
       "//brave/components/sidebar",
       "//components/prefs",
       "//components/prefs:test_support",
+      "//components/version_info",
       "//content/public/browser",
       "//content/test:test_support",
       "//testing/gtest",

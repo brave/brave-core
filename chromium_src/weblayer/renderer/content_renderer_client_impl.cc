@@ -25,4 +25,4 @@ void AddAndroidWidevine(
 }  // namespace cdm
 #endif  // BUILDFLAG(ENABLE_WIDEVINE)
 
-#include "../../../../weblayer/renderer/content_renderer_client_impl.cc"
+#include "src/weblayer/renderer/content_renderer_client_impl.cc"

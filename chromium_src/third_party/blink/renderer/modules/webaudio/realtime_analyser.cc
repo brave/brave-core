@@ -23,7 +23,7 @@
     value = audio_farbling_callback_.Run(value, i);  \
   }
 
-#include "../../../../../../../third_party/blink/renderer/modules/webaudio/realtime_analyser.cc"
+#include "src/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc"
 
 #undef BRAVE_REALTIMEANALYSER_CONVERTFLOATTODB
 #undef BRAVE_REALTIMEANALYSER_CONVERTTOBYTEDATA

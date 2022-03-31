@@ -4,5 +4,5 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define BRAVE_WEB_UI_IMPL AddRequestableScheme(kBraveUIScheme);
-#include "../../../../../content/browser/webui/web_ui_impl.cc"
+#include "src/content/browser/webui/web_ui_impl.cc"
 #undef BRAVE_WEB_UI_IMPL

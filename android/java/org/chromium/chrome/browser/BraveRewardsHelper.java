@@ -6,6 +6,7 @@ package org.chromium.chrome.browser;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -27,16 +28,16 @@ import androidx.annotation.Nullable;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.components.browser_ui.widget.RoundedIconGenerator;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.components.favicon.IconType;
 import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.url.GURL;
@@ -71,13 +72,14 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     private LargeIconReadyCallback mCallback;
     private final Handler mHandler = new Handler();
     private int mFetchCount;
-    private final int MAX_FAVICON_FETCH_COUNT = 30;
+    private final int MAX_FAVICON_FETCH_COUNT = 8;
     public static final int CROSS_FADE_DURATION = 1000; //ms
     public static final int THANKYOU_FADE_OUT_DURATION = 1500; //ms
     public static final int THANKYOU_FADE_IN_DURATION = 1500; //ms
     public static final int THANKYOU_STAY_DURATION = 2000; //ms
     private static final float DP_PER_INCH_MDPI = 160f;
     private Tab mTab;
+    private Profile mProfile;
 
     public static void setRewardsEnvChange(boolean isEnabled) {
         SharedPreferences.Editor sharedPreferencesEditor =
@@ -185,8 +187,9 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     public BraveRewardsHelper(Tab tab) {
         mTab = tab;
         assert mTab != null;
-        if (mLargeIconBridge == null && mTab != null) {
-            mLargeIconBridge = new LargeIconBridge(Profile.fromWebContents(mTab.getWebContents()));
+        mProfile = Profile.getLastUsedRegularProfile();
+        if (mLargeIconBridge == null && mTab != null && mProfile != null) {
+            mLargeIconBridge = new LargeIconBridge(mProfile);
         }
     }
 
@@ -201,7 +204,6 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         mCallback =  null;
     }
 
-
     public void detach() {
         mCallback =  null;
     }
@@ -212,13 +214,14 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         retrieveLargeIconInternal();
     }
 
+    @SuppressLint("VisibleForTests")
     private void retrieveLargeIconInternal() {
-        mFetchCount ++;
+        mFetchCount++;
 
-        //favIconURL (or content URL) is still not available, try to read it again
+        // FavIconURL (or content URL) is still not available, try to read it again.
         if (mFaviconUrl == null || mFaviconUrl.isEmpty() || mFaviconUrl.equals("clear")) {
             if (mTab != null) {
-                mFaviconUrl = mTab.getUrlString();
+                mFaviconUrl = mTab.getUrl().getSpec();
             }
 
             mHandler.postDelayed(new Runnable() {
@@ -231,9 +234,10 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
             return;
         }
 
-        //get the icon
-        if (mLargeIconBridge!= null && mCallback != null && !mFaviconUrl.isEmpty()) {
-            mLargeIconBridge.getLargeIconForUrl(new GURL(mFaviconUrl),FAVICON_DESIRED_SIZE, this);
+        // Get the icon.
+        if (mLargeIconBridge != null && mCallback != null && !mFaviconUrl.isEmpty()
+                && mProfile.isNativeInitialized()) {
+            mLargeIconBridge.getLargeIconForUrl(new GURL(mFaviconUrl), FAVICON_DESIRED_SIZE, this);
         }
     }
 
@@ -249,15 +253,15 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
             return;
         }
 
-        if (  mFetchCount == MAX_FAVICON_FETCH_COUNT  || (icon == null && false == isFallbackColorDefault) ) {
+        if (mFetchCount == MAX_FAVICON_FETCH_COUNT
+                || (icon == null && false == isFallbackColorDefault)) {
             RoundedIconGenerator mIconGenerator = new RoundedIconGenerator(Resources.getSystem(),
                     FAVICON_CIRCLE_MEASUREMENTS, FAVICON_CIRCLE_MEASUREMENTS,
                     FAVICON_CIRCLE_MEASUREMENTS, fallbackColor, FAVICON_TEXT_SIZE);
 
             mIconGenerator.setBackgroundColor(fallbackColor);
             icon = mIconGenerator.generateIconForUrl(mFaviconUrl);
-        }
-        else if (icon == null && true == isFallbackColorDefault) {
+        } else if (icon == null && true == isFallbackColorDefault) {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -426,8 +430,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     }
   }
 
-
-  static double probiToDouble(String probi) {
+  public static double probiToDouble(String probi) {
       final String PROBI_POWER = "1000000000000000000";
       double val = Double.NaN;
       try {
@@ -440,7 +443,6 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
       }
       return val;
   }
-
 
     /**
      * Expands touchable area of a small view

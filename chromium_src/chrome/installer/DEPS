@@ -1,7 +1,6 @@
 include_rules = [
-  "+../../../../../chrome/installer/mini_installer",
-  "+../../../../../chrome/installer/setup",
-  "+../../../../../chrome/installer/util",
-  "+chrome/installer",
+  "+brave/installer",
+  "+chrome/common",
   "+chrome/install_static",
+  "+components/version_info",
 ]

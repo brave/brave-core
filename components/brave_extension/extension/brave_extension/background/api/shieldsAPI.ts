@@ -24,7 +24,6 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
   return Promise.all([
     chrome.braveShields.getBraveShieldsEnabledAsync(tabData.url),
     chrome.braveShields.getAdControlTypeAsync(tabData.url),
-    chrome.braveShields.shouldDoCosmeticFilteringAsync(tabData.url),
     chrome.braveShields.isFirstPartyCosmeticFilteringEnabledAsync(tabData.url),
     chrome.braveShields.getHTTPSEverywhereEnabledAsync(tabData.url),
     chrome.braveShields.getNoScriptControlTypeAsync(tabData.url),
@@ -39,12 +38,11 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       braveShields: details[0] ? 'allow' : 'block',
       ads: details[1],
       trackers: details[1],
-      cosmeticFiltering: details[2],
-      firstPartyCosmeticFiltering: details[3],
-      httpUpgradableResources: details[4] ? 'block' : 'allow',
-      javascript: details[5],
-      fingerprinting: details[6],
-      cookies: details[7]
+      firstPartyCosmeticFiltering: details[2],
+      httpUpgradableResources: details[3] ? 'block' : 'allow',
+      javascript: details[4],
+      fingerprinting: details[5],
+      cookies: details[6]
     }
   }).catch(() => {
     return {
@@ -52,11 +50,10 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       origin,
       hostname,
       id: tabData.id,
+      firstPartyCosmeticFiltering: true,
       braveShields: 'block',
       ads: 0,
       trackers: 0,
-      cosmeticFiltering: 0,
-      cosmeticFilteringFeatureFlag: 0,
       httpUpgradableResources: 0,
       javascript: 0,
       fingerprinting: 0
@@ -104,7 +101,8 @@ export const requestShieldPanelData = (tabId: number) =>
     .then((details: ShieldDetails) => {
       actions.shieldsPanelDataUpdated(details)
     })
-    .catch((error: any) => console.error('[Shields]: Can\'t request shields panel data.', error))
+    .catch((error: any) =>
+      console.error('[Shields]: Can\'t request shields panel data for tabId: ' + tabId + '. ', error))
 
 /**
  * Changes the brave shields setting at origin to be allowed or blocked.
@@ -113,7 +111,7 @@ export const requestShieldPanelData = (tabId: number) =>
  * @return a promise which resolves when the setting is set
  */
 export const setAllowBraveShields = (origin: string, setting: string) =>
-  chrome.braveShields.setBraveShieldsEnabledAsync(setting === 'allow' ? true : false, origin)
+  chrome.braveShields.setBraveShieldsEnabledAsync(setting === 'allow', origin)
 
 /**
  * Changes the ads at origin to be allowed or blocked.
@@ -154,7 +152,7 @@ export const setAllowCosmeticFiltering = (origin: string, setting: string) => {
  * @return a promise which resolves when the setting is set
  */
 export const setAllowHTTPUpgradableResources = (origin: string, setting: BlockOptions) =>
-  chrome.braveShields.setHTTPSEverywhereEnabledAsync(setting === 'allow' ? false : true, origin)
+  chrome.braveShields.setHTTPSEverywhereEnabledAsync(setting !== 'allow', origin)
 
 /**
  * Changes the Javascript to be on (allow) or off (block)
@@ -195,7 +193,7 @@ export const toggleShieldsValue = (value: BlockOptions) =>
  * @param {number} tabId ID of the tab which these origins are allowed in
  * @return a promise which resolves when the origins are set.
  */
-export const setAllowScriptOriginsOnce = (origins: Array<string>, tabId: number) =>
+export const setAllowScriptOriginsOnce = (origins: string[], tabId: number) =>
   new Promise<void>((resolve) => {
     chrome.braveShields.allowScriptsOnce(origins, tabId, () => {
       resolve()

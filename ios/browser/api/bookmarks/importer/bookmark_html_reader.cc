@@ -9,16 +9,16 @@
 #include <stdint.h>
 
 #include "base/callback.h"
+#include "base/cxx17_backports.h"
 #include "base/files/file_util.h"
 #include "base/i18n/icu_string_conversions.h"
-#include "base/stl_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
-#include "brave/ios/browser/api/bookmarks/importer/imported_bookmark_entry.h"
 #include "brave/ios/browser/api/bookmarks/importer/favicon_reencode.h"
+#include "brave/ios/browser/api/bookmarks/importer/imported_bookmark_entry.h"
 #include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
 #include "net/base/data_url.h"

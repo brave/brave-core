@@ -15,8 +15,8 @@
 #include "base/files/file_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/task_runner_util.h"
 #include "base/time/time.h"
 #include "base/token.h"
 #include "brave/components/crypto_dot_com/browser/crypto_dot_com_json_parser.h"
@@ -25,9 +25,11 @@
 #include "content/public/browser/storage_partition.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/fetch_api.mojom-shared.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace {
 
@@ -70,11 +72,9 @@ std::string GetFormattedResponseBody(const std::string& json_response) {
 
 CryptoDotComService::CryptoDotComService(content::BrowserContext* context)
     : context_(context),
-      url_loader_factory_(
-          content::BrowserContext::GetDefaultStoragePartition(context_)
-              ->GetURLLoaderFactoryForBrowserProcess()),
-      weak_factory_(this) {
-}
+      url_loader_factory_(context_->GetDefaultStoragePartition()
+                              ->GetURLLoaderFactoryForBrowserProcess()),
+      weak_factory_(this) {}
 
 CryptoDotComService::~CryptoDotComService() {
 }
@@ -194,8 +194,7 @@ bool CryptoDotComService::NetworkRequest(const GURL &url,
       network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
 
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-  auto* default_storage_partition =
-      content::BrowserContext::GetDefaultStoragePartition(context_);
+  auto* default_storage_partition = context_->GetDefaultStoragePartition();
   auto* url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess().get();
 

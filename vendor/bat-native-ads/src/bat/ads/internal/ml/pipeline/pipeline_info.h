@@ -10,17 +10,14 @@
 
 #include "bat/ads/internal/ml/ml_aliases.h"
 #include "bat/ads/internal/ml/model/linear/linear.h"
-#include "bat/ads/internal/ml/transformation/transformation.h"
 
 namespace ads {
 namespace ml {
 namespace pipeline {
 
-struct PipelineInfo {
+struct PipelineInfo final {
   PipelineInfo();
-
-  PipelineInfo(const PipelineInfo& pinfo);
-
+  PipelineInfo(const PipelineInfo& info);
   ~PipelineInfo();
 
   PipelineInfo(const int& version,

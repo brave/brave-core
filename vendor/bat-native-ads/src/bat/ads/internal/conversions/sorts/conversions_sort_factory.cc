@@ -11,17 +11,17 @@
 namespace ads {
 
 std::unique_ptr<ConversionsSort> ConversionsSortFactory::Build(
-    const ConversionInfo::SortType type) {
+    const ConversionSortType type) {
   switch (type) {
-    case ConversionInfo::SortType::kNone: {
+    case ConversionSortType::kNone: {
       return nullptr;
     }
 
-    case ConversionInfo::SortType::kAscendingOrder: {
+    case ConversionSortType::kAscendingOrder: {
       return std::make_unique<ConversionsAscendingSort>();
     }
 
-    case ConversionInfo::SortType::kDescendingOrder: {
+    case ConversionSortType::kDescendingOrder: {
       return std::make_unique<ConversionsDescendingSort>();
     }
   }

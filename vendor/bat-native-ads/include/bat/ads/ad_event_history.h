@@ -6,27 +6,32 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_EVENT_HISTORY_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_EVENT_HISTORY_H_
 
-#include <cstdint>
-#include <map>
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
+#include "bat/ads/export.h"
+
 namespace ads {
 
-class AdEventHistory {
+class ADS_EXPORT AdEventHistory final {
  public:
   AdEventHistory();
   ~AdEventHistory();
 
-  void Record(const std::string& ad_type,
-              const std::string& confirmation_type,
-              const uint64_t timestamp);
+  void RecordForId(const std::string& id,
+                   const std::string& ad_type,
+                   const std::string& confirmation_type,
+                   const double timestamp);
 
-  std::vector<uint64_t> Get(const std::string& ad_type,
-                            const std::string& confirmation_type) const;
+  std::vector<double> Get(const std::string& ad_type,
+                          const std::string& confirmation_type) const;
+
+  void ResetForId(const std::string& id);
 
  private:
-  std::map<std::string, std::vector<uint64_t>> history_;
+  base::flat_map<std::string, base::flat_map<std::string, std::vector<double>>>
+      history_;
 };
 
 }  // namespace ads

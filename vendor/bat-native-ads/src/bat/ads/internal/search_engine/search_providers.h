@@ -128,9 +128,13 @@ const std::vector<SearchProviderInfo> _search_providers = {
     SearchProviderInfo("findx",
                        "https://findx.com",
                        "https://www.findx.com/search?q={searchTerms}&type=web",
+                       true),
+    SearchProviderInfo("Brave",
+                       "https://search.brave.com/",
+                       "https://search.brave.com/search?q={searchTerms}",
                        true)};
 
-class SearchProviders {
+class SearchProviders final {
  public:
   SearchProviders();
   ~SearchProviders();

@@ -10,7 +10,6 @@
 
 #include "base/memory/ref_counted.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
@@ -23,6 +22,7 @@
 namespace brave {
 class BraveReferralsService;
 class BraveP3AService;
+class HistogramsBraveizer;
 }  // namespace brave
 
 namespace brave_component_updater {
@@ -34,8 +34,6 @@ class LocalDataFilesService;
 
 namespace brave_shields {
 class AdBlockService;
-class AdBlockCustomFiltersService;
-class AdBlockRegionalServiceManager;
 class HTTPSEverywhereService;
 }  // namespace brave_shields
 
@@ -48,6 +46,10 @@ namespace greaselion {
 class GreaselionDownloadService;
 #endif
 }  // namespace greaselion
+
+namespace debounce {
+class DebounceComponentInstaller;
+}  // namespace debounce
 
 namespace ntp_background_images {
 class NTPBackgroundImagesService;
@@ -73,6 +75,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
                                 public BrowserProcessImpl {
  public:
   explicit BraveBrowserProcessImpl(StartupData* startup_data);
+  BraveBrowserProcessImpl(const BraveBrowserProcessImpl&) = delete;
+  BraveBrowserProcessImpl& operator=(const BraveBrowserProcessImpl&) = delete;
   ~BraveBrowserProcessImpl() override;
 
   // BrowserProcess implementation.
@@ -84,10 +88,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 
   void StartBraveServices() override;
   brave_shields::AdBlockService* ad_block_service() override;
-  brave_shields::AdBlockCustomFiltersService* ad_block_custom_filters_service()
-      override;
-  brave_shields::AdBlockRegionalServiceManager*
-  ad_block_regional_service_manager() override;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   brave_component_updater::ExtensionWhitelistService*
   extension_whitelist_service() override;
@@ -95,13 +95,14 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionDownloadService* greaselion_download_service() override;
 #endif
+  debounce::DebounceComponentInstaller* debounce_component_installer() override;
   brave_shields::HTTPSEverywhereService* https_everywhere_service() override;
   brave_component_updater::LocalDataFilesService* local_data_files_service()
       override;
 #if BUILDFLAG(ENABLE_TOR)
   tor::BraveTorClientUpdater* tor_client_updater() override;
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
 #endif
   brave::BraveP3AService* brave_p3a_service() override;
@@ -109,12 +110,10 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   brave_stats::BraveStatsUpdater* brave_stats_updater() override;
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() override;
+  brave_ads::ResourceComponent* resource_component() override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;
-#endif
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-  brave_ads::ResourceComponent* resource_component() override;
 #endif
 
  private:
@@ -122,7 +121,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   void Init() override;
 
   void CreateProfileManager();
-  void CreateNotificationPlatformBridge();
 
 #if BUILDFLAG(ENABLE_TOR)
   void OnTorEnabledChanged();
@@ -149,6 +147,9 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<greaselion::GreaselionDownloadService>
       greaselion_download_service_;
 #endif
+  std::unique_ptr<debounce::DebounceComponentInstaller>
+      debounce_component_installer_;
+  bool created_https_everywhere_service_ = false;
   std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;
   std::unique_ptr<brave_stats::BraveStatsUpdater> brave_stats_updater_;
@@ -158,25 +159,21 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<tor::BraveTorClientUpdater> tor_client_updater_;
 #endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   std::unique_ptr<ipfs::BraveIpfsClientUpdater> ipfs_client_updater_;
 #endif
   scoped_refptr<brave::BraveP3AService> brave_p3a_service_;
+  scoped_refptr<brave::HistogramsBraveizer> histogram_braveizer_;
   std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>
       ntp_background_images_service_;
+  std::unique_ptr<brave_ads::ResourceComponent> resource_component_;
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   std::unique_ptr<speedreader::SpeedreaderRewriterService>
       speedreader_rewriter_service_;
 #endif
 
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-  std::unique_ptr<brave_ads::ResourceComponent> resource_component_;
-#endif
-
   SEQUENCE_CHECKER(sequence_checker_);
-
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowserProcessImpl);
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_IMPL_H_

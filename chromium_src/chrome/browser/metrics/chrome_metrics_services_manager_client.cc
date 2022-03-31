@@ -6,7 +6,7 @@
 #include "chrome/browser/metrics/chrome_metrics_services_manager_client.h"
 
 #define IsMetricsReportingEnabled IsMetricsReportingEnabled_ChromiumImpl
-#include "../../../../../chrome/browser/metrics/chrome_metrics_services_manager_client.cc"
+#include "src/chrome/browser/metrics/chrome_metrics_services_manager_client.cc"
 #undef IsMetricsReportingEnabled
 
 bool ChromeMetricsServicesManagerClient::IsMetricsReportingEnabled() {

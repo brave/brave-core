@@ -28,7 +28,7 @@ export interface Props {
 }
 
 export default class TableTransactions extends React.PureComponent<Props, {}> {
-  private tokenColors: Record<TransactionType, TokenType> = {
+  private readonly tokenColors: Record<TransactionType, TokenType> = {
     grant: 'earning',
     ads: 'earning',
     contribute: 'contribute',

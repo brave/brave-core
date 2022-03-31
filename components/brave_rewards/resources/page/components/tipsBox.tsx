@@ -7,20 +7,21 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import { Checkbox, Grid, Column, ControlWrapper } from 'brave-ui/components'
+import { Button, Checkbox, Grid, Column, ControlWrapper } from 'brave-ui/components'
 import {
-  DisabledContent,
   Box,
   TableDonation,
   List,
   Tokens,
   ModalDonation
 } from '../../ui/components'
+import { NewTabLink } from '../../shared/components/new_tab_link'
 import { Provider } from '../../ui/components/profile'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
+import * as urls from '../../shared/lib/rewards_urls'
 import * as utils from '../utils'
 import { DetailRow } from '../../ui/components/tableDonation'
 
@@ -30,6 +31,7 @@ interface Props extends Rewards.ComponentProps {
 interface State {
   modalShowAll: boolean
   settings: boolean
+  restartNeeded: boolean
 }
 
 class TipBox extends React.Component<Props, State> {
@@ -37,23 +39,13 @@ class TipBox extends React.Component<Props, State> {
     super(props)
     this.state = {
       modalShowAll: false,
-      settings: false
+      settings: false,
+      restartNeeded: false
     }
   }
 
   get actions () {
     return this.props.actions
-  }
-
-  disabledContent = () => {
-    return (
-      <DisabledContent
-        type={'donation'}
-      >
-        {getLocale('donationDisabledText1')}<br/>
-        {getLocale('donationDisabledText2')}
-      </DisabledContent>
-    )
   }
 
   getTipsRows = () => {
@@ -106,6 +98,11 @@ class TipBox extends React.Component<Props, State> {
 
   onInlineTipSettingChange = (key: string, selected: boolean) => {
     this.actions.onInlineTipSettingChange(key, selected)
+    this.setState({ restartNeeded: true })
+  }
+
+  onRelaunch = () => {
+    this.actions.restartBrowser()
   }
 
   donationSettingsChild = () => {
@@ -138,7 +135,6 @@ class TipBox extends React.Component<Props, State> {
               >
                 <div data-key='twitter'>{getLocale('donationAbilityTwitter')}</div>
               </Checkbox>
-
               <Checkbox
                 value={value}
                 multiple={true}
@@ -149,17 +145,30 @@ class TipBox extends React.Component<Props, State> {
             </ControlWrapper>
           </Column>
         </Grid>
+        {
+          this.state.restartNeeded
+          ? <Button
+              text={getLocale('relaunch')}
+              size={'small'}
+              type={'subtle'}
+              onClick={this.onRelaunch}
+          />
+          : null
+        }
       </>
     )
   }
 
+  getDescription = () => {
+    return (
+      <div>
+        {getLocale('donationDesc')} <NewTabLink href={urls.tippingLearnMoreURL}>{getLocale('donationDescLearnMore')}</NewTabLink>
+      </div>
+    )
+  }
+
   render () {
-    const {
-      parameters,
-      firstLoad,
-      tipsList
-    } = this.props.rewardsData
-    const showDisabled = firstLoad !== false
+    const { parameters, tipsList } = this.props.rewardsData
     const tipRows = this.getTipsRows()
     const topRows = tipRows.slice(0, 5)
     const numRows = tipRows && tipRows.length
@@ -171,8 +180,7 @@ class TipBox extends React.Component<Props, State> {
       <Box
         title={getLocale('donationTitle')}
         type={'donation'}
-        description={getLocale('donationDesc')}
-        disabledContent={showDisabled ? this.disabledContent() : null}
+        description={this.getDescription()}
         settingsChild={this.donationSettingsChild()}
         settingsOpened={this.state.settings}
         onSettingsClick={this.onSettingsToggle}

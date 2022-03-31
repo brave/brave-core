@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recovery_phrase_text"
+    android:layout_margin="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:textColor="@color/wallet_text_color"
+    android:textSize="14sp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="@drawable/recovery_phrase_bg"/>

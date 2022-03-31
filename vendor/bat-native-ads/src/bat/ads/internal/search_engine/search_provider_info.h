@@ -10,7 +10,7 @@
 
 namespace ads {
 
-struct SearchProviderInfo {
+struct SearchProviderInfo final {
  public:
   SearchProviderInfo();
   SearchProviderInfo(const std::string& name,

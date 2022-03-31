@@ -6,12 +6,8 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LOGGING_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LOGGING_H_
 
-#include <ostream>
+#include <sstream>
 #include <string>
-
-#include "base/check.h"
-#include "base/notreached.h"
-#include "bat/ads/internal/logging_util.h"
 
 namespace ads {
 

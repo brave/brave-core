@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define RegisterWidevineCdmComponent RegisterWidevineCdmComponent_ChromiumImpl
-#include "../../../../../chrome/browser/component_updater/widevine_cdm_component_installer.cc"  // NOLINT
+#include "src/chrome/browser/component_updater/widevine_cdm_component_installer.cc"
 #undef RegisterWidevineCdmComponent
 
 #include "brave/browser/widevine/widevine_utils.h"

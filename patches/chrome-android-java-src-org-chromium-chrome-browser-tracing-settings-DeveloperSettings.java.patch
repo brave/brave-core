@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/DeveloperSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/DeveloperSettings.java
-index 1f9156c7fb11dc2d00ab73a1d1f6adeadf153bbf..2570765032177a756128d7e342e0450f1d37dd21 100644
+index db6ca8da0ebccb87399e96fb322334264d4850ff..5cc853277247e3b5120ea91a953460fd73d92ab6 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/DeveloperSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/DeveloperSettings.java
-@@ -20,7 +20,7 @@ import org.chromium.components.version_info.VersionConstants;
+@@ -20,7 +20,7 @@ import org.chromium.components.version_info.VersionInfo;
  /**
   * Settings fragment containing preferences aimed at Chrome and web developers.
   */

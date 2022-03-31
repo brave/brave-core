@@ -10,6 +10,10 @@ import os
 import subprocess
 import sys
 
+# Import the entire module to avoid circular dependencies in the functions
+from signing import chromium_config, commands, model, notarize  # noqa: E402
+from signing_helper import GetBraveSigningConfig
+
 """
 The sign_chrome.py script does notarization of the app, but we don't use it to
 create our .dmg and .pkg files. Instead we do our own signing and packaging,
@@ -22,10 +26,6 @@ performs notarizing and stapling of those files.
 # relative to that
 packaging_signing_path = os.path.realpath(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(packaging_signing_path)
-
-# Import the entire module to avoid circular dependencies in the functions
-from signing import chromium_config, config, commands, model, notarize, pipeline, signing  # noqa: E402
-from signing_helper import GetBraveSigningConfig
 
 def run_command(args, **kwargs):
     print('Running command: {}'.format(args))
@@ -147,5 +147,4 @@ def parse_args():
 
 
 if __name__ == '__main__':
-    import sys
     sys.exit(main())

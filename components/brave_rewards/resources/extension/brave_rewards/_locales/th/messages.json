@@ -1,661 +1,416 @@
 {
-  "braveRewards": {
-    "message": "Brave Rewards",
-    "description": "Title in welcome screen for the panel"
+  "summary": {
+    "message": "สรุป",
+    "description": ""
   },
-  "welcomeButtonTextOne": {
-    "message": "เริ่มรับเงินตอนนี้!",
-    "description": "CTA on welcome screen in the panel, existing users"
+  "tip": {
+    "message": "ทิป",
+    "description": ""
   },
-  "welcomeButtonTextTwo": {
-    "message": "รางวัลเข้าร่วม",
-    "description": "CTA on welcome screen in the panel, new users"
+  "unverifiedCreator": {
+    "message": "ผู้สร้างยังไม่ยืนยันตัวตน",
+    "description": ""
   },
-  "welcomeDescOne": {
-    "message": "ได้รับเงินเป็นค่าตอบแทนการดูโฆษณา แล้วสามารถจ่ายมันต่อไปเพื่อสนับสนุนผู้สร้างสรรค์เนื้อหาที่คุณชื่นชอบ",
-    "description": "Entry text for welcome screen in the panel, existing user"
+  "verifiedCreator": {
+    "message": "ผู้สร้างยืนยันตัวตนแล้ว",
+    "description": ""
   },
-  "welcomeDescTwo": {
-    "message": "เดี๋ยวนี้คุณสามารถได้รับโทเค็นจากการชมโฆษณาที่เคารพความเป็นส่วนตัวแล้ว",
-    "description": "Entry text for welcome screen in the panel, new user"
+  "refreshStatus": {
+    "message": "รีเฟรช",
+    "description": ""
   },
-  "welcomeDescPoints": {
-    "message": "รับคะแนนจากการชมโฆษณาที่เกี่ยวข้องกับความเป็นส่วนตัวได้แล้วตอนนี้",
-    "description": "Entry text for welcome screen in the panel, points"
-  },
-  "welcomeFooterTextOne": {
-    "message": "มาดูว่ามีอะไรปรับปรุงเปลี่ยนแปลงไปแล้วบ้าง",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
-  },
-  "welcomeFooterTextTwo": {
-    "message": "เรียนรู้เพิ่มเติม",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
-  },
-  "welcomeHeaderOne": {
-    "message": "เราได้ทำการอัปเกรดครั้งใหญ่ให้กับ Brave Rewards",
-    "description": "Main header title for welcome screen in the panel, existing user"
-  },
-  "welcomeHeaderTwo": {
-    "message": "เตรียมรับประสบการณ์อินเทอร์เน็ตของอนาคต",
-    "description": "Main header title for welcome screen in the panel, new user"
-  },
-  "yourWallet": {
-    "message": "กระเป๋าเงินของคุณ",
-    "description": "Title of wallet section where we display data about wallet"
-  },
-  "grants": {
-    "message": "Grants",
-    "description": "Title for grant section in wallet summary"
-  },
-  "details": {
-    "message": "รายละเอียด",
-    "description": "Title for grant section in wallet panel summary"
-  },
-  "yourBalance": {
-    "message": "ยอดของคุณ",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "คะแนน BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "สามารถใช้ใน Brave Rewards เพื่อส่งรายได้ให้แก่ผู้สร้างสรรค์เนื้อหาคนโปรดของคุณ แต้ม BAT ไม่สามารถแลกเปลี่ยนเป็น BAT ได้",
-    "description": "Text for BAT Point helper message"
-  },
-  "on": {
-    "message": "เปิด",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "verifiedPublisher": {
-    "message": "ผู้สร้าง Brave ที่ยืนยันแล้ว",
-    "description": "Tells user that this particular publisher is a Brave Verified Creator"
-  },
-  "rewardsContributeAttentionScore": {
-    "message": "โปรดระวัง",
-    "description": "Label for auto contribute table attention for the publisher"
-  },
-  "donateMonthly": {
-    "message": "การสนับสนุนรายเดือน",
-    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
-  },
-  "includeInAuto": {
-    "message": "รวมไว้ในการบริจาคแบบอัตโนมัติ",
-    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
-  },
-  "donateNow": {
-    "message": "ส่งเคล็ดลับ",
-    "description": "CTA for sending tip form site banner"
-  },
-  "enableTips": {
-    "message": "เปิดทิป",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "for": {
-    "message": "สำหรับ",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "rewardsSummary": {
-    "message": "สรุปรางวัล",
-    "description": "Section title in wallet panel, which contains monthly rewards summary"
-  },
-  "monthApr": {
-    "message": "เมษายน",
-    "description": "Month"
-  },
-  "monthAug": {
-    "message": "สิงหาคม",
-    "description": "Month"
-  },
-  "monthDec": {
-    "message": "ธันวาคม",
-    "description": "Month"
-  },
-  "monthFeb": {
-    "message": "กุมภาพันธ์",
-    "description": "Month"
-  },
-  "monthJan": {
-    "message": "มกราคม",
-    "description": "Month"
-  },
-  "monthJul": {
-    "message": "กรกฎาคม",
-    "description": "Month"
-  },
-  "monthJun": {
-    "message": "มิถุนายน",
-    "description": "Month"
-  },
-  "monthMar": {
-    "message": "มีนาคม",
-    "description": "Month"
-  },
-  "monthMay": {
-    "message": "พฤษภาคม",
-    "description": "Month"
-  },
-  "monthNov": {
-    "message": "พฤศจิกายน",
-    "description": "Month"
-  },
-  "monthOct": {
-    "message": "ตุลาคม",
-    "description": "Month"
-  },
-  "monthSep": {
-    "message": "กันยายน",
-    "description": "Month"
-  },
-  "tokenGrant": {
-    "message": "เงินสนับสนุน $currency$",
-    "description": "Title for grant notification",
+  "pendingTipText": {
+    "message": "ทิปใดๆ ที่คุณให้จะยังคงรอดำเนินการอยู่และระบบจะลองดำเนินการใหม่โดยอัตโนมัติเป็นเวลา 90 วัน $link_begin$ดูเพิ่มเติม$link_end$",
+    "description": "",
     "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "Token"
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
       }
     }
   },
-  "tokenGrantClaimed": {
-    "message": "โทเค็นเงินบริจาคที่เบิกแล้ว",
-    "description": "Title for grant section in wallet summary"
+  "pendingTipTitle": {
+    "message": "ครีเอเตอร์รายนี้ยังไม่ได้ลงทะเบียน",
+    "description": ""
   },
-  "pointGrantClaimed": {
-    "message": "ขอรับคะแนนที่แจกแล้ว",
-    "description": "Title for point grant section in wallet summary"
+  "pendingTipTitleRegistered": {
+    "message": "ผู้สร้างรายนี้ยังไม่ได้รับการกำหนดค่าให้รับทิปจากบริการกระเป๋าเงินเพื่อจัดเก็บข้อมูลของลูกค้า Rewards ของคุณ",
+    "description": ""
   },
-  "earningsAds": {
-    "message": "ได้รายได้จากโฆษณา",
-    "description": "Title for ads section in wallet summary"
+  "platformPublisherTitle": {
+    "message": "$name$ บน $platform$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "platform": {
+        "content": "$2"
+      }
+    }
   },
-  "rewardsContribute": {
-    "message": "มีส่วนร่วมอัตโนมัติ",
-    "description": "Title for auto contribute section in wallet summary"
+  "attention": {
+    "message": "โปรดระวัง",
+    "description": ""
   },
-  "oneTimeDonation": {
-    "message": "ทิปครั้งเดียว",
-    "description": "Title for one time tips section in wallet summary"
+  "sendTip": {
+    "message": "ส่งทิป",
+    "description": ""
   },
-  "expiresOn": {
-    "message": "หมดอายุวันที่",
-    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
+  "includeInAutoContribute": {
+    "message": "รวมไว้ในการบริจาคแบบอัตโนมัติ",
+    "description": ""
   },
-  "recurringDonations": {
-    "message": "การสนับสนุนรายเดือน",
-    "description": "Title for monthly contributions section in wallet summary"
-  },
-  "off": {
-    "message": "ปิด",
-    "description": "Label used in toggle indicating that toggle is off"
+  "monthlyTip": {
+    "message": "การให้ทิปรายเดือน",
+    "description": ""
   },
   "ok": {
     "message": "ตกลง",
-    "description": "Used in notification to dismiss notification"
-  },
-  "braveAdsLaunchMsg": {
-    "message": "คุณสามารถรับรายได้ผ่านการชมโฆษณาได้แล้วตอนนี้",
-    "description": "Message for ads launch notification"
-  },
-  "braveAdsTitle": {
-    "message": "เบรฟ แอดส์ (Brave Ads)",
-    "description": "Notification title when we display info about ads"
-  },
-  "braveContributeTitle": {
-    "message": "มีส่วนร่วมอัตโนมัติ",
-    "description": "Notification title when we display info about auto contribution"
-  },
-  "contributeNotificationSuccess": {
-    "message": "บริจาคเงิน $amount$ $currency$ แล้ว",
-    "description": "We show this string in the notification when contribution is successful",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10.0"
-      },
-      "currency": {
-        "content": "$2",
-        "example": "BAT"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "มีรางวัลรอคุณอยู่",
-    "description": "Description for new grant notification"
-  },
-  "backupNow": {
-    "message": "สำรองข้อมูลเลย",
-    "description": "Notification button text when we ask user to backup wallet"
-  },
-  "backupWalletTitle": {
-    "message": "สำรองข้อมูลวอลเล็ท",
-    "description": "Notification title when we ask user to backup wallet"
-  },
-  "backupWalletNotification": {
-    "message": "โปรดสำรองข้อมูล Brave วอลเล็ทของคุณ",
-    "description": "Description for backup wallet notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "เรียนรู้เพิ่มเติม",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "ถึงขีดจำกัดอุปกรณ์",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "ไม่สามารถยืนยันตัวตนของวอลเล็ทได้เนื่องจากคุณมีจำนวนอุปกรณ์ที่ผ่านการยืนยันตัวตนถึงขีดจำกัดสูงสุดแล้ว",
-    "description": "Description for device limit reached notification"
-  },
-  "insufficientFundsNotification": {
-    "message": "บัญชี Brave Rewards ของคุณกำลังรอเงินฝาก",
-    "description": "Description for new insufficient funds notification"
-  },
-  "insufficientFunds": {
-    "message": "ยอดเงินไม่พอ",
-    "description": "Title for insufficient funds notification"
-  },
-  "braveRewardsCreatingText": {
-    "message": "การสร้างกระเป๋าสตางค์",
-    "description": "Used in a button displaying wallet creation process"
-  },
-  "contributeNotificationError": {
-    "message": "มีปัญหาในการประมวลผลการบริจาคของคุณ",
-    "description": "We show this string in notification when contribution fails"
-  },
-  "contributeNotificationNotEnoughFunds": {
-    "message": "การชำระเงินรายเดือนตามกำหนดของคุณสำหรับการให้เงินสนับสนุนอัตโนมัติและเงินสนับสนุนรายเดือนนั้นดำเนินการไม่สำเร็จเนื่องจากมีเงินไม่เพียงพอ เราจะทำรายการอีกครั้งในอีก 30 วัน",
-    "description": "We show this string in the notification when you don't have enough funds for contribution"
-  },
-  "contributeNotificationTipError": {
-    "message": "ส่งทิปไม่สำเร็จ โปรดลองอีกครั้งในภายหลัง",
-    "description": "We show this string in notification when tip fails"
-  },
-  "noActivity": {
-    "message": "ยังไม่มีกิจกรรม…",
-    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
-  },
-  "captchaDrag": {
-    "message": "ลากไอคอน BAT ไปยัง",
-    "description": "Directs the user to drag the BAT icon"
-  },
-  "captchaProveHuman": {
-    "message": "พิสูจน์ว่าคุณเป็นมนุษย์!",
-    "description": "Cosmetic text for captcha prompt"
-  },
-  "captchaTarget": {
-    "message": "เป้าหมาย",
-    "description": "Captcha Target"
-  },
-  "captchaMissedTarget": {
-    "message": "หืม... ไม่ใช่นะ ลองอีกครั้งสิ",
-    "description": "Message upon failing captcha"
-  },
-  "claim": {
-    "message": "รับ",
-    "description": "Claim text"
-  },
-  "newTokenGrant": {
-    "message": "โทเค็นเงินบริจาคฟรี",
-    "description": "Token grant label"
-  },
-  "grantExpire": {
-    "message": "วันที่เงินบริจาคหมดอายุ",
-    "description": "Grant expiry label"
-  },
-  "grantGeneralErrorButton": {
-    "message": "ตกลง",
-    "description": "Button text for clearing the error."
-  },
-  "grantGeneralErrorText": {
-    "message": "Brave Rewards มีปัญหาอยู่ในขณะนี้ โปรดลองใหม่ภายหลัง",
-    "description": "Error text when user is having problems claiming a grant."
-  },
-  "grantGeneralErrorTitle": {
-    "message": "อุ๊ย มีบางอย่างผิดปกติ โปรดลองใหม่ภายหลัง",
-    "description": "Error title when user is having problems claiming a grant."
-  },
-  "unVerifiedCheck": {
-    "message": "รีเฟรชสถานะ",
-    "description": "Text of link that allows to check verified status of unverified publisher"
-  },
-  "unVerifiedPublisher": {
-    "message": "ยังไม่ได้ยืนยัน",
-    "description": "Status of the publisher shown in the panel"
-  },
-  "unVerifiedText": {
-    "message": "ผู้สร้างคนนี้ยังไม่ได้ลงทะเบียนรับเงินสนับสนุนจากผู้ใช้ Brave ทิปทั้งหมดที่คุณส่งให้จะยังคงอยู่ในวอลเล็ทของคุณจนกว่าผู้สร้างจะยืนยัน",
-    "description": "Notice about unverified publisher."
-  },
-  "unVerifiedTextMore": {
-    "message": "เรียนรู้เพิ่มเติม",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "reservedAmountText": {
-    "message": "คุณได้กำหนดจำนวนเงิน {{reservedAmount}} {{currency}} ไว้ให้แก่ผู้สร้างสรรค์ที่ยังไม่ได้สมัครรับรายได้ เบราว์เซอร์ของคุณจะพยายามส่งรายได้ให้จนกว่าพวกเขาจะยืนยัน หรือจนกว่าจะครบ 90 วัน",
-    "description": "Notification about how much BAT do you have reserved"
-  },
-  "reservedMoreLink": {
-    "message": "เรียนรู้เพิ่มเติม",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "disabledPanelOff": {
-    "message": "ปิด",
-    "description": "Off state text for Panel's disabled state"
-  },
-  "disabledPanelSettings": {
-    "message": "การตั้งค่า",
-    "description": "Settings Link for Panel's disabled state"
-  },
-  "disabledPanelText": {
-    "message": "ขณะนี้คุณไม่ได้รับสิทธิ์ประโยชน์ใด ๆ จาก Rewards ระหว่างการท่องเว็บ กรุณาเปิดใช้งาน Rewards ใน",
-    "description": "Text for Panel's disabled state"
-  },
-  "disabledPanelTitle": {
-    "message": "Brave Rewards คือ",
-    "description": "Title for Panel's disabled state"
-  },
-  "walletFailedTitle": {
-    "message": "การสร้างกระเป๋าสตางค์ล้มเหลว",
-    "description": "Failure title for wallet creation"
-  },
-  "walletFailedButton": {
-    "message": "ลองอีกครั้ง",
-    "description": "Button for re-try after wallet creation failed"
-  },
-  "addFunds": {
-    "message": "เพิ่มเงินทุน",
-    "description": "Button for adding funds"
-  },
-  "rewardsSettings": {
-    "message": "การตั้งค่า Rewards",
-    "description": "Button for opening settings page"
-  },
-  "earningsClaimDefault": {
-    "message": "รางวัลของคุณจาก Ads อยู่นี่แล้ว!",
-    "description": "Panel notification text for Ads grant"
-  },
-  "and": {
-    "message": "และ",
-    "description": "The word 'and'"
-  },
-  "braveRewardsSubTitle": {
-    "message": "รับรางวัลจากการท่องเน็ต!",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "disabledPanelTextTwo": {
-    "message": "สร้างรายได้ด้วยการชมโฆษณาที่เคารพความเป็นส่วนตัวและส่งต่อรายได้เพื่อช่วยสนับสนุนผู้สร้างเนื้อหาที่คุณรัก",
-    "description": "Text block for wallet disabled panel"
-  },
-  "enableRewards": {
-    "message": "เปิด Brave Rewards",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "privacyPolicy": {
-    "message": "นโยบายสความเป็นส่วนตัว",
-    "description": "Privacy Policy"
-  },
-  "serviceText": {
-    "message": "การคลิก 'เปิดใช้ Brave Rewards' จะถือเป็นการบ่งชี้ว่าคุณได้อ่านและยอมรับใน",
-    "description": "Terms of service main text"
-  },
-  "termsOfService": {
-    "message": "ข้อตกลงการใช้บริการ",
-    "description": "Terms of Service"
-  },
-  "welcomeBack": {
-    "message": "Welcome Back!",
-    "description": "Title message for wallet disabled panel"
-  },
-  "tipsProcessedNotification": {
-    "message": "เงินสนับสนุนรายเดือนของคุณดำเนินการเรียบร้อยแล้ว!",
-    "description": "Message for monthly contributions processed notification"
-  },
-  "contributionTips": {
-    "message": "การบริจาคและทิป",
-    "description": "Title for monthly contributions processed notification"
-  },
-  "serviceTextPanelWelcome": {
-    "message": "การคลิก 'ร่วมรับรางวัล' จะถือเป็นการระบุว่าคุณได้อ่านและยอมรับใน",
-    "description": "Terms of service panel opt-in text"
-  },
-  "bat": {
-    "message": "BAT",
-    "description": "BAT text for displaying converted tip amount."
-  },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
-  "turnOnAds": {
-    "message": "เปิดใช้งาน Ads",
-    "description": "Prompt to turn on Ads via notification"
-  },
-  "adsEarnings": {
-    "message": "ได้รับจากโฆษณาแล้ว",
-    "description": "Description text for ad grants in grant details"
-  },
-  "twitterTipsHoverText": {
-    "message": "ให้ทิปทวีตนี้",
-    "description": "Hover text for Twitter tips action"
-  },
-  "twitterTipsIconLabel": {
-    "message": "ทิป",
-    "description": "Icon label for Twitter tips"
-  },
-  "redditTipsHoverText": {
-    "message": "ให้ทิปโพสต์นี้",
-    "description": "Hover text for Reddit tips action"
-  },
-  "redditTipsIconLabel": {
-    "message": "ทิป",
-    "description": "Icon label for Reddit tips"
-  },
-  "githubTipsHoverText": {
-    "message": "ส่งทิป",
-    "description": "Hover text for GitHub tips action"
-  },
-  "githubTipsIconLabel": {
-    "message": "ทิป",
-    "description": "Icon label for GitHub tips"
-  },
-  "verifiedPublisherNotification": {
-    "message": "ผู้สร้าง $name$ ที่ยืนยันเมื่อไม่นานมานี้",
-    "description": "Notification text that tells user which publisher just verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "brave.com"
-      }
-    }
-  },
-  "pendingNotEnoughFundsNotification": {
-    "message": "คุณมีทิปที่รอดำเนินการอยู่เนื่องจากมีเงินในบัญชีไม่พอ",
-    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
-  },
-  "pendingContributionTitle": {
-    "message": "เงินสนับสนุนที่รอดำเนินการ",
-    "description": "Notification title for pending contribution type"
-  },
-  "grantFinishTitleUGP": {
-    "message": "วันนี้คุณมีโชค!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "grantFinishTextUGP": {
-    "message": "เงินสนับสนุน $currency$ กำลังเดินทาง",
-    "description": "Cosmetic text indicating grant funds are on the way",
-    "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "token"
-      }
-    }
-  },
-  "grantFinishTokenTitleUGP": {
-    "message": "โทเค็นเงินบริจาคฟรี",
-    "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "แจกคะแนนฟรี",
-    "description": "Point title on success screen"
-  },
-  "grantFinishTitleAds": {
-    "message": "คุณได้รับรางวัลโฆษณา!",
-    "description": "Cosmetic text upon captcha success for ads"
-  },
-  "grantFinishTextAds": {
-    "message": "รางวัลของคุณกำลังอยู่ระหว่างทางไปสู่กระเป๋าสตางค์ Brave Rewards ของคุณ",
-    "description": "Cosmetic text indicating ads funds are on the way"
-  },
-  "grantFinishTokenTitleAds": {
-    "message": "ปริมาณรางวัลของคุณ",
-    "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "ยืนยัน",
-    "description": "CTA in the footer to verify"
-  },
-  "walletButtonDisconnected":  {
-    "message": "ไม่ได้เชื่อมต่อ",
-    "description": "CTA status button"
-  },
-  "walletButtonUnverified":  {
-    "message": "ยืนยันวอลเล็ท",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletButtonVerified":  {
-    "message": "ยืนยันวอลเล็ตแล้ว",
-    "description": "Displayed in wallet that tells users that he is verified"
-  },
-  "walletGoToProvider":  {
-    "message": "ไปยังบัญชี $provider$ ของฉัน",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnect":  {
-    "message": "ยกเลิกการเชื่อมต่อกับ Brave Rewards",
-    "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerified":  {
-    "message": "ยืนยันแล้ว",
-    "description": "Status button that tells user that he is verified"
-  },
-  "walletVerifiedNotification":  {
-    "message": "วอลเล็ทของคุณได้รับการยืนยันแล้ว!",
-    "description": "Title for notification when wallet becomes verified"
-  },
-  "walletVerifiedTextNotification":  {
-    "message": "ยินดีด้วย! วอลเล็ท $name$ ของคุณได้รับการยืนยันเรียบร้อยแล้วและพร้อมสำหรับการฝาก-ถอนเงินแล้ว",
-    "description": "Title for notification when wallet becomes verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnectedNotification":  {
-    "message": "โอ๊ะ ไม่สามารถเข้าถึงวอลเล็ทของคุณได้",
-    "description": "Title for notification when wallet is disconnected."
-  },
-  "walletDisconnectedTextNotification":  {
-    "message": "ไม่ต้องห่วง กรณีนี้อาจมีสาเหตุมาจากเหตุผลด้านความปลอดภัยหลายประการ การเชื่อมต่อวอลเล็ตของคุณใหม่จะแก้ไขปัญหานี้ได้",
-    "description": "Title for notification when wallet is disconnected"
-  },
-  "connectedText":  {
-    "message": "ครีเอเตอร์ Brave รายนี้ได้ผ่านการรับรองแล้ว แต่ยังไม่กำหนดค่าบัญชีของตนเพื่อรับเงินสนับสนุนจากผู้ใช้ Brave ทิปที่คุณส่งให้จะยังคงอยู่ในกระเป๋าสตางค์ของคุณจนกว่าขั้นตอนนี้จะเสร็จสมบูรณ์",
-    "description": "Text shown for connected publishers that are not fully verified in the panel"
-  },
-  "walletGoToVerifyPage":  {
-    "message": "ยืนยันวอลเล็ตให้เสร็จสิ้น",
-    "description": "CTA for completing wallet verification"
+    "description": ""
   },
   "set": {
-    "message": "ตั้งค่า...",
-    "description": "Button text for setting monthly contribution"
+    "message": "ตั้งค่า",
+    "description": ""
   },
-  "tokens":  {
-    "message": "เหรียญ",
-    "description": "Standard tokens text"
+  "changeAmount": {
+    "message": "เปลี่ยนจำนวน",
+    "description": ""
   },
-  "point":  {
-    "message": "คะแนน",
-    "description": "BAT Point text"
+  "cancel": {
+    "message": "ยกเลิก",
+    "description": ""
   },
-  "token":  {
-    "message": "Token",
-    "description": "BAT Token text"
+  "grantCaptchaTitle": {
+    "message": "ยืนยันว่าคุณเป็นมนุษย์",
+    "description": ""
   },
-  "points":  {
-    "message": "คะแนน",
-    "description": "BAT Points text"
+  "grantCaptchaFailedTitle": {
+    "message": "หืม... ไม่ใช่นะ ลองอีกครั้งสิ",
+    "description": ""
   },
-  "tokenGrants":  {
-    "message": "จำนวนโทเคนที่ให้",
-    "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "คะแนนแจกฟรี",
-    "description": "BAT Points Grant Text"
-  },
-  "greetingsVerified":  {
-    "message": "สวัสดี $name$!",
-    "description": "Greetings for external wallet popup",
+  "grantCaptchaHint": {
+    "message": "ลากไอคอน BAT ไปยังเป้าหมาย $hint$",
+    "description": "",
     "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "John"
+      "hint": {
+        "content": "$1"
       }
     }
   },
-  "cancel":  {
-    "message": "ยกเลิก",
-    "description": "Text for cancel button"
+  "grantCaptchaPassedTitleUGP": {
+    "message": "วันนี้คุณมีโชค!",
+    "description": ""
   },
-  "changeAmount":  {
-    "message": "เปลี่ยนจำนวน",
-    "description": "Button text for changing monthly contribution amount"
+  "grantCaptchaPassedTextUGP": {
+    "message": "โทเค็นเงินบริจาคกำลังจะไปถึงคุณแล้ว",
+    "description": ""
   },
-  "login":  {
-    "message": "ลงชื่อเข้าใช้",
-    "description": "Text for login button"
+  "grantCaptchaAmountUGP": {
+    "message": "โทเค็นเงินบริจาคฟรี",
+    "description": ""
   },
-  "loginMessageTitle":  {
-    "message": "การยืนยันวอลเล็ตให้คุณจัดการเงินทุนได้อย่างมีประสิทธิภาพมากขึ้น",
-    "description": "Text for login button"
+  "grantCaptchaPassedTitleAds": {
+    "message": "คุณได้รับรางวัลโฆษณา!",
+    "description": ""
   },
-  "loginMessageText":  {
-    "message": "คุณต้องมีอย่างน้อย $amount$ BAT เพื่อสร้างบัญชี Uphold หากคุณมีบัญชี Uphold ที่ยืนยันตัวตนแล้ว ให้ทำการเข้าสู่ระบบ",
-    "description": "Text for login button",
+  "grantCaptchaPassedTextAds": {
+    "message": "Reward กำลังจะไปถึงคุณแล้ว",
+    "description": ""
+  },
+  "grantCaptchaAmountAds": {
+    "message": "ปริมาณรางวัลของคุณ",
+    "description": ""
+  },
+  "grantCaptchaExpiration": {
+    "message": "วันที่เงินบริจาคหมดอายุ",
+    "description": ""
+  },
+  "grantCaptchaErrorTitle": {
+    "message": "อุ๊ย มีบางอย่างผิดปกติ โปรดลองใหม่ภายหลัง",
+    "description": ""
+  },
+  "grantCaptchaErrorText": {
+    "message": "Brave Rewards มีปัญหาอยู่ในขณะนี้ โปรดลองใหม่ภายหลัง",
+    "description": ""
+  },
+  "rewardsPaymentCheckStatus": {
+    "message": "ตรวจสอบสถานะ",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "ยินดีด้วย! รางวัลสำหรับเดือน $month$ ของคุณมาถึงแล้ว!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "รางวัลสำหรับเดือน $month$ จำนวน $amount$ ของคุณจะมาถึงในอีก $days$",
+    "description": "",
     "placeholders": {
       "amount": {
-        "content": "$1",
-        "example": "15"
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
       }
     }
   },
-  "walletConnected":  {
-    "message": "เชื่อมต่อแล้ว",
-    "description": "Status button that tells user that he is connected"
+  "rewardsPaymentProcessing": {
+    "message": "รางวัลสำหรับเดือน $month$ จำนวน $amount$ ของคุณใกล้เข้ามาแล้ว เตรียมรับรางวัลได้เลย!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
   },
-  "walletPending":  {
-    "message": "รอดำเนินการ",
-    "description": "Status button that tells user that he is currently pending"
-  },
-  "walletVerificationNote3":  {
-    "message": "หมายเหตุ: $provider$ จะดูรายการธุรกรรมของคุณได้หลังจากที่คุณให้สิทธิ์ เช่น จะสามารถดูชื่อผู้รับและจำนวนเงินทิปของคุณ",
-    "description": "Displayed in login modal for external wallet providers",
+  "walletAccountLink": {
+    "message": "ไปยังบัญชี $provider$ ของฉัน",
+    "description": "",
     "placeholders": {
       "provider": {
-        "content": "$1",
-        "example": "Uphold"
+        "content": "$1"
       }
     }
+  },
+  "walletAddFunds": {
+    "message": "เพิ่มเงิน",
+    "description": ""
+  },
+  "walletAutoContribute": {
+    "message": "มีส่วนร่วมอัตโนมัติ",
+    "description": ""
+  },
+  "walletCompleteVerificationLink": {
+    "message": "ไปที่ $provider$ เพื่อยืนยันให้เสร็จสิ้น",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "กรุณายืนยันตัวตนให้เสร็จสิ้นเพื่อเริ่มรับรางวัล",
+    "description": ""
+  },
+  "walletDisconnected": {
+    "message": "ออกจากระบบ",
+    "description": ""
+  },
+  "walletDisconnectLink": {
+    "message": "ออกจาก $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletEstimatedEarnings": {
+    "message": "รายได้โดยประมาณ",
+    "description": ""
+  },
+  "walletLogIntoYourAccount": {
+    "message": "ล็อกอินเข้าสู่บัญชี $provider$ ของคุณ",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletMonthlyTips": {
+    "message": "การให้ทิปรายเดือน",
+    "description": ""
+  },
+  "walletOneTimeTips": {
+    "message": "ทิปครั้งเดียว",
+    "description": ""
+  },
+  "walletPending": {
+    "message": "รอดำเนินการ",
+    "description": ""
+  },
+  "walletRewardsFromAds": {
+    "message": "Rewards จาก Ads",
+    "description": ""
+  },
+  "walletRewardsSummary": {
+    "message": "สรุปรางวัล",
+    "description": ""
+  },
+  "walletUnverified": {
+    "message": "ยังไม่ยืนยัน",
+    "description": ""
+  },
+  "walletVerified": {
+    "message": "ยืนยันแล้ว",
+    "description": ""
+  },
+  "walletYourBalance": {
+    "message": "ยอดของคุณ",
+    "description": ""
+  },
+  "notificationAddFunds": {
+    "message": "เพิ่มเงิน",
+    "description": ""
+  },
+  "notificationReconnect": {
+    "message": "เชื่อมต่ออีกครั้ง",
+    "description": ""
+  },
+  "notificationClaimRewards": {
+    "message": "รับ Rewards",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "รับโทเค็น",
+    "description": ""
+  },
+  "notificationAddFundsTitle": {
+    "message": "ยอดเงินไม่พอ",
+    "description": ""
+  },
+  "notificationAddFundsText": {
+    "message": "บัญชี Brave Rewards ของคุณกำลังรอเงินฝาก",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedTitle": {
+    "message": "มีส่วนร่วมอัตโนมัติ",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedText": {
+    "message": "คุณได้สนับสนุน $amount$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationBackupWalletTitle": {
+    "message": "สำรองข้อมูล Brave Rewards",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "โปรดสำรองข้อมูล Brave Rewards ของคุณ",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "เก็บสำรองเลยตอนนี้",
+    "description": ""
+  },
+  "notificationWalletDisconnectedTitle": {
+    "message": "คุณออกจากระบบแล้ว",
+    "description": ""
+  },
+  "notificationWalletDisconnectedText": {
+    "message": "สิ่งนี้สามารถเกิดขึ้นได้เพื่อรักษาบัญชีของคุณให้ปลอดภัย กรุณาคลิกด้านล่างเพื่อเชื่อมต่อใหม่อีกครั้งตอนนี้",
+    "description": ""
+  },
+  "notificationWalletDisconnectedAction": {
+    "message": "เชื่อมต่ออีกครั้ง",
+    "description": ""
+  },
+  "notificationWalletVerifiedTitle": {
+    "message": "Brave Rewards ของคุณได้รับการยืนยันแล้ว!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Brave Rewards ผ่านการยืนยันสำเร็จกับ $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationTokenGrantTitle": {
+    "message": "มีโทเค็นพร้อมมอบให้!",
+    "description": ""
+  },
+  "notificationAdGrantAmount": {
+    "message": "$month$ Rewards: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
+  },
+  "notificationAdGrantTitle": {
+    "message": "Ad Rewards $month$ ของคุณอยู่นี่แล้ว!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationGrantDaysRemaining": {
+    "message": "คุณมีเวลาเหลืออีก $days$ ในการรับ",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationInsufficientFundsText": {
+    "message": "ไม่สามารถดำเนินการชำระเงินรายเดือนตามกำหนดเวลาของคุณสำหรับการบริจาคอัตโนมัติและการให้ทิปรายเดือนเนื่องจากมีเงินไม่เพียงพอ เราจะลองใหม่ใน 30 วัน",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedText": {
+    "message": "มีปัญหาในการประมวลผลการบริจาคของคุณ",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "การให้ทิปรายเดือนล้มเหลว",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedTitle": {
+    "message": "การสนับสนุนและการให้ทิป",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedText": {
+    "message": "ดำเนินการให้ทิปรายเดือนของคุณเรียบร้อยแล้ว",
+    "description": ""
+  },
+  "notificationPublisherVerifiedTitle": {
+    "message": "การสนับสนุนที่รอดำเนินการ",
+    "description": ""
+  },
+  "notificationPublisherVerifiedText": {
+    "message": "ผู้สร้าง $publisher_name$ เพิ่งได้รับการยืนยัน",
+    "description": "",
+    "placeholders": {
+      "publisher_name": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationPendingTipFailedTitle": {
+    "message": "เงินไม่เพียงพอ",
+    "description": ""
+  },
+  "notificationPendingTipFailedText": {
+    "message": "คุณมีทิปที่รอดำเนินการอยู่เนื่องจากมีเงินในบัญชีไม่พอ",
+    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "รับโทเค็นเพื่อนำไปตอบแทน",
@@ -796,11 +551,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "ยืนยันกระเป๋าเงินของคุณ",
+    "message": "ยืนยัน",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "ในการถอนโทเค็นที่คุณได้รับจากการดูโฆษณา คุณจะต้องยืนยันกระเป๋าเงินของคุณ",
+    "message": "ในการถอน BAT ที่คุณได้รับจากการดูโฆษณา คุณจะต้องยืนยัน Brave Rewards",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -808,7 +563,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "ยืนยันกระเป๋าเงินของฉัน",
+    "message": "ยืนยัน Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -816,7 +571,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "เมื่อยืนยันกระเป๋าเงินของคุณและเชื่อมโยงกับบัญชี bitFlyer คุณจะสามารถจัดเก็บและจัดการโทเค็นที่คุณได้รับผ่าน Brave Rewards ได้ง่ายขึ้น",
+    "message": "เมื่อยืนยัน Brave Rewards ของคุณและเชื่อมโยงกับบัญชี bitFlyer คุณจะสามารถจัดเก็บและจัดการ BAT ที่คุณได้รับผ่าน Brave Rewards ได้ง่ายขึ้น",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {
@@ -831,16 +586,90 @@
       }
     }
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards ในญี่ปุ่นกำลังเปลี่ยนไปใช้ระบบใหม่!",
-    "description": "Header text for BAP deprecation warning message"
+  "captchaMaxAttemptsExceededText": {
+    "message": "ดูเหมือนว่าจะไม่ได้ผล Brave Ads จะยังคงหยุดชั่วคราว กรุณาติดต่อเราหากคุณต้องการความช่วยเหลือเกี่ยวกับ CAPTCHA",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "ดูข้อมูลเพิ่มเติม",
-    "description": "Link to learn more about BAP deprecation"
+  "captchaMaxAttemptsExceededTitle": {
+    "message": "เกินความพยายามสูงสุดแล้ว",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "โปรดใช้ BAP ของคุณภายในวันที่ 13 มีนาคม หลังจากนั้น BAP จะถูกยกเลิก",
-    "description": "Text for BAP deprecation popup"
+  "captchaSolvedTitle": {
+    "message": "แก้ปัญหาสำเร็จแล้ว!",
+    "description": ""
+  },
+  "captchaSolvedText": {
+    "message": "Ads และรายได้จะกลับมาอีกครั้งแล้ว ขอบคุณที่ช่วยเราปกป้อง Brave Rewards และโฆษณาที่รักษาความเป็นส่วนตัว",
+    "description": ""
+  },
+  "captchaContactSupport": {
+    "message": "ติดต่อฝ่ายสนับสนุน",
+    "description": ""
+  },
+  "captchaDismiss": {
+    "message": "ปิด",
+    "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "หากต้องการเริ่มการโทรฟรี ให้เปิดการทำงานของ Brave รีวอร์ด",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "ด้วย Brave รีวอร์ด คุณจะสามารถรับโทเค็นจากการดูโฆษณาแบบส่วนตัว (ข้อมูลของคุณจะปลอดภัย) เปลี่ยนโทเค็นเหล่านั้นเป็นเงินสด บัตรของขวัญ… หรือแม้แต่เป็นทิปให้แก่เว็บไซต์ที่คุณชื่นชอบ โดยไม่มีการติดตาม และไม่ทำให้การทำงานช้าลง",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "เปิดใช้งาน Rewards",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "การดำเนินการต่อจะถือว่าคุณยอมรับ$tos_link_begin$ข้อตกลงในการใช้บริการ$tos_link_end$และ$pp_link_begin$นโยบายความเป็นส่วนตัว$pp_link_end$",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "หากต้องการเริ่มการโทรฟรี ให้เปิดใช้งาน Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "ด้วย Brave Private Ads คุณจะสามารถรับโทเค็นจากการดูโฆษณาแบบส่วนตัว (ข้อมูลของคุณจะปลอดภัย) เปลี่ยนโทเค็นเหล่านั้นเป็นเงินสด บัตรของขวัญ… หรือแม้แต่เป็นทิปให้แก่เว็บไซต์ที่คุณชื่นชอบ โดยไม่มีการติดตาม และไม่ทำให้การทำงานช้าลง",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "เปิดการทำงานของ Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "คุณสามารถเริ่มการโทรฟรีได้เลยตอนนี้",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "คลิกหรือแตะที่ใดก็ได้บนหน้าจอเพื่อดำเนินการต่อใน Brave Talk",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "ต้องการดูข้อมูลเพิ่มเติมเกี่ยวกับ Brave รีวอร์ดใช่ไหม $tour_link_begin$เข้าไปดูการแนะนำสั้นๆ$tour_link_end$",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

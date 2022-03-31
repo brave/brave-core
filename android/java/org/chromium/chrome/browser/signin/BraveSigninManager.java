@@ -14,9 +14,10 @@ import org.chromium.base.Callback;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.browser.AppHooks;
 import org.chromium.chrome.browser.signin.services.SigninManager;
-import org.chromium.components.signin.AccountTrackerService;
+import org.chromium.components.signin.base.CoreAccountId;
 import org.chromium.components.signin.base.CoreAccountInfo;
-import org.chromium.components.signin.identitymanager.AccountInfoService;
+import org.chromium.components.signin.identitymanager.AccountInfoServiceProvider;
+import org.chromium.components.signin.identitymanager.AccountTrackerService;
 import org.chromium.components.signin.identitymanager.IdentityManager;
 import org.chromium.components.signin.identitymanager.IdentityMutator;
 import org.chromium.components.signin.metrics.SigninAccessPoint;
@@ -30,7 +31,7 @@ public class BraveSigninManager implements SigninManager {
     }
 
     @Override
-    public boolean isSignInAllowed() {
+    public boolean isSigninAllowed() {
         return false;
     }
 
@@ -56,22 +57,12 @@ public class BraveSigninManager implements SigninManager {
     public void runAfterOperationInProgress(Runnable runnable) {}
 
     @Override
-    public void signinAndEnableSync(@SigninAccessPoint int accessPoint, CoreAccountInfo accountInfo,
-            @Nullable SignInCallback callback) {}
-
-    @Override
     @Deprecated
     public void signinAndEnableSync(@SigninAccessPoint int accessPoint, Account account,
             @Nullable SignInCallback callback) {}
 
     @Override
-    public void signin(CoreAccountInfo accountInfo, @Nullable SignInCallback callback) {}
-
-    @Override
-    public void removeSignInAllowedObserver(SignInAllowedObserver observer) {}
-
-    @Override
-    public void addSignInAllowedObserver(SignInAllowedObserver observer) {}
+    public void signin(Account account, @Nullable SignInCallback callback) {}
 
     @Override
     public void removeSignInStateObserver(SignInStateObserver observer) {}
@@ -102,16 +93,27 @@ public class BraveSigninManager implements SigninManager {
         return "";
     };
 
+    @Override
+    public void reloadAllAccountsFromSystem(@Nullable CoreAccountId primaryAccountId) {}
+
     @CalledByNative
     static SigninManager create(long nativeSigninManagerAndroid,
             AccountTrackerService accountTrackerService, IdentityManager identityManager,
             IdentityMutator identityMutator) {
-        AccountInfoService.init(identityManager);
+        AccountInfoServiceProvider.init(identityManager, accountTrackerService);
         return new BraveSigninManager(identityManager);
     }
 
     @CalledByNative
     void destroy() {
-        AccountInfoService.get().destroy();
+        AccountInfoServiceProvider.get().destroy();
+    }
+
+    @Override
+    public void wipeSyncUserData(Runnable wipeDataCallback) {}
+
+    @Override
+    public boolean isSyncOptInAllowed() {
+        return false;
     }
 }

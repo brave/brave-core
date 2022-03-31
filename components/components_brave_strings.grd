@@ -35,8 +35,10 @@
       <output filename="components_chromium_strings_zh-HK.pak" type="data_package" lang="zh-HK" />
       <output filename="components_chromium_strings_zu.pak" type="data_package" lang="zu" />
     </if>
-    <if expr="chromeos or lacros">
+    <if expr="chromeos_ash or chromeos_lacros">
+      <output filename="components_chromium_strings_af.pak" type="data_package" lang="af" />
       <output filename="components_chromium_strings_is.pak" type="data_package" lang="is" />
+      <output filename="components_chromium_strings_zu.pak" type="data_package" lang="zu" />
     </if>
     <output filename="components_chromium_strings_am.pak" type="data_package" lang="am" />
     <output filename="components_chromium_strings_ar.pak" type="data_package" lang="ar" />
@@ -287,7 +289,7 @@
       </message>
 
       <message name="IDS_VERSION_UI_LICENSE" desc="The label below the copyright message, containing the URLs.">
-        Brave is made possible by the <ph name="BEGIN_LINK_CHROMIUM">&lt;a target="_blank" rel="noopener noreferrer" href="$1"&gt;</ph>Brave<ph name="END_LINK_CHROMIUM">&lt;/a&gt;</ph> open source project and other <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" rel="noopener noreferrer" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph>.
+        Brave is made possible by the <ph name="BEGIN_LINK_CHROMIUM">&lt;a target="_blank" href="$1"&gt;</ph>Brave<ph name="END_LINK_CHROMIUM">&lt;/a&gt;</ph> open source project and other <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph>.
       </message>
 
       <!-- Page Info -->

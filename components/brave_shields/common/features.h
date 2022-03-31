@@ -12,12 +12,19 @@ struct Feature;
 
 namespace brave_shields {
 namespace features {
+extern const base::Feature kBraveAdblockDefault1pBlocking;
 extern const base::Feature kBraveAdblockCnameUncloaking;
+extern const base::Feature kBraveAdblockCollapseBlockedElements;
+extern const base::Feature kBraveAdblockCookieListDefault;
 extern const base::Feature kBraveAdblockCosmeticFiltering;
-extern const base::Feature kBraveAdblockCosmeticFilteringNative;
 extern const base::Feature kBraveAdblockCspRules;
 extern const base::Feature kBraveDomainBlock;
+extern const base::Feature kBraveDomainBlock1PES;
 extern const base::Feature kBraveExtensionNetworkBlocking;
+extern const base::Feature kBraveDarkModeBlock;
+extern const base::Feature kCosmeticFilteringSyncLoad;
+extern const base::Feature kBraveShieldsPanelV1;
+extern const base::Feature kBraveShieldsPanelV2;
 }  // namespace features
 }  // namespace brave_shields
 

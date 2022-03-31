@@ -15,16 +15,23 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_paths.h"
-#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "net/base/url_util.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/browser/ui/browser.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#endif
 
 namespace {
 
@@ -51,7 +58,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequestForStats(
 
 }  // anonymous namespace
 
-class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
+class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
  public:
   void SetUp() override {
     auto referral_initialized_callback = base::BindRepeating(
@@ -71,7 +78,7 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
         base::Unretained(this));
     brave_stats::BraveStatsUpdater::SetStatsThresholdCallbackForTesting(
         &stats_threshold_callback);
-    InProcessBrowserTest::SetUp();
+    PlatformBrowserTest::SetUp();
   }
 
   void TearDown() override {
@@ -80,7 +87,7 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
     brave_stats::BraveStatsUpdater::SetStatsUpdatedCallbackForTesting(nullptr);
     brave_stats::BraveStatsUpdater::SetStatsThresholdCallbackForTesting(
         nullptr);
-    InProcessBrowserTest::TearDown();
+    PlatformBrowserTest::TearDown();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -100,7 +107,7 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
     env->SetVar("BRAVE_REFERRALS_LOCAL", "1");  // use http for local testing
   }
 
-  std::string GetUpdateURL() const { return update_url_; }
+  GURL GetUpdateURL() const { return update_url_; }
 
   void OnReferralInitialized(const std::string& referral_code) {
     if (wait_for_referral_initialized_loop_) {
@@ -126,10 +133,7 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
     }
 
     on_standard_stats_updated_ = true;
-
-    // We get //1/usage/brave-core here, so ignore the first slash.
-    EXPECT_STREQ(update_url.path().c_str() + 1, "/1/usage/brave-core");
-    update_url_ = update_url.spec();
+    update_url_ = update_url;
   }
 
   void WaitForStandardStatsUpdatedCallback() {
@@ -147,11 +151,7 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
     }
 
     on_threshold_stats_updated_ = true;
-
-    // We get //1/usage/brave-core-threshold here, so ignore the first slash.
-    EXPECT_STREQ(update_url.path().c_str() + 1,
-                 "/1/usage/brave-core-threshold");
-    update_url_ = update_url.spec();
+    update_url_ = update_url;
   }
 
   void WaitForThresholdStatsUpdatedCallback() {
@@ -163,13 +163,17 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
     wait_for_threshold_stats_updated_loop_->Run();
   }
 
+  void DisableStatsUsagePing() {
+    g_browser_process->local_state()->SetBoolean(kStatsReportingEnabled, false);
+  }
+
  private:
   std::unique_ptr<base::RunLoop> wait_for_referral_initialized_loop_;
   std::unique_ptr<base::RunLoop> wait_for_standard_stats_updated_loop_;
   std::unique_ptr<base::RunLoop> wait_for_threshold_stats_updated_loop_;
 
   std::string referral_code_;
-  std::string update_url_;
+  GURL update_url_;
 
   bool on_referral_initialized_ = false;
   bool on_standard_stats_updated_ = false;
@@ -181,6 +185,9 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
                        StatsUpdaterSetsFirstCheckPreference) {
   WaitForReferralInitializeCallback();
   WaitForStandardStatsUpdatedCallback();
+
+  // We get //1/usage/brave-core here, so ignore the first slash.
+  EXPECT_STREQ(GetUpdateURL().path().c_str() + 1, "/1/usage/brave-core");
 
   // First check preference should now be true
   EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
@@ -195,9 +202,33 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   WaitForReferralInitializeCallback();
   WaitForThresholdStatsUpdatedCallback();
 
+  // We get //1/usage/brave-core-threshold here, so ignore the first slash.
+  EXPECT_STREQ(GetUpdateURL().path().c_str() + 1,
+               "/1/usage/brave-core-threshold");
+
   // First check and Threshold check should be set.
   EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
   EXPECT_TRUE(
+      g_browser_process->local_state()->GetBoolean(kThresholdCheckMade));
+}
+
+// The stats updater should not reach the endpoint
+IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
+                       StatsUpdaterUsagePingDisabledFirstCheck) {
+  DisableStatsUsagePing();
+
+  EXPECT_FALSE(
+      g_brave_browser_process->brave_stats_updater()->MaybeDoThresholdPing(3));
+  WaitForReferralInitializeCallback();
+  WaitForStandardStatsUpdatedCallback();
+  WaitForThresholdStatsUpdatedCallback();
+
+  // Dummy URL confirms no request was triggered
+  EXPECT_STREQ(GetUpdateURL().host().c_str(), "no-thanks.invalid");
+
+  // No prefs should be updated
+  EXPECT_FALSE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
+  EXPECT_FALSE(
       g_browser_process->local_state()->GetBoolean(kThresholdCheckMade));
 }
 
@@ -213,7 +244,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
       g_browser_process->local_state()->GetBoolean(kReferralInitialization));
 
   // Verify that update url is valid
-  const GURL update_url(GetUpdateURL());
+  const GURL update_url = GetUpdateURL();
   EXPECT_TRUE(update_url.is_valid());
 
   // Verify that daily parameter is true
@@ -240,7 +271,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
 
   WaitForStandardStatsUpdatedCallback();
   // Verify that update url is valid
-  const GURL update_url(GetUpdateURL());
+  const GURL update_url = GetUpdateURL();
   EXPECT_TRUE(update_url.is_valid());
 
   // Verify that daily parameter is true
@@ -290,7 +321,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterReferralCodeBrowserTest,
       g_browser_process->local_state()->GetBoolean(kReferralInitialization));
 
   // Verify that update url is valid
-  const GURL update_url(GetUpdateURL());
+  const GURL update_url = GetUpdateURL();
   EXPECT_TRUE(update_url.is_valid());
 
   // Verify that daily parameter is true

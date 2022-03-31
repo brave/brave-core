@@ -8,6 +8,6 @@
 
 #define ExternalProcessImporterClient BraveExternalProcessImporterClient
 #define InProcessImporterBridge BraveInProcessImporterBridge
-#include "../../../../../chrome/browser/importer/external_process_importer_host.cc"
+#include "src/chrome/browser/importer/external_process_importer_host.cc"
 #undef ExternalProcessImporterClient
 #undef InProcessImporterBridge

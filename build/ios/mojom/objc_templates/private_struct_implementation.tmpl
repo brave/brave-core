@@ -1,0 +1,69 @@
+
+{%- set cpp_namespace = struct|cpp_namespace_from_kind %}
+{%- set objc_class_name = "%s%s"|format(class_prefix, struct.name) -%}
+@implementation {{objc_class_name}}
+- (instancetype)init
+{
+  if ((self = [super init])) {
+{%- for field in struct.fields %}
+{%-   if field|objc_property_needs_default_assignment %}
+{%-     set name = field.name|objc_property_formatter %}
+{%-     set value = field|objc_property_default %}
+    self.{{name}} = {{value}};
+{%-   endif %}
+{%- endfor %}
+  }
+  return self;
+}
+{% if struct.fields|length %}
+- (instancetype)initWith
+{%-  for field in struct.fields -%}
+{%-   set type = field.kind|objc_wrapper_type -%}
+{%-   set name = field.name|objc_property_formatter -%}
+{{field.name|under_to_camel(lower_initial=not loop.first)}}:({{type}}){{name}}
+{%-  if not loop.last %} {% endif %}
+{%-  endfor %}
+{
+  if ((self = [super init])) {
+{%- for field in struct.fields %}
+{%-   set name = field.name|objc_property_formatter %}
+    self.{{name}} = {{name}};
+{%- endfor %}
+  }
+  return self;
+}
+{% endif %}
+- (id)copyWithZone:(nullable NSZone *)zone
+{
+  auto copy = [[{{objc_class_name}} alloc] init];
+{%- for field in struct.fields %}
+{%-   set name = field.name|objc_property_formatter %}
+  copy.{{name}} = self.{{name}};
+{%- endfor %}
+  return copy;
+}
+@end
+
+@implementation {{objc_class_name}} (Private)
+- (instancetype)initWith{{struct.name}}:(const {{cpp_namespace}}::{{struct.name}} &)obj
+{
+  if ((self = [super init])) {
+{%- for field in struct.fields %}
+    self.{{field.name|objc_property_formatter}} = {{field|cpp_to_objc_assign('obj.')}};
+{%- endfor %}
+  }
+  return self;
+}
+- (instancetype)initWith{{struct.name}}Ptr:({{cpp_namespace}}::{{struct.name}}Ptr)obj
+{
+  return [self initWith{{struct.name}}:*obj];
+}
+- ({{cpp_namespace}}::{{struct.name}}Ptr)cppObjPtr
+{
+  auto obj = {{cpp_namespace}}::{{struct.name}}::New();
+{%- for field in struct.fields %}
+  obj->{{field.name}} = {{field|objc_to_cpp_assign('self')}};
+{%- endfor %}
+  return obj;
+}
+@end

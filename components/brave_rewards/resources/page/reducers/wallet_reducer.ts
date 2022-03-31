@@ -42,6 +42,15 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       chrome.send('brave_rewards.recoverWallet', [key])
       break
     }
+    case types.ON_EXTERNAL_WALLET_PROVIDER_LIST: {
+      if (!action.payload.list) {
+        break
+      }
+
+      state = { ...state }
+      state.externalWalletProviderList = action.payload.list
+      break
+    }
     case types.ON_RECOVER_WALLET_DATA: {
       state = { ...state }
       const result = action.payload.result
@@ -101,9 +110,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         .reduce((accumulator: number, item: Rewards.PendingContribution) => {
           return accumulator + item.amount
         }, 0)
-      if (total > 0) {
-        state.firstLoad = false
-      }
       state.pendingContributionTotal = total
       break
     }
@@ -152,9 +158,68 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     case types.ON_EXTERNAL_WALLET: {
       state = { ...state }
 
-      if (action.payload.result === 24) { // on ledger::type::Result::EXPIRED_TOKEN
+      if (action.payload.result === 24) { // type::Result::EXPIRED_TOKEN
         chrome.send('brave_rewards.getExternalWallet')
         break
+      }
+
+      if (action.payload.result === 9) { // type::Result::NOT_FOUND
+        state.ui.modalRedirect = 'kycRequiredModal'
+        break
+      }
+
+      if (action.payload.result === 25) { // type::Result::UPHOLD_BAT_NOT_ALLOWED
+        state.ui.modalRedirect = 'upholdBATNotAllowedModal'
+        break
+      }
+
+      if (action.payload.result === 36) { // type::Result::DEVICE_LIMIT_REACHED
+        state.ui.modalRedirect = 'deviceLimitReachedModal'
+        break
+      }
+
+      if (action.payload.result === 37) { // type::Result::MISMATCHED_PROVIDER_ACCOUNTS
+        state.ui.modalRedirect = 'mismatchedProviderAccountsModal'
+        break
+      }
+
+      if (action.payload.result === 38) { // type::Result::UPHOLD_BLOCKED_USER
+        state.ui.modalRedirect = 'upholdBlockedUserModal'
+        break
+      }
+
+      if (action.payload.result === 39) { // type::Result::UPHOLD_PENDING_USER
+        state.ui.modalRedirect = 'upholdPendingUserModal'
+        break
+      }
+
+      if (action.payload.result === 40) { // type::Result::UPHOLD_RESTRICTED_USER
+        state.ui.modalRedirect = 'upholdRestrictedUserModal'
+        break
+      }
+
+      if (action.payload.result === 41) { // type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE
+        state.ui.modalRedirect = 'walletOwnershipVerificationFailureModal'
+        break
+      }
+
+      if (action.payload.result === 43) { // type::Result::UPHOLD_CUSTOMER_DUE_DILIGENCE_REQUIRED
+        state.ui.modalRedirect = 'upholdCustomerDueDiligenceRequiredModal'
+        break
+      }
+
+      if (action.payload.result === 44) { // type::Result::FLAGGED_WALLET
+        state.ui.modalRedirect = 'flaggedWalletModal'
+        break
+      }
+
+      if (action.payload.result === 45) { // type::Result::REGION_NOT_SUPPORTED
+        state.ui.modalRedirect = 'regionNotSupportedModal'
+        break
+      }
+
+      if (action.payload.result === 0) { // type::Result::LEDGER_OK
+        chrome.send('brave_rewards.fetchBalance')
       }
 
       state.externalWallet = action.payload.wallet
@@ -197,7 +262,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state.monthlyReportIds = action.payload
       break
     }
-    case types.GET_WALLET_PASSPHRASE:	{
+    case types.GET_WALLET_PASSPHRASE: {
       chrome.send('brave_rewards.getWalletPassphrase')
       break
     }

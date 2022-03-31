@@ -6,13 +6,22 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_TYPE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_INCLUDE_BAT_ADS_AD_TYPE_H_
 
+#include <iostream>
 #include <string>
+
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
-class AdType {
+class AdType final {
  public:
-  enum Value { kUndefined, kAdNotification, kNewTabPageAd, kPromotedContentAd };
+  enum Value {
+    kUndefined,
+    kAdNotification,
+    kNewTabPageAd,
+    kPromotedContentAd,
+    kInlineContentAd
+  };
 
   AdType() = default;
 
@@ -21,16 +30,19 @@ class AdType {
       : value_(value) {}
 
   explicit AdType(const std::string& value);
+  explicit AdType(const mojom::AdType value);
 
   Value value() const;
-  operator std::string() const;
+  std::string ToString() const;
 
   bool operator==(const AdType& rhs) const;
   bool operator!=(const AdType& rhs) const;
 
  private:
-  Value value_;
+  Value value_ = kUndefined;
 };
+
+std::ostream& operator<<(std::ostream& os, const AdType& type);
 
 }  // namespace ads
 

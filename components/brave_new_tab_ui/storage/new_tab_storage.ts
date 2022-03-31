@@ -5,13 +5,16 @@
 
 // Utils
 import { debounce } from '../../common/debounce'
+import { loadTimeData } from '../../common/loadTimeData'
 
 export const keyName = 'new-tab-data'
 
 export const defaultState: NewTab.State = {
   initialDataLoaded: false,
-  textDirection: window.loadTimeData.getString('textdirection'),
-  featureFlagBraveNTPSponsoredImagesWallpaper: window.loadTimeData.getBoolean('featureFlagBraveNTPSponsoredImagesWallpaper'),
+  textDirection: loadTimeData.getString('textdirection'),
+  featureFlagBraveNTPSponsoredImagesWallpaper: loadTimeData.getBoolean('featureFlagBraveNTPSponsoredImagesWallpaper'),
+  featureFlagBraveNewsEnabled: loadTimeData.getBoolean('featureFlagBraveNewsEnabled'),
+  featureCustomBackgroundEnabled: loadTimeData.getBoolean('featureCustomBackgroundEnabled'),
   showBackgroundImage: false,
   showStats: false,
   showToday: false,
@@ -21,17 +24,18 @@ export const defaultState: NewTab.State = {
   customLinksEnabled: false,
   customLinksNum: 0,
   showRewards: false,
-  showTogether: false,
+  showBraveTalk: false,
   showBinance: false,
   showGemini: false,
   showBitcoinDotCom: false,
   showCryptoDotCom: false,
   showFTX: false,
+  hideAllWidgets: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
   isBraveTodayOptedIn: false,
   showEmptyPage: false,
-  togetherSupported: false,
+  braveTalkSupported: false,
   geminiSupported: false,
   binanceSupported: false,
   bitcoinDotComSupported: false,
@@ -39,6 +43,7 @@ export const defaultState: NewTab.State = {
   ftxSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
+  showAlternativePrivateSearchEngineToggle: false,
   torCircuitEstablished: false,
   torInitProgress: '',
   isTor: false,
@@ -50,7 +55,9 @@ export const defaultState: NewTab.State = {
     httpsUpgradesStat: 0,
     fingerprintingBlockedStat: 0
   },
-  togetherPromptDismissed: false,
+  braveTalkPromptDismissed: false,
+  braveTalkPromptAutoDismissed: false,
+  braveTalkPromptAllowed: loadTimeData.getBoolean('braveTalkPromptAllowed'),
   rewardsState: {
     adsAccountStatement: {
       nextPaymentDate: 0,
@@ -63,6 +70,7 @@ export const defaultState: NewTab.State = {
       wallets: {}
     },
     dismissedNotifications: [],
+    rewardsEnabled: false,
     enabledAds: false,
     adsSupported: false,
     promotions: [],
@@ -75,7 +83,6 @@ export const defaultState: NewTab.State = {
   currentStackWidget: '',
   removedStackWidgets: [],
   // Order is ascending, with last entry being in the foreground
-  savedWidgetStackOrder: [],
   widgetStackOrder: ['ftx', 'cryptoDotCom', 'binance', 'gemini', 'rewards'],
   binanceState: {
     userTLD: 'com',
@@ -133,8 +140,8 @@ export const defaultState: NewTab.State = {
 }
 
 if (chrome.extension.inIncognitoContext) {
-  defaultState.isTor = window.loadTimeData.getBoolean('isTor')
-  defaultState.isQwant = window.loadTimeData.getBoolean('isQwant')
+  defaultState.isTor = loadTimeData.getBoolean('isTor')
+  defaultState.isQwant = loadTimeData.getBoolean('isQwant')
 }
 
 // For users upgrading to the new list based widget stack state,
@@ -210,8 +217,8 @@ export const replaceStackWidgets = (state: NewTab.State) => {
   const {
     showBinance,
     showRewards,
-    showTogether,
-    togetherSupported,
+    showBraveTalk,
+    braveTalkSupported,
     binanceSupported
   } = state
   const displayLookup = {
@@ -221,8 +228,8 @@ export const replaceStackWidgets = (state: NewTab.State) => {
     'binance': {
       display: binanceSupported && showBinance
     },
-    'together': {
-      display: togetherSupported && showTogether
+    'braveTalk': {
+      display: braveTalkSupported && showBraveTalk
     }
   }
   for (const key in displayLookup) {
@@ -279,9 +286,13 @@ export const load = (): NewTab.State => {
 
 export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
   if (data) {
+    // TODO(petemill): This should be of type NewTab.PersistantState, and first
+    // fix errors related to properties which shouldn't be defined as persistant
+    // (or are obsolete).
     const dataToSave = {
-      togetherSupported: data.togetherSupported,
-      togetherPromptDismissed: data.togetherPromptDismissed,
+      braveTalkSupported: data.braveTalkSupported,
+      braveTalkPromptDismissed: data.braveTalkPromptDismissed,
+      braveTalkPromptAutoDismissed: data.braveTalkPromptAutoDismissed,
       binanceSupported: data.binanceSupported,
       geminiSupported: data.geminiSupported,
       bitcoinDotComSupported: data.bitcoinDotComSupported,
@@ -291,8 +302,7 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
       cryptoDotComState: data.cryptoDotComState,
       ftxState: data.ftxState,
       removedStackWidgets: data.removedStackWidgets,
-      widgetStackOrder: data.widgetStackOrder,
-      savedWidgetStackOrder: data.savedWidgetStackOrder
+      widgetStackOrder: data.widgetStackOrder
     }
     window.localStorage.setItem(keyName, JSON.stringify(dataToSave))
   }

@@ -1,0 +1,48 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+
+source_set("core_data_models") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  sources = [
+    "ActivityInfo.h",
+    "ActivityInfo.m",
+    "ContributionInfo.h",
+    "ContributionInfo.m",
+    "ContributionPublisher.h",
+    "ContributionPublisher.m",
+    "ContributionQueue.h",
+    "ContributionQueue.m",
+    "CoreDataModels.h",
+    "MediaPublisherInfo.h",
+    "MediaPublisherInfo.m",
+    "PendingContribution.h",
+    "PendingContribution.m",
+    "Promotion.h",
+    "Promotion.m",
+    "PromotionCredentials.h",
+    "PromotionCredentials.m",
+    "PublisherInfo.h",
+    "PublisherInfo.m",
+    "RecurringDonation.h",
+    "RecurringDonation.m",
+    "ServerPublisherAmount.h",
+    "ServerPublisherAmount.m",
+    "ServerPublisherBanner.h",
+    "ServerPublisherBanner.m",
+    "ServerPublisherInfo.h",
+    "ServerPublisherInfo.m",
+    "ServerPublisherLink.h",
+    "ServerPublisherLink.m",
+    "UnblindedToken.h",
+    "UnblindedToken.m",
+  ]
+  frameworks = [
+    "Foundation.framework",
+    "CoreData.framework",
+  ]
+}

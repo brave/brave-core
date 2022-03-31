@@ -6,6 +6,7 @@
 #include "chrome/common/url_constants.h"
 
 #include "build/branding_buildflags.h"
+#include "build/build_config.h"
 #include "chrome/common/webui_url_constants.h"
 
 namespace chrome {
@@ -29,15 +30,14 @@ const char kCastCloudServicesHelpURL[] =
 const char kCastNoDestinationFoundURL[] =
     "https://support.brave.com/";
 
-const char kChooserBluetoothOverviewURL[] =
-    "https://support.brave.com/";
+const char kChooserHidOverviewUrl[] =
+    "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
 
-const char kChooserHidOverviewUrl[] = "https://support.brave.com/";
-
-const char kChooserSerialOverviewUrl[] = "https://support.brave.com/";
+const char kChooserSerialOverviewUrl[] =
+    "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
 
 const char kChooserUsbOverviewURL[] =
-    "https://support.brave.com/";
+    "https://github.com/brave/brave-browser/wiki/Web-API-Permissions";
 
 const char kChromeBetaForumURL[] =
     "https://community.brave.com/c/beta-builds";
@@ -62,7 +62,7 @@ const char kChromeSearchMostVisitedHost[] = "most-visited";
 const char kChromeSearchMostVisitedUrl[] = "chrome-search://most-visited/";
 
 const char kChromeUIUntrustedNewTabPageBackgroundUrl[] =
-    "chrome-untrusted://background.jpg";
+    "chrome-untrusted://new-tab-page/background.jpg";
 const char kChromeUIUntrustedNewTabPageBackgroundFilename[] = "background.jpg";
 
 const char kChromeSearchRemoteNtpHost[] = "remote-ntp";
@@ -118,9 +118,14 @@ const char kFlashDeprecationLearnMoreURL[] =
 const char kGoogleAccountActivityControlsURL[] =
     "https://support.brave.com/";
 
+const char kGoogleAccountActivityControlsURLInPrivacyGuide[] =
+    "https://support.brave.com/";
+
 const char kGoogleAccountURL[] = "https://support.brave.com/";
 
 const char kGoogleAccountChooserURL[] = "https://support.brave.com/";
+
+const char kGoogleAccountDeviceActivityURL[] = "https://support.brave.com/";
 
 const char kGooglePasswordManagerURL[] = "https://support.brave.com";
 
@@ -174,6 +179,10 @@ const char kSafeBrowsingHelpCenterURL[] =
 
 const char kSafetyTipHelpCenterURL[] =
     "https://support.brave.com/";
+
+const char kSearchHistoryUrlInClearBrowsingData[] =
+    "https://support.brave.com/";
+
 const char kSeeMoreSecurityTipsURL[] =
     "https://support.brave.com/";
 
@@ -195,6 +204,12 @@ const char kSyncGoogleDashboardURL[] =
 const char kSyncLearnMoreURL[] =
     "https://support.brave.com/";
 
+#if !BUILDFLAG(IS_ANDROID)
+const char kSyncTrustedVaultOptInURL[] = "https://support.brave.com/";
+#endif
+
+const char kSyncTrustedVaultLearnMoreURL[] = "https://support.brave.com/";
+
 const char kUpgradeHelpCenterBaseURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360025390311-How-do-I-download-and-install-Brave-";
@@ -205,13 +220,13 @@ const char kWhoIsMyAdministratorHelpURL[] =
 const char kCwsEnhancedSafeBrowsingLearnMoreURL[] =
     "https://support.brave.com/";
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 const char kEnhancedPlaybackNotificationLearnMoreURL[] =
 // Keep in sync with chrome/android/java/strings/android_chrome_strings.grd
     "https://community.brave.com";
 #endif
 
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
 const char kChromeEnterpriseSignInLearnMoreURL[] =
     "https://support.brave.com/";
 
@@ -220,7 +235,7 @@ const char kMac10_10_ObsoleteURL[] =
     "360025390311-How-do-I-download-and-install-Brave-";
 #endif
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const char kChromeCleanerLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017884152-How-do-I-remove-unwanted-ads-pop-ups-malware-";

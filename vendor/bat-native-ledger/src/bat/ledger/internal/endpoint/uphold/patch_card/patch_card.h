@@ -1,14 +1,13 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_UPHOLD_PATCH_CARD_PATCH_CARD_H_
-#define BRAVELEDGER_ENDPOINT_UPHOLD_PATCH_CARD_PATCH_CARD_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_PATCH_CARD_PATCH_CARD_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_PATCH_CARD_PATCH_CARD_H_
 
 #include <string>
 
-#include "bat/ledger/internal/uphold/uphold_card.h"
 #include "bat/ledger/ledger.h"
 
 // PATCH https://api.uphold.com/v0/me/cards/{wallet_address}
@@ -93,22 +92,18 @@ class PatchCard {
   explicit PatchCard(LedgerImpl* ledger);
   ~PatchCard();
 
-  void Request(
-      const std::string& token,
-      const std::string& address,
-      const ::ledger::uphold::UpdateCard& card,
-      PatchCardCallback callback);
+  void Request(const std::string& token,
+               const std::string& address,
+               PatchCardCallback callback);
 
  private:
   std::string GetUrl(const std::string& address);
 
-  std::string GeneratePayload(const ::ledger::uphold::UpdateCard& card);
+  std::string GeneratePayload();
 
   type::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(
-      const type::UrlResponse& response,
-      PatchCardCallback callback);
+  void OnRequest(const type::UrlResponse& response, PatchCardCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
@@ -117,4 +112,4 @@ class PatchCard {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_UPHOLD_PATCH_CARD_PATCH_CARD_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_UPHOLD_PATCH_CARD_PATCH_CARD_H_

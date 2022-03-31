@@ -78,7 +78,7 @@ type::Result PostOauth::ParseBody(const std::string& body,
   DCHECK(address);
   DCHECK(linking_info);
 
-  base::Optional<base::Value> value = base::JSONReader::Read(body);
+  absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return type::Result::LEDGER_ERROR;

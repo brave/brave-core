@@ -3,13 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <tuple>
+
+#include "base/callback_helpers.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
-#include "base/single_thread_task_runner.h"
 #include "base/task/post_task.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -32,11 +35,13 @@
 #include "components/browsing_data/core/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browsing_data_remover.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "url/url_constants.h"
 
 using content::BraveClearBrowsingData;
 using content::WebContents;
@@ -54,6 +59,9 @@ class BrowserChangeObserver : public BrowserListObserver {
       : browser_(browser), type_(type) {
     BrowserList::AddObserver(this);
   }
+
+  BrowserChangeObserver(const BrowserChangeObserver&) = delete;
+  BrowserChangeObserver& operator=(const BrowserChangeObserver&) = delete;
 
   ~BrowserChangeObserver() override { BrowserList::RemoveObserver(this); }
 
@@ -81,11 +89,9 @@ class BrowserChangeObserver : public BrowserListObserver {
   }
 
  private:
-  Browser* browser_;
+  raw_ptr<Browser> browser_ = nullptr;
   ChangeType type_;
   base::RunLoop run_loop_;
-
-  DISALLOW_COPY_AND_ASSIGN(BrowserChangeObserver);
 };
 
 }  // namespace
@@ -95,6 +101,9 @@ class BraveClearDataOnExitTest
       public BraveClearBrowsingData::OnExitTestingCallback {
  public:
   BraveClearDataOnExitTest() = default;
+  BraveClearDataOnExitTest(const BraveClearDataOnExitTest&) = delete;
+  BraveClearDataOnExitTest& operator=(const BraveClearDataOnExitTest&) = delete;
+
   void SetUpOnMainThread() override {
     BraveClearBrowsingData::SetOnExitTestingCallback(this);
   }
@@ -185,8 +194,6 @@ class BraveClearDataOnExitTest
   int expected_remove_data_call_count_ = 0;
   int expected_remove_mask_ = -1;
   int expected_origin_mask_ = -1;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveClearDataOnExitTest);
 };
 
 IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTest, NoPrefsSet) {
@@ -217,6 +224,11 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
     browsers_count_ = 2u;
   }
 
+  BraveClearDataOnExitTwoBrowsersTest(
+      const BraveClearDataOnExitTwoBrowsersTest&) = delete;
+  BraveClearDataOnExitTwoBrowsersTest& operator=(
+      const BraveClearDataOnExitTwoBrowsersTest&) = delete;
+
  protected:
   // Open a new browser window with the provided |profile|.
   Browser* NewBrowserWindow(Profile* profile) {
@@ -235,7 +247,7 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
   Browser* NewGuestBrowserWindow() {
     BrowserChangeObserver bco(nullptr,
                               BrowserChangeObserver::ChangeType::kAdded);
-    profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
+    profiles::SwitchToGuestProfile(base::DoNothing());
     Browser* browser = bco.Wait();
     DCHECK(browser);
     // When a guest |browser| closes a BrowsingDataRemover will be created and
@@ -247,7 +259,8 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
     search_test_utils::WaitForTemplateURLServiceToLoad(
         TemplateURLServiceFactory::GetForProfile(guest));
     // Navigate to about:blank.
-    ui_test_utils::NavigateToURL(browser, GURL(url::kAboutBlankURL));
+    EXPECT_TRUE(
+        ui_test_utils::NavigateToURL(browser, GURL(url::kAboutBlankURL)));
     return browser;
   }
 
@@ -258,7 +271,7 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
     path = path.AppendASCII("Profile 2");
     base::ScopedAllowBlockingForTesting allow_blocking;
     // Clean up profile directory when the test is done.
-    ignore_result(profile2_dir_.Set(path));
+    std::ignore = profile2_dir_.Set(path);
     ProfileManager* profile_manager = g_browser_process->profile_manager();
     size_t starting_number_of_profiles = profile_manager->GetNumberOfProfiles();
     if (!base::PathExists(path) && !base::CreateDirectory(path))
@@ -291,8 +304,6 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
 
  private:
   base::ScopedTempDir profile2_dir_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveClearDataOnExitTwoBrowsersTest);
 };
 
 IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, SameProfile) {
@@ -318,8 +329,8 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, OneOTR) {
   SetExepectedRemoveDataCallCount(1);
 
   // Open a second browser window with OTR profile.
-  Browser* second_window =
-      NewBrowserWindow(browser()->profile()->GetPrimaryOTRProfile());
+  Browser* second_window = NewBrowserWindow(
+      browser()->profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true));
   // Close second browser window
   CloseBrowserWindow(second_window);
   EXPECT_EQ(0, remove_data_call_count());
@@ -335,8 +346,8 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, OneOTRExitsLast) {
   SetExepectedRemoveDataCallCount(1);
 
   // Open a second browser window with OTR profile.
-  Browser* second_window =
-      NewBrowserWindow(browser()->profile()->GetPrimaryOTRProfile());
+  Browser* second_window = NewBrowserWindow(
+      browser()->profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true));
 
   // Close regular profile window.
   CloseBrowserWindow(browser());

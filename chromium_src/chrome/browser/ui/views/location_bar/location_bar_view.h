@@ -14,7 +14,7 @@
   virtual std::vector<views::View*> GetTrailingViews();
 
 #define GetBorderRadius virtual GetBorderRadius
-#include "../../../../../../../chrome/browser/ui/views/location_bar/location_bar_view.h"
+#include "src/chrome/browser/ui/views/location_bar/location_bar_view.h"
 #undef GetBorderRadius
 #undef BRAVE_LOCATION_BAR_VIEW_H_
 

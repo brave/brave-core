@@ -1,0 +1,19 @@
+<html>
+<head>
+</head>
+<body>
+<p><form id="form" method="post" action="">
+<input type="submit">
+</form></p>
+<p>Waiting for JS form submission...</p>
+<script>
+function redirectToDestination() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const url = urlParams.get('url');
+    let form = document.getElementById("form");
+    form.action = atob(url);
+    form.submit();
+}
+setTimeout(redirectToDestination, 100);
+</script>
+</html>

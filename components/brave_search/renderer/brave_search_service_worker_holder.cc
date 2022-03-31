@@ -9,35 +9,20 @@
 #include <utility>
 
 #include "base/no_destructor.h"
-#include "brave/components/brave_search/renderer/brave_search_js_handler.h"
+#include "brave/components/brave_search/common/brave_search_utils.h"
+#include "brave/components/brave_search/renderer/brave_search_fallback_js_handler.h"
 #include "url/gurl.h"
-
-namespace {
-
-static base::NoDestructor<std::vector<std::string>> g_vetted_hosts(
-    {"search.brave.com", "search-dev.brave.com", "search-dev-local.brave.com",
-     "search.brave.software", "search.bravesoftware.com"});
-
-bool IsAllowedHost(const GURL& url) {
-  std::string host = url.host();
-  for (size_t i = 0; i < g_vetted_hosts->size(); i++) {
-    if ((*g_vetted_hosts)[i] == host)
-      return true;
-  }
-
-  return false;
-}
-
-}  // namespace
 
 namespace brave_search {
 
-using JSHandlersVector = std::vector<std::unique_ptr<BraveSearchJSHandler>>;
+using JSHandlersVector =
+    std::vector<std::unique_ptr<BraveSearchFallbackJSHandler>>;
 
 JSHandlersVector::iterator FindContext(JSHandlersVector* contexts,
                                        v8::Local<v8::Context> v8_context) {
   auto context_matches =
-      [&v8_context](const std::unique_ptr<BraveSearchJSHandler>& context) {
+      [&v8_context](
+          const std::unique_ptr<BraveSearchFallbackJSHandler>& context) {
         v8::HandleScope handle_scope(context->GetIsolate());
         v8::Context::Scope context_scope(context->Context());
 
@@ -69,8 +54,8 @@ void BraveSearchServiceWorkerHolder::WillEvaluateServiceWorkerOnWorkerThread(
       !IsAllowedHost(service_worker_scope))
     return;
 
-  std::unique_ptr<BraveSearchJSHandler> js_handler(
-      new BraveSearchJSHandler(v8_context, broker_));
+  std::unique_ptr<BraveSearchFallbackJSHandler> js_handler(
+      new BraveSearchFallbackJSHandler(v8_context, broker_));
   js_handler->AddJavaScriptObject();
 
   JSHandlersVector* js_handlers = js_handlers_tls_.Get();

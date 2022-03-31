@@ -12,14 +12,16 @@ interface BatLedgerService {
          pending_associated_receiver<BatLedger> database) => ();
   SetEnvironment(ledger.mojom.Environment environment);
   SetDebug(bool isDebug);
-  SetReconcileInterval(int32 time);
-  SetShortRetries(bool short_retries);
+  SetGeminiRetries(int32 retries);
+  SetReconcileInterval(int32 interval);
+  SetRetryInterval(int32 interval);
   SetTesting();
 
   GetEnvironment() => (ledger.mojom.Environment environment);
   GetDebug() => (bool debug);
+  GetGeminiRetries() => (int32 retries);
   GetReconcileInterval() => (int32 interval);
-  GetShortRetries() => (bool short_retries);
+  GetRetryInterval() => (int32 retry_interval);
 };
 
 interface BatLedger {
@@ -182,23 +184,30 @@ interface BatLedgerClient {
 
   [Sync]
   GetBooleanState(string name) => (bool value);
-  SetBooleanState(string name, bool value);
+  [Sync]
+  SetBooleanState(string name, bool value) => ();
   [Sync]
   GetIntegerState(string name) => (int32 value);
-  SetIntegerState(string name, int32 value);
+  [Sync]
+  SetIntegerState(string name, int32 value) => ();
   [Sync]
   GetDoubleState(string name) => (double value);
-  SetDoubleState(string name, double value);
+  [Sync]
+  SetDoubleState(string name, double value) => ();
   [Sync]
   GetStringState(string name) => (string value);
-  SetStringState(string name, string value);
+  [Sync]
+  SetStringState(string name, string value) => ();
   [Sync]
   GetInt64State(string name) => (int64 value);
-  SetInt64State(string name, int64 value);
+  [Sync]
+  SetInt64State(string name, int64 value) => ();
   [Sync]
   GetUint64State(string name) => (uint64 value);
-  SetUint64State(string name, uint64 value);
-  ClearState(string name);
+  [Sync]
+  SetUint64State(string name, uint64 value) => ();
+  [Sync]
+  ClearState(string name) => ();
 
   [Sync]
   GetBooleanOption(string name) => (bool value);
@@ -242,8 +251,8 @@ interface BatLedgerClient {
   DeleteLog() => (ledger.mojom.Result result);
 
   [Sync]
-  SetEncryptedStringState(string name, string value) => (bool success);
+  EncryptString(string value) => (string? encrypted);
 
   [Sync]
-  GetEncryptedStringState(string name) => (string value);
+  DecryptString(string value) => (string? decrypted);
 };

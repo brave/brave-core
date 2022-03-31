@@ -1,9 +1,7 @@
 import styled from 'styled-components'
-import Swap from '../assets/swap.svg'
-import {
-  VerifiedSIcon,
-  CaratCircleODownIcon
-} from 'brave-ui/components/icons'
+import CheckMark from '../../../assets/svg-icons/big-checkmark.svg'
+import SwitchDown from '../../../assets/svg-icons/switch-icon.svg'
+import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
   panelBackground: string
@@ -21,23 +19,28 @@ export const StyledWrapper = styled.div<Partial<StyleProps>>`
 `
 
 export const CenterColumn = styled.div`
-  flex: 1;
   display: flex;
   width: 100%;
+  flex: 1;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0px 28px;
+  padding: 12px 0px 20px;
   max-width: 300px;
 `
 
-export const AccountCircle = styled.div<Partial<StyleProps>>`
+export const AccountCircle = styled(WalletButton) <Partial<StyleProps>>`
+  display: flex;
+  cursor: pointer;
   width: 54px;
   height: 54px;
   border-radius: 100%;
   background-image: url(${(p) => p.orb});
   background-size: cover;
   border: 2px solid white;
+  position: relative;
+  box-sizing: border-box;
+  margin-bottom: 6px;
 `
 
 export const AccountNameText = styled.span`
@@ -49,13 +52,17 @@ export const AccountNameText = styled.span`
   color: ${(p) => p.theme.palette.white};
 `
 
-export const AccountAddressText = styled.span`
+export const AccountAddressText = styled(WalletButton)`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.palette.white};
   font-weight: 300;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
 `
 
 export const BalanceColumn = styled.div`
@@ -73,6 +80,7 @@ export const AssetBalanceText = styled.span`
   letter-spacing: 0.02em;
   color: ${(p) => p.theme.palette.white};
   font-weight: 600;
+  height: 36px;
 `
 
 export const FiatBalanceText = styled.span`
@@ -82,13 +90,7 @@ export const FiatBalanceText = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.palette.white};
   font-weight: 300;
-`
-
-export const ConnectedIcon = styled(VerifiedSIcon)`
-  width: 14px;
-  height: 14px;
-  margin-right: 8px;
-  color: ${(p) => p.theme.palette.white};
+  height: 20px;
 `
 
 export const NotConnectedIcon = styled.div`
@@ -99,32 +101,20 @@ export const NotConnectedIcon = styled.div`
   border: 1px solid rgba(255,255,255,0.5);
 `
 
-export const CaratDownIcon = styled(CaratCircleODownIcon)`
-  width: 14px;
-  height: 14px;
-  margin-left: 8px;
-`
-
-export const SwapIcon = styled.div`
-  width: 14px;
-  height: 11.67px;
-  background: url(${Swap});
-`
-
-// Will use brave-ui button comp in the future!
-// Currently is missing "tiny" variant
-export const OvalButton = styled.button`
-  display: flex;;
+export const OvalButton = styled(WalletButton)`
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   outline: none;
   background: none;
   border-radius: 48px;
-  padding: 3px 14px;
+  padding: 3px 10px;
   border: 1px solid rgba(255,255,255,0.5);
-  fontSize: 14px;
   color: ${(p) => p.theme.palette.white};
+  &:disabled {
+    cursor: default;
+  }
 `
 
 export const OvalButtonText = styled.span`
@@ -143,4 +133,35 @@ export const StatusRow = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0px 12px;
+`
+
+export const BigCheckMark = styled.div`
+  width: 14px;
+  height: 14px;
+  background-color: ${(p) => p.theme.palette.white};
+  -webkit-mask-image: url(${CheckMark});
+  mask-image: url(${CheckMark});
+  margin-right: 8px;
+`
+
+export const SwitchIcon = styled.div`
+  width: 14px;
+  height: 14px;
+  background: url(${SwitchDown});
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  z-index: 10;
+`
+
+export const MoreAssetsButton = styled(WalletButton)`
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.palette.white};
 `

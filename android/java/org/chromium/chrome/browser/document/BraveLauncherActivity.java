@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.document;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -17,6 +18,7 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
  */
 public class BraveLauncherActivity extends Activity {
     @Override
+    @SuppressLint("VisibleForTests")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

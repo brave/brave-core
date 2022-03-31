@@ -34,7 +34,8 @@ class BraveNewTabTest : public testing::Test {
 
 TEST_F(BraveNewTabTest, BasicTest) {
   Profile* profile = manager()->CreateTestingProfile("Test 1");
-  Profile* otr_profile = profile->GetPrimaryOTRProfile();
+  Profile* otr_profile =
+      profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
   ASSERT_TRUE(profile);
   ASSERT_TRUE(otr_profile);
 

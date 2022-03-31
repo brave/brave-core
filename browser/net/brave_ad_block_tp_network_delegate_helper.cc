@@ -12,6 +12,8 @@
 
 #include "base/base64url.h"
 #include "base/feature_list.h"
+#include "base/metrics/histogram_macros.h"
+#include "base/no_destructor.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -22,8 +24,12 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/net/proxy_service_factory.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/system_network_context_manager.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
+#include "components/proxy_config/pref_proxy_config_tracker.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
@@ -32,12 +38,25 @@
 #include "content/public/common/url_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "net/proxy_resolution/proxy_config.h"
+#include "net/proxy_resolution/proxy_config_service.h"
+#include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "services/network/host_resolver.h"
 #include "services/network/network_context.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/url_canon.h"
 
 namespace brave {
+
+namespace {
+
+const std::string& GetCanonicalName(
+    const std::vector<std::string>& dns_aliases) {
+  return dns_aliases.size() >= 1 ? dns_aliases.front() : base::EmptyString();
+}
+
+}  // namespace
 
 network::HostResolver* g_testing_host_resolver;
 
@@ -58,12 +77,12 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
                     const ResponseCallback& next_callback,
                     std::shared_ptr<BraveRequestInfo> ctx,
                     EngineFlags previous_result,
-                    base::Optional<std::string> cname);
+                    absl::optional<std::string> cname);
 
 class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
  private:
   mojo::Receiver<network::mojom::ResolveHostClient> receiver_{this};
-  base::OnceCallback<void(base::Optional<std::string>)> cb_;
+  base::OnceCallback<void(absl::optional<std::string>)> cb_;
   base::TimeTicks start_time_;
 
  public:
@@ -103,13 +122,13 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
       if (!web_contents) {
         start_time_ = base::TimeTicks::Now();
         this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(),
-                         base::nullopt);
+                         absl::nullopt);
         return;
       }
 
       network::mojom::NetworkContext* network_context =
-          content::BrowserContext::GetDefaultStoragePartition(
-              web_contents->GetBrowserContext())
+          web_contents->GetBrowserContext()
+              ->GetDefaultStoragePartition()
               ->GetNetworkContext();
 
       network_context->ResolveHost(
@@ -120,21 +139,21 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     receiver_.set_disconnect_handler(
         base::BindOnce(&AdblockCnameResolveHostClient::OnComplete,
                        base::Unretained(this), net::ERR_NAME_NOT_RESOLVED,
-                       net::ResolveErrorInfo(net::ERR_FAILED), base::nullopt));
+                       net::ResolveErrorInfo(net::ERR_FAILED), absl::nullopt));
   }
 
   void OnComplete(
       int32_t result,
       const net::ResolveErrorInfo& resolve_error_info,
-      const base::Optional<net::AddressList>& resolved_addresses) override {
+      const absl::optional<net::AddressList>& resolved_addresses) override {
     UMA_HISTOGRAM_TIMES("Brave.ShieldsCNAMEBlocking.TotalResolutionTime",
                         base::TimeTicks::Now() - start_time_);
     if (result == net::OK && resolved_addresses) {
       DCHECK(resolved_addresses.has_value() && !resolved_addresses->empty());
-      std::move(cb_).Run(
-          base::Optional<std::string>(resolved_addresses->GetCanonicalName()));
+      std::move(cb_).Run(absl::optional<std::string>(
+          GetCanonicalName(resolved_addresses.value().dns_aliases())));
     } else {
-      std::move(cb_).Run(base::nullopt);
+      std::move(cb_).Run(absl::nullopt);
     }
 
     delete this;
@@ -157,7 +176,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 EngineFlags ShouldBlockRequestOnTaskRunner(
     std::shared_ptr<BraveRequestInfo> ctx,
     EngineFlags previous_result,
-    base::Optional<GURL> canonical_url) {
+    absl::optional<GURL> canonical_url) {
   if (!ctx->initiator_url.is_valid()) {
     return previous_result;
   }
@@ -170,8 +189,15 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
     url_to_check = ctx->request_url;
   }
 
+  bool force_aggressive = SameDomainOrHost(
+      ctx->initiator_url,
+      url::Origin::CreateFromNormalizedTuple("https", "youtube.com", 80),
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+
+  SCOPED_UMA_HISTOGRAM_TIMER("Brave.Adblock.ShouldBlockRequest");
   g_brave_browser_process->ad_block_service()->ShouldStartRequest(
       url_to_check, ctx->resource_type, source_host,
+      ctx->aggressive_blocking || force_aggressive,
       &previous_result.did_match_rule, &previous_result.did_match_exception,
       &previous_result.did_match_important, &ctx->mock_data_url);
 
@@ -207,12 +233,12 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
                     const ResponseCallback& next_callback,
                     std::shared_ptr<BraveRequestInfo> ctx,
                     EngineFlags previous_result,
-                    base::Optional<std::string> cname) {
+                    absl::optional<std::string> cname) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (cname.has_value() && ctx->request_url.host() != *cname &&
       !cname->empty()) {
-    GURL::Replacements replacements;
+    url::Replacements<char> replacements;
     replacements.SetHost(cname->c_str(),
                          url::Component(0, static_cast<int>(cname->length())));
     const GURL canonical_url = ctx->request_url.ReplaceComponents(replacements);
@@ -220,12 +246,65 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
     task_runner->PostTaskAndReplyWithResult(
         FROM_HERE,
         base::BindOnce(&ShouldBlockRequestOnTaskRunner, ctx, previous_result,
-                       base::make_optional<GURL>(canonical_url)),
+                       absl::make_optional<GURL>(canonical_url)),
         base::BindOnce(&OnShouldBlockRequestResult, false, task_runner,
                        next_callback, ctx));
   } else {
     next_callback.Run();
   }
+}
+
+// If only particular types of network traffic are being proxied, or if no
+// proxy is configured, it should be safe to continue making unproxied DNS
+// queries. However, in SingleProxy mode all types of network traffic should go
+// through the proxy, so additional DNS queries should be avoided. Also, in the
+// case of per-scheme proxy configurations, a fallback for any non-matching
+// request can be configured, in which case additional DNS queries should be
+// avoided as well.
+//
+// For some reason, when DoH is enabled alongside a system HTTPS proxy, the
+// CNAME queries here are also not proxied. So uncloaking is disabled in that
+// case as well.
+bool ProxySettingsAllowUncloaking(content::BrowserContext* browser_context,
+                                  bool doh_enabled) {
+  DCHECK(browser_context);
+
+  bool can_uncloak = true;
+
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+
+  std::unique_ptr<PrefProxyConfigTracker> config_tracker =
+      ProxyServiceFactory::CreatePrefProxyConfigTrackerOfProfile(
+          profile->GetPrefs(), nullptr);
+  std::unique_ptr<net::ProxyConfigService> proxy_config_service =
+      ProxyServiceFactory::CreateProxyConfigService(config_tracker.get(),
+                                                    profile);
+
+  net::ProxyConfigWithAnnotation config;
+  net::ProxyConfigService::ConfigAvailability availability =
+      proxy_config_service->GetLatestProxyConfig(&config);
+
+  if (availability ==
+      net::ProxyConfigService::ConfigAvailability::CONFIG_VALID) {
+    // PROXY_LIST corresponds to SingleProxy mode.
+    if (config.value().proxy_rules().type ==
+            net::ProxyConfig::ProxyRules::Type::PROXY_LIST ||
+        (config.value().proxy_rules().type ==
+             net::ProxyConfig::ProxyRules::Type::PROXY_LIST_PER_SCHEME &&
+         !config.value().proxy_rules().fallback_proxies.IsEmpty())) {
+      can_uncloak = false;
+    }
+
+    if (config.value().proxy_rules().type ==
+            net::ProxyConfig::ProxyRules::Type::PROXY_LIST_PER_SCHEME &&
+        !config.value().proxy_rules().proxies_for_https.IsEmpty()) {
+      can_uncloak = false;
+    }
+  }
+
+  config_tracker->DetachFromPrefService();
+
+  return can_uncloak;
 }
 
 void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
@@ -238,17 +317,38 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
   scoped_refptr<base::SequencedTaskRunner> task_runner =
       g_brave_browser_process->ad_block_service()->GetTaskRunner();
 
+  SecureDnsConfig secure_dns_config =
+      SystemNetworkContextManager::GetStubResolverConfigReader()
+          ->GetSecureDnsConfiguration(false);
+
+  bool doh_enabled = (secure_dns_config.mode() == net::SecureDnsMode::kSecure);
+
   // DoH or standard DNS queries won't be routed through Tor, so we need to
   // skip it.
+  // Also, skip CNAME uncloaking if there is currently a configured proxy.
   bool should_check_uncloaked =
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockCnameUncloaking) &&
-      ctx->browser_context && !ctx->browser_context->IsTor();
+      ctx->browser_context && !ctx->browser_context->IsTor() &&
+      ProxySettingsAllowUncloaking(ctx->browser_context, doh_enabled);
+
+  // When default 1p blocking is disabled, first-party requests should not be
+  // CNAME uncloaked unless using aggressive blocking mode.
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveAdblockDefault1pBlocking) &&
+      should_check_uncloaked && !ctx->aggressive_blocking &&
+      SameDomainOrHost(
+          ctx->request_url,
+          url::Origin::CreateFromNormalizedTuple("https",
+                                                 ctx->initiator_url.host(), 80),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    should_check_uncloaked = false;
+  }
 
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&ShouldBlockRequestOnTaskRunner, ctx, EngineFlags(),
-                     base::nullopt),
+                     absl::nullopt),
       base::BindOnce(&OnShouldBlockRequestResult, should_check_uncloaked,
                      task_runner, next_callback, ctx));
 }
@@ -258,10 +358,16 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
   if (ctx->request_url.is_empty() ||
-      ctx->request_url.SchemeIs(content::kChromeDevToolsScheme) ||
       ctx->initiator_url.is_empty() || !ctx->initiator_url.has_host() ||
       !ctx->allow_brave_shields || ctx->allow_ads ||
       ctx->resource_type == BraveRequestInfo::kInvalidResourceType) {
+    return net::OK;
+  }
+
+  // Filter out unnecessary request schemes, to avoid passing large `data:`
+  // URLs to the blocking engine.
+  if (!ctx->request_url.SchemeIsHTTPOrHTTPS() &&
+      !ctx->request_url.SchemeIsWSOrWSS()) {
     return net::OK;
   }
 

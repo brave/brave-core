@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_CONTRIBUTION_UNVERIFIED_H_
-#define BRAVELEDGER_CONTRIBUTION_UNVERIFIED_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_UNVERIFIED_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_UNVERIFIED_H_
 
 #include <stdint.h>
 
@@ -40,6 +40,9 @@ class Unverified {
       const std::string& publisher_key,
       const std::string& name);
 
+  void FetchInfoForUnverifiedPublishers(
+      std::vector<std::string>&& publisher_keys);
+
   void OnRemovePendingContribution(type::Result result);
 
   void OnContributeUnverifiedBalance(
@@ -60,4 +63,4 @@ class Unverified {
 
 }  // namespace contribution
 }  // namespace ledger
-#endif  // BRAVELEDGER_CONTRIBUTION_UNVERIFIED_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_CONTRIBUTION_UNVERIFIED_H_

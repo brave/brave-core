@@ -9,7 +9,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 
 #define ReloadBypassingCache ReloadBypassingCache_ChromiumImpl
-#include "../../../../../chrome/browser/ui/browser_commands.cc"  // NOLINT
+#include "src/chrome/browser/ui/browser_commands.cc"
 #undef ReloadBypassingCache
 
 namespace chrome {

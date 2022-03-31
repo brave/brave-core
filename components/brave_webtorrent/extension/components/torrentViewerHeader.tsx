@@ -69,6 +69,10 @@ export default class TorrentViewerHeader extends React.PureComponent<
       if (tab && typeof tab.id === 'number') {
         chrome.tabs.executeScript(tab.id, {
           code: `alert('${msg}')`
+        }, () => {
+          if (chrome.runtime.lastError) {
+            console.error('tabs.executeScript failed: ' + chrome.runtime.lastError.message)
+          }
         })
         return
       }

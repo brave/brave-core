@@ -5,7 +5,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_COMMON_URL_CONSTANTS_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_COMMON_URL_CONSTANTS_H_
 
-#include "../../../../../content/public/common/url_constants.h"
+#include "src/content/public/common/url_constants.h"
 
 namespace content {
 CONTENT_EXPORT extern const char kBraveUIScheme[];

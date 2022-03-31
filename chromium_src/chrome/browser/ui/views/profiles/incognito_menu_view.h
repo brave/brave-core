@@ -12,7 +12,7 @@
                                        \
  public:
 #define OnExitButtonClicked virtual OnExitButtonClicked
-#include "../../../../../../../chrome/browser/ui/views/profiles/incognito_menu_view.h"
+#include "src/chrome/browser/ui/views/profiles/incognito_menu_view.h"
 #undef OnExitButtonClicked
 #undef BRAVE_INCOGNITO_MENU_VIEW_H_
 

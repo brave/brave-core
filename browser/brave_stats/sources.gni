@@ -34,6 +34,7 @@ brave_browser_brave_stats_updater_deps = [
   "//brave/common:pref_names",
   "//brave/components/brave_referrals/buildflags",
   "//brave/components/brave_stats/browser",
+  "//brave/components/brave_wallet/browser",
   "//brave/components/rpill/common",
   "//brave/components/version_info",
   "//brave/vendor/bat-native-ads",

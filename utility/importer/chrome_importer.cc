@@ -11,7 +11,6 @@
 
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
-#include "base/macros.h"
 #include "base/memory/ref_counted.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -33,16 +32,17 @@
 #include "components/webdata/common/webdata_constants.h"
 #include "sql/database.h"
 #include "sql/statement.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 #include "chrome/grit/chromium_strings.h"
 #include "components/os_crypt/key_storage_config_linux.h"
 #include "ui/base/l10n/l10n_util.h"
-#endif  // defined(OS_LINUX)
+#endif  // BUILDFLAG(IS_LINUX)
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include "base/base64.h"
 #include "base/win/wincrypt_shim.h"
 #endif
@@ -52,7 +52,7 @@ using base::Time;
 namespace {
 
 // Most of below code is copied from os_crypt_win.cc
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 // Contains base64 random key encrypted with DPAPI.
 const char kOsCryptEncryptedKeyPrefName[] = "os_crypt.encrypted_key";
 
@@ -85,7 +85,7 @@ bool SetEncryptionKeyForPasswordImporting(
     const base::FilePath& local_state_path) {
   std::string local_state_content;
   base::ReadFileToString(local_state_path, &local_state_content);
-  base::Optional<base::Value> local_state =
+  absl::optional<base::Value> local_state =
       base::JSONReader::Read(local_state_content);
   if (auto* base64_encrypted_key =
           local_state->FindStringPath(kOsCryptEncryptedKeyPrefName)) {
@@ -113,7 +113,7 @@ bool SetEncryptionKeyForPasswordImporting(
 #endif
 
 bool SetEncryptionKey(const base::FilePath& source_path) {
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   // Set up crypt config.
   std::unique_ptr<os_crypt::Config> config(new os_crypt::Config());
   config->product_name = l10n_util::GetStringUTF8(IDS_PRODUCT_NAME);
@@ -123,7 +123,7 @@ bool SetEncryptionKey(const base::FilePath& source_path) {
   return true;
 #endif
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   base::FilePath local_state_path = source_path.DirName().Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("Local State")));
   if (!base::PathExists(local_state_path))
@@ -136,15 +136,11 @@ bool SetEncryptionKey(const base::FilePath& source_path) {
   return true;
 }
 
-std::u16string DecryptedCardFromColumn(const sql::Statement& s,
-                                       int column_index) {
+std::u16string DecryptedCardFromColumn(sql::Statement* s, int column_index) {
   std::u16string credit_card_number;
-  int encrypted_number_len = s.ColumnByteLength(column_index);
-  if (encrypted_number_len) {
-    std::string encrypted_number;
-    encrypted_number.resize(encrypted_number_len);
-    memcpy(&encrypted_number[0], s.ColumnBlob(column_index),
-           encrypted_number_len);
+  std::string encrypted_number;
+  s->ColumnBlobAsString(column_index, &encrypted_number);
+  if (!encrypted_number.empty()) {
     OSCrypt::DecryptString16(encrypted_number, &credit_card_number);
   }
   return credit_card_number;
@@ -276,7 +272,7 @@ void ChromeImporter::ImportBookmarks() {
 
   base::ReadFileToString(copy_bookmark_file.copied_file_path(),
                          &bookmarks_content);
-  base::Optional<base::Value> bookmarks_json =
+  absl::optional<base::Value> bookmarks_json =
       base::JSONReader::Read(bookmarks_content);
   const base::DictionaryValue* bookmark_dict;
   if (!bookmarks_json || !bookmarks_json->GetAsDictionary(&bookmark_dict))
@@ -393,7 +389,7 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
     std::vector<ImportedBookmarkEntry>* bookmarks) {
   const base::ListValue* children;
   if (folder->GetList("children", &children)) {
-    for (const auto& value : *children) {
+    for (const auto& value : children->GetList()) {
       const base::DictionaryValue* dict;
       if (!value.GetAsDictionary(&dict))
         continue;
@@ -408,7 +404,8 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
         // Folders are added implicitly on adding children, so we only
         // explicitly add empty folders.
         const base::ListValue* children;
-        if (dict->GetList("children", &children) && children->empty()) {
+        if (dict->GetList("children", &children) &&
+            children->GetList().empty()) {
           entry.in_toolbar = is_in_toolbar;
           entry.is_folder = true;
           entry.url = GURL();
@@ -502,7 +499,7 @@ void ChromeImporter::ImportPayments() {
   auto* brave_bridge =
       static_cast<BraveExternalProcessImporterBridge*>(bridge_.get());
   while (s.Step()) {
-    const std::u16string card_number = DecryptedCardFromColumn(s, 3);
+    const std::u16string card_number = DecryptedCardFromColumn(&s, 3);
     // Empty means decryption is failed. Or chrome's data is invalid.
     // Skip it.
     if (card_number.empty())

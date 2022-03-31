@@ -1,17 +1,22 @@
 import { select, boolean, number } from '@storybook/addon-knobs'
 import { images } from '../../../data/backgrounds'
 import { defaultTopSitesData } from '../../../data/defaultTopSites'
-import dummyBrandedWallpaper from './brandedWallpaper'
 import { defaultState } from '../../../storage/new_tab_storage'
 import { initialGridSitesState } from '../../../storage/grid_sites_storage'
+import { TabType as SettingsTabType } from '../../../containers/newTab/settings'
+import dummyBrandedWallpaper from './brandedWallpaper'
 
-function generateStaticImages (images: NewTab.Image[]) {
-  const staticImages = {}
+function generateStaticImages (images: NewTab.BackgroundWallpaper[]) {
+  const staticImages = { SpaceX: undefined }
   for (const image of images) {
+    // author is optional field.
+    if (!image.author) {
+      continue
+    }
     Object.assign(staticImages, {
       [image.author]: {
         ...image,
-        source: require('../../../../img/newtab/backgrounds/' + image.source)
+        wallpaperImageUrl: require('../../../../img/newtab/backgrounds/' + image.wallpaperImageUrl)
       }
     })
   }
@@ -34,55 +39,52 @@ function generateTopSites (topSites: typeof defaultTopSitesData) {
   return staticTopSites
 }
 
-function shouldShowBrandedWallpaperData (shouldShow: boolean): NewTab.BrandedWallpaper {
-  if (shouldShow === false) {
-    return {
-      wallpaperImageUrl: '',
-      isSponsored: false,
-      creativeInstanceId: '12345abcde',
-      wallpaperId: 'abcde12345',
-      logo: { image: '', companyName: '', alt: '', destinationUrl: '' }
-    }
+function shouldShowBrandedWallpaperData (shouldShow: boolean): NewTab.BrandedWallpaper | undefined {
+  if (!shouldShow) {
+    return undefined
   }
   return dummyBrandedWallpaper
 }
 
 function getWidgetStackOrder (firstWidget: string): NewTab.StackWidget[] {
   switch (firstWidget) {
-    case 'together':
-      return ['rewards', 'binance', 'together', 'ftx']
+    case 'braveTalk':
+      return ['rewards', 'binance', 'braveTalk', 'ftx']
     default:
-      return ['together', 'binance', 'rewards', 'ftx']
+      return ['braveTalk', 'binance', 'rewards', 'ftx']
   }
 }
 
 export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State => ({
   ...state,
-  brandedWallpaperData: shouldShowBrandedWallpaperData(
+  brandedWallpaper: shouldShowBrandedWallpaperData(
     boolean('Show branded background image?', true)
   ),
-  backgroundImage: select(
+  backgroundWallpaper: select(
     'Background image',
     generateStaticImages(images),
-    generateStaticImages(images)['SpaceX']
+    generateStaticImages(images).SpaceX
   ),
   customLinksEnabled: boolean('CustomLinks Enabled?', false),
+  featureFlagBraveNewsEnabled: true,
+  forceSettingsTab: select('Open settings tab?', [undefined, ...Object.keys(SettingsTabType)], undefined),
   showBackgroundImage: boolean('Show background image?', true),
   showStats: boolean('Show stats?', true),
-  showToday: boolean('Show today?', true),
+  showToday: boolean('Show Brave News?', true),
   showClock: boolean('Show clock?', true),
   showTopSites: boolean('Show top sites?', true),
   showRewards: boolean('Show rewards?', true),
-  showTogether: boolean('Show together?', true),
-  togetherSupported: boolean('Together supported?', true),
-  togetherPromptDismissed: !boolean('Together prompt?', false),
+  showBraveTalk: boolean('Show Brave Talk?', true),
+  braveTalkSupported: boolean('Brave Talk supported?', true),
+  braveTalkPromptDismissed: !boolean('Brave Talk prompt?', false),
   geminiSupported: boolean('Gemini Supported?', true),
   cryptoDotComSupported: boolean('Crypto.com supported?', true),
   ftxSupported: boolean('FTX supported?', true),
   showFTX: boolean('Show FTX?', true),
   showBinance: boolean('Show Binance?', true),
+  hideAllWidgets: boolean('Hide all widgets?', false),
   isBraveTodayOptedIn: boolean('Brave Today opted-in?', false),
-  textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' } , 'ltr'),
+  textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' }, 'ltr'),
   stats: {
     ...state.stats,
     adsBlockedStat: number('Number of blocked items', 1337),
@@ -94,7 +96,7 @@ export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State 
   //   binanceSupported: boolean('Binance supported?', true)
   // },
   initialDataLoaded: true,
-  widgetStackOrder: getWidgetStackOrder(select('First widget', ['together', 'rewards'], 'rewards'))
+  widgetStackOrder: getWidgetStackOrder(select('First widget', ['braveTalk', 'rewards'], 'rewards'))
 })
 
 export const getGridSitesData = (

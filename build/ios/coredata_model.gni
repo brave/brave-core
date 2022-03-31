@@ -1,0 +1,41 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/ios_sdk.gni")
+
+# Template to compile an .xcdatamodeld file
+#
+# Arguments
+#
+#   model_file
+#     path to .xcdatamodeld file that must be compiled
+#
+template("coredata_model") {
+  assert(defined(invoker.model_file) && invoker.model_file != "",
+         "model_file must be defined for $target_name")
+
+  _compile_model_target = "${target_name}_compile_model"
+  _compile_model_output =
+      "$target_gen_dir/" + get_path_info(invoker.model_file, "name") + ".momd"
+
+  action(_compile_model_target) {
+    script = "//build/apple/xcrun.py"
+    inputs = [ invoker.model_file ]
+    outputs = [ _compile_model_output ]
+    args = [
+      "momc",
+      "--action",
+      "compile",
+      rebase_path(invoker.model_file, root_build_dir),
+      rebase_path(target_gen_dir, root_build_dir),
+    ]
+  }
+
+  bundle_data(target_name) {
+    sources = [ _compile_model_output ]
+    outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
+    public_deps = [ ":$_compile_model_target" ]
+  }
+}

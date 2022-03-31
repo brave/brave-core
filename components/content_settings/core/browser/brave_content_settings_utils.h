@@ -24,7 +24,7 @@ bool IsShieldsContentSettingsType(const ContentSettingsType& content_type);
 
 bool IsShieldsContentSettingsTypeName(const std::string& content_type_name);
 
-base::Optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
+absl::optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
     const ContentSettingsPattern& pattern);
 
 std::string GetShieldsSettingUserPrefsPath(const std::string& name);

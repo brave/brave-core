@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/database/tables/segments_database_table.h"
 
+#include <memory>
+
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 
@@ -28,7 +30,7 @@ TEST_F(BatAdsSegmentsDatabaseTableTest,
   // Arrange
 
   // Act
-  const std::string table_name = database_table_->get_table_name();
+  const std::string table_name = database_table_->GetTableName();
 
   // Assert
   const std::string expected_table_name = "segments";

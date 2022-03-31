@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
-#include "base/scoped_observer.h"
 #include "brave/browser/binance/binance_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
@@ -419,12 +418,14 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
   }
 
   bool NavigateToNewTabUntilLoadStop() {
-    ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab"));
+    EXPECT_TRUE(
+        ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab")));
     return WaitForLoadStop(active_contents());
   }
 
   bool NavigateToVersionTabUntilLoadStop() {
-    ui_test_utils::NavigateToURL(browser(), GURL("chrome://version"));
+    EXPECT_TRUE(
+        ui_test_utils::NavigateToURL(browser(), GURL("chrome://version")));
     return WaitForLoadStop(active_contents());
   }
 
@@ -480,7 +481,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetOAuthClientURL) {
 
 // Test disabled due to failure when run from a Powershell context
 // TODO(ryanml): Fix test when running on Windows Powershell and remove guard
-#if !defined(OS_WIN)
+#if !BUILDFLAG(IS_WIN)
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetAccessToken) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
@@ -697,7 +698,7 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetConvertAssetsServerError) {
 
 // Test disabled due to failure when run from a Powershell context
 // TODO(ryanml): Fix test when running on Windows Powershell and remove guard
-#if !defined(OS_WIN)
+#if !BUILDFLAG(IS_WIN)
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, RevokeToken) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());

@@ -68,6 +68,7 @@ declare namespace chrome.settingsPrivate {
 }
 
 declare namespace chrome.braveRewards {
+  const setExternalWalletType: (walletType: string) => {}
   const getRewardsParameters: (callback: (properties: RewardsExtension.RewardsParameters) => void) => {}
   const updateMediaDuration: (tabId: number, publisherKey: string, duration: number, firstVisit: boolean) => {}
   const getPublisherInfo: (publisherKey: string, callback: (result: RewardsExtension.Result, properties: RewardsExtension.PublisherInfo) => void) => {}
@@ -94,6 +95,7 @@ declare namespace chrome.braveRewards {
   const onAdsEnabled: {
     addListener: (callback: (enabled: boolean) => void) => void
   }
+  const getRewardsEnabled: (callback: (enabled: boolean) => void) => {}
   const getAdsEnabled: (callback: (enabled: boolean) => void) => {}
   const getAdsSupported: (callback: (supported: boolean) => void) => {}
   const getAdsAccountStatement: (callback: (success: boolean, adsAccountStatement: NewTab.AdsAccountStatement) => void) => {}
@@ -152,6 +154,13 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (result: RewardsExtension.Result) => void) => void
   }
   const isInitialized: (callback: (initialized: boolean) => void) => {}
+
+  function getScheduledCaptchaInfo (
+    callback: (scheduledCaptcha: RewardsExtension.ScheduledCaptcha) => void
+  ): void
+
+  function updateScheduledCaptchaResult (result: boolean): void
+
   const shouldShowOnboarding: (callback: (showOnboarding: boolean) => void) => {}
 
   function enableRewards (): void
@@ -165,6 +174,7 @@ declare namespace chrome.braveRewards {
 
   const getPrefs: (callback: (prefs: RewardsPrefs) => void) => void
   const updatePrefs: (prefs: Partial<RewardsPrefs>) => void
+  const requestAdsEnabledPopupClosed: (adsEnabled: boolean) => void
 }
 
 declare namespace chrome.binance {
@@ -241,7 +251,7 @@ declare namespace chrome.ftx {
   const disconnect: (callback: () => void) => {}
 }
 
-declare namespace chrome.braveTogether {
+declare namespace chrome.braveTalk {
   const isSupported: (callback: (supported: boolean) => void) => {}
 }
 
@@ -308,7 +318,6 @@ declare namespace chrome.braveShields {
   const allowScriptsOnce: any
   const setBraveShieldsEnabledAsync: any
   const getBraveShieldsEnabledAsync: any
-  const shouldDoCosmeticFilteringAsync: any
   const setCosmeticFilteringControlTypeAsync: any
   const isFirstPartyCosmeticFilteringEnabledAsync: any
   const setAdControlTypeAsync: any
@@ -324,17 +333,6 @@ declare namespace chrome.braveShields {
   const onShieldsPanelShown: any
   const reportBrokenSite: any
 
-  interface UrlSpecificResources {
-    hide_selectors: string[]
-    style_selectors: any
-    exceptions: string[]
-    injected_script: string
-    force_hide_selectors: string[]
-    generichide: boolean
-  }
-  const urlCosmeticResources: (url: string, callback: (resources: UrlSpecificResources) => void) => void
-  const hiddenClassIdSelectors: (classes: string[], ids: string[], exceptions: string[], callback: (selectors: string[], forceHideSelectors: string[]) => void) => void
-  const migrateLegacyCosmeticFilters: (legacyFilters: any, callback: (success: boolean) => void) => void
   const addSiteCosmeticFilter: (origin: string, cssSelector: string) => void
   const openFilterManagementPage: () => void
 
@@ -345,12 +343,11 @@ declare namespace chrome.braveShields {
 }
 
 declare namespace chrome.braveWallet {
-  const promptToEnableWallet: (tabId: number | undefined) => void
   const ready: () => void
-  const shouldCheckForDapps: (callback: (dappDetection: boolean) => void) => void
-  const shouldPromptForSetup: (callback: (dappDetection: boolean) => void) => void
+  const shouldPromptForSetup: (callback: (shouldPrompt: boolean) => void) => void
   const loadUI: (callback: () => void) => void
   const isNativeWalletEnabled: (callback: (enabled: boolean) => void) => void
+  const notifyWalletUnlock: () => void
 }
 
 declare namespace chrome.ipfs {

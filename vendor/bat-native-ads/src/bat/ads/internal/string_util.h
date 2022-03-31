@@ -7,15 +7,12 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_STRING_UTIL_H_
 
 #include <string>
-#include <vector>
 
 namespace ads {
 
 std::string StripNonAlphaCharacters(const std::string& value);
 
 std::string StripNonAlphaNumericCharacters(const std::string& value);
-
-bool IsLatinAlphaNumeric(const std::string& value);
 
 }  // namespace ads
 

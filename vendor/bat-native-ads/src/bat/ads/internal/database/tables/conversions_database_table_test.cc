@@ -28,7 +28,7 @@ TEST_F(BatAdsConversionsDatabaseTableIntegrationTest,
        GetConversionsFromCatalogEndpoint) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v7/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -38,11 +38,10 @@ TEST_F(BatAdsConversionsDatabaseTableIntegrationTest,
 
   // Assert
   database::table::Conversions conversions;
-  conversions.GetAll(
-      [](const Result result, const ConversionList& conversions) {
-        EXPECT_EQ(Result::SUCCESS, result);
-        EXPECT_EQ(2UL, conversions.size());
-      });
+  conversions.GetAll([](const bool success, const ConversionList& conversions) {
+    EXPECT_TRUE(success);
+    EXPECT_EQ(2UL, conversions.size());
+  });
 }
 
 }  // namespace ads

@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/common/pref_names.h"
 #include "components/external_intents/android/jni_headers/InterceptNavigationDelegateImpl_jni.h"
 #include "components/navigation_interception/intercept_navigation_delegate.h"
@@ -64,7 +65,7 @@ class BraveInterceptNavigationDelegate : public InterceptNavigationDelegate {
     return false;
   }
 
-  PrefService* pref_service_;
+  raw_ptr<PrefService> pref_service_ = nullptr;
 };
 
 }  // namespace

@@ -14,13 +14,16 @@
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
+#include "brave/components/debounce/common/features.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/common/referrer.h"
+#include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 using content::Referrer;
 
@@ -198,6 +201,10 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
       GetDefaultAllowFromControlType(type));
 
   RecordShieldsSettingChanged(local_state);
+  if (url.is_empty()) {
+    // If global setting changed, report to P3A
+    RecordShieldsAdsSetting(type);
+  }
 }
 
 ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
@@ -218,35 +225,61 @@ ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
   }
 }
 
-bool ShouldDoCosmeticFiltering(HostContentSettingsMap* map, const GURL& url) {
-  return base::FeatureList::IsEnabled(
-             features::kBraveAdblockCosmeticFiltering) &&
-         GetBraveShieldsEnabled(map, url) &&
-         (GetCosmeticFilteringControlType(map, url) != ControlType::ALLOW);
-}
-
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url) {
   const ControlType type = GetCosmeticFilteringControlType(map, url);
   return type == ControlType::BLOCK;
 }
 
-bool ShouldDoDomainBlocking(HostContentSettingsMap* map, const GURL& url) {
-  // Don't block if feature is disabled
-  if (!base::FeatureList::IsEnabled(brave_shields::features::kBraveDomainBlock))
+bool ShouldDoDebouncing(HostContentSettingsMap* map, const GURL& url) {
+  // Don't debounce if debounce feature is disabled
+  if (!base::FeatureList::IsEnabled(debounce::features::kBraveDebounce))
     return false;
 
-  // Don't block if Brave Shields is down (this also handles cases where
+  // Don't debounce if Brave Shields is down (this also handles cases where
   // the URL is not HTTP(S))
   if (!brave_shields::GetBraveShieldsEnabled(map, url))
     return false;
 
-  // Don't block unless ad blocking is "aggressive"
-  if (brave_shields::GetCosmeticFilteringControlType(map, url) !=
-      ControlType::BLOCK)
+  // Don't debounce if ad blocking is off
+  if (brave_shields::GetAdControlType(map, url) != ControlType::BLOCK)
     return false;
 
   return true;
+}
+
+DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
+                                         const GURL& url) {
+  // Don't block if feature is disabled
+  if (!base::FeatureList::IsEnabled(brave_shields::features::kBraveDomainBlock))
+    return DomainBlockingType::kNone;
+
+  // Don't block if Brave Shields is down (this also handles cases where
+  // the URL is not HTTP(S))
+  if (!brave_shields::GetBraveShieldsEnabled(map, url))
+    return DomainBlockingType::kNone;
+
+  // Don't block if ad blocking is off.
+  if (brave_shields::GetAdControlType(map, url) != ControlType::BLOCK)
+    return DomainBlockingType::kNone;
+
+  const ControlType cosmetic_control_type =
+      brave_shields::GetCosmeticFilteringControlType(map, url);
+  // Block if ad blocking is "aggressive".
+  if (cosmetic_control_type == ControlType::BLOCK) {
+    return DomainBlockingType::kAggressive;
+  }
+
+  // Block using 1PES if ad blocking is "standard".
+  if (cosmetic_control_type == BLOCK_THIRD_PARTY &&
+      base::FeatureList::IsEnabled(
+          net::features::kBraveFirstPartyEphemeralStorage) &&
+      base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveDomainBlock1PES)) {
+    return DomainBlockingType::k1PES;
+  }
+
+  return DomainBlockingType::kNone;
 }
 
 void SetCookieControlType(HostContentSettingsMap* map,
@@ -330,6 +363,10 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
       ContentSettingsType::BRAVE_FINGERPRINTING_V2, content_setting);
 
   RecordShieldsSettingChanged(local_state);
+  if (url.is_empty()) {
+    // If global setting changed, report to P3A
+    RecordShieldsFingerprintSetting(type);
+  }
 }
 
 ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
@@ -439,9 +476,10 @@ bool MaybeChangeReferrer(bool allow_referrers,
   // Cap the referrer to "strict-origin-when-cross-origin". More restrictive
   // policies should be already applied.
   // See https://github.com/brave/brave-browser/issues/13464
+  url::Origin current_referrer_origin = url::Origin::Create(current_referrer);
   *output_referrer = Referrer::SanitizeForRequest(
       target_url,
-      Referrer(current_referrer.GetOrigin(),
+      Referrer(current_referrer_origin.GetURL(),
                network::mojom::ReferrerPolicy::kStrictOriginWhenCrossOrigin));
 
   return true;

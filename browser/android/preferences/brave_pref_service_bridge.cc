@@ -7,12 +7,13 @@
 
 #include "base/android/jni_string.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_perf_predictor/browser/buildflags.h"
+#include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/p3a/buildflags.h"
@@ -28,15 +29,11 @@
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
-#include "brave/components/brave_perf_predictor/common/pref_names.h"
-#endif
-
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
 #include "brave/components/p3a/pref_names.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #endif
@@ -102,7 +99,7 @@ void JNI_BravePrefServiceBridge_SetHTTPSEEnabled(
 
 void JNI_BravePrefServiceBridge_SetIpfsGatewayEnabled(JNIEnv* env,
                                                       jboolean enabled) {
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   ipfs::IPFSResolveMethodTypes type =
       enabled ? ipfs::IPFSResolveMethodTypes::IPFS_ASK
               : ipfs::IPFSResolveMethodTypes::IPFS_DISABLED;
@@ -160,13 +157,13 @@ void JNI_BravePrefServiceBridge_SetCosmeticFilteringControlType(JNIEnv* env,
           ControlType::BLOCK, GURL(), g_browser_process->local_state());
       brave_shields::SetAdControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::ALLOW, GURL(), g_browser_process->local_state());
+          ControlType::BLOCK, GURL(), g_browser_process->local_state());
       break;
     case 1:
       // standard
       brave_shields::SetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::ALLOW, GURL(), g_browser_process->local_state());
+          ControlType::DEFAULT, GURL(), g_browser_process->local_state());
       brave_shields::SetAdControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
           ControlType::BLOCK, GURL(), g_browser_process->local_state());
@@ -181,13 +178,14 @@ void JNI_BravePrefServiceBridge_SetCosmeticFilteringControlType(JNIEnv* env,
           ControlType::ALLOW, GURL(), g_browser_process->local_state());
       break;
     default:
+      NOTREACHED() << "There are no other types for cosmetic filtering";
       // standard
       brave_shields::SetAdControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
           ControlType::BLOCK, GURL(), g_browser_process->local_state());
       brave_shields::SetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::ALLOW, GURL(), g_browser_process->local_state());
+          ControlType::DEFAULT, GURL(), g_browser_process->local_state());
       break;
   }
 }
@@ -202,20 +200,18 @@ JNI_BravePrefServiceBridge_GetCosmeticFilteringControlType(JNIEnv* env) {
       HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
       GURL());
 
-  if (control_type_ad == ControlType::ALLOW) {
-    if (cosmetic_type == ControlType::ALLOW) {
-      // return allow
+  if (cosmetic_type == ControlType::BLOCK) {
+    return base::android::ConvertUTF8ToJavaString(
+        env, brave_shields::ControlTypeToString(ControlType::BLOCK));
+  } else {
+    if (control_type_ad == ControlType::BLOCK) {
+      return base::android::ConvertUTF8ToJavaString(
+          env, brave_shields::ControlTypeToString(ControlType::DEFAULT));
+    } else {
       return base::android::ConvertUTF8ToJavaString(
           env, brave_shields::ControlTypeToString(ControlType::ALLOW));
-    } else {
-      // return aggressive
-      return base::android::ConvertUTF8ToJavaString(
-          env, brave_shields::ControlTypeToString(ControlType::AGGRESSIVE));
     }
   }
-  // return standard
-  return base::android::ConvertUTF8ToJavaString(
-      env, brave_shields::ControlTypeToString(ControlType::BLOCK));
 }
 
 void JNI_BravePrefServiceBridge_SetCookiesBlockType(
@@ -335,11 +331,9 @@ jlong JNI_BravePrefServiceBridge_GetAdsBlockedCount(
 jlong JNI_BravePrefServiceBridge_GetDataSaved(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile) {
-#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
   return profile->GetPrefs()->GetUint64(
       brave_perf_predictor::prefs::kBandwidthSavedBytes);
-#endif
   return 0;
 }
 
@@ -484,8 +478,7 @@ void JNI_BravePrefServiceBridge_SetP3AEnabled(
   g_browser_process->local_state()->CommitPendingWrite();
 }
 
-jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(
-    JNIEnv* env) {
+static jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(JNIEnv* env) {
   return g_browser_process->local_state()->GetBoolean(
       brave::kP3AEnabled);
 }
@@ -512,7 +505,7 @@ jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(
 
 void JNI_BravePrefServiceBridge_SetP3AEnabled(JNIEnv* env, jboolean value) {}
 
-jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(JNIEnv* env) {
+static jboolean JNI_BravePrefServiceBridge_GetP3AEnabled(JNIEnv* env) {
   return false;
 }
 
@@ -525,6 +518,15 @@ jboolean JNI_BravePrefServiceBridge_GetP3ANoticeAcknowledged(JNIEnv* env) {
   return false;
 }
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
+
+void JNI_BravePrefServiceBridge_SetStatsReportingEnabled(JNIEnv* env,
+                                                         jboolean value) {
+  g_browser_process->local_state()->SetBoolean(kStatsReportingEnabled, value);
+}
+
+jboolean JNI_BravePrefServiceBridge_GetStatsReportingEnabled(JNIEnv* env) {
+  return g_browser_process->local_state()->GetBoolean(kStatsReportingEnabled);
+}
 
 void JNI_BravePrefServiceBridge_SetUnstoppableDomainsResolveMethod(
     JNIEnv* env,
@@ -559,6 +561,26 @@ jint JNI_BravePrefServiceBridge_GetENSResolveMethod(JNIEnv* env) {
 #else
   return 0;
 #endif
+}
+
+void JNI_BravePrefServiceBridge_SetNewsOptIn(JNIEnv* env, jboolean value) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(
+      brave_news::prefs::kBraveTodayOptedIn, value);
+}
+
+jboolean JNI_BravePrefServiceBridge_GetNewsOptIn(JNIEnv* env) {
+  return GetOriginalProfile()->GetPrefs()->GetBoolean(
+      brave_news::prefs::kBraveTodayOptedIn);
+}
+
+void JNI_BravePrefServiceBridge_SetShowNews(JNIEnv* env, jboolean value) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(
+      brave_news::prefs::kNewTabPageShowToday, value);
+}
+
+jboolean JNI_BravePrefServiceBridge_GetShowNews(JNIEnv* env) {
+  return GetOriginalProfile()->GetPrefs()->GetBoolean(
+      brave_news::prefs::kNewTabPageShowToday);
 }
 
 }  // namespace android

@@ -7,6 +7,7 @@
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/https_everywhere_component_installer.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
@@ -63,10 +64,9 @@ class HTTPSEverywhereServiceTest : public ExtensionBrowserTest {
 
   void InitService() {
     brave_shields::HTTPSEverywhereService::SetIgnorePortForTest(true);
-    brave_shields::HTTPSEverywhereService::
-        SetComponentIdAndBase64PublicKeyForTest(
-            kHTTPSEverywhereComponentTestId,
-            kHTTPSEverywhereComponentTestBase64PublicKey);
+    brave_shields::SetHTTPSEverywhereComponentIdAndBase64PublicKeyForTest(
+        kHTTPSEverywhereComponentTestId,
+        kHTTPSEverywhereComponentTestBase64PublicKey);
   }
 
   void GetTestDataDir(base::FilePath* test_data_dir) {
@@ -82,8 +82,8 @@ class HTTPSEverywhereServiceTest : public ExtensionBrowserTest {
     if (!httpse_extension)
       return false;
 
-    g_brave_browser_process->https_everywhere_service()->OnComponentReady(
-        httpse_extension->id(), httpse_extension->path(), "");
+    g_brave_browser_process->https_everywhere_service()->InitDB(
+        httpse_extension->path());
     WaitForHTTPSEverywhereServiceThread();
 
     return true;
@@ -101,7 +101,7 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, RedirectsKnownSite) {
   ASSERT_TRUE(InstallHTTPSEverywhereExtension());
 
   GURL url = embedded_test_server()->GetURL("www.digg.com", "/");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(GURL("https://www.digg.com/"), contents->GetLastCommittedURL());
@@ -112,7 +112,7 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, NoRedirectsNotKnownSite) {
   ASSERT_TRUE(InstallHTTPSEverywhereExtension());
 
   GURL url = embedded_test_server()->GetURL("www.brianbondy.com", "/");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -128,7 +128,7 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, NoRedirectsNotKnownSite) {
 IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, RedirectsKnownSiteInIframe) {
   ASSERT_TRUE(InstallHTTPSEverywhereExtension());
   GURL url = embedded_test_server()->GetURL("a.com", "/iframe.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   GURL iframe_url = embedded_test_server()->GetURL("www.digg.com", "/");
   const char kIframeID[] = "test";

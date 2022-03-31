@@ -1,5 +1,0 @@
-import("//brave/build/config.gni")
-
-declare_args() {
-  enable_brave_sync = true
-}

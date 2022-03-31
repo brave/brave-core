@@ -15,7 +15,8 @@ def render_markdown(changelog_txt, version, logging):
     output = ast_renderer.get_ast(d)
     s = str()
 
-    logging.debug("Locating the changelog AST for version: \'{}\'".format(version))
+    logging.debug(
+        "Locating the changelog AST for version: \'{}\'".format(version))
 
     version_heading = ''
     version_changes = ''
@@ -34,7 +35,8 @@ def render_markdown(changelog_txt, version, logging):
         for i in changes:
             s = s + i + '\n'
     else:
-        logging.error("Cannot Locate the changelog AST for version: \'{}\'".format(version))
+        logging.error(
+            "Cannot Locate the changelog AST for version: \'{}\'".format(version))
         exit(1)
 
     return s
@@ -45,7 +47,8 @@ def render_html(changelog_txt, version, logging):
     Format an html rendered document from the render_markdown method above.
     """
 
-    rendered = mistletoe.markdown(render_markdown(changelog_txt, version, logging))
+    rendered = mistletoe.markdown(
+        render_markdown(changelog_txt, version, logging))
     return rendered
 
 
@@ -66,15 +69,19 @@ def reconstruct_brave_changelog_list(li):
             if 'RawText' in item2['type']:
                 appended_entry = appended_entry + '{}'.format(item2['content'])
             elif 'Link' in item2['type']:
-                appended_entry = appended_entry + '[{}]({})'.format(item2['children'][0]['content'], item2['target'])
+                appended_entry = appended_entry + \
+                    '[{}]({})'.format(item2['children']
+                                      [0]['content'], item2['target'])
             elif 'InlineCode' in item2['type']:
-                appended_entry = appended_entry + '{}'.format(item2['children'][0]['content'])
+                appended_entry = appended_entry + \
+                    '{}'.format(item2['children'][0]['content'])
             else:
                 # Try to catch all other markdown types in this general case
                 #
                 # Mistletoe types defined here:
                 # https://github.com/miyuchina/mistletoe/blob/master/mistletoe/base_renderer.py#L47-L71
-                appended_entry = appended_entry + '{}'.format(item2['children'][0]['content'])
+                appended_entry = appended_entry + \
+                    '{}'.format(item2['children'][0]['content'])
 
         changes.append(" {} {}".format(' -', appended_entry))
     return changes
@@ -90,10 +97,12 @@ def download_from_url(args, logging, changelog_url):
     try:
         r = requests.get(changelog_url, headers=headers)
     except requests.exceptions.ConnectionError as e:
-        logging.error("Error: Received requests.exceptions.ConnectionError, Exiting...")
+        logging.error(
+            "Error: Received requests.exceptions.ConnectionError, Exiting...")
         exit(1)
     except Exception as e:
-        logging.error("Error: Received exception {},  Exiting...".format(type(e)))
+        logging.error(
+            "Error: Received exception {},  Exiting...".format(type(e)))
         exit(1)
     logging.debug("r.status_code: {}".format(r.status_code))
 

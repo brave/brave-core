@@ -8,32 +8,35 @@
 
 #include <memory>
 
-#include "base/callback_forward.h"
-#include "base/time/time.h"
-#include "base/timer/timer.h"
+#include "base/callback.h"
+
+namespace base {
+class OneShotTimer;
+class Time;
+class TimeDelta;
+}  // namespace base
 
 namespace ads {
 
-class Timer {
+class Timer final {
  public:
   Timer();
-
   ~Timer();
 
   // Set a mock implementation of base::OneShotTimer which requires |Fire()| to
   // be explicitly called. Prefer using TaskEnvironment::MOCK_TIME +
   // FastForward*() to this when possible
-  void set_timer_for_testing(std::unique_ptr<base::OneShotTimer> timer);
+  void SetTimerForTesting(std::unique_ptr<base::OneShotTimer> timer);
 
   // Start a timer to run at the given |delay| from now. If the timer is already
   // running, it will be replaced to call the given |user_task|. Returns the
   // time the delayed task will be fired
-  base::Time Start(const base::TimeDelta& delay, base::OnceClosure user_task);
+  base::Time Start(const base::TimeDelta delay, base::OnceClosure user_task);
 
   // Start a timer to run at a geometrically distributed number of seconds
   // |~delay| from now. If the timer is already running, it will be replaced to
   // call the given |user_task|. Returns the time the delayed task will be fired
-  base::Time StartWithPrivacy(const base::TimeDelta& delay,
+  base::Time StartWithPrivacy(const base::TimeDelta delay,
                               base::OnceClosure user_task);
 
   // Returns true if the timer is running (i.e., not stopped)
@@ -44,8 +47,8 @@ class Timer {
   void FireNow();
 
   // Call this method to stop the timer. It is a no-op if the timer is not
-  // running
-  void Stop();
+  // running. Returns |true| if the timer was stopped, otherwise returns |false|
+  bool Stop();
 
  private:
   std::unique_ptr<base::OneShotTimer> timer_;

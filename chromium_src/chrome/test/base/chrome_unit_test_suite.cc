@@ -5,4 +5,4 @@
 
 #include "brave/test/base/testing_brave_browser_process.h"
 
-#include "../../../../../chrome/test/base/chrome_unit_test_suite.cc"
+#include "src/chrome/test/base/chrome_unit_test_suite.cc"

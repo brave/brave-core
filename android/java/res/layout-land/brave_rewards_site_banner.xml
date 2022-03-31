@@ -110,7 +110,7 @@
                             android:textColor="#686978"
                             android:textSize="14sp"
                             android:padding="10dp"
-                            android:text="@string/brave_ui_site_banner_notice_text"/>
+                            android:text="@string/brave_ui_site_banner_unverified_notice_text"/>
                     </LinearLayout>
 
 
@@ -260,6 +260,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|bottom"
+                    tools:ignore="NestedWeights"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:fontFamily="sans-serif"
@@ -339,6 +340,7 @@
                     android:fontFamily="sans-serif"
                     android:paddingTop="2dp"
                     android:text="@string/value_0_usd"
+                    tools:ignore="SmallSp"
                     android:textSize="10sp" />
 
 
@@ -374,6 +376,7 @@
                     android:fontFamily="sans-serif"
                     android:paddingTop="2dp"
                     android:text="@string/value_0_usd"
+                    tools:ignore="SmallSp"
                     android:textSize="10sp" />
 
                 <ToggleButton
@@ -408,6 +411,7 @@
                     android:fontFamily="sans-serif"
                     android:paddingTop="2dp"
                     android:text="@string/value_0_usd"
+                    tools:ignore="SmallSp"
                     android:textSize="10sp" />
 
             </androidx.gridlayout.widget.GridLayout>
@@ -419,7 +423,8 @@
                 android:layout_weight="1.2"
                 android:background="@android:color/transparent"
                 android:orientation="horizontal"
-                android:padding="4dp">
+                android:padding="4dp"
+                tools:ignore="RelativeOverlap">
 
                 <TextView
                     android:id="@+id/make_monthly_text"
@@ -434,7 +439,7 @@
                     android:textStyle="bold"
                     android:paddingStart="10dp"/>
 
-                <CheckBox
+                <android.widget.CheckBox
                     android:id="@+id/make_monthly_checkbox"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
@@ -444,7 +449,6 @@
                     android:background="@android:color/transparent"
                     android:button="@drawable/plain_checkbox"
                     android:scaleType="fitXY"
-                    android:onClick="onMonthlyCheckboxClicked"
                     android:checked="false"/>
             </RelativeLayout>
             <!--Row # 4-->

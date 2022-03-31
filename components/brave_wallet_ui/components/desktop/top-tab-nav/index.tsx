@@ -1,51 +1,85 @@
 import * as React from 'react'
-import { TopTabNavObjectType, TopTabNavTypes } from '../../../constants/types'
+import {
+  TopTabNavObjectType,
+  TopTabNavTypes,
+  AddAccountNavTypes,
+  AccountSettingsNavTypes
+} from '../../../constants/types'
+
 // Styled Components
 import {
   StyledWrapper,
+  MoreIcon,
   MoreRow,
   MoreButton,
-  MoreIcon,
+  EmptyPadding,
   Line
 } from './style'
 
 // Components
-import { TopTabNavButton } from '../'
+import {
+  TopTabNavButton,
+  WalletMorePopup
+} from '../'
 
 export interface Props {
   tabList: TopTabNavObjectType[]
-  selectedTab: TopTabNavTypes
-  onSubmit: (id: TopTabNavTypes) => void
-  hasMoreButton?: boolean
-  onClickMoreButton?: () => void
+  selectedTab?: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes
+  hasMoreButtons?: boolean
+  showMore?: boolean
+  onSelectTab: (id: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes) => void
+  onClickLock?: () => void
+  onClickSettings?: () => void
+  onClickBackup?: () => void
+  onClickMore?: () => void
 }
 
-export default class TopTabNav extends React.PureComponent<Props, {}> {
-  onNav = (id: TopTabNavTypes) => () => {
-    this.props.onSubmit(id)
+function TopTabNav (props: Props) {
+  const {
+    tabList,
+    selectedTab,
+    hasMoreButtons,
+    showMore,
+    onClickMore,
+    onClickSettings,
+    onClickBackup,
+    onClickLock,
+    onSelectTab
+  } = props
+
+  const onClickSelectTab = (id: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes) => () => {
+    onSelectTab(id)
   }
 
-  render () {
-    const { tabList, selectedTab, hasMoreButton, onClickMoreButton } = this.props
-    return (
-      <StyledWrapper>
-        {tabList.map((option) =>
-          <TopTabNavButton
-            key={option.id}
-            isSelected={selectedTab === option.id}
-            onSubmit={this.onNav(option.id)}
-            text={option.name}
-          />
+  return (
+    <StyledWrapper>
+      {tabList.map((option) =>
+        <TopTabNavButton
+          key={option.id}
+          isSelected={selectedTab === option.id}
+          onSubmit={onClickSelectTab(option.id)}
+          text={option.name}
+        />
+      )}
+      <MoreRow>
+        {hasMoreButtons ? (
+          <MoreButton onClick={onClickMore}>
+            <MoreIcon />
+          </MoreButton>
+        ) : (
+          <EmptyPadding />
         )}
-        {hasMoreButton &&
-          <MoreRow>
-            <MoreButton onClick={onClickMoreButton}>
-              <MoreIcon />
-            </MoreButton>
-            <Line />
-          </MoreRow>
-        }
-      </StyledWrapper>
-    )
-  }
+        <Line />
+      </MoreRow>
+      {showMore &&
+        <WalletMorePopup
+          onClickLock={onClickLock}
+          onClickBackup={onClickBackup}
+          onClickSetting={onClickSettings}
+        />
+      }
+    </StyledWrapper>
+  )
 }
+
+export default TopTabNav

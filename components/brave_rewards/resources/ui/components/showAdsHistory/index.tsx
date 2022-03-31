@@ -5,32 +5,24 @@
 import * as React from 'react'
 import {
   StyledLink,
-  StyledWrapper,
-  StyledDisabledLink
+  StyledWrapper
 } from './style'
 
 import { getLocale } from 'brave-ui/helpers'
 
 export interface Props {
   onAdsHistoryOpen?: () => void
-  notEmpty: boolean
 }
 
 export default class ShowAdsHistory extends React.PureComponent<Props, {}> {
   render () {
-    const { onAdsHistoryOpen, notEmpty } = this.props
+    const { onAdsHistoryOpen } = this.props
 
     return (
       <StyledWrapper>
-        {
-          notEmpty ?
-          <StyledLink onClick={onAdsHistoryOpen}>
-              {getLocale('openAdsHistory')}
-          </StyledLink> :
-          <StyledDisabledLink>
-            {getLocale('openAdsHistory')}
-          </StyledDisabledLink>
-        }
+        <StyledLink onClick={onAdsHistoryOpen}>
+          {getLocale('openAdsHistory')}
+        </StyledLink>
       </StyledWrapper>
     )
   }

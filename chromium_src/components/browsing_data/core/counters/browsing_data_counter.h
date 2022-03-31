@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_BROWSING_DATA_CORE_COUNTERS_BROWSING_DATA_COUNTER_H_
 
 #define ReportResult virtual ReportResult
-#include "../../../../../../components/browsing_data/core/counters/browsing_data_counter.h"
+#include "src/components/browsing_data/core/counters/browsing_data_counter.h"
 #undef ReportResult
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_BROWSING_DATA_CORE_COUNTERS_BROWSING_DATA_COUNTER_H_

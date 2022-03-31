@@ -6,15 +6,15 @@
 #include "bat/ads/internal/ad_targeting/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
 
 #include <algorithm>
-#include <utility>
-#include <vector>
 
-#include "base/strings/string_number_conversions.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting_segment_util.h"
+#include "base/check.h"
+#include "base/notreached.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arms.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/segments/segments_util.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {
@@ -23,8 +23,8 @@ namespace processor {
 
 namespace {
 
-const double kArmDefaultValue = 1.0;
-const uint64_t kArmDefaultPulls = 0;
+constexpr double kArmDefaultValue = 1.0;
+constexpr uint64_t kArmDefaultPulls = 0;
 
 EpsilonGreedyBanditArmMap MaybeAddOrResetArms(
     const EpsilonGreedyBanditArmMap& arms) {
@@ -59,16 +59,18 @@ EpsilonGreedyBanditArmMap MaybeDeleteArms(
     const EpsilonGreedyBanditArmMap& arms) {
   EpsilonGreedyBanditArmMap updated_arms = arms;
 
-  for (const auto& arm : updated_arms) {
-    const auto iter = std::find(kSegments.begin(), kSegments.end(), arm.first);
-    if (iter != kSegments.end()) {
+  for (auto arm_iter = updated_arms.begin(); arm_iter != updated_arms.end();) {
+    const auto segment_iter =
+        std::find(kSegments.cbegin(), kSegments.cend(), arm_iter->first);
+    if (segment_iter != kSegments.end()) {
+      ++arm_iter;
       continue;
     }
 
-    updated_arms.erase(arm.first);
-
-    BLOG(2, "Epsilon greedy bandit arm was deleted for " << arm.first
+    BLOG(2, "Epsilon greedy bandit arm was deleted for " << arm_iter->first
                                                          << " segment ");
+
+    arm_iter = updated_arms.erase(arm_iter);
   }
 
   return updated_arms;
@@ -83,21 +85,25 @@ EpsilonGreedyBandit::EpsilonGreedyBandit() {
 EpsilonGreedyBandit::~EpsilonGreedyBandit() = default;
 
 void EpsilonGreedyBandit::Process(const BanditFeedbackInfo& feedback) {
+  DCHECK(!feedback.segment.empty());
+
   const std::string segment = GetParentSegment(feedback.segment);
+  DCHECK(!segment.empty());
 
   switch (feedback.ad_event_type) {
-    case AdNotificationEventType::kTimedOut:
-    case AdNotificationEventType::kDismissed: {
+    case mojom::AdNotificationEventType::kTimedOut:
+    case mojom::AdNotificationEventType::kDismissed: {
       UpdateArm(/* reward */ 0, segment);
       break;
     }
 
-    case AdNotificationEventType::kClicked: {
+    case mojom::AdNotificationEventType::kClicked: {
       UpdateArm(/* reward */ 1, segment);
       break;
     }
 
-    case AdNotificationEventType::kViewed: {
+    case mojom::AdNotificationEventType::kServed:
+    case mojom::AdNotificationEventType::kViewed: {
       NOTREACHED();
       break;
     }

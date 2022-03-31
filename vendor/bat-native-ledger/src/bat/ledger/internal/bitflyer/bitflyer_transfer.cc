@@ -27,7 +27,7 @@ BitflyerTransfer::~BitflyerTransfer() = default;
 
 void BitflyerTransfer::Start(const Transaction& transaction,
                              client::TransactionCallback callback) {
-  auto wallet = GetWallet(ledger_);
+  auto wallet = ledger_->bitflyer()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR, "");

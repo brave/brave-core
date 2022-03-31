@@ -18,7 +18,6 @@ interface Props {
 }
 
 export default class EditCards extends React.PureComponent<Props, {}> {
-
   render () {
     return (
       <StyledWrapper onClick={this.props.onEditCards}>

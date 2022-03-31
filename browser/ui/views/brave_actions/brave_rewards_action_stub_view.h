@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "components/prefs/pref_member.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/view.h"
@@ -28,13 +29,13 @@ class BraveRewardsActionStubView : public views::LabelButton {
   };
 
   explicit BraveRewardsActionStubView(Profile* profile, Delegate* delegate);
+  BraveRewardsActionStubView(const BraveRewardsActionStubView&) = delete;
+  BraveRewardsActionStubView& operator=(const BraveRewardsActionStubView&) =
+      delete;
   ~BraveRewardsActionStubView() override;
 
   // views::LabelButton:
   std::unique_ptr<views::LabelButtonBorder> CreateDefaultBorder()
-      const override;
-  SkColor GetInkDropBaseColor() const override;
-  std::unique_ptr<views::InkDropHighlight> CreateInkDropHighlight()
       const override;
 
   SkPath GetHighlightPath() const;
@@ -44,10 +45,8 @@ class BraveRewardsActionStubView : public views::LabelButton {
   void ButtonPressed();
 
   StringPrefMember badge_text_pref_;
-  Profile* profile_;
-  Delegate* delegate_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveRewardsActionStubView);
+  raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<Delegate> delegate_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_REWARDS_ACTION_STUB_VIEW_H_

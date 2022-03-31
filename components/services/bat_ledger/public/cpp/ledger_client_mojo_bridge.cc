@@ -132,67 +132,81 @@ void LedgerClientMojoBridge::PublisherListNormalized(
 }
 
 void LedgerClientMojoBridge::SetBooleanState(const std::string& name,
-                                            bool value) {
+                                             bool value,
+                                             SetBooleanStateCallback callback) {
   ledger_client_->SetBooleanState(name, value);
+  std::move(callback).Run();
 }
 
 void LedgerClientMojoBridge::GetBooleanState(const std::string& name,
-                                            GetBooleanStateCallback callback) {
+                                             GetBooleanStateCallback callback) {
   std::move(callback).Run(ledger_client_->GetBooleanState(name));
 }
 
 void LedgerClientMojoBridge::SetIntegerState(const std::string& name,
-                                            int value) {
+                                             int value,
+                                             SetIntegerStateCallback callback) {
   ledger_client_->SetIntegerState(name, value);
+  std::move(callback).Run();
 }
 
 void LedgerClientMojoBridge::GetIntegerState(const std::string& name,
-                                            GetIntegerStateCallback callback) {
+                                             GetIntegerStateCallback callback) {
   std::move(callback).Run(ledger_client_->GetIntegerState(name));
 }
 
 void LedgerClientMojoBridge::SetDoubleState(const std::string& name,
-                                           double value) {
+                                            double value,
+                                            SetDoubleStateCallback callback) {
   ledger_client_->SetDoubleState(name, value);
+  std::move(callback).Run();
 }
 
 void LedgerClientMojoBridge::GetDoubleState(const std::string& name,
-                                           GetDoubleStateCallback callback) {
+                                            GetDoubleStateCallback callback) {
   std::move(callback).Run(ledger_client_->GetDoubleState(name));
 }
 
 void LedgerClientMojoBridge::SetStringState(const std::string& name,
-                                           const std::string& value) {
+                                            const std::string& value,
+                                            SetStringStateCallback callback) {
   ledger_client_->SetStringState(name, value);
+  std::move(callback).Run();
 }
 
 void LedgerClientMojoBridge::GetStringState(const std::string& name,
-                                           GetStringStateCallback callback) {
+                                            GetStringStateCallback callback) {
   std::move(callback).Run(ledger_client_->GetStringState(name));
 }
 
 void LedgerClientMojoBridge::SetInt64State(const std::string& name,
-                                          int64_t value) {
+                                           int64_t value,
+                                           SetInt64StateCallback callback) {
   ledger_client_->SetInt64State(name, value);
+  std::move(callback).Run();
 }
 
 void LedgerClientMojoBridge::GetInt64State(const std::string& name,
-                                          GetInt64StateCallback callback) {
+                                           GetInt64StateCallback callback) {
   std::move(callback).Run(ledger_client_->GetInt64State(name));
 }
 
 void LedgerClientMojoBridge::SetUint64State(const std::string& name,
-                                           uint64_t value) {
+                                            uint64_t value,
+                                            SetUint64StateCallback callback) {
   ledger_client_->SetUint64State(name, value);
+  std::move(callback).Run();
 }
 
 void LedgerClientMojoBridge::GetUint64State(const std::string& name,
-                                           GetUint64StateCallback callback) {
+                                            GetUint64StateCallback callback) {
   std::move(callback).Run(ledger_client_->GetUint64State(name));
 }
 
-void LedgerClientMojoBridge::ClearState(const std::string& name) {
+void LedgerClientMojoBridge::ClearState(const std::string& name,
+                                        ClearStateCallback callback) {
   ledger_client_->ClearState(name);
+  std::move(callback).Run();
 }
 
 void LedgerClientMojoBridge::GetBooleanOption(
@@ -376,17 +390,14 @@ void LedgerClientMojoBridge::DeleteLog(DeleteLogCallback callback) {
                 _1));
 }
 
-void LedgerClientMojoBridge::SetEncryptedStringState(
-    const std::string& name,
-    const std::string& value,
-    SetEncryptedStringStateCallback callback) {
-  std::move(callback).Run(ledger_client_->SetEncryptedStringState(name, value));
+void LedgerClientMojoBridge::EncryptString(const std::string& value,
+                                           EncryptStringCallback callback) {
+  std::move(callback).Run(ledger_client_->EncryptString(value));
 }
 
-void LedgerClientMojoBridge::GetEncryptedStringState(
-    const std::string& name,
-    GetEncryptedStringStateCallback callback) {
-  std::move(callback).Run(ledger_client_->GetEncryptedStringState(name));
+void LedgerClientMojoBridge::DecryptString(const std::string& value,
+                                           DecryptStringCallback callback) {
+  std::move(callback).Run(ledger_client_->DecryptString(value));
 }
 
 }  // namespace bat_ledger

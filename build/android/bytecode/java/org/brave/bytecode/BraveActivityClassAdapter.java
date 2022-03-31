@@ -8,11 +8,13 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveActivityClassAdapter extends BraveClassVisitor {
+    static String sChromeActivityClassName = "org/chromium/chrome/browser/app/ChromeActivity";
     static String sBraveActivityClassName = "org/chromium/chrome/browser/app/BraveActivity";
 
     public BraveActivityClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        deleteField(sBraveActivityClassName, "mTabModelProfileSupplier");
+        deleteField(sBraveActivityClassName, "mBrowserControlsManagerSupplier");
+        makeProtectedField(sChromeActivityClassName, "mBrowserControlsManagerSupplier");
     }
 }

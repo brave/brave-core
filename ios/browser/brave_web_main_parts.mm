@@ -5,15 +5,16 @@
 
 #include "brave/ios/browser/brave_web_main_parts.h"
 
-#include "base/base_switches.h"
 #include "base/metrics/user_metrics.h"
 #include "base/path_service.h"
-#include "base/sequenced_task_runner.h"
 #include "base/task/post_task.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "brave/ios/browser/browser_state/brave_browser_state_keyed_service_factories.h"
 #include "components/flags_ui/pref_service_flags_storage.h"
 #include "components/metrics_services_manager/metrics_services_manager.h"
 #include "components/variations/service/variations_service.h"
+#include "components/variations/variations_ids_provider.h"
 #include "ios/chrome/browser/application_context_impl.h"
 #include "ios/chrome/browser/browser_state/browser_state_keyed_service_factories.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
@@ -33,18 +34,24 @@ BraveWebMainParts::BraveWebMainParts() {}
 
 BraveWebMainParts::~BraveWebMainParts() {}
 
-void BraveWebMainParts::PreMainMessageLoopStart() {
+void BraveWebMainParts::PreCreateMainMessageLoop() {
   l10n_util::OverrideLocaleWithCocoaLocale();
 
-   const std::string loaded_locale =
-       ui::ResourceBundle::InitSharedInstanceWithLocale(
-           std::string(), nullptr, ui::ResourceBundle::LOAD_COMMON_RESOURCES);
-   CHECK(!loaded_locale.empty());
+  const std::string loaded_locale =
+      ui::ResourceBundle::InitSharedInstanceWithLocale(
+          std::string(), nullptr, ui::ResourceBundle::LOAD_COMMON_RESOURCES);
+  CHECK(!loaded_locale.empty());
 
-   base::FilePath resources_pack_path;
-   base::PathService::Get(ios::FILE_RESOURCES_PACK, &resources_pack_path);
-   ui::ResourceBundle::GetSharedInstance().AddDataPackFromPath(
-       resources_pack_path, ui::SCALE_FACTOR_100P);
+  base::FilePath resources_pack_path;
+  base::PathService::Get(ios::FILE_RESOURCES_PACK, &resources_pack_path);
+  ui::ResourceBundle::GetSharedInstance().AddDataPackFromPath(
+      resources_pack_path, ui::k100Percent);
+
+  base::FilePath brave_pack_path;
+  base::PathService::Get(base::DIR_MODULE, &brave_pack_path);
+  brave_pack_path = brave_pack_path.AppendASCII("brave_resources.pak");
+  ui::ResourceBundle::GetSharedInstance().AddDataPackFromPath(
+      brave_pack_path, ui::kScaleFactorNone);
 }
 
 void BraveWebMainParts::PreCreateThreads() {
@@ -69,6 +76,9 @@ void BraveWebMainParts::PreCreateThreads() {
   ConvertFlagsToSwitches(&flags_storage,
                          base::CommandLine::ForCurrentProcess());
 
+  variations::VariationsIdsProvider::Create(
+      variations::VariationsIdsProvider::Mode::kUseSignedInState);
+
   SetupFieldTrials();
 
   // variations::InitCrashKeys();
@@ -85,9 +95,9 @@ void BraveWebMainParts::SetupFieldTrials() {
   // Initialize FieldTrialList to support FieldTrials that use one-time
   // randomization.
   DCHECK(!field_trial_list_);
-  field_trial_list_.reset(
-      new base::FieldTrialList(application_context_->GetMetricsServicesManager()
-                                   ->CreateEntropyProvider()));
+  application_context_->GetMetricsServicesManager()
+      ->InstantiateFieldTrialList();
+  field_trial_list_.reset(base::FieldTrialList::GetInstance());
 
   std::unique_ptr<base::FeatureList> feature_list(new base::FeatureList);
 
@@ -97,12 +107,8 @@ void BraveWebMainParts::SetupFieldTrials() {
   std::vector<std::string> variation_ids;
   RegisterAllFeatureVariationParameters(&flags_storage, feature_list.get());
 
-  // On iOS, GPU benchmarking is not supported. So, pass in a dummy value for
-  // the name of the switch that enables gpu benchmarking.
-  application_context_->GetVariationsService()->SetupFieldTrials(
-      "dummy-enable-gpu-benchmarking", switches::kEnableFeatures,
-      switches::kDisableFeatures, variation_ids,
-      std::vector<base::FeatureList::FeatureOverrideInfo>(),
+  application_context_->GetVariationsService()->SetUpFieldTrials(
+      variation_ids, std::vector<base::FeatureList::FeatureOverrideInfo>(),
       std::move(feature_list), &ios_field_trials_);
 }
 
@@ -115,12 +121,11 @@ void BraveWebMainParts::PreMainMessageLoopRun() {
 
   // Ensure that the browser state is initialized.
   EnsureBrowserStateKeyedServiceFactoriesBuilt();
+  brave::EnsureBrowserStateKeyedServiceFactoriesBuilt();
   ios::ChromeBrowserStateManager* browser_state_manager =
       application_context_->GetChromeBrowserStateManager();
-  ChromeBrowserState* last_used_browser_state =
+  [[maybe_unused]] ChromeBrowserState* last_used_browser_state =
       browser_state_manager->GetLastUsedBrowserState();
-
-  ALLOW_UNUSED_LOCAL(last_used_browser_state);
 }
 
 void BraveWebMainParts::PostMainMessageLoopRun() {

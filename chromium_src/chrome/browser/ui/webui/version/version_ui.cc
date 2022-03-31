@@ -6,5 +6,5 @@
 #include "brave/components/version_info/version_info.h"
 
 #define GetVersionNumber GetBraveVersionNumberForDisplay
-#include "../../../../../../../chrome/browser/ui/webui/version/version_ui.cc"
+#include "src/chrome/browser/ui/webui/version/version_ui.cc"
 #undef GetVersionNumber

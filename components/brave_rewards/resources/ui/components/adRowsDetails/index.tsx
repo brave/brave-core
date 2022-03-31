@@ -73,18 +73,17 @@ export default class AdRowsDetails extends React.PureComponent<Props, State> {
           </td>
         </tr>
         {
-          detailRows && this.state.innerDetailVisible ?
-          detailRows.map((detailRow: Row, j: number) => {
+          detailRows && this.state.innerDetailVisible
+          ? detailRows.map((detailRow: Row, j: number) => {
             return (
             <tr key={j}>
             {
               detailRow.content.map((detailCell: Cell, k: number) => {
-                return k === 0 ?
-                  <StyledInnerStartTD key={k}>
+                return k === 0
+                  ? <StyledInnerStartTD key={k}>
                     <StyledSpaceDiv />
                   </StyledInnerStartTD>
-                :
-                  <StyledAdPortionTD key={k}>
+                : <StyledAdPortionTD key={k}>
                     {detailCell.content}
                   </StyledAdPortionTD>
               })

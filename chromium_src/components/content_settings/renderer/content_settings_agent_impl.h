@@ -14,7 +14,7 @@ friend class BraveContentSettingsAgentImpl;
                                   const blink::WebURL& document_url) const; \
   bool IsAllowlistedForContentSettings
 
-#include "../../../../../components/content_settings/renderer/content_settings_agent_impl.h"
+#include "src/components/content_settings/renderer/content_settings_agent_impl.h"
 #undef IsAllowlistedForContentSettings
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_RENDERER_CONTENT_SETTINGS_AGENT_IMPL_H_

@@ -1,19 +1,5 @@
 {
-  "version": 7,
-  "issuers": [
-    {
-      "name": "confirmation",
-      "publicKey": "qi1Vl8YrPEZliN5wmBgLTuGkbk8K505QwlXLTZjUd34="
-    },
-    {
-      "name": "0.01BAT",
-      "publicKey": "VihGXGoiQ5Fjxe4SrskIVMcmERa1LoAgvhFxxfLmNEI="
-    },
-    {
-      "name": "0.05BAT",
-      "publicKey": "mmXlFlskcF+LjQmJTPQUmoDMV8Co2r+0eNqSyzCywmk="
-    }
-  ],
+  "version": 9,
   "ping": 7200000,
   "campaigns": [
     {
@@ -68,7 +54,7 @@
               }
             },
             {
-              "creativeInstanceId": "532943cb-b564-456f-9328-3eb7f7b79cb9",
+              "creativeInstanceId": "60001aa5-9368-45d2-81fc-e69887d278c5",
               "type": {
                 "code": "promoted_content_all_v1",
                 "name": "promoted_content",
@@ -76,7 +62,7 @@
                 "version": 1
               },
               "payload": {
-                "feed": "https://brave.com/3",
+                "feed": "https://brave.com/1/promoted_content_ad",
                 "title": "Promoted Content 1",
                 "domain": "Domain 1",
                 "category": "Category 1",
@@ -84,12 +70,29 @@
                 "contentType": "Content Type 1",
                 "description": "Test Promoted Content Ad Campaign 1"
               }
+            },
+            {
+              "creativeInstanceId": "30db5f7b-dba3-48a3-b299-c9bd9c67da65",
+              "type": {
+                "code": "inline_content_all_v1",
+                "name": "inline_content",
+                "platform": "all",
+                "version": 1
+              },
+              "payload": {
+                "title": "Inline Content 1",
+                "description": "Test Inline Content Ad Campaign 1",
+                "imageUrl": "https://www.brave.com/1/image.png",
+                "dimensions": "200x100",
+                "ctaText": "Call to Action Text 1",
+                "targetUrl": "https://brave.com/1/inline_content_ad"
+              }
             }
           ],
           "segments": [
             {
               "code": "yNl0N-ers2",
-              "name": "Technology & Computing"
+              "name": "technology & computing"
             }
           ],
           "oses": [

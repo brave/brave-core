@@ -14,45 +14,54 @@ import App from './components/app'
 import store from './store'
 import * as adblockActions from './actions/adblock_actions'
 
-window.cr.define('brave_adblock', function () {
-  'use strict'
+function getCustomFilters () {
+  const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+  actions.getCustomFilters()
+}
 
-  function getCustomFilters () {
-    const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
-    actions.getCustomFilters()
-  }
+function getRegionalLists () {
+  const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+  actions.getRegionalLists()
+}
 
-  function getRegionalLists () {
-    const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
-    actions.getRegionalLists()
-  }
+function getListSubscriptions () {
+  const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+  actions.getListSubscriptions()
+}
 
-  function initialize () {
-    getCustomFilters()
-    getRegionalLists()
-    render(
-      <Provider store={store}>
-        <App />
-      </Provider>,
-      document.getElementById('root'))
-    window.i18nTemplate.process(window.document, window.loadTimeData)
-  }
+function initialize () {
+  getCustomFilters()
+  getRegionalLists()
+  getListSubscriptions()
+  render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('root'))
+}
 
-  function onGetCustomFilters (customFilters: string) {
-    const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
-    actions.onGetCustomFilters(customFilters)
-  }
+function onGetCustomFilters (customFilters: string) {
+  const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+  actions.onGetCustomFilters(customFilters)
+}
 
-  function onGetRegionalLists (regionalLists: AdBlock.FilterList[]) {
-    const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
-    actions.onGetRegionalLists(regionalLists)
-  }
+function onGetRegionalLists (regionalLists: AdBlock.FilterList[]) {
+  const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+  actions.onGetRegionalLists(regionalLists)
+}
 
-  return {
-    initialize,
-    onGetCustomFilters,
-    onGetRegionalLists
-  }
-})
+function onGetListSubscriptions (listSubscriptions: AdBlock.SubscriptionInfo[]) {
+  const actions = bindActionCreators(adblockActions, store.dispatch.bind(store))
+  actions.onGetListSubscriptions(listSubscriptions)
+}
 
-document.addEventListener('DOMContentLoaded', window.brave_adblock.initialize)
+// Expose functions to Page Handlers.
+// TODO(petemill): Use event listeners instead.
+// @ts-expect-error
+window.brave_adblock = {
+  onGetCustomFilters,
+  onGetRegionalLists,
+  onGetListSubscriptions
+}
+
+document.addEventListener('DOMContentLoaded', initialize)

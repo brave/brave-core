@@ -9,13 +9,14 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/optional.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/tor_launcher_factory.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "brave/components/tor/tor_profile_service.h"
 #include "net/proxy_resolution/proxy_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
 class BrowserContext;
@@ -28,8 +29,8 @@ class ProxyConfigServiceTor;
 
 namespace tor {
 
-using NewTorCircuitCallback = base::OnceCallback<void(
-    const base::Optional<net::ProxyInfo>& proxy_info)>;
+using NewTorCircuitCallback =
+    base::OnceCallback<void(const absl::optional<net::ProxyInfo>& proxy_info)>;
 
 class TorProfileServiceImpl : public TorProfileService,
                               public BraveTorClientUpdater::Observer,
@@ -37,6 +38,8 @@ class TorProfileServiceImpl : public TorProfileService,
  public:
   TorProfileServiceImpl(content::BrowserContext* context,
                         BraveTorClientUpdater* tor_client_updater);
+  TorProfileServiceImpl(const TorProfileServiceImpl&) = delete;
+  TorProfileServiceImpl& operator=(const TorProfileServiceImpl&) = delete;
   ~TorProfileServiceImpl() override;
 
   // TorProfileService:
@@ -55,6 +58,7 @@ class TorProfileServiceImpl : public TorProfileService,
   void LaunchTor();
 
   base::FilePath GetTorExecutablePath() const;
+  base::FilePath GetTorrcPath() const;
   base::FilePath GetTorDataPath() const;
   base::FilePath GetTorWatchPath() const;
 
@@ -63,11 +67,10 @@ class TorProfileServiceImpl : public TorProfileService,
 
   content::BrowserContext* context_ = nullptr;
   BraveTorClientUpdater* tor_client_updater_ = nullptr;
-  TorLauncherFactory* tor_launcher_factory_;  // Singleton
-  net::ProxyConfigServiceTor* proxy_config_service_;  // NOT OWNED
+  raw_ptr<TorLauncherFactory> tor_launcher_factory_ = nullptr;  // Singleton
+  raw_ptr<net::ProxyConfigServiceTor> proxy_config_service_ =
+      nullptr;  // NOT OWNED
   base::WeakPtrFactory<TorProfileServiceImpl> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(TorProfileServiceImpl);
 };
 
 }  // namespace tor

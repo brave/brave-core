@@ -9,12 +9,11 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/decentralized_dns/constants.h"
-#include "brave/components/decentralized_dns/pref_names.h"
-#include "brave/components/decentralized_dns/utils.h"
+#include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_ports.h"
@@ -34,10 +33,21 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+#include "brave/components/decentralized_dns/constants.h"
+#include "brave/components/decentralized_dns/pref_names.h"
+#include "brave/components/decentralized_dns/utils.h"
+#endif
+
 namespace {
 
 constexpr char kTestProfileName[] = "TestProfile";
-
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+const GURL& GetDecentralizedTLDURL() {
+  static const GURL url("https://brave.crypto/");
+  return url;
+}
+#endif
 const GURL& GetIPFSURI() {
   static const GURL ipfs_url(
       "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/"
@@ -65,6 +75,10 @@ namespace ipfs {
 class ContentBrowserClientHelperUnitTest : public testing::Test {
  public:
   ContentBrowserClientHelperUnitTest() = default;
+  ContentBrowserClientHelperUnitTest(
+      const ContentBrowserClientHelperUnitTest&) = delete;
+  ContentBrowserClientHelperUnitTest& operator=(
+      const ContentBrowserClientHelperUnitTest&) = delete;
   ~ContentBrowserClientHelperUnitTest() override = default;
 
   void SetUp() override {
@@ -73,7 +87,6 @@ class ContentBrowserClientHelperUnitTest : public testing::Test {
     TestingBrowserProcess* browser_process = TestingBrowserProcess::GetGlobal();
     profile_manager_.reset(new TestingProfileManager(browser_process));
     ASSERT_TRUE(profile_manager_->SetUp());
-
     profile_ = profile_manager_->CreateTestingProfile(kTestProfileName);
 
     web_contents_ =
@@ -85,7 +98,17 @@ class ContentBrowserClientHelperUnitTest : public testing::Test {
     profile_ = nullptr;
     profile_manager_->DeleteTestingProfile(kTestProfileName);
   }
-
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+  bool ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes type) {
+    local_state()->SetInteger(
+        decentralized_dns::kUnstoppableDomainsResolveMethod,
+        static_cast<int>(type));
+    GURL ipfs_uri = GetDecentralizedTLDURL();
+    bool result = HandleIPFSURLRewrite(&ipfs_uri, browser_context());
+    EXPECT_EQ(ipfs_uri, GetDecentralizedTLDURL());
+    return result;
+  }
+#endif
   content::WebContents* web_contents() { return web_contents_.get(); }
 
   // Helper that creates simple test guest profile.
@@ -97,7 +120,6 @@ class ContentBrowserClientHelperUnitTest : public testing::Test {
 
   Profile* profile() { return profile_; }
   PrefService* local_state() { return profile_manager_->local_state()->Get(); }
-
   content::BrowserContext* browser_context() {
     return web_contents()->GetBrowserContext();
   }
@@ -116,11 +138,9 @@ class ContentBrowserClientHelperUnitTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   content::RenderViewHostTestEnabler test_render_host_factories_;
   std::unique_ptr<content::WebContents> web_contents_;
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
   std::unique_ptr<TestingProfileManager> profile_manager_;
   base::test::ScopedFeatureList feature_list_;
-
-  DISALLOW_COPY_AND_ASSIGN(ContentBrowserClientHelperUnitTest);
 };
 
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteDisabled) {
@@ -207,25 +227,32 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteLocal) {
   replacements.SetPortStr(port);
   gateway_url = gateway_url.ReplaceComponents(replacements);
 
-  ASSERT_EQ(
-      ipfs::GetConfiguredBaseGateway(browser_context(), chrome::GetChannel()),
-      gateway_url);
+  ASSERT_EQ(ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
+                                           chrome::GetChannel()),
+            gateway_url);
 
-  std::string source = "http://test.com.ipns.localhost:8000/";
-  GURL ipns_uri(source);
+  std::string source = "http://test.com.ipns.localhost/#ref";
+  GURL ipns_uri(GURL(source).ReplaceComponents(replacements));
+  ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), "ipns://test.com/#ref");
+
+  source = "http://test.com.ipns.localhost:8000/";
+  ipns_uri = GURL(source);
   ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
   ASSERT_EQ(ipns_uri.spec(), source);
 
-  ipns_uri = GURL("http://test.com.ipns.localhost/");
+  ipns_uri = GURL("http://wrongcidandbaddomain.ipns.localhost/#ref");
   ipns_uri = ipns_uri.ReplaceComponents(replacements);
+  source = ipns_uri.spec();
   ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), source);
 }
 
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteGateway) {
   profile()->GetPrefs()->SetInteger(
       kIPFSResolveMethod,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
-  ASSERT_EQ(ipfs::GetConfiguredBaseGateway(browser_context(),
+  ASSERT_EQ(ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
                                            version_info::Channel::UNKNOWN),
             GURL("https://dweb.link/"));
 
@@ -241,7 +268,7 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteGateway) {
 
   profile()->GetPrefs()->SetString(kIPFSPublicGatewayAddress,
                                    "http://localhost:8080");
-  ASSERT_EQ(ipfs::GetConfiguredBaseGateway(browser_context(),
+  ASSERT_EQ(ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
                                            version_info::Channel::UNKNOWN),
             GURL("http://localhost:8080"));
 
@@ -260,7 +287,12 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLReverseRewriteGateway) {
   ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
   ASSERT_EQ(ipns_uri.spec(), source);
 
-  source = "http://test.com.ipns.localhost:8080/";
+  source = "http://test.com.ipns.localhost:8080/#some-ref";
+  ipns_uri = GURL(source);
+  ASSERT_TRUE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
+  ASSERT_EQ(ipns_uri.spec(), "ipns://test.com/#some-ref");
+
+  source = "https://wrongcidandbaddomain.ipns.localhost:8080/";
   ipns_uri = GURL(source);
   ASSERT_FALSE(HandleIPFSURLReverseRewrite(&ipns_uri, browser_context()));
   ASSERT_EQ(ipns_uri.spec(), source);
@@ -289,4 +321,36 @@ TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteInternal) {
   ASSERT_TRUE(RedirectedToInternalPage(IPFSResolveMethodTypes::IPFS_DISABLED));
 }
 
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
+TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteCrypto) {
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod, static_cast<int>(IPFSResolveMethodTypes::IPFS_LOCAL));
+  ASSERT_TRUE(
+      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::ETHEREUM));
+  ASSERT_FALSE(ResolveUnstoppableURL(
+      decentralized_dns::ResolveMethodTypes::DNS_OVER_HTTPS));
+  ASSERT_FALSE(
+      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::DISABLED));
+
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
+  ASSERT_FALSE(
+      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::ETHEREUM));
+  ASSERT_FALSE(ResolveUnstoppableURL(
+      decentralized_dns::ResolveMethodTypes::DNS_OVER_HTTPS));
+  ASSERT_FALSE(
+      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::DISABLED));
+
+  profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
+  ASSERT_FALSE(
+      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::ETHEREUM));
+  ASSERT_FALSE(ResolveUnstoppableURL(
+      decentralized_dns::ResolveMethodTypes::DNS_OVER_HTTPS));
+  ASSERT_FALSE(
+      ResolveUnstoppableURL(decentralized_dns::ResolveMethodTypes::DISABLED));
+}
+#endif
 }  // namespace ipfs

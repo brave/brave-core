@@ -40,7 +40,7 @@
                 android:layout_columnSpan="2"
                 android:visibility="visible"/>
 
-            <Button
+            <android.widget.Button
                     android:id="@+id/btn_verify_wallet"
                     android:layout_height="25dp"
                     android:layout_width="wrap_content"
@@ -165,7 +165,7 @@
                     android:gravity="center"
                     android:layout_gravity="center">
 
-                    <Button
+                    <android.widget.Button
                         android:id="@+id/br_add_funds"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
@@ -184,7 +184,7 @@
                         android:visibility="gone"
                         tools:ignore="ButtonStyle"/>
 
-                    <Button
+                    <android.widget.Button
                         android:id="@+id/br_rewards_settings"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"

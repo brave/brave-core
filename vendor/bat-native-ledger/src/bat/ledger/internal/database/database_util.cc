@@ -11,7 +11,7 @@
 
 namespace {
 
-const int kCurrentVersionNumber = 32;
+const int kCurrentVersionNumber = 34;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace
@@ -198,9 +198,9 @@ std::string GenerateStringInCase(const std::vector<std::string>& items) {
     return "";
   }
 
-  const std::string items_join = base::JoinString(items, "\", \"");
+  const std::string items_join = base::JoinString(items, "', '");
 
-  return base::StringPrintf("\"%s\"", items_join.c_str());
+  return base::StringPrintf("'%s'", items_join.c_str());
 }
 
 }  // namespace database

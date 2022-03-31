@@ -17,7 +17,6 @@ class BraveTabStrip : public TabStrip {
 
  private:
   // TabStrip overrides:
-  bool ShouldHideCloseButtonForTab(Tab* tab) const override;
   SkColor GetTabSeparatorColor() const override;
 };
 

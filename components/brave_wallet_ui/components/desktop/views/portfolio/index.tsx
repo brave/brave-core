@@ -2,37 +2,40 @@ import * as React from 'react'
 
 // Constants
 import {
-  ChartTimelineType,
   PriceDataObjectType,
-  AssetOptionType,
-  RPCResponseType
+  AccountTransactions,
+  BraveWallet,
+  WalletAccountType,
+  UserAssetInfoType,
+  DefaultCurrencies,
+  AddAccountNavTypes
 } from '../../../../constants/types'
-import locale from '../../../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
+import { CurrencySymbols } from '../../../../utils/currency-symbols'
 
 // Utils
-import { formatePrices } from '../../../../utils/format-prices'
+import { sortTransactionByDate } from '../../../../utils/tx-utils'
+import { getTokensNetwork, getTokensCoinType } from '../../../../utils/network-utils'
+import Amount from '../../../../utils/amount'
 
 // Options
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
-import { AssetOptions } from '../../../../options/asset-options'
 
 // Components
-import { SearchBar, BackButton } from '../../../shared'
+import { BackButton, LoadingSkeleton, withPlaceholderIcon } from '../../../shared'
 import {
   ChartControlBar,
   LineChart,
-  PortfolioAssetItem,
-  AddButton,
-  PortfolioAccountItem,
-  PortfolioTransactionItem
+  EditVisibleAssetsModal,
+  WithHideBalancePlaceholder
 } from '../../'
 
-// Mock Data
-import { PriceHistoryMockData } from '../../../../stories/mock-data/price-history-data'
-import { mockRPCResponse } from '../../../../stories/mock-data/rpc-response'
-import { mockUserAccounts } from '../../../../stories/mock-data/user-accounts'
-import { mockUserWalletPreferences } from '../../../../stories/mock-data/user-wallet-preferences'
-import { CurrentPriceMockData } from '../../../../stories/mock-data/current-price-data'
+// import NFTDetails from './components/nft-details'
+import TokenLists from './components/token-lists'
+import AccountsAndTransactionsList from './components/accounts-and-transctions-list'
+
+// Hooks
+import { usePricing, useTransactionParser } from '../../../../common/hooks'
 
 // Styled Components
 import {
@@ -40,291 +43,356 @@ import {
   TopRow,
   BalanceTitle,
   BalanceText,
-  ButtonRow,
   AssetIcon,
   AssetRow,
+  AssetColumn,
   PriceRow,
   AssetNameText,
   DetailText,
   InfoColumn,
   PriceText,
-  DividerText,
-  SubDivider,
   PercentBubble,
   PercentText,
-  ArrowIcon
+  ArrowIcon,
+  BalanceRow,
+  ShowBalanceButton,
+  NetworkDescription
 } from './style'
 
 export interface Props {
   toggleNav: () => void
-}
-
-interface MockAPIResponse {
-  usd: string
-  btc: number
-  change24Hour: number
+  onChangeTimeline: (path: BraveWallet.AssetPriceTimeframe) => void
+  onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
+  onSelectAccount: (account: WalletAccountType) => void
+  onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
+  onAddCustomAsset: (token: BraveWallet.BlockchainToken) => void
+  onShowVisibleAssetsModal: (showModal: boolean) => void
+  onUpdateVisibleAssets: (updatedTokensList: BraveWallet.BlockchainToken[]) => void
+  showVisibleAssetsModal: boolean
+  defaultCurrencies: DefaultCurrencies
+  addUserAssetError: boolean
+  selectedNetwork: BraveWallet.NetworkInfo
+  networkList: BraveWallet.NetworkInfo[]
+  userAssetList: UserAssetInfoType[]
+  accounts: WalletAccountType[]
+  selectedTimeline: BraveWallet.AssetPriceTimeframe
+  selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
+  selectedAsset: BraveWallet.BlockchainToken | undefined
+  selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
+  selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
+  selectedAssetPriceHistory: PriceDataObjectType[]
+  portfolioPriceHistory: PriceDataObjectType[]
+  portfolioBalance: string
+  transactions: AccountTransactions
+  isLoading: boolean
+  fullAssetList: BraveWallet.BlockchainToken[]
+  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
+  isFetchingPortfolioPriceHistory: boolean
+  transactionSpotPrices: BraveWallet.AssetPrice[]
+  onRetryTransaction: (transaction: BraveWallet.TransactionInfo) => void
+  onSpeedupTransaction: (transaction: BraveWallet.TransactionInfo) => void
+  onCancelTransaction: (transaction: BraveWallet.TransactionInfo) => void
+  onFindTokenInfoByContractAddress: (contractAddress: string) => void
+  foundTokenInfoByContractAddress: BraveWallet.BlockchainToken | undefined
 }
 
 const Portfolio = (props: Props) => {
-  const { toggleNav } = props
-  const createdAssetList = React.useMemo(() => {
-    const userList = mockUserWalletPreferences.viewableAssets
-    return AssetOptions.filter((asset) => userList.includes(asset.id))
-  }, [mockUserWalletPreferences.viewableAssets])
-  const [userAssetList, setUserAssetList] = React.useState<AssetOptionType[]>(createdAssetList)
-  const [selectedTimeline, setSelectedTimeline] = React.useState<ChartTimelineType>('24HRS')
-  const [priceData, setPriceData] = React.useState<PriceDataObjectType[]>(PriceHistoryMockData.slice(15, 20))
-  const [selectedAsset, setSelectedAsset] = React.useState<AssetOptionType>()
+  const {
+    toggleNav,
+    onChangeTimeline,
+    onSelectAsset,
+    onSelectAccount,
+    onClickAddAccount,
+    onAddCustomAsset,
+    onShowVisibleAssetsModal,
+    onUpdateVisibleAssets,
+    showVisibleAssetsModal,
+    defaultCurrencies,
+    addUserAssetError,
+    userVisibleTokensInfo,
+    selectedNetwork,
+    fullAssetList,
+    portfolioPriceHistory,
+    selectedAssetPriceHistory,
+    selectedAssetFiatPrice,
+    selectedAssetCryptoPrice,
+    selectedTimeline,
+    selectedPortfolioTimeline,
+    accounts,
+    networkList,
+    selectedAsset,
+    portfolioBalance,
+    transactions,
+    userAssetList,
+    isLoading,
+    isFetchingPortfolioPriceHistory,
+    transactionSpotPrices,
+    onRetryTransaction,
+    onSpeedupTransaction,
+    onCancelTransaction,
+    onFindTokenInfoByContractAddress,
+    foundTokenInfoByContractAddress
+  } = props
 
-  // This will change once we hit a real api for pricing
-  const timeline = (path: ChartTimelineType) => {
-    switch (path) {
-      case '5MIN':
-        return 17
-      case '24HRS':
-        return 15
-      case '7Day':
-        return 12
-      case '1Month':
-        return 10
-      case '3Months':
-        return 8
-      case '1Year':
-        return 4
-      case 'AllTime':
-        return 0
+  const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(userAssetList)
+  const [fullPortfolioFiatBalance, setFullPortfolioFiatBalance] = React.useState<string>(portfolioBalance)
+  const [hoverBalance, setHoverBalance] = React.useState<string>()
+  const [hoverPrice, setHoverPrice] = React.useState<string>()
+  const [hideBalances, setHideBalances] = React.useState<boolean>(false)
+  const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
+
+  const onSetFilteredAssetList = (filteredList: UserAssetInfoType[]) => {
+    setfilteredAssetList(filteredList)
+  }
+
+  React.useEffect(() => {
+    if (portfolioBalance !== '') {
+      setFullPortfolioFiatBalance(portfolioBalance)
     }
-  }
+  }, [portfolioBalance])
 
-  // This updates the price chart timeline
-  const changeTimeline = (path: ChartTimelineType) => {
-    setPriceData(PriceHistoryMockData.slice(timeline(path), 20))
-    setSelectedTimeline(path)
-  }
+  React.useEffect(() => {
+    setfilteredAssetList(userAssetList)
+  }, [userAssetList])
 
-  // This returns the price info of an asset, will change once we have an api
-  const priceApi = (asset: AssetOptionType) => {
-    const data = CurrentPriceMockData.find((coin) => coin.symbol === asset.symbol)
-    const usdValue = data ? data.usd : 0
-    const btcValue = data ? data.btc : 0
-    const change24Hour = data ? data.change24Hour : 0
-    const response: MockAPIResponse = {
-      usd: formatePrices(usdValue),
-      btc: btcValue,
-      change24Hour: change24Hour
-    }
-    return response
-  }
+  const portfolioHistory = React.useMemo(() => {
+    return portfolioPriceHistory
+  }, [portfolioPriceHistory])
 
-  // This returns info about a single asset
-  const assetInfo = (account: RPCResponseType) => {
-    return account.assets.find((a) => a.id === selectedAsset?.id)
-  }
-
-  // This calculates the fiat value of a single accounts asset balance
-  const singleAccountFiatBalance = (account: RPCResponseType) => {
-    const asset = assetInfo(account)
-    const data = CurrentPriceMockData.find((coin) => coin.symbol === asset?.symbol)
-    const value = data ? asset ? asset.balance * data.usd : 0 : 0
-    return formatePrices(value)
-  }
-
-  // This returns the balance of a single accounts asset
-  const singleAccountBalance = (account: RPCResponseType) => {
-    const balance = assetInfo(account)?.balance
-    return balance ? balance.toString() : ''
-  }
-
-  // This returns a list of accounts with a balance of the selected asset
-  const filteredAccountsByAsset = React.useMemo(() => {
-    const id = selectedAsset ? selectedAsset.id : ''
-    const list = mockRPCResponse.filter((account) => account.assets.map((assetID) => assetID.id).includes(id))
-    return list
-  }, [selectedAsset])
-
-  // This will return the name of an account from user preferences
-  const accountName = (asset: RPCResponseType) => {
-    const foundName = mockUserAccounts.find((account) => account.address === asset.address)?.name
-    const name = foundName ? foundName : locale.account
-    return name
-  }
-
-  // This filters a list of assets when the user types in search bar
-  const filterAssets = (event: any) => {
-    const search = event.target.value
-    if (search === '') {
-      setUserAssetList(createdAssetList)
-    } else {
-      const filteredList = createdAssetList.filter((asset) => {
-        return (
-          asset.name.toLowerCase() === search.toLowerCase() ||
-          asset.name.toLowerCase().startsWith(search.toLowerCase()) ||
-          asset.symbol.toLocaleLowerCase() === search.toLowerCase() ||
-          asset.symbol.toLowerCase().startsWith(search.toLowerCase())
-        )
-      })
-      setUserAssetList(filteredList)
-    }
-  }
-
-  // This returns a list of transactions from all accounts filtered by selected asset
-  const transactions = React.useMemo(() => {
-    const response = mockRPCResponse
-    const transactionList = response.map((account) => {
-      const id = selectedAsset ? selectedAsset.id : ''
-      return account.transactions.find((item) => item.assetId === id)
-    })
-    const removedEmptyTransactions = transactionList.filter(x => x)
-    return removedEmptyTransactions
-  }, [selectedAsset])
-
-  // This will scrape all of the user's accounts and combine the balances for a single asset
-  const scrapedFullAssetBalance = (asset: AssetOptionType) => {
-    const response = mockRPCResponse
-    const amounts = response.map((account) => {
-      const balance = account.assets.find((item) => item.id === asset.id)?.balance
-      return balance ? balance : 0
-    })
-    const grandTotal = amounts.reduce(function (a, b) {
-      return a + b
-    }, 0)
-    return grandTotal
-  }
-
-  // This will scrape all of the user's accounts and combine the fiat value for a single asset
-  const scrapedFullAssetFiatBalance = (asset: AssetOptionType) => {
-    const fullBallance = scrapedFullAssetBalance(asset)
-    const price = CurrentPriceMockData.find((coin) => coin.symbol === asset?.symbol)?.usd
-    const value = price ? price * fullBallance : 0
-    return value
-  }
-
-  // This will scrape all of the user's accounts and combine the fiat value for every asset
-  const scrapedFullPortfolioBalance = () => {
-    const amountList = createdAssetList.map((asset) => {
-      return scrapedFullAssetFiatBalance(asset)
-    })
-    const grandTotal = amountList.reduce(function (a, b) {
-      return a + b
-    }, 0)
-    return formatePrices(grandTotal)
-  }
-
-  const addCoin = () => {
-    alert('Will Show New Coins To Add!!')
-  }
-
-  const addAccount = () => {
-    alert('Will Show Add Account!!')
-  }
-
-  const moreDetails = () => {
-    alert('Will Show More Details Popover!!')
-  }
-
-  const selectAsset = (asset: AssetOptionType) => () => {
-    setSelectedAsset(asset)
+  const selectAsset = (asset: BraveWallet.BlockchainToken) => () => {
+    onSelectAsset(asset)
     toggleNav()
   }
 
   const goBack = () => {
-    setSelectedAsset(undefined)
-    setUserAssetList(createdAssetList)
+    onSelectAsset(undefined)
+    setfilteredAssetList(userAssetList)
     toggleNav()
   }
+
+  const onUpdateBalance = (value: number | undefined) => {
+    if (!selectedAsset) {
+      if (value) {
+        setHoverBalance(new Amount(value).formatAsFiat())
+      } else {
+        setHoverBalance(undefined)
+      }
+    } else {
+      if (value) {
+        setHoverPrice(new Amount(value).formatAsFiat())
+      } else {
+        setHoverPrice(undefined)
+      }
+    }
+  }
+
+  const toggleShowVisibleAssetModal = () => {
+    onShowVisibleAssetsModal(!showVisibleAssetsModal)
+  }
+
+  const priceHistory = React.useMemo(() => {
+    if (parseFloat(portfolioBalance) === 0) {
+      return []
+    } else {
+      return portfolioHistory
+    }
+  }, [portfolioHistory, portfolioBalance])
+
+  const selectedAssetTransactions = React.useMemo((): BraveWallet.TransactionInfo[] => {
+    const filteredTransactions = Object.values(transactions).flatMap((txInfo) =>
+      txInfo.flatMap((tx) =>
+        parseTransaction(tx).symbol === selectedAsset?.symbol ? tx : []
+      ))
+
+    return sortTransactionByDate(filteredTransactions, 'descending')
+  }, [selectedAsset, transactions])
+
+  const fullAssetBalances = React.useMemo(() => {
+    if (selectedAsset?.contractAddress === '') {
+      return filteredAssetList.find(
+        (asset) =>
+          asset.asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase() &&
+          asset.asset.chainId === selectedAsset?.chainId
+      )
+    }
+    return filteredAssetList.find(
+      (asset) =>
+        asset.asset.contractAddress.toLowerCase() === selectedAsset?.contractAddress.toLowerCase() &&
+        asset.asset.chainId === selectedAsset?.chainId
+    )
+  }, [filteredAssetList, selectedAsset])
+
+  const AssetIconWithPlaceholder = React.useMemo(() => {
+    return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
+  }, [])
+
+  const formattedFullAssetBalance = fullAssetBalances?.assetBalance
+    ? '(' + new Amount(fullAssetBalances?.assetBalance ?? '')
+      .divideByDecimals(selectedAsset?.decimals ?? 18)
+      .formatAsAsset(6, selectedAsset?.symbol ?? '') + ')'
+    : ''
+
+  const { computeFiatAmount } = usePricing(transactionSpotPrices)
+  const fullAssetFiatBalance = fullAssetBalances?.assetBalance
+    ? computeFiatAmount(
+      fullAssetBalances.assetBalance,
+      fullAssetBalances.asset.symbol,
+      fullAssetBalances.asset.decimals
+    )
+    : Amount.empty()
+
+  const onToggleHideBalances = () => {
+    setHideBalances(!hideBalances)
+  }
+
+  const filteredAccountsByCoinType = React.useMemo(() => {
+    if (!selectedAsset) {
+      return []
+    }
+    const coinType = getTokensCoinType(networkList, selectedAsset)
+    return accounts.filter((account) => account.coin === coinType)
+  }, [networkList, accounts, selectedAsset])
+
+  const selectedAssetsNetwork = React.useMemo(() => {
+    if (!selectedAsset) {
+      return
+    }
+    return getTokensNetwork(networkList, selectedAsset)
+  }, [selectedAsset, networkList])
 
   return (
     <StyledWrapper>
       <TopRow>
-        {!selectedAsset ? (
-          <BalanceTitle>{locale.balance}</BalanceTitle>
-        ) : (
-          <BackButton onSubmit={goBack} />
-        )}
-        <ChartControlBar
-          onSubmit={changeTimeline}
-          selectedTimeline={selectedTimeline}
-          timelineOptions={ChartTimelineOptions}
-        />
+        <BalanceRow>
+          {!selectedAsset ? (
+            <BalanceTitle>{getLocale('braveWalletBalance')}</BalanceTitle>
+          ) : (
+            <BackButton onSubmit={goBack} />
+          )}
+        </BalanceRow>
+        <BalanceRow>
+          {!selectedAsset?.isErc721 &&
+            <ChartControlBar
+              onSubmit={onChangeTimeline}
+              selectedTimeline={selectedAsset ? selectedTimeline : selectedPortfolioTimeline}
+              timelineOptions={ChartTimelineOptions()}
+            />
+          }
+          <ShowBalanceButton
+            hideBalances={hideBalances}
+            onClick={onToggleHideBalances}
+          />
+        </BalanceRow>
       </TopRow>
       {!selectedAsset ? (
-        <BalanceText>${scrapedFullPortfolioBalance()}</BalanceText>
+        <WithHideBalancePlaceholder
+          size='big'
+          hideBalances={hideBalances}
+        >
+          <BalanceText>
+            {fullPortfolioFiatBalance !== ''
+              ? `${CurrencySymbols[defaultCurrencies.fiat]}${hoverBalance || fullPortfolioFiatBalance}`
+              : <LoadingSkeleton width={150} height={32} />
+            }
+          </BalanceText>
+        </WithHideBalancePlaceholder>
       ) : (
-        <InfoColumn>
-          <AssetRow>
-            <AssetIcon icon={selectedAsset.icon} />
-            <AssetNameText>{selectedAsset.name}</AssetNameText>
-          </AssetRow>
-          <DetailText>{selectedAsset.name} {locale.price} ({selectedAsset.symbol})</DetailText>
-          <PriceRow>
-            <PriceText>${priceApi(selectedAsset).usd}</PriceText>
-            <PercentBubble isDown={priceApi(selectedAsset).change24Hour < 0}>
-              <ArrowIcon isDown={priceApi(selectedAsset).change24Hour < 0} />
-              <PercentText>{priceApi(selectedAsset).change24Hour}%</PercentText>
-            </PercentBubble>
-          </PriceRow>
-          <DetailText>{priceApi(selectedAsset).btc} BTC</DetailText>
-        </InfoColumn>
+        <>
+          {!selectedAsset.isErc721 &&
+            <InfoColumn>
+              <AssetRow>
+                <AssetIconWithPlaceholder asset={selectedAsset} network={selectedAssetsNetwork} />
+                <AssetColumn>
+                  <AssetNameText>{selectedAsset.name}</AssetNameText>
+                  <NetworkDescription>{selectedAsset.symbol} on {selectedAssetsNetwork?.chainName ?? ''}</NetworkDescription>
+                </AssetColumn>
+              </AssetRow>
+              {/* <DetailText>{selectedAsset.name} {getLocale('braveWalletPrice')} ({selectedAsset.symbol})</DetailText> */}
+              <PriceRow>
+                <PriceText>{CurrencySymbols[defaultCurrencies.fiat]}{hoverPrice || (selectedAssetFiatPrice ? new Amount(selectedAssetFiatPrice.price).formatAsFiat() : 0.00)}</PriceText>
+                <PercentBubble isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}>
+                  <ArrowIcon isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false} />
+                  <PercentText>{selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange).toFixed(2) : 0.00}%</PercentText>
+                </PercentBubble>
+              </PriceRow>
+              <DetailText>
+                {
+                  selectedAssetCryptoPrice
+                    ? new Amount(selectedAssetCryptoPrice.price)
+                      .formatAsAsset(undefined, defaultCurrencies.crypto)
+                    : ''
+                }
+              </DetailText>
+            </InfoColumn>
+          }
+        </>
       )}
-      <LineChart priceData={priceData} />
-      {selectedAsset &&
-        <>
-          <DividerText>{locale.accounts}</DividerText>
-          <SubDivider />
-          {filteredAccountsByAsset.map((account) =>
-            <PortfolioAccountItem
-              key={account.address}
-              action={moreDetails}
-              assetTicker={selectedAsset.symbol}
-              name={accountName(account)}
-              address={account.address}
-              fiatBalance={singleAccountFiatBalance(account)}
-              assetBalance={singleAccountBalance(account)}
-            />
-          )}
-          <ButtonRow>
-            <AddButton
-              buttonType='secondary'
-              onSubmit={addAccount}
-              text={locale.addAccount}
-            />
-          </ButtonRow>
-          <DividerText>{locale.transactions}</DividerText>
-          <SubDivider />
-          {transactions.map((transaction) =>
-            <PortfolioTransactionItem
-              action={moreDetails}
-              key={transaction?.hash}
-              amount={transaction?.amount ? transaction.amount : 0}
-              from={transaction?.from ? transaction.from : ''}
-              to={transaction?.to ? transaction.to : ''}
-              ticker={selectedAsset.symbol}
-            />
-          )}
-        </>
+      {!selectedAsset?.isErc721 &&
+        <LineChart
+          isDown={selectedAsset && selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}
+          isAsset={!!selectedAsset}
+          priceData={selectedAsset ? selectedAssetPriceHistory : priceHistory}
+          onUpdateBalance={onUpdateBalance}
+          isLoading={selectedAsset ? isLoading : parseFloat(portfolioBalance) === 0 ? false : isFetchingPortfolioPriceHistory}
+          isDisabled={selectedAsset ? false : parseFloat(portfolioBalance) === 0}
+        />
       }
+
+      {/* Temp Commented out until we have an API to get NFT MetaData */}
+      {/* {selectedAsset?.isErc721 &&
+        <NFTDetails
+          selectedAsset={selectedAsset}
+          nftMetadata={}
+          defaultCurrencies={defaultCurrencies}
+          selectedNetwork={selectedNetwork}
+        />
+      } */}
+
+      <AccountsAndTransactionsList
+        accounts={filteredAccountsByCoinType}
+        defaultCurrencies={defaultCurrencies}
+        formattedFullAssetBalance={formattedFullAssetBalance}
+        fullAssetFiatBalance={fullAssetFiatBalance}
+        selectedAsset={selectedAsset}
+        selectedAssetTransactions={selectedAssetTransactions}
+        selectedNetwork={selectedAssetsNetwork ?? selectedNetwork}
+        transactionSpotPrices={transactionSpotPrices}
+        userVisibleTokensInfo={userVisibleTokensInfo}
+        onClickAddAccount={onClickAddAccount}
+        onSelectAccount={onSelectAccount}
+        onSelectAsset={selectAsset}
+        onCancelTransaction={onCancelTransaction}
+        onRetryTransaction={onRetryTransaction}
+        onSpeedupTransaction={onSpeedupTransaction}
+        hideBalances={hideBalances}
+        networkList={networkList}
+      />
       {!selectedAsset &&
-        <>
-          <SearchBar placeholder={locale.searchText} action={filterAssets} />
-          {userAssetList.map((asset) =>
-            <PortfolioAssetItem
-              action={selectAsset(asset)}
-              key={asset.id}
-              name={asset.name}
-              assetBalance={scrapedFullAssetBalance(asset)}
-              fiatBalance={formatePrices(scrapedFullAssetFiatBalance(asset))}
-              symbol={asset.symbol}
-              icon={asset.icon}
-            />
-          )}
-          <ButtonRow>
-            <AddButton
-              buttonType='secondary'
-              onSubmit={addCoin}
-              text={locale.addCoin}
-            />
-          </ButtonRow>
-        </>
+        <TokenLists
+          defaultCurrencies={defaultCurrencies}
+          userAssetList={userAssetList}
+          filteredAssetList={filteredAssetList}
+          tokenPrices={transactionSpotPrices}
+          networks={networkList}
+          onSetFilteredAssetList={onSetFilteredAssetList}
+          onSelectAsset={selectAsset}
+          onShowAssetModal={toggleShowVisibleAssetModal}
+          hideBalances={hideBalances}
+        />
+      }
+      {showVisibleAssetsModal &&
+        <EditVisibleAssetsModal
+          fullAssetList={fullAssetList}
+          userVisibleTokensInfo={userVisibleTokensInfo}
+          addUserAssetError={addUserAssetError}
+          onClose={toggleShowVisibleAssetModal}
+          onAddCustomAsset={onAddCustomAsset}
+          selectedNetwork={selectedNetwork}
+          networkList={networkList}
+          onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
+          foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
+          onUpdateVisibleAssets={onUpdateVisibleAssets}
+        />
       }
     </StyledWrapper>
   )

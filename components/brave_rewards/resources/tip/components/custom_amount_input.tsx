@@ -5,7 +5,6 @@
 import * as React from 'react'
 
 import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
-import { getExchangeCurrency } from './exchange_amount'
 import { ExchangeIcon } from './icons/exchange_icon'
 import { CaretIcon } from '../../shared/components/icons/caret_icon'
 
@@ -18,6 +17,8 @@ const amountFormat = new Intl.NumberFormat(undefined, {
 })
 
 type InputMode = 'bat' | 'exchange'
+
+const exchangeCurrency = 'USD'
 
 interface Props {
   amount: number
@@ -116,7 +117,7 @@ export function CustomAmountInput (props: Props) {
               data-test-id='custom-amount-input'
             />
             <span className='currency'>
-              {inputMode === 'bat' ? 'BAT' : getExchangeCurrency()}
+              {inputMode === 'bat' ? 'BAT' : exchangeCurrency}
             </span>
           </style.amountBox>
           {
@@ -134,7 +135,7 @@ export function CustomAmountInput (props: Props) {
         <style.exhangeBox>
           <span>{amountFormat.format(dependentAmount)}</span>
           <span className='currency'>
-            {inputMode === 'exchange' ? 'BAT' : getExchangeCurrency()}
+            {inputMode === 'exchange' ? 'BAT' : exchangeCurrency}
           </span>
         </style.exhangeBox>
       </style.form>

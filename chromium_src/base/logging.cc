@@ -12,4 +12,4 @@
 #define NACL_TC_REV 1
 #endif
 #endif
-#include "../../../base/logging.cc"
+#include "src/base/logging.cc"

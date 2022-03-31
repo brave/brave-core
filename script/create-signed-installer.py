@@ -11,7 +11,8 @@ def main():
         os.path.dirname(os.path.dirname(os.path.dirname(
             os.path.realpath(__file__)))),
         args.root_out_dir[0])
-    create_signed_installer(root_out_dir, args.brave_installer_exe[0], args.skip_signing)
+    create_signed_installer(
+        root_out_dir, args.brave_installer_exe[0], args.skip_signing)
 
 
 def parse_args():

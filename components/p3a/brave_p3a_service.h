@@ -8,13 +8,15 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_base.h"
-#include "base/timer/timer.h"
-#include "brave/components/brave_prochlo/brave_prochlo_message.h"
+#include "base/metrics/statistics_recorder.h"
+#include "base/timer/wall_clock_timer.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
+#include "brave/components/p3a/p3a_message.h"
 #include "url/gurl.h"
 
 class PrefRegistrySimple;
@@ -27,6 +29,7 @@ namespace brave {
 
 class BraveP3AScheduler;
 class BraveP3AUploader;
+class BraveP3ANewUploader;
 
 // Core class for Brave Privacy-Preserving Product Analytics machinery.
 // Works on UI thread. Refcounted to receive histogram updating callbacks
@@ -39,6 +42,9 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
                   std::string channel,
                   std::string week_of_install);
 
+  BraveP3AService(const BraveP3AService&) = delete;
+  BraveP3AService& operator=(const BraveP3AService&) = delete;
+
   static void RegisterPrefs(PrefRegistrySimple* registry, bool first_run);
 
   // Should be called right after constructor to subscribe to histogram
@@ -50,8 +56,9 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
   // BraveP3ALogStore::Delegate
-  std::string Serialize(base::StringPiece histogram_name,
-                        uint64_t value) override;
+  BraveP3ALogStore::LogForJsonMigration Serialize(
+      base::StringPiece histogram_name,
+      uint64_t value) override;
 
   // May be accessed from multiple threads, so this is thread-safe.
   bool IsActualMetric(base::StringPiece histogram_name) const override;
@@ -62,10 +69,10 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
 
   void MaybeOverrideSettingsFromCommandLine();
 
-  void InitPyxisMeta();
+  void InitMessageMeta();
 
   // Updates things that change over time: week of survey, etc.
-  void UpdatePyxisMeta();
+  void UpdateMessageMeta();
 
   void StartScheduledUpload();
 
@@ -103,11 +110,13 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   base::TimeDelta rotation_interval_;
   GURL upload_server_url_;
 
-  prochlo::MessageMetainfo pyxis_meta_;
+  MessageMetainfo message_meta_;
 
   // Components:
   std::unique_ptr<BraveP3ALogStore> log_store_;
   std::unique_ptr<BraveP3AUploader> uploader_;
+  // See `brave_p3a_new_uploader.h`
+  std::unique_ptr<BraveP3ANewUploader> new_uploader_;
   std::unique_ptr<BraveP3AScheduler> upload_scheduler_;
 
   // Used to store histogram values that are produced between constructing
@@ -115,9 +124,11 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   base::flat_map<base::StringPiece, size_t> histogram_values_;
 
   // Once fired we restart the overall uploading process.
-  base::OneShotTimer rotation_timer_;
+  base::WallClockTimer rotation_timer_;
 
-  DISALLOW_COPY_AND_ASSIGN(BraveP3AService);
+  std::vector<
+      std::unique_ptr<base::StatisticsRecorder::ScopedHistogramSampleObserver>>
+      histogram_sample_callbacks_;
 };
 
 }  // namespace brave

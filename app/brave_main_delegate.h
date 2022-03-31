@@ -8,11 +8,14 @@
 
 #include <string>
 
+#include "build/build_config.h"
 #include "chrome/app/chrome_main_delegate.h"
 
 // Chrome implementation of ContentMainDelegate.
 class BraveMainDelegate : public ChromeMainDelegate {
  public:
+  BraveMainDelegate(const BraveMainDelegate&) = delete;
+  BraveMainDelegate& operator=(const BraveMainDelegate&) = delete;
   BraveMainDelegate();
 
   // |exe_entry_point_ticks| is the time at which the main function of the
@@ -22,19 +25,10 @@ class BraveMainDelegate : public ChromeMainDelegate {
 
  protected:
   // content::ContentMainDelegate implementation:
-  bool BasicStartupComplete(int* exit_code) override;
-
   content::ContentBrowserClient* CreateContentBrowserClient() override;
   content::ContentRendererClient* CreateContentRendererClient() override;
   content::ContentUtilityClient* CreateContentUtilityClient() override;
   void PreSandboxStartup() override;
-
- private:
-#if defined(OS_ANDROID)
-  void AdjustSyncServiceUrlForAndroid(std::string* brave_sync_service_url);
-#endif  // defined(OS_ANDROID)
-
-  DISALLOW_COPY_AND_ASSIGN(BraveMainDelegate);
 };
 
 #endif  // BRAVE_APP_BRAVE_MAIN_DELEGATE_H_

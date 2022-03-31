@@ -9,7 +9,6 @@
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/new_tab_page_ad_info.h"
 
 namespace ads {
 namespace new_tab_page_ads {
@@ -23,8 +22,8 @@ void AdEventViewed::FireEvent(const NewTabPageAdInfo& ad) {
                                               << " and creative instance id "
                                               << ad.creative_instance_id);
 
-  LogAdEvent(ad, ConfirmationType::kViewed, [](const Result result) {
-    if (result != Result::SUCCESS) {
+  LogAdEvent(ad, ConfirmationType::kViewed, [](const bool success) {
+    if (!success) {
       BLOG(1, "Failed to log new tab page ad viewed event");
       return;
     }

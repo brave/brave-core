@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/url_util.h"
 
-#include "bat/ads/internal/logging.h"
+#include "base/check.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
@@ -39,10 +39,21 @@ std::string GetHostFromUrl(const std::string& url) {
   return gurl.host();
 }
 
-bool SameDomainOrHost(const std::string& url1, const std::string& url2) {
+bool SameDomainOrHost(const std::string& lhs, const std::string& rhs) {
   return net::registry_controlled_domains::SameDomainOrHost(
-      GURL(url1), GURL(url2),
+      GURL(lhs), GURL(rhs),
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+}
+
+bool DomainOrHostExists(const std::vector<std::string>& urls,
+                        const std::string& url) {
+  for (const auto& element : urls) {
+    if (SameDomainOrHost(element, url)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 }  // namespace ads

@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/tor/tor_profile_manager.h"
@@ -24,6 +25,7 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/geometry/size.h"
+#include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/text_constants.h"
@@ -43,11 +45,7 @@ constexpr SkColor kIconColor = SkColorSetRGB(0xf0, 0xf2, 0xff);
 constexpr SkColor kTextColor = SK_ColorWHITE;
 constexpr int kIconSize = 12;
 
-void OnTorProfileCreated(GURL onion_location,
-                         Profile* profile,
-                         Profile::CreateStatus status) {
-  if (status != Profile::CreateStatus::CREATE_STATUS_INITIALIZED)
-    return;
+void OnTorProfileCreated(GURL onion_location, Profile* profile) {
   Browser* browser = chrome::FindTabbedBrowser(profile, false);
   if (!browser)
     return;
@@ -62,6 +60,8 @@ void OnTorProfileCreated(GURL onion_location,
 class HighlightPathGenerator : public views::HighlightPathGenerator {
  public:
   HighlightPathGenerator() = default;
+  HighlightPathGenerator(const HighlightPathGenerator&) = delete;
+  HighlightPathGenerator& operator=(const HighlightPathGenerator&) = delete;
 
   // views::HighlightPathGenerator:
   SkPath GetHighlightPath(const views::View* view) override {
@@ -70,9 +70,6 @@ class HighlightPathGenerator : public views::HighlightPathGenerator {
     const int corner_radius = view->height() / 2;
     return SkPath().addRoundRect(rect, corner_radius, corner_radius);
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(HighlightPathGenerator);
 };
 
 class OnionLocationButtonView : public views::LabelButton {
@@ -82,8 +79,13 @@ class OnionLocationButtonView : public views::LabelButton {
                                         base::Unretained(this)),
                     l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_IN_TOR)),
         profile_(profile) {
-    if (profile->IsTor())
+    SetTooltipText(
+        l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT));
+    if (profile->IsTor()) {
       SetText(l10n_util::GetStringUTF16(IDS_LOCATION_BAR_ONION_AVAILABLE));
+      SetTooltipText(l10n_util::GetStringUTF16(
+          IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT));
+    }
     // Render vector icon
     const gfx::ImageSkia image =
         gfx::CreateVectorIcon(kOpenInTorIcon, kIconSize, kIconColor);
@@ -93,16 +95,21 @@ class OnionLocationButtonView : public views::LabelButton {
     SetEnabledTextColors(kTextColor);
     SetHorizontalAlignment(gfx::ALIGN_RIGHT);
     SetImageLabelSpacing(6);
-    SetInkDropMode(InkDropMode::ON);
+
+    auto* ink_drop = views::InkDrop::Get(this);
+    ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
     SetBorder(views::CreateEmptyBorder(
         GetLayoutInsets(LOCATION_BAR_ICON_INTERIOR_PADDING)));
     SetHasInkDropActionOnClick(true);
-    SetInkDropVisibleOpacity(kToolbarInkDropVisibleOpacity);
+    ink_drop->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
     UpdateBorder();
     // Ensure focus ring follows border
     views::HighlightPathGenerator::Install(
         this, std::make_unique<HighlightPathGenerator>());
   }
+
+  OnionLocationButtonView(const OnionLocationButtonView&) = delete;
+  OnionLocationButtonView& operator=(const OnionLocationButtonView&) = delete;
 
   ~OnionLocationButtonView() override {}
 
@@ -127,10 +134,7 @@ class OnionLocationButtonView : public views::LabelButton {
   }
 
   GURL onion_location_;
-  Profile* profile_;
-
-  OnionLocationButtonView(const OnionLocationButtonView&) = delete;
-  OnionLocationButtonView& operator=(const OnionLocationButtonView&) = delete;
+  raw_ptr<Profile> profile_ = nullptr;
 };
 
 }  // namespace

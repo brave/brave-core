@@ -19,10 +19,9 @@ import {
 } from '../../ui/components'
 import { Grid, Column, Select, ControlWrapper } from 'brave-ui/components'
 
-import { ArrivingSoon } from './style'
-import { MoneyBagIcon } from '../../shared/components/icons/money_bag'
-import { formatMessage } from '../../shared/lib/locale_context'
-import { getDaysUntilRewardsPayment } from '../../shared/lib/pending_rewards'
+import { PaymentStatusView } from '../../shared/components/payment_status_view'
+
+import * as style from './style'
 
 // Utils
 import * as utils from '../utils'
@@ -73,7 +72,7 @@ class AdsBox extends React.Component<Props, State> {
       automaticallyDetectedAdsSubdivisionTargeting
     } = this.props.rewardsData.adsData
 
-    let subdivisions: [string, string][] = [
+    let subdivisions: Array<[string, string]> = [
       ['US-AL', 'Alabama'],
       ['US-AK', 'Alaska'],
       ['US-AZ', 'Arizona'],
@@ -135,7 +134,7 @@ class AdsBox extends React.Component<Props, State> {
     const subdivisionMap = new Map<string, string>(subdivisions)
     const subdivision = subdivisionMap.get(automaticallyDetectedAdsSubdivisionTargeting)
     if (subdivision && adsSubdivisionTargeting === 'AUTO') {
-      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetectedAs', { adsSubdivisionTarget : subdivision })])
+      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetectedAs', { adsSubdivisionTarget: subdivision })])
     } else {
       subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetect')])
     }
@@ -194,8 +193,8 @@ class AdsBox extends React.Component<Props, State> {
             </Select>
           </ControlWrapper>
         </Column>
-        { shouldAllowAdsSubdivisionTargeting ?
-          <>
+        { shouldAllowAdsSubdivisionTargeting
+          ? <>
             <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
               <ControlWrapper text={getLocale('adsSubdivisionTargetingTitle')}>
                 <Select
@@ -257,28 +256,28 @@ class AdsBox extends React.Component<Props, State> {
     })
   }
 
-  onThumbUpPress = (creativeInstanceId: string, creativeSetId: string, action: number) => {
-    this.props.actions.toggleAdThumbUp(creativeInstanceId, creativeSetId, action)
+  onThumbUpPress = (adContent: Rewards.AdContent) => {
+    this.props.actions.toggleAdThumbUp(adContent)
   }
 
-  onThumbDownPress = (creativeInstanceId: string, creativeSetId: string, action: number) => {
-    this.props.actions.toggleAdThumbDown(creativeInstanceId, creativeSetId, action)
+  onThumbDownPress = (adContent: Rewards.AdContent) => {
+    this.props.actions.toggleAdThumbDown(adContent)
   }
 
-  onOptInAction = (category: string, action: number) => {
-    this.props.actions.toggleAdOptInAction(category, action)
+  onOptIn = (category: string, action: number) => {
+    this.props.actions.toggleAdOptIn(category, action)
   }
 
-  onOptOutAction = (category: string, action: number) => {
-    this.props.actions.toggleAdOptOutAction(category, action)
+  onOptOut = (category: string, action: number) => {
+    this.props.actions.toggleAdOptOut(category, action)
   }
 
-  onMenuSave = (creativeInstanceId: string, creativeSetId: string, saved: boolean) => {
-    this.props.actions.toggleSaveAd(creativeInstanceId, creativeSetId, saved)
+  onMenuSave = (adContent: Rewards.AdContent) => {
+    this.props.actions.toggleSavedAd(adContent)
   }
 
-  onMenuFlag = (creativeInstanceId: string, creativeSetId: string, flagged: boolean) => {
-    this.props.actions.toggleFlagAd(creativeInstanceId, creativeSetId, flagged)
+  onMenuFlag = (adContent: Rewards.AdContent) => {
+    this.props.actions.toggleFlaggedAd(adContent)
   }
 
   getGroupedAdsHistory = (adsHistory: Rewards.AdsHistory[], savedOnly: boolean) => {
@@ -313,17 +312,22 @@ class AdsBox extends React.Component<Props, State> {
   }
 
   getAdDetailRow = (adHistory: Rewards.AdHistory) => {
+    let brand = adHistory.adContent.brand
+    if (brand.length > 50) {
+      brand = brand.substring(0, 50) + '...'
+    }
+
     let brandInfo = adHistory.adContent.brandInfo
     if (brandInfo.length > 50) {
       brandInfo = brandInfo.substring(0, 50) + '...'
     }
 
     const adContent: Rewards.AdContent = {
+      adType: adHistory.adContent.adType,
       creativeInstanceId: adHistory.adContent.creativeInstanceId,
       creativeSetId: adHistory.adContent.creativeSetId,
-      brand: adHistory.adContent.brand,
+      brand: brand,
       brandInfo: brandInfo,
-      brandLogo: adHistory.adContent.brandLogo,
       brandDisplayUrl: adHistory.adContent.brandDisplayUrl,
       brandUrl: adHistory.adContent.brandUrl,
       likeAction: adHistory.adContent.likeAction,
@@ -331,32 +335,24 @@ class AdsBox extends React.Component<Props, State> {
       savedAd: adHistory.adContent.savedAd,
       flaggedAd: adHistory.adContent.flaggedAd,
       onThumbUpPress: () =>
-        this.onThumbUpPress(adHistory.adContent.creativeInstanceId,
-                            adHistory.adContent.creativeSetId,
-                            adHistory.adContent.likeAction),
+        this.onThumbUpPress(adHistory.adContent),
       onThumbDownPress: () =>
-        this.onThumbDownPress(adHistory.adContent.creativeInstanceId,
-                              adHistory.adContent.creativeSetId,
-                              adHistory.adContent.likeAction),
+        this.onThumbDownPress(adHistory.adContent),
       onMenuSave: () =>
-        this.onMenuSave(adHistory.adContent.creativeInstanceId,
-                        adHistory.adContent.creativeSetId,
-                        adHistory.adContent.savedAd),
+        this.onMenuSave(adHistory.adContent),
       onMenuFlag: () =>
-        this.onMenuFlag(adHistory.adContent.creativeInstanceId,
-                        adHistory.adContent.creativeSetId,
-                        adHistory.adContent.flaggedAd)
+        this.onMenuFlag(adHistory.adContent)
     }
 
     const categoryContent: Rewards.CategoryContent = {
       category: adHistory.categoryContent.category,
       optAction: adHistory.categoryContent.optAction,
-      onOptInAction: () =>
-        this.onOptInAction(adHistory.categoryContent.category,
-                           adHistory.categoryContent.optAction),
-      onOptOutAction: () =>
-        this.onOptOutAction(adHistory.categoryContent.category,
-                            adHistory.categoryContent.optAction)
+      onOptIn: () =>
+        this.onOptIn(adHistory.categoryContent.category,
+                     adHistory.categoryContent.optAction),
+      onOptOut: () =>
+        this.onOptOut(adHistory.categoryContent.category,
+                      adHistory.categoryContent.optAction)
     }
 
     return {
@@ -388,11 +384,12 @@ class AdsBox extends React.Component<Props, State> {
     let adsReceivedThisMonth = 0
     let earningsThisMonth = 0
     let earningsLastMonth = 0
+    let adEarningsReceived = false
 
     const {
       adsData,
       adsHistory,
-      firstLoad,
+      balanceReport,
       parameters
     } = this.props.rewardsData
 
@@ -407,16 +404,17 @@ class AdsBox extends React.Component<Props, State> {
       earningsLastMonth = adsData.adsEarningsLastMonth || 0
     }
 
+    if (balanceReport) {
+      adEarningsReceived = Number(balanceReport.ads || 0) > 0
+    }
+
     const enabled = adsEnabled && adsIsSupported
     const toggle = !(!adsUIEnabled || !adsIsSupported)
-    const showDisabled = firstLoad !== false || !toggle || !adsEnabled || !adsIsSupported
+    const showDisabled = !toggle || !adsEnabled || !adsIsSupported
 
     const historyEntries = adsHistory || []
     const rows = this.getGroupedAdsHistory(historyEntries, savedOnly)
-    const notEmpty = rows && rows.length !== 0
     const tokenString = getLocale('tokens')
-
-    const estimatedPendingDays = getDaysUntilRewardsPayment(nextPaymentDate)
 
     return (
       <>
@@ -434,29 +432,29 @@ class AdsBox extends React.Component<Props, State> {
           onSettingsClick={this.onSettingsToggle}
           attachedAlert={this.adsNotSupportedAlert(adsIsSupported)}
         >
-          {
-            earningsLastMonth > 0 && estimatedPendingDays &&
-              <ArrivingSoon>
-                <MoneyBagIcon />
-                {
-                  formatMessage(getLocale('pendingRewardsMessage'), [
-                    <span className='amount' key='amount'>
-                      +{earningsLastMonth} BAT
-                    </span>,
-                    estimatedPendingDays
-                  ])
-                }
-              </ArrivingSoon>
-          }
+          <style.PaymentStatus>
+            <PaymentStatusView
+              earningsLastMonth={earningsLastMonth}
+              earningsReceived={adEarningsReceived}
+              nextPaymentDate={nextPaymentDate}
+            />
+          </style.PaymentStatus>
           <List title={getLocale('adsCurrentEarnings')}>
             <Tokens
-              value={earningsThisMonth.toFixed(3)}
+              value={new Intl.NumberFormat(undefined, {
+                minimumFractionDigits: 3,
+                maximumFractionDigits: 3
+              }).format(earningsThisMonth)}
               converted={utils.convertBalance(earningsThisMonth, parameters.rate)}
             />
           </List>
           <List title={getLocale('adsPaymentDate')}>
             <NextContribution>
-              {nextPaymentDateFormatter.format(new Date(nextPaymentDate))}
+              {
+                nextPaymentDate
+                  ? nextPaymentDateFormatter.format(new Date(nextPaymentDate))
+                  : ''
+              }
             </NextContribution>
           </List>
           <List title={getLocale('adsNotificationsReceived')}>
@@ -466,12 +464,9 @@ class AdsBox extends React.Component<Props, State> {
             />
           </List>
           {
-            notEmpty
-            ? <ShowAdsHistory
+            <ShowAdsHistory
                 onAdsHistoryOpen={this.onAdsHistoryToggle}
-                notEmpty={notEmpty}
             />
-            : null
           }
         </Box>
         {
@@ -481,7 +476,7 @@ class AdsBox extends React.Component<Props, State> {
               adsPerHour={adsPerHour}
               rows={rows}
               hasSavedEntries={this.hasSavedEntries(rows)}
-              totalDays={7}
+              totalDays={30}
           />
           : null
         }

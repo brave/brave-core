@@ -13,7 +13,7 @@
 
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
-#include "../../../../../../../chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
+#include "src/chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (0)
 

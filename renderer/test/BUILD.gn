@@ -11,6 +11,8 @@ source_set("browser_tests") {
   sources = [
     "digital_goods_api_browsertest.cc",
     "file_system_access_browsertest.cc",
+    "js_ethereum_provider_browsertest.cc",
+    "navigator_connection_attribute_browsertest.cc",
     "serial_api_browsertest.cc",
     "subresource_web_bundles_browsertest.cc",
   ]
@@ -20,10 +22,13 @@ source_set("browser_tests") {
   deps = [
     "//base/test:test_support",
     "//brave/common",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:utils",
     "//chrome/browser/ui",
+    "//chrome/common",
     "//chrome/test:test_support_ui",
     "//components/embedder_support",
-    "//components/web_package:test_support",
+    "//components/web_package",
     "//content/test:test_support",
     "//net:test_support",
   ]

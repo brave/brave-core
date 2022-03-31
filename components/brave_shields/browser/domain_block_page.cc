@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/browser/domain_block_page.h"
 
+#include <ostream>
 #include <utility>
 
 #include "base/notreached.h"
@@ -14,6 +15,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/origin.h"
 
 namespace brave_shields {
 
@@ -64,29 +66,31 @@ void DomainBlockPage::CommandReceived(const std::string& command) {
   }
 }
 
-void DomainBlockPage::PopulateInterstitialStrings(
-    base::DictionaryValue* load_time_data) {
-  load_time_data->SetString("tabTitle",
-                            l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_TITLE));
-  load_time_data->SetString(
+void DomainBlockPage::PopulateInterstitialStrings(base::Value* load_time_data) {
+  load_time_data->SetStringKey(
+      "tabTitle", l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_TITLE));
+  load_time_data->SetStringKey(
       "heading", l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_HEADING));
 
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "primaryParagraph",
       l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_PRIMARY_PARAGRAPH));
-  load_time_data->SetString("domain", request_url().GetOrigin().spec());
-  load_time_data->SetString(
+
+  url::Origin request_url_origin = url::Origin::Create(request_url());
+  load_time_data->SetStringKey("domain", request_url_origin.Serialize());
+
+  load_time_data->SetStringKey(
       "explanationParagraph",
       l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_EXPLANATION));
 
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "dontWarnAgainText",
       l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_DONT_WARN_AGAIN_BUTTON));
 
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "proceedAnywayText",
       l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_PROCEED_ANYWAY_BUTTON));
-  load_time_data->SetString(
+  load_time_data->SetStringKey(
       "goBackText", l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_GO_BACK_BUTTON));
 }
 

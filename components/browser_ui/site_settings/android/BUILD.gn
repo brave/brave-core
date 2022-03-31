@@ -1,0 +1,38 @@
+# Copyright 2021 The Brave Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/android/rules.gni")
+
+android_library("java") {
+  sources = [
+    "java/src/org/chromium/components/browser_ui/site_settings/BraveContentSettingsResources.java",
+    "java/src/org/chromium/components/browser_ui/site_settings/BraveFourStateCookieSettingsPreferenceBase.java",
+    "java/src/org/chromium/components/browser_ui/site_settings/BraveSingleCategorySettings.java",
+    "java/src/org/chromium/components/browser_ui/site_settings/BraveSingleWebsiteSettings.java",
+    "java/src/org/chromium/components/browser_ui/site_settings/BraveSiteSettingsCategory.java",
+    "java/src/org/chromium/components/browser_ui/site_settings/BraveSiteSettingsPreferencesBase.java",
+    "java/src/org/chromium/components/browser_ui/site_settings/BraveWebsite.java",
+    "java/src/org/chromium/components/browser_ui/site_settings/BraveWebsitePermissionsFetcher.java",
+  ]
+  deps = [
+    ":java_resources",
+    "//base:base_java",
+    "//components/browser_ui/settings/android:java",
+    "//components/browser_ui/site_settings/android:java",
+    "//components/browser_ui/widget/android:java",
+    "//components/content_settings/android:content_settings_enums_java",
+    "//content/public/android:content_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_preference_preference_java",
+  ]
+  resources_package = "org.chromium.components.browser_ui.site_settings"
+}
+
+android_resources("java_resources") {
+  sources = [ "java/res/xml/brave_site_settings_preferences.xml" ]
+  deps = [
+    "//brave/build/android:android_brave_strings_grd",
+    "//components/browser_ui/site_settings/android:java_resources",
+  ]
+}

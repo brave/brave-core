@@ -67,7 +67,6 @@ describe('tabsEvents events', () => {
       spy.mockRestore()
     })
     it('calls tabCreated with the correct args', (cb) => {
-
       const onCreated = chrome.tabs.onCreated as TabCreatedEvent
 
       onCreated.addListener((tab) => {

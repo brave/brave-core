@@ -4,11 +4,17 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/common/brave_switches.h"
+#include "build/build_config.h"
 #include "chrome/common/chrome_features.h"
-#include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 
-class BraveMainDelegateRuntimeFlagsBrowserTest : public InProcessBrowserTest {
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/test/base/in_process_browser_test.h"
+#endif
+
+class BraveMainDelegateRuntimeFlagsBrowserTest : public PlatformBrowserTest {
  public:
   BraveMainDelegateRuntimeFlagsBrowserTest() {}
   ~BraveMainDelegateRuntimeFlagsBrowserTest() override {}

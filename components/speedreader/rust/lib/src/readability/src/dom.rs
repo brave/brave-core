@@ -326,6 +326,17 @@ pub fn is_single_image(handle: &Handle) -> bool {
     false
 }
 
+/// HTML decode runs the text through an HTML parser and extracts the text.
+pub fn html_decode(data: &str) -> Option<String> {
+    if let Some(ref inner) = parse_inner(data) {
+        let extracted = extract_text_from_node(inner, true, true);
+        if !extracted.is_empty() {
+            return Some(extracted);
+        }
+    }
+    None
+}
+
 // The commented out elements qualify as phrasing content but tend to be
 // removed by readability when put into paragraphs, so we ignore them here.
 static PHRASING_ELEMS: [&LocalName; 39] = [

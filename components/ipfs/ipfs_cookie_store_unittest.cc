@@ -6,7 +6,7 @@
 #include "net/cookies/cookie_monster_store_test.h"  // For CookieStore mock
 #include "net/cookies/cookie_store.h"
 #include "net/cookies/cookie_store_unittest.h"
-#include "net/log/test_net_log.h"
+#include "net/log/net_log.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -15,7 +15,8 @@ namespace net {
 struct IPFSCookieStoreTestTraits {
   static std::unique_ptr<CookieStore> Create() {
     return std::make_unique<CookieMonster>(nullptr /* store */,
-                                           nullptr /* netlog */);
+                                           nullptr /* netlog */,
+                                           /*first_party_sets_enabled=*/false);
   }
 
   static void DeliverChangeNotifications() { base::RunLoop().RunUntilIdle(); }
@@ -43,13 +44,12 @@ class IPFSCookieStoreTest : public CookieStoreTest<IPFSCookieStoreTestTraits> {
   GURL GetIPNSURL(const std::string& cid) {
     return GURL("http://" + cid + ".ipns.localhost:48080");
   }
-
-  RecordingTestNetLog net_log_;
 };
 
 TEST_F(IPFSCookieStoreTest, SetCookie) {
   scoped_refptr<MockPersistentCookieStore> store(new MockPersistentCookieStore);
-  std::unique_ptr<CookieMonster> cm(new CookieMonster(store.get(), &net_log_));
+  std::unique_ptr<CookieMonster> cm(new CookieMonster(
+      store.get(), net::NetLog::Get(), /*first_party_sets_enabled=*/false));
 
   // Verify
   // 1. {CID}.ipfs.localhost can set cookies for itself

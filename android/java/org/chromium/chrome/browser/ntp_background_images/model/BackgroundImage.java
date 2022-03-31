@@ -9,6 +9,7 @@ public class BackgroundImage extends NTPImage{
     private int imageDrawable;
     private int centerPointX;
     private int centerPointY;
+    private String imagePath;
     private ImageCredit imageCredit;
 
     public BackgroundImage(
@@ -17,6 +18,16 @@ public class BackgroundImage extends NTPImage{
         this.centerPointX = centerPointX;
         this.centerPointY = centerPointY;
         this.imageCredit = imageCredit;
+        this.imagePath = null;
+    }
+
+    public BackgroundImage(
+            String imagePath, int centerPointX, int centerPointY, ImageCredit imageCredit) {
+        this.imageDrawable = 0;
+        this.centerPointX = centerPointX;
+        this.centerPointY = centerPointY;
+        this.imageCredit = imageCredit;
+        this.imagePath = imagePath;
     }
 
     public BackgroundImage(int imageDrawable, int centerPointX, int centerPointY) {
@@ -27,6 +38,10 @@ public class BackgroundImage extends NTPImage{
 
     public int getImageDrawable() {
         return imageDrawable;
+    }
+
+    public String getImagePath() {
+        return imagePath;
     }
 
     public int getCenterPointX() {

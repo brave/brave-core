@@ -22,6 +22,10 @@ using OnComponentReadyCallback =
 
 void RegisterNTPBackgroundImagesComponent(
     component_updater::ComponentUpdateService* cus,
+    OnComponentReadyCallback callback);
+
+void RegisterNTPSponsoredImagesComponent(
+    component_updater::ComponentUpdateService* cus,
     const std::string& component_public_key,
     const std::string& component_id,
     const std::string& component_name,

@@ -29,7 +29,7 @@ class BraveDefaultBrowserDialogView : public views::DialogDelegateView {
   bool ShouldShowCloseButton() const override;
   std::unique_ptr<views::NonClientFrameView> CreateNonClientFrameView(
       views::Widget* widget) override;
-  void OnDialogInitialized() override;
+  void OnWidgetInitialized() override;
 
  private:
   void OnCancelButtonClicked();

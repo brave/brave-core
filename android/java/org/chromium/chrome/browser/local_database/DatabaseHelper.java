@@ -5,20 +5,21 @@
 
 package org.chromium.chrome.browser.local_database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Pair;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Pair;
+
+import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
+import org.chromium.chrome.browser.ntp_background_images.model.TopSite;
+import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.chromium.base.Log;
-import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.ntp_background_images.model.TopSite;
-import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -88,6 +89,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    @SuppressLint("Range")
     public List<TopSiteTable> getAllTopSites() {
         List<TopSiteTable> topSites = new ArrayList<>();
 
@@ -168,6 +170,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count > 0;
     }
 
+    @SuppressLint("Range")
     public List<BraveStatsTable> getAllStats() {
         List<BraveStatsTable> braveStats = new ArrayList<>();
 
@@ -198,6 +201,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return braveStats;
     }
 
+    @SuppressLint("Range")
     public List<BraveStatsTable> getAllStatsWithDate(String thresholdTime, String currentTime) {
         List<BraveStatsTable> braveStats = new ArrayList<>();
         // Select All Query
@@ -229,6 +233,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return braveStats;
     }
 
+    @SuppressLint("Range")
     public List<Pair<String, Integer>> getStatsWithDate(String thresholdTime, String currentTime) {
         List<Pair<String, Integer>> braveStats = new ArrayList<>();
 
@@ -254,6 +259,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return braveStats;
     }
 
+    @SuppressLint("Range")
     public List<Pair<String, Integer>> getSitesWithDate(String thresholdTime, String currentTime) {
         List<Pair<String, Integer>> braveStats = new ArrayList<>();
         // Select All Query
@@ -298,6 +304,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insert(SavedBandwidthTable.TABLE_NAME, null, values);
     }
 
+    @SuppressLint("Range")
     public long getTotalSavedBandwidthWithDate(String thresholdTime, String currentTime) {
         long sum = 0;
         String selectQuery = "SELECT  SUM(" + SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH + ") as total FROM "
@@ -315,6 +322,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return sum;
     }
 
+    @SuppressLint("Range")
     public long getTotalSavedBandwidth() {
         long sum = 0;
         String selectQuery = "SELECT  SUM(" + SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH + ") as total FROM "

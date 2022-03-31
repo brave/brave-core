@@ -21,6 +21,6 @@ class UnusedClass {
 
 #define Java_SigninManagerImpl_create Java_BraveSigninManager_create
 #define Java_SigninManagerImpl_destroy Java_BraveSigninManager_destroy
-#include "../../../../../../chrome/browser/android/signin/signin_manager_android.cc"  // NOLINT
+#include "src/chrome/browser/android/signin/signin_manager_android.cc"
 #undef Java_SigninManagerImpl_create
 #undef Java_SigninManagerImpl_destroy

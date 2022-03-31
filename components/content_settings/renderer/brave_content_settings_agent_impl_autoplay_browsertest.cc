@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
@@ -36,9 +37,16 @@ class MockContentSettingsManagerImpl : public mojom::ContentSettingsManager {
   void AllowStorageAccess(int32_t render_frame_id,
                           StorageType storage_type,
                           const url::Origin& origin,
-                          const GURL& site_for_cookies,
+                          const ::net::SiteForCookies& site_for_cookies,
                           const url::Origin& top_frame_origin,
                           base::OnceCallback<void(bool)> callback) override {}
+
+  void AllowEphemeralStorageAccess(
+      int32_t render_frame_id,
+      const ::url::Origin& origin,
+      const ::net::SiteForCookies& site_for_cookies,
+      const ::url::Origin& top_frame_origin,
+      AllowEphemeralStorageAccessCallback callback) override {}
 
   void OnContentBlocked(int32_t render_frame_id,
                         ContentSettingsType type) override {
@@ -47,12 +55,15 @@ class MockContentSettingsManagerImpl : public mojom::ContentSettingsManager {
   }
 
  private:
-  Log* log_;
+  raw_ptr<Log> log_ = nullptr;
 };
 
 class MockContentSettingsAgentImpl : public BraveContentSettingsAgentImpl {
  public:
   explicit MockContentSettingsAgentImpl(content::RenderFrame* render_frame);
+  MockContentSettingsAgentImpl(const MockContentSettingsAgentImpl&) = delete;
+  MockContentSettingsAgentImpl& operator=(const MockContentSettingsAgentImpl&) =
+      delete;
   ~MockContentSettingsAgentImpl() override {}
 
   // ContentSettingAgentImpl methods:
@@ -66,8 +77,6 @@ class MockContentSettingsAgentImpl : public BraveContentSettingsAgentImpl {
 
  private:
   MockContentSettingsManagerImpl::Log log_;
-
-  DISALLOW_COPY_AND_ASSIGN(MockContentSettingsAgentImpl);
 };
 
 MockContentSettingsAgentImpl::MockContentSettingsAgentImpl(
@@ -97,9 +106,8 @@ class BraveContentSettingsAgentImplAutoplayBrowserTest
 
     // Unbind the ContentSettingsAgent interface that would be registered by
     // the ContentSettingsAgentImpl created when the render frame is created.
-    view_->GetMainRenderFrame()
-        ->GetAssociatedInterfaceRegistry()
-        ->RemoveInterface(mojom::ContentSettingsAgent::Name_);
+    GetMainRenderFrame()->GetAssociatedInterfaceRegistry()->RemoveInterface(
+        mojom::ContentSettingsAgent::Name_);
   }
 };
 
@@ -113,11 +121,10 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
       content_setting_rules.autoplay_rules;
   autoplay_setting_rules.push_back(ContentSettingPatternSource(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-      base::Value::FromUniquePtrValue(
-          content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK)),
+      content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK),
       std::string(), false));
 
-  MockContentSettingsAgentImpl agent(view_->GetMainRenderFrame());
+  MockContentSettingsAgentImpl agent(GetMainRenderFrame());
   agent.SetContentSettingRules(&content_setting_rules);
   EXPECT_FALSE(agent.AllowAutoplay(true));
   base::RunLoop().RunUntilIdle();
@@ -130,8 +137,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
       ContentSettingPatternSource(
           ContentSettingsPattern::Wildcard(),
           ContentSettingsPattern::FromString("https://example.com"),
-          base::Value::FromUniquePtrValue(
-              content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
+          content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW),
           std::string(), false));
   EXPECT_TRUE(agent.AllowAutoplay(true));
 }
@@ -146,11 +152,10 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
       content_setting_rules.autoplay_rules;
   autoplay_setting_rules.push_back(ContentSettingPatternSource(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-      base::Value::FromUniquePtrValue(
-          content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
+      content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW),
       std::string(), false));
 
-  MockContentSettingsAgentImpl agent(view_->GetMainRenderFrame());
+  MockContentSettingsAgentImpl agent(GetMainRenderFrame());
   agent.SetContentSettingRules(&content_setting_rules);
   EXPECT_TRUE(agent.AllowAutoplay(true));
 
@@ -160,8 +165,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
       ContentSettingPatternSource(
           ContentSettingsPattern::Wildcard(),
           ContentSettingsPattern::FromString("https://example.com"),
-          base::Value::FromUniquePtrValue(
-              content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK)),
+          content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK),
           std::string(), false));
   EXPECT_FALSE(agent.AllowAutoplay(true));
   base::RunLoop().RunUntilIdle();

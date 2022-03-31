@@ -6,13 +6,26 @@ declare_args() {
   brave_android_manifest_includes = []
 }
 
-brave_android_manifest_includes = [ "//brave/android/java/AndroidManifest.xml" ]
+brave_android_manifest_includes = [
+  "//brave/android/java/AndroidManifest.xml",
+  "//brave/android/java/AndroidManifest_intent_filters.xml",
+]
 
 brave_chrome_java_deps = [
   "//brave/android/java/org/chromium/chrome/browser/search_engines/settings:java",
+  "//brave/browser/notifications/android:brave_java",
+  "//brave/browser/notifications/android:java",
   "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings:java",
+  "//brave/browser/ui/android/omnibox:java",
+  "//brave/browser/ui/android/theme:java",
+  "//brave/components/brave_today/common:mojom_java",
+  "//brave/components/brave_wallet/common:mojom_java",
+  "//brave/components/browser_ui/site_settings/android:java",
+  "//brave/components/variations/android:java",
   "//brave/third_party/android_deps:com_airbnb_android_java",
+  "//brave/third_party/android_deps:com_android_billingclient_java",
   "//brave/third_party/android_deps:com_android_installreferrer_java",
+  "//brave/third_party/android_deps:com_github_bumptech_glide_java",
   "//brave/third_party/android_deps:google_play_services_safetynet_java",
   "//brave/third_party/zxing:zxing_java",
   "//third_party/android_deps:google_play_services_vision_common_java",
@@ -32,11 +45,10 @@ brave_chrome_java_srcjar_deps = [
   "//brave/browser/android/preferences:java_pref_names_srcjar",
 ]
 
-brave_chrome_app_java_resources_deps =
-    [ "//brave/build/android:android_brave_strings_grd" ]
-
-brave_components_browser_ui_site_settings_android_java_resources_deps =
-    [ "//brave/build/android:android_brave_strings_grd" ]
+brave_chrome_app_java_resources_deps = [
+  "//brave/build/android:android_brave_strings_grd",
+  "//brave/build/android:brave_java_xml_preprocess_resources",
+]
 
 brave_resources_exclusion_exceptions =
     [ "*com_google_android_material*design_bottom_*" ]

@@ -5,7 +5,10 @@
 
 #include "bat/ads/internal/catalog/catalog_util.h"
 
+#include "bat/ads/ads_client.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/pref_names.h"
 
@@ -19,6 +22,25 @@ class BatAdsCatalogUtilTest : public UnitTestBase {
 
   ~BatAdsCatalogUtilTest() override = default;
 };
+
+TEST_F(BatAdsCatalogUtilTest, ResetCatalog) {
+  // Arrange
+  AdsClientHelper::Get()->SetStringPref(prefs::kCatalogId,
+                                        "150a9518-4db8-4fba-b104-0c420a1d9c0c");
+  AdsClientHelper::Get()->SetIntegerPref(prefs::kCatalogVersion, 1);
+  AdsClientHelper::Get()->SetInt64Pref(prefs::kCatalogPing, 1000);
+  AdsClientHelper::Get()->SetDoublePref(prefs::kCatalogLastUpdated,
+                                        NowAsTimestamp());
+
+  // Act
+  ResetCatalog();
+
+  // Assert
+  EXPECT_TRUE(!AdsClientHelper::Get()->HasPrefPath(prefs::kCatalogId) &&
+              !AdsClientHelper::Get()->HasPrefPath(prefs::kCatalogVersion) &&
+              !AdsClientHelper::Get()->HasPrefPath(prefs::kCatalogPing) &&
+              !AdsClientHelper::Get()->HasPrefPath(prefs::kCatalogLastUpdated));
+}
 
 TEST_F(BatAdsCatalogUtilTest, CatalogExists) {
   // Arrange
@@ -44,11 +66,11 @@ TEST_F(BatAdsCatalogUtilTest, CatalogDoesNotExist) {
 
 TEST_F(BatAdsCatalogUtilTest, CatalogHasExpired) {
   // Arrange
-  AdsClientHelper::Get()->SetInt64Pref(prefs::kCatalogLastUpdated,
-                                       NowAsTimestamp());
+  AdsClientHelper::Get()->SetDoublePref(prefs::kCatalogLastUpdated,
+                                        NowAsTimestamp());
 
   // Act
-  AdvanceClock(base::TimeDelta::FromDays(1));
+  AdvanceClock(base::Days(1));
 
   // Assert
   const bool has_expired = HasCatalogExpired();
@@ -57,11 +79,11 @@ TEST_F(BatAdsCatalogUtilTest, CatalogHasExpired) {
 
 TEST_F(BatAdsCatalogUtilTest, CatalogHasNotExpired) {
   // Arrange
-  AdsClientHelper::Get()->SetInt64Pref(prefs::kCatalogLastUpdated,
-                                       NowAsTimestamp());
+  AdsClientHelper::Get()->SetDoublePref(prefs::kCatalogLastUpdated,
+                                        NowAsTimestamp());
 
   // Act
-  AdvanceClock(base::TimeDelta::FromDays(1) - base::TimeDelta::FromSeconds(1));
+  AdvanceClock(base::Days(1) - base::Seconds(1));
 
   // Assert
   const bool has_expired = HasCatalogExpired();

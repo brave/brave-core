@@ -38,9 +38,11 @@ export default class ShieldsAdvancedView extends React.PureComponent<Props, Stat
     super(props)
     this.state = { isBlockedListOpen: false }
   }
+
   setBlockedListOpen = () => {
     this.setState({ isBlockedListOpen: !this.state.isBlockedListOpen })
   }
+
   render () {
     const {
       enabled,

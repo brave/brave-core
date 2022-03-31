@@ -6,7 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SERVER_URL_REQUEST_BUILDER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SERVER_URL_REQUEST_BUILDER_H_
 
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
@@ -14,7 +14,7 @@ class UrlRequestBuilder {
  public:
   virtual ~UrlRequestBuilder() = default;
 
-  virtual UrlRequestPtr Build() = 0;
+  virtual mojom::UrlRequestPtr Build() = 0;
 };
 
 }  // namespace ads

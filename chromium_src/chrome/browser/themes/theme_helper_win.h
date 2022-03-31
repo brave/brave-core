@@ -16,7 +16,7 @@
   friend class BraveThemeHelperWin; \
                                     \
  public:
-#include "../../../../../chrome/browser/themes/theme_helper_win.h"
+#include "src/chrome/browser/themes/theme_helper_win.h"
 
 #undef BRAVE_THEME_HELPER_WIN_H_
 #undef ThemeHelper

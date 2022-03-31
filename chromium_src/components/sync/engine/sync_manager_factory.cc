@@ -6,5 +6,5 @@
 #include "brave/components/sync/engine/brave_sync_manager_impl.h"
 
 #define SyncManagerImpl BraveSyncManagerImpl
-#include "../../../../../components/sync/engine/sync_manager_factory.cc"
+#include "src/components/sync/engine/sync_manager_factory.cc"
 #undef SyncManagerImpl

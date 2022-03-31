@@ -3,13 +3,15 @@
      Use of this source code is governed by a BSD-style license that can be
      found in the LICENSE file. -->
 
-<org.chromium.chrome.browser.toolbar.top.BraveTabSwitcherModeTTPhone
+<org.chromium.chrome.browser.toolbar.top.BraveTabSwitcherModeTopToolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tab_switcher_toolbar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_height_no_shadow"
-    android:clickable="true" >
+    android:clickable="true"
+    android:focusable="true" >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -19,16 +21,18 @@
         android:orientation="horizontal"
         android:visibility="gone">
         <ImageView
+            android:id="@+id/new_tab_view_button"
             android:layout_width="wrap_content"
             android:layout_height="56dp"
             android:layout_gravity="start|top"
             android:scaleType="center"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            app:tint="@color/default_icon_color"
+            app:tint="@macro/default_icon_color"
             app:srcCompat="@drawable/new_tab_icon"
             android:contentDescription="@string/accessibility_toolbar_btn_new_tab"/>
         <TextView
+            android:id="@+id/new_tab_view_desc"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:paddingEnd="16dp"
@@ -89,10 +93,11 @@
             android:paddingEnd="16dp"
             android:thumb="@drawable/incognito_switch"
             android:track="@drawable/incognito_switch_track"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:ignore="UseSwitchCompatOrMaterialXml"/>
 
         <include layout="@layout/menu_button" />
 
     </LinearLayout>
 
-</org.chromium.chrome.browser.toolbar.top.BraveTabSwitcherModeTTPhone>
+</org.chromium.chrome.browser.toolbar.top.BraveTabSwitcherModeTopToolbar>

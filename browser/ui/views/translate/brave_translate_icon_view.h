@@ -11,9 +11,7 @@
 #include "chrome/browser/ui/views/translate/translate_icon_view.h"
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
 #include "chrome/common/extensions/webstore_install_result.h"
-#include "extensions/buildflags/buildflags.h"
 
 // The purpose of this subclass is to hide translate icon and translate bubble
 // when Google Translate extension is installed. This subclass also takes care
@@ -26,6 +24,8 @@ class BraveTranslateIconView : public TranslateIconView {
       CommandUpdater* command_updater,
       IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
       PageActionIconView::Delegate* page_action_icon_delegate);
+  BraveTranslateIconView(const BraveTranslateIconView&) = delete;
+  BraveTranslateIconView& operator=(const BraveTranslateIconView&) = delete;
   ~BraveTranslateIconView() override;
 
   void UpdateImpl() override;
@@ -38,8 +38,6 @@ class BraveTranslateIconView : public TranslateIconView {
                        extensions::webstore_install::Result result);
 
   base::WeakPtrFactory<BraveTranslateIconView> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveTranslateIconView);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TRANSLATE_BRAVE_TRANSLATE_ICON_VIEW_H_

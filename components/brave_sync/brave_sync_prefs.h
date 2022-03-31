@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "base/macros.h"
 #include "base/values.h"
+#include "build/build_config.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -25,13 +25,15 @@ namespace brave_sync {
 class Prefs {
  public:
   explicit Prefs(PrefService* pref_service);
+  Prefs(const Prefs&) = delete;
+  Prefs& operator=(const Prefs&) = delete;
   virtual ~Prefs();
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   static std::string GetSeedPath();
 
-  std::string GetSeed() const;
+  std::string GetSeed(bool* failed_to_decrypt) const;
   bool SetSeed(const std::string& seed);
 
   bool IsSyncV1Migrated() const;
@@ -42,7 +44,7 @@ class Prefs {
 
   // It is only used to read whether sync v1 was enabled before upgrading
   bool IsSyncV1Enabled() const;
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   // Used for android clients to pretend sync v1 was enabled through the prefs.
   // Originally Android used shared preferences
   void SetSyncV1WasEnabled() const;
@@ -55,8 +57,6 @@ class Prefs {
 
  private:
   PrefService* const pref_service_;
-
-  DISALLOW_COPY_AND_ASSIGN(Prefs);
 };
 
 void MigrateBraveSyncPrefs(PrefService* prefs);

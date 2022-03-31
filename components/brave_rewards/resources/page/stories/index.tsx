@@ -5,6 +5,7 @@
 import * as React from 'react'
 
 import { ConnectWalletModal } from '../components/connect_wallet_modal'
+import { ClaimGrantView } from '../components/claim_grant_view'
 import { LocaleContext } from '../../shared/lib/locale_context'
 import { WithThemeVariables } from '../../shared/components/with_theme_variables'
 import { localeStrings } from './locale_strings'
@@ -25,7 +26,7 @@ function actionLogger (name: string) {
   }
 }
 
-export const ConnectWallet = () => {
+export function ConnectWallet () {
   const providers = [
     {
       type: 'uphold',
@@ -42,11 +43,32 @@ export const ConnectWallet = () => {
       <WithThemeVariables>
         <ConnectWalletModal
           rewardsBalance={10}
-          defaultProvider={'uphold'}
           providers={providers}
           onContinue={actionLogger('onContinue')}
           onClose={actionLogger('onClose')}
         />
+      </WithThemeVariables>
+    </LocaleContext.Provider>
+  )
+}
+
+export function Claim () {
+  return (
+    <LocaleContext.Provider value={locale}>
+      <WithThemeVariables>
+        <div style={{ width: '366px' }}>
+          <ClaimGrantView
+            grantInfo={{
+              id: 'grant-1',
+              type: 'ads',
+              amount: 3.25,
+              createdAt: Date.now(),
+              claimableUntil: Date.now() + 1000 * 60 * 60 * 24 * 5,
+              expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 5
+            }}
+            onClaim={actionLogger('onClaim')}
+          />
+        </div>
       </WithThemeVariables>
     </LocaleContext.Provider>
   )

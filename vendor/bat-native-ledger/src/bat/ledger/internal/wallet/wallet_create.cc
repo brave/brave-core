@@ -8,11 +8,11 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
 #include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/common/time_util.h"
-#include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/constants.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/logging/event_log_keys.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -29,22 +29,26 @@ WalletCreate::WalletCreate(LedgerImpl* ledger) :
 WalletCreate::~WalletCreate() = default;
 
 void WalletCreate::Start(ledger::ResultCallback callback) {
-  auto wallet = ledger_->wallet()->GetWallet();
+  bool corrupted = false;
+  auto wallet = ledger_->wallet()->GetWallet(&corrupted);
 
-  if (wallet && !wallet->payment_id.empty()) {
-    BLOG(1, "Wallet already exists");
-    callback(type::Result::WALLET_CREATED);
-    return;
+  if (corrupted) {
+    BLOG(0, "Rewards wallet data is corrupted - generating a new wallet");
+    ledger_->database()->SaveEventLog(log::kWalletCorrupted, "");
   }
 
-  wallet = type::BraveWallet::New();
-  const auto key_info_seed = util::Security::GenerateSeed();
-  wallet->recovery_seed = key_info_seed;
-  const bool success = ledger_->wallet()->SetWallet(std::move(wallet));
+  if (!wallet) {
+    wallet = type::BraveWallet::New();
+    wallet->recovery_seed = util::Security::GenerateSeed();
+    if (!ledger_->wallet()->SetWallet(wallet->Clone())) {
+      callback(type::Result::LEDGER_ERROR);
+      return;
+    }
+  }
 
-  if (!success) {
-    BLOG(0, "Wallet couldn't be set");
-    callback(type::Result::LEDGER_ERROR);
+  if (!wallet->payment_id.empty()) {
+    BLOG(1, "Wallet already exists");
+    callback(type::Result::WALLET_CREATED);
     return;
   }
 

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/synced_device_manager.html b/chrome/browser/resources/history/synced_device_manager.html
-index d03a367a7cb1ea6ccad6478a2300606b4c20829a..bfa8a2debda7e0c35b217cea85df668232c5507b 100644
+index 8658151958b1dedb65fe4e641ac8adca4a942be2..cd24e674ce5d111fbc02fbbb11025adcc4d91c0b 100644
 --- a/chrome/browser/resources/history/synced_device_manager.html
 +++ b/chrome/browser/resources/history/synced_device_manager.html
 @@ -73,6 +73,7 @@
@@ -8,9 +8,9 @@ index d03a367a7cb1ea6ccad6478a2300606b4c20829a..bfa8a2debda7e0c35b217cea85df6682
      </div>
 +<!--
      <div id="sign-in-guide"
-         hidden="[[!showSignInGuide(signInState, guestSession_)]]">
-       <div id="illustration"></div>
-@@ -83,6 +84,7 @@
+         hidden="[[!showSignInGuide(signInState, guestSession_,
+                                    signInAllowed_)]]">
+@@ -84,6 +85,7 @@
          $i18n{signInButton}
        </cr-button>
      </div>

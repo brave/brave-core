@@ -12,12 +12,14 @@ class BraveBookmarkModelLoadedObserver
     : public BookmarkModelLoadedObserver {
  public:
   explicit BraveBookmarkModelLoadedObserver(Profile* profile);
+  BraveBookmarkModelLoadedObserver(const BraveBookmarkModelLoadedObserver&) =
+      delete;
+  BraveBookmarkModelLoadedObserver& operator=(
+      const BraveBookmarkModelLoadedObserver&) = delete;
 
  private:
   void BookmarkModelLoaded(bookmarks::BookmarkModel* model,
                            bool ids_reassigned) override;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveBookmarkModelLoadedObserver);
 };
 
 #endif  // BRAVE_BROWSER_PROFILES_BRAVE_BOOKMARK_MODEL_LOADED_OBSERVER_H_

@@ -1,0 +1,157 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+import("//tools/grit/preprocess_if_expr.gni")
+
+preprocess_folder = "preprocessed"
+preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
+
+static_library("brave_vpn") {
+  sources = [
+    "brave_vpn_service.cc",
+    "brave_vpn_service.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/api_request_helper:api_request_helper",
+    "//components/keyed_service/core",
+    "//services/network/public/cpp",
+    "//third_party/abseil-cpp:absl",
+    "//url",
+  ]
+
+  libs = []
+
+  if (is_win || is_mac) {
+    sources += [
+      "brave_vpn_connection_info.cc",
+      "brave_vpn_connection_info.h",
+      "brave_vpn_constants.h",
+      "brave_vpn_data_types.h",
+      "brave_vpn_os_connection_api.cc",
+      "brave_vpn_os_connection_api.h",
+      "brave_vpn_os_connection_api_sim.cc",
+      "brave_vpn_os_connection_api_sim.h",
+      "brave_vpn_service_desktop.cc",
+      "brave_vpn_service_desktop.h",
+      "brave_vpn_service_observer.cc",
+      "brave_vpn_service_observer.h",
+      "brave_vpn_utils.cc",
+      "brave_vpn_utils.h",
+      "features.cc",
+      "features.h",
+      "pref_names.cc",
+      "pref_names.h",
+      "switches.h",
+    ]
+
+    if (is_win) {
+      sources += [
+        "brave_vpn_os_connection_api_win.cc",
+        "brave_vpn_os_connection_api_win.h",
+      ]
+
+      libs += [ "rasapi32.lib" ]
+    }
+
+    if (is_mac) {
+      sources += [
+        "brave_vpn_os_connection_api_mac.h",
+        "brave_vpn_os_connection_api_mac.mm",
+      ]
+
+      frameworks = [ "NetworkExtension.framework" ]
+      configs += [ "//build/config/compiler:enable_arc" ]
+    }
+
+    deps += [
+      ":brave_vpn_internal",
+      ":mojom",
+      "//brave/components/resources:strings",
+      "//brave/components/skus/browser",
+      "//brave/components/skus/common",
+      "//brave/components/skus/common:mojom",
+      "//components/prefs",
+      "//third_party/icu",
+      "//ui/base",
+    ]
+  }
+}
+
+source_set("brave_vpn_internal") {
+  visibility = [
+    ":brave_vpn",
+    ":vpntool",
+  ]
+
+  sources = []
+  deps = [ "//base" ]
+
+  if (is_win) {
+    sources += [
+      "utils_win.cc",
+      "utils_win.h",
+    ]
+  }
+}
+
+source_set("unit_tests") {
+  if (enable_brave_vpn) {
+    testonly = true
+
+    sources = []
+
+    # Currently, tests are for desktop only (fails on Android).
+    if (is_win || is_mac) {
+      sources += [ "brave_vpn_unittest.cc" ]
+    }
+
+    deps = [
+      ":brave_vpn",
+      "//base",
+      "//brave/components/skus/browser",
+      "//brave/components/skus/common",
+      "//brave/components/skus/common:mojom",
+      "//components/prefs:test_support",
+      "//components/sync_preferences:test_support",
+      "//content/test:test_support",
+      "//services/network:test_support",
+      "//testing/gtest",
+    ]
+  }
+}
+
+executable("vpntool") {
+  sources = []
+  deps = [
+    ":brave_vpn_internal",
+    "//base",
+  ]
+
+  if (is_win) {
+    sources += [ "winvpntool.cc" ]
+    libs = [ "rasapi32.lib" ]
+  }
+}
+
+preprocess_if_expr("preprocess_mojo") {
+  deps = [ "//brave/components/brave_vpn:mojom_js" ]
+  in_folder = "$target_gen_dir"
+  out_folder = "$target_gen_dir/$preprocess_folder"
+  out_manifest = "$target_gen_dir/$preprocess_mojo_manifest"
+  in_files = [ "brave_vpn.mojom-lite.js" ]
+}
+
+mojom("mojom") {
+  sources = [ "brave_vpn.mojom" ]
+
+  deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
+}

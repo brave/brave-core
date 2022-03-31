@@ -7,7 +7,7 @@
 
 #define AddFeature AddFeature_ChromiumImpl
 #define AddForceEnabledTrials AddForceEnabledTrials_ChromiumImpl
-#include "../../../../../../../third_party/blink/renderer/core/origin_trials/origin_trial_context.cc"
+#include "src/third_party/blink/renderer/core/origin_trials/origin_trial_context.cc"
 #undef AddForceEnabledTrials
 #undef AddFeature
 
@@ -25,7 +25,7 @@ void OriginTrialContext::AddFeature(OriginTrialFeature feature) {
 void OriginTrialContext::AddForceEnabledTrials(
     const Vector<String>& trial_names) {
   for (const String& trial_name : trial_names) {
-    if (origin_trials::IsTrialDisabledInBrave(trial_name))
+    if (origin_trials::IsTrialDisabledInBrave(trial_name.Utf8()))
       return;
   }
 

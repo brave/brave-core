@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_uma_util.cc b/components/permissions/permission_uma_util.cc
-index e7f4572d2992fce8f72e23ce89c22bdaea49cf59..1ad45ad5c0949add8f817b1eead6a6d742745117 100644
+index 32992dcf7aa2d8a2cf4e65ee75b304edc794e304..88ecee960d6768cf6801e8c84264b49143e50142 100644
 --- a/components/permissions/permission_uma_util.cc
 +++ b/components/permissions/permission_uma_util.cc
-@@ -107,6 +107,7 @@ RequestTypeForUma GetUmaValueForRequestType(RequestType request_type) {
+@@ -110,6 +110,7 @@ RequestTypeForUma GetUmaValueForRequestType(RequestType request_type) {
      case RequestType::kWindowPlacement:
        return RequestTypeForUma::PERMISSION_WINDOW_PLACEMENT;
  #endif

@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
-#include "base/scoped_observer.h"
 #include "brave/browser/gemini/gemini_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/gemini/browser/gemini_service.h"
@@ -284,12 +283,14 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
   }
 
   bool NavigateToNewTabUntilLoadStop() {
-    ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab"));
+    EXPECT_TRUE(
+        ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab")));
     return WaitForLoadStop(active_contents());
   }
 
   bool NavigateToVersionTabUntilLoadStop() {
-    ui_test_utils::NavigateToURL(browser(), GURL("chrome://version"));
+    EXPECT_TRUE(
+        ui_test_utils::NavigateToURL(browser(), GURL("chrome://version")));
     return WaitForLoadStop(active_contents());
   }
 
@@ -343,7 +344,7 @@ IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetOAuthClientURL) {
   ASSERT_EQ(expected_url, client_url);
 }
 
-#if !defined(OS_WIN)
+#if !BUILDFLAG(IS_WIN)
 IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetAccessToken) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
@@ -381,7 +382,7 @@ IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetAccessTokenServerError) {
   WaitForGetAccessToken(false);
 }
 
-#if !defined(OS_WIN)
+#if !BUILDFLAG(IS_WIN)
 IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, RefreshAccessToken) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());

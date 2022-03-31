@@ -38,7 +38,14 @@ class BraveContentSettingsAgentImpl
   BraveContentSettingsAgentImpl(content::RenderFrame* render_frame,
                                 bool should_whitelist,
                                 std::unique_ptr<Delegate> delegate);
+  BraveContentSettingsAgentImpl(const BraveContentSettingsAgentImpl&) = delete;
+  BraveContentSettingsAgentImpl& operator=(
+      const BraveContentSettingsAgentImpl&) = delete;
   ~BraveContentSettingsAgentImpl() override;
+
+  bool IsCosmeticFilteringEnabled(const GURL& url) override;
+
+  bool IsFirstPartyCosmeticFilteringEnabled(const GURL& url) override;
 
  protected:
   bool AllowScript(bool enabled_per_settings) override;
@@ -46,7 +53,7 @@ class BraveContentSettingsAgentImpl
                              const blink::WebURL& script_url) override;
   void DidNotAllowScript() override;
 
-  bool UseEphemeralStorageSync(StorageType storage_type) override;
+  blink::WebSecurityOrigin GetEphemeralStorageOriginSync() override;
   bool AllowStorageAccessSync(StorageType storage_type) override;
 
   void BraveSpecificDidBlockJavaScript(const std::u16string& details);
@@ -63,15 +70,10 @@ class BraveContentSettingsAgentImpl
   FRIEND_TEST_ALL_PREFIXES(BraveContentSettingsAgentImplAutoplayBrowserTest,
                            AutoplayAllowedByDefault);
 
-  bool IsBraveShieldsDown(
-      const blink::WebFrame* frame,
-      const GURL& secondary_url);
-
-  // RenderFrameObserver
-  void DidCommitProvisionalLoad(ui::PageTransition transition) override;
+  bool IsBraveShieldsDown(const blink::WebFrame* frame,
+                          const GURL& secondary_url);
 
   bool IsScriptTemporilyAllowed(const GURL& script_url);
-  bool AllowStorageAccessForMainFrameSync(StorageType storage_type);
 
   // brave_shields::mojom::BraveShields.
   void SetAllowScriptsFromOriginsOnce(
@@ -93,19 +95,14 @@ class BraveContentSettingsAgentImpl
   // cache blocked script url which will later be used in `DidNotAllowScript()`
   GURL blocked_script_url_;
 
-  // temporary allowed script origins we preloaded for the next load
-  base::flat_set<std::string> preloaded_temporarily_allowed_scripts_;
-
-  using StoragePermissionsKey = std::pair<url::Origin, StorageType>;
-  base::flat_map<StoragePermissionsKey, bool> cached_storage_permissions_;
+  base::flat_map<url::Origin, blink::WebSecurityOrigin>
+      cached_ephemeral_storage_origins_;
 
   mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost>
       brave_shields_remote_;
 
   mojo::AssociatedReceiverSet<brave_shields::mojom::BraveShields>
       brave_shields_receivers_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsAgentImpl);
 };
 
 }  // namespace content_settings

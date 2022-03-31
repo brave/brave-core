@@ -8,7 +8,7 @@
 
 #define IsHandledProtocol IsHandledProtocol_ChromiumImpl
 #define IsHandledURL IsHandledURL_ChromiumImpl
-#include "../../../../../chrome/browser/profiles/profile_io_data.cc"
+#include "src/chrome/browser/profiles/profile_io_data.cc"
 #undef IsHandledURL
 #undef IsHandledProtocol
 

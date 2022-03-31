@@ -30,11 +30,10 @@ constexpr int64_t kInitialBackoffIntervalSeconds = 5;
 // where the server is having issues.
 base::TimeDelta BackOffUploadInterval(base::TimeDelta interval) {
   DCHECK_GT(kBackoffMultiplier, 1.0);
-  interval = base::TimeDelta::FromMicroseconds(
+  interval = base::Microseconds(
       static_cast<int64_t>(kBackoffMultiplier * interval.InMicroseconds()));
 
-  base::TimeDelta max_interval =
-      base::TimeDelta::FromHours(kMaxBackoffIntervalHours);
+  base::TimeDelta max_interval = base::Hours(kMaxBackoffIntervalHours);
   if (interval > max_interval || interval.InSeconds() < 0) {
     interval = max_interval;
   }
@@ -49,10 +48,8 @@ BraveP3AScheduler::BraveP3AScheduler(
     : metrics::MetricsScheduler(upload_callback,
                                 false /* fast_startup_for_testing */),
       get_interval_callback_(get_interval_callback),
-      initial_backoff_interval_(
-          base::TimeDelta::FromSeconds(kInitialBackoffIntervalSeconds)),
-      backoff_interval_(
-          base::TimeDelta::FromSeconds(kInitialBackoffIntervalSeconds)) {}
+      initial_backoff_interval_(base::Seconds(kInitialBackoffIntervalSeconds)),
+      backoff_interval_(base::Seconds(kInitialBackoffIntervalSeconds)) {}
 
 BraveP3AScheduler::~BraveP3AScheduler() {}
 

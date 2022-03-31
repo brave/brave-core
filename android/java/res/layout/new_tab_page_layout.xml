@@ -5,6 +5,7 @@
 <org.chromium.chrome.browser.ntp.BraveNewTabPageLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ntp_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,7 +33,7 @@
             android:layout_height="@dimen/cryptid_height_in_logo_wrapper"
             android:layout_gravity="bottom|start" />
 
-        <org.chromium.chrome.browser.ntp.LogoView
+        <org.chromium.chrome.browser.logo.LogoView
             android:id="@+id/search_provider_logo"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/ntp_logo_height"
@@ -57,41 +58,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/ntp_widget_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginBottom="12dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/ntp_widget_cardview_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="140dp"
-                    android:layout_gravity="center_horizontal"
-                    app:cardCornerRadius="12dp">
-
-                    <org.chromium.chrome.browser.custom_layout.VerticalViewPager
-                        android:id="@+id/ntp_widget_view_pager"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
-                </androidx.cardview.widget.CardView>
-
-                <LinearLayout
-                    android:id="@+id/indicator_layout"
-                    android:layout_width="12dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/ntp_widget_indicator_bg"
-                    android:padding="2dp"
-                    android:orientation="vertical"/>
-
-            </LinearLayout>
 
             <!-- Search box -->
             <include layout="@layout/fake_search_box_layout"/>
@@ -118,6 +84,7 @@
                 android:id="@+id/ntp_middle_spacer"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                tools:ignore="NestedWeights"
                 android:layout_weight="0"
                 android:visibility="invisible" />
 
@@ -150,9 +117,27 @@
 
         </LinearLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/newsRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="750dp"
+            android:visibility="gone"
+         />
+
+        <include
+            android:id="@+id/optin_layout_id"
+            layout="@layout/optin_layout"
+            android:layout_marginTop="-10dp"
+            android:layout_marginBottom="300dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
         <FrameLayout
             android:id="@+id/image_credit_layout"
             android:layout_width="match_parent"
+            android:layout_marginBottom="30dp"
             android:layout_height="wrap_content">
 
             <TextView
@@ -178,6 +163,14 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/feed_spinner"
+        style="?android:progressBarStyleLarge"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:visibility="gone"
+        android:layout_gravity="center" />
+
     <include layout="@layout/ntp_non_disruptive_banner"/>
     <include layout="@layout/bre_bottom_banner"/>
 
@@ -185,7 +178,8 @@
         android:id="@+id/super_referral_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/qrcode_light"
+        app:srcCompat="@drawable/ic_qr_code"
+        android:tint="#000000"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="16dp"
         android:contentDescription="@null"

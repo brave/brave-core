@@ -1,7 +1,24 @@
 import("//mojo/public/tools/bindings/mojom.gni")
 
+static_library("common") {
+  sources = [
+    "brave_search_utils.cc",
+    "brave_search_utils.h",
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [
+    "//base",
+    "//url",
+  ]
+}
+
 mojom("mojom") {
-  sources = [ "brave_search.mojom" ]
+  sources = [
+    "brave_search_default.mojom",
+    "brave_search_fallback.mojom",
+  ]
 
   deps = [ "//mojo/public/mojom/base" ]
 }

@@ -7,7 +7,7 @@
 
 #define BRAVE_GM2_TAB_STYLE_H protected:
 #define CreateForTab CreateForTab_ChromiumImpl
-#include "../../../../../../../chrome/browser/ui/views/tabs/tab_style_views.cc"
+#include "src/chrome/browser/ui/views/tabs/tab_style_views.cc"
 #undef CreateForTab
 #undef BRAVE_GM2_TAB_STYLE_H
 

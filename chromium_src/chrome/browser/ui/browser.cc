@@ -12,13 +12,8 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_content_setting_bubble_model_delegate.h"
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SIDEBAR)
-#include "base/feature_list.h"
-#include "brave/components/sidebar/features.h"
 #endif
 
 #define BRAVE_BROWSER_CREATE return new BraveBrowser(params);
@@ -26,16 +21,16 @@
   BraveBrowserContentSettingBubbleModelDelegate
 #define BrowserCommandController BraveBrowserCommandController
 #define BrowserLocationBarModelDelegate BraveLocationBarModelDelegate
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #define BookmarkTabHelper BraveBookmarkTabHelper
 #endif
 
-#include "../../../../../chrome/browser/ui/browser.cc"  // NOLINT
+#include "src/chrome/browser/ui/browser.cc"
 #undef BrowserLocationBarModelDelegate
 #undef BrowserContentSettingBubbleModelDelegate
 #undef BrowserCommandController
 #undef BRAVE_BROWSER_CREATE
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #undef BookmarkTabHelper
 #endif

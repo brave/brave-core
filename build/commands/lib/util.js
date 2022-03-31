@@ -6,14 +6,7 @@ const fs = require('fs-extra')
 const crypto = require('crypto')
 const l10nUtil = require('./l10nUtil')
 const Log = require('./sync/logging')
-
-const fixPywin32 = (options = {}) => {
-  if (process.platform !== 'win32') {
-    return
-  }
-  console.log("Manually installing pywin32 python module")
-  util.run('python', ['-m', 'pip', 'install', 'pywin32'], options)
-}
+const assert = require('assert')
 
 const runGClient = (args, options = {}) => {
   if (config.gClientVerbose) args.push('--verbose')
@@ -21,7 +14,6 @@ const runGClient = (args, options = {}) => {
   options = mergeWithDefault(options)
   options.env.GCLIENT_FILE = config.gClientFile
   util.run('gclient', args, options)
-  fixPywin32(options)
 }
 
 const mergeWithDefault = (options) => {
@@ -56,6 +48,18 @@ async function applyPatches() {
   if (hasPatchError) {
     Log.error('Exiting as not all patches were successful!')
     process.exit(1)
+  }
+}
+
+const restoreBraveCoreGitUrlIfGitCacheEnabled = () => {
+  const gitCachePath = util.runGit(config.braveCoreDir, ['config', 'cache.cachepath'], true)
+  if (!gitCachePath) {
+    return
+  }
+  const gitBraveCoreRemoteUrl = util.runGit(config.braveCoreDir, ['remote', 'get-url', 'origin'], true)
+  const gitBraveCoreRemotePushUrl = util.runGit(config.braveCoreDir, ['remote', 'get-url', '--push', 'origin'], true)
+  if (gitBraveCoreRemoteUrl != gitBraveCoreRemotePushUrl) {
+    util.runGit(config.braveCoreDir, ['remote', 'set-url', 'origin', gitBraveCoreRemotePushUrl], true)
   }
 }
 
@@ -168,7 +172,7 @@ const util = {
           "src/chrome/tools/test/reference_build/chrome_win": "%None%"
         },
         custom_vars: {
-          "checkout_pgo_profiles": "%False%"
+          "checkout_pgo_profiles": config.isBraveReleaseBuild() ? "%True%" : "%False%"
         }
       },
       {
@@ -382,8 +386,10 @@ const util = {
       const androidTouchtoFillResDest = path.join(config.srcDir, 'chrome', 'browser', 'touch_to_fill', 'android', 'internal', 'java', 'res')
       const androidToolbarResSource = path.join(config.braveCoreDir, 'browser', 'ui', 'android', 'toolbar', 'java', 'res')
       const androidToolbarResDest = path.join(config.srcDir, 'chrome', 'browser', 'ui', 'android', 'toolbar', 'java', 'res')
-      const androidComponentsResSource = path.join(config.braveCoreDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
-      const androidComponentsResDest = path.join(config.srcDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
+      const androidComponentsWidgetResSource = path.join(config.braveCoreDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
+      const androidComponentsWidgetResDest = path.join(config.srcDir, 'components', 'browser_ui', 'widget', 'android', 'java', 'res')
+      const androidComponentsStylesResSource = path.join(config.braveCoreDir, 'components', 'browser_ui', 'styles', 'android', 'java', 'res')
+      const androidComponentsStylesResDest = path.join(config.srcDir, 'components', 'browser_ui', 'styles', 'android', 'java', 'res')
       const androidSafeBrowsingResSource = path.join(config.braveCoreDir, 'browser', 'safe_browsing', 'android', 'java', 'res')
       const androidSafeBrowsingResDest = path.join(config.srcDir, 'chrome', 'browser', 'safe_browsing', 'android', 'java', 'res')
 
@@ -396,7 +402,8 @@ const util = {
         [androidContentPublicResSource]: [androidContentPublicResDest],
         [androidTouchtoFillResSource]: [androidTouchtoFillResDest],
         [androidToolbarResSource]: [androidToolbarResDest],
-        [androidComponentsResSource]: [androidComponentsResDest],
+        [androidComponentsWidgetResSource]: [androidComponentsWidgetResDest],
+        [androidComponentsStylesResSource]: [androidComponentsStylesResDest],
         [androidSafeBrowsingResSource]: [androidSafeBrowsingResDest]
       }
 
@@ -533,25 +540,37 @@ const util = {
     const buildArgsStr = util.buildArgsToString(config.buildArgs())
     const buildArgsFile = path.join(config.outputDir, 'brave_build_args.txt')
     const buildNinjaFile = path.join(config.outputDir, 'build.ninja')
+    const prevBuildArgs = fs.existsSync(buildArgsFile) ?
+      fs.readFileSync(buildArgsFile) : undefined
 
-    const shouldRunGnGen = !config.auto_gn_gen ||
-        !fs.existsSync(buildNinjaFile) || !fs.existsSync(buildArgsFile) ||
-        fs.readFileSync(buildArgsFile) != buildArgsStr
+    const shouldRunGnGen = config.force_gn_gen ||
+      !fs.existsSync(buildNinjaFile) || !prevBuildArgs ||
+      prevBuildArgs != buildArgsStr
 
     if (shouldRunGnGen) {
+      // `gn gen` can modify args.gn even if it's failed.
+      // Therefore delete the file to make sure that args.gn and
+      // brave_build_args.txt are in sync.
+      if (prevBuildArgs)
+        fs.removeSync(buildArgsFile)
+
       util.run('gn', ['gen', config.outputDir, '--args="' + buildArgsStr + '"'], options)
       fs.writeFileSync(buildArgsFile, buildArgsStr)
     }
   },
 
-  buildTarget: (options = config.defaultOptions) => {
-    console.log('building ' + config.buildTarget + '...')
+  generateNinjaFiles: (options = config.defaultOptions) => {
+    console.log('generating ninja files...')
 
     if (process.platform === 'win32') {
       util.updateOmahaMidlFiles()
       util.buildRedirectCCTool()
     }
     util.runGnGen(options)
+  },
+
+  buildTarget: (options = config.defaultOptions) => {
+    console.log('building ' + config.buildTarget + '...')
 
     let num_compile_failure = 1
     if (config.ignore_compile_failure)
@@ -564,16 +583,40 @@ const util = {
     ]
 
     if (config.use_goma) {
-      const gomaLoginInfo = util.runProcess('goma_auth', ['info'], options)
-      if (gomaLoginInfo.status !== 0) {
-        console.log('Login required for using Goma. This is only needed once')
-        util.run('goma_auth', ['login'], options)
+      const compiler_proxy_binary = path.join(config.gomaDir, util.appendExeIfWin32('compiler_proxy'))
+      assert(fs.existsSync(compiler_proxy_binary), 'compiler_proxy not found at ' + config.gomaDir)
+      options.env.GOMA_COMPILER_PROXY_BINARY = compiler_proxy_binary
+
+      // Disable HTTP2 proxy. According to EngFlow this has significant performance impact.
+      options.env.GOMACTL_USE_PROXY = 0
+
+      // This skips the auth check and make this call instant if compiler_proxy is already running.
+      // If compiler_proxy is not running, it will fail to start if no valid credentials are found.
+      options.env.GOMACTL_SKIP_AUTH = 1
+      const gomaStartInfo = util.runProcess('goma_ctl', ['ensure_start'], options)
+      delete options.env.GOMACTL_SKIP_AUTH
+
+      if (gomaStartInfo.status !== 0) {
+        const gomaLoginInfo = util.runProcess('goma_auth', ['info'], options)
+        if (gomaLoginInfo.status !== 0) {
+          console.log('Login required for using Goma. This is only needed once')
+          util.run('goma_auth', ['login'], options)
+        }
+        util.run('goma_ctl', ['ensure_start'], options)
       }
-      util.run('goma_ctl', ['ensure_start'], options)
-      ninjaOpts.push('-j', config.gomaJValue)
+      util.run('goma_ctl', ['update_hook'], options)
     }
 
-    util.run('ninja', ninjaOpts, options)
+    if (config.isCI && config.use_goma) {
+      util.run('goma_ctl', ['showflags'], options)
+      util.run('goma_ctl', ['stat'], options)
+    }
+
+    util.run('autoninja', ninjaOpts, options)
+
+    if (config.isCI && config.use_goma) {
+      util.run('goma_ctl', ['stat'], options)
+    }
   },
 
   generateXcodeWorkspace: (options = config.defaultOptions) => {
@@ -626,13 +669,13 @@ const util = {
     return needsUpdate
   },
 
-  gclientSync: (forceReset = false, cleanup = false, braveCoreRef = null, options = {}) => {
+  gclientSync: (forceReset = false, cleanup = false, braveCoreRef = null, shouldCheckChromiumVersion = true, options = {}) => {
     let reset = forceReset
 
     // base args
-    const initialArgs = ['sync', '--reset', '--nohooks']
+    const initialArgs = ['sync', '--nohooks']
     const chromiumArgs = ['--revision', 'src@' + config.getProjectRef('chrome')]
-    const resetArgs = ['--with_tags', '--with_branch_heads', '--upstream']
+    const resetArgs = ['--reset', '--with_tags', '--with_branch_heads', '--upstream']
 
     let args = [...initialArgs]
     let didUpdateChromium = false
@@ -648,11 +691,32 @@ const util = {
         }
       }
 
+      // re-checkout as the commit ref because otherwise gclient sync clobbers
+      // the branch for braveCoreRef and doesn't set it to the correct commit
+      // for some reason
+      if (fs.existsSync(config.braveCoreDir)) {
+        const braveCoreSha = util.runGit(config.braveCoreDir, ['rev-parse', 'HEAD'])
+        Log.progress(`Resetting brave core to "${braveCoreSha}"...`)
+        util.runGit(config.braveCoreDir, ['reset', '--hard', 'HEAD'], true)
+        let checkoutResult = util.runGit(config.braveCoreDir, ['checkout', braveCoreSha], true)
+        // Handle checkout failure
+        if (checkoutResult === null) {
+          Log.error('Could not checkout: ' + braveCoreSha)
+        }
+        // Checkout was successful
+        Log.progress(`...brave core is now at commit ID ${braveCoreSha}`)
+      }
+
       args = args.concat(['--revision', 'src/brave@' + braveCoreRef])
       reset = true
     }
 
-    if (forceReset || util.shouldUpdateChromium()) {
+    if (!shouldCheckChromiumVersion) {
+      const chromiumNeedsUpdate = util.shouldUpdateChromium()
+      if (chromiumNeedsUpdate) {
+        console.warn(chalk.yellow.bold('Chromium needed update but received the flag to skip performing the update. Working directory may not compile correctly.'))
+      }
+    } else if (forceReset || util.shouldUpdateChromium()) {
       args = [...args, ...chromiumArgs]
       reset = true
       didUpdateChromium = true
@@ -671,6 +735,10 @@ const util = {
     }
 
     runGClient(args, options)
+    // When git cache is enabled, gclient sync will use a local directory as a
+    // git remote url. This will break non gclient-triggered git operations, so
+    // after gclient is done, we restore the remote url here.
+    restoreBraveCoreGitUrlIfGitCacheEnabled()
 
     return {
       didUpdateChromium,
@@ -715,6 +783,12 @@ const util = {
       }
     })
     return filelist
+  },
+
+  appendExeIfWin32: (input) => {
+    if (process.platform === 'win32')
+      input += '.exe'
+    return input
   }
 }
 

@@ -10,12 +10,11 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_map.h"
 #include "base/callback_forward.h"
-#include "base/macros.h"
+#include "base/containers/flat_map.h"
 #include "base/observer_list.h"
-#include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
@@ -52,7 +51,6 @@ using GetReconcileStampCallback = base::OnceCallback<void(uint64_t)>;
 using GetPendingContributionsTotalCallback = base::OnceCallback<void(double)>;
 using GetRewardsInternalsInfoCallback =
     base::OnceCallback<void(ledger::type::RewardsInternalsInfoPtr info)>;
-using SaveRecurringTipCallback = base::OnceCallback<void(bool)>;
 using GetRecurringTipsCallback =
     base::OnceCallback<void(ledger::type::PublisherInfoList list)>;
 using GetOneTimeTipsCallback =
@@ -133,9 +131,13 @@ using GetBraveWalletCallback =
 using GetWalletPassphraseCallback =
     base::OnceCallback<void(const std::string&)>;
 
+using OnTipCallback = base::OnceCallback<void(ledger::type::Result)>;
+
 class RewardsService : public KeyedService {
  public:
   RewardsService();
+  RewardsService(const RewardsService&) = delete;
+  RewardsService& operator=(const RewardsService&) = delete;
   ~RewardsService() override;
 
   virtual bool IsInitialized() = 0;
@@ -215,10 +217,10 @@ class RewardsService : public KeyedService {
       GetAutoContributionAmountCallback callback) = 0;
   virtual void GetPublisherBanner(const std::string& publisher_id,
                                   GetPublisherBannerCallback callback) = 0;
-  virtual void OnTip(
-      const std::string& publisher_key,
-      const double amount,
-      const bool recurring) = 0;
+  virtual void OnTip(const std::string& publisher_key,
+                     double amount,
+                     bool recurring,
+                     OnTipCallback callback) = 0;
 
   // Used in importer from muon days
   virtual void OnTip(
@@ -262,10 +264,9 @@ class RewardsService : public KeyedService {
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
-  virtual void SaveRecurringTip(
-      const std::string& publisher_key,
-      const double amount,
-      SaveRecurringTipCallback callback) = 0;
+  virtual void SaveRecurringTip(const std::string& publisher_key,
+                                double amount,
+                                OnTipCallback callback) = 0;
 
   virtual const RewardsNotificationService::RewardsNotificationsMap&
   GetAllNotifications() = 0;
@@ -308,12 +309,20 @@ class RewardsService : public KeyedService {
 
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;
 
+  virtual bool IsAutoContributeSupported() const = 0;
+
   virtual void GetExternalWallet(GetExternalWalletCallback callback) = 0;
+
+  virtual std::string GetExternalWalletType() const = 0;
+
+  virtual const std::vector<std::string> GetExternalWalletProviders() const = 0;
 
   virtual void ProcessRewardsPageUrl(
       const std::string& path,
       const std::string& query,
       ProcessRewardsPageUrlCallback callback) = 0;
+
+  virtual void RequestAdsEnabledPopupClosed(bool ads_enabled) = 0;
 
   virtual void DisconnectWallet() = 0;
 
@@ -349,12 +358,6 @@ class RewardsService : public KeyedService {
 
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
-  virtual std::string GetEncryptedStringState(const std::string& key) = 0;
-
-  virtual bool SetEncryptedStringState(
-      const std::string& key,
-      const std::string& value) = 0;
-
   virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
 
   virtual void StartProcess(base::OnceClosure callback) = 0;
@@ -365,11 +368,10 @@ class RewardsService : public KeyedService {
 
   virtual bool IsRewardsEnabled() const = 0;
 
+  virtual void SetExternalWalletType(const std::string& wallet_type) = 0;
+
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(RewardsService);
 };
 
 }  // namespace brave_rewards

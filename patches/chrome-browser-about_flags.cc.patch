@@ -1,31 +1,12 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index f9aea40901ea3172c34b0a62800a6d5350198502..d7bb2c5119cce22422f66d44b30e6a0dd8b15211 100644
+index 81876b3c1a1576af78b919b00ad05e96c9a29394..6d333d7d63494b1d38c11aa69509769b3b1a3d2e 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -309,14 +309,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
- const FeatureEntry::Choice kTraceUploadURL[] = {
-     {flags_ui::kGenericExperimentChoiceDisabled, "", ""},
-     {flag_descriptions::kTraceUploadUrlChoiceOther, switches::kTraceUploadURL,
--     "https://performance-insights.appspot.com/upload?tags=flags,Other"},
-+     "https://no-thanks.invalid"},
-     {flag_descriptions::kTraceUploadUrlChoiceEmloading,
-      switches::kTraceUploadURL,
--     "https://performance-insights.appspot.com/upload?tags=flags,emloading"},
-+     "https://no-thanks.invalid"},
-     {flag_descriptions::kTraceUploadUrlChoiceQa, switches::kTraceUploadURL,
--     "https://performance-insights.appspot.com/upload?tags=flags,QA"},
-+     "https://no-thanks.invalid"},
-     {flag_descriptions::kTraceUploadUrlChoiceTesting, switches::kTraceUploadURL,
--     "https://performance-insights.appspot.com/upload?tags=flags,TestingTeam"}};
-+     "https://no-thanks.invalid"}};
- 
- const FeatureEntry::Choice kPassiveListenersChoices[] = {
-     {flags_ui::kGenericExperimentChoiceDefault, "", ""},
-@@ -7287,6 +7287,7 @@ const FeatureEntry kFeatureEntries[] = {
-     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
-     // Histograms" in tools/metrics/histograms/README.md (run the
-     // AboutFlagsHistogramTest unit test to verify this process).
-+    BRAVE_FEATURE_ENTRIES
- };
- 
- class FlagsStateSingleton : public flags_ui::FlagsState::Delegate {
+@@ -2865,6 +2865,7 @@ constexpr FeatureEntry::FeatureVariation kLensStandaloneVariations[] = {
+ //
+ // When adding a new choice, add it to the end of the list.
+ const FeatureEntry kFeatureEntries[] = {
++    BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
+ // Include generated flags for flag unexpiry; see //docs/flag_expiry.md and
+ // //tools/flags/generate_unexpire_flags.py.
+ #include "build/chromeos_buildflags.h"

@@ -13,6 +13,7 @@
 #include "base/command_line.h"
 #include "base/strings/string_split.h"
 #include "base/strings/utf_string_conversions.h"
+#include "build/build_config.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
@@ -21,7 +22,7 @@ int CountA(const base::CommandLine::StringVector& sv) {
   int count = 0;
   for (const auto& argv : sv) {
     std::string value;
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     value = base::WideToUTF8(argv);
 #else
     value = argv;

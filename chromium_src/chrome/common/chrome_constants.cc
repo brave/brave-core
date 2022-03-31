@@ -9,9 +9,9 @@
 
 #define FPL FILE_PATH_LITERAL
 
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
 #define PRODUCT_STRING BRAVE_PRODUCT_STRING
-#endif  // defined(OS_MAC)
+#endif  // BUILDFLAG(IS_MAC)
 
 namespace chrome {
 
@@ -34,63 +34,63 @@ const char kChromeVersion[] = CHROME_VERSION_STRING;
 // in the UITest class we support switching to that version when told to
 // do so.
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const base::FilePath::CharType kBrowserProcessExecutableName[] =
     FPL("brave.exe");
 const base::FilePath::CharType kHelperProcessExecutableName[] =
     FPL("brave.exe");
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
 const base::FilePath::CharType kBrowserProcessExecutableName[] =
     FPL(PRODUCT_STRING);
 const base::FilePath::CharType kHelperProcessExecutableName[] =
     FPL(PRODUCT_STRING " Helper");
-#elif defined(OS_ANDROID)
+#elif BUILDFLAG(IS_ANDROID)
 // NOTE: Keep it synced with the process names defined in AndroidManifest.xml.
 const base::FilePath::CharType kBrowserProcessExecutableName[] = FPL("brave");
 const base::FilePath::CharType kHelperProcessExecutableName[] =
     FPL("sandboxed_process");
-#elif defined(OS_POSIX)
+#elif BUILDFLAG(IS_POSIX)
 const base::FilePath::CharType kBrowserProcessExecutableName[] = FPL("brave");
 // Helper processes end up with a name of "exe" due to execing via
 // /proc/self/exe.  See bug 22703.
 const base::FilePath::CharType kHelperProcessExecutableName[] = FPL("exe");
 #endif  // OS_*
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const base::FilePath::CharType kBrowserProcessExecutablePath[] =
     FPL("brave.exe");
 const base::FilePath::CharType kHelperProcessExecutablePath[] =
     FPL("brave.exe");
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
 const base::FilePath::CharType kBrowserProcessExecutablePath[] =
     FPL(PRODUCT_STRING ".app/Contents/MacOS/" PRODUCT_STRING);
 const base::FilePath::CharType kHelperProcessExecutablePath[] =
     FPL(PRODUCT_STRING " Helper.app/Contents/MacOS/" PRODUCT_STRING " Helper");
-#elif defined(OS_ANDROID)
+#elif BUILDFLAG(IS_ANDROID)
 const base::FilePath::CharType kBrowserProcessExecutablePath[] = FPL("brave");
 const base::FilePath::CharType kHelperProcessExecutablePath[] = FPL("brave");
-#elif defined(OS_POSIX)
+#elif BUILDFLAG(IS_POSIX)
 const base::FilePath::CharType kBrowserProcessExecutablePath[] = FPL("brave");
 const base::FilePath::CharType kHelperProcessExecutablePath[] = FPL("brave");
 #endif  // OS_*
 
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
 const base::FilePath::CharType kFrameworkName[] =
     FPL(PRODUCT_STRING " Framework.framework");
 const base::FilePath::CharType kFrameworkExecutableName[] =
     FPL(PRODUCT_STRING " Framework");
+const char kMacHelperSuffixAlerts[] = " (Alerts)";
 #endif  // OS_MAC
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const base::FilePath::CharType kBrowserResourcesDll[] = FPL("chrome.dll");
 const base::FilePath::CharType kElfDll[] = FPL("chrome_elf.dll");
 const base::FilePath::CharType kStatusTrayWindowClass[] =
     FPL("Chrome_StatusTrayWindow");
-#endif  // defined(OS_WIN)
+#endif  // BUILDFLAG(IS_WIN)
 
 const char kInitialProfile[] = "Default";
 const char kMultiProfileDirPrefix[] = "Profile ";
-const char kEphemeralGuestProfileDirPrefix[] = "Guest ";
 const base::FilePath::CharType kGuestProfileDir[] = FPL("Guest Profile");
 const base::FilePath::CharType kSystemProfileDir[] = FPL("System Profile");
 
@@ -115,6 +115,7 @@ const base::FilePath::CharType kLocalStateFilename[] = FPL("Local State");
 const base::FilePath::CharType kMediaCacheDirname[] = FPL("Media Cache");
 const base::FilePath::CharType kNetworkPersistentStateFilename[] =
     FPL("Network Persistent State");
+const base::FilePath::CharType kNetworkDataDirname[] = FPL("Network");
 const base::FilePath::CharType kNotificationSchedulerStorageDirname[] =
     FPL("Notification Scheduler");
 const base::FilePath::CharType kOfflinePageArchivesDirname[] =
@@ -129,12 +130,14 @@ const base::FilePath::CharType kPreferencesFilename[] = FPL("Preferences");
 const base::FilePath::CharType kPreviewsOptOutDBFilename[] =
     FPL("previews_opt_out.db");
 const base::FilePath::CharType kQueryTileStorageDirname[] = FPL("Query Tiles");
-const base::FilePath::CharType kVideoTutorialsStorageDirname[] =
-    FPL("Video Tutorials");
 const base::FilePath::CharType kReadmeFilename[] = FPL("README");
+const base::FilePath::CharType kSCTAuditingPendingReportsFileName[] =
+    FPL("SCT Auditing Pending Reports");
 const base::FilePath::CharType kSecurePreferencesFilename[] =
     FPL("Secure Preferences");
 const base::FilePath::CharType kServiceStateFileName[] = FPL("Service State");
+const base::FilePath::CharType kSegmentationPlatformStorageDirName[] =
+    FPL("Segmentation Platform");
 const base::FilePath::CharType kSingletonCookieFilename[] =
     FPL("SingletonCookie");
 const base::FilePath::CharType kSingletonLockFilename[] = FPL("SingletonLock");
@@ -143,18 +146,22 @@ const base::FilePath::CharType kSingletonSocketFilename[] =
 const base::FilePath::CharType kSupervisedUserSettingsFilename[] =
     FPL("Managed Mode Settings");
 const base::FilePath::CharType kThemePackFilename[] = FPL("Cached Theme.pak");
+const base::FilePath::CharType kTransportSecurityPersisterFilename[] =
+    FPL("TransportSecurity");
 const base::FilePath::CharType kTrustTokenFilename[] = FPL("Trust Tokens");
+const base::FilePath::CharType kVideoTutorialsStorageDirname[] =
+    FPL("Video Tutorials");
 const base::FilePath::CharType kWebAppDirname[] = FPL("Web Applications");
 // Only use if the ENABLE_REPORTING build flag is true
 const base::FilePath::CharType kReportingAndNelStoreFilename[] =
     FPL("Reporting and NEL");
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const base::FilePath::CharType kJumpListIconDirname[] = FPL("JumpListIcons");
 #endif
 
 // directory names
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const wchar_t kUserDataDirname[] = L"User Data";
 #endif
 

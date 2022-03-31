@@ -14,8 +14,9 @@
 #include "base/files/file_path_watcher.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/observer_list_types.h"
 #include "base/sequence_checker.h"
-#include "base/sequenced_task_runner.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
@@ -99,6 +100,9 @@ class GreaselionDownloadService : public LocalDataFilesObserver {
  public:
   explicit GreaselionDownloadService(
       LocalDataFilesService* local_data_files_service);
+  GreaselionDownloadService(const GreaselionDownloadService&) = delete;
+  GreaselionDownloadService& operator=(const GreaselionDownloadService&) =
+      delete;
   ~GreaselionDownloadService() override;
 
   std::vector<std::unique_ptr<GreaselionRule>>* rules();
@@ -136,7 +140,6 @@ class GreaselionDownloadService : public LocalDataFilesObserver {
 
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<GreaselionDownloadService> weak_factory_;
-  DISALLOW_COPY_AND_ASSIGN(GreaselionDownloadService);
 };  // namespace greaselion
 
 // Creates the GreaselionDownloadService

@@ -10,7 +10,6 @@ import ImportBox, { Props } from '../../../../components/brave_welcome_ui/contai
 import { mockImportSources } from '../../testData'
 
 describe('ImportBox component tests', () => {
-
   const mockProps: Props = {
     index: 2,
     currentScreen: 2,

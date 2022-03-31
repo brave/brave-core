@@ -8,9 +8,9 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_op.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/logging.h"
 
 namespace ads {
 namespace database {
@@ -38,108 +38,117 @@ std::string BuildBindingParameterPlaceholders(const size_t parameters_count,
   return base::JoinString(values, ", ");
 }
 
-void BindNull(DBCommand* command, const int_fast16_t index) {
+void BindNull(mojom::DBCommand* command, const int_fast16_t index) {
   DCHECK(command);
 
-  DBCommandBindingPtr binding = DBCommandBinding::New();
+  mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = DBValue::New();
+  binding->value = mojom::DBValue::New();
   binding->value->set_null_value(0);
 
   command->bindings.push_back(std::move(binding));
 }
 
-void BindInt(DBCommand* command, const int index, const int32_t value) {
+void BindInt(mojom::DBCommand* command, const int index, const int32_t value) {
   DCHECK(command);
 
-  DBCommandBindingPtr binding = DBCommandBinding::New();
+  mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = DBValue::New();
+  binding->value = mojom::DBValue::New();
   binding->value->set_int_value(value);
 
   command->bindings.push_back(std::move(binding));
 }
 
-void BindInt64(DBCommand* command, const int index, const int64_t value) {
+void BindInt64(mojom::DBCommand* command,
+               const int index,
+               const int64_t value) {
   DCHECK(command);
 
-  DBCommandBindingPtr binding = DBCommandBinding::New();
+  mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = DBValue::New();
+  binding->value = mojom::DBValue::New();
   binding->value->set_int64_value(value);
 
   command->bindings.push_back(std::move(binding));
 }
 
-void BindDouble(DBCommand* command, const int index, const double value) {
+void BindDouble(mojom::DBCommand* command,
+                const int index,
+                const double value) {
   DCHECK(command);
 
-  DBCommandBindingPtr binding = DBCommandBinding::New();
+  mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = DBValue::New();
+  binding->value = mojom::DBValue::New();
   binding->value->set_double_value(value);
 
   command->bindings.push_back(std::move(binding));
 }
 
-void BindBool(DBCommand* command, const int index, const bool value) {
+void BindBool(mojom::DBCommand* command, const int index, const bool value) {
   DCHECK(command);
 
-  DBCommandBindingPtr binding = DBCommandBinding::New();
+  mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = DBValue::New();
+  binding->value = mojom::DBValue::New();
   binding->value->set_bool_value(value);
 
   command->bindings.push_back(std::move(binding));
 }
 
-void BindString(DBCommand* command, const int index, const std::string& value) {
+void BindString(mojom::DBCommand* command,
+                const int index,
+                const std::string& value) {
   DCHECK(command);
 
-  DBCommandBindingPtr binding = DBCommandBinding::New();
+  mojom::DBCommandBindingPtr binding = mojom::DBCommandBinding::New();
   binding->index = index;
-  binding->value = DBValue::New();
+  binding->value = mojom::DBValue::New();
   binding->value->set_string_value(value);
 
   command->bindings.push_back(std::move(binding));
 }
 
-int ColumnInt(DBRecord* record, const size_t index) {
+int ColumnInt(mojom::DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
-  DCHECK_EQ(DBValue::Tag::INT_VALUE, record->fields.at(index)->which());
+  DCHECK_EQ(mojom::DBValue::Tag::INT_VALUE, record->fields.at(index)->which());
 
   return record->fields.at(index)->get_int_value();
 }
 
-int64_t ColumnInt64(DBRecord* record, const size_t index) {
+int64_t ColumnInt64(mojom::DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
-  DCHECK_EQ(DBValue::Tag::INT64_VALUE, record->fields.at(index)->which());
+  DCHECK_EQ(mojom::DBValue::Tag::INT64_VALUE,
+            record->fields.at(index)->which());
 
   return record->fields.at(index)->get_int64_value();
 }
 
-double ColumnDouble(DBRecord* record, const size_t index) {
+double ColumnDouble(mojom::DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
-  DCHECK_EQ(DBValue::Tag::DOUBLE_VALUE, record->fields.at(index)->which());
+  DCHECK_EQ(mojom::DBValue::Tag::DOUBLE_VALUE,
+            record->fields.at(index)->which());
 
   return record->fields.at(index)->get_double_value();
 }
 
-bool ColumnBool(DBRecord* record, const size_t index) {
+bool ColumnBool(mojom::DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
-  DCHECK_EQ(DBValue::Tag::BOOL_VALUE, record->fields.at(index)->which());
+  DCHECK_EQ(mojom::DBValue::Tag::BOOL_VALUE, record->fields.at(index)->which());
 
   return record->fields.at(index)->get_bool_value();
 }
 
-std::string ColumnString(DBRecord* record, const size_t index) {
+std::string ColumnString(mojom::DBRecord* record, const size_t index) {
   DCHECK(record);
   DCHECK_LT(index, record->fields.size());
-  DCHECK_EQ(DBValue::Tag::STRING_VALUE, record->fields.at(index)->which());
+  DCHECK_EQ(mojom::DBValue::Tag::STRING_VALUE,
+            record->fields.at(index)->which());
 
   return record->fields.at(index)->get_string_value();
 }

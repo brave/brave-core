@@ -17,7 +17,7 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
                          base::ListValue* chrome_profiles,
                          const base::FilePath& user_data_folder,
                          const std::string& brand) {
-  for (const auto& value : *chrome_profiles) {
+  for (const auto& value : chrome_profiles->GetList()) {
     const base::DictionaryValue* dict;
     if (!value.GetAsDictionary(&dict))
       continue;
@@ -54,7 +54,7 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
   AddChromeToProfiles(profiles, chrome_profiles, chrome_user_data_folder,
                       brand_chrome);
 
-#if !defined(OS_LINUX)
+#if !BUILDFLAG(IS_LINUX)
   const base::FilePath canary_user_data_folder = GetCanaryUserDataFolder();
   base::ListValue* canary_profiles =
       GetChromeSourceProfiles(canary_user_data_folder);
@@ -73,4 +73,4 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
 
 }  // namespace
 
-#include "../../../../../chrome/browser/importer/importer_list.cc"
+#include "src/chrome/browser/importer/importer_list.cc"

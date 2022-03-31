@@ -5,17 +5,24 @@
 
 #include "bat/ads/internal/unittest_base.h"
 
+#include "base/check.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
+#include "base/time/time.h"
+#include "bat/ads/ads_client.h"
+#include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/unittest_file_util.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
-#include "bat/ads/mojom.h"
-#include "bat/ads/result.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 using ::testing::NiceMock;
 
 namespace ads {
 
 namespace {
-const char kDatabaseFilename[] = "database.sqlite";
+constexpr char kDatabaseFilename[] = "database.sqlite";
 }  // namespace
 
 UnitTestBase::UnitTestBase()
@@ -25,10 +32,12 @@ UnitTestBase::UnitTestBase()
           std::make_unique<NiceMock<brave_l10n::LocaleHelperMock>>()),
       platform_helper_mock_(std::make_unique<NiceMock<PlatformHelperMock>>()) {
   // You can do set-up work for each test here
+  CHECK(temp_dir_.CreateUniqueTempDir());
+
   brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
       locale_helper_mock_.get());
 
-  PlatformHelper::GetInstance()->set_for_testing(platform_helper_mock_.get());
+  PlatformHelper::GetInstance()->SetForTesting(platform_helper_mock_.get());
 }
 
 UnitTestBase::~UnitTestBase() {
@@ -41,34 +50,11 @@ UnitTestBase::~UnitTestBase() {
       << "You have overridden TearDown but never called UnitTestBase::TearDown";
 }
 
-void UnitTestBase::InitializeAds() {
-  CHECK(integration_test_)
-      << "|InitializeAds| should only be called if "
-         "|SetUpForTesting| was initialized for integration testing";
-
-  ads_->Initialize(
-      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
-
-  task_environment_.RunUntilIdle();
-}
-
-AdsImpl* UnitTestBase::GetAds() const {
-  return ads_.get();
-}
-
 void UnitTestBase::SetUp() {
   // Code here will be called immediately after the constructor (right before
   // each test)
 
   SetUpForTesting(/* integration_test */ false);
-}
-
-void UnitTestBase::SetUpForTesting(const bool integration_test) {
-  setup_called_ = true;
-
-  integration_test_ = integration_test;
-
-  Initialize();
 }
 
 void UnitTestBase::TearDown() {
@@ -80,31 +66,77 @@ void UnitTestBase::TearDown() {
 
 // Objects declared here can be used by all tests in the test case
 
-void UnitTestBase::FastForwardClockBy(const base::TimeDelta& time_delta) {
+bool UnitTestBase::CopyFileFromTestPathToTempDir(
+    const std::string& source_filename,
+    const std::string& dest_filename) const {
+  CHECK(!setup_called_)
+      << "|CopyFileFromTestPathToTempDir| should be called before "
+         "|SetUpForTesting|";
+
+  const base::FilePath from_path = GetTestPath().AppendASCII(source_filename);
+
+  const base::FilePath to_path = temp_dir_.GetPath().AppendASCII(dest_filename);
+
+  return base::CopyFile(from_path, to_path);
+}
+
+void UnitTestBase::SetUpForTesting(const bool integration_test) {
+  setup_called_ = true;
+
+  integration_test_ = integration_test;
+
+  Initialize();
+}
+
+void UnitTestBase::InitializeAds() {
+  CHECK(integration_test_)
+      << "|InitializeAds| should only be called if "
+         "|SetUpForTesting| was initialized for integration testing";
+
+  ads_->Initialize([=](const bool success) {
+    ASSERT_TRUE(success);
+
+    ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
+                          "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
+  });
+
+  task_environment_.RunUntilIdle();
+}
+
+AdsImpl* UnitTestBase::GetAds() const {
+  return ads_.get();
+}
+
+void UnitTestBase::FastForwardClockBy(const base::TimeDelta time_delta) {
   task_environment_.FastForwardBy(time_delta);
 }
 
-void UnitTestBase::FastForwardClockTo(const base::Time& time) {
-  const base::TimeDelta time_delta = time - base::Time::Now();
+void UnitTestBase::FastForwardClockTo(const base::Time time) {
+  const base::TimeDelta time_delta = time - Now();
+  CHECK(time_delta.is_positive())
+      << "You Can't Travel Back in Time, Scientists Say! Unless, of course, "
+         "you are travelling at 88 mph";
 
   FastForwardClockBy(time_delta);
 }
 
 void UnitTestBase::AdvanceClockToMidnightUTC() {
-  const base::TimeDelta time_delta = base::Time::Now().LocalMidnight() +
-                                     base::TimeDelta::FromHours(24) -
-                                     base::Time::Now();
+  const base::TimeDelta time_delta =
+      Now().LocalMidnight() + base::Days(1) - Now();
 
   return AdvanceClock(time_delta);
 }
 
-void UnitTestBase::AdvanceClock(const base::Time& time) {
-  const base::TimeDelta time_delta = time - base::Time::Now();
+void UnitTestBase::AdvanceClock(const base::Time time) {
+  const base::TimeDelta time_delta = time - Now();
+  CHECK(time_delta.is_positive())
+      << "You Can't Travel Back in Time, Scientists Say! Unless, of course, "
+         "you are travelling at 88 mph";
 
   return AdvanceClock(time_delta);
 }
 
-void UnitTestBase::AdvanceClock(const base::TimeDelta& time_delta) {
+void UnitTestBase::AdvanceClock(const base::TimeDelta time_delta) {
   task_environment_.AdvanceClock(time_delta);
 }
 
@@ -119,13 +151,11 @@ size_t UnitTestBase::GetPendingTaskCount() const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void UnitTestBase::Initialize() {
-  ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+  SetEnvironment(mojom::Environment::kStaging);
 
-  SetEnvironment(Environment::DEVELOPMENT);
+  SetSysInfo(mojom::SysInfo());
 
-  SetSysInfo(SysInfo());
-
-  SetBuildChannel(false, "test");
+  SetBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
@@ -141,26 +171,26 @@ void UnitTestBase::Initialize() {
   MockShowNotification(ads_client_mock_);
   MockCloseNotification(ads_client_mock_);
 
-  MockRecordAdEvent(ads_client_mock_);
+  MockRecordAdEventForId(ads_client_mock_);
   MockGetAdEvents(ads_client_mock_);
+  MockResetAdEventsForId(ads_client_mock_);
 
-  MockLoad(ads_client_mock_);
+  MockGetBrowsingHistory(ads_client_mock_);
+
+  MockLoad(ads_client_mock_, temp_dir_);
   MockLoadAdsResource(ads_client_mock_);
   MockLoadResourceForId(ads_client_mock_);
   MockSave(ads_client_mock_);
 
   MockPrefs(ads_client_mock_);
 
-  const base::FilePath path = temp_dir_.GetPath();
-  database_ = std::make_unique<Database>(path.AppendASCII(kDatabaseFilename));
+  const base::FilePath path =
+      temp_dir_.GetPath().AppendASCII(kDatabaseFilename);
+  database_ = std::make_unique<Database>(path);
   MockRunDBTransaction(ads_client_mock_, database_);
 
   if (integration_test_) {
     ads_ = std::make_unique<AdsImpl>(ads_client_mock_.get());
-
-    ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
-                          "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
-
     return;
   }
 
@@ -168,27 +198,27 @@ void UnitTestBase::Initialize() {
       std::make_unique<AdsClientHelper>(ads_client_mock_.get());
 
   client_ = std::make_unique<Client>();
+  client_->Initialize([](const bool success) { ASSERT_TRUE(success); });
 
   ad_notifications_ = std::make_unique<AdNotifications>();
   ad_notifications_->Initialize(
-      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
+      [](const bool success) { ASSERT_TRUE(success); });
 
-  ad_rewards_ = std::make_unique<AdRewards>();
-
-  confirmations_state_ =
-      std::make_unique<ConfirmationsState>(ad_rewards_.get());
+  confirmations_state_ = std::make_unique<ConfirmationsState>();
   confirmations_state_->Initialize(
-      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
+      [](const bool success) { ASSERT_TRUE(success); });
 
   database_initialize_ = std::make_unique<database::Initialize>();
   database_initialize_->CreateOrOpen(
-      [](const Result result) { ASSERT_EQ(Result::SUCCESS, result); });
+      [](const bool success) { ASSERT_TRUE(success); });
 
   browser_manager_ = std::make_unique<BrowserManager>();
 
   tab_manager_ = std::make_unique<TabManager>();
 
   user_activity_ = std::make_unique<UserActivity>();
+
+  covariate_logs_ = std::make_unique<CovariateLogs>();
 
   // Fast forward until no tasks remain to ensure "EnsureSqliteInitialized"
   // tasks have fired before running tests

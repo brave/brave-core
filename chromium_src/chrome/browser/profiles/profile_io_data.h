@@ -17,7 +17,7 @@
   IsHandledURL_ChromiumImpl(const GURL& url); \
   static bool IsHandledURL
 
-#include "../../../../../chrome/browser/profiles/profile_io_data.h"
+#include "src/chrome/browser/profiles/profile_io_data.h"
 
 #undef IsHandledURL
 #undef IsHandledProtocol

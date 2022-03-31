@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/feature_list.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -17,10 +18,10 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/common/pref_names.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/base/features.h"
 #include "net/dns/mock_host_resolver.h"
@@ -37,6 +38,9 @@ class TabActivationWaiter : public TabStripModelObserver {
       : number_of_unconsumed_active_tab_changes_(0) {
     tab_strip_model->AddObserver(this);
   }
+
+  TabActivationWaiter(const TabActivationWaiter&) = delete;
+  TabActivationWaiter& operator=(const TabActivationWaiter&) = delete;
 
   void WaitForActiveTabChange() {
     if (number_of_unconsumed_active_tab_changes_ == 0) {
@@ -67,8 +71,6 @@ class TabActivationWaiter : public TabStripModelObserver {
  private:
   scoped_refptr<content::MessageLoopRunner> message_loop_runner_;
   int number_of_unconsumed_active_tab_changes_;
-
-  DISALLOW_COPY_AND_ASSIGN(TabActivationWaiter);
 };
 
 }  // namespace
@@ -146,14 +148,23 @@ class EphemeralStorageTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
 
-    // This is needed to load pages from "domain.com" without an interstitial.
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
   void SetUp() override {
@@ -309,7 +320,7 @@ class EphemeralStorageTest : public InProcessBrowserTest {
     ASSERT_EQ(1, tabs_->active_index());
 
     std::string target =
-        EvalJs(original_tab_,
+        EvalJs(original_tab_.get(),
                "document.getElementById('continue-test-url-step-3').value")
             .ExtractString();
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
@@ -349,7 +360,7 @@ class EphemeralStorageTest : public InProcessBrowserTest {
     ASSERT_EQ(1, tabs_->active_index());
 
     std::string target =
-        EvalJs(original_tab_,
+        EvalJs(original_tab_.get(),
                "document.getElementById('continue-test-url-step-5').value")
             .ExtractString();
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
@@ -372,7 +383,7 @@ class EphemeralStorageTest : public InProcessBrowserTest {
     ASSERT_EQ(1, tabs_->active_index());
 
     std::string target =
-        EvalJs(original_tab_,
+        EvalJs(original_tab_.get(),
                "document.getElementById('continue-test-url-step-6').value")
             .ExtractString();
 
@@ -394,19 +405,20 @@ class EphemeralStorageTest : public InProcessBrowserTest {
 
     GURL tab_url = embedded_test_server()->GetURL("dev-pages.brave.software",
                                                   kEphemeralStorageTestPage);
-    ui_test_utils::NavigateToURL(browser(), tab_url);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
     original_tab_ = tabs_->GetActiveWebContents();
 
     ClickStartTest(original_tab_);
   }
 
  protected:
+  content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
   base::test::ScopedFeatureList feature_list_;
 
  private:
-  content::WebContents* original_tab_;
-  TabStripModel* tabs_;
+  raw_ptr<content::WebContents> original_tab_ = nullptr;
+  raw_ptr<TabStripModel> tabs_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageTest, CrossSiteCookiesBlockedInitial) {

@@ -1,7 +1,8 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "bat/ledger/internal/endpoint/promotion/post_claim_uphold/post_claim_uphold.h"
 
 #include <map>
@@ -9,6 +10,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
@@ -24,37 +26,30 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostClaimUphold::PostClaimUphold(LedgerImpl* ledger):
-    ledger_(ledger) {
+PostClaimUphold::PostClaimUphold(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
 }
 
 PostClaimUphold::~PostClaimUphold() = default;
 
-std::string PostClaimUphold::GetUrl() {
-  const auto wallet = ledger_->wallet()->GetWallet();
-  if (!wallet) {
-    BLOG(0, "Wallet is null");
-    return "";
-  }
+void PostClaimUphold::Request(const double user_funds,
+                              const std::string& address,
+                              PostClaimUpholdCallback callback) const {
+  auto request = type::UrlRequest::New();
+  request->url = GetUrl();
+  request->method = type::UrlMethod::POST;
+  request->content = GeneratePayload(user_funds, address);
+  request->content_type = "application/json; charset=utf-8";
 
-  const std::string& path = base::StringPrintf(
-      "/v3/wallet/uphold/%s/claim",
-      wallet->payment_id.c_str());
-
-  return GetServerUrl(path);
+  ledger_->LoadURL(std::move(request), std::bind(&PostClaimUphold::OnRequest,
+                                                 this, _1, address, callback));
 }
 
-std::string PostClaimUphold::GeneratePayload(const double user_funds) {
-  auto uphold_wallet = uphold::GetWallet(ledger_);
-  if (!uphold_wallet) {
-    BLOG(0, "Wallet is null");
-    return "";
-  }
-
-  const auto wallet = ledger_->wallet()->GetWallet();
-  if (!wallet) {
-    BLOG(0, "Wallet is null");
+std::string PostClaimUphold::GeneratePayload(const double user_funds,
+                                             const std::string& address) const {
+  const auto rewards_wallet = ledger_->wallet()->GetWallet();
+  if (!rewards_wallet) {
+    BLOG(0, "Rewards wallet is null!");
     return "";
   }
 
@@ -64,32 +59,29 @@ std::string PostClaimUphold::GeneratePayload(const double user_funds) {
 
   base::Value octets(base::Value::Type::DICTIONARY);
   octets.SetKey("denomination", std::move(denomination));
-  octets.SetStringKey("destination", uphold_wallet->address);
+  octets.SetStringKey("destination", address);
   std::string octets_json;
   base::JSONWriter::Write(octets, &octets_json);
 
-  const std::string header_digest =
-      util::Security::DigestValue(octets_json);
+  const std::string header_digest = util::Security::DigestValue(octets_json);
 
   std::vector<std::map<std::string, std::string>> headers;
   headers.push_back({{"digest", header_digest}});
 
-  const std::string header_signature = util::Security::Sign(
-      headers,
-      "primary",
-      wallet->recovery_seed);
+  const std::string header_signature =
+      util::Security::Sign(headers, "primary", rewards_wallet->recovery_seed);
 
-  base::Value signed_reqeust(base::Value::Type::DICTIONARY);
-  signed_reqeust.SetStringKey("octets", octets_json);
-  signed_reqeust.SetKey("body", std::move(octets));
+  base::Value signed_request(base::Value::Type::DICTIONARY);
+  signed_request.SetStringKey("octets", octets_json);
+  signed_request.SetKey("body", std::move(octets));
 
   base::Value headers_dict(base::Value::Type::DICTIONARY);
   headers_dict.SetStringKey("digest", header_digest);
   headers_dict.SetStringKey("signature", header_signature);
-  signed_reqeust.SetKey("headers", std::move(headers_dict));
+  signed_request.SetKey("headers", std::move(headers_dict));
 
   std::string signed_request_json;
-  base::JSONWriter::Write(signed_reqeust, &signed_request_json);
+  base::JSONWriter::Write(signed_request, &signed_request_json);
 
   std::string signed_request_base64;
   base::Base64Encode(signed_request_json, &signed_request_base64);
@@ -102,15 +94,38 @@ std::string PostClaimUphold::GeneratePayload(const double user_funds) {
   return json;
 }
 
-type::Result PostClaimUphold::CheckStatusCode(const int status_code) {
+std::string PostClaimUphold::GetUrl() const {
+  const auto rewards_wallet = ledger_->wallet()->GetWallet();
+  if (!rewards_wallet) {
+    BLOG(0, "Rewards wallet is null!");
+    return "";
+  }
+
+  const std::string path = base::StringPrintf(
+      "/v3/wallet/uphold/%s/claim", rewards_wallet->payment_id.c_str());
+
+  return GetServerUrl(path);
+}
+
+void PostClaimUphold::OnRequest(const type::UrlResponse& response,
+                                const std::string& address,
+                                PostClaimUpholdCallback callback) const {
+  ledger::LogUrlResponse(__func__, response);
+  callback(ProcessResponse(response), address);
+}
+
+type::Result PostClaimUphold::ProcessResponse(
+    const type::UrlResponse& response) const {
+  const auto status_code = response.status_code;
+
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return type::Result::LEDGER_ERROR;
+    return ParseBody(response.body);
   }
 
   if (status_code == net::HTTP_FORBIDDEN) {
     BLOG(0, "Forbidden");
-    return type::Result::LEDGER_ERROR;
+    return ParseBody(response.body);
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
@@ -119,8 +134,8 @@ type::Result PostClaimUphold::CheckStatusCode(const int status_code) {
   }
 
   if (status_code == net::HTTP_CONFLICT) {
-    BLOG(0, "Not found");
-    return type::Result::ALREADY_EXISTS;
+    BLOG(0, "Conflict");
+    return type::Result::DEVICE_LIMIT_REACHED;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
@@ -136,28 +151,38 @@ type::Result PostClaimUphold::CheckStatusCode(const int status_code) {
   return type::Result::LEDGER_OK;
 }
 
-void PostClaimUphold::Request(
-    const double user_funds,
-    PostClaimUpholdCallback callback) {
-  auto url_callback = std::bind(&PostClaimUphold::OnRequest,
-      this,
-      _1,
-      callback);
-  const std::string& payload = GeneratePayload(user_funds);
+type::Result PostClaimUphold::ParseBody(const std::string& body) const {
+  base::DictionaryValue* root = nullptr;
+  auto value = base::JSONReader::Read(body);
+  if (!value || !value->GetAsDictionary(&root)) {
+    BLOG(0, "Invalid body!");
+    return type::Result::LEDGER_ERROR;
+  }
+  DCHECK(root);
 
-  auto request = type::UrlRequest::New();
-  request->url = GetUrl();
-  request->content = payload;
-  request->content_type = "application/json; charset=utf-8";
-  request->method = type::UrlMethod::POST;
-  ledger_->LoadURL(std::move(request), url_callback);
-}
+  auto* message = root->FindStringKey("message");
+  if (!message) {
+    BLOG(0, "message is missing!");
+    return type::Result::LEDGER_ERROR;
+  }
 
-void PostClaimUphold::OnRequest(
-    const type::UrlResponse& response,
-    PostClaimUpholdCallback callback) {
-  ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  if (message->find("KYC required") != std::string::npos) {
+    return type::Result::NOT_FOUND;
+  } else if (message->find("mismatched provider accounts") !=
+             std::string::npos) {
+    return type::Result::MISMATCHED_PROVIDER_ACCOUNTS;
+  } else if (message->find("transaction verification failure") !=
+             std::string::npos) {
+    return type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE;
+  } else if (message->find("unable to link - unusual activity") !=
+             std::string::npos) {
+    return type::Result::FLAGGED_WALLET;
+  } else if (message->find("region not supported") != std::string::npos) {
+    return type::Result::REGION_NOT_SUPPORTED;
+  } else {
+    BLOG(0, "Unknown message!");
+    return type::Result::LEDGER_ERROR;
+  }
 }
 
 }  // namespace promotion

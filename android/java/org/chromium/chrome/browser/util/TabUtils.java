@@ -9,6 +9,7 @@ package org.chromium.chrome.browser.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.PopupMenu;
 
 import org.chromium.base.ApplicationStatus;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
@@ -96,5 +98,11 @@ public class TabUtils {
             return;
         }
         rewardsLayout.setVisibility(View.VISIBLE);
+    }
+
+    public static void bringChromeTabbedActivityToTheTop(Activity activity) {
+        Intent braveActivityIntent = new Intent(activity, ChromeTabbedActivity.class);
+        braveActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        activity.startActivity(braveActivityIntent);
     }
 }

@@ -18,22 +18,24 @@
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/json/json_file_value_serializer.h"
 #include "base/one_shot_event.h"
-#include "base/sequenced_task_runner.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
-#include "base/task_runner_util.h"
+#include "base/task/task_runner_util.h"
 #include "base/values.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_component_updater/browser/switches.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
+#include "brave/components/update_client/buildflags.h"
 #include "brave/components/version_info//version_info.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "components/version_info/version_info.h"
 #include "crypto/sha2.h"
+#include "extensions/browser/computed_hashes.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/api/content_scripts.h"
@@ -42,6 +44,7 @@
 #include "extensions/common/file_util.h"
 #include "extensions/common/manifest_constants.h"
 #include "extensions/common/mojom/manifest.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 using extensions::Extension;
@@ -51,14 +54,19 @@ namespace {
 
 constexpr char kRunAtDocumentStart[] = "document_start";
 
+bool ShouldComputeHashesForResource(
+    const base::FilePath& relative_resource_path) {
+  std::vector<base::FilePath::StringType> components =
+      relative_resource_path.GetComponents();
+  return !components.empty() && components[0] != extensions::kMetadataFolder;
+}
+
 // Wraps a Greaselion rule in a component. The component is stored as
 // an unpacked extension in the user data dir. Returns a valid
 // extension that the caller should take ownership of, or nullptr.
 //
 // NOTE: This function does file IO and should not be called on the UI thread.
-// NOTE: The caller takes ownership of the directory at extension->path() on the
-// returned object.
-base::Optional<greaselion::GreaselionServiceImpl::GreaselionConvertedExtension>
+absl::optional<greaselion::GreaselionServiceImpl::GreaselionConvertedExtension>
 ConvertGreaselionRuleToExtensionOnTaskRunner(
     const greaselion::GreaselionRule& rule,
     const base::FilePath& install_dir) {
@@ -66,13 +74,13 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
       extensions::file_util::GetInstallTempDir(install_dir);
   if (install_temp_dir.empty()) {
     LOG(ERROR) << "Could not get path to profile temp directory";
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   base::ScopedTempDir temp_dir;
   if (!temp_dir.CreateUniqueTempDirUnderPath(install_temp_dir)) {
     LOG(ERROR) << "Could not create Greaselion temp directory";
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   // Create the manifest
@@ -95,13 +103,11 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   if (!command_line.HasSwitch(brave_component_updater::kUseGoUpdateDev) &&
       !base::FeatureList::IsEnabled(
           brave_component_updater::kUseDevUpdaterUrl)) {
-    crypto::SHA256HashString(UPDATER_DEV_ENDPOINT + script_name,
-                             raw,
+    crypto::SHA256HashString(BUILDFLAG(UPDATER_DEV_ENDPOINT) + script_name, raw,
                              crypto::kSHA256Length);
   } else {
-    crypto::SHA256HashString(UPDATER_PROD_ENDPOINT + script_name,
-                             raw,
-                             crypto::kSHA256Length);
+    crypto::SHA256HashString(BUILDFLAG(UPDATER_PROD_ENDPOINT) + script_name,
+                             raw, crypto::kSHA256Length);
   }
   base::Base64Encode(base::StringPiece(raw, crypto::kSHA256Length), &key);
 
@@ -150,7 +156,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   // files to disk.
   if (!serializer.Serialize(*root)) {
     LOG(ERROR) << "Could not write Greaselion manifest";
-    return base::nullopt;
+    return absl::nullopt;
   }
 
   // Copy the messages directory to our extension directory.
@@ -160,7 +166,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
             temp_dir.GetPath().AppendASCII("_locales"), true)) {
       LOG(ERROR) << "Could not copy Greaselion messages directory at path: "
                  << rule.messages().LossyDisplayName();
-      return base::nullopt;
+      return absl::nullopt;
     }
   }
 
@@ -170,7 +176,7 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
                         temp_dir.GetPath().Append(script.BaseName()))) {
       LOG(ERROR) << "Could not copy Greaselion script at path: "
           << script.LossyDisplayName();
-      return base::nullopt;
+      return absl::nullopt;
     }
   }
 
@@ -181,13 +187,33 @@ ConvertGreaselionRuleToExtensionOnTaskRunner(
   if (!extension.get()) {
     LOG(ERROR) << "Could not load Greaselion extension";
     LOG(ERROR) << error;
-    return base::nullopt;
+    return absl::nullopt;
   }
 
-  // Take ownership of this temporary directory so it's deleted when
-  // the service exits
-  return std::make_pair(extension, std::move(temp_dir));
+  // Calculate and write computed hashes.
+  absl::optional<extensions::ComputedHashes::Data> computed_hashes_data =
+      extensions::ComputedHashes::Compute(
+          extension->path(),
+          extension_misc::kContentVerificationDefaultBlockSize,
+          extensions::IsCancelledCallback(),
+          base::BindRepeating(&ShouldComputeHashesForResource));
+  if (computed_hashes_data) {
+    extensions::ComputedHashes(std::move(*computed_hashes_data))
+        .WriteToFile(
+            extensions::file_util::GetComputedHashesPath(extension->path()));
+  }
+
+  // Take ownership of this temporary directory; the service will delete it on
+  // exit
+  return std::make_pair(extension, temp_dir.Take());
 }
+
+void DeleteExtensionDirs(const std::vector<base::FilePath>& extension_dirs) {
+  for (const auto& extension_dir : extension_dirs) {
+    base::DeletePathRecursively(extension_dir);
+  }
+}
+
 }  // namespace
 
 namespace greaselion {
@@ -211,6 +237,7 @@ GreaselionServiceImpl::GreaselionServiceImpl(
       browser_version_(
           version_info::GetBraveVersionWithoutChromiumMajorVersion()),
       weak_factory_(this) {
+  download_service_->AddObserver(this);
   extension_registry_->AddObserver(this);
   for (int i = FIRST_FEATURE; i != LAST_FEATURE; i++)
     state_[static_cast<GreaselionFeature>(i)] = false;
@@ -218,8 +245,13 @@ GreaselionServiceImpl::GreaselionServiceImpl(
   state_[GreaselionFeature::SUPPORTS_MINIMUM_BRAVE_VERSION] = true;
 }
 
-GreaselionServiceImpl::~GreaselionServiceImpl() {
+GreaselionServiceImpl::~GreaselionServiceImpl() {}
+
+void GreaselionServiceImpl::Shutdown() {
+  download_service_->RemoveObserver(this);
   extension_registry_->RemoveObserver(this);
+  task_runner_->PostTask(FROM_HERE,
+                         base::BindOnce(&DeleteExtensionDirs, extension_dirs_));
 }
 
 bool GreaselionServiceImpl::IsGreaselionExtension(const std::string& id) {
@@ -293,7 +325,7 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
 }
 
 void GreaselionServiceImpl::PostConvert(
-    base::Optional<GreaselionConvertedExtension> converted_extension) {
+    absl::optional<GreaselionConvertedExtension> converted_extension) {
   if (!converted_extension) {
     all_rules_installed_successfully_ = false;
     pending_installs_ -= 1;
@@ -301,7 +333,7 @@ void GreaselionServiceImpl::PostConvert(
     LOG(ERROR) << "Could not load Greaselion script";
   } else {
     greaselion_extensions_.push_back(converted_extension->first->id());
-    extension_dirs_.push_back(std::move(converted_extension->second));
+    extension_dirs_.push_back(converted_extension->second);
     extension_system_->ready().Post(
         FROM_HERE, base::BindOnce(&GreaselionServiceImpl::Install,
                                   weak_factory_.GetWeakPtr(),
@@ -345,11 +377,12 @@ void GreaselionServiceImpl::OnExtensionUnloaded(
   }
 }
 
-void GreaselionServiceImpl::AddObserver(Observer* observer) {
+void GreaselionServiceImpl::AddObserver(GreaselionService::Observer* observer) {
   observers_.AddObserver(observer);
 }
 
-void GreaselionServiceImpl::RemoveObserver(Observer* observer) {
+void GreaselionServiceImpl::RemoveObserver(
+    GreaselionService::Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
@@ -360,9 +393,16 @@ void GreaselionServiceImpl::MaybeNotifyObservers() {
       update_pending_ = false;
       UpdateInstalledExtensions();
     } else {
-      for (Observer& observer : observers_)
+      for (auto& observer : observers_)
         observer.OnExtensionsReady(this, all_rules_installed_successfully_);
     }
+  }
+}
+
+void GreaselionServiceImpl::OnRulesReady(
+    GreaselionDownloadService* download_service) {
+  for (auto& observer : observers_) {
+    observer.OnRulesReady(this);
   }
 }
 

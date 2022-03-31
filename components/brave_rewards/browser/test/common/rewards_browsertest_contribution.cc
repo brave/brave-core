@@ -5,9 +5,13 @@
 
 #include <utility>
 
+#include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_contribution.h"
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/components/brave_rewards/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -92,7 +96,7 @@ void RewardsBrowserTestContribution::TipPublisher(
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
-  content::WebContents* site_banner_contents =
+  base::WeakPtr<content::WebContents> site_banner_contents =
       context_helper_->OpenSiteBanner(tip_action);
   ASSERT_TRUE(site_banner_contents);
 
@@ -101,10 +105,10 @@ void RewardsBrowserTestContribution::TipPublisher(
   if (custom_amount > 0) {
     amount = custom_amount;
     rewards_browsertest_util::WaitForElementThenClick(
-        site_banner_contents, "[data-test-id=custom-tip-button]");
+        site_banner_contents.get(), "[data-test-id=custom-tip-button]");
 
     rewards_browsertest_util::WaitForElementToAppear(
-        site_banner_contents, "[data-test-id=custom-amount-input]");
+        site_banner_contents.get(), "[data-test-id=custom-amount-input]");
 
     constexpr char set_input_script[] = R"(
         const input = document.querySelector(
@@ -113,30 +117,29 @@ void RewardsBrowserTestContribution::TipPublisher(
         input.blur();
     )";
 
-    ASSERT_TRUE(ExecJs(site_banner_contents,
+    ASSERT_TRUE(ExecJs(site_banner_contents.get(),
                        content::JsReplace(set_input_script, amount),
                        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                        content::ISOLATED_WORLD_ID_CONTENT_END));
 
     rewards_browsertest_util::WaitForElementThenClick(
-        site_banner_contents, "[data-test-id=form-submit-button]");
+        site_banner_contents.get(), "[data-test-id=form-submit-button]");
   } else {
     amount = rewards_browsertest_util::GetSiteBannerTipOptions(
-        site_banner_contents)[selection];
+        site_banner_contents.get())[selection];
 
     // Select the tip amount (default is 1.000 BAT)
     std::string amount_selector = base::StringPrintf(
         "[data-test-id=tip-amount-options] [data-option-index='%u'] button",
         selection);
 
-    rewards_browsertest_util::WaitForElementThenClick(site_banner_contents,
-                                                      amount_selector);
+    rewards_browsertest_util::WaitForElementThenClick(
+        site_banner_contents.get(), amount_selector);
   }
 
   // Send the tip
   rewards_browsertest_util::WaitForElementThenClick(
-      site_banner_contents,
-      "[data-test-id=form-submit-button]");
+      site_banner_contents.get(), "[data-test-id=form-submit-button]");
 
   // Signal that direct tip was made and update wallet with new
   // balance
@@ -147,7 +150,7 @@ void RewardsBrowserTestContribution::TipPublisher(
   }
 
   // Wait for thank you banner to load
-  ASSERT_TRUE(WaitForLoadStop(site_banner_contents));
+  ASSERT_TRUE(WaitForLoadStop(site_banner_contents.get()));
 
   if (tip_action == rewards_browsertest_util::TipAction::SetMonthly) {
     WaitForRecurringTipToBeSaved();
@@ -183,12 +186,9 @@ void RewardsBrowserTestContribution::TipPublisher(
   // Make sure that thank you banner shows correct publisher data
   {
     rewards_browsertest_util::WaitForElementToContain(
-        site_banner_contents,
-        "body",
-        "Thanks for the support!");
+        site_banner_contents.get(), "body", "Thanks for the support!");
     rewards_browsertest_util::WaitForElementToContain(
-        site_banner_contents,
-        "body",
+        site_banner_contents.get(), "body",
         base::StringPrintf("%.3f BAT", amount));
   }
 
@@ -215,14 +215,13 @@ void RewardsBrowserTestContribution::VerifyTip(
     IsBalanceCorrect();
 
     // Check that tip table shows the appropriate tip amount
-    const std::string selector = monthly
-        ? "[data-test-id='summary-monthly']"
-        : "[data-test-id='summary-tips']";
+    const std::string selector =
+        monthly ? "[data-test-id=rewards-summary-monthly]"
+                : "[data-test-id=rewards-summary-one-time]";
 
     rewards_browsertest_util::WaitForElementToContain(
-        contents(),
-        selector,
-        "-" + rewards_browsertest_util::BalanceDoubleToString(amount) + "BAT");
+        contents(), selector,
+        "-" + base::StringPrintf("%.2f", amount) + " BAT");
     return;
   }
 
@@ -241,9 +240,7 @@ void RewardsBrowserTestContribution::VerifyTip(
 
 void RewardsBrowserTestContribution::IsBalanceCorrect() {
   rewards_browsertest_util::WaitForElementToEqual(
-      contents(),
-      "[data-test-id='balance']",
-      GetStringBalance());
+      contents(), "[data-test-id=rewards-balance-text]", GetStringBalance());
 }
 
 void RewardsBrowserTestContribution::IsPendingBalanceCorrect() {
@@ -448,11 +445,50 @@ ledger::type::Result RewardsBrowserTestContribution::GetACStatus() {
   return ac_reconcile_status_;
 }
 
+#if BUILDFLAG(ENABLE_GEMINI_WALLET)
+void RewardsBrowserTestContribution::SetUpGeminiWallet(
+    brave_rewards::RewardsServiceImpl* rewards_service,
+    const double balance,
+    const ledger::type::WalletStatus status) {
+  if (!base::FeatureList::IsEnabled(brave_rewards::features::kGeminiFeature)) {
+    return;
+  }
+  DCHECK(rewards_service);
+  browser_->profile()->GetPrefs()->SetString(
+      brave_rewards::prefs::kExternalWalletType, "gemini");
+  // we need brave wallet as well
+  rewards_browsertest_util::CreateWallet(rewards_service_);
+
+  external_balance_ = balance;
+
+  base::Value wallet(base::Value::Type::DICTIONARY);
+  wallet.SetStringKey("token", "token");
+  wallet.SetStringKey("address",
+                      rewards_browsertest_util::GetGeminiExternalAddress());
+  wallet.SetIntKey("status", static_cast<int>(status));
+  wallet.SetStringKey("user_name", "Brave Test");
+
+  std::string json;
+  base::JSONWriter::Write(wallet, &json);
+  auto encrypted =
+      rewards_browsertest_util::EncryptPrefString(rewards_service_, json);
+  ASSERT_TRUE(encrypted);
+  browser_->profile()->GetPrefs()->SetString(
+      brave_rewards::prefs::kWalletGemini, *encrypted);
+}
+#endif
+
 void RewardsBrowserTestContribution::SetUpUpholdWallet(
     brave_rewards::RewardsServiceImpl* rewards_service,
     const double balance,
     const ledger::type::WalletStatus status) {
   DCHECK(rewards_service);
+#if BUILDFLAG(ENABLE_GEMINI_WALLET)
+  if (base::FeatureList::IsEnabled(brave_rewards::features::kGeminiFeature)) {
+    browser_->profile()->GetPrefs()->SetString(
+        brave_rewards::prefs::kExternalWalletType, "uphold");
+  }
+#endif
   // we need brave wallet as well
   rewards_browsertest_util::CreateWallet(rewards_service_);
 
@@ -468,7 +504,12 @@ void RewardsBrowserTestContribution::SetUpUpholdWallet(
 
   std::string json;
   base::JSONWriter::Write(wallet, &json);
-  rewards_service->SetEncryptedStringState("wallets.uphold", json);
+  auto encrypted =
+      rewards_browsertest_util::EncryptPrefString(rewards_service_, json);
+  ASSERT_TRUE(encrypted);
+
+  browser_->profile()->GetPrefs()->SetString(
+      brave_rewards::prefs::kWalletUphold, *encrypted);
 }
 
 double RewardsBrowserTestContribution::GetReconcileTipTotal() {

@@ -10,39 +10,40 @@
 
 namespace ads {
 
-FilteredCategory::FilteredCategory() = default;
+FilteredCategoryInfo::FilteredCategoryInfo() = default;
 
-FilteredCategory::FilteredCategory(const FilteredCategory& category) = default;
+FilteredCategoryInfo::FilteredCategoryInfo(const FilteredCategoryInfo& info) =
+    default;
 
-FilteredCategory::~FilteredCategory() = default;
+FilteredCategoryInfo::~FilteredCategoryInfo() = default;
 
-std::string FilteredCategory::ToJson() const {
+std::string FilteredCategoryInfo::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;
 }
 
-Result FilteredCategory::FromJson(const std::string& json) {
+bool FilteredCategoryInfo::FromJson(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
     BLOG(1, helper::JSON::GetLastError(&document));
-    return FAILED;
+    return false;
   }
 
   if (document.HasMember("name")) {
     name = document["name"].GetString();
   }
 
-  return SUCCESS;
+  return true;
 }
 
-void SaveToJson(JsonWriter* writer, const FilteredCategory& category) {
+void SaveToJson(JsonWriter* writer, const FilteredCategoryInfo& info) {
   writer->StartObject();
 
   writer->String("name");
-  writer->String(category.name.c_str());
+  writer->String(info.name.c_str());
 
   writer->EndObject();
 }

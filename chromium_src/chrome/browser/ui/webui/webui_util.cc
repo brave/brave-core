@@ -6,7 +6,7 @@
 #include "chrome/browser/ui/webui/webui_util.h"
 
 #define SetupWebUIDataSource SetupWebUIDataSource_ChromiumImpl
-#include "../../../../../../chrome/browser/ui/webui/webui_util.cc"
+#include "src/chrome/browser/ui/webui/webui_util.cc"
 #undef SetupWebUIDataSource
 
 namespace webui {

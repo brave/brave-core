@@ -12,7 +12,7 @@ using std::placeholders::_1;
 
 namespace {
 
-const int kCurrentVersionNumber = 9;
+const int kCurrentVersionNumber = 11;
 
 }  // namespace
 
@@ -29,21 +29,16 @@ StateMigration::StateMigration(LedgerImpl* ledger)
       v7_(std::make_unique<StateMigrationV7>(ledger)),
       v8_(std::make_unique<StateMigrationV8>(ledger)),
       v9_(std::make_unique<StateMigrationV9>()),
+      v10_(std::make_unique<StateMigrationV10>(ledger)),
+      v11_(std::make_unique<StateMigrationV11>(ledger)),
       ledger_(ledger) {
-  DCHECK(v1_ && v2_ && v3_ && v4_ && v5_ && v6_ && v7_ && v8_ && v9_);
+  DCHECK(v1_ && v2_ && v3_ && v4_ && v5_ && v6_ && v7_ && v8_ && v9_ && v10_ &&
+         v11_);
 }
 
 StateMigration::~StateMigration() = default;
 
 void StateMigration::Start(ledger::ResultCallback callback) {
-  const int current_version = ledger_->state()->GetVersion();
-  const bool fresh_install = current_version == 0;
-
-  if (fresh_install) {
-    FreshInstall(callback);
-    return;
-  }
-
   Migrate(callback);
 }
 
@@ -63,13 +58,19 @@ void StateMigration::FreshInstall(ledger::ResultCallback callback) {
 }
 
 void StateMigration::Migrate(ledger::ResultCallback callback) {
-  const int current_version = ledger_->state()->GetVersion();
-  const int new_version = current_version + 1;
+  int current_version = ledger_->state()->GetVersion();
+
+  if (current_version < 0) {
+    ledger_->state()->SetVersion(0);
+    current_version = 0;
+  }
 
   if (current_version == kCurrentVersionNumber) {
     callback(type::Result::LEDGER_OK);
     return;
   }
+
+  const int new_version = current_version + 1;
 
   auto migrate_callback = std::bind(&StateMigration::OnMigration,
       this,
@@ -78,11 +79,6 @@ void StateMigration::Migrate(ledger::ResultCallback callback) {
       callback);
 
   switch (new_version) {
-    case 0: {
-      ledger_->state()->SetVersion(new_version);
-      Migrate(callback);
-      return;
-    }
     case 1: {
       v1_->Migrate(migrate_callback);
       return;
@@ -119,6 +115,14 @@ void StateMigration::Migrate(ledger::ResultCallback callback) {
       v9_->Migrate(migrate_callback);
       return;
     }
+    case 10: {
+      v10_->Migrate(migrate_callback);
+      return;
+    }
+    case 11: {
+      v11_->Migrate(migrate_callback);
+      return;
+    }
   }
 
   BLOG(0, "Migration version is not handled " << new_version);
@@ -137,8 +141,16 @@ void StateMigration::OnMigration(
   }
 
   BLOG(1, "State: Migrated to version " << version);
-
   ledger_->state()->SetVersion(version);
+
+  // If the user did not previously have a state version and the initial
+  // migration did not find any rewards data stored in JSON files, assume that
+  // this is a "fresh" Rewards profile and skip the remaining migrations.
+  if (version == 1 && !v1_->legacy_data_migrated()) {
+    FreshInstall(callback);
+    return;
+  }
+
   Migrate(callback);
 }
 

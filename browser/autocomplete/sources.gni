@@ -25,6 +25,6 @@ if (enable_extensions && enable_brave_webtorrent) {
       [ "//brave/components/brave_webtorrent/browser" ]
 }
 
-if (ipfs_enabled) {
+if (enable_ipfs) {
   brave_browser_autocomplete_deps += [ "//brave/components/ipfs" ]
 }

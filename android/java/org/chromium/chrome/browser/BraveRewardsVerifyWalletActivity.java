@@ -19,19 +19,53 @@ import android.widget.TextView;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet;
 import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.BraveUphold;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 
 import java.util.Locale;
 
 public class BraveRewardsVerifyWalletActivity extends Activity {
+    private String walletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
+    private String walletTypeString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.verify_wallet_activity);
+
+        walletTypeString = walletType.equals(BraveWalletProvider.UPHOLD)
+                ? getResources().getString(R.string.uphold)
+                : getResources().getString(R.string.bitflyer);
+
+        setTextForWalletTypes();
         SetVerifyWalletBtnClickHandler();
         SetUpholdLinkHandler();
+    }
+
+    void setTextForWalletTypes() {
+        TextView verifyWalletBenefitText1 = (TextView) findViewById(R.id.verify_wallet_benefit_1);
+        verifyWalletBenefitText1.setText(walletType.equals(BraveWalletProvider.UPHOLD)
+                        ? getResources().getString(R.string.verify_wallet_uphold_benefits1)
+                        : getResources().getString(R.string.verify_wallet_bitflyer_benefits1));
+        TextView verifyWalletBenefitText2 = (TextView) findViewById(R.id.verify_wallet_benefit_2);
+        verifyWalletBenefitText2.setText(walletType.equals(BraveWalletProvider.UPHOLD)
+                        ? getResources().getString(R.string.verify_wallet_uphold_benefits2)
+                        : getResources().getString(R.string.verify_wallet_bitflyer_benefits2));
+        TextView verifyWalletBenefitText3 = (TextView) findViewById(R.id.verify_wallet_benefit_3);
+        verifyWalletBenefitText3.setText(walletType.equals(BraveWalletProvider.UPHOLD)
+                        ? getResources().getString(R.string.verify_wallet_uphold_benefits3)
+                        : getResources().getString(R.string.verify_wallet_bitflyer_benefits3));
+
+        TextView verifyWalletProviderNoteText =
+                (TextView) findViewById(R.id.verify_wallet_provider_note_txt);
+        verifyWalletProviderNoteText.setText(String.format(
+                getResources().getString(R.string.verify_wallet_provider_note1), walletTypeString));
+
+        TextView verifyWalletBraveNoteText =
+                (TextView) findViewById(R.id.verify_wallet_brave_note_txt);
+        verifyWalletBraveNoteText.setText(String.format(
+                getResources().getString(R.string.verify_wallet_brave_note1), walletTypeString));
     }
 
     void SetVerifyWalletBtnClickHandler() {
@@ -49,7 +83,7 @@ public class BraveRewardsVerifyWalletActivity extends Activity {
     void SetUpholdLinkHandler() {
         TextView uphold_link = (TextView)findViewById(R.id.service_provider_txt);
         final String part1 = getResources().getString(R.string.verify_wallet_service_note);
-        final String part2 = getResources().getString(R.string.verify_wallet_uphold);
+        final String part2 = walletTypeString;
         final String built_service_str = String.format(Locale.US, "%s <b>%s</b>", part1, part2);
         Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(built_service_str);
         uphold_link.setText(toInsert);
@@ -63,7 +97,8 @@ public class BraveRewardsVerifyWalletActivity extends Activity {
 
                         if (BraveRewardsHelper.subtextAtOffset(built_service_str, part2, offset) ){
                             Intent intent = new Intent();
-                            intent.putExtra(BraveActivity.OPEN_URL, BraveUphold.UPHOLD_ORIGIN_URL);
+                            intent.putExtra(
+                                    BraveActivity.OPEN_URL, BraveWalletProvider.UPHOLD_ORIGIN_URL);
                             setResult(RESULT_OK, intent);
                             finish();
                             event_consumed = true;

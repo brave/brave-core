@@ -7,6 +7,7 @@
 
 #include "bat/ads/internal/tab_manager/tab_info.h"
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/internal/user_activity/user_activity_event_info.h"
 
@@ -58,7 +59,7 @@ TEST_F(BatAdsTabManagerTest, UpdatedTab) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
   // Assert
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(1);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -74,14 +75,13 @@ TEST_F(BatAdsTabManagerTest, OpenedNewTabUserActivityEvent) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
   // Assert
-  const UserActivityEvents events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -95,14 +95,13 @@ TEST_F(BatAdsTabManagerTest, FocusedOnExistingTabUserActivityEvent) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
   // Assert
-  const UserActivityEvents events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kFocusedOnExistingTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -115,8 +114,8 @@ TEST_F(BatAdsTabManagerTest, UpdatedIncognitoTab) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, true);
 
   // Assert
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(1);
-  EXPECT_EQ(base::nullopt, tab);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
+  EXPECT_EQ(absl::nullopt, tab);
 }
 
 TEST_F(BatAdsTabManagerTest, DoNotRecordEventWhenUpdatingIncognitoTab) {
@@ -126,11 +125,10 @@ TEST_F(BatAdsTabManagerTest, DoNotRecordEventWhenUpdatingIncognitoTab) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, true);
 
   // Assert
-  const UserActivityEvents events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
-  const UserActivityEvents expected_events = {};
+  const UserActivityEventList expected_events = {};
 
   EXPECT_EQ(expected_events, events);
 }
@@ -142,7 +140,7 @@ TEST_F(BatAdsTabManagerTest, UpdatedOccludedTab) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", false, false);
 
   // Assert
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(1);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -159,11 +157,10 @@ TEST_F(BatAdsTabManagerTest, DoNotRecordEventWhenUpdatingOccludedTab) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", false, false);
 
   // Assert
-  const UserActivityEvents events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
-  const UserActivityEvents expected_events = {};
+  const UserActivityEventList expected_events = {};
 
   EXPECT_EQ(expected_events, events);
 }
@@ -176,7 +173,7 @@ TEST_F(BatAdsTabManagerTest, UpdatedExistingTabWithSameUrl) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
   // Assert
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(1);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -195,14 +192,13 @@ TEST_F(BatAdsTabManagerTest,
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
   // Assert
-  const UserActivityEvents events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -216,7 +212,7 @@ TEST_F(BatAdsTabManagerTest, UpdatedExistingTab) {
   TabManager::Get()->OnUpdated(1, "https://brave.com/about", true, false);
 
   // Assert
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(1);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
 
   TabInfo expected_tab;
   expected_tab.id = 1;
@@ -234,17 +230,16 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenUpdatingExistingTab) {
   TabManager::Get()->OnUpdated(1, "https://brave.com/about", true, false);
 
   // Assert
-  const UserActivityEvents events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
   event.type = UserActivityEventType::kTabUpdated;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -258,8 +253,8 @@ TEST_F(BatAdsTabManagerTest, ClosedTab) {
   TabManager::Get()->OnClosed(1);
 
   // Assert
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(1);
-  EXPECT_EQ(base::nullopt, tab);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
+  EXPECT_EQ(absl::nullopt, tab);
 }
 
 TEST_F(BatAdsTabManagerTest, RecordEventWhenClosingTab) {
@@ -270,17 +265,16 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenClosingTab) {
   TabManager::Get()->OnClosed(1);
 
   // Assert
-  const UserActivityEvents events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
   event.type = UserActivityEventType::kClosedTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -305,17 +299,16 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenPlayingMedia) {
   TabManager::Get()->OnMediaPlaying(1);
 
   // Assert
-  const UserActivityEvents events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
   event.type = UserActivityEventType::kPlayedMedia;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -342,17 +335,16 @@ TEST_F(BatAdsTabManagerTest, DoNotRecordEventWhenAlreadyPlayingMedia) {
   TabManager::Get()->OnMediaPlaying(1);
 
   // Assert
-  const UserActivityEvents events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
   event.type = UserActivityEventType::kPlayedMedia;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -379,20 +371,19 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenStoppedPlayingMedia) {
   TabManager::Get()->OnMediaStopped(1);
 
   // Assert
-  const UserActivityEvents events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+  const UserActivityEventList events =
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
-  UserActivityEvents expected_events;
+  UserActivityEventList expected_events;
   UserActivityEventInfo event;
   event.type = UserActivityEventType::kOpenedNewTab;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
   event.type = UserActivityEventType::kPlayedMedia;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
   event.type = UserActivityEventType::kStoppedPlayingMedia;
-  event.time = base::Time::Now();
+  event.created_at = Now();
   expected_events.push_back(event);
 
   EXPECT_EQ(expected_events, events);
@@ -404,7 +395,7 @@ TEST_F(BatAdsTabManagerTest, GetVisibleTab) {
   TabManager::Get()->OnUpdated(2, "https://brave.com", true, false);
 
   // Act
-  base::Optional<TabInfo> tab = TabManager::Get()->GetVisible();
+  absl::optional<TabInfo> tab = TabManager::Get()->GetVisible();
 
   // Assert
   TabInfo expected_tab;
@@ -420,7 +411,7 @@ TEST_F(BatAdsTabManagerTest, GetLastVisibleTab) {
   TabManager::Get()->OnUpdated(2, "https://brave.com", true, false);
 
   // Act
-  base::Optional<TabInfo> tab = TabManager::Get()->GetLastVisible();
+  absl::optional<TabInfo> tab = TabManager::Get()->GetLastVisible();
 
   // Assert
   TabInfo expected_tab;
@@ -435,7 +426,7 @@ TEST_F(BatAdsTabManagerTest, GetTabForId) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
   // Act
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(1);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(1);
 
   // Assert
   TabInfo expected_tab;
@@ -450,10 +441,10 @@ TEST_F(BatAdsTabManagerTest, GetTabWithInvalidId) {
   TabManager::Get()->OnUpdated(1, "https://brave.com", true, false);
 
   // Act
-  base::Optional<TabInfo> tab = TabManager::Get()->GetForId(2);
+  absl::optional<TabInfo> tab = TabManager::Get()->GetForId(2);
 
   // Assert
-  EXPECT_EQ(base::nullopt, tab);
+  EXPECT_EQ(absl::nullopt, tab);
 }
 
 }  // namespace ads

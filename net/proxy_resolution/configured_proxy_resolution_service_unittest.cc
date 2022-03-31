@@ -7,11 +7,10 @@
 
 #include <string>
 
-#include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "net/base/test_completion_callback.h"
-#include "net/log/test_net_log.h"
+#include "net/log/net_log_with_source.h"
 #include "net/proxy_resolution/mock_proxy_resolver.h"
 #include "net/proxy_resolution/proxy_resolution_request.h"
 #include "net/test/gtest_util.h"
@@ -25,6 +24,10 @@ namespace net {
 class ConfiguredProxyResolutionServiceTest : public TestWithTaskEnvironment {
  public:
   ConfiguredProxyResolutionServiceTest() = default;
+  ConfiguredProxyResolutionServiceTest(
+      const ConfiguredProxyResolutionServiceTest&) = delete;
+  ConfiguredProxyResolutionServiceTest& operator=(
+      const ConfiguredProxyResolutionServiceTest&) = delete;
   ~ConfiguredProxyResolutionServiceTest() override = default;
 
   void SetUp() override {
@@ -41,7 +44,6 @@ class ConfiguredProxyResolutionServiceTest : public TestWithTaskEnvironment {
 
  private:
   std::unique_ptr<ConfiguredProxyResolutionService> service_;
-  DISALLOW_COPY_AND_ASSIGN(ConfiguredProxyResolutionServiceTest);
 };
 
 TEST_F(ConfiguredProxyResolutionServiceTest, TorProxy) {
@@ -52,11 +54,11 @@ TEST_F(ConfiguredProxyResolutionServiceTest, TorProxy) {
 
   ProxyInfo info;
   TestCompletionCallback callback;
-  RecordingBoundTestNetLog log;
   std::unique_ptr<ProxyResolutionRequest> request;
   int rv =
       service->ResolveProxy(site_url, std::string(), NetworkIsolationKey(),
-                            &info, callback.callback(), &request, log.bound());
+                            &info, callback.callback(), &request,
+                            NetLogWithSource::Make(NetLogSourceType::NONE));
   EXPECT_THAT(rv, IsOk());
 
   ProxyServer server = info.proxy_server();

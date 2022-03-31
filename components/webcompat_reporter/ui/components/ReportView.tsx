@@ -14,7 +14,11 @@ import {
   NonInteractiveURL,
   DisclaimerText,
   SideBySideButtons,
-  PaddedButton
+  PaddedButton,
+  Input,
+  TextArea,
+  FieldCtr,
+  InputLabel
 } from './basic'
 
 // Localization data
@@ -22,13 +26,19 @@ import { getLocale } from '../../../common/locale'
 
 interface Props {
   siteUrl: string
-  onSubmitReport: () => void
+  onSubmitReport: (details: string, contact: string) => void
   onClose: () => void
 }
 
-export default class ReportView extends React.PureComponent<Props, {}> {
+interface State {
+  details: string
+  contact: string
+}
+
+export default class ReportView extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
+    this.state = { details: '', contact: '' }
   }
 
   render () {
@@ -37,6 +47,7 @@ export default class ReportView extends React.PureComponent<Props, {}> {
       onSubmitReport,
       onClose
     } = this.props
+    const { details, contact } = this.state
     return (
       <ModalLayout>
         <TextSection>
@@ -45,6 +56,28 @@ export default class ReportView extends React.PureComponent<Props, {}> {
         <InfoText>{getLocale('reportExplanation')}</InfoText>
         <NonInteractiveURL>{siteUrl}</NonInteractiveURL>
         <DisclaimerText>{getLocale('reportDisclaimer')}</DisclaimerText>
+        <FieldCtr>
+          <TextArea
+            placeholder={getLocale('reportDetails')}
+            onChange={(ev) => this.setState({ details: ev.target.value })}
+            rows={7}
+            maxLength={2000}
+            value={details}
+          />
+        </FieldCtr>
+        <FieldCtr>
+          <InputLabel htmlFor='contact-info'>
+            {getLocale('reportContactLabel')}
+          </InputLabel>
+          <Input
+            placeholder={getLocale('reportContactPlaceholder')}
+            onChange={(ev) => this.setState({ contact: ev.target.value })}
+            type='text'
+            maxLength={2000}
+            value={contact}
+            id='contact-info'
+          />
+        </FieldCtr>
         <SideBySideButtons>
           <PaddedButton
             text={getLocale('cancel')}
@@ -58,7 +91,7 @@ export default class ReportView extends React.PureComponent<Props, {}> {
             level={'primary'}
             type={'accent'}
             size={'small'}
-            onClick={onSubmitReport}
+            onClick={() => onSubmitReport(details, contact)}
           />
         </SideBySideButtons>
       </ModalLayout>

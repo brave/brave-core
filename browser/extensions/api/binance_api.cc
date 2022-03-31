@@ -18,7 +18,6 @@
 #include "brave/components/binance/browser/binance_service.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
-#include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_util.h"
@@ -112,11 +111,12 @@ void BinanceGetAccountBalancesFunction::OnGetAccountBalances(
   base::DictionaryValue result;
 
   for (const auto& balance : balances) {
-    auto info = std::make_unique<base::DictionaryValue>();
-    info->SetString("balance", balance.second[0]);
-    info->SetString("btcValue", balance.second[1]);
-    info->SetString("fiatValue", balance.second[2]);
-    result.SetDictionary(balance.first, std::move(info));
+    base::Value info(base::Value::Type::DICTIONARY);
+    info.SetKey("balance", base::Value(balance.second[0]));
+    info.SetKey("btcValue", base::Value(balance.second[1]));
+    info.SetKey("fiatValue", base::Value(balance.second[2]));
+
+    result.SetPath(balance.first, std::move(info));
   }
 
   Respond(TwoArguments(std::move(result), base::Value(success)));
@@ -129,7 +129,7 @@ BinanceGetConvertQuoteFunction::Run() {
   }
 
   std::unique_ptr<binance::GetConvertQuote::Params> params(
-      binance::GetConvertQuote::Params::Create(*args_));
+      binance::GetConvertQuote::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto* service = GetBinanceService(browser_context());
@@ -176,7 +176,7 @@ BinanceGetDepositInfoFunction::Run() {
   }
 
   std::unique_ptr<binance::GetDepositInfo::Params> params(
-      binance::GetDepositInfo::Params::Create(*args_));
+      binance::GetDepositInfo::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto* service = GetBinanceService(browser_context());
@@ -207,7 +207,7 @@ BinanceConfirmConvertFunction::Run() {
   }
 
   std::unique_ptr<binance::ConfirmConvert::Params> params(
-      binance::ConfirmConvert::Params::Create(*args_));
+      binance::ConfirmConvert::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto* service = GetBinanceService(browser_context());

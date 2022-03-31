@@ -35,7 +35,7 @@ TEST_F(BatAdsLowercaseTest, LowercaseTest) {
   // Act
   const std::unique_ptr<Data> lowercase_data = lowercase.Apply(uppercase_data);
 
-  ASSERT_EQ(DataType::TEXT_DATA, lowercase_data->GetType());
+  ASSERT_EQ(DataType::kText, lowercase_data->GetType());
   const TextData* lowercase_text_data =
       static_cast<TextData*>(lowercase_data.get());
 

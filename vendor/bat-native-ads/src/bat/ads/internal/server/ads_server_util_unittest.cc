@@ -14,7 +14,7 @@ namespace ads {
 
 TEST(BatAdsServerUtilTest, Production) {
   // Arrange
-  SetEnvironment(Environment::PRODUCTION);
+  SetEnvironment(mojom::Environment::kProduction);
 
   // Act
   const std::string host = server::GetHost();
@@ -26,25 +26,13 @@ TEST(BatAdsServerUtilTest, Production) {
 
 TEST(BatAdsServerUtilTest, Staging) {
   // Arrange
-  SetEnvironment(Environment::STAGING);
+  SetEnvironment(mojom::Environment::kStaging);
 
   // Act
   const std::string host = server::GetHost();
 
   // Assert
   const std::string expected_host = "https://ads-serve.bravesoftware.com";
-  EXPECT_EQ(expected_host, host);
-}
-
-TEST(BatAdsServerUtilTest, Development) {
-  // Arrange
-  SetEnvironment(Environment::DEVELOPMENT);
-
-  // Act
-  const std::string host = server::GetHost();
-
-  // Assert
-  const std::string expected_host = "https://ads-serve.brave.software";
   EXPECT_EQ(expected_host, host);
 }
 

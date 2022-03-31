@@ -10,7 +10,7 @@
 #include "chrome/browser/chrome_browser_main.h"
 
 #define ChromeBrowserMainParts BraveBrowserMainParts
-#include "../../../../chrome/browser/chrome_browser_main_posix.h"  // NOLINT
+#include "src/chrome/browser/chrome_browser_main_posix.h"
 #undef ChromeBrowserMainParts
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_CHROME_BROWSER_MAIN_POSIX_H_

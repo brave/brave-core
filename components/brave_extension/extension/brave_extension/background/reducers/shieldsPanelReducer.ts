@@ -36,10 +36,6 @@ import {
   setAllowScriptOriginsOnce
 } from '../api/shieldsAPI'
 import { reloadTab } from '../api/tabsAPI'
-import {
-  injectClassIdStylesheet,
-  applyAdblockCosmeticFilters
-} from '../api/cosmeticFilterAPI'
 
 // Helpers
 import { getAllowedScriptsOrigins } from '../../helpers/noScriptUtils'
@@ -71,7 +67,7 @@ export default function shieldsPanelReducer (
       break
     }
     case windowTypes.WINDOW_CREATED: {
-      if (action.window.focused || Object.keys(state.windows).length === 0) {
+      if (action.window.id && (action.window.focused || Object.keys(state.windows).length === 0)) {
         state = shieldsPanelState.focusedWindowChanged(state, action.window.id)
       }
       break
@@ -108,11 +104,10 @@ export default function shieldsPanelReducer (
       break
     }
     case shieldsPanelTypes.SHIELDS_PANEL_DATA_UPDATED: {
+      // @ts-expect-error (petemill) - shields Tab / ShieldDetails types are a mess of
+      // and used interchangably and all this code will be removed soon.
       state = shieldsPanelState.updateTabShieldsData(state, action.details.id, action.details)
       shieldsPanelState.updateShieldsIcon(state)
-      if (chrome.test && shieldsPanelState.getActiveTabData(state)) {
-        chrome.test.sendMessage('brave-extension-shields-data-ready')
-      }
       break
     }
     case shieldsPanelTypes.SHIELDS_TOGGLED: {
@@ -154,7 +149,7 @@ export default function shieldsPanelReducer (
       setAllowHTTPUpgradableResources(tabData.origin, toggleShieldsValue(action.setting))
         .then(() => {
           requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-          reloadTab(tabData.id, true).catch(() => {
+          return reloadTab(tabData.id, true).catch(() => {
             console.error('Tab reload was not successful')
           })
         })
@@ -172,7 +167,7 @@ export default function shieldsPanelReducer (
       setAllowJavaScript(tabData.origin, toggleShieldsValue(tabData.javascript))
         .then(() => {
           requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-          reloadTab(tabData.id, true).catch(() => {
+          return reloadTab(tabData.id, true).catch(() => {
             console.error('Tab reload was not successful')
           })
         })
@@ -223,7 +218,7 @@ export default function shieldsPanelReducer (
           reloadTab(tabId, true).catch(() => {
             console.error('Tab reload was not successful')
           })
-          requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+          return requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
         })
         .catch(() => {
           console.error('Could not set blockers for tracking')
@@ -245,7 +240,7 @@ export default function shieldsPanelReducer (
       setAllowFingerprinting(tabData.origin, action.setting)
         .then(() => {
           requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-          reloadTab(tabData.id, true).catch(() => {
+          return reloadTab(tabData.id, true).catch(() => {
             console.error('Tab reload was not successful')
           })
         })
@@ -266,28 +261,47 @@ export default function shieldsPanelReducer (
             chrome.cookies.getAll({ domain: tabData.origin },
               function (cookies) {
                 cookies.forEach(function (cookie) {
-                  chrome.cookies.remove({ 'url': 'http://' + cookie.domain + cookie.path, 'name': cookie.name })
-                  chrome.cookies.remove({ 'url': 'https://' + cookie.domain + cookie.path, 'name': cookie.name })
+                  const path = cookie.domain + cookie.path
+                  chrome.cookies.remove({ 'url': 'http://' + path, 'name': cookie.name },
+                    () => {
+                      if (chrome.runtime.lastError) {
+                        console.error('cookies.remove failed for cookie http://' + path +
+                                      ', error: ' + chrome.runtime.lastError.message)
+                      }
+                    })
+                  chrome.cookies.remove({ 'url': 'https://' + path, 'name': cookie.name },
+                    () => {
+                      if (chrome.runtime.lastError) {
+                        console.error('cookies.remove failed for cookie https://' + path +
+                                      ', error: ' + chrome.runtime.lastError.message)
+                      }
+                    })
                 })
               }
             )
             chrome.tabs.executeScript(tabData.id, {
               code: 'try { window.sessionStorage.clear(); } catch(e) {}'
+            }, () => {
+              if (chrome.runtime.lastError) {
+                console.error('Clearing sessionStorage failed: ' + chrome.runtime.lastError.message)
+              }
             })
             // clearing localStorage may fail with SecurityError if third-
             // party cookies are already blocked, but that's okay
             chrome.tabs.executeScript(tabData.id, {
               code: 'try { window.localStorage.clear(); } catch(e) {}'
+            }, () => {
+              if (chrome.runtime.lastError) {
+                console.warn('Clearing localStorage failed: ' + chrome.runtime.lastError.message)
+              }
             })
           }
           requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-          reloadTab(tabData.id, true).catch(() => {
+          return reloadTab(tabData.id, true).catch(() => {
             console.error('Tab reload was not successful')
           })
         })
-        .catch(() => {
-          console.error('Could not set cookies setting')
-        })
+        .catch((error: any) => console.error('Could not set cookies setting. ', error))
       break
     }
     case shieldsPanelTypes.ALLOW_SCRIPT_ORIGINS_ONCE: {
@@ -299,7 +313,7 @@ export default function shieldsPanelReducer (
       setAllowScriptOriginsOnce(getAllowedScriptsOrigins(tabData.noScriptInfo), tabData.id)
         .then(() => {
           requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-          reloadTab(tabData.id, true).catch(() => {
+          return reloadTab(tabData.id, true).catch(() => {
             console.error('Tab reload was not successful')
           })
         })
@@ -359,61 +373,6 @@ export default function shieldsPanelReducer (
       onShieldsPanelShown().catch(() => {
         console.error('error calling `chrome.braveShields.onShieldsPanelShown()`')
       })
-      break
-    }
-    case shieldsPanelTypes.GENERATE_CLASS_ID_STYLESHEET: {
-      const tabData = state.tabs[action.tabId]
-      if (!tabData) {
-        console.error('Active tab not found')
-        break
-      }
-      const exceptions = tabData.cosmeticFilters.ruleExceptions
-      const hide1pContent = tabData.firstPartyCosmeticFiltering
-
-      // setTimeout is used to prevent injectClassIdStylesheet from calling
-      // another Redux function immediately
-      setTimeout(() => injectClassIdStylesheet(action.tabId, action.classes, action.ids, exceptions, hide1pContent), 0)
-      break
-    }
-    case shieldsPanelTypes.COSMETIC_FILTER_RULE_EXCEPTIONS: {
-      const tabData = state.tabs[action.tabId]
-      if (!tabData) {
-        console.error('Active tab not found')
-        break
-      }
-      let message: { type: string, scriptlet: string, hideOptions?: { hide1pContent: boolean, generichide: boolean } } = {
-        type: 'cosmeticFilteringBackgroundReady',
-        scriptlet: action.scriptlet,
-        hideOptions: undefined
-      }
-      if (action.frameId === 0) {
-        // Non-scriptlet cosmetic filters are only applied on the top-level frame
-        state = shieldsPanelState.saveCosmeticFilterRuleExceptions(state, action.tabId, action.exceptions)
-        message.hideOptions = {
-          hide1pContent: tabData.firstPartyCosmeticFiltering,
-          generichide: action.generichide
-        }
-      }
-      chrome.tabs.sendMessage(action.tabId, message, {
-        frameId: action.frameId
-      })
-      break
-    }
-    case shieldsPanelTypes.CONTENT_SCRIPTS_LOADED: {
-      const tabData = state.tabs[action.tabId]
-      if (!tabData) {
-        console.error('Active tab not found')
-        break
-      }
-      Promise.all([chrome.braveShields.shouldDoCosmeticFilteringAsync(action.url), chrome.braveShields.isFirstPartyCosmeticFilteringEnabledAsync(action.url)])
-        .then(([doCosmeticBlocking, hide1pContent]: [boolean, boolean]) => {
-          if (doCosmeticBlocking) {
-            applyAdblockCosmeticFilters(action.tabId, action.frameId, action.url, hide1pContent)
-          }
-        })
-        .catch(() => {
-          console.error('Could not apply cosmetic blocking')
-        })
       break
     }
   }

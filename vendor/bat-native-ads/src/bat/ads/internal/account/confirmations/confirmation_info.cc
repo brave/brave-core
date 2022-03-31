@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 
+#include "bat/ads/internal/number_util.h"
+
 namespace ads {
 
 ConfirmationInfo::ConfirmationInfo()
@@ -15,13 +17,15 @@ ConfirmationInfo::ConfirmationInfo(const ConfirmationInfo& info) = default;
 ConfirmationInfo::~ConfirmationInfo() = default;
 
 bool ConfirmationInfo::operator==(const ConfirmationInfo& rhs) const {
-  return id == rhs.id && creative_instance_id == rhs.creative_instance_id &&
-         type == rhs.type && unblinded_token == rhs.unblinded_token &&
+  return id == rhs.id && transaction_id == rhs.transaction_id &&
+         creative_instance_id == rhs.creative_instance_id && type == rhs.type &&
+         ad_type == rhs.ad_type && unblinded_token == rhs.unblinded_token &&
          payment_token.encode_base64() == rhs.payment_token.encode_base64() &&
          blinded_payment_token.encode_base64() ==
              rhs.blinded_payment_token.encode_base64() &&
          credential == rhs.credential && user_data == rhs.user_data &&
-         timestamp == rhs.timestamp && created == rhs.created;
+         DoubleEquals(created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
+         was_created == rhs.was_created;
 }
 
 bool ConfirmationInfo::operator!=(const ConfirmationInfo& rhs) const {
@@ -29,8 +33,9 @@ bool ConfirmationInfo::operator!=(const ConfirmationInfo& rhs) const {
 }
 
 bool ConfirmationInfo::IsValid() const {
-  if (id.empty() || type == ConfirmationType::kUndefined ||
-      creative_instance_id.empty()) {
+  if (id.empty() || creative_instance_id.empty() ||
+      type == ConfirmationType::kUndefined || ad_type == AdType::kUndefined ||
+      created_at.is_null()) {
     return false;
   }
 

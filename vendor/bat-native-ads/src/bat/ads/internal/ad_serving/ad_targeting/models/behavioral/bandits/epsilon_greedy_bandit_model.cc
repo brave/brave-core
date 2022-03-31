@@ -6,17 +6,19 @@
 #include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model.h"
 
 #include <algorithm>
-#include <limits>
 #include <map>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/rand_util.h"
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arms.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/segments/segments_json_reader.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {
@@ -25,9 +27,10 @@ namespace model {
 
 namespace {
 
-const size_t kTopArmCount = 3;
+constexpr size_t kTopArmCount = 3;
 
-using ArmBucketMap = std::map<double, std::vector<EpsilonGreedyBanditArmInfo>>;
+using ArmBucketMap =
+    base::flat_map<double, std::vector<EpsilonGreedyBanditArmInfo>>;
 using ArmList = std::vector<EpsilonGreedyBanditArmInfo>;
 using ArmBucketPair = std::pair<double, ArmList>;
 using ArmBucketList = std::vector<ArmBucketPair>;
@@ -72,17 +75,20 @@ SegmentList GetEligibleSegments() {
   const std::string json = AdsClientHelper::Get()->GetStringPref(
       prefs::kEpsilonGreedyBanditEligibleSegments);
 
-  return DeserializeSegments(json);
+  return JSONReader::ReadSegments(json);
 }
 
 EpsilonGreedyBanditArmMap GetEligibleArms(
     const EpsilonGreedyBanditArmMap& arms) {
   const SegmentList eligible_segments = GetEligibleSegments();
+  if (eligible_segments.empty()) {
+    return {};
+  }
 
   EpsilonGreedyBanditArmMap eligible_arms;
 
   for (const auto& arm : arms) {
-    if (std::find(eligible_segments.begin(), eligible_segments.end(),
+    if (std::find(eligible_segments.cbegin(), eligible_segments.cend(),
                   arm.first) == eligible_segments.end()) {
       continue;
     }
@@ -94,11 +100,11 @@ EpsilonGreedyBanditArmMap GetEligibleArms(
 }
 
 ArmBucketList GetSortedBuckets(const ArmBucketMap& arms) {
-  const ArmBucketList unsorted_buckets{arms.begin(), arms.end()};
+  const ArmBucketList unsorted_buckets{arms.cbegin(), arms.cend()};
   ArmBucketList sorted_buckets(arms.size());
   std::partial_sort_copy(
-      unsorted_buckets.begin(), unsorted_buckets.end(), sorted_buckets.begin(),
-      sorted_buckets.end(),
+      unsorted_buckets.cbegin(), unsorted_buckets.cend(),
+      sorted_buckets.begin(), sorted_buckets.end(),
       [](const ArmBucketPair& lhs, const ArmBucketPair& rhs) {
         return lhs.first > rhs.first;
       });
@@ -118,11 +124,11 @@ ArmList GetTopArms(const ArmBucketList& buckets, const size_t count) {
     ArmList arms = bucket.second;
     if (arms.size() > available_arms) {
       // Sample without replacement
-      base::RandomShuffle(begin(arms), end(arms));
+      base::RandomShuffle(std::begin(arms), std::end(arms));
       arms.resize(available_arms);
     }
 
-    top_arms.insert(top_arms.end(), arms.begin(), arms.end());
+    top_arms.insert(top_arms.cend(), arms.cbegin(), arms.cend());
   }
 
   return top_arms;
@@ -135,8 +141,10 @@ SegmentList ExploreSegments(const EpsilonGreedyBanditArmMap& arms) {
     segments.push_back(arm.first);
   }
 
-  base::RandomShuffle(begin(segments), end(segments));
-  segments.resize(kTopArmCount);
+  if (segments.size() > kTopArmCount) {
+    base::RandomShuffle(std::begin(segments), std::end(segments));
+    segments.resize(kTopArmCount);
+  }
 
   BLOG(2, "Exploring epsilon greedy bandit segments:");
   for (const auto& segment : segments) {

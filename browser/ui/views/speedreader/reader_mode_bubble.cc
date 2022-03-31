@@ -11,10 +11,14 @@
 
 #include "base/bind.h"
 #include "base/notreached.h"
+#include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_util.h"
+#include "brave/browser/ui/views/speedreader/speedreader_dancing_books.h"
 #include "brave/common/url_constants.h"
+#include "brave/components/speedreader/speedreader_service.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/strings/grit/components_strings.h"
@@ -23,13 +27,14 @@
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/common/referrer.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/events/event.h"
+#include "ui/gfx/geometry/insets.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/styled_label.h"
 #include "ui/views/layout/box_layout.h"
-#include "ui/views/metadata/metadata_impl_macros.h"
 #include "ui/views/view.h"
 
 namespace {
@@ -63,6 +68,10 @@ ReaderModeBubble::ReaderModeBubble(views::View* anchor_view,
     : LocationBarBubbleDelegateView(anchor_view, nullptr),
       tab_helper_(tab_helper) {
   SetButtons(ui::DialogButton::DIALOG_BUTTON_NONE);
+
+  gfx::Insets m = margins();
+  m.set_bottom(kBubbleBottomMargin);
+  set_margins(m);
 }
 
 void ReaderModeBubble::Show() {
@@ -125,12 +134,19 @@ void ReaderModeBubble::Init() {
       l10n_util::GetStringUTF16(IDS_SPEEDREADER_ENABLE_BUTTON));
   enable_speedreader_button_ =
       AddChildView(std::move(enable_speedreader_button));
+
+  // Speedreader Graphic
+  AddChildView(std::make_unique<SpeedreaderDancingBooks>());
 }
 
 void ReaderModeBubble::OnButtonPressed(const ui::Event& event) {
-  // FIXME: Tie up this logic to the speedreader service. Enable Speedreader
-  // globally.
-  NOTIMPLEMENTED();
+  auto* contents = tab_helper_->web_contents();
+  Profile* profile = Profile::FromBrowserContext(contents->GetBrowserContext());
+  auto* speedreader_service = SpeedreaderServiceFactory::GetForProfile(profile);
+  speedreader_service->ToggleSpeedreader();
+  tab_helper_->web_contents()->GetController().Reload(
+      content::ReloadType::NORMAL, false);
+  CloseBubble();
 }
 
 void ReaderModeBubble::OnLinkClicked(const ui::Event& event) {

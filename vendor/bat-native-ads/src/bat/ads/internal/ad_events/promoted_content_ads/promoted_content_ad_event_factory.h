@@ -8,19 +8,21 @@
 
 #include <memory>
 
-#include "bat/ads/internal/ad_events/ad_event.h"
-#include "bat/ads/mojom.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
+
+template <typename T>
+class AdEvent;
 
 struct PromotedContentAdInfo;
 
 namespace promoted_content_ads {
 
-class AdEventFactory {
+class AdEventFactory final {
  public:
   static std::unique_ptr<AdEvent<PromotedContentAdInfo>> Build(
-      const PromotedContentAdEventType event_type);
+      const mojom::PromotedContentAdEventType event_type);
 };
 
 }  // namespace promoted_content_ads

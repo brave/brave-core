@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from __future__ import print_function
 
@@ -20,9 +24,8 @@ except ImportError:
 import os
 import zipfile
 
-from .config import is_verbose_mode, PLATFORM
+from .config import is_verbose_mode
 from .env_util import get_vs_env
-from .helpers import release_channel
 
 BOTO_DIR = os.path.abspath(os.path.join(__file__, '..', '..', '..', 'vendor',
                                         'boto'))
@@ -82,6 +85,7 @@ def download(text, url, path):
     safe_mkdir(os.path.dirname(path))
     with open(path, 'wb') as local_file:
         if hasattr(ssl, '_create_unverified_context'):
+            # pylint: disable=protected-access
             ssl._create_default_https_context = ssl._create_unverified_context
 
         web_file = urlopen(url)
@@ -166,21 +170,44 @@ def safe_mkdir(path):
             raise
 
 
-def execute(argv, env=os.environ):
+def execute(argv, env=os.environ):  # pylint: disable=dangerous-default-value
     if is_verbose_mode():
         print(' '.join(argv))
     try:
-        output = subprocess.check_output(argv, stderr=subprocess.STDOUT,
-                                         env=env)
-        if is_verbose_mode():
-            print(output)
-        return output
+        if sys.version_info.major == 2:
+            process = subprocess.Popen(
+                argv, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                universal_newlines=True)
+        else:
+            process = subprocess.Popen(  # pylint: disable=unexpected-keyword-arg
+                argv, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                encoding='utf-8', universal_newlines=True)
+        stdout, stderr = process.communicate()
+        if is_verbose_mode() or process.returncode != 0:
+            if sys.version_info.major == 2:
+                printable_stdout = stdout
+            else:
+                # Fix any unsupported characters in print encoder.
+                printable_stdout = stdout.encode(sys.stdout.encoding,
+                                                 'backslashreplace').decode(
+                                                     sys.stdout.encoding)
+            # Print the output instead of raising it, so that we get pretty output.
+            # Most useful erroroutput from typescript / webpack is in stdout
+            # and not stderr.
+            print(printable_stdout)
+            if process.returncode != 0:
+                raise RuntimeError('Command \'%s\' failed' % (' '.join(argv)),
+                                   stderr)
+        return stdout
     except subprocess.CalledProcessError as e:
-        print(e.output)
+        print('Error in subprocess:')
+        print(' '.join(argv))
+        if sys.version_info.major > 2:
+            print(e.stderr)  # pylint: disable=no-member
         raise e
 
 
-def execute_stdout(argv, env=os.environ):
+def execute_stdout(argv, env=os.environ):  # pylint: disable=dangerous-default-value
     if is_verbose_mode():
         print(' '.join(argv))
         try:

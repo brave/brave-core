@@ -6,30 +6,26 @@
 #include "bat/ads/internal/server/ads_server_util.h"
 
 #include "bat/ads/ads.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 namespace server {
 
 namespace {
 
-const char kProductionHost[] = "https://ads-static.brave.com";
-const char kStagingHost[] = "https://ads-serve.bravesoftware.com";
-const char kDevelopmentHost[] = "https://ads-serve.brave.software";
+constexpr char kProductionHost[] = "https://ads-static.brave.com";
+constexpr char kStagingHost[] = "https://ads-serve.bravesoftware.com";
 
 }  // namespace
 
 std::string GetHost() {
   switch (g_environment) {
-    case Environment::PRODUCTION: {
+    case mojom::Environment::kProduction: {
       return kProductionHost;
     }
 
-    case Environment::STAGING: {
+    case mojom::Environment::kStaging: {
       return kStagingHost;
-    }
-
-    case Environment::DEVELOPMENT: {
-      return kDevelopmentHost;
     }
   }
 }

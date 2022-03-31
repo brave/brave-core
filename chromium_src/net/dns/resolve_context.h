@@ -16,7 +16,7 @@ class BraveResolveContext;
  private:                       \
   friend class BraveResolveContext;
 
-#include "../../../../net/dns/resolve_context.h"
+#include "src/net/dns/resolve_context.h"
 #undef GetDohServerAvailability
 #undef NumAvailableDohServers
 #undef BRAVE_RESOLVE_CONTEXT_H

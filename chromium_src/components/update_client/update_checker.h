@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_UPDATE_CLIENT_UPDATE_CHECKER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_UPDATE_CLIENT_UPDATE_CHECKER_H_
 
-#include "../../../../components/update_client/update_checker.h"
+#include "src/components/update_client/update_checker.h"
 
 #include <deque>
 #include <string>
@@ -14,12 +14,12 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/ref_counted.h"
-#include "base/optional.h"
 #include "base/threading/thread_checker.h"
 #include "components/update_client/component.h"
 #include "components/update_client/configurator.h"
 #include "components/update_client/persisted_data.h"
 #include "components/update_client/update_client_errors.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace update_client {
 
@@ -46,18 +46,19 @@ class SequentialUpdateChecker : public UpdateChecker {
       const std::vector<std::string>& ids_checked,
       const IdToComponentPtrMap& components,
       const base::flat_map<std::string, std::string>& additional_attributes,
-      bool enabled_component_updates,
       UpdateCheckCallback update_check_callback) override;
 
   // Needs to be public so std::make_unique(...) works in Create(...).
   SequentialUpdateChecker(scoped_refptr<Configurator> config,
                           PersistedData* metadata);
+  SequentialUpdateChecker(const SequentialUpdateChecker&) = delete;
+  SequentialUpdateChecker& operator=(const SequentialUpdateChecker&) = delete;
   ~SequentialUpdateChecker() override;
 
  private:
   void CheckNext();
   void UpdateResultAvailable(
-      const base::Optional<ProtocolParser::Results>& results,
+      const absl::optional<ProtocolParser::Results>& results,
       ErrorCategory error_category,
       int error,
       int retry_after_sec);
@@ -76,7 +77,6 @@ class SequentialUpdateChecker : public UpdateChecker {
   // outlives this class.
   const IdToComponentPtrMap* components_;
   base::flat_map<std::string, std::string> additional_attributes_;
-  bool enabled_component_updates_;
   UpdateCheckCallback update_check_callback_;
 
   std::deque<std::string> remaining_ids_;
@@ -86,8 +86,6 @@ class SequentialUpdateChecker : public UpdateChecker {
   std::unique_ptr<UpdateChecker> update_checker_;
   // Aggregates results from all sequential update requests.
   ProtocolParser::Results results_;
-
-  DISALLOW_COPY_AND_ASSIGN(SequentialUpdateChecker);
 };
 
 }  // namespace update_client

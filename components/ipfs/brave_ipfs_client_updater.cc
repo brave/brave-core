@@ -10,9 +10,9 @@
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/task/post_task.h"
+#include "base/task/task_runner.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/task_runner.h"
-#include "base/task_runner_util.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "components/component_updater/component_updater_service.h"
 
@@ -69,7 +69,7 @@ base::FilePath InitExecutablePath(const base::FilePath& install_dir) {
     return base::FilePath();
   }
 
-#if defined(OS_POSIX)
+#if BUILDFLAG(IS_POSIX)
   // Ensure that Ipfs client executable has appropriate file
   // permissions, as CRX unzipping does not preserve them.
   // See https://crbug.com/555011
@@ -78,7 +78,7 @@ base::FilePath InitExecutablePath(const base::FilePath& install_dir) {
                << executable_path.value().c_str();
     return base::FilePath();
   }
-#endif  // defined(OS_POSIX)
+#endif  // BUILDFLAG(IS_POSIX)
 
   return executable_path;
 }

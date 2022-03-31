@@ -11,13 +11,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class BraveSyncInternalsController;
+
 OBJC_EXPORT
 @interface BraveSyncAPI : NSObject
 
-@property(class, readonly, strong)
-    BraveSyncAPI* sharedSyncAPI NS_SWIFT_NAME(shared);
 @property(nonatomic) bool syncEnabled;
 @property(nonatomic, readonly) bool isSyncFeatureActive;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 - (void)resetSync;
 
@@ -32,9 +34,13 @@ OBJC_EXPORT
 
 - (NSString*)syncCodeFromHexSeed:(NSString*)hexSeed;
 
+- (NSString*)hexSeedFromSyncCode:(NSString*)syncCode;
+
 - (nullable UIImage*)getQRCodeImage:(CGSize)size;
 
 - (nullable NSString*)getDeviceListJSON;
+
+- (BraveSyncInternalsController*)createSyncInternalsController;
 
 - (id)createSyncDeviceObserver:(void (^)())onDeviceInfoChanged;
 - (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged;

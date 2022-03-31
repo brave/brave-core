@@ -3,8 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledWrapper, StyledTitle, StyledContentWrapper } from './style'
+import { StyledWrapper, StyledTitle, StyledContentWrapper, StyledLink } from './style'
 import Tokens, { Size, Type } from '../tokens/index'
+import { getLocale } from 'brave-ui/helpers'
 
 export interface Props {
   title: React.ReactNode
@@ -16,6 +17,7 @@ export interface Props {
   color?: Type
   border?: 'first' | 'last' | 'default'
   testId?: string
+  link?: string
 }
 
 export default class ListToken extends React.PureComponent<Props, {}> {
@@ -24,19 +26,25 @@ export default class ListToken extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, title, value, converted, isNegative, size, color, border, testId } = this.props
+    const { id, title, value, converted, isNegative, size, color, border, testId, link } = this.props
 
     return (
       <StyledWrapper id={id} border={border} data-test-id={testId}>
         <StyledTitle>{title}</StyledTitle>
         <StyledContentWrapper>
-          <Tokens
-            value={value}
-            converted={converted}
-            isNegative={isNegative}
-            size={size}
-            color={color}
-          />
+          {
+            link
+              ? <StyledLink href={link}>
+                  {getLocale('earningsViewDepositHistory')}
+                </StyledLink>
+              : <Tokens
+                  value={value}
+                  converted={converted}
+                  isNegative={isNegative}
+                  size={size}
+                  color={color}
+              />
+          }
         </StyledContentWrapper>
       </StyledWrapper>
     )

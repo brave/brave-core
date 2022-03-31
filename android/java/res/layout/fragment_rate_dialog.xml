@@ -86,7 +86,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:scrollbars="vertical"
-        android:textColorHint="@color/onboarding_gray"
+        android:textColorHint="@color/brave_theme_hint_text"
         android:textColor="@android:color/black"
         android:hint="@string/rate_feedback_hint"
         android:visibility="gone"
@@ -100,7 +100,7 @@
         android:layout_marginTop="16dp"
         android:orientation="horizontal">
 
-        <Button
+        <android.widget.Button
             android:id="@+id/rate_negative_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
             style="?android:attr/buttonBarButtonStyle"
             android:gravity="center"/>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/rate_positive_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

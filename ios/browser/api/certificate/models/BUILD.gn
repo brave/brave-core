@@ -1,0 +1,37 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("models") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  sources = [
+    "brave_certificate_enums.h",
+    "brave_certificate_fingerprint.h",
+    "brave_certificate_fingerprint.mm",
+    "brave_certificate_model+private.h",
+    "brave_certificate_public_key_info.h",
+    "brave_certificate_public_key_info.mm",
+    "brave_certificate_rdns_sequence.h",
+    "brave_certificate_rdns_sequence.mm",
+    "brave_certificate_signature.h",
+    "brave_certificate_signature.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/base/mac",
+    "//brave/ios/browser/api/certificate/utils",
+    "//brave/ios/browser/api/common",
+    "//crypto",
+    "//net",
+    "//third_party/abseil-cpp:absl",
+    "//third_party/boringssl",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "Security.framework",
+  ]
+}

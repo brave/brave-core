@@ -52,7 +52,7 @@ export default class ModalQRCode extends React.PureComponent<Props, State> {
   generateQRData = () => {
     const image: any = qr.image(this.props.paymentId)
     try {
-      let chunks: Array<Uint8Array> = []
+      let chunks: Uint8Array[] = []
       image
         .on('data', (chunk: Uint8Array) => chunks.push(chunk))
         .on('end', () => {

@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_AVATAR_ICON_UTIL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_AVATAR_ICON_UTIL_H_
 
-#include "../../../../../chrome/browser/profiles/profile_avatar_icon_util.h"
+#include "src/chrome/browser/profiles/profile_avatar_icon_util.h"
 
 namespace profiles {
   // Access original value for tests

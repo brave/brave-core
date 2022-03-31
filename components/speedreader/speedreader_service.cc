@@ -76,22 +76,28 @@ void RecordHistograms(PrefService* prefs, bool toggled, bool enabled_now) {
 
 SpeedreaderService::SpeedreaderService(PrefService* prefs) : prefs_(prefs) {}
 
-SpeedreaderService::~SpeedreaderService() {}
+SpeedreaderService::~SpeedreaderService() = default;
 
 // static
 void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kSpeedreaderPrefEnabled, false);
   registry->RegisterBooleanPref(kSpeedreaderPrefEverEnabled, false);
   registry->RegisterListPref(kSpeedreaderPrefToggleCount);
+  registry->RegisterIntegerPref(kSpeedreaderPrefPromptCount, 0);
 }
 
 void SpeedreaderService::ToggleSpeedreader() {
-  const bool enabled = prefs_->GetBoolean(kSpeedreaderPrefEnabled);
-  prefs_->SetBoolean(kSpeedreaderPrefEnabled, !enabled);
-  if (!enabled)
+  const bool toggled_value = !prefs_->GetBoolean(kSpeedreaderPrefEnabled);
+  prefs_->SetBoolean(kSpeedreaderPrefEnabled, toggled_value);
+  if (toggled_value)
     prefs_->SetBoolean(kSpeedreaderPrefEverEnabled, true);
-  RecordHistograms(prefs_, true,
-                   !enabled);  // toggling - now enabled
+  RecordHistograms(prefs_, true, toggled_value);
+}
+
+void SpeedreaderService::DisableSpeedreaderForTest() {
+  prefs_->SetBoolean(kSpeedreaderPrefEnabled, false);
+  prefs_->SetBoolean(kSpeedreaderPrefEverEnabled, false);
+  prefs_->SetInteger(kSpeedreaderPrefPromptCount, 0);
 }
 
 bool SpeedreaderService::IsEnabled() {
@@ -102,6 +108,22 @@ bool SpeedreaderService::IsEnabled() {
   const bool enabled = prefs_->GetBoolean(kSpeedreaderPrefEnabled);
   RecordHistograms(prefs_, false, enabled);
   return enabled;
+}
+
+bool SpeedreaderService::ShouldPromptUserToEnable() const {
+  constexpr int max_speedreader_prompts = 2;
+
+  if (prefs_->GetBoolean(kSpeedreaderPrefEverEnabled) ||
+      prefs_->GetInteger(kSpeedreaderPrefPromptCount) >
+          max_speedreader_prompts) {
+    return false;
+  }
+  return true;
+}
+
+void SpeedreaderService::IncrementPromptCount() {
+  const int count = prefs_->GetInteger(kSpeedreaderPrefPromptCount);
+  prefs_->SetInteger(kSpeedreaderPrefPromptCount, count + 1);
 }
 
 }  // namespace speedreader

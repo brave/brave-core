@@ -9,21 +9,26 @@
 #include "net/base/url_util.h"
 
 #define CookieMonster ChromiumCookieMonster
-#include "../../../../net/cookies/cookie_monster.cc"
+#include "src/net/cookies/cookie_monster.cc"
 #undef CookieMonster
 
 namespace net {
 
 CookieMonster::CookieMonster(scoped_refptr<PersistentCookieStore> store,
-                             NetLog* net_log)
-    : ChromiumCookieMonster(store, net_log),
+                             NetLog* net_log,
+                             bool first_party_sets_enabled)
+    : ChromiumCookieMonster(store, net_log, first_party_sets_enabled),
       net_log_(
           NetLogWithSource::Make(net_log, NetLogSourceType::COOKIE_STORE)) {}
 
 CookieMonster::CookieMonster(scoped_refptr<PersistentCookieStore> store,
                              base::TimeDelta last_access_threshold,
-                             NetLog* net_log)
-    : ChromiumCookieMonster(store, last_access_threshold, net_log),
+                             NetLog* net_log,
+                             bool first_party_sets_enabled)
+    : ChromiumCookieMonster(store,
+                            last_access_threshold,
+                            net_log,
+                            first_party_sets_enabled),
       net_log_(
           NetLogWithSource::Make(net_log, NetLogSourceType::COOKIE_STORE)) {}
 
@@ -38,8 +43,9 @@ CookieMonster::GetOrCreateEphemeralCookieStoreForTopFrameURL(
     return it->second.get();
 
   return ephemeral_cookie_stores_
-      .emplace(domain, new ChromiumCookieMonster(nullptr /* store */,
-                                                 net_log_.net_log()))
+      .emplace(domain, new ChromiumCookieMonster(
+                           nullptr /* store */, net_log_.net_log(),
+                           /*first_party_sets_enabled=*/false))
       .first->second.get();
 }
 
@@ -94,27 +100,59 @@ void CookieMonster::SetCookieableSchemes(
   ChromiumCookieMonster::SetCookieableSchemes(schemes, std::move(callback));
 }
 
-void CookieMonster::GetEphemeralCookieListWithOptionsAsync(
-    const GURL& url,
-    const GURL& top_frame_url,
-    const CookieOptions& options,
-    GetCookieListCallback callback) {
-  ChromiumCookieMonster* ephemeral_monster =
-      GetOrCreateEphemeralCookieStoreForTopFrameURL(top_frame_url);
-  ephemeral_monster->GetCookieListWithOptionsAsync(url, options,
-                                                   std::move(callback));
-}
-
-void CookieMonster::SetEphemeralCanonicalCookieAsync(
+void CookieMonster::SetCanonicalCookieAsync(
     std::unique_ptr<CanonicalCookie> cookie,
     const GURL& source_url,
-    const GURL& top_frame_url,
     const CookieOptions& options,
-    SetCookiesCallback callback) {
-  ChromiumCookieMonster* ephemeral_monster =
-      GetOrCreateEphemeralCookieStoreForTopFrameURL(top_frame_url);
-  ephemeral_monster->SetCanonicalCookieAsync(std::move(cookie), source_url,
-                                             options, std::move(callback));
+    SetCookiesCallback callback,
+    const CookieAccessResult* cookie_access_result) {
+  if (options.should_use_ephemeral_storage()) {
+    if (!options.top_frame_origin()) {
+      // Shouldn't happen, but don't do anything in this case.
+      NOTREACHED();
+      MaybeRunCookieCallback(
+          std::move(callback),
+          CookieAccessResult(CookieInclusionStatus(
+              CookieInclusionStatus::EXCLUDE_UNKNOWN_ERROR)));
+      return;
+    }
+    ChromiumCookieMonster* ephemeral_monster =
+        GetOrCreateEphemeralCookieStoreForTopFrameURL(
+            options.top_frame_origin()->GetURL());
+    ephemeral_monster->SetCanonicalCookieAsync(std::move(cookie), source_url,
+                                               options, std::move(callback),
+                                               cookie_access_result);
+    return;
+  }
+
+  ChromiumCookieMonster::SetCanonicalCookieAsync(std::move(cookie), source_url,
+                                                 options, std::move(callback),
+                                                 cookie_access_result);
+}
+
+void CookieMonster::GetCookieListWithOptionsAsync(
+    const GURL& url,
+    const CookieOptions& options,
+    const CookiePartitionKeyCollection& cookie_partition_key_collection,
+    GetCookieListCallback callback) {
+  if (options.should_use_ephemeral_storage()) {
+    if (!options.top_frame_origin()) {
+      // Shouldn't happen, but don't do anything in this case.
+      NOTREACHED();
+      MaybeRunCookieCallback(std::move(callback), CookieAccessResultList(),
+                             CookieAccessResultList());
+      return;
+    }
+    ChromiumCookieMonster* ephemeral_monster =
+        GetOrCreateEphemeralCookieStoreForTopFrameURL(
+            options.top_frame_origin()->GetURL());
+    ephemeral_monster->GetCookieListWithOptionsAsync(
+        url, options, cookie_partition_key_collection, std::move(callback));
+    return;
+  }
+
+  ChromiumCookieMonster::GetCookieListWithOptionsAsync(
+      url, options, cookie_partition_key_collection, std::move(callback));
 }
 
 }  // namespace net

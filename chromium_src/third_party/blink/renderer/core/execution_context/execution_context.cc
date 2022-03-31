@@ -7,7 +7,6 @@
 
 #include "base/command_line.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "crypto/hmac.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/dom/document.h"
@@ -18,7 +17,7 @@
 #include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
 #include "third_party/blink/renderer/platform/graphics/static_bitmap_image.h"
 #include "third_party/blink/renderer/platform/graphics/unaccelerated_static_bitmap_image.h"
-#include "third_party/blink/renderer/platform/heap/handle.h"
+#include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/network/network_utils.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
@@ -83,6 +82,25 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
         blink::To<blink::WorkerGlobalScope>(context)->ContentSettingsClient();
   }
   return settings;
+}
+
+BraveFarblingLevel GetBraveFarblingLevelFor(ExecutionContext* context,
+                                            BraveFarblingLevel default_value) {
+  BraveFarblingLevel value = default_value;
+  // This is safe to call with a null pointer.
+  blink::WebContentSettingsClient* settings =
+      GetContentSettingsClientFor(context);
+  if (settings)
+    value = settings->GetBraveFarblingLevel();
+  return value;
+}
+
+bool AllowFingerprinting(ExecutionContext* context) {
+  blink::WebContentSettingsClient* settings =
+      GetContentSettingsClientFor(context);
+  if (settings)
+    return settings->AllowFingerprinting(true);
+  return true;
 }
 
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)
@@ -252,4 +270,4 @@ std::mt19937_64 BraveSessionCache::MakePseudoRandomGenerator() {
 
 }  // namespace brave
 
-#include "../../../../../../../third_party/blink/renderer/core/execution_context/execution_context.cc"
+#include "src/third_party/blink/renderer/core/execution_context/execution_context.cc"

@@ -78,6 +78,7 @@ Polymer({
   },
 
   useThemesSubPage_: function() {
-    return loadTimeData.getString('superReferralThemeName') !== "";
+    return loadTimeData.valueExists('superReferralThemeName') &&
+      loadTimeData.getString('superReferralThemeName') !== '';
   }
 });

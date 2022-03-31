@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/observer_list.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "extensions/browser/extension_function.h"
 #include "extensions/common/extension.h"
@@ -42,6 +43,8 @@ class BraveActionAPI : public KeyedService {
         std::unique_ptr<std::string> ui_relative_path,
         std::string* error);
   BraveActionAPI();
+  BraveActionAPI(const BraveActionAPI&) = delete;
+  BraveActionAPI& operator=(const BraveActionAPI&) = delete;
   ~BraveActionAPI() override;
 
   // Add or remove observers.
@@ -54,8 +57,6 @@ class BraveActionAPI : public KeyedService {
 
  private:
   base::ObserverList<Observer>::Unchecked observers_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveActionAPI);
 };
 }  // namespace extensions
 

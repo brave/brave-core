@@ -14,7 +14,7 @@
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 #endif
 
-#include "../../../../../chrome/installer/mini_installer/regkey.cc"
+#include "src/chrome/installer/mini_installer/regkey.cc"
 
 #if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING

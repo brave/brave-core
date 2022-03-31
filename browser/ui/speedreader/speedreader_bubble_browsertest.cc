@@ -3,10 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
-#include "brave/components/speedreader/speedreader_service.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/test/test_browser_dialog.h"
@@ -24,14 +23,16 @@ class SpeedreaderBubbleBrowserTest : public DialogBrowserTest {
 
   // DialogBrowserTest:
   void ShowUi(const std::string& name) override {
-    auto* tab_helper =
-        speedreader::SpeedreaderTabHelper::Get(ActiveWebContents());
-    tab_helper->ShowBubble();
+    if (speedreader_bubble_)
+      tab_helper()->ShowSpeedreaderBubble();
+    else
+      tab_helper()->ShowReaderModeBubble();
   }
 
  protected:
   bool NavigateToNewTab() {
-    ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab"));
+    EXPECT_TRUE(
+        ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab")));
     return WaitForLoadStop(ActiveWebContents());
   }
 
@@ -39,31 +40,38 @@ class SpeedreaderBubbleBrowserTest : public DialogBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  void ToggleSpeedreader() {
-    auto* speedreader_service =
-        speedreader::SpeedreaderServiceFactory::GetForProfile(
-            browser()->profile());
-    speedreader_service->ToggleSpeedreader();
+  speedreader::SpeedreaderTabHelper* tab_helper() {
+    speedreader::SpeedreaderTabHelper::CreateForWebContents(
+        ActiveWebContents());
+    return speedreader::SpeedreaderTabHelper::FromWebContents(
+        ActiveWebContents());
   }
+
+  bool speedreader_bubble_ = false;
 };
 
 IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
                        InvokeUi_reader_mode_bubble_basic) {
-  auto* tab_helper =
-      speedreader::SpeedreaderTabHelper::Get(ActiveWebContents());
-  EXPECT_FALSE(tab_helper->IsSpeedreaderEnabled());
+  speedreader_bubble_ = false;
   ShowAndVerifyUi();
 }
 
+// Disable this test for intermittent crashes on macOS.
+// See https://github.com/brave/brave-browser/issues/20082
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_InvokeUi_speedreader_mode_bubble_basic \
+  DISABLED_InvokeUi_speedreader_mode_bubble_basic
+#else
+#define MAYBE_InvokeUi_speedreader_mode_bubble_basic \
+  InvokeUi_speedreader_mode_bubble_basic
+#endif
+
 IN_PROC_BROWSER_TEST_F(SpeedreaderBubbleBrowserTest,
-                       InvokeUi_speedreader_mode_bubble_basic) {
-  ToggleSpeedreader();
-  auto* tab_helper =
-      speedreader::SpeedreaderTabHelper::Get(ActiveWebContents());
-  EXPECT_TRUE(tab_helper->IsSpeedreaderEnabled());
+                       MAYBE_InvokeUi_speedreader_mode_bubble_basic) {
+  speedreader_bubble_ = true;
   // We need to navigate somewhere so the host is non-empty. For tests the new
   // tab page is fine.
-  NavigateToNewTab();
+  EXPECT_TRUE(NavigateToNewTab());
   const GURL active_url = ActiveWebContents()->GetLastCommittedURL();
   EXPECT_FALSE(active_url.host().empty());
   ShowAndVerifyUi();

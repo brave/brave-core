@@ -7,7 +7,7 @@
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
 #include "components/autofill/core/browser/personal_data_manager.h"
 
-#include "../../../../../chrome/browser/importer/profile_writer.cc"
+#include "src/chrome/browser/importer/profile_writer.cc"
 
 void ProfileWriter::AddCreditCard(const std::u16string& name_on_card,
                                   const std::u16string& expiration_month,

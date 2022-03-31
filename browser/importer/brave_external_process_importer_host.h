@@ -7,14 +7,18 @@
 #define BRAVE_BROWSER_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H_
 
 #include "base/memory/weak_ptr.h"
-#include "base/optional.h"
 #include "base/values.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
 #include "extensions/buildflags/buildflags.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
  public:
   BraveExternalProcessImporterHost();
+  BraveExternalProcessImporterHost(const BraveExternalProcessImporterHost&) =
+      delete;
+  BraveExternalProcessImporterHost& operator=(
+      const BraveExternalProcessImporterHost&) = delete;
 
  private:
   friend class ExternalProcessImporterHost;
@@ -26,13 +30,11 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   void LaunchExtensionsImport();
-  void OnGetChromeExtensionsList(base::Optional<base::Value> extensions_list);
+  void OnGetChromeExtensionsList(absl::optional<base::Value> extensions_list);
 #endif
 
   // Vends weak pointers for the importer to call us back.
   base::WeakPtrFactory<BraveExternalProcessImporterHost> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveExternalProcessImporterHost);
 };
 
 #endif  // BRAVE_BROWSER_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H_

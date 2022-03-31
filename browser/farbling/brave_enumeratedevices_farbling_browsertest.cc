@@ -26,6 +26,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "url/gurl.h"
 
 using brave_shields::ControlType;
 
@@ -46,11 +47,11 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server_.ServeFilesFromDirectory(test_data_dir);
     EXPECT_TRUE(https_server_.Start());
-    top_level_page_url_ = https_server_.GetURL("a.com", "/");
-    farbling_url_ = https_server_.GetURL("a.com", "/simple.html");
+    top_level_page_url_ = https_server_.GetURL("a.test", "/");
+    farbling_url_ = https_server_.GetURL("a.test", "/simple.html");
   }
 
   BraveEnumerateDevicesFarblingBrowserTest(
@@ -59,12 +60,6 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
       const BraveEnumerateDevicesFarblingBrowserTest&) = delete;
 
   ~BraveEnumerateDevicesFarblingBrowserTest() override {}
-
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    // HTTPS server only serves a valid cert for localhost, so this is needed
-    // to load pages from other hosts without an error
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
-  }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -126,7 +121,7 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   bool NavigateToURLUntilLoadStop(const GURL& url) {
-    ui_test_utils::NavigateToURL(browser(), url);
+    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     return WaitForLoadStop(contents());
   }
 

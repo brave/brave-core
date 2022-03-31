@@ -7,45 +7,45 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_PANEL_HANDLER_WALLET_PANEL_HANDLER_H_
 
 #include <string>
+#include <vector>
 
-#include "brave/components/brave_wallet_ui/wallet_ui.mojom.h"
-#include "content/public/browser/web_contents_observer.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "mojo/public/cpp/bindings/remote.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
 
 namespace content {
 class WebUI;
 }
 
-class WalletPanelHandler : public wallet_ui::mojom::PanelHandler,
-                           public content::WebContentsObserver {
+class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
  public:
+  using GetActiveWebContentsCallback =
+      base::RepeatingCallback<content::WebContents*()>;
+  using PanelCloseOnDeactivationCallback = base::RepeatingCallback<void(bool)>;
   WalletPanelHandler(
-      mojo::PendingReceiver<wallet_ui::mojom::PanelHandler> receiver,
-      mojo::PendingRemote<wallet_ui::mojom::Page> page,
-      content::WebUI* web_ui,
-      ui::MojoBubbleWebUIController* webui_controller);
+      mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
+      ui::MojoBubbleWebUIController* webui_controller,
+      GetActiveWebContentsCallback get_active_web_contents,
+      PanelCloseOnDeactivationCallback close_on_deactivation);
 
   WalletPanelHandler(const WalletPanelHandler&) = delete;
   WalletPanelHandler& operator=(const WalletPanelHandler&) = delete;
   ~WalletPanelHandler() override;
 
-  // content::WebContentsObserver:
-  void OnVisibilityChanged(content::Visibility visibility) override;
-
-  // wallet_ui::mojom::PanelHandler:
+  // brave_wallet::mojom::PanelHandler:
   void ShowUI() override;
   void CloseUI() override;
+  void SetCloseOnDeactivate(bool close) override;
+  void ConnectToSite(const std::vector<std::string>& accounts,
+                     const std::string& origin) override;
+  void CancelConnectToSite(const std::string& origin) override;
 
  private:
-  bool webui_hidden_ = false;
-  mojo::Receiver<wallet_ui::mojom::PanelHandler> receiver_;
-  mojo::Remote<wallet_ui::mojom::Page> page_;
-  content::WebUI* const web_ui_;
+  mojo::Receiver<brave_wallet::mojom::PanelHandler> receiver_;
   ui::MojoBubbleWebUIController* const webui_controller_;
+  const GetActiveWebContentsCallback get_active_web_contents_;
+  const PanelCloseOnDeactivationCallback close_on_deactivation_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_PANEL_HANDLER_WALLET_PANEL_HANDLER_H_

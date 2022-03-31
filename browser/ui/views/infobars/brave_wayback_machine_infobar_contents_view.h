@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
 #include "ui/views/view.h"
 
@@ -22,6 +23,7 @@ class Label;
 
 class BraveWaybackMachineInfoBarButtonContainer;
 class GURL;
+class PrefService;
 
 // Includes all view controls except close button that managed by InfoBarView.
 class BraveWaybackMachineInfoBarContentsView
@@ -55,16 +57,19 @@ class BraveWaybackMachineInfoBarContentsView
   void LoadURL(const GURL& url);
   void HideInfobar();
 
-  void ButtonPressed();
+  void FetchURLButtonPressed();
+  void DontAskButtonPressed();
 
   // Used for labels theme changing all together.
   Labels labels_;
   Views views_visible_before_checking_;
   Views views_visible_after_checking_;
-  content::WebContents* contents_;
+  raw_ptr<content::WebContents> contents_ = nullptr;
   WaybackMachineURLFetcher wayback_machine_url_fetcher_;
 
-  BraveWaybackMachineInfoBarButtonContainer* button_ = nullptr;
+  BraveWaybackMachineInfoBarButtonContainer* fetch_url_button_ = nullptr;
+  views::View* dont_ask_button_ = nullptr;
+  PrefService* pref_service_ = nullptr;
   views::ImageView* wayback_spot_graphic_ = nullptr;
   bool wayback_url_fetch_requested_ = false;
 };

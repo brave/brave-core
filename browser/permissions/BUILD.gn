@@ -4,16 +4,21 @@ if (!is_android) {
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
     sources = [
+      "brave_ethereum_permission_context_browsertest.cc",
       "mock_permission_lifetime_prompt.cc",
       "mock_permission_lifetime_prompt.h",
       "mock_permission_lifetime_prompt_factory.cc",
       "mock_permission_lifetime_prompt_factory.h",
       "permission_lifetime_manager_browsertest.cc",
+      "permission_manager_browsertest.cc",
     ]
 
     deps = [
       "//brave/browser",
-      "//brave/browser/ephemeral_storage",
+      "//brave/browser/brave_wallet",
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/browser:ethereum_permission_utils",
+      "//brave/components/brave_wallet/common",
       "//chrome/browser",
       "//chrome/browser/ui",
       "//chrome/test:test_support",
@@ -28,9 +33,13 @@ source_set("unit_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "permission_lifetime_manager_unittest.cc" ]
+  sources = [
+    "brave_ethereum_permission_context_unittest.cc",
+    "permission_lifetime_manager_unittest.cc",
+  ]
 
   deps = [
+    "//brave/components/brave_wallet/browser:ethereum_permission_utils",
     "//chrome/browser",
     "//chrome/test:test_support",
     "//components/content_settings/core/browser",

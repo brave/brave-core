@@ -44,7 +44,12 @@ class OnionLocationNavigationThrottle : public content::NavigationThrottle {
   ThrottleCheckResult WillStartRequest() override;
   const char* GetNameForLogging() override;
 
+  static void BlockOnionRequestsOutsideTorForTesting(bool block) {
+    block_onion_requests_outside_tor_for_testing_ = block;
+  }
+
  private:
+  static bool block_onion_requests_outside_tor_for_testing_;
   bool is_tor_profile_ = false;
 
   PrefService* pref_service_ = nullptr;

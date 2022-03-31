@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/check_op.h"
 #include "base/strings/string_split.h"
 
 namespace ads {

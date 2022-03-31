@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
@@ -20,7 +20,7 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser_list_observer.h"
 #endif
 
@@ -41,7 +41,7 @@ namespace brave_ads {
 class AdsService;
 
 class AdsTabHelper : public content::WebContentsObserver,
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
                      public BrowserListObserver,
 #endif
                      public content::WebContentsUserData<AdsTabHelper> {
@@ -55,8 +55,6 @@ class AdsTabHelper : public content::WebContentsObserver,
  private:
   friend class content::WebContentsUserData<AdsTabHelper>;
 
-  bool IsAdsEnabled() const;
-
   void TabUpdated();
 
   void RunIsolatedJavaScript(content::RenderFrameHost* render_frame_host);
@@ -68,8 +66,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   // content::WebContentsObserver overrides
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void DocumentOnLoadCompletedInMainFrame(
-      content::RenderFrameHost* render_frame_host) override;
+  void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
   void MediaStartedPlaying(const MediaPlayerInfo& video_type,
@@ -81,18 +78,18 @@ class AdsTabHelper : public content::WebContentsObserver,
   void OnVisibilityChanged(content::Visibility visibility) override;
   void WebContentsDestroyed() override;
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   // BrowserListObserver overrides
   void OnBrowserSetLastActive(Browser* browser) override;
   void OnBrowserNoLongerActive(Browser* browser) override;
 #endif
 
   SessionID tab_id_;
-  AdsService* ads_service_;  // NOT OWNED
-  bool is_active_;
-  bool is_browser_active_;
+  raw_ptr<AdsService> ads_service_ = nullptr;  // NOT OWNED
+  bool is_active_ = false;
+  bool is_browser_active_ = true;
   std::vector<GURL> redirect_chain_;
-  bool should_process_;
+  bool should_process_ = false;
 
   base::WeakPtrFactory<AdsTabHelper> weak_factory_;
   WEB_CONTENTS_USER_DATA_KEY_DECL();

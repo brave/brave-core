@@ -9,6 +9,8 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
 #include "url/gurl.h"
 
@@ -20,9 +22,13 @@ namespace security_interstitials {
 class MetricsHelper;
 }  // namespace security_interstitials
 
+namespace ephemeral_storage {
+class EphemeralStorageService;
+}  // namespace ephemeral_storage
+
 namespace brave_shields {
 
-class AdBlockCustomFiltersService;
+class AdBlockCustomFiltersProvider;
 
 class DomainBlockControllerClient
     : public security_interstitials::SecurityInterstitialControllerClient {
@@ -33,10 +39,11 @@ class DomainBlockControllerClient
   DomainBlockControllerClient(
       content::WebContents* web_contents,
       const GURL& request_url,
-      AdBlockCustomFiltersService* ad_block_custom_filters_service,
+      AdBlockCustomFiltersProvider* ad_block_custom_filters_provider,
+      ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       PrefService* prefs,
       const std::string& locale);
-  ~DomainBlockControllerClient() override = default;
+  ~DomainBlockControllerClient() override;
 
   DomainBlockControllerClient(const DomainBlockControllerClient&) = delete;
   DomainBlockControllerClient& operator=(const DomainBlockControllerClient&) =
@@ -49,9 +56,17 @@ class DomainBlockControllerClient
   void Proceed() override;
 
  private:
+  void ReloadPage();
+  void OnCanEnable1PESForUrl(bool can_enable_1pes);
+
   const GURL request_url_;
-  AdBlockCustomFiltersService* ad_block_custom_filters_service_;
+  raw_ptr<AdBlockCustomFiltersProvider> ad_block_custom_filters_provider_ =
+      nullptr;
+  raw_ptr<ephemeral_storage::EphemeralStorageService>
+      ephemeral_storage_service_ = nullptr;
   bool dont_warn_again_;
+
+  base::WeakPtrFactory<DomainBlockControllerClient> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_shields

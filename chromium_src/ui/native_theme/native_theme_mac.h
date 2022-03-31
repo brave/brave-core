@@ -12,7 +12,7 @@
   GetSystemButtonPressedColor_ChromiumImpl(SkColor base_color) const override; \
   virtual SkColor GetSystemButtonPressedColor
 
-#include "../../../../ui/native_theme/native_theme_mac.h"
+#include "src/ui/native_theme/native_theme_mac.h"
 #undef GetSystemButtonPressedColor
 
 #endif  // BRAVE_CHROMIUM_SRC_UI_NATIVE_THEME_NATIVE_THEME_MAC_H_

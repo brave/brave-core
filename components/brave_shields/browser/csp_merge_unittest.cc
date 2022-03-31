@@ -9,12 +9,12 @@
 
 namespace brave_shields {
 
-const base::Optional<std::string> NO_POLICY = base::nullopt;
+const absl::optional<std::string> NO_POLICY = absl::nullopt;
 
 const auto POLICY1 =
-    base::Optional<std::string>("script-src 'self' 'unsafe-inline'");
+    absl::optional<std::string>("script-src 'self' 'unsafe-inline'");
 const auto POLICY2 =
-    base::Optional<std::string>("media-src 'self' https://example.com");
+    absl::optional<std::string>("media-src 'self' https://example.com");
 
 TEST(CspMergeTest, MergeTwoEmptyPolicies) {
   const auto a = NO_POLICY;

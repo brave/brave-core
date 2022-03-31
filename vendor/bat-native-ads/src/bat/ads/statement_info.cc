@@ -5,13 +5,54 @@
 
 #include "bat/ads/statement_info.h"
 
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "bat/ads/internal/number_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
+
+namespace {
+
+double GetNextPaymentDateFromDictionary(base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
+  const std::string* value = dictionary->FindStringKey("next_payment_date");
+  if (!value) {
+    return 0;
+  }
+
+  double value_as_double = 0.0;
+  if (!base::StringToDouble(*value, &value_as_double)) {
+    return 0.0;
+  }
+
+  return value_as_double;
+}
+
+double GetEarningsThisMonthFromDictionary(base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
+  return dictionary->FindDoubleKey("earnings_this_month").value_or(0.0);
+}
+
+double GetEarningsLastMonthFromDictionary(base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
+  return dictionary->FindDoubleKey("earnings_last_month").value_or(0.0);
+}
+
+int GetAdsReceivedForThisMonthFromDictionary(
+    base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
+  return dictionary->FindIntKey("ads_received_this_month").value_or(0);
+}
+
+}  // namespace
 
 StatementInfo::StatementInfo() = default;
 
@@ -20,14 +61,10 @@ StatementInfo::StatementInfo(const StatementInfo& info) = default;
 StatementInfo::~StatementInfo() = default;
 
 bool StatementInfo::operator==(const StatementInfo& rhs) const {
-  return DoubleEquals(estimated_pending_rewards,
-                      rhs.estimated_pending_rewards) &&
-         next_payment_date == rhs.next_payment_date &&
-         ads_received_this_month == rhs.ads_received_this_month &&
+  return DoubleEquals(next_payment_date, rhs.next_payment_date) &&
          DoubleEquals(earnings_this_month, rhs.earnings_this_month) &&
          DoubleEquals(earnings_last_month, rhs.earnings_last_month) &&
-         transactions == rhs.transactions &&
-         uncleared_transactions == rhs.uncleared_transactions;
+         ads_received_this_month == rhs.ads_received_this_month;
 }
 
 bool StatementInfo::operator!=(const StatementInfo& rhs) const {
@@ -37,32 +74,18 @@ bool StatementInfo::operator!=(const StatementInfo& rhs) const {
 std::string StatementInfo::ToJson() const {
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
-  // Estimated pending rewards
-  dictionary.SetKey("estimated_pending_rewards",
-                    base::Value(estimated_pending_rewards));
-
   // Next payment date
-  dictionary.SetKey("next_payment_date",
-                    base::Value(std::to_string(next_payment_date)));
-
-  // Ads received this month
-  dictionary.SetKey("ads_received_this_month",
-                    base::Value(ads_received_this_month));
+  dictionary.SetStringKey("next_payment_date",
+                          base::NumberToString(next_payment_date));
 
   // Earnings this month
-  dictionary.SetKey("earnings_this_month", base::Value(earnings_this_month));
+  dictionary.SetDoubleKey("earnings_this_month", earnings_this_month);
 
   // Earnings last month
-  dictionary.SetKey("earnings_last_month", base::Value(earnings_last_month));
+  dictionary.SetDoubleKey("earnings_last_month", earnings_last_month);
 
-  // Transactions
-  base::Value transactions_list = GetTransactionsAsList();
-  dictionary.SetKey("transactions", base::Value(std::move(transactions_list)));
-
-  // Uncleared transactions
-  base::Value uncleared_transactions_list = GetUnclearedTransactionsAsList();
-  dictionary.SetKey("uncleared_transactions",
-                    base::Value(std::move(uncleared_transactions_list)));
+  // Ads received this month
+  dictionary.SetIntKey("ads_received_this_month", ads_received_this_month);
 
   // Write to JSON
   std::string json;
@@ -72,7 +95,7 @@ std::string StatementInfo::ToJson() const {
 }
 
 bool StatementInfo::FromJson(const std::string& json) {
-  base::Optional<base::Value> value = base::JSONReader::Read(json);
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     return false;
   }
@@ -82,148 +105,15 @@ bool StatementInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  estimated_pending_rewards =
-      GetEstimatedPendingRewardsFromDictionary(dictionary);
-
   next_payment_date = GetNextPaymentDateFromDictionary(dictionary);
 
-  ads_received_this_month = GetAdsReceivedThisMonthFromDictionary(dictionary);
-
   earnings_this_month = GetEarningsThisMonthFromDictionary(dictionary);
-
   earnings_last_month = GetEarningsLastMonthFromDictionary(dictionary);
 
-  transactions = GetTransactionsFromDictionary(dictionary);
-
-  uncleared_transactions = GetUnclearedTransactionsFromDictionary(dictionary);
+  ads_received_this_month =
+      GetAdsReceivedForThisMonthFromDictionary(dictionary);
 
   return true;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-double StatementInfo::GetEstimatedPendingRewardsFromDictionary(
-    base::DictionaryValue* dictionary) const {
-  DCHECK(dictionary);
-
-  return dictionary->FindDoubleKey("estimated_pending_rewards").value_or(0.0);
-}
-
-uint64_t StatementInfo::GetNextPaymentDateFromDictionary(
-    base::DictionaryValue* dictionary) const {
-  DCHECK(dictionary);
-
-  const std::string* value = dictionary->FindStringKey("next_payment_date");
-  if (!value) {
-    return 0;
-  }
-
-  uint64_t value_as_uint64 = 0;
-  if (!base::StringToUint64(*value, &value_as_uint64)) {
-    return 0;
-  }
-
-  return value_as_uint64;
-}
-
-uint64_t StatementInfo::GetAdsReceivedThisMonthFromDictionary(
-    base::DictionaryValue* dictionary) const {
-  DCHECK(dictionary);
-
-  return dictionary->FindIntKey("ads_received_this_month").value_or(0);
-}
-
-double StatementInfo::GetEarningsThisMonthFromDictionary(
-    base::DictionaryValue* dictionary) const {
-  DCHECK(dictionary);
-
-  return dictionary->FindDoubleKey("earnings_this_month").value_or(0.0);
-}
-
-double StatementInfo::GetEarningsLastMonthFromDictionary(
-    base::DictionaryValue* dictionary) const {
-  DCHECK(dictionary);
-
-  return dictionary->FindDoubleKey("earnings_last_month").value_or(0.0);
-}
-
-base::Value StatementInfo::GetTransactionsAsList() const {
-  base::Value list(base::Value::Type::LIST);
-
-  for (const auto& transaction : transactions) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
-    transaction.ToDictionary(&dictionary);
-
-    list.Append(std::move(dictionary));
-  }
-
-  return list;
-}
-
-TransactionList StatementInfo::GetTransactionsFromDictionary(
-    base::DictionaryValue* dictionary) const {
-  DCHECK(dictionary);
-
-  base::Value* transactions_list = dictionary->FindListKey("transactions");
-  if (!transactions_list) {
-    return {};
-  }
-
-  TransactionList transactions;
-
-  for (auto& value : transactions_list->GetList()) {
-    base::DictionaryValue* transaction_dictionary = nullptr;
-    if (!value.GetAsDictionary(&transaction_dictionary)) {
-      continue;
-    }
-
-    TransactionInfo transaction;
-    transaction.FromDictionary(transaction_dictionary);
-
-    transactions.push_back(transaction);
-  }
-
-  return transactions;
-}
-
-base::Value StatementInfo::GetUnclearedTransactionsAsList() const {
-  base::Value list(base::Value::Type::LIST);
-
-  for (const auto& transaction : uncleared_transactions) {
-    base::Value dictionary(base::Value::Type::DICTIONARY);
-    transaction.ToDictionary(&dictionary);
-
-    list.Append(std::move(dictionary));
-  }
-
-  return list;
-}
-
-TransactionList StatementInfo::GetUnclearedTransactionsFromDictionary(
-    base::DictionaryValue* dictionary) const {
-  DCHECK(dictionary);
-
-  base::Value* transactions_list =
-      dictionary->FindListKey("uncleared_transactions");
-  if (!transactions_list) {
-    return {};
-  }
-
-  TransactionList transactions;
-
-  for (auto& value : transactions_list->GetList()) {
-    base::DictionaryValue* transaction_dictionary = nullptr;
-    if (!value.GetAsDictionary(&transaction_dictionary)) {
-      continue;
-    }
-
-    TransactionInfo transaction;
-    transaction.FromDictionary(transaction_dictionary);
-
-    transactions.push_back(transaction);
-  }
-
-  return transactions;
 }
 
 }  // namespace ads

@@ -7,20 +7,22 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/string_number_conversions.h"
+#include "base/notreached.h"
 #include "base/values.h"
 #include "bat/ads/internal/logging.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace ad_targeting {
 
 namespace {
 
-const char kSegmentKey[] = "segment";
-const char kValueKey[] = "value";
-const char kPullsKey[] = "pulls";
+constexpr char kSegmentKey[] = "segment";
+constexpr char kValueKey[] = "value";
+constexpr char kPullsKey[] = "pulls";
 
 bool GetArmFromDictionary(const base::DictionaryValue* dictionary,
                           EpsilonGreedyBanditArmInfo* info) {
@@ -38,10 +40,11 @@ bool GetArmFromDictionary(const base::DictionaryValue* dictionary,
   EpsilonGreedyBanditArmInfo arm;
 
   const std::string* segment = dictionary->FindStringKey(kSegmentKey);
-  if (!segment) {
+  if (!segment || segment->empty()) {
     return false;
   }
   arm.segment = *segment;
+  DCHECK(!arm.segment.empty());
 
   arm.pulls = dictionary->FindIntKey(kPullsKey).value_or(0);
 
@@ -61,26 +64,36 @@ EpsilonGreedyBanditArmMap GetArmsFromDictionary(
     return arms;
   }
 
-  for (const auto& value : dictionary->DictItems()) {
+  bool found_errors = false;
+  for (const auto value : dictionary->DictItems()) {
+    if (value.first.empty()) {
+      found_errors = true;
+      continue;
+    }
+
     if (!value.second.is_dict()) {
-      NOTREACHED();
+      found_errors = true;
       continue;
     }
 
     const base::DictionaryValue* arm_dictionary = nullptr;
     value.second.GetAsDictionary(&arm_dictionary);
     if (!arm_dictionary) {
-      NOTREACHED();
+      found_errors = true;
       continue;
     }
 
     EpsilonGreedyBanditArmInfo arm;
     if (!GetArmFromDictionary(arm_dictionary, &arm)) {
-      NOTREACHED();
+      found_errors = true;
       continue;
     }
 
     arms[value.first] = arm;
+  }
+
+  if (found_errors) {
+    BLOG(0, "Errors detected when parsing epsilon greedy bandit arms");
   }
 
   return arms;
@@ -95,7 +108,7 @@ EpsilonGreedyBanditArms::~EpsilonGreedyBanditArms() = default;
 EpsilonGreedyBanditArmMap EpsilonGreedyBanditArms::FromJson(
     const std::string& json) {
   EpsilonGreedyBanditArmMap arms;
-  base::Optional<base::Value> value = base::JSONReader::Read(json);
+  absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     return arms;
   }
@@ -115,9 +128,9 @@ std::string EpsilonGreedyBanditArms::ToJson(
 
   for (const auto& arm : arms) {
     base::Value dictionary(base::Value::Type::DICTIONARY);
-    dictionary.SetKey(kSegmentKey, base::Value(arm.first));
-    dictionary.SetKey(kPullsKey, base::Value(arm.second.pulls));
-    dictionary.SetKey(kValueKey, base::Value(arm.second.value));
+    dictionary.SetStringKey(kSegmentKey, arm.first);
+    dictionary.SetIntKey(kPullsKey, arm.second.pulls);
+    dictionary.SetDoubleKey(kValueKey, arm.second.value);
     arms_dictionary.SetKey(arm.first, std::move(dictionary));
   }
 
@@ -126,8 +139,6 @@ std::string EpsilonGreedyBanditArms::ToJson(
 
   return json;
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 }  // namespace ad_targeting
 }  // namespace ads

@@ -6,10 +6,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-      android:key="hide_brave_rewards_icon"
-      android:title="@string/hide_brave_rewards_icon_title"
-      android:summaryOn="@string/hide_brave_rewards_icon_description"
-      android:summaryOff="@string/hide_brave_rewards_icon_description" />
+      android:key="show_brave_rewards_icon"
+      android:title="@string/show_brave_rewards_icon_title"
+      android:summaryOn="@string/text_on"
+      android:summaryOff="@string/text_off" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave_bottom_toolbar_enabled_key"
@@ -24,8 +24,8 @@
         android:summaryOff="@string/text_off" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="brave_enable_tab_groups"
-        android:title="@string/enable_tab_groups_title"
+        android:key="brave_disable_sharing_hub"
+        android:title="@string/disable_sharing_hub"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
 

@@ -14,10 +14,22 @@ public class BraveNewTabPageClassAdapter extends BraveClassVisitor {
     public BraveNewTabPageClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
+        redirectConstructor(sNewTabPageClassName, sBraveNewTabPageClassName);
+
+        deleteField(sBraveNewTabPageClassName, "mBrowserControlsStateProvider");
+        makeProtectedField(sNewTabPageClassName, "mBrowserControlsStateProvider");
+
         deleteField(sBraveNewTabPageClassName, "mNewTabPageLayout");
         makeProtectedField(sNewTabPageClassName, "mNewTabPageLayout");
 
         deleteField(sBraveNewTabPageClassName, "mFeedSurfaceProvider");
         makeProtectedField(sNewTabPageClassName, "mFeedSurfaceProvider");
+
+        deleteField(sBraveNewTabPageClassName, "mToolbarSupplier");
+        makeProtectedField(sNewTabPageClassName, "mToolbarSupplier");
+
+        makePublicMethod(sNewTabPageClassName, "updateSearchProviderHasLogo");
+        addMethodAnnotation(
+                sBraveNewTabPageClassName, "updateSearchProviderHasLogo", "Ljava/lang/Override;");
     }
 }

@@ -6,9 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_MINI_INSTALLER_MINI_INSTALLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_MINI_INSTALLER_MINI_INSTALLER_H_
 
-#include "../../../../../chrome/installer/mini_installer/mini_installer.h"
-
-#define StandardReferralCodeLen 6
+#include "src/chrome/installer/mini_installer/mini_installer.h"
 
 namespace mini_installer {
 typedef StackString<128> ReferralCodeString;

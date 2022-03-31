@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<!-- Used because of an Android bu causing IllegalStateException on EditTextPreference in brave_news_preferences.xml -->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="48dp"
+    android:layout_marginBottom="48dp"
+    android:overScrollMode="ifContentScrolls">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingStart="?dialogPreferredPadding"
+        android:paddingLeft="?dialogPreferredPadding"
+        android:paddingEnd="?dialogPreferredPadding"
+        android:paddingRight="?dialogPreferredPadding"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@android:id/message"
+            style="?android:attr/textAppearanceSmall"
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/textColorSecondary" />
+
+        <EditText
+            android:id="@android:id/edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="@NULL"
+            android:inputType="textUri"
+            android:hint="@string/news_feed_site_url" />
+
+    </LinearLayout>
+</ScrollView>

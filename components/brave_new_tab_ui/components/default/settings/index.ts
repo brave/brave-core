@@ -15,6 +15,12 @@ import favoritesUnselectedDark from './assets/favorites-unselected-dark.png'
 import frecencySelectedDark from './assets/frecency-selected-dark.png'
 import frecencyUnselectedDark from './assets/frecency-unselected-dark.png'
 
+// Reverse decisions to have the controls define their margin. This helps
+// fill the gap before we remove all margins from these types of controls.
+// Usually containers will want to define spacing based on specific UI needs.
+interface ControllableLayoutProps {
+  isLayoutControlled?: boolean
+}
 interface Props {
   textDirection: string
 }
@@ -42,7 +48,7 @@ const getTopSiteCustomizationImage = (dark: boolean, selected: boolean, favorite
 export const SettingsMenu = styled('div')<Props>`
   width: 720px;
   min-width: 720px;
-  ${p => p.textDirection && (p.textDirection === 'rtl') ? `left: 12px` : `right: 12px`};
+  ${p => p.textDirection && (p.textDirection === 'rtl') ? 'left: 12px' : 'right: 12px'};
   background-color: ${p => p.theme.color.contextMenuBackground};
   color:  ${p => p.theme.color.contextMenuForeground};
   border-radius: 8px;
@@ -89,7 +95,7 @@ export const SettingsSidebarActiveButtonSlider =
   transition-property: transform;
 `
 interface SettingsSidebarSVGContentProps {
-  src: string,
+  src: string
   isActive: boolean
 }
 
@@ -271,14 +277,14 @@ export const SettingsCloseIcon = styled('button')<{}>`
   }
 `
 
-interface SettingsRowProps {
+interface SettingsRowProps extends ControllableLayoutProps {
   isChildSetting?: boolean
   isInteractive?: boolean
 }
 
 export const SettingsRow = styled('div')<SettingsRowProps>`
   box-sizing: border-box;
-  margin-bottom: 10px;
+  margin-bottom: ${p => !p.isLayoutControlled && '10px'};
   display: grid;
   grid-template-columns: auto max-content;
   align-items: center;
@@ -318,8 +324,8 @@ export const SettingsText = styled('span')<{}>`
   font-family: ${p => p.theme.fontFamily.heading};
 `
 
-export const SettingsSectionTitle = styled('h3')`
-  margin: 0 0 8px 0;
+export const SettingsSectionTitle = styled('h3')<ControllableLayoutProps>`
+  margin: 0 0 ${p => p.isLayoutControlled ? '0' : '8px'} 0;
   font-weight: 800;
   font-size: 13px;
   line-height: 24px;
@@ -561,4 +567,62 @@ export const StyledTopSitesCustomizationOptionDesc = styled('div')<{}>`
   font-size: 11px;
   line-height: 17px;
   text-align: left;
+`
+
+export const StyledCustomBackgroundSettings = styled('div')<{}>`
+  --option-gap: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  gap: var(--option-gap)
+`
+
+export const StyledCustomBackgroundOption = styled('button')<{}>`
+  width: calc(50% - var(--option-gap) / 2);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  cursor: pointer;
+  border: unset;
+  outline: unset;
+  background: inherit;
+  gap: 8px;
+
+  &:focus-visible {
+    outline-style: solid;
+    outline-color: ${p => p.theme.color.brandBrave};
+    outline-width: 1px;
+  }
+`
+
+export const StyledUploadIconContainer = styled('div')<{}>`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 47px 40px 43px 40px;
+  align-items: center;
+  gap: 16px;
+  border: 2px solid #E9E9F4;
+  border-radius: 10.8718px;
+`
+
+export const StyledCustomBackgroundOptionImage = styled('img')<{}>`
+  width: 100%;
+  height: 160px;
+  border-radius: 10.8718px;
+`
+
+export const StyledUploadLabel = styled('div')<{}>`
+font-style: normal;
+font-weight: 400;
+font-size: 11px;
+line-height: 17px;
+`
+
+export const StyledCustomBackgroundOptionLabel = styled('div')<{}>`
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 20px;
 `

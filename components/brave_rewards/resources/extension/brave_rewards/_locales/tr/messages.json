@@ -1,661 +1,416 @@
 {
-  "braveRewards": {
-    "message": "Brave Ödülleri",
-    "description": "Title in welcome screen for the panel"
+  "summary": {
+    "message": "Özet",
+    "description": ""
   },
-  "welcomeButtonTextOne": {
-    "message": "Kazanmaya Başlayın!",
-    "description": "CTA on welcome screen in the panel, existing users"
+  "tip": {
+    "message": "Bahşiş",
+    "description": ""
   },
-  "welcomeButtonTextTwo": {
-    "message": "Ödül'e Katılın",
-    "description": "CTA on welcome screen in the panel, new users"
+  "unverifiedCreator": {
+    "message": "Doğrulanmamış Oluşturucu",
+    "description": ""
   },
-  "welcomeDescOne": {
-    "message": "Reklamları görüntüleyerek ödeme alın ve favori içerik oluşturucularınızı desteklemek için harcayın.",
-    "description": "Entry text for welcome screen in the panel, existing user"
+  "verifiedCreator": {
+    "message": "Doğrulanmış Oluşturucu",
+    "description": ""
   },
-  "welcomeDescTwo": {
-    "message": "Şimdi özel hayata saygı reklamlarını izleyerek jokerler kazanabilirsiniz.",
-    "description": "Entry text for welcome screen in the panel, new user"
+  "refreshStatus": {
+    "message": "Yenile",
+    "description": ""
   },
-  "welcomeDescPoints": {
-    "message": "Artık gizliliğe saygı duyan reklamları izleyerek puan kazanabilirsiniz.",
-    "description": "Entry text for welcome screen in the panel, points"
-  },
-  "welcomeFooterTextOne": {
-    "message": "Nelerin geliştirildiğini kontrol edin",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
-  },
-  "welcomeFooterTextTwo": {
-    "message": "Daha Fazla Bilgi Edinin",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
-  },
-  "welcomeHeaderOne": {
-    "message": "Brave Ödülleri'nde büyük bir geliştirme yaptık.",
-    "description": "Main header title for welcome screen in the panel, existing user"
-  },
-  "welcomeHeaderTwo": {
-    "message": "Yeni interneti tecrübe etmek için hazırlan.",
-    "description": "Main header title for welcome screen in the panel, new user"
-  },
-  "yourWallet": {
-    "message": "Cüzdanınız",
-    "description": "Title of wallet section where we display data about wallet"
-  },
-  "grants": {
-    "message": "Yardımlar",
-    "description": "Title for grant section in wallet summary"
-  },
-  "details": {
-    "message": "Detaylar",
-    "description": "Title for grant section in wallet panel summary"
-  },
-  "yourBalance": {
-    "message": "Bakiyeniz",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT Puanları",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "en sevdiğiniz içerik yaratıcılarına katkıda bulunmak için Brave Ödüller'de kullanılabilir. BAT Puanları, BAT almak için kullanılamaz.",
-    "description": "Text for BAT Point helper message"
-  },
-  "on": {
-    "message": "Açık",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "verifiedPublisher": {
-    "message": "Brave Onaylı Oluşturucu",
-    "description": "Tells user that this particular publisher is a Brave Verified Creator"
-  },
-  "rewardsContributeAttentionScore": {
-    "message": "Dikkat",
-    "description": "Label for auto contribute table attention for the publisher"
-  },
-  "donateMonthly": {
-    "message": "Aylık Katkı",
-    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
-  },
-  "includeInAuto": {
-    "message": "Otomatik-Katkıya Dahil",
-    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
-  },
-  "donateNow": {
-    "message": "Bir bahşiş gönder...",
-    "description": "CTA for sending tip form site banner"
-  },
-  "enableTips": {
-    "message": "Bahşişleri Etkinleştir",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "for": {
-    "message": "için",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "rewardsSummary": {
-    "message": "Ödüller Özeti",
-    "description": "Section title in wallet panel, which contains monthly rewards summary"
-  },
-  "monthApr": {
-    "message": "Nisan",
-    "description": "Month"
-  },
-  "monthAug": {
-    "message": "Ağustos",
-    "description": "Month"
-  },
-  "monthDec": {
-    "message": "Aralık",
-    "description": "Month"
-  },
-  "monthFeb": {
-    "message": "Şubat",
-    "description": "Month"
-  },
-  "monthJan": {
-    "message": "Ocak",
-    "description": "Month"
-  },
-  "monthJul": {
-    "message": "Temmuz",
-    "description": "Month"
-  },
-  "monthJun": {
-    "message": "Haziran",
-    "description": "Month"
-  },
-  "monthMar": {
-    "message": "Mart",
-    "description": "Month"
-  },
-  "monthMay": {
-    "message": "Mayıs",
-    "description": "Month"
-  },
-  "monthNov": {
-    "message": "Kasım",
-    "description": "Month"
-  },
-  "monthOct": {
-    "message": "Ekim",
-    "description": "Month"
-  },
-  "monthSep": {
-    "message": "Eylül",
-    "description": "Month"
-  },
-  "tokenGrant": {
-    "message": "$currency$ Bağışları",
-    "description": "Title for grant notification",
+  "pendingTipText": {
+    "message": "Verdiğiniz her bahşiş beklemede kalır ve 90 gün boyunca otomatik olarak tekrar denenir. $link_begin$Daha fazla bilgi edinin$link_end$",
+    "description": "",
     "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "Token"
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
       }
     }
   },
-  "tokenGrantClaimed": {
-    "message": "Token Bağışları Talep Edildi",
-    "description": "Title for grant section in wallet summary"
+  "pendingTipTitle": {
+    "message": "Bu oluşturucu henüz kaydolmamış.",
+    "description": ""
   },
-  "pointGrantClaimed": {
-    "message": "Puan Bağışları Talep Edildi",
-    "description": "Title for point grant section in wallet summary"
+  "pendingTipTitleRegistered": {
+    "message": "Bu içerik oluşturucusu henüz Ödüller korumalı cüzdan hizmetinizden bahşiş alabilmek üzere yapılandırılmamış.",
+    "description": ""
   },
-  "earningsAds": {
-    "message": "Reklam Kazançları",
-    "description": "Title for ads section in wallet summary"
+  "platformPublisherTitle": {
+    "message": "$platform$ üzerinde $name$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "platform": {
+        "content": "$2"
+      }
+    }
   },
-  "rewardsContribute": {
-    "message": "Otomatik-Katkı",
-    "description": "Title for auto contribute section in wallet summary"
+  "attention": {
+    "message": "Dikkat",
+    "description": ""
   },
-  "oneTimeDonation": {
-    "message": "Tek-Seferlik Bahşiş",
-    "description": "Title for one time tips section in wallet summary"
+  "sendTip": {
+    "message": "Bahşiş Gönder",
+    "description": ""
   },
-  "expiresOn": {
-    "message": "sona eriyor",
-    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
+  "includeInAutoContribute": {
+    "message": "Otomatik-Katkıya Dahil",
+    "description": ""
   },
-  "recurringDonations": {
-    "message": "Aylık Katkılar",
-    "description": "Title for monthly contributions section in wallet summary"
-  },
-  "off": {
-    "message": "Kapalı",
-    "description": "Label used in toggle indicating that toggle is off"
+  "monthlyTip": {
+    "message": "Aylık Bahşiş",
+    "description": ""
   },
   "ok": {
-    "message": "tamam",
-    "description": "Used in notification to dismiss notification"
-  },
-  "braveAdsLaunchMsg": {
-    "message": "Artık reklam görüntüleyerek kazanabilirsiniz.",
-    "description": "Message for ads launch notification"
-  },
-  "braveAdsTitle": {
-    "message": "Brave Reklamları",
-    "description": "Notification title when we display info about ads"
-  },
-  "braveContributeTitle": {
-    "message": "Otomatik-Katkı",
-    "description": "Notification title when we display info about auto contribution"
-  },
-  "contributeNotificationSuccess": {
-    "message": "$amount$ $currency$ katkıda bulundunuz",
-    "description": "We show this string in the notification when contribution is successful",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10.0"
-      },
-      "currency": {
-        "content": "$2",
-        "example": "BAT"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "Sizin için bekleyen bir yardım var.",
-    "description": "Description for new grant notification"
-  },
-  "backupNow": {
-    "message": "Şimdi Yedekle",
-    "description": "Notification button text when we ask user to backup wallet"
-  },
-  "backupWalletTitle": {
-    "message": "Cüzdanı Yedekle",
-    "description": "Notification title when we ask user to backup wallet"
-  },
-  "backupWalletNotification": {
-    "message": "Lütfen Brave cüzdanınızı yedekleyin.",
-    "description": "Description for backup wallet notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Daha Fazla Bilgi Edinin",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Cihaz Limitine Erişildi",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Cüzdanınız doğrulanamaz çünkü en fazla doğrulanmış cihaz limitine ulaştınız.",
-    "description": "Description for device limit reached notification"
-  },
-  "insufficientFundsNotification": {
-    "message": "Brave Ödülleri hesabınız para yatırmayı bekliyor.",
-    "description": "Description for new insufficient funds notification"
-  },
-  "insufficientFunds": {
-    "message": "Yetersiz Bakiye",
-    "description": "Title for insufficient funds notification"
-  },
-  "braveRewardsCreatingText": {
-    "message": "Cüzdan oluşturmak",
-    "description": "Used in a button displaying wallet creation process"
-  },
-  "contributeNotificationError": {
-    "message": "Katkınızın işleme sokulması esnasında bir sorunla karşılaşıldı.",
-    "description": "We show this string in notification when contribution fails"
-  },
-  "contributeNotificationNotEnoughFunds": {
-    "message": "Auto-Contribute ve aylık bağışlar için planlı aylık ödemeniz, yetersiz para nedeniyle tamamlanamadı. 30 gün içinde tekrar deneyeceğiz. ",
-    "description": "We show this string in the notification when you don't have enough funds for contribution"
-  },
-  "contributeNotificationTipError": {
-    "message": "Bahşişiniz gönderilemedi. Lütfen daha sonra tekrar deneyin.",
-    "description": "We show this string in notification when tip fails"
-  },
-  "noActivity": {
-    "message": "Henüz aktivite yok...",
-    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
-  },
-  "captchaDrag": {
-    "message": "BAT İkonunu şunun üzerine sürükleyin:",
-    "description": "Directs the user to drag the BAT icon"
-  },
-  "captchaProveHuman": {
-    "message": "İnsan olduğunuzu ispatlayın!",
-    "description": "Cosmetic text for captcha prompt"
-  },
-  "captchaTarget": {
-    "message": "hedef. ",
-    "description": "Captcha Target"
-  },
-  "captchaMissedTarget": {
-    "message": "Hmm... Pek Sayılmaz. Tekrar Deneyin. ",
-    "description": "Message upon failing captcha"
-  },
-  "claim": {
-    "message": "Talep et",
-    "description": "Claim text"
-  },
-  "newTokenGrant": {
-    "message": "Ücretsiz Token Bağışı",
-    "description": "Token grant label"
-  },
-  "grantExpire": {
-    "message": "Bağış Bitiş Tarihi",
-    "description": "Grant expiry label"
-  },
-  "grantGeneralErrorButton": {
     "message": "Tamam",
-    "description": "Button text for clearing the error."
-  },
-  "grantGeneralErrorText": {
-    "message": "Brave Rewards bir sorun yaşıyor. Lütfen daha sonra tekrar deneyiniz.",
-    "description": "Error text when user is having problems claiming a grant."
-  },
-  "grantGeneralErrorTitle": {
-    "message": "Eyvah, bir şeyler yanlış. Lütfen daha sonra tekrar deneyin.",
-    "description": "Error title when user is having problems claiming a grant."
-  },
-  "unVerifiedCheck": {
-    "message": "Durumu Yenile",
-    "description": "Text of link that allows to check verified status of unverified publisher"
-  },
-  "unVerifiedPublisher": {
-    "message": "Henüz doğrulanmadı",
-    "description": "Status of the publisher shown in the panel"
-  },
-  "unVerifiedText": {
-    "message": "Bu içerik oluşturucusu henüz Brave kullanıcılarının katkılarını almak için kaydolmadı. Gönderdiğiniz bütün bahşişler, onlar doğrulayana kadar cüzdanınızda kalacaktır. ",
-    "description": "Notice about unverified publisher."
-  },
-  "unVerifiedTextMore": {
-    "message": "Learn more.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "reservedAmountText": {
-    "message": "Katkı payı almak için henüz kaydolmamış içerik oluşturucular için size {{reservedAmount}} {{currency}} atandı. Tarayıcınız, onlar doğrulayana veya 90 gün geçene kadar katkıda bulunmayı denemeye devam edecektir.",
-    "description": "Notification about how much BAT do you have reserved"
-  },
-  "reservedMoreLink": {
-    "message": "Learn more.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "disabledPanelOff": {
-    "message": "Kapalı",
-    "description": "Off state text for Panel's disabled state"
-  },
-  "disabledPanelSettings": {
-    "message": "Ayarlar. ",
-    "description": "Settings Link for Panel's disabled state"
-  },
-  "disabledPanelText": {
-    "message": "Mevcut durumda gezinirken herhangi bir Rewards avantajı biriktirmiyorsunuz. Rewards'u tekrar etkinleştirin",
-    "description": "Text for Panel's disabled state"
-  },
-  "disabledPanelTitle": {
-    "message": "Brave Rewards",
-    "description": "Title for Panel's disabled state"
-  },
-  "walletFailedTitle": {
-    "message": "Cüzdan oluşturma başarısız",
-    "description": "Failure title for wallet creation"
-  },
-  "walletFailedButton": {
-    "message": "Yeniden dene",
-    "description": "Button for re-try after wallet creation failed"
-  },
-  "addFunds": {
-    "message": "Para ekle",
-    "description": "Button for adding funds"
-  },
-  "rewardsSettings": {
-    "message": "Ödül Ayarları",
-    "description": "Button for opening settings page"
-  },
-  "earningsClaimDefault": {
-    "message": "Reklamlardan gelen ödülleriniz burada!",
-    "description": "Panel notification text for Ads grant"
-  },
-  "and": {
-    "message": "ve",
-    "description": "The word 'and'"
-  },
-  "braveRewardsSubTitle": {
-    "message": "İnternette gezinerek ödül kazanın!",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "disabledPanelTextTwo": {
-    "message": "Gizliliğe saygı duyan reklamları görüntüleyerek para kazanın ve sevdiğiniz içerik oluşturucuları desteklemek için bir iyilik yapın.",
-    "description": "Text block for wallet disabled panel"
-  },
-  "enableRewards": {
-    "message": "Brave Ödülleri'ni Etkinleştir",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "privacyPolicy": {
-    "message": "Gizlilik Şartları",
-    "description": "Privacy Policy"
-  },
-  "serviceText": {
-    "message": "'Brave Ödüllerini Etkinleştir'i tıklayarak, şunu okuduğunuzu ve kabul ettiğinizi bildirirsiniz: ",
-    "description": "Terms of service main text"
-  },
-  "termsOfService": {
-    "message": "Kullanım Şartları",
-    "description": "Terms of Service"
-  },
-  "welcomeBack": {
-    "message": "Welcome Back!",
-    "description": "Title message for wallet disabled panel"
-  },
-  "tipsProcessedNotification": {
-    "message": "Aylık bağışlarınız işlendi!",
-    "description": "Message for monthly contributions processed notification"
-  },
-  "contributionTips": {
-    "message": "Katkılar & Bahşişler",
-    "description": "Title for monthly contributions processed notification"
-  },
-  "serviceTextPanelWelcome": {
-    "message": "'Ödüllere Katıl'a tıklayarak, şunu okuduğunu ve kabul ettiğini belirtiyorsun:",
-    "description": "Terms of service panel opt-in text"
-  },
-  "bat": {
-    "message": "BAT",
-    "description": "BAT text for displaying converted tip amount."
-  },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
-  "turnOnAds": {
-    "message": "Reklamları Etkinleştir",
-    "description": "Prompt to turn on Ads via notification"
-  },
-  "adsEarnings": {
-    "message": "reklamlardan kazanıldı",
-    "description": "Description text for ad grants in grant details"
-  },
-  "twitterTipsHoverText": {
-    "message": "Bu tweete bahşiş ver",
-    "description": "Hover text for Twitter tips action"
-  },
-  "twitterTipsIconLabel": {
-    "message": "Bahşiş",
-    "description": "Icon label for Twitter tips"
-  },
-  "redditTipsHoverText": {
-    "message": "Bu gönderi için bahşiş bırak",
-    "description": "Hover text for Reddit tips action"
-  },
-  "redditTipsIconLabel": {
-    "message": "Bahşiş",
-    "description": "Icon label for Reddit tips"
-  },
-  "githubTipsHoverText": {
-    "message": "Bir bahşiş gönder",
-    "description": "Hover text for GitHub tips action"
-  },
-  "githubTipsIconLabel": {
-    "message": "Bahşiş",
-    "description": "Icon label for GitHub tips"
-  },
-  "verifiedPublisherNotification": {
-    "message": "$name$ isimli oluşturucu kısa süre önce onaylandı",
-    "description": "Notification text that tells user which publisher just verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "brave.com"
-      }
-    }
-  },
-  "pendingNotEnoughFundsNotification": {
-    "message": "Yetersiz fon nedeniyle bekleyen bahşişleriniz var",
-    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
-  },
-  "pendingContributionTitle": {
-    "message": "Beklenen Katkı",
-    "description": "Notification title for pending contribution type"
-  },
-  "grantFinishTitleUGP": {
-    "message": "Bugün senin şanslı günün!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "grantFinishTextUGP": {
-    "message": "$currency$ bağışınız ulaşmak üzere.",
-    "description": "Cosmetic text indicating grant funds are on the way",
-    "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "token"
-      }
-    }
-  },
-  "grantFinishTokenTitleUGP": {
-    "message": "Ücretsiz Token Bağışı",
-    "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Ücretsiz Puan Bağışı",
-    "description": "Point title on success screen"
-  },
-  "grantFinishTitleAds": {
-    "message": "Bir Reklam Ödülü kazandınız!",
-    "description": "Cosmetic text upon captcha success for ads"
-  },
-  "grantFinishTextAds": {
-    "message": "Ödülünüz, Brave Ödülleri cüzdanınıza geliyor.",
-    "description": "Cosmetic text indicating ads funds are on the way"
-  },
-  "grantFinishTokenTitleAds": {
-    "message": "Ödül Tutarınız",
-    "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "doğrula",
-    "description": "CTA in the footer to verify"
-  },
-  "walletButtonDisconnected":  {
-    "message": "Bağlantı kesildi",
-    "description": "CTA status button"
-  },
-  "walletButtonUnverified":  {
-    "message": "Cüzdanı Doğrula",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletButtonVerified":  {
-    "message": "Cüzdan Onaylandı",
-    "description": "Displayed in wallet that tells users that he is verified"
-  },
-  "walletGoToProvider":  {
-    "message": "$provider$ hesabıma git",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnect":  {
-    "message": "Brave Ödüllerden Ayrıl",
-    "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerified":  {
-    "message": "Doğrulandı",
-    "description": "Status button that tells user that he is verified"
-  },
-  "walletVerifiedNotification":  {
-    "message": "Cüzdanınız doğrulandı!",
-    "description": "Title for notification when wallet becomes verified"
-  },
-  "walletVerifiedTextNotification":  {
-    "message": "Tebrikler! $name$ cüzdanınız başarılı şekilde doğrulandı ve para yatırma ve çekmeye hazır.",
-    "description": "Title for notification when wallet becomes verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnectedNotification":  {
-    "message": "Ah ah. Cüzdanınıza erişilemiyor.",
-    "description": "Title for notification when wallet is disconnected."
-  },
-  "walletDisconnectedTextNotification":  {
-    "message": "Merak etmeyin. Bu durum çeşitli güvenlik gerekçeleriyle gerçekleşebilir. Cüzdanınızı yeniden bağlamak sorunu çözecektir.",
-    "description": "Title for notification when wallet is disconnected"
-  },
-  "connectedText":  {
-    "message": "Bu Brave Doğrulanmış Oluşturucusu, henüz hesabını Brave Kullanıcılarından katkılar alacak biçimde yapılandırmadı. Gönderdiğiniz tüm bahşişler, bu kişi bu işlemi tamamlayana kadar cüzdanınızda kalır.",
-    "description": "Text shown for connected publishers that are not fully verified in the panel"
-  },
-  "walletGoToVerifyPage":  {
-    "message": "Tam cüzdan onayı",
-    "description": "CTA for completing wallet verification"
+    "description": ""
   },
   "set": {
-    "message": "Ayarla...",
-    "description": "Button text for setting monthly contribution"
+    "message": "Ayarla",
+    "description": ""
   },
-  "tokens":  {
-    "message": "tokenler",
-    "description": "Standard tokens text"
+  "changeAmount": {
+    "message": "Miktarı değiştirin",
+    "description": ""
   },
-  "point":  {
-    "message": "Puan",
-    "description": "BAT Point text"
+  "cancel": {
+    "message": "İptal et",
+    "description": ""
   },
-  "token":  {
-    "message": "Token",
-    "description": "BAT Token text"
+  "grantCaptchaTitle": {
+    "message": "Bir insan olduğunuzu onaylayın",
+    "description": ""
   },
-  "points":  {
-    "message": "puanlar",
-    "description": "BAT Points text"
+  "grantCaptchaFailedTitle": {
+    "message": "Hmm... Pek Sayılmaz. Tekrar Deneyin. ",
+    "description": ""
   },
-  "tokenGrants":  {
-    "message": "Token Bağışları",
-    "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Puan Bağışları",
-    "description": "BAT Points Grant Text"
-  },
-  "greetingsVerified":  {
-    "message": "Merhaba, $name$!",
-    "description": "Greetings for external wallet popup",
+  "grantCaptchaHint": {
+    "message": "BAT simgesini $hint$ hedefine sürükleyin.",
+    "description": "",
     "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "John"
+      "hint": {
+        "content": "$1"
       }
     }
   },
-  "cancel":  {
-    "message": "İptal et",
-    "description": "Text for cancel button"
+  "grantCaptchaPassedTitleUGP": {
+    "message": "Bugün senin şanslı günün!",
+    "description": ""
   },
-  "changeAmount":  {
-    "message": "Miktarı değiştirin",
-    "description": "Button text for changing monthly contribution amount"
+  "grantCaptchaPassedTextUGP": {
+    "message": "Token bağışınız yolda.",
+    "description": ""
   },
-  "login":  {
-    "message": "Oturum Aç",
-    "description": "Text for login button"
+  "grantCaptchaAmountUGP": {
+    "message": "Ücretsiz Token Bağışı",
+    "description": ""
   },
-  "loginMessageTitle":  {
-    "message": "Cüzdanın onaylanması, paranızı daha etkili bir biçimde yönetmenize imkan verir.",
-    "description": "Text for login button"
+  "grantCaptchaPassedTitleAds": {
+    "message": "Bir Reklam Ödülü kazandınız!",
+    "description": ""
   },
-  "loginMessageText":  {
-    "message": "Bir Uphold hesabı oluşturmak için en az $amount$ BAT sahibi olmanız gereklidir. Doğrulanmış bir Uphold hesabınız varsa oturum açın.",
-    "description": "Text for login button",
+  "grantCaptchaPassedTextAds": {
+    "message": "Ödülünüz yolda.",
+    "description": ""
+  },
+  "grantCaptchaAmountAds": {
+    "message": "Ödül Tutarınız",
+    "description": ""
+  },
+  "grantCaptchaExpiration": {
+    "message": "Bağış Bitiş Tarihi",
+    "description": ""
+  },
+  "grantCaptchaErrorTitle": {
+    "message": "Eyvah, bir şeyler yanlış. Lütfen daha sonra tekrar deneyin.",
+    "description": ""
+  },
+  "grantCaptchaErrorText": {
+    "message": "Brave Rewards bir sorun yaşıyor. Lütfen daha sonra tekrar deneyiniz.",
+    "description": ""
+  },
+  "rewardsPaymentCheckStatus": {
+    "message": "Durumu kontrol edin",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Tebrikler! $month$ ödülleriniz geldi!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "$amount$ tutarlı $month$ ödülleriniz $days$ içerisinde gelecek",
+    "description": "",
     "placeholders": {
       "amount": {
-        "content": "$1",
-        "example": "15"
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
       }
     }
   },
-  "walletConnected":  {
-    "message": "Bağlı",
-    "description": "Status button that tells user that he is connected"
+  "rewardsPaymentProcessing": {
+    "message": "$amount$ tutarlı $month$ ödülleriniz yolda. Gözünüz cüzdanınızda olsun!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
   },
-  "walletPending":  {
-    "message": "Beklemede",
-    "description": "Status button that tells user that he is currently pending"
-  },
-  "walletVerificationNote3":  {
-    "message": "Not: Yetkilendirdiğinizde işlemleriniz  $provider$ için görülebilir olacak; örneğin, alıcıyı ve bahşişlerinizin miktarını görebilecek.",
-    "description": "Displayed in login modal for external wallet providers",
+  "walletAccountLink": {
+    "message": "$provider$ hesabıma git",
+    "description": "",
     "placeholders": {
       "provider": {
-        "content": "$1",
-        "example": "Uphold"
+        "content": "$1"
       }
     }
+  },
+  "walletAddFunds": {
+    "message": "Sermaye Ekle",
+    "description": ""
+  },
+  "walletAutoContribute": {
+    "message": "Otomatik-Katkı",
+    "description": ""
+  },
+  "walletCompleteVerificationLink": {
+    "message": "Doğrulamayı tamamlamak için $provider$ kısmına gidin",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Ödül almaya başlamak için lütfen kimlik doğrulamasını tamamlayın.",
+    "description": ""
+  },
+  "walletDisconnected": {
+    "message": "Oturum kapatıldı",
+    "description": ""
+  },
+  "walletDisconnectLink": {
+    "message": "$provider$ bağlantısını kes",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletEstimatedEarnings": {
+    "message": "Tahmini Kazanç",
+    "description": ""
+  },
+  "walletLogIntoYourAccount": {
+    "message": "$provider$ hesabınızda oturum açın",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletMonthlyTips": {
+    "message": "Aylık Bahşişler",
+    "description": ""
+  },
+  "walletOneTimeTips": {
+    "message": "Tek-Seferlik Bahşiş",
+    "description": ""
+  },
+  "walletPending": {
+    "message": "Beklemede",
+    "description": ""
+  },
+  "walletRewardsFromAds": {
+    "message": "Ads Ödülleri",
+    "description": ""
+  },
+  "walletRewardsSummary": {
+    "message": "Ödüller Özeti",
+    "description": ""
+  },
+  "walletUnverified": {
+    "message": "Doğrulanmamış",
+    "description": ""
+  },
+  "walletVerified": {
+    "message": "Doğrulandı",
+    "description": ""
+  },
+  "walletYourBalance": {
+    "message": "Bakiyeniz",
+    "description": ""
+  },
+  "notificationAddFunds": {
+    "message": "Sermaye Ekle",
+    "description": ""
+  },
+  "notificationReconnect": {
+    "message": "Tekrar bağlan",
+    "description": ""
+  },
+  "notificationClaimRewards": {
+    "message": "Ödülleri Al",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Tokenleri Al",
+    "description": ""
+  },
+  "notificationAddFundsTitle": {
+    "message": "Yetersiz Bakiye",
+    "description": ""
+  },
+  "notificationAddFundsText": {
+    "message": "Brave Ödülleri hesabınız para yatırmayı bekliyor.",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedTitle": {
+    "message": "Otomatik-Katkı",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedText": {
+    "message": "$amount$ katkıda bulundunuz.",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationBackupWalletTitle": {
+    "message": "Brave Ödülllerini Yedekle",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Lütfen Brave Ödüllerinizi yedekleyin.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Şimdi yedekleyin",
+    "description": ""
+  },
+  "notificationWalletDisconnectedTitle": {
+    "message": "Oturumunuz kapatıldı",
+    "description": ""
+  },
+  "notificationWalletDisconnectedText": {
+    "message": "Bu hesabınızı güvende tutmak için gerçekleşebilir. Hemen tekrar bağlanmak için aşağıya tıklayın.",
+    "description": ""
+  },
+  "notificationWalletDisconnectedAction": {
+    "message": "Tekrar bağlan",
+    "description": ""
+  },
+  "notificationWalletVerifiedTitle": {
+    "message": "Brave Ödülleriniz doğrulandı!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Brave Ödülleriniz $provider$ ile başarıyla doğrulandı.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationTokenGrantTitle": {
+    "message": "Bir token yardımı kullanılabilir!",
+    "description": ""
+  },
+  "notificationAdGrantAmount": {
+    "message": "$month$ Ayı Ödülleri: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
+  },
+  "notificationAdGrantTitle": {
+    "message": "$month$ ayı Reklam Ödülleriniz burada!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationGrantDaysRemaining": {
+    "message": "Almak için $days$ süreniz kaldı",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationInsufficientFundsText": {
+    "message": "Planlanmış aylık Otomatik-Katkı ve aylık bahşiş ödemeniz, yetersiz bakiye sebebiyle gerçekleştirilememiştir. 30 gün içinde tekrar deneyeceğiz.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedText": {
+    "message": "Katkınızın işleme sokulması esnasında bir sorunla karşılaşıldı.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Aylık bahşiş başarısız oldu",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedTitle": {
+    "message": "Katkılar ve bahşişler",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedText": {
+    "message": "Aylık bahşişleriniz işlendi.",
+    "description": ""
+  },
+  "notificationPublisherVerifiedTitle": {
+    "message": "Katkı bekleniyor",
+    "description": ""
+  },
+  "notificationPublisherVerifiedText": {
+    "message": "Oluşturucu $publisher_name$ öğesi yakın zamanda doğrulandı.",
+    "description": "",
+    "placeholders": {
+      "publisher_name": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationPendingTipFailedTitle": {
+    "message": "Yetersiz kaynak",
+    "description": ""
+  },
+  "notificationPendingTipFailedText": {
+    "message": "Yetersiz fon nedeniyle bekleyen bahşişleriniz var",
+    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "Jeton Kazanın ve Geri Verin",
@@ -796,11 +551,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Cüzdanınızı doğrulayın",
+    "message": "Doğrula",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Reklam görüntüleyerek kazandığınız tokenleri çekmek için cüzdanınızı doğrulamanız gerekecektir.",
+    "message": "Reklam görüntüleyerek kazandığınız BAT'yi çekmek için Brave Ödüllerini doğrulamanız gerekecektir.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -808,7 +563,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Cüzdanımı doğrula",
+    "message": "Brave Ödüllerini Doğrula",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -816,7 +571,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Cüzdanınızı doğrulayarak ve bir bitFlyer hesabına bağlayarak, Brave Rewards aracılığıyla kazandığınız tokenleri daha kolay depolayabilecek ve yönetebileceksiniz",
+    "message": "Brave Ödüllerinizi doğrulayarak ve bir bitFlyer hesabına bağlayarak, Brave Ödülleri aracılığıyla kazandığınız tokenleri daha kolay depolayabilecek ve yönetebileceksiniz",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {
@@ -831,16 +586,90 @@
       }
     }
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Ödülleri Japonya'da yeni bir sisteme geçiyor!",
-    "description": "Header text for BAP deprecation warning message"
+  "captchaMaxAttemptsExceededText": {
+    "message": "Bu çalışmıyor gibi görünüyor. Brave reklamları duraklatılmış kalmaya devam edecektir. Captcha için yardıma ihtiyacınız olursa bize ulaşın.",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Daha fazla bilgi edinin",
-    "description": "Link to learn more about BAP deprecation"
+  "captchaMaxAttemptsExceededTitle": {
+    "message": "Maksimum deneme aşıldı",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Lütfen BAPınızı 13 Marta kadar kullanın. Sonrasında BAP sonlandırılacak.",
-    "description": "Text for BAP deprecation popup"
+  "captchaSolvedTitle": {
+    "message": "Çözüldü!",
+    "description": ""
+  },
+  "captchaSolvedText": {
+    "message": "Reklamlar ve kazançlar artık devam edecektir. Brave Ödüllerini ve gizlilik tabanlı reklamları korumamıza yardımcı olduğunuz için teşekkür ederiz.",
+    "description": ""
+  },
+  "captchaContactSupport": {
+    "message": "Destek birimine ulaşın",
+    "description": ""
+  },
+  "captchaDismiss": {
+    "message": "Dismiss",
+    "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Ücretsiz bir arama başlatmak için, Brave Ödülleri'ni açın",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Brave Ödülleri sayesinde, özel reklamları görüntülemek karşılığında (verileriniz güvende tutularak) token kazanırsınız. Bu token'ları ister nakit paraya, ister hediye kartına, hatta isterseniz sevdiğiniz internet siteleri için bahşişe dönüştürebilirsiniz. İzleme yok. Yavaşlama yok.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Rewards'ı Etkinleştir",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Etkinleştirerek, $tos_link_begin$Hizmet Koşullarını$tos_link_end$ ve $pp_link_begin$Gizlilik İlkesini$pp_link_end$ kabul etmiş sayılırsınız.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Ücretsiz bir arama başlatmak için, Brave Özel Reklamlar'ı etkinleştirin",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Brave Özel Reklamlar sayesinde, özel reklamları görüntülemek karşılığında (verileriniz güvende tutularak) token kazanırsınız. Bu token'ları ister nakit paraya, ister hediye kartına, hatta isterseniz sevdiğiniz internet siteleri için bahşişe dönüştürebilirsiniz. İzleme yok. Yavaşlama yok.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Brave Özel Reklamlar'ı Aç",
+    "description": ""
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Şimdi ücretsiz bir arama başlatabilirsiniz",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Brave Sohbet'e devam etmek için ekranın herhangi bir yerine dokunun veya tıklayın.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Brave Ödülleri hakkında daha fazla bilgi edinmek mi istiyorsunuz? $tour_link_begin$Hızlandırılmış tura katılın$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

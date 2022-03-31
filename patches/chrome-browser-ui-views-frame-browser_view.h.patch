@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.h b/chrome/browser/ui/views/frame/browser_view.h
-index 59ddc0ac10f942dd60a71f5d99cf7a024ddf4e9e..51110e5f3b48fa2a55046a236dd82ddf7c3e6ab8 100644
+index a8abae057e699622f51c019387772f8a46ba975e..feaa49df0f5f6aed646b638da6918f68764e09f8 100644
 --- a/chrome/browser/ui/views/frame/browser_view.h
 +++ b/chrome/browser/ui/views/frame/browser_view.h
-@@ -624,6 +624,7 @@ class BrowserView : public BrowserWindow,
-     return accessibility_focus_highlight_.get();
-   }
+@@ -723,6 +723,7 @@ class BrowserView : public BrowserWindow,
+       const std::map<std::string, std::string>& extra_data) override;
+ #endif
  
 +  BRAVE_BROWSER_VIEW_H
   private:

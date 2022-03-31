@@ -11,8 +11,8 @@
 #include "base/command_line.h"
 #include "base/location.h"
 #include "base/memory/ref_counted.h"
-#include "base/single_thread_task_runner.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/threading/thread.h"
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/utility/importer/brave_external_process_importer_bridge.h"
@@ -73,7 +73,7 @@ void BraveProfileImportImpl::StartImport(
 
   // Create worker thread in which importer runs.
   import_thread_.reset(new base::Thread("import_thread"));
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   import_thread_->init_com_with_mta(false);
 #endif
   if (!import_thread_->Start()) {

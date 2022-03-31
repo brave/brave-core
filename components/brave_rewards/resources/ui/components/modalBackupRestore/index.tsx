@@ -3,6 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+
+import { formatMessage } from '../../../shared/lib/locale_context'
 import {
   StyledContent,
   StyledImport,
@@ -29,7 +31,6 @@ export interface Props {
   backupKey: string
   activeTabId: number
   showBackupNotice: boolean
-  walletProvider: string
   onTabChange: (newTabId: number) => void
   onClose: () => void
   onCopy?: (key: string) => void
@@ -37,6 +38,7 @@ export interface Props {
   onSaveFile?: (key: string) => void
   onRestore: (key: string) => void
   onVerify?: () => void
+  onShowQRCode: () => void
   error?: React.ReactNode
   id?: string
   testId?: string
@@ -55,7 +57,6 @@ interface State {
   - add error flow
  */
 export default class ModalBackupRestore extends React.PureComponent<Props, State> {
-
   constructor (props: Props) {
     super(props)
     this.state = {
@@ -115,8 +116,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
       onCopy,
       onPrint,
       onSaveFile,
-      onVerify,
-      walletProvider
+      onVerify
     } = this.props
 
     return (
@@ -176,10 +176,17 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
           {getLocale('rewardsBackupText4')}
         </StyledContent>
         <StyledContent>
-            {getLocale('rewardsBackupText5')}
-          <StyledLink onClick={onVerify}>
-            {getLocale('rewardsBackupText6').replace('$1', walletProvider)}
-          </StyledLink>
+          {
+            formatMessage(getLocale('rewardsBackupNoticeText2'), {
+              tags: {
+                $1: (content) => (
+                  <StyledLink key='link' onClick={onVerify}>
+                    {content}
+                  </StyledLink>
+                )
+              }
+            })
+          }
         </StyledContent>
         <StyledDoneWrapper>
           <Button
@@ -196,8 +203,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
   getBackupNotice = () => {
     const {
       onClose,
-      onVerify,
-      walletProvider
+      onVerify
     } = this.props
 
     return (
@@ -206,10 +212,17 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
           {getLocale('rewardsBackupNoticeText1')}
         </StyledContent>
         <StyledContent>
-          {getLocale('rewardsBackupNoticeText2')}
-          <StyledLink onClick={onVerify} id={'backup-verify-link'}>
-            {getLocale('rewardsBackupNoticeText3').replace('$1', walletProvider)}
-          </StyledLink>
+          {
+            formatMessage(getLocale('rewardsBackupNoticeText2'), {
+              tags: {
+                $1: (content) => (
+                  <StyledLink key='link' onClick={onVerify} id={'backup-verify-link'}>
+                    {content}
+                  </StyledLink>
+                )
+              }
+            })
+          }
         </StyledContent>
         <StyledDoneWrapper>
           <Button
@@ -232,7 +245,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
   }
 
   getRestore = () => {
-    const { error, onClose, funds } = this.props
+    const { error, onShowQRCode, onClose, funds } = this.props
     const errorShown = error && this.state.errorShown
 
     return (
@@ -285,6 +298,13 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
             {getLocale('rewardsRestoreText3')}
           </StyledText>
         </StyledTextWrapper>
+        <StyledTextWrapper>
+          <StyledText>
+            <StyledLink onClick={onShowQRCode}>
+              {getLocale('rewardsViewQRCodeText1')}
+            </StyledLink> {getLocale('rewardsViewQRCodeText2')}
+          </StyledText>
+        </StyledTextWrapper>
         <StyledActionsWrapper>
           <ActionButton
             level={'secondary'}
@@ -307,28 +327,40 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
 
   confirmSelection = () => {
     const confirmed = confirm(getLocale('rewardsResetConfirmation'))
-    if (confirmed === true) {
+    if (confirmed) {
       this.props.onReset()
     }
   }
 
   getReset = () => {
-    const parts = getLocale('rewardsResetTextFunds').split(/\$\d/g)
+    const getText = () => {
+      if (this.props.internalFunds <= 0) {
+        return getLocale('rewardsResetTextNoFunds')
+      }
+
+      return formatMessage(getLocale('rewardsResetTextFunds'), {
+        placeholders: {
+          $1: (
+            <b key='amount'>
+              {this.props.internalFunds.toString()} BAT
+            </b>
+          )
+        },
+        tags: {
+          $2: (content) => (
+            <StyledLink key='link' onClick={this.props.onVerify}>
+              {content}
+            </StyledLink>
+          )
+        }
+      })
+    }
+
     return (
       <>
         <StyledTextWrapper>
           <StyledText data-test-id={'reset-text'}>
-            {
-              this.props.internalFunds > 0
-              ? <span>
-                {parts[0]}
-                <b>{this.props.internalFunds.toString()} BAT</b>
-                {parts[1]}
-                {this.props.walletProvider}
-                {parts[2]}
-              </span>
-              : getLocale('rewardsResetTextNoFunds')
-            }
+            {getText()}
           </StyledText>
         </StyledTextWrapper>
         <StyledActionsWrapper>

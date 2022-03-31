@@ -6,6 +6,11 @@
 #include "brave/components/speedreader/speedreader_util.h"
 
 #include "base/strings/string_util.h"
+#include "components/content_settings/core/browser/content_settings_utils.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "url/gurl.h"
 
 namespace speedreader {
@@ -15,7 +20,10 @@ namespace {
 // Regex pattern for paths like /blog/, /article/, /post/, hinting the page
 // is a blog entry, magazine entry, or news article.
 constexpr char kReadablePathSingleComponentHints[] =
-    "(?i)/(blogs?|news|story|entry|articles?|posts?|amp)(/|$)";
+    "(?i)/"
+    "(blogs?|news|story|entry|articles?|posts?|amp|technology|politics|"
+    "business)/";
+
 // Regex pattern for matching URL paths of the form /YYYY/MM/DD/, which is
 // extremely common for news websites.
 constexpr char kReadablePathMultiComponentHints[] = "/\\d\\d\\d\\d/\\d\\d/";
@@ -44,6 +52,48 @@ bool URLReadableHintExtractor::HasHints(const GURL& url) {
   }
 
   return false;
+}
+
+bool PageSupportsDistillation(DistillState state) {
+  return state == DistillState::kSpeedreaderOnDisabledPage ||
+         state == DistillState::kPageProbablyReadable;
+}
+
+bool PageStateIsDistilled(DistillState state) {
+  return state == DistillState::kReaderMode ||
+         state == DistillState::kSpeedreaderMode;
+}
+
+bool PageWantsDistill(DistillState state) {
+  return state == DistillState::kReaderMode ||
+         state == DistillState::kSpeedreaderMode ||
+         state == DistillState::kReaderModePending ||
+         state == DistillState::kSpeedreaderModePending;
+}
+
+void SetEnabledForSite(HostContentSettingsMap* map,
+                       const GURL& url,
+                       bool enable) {
+  DCHECK(!url.is_empty());  // Not supported. Disable Speedreader in settings.
+
+  // Rule covers all protocols and pages.
+  auto pattern = ContentSettingsPattern::FromString("*://" + url.host() + "/*");
+  if (!pattern.IsValid())
+    return;
+
+  ContentSetting setting =
+      enable ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
+  map->SetContentSettingCustomScope(pattern, ContentSettingsPattern::Wildcard(),
+                                    ContentSettingsType::BRAVE_SPEEDREADER,
+                                    setting);
+}
+
+bool IsEnabledForSite(HostContentSettingsMap* map, const GURL& url) {
+  ContentSetting setting = map->GetContentSetting(
+      url, GURL(), ContentSettingsType::BRAVE_SPEEDREADER);
+  const bool enabled =
+      setting == CONTENT_SETTING_ALLOW || setting == CONTENT_SETTING_DEFAULT;
+  return enabled;
 }
 
 }  // namespace speedreader

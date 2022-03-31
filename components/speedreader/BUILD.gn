@@ -1,3 +1,8 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
 import("//brave/components/speedreader/buildflags.gni")
 import("//build/buildflag_header.gni")
 
@@ -9,7 +14,7 @@ buildflag_header("buildflags") {
   ]
 }
 
-source_set("speedreader") {
+static_library("speedreader") {
   public_deps = [
     ":buildflags",
     "rust/ffi",
@@ -20,14 +25,14 @@ source_set("speedreader") {
     "features.h",
     "speedreader_component.cc",
     "speedreader_component.h",
+    "speedreader_extended_info_handler.cc",
+    "speedreader_extended_info_handler.h",
     "speedreader_pref_names.h",
+    "speedreader_result_delegate.h",
     "speedreader_rewriter_service.cc",
     "speedreader_rewriter_service.h",
     "speedreader_service.cc",
     "speedreader_service.h",
-    "speedreader_switches.h",
-    "speedreader_test_whitelist.cc",
-    "speedreader_test_whitelist.h",
     "speedreader_throttle.cc",
     "speedreader_throttle.h",
     "speedreader_url_loader.cc",
@@ -37,12 +42,18 @@ source_set("speedreader") {
   ]
 
   deps = [
+    "//brave/components/body_sniffer",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/resources",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/weekly_storage",
+    "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
     "//components/keyed_service/core:core",
     "//components/prefs:prefs",
+    "//components/sessions:sessions",
+    "//content/public/browser",
+    "//crypto",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//third_party/blink/public/common",

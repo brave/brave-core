@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
@@ -96,9 +97,12 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
 
   double ClaimPromotion(bool use_panel, const bool should_finish = true) {
     // Use the appropriate WebContents
-    content::WebContents* contents = use_panel
-        ? context_helper_->OpenRewardsPopup()
-        : browser()->tab_strip_model()->GetActiveWebContents();
+    base::WeakPtr<content::WebContents> contents =
+        use_panel ? context_helper_->OpenRewardsPopup()
+                  : browser()
+                        ->tab_strip_model()
+                        ->GetActiveWebContents()
+                        ->GetWeakPtr();
 
     // Wait for promotion to initialize
     promotion_->WaitForPromotionInitialization();
@@ -106,23 +110,19 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     // Claim promotion via settings page or panel, as instructed
     if (use_panel) {
       rewards_browsertest_util::WaitForElementThenClick(
-          contents,
-          "#panel-notifications");
+          contents.get(), "[data-test-id=notification-action-button");
     } else {
       rewards_browsertest_util::WaitForElementThenClick(
-          contents,
-          "[data-test-id='claimGrant']");
+          contents.get(), "[data-test-id='claimGrant']");
     }
 
     // Wait for CAPTCHA
     rewards_browsertest_util::WaitForElementToAppear(
-        contents,
-        "[data-test-id='captcha']");
+        contents.get(), "[data-test-id=grant-captcha-object]");
 
     rewards_browsertest_util::DragAndDrop(
-        contents,
-        "[data-test-id=\"captcha-triangle\"]",
-        "[data-test-id=\"captcha-drop\"]");
+        contents.get(), "[data-test-id=grant-captcha-object]",
+        "[data-test-id=grant-captcha-target]");
 
     if (!should_finish) {
       promotion_->WaitForPromotionFinished(false);
@@ -146,21 +146,16 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     const std::string selector = use_panel
         ? "[id='root']"
         : "[data-test-id='newTokenGrant']";
-    rewards_browsertest_util::WaitForElementToContain(
-        contents,
-        selector,
-        "Free Token Grant");
-    rewards_browsertest_util::WaitForElementToContain(
-        contents,
-        selector,
-        "30.000 BAT");
+    rewards_browsertest_util::WaitForElementToContain(contents.get(), selector,
+                                                      "Free Token Grant");
+    rewards_browsertest_util::WaitForElementToContain(contents.get(), selector,
+                                                      "30.000 BAT");
 
     // Dismiss the promotion notification
     if (use_panel) {
-      rewards_browsertest_util::WaitForElementThenClick(
-          contents,
-          "#"
-          "grant-completed-ok");
+      rewards_browsertest_util::WaitForElementThenClick(contents.get(),
+                                                        "#"
+                                                        "grant-completed-ok");
     }
 
     return 30;
@@ -184,7 +179,7 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
         status);
   }
 
-  brave_rewards::RewardsServiceImpl* rewards_service_;
+  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<RewardsBrowserTestPromotion> promotion_;
   std::unique_ptr<RewardsBrowserTestResponse> response_;
@@ -213,13 +208,12 @@ IN_PROC_BROWSER_TEST_F(
   response_->SetPromotionEmptyKey(true);
   rewards_browsertest_util::StartProcess(rewards_service_);
 
-  content::WebContents* popup = context_helper_->OpenRewardsPopup();
+  base::WeakPtr<content::WebContents> popup =
+      context_helper_->OpenRewardsPopup();
 
   promotion_->WaitForPromotionInitialization();
   rewards_browsertest_util::WaitForElementToAppear(
-      popup,
-      "[data-test-id=notification-close]",
-      false);
+      popup.get(), "[data-test-id=notification-close]", false);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionGone) {

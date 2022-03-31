@@ -20,14 +20,16 @@ class TorInternalsDOMHandler : public content::WebUIMessageHandler,
                                public TorLauncherObserver {
  public:
   TorInternalsDOMHandler();
+  TorInternalsDOMHandler(const TorInternalsDOMHandler&) = delete;
+  TorInternalsDOMHandler& operator=(const TorInternalsDOMHandler&) = delete;
   ~TorInternalsDOMHandler() override;
 
   // WebUIMessageHandler implementation.
   void RegisterMessages() override;
 
  private:
-  void HandleGetTorGeneralInfo(const base::ListValue* args);
-  void HandleGetTorLog(const base::ListValue* args);
+  void HandleGetTorGeneralInfo(base::Value::ConstListView args);
+  void HandleGetTorLog(base::Value::ConstListView args);
 
   void OnGetTorLog(bool success, const std::string& log);
 
@@ -35,20 +37,19 @@ class TorInternalsDOMHandler : public content::WebUIMessageHandler,
   void OnTorCircuitEstablished(bool result) override;
   void OnTorInitializing(const std::string& percentage) override;
   void OnTorControlEvent(const std::string& event) override;
+  void OnTorLogUpdated() override;
 
   TorLauncherFactory* tor_launcher_factory_ = nullptr;
 
   base::WeakPtrFactory<TorInternalsDOMHandler> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(TorInternalsDOMHandler);
 };
 
 class TorInternalsUI : public content::WebUIController {
  public:
   TorInternalsUI(content::WebUI* web_ui, const std::string& host);
-  ~TorInternalsUI() override;
   TorInternalsUI(const TorInternalsUI&) = delete;
   TorInternalsUI& operator=(const TorInternalsUI&) = delete;
+  ~TorInternalsUI() override;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_TOR_INTERNALS_UI_H_

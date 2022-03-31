@@ -56,7 +56,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
-    "message": "Zablokowano narzędzia do monitorowania oraz reklamy",
+    "message": "Zablokowane skrypty śledzące i reklamy",
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
@@ -176,7 +176,7 @@
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Block element",
+    "message": "Blokuj element",
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {

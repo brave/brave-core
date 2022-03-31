@@ -155,7 +155,7 @@ bool ClientState::FromDict(
       return false;
     }
 
-    for (const auto& inline_tip_value : inline_tips_value->DictItems()) {
+    for (const auto inline_tip_value : inline_tips_value->DictItems()) {
       const auto& key = inline_tip_value.first;
       const auto& value = inline_tip_value.second;
 

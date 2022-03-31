@@ -1,23 +1,8 @@
 {
-  "ads_rewards": {
-    "grants_balance": 4.21,
-    "payments": [
-      {
-        "balance": 48.0,
-        "month": "2021-04",
-        "transaction_count": "16"
-      }
-    ],
-    "unreconciled_estimated_pending_rewards": 0
-  },
-  "catalog_issuers": {
-  },
   "confirmations": {
     "failed_confirmations": []
   },
-  "next_token_redemption_date_in_seconds": "4102444799",
-  "transaction_history": {
-    "transactions": []
+  "issuers": {
   },
   "unblinded_payment_tokens": [],
   "unblinded_tokens": []

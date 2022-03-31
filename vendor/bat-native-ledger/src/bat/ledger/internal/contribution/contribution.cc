@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/guid.h"
+#include "base/time/time.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/contribution.h"
@@ -26,6 +27,32 @@ using std::placeholders::_2;
 using std::placeholders::_3;
 
 namespace {
+
+bool IsRevivedAC(const ledger::type::ContributionInfo& contribution) {
+  using ledger::type::ContributionProcessor;
+  using ledger::type::RewardsType;
+
+  if (contribution.type != RewardsType::AUTO_CONTRIBUTE) {
+    return false;
+  }
+
+  // Only externally-funded ACs are considered "revived".
+  if (contribution.processor == ContributionProcessor::BRAVE_TOKENS ||
+      contribution.processor == ContributionProcessor::BRAVE_USER_FUNDS) {
+    return false;
+  }
+
+  // If the |created_at| field does not have a valid timestamp, then do not
+  // consider this a revived AC.
+  if (contribution.created_at == 0) {
+    return false;
+  }
+
+  // ACs that were started over 20 days ago are considered "revived".
+  base::Time created_at = base::Time::FromDoubleT(contribution.created_at);
+  return base::Time::Now() - created_at > base::Days(20);
+}
+
 ledger::type::ContributionStep ConvertResultIntoContributionStep(
     const ledger::type::Result result) {
   switch (result) {
@@ -76,6 +103,7 @@ Contribution::~Contribution() = default;
 void Contribution::Initialize() {
   ledger_->uphold()->Initialize();
   ledger_->bitflyer()->Initialize();
+  ledger_->gemini()->Initialize();
 
   CheckContributionQueue();
   CheckNotCompletedContributions();
@@ -83,9 +111,8 @@ void Contribution::Initialize() {
 
 void Contribution::CheckContributionQueue() {
   base::TimeDelta delay = ledger::is_testing
-      ? base::TimeDelta::FromSeconds(1)
-      : util::GetRandomizedDelay(
-          base::TimeDelta::FromSeconds(15));
+                              ? base::Seconds(1)
+                              : util::GetRandomizedDelay(base::Seconds(15));
 
   BLOG(1, "Queue timer set for " << delay);
 
@@ -205,7 +232,7 @@ void Contribution::SetReconcileTimer() {
 
   base::TimeDelta delay;
   if (next_reconcile_stamp > now) {
-    delay = base::TimeDelta::FromSeconds(next_reconcile_stamp - now);
+    delay = base::Seconds(next_reconcile_stamp - now);
   }
 
   BLOG(1, "Last reconcile timer set for " << delay);
@@ -223,19 +250,19 @@ void Contribution::ContributionCompleted(
     return;
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/7717)
-  // rename to ContributionCompleted
-  ledger_->ledger_client()->OnReconcileComplete(
-      result,
-      contribution->Clone());
+  // It is currently possible for some externally funded ACs to be stalled until
+  // browser restart. Those ACs should complete in the background without
+  // updating the current month's balance report or generating a notification.
+  if (!IsRevivedAC(*contribution)) {
+    ledger_->ledger_client()->OnReconcileComplete(result,
+                                                  contribution->Clone());
 
-  if (result == type::Result::LEDGER_OK) {
-    ledger_->database()->SaveBalanceReportInfoItem(
-        util::GetCurrentMonth(),
-        util::GetCurrentYear(),
-        GetReportTypeFromRewardsType(contribution->type),
-        contribution->amount,
-        [](const type::Result){});
+    if (result == type::Result::LEDGER_OK) {
+      ledger_->database()->SaveBalanceReportInfoItem(
+          util::GetCurrentMonth(), util::GetCurrentYear(),
+          GetReportTypeFromRewardsType(contribution->type),
+          contribution->amount, [](const type::Result) {});
+    }
   }
 
   auto save_callback = std::bind(&Contribution::ContributionCompletedSaved,
@@ -423,7 +450,8 @@ void Contribution::OnEntrySaved(
 
     sku_->AnonUserFunds(contribution_id, wallet_type, result_callback);
   } else if (wallet_type == constant::kWalletUphold ||
-             wallet_type == constant::kWalletBitflyer) {
+             wallet_type == constant::kWalletBitflyer ||
+             wallet_type == constant::kWalletGemini) {
     auto result_callback = std::bind(&Contribution::Result,
         this,
         _1,
@@ -530,6 +558,11 @@ void Contribution::TransferFunds(
     return;
   }
 
+  if (wallet_type == constant::kWalletGemini) {
+    ledger_->gemini()->TransferFunds(transaction.amount, destination, callback);
+    return;
+  }
+
   if (wallet_type == constant::kWalletAnonymous) {
     anon_card_->SendTransaction(
         transaction.amount,
@@ -587,15 +620,12 @@ void Contribution::Result(
     const type::Result result,
     const std::string& contribution_id) {
   if (result == type::Result::RETRY_SHORT) {
-    SetRetryTimer(contribution_id, base::TimeDelta::FromSeconds(5));
+    SetRetryTimer(contribution_id, base::Seconds(5));
     return;
   }
 
   if (result == type::Result::RETRY) {
-    SetRetryTimer(
-        contribution_id,
-        util::GetRandomizedDelay(
-            base::TimeDelta::FromSeconds(45)));
+    SetRetryTimer(contribution_id, util::GetRandomizedDelay(base::Seconds(45)));
     return;
   }
 
@@ -618,15 +648,11 @@ void Contribution::OnResult(
   if (result == type::Result::RETRY_LONG) {
     if (contribution->processor ==
         type::ContributionProcessor::BRAVE_TOKENS) {
-      SetRetryTimer(
-          contribution->contribution_id,
-          util::GetRandomizedDelay(
-              base::TimeDelta::FromSeconds(45)));
+      SetRetryTimer(contribution->contribution_id,
+                    util::GetRandomizedDelay(base::Seconds(45)));
     } else {
-      SetRetryTimer(
-          contribution->contribution_id,
-          util::GetRandomizedDelay(
-              base::TimeDelta::FromSeconds(450)));
+      SetRetryTimer(contribution->contribution_id,
+                    util::GetRandomizedDelay(base::Seconds(450)));
     }
 
     return;
@@ -643,8 +669,8 @@ void Contribution::SetRetryTimer(
     return;
   }
 
-  if (ledger::short_retries) {
-    delay = base::TimeDelta::FromSeconds(1);
+  if (ledger::retry_interval) {
+    delay = base::Seconds(retry_interval);
   }
 
   BLOG(1, "Timer for contribution retry (" << contribution_id << ") "
@@ -745,7 +771,8 @@ void Contribution::Retry(
       return;
     }
     case type::ContributionProcessor::UPHOLD:
-    case type::ContributionProcessor::BITFLYER: {
+    case type::ContributionProcessor::BITFLYER:
+    case type::ContributionProcessor::GEMINI: {
       if ((*shared_contribution)->type ==
           type::RewardsType::AUTO_CONTRIBUTE) {
         sku_->Retry((*shared_contribution)->Clone(), result_callback);

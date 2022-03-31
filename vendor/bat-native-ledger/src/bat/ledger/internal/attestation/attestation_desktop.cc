@@ -31,7 +31,7 @@ type::Result AttestationDesktop::ParseClaimSolution(
     std::string* captcha_id) {
   DCHECK(x && y && captcha_id);
 
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  absl::optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
     return type::Result::LEDGER_ERROR;
   }

@@ -19,6 +19,7 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/ipfs/import/imported_data.h"
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_navigation_throttle.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
 #include "chrome/browser/notifications/notification_display_service.h"
@@ -26,6 +27,7 @@
 #include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/common/channel_info.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -111,7 +113,7 @@ std::unique_ptr<message_center::Notification> CreateMessageCenterNotification(
   message_center::RichNotificationData notification_data;
   // hack to prevent origin from showing in the notification
   // since we're using that to get the notification_id to OpenSettings
-  notification_data.context_message = base::ASCIIToUTF16(" ");
+  notification_data.context_message = u" ";
   auto notification = std::make_unique<message_center::Notification>(
       message_center::NOTIFICATION_TYPE_SIMPLE, uuid, title, body, gfx::Image(),
       std::u16string(), link,
@@ -185,8 +187,8 @@ void IpfsImportController::SaveWebPage(const base::FilePath& directory) {
   saved_main_directory_path = saved_main_directory_path.Append(
       saved_main_file_path.RemoveExtension().BaseName().value() +
       FILE_PATH_LITERAL("_files"));
-  auto* download_manager = content::BrowserContext::GetDownloadManager(
-      web_contents_->GetBrowserContext());
+  auto* download_manager =
+      web_contents_->GetBrowserContext()->GetDownloadManager();
   save_package_observer_.reset(new SavePackageFinishedObserver(
       download_manager, saved_main_file_path,
       base::BindOnce(&IpfsImportController::OnDownloadFinished,
@@ -263,8 +265,9 @@ GURL IpfsImportController::CreateAndCopyShareableLink(
       ipfs = ipfs::kIPNSScheme + std::string("://") + key;
     }
   }
-  auto shareable_link =
-      ipfs::ToPublicGatewayURL(GURL(ipfs), web_contents_->GetBrowserContext());
+  auto shareable_link = ipfs::ToPublicGatewayURL(
+      GURL(ipfs),
+      user_prefs::UserPrefs::Get(web_contents_->GetBrowserContext()));
   if (!shareable_link.is_valid())
     return GURL();
   if (!data.filename.empty())

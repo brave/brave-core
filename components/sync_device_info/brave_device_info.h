@@ -8,11 +8,10 @@
 
 #include <string>
 
-#include "base/macros.h"
-#include "base/optional.h"
 #include "base/time/time.h"
 #include "components/sync/protocol/sync.pb.h"
 #include "components/sync_device_info/device_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace syncer {
 
@@ -29,11 +28,13 @@ class BraveDeviceInfo : public DeviceInfo {
                   base::Time last_updated_timestamp,
                   base::TimeDelta pulse_interval,
                   bool send_tab_to_self_receiving_enabled,
-                  const base::Optional<DeviceInfo::SharingInfo>& sharing_info,
-                  const base::Optional<PhoneAsASecurityKeyInfo>& paask_info,
+                  const absl::optional<DeviceInfo::SharingInfo>& sharing_info,
+                  const absl::optional<PhoneAsASecurityKeyInfo>& paask_info,
                   const std::string& fcm_registration_token,
                   const ModelTypeSet& interested_data_types,
                   bool is_self_delete_supported);
+  BraveDeviceInfo(const BraveDeviceInfo&) = delete;
+  BraveDeviceInfo& operator=(const BraveDeviceInfo&) = delete;
   ~BraveDeviceInfo() override {}
 
   bool is_self_delete_supported() const;
@@ -41,8 +42,6 @@ class BraveDeviceInfo : public DeviceInfo {
 
  private:
   bool is_self_delete_supported_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveDeviceInfo);
 };
 
 }  // namespace syncer

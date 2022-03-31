@@ -10,7 +10,7 @@
 
 namespace ads {
 
-struct CatalogAdNotificationPayloadInfo {
+struct CatalogAdNotificationPayloadInfo final {
   CatalogAdNotificationPayloadInfo();
   CatalogAdNotificationPayloadInfo(
       const CatalogAdNotificationPayloadInfo& info);

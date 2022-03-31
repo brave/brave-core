@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {addSingletonGetter} from 'chrome://resources/js/cr.m.js';
+import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
 
 /** @interface */
 export class BraveWalletBrowserProxy {
@@ -13,6 +13,12 @@ export class BraveWalletBrowserProxy {
    setBraveWalletEnabled (value) {}
    getWeb3ProviderList () {}
    isNativeWalletEnabled() {}
+   getAutoLockMinutes() {}
+   getCustomNetworksList () {}
+   removeEthereumChain (chainId) {}
+   addEthereumChain (value) {}
+   setActiveNetwork (chainId) {}
+   resetTransactionInfo () {}
 }
 
 /**
@@ -20,8 +26,32 @@ export class BraveWalletBrowserProxy {
  */
 export class BraveWalletBrowserProxyImpl {
   /** @override */
+  resetWallet () {
+    chrome.send('resetWallet', [])
+  }
+  /** @override */
+  resetTransactionInfo() {
+    chrome.send('resetTransactionInfo', [])
+  }
+  /** @override */
   setBraveWalletEnabled (value) {
     chrome.send('setBraveWalletEnabled', [value])
+  }
+
+  getCustomNetworksList () {
+    return sendWithPromise('getCustomNetworksList')
+  }
+
+  setActiveNetwork (chainId) {
+    return sendWithPromise('setActiveNetwork', chainId)
+  }
+
+  removeEthereumChain (chainId) {
+    return sendWithPromise('removeEthereumChain', chainId)
+  }
+
+  addEthereumChain (payload) {
+    return sendWithPromise('addEthereumChain', payload)
   }
 
   /** @override */
@@ -32,6 +62,11 @@ export class BraveWalletBrowserProxyImpl {
   /** @override */
   isNativeWalletEnabled () {
     return new Promise(resolve => chrome.braveWallet.isNativeWalletEnabled(resolve))
+  }
+
+  /** @override */
+  getAutoLockMinutes() {
+    return sendWithPromise('getAutoLockMinutes')
   }
 }
 

@@ -1,4 +1,4 @@
-source_set("ipfs") {
+static_library("ipfs") {
   sources = [
     "ipfs_service_impl.h",
     "ipfs_service_utils.cc",
@@ -15,5 +15,6 @@ source_set("ipfs") {
     "//brave/components/child_process_monitor",
     "//brave/components/services/ipfs/public/mojom",
     "//mojo/public/cpp/bindings",
+    "//third_party/re2",
   ]
 }

@@ -1,0 +1,18 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//tools/grit/repack.gni")
+
+group("resources") {
+  public_deps = [ ":repack_unscaled_resources" ]
+}
+
+repack("repack_unscaled_resources") {
+  visibility = [ ":resources" ]
+  output = "$target_gen_dir/brave_resources.pak"
+  sources = [ "$root_gen_dir/components/brave_components_resources.pak" ]
+  deps = [ "//brave/components/resources" ]
+  copy_data_to_bundle = true
+}

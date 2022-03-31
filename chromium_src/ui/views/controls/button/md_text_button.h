@@ -18,7 +18,7 @@
   UpdateColors();    \
   void UpdateColorsForBrave
 
-#include "../../../../../../ui/views/controls/button/md_text_button.h"
+#include "src/ui/views/controls/button/md_text_button.h"
 
 #undef UpdateColors
 #undef MdTextButton
@@ -35,21 +35,15 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
   explicit MdTextButton(PressedCallback callback = PressedCallback(),
                         const std::u16string& text = std::u16string(),
                         int button_context = style::CONTEXT_BUTTON_MD);
+  MdTextButton(const MdTextButton&) = delete;
+  MdTextButton& operator=(const MdTextButton&) = delete;
   ~MdTextButton() override;
-
-  // InkDrop
-  std::unique_ptr<InkDrop> CreateInkDrop() override;
-  std::unique_ptr<views::InkDropHighlight> CreateInkDropHighlight()
-      const override;
 
   SkPath GetHighlightPath() const;
 
  protected:
   // views::Views
   void OnPaintBackground(gfx::Canvas* canvas) override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(MdTextButton);
 };
 
 }  // namespace views

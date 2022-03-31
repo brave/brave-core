@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "base/scoped_observer.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/common/brave_renderer_configuration.mojom-forward.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -47,11 +47,12 @@ class BraveRendererUpdater : public KeyedService {
       mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>*
           renderer_configuration);
 
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
 
   // Prefs that we sync to the renderers.
   IntegerPrefMember brave_wallet_web3_provider_;
+  bool is_wallet_allowed_for_context_;
 };
 
 #endif  // BRAVE_BROWSER_PROFILES_BRAVE_RENDERER_UPDATER_H_

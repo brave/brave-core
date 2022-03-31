@@ -15,12 +15,6 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
   switch (action.type) {
     case types.ON_CONTRIBUTE_LIST:
       state = { ...state }
-      if (state.contributeLoad) {
-        state.firstLoad = false
-      } else {
-        state.contributeLoad = true
-      }
-
       state.autoContributeList = action.payload.list
       break
     case types.ON_EXCLUDED_LIST: {
@@ -56,11 +50,6 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       break
     case types.ON_RECURRING_TIPS:
       state = { ...state }
-      if (state.recurringLoad) {
-        state.firstLoad = false
-      } else {
-        state.recurringLoad = true
-      }
       state.recurringList = action.payload.list || []
       break
     case types.REMOVE_RECURRING_TIP:
@@ -71,11 +60,6 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       break
     case types.ON_CURRENT_TIPS:
       state = { ...state }
-      if (state.tipsLoad) {
-        state.firstLoad = false
-      } else {
-        state.tipsLoad = true
-      }
       state.tipsList = action.payload.list || []
       break
     case types.ON_RECURRING_TIP_SAVED:

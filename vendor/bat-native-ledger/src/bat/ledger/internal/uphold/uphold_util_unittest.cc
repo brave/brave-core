@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -80,8 +80,7 @@ TEST_F(UpholdUtilTest, GetFeeAddress) {
 TEST_F(UpholdUtilTest, GetAuthorizeUrl) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
-  std::string result =
-      uphold::GetAuthorizeUrl("rdfdsfsdfsdf", true);
+  std::string result = uphold::GetAuthorizeUrl("rdfdsfsdfsdf", true);
   ASSERT_EQ(result,
             "https://uphold.com/authorize/" UPHOLD_CLIENT_ID
             "?scope=accounts:read "
@@ -104,8 +103,7 @@ TEST_F(UpholdUtilTest, GetAuthorizeUrl) {
 
   // production
   ledger::_environment = type::Environment::PRODUCTION;
-  result =
-      uphold::GetAuthorizeUrl("rdfdsfsdfsdf", false);
+  result = uphold::GetAuthorizeUrl("rdfdsfsdfsdf", false);
   ASSERT_EQ(result,
             "https://uphold.com/authorize/" UPHOLD_CLIENT_ID
             "?scope=accounts:read "
@@ -179,14 +177,33 @@ TEST_F(UpholdUtilTest, GetSecondStepVerify) {
             "?application_id=" UPHOLD_STAGING_CLIENT_ID "&intention=kyc");
 }
 
+TEST_F(UpholdUtilTest, GetActivityUrl) {
+  // empty string
+  std::string result = uphold::GetActivityUrl("");
+  ASSERT_EQ(result, "");
+
+  // production
+  ledger::_environment = type::Environment::PRODUCTION;
+  result = uphold::GetActivityUrl("9324i5i32459i");
+  ASSERT_EQ(result,
+            "https://uphold.com/dashboard/cards/9324i5i32459i/activity");
+
+  // staging
+  ledger::_environment = type::Environment::STAGING;
+  result = uphold::GetActivityUrl("9324i5i32459i");
+  ASSERT_EQ(result,
+            "https://wallet-sandbox.uphold.com/dashboard/cards/9324i5i32459i/"
+            "activity");
+}
+
 TEST_F(UpholdUtilTest, GetWallet) {
   // no wallet
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
       .WillByDefault(testing::Return(""));
-  auto result = uphold::GetWallet(mock_ledger_impl_.get());
+  auto result = mock_ledger_impl_.get()->uphold()->GetWallet();
   ASSERT_TRUE(!result);
 
-  const std::string wallet = R"({
+  const std::string wallet = FakeEncryption::Base64EncryptString(R"({
     "account_url":"https://wallet-sandbox.uphold.com/dashboard",
     "add_url":"https://wallet-sandbox.uphold.com/dashboard/cards/asadasdasd/add",
     "address":"2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af",
@@ -199,13 +216,13 @@ TEST_F(UpholdUtilTest, GetWallet) {
     "verify_url":"",
     "withdraw_url":
       "https://wallet-sandbox.uphold.com/dashboard/cards/asadasdasd/use"
-  })";
+  })");
 
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
       .WillByDefault(testing::Return(wallet));
 
   // uphold wallet
-  result = uphold::GetWallet(mock_ledger_impl_.get());
+  result = mock_ledger_impl_.get()->uphold()->GetWallet();
   ASSERT_TRUE(result);
   ASSERT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
   ASSERT_EQ(result->user_name, "test");
@@ -230,10 +247,11 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   ledger::_environment = type::Environment::STAGING;
 
   auto wallet = type::ExternalWallet::New();
-  wallet->address = "123123123124234234234";
 
   // Not connected
   wallet->status = type::WalletStatus::NOT_CONNECTED;
+  wallet->token = "";    // must be empty
+  wallet->address = "";  // must be empty
   auto result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
@@ -247,22 +265,10 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
       "&intention=kyc&state=");
   ASSERT_EQ(result->account_url, "https://wallet-sandbox.uphold.com/dashboard");
 
-  // Connected
-  wallet->status = type::WalletStatus::CONNECTED;
-  result = uphold::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url,
-            "https://wallet-sandbox.uphold.com/dashboard/cards/"
-            "123123123124234234234/add");
-  ASSERT_EQ(result->withdraw_url,
-            "https://wallet-sandbox.uphold.com/signup/step2"
-            "?application_id=" UPHOLD_STAGING_CLIENT_ID "&intention=kyc");
-  ASSERT_EQ(result->verify_url,
-            "https://wallet-sandbox.uphold.com/signup/step2"
-            "?application_id=" UPHOLD_STAGING_CLIENT_ID "&intention=kyc");
-  ASSERT_EQ(result->account_url, "https://wallet-sandbox.uphold.com/dashboard");
-
   // Verified
   wallet->status = type::WalletStatus::VERIFIED;
+  wallet->token = "must be non-empty";
+  wallet->address = "123123123124234234234";  // must be non-empty
   result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url,
             "https://wallet-sandbox.uphold.com/dashboard/cards/"
@@ -273,22 +279,10 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
   ASSERT_EQ(result->verify_url, "");
   ASSERT_EQ(result->account_url, "https://wallet-sandbox.uphold.com/dashboard");
 
-  // Disconnected Non-Verified
-  wallet->status = type::WalletStatus::DISCONNECTED_NOT_VERIFIED;
-  result = uphold::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url, "");
-  ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(
-      result->verify_url,
-      "https://wallet-sandbox.uphold.com/authorize/" UPHOLD_STAGING_CLIENT_ID
-      "?scope=accounts:read accounts:write cards:read cards:write user:read "
-      "transactions:deposit transactions:read "
-      "transactions:transfer:application transactions:transfer:others"
-      "&intention=kyc&state=");
-  ASSERT_EQ(result->account_url, "https://wallet-sandbox.uphold.com/dashboard");
-
   // Disconnected Verified
   wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
+  wallet->token = "";    // must be empty
+  wallet->address = "";  // must be empty
   result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
@@ -304,6 +298,8 @@ TEST_F(UpholdUtilTest, GenerateLinks) {
 
   // Pending
   wallet->status = type::WalletStatus::PENDING;
+  wallet->token = "must be non-empty";
+  wallet->address = "";  // must be empty
   result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url,
             "https://wallet-sandbox.uphold.com/signup/step2"
@@ -325,6 +321,8 @@ TEST_F(UpholdUtilTest, GenerateVerifyLink) {
 
   // Not connected
   wallet->status = type::WalletStatus::NOT_CONNECTED;
+  wallet->token = "";    // must be empty
+  wallet->address = "";  // must be empty
   auto result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(
       result,
@@ -335,32 +333,17 @@ TEST_F(UpholdUtilTest, GenerateVerifyLink) {
       "transactions:transfer:application transactions:transfer:others"
       "&intention=kyc&state=123123123124234234234");
 
-  // Connected
-  wallet->status = type::WalletStatus::CONNECTED;
-  result = uphold::GenerateVerifyLink(wallet->Clone());
-  ASSERT_EQ(result,
-            "https://wallet-sandbox.uphold.com/signup/step2"
-            "?application_id=" UPHOLD_STAGING_CLIENT_ID "&intention=kyc");
-
   // Verified
   wallet->status = type::WalletStatus::VERIFIED;
+  wallet->token = "must be non-empty";
+  wallet->address = "must be non-empty";
   result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(result, "");
 
-  // Disconnected Non-Verified
-  wallet->status = type::WalletStatus::DISCONNECTED_NOT_VERIFIED;
-  result = uphold::GenerateVerifyLink(wallet->Clone());
-  ASSERT_EQ(
-      result,
-      "https://wallet-sandbox.uphold.com/authorize/" UPHOLD_STAGING_CLIENT_ID
-      "?scope=accounts:read "
-      "accounts:write cards:read cards:write user:read "
-      "transactions:deposit transactions:read "
-      "transactions:transfer:application transactions:transfer:others"
-      "&intention=kyc&state=123123123124234234234");
-
   // Disconnected Verified
   wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
+  wallet->token = "";    // must be empty
+  wallet->address = "";  // must be empty
   result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(
       result,
@@ -373,6 +356,8 @@ TEST_F(UpholdUtilTest, GenerateVerifyLink) {
 
   // Pending
   wallet->status = type::WalletStatus::PENDING;
+  wallet->token = "must be non-empty";
+  wallet->address = "";  // must be empty
   result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(result,
             "https://wallet-sandbox.uphold.com/signup/step2"

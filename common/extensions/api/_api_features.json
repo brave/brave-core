@@ -26,6 +26,19 @@
       "chrome://newtab/*"
     ]
   }],
+  "bookmarkManagerPrivate": [{
+    "dependencies": ["permission:bookmarkManagerPrivate"],
+    "contexts": ["blessed_extension"],
+    "default_parent": true
+  }, {
+    "channel": "stable",
+    "contexts": ["webui"],
+    "matches": [
+      "chrome://bookmarks/*",
+      "chrome://read-later.top-chrome/*",
+      "chrome://sidebar-bookmarks.top-chrome/*"
+    ]
+  }],
   "bookmarks": [{
     "dependencies": ["permission:bookmarks"],
     "contexts": ["blessed_extension"],
@@ -34,7 +47,9 @@
     "channel": "stable",
     "contexts": ["webui"],
     "matches": [
-      "chrome://bookmarks/*"
+      "chrome://bookmarks/*",
+      "chrome://read-later.top-chrome/*",
+      "chrome://sidebar-bookmarks.top-chrome/*"
     ],
     "default_parent": true
   }, {
@@ -57,7 +72,8 @@
       "chrome://read-later.top-chrome/*",
       "chrome://tab-strip/*",
       "chrome://wallet-panel.top-chrome/*",
-      "chrome://wallet/*"
+      "chrome://wallet/*",
+      "chrome://brave-shields.top-chrome/*"
     ]
   }, {
     "channel": "stable",
@@ -105,7 +121,9 @@
       "channel": "stable",
       "contexts": ["webui"],
       "matches": [
-        "chrome://newtab/*"
+        "chrome://newtab/*",
+        "chrome://rewards/*",
+        "chrome://settings/*"
       ]
     }
   ],
@@ -134,7 +152,9 @@
       "chrome://newtab/*",
       "chrome://webcompat/*",
       "chrome://wallet/*",
-      "chrome://wallet-panel.top-chrome/*"
+      "chrome://wallet-panel.top-chrome/*",
+      "chrome://vpn-panel.top-chrome/*",
+      "chrome://brave-shields.top-chrome/*"
     ]
   }],
   "greaselion": [{
@@ -150,12 +170,5 @@
     "matches": [
       "chrome://newtab/*"
     ]
-  }],
-  "braveToday": {
-    "channel": "stable",
-    "contexts": ["blessed_extension"],
-    "allowlist": [
-      "A321D47A2B4CA86898167A55CA8B2E02385EA7CD"  // brave
-    ]
-  }
+  }]
 }

@@ -25,14 +25,15 @@
 #include "base/json/json_string_value_serializer.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
-#include "base/sequenced_task_runner.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
-#include "base/task_runner_util.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
 #include "bat/ads/pref_names.h"
@@ -41,7 +42,6 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/logging.h"
@@ -49,8 +49,10 @@
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/browser/service_sandbox_type.h"
 #include "brave/components/brave_rewards/browser/static_values.h"
 #include "brave/components/brave_rewards/browser/switches.h"
+#include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
@@ -58,10 +60,8 @@
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
-#include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/service_sandbox_type.h"
 #include "components/country_codes/country_codes.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
@@ -76,21 +76,22 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 #include "url/url_canon_stdstring.h"
 #include "url/url_util.h"
 
-#if BUILDFLAG(ENABLE_GREASELION)
-#include "brave/components/greaselion/browser/greaselion_service.h"
-#endif
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #endif
+
 using net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES;
 
 namespace brave_rewards {
@@ -99,10 +100,10 @@ static const unsigned int kRetriesCountOnNetworkChange = 1;
 
 namespace {
 
-const int kDiagnosticLogMaxVerboseLevel = 6;
-const int kDiagnosticLogKeepNumLines = 20000;
-const int kDiagnosticLogMaxFileSize = 10 * (1024 * 1024);
-const char pref_prefix[] = "brave.rewards";
+constexpr int kDiagnosticLogMaxVerboseLevel = 6;
+constexpr int kDiagnosticLogKeepNumLines = 20000;
+constexpr int kDiagnosticLogMaxFileSize = 10 * (1024 * 1024);
+constexpr char pref_prefix[] = "brave.rewards";
 
 std::string URLMethodToRequestType(ledger::type::UrlMethod method) {
   switch (method) {
@@ -255,9 +256,9 @@ ledger::type::InlineTipsPlatforms ConvertInlineTipStringToPlatform(
 
 bool ProcessPublisher(const GURL& url) {
   // we should always process publisher on desktop
-  #if !defined(OS_ANDROID)
-    return true;
-  #endif
+#if !BUILDFLAG(IS_ANDROID)
+  return true;
+#endif
 
   const std::vector<GURL> excluded = {
       GURL("https://twitter.com")
@@ -291,7 +292,7 @@ bool IsMediaLink(const GURL& url,
 
 
 // read comment about file pathes at src\base\files\file_path.h
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const base::FilePath::StringType kDiagnosticLogPath(L"Rewards.log");
 const base::FilePath::StringType kLedger_state(L"ledger_state");
 const base::FilePath::StringType kPublisher_state(L"publisher_state");
@@ -337,10 +338,23 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 
   if (base::FeatureList::IsEnabled(features::kVerboseLoggingFeature))
     persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
+
+#if BUILDFLAG(ENABLE_GREASELION)
+  if (greaselion_service_) {
+    greaselion_service_->AddObserver(this);
+  }
+#endif
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+#if BUILDFLAG(ENABLE_GREASELION)
+  if (greaselion_service_) {
+    greaselion_service_->RemoveObserver(this);
+  }
+#endif
+
   if (ledger_database_) {
     file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
   }
@@ -352,7 +366,7 @@ void RewardsServiceImpl::ConnectionClosed() {
       FROM_HERE,
       base::BindOnce(&RewardsServiceImpl::StartLedgerProcessIfNecessary,
                      AsWeakPtr()),
-      base::TimeDelta::FromSeconds(1));
+      base::Seconds(1));
 }
 
 bool RewardsServiceImpl::IsInitialized() {
@@ -378,13 +392,13 @@ void RewardsServiceImpl::Init(
 
   CheckPreferences();
   InitPrefChangeRegistrar();
-  EnableGreaseLion();
+  p3a::RecordAdsEnabledDuration(profile_->GetPrefs(), IsAdsEnabled());
 }
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
   profile_pref_change_registrar_.Add(
-      prefs::kHideButton,
+      prefs::kShowButton,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
   profile_pref_change_registrar_.Add(
@@ -410,10 +424,6 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
 }
 
 void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
-  if (profile_->GetPrefs()->GetInteger(prefs::kVersion) == -1) {
-    return;
-  }
-
   if (key == prefs::kAutoContributeEnabled) {
     if (profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled)) {
       StartLedgerProcessIfNecessary();
@@ -425,12 +435,14 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
   }
 
   if (key == prefs::kAutoContributeEnabled || key == ads::prefs::kEnabled) {
-    if (IsRewardsEnabled()) {
+    bool rewards_enabled = IsRewardsEnabled();
+    if (rewards_enabled) {
       RecordBackendP3AStats();
     } else {
       p3a::RecordRewardsDisabledForSomeMetrics();
       p3a::RecordWalletState({.wallet_created = true});
     }
+    p3a::RecordAdsEnabledDuration(profile_->GetPrefs(), IsAdsEnabled());
   }
 }
 
@@ -469,11 +481,11 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
 
   ledger::type::Environment environment = ledger::type::Environment::STAGING;
   // Environment
-  #if defined(OFFICIAL_BUILD) && defined(OS_ANDROID)
-    environment = GetServerEnvironmentForAndroid();
-  #elif defined(OFFICIAL_BUILD)
-    environment = ledger::type::Environment::PRODUCTION;
-  #endif
+#if defined(OFFICIAL_BUILD) && BUILDFLAG(IS_ANDROID)
+  environment = GetServerEnvironmentForAndroid();
+#elif defined(OFFICIAL_BUILD)
+  environment = ledger::type::Environment::PRODUCTION;
+#endif
   SetEnvironment(environment);
 
   SetDebug(false);
@@ -653,18 +665,25 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
     return;
   }
 
-  auto origin = url.GetOrigin();
-  const std::string baseDomain =
-      GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
-
+  auto origin = url.host();
+  std::string baseDomain =
+      GetDomainAndRegistry(url.host(), INCLUDE_PRIVATE_REGISTRIES);
+#if BUILDFLAG(ENABLE_IPFS)
+  if (baseDomain.empty()) {
+    baseDomain = ipfs::GetRegistryDomainFromIPNS(url);
+    if (!baseDomain.empty()) {
+      origin = baseDomain;
+    }
+  }
+#endif
   if (baseDomain == "")
     return;
 
-  const std::string publisher_url = origin.scheme() + "://" + baseDomain + "/";
+  const std::string publisher_url = url.scheme() + "://" + baseDomain + "/";
 
   ledger::type::VisitDataPtr data = ledger::type::VisitData::New();
   data->tld = data->name = baseDomain;
-  data->domain = origin.host(),
+  data->domain = origin;
   data->path = url.path();
   data->tab_id = tab_id.id();
   data->url = publisher_url;
@@ -762,7 +781,7 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
   base::flat_map<std::string, std::string> parts;
 
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
-    parts[it.GetKey()] = it.GetUnescapedValue();
+    parts[std::string(it.GetKey())] = it.GetUnescapedValue();
   }
 
   ledger::type::VisitDataPtr data = ledger::type::VisitData::New();
@@ -1012,7 +1031,7 @@ void RewardsServiceImpl::LoadURL(
   if (net_request->url.DomainIs("twitter.com")) {
     net_request->credentials_mode = network::mojom::CredentialsMode::kInclude;
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
     net_request->headers.SetHeader(
         net::HttpRequestHeaders::kUserAgent,
         "DESKTOP");
@@ -1039,7 +1058,7 @@ void RewardsServiceImpl::LoadURL(
 
   auto loader_it = url_loaders_.insert(url_loaders_.begin(), std::move(loader));
   loader_it->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      content::BrowserContext::GetDefaultStoragePartition(profile_)
+      profile_->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess()
           .get(),
       base::BindOnce(&RewardsServiceImpl::OnURLLoaderComplete,
@@ -1136,7 +1155,7 @@ void ParseCaptchaResponse(
     std::string* image,
     std::string* id,
     std::string* hint) {
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  absl::optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
     return;
   }
@@ -1204,17 +1223,13 @@ void RewardsServiceImpl::AttestationAndroid(
     return;
   }
 
-  #if defined(OS_ANDROID)
-    auto attest_callback =
-        base::BindOnce(&RewardsServiceImpl::OnAttestationAndroid,
-            AsWeakPtr(),
-            promotion_id,
-            std::move(callback),
-            nonce);
-    safetynet_check_runner_.performSafetynetCheck(
-        nonce,
-        std::move(attest_callback));
-  #endif
+#if BUILDFLAG(IS_ANDROID)
+  auto attest_callback =
+      base::BindOnce(&RewardsServiceImpl::OnAttestationAndroid, AsWeakPtr(),
+                     promotion_id, std::move(callback), nonce);
+  safetynet_check_runner_.performSafetynetCheck(nonce,
+                                                std::move(attest_callback));
+#endif
 }
 
 void RewardsServiceImpl::OnAttestationAndroid(
@@ -1230,6 +1245,7 @@ void RewardsServiceImpl::OnAttestationAndroid(
 
   if (!token_received) {
     std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
+    return;
   }
 
   base::Value solution(base::Value::Type::DICTIONARY);
@@ -1298,6 +1314,25 @@ void RewardsServiceImpl::OnRecoverWallet(const ledger::type::Result result) {
   }
 }
 
+const std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
+    const {
+  std::vector<std::string> providers;
+
+  if (IsBitFlyerRegion()) {
+    providers.push_back(ledger::constant::kWalletBitflyer);
+    return providers;
+  }
+
+  providers.push_back(ledger::constant::kWalletUphold);
+
+#if BUILDFLAG(ENABLE_GEMINI_WALLET)
+  if (base::FeatureList::IsEnabled(features::kGeminiFeature)) {
+    providers.push_back(ledger::constant::kWalletGemini);
+  }
+#endif
+  return providers;
+}
+
 void RewardsServiceImpl::AttestPromotion(
     const std::string& promotion_id,
     const std::string& solution,
@@ -1330,13 +1365,6 @@ void RewardsServiceImpl::OnAttestPromotion(
     observer.OnPromotionFinished(this, result, promotion->Clone());
   }
 
-  if (promotion->type == ledger::type::PromotionType::ADS) {
-    auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
-    if (ads_service) {
-      ads_service->ReconcileAdRewards();
-    }
-  }
-
   std::move(callback).Run(result, std::move(promotion));
 }
 
@@ -1348,8 +1376,8 @@ void RewardsServiceImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
   bat_ledger_->GetReconcileStamp(std::move(callback));
 }
 
-void RewardsServiceImpl::EnableGreaseLion() {
 #if BUILDFLAG(ENABLE_GREASELION)
+void RewardsServiceImpl::EnableGreaseLion() {
   if (!greaselion_service_) {
     return;
   }
@@ -1361,21 +1389,26 @@ void RewardsServiceImpl::EnableGreaseLion() {
   greaselion_service_->SetFeatureEnabled(
       greaselion::ADS, profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
 
-  const bool hide_button = profile_->GetPrefs()->GetBoolean(prefs::kHideButton);
+  const bool show_button = profile_->GetPrefs()->GetBoolean(prefs::kShowButton);
   greaselion_service_->SetFeatureEnabled(
       greaselion::TWITTER_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipTwitterEnabled) &&
-          !hide_button);
+          show_button);
   greaselion_service_->SetFeatureEnabled(
       greaselion::REDDIT_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipRedditEnabled) &&
-          !hide_button);
+          show_button);
   greaselion_service_->SetFeatureEnabled(
       greaselion::GITHUB_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled) &&
-          !hide_button);
-#endif
+          show_button);
 }
+
+void RewardsServiceImpl::OnRulesReady(
+    greaselion::GreaselionService* greaselion_service) {
+  EnableGreaseLion();
+}
+#endif
 
 void RewardsServiceImpl::StopLedger(StopLedgerCallback callback) {
   BLOG(1, "Shutting down ledger process");
@@ -1704,11 +1737,13 @@ void RewardsServiceImpl::OnFetchBalanceForEnableRewards(
 }
 
 void RewardsServiceImpl::OnAdsEnabled(bool ads_enabled) {
-  #if BUILDFLAG(ENABLE_GREASELION)
-  greaselion_service_->SetFeatureEnabled(
-      greaselion::ADS,
-      profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
-  #endif
+#if BUILDFLAG(ENABLE_GREASELION)
+  if (greaselion_service_) {
+    greaselion_service_->SetFeatureEnabled(
+        greaselion::ADS,
+        profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
+  }
+#endif
 
   for (auto& observer : observers_) {
     observer.OnAdsEnabled(this, ads_enabled);
@@ -1750,21 +1785,16 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
     return;
   }
 
-  auto origin = parsed_url.GetOrigin();
+  auto origin = url::Origin::Create(parsed_url).Serialize();
   std::string baseDomain =
-      GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
-  std::string path = parsed_url.PathForRequest();
-#if BUILDFLAG(IPFS_ENABLED)
-  if (ipfs::IsIpfsEnabled(profile_) && parsed_url.SchemeIs(ipfs::kIPNSScheme)) {
-    std::string cid;
-    if (!ipfs::ParseCIDAndPathFromIPFSUrl(parsed_url, &cid, &path) ||
-        cid.empty())
-      return;
-    origin = GURL(parsed_url.scheme() + "://" + cid);
-    baseDomain = cid;
-  } else if (parsed_url.SchemeIs(ipfs::kIPFSScheme)) {
-    OnPanelPublisherInfo(ledger::type::Result::NOT_FOUND, nullptr, windowId);
-    return;
+      GetDomainAndRegistry(parsed_url.host(), INCLUDE_PRIVATE_REGISTRIES);
+  std::string path = parsed_url.has_path() ? parsed_url.PathForRequest() : "";
+#if BUILDFLAG(ENABLE_IPFS)
+  if (baseDomain.empty()) {
+    baseDomain = ipfs::GetRegistryDomainFromIPNS(parsed_url);
+    if (!baseDomain.empty()) {
+      origin = parsed_url.scheme() + "://" + baseDomain + "/";
+    }
   }
 #endif
   if (baseDomain == "") {
@@ -1783,7 +1813,7 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
   ledger::type::VisitDataPtr visit_data = ledger::type::VisitData::New();
   visit_data->domain = visit_data->name = baseDomain;
   visit_data->path = path;
-  visit_data->url = origin.spec();
+  visit_data->url = origin;
   visit_data->favicon_url = favicon_url;
 
   bat_ledger_->GetPublisherActivityFromUrl(
@@ -1898,22 +1928,19 @@ void RewardsServiceImpl::OnPublisherBanner(
   std::move(callback).Run(std::move(banner));
 }
 
-void RewardsServiceImpl::OnSaveRecurringTip(
-    SaveRecurringTipCallback callback,
-    const ledger::type::Result result) {
-  bool success = result == ledger::type::Result::LEDGER_OK;
-
+void RewardsServiceImpl::OnSaveRecurringTip(OnTipCallback callback,
+                                            ledger::type::Result result) {
   for (auto& observer : observers_) {
-    observer.OnRecurringTipSaved(this, success);
+    observer.OnRecurringTipSaved(this,
+                                 result == ledger::type::Result::LEDGER_OK);
   }
 
-  std::move(callback).Run(success);
+  std::move(callback).Run(result);
 }
 
-void RewardsServiceImpl::SaveRecurringTip(
-    const std::string& publisher_key,
-    const double amount,
-    SaveRecurringTipCallback callback) {
+void RewardsServiceImpl::SaveRecurringTip(const std::string& publisher_key,
+                                          double amount,
+                                          OnTipCallback callback) {
   if (!Connected()) {
     return;
   }
@@ -1924,10 +1951,8 @@ void RewardsServiceImpl::SaveRecurringTip(
   info->created_at = GetCurrentTimestamp();
 
   bat_ledger_->SaveRecurringTip(
-      std::move(info),
-      base::BindOnce(&RewardsServiceImpl::OnSaveRecurringTip,
-                     AsWeakPtr(),
-                     std::move(callback)));
+      std::move(info), base::BindOnce(&RewardsServiceImpl::OnSaveRecurringTip,
+                                      AsWeakPtr(), std::move(callback)));
 }
 
 void RewardsServiceImpl::OnMediaInlineInfoSaved(
@@ -2233,7 +2258,7 @@ bool RewardsServiceImpl::ShouldShowNotificationAddFunds() const {
 void RewardsServiceImpl::ShowNotificationAddFunds(bool sufficient) {
   if (sufficient) return;
 
-  base::Time next_time = base::Time::Now() + base::TimeDelta::FromDays(3);
+  base::Time next_time = base::Time::Now() + base::Days(3);
   profile_->GetPrefs()->SetTime(prefs::kAddFundsNotification, next_time);
   RewardsNotificationService::RewardsNotificationArgs args;
   notification_service_->AddNotification(
@@ -2384,17 +2409,15 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       continue;
     }
 
-    if (name == "short-retries") {
-      std::string lower = base::ToLowerASCII(value);
-      bool short_retries;
+    if (name == "retry-interval") {
+      int retry_interval;
+      bool success = base::StringToInt(value, &retry_interval);
 
-      if (lower == "true" || lower == "1") {
-        short_retries = true;
-      } else {
-        short_retries = false;
+      if (success && retry_interval > 0) {
+        SetRetryInterval(retry_interval);
       }
 
-      SetShortRetries(short_retries);
+      continue;
     }
 
     if (name == "development") {
@@ -2404,6 +2427,17 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       if (lower == "true" || lower == "1") {
         environment = ledger::type::Environment::DEVELOPMENT;
         SetEnvironment(environment);
+      }
+
+      continue;
+    }
+
+    if (name == "gemini-retries") {
+      int retries;
+      bool success = base::StringToInt(value, &retries);
+
+      if (success && retries >= 0) {
+        SetGeminiRetries(retries);
       }
 
       continue;
@@ -2471,23 +2505,22 @@ void RewardsServiceImpl::OnTipPublisherSaved(
     return;
   }
 
-  OnTip(publisher_key, amount, recurring);
+  OnTip(publisher_key, amount, recurring, base::DoNothing());
 }
 
-void RewardsServiceImpl::OnTip(
-    const std::string& publisher_key,
-    const double amount,
-    const bool recurring) {
+void RewardsServiceImpl::OnTip(const std::string& publisher_key,
+                               double amount,
+                               bool recurring,
+                               OnTipCallback callback) {
   if (!Connected()) {
     return;
   }
 
   if (recurring) {
-    SaveRecurringTip(publisher_key, amount, base::DoNothing());
-    return;
+    return SaveRecurringTip(publisher_key, amount, std::move(callback));
   }
 
-  bat_ledger_->OneTimeTip(publisher_key, amount, base::DoNothing());
+  bat_ledger_->OneTimeTip(publisher_key, amount, std::move(callback));
 }
 
 bool RewardsServiceImpl::Connected() const {
@@ -2504,9 +2537,9 @@ void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
   }
 
   bat_ledger_service_->SetTesting();
+  SetRetryInterval(1);
 
-  SetPublisherMinVisitTime(1);
-  SetShortRetries(true);
+  profile_->GetPrefs()->SetInteger(prefs::kMinVisitTime, 1);
 
   // this is needed because we are using braveledger_request_util::buildURL
   // directly in RewardsBrowserTest
@@ -2542,8 +2575,12 @@ void RewardsServiceImpl::GetReconcileInterval(
   bat_ledger_service_->GetReconcileInterval(std::move(callback));
 }
 
-void RewardsServiceImpl::GetShortRetries(GetShortRetriesCallback callback) {
-  bat_ledger_service_->GetShortRetries(std::move(callback));
+void RewardsServiceImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
+  bat_ledger_service_->GetRetryInterval(std::move(callback));
+}
+
+void RewardsServiceImpl::GetGeminiRetries(GetGeminiRetriesCallback callback) {
+  bat_ledger_service_->GetGeminiRetries(std::move(callback));
 }
 
 void RewardsServiceImpl::SetEnvironment(ledger::type::Environment environment) {
@@ -2558,8 +2595,12 @@ void RewardsServiceImpl::SetReconcileInterval(const int32_t interval) {
   bat_ledger_service_->SetReconcileInterval(interval);
 }
 
-void RewardsServiceImpl::SetShortRetries(bool short_retries) {
-  bat_ledger_service_->SetShortRetries(short_retries);
+void RewardsServiceImpl::SetRetryInterval(int32_t interval) {
+  bat_ledger_service_->SetRetryInterval(interval);
+}
+
+void RewardsServiceImpl::SetGeminiRetries(const int32_t retries) {
+  bat_ledger_service_->SetGeminiRetries(retries);
 }
 
 void RewardsServiceImpl::GetPendingContributionsTotal(
@@ -2795,11 +2836,16 @@ void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
                      std::move(callback)));
 }
 
+bool RewardsServiceImpl::IsAutoContributeSupported() const {
+  // Auto-contribute is currently not supported in bitFlyer regions
+  return !IsBitFlyerRegion();
+}
+
 std::string RewardsServiceImpl::GetLegacyWallet() {
   auto* dict = profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
 
   std::string json;
-  for (const auto& it : dict->DictItems()) {
+  for (auto it : dict->DictItems()) {
     base::JSONWriter::Write(std::move(it.second), &json);
   }
 
@@ -2881,12 +2927,13 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
 
   const auto url = GURL("brave:/" + path + query);
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
-    query_map[it.GetKey()] = it.GetUnescapedValue();
+    query_map[std::string(it.GetKey())] = it.GetUnescapedValue();
   }
 
   if (action == "authorization") {
     if (wallet_type == ledger::constant::kWalletUphold ||
-        wallet_type == ledger::constant::kWalletBitflyer) {
+        wallet_type == ledger::constant::kWalletBitflyer ||
+        wallet_type == ledger::constant::kWalletGemini) {
       ExternalWalletAuthorization(
           wallet_type,
           query_map,
@@ -2905,6 +2952,17 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
       wallet_type,
       action,
       {});
+}
+
+void RewardsServiceImpl::RequestAdsEnabledPopupClosed(bool ads_enabled) {
+  if (ads_enabled) {
+    // If Rewards were previously enabled, this call will only turn on Ads.
+    EnableRewards();
+  }
+
+  for (auto& observer : observers_) {
+    observer.OnRequestAdsEnabledPopupClosed(ads_enabled);
+  }
 }
 
 void RewardsServiceImpl::OnDisconnectWallet(
@@ -3015,7 +3073,7 @@ void RewardsServiceImpl::OnRecordBackendP3AStatsAC(
                                     auto_contributions);
 }
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 ledger::type::Environment RewardsServiceImpl::GetServerEnvironmentForAndroid() {
   auto result = ledger::type::Environment::PRODUCTION;
   bool use_staging = false;
@@ -3035,25 +3093,25 @@ ledger::type::Environment RewardsServiceImpl::GetServerEnvironmentForAndroid() {
 ledger::type::ClientInfoPtr GetDesktopClientInfo() {
   auto info = ledger::type::ClientInfo::New();
   info->platform = ledger::type::Platform::DESKTOP;
-  #if defined(OS_MAC)
-    info->os = ledger::type::OperatingSystem::MACOS;
-  #elif defined(OS_WIN)
-    info->os = ledger::type::OperatingSystem::WINDOWS;
-  #elif defined(OS_LINUX)
-    info->os = ledger::type::OperatingSystem::LINUX;
-  #else
-    info->os = ledger::type::OperatingSystem::UNDEFINED;
-  #endif
+#if BUILDFLAG(IS_MAC)
+  info->os = ledger::type::OperatingSystem::MACOS;
+#elif BUILDFLAG(IS_WIN)
+  info->os = ledger::type::OperatingSystem::WINDOWS;
+#elif BUILDFLAG(IS_LINUX)
+  info->os = ledger::type::OperatingSystem::LINUX;
+#else
+  info->os = ledger::type::OperatingSystem::UNDEFINED;
+#endif
 
   return info;
 }
 
 ledger::type::ClientInfoPtr RewardsServiceImpl::GetClientInfo() {
-  #if defined(OS_ANDROID)
-    return android_util::GetAndroidClientInfo();
-  #else
-    return GetDesktopClientInfo();
-  #endif
+#if BUILDFLAG(IS_ANDROID)
+  return android_util::GetAndroidClientInfo();
+#else
+  return GetDesktopClientInfo();
+#endif
 }
 
 void RewardsServiceImpl::UnblindedTokensReady() {
@@ -3295,44 +3353,22 @@ void RewardsServiceImpl::OnGetEventLogs(
   std::move(callback).Run(std::move(logs));
 }
 
-bool RewardsServiceImpl::SetEncryptedStringState(
-      const std::string& name,
-      const std::string& value) {
-  std::string encrypted_value;
-  if (!OSCrypt::EncryptString(value, &encrypted_value)) {
-    BLOG(0, "Couldn't encrypt value for " + name);
-    return false;
-  }
+absl::optional<std::string> RewardsServiceImpl::EncryptString(
+    const std::string& value) {
+  std::string encrypted;
+  if (OSCrypt::EncryptString(value, &encrypted))
+    return encrypted;
 
-  std::string encoded_value;
-  base::Base64Encode(encrypted_value, &encoded_value);
-
-  profile_->GetPrefs()->SetString(GetPrefPath(name), encoded_value);
-  return true;
+  return {};
 }
 
-std::string RewardsServiceImpl::GetEncryptedStringState(
-    const std::string& name) {
-  const std::string encoded_value =
-      profile_->GetPrefs()->GetString(GetPrefPath(name));
+absl::optional<std::string> RewardsServiceImpl::DecryptString(
+    const std::string& value) {
+  std::string decrypted;
+  if (OSCrypt::DecryptString(value, &decrypted))
+    return decrypted;
 
-  std::string encrypted_value;
-  if (!base::Base64Decode(encoded_value, &encrypted_value)) {
-    BLOG(0, "base64 decode failed for " + name);
-    return "";
-  }
-
-  if (encrypted_value.empty()) {
-    return "";
-  }
-
-  std::string value;
-  if (!OSCrypt::DecryptString(encrypted_value, &value)) {
-    BLOG(0, "Decrypting failed for " + name);
-    return "";
-  }
-
-  return value;
+  return {};
 }
 
 void RewardsServiceImpl::GetBraveWallet(GetBraveWalletCallback callback) {
@@ -3388,6 +3424,10 @@ void RewardsServiceImpl::SetAdsEnabled(const bool is_enabled) {
       AsWeakPtr()));
 }
 
+bool RewardsServiceImpl::IsAdsEnabled() const {
+  return profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled);
+}
+
 bool RewardsServiceImpl::IsRewardsEnabled() const {
   // This method will return true if either Ads or AC are enabled. We do not
   // currently check the value of the "enabled" pref because users do not have
@@ -3395,7 +3435,7 @@ bool RewardsServiceImpl::IsRewardsEnabled() const {
   if (profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled))
     return true;
 
-  if (profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled))
+  if (IsAdsEnabled())
     return true;
 
   return false;
@@ -3418,7 +3458,7 @@ void RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled(
   }
 }
 
-std::string RewardsServiceImpl::GetExternalWalletType() const {
+bool RewardsServiceImpl::IsBitFlyerRegion() const {
   int32_t current_country = country_id_;
 
   if (!current_country) {
@@ -3432,11 +3472,40 @@ std::string RewardsServiceImpl::GetExternalWalletType() const {
           country_codes::CountryCharsToCountryID(country.at(0), country.at(1));
 
       if (id == current_country)
-        return ledger::constant::kWalletBitflyer;
+        return true;
     }
+  }
+  return false;
+}
+
+bool RewardsServiceImpl::IsValidWalletType(
+    const std::string& wallet_type) const {
+  for (auto& provider : GetExternalWalletProviders()) {
+    if (wallet_type == provider)
+      return true;
+  }
+  return false;
+}
+
+std::string RewardsServiceImpl::GetExternalWalletType() const {
+  if (IsBitFlyerRegion()) {
+    return ledger::constant::kWalletBitflyer;
+  }
+
+  const std::string type =
+      profile_->GetPrefs()->GetString(prefs::kExternalWalletType);
+
+  if (IsValidWalletType(type)) {
+    return type;
   }
 
   return ledger::constant::kWalletUphold;
+}
+
+void RewardsServiceImpl::SetExternalWalletType(const std::string& wallet_type) {
+  if (IsValidWalletType(wallet_type)) {
+    profile_->GetPrefs()->SetString(prefs::kExternalWalletType, wallet_type);
+  }
 }
 
 }  // namespace brave_rewards

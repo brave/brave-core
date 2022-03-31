@@ -1,661 +1,416 @@
 {
-  "braveRewards": {
-    "message": "Brave Rewards",
-    "description": "Title in welcome screen for the panel"
+  "summary": {
+    "message": "Kokkuvõte",
+    "description": ""
   },
-  "welcomeButtonTextOne": {
-    "message": "Hakake kohe teenima!",
-    "description": "CTA on welcome screen in the panel, existing users"
+  "tip": {
+    "message": "Premeeri",
+    "description": ""
   },
-  "welcomeButtonTextTwo": {
-    "message": "Liituge Rewardsiga",
-    "description": "CTA on welcome screen in the panel, new users"
+  "unverifiedCreator": {
+    "message": "Kinnitamata looja",
+    "description": ""
   },
-  "welcomeDescOne": {
-    "message": "Saate reklaamide vaatamise eest preemiaid ja võite neid edasi anda, et toetada oma lemmiksisuloojaid.",
-    "description": "Entry text for welcome screen in the panel, existing user"
+  "verifiedCreator": {
+    "message": "Kinnitatud looja",
+    "description": ""
   },
-  "welcomeDescTwo": {
-    "message": "Nüüd saate privaatsust austavate reklaamide vaatamise eest tokeneid teenida.",
-    "description": "Entry text for welcome screen in the panel, new user"
+  "refreshStatus": {
+    "message": "Värskenda",
+    "description": ""
   },
-  "welcomeDescPoints": {
-    "message": "Nüüd saate privaatsust austavate reklaamide vaatamise eest punkte teenida.",
-    "description": "Entry text for welcome screen in the panel, points"
-  },
-  "welcomeFooterTextOne": {
-    "message": "Vaadake, mis on paremaks tehtud",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
-  },
-  "welcomeFooterTextTwo": {
-    "message": "Rohkem teavet",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
-  },
-  "welcomeHeaderOne": {
-    "message": "Brave Rewards on läbinud suure uuenduskuuri.",
-    "description": "Main header title for welcome screen in the panel, existing user"
-  },
-  "welcomeHeaderTwo": {
-    "message": "Kogege internetti uuel moel.",
-    "description": "Main header title for welcome screen in the panel, new user"
-  },
-  "yourWallet": {
-    "message": "Teie rahakott",
-    "description": "Title of wallet section where we display data about wallet"
-  },
-  "grants": {
-    "message": "Võimalused",
-    "description": "Title for grant section in wallet summary"
-  },
-  "details": {
-    "message": "Üksikasjad",
-    "description": "Title for grant section in wallet panel summary"
-  },
-  "yourBalance": {
-    "message": "Teie saldo",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "BAT-punktid",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "Neid saate kasutada Brave Rewardsis, et toetada lemmiksisuloojaid. BAT-punkte ei saa BAT-i vastu välja vahetada.",
-    "description": "Text for BAT Point helper message"
-  },
-  "on": {
-    "message": "sees",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "verifiedPublisher": {
-    "message": "Brave’i kinnitatud looja",
-    "description": "Tells user that this particular publisher is a Brave Verified Creator"
-  },
-  "rewardsContributeAttentionScore": {
-    "message": "Tähelepanu",
-    "description": "Label for auto contribute table attention for the publisher"
-  },
-  "donateMonthly": {
-    "message": "Igakuine panus",
-    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
-  },
-  "includeInAuto": {
-    "message": "Kaasa automaatsesse panustamisse",
-    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
-  },
-  "donateNow": {
-    "message": "Saada preemia ...",
-    "description": "CTA for sending tip form site banner"
-  },
-  "enableTips": {
-    "message": "Luba premeerimine",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "for": {
-    "message": "jaoks",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "rewardsSummary": {
-    "message": "Preemiate kokkuvõte",
-    "description": "Section title in wallet panel, which contains monthly rewards summary"
-  },
-  "monthApr": {
-    "message": "Aprill",
-    "description": "Month"
-  },
-  "monthAug": {
-    "message": "august",
-    "description": "Month"
-  },
-  "monthDec": {
-    "message": "detsember",
-    "description": "Month"
-  },
-  "monthFeb": {
-    "message": "veebruar",
-    "description": "Month"
-  },
-  "monthJan": {
-    "message": "jaanuar",
-    "description": "Month"
-  },
-  "monthJul": {
-    "message": "juuli",
-    "description": "Month"
-  },
-  "monthJun": {
-    "message": "juuni",
-    "description": "Month"
-  },
-  "monthMar": {
-    "message": "märts",
-    "description": "Month"
-  },
-  "monthMay": {
-    "message": "mai",
-    "description": "Month"
-  },
-  "monthNov": {
-    "message": "november",
-    "description": "Month"
-  },
-  "monthOct": {
-    "message": "oktoober",
-    "description": "Month"
-  },
-  "monthSep": {
-    "message": "september",
-    "description": "Month"
-  },
-  "tokenGrant": {
-    "message": "Valuuta $currency$ võimalused",
-    "description": "Title for grant notification",
+  "pendingTipText": {
+    "message": "Kõik saadetud preemiad jäävad ootele ja neid proovitakse 90 päeva jooksul automaatselt uuesti saata. $link_begin$Lisateave$link_end$",
+    "description": "",
     "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "Token"
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
       }
     }
   },
-  "tokenGrantClaimed": {
-    "message": "Kasutatud tokenivõimalused",
-    "description": "Title for grant section in wallet summary"
+  "pendingTipTitle": {
+    "message": "See looja ei ole veel registreerunud.",
+    "description": ""
   },
-  "pointGrantClaimed": {
-    "message": "Kasutatud punktivõimalused",
-    "description": "Title for point grant section in wallet summary"
+  "pendingTipTitleRegistered": {
+    "message": "See looja ei ole praegu konfigureeritud teie Preemiate kolmandast osapoolest krüptorahakoti teenusest preemiaid saama.",
+    "description": ""
   },
-  "earningsAds": {
-    "message": "Reklaamidest saadud tulu",
-    "description": "Title for ads section in wallet summary"
+  "platformPublisherTitle": {
+    "message": "$name$ platvormil $platform$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "platform": {
+        "content": "$2"
+      }
+    }
   },
-  "rewardsContribute": {
-    "message": "Automaatne panustamine",
-    "description": "Title for auto contribute section in wallet summary"
+  "attention": {
+    "message": "Tähelepanu",
+    "description": ""
   },
-  "oneTimeDonation": {
-    "message": "Ühekordsed preemiad",
-    "description": "Title for one time tips section in wallet summary"
+  "sendTip": {
+    "message": "Saada preemia",
+    "description": ""
   },
-  "expiresOn": {
-    "message": "aegub",
-    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
+  "includeInAutoContribute": {
+    "message": "Kaasa automaatsesse panustamisse",
+    "description": ""
   },
-  "recurringDonations": {
-    "message": "Igakuised panused",
-    "description": "Title for monthly contributions section in wallet summary"
-  },
-  "off": {
-    "message": "Väljas",
-    "description": "Label used in toggle indicating that toggle is off"
+  "monthlyTip": {
+    "message": "Igakuine preemia",
+    "description": ""
   },
   "ok": {
-    "message": "ok",
-    "description": "Used in notification to dismiss notification"
-  },
-  "braveAdsLaunchMsg": {
-    "message": "Nüüd võid teenida reklaamide vaatamisega.",
-    "description": "Message for ads launch notification"
-  },
-  "braveAdsTitle": {
-    "message": "Brave'i reklaamid",
-    "description": "Notification title when we display info about ads"
-  },
-  "braveContributeTitle": {
-    "message": "Automaatne panustamine",
-    "description": "Notification title when we display info about auto contribution"
-  },
-  "contributeNotificationSuccess": {
-    "message": "Olete panustanud $amount$ $currency$",
-    "description": "We show this string in the notification when contribution is successful",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10.0"
-      },
-      "currency": {
-        "content": "$2",
-        "example": "BAT"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "Teid ootab preemia.",
-    "description": "Description for new grant notification"
-  },
-  "backupNow": {
-    "message": "Varunda kohe",
-    "description": "Notification button text when we ask user to backup wallet"
-  },
-  "backupWalletTitle": {
-    "message": "Rahakoti varundamine",
-    "description": "Notification title when we ask user to backup wallet"
-  },
-  "backupWalletNotification": {
-    "message": "Varundage oma Brave'i rahakotti",
-    "description": "Description for backup wallet notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Rohkem teavet",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Jõuti seadmete ülemmäärani",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Rahakotti ei saa kinnitada, sest olete jõudnud kinnitatud seadmete ülemmäärani.",
-    "description": "Description for device limit reached notification"
-  },
-  "insufficientFundsNotification": {
-    "message": "Teie Brave Rewardsi konto ootab sissemakset.",
-    "description": "Description for new insufficient funds notification"
-  },
-  "insufficientFunds": {
-    "message": "Ebapiisavad vahendid",
-    "description": "Title for insufficient funds notification"
-  },
-  "braveRewardsCreatingText": {
-    "message": "Rahakoti loomine",
-    "description": "Used in a button displaying wallet creation process"
-  },
-  "contributeNotificationError": {
-    "message": "Panustamise töötlemisel tekkis tõrge.",
-    "description": "We show this string in notification when contribution fails"
-  },
-  "contributeNotificationNotEnoughFunds": {
-    "message": "Automaatse panustamise ja igakuise panuse plaanilist makset ei saanud teha ebapiisavate vahendite tõttu. Proovime uuesti 30 päeva pärast.",
-    "description": "We show this string in the notification when you don't have enough funds for contribution"
-  },
-  "contributeNotificationTipError": {
-    "message": "Preemiat ei saanud saata. Palun proovige hiljem uuesti.",
-    "description": "We show this string in notification when tip fails"
-  },
-  "noActivity": {
-    "message": "Tegevusi veel pole...",
-    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
-  },
-  "captchaDrag": {
-    "message": "Lohistage BATi logo järgmisesse kohta:",
-    "description": "Directs the user to drag the BAT icon"
-  },
-  "captchaProveHuman": {
-    "message": "Tõestage, et olete inimene!",
-    "description": "Cosmetic text for captcha prompt"
-  },
-  "captchaTarget": {
-    "message": "siht.",
-    "description": "Captcha Target"
-  },
-  "captchaMissedTarget": {
-    "message": "Hmm… Mitte päris nii. Proovige uuesti.",
-    "description": "Message upon failing captcha"
-  },
-  "claim": {
-    "message": "Hangi",
-    "description": "Claim text"
-  },
-  "newTokenGrant": {
-    "message": "Tasuta tokenivõimalus",
-    "description": "Token grant label"
-  },
-  "grantExpire": {
-    "message": "Võimaluse aegumiskuupäev",
-    "description": "Grant expiry label"
-  },
-  "grantGeneralErrorButton": {
     "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGeneralErrorText": {
-    "message": "Brave Rewards ei ole praegu saadaval. Proovige hiljem uuesti.",
-    "description": "Error text when user is having problems claiming a grant."
-  },
-  "grantGeneralErrorTitle": {
-    "message": "Oi, midagi on valesti. Palun proovige hiljem uuesti.",
-    "description": "Error title when user is having problems claiming a grant."
-  },
-  "unVerifiedCheck": {
-    "message": "Värskenda olekut",
-    "description": "Text of link that allows to check verified status of unverified publisher"
-  },
-  "unVerifiedPublisher": {
-    "message": "Kinnitamata",
-    "description": "Status of the publisher shown in the panel"
-  },
-  "unVerifiedText": {
-    "message": "See looja pole veel end Brave'i kasutajate sissemaksete saajaks registreerinud. Kogu teie saadetud raha jääb kuni kinnitamiseni teie rahakotti.",
-    "description": "Notice about unverified publisher."
-  },
-  "unVerifiedTextMore": {
-    "message": "Lisateave.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "reservedAmountText": {
-    "message": "Olete määranud {{reservedAmount}} {{currency}}i loojatele, kes pole end veel sissemaksete saajaks registreerinud. Teie brauser üritab panustada seni, kuni nad kinnitavad või kuni 90 päeva on möödunud.",
-    "description": "Notification about how much BAT do you have reserved"
-  },
-  "reservedMoreLink": {
-    "message": "Lisateave.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "disabledPanelOff": {
-    "message": "Väljas",
-    "description": "Off state text for Panel's disabled state"
-  },
-  "disabledPanelSettings": {
-    "message": "Seaded",
-    "description": "Settings Link for Panel's disabled state"
-  },
-  "disabledPanelText": {
-    "message": "Te ei kogu praegu sirvimise ajal mingeid hüvesid. Lülitage preemiad tagasi sisse.",
-    "description": "Text for Panel's disabled state"
-  },
-  "disabledPanelTitle": {
-    "message": "Brave Rewards on",
-    "description": "Title for Panel's disabled state"
-  },
-  "walletFailedTitle": {
-    "message": "Rahakoti loomine ebaõnnestus.",
-    "description": "Failure title for wallet creation"
-  },
-  "walletFailedButton": {
-    "message": "Proovi uuesti",
-    "description": "Button for re-try after wallet creation failed"
-  },
-  "addFunds": {
-    "message": "Lisa vahendeid",
-    "description": "Button for adding funds"
-  },
-  "rewardsSettings": {
-    "message": "Preemiate seaded",
-    "description": "Button for opening settings page"
-  },
-  "earningsClaimDefault": {
-    "message": "Teie reklaamide eest saadud preemiad on siin!",
-    "description": "Panel notification text for Ads grant"
-  },
-  "and": {
-    "message": "ja",
-    "description": "The word 'and'"
-  },
-  "braveRewardsSubTitle": {
-    "message": "Saage sirvimise eest preemiaid!",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "disabledPanelTextTwo": {
-    "message": "Teenige privaatsust austavaid reklaame vaadates ning andke edasi, et toetada oma lemmiksisuloojaid.",
-    "description": "Text block for wallet disabled panel"
-  },
-  "enableRewards": {
-    "message": "Luba Brave Rewards",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "privacyPolicy": {
-    "message": "privaatsuspoliitika",
-    "description": "Privacy Policy"
-  },
-  "serviceText": {
-    "message": "Vajutades \"Luba Brave Rewards\", kinnitate, et olete lugenud ning nõustute",
-    "description": "Terms of service main text"
-  },
-  "termsOfService": {
-    "message": "teenusetingimustega",
-    "description": "Terms of Service"
-  },
-  "welcomeBack": {
-    "message": "Tere tulemast tagasi!",
-    "description": "Title message for wallet disabled panel"
-  },
-  "tipsProcessedNotification": {
-    "message": "Igakuised panused on töödeldud!",
-    "description": "Message for monthly contributions processed notification"
-  },
-  "contributionTips": {
-    "message": "Panused ja preemiad",
-    "description": "Title for monthly contributions processed notification"
-  },
-  "serviceTextPanelWelcome": {
-    "message": "Klõpsates „Liitu Rewardsiga“ kinnitate, et olete lugenud ning nõustute",
-    "description": "Terms of service panel opt-in text"
-  },
-  "bat": {
-    "message": "BAT",
-    "description": "BAT text for displaying converted tip amount."
-  },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
-  "turnOnAds": {
-    "message": "Lülita reklaamid sisse ",
-    "description": "Prompt to turn on Ads via notification"
-  },
-  "adsEarnings": {
-    "message": "reklaamidest teenitud",
-    "description": "Description text for ad grants in grant details"
-  },
-  "twitterTipsHoverText": {
-    "message": "Premeeri seda säutsu",
-    "description": "Hover text for Twitter tips action"
-  },
-  "twitterTipsIconLabel": {
-    "message": "Premeeri",
-    "description": "Icon label for Twitter tips"
-  },
-  "redditTipsHoverText": {
-    "message": "Premeeri seda postitust",
-    "description": "Hover text for Reddit tips action"
-  },
-  "redditTipsIconLabel": {
-    "message": "Premeeri",
-    "description": "Icon label for Reddit tips"
-  },
-  "githubTipsHoverText": {
-    "message": "Saada preemia",
-    "description": "Hover text for GitHub tips action"
-  },
-  "githubTipsIconLabel": {
-    "message": "Premeeri",
-    "description": "Icon label for GitHub tips"
-  },
-  "verifiedPublisherNotification": {
-    "message": "Looja $name$ kinnitas hiljuti",
-    "description": "Notification text that tells user which publisher just verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "brave.com"
-      }
-    }
-  },
-  "pendingNotEnoughFundsNotification": {
-    "message": "Teil on ebapiisavate vahendite tõttu ootel preemiaid.",
-    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
-  },
-  "pendingContributionTitle": {
-    "message": "Ootel panus",
-    "description": "Notification title for pending contribution type"
-  },
-  "grantFinishTitleUGP": {
-    "message": "See on hea päev!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "grantFinishTextUGP": {
-    "message": "Teie valuuta $currency$ võimalus on teel.",
-    "description": "Cosmetic text indicating grant funds are on the way",
-    "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "token"
-      }
-    }
-  },
-  "grantFinishTokenTitleUGP": {
-    "message": "Tasuta tokenivõimalus",
-    "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Tasuta punktivõimalus",
-    "description": "Point title on success screen"
-  },
-  "grantFinishTitleAds": {
-    "message": "Teenisite reklaamipreemia!",
-    "description": "Cosmetic text upon captcha success for ads"
-  },
-  "grantFinishTextAds": {
-    "message": "Preemia saadetakse teie Brave Rewardsi rahakotti.",
-    "description": "Cosmetic text indicating ads funds are on the way"
-  },
-  "grantFinishTokenTitleAds": {
-    "message": "Teie preemiasumma",
-    "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "kinnita",
-    "description": "CTA in the footer to verify"
-  },
-  "walletButtonDisconnected":  {
-    "message": "Ühendus katkestatud",
-    "description": "CTA status button"
-  },
-  "walletButtonUnverified":  {
-    "message": "Kinnita rahakott",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletButtonVerified":  {
-    "message": "Rahakott on kinnitatud",
-    "description": "Displayed in wallet that tells users that he is verified"
-  },
-  "walletGoToProvider":  {
-    "message": "Ava minu konto: $provider$",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnect":  {
-    "message": "Katkesta Brave Rewardsi ühendus",
-    "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerified":  {
-    "message": "Kinnitatud",
-    "description": "Status button that tells user that he is verified"
-  },
-  "walletVerifiedNotification":  {
-    "message": "Teie rahakott on kinnitatud!",
-    "description": "Title for notification when wallet becomes verified"
-  },
-  "walletVerifiedTextNotification":  {
-    "message": "Palju õnne! Teie $name$ rahakoti kinnitamine õnnestus ja te saate nüüd vahendeid lisada ja välja võtta.",
-    "description": "Title for notification when wallet becomes verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnectedNotification":  {
-    "message": "Oi-oi. Teie rahakotiga ei saa ühendust.",
-    "description": "Title for notification when wallet is disconnected."
-  },
-  "walletDisconnectedTextNotification":  {
-    "message": "Ärge heitke meelt. Selle põhjuseks võib olla mistahes turvalisuse tõrge. Rahakoti uuesti ühendamine lahendab selle probleemi.",
-    "description": "Title for notification when wallet is disconnected"
-  },
-  "connectedText":  {
-    "message": "See Brave’i kinnitatud looja pole veel oma kontot Brave’i kasutajatelt panuste saamiseks konfigureerinud. Teie saadetud preemiad jäävad teie rahakotti, kuni looja on protsessi lõpetanud.",
-    "description": "Text shown for connected publishers that are not fully verified in the panel"
-  },
-  "walletGoToVerifyPage":  {
-    "message": "Lõpetage rahakoti kinnitamine",
-    "description": "CTA for completing wallet verification"
+    "description": ""
   },
   "set": {
-    "message": "Määra…",
-    "description": "Button text for setting monthly contribution"
+    "message": "Sea",
+    "description": ""
   },
-  "tokens":  {
-    "message": "tokenid",
-    "description": "Standard tokens text"
+  "changeAmount": {
+    "message": "Muuda summat",
+    "description": ""
   },
-  "point":  {
-    "message": "Punkt",
-    "description": "BAT Point text"
+  "cancel": {
+    "message": "Tühista",
+    "description": ""
   },
-  "token":  {
-    "message": "Luba",
-    "description": "BAT Token text"
+  "grantCaptchaTitle": {
+    "message": "Kinnitage, et olete inimene",
+    "description": ""
   },
-  "points":  {
-    "message": "punkti",
-    "description": "BAT Points text"
+  "grantCaptchaFailedTitle": {
+    "message": "Hmm… Mitte päris nii. Proovige uuesti.",
+    "description": ""
   },
-  "tokenGrants":  {
-    "message": "Tokenivõimalused",
-    "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Punktivõimalused",
-    "description": "BAT Points Grant Text"
-  },
-  "greetingsVerified":  {
-    "message": "Tere, $name$!",
-    "description": "Greetings for external wallet popup",
+  "grantCaptchaHint": {
+    "message": "Lohistage BAT-i ikoon sihtmärgile $hint$.",
+    "description": "",
     "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "John"
+      "hint": {
+        "content": "$1"
       }
     }
   },
-  "cancel":  {
-    "message": "Tühista",
-    "description": "Text for cancel button"
+  "grantCaptchaPassedTitleUGP": {
+    "message": "See on hea päev!",
+    "description": ""
   },
-  "changeAmount":  {
-    "message": "Muuda summat",
-    "description": "Button text for changing monthly contribution amount"
+  "grantCaptchaPassedTextUGP": {
+    "message": "Teie tokenitoetus on teel.",
+    "description": ""
   },
-  "login":  {
-    "message": "Sisselogimine",
-    "description": "Text for login button"
+  "grantCaptchaAmountUGP": {
+    "message": "Tasuta tokenivõimalus",
+    "description": ""
   },
-  "loginMessageTitle":  {
-    "message": "Rahakoti kinnitamine võimaldab sul hallata oma raha tõhusamalt.",
-    "description": "Text for login button"
+  "grantCaptchaPassedTitleAds": {
+    "message": "Teenisite reklaamipreemia!",
+    "description": ""
   },
-  "loginMessageText":  {
-    "message": "Upholdi konto loomiseks on vaja vähemalt $amount$ BAT-i. Kui teil on juba kinnitatud Upholdi konto, siis jätkake sisselogimist.",
-    "description": "Text for login button",
+  "grantCaptchaPassedTextAds": {
+    "message": "Teie preemia on teel.",
+    "description": ""
+  },
+  "grantCaptchaAmountAds": {
+    "message": "Teie preemiasumma",
+    "description": ""
+  },
+  "grantCaptchaExpiration": {
+    "message": "Võimaluse aegumiskuupäev",
+    "description": ""
+  },
+  "grantCaptchaErrorTitle": {
+    "message": "Oi, midagi on valesti. Palun proovige hiljem uuesti.",
+    "description": ""
+  },
+  "grantCaptchaErrorText": {
+    "message": "Brave Rewards ei ole praegu saadaval. Proovige hiljem uuesti.",
+    "description": ""
+  },
+  "rewardsPaymentCheckStatus": {
+    "message": "Kontrolli olekut",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Palju õnne! Teie preemiad on kohal (kuu: $month$)!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Teie preemiasumma $amount$ (kuu: $month$) saabub $days$ jooksul",
+    "description": "",
     "placeholders": {
       "amount": {
-        "content": "$1",
-        "example": "15"
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
       }
     }
   },
-  "walletConnected":  {
-    "message": "Ühendatud",
-    "description": "Status button that tells user that he is connected"
+  "rewardsPaymentProcessing": {
+    "message": "Teie preemiasumma $amount$ (kuu: $month$) on teel. Hoidke silm peal!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
   },
-  "walletPending":  {
-    "message": "Ootel",
-    "description": "Status button that tells user that he is currently pending"
-  },
-  "walletVerificationNote3":  {
-    "message": "Märkus. Kui annate volituse, näeb $provider$ teie tehinguid. Näiteks näeb ta saajat ja preemiate summat.",
-    "description": "Displayed in login modal for external wallet providers",
+  "walletAccountLink": {
+    "message": "Ava minu konto: $provider$",
+    "description": "",
     "placeholders": {
       "provider": {
-        "content": "$1",
-        "example": "Uphold"
+        "content": "$1"
       }
     }
+  },
+  "walletAddFunds": {
+    "message": "Lisa vahendeid",
+    "description": ""
+  },
+  "walletAutoContribute": {
+    "message": "Automaatne panustamine",
+    "description": ""
+  },
+  "walletCompleteVerificationLink": {
+    "message": "Kinnitamise lõpuleviimiseks avage $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Palun kinnitage oma identiteet, et hakata preemiaid saama.",
+    "description": ""
+  },
+  "walletDisconnected": {
+    "message": "Välja loginud",
+    "description": ""
+  },
+  "walletDisconnectLink": {
+    "message": "Katkesta ühendus teenusepakkujaga $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletEstimatedEarnings": {
+    "message": "Hinnanguline tulu",
+    "description": ""
+  },
+  "walletLogIntoYourAccount": {
+    "message": "Logige sisse oma teenusepakkuja $provider$ kontole",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletMonthlyTips": {
+    "message": "Igakuised preemiad",
+    "description": ""
+  },
+  "walletOneTimeTips": {
+    "message": "Ühekordsed preemiad",
+    "description": ""
+  },
+  "walletPending": {
+    "message": "Ootel",
+    "description": ""
+  },
+  "walletRewardsFromAds": {
+    "message": "Preemiad Adsilt",
+    "description": ""
+  },
+  "walletRewardsSummary": {
+    "message": "Preemiate kokkuvõte",
+    "description": ""
+  },
+  "walletUnverified": {
+    "message": "Kinnitamata",
+    "description": ""
+  },
+  "walletVerified": {
+    "message": "Kinnitatud",
+    "description": ""
+  },
+  "walletYourBalance": {
+    "message": "Teie saldo",
+    "description": ""
+  },
+  "notificationAddFunds": {
+    "message": "Lisa vahendeid",
+    "description": ""
+  },
+  "notificationReconnect": {
+    "message": "Ühenda uuesti",
+    "description": ""
+  },
+  "notificationClaimRewards": {
+    "message": "Võta preemiad vastu",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Võta tokenid vastu",
+    "description": ""
+  },
+  "notificationAddFundsTitle": {
+    "message": "Ebapiisavad vahendid",
+    "description": ""
+  },
+  "notificationAddFundsText": {
+    "message": "Teie Brave Rewardsi konto ootab sissemakset.",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedTitle": {
+    "message": "Automaatne panustamine",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedText": {
+    "message": "Olete panustanud $amount$.",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationBackupWalletTitle": {
+    "message": "Varunda Brave'i Preemiad",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Varundage oma Brave'i Preemiad.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Varunda kohe",
+    "description": ""
+  },
+  "notificationWalletDisconnectedTitle": {
+    "message": "Olete välja logitud",
+    "description": ""
+  },
+  "notificationWalletDisconnectedText": {
+    "message": "Nii võib juhtuda konto turvalisena hoidmiseks. Uuesti ühendamiseks klõpsake allpool.",
+    "description": ""
+  },
+  "notificationWalletDisconnectedAction": {
+    "message": "Ühenda uuesti",
+    "description": ""
+  },
+  "notificationWalletVerifiedTitle": {
+    "message": "Teie Brave'i Preemiad on kinnitatud!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Teie Brave'i Preemiate kinnitamine teenusepakkuja $provider$ juures õnnestus.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationTokenGrantTitle": {
+    "message": "Tokenivõimalus on saadaval!",
+    "description": ""
+  },
+  "notificationAdGrantAmount": {
+    "message": "Kuu $month$ preemiad: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
+  },
+  "notificationAdGrantTitle": {
+    "message": "Teie reklaamide preemiad kuu $month$ eest on laekunud!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationGrantDaysRemaining": {
+    "message": "Vastuvõtmiseks jäänud aeg: $days$",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationInsufficientFundsText": {
+    "message": "Automaatsete panustamiste ja igakuiste preemiate kavandatud maksed ei saanud ebapiisavate vahendite tõttu teostada. Proovime uuesti 30 päeva pärast.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedText": {
+    "message": "Panustamise töötlemisel tekkis tõrge.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Igakuine preemia nurjus",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedTitle": {
+    "message": "Panused ja preemiad",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedText": {
+    "message": "Teie igakuised preemiad on töödeldud.",
+    "description": ""
+  },
+  "notificationPublisherVerifiedTitle": {
+    "message": "Ootel panus",
+    "description": ""
+  },
+  "notificationPublisherVerifiedText": {
+    "message": "Looja $publisher_name$ kinnitati hiljuti.",
+    "description": "",
+    "placeholders": {
+      "publisher_name": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationPendingTipFailedTitle": {
+    "message": "Ebapiisavad vahendid",
+    "description": ""
+  },
+  "notificationPendingTipFailedText": {
+    "message": "Teil on ebapiisavate vahendite tõttu ootel preemiaid.",
+    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "Teenige ja andke tokeneid",
@@ -796,11 +551,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Kinnitage oma rahakott",
+    "message": "Kinnita",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Et võtta välja reklaamide vaatamise eest teenitud tokeneid, peate kinnitama oma rahakoti.",
+    "message": "Reklaamide vaatamise eest teenitud BAT-ide väljavõtmiseks peate kinnitama Brave'i Preemiad.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -808,7 +563,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Kinnita minu rahakott",
+    "message": "Kinnita Brave'i Preemiad",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -816,7 +571,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Kui kinnitate oma rahakoti ja seote selle bitFlyeri kontoga, saate Brave Rewardsi kaudu teenitud tokeneid lihtsamalt säilitada ja hallata.",
+    "message": "Kui kinnitate oma Brave'i Preemiate konto ning seote selle bitFlyeri kontoga, saate Brave'i Preemiate kaudu teenitud BAT-e lihtsamalt säilitada ja hallata.",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {
@@ -831,16 +586,90 @@
       }
     }
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards läheb Jaapanis üle uuele süsteemile.",
-    "description": "Header text for BAP deprecation warning message"
+  "captchaMaxAttemptsExceededText": {
+    "message": "Paistab, et see ei toimi, Brave Ads jääb peatatuks. Võtke meiega ühendust, kui vajate robotilõksuga abi.",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Lisateave",
-    "description": "Link to learn more about BAP deprecation"
+  "captchaMaxAttemptsExceededTitle": {
+    "message": "Katsete maksimumarv on ületatud",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Kasutage oma BAP-d ära 13. märtsiks. Pärast seda BAP-de kasutamine lõpetatakse.",
-    "description": "Text for BAP deprecation popup"
+  "captchaSolvedTitle": {
+    "message": "Lahendatud!",
+    "description": ""
+  },
+  "captchaSolvedText": {
+    "message": "Nüüd Ads jätkab ja saate jälle tulu. Aitäh, et aitate meil kaitsta Brave Rewardsi ja privaatsuspõhiseid reklaame.",
+    "description": ""
+  },
+  "captchaContactSupport": {
+    "message": "Võtke ühendust klienditoega",
+    "description": ""
+  },
+  "captchaDismiss": {
+    "message": "Loobu",
+    "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Tasuta kõne alustamiseks lülitage sisse Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Brave Rewardsiga teenite privaatse reklaami vaatamise eest tokeneid (teie andmed on kaitstud). Need tokenid saate muuta sularahaks või kinkekaartideks või koguni anda preemiat oma lemmikveebisaitidele. Ei mingit jälgimist. Ei mingit aeglasemaks muutumist.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Lülita Rewards sisse",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Lubamisega nõustute $tos_link_begin$teenusetingimuste$tos_link_end$ ja $pp_link_begin$privaatsuspõhimõtetega$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Tasuta kõne alustamiseks lubage Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Brave Private Adsiga teenite privaatse reklaami vaatamise eest tokeneid (teie andmed on kaitstud). Need tokenid saate muuta sularahaks või kinkekaartideks või koguni anda preemiat oma lemmikveebisaitidele. Ei mingit jälgimist. Ei mingit aeglasemaks muutumist.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Lülita Brave'i privaatreklaamid sisse",
+    "description": ""
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Saate nüüd alustada tasuta kõnet",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Brave'i vestluses jätkamiseks puudutage mis tahes kohta ekraanil.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Kas soovite lisateavet Brave Rewardsi kohta? $tour_link_begin$Tehke kiire ringkäik$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

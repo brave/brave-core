@@ -11,18 +11,34 @@ import {
   Footer
 } from './modal'
 import { Page, PageWrapper } from './page'
-import { Grid, Grid2Columns, HeaderGrid, ButtonGroup } from './grid'
+import {
+  Grid,
+  Grid2Columns,
+  Grid3Columns,
+  HeaderGrid,
+  ButtonGroup,
+  ToggleGroup,
+  IconText,
+  TorHelpText,
+  TorStatusContainer,
+  TorStatusGrid,
+  TorStatusIndicator,
+  TorStatusText
+} from './grid'
 import {
   Box,
   Content,
+  ControlBox,
   HeaderBox,
   DuckDuckGoImage,
   TorLockImage,
+  PrivacyEyeImage,
   PrivateImage,
   TorImage,
   SubTitle,
   Title,
   Text,
+  ControlText,
   Separator,
   PurpleButton,
   FakeButton,
@@ -39,20 +55,31 @@ export {
   PageWrapper,
   Grid,
   Grid2Columns,
+  Grid3Columns,
   HeaderGrid,
   ButtonGroup,
+  ToggleGroup,
+  IconText,
   Box,
   Content,
+  ControlBox,
   HeaderBox,
   DuckDuckGoImage,
   TorLockImage,
+  PrivacyEyeImage,
   PrivateImage,
   TorImage,
   SubTitle,
   Title,
   Text,
+  ControlText,
   Separator,
   FakeButton,
   PurpleButton,
-  Link
+  Link,
+  TorHelpText,
+  TorStatusContainer,
+  TorStatusGrid,
+  TorStatusIndicator,
+  TorStatusText
 }

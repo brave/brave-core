@@ -11,10 +11,16 @@
 
 #include "base/command_line.h"
 #include "base/files/file_util.h"
+#include "base/process/kill.h"
 #include "base/process/launch.h"
+#include "base/version.h"
 #include "brave/components/services/ipfs/ipfs_service_utils.h"
+#include "build/build_config.h"
 
 namespace {
+
+const char kRepoLockFile[] = "repo.lock";
+const char kVersionWithAgentSuffixSupport[] = "0.10.0";
 
 bool LaunchProcessAndExit(const base::FilePath& path,
                           std::initializer_list<std::string> args,
@@ -89,20 +95,26 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
   }
 
   base::LaunchOptions options;
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   options.environment[L"IPFS_PATH"] = data_path.value();
 #else
   options.environment["IPFS_PATH"] = data_path.value();
 #endif
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   options.kill_on_parent_death = true;
 #endif
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   options.start_hidden = true;
 #endif
 
   // Check if IPFS configs are ready, if not, run ipfs init to initialize them.
   base::FilePath config_path = config->config_path;
+
+  if (base::PathExists(data_path.AppendASCII(kRepoLockFile))) {
+    base::KillProcesses(config->binary_path.BaseName().value(), 1, nullptr);
+    base::DeleteFile(data_path.AppendASCII(kRepoLockFile));
+  }
+
   if (!base::PathExists(config_path)) {
     // run ipfs init to gen config
     if (!LaunchProcessAndExit(config->binary_path, {"init"}, options)) {
@@ -148,10 +160,20 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
 
   // Launch IPFS daemon.
   base::CommandLine args(config->binary_path);
+
   args.AppendArg("daemon");
   args.AppendArg("--migrate=true");
   args.AppendArg("--enable-gc");
   args.AppendArg("--routing=dhtclient");
+
+  auto version = ipfs::GetVersionFromNodeFilename(
+      config->binary_path.BaseName().MaybeAsASCII());
+
+  if (!version.empty() &&
+      base::Version(version) >= base::Version(kVersionWithAgentSuffixSupport)) {
+    args.AppendArg("--agent-version-suffix=brave");
+  }
+
   base::Process ipfs_process = base::LaunchProcess(args, options);
   bool result = ipfs_process.IsValid();
 

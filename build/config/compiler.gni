@@ -6,5 +6,5 @@
 # Adjusts compiler flags in //build/config/compiler:chromium_code.
 brave_removed_chromium_code_cflags = []
 if (is_clang) {
-  brave_removed_chromium_code_cflags += [ "-Wunreachable-code" ]
+  brave_removed_chromium_code_cflags += [ "-Wunreachable-code-aggressive" ]
 }

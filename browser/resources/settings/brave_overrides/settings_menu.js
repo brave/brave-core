@@ -14,17 +14,29 @@ function createMenuElement (title, href, iconName, pageVisibilitySection) {
     menuEl.setAttribute('hidden', `[[!pageVisibility.${pageVisibilitySection}]]`)
   }
   menuEl.href = href
-  const child = document.createElement('iron-icon')
-  child.setAttribute('icon', iconName)
-  menuEl.appendChild(child)
+  menuEl.setAttribute('role', 'menuitem')
+  menuEl.setAttribute('class', 'cr-nav-menu-item')
+  const iconChild = document.createElement('iron-icon')
+  iconChild.setAttribute('icon', iconName)
+  menuEl.appendChild(iconChild)
   const text = document.createTextNode(title)
   menuEl.appendChild(text)
+  const paperRippleChild = document.createElement('paper-ripple')
+  menuEl.appendChild(paperRippleChild)
   return menuEl
 }
 
 function getMenuElement (templateContent, href) {
-  const menuEl = templateContent.querySelector(`a[href="${href}"]`)
+  let menuEl = templateContent.querySelector(`a[href="${href}"]`)
   if (!menuEl) {
+    // Search templates
+    const templates = templateContent.querySelectorAll('template')
+    for (const template of templates) {
+      menuEl = template.content.querySelector(`a[href="${href}"]`)
+      if (menuEl) {
+        return menuEl
+      }
+    }
     console.error(`[Brave Settings Overrides] Could not find menu item '${href}'`)
   }
   return menuEl
@@ -49,6 +61,28 @@ RegisterStyleOverride(
         padding: 30px !important;
       }
 
+      .cr-nav-menu-item {
+        min-height: 20px !important;
+        border-end-end-radius: 0px !important;
+        border-start-end-radius: 0px !important;
+        box-sizing: content-box !important;
+        overflow: visible !important;
+      }
+
+      .cr-nav-menu-item:hover {
+        background: transparent !important;
+      }
+
+      .cr-nav-menu-item[selected] {
+        --iron-icon-fill-color: var(--cr-link-color) !important;
+        color: var(--cr-link-color) !important;
+        background: transparent !important;
+      }
+
+      .cr-nav-menu-item paper-ripple {
+        display: none !important;
+      }
+
       @media (prefers-color-scheme: dark) {
         :host {
           --settings-nav-item-color: #F4F4F4 !important;
@@ -65,23 +99,53 @@ RegisterStyleOverride(
         padding-bottom: 0 !important;
         padding-top: 0 !important;
         padding-inline-start: 0 !important;
+        position: relative; !important;
+      }
+
+      a[href]:focus-visible {
+        box-shadow: 0 0 0 4px rgba(160, 165, 235, 1) !important;
+        outline: none !important;
+        border-radius: 6px !important;
       }
 
       a[href].iron-selected {
-        color: var(--settings-nav-item-color) !important;
+        color: none;
+        background: linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%) !important;
+
+        -webkit-background-clip: text !important;;
+        -webkit-text-fill-color: transparent !important;
         font-weight: 600 !important;
       }
 
+      a:hover, iron-icon:hover {
+        color: rgba(76, 84, 210, 1) !important;
+      }
+
       iron-icon {
-        color: var(--settings-nav-item-color);
         margin-inline-end: 16px !important;
         width: 20px;
         height: 20px;
       }
 
+      a[href].iron-selected::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: calc(-1 * var(--brave-settings-menu-padding));
+        transform: translateY(-50%);
+        display: block;
+        height: 170%;
+        width: 4px;
+        background: linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%);
+        border-radius: 0px 2px 2px 0px;
+      }
+
       @media (prefers-color-scheme: dark) {
         a[href].iron-selected iron-icon {
           color: var(--settings-nav-item-color) !important;
+        }
+        a:hover, iron-icon:hover {
+          color: #737ADE !important;
         }
       }
 
@@ -175,21 +239,6 @@ RegisterPolymerTemplateModifications({
       'newTab'
     )
     appearanceBrowserEl.insertAdjacentElement('afterend', newTabEl)
-    // Add Sync and Help Tips item
-    const helpTipsEl = createMenuElement(
-      loadTimeData.getString('braveHelpTips'),
-      '/braveHelpTips',
-      'brave_settings:help',
-      'braveHelpTips',
-    )
-    const syncEl = createMenuElement(
-      loadTimeData.getString('braveSync'),
-      '/braveSync',
-      'brave_settings:sync',
-      'braveSync',
-    )
-    newTabEl.insertAdjacentElement('afterend', syncEl)
-    syncEl.insertAdjacentElement('afterend', helpTipsEl)
     // Add Shields item
     const shieldsEl = createMenuElement(
       loadTimeData.getString('braveShieldsTitle'),
@@ -197,7 +246,15 @@ RegisterPolymerTemplateModifications({
       'brave_settings:shields',
       'shields',
     )
-    helpTipsEl.insertAdjacentElement('afterend', shieldsEl)
+    newTabEl.insertAdjacentElement('afterend', shieldsEl)
+    // Add Rewards item
+    const rewardsEl = createMenuElement(
+      loadTimeData.getString('braveRewards'),
+      '/rewards',
+      'brave_settings:rewards',
+      'rewards',
+    )
+    shieldsEl.insertAdjacentElement('afterend', rewardsEl)
     // Add Embed Blocking item
     const embedEl = createMenuElement(
       loadTimeData.getString('socialBlocking'),
@@ -205,10 +262,21 @@ RegisterPolymerTemplateModifications({
       'brave_settings:social-permissions',
       'socialBlocking',
     )
-    shieldsEl.insertAdjacentElement('afterend', embedEl)
+    rewardsEl.insertAdjacentElement('afterend', embedEl)
+    // Add privacy
+    const privacyEl = getMenuElement(templateContent, '/privacy')
+    embedEl.insertAdjacentElement('afterend', privacyEl)
+    // Add Sync item
+    const syncEl = createMenuElement(
+      loadTimeData.getString('braveSync'),
+      '/braveSync',
+      'brave_settings:sync',
+      'braveSync',
+    )
+    privacyEl.insertAdjacentElement('afterend', syncEl)
     // Move search item
     const searchEl = getMenuElement(templateContent, '/search')
-    embedEl.insertAdjacentElement('afterend', searchEl)
+    syncEl.insertAdjacentElement('afterend', searchEl)
     // Add Extensions item
     const extensionEl = createMenuElement(
       loadTimeData.getString('braveDefaultExtensions'),
@@ -238,10 +306,13 @@ RegisterPolymerTemplateModifications({
     const autofillEl = getMenuElement(templateContent, '/autofill')
     const languagesEl = getMenuElement(templateContent, '/languages')
     languagesEl.insertAdjacentElement('beforebegin', autofillEl)
-    // Move privacy to advanced
-    const privacyEl = getMenuElement(templateContent, '/privacy')
-    autofillEl.insertAdjacentElement('beforebegin', privacyEl)
-    // Move helptips to advanced
+    // Move HelpTips after downloads
+    const helpTipsEl = createMenuElement(
+      loadTimeData.getString('braveHelpTips'),
+      '/braveHelpTips',
+      'brave_settings:help',
+      'braveHelpTips',
+    )
     const downloadsEl = getMenuElement(templateContent, '/downloads')
     downloadsEl.insertAdjacentElement('afterend', helpTipsEl)
     // Allow Accessibility to be removed :-(

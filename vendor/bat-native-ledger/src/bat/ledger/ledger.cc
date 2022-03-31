@@ -13,10 +13,11 @@ namespace ledger {
 
 type::Environment _environment = type::Environment::PRODUCTION;
 
+int gemini_retries = 3;
 bool is_debug = false;
 bool is_testing = false;
 int reconcile_interval = 0;  // minutes
-bool short_retries = false;
+int retry_interval = 0;      // seconds
 
 // static
 Ledger* Ledger::CreateInstance(LedgerClient* client) {

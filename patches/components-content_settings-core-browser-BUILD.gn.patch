@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/core/browser/BUILD.gn b/components/content_settings/core/browser/BUILD.gn
-index 764c726b9889e39787d6fdf53db5d9fd450341b5..dcbb79371a0e5204a2c1bc165bf2ac4dd9a33a1f 100644
+index 592cb548ecdd02f87ac7d80368d7373f013b4ce1..a2141e6b0033812e0ba691a6cadd53cf1fb14d0d 100644
 --- a/components/content_settings/core/browser/BUILD.gn
 +++ b/components/content_settings/core/browser/BUILD.gn
-@@ -63,6 +63,7 @@ static_library("browser") {
-     "//services/tracing/public/cpp",
-     "//url",
-   ]
-+  deps += [ "//brave/components/content_settings/core/browser" ]
+@@ -81,6 +81,7 @@ static_library("browser") {
+   }
  
-   if (is_android) {
-     deps += [ "//media" ]
+   configs += [ "//build/config/compiler:wexit_time_destructors" ]
++  sources += brave_components_content_settings_core_browser_sources deps += brave_components_content_settings_core_browser_deps
+ }
+ 
+ source_set("unit_tests") {

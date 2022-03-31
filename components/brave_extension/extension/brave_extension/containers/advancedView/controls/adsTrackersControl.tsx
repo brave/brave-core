@@ -42,10 +42,10 @@ interface CommonProps {
 interface AdsTrackersProps {
   ads: BlockOptions
   adsBlocked: number
-  adsBlockedResources: Array<string>
+  adsBlockedResources: string[]
   trackers: BlockOptions
   trackersBlocked: number
-  trackersBlockedResources: Array<string>
+  trackersBlockedResources: string[]
   firstPartyCosmeticFiltering: boolean
   blockAdsTrackers: (event: string) => void
 }
@@ -71,7 +71,7 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
     return blockedResourcesSize(this.totalAdsTrackersBlocked)
   }
 
-  get totalAdsTrackersBlockedList (): Array<string> {
+  get totalAdsTrackersBlockedList (): string[] {
     const { adsBlockedResources, trackersBlockedResources } = this.props
     return mergeAdsAndTrackersResources(adsBlockedResources, trackersBlockedResources)
   }

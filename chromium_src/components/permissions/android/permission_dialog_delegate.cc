@@ -11,6 +11,7 @@
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/android/jni_headers/PermissionDialogController_jni.h"
+#include "components/permissions/android/permission_prompt_android.h"
 #include "components/permissions/features.h"
 #include "components/strings/grit/components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -78,7 +79,7 @@ void Java_PermissionDialogController_createDialog_BraveImpl(
 #define Java_PermissionDialogController_createDialog \
   Java_PermissionDialogController_createDialog_BraveImpl
 
-#include "../../../../../components/permissions/android/permission_dialog_delegate.cc"
+#include "src/components/permissions/android/permission_dialog_delegate.cc"
 
 #undef Java_PermissionDialogController_createDialog
 #undef BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL

@@ -9,10 +9,7 @@
 #include "base/callback.h"
 #include "base/component_export.h"
 #include "base/memory/singleton.h"
-
-namespace network {
-struct ResourceRequest;
-}  // namespace network
+#include "services/network/public/cpp/resource_request.h"
 
 namespace network {
 
@@ -21,6 +18,9 @@ class COMPONENT_EXPORT(NETWORK_CPP) SystemRequestHandler {
   typedef base::RepeatingCallback<network::ResourceRequest(
       const network::ResourceRequest&)>
       OnBeforeSystemRequestCallback;
+
+  SystemRequestHandler(const SystemRequestHandler&) = delete;
+  SystemRequestHandler& operator=(const SystemRequestHandler&) = delete;
 
   // Returns the instance of SystemRequestHandler.
   static SystemRequestHandler* GetInstance();
@@ -39,8 +39,6 @@ class COMPONENT_EXPORT(NETWORK_CPP) SystemRequestHandler {
   ~SystemRequestHandler();
 
   OnBeforeSystemRequestCallback on_before_system_request_callback_;
-
-  DISALLOW_COPY_AND_ASSIGN(SystemRequestHandler);
 };
 
 }  // namespace network

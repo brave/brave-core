@@ -47,6 +47,14 @@
                   "type": "integer",
                   "description": "promotion status"
                 },
+                "createdAt": {
+                  "type": "integer",
+                  "description": "when the promotion record was created"
+                },
+                "claimableUntil": {
+                  "type": "integer",
+                  "description": "when the promotion is no longer claimable"
+                },
                 "expiresAt": {
                   "type": "integer",
                   "description": "when promotion expires"
@@ -318,6 +326,23 @@
       }
     ],
     "functions": [
+      {
+        "name": "getLocale",
+        "type": "function",
+        "description": "Retrieves the current locale",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "locale",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
       {
         "name": "openBrowserActionUI",
         "type": "function",
@@ -805,6 +830,23 @@
         ]
       },
       {
+        "name": "getRewardsEnabled",
+        "type": "function",
+        "description": "Gets a value indicating whether the user has opted-in to Rewards",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "enabled",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getAdsEnabled",
         "type": "function",
         "description": "Gets whether ads is enabled",
@@ -833,6 +875,46 @@
               {
                 "name": "supported",
                 "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getAdsData",
+        "type": "function",
+        "description": "Gets whether ads is supported in the user's region",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "adsData",
+                "type": "object",
+                "properties": {
+                  "adsIsSupported": {
+                    "type": "boolean"
+                  },
+                  "adsEnabled": {
+                    "type": "boolean"
+                  },
+                  "adsPerHour": {
+                    "type": "number"
+                  },
+                  "adsSubdivisionTargeting": {
+                    "type": "string"
+                  },
+                  "automaticallyDetectedAdsSubdivisionTargeting": {
+                    "type": "string"
+                  },
+                  "shouldAllowAdsSubdivisionTargeting": {
+                    "type": "boolean"
+                  },
+                  "adsUIEnabled": {
+                    "type": "boolean"
+                  }
+                }
               }
             ]
           }
@@ -1033,6 +1115,23 @@
         ]
       },
       {
+        "name": "isAutoContributeSupported",
+        "type": "function",
+        "description": "Determines whether the current profile supports auto-contribute",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "type",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "fetchBalance",
         "type": "function",
         "description": "Fetch balance",
@@ -1101,6 +1200,9 @@
                   },
                   "loginUrl": {
                     "type": "string"
+                  },
+                  "activityUrl": {
+                    "type": "string"
                   }
                 }
               }
@@ -1153,7 +1255,7 @@
       {
         "name": "getAnonWalletStatus",
         "type": "function",
-        "description": "Gets wallet status fo anon wallet",
+        "description": "Gets wallet status for anon wallet",
         "parameters": [
           {
             "type": "function",
@@ -1198,6 +1300,42 @@
                 "type": "boolean"
               }
             ]
+          }
+        ]
+      },
+      {
+        "name": "getScheduledCaptchaInfo",
+        "type": "function",
+        "description": "Gets all info required to retrieve a scheduled captcha (if any) for the user.",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "result",
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  },
+                  "maxAttemptsExceeded": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "updateScheduledCaptchaResult",
+        "type": "function",
+        "description": "Updates the scheduled captcha result and associated metadata",
+        "parameters": [
+          {
+            "name": "result",
+            "type": "boolean"
           }
         ]
       },
@@ -1264,6 +1402,17 @@
                 "optional": true
               }
             }
+          }
+        ]
+      },
+      {
+        "name": "requestAdsEnabledPopupClosed",
+        "type": "function",
+        "description": "",
+        "parameters": [
+          {
+            "name": "ads_enabled",
+            "type": "boolean"
           }
         ]
       }

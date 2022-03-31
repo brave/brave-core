@@ -5,17 +5,25 @@
 
 #include "bat/ads/ads.h"
 
+#include "base/check.h"
+#include "base/no_destructor.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/locale/supported_country_codes.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
 
-Environment g_environment = Environment::DEVELOPMENT;
+mojom::Environment g_environment = mojom::Environment::kStaging;
 
-SysInfo g_sys_info;
+mojom::SysInfo& SysInfo() {
+  static base::NoDestructor<mojom::SysInfo> sys_info;
+  return *sys_info;
+}
 
-BuildChannel g_build_channel;
+mojom::BuildChannel& BuildChannel() {
+  static base::NoDestructor<mojom::BuildChannel> build_channel;
+  return *build_channel;
+}
 
 bool g_is_debug = false;
 
@@ -27,28 +35,7 @@ bool IsSupportedLocale(const std::string& locale) {
   for (const auto& schema : kSupportedCountryCodes) {
     const SupportedCountryCodesSet country_codes = schema.second;
     const auto iter =
-        std::find(country_codes.begin(), country_codes.end(), country_code);
-    if (iter != country_codes.end()) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-bool IsNewlySupportedLocale(const std::string& locale,
-                            const int last_schema_version) {
-  const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  for (const auto& schema : kSupportedCountryCodes) {
-    const int schema_version = schema.first;
-    if (schema_version < last_schema_version) {
-      continue;
-    }
-
-    const SupportedCountryCodesSet country_codes = schema.second;
-    const auto iter =
-        std::find(country_codes.begin(), country_codes.end(), country_code);
+        std::find(country_codes.cbegin(), country_codes.cend(), country_code);
     if (iter != country_codes.end()) {
       return true;
     }

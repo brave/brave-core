@@ -9,7 +9,10 @@
 #include <string>
 #include <utility>
 
+#include "base/check_op.h"
+#include "base/values.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 
 namespace ads {
 namespace privacy {
@@ -33,10 +36,10 @@ base::Value UnblindedTokens::GetTokensAsList() {
 
   for (const auto& unblinded_token : unblinded_tokens_) {
     base::Value dictionary(base::Value::Type::DICTIONARY);
-    dictionary.SetKey("unblinded_token",
-                      base::Value(unblinded_token.value.encode_base64()));
-    dictionary.SetKey("public_key",
-                      base::Value(unblinded_token.public_key.encode_base64()));
+    dictionary.SetStringKey("unblinded_token",
+                            unblinded_token.value.encode_base64());
+    dictionary.SetStringKey("public_key",
+                            unblinded_token.public_key.encode_base64());
 
     list.Append(std::move(dictionary));
   }
@@ -58,7 +61,6 @@ void UnblindedTokens::SetTokensFromList(const base::Value& list) {
     if (value.is_string()) {
       // Migrate legacy tokens
       unblinded_token_base64 = value.GetString();
-      public_key_base64 = "";
     } else {
       const base::DictionaryValue* dictionary = nullptr;
       if (!value.GetAsDictionary(&dictionary)) {
@@ -106,7 +108,7 @@ void UnblindedTokens::AddTokens(const UnblindedTokenList& unblinded_tokens) {
 }
 
 bool UnblindedTokens::RemoveToken(const UnblindedTokenInfo& unblinded_token) {
-  auto iter = std::find_if(unblinded_tokens_.begin(), unblinded_tokens_.end(),
+  auto iter = std::find_if(unblinded_tokens_.cbegin(), unblinded_tokens_.cend(),
                            [&unblinded_token](const UnblindedTokenInfo& value) {
                              return unblinded_token == value;
                            });
@@ -120,12 +122,23 @@ bool UnblindedTokens::RemoveToken(const UnblindedTokenInfo& unblinded_token) {
   return true;
 }
 
+void UnblindedTokens::RemoveTokens(const UnblindedTokenList& unblinded_tokens) {
+  const auto iter = std::remove_if(
+      unblinded_tokens_.begin(), unblinded_tokens_.end(),
+      [&unblinded_tokens](const UnblindedTokenInfo& unblinded_token) {
+        return std::find(unblinded_tokens.cbegin(), unblinded_tokens.cend(),
+                         unblinded_token) != unblinded_tokens.end();
+      });
+
+  unblinded_tokens_.erase(iter, unblinded_tokens_.end());
+}
+
 void UnblindedTokens::RemoveAllTokens() {
   unblinded_tokens_.clear();
 }
 
 bool UnblindedTokens::TokenExists(const UnblindedTokenInfo& unblinded_token) {
-  auto iter = std::find_if(unblinded_tokens_.begin(), unblinded_tokens_.end(),
+  auto iter = std::find_if(unblinded_tokens_.cbegin(), unblinded_tokens_.cend(),
                            [&unblinded_token](const UnblindedTokenInfo& value) {
                              return unblinded_token == value;
                            });

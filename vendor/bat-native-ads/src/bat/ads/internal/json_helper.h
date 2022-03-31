@@ -14,8 +14,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/logging.h"
-#include "bat/ads/result.h"
+#include "base/check.h"
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
 #include "rapidjson/schema.h"
@@ -26,26 +25,15 @@ namespace ads {
 
 struct AdContentInfo;
 struct AdHistoryInfo;
-struct AdNotificationInfo;
 struct AdPreferencesInfo;
-struct AdsHistoryInfo;
 struct CategoryContentInfo;
-struct ClientInfo;
-struct NewTabPageAdInfo;
-struct PurchaseIntentSignalHistoryInfo;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
 void SaveToJson(JsonWriter* writer, const AdContentInfo& info);
 void SaveToJson(JsonWriter* writer, const AdHistoryInfo& info);
-void SaveToJson(JsonWriter* writer, const AdNotificationInfo& info);
 void SaveToJson(JsonWriter* writer, const AdPreferencesInfo& info);
-void SaveToJson(JsonWriter* writer, const AdsHistoryInfo& info);
 void SaveToJson(JsonWriter* writer, const CategoryContentInfo& info);
-void SaveToJson(JsonWriter* writer, const ClientInfo& state);
-void SaveToJson(JsonWriter* writer, const NewTabPageAdInfo& info);
-void SaveToJson(JsonWriter* writer,
-                const PurchaseIntentSignalHistoryInfo& info);
 
 template <typename T>
 void SaveToJson(const T& t, std::string* json) {
@@ -59,15 +47,15 @@ void SaveToJson(const T& t, std::string* json) {
 }
 
 template <typename T>
-Result LoadFromJson(T* t, const std::string& json) {
+bool LoadFromJson(T* t, const std::string& json) {
   DCHECK(t);
   return t->FromJson(json);
 }
 
 template <typename T>
-Result LoadFromJson(T* t,
-                    const std::string& json,
-                    const std::string& json_schema) {
+bool LoadFromJson(T* t,
+                  const std::string& json,
+                  const std::string& json_schema) {
   DCHECK(t);
   return t->FromJson(json, json_schema);
 }
@@ -76,10 +64,10 @@ Result LoadFromJson(T* t,
 
 namespace helper {
 
-class JSON {
+class JSON final {
  public:
-  static ads::Result Validate(rapidjson::Document* document,
-                              const std::string& json_schema);
+  static bool Validate(rapidjson::Document* document,
+                       const std::string& json_schema);
 
   static std::string GetLastError(rapidjson::Document* document);
 };

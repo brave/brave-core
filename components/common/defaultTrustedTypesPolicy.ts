@@ -11,7 +11,7 @@
 // Do NOT add on to this a `createHTML` function which would have the ability
 // for any script to set `HTMLElement.innerHTML`.
 
-// @ts-ignore
+// @ts-expect-error
 window.trustedTypes.createPolicy('default', {
   createScriptURL: (url: string) => {
     const parsed = new URL(url, document.location.href)

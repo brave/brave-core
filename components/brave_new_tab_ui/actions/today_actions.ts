@@ -4,16 +4,15 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import { createAction } from 'redux-act'
-
-export const todayInit = createAction('todayInit')
+import * as BraveNews from '../api/brave_news'
 
 export const interactionBegin = createAction('interactionStart')
 
 export const ensureSettingsData = createAction('ensureSettingsData')
 
 type DataReceivedPayload = {
-  feed?: BraveToday.Feed
-  publishers?: BraveToday.Publishers
+  feed?: BraveNews.Feed
+  publishers?: BraveNews.Publishers
 }
 export const dataReceived = createAction<DataReceivedPayload>('dataReceived')
 
@@ -33,21 +32,42 @@ export const errorGettingDataFromBackground = createAction<BackgroundErrorPayloa
  * User has requested to read an article
  */
 export type ReadFeedItemPayload = {
-  item: BraveToday.FeedItem,
-  isPromoted?: boolean,
+  item: BraveNews.FeedItem
+  isPromoted?: boolean
+  promotedUUID?: string
   openInNewTab?: boolean
 }
 export const readFeedItem = createAction<ReadFeedItemPayload>('readFeedItem')
 
 export const feedItemViewedCountChanged = createAction<number>('feedItemViewedCountChanged')
 
-export const promotedItemViewed = createAction<BraveToday.PromotedArticle>('promotedItemViewed')
+export type PromotedItemViewedPayload = {
+  item: BraveNews.FeedItem
+  uuid: string
+}
+export const promotedItemViewed = createAction<PromotedItemViewedPayload>('promotedItemViewed')
+
+export type VisitDisplayAdPayload = {
+  ad: BraveNews.DisplayAd
+  openInNewTab?: boolean
+}
+export const visitDisplayAd = createAction<VisitDisplayAdPayload>('visitDisplayAd')
+
+export type DisplayAdViewedPayload = {
+  ad: BraveNews.DisplayAd
+}
+export const displayAdViewed = createAction<DisplayAdViewedPayload>('displayAdViewed')
 
 export type SetPublisherPrefPayload = {
   publisherId: string
   enabled: boolean | null
 }
 export const setPublisherPref = createAction<SetPublisherPrefPayload>('setPublisherPref', (publisherId: string, enabled: boolean | null) => ({ publisherId, enabled }))
+
+export type RemoveDirectFeedPayload = {
+  directFeed: BraveNews.Publisher
+}
+export const removeDirectFeed = createAction<RemoveDirectFeedPayload>('removeDirectFeed')
 
 export const checkForUpdate = createAction('checkForUpdate')
 

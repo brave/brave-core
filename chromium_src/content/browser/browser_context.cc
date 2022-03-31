@@ -8,7 +8,7 @@
 #include <string>
 
 #include "base/memory/ref_counted.h"
-#include "base/optional.h"
+#include "content/browser/blob_storage/chrome_blob_storage_context.h"
 #include "content/browser/dom_storage/dom_storage_context_wrapper.h"
 #include "content/browser/dom_storage/session_storage_namespace_impl.h"
 #include "content/browser/renderer_host/navigation_controller_impl.h"
@@ -18,13 +18,19 @@
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace content {
+
+mojo::PendingRemote<storage::mojom::BlobStorageContext>
+GetRemoteBlobStorageContextFor(BrowserContext* browser_context) {
+  return content::ChromeBlobStorageContext::GetRemoteFor(browser_context);
+}
 
 scoped_refptr<content::SessionStorageNamespace> CreateSessionStorageNamespace(
     content::StoragePartition* partition,
     const std::string& namespace_id,
-    base::Optional<std::string> clone_from_namespace_id) {
+    absl::optional<std::string> clone_from_namespace_id) {
   content::DOMStorageContextWrapper* context_wrapper =
       static_cast<content::DOMStorageContextWrapper*>(
           partition->GetDOMStorageContext());
@@ -44,7 +50,8 @@ std::string GetSessionStorageNamespaceId(WebContents* web_contents) {
   DCHECK(site_instance_impl);
 
   return static_cast<NavigationControllerImpl&>(web_contents->GetController())
-      .GetSessionStorageNamespace(site_instance_impl->GetSiteInfo())
+      .GetSessionStorageNamespace(
+          site_instance_impl->GetStoragePartitionConfig())
       ->id();
 }
 
@@ -56,5 +63,6 @@ bool BrowserContext::IsTor() const {
 }
 }  // namespace content
 
-#include "../../../../content/browser/browser_context.cc"
+#include "src/content/browser/browser_context.cc"
+
 #include "content/browser/tld_ephemeral_lifetime.cc"

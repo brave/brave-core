@@ -15,16 +15,6 @@ class Profile;
 namespace extensions {
 namespace api {
 
-class BraveWalletPromptToEnableWalletFunction :
-    public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveWallet.promptToEnableWallet", UNKNOWN)
-
- protected:
-  ~BraveWalletPromptToEnableWalletFunction() override {}
-  ResponseAction Run() override;
-};
-
 class BraveWalletReadyFunction :
     public ExtensionFunction {
  public:
@@ -35,12 +25,12 @@ class BraveWalletReadyFunction :
   ResponseAction Run() override;
 };
 
-class BraveWalletShouldCheckForDappsFunction : public ExtensionFunction {
+class BraveWalletNotifyWalletUnlockFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveWallet.shouldCheckForDapps", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveWallet.notifyWalletUnlock", UNKNOWN)
 
  protected:
-  ~BraveWalletShouldCheckForDappsFunction() override {}
+  ~BraveWalletNotifyWalletUnlockFunction() override {}
   ResponseAction Run() override;
 };
 
@@ -69,15 +59,6 @@ class BraveWalletGetWalletSeedFunction : public ExtensionFunction {
 
  protected:
   ~BraveWalletGetWalletSeedFunction() override {}
-  ResponseAction Run() override;
-};
-
-class BraveWalletGetBitGoSeedFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveWallet.getBitGoSeed", UNKNOWN)
-
- protected:
-  ~BraveWalletGetBitGoSeedFunction() override {}
   ResponseAction Run() override;
 };
 

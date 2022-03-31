@@ -9,8 +9,8 @@
 #include <string>
 
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -29,6 +29,8 @@ class BraveComponentLoader : public ComponentLoader {
  public:
   BraveComponentLoader(ExtensionSystem* extension_system,
                        Profile* browser_context);
+  BraveComponentLoader(const BraveComponentLoader&) = delete;
+  BraveComponentLoader& operator=(const BraveComponentLoader&) = delete;
   ~BraveComponentLoader() override;
 
   // Adds the default component extensions. If |skip_session_components|
@@ -38,12 +40,11 @@ class BraveComponentLoader : public ComponentLoader {
   void AddDefaultComponentExtensions(bool skip_session_components) override;
   void OnComponentRegistered(std::string extension_id);
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   void AddRewardsExtension();
-#endif
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   void AddEthereumRemoteClientExtension();
   void AddEthereumRemoteClientExtensionOnStartup();
+  void UnloadEthereumRemoteClientExtension();
 #endif
   void AddWebTorrentExtension();
   void OnComponentReady(std::string extension_id,
@@ -61,19 +62,15 @@ class BraveComponentLoader : public ComponentLoader {
   void AddHangoutServicesExtension() override;
 #endif  // BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   void CheckRewardsStatus();
-#endif
 
   void ReinstallAsNonComponent(std::string extension_id);
 
-  Profile* profile_;
-  PrefService* profile_prefs_;
+  raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<PrefService> profile_prefs_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
   std::string ethereum_remote_client_manifest_;
   base::FilePath ethereum_remote_client_install_dir_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveComponentLoader);
 };
 
 }  // namespace extensions

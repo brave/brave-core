@@ -35,17 +35,19 @@ TEST_F(BatAdsHashedNGramsTest, HashingTest) {
   // Act
   const std::unique_ptr<Data> hashed_data = hashed_ngrams.Apply(text_data);
 
-  ASSERT_EQ(hashed_data->GetType(), DataType::VECTOR_DATA);
+  ASSERT_EQ(hashed_data->GetType(), DataType::kVector);
 
   const VectorData* hashed_vect_data =
       static_cast<VectorData*>(hashed_data.get());
 
   // Assert
   // 10000 is the default size
-  ASSERT_EQ(kDefaultBucketCount, hashed_vect_data->GetDimensionCount());
+  ASSERT_EQ(kDefaultBucketCount,
+            hashed_vect_data->GetDimensionCountForTesting());
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
-  EXPECT_EQ(kExpectedElementCount, hashed_vect_data->GetRawData().size());
+  EXPECT_EQ(kExpectedElementCount,
+            hashed_vect_data->GetValuesForTesting().size());
 }
 
 TEST_F(BatAdsHashedNGramsTest, CustomHashingTest) {
@@ -61,15 +63,15 @@ TEST_F(BatAdsHashedNGramsTest, CustomHashingTest) {
   // Act
   const std::unique_ptr<Data> hashed_data = hashed_ngrams.Apply(text_data);
 
-  ASSERT_EQ(DataType::VECTOR_DATA, hashed_data->GetType());
+  ASSERT_EQ(DataType::kVector, hashed_data->GetType());
 
   const VectorData* hashed_vect_data =
       static_cast<VectorData*>(hashed_data.get());
 
   // Assert
-  ASSERT_EQ(kHashBucketCount, hashed_vect_data->GetDimensionCount());
+  ASSERT_EQ(kHashBucketCount, hashed_vect_data->GetDimensionCountForTesting());
   EXPECT_EQ(kHashBucketCount,
-            static_cast<int>(hashed_vect_data->GetRawData().size()));
+            static_cast<int>(hashed_vect_data->GetValuesForTesting().size()));
 }
 
 }  // namespace ml

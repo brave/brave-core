@@ -16,7 +16,7 @@ export const StyledContent = styled('div')<{}>`
   letter-spacing: 0;
   color: ${p => p.theme.color.text};
   line-height: 26px;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 `
 
 export const StyledImport = styled('label')<{}>`
@@ -77,6 +77,7 @@ export const StyledTitle = styled('span')<{}>`
   letter-spacing: 0;
   line-height: 40px;
   font-family: ${p => p.theme.fontFamily.heading};
+  text-transform: capitalize;
 `
 
 export const StyledSafe = styled('span')<{}>`
@@ -107,5 +108,4 @@ export const StyledLink = styled('a')<{}>`
   cursor: pointer;
   display: inline-block;
   font-weight: 700;
-  margin-left: 3px;
 `

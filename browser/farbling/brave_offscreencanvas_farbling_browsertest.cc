@@ -93,7 +93,7 @@ class BraveOffscreenCanvasFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   bool NavigateToURLUntilLoadStop(const GURL& url) {
-    ui_test_utils::NavigateToURL(browser(), url);
+    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     return WaitForLoadStop(contents());
   }
 

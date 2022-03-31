@@ -5,7 +5,6 @@
 import * as React from 'react'
 
 export default class RefreshIcon extends React.PureComponent {
-
   render () {
     return (
       <svg width={'15'} height={'18'} xmlns={'http://www.w3.org/2000/svg'}>

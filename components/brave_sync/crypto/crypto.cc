@@ -19,6 +19,9 @@ namespace brave_sync {
 namespace crypto {
 
 std::vector<uint8_t> GetSeed(size_t size) {
+  if (size < DEFAULT_SEED_SIZE) {
+    size = DEFAULT_SEED_SIZE;
+  }
   std::vector<uint8_t> bytes(size);
   ::crypto::RandBytes(&bytes[0], bytes.size());
   return bytes;
@@ -132,7 +135,7 @@ std::string PassphraseFromBytes32(const std::vector<uint8_t>& bytes) {
   std::string passphrase;
   if (bip39_mnemonic_from_bytes(nullptr, bytes.data(), bytes.size(), &words) !=
       WALLY_OK) {
-    LOG(ERROR) << "bip39_mnemonic_from_bytes failed";
+    CHECK(false) << "bip39_mnemonic_from_bytes failed";
     return passphrase;
   }
   passphrase = words;
@@ -152,6 +155,11 @@ bool PassphraseToBytes32(const std::string& passphrase,
     return false;
   }
   return true;
+}
+
+bool IsPassphraseValid(const std::string& passphrase) {
+  std::vector<uint8_t> bytes;
+  return PassphraseToBytes32(passphrase, &bytes);
 }
 
 }  // namespace crypto

@@ -8,7 +8,7 @@
 #include "components/omnibox/browser/omnibox_controller.h"
 #include "url/gurl.h"
 
-#if !defined(OS_IOS)
+#if !BUILDFLAG(IS_IOS)
 #include "content/public/common/url_constants.h"
 #endif
 
@@ -18,6 +18,8 @@ class BraveOmniboxController : public OmniboxController {
                          OmniboxClient* client)
       : OmniboxController(omnibox_edit_model, client),
         client_(static_cast<BraveOmniboxClient*>(client)) {}
+  BraveOmniboxController(const BraveOmniboxController&) = delete;
+  BraveOmniboxController& operator=(const BraveOmniboxController&) = delete;
   ~BraveOmniboxController() override = default;
 
   // OmniboxController overrides:
@@ -30,13 +32,11 @@ class BraveOmniboxController : public OmniboxController {
 
  private:
   BraveOmniboxClient* client_ = nullptr;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveOmniboxController);
 };
 
 namespace {
 void BraveAdjustTextForCopy(GURL* url) {
-#if !defined(OS_IOS)
+#if !BUILDFLAG(IS_IOS)
   if (url->scheme() == content::kChromeUIScheme) {
     GURL::Replacements replacements;
     replacements.SetSchemeStr(content::kBraveUIScheme);
@@ -51,6 +51,6 @@ void BraveAdjustTextForCopy(GURL* url) {
   BraveAdjustTextForCopy(url_from_text);
 
 #define OmniboxController BraveOmniboxController
-#include "../../../../../components/omnibox/browser/omnibox_edit_model.cc"  // NOLINT
+#include "src/components/omnibox/browser/omnibox_edit_model.cc"
 #undef OmniboxController
 #undef BRAVE_ADJUST_TEXT_FOR_COPY

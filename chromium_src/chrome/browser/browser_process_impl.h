@@ -9,7 +9,6 @@
 // Note: Init method name is quite common. To re-define only Init in
 // browser_process_impl.h, all other headers are added.
 #include "base/debug/stack_trace.h"
-#include "base/macros.h"
 #include "base/memory/ref_counted.h"
 #include "base/sequence_checker.h"
 #include "base/timer/timer.h"
@@ -29,7 +28,7 @@
 #include "services/network/public/mojom/network_service.mojom-forward.h"
 
 #define Init virtual Init
-#include "../../../../chrome/browser/browser_process_impl.h"
+#include "src/chrome/browser/browser_process_impl.h"
 #undef Init
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BROWSER_PROCESS_IMPL_H_

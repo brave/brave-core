@@ -6,35 +6,41 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CLIENT_CLIENT_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CLIENT_CLIENT_H_
 
-#include <cstdint>
 #include <deque>
 #include <map>
 #include <memory>
 #include <string>
 
-#include "base/time/time.h"
-#include "bat/ads/ads.h"
+#include "bat/ads/ad_content_action_types.h"
+#include "bat/ads/ads_aliases.h"
+#include "bat/ads/category_content_action_types.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_aliases.h"
-#include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "bat/ads/internal/ad_targeting/data_types/contextual/text_classification/text_classification_aliases.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
-#include "bat/ads/internal/client/client_info.h"
-#include "bat/ads/internal/client/preferences/filtered_ad_info.h"
-#include "bat/ads/internal/client/preferences/filtered_category_info.h"
-#include "bat/ads/internal/client/preferences/flagged_ad_info.h"
-#include "bat/ads/internal/client/preferences/saved_ad_info.h"
-#include "bat/ads/result.h"
+#include "bat/ads/internal/bundle/creative_ad_info_aliases.h"
+#include "bat/ads/internal/client/preferences/filtered_advertiser_info_aliases.h"
+#include "bat/ads/internal/client/preferences/filtered_category_info_aliases.h"
+#include "bat/ads/internal/client/preferences/flagged_ad_info_aliases.h"
+#include "bat/ads/internal/client/preferences/saved_ad_info_aliases.h"
+
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 
+namespace ad_targeting {
+struct PurchaseIntentSignalHistoryInfo;
+}  // namespace ad_targeting
+
+class AdType;
 struct AdContentInfo;
 struct AdHistoryInfo;
-struct CategoryContentInfo;
+struct AdInfo;
+struct ClientInfo;
 
-class Client {
+class Client final {
  public:
   Client();
-
   ~Client();
 
   static Client* Get();
@@ -43,52 +49,54 @@ class Client {
 
   void Initialize(InitializeCallback callback);
 
-  FilteredAdList get_filtered_ads() const;
-  FilteredCategoryList get_filtered_categories() const;
-  FlaggedAdList get_flagged_ads() const;
+  FilteredAdvertiserList GetFilteredAdvertisers() const;
+  FilteredCategoryList GetFilteredCategories() const;
+  FlaggedAdList GetFlaggedAds() const;
 
-  void AppendAdHistoryToAdsHistory(const AdHistoryInfo& ad_history);
+  void AppendAdHistory(const AdHistoryInfo& ad_history);
   const std::deque<AdHistoryInfo>& GetAdsHistory() const;
+
   void AppendToPurchaseIntentSignalHistoryForSegment(
       const std::string& segment,
-      const PurchaseIntentSignalHistoryInfo& history);
-  const PurchaseIntentSignalHistoryMap& GetPurchaseIntentSignalHistory() const;
+      const ad_targeting::PurchaseIntentSignalHistoryInfo& history);
+  const ad_targeting::PurchaseIntentSignalHistoryMap&
+  GetPurchaseIntentSignalHistory() const;
 
-  AdContentInfo::LikeAction ToggleAdThumbUp(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const AdContentInfo::LikeAction action);
-  AdContentInfo::LikeAction ToggleAdThumbDown(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const AdContentInfo::LikeAction action);
-  CategoryContentInfo::OptAction ToggleAdOptInAction(
+  AdContentLikeActionType ToggleAdThumbUp(const AdContentInfo& ad_content);
+  AdContentLikeActionType ToggleAdThumbDown(const AdContentInfo& ad_content);
+  AdContentLikeActionType GetAdContentLikeActionTypeForAdvertiser(
+      const std::string& advertiser_id);
+
+  CategoryContentOptActionType ToggleAdOptIn(
       const std::string& category,
-      const CategoryContentInfo::OptAction action);
-  CategoryContentInfo::OptAction ToggleAdOptOutAction(
+      const CategoryContentOptActionType action_type);
+  CategoryContentOptActionType ToggleAdOptOut(
       const std::string& category,
-      const CategoryContentInfo::OptAction action);
-  bool ToggleSaveAd(const std::string& creative_instance_id,
-                    const std::string& creative_set_id,
-                    const bool saved);
-  bool ToggleFlagAd(const std::string& creative_instance_id,
-                    const std::string& creative_set_id,
-                    const bool flagged);
+      const CategoryContentOptActionType action_type);
+  CategoryContentOptActionType GetCategoryContentOptActionTypeForSegment(
+      const std::string& segment);
 
-  void UpdateSeenAdNotification(const std::string& creative_instance_id);
-  const std::map<std::string, uint64_t>& GetSeenAdNotifications();
-  void ResetSeenAdNotifications(const CreativeAdNotificationList& ads);
+  bool ToggleSavedAd(const AdContentInfo& ad_content);
 
-  void UpdateSeenAdvertiser(const std::string& advertiser_id);
-  const std::map<std::string, uint64_t>& GetSeenAdvertisers();
-  void ResetSeenAdvertisers(const CreativeAdNotificationList& ads);
+  bool ToggleFlaggedAd(const AdContentInfo& ad_content);
 
-  void SetNextAdServingInterval(const base::Time& next_check_serve_ad_date);
-  base::Time GetNextAdServingInterval();
+  void UpdateSeenAd(const AdInfo& ad);
+  const std::map<std::string, bool>& GetSeenAdsForType(const AdType& type);
+  void ResetSeenAdsForType(const CreativeAdList& creative_ads,
+                           const AdType& type);
+  void ResetAllSeenAdsForType(const AdType& type);
+  const std::map<std::string, bool>& GetSeenAdvertisersForType(
+      const AdType& type);
+  void ResetSeenAdvertisersForType(const CreativeAdList& creative_ads,
+                                   const AdType& type);
+  void ResetAllSeenAdvertisersForType(const AdType& type);
+
+  void SetServeAdAt(const base::Time time);
+  base::Time GetServeAdAt();
 
   void AppendTextClassificationProbabilitiesToHistory(
-      const TextClassificationProbabilitiesMap& probabilities);
-  const TextClassificationProbabilitiesList&
+      const ad_targeting::TextClassificationProbabilitiesMap& probabilities);
+  const ad_targeting::TextClassificationProbabilitiesList&
   GetTextClassificationProbabilitiesHistory();
 
   std::string GetVersionCode() const;
@@ -97,19 +105,19 @@ class Client {
   void RemoveAllHistory();
 
  private:
-  bool is_initialized_ = false;
-
-  InitializeCallback callback_;
-
   void Save();
-  void OnSaved(const Result result);
+  void OnSaved(const bool success);
 
   void Load();
-  void OnLoaded(const Result result, const std::string& json);
+  void OnLoaded(const bool success, const std::string& json);
 
   bool FromJson(const std::string& json);
 
   std::unique_ptr<ClientInfo> client_;
+
+  bool is_initialized_ = false;
+
+  InitializeCallback callback_;
 };
 
 }  // namespace ads

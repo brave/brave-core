@@ -8,13 +8,35 @@
 
 #include <string>
 
-#include "base/time/time.h"
+namespace base {
+class Time;
+}  // namespace base
 
 namespace ads {
 
-std::string GetLocalWeekDay(const base::Time& time);
+int GetLocalTimeAsMinutes(const base::Time time);
 
-int ConvertHoursAndMinutesToMinutes(const base::Time& time);
+base::Time AdjustLocalTimeToBeginningOfPreviousMonth(const base::Time time);
+base::Time AdjustLocalTimeToEndOfPreviousMonth(const base::Time time);
+base::Time AdjustLocalTimeToBeginningOfMonth(const base::Time time);
+base::Time AdjustLocalTimeToEndOfMonth(const base::Time time);
+
+base::Time GetTimeInDistantPast();
+
+base::Time GetLocalTimeAtBeginningOfLastMonth();
+base::Time GetLocalTimeAtEndOfLastMonth();
+base::Time GetLocalTimeAtBeginningOfThisMonth();
+base::Time GetLocalTimeAtEndOfThisMonth();
+
+std::string TimeToPrivacyPreservingISO8601(const base::Time time);
+
+// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
+// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
+base::Time GetLocalMidnight(const base::Time time);
+
+// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
+// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
+void SetFromLocalExplodedFailedForTesting(bool set_failed);
 
 }  // namespace ads
 

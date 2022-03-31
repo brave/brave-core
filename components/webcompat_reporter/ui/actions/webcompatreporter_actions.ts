@@ -14,8 +14,11 @@ export const setSiteUrl = (siteUrl: string) => {
   })
 }
 
-export const onSubmitReport = () =>
-  action(types.WEBCOMPATREPORTER_ON_SUBMIT_REPORT)
+export const onSubmitReport = (details: string, contact: string) =>
+  action(types.WEBCOMPATREPORTER_ON_SUBMIT_REPORT, {
+    details,
+    contact
+  })
 
 export const onClose = () =>
   action(types.WEBCOMPATREPORTER_ON_CLOSE)

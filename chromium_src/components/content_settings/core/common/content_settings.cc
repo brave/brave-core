@@ -29,7 +29,9 @@ constexpr int brave_value(int incr) {
   {ContentSettingsType::BRAVE_FINGERPRINTING_V2, brave_value(4)},         \
   {ContentSettingsType::BRAVE_SHIELDS, brave_value(5)},                   \
   {ContentSettingsType::BRAVE_REFERRERS, brave_value(6)},                 \
-  {ContentSettingsType::BRAVE_COOKIES, brave_value(7)},
+  {ContentSettingsType::BRAVE_COOKIES, brave_value(7)},                   \
+  {ContentSettingsType::BRAVE_SPEEDREADER, brave_value(8)},               \
+  {ContentSettingsType::BRAVE_ETHEREUM, brave_value(9)},
 // clang-format on
 
 #define ContentSettingTypeToHistogramValue \
@@ -37,7 +39,7 @@ constexpr int brave_value(int incr) {
 
 #define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
 
-#include "../../../../../../components/content_settings/core/common/content_settings.cc"
+#include "src/components/content_settings/core/common/content_settings.cc"
 
 #undef RendererContentSettingRules
 #undef ContentSettingTypeToHistogramValue
@@ -60,3 +62,24 @@ bool RendererContentSettingRules::IsRendererContentSetting(
              content_type) ||
          content_type == ContentSettingsType::AUTOPLAY;
 }
+
+namespace content_settings {
+namespace {
+
+bool IsExplicitSetting(const ContentSettingsPattern& primary_pattern,
+                       const ContentSettingsPattern& secondary_pattern) {
+  return !primary_pattern.MatchesAllHosts() ||
+         !secondary_pattern.MatchesAllHosts();
+}
+
+}  // namespace
+
+bool IsExplicitSetting(const ContentSettingPatternSource& setting) {
+  return IsExplicitSetting(setting.primary_pattern, setting.secondary_pattern);
+}
+
+bool IsExplicitSetting(const SettingInfo& setting) {
+  return IsExplicitSetting(setting.primary_pattern, setting.secondary_pattern);
+}
+
+}  // namespace content_settings

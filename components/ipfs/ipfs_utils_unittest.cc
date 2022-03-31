@@ -9,22 +9,20 @@
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
+#include "base/test/task_environment.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_ports.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
-#include "components/user_prefs/user_prefs.h"
 #include "components/version_info/channel.h"
-#include "content/public/test/browser_task_environment.h"
-#include "content/public/test/test_browser_context.h"
 #include "net/base/url_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 class IpfsUtilsUnitTest : public testing::Test {
  public:
-  IpfsUtilsUnitTest() : browser_context_(new content::TestBrowserContext()) {}
+  IpfsUtilsUnitTest() {}
   ~IpfsUtilsUnitTest() override = default;
 
   void SetUp() override {
@@ -33,7 +31,7 @@ class IpfsUtilsUnitTest : public testing::Test {
     prefs_.registry()->RegisterIntegerPref(
         kIPFSResolveMethod,
         static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
-    user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
+
     public_gateway_ = GURL(ipfs::kDefaultIPFSGateway);
     local_gateway_ = GURL("http://localhost:48080");
   }
@@ -57,11 +55,8 @@ class IpfsUtilsUnitTest : public testing::Test {
     prefs_.SetInteger(kIPFSResolveMethod, static_cast<int>(type));
   }
 
-  content::TestBrowserContext* context() { return browser_context_.get(); }
-
  private:
-  content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<content::TestBrowserContext> browser_context_;
+  base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple prefs_;
   GURL local_gateway_;
   GURL public_gateway_;
@@ -123,11 +118,11 @@ TEST_F(IpfsUtilsUnitTest, IsDefaultGatewayURL) {
             "/wiki/Vincent_van_Gogh.html")});
 
   for (auto url : gateway_urls) {
-    EXPECT_TRUE(ipfs::IsDefaultGatewayURL(url, context())) << url;
+    EXPECT_TRUE(ipfs::IsDefaultGatewayURL(url, prefs())) << url;
   }
 
   for (auto url : ipfs_urls) {
-    EXPECT_FALSE(ipfs::IsDefaultGatewayURL(url, context())) << url;
+    EXPECT_FALSE(ipfs::IsDefaultGatewayURL(url, prefs())) << url;
   }
 }
 
@@ -177,7 +172,7 @@ TEST_F(IpfsUtilsUnitTest, ToPublicGatewayURL) {
       "Vincent_van_Gogh.html");
 
   for (auto url : ipfs_urls) {
-    GURL new_url = ipfs::ToPublicGatewayURL(url, context());
+    GURL new_url = ipfs::ToPublicGatewayURL(url, prefs());
     EXPECT_EQ(new_url, expected_new_url) << url;
   }
 }
@@ -186,14 +181,14 @@ TEST_F(IpfsUtilsUnitTest, GetIPFSGatewayURL) {
   EXPECT_EQ(
       ipfs::GetIPFSGatewayURL(
           "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq", "",
-          ipfs::GetDefaultIPFSGateway(context())),
+          ipfs::GetDefaultIPFSGateway(prefs())),
       GURL(
           "https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq."
           "ipfs.dweb.link"));
   EXPECT_EQ(
       ipfs::GetIPFSGatewayURL(
           "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq", "",
-          ipfs::GetDefaultIPFSGateway(context())),
+          ipfs::GetDefaultIPFSGateway(prefs())),
       GURL(
           "https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq."
           "ipfs.dweb.link"));
@@ -215,33 +210,32 @@ TEST_F(IpfsUtilsUnitTest, GetIPFSGatewayURLLocal) {
 }
 
 TEST_F(IpfsUtilsUnitTest, IsLocalGatewayConfigured) {
-  ASSERT_FALSE(ipfs::IsLocalGatewayConfigured(context()));
+  ASSERT_FALSE(ipfs::IsLocalGatewayConfigured(prefs()));
   SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
-  ASSERT_TRUE(ipfs::IsLocalGatewayConfigured(context()));
+  ASSERT_TRUE(ipfs::IsLocalGatewayConfigured(prefs()));
 }
 
 TEST_F(IpfsUtilsUnitTest, GetConfiguredBaseGateway) {
   GURL url =
-      ipfs::GetConfiguredBaseGateway(context(), version_info::Channel::UNKNOWN);
+      ipfs::GetConfiguredBaseGateway(prefs(), version_info::Channel::UNKNOWN);
   ASSERT_EQ(url, GURL("https://dweb.link/"));
   SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
-  url =
-      ipfs::GetConfiguredBaseGateway(context(), version_info::Channel::UNKNOWN);
+  url = ipfs::GetConfiguredBaseGateway(prefs(), version_info::Channel::UNKNOWN);
   ASSERT_EQ(url, GURL("http://localhost:48080/"));
 }
 
 TEST_F(IpfsUtilsUnitTest, ResolveIPFSURI) {
   GURL url =
-      ipfs::GetConfiguredBaseGateway(context(), version_info::Channel::UNKNOWN);
+      ipfs::GetConfiguredBaseGateway(prefs(), version_info::Channel::UNKNOWN);
   GURL gateway_url;
-  ASSERT_TRUE(ipfs::ResolveIPFSURI(context(), version_info::Channel::UNKNOWN,
+  ASSERT_TRUE(ipfs::ResolveIPFSURI(prefs(), version_info::Channel::UNKNOWN,
                                    GURL("ipfs://bafybeiemxf5abjwjbikoz4mc3a3dl"
                                         "a6ual3jsgpdr4cjr3oz3evfyavhwq"),
                                    &gateway_url));
   ASSERT_EQ(gateway_url, GURL("https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsg"
                               "pdr4cjr3oz3evfyavhwq.ipfs.dweb.link"));
   SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
-  ASSERT_TRUE(ipfs::ResolveIPFSURI(context(), version_info::Channel::UNKNOWN,
+  ASSERT_TRUE(ipfs::ResolveIPFSURI(prefs(), version_info::Channel::UNKNOWN,
                                    GURL("ipfs://bafybeiemxf5abjwjbikoz4mc3a3dl"
                                         "a6ual3jsgpdr4cjr3oz3evfyavhwq"),
                                    &gateway_url));
@@ -251,15 +245,14 @@ TEST_F(IpfsUtilsUnitTest, ResolveIPFSURI) {
 
 TEST_F(IpfsUtilsUnitTest, GetDefaultIPFSGateway) {
   prefs()->SetString(kIPFSPublicGatewayAddress, "https://example.com/");
-  EXPECT_EQ(ipfs::GetDefaultIPFSGateway(context()),
-            GURL("https://example.com/"));
+  EXPECT_EQ(ipfs::GetDefaultIPFSGateway(prefs()), GURL("https://example.com/"));
   prefs()->SetString(kIPFSPublicGatewayAddress, "https://127.0.0.1:8888/");
-  EXPECT_EQ(ipfs::GetDefaultIPFSGateway(context()),
+  EXPECT_EQ(ipfs::GetDefaultIPFSGateway(prefs()),
             GURL("https://localhost:8888/"));
   prefs()->SetString(kIPFSPublicGatewayAddress, "https://127.0.0.1/");
-  EXPECT_EQ(ipfs::GetDefaultIPFSGateway(context()), GURL("https://localhost/"));
+  EXPECT_EQ(ipfs::GetDefaultIPFSGateway(prefs()), GURL("https://localhost/"));
   prefs()->SetString(kIPFSPublicGatewayAddress, "https://localhost/");
-  EXPECT_EQ(ipfs::GetDefaultIPFSGateway(context()), GURL("https://localhost/"));
+  EXPECT_EQ(ipfs::GetDefaultIPFSGateway(prefs()), GURL("https://localhost/"));
 }
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURINotIPFSScheme) {
@@ -560,11 +553,11 @@ TEST_F(IpfsUtilsUnitTest, ResolveWebUIFilesLocation) {
 }
 
 TEST_F(IpfsUtilsUnitTest, IsIpfsMenuEnabled) {
-  ASSERT_FALSE(ipfs::IsLocalGatewayConfigured(context()));
-  ASSERT_FALSE(ipfs::IsIpfsMenuEnabled(context()));
+  ASSERT_FALSE(ipfs::IsLocalGatewayConfigured(prefs()));
+  ASSERT_FALSE(ipfs::IsIpfsMenuEnabled(prefs()));
   SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
-  ASSERT_TRUE(ipfs::IsLocalGatewayConfigured(context()));
-  ASSERT_TRUE(ipfs::IsIpfsMenuEnabled(context()));
+  ASSERT_TRUE(ipfs::IsLocalGatewayConfigured(prefs()));
+  ASSERT_TRUE(ipfs::IsIpfsMenuEnabled(prefs()));
 }
 
 TEST_F(IpfsUtilsUnitTest, ParsePeerConnectionStringTest) {
@@ -608,6 +601,10 @@ TEST_F(IpfsUtilsUnitTest, ValidateNodeFilename) {
   ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc1_darwin-amd64"));
   ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc21_darwin-amd64"));
   ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0_darwin-amd64"));
+
+  ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc1_darwin-arm64"));
+  ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc21_darwin-arm64"));
+  ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0_darwin-arm64"));
 
   ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc1_linux-amd64"));
   ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc21_linux-amd64"));
@@ -660,4 +657,46 @@ TEST_F(IpfsUtilsUnitTest, IsAPIGatewayTest) {
   ASSERT_TRUE(ipfs::IsAPIGateway(GURL("https://localhost:" + port), channel));
   ASSERT_FALSE(ipfs::IsAPIGateway(GURL("https://brave.com"), channel));
   ASSERT_FALSE(ipfs::IsAPIGateway(GURL(), channel));
+}
+
+TEST_F(IpfsUtilsUnitTest, IPNSRegistryDomain) {
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("http://google.com")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("https://google.com")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipfs://bafy")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipfs://QmfdSDf")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://QmfdSDf/path")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://bafyff/path")), "");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://brantly.eth.link")),
+            "brantly.eth.link");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://brantly.eth/path")),
+            "brantly.eth");
+  EXPECT_EQ(ipfs::GetRegistryDomainFromIPNS(GURL("ipns://blah.google.com")),
+            "google.com");
+}
+
+TEST_F(IpfsUtilsUnitTest, IsValidCIDOrDomain) {
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain(
+      "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain(
+      "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain(
+      "zb2rhe5P4gXftAwvA4eXQ5HJwsER2owDyS9sKaQRRVQPn93bA"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("bafkqaaa"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("k51qzi5uqu5dgutdk6i1ynyzg"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("7testtesttest"));
+
+  ASSERT_FALSE(ipfs::IsValidCIDOrDomain(
+      "zb2rhe5P4gXftAwvA4eXQ5HJwsER2owDyS9sKaQRRVQPn=3bA"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("brantly.eth"));
+  ASSERT_FALSE(ipfs::IsValidCIDOrDomain(
+      "ba-ybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"));
+  ASSERT_FALSE(ipfs::IsValidCIDOrDomain(
+      "ba%ybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"));
+
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("test.com"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("test.net"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("a.b.c.com"));
+  ASSERT_TRUE(ipfs::IsValidCIDOrDomain("a.b.c.localhost"));
+  ASSERT_FALSE(ipfs::IsValidCIDOrDomain("a.b.c.com:11112"));
+  ASSERT_FALSE(ipfs::IsValidCIDOrDomain("wrongdomainandcid"));
 }

@@ -4,15 +4,16 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/guest_window_search_engine_provider_service.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -22,6 +23,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/testing_browser_process.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "components/search_engines/search_engines_test_util.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
@@ -38,6 +40,14 @@
 
 using SearchEngineProviderServiceTest = InProcessBrowserTest;
 
+namespace {
+
+// An observer that returns back to test code after a new profile is
+// initialized.
+void OnProfileCreation(base::RunLoop* run_loop, Profile* profile) {
+  run_loop->Quit();
+}
+
 TemplateURLData CreateTestSearchEngine() {
   TemplateURLData result;
   result.SetShortName(u"test1");
@@ -46,11 +56,14 @@ TemplateURLData CreateTestSearchEngine() {
   return result;
 }
 
+}  // namespace
+
 // In Qwant region, alternative search engine prefs isn't used.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PrivateWindowPrefTestWithNonQwantRegion) {
   Profile* profile = browser()->profile();
-  Profile* incognito_profile = profile->GetPrimaryOTRProfile();
+  Profile* incognito_profile =
+      profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
 
   // This test case is only for non-qwant region.
   if (brave::IsRegionForQwant(profile))
@@ -99,7 +112,8 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PrivateWindowTestWithQwantRegion) {
   Profile* profile = browser()->profile();
-  Profile* incognito_profile = profile->GetPrimaryOTRProfile();
+  Profile* incognito_profile =
+      profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
 
   // This test case is only for qwant region.
   if (!brave::IsRegionForQwant(profile))
@@ -146,17 +160,17 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 // Checks the default search engine of the tor profile.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PRE_CheckDefaultTorProfileSearchProviderTest) {
-  brave::NewOffTheRecordWindowTor(browser());
-  content::RunAllTasksUntilIdle();
-
+  base::RunLoop run_loop;
+  TorProfileManager::SwitchToTorProfile(
+      browser()->profile(), base::BindOnce(&OnProfileCreation, &run_loop));
+  run_loop.Run();
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
   EXPECT_TRUE(tor_profile->IsTor());
 
   auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
 
-  int default_provider_id = brave::IsRegionForQwant(tor_profile) ?
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT :
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
+  const int default_provider_id =
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR;
 
   // Check tor profile's search provider is set to ddg.
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
@@ -174,16 +188,15 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 // sessions.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        CheckDefaultTorProfileSearchProviderTest) {
-  brave::NewOffTheRecordWindowTor(browser());
-  content::RunAllTasksUntilIdle();
-
+  base::RunLoop run_loop;
+  TorProfileManager::SwitchToTorProfile(
+      browser()->profile(), base::BindOnce(&OnProfileCreation, &run_loop));
+  run_loop.Run();
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
   EXPECT_TRUE(tor_profile->IsTor());
 
-  int default_provider_id =
-      brave::IsRegionForQwant(tor_profile)
-          ? TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT
-          : TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
+  const int default_provider_id =
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR;
   auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
             default_provider_id);
@@ -193,8 +206,9 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 // Check ddg toggle button state is changed by user's settings change.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        GuestWindowControllerTest) {
-  profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
-  content::RunAllTasksUntilIdle();
+  base::RunLoop run_loop;
+  profiles::SwitchToGuestProfile(base::BindOnce(&OnProfileCreation, &run_loop));
+  run_loop.Run();
 
   Profile* guest_profile =
       BrowserList::GetInstance()->GetLastActive()->profile();
@@ -249,15 +263,15 @@ namespace extensions {
 
 // Copied from settings_overrides_browsertest.cc
 // On linux, search engine from extension is not set by default.
-#if defined(OS_WIN) || defined(OS_MAC)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 // Prepopulated id hardcoded in test_extension.
 const int kTestExtensionPrepopulatedId = 3;
 // TemplateURLData with search engines settings from test extension manifest.
 // chrome/test/data/extensions/settings_override/manifest.json
 std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(PrefService* prefs) {
   auto result = std::make_unique<TemplateURLData>();
-  result->SetShortName(base::ASCIIToUTF16("name.de"));
-  result->SetKeyword(base::ASCIIToUTF16("keyword.de"));
+  result->SetShortName(u"name.de");
+  result->SetKeyword(u"keyword.de");
   result->SetURL("http://www.foo.de/s?q={searchTerms}&id=10");
   result->favicon_url = GURL("http://www.foo.de/favicon.ico?id=10");
   result->suggestions_url = "http://www.foo.de/suggest?q={searchTerms}&id=10";
@@ -311,7 +325,8 @@ IN_PROC_BROWSER_TEST_F(ExtensionBrowserTest,
       TestExtensionSearchEngine(prefs);
   ExpectSimilar(extension_dse.get(), &current_dse->data());
 
-  Profile* incognito_profile = profile()->GetPrimaryOTRProfile();
+  Profile* incognito_profile =
+      profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true);
 
   auto* incognito_url_service =
       TemplateURLServiceFactory::GetForProfile(incognito_profile);
@@ -337,8 +352,7 @@ IN_PROC_BROWSER_TEST_F(ExtensionBrowserTest,
 
   // After unloading private window's search provider is ddg.
   current_incognito_dse = incognito_url_service->GetDefaultSearchProvider();
-  EXPECT_EQ(current_incognito_dse->data().short_name(),
-            base::ASCIIToUTF16("DuckDuckGo"));
+  EXPECT_EQ(current_incognito_dse->data().short_name(), u"DuckDuckGo");
   EXPECT_EQ(TemplateURL::NORMAL, current_incognito_dse->type());
 }
 #endif

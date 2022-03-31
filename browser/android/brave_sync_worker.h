@@ -10,14 +10,14 @@
 #include <string>
 
 #include "base/android/jni_weak_ref.h"
-#include "base/scoped_observer.h"
+#include "base/scoped_multi_source_observation.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
 
 class Profile;
 
 namespace syncer {
-class BraveProfileSyncService;
+class BraveSyncServiceImpl;
 }  // namespace syncer
 
 namespace chrome {
@@ -27,6 +27,8 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
  public:
   BraveSyncWorker(JNIEnv* env,
                   const base::android::JavaRef<jobject>& obj);
+  BraveSyncWorker(const BraveSyncWorker&) = delete;
+  BraveSyncWorker& operator=(const BraveSyncWorker&) = delete;
   ~BraveSyncWorker() override;
 
   void Destroy(JNIEnv* env);
@@ -53,7 +55,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
       bool sync_v2_migration_notice_dismissed);
 
  private:
-  syncer::BraveProfileSyncService* GetSyncService() const;
+  syncer::BraveSyncServiceImpl* GetSyncService() const;
   void MarkFirstSetupComplete();
 
   // syncer::SyncServiceObserver implementation.
@@ -69,11 +71,10 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
   std::string passphrase_;
 
-  ScopedObserver<syncer::SyncService, syncer::SyncServiceObserver>
+  base::ScopedMultiSourceObservation<syncer::SyncService,
+                                     syncer::SyncServiceObserver>
       sync_service_observer_{this};
   base::WeakPtrFactory<BraveSyncWorker> weak_ptr_factory_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(BraveSyncWorker);
 };
 
 }  // namespace android

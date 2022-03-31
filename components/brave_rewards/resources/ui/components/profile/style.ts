@@ -56,11 +56,11 @@ const fadeOutToNull = keyframes`
   }
 `
 
-export const StyledWrapper = styled('div')<{}>`
+export const StyledWrapper = styled('div')<Partial<Props>>`
   position: relative;
   display: flex;
   align-items: center;
-  font-family: ${p => p.theme.fontFamily.body};
+  font-family: ${p => p.type === 'mobile' ? 'var(--brave-font-heading)' : p.theme.fontFamily.body};
 `
 
 export const StyledImageWrapper = styled('div')<Partial<Props>>`
@@ -72,10 +72,15 @@ export const StyledImageWrapper = styled('div')<Partial<Props>>`
       height: 32px;
       width: 32px;
     `
+    : p.type === 'small'
+    ? css`
+      height: 24px;
+      width: 24px;
+    `
     : css`
-    height: 24px;
-    width: 24px
-  `
+      height: 20px;
+      width: 20px;
+    `
   };
 `
 
@@ -97,25 +102,29 @@ export const StyledVerified = styled('span')<{}>`
   position: absolute;
 `
 
-export const StyledContent = styled.div`
-  padding: 0 0 0 12px;
+export const StyledContent = styled('div')<Partial<Props>>`
+  padding: 0px;
+  padding-left: ${p => p.type === 'mobile' ? '8px' : '12px'}
 `
 
-export const StyledTitleWrap = styled.div`
+export const StyledTitleWrap = styled('div')<Partial<Props>>`
   display: flex;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: ${p => p.type === 'mobile' ? '16px' : '14px'};
+  font-weight: ${p => p.type === 'mobile' ? '500' : '700'};
   color: ${p => p.theme.palette.grey800};
+  display: ${p => p.type === 'mobile' ? 'block' : 'flex'};
+
 `
 
 export const StyledTitle = styled('span')<Partial<Props>>`
-  font-size: ${p => p.type === 'big' ? '18px' : null};
+  font-size: ${p => p.type === 'big' ? '18px' : p.type === 'mobile' ? '16px' : null};
+  font-weight: ${p => p.type === 'mobile' ? '500' : null};
 `
 
 export const StyledProvider = styled('span')<Partial<Props>>`
   padding-left: 4px;
-  font-size: ${p => p.type === 'big' ? '16px' : null};
-  font-weight: ${p => p.type === 'big' ? '400' : null};
+  font-size: ${p => p.type === 'big' ? '16px' : p.type === 'mobile' ? '16px' : null};
+  font-weight: ${p => p.type === 'big' ? '400' : p.type === 'mobile' ? '500' : null};
 `
 
 export const StyledProviderWrap = styled('div')<{}>`

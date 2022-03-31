@@ -5,7 +5,7 @@
 
 #define ParseJSON ParseJSON_ChromiumImpl
 #define ParseCertificatesFile ParseCertificatesFile_ChromiumImpl
-#include "../../../../../net/tools/transport_security_state_generator/input_file_parsers.cc"
+#include "src/net/tools/transport_security_state_generator/input_file_parsers.cc"
 #undef ParseCertificatesFile
 #undef ParseJSON
 
@@ -417,9 +417,9 @@ bool ParseJSON(base::StringPiece json,
       { "name": "brave-today-cdn.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "clients4.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "componentupdater.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
-      { "name": "crlsets.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "crxdownload.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "devtools.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "dict.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "extensionupdater.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "gaia.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "go-updater.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
@@ -468,7 +468,10 @@ bool ParseJSON(base::StringPiece json,
       { "name": "payment.rewards.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
       { "name": "payment.rewards.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
       { "name": "payment.rewards.brave.software", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "rewards.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"}
+      { "name": "rewards.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+
+      // Test page using a CA outside of the pinset (expected to be blocked)
+      { "name": "ssl-pinning.someblog.org", "policy": "custom", "mode": "force-https", "pins": "brave"}
       // =====END BRAVE HOSTS JSON=====
     ]})brave_json";
 

@@ -12,15 +12,15 @@
 #include "base/compiler_specific.h"
 #include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"
-#include "base/scoped_observer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
+#include "brave/ios/browser/api/sync/brave_sync_internals+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
-#include "components/sync/driver/profile_sync_service.h"
 #include "components/sync/driver/sync_service.h"
+#include "components/sync/driver/sync_service_impl.h"
 #include "components/sync/driver/sync_service_observer.h"
 #include "components/sync_device_info/device_info.h"
 #include "components/sync_device_info/device_info_sync_service.h"
@@ -30,7 +30,7 @@
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/sync/device_info_sync_service_factory.h"
-#include "ios/chrome/browser/sync/profile_sync_service_factory.h"
+#include "ios/chrome/browser/sync/sync_service_factory.h"
 #include "ios/chrome/browser/sync/sync_setup_service.h"
 #include "ios/chrome/browser/sync/sync_setup_service_factory.h"
 
@@ -62,12 +62,12 @@
 
 @implementation BraveSyncServiceObserver
 
-- (instancetype)
-    initWithProfileSyncService:(syncer::ProfileSyncService*)profileSyncService
-                      callback:(void (^)())onSyncServiceStateChanged {
+- (instancetype)initWithSyncServiceImpl:
+                    (syncer::SyncServiceImpl*)syncServiceImpl
+                               callback:(void (^)())onSyncServiceStateChanged {
   if ((self = [super init])) {
     _service_tracker = std::make_unique<BraveSyncServiceTracker>(
-        profileSyncService, onSyncServiceStateChanged);
+        syncServiceImpl, onSyncServiceStateChanged);
   }
   return self;
 }
@@ -81,20 +81,9 @@
 
 @implementation BraveSyncAPI
 
-+ (instancetype)sharedSyncAPI {
-  static BraveSyncAPI* instance = nil;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    instance = [[BraveSyncAPI alloc] init];
-  });
-  return instance;
-}
-
-- (instancetype)init {
+- (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState {
   if ((self = [super init])) {
-    ios::ChromeBrowserStateManager* browserStateManager =
-        GetApplicationContext()->GetChromeBrowserStateManager();
-    _chromeBrowserState = browserStateManager->GetLastUsedBrowserState();
+    _chromeBrowserState = mainBrowserState;
     _worker.reset(new BraveSyncWorker(_chromeBrowserState));
   }
   return self;
@@ -106,7 +95,7 @@
 }
 
 - (bool)syncEnabled {
-  return _worker->IsSyncEnabled();
+  return _worker->CanSyncFeatureStart();
 }
 
 - (void)setSyncEnabled:(bool)enabled {
@@ -137,6 +126,11 @@
 - (NSString*)syncCodeFromHexSeed:(NSString*)hexSeed {
   return base::SysUTF8ToNSString(
       _worker->GetSyncCodeFromHexSeed(base::SysNSStringToUTF8(hexSeed)));
+}
+
+- (NSString*)hexSeedFromSyncCode:(NSString*)syncCode {
+  return base::SysUTF8ToNSString(
+      _worker->GetHexSeedFromSyncCode(base::SysNSStringToUTF8(syncCode)));
 }
 
 - (UIImage*)getQRCodeImage:(CGSize)size {
@@ -208,6 +202,11 @@
   _worker->DeleteDevice(base::SysNSStringToUTF8(guid));
 }
 
+- (BraveSyncInternalsController*)createSyncInternalsController {
+  return [[BraveSyncInternalsController alloc]
+      initWithBrowserState:_chromeBrowserState];
+}
+
 - (id)createSyncDeviceObserver:(void (^)())onDeviceInfoChanged {
   auto* tracker =
       DeviceInfoSyncServiceFactory::GetForBrowserState(_chromeBrowserState)
@@ -218,11 +217,10 @@
 }
 
 - (id)createSyncServiceObserver:(void (^)())onSyncServiceStateChanged {
-  auto* service =
-      ProfileSyncServiceFactory::GetAsProfileSyncServiceForBrowserState(
-          _chromeBrowserState);
+  auto* service = SyncServiceFactory::GetAsSyncServiceImplForBrowserState(
+      _chromeBrowserState);
   return [[BraveSyncServiceObserver alloc]
-      initWithProfileSyncService:service
-                        callback:onSyncServiceStateChanged];
+      initWithSyncServiceImpl:service
+                     callback:onSyncServiceStateChanged];
 }
 @end

@@ -9,5 +9,5 @@
 #include "chrome/browser/chrome_browser_main.h"
 
 #define ChromeBrowserMainParts BraveBrowserMainParts
-#include "../../../../chrome/browser/chrome_browser_main_android.cc"  // NOLINT
+#include "src/chrome/browser/chrome_browser_main_android.cc"
 #undef ChromeBrowserMainParts

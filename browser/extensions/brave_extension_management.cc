@@ -25,13 +25,15 @@
 #include "extensions/common/extension_urls.h"
 
 #if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/pref_names.h"
 #endif
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "components/user_prefs/user_prefs.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
@@ -41,8 +43,8 @@
 namespace extensions {
 
 BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
-    : ExtensionManagement(profile), extension_registry_observer_(this) {
-  extension_registry_observer_.Add(
+    : ExtensionManagement(profile) {
+  extension_registry_observer_.Observe(
       ExtensionRegistry::Get(static_cast<content::BrowserContext*>(profile)));
   providers_.push_back(std::make_unique<BraveExtensionProvider>());
   local_state_pref_change_registrar_.Init(g_browser_process->local_state());
@@ -81,8 +83,10 @@ void BraveExtensionManagement::OnExtensionUnloaded(
 
 void BraveExtensionManagement::OnTorDisabledChanged() {
 #if BUILDFLAG(ENABLE_TOR)
-  if (TorProfileServiceFactory::IsTorDisabled())
+  if (TorProfileServiceFactory::IsTorDisabled()) {
+    TorProfileManager::GetInstance().CloseAllTorWindows();
     g_brave_browser_process->tor_client_updater()->Cleanup();
+  }
 #endif
 }
 
@@ -91,9 +95,9 @@ void BraveExtensionManagement::Cleanup(content::BrowserContext* context) {
   // have to manully cleanup tor executable when tor is disabled by gpo
   OnTorDisabledChanged();
 
-#if BUILDFLAG(IPFS_ENABLED)
+#if BUILDFLAG(ENABLE_IPFS)
   // Remove ipfs executable if it is disabled by GPO.
-  if (ipfs::IsIpfsDisabledByPolicy(context))
+  if (ipfs::IsIpfsDisabledByPolicy(user_prefs::UserPrefs::Get(context)))
     g_brave_browser_process->ipfs_client_updater()->Cleanup();
 #endif
 }

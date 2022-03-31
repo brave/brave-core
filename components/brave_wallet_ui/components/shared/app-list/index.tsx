@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { AppObjectType, AppsListType } from '../../../constants/types'
+import { AppsListType, BraveWallet } from '../../../constants/types'
 import { NavButton } from '../../extension/'
 import { AppListItem } from '../'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
   StyledWrapper,
@@ -13,19 +13,18 @@ import {
 
 export interface Props {
   list: AppsListType[]
-  favApps: AppObjectType[]
+  favApps: BraveWallet.AppItem[]
   action: () => void
-  addToFav: (app: AppObjectType) => void
-  removeFromFav: (app: AppObjectType) => void
+  addToFav: (app: BraveWallet.AppItem) => void
+  removeFromFav: (app: BraveWallet.AppItem) => void
 }
 
 export default class AppList extends React.PureComponent<Props> {
-
-  checkIsSelected = (app: AppObjectType) => {
+  checkIsSelected = (app: BraveWallet.AppItem) => {
     return this.props.favApps.some((a) => a.name === app.name)
   }
 
-  toggleFavorite = (app: AppObjectType) => () => {
+  toggleFavorite = (app: BraveWallet.AppItem) => () => {
     if (this.checkIsSelected(app)) {
       this.props.removeFromFav(app)
     } else {
@@ -50,7 +49,7 @@ export default class AppList extends React.PureComponent<Props> {
                 toggleFavorite={this.toggleFavorite(item)}
               />
             )}
-            {option.category !== locale.searchCategory &&
+            {option.category !== getLocale('braveWalletSearchCategory') &&
               <ButtonRow>
                 <NavButton
                   disabled={false}

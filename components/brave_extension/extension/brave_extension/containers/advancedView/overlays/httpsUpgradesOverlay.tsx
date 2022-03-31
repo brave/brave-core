@@ -29,7 +29,7 @@ interface Props {
   favicon: string
   hostname: string
   stats: number
-  list: Array<string>
+  list: string[]
   onClose: (event?: React.MouseEvent) => void
 }
 

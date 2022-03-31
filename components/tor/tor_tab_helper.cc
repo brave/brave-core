@@ -11,7 +11,8 @@
 namespace tor {
 
 TorTabHelper::TorTabHelper(content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents) {}
+    : content::WebContentsObserver(web_contents),
+      content::WebContentsUserData<TorTabHelper>(*web_contents) {}
 
 TorTabHelper::~TorTabHelper() = default;
 
@@ -34,7 +35,7 @@ void TorTabHelper::DidFinishNavigation(
       FROM_HERE,
       base::BindOnce(&TorTabHelper::ReloadTab, AsWeakPtr(),
                      navigation_handle->GetWebContents()),
-      base::TimeDelta::FromSeconds(1));
+      base::Seconds(1));
 }
 
 void TorTabHelper::ReloadTab(content::WebContents* web_contents) {
@@ -42,6 +43,6 @@ void TorTabHelper::ReloadTab(content::WebContents* web_contents) {
   web_contents->GetController().Reload(content::ReloadType::NORMAL, false);
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(TorTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(TorTabHelper);
 
 }  // namespace tor

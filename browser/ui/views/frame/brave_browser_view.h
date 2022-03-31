@@ -10,8 +10,13 @@
 #include <string>
 
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/ui/views/toolbar/brave_vpn_panel_controller.h"
+#endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
 class ContentsLayoutManager;
@@ -32,6 +37,8 @@ class WalletButton;
 class BraveBrowserView : public BrowserView {
  public:
   explicit BraveBrowserView(std::unique_ptr<Browser> browser);
+  BraveBrowserView(const BraveBrowserView&) = delete;
+  BraveBrowserView& operator=(const BraveBrowserView&) = delete;
   ~BraveBrowserView() override;
 
   void SetStarredState(bool is_starred) override;
@@ -47,9 +54,12 @@ class BraveBrowserView : public BrowserView {
       speedreader::SpeedreaderTabHelper* tab_helper,
       bool is_enabled) override;
   void CreateWalletBubble();
+  void CreateApproveWalletBubble();
   void CloseWalletBubble();
   WalletButton* GetWalletButton();
+  views::View* GetWalletButtonAnchorView();
   void StartTabCycling() override;
+  views::View* GetAnchorViewForBraveVPNPanel();
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
@@ -63,8 +73,11 @@ class BraveBrowserView : public BrowserView {
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
+  void ShowBraveVPNBubble() override;
 
   void StopTabCycling();
+  void UpdateSearchTabsButtonState();
+  void OnPreferenceChanged(const std::string& pref_name);
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
   sidebar::Sidebar* InitSidebar() override;
@@ -80,9 +93,12 @@ class BraveBrowserView : public BrowserView {
   views::View* sidebar_host_view_ = nullptr;
 #endif
 
-  std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  BraveVPNPanelController vpn_panel_controller_{this};
+#endif
 
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowserView);
+  std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
+  PrefChangeRegistrar pref_change_registrar_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_H_

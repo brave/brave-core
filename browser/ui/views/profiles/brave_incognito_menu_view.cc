@@ -50,6 +50,19 @@ int GetProfileMenuCloseButtonTextId(Profile* profile) {
 }  // namespace
 
 void BraveIncognitoMenuView::BuildMenu() {
+  AddTorButton();
+
+  AddFeatureButton(
+      l10n_util::GetStringUTF16(
+          GetProfileMenuCloseButtonTextId(browser()->profile())),
+      base::BindRepeating(&BraveIncognitoMenuView::OnExitButtonClicked,
+                          base::Unretained(this)),
+      vector_icons::kCloseIcon);
+}
+
+void BraveIncognitoMenuView::AddedToWidget() {
+  IncognitoMenuView::AddedToWidget();
+
   ChromeLayoutProvider* provider = ChromeLayoutProvider::Get();
   // The icon color is set to match the menu text, which guarantees sufficient
   // contrast and a consistent visual appearance.
@@ -61,20 +74,12 @@ void BraveIncognitoMenuView::BuildMenu() {
   SetProfileIdentityInfo(
       /*profile_name=*/std::u16string(),
       /*background_color=*/SK_ColorTRANSPARENT,
-      /*edit_button=*/base::nullopt,
+      /*edit_button=*/absl::nullopt,
       ui::ImageModel::FromVectorIcon(kIncognitoProfileIcon, icon_color),
       l10n_util::GetStringUTF16(GetProfileMenuTitleId(browser()->profile())),
       window_count > 1 ? l10n_util::GetPluralStringFUTF16(
                              IDS_INCOGNITO_WINDOW_COUNT_MESSAGE, window_count)
                        : std::u16string());
-
-  AddTorButton();
-
-  AddFeatureButton(l10n_util::GetStringUTF16(
-                       GetProfileMenuCloseButtonTextId(browser()->profile())),
-                   base::BindRepeating(&IncognitoMenuView::OnExitButtonClicked,
-                                       base::Unretained(this)),
-                   kCloseAllIcon);
 }
 
 void BraveIncognitoMenuView::AddTorButton() {
@@ -89,7 +94,7 @@ void BraveIncognitoMenuView::AddTorButton() {
 
 void BraveIncognitoMenuView::OnTorProfileButtonClicked() {
   TorProfileManager::SwitchToTorProfile(browser()->profile(),
-                                        ProfileManager::CreateCallback());
+                                        base::DoNothing());
 }
 
 std::u16string BraveIncognitoMenuView::GetAccessibleWindowTitle() const {

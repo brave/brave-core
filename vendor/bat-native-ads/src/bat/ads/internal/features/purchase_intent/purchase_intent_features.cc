@@ -6,18 +6,21 @@
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
 
 #include "base/metrics/field_trial_params.h"
-#include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model_values.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/purchase_intent/purchase_intent_model_constants.h"
 
 namespace ads {
 namespace features {
 
 namespace {
-const char kFeatureName[] = "PurchaseIntent";
-const char kFieldTrialParameterThreshold[] = "threshold";
-const char kFieldTrialParameterTimeWindowInSeconds[] = "time_window_in_seconds";
-const char kFieldTrialParameterResourceVersion[] =
+
+constexpr char kFeatureName[] = "PurchaseIntent";
+constexpr char kFieldTrialParameterThreshold[] = "threshold";
+constexpr char kFieldTrialParameterTimeWindowInSeconds[] =
+    "time_window_in_seconds";
+constexpr char kFieldTrialParameterResourceVersion[] =
     "purchase_intent_resource_version";
-const int kDefaultResourceVersion = 1;
+constexpr int kDefaultResourceVersion = 1;
+
 }  // namespace
 
 const base::Feature kPurchaseIntent{kFeatureName,

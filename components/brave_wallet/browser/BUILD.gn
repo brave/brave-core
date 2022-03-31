@@ -1,46 +1,244 @@
 import("//brave/build/config.gni")
-import("//brave/components/brave_wallet/browser/config.gni")
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
-assert(brave_wallet_enabled)
-
-source_set("browser") {
-  configs += [ ":infura_config" ]
-  include_dirs = [ "//brave/third_party/ethash/src/include" ]
-
+static_library("browser") {
   sources = [
-    "brave_wallet_constants.cc",
-    "brave_wallet_constants.h",
-    "brave_wallet_provider_events_observer.h",
+    "asset_ratio_response_parser.cc",
+    "asset_ratio_response_parser.h",
+    "asset_ratio_service.cc",
+    "asset_ratio_service.h",
+    "block_tracker.cc",
+    "block_tracker.h",
+    "blockchain_list_parser.cc",
+    "blockchain_list_parser.h",
+    "blockchain_registry.cc",
+    "blockchain_registry.h",
+    "brave_wallet_p3a.cc",
+    "brave_wallet_p3a.h",
+    "brave_wallet_prefs.cc",
+    "brave_wallet_prefs.h",
+    "brave_wallet_provider_delegate.h",
     "brave_wallet_provider_impl.cc",
     "brave_wallet_provider_impl.h",
     "brave_wallet_service.cc",
     "brave_wallet_service.h",
-    "brave_wallet_utils.cc",
-    "brave_wallet_utils.h",
-    "eth_address.cc",
-    "eth_address.h",
-    "eth_call_data_builder.cc",
-    "eth_call_data_builder.h",
-    "eth_json_rpc_controller.cc",
-    "eth_json_rpc_controller.h",
+    "brave_wallet_service_delegate.cc",
+    "brave_wallet_service_delegate.h",
+    "eth_block_tracker.cc",
+    "eth_block_tracker.h",
+    "eth_data_builder.cc",
+    "eth_data_builder.h",
+    "eth_data_parser.cc",
+    "eth_data_parser.h",
+    "eth_gas_utils.cc",
+    "eth_gas_utils.h",
+    "eth_nonce_tracker.cc",
+    "eth_nonce_tracker.h",
+    "eth_pending_tx_tracker.cc",
+    "eth_pending_tx_tracker.h",
     "eth_requests.cc",
     "eth_requests.h",
     "eth_response_parser.cc",
     "eth_response_parser.h",
-    "eth_transaction.cc",
-    "eth_transaction.h",
-    "hd_key.cc",
-    "hd_key.h",
-    "hd_keyring.cc",
-    "hd_keyring.h",
-    "keyring_controller.cc",
-    "keyring_controller.h",
+    "eth_tx_manager.cc",
+    "eth_tx_manager.h",
+    "eth_tx_meta.cc",
+    "eth_tx_meta.h",
+    "eth_tx_state_manager.cc",
+    "eth_tx_state_manager.h",
+    "fil_block_tracker.cc",
+    "fil_block_tracker.h",
+    "fil_requests.cc",
+    "fil_requests.h",
+    "fil_response_parser.cc",
+    "fil_response_parser.h",
+    "fil_tx_manager.cc",
+    "fil_tx_manager.h",
+    "fil_tx_state_manager.cc",
+    "fil_tx_state_manager.h",
+    "json_rpc_requests_helper.cc",
+    "json_rpc_requests_helper.h",
+    "json_rpc_response_parser.cc",
+    "json_rpc_response_parser.h",
+    "json_rpc_service.cc",
+    "json_rpc_service.h",
+    "keyring_service.cc",
+    "keyring_service.h",
     "password_encryptor.cc",
     "password_encryptor.h",
+    "solana_account_meta.cc",
+    "solana_account_meta.h",
+    "solana_block_tracker.cc",
+    "solana_block_tracker.h",
+    "solana_instruction.cc",
+    "solana_instruction.h",
+    "solana_instruction_builder.cc",
+    "solana_instruction_builder.h",
+    "solana_message.cc",
+    "solana_message.h",
+    "solana_provider_impl.cc",
+    "solana_provider_impl.h",
+    "solana_requests.cc",
+    "solana_requests.h",
+    "solana_response_parser.cc",
+    "solana_response_parser.h",
+    "solana_transaction.cc",
+    "solana_transaction.h",
+    "solana_tx_manager.cc",
+    "solana_tx_manager.h",
+    "solana_tx_meta.cc",
+    "solana_tx_meta.h",
+    "solana_tx_state_manager.cc",
+    "solana_tx_state_manager.h",
+    "swap_response_parser.cc",
+    "swap_response_parser.h",
+    "swap_service.cc",
+    "swap_service.h",
+    "tx_manager.cc",
+    "tx_manager.h",
+    "tx_meta.cc",
+    "tx_meta.h",
+    "tx_service.cc",
+    "tx_service.h",
+    "tx_state_manager.cc",
+    "tx_state_manager.h",
+    "wallet_data_files_installer.cc",
+    "wallet_data_files_installer.h",
+  ]
+  deps = [
+    ":constants",
+    ":hd_keyring",
+    ":pref_names",
+    ":transaction",
+    ":utils",
+    "//base",
+    "//brave/common:brave_services_key",
+    "//brave/components/api_request_helper",
+    "//brave/components/bls:buildflags",
+    "//brave/components/bls/rs:cxx",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_stats/browser",
+    "//brave/components/brave_wallet/browser:ethereum_permission_utils",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:buildflags",
+    "//brave/components/brave_wallet/common:common_constants",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/common:solana_utils",
+    "//brave/components/json/rs:cxx",
+    "//brave/components/json/rs:cxx_gen",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/weekly_storage:weekly_storage",
+    "//components/component_updater",
+    "//components/content_settings/core/browser",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/sync_preferences",
+    "//crypto",
+    "//services/network/public/cpp",
+    "//third_party/abseil-cpp:absl",
+    "//third_party/boringssl",
+    "//third_party/re2",
+    "//ui/base:base",
+    "//url",
+  ]
+}
+
+static_library("ethereum_permission_utils") {
+  sources = [
+    "ethereum_permission_utils.cc",
+    "ethereum_permission_utils.h",
+  ]
+
+  deps = [
+    "//base",
+    "//third_party/re2",
+    "//url",
+  ]
+}
+
+source_set("constants") {
+  sources = [
+    "brave_wallet_constants.cc",
+    "brave_wallet_constants.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/resources:strings_grit",
+    "//ui/base:base",
+  ]
+
+  public_deps = [ "//brave/components/brave_wallet/common" ]
+}
+
+source_set("pref_names") {
+  sources = [
     "pref_names.cc",
     "pref_names.h",
+  ]
+}
+
+source_set("utils") {
+  sources = [
+    "brave_wallet_utils.cc",
+    "brave_wallet_utils.h",
+  ]
+
+  deps = [
+    ":constants",
+    ":pref_names",
+    "//base",
+    "//brave/components/brave_wallet/common:buildflags",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/vendor/bip39wally-core-native:bip39wally-core",
+    "//components/prefs",
+    "//crypto",
+    "//third_party/abseil-cpp:absl",
+    "//third_party/boringssl",
+    "//url",
+  ]
+
+  public_deps = [ "//brave/components/brave_wallet/common" ]
+}
+
+source_set("hd_keyring") {
+  sources = [
+    "ethereum_keyring.cc",
+    "ethereum_keyring.h",
+    "filecoin_keyring.cc",
+    "filecoin_keyring.h",
+    "hd_keyring.cc",
+    "hd_keyring.h",
+    "solana_keyring.cc",
+    "solana_keyring.h",
+  ]
+
+  deps = [
+    ":transaction",
+    "internal:hd_key",
+    "//base",
+    "//brave/components/bls:buildflags",
+    "//brave/components/bls/rs:cxx",
+    "//brave/components/bls/rs:cxx_gen",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:common_constants",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/common:solana_utils",
+    "//crypto",
+  ]
+
+  public_deps = [ "//brave/components/brave_wallet/rust:rust-rs" ]
+}
+
+source_set("transaction") {
+  sources = [
+    "eip1559_transaction.cc",
+    "eip1559_transaction.h",
+    "eip2930_transaction.cc",
+    "eip2930_transaction.h",
+    "eth_transaction.cc",
+    "eth_transaction.h",
     "rlp_decode.cc",
     "rlp_decode.h",
     "rlp_encode.cc",
@@ -51,19 +249,5 @@ source_set("browser") {
     "//base",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
-    "//brave/third_party/bitcoin-core",
-    "//brave/third_party/bitcoin-core:secp256k1",
-    "//brave/third_party/ethash",
-    "//brave/vendor/bip39wally-core-native:bip39wally-core",
-    "//components/keyed_service/core",
-    "//components/prefs",
-    "//crypto",
-    "//services/network/public/cpp",
-    "//third_party/boringssl",
-    "//url",
   ]
-}
-
-config("infura_config") {
-  defines = [ "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"" ]
 }

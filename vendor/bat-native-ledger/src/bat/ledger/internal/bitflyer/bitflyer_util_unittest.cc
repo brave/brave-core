@@ -131,14 +131,26 @@ TEST_F(BitflyerUtilTest, GetWithdrawUrl) {
   ASSERT_EQ(result, BITFLYER_STAGING_URL "/ex/Home?login=1");
 }
 
+TEST_F(BitflyerUtilTest, GetActivityUrl) {
+  // production
+  ledger::_environment = type::Environment::PRODUCTION;
+  std::string result = bitflyer::GetActivityUrl();
+  ASSERT_EQ(result, std::string(kUrlProduction) + "/ja-jp/ex/tradehistory");
+
+  // staging
+  ledger::_environment = type::Environment::STAGING;
+  result = bitflyer::GetActivityUrl();
+  ASSERT_EQ(result, BITFLYER_STAGING_URL "/ja-jp/ex/tradehistory");
+}
+
 TEST_F(BitflyerUtilTest, GetWallet) {
   // no wallet
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletBitflyer))
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBitflyer))
       .WillByDefault(testing::Return(""));
-  auto result = bitflyer::GetWallet(mock_ledger_impl_.get());
+  auto result = mock_ledger_impl_.get()->bitflyer()->GetWallet();
   ASSERT_TRUE(!result);
 
-  const std::string wallet = R"({
+  const std::string wallet = FakeEncryption::Base64EncryptString(R"({
     "account_url": "https://bitflyer.com/ex/Home?login=1",
     "add_url": "",
     "address": "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af",
@@ -151,13 +163,13 @@ TEST_F(BitflyerUtilTest, GetWallet) {
     "user_name": "test",
     "verify_url": "https://sandbox.bitflyer.com/authorize/4c2b665ca060d",
     "withdraw_url": ""
-  })";
+  })");
 
-  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletBitflyer))
+  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBitflyer))
       .WillByDefault(testing::Return(wallet));
 
   // Bitflyer wallet
-  result = bitflyer::GetWallet(mock_ledger_impl_.get());
+  result = mock_ledger_impl_.get()->bitflyer()->GetWallet();
   ASSERT_TRUE(result);
   ASSERT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
   ASSERT_EQ(result->user_name, "test");

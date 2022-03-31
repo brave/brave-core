@@ -17,8 +17,8 @@
   <message name="IDS_SETTINGS_CAPTIONS_PREFERENCES_TITLE" desc="Section title for caption style setting that is supported by some apps and sites">
     Caption preferences
   </message>
-  <message name="IDS_SETTINGS_CAPTIONS_PREFERENCES_SUBTITLE" desc="Section subtitle for Caption preferences. Disclaimer that not all apps and sites support the system caption style. Some apps and sites don't use the web captioning standard and have their own captioning platform.">
-    Customize caption size and style for apps and sites that support this setting
+  <message name="IDS_SETTINGS_CAPTIONS_PREFERENCES_SUBTITLE" desc="Section subtitle for Caption preferences for Live Caption. Some apps and sites also use the system caption style, but others don't use the web captioning standard and have their own captioning platform.">
+    Customize caption size and style for Live Caption. Some apps and sites will also use this setting.
   </message>
   <message name="IDS_SETTINGS_CAPTIONS_TEXT_SIZE" desc="Name of the caption text size preference.">
     Text size
@@ -104,7 +104,7 @@
     Device name
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_DIALOG_TITLE" desc="Title for the dialog which allows a user to set the name of their device which is shown to other devices for the Nearby Share feature.">
-    Device Name
+    Change device name
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_FIELD_LABEL" desc="Label for the input field where a user can set the name of their device which is shown to other devices for the Nearby Share feature.">
     New device name
@@ -112,8 +112,20 @@
   <message name="IDS_SETTINGS_NEARBY_SHARE_EDIT_DEVICE_NAME" desc="Label for the button that opens the dialog which allows a user to set the name of their device which is shown to other devices for the Nearby Share feature.">
     Change device name
   </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_FAST_INITIATION_NOTIFICATION_TOGGLE_TITLE" desc="Title for the toggle that allows a user to turn fast initiation notifications on or off. Fast initiation notifications alert the user when devices nearby are trying to share.">
+    Show notification
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_FAST_INITIATION_NOTIFICATION_TOGGLE_DESCRIPTION" desc="Description for the toggle that allows a user to turn fast initiation notifications on or off. Fast initiation notifications alert the user when devices nearby are trying to share.">
+    When devices are sharing nearby
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_FAST_INITIATION_NOTIFICATION_TOGGLE_ARIA_LABEL" desc="Title for screen readers for the toggle that allows a user to turn fast initiation notifications on or off. Fast initiation notifications alert the user when devices nearby are trying to share." is_accessibility_with_no_ui="true">
+    Show notification when devices are sharing nearby
+  </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_ARIA_DESCRIPTION" desc="Description for screen readers, not displayed in UI, specifying the current device name which is shown to other devices for the Nearby Share feature." is_accessibility_with_no_ui="true">
-    Current device name is <ph name="DEVICE_NAME">$1<ex>Michael's Bravebook</ex></ph>
+    Current device name is <ph name="DEVICE_NAME">$1<ex>Michael's Chromebook</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_CONFIRM_DEVICE_NAME" desc="Label for the button that allows a user to confirm their device name which is shown to other devices for the Nearby Share feature.">
+    Rename
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_MANAGE_CONTACTS_LABEL" desc="Label for the button that opens contacts management when configuring visibility of their device with their contacts for the Nearby Share feature.">
     Manage contacts
@@ -125,7 +137,7 @@
     Edit
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_UPDATE_DATA_USAGE" desc="Label for the button that allows a user to confirm their choice of data usage setting for the Nearby Share feature.">
-    Done
+    Save
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_DIALOG_TITLE" desc="Title for the dialog where a user can select the data usage setting for the Nearby Share feature.">
     Data usage
@@ -143,7 +155,7 @@
     May incur mobile data charges
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_MOBILE_DATA_TOOLTIP" desc="Explanation of when the mobile data usage setting applies. When selected, Mobile data means that Wi-Fi or cell data may be used for transfers for the Nearby Share feature.">
-    This option applies to Bravebooks with a data plan or mobile network dongle, or when tethering to a portable hotspot
+    This option applies to Chromebooks with a data plan or mobile network dongle, or when tethering to a portable hotspot
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_DATA_USAGE_OFFLINE_LABEL" desc="Label for the data usage setting where transfers will only take place offline for the Nearby Share feature.">
     Without internet
@@ -168,6 +180,9 @@
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_VISIBILITY_DIALOG_TITLE" desc="Title for the dialog which allows a user to set their preference for the visibility of their device with their contacts for the Nearby Share feature.">
     Device visibility
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_VISIBILITY_DIALOG_SAVE" desc="Label for the button that saves a user's preference for the visibility of their device with their contacts for the Nearby Share feature. ">
+    Save
   </message>
   <message name="IDS_SETTINGS_NEARBY_SHARE_DESCRIPTION" desc="A description of nearby share that helps users understand what the feature is used for.">
     Share files with profiles around you. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
@@ -202,7 +217,7 @@
     Help improve Brave's features and performance
   </message>
   <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging">
-    Automatically sends crash reports to Brave
+    Automatically sends usage statistics and crash reports to Brave
   </message>
   <message name="IDS_SETTINGS_LINKDOCTOR_PREF" desc="The documentation string of the 'Use Link Doctor' preference to help with navigation errors.">
     Show suggestions for similar pages when a page can't be found
@@ -349,6 +364,19 @@
   <message name="IDS_SETTINGS_SYNC_SETUP_CANCEL_DIALOG_BODY" desc="The body text of the dialog to confirm the sync cancellation.">
     You can turn on sync anytime in settings
   </message>
+    <if expr="chromeos">
+    <!-- TODO(crbug.com/1231500): Remove this string after Lacros side-by-side rollout stage. -->
+    <message name="IDS_SYNC_SETTINGS_SIDE_BY_SIDE_WARNING_ASH" desc="The warning message that is shown when lacros side-by-side mode is enabled.">
+      Changes you make here apply only to Brave Browser. To make changes to your Lacros Brave Browser settings, open Lacros Brave Browser and go to settings.
+    </message>
+  </if>
+
+  <if expr="lacros">
+    <!-- TODO(crbug.com/1231500): Remove this string after Lacros side-by-side rollout stage. -->
+    <message name="IDS_SYNC_SETTINGS_SIDE_BY_SIDE_WARNING_LACROS" desc="The warning message that is shown when lacros side-by-side mode is enabled.">
+      Changes you make here apply only to Lacros Brave Browser. To make changes to your Brave Browser settings, open Brave Browser and go to settings.
+    </message>
+  </if>
 
   <!-- About Subpage-->
   <message name="IDS_SETTINGS_ABOUT_UPGRADE_CHECK_STARTED" desc="Status label: About to start checking for updates">
@@ -363,6 +391,19 @@
   <if expr="not chromeos">
       <message name="IDS_SETTINGS_THEMES_AND_WALLPAPERS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing themes and wallpapers between multiple browser instances.">
         Theme
+    </message>
+  </if>
+
+  <!-- Password Prompt Dialog -->
+  <if expr="chromeos_ash or chromeos_lacros">
+    <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_TITLE" desc="Title of the password prompt dialog popup.">
+      Confirm your password
+    </message>
+    <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_PASSWORD_LABEL" desc="An input box label that tells the user to enter their password in that input box.">
+      Password
+    </message>
+    <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_INVALID_PASSWORD" desc="Text on a password field that tells the user the password is incorrect.">
+      Invalid password
     </message>
   </if>
 </grit-part>

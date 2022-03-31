@@ -4,168 +4,126 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-
-// Feature Containers
+import * as BraveNews from '../../../api/brave_news'
 import CardLarge from './cards/_articles/cardArticleLarge'
 import CardSmall from './cards/_articles/cardArticleMedium'
 import CategoryGroup from './cards/categoryGroup'
 import PublisherGroup from './cards/publisherGroup'
 import CardDeals from './cards/cardDeals'
-import { attributeNameCardCount, OnPromotedItemViewed, OnReadFeedItem, OnSetPublisherPref } from './'
+import CardDisplayAd from './cards/displayAd'
+import { attributeNameCardCount, GetDisplayAdContent, OnPromotedItemViewed, OnReadFeedItem, OnSetPublisherPref, OnViewedDisplayAd, OnVisitDisplayAd } from './'
+
+import CardType = BraveNews.CardType
 
 // Disabled rules because we have a function
 // which returns elements in a switch.
-// tslint:disable:jsx-wrap-multiline jsx-alignment
-
-enum CardType {
-  Headline,
-  HeadlinePaired,
-  CategoryGroup,
-  Deals,
-  PromotedArticle,
-  PublisherGroup
-}
-
-const PageContentOrder = [
-  CardType.Headline,
-  CardType.Headline,
-  CardType.HeadlinePaired,
-  CardType.HeadlinePaired,
-  CardType.PromotedArticle,
-  CardType.CategoryGroup,
-  CardType.Headline,
-  CardType.Deals,
-  CardType.Headline,
-  CardType.HeadlinePaired,
-  CardType.PublisherGroup,
-  CardType.Headline,
-  CardType.HeadlinePaired
-]
-
-const RandomContentOrder = [
-  CardType.Headline,
-  CardType.HeadlinePaired,
-  CardType.Headline
-]
-
-export const groupItemCount = PageContentOrder.length + RandomContentOrder.length
 
 type Props = {
-  content: BraveToday.Page
-  publishers: BraveToday.Publishers
-  articleToScrollTo?: BraveToday.FeedItem
+  content: BraveNews.FeedPage
+  publishers: BraveNews.Publishers
+  articleToScrollTo?: BraveNews.FeedItemMetadata
+  shouldScrollToDisplayAd: boolean
   itemStartingDisplayIndex: number
   onReadFeedItem: OnReadFeedItem
   onSetPublisherPref: OnSetPublisherPref
   onPeriodicCardViews: (element: HTMLElement | null) => void
   onPromotedItemViewed: OnPromotedItemViewed
+  onVisitDisplayAd: OnVisitDisplayAd
+  onViewedDisplayAd: OnViewedDisplayAd
+  getDisplayAdContent: GetDisplayAdContent
 }
 
-type CardProps = Props & {
-  cardType: CardType
-  headlines: BraveToday.Article[]
-}
-
-function Card (props: CardProps) {
-  switch (props.cardType) {
-    case CardType.Headline:
-      // TODO: article card should handle any number of articles and
-      // adapt accordingly.
+function getCard (props: Props, content: BraveNews.FeedPageItem) {
+  switch (content.cardType) {
+    case CardType.HEADLINE:
       return <CardLarge
-              content={props.headlines.splice(0, 1)}
+              content={content.items}
               publishers={props.publishers}
               articleToScrollTo={props.articleToScrollTo}
               onReadFeedItem={props.onReadFeedItem}
               onSetPublisherPref={props.onSetPublisherPref}
       />
-    case CardType.HeadlinePaired:
-      // TODO: handle content length < 2
+    case CardType.HEADLINE_PAIRED:
       return <CardSmall
-              content={props.headlines.splice(0, 2)}
+              content={content.items}
               publishers={props.publishers}
               articleToScrollTo={props.articleToScrollTo}
               onReadFeedItem={props.onReadFeedItem}
               onSetPublisherPref={props.onSetPublisherPref}
       />
-    case CardType.PromotedArticle:
-      if (!props.content.promotedArticle) {
-        return null
-      }
+    case CardType.PROMOTED_ARTICLE:
       return <CardLarge
                 isPromoted={true}
-                content={[props.content.promotedArticle]}
+                content={content.items}
                 publishers={props.publishers}
                 articleToScrollTo={props.articleToScrollTo}
                 onReadFeedItem={props.onReadFeedItem}
                 onSetPublisherPref={props.onSetPublisherPref}
                 onItemViewed={props.onPromotedItemViewed}
       />
-    case CardType.CategoryGroup:
-      if (!props.content.itemsByCategory) {
+    case CardType.CATEGORY_GROUP:
+      const categoryName = content.items[0]?.article?.data.categoryName
+      if (!categoryName) {
         return null
       }
-      const categoryName = props.content.itemsByCategory.categoryName
       return <CategoryGroup
-        content={props.content.itemsByCategory.items}
+        content={content.items}
         publishers={props.publishers}
         categoryName={categoryName}
         onReadFeedItem={props.onReadFeedItem}
         articleToScrollTo={props.articleToScrollTo}
       />
-    case CardType.PublisherGroup:
-      if (!props.content.itemsByPublisher) {
+    case CardType.PUBLISHER_GROUP:
+      const publisherId = content.items[0]?.article?.data.publisherId
+      if (!publisherId) {
         return null
       }
-      const publisherId = props.content.itemsByPublisher.name
       const publisher = props.publishers[publisherId]
       return <PublisherGroup
-        content={props.content.itemsByPublisher.items}
+        content={content.items}
         publisher={publisher}
         articleToScrollTo={props.articleToScrollTo}
         onReadFeedItem={props.onReadFeedItem}
         onSetPublisherPref={props.onSetPublisherPref}
       />
-    case CardType.Deals:
+    case CardType.DEALS:
       return <CardDeals
-        content={props.content.deals}
+        content={content.items}
         onReadFeedItem={props.onReadFeedItem}
         articleToScrollTo={props.articleToScrollTo}
       />
+    case CardType.DISPLAY_AD:
+      return <CardDisplayAd
+        shouldScrollIntoView={props.shouldScrollToDisplayAd}
+        onViewedDisplayAd={props.onViewedDisplayAd}
+        onVisitDisplayAd={props.onVisitDisplayAd}
+        getContent={props.getDisplayAdContent}
+      />
   }
-  console.error('Asked to render unknown card type', props.cardType)
+  console.error('Asked to create unknown card type', content.cardType)
   return null
 }
 
 export default function CardsGroups (props: Props) {
   // Duplicate array so we can splice without affecting state
-  const headlines = [...props.content.articles]
-  const randomHeadlines = [...props.content.randomArticles]
-  const groups = [
-    { order: PageContentOrder, items: headlines },
-    { order: RandomContentOrder, items: randomHeadlines }
-  ]
-  let displayIndex = props.itemStartingDisplayIndex
-  return <>{groups.flatMap((group, groupIndex) => group.order.map(
-    (cardType, orderIndex) => {
-      displayIndex++
-      // All buckets are divisible by 4, so we send a ping when we are in
-      // the next bucket. This is to avoid too many redux action firing
-      // on scroll.
-      const shouldTriggerViewCountUpdate = (displayIndex % 4 === 1)
-      return (
-        <React.Fragment
-          key={displayIndex}
-        >
-          <Card
-            {...props}
-            cardType={cardType}
-            headlines={group.items}
-          />
-          {shouldTriggerViewCountUpdate &&
-            <div {...{ [attributeNameCardCount]: displayIndex }} ref={props.onPeriodicCardViews} />
-          }
-        </React.Fragment>
-      )
+  return <>{props.content.items.map((feedPageItem, index) => {
+    const cardInstance = getCard(props, feedPageItem)
+    if (!cardInstance) {
+      return <React.Fragment key={index} />
     }
-  ))}</>
+    // All buckets are divisible by 4, so we send a ping when we are in
+    // the next bucket. This is to avoid too many redux action firing
+    // on scroll.
+    const shouldTriggerViewCountUpdate = (index % 4 === 1)
+    return (
+      <React.Fragment
+        key={index}
+      >
+        {cardInstance}
+        {shouldTriggerViewCountUpdate &&
+          <div {...{ [attributeNameCardCount]: index }} ref={props.onPeriodicCardViews} />
+        }
+      </React.Fragment>
+    )
+  })}</>
 }

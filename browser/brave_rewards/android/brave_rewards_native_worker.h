@@ -14,10 +14,11 @@
 
 #include "base/android/jni_weak_ref.h"
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/mojom_structs.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 
 namespace brave_rewards {
@@ -46,6 +47,11 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
                           const base::android::JavaParamRef<jstring>& host);
 
     base::android::ScopedJavaLocalRef<jstring> GetWalletBalance(JNIEnv* env);
+
+    base::android::ScopedJavaLocalRef<jstring> GetExternalWalletType(
+        JNIEnv* env);
+
+    void GetAdsAccountStatement(JNIEnv* env);
 
     double GetWalletRate(JNIEnv* env);
 
@@ -120,13 +126,11 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void SetAutoContributionAmount(JNIEnv* env, jdouble value);
 
+    void GetAutoContributionAmount(JNIEnv* env);
+
     void GetExternalWallet(JNIEnv* env);
 
     void DisconnectWallet(JNIEnv* env);
-
-    void ProcessRewardsPageUrl(JNIEnv* env,
-        const base::android::JavaParamRef<jstring>& path,
-        const base::android::JavaParamRef<jstring>& query);
 
     void RecoverWallet(JNIEnv* env,
                        const base::android::JavaParamRef<jstring>& pass_phrase);
@@ -141,6 +145,8 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void OnGetAutoContributeProperties(
         ledger::type::AutoContributePropertiesPtr properties);
+
+    void OnGetAutoContributionAmount(double auto_contribution_amount);
 
     void OnGetPendingContributionsTotal(double amount);
 
@@ -158,6 +164,17 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void OnGetRewardsParameters(
         brave_rewards::RewardsService* rewards_service,
         ledger::type::RewardsParametersPtr parameters);
+
+    void OnUnblindedTokensReady(
+        brave_rewards::RewardsService* rewards_service) override;
+
+    void OnReconcileComplete(
+        brave_rewards::RewardsService* rewards_service,
+        const ledger::type::Result result,
+        const std::string& contribution_id,
+        const double amount,
+        const ledger::type::RewardsType type,
+        const ledger::type::ContributionProcessor processor) override;
 
     void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
@@ -195,12 +212,6 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
       const ledger::type::Result result,
       const std::string& wallet_type) override;
 
-    void OnProcessRewardsPageUrl(
-        const ledger::type::Result result,
-        const std::string& wallet_type,
-        const std::string& action,
-        const base::flat_map<std::string, std::string>& args);
-
     void OnRecoverWallet(
         brave_rewards::RewardsService* rewards_service,
         const ledger::type::Result result) override;
@@ -223,8 +234,14 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     void OnStartProcess();
 
+    void OnGetAdsAccountStatement(bool success,
+                                  double next_payment_date,
+                                  int ads_received_this_month,
+                                  double earnings_this_month,
+                                  double earnings_last_month);
+
     JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
-    brave_rewards::RewardsService* brave_rewards_service_;
+    raw_ptr<brave_rewards::RewardsService> brave_rewards_service_ = nullptr;
     ledger::type::RewardsParameters parameters_;
     ledger::type::Balance balance_;
     ledger::type::AutoContributePropertiesPtr auto_contrib_properties_;

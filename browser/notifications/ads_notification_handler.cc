@@ -47,8 +47,8 @@ void AdsNotificationHandler::OnClick(
     Profile* profile,
     const GURL& origin,
     const std::string& id,
-    const base::Optional<int>& action_index,
-    const base::Optional<std::u16string>& reply,
+    const absl::optional<int>& action_index,
+    const absl::optional<std::u16string>& reply,
     base::OnceClosure completed_closure) {
   AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service) {

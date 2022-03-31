@@ -6,7 +6,7 @@
 #include "brave/chromium_src/components/browsing_data/core/pref_names.h"
 
 #define RegisterBrowserUserPrefs RegisterBrowserUserPrefs_ChromiumImpl
-#include "../../../../../components/browsing_data/core/pref_names.cc"
+#include "src/components/browsing_data/core/pref_names.cc"
 #undef RegisterBrowserUserPrefs
 
 namespace browsing_data {

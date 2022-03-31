@@ -54,8 +54,7 @@ class IPFSNotConnectedPage
 
  protected:
   // SecurityInterstitialPage::
-  void PopulateInterstitialStrings(
-      base::DictionaryValue* load_time_data) override;
+  void PopulateInterstitialStrings(base::Value* load_time_data) override;
   int GetHTMLTemplateId() override;
 
  private:

@@ -3,27 +3,22 @@ import * as React from 'react'
 import {
   StyledWrapper,
   Title,
-  Description,
-  PageIcon,
-  RestoreButton
+  Description
 } from './style'
 import { NavButton } from '../'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 
 export interface Props {
   onSetup: () => void
-  onRestore: () => void
 }
 
 function WelcomePanel (props: Props) {
-  const { onRestore, onSetup } = props
+  const { onSetup } = props
   return (
     <StyledWrapper>
-      <PageIcon />
-      <Title>{locale.welcomeTitle}</Title>
-      <Description>{locale.welcomeDescription}</Description>
-      <NavButton buttonType='primary' text={locale.welcomeButton} onSubmit={onSetup} />
-      <RestoreButton onClick={onRestore}>{locale.welcomeRestoreButton}</RestoreButton>
+      <Title>{getLocale('braveWalletPanelTitle')}</Title>
+      <Description>{getLocale('braveWalletWelcomePanelDescription')}</Description>
+      <NavButton buttonType='primary' text={getLocale('braveWalletWelcomePanelButton')} onSubmit={onSetup} />
     </StyledWrapper>
   )
 }

@@ -39,7 +39,7 @@ interface CommonProps {
 interface DeviceRecognitionProps {
   fingerprinting: BlockFPOptions
   fingerprintingBlocked: number
-  fingerprintingBlockedResources: Array<string>
+  fingerprintingBlockedResources: string[]
   blockFingerprinting: (event: string) => void
 }
 

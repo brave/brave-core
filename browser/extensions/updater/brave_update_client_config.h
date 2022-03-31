@@ -8,11 +8,10 @@
 
 #include <string>
 
-#include "base/macros.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/optional.h"
 #include "chrome/browser/extensions/updater/chrome_update_client_config.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
 
@@ -30,9 +29,12 @@ class ExtensionUpdateClientBaseTest;
 
 class BraveUpdateClientConfig : public ChromeUpdateClientConfig {
  public:
+  BraveUpdateClientConfig(const BraveUpdateClientConfig&) = delete;
+  BraveUpdateClientConfig& operator=(const BraveUpdateClientConfig&) = delete;
+
   static scoped_refptr<ChromeUpdateClientConfig> Create(
       content::BrowserContext* context,
-      base::Optional<GURL> url_override);
+      absl::optional<GURL> url_override);
 
   using ChromeUpdateClientConfig::ChromeUpdateClientConfig;
 
@@ -46,9 +48,6 @@ class BraveUpdateClientConfig : public ChromeUpdateClientConfig {
   friend class ExtensionUpdateClientBaseTest;
 
   ~BraveUpdateClientConfig() override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveUpdateClientConfig);
 };
 
 }  // namespace extensions

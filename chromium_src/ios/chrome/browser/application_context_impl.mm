@@ -10,16 +10,17 @@
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
-#include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "base/path_service.h"
-#include "base/sequenced_task_runner.h"
 #include "base/task/post_task.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/time/default_clock.h"
 #include "base/time/default_tick_clock.h"
 #include "brave/ios/browser/metrics/ios_brave_metrics_services_manager_client.h"
 #include "components/breadcrumbs/core/breadcrumb_manager.h"
+#include "components/breadcrumbs/core/breadcrumb_persistent_storage_manager.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/component_updater/timer_update_scheduler.h"
 #include "components/gcm_driver/gcm_driver.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
@@ -35,8 +36,8 @@
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager_impl.h"
 #include "ios/chrome/browser/chrome_paths.h"
+#include "ios/chrome/browser/component_updater/ios_component_updater_configurator.h"
 #import "ios/chrome/browser/crash_report/breadcrumbs/application_breadcrumbs_logger.h"
-#include "ios/chrome/browser/crash_report/breadcrumbs/breadcrumb_persistent_storage_manager.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/ios_chrome_io_thread.h"
 #include "ios/chrome/browser/policy/browser_policy_connector_ios.h"
@@ -44,6 +45,8 @@
 #include "ios/chrome/browser/prefs/browser_prefs.h"
 #include "ios/chrome/browser/prefs/ios_chrome_pref_service_factory.h"
 #import "ios/chrome/browser/safe_browsing/safe_browsing_service.h"
+#include "ios/public/provider/chrome/browser/app_distribution/app_distribution_api.h"
+#include "ios/public/provider/chrome/browser/signin/signin_sso_api.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "net/log/net_log.h"
 #include "net/log/net_log_capture_mode.h"
@@ -73,8 +76,7 @@ ApplicationContextImpl::ApplicationContextImpl(
     base::SequencedTaskRunner* local_state_task_runner,
     const base::CommandLine& command_line,
     const std::string& locale)
-    : local_state_task_runner_(local_state_task_runner),
-      was_last_shutdown_clean_(false) {
+    : local_state_task_runner_(local_state_task_runner) {
   DCHECK(!GetApplicationContext());
   SetApplicationContext(this);
 
@@ -134,9 +136,6 @@ void ApplicationContextImpl::PostDestroyThreads() {
 
 void ApplicationContextImpl::OnAppEnterForeground() {
   DCHECK(thread_checker_.CalledOnValidThread());
-
-  PrefService* local_state = GetLocalState();
-  local_state->SetBoolean(prefs::kLastSessionExitedCleanly, false);
 }
 
 void ApplicationContextImpl::OnAppEnterBackground() {
@@ -155,16 +154,12 @@ void ApplicationContextImpl::OnAppEnterBackground() {
     if (browser_state_prefs)
       browser_state_prefs->CommitPendingWrite();
   }
-
-  PrefService* local_state = GetLocalState();
-  local_state->SetBoolean(prefs::kLastSessionExitedCleanly, true);
 }
 
 bool ApplicationContextImpl::WasLastShutdownClean() {
   DCHECK(thread_checker_.CalledOnValidThread());
   // Make sure the locale state is created as the file is initialized there.
-  ignore_result(GetLocalState());
-  return was_last_shutdown_clean_;
+  return true;
 }
 
 PrefService* ApplicationContextImpl::GetLocalState() {
@@ -270,16 +265,16 @@ gcm::GCMDriver* ApplicationContextImpl::GetGCMDriver() {
 component_updater::ComponentUpdateService*
 ApplicationContextImpl::GetComponentUpdateService() {
   DCHECK(thread_checker_.CalledOnValidThread());
-  // if (!component_updater_) {
-  //   // Creating the component updater does not do anything, components need to
-  //   // be registered and Start() needs to be called.
-  //   component_updater_ = component_updater::ComponentUpdateServiceFactory(
-  //       component_updater::MakeIOSComponentUpdaterConfigurator(
-  //           base::CommandLine::ForCurrentProcess()),
-  //       std::make_unique<component_updater::TimerUpdateScheduler>());
-  // }
-  // return component_updater_.get();
-  return nullptr;
+  if (!component_updater_) {
+    // Creating the component updater does not do anything, components need to
+    // be registered and Start() needs to be called.
+    component_updater_ = component_updater::ComponentUpdateServiceFactory(
+        component_updater::MakeIOSComponentUpdaterConfigurator(
+            base::CommandLine::ForCurrentProcess()),
+        std::make_unique<component_updater::TimerUpdateScheduler>(),
+        ios::provider::GetBrandCode());
+  }
+  return component_updater_.get();
 }
 
 SafeBrowsingService* ApplicationContextImpl::GetSafeBrowsingService() {
@@ -307,10 +302,18 @@ BrowserPolicyConnectorIOS* ApplicationContextImpl::GetBrowserPolicyConnector() {
   return nullptr;
 }
 
-BreadcrumbPersistentStorageManager*
+breadcrumbs::BreadcrumbPersistentStorageManager*
 ApplicationContextImpl::GetBreadcrumbPersistentStorageManager() {
   DCHECK(thread_checker_.CalledOnValidThread());
   return nullptr;
+}
+
+id<SingleSignOnService> ApplicationContextImpl::GetSSOService() {
+  if (!single_sign_on_service_) {
+    single_sign_on_service_ = ios::provider::CreateSSOService();
+    DCHECK(single_sign_on_service_);
+  }
+  return single_sign_on_service_;
 }
 
 void ApplicationContextImpl::SetApplicationLocale(const std::string& locale) {
@@ -341,12 +344,6 @@ void ApplicationContextImpl::CreateLocalState() {
       std::max(std::min<int>(net::kDefaultMaxSocketsPerProxyServer, 99),
                net::ClientSocketPoolManager::max_sockets_per_group(
                    net::HttpNetworkSession::NORMAL_SOCKET_POOL)));
-
-  // Register the shutdown state before anything changes it.
-  if (local_state_->HasPrefPath(prefs::kLastSessionExitedCleanly)) {
-    was_last_shutdown_clean_ =
-        local_state_->GetBoolean(prefs::kLastSessionExitedCleanly);
-  }
 }
 
 void ApplicationContextImpl::CreateGCMDriver() {

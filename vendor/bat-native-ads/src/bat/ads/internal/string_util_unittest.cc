@@ -119,38 +119,4 @@ TEST(BatAdsStringUtilTest, StripNonAlphaNumericCharacters) {
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-TEST(BatAdsStringUtilTest, IsLatinAlphaNumericForEmptyValue) {
-  // Arrange
-  const std::string value = "";
-
-  // Act
-  const bool is_alpha_numeric = IsLatinAlphaNumeric(value);
-
-  // Assert
-  EXPECT_EQ(true, is_alpha_numeric);
-}
-
-TEST(BatAdsStringUtilTest, IsLatinAlphaNumericForNonAlphaNumericValue) {
-  // Arrange
-  const std::string value = "abc123 ";
-
-  // Act
-  const bool is_alpha_numeric = IsLatinAlphaNumeric(value);
-
-  // Assert
-  EXPECT_EQ(false, is_alpha_numeric);
-}
-
-TEST(BatAdsStringUtilTest, IsLatinAlphaNumeric) {
-  // Arrange
-  const std::string value =
-      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-
-  // Act
-  const bool is_alpha_numeric = IsLatinAlphaNumeric(value);
-
-  // Assert
-  EXPECT_EQ(true, is_alpha_numeric);
-}
-
 }  // namespace ads

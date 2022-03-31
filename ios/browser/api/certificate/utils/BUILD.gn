@@ -1,0 +1,27 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("utils") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  sources = [
+    "brave_certificate_utils.h",
+    "brave_certificate_utils.mm",
+    "brave_certificate_x509_utils.cc",
+    "brave_certificate_x509_utils.h",
+  ]
+
+  deps = [
+    "//base",
+    "//net",
+    "//third_party/abseil-cpp:absl",
+    "//third_party/boringssl",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "Security.framework",
+  ]
+}

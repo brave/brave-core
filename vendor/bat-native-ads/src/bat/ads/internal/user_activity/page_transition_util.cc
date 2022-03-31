@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/user_activity/page_transition_util.h"
 
-#include "bat/ads/mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -43,7 +43,7 @@ bool DidTransitionFromExternalApplication(const PageTransitionType type) {
   return PageTransitionGetQualifier(type) == kPageTransitionFromAPI;
 }
 
-base::Optional<UserActivityEventType> ToUserActivityEventType(
+absl::optional<UserActivityEventType> ToUserActivityEventType(
     const PageTransitionType type) {
   const PageTransitionType core_value = PageTransitionGetCoreValue(type);
 
@@ -81,7 +81,7 @@ base::Optional<UserActivityEventType> ToUserActivityEventType(
     }
 
     default: {
-      return base::nullopt;
+      return absl::nullopt;
     }
   }
 }

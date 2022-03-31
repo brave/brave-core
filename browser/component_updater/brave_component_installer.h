@@ -15,7 +15,6 @@
 #include "base/bind.h"
 #include "base/callback.h"
 #include "base/files/file_path.h"
-#include "base/macros.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "components/component_updater/component_installer.h"
 #include "components/update_client/update_client.h"
@@ -24,29 +23,33 @@ using brave_component_updater::BraveComponent;
 
 namespace brave {
 
-class BraveComponentInstallerPolicy :
-    public component_updater::ComponentInstallerPolicy {
+class BraveComponentInstallerPolicy
+    : public component_updater::ComponentInstallerPolicy {
  public:
-  explicit BraveComponentInstallerPolicy(const std::string& name,
+  explicit BraveComponentInstallerPolicy(
+      const std::string& name,
       const std::string& base64_public_key,
       BraveComponent::ReadyCallback ready_callback);
+
+  BraveComponentInstallerPolicy(const BraveComponentInstallerPolicy&) = delete;
+  BraveComponentInstallerPolicy& operator=(
+      const BraveComponentInstallerPolicy&) = delete;
 
   ~BraveComponentInstallerPolicy() override;
 
  private:
   // The following methods override ComponentInstallerPolicy
-  bool VerifyInstallation(const base::DictionaryValue& manifest,
-      const base::FilePath& install_dir) const override;
+  bool VerifyInstallation(const base::Value& manifest,
+                          const base::FilePath& install_dir) const override;
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
   bool RequiresNetworkEncryption() const override;
   update_client::CrxInstaller::Result OnCustomInstall(
-      const base::DictionaryValue& manifest,
+      const base::Value& manifest,
       const base::FilePath& install_dir) override;
   void OnCustomUninstall() override;
-  void ComponentReady(
-      const base::Version& version,
-      const base::FilePath& install_dir,
-      std::unique_ptr<base::DictionaryValue> manifest) override;
+  void ComponentReady(const base::Version& version,
+                      const base::FilePath& install_dir,
+                      base::Value manifest) override;
   base::FilePath GetRelativeInstallDir() const override;
   void GetHash(std::vector<uint8_t>* hash) const override;
   std::string GetName() const override;
@@ -56,15 +59,13 @@ class BraveComponentInstallerPolicy :
   std::string base64_public_key_;
   std::string public_key_;
   BraveComponent::ReadyCallback ready_callback_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveComponentInstallerPolicy);
 };
 
 void RegisterComponent(component_updater::ComponentUpdateService* cus,
-    const std::string& name,
-    const std::string& base64_public_key,
-    base::OnceClosure registered_callback,
-    BraveComponent::ReadyCallback ready_callback);
+                       const std::string& name,
+                       const std::string& base64_public_key,
+                       base::OnceClosure registered_callback,
+                       BraveComponent::ReadyCallback ready_callback);
 
 }  // namespace brave
 

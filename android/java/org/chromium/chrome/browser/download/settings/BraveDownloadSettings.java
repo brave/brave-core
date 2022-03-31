@@ -57,6 +57,6 @@ public class BraveDownloadSettings
                             (boolean) newValue)
                     .apply();
         }
-        return true;
+        return super.onPreferenceChange(preference, newValue);
     }
 }

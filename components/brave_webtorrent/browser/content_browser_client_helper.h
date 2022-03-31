@@ -19,6 +19,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/render_view_host.h"
+#include "content/public/browser/weak_document_ptr.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension_set.h"
@@ -82,11 +83,12 @@ static bool HandleTorrentURLRewrite(GURL* url,
 
 static void LoadOrLaunchMagnetURL(
     const GURL& url,
-    content::WebContents::OnceGetter web_contents_getter,
+    content::WebContents::Getter web_contents_getter,
     ui::PageTransition page_transition,
     bool has_user_gesture,
-    const base::Optional<url::Origin>& initiating_origin) {
-  content::WebContents* web_contents = std::move(web_contents_getter).Run();
+    const absl::optional<url::Origin>& initiating_origin,
+    content::WeakDocumentPtr initiator_document) {
+  content::WebContents* web_contents = web_contents_getter.Run();
   if (!web_contents)
     return;
 
@@ -95,9 +97,8 @@ static void LoadOrLaunchMagnetURL(
         page_transition, std::string());
   } else {
     ExternalProtocolHandler::LaunchUrl(
-        url, web_contents->GetRenderViewHost()->GetProcess()->GetID(),
-        web_contents->GetRenderViewHost()->GetRoutingID(), page_transition,
-        has_user_gesture, initiating_origin);
+        url, web_contents_getter, page_transition, has_user_gesture,
+        initiating_origin, std::move(initiator_document));
   }
 }
 
@@ -113,15 +114,17 @@ static bool HandleMagnetURLRewrite(GURL* url,
 
 static void HandleMagnetProtocol(
     const GURL& url,
-    content::WebContents::OnceGetter web_contents_getter,
+    content::WebContents::Getter web_contents_getter,
     ui::PageTransition page_transition,
     bool has_user_gesture,
-    const base::Optional<url::Origin>& initiating_origin) {
+    const absl::optional<url::Origin>& initiating_origin,
+    content::WeakDocumentPtr initiator_document) {
   DCHECK(url.SchemeIs(kMagnetScheme));
-  base::PostTask(FROM_HERE, {content::BrowserThread::UI},
-                 base::BindOnce(&LoadOrLaunchMagnetURL, url,
-                                std::move(web_contents_getter), page_transition,
-                                has_user_gesture, initiating_origin));
+  base::PostTask(
+      FROM_HERE, {content::BrowserThread::UI},
+      base::BindOnce(&LoadOrLaunchMagnetURL, url, web_contents_getter,
+                     page_transition, has_user_gesture, initiating_origin,
+                     std::move(initiator_document)));
 }
 
 static bool IsMagnetProtocol(const GURL& url) {

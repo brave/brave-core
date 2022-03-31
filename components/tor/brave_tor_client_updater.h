@@ -8,12 +8,16 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "base/sequenced_task_runner.h"
+#include "base/observer_list_types.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "build/build_config.h"
 
 class BraveTorClientUpdaterTest;
 class PrefService;
@@ -22,14 +26,14 @@ using brave_component_updater::BraveComponent;
 
 namespace tor {
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 extern const char kTorClientComponentName[];
 extern const char kTorClientComponentId[];
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
 extern const char kTorClientComponentName[];
 extern const char kTorClientComponentId[];
 extern const char kTorClientComponentBase64PublicKey[];
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
 extern const char kTorClientComponentName[];
 extern const char kTorClientComponentId[];
 extern const char kTorClientComponentBase64PublicKey[];
@@ -48,12 +52,15 @@ class BraveTorClientUpdater : public BraveComponent {
   BraveTorClientUpdater(BraveComponent::Delegate* component_delegate,
                         PrefService* local_state,
                         const base::FilePath& user_data_dir);
+  BraveTorClientUpdater(const BraveTorClientUpdater&) = delete;
+  BraveTorClientUpdater& operator=(const BraveTorClientUpdater&) = delete;
   ~BraveTorClientUpdater() override;
 
   void Register();
   void Unregister();
   void Cleanup();
   base::FilePath GetExecutablePath() const;
+  base::FilePath GetTorrcPath() const;
   base::FilePath GetTorDataPath() const;
   base::FilePath GetTorWatchPath() const;
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() {
@@ -72,24 +79,26 @@ class BraveTorClientUpdater : public BraveComponent {
  private:
   friend class ::BraveTorClientUpdaterTest;
 
+  void RemoveObsoleteFiles();
+
   static std::string g_tor_client_component_name_;
   static std::string g_tor_client_component_id_;
   static std::string g_tor_client_component_base64_public_key_;
   static void SetComponentIdAndBase64PublicKeyForTest(
       const std::string& component_id,
       const std::string& component_base64_public_key);
-  void SetExecutablePath(const base::FilePath& path);
+  // <tor executable, torrc>
+  void SetTorPath(const std::pair<base::FilePath, base::FilePath>&);
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool registered_;
   base::FilePath executable_path_;
+  base::FilePath torrc_path_;
   base::ObserverList<Observer> observers_;
-  PrefService* local_state_;
+  raw_ptr<PrefService> local_state_ = nullptr;
   base::FilePath user_data_dir_;
 
   base::WeakPtrFactory<BraveTorClientUpdater> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveTorClientUpdater);
 };
 
 }  // namespace tor

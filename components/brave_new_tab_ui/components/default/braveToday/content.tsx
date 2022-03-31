@@ -4,16 +4,17 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { Feed } from '../../../api/brave_news'
 import CardLoading from './cards/cardLoading'
 import CardError from './cards/cardError'
 import CardLarge from './cards/_articles/cardArticleLarge'
-import CardDeals from './cards/cardDeals'
-import CardsGroup, { groupItemCount } from './cardsGroup'
+import CardDisplayAd from './cards/displayAd'
+import CardsGroup from './cardsGroup'
 import Customize from './options/customize'
 import { attributeNameCardCount, Props } from './'
 import Refresh from './options/refresh'
 
-function getFeedHashForCache (feed?: BraveToday.Feed) {
+function getFeedHashForCache (feed?: Feed) {
   return feed ? feed.hash : ''
 }
 
@@ -58,8 +59,8 @@ export default function BraveTodayContent (props: Props) {
       console.debug('Intersection Observer trigger show options', [...entries])
       // Show if target article is inside or above viewport.
       const shouldShowOptions = entries.some(
-        entry => entry.isIntersecting
-                  || entry.boundingClientRect.top < 0
+        entry => entry.isIntersecting ||
+                  entry.boundingClientRect.top < 0
       )
       console.debug('Intersection Observer trigger show options, changing', shouldShowOptions)
       setShowOptions(shouldShowOptions)
@@ -140,46 +141,51 @@ export default function BraveTodayContent (props: Props) {
     console.error('Brave Today: should have shown error or loading state, but ran in to an unintended code path.')
     return null
   }
-
   const displayedPageCount = Math.min(props.displayedPageCount, feed.pages.length)
-  const introCount = feed.featuredDeals ? 2 : 1
+  const introCount = feed.featuredItem ? 2 : 1
+  let runningCardCount = introCount
   return (
     <>
     {/* featured item */}
-      <CardLarge
-        ref={onOptionsTriggerElement}
-        content={[feed.featuredArticle]}
+      <div ref={onOptionsTriggerElement} />
+      { feed.featuredItem && <CardLarge
+        content={[feed.featuredItem]}
         publishers={publishers}
         articleToScrollTo={props.articleToScrollTo}
         onSetPublisherPref={props.onSetPublisherPref}
         onReadFeedItem={props.onReadFeedItem}
       />
-      <div {...{ [attributeNameCardCount]: 1 }} ref={registerCardCountTriggerElement} />
-      {/* deals */}
-      {feed.featuredDeals &&
-      <>
-        <CardDeals
-          content={feed.featuredDeals}
-          articleToScrollTo={props.articleToScrollTo}
-          onReadFeedItem={props.onReadFeedItem}
-        />
-        <div {...{ [attributeNameCardCount]: 2 }} ref={registerCardCountTriggerElement} />
-      </>
       }
+      <div {...{ [attributeNameCardCount]: 1 }} ref={registerCardCountTriggerElement} />
+      <>
+        <CardDisplayAd
+          onVisitDisplayAd={props.onVisitDisplayAd}
+          onViewedDisplayAd={props.onViewedDisplayAd}
+          getContent={props.getDisplayAd}
+        />
+        <div {...{ [attributeNameCardCount]: introCount }} ref={registerCardCountTriggerElement} />
+      </>
       {
         /* Infinitely repeating collections of content. */
         Array(displayedPageCount).fill(undefined).map((_: undefined, index: number) => {
+          const shouldScrollToDisplayAd = props.displayAdToScrollTo === (index + 1)
+          let startingDisplayIndex = runningCardCount
+          runningCardCount += feed.pages[index].items.length
           return (
             <CardsGroup
               key={index}
-              itemStartingDisplayIndex={introCount + (groupItemCount * index)}
+              itemStartingDisplayIndex={startingDisplayIndex}
               content={feed.pages[index]}
               publishers={publishers}
               articleToScrollTo={props.articleToScrollTo}
+              shouldScrollToDisplayAd={shouldScrollToDisplayAd}
               onReadFeedItem={props.onReadFeedItem}
               onPeriodicCardViews={registerCardCountTriggerElement}
               onSetPublisherPref={props.onSetPublisherPref}
               onPromotedItemViewed={props.onPromotedItemViewed}
+              onVisitDisplayAd={props.onVisitDisplayAd}
+              onViewedDisplayAd={props.onViewedDisplayAd}
+              getDisplayAdContent={props.getDisplayAd}
             />
           )
         })

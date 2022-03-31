@@ -12,6 +12,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
+#include "build/build_config.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
@@ -69,11 +70,11 @@ class BraveTorClientUpdaterTest : public ExtensionBrowserTest {
   }
 
   bool InstallTorClientUpdater() {
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     return InstallTorClientUpdater("tor-client-updater-win");
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
     return InstallTorClientUpdater("tor-client-updater-mac");
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
     return InstallTorClientUpdater("tor-client-updater-linux");
 #else
     return false;
@@ -117,6 +118,9 @@ IN_PROC_BROWSER_TEST_F(BraveTorClientUpdaterTest, TorClientInstalls) {
   base::FilePath executable_path =
       g_brave_browser_process->tor_client_updater()->GetExecutablePath();
   ASSERT_TRUE(PathExists(executable_path));
+  base::FilePath torrc_path =
+      g_brave_browser_process->tor_client_updater()->GetTorrcPath();
+  ASSERT_TRUE(PathExists(torrc_path));
 }
 
 // Load the Tor client updater extension and verify that we can launch
@@ -131,8 +135,16 @@ IN_PROC_BROWSER_TEST_F(BraveTorClientUpdaterTest, TorClientLaunches) {
   base::FilePath executable_path =
       g_brave_browser_process->tor_client_updater()->GetExecutablePath();
   ASSERT_TRUE(PathExists(executable_path));
+  base::FilePath torrc_path =
+      g_brave_browser_process->tor_client_updater()->GetTorrcPath();
+  ASSERT_TRUE(PathExists(torrc_path));
 
   base::CommandLine cmd_line(executable_path);
+  cmd_line.AppendArg("--ignore-missing-torrc");
+  cmd_line.AppendArg("-f");
+  cmd_line.AppendArgPath(torrc_path);
+  cmd_line.AppendArg("--defaults-torrc");
+  cmd_line.AppendArgPath(torrc_path);
   base::Process tor_client_process =
       base::LaunchProcess(cmd_line, base::LaunchOptions());
   ASSERT_TRUE(tor_client_process.IsValid());

@@ -73,7 +73,7 @@ type::Result GetMe::ParseBody(
     ::ledger::uphold::User* user) {
   DCHECK(user);
 
-  base::Optional<base::Value> value = base::JSONReader::Read(body);
+  absl::optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return type::Result::LEDGER_ERROR;
@@ -90,25 +90,27 @@ type::Result GetMe::ParseBody(
     user->name = *name;
   }
 
-  const auto* member_at = dictionary->FindStringKey("memberAt");
-  if (member_at) {
-    user->member_at = *member_at;
-    user->verified = !user->member_at.empty();
+  if (const auto* id = dictionary->FindStringKey("id")) {
+    user->member_id = *id;
   }
 
   const auto* currencies = dictionary->FindListKey("currencies");
   if (currencies) {
     const std::string currency = "BAT";
-    auto bat_in_list = std::find(
-        currencies->GetList().begin(),
-        currencies->GetList().end(),
-        base::Value(currency));
+    auto bat_in_list =
+        std::find(currencies->GetList().begin(), currencies->GetList().end(),
+                  base::Value(currency));
     user->bat_not_allowed = bat_in_list == currencies->GetList().end();
   }
 
   const auto* status = dictionary->FindStringKey("status");
   if (status) {
     user->status = GetUserStatus(*status);
+  }
+
+  if (const auto* cdd_status = dictionary->FindStringPath(
+          "verifications.customerDueDiligence.status")) {
+    user->customer_due_diligence_required = *cdd_status == "required";
   }
 
   return type::Result::LEDGER_OK;

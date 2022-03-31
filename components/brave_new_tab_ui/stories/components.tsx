@@ -8,6 +8,7 @@ import { withKnobs } from '@storybook/addon-knobs'
 import ThemeProvider from '../../common/StorybookThemeProvider'
 // Components
 import LoadingComponent from '../components/loading'
+import OutlineButtonComponent from '../components/outlineButton'
 
 export default {
   title: 'New Tab',
@@ -22,5 +23,15 @@ export const Loading = () => (
     style={{ width: '500px', height: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
   >
     <LoadingComponent />
+  </div>
+)
+
+export const OutlineButton = () => (
+  <div
+    style={{ width: '500px', height: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+  >
+    <OutlineButtonComponent>
+      Button
+    </OutlineButtonComponent>
   </div>
 )

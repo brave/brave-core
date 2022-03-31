@@ -11,9 +11,11 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_info.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
@@ -31,7 +33,7 @@ class ResourceComponent : public brave_component_updater::BraveComponent {
   void RemoveObserver(Observer* observer);
   void NotifyObservers(const std::string& id);
 
-  base::Optional<base::FilePath> GetPath(const std::string& id,
+  absl::optional<base::FilePath> GetPath(const std::string& id,
                                          const int version);
 
  private:

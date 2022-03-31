@@ -10,17 +10,21 @@
 #include <deque>
 #include <string>
 
-#include "base/values.h"
-#include "bat/ads/ads.h"
+#include "bat/ads/ad_notification_info.h"
+#include "bat/ads/ads_aliases.h"
+#include "build/build_config.h"
+
+namespace base {
+class DictionaryValue;
+class ListValue;
+class Value;
+}  // namespace base
 
 namespace ads {
 
-struct AdNotificationInfo;
-
-class AdNotifications {
+class AdNotifications final {
  public:
   AdNotifications();
-
   ~AdNotifications();
 
   static AdNotifications* Get();
@@ -43,20 +47,14 @@ class AdNotifications {
 
   uint64_t Count() const;
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   void RemoveAllAfterReboot();
   void RemoveAllAfterUpdate();
 #endif
 
  private:
-  bool is_initialized_ = false;
-
-  InitializeCallback callback_;
-
-  std::deque<AdNotificationInfo> ad_notifications_;
-
   std::deque<AdNotificationInfo> GetNotificationsFromList(
-      base::ListValue* list) const;
+      base::Value* list) const;
 
   bool GetNotificationFromDictionary(base::DictionaryValue* dictionary,
                                      AdNotificationInfo* ad_notification) const;
@@ -87,16 +85,22 @@ class AdNotifications {
                                std::string* string) const;
 
   void Save();
-  void OnSaved(const Result result);
+  void OnSaved(const bool success);
 
   void Load();
-  void OnLoaded(const Result result, const std::string& json);
+  void OnLoaded(const bool success, const std::string& json);
 
   bool FromJson(const std::string& json);
   bool GetNotificationsFromDictionary(base::DictionaryValue* dictionary);
 
   std::string ToJson();
   base::Value GetAsList();
+
+  bool is_initialized_ = false;
+
+  InitializeCallback callback_;
+
+  std::deque<AdNotificationInfo> ad_notifications_;
 };
 
 }  // namespace ads

@@ -25,7 +25,6 @@ const changeInfo: chrome.tabs.TabChangeInfo = {
 const tabId: number = 1
 
 describe('tab_actions', () => {
-
   it('tabUpdated', () => {
     expect(actions.tabUpdated(tabId, changeInfo)).toEqual({
       type: types.TAB_UPDATED,

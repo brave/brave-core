@@ -12,6 +12,7 @@
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/core/bat_ledger_context.h"
 #include "bat/ledger/internal/core/test_ledger_client.h"
+#include "bat/ledger/internal/ledger_impl.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ledger {
@@ -19,6 +20,10 @@ namespace ledger {
 // Base class for unit tests. |BATLedgerTest| provides a task environment,
 // access to a |BATLedgerContext|, and an test implementation of |LedgerClient|.
 class BATLedgerTest : public testing::Test {
+ public:
+  BATLedgerTest();
+  ~BATLedgerTest() override;
+
  protected:
   // Returns the |TaskEnvironment| for this test.
   base::test::TaskEnvironment* task_environment() { return &task_environment_; }
@@ -28,6 +33,9 @@ class BATLedgerTest : public testing::Test {
 
   // Returns the |TestLedgerClient| instance for this test.
   TestLedgerClient* GetTestLedgerClient() { return &client_; }
+
+  // Returns the |LedgerImpl| instance for this test.
+  LedgerImpl* GetLedgerImpl() { return &ledger_; }
 
   // Adds a mock network response for the specified URL and HTTP method.
   void AddNetworkResultForTesting(const std::string& url,
@@ -40,7 +48,8 @@ class BATLedgerTest : public testing::Test {
  private:
   base::test::TaskEnvironment task_environment_;
   TestLedgerClient client_;
-  BATLedgerContext context_{&client_};
+  LedgerImpl ledger_{&client_};
+  BATLedgerContext context_{&ledger_};
 };
 
 }  // namespace ledger

@@ -5,10 +5,11 @@
 
 #include "brave/components/tor/tor_control.h"
 
-#include "base/sequenced_task_runner.h"
+#include "base/callback_helpers.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/task/task_traits.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "net/base/io_buffer.h"
@@ -177,7 +178,7 @@ void TorControl::Connected(std::vector<uint8_t> cookie, int rv) {
   }
 
   DoCmd("AUTHENTICATE " + base::HexEncode(cookie.data(), cookie.size()),
-        base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
+        base::DoNothing(),
         base::BindOnce(&TorControl::Authenticated,
                        weak_ptr_factory_.GetWeakPtr()));
 }
@@ -202,12 +203,9 @@ void TorControl::Authenticated(bool error,
   }
   VLOG(2) << "tor: control connection ready";
 
-  DoCmd("TAKEOWNERSHIP",
-        base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
-        base::DoNothing::Once<bool, const std::string&, const std::string&>());
-  DoCmd("RESETCONF __OwningControllerProcess",
-        base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
-        base::DoNothing::Once<bool, const std::string&, const std::string&>());
+  DoCmd("TAKEOWNERSHIP", base::DoNothing(), base::DoNothing());
+  DoCmd("RESETCONF __OwningControllerProcess", base::DoNothing(),
+        base::DoNothing());
   NotifyTorControlReady();
 }
 
@@ -242,8 +240,7 @@ void TorControl::DoSubscribe(TorControlEvent event,
   }
 
   async_events_[event] = 1;
-  DoCmd(SetEventsCmd(),
-        base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
+  DoCmd(SetEventsCmd(), base::DoNothing(),
         base::BindOnce(&TorControl::Subscribed, weak_ptr_factory_.GetWeakPtr(),
                        event, std::move(callback)));
 }
@@ -298,8 +295,7 @@ void TorControl::DoUnsubscribe(TorControlEvent event,
   DCHECK_EQ(async_events_[event], 0u);
   async_events_.erase(event);
   DoCmd(
-      SetEventsCmd(),
-      base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
+      SetEventsCmd(), base::DoNothing(),
       base::BindOnce(&TorControl::Unsubscribed, weak_ptr_factory_.GetWeakPtr(),
                      event, std::move(callback)));
 }

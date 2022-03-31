@@ -6,7 +6,9 @@
 #include "brave/browser/ui/views/profiles/brave_avatar_toolbar_button.h"
 
 #include <memory>
+#include <string>
 
+#include "base/strings/string_number_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
@@ -18,9 +20,11 @@
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button_delegate.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/base/theme_provider.h"
+#include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/background.h"
@@ -56,11 +60,23 @@ BraveAvatarToolbarButton::BraveAvatarToolbarButton(BrowserView* browser_view)
 
 void BraveAvatarToolbarButton::SetHighlight(
     const std::u16string& highlight_text,
-    base::Optional<SkColor> highlight_color) {
+    absl::optional<SkColor> highlight_color) {
   std::u16string revised_highlight_text;
   if (browser_->profile()->IsTor()) {
     revised_highlight_text =
         l10n_util::GetStringUTF16(IDS_TOR_AVATAR_BUTTON_LABEL);
+
+    if (GetWindowCount() > 1) {
+      revised_highlight_text =
+          l10n_util::GetStringFUTF16(IDS_TOR_AVATAR_BUTTON_LABEL_COUNT,
+                                     base::NumberToString16(GetWindowCount()));
+    }
+  } else if (browser_->profile()->IsIncognitoProfile()) {
+    // We only want the icon and count for Incognito profiles.
+    revised_highlight_text = std::u16string();
+    if (GetWindowCount() > 1) {
+      revised_highlight_text = base::NumberToString16(GetWindowCount());
+    }
   } else if (browser_->profile()->IsGuestSession()) {
     // We only want the icon for Guest profiles.
     revised_highlight_text = std::u16string();
@@ -69,6 +85,10 @@ void BraveAvatarToolbarButton::SetHighlight(
   }
 
   AvatarToolbarButton::SetHighlight(revised_highlight_text, highlight_color);
+}
+
+int BraveAvatarToolbarButton::GetWindowCount() const {
+  return delegate_->GetWindowCount();
 }
 
 void BraveAvatarToolbarButton::UpdateColorsAndInsets() {

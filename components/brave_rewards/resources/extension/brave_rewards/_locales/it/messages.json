@@ -1,661 +1,416 @@
 {
-  "braveRewards": {
-    "message": "Ricompense Brave",
-    "description": "Title in welcome screen for the panel"
+  "summary": {
+    "message": "Riepilogo",
+    "description": ""
   },
-  "welcomeButtonTextOne": {
-    "message": "Inizia a guadagnare adesso!",
-    "description": "CTA on welcome screen in the panel, existing users"
+  "tip": {
+    "message": "Donazione",
+    "description": ""
   },
-  "welcomeButtonTextTwo": {
-    "message": "Partecipa alle Ricompense",
-    "description": "CTA on welcome screen in the panel, new users"
+  "unverifiedCreator": {
+    "message": "Autore non verificato",
+    "description": ""
   },
-  "welcomeDescOne": {
-    "message": "Ricevi un pagamento per la visualizzazione di annunci pubblicitari e spendilo per sostenere i tuoi creatori di contenuti preferiti.",
-    "description": "Entry text for welcome screen in the panel, existing user"
+  "verifiedCreator": {
+    "message": "Autore verificato",
+    "description": ""
   },
-  "welcomeDescTwo": {
-    "message": "Ora puoi guadagnare gettoni guardando annunci pubblicitari che rispettano la privacy.",
-    "description": "Entry text for welcome screen in the panel, new user"
+  "refreshStatus": {
+    "message": "Aggiorna",
+    "description": ""
   },
-  "welcomeDescPoints": {
-    "message": "Ora puoi guadagnare punti guardando annunci che rispettano la privacy.",
-    "description": "Entry text for welcome screen in the panel, points"
-  },
-  "welcomeFooterTextOne": {
-    "message": "Scopri che cosa è migliorato",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
-  },
-  "welcomeFooterTextTwo": {
-    "message": "Ulteriori informazioni",
-    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
-  },
-  "welcomeHeaderOne": {
-    "message": "Abbiamo aggiornato le Ricompense Brave in modo significativo.",
-    "description": "Main header title for welcome screen in the panel, existing user"
-  },
-  "welcomeHeaderTwo": {
-    "message": "Preparati a vivere il futuro di Internet.",
-    "description": "Main header title for welcome screen in the panel, new user"
-  },
-  "yourWallet": {
-    "message": "Il tuo portafoglio",
-    "description": "Title of wallet section where we display data about wallet"
-  },
-  "grants": {
-    "message": "Contributi",
-    "description": "Title for grant section in wallet summary"
-  },
-  "details": {
-    "message": "Dettagli",
-    "description": "Title for grant section in wallet panel summary"
-  },
-  "yourBalance": {
-    "message": "Il tuo saldo",
-    "description": "Wallet panel title for anon wallets"
-  },
-  "batPoints": {
-    "message": "Punti BAT",
-    "description": "BAT Points text"
-  },
-  "batPointsMessage": {
-    "message": "può essere usato nei Premi Brave per contribuire al tuo creatore di contenuti preferito. I punti BAT non possono essere scambiati per BAT.",
-    "description": "Text for BAT Point helper message"
-  },
-  "on": {
-    "message": "attivo",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "verifiedPublisher": {
-    "message": "Autore verificato Brave",
-    "description": "Tells user that this particular publisher is a Brave Verified Creator"
-  },
-  "rewardsContributeAttentionScore": {
-    "message": "Attenzione",
-    "description": "Label for auto contribute table attention for the publisher"
-  },
-  "donateMonthly": {
-    "message": "Contributo mensile",
-    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
-  },
-  "includeInAuto": {
-    "message": "Includi in Auto-contributo",
-    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
-  },
-  "donateNow": {
-    "message": "Invia una donazione...",
-    "description": "CTA for sending tip form site banner"
-  },
-  "enableTips": {
-    "message": "Attiva le donazioni",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "for": {
-    "message": "per",
-    "description": "The whole string is 'Enable tips on YouTube for like.'"
-  },
-  "rewardsSummary": {
-    "message": "Riepilogo Ricompense",
-    "description": "Section title in wallet panel, which contains monthly rewards summary"
-  },
-  "monthApr": {
-    "message": "Aprile",
-    "description": "Month"
-  },
-  "monthAug": {
-    "message": "Agosto",
-    "description": "Month"
-  },
-  "monthDec": {
-    "message": "Dicembre",
-    "description": "Month"
-  },
-  "monthFeb": {
-    "message": "Febbraio",
-    "description": "Month"
-  },
-  "monthJan": {
-    "message": "Gennaio",
-    "description": "Month"
-  },
-  "monthJul": {
-    "message": "Luglio",
-    "description": "Month"
-  },
-  "monthJun": {
-    "message": "Giugno",
-    "description": "Month"
-  },
-  "monthMar": {
-    "message": "Marzo",
-    "description": "Month"
-  },
-  "monthMay": {
-    "message": "Maggio",
-    "description": "Month"
-  },
-  "monthNov": {
-    "message": "Novembre",
-    "description": "Month"
-  },
-  "monthOct": {
-    "message": "Ottobre",
-    "description": "Month"
-  },
-  "monthSep": {
-    "message": "Settembre",
-    "description": "Month"
-  },
-  "tokenGrant": {
-    "message": "Donazioni in $currency$",
-    "description": "Title for grant notification",
+  "pendingTipText": {
+    "message": "Ogni donazione che effettuerai resterà in sospeso e l'invio verrà ritentato automaticamente per 90 giorni. $link_begin$Scopri di più$link_end$",
+    "description": "",
     "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "Token"
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
       }
     }
   },
-  "tokenGrantClaimed": {
-    "message": "Contributi in Token Riscossi",
-    "description": "Title for grant section in wallet summary"
+  "pendingTipTitle": {
+    "message": "Questo creatore non si è ancora iscritto.",
+    "description": ""
   },
-  "pointGrantClaimed": {
-    "message": "Point Grants Richiesti",
-    "description": "Title for point grant section in wallet summary"
+  "pendingTipTitleRegistered": {
+    "message": "Questo autore non ha ancora eseguito la configurazione necessaria per ricevere donazioni dal tuo servizio di custodial wallet delle ricompense.",
+    "description": ""
   },
-  "earningsAds": {
-    "message": "Guadagni da Annunci Pubblicitari",
-    "description": "Title for ads section in wallet summary"
+  "platformPublisherTitle": {
+    "message": "$name$ su $platform$",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "platform": {
+        "content": "$2"
+      }
+    }
   },
-  "rewardsContribute": {
-    "message": "Contribuisci automaticamente",
-    "description": "Title for auto contribute section in wallet summary"
+  "attention": {
+    "message": "Attenzione",
+    "description": ""
   },
-  "oneTimeDonation": {
-    "message": "Donazione singola",
-    "description": "Title for one time tips section in wallet summary"
+  "sendTip": {
+    "message": "Invia mancia",
+    "description": ""
   },
-  "expiresOn": {
-    "message": "scade il",
-    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
+  "includeInAutoContribute": {
+    "message": "Includi in Auto-contributo",
+    "description": ""
   },
-  "recurringDonations": {
-    "message": "Contributi mensili",
-    "description": "Title for monthly contributions section in wallet summary"
-  },
-  "off": {
-    "message": "Off",
-    "description": "Label used in toggle indicating that toggle is off"
+  "monthlyTip": {
+    "message": "Donazione mensile",
+    "description": ""
   },
   "ok": {
-    "message": "ok",
-    "description": "Used in notification to dismiss notification"
-  },
-  "braveAdsLaunchMsg": {
-    "message": "Ora puoi guadagnare visionando pubblicità.",
-    "description": "Message for ads launch notification"
-  },
-  "braveAdsTitle": {
-    "message": "Annunci Brave",
-    "description": "Notification title when we display info about ads"
-  },
-  "braveContributeTitle": {
-    "message": "Contribuisci automaticamente",
-    "description": "Notification title when we display info about auto contribution"
-  },
-  "contributeNotificationSuccess": {
-    "message": "Hai contribuito con $amount$ $currency$",
-    "description": "We show this string in the notification when contribution is successful",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10.0"
-      },
-      "currency": {
-        "content": "$2",
-        "example": "BAT"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "C'è una donazione in attesa per te.",
-    "description": "Description for new grant notification"
-  },
-  "backupNow": {
-    "message": "Esegui il backup ora",
-    "description": "Notification button text when we ask user to backup wallet"
-  },
-  "backupWalletTitle": {
-    "message": "Backup Portafoglio",
-    "description": "Notification title when we ask user to backup wallet"
-  },
-  "backupWalletNotification": {
-    "message": "Per favore, effettua il backup del tuo portafoglio Brave.",
-    "description": "Description for backup wallet notification"
-  },
-  "deviceLimitReachedLearnMore": {
-    "message": "Ulteriori informazioni",
-    "description": "Notification button text to learn more about device limit"
-  },
-  "deviceLimitReachedTitle": {
-    "message": "Limite di dispositivi raggiunto",
-    "description": "Title for device limit reached notification"
-  },
-  "deviceLimitReachedNotification": {
-    "message": "Il tuo portafoglio non può essere verificato perché hai raggiunto il limite massimo di dispositivi verificati.",
-    "description": "Description for device limit reached notification"
-  },
-  "insufficientFundsNotification": {
-    "message": "Il tuo account Brave Rewards è in attesa di un deposito.",
-    "description": "Description for new insufficient funds notification"
-  },
-  "insufficientFunds": {
-    "message": "Fondi Insufficienti",
-    "description": "Title for insufficient funds notification"
-  },
-  "braveRewardsCreatingText": {
-    "message": "Creazione del portafoglio",
-    "description": "Used in a button displaying wallet creation process"
-  },
-  "contributeNotificationError": {
-    "message": "Si è verificato un problema nell'elaborazione del tuo contributo.",
-    "description": "We show this string in notification when contribution fails"
-  },
-  "contributeNotificationNotEnoughFunds": {
-    "message": "Non è stato possibile completare il tuo pagamento mensile pianificato dei contributi automatici e di quelli mensili a causa di fondi insufficienti. Riproveremo tra 30 giorni. ",
-    "description": "We show this string in the notification when you don't have enough funds for contribution"
-  },
-  "contributeNotificationTipError": {
-    "message": "Impossibile inviare la tua mancia. Per favore riprova più tardi.",
-    "description": "We show this string in notification when tip fails"
-  },
-  "noActivity": {
-    "message": "Ancora nessuna attività...",
-    "description": "Allows the user to see that there have been no transactions or other activity in their wallet"
-  },
-  "captchaDrag": {
-    "message": "Trascina l'Icona BAT sul",
-    "description": "Directs the user to drag the BAT icon"
-  },
-  "captchaProveHuman": {
-    "message": "Dimostra di essere umano!",
-    "description": "Cosmetic text for captcha prompt"
-  },
-  "captchaTarget": {
-    "message": "target.",
-    "description": "Captcha Target"
-  },
-  "captchaMissedTarget": {
-    "message": "Mmh... Quasi. Prova di Nuovo.",
-    "description": "Message upon failing captcha"
-  },
-  "claim": {
-    "message": "Riscuoti",
-    "description": "Claim text"
-  },
-  "newTokenGrant": {
-    "message": "Contributo di Token Gratuito",
-    "description": "Token grant label"
-  },
-  "grantExpire": {
-    "message": "Data di Scadenza Contributo",
-    "description": "Grant expiry label"
-  },
-  "grantGeneralErrorButton": {
     "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGeneralErrorText": {
-    "message": "Ricompense Brave sta riscontrando un problema. Per favore, riprova più tardi.",
-    "description": "Error text when user is having problems claiming a grant."
-  },
-  "grantGeneralErrorTitle": {
-    "message": "Ops, qualcosa è andato storto. Per favore, riprova più tardi.",
-    "description": "Error title when user is having problems claiming a grant."
-  },
-  "unVerifiedCheck": {
-    "message": "Aggiorna status",
-    "description": "Text of link that allows to check verified status of unverified publisher"
-  },
-  "unVerifiedPublisher": {
-    "message": "Non ancora verificato",
-    "description": "Status of the publisher shown in the panel"
-  },
-  "unVerifiedText": {
-    "message": "Questo creatore non si è ancora iscritto per ricevere i contributi dagli utenti Brave. Ogni mancia che invierai rimarrà nel tuo portafoglio fino a quando non si sarà verificato.",
-    "description": "Notice about unverified publisher."
-  },
-  "unVerifiedTextMore": {
-    "message": "Scopri di più.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "reservedAmountText": {
-    "message": "Hai predisposto {{reservedAmount}} {{currency}} per ideatori che non sono ancora entrati per ricevere il contributo. Il tuo browser continuerà a provare a dare il contributo finché non avranno effettuato la verifica, fino a 90 giorni.",
-    "description": "Notification about how much BAT do you have reserved"
-  },
-  "reservedMoreLink": {
-    "message": "Scopri di più.",
-    "description": "Text for the link that explains more about reserved amount"
-  },
-  "disabledPanelOff": {
-    "message": "Off",
-    "description": "Off state text for Panel's disabled state"
-  },
-  "disabledPanelSettings": {
-    "message": "Impostazioni.",
-    "description": "Settings Link for Panel's disabled state"
-  },
-  "disabledPanelText": {
-    "message": "Attualmente non stai accumulando nessun benefit delle Ricompense durante la navigazione. Riattiva le Ricompense in",
-    "description": "Text for Panel's disabled state"
-  },
-  "disabledPanelTitle": {
-    "message": "Ricompense Brave è",
-    "description": "Title for Panel's disabled state"
-  },
-  "walletFailedTitle": {
-    "message": "Creazione portafoglio fallita",
-    "description": "Failure title for wallet creation"
-  },
-  "walletFailedButton": {
-    "message": "Riprova",
-    "description": "Button for re-try after wallet creation failed"
-  },
-  "addFunds": {
-    "message": "Aggiungi fondi",
-    "description": "Button for adding funds"
-  },
-  "rewardsSettings": {
-    "message": "Impostazioni Ricompense",
-    "description": "Button for opening settings page"
-  },
-  "earningsClaimDefault": {
-    "message": "Le tue ricompense dagli Ads sono qui!",
-    "description": "Panel notification text for Ads grant"
-  },
-  "and": {
-    "message": "e",
-    "description": "The word 'and'"
-  },
-  "braveRewardsSubTitle": {
-    "message": "Fatti ricompensare per la navigazione!",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "disabledPanelTextTwo": {
-    "message": "Guadagna guardando annunci pubblicitari che rispettano la privacy e paga per supportare i creatori di contenuti che ami.",
-    "description": "Text block for wallet disabled panel"
-  },
-  "enableRewards": {
-    "message": "Attiva Ricompense Brave",
-    "description": "Subtitle for wallet disabled panel"
-  },
-  "privacyPolicy": {
-    "message": "Politica sulla Privacy",
-    "description": "Privacy Policy"
-  },
-  "serviceText": {
-    "message": "Facendo clic su \"Attiva Ricompense Brave\", indichi di aver letto e accettato i",
-    "description": "Terms of service main text"
-  },
-  "termsOfService": {
-    "message": "Termini di Servizio",
-    "description": "Terms of Service"
-  },
-  "welcomeBack": {
-    "message": "Bentornato!",
-    "description": "Title message for wallet disabled panel"
-  },
-  "tipsProcessedNotification": {
-    "message": "I tuoi contributi mensili sono stati elaborati!",
-    "description": "Message for monthly contributions processed notification"
-  },
-  "contributionTips": {
-    "message": "Contributi e Donazioni",
-    "description": "Title for monthly contributions processed notification"
-  },
-  "serviceTextPanelWelcome": {
-    "message": "Facendo clic su 'Partecipa alle Ricompense', indichi di aver letto e accettato i",
-    "description": "Terms of service panel opt-in text"
-  },
-  "bat": {
-    "message": "BAT",
-    "description": "BAT text for displaying converted tip amount."
-  },
-  "bap": {
-    "message": "BAP",
-    "description": "BAT Points abbreviation text"
-  },
-  "turnOnAds": {
-    "message": "Attiva gli Ads",
-    "description": "Prompt to turn on Ads via notification"
-  },
-  "adsEarnings": {
-    "message": "guadagnati dagli annunci pubblicitari",
-    "description": "Description text for ad grants in grant details"
-  },
-  "twitterTipsHoverText": {
-    "message": "Dai la mancia per questo tweet",
-    "description": "Hover text for Twitter tips action"
-  },
-  "twitterTipsIconLabel": {
-    "message": "Donazione",
-    "description": "Icon label for Twitter tips"
-  },
-  "redditTipsHoverText": {
-    "message": "Dai una mancia per questo post",
-    "description": "Hover text for Reddit tips action"
-  },
-  "redditTipsIconLabel": {
-    "message": "Donazione",
-    "description": "Icon label for Reddit tips"
-  },
-  "githubTipsHoverText": {
-    "message": "Invia una Mancia",
-    "description": "Hover text for GitHub tips action"
-  },
-  "githubTipsIconLabel": {
-    "message": "Donazione",
-    "description": "Icon label for GitHub tips"
-  },
-  "verifiedPublisherNotification": {
-    "message": "$name$ autore verificato di recente",
-    "description": "Notification text that tells user which publisher just verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "brave.com"
-      }
-    }
-  },
-  "pendingNotEnoughFundsNotification": {
-    "message": "Hai mance in sospeso a causa di fondi insufficienti",
-    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
-  },
-  "pendingContributionTitle": {
-    "message": "Contributi in sospeso",
-    "description": "Notification title for pending contribution type"
-  },
-  "grantFinishTitleUGP": {
-    "message": "È il tuo giorno fortunato!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "grantFinishTextUGP": {
-    "message": "La tua donazione di $currency$ è in arrivo.",
-    "description": "Cosmetic text indicating grant funds are on the way",
-    "placeholders": {
-      "currency": {
-        "content": "$1",
-        "example": "token"
-      }
-    }
-  },
-  "grantFinishTokenTitleUGP": {
-    "message": "Contributo di Token Gratuito",
-    "description": "Token title on success screen"
-  },
-  "grantFinishPointTitleUGP": {
-    "message": "Point Grant Gratis",
-    "description": "Point title on success screen"
-  },
-  "grantFinishTitleAds": {
-    "message": "Hai ottenuto un Premio Pubblicità!",
-    "description": "Cosmetic text upon captcha success for ads"
-  },
-  "grantFinishTextAds": {
-    "message": "Il tuo premio è sulla via verso il tuo portafoglio Premi Brave ",
-    "description": "Cosmetic text indicating ads funds are on the way"
-  },
-  "grantFinishTokenTitleAds": {
-    "message": "Quantità Premio",
-    "description": "Token title on success screen for ads"
-  },
-  "rewardsPanelTextVerify":  {
-    "message": "verifica",
-    "description": "CTA in the footer to verify"
-  },
-  "walletButtonDisconnected":  {
-    "message": "Disconnesso",
-    "description": "CTA status button"
-  },
-  "walletButtonUnverified":  {
-    "message": "Verifica il Portafoglio",
-    "description": "CTA to verify wallet in the wallet "
-  },
-  "walletButtonVerified":  {
-    "message": "Portafoglio verificato",
-    "description": "Displayed in wallet that tells users that he is verified"
-  },
-  "walletGoToProvider":  {
-    "message": "Vai al mio account su $provider$",
-    "description": "CTA to open an external wallet account",
-    "placeholders": {
-      "provider": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnect":  {
-    "message": "Scollegati da Brave Rewards",
-    "description": "CTA to disconnect user wallet from rewards"
-  },
-  "walletVerified":  {
-    "message": "Verificato",
-    "description": "Status button that tells user that he is verified"
-  },
-  "walletVerifiedNotification":  {
-    "message": "Il tuo portafoglio è verificato!",
-    "description": "Title for notification when wallet becomes verified"
-  },
-  "walletVerifiedTextNotification":  {
-    "message": "Congratulazioni! Il tuo portafoglio $name$ è stato verificato correttamente ed è disponibile per aggiungere e prelevare fondi.",
-    "description": "Title for notification when wallet becomes verified",
-    "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "Uphold"
-      }
-    }
-  },
-  "walletDisconnectedNotification":  {
-    "message": "Uh oh. Il tuo portafoglio non è raggiungibile.",
-    "description": "Title for notification when wallet is disconnected."
-  },
-  "walletDisconnectedTextNotification":  {
-    "message": "Non preoccuparti. Questo può succedere per diverse ragioni di sicurezza. Riconnettendo il tuo portafoglio risolveremo il problema.",
-    "description": "Title for notification when wallet is disconnected"
-  },
-  "connectedText":  {
-    "message": "Questo creatore verificato di Brave non ha ancora configurato il suo account per ricevere contributi dagli utenti di Brave. Qualsiasi mancia inviata rimarrà nel tuo portafoglio finché non avrà completato questo processo.\n",
-    "description": "Text shown for connected publishers that are not fully verified in the panel"
-  },
-  "walletGoToVerifyPage":  {
-    "message": "Completa verifica del portafoglio",
-    "description": "CTA for completing wallet verification"
+    "description": ""
   },
   "set": {
-    "message": "Imposta...",
-    "description": "Button text for setting monthly contribution"
+    "message": "Imposta",
+    "description": ""
   },
-  "tokens":  {
-    "message": "token",
-    "description": "Standard tokens text"
+  "changeAmount": {
+    "message": "Modifica l'importo",
+    "description": ""
   },
-  "point":  {
-    "message": "Punto",
-    "description": "BAT Point text"
+  "cancel": {
+    "message": "Annulla",
+    "description": ""
   },
-  "token":  {
-    "message": "Token",
-    "description": "BAT Token text"
+  "grantCaptchaTitle": {
+    "message": "Dimostra che sei un essere umano",
+    "description": ""
   },
-  "points":  {
-    "message": "punti",
-    "description": "BAT Points text"
+  "grantCaptchaFailedTitle": {
+    "message": "Mmh... Quasi. Prova di Nuovo.",
+    "description": ""
   },
-  "tokenGrants":  {
-    "message": "Contributi in token",
-    "description": "BAT Tokens Grant Text"
-  },
-  "pointGrants":  {
-    "message": "Donazioni di punti",
-    "description": "BAT Points Grant Text"
-  },
-  "greetingsVerified":  {
-    "message": "Ciao, $name$!",
-    "description": "Greetings for external wallet popup",
+  "grantCaptchaHint": {
+    "message": "Trascina l’icona del BAT sul $hint$.",
+    "description": "",
     "placeholders": {
-      "name": {
-        "content": "$1",
-        "example": "John"
+      "hint": {
+        "content": "$1"
       }
     }
   },
-  "cancel":  {
-    "message": "Annulla",
-    "description": "Text for cancel button"
+  "grantCaptchaPassedTitleUGP": {
+    "message": "È il tuo giorno fortunato!",
+    "description": ""
   },
-  "changeAmount":  {
-    "message": "Modifica l'importo",
-    "description": "Button text for changing monthly contribution amount"
+  "grantCaptchaPassedTextUGP": {
+    "message": "Il tuo contributo di token è in arrivo.",
+    "description": ""
   },
-  "login":  {
-    "message": "Accesso",
-    "description": "Text for login button"
+  "grantCaptchaAmountUGP": {
+    "message": "Contributo di Token Gratuito",
+    "description": ""
   },
-  "loginMessageTitle":  {
-    "message": "Verificare il tuo portafoglio ti permette di gestire i tuoi fondi al meglio.",
-    "description": "Text for login button"
+  "grantCaptchaPassedTitleAds": {
+    "message": "Hai ottenuto un Premio Pubblicità!",
+    "description": ""
   },
-  "loginMessageText":  {
-    "message": "Ti servono almeno $amount$ BAT per creare un portafoglio Uphold. Se hai già un account Uphold verificato, continua per eseguire il login.",
-    "description": "Text for login button",
+  "grantCaptchaPassedTextAds": {
+    "message": "La tua ricompensa è in arrivo.",
+    "description": ""
+  },
+  "grantCaptchaAmountAds": {
+    "message": "Quantità Premio",
+    "description": ""
+  },
+  "grantCaptchaExpiration": {
+    "message": "Data di Scadenza Contributo",
+    "description": ""
+  },
+  "grantCaptchaErrorTitle": {
+    "message": "Ops, qualcosa è andato storto. Per favore, riprova più tardi.",
+    "description": ""
+  },
+  "grantCaptchaErrorText": {
+    "message": "Ricompense Brave sta riscontrando un problema. Per favore, riprova più tardi.",
+    "description": ""
+  },
+  "rewardsPaymentCheckStatus": {
+    "message": "Verifica lo stato",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Congratulazioni! Le ricompense di $month$ sono arrivate!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Le tue ricompense di $month$, per un valore di $amount$, arriveranno fra $days$",
+    "description": "",
     "placeholders": {
       "amount": {
-        "content": "$1",
-        "example": "15"
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
       }
     }
   },
-  "walletConnected":  {
-    "message": "Connessa",
-    "description": "Status button that tells user that he is connected"
+  "rewardsPaymentProcessing": {
+    "message": "Le tue ricompense di $month$, per un valore di $amount$, sono in arrivo. Tienile d’occhio!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
   },
-  "walletPending":  {
-    "message": "In sospeso",
-    "description": "Status button that tells user that he is currently pending"
-  },
-  "walletVerificationNote3":  {
-    "message": "Nota: le tue transazioni saranno visibili a $provider$ una volta autorizzato. Ad esempio, potrà vedere il destinatario e l'ammontare delle tue donazioni.",
-    "description": "Displayed in login modal for external wallet providers",
+  "walletAccountLink": {
+    "message": "Vai al mio account su $provider$",
+    "description": "",
     "placeholders": {
       "provider": {
-        "content": "$1",
-        "example": "Uphold"
+        "content": "$1"
       }
     }
+  },
+  "walletAddFunds": {
+    "message": "Aggiungi fondi",
+    "description": ""
+  },
+  "walletAutoContribute": {
+    "message": "Contribuisci automaticamente",
+    "description": ""
+  },
+  "walletCompleteVerificationLink": {
+    "message": "Passa a $provider$ per completare la verifica",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletCompleteVerificationText": {
+    "message": "Completa la verifica dell’identità per iniziare a ricevere dei premi.",
+    "description": ""
+  },
+  "walletDisconnected": {
+    "message": "Disconnessione effettuata",
+    "description": ""
+  },
+  "walletDisconnectLink": {
+    "message": "Scollegati da $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletEstimatedEarnings": {
+    "message": "Guadagni stimati",
+    "description": ""
+  },
+  "walletLogIntoYourAccount": {
+    "message": "Accedere all’account $provider$",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "walletMonthlyTips": {
+    "message": "Donazioni mensili",
+    "description": ""
+  },
+  "walletOneTimeTips": {
+    "message": "Donazione singola",
+    "description": ""
+  },
+  "walletPending": {
+    "message": "In sospeso",
+    "description": ""
+  },
+  "walletRewardsFromAds": {
+    "message": "Premi di Brave Ads",
+    "description": ""
+  },
+  "walletRewardsSummary": {
+    "message": "Riepilogo Ricompense",
+    "description": ""
+  },
+  "walletUnverified": {
+    "message": "Non verificato",
+    "description": ""
+  },
+  "walletVerified": {
+    "message": "Verificato",
+    "description": ""
+  },
+  "walletYourBalance": {
+    "message": "Il tuo saldo",
+    "description": ""
+  },
+  "notificationAddFunds": {
+    "message": "Aggiungi fondi",
+    "description": ""
+  },
+  "notificationReconnect": {
+    "message": "Ricollegati",
+    "description": ""
+  },
+  "notificationClaimRewards": {
+    "message": "Richiedi ricompense",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Richiedi token",
+    "description": ""
+  },
+  "notificationAddFundsTitle": {
+    "message": "Fondi Insufficienti",
+    "description": ""
+  },
+  "notificationAddFundsText": {
+    "message": "Il tuo account Brave Rewards è in attesa di un deposito.",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedTitle": {
+    "message": "Contribuisci automaticamente",
+    "description": ""
+  },
+  "notificationAutoContributeCompletedText": {
+    "message": "Hai dato un contributo di $amount$.",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationBackupWalletTitle": {
+    "message": "Esegui il back up di Ricompense Brave",
+    "description": ""
+  },
+  "notificationBackupWalletText": {
+    "message": "Effettua il backup delle Ricompense Brave.",
+    "description": ""
+  },
+  "notificationBackupWalletAction": {
+    "message": "Esegui subito il backup",
+    "description": ""
+  },
+  "notificationWalletDisconnectedTitle": {
+    "message": "Sei disconnesso",
+    "description": ""
+  },
+  "notificationWalletDisconnectedText": {
+    "message": "Può servire per mantenere al sicuro l’account. Clicca qua sotto per ricollegarti subito.",
+    "description": ""
+  },
+  "notificationWalletDisconnectedAction": {
+    "message": "Ricollegati",
+    "description": ""
+  },
+  "notificationWalletVerifiedTitle": {
+    "message": "Il tuo profilo Ricompense Brave è verificato!",
+    "description": ""
+  },
+  "notificationWalletVerifiedText": {
+    "message": "Il tuo profilo Ricompense Brave è stato verificato correttamente con $provider$.",
+    "description": "",
+    "placeholders": {
+      "provider": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationTokenGrantTitle": {
+    "message": "È disponibile una concessione di token!",
+    "description": ""
+  },
+  "notificationAdGrantAmount": {
+    "message": "Ricompense di $month$: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
+  },
+  "notificationAdGrantTitle": {
+    "message": "Le tue ricompense per Annunci Brave di $month$ sono arrivate!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationGrantDaysRemaining": {
+    "message": "Hai ancora $days$ per la richiesta",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationInsufficientFundsText": {
+    "message": "Non è stato possibile completare il pagamento mensile pianificato per l'auto-contributo e le donazioni mensili a causa dell'insufficienza dei fondi. Riproveremo tra 30 giorni.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedText": {
+    "message": "Si è verificato un problema nell'elaborazione del tuo contributo.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Donazione mensile non riuscita",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedTitle": {
+    "message": "Contributi e donazioni",
+    "description": ""
+  },
+  "notificationMonthlyTipCompletedText": {
+    "message": "Le tue donazioni mensili sono state elaborate.",
+    "description": ""
+  },
+  "notificationPublisherVerifiedTitle": {
+    "message": "Contributo in sospeso",
+    "description": ""
+  },
+  "notificationPublisherVerifiedText": {
+    "message": "L’autore $publisher_name$ è stato verificato di recente.",
+    "description": "",
+    "placeholders": {
+      "publisher_name": {
+        "content": "$1"
+      }
+    }
+  },
+  "notificationPendingTipFailedTitle": {
+    "message": "Denaro insufficiente",
+    "description": ""
+  },
+  "notificationPendingTipFailedText": {
+    "message": "Hai mance in sospeso a causa di fondi insufficienti",
+    "description": ""
   },
   "onboardingEarnHeader": {
     "message": "Guadagna Gettoni e dai indietro",
@@ -796,11 +551,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Verifica il tuo portafoglio",
+    "message": "Verifica",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Per incassare i token guadagnati visualizzando gli annunci pubblicitari, devi verificare il tuo portafoglio.",
+    "message": "Per incassare i BAT guadagnati visualizzando gli annunci, devi verificare il profilo Ricompense Brave.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -808,7 +563,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Verifica il mio portafoglio",
+    "message": "Verifica Ricompense Brave",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -816,7 +571,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Verificando il portafoglio e collegandolo a un account bitFlyer, è più facile conservare e gestire i token guadagnati con Brave Rewards",
+    "message": "Verificando il profilo Ricompense Brave e collegandolo a un account bitFlyer, è più facile conservare e gestire i BAT guadagnati con Ricompense Brave",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {
@@ -831,16 +586,90 @@
       }
     }
   },
-  "bapDeprecationHeader": {
-    "message": "Brave Rewards in Giappone sta passando a un nuovo sistema!",
-    "description": "Header text for BAP deprecation warning message"
+  "captchaMaxAttemptsExceededText": {
+    "message": "A quanto pare c’è qualcosa che non funziona; gli annunci di Brave verranno sospesi. Se ti serve aiuto per il captcha contattaci.",
+    "description": ""
   },
-  "bapDeprecationLearnMore": {
-    "message": "Ulteriori informazioni",
-    "description": "Link to learn more about BAP deprecation"
+  "captchaMaxAttemptsExceededTitle": {
+    "message": "Numero di tentativi massimi superato",
+    "description": ""
   },
-  "bapDeprecationPopupText": {
-    "message": "Utilizza i tuoi BAP entro il 13 marzo. Dopo tale data, i BAP non saranno più validi.",
-    "description": "Text for BAP deprecation popup"
+  "captchaSolvedTitle": {
+    "message": "Risolto!",
+    "description": ""
+  },
+  "captchaSolvedText": {
+    "message": "Da adesso riprenderanno gli annunci e i guadagni. Grazie per averci aiutato a proteggere Brave Rewards e gli annunci che tutelano la privacy.",
+    "description": ""
+  },
+  "captchaContactSupport": {
+    "message": "Contatta l’assistenza",
+    "description": ""
+  },
+  "captchaDismiss": {
+    "message": "Ignora",
+    "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Per avviare una chiamata gratuita, attiva Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Con Brave Rewards guadagni token per visualizzare annunci privati (i tuoi dati sono al sicuro). Trasforma questi token in denaro, carte regalo o addirittura in donazioni ai siti web che adori. Nessun tracciamento né rallentamenti.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Attiva Rewards",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Con l'attivazione, accetti i $tos_link_begin$Termini di servizio$tos_link_end$ e l’$pp_link_begin$Informativa sulla privacy$pp_link_end$. ",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Per avviare una chiamata gratuita, attiva Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Con Brave Private Ads guadagni token per visualizzare annunci privati (i tuoi dati sono al sicuro). Trasforma questi token in denaro, carte regalo o addirittura in donazioni ai siti web che adori. Nessun tracciamento né rallentamenti.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Attiva Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Ora puoi avviare una chiamata gratuita",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Clicca o tocca un punto qualsiasi dello schermo per continuare in Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Vuoi saperne di più su Brave Rewards? $tour_link_begin$Segui questa breve presentazione$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

@@ -1,8 +1,8 @@
 diff --git a/net/base/host_port_pair.h b/net/base/host_port_pair.h
-index 1efb721e103ad43bb8799ceed2ce3fc199ccd9e6..0f773eff2ef5b03de11de367ffedb0ea7f861b4e 100644
+index ae37263ac0420f3965fe2c8358cbb090fd089168..5f7e723378947ece8628b97616804bac873c524c 100644
 --- a/net/base/host_port_pair.h
 +++ b/net/base/host_port_pair.h
-@@ -36,16 +36,20 @@ class NET_EXPORT HostPortPair {
+@@ -44,16 +44,20 @@ class NET_EXPORT HostPortPair {
  
    // TODO(willchan): Define a functor instead.
    // Comparator function so this can be placed in a std::map.
@@ -23,11 +23,11 @@ index 1efb721e103ad43bb8799ceed2ce3fc199ccd9e6..0f773eff2ef5b03de11de367ffedb0ea
  
    bool IsEmpty() const {
      return host_.empty() && port_ == 0;
-@@ -72,6 +76,7 @@ class NET_EXPORT HostPortPair {
+@@ -78,6 +82,7 @@ class NET_EXPORT HostPortPair {
+   // Returns |host_|, adding IPv6 brackets if needed.
+   std::string HostForURL() const;
  
-   // Returns the estimate of dynamically allocated memory in bytes.
-   size_t EstimateMemoryUsage() const;
 +  BRAVE_HOST_PORT_PAIR_H_
- 
   private:
    // If |host_| represents an IPv6 address, this string will not contain
+   // brackets around the address.

@@ -10,7 +10,7 @@
 
 #define IsMetricsReportingEnabled IsMetricsReportingEnabled_ChromiumImpl(); \
   virtual bool IsMetricsReportingEnabled
-#include "../../../../../chrome/browser/metrics/chrome_metrics_services_manager_client.h"
+#include "src/chrome/browser/metrics/chrome_metrics_services_manager_client.h"
 #undef IsMetricsReportingEnabled
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_METRICS_CHROME_METRICS_SERVICES_MANAGER_CLIENT_H_

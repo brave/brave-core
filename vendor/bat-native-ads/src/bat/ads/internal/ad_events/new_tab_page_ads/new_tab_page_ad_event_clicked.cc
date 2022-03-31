@@ -6,11 +6,9 @@
 #include "bat/ads/internal/ad_events/new_tab_page_ads/new_tab_page_ad_event_clicked.h"
 
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/internal/account/confirmations/confirmations.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/new_tab_page_ad_info.h"
 
 namespace ads {
 namespace new_tab_page_ads {
@@ -24,8 +22,8 @@ void AdEventClicked::FireEvent(const NewTabPageAdInfo& ad) {
                                                << " and creative instance id "
                                                << ad.creative_instance_id);
 
-  LogAdEvent(ad, ConfirmationType::kClicked, [](const Result result) {
-    if (result != Result::SUCCESS) {
+  LogAdEvent(ad, ConfirmationType::kClicked, [](const bool success) {
+    if (!success) {
       BLOG(1, "Failed to log new tab page ad clicked event");
       return;
     }

@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
 class BraveBrowser;
@@ -20,6 +21,7 @@ struct SidebarItem;
 class SidebarAddItemBubbleDelegateView
     : public views::BubbleDialogDelegateView {
  public:
+  METADATA_HEADER(SidebarAddItemBubbleDelegateView);
   SidebarAddItemBubbleDelegateView(BraveBrowser* browser,
                                    views::View* anchor_view);
   ~SidebarAddItemBubbleDelegateView() override;
@@ -39,8 +41,9 @@ class SidebarAddItemBubbleDelegateView
   // Passed |item| will be added to sidebar.
   void OnDefaultItemsButtonPressed(const sidebar::SidebarItem& item);
   void OnCurrentItemButtonPressed();
+  void CloseOrReLayoutAfterAddingItem();
 
-  BraveBrowser* browser_ = nullptr;
+  raw_ptr<BraveBrowser> browser_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ADD_ITEM_BUBBLE_DELEGATE_VIEW_H_

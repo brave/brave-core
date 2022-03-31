@@ -10,7 +10,7 @@ export const settingsOptions: SettingsOptions = {
   'brave.shields.advanced_view_enabled': 'showAdvancedView'
 }
 
-export const settingsKeyList: Array<SettingsKey> = [
+export const settingsKeyList: SettingsKey[] = [
   'brave.shields.stats_badge_visible',
   'brave.shields.advanced_view_enabled'
 ]

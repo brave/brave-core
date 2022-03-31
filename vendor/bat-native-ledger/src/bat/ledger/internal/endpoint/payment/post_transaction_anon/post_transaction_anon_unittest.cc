@@ -48,8 +48,8 @@ class PostTransactionAnonTest : public testing::Test {
       "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
       "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
     })";
-    ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletBrave))
-      .WillByDefault(testing::Return(wallet));
+    ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
+        .WillByDefault(testing::Return(wallet));
   }
 };
 

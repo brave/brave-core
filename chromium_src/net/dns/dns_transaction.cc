@@ -15,7 +15,7 @@ bool GetNextIndex(const std::string& hostname,
                   net::DnsServerIterator* dns_server_iterator,
                   size_t* doh_server_index) {
   base::StringPiece server =
-      config.dns_over_https_servers[*doh_server_index].server_template;
+      config.doh_config.servers()[*doh_server_index].server_template();
 
   // Skip decentralized DNS resolvers if it is not target TLDs.
   while ((server == decentralized_dns::kUnstoppableDomainsDoHResolver &&
@@ -28,7 +28,7 @@ bool GetNextIndex(const std::string& hostname,
     }
 
     *doh_server_index = dns_server_iterator->GetNextAttemptIndex();
-    server = config.dns_over_https_servers[*doh_server_index].server_template;
+    server = config.doh_config.servers()[*doh_server_index].server_template();
   }
 
   return true;
@@ -42,5 +42,5 @@ bool GetNextIndex(const std::string& hostname,
     return AttemptResult(ERR_BLOCKED_BY_CLIENT, nullptr);             \
   }
 
-#include "../../../../net/dns/dns_transaction.cc"
+#include "src/net/dns/dns_transaction.cc"
 #undef BRAVE_MAKE_HTTP_ATTEMPT

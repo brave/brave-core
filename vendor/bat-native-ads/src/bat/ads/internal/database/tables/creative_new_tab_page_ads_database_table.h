@@ -8,42 +8,32 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/ad_targeting/ad_targeting.h"
-#include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
+#include "base/check_op.h"
+#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/internal/bundle/creative_new_tab_page_ad_info_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
-#include "bat/ads/internal/database/tables/campaigns_database_table.h"
-#include "bat/ads/internal/database/tables/creative_ads_database_table.h"
-#include "bat/ads/internal/database/tables/dayparts_database_table.h"
-#include "bat/ads/internal/database/tables/geo_targets_database_table.h"
-#include "bat/ads/internal/database/tables/segments_database_table.h"
-#include "bat/ads/mojom.h"
-#include "bat/ads/result.h"
+#include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table_aliases.h"
+#include "bat/ads/internal/segments/segments_aliases.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-
-using GetCreativeNewTabPageAdCallback =
-    std::function<void(const Result,
-                       const std::string& creative_instance_id,
-                       const CreativeNewTabPageAdInfo&)>;
-
-using GetCreativeNewTabPageAdsCallback =
-    std::function<void(const Result,
-                       const std::vector<std::string>&,
-                       const CreativeNewTabPageAdList&)>;
-
 namespace database {
 namespace table {
 
-class CreativeNewTabPageAds : public Table {
+class Campaigns;
+class CreativeAds;
+class CreativeNewTabPageAdWallpapers;
+class Dayparts;
+class GeoTargets;
+class Segments;
+
+class CreativeNewTabPageAds final : public Table {
  public:
   CreativeNewTabPageAds();
-
   ~CreativeNewTabPageAds() override;
 
-  void Save(const CreativeNewTabPageAdList& creative_new_tab_page_ads,
+  void Save(const CreativeNewTabPageAdList& creative_ads,
             ResultCallback callback);
 
   void Delete(ResultCallback callback);
@@ -56,44 +46,44 @@ class CreativeNewTabPageAds : public Table {
 
   void GetAll(GetCreativeNewTabPageAdsCallback callback);
 
-  void set_batch_size(const int batch_size);
+  void set_batch_size(const int batch_size) {
+    DCHECK_GT(batch_size, 0);
 
-  std::string get_table_name() const override;
+    batch_size_ = batch_size;
+  }
 
-  void Migrate(DBTransaction* transaction, const int to_version) override;
+  std::string GetTableName() const override;
+
+  void Migrate(mojom::DBTransaction* transaction,
+               const int to_version) override;
 
  private:
-  void InsertOrUpdate(
-      DBTransaction* transaction,
-      const CreativeNewTabPageAdList& creative_new_tab_page_ads);
-
-  int BindParameters(DBCommand* command,
-                     const CreativeNewTabPageAdList& creative_new_tab_page_ads);
+  void InsertOrUpdate(mojom::DBTransaction* transaction,
+                      const CreativeNewTabPageAdList& creative_ads);
 
   std::string BuildInsertOrUpdateQuery(
-      DBCommand* command,
-      const CreativeNewTabPageAdList& creative_new_tab_page_ads);
+      mojom::DBCommand* command,
+      const CreativeNewTabPageAdList& creative_ads);
 
-  void OnGetForCreativeInstanceId(DBCommandResponsePtr response,
+  void OnGetForCreativeInstanceId(mojom::DBCommandResponsePtr response,
                                   const std::string& creative_instance_id,
                                   GetCreativeNewTabPageAdCallback callback);
 
-  void OnGetForSegments(DBCommandResponsePtr response,
+  void OnGetForSegments(mojom::DBCommandResponsePtr response,
                         const SegmentList& segments,
                         GetCreativeNewTabPageAdsCallback callback);
 
-  void OnGetAll(DBCommandResponsePtr response,
+  void OnGetAll(mojom::DBCommandResponsePtr response,
                 GetCreativeNewTabPageAdsCallback callback);
 
-  CreativeNewTabPageAdInfo GetFromRecord(DBRecord* record) const;
-
-  void CreateTableV14(DBTransaction* transaction);
-  void MigrateToV14(DBTransaction* transaction);
+  void MigrateToV19(mojom::DBTransaction* transaction);
 
   int batch_size_;
 
   std::unique_ptr<Campaigns> campaigns_database_table_;
   std::unique_ptr<CreativeAds> creative_ads_database_table_;
+  std::unique_ptr<CreativeNewTabPageAdWallpapers>
+      creative_new_tab_page_ad_wallpapers_database_table_;
   std::unique_ptr<Dayparts> dayparts_database_table_;
   std::unique_ptr<GeoTargets> geo_targets_database_table_;
   std::unique_ptr<Segments> segments_database_table_;

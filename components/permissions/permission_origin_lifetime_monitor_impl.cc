@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/stl_util.h"
+#include "base/containers/contains.h"
 #include "content/public/browser/tld_ephemeral_lifetime.h"
 #include "net/base/features.h"
 #include "net/base/url_util.h"

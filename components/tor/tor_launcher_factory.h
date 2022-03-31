@@ -32,6 +32,10 @@ class TorLauncherObserver;
 class TorLauncherFactory : public tor::TorControl::Delegate {
  public:
   using GetLogCallback = base::OnceCallback<void(bool, const std::string&)>;
+
+  TorLauncherFactory(const TorLauncherFactory&) = delete;
+  TorLauncherFactory& operator=(const TorLauncherFactory&) = delete;
+
   static TorLauncherFactory* GetInstance();
 
   virtual void Init();
@@ -65,8 +69,6 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   TorLauncherFactory();
   ~TorLauncherFactory() override;
 
-  void OnTorLogLoaded(GetLogCallback, const std::pair<bool, std::string>&);
-
   void OnTorControlPrerequisitesReady(int64_t pid,
                                       bool ready,
                                       std::vector<uint8_t> cookie,
@@ -92,6 +94,8 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   std::string tor_proxy_uri_;
   std::string tor_version_;
 
+  std::string tor_log_;
+
   int64_t tor_pid_;
 
   tor::mojom::TorConfig config_;
@@ -103,8 +107,6 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   SEQUENCE_CHECKER(sequence_checker_);
 
   base::WeakPtrFactory<TorLauncherFactory> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(TorLauncherFactory);
 };
 
 #endif  // BRAVE_COMPONENTS_TOR_TOR_LAUNCHER_FACTORY_H_

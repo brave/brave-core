@@ -9,7 +9,7 @@ import sys
 import subprocess
 import shutil
 
-from rust_deps_config import RUST_DEPS_PACKAGE_VERSION
+from deps_config import RUST_DEPS_PACKAGE_VERSION
 
 
 def run(args):

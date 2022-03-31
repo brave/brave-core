@@ -6,11 +6,9 @@
 #include "bat/ads/internal/ml/model/linear/linear.h"
 
 #include <algorithm>
-#include <cmath>
 #include <utility>
 #include <vector>
 
-#include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/ml_prediction_util.h"
 
 namespace ads {

@@ -8,41 +8,44 @@
 
 #include <cstdint>
 #include <map>
+#include <memory>
 #include <vector>
 
 #include "bat/ads/internal/ml/data/data.h"
-#include "bat/ads/internal/ml/data/vector_data_aliases.h"
 
 namespace ads {
 namespace ml {
 
-class VectorData : public Data {
+class VectorData final : public Data {
  public:
   VectorData();
-
   VectorData(const VectorData& vector_data);
+  VectorData(VectorData&& vector_data);
 
-  explicit VectorData(const std::vector<double>& data);
+  // Make a "dense" DataVector with points 0..n-1 (n = data.size()):
+  // ({0, data[0]}, {1, data[0]}, .., {n-1, data[n-1]}}
+  explicit VectorData(std::vector<float> data);
 
-  // Explicit copy assignment operator is required because the class
+  // Make a "sparse" DataVector using points from |data|.
+  // double is used for backward compatibility with the current code.
+  VectorData(int dimension_count, const std::map<uint32_t, double>& data);
+  ~VectorData() override;
+
+  // Explicit copy assignment && move operators is required because the class
   // inherits const member type_ that cannot be copied by default
   VectorData& operator=(const VectorData& vector_data);
-
-  VectorData(const int dimension_count, const std::map<uint32_t, double>& data);
-
-  ~VectorData() override;
+  VectorData& operator=(VectorData&& vector_data);
 
   friend double operator*(const VectorData& lhs, const VectorData& rhs);
 
   void Normalize();
 
-  int GetDimensionCount() const;
+  int GetDimensionCountForTesting() const;
 
-  std::vector<SparseVectorElement> GetRawData() const;
+  const std::vector<float>& GetValuesForTesting() const;
 
  private:
-  int dimension_count_;
-  std::vector<SparseVectorElement> data_;
+  std::unique_ptr<class VectorDataStorage> storage_;
 };
 
 }  // namespace ml

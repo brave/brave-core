@@ -8,11 +8,12 @@ import { debounce } from '../../../common/debounce'
 const keyName = 'rewards-data'
 
 export const defaultState: Rewards.State = {
+  version: 1,
   createdTimestamp: null,
   enabledAds: false,
   enabledAdsMigrated: false,
   enabledContribute: false,
-  firstLoad: null,
+  firstLoad: false,
   contributionMinTime: 8,
   contributionMinVisits: 1,
   contributionMonthly: 0,
@@ -29,7 +30,6 @@ export const defaultState: Rewards.State = {
     paymentIdCheck: true,
     walletRecoveryStatus: null,
     walletServerProblem: false,
-    verifyOnboardingDisplayed: false,
     promosDismissed: {}
   },
   autoContributeList: [],
@@ -61,6 +61,7 @@ export const defaultState: Rewards.State = {
   },
   pendingContributions: [],
   excludedList: [],
+  externalWalletProviderList: [],
   balance: {
     total: 0,
     wallets: {}
@@ -82,40 +83,15 @@ export const defaultState: Rewards.State = {
   showOnboarding: false
 }
 
-const cleanData = (state: Rewards.State) => {
-  if (!state.balance) {
-    state.balance = defaultState.balance
-  }
-
-  if (!state.parameters) {
-    state.parameters = defaultState.parameters
-  }
-
-  // Name change: onBoardingDisplayed -> verifyOnboardingDisplayed
-  if (state.ui.verifyOnboardingDisplayed === undefined) {
-    const { ui } = state as any
-    if (ui.onBoardingDisplayed) {
-      ui.verifyOnboardingDisplayed = true
-      ui.onBoardingDisplayed = undefined
-    }
-  }
-
-  // Data type change: adsNextPaymentDate (string -> number)
-  if (typeof (state.adsData.adsNextPaymentDate as any) !== 'number') {
-    throw new Error('Invalid adsNextPaymentDate')
-  }
-
-  state.ui.modalRedirect = 'hide'
-
-  return state
-}
-
 export const load = (): Rewards.State => {
   const data = window.localStorage.getItem(keyName)
   let state: Rewards.State = defaultState
   if (data) {
     try {
-      state = cleanData(JSON.parse(data))
+      state = JSON.parse(data)
+      if (!state || state.version !== defaultState.version) {
+        throw new Error('State versions do not match')
+      }
       state.initializing = true
     } catch (e) {
       console.error('Could not parse local storage data: ', e)
@@ -126,10 +102,10 @@ export const load = (): Rewards.State => {
 
 export const debouncedSave = debounce((data: Rewards.State) => {
   if (data) {
-    window.localStorage.setItem(keyName, JSON.stringify(cleanData(data)))
+    window.localStorage.setItem(keyName, JSON.stringify(data))
   }
-}, 50)
+}, 150)
 
 export const save = (data: Rewards.State) => {
-  window.localStorage.setItem(keyName, JSON.stringify(cleanData(data)))
+  window.localStorage.setItem(keyName, JSON.stringify(data))
 }

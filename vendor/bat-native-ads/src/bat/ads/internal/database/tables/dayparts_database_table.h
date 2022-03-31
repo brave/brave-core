@@ -8,38 +8,36 @@
 
 #include <string>
 
-#include "bat/ads/ads_client.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/ads_client_aliases.h"
+#include "bat/ads/internal/bundle/creative_ad_info_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
 namespace database {
 namespace table {
 
-class Dayparts : public Table {
+class Dayparts final : public Table {
  public:
   Dayparts();
-
   ~Dayparts() override;
 
-  void InsertOrUpdate(DBTransaction* transaction,
+  void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const CreativeAdList& creative_ads);
 
   void Delete(ResultCallback callback);
 
-  std::string get_table_name() const override;
+  std::string GetTableName() const override;
 
-  void Migrate(DBTransaction* transaction, const int to_version) override;
+  void Migrate(mojom::DBTransaction* transaction,
+               const int to_version) override;
 
  private:
-  int BindParameters(DBCommand* command, const CreativeAdList& creative_ads);
-
-  std::string BuildInsertOrUpdateQuery(DBCommand* command,
+  std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const CreativeAdList& creative_ads);
 
-  void CreateTableV14(DBTransaction* transaction);
-  void MigrateToV14(DBTransaction* transaction);
+  void MigrateToV19(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

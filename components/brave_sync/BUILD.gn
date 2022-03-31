@@ -2,21 +2,20 @@ import("//brave/components/common/typescript.gni")
 import("//build/config/features.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
-import("buildflags/buildflags.gni")
 
 declare_args() {
   brave_sync_endpoint = ""
 }
 
-if (is_official_build) { assert(brave_sync_endpoint != "") }
-
-config("brave_sync_config") {
-  defines = [
-    "BRAVE_SYNC_ENDPOINT=\"$brave_sync_endpoint\""
-  ]
+if (is_official_build) {
+  assert(brave_sync_endpoint != "")
 }
 
-source_set("crypto") {
+config("brave_sync_config") {
+  defines = [ "BRAVE_SYNC_ENDPOINT=\"$brave_sync_endpoint\"" ]
+}
+
+static_library("crypto") {
   sources = [
     "crypto/crypto.cc",
     "crypto/crypto.h",
@@ -41,13 +40,10 @@ source_set("features") {
     "features.h",
   ]
 
-  deps = [
-    "//base",
-    "buildflags",
-  ]
+  deps = [ "//base" ]
 }
 
-source_set("network_time_helper") {
+static_library("network_time_helper") {
   # Remove when https://github.com/brave/brave-browser/issues/10650 is resolved
   check_includes = false
   sources = [
@@ -74,16 +70,30 @@ source_set("prefs") {
   ]
 }
 
-source_set("profile_sync_service_helper") {
+source_set("qr_code_data") {
   sources = [
-    "profile_sync_service_helper.cc",
-    "profile_sync_service_helper.h",
+    "qr_code_data.cc",
+    "qr_code_data.h",
+    "qr_code_validator.cc",
+    "qr_code_validator.h",
+  ]
+
+  deps = [
+    ":crypto",
+    "//base",
+  ]
+}
+
+static_library("sync_service_impl_helper") {
+  sources = [
+    "sync_service_impl_helper.cc",
+    "sync_service_impl_helper.h",
   ]
 
   deps = [
     "//base",
-    "//components/sync_device_info",
     "//components/sync/driver",
+    "//components/sync_device_info",
   ]
 }
 
@@ -93,11 +103,28 @@ group("brave_sync") {
     ":features",
     ":network_time_helper",
     ":prefs",
-    "buildflags",
+    ":qr_code_data",
     "//base",
   ]
 }
 
 group("constants") {
   public_configs = [ ":brave_sync_config" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "//brave/components/brave_sync/brave_sync_prefs_unittest.cc",
+    "//brave/components/brave_sync/qr_code_data_unittest.cc",
+    "//brave/components/brave_sync/qr_code_validator_unittest.cc",
+  ]
+
+  deps = [
+    ":prefs",
+    ":qr_code_data",
+    "//base/test:test_support",
+    "//components/os_crypt:test_support",
+    "//components/prefs:test_support",
+  ]
 }

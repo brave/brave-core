@@ -4,6 +4,7 @@ import OnboardingRecovery from './recovery'
 import OnboardingVerify from './verify'
 import OnboardingCreatePassword from './create-password'
 import OnboardingRestore from './restore'
+import OnboardingImportMetaMaskOrLegacy from './import-meta-mask-or-legacy'
 
 export {
   OnboardingWelcome,
@@ -11,5 +12,6 @@ export {
   OnboardingRecovery,
   OnboardingVerify,
   OnboardingCreatePassword,
-  OnboardingRestore
+  OnboardingRestore,
+  OnboardingImportMetaMaskOrLegacy
 }

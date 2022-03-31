@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_IMPORT_DATA_HANDLER_H_
 
 #include "base/memory/weak_ptr.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/webui/settings/import_data_handler.h"
 #include "content/public/browser/web_contents_observer.h"
 
@@ -36,7 +37,7 @@ class BraveImportDataHandler : public ImportDataHandler,
   BraveImportDataHandler& operator=(const BraveImportDataHandler&) = delete;
 
  private:
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
   // ImportDataHandler overrides:
   void StartImport(const importer::SourceProfile& source_profile,
                    uint16_t imported_items) override;

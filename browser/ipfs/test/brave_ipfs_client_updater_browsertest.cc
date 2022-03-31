@@ -11,6 +11,7 @@
 #include "brave/common/brave_paths.h"
 #include "brave/components/ipfs/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/ipfs_service.h"
+#include "build/build_config.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -63,11 +64,11 @@ class BraveIpfsClientUpdaterTest : public ExtensionBrowserTest {
   }
 
   bool InstallIpfsClientUpdater() {
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
     return InstallIpfsClientUpdater("ipfs-client-updater-win");
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
     return InstallIpfsClientUpdater("ipfs-client-updater-mac");
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
     return InstallIpfsClientUpdater("ipfs-client-updater-linux");
 #else
     return false;
@@ -101,6 +102,10 @@ class BraveIpfsClientUpdaterTest : public ExtensionBrowserTest {
     base::RunLoop loop;
     loop.RunUntilIdle();
   }
+
+  void SetIpfsExecutablePath(const base::FilePath& path) {
+    g_brave_browser_process->ipfs_client_updater()->SetExecutablePath(path);
+  }
 };
 
 // Load the Ipfs client updater extension and verify that it correctly
@@ -130,5 +135,10 @@ IN_PROC_BROWSER_TEST_F(BraveIpfsClientUpdaterTest, IpfsExecutableReady) {
   ASSERT_TRUE(PathExists(executable_path));
 
   EXPECT_EQ(ipfs_service->GetIpfsExecutablePath(), executable_path);
+  ASSERT_TRUE(ipfs_service->IsIPFSExecutableAvailable());
+
+  base::FilePath new_path(FILE_PATH_LITERAL("newpath"));
+  SetIpfsExecutablePath(new_path);
+  EXPECT_EQ(ipfs_service->GetIpfsExecutablePath(), new_path);
   ASSERT_TRUE(ipfs_service->IsIPFSExecutableAvailable());
 }

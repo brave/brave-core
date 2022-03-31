@@ -72,4 +72,7 @@
   <message name="IDS_FTX_SUMMARY_REVEAL_LABEL" desc="">
     Reveal your balances on screen
   </message>
+  <message name="IDS_FTX_SUMMARY_NO_BALANCE" desc="">
+    You do not have any balances in your account. Visit FTX to purchase some.
+  </message>
 </grit-part>

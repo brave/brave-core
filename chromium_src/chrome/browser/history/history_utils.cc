@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define CanAddURLToHistory CanAddURLToHistory_ChromiumImpl
-#include "../../../../../chrome/browser/history/history_utils.cc"  // NOLINT
+#include "src/chrome/browser/history/history_utils.cc"
 #undef CanAddURLToHistory
 
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"

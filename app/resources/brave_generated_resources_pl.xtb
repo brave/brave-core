@@ -4,85 +4,130 @@
 <translation id="3333887201479867589">Nagrody Brave</translation>
 <translation id="7942180974165298215">Blokada reklam Brave</translation>
 <translation id="4615489450165434530">Zgłoś uszkodzoną stronę</translation>
+<translation id="1209739344687072997">Zgłoś uszkodzoną stronę</translation>
 <translation id="6406506848690869874">Synchronizacja</translation>
 <translation id="1544192797660353713">Portfel</translation>
 <translation id="2445484935443597917">Utwórz nowy profil</translation>
+<translation id="744341768939279100">Utwórz nowy profil</translation>
 <translation id="2666990579225592931">Otwórz okno trybu gościa</translation>
+<translation id="4986483413015198747">Otwórz okno w trybie gościa</translation>
 <translation id="8275068909952022340">Więcej…</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") - to rozszerzenie nie jest dozwolone w Brave.</translation>
 <translation id="6786747875388722282">Rozszerzenia</translation>
 <translation id="984275831282074731">Metody płatności</translation>
-<translation id="3699882589215410581">Zainstaluj i uruchom Widevine</translation>
+<translation id="1990886731975529483">Zainstaluj i uruchom Google Widevine</translation>
 <translation id="8926389886865778422">Nie pytaj ponownie</translation>
 <translation id="5249433283143453448">Korzystaj z komponentu Widevine do zarządzania prawami cyfrowymi, oglądając chronione strumieniowane nagrania wideo i inne treści w przeglądarce.</translation>
 <translation id="6241402707160226266">Prywatne okno z Torem</translation>
 <translation id="8762452230727230396">Sieć Tor ukrywa Twój adres IP przed stronami, które odwiedzasz.</translation>
 <translation id="1369311132025451972">Automatycznie przekierowuj strony .onion</translation>
-<translation id="81720820779436751">Brave otworzy serwis onion tej strony, gdy będzie dostępny lub domenę .onion w oknie Tor</translation>
-<translation id="8053096063396012732">Zainstaluj Widevine</translation>
-<translation id="4840334696217618631">Uruchom ponownie przeglądarkę, aby włączyć Widevine</translation>
-<translation id="8410111618231938546">Google Widevine to fragment kodu zarządzania prawami cyfrowymi (DRM), który nie należy do Brave Software i którego nie jesteśmy w stanie kontrolować. Kod Google Widevine wczytywany jest z serwerów Google, a nie z naszych. Jest wczytywany tylko wtedy, gdy włączysz taką opcję. Odradzamy używanie DRM, ale szanujemy wybór użytkownika i przyjmujemy do wiadomości, że niektórzy użytkownicy Brave chcą korzystać z usług, które tego wymagają.
-
-Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Google Widevine. Akceptujesz to, że Brave nie ponosi odpowiedzialności za jakiekolwiek szkody lub straty związane z używaniem Google Widevine.</translation>
+<translation id="2843777623071353503">Brave otworzy usługę pseudodomeny strony internetowej, jeśli jest dostępna lub domenę .pseudodomena w oknie Tor.</translation>
+<translation id="4900351245762303149">Zainstaluj Google Widevine</translation>
+<translation id="2313383941300459392">Uruchom ponownie przeglądarkę, aby włączyć Google Widevine</translation>
+<translation id="2200626478572277092">Widevine jest czasami potrzebne, aby odtworzyć multimedia na stronie internetowej. To rozszerzenie Google do pobrania z serwerów Google, których Brave nie może sprawdzić. Instalując je, wyrażasz zgodę na warunki korzystania firmy Google.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>
+lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Dowiedz się więcej o Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> prosi Cię o</translation>
 <translation id="410351446219883937">Automatyczne odtwarzanie</translation>
 <translation id="3218385319396786393">Zablokowano automatyczne odtwarzanie na tej stronie</translation>
 <translation id="4988333904713528597">Zawsze zezwalaj na automatyczne odtwarzanie na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Kontynuuj blokowanie automatycznego odtwarzania</translation>
+<translation id="1448289340149908413">Ethereum</translation>
+<translation id="6583467242903731748">Pytaj, gdy witryna chce uzyskać dostęp do interfejsu API dostawcy Ethereum</translation>
+<translation id="7017590444693657895">Zablokuj witrynom dostęp do interfejsu API dostawcy Ethereum</translation>
 <translation id="8988939298652262600">Brave nie dokonuje przeglądu rozszerzeń pod kątem bezpieczeństwa. Zainstaluj to rozszerzenie tylko wtedy, gdy ufasz jego twórcy.</translation>
+<translation id="933652931229970927">Automatycznie wysyłaj raporty diagnostyczne</translation>
+<translation id="1679356339067548863">Pomóż poprawić stabilność produktu Brave, automatycznie przesyłając raporty diagnostyczne po awarii lub zacięciu przeglądarki Brave.</translation>
 <translation id="8081858229109418493">Nazwa profilu i zdjęcie</translation>
+<translation id="6438096877646138757">Strony, które po zamknięciu czyszczą pliki cookie</translation>
+<translation id="2988792685798128092">Wyczyść przy zamknięciu strony</translation>
 <translation id="2044383478723007273">Kolory Brave</translation>
 <translation id="1692470335103807198">Pobierz więcej motywów</translation>
 <translation id="2906510232093002459">Obrazy domyślne Brave</translation>
 <translation id="2814998458708016836">Korzystaj z szerokiego paska adresu</translation>
-<translation id="6123134130710658846">Ukryj przycisk nagród Brave</translation>
-<translation id="1811404036171336214">Zawsze pokazuj zakładki na nowej stronie zakładek</translation>
-<translation id="1643029991199044105">Przejdź przez najczęściej ostatnio używane zakładki, wciskając klawisze Ctrl i Tab.</translation>
+<translation id="6333347122924254968">Pokaż ikonę Nagród Brave w pasku adresu</translation>
+<translation id="1811404036171336214">Zawsze pokazuj zakładki na stronie nowej karty</translation>
+<translation id="1643029991199044105">Przejdź przez najczęściej ostatnio używane karty, wciskając klawisze Ctrl i Tab.</translation>
+<translation id="1013121820689882118">Speedreader</translation>
+<translation id="2025435450953474282">Artykuły automatycznie ładują się w trybie czytnika, oszczędzając Twój czas</translation>
 <translation id="5802665280774361839">Wyświetl elementy automatycznie wypełnione w pasku adresu</translation>
 <translation id="597020512043916976">Pokaż popularne strony w sugestiach autouzupełnienia</translation>
 <translation id="264150068416846820">Pokaż sugestie stron Brave w sugestiach autouzupełnienia</translation>
+<translation id="5529693968082667490">Pokaż przycisk do wyszukiwania kart</translation>
 <translation id="6414370348346025511">Ochrona standardowa jest włączona.</translation>
 <translation id="814018970995616154">Porównuje adresy URL z listą niebezpiecznych witryn przechowywaną w Brave.</translation>
 <translation id="1144810021918451336">Nie chroni przed niebezpiecznymi witrynami internetowymi, pobieranymi plikami ani rozszerzeniami.</translation>
+<translation id="6285118765755298263">Indeksowanie innych wyszukiwarek</translation>
+<translation id="919715748352669592">Automatycznie indeksuje strony internetowe, które są zgodne ze specyfikacją OpenSearch.</translation>
+<translation id="6821903322090655051">Nagrody Brave są wyłączone</translation>
+<translation id="413570371620795359">Otwórz panel z nagrodami i zacznij</translation>
+<translation id="3849957491997306859">Wykryte automatycznie</translation>
+<translation id="8798099450830957504">Domyślna</translation>
+<translation id="4176463684765177261">Wyłączone</translation>
+<translation id="4851215387785619212">Prywatne reklamy Brave</translation>
+<translation id="7808122468353671181">Zarabiaj tokeny, oglądając reklamy Brave. Te reklamy odpowiadają Twoim zainteresowaniom, które są określane na podstawie przeglądanych przez Ciebie stron internetowych. Twoje dane osobowe oraz historia przeglądania przez cały czas pozostają wyłącznie w Twojej przeglądarce.</translation>
+<translation id="1758947220824279023">Maksymalna liczba reklam do wyświetlenia</translation>
+<translation id="8578912649458880781">Kierowanie reklam na poziomie regionalnym</translation>
+<translation id="3678362265519557511">Dzięki temu Brave może przedstawiać Ci reklamy przeznaczone specjalnie dla Twojego regionu. <ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Wspieraj automatycznie</translation>
+<translation id="9132509928968869844">Miesięczny limit automatycznego wsparcia</translation>
+<translation id="7286722244752781970">Minimalny czas spędzony na stronie przed zalogowaniem odwiedzin</translation>
+<translation id="4424486208397124985">Minimalna liczba wizyt określająca istotność wydawcy</translation>
+<translation id="6248554379744796526">Pokaż niezweryfikowane witryny na liście</translation>
+<translation id="5510618543889994434">Zezwalaj na wspieranie nagrań wideo</translation>
+<translation id="924777189963477634">Włączając opcję Wspieraj automatycznie, wyrażasz zgodę na <ph name="BEGIN_LINK_TOS"/>Warunki użytkowania<ph name="END_LINK_TOS"/> i <ph name="BEGIN_LINK_PP"/>Politykę prywatności<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Przyciski napiwku</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="7781069478569868053">Strona nowej karty</translation>
-<translation id="1988804048511540801">Nowa strona zakładki pokazuje</translation>
+<translation id="1988804048511540801">Strona nowej karty pokazuje</translation>
 <translation id="2970343821770026391">Panel kontrolny</translation>
 <translation id="3719826155360621982">Strona główna</translation>
 <translation id="5448570825852364919">Pusta strona</translation>
-<translation id="5919424224662539292">Personalizuj obraz tła i widżety pojawiające się na nowej stronie zakładek.</translation>
+<translation id="5919424224662539292">Personalizuj obraz tła i widżety pojawiające się na stronie nowej karty.</translation>
 <translation id="7965178729203412357">Nowa tożsamość Tor</translation>
 <translation id="6924909138923993900">Nowe połączenie z siecią Tor dla tej strony</translation>
 <translation id="4734294903299549345">Wyjdź z prywatnego okna z Torem.</translation>
 <translation id="8612763432858587652">Wyjdź z prywatnego okna.</translation>
 <translation id="8760415064721320867">Okno prywatne z obsługą sieci Tor</translation>
 <translation id="2055363275850890030">Okno prywatne</translation>
-<translation id="8934172355414207733">Prywatnie z Torem</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">To prywatne okno z Torem.</translation>
 <translation id="1037341607922068025">Otwórz prywatne okno z Torem.</translation>
 <translation id="1725356094208762656">Otwórz w sieci Tor</translation>
-<translation id="7643538479215207633">Otwórz, korzystając z IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Publikować i odzyskiwać pliki z IPFS</translation>
-<translation id="1672270084584211506">Dostępne usługi cebulowe</translation>
+<translation id="7398397225367092613">.onion</translation>
+<translation id="406832631167785034">Otwórz za pomocą adresu .onion</translation>
 <translation id="4901618511712685702">Import do IPFS</translation>
 <translation id="6794469945030154569">Ta strona</translation>
 <translation id="5037852323412456577">Wybrane zdjęcie</translation>
 <translation id="2715839724138372481">Wybrany film</translation>
 <translation id="4227945450504703638">Wybrany dźwięk</translation>
 <translation id="7895302206188277628">Powiązane treści</translation>
-<translation id="4322612543319315652">Importuj wybrany tekst do IPFS</translation>
-<translation id="8883166554766780543">Zaimportuj i skopiuj link do migawki IPFS</translation>
 <translation id="3654831858282189202">Publikuj za pomocą klucza IPNS</translation>
-<translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importuj wybrany tekst do protokołu IPFS</translation>
+<translation id="6925604404524625582">Importuj i kopiuj łącze do IPFS Snapshot</translation>
 <translation id="1434416574322382019">Nowe okno prywatne z obsługą sieci Tor</translation>
 <translation id="4703780849509456860">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
 <translation id="3488584642074079080">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
-<translation id="7475547933708221517">Udostępnij plik lokalny, używając IPFS</translation>
-<translation id="2286177249736199435">Udostępnij lokalny folder, używając IPFS</translation>
-<translation id="784573715436258741">Udostępnij plik lokalny, używając IPFS</translation>
+<translation id="186554175479803110">Importuj i udostępnij plik</translation>
+<translation id="3036649622769666520">Otwórz pliki</translation>
+<translation id="4408880250587950158">Importuj i udostępnij katalog</translation>
+<translation id="8396273373598682323">Z plikiem</translation>
+<translation id="518600784989889917">Z katalogiem</translation>
+<translation id="8147987711042435221">Aktualizuj IPNS</translation>
+<translation id="4491895534716990473">Importuj zaznaczony tekst do IPFS</translation>
+<translation id="8883166554766780543">Zaimportuj i skopiuj link do migawki IPFS</translation>
+<translation id="709253338301411121">Importuj i udostępnij plik</translation>
+<translation id="7068360136237591149">Otwórz pliki</translation>
 <translation id="6313675821927505581">Nowe okno prywatne z obsługą sieci Tor</translation>
 <translation id="2638041073279639246">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
 <translation id="3425600262621021599">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
-<translation id="575838692088926391">Udostępnij lokalny folder, używając IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
+<translation id="3229091547987707389">Importuj i udostępnij katalog</translation>
 <translation id="2515126961943087659">Usługa reklam Bat</translation>
 <translation id="7924918279836988121">Usługa Ledger Bat</translation>
 <translation id="4472575034687746823">Podstawowe</translation>
@@ -90,7 +135,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="6303294677342628402">Tarcze</translation>
 <translation id="7133511168130368997">Zablokuj reklamy i skrypty śledzące Cię w internecie.</translation>
 <translation id="2761825942249694703">Są to domyślne ustawienia tarcz. Dotyczą one wszystkich stron internetowych, chyba że coś zmienisz w panelu tarcz na konkretnej stronie. Zmiana tych ustawień nie wpłynie na istniejące ustawienia poszczególnych stron.</translation>
-<translation id="8754605759692119662">Spowoduje to zablokowanie większości reklam w witrynach, ale nie prywatnych reklam Brave — te są kontrolowane w</translation>
+<translation id="1485394570478670912">To zablokuje większość reklam na stronach internetowych, nie reklamy w Brave w trybie prywatnym — te są kontrolowane w</translation>
 <translation id="6388201778088078932">ustawieniach.</translation>
 <translation id="9185018653595759199">Zablokuj sieci społecznościowe</translation>
 <translation id="7390783310074170337">Widok domyślny</translation>
@@ -109,13 +154,11 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="958971637207126733">Zezwalaj na osadzone posty LinkedIn</translation>
 <translation id="4078738236287221428">Agresywne</translation>
 <translation id="7740996059027112821">Standardowe</translation>
-<translation id="4176463684765177261">Wyłączone</translation>
 <translation id="5770288601196774623">Tylko stron trzecich</translation>
 <translation id="3587482841069643663">Wszystkie</translation>
 <translation id="5533533363827555308">Ścisłe, strona może nie działać</translation>
 <translation id="8792121506918889955">Zasady obsługi IP WebRTC IP</translation>
 <translation id="6165508094623778733">Dowiedz się więcej</translation>
-<translation id="8798099450830957504">Domyślna</translation>
 <translation id="1822560017823072927">Domyślne interfejsy publiczne i prywatne</translation>
 <translation id="5825943197137337319">Tylko domyślny interfejs publiczny</translation>
 <translation id="1689062823386843231">Wyłącz UDP bez proxy</translation>
@@ -140,7 +183,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="298546024891487702">Na początek musisz zainstalować przeglądarkę Brave na wszystkich urządzeniach, które chcesz zsynchronizować. Aby je połączyć, rozpocznij łańcuch synchronizacji, którego użyjesz do bezpiecznego połączenia wszystkich swoich urządzeń.</translation>
 <translation id="6200528822592747640">Rozpocznij nowy łańcuch synchronizacji</translation>
 <translation id="5184726904895809379">Mam kod synchronizacji</translation>
-<translation id="8780295742023331191">Pokaż nowy kod synchronizacji</translation>
+<translation id="8780295742023331191">Pokaż kod synchronizacji</translation>
 <translation id="9017050385815017931">Telefon/Tablet</translation>
 <translation id="1736420071277903564">Komputer</translation>
 <translation id="3407602902101449803">Kod QR łańcucha synchronizacji</translation>
@@ -162,6 +205,11 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="2339730291919608488">Opuść łańcuch synchronizacji</translation>
 <translation id="115699408012835975">Jeśli zresetujesz synchronizację, będziesz musiał ponownie wpisać kod synchronizacji z innego urządzenia, aby zsynchronizować się z nim. Na pewno chcesz kontynuować?</translation>
 <translation id="6092564993102418148">Czy na pewno chcesz usunąć wybrane urządzenie z łańcucha synchronizacji?</translation>
+<translation id="2936582902048232286">Ostrzeżenie: spowoduje to udostępnienie danych Brave, w tym potencjalnie haseł, urządzeniu, które wygenerowało te słowa kodu.
+
+Sprawdź, czy te słowa kodu zostały wygenerowane przez urządzenie, które należy do Ciebie.
+
+Czy na pewno chcesz to zrobić?</translation>
 <translation id="3396347744975515056">Synchronizacja Brave została zaktualizowana i wymaga skonfigurowania</translation>
 <translation id="7473245612074035141">Rozpocznij konfigurację</translation>
 <translation id="3411013544209536575">Pomocne podpowiedzi</translation>
@@ -175,48 +223,72 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="8488282162676695335">Portfel Brave</translation>
 <translation id="2356070529366658676">Zapytaj</translation>
 <translation id="7701040980221191251">Brak</translation>
-<translation id="5655621391922317800">Portfele kryptowalut</translation>
-<translation id="1696548911367097044">Stare rozszerzenie portfeli kryptowaluty</translation>
-<translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Dostawca Ethereum do korzystania z Dapps</translation>
-<translation id="5913089932885076110">Wczytuj portfele kryptowalut podczas uruchamiania</translation>
-<translation id="757886143331967039">Wczytaj stare rozszerzenie portfeli kryptowaluty podczas uruchomienia</translation>
+<translation id="1274962333945373242">Portfele kryptowalut (przestarzałe)</translation>
+<translation id="3695088618483091287">Portfel Brave (preferowane rozszerzenia)</translation>
+<translation id="9131889008937672866">Domyślny portfel kryptowalutowy</translation>
+<translation id="4718664830805652430">Domyślna podstawowa waluta</translation>
+<translation id="7992507032049865603">Domyślna podstawowa kryptowaluta</translation>
 <translation id="1834467296210148203">Pokaż ikonę Brave Wallet na pasku narzędzi</translation>
+<translation id="8239147115686034860">Automatycznie zablokuj portfel Brave</translation>
+<translation id="414639769490080648">Czas, w minutach, po upływie którego portfel Brave zostanie automatycznie zablokowany</translation>
 <translation id="6864914031231797928">Zezwól na logowanie Google w przypadku rozszerzeń</translation>
 <translation id="5927916530277631319">Metoda rozwiązywania Unstoppable Domains</translation>
-<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/> o DNS over HTTPS i uwzględnieniu prywatności Ethereum</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/>o protokole DNS over HTTPS i ochronie prywatności na platformie Ethereum.</translation>
 <translation id="5248318250177143470">Metoda rozwiązywania Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Skonfiguruj swoje klucze IPNS</translation>
-<translation id="951216659045543447">Podpisz zawartość za pomocą odpowiedniego klucza prywatnego i opublikuj ją w IPNS</translation>
+<translation id="951216659045543447">Podpisz dane za pomocą odpowiedniego klucza prywatnego i opublikuj je w IPNS</translation>
 <translation id="7611728475758612204">Klucze dostępne do publikacji</translation>
 <translation id="911363100236037920">Wprowadź nazwę dla nowego klucza</translation>
 <translation id="6358469157239228181">Tej nazwy nie można użyć</translation>
+<translation id="5761731140570209168">Dodaj nowy string połączenia peer</translation>
+<translation id="2082206983920804886">Obróć klucz</translation>
+<translation id="5078501082919354191">Nie można zatrzymać lokalnego węzła IPFS Brave</translation>
+<translation id="5687424953196903465">Nie można uruchomić lokalnego węzła IPFS Brave</translation>
+<translation id="6476061084931271248">Uruchom ponownie węzeł, aby zastosować zmiany</translation>
+<translation id="3754226427671882382">Zrestartuj węzeł</translation>
+<translation id="949667118776341807">Obróć</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="724513921936768901">Ta nazwa jest nieprawidłowa</translation>
+<translation id="6758961763875471084">Modyfikuj listę peerów</translation>
+<translation id="1295874070797049002">Eksportuj klucz</translation>
+<translation id="3946479342297227860">Usuń klucz</translation>
+<translation id="1534091531114892221">Ustaw opis peerów IPFS</translation>
 <translation id="8996633027318264334">Czy naprawdę chcesz usunąć <ph name="KEY_NAME"/>?</translation>
 <translation id="910215077892371264">Węzeł nie został uruchomiony</translation>
-<translation id="616058968889448209">Błąd uruchomienia usługi IPFS, więcej informacji jest dostępnych na stronie diagnostycznej <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
+<translation id="616058968889448209">Błąd uruchomienia usługi IPFS; więcej informacji dostępnych jest na <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' import klucza nie powiódł się</translation>
+<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' key export failed</translation>
+<translation id="4993345308607970390">Resetuj portfel Brave Wallet</translation>
+<translation id="5975930666279943472">Transakcja czyszczenia portfela i informacja okolicznościowa</translation>
+<translation id="5693968582510626466">Transakcje czyszczenia mogą być przydatne dla programistów lub w takcie czyszczenia lokalnego serwera</translation>
+<translation id="6369495274982305511">Czy na pewno chcesz zresetować portfel? Jeśli portfel nie ma kopii zapasowej, zresetowanie go spowoduje utratę wszystkich danych konta (w tym wszelkich powiązanych środków). Wpisz „<ph name="CONFIRMATION_PHRASE"/>”, aby potwierdzić.</translation>
+<translation id="9216386092464743272">Czy na pewno chcesz zresetować wszystkie transakcje w portfelu i informacje okolicznościowe? Tę opcję wykorzystują zazwyczaj programiści przeprowadzający lokalny test serwera. Wpisz „<ph name="CONFIRMATION_PHRASE"/>”, aby potwierdzić.</translation>
+<translation id="3752403403443723332">Twój portfel został zresetowany.</translation>
+<translation id="594766067816395072">Informacje o Twoim portfelu zostały zresetowane.</translation>
+<translation id="1426410128494586442">Tak</translation>
 <translation id="8275038454117074363">Importuj</translation>
 <translation id="3654980960391973513">Wygeneruj</translation>
 <translation id="5531501313997312487">Węzeł wyjściowy</translation>
 <translation id="9170907049676078643">Metoda rozwiązania zasobów IPFS</translation>
 <translation id="1327977588028644528">Brama</translation>
-<translation id="80225669816651290">Węzeł lokalny</translation>
+<translation id="1195880978080389104">Lokalny węzeł IPFS Brave</translation>
 <translation id="4927734062756955434">Adres publicznego wejścia IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Dowiedz się więcej<ph name="END_LINK_MPL"/> o ochronie prywatności węzła lokalnego i bramki IPFS.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Dowiedz się więcej <ph name="END_LINK_MPL"/> o lokalnym węźle IPFS Brave i zapoznaj się z uwagami o ochronie prywatności bramy.</translation>
 <translation id="8425213833346101688">Zmień</translation>
 <translation id="557281710253742286">Ustaw wejście IPFS</translation>
 <translation id="8571837315037233299">Adres wejścia</translation>
 <translation id="1251574393468476924">Maksymalny rozmiar pamięci podręcznej IPFS (GB)</translation>
 <translation id="2503497578400410320">Miękki górny limit wielkości magazynu danych repozytorium IPFS.</translation>
 <translation id="7703184801853248830">Nieważny adres wejścia</translation>
+<translation id="7690058578502751948">W Brave można korzystać tylko z prawidłowej bramy IPFS z włączonym izolowaniem Origin</translation>
 <translation id="585868419599255817">Powrót do publicznej bramki IPFS</translation>
-<translation id="207763736230883589">Automatycznie cofnij do publicznego wejścia IPFS jeśli Twój lokalny węzeł nie będzie mógł zostać osiągnięty.</translation>
+<translation id="2618080188892567155">Automatycznie cofnij do publicznej bramy IPFS, jeśli Twój lokalny węzeł IPFS Brave nie będzie mógł zostać osiągnięty.</translation>
 <translation id="4107552920076294723">Przekieruj zasoby IPFS do skonfigurowanego wejścia IPFS</translation>
 <translation id="6494857428933042381">Automatycznie korzysta ze skonfigurowanego wejścia dla rozdzielczości IPFS, gdy napotka zasoby wejścia IPFS.</translation>
 <translation id="8655170717758778983">Automatycznie przekierowuj do stron IPFS za pośrednictwem DNSLink, gdy to możliwe</translation>
 <translation id="2233724520223030977">Automatycznie wykorzystuje DNSLink, aby przejść do wersji IPFS strony internetowej, gdy to możliwe</translation>
 <translation id="6554397389149987360">Stosuj komponent Hangouts, aby umożliwić udostępnianie ekranu i inne funkcje w przeglądarce.</translation>
-<translation id="1765684547504191670">Stosuj komponent Media Router, aby umożliwić działanie Chromecast w przeglądarce.</translation>
+<translation id="7878791177459550035">Router mediów umożliwia korzystanie z funkcji przesyłania w przeglądarce.</translation>
 <translation id="9156965752763025780">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave.</translation>
 <translation id="7179921470347911571">Uruchom ponownie teraz</translation>
 <translation id="8068526464562249859">Korzysta z rozszerzenia Asystent IPFS dla lepszego wsparcia IPFS w Brave, w tym dostępu z twojego paska przeglądarki do wspólnych zadań IPFS.</translation>
@@ -277,23 +349,47 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="1391855377994926460">Przeglądaj sieć szybciej - do sześciu razy szybciej na największych portalach informacyjnych.</translation>
 <translation id="9218430445555521422">Ustaw jako domyślną</translation>
 <translation id="3479552764303398839">Nie teraz</translation>
+<translation id="732814027519296280">Czy chcesz sprawić, że wyszukiwarka Brave stanie się jeszcze lepsza?</translation>
+<translation id="2677865600861971449">Weź udział w projekcie Web Discovery i udostępniaj anonimowo wybrane dane wyszukiwania i przeglądania, aby pomóc usprawnić wyszukiwarkę Brave dla wszyskich użytkowników — całkowicie anonimowo i bez żadnego wysiłku. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Włącz</translation>
+<translation id="780301667611848630">Nie, dziękuję</translation>
+<translation id="5039804452771397117">Zezwalaj</translation>
+<translation id="7053983685419859001">Blokuj</translation>
+<translation id="660171790038410175"><ph name="BROWSER_NAME"/> niespodziewanie przestała działać.</translation>
+<translation id="1324417023773393937">Przeglądarka Brave</translation>
+<translation id="7276554663454265692">Możesz <ph name="SETTING_TEXT"/> zmienić w dowolnym momencie w ustawieniach przeglądarki.</translation>
+<translation id="6873781976650514089">to ustawienie</translation>
 <translation id="6040143037577758943">Zamknij</translation>
 <translation id="5600566490506283344">Powiadomienie Brave Ad</translation>
+<translation id="4174337572777167894">Projekt Web Discovery</translation>
+<translation id="8659271182272561965">Przekaż anonimowo niektóre dane wyszukiwania i przeglądania, aby pomóc w doskonaleniu wyszukiwarki Brave.</translation>
+<translation id="1516554614404600536">Tooltip Brave</translation>
 <translation id="4877147287319222750">Dodaj do paska bocznego</translation>
-<translation id="4233010476457917696">Pokaż pasek boczny</translation>
-<translation id="5404213409401164238">Pokaż boczny pasek.</translation>
+<translation id="5404213409401164238">Pokaż boczny pasek</translation>
 <translation id="7561196759112975576">Zawsze</translation>
 <translation id="7060352228894039151">Po najechaniu myszką</translation>
-<translation id="407173827865827707">Po kliknięciu</translation>
 <translation id="7961015016161918242">Nigdy</translation>
+<translation id="8981254605840444865">Pokaż ustawienia</translation>
 <translation id="59174027418879706">Włączone</translation>
 <translation id="8258999165172757081">Dodano</translation>
 <translation id="6959315322491671328">Kliknij prawym przyciskiem myszy, aby usunąć.</translation>
+<translation id="495046168593986294">Przewiń górę</translation>
+<translation id="4021716437419160885">Przewiń w dół</translation>
+<translation id="4651504163033753423">Czy chcesz włączyć Speedreader?</translation>
+<translation id="9089090017461255038">Włącz Speedreader</translation>
+<translation id="312393675740711187">Artykuły ładują się automatycznie w trybie czytnika, oszczędzając Twój czas.</translation>
+<translation id="3234744217174488546">Włącz/wyłącz tryb czytnika tylko dla tej witryny. Aby wyłączyć tryb Speedreader dla całego profilu przeglądarki, odwiedź stronę</translation>
+<translation id="8597690239474328831">Przełącz, aby włączyć/wyłączyć tryb czytnika tylko dla tej witryny.</translation>
+<translation id="7839742507462737706">w Speedreader</translation>
+<translation id="8490082094734500369">Wyłącz tryb czytnika</translation>
+<translation id="2036503787657622020">Włącz tryb czytnika</translation>
+<translation id="5226458915125328323">Ustawienia Speedreader</translation>
+<translation id="6284218950354553099">Automatycznie wysyłaj pingi dziennego użycia do Brave</translation>
+<translation id="5288333155754958121">Ten anonimowy, prywatny ping pozwala Brave oszacować liczbę aktywnych użytkowników</translation>
 <translation id="1872784258300710671">Brave wykorzystuje całkowicie prywatne analizy dotyczące produktu w celu oszacowania ogólnego poziomu korzystania z określonych funkcji.</translation>
 <translation id="8712637175834984815">Rozumiem</translation>
 <translation id="4394049700291259645">Wyłącz</translation>
-<translation id="6469509880167172749">Automatycznie przesyłaj do Brave całkowicie prywatne analizy dotyczące produktu</translation>
-<translation id="7090566321964540749">Te anonimowe informacje pozwalają Brave oszacować jedynie ogólny poziom korzystania z określonych funkcji.</translation>
+<translation id="7142548388914389999">Zezwól na zastosowanie analizy produktów z zachowaniem prywatności (P3A)</translation>
 <translation id="1947672064022327074">Czy chcesz uruchomić portfele kryptowalut do obsługi Ethereum?</translation>
 <translation id="7583735190612229830">Skonfiguruj portfele kryptowalut do interakcji z tą aplikacją i innymi podobnymi.</translation>
 <translation id="8731422418734770661">Skonfiguruj portfele kryptowaluty</translation>
@@ -307,6 +403,24 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="191143826155037518">Przeglądarka Brave powstała na podstawie licencji <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) i zawiera <ph name="BEGIN_LINK_OSS"/>oprogramowanie open source<ph name="END_LINK_OSS"/> na podstawie różnych licencji. Możesz przeczytać <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instrukcję jak pobrać i skompilować<ph name="END_LINK_BUILD_INSTRUCTIONS"/> określony <ph name="BEGIN_LINK_SOURCE_CODE"/>kod źródłowy, aby utworzyć własną kopię kompilacji<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Dodaj wszystkie karty do zakładek...</translation>
 <translation id="2336228925368920074">Dodaj wszystkie karty do zakładek...</translation>
+<translation id="4235920711083356755">Pokaż przycisk VPN</translation>
+<translation id="4070612712151038707">Pokazuje przycisk VPN na pasku narzędzi</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Przełącz sieć VPN</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="2345974803401546682">O Brave VPN</translation>
+<translation id="4378551569595875038">Łączenie...</translation>
+<translation id="3368922792935385530">Połączone</translation>
+<translation id="1536754031901697553">Rozłączam…</translation>
+<translation id="8030169304546394654">Rozłączony</translation>
+<translation id="1863950594388384201">Pokaż przycisk VPN na pasku narzędzi</translation>
+<translation id="5187139277471084437">Ukryj przycisk VPN na pasku narzędzi</translation>
+<translation id="8041089156583427627">Prześlij opinię</translation>
+<translation id="4049186905514157504">Zarządzaj moim planem</translation>
+<translation id="7570585565843385325">Pokaż przycisk VPN na pasku narzędzi</translation>
+<translation id="5310426188697803101">Ukryj przycisk VPN na pasku narzędzi</translation>
+<translation id="945522503751344254">Wyślij opinię</translation>
+<translation id="3015685033234401792">Zarządzaj moim planem</translation>
 <translation id="796831669370432378">Aby dodać zakładkę, kliknij przycisk zakładki obok paska adresu</translation>
 <translation id="4989337484121655457">Wymagany jest pełny dostęp do dysku</translation>
 <translation id="8025559074845816210">Brave wymaga pełnego dostępu do dysku, aby zaimportować Twoje zakładki z przeglądarki Safari.</translation>
@@ -316,6 +430,33 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="8487693399751278191">Importuj zakładki...</translation>
 <translation id="2557899542277210112">Aby uzyskać szybki dostęp, umieść zakładki tutaj na pasku zakładek.</translation>
 <translation id="2808630562319398131">Zresetuj dane nagród przeglądarki Brave...</translation>
-<translation id="1224064034972923114">Pomóż ulepszać przeglądarkę Brave, automatycznie wysyłając raporty o crashach.</translation>
-<translation id="3738833060602717053">Pomóż ulepszać przeglądarkę <ph name="PRODUCT_NAME"/>, automatycznie wysyłając raporty o crashach.</translation>
+<translation id="2273851479262317744">Ustaw Brave jako domyślną przeglądarkę</translation>
+<translation id="8581710194025054669">Aby zapewnić sobie najlepszą ochronę prywatności w Internecie, rozważ ustawienie Brave jako domyślnej przeglądarki na swoim komputerze. Jeśli to zrobisz, każde kliknięte łącze internetowe będzie otwierane z wykorzystaniem ochrony prywatności Brave.</translation>
+<translation id="8722651357687610395">Ustaw Brave jako domyślną</translation>
+<translation id="1241283133946520352">Sieci</translation>
+<translation id="8205945804087322170">Dodawanie nowej sieci</translation>
+<translation id="2156993118928861787">Nieprawidłowy adres</translation>
+<translation id="2653659639078652383">Prześlij</translation>
+<translation id="2556708692502648323">Sieci portfela</translation>
+<translation id="1330032157352961756">Identyfikator nowego łańcucha</translation>
+<translation id="3423620355610881890">Dodatnia liczba dziesiętna</translation>
+<translation id="726121047592132939">Nazwa nowego łańcucha</translation>
+<translation id="1034112277864078119">Wprowadź nazwę łańcucha</translation>
+<translation id="4672314527143443556">Nazwa waluty łańcucha</translation>
+<translation id="4652114030688989556">Wprowadź nazwę waluty</translation>
+<translation id="1079960017149736097">Symbol waluty łańcucha</translation>
+<translation id="1288105009659846362">Wprowadź symbol waluty</translation>
+<translation id="665660671251623018">Liczba miejsc po przecinku waluty łańcucha</translation>
+<translation id="2978054488731497946">Wprowadź liczbę miejsc po przecinku waluty</translation>
+<translation id="2727514928168763432">Adresy URL RPC</translation>
+<translation id="7059127752542505809">Podaj adres URL</translation>
+<translation id="3047726704186619366">Adresy URL ikon</translation>
+<translation id="2487558607408469181">Adresy URL eksploratorów bloków</translation>
+<translation id="6301398959353668507">To pole nie może być puste.</translation>
+<translation id="7504462451153306677">Nieprawidłowy format. Identyfikator łańcucha jest liczbą dodatnią</translation>
+<translation id="650071759190249039">Błąd wewnętrzny. Nie można dodać sieci.</translation>
+<translation id="868529041590572443">Podaj wszystkie informacje o natywnej walucie</translation>
+<translation id="1062463687579789365">Dostosowywanie sieci portfela</translation>
+<translation id="2234108191702901162">Nie można dodać sieci</translation>
+<translation id="2618193846561624884">Czy chcesz zaktualizować istniejącą sieć?</translation>
 </translationbundle>

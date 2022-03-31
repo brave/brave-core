@@ -1,15 +1,17 @@
 diff --git a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
-index b04e33e473ee605c57e8e0acc243c51ee736beea..ee55b3ac39bd77841aaf59b1e864039ffe9fce02 100644
+index f3c355703d3ba06308a20a545b2ff70c86499eab..91ce7a344c830ef25742c5ab1de1522624c9851d 100644
 --- a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
-@@ -76,10 +76,10 @@
+@@ -68,10 +68,16 @@
      void stroke(Path2D path);
      void clip(optional CanvasFillRule winding);
      void clip(Path2D path, optional CanvasFillRule winding);
--    [HighEntropy, MeasureAs=OffscreenCanvasIsPointInPath] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
--    [HighEntropy, MeasureAs=OffscreenCanvasIsPointInPath] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
--    [HighEntropy, MeasureAs=OffscreenCanvasIsPointInStroke] boolean isPointInStroke(unrestricted double x, unrestricted double y);
--    [HighEntropy, MeasureAs=OffscreenCanvasIsPointInStroke] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
++    /*
+     [HighEntropy, MeasureAs=OffscreenCanvasIsPointInPath] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
+     [HighEntropy, MeasureAs=OffscreenCanvasIsPointInPath] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
+     [HighEntropy, MeasureAs=OffscreenCanvasIsPointInStroke] boolean isPointInStroke(unrestricted double x, unrestricted double y);
+     [HighEntropy, MeasureAs=OffscreenCanvasIsPointInStroke] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
++    */
 +    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasIsPointInPath] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
 +    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasIsPointInPath] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
 +    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasIsPointInStroke] boolean isPointInStroke(unrestricted double x, unrestricted double y);
@@ -17,12 +19,16 @@ index b04e33e473ee605c57e8e0acc243c51ee736beea..ee55b3ac39bd77841aaf59b1e864039f
  
      // text (see also the CanvasDrawingStyles interface)
      void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double maxWidth);
-@@ -94,7 +94,7 @@
-     // pixel manipulation
+@@ -87,8 +93,12 @@
      [RaisesException] ImageData createImageData(ImageData imagedata);
-     [RaisesException] ImageData createImageData(long sw, long sh);
--    [HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh);
-+    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData(long sx, long sy, long sw, long sh);
-     [RaisesException] void putImageData(ImageData imagedata, long dx, long dy);
-     [RaisesException] void putImageData(ImageData imagedata, long dx, long dy, long dirtyX, long dirtyY, long dirtyWidth, long dirtyHeight);
+     [RaisesException] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh);
+     [RaisesException, RuntimeEnabled=CanvasColorManagement] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
++    /*
+     [HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh);
+     [HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException, RuntimeEnabled=CanvasColorManagement] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
++    */
++    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh);
++    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasGetImageData, RaisesException, RuntimeEnabled=CanvasColorManagement] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
+     [RaisesException] void putImageData(ImageData imagedata, [EnforceRange] long dx, [EnforceRange] long dy);
+     [RaisesException] void putImageData(ImageData imagedata, [EnforceRange] long dx, [EnforceRange] long dy, [EnforceRange] long dirtyX, [EnforceRange] long dirtyY, [EnforceRange] long dirtyWidth, [EnforceRange] long dirtyHeight);
  

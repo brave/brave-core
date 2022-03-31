@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_LEDGER_LEDGER_CLIENT_MOCK_H_
-#define BAT_LEDGER_LEDGER_CLIENT_MOCK_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEDGER_CLIENT_MOCK_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEDGER_CLIENT_MOCK_H_
 
 #include <stdint.h>
 
@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 
+#include "bat/ledger/internal/core/test_ledger_client.h"
 #include "bat/ledger/ledger_client.h"
 
 #include "testing/gmock/include/gmock/gmock.h"
@@ -23,6 +24,10 @@ class MockLedgerClient : public LedgerClient {
  public:
   MockLedgerClient();
   ~MockLedgerClient() override;
+
+  absl::optional<std::string> EncryptString(const std::string& value) override;
+
+  absl::optional<std::string> DecryptString(const std::string& value) override;
 
   MOCK_METHOD2(OnReconcileComplete, void(
       type::Result result,
@@ -156,14 +161,8 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD1(DeleteLog, void(const client::ResultCallback callback));
 
   MOCK_METHOD0(GetLegacyWallet, std::string());
-
-  MOCK_METHOD2(
-      SetEncryptedStringState,
-      bool(const std::string&, const std::string&));
-
-  MOCK_METHOD1(GetEncryptedStringState, std::string(const std::string&));
 };
 
 }  // namespace ledger
 
-#endif  // BAT_LEDGER_LEDGER_CLIENT_MOCK_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_LEDGER_CLIENT_MOCK_H_

@@ -1,15 +1,5 @@
 {
-  "version": 7,
-  "issuers": [
-    {
-      "name": "confirmation",
-      "publicKey": "qi1Vl8YrPEZliN5wmBgLTuGkbk8K505QwlXLTZjUd34="
-    },
-    {
-      "name": "0.05BAT",
-      "publicKey": "mmXlFlskcF+LjQmJTPQUmoDMV8Co2r+0eNqSyzCywmk="
-    }
-  ],
+  "version": 9,
   "ping": 7200000,
   "campaigns": [
     {
@@ -61,12 +51,29 @@
                 "contentType": "Content Type",
                 "description": "Test Ad 3 Campaign 1 Body"
               }
+            },
+            {
+              "creativeInstanceId": "30db5f7b-dba3-48a3-b299-c9bd9c67da65",
+              "type": {
+                "code": "inline_content_all_v1",
+                "name": "inline_content",
+                "platform": "all",
+                "version": 1
+              },
+              "payload": {
+                "title": "Inline Content 1",
+                "description": "Test Inline Content Ad Campaign 1",
+                "imageUrl": "https://www.brave.com/1/image.png",
+                "dimensions": "200x100",
+                "ctaText": "Call to Action Text 1",
+                "targetUrl": "https://brave.com/1/inline_content_ad"
+              }
             }
           ],
           "segments": [
             {
               "code": "yNl0N-ers2",
-              "name": "Technology & Computing"
+              "name": "technology & computing"
             }
           ],
           "oses": [
@@ -85,7 +92,7 @@
           "perWeek": 6,
           "perMonth": 7,
           "totalMax": 100,
-          "value": "value"
+          "value": "1.0"
         }
       ],
       "dayParts": [
@@ -145,7 +152,7 @@
           "segments": [
             {
               "code": "yNl0N-ers2",
-              "name": "Technology & Computing"
+              "name": "technology & computing"
             }
           ],
           "oses": [
@@ -159,7 +166,7 @@
           "perWeek": 6,
           "perMonth": 7,
           "totalMax": 100,
-          "value": "value"
+          "value": "1.0"
         }
       ],
       "dayParts": [
@@ -200,7 +207,7 @@
           "segments": [
             {
               "code": "yNl0N-ers2",
-              "name": "Food & Drink"
+              "name": "food & drink"
             }
           ],
           "oses": [
@@ -219,7 +226,7 @@
           "perWeek": 6,
           "perMonth": 7,
           "totalMax": 100,
-          "value": "value"
+          "value": "1.0"
         }
       ],
       "dayParts": [

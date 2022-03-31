@@ -101,7 +101,8 @@ void LogUrlResponse(
     const bool long_response) {
   std::string result;
   if (!response.error.empty()) {
-    result = "Error (" + response.error + ")";
+    result = "Error";
+    BLOG(0, "Network error (" << response.error << ")");
   } else if (response.status_code >= 200 && response.status_code < 300) {
     result = "Success";
   } else {

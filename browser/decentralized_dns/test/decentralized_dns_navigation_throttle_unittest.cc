@@ -5,6 +5,7 @@
 
 #include "brave/components/decentralized_dns/decentralized_dns_navigation_throttle.h"
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/decentralized_dns/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -51,7 +52,8 @@ class DecentralizedDnsNavigationThrottleTest : public testing::Test {
 
   // Helper that creates simple test guest profile.
   Profile* CreateGuestProfile() {
-    return profile_manager_.CreateGuestProfile()->GetPrimaryOTRProfile();
+    return profile_manager_.CreateGuestProfile()->GetPrimaryOTRProfile(
+        /*create_if_needed=*/true);
   }
 
   TestingProfile* profile() { return profile_; }
@@ -61,9 +63,9 @@ class DecentralizedDnsNavigationThrottleTest : public testing::Test {
  private:
   content::BrowserTaskEnvironment task_environment_;
   content::RenderViewHostTestEnabler test_render_host_factories_;
-  ScopedTestingLocalState* local_state_;
+  raw_ptr<ScopedTestingLocalState> local_state_ = nullptr;
   TestingProfileManager profile_manager_;
-  TestingProfile* profile_;
+  raw_ptr<TestingProfile> profile_ = nullptr;
   base::test::ScopedFeatureList feature_list_;
   std::unique_ptr<content::WebContents> web_contents_;
   std::string locale_;
@@ -77,7 +79,7 @@ TEST_F(DecentralizedDnsNavigationThrottleTest, Instantiation) {
 
   // Disable in OTR profile.
   auto otr_web_contents = content::WebContentsTester::CreateTestWebContents(
-      profile()->GetPrimaryOTRProfile(), nullptr);
+      profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true), nullptr);
   content::MockNavigationHandle otr_test_handle(otr_web_contents.get());
   auto throttle_in_otr =
       DecentralizedDnsNavigationThrottle::MaybeCreateThrottleFor(

@@ -8,8 +8,10 @@
 
 #include <string>
 
-#include "base/feature_list.h"
-#include "base/time/time.h"
+namespace base {
+class TimeDelta;
+struct Feature;
+}  // namespace base
 
 namespace ads {
 
@@ -21,7 +23,7 @@ std::string GetFieldTrialParamByFeatureAsString(
 base::TimeDelta GetFieldTrialParamByFeatureAsTimeDelta(
     const base::Feature& feature,
     const std::string& param_name,
-    const base::TimeDelta& default_value);
+    const base::TimeDelta default_value);
 
 }  // namespace ads
 

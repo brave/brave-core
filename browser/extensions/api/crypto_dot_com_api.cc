@@ -18,7 +18,6 @@
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
-#include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_util.h"
@@ -47,7 +46,7 @@ CryptoDotComGetTickerInfoFunction::Run() {
   }
 
   std::unique_ptr<crypto_dot_com::GetTickerInfo::Params> params(
-      crypto_dot_com::GetTickerInfo::Params::Create(*args_));
+      crypto_dot_com::GetTickerInfo::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto* service = GetCryptoDotComService(browser_context());
@@ -82,7 +81,7 @@ CryptoDotComGetChartDataFunction::Run() {
   }
 
   std::unique_ptr<crypto_dot_com::GetChartData::Params> params(
-      crypto_dot_com::GetChartData::Params::Create(*args_));
+      crypto_dot_com::GetChartData::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto* service = GetCryptoDotComService(browser_context());

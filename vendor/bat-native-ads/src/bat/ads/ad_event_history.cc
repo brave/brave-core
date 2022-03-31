@@ -5,30 +5,30 @@
 
 #include "bat/ads/ad_event_history.h"
 
+#include "base/check.h"
 #include "base/time/time.h"
 
 namespace ads {
 
 namespace {
 
-std::string GetId(const std::string ad_type,
-                  const std::string& confirmation_type) {
+std::string GetTypeId(const std::string& ad_type,
+                      const std::string& confirmation_type) {
   return ad_type + confirmation_type;
 }
 
-void PurgeHistoryOlderThan(std::vector<uint64_t>* timestamps,
-                           const base::TimeDelta& time_delta) {
-  DCHECK(timestamps);
+void PurgeHistoryOlderThan(std::vector<double>* history,
+                           const base::TimeDelta time_delta) {
+  DCHECK(history);
 
   const base::Time past = base::Time::Now() - time_delta;
 
-  const auto iter =
-      std::remove_if(timestamps->begin(), timestamps->end(),
-                     [&past](const uint64_t timestamp) {
-                       return base::Time::FromDoubleT(timestamp) < past;
-                     });
+  const auto iter = std::remove_if(
+      history->begin(), history->end(), [&past](const double timestamp) {
+        return base::Time::FromDoubleT(timestamp) < past;
+      });
 
-  timestamps->erase(iter, timestamps->end());
+  history->erase(iter, history->end());
 }
 
 }  // namespace
@@ -37,36 +37,54 @@ AdEventHistory::AdEventHistory() = default;
 
 AdEventHistory::~AdEventHistory() = default;
 
-void AdEventHistory::Record(const std::string& ad_type,
-                            const std::string& confirmation_type,
-                            const uint64_t timestamp) {
-  const std::string id = GetId(ad_type, confirmation_type);
+void AdEventHistory::RecordForId(const std::string& id,
+                                 const std::string& ad_type,
+                                 const std::string& confirmation_type,
+                                 const double timestamp) {
   DCHECK(!id.empty());
+  DCHECK(!ad_type.empty());
+  DCHECK(!confirmation_type.empty());
 
-  const auto iter = history_.find(id);
-  if (iter == history_.end()) {
-    history_.insert({id, {timestamp}});
-    return;
-  }
+  const std::string& type_id = GetTypeId(ad_type, confirmation_type);
 
-  iter->second.push_back(timestamp);
+  history_[id][type_id].push_back(timestamp);
 
-  const base::TimeDelta time_delta = base::TimeDelta::FromDays(1);
-  PurgeHistoryOlderThan(&iter->second, time_delta);
+  const base::TimeDelta time_delta = base::Days(1);
+  PurgeHistoryOlderThan(&history_[id][type_id], time_delta);
 }
 
-std::vector<uint64_t> AdEventHistory::Get(
+std::vector<double> AdEventHistory::Get(
     const std::string& ad_type,
     const std::string& confirmation_type) const {
-  const std::string id = GetId(ad_type, confirmation_type);
-  DCHECK(!id.empty());
+  DCHECK(!ad_type.empty());
+  DCHECK(!confirmation_type.empty());
 
-  const auto iter = history_.find(id);
-  if (iter == history_.end()) {
-    return {};
+  const std::string& type_id = GetTypeId(ad_type, confirmation_type);
+
+  std::vector<double> timestamps;
+
+  for (const auto& history : history_) {
+    const base::flat_map<std::string, std::vector<double>>& ad_events =
+        history.second;
+
+    for (const auto& ad_event : ad_events) {
+      const std::string& ad_event_type_id = ad_event.first;
+      if (ad_event_type_id != type_id) {
+        continue;
+      }
+
+      const std::vector<double>& ad_event_timestamps = ad_event.second;
+
+      timestamps.insert(timestamps.end(), ad_event_timestamps.cbegin(),
+                        ad_event_timestamps.cend());
+    }
   }
 
-  return iter->second;
+  return timestamps;
+}
+
+void AdEventHistory::ResetForId(const std::string& id) {
+  history_[id] = {};
 }
 
 }  // namespace ads

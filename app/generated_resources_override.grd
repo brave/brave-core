@@ -94,6 +94,11 @@ are declared in tools/grit/grit_rule.gni.
 
       <part file="profiles_strings_override.grdp" />
 
+      <if expr="is_win or is_macosx or is_linux">
+        </if>
+
+      <if expr="chromeos_ash or chromeos_lacros">
+        </if>
       <if expr="chromeos">
         <part file="os_settings_strings_override.grdp" />
         <part file="os_settings_search_tag_strings_override.grdp" />
@@ -113,6 +118,9 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <if expr="not chromeos and not is_android">
+        </if>
+
+      <if expr="not is_android">
         </if>
 
       <if expr="enable_printing">
@@ -140,14 +148,18 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_macosx">
         </if>
-      <if expr="is_win or desktop_linux">
+      <if expr="is_win or desktop_linux or is_fuchsia">
         </if>
       <if expr="not is_android">
+        <if expr="is_macosx">
+          </if>
+        <if expr="not is_macosx">
+          </if>
         </if>
 
        <if expr="not is_android">
         <if expr="not use_titlecase">
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="The name of the open a link in private window command">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="The name of the open a link in Private window command">
             Open link in &amp;private window
           </message>
           <if expr="is_macosx">
@@ -156,7 +168,7 @@ are declared in tools/grit/grit_rule.gni.
             </if>
           </if>
         <if expr="use_titlecase">
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="In Title Case: The name of the open a link in private window command">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="In Title Case: The name of the open a link in Private window command">
             Open Link in &amp;Private Window
           </message>
           <if expr="is_macosx">
@@ -169,7 +181,8 @@ are declared in tools/grit/grit_rule.gni.
           <if expr="not is_macosx">
             </if>
           </if>
-      </if>
+
+        </if>
 
       <if expr="not use_titlecase">
         </if>
@@ -182,12 +195,18 @@ are declared in tools/grit/grit_rule.gni.
 
       <if expr="not is_android">
         <if expr="not use_titlecase">
-          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new private window">
-            New &amp;private window
+          <message name="IDS_NEW_INCOGNITO_TAB" desc="The text label of a menu item for opening a new private tab">
+            New Private &amp;tab
+          </message>
+          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new Private window">
+            New &amp;Private window
           </message>
           </if>
         <if expr="use_titlecase">
-          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="In Title Case: The text label of a menu item for opening a new private window">
+          <message name="IDS_NEW_INCOGNITO_TAB" desc="In Title Case: The text label of a menu item for opening a new private tab">
+            New Private &amp;Tab
+          </message>
+          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="In Title Case: The text label of a menu item for opening a new Private window">
             New &amp;Private Window
           </message>
           </if>
@@ -206,7 +225,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_posix and not is_macosx">
         </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
 
       <if expr="not use_titlecase">
@@ -218,24 +237,28 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="use_titlecase">
         </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
 
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
       <if expr="is_android">
         </if>
       <if expr="not is_android">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
 
       <if expr="use_titlecase">
@@ -246,8 +269,6 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_macosx">
         </if>
-      <if expr="chromeos">
-      </if>
       <message name="IDS_DOWNLOAD_IN_INCOGNITO" desc="Indicates a download was started in Private mode.">
         Downloaded in Private
       </message>
@@ -300,13 +321,13 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="use_titlecase">
         </if>
       <if expr="not is_macosx">
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last private window while one or more downloads are in progress. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
-          Exit private mode anyway?
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last Private window while one or more downloads are in progress. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
+          Exit Private mode anyway?
         </message>
         </if>
       <if expr="is_macosx">
-        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last private window while one or more downloads are in progress. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
-          Quit private mode anyway?
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last Private window while one or more downloads are in progress. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
+          Quit Private mode anyway?
         </message>
         </if>
 
@@ -316,6 +337,11 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
+        </if>
+
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
         </if>
 
       <if expr="not use_titlecase">
@@ -354,6 +380,9 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_win">
         </if>
 
+      <if expr="is_win or is_linux">
+        </if>
+
       <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_CROWD_DENY_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's notifications permission request is automatically blocked by Brave, as this permission prompt is often denied by other users for this site.">
         Most profiles block notifications from this site
       </message>
@@ -368,19 +397,25 @@ are declared in tools/grit/grit_rule.gni.
           </if>
         <if expr="use_titlecase">
           </if>
-        <message name="IDS_TASK_MANAGER_EXTENSION_INCOGNITO_PREFIX" desc="The prefix for a Task Manager private extension row (may not be visible if private is not open)">
+        <message name="IDS_TASK_MANAGER_EXTENSION_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private extension row (may not be visible if Private is not open)">
           Private Extension: <ph name="EXTENSION_NAME">$1<ex>Sample Extension</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_APP_INCOGNITO_PREFIX" desc="The prefix for a Task Manager private app row (may not be visible if the app is not open in private)">
+        <message name="IDS_TASK_MANAGER_APP_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private app row (may not be visible if the app is not open in Private)">
           Private App: <ph name="APP_NAME">$1<ex>Sample App</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_TAB_INCOGNITO_PREFIX" desc="The prefix for a Task Manager private Tab row (may not be visible if private is not open)">
+        <message name="IDS_TASK_MANAGER_TAB_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private Tab row (may not be visible if Private is not open)">
           Private Tab: <ph name="TAB_NAME">$1<ex>Brave</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_SUBFRAME_INCOGNITO_PREFIX" desc="The prefix for a Private out-of-process-iframe process row in the Task Manager (these processes are created when site isolation is enabled, in private mode)">
+        <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_INCOGNITO_PREFIX" desc="The prefix for a Private page stored in the Back/Forward Cache">
+          Private Back/Forward Cached Page: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_SUBFRAME_INCOGNITO_PREFIX" desc="The prefix for a Private out-of-process-iframe process row in the Task Manager (these processes are created when site isolation is enabled, in Private mode)">
           Private Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_PORTAL_INCOGNITO_PREFIX" desc="The prefix for a Private portal row in the Task Manager (these processes are created when portals is enabled, in private mode)">
+        <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_INCOGNITO_SUBFRAME_PREFIX" desc="The prefix for a Private out-of-process-iframe row stored in the Back/Forward Cache">
+          Private Back/Forward Cached Subframe: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_PORTAL_INCOGNITO_PREFIX" desc="The prefix for a Private portal row in the Task Manager (these processes are created when portals is enabled, in Private mode)">
           Private Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_TOOL_PREFIX" desc="The prefix for a tool process row in the Task Manager">
@@ -395,7 +430,11 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_win">
         </if>
       <if expr="enable_extensions">
-        </if>
+        <if expr="reven">
+          </if>
+        <if expr="not reven">
+          </if>
+      </if>
       <if expr="enable_extensions or is_android">
         </if>
       <if expr="enable_extensions">
@@ -406,9 +445,17 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
       <if expr="enable_extensions">
-        </if>
+        <if expr="reven">
+          </if>
+        <if expr="not reven">
+          </if>
+      </if>
 
       <if expr="chromeos">
+        </if>
+      <if expr="reven">
+        </if>
+      <if expr="not reven">
         </if>
       <if expr="chromeos">
         </if>
@@ -422,6 +469,9 @@ are declared in tools/grit/grit_rule.gni.
           </if>
         <if expr="is_macosx">
           </if>
+        </if>
+
+      <if expr="not is_android">
         </if>
 
       <if expr="enable_extensions">
@@ -440,6 +490,18 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
+        </if>
+
+      <if expr="chromeos_ash or chromeos_lacros">
+        <then>
+          </then>
+        <else>
+          </else>
+      </if>
+
+      <if expr="chromeos">
+        </if>
+      <if expr="lacros">
         </if>
 
       <if expr="use_titlecase">
@@ -462,7 +524,12 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not is_android">
         </if>
 
-      <if expr="is_win or is_macosx or (is_linux and not chromeos)">
+      <if expr="is_win or is_macosx or is_fuchsia or (is_linux and not chromeos)">
+        </if>
+
+      <if expr="chromeos">
+        </if>
+      <if expr="lacros">
         </if>
 
       <if expr="is_win">
@@ -474,13 +541,14 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_android or enable_vr">
         </if>
-      <if expr="is_android">
-      </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
         </if>
 
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_FAVORITE_PEOPLE_WELCOME_TITLE" desc="Title of the opt-in UI for Google Photos in the new tab page emphasizing on favorite profiles.">
+        See memories of your favorite profiles and more
+      </message>
       <if expr="is_android">
         </if>
 
@@ -489,6 +557,10 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
 
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -496,34 +568,44 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_macosx">
         </if>
       <if expr="not is_android">
-        </if>
+        <if expr="chromeos_ash">
+          </if>
+      </if>
 
-      <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a private window">
+      <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a Private window">
         <ph name="WINDOW_TITLE">$1</ph> (Private)
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_0" desc="Variations option 1. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        You can browse privately using a private window
+        You can browse privately using a Private window
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_1" desc="Variations option 2. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        Use the web without saving your browsing history with a private window
+        Use the web without saving your browsing history with a Private window
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_2" desc="Variations option 3. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        Using a shared computer? Try opening a private window.
+        Using a shared computer? Try opening a Private window.
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_3" desc="Variations option 4. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        To browse privately, click the dots icon menu to open a private window
+        To browse privately, click the dots icon menu to open a Private window
       </message>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
         </if>
-
       <if expr="is_win">
         </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
         </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -577,7 +659,9 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not is_macosx">
         </if>
       <if expr="not use_titlecase">
-        </if>
+        <if expr="chromeos_ash or chromeos_lacros">
+          </if>
+      </if>
       <if expr="use_titlecase">
         </if>
 
@@ -588,6 +672,9 @@ are declared in tools/grit/grit_rule.gni.
           </if>
       </if>
 
+      <if expr="enable_side_search">
+        </if>
+
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
@@ -605,14 +692,10 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_macosx">
         </if>
 
-      <message name="IDS_FR_ENABLE_LOGGING" desc="The label of the checkbox to enable/disable crash and user metrics logging">
-        Automatically send crash reports to Brave
-      </message>
-
       <if expr="is_macosx">
         </if>
 
-      <if expr="chromeos or lacros">
+      <if expr="chromeos_ash or chromeos_lacros">
         </if>
       <if expr="is_win">
         </if>
@@ -628,9 +711,6 @@ are declared in tools/grit/grit_rule.gni.
           </if>
       </if> <if expr="chromeos">
         </if> <if expr="not is_android">
-        <if expr="not chromeos">
-          </if>
-
         <message name="IDS_EXTENSIONS_INSTALL_LOCATION_UNKNOWN" desc="The text explaining the the installation location is unknown.">
           Not from Web Store.
         </message>
@@ -649,13 +729,17 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="use_titlecase">
         </if>
-
+      <if expr="is_android">
+      </if>
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not is_android">
         </if>
+      <if expr="not is_android">
+        </if>
+
       <if expr="not use_titlecase">
         </if>
 
@@ -699,6 +783,12 @@ are declared in tools/grit/grit_rule.gni.
           </if>
         <if expr="chromeos">
           </if>
+        </if>
+
+      <if expr="lacros">
+        </if>
+
+      <if expr="not chromeos and not is_android and not lacros">
         </if>
 
       <if expr="not chromeos and not is_android">
@@ -754,9 +844,7 @@ are declared in tools/grit/grit_rule.gni.
         <if expr="chromeos">
           </if>
 
-        <if expr="not chromeos">
-          </if>
-      </if>
+        </if>
 
       <if expr="toolkit_views">
         <if expr="not use_titlecase">
@@ -778,7 +866,7 @@ are declared in tools/grit/grit_rule.gni.
 
       <if expr="is_macosx">
         </if> <if expr="is_macosx">
-        <message name="IDS_NEW_INCOGNITO_WINDOW_MAC" desc="The Mac menu item for opening a new private window in the file menu.">
+        <message name="IDS_NEW_INCOGNITO_WINDOW_MAC" desc="The Mac menu item for opening a new Private window in the file menu.">
           New Private Window
         </message>
         <message name="IDS_BOOKMARK_BAR_ALWAYS_SHOW_MAC" desc="The Mac menu item for having bookmark bar always visible in the view menu.">
@@ -814,12 +902,6 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="chromeos">
         </if>
 
-      <if expr="chromeos">
-      </if>
-    <if expr="is_macosx">
-      </if>
-    <if expr="is_win or desktop_linux">
-      </if>
       <if expr="not chromeos">
         </if>
       <if expr="chromeos">
@@ -837,22 +919,18 @@ are declared in tools/grit/grit_rule.gni.
         </if>
 
       <if expr="chromeos">
-        <message name="IDS_APP_LIST_NEW_INCOGNITO_WINDOW" desc="The text label of the New private window menu item">
-          New private window
+        <message name="IDS_APP_LIST_NEW_INCOGNITO_WINDOW" desc="The text label of the New Private window menu item">
+          New Private window
         </message>
         </if>
 
       <if expr="toolkit_views">
         </if>
-
-      <if expr="enable_service_discovery">
-        </if>
-
       <if expr="chromeos">
         </if>
       <if expr="is_macosx">
         </if>
-      <if expr="is_win or desktop_linux">
+      <if expr="is_win or desktop_linux or is_fuchsia">
         </if>
       <if expr="chromeos">
         </if>
@@ -870,6 +948,13 @@ are declared in tools/grit/grit_rule.gni.
 
     <if expr="not is_android">
       </if>
+
+    <if expr="not is_android">
+      <if expr="use_titlecase">
+      </if>
+      <if expr="not use_titlecase">
+      </if>
+    </if>
 
     <if expr="not is_android">
       </if>
@@ -899,23 +984,41 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       </if>
 
-    <if expr="is_win or is_macosx or desktop_linux or chromeos">
+    <if expr="is_win or is_macosx or desktop_linux or chromeos or is_fuchsia">
       <message name="IDS_WEBAUTHN_PLATFORM_AUTHENTICATOR_OFF_THE_RECORD_INTERSTITIAL_DESCRIPTION" desc="Description of a dialog that asks for the user's permission to set up device-based sign-in (i.e. using their computer's biometric sensor or screen unlock/PIN) on a website while browsing in Private mode.">
          Sign-in data will be stored on this device after you exit Private mode. You'll be able to sign in to this website with your device again later.
       </message>
       </if>
 
-   <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the private version of profile menu.">
+   <if expr="is_win or is_macosx or desktop_linux or chromeos or is_android or is_fuchsia">
+      </if>
+
+   <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the Private version of profile menu.">
       Private
     </message>
-    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all private windows.">
+    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all Private windows.">
       Exit Private
     </message>
-    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON_NEW" desc="The text of the button offering to close all private windows.">
+    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON_NEW" desc="The text of the button offering to close all Private windows.">
       Close Private
     </message>
 
-   <if expr="not is_android">
+    <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_PRIMARY_TEXT" desc="The primary text of the clear browsing data dialog which is shown in Private when users invokes a clear browsing data action in Private. The text describes how Private users can clear the browsing data by closing all Private windows.">
+      To clear data, close all Private windows
+    </message>
+    <message name="IDS_INCOGNITO_CLEAR_BROWSING_DATA_DIALOG_SECONDARY_TEXT" desc="The secondary text of the clear browsing data dialog which is shown in Private when users invokes a clear browsing data action in Private. The text describes how the clear browsing data action affects only the Private windows.">
+      This only affects Private windows
+    </message>
+    <message name="IDS_INCOGNITO_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Private mode.">
+    Sites you visit aren’t saved in Private
+  </message>
+  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Private tabs is necessary to clear Private browsing history from the device,">
+    To clear Private browsing history from your device, close all Private tabs
+  </message>
+  <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CLOSE_INCOGNITO_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all private tabs action.">
+    Close Private
+  </message>
+  <if expr="not is_android">
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -928,6 +1031,17 @@ are declared in tools/grit/grit_rule.gni.
     </if>
     <if expr="not use_titlecase">
       </if>
+    <if expr="is_cfm">
+      </if>
+
+    <if expr="use_titlecase">
+      </if>
+    <if expr="not use_titlecase">
+      </if>
+
+    <if expr="chromeos_ash">
+      </if>
+
     </messages>
 </release>
 </grit>

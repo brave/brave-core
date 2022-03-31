@@ -236,12 +236,10 @@ void CredentialsSKU::Claim(
 
 
   DCHECK_EQ(trigger.data.size(), 2ul);
+  DCHECK(blinded_creds.has_value());
   payment_server_->post_credentials()->Request(
-      trigger.id,
-      trigger.data[0],
-      ConvertItemTypeToString(trigger.data[1]),
-      std::move(blinded_creds),
-      url_callback);
+      trigger.id, trigger.data[0], ConvertItemTypeToString(trigger.data[1]),
+      std::move(blinded_creds.value()), url_callback);
 }
 
 void CredentialsSKU::OnClaim(

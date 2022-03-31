@@ -8,6 +8,8 @@
 
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
@@ -24,9 +26,9 @@ class RewardsBrowserTestContextHelper {
   explicit RewardsBrowserTestContextHelper(Browser* browser);
   ~RewardsBrowserTestContextHelper();
 
-  content::WebContents* OpenRewardsPopup();
+  base::WeakPtr<content::WebContents> OpenRewardsPopup();
 
-  content::WebContents* OpenSiteBanner(
+  base::WeakPtr<content::WebContents> OpenSiteBanner(
       rewards_browsertest_util::TipAction tip_action);
 
   void VisitPublisher(
@@ -43,7 +45,7 @@ class RewardsBrowserTestContextHelper {
 
   void OpenPopupFirstTime();
 
-  Browser* browser_;  // NOT OWNED
+  raw_ptr<Browser> browser_ = nullptr;  // NOT OWNED
   bool loaded_ = false;
 };
 

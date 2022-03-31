@@ -1,0 +1,7 @@
+include_rules = [
+  "+cc/test",
+  "+ui/compositor",
+  "+ui/gfx/image",
+  "+ui/snapshot",
+  "+ui/views/widget/widget.h",
+]

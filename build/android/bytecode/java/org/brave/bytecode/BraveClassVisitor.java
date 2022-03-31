@@ -5,6 +5,7 @@
 
 package org.brave.bytecode;
 
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PRIVATE;
 import static org.objectweb.asm.Opcodes.ACC_PROTECTED;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
@@ -16,6 +17,7 @@ import static org.objectweb.asm.Opcodes.NEW;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -48,6 +50,11 @@ class BraveClassVisitor extends ClassVisitor {
         public void makePublic() {
             access &= ~ACC_PRIVATE;
             access |= ACC_PUBLIC;
+        }
+
+        public void makePrivate() {
+            access &= ~ACC_PUBLIC;
+            access |= ACC_PRIVATE;
         }
     }
 
@@ -85,6 +92,14 @@ class BraveClassVisitor extends ClassVisitor {
                 System.out.println("redirecting constructor from " + type + " to " + newType);
                 type = newType;
             }
+            // Point one type in method to another
+            Map<String, String> types = getMapForRedirectTypeInMethod(mName, mMethod.name);
+            if (types != null && types.containsKey(type)) {
+                String newType = types.get(type);
+                System.out.println("redirecting type in method " + mMethod.name + " in class "
+                        + mName + " from " + type + " to " + newType);
+                type = newType;
+            }
             super.visitTypeInsn(opcode, type);
         }
     }
@@ -97,7 +112,13 @@ class BraveClassVisitor extends ClassVisitor {
             new HashMap<String, ArrayList<String>>();
     private Map<String, ArrayList<String>> mDeleteFields =
             new HashMap<String, ArrayList<String>>();
+    private Map<String, ArrayList<String>> mDeleteInnerClasses =
+            new HashMap<String, ArrayList<String>>();
     private Map<String, ArrayList<String>> mMakePublicMethods =
+            new HashMap<String, ArrayList<String>>();
+    private Map<String, ArrayList<String>> mMakePrivateMethods =
+            new HashMap<String, ArrayList<String>>();
+    private Map<String, ArrayList<String>> mMakePublicInnerClasses =
             new HashMap<String, ArrayList<String>>();
     private Map<String, Map<String, String>> mChangeOwnerMethods =
             new HashMap<String, Map<String, String>>();
@@ -106,6 +127,9 @@ class BraveClassVisitor extends ClassVisitor {
     private Map<String, Map<String, ArrayList<String>>> mAddAnnotations =
             new HashMap<String, Map<String, ArrayList<String>>>();
     private Map<String, String> mRedirectConstructors = new HashMap<String, String>();
+    private Map<String, Map<String, Map<String, String>>> mRedirectMethodType =
+            new HashMap<String, Map<String, Map<String, String>>>();
+    private ArrayList<String> mMakeNonFinalClasses = new ArrayList<String>();
 
     public BraveClassVisitor(ClassVisitor visitor) {
         super(ASM5, null);
@@ -142,8 +166,7 @@ class BraveClassVisitor extends ClassVisitor {
                 mMakePublicMethods.entrySet()) {
             String entryClassName = entry.getKey();
             ArrayList<String> methodNames = entry.getValue();
-            return className.contains(entryClassName) &&
-                   methodNames.contains(methodName);
+            return className.equals(entryClassName) && methodNames.contains(methodName);
         }
 
         return false;
@@ -158,6 +181,29 @@ class BraveClassVisitor extends ClassVisitor {
         if (methods == null) {
             methods = new ArrayList<String>();
             mMakePublicMethods.put(className, methods);
+        }
+        methods.add(methodName);
+    }
+
+    private boolean shouldMakePrivateMethod(String className, String methodName) {
+        for (Map.Entry<String, ArrayList<String>> entry : mMakePrivateMethods.entrySet()) {
+            String entryClassName = entry.getKey();
+            ArrayList<String> methodNames = entry.getValue();
+            return className.equals(entryClassName) && methodNames.contains(methodName);
+        }
+
+        return false;
+    }
+
+    private boolean shouldMakePrivateMethod(String methodName) {
+        return shouldMakePrivateMethod(mName, methodName);
+    }
+
+    protected void makePrivateMethod(String className, String methodName) {
+        ArrayList methods = mMakePrivateMethods.get(className);
+        if (methods == null) {
+            methods = new ArrayList<String>();
+            mMakePrivateMethods.put(className, methods);
         }
         methods.add(methodName);
     }
@@ -216,6 +262,52 @@ class BraveClassVisitor extends ClassVisitor {
         fields.add(fieldName);
     }
 
+    private boolean shouldDeleteInnerClass(String innerName) {
+        for (Map.Entry<String, ArrayList<String>> entry : mDeleteInnerClasses.entrySet()) {
+            String outerName = entry.getKey();
+            ArrayList<String> innerNames = entry.getValue();
+            return outerName.contains(mName) && innerNames.contains(innerName);
+        }
+
+        return false;
+    }
+
+    protected void deleteInnerClass(String outerName, String innerName) {
+        ArrayList innerNames = mDeleteInnerClasses.get(outerName);
+        if (innerNames == null) {
+            innerNames = new ArrayList<String>();
+            mDeleteInnerClasses.put(outerName, innerNames);
+        }
+        innerNames.add(innerName);
+    }
+
+    private boolean shouldMakeNonFinalClass(String className) {
+        return mMakeNonFinalClasses.contains(className);
+    }
+
+    protected void makeNonFinalClass(String className) {
+        if (!mMakeNonFinalClasses.contains(className)) mMakeNonFinalClasses.add(className);
+    }
+
+    private boolean shouldMakePublicInnerClass(String innerName) {
+        for (Map.Entry<String, ArrayList<String>> entry : mMakePublicInnerClasses.entrySet()) {
+            String outerName = entry.getKey();
+            ArrayList<String> innerNames = entry.getValue();
+            return outerName.contains(mName) && innerNames.contains(innerName);
+        }
+
+        return false;
+    }
+
+    protected void makePublicInnerClass(String outerName, String innerName) {
+        ArrayList innerNames = mMakePublicInnerClasses.get(outerName);
+        if (innerNames == null) {
+            innerNames = new ArrayList<String>();
+            mMakePublicInnerClasses.put(outerName, innerNames);
+        }
+        innerNames.add(innerName);
+    }
+
     private boolean shouldMakeProtectedField(String className, String fieldName) {
         for(Map.Entry<String, ArrayList<String>> entry :
                 mMakeProtectedFields.entrySet()) {
@@ -262,6 +354,37 @@ class BraveClassVisitor extends ClassVisitor {
         mRedirectConstructors.put(originalClassName, newClassName);
     }
 
+    private Map<String, String> getMapForRedirectTypeInMethod(String className, String methodName) {
+        for (Map.Entry<String, Map<String, Map<String, String>>> entry :
+                mRedirectMethodType.entrySet()) {
+            String entryClassName = entry.getKey();
+            Map<String, Map<String, String>> methodNames = entry.getValue();
+            for (Map.Entry<String, Map<String, String>> entryMethod : methodNames.entrySet()) {
+                String entryMethodName = entryMethod.getKey();
+                Map<String, String> typeNames = entryMethod.getValue();
+                if (className.equals(entryClassName) && entryMethodName.equals(methodName))
+                    return typeNames;
+            }
+        }
+
+        return null;
+    }
+
+    protected void redirectTypeInMethod(
+            String className, String methodName, String originalTypeName, String newTypeName) {
+        Map<String, Map<String, String>> methods = mRedirectMethodType.get(className);
+        if (methods == null) {
+            methods = new HashMap<String, Map<String, String>>();
+            mRedirectMethodType.put(className, methods);
+        }
+        Map<String, String> types = methods.get(methodName);
+        if (types == null) {
+            types = new HashMap<String, String>();
+            methods.put(methodName, types);
+        }
+        types.put(originalTypeName, newTypeName);
+    }
+
     @Override
     public void visit(int version,
                       int access,
@@ -272,6 +395,10 @@ class BraveClassVisitor extends ClassVisitor {
         super.cv = new ClassNode();
         mName = name;
         mSuperName = superName;
+        if (shouldMakeNonFinalClass(name)) {
+            System.out.println("make Class " + name + " non final");
+            access &= ~ACC_FINAL;
+        }
         if (mSuperNames.containsKey(name)) {
             superName = mSuperNames.get(name);
             System.out.println("change superclass of " + name + " to " + superName);
@@ -287,6 +414,21 @@ class BraveClassVisitor extends ClassVisitor {
                              String superName,
                              String[] interfaces) {
         super.visit(version, access, name, signature, superName, interfaces);
+    }
+
+    @Override
+    public void visitInnerClass​(String name, String outerName, String innerName, int access) {
+        if (shouldDeleteInnerClass(innerName)) {
+            System.out.println("delete InnerClass " + innerName + " from " + mName);
+            return;
+        }
+
+        if (shouldMakePublicInnerClass(innerName)) {
+            System.out.println("make InnerClass " + innerName + " public in " + mName);
+            access &= ~ACC_PRIVATE;
+            access |= ACC_PUBLIC;
+        }
+        super.visitInnerClass​(name, outerName, innerName, access);
     }
 
     @Override
@@ -314,6 +456,21 @@ class BraveClassVisitor extends ClassVisitor {
                                      String desc,
                                      String signature,
                                      String[] exceptions) {
+        // This part changes the type in method declaration
+        Map<String, String> types = getMapForRedirectTypeInMethod(mName, name);
+        if (types != null) {
+            for (Map.Entry<String, String> entry : types.entrySet()) {
+                String originalTypeName = entry.getKey();
+                String newTypeName = entry.getValue();
+                if (desc.contains(originalTypeName)) {
+                    // Use literal replacement like other methods in the class
+                    desc = desc.replace(originalTypeName, newTypeName);
+                    System.out.println("redirecting type in method declaration " + name
+                            + " in class " + mName + " from " + originalTypeName + " to "
+                            + newTypeName);
+                }
+            }
+        }
         Method method = new Method(access, name, desc, signature, exceptions);
         if (shouldDeleteMethod(name)) {
             System.out.println("delete " + name + " from " + mName);
@@ -323,8 +480,10 @@ class BraveClassVisitor extends ClassVisitor {
         if (shouldMakePublicMethod(name)) {
             System.out.println("make " + name + " public in " + mName);
             method.makePublic();
+        } else if (shouldMakePrivateMethod(name)) {
+            System.out.println("make " + name + " private in " + mName);
+            method.makePrivate();
         }
-
         return visitMethodImpl(method);
     }
 

@@ -1,4 +1,3 @@
-declare module 'deep-freeze-node'
 declare module 'chromedriver'
 
 // Used in tests

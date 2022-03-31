@@ -9,7 +9,6 @@ import { newTabReducers } from '../../../brave_new_tab_ui/reducers'
 import * as storage from '../../../brave_new_tab_ui/storage/new_tab_storage'
 
 describe('newTabReducer', () => {
-
   describe('initial state', () => {
     it('loads initial data', () => {
       const expectedState = storage.load()

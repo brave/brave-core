@@ -6,94 +6,110 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ACCOUNT_H_
 
-#include <cstdint>
 #include <memory>
 #include <string>
 
+#include "base/observer_list.h"
 #include "bat/ads/internal/account/account_observer.h"
-#include "bat/ads/internal/account/ad_rewards/ad_rewards_delegate.h"
-#include "bat/ads/internal/account/confirmations/confirmations_observer.h"
-#include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
-#include "bat/ads/transaction_info.h"
+#include "bat/ads/internal/account/confirmations/confirmations_delegate.h"
+#include "bat/ads/internal/account/issuers/issuers_delegate.h"
+#include "bat/ads/internal/account/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
+#include "bat/ads/internal/account/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
+#include "bat/ads/internal/account/statement/statement_aliases.h"
+#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
 
 namespace ads {
 
-class AdRewards;
+class AdType;
 class Confirmations;
 class ConfirmationType;
+class Issuers;
 class RedeemUnblindedPaymentTokens;
 class RefillUnblindedTokens;
-class Statement;
 class Wallet;
-struct CatalogIssuersInfo;
-struct StatementInfo;
+struct IssuersInfo;
 struct WalletInfo;
 
-class Account : public AdRewardsDelegate,
-                public ConfirmationsObserver,
-                public RedeemUnblindedPaymentTokensDelegate {
+namespace privacy {
+class TokenGeneratorInterface;
+}  // namespace privacy
+
+class Account final : public ConfirmationsDelegate,
+                      public IssuersDelegate,
+                      public RedeemUnblindedPaymentTokensDelegate,
+                      public RefillUnblindedTokensDelegate {
  public:
   explicit Account(privacy::TokenGeneratorInterface* token_generator);
-
   ~Account() override;
 
   void AddObserver(AccountObserver* observer);
   void RemoveObserver(AccountObserver* observer);
 
   bool SetWallet(const std::string& id, const std::string& seed);
-
   WalletInfo GetWallet() const;
 
-  void SetCatalogIssuers(const CatalogIssuersInfo& catalog_issuers);
+  void MaybeGetIssuers() const;
 
   void Deposit(const std::string& creative_instance_id,
+               const AdType& ad_type,
                const ConfirmationType& confirmation_type);
 
-  StatementInfo GetStatement(const int64_t from_timestamp,
-                             const int64_t to_timestamp) const;
+  void GetStatement(StatementCallback callback) const;
 
-  void Reconcile();
-
-  void ProcessTransactions();
-
-  void TopUpUnblindedTokens();
+  void ProcessClearingCycle();
 
  private:
-  base::ObserverList<AccountObserver> observers_;
-
-  privacy::TokenGeneratorInterface* token_generator_;  // NOT_OWNED
-
-  std::unique_ptr<AdRewards> ad_rewards_;
-  std::unique_ptr<Confirmations> confirmations_;
-  std::unique_ptr<RedeemUnblindedPaymentTokens>
-      redeem_unblinded_payment_tokens_;
-  std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
-  std::unique_ptr<Statement> statement_;
-  std::unique_ptr<Wallet> wallet_;
+  void ProcessDeposit(const std::string& creative_instance_id,
+                      const AdType& ad_type,
+                      const ConfirmationType& confirmation_type,
+                      const double value) const;
 
   void ProcessUnclearedTransactions();
 
-  void NotifyWalletChanged(const WalletInfo& wallet);
-  void NotifyWalletRestored(const WalletInfo& wallet);
-  void NotifyWalletInvalid();
-  void NotifyCatalogIssuersChanged(const CatalogIssuersInfo& catalog_issuers);
-  void NotifyAdRewardsChanged();
-  void NotifyTransactionsChanged();
-  void NotifyUnclearedTransactionsProcessed();
+  void TopUpUnblindedTokens();
 
-  // AdRewardsDelegate implementation
-  void OnDidReconcileAdRewards() override;
+  void Reset();
 
-  // ConfirmationsObserver implementation
-  void OnConfirmAd(const double estimated_redemption_value,
-                   const ConfirmationInfo& confirmation) override;
-  void OnConfirmAdFailed(const ConfirmationInfo& confirmation) override;
+  void NotifyWalletDidUpdate(const WalletInfo& wallet) const;
+  void NotifyWalletDidChange(const WalletInfo& wallet) const;
+  void NotifyInvalidWallet() const;
 
-  // RedeemUnblindedPaymentTokensDelegate implementation
-  void OnDidRedeemUnblindedPaymentTokens() override;
+  void NotifyDidProcessDeposit(const TransactionInfo& transaction) const;
+  void NotifyFailedToProcessDeposit(
+      const std::string& creative_instance_id,
+      const AdType& ad_type,
+      const ConfirmationType& confirmation_type) const;
+
+  void NotifyStatementOfAccountsDidChange() const;
+
+  // ConfirmationsDelegate:
+  void OnDidConfirm(const ConfirmationInfo& confirmation) override;
+  void OnFailedToConfirm(const ConfirmationInfo& confirmation) override;
+
+  // IssuersDelegate:
+  void OnDidGetIssuers(const IssuersInfo& issuers) override;
+  void OnFailedToGetIssuers() override;
+
+  // RedeemUnblindedPaymentTokensDelegate:
+  void OnDidRedeemUnblindedPaymentTokens(
+      const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens)
+      override;
   void OnFailedToRedeemUnblindedPaymentTokens() override;
   void OnDidRetryRedeemingUnblindedPaymentTokens() override;
+
+  // RedeemUnblindedTokensDelegate:
+  void OnDidRefillUnblindedTokens() override;
+  void OnCaptchaRequiredToRefillUnblindedTokens(
+      const std::string& captcha_id) override;
+
+  base::ObserverList<AccountObserver> observers_;
+
+  std::unique_ptr<Confirmations> confirmations_;
+  std::unique_ptr<Issuers> issuers_;
+  std::unique_ptr<RedeemUnblindedPaymentTokens>
+      redeem_unblinded_payment_tokens_;
+  std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
+  std::unique_ptr<Wallet> wallet_;
 };
 
 }  // namespace ads

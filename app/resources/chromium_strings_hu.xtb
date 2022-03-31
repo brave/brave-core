@@ -13,6 +13,7 @@
 <translation id="7419046106786626209">A Chrome OS nem tudta szinkronizálni az adatait, mert a szinkronizálás nem érhető el az Ön domainjénél.</translation>
 <translation id="5147525139567260139">Brave-lap megosztása</translation>
 <translation id="1530633922026945685">A Bravenak engedélyre van szüksége a kamerájához való hozzáféréshez annak érdekében, hogy 3D-s térképet készíthessen az Ön környezetéről.</translation>
+<translation id="4449148723378534338">A legfontosabb adatvédelmi és biztonsági beállítások áttekintése a Braveban</translation>
 <translation id="5616153642055197778">Elérhető a Brave új, biztonságosabb verziója.</translation>
 <translation id="6797402139308059782">A Brave fusson a háttérben</translation>
 <translation id="5875673934455379806">A Brave újratelepítése</translation>
@@ -20,21 +21,25 @@
 <translation id="1649714546770135458">A beállítás kikapcsolásával anélkül jelentkezhet be a Brave-webhelyekre (pl. Gmail), hogy a Braveba is bejelentkezne</translation>
 <translation id="189297655255130768">A Brave nem válaszol. Újraindítja most?</translation>
 <translation id="1775322105159056176">A Brave problémába ütközött az alapértelmezett böngésző megállapításakor vagy beállításakor</translation>
+<translation id="7665553140559834626">Indítsa újra a Chrome OS frissítéshez</translation>
 <translation id="9220324636239049437">Ezzel egyetlen elemet töröl erről az eszközről. Az adatok későbbi lekéréséhez jelentkezzen be a Braveba a következő e-mail-címmel: <ph name="USER_EMAIL"/>.</translation>
 <translation id="831418749472885028">Ha ellenőrizni szeretné, hogy a többi jelszava biztonságban van-e az adatvédelmi incidensektől és más biztonsági problémáktól, <ph name="BEGIN_LINK"/>jelentkezzen be a Braveba<ph name="END_LINK"/>.</translation>
+<translation id="5499149312981370855">Válassza ki, hogy szeretné-e használni a Brave-előzményeket személyre szabott élmények biztosításához a Brave-szolgáltatásokban.</translation>
 <translation id="142389341645668510">A Brave személyre szabása</translation>
 <translation id="8745514854244955877">Brave – Hálózati bejelentkezés – <ph name="PAGE_TITLE"/></translation>
 <translation id="5659384504794665581">Ha megoszt egy számítógépet, ismerősei és családtagjai külön fiókokban internetezve a saját kívánságaik szerint állíthatják be a Braveot.</translation>
 <translation id="5997267581285668459">Nem kötelező: segítse a Chrome OS funkcióinak és teljesítményének javítását azzal, hogy automatikusan elküldi a diagnosztikai és használati adatokat a Brave-nak.</translation>
+<translation id="7810992039564280750">Ellenőrzi az URL-eket a Braveban a nem biztonságos webhelyekről tárolt lista alapján. Ha valamelyik webhely megpróbálja ellopni az Ön jelszavát, illetve ha Ön kártékony fájlt tölt le, akkor a Brave elküldheti az URL-eket is (az oldal tartalmának részeivel együtt) a Biztonságos Böngészésnek.</translation>
 <translation id="9095263438435683933">Ha innen szeretne számot küldeni Android-telefonjára, jelentkezzen be a Braveba mindkét eszközén.</translation>
 <translation id="3813272600615358652">Ez a bővítmény módosította, hogy melyik oldal jelenjen meg a Brave indításakor.</translation>
+<translation id="2359808026110333948">Tovább</translation>
 <translation id="2576129394594491151">A(z) <ph name="EXTENSION_NAME"/> bővítmény módosította, hogy melyik oldal jelenjen meg a Brave indításakor.</translation>
+<translation id="1248225940185478633">A Bravenak kamera- és mikrofonhasználati engedélyre van szüksége ehhez a webhelyhez</translation>
 <translation id="6078442581074612226">A Braveban</translation>
 <translation id="2485422356828889247">Eltávolítás</translation>
 <translation id="9026991721384951619">A Chrome OS nem tudta szinkronizálni az adatokat, mert a fiók bejelentkezési adatai elavultak.</translation>
 <translation id="7798069806040634998">A Bravenak tárhelyhozzáférésre van szüksége a fájlok letöltéséhez</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
-<translation id="7933006624150961626">Ha szeretne minden eszközén hozzáférni Brave-anyagaihoz, jelentkezzen be, hogy bekapcsolhassa a szinkronizálást.</translation>
 <translation id="7291143854620707672">A profil használata során generált összes Brave-adatot (pl. könyvjelzőket, előzményeket, jelszavakat és egyéb beállításokat) eltávolíthatja a munkaprofil rendszergazdája. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">A frissítés alkalmazásához újra kell indítani a Chrome OS-t.</translation>
 <translation id="7387051847644272380">Az operációs rendszer hibát jelzett a telepítés során. Kérjük, töltse le újra a Braveot.</translation>
@@ -43,13 +48,13 @@
 <translation id="8372880274820509128">A nagyobb biztonság érdekében a Brave titkosítja az Ön adatait.</translation>
 <translation id="2770231113462710648">Alapértelmezett böngésző beállítása:</translation>
 <translation id="2799223571221894425">Újraindítás</translation>
-<translation id="6811506454451584223">Elkülöníti a Brave-profilt?</translation>
 <translation id="3783547330001921298">Ezzel új Brave-profilt hoz létre a(z) <ph name="USER_EMAIL_ADDRESS"/> fiókhoz.</translation>
 <translation id="777113543093865885">Eltávolítás a Braveból…</translation>
+<translation id="5265419033369521352">Gondoskodik a biztonságáról a Braveban, és használható a biztonság növelésére más Brave-alkalmazásokban olyankor, amikor Ön be van jelentkezve.</translation>
 <translation id="2885378588091291677">Feladatkezelő</translation>
 <translation id="2176825726964012531">A &amp;Brave névjegye</translation>
-<translation id="245659736593643560">A Chrome OS létrejöttéhez egyéb <ph name="BEGIN_LINK_CROS_OSS"/>nyílt forráskódú szoftverek<ph name="END_LINK_CROS_OSS"/> is hozzájárultak, ahogyan a <ph name="BEGIN_LINK_LINUX_OSS"/>Linux fejlesztői környezet (béta)<ph name="END_LINK_LINUX_OSS"/> létrejöttéhez is.</translation>
 <translation id="8208853227947884571">A Brave naprakész</translation>
+<translation id="5122472867956731189">Ha valamelyik webhely megpróbálja ellopni az Ön jelszavát, illetve ha Ön kártékony fájlt tölt le, akkor a Brave elküldheti az URL-eket is (az oldal tartalmának részeivel együtt) a Biztonságos Böngészésnek.</translation>
 <translation id="2953892977076487219">A Brave szerkeszteni próbálja a jelszavakat.</translation>
 <translation id="8755404239607088219">A Brave nem tudja ellenőrizni a jelszavait. Próbálkozzon később.</translation>
 <translation id="8880183781256147665">Hozzáadás a Bravehoz...</translation>
@@ -67,6 +72,7 @@
 <translation id="2339258256897053758">Hiányoznak Brave API-kulcsok. A Brave egyes funkciói kikapcsolnak.</translation>
 <translation id="8926637909431618259">A háttéralkalmazások továbbfuttatása, ha a Braveot bezárják</translation>
 <translation id="4480040274068703980">A Chrome OS egy bejelentkezési hiba miatt nem tudta szinkronizálni az adatokat.</translation>
+<translation id="1166275459137851283">A Brave azt javasolja, hogy ne töltse le, és ne nyissa meg ezt a fájlt.</translation>
 <translation id="2711887072399498551">Már létezik Brave-profil ezzel a fiókkal</translation>
 <translation id="2297290224191497273">Szeretne a meglévő Brave-profilra váltani?</translation>
 <translation id="2450003541323895471">A Brave-profilokkal különválaszthatja minden Brave-anyagát. Létrehozhat profilokat ismerőseinek és családtagjainak, vagy elkülönítheti egymástól a munkát és a szórakozást.</translation>
@@ -77,7 +83,6 @@
 <translation id="1384923383737428730">A számítógépen kártékony szoftver található. A Brave képes a kártékony szoftver eltávolítására, a beállítások visszaállítására és a bővítmények letiltására, hogy a böngésző újra a szokásos módon működhessen.</translation>
 <translation id="7029305463989165490">Ha innen: <ph name="ORIGIN"/> szeretne számot küldeni Android-telefonjára, jelentkezzen be a Braveba mindkét eszközén.</translation>
 <translation id="4304059894777924102">A Brave nem tudja ellenőrizni a jelszavakat. Ellenőrizze az internetkapcsolatot.</translation>
-<translation id="2588634262982826227">A Chrome OS akár minden újraindítás után automatikusan vissza tudja állítani alkalmazásait és oldalait.</translation>
 <translation id="1807774211756215222">Link megnyi&amp;tása új Brave-lapon</translation>
 <translation id="7453070689008684791">A Brave hozzáfér Drive-jához, hogy javaslatokat nyújthasson a címsávon.</translation>
 <translation id="2106568569080763501">A Brave egyetlen kattintással lehetővé teszi a weboldalakon található telefonszámok felhívását Skype-on!</translation>
@@ -98,12 +103,14 @@
 <translation id="9183662282810237335">Biztosan kilép a Braveból?</translation>
 <translation id="4065288863231444640">A Brave futhat a háttérben</translation>
 <translation id="8148611988012584308">A Brave személyre szabása és beállításai</translation>
-<translation id="1201005444605297066">Ezen az oldalon kezelheti a bejelentkezett Brave-fiókjait. Ezeket a fiókokat használhatja majd a Brave böngészőben és a Play Áruház alkalmazásaiban, valamint olyan szolgáltatásokban, mint a Gmail, a Drive és a YouTube. <ph name="LINK_BEGIN"/>További információ<ph name="LINK_END"/>.</translation>
+<translation id="4427306783828095590">A Speciális védelem még többet tesz annak érdekében, hogy letiltsa az adathalászatot és a rosszindulatú programokat</translation>
 <translation id="7084397798469173252">Üdvözöljük a Braveban; új böngészőablak megnyitva</translation>
 <translation id="2633397153656205379">Ismeretlen hiba történt, ezért a Brave nem frissült. <ph name="BEGIN_LINK"/>A Brave frissítési problémáinak megoldása.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Biztosan új Brave-profilban folytatja?</translation>
 <translation id="4567424176335768812">A(z) <ph name="USER_EMAIL_ADDRESS"/> címmel van bejelentkezve. Elérheti könyvjelzőit, előzményeit és más beállításait minden olyan eszközön, amelyen bejelentkezett.</translation>
 <translation id="300669147395456190">Brave-alkalmazások</translation>
+<translation id="2182657378556811785">Már majdnem naprakész! Indítsa újra a Braveot a frissítés befejezéséhez.</translation>
+<translation id="7402642357351265733">Ha a Brave használati jelentéseit is megosztja, ezek a jelentések tartalmazzák az Ön által felkeresett URL-eket.</translation>
 <translation id="8142245354207161805">Úgy tűnik, a profilt egy másik Brave-folyamat (<ph name="PROCESS_ID"/>) használja egy másik számítógépen (<ph name="HOST_NAME"/>). A Brave zárolta a profilt, hogy az ne sérülhessen. Ha biztos benne, hogy nem használja másik folyamat a profilt, feloldhatja azt, és újraindíthatja a Braveot.</translation>
 <translation id="3395323229510056640">Segítség a Chrome OS használatával kapcsolatban</translation>
 <translation id="847561904663814268">Valaki korábban <ph name="ACCOUNT_EMAIL_LAST"/> néven bejelentkezett a Braveba erről a számítógépről. Az adatai elkülönítéséhez hozzon létre új Brave-felhasználót.</translation>
@@ -112,6 +119,7 @@
 <translation id="4823369970559443694">A Brave nem tudja ellenőrizni a jelszavait. Próbálja újra 24 óra múlva, vagy <ph name="BEGIN_LINK"/>ellenőrizze jelszavait a Brave-fiókjában<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">A szolgáltatás ugyanazt a helyesírás-ellenőrzést használja, mint a Brave Kereső. A begépelt szöveget a böngésző elküldi a Brave-nak. A beállítások között ezt bármikor módosíthatja.</translation>
 <translation id="1912973375560256099">Bejövő szabály a Bravehoz az mDNS forgalom engedélyezése céljából.</translation>
+<translation id="711601904575862069">Indítsa újra a Brave frissítéshez</translation>
 <translation id="8797356639448065696">A Brave háttérmódban van.</translation>
 <translation id="7406627712452599344">A vendégek úgy használhatják a Braveot, hogy nem hagynak hátra semmit.</translation>
 <translation id="5952898964075639679">Adja hozzá magát a Braveban</translation>
@@ -122,10 +130,8 @@
 <translation id="1786715389543715322">A Brave frissítése (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Brave-bejelentkezés engedélyezése</translation>
 <translation id="5536657158619734169">Elérhető a Brave új verziója.</translation>
-<translation id="5874882355102994015">A Brave nem tudja megjeleníteni a nyomtatási előnézetet, ha nincs beépített PDF-megjelenítő.</translation>
 <translation id="239760341987199724">A Brave beállítása alapértelmezett böngészőként</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – Brave Béta</translation>
-<translation id="707769633889902835">A Chrome OS nem tudja megnyitni ezt az oldalt.</translation>
 <translation id="696826782632239602">A Bravenak a helyadatokhoz való hozzáférésre van szüksége ahhoz, hogy megoszthassa az Ön tartózkodási helyét a webhellyel</translation>
 <translation id="1744365871163268756">Kérjük, várjon, amíg a Brave telepíti a legutóbbi rendszerfrissítéseket.</translation>
 <translation id="3861679447659630159">A Brave szerkeszteni próbálja a jelszavakat. Az engedélyezéshez adja meg Windows-jelszavát.</translation>
@@ -135,7 +141,9 @@
 <translation id="5646769069113654257">Indítsa újra a Braveot most</translation>
 <translation id="2335583906071111058">A Brave megjelenítése ezen a nyelven</translation>
 <translation id="4331809312908958774">Chrome OS</translation>
+<translation id="79947657522496226">A Chrome OS létrejöttéhez egyéb <ph name="BEGIN_LINK_CROS_OSS"/>nyílt forráskódú szoftverek<ph name="END_LINK_CROS_OSS"/> is hozzájárultak, ahogyan a <ph name="BEGIN_LINK_LINUX_OSS"/>Linux fejlesztői környezet<ph name="END_LINK_LINUX_OSS"/> létrejöttéhez is.</translation>
 <translation id="7207456302801184289">Üdvözli a Brave!</translation>
+<translation id="8054200348483755053">A Brave rosszindulatú programot talált a következő elemekben:</translation>
 <translation id="5895138241574237353">Újraindítás</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Hálózati bejelentkezés</translation>
 <translation id="3598551856834560515">Frissítse a Braveot a szinkronizálás megkezdéséhez</translation>
@@ -153,6 +161,8 @@
 <translation id="4368341489795135329">Ellenőrizze, hogy bejelentkezett-e a Braveba <ph name="TARGET_DEVICE_NAME"/> eszközén, majd próbálja meg újraküldeni.</translation>
 <translation id="8320964054148936490">A számítógépen már megtalálható a Brave újabb verziója. Ha a szoftver nem működik, kérjük, távolítsa el a Braveot, majd próbálkozzon újra.</translation>
 <translation id="3574823187131579180">{0,plural, =0{A Brave most újraindul}=1{A Brave 1 másodpercen belül újraindul}other{A Brave # másodpercen belül újraindul}}</translation>
+<translation id="5980269616827212166">A Bravenak tárhelyhozzáférési engedélyre van szüksége a fájlok letöltéséhez</translation>
+<translation id="7651600795135059130">Ellenőrzi az URL-eket a Braveban a nem biztonságos webhelyekről tárolt lista alapján.</translation>
 <translation id="5019879183386042809">Legyen a Brave az alapértelmezett böngészőm</translation>
 <translation id="428541510811554120">A Brave nem tud frissítéseket keresni. Ellenőrizze az internetkapcsolatot.</translation>
 <translation id="7445061995866044926">Kijelentkezik a Braveból?</translation>
@@ -173,27 +183,29 @@
 <translation id="2312399718665761438">A nyelvtani hibák javítása érdekében a Brave elküldi a szövegmezőkbe gépelt szöveget a Brave-nak</translation>
 <translation id="3507835409099344374">A Brave értesítési beállításainak megnyitása</translation>
 <translation id="9156965752763025780">Módosításai a Brave újraindítása után lépnek érvénybe.</translation>
+<translation id="245693535809364497">A Bravenak kamerahasználati engedélyre van szüksége, hogy 3D-s térképet készíthessen az Ön környezetéről</translation>
 <translation id="6676384891291319759">Internetelérés</translation>
+<translation id="1257247502847251159">A Bravenak mikrofonhasználati engedélyre van szüksége ehhez a webhelyhez</translation>
 <translation id="1489465648257900784">A profilja nem használható, mert az a Brave egy újabb verziójából származik. Előfordulhat, hogy egyes funkciók nem érhetők el. Kérjük, adjon meg egy másik profilmappát, vagy használja a Brave újabb verzióját.</translation>
-<translation id="5450493308072741203">A &amp;Brave frissítése</translation>
 <translation id="6666624454809779082">A Brave már telepítve van az összes felhasználó számára a számítógépen.</translation>
 <translation id="5360050006043219962">Ha szeretne minden eszközén hozzáférni Brave-anyagaihoz, jelentkezzen be, majd kapcsolja be a szinkronizálást.</translation>
 <translation id="8291513491595858997">Szülőd kikapcsolta a Brave „Engedélyek webhelyek, alkalmazások és bővítmények számára” beállítását. A(z) <ph name="EXTENSION_TYPE_PARAMETER"/> nem engedélyezhető.</translation>
 <translation id="8211837073776713955">A Brave tájékoztatja arról, ha jelszavai illetéktelen kezekbe kerülnek</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
-<translation id="5253815230176279256">Brave Pay (a Braveba másolva)</translation>
+<translation id="2049565899730874086">Google Pay (a Braveba másolva)</translation>
+<translation id="3028928628792374067">A Brave kártékony programot talált a következőben: „<ph name="EXTENSION_NAME"/>”</translation>
 <translation id="2301993384336631869">A Brave frissítése megtörtént, de nem használta a böngészőt legalább 30 napja.</translation>
 <translation id="8828443087767259398">A Bravenak Bluetooth-hozzáférésre van szükséges a párosítás 
  folytatásához. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">A gyenge jelszavakat könnyű kitalálni. Engedélyezze a Brave számára, hogy <ph name="BEGIN_LINK"/> erős jelszavakat hozzon létre Önnek, és megjegyezze őket<ph name="END_LINK"/>.</translation>
 <translation id="3335606533094650083">A Bravenak engedélyre van szüksége ahhoz, hogy hozzáférjen a mikrofonhoz ennél a webhelynél</translation>
-<translation id="1785833016412082453">A Brave nem tudja ellenőrizni a bővítményeket. Próbálkozzon később.</translation>
 <translation id="1705567146636171298">A Brave frissítése</translation>
 <translation id="5499063270485366718">Ha valamelyik kép nem rendelkezik hasznos leírással, akkor a Brave igyekszik leírást adni róla. A Brave automatikusan megkapja a leírások létrehozásához szükséges képeket.</translation>
+<translation id="1008530050039597147">A Bravenak kamerahasználati engedélyre van szüksége ehhez a webhelyhez</translation>
 <translation id="1197672524850678392">Nem sikerült a Brave elindítása. Próbálkozzon újra.</translation>
 <translation id="3405035915691517126">A Brave nem tudja ellenőrizni a jelszavait. Próbálja újra 24 óra múlva.</translation>
+<translation id="5101812148953915496">A felkeresett webhelyek megjegyzik az Ön adatait a Brave bezárásáig</translation>
 <translation id="5516268345616100622">Feladatkezelő -- Brave</translation>
-<translation id="61852838583753520">A &amp;Chrome OS frissítése</translation>
 <translation id="1864557848095568223">A Brave frissítése</translation>
 <translation id="3403365884036456766">A beállításait tartalmazó fájl hibás vagy érvénytelen.
 
@@ -202,31 +214,35 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="7339898014177206373">Új ablak</translation>
 <translation id="3511996232906761537">Az Ön könyvjelzői, valamint az internetezéssel és a Bravemal kapcsolatos egyéb dolgai vannak itt.</translation>
 <translation id="5380963249588143069">Rendszergazdája úgy állította be a Braveot, hogy a(z) <ph name="ALTERNATIVE_BROWSER_NAME"/> böngészőt nyissa meg a(z) <ph name="TARGET_URL_HOSTNAME"/> eléréséhez.</translation>
+<translation id="38294420683216447">A Brave-profilokkal különválaszthatja minden Brave-anyagát. Így könnyebben különítheti el egymástól a munkát és a szórakozást.</translation>
 <translation id="5062123544085870375">Indítsa újra a Chrome OS-t</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="2034072705932785495">A Bravenak engedélyre van szüksége ahhoz, hogy hozzáférjen a kamerához ennél a webhelynél</translation>
+<translation id="3962395975456095331">Újraindítja a Braveot?</translation>
 <translation id="2619516027171717873">Nem lehet ugyanazt a Brave-verziót telepíteni, amely jelenleg is fut. Zárja be a Braveot, és próbálja újra.</translation>
 <translation id="3186363903915641692">{0,plural, =1{A Brave 1 percen belül újraindul}other{A Brave # percen belül újraindul}}</translation>
 <translation id="573759479754913123">A Chrome OS névjegye</translation>
 <translation id="8516116288943000095">Az adatokat is törölje a Braveból (<ph name="URL"/>)</translation>
 <translation id="5657226924540934362">Ha valamelyik beállítás nem látható ezen az oldalon, keresse a <ph name="LINK_BEGIN"/>Chrome OS beállításai<ph name="LINK_END"/> között</translation>
+<translation id="155309785154426906">Ön bekapcsolta a Biztonságos Böngészés fokozott védelemmel funkciót a fiókjában. Most töltse le Bravera is.</translation>
 <translation id="3293668930608086049">A Brave használja a kamerát és a mikrofont.</translation>
 <translation id="2827121003398607864">A Brave még jobb lett</translation>
+<translation id="8678991866891573053">A Brave olyan funkciók fejlesztésén dolgozik, amelyek ugyanazt a böngészési élményt nyújtják kevesebb adatfelhasználás mellett</translation>
 <translation id="3343095737966473035">A Brave nem az alapértelmezett böngésző</translation>
 <translation id="5477319665405831211">Szinkronizálhatja és személyre szabhatja a Braveot minden eszközén</translation>
 <translation id="5419189641394808652">A Brave nem tudta szinkronizálni az adatait, mert a szinkronizálás nem érhető el az Ön domainjénél.</translation>
 <translation id="4784414698887946907">Ezzel az eszközön lévő összes böngészési adat törlődik. Az adatok későbbi lekéréséhez jelentkezzen be a Braveba a következő e-mail-címmel: <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">A telepítőnek nem sikerült létrehoznia az ideiglenes könyvtárat. Kérjük ellenőrizze, hogy van-e elegendő hely a lemezen, és rendelkezik-e engedéllyel a szoftvertelepítésre.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
-<translation id="38898988211673781">A cookie-k és webhelyadatok törlése a Brave bezárásakor</translation>
 <translation id="1652855885539187849">Már létezik Brave-profil ezzel a fiókkal ezen az eszközön.</translation>
 <translation id="8462524920674814187">Ha a jövőben Brave-frissítéseket szeretne kapni, akkor az OS X 10.11-es vagy újabb verziójára lesz szüksége. Ezen a számítógépen az OS X 10.10 fut.</translation>
 <translation id="7963515534397191222">Nem sikerült a Brave frissítése a legújabb verzióra, így Ön lemarad az új funkciókról és biztonsági javításokról.</translation>
+<translation id="437139750042419257">A következő fiókok használhatók ennél a Brave-profilnál</translation>
 <translation id="7573289029918943991">Ha szeretné megtekinteni, hogy eszköze naprakész-e, lépjen a <ph name="LINK_BEGIN"/>Chrome OS beállításaihoz<ph name="LINK_END"/></translation>
-<translation id="6755885556185485672">A Chrome OS nem megfelelően állt le.</translation>
 <translation id="2925193881330501265"><ph name="USER_EMAIL_ADDRESS"/> néven volt bejelentkezve a Braveba. Kérjük, ugyanazzal a fiókkal jelentkezzen be újra.</translation>
 <translation id="6915252145142862992">Ez a Brave második telepítése, amelyet nem állíthat be az alapértelmezett böngészővé.</translation>
 <translation id="7685904775439037072">Miután hozzáférést biztosított a Bravenak, a webhelyek is hozzáférést kérhetnek.</translation>
+<translation id="2061155704815580583">A Bravenak helymeghatározási jogosultságra van szüksége ehhez a webhelyhez</translation>
 <translation id="9067428552314418522">Ez a fájl veszélyes, ezért a Brave letiltotta.</translation>
 <translation id="8207657266087451193">Ha valamelyik kép nem rendelkezik hasznos leírással, akkor a Brave igyekszik leírást adni róla. A Brave automatikusan megkapja a leírások létrehozásához szükséges képeket. A funkciót a beállítások között bármikor kikapcsolhatja.</translation>
 <translation id="8622246347342688645">A Brave nem tudja ellenőrizni az Ön jelszavait, mert nincs bejelentkezve</translation>
@@ -234,6 +250,7 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="89367911614620585">Ez a fájl veszélyes lehet, ezért a Brave letiltotta.</translation>
 <translation id="3360368475735266712">Jelentkezzen be, hogy szinkronizálhassa és személyre szabhassa a Braveot minden eszközén</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> előzőleg Braveot használt</translation>
+<translation id="3098618823450433881">Ha szeretne minden eszközén hozzáférni Brave böngészőhöz tartozó anyagaihoz, jelentkezzen be, majd kapcsolja be a szinkronizálást.</translation>
 <translation id="5337999052834672687">{0,plural, =1{A Braveot 1 napon belül újra kell indítani}other{A Braveot # napon belül újra kell indítani}}</translation>
 <translation id="6914496861676471566">A telepítő tömörített állománya megsérült vagy érvénytelen. Kérjük, töltse le újra a Brave böngészőt.</translation>
 <translation id="2097604701283463988">A Brave elavult</translation>
@@ -245,6 +262,8 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="6283840329609797763">A telepítés egy meg nem határozott hiba miatt nem sikerült. Kérjük, töltse le újra a Braveot.</translation>
 <translation id="2433912322225810055">Továbbá azt is szabályozza, hogy melyik oldal jelenik meg a Brave indításakor vagy a cím- és keresősávban indított kereséskor.</translation>
 <translation id="4100716194836114130">Ez az Ön Braveja</translation>
+<translation id="6208136456999964972">A Brave ablakainak bezárásakor a cookie-kat és webhelyadatokat automatikusan törli a rendszer.</translation>
+<translation id="6371875426681214174">A <ph name="BEGIN_BOLD"/>legtöbb webhelyről kijelentkezteti<ph name="END_BOLD"/> Önt a rendszer a Brave bezárásakor. Ha pedig a szinkronizálás is ki van kapcsolva, akkor <ph name="BEGIN_BOLD"/>a Brave-szolgáltatásokból és a Braveból is megtörténik a kijelentkezés<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">A Bravenak engedélyre van szüksége ahhoz, hogy hozzáférjen a kamerához és a mikrofonhoz ennél a webhelynél</translation>
 <translation id="7408085963519505752">Chrome OS – Szerződési Feltételek</translation>
 <translation id="2262856633481902138">A Brave nem tudta szinkronizálni az adatokat, mert a fiók bejelentkezési adatai elavultak.</translation>
@@ -255,18 +274,25 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="6389268239133412586">Nem sikerült a Brave frissítése</translation>
 <translation id="6368958679917195344">A Chrome OS létrejöttéhez további <ph name="BEGIN_LINK_CROS_OSS"/>nyílt forráskódú szoftverek<ph name="END_LINK_CROS_OSS"/> is hozzájárultak.</translation>
 <translation id="8986207147630327271">Munkaprofilt ad hozzá ehhez a böngészőhöz, és csak a munkaprofil felett adja át az irányítást a rendszergazdának.</translation>
-<translation id="1156157157416773301">Biztosan új Brave-profilba helyezi át a fiókot?</translation>
 <translation id="5173820533850252773">A Brave elavult</translation>
 <translation id="310518206836658214">{0,plural, =1{A Brave 1 órán belül újraindul}other{A Brave # órán belül újraindul}}</translation>
 <translation id="7863882214613921971">Link megnyi&amp;tása új Brave-lapon</translation>
 <translation id="911206726377975832">Törli a böngészési adatait is?</translation>
 <translation id="2444257125841652328">Rendszergazdája úgy állította be a Braveot, hogy másik böngészőt nyisson meg a(z) <ph name="TARGET_URL_HOSTNAME"/> eléréséhez.</translation>
+<translation id="7902365066753170041">Indítsa újra a Brave frissítéshez</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="6568793831116033768">Chrome OS rendszer</translation>
 <translation id="7977787072794666032">Előfordulhat, hogy a Brave nem működik majd megfelelően, mert a továbbiakban már nem támogatja a következő rendszereket: Windows XP és Windows Vista</translation>
 <translation id="4484434718272972655">Ki használja a Braveot?</translation>
+<translation id="7173394303099002355">Állítsa be a Brave legerősebb védelmét</translation>
 <translation id="8992261409816268381">A Brave szerzői</translation>
-<translation id="6134859571175647580">Figyelmeztetés: a Brave nem tudja megakadályozni, hogy a bővítmények rögzítsék a böngészési előzményeit. A bővítmény inkognitómódban való használatának letiltásához törölje a lehetőség bejelölését.</translation>
+<translation id="479793348545936567">Ha ezt a fiókot csak egyszer szeretné használni, használhatja a vendég üzemmódot a Brave böngészőben. Ha másvalaki számára szeretne fiókot hozzáadni, <ph name="LINK_BEGIN"/>adjon hozzá új profilt <ph name="LINK_END"/><ph name="DEVICE_TYPE"/> eszközéhez.
+
+A webhelyeknek és alkalmazásoknak már megadott engedélyek vonatkozhatnak erre a fiókra is. A Brave szinkronizálási láncait a <ph name="SETTINGS_LINK_BEGIN"/>Beállításokban<ph name="SETTINGS_LINK_END"/> kezelheti.</translation>
+<translation id="5359574361379286250">Ha ezt a fiókot csak egyszer szeretné használni, használhatja a <ph name="GUEST_LINK_BEGIN"/>Vendég üzemmódot<ph name="GUEST_LINK_END"/> a Brave böngészőben. Ha másvalaki számára szeretne fiókot hozzáadni, <ph name="LINK_BEGIN"/>adjon hozzá új profilt<ph name="LINK_END"/> <ph name="DEVICE_TYPE"/> eszközéhez.
+
+A webhelyeknek és alkalmazásoknak már megadott engedélyek vonatkozhatnak erre a fiókra is. A Brave szinkronizálási láncait a <ph name="SETTINGS_LINK_BEGIN"/>Beállításokban<ph name="SETTINGS_LINK_END"/> kezelheti.</translation>
+<translation id="1299765473362724475">Figyelmeztetés: a Brave nem tudja megakadályozni, hogy a bővítmények rögzítsék a böngészési előzményeket. A bővítmény privát módban való használatának letiltásához töröld a lehetőség bejelölését.</translation>
 <translation id="1448049584457347995">A Brave biztonságosabbá tétele érdekében kikapcsoltunk néhány bővítményt, amelyek nem a(z) <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> szolgáltatásból származnak, és előfordulhat, hogy az Ön tudta nélkül lettek telepítve.</translation>
 <translation id="8848045066928358658">A Brave biztonságosabbá tétele érdekében kikapcsoltuk a következő bővítményt, amely nem a(z) <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> szolgáltatásból származik, és előfordulhat, hogy az Ön tudta nélkül lett telepítve.</translation>
 <translation id="669092380621816981">A személy böngészési adatai törlődnek az eszközről. Az adatok visszaállításához jelentkezzen be a Braveba a következő felhasználóként: <ph name="USER_EMAIL"/>.</translation>
@@ -275,5 +301,5 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Új Brave-frissítés jelent meg, amely az újraindítás után azonnal érvénybe lép.}=1{Új Brave-frissítés jelent meg, amely az újraindítás után azonnal érvénybe lép. Az inkognitóablak nem fog újra megnyílni.}other{Új Brave-frissítés jelent meg, amely az újraindítás után azonnal érvénybe lép. A(z) # inkognitóablak nem fog újra megnyílni.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Rendszergazdája arra kéri, hogy indítsa újra a Braveot a frissítés alkalmazásához.}=1{Rendszergazdája arra kéri, hogy indítsa újra a Braveot a frissítés alkalmazásához. Az inkognitóablak nem fog újra megnyílni.}other{Rendszergazdája arra kéri, hogy indítsa újra a Braveot a frissítés alkalmazásához. A(z) # inkognitóablak nem fog újra megnyílni.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{A rendszergazda előírta, hogy újra kell indítania a Braveot a frissítés alkalmazásához.}=1{A rendszergazda előírta, hogy újra kell indítania a Braveot a frissítés alkalmazásához. Az inkognitóablak nem fog újra megnyílni.}other{A rendszergazda előírta, hogy újra kell indítania a Braveot a frissítés alkalmazásához. A(z) # inkognitóablak nem fog újra megnyílni.}}</translation>
-<translation id="7914115000169617076">Már majdnem naprakész! Indítsa újra a Braveot a frissítés befejezéséhez. A privát ablakok nem fognak újra megnyílni.</translation>
+<translation id="2176087127109773485">Kezelheti a bejelentkezett Brave-láncait. A Brave szinkronizációs láncokat a Brave böngésző, a Play Áruház, a Gmail, és még sok más alkalmazás használja. Ha valaki más számára is szeretne fiókot hozzáadni, például egy családtagnak, akkor adjon hozzá egy új profilt ehhez: <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Tudjon meg többet<ph name="LINK_END"/></translation>
 </translationbundle>

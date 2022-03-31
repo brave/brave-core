@@ -1,45 +1,43 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/media/router/media_router_feature.h"
 
-#include "chrome/common/pref_names.h"
-#include "extensions/common/feature_switch.h"
+#include "build/build_config.h"
+#include "content/public/browser/browser_context.h"
 
 #define MediaRouterEnabled MediaRouterEnabled_ChromiumImpl
-#include "../../../../../../chrome/browser/media/router/media_router_feature.cc"  // NOLINT
+#define GlobalMediaControlsCastStartStopEnabled \
+  GlobalMediaControlsCastStartStopEnabled_ChromiumImpl
+#include "src/chrome/browser/media/router/media_router_feature.cc"
+#undef GlobalMediaControlsCastStartStopEnabled
 #undef MediaRouterEnabled
 
 namespace media_router {
 
-// Media router pref can be toggled using kLoadMediaRouterComponentExtension
-// on Desktop
-void UpdateMediaRouterPref(content::BrowserContext* context) {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  user_prefs::UserPrefs::Get(context)->SetBoolean(
-      ::prefs::kEnableMediaRouter,
-      extensions::FeatureSwitch::load_media_router_component_extension()
-          ->IsEnabled());
+bool MediaRouterEnabled(content::BrowserContext* context) {
+#if BUILDFLAG(IS_ANDROID)
+  return MediaRouterEnabled_ChromiumImpl(context);
+#else
+  if (!base::FeatureList::IsEnabled(kMediaRouter)) {
+    return false;
+  }
+  const PrefService::Preference* pref = GetMediaRouterPref(context);
+  CHECK(pref->GetValue()->is_bool());
+  return pref->GetValue()->GetBool();
 #endif
 }
 
-bool MediaRouterEnabled(content::BrowserContext* context) {
-#if defined(OS_ANDROID)
-  return MediaRouterEnabled_ChromiumImpl(context);
-#elif BUILDFLAG(ENABLE_EXTENSIONS)
-  UpdateMediaRouterPref(context);
-  const PrefService::Preference* pref = GetMediaRouterPref(context);
-  bool allowed = false;
-  CHECK(pref->GetValue()->GetAsBoolean(&allowed));
-
-  // The component extension cannot be loaded in guest sessions.
-  // crbug.com/756243
-  return allowed && !Profile::FromBrowserContext(context)->IsGuestSession();
-#else
-  return false;
-#endif  // defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
+// This override forces GlobalMediaControlsCastStartStopEnabled to use our
+// version of MediaRouterEnabled, rather than the original. The implementation
+// of this function must be kept in sync with the original implementation.
+bool GlobalMediaControlsCastStartStopEnabled(content::BrowserContext* context) {
+  return base::FeatureList::IsEnabled(kGlobalMediaControlsCastStartStop) &&
+         MediaRouterEnabled(context);
 }
+#endif
 
 }  // namespace media_router

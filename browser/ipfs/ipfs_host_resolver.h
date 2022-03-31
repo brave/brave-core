@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/callback_forward.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "net/base/host_port_pair.h"
 #include "net/base/network_isolation_key.h"
 #include "net/dns/public/dns_query_type.h"
@@ -49,7 +50,7 @@ class IPFSHostResolver : public network::ResolveHostClientBase {
   void OnComplete(
       int result,
       const net::ResolveErrorInfo& resolve_error_info,
-      const base::Optional<net::AddressList>& resolved_addresses) override;
+      const absl::optional<net::AddressList>& resolved_addresses) override;
   void OnTextResults(const std::vector<std::string>& text_results) override;
 
   std::string resolving_host_;

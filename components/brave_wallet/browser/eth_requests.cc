@@ -7,76 +7,12 @@
 
 #include <utility>
 
-#include "base/json/json_writer.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-
-namespace {
-
-base::Value GetJsonRpcDictionary(const std::string& method,
-                                 base::Value* params) {
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-  dictionary.SetKey("jsonrpc", base::Value("2.0"));
-  dictionary.SetKey("method", base::Value(method));
-  dictionary.SetKey("params", std::move(*params));
-  // I don't think we need to use this param, but it is required,
-  // so always set it to 1 for now..
-  dictionary.SetKey("id", base::Value(1));
-  return dictionary;
-}
-
-std::string GetJSON(const base::Value& dictionary) {
-  std::string json;
-  base::JSONWriter::Write(dictionary, &json);
-  return json;
-}
-
-std::string GetJsonRpcNoParams(const std::string& method) {
-  base::Value params(base::Value::Type::LIST);
-  base::Value dictionary = GetJsonRpcDictionary(method, &params);
-  return GetJSON(dictionary);
-}
-
-std::string GetJsonRpc1Param(const std::string& method,
-                             const std::string& val) {
-  base::Value params(base::Value::Type::LIST);
-  params.Append(base::Value(val));
-  base::Value dictionary = GetJsonRpcDictionary(method, &params);
-  return GetJSON(dictionary);
-}
-
-std::string GetJsonRpc2Params(const std::string& method,
-                              const std::string& val1,
-                              const std::string& val2) {
-  base::Value params(base::Value::Type::LIST);
-  params.Append(base::Value(val1));
-  params.Append(base::Value(val2));
-  base::Value dictionary = GetJsonRpcDictionary(method, &params);
-  return GetJSON(dictionary);
-}
-
-std::string GetJsonRpc3Params(const std::string& method,
-                              const std::string& val1,
-                              const std::string& val2,
-                              const std::string& val3) {
-  base::Value params(base::Value::Type::LIST);
-  params.Append(base::Value(val1));
-  params.Append(base::Value(val2));
-  params.Append(base::Value(val3));
-  base::Value dictionary = GetJsonRpcDictionary(method, &params);
-  return GetJSON(dictionary);
-}
-
-void AddKeyIfNotEmpty(base::Value* dict,
-                      const std::string& name,
-                      const std::string& val) {
-  if (!val.empty()) {
-    dict->SetKey(name, base::Value(val));
-  }
-}
-
-}  // namespace
+#include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
+
+namespace eth {
 
 std::string web3_clientVersion() {
   return GetJsonRpcNoParams("web3_clientVersion");
@@ -96,6 +32,10 @@ std::string net_listening() {
 
 std::string net_peerCount() {
   return GetJsonRpcNoParams("net_peerCount");
+}
+
+std::string eth_chainId() {
+  return GetJsonRpcNoParams("eth_chainId");
 }
 
 std::string eth_protocolVersion() {
@@ -128,6 +68,22 @@ std::string eth_accounts() {
 
 std::string eth_blockNumber() {
   return GetJsonRpcNoParams("eth_blockNumber");
+}
+
+std::string eth_feeHistory(int num_blocks,
+                           const std::string& head,
+                           const std::vector<double>& reward_percentiles) {
+  base::Value percentile_values(base::Value::Type::LIST);
+  for (size_t i = 0; i < reward_percentiles.size(); ++i) {
+    percentile_values.Append(base::Value(reward_percentiles[i]));
+  }
+
+  base::Value params(base::Value::Type::LIST);
+  params.Append(base::Value(num_blocks));
+  params.Append(base::Value(head));
+  params.Append(std::move(percentile_values));
+  base::Value dictionary = GetJsonRpcDictionary("eth_feeHistory", &params);
+  return GetJSON(dictionary);
 }
 
 std::string eth_getBalance(const std::string& address,
@@ -249,8 +205,7 @@ std::string eth_estimateGas(const std::string& from_address,
                             const std::string& gas,
                             const std::string& gas_price,
                             const std::string& val,
-                            const std::string& data,
-                            const std::string& quantity_tag) {
+                            const std::string& data) {
   base::Value params(base::Value::Type::LIST);
   base::Value transaction(base::Value::Type::DICTIONARY);
   AddKeyIfNotEmpty(&transaction, "data", data);
@@ -260,7 +215,6 @@ std::string eth_estimateGas(const std::string& from_address,
   transaction.SetKey("to", base::Value(to_address));
   AddKeyIfNotEmpty(&transaction, "value", val);
   params.Append(std::move(transaction));
-  params.Append(std::move(quantity_tag));
   base::Value dictionary = GetJsonRpcDictionary("eth_estimateGas", &params);
   return GetJSON(dictionary);
 }
@@ -389,5 +343,7 @@ std::string eth_getLogs(const std::string& from_block_quantity_tag,
   base::Value dictionary = GetJsonRpcDictionary("eth_getLogs", &params);
   return GetJSON(dictionary);
 }
+
+}  // namespace eth
 
 }  // namespace brave_wallet

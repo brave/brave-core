@@ -6,14 +6,22 @@
 #ifndef BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_UPDATER_PARAMS_H_
 #define BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_UPDATER_PARAMS_H_
 
+#include <cstdint>
 #include <string>
 
-#include "base/macros.h"
+#include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 
 class BraveStatsUpdaterTest;
+class GURL;
 class PrefService;
+
+FORWARD_DECLARE_TEST(BraveStatsUpdaterTest, UsageBitstringDaily);
+FORWARD_DECLARE_TEST(BraveStatsUpdaterTest, UsageBitstringWeekly);
+FORWARD_DECLARE_TEST(BraveStatsUpdaterTest, UsageBitstringMonthly);
+FORWARD_DECLARE_TEST(BraveStatsUpdaterTest, UsageBitstringInactive);
 
 namespace brave_stats {
 
@@ -28,6 +36,8 @@ class BraveStatsUpdaterParams {
                           const std::string& ymd,
                           int woy,
                           int month);
+  BraveStatsUpdaterParams(const BraveStatsUpdaterParams&) = delete;
+  BraveStatsUpdaterParams& operator=(const BraveStatsUpdaterParams&) = delete;
   ~BraveStatsUpdaterParams();
 
   std::string GetDailyParam() const;
@@ -39,13 +49,23 @@ class BraveStatsUpdaterParams {
   std::string GetReferralCodeParam() const;
   std::string GetAdsEnabledParam() const;
   std::string GetProcessArchParam() const;
+  std::string GetWalletEnabledParam() const;
+  GURL GetUpdateURL(const GURL& base_update_url,
+                    const std::string platform_id,
+                    const std::string channel_name,
+                    const std::string full_brave_version) const;
 
   void SavePrefs();
 
  private:
   friend class ::BraveStatsUpdaterTest;
-  PrefService* stats_pref_service_;
-  PrefService* profile_pref_service_;
+  FRIEND_TEST_ALL_PREFIXES(::BraveStatsUpdaterTest, UsageBitstringDaily);
+  FRIEND_TEST_ALL_PREFIXES(::BraveStatsUpdaterTest, UsageBitstringWeekly);
+  FRIEND_TEST_ALL_PREFIXES(::BraveStatsUpdaterTest, UsageBitstringMonthly);
+  FRIEND_TEST_ALL_PREFIXES(::BraveStatsUpdaterTest, UsageBitstringInactive);
+
+  raw_ptr<PrefService> stats_pref_service_ = nullptr;
+  raw_ptr<PrefService> profile_pref_service_ = nullptr;
   ProcessArch arch_;
   std::string ymd_;
   int woy_;
@@ -56,6 +76,8 @@ class BraveStatsUpdaterParams {
   bool first_check_made_;
   std::string week_of_installation_;
   base::Time date_of_installation_;
+  base::Time wallet_last_unlocked_;
+  base::Time last_reported_wallet_unlock_;
   std::string referral_promo_code_;
   static base::Time g_current_time;
   static bool g_force_first_run;
@@ -69,15 +91,20 @@ class BraveStatsUpdaterParams {
   std::string GetLastMondayAsYMD() const;
   int GetCurrentMonth() const;
   int GetCurrentISOWeekNumber() const;
+
+  // Returns the current time, allows override from tests
   base::Time GetCurrentTimeNow() const;
+
+  // Gets the previous day, since that is the most recent time another stats
+  // ping could have fired.
+  base::Time GetReferenceTime() const;
+
   bool ShouldForceFirstRun() const;
 
   static void SetCurrentTimeForTest(const base::Time& current_time);
   static void SetFirstRunForTest(bool first_run);
   // Returns the timestamp of the browsers first run
-  static base::Time GetFirstRunTime(PrefService *pref_service);
-
-  DISALLOW_COPY_AND_ASSIGN(BraveStatsUpdaterParams);
+  static base::Time GetFirstRunTime(PrefService* pref_service);
 };
 
 }  // namespace brave_stats

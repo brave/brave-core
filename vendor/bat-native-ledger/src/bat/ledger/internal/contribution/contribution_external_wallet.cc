@@ -57,6 +57,9 @@ void ContributionExternalWallet::ContributionInfo(
     case type::ContributionProcessor::BITFLYER:
       wallet = ledger_->bitflyer()->GetWallet();
       break;
+    case type::ContributionProcessor::GEMINI:
+      wallet = ledger_->gemini()->GetWallet();
+      break;
     default:
       break;
   }
@@ -134,6 +137,9 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     case type::PublisherStatus::BITFLYER_VERIFIED:
       publisher_verified = processor == type::ContributionProcessor::BITFLYER;
       break;
+    case type::PublisherStatus::GEMINI_VERIFIED:
+      publisher_verified = processor == type::ContributionProcessor::GEMINI;
+      break;
     default:
       break;
   }
@@ -148,6 +154,15 @@ void ContributionExternalWallet::OnServerPublisherInfo(
 
     BLOG(1, "Publisher not verified");
 
+    // TODO(zenparsing): Adding a record to the pending contribution table at
+    // this point can lead to an (async) infinite loop if pending contributions
+    // are currently being flushed. In `unverified.cc`, the pending contribution
+    // processor processes the first available pending record and then sets a
+    // timer to process the next one. If another record is added before that
+    // timer expires, it can cause the flushing operation to continue
+    // indefinitely.
+
+    /*
     auto save_callback =
         std::bind(&ContributionExternalWallet::OnSavePendingContribution,
             this,
@@ -157,7 +172,6 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     contribution->publisher_key = info->publisher_key;
     contribution->amount = amount;
     contribution->type = type;
-    contribution->processor = processor;
 
     type::PendingContributionList list;
     list.push_back(std::move(contribution));
@@ -165,6 +179,8 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     ledger_->database()->SavePendingContribution(
         std::move(list),
         save_callback);
+    */
+
     callback(type::Result::LEDGER_ERROR);
     return;
   }
@@ -180,6 +196,10 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     case type::ContributionProcessor::BITFLYER:
       ledger_->bitflyer()->StartContribution(contribution_id, std::move(info),
                                              amount, start_callback);
+      break;
+    case type::ContributionProcessor::GEMINI:
+      ledger_->gemini()->StartContribution(contribution_id, std::move(info),
+                                           amount, start_callback);
       break;
     default:
       NOTREACHED();

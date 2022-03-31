@@ -6,14 +6,13 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_CLIENT_HELPER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_CLIENT_HELPER_H_
 
-#include "bat/ads/ads_client.h"
-
 namespace ads {
 
-class AdsClientHelper {
+class AdsClient;
+
+class AdsClientHelper final {
  public:
   explicit AdsClientHelper(AdsClient* ads_client);
-
   ~AdsClientHelper();
 
   static AdsClient* Get();

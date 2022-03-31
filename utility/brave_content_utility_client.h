@@ -14,10 +14,13 @@
 class BraveContentUtilityClient : public ChromeContentUtilityClient {
  public:
   BraveContentUtilityClient();
+  BraveContentUtilityClient(const BraveContentUtilityClient&) = delete;
+  BraveContentUtilityClient& operator=(const BraveContentUtilityClient&) =
+      delete;
   ~BraveContentUtilityClient() override;
 
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveContentUtilityClient);
+  // ChromeContentUtilityClient overrides:
+  void RegisterMainThreadServices(mojo::ServiceFactory& services) override;
 };
 
 #endif  // BRAVE_UTILITY_BRAVE_CONTENT_UTILITY_CLIENT_H_

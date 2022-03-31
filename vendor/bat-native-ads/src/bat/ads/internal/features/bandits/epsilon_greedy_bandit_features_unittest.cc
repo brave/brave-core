@@ -4,7 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"
-#include "bat/ads/internal/unittest_base.h"
+
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

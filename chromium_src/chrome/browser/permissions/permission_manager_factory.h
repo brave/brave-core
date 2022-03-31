@@ -13,7 +13,7 @@
       const;                                                              \
   KeyedService* BuildServiceInstanceFor
 
-#include "../../../../../chrome/browser/permissions/permission_manager_factory.h"
+#include "src/chrome/browser/permissions/permission_manager_factory.h"
 #undef BuildServiceInstanceFor
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PERMISSIONS_PERMISSION_MANAGER_FACTORY_H_

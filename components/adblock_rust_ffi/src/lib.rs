@@ -1,5 +1,6 @@
+use adblock::blocker::Redirection;
 use adblock::engine::Engine;
-use adblock::resources::{Resource, ResourceType, MimeType};
+use adblock::resources::{MimeType, Resource, ResourceType};
 use core::ptr;
 use libc::size_t;
 use std::ffi::CStr;
@@ -38,15 +39,35 @@ pub unsafe extern "C" fn set_domain_resolver(resolver: DomainResolverCallback) -
         }
     }
 
-    adblock::url_parser::set_domain_resolver(Box::new(RemoteResolverImpl { remote_callback: resolver })).is_ok()
+    adblock::url_parser::set_domain_resolver(Box::new(RemoteResolverImpl {
+        remote_callback: resolver,
+    }))
+    .is_ok()
 }
 
 /// Create a new `Engine`.
 #[no_mangle]
+pub unsafe extern "C" fn engine_create_from_buffer(
+    data: *const c_char,
+    data_size: size_t,
+) -> *mut Engine {
+    let data: &[u8] = std::slice::from_raw_parts(data as *const u8, data_size);
+    let rules = std::str::from_utf8(data).unwrap_or_else(|_| {
+        eprintln!("Failed to parse filter list with invalid UTF-8 content");
+        ""
+    });
+    engine_create_from_str(rules)
+}
+
+#[no_mangle]
 pub unsafe extern "C" fn engine_create(rules: *const c_char) -> *mut Engine {
-    let rules = CStr::from_ptr(rules).to_str().unwrap();
+    let rules = CStr::from_ptr(rules).to_str().unwrap_or("");
+    engine_create_from_str(rules)
+}
+
+fn engine_create_from_str(rules: &str) -> *mut Engine {
     let mut filter_set = adblock::lists::FilterSet::new(false);
-    filter_set.add_filter_list(&rules, adblock::lists::FilterFormat::Standard);
+    filter_set.add_filter_list(&rules, Default::default());
     let engine = Engine::from_filter_set(filter_set, true);
     Box::into_raw(Box::new(engine))
 }
@@ -90,10 +111,12 @@ pub unsafe extern "C" fn engine_match(
     *did_match_exception |= blocker_result.exception.is_some();
     *did_match_important |= blocker_result.important;
     *redirect = match blocker_result.redirect {
-        Some(x) => match CString::new(x) {
+        Some(Redirection::Resource(x)) => match CString::new(x) {
             Ok(y) => y.into_raw(),
             _ => ptr::null_mut(),
         },
+        // Ignore `redirect-url` for now.
+        Some(Redirection::Url(_)) => ptr::null_mut(),
         None => ptr::null_mut(),
     };
 }
@@ -115,18 +138,12 @@ pub unsafe extern "C" fn engine_get_csp_directives(
     let resource_type = CStr::from_ptr(resource_type).to_str().unwrap();
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    if let Some(directive) = engine.get_csp_directives(url, host, tab_host, resource_type, Some(third_party)) {
-        let ptr = CString::new(directive)
-            .expect("Error: CString::new()")
-            .into_raw();
-        std::mem::forget(ptr);
-        ptr
+    if let Some(directive) =
+        engine.get_csp_directives(url, host, tab_host, resource_type, Some(third_party))
+    {
+        CString::new(directive).expect("Error: CString::new()").into_raw()
     } else {
-        let ptr = CString::new("")
-            .expect("Error: CString::new()")
-            .into_raw();
-        std::mem::forget(ptr);
-        ptr
+        CString::new("").expect("Error: CString::new()").into_raw()
     }
 }
 
@@ -234,12 +251,11 @@ pub unsafe extern "C" fn engine_url_cosmetic_resources(
     let url = CStr::from_ptr(url).to_str().unwrap();
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    let ptr = CString::new(serde_json::to_string(&engine.url_cosmetic_resources(url))
-        .unwrap_or_else(|_| "".into()))
-        .expect("Error: CString::new()")
-        .into_raw();
-    std::mem::forget(ptr);
-    ptr
+    CString::new(
+        serde_json::to_string(&engine.url_cosmetic_resources(url)).unwrap_or_else(|_| "".into()),
+    )
+    .expect("Error: CString::new()")
+    .into_raw()
 }
 
 /// Returns a stylesheet containing all generic cosmetic rules that begin with any of the provided class and id selectors
@@ -270,5 +286,7 @@ pub unsafe extern "C" fn engine_hidden_class_id_selectors(
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
     let stylesheet = engine.hidden_class_id_selectors(&classes, &ids, &exceptions);
-    CString::new(serde_json::to_string(&stylesheet).unwrap_or_else(|_| "".into())).expect("Error: CString::new()").into_raw()
+    CString::new(serde_json::to_string(&stylesheet).unwrap_or_else(|_| "".into()))
+        .expect("Error: CString::new()")
+        .into_raw()
 }

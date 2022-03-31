@@ -8,15 +8,16 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/extension_whitelist_service.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "extensions/common/extension.h"
 #include "ui/base/l10n/l10n_util.h"
 
 #define GetDialogTitle GetDialogTitle_ChromiumImpl
-#include "../../../../../chrome/browser/extensions/extension_install_prompt.cc"
+#include "src/chrome/browser/extensions/extension_install_prompt.cc"
 #undef GetDialogTitle
 
 std::u16string ExtensionInstallPrompt::Prompt::GetDialogTitle() const {
   if (!g_brave_browser_process->extension_whitelist_service()->IsVetted(
-          extension())) {
+          extension()->id())) {
     if (type_ == ExtensionInstallPrompt::INSTALL_PROMPT ||
         type_ == ExtensionInstallPrompt::WEBSTORE_WIDGET_PROMPT) {
       return l10n_util::GetStringUTF16(

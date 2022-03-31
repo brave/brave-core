@@ -80,6 +80,17 @@ class IpfsGetResolveMethodListFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class IpfsRotateKeyFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.rotateKey", UNKNOWN)
+
+ protected:
+  void OnKeyRotated(bool result);
+
+  ~IpfsRotateKeyFunction() override {}
+  ResponseAction Run() override;
+};
+
 class IpfsAddIpnsKeyFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("ipfs.addIpnsKey", UNKNOWN)
@@ -168,6 +179,17 @@ class IpfsResolveIPFSURIFunction : public ExtensionFunction {
 
  protected:
   ~IpfsResolveIPFSURIFunction() override {}
+  ResponseAction Run() override;
+};
+
+class IpfsValidateGatewayUrlFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("ipfs.validateGatewayUrl", UNKNOWN)
+
+ protected:
+  void OnGatewayValidated(bool success);
+
+  ~IpfsValidateGatewayUrlFunction() override {}
   ResponseAction Run() override;
 };
 

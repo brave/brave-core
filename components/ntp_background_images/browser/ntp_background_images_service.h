@@ -12,6 +12,7 @@
 
 #include "base/files/file_path.h"
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/timer/timer.h"
@@ -28,6 +29,7 @@ class PrefService;
 namespace ntp_background_images {
 
 struct NTPBackgroundImagesData;
+struct NTPSponsoredImagesData;
 
 class NTPBackgroundImagesService {
  public:
@@ -35,6 +37,7 @@ class NTPBackgroundImagesService {
    public:
     // Called whenever ntp background images component is updated.
     virtual void OnUpdated(NTPBackgroundImagesData* data) = 0;
+    virtual void OnUpdated(NTPSponsoredImagesData* data) = 0;
     // Called when SR campaign ended.
     virtual void OnSuperReferralEnded() = 0;
    protected:
@@ -58,7 +61,8 @@ class NTPBackgroundImagesService {
   void RemoveObserver(Observer* observer);
   bool HasObserver(Observer* observer);
 
-  NTPBackgroundImagesData* GetBackgroundImagesData(bool super_referral) const;
+  NTPBackgroundImagesData* GetBackgroundImagesData() const;
+  NTPSponsoredImagesData* GetBrandedImagesData(bool super_referral) const;
 
   bool test_data_used() const { return test_data_used_; }
 
@@ -66,12 +70,14 @@ class NTPBackgroundImagesService {
   std::string GetSuperReferralThemeName() const;
   std::string GetSuperReferralCode() const;
 
-  std::vector<std::string> GetTopSitesFaviconList() const;
+  void CheckNTPSIComponentUpdateIfNeeded();
 
  private:
   friend class TestNTPBackgroundImagesService;
   friend class NTPBackgroundImagesServiceTest;
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest, InternalDataTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           MultipleCampaignsTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            WithDefaultReferralCodeTest1);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
@@ -91,26 +97,37 @@ class NTPBackgroundImagesService {
       NTPBackgroundImagesServiceTest,
       CheckRecoverShutdownWhileMappingTableFetchingWithNonDefaultCode);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           ActiveOptedInWithNTPBackgoundOption);
+                           SINotActiveInitially);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           NotActiveInitially);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           NotActiveWithBadData);
+                           SINotActiveWithBadData);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            NotActiveOptedOut);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            IsActiveOptedIn);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            ActiveInitiallyOptedIn);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           ActiveOptedInWithNTPBackgoundOption);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BasicTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           BINotActiveInitially);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           BINotActiveWithBadData);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           BINotActiveWithNTPBackgoundOptionOptedOut);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, SponsoredImagesTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest,
                            BasicSuperReferralDataTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BackgroundImagesTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           GetCurrentWallpaperTest);
 
-  void OnComponentReady(bool is_super_referral,
-                        const base::FilePath& installed_dir);
-  void OnGetComponentJsonData(bool is_super_referral,
-                              const std::string& json_string);
+  void OnSponsoredComponentReady(bool is_super_referral,
+                                 const base::FilePath& installed_dir);
+  void OnGetSponsoredComponentJsonData(bool is_super_referral,
+                                       const std::string& json_string);
+  void OnComponentReady(const base::FilePath& installed_dir);
+  void OnGetComponentJsonData(const std::string& json_string);
   void OnMappingTableComponentReady(const base::FilePath& installed_dir);
   void OnPreferenceChanged(const std::string& pref_name);
   void OnGetMappingTableData(const std::string& json_string);
@@ -119,11 +136,11 @@ class NTPBackgroundImagesService {
   bool IsValidSuperReferralComponentInfo(
       const base::Value& component_info) const;
 
-  void CacheTopSitesFaviconList();
-  void CheckSIComponentUpdate(const std::string& component_id);
+  void CheckImagesComponentUpdate(const std::string& component_id);
 
   // virtual for test.
   virtual void CheckSuperReferralComponent();
+  virtual void RegisterBackgroundImagesComponent();
   virtual void RegisterSponsoredImagesComponent();
   virtual void RegisterSuperReferralComponent();
   virtual void DownloadSuperReferralMappingTable();
@@ -131,16 +148,20 @@ class NTPBackgroundImagesService {
   virtual void UnRegisterSuperReferralComponent();
   virtual void MarkThisInstallIsNotSuperReferralForever();
 
+  base::Time last_update_check_time_;
   base::RepeatingTimer si_update_check_timer_;
-  std::vector<std::string> top_site_favicon_list_;
+  base::RepeatingClosure si_update_check_callback_;
   bool test_data_used_ = false;
-  component_updater::ComponentUpdateService* component_update_service_;
-  PrefService* local_pref_;
+  raw_ptr<component_updater::ComponentUpdateService> component_update_service_ =
+      nullptr;
+  raw_ptr<PrefService> local_pref_ = nullptr;
+  base::FilePath bi_installed_dir_;
+  std::unique_ptr<NTPBackgroundImagesData> bi_images_data_;
   base::FilePath si_installed_dir_;
   base::FilePath sr_installed_dir_;
   base::ObserverList<Observer>::Unchecked observer_list_;
-  std::unique_ptr<NTPBackgroundImagesData> si_images_data_;
-  std::unique_ptr<NTPBackgroundImagesData> sr_images_data_;
+  std::unique_ptr<NTPSponsoredImagesData> si_images_data_;
+  std::unique_ptr<NTPSponsoredImagesData> sr_images_data_;
   PrefChangeRegistrar pref_change_registrar_;
   // This is only used for registration during initial(first) SR component
   // download. After initial download is done, it's cached to

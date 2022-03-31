@@ -11,6 +11,7 @@ import { getActionsForDispatch } from '../api/getActions'
 import store from '../store'
 import { getNewTabData, getGridSitesData } from './default/data/storybookState'
 import getTodayState from './default/data/todayStorybookState'
+import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
 
 const doNothingDispatch: Dispatch = (action: any) => action
 
@@ -19,14 +20,13 @@ function getActions () {
 }
 
 // TODO(petemill): privateCDN should be in /common/
-import { getUnpaddedAsDataUrl } from '../../brave_extension/extension/brave_extension/background/today/privateCDN'
+import { getUnpaddedAsDataUrl } from '../../common/privateCDN'
 import getFTXStorybookState from '../widgets/ftx/ftx_storybook_state'
 
-// @ts-ignore
+// @ts-expect-error
 window.braveStorybookUnpadUrl = async function UnpadUrl (paddedUrl: string, mimeType = 'image/jpg'): Promise<string> {
   const response = await fetch(paddedUrl)
   const blob = await response.blob()
-  // @ts-ignore (Blob.arrayBuffer does exist)
   const buffer = await blob.arrayBuffer()
   const dataUrl = await getUnpaddedAsDataUrl(buffer, mimeType)
   return dataUrl
@@ -65,12 +65,13 @@ export const Regular = () => {
       saveShowToday={doNothing}
       saveShowRewards={doNothing}
       saveShowBinance={doNothing}
-      saveShowTogether={doNothing}
+      saveShowBraveTalk={doNothing}
       saveShowGemini={doNothing}
       saveShowCryptoDotCom={doNothing}
       saveShowFTX={doNothing}
       saveBrandedWallpaperOptIn={doNothing}
       saveSetAllStackWidgets={doNothing}
+      getBraveNewsDisplayAd={getBraveNewsDisplayAd}
     />
   )
 }

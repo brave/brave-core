@@ -19,7 +19,7 @@
 #include "ui/base/page_transition_types.h"
 #include "ui/base/resource/resource_bundle.h"
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -29,11 +29,8 @@ namespace brave_ads {
 
 AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
+      content::WebContentsUserData<AdsTabHelper>(*web_contents),
       tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)),
-      ads_service_(nullptr),
-      is_active_(false),
-      is_browser_active_(true),
-      should_process_(false),
       weak_factory_(this) {
   if (!tab_id_.is_valid()) {
     return;
@@ -43,7 +40,7 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
   ads_service_ = AdsServiceFactory::GetForProfile(profile);
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   BrowserList::AddObserver(this);
   OnBrowserSetLastActive(BrowserList::GetInstance()->GetLastActive());
 #endif
@@ -51,26 +48,18 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
 }
 
 AdsTabHelper::~AdsTabHelper() {
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   BrowserList::RemoveObserver(this);
 #endif
 }
 
-bool AdsTabHelper::IsAdsEnabled() const {
-  if (!ads_service_ || !ads_service_->IsEnabled()) {
-    return false;
-  }
-
-  return true;
-}
-
 void AdsTabHelper::TabUpdated() {
-  if (!IsAdsEnabled()) {
+  if (!ads_service_) {
     return;
   }
 
-  ads_service_->OnTabUpdated(tab_id_, web_contents()->GetURL(), is_active_,
-                             is_browser_active_);
+  ads_service_->OnTabUpdated(tab_id_, web_contents()->GetVisibleURL(),
+                             is_active_, is_browser_active_);
 }
 
 void AdsTabHelper::RunIsolatedJavaScript(
@@ -89,22 +78,26 @@ void AdsTabHelper::RunIsolatedJavaScript(
 }
 
 void AdsTabHelper::OnJavaScriptHtmlResult(base::Value value) {
-  DCHECK(ads_service_ && ads_service_->IsEnabled());
+  if (!ads_service_) {
+    return;
+  }
 
-  DCHECK(value.is_string());
-  std::string html;
-  value.GetAsString(&html);
-
+  if (!value.is_string()) {
+    return;
+  }
+  const std::string& html = value.GetString();
   ads_service_->OnHtmlLoaded(tab_id_, redirect_chain_, html);
 }
 
 void AdsTabHelper::OnJavaScriptTextResult(base::Value value) {
-  DCHECK(ads_service_ && ads_service_->IsEnabled());
+  if (!ads_service_) {
+    return;
+  }
 
-  DCHECK(value.is_string());
-  std::string text;
-  value.GetAsString(&text);
-
+  if (!value.is_string()) {
+    return;
+  }
+  const std::string& text = value.GetString();
   ads_service_->OnTextLoaded(tab_id_, redirect_chain_, text);
 }
 
@@ -112,7 +105,7 @@ void AdsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   DCHECK(navigation_handle);
 
-  if (!IsAdsEnabled() || !navigation_handle->IsInMainFrame() ||
+  if (!ads_service_ || !navigation_handle->IsInMainFrame() ||
       !navigation_handle->HasCommitted() || !tab_id_.is_valid()) {
     return;
   }
@@ -138,17 +131,12 @@ void AdsTabHelper::DidFinishNavigation(
   RunIsolatedJavaScript(render_frame_host);
 }
 
-void AdsTabHelper::DocumentOnLoadCompletedInMainFrame(
-    content::RenderFrameHost* render_frame_host) {
-  if (!IsAdsEnabled() || !should_process_) {
+void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
+  if (!should_process_) {
     return;
   }
 
-  std::unique_ptr<dom_distiller::SourcePageHandleWebContents> handle =
-      std::make_unique<dom_distiller::SourcePageHandleWebContents>(
-          web_contents(), false);
-
-  RunIsolatedJavaScript(render_frame_host);
+  RunIsolatedJavaScript(web_contents()->GetMainFrame());
 }
 
 void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
@@ -164,7 +152,7 @@ void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
 
 void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
                                        const content::MediaPlayerId& id) {
-  if (!IsAdsEnabled()) {
+  if (!ads_service_) {
     return;
   }
 
@@ -175,7 +163,7 @@ void AdsTabHelper::MediaStoppedPlaying(
     const MediaPlayerInfo& video_type,
     const content::MediaPlayerId& id,
     WebContentsObserver::MediaStoppedReason reason) {
-  if (!IsAdsEnabled()) {
+  if (!ads_service_) {
     return;
   }
 
@@ -206,7 +194,7 @@ void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
 }
 
 void AdsTabHelper::WebContentsDestroyed() {
-  if (!IsAdsEnabled()) {
+  if (!ads_service_) {
     return;
   }
 
@@ -214,7 +202,7 @@ void AdsTabHelper::WebContentsDestroyed() {
   ads_service_ = nullptr;
 }
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 // components/brave_ads/browser/background_helper_android.cc handles Android
 void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
   if (!browser) {
@@ -253,6 +241,6 @@ void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
 }
 #endif
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(AdsTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(AdsTabHelper);
 
 }  // namespace brave_ads

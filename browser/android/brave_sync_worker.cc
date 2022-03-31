@@ -17,13 +17,15 @@
 #include "brave/build/android/jni_headers/BraveSyncWorker_jni.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
-#include "brave/components/brave_sync/profile_sync_service_helper.h"
-#include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
+#include "brave/components/brave_sync/qr_code_data.h"
+#include "brave/components/brave_sync/qr_code_validator.h"
+#include "brave/components/brave_sync/sync_service_impl_helper.h"
+#include "brave/components/sync/driver/brave_sync_service_impl.h"
 
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
-#include "chrome/browser/sync/profile_sync_service_factory.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_user_settings.h"
@@ -33,7 +35,7 @@
 
 #include "third_party/leveldatabase/src/include/leveldb/db.h"
 
-// TODO(alexeybarabash): consider use of java ProfileSyncService methods:
+// TODO(alexeybarabash): consider use of java SyncServiceImpl methods:
 //    addSyncStateChangedListener
 //    removeSyncStateChangedListener
 //    requestStart
@@ -94,6 +96,8 @@ base::android::ScopedJavaLocalRef<jstring> BraveSyncWorker::GetSyncCodeWords(
   if (sync_service)
     sync_code = sync_service->GetOrCreateSyncCode();
 
+  CHECK(brave_sync::crypto::IsPassphraseValid(sync_code));
+
   return base::android::ConvertUTF8ToJavaString(env, sync_code);
 }
 
@@ -116,10 +120,10 @@ void BraveSyncWorker::SaveCodeWords(
   passphrase_ = str_passphrase;
 }
 
-syncer::BraveProfileSyncService* BraveSyncWorker::GetSyncService() const {
-  return ProfileSyncServiceFactory::IsSyncAllowed(profile_)
-             ? static_cast<syncer::BraveProfileSyncService*>(
-                 ProfileSyncServiceFactory::GetForProfile(profile_))
+syncer::BraveSyncServiceImpl* BraveSyncWorker::GetSyncService() const {
+  return SyncServiceFactory::IsSyncAllowed(profile_)
+             ? static_cast<syncer::BraveSyncServiceImpl*>(
+                   SyncServiceFactory::GetForProfile(profile_))
              : nullptr;
 }
 
@@ -127,11 +131,10 @@ syncer::BraveProfileSyncService* BraveSyncWorker::GetSyncService() const {
 // bring the logic of enabling / disabling sync from deskop to Android
 
 void BraveSyncWorker::RequestSync(JNIEnv* env) {
-  syncer::SyncService* service =
-      ProfileSyncServiceFactory::GetForProfile(profile_);
+  syncer::SyncService* service = SyncServiceFactory::GetForProfile(profile_);
 
-  if (service && !sync_service_observer_.IsObserving(service)) {
-    sync_service_observer_.Add(service);
+  if (service && !sync_service_observer_.IsObservingSource(service)) {
+    sync_service_observer_.AddObservation(service);
   }
 
   // Mark Sync as requested by the user. It might already be requested, but
@@ -212,8 +215,8 @@ void BraveSyncWorker::SetSyncV2MigrateNoticeDismissed(
 void BraveSyncWorker::OnResetDone() {
   syncer::SyncService* sync_service = GetSyncService();
   if (sync_service) {
-    if (sync_service_observer_.IsObserving(sync_service)) {
-      sync_service_observer_.Remove(sync_service);
+    if (sync_service_observer_.IsObservingSource(sync_service)) {
+      sync_service_observer_.RemoveObservation(sync_service);
     }
   }
 }
@@ -226,8 +229,8 @@ void BraveSyncWorker::SetEncryptionPassphrase(syncer::SyncService* service) {
   syncer::SyncUserSettings* sync_user_settings = service->GetUserSettings();
   DCHECK(!sync_user_settings->IsPassphraseRequired());
 
-  if (sync_user_settings->IsEncryptEverythingAllowed() &&
-      !sync_user_settings->IsUsingSecondaryPassphrase() &&
+  if (sync_user_settings->IsCustomPassphraseAllowed() &&
+      !sync_user_settings->IsUsingExplicitPassphrase() &&
       !sync_user_settings->IsTrustedVaultKeyRequired()) {
     sync_user_settings->SetEncryptionPassphrase(this->passphrase_);
     ProfileMetrics::LogProfileSyncInfo(
@@ -293,11 +296,7 @@ JNI_BraveSyncWorker_GetSeedHexFromWords(
   return base::android::ConvertUTF8ToJavaString(env, sync_code_hex);
 }
 
-static base::android::ScopedJavaLocalRef<jstring>
-JNI_BraveSyncWorker_GetWordsFromSeedHex(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& seed_hex) {
-  std::string str_seed_hex = base::android::ConvertJavaStringToUTF8(seed_hex);
+std::string GetWordsFromSeedHex(const std::string& str_seed_hex) {
   DCHECK(!str_seed_hex.empty());
 
   std::vector<uint8_t> bytes;
@@ -307,7 +306,8 @@ JNI_BraveSyncWorker_GetWordsFromSeedHex(
     if (bytes.size(), SEED_BYTES_COUNT) {
       sync_code_words = brave_sync::crypto::PassphraseFromBytes32(bytes);
       if (sync_code_words.empty()) {
-        VLOG(1) << __func__ << " PassphraseFromBytes32 failed for " << seed_hex;
+        VLOG(1) << __func__ << " PassphraseFromBytes32 failed for "
+                << str_seed_hex;
       }
     } else {
       LOG(ERROR) << "wrong seed bytes " << bytes.size();
@@ -317,7 +317,59 @@ JNI_BraveSyncWorker_GetWordsFromSeedHex(
     VLOG(1) << __func__ << " HexStringToBytes failed for " << str_seed_hex;
   }
 
+  return sync_code_words;
+}
+
+static base::android::ScopedJavaLocalRef<jstring>
+JNI_BraveSyncWorker_GetWordsFromSeedHex(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& seed_hex) {
+  std::string str_seed_hex = base::android::ConvertJavaStringToUTF8(seed_hex);
+  std::string sync_code_words = GetWordsFromSeedHex(str_seed_hex);
   return base::android::ConvertUTF8ToJavaString(env, sync_code_words);
+}
+
+static base::android::ScopedJavaLocalRef<jstring>
+JNI_BraveSyncWorker_GetQrDataJson(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& seed_hex) {
+  std::string str_seed_hex = base::android::ConvertJavaStringToUTF8(seed_hex);
+  DCHECK(!str_seed_hex.empty());
+
+  const std::string qr_code_string =
+      brave_sync::QrCodeData::CreateWithActualDate(str_seed_hex)->ToJson();
+
+  return base::android::ConvertUTF8ToJavaString(env, qr_code_string);
+}
+
+int JNI_BraveSyncWorker_GetQrCodeValidationResult(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& json_qr) {
+  std::string str_json_qr = base::android::ConvertJavaStringToUTF8(json_qr);
+  DCHECK(!str_json_qr.empty());
+  return static_cast<int>(
+      brave_sync::QrCodeDataValidator::ValidateQrDataJson(str_json_qr));
+}
+
+static base::android::ScopedJavaLocalRef<jstring>
+JNI_BraveSyncWorker_GetSeedHexFromQrJson(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& json_qr) {
+  std::string str_json_qr = base::android::ConvertJavaStringToUTF8(json_qr);
+  DCHECK(!str_json_qr.empty());
+
+  auto qr_data = brave_sync::QrCodeData::FromJson(str_json_qr);
+
+  std::string result;
+  if (qr_data) {
+    result = qr_data->sync_code_hex;
+  } else {
+    result = str_json_qr;
+  }
+
+  DCHECK(!GetWordsFromSeedHex(result).empty());
+
+  return base::android::ConvertUTF8ToJavaString(env, result);
 }
 
 }  // namespace android

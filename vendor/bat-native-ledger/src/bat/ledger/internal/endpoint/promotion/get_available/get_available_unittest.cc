@@ -80,6 +80,7 @@ TEST_F(GetAvailableTest, ServerOK) {
           const std::vector<std::string>& corrupted_promotions) {
         type::Promotion expected_promotion;
         expected_promotion.id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
+        expected_promotion.created_at = 1591628685;
         expected_promotion.expires_at = 1602169485;
         expected_promotion.version = 5;
         expected_promotion.suggestions = 120;

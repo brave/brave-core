@@ -7,9 +7,6 @@ include_rules = [
 
 # Existing exceptions
 specific_include_rules = {
-  "named_third_party_registry_factory.cc": [
-    "+chrome/browser/profiles/profile.h",
-  ],
   "perf_predictor_tab_helper.cc": [
     "+brave/browser/android/brave_shields_content_settings.h",
   ],

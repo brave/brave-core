@@ -14,14 +14,6 @@ transpile_web_ui("brave_extension") {
       rebase_path("background.ts"),
     ],
     [
-      "content_dapps",
-      rebase_path("content_dapps.ts"),
-    ],
-    [
-      "content_cosmetic",
-      rebase_path("content_cosmetic.ts"),
-    ],
-    [
       "content_element_picker",
       rebase_path("content_element_picker.ts"),
     ],
@@ -38,18 +30,28 @@ transpile_web_ui("brave_extension") {
   # plus any other relative path we want these files to live in the extension
   extra_relative_path = "/brave_extension/out"
 
+  # WDP node_modules is not an ancestor of its generated code, which still
+  # contains module imports.
+  # TODO(petemill): Use already-packed output from WDP, or use webpack for all
+  # of it, not just some of it.
+  extra_modules =
+      [ rebase_path("//brave/vendor/web-discovery-project/node_modules") ]
+
   public_asset_path = "/out/"
+
+  deps =
+      [ "//brave/components/brave_extension:web_discovery_project_resources" ]
 }
 
 if (is_mac) {
   group("brave_extension_framework_bundle_data") {
     deps = []
-    foreach(locale, locales) {
+    foreach(locale, platform_pak_locales) {
       deps += [ ":brave_extension_framework_bundle_data_${locale}" ]
     }
   }
 
-  foreach(locale, locales) {
+  foreach(locale, platform_pak_locales) {
     bundle_data("brave_extension_framework_bundle_data_${locale}") {
       locale = string_replace(locale, "-", "_")
       source_locale = string_replace(locale, "nb", "no")
@@ -60,11 +62,11 @@ if (is_mac) {
 } else {
   group("locales") {
     deps = []
-    foreach(locale, locales) {
+    foreach(locale, platform_pak_locales) {
       deps += [ ":locales_${locale}" ]
     }
   }
-  foreach(locale, locales) {
+  foreach(locale, platform_pak_locales) {
     copy("locales_${locale}") {
       locale = string_replace(locale, "-", "_")
       source_locale = string_replace(locale, "nb", "no")

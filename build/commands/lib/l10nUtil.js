@@ -14,11 +14,11 @@ const path = require('path')
 const fs = require('fs')
 const chalk = require('chalk')
 const { JSDOM } = require("jsdom")
-const rootDir = require('./root')
+const config = require('./config')
 
 // Change to `true` for verbose console log output of GRD traversal
 const verboseLogFindGrd = false
-const srcDir = path.join(rootDir, 'src')
+const srcDir = config.srcDir
 
 // chromium_strings.grd and any of its parts files that we track localization for in transifex
 // These map to brave/app/resources/chromium_strings*.xtb
@@ -90,7 +90,10 @@ function addGrd(chromiumPath, bravePath, exclude = new Set()) {
       if (exclude.has(grdp)) {
         continue
       }
-      mapping[path.resolve(path.join(chromiumDir, grdp))] = path.resolve(path.join(braveDir, grdp))
+      const chromiumGrdpPath = path.resolve(path.join(chromiumDir, grdp))
+      const braveGrdpPath = path.resolve(path.join(braveDir, grdp))
+      // grdp files can have their own grdp parts too
+      mapping = { ...mapping, ...addGrd(chromiumGrdpPath, braveGrdpPath, exclude) }
     }
     if (verboseLogFindGrd)
       console.log("  - Added " + (Object.keys(mapping).length - 1) + " GRDP.")

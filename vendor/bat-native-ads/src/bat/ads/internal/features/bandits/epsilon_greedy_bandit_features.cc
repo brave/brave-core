@@ -6,14 +6,16 @@
 #include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"
 
 #include "base/metrics/field_trial_params.h"
-#include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model_values.h"
+#include "bat/ads/internal/ad_serving/ad_targeting/models/behavioral/bandits/epsilon_greedy_bandit_model_constants.h"
 
 namespace ads {
 namespace features {
 
 namespace {
-const char kFeatureName[] = "EpsilonGreedyBandit";
-const char kFieldTrialParameterEpsilonValue[] = "epsilon_value";
+
+constexpr char kFeatureName[] = "EpsilonGreedyBandit";
+constexpr char kFieldTrialParameterEpsilonValue[] = "epsilon_value";
+
 }  // namespace
 
 const base::Feature kEpsilonGreedyBandit{kFeatureName,

@@ -1,7 +1,7 @@
 declare namespace RewardsExtension {
   interface State {
     balance: Balance
-    currentNotification?: string
+    currentNotification?: string | number
     enabledAC: boolean
     notifications: Record<string, Notification>
     publishers: Record<string, Publisher>
@@ -27,11 +27,17 @@ declare namespace RewardsExtension {
     rewardsPanelData: State
   }
 
+  interface ScheduledCaptcha {
+    url: string
+    maxAttemptsExceeded: boolean
+  }
+
   export enum PublisherStatus {
     NOT_VERIFIED = 0,
     CONNECTED = 1,
     UPHOLD_VERIFIED = 2,
-    BITFLYER_VERIFIED = 3
+    BITFLYER_VERIFIED = 3,
+    GEMINI_VERIFIED = 4
   }
 
   interface Publisher {
@@ -64,6 +70,8 @@ declare namespace RewardsExtension {
   export interface Promotion {
     promotionId: string
     amount: number
+    createdAt: number
+    claimableUntil: number
     expiresAt: number
     status: PromotionStatus
     type: PromotionTypes
@@ -107,6 +115,7 @@ declare namespace RewardsExtension {
     result: number
     promotionId: string
     captchaImage: string
+    captchaId: string
     hint: string
   }
 
@@ -143,7 +152,7 @@ declare namespace RewardsExtension {
   }
 
   interface RecurringTips {
-    recurringTips: Record<string, number>[]
+    recurringTips: ({ publisherKey: string, amount: number })[]
   }
 
   interface PublisherBanner {
@@ -166,7 +175,7 @@ declare namespace RewardsExtension {
     wallets: Record<string, number>
   }
 
-  export type WalletType = 'anonymous' | 'uphold' | 'bitflyer'
+  export type WalletType = 'anonymous' | 'uphold' | 'bitflyer' | 'gemini'
 
   export enum WalletStatus {
     NOT_CONNECTED = 0,
@@ -187,5 +196,6 @@ declare namespace RewardsExtension {
     userName: string
     accountUrl: string
     loginUrl: string
+    activityUrl: string
   }
 }

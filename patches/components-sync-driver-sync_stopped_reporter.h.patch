@@ -1,11 +1,11 @@
 diff --git a/components/sync/driver/sync_stopped_reporter.h b/components/sync/driver/sync_stopped_reporter.h
-index a0763bc9d46d2dc159e8d7ec8a06e315ac32a104..d619cb9b9abf9a84fdc070dc013129c6719ddec6 100644
+index 0990b5b865f6ad8532110d889f75c474b3e9999f..2357cff9ccdbb8c9e00b52f1fba16547ff78216f 100644
 --- a/components/sync/driver/sync_stopped_reporter.h
 +++ b/components/sync/driver/sync_stopped_reporter.h
-@@ -32,7 +32,7 @@ class SyncStoppedReporter {
-       const std::string& user_agent,
-       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-       ResultCallback callback);
+@@ -35,7 +35,7 @@ class SyncStoppedReporter {
+   SyncStoppedReporter(const SyncStoppedReporter&) = delete;
+   SyncStoppedReporter& operator=(const SyncStoppedReporter&) = delete;
+ 
 -  ~SyncStoppedReporter();
 +  virtual ~SyncStoppedReporter();
  

@@ -8,7 +8,7 @@
 #include <algorithm>
 
 #define ToValue ToValue_ChromiumImpl
-#include "../../../../components/sync_device_info/device_info.cc"
+#include "src/components/sync_device_info/device_info.cc"
 #undef ToValue
 
 namespace syncer {

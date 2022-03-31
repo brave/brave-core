@@ -4,8 +4,9 @@ import {
   OnboardingRecovery,
   OnboardingVerify
 } from '../../components/desktop'
-import { RecoveryObject } from '../../constants/types'
+
 import { BackButton } from '../../components/shared'
+import { copyToClipboard } from '../../utils/copy-to-clipboard'
 
 export interface Props {
   recoveryPhrase: string[]
@@ -15,13 +16,15 @@ export interface Props {
   isOnboarding: boolean
 }
 
-function BackupWallet (props: Props) {
+const recoverPhraseCopiedTimeout = 5000 // 5s
+
+export function BackupWallet (props: Props) {
   const { recoveryPhrase, isOnboarding, onSubmit, onCancel, onBack } = props
   const [backupStep, setBackupStep] = React.useState<number>(0)
   const [backupTerms, setBackupTerms] = React.useState<boolean>(false)
   const [backedUp, setBackedUp] = React.useState<boolean>(false)
-  const [sortedPhrase, setSortedPhrase] = React.useState<RecoveryObject[]>([])
-  const [verifyError, setVerifyError] = React.useState<boolean>(false)
+
+  const [isRecoverPhraseCopied, setIsRecoverPhraseCopied] = React.useState(false)
 
   const nextStep = () => {
     if (backupStep === 2) {
@@ -48,63 +51,24 @@ function BackupWallet (props: Props) {
     }
   }
 
-  const selectWord = (word: RecoveryObject) => {
-    const newList = [...sortedPhrase, word]
-    setSortedPhrase(newList)
-    setVerifyError(false)
+  const onCopyToClipboard = async () => {
+    await copyToClipboard(recoveryPhrase.join(' '))
+    setIsRecoverPhraseCopied(true)
   }
 
-  const unSelectWord = (word: RecoveryObject) => {
-    const newList = sortedPhrase.filter((key) => key !== word)
-    setSortedPhrase(newList)
-  }
-
-  const shuffledPhrase = React.useMemo(() => {
-    const array = recoveryPhrase.slice().sort()
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1))
-      let temp = array[i]
-      array[i] = array[j]
-      array[j] = temp
+  React.useEffect(() => {
+    if (isRecoverPhraseCopied) {
+      const timer = setTimeout(() => {
+        setIsRecoverPhraseCopied(false)
+      }, recoverPhraseCopiedTimeout)
+      return () => clearTimeout(timer)
     }
-    return array.map((str, index) => ({ value: str, id: index + 1 }))
-  }, [recoveryPhrase])
-
-  const showError = () => {
-    setVerifyError(true)
-    setTimeout(function () { setVerifyError(false) }, 3000)
-  }
-
-  const checkPhrase = () => {
-    if (sortedPhrase.length === recoveryPhrase.length && sortedPhrase.every((v, i) => v.value === recoveryPhrase[i])) {
-      nextStep()
-    } else {
-      setSortedPhrase([])
-      showError()
-    }
-  }
-
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(recoveryPhrase.join(' '))
-    } catch (e) {
-      console.log(`Could not copy address ${e.toString()}`)
-    }
-  }
-
-  const showBackButton = React.useMemo(() => {
-    if (isOnboarding) {
-      return true
-    }
-    if (!isOnboarding && backupStep !== 0) {
-      return true
-    }
-    return false
-  }, [isOnboarding, backupStep])
+    return () => {}
+  }, [isRecoverPhraseCopied])
 
   return (
     <>
-      {showBackButton &&
+      {backupStep !== 0 &&
         <BackButton onSubmit={onGoBack} />
       }
       {backupStep === 0 &&
@@ -114,6 +78,7 @@ function BackupWallet (props: Props) {
           onCancel={onCancel}
           isBackupTermsAccepted={backupTerms}
           isOnboarding={isOnboarding}
+          recoveryPhraseLength={recoveryPhrase.length}
         />
       }
       {backupStep === 1 &&
@@ -122,18 +87,12 @@ function BackupWallet (props: Props) {
           isRecoveryTermsAccepted={backedUp}
           onSubmitTerms={checkedBox}
           recoverPhrase={recoveryPhrase}
-          onCopy={copyToClipboard}
+          isRecoverPhraseCopied={isRecoverPhraseCopied}
+          onCopy={onCopyToClipboard}
         />
       }
       {backupStep === 2 &&
-        <OnboardingVerify
-          onSubmit={checkPhrase}
-          recoveryPhrase={shuffledPhrase}
-          sortedPhrase={sortedPhrase}
-          selectWord={selectWord}
-          unSelectWord={unSelectWord}
-          hasVerifyError={verifyError}
-        />
+        <OnboardingVerify recoveryPhrase={recoveryPhrase} onNextStep={nextStep} />
       }
     </>
   )

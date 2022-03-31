@@ -6,5 +6,5 @@
 #include "brave/components/sync/engine/brave_model_type_worker.h"
 
 #define ModelTypeWorker BraveModelTypeWorker
-#include "../../../../../components/sync/engine/model_type_registry.cc"
+#include "src/components/sync/engine/model_type_registry.cc"
 #undef ModelTypeWorker

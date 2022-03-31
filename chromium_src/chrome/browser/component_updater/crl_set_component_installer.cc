@@ -4,12 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define RegisterCRLSetComponent RegisterCRLSetComponent_ChromiumImpl
-#include "../../../../../chrome/browser/component_updater/crl_set_component_installer.cc"  // NOLINT
+#include "src/chrome/browser/component_updater/crl_set_component_installer.cc"
 #undef RegisterCRLSetComponent
 
 #include "chrome/browser/browser_process.h"
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/component_updater/component_updater_utils.h"
 #include "extensions/common/constants.h"
 #endif
@@ -18,7 +18,7 @@ namespace component_updater {
 
 void OnCRLSetRegistered() {
 // https://github.com/brave/browser-android-tabs/issues/857
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   component_updater::BraveOnDemandUpdate(crl_set_extension_id);
 #endif
 }

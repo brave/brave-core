@@ -6,8 +6,9 @@
 
 #import <Foundation/Foundation.h>
 
+#include <tuple>
+
 #include "base/mac/bundle_locations.h"
-#include "base/macros.h"
 #include "base/no_destructor.h"
 #include "base/strings/sys_string_conversions.h"
 #include "components/version_info/version_info.h"
@@ -43,7 +44,7 @@ std::string GetChannelName(WithExtendedStable with_extended_stable) {
 }
 
 void CacheChannelInfo() {
-  ignore_result(GetChannelName(chrome::WithExtendedStable(false)));
+  std::ignore = GetChannelName(chrome::WithExtendedStable(false));
 }
 
 version_info::Channel GetChannelByName(const std::string& channel) {

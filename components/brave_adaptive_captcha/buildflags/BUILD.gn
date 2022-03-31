@@ -1,0 +1,7 @@
+import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
+import("//build/buildflag_header.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "BRAVE_ADAPTIVE_CAPTCHA_ENABLED=$brave_adaptive_captcha_enabled" ]
+}

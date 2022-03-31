@@ -16,28 +16,30 @@ import sys
 
 import git_cl
 
-def main(args):
-  """Runs clang-format and gn format on the current changelist."""
-  parser = git_cl.OptionParser()
-  parser.parse_args([])
 
-  # Change the current working directory before calling so that it
-  # shows the correct base.
-  settings = git_cl.settings
-  previous_cwd = os.getcwd()
-  os.chdir(settings.GetRoot())
-  try:
-      cmd = ['cl', 'format'] + args
-      print('git ' + ' '.join(cmd))
-      git_cl.RunGit(cmd)
-  except:
-    e = sys.exc_info()[1]
-    print('Could not run format: %s' % e.message)
-    return 1
-  finally:
-    os.chdir(previous_cwd)
-  print('Formatting done.')
-  return 0
+def main(args):
+    """Runs clang-format and gn format on the current changelist."""
+    parser = git_cl.OptionParser()
+    parser.parse_args([])
+
+    # Change the current working directory before calling so that it
+    # shows the correct base.
+    settings = git_cl.settings
+    previous_cwd = os.getcwd()
+    os.chdir(settings.GetRoot())
+    try:
+        cmd = ['cl', 'format'] + args
+        print('git ' + ' '.join(cmd))
+        git_cl.RunGit(cmd)
+    except:
+        e = sys.exc_info()[1]
+        print('Could not run format: %s' % e.message)
+        return 1
+    finally:
+        os.chdir(previous_cwd)
+    print('Formatting done.')
+    return 0
+
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))

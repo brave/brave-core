@@ -7,6 +7,7 @@ Resolves
 - [ ] There is a [ticket](https://github.com/brave/brave-browser/issues) for my issue
 - [ ] Used Github [auto-closing keywords](https://docs.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) in the PR description above
 - [ ] Wrote a good [PR/commit description](https://google.github.io/eng-practices/review/developer/cl-descriptions.html)
+- [ ] Squashed any review feedback or "fixup" commits before merge, so that history is a record of what happened in the repo, not your PR
 - [ ] Added appropriate labels (`QA/Yes` or `QA/No`; `release-notes/include` or `release-notes/exclude`; `OS/...`) to the associated issue
 - [ ] Checked the PR locally: `npm run test -- brave_browser_tests`, `npm run test -- brave_unit_tests`, `npm run lint`, `npm run gn_check`, `npm run tslint`
 - [ ] Ran `git rebase master` (if needed)

@@ -6,7 +6,7 @@
 #include "build/build_config.h"
 #include "extensions/buildflags/buildflags.h"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #include "ui/native_theme/native_theme.h"
 
 #define IDR_DEFAULT_FAVICON_32 IDR_DEFAULT_FAVICON
@@ -19,6 +19,7 @@
 // Thus we exclude desktop related code from it for Android builds.
 #if !BUILDFLAG(ENABLE_EXTENSIONS)
 // Exclude extension headers to avoid build errors
+#define BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_
 #define EXTENSIONS_BROWSER_EXTENSION_REGISTRY_H_
 #define EXTENSIONS_COMMON_CONSTANTS_H_
 #define EXTENSIONS_COMMON_MANIFEST_H_
@@ -76,14 +77,14 @@ ui::NativeTheme* GetNativeTheme(content::WebContents* web_contents) {
 }  // namespace webui
 #endif  // !defined(TOOLKIT_VIEWS)
 
-#endif  // #if defined(OS_ANDROID)
+#endif  // #if BUILDFLAG(IS_ANDROID)
 
-#include "../../../../../../chrome/browser/ui/webui/favicon_source.cc"
+#include "src/chrome/browser/ui/webui/favicon_source.cc"
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 #if !BUILDFLAG(ENABLE_EXTENSIONS)
 #undef EXTENSIONS_BROWSER_EXTENSION_REGISTRY_H_
 #undef EXTENSIONS_COMMON_CONSTANTS_H_
 #undef EXTENSIONS_COMMON_MANIFEST_H_
 #endif  // #if !BUILDFLAG(ENABLE_EXTENSIONS)
-#endif  // #if defined(OS_ANDROID)
+#endif  // #if BUILDFLAG(IS_ANDROID)

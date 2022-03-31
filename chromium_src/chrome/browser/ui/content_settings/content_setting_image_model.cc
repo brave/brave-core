@@ -9,7 +9,7 @@
 
 #define GenerateContentSettingImageModels \
   GenerateContentSettingImageModels_ChromiumImpl
-#include "../../../../../../chrome/browser/ui/content_settings/content_setting_image_model.cc"
+#include "src/chrome/browser/ui/content_settings/content_setting_image_model.cc"
 #undef GenerateContentSettingImageModels
 
 std::vector<std::unique_ptr<ContentSettingImageModel>>

@@ -9,7 +9,7 @@
 #include "ui/views/style/typography_provider.h"
 
 #define ChromeTypographyProvider ChromeTypographyProvider_ChromiumImpl
-#include "../../../../../../chrome/browser/ui/views/chrome_typography_provider.h"
+#include "src/chrome/browser/ui/views/chrome_typography_provider.h"
 #undef ChromeTypographyProvider
 
 class ChromeTypographyProvider : public ChromeTypographyProvider_ChromiumImpl {
@@ -17,13 +17,13 @@ class ChromeTypographyProvider : public ChromeTypographyProvider_ChromiumImpl {
   using ChromeTypographyProvider_ChromiumImpl::
       ChromeTypographyProvider_ChromiumImpl;
 
+  ChromeTypographyProvider(const ChromeTypographyProvider&) = delete;
+  ChromeTypographyProvider& operator=(const ChromeTypographyProvider&) = delete;
+
   // TypographyProvider:
   SkColor GetColor(const views::View& view,
                    int context,
                    int style) const override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(ChromeTypographyProvider);
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_CHROME_TYPOGRAPHY_PROVIDER_H_

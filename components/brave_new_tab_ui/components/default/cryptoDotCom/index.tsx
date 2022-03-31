@@ -83,14 +83,14 @@ interface Props {
   onOptInMarkets: (show: boolean) => void
 }
 interface ChartConfig {
-  data: Array<any>
+  data: any[]
   chartHeight: number
   chartWidth: number
 }
 
 class CryptoDotCom extends React.PureComponent<Props, State> {
   private refreshInterval: any
-  private topMovers: string[] = Object.keys(currencyNames)
+  private readonly topMovers: string[] = Object.keys(currencyNames)
 
   constructor (props: Props) {
     super(props)
@@ -102,7 +102,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   // This is a temporary function only necessary for MVP
   // Merges losers/gainers into one table
   transformLosersGainers = ({ losers = [], gainers = [] }: Record<string, AssetRanking[]>): Record<string, AssetRanking> => {
-    const losersGainersMerged = [ ...losers, ...gainers ]
+    const losersGainersMerged = [...losers, ...gainers]
     return losersGainersMerged.reduce((mergedTable: object, asset: AssetRanking) => {
       let { pair: assetName, ...assetRanking } = asset
       assetName = assetName.split('_')[0]

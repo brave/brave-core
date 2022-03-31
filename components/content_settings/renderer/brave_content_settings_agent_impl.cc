@@ -11,8 +11,8 @@
 #include <vector>
 
 #include "base/callback_helpers.h"
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
-#include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -27,6 +27,7 @@
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_frame.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "url/origin.h"
 #include "url/url_constants.h"
 
 namespace content_settings {
@@ -86,21 +87,25 @@ BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
 
 BraveContentSettingsAgentImpl::~BraveContentSettingsAgentImpl() {}
 
-void BraveContentSettingsAgentImpl::DidCommitProvisionalLoad(
-    ui::PageTransition transition) {
-  temporarily_allowed_scripts_ =
-      std::move(preloaded_temporarily_allowed_scripts_);
-  ContentSettingsAgentImpl::DidCommitProvisionalLoad(transition);
-}
-
 bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
     const GURL& script_url) {
   // Check if scripts from this origin are temporily allowed or not.
   // Also matches the full script URL to support data URL cases which we use
   // the full URL to allow it.
-  return base::Contains(temporarily_allowed_scripts_,
-                        script_url.GetOrigin().spec()) ||
-         base::Contains(temporarily_allowed_scripts_, script_url.spec());
+  bool allow = base::Contains(temporarily_allowed_scripts_,
+                              url::Origin::Create(script_url).Serialize()) ||
+               base::Contains(temporarily_allowed_scripts_, script_url.spec());
+  if (!allow) {
+    // Also check rules in the main frame, because this frame rules may be out
+    // of sync.
+    content::RenderFrame* main_frame = render_frame()->GetMainRenderFrame();
+    if (main_frame && main_frame != render_frame()) {
+      allow = static_cast<BraveContentSettingsAgentImpl*>(
+                  ContentSettingsAgentImpl::Get(main_frame))
+                  ->IsScriptTemporilyAllowed(script_url);
+    }
+  }
+  return allow;
 }
 
 void BraveContentSettingsAgentImpl::BraveSpecificDidBlockJavaScript(
@@ -121,6 +126,10 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
   allow = allow || IsBraveShieldsDown(frame, secondary_url) ||
           IsScriptTemporilyAllowed(secondary_url);
 
+  if (!allow) {
+    blocked_script_url_ = secondary_url;
+  }
+
   return allow;
 }
 
@@ -133,66 +142,57 @@ void BraveContentSettingsAgentImpl::DidNotAllowScript() {
   ContentSettingsAgentImpl::DidNotAllowScript();
 }
 
-bool BraveContentSettingsAgentImpl::UseEphemeralStorageSync(
-    StorageType storage_type) {
+blink::WebSecurityOrigin
+BraveContentSettingsAgentImpl::GetEphemeralStorageOriginSync() {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
-    return false;
-
-  if (storage_type != StorageType::kLocalStorage &&
-      storage_type != StorageType::kSessionStorage)
-    return false;
+    return {};
 
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
 
   if (!frame || IsFrameWithOpaqueOrigin(frame))
-    return false;
+    return {};
+
+  auto frame_origin = url::Origin(frame->GetSecurityOrigin());
+  const auto ephemeral_storage_origin_it =
+      cached_ephemeral_storage_origins_.find(frame_origin);
+  if (ephemeral_storage_origin_it != cached_ephemeral_storage_origins_.end())
+    return ephemeral_storage_origin_it->second;
 
   auto top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
-  if (net::registry_controlled_domains::SameDomainOrHost(
-          top_origin, url::Origin(frame->GetSecurityOrigin()),
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
-    return false;
+  // If first party ephemeral storage is enabled, we should always ask the
+  // browser if a frame should use ephemeral storage or not.
+  if (!base::FeatureList::IsEnabled(
+          net::features::kBraveFirstPartyEphemeralStorage) &&
+      net::registry_controlled_domains::SameDomainOrHost(
+          top_origin, frame_origin,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    return {};
+  }
 
-  return  // block 3p
-      !ContentSettingsAgentImpl::AllowStorageAccessSync(storage_type) &&
-      // allow 1p
-      AllowStorageAccessForMainFrameSync(storage_type);
+  absl::optional<url::Origin> optional_ephemeral_storage_origin;
+  GetContentSettingsManager().AllowEphemeralStorageAccess(
+      routing_id(), frame_origin, frame->GetDocument().SiteForCookies(),
+      top_origin, &optional_ephemeral_storage_origin);
+  blink::WebSecurityOrigin ephemeral_storage_origin(
+      optional_ephemeral_storage_origin
+          ? blink::WebSecurityOrigin(*optional_ephemeral_storage_origin)
+          : blink::WebSecurityOrigin());
+  cached_ephemeral_storage_origins_[frame_origin] = ephemeral_storage_origin;
+  return ephemeral_storage_origin;
 }
 
 bool BraveContentSettingsAgentImpl::AllowStorageAccessSync(
     StorageType storage_type) {
   bool result = ContentSettingsAgentImpl::AllowStorageAccessSync(storage_type);
-
-  if (result || UseEphemeralStorageSync(storage_type))
+  if (result)
     return true;
 
+  if (storage_type == StorageType::kLocalStorage ||
+      storage_type == StorageType::kSessionStorage) {
+    return !GetEphemeralStorageOriginSync().IsNull();
+  }
+
   return false;
-}
-
-bool BraveContentSettingsAgentImpl::AllowStorageAccessForMainFrameSync(
-    StorageType storage_type) {
-  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
-
-  if (IsFrameWithOpaqueOrigin(frame))
-    return false;
-
-  bool result = false;
-
-  StoragePermissionsKey key(url::Origin(frame->GetSecurityOrigin()),
-                            storage_type);
-  const auto permissions = cached_storage_permissions_.find(key);
-  if (permissions != cached_storage_permissions_.end())
-    return permissions->second;
-
-  // check for block all by looking at top domain only
-  GetContentSettingsManager().AllowStorageAccess(
-      routing_id(), ConvertToMojoStorageType(storage_type),
-      frame->GetDocument().TopFrameOrigin(),
-      url::Origin(frame->GetDocument().TopFrameOrigin()).GetURL(),
-      frame->GetDocument().TopFrameOrigin(), &result);
-  cached_storage_permissions_[key] = result;
-
-  return result;
 }
 
 bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
@@ -239,6 +239,49 @@ bool BraveContentSettingsAgentImpl::AllowFingerprinting(
   }
 
   return GetBraveFarblingLevel() != BraveFarblingLevel::MAXIMUM;
+}
+
+bool BraveContentSettingsAgentImpl::IsCosmeticFilteringEnabled(
+    const GURL& url) {
+  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+  GURL secondary_url = GURL();
+
+  const auto& rules = content_setting_rules_->cosmetic_filtering_rules;
+  ContentSetting setting = CONTENT_SETTING_DEFAULT;
+  const GURL& primary_url = GetOriginOrURL(frame);
+
+  for (const auto& rule : rules) {
+    if (rule.primary_pattern.Matches(primary_url) &&
+        rule.secondary_pattern.Matches(secondary_url)) {
+      setting = rule.GetContentSetting();
+      break;
+    }
+  }
+
+  return base::FeatureList::IsEnabled(
+             brave_shields::features::kBraveAdblockCosmeticFiltering) &&
+         !IsBraveShieldsDown(frame, secondary_url) &&
+         (setting != CONTENT_SETTING_ALLOW);
+}
+
+bool BraveContentSettingsAgentImpl::IsFirstPartyCosmeticFilteringEnabled(
+    const GURL& url) {
+  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+  GURL secondary_url = GURL("https://firstParty/");
+
+  const auto& rules = content_setting_rules_->cosmetic_filtering_rules;
+  ContentSetting setting = CONTENT_SETTING_DEFAULT;
+  const GURL& primary_url = GetOriginOrURL(frame);
+
+  for (const auto& rule : rules) {
+    if (rule.primary_pattern.Matches(primary_url) &&
+        rule.secondary_pattern.Matches(secondary_url)) {
+      setting = rule.GetContentSetting();
+      break;
+    }
+  }
+
+  return setting == CONTENT_SETTING_BLOCK;
 }
 
 BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
@@ -307,7 +350,7 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool play_requested) {
 
 void BraveContentSettingsAgentImpl::SetAllowScriptsFromOriginsOnce(
     const std::vector<std::string>& origins) {
-  preloaded_temporarily_allowed_scripts_ = std::move(origins);
+  temporarily_allowed_scripts_ = origins;
 }
 
 void BraveContentSettingsAgentImpl::BindBraveShieldsReceiver(

@@ -26,7 +26,7 @@ import {
 } from '../../../helpers'
 
 interface Props {
-  noScriptInfo: Array<any>
+  noScriptInfo: any[]
   shouldBlock: boolean
 }
 
@@ -40,11 +40,11 @@ export default class NoScriptList extends React.PureComponent<Props, {}> {
   }
 
   setBlockState (url: string, maybeBlock: boolean) {
-    return
+
   }
 
   setBlockStateGroup (hostname: string, maybeBlock: boolean) {
-    return
+
   }
 
   getBlockScriptText = (haveUserInteracted: boolean, shouldBlock: boolean) => {
@@ -62,9 +62,9 @@ export default class NoScriptList extends React.PureComponent<Props, {}> {
     )
   }
 
-  getGroupedOrDetachedScriptsLoop = (nestedScriptInfo: Array<any>, shouldBlock: boolean) => {
+  getGroupedOrDetachedScriptsLoop = (nestedScriptInfo: any[], shouldBlock: boolean) => {
     return (
-      nestedScriptInfo.map((nestedScript: Array<any>, nestedKey: number) => {
+      nestedScriptInfo.map((nestedScript: any[], nestedKey: number) => {
         const nestedScriptInfoUrl = nestedScript[0]
         const nestedScriptInfoUrlData = nestedScript[1]
         if (nestedScriptInfoUrlData.willBlock !== shouldBlock) {
@@ -75,7 +75,7 @@ export default class NoScriptList extends React.PureComponent<Props, {}> {
     )
   }
 
-  getGroupedScriptsRow = (script: Array<any>, key: number, shouldBlock: boolean) => {
+  getGroupedScriptsRow = (script: any[], key: number, shouldBlock: boolean) => {
     const urlWithNestedScriptInfo = getHostname(script[0])
     const nestedScriptInfo = script[1]
     const hasNestedScriptInfo = filterNoScriptInfoByBlockedState(nestedScriptInfo, shouldBlock).length >= 2
@@ -104,7 +104,7 @@ export default class NoScriptList extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    return this.noScriptInfo.map((script: Array<any>, key: number) => {
+    return this.noScriptInfo.map((script: any[], key: number) => {
       const scriptData = script[1]
       const url = scriptData[0][0]
       const scriptInfo = scriptData[0][1]

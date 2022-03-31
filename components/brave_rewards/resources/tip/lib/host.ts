@@ -2,9 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { addWebUIListener } from 'chrome://resources/js/cr.m'
+import { loadTimeData } from '../../../../common/loadTimeData'
 import { OnboardingCompletedStore } from '../../shared/lib/onboarding_completed_store'
 
-import { createStateManager } from './state_manager'
+import { createStateManager } from '../../shared/lib/state_manager'
 
 import {
   Host,
@@ -53,7 +55,7 @@ function getDialogArgs (): DialogArgs {
 
 function addWebUIListeners (listeners: Record<string, any>) {
   for (const [name, listener] of Object.entries(listeners)) {
-    self.cr.addWebUIListener(name, listener)
+    addWebUIListener(name, listener)
   }
 }
 
@@ -87,6 +89,19 @@ export function createHost (): Host {
 
     externalWalletUpdated (externalWalletInfo: ExternalWalletInfo) {
       stateManager.update({ externalWalletInfo })
+    },
+
+    tipProcessed (amount: number) {
+      stateManager.update({
+        tipProcessed: true,
+        tipAmount: amount
+      })
+    },
+
+    tipFailed () {
+      stateManager.update({
+        hostError: { type: 'ERR_TIP_FAILED' }
+      })
     },
 
     publisherBannerUpdated (publisherInfo: PublisherInfo) {
@@ -164,8 +179,6 @@ export function createHost (): Host {
 
   })
 
-  self.i18nTemplate.process(document, self.loadTimeData)
-
   // Expose a symbol-keyed method for testing the display of
   // error messaging which may be difficult to reproduce.
   self[Symbol.for('setTipDialogErrorForTesting')] =
@@ -187,7 +200,7 @@ export function createHost (): Host {
     },
 
     getString (key: string) {
-      return self.loadTimeData.getString(key)
+      return loadTimeData.getString(key)
     },
 
     getDialogArgs () {
@@ -232,13 +245,19 @@ export function createHost (): Host {
       chrome.send('onTip', [
         dialogArgs.publisherKey,
         amount,
-        kind === 'monthly' ? true : false
+        kind === 'monthly'
       ])
 
-      stateManager.update({
-        tipProcessed: true,
-        tipAmount: amount
-      })
+      // Gemini currently has up to a 10-minute delay on the balance
+      // actually being moved from the user's account.
+      // If the tipping banner doesn't hear back within 3 seconds,
+      // we consider the transaction as non-errored and show the success UI.
+      setTimeout(() => {
+        stateManager.update({
+          tipProcessed: true,
+          tipAmount: amount
+        })
+      }, 3000)
     },
 
     shareTip (target: ShareTarget) {

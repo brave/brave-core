@@ -6,10 +6,10 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_DATA_DATA_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_DATA_DATA_H_
 
+#include "bat/ads/internal/ml/data/data_types.h"
+
 namespace ads {
 namespace ml {
-
-enum class DataType { TEXT_DATA = 0, VECTOR_DATA = 1 };
 
 class Data {
  public:

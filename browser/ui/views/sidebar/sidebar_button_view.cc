@@ -4,15 +4,22 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/views/controls/focus_ring.h"
 
-SidebarButtonView::SidebarButtonView(Delegate* delegate) : delegate_(delegate) {
+SidebarButtonView::SidebarButtonView(Delegate* delegate,
+                                     const std::u16string& accessible_name)
+    : delegate_(delegate) {
   // Locate image at center of the button.
   SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
   SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
   DCHECK(GetInstallFocusRingOnFocus());
-  focus_ring()->SetColor(gfx::kBraveBlurple300);
+  views::FocusRing::Get(this)->SetColor(gfx::kBraveBlurple300);
+
+  // Views resulting in focusable nodes later on in the accessibility tree need
+  // to have an accessible name for screen readers to see what they are about.
+  SetAccessibleName(accessible_name);
 }
 
 SidebarButtonView::~SidebarButtonView() = default;
@@ -27,3 +34,6 @@ std::u16string SidebarButtonView::GetTooltipText(const gfx::Point& p) const {
 
   return delegate_->GetTooltipTextFor(this);
 }
+
+BEGIN_METADATA(SidebarButtonView, views::ImageButton)
+END_METADATA

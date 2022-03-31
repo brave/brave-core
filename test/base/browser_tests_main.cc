@@ -8,10 +8,10 @@
 #include "brave/test/base/brave_test_launcher_delegate.h"
 #include "build/build_config.h"
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include "base/test/test_switches.h"
 #include "base/win/win_util.h"
-#endif  // defined(OS_WIN)
+#endif  // BUILDFLAG(IS_WIN)
 
 int main(int argc, char** argv) {
   base::CommandLine::Init(argc, argv);
@@ -22,14 +22,14 @@ int main(int argc, char** argv) {
     parallel_jobs /= 2U;
   }
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   // Enable high-DPI for interactive tests where the user is expected to
   // manually verify results.
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
           switches::kTestLauncherInteractive)) {
     base::win::EnableHighDPISupport();
   }
-#endif  // defined(OS_WIN)
+#endif  // BUILDFLAG(IS_WIN)
 
   ChromeTestSuiteRunner runner;
   BraveTestLauncherDelegate delegate(&runner);

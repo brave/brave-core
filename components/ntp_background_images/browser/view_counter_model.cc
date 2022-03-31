@@ -7,34 +7,66 @@
 
 #include "base/check_op.h"
 #include "base/logging.h"
+#include "base/rand_util.h"
 
 namespace ntp_background_images {
 
 ViewCounterModel::ViewCounterModel() {
-  Reset();
+  count_to_branded_wallpaper_ = kInitialCountToBrandedWallpaper;
 }
 
 ViewCounterModel::~ViewCounterModel() = default;
 
+void ViewCounterModel::SetCampaignsTotalBrandedImageCount(
+    const std::vector<size_t>& campaigns_total_image_count) {
+  campaigns_total_branded_image_count_ = campaigns_total_image_count;
+  total_campaign_count_ = campaigns_total_branded_image_count_.size();
+  for (size_t i = 0; i < total_campaign_count_; ++i) {
+    campaigns_current_branded_image_index_.push_back(0);
+  }
+  // Pick the first campaign randomly.
+  current_campaign_index_ = base::RandInt(0, total_campaign_count_ - 1);
+}
+
+std::tuple<size_t, size_t> ViewCounterModel::GetCurrentBrandedImageIndex()
+    const {
+  return {current_campaign_index_,
+          campaigns_current_branded_image_index_[current_campaign_index_]};
+}
+
 bool ViewCounterModel::ShouldShowBrandedWallpaper() const {
-  if (ignore_count_to_branded_wallpaper_)
+  if (always_show_branded_wallpaper_)
     return true;
+
+  if (!show_branded_wallpaper_)
+    return false;
 
   return count_to_branded_wallpaper_ == 0;
 }
 
-void ViewCounterModel::ResetCurrentWallpaperImageIndex() {
-  current_wallpaper_image_index_ = 0;
+void ViewCounterModel::RegisterPageView() {
+  RegisterPageViewForBrandedImages();
+  RegisterPageViewForBackgroundImages();
 }
 
-void ViewCounterModel::RegisterPageView() {
-  DCHECK_NE(-1, total_image_count_);
+void ViewCounterModel::RegisterPageViewForBrandedImages() {
+  // NTP SI/SR component is not ready.
+  if (total_campaign_count_ == 0)
+    return;
 
-  if (ignore_count_to_branded_wallpaper_) {
-    current_wallpaper_image_index_++;
-    current_wallpaper_image_index_ %= total_image_count_;
+  // In SR mode, SR image is always visible regardless of
+  if (always_show_branded_wallpaper_) {
+    // SR uses only one campaign.
+    DCHECK_EQ(1UL, total_campaign_count_);
+    campaigns_current_branded_image_index_[0]++;
+    campaigns_current_branded_image_index_[0] %=
+        campaigns_total_branded_image_count_[0];
     return;
   }
+
+  // User turned off "Show Sponsored Images" option.
+  if (!show_branded_wallpaper_)
+    return;
 
   // When count is `0` then UI is free to show
   // the branded wallpaper, until the next time `RegisterPageView`
@@ -45,18 +77,45 @@ void ViewCounterModel::RegisterPageView() {
   if (count_to_branded_wallpaper_ < 0) {
     // Reset count and increse image index for next time.
     count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
-    current_wallpaper_image_index_++;
-    current_wallpaper_image_index_ %= total_image_count_;
+    campaigns_current_branded_image_index_[current_campaign_index_]++;
+    campaigns_current_branded_image_index_[current_campaign_index_] %=
+        campaigns_total_branded_image_count_[current_campaign_index_];
+
+    // Increse campaign index for next time.
+    current_campaign_index_++;
+    current_campaign_index_ %= total_campaign_count_;
+    return;
   }
 }
 
-void ViewCounterModel::Reset(bool use_initial_count) {
-  count_to_branded_wallpaper_ =
-      use_initial_count ? kInitialCountToBrandedWallpaper
-                        : kRegularCountToBrandedWallpaper;
+void ViewCounterModel::RegisterPageViewForBackgroundImages() {
+  // NTP BI component is not ready.
+  if (total_image_count_ == 0)
+    return;
+
+  if (!show_wallpaper_)
+    return;
+
+  // We don't show NTP BI in SR mode.
+  if (always_show_branded_wallpaper_)
+    return;
+
+  // Don't count when SI will be visible.
+  if (show_branded_wallpaper_ && count_to_branded_wallpaper_ == 0)
+    return;
+
+  // Increase background image index
+  current_wallpaper_image_index_++;
+  current_wallpaper_image_index_ %= total_image_count_;
+}
+
+void ViewCounterModel::Reset() {
   current_wallpaper_image_index_ = 0;
-  total_image_count_ = -1;
-  ignore_count_to_branded_wallpaper_ = false;
+  total_image_count_ = 0;
+  always_show_branded_wallpaper_ = false;
+  current_campaign_index_ = 0;
+  campaigns_total_branded_image_count_.clear();
+  campaigns_current_branded_image_index_.clear();
 }
 
 }  // namespace ntp_background_images
