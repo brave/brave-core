@@ -150,11 +150,14 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     return;
 
   base::CommandLine* cmd_line = base::CommandLine::ForCurrentProcess();
-  base::StringToUint64(cmd_line->HasSwitch(kBraveSessionToken)
-                           ? cmd_line->GetSwitchValueASCII(kBraveSessionToken)
-                           // https://github.com/brave/brave-browser/issues/22021
-                           : "12345",
-                       &session_key_);
+  base::StringToUint64(
+      cmd_line->HasSwitch(kBraveSessionToken)
+          ? cmd_line->GetSwitchValueASCII(kBraveSessionToken)
+          // https://github.com/brave/brave-browser/issues/22021
+          : "23456",  // this is intentionally different from the test default
+                      // of 12345 so we can still detect any switch issues in
+                      // our farbling tests
+      &session_key_);
 
   crypto::HMAC h(crypto::HMAC::SHA256);
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
