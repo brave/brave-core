@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/check.h"
 #include "bat/ads/internal/logging.h"

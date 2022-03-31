@@ -554,11 +554,9 @@ void MockLoadAdsFileResource(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, LoadAdsFileResource(_, _, _))
       .WillByDefault(Invoke([](const std::string& id, const int version,
                                LoadFileCallback callback) {
-        base::FilePath path = GetTestPath();
-        path = path.AppendASCII("resources");
-        path = path.AppendASCII(id);
+        const base::FilePath path =
+            GetTestPath().AppendASCII("resources").AppendASCII(id);
 
-        std::string value;
         base::File file(
             path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
         callback(std::move(file));

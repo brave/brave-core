@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/resources/resource.h"
 
 namespace ads {
@@ -34,6 +35,8 @@ class TextClassification final
 
  private:
   std::unique_ptr<ml::pipeline::TextProcessing> text_processing_pipeline_;
+
+  base::WeakPtrFactory<TextClassification> weak_ptr_factory_{this};
 };
 
 }  // namespace resource
