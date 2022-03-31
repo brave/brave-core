@@ -18,6 +18,8 @@ static_library("brave_federated") {
     "features.h",
     "operational_patterns.cc",
     "operational_patterns.h",
+    "operational_patterns_util.cc",
+    "operational_patterns_util.h",
   ]
 
   deps = [
@@ -33,22 +35,26 @@ static_library("brave_federated") {
   ]
 }
 
-source_set("brave_ad_notification_timing_data_store_unit_tests") {
+source_set("brave_federated_tests") {
   testonly = true
+
   sources = [
     "data_stores/ad_notification_timing_data_store_unittest.cc",
     "data_stores/data_store_unittest.cc",
     "data_stores/test_data_store.cc",
     "data_stores/test_data_store.h",
     "features_unittest.cc",
+    "operational_patterns_util_unittest.cc",
   ]
 
   deps = [
     "//base/test:test_support",
     "//brave/components/brave_federated:brave_federated",
+    "//content/test:test_support",
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//sql",
     "//sql:test_support",
+    "//third_party/re2",
   ]
 }

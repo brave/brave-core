@@ -46,18 +46,21 @@ class BraveFederatedService : public KeyedService {
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
-  void Start();
-
   DataStoreService* GetDataStoreService() const;
 
  private:
-  void InitPrefChangeRegistrar();
+  void Init();
+
   void OnPreferenceChanged(const std::string& key);
 
   bool IsFederatedLearningEnabled();
-  bool ShouldStartOperationalPatterns();
-  bool IsP3AEnabled();
   bool IsOperationalPatternsEnabled();
+  bool IsP3AEnabled();
+
+  bool ShouldStartOperationalPatterns();
+  void MaybeStartOrStopOperationalPatterns();
+  void MaybeStartOperationalPatterns();
+  void MaybeStopOperationalPatterns();
 
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<PrefService> local_state_ = nullptr;

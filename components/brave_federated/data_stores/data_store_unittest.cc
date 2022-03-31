@@ -94,12 +94,12 @@ void DataStoreTest::AddAll() {
 TEST_F(DataStoreTest, DeleteLogs) {
   AddAll();
   EXPECT_EQ(4U, CountRecords());
-  TestDataStore::IdToTestTaskLogMap test_logs;
-  test_data_store_->LoadLogs(&test_logs);
-  EXPECT_EQ(test_logs.size(), CountRecords());
+  TestDataStore::TestTaskLogMap test_task_logs;
+  test_data_store_->LoadLogs(&test_task_logs);
+  EXPECT_EQ(test_task_logs.size(), CountRecords());
   EXPECT_TRUE(test_data_store_->DeleteLogs());
   EXPECT_EQ(0U, CountRecords());
-  test_data_store_->LoadLogs(&test_logs);
+  test_data_store_->LoadLogs(&test_task_logs);
   EXPECT_EQ(0U, CountRecords());
 }
 
@@ -109,12 +109,12 @@ TEST_F(DataStoreTest, EnforceRetentionPolicy) {
 
   test_data_store_->EnforceRetentionPolicy();
 
-  TestDataStore::IdToTestTaskLogMap test_logs;
-  test_data_store_->LoadLogs(&test_logs);
+  TestDataStore::TestTaskLogMap test_task_logs;
+  test_data_store_->LoadLogs(&test_task_logs);
   EXPECT_EQ(3U, CountRecords());
 
-  auto it = test_logs.find(1);
-  EXPECT_TRUE(it == test_logs.end());
+  auto it = test_task_logs.find(1);
+  EXPECT_TRUE(it == test_task_logs.end());
 }
 
 }  // namespace brave_federated
