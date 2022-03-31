@@ -29,5 +29,22 @@ provideStrings({
   braveVpnLoading: 'One moment while loading…',
   braveVpnEditPaymentMethod: 'Edit payment method',
   braveVpnPaymentFailure: 'There was a problem with your payment',
-  braveVpnPaymentFailureReason: 'Looks like your most recent payment for did not go through. Access to this subscription will pause until the payment issue is resolved. Try to edit your payment method, or contact Brave support.'
+  braveVpnPaymentFailureReason: 'Looks like your most recent payment for did not go through. Access to this subscription will pause until the payment issue is resolved. Try to edit your payment method, or contact Brave support.',
+  braveVpnSupportEmail: 'Your email address',
+  braveVpnSupportSubject: 'Subject',
+  braveVpnSupportSubjectNotSet: 'Please choose a reason',
+  braveVpnSupportSubjectOtherConnectionProblem: 'Cannot connect to the VPN (Other error)',
+  braveVpnSupportSubjectNoInternet: 'No internet when connected',
+  braveVpnSupportSubjectSlowConnection: 'Slow connection',
+  braveVpnSupportSubjectWebsiteDoesntWork: 'Website doesn\'t work',
+  braveVpnSupportSubjectOther: 'Other',
+  braveVpnSupportBody: 'Describe your issue',
+  braveVpnSupportOptionalHeader: 'Select the info you\'re willing to share with us',
+  braveVpnSupportOptionalNotes: 'The more info you share, the easier it will be for support staff to help.',
+  braveVpnSupportOptionalNotesPrivacyPolicy: 'Privacy Policy',
+  braveVpnSupportOptionalVpnHostname: 'VPN hostname:',
+  braveVpnSupportOptionalAppVersion: 'App version:',
+  braveVpnSupportOptionalOsVersion: 'OS version:',
+  braveVpnSupportNotes: 'Support provided in partnership with Guardian.',
+  braveVpnSupportSubmit: 'Submit'
 })

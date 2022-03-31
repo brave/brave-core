@@ -40,7 +40,7 @@
     Choose another server
   </message>
 
-  <message name="IDS_BRAVE_VPN_UNABLE_CONNECT_INFO" desc="Description of which region VPN couldn't connect to"><ph name="PRODUCT_NAME">$1<ex>Brave Firewall + VPN</ex></ph> couldn't connect to the <ph name="REGION_NAME">$2<ex>Tokyo</ex></ph> server. You can try again, or choose another</message>
+  <message name="IDS_BRAVE_VPN_UNABLE_CONNECT_INFO" desc="Description of which region VPN couldn't connect to"><ph name="PRODUCT_NAME">$1<ex>Brave Firewall + VPN</ex></ph> couldn't connect to the <ph name="REGION_NAME">$2<ex>Tokyo</ex></ph> server. You can try again, or choose another.</message>
 
   <message name="IDS_BRAVE_VPN_BUY" desc="Button title to purchase vpn">
     Buy
@@ -52,7 +52,7 @@
     Powered by
   </message>
 
-  <message name="IDS_BRAVE_VPN_SETTINGS" desc="Label to show the current panel the user is on">
+  <message name="IDS_BRAVE_VPN_SETTINGS_PANEL_HEADER" desc="Text shown in header for settings panel">
     Settings
   </message>
 
@@ -110,5 +110,73 @@
 
   <message name="IDS_BRAVE_VPN_PAYMENT_FAILURE_REASON" desc="A long form on the consequence of failed payment">
     Looks like your most recent payment for did not go through. Access to this subscription will pause until the payment issue is resolved. Try to edit your payment method, or contact Brave support.
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_EMAIL" desc="Label above email input on VPN support">
+    Your email address
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_SUBJECT" desc="Label above subject drop down on VPN support">
+    Subject
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_SUBJECT_NOTSET" desc="VPN support: pre-selected item in subject drop down (user needs to set)">
+    Please choose a reason
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_SUBJECT_OTHER_CONNECTION_PROBLEM" desc="VPN support: subject: cannot connect to VPN">
+    Cannot connect to the VPN (Other error)
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_SUBJECT_NO_INTERNET" desc="VPN support: subject: no internet when connected">
+    No internet when connected
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_SUBJECT_SLOW_CONNECTION" desc="VPN support: subject: slow connection">
+    Slow connection
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_SUBJECT_WEBSITE_DOESNT_WORK" desc="VPN support: subject: website does not work">
+    Website doesn't work
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_SUBJECT_OTHER" desc="VPN support: subject: slow connection">
+    Other
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_BODY" desc="Label for free-form problem description on VPN support">
+    Describe your issue
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_OPTIONAL_HEADER" desc="Label for free-form problem description on VPN support">
+    Select the info you're willing to share with us
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_OPTIONAL_NOTES" desc="Notice in the optional section for VPN support">
+    The more info you share, the easier it will be for support staff to help.
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_OPTIONAL_NOTES_PRIVACY_POLICY" desc="Link to privacy policy for VPN support">
+    Privacy Policy
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_OPTIONAL_VPN_HOSTNAME" desc="Label for the VPN hostname (to help support)">
+    VPN hostname:
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_OPTIONAL_APP_VERSION" desc="Label for the App version (to help support)">
+    App version:
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_OPTIONAL_OS_VERSION" desc="Label for the OS version (to help support)">
+    OS version:
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_NOTES" desc="Notice describing that support is provided by Guardian">
+    Support provided in partnership with Guardian.
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_SUBMIT" desc="Text for submit button on VPN support form">
+    Submit
   </message>
 </grit-part>

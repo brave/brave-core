@@ -28,7 +28,7 @@ function SettingsPanel (props: Props) {
             aria-label='Close settings'
           >
             <i><CaratStrongLeftIcon /></i>
-            <span>{getLocale('braveVpnSettings')}</span>
+            <span>{getLocale('braveVpnSettingsPanelHeader')}</span>
           </S.BackButton>
         </S.PanelHeader>
         <S.List>

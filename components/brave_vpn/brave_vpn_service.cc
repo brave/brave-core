@@ -795,7 +795,7 @@ void BraveVpnService::GetSupportData(GetSupportDataCallback callback) {
   std::string brave_version =
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
   std::string os_version = version_info::GetOSType();
-  std::string vpn_hostname = hostname_ ? hostname_->display_name : "n/a";
+  std::string vpn_hostname = hostname_ ? hostname_->display_name : "";
   std::move(callback).Run(brave_version, os_version, vpn_hostname);
 }
 

@@ -133,47 +133,51 @@ function ContactSupport (props: Props) {
 
         <S.Form onSubmit={e => { e.preventDefault() }}>
           <TextInput
-            label={'Your email address'}
+            label={getLocale('braveVpnSupportEmail')}
             isRequired={true}
             isErrorAlwaysShown={showErrors}
             value={formData.contactEmail ?? ''}
             onChange={getOnChangeField('contactEmail')}
           />
           <label>
-            Subject
+            {getLocale('braveVpnSupportSubject')}
             <Select
-              ariaLabel={'Please choose a reason'}
+              ariaLabel={getLocale('braveVpnSupportSubjectNotSet')}
               value={formData.problemSubject ?? ''}
               onChange={getOnChangeField('problemSubject')}
             >
-              <option value="" disabled>Please choose a reason</option>
-              <option value="otherConnectionProblems">Cannot connect to the VPN (Other error)</option>
-              <option value="noInternet">No internet when connected</option>
-              <option value="slowConnection">Slow connection</option>
-              <option value="websiteProblems">Website doesn't work</option>
-              <option value="other">Other</option>
+              <option value="" disabled>{getLocale('braveVpnSupportSubjectNotSet')}</option>
+              <option value="otherConnectionProblems">{getLocale('braveVpnSupportSubjectOtherConnectionProblem')}</option>
+              <option value="noInternet">{getLocale('braveVpnSupportSubjectNoInternet')}</option>
+              <option value="slowConnection">{getLocale('braveVpnSupportSubjectSlowConnection')}</option>
+              <option value="websiteProblems">{getLocale('braveVpnSupportSubjectWebsiteDoesntWork')}</option>
+              <option value="other">{getLocale('braveVpnSupportSubjectOther')}</option>
             </Select>
           </label>
           <Textarea
             value={formData.problemBody}
-            label={'Describe your issue'}
+            label={getLocale('braveVpnSupportBody')}
             isRequired={true}
             onChange={getOnChangeField('problemBody')}
           />
           <S.OptionalValues>
             <S.SectionDescription>
-              Select the info you're willing to share with us
+              {getLocale('braveVpnSupportOptionalHeader')}
             </S.SectionDescription>
             <S.Notes>
               <p>
-                The more info you share, the easier it will be for support staff to help.
+                {getLocale('braveVpnSupportOptionalNotes')}
                 { ' ' }
-                <a href="#" onClick={handlePrivacyPolicyClick}>Privacy Policy.</a>
+                <a href="#" onClick={handlePrivacyPolicyClick}>
+                  {getLocale('braveVpnSupportOptionalNotesPrivacyPolicy')}
+                </a>.
               </p>
             </S.Notes>
             <S.OptionalValueLabel>
               <div className={'optionalValueTitle'}>
-                <span className={'optionalValueTitleKey'}>VPN hostname:</span> {supportData?.hostname}
+                <span className={'optionalValueTitleKey'}>
+                  {getLocale('braveVpnSupportOptionalVpnHostname')}
+                </span> {supportData?.hostname}
               </div>
               <Toggle
                 isOn={formData.shareHostname}
@@ -183,7 +187,9 @@ function ContactSupport (props: Props) {
             </S.OptionalValueLabel>
             <S.OptionalValueLabel>
               <div className={'optionalValueTitle'}>
-                <span className={'optionalValueTitleKey'}>App version:</span> {supportData?.appVersion}
+                <span className={'optionalValueTitleKey'}>
+                  {getLocale('braveVpnSupportOptionalAppVersion')}
+                </span> {supportData?.appVersion}
               </div>
               <Toggle
                 isOn={formData.shareAppVersion}
@@ -193,7 +199,9 @@ function ContactSupport (props: Props) {
             </S.OptionalValueLabel>
             <S.OptionalValueLabel>
               <div className={'optionalValueTitle'}>
-                <span className={'optionalValueTitleKey'}>OS version:</span> {supportData?.osVersion}
+                <span className={'optionalValueTitleKey'}>
+                  {getLocale('braveVpnSupportOptionalOsVersion')}
+                </span> {supportData?.osVersion}
               </div>
               <Toggle
                 isOn={formData.shareOsVersion}
@@ -203,9 +211,7 @@ function ContactSupport (props: Props) {
             </S.OptionalValueLabel>
           </S.OptionalValues>
           <S.Notes>
-            <p>
-              Support provided in partnership with Guardian.
-            </p>
+            <p>{getLocale('braveVpnSupportNotes')}</p>
           </S.Notes>
           <Button
             type={'submit'}
@@ -215,7 +221,7 @@ function ContactSupport (props: Props) {
             isDisabled={isSubmitting}
             onClick={handleSubmit}
           >
-            Submit
+            {getLocale('braveVpnSupportSubmit')}
           </Button>
         </S.Form>
 
