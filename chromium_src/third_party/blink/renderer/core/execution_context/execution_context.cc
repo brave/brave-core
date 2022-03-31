@@ -148,10 +148,14 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
           .Utf8();
   if (domain.empty())
     return;
+
   base::CommandLine* cmd_line = base::CommandLine::ForCurrentProcess();
-  DCHECK(cmd_line->HasSwitch(kBraveSessionToken));
-  base::StringToUint64(cmd_line->GetSwitchValueASCII(kBraveSessionToken),
+  base::StringToUint64(cmd_line->HasSwitch(kBraveSessionToken)
+                           ? cmd_line->GetSwitchValueASCII(kBraveSessionToken)
+                           // https://github.com/brave/brave-browser/issues/22021
+                           : "12345",
                        &session_key_);
+
   crypto::HMAC h(crypto::HMAC::SHA256);
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
                sizeof session_key_));
