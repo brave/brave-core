@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "absl/types/optional.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/json/rs/src/lib.rs.h"

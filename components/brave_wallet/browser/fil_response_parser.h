@@ -29,7 +29,6 @@ bool ParseFilGetChainHead(const std::string& json, std::string* cid);
 bool ParseFilStateSearchMsgLimited(const std::string& json,
                                    const std::string& cid,
                                    int64_t* exit_code);
-                                   int64_t* gas_limit);
 // Returns parsed transaction CID.
 bool ParseSendFilecoinTransaction(const std::string& json,
                                   std::string* tx_hash);

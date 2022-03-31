@@ -399,7 +399,6 @@ export interface SendFilTransactionParams extends BaseTransactionParams {
   gasFeeCap?: string
   gasLimit?: string
   maxFee?: string
-  cid?: string
 }
 
 export interface SendSolTransactionParams extends BaseTransactionParams {

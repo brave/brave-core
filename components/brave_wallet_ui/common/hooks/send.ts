@@ -10,7 +10,8 @@ import {
   GetEthAddrReturnInfo,
   GetChecksumEthAddressReturnInfo,
   AmountValidationErrorType,
-  WalletState
+  WalletState,
+  SendFilTransactionParams
 } from '../../constants/types'
 import { getLocale } from '../../../common/locale'
 import * as WalletActions from '../actions/wallet_actions'
@@ -248,7 +249,7 @@ export default function useSend () {
         from: selectedAccount.address,
         to: toAddress,
         value: new Amount(sendAmount)
-        .multiplyByDecimals(1).toNumber().toString(),
+        .multiplyByDecimals(selectedSendAsset.decimals).toNumber().toString(),
         coin: selectedAccount.coin
       } as SendFilTransactionParams))
       return

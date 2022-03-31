@@ -16,7 +16,7 @@ TEST(FilTxMeta, ToTransactionInfo) {
   std::unique_ptr<FilTransaction> tx = std::make_unique<FilTransaction>(
       *FilTransaction::FromTxData(mojom::FilTxData::New(
           "1", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-          "6")));
+          "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
   FilTxMeta meta(std::move(tx));
   meta.set_from("t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq");
   base::Time::Exploded x{1981, 3, 0, 1, 2};
@@ -49,9 +49,9 @@ TEST(FilTxMeta, ToTransactionInfo) {
 }
 
 TEST(FilTxMeta, ToValue) {
-  auto transaction = FilTransaction::FromTxData(
-      mojom::FilTxData::New("1", "2", "3", "4", "5",
-                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6"));
+  auto transaction = FilTransaction::FromTxData(mojom::FilTxData::New(
+      "1", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
   std::unique_ptr<FilTransaction> tx =
       std::make_unique<FilTransaction>(*transaction);
   FilTxMeta meta(std::move(tx));

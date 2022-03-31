@@ -1916,12 +1916,19 @@ void JsonRpcService::SendFilecoinTransaction(
     std::move(callback).Run(
         "", mojom::FilecoinProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+  auto request = fil::getSendTransaction(signed_tx);
+  if (!request) {
+    std::move(callback).Run(
+        "", mojom::FilecoinProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
   }
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnSendFilecoinTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(fil_sendTransaction(signed_tx), true,
-                  network_urls_[mojom::CoinType::FIL],
+  RequestInternal(request.value(), true, network_urls_[mojom::CoinType::FIL],
                   std::move(internal_callback));
 }
 
@@ -1938,8 +1945,8 @@ void JsonRpcService::OnSendFilecoinTransaction(
     return;
   }
 
-  std::string transaction_id;
-  if (!ParseSendFilecoinTransaction(body, &transaction_id)) {
+  std::string cid;
+  if (!ParseSendFilecoinTransaction(body, &cid)) {
     mojom::FilecoinProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::FilecoinProviderError>(body, &error,
@@ -1948,8 +1955,7 @@ void JsonRpcService::OnSendFilecoinTransaction(
     return;
   }
 
-  std::move(callback).Run(transaction_id,
-                          mojom::FilecoinProviderError::kSuccess, "");
+  std::move(callback).Run(cid, mojom::FilecoinProviderError::kSuccess, "");
 }
 
 void JsonRpcService::SendSolanaTransaction(

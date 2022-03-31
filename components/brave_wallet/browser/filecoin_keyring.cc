@@ -146,8 +146,8 @@ absl::optional<std::string> FilecoinKeyring::SignTransaction(
     FilTransaction* tx) {
   if (!tx)
     return std::string();
-  HDKey* hd_key =
-      static_cast<HDKey*>(GetHDKeyFromAddress(tx->from().EncodeAsString()));
+  auto address = tx->from().EncodeAsString();
+  HDKey* hd_key = static_cast<HDKey*>(GetHDKeyFromAddress(address));
   if (!hd_key)
     return std::string();
   std::string private_key = base::Base64Encode(hd_key->private_key());

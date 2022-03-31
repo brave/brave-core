@@ -163,8 +163,7 @@ void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
                                   uint256_t nonce) {
   if (!success) {
     meta->set_status(mojom::TransactionStatus::Error);
-    tx_state_manager_->AddOrUpdateTx(*meta);
-    LOG(ERROR) << "GetNextNonce failed";
+    GetFilTxStateManager()->AddOrUpdateTx(*meta);
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewFilecoinProviderError(
@@ -198,7 +197,7 @@ void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
 void FilTxManager::OnSendFilecoinTransaction(
     const std::string& tx_meta_id,
     ApproveTransactionCallback callback,
-    const std::string& tx_hash,
+    const std::string& tx_cid,
     mojom::FilecoinProviderError error,
     const std::string& error_message) {
   std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(tx_meta_id);
@@ -217,7 +216,7 @@ void FilTxManager::OnSendFilecoinTransaction(
   if (success) {
     meta->set_status(mojom::TransactionStatus::Submitted);
     meta->set_submitted_time(base::Time::Now());
-    meta->set_tx_hash(tx_hash);
+    meta->set_tx_hash(tx_cid);
   } else {
     meta->set_status(mojom::TransactionStatus::Error);
   }
@@ -226,12 +225,12 @@ void FilTxManager::OnSendFilecoinTransaction(
 
   if (success)
     UpdatePendingTransactions();
-  DLOG(INFO) << "error_message:" << error_message;
   std::move(callback).Run(
       error_message.empty(),
       mojom::ProviderErrorUnion::NewFilecoinProviderError(error),
       error_message);
 }
+
 void FilTxManager::GetAllTransactionInfo(
     const std::string& from,
     GetAllTransactionInfoCallback callback) {
@@ -259,7 +258,14 @@ void FilTxManager::RetryTransaction(const std::string& tx_meta_id,
 void FilTxManager::GetTransactionMessageToSign(
     const std::string& tx_meta_id,
     GetTransactionMessageToSignCallback callback) {
-  NOTIMPLEMENTED();
+  std::unique_ptr<FilTxMeta> meta =
+      GetFilTxStateManager()->GetFilTx(tx_meta_id);
+  if (!meta) {
+    VLOG(1) << __FUNCTION__ << "No transaction found with id:" << tx_meta_id;
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+  std::move(callback).Run(meta->tx()->GetMessageToSign());
 }
 
 void FilTxManager::Reset() {
