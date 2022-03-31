@@ -1,7 +1,6 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
-import("//brave/components/brave_wallet/browser/config.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
@@ -117,10 +116,11 @@ source_set("extensions") {
       "ethereum_remote_client_util.cc",
       "ethereum_remote_client_util.h",
     ]
-    configs += [ ":infura_config" ]
+
     deps += [
       "//brave/browser/ethereum_remote_client",
       "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/common:buildflags",
       "//components/infobars/content",
       "//components/prefs",
     ]
@@ -219,8 +219,4 @@ group("resources") {
       "//brave/components/brave_webtorrent:static_resources",
     ]
   }
-}
-
-config("infura_config") {
-  defines = [ "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"" ]
 }

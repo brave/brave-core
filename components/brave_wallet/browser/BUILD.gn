@@ -1,6 +1,4 @@
 import("//brave/build/config.gni")
-import("//brave/components/bls/buildflags.gni")
-import("//brave/components/brave_wallet/browser/config.gni")
 import("//build/config/features.gni")
 
 static_library("browser") {
@@ -114,6 +112,7 @@ static_library("browser") {
     ":transaction",
     ":utils",
     "//base",
+    "//brave/common:brave_services_key",
     "//brave/components/api_request_helper",
     "//brave/components/bls:buildflags",
     "//brave/components/bls/rs:cxx",
@@ -121,6 +120,7 @@ static_library("browser") {
     "//brave/components/brave_stats/browser",
     "//brave/components/brave_wallet/browser:ethereum_permission_utils",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:buildflags",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:solana_utils",
@@ -141,10 +141,6 @@ static_library("browser") {
     "//ui/base:base",
     "//url",
   ]
-}
-
-config("infura_config") {
-  defines = [ "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"" ]
 }
 
 static_library("ethereum_permission_utils") {
@@ -184,8 +180,6 @@ source_set("pref_names") {
 }
 
 source_set("utils") {
-  configs += [ ":infura_config" ]
-
   sources = [
     "brave_wallet_utils.cc",
     "brave_wallet_utils.h",
@@ -195,6 +189,7 @@ source_set("utils") {
     ":constants",
     ":pref_names",
     "//base",
+    "//brave/components/brave_wallet/common:buildflags",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//components/prefs",

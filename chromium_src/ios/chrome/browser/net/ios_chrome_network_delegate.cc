@@ -9,15 +9,17 @@
 #include "src/ios/chrome/browser/net/ios_chrome_network_delegate.cc"
 #undef IOSChromeNetworkDelegate
 
-#include "brave/common/brave_service_key_helper.h"
+#include "brave/common/brave_services_key.h"
+#include "brave/common/brave_services_key_helper.h"
 #include "brave/common/network_constants.h"
 
 namespace {
 
 void AddBraveServicesKeyHeader(net::URLRequest* request) {
   if (brave::ShouldAddBraveServicesKeyHeader(request->url())) {
-    request->SetExtraRequestHeaderByName(
-        kBraveServicesKeyHeader, BRAVE_SERVICES_KEY, true /* overrwrite */);
+    request->SetExtraRequestHeaderByName(kBraveServicesKeyHeader,
+                                         BUILDFLAG(BRAVE_SERVICES_KEY),
+                                         true /* overrwrite */);
   }
 }
 

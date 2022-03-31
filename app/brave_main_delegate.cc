@@ -21,6 +21,7 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_component_updater/browser/switches.h"
 #include "brave/components/speedreader/buildflags.h"
+#include "brave/components/update_client/buildflags.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
 #include "build/build_config.h"
@@ -55,9 +56,9 @@ std::string GetUpdateURLHost() {
   if (!command_line.HasSwitch(brave_component_updater::kUseGoUpdateDev) &&
       !base::FeatureList::IsEnabled(
           brave_component_updater::kUseDevUpdaterUrl)) {
-    return UPDATER_PROD_ENDPOINT;
+    return BUILDFLAG(UPDATER_PROD_ENDPOINT);
   }
-  return UPDATER_DEV_ENDPOINT;
+  return BUILDFLAG(UPDATER_DEV_ENDPOINT);
 }
 
 }  // namespace

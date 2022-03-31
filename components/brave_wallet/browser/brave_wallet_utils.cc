@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -59,7 +60,7 @@ bool IsValidEntropySize(size_t entropy_size) {
 }
 
 std::string GetInfuraProjectID() {
-  std::string project_id(BRAVE_INFURA_PROJECT_ID);
+  std::string project_id(BUILDFLAG(BRAVE_INFURA_PROJECT_ID));
   std::unique_ptr<base::Environment> env(base::Environment::Create());
   if (env->HasVar("BRAVE_INFURA_PROJECT_ID")) {
     env->GetVar("BRAVE_INFURA_PROJECT_ID", &project_id);
@@ -68,7 +69,6 @@ std::string GetInfuraProjectID() {
 }
 
 bool GetUseStagingInfuraEndpoint() {
-  std::string project_id(BRAVE_INFURA_PROJECT_ID);
   std::unique_ptr<base::Environment> env(base::Environment::Create());
   return env->HasVar("BRAVE_INFURA_STAGING");
 }

@@ -29,6 +29,7 @@ source_set("app") {
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
     "//brave/components/skus/browser",
+    "//brave/components/update_client:buildflags",
     "//brave/ios/app/resources",
     "//brave/ios/browser",
     "//brave/ios/browser/api/ads",

@@ -1,12 +1,10 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
-import("//brave/components/brave_wallet/browser/config.gni")
 import("//build/config/features.gni")
 
 assert(ethereum_remote_client_enabled)
 
 source_set("ethereum_remote_client") {
-  configs += [ ":infura_config" ]
   include_dirs = [ "//brave/third_party/ethash/src/include" ]
 
   sources = [
@@ -55,8 +53,4 @@ source_set("browser") {
     "//components/keyed_service/content",
     "//extensions/browser",
   ]
-}
-
-config("infura_config") {
-  defines = [ "BRAVE_INFURA_PROJECT_ID=\"$brave_infura_project_id\"" ]
 }

@@ -15,6 +15,7 @@
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
+#include "brave/common/brave_services_key.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -367,7 +368,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
          content](const network::ResourceRequest& request) {
           std::string header_value(100, '\0');
           EXPECT_TRUE(request.headers.GetHeader("x-brave-key", &header_value));
-          EXPECT_EQ(BRAVE_SERVICES_KEY, header_value);
+          EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
           EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
           EXPECT_EQ(expected_method, header_value);
           if (expected_method == "eth_blockNumber") {

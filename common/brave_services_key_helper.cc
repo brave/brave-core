@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/common/brave_service_key_helper.h"
+#include "brave/common/brave_services_key_helper.h"
 
 #include "brave/common/network_constants.h"
 #include "extensions/common/url_pattern.h"

@@ -5,6 +5,7 @@ include_rules = [
 # Existing exceptions
 specific_include_rules = {
   "brave_sync_auth_manager.cc": [
+    "+brave/common/brave_services_key.h",
     "+brave/common/network_constants.h",
   ],
 }

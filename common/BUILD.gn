@@ -1,6 +1,13 @@
+import("//brave/build/config.gni")
+import("//build/buildflag_header.gni")
 import("//build/util/branding.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
+
+buildflag_header("brave_services_key") {
+  header = "brave_services_key.h"
+  flags = [ "BRAVE_SERVICES_KEY=\"$brave_services_key\"" ]
+}
 
 brave_common_visibility_targets = [
   ":*",
@@ -114,8 +121,8 @@ source_set("common") {
     "brave_features.h",
     "brave_paths.cc",
     "brave_paths.h",
-    "brave_service_key_helper.cc",
-    "brave_service_key_helper.h",
+    "brave_services_key_helper.cc",
+    "brave_services_key_helper.h",
     "resource_bundle_helper.cc",
     "resource_bundle_helper.h",
     "url_constants.cc",
@@ -123,6 +130,8 @@ source_set("common") {
     "webui_url_constants.cc",
     "webui_url_constants.h",
   ]
+
+  public_deps = [ ":brave_services_key" ]
 
   if (!is_android && !is_ios) {
     deps += [ "//brave/common/importer" ]
@@ -143,7 +152,7 @@ source_set("common") {
       "//extensions/common:common_constants",
     ]
 
-    public_deps = [ "extensions/api" ]
+    public_deps += [ "extensions/api" ]
   }
 
   deps += [
