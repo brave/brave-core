@@ -63,13 +63,8 @@ import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
 import { GetBuyOrFaucetUrl } from '../utils/buy-asset-url'
 import { getNetworkInfo } from '../utils/network-utils'
-import {
-  findENSAddress,
-  findUnstoppableDomainAddress,
-  getChecksumEthAddress
-} from '../common/async/lib'
 import { isHardwareAccount } from '../utils/address-utils'
-import { useAssets, useBalance, useSwap, useSend, usePreset } from '../common/hooks'
+import { useAssets, useSwap, useSend } from '../common/hooks'
 
 type Props = {
   panel: PanelState
@@ -138,13 +133,7 @@ function Container (props: Props) {
     sendAssetOptions,
     buyAssetOptions,
     panelUserAssetList
-  } = useAssets(
-    selectedAccount,
-    networkList,
-    selectedNetwork,
-    userVisibleTokensInfo,
-    transactionSpotPrices
-  )
+  } = useAssets()
 
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(buyAssetOptions[0])
 
@@ -152,36 +141,14 @@ function Container (props: Props) {
   const {
     filteredAssetList,
     isSwapSupported,
-    onSetFromAmount,
     setSwapToOrFrom,
     swapToOrFrom,
-    onSelectTransactAsset,
-    fromAsset
+    onSelectTransactAsset
   } = swap
 
   const {
-    onSetSendAmount,
-    onSetToAddressOrUrl,
-    onSubmitSend,
-    onSelectSendAsset,
-    sendAmount,
-    toAddressOrUrl,
-    toAddress,
-    addressError,
-    addressWarning,
-    selectedSendAsset,
-    sendAmountValidationError
-  } = useSend(
-    findENSAddress,
-    findUnstoppableDomainAddress,
-    getChecksumEthAddress,
-    sendAssetOptions,
-    selectedAccount,
-    props.walletActions.sendERC20Transfer,
-    props.walletActions.sendTransaction,
-    props.walletActions.sendERC721TransferFrom,
-    props.wallet.fullTokenList
-  )
+    selectSendAsset: onSelectSendAsset
+  } = useSend()
 
   React.useEffect(() => {
     setSelectedAccounts([selectedAccount])
@@ -193,16 +160,6 @@ function Container (props: Props) {
       setInputValue('')
     }
   }, [hasIncorrectPassword])
-
-  const getSelectedAccountBalance = useBalance(networkList)
-  const sendAssetBalance = getSelectedAccountBalance(selectedAccount, selectedSendAsset)
-
-  const onSelectPresetAmount = usePreset(
-    {
-      onSetAmount: onSetFromAmount,
-      asset: fromAsset
-    }
-  )
 
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
@@ -250,14 +207,6 @@ function Container (props: Props) {
     }
 
     setShowSelectAsset(false)
-  }
-
-  const onInputChange = (value: string, name: string) => {
-    if (name === 'address') {
-      onSetToAddressOrUrl(value)
-    } else {
-      onSetSendAmount(value)
-    }
   }
 
   const [readyToConnect, setReadyToConnect] = React.useState<boolean>(false)
@@ -344,11 +293,6 @@ function Container (props: Props) {
 
   const onSelectAccount = (account: WalletAccountType) => () => {
     props.walletActions.selectAccount(account)
-    props.walletPanelActions.navigateTo('main')
-  }
-
-  const onSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
-    props.walletActions.selectNetwork(network)
     props.walletPanelActions.navigateTo('main')
   }
 
@@ -719,10 +663,8 @@ function Container (props: Props) {
         <SelectContainer>
           <SelectAsset
             assets={assets}
-            selectedNetwork={selectedNetwork}
             onSelectAsset={onSelectAsset}
             onBack={onHideSelectAsset}
-            onAddAsset={onAddAsset}
           />
         </SelectContainer>
       </PanelWrapper>
@@ -734,10 +676,7 @@ function Container (props: Props) {
       <PanelWrapper isLonger={false}>
         <SelectContainer>
           <SelectNetwork
-            selectedNetwork={selectedNetwork}
-            networks={networkList}
             onBack={onReturnToMain}
-            onSelectNetwork={onSelectNetwork}
             onAddNetwork={onAddNetwork}
             hasAddButton={true}
           />
@@ -822,18 +761,6 @@ function Container (props: Props) {
             <SendWrapper>
               <Send
                 onChangeSendView={onChangeSendView}
-                onInputChange={onInputChange}
-                onSelectPresetAmount={onSelectPresetAmount}
-                onSubmit={onSubmitSend}
-                selectedAsset={selectedSendAsset}
-                selectedNetwork={selectedNetwork}
-                selectedAssetAmount={sendAmount}
-                selectedAssetBalance={sendAssetBalance}
-                addressError={addressError}
-                addressWarning={addressWarning}
-                toAddressOrUrl={toAddressOrUrl}
-                toAddress={toAddress}
-                amountValidationError={sendAmountValidationError}
               />
             </SendWrapper>
           </Panel>

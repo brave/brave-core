@@ -16,8 +16,6 @@ import { WalletAccountType } from '../../constants/types'
 import { setMockedBuyAssets } from '../async/__mocks__/lib'
 import * as MockedLib from '../async/__mocks__/lib'
 import { LibContext } from '../context/lib.context'
-import { createPageReducer } from '../../page/reducers/page_reducer'
-import { mockPageState } from '../../stories/mock-data/mock-page-state'
 import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
 import { createWalletReducer } from '../reducers/wallet_reducer'
 import { mockBasicAttentionToken, mockEthToken } from '../../stories/mock-data/mock-asset-options'
@@ -45,30 +43,34 @@ const mockVisibleList = [
   mockBasicAttentionToken
 ]
 
-const store = createStore(combineReducers({
-  wallet: createWalletReducer(mockWalletState),
-  page: createPageReducer(mockPageState)
-}))
-
-const renderHookOptions = {
+const renderHookOptionsWithCustomStore = (store: any) => ({
   wrapper: ({ children }: { children?: React.ReactChildren }) =>
     <Provider store={store}>
       <LibContext.Provider value={MockedLib as any}>
         {children}
       </LibContext.Provider>
     </Provider>
-}
+})
 
 describe('useAssets hook', () => {
   it('Selected account has balances, should return expectedResult', async () => {
     setMockedBuyAssets(mockVisibleList)
-    const { result, waitForNextUpdate } = renderHook(() => useAssets(
-      mockAccounts[0],
-      [mockNetwork],
-      mockNetwork,
-      mockVisibleList,
-      mockAssetPrices
-    ), renderHookOptions)
+    const { result, waitForNextUpdate } = renderHook(
+      () => useAssets(),
+      renderHookOptionsWithCustomStore(
+        createStore(combineReducers({
+          wallet: createWalletReducer({
+            ...mockWalletState,
+            userVisibleTokensInfo: mockVisibleList,
+            selectedAccount: mockAccounts[0],
+            accounts: mockAccounts,
+            transactionSpotPrices: mockAssetPrices,
+            selectedNetwork: mockNetwork,
+            networkList: [mockNetwork]
+          })
+        }))
+      )
+    )
     await act(async () => {
       await waitForNextUpdate()
     })
@@ -76,13 +78,22 @@ describe('useAssets hook', () => {
   })
 
   it('should return empty array for panelUserAssetList if visible assets is empty', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useAssets(
-      mockAccount,
-      [mockNetwork],
-      mockNetwork,
-      [],
-      mockAssetPrices
-    ), renderHookOptions)
+    const { result, waitForNextUpdate } = renderHook(
+      () => useAssets(),
+      renderHookOptionsWithCustomStore(
+        createStore(combineReducers({
+          wallet: createWalletReducer({
+            ...mockWalletState,
+            userVisibleTokensInfo: [],
+            selectedAccount: mockAccounts[0],
+            accounts: mockAccounts,
+            transactionSpotPrices: mockAssetPrices,
+            selectedNetwork: mockNetwork,
+            networkList: [mockNetwork]
+          })
+        }))
+      )
+    )
     await act(async () => {
       await waitForNextUpdate()
     })

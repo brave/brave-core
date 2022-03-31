@@ -30,7 +30,6 @@ import {
   WalletState,
   SupportedTestNetworks
 } from '../constants/types'
-// import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
@@ -43,11 +42,8 @@ import { mojoTimeDeltaToJSDate } from '../../common/mojomUtils'
 import { getTokensCoinType } from '../utils/network-utils'
 
 import {
-  findENSAddress,
-  findUnstoppableDomainAddress,
   getBalance,
   getBlockchainTokenInfo,
-  getChecksumEthAddress,
   isStrongPassword,
   onConnectHardwareWallet
 } from '../common/async/lib'
@@ -56,9 +52,7 @@ import {
 import {
   useAssets,
   useBalance,
-  usePreset,
   usePricing,
-  useSend,
   useTokenInfo,
   useAssetManagement
 } from '../common/hooks'
@@ -127,45 +121,12 @@ function Container (props: Props) {
   const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
   const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
 
-  const {
-    sendAssetOptions,
-    buyAssetOptions
-  } = useAssets(
-    selectedAccount,
-    networkList,
-    selectedNetwork,
-    userVisibleTokensInfo,
-    transactionSpotPrices
-  )
+  const { buyAssetOptions } = useAssets()
 
   const {
     onFindTokenInfoByContractAddress,
     foundTokenInfoByContractAddress
   } = useTokenInfo(getBlockchainTokenInfo, userVisibleTokensInfo, fullTokenList, selectedNetwork)
-
-  const {
-    onSetSendAmount,
-    onSetToAddressOrUrl,
-    onSubmitSend,
-    onSelectSendAsset,
-    sendAmount,
-    toAddressOrUrl,
-    toAddress,
-    addressError,
-    addressWarning,
-    selectedSendAsset,
-    sendAmountValidationError
-  } = useSend(
-    findENSAddress,
-    findUnstoppableDomainAddress,
-    getChecksumEthAddress,
-    sendAssetOptions,
-    selectedAccount,
-    props.walletActions.sendERC20Transfer,
-    props.walletActions.sendTransaction,
-    props.walletActions.sendERC721TransferFrom,
-    props.wallet.fullTokenList
-  )
 
   const {
     onAddCustomAsset,
@@ -174,14 +135,6 @@ function Container (props: Props) {
 
   const { computeFiatAmount } = usePricing(transactionSpotPrices)
   const getAccountBalance = useBalance(networkList)
-  const sendAssetBalance = getAccountBalance(selectedAccount, selectedSendAsset)
-
-  const onSelectPresetAmount = usePreset(
-    {
-      onSetAmount: onSetSendAmount,
-      asset: selectedSendAsset
-    }
-  )
 
   const onToggleShowRestore = React.useCallback(() => {
     if (walletLocation === WalletRoutes.Restore) {
@@ -457,10 +410,6 @@ function Container (props: Props) {
     props.walletActions.cancelTransaction(transaction)
   }
 
-  const onAddNetwork = () => {
-    props.walletActions.expandWalletNetworks()
-  }
-
   const onShowVisibleAssetsModal = (showModal: boolean) => {
     if (showModal) {
       if (fullTokenList.length === 0) {
@@ -671,33 +620,14 @@ function Container (props: Props) {
       {hideMainComponents &&
         <WalletWidgetStandIn>
           <BuySendSwap
-            networkList={networkList}
-            selectedNetwork={selectedNetwork}
             selectedTab={selectedWidgetTab}
             buyAmount={buyAmount}
-            sendAmount={sendAmount}
-            addressError={addressError}
-            addressWarning={addressWarning}
-            sendAmountValidationError={sendAmountValidationError}
-            toAddressOrUrl={toAddressOrUrl}
-            toAddress={toAddress}
             buyAssetOptions={buyAssetOptions}
-            selectedSendAsset={selectedSendAsset}
-            sendAssetBalance={sendAssetBalance}
-            sendAssetOptions={sendAssetOptions}
-            defaultCurrencies={defaultCurrencies}
             onSetBuyAmount={onSetBuyAmount}
-            onSetToAddressOrUrl={onSetToAddressOrUrl}
-            onSelectPresetSendAmount={onSelectPresetAmount}
-            onSetSendAmount={onSetSendAmount}
-            onSubmitSend={onSubmitSend}
             onSubmitBuy={onSubmitBuy}
             onSelectNetwork={onSelectNetwork}
             onSelectAccount={onSelectAccount}
             onSelectTab={setSelectedWidgetTab}
-            onSelectSendAsset={onSelectSendAsset}
-            onAddNetwork={onAddNetwork}
-            onAddAsset={onShowVisibleAssetsModal}
           />
           <SweepstakesBanner />
         </WalletWidgetStandIn>

@@ -1,9 +1,9 @@
 import * as React from 'react'
 import {
-  UserAccountType,
   BuySendSwapViewTypes,
   ToOrFromType,
-  BraveWallet
+  BraveWallet,
+  WalletAccountType
 } from '../../../constants/types'
 import {
   AccountsAssetsNetworks,
@@ -11,27 +11,18 @@ import {
   Swap
 } from '..'
 import { useSwap } from '../../../common/hooks'
+import { useDispatch } from 'react-redux'
+import { WalletActions } from '../../../common/actions'
 
-export interface Props {
-  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
-  onSelectAccount: (account: UserAccountType) => void
-  onAddNetwork: () => void
-  onAddAsset: () => void
-}
-
-function SwapTab (props: Props) {
-  const {
-    onSelectNetwork,
-    onSelectAccount,
-    onAddNetwork,
-    onAddAsset
-  } = props
-
+function SwapTab () {
   const swap = useSwap()
   const {
     onSelectTransactAsset,
     swapAssetOptions
   } = swap
+
+  // redux
+  const dispatch = useDispatch()
 
   const [swapView, setSwapView] = React.useState<BuySendSwapViewTypes>('swap')
   const [isSelectingAsset, setIsSelectingAsset] = React.useState<ToOrFromType>('from')
@@ -45,12 +36,12 @@ function SwapTab (props: Props) {
   }
 
   const onClickSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
-    onSelectNetwork(network)
+    dispatch(WalletActions.selectNetwork(network))
     setSwapView('swap')
   }
 
-  const onClickSelectAccount = (account: UserAccountType) => () => {
-    onSelectAccount(account)
+  const onClickSelectAccount = (account: WalletAccountType) => () => {
+    dispatch(WalletActions.selectAccount(account))
     setSwapView('swap')
   }
 
@@ -118,8 +109,6 @@ function SwapTab (props: Props) {
           onClickSelectNetwork={onClickSelectNetwork}
           onSelectedAsset={onSelectAsset}
           selectedView={swapView}
-          onAddNetwork={onAddNetwork}
-          onAddAsset={onAddAsset}
         />
       }
     </>

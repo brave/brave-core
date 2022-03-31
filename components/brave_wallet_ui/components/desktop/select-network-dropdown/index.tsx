@@ -10,15 +10,14 @@ import {
 } from './style'
 
 export interface Props {
-  onSelectNetwork: (network: BraveWallet.NetworkInfo) => () => void
-  networkList: BraveWallet.NetworkInfo[]
   selectedNetwork: BraveWallet.NetworkInfo
   showNetworkDropDown: boolean
   onClick: () => void
+  onSelectCustomNetwork?: (network: BraveWallet.NetworkInfo) => void
 }
 
 function SelectNetworkDropdown (props: Props) {
-  const { selectedNetwork, networkList, onClick, onSelectNetwork, showNetworkDropDown } = props
+  const { selectedNetwork, onClick, showNetworkDropDown, onSelectCustomNetwork } = props
 
   return (
     <StyledWrapper>
@@ -26,9 +25,8 @@ function SelectNetworkDropdown (props: Props) {
       {showNetworkDropDown &&
         <DropDown>
           <SelectNetwork
+            onSelectCustomNetwork={onSelectCustomNetwork}
             selectedNetwork={selectedNetwork}
-            networks={networkList}
-            onSelectNetwork={onSelectNetwork}
           />
         </DropDown>
       }
