@@ -397,11 +397,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_SETTINGS_BRAVE_REWARDS_MAX_ADS_TO_DISPLAY_LABEL" desc="The text label for the setting controlling the maximum number of ads to display">
         Maximum number of ads to display
       </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_LABEL" desc="The text label for the setting controlling subdivision-level ad targeting">
+      <message name="IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_LABEL" desc="The text label for the setting that allows Brave to show ads meant specifically for user's region">
         Regional ad relevance
       </message>
       <message name="IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_DESC_LABEL" desc="The text label for the description of subdivision-level ad targeting">
-        This allows Brave to show you ads meant specifically for your state. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+        This allows Brave to show you ads meant specifically for your region. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
       </message>
       <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_TITLE" desc="The text label for the Rewards Auto-Contribute section">
         Auto-Contribute
