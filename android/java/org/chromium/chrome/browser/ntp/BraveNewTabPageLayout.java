@@ -777,6 +777,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         mParentScrollView = (ScrollView) mNtpContent.getParent();
 
         ViewGroup rootView = (ViewGroup) mParentScrollView.getParent();
+        rootView.setFocusableInTouchMode(true);
         mCompositorView = (ViewGroup) rootView.getParent();
 
         mImageCreditLayout = findViewById(R.id.image_credit_layout);
@@ -1411,6 +1412,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
             checkAndShowNTPImage(false);
             mParentScrollView = (ScrollView) mNtpContent.getParent();
             ViewGroup rootView = (ViewGroup) mParentScrollView.getParent();
+            rootView.setFocusableInTouchMode(true);
             CompositorViewHolder compositorView = (CompositorViewHolder) rootView.getParent();
             final int childCount = compositorView.getChildCount();
         }
@@ -1465,6 +1467,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                         ViewGroup rootView = (ViewGroup) mParentScrollView.getParent();
 
                         if (rootView != null) {
+                            rootView.setFocusableInTouchMode(true);
                             ViewGroup compositorView = (ViewGroup) rootView.getParent();
 
                             if (BraveActivity.getBraveActivity() != null
