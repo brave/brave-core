@@ -21,7 +21,7 @@ export default class WalletApiProxy {
   solanaTxManagerProxy = new BraveWallet.SolanaTxManagerProxyRemote()
   braveWalletService = new BraveWallet.BraveWalletServiceRemote()
 
-  addJsonRpcServiceObserver (store: Store) {
+  addJsonRpcServiceObserver(store: Store) {
     const jsonRpcServiceObserverReceiver = new BraveWallet.JsonRpcServiceObserverReceiver({
       chainChangedEvent: function (chainId, coin) {
         store.dispatch(WalletActions.chainChangedEvent({ chainId, coin }))
@@ -36,7 +36,7 @@ export default class WalletApiProxy {
     this.jsonRpcService.addObserver(jsonRpcServiceObserverReceiver.$.bindNewPipeAndPassRemote())
   }
 
-  addKeyringServiceObserver (store: Store) {
+  addKeyringServiceObserver(store: Store) {
     const keyringServiceObserverReceiver = new BraveWallet.KeyringServiceObserverReceiver({
       keyringCreated: function () {
         store.dispatch(WalletActions.keyringCreated())
@@ -69,7 +69,7 @@ export default class WalletApiProxy {
     this.keyringService.addObserver(keyringServiceObserverReceiver.$.bindNewPipeAndPassRemote())
   }
 
-  addTxServiceObserver (store: Store) {
+  addTxServiceObserver(store: Store) {
     const txServiceManagerObserverReceiver = new BraveWallet.TxServiceObserverReceiver({
       onNewUnapprovedTx: function (txInfo) {
         store.dispatch(WalletActions.newUnapprovedTxAdded({ txInfo }))
@@ -84,10 +84,10 @@ export default class WalletApiProxy {
     this.txService.addObserver(txServiceManagerObserverReceiver.$.bindNewPipeAndPassRemote())
   }
 
-  addBraveWalletServiceObserver (store: Store) {
+  addBraveWalletServiceObserver(store: Store) {
     const braveWalletServiceObserverReceiver = new BraveWallet.BraveWalletServiceObserverReceiver({
-      onActiveOriginChanged: function (origin, eTldPlusOne) {
-        store.dispatch(WalletActions.activeOriginChanged({ origin, eTldPlusOne }))
+      onActiveOriginChanged: function (originInfo) {
+        store.dispatch(WalletActions.activeOriginChanged(originInfo))
       },
       onDefaultWalletChanged: function (defaultWallet) {
         store.dispatch(WalletActions.defaultWalletChanged({ defaultWallet }))

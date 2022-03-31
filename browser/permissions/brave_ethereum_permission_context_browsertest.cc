@@ -74,7 +74,7 @@ class BraveEthereumPermissionContextBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
-    https_server()->ServeFilesFromDirectory(GetChromeTestDataDir());
+    https_server()->ServeFilesFromSourceDirectory(GetChromeTestDataDir());
     ASSERT_TRUE(https_server()->Start());
   }
 
@@ -86,8 +86,8 @@ class BraveEthereumPermissionContextBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  GURL GetLastCommitedOrigin() {
-    return url::Origin::Create(web_contents()->GetLastCommittedURL()).GetURL();
+  url::Origin GetLastCommitedOrigin() {
+    return url::Origin::Create(web_contents()->GetLastCommittedURL());
   }
 
   net::EmbeddedTestServer* https_server() { return &https_server_; }
@@ -134,11 +134,11 @@ IN_PROC_BROWSER_TEST_F(BraveEthereumPermissionContextBrowserTest,
   std::vector<std::string> expected_allowed_accounts = {addresses[0],
                                                         addresses[2]};
   for (const auto& account : expected_allowed_accounts) {
-    GURL sub_request_origin;
+    url::Origin sub_request_origin;
     ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
         GetLastCommitedOrigin(), account, &sub_request_origin));
     host_content_settings_map()->SetContentSettingDefaultScope(
-        sub_request_origin, GetLastCommitedOrigin(),
+        sub_request_origin.GetURL(), GetLastCommitedOrigin().GetURL(),
         ContentSettingsType::BRAVE_ETHEREUM,
         ContentSetting::CONTENT_SETTING_ALLOW);
   }

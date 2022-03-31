@@ -20,6 +20,7 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/data_decoder/public/cpp/json_sanitizer.h"
+#include "url/origin.h"
 
 class HostContentSettingsMap;
 class PrefService;
@@ -55,15 +56,11 @@ class BraveWalletProviderImpl final
                           PrefService* prefs);
   ~BraveWalletProviderImpl() override;
 
-  void Request(base::Value input,
-               const std::string& origin,
-               RequestCallback callback) override;
   void SendErrorOnRequest(const mojom::ProviderError& error,
                           const std::string& error_message,
                           RequestCallback callback,
                           base::Value id);
   void Web3ClientVersion(RequestCallback callback, base::Value id);
-  void GetChainId(GetChainIdCallback callback) override;
   void GetAllowedAccounts(bool include_accounts_when_locked,
                           GetAllowedAccountsCallback callback);
   void AddEthereumChain(const std::string& json_payload,
@@ -90,6 +87,7 @@ class BraveWalletProviderImpl final
                               base::Value id);
   void Decrypt(const std::string& untrusted_encrypted_data_json,
                const std::string& address,
+               const url::Origin& origin,
                RequestCallback callback,
                base::Value id);
   // Used for eth_signTypedData
@@ -110,21 +108,10 @@ class BraveWalletProviderImpl final
   void OnContinueGetAllowedAccounts(RequestCallback callback,
                                     base::Value id,
                                     const std::string& method,
-                                    const std::string& origin,
+                                    const url::Origin& origin,
                                     const std::vector<std::string>& accounts,
                                     mojom::ProviderError error,
                                     const std::string& error_message);
-
-  void Enable(EnableCallback callback) override;
-  void Send(const std::string& method,
-            base::Value params,
-            const std::string& origin,
-            SendCallback callback) override;
-
-  void Init(
-      mojo::PendingRemote<mojom::EventsListener> events_listener) override;
-
-  void IsLocked(IsLockedCallback callback) override;
 
   // Used for wallet_watchAsset.
   // It will prompt an UI for user to confirm, and add the token into user's
@@ -139,6 +126,18 @@ class BraveWalletProviderImpl final
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest, OnAddEthereumChain);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+                           AddAndApproveTransactionError);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+                           AddAndApproveTransactionNoPermission);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+                           AddAndApprove1559Transaction);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+                           AddAndApprove1559TransactionNoChainId);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+                           AddAndApprove1559TransactionError);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+                           AddAndApprove1559TransactionNoPermission);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
                            OnAddEthereumChainRequestCompletedError);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
                            OnAddEthereumChainRequestCompletedSuccess);
@@ -151,6 +150,17 @@ class BraveWalletProviderImpl final
   FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
                            RequestEthereumPermissionsLocked);
   friend class BraveWalletProviderImplUnitTest;
+
+  // mojom::BraveWalletProvider:
+  void Init(
+      mojo::PendingRemote<mojom::EventsListener> events_listener) override;
+  void Request(base::Value input, RequestCallback callback) override;
+  void Enable(EnableCallback callback) override;
+  void Send(const std::string& method,
+            base::Value params,
+            SendCallback callback) override;
+  void GetChainId(GetChainIdCallback callback) override;
+  void IsLocked(IsLockedCallback callback) override;
 
   // mojom::JsonRpcServiceObserver
   void ChainChangedEvent(const std::string& chain_id,
@@ -217,6 +227,7 @@ class BraveWalletProviderImpl final
                            bool is_eip712,
                            RequestCallback callback,
                            base::Value id,
+                           const url::Origin& origin,
                            const std::vector<std::string>& allowed_accounts,
                            mojom::ProviderError error,
                            const std::string& error_message);
@@ -235,12 +246,14 @@ class BraveWalletProviderImpl final
       RequestCallback callback,
       base::Value id,
       const std::string& address,
+      const url::Origin& origin,
       const std::vector<std::string>& allowed_accounts,
       mojom::ProviderError error,
       const std::string& error_message);
   void ContinueDecryptWithSanitizedJson(RequestCallback callback,
                                         base::Value id,
                                         const std::string& address,
+                                        const url::Origin& origin,
                                         data_decoder::JsonSanitizer::Result);
   void ContinueDecryptWithAllowedAccounts(
       RequestCallback callback,
@@ -250,6 +263,7 @@ class BraveWalletProviderImpl final
       const std::vector<uint8_t>& ephemeral_public_key,
       const std::vector<uint8_t>& ciphertext,
       const std::string& address,
+      const url::Origin& origin,
       const std::vector<std::string>& allowed_accounts,
       mojom::ProviderError error,
       const std::string& error_message);
@@ -295,17 +309,16 @@ class BraveWalletProviderImpl final
   void SelectedAccountChanged(mojom::CoinType coin) override;
 
   void CommonRequestOrSendAsync(base::Value input_value,
-                                const std::string& origin,
                                 RequestCallback callback);
 
   void RequestEthereumPermissions(RequestCallback callback,
                                   base::Value id,
                                   const std::string& method,
-                                  const std::string& origin);
+                                  const url::Origin& origin);
   void OnRequestEthereumPermissions(RequestCallback callback,
                                     base::Value id,
                                     const std::string& method,
-                                    const std::string& origin,
+                                    const url::Origin& origin,
                                     const std::vector<std::string>& accounts,
                                     mojom::ProviderError error,
                                     const std::string& error_message);
@@ -324,7 +337,7 @@ class BraveWalletProviderImpl final
   base::flat_map<std::string, base::Value> add_tx_ids_;
   RequestCallback pending_request_ethereum_permissions_callback_;
   base::Value pending_request_ethereum_permissions_id_;
-  std::string pending_request_ethereum_permissions_origin_;
+  url::Origin pending_request_ethereum_permissions_origin_;
   std::string pending_request_ethereum_permissions_method_;
   mojo::Receiver<mojom::JsonRpcServiceObserver> rpc_observer_receiver_{this};
   mojo::Receiver<mojom::TxServiceObserver> tx_observer_receiver_{this};

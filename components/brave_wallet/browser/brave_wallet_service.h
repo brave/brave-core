@@ -25,6 +25,7 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/origin.h"
 
 class PrefService;
 
@@ -100,14 +101,14 @@ class BraveWalletService : public KeyedService,
   void GetDefaultBaseCryptocurrency(
       GetDefaultBaseCryptocurrencyCallback callback) override;
   void SetDefaultBaseCryptocurrency(const std::string& cryptocurrency) override;
-  void AddEthereumPermission(const std::string& origin,
+  void AddEthereumPermission(const url::Origin& origin,
                              const std::string& account,
                              AddEthereumPermissionCallback callback) override;
-  void HasEthereumPermission(const std::string& origin,
+  void HasEthereumPermission(const url::Origin& origin,
                              const std::string& account,
                              HasEthereumPermissionCallback callback) override;
   void ResetEthereumPermission(
-      const std::string& origin,
+      const url::Origin& origin,
       const std::string& account,
       ResetEthereumPermissionCallback callback) override;
   void GetActiveOrigin(GetActiveOriginCallback callback) override;
@@ -129,13 +130,12 @@ class BraveWalletService : public KeyedService,
       bool approved,
       const std::vector<std::string>& contract_addresses) override;
   void NotifyGetPublicKeyRequestProcessed(bool approved,
-                                          const GURL& origin) override;
+                                          const url::Origin& origin) override;
   void NotifyDecryptRequestProcessed(bool approved,
-                                     const GURL& origin) override;
+                                     const url::Origin& origin) override;
 
   // BraveWalletServiceDelegate::Observer:
-  void OnActiveOriginChanged(const std::string& origin,
-                             const std::string& etld_plus_one) override;
+  void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 
   // Resets things back to the original state of BraveWalletService.
   // To be used when the Wallet is reset / erased
@@ -149,7 +149,7 @@ class BraveWalletService : public KeyedService,
       base::Value id);
   void AddGetPublicKeyRequest(
       const std::string& address,
-      const GURL& origin,
+      const url::Origin& origin,
       mojom::BraveWalletProvider::RequestCallback callback,
       base::Value id);
   void AddDecryptRequest(mojom::DecryptRequestPtr request,
@@ -220,14 +220,15 @@ class BraveWalletService : public KeyedService,
   base::flat_map<std::string, base::Value> add_suggest_token_ids_;
   base::flat_map<std::string, mojom::AddSuggestTokenRequestPtr>
       add_suggest_token_requests_;
-  base::flat_map<GURL, std::string> add_get_encryption_public_key_requests_;
-  base::flat_map<GURL, mojom::BraveWalletProvider::RequestCallback>
+  base::flat_map<url::Origin, std::string>
+      add_get_encryption_public_key_requests_;
+  base::flat_map<url::Origin, mojom::BraveWalletProvider::RequestCallback>
       add_get_encryption_public_key_callbacks_;
-  base::flat_map<GURL, base::Value> get_encryption_public_key_ids_;
-  base::flat_map<GURL, mojom::DecryptRequestPtr> decrypt_requests_;
-  base::flat_map<GURL, mojom::BraveWalletProvider::RequestCallback>
+  base::flat_map<url::Origin, base::Value> get_encryption_public_key_ids_;
+  base::flat_map<url::Origin, mojom::DecryptRequestPtr> decrypt_requests_;
+  base::flat_map<url::Origin, mojom::BraveWalletProvider::RequestCallback>
       decrypt_callbacks_;
-  base::flat_map<GURL, base::Value> decrypt_ids_;
+  base::flat_map<url::Origin, base::Value> decrypt_ids_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;

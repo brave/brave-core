@@ -11,13 +11,14 @@
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
-base::Value EthNetworkInfoToValue(const mojom::NetworkInfoPtr& info);
+base::Value EthNetworkInfoToValue(const mojom::NetworkInfo& info);
 mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value);
 base::ListValue PermissionRequestResponseToValue(
-    const std::string& origin,
+    const url::Origin& origin,
     const std::vector<std::string> accounts);
 
 mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value& value,

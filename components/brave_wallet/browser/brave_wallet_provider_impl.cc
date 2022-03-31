@@ -31,6 +31,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -473,12 +474,12 @@ void BraveWalletProviderImpl::SignMessage(const std::string& address,
   // Convert to checksum address
   auto checksum_address = EthAddress::FromHex(address);
   GetAllowedAccounts(
-      false,
-      base::BindOnce(&BraveWalletProviderImpl::ContinueSignMessage,
-                     weak_factory_.GetWeakPtr(),
-                     checksum_address.ToChecksumAddress(), message_str,
-                     std::move(message_bytes), absl::nullopt, absl::nullopt,
-                     false, std::move(callback), std::move(id)));
+      false, base::BindOnce(&BraveWalletProviderImpl::ContinueSignMessage,
+                            weak_factory_.GetWeakPtr(),
+                            checksum_address.ToChecksumAddress(), message_str,
+                            std::move(message_bytes), absl::nullopt,
+                            absl::nullopt, false, std::move(callback),
+                            std::move(id), delegate_->GetOrigin()));
 }
 
 void BraveWalletProviderImpl::RecoverAddress(const std::string& message,
@@ -545,25 +546,27 @@ void BraveWalletProviderImpl::GetEncryptionPublicKey(const std::string& address,
       false,
       base::BindOnce(&BraveWalletProviderImpl::ContinueGetEncryptionPublicKey,
                      weak_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(id), address));
+                     std::move(id), address, delegate_->GetOrigin()));
 }
 
 void BraveWalletProviderImpl::Decrypt(
     const std::string& untrusted_encrypted_data_json,
     const std::string& address,
+    const url::Origin& origin,
     RequestCallback callback,
     base::Value id) {
   data_decoder::JsonSanitizer::Sanitize(
       untrusted_encrypted_data_json,
       base::BindOnce(&BraveWalletProviderImpl::ContinueDecryptWithSanitizedJson,
                      weak_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(id), address));
+                     std::move(id), address, origin));
 }
 
 void BraveWalletProviderImpl::ContinueDecryptWithSanitizedJson(
     RequestCallback callback,
     base::Value id,
     const std::string& address,
+    const url::Origin& origin,
     data_decoder::JsonSanitizer::Result result) {
   if (result.error || !result.value.has_value()) {
     SendErrorOnRequest(mojom::ProviderError::kInvalidParams,
@@ -585,16 +588,18 @@ void BraveWalletProviderImpl::ContinueDecryptWithSanitizedJson(
   }
 
   GetAllowedAccounts(
-      false, base::BindOnce(
-                 &BraveWalletProviderImpl::ContinueDecryptWithAllowedAccounts,
-                 weak_factory_.GetWeakPtr(), std::move(callback), std::move(id),
-                 version, nonce, ephemeral_public_key, ciphertext, address));
+      false,
+      base::BindOnce(
+          &BraveWalletProviderImpl::ContinueDecryptWithAllowedAccounts,
+          weak_factory_.GetWeakPtr(), std::move(callback), std::move(id),
+          version, nonce, ephemeral_public_key, ciphertext, address, origin));
 }
 
 void BraveWalletProviderImpl::ContinueGetEncryptionPublicKey(
     RequestCallback callback,
     base::Value id,
     const std::string& address,
+    const url::Origin& origin,
     const std::vector<std::string>& allowed_accounts,
     mojom::ProviderError error,
     const std::string& error_message) {
@@ -618,7 +623,7 @@ void BraveWalletProviderImpl::ContinueGetEncryptionPublicKey(
 
   // Only show bubble when there is no immediate error
   brave_wallet_service_->AddGetPublicKeyRequest(
-      address, delegate_->GetOrigin(), std::move(callback), std::move(id));
+      address, origin, std::move(callback), std::move(id));
   delegate_->ShowPanel();
 }
 
@@ -630,6 +635,7 @@ void BraveWalletProviderImpl::ContinueDecryptWithAllowedAccounts(
     const std::vector<uint8_t>& ephemeral_public_key,
     const std::vector<uint8_t>& ciphertext,
     const std::string& address,
+    const url::Origin& origin,
     const std::vector<std::string>& allowed_accounts,
     mojom::ProviderError error,
     const std::string& error_message) {
@@ -679,7 +685,7 @@ void BraveWalletProviderImpl::ContinueDecryptWithAllowedAccounts(
     return;
   }
 
-  auto request = mojom::DecryptRequest::New(delegate_->GetOrigin(), address,
+  auto request = mojom::DecryptRequest::New(MakeOriginInfo(origin), address,
                                             unsafe_message);
   brave_wallet_service_->AddDecryptRequest(std::move(request),
                                            std::move(callback), std::move(id));
@@ -753,7 +759,7 @@ void BraveWalletProviderImpl::SignTypedMessage(
                      checksum_address.ToChecksumAddress(), message,
                      std::move(*message_to_sign), base::HexEncode(domain_hash),
                      base::HexEncode(primary_hash), true, std::move(callback),
-                     std::move(id)));
+                     std::move(id), delegate_->GetOrigin()));
 }
 
 void BraveWalletProviderImpl::ContinueSignMessage(
@@ -765,6 +771,7 @@ void BraveWalletProviderImpl::ContinueSignMessage(
     bool is_eip712,
     RequestCallback callback,
     base::Value id,
+    const url::Origin& origin,
     const std::vector<std::string>& allowed_accounts,
     mojom::ProviderError error,
     const std::string& error_message) {
@@ -789,9 +796,9 @@ void BraveWalletProviderImpl::ContinueSignMessage(
     return;
   }
 
-  auto request =
-      mojom::SignMessageRequest::New(sign_message_id_++, address, message,
-                                     is_eip712, domain_hash, primary_hash);
+  auto request = mojom::SignMessageRequest::New(
+      MakeOriginInfo(origin), sign_message_id_++, address, message, is_eip712,
+      domain_hash, primary_hash);
 
   if (keyring_service_->IsHardwareAccount(address)) {
     brave_wallet_service_->AddSignMessageRequest(
@@ -919,9 +926,8 @@ void BraveWalletProviderImpl::OnAddEthereumChainRequestCompleted(
 }
 
 void BraveWalletProviderImpl::Request(base::Value input,
-                                      const std::string& origin,
                                       RequestCallback callback) {
-  CommonRequestOrSendAsync(std::move(input), origin, std::move(callback));
+  CommonRequestOrSendAsync(std::move(input), std::move(callback));
 }
 
 void BraveWalletProviderImpl::SendErrorOnRequest(
@@ -937,7 +943,6 @@ void BraveWalletProviderImpl::SendErrorOnRequest(
 
 void BraveWalletProviderImpl::CommonRequestOrSendAsync(
     base::Value input_value,
-    const std::string& origin,
     RequestCallback callback) {
   mojom::ProviderError error = mojom::ProviderError::kUnsupportedMethod;
   std::string error_message = "Generic processing error";
@@ -970,10 +975,10 @@ void BraveWalletProviderImpl::CommonRequestOrSendAsync(
         false,
         base::BindOnce(&BraveWalletProviderImpl::OnContinueGetAllowedAccounts,
                        weak_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(id), method, origin));
+                       std::move(id), method, delegate_->GetOrigin()));
   } else if (method == kEthRequestAccounts) {
     RequestEthereumPermissions(std::move(callback), std::move(id), method,
-                               origin);
+                               delegate_->GetOrigin());
   } else if (method == kAddEthereumChainMethod) {
     AddEthereumChain(normalized_json_request, std::move(callback),
                      std::move(id));
@@ -1064,8 +1069,8 @@ void BraveWalletProviderImpl::CommonRequestOrSendAsync(
                          std::move(id));
       return;
     }
-    Decrypt(untrusted_encrypted_data_json, address, std::move(callback),
-            std::move(id));
+    Decrypt(untrusted_encrypted_data_json, address, delegate_->GetOrigin(),
+            std::move(callback), std::move(id));
   } else if (method == kWalletWatchAsset || method == kMetamaskWatchAsset) {
     mojom::BlockchainTokenPtr token;
     const auto chain_id = json_rpc_service_->GetChainId(mojom::CoinType::ETH);
@@ -1095,13 +1100,13 @@ void BraveWalletProviderImpl::CommonRequestOrSendAsync(
     }
 
     RequestEthereumPermissions(std::move(callback), std::move(id), method,
-                               origin);
+                               delegate_->GetOrigin());
   } else if (method == kGetPermissionsMethod) {
     GetAllowedAccounts(
         true,
         base::BindOnce(&BraveWalletProviderImpl::OnContinueGetAllowedAccounts,
                        weak_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(id), method, origin));
+                       std::move(id), method, delegate_->GetOrigin()));
   } else if (method == kWeb3ClientVersion) {
     Web3ClientVersion(std::move(callback), std::move(id));
   } else {
@@ -1112,12 +1117,11 @@ void BraveWalletProviderImpl::CommonRequestOrSendAsync(
 
 void BraveWalletProviderImpl::Send(const std::string& method,
                                    base::Value params,
-                                   const std::string& origin,
                                    SendCallback callback) {
   std::unique_ptr<base::Value> params_ptr =
       base::Value::ToUniquePtrValue(std::move(params));
   CommonRequestOrSendAsync(
-      std::move(*GetJsonRpcRequest(method, std::move(params_ptr))), origin,
+      std::move(*GetJsonRpcRequest(method, std::move(params_ptr))),
       std::move(callback));
 }
 
@@ -1125,7 +1129,7 @@ void BraveWalletProviderImpl::RequestEthereumPermissions(
     RequestCallback callback,
     base::Value id,
     const std::string& method,
-    const std::string& origin) {
+    const url::Origin& origin) {
   DCHECK(delegate_);
   delegate_->RequestEthereumPermissions(
       base::BindOnce(&BraveWalletProviderImpl::OnRequestEthereumPermissions,
@@ -1134,14 +1138,15 @@ void BraveWalletProviderImpl::RequestEthereumPermissions(
 }
 
 void BraveWalletProviderImpl::Enable(EnableCallback callback) {
-  RequestEthereumPermissions(std::move(callback), base::Value(), "", "");
+  RequestEthereumPermissions(std::move(callback), base::Value(), "",
+                             delegate_->GetOrigin());
 }
 
 void BraveWalletProviderImpl::OnRequestEthereumPermissions(
     RequestCallback callback,
     base::Value id,
     const std::string& method,
-    const std::string& origin,
+    const url::Origin& origin,
     const std::vector<std::string>& accounts,
     mojom::ProviderError error,
     const std::string& error_message) {
@@ -1214,7 +1219,7 @@ void BraveWalletProviderImpl::OnContinueGetAllowedAccounts(
     RequestCallback callback,
     base::Value id,
     const std::string& method,
-    const std::string& origin,
+    const url::Origin& origin,
     const std::vector<std::string>& accounts,
     mojom::ProviderError error,
     const std::string& error_message) {
@@ -1378,7 +1383,8 @@ void BraveWalletProviderImpl::AddSuggestToken(mojom::BlockchainTokenPtr token,
     return;
   }
 
-  auto request = mojom::AddSuggestTokenRequest::New(std::move(token));
+  auto request = mojom::AddSuggestTokenRequest::New(
+      MakeOriginInfo(delegate_->GetOrigin()), std::move(token));
   brave_wallet_service_->AddSuggestTokenRequest(
       std::move(request), std::move(callback), std::move(id));
   delegate_->ShowPanel();

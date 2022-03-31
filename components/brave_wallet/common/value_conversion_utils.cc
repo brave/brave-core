@@ -78,42 +78,42 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
   return chain.Clone();
 }
 
-base::Value EthNetworkInfoToValue(const mojom::NetworkInfoPtr& chain) {
+base::Value EthNetworkInfoToValue(const mojom::NetworkInfo& chain) {
   base::Value dict(base::Value::Type::DICTIONARY);
-  DCHECK_EQ(chain->coin, mojom::CoinType::ETH);
-  dict.SetStringKey("chainId", chain->chain_id);
-  dict.SetStringKey("chainName", chain->chain_name);
+  DCHECK_EQ(chain.coin, mojom::CoinType::ETH);
+  dict.SetStringKey("chainId", chain.chain_id);
+  dict.SetStringKey("chainName", chain.chain_name);
   bool is_eip1559 = false;
-  if (chain->data && chain->data->is_eth_data()) {
-    is_eip1559 = chain->data->get_eth_data()->is_eip1559;
+  if (chain.data && chain.data->is_eth_data()) {
+    is_eip1559 = chain.data->get_eth_data()->is_eip1559;
   }
   dict.SetBoolKey("is_eip1559", is_eip1559);
 
   base::ListValue blockExplorerUrlsValue;
-  if (!chain->block_explorer_urls.empty()) {
-    for (const auto& url : chain->block_explorer_urls) {
+  if (!chain.block_explorer_urls.empty()) {
+    for (const auto& url : chain.block_explorer_urls) {
       blockExplorerUrlsValue.Append(url);
     }
   }
   dict.SetKey("blockExplorerUrls", std::move(blockExplorerUrlsValue));
 
   base::ListValue iconUrlsValue;
-  if (!chain->icon_urls.empty()) {
-    for (const auto& url : chain->icon_urls) {
+  if (!chain.icon_urls.empty()) {
+    for (const auto& url : chain.icon_urls) {
       iconUrlsValue.Append(url);
     }
   }
   dict.SetKey("iconUrls", std::move(iconUrlsValue));
 
   base::ListValue rpcUrlsValue;
-  for (const auto& url : chain->rpc_urls) {
+  for (const auto& url : chain.rpc_urls) {
     rpcUrlsValue.Append(url);
   }
   dict.SetKey("rpcUrls", std::move(rpcUrlsValue));
   base::Value currency(base::Value::Type::DICTIONARY);
-  currency.SetStringKey("name", chain->symbol_name);
-  currency.SetStringKey("symbol", chain->symbol);
-  currency.SetIntKey("decimals", chain->decimals);
+  currency.SetStringKey("name", chain.symbol_name);
+  currency.SetStringKey("symbol", chain.symbol);
+  currency.SetIntKey("decimals", chain.decimals);
   dict.SetKey("nativeCurrency", std::move(currency));
   return dict;
 }
@@ -182,7 +182,7 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value& value,
 // Creates a response object as described in:
 // https://eips.ethereum.org/EIPS/eip-2255
 base::ListValue PermissionRequestResponseToValue(
-    const std::string& origin,
+    const url::Origin& origin,
     const std::vector<std::string> accounts) {
   base::ListValue container_list;
   base::Value dict(base::Value::Type::DICTIONARY);
@@ -210,7 +210,7 @@ base::ListValue PermissionRequestResponseToValue(
   dict.SetKey("caveats", std::move(caveats_list));
 
   dict.SetDoubleKey("date", base::Time::Now().ToJsTime());
-  dict.SetStringKey("invoker", origin);
+  dict.SetStringKey("invoker", origin.Serialize());
   dict.SetStringKey("parentCapability", "eth_accounts");
   container_list.Append(std::move(dict));
   return container_list;

@@ -18,7 +18,6 @@ import {
   DefaultCurrencies,
   GetPriceReturnInfo,
   GetNativeAssetBalancesPayload,
-  OriginInfo,
   SolFeeEstimates
 } from '../../constants/types'
 import {
@@ -79,8 +78,14 @@ const defaultState: WalletState = {
   addUserAssetError: false,
   defaultWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   activeOrigin: {
-    origin: '',
-    eTldPlusOne: ''
+    eTldPlusOne: '',
+    originSpec: '',
+    origin: {
+      scheme: '',
+      host: '',
+      port: 0,
+      nonceIfOpaque: undefined
+    }
   },
   gasEstimates: undefined,
   connectedAccounts: [],
@@ -376,7 +381,7 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.activeOriginChanged, (state: WalletState, payload: OriginInfo): WalletState => {
+  reducer.on(WalletActions.activeOriginChanged, (state: WalletState, payload: BraveWallet.OriginInfo): WalletState => {
     return {
       ...state,
       activeOrigin: payload

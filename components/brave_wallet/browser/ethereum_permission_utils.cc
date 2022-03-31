@@ -20,29 +20,31 @@ constexpr char kAddrPattern[] = "addr%3D(0x[[:xdigit:]]{40})";
 
 // Given an origin and an account address, append the account address to the
 // end of the host piece of the origin, then return it as the new origin.
-bool AddAccountToHost(const GURL& old_origin,
+bool AddAccountToHost(const url::Origin& old_origin,
                       const std::string& account,
-                      GURL* new_origin) {
-  if (!old_origin.is_valid() || account.empty() || !new_origin)
+                      url::Origin* new_origin) {
+  if (old_origin.opaque() || account.empty() || !new_origin)
     return false;
 
   GURL::Replacements replacements;
-  std::string new_host = base::StrCat({old_origin.host_piece(), account});
+  std::string new_host = base::StrCat({old_origin.host(), account});
   replacements.SetHostStr(new_host);
 
-  *new_origin = old_origin.ReplaceComponents(replacements);
-  return new_origin->is_valid();
+  *new_origin =
+      url::Origin::Create(old_origin.GetURL().ReplaceComponents(replacements));
+
+  return !new_origin->host().empty();
 }
 
 // Given the overwritten origin, such as https://test.com{addr=123&addr=456},
 // extract all addresses and save into address_queue.
-void ExtractAddresses(const GURL& origin,
+void ExtractAddresses(const url::Origin& origin,
                       std::queue<std::string>* address_queue) {
   static const base::NoDestructor<re2::RE2> kAddrRegex(kAddrPattern);
-  DCHECK(origin.is_valid() && address_queue);
-  DCHECK_EQ(origin, url::Origin::Create(origin).GetURL());
+  DCHECK(!origin.opaque() && address_queue);
 
-  re2::StringPiece input(origin.spec());
+  std::string origin_string(origin.Serialize());
+  re2::StringPiece input(origin_string);
   std::string match;
   while (re2::RE2::FindAndConsume(&input, *kAddrRegex, &match)) {
     address_queue->push(match);
@@ -51,12 +53,12 @@ void ExtractAddresses(const GURL& origin,
 
 // Parse requesting origin in either sub-request format (one address) or
 // non-sub-request format (all addresses).
-bool ParseRequestingOriginInternal(const GURL& origin,
+bool ParseRequestingOriginInternal(const url::Origin& origin,
                                    bool sub_req_format,
-                                   std::string* requesting_origin,
+                                   url::Origin* requesting_origin,
                                    std::string* account,
                                    std::queue<std::string>* address_queue) {
-  if (!origin.is_valid() || origin != url::Origin::Create(origin).GetURL())
+  if (origin.opaque())
     return false;
 
   std::string scheme_host_group;
@@ -65,17 +67,19 @@ bool ParseRequestingOriginInternal(const GURL& origin,
 
   // Validate input format.
   std::string pattern = sub_req_format
-                            ? "(.*)(0x[[:xdigit:]]{40})(:[0-9]+)*/"
+                            ? "(.*)(0x[[:xdigit:]]{40})(:[0-9]+)*"
                             : "(.*)%7Baddr%3D0x[[:xdigit:]]{40}(%"
-                              "26addr%3D0x[[:xdigit:]]{40})*%7D(:[0-9]+)*/";
+                              "26addr%3D0x[[:xdigit:]]{40})*%7D(:[0-9]+)*";
   RE2 full_pattern(pattern);
-  if (!re2::RE2::FullMatch(origin.spec(), full_pattern, &scheme_host_group,
+  if (!re2::RE2::FullMatch(origin.Serialize(), full_pattern, &scheme_host_group,
                            &address_group, &port_group)) {
     return false;
   }
 
   if (requesting_origin) {
-    *requesting_origin = base::StrCat({scheme_host_group, port_group});
+    auto requesting_origin_string =
+        base::StrCat({scheme_host_group, port_group});
+    *requesting_origin = url::Origin::Create(GURL(requesting_origin_string));
   }
 
   if (sub_req_format && account) {
@@ -94,10 +98,10 @@ bool ParseRequestingOriginInternal(const GURL& origin,
 namespace brave_wallet {
 
 bool GetConcatOriginFromWalletAddresses(
-    const GURL& old_origin,
+    const url::Origin& old_origin,
     const std::vector<std::string>& addresses,
-    GURL* new_origin) {
-  if (!old_origin.is_valid() || addresses.empty()) {
+    url::Origin* new_origin) {
+  if (old_origin.opaque() || addresses.empty()) {
     return false;
   }
 
@@ -112,16 +116,16 @@ bool GetConcatOriginFromWalletAddresses(
   return AddAccountToHost(old_origin, addresses_suffix, new_origin);
 }
 
-bool ParseRequestingOriginFromSubRequest(const GURL& origin,
-                                         std::string* requesting_origin,
+bool ParseRequestingOriginFromSubRequest(const url::Origin& origin,
+                                         url::Origin* requesting_origin,
                                          std::string* account) {
   return ParseRequestingOriginInternal(origin, true /* sub_req_format */,
                                        requesting_origin, account,
                                        nullptr /* address_queue */);
 }
 
-bool ParseRequestingOrigin(const GURL& origin,
-                           std::string* requesting_origin,
+bool ParseRequestingOrigin(const url::Origin& origin,
+                           url::Origin* requesting_origin,
                            std::queue<std::string>* address_queue) {
   if (address_queue && !address_queue->empty())
     return false;
@@ -130,24 +134,35 @@ bool ParseRequestingOrigin(const GURL& origin,
                                        address_queue);
 }
 
-bool GetSubRequestOrigin(const GURL& old_origin,
+bool GetSubRequestOrigin(const url::Origin& old_origin,
                          const std::string& account,
-                         GURL* new_origin) {
+                         url::Origin* new_origin) {
   return AddAccountToHost(old_origin, account, new_origin);
 }
 
 GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
                                 const std::vector<std::string>& accounts,
-                                const std::string& origin) {
-  DCHECK(webui_base_url.is_valid() && !accounts.empty() && !origin.empty());
+                                const url::Origin& origin) {
+  DCHECK(webui_base_url.is_valid() && !accounts.empty() && !origin.opaque());
 
   std::vector<std::string> query_parts;
   for (const auto& account : accounts) {
     query_parts.push_back(base::StringPrintf("addr=%s", account.c_str()));
   }
-  query_parts.push_back(base::StringPrintf("origin=%s", origin.c_str()));
-  query_parts.push_back(base::StringPrintf("etld-plus-one=%s",
-                                           eTLDPlusOne(GURL(origin)).c_str()));
+
+  mojom::OriginInfoPtr origin_info = MakeOriginInfo(origin);
+
+  query_parts.push_back(base::StringPrintf(
+      "origin-scheme=%s", origin_info->origin.scheme().c_str()));
+  query_parts.push_back(
+      base::StringPrintf("origin-host=%s", origin_info->origin.host().c_str()));
+  query_parts.push_back(
+      base::StringPrintf("origin-port=%d", origin_info->origin.port()));
+  query_parts.push_back(
+      base::StringPrintf("origin-spec=%s", origin_info->origin_spec.c_str()));
+  query_parts.push_back(base::StringPrintf(
+      "etld-plus-one=%s", origin_info->e_tld_plus_one.c_str()));
+
   std::string query_str = base::JoinString(query_parts, "&");
   url::Replacements<char> replacements;
   replacements.SetQuery(query_str.c_str(), url::Component(0, query_str.size()));

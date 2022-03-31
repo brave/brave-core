@@ -107,7 +107,7 @@ std::string GetUnstoppableDomainsProxyReaderContractAddress(
 std::string GetEnsRegistryContractAddress(const std::string& chain_id);
 
 // Append chain value to kBraveWalletCustomNetworks dictionary pref.
-void AddCustomNetwork(PrefService* prefs, mojom::NetworkInfoPtr chain);
+void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain);
 
 void RemoveCustomNetwork(PrefService* prefs,
                          const std::string& chain_id_to_remove);
@@ -135,10 +135,10 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin);
 // is leaked from what the user agent provides for fingerprinting.
 std::string GetWeb3ClientVersion();
 
-/**
- * Given an url, return eTLD + 1 for that URL
- */
-std::string eTLDPlusOne(const GURL& url);
+// Given an url, return eTLD + 1 for that Origin
+std::string eTLDPlusOne(const url::Origin& origin);
+
+mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin);
 
 }  // namespace brave_wallet
 

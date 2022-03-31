@@ -13,6 +13,7 @@
 
 #include "components/permissions/permission_context_base.h"
 #include "components/permissions/permission_request_id.h"
+#include "url/origin.h"
 
 class GURL;
 class HostContentSettingsMap;
@@ -65,14 +66,14 @@ class BraveEthereumPermissionContext : public PermissionContextBase {
       base::OnceCallback<void(bool, const std::vector<std::string>&)> callback);
 
   static bool AddEthereumPermission(content::BrowserContext* context,
-                                    const std::string& origin_spec,
+                                    const url::Origin& origin,
                                     const std::string& account);
   static bool HasEthereumPermission(content::BrowserContext* context,
-                                    const std::string& origin_spec,
+                                    const url::Origin& origin,
                                     const std::string& account,
                                     bool* has_permission);
   static bool ResetEthereumPermission(content::BrowserContext* context,
-                                      const std::string& origin_spec,
+                                      const url::Origin& origin,
                                       const std::string& account);
 
  protected:

@@ -205,10 +205,11 @@ function ConfirmTransactionPanel ({
 
       {isERC20Approve ? (
         <>
-          <FavIcon src={`chrome://favicon/size/64@1x/${originInfo.origin}`} />
+          <FavIcon src={`chrome://favicon/size/64@1x/${originInfo.originSpec}`} />
           <URLText>
-            <CreateSiteOrigin
-              originInfo={originInfo}
+            <CreateSiteOrigin 
+              originSpec={originInfo.originSpec}
+              eTldPlusOne={originInfo.eTldPlusOne}
             />
           </URLText>
           <PanelTitle>{getLocale('braveWalletAllowSpendTitle').replace('$1', foundTokenInfoByContractAddress?.symbol ?? '')}</PanelTitle>

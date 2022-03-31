@@ -82,7 +82,7 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
     prompt_factory_.reset(new MockPermissionLifetimePromptFactory(manager));
 
     host_resolver()->AddRule("*", "127.0.0.1");
-    https_server()->ServeFilesFromDirectory(GetChromeTestDataDir());
+    https_server()->ServeFilesFromSourceDirectory(GetChromeTestDataDir());
     ASSERT_TRUE(https_server()->Start());
   }
 

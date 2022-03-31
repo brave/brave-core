@@ -7,19 +7,20 @@
 
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
 #include "src/components/permissions/permission_request_manager.cc"
+#include "url/origin.h"
 
 namespace permissions {
 
 bool PermissionRequestManager::ShouldGroupRequests(PermissionRequest* a,
                                                    PermissionRequest* b) {
-  std::string origin_a;
-  std::string origin_b;
+  url::Origin origin_a;
+  url::Origin origin_b;
   if (a->request_type() == RequestType::kBraveEthereum &&
       b->request_type() == RequestType::kBraveEthereum &&
-      brave_wallet::ParseRequestingOriginFromSubRequest(a->requesting_origin(),
-                                                        &origin_a, nullptr) &&
-      brave_wallet::ParseRequestingOriginFromSubRequest(b->requesting_origin(),
-                                                        &origin_b, nullptr) &&
+      brave_wallet::ParseRequestingOriginFromSubRequest(
+          url::Origin::Create(a->requesting_origin()), &origin_a, nullptr) &&
+      brave_wallet::ParseRequestingOriginFromSubRequest(
+          url::Origin::Create(b->requesting_origin()), &origin_b, nullptr) &&
       origin_a == origin_b) {
     return true;
   }

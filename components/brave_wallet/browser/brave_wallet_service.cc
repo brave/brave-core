@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -31,6 +32,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/origin.h"
 
 // kBraveWalletUserAssets
 // {
@@ -538,32 +540,31 @@ void BraveWalletService::OnNetworkListChanged() {
 }
 
 void BraveWalletService::AddEthereumPermission(
-    const std::string& origin_spec,
+    const url::Origin& origin,
     const std::string& account,
     AddEthereumPermissionCallback callback) {
   if (delegate_)
-    delegate_->AddEthereumPermission(origin_spec, account, std::move(callback));
+    delegate_->AddEthereumPermission(origin, account, std::move(callback));
   else
     std::move(callback).Run(false);
 }
 
 void BraveWalletService::HasEthereumPermission(
-    const std::string& origin_spec,
+    const url::Origin& origin,
     const std::string& account,
     HasEthereumPermissionCallback callback) {
   if (delegate_)
-    delegate_->HasEthereumPermission(origin_spec, account, std::move(callback));
+    delegate_->HasEthereumPermission(origin, account, std::move(callback));
   else
     std::move(callback).Run(false, false);
 }
 
 void BraveWalletService::ResetEthereumPermission(
-    const std::string& origin_spec,
+    const url::Origin& origin,
     const std::string& account,
     ResetEthereumPermissionCallback callback) {
   if (delegate_)
-    delegate_->ResetEthereumPermission(origin_spec, account,
-                                       std::move(callback));
+    delegate_->ResetEthereumPermission(origin, account, std::move(callback));
   else
     std::move(callback).Run(false);
 }
@@ -790,7 +791,7 @@ void BraveWalletService::GetActiveOrigin(GetActiveOriginCallback callback) {
   if (delegate_)
     delegate_->GetActiveOrigin(std::move(callback));
   else
-    std::move(callback).Run("", "");
+    std::move(callback).Run(MakeOriginInfo(url::Origin()));
 }
 
 void BraveWalletService::GetPendingSignMessageRequests(
@@ -847,10 +848,9 @@ void BraveWalletService::AddObserver(
 }
 
 void BraveWalletService::OnActiveOriginChanged(
-    const std::string& origin,
-    const std::string& etld_plus_one) {
+    const mojom::OriginInfoPtr& origin_info) {
   for (const auto& observer : observers_) {
-    observer->OnActiveOriginChanged(origin, etld_plus_one);
+    observer->OnActiveOriginChanged(origin_info.Clone());
   }
 }
 
@@ -956,7 +956,7 @@ void BraveWalletService::AddSuggestTokenRequest(
 
 void BraveWalletService::AddGetPublicKeyRequest(
     const std::string& address,
-    const GURL& origin,
+    const url::Origin& origin,
     mojom::BraveWalletProvider::RequestCallback callback,
     base::Value id) {
   // There can be only 1 request per origin
@@ -979,7 +979,7 @@ void BraveWalletService::AddDecryptRequest(
     mojom::DecryptRequestPtr request,
     mojom::BraveWalletProvider::RequestCallback callback,
     base::Value id) {
-  GURL origin = request->origin;
+  url::Origin origin = request->origin_info->origin;
   // There can be only 1 request per origin
   if (decrypt_requests_.contains(origin)) {
     std::unique_ptr<base::Value> formed_response;
@@ -1001,7 +1001,7 @@ void BraveWalletService::GetPendingGetEncryptionPublicKeyRequests(
   std::vector<mojom::GetEncryptionPublicKeyRequestPtr> requests;
   for (const auto& request : add_get_encryption_public_key_requests_) {
     requests.push_back(mojom::GetEncryptionPublicKeyRequest::New(
-        request.first, request.second));
+        MakeOriginInfo(request.first), request.second));
   }
   std::move(callback).Run(std::move(requests));
 }
@@ -1067,7 +1067,7 @@ void BraveWalletService::NotifyAddSuggestTokenRequestsProcessed(
 
 void BraveWalletService::NotifyGetPublicKeyRequestProcessed(
     bool approved,
-    const GURL& origin) {
+    const url::Origin& origin) {
   if (!add_get_encryption_public_key_requests_.contains(origin) ||
       !add_get_encryption_public_key_callbacks_.contains(origin) ||
       !get_encryption_public_key_ids_.contains(origin)) {
@@ -1112,7 +1112,7 @@ void BraveWalletService::NotifyGetPublicKeyRequestProcessed(
 }
 
 void BraveWalletService::NotifyDecryptRequestProcessed(bool approved,
-                                                       const GURL& origin) {
+                                                       const url::Origin& origin) {
   if (!decrypt_requests_.contains(origin) ||
       !decrypt_callbacks_.contains(origin) || !decrypt_ids_.contains(origin)) {
     return;

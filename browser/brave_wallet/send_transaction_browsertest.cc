@@ -259,13 +259,14 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
               expected_address);
   }
 
-  void AddEthereumPermission(const GURL& url, size_t from_index = 0) {
-    AddEthereumPermission(url, from(from_index));
+  void AddEthereumPermission(const url::Origin& origin, size_t from_index = 0) {
+    AddEthereumPermission(origin, from(from_index));
   }
-  void AddEthereumPermission(const GURL& url, const std::string& address) {
+  void AddEthereumPermission(const url::Origin& origin,
+                             const std::string& address) {
     base::RunLoop run_loop;
     brave_wallet_service_->AddEthereumPermission(
-        url.spec(), address, base::BindLambdaForTesting([&](bool success) {
+        origin, address, base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
         }));
@@ -645,7 +646,7 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SelectedAddress) {
             from());
 
   // But it does update the selectedAddress if the account is allowed
-  AddEthereumPermission(url, 1);
+  AddEthereumPermission(url::Origin::Create(url), 1);
   EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractString(),
@@ -744,7 +745,7 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
                            "Test Coin", 11, mojom::CoinType::ETH,
                            mojom::NetworkInfoData::NewEthData(
                                mojom::NetworkInfoDataETH::New(false)));
-  AddCustomNetwork(browser()->profile()->GetPrefs(), chain.Clone());
+  AddCustomNetwork(browser()->profile()->GetPrefs(), chain);
 
   TestUserApproved("request", "", true /* skip_restore */);
 }

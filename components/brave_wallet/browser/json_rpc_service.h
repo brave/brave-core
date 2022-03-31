@@ -26,6 +26,7 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -155,7 +156,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                         AddEthereumChainCallback callback) override;
   void AddEthereumChainForOrigin(
       mojom::NetworkInfoPtr chain,
-      const GURL& origin,
+      const url::Origin& origin,
       AddEthereumChainForOriginCallback callback) override;
   void AddEthereumChainRequestCompleted(const std::string& chain_id,
                                         bool approved) override;
@@ -167,12 +168,12 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                   mojom::JsonRpcService::GetChainIdCallback callback) override;
   void GetBlockTrackerUrl(
       mojom::JsonRpcService::GetBlockTrackerUrlCallback callback) override;
-  void GetPendingChainRequests(
-      GetPendingChainRequestsCallback callback) override;
+  void GetPendingAddChainRequests(
+      GetPendingAddChainRequestsCallback callback) override;
   void GetPendingSwitchChainRequests(
       GetPendingSwitchChainRequestsCallback callback) override;
   void NotifySwitchChainRequestProcessed(bool approved,
-                                         const GURL& origin) override;
+                                         const url::Origin& origin) override;
   void GetAllNetworks(mojom::CoinType coin,
                       GetAllNetworksCallback callback) override;
   std::string GetNetworkUrl(mojom::CoinType coin) const;
@@ -240,7 +241,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               const std::string& error_message)>;
   // return false when there is an error before processing request
   bool AddSwitchEthereumChainRequest(const std::string& chain_id,
-                                     const GURL& origin,
+                                     const url::Origin& origin,
                                      RequestCallback callback,
                                      base::Value id);
 
@@ -291,7 +292,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void FireNetworkChanged(mojom::CoinType coin);
   void FirePendingRequestCompleted(const std::string& chain_id,
                                    const std::string& error);
-  bool HasRequestFromOrigin(const GURL& origin) const;
+  bool HasRequestFromOrigin(const url::Origin& origin) const;
   void RemoveChainIdRequest(const std::string& chain_id);
   void OnGetBlockNumber(
       GetBlockNumberCallback callback,
@@ -416,7 +417,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                        RequestIntermediateCallback callback);
   void OnEthChainIdValidatedForOrigin(
       mojom::NetworkInfoPtr chain,
-      const GURL& origin,
+      const url::Origin& origin,
       AddEthereumChainForOriginCallback callback,
       bool success);
 
@@ -488,17 +489,13 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   base::flat_map<mojom::CoinType, GURL> network_urls_;
   // <mojom::CoinType, chain_id>
   base::flat_map<mojom::CoinType, std::string> chain_ids_;
-  // mojom::NetworkInfoPtr is move-only so we cannot use a custom struct to
-  // store NetworkInfo and origin together
-  // <chain_id, mojom::NetworkInfoPtr>
-  base::flat_map<std::string, mojom::NetworkInfoPtr>
+  // <chain_id, mojom::AddChainRequest>
+  base::flat_map<std::string, mojom::AddChainRequestPtr>
       add_chain_pending_requests_;
-  // <chain_id, origin>
-  base::flat_map<std::string, GURL> add_chain_pending_requests_origins_;
   // <origin, chain_id>
-  base::flat_map<GURL, std::string> switch_chain_requests_;
-  base::flat_map<GURL, RequestCallback> switch_chain_callbacks_;
-  base::flat_map<GURL, base::Value> switch_chain_ids_;
+  base::flat_map<url::Origin, std::string> switch_chain_requests_;
+  base::flat_map<url::Origin, RequestCallback> switch_chain_callbacks_;
+  base::flat_map<url::Origin, base::Value> switch_chain_ids_;
   mojo::RemoteSet<mojom::JsonRpcServiceObserver> observers_;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;

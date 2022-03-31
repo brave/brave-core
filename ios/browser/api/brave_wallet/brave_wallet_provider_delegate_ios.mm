@@ -15,8 +15,8 @@ void BraveWalletProviderDelegateBridge::ShowPanel() {
   [bridge_ showPanel];
 }
 
-GURL BraveWalletProviderDelegateBridge::GetOrigin() const {
-  return net::GURLWithNSURL([bridge_ getOrigin]);
+url::Origin BraveWalletProviderDelegateBridge::GetOrigin() const {
+  return url::Origin::Create(net::GURLWithNSURL([bridge_ getOrigin]));
 }
 
 void BraveWalletProviderDelegateBridge::RequestEthereumPermissions(
