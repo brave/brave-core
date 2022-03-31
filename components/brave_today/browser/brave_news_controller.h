@@ -14,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/feed_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
@@ -101,6 +102,7 @@ class BraveNewsController : public KeyedService,
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
   api_request_helper::APIRequestHelper api_request_helper_;
+  brave_private_cdn::PrivateCDNRequestHelper private_cdn_request_helper_;
   PublishersController publishers_controller_;
   DirectFeedController direct_feed_controller_;
   FeedController feed_controller_;
