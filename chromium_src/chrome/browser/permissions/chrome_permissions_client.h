@@ -14,7 +14,13 @@
                                      ContentSettingsType type) override; \
   bool CanBypassEmbeddingOriginCheck
 
+#define MaybeCreateMessageUI                                        \
+  MaybeCreateMessageUI_ChromiumImpl(                                \
+      content::WebContents* web_contents, ContentSettingsType type, \
+      base::WeakPtr<permissions::PermissionPromptAndroid> prompt);  \
+  std::unique_ptr<PermissionMessageDelegate> MaybeCreateMessageUI
 #include "src/chrome/browser/permissions/chrome_permissions_client.h"
+#undef MaybeCreateMessageUI
 #undef CanBypassEmbeddingOriginCheck
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PERMISSIONS_CHROME_PERMISSIONS_CLIENT_H_

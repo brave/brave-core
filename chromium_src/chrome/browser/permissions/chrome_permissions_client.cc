@@ -3,9 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/permissions/chrome_permissions_client.h"
+
+#define MaybeCreateMessageUI MaybeCreateMessageUI_ChromiumImpl
 #include "src/chrome/browser/permissions/chrome_permissions_client.cc"
+#undef MaybeCreateMessageUI
+
+#include <vector>
 
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "build/build_config.h"
+#include "components/permissions/permission_request.h"
+#include "components/permissions/request_type.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/permissions/brave_ethereum_permission_prompt_android.h"
+#include "components/permissions/android/permission_prompt_android.h"
+#endif
 
 bool ChromePermissionsClient::BraveCanBypassEmbeddingOriginCheck(
     const GURL& requesting_origin,
@@ -27,3 +42,26 @@ bool ChromePermissionsClient::BraveCanBypassEmbeddingOriginCheck(
 
   return CanBypassEmbeddingOriginCheck(requesting_origin, embedding_origin);
 }
+
+#if BUILDFLAG(IS_ANDROID)
+std::unique_ptr<ChromePermissionsClient::PermissionMessageDelegate>
+ChromePermissionsClient::MaybeCreateMessageUI(
+    content::WebContents* web_contents,
+    ContentSettingsType type,
+    base::WeakPtr<permissions::PermissionPromptAndroid> prompt) {
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  std::vector<permissions::PermissionRequest*> requests =
+      prompt->delegate()->Requests();
+  if (requests.size() != 0 &&
+      requests[0]->request_type() == permissions::RequestType::kBraveEthereum) {
+    auto delegate = std::make_unique<BraveEthereumPermissionPrompt::Delegate>(
+        std::move(prompt));
+    return std::make_unique<BraveEthereumPermissionPrompt>(web_contents,
+                                                           std::move(delegate));
+  }
+#endif
+
+  return MaybeCreateMessageUI_ChromiumImpl(web_contents, type,
+                                           std::move(prompt));
+}
+#endif
