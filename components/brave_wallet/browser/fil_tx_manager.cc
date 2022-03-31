@@ -96,6 +96,7 @@ void FilTxManager::GetEstimatedGas(const std::string& from,
   const std::string value = tx->value();
   const std::string max_fee = tx->max_fee();
   auto to = tx->to().EncodeAsString();
+
   json_rpc_service_->GetFilEstimateGas(
       from, to, gas_premium, gas_fee_cap, gas_limit, nonce, max_fee, value,
       base::BindOnce(&FilTxManager::ContinueAddUnapprovedTransaction,
@@ -145,7 +146,6 @@ void FilTxManager::ApproveTransaction(const std::string& tx_meta_id,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
     return;
   }
-
   if (!meta->tx()->nonce()) {
     auto from = meta->from();
     nonce_tracker_->GetNextNonce(
@@ -179,7 +179,6 @@ void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
   auto signed_tx =
       keyring_service_->SignTransactionByFilecoinKeyring(meta->tx());
   GetFilTxStateManager()->AddOrUpdateTx(*meta);
-
   json_rpc_service_->SendFilecoinTransaction(
       signed_tx, base::BindOnce(&FilTxManager::OnSendFilecoinTransaction,
                                 weak_factory_.GetWeakPtr(), meta->id(),

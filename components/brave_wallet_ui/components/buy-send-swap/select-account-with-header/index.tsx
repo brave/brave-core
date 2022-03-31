@@ -28,7 +28,7 @@ function SelectAccountWithHeader (props: Props) {
     hasAddButton
   } = props
   const [filteredAccountList, setFilteredAccountList] = React.useState<WalletAccountType[]>(accounts)
-
+  console.log("accounts:", accounts)
   const filterAccountList = (event: any) => {
     const search = event.target.value
     if (search === '') {

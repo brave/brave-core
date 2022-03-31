@@ -10,7 +10,6 @@
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/common/brave_services_key.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
@@ -87,9 +86,7 @@ class FilTxManagerUnitTest : public testing::Test {
         [&, expected_url, expected_method,
          content](const network::ResourceRequest& request) {
           EXPECT_EQ(request.url, expected_url);
-          std::string header_value(100, '\0');
-          EXPECT_TRUE(request.headers.GetHeader("x-brave-key", &header_value));
-          EXPECT_EQ(BRAVE_SERVICES_KEY, header_value);
+          std::string header_value;
           EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
           EXPECT_TRUE(responses_.count(header_value));
           url_loader_factory_.ClearResponses();

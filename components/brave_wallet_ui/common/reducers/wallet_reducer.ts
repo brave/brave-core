@@ -298,7 +298,7 @@ export const createWalletReducer = (initialState: WalletState) => {
 
   reducer.on(WalletActions.unapprovedTxUpdated, (state: WalletState, payload: UnapprovedTxUpdated): WalletState => {
     const newState = { ...state }
-
+    console.log(payload)
     const index = state.pendingTransactions.findIndex(
       (tx: BraveWallet.TransactionInfo) => tx.id === payload.txInfo.id
     )

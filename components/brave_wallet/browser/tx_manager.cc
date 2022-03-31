@@ -74,6 +74,7 @@ void TxManager::GetAllTransactionInfo(const std::string& from,
       [](const std::unique_ptr<TxMeta>& m) -> mojom::TransactionInfoPtr {
         return m->ToTransactionInfo();
       });
+
   std::move(callback).Run(std::move(tis));
 }
 

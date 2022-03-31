@@ -73,16 +73,17 @@ absl::optional<std::string> getSendTransaction(const std::string& signed_tx) {
   base::JSONReader::ValueWithError parsed_tx =
       base::JSONReader::ReadAndReturnValueWithError(signed_tx);
   if (!parsed_tx.value || !parsed_tx.value->is_dict()) {
-    VLOG(1) << "Error parsing transaction JSON: " << parsed_tx.error_message;
     return absl::nullopt;
   }
   auto* message_value = parsed_tx.value->FindKey("message");
   auto* signature_value = parsed_tx.value->FindKey("signature");
   if (!message_value || !signature_value)
     return absl::nullopt;
+  base::Value command(base::Value::Type::DICTIONARY);
+  command.SetKey("Message", message_value->Clone());
+  command.SetKey("Signature", signature_value->Clone());
   base::Value params(base::Value::Type::LIST);
-  params.Append(message_value->Clone());
-  params.Append(signature_value->Clone());
+  params.Append(std::move(command));
   // params.Append(cid.Clone());
 
   base::Value dictionary(base::Value::Type::DICTIONARY);

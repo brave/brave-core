@@ -82,7 +82,7 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkIn
    */
   const checkForMissingGasLimitError = React.useCallback((gasLimit: string): string | undefined => {
     return (gasLimit === '' || Amount.normalize(gasLimit) === '0')
-      ? getLocale('braveWalletMissingGasLimitError')
+      ? undefined //getLocale('braveWalletMissingGasLimitError')
       : undefined
   }, [])
 

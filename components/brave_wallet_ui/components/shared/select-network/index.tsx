@@ -22,7 +22,6 @@ function SelectNetwork (props: Props) {
   const networkList = React.useMemo(() => {
     if (!hasSolAccount && !hasFilAccount) {
       return networks.filter((network) =>
-        network.coin !== BraveWallet.CoinType.FIL &&
         network.coin !== BraveWallet.CoinType.SOL)
     }
     if (hasSolAccount && !hasFilAccount) {
