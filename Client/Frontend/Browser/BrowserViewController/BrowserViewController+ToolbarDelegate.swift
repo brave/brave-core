@@ -33,7 +33,8 @@ extension BrowserViewController: TopToolbarDelegate {
     let tabTrayController = TabTrayController(tabManager: tabManager).then {
       $0.delegate = self
     }
-    let container = SettingsNavigationController(rootViewController: tabTrayController)
+    let container = UINavigationController(rootViewController: tabTrayController)
+
     if !UIAccessibility.isReduceMotionEnabled {
       container.transitioningDelegate = tabTrayController
       container.modalPresentationStyle = .fullScreen
