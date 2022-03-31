@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
+#include <unordered_map>
 
 #include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
@@ -80,6 +81,8 @@ class FilTxManagerUnitTest : public testing::Test {
   void SetInterceptor(const GURL& expected_url,
                       const std::string& expected_method,
                       const std::string& content) {
+    ClearInterceptorResponses();
+    AddInterceptorResponse(expected_method, content);
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, expected_url, expected_method,
          content](const network::ResourceRequest& request) {
@@ -88,11 +91,21 @@ class FilTxManagerUnitTest : public testing::Test {
           EXPECT_TRUE(request.headers.GetHeader("x-brave-key", &header_value));
           EXPECT_EQ(BRAVE_SERVICES_KEY, header_value);
           EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
-          EXPECT_EQ(expected_method, header_value);
+          EXPECT_TRUE(responses_.count(header_value));
           url_loader_factory_.ClearResponses();
-          url_loader_factory_.AddResponse(request.url.spec(), content);
+          auto response = responses_[header_value];
+          url_loader_factory_.AddResponse(request.url.spec(), response);
         }));
   }
+  void AddInterceptorResponse(const std::string& expected_method,
+                              const std::string& content) {
+    responses_[expected_method] = content;
+  }
+  void ClearInterceptorResponses() {
+    responses_.clear();
+    url_loader_factory_.ClearResponses();
+  }
+
   FilTxManager* fil_tx_manager() { return tx_service_->GetFilTxManager(); }
 
   PrefService* prefs() { return &prefs_; }
@@ -144,6 +157,7 @@ class FilTxManagerUnitTest : public testing::Test {
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<TxService> tx_service_;
+  std::unordered_map<std::string, std::string> responses_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
@@ -174,11 +188,11 @@ TEST_F(FilTxManagerUnitTest,
   base::ReplaceSubstringsAfterOffset(&gas_response, 0, "{from}", from_account);
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
                  "Filecoin.GasEstimateMessageGas", gas_response);
-  auto tx_data = mojom::FilTxData::New("" /* nonce */, "" /* gas_premium */,
-                                       "" /* gas_fee_cap */, "" /* gas_limit */,
-                                       "" /* max_fee */, to_account,
-                                       from_account, "11", "bafy");
+  auto tx_data = mojom::FilTxData::New(
+      "" /* nonce */, "" /* gas_premium */, "" /* gas_fee_cap */,
+      "" /* gas_limit */, "" /* max_fee */, to_account, from_account, "11");
   auto tx = FilTransaction::FromTxData(tx_data.Clone());
+
   std::string meta_id1;
   AddUnapprovedTransaction(tx_data.Clone(), from_account, &meta_id1);
 
@@ -188,8 +202,6 @@ TEST_F(FilTxManagerUnitTest,
   EXPECT_EQ(tx_meta1->tx()->gas_fee_cap(), "100820");
   EXPECT_EQ(tx_meta1->tx()->gas_limit(), 598585);
   EXPECT_EQ(tx_meta1->tx()->gas_premium(), "99766");
-  EXPECT_EQ(tx_meta1->tx()->cid(),
-            "bafy2bzacedkdoldmztwjwi3jvxhxo4qqp7haufuifpqzregfqkthlyhhf2lfu");
   EXPECT_EQ(tx_meta1->from(), from_account);
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Unapproved);
 
@@ -202,15 +214,19 @@ TEST_F(FilTxManagerUnitTest,
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
                  "Filecoin.MpoolGetNonce",
                  "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\": 1 }");
-
+  AddInterceptorResponse(
+      "Filecoin.MpoolPush",
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{\"/"
+      "\":\"bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4\"}"
+      "}");
   ApproveTransaction(meta_id1);
   // Wait for tx to be updated.
   base::RunLoop().RunUntilIdle();
   tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
   ASSERT_TRUE(tx_meta1);
-  EXPECT_FALSE(tx_meta1->tx()->cid().empty());
+  EXPECT_FALSE(tx_meta1->tx_hash().empty());
   EXPECT_EQ(tx_meta1->from(), from_account);
-  EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Approved);
+  EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Submitted);
 
   // Send another tx.
   ApproveTransaction(meta_id2);
@@ -219,8 +235,8 @@ TEST_F(FilTxManagerUnitTest,
   tx_meta2 = fil_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(tx_meta2);
   EXPECT_EQ(tx_meta2->from(), from_account);
-  EXPECT_FALSE(tx_meta2->tx()->cid().empty());
-  EXPECT_EQ(tx_meta2->status(), mojom::TransactionStatus::Approved);
+  EXPECT_FALSE(tx_meta2->tx_hash().empty());
+  EXPECT_EQ(tx_meta2->status(), mojom::TransactionStatus::Submitted);
 }
 
 }  //  namespace brave_wallet

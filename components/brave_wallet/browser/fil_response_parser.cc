@@ -72,8 +72,15 @@ bool ParseFilEstimateGas(const std::string& raw_json,
   return true;
 }
 
-bool ParseSendFilecoinTransaction(const std::string& json,
-                                  std::string* tx_hash) {
+bool ParseSendFilecoinTransaction(const std::string& json, std::string* cid) {
+  base::Value result;
+  if (!cid || !ParseResult(json, &result))
+    return false;
+
+  auto* cid_value = result.FindStringKey("/");
+  if (!cid_value)
+    return false;
+  *cid = *cid_value;
   return true;
 }
 

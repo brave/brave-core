@@ -24,12 +24,10 @@ TEST(FilTransactionUnitTest, Initialization) {
   EXPECT_EQ(first.gas_limit(), 0u);
   EXPECT_TRUE(first.to().IsEmpty());
   EXPECT_TRUE(first.value().empty());
-  EXPECT_TRUE(first.cid().empty());
 
   FilTransaction empty;
   EXPECT_EQ(first, empty);
 
-  first.set_cid("cid");
   first.set_nonce(1);
   first.set_gas_premium("2");
   first.set_fee_cap("3");
@@ -47,12 +45,11 @@ TEST(FilTransactionUnitTest, Initialization) {
   EXPECT_EQ(first.max_fee(), "5");
   EXPECT_EQ(first.to(), address);
   EXPECT_EQ(first.value(), "6");
-  EXPECT_EQ(first.cid(), "cid");
 
   EXPECT_NE(first, empty);
   auto third = FilTransaction::FromTxData(mojom::FilTxData::New(
       "1", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", "cid"));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
   EXPECT_TRUE(third);
   EXPECT_EQ(third->nonce().value(), 1u);
   EXPECT_EQ(third->gas_premium(), "2");
@@ -61,7 +58,6 @@ TEST(FilTransactionUnitTest, Initialization) {
   EXPECT_EQ(third->max_fee(), "5");
   EXPECT_EQ(third->to(), address);
   EXPECT_EQ(third->value(), "6");
-  EXPECT_EQ(third->cid(), "cid");
   EXPECT_EQ(first, third);
 }
 
@@ -69,75 +65,75 @@ TEST(FilTransactionUnitTest, FromTxData) {
   // nonce empty
   auto empty_nonce = FilTransaction::FromTxData(mojom::FilTxData::New(
       "", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "1", "cid"));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "1"));
   ASSERT_TRUE(empty_nonce);
   EXPECT_FALSE(empty_nonce->nonce());
 
   // non numeric values
   EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
       "a", "2", "3", "4", "d", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", "cid")));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
   EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
       "1", "b", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", "cid")));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
   EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
       "1", "2", "c", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", "cid")));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
   EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
       "1", "2", "3", "d", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", "cid")));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
   EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
       "1", "2", "3", "4", "e", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", "cid")));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
 
   // empty values
   EXPECT_TRUE(FilTransaction::FromTxData(mojom::FilTxData::New(
       "", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", "cid")));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
   EXPECT_TRUE(FilTransaction::FromTxData(mojom::FilTxData::New(
       "1", "", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", "cid")));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
   EXPECT_TRUE(FilTransaction::FromTxData(mojom::FilTxData::New(
       "1", "2", "", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", "cid")));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
   EXPECT_TRUE(FilTransaction::FromTxData(mojom::FilTxData::New(
       "1", "2", "3", "", "", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", "cid")));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
   EXPECT_FALSE(FilTransaction::FromTxData(
-      mojom::FilTxData::New("1", "2", "3", "4", "5", "", "", "6", "cid")));
+      mojom::FilTxData::New("1", "2", "3", "4", "5", "", "", "6")));
   EXPECT_TRUE(FilTransaction::FromTxData(mojom::FilTxData::New(
       "1", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", "")));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
 
   // invalid address
   EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
-      "1", "2", "3", "4", "e", "t1h4n7rp3q", "t1h4n7rp2a", "0x1", "cid")));
+      "1", "2", "3", "4", "e", "t1h4n7rp3q", "t1h4n7rp2a", "0x1")));
 
   // invalid value
   EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
       "1", "2", "3", "4", "e", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "0x1", "cid")));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "0x1")));
   EXPECT_FALSE(FilTransaction::FromTxData(mojom::FilTxData::New(
       "1", "2", "3", "4", "e", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "", "cid")));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "")));
 }
 
 TEST(FilTransactionUnitTest, Serialization) {
   auto transaction = FilTransaction::FromTxData(mojom::FilTxData::New(
       "1", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", "cid"));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
   EXPECT_EQ(transaction, FilTransaction::FromValue(transaction->ToValue()));
 
   auto empty_nonce = FilTransaction::FromTxData(mojom::FilTxData::New(
       "", "2", "3", "1", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", "cid"));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
   EXPECT_EQ(empty_nonce, FilTransaction::FromValue(empty_nonce->ToValue()));
 }
 
 TEST(FilTransactionUnitTest, GetMessageToSign) {
   auto transaction = FilTransaction::FromTxData(mojom::FilTxData::New(
       "1", "2", "3", "1", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", ""));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
   std::string message_to_sign = transaction->GetMessageToSign();
   EXPECT_EQ(message_to_sign,
             "{\"from\":\"t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq\","

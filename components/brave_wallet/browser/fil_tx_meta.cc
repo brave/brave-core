@@ -39,7 +39,7 @@ mojom::TransactionInfoPtr FilTxMeta::ToTransactionInfo() const {
           tx_->gas_premium(), tx_->gas_fee_cap(),
           base::NumberToString(tx_->gas_limit()), tx_->max_fee(),
           tx_->to().EncodeAsString(), tx_->from().EncodeAsString(),
-          tx_->value(), tx_->cid())),
+          tx_->value())),
       status_, mojom::TransactionType::Other,
       std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,

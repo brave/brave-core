@@ -197,7 +197,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       base::OnceCallback<void(const std::string& gas_premium,
                               const std::string& gas_fee_cap,
                               int64_t gas_limit,
-                              const std::string& cid,
                               mojom::FilecoinProviderError error,
                               const std::string& error_message)>;
   void GetFilEstimateGas(const std::string& from_address,

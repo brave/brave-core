@@ -39,7 +39,6 @@ class FilTransaction {
   FilAddress to() const { return to_; }
   FilAddress from() const { return from_; }
   std::string value() const { return value_; }
-  std::string cid() const { return cid_; }
 
   void set_to(FilAddress to) { to_ = to; }
   void set_from(FilAddress from) { from_ = from; }
@@ -53,7 +52,6 @@ class FilTransaction {
   }
   void set_gas_limit(int64_t gas_limit) { gas_limit_ = gas_limit; }
   void set_max_fee(const std::string& max_fee) { max_fee_ = max_fee; }
-  void set_cid(const std::string& cid) { cid_ = cid; }
 
   std::string GetMessageToSign() const;
   base::Value ToValue() const;
@@ -68,7 +66,6 @@ class FilTransaction {
   std::string gas_fee_cap_;
   int64_t gas_limit_ = 0;
   std::string max_fee_;
-  std::string cid_;
   FilAddress to_;
   FilAddress from_;
   std::string value_;
@@ -83,8 +80,7 @@ class FilTransaction {
                  const std::string& max_fee,
                  const FilAddress& to,
                  const FilAddress& from,
-                 const std::string& value,
-                 const std::string& cid);
+                 const std::string& value);
 };
 
 }  // namespace brave_wallet

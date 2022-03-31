@@ -83,7 +83,6 @@ class FilTxManager : public TxManager {
       const std::string& gas_premium,
       const std::string& gas_fee_cap,
       int64_t gas_limit,
-      const std::string& cid,
       mojom::FilecoinProviderError error,
       const std::string& error_message);
 

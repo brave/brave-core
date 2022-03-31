@@ -27,9 +27,7 @@ std::string getEstimateGas(const std::string& from_address,
                             uint64_t nonce,
                             const std::string& max_fee,
                             const std::string& value);
-std::string getSendTransaction(const std::string& signed_tx);
-
-}  // namespace fil
+absl::optional<std::string> getSendTransaction(const std::string& signed_tx);
 
 }  // namespace fil
 

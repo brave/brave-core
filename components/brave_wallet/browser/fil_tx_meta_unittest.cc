@@ -16,7 +16,7 @@ TEST(FilTxMeta, ToTransactionInfo) {
   std::unique_ptr<FilTransaction> tx = std::make_unique<FilTransaction>(
       *FilTransaction::FromTxData(mojom::FilTxData::New(
           "1", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-          "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", "cid")));
+          "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6")));
   FilTxMeta meta(std::move(tx));
   meta.set_from("t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq");
   base::Time::Exploded x{1981, 3, 0, 1, 2};
@@ -39,7 +39,6 @@ TEST(FilTxMeta, ToTransactionInfo) {
   EXPECT_EQ(tx_data->max_fee, "5");
   EXPECT_EQ(tx_data->to, "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
   EXPECT_EQ(tx_data->value, "6");
-  EXPECT_EQ(tx_data->cid, "cid");
 
   EXPECT_EQ(meta.created_time().ToJavaTime(),
             ti->created_time.InMilliseconds());
@@ -52,7 +51,7 @@ TEST(FilTxMeta, ToTransactionInfo) {
 TEST(FilTxMeta, ToValue) {
   auto transaction = FilTransaction::FromTxData(mojom::FilTxData::New(
       "1", "2", "3", "4", "5", "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6", "cid"));
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
   std::unique_ptr<FilTransaction> tx =
       std::make_unique<FilTransaction>(*transaction);
   FilTxMeta meta(std::move(tx));
