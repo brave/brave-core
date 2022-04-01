@@ -366,9 +366,13 @@ extension BuyVPNViewController {
         // we have to calculate it manually.
         let yearlyDouble = yearlyProduct.price.doubleValue
         let discountDouble = monthlyProduct.price.multiplying(by: 12).doubleValue
-        let discountSavingPercentage = 100 - Int((yearlyDouble * 100) / discountDouble)
+        
+        if discountDouble > 0.0 {
+          let discountSavingPercentage = 100 - Int((yearlyDouble * 100) / discountDouble)
 
-        detail = String(format: Strings.VPN.yearlySubDetail, "\(discountSavingPercentage)%")
+          detail = String(format: Strings.VPN.yearlySubDetail, "\(discountSavingPercentage)%")
+        }
+        
         price = "\(formattedYearlyPrice) / \(Strings.yearAbbreviation)"
         priceDiscount = discountFormattedPrice
       }
