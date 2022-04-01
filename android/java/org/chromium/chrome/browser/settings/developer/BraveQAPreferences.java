@@ -172,8 +172,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
                     }
                 };
 
-                AlertDialog.Builder alert =
-                    new AlertDialog.Builder(getActivity(), R.style.Theme_Chromium_AlertDialog);
+                AlertDialog.Builder alert = new AlertDialog.Builder(
+                        getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
                 AlertDialog.Builder alertDialog =
                     alert.setTitle("Enter Wallet restore phrase")
                     .setView(view)
@@ -253,8 +253,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
             });
             input.requestFocus();
 
-            AlertDialog.Builder alert =
-                    new AlertDialog.Builder(getActivity(), R.style.Theme_Chromium_AlertDialog);
+            AlertDialog.Builder alert = new AlertDialog.Builder(
+                    getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
             if (alert == null) {
                 return true;
             }
@@ -371,7 +371,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
         input.requestFocus();
 
         AlertDialog.Builder alert =
-            new AlertDialog.Builder(getActivity(), R.style.Theme_Chromium_AlertDialog);
+                new AlertDialog.Builder(getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
         if (alert == null) {
             return;
         }
@@ -483,10 +483,12 @@ public class BraveQAPreferences extends BravePreferenceFragment
                 }
             }
         };
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity(), R.style.Theme_Chromium_AlertDialog)
-        .setMessage(
-            "This operation requires restart. Would you like to restart application and start operation?")
-        .setPositiveButton(R.string.ok, onClickListener).setNegativeButton(R.string.cancel, onClickListener);
+        AlertDialog.Builder alertDialog =
+                new AlertDialog.Builder(getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog)
+                        .setMessage(
+                                "This operation requires restart. Would you like to restart application and start operation?")
+                        .setPositiveButton(R.string.ok, onClickListener)
+                        .setNegativeButton(R.string.cancel, onClickListener);
         Dialog dialog = alertDialog.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
