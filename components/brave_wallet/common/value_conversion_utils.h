@@ -20,7 +20,9 @@ base::ListValue PermissionRequestResponseToValue(
     const std::string& origin,
     const std::vector<std::string> accounts);
 
-mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value& value);
+mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value& value,
+                                                 const std::string& chain_id,
+                                                 mojom::CoinType coin);
 
 }  // namespace brave_wallet
 

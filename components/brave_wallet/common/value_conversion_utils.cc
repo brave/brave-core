@@ -118,7 +118,9 @@ base::Value EthNetworkInfoToValue(const mojom::NetworkInfoPtr& chain) {
   return dict;
 }
 
-mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value& value) {
+mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value& value,
+                                                 const std::string& chain_id,
+                                                 mojom::CoinType coin) {
   mojom::BlockchainTokenPtr tokenPtr = mojom::BlockchainToken::New();
   if (!value.is_dict())
     return nullptr;
@@ -170,6 +172,9 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value& value) {
   const std::string* coingecko_id = value.FindStringKey("coingecko_id");
   if (coingecko_id)
     tokenPtr->coingecko_id = *coingecko_id;
+
+  tokenPtr->coin = coin;
+  tokenPtr->chain_id = chain_id;
 
   return tokenPtr;
 }
