@@ -42,6 +42,15 @@
   <message name="IDS_IOS_OMNIBOX_PEDAL_CLEAR_BROWSING_DATA_HINT" desc="In Title Case: The button text contents to suggest pedal action, CLEAR_BROWSING_DATA">
     Clear Browsing Data
   </message>
+  <!-- Same as IDS_OMNIBOX_PEDAL_SET_CHROME_AS_DEFAULT_BROWSER_HINT, but title case instead of sentence case -->
+  <message name="IDS_IOS_OMNIBOX_PEDAL_SET_CHROME_AS_DEFAULT_BROWSER_HINT" desc="In Title Case: The button text contents to suggest pedal action, SET_CHROME_AS_DEFAULT_BROWSER">
+    Set Brave as Default Browser
+  </message>
+
+  <!-- Same as IDS_OMNIBOX_PEDAL_MANAGE_PASSWORDS_HINT, but title case instead of sentence case -->
+  <message name="IDS_IOS_OMNIBOX_PEDAL_MANAGE_PASSWORDS_HINT" desc="In Title Case: The button text contents to suggest pedal action, MANAGE_PASSWORDS">
+    Manage Passwords
+  </message>
 
   <message name="IDS_AUTOCOMPLETE_SEARCH_DESCRIPTION" desc="Description for the default search match.">
     <ph name="ENGINE">$1<ex>Brave</ex></ph> Search
