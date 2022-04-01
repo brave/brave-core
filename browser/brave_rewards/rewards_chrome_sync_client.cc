@@ -49,6 +49,7 @@ using invalidation::ProfileIdentityProvider;
 using invalidation::ProfileInvalidationProvider;
 using sync_preferences::PrefServiceSyncable;
 using syncer::DeviceInfoPrefs;
+using syncer::DeviceInfoSyncService;
 using syncer::DeviceInfoSyncServiceImpl;
 using syncer::ForwardingModelTypeControllerDelegate;
 using syncer::LocalDeviceInfoProviderImpl;
@@ -175,6 +176,11 @@ RewardsChromeSyncClient::CreateDataTypeControllers(syncer::SyncService*) {
           GetControllerDelegateForModelType(syncer::VG_SPEND_STATUSES).get())));
 
   return controllers;
+}
+
+DeviceInfoSyncService* RewardsChromeSyncClient::GetDeviceInfoSyncService() {
+  DCHECK(device_info_sync_service_);
+  return device_info_sync_service_.get();
 }
 
 InvalidationService* RewardsChromeSyncClient::GetInvalidationService() {
