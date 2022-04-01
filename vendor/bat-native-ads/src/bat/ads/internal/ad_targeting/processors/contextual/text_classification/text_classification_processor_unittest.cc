@@ -64,7 +64,7 @@ TEST_F(BatAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
 }
 
 TEST_F(BatAdsTextClassificationProcessorTest, NeverProcessed) {
-// Act
+  // Act
   model::TextClassification model;
   const SegmentList segments = model.GetSegments();
 
