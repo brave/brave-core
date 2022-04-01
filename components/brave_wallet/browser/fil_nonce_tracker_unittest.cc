@@ -53,7 +53,6 @@ class FilNonceTrackerUnitTest : public testing::Test {
             .spec(),
         GetResultString());
   }
-  void WaitForResponse() { task_environment_.RunUntilIdle(); }
 
   void GetNextNonce(FilNonceTracker* tracker,
                     const std::string& address,

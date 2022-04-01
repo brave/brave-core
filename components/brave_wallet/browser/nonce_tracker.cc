@@ -7,7 +7,7 @@
 
 #include <algorithm>
 
-#include "brave/components/brave_wallet/browser/fil_tx_meta.h"
+#include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"

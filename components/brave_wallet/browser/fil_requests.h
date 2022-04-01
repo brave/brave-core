@@ -11,10 +11,14 @@
 
 namespace brave_wallet {
 
+namespace fil {
+
 // Returns the balance of the account of given address.
-std::string fil_getBalance(const std::string& address);
+std::string getBalance(const std::string& address);
 // Returns the transactions count of given address.
-std::string fil_getTransactionCount(const std::string& address);
+std::string getTransactionCount(const std::string& address);
+
+}  // namespace fil
 
 }  // namespace brave_wallet
 
