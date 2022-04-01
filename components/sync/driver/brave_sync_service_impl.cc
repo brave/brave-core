@@ -14,6 +14,7 @@
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/sync/driver/brave_sync_auth_manager.h"
 #include "brave/components/sync/driver/sync_service_impl_delegate.h"
+#include "components/browser_sync/browser_sync_client.h"
 #include "components/prefs/pref_service.h"
 
 namespace syncer {
@@ -54,6 +55,12 @@ void BraveSyncServiceImpl::Initialize() {
   if (!user_settings_->IsFirstSetupComplete()) {
     base::UmaHistogramExactLinear("Brave.Sync.Status.2", 0, 3);
   }
+}
+
+syncer::DeviceInfoSyncService*
+BraveSyncServiceImpl::GetDeviceInfoSyncService() {
+  return static_cast<browser_sync::BrowserSyncClient*>(sync_client_.get())
+      ->GetDeviceInfoSyncService();
 }
 
 bool BraveSyncServiceImpl::IsSetupInProgress() const {
