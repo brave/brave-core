@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 
-#include <string>
 #include <utility>
 
 #include "base/files/file_util.h"
