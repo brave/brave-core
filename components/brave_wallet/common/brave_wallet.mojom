@@ -412,6 +412,11 @@ interface KeyringServiceObserver {
   SelectedAccountChanged(CoinType coin);
 };
 
+enum OnRampProvider {
+  kWyre = 0,
+  kRamp = 1,
+};
+
 // List of tokens and coins that are supported.
 interface BlockchainRegistry {
   // Obtains token information by an address lookup
@@ -425,10 +430,10 @@ interface BlockchainRegistry {
 
   // Below APIs are Ethereum only for the moment.
   // Obtains all tokens for the Buy UI
-  GetBuyTokens(string chain_id) => (array<BlockchainToken> tokens);
+  GetBuyTokens(OnRampProvider provider, string chain_id) => (array<BlockchainToken> tokens);
 
   // Obtains the URL used for buying assets
-  GetBuyUrl(string chain_id, string address, string symbol, string amount) => (string url);
+  GetBuyUrl(OnRampProvider provider, string chain_id, string address, string symbol, string amount) => (string url, string? error);
 };
 
 // Implements the HD wallet, Ledger & Trezor integration, account management,

@@ -10,6 +10,7 @@ import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.OnRampProvider;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
@@ -61,8 +62,8 @@ public class TokenUtils {
 
     public static void getBuyTokensFiltered(BlockchainRegistry blockchainRegistry,
             BlockchainRegistry.GetAllTokens_Response callback) {
-        blockchainRegistry.getBuyTokens(
-                BraveWalletConstants.MAINNET_CHAIN_ID, (BlockchainToken[] tokens) -> {
+        blockchainRegistry.getBuyTokens(OnRampProvider.WYRE, BraveWalletConstants.MAINNET_CHAIN_ID,
+                (BlockchainToken[] tokens) -> {
                     BlockchainToken[] filteredTokens = filterOut(tokens, true);
                     callback.call(filteredTokens);
                 });
