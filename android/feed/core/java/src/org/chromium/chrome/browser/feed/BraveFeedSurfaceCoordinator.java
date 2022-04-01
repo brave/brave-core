@@ -9,7 +9,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ScrollView;
+import androidx.core.widget.NestedScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,7 +41,7 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     private FrameLayout mRootView;
 
     // Own members.
-    private @Nullable ScrollView mScrollViewForPolicy;
+    private @Nullable NestedScrollView mScrollViewForPolicy;
 
     public BraveFeedSurfaceCoordinator(Activity activity, SnackbarManager snackbarManager,
             WindowAndroid windowAndroid, @Nullable SnapScrollHelper snapScrollHelper,
@@ -71,7 +71,7 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
         // Remove all previously added views.
         mRootView.removeAllViews();
 
-        mScrollViewForPolicy = new ScrollView(mActivity);
+        mScrollViewForPolicy = new NestedScrollView(mActivity);
         mScrollViewForPolicy.setBackgroundColor(
                 ApiCompatibilityUtils.getColor(mActivity.getResources(), R.color.default_bg_color));
         mScrollViewForPolicy.setVerticalScrollBarEnabled(false);
@@ -92,7 +92,7 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
         mScrollViewForPolicy.requestFocus();
     }
 
-    public ScrollView getScrollViewForPolicy() {
+    public NestedScrollView getScrollViewForPolicy() {
         return mScrollViewForPolicy;
     }
 

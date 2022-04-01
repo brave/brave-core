@@ -46,6 +46,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import androidx.core.widget.NestedScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -198,7 +199,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     private TextView mLoading;
     private View mLoadingView;
     private View mFeedSpinner;
-    private ScrollView mParentScrollView;
+    private NestedScrollView mParentScrollView;
     private ViewGroup mImageCreditLayout;
     private ViewGroup mSettingsBar;
     private ViewGroup mNewContentButton;
@@ -764,7 +765,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManagerWrapper(mActivity, LinearLayoutManager.VERTICAL, false));
 
-        mParentScrollView = (ScrollView) mNtpContent.getParent();
+        mParentScrollView = (NestedScrollView) mNtpContent.getParent();
 
         ViewGroup rootView = (ViewGroup) mParentScrollView.getParent();
         mCompositorView = (ViewGroup) rootView.getParent();
@@ -1399,7 +1400,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 initilizeSponsoredTab();
             }
             checkAndShowNTPImage(false);
-            mParentScrollView = (ScrollView) mNtpContent.getParent();
+            mParentScrollView = (NestedScrollView) mNtpContent.getParent();
             ViewGroup rootView = (ViewGroup) mParentScrollView.getParent();
             CompositorViewHolder compositorView = (CompositorViewHolder) rootView.getParent();
             final int childCount = compositorView.getChildCount();
@@ -1450,7 +1451,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                     BraveActivity.getBraveActivity().setBackground(bgWallpaper);
                 }
                 try {
-                    mParentScrollView = (ScrollView) mNtpContent.getParent();
+                    mParentScrollView = (NestedScrollView) mNtpContent.getParent();
                     if (mParentScrollView != null) {
                         ViewGroup rootView = (ViewGroup) mParentScrollView.getParent();
 
