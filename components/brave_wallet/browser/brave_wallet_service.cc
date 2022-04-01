@@ -574,7 +574,7 @@ void BraveWalletService::MigrateUserAssetEthContractAddress(
   if (prefs->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated))
     return;
 
-  DictionaryPrefUpdate update(prefs, kBraveWalletUserAssets);
+  DictionaryPrefUpdate update(prefs, kBraveWalletUserAssetsDeprecated);
   base::Value* user_assets_pref = update.Get();
 
   for (auto user_asset_list : user_assets_pref->DictItems()) {
@@ -595,6 +595,119 @@ void BraveWalletService::MigrateUserAssetEthContractAddress(
   }
 
   prefs->SetBoolean(kBraveWalletUserAssetEthContractAddressMigrated, true);
+}
+
+// static
+void BraveWalletService::MigrateMultichainUserAssets(PrefService* prefs) {
+  if (!prefs->HasPrefPath(kBraveWalletUserAssetsDeprecated))
+    return;
+
+  base::Value eth_user_assets =
+      prefs->GetDictionary(kBraveWalletUserAssetsDeprecated)->Clone();
+
+  // Update contract_address key to address.
+  for (auto user_asset_list : eth_user_assets.DictItems()) {
+    for (auto& asset : user_asset_list.second.GetList()) {
+      const std::string* address = asset.FindStringKey("contract_address");
+      if (address) {
+        asset.SetStringKey("address", *address);
+        asset.RemoveKey("contract_address");
+      }
+    }
+  }
+
+  base::Value new_user_assets(base::Value::Type::DICTIONARY);
+  new_user_assets.SetKey(kEthereumPrefKey, std::move(eth_user_assets));
+  new_user_assets.SetKey(kSolanaPrefKey, GetDefaultSolanaAssets());
+  new_user_assets.SetKey(kFilecoinPrefKey, GetDefaultFilecoinAssets());
+
+  prefs->Set(kBraveWalletUserAssets, new_user_assets);
+  prefs->ClearPref(kBraveWalletUserAssetsDeprecated);
+}
+
+// static
+base::Value BraveWalletService::GetDefaultEthereumAssets() {
+  base::Value user_assets(base::Value::Type::DICTIONARY);
+
+  base::Value eth(base::Value::Type::DICTIONARY);
+  eth.SetKey("address", base::Value(""));
+  eth.SetKey("name", base::Value("Ethereum"));
+  eth.SetKey("symbol", base::Value("ETH"));
+  eth.SetKey("is_erc20", base::Value(false));
+  eth.SetKey("is_erc721", base::Value(false));
+  eth.SetKey("decimals", base::Value(18));
+  eth.SetKey("visible", base::Value(true));
+
+  base::Value bat(base::Value::Type::DICTIONARY);
+  bat.SetKey("address",
+             base::Value("0x0D8775F648430679A709E98d2b0Cb6250d2887EF"));
+  bat.SetKey("name", base::Value("Basic Attention Token"));
+  bat.SetKey("symbol", base::Value("BAT"));
+  bat.SetKey("is_erc20", base::Value(true));
+  bat.SetKey("is_erc721", base::Value(false));
+  bat.SetKey("decimals", base::Value(18));
+  bat.SetKey("visible", base::Value(true));
+  bat.SetKey("logo", base::Value("bat.png"));
+
+  // Show ETH and BAT by default for mainnet, and ETH for other known networks.
+  std::vector<std::string> network_ids = GetAllKnownEthNetworkIds();
+  for (const auto& network_id : network_ids) {
+    base::Value* user_assets_list =
+        user_assets.SetKey(network_id, base::Value(base::Value::Type::LIST));
+    user_assets_list->Append(eth.Clone());
+    if (network_id == "mainnet")
+      user_assets_list->Append(bat.Clone());
+  }
+
+  return user_assets;
+}
+
+// static
+base::Value BraveWalletService::GetDefaultSolanaAssets() {
+  base::Value user_assets(base::Value::Type::DICTIONARY);
+
+  base::Value sol(base::Value::Type::DICTIONARY);
+  sol.SetKey("address", base::Value(""));
+  sol.SetKey("name", base::Value("Solana"));
+  sol.SetKey("symbol", base::Value("SOL"));
+  sol.SetKey("decimals", base::Value(9));
+  sol.SetKey("is_erc20", base::Value(false));
+  sol.SetKey("is_erc721", base::Value(false));
+  sol.SetKey("visible", base::Value(true));
+  sol.SetKey("logo", base::Value("sol.png"));
+
+  std::vector<std::string> network_ids = GetAllKnownSolNetworkIds();
+  for (const auto& network_id : network_ids) {
+    base::Value* user_assets_list =
+        user_assets.SetKey(network_id, base::Value(base::Value::Type::LIST));
+    user_assets_list->Append(sol.Clone());
+  }
+
+  return user_assets;
+}
+
+// static
+base::Value BraveWalletService::GetDefaultFilecoinAssets() {
+  base::Value user_assets(base::Value::Type::DICTIONARY);
+
+  base::Value fil(base::Value::Type::DICTIONARY);
+  fil.SetKey("address", base::Value(""));
+  fil.SetKey("name", base::Value("Filecoin"));
+  fil.SetKey("symbol", base::Value("FIL"));
+  fil.SetKey("decimals", base::Value(18));
+  fil.SetKey("is_erc20", base::Value(false));
+  fil.SetKey("is_erc721", base::Value(false));
+  fil.SetKey("visible", base::Value(true));
+  fil.SetKey("logo", base::Value("fil.png"));
+
+  std::vector<std::string> network_ids = GetAllKnownFilNetworkIds();
+  for (const auto& network_id : network_ids) {
+    base::Value* user_assets_list =
+        user_assets.SetKey(network_id, base::Value(base::Value::Type::LIST));
+    user_assets_list->Append(fil.Clone());
+  }
+
+  return user_assets;
 }
 
 void BraveWalletService::OnP3ATimerFired() {

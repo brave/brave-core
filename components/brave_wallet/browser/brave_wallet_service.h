@@ -62,6 +62,11 @@ class BraveWalletService : public KeyedService,
   void Bind(mojo::PendingReceiver<mojom::BraveWalletService> receiver);
 
   static void MigrateUserAssetEthContractAddress(PrefService* prefs);
+  static void MigrateMultichainUserAssets(PrefService* prefs);
+
+  static base::Value GetDefaultEthereumAssets();
+  static base::Value GetDefaultSolanaAssets();
+  static base::Value GetDefaultFilecoinAssets();
 
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>

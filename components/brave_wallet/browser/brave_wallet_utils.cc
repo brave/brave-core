@@ -758,6 +758,26 @@ void GetAllKnownSolChains(std::vector<mojom::NetworkInfoPtr>* result) {
     result->push_back(network.Clone());
 }
 
+std::vector<std::string> GetAllKnownSolNetworkIds() {
+  std::vector<std::string> network_ids;
+  for (const auto& network : kKnownSolNetworks) {
+    std::string network_id = GetKnownSolNetworkId(network.chain_id);
+    if (!network_id.empty())
+      network_ids.push_back(network_id);
+  }
+  return network_ids;
+}
+
+std::vector<std::string> GetAllKnownFilNetworkIds() {
+  std::vector<std::string> network_ids;
+  for (const auto& network : kKnownFilNetworks) {
+    std::string network_id = GetKnownFilNetworkId(network.chain_id);
+    if (!network_id.empty())
+      network_ids.push_back(network_id);
+  }
+  return network_ids;
+}
+
 std::vector<std::string> GetAllKnownEthNetworkIds() {
   std::vector<std::string> network_ids;
   for (const auto& network : kKnownEthNetworks) {
@@ -837,6 +857,9 @@ std::string GetNetworkId(PrefService* prefs,
                          mojom::CoinType coin,
                          const std::string& chain_id) {
   DCHECK(prefs);
+
+  if (chain_id.empty())
+    return "";
 
   std::string id = GetKnownNetworkId(coin, chain_id);
   if (!id.empty())

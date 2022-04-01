@@ -98,6 +98,8 @@ void SetDefaultBaseCryptocurrency(PrefService* prefs,
                                   const std::string& cryptocurrency);
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
 std::vector<std::string> GetAllKnownEthNetworkIds();
+std::vector<std::string> GetAllKnownSolNetworkIds();
+std::vector<std::string> GetAllKnownFilNetworkIds();
 std::string GetKnownEthNetworkId(const std::string& chain_id);
 
 std::string GetUnstoppableDomainsProxyReaderContractAddress(
