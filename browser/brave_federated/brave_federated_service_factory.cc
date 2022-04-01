@@ -24,11 +24,8 @@ namespace brave_federated {
 // static
 BraveFederatedService* BraveFederatedServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
-  if (base::FeatureList::IsEnabled(features::kFederatedLearning)) {
-    return static_cast<BraveFederatedService*>(
-        GetInstance()->GetServiceForBrowserContext(context, true));
-  }
-  return nullptr;
+  return static_cast<BraveFederatedService*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
 // static
@@ -45,6 +42,10 @@ BraveFederatedServiceFactory::~BraveFederatedServiceFactory() {}
 
 KeyedService* BraveFederatedServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
+  if (!base::FeatureList::IsEnabled(features::kFederatedLearning)) {
+    return nullptr;
+  }
+
   auto url_loader_factory = context->GetDefaultStoragePartition()
                                 ->GetURLLoaderFactoryForBrowserProcess();
   std::unique_ptr<BraveFederatedService> brave_federated_service(
