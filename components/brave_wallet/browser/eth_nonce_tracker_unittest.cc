@@ -53,20 +53,18 @@ class EthNonceTrackerUnitTest : public testing::Test {
 
   void WaitForResponse() { task_environment_.RunUntilIdle(); }
 
-  bool GetNextNonce(EthNonceTracker* tracker,
+  void GetNextNonce(EthNonceTracker* tracker,
                     const std::string& address,
+                    bool expected_success,
                     uint256_t expected_nonce) {
-    bool callback_called = false;
-    bool callback_result = false;
+    base::RunLoop run_loop;
     tracker->GetNextNonce(
         address, base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
-          callback_called = true;
-          callback_result = success;
+          EXPECT_EQ(expected_success, success);
           EXPECT_EQ(expected_nonce, nonce);
+          run_loop.Quit();
         }));
-    WaitForResponse();
-    EXPECT_TRUE(callback_called);
-    return callback_result;
+    run_loop.Run();
   }
 
   void SetTransactionCount(uint256_t count) {
@@ -111,7 +109,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
 
   const std::string address("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   // tx count: 2, confirmed: null, pending: null
-  EXPECT_TRUE(GetNextNonce(&nonce_tracker, address, 2));
+  GetNextNonce(&nonce_tracker, address, true, 2);
 
   // tx count: 2, confirmed: [2], pending: null
   EthTxMeta meta;
@@ -121,7 +119,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   meta.tx()->set_nonce(uint256_t(2));
   tx_state_manager.AddOrUpdateTx(meta);
 
-  EXPECT_TRUE(GetNextNonce(&nonce_tracker, address, 3));
+  GetNextNonce(&nonce_tracker, address, true, 3);
 
   // tx count: 2, confirmed: [2, 3], pending: null
   meta.set_id(TxMeta::GenerateMetaID());
@@ -129,7 +127,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   meta.tx()->set_nonce(uint256_t(3));
   tx_state_manager.AddOrUpdateTx(meta);
 
-  EXPECT_TRUE(GetNextNonce(&nonce_tracker, address, 4));
+  GetNextNonce(&nonce_tracker, address, true, 4);
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4]
   meta.set_status(mojom::TransactionStatus::Submitted);
@@ -139,7 +137,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   meta.set_id(TxMeta::GenerateMetaID());
   tx_state_manager.AddOrUpdateTx(meta);
 
-  EXPECT_TRUE(GetNextNonce(&nonce_tracker, address, 5));
+  GetNextNonce(&nonce_tracker, address, true, 5);
 }
 
 TEST_F(EthNonceTrackerUnitTest, NonceLock) {
@@ -157,11 +155,11 @@ TEST_F(EthNonceTrackerUnitTest, NonceLock) {
   base::Lock* lock = nonce_tracker.GetLock();
   lock->Acquire();
   const std::string addr("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
-  EXPECT_FALSE(GetNextNonce(&nonce_tracker, addr, 0));
+  GetNextNonce(&nonce_tracker, addr, false, 0);
 
   lock->Release();
 
-  EXPECT_TRUE(GetNextNonce(&nonce_tracker, addr, 4));
+  GetNextNonce(&nonce_tracker, addr, true, 4);
 }
 
 }  // namespace brave_wallet

@@ -668,9 +668,6 @@ void JsonRpcService::OnFilGetBalance(
 
 void JsonRpcService::GetFilTransactionCount(const std::string& address,
                                             GetFilTxCountCallback callback) {
-  auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnFilGetTransactionCount,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   auto network_url = network_urls_[mojom::CoinType::FIL];
   if (!network_url.is_valid()) {
     std::move(callback).Run(
@@ -678,15 +675,16 @@ void JsonRpcService::GetFilTransactionCount(const std::string& address,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnFilGetTransactionCount,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
   RequestInternal(fil_getTransactionCount(address), true, network_url,
                   std::move(internal_callback));
 }
 
 void JsonRpcService::GetEthTransactionCount(const std::string& address,
                                             GetTxCountCallback callback) {
-  auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnEthGetTransactionCount,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   auto network_url = network_urls_[mojom::CoinType::ETH];
   if (!network_url.is_valid()) {
     std::move(callback).Run(
@@ -694,6 +692,10 @@ void JsonRpcService::GetEthTransactionCount(const std::string& address,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnEthGetTransactionCount,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
   RequestInternal(eth::eth_getTransactionCount(address, "latest"), true,
                   network_url, std::move(internal_callback));
 }

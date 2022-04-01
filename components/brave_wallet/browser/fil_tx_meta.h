@@ -28,6 +28,7 @@ class FilTxMeta : public TxMeta {
   FilTxMeta(const FilTxMeta&) = delete;
   ~FilTxMeta() override;
   bool operator==(const FilTxMeta&) const;
+  FilTxMeta operator=(const FilTxMeta&) = delete;
 
   // TxMeta
   base::Value ToValue() const override;

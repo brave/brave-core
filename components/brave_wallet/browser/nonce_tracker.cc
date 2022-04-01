@@ -6,14 +6,11 @@
 #include "brave/components/brave_wallet/browser/nonce_tracker.h"
 
 #include <algorithm>
-#include <utility>
 
-#include "base/bind.h"
+#include "brave/components/brave_wallet/browser/fil_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/fil_address.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {

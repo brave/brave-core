@@ -55,20 +55,18 @@ class FilNonceTrackerUnitTest : public testing::Test {
   }
   void WaitForResponse() { task_environment_.RunUntilIdle(); }
 
-  bool GetNextNonce(FilNonceTracker* tracker,
+  void GetNextNonce(FilNonceTracker* tracker,
                     const std::string& address,
+                    bool expected_success,
                     uint64_t expected_nonce) {
-    bool callback_called = false;
-    bool callback_result = false;
+    base::RunLoop run_loop;
     tracker->GetNextNonce(
         address, base::BindLambdaForTesting([&](bool success, uint256_t nonce) {
-          callback_called = true;
-          callback_result = success;
+          EXPECT_EQ(expected_success, success);
           EXPECT_EQ(expected_nonce, nonce);
+          run_loop.Quit();
         }));
-    WaitForResponse();
-    EXPECT_TRUE(callback_called);
-    return callback_result;
+    run_loop.Run();
   }
 
  private:
@@ -99,7 +97,7 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
   SetTransactionCount(2);
 
   const std::string address("t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy");
-  EXPECT_TRUE(GetNextNonce(&nonce_tracker, address, uint64_t(2)));
+  GetNextNonce(&nonce_tracker, address, true, uint64_t(2));
 
   // tx count: 2, confirmed: [2], pending: null
   FilTxMeta meta;
@@ -109,7 +107,7 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
   meta.tx()->set_nonce(uint64_t(2));
   tx_state_manager.AddOrUpdateTx(meta);
 
-  EXPECT_TRUE(GetNextNonce(&nonce_tracker, address, uint64_t(3)));
+  GetNextNonce(&nonce_tracker, address, true, uint64_t(3));
 
   // tx count: 2, confirmed: [2, 3], pending: null
   meta.set_id(TxMeta::GenerateMetaID());
@@ -117,7 +115,7 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
   meta.tx()->set_nonce(uint64_t(3));
   tx_state_manager.AddOrUpdateTx(meta);
 
-  EXPECT_TRUE(GetNextNonce(&nonce_tracker, address, uint64_t(4)));
+  GetNextNonce(&nonce_tracker, address, true, uint64_t(4));
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4]
   meta.set_status(mojom::TransactionStatus::Submitted);
@@ -127,7 +125,7 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
   meta.set_id(TxMeta::GenerateMetaID());
   tx_state_manager.AddOrUpdateTx(meta);
 
-  EXPECT_TRUE(GetNextNonce(&nonce_tracker, address, uint64_t(5)));
+  GetNextNonce(&nonce_tracker, address, true, uint64_t(5));
 }
 
 TEST_F(FilNonceTrackerUnitTest, NonceLock) {
@@ -145,10 +143,10 @@ TEST_F(FilNonceTrackerUnitTest, NonceLock) {
   base::Lock* lock = nonce_tracker.GetLock();
   lock->Acquire();
   const std::string address("t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy");
-  EXPECT_FALSE(GetNextNonce(&nonce_tracker, address, 0u));
+  GetNextNonce(&nonce_tracker, address, false, 0u);
   lock->Release();
 
-  EXPECT_TRUE(GetNextNonce(&nonce_tracker, address, uint64_t(4)));
+  GetNextNonce(&nonce_tracker, address, true, uint64_t(4));
 }
 
 }  // namespace brave_wallet

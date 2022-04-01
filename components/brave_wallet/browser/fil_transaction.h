@@ -53,9 +53,8 @@ class FilTransaction {
   void set_max_fee(const std::string& max_fee) { max_fee_ = max_fee; }
   void set_cid(const std::string& cid) { cid_ = cid; }
 
-  virtual std::string GetMessageToSign() const;
-
-  virtual base::Value ToValue() const;
+  std::string GetMessageToSign() const;
+  base::Value ToValue() const;
   static absl::optional<FilTransaction> FromValue(const base::Value& value);
 
  private:
@@ -84,4 +83,5 @@ class FilTransaction {
 };
 
 }  // namespace brave_wallet
+
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FIL_TRANSACTION_H_

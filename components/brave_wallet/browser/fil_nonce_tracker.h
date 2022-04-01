@@ -37,11 +37,11 @@ class FilNonceTracker : public NonceTracker {
       const std::vector<std::unique_ptr<TxMeta>>& metas,
       uint256_t start) override;
 
-  void OnFilGetNetworkNonce(const std::string& from,
-                            GetNextNonceCallback callback,
-                            uint256_t network_nonce,
-                            mojom::FilecoinProviderError error,
-                            const std::string& error_message);
+  void OnGetNetworkNonce(const std::string& from,
+                         GetNextNonceCallback callback,
+                         uint256_t network_nonce,
+                         mojom::FilecoinProviderError error,
+                         const std::string& error_message);
 
  private:
   base::WeakPtrFactory<FilNonceTracker> weak_factory_;
