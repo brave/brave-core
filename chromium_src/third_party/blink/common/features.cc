@@ -18,15 +18,18 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 
     {kAdInterestGroupAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAllowURNsInIframes, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kBrowsingTopics, base::FEATURE_DISABLED_BY_DEFAULT},
     {kComputePressure, base::FEATURE_DISABLED_BY_DEFAULT},
     {kConversionMeasurement, base::FEATURE_DISABLED_BY_DEFAULT},
     {kCssSelectorFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kFencedFrames, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledge, base::FEATURE_DISABLED_BY_DEFAULT},
     {kHandwritingRecognitionWebPlatformApiFinch,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kInterestGroupStorage, base::FEATURE_DISABLED_BY_DEFAULT},
     {kParakeet, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPrivacySandboxAdsAPIs, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTextFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
 }});

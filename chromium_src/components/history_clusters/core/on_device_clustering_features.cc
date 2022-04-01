@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/components/privacy_sandbox/privacy_sandbox_features.cc"
+#include "src/components/history_clusters/core/on_device_clustering_features.cc"
 
 #include "base/feature_override.h"
 
-namespace privacy_sandbox {
+namespace history_clusters {
+namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kPrivacySandboxSettings3, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kOverridePrivacySandboxSettingsLocalTesting,
-     base::FEATURE_DISABLED_BY_DEFAULT},
+    {kOnDeviceClustering, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-}  // namespace privacy_sandbox
+}  // namespace features
+}  // namespace history_clusters

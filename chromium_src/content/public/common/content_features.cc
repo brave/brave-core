@@ -15,6 +15,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kFirstPartySets, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIdleDetection, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNotificationTriggers, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPrivacySandboxAdsAPIsOverride, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSignedExchangeSubresourcePrefetch, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSubresourceWebBundles, base::FEATURE_DISABLED_BY_DEFAULT},
 #if BUILDFLAG(IS_ANDROID)

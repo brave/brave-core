@@ -11,8 +11,11 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
+#include "components/commerce/core/commerce_feature_list.h"
 #include "components/component_updater/component_updater_switches.h"
 #include "components/embedder_support/switches.h"
+#include "components/history_clusters/core/features.h"
+#include "components/history_clusters/core/on_device_clustering_features.h"
 #include "components/language/core/common/language_experiments.h"
 #include "components/lens/lens_features.h"
 #include "components/network_time/network_time_tracker.h"
@@ -89,19 +92,29 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   // Please, keep alphabetized
   const base::Feature* disabled_features[] = {
     &autofill::features::kAutofillEnableAccountWalletStorage,
+    &autofill::features::kAutofillEnableOfferNotificationForPromoCodes,
     &autofill::features::kAutofillServerCommunication,
     &blink::features::kAdInterestGroupAPI,
+    &blink::features::kBrowsingTopics,
     &blink::features::kAllowURNsInIframes,
     &blink::features::kComputePressure,
     &blink::features::kConversionMeasurement,
     &blink::features::kCssSelectorFragmentAnchor,
+    &blink::features::kFencedFrames,
     &blink::features::kFledge,
     &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
     &blink::features::kInterestGroupStorage,
     &blink::features::kParakeet,
     &blink::features::kPrerender2,
+    &blink::features::kPrivacySandboxAdsAPIs,
     &blink::features::kSpeculationRulesPrefetchProxy,
     &blink::features::kTextFragmentAnchor,
+    &commerce::kCommerceDeveloper,
+    &commerce::kCommerceMerchantViewer,
+    &commerce::kCommercePriceTracking,
+    &commerce::kShoppingList,
+    &commerce::kShoppingPDPMetrics,
+    &commerce::kRetailCoupons,
 #if !BUILDFLAG(IS_ANDROID)
     &features::kCopyLinkToText,
 #endif
@@ -110,10 +123,16 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kIdleDetection,
     &features::kNotificationTriggers,
     &features::kOmniboxTriggerForNoStatePrefetch,
+    &features::kPrivacySandboxAdsAPIsOverride,
     &features::kSidePanel,
     &features::kSignedExchangeSubresourcePrefetch,
     &features::kSubresourceWebBundles,
     &features::kWebOTP,
+    &history_clusters::features::kOnDeviceClustering,
+    &history_clusters::internal::kHistoryClustersInternalsPage,
+    &history_clusters::internal::kJourneys,
+    &history_clusters::internal::kOmniboxAction,
+    &history_clusters::internal::kPersistContextAnnotationsInHistoryDb,
     &lens::features::kLensStandalone,
     &media::kLiveCaption,
     &net::features::kPartitionedCookies,
@@ -124,6 +143,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &optimization_guide::features::
         kRemoteOptimizationGuideFetchingAnonymousDataConsent,
     &permissions::features::kPermissionOnDeviceNotificationPredictions,
+    &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
     &privacy_sandbox::kPrivacySandboxSettings3,
     &reading_list::switches::kReadLater,
 #if !BUILDFLAG(IS_ANDROID)
