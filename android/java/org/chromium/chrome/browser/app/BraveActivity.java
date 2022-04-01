@@ -746,7 +746,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         if (compositorView != null) {
             ViewGroup root = (ViewGroup) compositorView.getChildAt(1);
 
-            /*if (root.getChildAt(0) instanceof NestedScrollView) {
+            if (root.getChildAt(0) instanceof NestedScrollView) {
                 NestedScrollView scrollView = (NestedScrollView) root.getChildAt(0);
 
                 DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -771,7 +771,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                             @Override
                             public void onLoadCleared(@Nullable Drawable placeholder) {}
                         });
-            }*/
+            }
         }
     }
 

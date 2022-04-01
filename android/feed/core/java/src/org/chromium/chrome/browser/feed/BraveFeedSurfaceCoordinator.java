@@ -88,7 +88,7 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             mScrollViewForPolicy.addView(mNtpHeader);
         }
         mRootView.addView(mScrollViewForPolicy);
-        mScrollViewForPolicy.setFillViewport(true);
+        //mScrollViewForPolicy.setFillViewport(true);
         mScrollViewForPolicy.requestFocus();
     }
 
