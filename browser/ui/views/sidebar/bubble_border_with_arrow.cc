@@ -75,8 +75,8 @@ void BubbleBorderWithArrow::Paint(const views::View& view,
   flags.setColor(background_color());
 
   gfx::RectF bounds(view.GetLocalBounds());
-  bounds.Inset(GetInsets() +
-               gfx::Insets::TLBR(0, kBubbleArrowBoundsWidth, 0, 0));
+  bounds.Inset(gfx::InsetsF(
+      GetInsets() + gfx::Insets::TLBR(0, kBubbleArrowBoundsWidth, 0, 0)));
   gfx::RectF arrow_bounds = GetArrowRect(bounds, arrow());
 
   // Fill arrow bg.
@@ -114,8 +114,8 @@ void BubbleBorderWithArrow::Paint(const views::View& view,
 
 SkRRect BubbleBorderWithArrow::GetClientRect(const views::View& view) const {
   gfx::RectF bounds(view.GetLocalBounds());
-  bounds.Inset(GetInsets() +
-               gfx::Insets::TLBR(0, kBubbleArrowBoundsWidth, 0, 0));
+  bounds.Inset(gfx::InsetsF(
+      GetInsets() + gfx::Insets::TLBR(0, kBubbleArrowBoundsWidth, 0, 0)));
   return SkRRect::MakeRectXY(gfx::RectFToSkRect(bounds), corner_radius(),
                              corner_radius());
 }
