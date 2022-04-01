@@ -26,6 +26,8 @@ class EthNonceTracker : public NonceTracker {
   EthNonceTracker(TxStateManager* tx_state_manager,
                   JsonRpcService* json_rpc_service);
   ~EthNonceTracker() override;
+  EthNonceTracker(const EthNonceTracker&) = delete;
+  EthNonceTracker operator=(const EthNonceTracker&) = delete;
 
   // NonceTracker
   void GetNextNonce(const std::string& from,
