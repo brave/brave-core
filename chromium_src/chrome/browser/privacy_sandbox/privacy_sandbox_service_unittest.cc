@@ -16,6 +16,8 @@
 #include "chrome/browser/signin/identity_manager_factory.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/browsing_topics/browsing_topics_service.h"
+#include "components/browsing_topics/test_util.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/pref_names.h"
@@ -73,7 +75,8 @@ class PrivacySandboxServiceTest : public testing::Test {
         CookieSettingsFactory::GetForProfile(profile()).get(),
         profile()->GetPrefs(), policy_service(), sync_service(),
         identity_test_env()->identity_manager(), test_interest_group_manager(),
-        profile_metrics::BrowserProfileType::kRegular, browsing_data_remover());
+        profile_metrics::BrowserProfileType::kRegular, browsing_data_remover(),
+        mock_browsing_topics_service());
   }
 
   virtual void InitializePrefsBeforeStart() {}
@@ -104,6 +107,9 @@ class PrivacySandboxServiceTest : public testing::Test {
   content::BrowsingDataRemover* browsing_data_remover() {
     return profile()->GetBrowsingDataRemover();
   }
+  browsing_topics::MockBrowsingTopicsService* mock_browsing_topics_service() {
+    return mock_browsing_topics_service_;
+  }
 
  private:
   content::BrowserTaskEnvironment browser_task_environment_;
@@ -116,4 +122,5 @@ class PrivacySandboxServiceTest : public testing::Test {
   TestInterestGroupManager test_interest_group_manager_;
 
   std::unique_ptr<PrivacySandboxService> privacy_sandbox_service_;
+  browsing_topics::MockBrowsingTopicsService* mock_browsing_topics_service_;
 };
