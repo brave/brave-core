@@ -58,6 +58,7 @@
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "brave/components/brave_sync/sync_service_impl_helper.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -1317,12 +1318,23 @@ void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
 }
 
 void RewardsServiceImpl::OnRecoverWallet(const ledger::type::Result result) {
+  brave_sync::ResetSync(
+      sync_service_, sync_service_->GetDeviceInfoSyncService(),
+      base::BindOnce(&RewardsServiceImpl::OnResetSyncDone, AsWeakPtr()));
+
   // Fetch balance after recovering wallet in order to initiate P3A
   // stats collection
   FetchBalance(base::DoNothing());
 
   for (auto& observer : observers_) {
     observer.OnRecoverWallet(this, result);
+  }
+}
+
+void RewardsServiceImpl::OnResetSyncDone() {
+  if (!sync_service_->GetUserSettings()->IsFirstSetupComplete()) {
+    GetWalletPassphrase(base::BindOnce(
+        &RewardsServiceImpl::OnGetWalletPassphrase, AsWeakPtr()));
   }
 }
 

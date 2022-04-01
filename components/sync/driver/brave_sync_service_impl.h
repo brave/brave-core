@@ -19,6 +19,7 @@ class Profile;
 namespace syncer {
 
 class BraveSyncAuthManager;
+class DeviceInfoSyncService;
 class SyncServiceImplDelegate;
 
 class BraveSyncServiceImpl : public SyncServiceImpl {
@@ -47,6 +48,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void ResumeDeviceObserver();
 
   void Initialize() override;
+
+  syncer::DeviceInfoSyncService* GetDeviceInfoSyncService();
 
  private:
   BraveSyncAuthManager* GetBraveSyncAuthManager();
