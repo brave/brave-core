@@ -1153,6 +1153,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   NSString* bridgedId = base::SysUTF8ToNSString(id);
 
   BLOG(1, @"Loading %@ ads resource descriptor", bridgedId);
+
+  base::FilePath file_path(bridgedId.UTF8String);
   base::File file(file_path, base::File::FLAG_OPEN | base::File::FLAG_READ);
   callback(std::move(file));
 }
