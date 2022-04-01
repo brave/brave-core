@@ -188,7 +188,8 @@ extension BrowserViewController {
       UIKeyCommand(title: Strings.selectLocationBarTitle, action: #selector(selectLocationBarKeyCommand), input: "l", modifierFlags: .command),
       UIKeyCommand(title: Strings.newTabTitle, action: #selector(newTabKeyCommand), input: "t", modifierFlags: .command),
       UIKeyCommand(title: Strings.newPrivateTabTitle, action: #selector(newPrivateTabKeyCommand), input: "n", modifierFlags: [.command, .shift]),
-      UIKeyCommand(title: Strings.closeTabTitle, action: #selector(closeTabKeyCommand), input: "w", modifierFlags: .command)
+      UIKeyCommand(title: Strings.closeTabTitle, action: #selector(closeTabKeyCommand), input: "w", modifierFlags: .command),
+      UIKeyCommand(title: Strings.closeAllTabsFromTabTrayKeyCodeTitle, action: #selector(closeAllTabsKeyCommand), input: "w", modifierFlags: [.command, .alternate])
     ]
     
     let tabNavigationKeyCommands = [
