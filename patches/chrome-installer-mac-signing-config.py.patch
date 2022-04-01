@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/signing/config.py b/chrome/installer/mac/signing/config.py
-index 4a5acbac8518e55fed8111c14d36f87428b6f163..6b35bf826a94fe56b501b1829fce1eed68243a89 100644
+index c6ae4b5a059f23f486df4dc16df37d7148eef683..c497c285d6ed04367efa1d879eed2011135523e3 100644
 --- a/chrome/installer/mac/signing/config.py
 +++ b/chrome/installer/mac/signing/config.py
 @@ -241,4 +241,4 @@ class CodeSignConfig(object):

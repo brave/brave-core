@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/sync/sync_service_factory.mm b/ios/chrome/browser/sync/sync_service_factory.mm
-index c09a7144e41073b7e429a5ead93668772967d389..a9046b47ad81f17996ef90d5154f94118dc9ef4e 100644
+index 4be5148aec4fdea8404a4ed0976a4980e70f01d5..49cf2f6fe2be7af0208458eae8ae46bd5d90923d 100644
 --- a/ios/chrome/browser/sync/sync_service_factory.mm
 +++ b/ios/chrome/browser/sync/sync_service_factory.mm
-@@ -156,7 +156,7 @@
+@@ -155,7 +155,7 @@
        policy_connector ? policy_connector->GetPolicyService() : nullptr;
  
    auto sync_service =

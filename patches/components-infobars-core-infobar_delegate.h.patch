@@ -1,8 +1,8 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index 7c1f94541055ffb73f3d8ab41c3688b948c05bb2..a51ac58bbc792226c552acbe57220ca70a377562 100644
+index 75c3fc5f78469402bf415451f094d54a05240981..da4cb964aab9f4f403e372ae9749710e4df00911 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -180,6 +180,7 @@ class InfoBarDelegate {
+@@ -181,6 +181,7 @@ class InfoBarDelegate {
      SUPPORTED_LINKS_INFOBAR_DELEGATE_CHROMEOS = 109,
      AUTOFILL_VIRTUAL_CARD_ENROLLMENT_INFOBAR_DELEGATE_MOBILE = 110,
      ABOUT_THIS_SITE_INFOBAR_DELEGATE = 111,

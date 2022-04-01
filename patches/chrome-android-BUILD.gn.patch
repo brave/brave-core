@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 638d96f9b69bd9e86c24053c1d22ff2eb6549d0a..65b3fb8b97c4cb07691bf53ed58baf8ff88bd07b 100644
+index 9bad5f3f07e1a9a6c0f7d0d3b3afcfda2cb6d028..dd4e7d07d6ddc55d8b7387049b0280b645d5133d 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -270,6 +270,7 @@ android_resources("chrome_app_java_resources") {
@@ -10,7 +10,7 @@ index 638d96f9b69bd9e86c24053c1d22ff2eb6549d0a..65b3fb8b97c4cb07691bf53ed58baf8f
  }
  
  if (enable_vr) {
-@@ -653,6 +654,7 @@ android_library("chrome_java") {
+@@ -652,6 +653,7 @@ android_library("chrome_java") {
    ]
  
    deps += feed_deps
@@ -18,7 +18,7 @@ index 638d96f9b69bd9e86c24053c1d22ff2eb6549d0a..65b3fb8b97c4cb07691bf53ed58baf8f
  
    srcjar_deps = [
      ":autofill_verification_status_generated_enum",
-@@ -682,6 +684,7 @@ android_library("chrome_java") {
+@@ -681,6 +683,7 @@ android_library("chrome_java") {
      "//components/offline_pages/core:offline_page_model_enums_java",
      "//net:effective_connection_type_java",
    ]
@@ -26,7 +26,7 @@ index 638d96f9b69bd9e86c24053c1d22ff2eb6549d0a..65b3fb8b97c4cb07691bf53ed58baf8f
  
    # From java_sources.gni.
    sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -804,6 +807,7 @@ java_group("chrome_all_java") {
+@@ -802,6 +805,7 @@ java_group("chrome_all_java") {
        "//chrome/android/features/tab_ui:module_desc_java",
      ]
    }
@@ -34,7 +34,7 @@ index 638d96f9b69bd9e86c24053c1d22ff2eb6549d0a..65b3fb8b97c4cb07691bf53ed58baf8f
  }
  
  # This is a list of all base module jni headers. New features should add their
-@@ -851,6 +855,7 @@ group("jni_headers") {
+@@ -850,6 +854,7 @@ group("jni_headers") {
      "//components/ukm/android:jni_headers",
      "//components/webauthn/android:jni_headers",
    ]
@@ -42,7 +42,7 @@ index 638d96f9b69bd9e86c24053c1d22ff2eb6549d0a..65b3fb8b97c4cb07691bf53ed58baf8f
  }
  
  action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -2249,6 +2254,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2243,6 +2248,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]

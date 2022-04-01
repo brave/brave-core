@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_bubble_view_impl.cc b/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_bubble_view_impl.cc
-index a3a7a19ba98128c93e3b1cb1b32ed092b1078cfb..2ab43c63494fef9f1889e466b59a77aea932ec8d 100644
+index ac865767fa63eb61dcec1266b3a96dd2e8e53ad2..68399d869c3f87563597a87623d615edb6ae3deb 100644
 --- a/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_bubble_view_impl.cc
 +++ b/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_bubble_view_impl.cc
-@@ -140,6 +140,7 @@ void SendTabToSelfBubbleViewImpl::Init() {
+@@ -139,6 +139,7 @@ void SendTabToSelfBubbleViewImpl::Init() {
    CreateHintTextLabel();
    CreateDevicesScrollView();
  
