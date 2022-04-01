@@ -549,6 +549,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnRecoverWallet(const ledger::type::Result result);
 
+  void OnResetDone();
+
   void OnStartProcessForSetAdsEnabled();
 
   void OnWalletCreatedForSetAdsEnabled(const ledger::type::Result result);

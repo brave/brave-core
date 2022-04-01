@@ -14,7 +14,11 @@
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/sync/driver/brave_sync_auth_manager.h"
 #include "brave/components/sync/driver/sync_service_impl_delegate.h"
+#include "chrome/browser/sync/chrome_sync_client.h"
 #include "components/prefs/pref_service.h"
+#include "components/sync_device_info/device_info_sync_service.h"
+#include "components/sync_device_info/device_info_tracker.h"
+#include "components/sync_device_info/local_device_info_provider.h"
 
 namespace syncer {
 
@@ -54,6 +58,44 @@ void BraveSyncServiceImpl::Initialize() {
   if (!user_settings_->IsFirstSetupComplete()) {
     base::UmaHistogramExactLinear("Brave.Sync.Status.2", 0, 3);
   }
+}
+
+void BraveSyncServiceImpl::ResetSync(base::OnceClosure on_reset_done) {
+  if (GetTransportState() != syncer::SyncService::TransportState::ACTIVE) {
+    OnSelfDeviceInfoDeleted(std::move(on_reset_done));
+    return;
+  }
+
+  auto* device_info_service =
+      static_cast<browser_sync::ChromeSyncClient*>(sync_client_.get())
+          ->GetDeviceInfoSyncService();
+  syncer::DeviceInfoTracker* tracker =
+      device_info_service->GetDeviceInfoTracker();
+  DCHECK(tracker);
+
+  const syncer::DeviceInfo* local_device_info =
+      device_info_service->GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
+
+  // Remove DCHECK when will be found the reason of the issue
+  // https://github.com/brave/brave-browser/issues/16066 .
+  DCHECK(local_device_info);
+  if (!local_device_info) {
+    std::move(on_reset_done).Run();
+    return;
+  }
+
+  SuspendDeviceObserverForOwnReset();
+
+  tracker->DeleteDeviceInfo(
+      local_device_info->guid(),
+      base::BindOnce(
+          [](syncer::BraveSyncServiceImpl* sync_service_impl,
+             base::OnceClosure on_reset_done) {
+            sync_service_impl->OnSelfDeviceInfoDeleted(
+                std::move(on_reset_done));
+            sync_service_impl->ResumeDeviceObserver();
+          },
+          this, std::move(on_reset_done)));
 }
 
 bool BraveSyncServiceImpl::IsSetupInProgress() const {

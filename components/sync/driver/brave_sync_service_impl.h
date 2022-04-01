@@ -48,6 +48,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   void Initialize() override;
 
+  void ResetSync(base::OnceClosure on_reset_done);
+
  private:
   BraveSyncAuthManager* GetBraveSyncAuthManager();
 

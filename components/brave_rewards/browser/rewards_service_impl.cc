@@ -1317,12 +1317,22 @@ void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
 }
 
 void RewardsServiceImpl::OnRecoverWallet(const ledger::type::Result result) {
+  sync_service_->ResetSync(
+      base::BindOnce(&RewardsServiceImpl::OnResetDone, AsWeakPtr()));
+
   // Fetch balance after recovering wallet in order to initiate P3A
   // stats collection
   FetchBalance(base::DoNothing());
 
   for (auto& observer : observers_) {
     observer.OnRecoverWallet(this, result);
+  }
+}
+
+void RewardsServiceImpl::OnResetDone() {
+  if (!sync_service_->GetUserSettings()->IsFirstSetupComplete()) {
+    GetWalletPassphrase(base::BindOnce(
+        &RewardsServiceImpl::OnGetWalletPassphrase, AsWeakPtr()));
   }
 }
 
