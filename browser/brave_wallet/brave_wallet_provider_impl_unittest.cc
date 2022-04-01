@@ -739,9 +739,10 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   void Decrypt(const std::string& encrypted_data_json,
                const std::string& address,
                bool approved,
-               std::string* message,
+               std::string* unsafe_message,
                mojom::ProviderError* error_out,
                std::string* error_message_out) {
+    *unsafe_message = "";
     base::RunLoop run_loop;
     provider_->Decrypt(
         encrypted_data_json, address,
@@ -749,9 +750,8 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
                                        base::Value formed_response, bool reject,
                                        const std::string& first_allowed_account,
                                        const bool update_bind_js_properties) {
-          *message = "";
           if (formed_response.type() == base::Value::Type::STRING) {
-            *message = formed_response.GetString();
+            *unsafe_message = formed_response.GetString();
           }
           mojom::ProviderError error;
           std::string error_message;
@@ -2207,12 +2207,12 @@ TEST_F(BraveWalletProviderImplUnitTest, Decrypt) {
       R"({"version":"x25519-xsalsa20-poly1305","nonce":"6IWDnjTObWyEB/XpQWT9Rs6CTed24BaA","ephemPublicKey":"XhoADVJjjmI5iUveoJ8sm3v9+wWBwCN6x/6K2tFhdg8=","ciphertext":"lru72L3/fK+X30ZBTxhVmp1YDTb0CZ+NAAxG919PJR9Y0icmpjhEijoASBLB2kR1KfKMtERHxpeCl9XYtmRY87LBRIuRFAmvoA6j0kF4YhDSm4AzMpwQRzvZSIC49rLHJZM1rSDLBMKkFdON0H3D"})";
 
   // Happy path w/ key GeiNTGIpEKEVFeMBpd3aVs/S2EjoF8FOoichRuqjBg0=
-  std::string message;
+  std::string unsafe_message;
   mojom::ProviderError error;
   std::string error_message;
-  Decrypt(valid_pi_json, from(), true, &message, &error, &error_message);
+  Decrypt(valid_pi_json, from(), true, &unsafe_message, &error, &error_message);
 
-  EXPECT_EQ(message,
+  EXPECT_EQ(unsafe_message,
             "3."
             "141592653589793238462643383279502884197169399375105820974944592307"
             "816406286208998628034825...");
@@ -2241,8 +2241,8 @@ TEST_F(BraveWalletProviderImplUnitTest, Decrypt) {
       // Invalid JSON
       "\"Pickle rick"};
   for (auto& error_case : error_cases) {
-    Decrypt(error_case, from(), true, &message, &error, &error_message);
-    EXPECT_TRUE(message.empty());
+    Decrypt(error_case, from(), true, &unsafe_message, &error, &error_message);
+    EXPECT_TRUE(unsafe_message.empty());
     EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
     EXPECT_FALSE(error_message.empty());
   }
@@ -2250,29 +2250,45 @@ TEST_F(BraveWalletProviderImplUnitTest, Decrypt) {
   // Locked should give invalid params error
   std::string from_address = from();
   Lock();
-  Decrypt(valid_pi_json, from_address, true, &message, &error, &error_message);
-  EXPECT_TRUE(message.empty());
+  Decrypt(valid_pi_json, from_address, true, &unsafe_message, &error,
+          &error_message);
+  EXPECT_TRUE(unsafe_message.empty());
   EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
   EXPECT_FALSE(error_message.empty());
 
   // Unlocked and user rejected
   Unlock();
-  Decrypt(valid_pi_json, from(), false, &message, &error, &error_message);
-  EXPECT_TRUE(message.empty());
+  Decrypt(valid_pi_json, from(), false, &unsafe_message, &error,
+          &error_message);
+  EXPECT_TRUE(unsafe_message.empty());
   EXPECT_EQ(mojom::ProviderError::kUserRejectedRequest, error);
   EXPECT_EQ(l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST),
             error_message);
 
   // Address without permissions gives the invalid params error
   AddAccount();
-  Decrypt(valid_pi_json, from(1), true, &message, &error, &error_message);
-  EXPECT_TRUE(message.empty());
+  Decrypt(valid_pi_json, from(1), true, &unsafe_message, &error,
+          &error_message);
+  EXPECT_TRUE(unsafe_message.empty());
   EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
   EXPECT_FALSE(error_message.empty());
 
   // Invalid address gives the invalid params error
-  Decrypt(valid_pi_json, "", true, &message, &error, &error_message);
-  EXPECT_TRUE(message.empty());
+  Decrypt(valid_pi_json, "", true, &unsafe_message, &error, &error_message);
+  EXPECT_TRUE(unsafe_message.empty());
+  EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
+  EXPECT_FALSE(error_message.empty());
+
+  // Encrypted string for the message: '\x00\x01\x02' (non-printable)
+  Decrypt(
+      "0x7b2276657273696f6e223a227832353531392d7873616c736132302d706f6c79313330"
+      "35222c226e6f6e6365223a22444d59686b526f712b7a695a7a47366d6142526f48464176"
+      "4f33624743456976222c22657068656d5075626c69634b6579223a227a4b634c4f4c5575"
+      "7273735a634b377a7a71757062713647566566494a374d6d43656475412f732b577a4d3d"
+      "222c2263697068657274657874223a22724964467156436b4e694456504b31366b634b78"
+      "50586b424f413d3d227d",
+      from(), true, &unsafe_message, &error, &error_message);
+  EXPECT_TRUE(unsafe_message.empty());
   EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
   EXPECT_FALSE(error_message.empty());
 }

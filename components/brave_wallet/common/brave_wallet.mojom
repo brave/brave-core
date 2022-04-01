@@ -675,7 +675,7 @@ struct GetEncryptionPublicKeyRequest {
 struct DecryptRequest {
   url.mojom.Url origin;
   string address;
-  string? message;
+  string? unsafe_message;
 };
 
 // Deals with the ETH JSON RPC API, as well as things like the user's current

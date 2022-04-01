@@ -966,7 +966,7 @@ void BraveWalletService::NotifyDecryptRequestProcessed(bool approved,
   bool reject = true;
   if (approved) {
     std::string key;
-    if (!request->message) {
+    if (!request->unsafe_message) {
       std::unique_ptr<base::Value> formed_response;
       formed_response = GetProviderErrorDictionary(
           mojom::ProviderError::kInternalError,
@@ -978,7 +978,7 @@ void BraveWalletService::NotifyDecryptRequestProcessed(bool approved,
 
     std::unique_ptr<base::Value> formed_response;
     formed_response =
-        base::Value::ToUniquePtrValue(base::Value(*request->message));
+        base::Value::ToUniquePtrValue(base::Value(*request->unsafe_message));
     reject = false;
     std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
                             "", false);
