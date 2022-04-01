@@ -9,11 +9,11 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import androidx.core.widget.NestedScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.core.widget.NestedScrollView;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.supplier.Supplier;
@@ -88,7 +88,6 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             mScrollViewForPolicy.addView(mNtpHeader);
         }
         mRootView.addView(mScrollViewForPolicy);
-        //mScrollViewForPolicy.setFillViewport(true);
         mScrollViewForPolicy.requestFocus();
     }
 
