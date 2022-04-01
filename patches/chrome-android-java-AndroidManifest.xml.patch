@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index e3309fd939849f07a11a6ea427fe56a7be88dbc3..61ff6e4420d3d128798b40b6a254a5fc081137b8 100644
+index 8dc9debff72755d99ee5158dfd1987cba56f0d2e..67a4e8149f3391bcaf2588b980eb414ea04cf07e 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -59,18 +59,26 @@ by a child template that "extends" this file.
@@ -63,15 +63,15 @@ index e3309fd939849f07a11a6ea427fe56a7be88dbc3..61ff6e4420d3d128798b40b6a254a5fc
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -330,6 +343,7 @@ by a child template that "extends" this file.
-                 <action android:name="android.web.action.APP_ATTRIBUTION" />
-                 <category android:name="android.intent.category.DEFAULT" />
+@@ -326,6 +339,7 @@ by a child template that "extends" this file.
+             <intent-filter>
+                 <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
 +            {% include "//brave/android/java/AndroidManifest_intent_filters.xml" %}
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1233,6 +1247,7 @@ by a child template that "extends" this file.
+@@ -1229,6 +1243,7 @@ by a child template that "extends" this file.
              android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" >
          </activity>
  
@@ -79,7 +79,7 @@ index e3309fd939849f07a11a6ea427fe56a7be88dbc3..61ff6e4420d3d128798b40b6a254a5fc
          {% block extra_application_definitions %}
          {% endblock %}
        {% endmacro %}
-@@ -1311,6 +1326,7 @@ by a child template that "extends" this file.
+@@ -1307,6 +1322,7 @@ by a child template that "extends" this file.
        <!-- ARCore APK integration -->
        <!-- This tag indicates that this application optionally uses ARCore. -->
        <meta-data android:name="com.google.ar.core" android:value="optional" />

@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index c9215a52c014c2e212077130d26bf4589d66cc4e..2473711919489aec723c8be10058383744aaad57 100644
+index e6deebea7f7098e2e2a2233de789e6ec616ff3d6..500d6eb5c0a504b5407481598dba816fc505585f 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 @@ -74,7 +74,7 @@ export class SettingsPersonalizationOptionsElement extends
  
        syncStatus: Object,
  
--      // <if expr="_google_chrome and not chromeos">
-+      // <if expr="_chromium and not chromeos">
+-      // <if expr="_google_chrome and not chromeos_ash">
++      // <if expr="_chromium and not chromeos_ash">
        // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
        // (but handled differently in C++).
        metricsReportingPref_: {
@@ -15,8 +15,8 @@ index c9215a52c014c2e212077130d26bf4589d66cc4e..2473711919489aec723c8be100583837
    pageVisibility: PrivacyPageVisibility;
    syncStatus: SyncStatus;
  
--  // <if expr="_google_chrome and not chromeos">
-+  // <if expr="_chromium and not chromeos">
+-  // <if expr="_google_chrome and not chromeos_ash">
++  // <if expr="_chromium and not chromeos_ash">
    private metricsReportingPref_: chrome.settingsPrivate.PrefObject;
    private showRestart_: boolean;
    // </if>
@@ -24,8 +24,8 @@ index c9215a52c014c2e212077130d26bf4589d66cc4e..2473711919489aec723c8be100583837
    override ready() {
      super.ready();
  
--    // <if expr="_google_chrome and not chromeos">
-+    // <if expr="_chromium and not chromeos">
+-    // <if expr="_google_chrome and not chromeos_ash">
++    // <if expr="_chromium and not chromeos_ash">
      const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
          this.setMetricsReportingPref_(metricsReporting);
      this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
@@ -33,8 +33,8 @@ index c9215a52c014c2e212077130d26bf4589d66cc4e..2473711919489aec723c8be100583837
    }
    // </if>
  
--  // <if expr="_google_chrome and not chromeos">
-+  // <if expr="_chromium and not chromeos">
+-  // <if expr="_google_chrome and not chromeos_ash">
++  // <if expr="_chromium and not chromeos_ash">
    private onMetricsReportingChange_() {
      const enabled = this.$.metricsReportingControl.checked;
      this.browserProxy_.setMetricsReportingEnabled(enabled);
