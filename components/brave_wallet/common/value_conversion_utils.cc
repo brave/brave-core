@@ -125,7 +125,7 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value& value,
   if (!value.is_dict())
     return nullptr;
 
-  const std::string* contract_address = value.FindStringKey("contract_address");
+  const std::string* contract_address = value.FindStringKey("address");
   if (!contract_address)
     return nullptr;
   tokenPtr->contract_address = *contract_address;

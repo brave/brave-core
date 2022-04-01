@@ -947,20 +947,20 @@ interface BraveWalletService {
   // Adds an observer for BraveWalletService
   AddObserver(pending_remote<BraveWalletServiceObserver> observer);
 
-  // Obtains the user assets for the specified chain ID
-  GetUserAssets(string chain_id) => (array<BlockchainToken> tokens);
+  // Obtains the user assets for the specified chain ID and coin type.
+  GetUserAssets(string chain_id, CoinType coin) => (array<BlockchainToken> tokens);
 
-  // Adds a user asset to the user asset list pref for the specified chain ID.
+  // Adds a user asset to the user asset list pref.
   // This asset could be a token from BlockchainRegistry or a custom token.
-  AddUserAsset(BlockchainToken token, string chain_id) => (bool success);
+  AddUserAsset(BlockchainToken token) => (bool success);
 
-  // Removes a user asset from the user asset list pref for the specified chain
-  // ID. This asset could be a token from BlockchainRegistry or a custom token.
-  RemoveUserAsset(BlockchainToken token, string chain_id) => (bool success);
-
-  // Sets whether or not an asset is visible for the specified chain ID.
+  // Removes a user asset from the user asset list pref.
   // This asset could be a token from BlockchainRegistry or a custom token.
-  SetUserAssetVisible(BlockchainToken token, string chain_id, bool visible) => (bool success);
+  RemoveUserAsset(BlockchainToken token) => (bool success);
+
+  // Sets whether or not an asset is visible.
+  // This asset could be a token from BlockchainRegistry or a custom token.
+  SetUserAssetVisible(BlockchainToken token, bool visible) => (bool success);
 
   // Check if the external wallet is installed (Only check installation state
   // regardless of internal state)

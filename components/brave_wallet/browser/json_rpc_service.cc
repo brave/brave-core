@@ -386,10 +386,7 @@ bool JsonRpcService::SetNetwork(const std::string& chain_id,
   DictionaryPrefUpdate update(prefs_, kBraveWalletSelectedNetworks);
   base::Value* dict = update.Get();
   DCHECK(dict);
-  auto key = GetPrefKeyForCoinType(coin);
-  if (!key)
-    return false;
-  dict->SetStringKey(*key, chain_id);
+  dict->SetStringKey(GetPrefKeyForCoinType(coin), chain_id);
 
   FireNetworkChanged(coin);
   if (coin == mojom::CoinType::ETH)
