@@ -40,6 +40,9 @@ class RewardsChromeSyncClient : public ChromeSyncClient {
   syncer::DataTypeController::TypeVector CreateDataTypeControllers(
       syncer::SyncService* sync_service) override;
 
+  // Do we need this?
+  //syncer::ModelTypeStoreService* GetModelTypeStoreService() override;
+  syncer::DeviceInfoSyncService* GetDeviceInfoSyncService() override;
   invalidation::InvalidationService* GetInvalidationService() override;
 
   void SetDefaultEnabledTypes(syncer::SyncService* sync_service) override;
