@@ -121,14 +121,14 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
   run_loop3.Run();
 }
 
-TEST(BlockchainRegistryUnitTest, GetTokenByContract) {
+TEST(BlockchainRegistryUnitTest, GetTokenByAddress) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
   TokenListMap token_list_map;
   ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
   registry->UpdateTokenList(std::move(token_list_map));
   base::RunLoop run_loop;
-  registry->GetTokenByContract(
+  registry->GetTokenByAddress(
       mojom::kMainnetChainId, "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_EQ(token->symbol, "BAT");
@@ -138,7 +138,7 @@ TEST(BlockchainRegistryUnitTest, GetTokenByContract) {
 
   // Can get other chain tokens
   base::RunLoop run_loop2;
-  registry->GetTokenByContract(
+  registry->GetTokenByAddress(
       mojom::kRopstenChainId, "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_EQ(token->symbol, "UNI");
@@ -146,9 +146,9 @@ TEST(BlockchainRegistryUnitTest, GetTokenByContract) {
       }));
   run_loop2.Run();
 
-  // tokens for chanId exist but contract doesn't exist
+  // tokens for chanId exist but address doesn't exist
   base::RunLoop run_loop3;
-  registry->GetTokenByContract(
+  registry->GetTokenByAddress(
       mojom::kMainnetChainId, "0xCCC775F648430679A709E98d2b0Cb6250d2887EF",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_FALSE(token);
@@ -158,7 +158,7 @@ TEST(BlockchainRegistryUnitTest, GetTokenByContract) {
 
   // chainId which has no tokens
   base::RunLoop run_loop4;
-  registry->GetTokenByContract(
+  registry->GetTokenByAddress(
       mojom::kRinkebyChainId, "0xCCC775F648430679A709E98d2b0Cb6250d2887EF",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_FALSE(token);

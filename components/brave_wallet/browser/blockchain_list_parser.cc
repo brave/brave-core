@@ -9,6 +9,8 @@
 
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/strings/strcat.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 namespace {
 
@@ -26,7 +28,9 @@ bool ParseResultFromDict(const base::DictionaryValue* response_dict,
 
 namespace brave_wallet {
 
-bool ParseTokenList(const std::string& json, TokenListMap* token_list_map) {
+bool ParseTokenList(const std::string& json,
+                    TokenListMap* token_list_map,
+                    mojom::CoinType coin) {
   DCHECK(token_list_map);
 
   // {
@@ -111,16 +115,27 @@ bool ParseTokenList(const std::string& json, TokenListMap* token_list_map) {
     else
       continue;
 
-    std::string chain_id = "0x1";
-    ParseResultFromDict(blockchain_token_value, "chainId", &chain_id);
+    // chain_id is only optional for ETH mainnet token lists.
+    blockchain_token->chain_id = "0x1";
+    if (!ParseResultFromDict(blockchain_token_value, "chainId",
+                             &blockchain_token->chain_id) &&
+        coin != mojom::CoinType::ETH) {
+      continue;
+    }
 
     ParseResultFromDict(blockchain_token_value, "coingeckoId",
                         &blockchain_token->coingecko_id);
 
-    (*token_list_map)[chain_id].push_back(std::move(blockchain_token));
+    blockchain_token->coin = coin;
+    (*token_list_map)[GetTokenListKey(coin, blockchain_token->chain_id)]
+        .push_back(std::move(blockchain_token));
   }
 
   return true;
+}
+
+std::string GetTokenListKey(mojom::CoinType coin, const std::string& chain_id) {
+  return base::StrCat({GetPrefKeyForCoinType(coin), ".", chain_id});
 }
 
 }  // namespace brave_wallet

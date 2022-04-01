@@ -414,15 +414,16 @@ interface KeyringServiceObserver {
 
 // List of tokens and coins that are supported.
 interface BlockchainRegistry {
-  // Obtains token information by a contract lookup
-  GetTokenByContract(string chain_id, string contract) => (BlockchainToken? token);
+  // Obtains token information by an address lookup
+  GetTokenByAddress(string chain_id, CoinType coin, string address) => (BlockchainToken? token);
 
   // Obtains token information by a symbol lookup
-  GetTokenBySymbol(string chain_id, string symbol) => (BlockchainToken? token);
+  GetTokenBySymbol(string chain_id, CoinType coin, string symbol) => (BlockchainToken? token);
 
   // Obtains all tokens Send/Swap UI
-  GetAllTokens(string chain_id) => (array<BlockchainToken> tokens);
+  GetAllTokens(string chain_id, CoinType coin) => (array<BlockchainToken> tokens);
 
+  // Below APIs are Ethereum only for the moment.
   // Obtains all tokens for the Buy UI
   GetBuyTokens(string chain_id) => (array<BlockchainToken> tokens);
 

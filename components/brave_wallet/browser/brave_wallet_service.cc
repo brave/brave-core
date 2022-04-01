@@ -780,7 +780,7 @@ void BraveWalletService::AddSuggestTokenRequest(
 
   if (!token)
     token =
-        BlockchainRegistry::GetInstance()->GetTokenByContract(chain_id, addr);
+        BlockchainRegistry::GetInstance()->GetTokenByAddress(chain_id, addr);
 
   if (token)
     request->token = std::move(token);
