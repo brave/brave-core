@@ -86,7 +86,6 @@ const Config = function () {
   this.chromeVersion = this.getProjectVersion('chrome')
   this.chromiumRepo = getNPMConfig(['projects', 'chrome', 'repository', 'url'])
   this.braveCoreDir = path.join(this.srcDir, 'brave')
-  this.braveCoreRepo = getNPMConfig(['projects', 'brave-core', 'repository', 'url'])
   this.buildToolsDir = path.join(this.srcDir, 'build')
   this.resourcesDir = path.join(this.rootDir, 'resources')
   this.depotToolsDir = path.join(this.braveCoreDir, 'vendor', 'depot_tools')
