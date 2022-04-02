@@ -13,3 +13,12 @@ index 118765f9323faae3782ea69d6063174dcf5c4373..131728edfcaf1f705b68c92c5a5e956e
    // Tells the renderer that a same-document navigation should be committed.
    // The renderer will return a status value indicating whether the commit
    // could proceed as expected or not. In particular, it might be necessary to
+@@ -708,6 +712,8 @@ interface FrameHost {
+   // proper encoding name. Sent for top-level frames.
+   UpdateEncoding(string encoding_name);
+ 
++  FinalPageGraph(mojo_base.mojom.UnguessableToken devtools_main_frame_token, string frame_id, string data);
++
+   // Updates information to determine whether a user gesture should carryover to
+   // future navigations. This is needed so navigations within a certain
+   // timeframe of a request initiated by a gesture will be treated as if they

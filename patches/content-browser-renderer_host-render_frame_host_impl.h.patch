@@ -15,3 +15,13 @@ index 3456986091abe0915361938b31ae6626dbd63f4a..fe3e46839bf5cb123d65937da6c0c980
    void ExecuteJavaScriptMethod(const std::u16string& object_name,
                                 const std::u16string& method_name,
                                 base::Value arguments,
+@@ -1831,6 +1837,9 @@ class CONTENT_EXPORT RenderFrameHostImpl
+   void GoToEntryAtOffset(int32_t offset, bool has_user_gesture) override;
+   void UpdateTitle(const absl::optional<::std::u16string>& title,
+                    base::i18n::TextDirection title_direction) override;
++  void FinalPageGraph(const ::base::UnguessableToken& devtools_main_frame_token,
++                      const std::string& frame_id,
++                      const std::string& data) override;
+   void UpdateUserActivationState(
+       blink::mojom::UserActivationUpdateType update_type,
+       blink::mojom::UserActivationNotificationType notification_type) override;

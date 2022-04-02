@@ -1,0 +1,28 @@
+diff --git a/content/public/browser/render_process_host.h b/content/public/browser/render_process_host.h
+index 5632115f5995a004638d9af686d91133b7d421e4..3c5619b768e4dc21619b64d8134312910e70a910 100644
+--- a/content/public/browser/render_process_host.h
++++ b/content/public/browser/render_process_host.h
+@@ -53,6 +53,10 @@
+ #include "content/public/browser/android/child_process_importance.h"
+ #endif
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "base/unguessable_token.h"
++// #endif
++
+ class GURL;
+ 
+ namespace base {
+@@ -661,6 +665,12 @@ class CONTENT_EXPORT RenderProcessHost : public IPC::Sender,
+                                    mojo::GenericPendingReceiver* receiver)>;
+   static void InterceptBindHostReceiverForTesting(
+       BindHostReceiverInterceptor callback);
++
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  virtual void OnFinalPageGraph(const base::UnguessableToken& devtools_main_frame_token,
++                        const std::string& frame_id,
++                        const std::string& data);
++// #endif
+ };
+ 
+ }  // namespace content

@@ -10,21 +10,22 @@ index f0cb4833442be24dee52e2e172a0d22474d1135b..4ea1bbf03257f7dc264b6d91a4ada6d4
 +  devtools_main_frame_token_ = params->devtools_main_frame_token;
 +// #endif
 +
-   RenderThread::Get()->AddRoute(routing_id_, this);
- 
- #if defined(OS_ANDROID)
-@@ -1829,6 +1833,14 @@ void RenderViewImpl::DidFocus(blink::WebLocalFrame* calling_frame) {
-   }
+   WebFrame* opener_frame = nullptr;
+   if (params->opener_frame_token)
+     opener_frame = WebFrame::FromFrameToken(params->opener_frame_token.value());
+@@ -475,4 +479,15 @@ blink::WebView* RenderViewImpl::GetWebView() {
+   return webview_;
  }
  
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +void RenderViewImpl::FinalPageGraph(const std::string& frame_id,
 +                                    const std::string& data) {
 +  DCHECK(!devtools_main_frame_token_.is_empty());
-+  Send(new ViewHostMsg_FinalPageGraph(devtools_main_frame_token_, frame_id, data));
++  RenderFrameImpl* render_frame = GetMainRenderFrame();
++  if (render_frame) {
++    render_frame->GetFrameHost()->FinalPageGraph(devtools_main_frame_token_, frame_id, data);
++  }
 +}
 +// #endif
 +
- #if defined(OS_ANDROID)
- void RenderViewImpl::SuspendVideoCaptureDevices(bool suspend) {
-   if (!main_render_frame_)
+ }  // namespace content

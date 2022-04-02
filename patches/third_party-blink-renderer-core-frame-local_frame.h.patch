@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/renderer/core/frame/local_frame.h b/third_party/blink/renderer/core/frame/local_frame.h
+index 777647d822d3215cfe0708b283041380d739f7e7..622ceb5c102ee8cc08312e4c8543d4dfe26969b5 100644
+--- a/third_party/blink/renderer/core/frame/local_frame.h
++++ b/third_party/blink/renderer/core/frame/local_frame.h
+@@ -482,6 +482,9 @@ class CORE_EXPORT LocalFrame final
+     should_send_resource_timing_info_to_parent_ = value;
+   }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void ExpectToSendFinalPageGraphOnUnload();
++// #endif
+   // Called when certain event listeners are added for the first time/last time,
+   // making it possible/not possible to terminate the frame suddenly.
+   void UpdateSuddenTerminationStatus(

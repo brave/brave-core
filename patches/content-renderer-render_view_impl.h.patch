@@ -12,20 +12,22 @@ index 701aac4f7865097899b76ee8c37db6eb32672b33..cc736ddee970baaec46e9d369e9831bb
  namespace blink {
  class WebURLRequest;
  struct WebWindowFeatures;
-@@ -235,6 +239,9 @@ class CONTENT_EXPORT RenderViewImpl : public blink::WebViewClient,
-   int HistoryForwardListCount() override;
-   void DidAutoResize(const blink::WebSize& newSize) override;
-   void DidFocus(blink::WebLocalFrame* calling_frame) override;
+@@ -147,6 +150,10 @@ class CONTENT_EXPORT RenderViewImpl : public blink::WebViewClient,
+     return renderer_wide_named_frame_lookup_;
+   }
+ 
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  void FinalPageGraph(const std::string&, const std::string&) override;
 +// #endif
-   bool CanHandleGestureEvent() override;
-   bool AllowPopupsDuringPageUnload() override;
-   void OnPageVisibilityChanged(PageVisibilityState visibility) override;
-@@ -603,6 +610,9 @@ class CONTENT_EXPORT RenderViewImpl : public blink::WebViewClient,
-   // is fine.
-   base::ObserverList<RenderViewObserver>::Unchecked observers_;
- 
++
+  protected:
+   RenderViewImpl(AgentSchedulingGroup& agent_scheduling_group,
+                  const mojom::CreateViewParams& params);
+@@ -232,7 +239,9 @@ class CONTENT_EXPORT RenderViewImpl : public blink::WebViewClient,
+   // Whether this was a renderer-created or browser-created RenderView.
+   bool was_created_by_renderer_ = false;
+ #endif
+-
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  base::UnguessableToken devtools_main_frame_token_;
 +// #endif
