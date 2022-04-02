@@ -1819,6 +1819,12 @@ Are you sure you want to do this?
     <message name="IDS_CONTINUE_TEXT" desc="Brave Wallet onboarding text">
       Continue
     </message>
+    <message name="IDS_MESSAGE" desc="Brave wallet message title text">
+      Message
+    </message>
+    <message name="IDS_DATA_TEXT" desc="Brave wallet data title text">
+      DATA
+    </message>
     <message name="IDS_BACKUP_WALLET_CHECKBOX_TEXT" desc="Brave Wallet onboarding text">
       I understand that if I lose my recovery phrase, I won’t be able to access my crypto wallet.
     </message>
@@ -2865,6 +2871,51 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_ACCESSIBILITY_NEW_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new tab view.">
       New tab
+    </message>
+    <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_WALLET" desc="Content description for the button that allows an access to Brave Wallet.">
+      Access Brave Wallet
+    </message>
+    <message name="IDS_DAPP_BOTTOM_SHEET_WALLET_CONNECTIVITY_INFO" desc="Brave wallet Dapp wallet connectivity bottom sheet text">
+      Use this panel to securely access web3 and all your crypto assets.
+    </message>
+    <message name="IDS_DAPP_WALLET_PANEL_CONNECTIVITY_STATUS" desc="Brave wallet Dapp wallet connectivity status">
+      Not connected...
+    </message>
+    <message name="IDS_DAPP_WALLET_PANEL_CONNECTIVITY_STATUS_CONNECTED" desc="Brave wallet Dapp wallet connectivity status">
+      Connected
+    </message>
+    <message name="IDS_ACCESSIBILITY_WALLET_DAPP_PANEL_ACCOUNT" desc="Content description for account image on Brave wallet Dapp wallet panel">
+      User account
+    </message>
+    <message name="IDS_ACCESSIBILITY_WALLET_DAPP_PANEL_ACCOUNT_ANCHOR" desc="Content description for anchor account image on Brave wallet Dapp wallet panel">
+      Switch account
+    </message>
+    <message name="IDS_ACCESSIBILITY_WALLET_DAPP_PANEL_MENU" desc="Content description for menu options on Brave wallet Dapp wallet panel">
+      Menu
+    </message>
+    <message name="IDS_ACCESSIBILITY_WALLET_DAPP_PANEL_EXPAND" desc="Content description for expand panel action on Brave wallet Dapp wallet panel">
+      Expand
+    </message>
+    <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_POSITIVE_BUTTON_ACTION" desc="Brave wallet Dapp sign farment positive action text">
+      Sign
+    </message>
+    <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_TITLE" desc="Title text for a request to connect a wallet.">
+      Connect With Brave Wallet
+    </message>
+    <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_SUB_TITLE" desc="Sub title text for a request to connect a wallet.">
+      Select account(s)
+    </message>
+    <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_ACCOUNTS_TITLE" desc="Title text for a request to connect a wallet for an accounts section.">
+      New account
+    </message>
+    <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_WARNING_TITLE" desc="Title text for a request to connect a wallet for a warning section.">
+      Only connect with sites you trust.
+    </message>
+    <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_CONNECT_BUTTON_TEXT" desc="Connect button text for Brave wallet permission dialog.">
+      Connect
+    </message>
+    <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_BACK_BUTTON_TEXT" desc="Back button text for Brave wallet permission dialog.">
+      Back
     </message>
     </messages>
   </release>

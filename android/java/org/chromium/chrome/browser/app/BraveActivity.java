@@ -73,6 +73,10 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.BraveWalletServiceObserver;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ApplicationLifetime;
 import org.chromium.chrome.browser.BraveConfig;
@@ -99,8 +103,13 @@ import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.Layout;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
@@ -160,6 +169,8 @@ import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
 
 import java.text.DateFormat;
@@ -178,7 +189,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @JNINamespace("chrome::android")
 public abstract class BraveActivity<C extends ChromeActivityComponent>
         extends ChromeActivity implements BrowsingDataBridge.OnClearBrowsingDataListener,
-                                          BraveVpnObserver, OnBraveSetDefaultBrowserListener {
+                                          BraveVpnObserver, OnBraveSetDefaultBrowserListener,
+                                          ConnectionErrorHandler, BraveWalletServiceObserver {
     public static final int SITE_BANNER_REQUEST_CODE = 33;
     public static final int VERIFY_WALLET_ACTIVITY_REQUEST_CODE = 34;
     public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;
@@ -223,6 +235,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     private boolean mIsVerification;
     private boolean isDefaultCheckOnResume;
     private boolean isSetDefaultBrowserNotification;
+    private BraveWalletService mBraveWalletService;
+    private KeyringService mKeyringService;
+    private JsonRpcService mJsonRpcService;
     public CompositorViewHolder compositorView;
     public View inflatedSettingsBarLayout;
     public boolean mLoadedFeed;
@@ -281,7 +296,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         } else if (id == R.id.brave_rewards_id) {
             openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         } else if (id == R.id.brave_wallet_id) {
-            openBraveWallet();
+            openBraveWallet(false);
         } else if (id == R.id.brave_news_id) {
             openBraveNewsSettings();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
@@ -304,6 +319,155 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         }
 
         return true;
+    }
+
+    @Override
+    public void onConnectionError(MojoException e) {
+        mBraveWalletService.close();
+        mBraveWalletService = null;
+        mKeyringService.close();
+        mKeyringService = null;
+        mJsonRpcService.close();
+        mJsonRpcService = null;
+        InitBraveWalletService();
+        InitKeyringService();
+        InitJsonRpcService();
+    }
+
+    @Override
+    protected void onDestroyInternal() {
+        super.onDestroyInternal();
+        if (mBraveWalletService != null) {
+            mBraveWalletService.close();
+        }
+        if (mKeyringService != null) {
+            mKeyringService.close();
+        }
+        if (mJsonRpcService != null) {
+            mJsonRpcService.close();
+        }
+    }
+
+    private void InitBraveWalletService() {
+        if (mBraveWalletService != null) {
+            return;
+        }
+
+        mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
+        mBraveWalletService.addObserver(this);
+    }
+
+    private void InitKeyringService() {
+        if (mKeyringService != null) {
+            return;
+        }
+
+        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+    }
+
+    private void InitJsonRpcService() {
+        if (mJsonRpcService != null) {
+            return;
+        }
+
+        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
+    }
+
+    private void maybeHasPendingUnlockRequest() {
+        assert mKeyringService != null;
+        mKeyringService.hasPendingUnlockRequest(pending -> {
+            if (pending) {
+                BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
+                assert layout != null;
+                if (layout != null) {
+                    layout.showWalletPanel();
+                }
+
+                return;
+            }
+            maybeShowSignMessageRequestLayout();
+        });
+    }
+
+    private void maybeShowSignMessageRequestLayout() {
+        assert mBraveWalletService != null;
+        mBraveWalletService.getPendingSignMessageRequests(requests -> {
+            if (requests != null && requests.length != 0) {
+                openBraveWalletDAppsActivity(BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE);
+
+                return;
+            }
+            maybeShowChainRequestLayout();
+        });
+    }
+
+    private void maybeShowChainRequestLayout() {
+        assert mJsonRpcService != null;
+        mJsonRpcService.getPendingChainRequests(networks -> {
+            if (networks != null && networks.length != 0) {
+                openBraveWalletDAppsActivity(
+                        BraveWalletDAppsActivity.ActivityType.ADD_ETHEREUM_CHAIN);
+
+                return;
+            }
+            maybeShowSwitchChainRequestLayout();
+        });
+    }
+
+    private void maybeShowSwitchChainRequestLayout() {
+        assert mJsonRpcService != null;
+        mJsonRpcService.getPendingSwitchChainRequests(requests -> {
+            if (requests != null && requests.length != 0) {
+                openBraveWalletDAppsActivity(
+                        BraveWalletDAppsActivity.ActivityType.SWITCH_ETHEREUM_CHAIN);
+
+                return;
+            }
+            maybeShowAddSuggestTokenRequestLayout();
+        });
+    }
+
+    private void maybeShowAddSuggestTokenRequestLayout() {
+        assert mBraveWalletService != null;
+        mBraveWalletService.getPendingAddSuggestTokenRequests(requests -> {
+            if (requests != null && requests.length != 0) {
+                openBraveWalletDAppsActivity(BraveWalletDAppsActivity.ActivityType.ADD_TOKEN);
+
+                return;
+            }
+            BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
+            assert layout != null;
+            if (layout != null) {
+                layout.showWalletPanel();
+            }
+        });
+    }
+
+    @Override
+    public void onShowPanel() {
+        BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
+        assert layout != null;
+        if (layout != null) {
+            layout.showWalletIcon(true);
+        }
+        assert mKeyringService != null;
+        mKeyringService.isLocked(locked -> {
+            if (locked) {
+                layout.showWalletPanel();
+                return;
+            }
+            maybeHasPendingUnlockRequest();
+        });
+    }
+
+    @Override
+    public void onShowWalletOnboarding() {
+        BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
+        assert layout != null;
+        if (layout != null) {
+            layout.showWalletIcon(true);
+            layout.showWalletPanel();
+        }
     }
 
     private void verifySubscription() {
@@ -650,6 +814,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                 OnboardingPrefManager.getInstance().setDormantUsersNotificationsStarted(true);
             }
         }
+        InitBraveWalletService();
+        InitKeyringService();
+        InitJsonRpcService();
     }
 
     public void setDormantUsersPrefs() {
@@ -797,8 +964,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         settingsLauncher.launchSettingsActivity(this, BraveNewsPreferences.class);
     }
 
-    private void openBraveWallet() {
+    public void openBraveWallet(boolean fromDapp) {
         Intent braveWalletIntent = new Intent(this, BraveWalletActivity.class);
+        braveWalletIntent.putExtra(Utils.IS_FROM_DAPPS, fromDapp);
         braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(braveWalletIntent);
     }
@@ -808,6 +976,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         Intent braveNetworkSelectionIntent = new Intent(this, NetworkSelectorActivity.class);
         braveNetworkSelectionIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(braveNetworkSelectionIntent);
+    }
+
+    public void openBraveWalletDAppsActivity(BraveWalletDAppsActivity.ActivityType activityType) {
+        Intent braveWalletIntent = new Intent(this, BraveWalletDAppsActivity.class);
+        braveWalletIntent.putExtra("activityType", activityType.getValue());
+        braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(braveWalletIntent);
     }
 
     private void checkForYandexSE() {

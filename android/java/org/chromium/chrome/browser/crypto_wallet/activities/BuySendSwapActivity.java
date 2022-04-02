@@ -530,6 +530,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         if (mBtnBuySendSwap.isEnabled() && mCurrentBlockchainToken != null
                                 && mCurrentBlockchainToken.isErc20) {
                             // Check for ERC20 token allowance
+                            assert response != null;
                             checkAllowance(mCurrentBlockchainToken.contractAddress,
                                     response.allowanceTarget, fromValue);
                         }
@@ -917,7 +918,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     amountToGet = mConvertedFromBalance;
                 }
 
-                mFromValueText.setText(String.format(Locale.getDefault(), "%f", amountToGet));
+                mFromValueText.setText(String.format(Locale.getDefault(), "%.8f", amountToGet));
                 radioPerPercent.clearCheck();
                 if (mActivityType == ActivityType.SWAP) {
                     getSendSwapQuota(true, false);
@@ -1236,12 +1237,14 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             } else if (!data.gasPrice.isEmpty()) {
                 // We have hardcoded legacy tx gas fields.
                 isEIP1559 = false;
-            }
-            for (NetworkInfo network : networks) {
-                if (!mCurrentChainId.equals(network.chainId)) {
-                    continue;
+            } else {
+                for (NetworkInfo network : networks) {
+                    if (!mCurrentChainId.equals(network.chainId)) {
+                        continue;
+                    }
+                    isEIP1559 = network.data.getEthData().isEip1559;
+                    break;
                 }
-                isEIP1559 = network.data.getEthData().isEip1559;
             }
 
             assert mTxService != null;

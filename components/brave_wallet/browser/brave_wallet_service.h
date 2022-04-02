@@ -148,6 +148,9 @@ class BraveWalletService : public KeyedService,
 
   void RemovePrefListenersForTests();
 
+  void ShowPanel();
+  void ShowWalletOnboarding();
+
  private:
   friend class BraveWalletProviderImplUnitTest;
   friend class BraveWalletServiceUnitTest;

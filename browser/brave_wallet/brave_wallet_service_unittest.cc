@@ -142,6 +142,8 @@ class TestBraveWalletServiceObserver
   }
 
   void OnNetworkListChanged() override { networkListChangedFired_ = true; }
+  void OnShowPanel() override {}
+  void OnShowWalletOnboarding() override {}
 
   mojom::DefaultWallet GetDefaultWallet() { return default_wallet_; }
   bool DefaultWalletChangedFired() { return defaultWalletChangedFired_; }

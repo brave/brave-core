@@ -8,6 +8,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Theme colors -->
+    <color name="brave_white">@android:color/white</color>
+
     <!-- Overriding chromium theme colors to brave theme colors -->
     <color name="baseline_primary_100">#F9C3B6</color>
     <color name="baseline_primary_200">#FF7654</color>
@@ -59,9 +61,9 @@
     <color name="brave_set_default_dialog_text_color">@color/modern_grey_700</color>
 
     <!-- Theme colors -->
-    <color name="brave_white">@android:color/white</color>
     <color name="brave_theme_color">#fb542b</color>
     <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_200</color>
+    <color name="brave_wallet_button_pressed">#737ADE</color>
 
     <!-- Brave news colors -->
     <!-- <color name="card_background">#DC353535</color> -->
@@ -196,4 +198,9 @@
 
     <color name="rewards_panel_foreground_color">#80000000</color>
     <color name="rewards_divider_color">#E9E9F4</color>
+
+    <!--  Brave Wallet DApp  -->
+    <color name="brave_wallet_dapp_button_color">#FFFFFF</color>
+    <color name="brave_wallet_dapp_bg_color">@color/brave_action_color</color>
+    <color name="brave_wallet_dapp_text_color">#171919</color>
 </resources>
