@@ -183,28 +183,20 @@ export function refreshVisibleTokenInfo (currentNetwork: BraveWallet.NetworkInfo
         logo: network.iconUrls[0] ?? '',
         name: network.symbolName,
         symbol: network.symbol,
-        // MULTICHAIN: Change visible back to false once getUserAssets returns
-        // SOL and FIL by default.
-        visible: network.coin === BraveWallet.CoinType.SOL || network.coin === BraveWallet.CoinType.FIL,
+        visible: false,
         tokenId: '',
         coingeckoId: '',
-        chainId: network.chainId
+        chainId: network.chainId,
+        coin: network.coin
       }
 
       // Get a list of user tokens for each coinType and network.
-      const getTokenList = network.chainId === BraveWallet.LOCALHOST_CHAIN_ID &&
-        network.coin === BraveWallet.CoinType.SOL || network.coin === BraveWallet.CoinType.FIL
-        // Since LOCALHOST's chainId is shared between coinType networks,
-        // this check will make sure we create the correct Native Asset for
-        // that network.
-        ? { tokens: [nativeAsset] } // MULTICHAIN: We do not yet support getting userAssets for FIL and SOL
-        // Will be implemented here https://github.com/brave/brave-browser/issues/21547
-        : await braveWalletService.getUserAssets(network.chainId)
+      const getTokenList = await braveWalletService.getUserAssets(network.chainId, network.coin)
 
       // Adds a logo and chainId to each token object
       const tokenList = getTokenList.tokens.map((token) => ({
         ...token,
-        logo: token.symbol.toLowerCase() === 'sol' ? '' : `chrome://erc-token-images/${token.logo}`
+        logo: `chrome://erc-token-images/${token.logo}`
       })) as BraveWallet.BlockchainToken[]
       return tokenList.length === 0 ? [nativeAsset] : tokenList
     }))

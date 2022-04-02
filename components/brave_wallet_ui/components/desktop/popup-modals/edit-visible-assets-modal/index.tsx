@@ -180,7 +180,8 @@ const EditVisibleAssetsModal = (props: Props) => {
     visible: true,
     tokenId: '',
     coingeckoId: '',
-    chainId: ''
+    chainId: selectedNetwork.chainId,
+    coin: selectedNetwork.coin
   }
 
   const tokenList = React.useMemo(() => {
@@ -262,7 +263,8 @@ const EditVisibleAssetsModal = (props: Props) => {
         logo: iconURL,
         visible: true,
         coingeckoId: coingeckoID,
-        chainId: customAssetsNetwork.chainId
+        chainId: customAssetsNetwork.chainId,
+        coin: customAssetsNetwork.coin
       }
       onAddCustomAsset(newToken)
     }

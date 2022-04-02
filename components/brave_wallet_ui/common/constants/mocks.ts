@@ -68,6 +68,7 @@ export const mockERC20Token: BraveWallet.BlockchainToken = {
   visible: true,
   tokenId: '',
   coingeckoId: '',
+  coin: BraveWallet.CoinType.ETH,
   chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 

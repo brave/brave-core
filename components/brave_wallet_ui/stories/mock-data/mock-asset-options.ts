@@ -22,6 +22,7 @@ export const mockBasicAttentionToken = {
   visible: true,
   tokenId: '',
   coingeckoId: '',
+  coin: BraveWallet.CoinType.ETH,
   chainId: '0x1'
 }
 
@@ -36,6 +37,7 @@ export const mockBinanceCoinErc20Token = {
   visible: true,
   tokenId: '',
   coingeckoId: '',
+  coin: BraveWallet.CoinType.ETH,
   chainId: '0x1'
 }
 
@@ -50,6 +52,7 @@ export const mockBitcoinErc20Token = {
   visible: true,
   tokenId: '',
   coingeckoId: '',
+  coin: BraveWallet.CoinType.ETH,
   chainId: '0x1'
 }
 
@@ -64,6 +67,7 @@ export const mockAlgorandErc20Token = {
   visible: true,
   tokenId: '',
   coingeckoId: '',
+  coin: BraveWallet.CoinType.ETH,
   chainId: '0x1'
 }
 
@@ -78,6 +82,7 @@ export const mockZrxErc20Token = {
   visible: true,
   tokenId: '',
   coingeckoId: '',
+  coin: BraveWallet.CoinType.ETH,
   chainId: '0x1'
 }
 
@@ -92,6 +97,7 @@ export const mockMoonCatNFT = {
   visible: true,
   tokenId: '0x42a5',
   coingeckoId: '',
+  coin: BraveWallet.CoinType.ETH,
   chainId: '0x1'
 }
 
@@ -117,6 +123,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     visible: true,
     tokenId: '',
     coingeckoId: '',
+    coin: BraveWallet.CoinType.ETH,
     chainId: '0x1'
   },
   {
@@ -130,6 +137,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     visible: true,
     tokenId: '',
     coingeckoId: '',
+    coin: BraveWallet.CoinType.ETH,
     chainId: '0x3'
   },
   {
@@ -143,6 +151,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     visible: true,
     tokenId: '',
     coingeckoId: '',
+    coin: BraveWallet.CoinType.ETH,
     chainId: '0x1'
   },
   {
@@ -156,6 +165,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     visible: true,
     tokenId: '',
     coingeckoId: '',
+    coin: BraveWallet.CoinType.ETH,
     chainId: '0x1'
   },
   {
@@ -169,6 +179,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     visible: true,
     tokenId: '',
     coingeckoId: '',
+    coin: BraveWallet.CoinType.ETH,
     chainId: '0x1'
   },
   mockMoonCatNFT
