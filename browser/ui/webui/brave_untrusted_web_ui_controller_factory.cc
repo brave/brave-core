@@ -12,7 +12,14 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/ui/webui/brave_wallet/trezor/trezor_ui.h"
+#include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "ui/webui/webui_config.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
+#include "brave/components/brave_vpn/brave_vpn_utils.h"
+#endif
 
 using WebUIConfigList =
     std::vector<std::pair<std::string, std::unique_ptr<ui::WebUIConfig>>>;
@@ -28,6 +35,13 @@ WebUIConfigList CreateConfigs() {
         config_list.emplace_back(host, std::move(config));
       };
   register_config(std::make_unique<trezor::UntrustedTrezorUIConfig>());
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+  if (brave_vpn::IsBraveVPNEnabled()) {
+    register_config(std::make_unique<UntrustedVPNPanelUIConfig>());
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+
   return config_list;
 }
 

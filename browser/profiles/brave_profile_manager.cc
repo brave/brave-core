@@ -59,7 +59,10 @@ namespace {
 void AddBraveSharedResourcesDataSourceToProfile(Profile* profile) {
   content::URLDataSource::Add(
       profile,
-      std::make_unique<brave_content::BraveSharedResourcesDataSource>());
+      std::make_unique<brave_content::BraveSharedResourcesDataSource>(false));
+  content::URLDataSource::Add(
+      profile,
+      std::make_unique<brave_content::BraveSharedResourcesDataSource>(true));
 }
 
 }  // namespace

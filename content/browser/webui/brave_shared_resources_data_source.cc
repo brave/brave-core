@@ -17,6 +17,8 @@
 #include "base/memory/ref_counted_memory.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
+#include "brave/ui/webui/resources/grit/brave_webui_resources.h"
+#include "brave/ui/webui/resources/grit/brave_webui_resources_map.h"
 #include "build/build_config.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/common/content_client.h"
@@ -25,8 +27,6 @@
 #include "ui/base/layout.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/webui/web_ui_util.h"
-#include "brave/ui/webui/resources/grit/brave_webui_resources.h"
-#include "brave/ui/webui/resources/grit/brave_webui_resources_map.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "base/strings/utf_string_conversions.h"
@@ -72,13 +72,18 @@ int GetIdrForPath(const std::string& path) {
 
 }  // namespace
 
-BraveSharedResourcesDataSource::BraveSharedResourcesDataSource() {
-}
+BraveSharedResourcesDataSource::BraveSharedResourcesDataSource(
+    bool is_untrusted)
+    : is_untrusted_(is_untrusted) {}
 
-BraveSharedResourcesDataSource::~BraveSharedResourcesDataSource() {
-}
+BraveSharedResourcesDataSource::~BraveSharedResourcesDataSource() {}
 
 std::string BraveSharedResourcesDataSource::GetSource() {
+  if (is_untrusted_) {
+    std::string source = content::kChromeUIUntrustedScheme;
+    source += "://brave-resources/";
+    return source;
+  }
   return "brave-resources";
 }
 
@@ -162,7 +167,12 @@ BraveSharedResourcesDataSource::GetAccessControlAllowOriginForOrigin(
   // back.
   std::string allowed_origin_prefix = content::kChromeUIScheme;
   allowed_origin_prefix += "://";
+  std::string allowed_untrusted_origin_prefix =
+      content::kChromeUIUntrustedScheme;
+  allowed_untrusted_origin_prefix += "://";
   if (!base::StartsWith(origin, allowed_origin_prefix,
+                        base::CompareCase::SENSITIVE) &&
+      !base::StartsWith(origin, allowed_untrusted_origin_prefix,
                         base::CompareCase::SENSITIVE)) {
     return "null";
   }
