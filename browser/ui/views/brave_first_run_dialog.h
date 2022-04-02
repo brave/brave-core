@@ -3,25 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_FIRST_RUN_DIALOG_WIN_H_
-#define BRAVE_BROWSER_UI_VIEWS_FIRST_RUN_DIALOG_WIN_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_FIRST_RUN_DIALOG_H_
+#define BRAVE_BROWSER_UI_VIEWS_BRAVE_FIRST_RUN_DIALOG_H_
 
 #include "base/callback.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/window/dialog_delegate.h"
 
-class FirstRunDialogWin : public views::DialogDelegateView {
+class BraveFirstRunDialog : public views::DialogDelegateView {
  public:
-  METADATA_HEADER(FirstRunDialogWin);
+  METADATA_HEADER(BraveFirstRunDialog);
 
-  FirstRunDialogWin(const FirstRunDialogWin&) = delete;
-  FirstRunDialogWin& operator=(const FirstRunDialogWin&) = delete;
+  BraveFirstRunDialog(const BraveFirstRunDialog&) = delete;
+  BraveFirstRunDialog& operator=(const BraveFirstRunDialog&) = delete;
 
   static void Show(base::RepeatingClosure quit_runloop);
 
  private:
-  explicit FirstRunDialogWin(base::RepeatingClosure quit_runloop);
-  ~FirstRunDialogWin() override;
+  explicit BraveFirstRunDialog(base::RepeatingClosure quit_runloop);
+  ~BraveFirstRunDialog() override;
 
   // This terminates the nested message-loop.
   void Done();
@@ -35,4 +35,4 @@ class FirstRunDialogWin : public views::DialogDelegateView {
   base::RepeatingClosure quit_runloop_;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_FIRST_RUN_DIALOG_WIN_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_FIRST_RUN_DIALOG_H_
