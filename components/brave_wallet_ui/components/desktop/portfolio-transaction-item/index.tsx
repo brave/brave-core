@@ -1,11 +1,13 @@
 import * as React from 'react'
 import * as EthereumBlockies from 'ethereum-blockies'
+import { useSelector } from 'react-redux'
 
 import { getLocale } from '../../../../common/locale'
 import {
   BraveWallet,
   WalletAccountType,
-  DefaultCurrencies
+  DefaultCurrencies,
+  WalletState
 } from '../../../constants/types'
 
 // Utils
@@ -14,6 +16,7 @@ import { formatDateAsRelative } from '../../../utils/datetime-utils'
 import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
 import Amount from '../../../utils/amount'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
+import { getNetworkFromTXDataUnion } from '../../../utils/network-utils'
 
 // Hooks
 import { useExplorer, useTransactionParser } from '../../../common/hooks'
@@ -81,7 +84,15 @@ const PortfolioTransactionItem = (props: Props) => {
   } = props
   const [showTransactionPopup, setShowTransactionPopup] = React.useState<boolean>(false)
 
-  const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens)
+  const {
+    defaultNetworks
+  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+
+  const transactionsNetwork = React.useMemo(() => {
+    return getNetworkFromTXDataUnion(transaction.txDataUnion, defaultNetworks, selectedNetwork)
+  }, [defaultNetworks, transaction, selectedNetwork])
+
+  const parseTransaction = useTransactionParser(transactionsNetwork, accounts, transactionSpotPrices, visibleTokens)
   const transactionDetails = React.useMemo(
     () => parseTransaction(transaction),
     [transaction]
@@ -105,7 +116,7 @@ const PortfolioTransactionItem = (props: Props) => {
     }
   }
 
-  const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+  const onClickViewOnBlockExplorer = useExplorer(transactionsNetwork)
 
   const onClickCopyTransactionHash = (transactionHash: string) => {
     copyToClipboard(transactionHash)
@@ -317,30 +328,33 @@ const PortfolioTransactionItem = (props: Props) => {
           </DetailTextDark>
           <DetailTextLight>{transactionDetails.formattedNativeCurrencyTotal}</DetailTextLight>
         </BalanceColumn>
-        <TransactionFeesTooltip
-          text={
-            <>
-              <TransactionFeeTooltipTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionFeeTooltipTitle>
-              <TransactionFeeTooltipBody>
-                {
-                  new Amount(transactionDetails.gasFee)
-                    .divideByDecimals(selectedNetwork.decimals)
-                    .formatAsAsset(6, selectedNetwork.symbol)
-                }
-              </TransactionFeeTooltipBody>
-              <TransactionFeeTooltipBody>
-                {
-                  new Amount(transactionDetails.gasFeeFiat)
-                    .formatAsFiat(defaultCurrencies.fiat)
-                }
-              </TransactionFeeTooltipBody>
-            </>
-          }
-        >
-          <CoinsButton>
-            <CoinsIcon />
-          </CoinsButton>
-        </TransactionFeesTooltip>
+        {/* Will remove this conditional for solana once https://github.com/brave/brave-browser/issues/22040 is implemented. */}
+        {transaction.txType !== BraveWallet.TransactionType.SolanaSystemTransfer &&
+          <TransactionFeesTooltip
+            text={
+              <>
+                <TransactionFeeTooltipTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionFeeTooltipTitle>
+                <TransactionFeeTooltipBody>
+                  {
+                    new Amount(transactionDetails.gasFee)
+                      .divideByDecimals(transactionsNetwork.decimals)
+                      .formatAsAsset(6, transactionsNetwork.symbol)
+                  }
+                </TransactionFeeTooltipBody>
+                <TransactionFeeTooltipBody>
+                  {
+                    new Amount(transactionDetails.gasFeeFiat)
+                      .formatAsFiat(defaultCurrencies.fiat)
+                  }
+                </TransactionFeeTooltipBody>
+              </>
+            }
+          >
+            <CoinsButton>
+              <CoinsIcon />
+            </CoinsButton>
+          </TransactionFeesTooltip>
+        }
 
         {(transactionDetails.status !== BraveWallet.TransactionStatus.Rejected && transactionDetails.status !== BraveWallet.TransactionStatus.Unapproved) ? (
           <MoreButton onClick={onShowTransactionPopup}>
@@ -367,6 +381,7 @@ const PortfolioTransactionItem = (props: Props) => {
             }
 
             {[BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Approved].includes(transactionDetails.status) &&
+              transaction.txType !== BraveWallet.TransactionType.SolanaSystemTransfer &&
               <TransactionPopupItem
                 onClick={onClickSpeedupTransaction}
                 text={getLocale('braveWalletTransactionSpeedup')}
@@ -374,6 +389,7 @@ const PortfolioTransactionItem = (props: Props) => {
             }
 
             {[BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Approved].includes(transactionDetails.status) &&
+              transaction.txType !== BraveWallet.TransactionType.SolanaSystemTransfer &&
               <TransactionPopupItem
                 onClick={onClickCancelTransaction}
                 text={getLocale('braveWalletTransactionCancel')}
@@ -381,6 +397,7 @@ const PortfolioTransactionItem = (props: Props) => {
             }
 
             {[BraveWallet.TransactionStatus.Error].includes(transactionDetails.status) &&
+              transaction.txType !== BraveWallet.TransactionType.SolanaSystemTransfer &&
               <TransactionPopupItem
                 onClick={onClickRetryTransaction}
                 text={getLocale('braveWalletTransactionRetry')}

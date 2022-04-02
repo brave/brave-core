@@ -616,7 +616,6 @@ function Container (props: Props) {
             transactionInfo={selectedPendingTransaction}
             transactionSpotPrices={transactionSpotPrices}
             visibleTokens={userVisibleTokensInfo}
-            refreshGasEstimates={props.walletActions.refreshGasEstimates}
             getERC20Allowance={getERC20Allowance}
             updateUnapprovedTransactionGasFields={props.walletActions.updateUnapprovedTransactionGasFields}
             updateUnapprovedTransactionSpendAllowance={props.walletActions.updateUnapprovedTransactionSpendAllowance}

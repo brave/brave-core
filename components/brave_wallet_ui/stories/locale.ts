@@ -322,8 +322,10 @@ provideStrings({
   // Confirm Transaction Panel
   braveWalletConfirmTransactionTotal: 'Total',
   braveWalletConfirmTransactionGasFee: 'Gas fee',
+  braveWalletConfirmTransactionTransactionFee: 'Transaction fee',
   braveWalletConfirmTransactionBid: 'Bid',
   braveWalletConfirmTransactionAmountGas: 'Amount + gas',
+  braveWalletConfirmTransactionAmountFee: 'Amount + fee',
   braveWalletConfirmTransactionNoData: 'No data.',
   braveWalletConfirmTransactionNext: 'next',
   braveWalletConfirmTransactionFrist: 'first',

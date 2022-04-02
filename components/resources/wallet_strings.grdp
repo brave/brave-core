@@ -272,9 +272,11 @@
   <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_DESCRIPTION" desc="Change network panel description">This will switch the network to a previously added network.</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON" desc="Change network panel button">Switch network</message> 
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_TOTAL" desc="Confirm transaction panel total label">Total</message>
-  <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_GAS_FEE" desc="Confirm transaction panel label">Gas fee</message>
+  <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_GAS_FEE" desc="Confirm transaction panel gas feelabel">Gas fee</message>
+  <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_TRANSACTION_FEE" desc="Confirm transaction panel transaction fee label">Transaction fee</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_BID" desc="Confirm transaction panel bid label">Bid</message>
-  <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_AMOUNT_GAS" desc="Confirm transaction panel total label">Amount + gas</message>
+  <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_AMOUNT_GAS" desc="Confirm transaction panel total gas label">Amount + gas</message>
+  <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_AMOUNT_FEE" desc="Confirm transaction panel total fee label">Amount + fee</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_NO_DATA" desc="Confirm transaction panel no data placeholder">No data.</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_NEXT" desc="Confirm transaction panel next transaction button">next</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_FRIST" desc="Confirm transaction panel first transaction button">first</message>

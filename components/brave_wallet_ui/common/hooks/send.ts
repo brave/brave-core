@@ -15,7 +15,8 @@ import {
   SendFilTransactionParams,
   ERC721TransferFromParams,
   GetChecksumEthAddressReturnInfo,
-  AmountValidationErrorType
+  AmountValidationErrorType,
+  SendSolTransactionParams
 } from '../../constants/types'
 import { getLocale } from '../../../common/locale'
 
@@ -30,7 +31,7 @@ export default function useSend (
   sendAssetOptions: BraveWallet.BlockchainToken[],
   selectedAccount: WalletAccountType,
   sendERC20Transfer: SimpleActionCreator<ER20TransferParams>,
-  sendTransaction: SimpleActionCreator<SendEthTransactionParams | SendFilTransactionParams>,
+  sendTransaction: SimpleActionCreator<SendEthTransactionParams | SendFilTransactionParams | SendSolTransactionParams>,
   sendERC721TransferFrom: SimpleActionCreator<ERC721TransferFromParams>,
   fullTokenList: BraveWallet.BlockchainToken[]
 ) {
@@ -189,11 +190,26 @@ export default function useSend (
     setAddressError('')
   }, [])
 
+  const processSolanaAddress = React.useCallback((toAddressOrUrl: string) => {
+    setToAddress(toAddressOrUrl)
+
+    if (toAddressOrUrl.toLowerCase() === selectedAccount?.address?.toLowerCase()) {
+      setAddressWarning('')
+      setAddressError(getLocale('braveWalletSameAddressError'))
+      return
+    }
+
+    setAddressWarning('')
+    setAddressError('')
+  }, [selectedAccount])
+
   React.useEffect(() => {
     if (selectedAccount?.coin === BraveWallet.CoinType.ETH) {
       processEthereumAddress(toAddressOrUrl)
     } else if (selectedAccount?.coin === BraveWallet.CoinType.FIL) {
       processFilecoinAddress(toAddressOrUrl)
+    } else if (selectedAccount?.coin === BraveWallet.CoinType.SOL) {
+      processSolanaAddress(toAddressOrUrl)
     }
   }, [toAddressOrUrl, selectedAccount])
 
@@ -240,6 +256,15 @@ export default function useSend (
           .multiplyByDecimals(selectedSendAsset.decimals).toString(),
         coin: selectedAccount.coin
       } as SendFilTransactionParams)
+    } else if (selectedAccount.coin === BraveWallet.CoinType.SOL) {
+      sendTransaction({
+        from: selectedAccount.address,
+        to: toAddress,
+        value: new Amount(sendAmount)
+          .multiplyByDecimals(selectedSendAsset.decimals)
+          .toHex(),
+        coin: selectedAccount.coin
+      } as SendSolTransactionParams)
     }
 
     setToAddressOrUrl('')

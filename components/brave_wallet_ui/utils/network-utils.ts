@@ -72,3 +72,8 @@ export const getCoinFromTxDataUnion = (txDataUnion: BraveWallet.TxDataUnion): Br
   if (txDataUnion.solanaTxData) { return BraveWallet.CoinType.SOL }
   return BraveWallet.CoinType.ETH
 }
+
+export const getNetworkFromTXDataUnion = (txDataUnion: BraveWallet.TxDataUnion, networks: BraveWallet.NetworkInfo[], selectedNetwork: BraveWallet.NetworkInfo) => {
+  const coin = getCoinFromTxDataUnion(txDataUnion)
+  return networks.find((network) => network.coin === coin) ?? selectedNetwork
+}

@@ -1,17 +1,20 @@
 import * as React from 'react'
 import * as EthereumBlockies from 'ethereum-blockies'
+import { useSelector } from 'react-redux'
 
 import { getLocale } from '../../../../common/locale'
 import {
   BraveWallet,
   WalletAccountType,
-  DefaultCurrencies
+  DefaultCurrencies,
+  WalletState
 } from '../../../constants/types'
 
 // Utils
 import { toProperCase } from '../../../utils/string-utils'
 import { getTransactionStatusString } from '../../../utils/tx-utils'
 import { formatDateAsRelative } from '../../../utils/datetime-utils'
+import { getNetworkFromTXDataUnion } from '../../../utils/network-utils'
 import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
 import Amount from '../../../utils/amount'
 
@@ -63,7 +66,15 @@ const TransactionsListItem = (props: Props) => {
     onSelectTransaction
   } = props
 
-  const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens)
+  const {
+    defaultNetworks
+  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+
+  const transactionsNetwork = React.useMemo(() => {
+    return getNetworkFromTXDataUnion(transaction.txDataUnion, defaultNetworks, selectedNetwork)
+  }, [defaultNetworks, transaction, selectedNetwork])
+
+  const parseTransaction = useTransactionParser(transactionsNetwork, accounts, transactionSpotPrices, visibleTokens)
   const transactionDetails = React.useMemo(
     () => parseTransaction(transaction),
     [transaction]
@@ -98,13 +109,9 @@ const TransactionsListItem = (props: Props) => {
       : ''
     return (
       <DetailTextDark>
-        {`${
-            toProperCase(getLocale('braveWalletTransactionSent'))} ${
-            transactionDetails.fiatValue.formatAsFiat(defaultCurrencies.fiat) || '...'
-          } (${
-            transactionDetails.formattedNativeCurrencyTotal || '...'
-          }${
-            erc721ID
+        {`${toProperCase(getLocale('braveWalletTransactionSent'))} ${transactionDetails.fiatValue.formatAsFiat(defaultCurrencies.fiat) || '...'
+          } (${transactionDetails.formattedNativeCurrencyTotal || '...'
+          }${erc721ID
           })`}
       </DetailTextDark>
     )
