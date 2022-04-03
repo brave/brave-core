@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "brave/components/brave_wallet/browser/fil_block_tracker.h"
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -25,7 +26,7 @@ class FilTxStateManager;
 class FilTransaction;
 class FilPendingTxTracker;
 
-class FilTxManager : public TxManager {
+class FilTxManager : public TxManager, public FilBlockTracker::Observer {
  public:
   FilTxManager(TxService* tx_service,
                JsonRpcService* json_rpc_service,
@@ -85,9 +86,16 @@ class FilTxManager : public TxManager {
       int64_t gas_limit,
       mojom::FilecoinProviderError error,
       const std::string& error_message);
+  void OnGetTransactionStatus(const std::string& tx_meta_id,
+                              int exit_code,
+                              mojom::FilecoinProviderError error,
+                              const std::string& error_message);
+  // FilBlockTracker::Observer
+  void OnLatestBlockhashUpdated() override;
 
   void UpdatePendingTransactions() override;
   FilTxStateManager* GetFilTxStateManager();
+  FilBlockTracker* GetFilBlockTracker();
 
   std::unique_ptr<FilNonceTracker> nonce_tracker_;
   base::WeakPtrFactory<FilTxManager> weak_factory_{this};
