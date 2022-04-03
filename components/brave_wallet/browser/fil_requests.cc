@@ -13,7 +13,6 @@
 namespace brave_wallet {
 
 namespace fil {
-
 std::string getBalance(const std::string& address) {
   return GetJsonRpc1Param("Filecoin.WalletBalance", address);
 }
@@ -93,6 +92,10 @@ absl::optional<std::string> getSendTransaction(const std::string& signed_tx) {
   dictionary.SetIntKey("id", 1);
 
   return GetJSON(dictionary);
+}
+
+std::string getChainHead() {
+  return GetJsonRpcNoParams("Filecoin.ChainHead");
 }
 
 }  // namespace fil

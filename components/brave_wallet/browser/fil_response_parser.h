@@ -27,6 +27,8 @@ bool ParseFilEstimateGas(const std::string& json,
 // Returns parsed transaction CID.
 bool ParseSendFilecoinTransaction(const std::string& json,
                                   std::string* tx_hash);
+// Returns parsed chain head CID.
+bool ParseFilGetChainHead(const std::string& json, std::string* cid);
 
 }  // namespace brave_wallet
 

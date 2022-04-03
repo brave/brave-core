@@ -28,6 +28,8 @@ std::string getEstimateGas(const std::string& from_address,
                             const std::string& max_fee,
                             const std::string& value);
 absl::optional<std::string> getSendTransaction(const std::string& signed_tx);
+// Returns Filecoin.ChainHead request.
+std::string getChainHead();
 
 }  // namespace fil
 
