@@ -740,7 +740,7 @@ void JsonRpcService::OnGetFilChainHead(
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
     std::move(callback).Run(
-        0, mojom::FilecoinProviderError::kInternalError,
+        std::string(), mojom::FilecoinProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
