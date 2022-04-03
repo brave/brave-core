@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FIL_REQUESTS_H_
 
 #include <string>
+#include "base/time/time.h"
 #include "base/values.h"
 
 namespace brave_wallet {
@@ -30,7 +31,8 @@ std::string getEstimateGas(const std::string& from_address,
 absl::optional<std::string> getSendTransaction(const std::string& signed_tx);
 // Returns Filecoin.ChainHead request.
 std::string getChainHead();
-
+// Returns Filecoin.StateSearchMsgLimited request.
+std::string getStateSearchMsgLimited(const std::string& cid, uint64_t period);
 }  // namespace fil
 
 }  // namespace brave_wallet

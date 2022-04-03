@@ -22,6 +22,10 @@ std::string GetJsonRpcNoParams(const std::string& method);
 std::string GetJsonRpc1Param(const std::string& method, const std::string& val);
 
 std::string GetJsonRpc2Params(const std::string& method,
+                              base::Value&& val1,
+                              base::Value&& val2);
+
+std::string GetJsonRpc2Params(const std::string& method,
                               const std::string& val1,
                               const std::string& val2);
 

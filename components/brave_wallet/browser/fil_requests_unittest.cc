@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <cstdint>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -41,6 +42,12 @@ TEST(FilRequestUnitTest, getChainHead) {
   EXPECT_EQ(fil::getChainHead(),
             "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"Filecoin.ChainHead\","
             "\"params\":[]}");
+}
+TEST(FilRequestUnitTest, getStateSearchMsgLimited) {
+  EXPECT_EQ(fil::getStateSearchMsgLimited("cid", UINT64_MAX),
+            "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"Filecoin."
+            "StateSearchMsgLimited\",\"params\":[{\"/\":\"cid\"}," +
+                std::to_string(UINT64_MAX) + "]}");
 }
 
 }  // namespace brave_wallet
