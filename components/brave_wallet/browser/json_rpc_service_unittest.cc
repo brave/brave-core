@@ -593,7 +593,27 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
     EXPECT_TRUE(callback_called);
   }
-
+  void GetFilStateSearchMsgLimited(const std::string& cid,
+                                   uint64_t period,
+                                   int expected_exit_code,
+                                   mojom::FilecoinProviderError expected_error,
+                                   const std::string& expected_error_message) {
+    bool callback_called = false;
+    base::RunLoop run_loop;
+    json_rpc_service_->GetFilStateSearchMsgLimited(
+        cid, period,
+        base::BindLambdaForTesting([&](int exit_code,
+                                       mojom::FilecoinProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(exit_code, expected_exit_code);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          callback_called = true;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    EXPECT_TRUE(callback_called);
+  }
   void TestGetSPLTokenAccountBalance(
       const std::string& expected_amount,
       uint8_t expected_decimals,
@@ -2990,6 +3010,63 @@ TEST_F(JsonRpcServiceUnitTest, GetFilChainHead) {
     })");
   GetFilChainHead("", mojom::FilecoinProviderError::kInvalidParams,
                   "wrong param count (method 'Filecoin.ChainHead'): 1 != 0");
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetFilStateSearchMsgLimited) {
+  SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL);
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                 "Filecoin.StateSearchMsgLimited", "", R"(
+    {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result":
+        {
+            "Height": 22389,
+            "Message":
+            {
+                "/": "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy"
+            },
+            "Receipt":
+            {
+                "ExitCode": 0,
+                "GasUsed": 1749648,
+                "Return": null
+            },
+            "ReturnDec": null,
+            "TipSet":
+            [
+                {
+                    "/": "bafy2bzacednkg6htmwwlkewl5wr2nezsovfgx5xb56l2uthz32uraqlmtsuzc"
+                }
+            ]
+        }
+    }
+  )");
+
+  GetFilStateSearchMsgLimited(
+      "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy", 30, 0,
+      mojom::FilecoinProviderError::kSuccess, "");
+
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                 "Filecoin.StateSearchMsgLimited", "", R"(
+    {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "error":{
+          "code":-32602,
+          "message":"wrong param count"
+        }
+  })");
+  GetFilStateSearchMsgLimited(
+      "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy", 30, -1,
+      mojom::FilecoinProviderError::kInvalidParams, "wrong param count");
+
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                 "Filecoin.StateSearchMsgLimited", "", R"({,})");
+  GetFilStateSearchMsgLimited(
+      "bafy2bzacebundyopm3trenj47hxkwiqn2cbvvftz3fss4dxuttu2u6xbbtkqy", 30, -1,
+      mojom::FilecoinProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 }
 
 }  // namespace brave_wallet

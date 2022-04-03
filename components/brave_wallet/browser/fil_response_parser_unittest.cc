@@ -15,6 +15,14 @@
 
 namespace brave_wallet {
 
+namespace {
+std::string GetResponse(const std::string& value) {
+  std::string response = "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{value}}";
+  base::ReplaceSubstringsAfterOffset(&response, 0, "{value}", value);
+  return response;
+}
+}  // namespace
+
 TEST(FilResponseParserUnitTest, ParseFilGetBalance) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
@@ -211,6 +219,50 @@ TEST(FilResponseParserUnitTest, ParseFilGetChainHead) {
       brave_wallet::ParseFilGetChainHead(R"({"Cids": [{"/":[]}]})", &cid));
   EXPECT_FALSE(
       brave_wallet::ParseFilGetChainHead(R"({"Cids": [{"/":{}}]})", &cid));
+}
+
+TEST(FilResponseParserUnitTest, ParseFilStateSearchMsgLimited) {
+  int64_t exit_code = -1;
+  EXPECT_TRUE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse("{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":" +
+                  std::to_string(INT64_MAX) + "}}"),
+      "cid", &exit_code));
+  EXPECT_EQ(exit_code, INT64_MAX);
+  EXPECT_TRUE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse("{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":" +
+                  std::to_string(INT64_MIN) + "}}"),
+      "cid", &exit_code));
+  EXPECT_EQ(exit_code, INT64_MIN);
+
+  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse("{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":" +
+                  std::to_string(INT64_MIN) + "}}"),
+      "anothercid", &exit_code));
+
+  EXPECT_FALSE(
+      brave_wallet::ParseFilStateSearchMsgLimited("", "cid", &exit_code));
+  EXPECT_FALSE(
+      brave_wallet::ParseFilStateSearchMsgLimited("{}", "cid", &exit_code));
+  EXPECT_FALSE(
+      brave_wallet::ParseFilStateSearchMsgLimited("{,}", "cid", &exit_code));
+  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse(R"({\"Message\": {\"/\":\"cid\"},"Receipt": {}})"), "cid",
+      &exit_code));
+  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse(R"({\"Message\": {\"/\":\"cid\"},"Receipt": []]})"), "cid",
+      &exit_code));
+  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse(
+          R"({\"Message\": {\"/\":\"cid\"},"Receipt": {"ExitCode": "a"}})"),
+      "cid", &exit_code));
+  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse(
+          R"({\"Message\": {\"/\":\"cid\"},"Receipt": {"ExitCode": []}})"),
+      "cid", &exit_code));
+  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse(
+          R"({\"Message\": {\"/\":\"cid\"},"Receipt": {"ExitCode": {}}})"),
+      "cid", &exit_code));
 }
 
 }  // namespace brave_wallet
