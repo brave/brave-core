@@ -70,6 +70,10 @@ std::string getEstimateGas(const std::string& from_address,
                          .c_str());
 }
 
+std::string getChainHead() {
+  return GetJsonRpcNoParams("Filecoin.ChainHead");
+}
+
 }  // namespace fil
 
 }  // namespace brave_wallet

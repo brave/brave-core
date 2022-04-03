@@ -55,4 +55,22 @@ bool ParseFilEstimateGas(const std::string& json,
   return true;
 }
 
+bool ParseFilGetChainHead(const std::string& json, std::string* cid) {
+  base::Value result;
+  if (!cid || !ParseResult(json, &result))
+    return false;
+  auto* cids_value = result.FindListKey("Cids");
+  if (!cids_value) {
+    return false;
+  }
+  const auto& list_value = cids_value->GetList();
+  if (!list_value.size())
+    return false;
+  auto* cid_value = list_value[0].FindStringKey("/");
+  if (!cid_value)
+    return false;
+  *cid = *cid_value;
+  return true;
+}
+
 }  // namespace brave_wallet

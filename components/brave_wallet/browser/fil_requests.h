@@ -27,7 +27,8 @@ std::string getEstimateGas(const std::string& from_address,
                            uint64_t nonce,
                            const std::string& max_fee,
                            const std::string& value);
-
+// Returns Filecoin.ChainHead request.
+std::string getChainHead();
 }  // namespace fil
 
 }  // namespace brave_wallet
