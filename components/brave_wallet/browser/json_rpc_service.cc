@@ -530,6 +530,32 @@ void JsonRpcService::GetBlockNumber(GetBlockNumberCallback callback) {
                   std::move(internal_callback));
 }
 
+void JsonRpcService::OnGetFilStateSearchMsgLimited(
+    GetFilStateSearchMsgLimitedCallback callback,
+    const std::string& cid,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  int64_t exit_code = -1;
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        exit_code, mojom::FilecoinProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+  if (!ParseFilStateSearchMsgLimited(body, cid, &exit_code)) {
+    mojom::FilecoinProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::FilecoinProviderError>(body, &error,
+                                                   &error_message);
+    std::move(callback).Run(exit_code, error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(exit_code, mojom::FilecoinProviderError::kSuccess,
+                          "");
+}
+
 void JsonRpcService::OnGetBlockNumber(
     GetBlockNumberCallback callback,
     const int status,
@@ -674,7 +700,24 @@ void JsonRpcService::OnFilGetBalance(
 
   std::move(callback).Run(balance, mojom::ProviderError::kSuccess, "");
 }
+void JsonRpcService::GetFilStateSearchMsgLimited(
+    const std::string& cid,
+    uint64_t period,
+    GetFilStateSearchMsgLimitedCallback callback) {
+  auto network_url = network_urls_[mojom::CoinType::FIL];
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        0, mojom::FilecoinProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetFilStateSearchMsgLimited,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback), cid);
 
+  RequestInternal(fil::getStateSearchMsgLimited(cid, period), true, network_url,
+                  std::move(internal_callback));
+}
 void JsonRpcService::GetFilChainHead(GetFilChainHeadCallback callback) {
   auto network_url = network_urls_[mojom::CoinType::FIL];
   if (!network_url.is_valid()) {

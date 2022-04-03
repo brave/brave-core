@@ -83,5 +83,11 @@ TEST(FilRequestUnitTest, getChainHead) {
             "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"Filecoin.ChainHead\","
             "\"params\":[]}");
 }
+TEST(FilRequestUnitTest, getStateSearchMsgLimited) {
+  EXPECT_EQ(fil::getStateSearchMsgLimited("cid", UINT64_MAX),
+            "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"Filecoin."
+            "StateSearchMsgLimited\",\"params\":[{\"/\":\"cid\"}," +
+                std::to_string(UINT64_MAX) + "]}");
+}
 
 }  // namespace brave_wallet

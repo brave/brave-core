@@ -93,6 +93,15 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               mojom::FilecoinProviderError error,
                               const std::string& error_message)>;
   void GetFilChainHead(GetFilChainHeadCallback callback);
+  using GetFilStateSearchMsgLimitedCallback =
+      base::OnceCallback<void(int code,
+                              mojom::FilecoinProviderError error,
+                              const std::string& error_message)>;
+  void GetFilStateSearchMsgLimited(
+      const std::string& cid,
+      uint64_t period,
+      GetFilStateSearchMsgLimitedCallback callback);
+
   using GetTxCountCallback =
       base::OnceCallback<void(uint256_t result,
                               mojom::ProviderError error,
@@ -324,6 +333,12 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                                    const std::string& error);
   bool HasRequestFromOrigin(const url::Origin& origin) const;
   void RemoveChainIdRequest(const std::string& chain_id);
+  void OnGetFilStateSearchMsgLimited(
+      GetFilStateSearchMsgLimitedCallback callback,
+      const std::string& cid,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
   void OnGetFilChainHead(
       GetFilChainHeadCallback callback,
       const int status,

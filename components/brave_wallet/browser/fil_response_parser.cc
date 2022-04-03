@@ -73,4 +73,26 @@ bool ParseFilGetChainHead(const std::string& json, std::string* cid) {
   return true;
 }
 
+// Returns parsed receipt exit code.
+bool ParseFilStateSearchMsgLimited(const std::string& raw_json,
+                                   const std::string& cid,
+                                   int64_t* exit_code) {
+  std::string converted_json(json::convert_int64_value_to_string(
+      "/result/Receipt/ExitCode", raw_json.c_str(), false));
+  if (converted_json.empty())
+    return false;
+  base::Value result;
+  if (!exit_code || !ParseResult(converted_json, &result)) {
+    return false;
+  }
+  auto* cid_value = result.FindStringPath("Message./");
+  if (!cid_value || cid != *cid_value)
+    return false;
+  auto* code_value = result.FindStringPath("Receipt.ExitCode");
+  if (!code_value) {
+    return false;
+  }
+  return base::StringToInt64(*code_value, exit_code);
+}
+
 }  // namespace brave_wallet

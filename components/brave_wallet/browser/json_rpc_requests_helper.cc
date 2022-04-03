@@ -46,9 +46,15 @@ std::string GetJsonRpc1Param(const std::string& method,
 std::string GetJsonRpc2Params(const std::string& method,
                               const std::string& val1,
                               const std::string& val2) {
+  return GetJsonRpc2Params(method, base::Value(val1), base::Value(val2));
+}
+
+std::string GetJsonRpc2Params(const std::string& method,
+                              base::Value&& val1,
+                              base::Value&& val2) {
   base::Value params(base::Value::Type::LIST);
-  params.Append(base::Value(val1));
-  params.Append(base::Value(val2));
+  params.Append(std::move(val1));
+  params.Append(std::move(val2));
   base::Value dictionary = GetJsonRpcDictionary(method, &params);
   return GetJSON(dictionary);
 }
