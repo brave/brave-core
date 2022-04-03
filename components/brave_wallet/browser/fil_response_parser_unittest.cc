@@ -180,4 +180,37 @@ TEST(FilResponseParserUnitTest, ParseFilEstimateGas) {
                                                  &gas_fee_cap, &gas_limit));
 }
 
+TEST(FilResponseParserUnitTest, ParseFilGetChainHead) {
+  std::string cid;
+  EXPECT_TRUE(brave_wallet::ParseFilGetChainHead(GetResponse(R"({
+        "Blocks":[],
+        "Cids": [{
+              "/": "bafy2bzaceauxm7waysuftonc4vod6wk4trdjx2ibw233dos6jcvkf5nrhflju"
+        }],
+        "Height": 22452
+      })"),
+                                                 &cid));
+  EXPECT_EQ(cid,
+            "bafy2bzaceauxm7waysuftonc4vod6wk4trdjx2ibw233dos6jcvkf5nrhflju");
+  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(GetResponse(R"()"), &cid));
+  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(GetResponse(R"({})"), &cid));
+  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(GetResponse(R"({,})"), &cid));
+  EXPECT_FALSE(
+      brave_wallet::ParseFilGetChainHead(GetResponse(R"({"Cids": 11})"), &cid));
+  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(
+      GetResponse(R"({"Cids": "abc"})"), &cid));
+  EXPECT_FALSE(
+      brave_wallet::ParseFilGetChainHead(GetResponse(R"({"Cids": {}})"), &cid));
+  EXPECT_FALSE(
+      brave_wallet::ParseFilGetChainHead(GetResponse(R"({"Cids": []})"), &cid));
+  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(
+      GetResponse(R"({"Cids": [{}]})"), &cid));
+  EXPECT_FALSE(
+      brave_wallet::ParseFilGetChainHead(R"({"Cids": [{"/":1}]})", &cid));
+  EXPECT_FALSE(
+      brave_wallet::ParseFilGetChainHead(R"({"Cids": [{"/":[]}]})", &cid));
+  EXPECT_FALSE(
+      brave_wallet::ParseFilGetChainHead(R"({"Cids": [{"/":{}}]})", &cid));
+}
+
 }  // namespace brave_wallet

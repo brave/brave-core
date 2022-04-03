@@ -88,7 +88,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                   mojom::CoinType coin,
                   const std::string& chaind_id,
                   GetBalanceCallback callback) override;
-
+  using GetFilChainHeadCallback =
+      base::OnceCallback<void(const std::string& cid,
+                              mojom::FilecoinProviderError error,
+                              const std::string& error_message)>;
+  void GetFilChainHead(GetFilChainHeadCallback callback);
   using GetTxCountCallback =
       base::OnceCallback<void(uint256_t result,
                               mojom::ProviderError error,
@@ -97,7 +101,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       base::OnceCallback<void(uint256_t result,
                               mojom::FilecoinProviderError error,
                               const std::string& error_message)>;
-
   void GetEthTransactionCount(const std::string& address,
                               GetTxCountCallback callback);
   void GetFilTransactionCount(const std::string& address,
@@ -321,6 +324,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                                    const std::string& error);
   bool HasRequestFromOrigin(const url::Origin& origin) const;
   void RemoveChainIdRequest(const std::string& chain_id);
+  void OnGetFilChainHead(
+      GetFilChainHeadCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
   void OnGetBlockNumber(
       GetBlockNumberCallback callback,
       const int status,

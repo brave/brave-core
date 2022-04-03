@@ -78,4 +78,10 @@ TEST(FilRequestUnitTest, estimateGas) {
               })");
 }
 
+TEST(FilRequestUnitTest, getChainHead) {
+  EXPECT_EQ(fil::getChainHead(),
+            "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"Filecoin.ChainHead\","
+            "\"params\":[]}");
+}
+
 }  // namespace brave_wallet

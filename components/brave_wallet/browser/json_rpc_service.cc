@@ -675,6 +675,45 @@ void JsonRpcService::OnFilGetBalance(
   std::move(callback).Run(balance, mojom::ProviderError::kSuccess, "");
 }
 
+void JsonRpcService::GetFilChainHead(GetFilChainHeadCallback callback) {
+  auto network_url = network_urls_[mojom::CoinType::FIL];
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        0, mojom::FilecoinProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetFilChainHead,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  RequestInternal(fil::getChainHead(), true, network_url,
+                  std::move(internal_callback));
+}
+void JsonRpcService::OnGetFilChainHead(
+    GetFilChainHeadCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        0, mojom::FilecoinProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+  std::string cid;
+  if (!ParseFilGetChainHead(body, &cid)) {
+    mojom::FilecoinProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::FilecoinProviderError>(body, &error,
+                                                   &error_message);
+    std::move(callback).Run(cid, error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(cid, mojom::FilecoinProviderError::kSuccess, "");
+}
+
 void JsonRpcService::GetFilTransactionCount(const std::string& address,
                                             GetFilTxCountCallback callback) {
   auto network_url = network_urls_[mojom::CoinType::FIL];

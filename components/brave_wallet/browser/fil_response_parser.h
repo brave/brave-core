@@ -23,6 +23,8 @@ bool ParseFilEstimateGas(const std::string& json,
                          std::string* gas_premium,
                          std::string* gas_fee_cap,
                          int64_t* gas_limit);
+// Returns parsed chain head CID.
+bool ParseFilGetChainHead(const std::string& json, std::string* cid);
 
 }  // namespace brave_wallet
 
