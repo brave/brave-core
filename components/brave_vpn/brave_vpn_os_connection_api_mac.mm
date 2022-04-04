@@ -172,14 +172,20 @@ void BraveVPNOSConnectionAPIMac::CreateVPNConnection(
     const BraveVPNConnectionInfo& info) {
   info_ = info;
 
-  if (StorePassword(base::SysUTF8ToNSString(info_.password())) != errSecSuccess)
+  if (StorePassword(base::SysUTF8ToNSString(info_.password())) !=
+      errSecSuccess) {
+    for (Observer& obs : observers_)
+      obs.OnCreateFailed();
     return;
+  }
 
   NEVPNManager* vpn_manager = [NEVPNManager sharedManager];
   [vpn_manager loadFromPreferencesWithCompletionHandler:^(NSError* error) {
     if (error) {
       LOG(ERROR) << "Create - loadFromPrefs error: "
                  << base::SysNSStringToUTF8([error localizedDescription]);
+      for (Observer& obs : observers_)
+        obs.OnCreateFailed();
       return;
     }
 
@@ -237,6 +243,8 @@ void BraveVPNOSConnectionAPIMac::Connect(const std::string& name) {
     if (error) {
       LOG(ERROR) << "Connect - loadFromPrefs error: "
                  << base::SysNSStringToUTF8([error localizedDescription]);
+      for (Observer& obs : observers_)
+        obs.OnConnectFailed();
       return;
     }
 
@@ -244,6 +252,8 @@ void BraveVPNOSConnectionAPIMac::Connect(const std::string& name) {
     // Early return if already connected.
     if (current_status == NEVPNStatusConnected) {
       VLOG(2) << "Connect - Already connected";
+      for (Observer& obs : observers_)
+        obs.OnConnected();
       return;
     }
 
@@ -252,6 +262,8 @@ void BraveVPNOSConnectionAPIMac::Connect(const std::string& name) {
     if (start_error != nil) {
       LOG(ERROR) << "Connect - startVPNTunnel error: "
                  << base::SysNSStringToUTF8([start_error localizedDescription]);
+      for (Observer& obs : observers_)
+        obs.OnConnectFailed();
       return;
     }
   }];
