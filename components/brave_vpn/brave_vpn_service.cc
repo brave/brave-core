@@ -64,6 +64,8 @@ std::string GetStringFor(ConnectionState state) {
       return "Disconnecting";
     case ConnectionState::CONNECT_FAILED:
       return "Connect failed";
+    case ConnectionState::CONNECT_NOT_ALLOWED:
+      return "Connect not allowed";
     default:
       NOTREACHED();
   }
@@ -238,7 +240,12 @@ void BraveVpnService::OnCreated() {
 void BraveVpnService::OnCreateFailed() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__;
-  UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+
+  // Clear connecting cancel request.
+  if (cancel_connecting_)
+    cancel_connecting_ = false;
+
+  UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_NOT_ALLOWED);
 }
 
 void BraveVpnService::OnRemoved() {
