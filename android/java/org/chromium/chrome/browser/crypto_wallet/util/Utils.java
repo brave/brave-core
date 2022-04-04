@@ -976,14 +976,15 @@ public class Utils {
         }
     }
 
-    public static BlockchainToken createEthereumBlockchainToken() {
+    public static BlockchainToken createEthereumBlockchainToken(String chainId) {
         BlockchainToken eth = new BlockchainToken();
         eth.name = "Ethereum";
         eth.symbol = "ETH";
         eth.contractAddress = "";
         eth.logo = "eth.png";
         eth.decimals = 18;
-        eth.chainId = "";
+        eth.chainId = chainId;
+        eth.coin = CoinType.ETH;
         return eth;
     }
 

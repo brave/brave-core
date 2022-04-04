@@ -453,7 +453,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         if (mActivityType == ActivityType.BUY) return;
         if (mBlockchainRegistry != null && mCustomAccountAdapter != null
                 && mInitialLayoutInflationComplete) {
-            final BlockchainToken eth = Utils.createEthereumBlockchainToken();
+            final BlockchainToken eth =
+                    Utils.createEthereumBlockchainToken(BraveWalletConstants.MAINNET_CHAIN_ID);
             String swapToAsset = "BAT";
 
             // Swap from
@@ -462,8 +463,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     || swapFromAssetSymbol.equals(eth.symbol)) { // default swap from ETH
                 updateBuySendSwapAsset(eth.symbol, eth, true);
             } else {
-                mBlockchainRegistry.getTokenBySymbol(
-                        BraveWalletConstants.MAINNET_CHAIN_ID, swapFromAssetSymbol, token -> {
+                mBlockchainRegistry.getTokenBySymbol(BraveWalletConstants.MAINNET_CHAIN_ID,
+                        CoinType.ETH, swapFromAssetSymbol, token -> {
                             if (token != null) {
                                 updateBuySendSwapAsset(token.symbol, token, true);
                             }
@@ -475,8 +476,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 if (swapToAsset.equals(swapFromAssetSymbol)) { // swap from BAT
                     updateBuySendSwapAsset(eth.symbol, eth, false);
                 } else {
-                    mBlockchainRegistry.getTokenBySymbol(
-                            BraveWalletConstants.MAINNET_CHAIN_ID, swapToAsset, token -> {
+                    mBlockchainRegistry.getTokenBySymbol(BraveWalletConstants.MAINNET_CHAIN_ID,
+                            CoinType.ETH, swapToAsset, token -> {
                                 if (token != null) {
                                     updateBuySendSwapAsset(token.symbol, token, false);
                                 }
