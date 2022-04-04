@@ -182,6 +182,15 @@ source_set("ui") {
       "views/web_discovery_dialog_view.h",
     ]
 
+    # Use different FirstRun dialog UI on Win.
+    # Upstream only includes it on mac/Linux.
+    if (is_win) {
+      sources += [
+        "views/first_run_dialog_win.cc",
+        "views/first_run_dialog_win.h",
+      ]
+    }
+
     if (use_aura) {
       sources += [
         "views/renderer_context_menu/brave_render_view_context_menu_views.cc",
