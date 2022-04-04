@@ -683,18 +683,6 @@ void BraveWalletService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
-void BraveWalletService::ShowPanel() {
-  for (const auto& observer : observers_) {
-    observer->OnShowPanel();
-  }
-}
-
-void BraveWalletService::ShowWalletOnboarding() {
-  for (const auto& observer : observers_) {
-    observer->OnShowWalletOnboarding();
-  }
-}
-
 void BraveWalletService::OnActiveOriginChanged(
     const std::string& origin,
     const std::string& etld_plus_one) {
