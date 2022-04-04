@@ -538,47 +538,6 @@ void BraveWalletProviderImpl::RecoverAddress(const std::string& message,
                           "", false);
 }
 
-void BraveWalletProviderImpl::GetEncryptionPublicKey(const std::string& address,
-                                                     RequestCallback callback,
-                                                     base::Value id) {
-  GetAllowedAccounts(
-      false,
-      base::BindOnce(&BraveWalletProviderImpl::ContinueGetEncryptionPublicKey,
-                     weak_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(id), address));
-}
-
-void BraveWalletProviderImpl::ContinueGetEncryptionPublicKey(
-    RequestCallback callback,
-    base::Value id,
-    const std::string& address,
-    const std::vector<std::string>& allowed_accounts,
-    mojom::ProviderError error,
-    const std::string& error_message) {
-  if (error != mojom::ProviderError::kSuccess) {
-    std::unique_ptr<base::Value> formed_response;
-    formed_response = GetProviderErrorDictionary(error, error_message);
-    std::move(callback).Run(std::move(id), std::move(*formed_response), false,
-                            "", false);
-    return;
-  }
-
-  if (!CheckAccountAllowed(address, allowed_accounts)) {
-    std::unique_ptr<base::Value> formed_response;
-    formed_response = GetProviderErrorDictionary(
-        mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    std::move(callback).Run(std::move(id), std::move(*formed_response), false,
-                            "", false);
-    return;
-  }
-
-  // Only show bubble when there is no immediate error
-  brave_wallet_service_->AddGetPublicKeyRequest(
-      address, delegate_->GetOrigin(), std::move(callback), std::move(id));
-  delegate_->ShowPanel();
-}
-
 void BraveWalletProviderImpl::SignTypedMessage(
     const std::string& address,
     const std::string& message,
@@ -939,15 +898,6 @@ void BraveWalletProviderImpl::CommonRequestOrSendAsync(
 
     SignTypedMessage(address, message, domain_hash_out, primary_hash_out,
                      std::move(domain), std::move(callback), std::move(id));
-  } else if (method == kEthGetEncryptionPublicKey) {
-    std::string address;
-    if (!ParseEthGetEncryptionPublicKeyParams(normalized_json_request,
-                                              &address)) {
-      SendErrorOnRequest(error, error_message, std::move(callback),
-                         std::move(id));
-      return;
-    }
-    GetEncryptionPublicKey(address, std::move(callback), std::move(id));
   } else if (method == kWalletWatchAsset || method == kMetamaskWatchAsset) {
     mojom::BlockchainTokenPtr token;
     if (!ParseWalletWatchAssetParams(normalized_json_request, &token,

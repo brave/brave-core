@@ -596,13 +596,6 @@ struct SwitchChainRequest {
   string chain_id;
 };
 
-struct GetEncryptionPublicKeyRequest {
-  url.mojom.Url origin;
-  string address;
-  // TODO(bbondy): This field is used in the front-end but will be removed soon
-  string? message;
-};
-
 // Deals with the ETH JSON RPC API, as well as things like the user's current
 // network.
 interface JsonRpcService {
@@ -903,11 +896,6 @@ interface BraveWalletService {
   // Obtain the pending add suggest token requests for current chain, will be
   // cleared when user switch networks.
   GetPendingAddSuggestTokenRequests() => (array<AddSuggestTokenRequest> requests);
-
-  // This is used for UI notifying native when the user approves or
-  // rejects getting the public key for an origin
-  NotifyGetPublicKeyRequestProcessed(bool approved, url.mojom.Url origin);
-  GetPendingGetEncryptionPublicKeyRequests() => (array<GetEncryptionPublicKeyRequest> requests);
 
   // Resets the keyring and the related preferences
   Reset();
