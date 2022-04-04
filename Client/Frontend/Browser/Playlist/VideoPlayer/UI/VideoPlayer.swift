@@ -73,6 +73,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
   // State
   var isOverlayDisplayed = false
 
+  private var isMediaLive = false
   private var isSeeking = false
   private(set) var isFullscreen = false
   private var wasPlayingBeforeSeeking = false
@@ -92,6 +93,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
   private var dragStartedVolume: Float = 0.0
 
   private let volumeView = MPVolumeView()
+  private var seekGestures = [UIGestureRecognizer]()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -166,6 +168,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
       $0.numberOfTouchesRequired = 1
     }
 
+    seekGestures = [overlayDoubleTappedGesture, overlayDraggedGesture]
     addGestureRecognizer(overlayTappedGesture)
     addGestureRecognizer(overlayDoubleTappedGesture)
     addGestureRecognizer(overlayDraggedGesture)
@@ -509,9 +512,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
       delegate.pause(self)
     }
 
-    toggleOverlays(showOverlay: false, except: [infoView, controlsView], display: [controlsView])
     isOverlayDisplayed = true
-
     delegate.seek(self, relativeOffset: Float(value))
   }
 
@@ -602,6 +603,14 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     infoView.clearFavIcon()
     controlsView.trackBar.setTimeRange(currentTime: .zero, endTime: .zero)
   }
+  
+  func setMediaIsLive(_ isLiveMedia: Bool) {
+    self.isMediaLive = isLiveMedia
+    controlsView.trackBar.isUserInteractionEnabled = !isLiveMedia
+    controlsView.skipBackButton.isEnabled = !isLiveMedia
+    controlsView.skipForwardButton.isEnabled = !isLiveMedia
+    seekGestures.forEach({ $0.isEnabled = !isLiveMedia })
+  }
 
   func setControlsEnabled(_ enabled: Bool) {
     // Disable all controls except the side-panel and the exit button
@@ -611,7 +620,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     controlsView.isUserInteractionEnabled = enabled
 
     gestureRecognizers?.forEach({
-      $0.isEnabled = enabled
+      $0.isEnabled = enabled && !isMediaLive
     })
   }
 
