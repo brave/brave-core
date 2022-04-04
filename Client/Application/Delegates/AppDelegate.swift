@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var shutdownWebServer: Timer?
 
   /// Object used to handle server pings
-  let dau = DAU()
+  private(set) lazy var dau = DAU(braveCoreStats: braveCore.braveStats)
 
   /// Must be added at launch according to Apple's documentation.
   let iapObserver = IAPObserver()
