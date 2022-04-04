@@ -212,10 +212,13 @@ const Portfolio = (props: Props) => {
   }, [accounts, transactions, selectedAssetsNetwork])
 
   const selectedAssetTransactions = React.useMemo((): BraveWallet.TransactionInfo[] => {
-    const filteredTransactions = transactionsByNetwork.filter((tx) => {
-      return parseTransaction(tx).symbol === selectedAsset?.symbol ? tx : []
-    })
-    return sortTransactionByDate(filteredTransactions, 'descending')
+    if (selectedAsset) {
+      const filteredTransactions = transactionsByNetwork.filter((tx) => {
+        return parseTransaction(tx).symbol === selectedAsset?.symbol ? tx : []
+      })
+      return sortTransactionByDate(filteredTransactions, 'descending')
+    }
+    return []
   }, [selectedAsset, transactionsByNetwork])
 
   const fullAssetBalances = React.useMemo(() => {
