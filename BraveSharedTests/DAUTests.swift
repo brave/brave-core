@@ -6,6 +6,12 @@ import XCTest
 @testable import BraveShared
 import Shared
 
+extension DAU {
+  fileprivate convenience init(date: Date = Date()) {
+    self.init(date: date, braveCoreStats: nil)
+  }
+}
+
 class DAUTests: XCTestCase {
 
   override func setUp() {

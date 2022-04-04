@@ -3,6 +3,7 @@
 import Foundation
 import Shared
 import XCGLogger
+import BraveCore
 
 private let log = Logger.browserLogger
 
@@ -38,12 +39,17 @@ public class DAU {
 
   private static let apiKeyPlistKey = "API_KEY"
   private let apiKey: String?
+  private let braveCoreStats: BraveStats?
 
-  public init(date: Date = Date()) {
+  public init(
+    date: Date = Date(),
+    braveCoreStats: BraveStats?
+  ) {
     today = date
+    self.braveCoreStats = braveCoreStats
     apiKey = (Bundle.main.infoDictionary?[Self.apiKeyPlistKey] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
   }
-
+  
   /// Sends ping to server and returns a boolean whether a timer for the server call was scheduled.
   /// A user needs to be active for a certain amount of time before we ping the server.
   @discardableResult public func sendPingToServer() -> Bool {
@@ -97,7 +103,7 @@ public class DAU {
       request.setValue(value, forHTTPHeaderField: key)
     }
 
-    let task = URLSession.shared.dataTask(with: request) { _, _, error in
+    let task = URLSession.shared.dataTask(with: request) { [self] _, _, error in
       defer {
         self.processingPing = false
       }
@@ -113,6 +119,10 @@ public class DAU {
 
       // This preference is used to calculate whether user used the app in this month and/or day.
       Preferences.DAU.lastLaunchInfo.value = paramsAndPrefs.lastLaunchInfoPreference
+      
+      DispatchQueue.main.async { [self] in
+        braveCoreStats?.notifyPingSent()
+      }
     }
 
     task.resume()
@@ -152,6 +162,10 @@ public class DAU {
       // Must be after setting up the preferences
       weekOfInstallationParam(),
     ]
+    
+    if let braveCoreStats = braveCoreStats {
+      params += braveCoreParams(for: braveCoreStats)
+    }
 
     // Installation date for `dtoi` param has a limited lifetime.
     // After that we clear the install date from the app and always send null `dtoi` param.
@@ -178,7 +192,7 @@ public class DAU {
 
     return ParamsAndPrefs(queryParams: params, headers: headers, lastLaunchInfoPreference: lastPingTimestamp)
   }
-
+  
   private func retentionMeasureDatePassed(since date: Date) -> Bool {
     guard let referenceDateOrdinal = DAU.calendar.ordinality(of: .day, in: .era, for: date),
       let currentDateOrdinal = DAU.calendar.ordinality(of: .day, in: .era, for: today)
@@ -198,6 +212,11 @@ public class DAU {
     return URLQueryItem(name: "channel", value: channel.serverChannelParam)
   }
 
+  func braveCoreParams(for braveStats: BraveStats) -> [URLQueryItem] {
+    // For now we only have wallet params from brave-core
+    braveStats.walletParams.map({ URLQueryItem(name: $0.key, value: $0.value) })
+  }
+  
   func versionParam(for version: String = AppInfo.appVersion) -> URLQueryItem {
     var version = version
     if DAU.shouldAppend0(toVersion: version) {
