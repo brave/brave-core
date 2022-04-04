@@ -191,7 +191,10 @@ absl::optional<model::Linear> ParsePipelineClassifier(
 absl::optional<PipelineInfo> ParsePipelineJSON(std::string json) {
   absl::optional<base::Value> root = base::JSONReader::Read(json);
 
-  json = std::string();  // Free memory, because |json| can be ~10Mb.
+  // Free memory in advance to optimize the peak memory consumption. |json| can
+  // be up to 10Mb and the following code allocates an extra memory few Mb of
+  // memory.
+  json = std::string();
 
   if (!root) {
     return absl::nullopt;

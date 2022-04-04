@@ -2073,7 +2073,7 @@ void AdsServiceImpl::LoadAdsFileResource(const std::string& id,
     return;
   }
 
-  VLOG(1) << "Geting descriptor to ads resource from " << path.value();
+  VLOG(1) << "Getting descriptor to ads resource from " << path.value();
 
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,

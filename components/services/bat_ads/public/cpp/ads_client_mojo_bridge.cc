@@ -157,7 +157,7 @@ void AdsClientMojoBridge::OnLoadAdsResource(
 void AdsClientMojoBridge::LoadAdsResource(const std::string& id,
                                           const int version,
                                           LoadAdsResourceCallback callback) {
-  // this gets deleted in OnLoad
+  // this gets deleted in OnLoadAdsResource
   auto* holder = new CallbackHolder<LoadAdsResourceCallback>(
       AsWeakPtr(), std::move(callback));
   ads_client_->LoadAdsResource(
@@ -182,7 +182,7 @@ void AdsClientMojoBridge::LoadAdsFileResource(
     const std::string& id,
     const int version,
     LoadAdsFileResourceCallback callback) {
-  // this gets deleted in OnLoad
+  // this gets deleted in OnLoadAdsFileResource
   auto* holder = new CallbackHolder<LoadAdsFileResourceCallback>(
       AsWeakPtr(), std::move(callback));
   ads_client_->LoadAdsFileResource(
