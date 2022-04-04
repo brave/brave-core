@@ -124,7 +124,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kNotificationTriggers,
     &features::kOmniboxTriggerForNoStatePrefetch,
     &features::kPrivacySandboxAdsAPIsOverride,
-    &features::kSidePanel,
     &features::kSignedExchangeSubresourcePrefetch,
     &features::kSubresourceWebBundles,
     &features::kWebOTP,

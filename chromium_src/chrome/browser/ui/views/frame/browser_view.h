@@ -14,9 +14,13 @@
   GetContentsLayoutManager_Unused(); \
   virtual ContentsLayoutManager* GetContentsLayoutManager
 
+#define MaybeShowReadingListInSidePanelIPH \
+  virtual MaybeShowReadingListInSidePanelIPH
+
 #include "src/chrome/browser/ui/views/frame/browser_view.h"
 #undef BRAVE_BROWSER_VIEW_H
 #undef BrowserWindow
+#undef MaybeShowReadingListInSidePanelIPH
 #undef GetContentsLayoutManager
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_H_

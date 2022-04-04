@@ -401,6 +401,10 @@ void BraveBrowserView::ConfirmBrowserCloseWithPendingDownloads(
       download_count, dialog_type, std::move(callback));
 }
 
+void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
+  // Do nothing.
+}
+
 BraveBrowser* BraveBrowserView::GetBraveBrowser() const {
   return static_cast<BraveBrowser*>(browser_.get());
 }

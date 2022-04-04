@@ -5,18 +5,8 @@
 
 #include "src/components/reading_list/features/reading_list_switches.cc"
 
+#include "base/feature_list.h"
 #include "base/feature_override.h"
-#include "build/build_config.h"
-
-#if !BUILDFLAG(IS_IOS)
-namespace features {
-
-OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kSidePanel, base::FEATURE_DISABLED_BY_DEFAULT},
-}});
-
-}  // namespace features
-#endif  // !BUILDFLAG(IS_IOS)
 
 namespace reading_list {
 namespace switches {

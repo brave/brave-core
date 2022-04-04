@@ -76,3 +76,8 @@ void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
 void BraveTabStripModel::StopMRUCycling() {
   mru_cycle_list_.clear();
 }
+
+bool BraveTabStripModel::IsReadLaterSupportedForAny(
+    const std::vector<int>& indices) {
+  return false;
+}
