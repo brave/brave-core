@@ -854,9 +854,7 @@ extension PlaylistViewController: VideoViewDelegate {
 
             // Live media item
             let isPlayingLiveMedia = self.player.isLiveMedia
-            self.playerView.controlsView.trackBar.isUserInteractionEnabled = !isPlayingLiveMedia
-            self.playerView.controlsView.skipBackButton.isEnabled = !isPlayingLiveMedia
-            self.playerView.controlsView.skipForwardButton.isEnabled = !isPlayingLiveMedia
+            self.playerView.setMediaIsLive(isPlayingLiveMedia)
 
             // Track-bar
             let endTime = CMTimeConvertScale(item.asset.duration, timescale: self.player.currentTime.timescale, method: .roundHalfAwayFromZero)

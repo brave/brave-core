@@ -643,7 +643,16 @@ extension AVPlayerItem {
   /// tracks may not always be available and the particle effect will show even on videos..
   /// It's best to assume this type of media is a video stream.
   func isVideoTracksAvailable() -> Bool {
-    tracks.isEmpty || tracks.filter({ $0.assetTrack?.mediaType == .video }).isEmpty == false
+    if tracks.isEmpty && asset.tracks.isEmpty {
+      return true  // Assume video
+    }
+    
+    // All tracks are null (not loaded yet)
+    if tracks.allSatisfy({ $0.assetTrack == nil }) {
+      return true  // Assume video
+    }
+    
+    return (tracks.filter({ $0.assetTrack?.mediaType == .video }).isEmpty == false) || asset.isVideoTracksAvailable()
   }
 }
 
@@ -659,6 +668,6 @@ extension AVAsset {
   /// tracks may not always be available and the particle effect will show even on videos..
   /// It's best to assume this type of media is a video stream.
   func isVideoTracksAvailable() -> Bool {
-    tracks.isEmpty || tracks.filter({ $0.mediaType == .video }).isEmpty == false
+    tracks.filter({ $0.mediaType == .video }).isEmpty == false
   }
 }
