@@ -39,6 +39,12 @@ import XCGLogger
 private let DatabaseBusyTimeout: Int32 = 3 * 1000
 private let log = Logger.syncLogger
 
+public protocol Cancellable: AnyObject {
+  func cancel()
+  var cancelled: Bool { get }
+  var running: Bool { get set }
+}
+
 public class DBOperationCancelled: MaybeErrorType {
   public var description: String {
     return "Database operation cancelled"
