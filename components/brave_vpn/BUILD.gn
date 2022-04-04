@@ -32,6 +32,7 @@ static_library("brave_vpn") {
     "//brave/components/skus/common",
     "//brave/components/skus/common:mojom",
     "//components/keyed_service/core",
+    "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//ui/base",

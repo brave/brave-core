@@ -20,6 +20,7 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "services/data_decoder/public/cpp/json_sanitizer.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
 
@@ -219,6 +220,9 @@ class BraveVpnService :
                      int status,
                      const std::string& body,
                      const base::flat_map<std::string, std::string>& headers);
+  void OnGetSanitizedJsonResponse(
+      ResponseCallback callback,
+      data_decoder::JsonSanitizer::Result sanitized_json_response);
 
   void OnGetSubscriberCredential(
       ResponseCallback callback,

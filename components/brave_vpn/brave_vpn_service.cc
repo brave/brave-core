@@ -152,8 +152,7 @@ std::string GetSubscriberCredentialFromJson(const std::string& json) {
                     base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
-    VLOG(1) << __func__
-            << "Invalid response, could not parse JSON, JSON is: " << json;
+    VLOG(1) << __func__ << "Invalid response, could not parse JSON.";
     return "";
   }
 
@@ -609,6 +608,7 @@ bool BraveVpnService::ParseAndCacheRegionList(const base::Value& region_value) {
 void BraveVpnService::OnFetchTimezones(const std::string& timezones_list,
                                        bool success) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
   absl::optional<base::Value> value = base::JSONReader::Read(timezones_list);
   if (success && value && value->is_list()) {
     VLOG(2) << "Got valid timezones list";
@@ -617,7 +617,8 @@ void BraveVpnService::OnFetchTimezones(const std::string& timezones_list,
     VLOG(2) << "Failed to get invalid timezones list";
   }
 
-  // Anyway, it's purchased now.
+  // Can set as purchased state now regardless of timezone fetching result.
+  // We use default one picked from region list as a device region on failure.
   SetPurchasedState(PurchasedState::PURCHASED);
 }
 
@@ -794,7 +795,6 @@ void BraveVpnService::CreateSupportTicket(
   dict.SetStringKey("payment-validation-data", "");
 
   std::string request_body = CreateJSONRequestBody(dict);
-  VLOG(2) << " : sending " << request_body;
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
 
@@ -1015,7 +1015,7 @@ void BraveVpnService::OnCreateSupportTicket(
     const base::flat_map<std::string, std::string>& headers) {
   bool success = status == 200;
   VLOG(2) << "OnCreateSupportTicket success=" << success
-          << "\nresponse_code=" << status << "\nbody=[[" << body << "]]";
+          << "\nresponse_code=" << status;
   std::move(callback).Run(success, body);
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -1079,8 +1079,6 @@ void BraveVpnService::OnCredentialSummary(const std::string& summary_string) {
     return;
   }
 
-  VLOG(2) << __func__ << " credential_summary returned: `" << summary_string
-          << "`";
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
@@ -1294,8 +1292,38 @@ void BraveVpnService::OnGetResponse(
   std::string json_response;
   bool success = status == 200;
   if (success) {
+    // Give sanitized json response on success.
     json_response = body;
+    data_decoder::JsonSanitizer::Sanitize(
+        json_response,
+        base::BindOnce(&BraveVpnService::OnGetSanitizedJsonResponse,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  } else {
+    // Give empty response on failure.
+    std::move(callback).Run(json_response, success);
   }
+}
+
+void BraveVpnService::OnGetSanitizedJsonResponse(
+    ResponseCallback callback,
+    data_decoder::JsonSanitizer::Result sanitized_json_response) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  std::string json_response;
+  bool success = true;
+  if (sanitized_json_response.error) {
+    VLOG(1) << "Response validation error: " << *sanitized_json_response.error;
+    success = false;
+  }
+
+  if (success && !sanitized_json_response.value.has_value()) {
+    VLOG(1) << "Empty response";
+    success = false;
+  }
+
+  if (success)
+    json_response = sanitized_json_response.value.value();
+
   std::move(callback).Run(json_response, success);
 }
 
