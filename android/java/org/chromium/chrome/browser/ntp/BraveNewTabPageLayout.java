@@ -712,6 +712,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     private void initNews() {
         mSettingsBarIsClickable = false;
         mRecyclerView = findViewById(R.id.newsRecycler);
+        //mRecyclerView.setHasFixedSize(true);
         mContainer = (LinearLayout) findViewById(R.id.ntp_main_layout);
         mOptinButton = findViewById(R.id.optin_button);
         mOptinClose = findViewById(R.id.close_optin);
@@ -738,13 +739,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         mItemPosition = 0;
         mVisibleCard = null;
 
-        ViewGroup.LayoutParams recyclerviewParams = mRecyclerView.getLayoutParams();
+        /*ViewGroup.LayoutParams recyclerviewParams = mRecyclerView.getLayoutParams();
         recyclerviewParams.height = (ConfigurationUtils.isTablet(mActivity)
                                             && !ConfigurationUtils.isLandscape(mActivity))
                 ? (int) dpToPx(mActivity, 1500)
                 : (int) dpToPx(mActivity, 800);
 
-        mRecyclerView.setLayoutParams(recyclerviewParams);
+        mRecyclerView.setLayoutParams(recyclerviewParams);*/
 
         if (mOptinLayout != null) {
             mLoadingView.setVisibility(View.GONE);

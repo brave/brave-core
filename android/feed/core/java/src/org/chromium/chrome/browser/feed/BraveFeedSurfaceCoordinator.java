@@ -72,6 +72,7 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
         mRootView.removeAllViews();
 
         mScrollViewForPolicy = new NestedScrollView(mActivity);
+        mScrollViewForPolicy.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         mScrollViewForPolicy.setBackgroundColor(
                 ApiCompatibilityUtils.getColor(mActivity.getResources(), R.color.default_bg_color));
         mScrollViewForPolicy.setVerticalScrollBarEnabled(false);
@@ -88,6 +89,8 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             mScrollViewForPolicy.addView(mNtpHeader);
         }
         mRootView.addView(mScrollViewForPolicy);
+        mScrollViewForPolicy.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        mScrollViewForPolicy.setFillViewport(true);
         mScrollViewForPolicy.requestFocus();
     }
 
