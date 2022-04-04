@@ -30,7 +30,6 @@ import ControlWrapper from 'brave-ui/components/formControls/controlWrapper'
 export interface Props {
   backupKey: string
   activeTabId: number
-  showBackupNotice: boolean
   onTabChange: (newTabId: number) => void
   onClose: () => void
   onCopy?: (key: string) => void
@@ -50,6 +49,7 @@ export interface Props {
 interface State {
   recoveryKey: string
   errorShown: boolean
+  copyButtonClicked: boolean
 }
 
 /*
@@ -61,7 +61,8 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
     super(props)
     this.state = {
       recoveryKey: '',
-      errorShown: false
+      errorShown: false,
+      copyButtonClicked: false
     }
   }
 
@@ -109,14 +110,13 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
     }
   }
 
-  getBackupLegacy = () => {
+  getBackup = () => {
     const {
       backupKey,
       onClose,
       onCopy,
       onPrint,
-      onSaveFile,
-      onVerify
+      onSaveFile
     } = this.props
 
     return (
@@ -131,18 +131,27 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
           <TextArea
             id={'backup-recovery-key'}
             value={backupKey}
-            disabled={true}
+            readOnly={true}
           />
         </ControlWrapper>
         <StyledButtonWrapper>
           {
             onCopy
             ? <GroupedButton
+              className={`clickable clicked-${this.state.copyButtonClicked}`}
               text={getLocale('copy')}
               level={'secondary'}
               size={'small'}
               type={'subtle'}
-              onClick={onCopy.bind(this, backupKey)}
+              onClick={
+                () => {
+                  onCopy(backupKey)
+                  this.setState({ copyButtonClicked: true })
+                  setTimeout(() => {
+                    this.setState({ copyButtonClicked: false })
+                  }, 1000)
+                }
+              }
             />
             : null
           }
@@ -169,25 +178,6 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
             : null
           }
         </StyledButtonWrapper>
-        <StyledContent>
-          <StyledSafe>
-            {getLocale('rewardsBackupText3')}
-          </StyledSafe>
-          {getLocale('rewardsBackupText4')}
-        </StyledContent>
-        <StyledContent>
-          {
-            formatMessage(getLocale('rewardsBackupNoticeText2'), {
-              tags: {
-                $1: (content) => (
-                  <StyledLink key='link' onClick={onVerify}>
-                    {content}
-                  </StyledLink>
-                )
-              }
-            })
-          }
-        </StyledContent>
         <StyledDoneWrapper>
           <Button
             text={getLocale('done')}
@@ -198,50 +188,6 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
         </StyledDoneWrapper>
       </>
     )
-  }
-
-  getBackupNotice = () => {
-    const {
-      onClose,
-      onVerify
-    } = this.props
-
-    return (
-      <>
-        <StyledContent>
-          {getLocale('rewardsBackupNoticeText1')}
-        </StyledContent>
-        <StyledContent>
-          {
-            formatMessage(getLocale('rewardsBackupNoticeText2'), {
-              tags: {
-                $1: (content) => (
-                  <StyledLink key='link' onClick={onVerify} id={'backup-verify-link'}>
-                    {content}
-                  </StyledLink>
-                )
-              }
-            })
-          }
-        </StyledContent>
-        <StyledDoneWrapper>
-          <Button
-            text={getLocale('done')}
-            size={'medium'}
-            type={'accent'}
-            onClick={onClose}
-          />
-        </StyledDoneWrapper>
-      </>
-    )
-  }
-
-  getBackup = () => {
-    if (this.props.showBackupNotice) {
-      return this.getBackupNotice()
-    } else {
-      return this.getBackupLegacy()
-    }
   }
 
   getRestore = () => {
