@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddTokenFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SwitchEthereumChainFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,22 +58,20 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity {
         Intent intent = getIntent();
         mActivityType = ActivityType.valueOf(
                 intent.getIntExtra("activityType", ActivityType.ADD_ETHEREUM_CHAIN.getValue()));
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment fragment = null;
         if (mActivityType == ActivityType.SIGN_MESSAGE) {
             fragment = new SignMessageFragment();
-        }
-        //         else if (mActivityType == ActivityType.ADD_ETHEREUM_CHAIN) {
-        //             fragment = new AddEthereumChainFragment();
-        //         } else if (mActivityType == ActivityType.SWITCH_ETHEREUM_CHAIN) {
-        //             fragment = new SwitchEthereumChainFragment();
-        //         }
-        else if (mActivityType == ActivityType.ADD_TOKEN) {
+        } else if (mActivityType == ActivityType.SWITCH_ETHEREUM_CHAIN) {
+            fragment = new SwitchEthereumChainFragment();
+        } else if (mActivityType == ActivityType.ADD_TOKEN) {
             fragment = new AddTokenFragment();
         }
-        ft.replace(R.id.frame_layout, fragment);
-        ft.commit();
 
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.frame_layout, fragment);
+            ft.commit();
+        }
         onInitialLayoutInflationComplete();
     }
 }
