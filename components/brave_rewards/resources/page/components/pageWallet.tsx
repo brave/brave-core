@@ -54,11 +54,6 @@ class PageWallet extends React.Component<Props, State> {
     return this.props.actions
   }
 
-  hasUserFunds () {
-    const { balance } = this.props.rewardsData
-    return balance && balance.wallets.anonymous > 0
-  }
-
   componentDidMount () {
     this.isBackupUrl()
     this.isDisconnectUrl()
@@ -79,10 +74,6 @@ class PageWallet extends React.Component<Props, State> {
       this.actions.getWalletPassphrase()
     }
     this.actions.onModalBackupOpen()
-  }
-
-  showBackupNotice = () => {
-    return this.state.activeTabId === 0 && !this.hasUserFunds()
   }
 
   onModalBackupTabChange = (newTabId: number) => {
@@ -799,7 +790,6 @@ class PageWallet extends React.Component<Props, State> {
             ? <ModalBackupRestore
               activeTabId={this.state.activeTabId}
               backupKey={recoveryKey}
-              showBackupNotice={this.showBackupNotice()}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupClose}
               onCopy={this.onModalBackupOnCopy}
