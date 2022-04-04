@@ -17,7 +17,6 @@
 #include "net/dns/dns_config.h"
 #include "net/dns/dns_server_iterator.h"
 #include "net/dns/dns_session.h"
-#include "net/dns/dns_socket_allocator.h"
 #include "net/dns/public/dns_over_https_server_config.h"
 #include "net/url_request/url_request_context.h"
 #include "net/url_request/url_request_context_builder.h"
@@ -49,9 +48,8 @@ class BraveResolveContextTest : public testing::Test {
     auto null_random_callback =
         base::BindRepeating([](int, int) -> int { IMMEDIATE_CRASH(); });
 
-    return base::MakeRefCounted<DnsSession>(
-        config, nullptr /* socket_allocator */, null_random_callback,
-        nullptr /* netlog */);
+    return base::MakeRefCounted<DnsSession>(config, null_random_callback,
+                                            nullptr /* netlog */);
   }
 
  private:
