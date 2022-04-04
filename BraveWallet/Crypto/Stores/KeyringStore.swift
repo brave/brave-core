@@ -143,6 +143,7 @@ public class KeyringStore: ObservableObject {
 
   func unlock(password: String, completion: @escaping (Bool) -> Void) {
     if !keyring.isKeyringCreated {
+      completion(false)
       return
     }
     keyringService.unlock(password) { [weak self] unlocked in
@@ -153,6 +154,14 @@ public class KeyringStore: ObservableObject {
       }
       self?.updateKeyringInfo()
     }
+  }
+  
+  func validate(password: String, completion: @escaping (Bool) -> Void) {
+    if !keyring.isKeyringCreated {
+      completion(false)
+      return
+    }
+    keyringService.validatePassword(password, completion: completion)
   }
 
   func isStrongPassword(_ password: String, completion: @escaping (Bool) -> Void) {

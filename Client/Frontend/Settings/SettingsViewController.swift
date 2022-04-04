@@ -65,6 +65,7 @@ class SettingsViewController: TableViewController {
   private let syncAPI: BraveSyncAPI
   private let walletSettingsStore: SettingsStore?
   private let walletNetworkStore: NetworkStore?
+  private let keyringStore: KeyringStore?
   private let windowProtection: WindowProtection?
 
   private let featureSectionUUID: UUID = .init()
@@ -79,7 +80,8 @@ class SettingsViewController: TableViewController {
     windowProtection: WindowProtection?,
     braveCore: BraveCoreMain,
     walletSettingsStore: SettingsStore? = nil,
-    walletNetworkStore: NetworkStore? = nil
+    walletNetworkStore: NetworkStore? = nil,
+    keyringStore: KeyringStore? = nil
   ) {
     self.profile = profile
     self.tabManager = tabManager
@@ -92,6 +94,7 @@ class SettingsViewController: TableViewController {
     self.syncAPI = braveCore.syncAPI
     self.walletSettingsStore = walletSettingsStore
     self.walletNetworkStore = walletNetworkStore
+    self.keyringStore = keyringStore
 
     super.init(style: .insetGrouped)
   }
@@ -667,7 +670,7 @@ class SettingsViewController: TableViewController {
   }()
 
   private func setUpSections() {
-    if let settingsStore = walletSettingsStore, let networkStore = walletNetworkStore {
+    if let settingsStore = walletSettingsStore, let networkStore = walletNetworkStore, let keyringStore = keyringStore {
       settingsStore.isDefaultKeyringCreated { [weak self] created in
         guard let self = self else { return }
         var copyOfSections = self.sections
@@ -683,7 +686,12 @@ class SettingsViewController: TableViewController {
               Row(
                 text: Strings.Wallet.braveWallet,
                 selection: { [unowned self] in
-                  let vc = UIHostingController(rootView: WalletSettingsView(settingsStore: settingsStore, networkStore: networkStore))
+                  let walletSettingsView = WalletSettingsView(
+                    settingsStore: settingsStore,
+                    networkStore: networkStore,
+                    keyringStore: keyringStore
+                  )
+                  let vc = UIHostingController(rootView: walletSettingsView)
                   self.navigationController?.pushViewController(vc, animated: true)
                 },
                 image: #imageLiteral(resourceName: "menu-crypto").template,

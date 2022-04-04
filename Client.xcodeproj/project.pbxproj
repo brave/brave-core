@@ -1152,6 +1152,7 @@
 		D506715C27E2AAB700560631 /* TransactionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D506715B27E2AAB700560631 /* TransactionHeader.swift */; };
 		D51CD9C727DBC6A600C01104 /* PortfolioStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51CD9C627DBC6A600C01104 /* PortfolioStoreTests.swift */; };
 		D5A691EC27DF93AD000CC4B3 /* TransactionDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A691EB27DF93AD000CC4B3 /* TransactionDetailsView.swift */; };
+		D5C51E6C27F4C8AA00E1F2D0 /* BiometricsPasscodeEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C51E6B27F4C8AA00E1F2D0 /* BiometricsPasscodeEntryView.swift */; };
 		D83822001FC7961D00303C12 /* DispatchQueueExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83821FF1FC7961D00303C12 /* DispatchQueueExtensions.swift */; };
 		D863C8F21F68BFC20058D95F /* GradientProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D863C8E31F68BFC20058D95F /* GradientProgressBar.swift */; };
 		D8D33A7D1FBD080300A20A28 /* SnapKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D33A7C1FBD080300A20A28 /* SnapKitExtensions.swift */; };
@@ -3122,6 +3123,7 @@
 		D506715B27E2AAB700560631 /* TransactionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHeader.swift; sourceTree = "<group>"; };
 		D51CD9C627DBC6A600C01104 /* PortfolioStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioStoreTests.swift; sourceTree = "<group>"; };
 		D5A691EB27DF93AD000CC4B3 /* TransactionDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsView.swift; sourceTree = "<group>"; };
+		D5C51E6B27F4C8AA00E1F2D0 /* BiometricsPasscodeEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsPasscodeEntryView.swift; sourceTree = "<group>"; };
 		D83821FF1FC7961D00303C12 /* DispatchQueueExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueueExtensions.swift; sourceTree = "<group>"; };
 		D863C8E31F68BFC20058D95F /* GradientProgressBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientProgressBar.swift; sourceTree = "<group>"; };
 		D8D33A7C1FBD080300A20A28 /* SnapKitExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapKitExtensions.swift; sourceTree = "<group>"; };
@@ -4097,6 +4099,7 @@
 				7DC054A327A200EC00BBA042 /* CustomNetworkListView.swift */,
 				7D4C49502791D2450073C37E /* CustomNetworkDetailsView.swift */,
 				275034E226EF9E6A00CF4C8A /* WalletSettingsView.swift */,
+				D5C51E6B27F4C8AA00E1F2D0 /* BiometricsPasscodeEntryView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -7988,6 +7991,7 @@
 				7DC054C227A9CCA400BBA042 /* KeyringServiceExtensions.swift in Sources */,
 				D506715C27E2AAB700560631 /* TransactionHeader.swift in Sources */,
 				277309DE2721DDFB007643F6 /* WeiFormatter.swift in Sources */,
+				D5C51E6C27F4C8AA00E1F2D0 /* BiometricsPasscodeEntryView.swift in Sources */,
 				271F689926EBD27E00AA2A50 /* Address.swift in Sources */,
 				270E5F3226F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift in Sources */,
 				27E17B8E2744128200F3C282 /* MockAssetRatioService.swift in Sources */,
