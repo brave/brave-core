@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 5ab56f2c942fea54eb245b6ecae48cf8a005dc71..f02578915ce69c729cd13e8c1383fad2b2e25b9d 100644
+index e230d139fb95930b68511c026c6d96d25071d032..db600b72bce8a786f56a04227953ec6dc65df7ce 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -2919,6 +2919,7 @@ const FeatureEntry::Choice kAlwaysEnableHdcpChoices[] = {
+@@ -2931,6 +2931,7 @@ const FeatureEntry::Choice kAlwaysEnableHdcpChoices[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

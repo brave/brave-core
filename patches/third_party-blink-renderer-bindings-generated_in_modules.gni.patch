@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/generated_in_modules.gni b/third_party/blink/renderer/bindings/generated_in_modules.gni
-index 9659f016e7dbb5584a89ded7ec69c539b3b06631..a9f933a723c6716aac573907cabf601e2ed07fa1 100644
+index 0b6fd91cb69ac806c9a5bbe787342cbdab30c37f..6433b97253843d3e1664faa20e7d5d3c8ac1a1e8 100644
 --- a/third_party/blink/renderer/bindings/generated_in_modules.gni
 +++ b/third_party/blink/renderer/bindings/generated_in_modules.gni
 @@ -2530,6 +2530,7 @@ generated_interface_sources_in_modules = [
