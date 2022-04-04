@@ -53,7 +53,8 @@ struct AccountsHeaderView: View {
         NavigationLink(
           destination: WalletSettingsView(
             settingsStore: settingsStore,
-            networkStore: networkStore)
+            networkStore: networkStore,
+            keyringStore: keyringStore)
         ) {
           Label(Strings.Wallet.settings, image: "brave.gear")
             .labelStyle(.iconOnly)

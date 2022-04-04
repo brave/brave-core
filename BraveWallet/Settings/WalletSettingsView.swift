@@ -10,16 +10,21 @@ import BraveUI
 public struct WalletSettingsView: View {
   @ObservedObject var settingsStore: SettingsStore
   @ObservedObject var networkStore: NetworkStore
+  @ObservedObject var keyringStore: KeyringStore
 
   @State private var isShowingResetWalletAlert = false
   @State private var isShowingResetTransactionAlert = false
+  /// If we are showing the modal so the user can enter their password to enable unlock via biometrics.
+  @State private var isShowingBiometricsPasswordEntry = false
 
   public init(
     settingsStore: SettingsStore,
-    networkStore: NetworkStore
+    networkStore: NetworkStore,
+    keyringStore: KeyringStore
   ) {
     self.settingsStore = settingsStore
     self.networkStore = networkStore
+    self.keyringStore = keyringStore
   }
 
   private var autoLockIntervals: [AutoLockInterval] {
@@ -51,6 +56,21 @@ public struct WalletSettingsView: View {
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      if settingsStore.isBiometricsAvailable, keyringStore.keyring.isKeyringCreated {
+        Section(
+          footer: Text(Strings.Wallet.settingsEnableBiometricsFooter)
+            .foregroundColor(Color(.secondaryBraveLabel))
+        ) {
+          Toggle(
+            Strings.Wallet.settingsEnableBiometricsTitle,
+            isOn: Binding(get: { settingsStore.isBiometricsUnlockEnabled },
+                          set: { toggledBiometricsUnlock($0) })
+          )
+            .foregroundColor(Color(.braveLabel))
+            .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+        }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
       Section(
         footer: Text(Strings.Wallet.networkFooter)
           .foregroundColor(Color(.secondaryBraveLabel))
@@ -113,6 +133,20 @@ public struct WalletSettingsView: View {
           )
         }
     )
+    .background(
+      Color.clear
+        .sheet(isPresented: $isShowingBiometricsPasswordEntry) {
+          BiometricsPasscodeEntryView(keyringStore: keyringStore)
+        }
+    )
+  }
+  
+  private func toggledBiometricsUnlock(_ enabled: Bool) {
+    if enabled {
+      self.isShowingBiometricsPasswordEntry = true
+    } else {
+      KeyringStore.resetKeychainStoredPassword()
+    }
   }
 }
 
@@ -122,7 +156,8 @@ struct WalletSettingsView_Previews: PreviewProvider {
     NavigationView {
       WalletSettingsView(
         settingsStore: .previewStore,
-        networkStore: .previewStore
+        networkStore: .previewStore,
+        keyringStore: .previewStore
       )
     }
   }

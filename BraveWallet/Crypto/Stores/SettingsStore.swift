@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import LocalAuthentication
 import BraveCore
 
 public class SettingsStore: ObservableObject {
@@ -12,6 +13,16 @@ public class SettingsStore: ObservableObject {
     didSet {
       keyringService.setAutoLockMinutes(autoLockInterval.value) { _ in }
     }
+  }
+
+  /// If we should attempt to unlock via biometrics (Face ID / Touch ID)
+  var isBiometricsUnlockEnabled: Bool {
+    KeyringStore.isKeychainPasswordStored && isBiometricsAvailable
+  }
+
+  /// If the device has biometrics available
+  var isBiometricsAvailable: Bool {
+    LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
   }
 
   private let keyringService: BraveWalletKeyringService

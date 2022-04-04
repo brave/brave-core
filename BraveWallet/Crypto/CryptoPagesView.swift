@@ -60,7 +60,8 @@ struct CryptoPagesView: View {
       NavigationLink(
         destination: WalletSettingsView(
           settingsStore: cryptoStore.settingsStore,
-          networkStore: cryptoStore.networkStore
+          networkStore: cryptoStore.networkStore,
+          keyringStore: keyringStore
         ),
         isActive: $isShowingSettings
       ) {

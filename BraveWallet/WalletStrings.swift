@@ -1940,5 +1940,33 @@ extension Strings {
       value: "Sent",
       comment: "As in sent cryptocurrency from one asset to another"
     )
+    public static let settingsEnableBiometricsTitle = NSLocalizedString(
+      "wallet.settingsEnableBiometricsTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Allow Biometric Unlock",
+      comment: "A label beside the toggle for allowing biometrics to unlock the wallet in wallet settings."
+    )
+    public static let settingsEnableBiometricsFooter = NSLocalizedString(
+      "wallet.settingsEnableBiometricsFooter",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Toggle on if you'd like to use biometrics (Face ID / Touch ID) to unlock your wallet",
+      comment: "The footer beneath the toggle for allowing biometrics to unlock the wallet in wallet settings."
+    )
+    public static let enterPasswordForBiometricsNavTitle = NSLocalizedString(
+      "wallet.enterPasswordForBiometricsNavTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Enable Biometrics",
+      comment: "The navigation bar title displayed on the screen to enter wallet password to enable biometrics unlock from wallet settings."
+    )
+    public static let enterPasswordForBiometricsTitle = NSLocalizedString(
+      "wallet.enterPasswordForBiometricsTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Enter your wallet password to enable biometrics for wallet (you'll only be asked for this once)",
+      comment: "The title displayed on the screen to enter password to enable biometrics unlock from wallet settings."
+    )
   }
 }
