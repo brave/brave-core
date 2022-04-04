@@ -26,8 +26,10 @@ export const StyledImport = styled('label')<{}>`
 
 export const StyledButtonWrapper = styled('div')<{}>`
   display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 `
 
 export const GroupedButton = styled(Button as ComponentType<ButtonProps>)`
@@ -37,9 +39,34 @@ export const GroupedButton = styled(Button as ComponentType<ButtonProps>)`
     min-width: 74px;
     font-size: 9px;
   }
+
   @media (max-width: 370px) {
     min-width: 65px;
     font-size: 9px;
+  }
+
+  &.clickable div {
+    position: relative;
+    transition: 0.3s;
+  }
+
+  &.clickable div:after {
+    content: '\\2713';
+    position: absolute;
+    font-size: inherit;
+    opacity: 0;
+    top: 2px;
+    right: -20px;
+    transition: 0.5s;
+  }
+
+  &.clickable.clicked-true div {
+    padding-right: 12px;
+  }
+
+  &.clickable.clicked-true div:after {
+    opacity: 1;
+    right: 0;
   }
 `
 
