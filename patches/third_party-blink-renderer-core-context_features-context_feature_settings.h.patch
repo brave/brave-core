@@ -1,9 +1,9 @@
 diff --git a/third_party/blink/renderer/core/context_features/context_feature_settings.h b/third_party/blink/renderer/core/context_features/context_feature_settings.h
-index 9c9a289262c01daa45e24d4cb553b7d90797f7b8..de4e8ced39169f817f6c22842013557198630137 100644
+index 7d0c26eb319de93221debf4b7937739f63873254..be317aa5adc96099e19a00447d0cdc2db4ba56de 100644
 --- a/third_party/blink/renderer/core/context_features/context_feature_settings.h
 +++ b/third_party/blink/renderer/core/context_features/context_feature_settings.h
-@@ -35,6 +35,7 @@ class CORE_EXPORT ContextFeatureSettings final
-   bool isMojoJSEnabled() const { return enable_mojo_js_; }
+@@ -44,6 +44,7 @@ class CORE_EXPORT ContextFeatureSettings final
+   }
  
    void Trace(Visitor*) const override;
 +  BRAVE_CONTEXT_FEATURE_SETTINGS_H_
