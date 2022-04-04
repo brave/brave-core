@@ -926,8 +926,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                                     new SettingsLauncherImpl();
                                             settingsLauncher.launchSettingsActivity(
                                                     getContext(), BraveNewsPreferences.class);
-                                            mParentScrollView.getViewTreeObserver()
-                                                    .removeOnGlobalLayoutListener(listener);
                                         }
                                     }
                                 });
