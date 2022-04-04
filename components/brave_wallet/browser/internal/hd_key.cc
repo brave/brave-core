@@ -425,8 +425,9 @@ std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
 std::vector<uint8_t> HDKey::GetPublicKeyFromX25519_XSalsa20_Poly1305() const {
   size_t public_key_len = crypto_scalarmult_curve25519_tweet_BYTES;
   std::vector<uint8_t> public_key(public_key_len);
+  const uint8_t* private_key_ptr = private_key_.data();
   if (crypto_scalarmult_curve25519_tweet_base(public_key.data(),
-                                              private_key_.data()) != 0)
+                                              private_key_ptr) != 0)
     return std::vector<uint8_t>();
   return public_key;
 }
@@ -449,16 +450,17 @@ std::vector<uint8_t> HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
     return std::vector<uint8_t>();
 
   std::vector<uint8_t> padded_ciphertext = ciphertext;
-  padded_ciphertext.insert(padded_ciphertext.begin(), 16, 0);
-  std::vector<uint8_t> padded_plaintext(ciphertext.size() + 32);
-
+  padded_ciphertext.insert(padded_ciphertext.begin(), crypto_box_BOXZEROBYTES,
+                           0);
+  std::vector<uint8_t> padded_plaintext(padded_ciphertext.size());
   const uint8_t* private_key_ptr = private_key_.data();
   if (crypto_box_open(padded_plaintext.data(), padded_ciphertext.data(),
                       padded_ciphertext.size(), nonce.data(),
                       ephemeral_public_key.data(), private_key_ptr) != 0)
     return std::vector<uint8_t>();
-  std::vector<uint8_t> plaintext(padded_plaintext.cbegin() + 32,
-                                 padded_plaintext.cend() - 16);
+  std::vector<uint8_t> plaintext(
+      padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
+      padded_plaintext.cend());
   return plaintext;
 }
 

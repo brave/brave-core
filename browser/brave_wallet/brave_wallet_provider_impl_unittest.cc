@@ -2242,9 +2242,10 @@ TEST_F(BraveWalletProviderImplUnitTest, Decrypt) {
       "\"Pickle rick"};
   for (auto& error_case : error_cases) {
     Decrypt(error_case, from(), true, &unsafe_message, &error, &error_message);
-    EXPECT_TRUE(unsafe_message.empty());
-    EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
-    EXPECT_FALSE(error_message.empty());
+    EXPECT_TRUE(unsafe_message.empty()) << " case: " << error_case;
+    EXPECT_EQ(mojom::ProviderError::kInvalidParams, error)
+        << " case: " << error_case;
+    EXPECT_FALSE(error_message.empty()) << " case: " << error_case;
   }
 
   // Locked should give invalid params error
