@@ -11,6 +11,7 @@
 #include "base/path_service.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/common/brave_paths.h"
+#include "brave/components/speedreader/features.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -41,6 +42,7 @@ class SpeedreaderRewriterTest
   std::string ProcessPage(const std::string& file_name) {
     auto rewriter = speedreader_.MakeRewriter(
         "https://test.com", RewriterType::RewriterReadability);
+    rewriter->SetMinOutLength(100);
     const auto file_content = GetFileContent(file_name);
     rewriter->Write(file_content.data(), file_content.size());
     rewriter->End();
@@ -65,7 +67,7 @@ INSTANTIATE_TEST_SUITE_P(,
                                            "no_span_root",
                                            "too_small_output"));
 
-TEST_P(SpeedreaderRewriterTest, SelectShortestDescription) {
+TEST_P(SpeedreaderRewriterTest, Check) {
   base::ScopedAllowBlockingForTesting allow_blocking;
 
   const std::string input_file = std::string(GetParam()).append(".html");
