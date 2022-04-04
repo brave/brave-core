@@ -806,7 +806,6 @@ brave_java_resources = [
   "java/res/layout/binance_spinner_dropdown_item.xml",
   "java/res/layout/binance_spinner_item.xml",
   "java/res/layout/binance_summary_item.xml",
-  "java/res/layout/bottom_control_container.xml",
   "java/res/layout/bottom_toolbar.xml",
   "java/res/layout/bottom_toolbar_browsing.xml",
   "java/res/layout/bottom_toolbar_menu_button.xml",
