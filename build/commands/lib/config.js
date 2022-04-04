@@ -4,6 +4,7 @@ const path = require('path')
 const fs = require('fs')
 const os = require('os')
 const assert = require('assert')
+const crypto = require('crypto');
 const { spawnSync } = require('child_process')
 
 let npmCommand = 'npm'
@@ -95,6 +96,8 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
 }
 
 const Config = function () {
+  // TODO(yannic): Should the user be able to override this?
+  this.buildId = crypto.randomUUID()
   this.defaultBuildConfig = 'Component'
   this.buildConfig = this.defaultBuildConfig
   this.signTarget = 'sign_app'
