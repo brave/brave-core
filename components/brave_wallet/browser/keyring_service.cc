@@ -1372,26 +1372,21 @@ bool KeyringService::GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
           EthAddress::FromHex(address).ToChecksumAddress(), key);
 }
 
-bool KeyringService::DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
+absl::optional<std::vector<uint8_t>>
+KeyringService::DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
     const std::string& version,
     const std::vector<uint8_t>& nonce,
     const std::vector<uint8_t>& ephemeral_public_key,
     const std::vector<uint8_t>& ciphertext,
-    const std::string& address,
-    std::vector<uint8_t>* message) {
-  CHECK(message);
+    const std::string& address) {
   auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
   if (!keyring)
-    return false;
+    return absl::nullopt;
 
-  if (!static_cast<EthereumKeyring*>(keyring)
-           ->DecryptCipherFromX25519_XSalsa20_Poly1305(
-               version, nonce, ephemeral_public_key, ciphertext,
-               EthAddress::FromHex(address).ToChecksumAddress(), message)) {
-    return false;
-  }
-
-  return true;
+  return static_cast<EthereumKeyring*>(keyring)
+      ->DecryptCipherFromX25519_XSalsa20_Poly1305(
+          version, nonce, ephemeral_public_key, ciphertext,
+          EthAddress::FromHex(address).ToChecksumAddress());
 }
 
 std::vector<uint8_t> KeyringService::SignMessage(

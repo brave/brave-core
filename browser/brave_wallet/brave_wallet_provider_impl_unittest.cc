@@ -2205,17 +2205,25 @@ TEST_F(BraveWalletProviderImplUnitTest, Decrypt) {
 
   std::string valid_pi_json =
       R"({"version":"x25519-xsalsa20-poly1305","nonce":"6IWDnjTObWyEB/XpQWT9Rs6CTed24BaA","ephemPublicKey":"XhoADVJjjmI5iUveoJ8sm3v9+wWBwCN6x/6K2tFhdg8=","ciphertext":"lru72L3/fK+X30ZBTxhVmp1YDTb0CZ+NAAxG919PJR9Y0icmpjhEijoASBLB2kR1KfKMtERHxpeCl9XYtmRY87LBRIuRFAmvoA6j0kF4YhDSm4AzMpwQRzvZSIC49rLHJZM1rSDLBMKkFdON0H3D"})";
+  std::string empty_message_json =
+      R"({"version":"x25519-xsalsa20-poly1305","nonce":"X0HlUQmgWwjiB0794AB4Js/wbzjrM9v9","ephemPublicKey":"nf595GsfgQKpQahDibdvFsxjOCG4j8luJ+fM5WIjoGQ=","ciphertext":"jvRnfKcpv4t1Oghb+q4vqw=="})";
 
   // Happy path w/ key GeiNTGIpEKEVFeMBpd3aVs/S2EjoF8FOoichRuqjBg0=
   std::string unsafe_message;
   mojom::ProviderError error;
   std::string error_message;
   Decrypt(valid_pi_json, from(), true, &unsafe_message, &error, &error_message);
-
   EXPECT_EQ(unsafe_message,
             "3."
             "141592653589793238462643383279502884197169399375105820974944592307"
             "816406286208998628034825...");
+  EXPECT_EQ(mojom::ProviderError::kSuccess, error);
+  EXPECT_TRUE(error_message.empty());
+
+  // Happy path w/ empty message
+  Decrypt(empty_message_json, from(), true, &unsafe_message, &error,
+          &error_message);
+  EXPECT_TRUE(unsafe_message.empty());
   EXPECT_EQ(mojom::ProviderError::kSuccess, error);
   EXPECT_TRUE(error_message.empty());
 

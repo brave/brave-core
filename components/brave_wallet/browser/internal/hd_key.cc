@@ -432,22 +432,23 @@ std::vector<uint8_t> HDKey::GetPublicKeyFromX25519_XSalsa20_Poly1305() const {
   return public_key;
 }
 
-std::vector<uint8_t> HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
+absl::optional<std::vector<uint8_t>>
+HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
     const std::string& version,
     const std::vector<uint8_t>& nonce,
     const std::vector<uint8_t>& ephemeral_public_key,
     const std::vector<uint8_t>& ciphertext) const {
   // Only x25519-xsalsa20-poly1305 is supported by MM at the time of writing
   if (version != "x25519-xsalsa20-poly1305")
-    return std::vector<uint8_t>();
+    return absl::nullopt;
   if (nonce.size() != crypto_box_curve25519xsalsa20poly1305_tweet_NONCEBYTES)
-    return std::vector<uint8_t>();
+    return absl::nullopt;
   if (ephemeral_public_key.size() !=
       crypto_box_curve25519xsalsa20poly1305_tweet_PUBLICKEYBYTES)
-    return std::vector<uint8_t>();
+    return absl::nullopt;
   if (private_key_.size() !=
       crypto_box_curve25519xsalsa20poly1305_tweet_SECRETKEYBYTES)
-    return std::vector<uint8_t>();
+    return absl::nullopt;
 
   std::vector<uint8_t> padded_ciphertext = ciphertext;
   padded_ciphertext.insert(padded_ciphertext.begin(), crypto_box_BOXZEROBYTES,
@@ -457,7 +458,7 @@ std::vector<uint8_t> HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
   if (crypto_box_open(padded_plaintext.data(), padded_ciphertext.data(),
                       padded_ciphertext.size(), nonce.data(),
                       ephemeral_public_key.data(), private_key_ptr) != 0)
-    return std::vector<uint8_t>();
+    return absl::nullopt;
   std::vector<uint8_t> plaintext(
       padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
       padded_plaintext.cend());

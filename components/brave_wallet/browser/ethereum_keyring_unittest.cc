@@ -295,54 +295,84 @@ TEST(EthereumKeyringUnitTest, DecryptCipherFromX25519_XSalsa20_Poly1305) {
   std::vector<uint8_t> ephemeral_public_key(ephemeral_public_key_str.begin(),
                                             ephemeral_public_key_str.end());
 
-  std::vector<uint8_t> message_bytes;
-  EXPECT_TRUE(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
+  absl::optional<std::vector<uint8_t>> message_bytes;
+  message_bytes = keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
       "x25519-xsalsa20-poly1305", nonce, ephemeral_public_key, ciphertext,
-      keyring.GetAddress(0), &message_bytes));
-
-  std::string message_str(message_bytes.begin(), message_bytes.end());
+      keyring.GetAddress(0));
+  EXPECT_TRUE(message_bytes.has_value());
+  std::string message_str(message_bytes->begin(), message_bytes->end());
   EXPECT_EQ(message_str, "Ode to Anthony!");
 
+  // 0 byte message
+  // {
+  //   version: 'x25519-xsalsa20-poly1305',
+  //   nonce: 'lz+CB6jeQsUkRB+j8u9jZ37z3hun62kE',
+  //   ephemPublicKey: 'InEw0fowJVqqcwtsaHjxTsAtp3kyFtyTMHgd7UrQ1Tg=',
+  //   ciphertext: 'J+hZ4WZ0Z+YmkOsz2unA+w=='
+  // }
+  EXPECT_TRUE(base::Base64Decode("J+hZ4WZ0Z+YmkOsz2unA+w==", &ciphertext_str));
+  ciphertext =
+      std::vector<uint8_t>(ciphertext_str.begin(), ciphertext_str.end());
+  EXPECT_TRUE(base::Base64Decode("InEw0fowJVqqcwtsaHjxTsAtp3kyFtyTMHgd7UrQ1Tg=",
+                                 &ephemeral_public_key_str));
+  ephemeral_public_key = std::vector<uint8_t>(ephemeral_public_key_str.begin(),
+                                              ephemeral_public_key_str.end());
+  EXPECT_TRUE(
+      base::Base64Decode("lz+CB6jeQsUkRB+j8u9jZ37z3hun62kE", &nonce_str));
+  nonce = std::vector<uint8_t>(nonce_str.begin(), nonce_str.end());
+  message_bytes = keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
+      "x25519-xsalsa20-poly1305", nonce, ephemeral_public_key, ciphertext,
+      keyring.GetAddress(0));
+  message_str = std::string(message_bytes->begin(), message_bytes->end());
+  EXPECT_TRUE(message_str.empty());
+
   // Wrong version
-  EXPECT_FALSE(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-      "x25519-xsalsa20-poly1306", nonce, ephemeral_public_key, ciphertext,
-      keyring.GetAddress(0), &message_bytes));
+  EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
+                "x25519-xsalsa20-poly1306", nonce, ephemeral_public_key,
+                ciphertext, keyring.GetAddress(0)),
+            absl::nullopt);
 
   // Empty nonce
-  EXPECT_FALSE(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-      "x25519-xsalsa20-poly1305", std::vector<uint8_t>(), ephemeral_public_key,
-      ciphertext, keyring.GetAddress(0), &message_bytes));
+  EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
+                "x25519-xsalsa20-poly1305", std::vector<uint8_t>(),
+                ephemeral_public_key, ciphertext, keyring.GetAddress(0)),
+            absl::nullopt);
 
   // Empty public key
-  EXPECT_FALSE(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-      "x25519-xsalsa20-poly1305", nonce, std::vector<uint8_t>(), ciphertext,
-      keyring.GetAddress(0), &message_bytes));
+  EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
+                "x25519-xsalsa20-poly1305", nonce, std::vector<uint8_t>(),
+                ciphertext, keyring.GetAddress(0)),
+            absl::nullopt);
 
   // Empty ciphertext
-  EXPECT_FALSE(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-      "x25519-xsalsa20-poly1305", nonce, ephemeral_public_key,
-      std::vector<uint8_t>(), keyring.GetAddress(0), &message_bytes));
+  EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
+                "x25519-xsalsa20-poly1305", nonce, ephemeral_public_key,
+                std::vector<uint8_t>(), keyring.GetAddress(0)),
+            absl::nullopt);
 
   // Wrong nonce
   std::vector<uint8_t> bad_nonce = nonce;
   bad_nonce[0] = 0;
-  EXPECT_FALSE(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-      "x25519-xsalsa20-poly1305", bad_nonce, ephemeral_public_key, ciphertext,
-      keyring.GetAddress(0), &message_bytes));
+  EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
+                "x25519-xsalsa20-poly1305", bad_nonce, ephemeral_public_key,
+                ciphertext, keyring.GetAddress(0)),
+            absl::nullopt);
 
   // Wrong public key
   std::vector<uint8_t> bad_ephemeral_public_key = ephemeral_public_key;
   bad_ephemeral_public_key[0] = 0;
-  EXPECT_FALSE(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-      "x25519-xsalsa20-poly1305", nonce, bad_ephemeral_public_key, ciphertext,
-      keyring.GetAddress(0), &message_bytes));
+  EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
+                "x25519-xsalsa20-poly1305", nonce, bad_ephemeral_public_key,
+                ciphertext, keyring.GetAddress(0)),
+            absl::nullopt);
 
-  // Empty ciphertext
+  // Wrong ciphertext
   std::vector<uint8_t> bad_ciphertext = ciphertext;
   bad_ciphertext[0] = 0;
-  EXPECT_FALSE(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
-      "x25519-xsalsa20-poly1305", nonce, ephemeral_public_key, bad_ciphertext,
-      keyring.GetAddress(0), &message_bytes));
+  EXPECT_EQ(keyring.DecryptCipherFromX25519_XSalsa20_Poly1305(
+                "x25519-xsalsa20-poly1305", nonce, ephemeral_public_key,
+                bad_ciphertext, keyring.GetAddress(0)),
+            absl::nullopt);
 }
 
 }  // namespace brave_wallet

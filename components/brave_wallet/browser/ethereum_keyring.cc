@@ -144,21 +144,18 @@ bool EthereumKeyring::GetPublicKeyFromX25519_XSalsa20_Poly1305(
   return true;
 }
 
-bool EthereumKeyring::DecryptCipherFromX25519_XSalsa20_Poly1305(
+absl::optional<std::vector<uint8_t>>
+EthereumKeyring::DecryptCipherFromX25519_XSalsa20_Poly1305(
     const std::string& version,
     const std::vector<uint8_t>& nonce,
     const std::vector<uint8_t>& ephemeral_public_key,
     const std::vector<uint8_t>& ciphertext,
-    const std::string& address,
-    std::vector<uint8_t>* message) {
+    const std::string& address) {
   HDKey* hd_key = static_cast<HDKey*>(GetHDKeyFromAddress(address));
   if (!hd_key)
-    return false;
-  *message = hd_key->DecryptCipherFromX25519_XSalsa20_Poly1305(
+    return absl::nullopt;
+  return hd_key->DecryptCipherFromX25519_XSalsa20_Poly1305(
       version, nonce, ephemeral_public_key, ciphertext);
-  if (message->empty())
-    return false;
-  return true;
 }
 
 }  // namespace brave_wallet

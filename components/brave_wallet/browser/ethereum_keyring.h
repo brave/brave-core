@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -39,13 +40,13 @@ class EthereumKeyring : public HDKeyring {
 
   bool GetPublicKeyFromX25519_XSalsa20_Poly1305(const std::string& address,
                                                 std::string* key);
-  bool DecryptCipherFromX25519_XSalsa20_Poly1305(
+  absl::optional<std::vector<uint8_t>>
+  DecryptCipherFromX25519_XSalsa20_Poly1305(
       const std::string& version,
       const std::vector<uint8_t>& nonce,
       const std::vector<uint8_t>& ephemeral_public_key,
       const std::vector<uint8_t>& ciphertext,
-      const std::string& address,
-      std::vector<uint8_t>* message);
+      const std::string& address);
 
  private:
   std::string GetAddressInternal(HDKeyBase* hd_key) const override;

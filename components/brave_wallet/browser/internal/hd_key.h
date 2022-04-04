@@ -14,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_base.h"
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -49,7 +50,8 @@ class HDKey : public HDKeyBase {
   std::string GetPublicExtendedKey() const;
   std::vector<uint8_t> GetUncompressedPublicKey() const;
   std::vector<uint8_t> GetPublicKeyFromX25519_XSalsa20_Poly1305() const;
-  std::vector<uint8_t> DecryptCipherFromX25519_XSalsa20_Poly1305(
+  absl::optional<std::vector<uint8_t>>
+  DecryptCipherFromX25519_XSalsa20_Poly1305(
       const std::string& version,
       const std::vector<uint8_t>& nonce,
       const std::vector<uint8_t>& ephemeral_public_key,

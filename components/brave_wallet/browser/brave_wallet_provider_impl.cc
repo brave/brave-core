@@ -651,11 +651,11 @@ void BraveWalletProviderImpl::ContinueDecryptWithAllowedAccounts(
     return;
   }
 
-  std::vector<uint8_t> unsafe_message_bytes;
-  if (!keyring_service_
-           ->DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
-               version, nonce, ephemeral_public_key, ciphertext, address,
-               &unsafe_message_bytes)) {
+  absl::optional<std::vector<uint8_t>> unsafe_message_bytes =
+      keyring_service_
+          ->DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
+              version, nonce, ephemeral_public_key, ciphertext, address);
+  if (!unsafe_message_bytes.has_value()) {
     std::unique_ptr<base::Value> formed_response;
     formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInvalidParams,
@@ -665,8 +665,8 @@ void BraveWalletProviderImpl::ContinueDecryptWithAllowedAccounts(
     return;
   }
 
-  std::string unsafe_message(unsafe_message_bytes.begin(),
-                             unsafe_message_bytes.end());
+  std::string unsafe_message(unsafe_message_bytes->begin(),
+                             unsafe_message_bytes->end());
   // If the string was not UTF8 then it should have already failed on the
   // JSON sanitization, but we add this check for extra safety.
   if (!base::IsStringUTF8(unsafe_message)) {
