@@ -69,6 +69,7 @@ impl From<u8> for RewriterType {
 }
 
 pub trait SpeedReaderProcessor {
+    fn set_min_out_length(&mut self, min_out_length: i32);
     fn write(&mut self, input: &[u8]) -> Result<(), SpeedReaderError>;
     fn end(&mut self) -> Result<(), SpeedReaderError>;
     fn rewriter_type(&self) -> RewriterType;

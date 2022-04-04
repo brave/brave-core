@@ -63,7 +63,7 @@ where
     let mut dom: Sink =
         parse_document(Sink::default(), Default::default()).from_utf8().read_from(input)?;
 
-    extract_dom(&mut dom, &url, &HashMap::new())
+    extract_dom(&mut dom, &url, None, &HashMap::new())
 }
 
 #[derive(Default, Debug)]
@@ -219,6 +219,7 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
 pub fn extract_dom<S: ::std::hash::BuildHasher>(
     mut dom: &mut Sink,
     url: &Url,
+    min_out_length: Option<i32>,
     features: &HashMap<String, u32, S>,
 ) -> Result<Product, std::io::Error> {
     let handle = dom.document_node.clone();
@@ -249,8 +250,10 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
 
     post_process(&mut dom, top_candidate.clone(), &meta);
 
-    if dom::text_len(&top_candidate) < 100 {
-        return Err(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Too small output"));
+    if let Some(min_out_length) = min_out_length {
+        if (dom::text_len(&top_candidate) as i32) < min_out_length {
+            return Err(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Too small output"));
+        }
     }
 
     // Calls html5ever::serialize() with IncludeNode for us.
@@ -263,8 +266,8 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
             // Our CSS formats based on id="article".
             dom::set_attr("id", "article", div.clone(), true);
             div.to_string()
-        },
-        _ => { top_candidate.to_string() }
+        }
+        _ => top_candidate.to_string(),
     };
 
     if let Some(ref charset) = meta.charset {

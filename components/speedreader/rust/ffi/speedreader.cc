@@ -76,6 +76,10 @@ Rewriter::~Rewriter() {
   }
 }
 
+void Rewriter::SetMinOutLength(int min_out_length) {
+  rewriter_set_min_out_length(raw_, min_out_length);
+}
+
 int Rewriter::Write(const char* chunk, size_t chunk_len) {
   if (!ended_ && !poisoned_) {
     int ret = rewriter_write(raw_, chunk, chunk_len);

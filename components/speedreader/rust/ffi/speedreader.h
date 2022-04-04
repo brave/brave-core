@@ -57,6 +57,10 @@ class SPEEDREADER_EXPORT Rewriter {
   Rewriter(const Rewriter&) = delete;
   void operator=(const Rewriter&) = delete;
 
+  /// If the length of the output content is less than the specified number,
+  /// Speedreader will show the original page.
+  void SetMinOutLength(int min_out_length);
+
   /// Write a new chunk of data (byte array) to the rewriter instance. Does
   /// _not_ need to be a full document and can be called many times with ever
   /// new chunk of data available.

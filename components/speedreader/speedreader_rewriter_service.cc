@@ -105,8 +105,10 @@ bool SpeedreaderRewriterService::URLLooksReadable(const GURL& url) {
 
 std::unique_ptr<Rewriter> SpeedreaderRewriterService::MakeRewriter(
     const GURL& url) {
-  return speedreader_->MakeRewriter(url.spec(),
-                                    RewriterType::RewriterReadability);
+  auto rewriter =
+      speedreader_->MakeRewriter(url.spec(), RewriterType::RewriterReadability);
+  rewriter->SetMinOutLength(speedreader::kSpeedreaderMinOutLengthParam.Get());
+  return rewriter;
 }
 
 const std::string& SpeedreaderRewriterService::GetContentStylesheet() {
