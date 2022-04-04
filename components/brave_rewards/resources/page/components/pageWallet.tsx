@@ -54,11 +54,6 @@ class PageWallet extends React.Component<Props, State> {
     return this.props.actions
   }
 
-  hasUserFunds () {
-    const { balance } = this.props.rewardsData
-    return balance && balance.wallets.anonymous > 0
-  }
-
   componentDidMount () {
     this.isBackupUrl()
     this.isDisconnectUrl()
@@ -81,10 +76,6 @@ class PageWallet extends React.Component<Props, State> {
     this.actions.onModalBackupOpen()
   }
 
-  showBackupNotice = () => {
-    return this.state.activeTabId === 0 && !this.hasUserFunds()
-  }
-
   onModalBackupTabChange = (newTabId: number) => {
     this.setState({
       activeTabId: newTabId
@@ -103,14 +94,12 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   onModalBackupOnPrint = (backupKey: string) => {
-    if (document.location) {
-      const win = window.open(document.location.href)
-      if (win) {
-        win.document.body.innerText = utils.constructBackupString(backupKey) // this should be text, not HTML
-        win.print()
-        win.close()
-        chrome.send('brave_rewards.setBackupCompleted')
-      }
+    const win = window.open()
+    if (win) {
+      win.document.body.innerText = utils.constructBackupString(backupKey)
+      win.print()
+      win.close()
+      chrome.send('brave_rewards.setBackupCompleted')
     }
   }
 
@@ -799,7 +788,6 @@ class PageWallet extends React.Component<Props, State> {
             ? <ModalBackupRestore
               activeTabId={this.state.activeTabId}
               backupKey={recoveryKey}
-              showBackupNotice={this.showBackupNotice()}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupClose}
               onCopy={this.onModalBackupOnCopy}
