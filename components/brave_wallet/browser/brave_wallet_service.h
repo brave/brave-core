@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -148,8 +149,10 @@ class BraveWalletService : public KeyedService,
 
   void RemovePrefListenersForTests();
 
+#if BUILDFLAG(IS_ANDROID)
   void ShowPanel();
   void ShowWalletOnboarding();
+#endif
 
  private:
   friend class BraveWalletProviderImplUnitTest;

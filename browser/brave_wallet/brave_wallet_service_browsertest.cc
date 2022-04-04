@@ -12,6 +12,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -48,8 +49,10 @@ class TestBraveWalletServiceObserver
   void OnDefaultBaseCryptocurrencyChanged(
       const std::string& cryptocurrency) override {}
   void OnNetworkListChanged() override {}
+#if BUILDFLAG(IS_ANDROID)
   void OnShowPanel() override {}
   void OnShowWalletOnboarding() override {}
+#endif
 
   void OnActiveOriginChanged(const std::string& origin,
                              const std::string& etld_plus_one) override {

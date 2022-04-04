@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "build/build_config.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
 class PrefService;
@@ -51,8 +52,10 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
   void OnDefaultBaseCryptocurrencyChanged(
       const std::string& cryptocurrency) override {}
   void OnNetworkListChanged() override {}
+#if BUILDFLAG(IS_ANDROID)
   void OnShowPanel() override {}
   void OnShowWalletOnboarding() override {}
+#endif
 
  private:
   void RecordInitialBraveWalletP3AState();

@@ -893,9 +893,11 @@ interface BraveWalletServiceObserver {
   OnNetworkListChanged();
 
   // Used on Android to show a panel from a dapp call
+  [EnableIf=is_android]
   OnShowPanel();
 
   // Used on Android to show an onboarding from a dapp call
+  [EnableIf=is_android]
   OnShowWalletOnboarding();
 };
 

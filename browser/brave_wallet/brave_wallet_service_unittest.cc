@@ -142,8 +142,10 @@ class TestBraveWalletServiceObserver
   }
 
   void OnNetworkListChanged() override { networkListChangedFired_ = true; }
+#if BUILDFLAG(IS_ANDROID)
   void OnShowPanel() override {}
   void OnShowWalletOnboarding() override {}
+#endif
 
   mojom::DefaultWallet GetDefaultWallet() { return default_wallet_; }
   bool DefaultWalletChangedFired() { return defaultWalletChangedFired_; }

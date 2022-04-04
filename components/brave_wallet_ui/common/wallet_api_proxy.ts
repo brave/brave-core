@@ -100,9 +100,7 @@ export default class WalletApiProxy {
       },
       onNetworkListChanged: function () {
         store.dispatch(WalletActions.getAllNetworks())
-      },
-      onShowPanel: function () {},
-      onShowWalletOnboarding: function () {}
+      }
     })
     this.braveWalletService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote())
   }

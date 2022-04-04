@@ -683,6 +683,7 @@ void BraveWalletService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
+#if BUILDFLAG(IS_ANDROID)
 void BraveWalletService::ShowPanel() {
   for (const auto& observer : observers_) {
     observer->OnShowPanel();
@@ -694,6 +695,7 @@ void BraveWalletService::ShowWalletOnboarding() {
     observer->OnShowWalletOnboarding();
   }
 }
+#endif
 
 void BraveWalletService::OnActiveOriginChanged(
     const std::string& origin,
