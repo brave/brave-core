@@ -7,7 +7,6 @@ import { createAction } from 'redux-act'
 import {
   AccountPayloadType,
   AddSuggestTokenProcessedPayload,
-  GetEncryptionPublicKeyProcessedPayload,
   ShowConnectToSitePayload,
   EthereumChainPayload,
   EthereumChainRequestPayload,
@@ -51,5 +50,3 @@ export const setHardwareWalletInteractionError = createAction<HardwareWalletResp
 export const cancelConnectHardwareWallet = createAction<BraveWallet.TransactionInfo>('cancelConnectHardwareWallet')
 export const addSuggestToken = createAction<BraveWallet.AddSuggestTokenRequest>('addSuggestToken')
 export const addSuggestTokenProcessed = createAction<AddSuggestTokenProcessedPayload>('addSuggestTokenProcessed')
-export const getEncryptionPublicKey = createAction<BraveWallet.GetEncryptionPublicKeyRequest>('getEncryptionPublicKey')
-export const getEncryptionPublicKeyProcessed = createAction<GetEncryptionPublicKeyProcessedPayload>('getEncryptionPublicKeyProcessed')

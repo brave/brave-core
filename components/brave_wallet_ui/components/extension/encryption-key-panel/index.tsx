@@ -31,7 +31,7 @@ export interface Props {
   panelType: 'request' | 'read'
   accounts: WalletAccountType[]
   selectedNetwork: BraveWallet.NetworkInfo
-  encryptionKeyPayload: BraveWallet.GetEncryptionPublicKeyRequest
+  encryptionKeyPayload: BraveWallet.EncryptionKeyRequest
   onProvideOrAllow: () => void
   onCancel: () => void
 }
@@ -69,7 +69,7 @@ function EncryptionKeyPanel (props: Props) {
       <PanelTitle>
         {panelType === 'request'
           ? getLocale('braveWalletProvideEncryptionKeyTitle')
-          : getLocale('braveWalletReadEncryptedMessageTitle').replace('$1', encryptionKeyPayload.origin.url)}
+          : getLocale('braveWalletReadEncryptedMessageTitle').replace('$1', encryptionKeyPayload.origin)}
       </PanelTitle>
       <TabRow>
         <PanelTab
@@ -89,7 +89,7 @@ function EncryptionKeyPanel (props: Props) {
         ) : (
           <MessageText>
             {panelType === 'request'
-              ? getLocale('braveWalletProvideEncryptionKeyDescription').replace('$1', encryptionKeyPayload.origin.url)
+              ? getLocale('braveWalletProvideEncryptionKeyDescription').replace('$1', encryptionKeyPayload.origin)
               : encryptionKeyPayload.message}
           </MessageText>
         )}

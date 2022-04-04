@@ -51,8 +51,3 @@ export type AddSuggestTokenProcessedPayload = {
   approved: boolean
   contractAddress: string
 }
-
-export type GetEncryptionPublicKeyProcessedPayload = {
-  approved: boolean
-  origin: Url
-}
