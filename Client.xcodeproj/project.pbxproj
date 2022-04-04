@@ -1153,6 +1153,10 @@
 		D51CD9C727DBC6A600C01104 /* PortfolioStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51CD9C627DBC6A600C01104 /* PortfolioStoreTests.swift */; };
 		D5A691EC27DF93AD000CC4B3 /* TransactionDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A691EB27DF93AD000CC4B3 /* TransactionDetailsView.swift */; };
 		D5C51E6C27F4C8AA00E1F2D0 /* BiometricsPasscodeEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C51E6B27F4C8AA00E1F2D0 /* BiometricsPasscodeEntryView.swift */; };
+		D5ACA7CE27FB7D08002443CE /* BraveCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AD20C226851C5400889AA7 /* BraveCore.xcframework */; };
+		D5ACA7D927FB7D0E002443CE /* MaterialComponents.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */; };
+		D5ACA7DD27FB7D4B002443CE /* BraveCore.xcframework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27AD20C226851C5400889AA7 /* BraveCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D5ACA7DE27FB7D52002443CE /* MaterialComponents.xcframework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27B68DD625C48EE9002D0826 /* MaterialComponents.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D83822001FC7961D00303C12 /* DispatchQueueExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83821FF1FC7961D00303C12 /* DispatchQueueExtensions.swift */; };
 		D863C8F21F68BFC20058D95F /* GradientProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D863C8E31F68BFC20058D95F /* GradientProgressBar.swift */; };
 		D8D33A7D1FBD080300A20A28 /* SnapKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D33A7C1FBD080300A20A28 /* SnapKitExtensions.swift */; };
@@ -1616,6 +1620,17 @@
 			files = (
 			);
 			name = "Copy Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5ACA7DC27FB7D43002443CE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D5ACA7DE27FB7D52002443CE /* MaterialComponents.xcframework in CopyFiles */,
+				D5ACA7DD27FB7D4B002443CE /* BraveCore.xcframework in CopyFiles */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		E6B09CD31C74EEDB00C63FA1 /* Copy Frameworks */ = {
@@ -3280,6 +3295,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5ACA7D927FB7D0E002443CE /* MaterialComponents.xcframework in Frameworks */,
+				D5ACA7CE27FB7D08002443CE /* BraveCore.xcframework in Frameworks */,
 				277309F32721DF79007643F6 /* SPMLibraries.framework in Frameworks */,
 				277309E92721DF6D007643F6 /* BraveWallet.framework in Frameworks */,
 			);
@@ -6905,6 +6922,7 @@
 				277309E12721DF6D007643F6 /* Sources */,
 				277309E22721DF6D007643F6 /* Frameworks */,
 				277309E32721DF6D007643F6 /* Resources */,
+				D5ACA7DC27FB7D43002443CE /* CopyFiles */,
 			);
 			buildRules = (
 			);
