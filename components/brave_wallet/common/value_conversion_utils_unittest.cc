@@ -23,7 +23,8 @@ void TestValueToBlockchainTokenFailCases(const base::Value& value,
   for (const auto& key : keys) {
     auto invalid_value = value.Clone();
     invalid_value.RemoveKey(key);
-    EXPECT_FALSE(ValueToBlockchainToken(invalid_value))
+    EXPECT_FALSE(
+        ValueToBlockchainToken(invalid_value, "0x1", mojom::CoinType::ETH))
         << "ValueToBlockchainToken should fail if " << key << " not exists";
   }
 }
@@ -145,7 +146,7 @@ TEST(ValueConversionUtilsUnitTest, EthNetworkInfoToValueTest) {
 
 TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   absl::optional<base::Value> json_value = base::JSONReader::Read(R"({
-      "contract_address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+      "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
       "name": "Basic Attention Token",
       "symbol": "BAT",
       "logo": "bat.png",
@@ -154,31 +155,31 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "decimals": 18,
       "visible": true,
       "token_id": "",
-      "coingecko_id": "",
-      "chain_id": ""
+      "coingecko_id": ""
   })");
   ASSERT_TRUE(json_value);
 
   mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
-      "bat.png", true, false, "BAT", 18, true, "", "", "");
+      "bat.png", true, false, "BAT", 18, true, "", "", "0x1",
+      mojom::CoinType::ETH);
 
-  mojom::BlockchainTokenPtr token = ValueToBlockchainToken(json_value.value());
+  mojom::BlockchainTokenPtr token =
+      ValueToBlockchainToken(json_value.value(), "0x1", mojom::CoinType::ETH);
   EXPECT_EQ(token, expected_token);
 
   // Test input value with required keys.
   TestValueToBlockchainTokenFailCases(
-      json_value.value(), {"contract_address", "name", "symbol", "is_erc20",
-                           "is_erc721", "decimals", "visible"});
+      json_value.value(), {"address", "name", "symbol", "is_erc20", "is_erc721",
+                           "decimals", "visible"});
 
   // Test input value with optional keys.
   base::Value optional_value = json_value.value().Clone();
   optional_value.RemoveKey("logo");
   optional_value.RemoveKey("token_id");
   optional_value.RemoveKey("coingecko_id");
-  optional_value.RemoveKey("chain_id");
   expected_token->logo = "";
-  token = ValueToBlockchainToken(optional_value);
+  token = ValueToBlockchainToken(optional_value, "0x1", mojom::CoinType::ETH);
   EXPECT_EQ(token, expected_token);
 }
 

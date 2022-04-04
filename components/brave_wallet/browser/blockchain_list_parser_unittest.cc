@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <map>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -42,13 +41,13 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
      }
     }
   )");
-  std::map<std::string, std::vector<mojom::BlockchainTokenPtr>> token_list_map;
-  ASSERT_TRUE(ParseTokenList(json, &token_list_map));
-  ASSERT_EQ(token_list_map["0x1"].size(), 2UL);
-  EXPECT_EQ(token_list_map["0x2"].size(), 0UL);
-  ASSERT_EQ(token_list_map["0x3"].size(), 1UL);
+  TokenListMap token_list_map;
+  ASSERT_TRUE(ParseTokenList(json, &token_list_map, mojom::CoinType::ETH));
+  ASSERT_EQ(token_list_map["ethereum.0x1"].size(), 2UL);
+  EXPECT_EQ(token_list_map["ethereum.0x2"].size(), 0UL);
+  ASSERT_EQ(token_list_map["ethereum.0x3"].size(), 1UL);
 
-  const auto& mainnet_token_list = token_list_map["0x1"];
+  const auto& mainnet_token_list = token_list_map["ethereum.0x1"];
   EXPECT_EQ(mainnet_token_list[0]->name, "Crypto Kitties");
   EXPECT_EQ(mainnet_token_list[0]->contract_address,
             "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
@@ -69,7 +68,7 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
   EXPECT_EQ(mainnet_token_list[1]->decimals, 18);
   EXPECT_EQ(mainnet_token_list[1]->coingecko_id, "basic-attention-token");
 
-  const auto& ropsten_token_list = token_list_map["0x3"];
+  const auto& ropsten_token_list = token_list_map["ethereum.0x3"];
   EXPECT_EQ(ropsten_token_list[0]->name, "Uniswap");
   EXPECT_EQ(ropsten_token_list[0]->contract_address,
             "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984");
@@ -82,19 +81,19 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
 
   token_list_map.clear();
   json = R"({})";
-  EXPECT_TRUE(ParseTokenList(json, &token_list_map));
+  EXPECT_TRUE(ParseTokenList(json, &token_list_map, mojom::CoinType::ETH));
   EXPECT_TRUE(token_list_map.empty());
   json = R"({"0x0D8775F648430679A709E98d2b0Cb6250d2887EF": 3})";
-  EXPECT_FALSE(ParseTokenList(json, &token_list_map));
+  EXPECT_FALSE(ParseTokenList(json, &token_list_map, mojom::CoinType::ETH));
   json = R"({"0x0D8775F648430679A709E98d2b0Cb6250d2887EF": {}})";
   EXPECT_TRUE(token_list_map.empty());
-  EXPECT_TRUE(ParseTokenList(json, &token_list_map));
+  EXPECT_TRUE(ParseTokenList(json, &token_list_map, mojom::CoinType::ETH));
   json = "3";
-  EXPECT_FALSE(ParseTokenList(json, &token_list_map));
+  EXPECT_FALSE(ParseTokenList(json, &token_list_map, mojom::CoinType::ETH));
   json = "[3]";
-  EXPECT_FALSE(ParseTokenList(json, &token_list_map));
+  EXPECT_FALSE(ParseTokenList(json, &token_list_map, mojom::CoinType::ETH));
   json = "";
-  EXPECT_FALSE(ParseTokenList(json, &token_list_map));
+  EXPECT_FALSE(ParseTokenList(json, &token_list_map, mojom::CoinType::ETH));
 }
 
 }  // namespace brave_wallet

@@ -54,7 +54,8 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
   TokenListMap token_list_map;
-  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
+  ASSERT_TRUE(
+      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
   registry->UpdateTokenList(std::move(token_list_map));
 
   // Loop twice to make sure getting the same list twice works
@@ -62,7 +63,7 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
   for (size_t i = 0; i < 2; ++i) {
     base::RunLoop run_loop;
     registry->GetAllTokens(
-        mojom::kMainnetChainId,
+        mojom::kMainnetChainId, mojom::CoinType::ETH,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
               // ENS Registrar should not be parsed because it doesn't
@@ -92,7 +93,7 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
   // Can get other chain tokens
   base::RunLoop run_loop2;
   registry->GetAllTokens(
-      mojom::kRopstenChainId,
+      mojom::kRopstenChainId, mojom::CoinType::ETH,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             ASSERT_EQ(token_list.size(), 1UL);
@@ -110,7 +111,7 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
   // chainId which has no tokens
   base::RunLoop run_loop3;
   registry->GetAllTokens(
-      mojom::kRinkebyChainId,
+      mojom::kRinkebyChainId, mojom::CoinType::ETH,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             // ENS Registrar should not be parsed because it doesn't have
@@ -125,11 +126,13 @@ TEST(BlockchainRegistryUnitTest, GetTokenByAddress) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
   TokenListMap token_list_map;
-  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
+  ASSERT_TRUE(
+      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
   registry->UpdateTokenList(std::move(token_list_map));
   base::RunLoop run_loop;
   registry->GetTokenByAddress(
-      mojom::kMainnetChainId, "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+      mojom::kMainnetChainId, mojom::CoinType::ETH,
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_EQ(token->symbol, "BAT");
         run_loop.Quit();
@@ -139,7 +142,8 @@ TEST(BlockchainRegistryUnitTest, GetTokenByAddress) {
   // Can get other chain tokens
   base::RunLoop run_loop2;
   registry->GetTokenByAddress(
-      mojom::kRopstenChainId, "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+      mojom::kRopstenChainId, mojom::CoinType::ETH,
+      "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_EQ(token->symbol, "UNI");
         run_loop2.Quit();
@@ -149,7 +153,8 @@ TEST(BlockchainRegistryUnitTest, GetTokenByAddress) {
   // tokens for chanId exist but address doesn't exist
   base::RunLoop run_loop3;
   registry->GetTokenByAddress(
-      mojom::kMainnetChainId, "0xCCC775F648430679A709E98d2b0Cb6250d2887EF",
+      mojom::kMainnetChainId, mojom::CoinType::ETH,
+      "0xCCC775F648430679A709E98d2b0Cb6250d2887EF",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_FALSE(token);
         run_loop3.Quit();
@@ -159,7 +164,8 @@ TEST(BlockchainRegistryUnitTest, GetTokenByAddress) {
   // chainId which has no tokens
   base::RunLoop run_loop4;
   registry->GetTokenByAddress(
-      mojom::kRinkebyChainId, "0xCCC775F648430679A709E98d2b0Cb6250d2887EF",
+      mojom::kRinkebyChainId, mojom::CoinType::ETH,
+      "0xCCC775F648430679A709E98d2b0Cb6250d2887EF",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_FALSE(token);
         run_loop4.Quit();
@@ -171,11 +177,12 @@ TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
   TokenListMap token_list_map;
-  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
+  ASSERT_TRUE(
+      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
   registry->UpdateTokenList(std::move(token_list_map));
   base::RunLoop run_loop;
   registry->GetTokenBySymbol(
-      mojom::kMainnetChainId, "BAT",
+      mojom::kMainnetChainId, mojom::CoinType::ETH, "BAT",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_EQ(token->contract_address,
                   "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
@@ -186,7 +193,7 @@ TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
   // Can get other chain tokens
   base::RunLoop run_loop2;
   registry->GetTokenBySymbol(
-      mojom::kRopstenChainId, "UNI",
+      mojom::kRopstenChainId, mojom::CoinType::ETH, "UNI",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_EQ(token->contract_address,
                   "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984");
@@ -197,7 +204,7 @@ TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
   // chainId has tokens but token doesn't exist
   base::RunLoop run_loop3;
   registry->GetTokenBySymbol(
-      mojom::kMainnetChainId, "BRB",
+      mojom::kMainnetChainId, mojom::CoinType::ETH, "BRB",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_FALSE(token);
         run_loop3.Quit();
@@ -207,7 +214,7 @@ TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
   // chainId which has no tokens
   base::RunLoop run_loop4;
   registry->GetTokenBySymbol(
-      mojom::kRinkebyChainId, "BRB",
+      mojom::kRinkebyChainId, mojom::CoinType::ETH, "BRB",
       base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
         EXPECT_FALSE(token);
         run_loop4.Quit();
