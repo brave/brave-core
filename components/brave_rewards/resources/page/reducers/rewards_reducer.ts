@@ -453,6 +453,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     }
     case types.ON_COMPLETE_RESET: {
       if (action.payload.success) {
+        onboardingCompletedStore.clear()
+        chrome.send('brave_rewards.getOnboardingStatus')
         return undefined
       }
       break
