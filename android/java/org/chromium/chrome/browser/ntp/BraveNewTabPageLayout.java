@@ -999,7 +999,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                                                     + dpToPx(getContext(), 90));
                                                 }
                                             }
-                                        }, 300);
+                                        }, 100);
 
                                         newContentButtonText.setVisibility(View.VISIBLE);
                                         loadingSpinner.setVisibility(View.GONE);
