@@ -466,9 +466,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
-  void OnSanitzeERC721InLineMetadata(
-      GetERC721MetadataCallback callback,
-      data_decoder::JsonSanitizer::Result result);
+  void OnSanitizeERC721Metadata(GetERC721MetadataCallback callback,
+                                data_decoder::JsonSanitizer::Result result);
 
   void OnGetSupportsInterface(
       GetSupportsInterfaceCallback callback,

@@ -423,4 +423,5 @@ bool ToConfiguredGatewayURL(GURL* url, PrefService* prefs) {
   *url = gateway_url;
   return true;
 }
+
 }  // namespace ipfs
