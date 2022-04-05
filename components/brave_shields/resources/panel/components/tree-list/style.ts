@@ -52,7 +52,7 @@ export const Footer = styled.section`
 
 export const SiteTitleBox = styled.div`
   display: grid;
-  grid-template-columns: 24px 1fr;
+  grid-template-columns: 26px 1fr;
   grid-gap: 10px;
   align-items: center;
   margin-bottom: 15px;
@@ -105,11 +105,16 @@ export const BackButton = styled.button`
 
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: 20px 2fr 0.5fr;
-  grid-gap: 5px;
+  grid-template-columns: 26px 2fr 0.5fr;
+  grid-gap: 10px;
   align-items: center;
   font-family: ${(p) => p.theme.fontFamily.heading};
   color: ${(p) => p.theme.color.text01};
   font-size: 14px;
   font-weight: 600;
+
+  span:first-child {
+    text-align: center;
+    overflow: hidden;
+  }
 `

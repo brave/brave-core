@@ -26,7 +26,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ADVANCED_CTRLS" desc="A button label to expand/collapse more options.">
-    Advanced Controls
+    Advanced controls
   </message>
 
   <message name="IDS_BRAVE_SHIELD_SETTINGS_DESCRIPTION" desc="A description to explain the various options below will effect web compatibility.">
