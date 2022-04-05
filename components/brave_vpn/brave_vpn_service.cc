@@ -452,7 +452,8 @@ void BraveVpnService::GetConnectionState(GetConnectionStateCallback callback) {
 void BraveVpnService::ResetConnectionState() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Reset is allowed only when it has failed state.
-  if (connection_state_ != ConnectionState::CONNECT_NOT_ALLOWED && connection_state_ != ConnectionState::CONNECT_FAILED)
+  if (connection_state_ != ConnectionState::CONNECT_NOT_ALLOWED &&
+      connection_state_ != ConnectionState::CONNECT_FAILED)
     return;
 
   UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED, true);

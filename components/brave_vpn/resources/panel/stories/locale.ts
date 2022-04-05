@@ -46,5 +46,6 @@ provideStrings({
   braveVpnSupportOptionalAppVersion: 'App version:',
   braveVpnSupportOptionalOsVersion: 'OS version:',
   braveVpnSupportNotes: 'Support provided in partnership with Guardian.',
-  braveVpnSupportSubmit: 'Submit'
+  braveVpnSupportSubmit: 'Submit',
+  braveVpnConnectNotAllowed: 'VPN connection failed. Please try connecting again, and be sure to click Allow to enable Brave\'s VPN configuration.'
 })

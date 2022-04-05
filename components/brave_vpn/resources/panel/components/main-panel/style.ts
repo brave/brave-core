@@ -84,3 +84,18 @@ export const RegionLabel = styled.span`
   color: var(--region-label-color);
   letter-spacing: 0.04em;
 `
+
+export const ConnectNotAllowedNote = styled.section`
+  color: ${(p) => p.theme.color.text01};
+  font-family: ${(p) => p.theme.fontFamily.heading};
+  font-size: 14px;
+  text-align: center;
+  padding: 0 22px;
+  margin-bottom: 20px;
+  
+  div {
+    padding: 12px;
+    background-color: ${(p) => p.theme.color.warningBackground};
+    border-radius: 8px;
+  }
+`

@@ -36,6 +36,7 @@ BraveVPN.setPanelBrowserApiForTesting({
     createSupportTicket: (email: string, subject: string, body: string) => Promise.resolve({
       success: true,
       response: 'OK'
-    })
+    }),
+    resetConnectionState: doNothing
   }
 })

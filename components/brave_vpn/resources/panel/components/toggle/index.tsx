@@ -38,12 +38,14 @@ function Toggle () {
         {status === ConnectionState.CONNECTING && <S.Loader><LoaderIcon /></S.Loader>}
         {status === ConnectionState.DISCONNECTING && <S.Loader><LoaderIcon /></S.Loader>}
         {status === ConnectionState.DISCONNECTED && <S.InActiveIndicator />}
+        {status === ConnectionState.CONNECT_NOT_ALLOWED && <S.InActiveIndicator />}
         {status === ConnectionState.CONNECT_FAILED && <S.FailedIndicator />}
         <S.StatusText>
           {status === ConnectionState.CONNECTED && getLocale('braveVpnConnected')}
           {status === ConnectionState.CONNECTING && getLocale('braveVpnConnecting')}
           {status === ConnectionState.DISCONNECTING && getLocale('braveVpnDisconnecting')}
           {status === ConnectionState.DISCONNECTED && getLocale('braveVpnDisconnected')}
+          {status === ConnectionState.CONNECT_NOT_ALLOWED && getLocale('braveVpnDisconnected')}
           {status === ConnectionState.CONNECT_FAILED && getLocale('braveVpnConnectionFailed')}
         </S.StatusText>
       </S.StatusBox>

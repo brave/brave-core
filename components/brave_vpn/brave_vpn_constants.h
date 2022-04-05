@@ -66,6 +66,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_VPN_SUPPORT_OPTIONAL_OS_VERSION},
     {"braveVpnSupportNotes", IDS_BRAVE_VPN_SUPPORT_NOTES},
     {"braveVpnSupportSubmit", IDS_BRAVE_VPN_SUPPORT_SUBMIT},
+    {"braveVpnConnectNotAllowed", IDS_BRAVE_VPN_CONNECT_NOT_ALLOWED},
 };
 
 constexpr char kManageUrlProd[] = "http://account.brave.com/";
