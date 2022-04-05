@@ -982,6 +982,8 @@ void BraveWalletProviderImpl::CommonRequestOrSendAsync(
         base::BindOnce(&BraveWalletProviderImpl::OnContinueGetAllowedAccounts,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id), method, origin));
+  } else if (method == kWeb3ClientVersion) {
+    Web3ClientVersion(std::move(callback), std::move(id));
   } else {
     json_rpc_service_->Request(normalized_json_request, true, std::move(id),
                                mojom::CoinType::ETH, std::move(callback));
@@ -1136,6 +1138,14 @@ void BraveWalletProviderImpl::OnUpdateKnownAccounts(
     events_listener_->AccountsChangedEvent(known_allowed_accounts);
   }
   first_known_accounts_check = false;
+}
+
+void BraveWalletProviderImpl::Web3ClientVersion(RequestCallback callback,
+                                                base::Value id) {
+  std::unique_ptr<base::Value> formed_response =
+      base::Value::ToUniquePtrValue(base::Value(GetWeb3ClientVersion()));
+  std::move(callback).Run(std::move(id), std::move(*formed_response), false, "",
+                          false);
 }
 
 void BraveWalletProviderImpl::GetChainId(GetChainIdCallback callback) {

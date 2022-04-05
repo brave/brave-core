@@ -26,6 +26,7 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "brave/components/version_info/version_info.h"
 #include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -952,6 +953,12 @@ absl::optional<std::string> GetPrefKeyForCoinType(mojom::CoinType coin) {
 std::string eTLDPlusOne(const GURL& url) {
   return net::registry_controlled_domains::GetDomainAndRegistry(
       url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+}
+
+// Returns a string used for web3_clientVersion in the form of Brave/v[version]
+std::string GetWeb3ClientVersion() {
+  return base::StringPrintf(
+      "BraveWallet/v%s", version_info::GetBraveChromiumVersionNumber().c_str());
 }
 
 }  // namespace brave_wallet
