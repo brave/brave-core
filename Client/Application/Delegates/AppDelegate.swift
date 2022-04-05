@@ -335,6 +335,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // Clean up BraveCore
     braveCore.syncAPI.removeAllObservers()
+    if braveCore.responds(to: Selector(("onAppWillTerminate:"))) {
+      braveCore.perform(Selector(("onAppWillTerminate:")), with: nil)
+    }
+    
+    log.debug("Cleanly Terminated the Application")
   }
 
   func updateShortcutItems(_ application: UIApplication) {
