@@ -143,6 +143,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   let downloadQueue = DownloadQueue()
 
   fileprivate var contentBlockListDeferred: Deferred<()>?
+  private var cancellables: Set<AnyCancellable> = []
 
   // Web filters
 
@@ -682,7 +683,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
 
     // Temporary work around for covering the non-clipped web view content
     statusBarOverlay = UIView()
-    statusBarOverlay.backgroundColor = .urlBarBackground
+    statusBarOverlay.backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
     view.addSubview(statusBarOverlay)
 
     topTouchArea = UIButton()
@@ -777,9 +778,22 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         if isPrivateBrowsing {
           self?.statusBarOverlay.backgroundColor = .privateModeBackground
         } else {
-          self?.statusBarOverlay.backgroundColor = .urlBarBackground
+          self?.statusBarOverlay.backgroundColor =
+          Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
         }
       })
+    
+    Preferences.General.nightModeEnabled.objectWillChange
+      .receive(on: RunLoop.main)
+      .sink { [weak self] _ in
+        if PrivateBrowsingManager.shared.isPrivateBrowsing {
+          self?.statusBarOverlay.backgroundColor = .privateModeBackground
+        } else {
+          self?.statusBarOverlay.backgroundColor =
+          Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
+        }
+      }
+      .store(in: &cancellables)
   }
 
   fileprivate let defaultBrowserNotificationId = "defaultBrowserNotification"

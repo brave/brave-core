@@ -184,6 +184,9 @@ extension UIColor {
       return .braveSeparator
     }
   }
+  public static var nightModeBackground: UIColor {
+    return .secondaryBraveBackground
+  }
 }
 
 // MARK: - Static Colors

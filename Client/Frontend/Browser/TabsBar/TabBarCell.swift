@@ -42,6 +42,7 @@ class TabBarCell: UICollectionViewCell {
   weak var tabManager: TabManager?
 
   var closeTabCallback: ((Tab) -> Void)?
+  private var cancellables: Set<AnyCancellable> = []
 
   private let deselectedOverlayView = UIView().then {
     $0.backgroundColor = UIColor {
@@ -54,8 +55,8 @@ class TabBarCell: UICollectionViewCell {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    backgroundColor = .urlBarBackground
-
+    backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
+    
     [deselectedOverlayView, closeButton, titleLabel, separatorLine, separatorLineRight].forEach { contentView.addSubview($0) }
     initConstraints()
 
@@ -66,6 +67,13 @@ class TabBarCell: UICollectionViewCell {
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         self?.updateColors(isPrivateBrowsing)
       })
+    
+    Preferences.General.nightModeEnabled.objectWillChange
+      .receive(on: RunLoop.main)
+      .sink { [weak self] _ in
+        self?.updateColors(PrivateBrowsingManager.shared.isPrivateBrowsing)
+      }
+      .store(in: &cancellables)
   }
 
   private var privateModeCancellable: AnyCancellable?
@@ -73,7 +81,7 @@ class TabBarCell: UICollectionViewCell {
     if isPrivateBrowsing {
       backgroundColor = .privateModeBackground
     } else {
-      backgroundColor = .urlBarBackground
+      backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
     }
   }
 

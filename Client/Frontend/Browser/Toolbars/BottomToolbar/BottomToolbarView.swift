@@ -24,13 +24,14 @@ class BottomToolbarView: UIView, ToolbarProtocol {
 
   var helper: ToolbarHelper?
   private let contentView = UIStackView()
+  private var cancellables: Set<AnyCancellable> = []
 
   fileprivate override init(frame: CGRect) {
     actionButtons = [backButton, forwardButton, addTabButton, searchButton, tabsButton, menuButton]
     super.init(frame: frame)
     setupAccessibility()
 
-    backgroundColor = .urlBarBackground
+    backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
 
     addSubview(contentView)
     helper = ToolbarHelper(toolbar: self)
@@ -46,6 +47,13 @@ class BottomToolbarView: UIView, ToolbarProtocol {
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         self?.updateColors(isPrivateBrowsing)
       })
+    
+    Preferences.General.nightModeEnabled.objectWillChange
+      .receive(on: RunLoop.main)
+      .sink { [weak self] _ in
+        self?.updateColors(PrivateBrowsingManager.shared.isPrivateBrowsing)
+      }
+      .store(in: &cancellables)
   }
 
   private var privateModeCancellable: AnyCancellable?
@@ -53,7 +61,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     if isPrivateBrowsing {
       backgroundColor = .privateModeBackground
     } else {
-      backgroundColor = .urlBarBackground
+      backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
     }
   }
 

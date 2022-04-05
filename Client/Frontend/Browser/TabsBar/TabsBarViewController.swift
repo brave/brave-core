@@ -20,6 +20,7 @@ class TabsBarViewController: UIViewController {
   private let rightOverflowIndicator = CAGradientLayer()
 
   weak var delegate: TabsBarViewControllerDelegate?
+  private var cancellables: Set<AnyCancellable> = []
 
   private lazy var plusButton: UIButton = {
     let button = UIButton()
@@ -74,7 +75,7 @@ class TabsBarViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.backgroundColor = .urlBarBackground
+    view.backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
     collectionView.backgroundColor = view.backgroundColor
 
     tabManager?.addDelegate(self)
@@ -141,6 +142,13 @@ class TabsBarViewController: UIViewController {
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         self?.updateColors(isPrivateBrowsing)
       })
+    
+    Preferences.General.nightModeEnabled.objectWillChange
+      .receive(on: RunLoop.main)
+      .sink { [weak self] _ in
+        self?.updateColors(PrivateBrowsingManager.shared.isPrivateBrowsing)
+      }
+      .store(in: &cancellables)
   }
 
   private var privateModeCancellable: AnyCancellable?
@@ -149,7 +157,7 @@ class TabsBarViewController: UIViewController {
     if isPrivateBrowsing {
       backgroundColor = .privateModeBackground
     } else {
-      backgroundColor = .urlBarBackground
+      backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
     }
     view.backgroundColor = backgroundColor
     collectionView.backgroundColor = view.backgroundColor

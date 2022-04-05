@@ -430,6 +430,9 @@ extension BrowserViewController: WKNavigationDelegate {
     guard let tab = tabManager[webView] else { return }
 
     tab.url = webView.url
+    // Need to evaluate Night mode script injection after url is set inside the Tab
+    tab.nightMode = Preferences.General.nightModeEnabled.value
+
     self.scrollController.resetZoomState()
 
     rewards.reportTabNavigation(tabId: tab.rewardsId)
