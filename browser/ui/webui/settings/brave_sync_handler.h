@@ -41,6 +41,7 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   // Custom message handlers:
   void HandleGetDeviceList(const base::Value::List& args);
   void HandleGetSyncCode(const base::Value::List& args);
+  void HandleGetPureSyncCode(const base::Value::List& args);
   void HandleSetSyncCode(const base::Value::List& args);
   void HandleGetQRCode(const base::Value::List& args);
   void HandleReset(const base::Value::List& args);

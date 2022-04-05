@@ -75,6 +75,10 @@ void BraveSyncHandler::RegisterMessages() {
       base::BindRepeating(&BraveSyncHandler::HandleGetSyncCode,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "SyncSetupGetPureSyncCode",
+      base::BindRepeating(&BraveSyncHandler::HandleGetPureSyncCode,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "SyncGetQRCode", base::BindRepeating(&BraveSyncHandler::HandleGetQRCode,
                                            base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
@@ -125,6 +129,18 @@ void BraveSyncHandler::HandleGetSyncCode(const base::Value::List& args) {
 
   ResolveJavascriptCallback(args[0].Clone(),
                             base::Value(time_limited_sync_code));
+}
+
+void BraveSyncHandler::HandleGetPureSyncCode(const base::Value::List& args) {
+  AllowJavascript();
+  CHECK_EQ(1U, args.size());
+
+  auto* sync_service = GetSyncService();
+  std::string sync_code;
+  if (sync_service)
+    sync_code = sync_service->GetOrCreateSyncCode();
+
+  ResolveJavascriptCallback(args[0].Clone(), base::Value(sync_code));
 }
 
 void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
