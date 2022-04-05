@@ -2874,6 +2874,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ACCESSIBILITY_NEW_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new tab view.">
       New tab
     </message>
+    <message name="IDS_ENABLE_TAB_GROUPS_TITLE" desc="Menu item for grouping Tabs automatically.">
+      Enable Tab Group auto creation
+    </message>
     </messages>
   </release>
 </grit>
