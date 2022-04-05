@@ -4,6 +4,7 @@
 
 import XCTest
 import WebKit
+import Combine
 @testable import Client
 
 class ContentBlockerTests: XCTestCase {
@@ -99,11 +100,18 @@ class ContentBlockerTests: XCTestCase {
 
     let exp = XCTestExpectation(description: "compile")
     exp.isInverted = !expectSuccess
-
-    Task.detached(priority: .userInitiated) {
-      _ = await self.contentBlocker?.compile(data: data, ruleStore: self.store)
-      exp.fulfill()
-    }
+    
+    var task: AnyCancellable?
+    task = contentBlocker?.compile(data: data, ruleStore: self.store)
+      .sink(receiveCompletion: { res in
+        switch res {
+        case .failure(let error):
+          XCTFail("Error Compiling Content Blocker Rules: \(error)")
+        default:
+          exp.fulfill()
+        }
+        task = nil
+      }, receiveValue: { _ in })
 
     wait(for: [exp], timeout: 1)
 

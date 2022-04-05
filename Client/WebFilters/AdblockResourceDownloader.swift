@@ -70,9 +70,7 @@ class AdblockResourceDownloader {
       return Empty(outputType: Void.self, failureType: Error.self).eraseToAnyPublisher()
     }
 
-    return downloadResources(
-      type: .regional(locale: locale),
-      queueName: "Regional adblock setup")
+    return downloadResources(type: .regional(locale: locale))
       .receive(on: DispatchQueue.main)
       .map {
         log.debug("Regional blocklists download and setup completed.")
@@ -81,9 +79,7 @@ class AdblockResourceDownloader {
   }
 
   func generalAdblockResourcesSetup() -> AnyPublisher<Void, Error> {
-    return downloadResources(
-      type: .general,
-      queueName: "General adblock setup")
+    return downloadResources(type: .general)
       .receive(on: DispatchQueue.main)
       .map {
         log.debug("General blocklists download and setup completed.")
@@ -91,7 +87,7 @@ class AdblockResourceDownloader {
       }.eraseToAnyPublisher()
   }
 
-  private func downloadResources(type: AdblockerType, queueName: String) -> AnyPublisher<Void, Error> {
+  private func downloadResources(type: AdblockerType) -> AnyPublisher<Void, Error> {
     let nm = networkManager
     let folderName = AdblockResourceDownloader.folderName
 
@@ -209,6 +205,10 @@ class AdblockResourceDownloader {
   }
 
   private func setUpFiles(resources: [AdBlockNetworkResource], compileJsonRules: Bool) -> AnyPublisher<Void, Error> {
+    if resources.isEmpty {
+      return Fail(error: "No Adblock Resource to Setup").eraseToAnyPublisher()
+    }
+    
     let resources: [AnyPublisher<Void, Error>] = resources.compactMap {
       switch $0.fileType {
       case .dat:

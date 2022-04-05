@@ -7,6 +7,7 @@ import Static
 import WebKit
 import Shared
 import BraveShared
+import Combine
 
 private let log = Logger.browserLogger
 
@@ -38,13 +39,24 @@ class AdblockDebugMenuTableViewController: TableViewController {
         text: "Recompile Content Blockers",
         selection: {
           BlocklistName.allLists.forEach { $0.fileVersionPref?.value = nil }
-          Task {
-            _ = await ContentBlockerHelper.compileBundledLists()
-            await MainActor.run { [weak self] in
-              let alert = UIAlertController(title: nil, message: "Recompiled Blockers", preferredStyle: .alert)
-              alert.addAction(UIAlertAction(title: "OK", style: .default))
-              self?.present(alert, animated: true)
-            }
+          
+          var compileListsTask: AnyCancellable?
+          compileListsTask = ContentBlockerHelper.compileBundledLists()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] res in
+              switch res {
+              case .failure(let error):
+                let alert = UIAlertController(title: nil, message: "Failed to Recompile Blockers: \(error)", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                self?.present(alert, animated: true)
+              default:
+                break
+              }
+              compileListsTask = nil
+          } receiveValue: { [weak self] _ in
+            let alert = UIAlertController(title: nil, message: "Recompiled Blockers", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self?.present(alert, animated: true)
           }
         }, cellClass: ButtonCell.self)
     ]
