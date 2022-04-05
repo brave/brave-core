@@ -122,7 +122,7 @@ class NTPDownloader {
     delegate?.preloadCustomTheme(theme: customTheme)
   }
 
-  private func getNTPResource(for type: ResourceType) async throws -> NTPThemeable? {
+  private func getNTPResource(for type: ResourceType, _ completion: @escaping (NTPThemeable?) -> Void) {
     // Load from cache because the time since the last fetch hasn't expired yet..
     if let nextDate = Preferences.NTP.ntpCheckDate.value,
       Date().timeIntervalSince1970 - nextDate < 0 {
@@ -132,83 +132,83 @@ class NTPDownloader {
         self.scheduleObservers(relativeTime: relativeTime)
       }
 
-      return loadNTPResource(for: type)
+      return completion(self.loadNTPResource(for: type))
     }
 
     // Download the NTP resource to a temporary directory
-    do {
-      let (url, cacheInfo) = try await downloadMetadata(type: type)
+    self.downloadMetadata(type: type) { [weak self] url, cacheInfo, error in
+      guard let self = self else { return }
+
       // Start the timer no matter what..
-      startNTPTimer()
+      self.startNTPTimer()
+
+      if case .campaignEnded = error {
+        do {
+          try self.removeCampaign(type: type)
+        } catch {
+          logger.error(error)
+        }
+        return completion(nil)
+      }
+
+      if let error = error?.underlyingError() {
+        logger.error(error)
+        return completion(self.loadNTPResource(for: type))
+      }
 
       if let cacheInfo = cacheInfo, cacheInfo.statusCode == 304 {
         logger.debug("NTPDownloader Cache is still valid")
-        return loadNTPResource(for: type)
+        return completion(self.loadNTPResource(for: type))
       }
 
       guard let url = url else {
         logger.error("Invalid NTP Temporary Downloads URL")
-        return loadNTPResource(for: type)
+        return completion(self.loadNTPResource(for: type))
       }
 
       // Move contents of `url` directory
       // to somewhere more permanent where we'll load the images from..
-      guard let saveLocation = type.saveLocation else { throw "Can't find location to save" }
 
-      try FileManager.default.createDirectory(at: saveLocation, withIntermediateDirectories: true, attributes: nil)
-
-      if FileManager.default.fileExists(atPath: saveLocation.path) {
-        try FileManager.default.removeItem(at: saveLocation)
-      }
-
-      try FileManager.default.moveItem(at: url, to: saveLocation)
-
-      // Store the ETag
-      if let cacheInfo = cacheInfo {
-        setETag(cacheInfo.etag, type: type)
-      }
-    } catch {
-      // Start the timer no matter what..
-      startNTPTimer()
-
-      if case .campaignEnded = error as? NTPError {
-        do {
-          try removeCampaign(type: type)
-        } catch {
-          logger.error(error)
-        }
-        return nil
-      }
-
-      if let error = (error as? NTPError)?.underlyingError() {
-        logger.error(error)
-      }
-    }
-
-    return loadNTPResource(for: type)
-  }
-
-  func notifyObservers(for type: ResourceType) {
-    Task {
       do {
-        let item = try await getNTPResource(for: type)
-        switch type {
-        case .superReferral(let code):
-          if item == nil {
-            // Even if referral is nil we stil want to call this code
-            // to trigger side effects of theme update function.
-            self.delegate?.onThemeUpdated(theme: item as? CustomTheme)
-            return
-          }
+        guard let saveLocation = type.saveLocation else { throw "Can't find location to save" }
 
-          self.delegate?.onThemeUpdated(theme: item as? CustomTheme)
-          Preferences.NewTabPage.selectedCustomTheme.value = code
-          Preferences.NewTabPage.superReferrerThemeRetryDeadline.value = nil
-        case .sponsor:
-          self.delegate?.onSponsorUpdated(sponsor: item as? NTPSponsor)
+        try FileManager.default.createDirectory(at: saveLocation, withIntermediateDirectories: true, attributes: nil)
+
+        if FileManager.default.fileExists(atPath: saveLocation.path) {
+          try FileManager.default.removeItem(at: saveLocation)
+        }
+
+        try FileManager.default.moveItem(at: url, to: saveLocation)
+
+        // Store the ETag
+        if let cacheInfo = cacheInfo {
+          self.setETag(cacheInfo.etag, type: type)
         }
       } catch {
         logger.error(error)
+      }
+
+      completion(self.loadNTPResource(for: type))
+    }
+  }
+
+  func notifyObservers(for type: ResourceType) {
+    self.getNTPResource(for: type) { [weak self] item in
+
+      switch type {
+      case .superReferral(let code):
+        if item == nil {
+          // Even if referral is nil we stil want to call this code
+          // to trigger side effects of theme update function.
+          self?.delegate?.onThemeUpdated(theme: item as? CustomTheme)
+          return
+        }
+
+        self?.delegate?.onThemeUpdated(theme: item as? CustomTheme)
+        Preferences.NewTabPage.selectedCustomTheme.value = code
+        Preferences.NewTabPage.superReferrerThemeRetryDeadline.value = nil
+      case .sponsor:
+        self?.delegate?.onSponsorUpdated(sponsor: item as? NTPSponsor)
       }
     }
   }
@@ -409,39 +409,40 @@ class NTPDownloader {
     }
   }
 
-  private func downloadMetadata(type: ResourceType) async throws -> (URL?, CacheResponse?) {
-    let data: Data
-    let cacheInfo: CacheResponse
-
-    do {
-      (data, cacheInfo) = try await download(
-        type: type,
-        path: type.resourceName,
-        etag: getETag(type: type))
-    } catch {
-      throw NTPError.metadataError(error)
-    }
-
-    if cacheInfo.statusCode == 304 {
-      return (nil, cacheInfo)
-    }
-
-    if data.isEmpty {
-      throw "Invalid \(type.resourceName) for NTP Download"
-    }
-
-    switch type {
-    case .sponsor:
-      if Self.isSponsorCampaignEnded(data: data) {
-        throw NTPError.campaignEnded
+  private func downloadMetadata(type: ResourceType, _ completion: @escaping (URL?, CacheResponse?, NTPError?) -> Void) {
+    self.download(type: type, path: type.resourceName, etag: self.getETag(type: type)) { [weak self] data, cacheInfo, error in
+      guard let self = self else {
+        completion(nil, nil, .loadingError("NTP Downloader Deallocated"))
+        return
       }
-    case .superReferral:
-      if Self.isSuperReferralCampaignEnded(data: data) {
-        throw NTPError.campaignEnded
+
+      if let error = error {
+        return completion(nil, nil, .metadataError(error))
+      }
+
+      if let cacheInfo = cacheInfo, cacheInfo.statusCode == 304 {
+        return completion(nil, cacheInfo, nil)
+      }
+
+      guard let data = data else {
+        return completion(nil, nil, .metadataError("Invalid \(type.resourceName) for NTP Download"))
+      }
+
+      switch type {
+      case .sponsor:
+        if Self.isSponsorCampaignEnded(data: data) {
+          return completion(nil, nil, .campaignEnded)
+        }
+      case .superReferral(_):
+        if Self.isSuperReferralCampaignEnded(data: data) {
+          return completion(nil, nil, .campaignEnded)
+        }
+      }
+
+      self.unpackMetadata(type: type, data: data) { url, error in
+        completion(url, cacheInfo, error)
       }
     }
-
-    return (try await unpackMetadata(type: type, data: data), nil)
   }
 
   // MARK: - Download & Unpacking
@@ -459,9 +460,9 @@ class NTPDownloader {
   }
 
   // Downloads the item at the specified url relative to the baseUrl
-  private func download(type: ResourceType, path: String?, etag: String?) async throws -> (Data, CacheResponse) {
+  private func download(type: ResourceType, path: String?, etag: String?, _ completion: @escaping (Data?, CacheResponse?, Error?) -> Void) {
     guard var url = type.resourceBaseURL() else {
-      throw "Invalid Resource Base URL"
+      return completion(nil, nil, nil)
     }
 
     if let path = path {
@@ -473,59 +474,75 @@ class NTPDownloader {
       request.setValue(etag, forHTTPHeaderField: "If-None-Match")
     }
 
-    let (data, response) = try await NetworkManager(session: URLSession(configuration: .ephemeral)).dataRequest(with: request)
+    let session = URLSession(configuration: .ephemeral)
+    session.dataRequest(with: request) { [weak self] result in
+      guard let self = self else { return }
+      
+      switch result {
+      case .success(let (data, response)):
+        guard let response = response as? HTTPURLResponse else {
+          completion(nil, nil, "Response is not an HTTP Response")
+          return
+        }
+        
+        if response.statusCode != 304 && (response.statusCode < 200 || response.statusCode > 299) {
+          completion(nil, nil, "Invalid Response Status Code: \(response.statusCode)")
+          return
+        }
 
-    guard let response = response as? HTTPURLResponse else {
-      throw "Response is not an HTTP Response"
+        completion(data, self.parseETagResponseInfo(response), nil)
+        
+      case .failure(let error):
+        completion(nil, nil, error)
+      }
     }
-
-    if response.statusCode != 304 && (response.statusCode < 200 || response.statusCode > 299) {
-      throw "Invalid Response Status Code: \(response.statusCode)"
-    }
-
-    return (data, parseETagResponseInfo(response))
+    
+    session.finishTasksAndInvalidate()
   }
 
   // Unpacks NTPResource by downloading all of its assets to a temporary directory
   // and returning the URL to the directory
-  private func unpackMetadata(type: ResourceType, data: Data) async throws -> URL {
-    func decodeAndSave(type: ResourceType) throws -> (wallpapers: [NTPWallpaper], logos: [NTPLogo], topSites: [CustomTheme.TopSite]?) {
-      switch type {
-      case .sponsor:
-        let schema = try JSONDecoder().decode(NTPSchema.self, from: data)
-        let metadataFileURL = directory.appendingPathComponent(type.resourceName)
-        try JSONEncoder().encode(schema).write(to: metadataFileURL, options: .atomic)
-
-        var wallpapers: [NTPWallpaper] = [NTPWallpaper]()
-        var logos: [NTPLogo] = [NTPLogo]()
-
-        if let schemaCampaigns = schema.campaigns {
-          wallpapers.append(contentsOf: schemaCampaigns.flatMap(\.wallpapers))
-          logos.append(contentsOf: schemaCampaigns.compactMap(\.logo))
-        }
-
-        logos.append(contentsOf: wallpapers.compactMap(\.logo))
-
-        if let schemaWallpapers = schema.wallpapers, wallpapers.isEmpty {
-          /// If campaigns are not defined in the scema fallback to wallpapers
-          wallpapers.append(contentsOf: schemaWallpapers.compactMap { $0 })
-          logos.append(contentsOf: [schema.logo].compactMap { $0 })
-        }
-
-        return (wallpapers, logos, nil)
-      case .superReferral:
-        let item = try JSONDecoder().decode(CustomTheme.self, from: data)
-        let metadataFileURL = directory.appendingPathComponent(type.resourceName)
-        try JSONEncoder().encode(item).write(to: metadataFileURL, options: .atomic)
-        return (item.wallpapers, [item.logo].compactMap { $0 }, item.topSites)
-      }
-    }
-
+  private func unpackMetadata(type: ResourceType, data: Data, _ completion: @escaping (URL?, NTPError?) -> Void) {
     let tempDirectory = FileManager.default.temporaryDirectory
     let directory = tempDirectory.appendingPathComponent(type.saveTopFolderName)
 
     do {
+      var error: Error?
+      let group = DispatchGroup()
+
       try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
+
+      func decodeAndSave(type: ResourceType) throws -> (wallpapers: [NTPWallpaper], logos: [NTPLogo], topSites: [CustomTheme.TopSite]?) {
+        switch type {
+        case .sponsor:
+          let schema = try JSONDecoder().decode(NTPSchema.self, from: data)
+          let metadataFileURL = directory.appendingPathComponent(type.resourceName)
+          try JSONEncoder().encode(schema).write(to: metadataFileURL, options: .atomic)
+
+          var wallpapers: [NTPWallpaper] = [NTPWallpaper]()
+          var logos: [NTPLogo] = [NTPLogo]()
+
+          if let schemaCampaigns = schema.campaigns {
+            wallpapers.append(contentsOf: schemaCampaigns.flatMap(\.wallpapers))
+            logos.append(contentsOf: schemaCampaigns.compactMap(\.logo))
+          }
+
+          logos.append(contentsOf: wallpapers.compactMap(\.logo))
+
+          if let schemaWallpapers = schema.wallpapers, wallpapers.isEmpty {
+            /// If campaigns are not defined in the scema fallback to wallpapers
+            wallpapers.append(contentsOf: schemaWallpapers.compactMap { $0 })
+            logos.append(contentsOf: [schema.logo].compactMap { $0 })
+          }
+
+          return (wallpapers, logos, nil)
+        case .superReferral:
+          let item = try JSONDecoder().decode(CustomTheme.self, from: data)
+          let metadataFileURL = directory.appendingPathComponent(type.resourceName)
+          try JSONEncoder().encode(item).write(to: metadataFileURL, options: .atomic)
+          return (item.wallpapers, [item.logo].compactMap { $0 }, item.topSites)
+        }
+      }
 
       let item = try decodeAndSave(type: type)
 
@@ -535,49 +552,88 @@ class NTPDownloader {
       imagesToDownload.append(contentsOf: item.wallpapers.map { $0.imageUrl })
       imagesToDownload.append(contentsOf: item.wallpapers.compactMap { $0.logo?.imageUrl })
 
-      try await withThrowingTaskGroup(
-        of: Void.self,
-        body: { group in
-          imagesToDownload.forEach { itemURL in
-            group.addTask {
-              let (data, _) = try await self.download(type: type, path: itemURL, etag: nil)
-              let file = directory.appendingPathComponent(itemURL)
+      for itemURL in imagesToDownload {
+        group.enter()
+        self.download(type: type, path: itemURL, etag: nil) { data, _, err in
+          if let err = err {
+            error = err
+            group.leave()
+            return
+          }
+
+          guard let data = data else {
+            error = "No Data Available for NTP-Download: \(itemURL)"
+            group.leave()
+            return
+          }
+
+          do {
+            let file = directory.appendingPathComponent(itemURL)
+            try data.write(to: file, options: .atomicWrite)
+          } catch let err {
+            error = err
+          }
+
+          group.leave()
+        }
+      }
+
+      if let topSites = item.topSites {
+        /// For favicons we do not move them to temp directory but write directly to a folder with favicon overrides.
+        guard
+          let saveLocation =
+            FileManager.default.getOrCreateFolder(name: NTPDownloader.faviconOverridesDirectory)
+        else {
+          throw "Failed to create directory for favicon overrides"
+        }
+
+        for topSite in topSites {
+          group.enter()
+
+          self.download(type: type, path: topSite.iconUrl, etag: nil) { data, _, err in
+            if let err = err {
+              error = err
+              group.leave()
+              return
+            }
+
+            guard let data = data else {
+              error = "No Data Available for top site: \(topSite.destinationUrl)"
+              group.leave()
+              return
+            }
+
+            do {
+              let name = topSite.destinationUrl.toBase64()
+              // FIXME: this saves even if error, should move to temp dir, and then move
+              let file = saveLocation.appendingPathComponent(name)
               try data.write(to: file, options: .atomicWrite)
+
+              let topSiteBackgroundColorFileName =
+                name + NTPDownloader.faviconOverridesBackgroundSuffix
+              let topSiteBackgroundColorURL = saveLocation.appendingPathComponent(topSiteBackgroundColorFileName)
+
+              try topSite.backgroundColor.write(
+                to: topSiteBackgroundColorURL,
+                atomically: true, encoding: .utf8)
+            } catch let err {
+              error = err
             }
+
+            group.leave()
           }
+        }
+      }
 
-          if let topSites = item.topSites {
-            /// For favicons we do not move them to temp directory but write directly to a folder with favicon overrides.
-            guard
-              let saveLocation =
-                FileManager.default.getOrCreateFolder(name: NTPDownloader.faviconOverridesDirectory)
-            else {
-              throw "Failed to create directory for favicon overrides"
-            }
+      group.notify(queue: .main) {
+        if let error = error {
+          return completion(nil, .unpackError(error))
+        }
 
-            topSites.forEach { topSite in
-              group.addTask {
-                let (data, _) = try await self.download(type: type, path: topSite.iconUrl, etag: nil)
-
-                let name = topSite.destinationUrl.toBase64()
-                // FIXME: this saves even if error, should move to temp dir, and then move
-                let file = saveLocation.appendingPathComponent(name)
-                try data.write(to: file, options: .atomicWrite)
-
-                let topSiteBackgroundColorFileName =
-                  name + NTPDownloader.faviconOverridesBackgroundSuffix
-                let topSiteBackgroundColorURL = saveLocation.appendingPathComponent(topSiteBackgroundColorFileName)
-
-                try topSite.backgroundColor.write(
-                  to: topSiteBackgroundColorURL,
-                  atomically: true, encoding: .utf8)
-              }
-            }
-          }
-        })
-      return directory
+        completion(directory, nil)
+      }
     } catch {
-      throw NTPError.unpackError(error)
+      completion(nil, .unpackError(error))
     }
   }
 

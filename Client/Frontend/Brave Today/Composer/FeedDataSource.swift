@@ -241,12 +241,12 @@ class FeedDataSource {
           fatalError("Incorrect URL generated for the given resource: \(resource)")
         }
         let deferred = Deferred<Result<Data, Error>>(value: nil, defaultQueue: .main)
-
-        Task {
-          do {
-            let (data, _) = try await self.session.dataRequest(with: url.appendingPathComponent(filename))
-            deferred.fill(.success(data))
-          } catch {
+        
+        self.session.dataRequest(with: url.appendingPathComponent(filename)) { result in
+          switch result {
+          case .success(let response):
+            deferred.fill(.success(response.0))
+          case .failure(let error):
             deferred.fill(.failure(error))
           }
         }
