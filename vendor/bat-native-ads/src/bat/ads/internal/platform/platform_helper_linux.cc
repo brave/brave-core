@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/platform/platform_helper_linux.h"
 
-#include "base/memory/singleton.h"
-
 namespace ads {
 
 PlatformHelperLinux::PlatformHelperLinux() = default;
@@ -23,14 +21,6 @@ std::string PlatformHelperLinux::GetPlatformName() const {
 
 PlatformType PlatformHelperLinux::GetPlatform() const {
   return PlatformType::kLinux;
-}
-
-PlatformHelperLinux* PlatformHelperLinux::GetInstanceImpl() {
-  return base::Singleton<PlatformHelperLinux>::get();
-}
-
-PlatformHelper* PlatformHelper::GetInstanceImpl() {
-  return PlatformHelperLinux::GetInstanceImpl();
 }
 
 }  // namespace ads

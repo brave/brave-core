@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/platform/platform_helper_mac.h"
 
-#include "base/memory/singleton.h"
-
 namespace ads {
 
 PlatformHelperMac::PlatformHelperMac() = default;
@@ -23,14 +21,6 @@ std::string PlatformHelperMac::GetPlatformName() const {
 
 PlatformType PlatformHelperMac::GetPlatform() const {
   return PlatformType::kMacOS;
-}
-
-PlatformHelperMac* PlatformHelperMac::GetInstanceImpl() {
-  return base::Singleton<PlatformHelperMac>::get();
-}
-
-PlatformHelper* PlatformHelper::GetInstanceImpl() {
-  return PlatformHelperMac::GetInstanceImpl();
 }
 
 }  // namespace ads

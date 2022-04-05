@@ -8,17 +8,15 @@
 
 #include <string>
 
+#include "base/no_destructor.h"
 #include "bat/ads/internal/platform/platform_helper_types.h"
-
-namespace base {
-template <typename T>
-struct DefaultSingletonTraits;
-}  // namespace base
 
 namespace ads {
 
 class PlatformHelper {
  public:
+  virtual ~PlatformHelper();
+
   PlatformHelper(const PlatformHelper&) = delete;
   PlatformHelper& operator=(const PlatformHelper&) = delete;
 
@@ -31,11 +29,11 @@ class PlatformHelper {
   virtual PlatformType GetPlatform() const;
 
  protected:
-  friend struct base::DefaultSingletonTraits<PlatformHelper>;
+  friend class base::NoDestructor<PlatformHelper>;
 
   PlatformHelper();
-  virtual ~PlatformHelper();
 
+ private:
   static PlatformHelper* GetInstanceImpl();
 };
 
