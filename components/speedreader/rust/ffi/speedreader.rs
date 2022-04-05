@@ -114,6 +114,16 @@ pub extern "C" fn rewriter_new(
     box_to_opaque!(rewriter, CRewriter)
 }
 
+/// Set up minimal length of the output content.
+#[no_mangle]
+pub extern "C" fn rewriter_set_min_out_length(
+    rewriter: *mut CRewriter,
+    min_out_length: i32
+) {
+    let rewriter: &mut Box<dyn SpeedReaderProcessor> = leak_void_to_box!(rewriter);
+    rewriter.set_min_out_length(min_out_length);
+}
+
 /// Write a new chunk of data (byte array) to the rewriter instance.
 #[no_mangle]
 pub extern "C" fn rewriter_write(

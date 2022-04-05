@@ -14,6 +14,7 @@ pub struct SpeedReaderHeuristics<O>
 where
     O: OutputSink,
 {
+    min_out_length: Option<i32>,
     url: Option<Url>,
     readable: RefCell<Option<bool>>,
     streamer: FeatureExtractorStreamer,
@@ -21,6 +22,10 @@ where
 }
 
 impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderHeuristics<O> {
+    fn set_min_out_length(&mut self, min_out_length: i32) {
+        self.min_out_length = Some(min_out_length);
+    }
+
     fn write(&mut self, input: &[u8]) -> Result<(), SpeedReaderError> {
         if self.document_readable() != Some(false)
             && self.streamer.write(&mut input.borrow()).is_err()
@@ -39,7 +44,7 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderHeuristics<O> {
                     "Not readable with heuristics".to_owned(),
                 ));
             }
-            let (readable, maybe_doc) = process(self.streamer.end(), &url);
+            let (readable, maybe_doc) = process(self.streamer.end(), self.min_out_length, &url);
 
             *self.readable.borrow_mut() = Some(readable);
             if readable {
@@ -73,6 +78,7 @@ impl<O: OutputSink> SpeedReaderHeuristics<O> {
             if url_maybe_readable(&url_parsed) {
                 let streamer = FeatureExtractorStreamer::try_new(&url_parsed)?;
                 Ok(SpeedReaderHeuristics {
+                    min_out_length: None,
                     url: Some(url_parsed),
                     readable: RefCell::new(None),
                     streamer,
@@ -89,11 +95,17 @@ impl<O: OutputSink> SpeedReaderHeuristics<O> {
     }
 }
 
-fn process(sink: &mut FeaturisingTreeSink, url: &Url) -> (bool, Option<String>) {
+fn process(
+    sink: &mut FeaturisingTreeSink,
+    min_out_length: Option<i32>,
+    url: &Url,
+) -> (bool, Option<String>) {
     let class = Classifier::from_feature_map(&sink.features).classify();
     if class == 0 {
         (false, None)
-    } else if let Ok(extracted) = extractor::extract_dom(&mut sink.rcdom, url, &sink.features) {
+    } else if let Ok(extracted) =
+        extractor::extract_dom(&mut sink.rcdom, url, min_out_length, &sink.features)
+    {
         (true, Some(extracted.content))
     } else {
         (false, None)

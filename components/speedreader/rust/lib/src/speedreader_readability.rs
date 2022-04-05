@@ -15,12 +15,17 @@ pub struct SpeedReaderReadability<O>
 where
     O: OutputSink,
 {
+    min_out_length: Option<i32>,
     parser: Option<Parser<Sink>>,
     url: Url,
     output_sink: O,
 }
 
 impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
+    fn set_min_out_length(&mut self, min_out_length: i32) {
+        self.min_out_length = Some(min_out_length);
+    }
+
     fn write(&mut self, input: &[u8]) -> Result<(), SpeedReaderError> {
         if let Some(ref mut parser) = self.parser {
             match StrTendril::try_from_byte_slice(input) {
@@ -42,7 +47,7 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
             let mut dom: Sink = parser.finish();
             if let Some(features) = statistics::collect_statistics(&dom) {
                 if features.moz_score > 20.0 {
-                    let extracted = extractor::extract_dom(&mut dom, &self.url, &HashMap::new())?;
+                    let extracted = extractor::extract_dom(&mut dom, &self.url, self.min_out_length, &HashMap::new())?;
                     self.output_sink.handle_chunk(extracted.content.as_bytes());
                     Ok(())
                 } else {
@@ -70,7 +75,12 @@ impl<O: OutputSink> SpeedReaderReadability<O> {
 
         if scheme == "http" || scheme == "https" {
             let parser = html5ever::parse_document(Sink::default(), ParseOpts::default());
-            Ok(SpeedReaderReadability { parser: Some(parser), url, output_sink })
+            Ok(SpeedReaderReadability {
+                min_out_length: None,
+                parser: Some(parser),
+                url,
+                output_sink,
+            })
         } else {
             Err(SpeedReaderError::InvalidUrl(url.to_string()))
         }
