@@ -4,6 +4,8 @@
 
 import Foundation
 import Shared
+import Combine
+import Dispatch
 
 private let log = Logger.browserLogger
 
@@ -13,6 +15,22 @@ class NetworkManager {
   init(session: NetworkSession = URLSession.shared) {
     self.session = session
   }
+  
+  func dataRequest(with url: URL, _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void) {
+    session.dataRequest(with: url, completion)
+  }
+  
+  func dataRequest(with urlRequest: URLRequest, _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void) {
+    session.dataRequest(with: urlRequest, completion)
+  }
+  
+  func dataRequest(with url: URL) -> AnyPublisher<NetworkSessionDataResponse, Error> {
+    session.dataRequest(with: url)
+  }
+  
+  func dataRequest(with urlRequest: URLRequest) -> AnyPublisher<NetworkSessionDataResponse, Error> {
+    session.dataRequest(with: urlRequest)
+  }
 
   func dataRequest(with url: URL) async throws -> NetworkSessionDataResponse {
     try await session.dataRequest(with: url)
@@ -20,6 +38,74 @@ class NetworkManager {
 
   func dataRequest(with urlRequest: URLRequest) async throws -> NetworkSessionDataResponse {
     try await session.dataRequest(with: urlRequest)
+  }
+  
+  /// - parameter checkLastServerSideModification: If true, the `CachedNetworkResource` will contain a timestamp
+  /// when the file was last time modified on the server.
+  func downloadResource(
+    with url: URL,
+    resourceType: NetworkResourceType = .regular,
+    retryTimeout: TimeInterval? = 60,
+    checkLastServerSideModification: Bool = false,
+    customHeaders: [String: String] = [:],
+    _ completion: @escaping (Result<CachedNetworkResource, Error>) -> Void
+  ) {
+    let request = createDownloadRequest(with: url,
+                                        resourceType: resourceType,
+                                        customHeaders: customHeaders)
+    
+    if let retryTimeout = retryTimeout {
+      retry(times: 3, retryDelay: retryTimeout, task: { [weak self] completion in
+        self?.dataRequest(with: request) { result in
+          completion(result)
+        }
+      }, completion: {
+        switch $0 {
+        case .success(let (data, response)):
+          do {
+            let result = try self.createDownloadResponse(resourceType: resourceType,
+                                                         checkLastServerSideModification: checkLastServerSideModification,
+                                                         data: data,
+                                                         response: response)
+            completion(.success(result))
+          } catch {
+            completion(.failure(error))
+          }
+        case .failure(let error):
+          completion(.failure(error))
+        }
+      })
+    }
+  }
+  
+  /// - parameter checkLastServerSideModification: If true, the `CachedNetworkResource` will contain a timestamp
+  /// when the file was last time modified on the server.
+  func downloadResource(
+    with url: URL,
+    resourceType: NetworkResourceType = .regular,
+    retryTimeout: TimeInterval? = 60,
+    checkLastServerSideModification: Bool = false,
+    customHeaders: [String: String] = [:]
+  ) -> AnyPublisher<CachedNetworkResource, Error> {
+    let request = createDownloadRequest(with: url,
+                                        resourceType: resourceType,
+                                        customHeaders: customHeaders)
+    
+    if let retryTimeout = retryTimeout {
+      return dataRequest(with: request)
+        .retry(3, delay: .init(floatLiteral: retryTimeout), scheduler: DispatchQueue.main)
+        .tryMap({ try self.createDownloadResponse(resourceType: resourceType,
+                                                  checkLastServerSideModification: checkLastServerSideModification,
+                                                  data: $0, response: $1) })
+        .eraseToAnyPublisher()
+    }
+    
+    return dataRequest(with: request)
+      .tryMap({ try self.createDownloadResponse(resourceType: resourceType,
+                                                checkLastServerSideModification: checkLastServerSideModification,
+                                                data: $0, response: $1) })
+      .eraseToAnyPublisher()
+    
   }
 
   /// - parameter checkLastServerSideModification: If true, the `CachedNetworkResource` will contain a timestamp
@@ -31,30 +117,89 @@ class NetworkManager {
     checkLastServerSideModification: Bool = false,
     customHeaders: [String: String] = [:]
   ) async throws -> CachedNetworkResource {
+    let request = createDownloadRequest(with: url,
+                                        resourceType: resourceType,
+                                        customHeaders: customHeaders)
+
+    let (data, response) = try await task(for: request, retryTimeout: retryTimeout)
+    return try createDownloadResponse(resourceType: resourceType,
+                                      checkLastServerSideModification:
+                                        checkLastServerSideModification,
+                                      data: data,
+                                      response: response)
+  }
+}
+
+extension NetworkManager {
+  private func retry<T>(times: Int,
+                        retryDelay: TimeInterval,
+                        task: @escaping (@escaping (Result<T, Error>) -> Void) -> Void,
+                        completion: @escaping (Result<T, Error>) -> Void) {
+    task({ [weak self] in
+      guard let self = self else {
+        completion(.failure("Network Manager Deallocated"))
+        return
+      }
+      
+      switch $0 {
+      case .success(let result):
+        completion(.success(result))
+      case .failure(let error):
+        if times > 0 {
+          DispatchQueue.main.asyncAfter(deadline: .now() + retryDelay) {
+            self.retry(times: times - 1,
+                       retryDelay: retryDelay,
+                       task: task,
+                       completion: completion)
+          }
+        } else {
+          completion(.failure(error))
+        }
+      }
+    })
+  }
+  
+  private func task(for request: URLRequest, retryTimeout: TimeInterval?) async throws -> NetworkSessionDataResponse {
+    if let retryTimeout = retryTimeout {
+      return try await Task.retry(retryCount: 3, retryDelay: retryTimeout) {
+        try await self.dataRequest(with: request)
+      }.value
+    }
+
+    return try await self.dataRequest(with: request)
+  }
+  
+  private func createDownloadRequest(with url: URL,
+                                     resourceType: NetworkResourceType,
+                                     customHeaders: [String: String]) -> URLRequest {
     var request = URLRequest(url: url)
 
     // Makes the request conditional, returns 304 if Etag value did not change.
     let ifNoneMatchHeader = "If-None-Match"
-    let fileNotModifiedStatusCode = 304
-
-    // Identifier for a specific version of a resource for a HTTP request
-    let etagHeader = "Etag"
 
     switch resourceType {
     case .cached(let etag):
-      let requestEtag = etag ?? UUID().uuidString
-
       // This cache policy is required to support `If-None-Match` header.
       request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
-      request.addValue(requestEtag, forHTTPHeaderField: ifNoneMatchHeader)
+      request.addValue(etag ?? UUID().uuidString, forHTTPHeaderField: ifNoneMatchHeader)
     default: break
     }
 
     customHeaders.forEach {
       request.addValue($0.value, forHTTPHeaderField: $0.key)
     }
+    return request
+  }
+  
+  private func createDownloadResponse(resourceType: NetworkResourceType,
+                                      checkLastServerSideModification: Bool,
+                                      data: Data,
+                                      response: URLResponse) throws -> CachedNetworkResource {
+    let fileNotModifiedStatusCode = 304
 
-    let (data, response) = try await task(for: request, retryTimeout: retryTimeout)
+    // Identifier for a specific version of a resource for a HTTP request
+    let etagHeader = "Etag"
+    
     guard let response = response as? HTTPURLResponse else {
       throw "Invalid Response Type (Not HTTPURLResponse)"
     }
@@ -92,14 +237,20 @@ class NetworkManager {
         lastModifiedTimestamp: lastModified)
     }
   }
+}
 
-  private func task(for request: URLRequest, retryTimeout: TimeInterval?) async throws -> NetworkSessionDataResponse {
-    if let retryTimeout = retryTimeout {
-      return try await Task.retry(retryCount: 3, retryDelay: retryTimeout) {
-        try await self.dataRequest(with: request)
-      }.value
+private extension Publisher {
+    func retry<S>(_ retries: Int,
+                  delay: S.SchedulerTimeType.Stride,
+                  scheduler: S) -> AnyPublisher<Output, Failure> where S: Scheduler {
+      self.catch { error in
+        Future { completion in
+          scheduler.schedule(after: scheduler.now.advanced(by: delay)) {
+            completion(.failure(error))
+          }
+        }
+      }
+      .retry(retries)
+      .eraseToAnyPublisher()
     }
-
-    return try await self.dataRequest(with: request)
-  }
 }
