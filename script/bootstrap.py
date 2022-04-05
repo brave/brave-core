@@ -2,7 +2,6 @@
 
 import argparse
 import os
-import subprocess
 import sys
 
 from lib.config import PLATFORM, SOURCE_ROOT, \
@@ -63,7 +62,7 @@ def update_node_modules(dirname, env=None):
     if env is None:
         env = os.environ.copy()
     with scoped_cwd(dirname):
-        args = [NPM, 'install', '--no-save']
+        args = [NPM, 'install', '--no-save', '--yes']
         if is_verbose_mode():
             args += ['--verbose']
         execute_stdout(args, env)
