@@ -95,8 +95,10 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
   // Only check the first entry because it will not be grouped with other
   // types.
   if (manager->Requests().empty() ||
-      manager->Requests()[0]->request_type() !=
-          permissions::RequestType::kBraveEthereum)
+      (manager->Requests()[0]->request_type() !=
+           permissions::RequestType::kBraveEthereum &&
+       manager->Requests()[0]->request_type() !=
+           permissions::RequestType::kBraveSolana))
     return webui_url;
 
   // Handle ConnectWithSite (ethereum permission) request.
