@@ -6,24 +6,25 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_BACKGROUND_HELPER_BACKGROUND_HELPER_MAC_H_
 #define BRAVE_BROWSER_BRAVE_ADS_BACKGROUND_HELPER_BACKGROUND_HELPER_MAC_H_
 
-#include "base/memory/singleton.h"
+#include <memory>
+
 #include "brave/browser/brave_ads/background_helper/background_helper.h"
 
 namespace brave_ads {
 
 class BackgroundHelperMac : public BackgroundHelper {
  public:
+  ~BackgroundHelperMac() override;
+
   BackgroundHelperMac(const BackgroundHelperMac&) = delete;
   BackgroundHelperMac& operator=(const BackgroundHelperMac&) = delete;
 
-  static BackgroundHelperMac* GetInstance();
-
- private:
-  friend struct base::DefaultSingletonTraits<BackgroundHelperMac>;
+ protected:
+  friend class BackgroundHelperHolder;
 
   BackgroundHelperMac();
-  ~BackgroundHelperMac() override;
 
+ private:
   // BackgroundHelper impl
   bool IsForeground() const override;
 

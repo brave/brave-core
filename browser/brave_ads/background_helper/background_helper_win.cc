@@ -21,7 +21,7 @@ BackgroundHelperWin::BackgroundHelperWin() {
           &BackgroundHelperWin::OnWndProc, base::Unretained(this))));
 }
 
-BackgroundHelperWin::~BackgroundHelperWin() {}
+BackgroundHelperWin::~BackgroundHelperWin() = default;
 
 bool BackgroundHelperWin::IsForeground() const {
   auto* browser = BrowserList::GetInstance()->GetLastActive();
@@ -46,14 +46,6 @@ void BackgroundHelperWin::OnWndProc(HWND hwnd,
   } else {
     TriggerOnBackground();
   }
-}
-
-BackgroundHelperWin* BackgroundHelperWin::GetInstance() {
-  return base::Singleton<BackgroundHelperWin>::get();
-}
-
-BackgroundHelper* BackgroundHelper::GetInstance() {
-  return BackgroundHelperWin::GetInstance();
 }
 
 }  // namespace brave_ads
