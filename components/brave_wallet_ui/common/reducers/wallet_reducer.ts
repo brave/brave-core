@@ -350,7 +350,7 @@ export const createWalletReducer = (initialState: WalletState) => {
       return payload[account.address]
     }).flat(1)
 
-    const filteredTransactions = newPendingTransactions?.filter((tx: BraveWallet.TransactionInfo) => tx.txStatus === BraveWallet.TransactionStatus.Unapproved) ?? []
+    const filteredTransactions = newPendingTransactions?.filter((tx: BraveWallet.TransactionInfo) => tx?.txStatus === BraveWallet.TransactionStatus.Unapproved) ?? []
 
     const sortedTransactionList = sortTransactionByDate(filteredTransactions)
 
