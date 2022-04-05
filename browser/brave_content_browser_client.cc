@@ -23,6 +23,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/solana_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
@@ -304,8 +305,18 @@ void MaybeBindBraveWalletProvider(
 void MaybeBindSolanaProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::SolanaProvider> receiver) {
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForContext(
+          frame_host->GetBrowserContext());
+  if (!keyring_service)
+    return;
+  content::WebContents* web_contents =
+      content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_wallet::SolanaProviderImpl>(),
+      std::make_unique<brave_wallet::SolanaProviderImpl>(
+          keyring_service,
+          std::make_unique<brave_wallet::SolanaProviderDelegateImpl>(
+              web_contents, frame_host)),
       std::move(receiver));
 }
 

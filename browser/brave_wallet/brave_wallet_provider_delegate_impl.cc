@@ -99,8 +99,11 @@ BraveWalletProviderDelegateImpl::BraveWalletProviderDelegateImpl(
       web_contents_(web_contents),
       host_id_(render_frame_host->GetGlobalId()),
       weak_ptr_factory_(this) {
-  keyring_service_ = brave_wallet::KeyringServiceFactory::GetServiceForContext(
-      web_contents->GetBrowserContext());
+  if (!keyring_service_) {
+    auto pending =
+        KeyringServiceFactory::GetForContext(web_contents->GetBrowserContext());
+    keyring_service_.Bind(std::move(pending));
+  }
   DCHECK(keyring_service_);
 }
 
@@ -186,19 +189,30 @@ void BraveWalletProviderDelegateImpl::
     return;
   }
 
-  permissions::BraveWalletPermissionContext::RequestPermissions(
-      ContentSettingsType::BRAVE_ETHEREUM,
-      content::RenderFrameHost::FromID(host_id_), addresses,
-      base::BindOnce(&OnRequestEthereumPermissions, addresses,
-                     keyring_service_->GetSelectedAccount(mojom::CoinType::ETH),
-                     std::move(callback)));
+  keyring_service_->GetSelectedAccount(
+      mojom::CoinType::ETH,
+      base::BindOnce(&BraveWalletProviderDelegateImpl::
+                         ContinueRequestEthereumPermissionsSelectedAccount,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     addresses));
 }
 
-void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
+void BraveWalletProviderDelegateImpl::
+    ContinueRequestEthereumPermissionsSelectedAccount(
+        RequestEthereumPermissionsCallback callback,
+        const std::vector<std::string>& request_accounts,
+        const absl::optional<std::string>& selected_account) {
+  permissions::BraveWalletPermissionContext::RequestPermissions(
+      ContentSettingsType::BRAVE_ETHEREUM,
+      content::RenderFrameHost::FromID(host_id_), request_accounts,
+      base::BindOnce(&OnRequestEthereumPermissions, request_accounts,
+                     selected_account, std::move(callback)));
+}
+
+void BraveWalletProviderDelegateImpl::ContinueGetAllowedAccounts(
     bool include_accounts_when_locked,
-    GetAllowedAccountsCallback callback) {
-  absl::optional<std::string> selected_account =
-      keyring_service_->GetSelectedAccount(mojom::CoinType::ETH);
+    GetAllowedAccountsCallback callback,
+    const absl::optional<std::string>& selected_account) {
   keyring_service_->GetKeyringInfo(
       brave_wallet::mojom::kDefaultKeyringId,
       base::BindOnce(
@@ -221,6 +235,17 @@ void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
           },
           host_id_, std::move(callback), include_accounts_when_locked,
           selected_account));
+}
+
+void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
+    bool include_accounts_when_locked,
+    GetAllowedAccountsCallback callback) {
+  keyring_service_->GetSelectedAccount(
+      mojom::CoinType::ETH,
+      base::BindOnce(
+          &BraveWalletProviderDelegateImpl::ContinueGetAllowedAccounts,
+          weak_ptr_factory_.GetWeakPtr(), include_accounts_when_locked,
+          std::move(callback)));
 }
 
 void BraveWalletProviderDelegateImpl::WebContentsDestroyed() {

@@ -652,6 +652,9 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SelectedAddress) {
 
   // But it does update the selectedAddress if the account is allowed
   AddEthereumPermission(url::Origin::Create(url), 1);
+  // Wait for KeyringService::GetSelectedAccount called by
+  // BraveWalletProviderDelegateImpl::GetAllowedAccounts
+  base::RunLoop().RunUntilIdle();
   EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()",
                    content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                 .ExtractString(),

@@ -727,6 +727,9 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
           run_loop.Quit();
         }),
         base::Value());
+    // Wait for KeyringService::GetSelectedAccount called by
+    // BraveWalletProviderDelegateImpl::GetAllowedAccounts
+    base::RunLoop().RunUntilIdle();
     auto requests = GetPendingGetEncryptionPublicKeyRequests();
     if (requests.size() > 0) {
       ASSERT_EQ(requests.size(), 1u);
@@ -1473,6 +1476,9 @@ TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissionsLocked) {
             run_loop.Quit();
           }),
       base::Value(), "", GetOrigin());
+  // Wait for KeyringService::GetSelectedAccount called by
+  // BraveWalletProviderDelegateImpl::GetAllowedAccounts
+  base::RunLoop().RunUntilIdle();
 
   EXPECT_TRUE(keyring_service()->HasPendingUnlockRequest());
   // Allowed accounts is still empty when locked
@@ -1895,7 +1901,13 @@ TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEventSelectedAccount) {
 
   // Multiple accounts can be returned
   AddEthereumPermission(GetOrigin(), 0);
+  // Wait for KeyringService::GetSelectedAccount called by
+  // BraveWalletProviderDelegateImpl::GetAllowedAccounts
+  base::RunLoop().RunUntilIdle();
   AddEthereumPermission(GetOrigin(), 1);
+  // Wait for KeyringService::GetSelectedAccount called by
+  // BraveWalletProviderDelegateImpl::GetAllowedAccounts
+  base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer_->AccountsChangedFired());
   EXPECT_EQ((std::vector<std::string>{from(0), from(1)}),
             observer_->GetAccounts());

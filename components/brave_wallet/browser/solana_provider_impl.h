@@ -6,18 +6,23 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_PROVIDER_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_PROVIDER_IMPL_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace brave_wallet {
+class KeyringService;
+class SolanaProviderDelegate;
 
 class SolanaProviderImpl final : public mojom::SolanaProvider {
  public:
-  SolanaProviderImpl();
+  SolanaProviderImpl(KeyringService* keyring_service,
+                     std::unique_ptr<SolanaProviderDelegate> delegate);
   ~SolanaProviderImpl() override;
   SolanaProviderImpl(const SolanaProviderImpl&) = delete;
   SolanaProviderImpl& operator=(const SolanaProviderImpl&) = delete;
@@ -42,7 +47,15 @@ class SolanaProviderImpl final : public mojom::SolanaProvider {
   void Request(base::Value arg, RequestCallback callback) override;
 
  private:
+  void OnConnect(ConnectCallback callback,
+                 const std::string& account,
+                 mojom::SolanaProviderError error,
+                 const std::string& error_message);
+
   mojo::Remote<mojom::SolanaEventsListener> events_listener_;
+  raw_ptr<KeyringService> keyring_service_ = nullptr;
+  std::unique_ptr<SolanaProviderDelegate> delegate_;
+  base::WeakPtrFactory<SolanaProviderImpl> weak_factory_;
 };
 
 }  // namespace brave_wallet

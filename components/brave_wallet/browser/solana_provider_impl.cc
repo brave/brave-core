@@ -10,10 +10,17 @@
 
 #include "base/notreached.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/solana_provider_delegate.h"
 
 namespace brave_wallet {
 
-SolanaProviderImpl::SolanaProviderImpl() = default;
+SolanaProviderImpl::SolanaProviderImpl(
+    KeyringService* keyring_service,
+    std::unique_ptr<SolanaProviderDelegate> delegate)
+    : keyring_service_(keyring_service),
+      delegate_(std::move(delegate)),
+      weak_factory_(this) {}
 SolanaProviderImpl::~SolanaProviderImpl() = default;
 
 void SolanaProviderImpl::Init(
@@ -26,8 +33,10 @@ void SolanaProviderImpl::Init(
 void SolanaProviderImpl::Connect(absl::optional<base::Value> arg,
                                  ConnectCallback callback) {
   // TODO(darkdh): handle onlyIfTrusted when it exists
-  NOTIMPLEMENTED();
-  std::move(callback).Run(mojom::SolanaProviderError::kInternalError, "", "");
+  DCHECK(delegate_);
+  delegate_->RequestSolanaPermission(
+      base::BindOnce(&SolanaProviderImpl::OnConnect, weak_factory_.GetWeakPtr(),
+                     std::move(callback)));
 }
 
 void SolanaProviderImpl::Disconnect() {
@@ -84,6 +93,15 @@ void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
   NOTIMPLEMENTED();
   std::move(callback).Run(mojom::SolanaProviderError::kInternalError, "",
                           std::move(result));
+}
+
+void SolanaProviderImpl::OnConnect(ConnectCallback callback,
+                                   const std::string& account,
+                                   mojom::SolanaProviderError error,
+                                   const std::string& error_message) {
+  std::move(callback).Run(
+      error, error_message,
+      error == mojom::SolanaProviderError::kSuccess ? account : "");
 }
 
 }  // namespace brave_wallet
