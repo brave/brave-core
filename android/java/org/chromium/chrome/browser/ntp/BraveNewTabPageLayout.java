@@ -170,6 +170,8 @@ public class BraveNewTabPageLayout
             "https://brave.com/privacy/browser/#brave-today";
     private static final int ITEMS_PER_PAGE = 18;
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
+    private static final int NEWS_SCROLL_TO_TOP_NEW = -1;
+    private static final int NEWS_SCROLL_TO_TOP_RELOAD = -2;
 
     private View mBraveStatsViewFallBackLayout;
 
@@ -318,7 +320,7 @@ public class BraveNewTabPageLayout
             mComesFromNewTab = BraveActivity.getBraveActivity().isComesFromNewTab();
             mIsFeedLoaded = BraveActivity.getBraveActivity().isLoadedFeed();
             mExistingNewsFeedObject = BraveActivity.getBraveActivity().getNewsItemsFeedCards();
-            mPrevScrollPosition = 1;
+            mPrevScrollPosition = NEWS_SCROLL_TO_TOP_NEW;
 
             if (mIsNewsOn && mIsShowNewsOn && mIsFeedLoaded && mExistingNewsFeedObject != null) {
                 mNewsItemsFeedCard = mExistingNewsFeedObject;
@@ -335,7 +337,7 @@ public class BraveNewTabPageLayout
                     BraveActivity.getBraveActivity().removeSettingsBar();
                     if (tab != null) {
                         SharedPreferencesManager.getInstance().writeInt(
-                                Integer.toString(tab.getId()), mPrevScrollPosition);
+                                "position_" + tab.getId(), mPrevScrollPosition);
                     }
                 }
             }
@@ -749,6 +751,24 @@ public class BraveNewTabPageLayout
             checkForNonDisruptiveBanner(ntpImage);
             super.onConfigurationChanged(newConfig);
             showNTPImage(ntpImage);
+
+            if (BraveActivity.getBraveActivity() != null
+                    && BraveActivity.getBraveActivity().getActivityTab() != null) {
+                Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+                int prevScrollPosition = (tab != null)
+                        ? SharedPreferencesManager.getInstance().readInt(
+                                "position_" + tab.getId(), 0)
+                        : 0;
+                if (ConfigurationUtils.isLandscape(mActivity)
+                        && ConfigurationUtils.isTablet(mActivity)
+                        && prevScrollPosition == NEWS_SCROLL_TO_TOP_RELOAD) {
+                    keepPosition(NEWS_SCROLL_TO_TOP_RELOAD);
+                } else if (!ConfigurationUtils.isLandscape(mActivity) && prevScrollPosition >= 1) {
+                    keepPosition(prevScrollPosition + 1);
+                } else {
+                    keepPosition(prevScrollPosition);
+                }
+            }
         } else {
             super.onConfigurationChanged(newConfig);
         }
@@ -811,6 +831,8 @@ public class BraveNewTabPageLayout
                 mBraveNewsController.getFeed((feed) -> {
                     if (feed == null) {
                         processFeed();
+                        mContainer.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.VISIBLE);
                         return;
                     }
                     try {
@@ -882,17 +904,8 @@ public class BraveNewTabPageLayout
                         } // end page loop
                         processFeed();
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mParentScrollView.scrollTo(0, 0);
-                                mRecyclerView.scrollToPosition(0);
-                                if (mImageCreditLayout != null) {
-                                    mImageCreditLayout.setVisibility(View.VISIBLE);
-                                    mImageCreditLayout.setAlpha(1);
-                                }
-                            }
-                        }, 300);
+                        mContainer.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.VISIBLE);
 
                         BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
                         BraveActivity.getBraveActivity().setLoadedFeed(true);
@@ -932,6 +945,48 @@ public class BraveNewTabPageLayout
         }
         if (mIsShowNewsOn && BravePrefServiceBridge.getInstance().getNewsOptIn()) {
             getFeed();
+        }
+    }
+
+    private void keepPosition(int prevScrollPosition) {
+        processFeed();
+        int scrollPosition = prevScrollPosition;
+
+        if (scrollPosition == NEWS_SCROLL_TO_TOP_RELOAD) {
+            if (ConfigurationUtils.isLandscape(mActivity)) {
+                new Handler().postDelayed(() -> {
+                    if (mRecyclerView != null) {
+                        mRecyclerView.scrollToPosition(0);
+                    }
+                }, 100);
+            } else {
+                mParentScrollView.post(() -> {
+                    mContainer.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
+                });
+            }
+        } else {
+            new Handler().postDelayed(() -> {
+                if (mRecyclerView != null) {
+                    mContainer.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+
+                    final int scrollPositionFinal = scrollPosition;
+                    if (mParentScrollView != null) {
+                        if (scrollPosition > 0) {
+                            mRecyclerView.scrollToPosition(scrollPosition);
+                        } else if (scrollPosition != NEWS_SCROLL_TO_TOP_RELOAD) {
+                            mParentScrollView.scrollTo(0, 0);
+                            mImageCreditLayout.setAlpha(1.0f);
+                            mImageCreditLayout.requestLayout();
+                        }
+                    }
+                    if (mRecyclerView.getLayoutManager().findViewByPosition(0) != null) {
+                        correctPosition(false);
+                    }
+                }
+            }, 100);
         }
     }
 
@@ -1024,12 +1079,13 @@ public class BraveNewTabPageLayout
                     BraveActivity.getBraveActivity().getNewsItemsFeedCards();
             Tab tab = BraveActivity.getBraveActivity().getActivityTab();
             int prevScrollPosition = (tab != null)
-                    ? SharedPreferencesManager.getInstance().readInt(Integer.toString(tab.getId()))
+                    ? SharedPreferencesManager.getInstance().readInt("position_" + tab.getId(), 0)
                     : 0;
 
             mmViewedNewsCardsCount = (tab != null) ? SharedPreferencesManager.getInstance().readInt(
                                              "mViewedNewsCardsCount_" + tab.getId())
                                                    : 0;
+
             if (prevScrollPosition == 0) {
                 isFeedLoaded = false;
                 existingNewsFeedObject = null;
@@ -1040,7 +1096,7 @@ public class BraveNewTabPageLayout
                 getFeed();
                 if (tab != null) {
                     SharedPreferencesManager.getInstance().writeInt(
-                            Integer.toString(tab.getId()), 1);
+                            "position_" + tab.getId(), NEWS_SCROLL_TO_TOP_NEW);
                 }
                 // Brave News interaction started
                 if (mBraveNewsController != null) {
@@ -1050,30 +1106,10 @@ public class BraveNewTabPageLayout
                 if (mActivity == null) {
                     mActivity = BraveActivity.getBraveActivity();
                 }
-                processFeed();
-
-                if (mRecyclerView != null) {
-                    mRecyclerView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            int scrollPosition = prevScrollPosition + 1;
-                            if (prevScrollPosition <= 1) {
-                                scrollPosition = 2;
-                            }
-                            final int scrollPositionFinal = scrollPosition;
-                            if (mParentScrollView != null) {
-                                mRecyclerView.scrollToPosition(scrollPositionFinal);
-                                if (scrollPositionFinal == 2) {
-                                    mParentScrollView.scrollTo(0, 0);
-                                    mImageCreditLayout.setAlpha(1.0f);
-                                    mImageCreditLayout.requestLayout();
-                                }
-                            }
-                            if (mRecyclerView.getLayoutManager().findViewByPosition(0) != null) {
-                                correctPosition(false);
-                            }
-                        }
-                    });
+                if (!ConfigurationUtils.isLandscape(mActivity) && prevScrollPosition > 1) {
+                    keepPosition(prevScrollPosition - 1);
+                } else {
+                    keepPosition(prevScrollPosition);
                 }
             }
         } else {
@@ -1107,6 +1143,11 @@ public class BraveNewTabPageLayout
                             }
 
                             int scrollY = mParentScrollView.getScrollY();
+                            RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
+                            if (manager instanceof LinearLayoutManager) {
+                                LinearLayoutManager linearLayoutManager =
+                                        (LinearLayoutManager) manager;
+                            }
                             isScrolled = false;
                             float value = (float) scrollY / mParentScrollView.getMaxScrollAmount();
                             if (value >= 1) {
@@ -1222,6 +1263,13 @@ public class BraveNewTabPageLayout
                                                     new GestureDetector.SimpleOnGestureListener() {
                                                         @Override
                                                         public boolean onDoubleTap(MotionEvent e) {
+                                                            SharedPreferencesManager.getInstance().writeInt(
+                                                                    "position_"
+                                                                            + BraveActivity
+                                                                                      .getBraveActivity()
+                                                                                      .getActivityTab()
+                                                                                      .getId(),
+                                                                    NEWS_SCROLL_TO_TOP_RELOAD);
                                                             correctPosition(false);
                                                             mParentScrollView.fullScroll(
                                                                     ScrollView.FOCUS_UP);
@@ -1269,11 +1317,16 @@ public class BraveNewTabPageLayout
                                         }
                                         isScrolled = false;
                                         refreshFeed();
-                                        new Handler().postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                mParentScrollView.scrollTo(0, 0);
-                                                mRecyclerView.scrollToPosition(0);
+                                        new Handler().postDelayed(() -> {
+                                            if (!ConfigurationUtils.isTablet(mActivity)
+                                                    && ConfigurationUtils.isLandscape(mActivity)) {
+                                                mParentScrollView.smoothScrollTo(0, 0);
+                                            } else {
+                                                mParentScrollView.smoothScrollTo(0,
+                                                        mRecyclerView.getHeight()
+                                                                - mParentScrollView
+                                                                          .getMaxScrollAmount()
+                                                                + dpToPx(getContext(), 90));
                                             }
                                         }, 300);
 
@@ -1312,13 +1365,6 @@ public class BraveNewTabPageLayout
                         long timeDiff = mEndCardViewTime - mStartCardViewTime;
                         // if viewed for more than 100 ms send the event
                         if (timeDiff > BraveNewsUtils.BRAVE_NEWS_VIEWD_CARD_TIME) {
-                            if (firstCompletelyVisibleItemPosition > 0) {
-                                SharedPreferencesManager.getInstance().writeInt(
-                                        Integer.toString(BraveActivity.getBraveActivity()
-                                                                 .getActivityTab()
-                                                                 .getId()),
-                                        firstCompletelyVisibleItemPosition);
-                            }
                             if (mVisibleCard != null) {
                                 if (!mVisibleCard.isViewStatSent()) {
                                     // send viewed cards events
@@ -1361,7 +1407,30 @@ public class BraveNewTabPageLayout
                                 linearLayoutManager.findFirstVisibleItemPosition();
                         int lastVisibleItemPosition =
                                 linearLayoutManager.findLastVisibleItemPosition();
+                        int scrollY = mParentScrollView.getScrollY();
 
+                        if (BraveActivity.getBraveActivity() != null
+                                && BraveActivity.getBraveActivity().getActivityTab() != null) {
+                            if (firstCompletelyVisibleItemPosition >= 0) {
+                                int position = 0;
+                                if (firstCompletelyVisibleItemPosition == 0
+                                        && ((ConfigurationUtils.isLandscape(mActivity)
+                                                    && scrollY > 600)
+                                                || (!ConfigurationUtils.isLandscape(mActivity)
+                                                        && scrollY > 900))) {
+                                    position = NEWS_SCROLL_TO_TOP_RELOAD;
+                                } else {
+                                    position = firstCompletelyVisibleItemPosition == 0
+                                            ? NEWS_SCROLL_TO_TOP_NEW
+                                            : firstCompletelyVisibleItemPosition;
+                                }
+                                SharedPreferencesManager.getInstance().writeInt("position_"
+                                                + BraveActivity.getBraveActivity()
+                                                          .getActivityTab()
+                                                          .getId(),
+                                        position);
+                            }
+                        }
                         mFeedHash = SharedPreferencesManager.getInstance().readString(
                                 BravePreferenceKeys.BRAVE_NEWS_FEED_HASH, "");
                         //@TODO alex optimize feed availability check
@@ -1495,9 +1564,6 @@ public class BraveNewTabPageLayout
         if (mOptinLayout != null) {
             mOptinLayout.setVisibility(View.GONE);
         }
-
-        mContainer.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
 
         if (mNewsItemsFeedCard != null && mNewsItemsFeedCard.size() > 0) {
             mAdapterFeedCard.notifyItemRangeInserted(0, mNewsItemsFeedCard.size());
@@ -1737,10 +1803,11 @@ public class BraveNewTabPageLayout
                                                                   .getSpec())) {
                                     mPrevScrollPosition =
                                             SharedPreferencesManager.getInstance().readInt(
-                                                    Integer.toString(
-                                                            BraveActivity.getBraveActivity()
-                                                                    .getActivityTab()
-                                                                    .getId()));
+                                                    "position_"
+                                                            + BraveActivity.getBraveActivity()
+                                                                      .getActivityTab()
+                                                                      .getId(),
+                                                    NEWS_SCROLL_TO_TOP_NEW);
                                     if (compositorView.getChildAt(2).getId()
                                             == R.id.news_settings_bar) {
                                         mSettingsBar = (LinearLayout) compositorView.getChildAt(2);
