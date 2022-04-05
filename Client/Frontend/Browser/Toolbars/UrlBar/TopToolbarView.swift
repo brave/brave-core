@@ -53,6 +53,8 @@ protocol TopToolbarDelegate: AnyObject {
 class TopToolbarView: UIView, ToolbarProtocol {
   weak var delegate: TopToolbarDelegate?
   var helper: ToolbarHelper?
+  
+  private var cancellables: Set<AnyCancellable> = []
 
   // MARK: - ToolbarProtocol properties
 
@@ -199,14 +201,14 @@ class TopToolbarView: UIView, ToolbarProtocol {
     if isPrivateBrowsing {
       backgroundColor = .privateModeBackground
     } else {
-      backgroundColor = .urlBarBackground
+      backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
     }
   }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    backgroundColor = .urlBarBackground
+    backgroundColor = Preferences.General.nightModeEnabled.value ? .nightModeBackground : .urlBarBackground
 
     locationContainer.addSubview(locationView)
 
@@ -250,6 +252,13 @@ class TopToolbarView: UIView, ToolbarProtocol {
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         self?.updateColors(isPrivateBrowsing)
       })
+    
+    Preferences.General.nightModeEnabled.objectWillChange
+      .receive(on: RunLoop.main)
+      .sink { [weak self] _ in
+        self?.updateColors(PrivateBrowsingManager.shared.isPrivateBrowsing)
+      }
+      .store(in: &cancellables)
   }
 
   @available(*, unavailable)

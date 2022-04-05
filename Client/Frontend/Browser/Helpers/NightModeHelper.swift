@@ -6,6 +6,7 @@ import Foundation
 import WebKit
 import Shared
 import BraveShared
+import Data
 
 class NightModeHelper: TabContentScript {
   fileprivate weak var tab: Tab?
@@ -34,13 +35,16 @@ class NightModeHelper: TabContentScript {
     Preferences.General.nightModeEnabled.value = enabled
 
     for tab in tabManager.allTabs {
-      tab.nightMode = enabled
 
-      // For WKWebView background color to take effect, isOpaque must be false,
-      // which is counter-intuitive. Default is true. The color is previously
-      // set to black in the WKWebView init.
-      tab.webView?.isOpaque = !enabled
-      tab.webView?.scrollView.indicatorStyle = enabled ? .white : .default
+      if let fetchedTabURL = tab.fetchedURL, !fetchedTabURL.isNightModeBlockedURL {
+        tab.nightMode = enabled
+
+        // For WKWebView background color to take effect, isOpaque must be false,
+        // which is counter-intuitive. Default is true. The color is previously
+        // set to black in the WKWebView init.
+        tab.webView?.isOpaque = !enabled
+        tab.webView?.scrollView.indicatorStyle = enabled ? .white : .default
+      }
     }
   }
 }

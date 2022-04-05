@@ -212,13 +212,15 @@ class Tab: NSObject {
 
   var nightMode: Bool {
     didSet {
-      guard nightMode != oldValue else {
-        return
+      var isNightModeEnabled = false
+      
+      if let fetchedTabURL = fetchedURL, !fetchedTabURL.isNightModeBlockedURL, nightMode {
+        isNightModeEnabled = true
       }
-
+      
       webView?.evaluateSafeJavaScript(
         functionName: "window.__firefox__.NightMode.setEnabled",
-        args: [nightMode],
+        args: [isNightModeEnabled],
         contentWorld: .defaultClient,
         asFunction: true
       ) { _, error in
@@ -227,7 +229,7 @@ class Tab: NSObject {
         }
       }
 
-      userScriptManager?.isNightModeEnabled = nightMode
+      userScriptManager?.isNightModeEnabled = isNightModeEnabled
     }
   }
 
@@ -469,6 +471,29 @@ class Tab: NSObject {
   var canGoForward: Bool {
     return webView?.canGoForward ?? false
   }
+  
+  /// This property is for fetching the actual URL for the Tab
+  /// In private browsing the URL is in memory but this is not the case for normal mode
+  /// For Normal  Mode Tab information is fetched using Tab ID from 
+  var fetchedURL: URL? {
+    if PrivateBrowsingManager.shared.isPrivateBrowsing {
+      if let url = url, url.isWebPage() {
+        return url
+      }
+    } else {
+      if let tabUrl = url, tabUrl.isWebPage() {
+        return tabUrl
+      } else if let tabID = id {
+        let fetchedTab = TabMO.get(fromId: tabID)
+        
+        if let urlString = fetchedTab?.url, let url = URL(string: urlString), url.isWebPage() {
+          return url
+        }
+      }
+    }
+    
+    return nil
+  }
 
   func goBack() {
     _ = webView?.goBack()
@@ -526,6 +551,7 @@ class Tab: NSObject {
     }
 
     if let _ = webView?.reloadFromOrigin() {
+      nightMode = Preferences.General.nightModeEnabled.value
       log.debug("reloaded zombified tab from origin")
       return
     }
