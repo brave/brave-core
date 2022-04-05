@@ -98,6 +98,36 @@ const char ropsten_list_json[] = R"(
    }
   })";
 
+const char solana_token_list_json[] = R"(
+  {
+    "So11111111111111111111111111111111111111112": {
+      "name": "Wrapped SOL",
+      "logo": "So11111111111111111111111111111111111111112.png",
+      "erc20": false,
+      "symbol": "SOL",
+      "decimals": 9,
+      "chainId": "0x65",
+      "coingeckoId": "solana"
+    },
+    "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": {
+      "name": "USD Coin",
+      "logo": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
+      "erc20": false,
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": "0x65",
+      "coingeckoId": "usd-coin"
+    },
+    "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ": {
+      "name": "Tesla Inc.",
+      "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
+      "erc20": false,
+      "symbol": "TSLA",
+      "decimals": 8,
+      "chainId": "0x65"
+    }
+  })";
+
 }  // namespace
 
 namespace brave_wallet {
@@ -224,6 +254,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
         ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
     ASSERT_TRUE(ParseTokenList(ropsten_list_json, &token_list_map,
                                mojom::CoinType::ETH));
+    ASSERT_TRUE(ParseTokenList(solana_token_list_json, &token_list_map,
+                               mojom::CoinType::SOL));
     registry->UpdateTokenList(std::move(token_list_map));
 
     token1_ = GetRegistry()->GetTokenByAddress(
@@ -243,6 +275,24 @@ class BraveWalletServiceUnitTest : public testing::Test {
         "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d");
     ASSERT_TRUE(erc721_token_);
     ASSERT_EQ(erc721_token_->symbol, "CK");
+
+    wrapped_sol_ = GetRegistry()->GetTokenByAddress(
+        mojom::kSolanaMainnet, mojom::CoinType::SOL,
+        "So11111111111111111111111111111111111111112");
+    ASSERT_TRUE(wrapped_sol_);
+    ASSERT_EQ(wrapped_sol_->symbol, "SOL");
+
+    sol_usdc_ = GetRegistry()->GetTokenByAddress(
+        mojom::kSolanaMainnet, mojom::CoinType::SOL,
+        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+    ASSERT_TRUE(sol_usdc_);
+    ASSERT_EQ(sol_usdc_->symbol, "USDC");
+
+    sol_tsla_ = GetRegistry()->GetTokenByAddress(
+        mojom::kSolanaMainnet, mojom::CoinType::SOL,
+        "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ");
+    ASSERT_TRUE(sol_tsla_);
+    ASSERT_EQ(sol_tsla_->symbol, "TSLA");
 
     eth_token_ = mojom::BlockchainToken::New();
     eth_token_->contract_address = "";
@@ -266,6 +316,13 @@ class BraveWalletServiceUnitTest : public testing::Test {
     bat_token_->logo = "bat.png";
     bat_token_->chain_id = "0x1";
     bat_token_->coin = mojom::CoinType::ETH;
+
+    sol_token_ = mojom::BlockchainToken::New(
+        "", "Solana", "sol.png", false, false, "SOL", 9, true, "", "",
+        mojom::kSolanaMainnet, mojom::CoinType::SOL);
+    fil_token_ = mojom::BlockchainToken::New(
+        "", "Filecoin", "fil.png", false, false, "FIL", 18, true, "", "",
+        mojom::kFilecoinMainnet, mojom::CoinType::FIL);
   }
 
   mojom::BlockchainTokenPtr GetToken1() { return token1_.Clone(); }
@@ -567,6 +624,11 @@ class BraveWalletServiceUnitTest : public testing::Test {
   mojom::BlockchainTokenPtr erc721_token_;
   mojom::BlockchainTokenPtr eth_token_;
   mojom::BlockchainTokenPtr bat_token_;
+  mojom::BlockchainTokenPtr sol_token_;
+  mojom::BlockchainTokenPtr wrapped_sol_;
+  mojom::BlockchainTokenPtr sol_usdc_;
+  mojom::BlockchainTokenPtr sol_tsla_;
+  mojom::BlockchainTokenPtr fil_token_;
 };
 
 TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
@@ -676,6 +738,28 @@ TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
       EXPECT_EQ(tokens.size(), 1u);
       EXPECT_EQ(eth_token, tokens[0]);
     }
+  }
+
+  std::vector<mojom::NetworkInfoPtr> chains;
+  GetAllKnownSolChains(&chains);
+  mojom::BlockchainTokenPtr sol_token = sol_token_->Clone();
+  for (const auto& chain : chains) {
+    std::vector<mojom::BlockchainTokenPtr> tokens;
+    sol_token->chain_id = chain->chain_id;
+    GetUserAssets(chain->chain_id, mojom::CoinType::SOL, &tokens);
+    EXPECT_EQ(tokens.size(), 1u) << chain->chain_id;
+    EXPECT_EQ(sol_token, tokens[0]) << chain->chain_id;
+  }
+
+  chains.clear();
+  GetAllKnownFilChains(&chains);
+  mojom::BlockchainTokenPtr fil_token = fil_token_->Clone();
+  for (const auto& chain : chains) {
+    std::vector<mojom::BlockchainTokenPtr> tokens;
+    fil_token->chain_id = chain->chain_id;
+    GetUserAssets(chain->chain_id, mojom::CoinType::FIL, &tokens);
+    EXPECT_EQ(tokens.size(), 1u) << chain->chain_id;
+    EXPECT_EQ(fil_token, tokens[0]) << chain->chain_id;
   }
 }
 
@@ -1172,6 +1256,69 @@ TEST_F(BraveWalletServiceUnitTest, ERC721TokenAddRemoveSetUserAssetVisible) {
   EXPECT_EQ(erc721_token_1_visible_false, tokens[1]);
 }
 
+TEST_F(BraveWalletServiceUnitTest, SolanaTokenUserAssetsAPI) {
+  bool success = false;
+  std::vector<mojom::BlockchainTokenPtr> tokens;
+
+  GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
+  ASSERT_EQ(tokens.size(), 1u);
+  EXPECT_EQ(sol_token_, tokens[0]);
+
+  auto sol_token_devnet = sol_token_->Clone();
+  sol_token_devnet->chain_id = mojom::kSolanaDevnet;
+  GetUserAssets(mojom::kSolanaDevnet, mojom::CoinType::SOL, &tokens);
+  ASSERT_EQ(tokens.size(), 1u);
+  EXPECT_EQ(sol_token_devnet, tokens[0]);
+
+  // Add usdc to mainnet and wrapped sol to devnet.
+  AddUserAsset(sol_usdc_->Clone(), &success);
+  EXPECT_TRUE(success);
+  auto wrapped_sol_devnet = wrapped_sol_->Clone();
+  wrapped_sol_devnet->chain_id = mojom::kSolanaDevnet;
+  AddUserAsset(wrapped_sol_devnet->Clone(), &success);
+  EXPECT_TRUE(success);
+
+  GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
+  ASSERT_EQ(tokens.size(), 2u);
+  EXPECT_EQ(sol_usdc_, tokens[1]);
+
+  GetUserAssets(mojom::kSolanaDevnet, mojom::CoinType::SOL, &tokens);
+  ASSERT_EQ(tokens.size(), 2u);
+  EXPECT_EQ(wrapped_sol_devnet, tokens[1]);
+
+  // Set visible of wrapped sol to false on devnet
+  EXPECT_TRUE(tokens[1]->visible);
+  SetUserAssetVisible(wrapped_sol_devnet->Clone(), false, &success);
+  ASSERT_TRUE(success);
+  GetUserAssets(mojom::kSolanaDevnet, mojom::CoinType::SOL, &tokens);
+  ASSERT_EQ(tokens.size(), 2u);
+  auto non_visible_wrapped_sol_devnet = wrapped_sol_devnet->Clone();
+  non_visible_wrapped_sol_devnet->visible = false;
+  EXPECT_EQ(non_visible_wrapped_sol_devnet, tokens[1]);
+
+  // Remove usdc from mainnet and wrapped sol from devnet.
+  RemoveUserAsset(sol_usdc_->Clone(), &success);
+  RemoveUserAsset(wrapped_sol_devnet->Clone(), &success);
+  GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
+  ASSERT_EQ(tokens.size(), 1u);
+  EXPECT_EQ(sol_token_, tokens[0]);
+  GetUserAssets(mojom::kSolanaDevnet, mojom::CoinType::SOL, &tokens);
+  ASSERT_EQ(tokens.size(), 1u);
+  EXPECT_EQ(sol_token_devnet, tokens[0]);
+
+  // Invalid chain id.
+  GetUserAssets("0x100", mojom::CoinType::SOL, &tokens);
+  EXPECT_TRUE(tokens.empty());
+  auto sol_0x100 = sol_token_.Clone();
+  sol_0x100->chain_id = "0x100";
+  AddUserAsset(sol_0x100->Clone(), &success);
+  EXPECT_FALSE(success);
+  RemoveUserAsset(sol_0x100->Clone(), &success);
+  EXPECT_FALSE(success);
+  SetUserAssetVisible(sol_0x100->Clone(), true, &success);
+  EXPECT_FALSE(success);
+}
+
 TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
   EXPECT_FALSE(
       GetPrefs()->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated));
@@ -1209,6 +1356,85 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
 
   EXPECT_TRUE(
       GetPrefs()->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated));
+}
+
+TEST_F(BraveWalletServiceUnitTest, MigrateMultichainUserAssets) {
+  ASSERT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsDeprecated));
+
+  {
+    DictionaryPrefUpdate update(GetPrefs(), kBraveWalletUserAssetsDeprecated);
+    base::Value* old_user_assets_pref = update.Get();
+    base::Value* mainnet_user_assets_list = old_user_assets_pref->SetKey(
+        "mainnet", base::Value(base::Value::Type::LIST));
+
+    base::Value value(base::Value::Type::DICTIONARY);
+    value.SetKey("contract_address", base::Value(""));
+    value.SetKey("name", base::Value("Ethereum"));
+    value.SetKey("symbol", base::Value("ETH"));
+    value.SetKey("is_erc20", base::Value(false));
+    value.SetKey("is_erc721", base::Value(false));
+    value.SetKey("decimals", base::Value(18));
+    value.SetKey("visible", base::Value(true));
+    mainnet_user_assets_list->Append(std::move(value));
+
+    base::Value value2(base::Value::Type::DICTIONARY);
+    value2.SetKey("contract_address",
+                  base::Value("0x0D8775F648430679A709E98d2b0Cb6250d2887EF"));
+    value2.SetKey("name", base::Value("Basic Attention Token"));
+    value2.SetKey("symbol", base::Value("BAT"));
+    value2.SetKey("is_erc20", base::Value(true));
+    value2.SetKey("is_erc721", base::Value(false));
+    value2.SetKey("decimals", base::Value(18));
+    value2.SetKey("visible", base::Value(true));
+    mainnet_user_assets_list->Append(std::move(value2));
+
+    base::Value* rinkbey_user_assets_list = old_user_assets_pref->SetKey(
+        "rinkbey", base::Value(base::Value::Type::LIST));
+
+    base::Value value3(base::Value::Type::DICTIONARY);
+    value3.SetKey("contract_address", base::Value(""));
+    value3.SetKey("name", base::Value("Ethereum"));
+    value3.SetKey("symbol", base::Value("ETH"));
+    value3.SetKey("is_erc20", base::Value(false));
+    value3.SetKey("is_erc721", base::Value(false));
+    value3.SetKey("decimals", base::Value(18));
+    value3.SetKey("visible", base::Value(true));
+    rinkbey_user_assets_list->Append(std::move(value3));
+  }
+
+  ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsDeprecated));
+  BraveWalletService::MigrateMultichainUserAssets(GetPrefs());
+
+  const base::Value* assets = GetPrefs()->GetDictionary(kBraveWalletUserAssets);
+  ASSERT_TRUE(assets);
+  const base::Value* ethereum_mainnet_list =
+      assets->FindListPath("ethereum.mainnet");
+  ASSERT_TRUE(ethereum_mainnet_list);
+  ASSERT_EQ(ethereum_mainnet_list->GetList().size(), 2u);
+  EXPECT_FALSE(
+      ethereum_mainnet_list->GetList()[0].FindStringKey("contract_address"));
+  EXPECT_FALSE(
+      ethereum_mainnet_list->GetList()[1].FindStringKey("contract_address"));
+  EXPECT_EQ(*ethereum_mainnet_list->GetList()[0].FindStringKey("address"), "");
+  EXPECT_EQ(*ethereum_mainnet_list->GetList()[1].FindStringKey("address"),
+            "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
+  const base::Value* ethereum_rinkbey_list =
+      assets->FindListPath("ethereum.rinkbey");
+  ASSERT_TRUE(ethereum_rinkbey_list);
+  ASSERT_EQ(ethereum_rinkbey_list->GetList().size(), 1u);
+  EXPECT_FALSE(
+      ethereum_rinkbey_list->GetList()[0].FindStringKey("contract_address"));
+  EXPECT_EQ(*ethereum_rinkbey_list->GetList()[0].FindStringKey("address"), "");
+
+  const base::Value* solana_dict = assets->FindDictKey("solana");
+  ASSERT_TRUE(solana_dict);
+  EXPECT_EQ(*solana_dict, BraveWalletService::GetDefaultSolanaAssets());
+
+  const base::Value* filecoin_dict = assets->FindDictKey("filecoin");
+  ASSERT_TRUE(filecoin_dict);
+  EXPECT_EQ(*filecoin_dict, BraveWalletService::GetDefaultFilecoinAssets());
+
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsDeprecated));
 }
 
 TEST_F(BraveWalletServiceUnitTest, RecordWalletNoUse) {
@@ -1668,6 +1894,41 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   EXPECT_TRUE(service_->sign_message_callbacks_.empty());
   EXPECT_TRUE(service_->add_suggest_token_callbacks_.empty());
   EXPECT_TRUE(service_->add_suggest_token_requests_.empty());
+}
+
+TEST_F(BraveWalletServiceUnitTest, GetUserAssetAddress) {
+  // Native asset
+  EXPECT_EQ(
+      *BraveWalletService::GetUserAssetAddress("", mojom::CoinType::ETH, "0x1"),
+      "");
+  EXPECT_EQ(*BraveWalletService::GetUserAssetAddress("", mojom::CoinType::SOL,
+                                                     mojom::kSolanaMainnet),
+            "");
+  EXPECT_EQ(
+      *BraveWalletService::GetUserAssetAddress("", mojom::CoinType::FIL, "f"),
+      "");
+
+  // ETH
+  EXPECT_EQ(*BraveWalletService::GetUserAssetAddress(
+                "0x6b175474e89094c44da98b954eedeac495271d0f",
+                mojom::CoinType::ETH, "0x1"),
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F");
+
+  // SOL
+  EXPECT_EQ(*BraveWalletService::GetUserAssetAddress(
+                "AQoKYV7tYpTrFZN6P5oUufbQKAUr9mNYGe1TTJC9wajM",
+                mojom::CoinType::SOL, mojom::kSolanaMainnet),
+            "AQoKYV7tYpTrFZN6P5oUufbQKAUr9mNYGe1TTJC9wajM");
+  EXPECT_EQ(BraveWalletService::GetUserAssetAddress("not_base58_encoded_string",
+                                                    mojom::CoinType::SOL,
+                                                    mojom::kSolanaMainnet),
+            absl::nullopt);
+
+  // FIL
+  EXPECT_EQ(BraveWalletService::GetUserAssetAddress(
+                "f1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
+                mojom::CoinType::FIL, "f"),
+            absl::nullopt);
 }
 
 }  // namespace brave_wallet
