@@ -3,6 +3,7 @@
 import Foundation
 import Shared
 import BraveShared
+import Combine
 
 private let log = Logger.browserLogger
 
@@ -137,35 +138,28 @@ class AdBlockStats: LocalAdblockResourceProtocol {
     }
   }
 
-  func setDataFile(data: Data, id: String) async throws {
+  func setDataFile(data: Data, id: String) -> AnyPublisher<Void, Error> {
     if !isGeneralAdblocker(id: id) && regionalAdblockEngine == nil {
       regionalAdblockEngine = AdblockRustEngine()
     }
 
     guard let engine = isGeneralAdblocker(id: id) ? generalAdblockEngine : regionalAdblockEngine else {
-      throw "Adblock engine with id: \(id) is nil"
+      return Fail(error: "Adblock engine with id: \(id) is nil").eraseToAnyPublisher()
     }
 
-    try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+    return Future { completion in
       AdBlockStats.adblockSerialQueue.async {
-        do {
-          try Task.checkCancellation()
-        } catch {
-          continuation.resume(throwing: error)
-          return
-        }
-
         if engine.set(data: data) {
           log.debug("Adblock file with id: \(id) deserialized successfully")
           // Clearing the cache or checked urls.
           // The new list can bring blocked resource that were previously set as not-blocked.
           self.fifoCacheOfUrlsChecked = FifoDict()
-          continuation.resume()
+          completion(.success(()))
         } else {
-          continuation.resume(throwing: "Failed to deserialize adblock list with id: \(id)")
+          completion(.failure("Failed to deserialize adblock list with id: \(id)"))
         }
       }
-    }
+    }.eraseToAnyPublisher()
   }
 
   private func isGeneralAdblocker(id: String) -> Bool {

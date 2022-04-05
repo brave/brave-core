@@ -6,6 +6,7 @@ import WebKit
 import Shared
 import Data
 import BraveShared
+import Combine
 
 private let log = Logger.browserLogger
 
@@ -18,53 +19,78 @@ protocol ContentBlocker: AnyObject, Hashable {
 }
 
 extension ContentBlocker {
-  func buildRule(ruleStore: WKContentRuleListStore) async {
-    guard await needsCompiling(ruleStore: ruleStore) else {
-      return
-    }
+  func buildRule(ruleStore: WKContentRuleListStore) -> AnyPublisher<Void, Error> {
+    needsCompiling(ruleStore: ruleStore)
+      .subscribe(on: DispatchQueue.global(qos: .userInitiated))
+      .receive(on: DispatchQueue.main)
+      .flatMap { needsCompiling -> AnyPublisher<String, Error> in
+        if !needsCompiling {
+          return Empty(outputType: String.self, failureType: Error.self).eraseToAnyPublisher()
+        }
+        
+        return BlocklistName.loadJsonFromBundle(forResource: self.filename)
+      }
+      .map { jsonString in
+        if jsonString.isEmpty {
+          return
+        }
+        
+        ruleStore.compileContentRuleList(forIdentifier: self.filename, encodedContentRuleList: jsonString) { rule, error in
+          if let error = error {
+            // TODO #382: Potential telemetry location
+            log.error("Content blocker '\(self.filename)' errored: \(error.localizedDescription)")
+            assert(false)
+            return
+          }
+          assert(rule != nil)
+          
+          self.rule = rule
+          self.fileVersionPref?.value = self.fileVersion
+        }
+      }.eraseToAnyPublisher()
+  }
 
-    if let jsonString = await BlocklistName.loadJsonFromBundle(forResource: filename) {
-      do {
-        let rule = try await ruleStore.compileContentRuleList(forIdentifier: filename, encodedContentRuleList: jsonString)
-
-        assert(rule != nil)
-
+  private func needsCompiling(ruleStore: WKContentRuleListStore) -> AnyPublisher<Bool, Never> {
+    return Future { [weak self] completion in
+      guard let self = self else {
+        completion(.success(true))
+        return
+      }
+      
+      if self.fileVersionPref?.value != self.fileVersion {
+        // New file, so we must update the lists, no need to check the store
+        completion(.success(true))
+        return
+      }
+      
+      ruleStore.lookUpContentRuleList(forIdentifier: self.filename) { rule, error in
+        if let error = error {
+          log.error(error)
+          completion(.success(true))
+          return
+        }
+        
         self.rule = rule
-        self.fileVersionPref?.value = self.fileVersion
+        completion(.success(false))
+      }
+    }.eraseToAnyPublisher()
+  }
+
+  private static func loadJsonFromBundle(forResource file: String) -> AnyPublisher<String, Error> {
+    return Future { completion in
+      do {
+        guard let path = Bundle.main.path(forResource: file, ofType: "json") else {
+          assert(false)
+          completion(.failure("Failed to Load JSON From Bundle - Resource: \(file)"))
+          return
+        }
+        
+        let source = try String(contentsOfFile: path, encoding: .utf8)
+        completion(.success(source))
       } catch {
-        // TODO #382: Potential telemetry location
-        log.error("Content blocker '\(self.filename)' errored: \(error.localizedDescription)")
-        assert(false)
+        completion(.failure(error))
       }
-    }
-  }
-
-  private func needsCompiling(ruleStore: WKContentRuleListStore) async -> Bool {
-    if fileVersionPref?.value != fileVersion {
-      // New file, so we must update the lists, no need to check the store
-      return true
-    }
-
-    do {
-      rule = try await ruleStore.contentRuleList(forIdentifier: filename)
-      return false
-    } catch {
-      log.error(error)
-      return true
-    }
-  }
-
-  private static func loadJsonFromBundle(forResource file: String) async -> String? {
-    await Task.detached(priority: .userInitiated) {
-      guard let path = Bundle.main.path(forResource: file, ofType: "json"),
-        let source = try? String(contentsOfFile: path, encoding: .utf8)
-      else {
-        assert(false)
-        return nil
-      }
-
-      return source
-    }.value
+    }.eraseToAnyPublisher()
   }
 
   public static func == (lhs: Self, rhs: Self) -> Bool {

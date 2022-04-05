@@ -198,20 +198,20 @@ extension BrowserViewController {
   }
 
   private func createSearchEngine(_ url: URL, reference: String, icon: UIImage) {
-    Task {
-      do {
-        let response = try await NetworkManager().downloadResource(with: url)
-        await MainActor.run { [weak self] in
-          guard
-            let openSearchEngine = OpenSearchParser(pluginMode: true).parse(
-              response.data, referenceURL: reference, image: icon, isCustomEngine: true)
-          else {
-            return
-          }
-
-          self?.addSearchEngine(openSearchEngine)
+    NetworkManager().downloadResource(with: url) { [weak self] result in
+      switch result {
+      case .success(let response):
+        guard let openSearchEngine = OpenSearchParser(pluginMode: true).parse(
+          response.data,
+          referenceURL: reference,
+          image: icon,
+          isCustomEngine: true) else {
+          return
         }
-      } catch {
+
+        self?.addSearchEngine(openSearchEngine)
+        
+      case .failure(let error):
         log.error(error)
       }
     }

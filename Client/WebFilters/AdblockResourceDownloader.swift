@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 import BraveShared
+import Combine
 
 private let log = Logger.browserLogger
 
@@ -38,6 +39,7 @@ class AdblockResourceDownloader {
 
   /// Initialized with year 1970 to force adblock fetch at first launch.
   private(set) var lastFetchDate = Date(timeIntervalSince1970: 0)
+  private var adblockResourceDownloader: AnyCancellable?
 
   func startLoading() {
     let now = Date()
@@ -45,53 +47,58 @@ class AdblockResourceDownloader {
 
     if now.timeIntervalSince(lastFetchDate) >= fetchInterval {
       lastFetchDate = now
-
-      Task.detached(priority: .userInitiated) {
-        do {
-          try await withThrowingTaskGroup(of: Void.self) { [weak self] group in
-            guard let self = self else { return }
-            group.addTask { try await self.regionalAdblockResourcesSetup() }
-            group.addTask { try await self.generalAdblockResourcesSetup() }
-            try await group.waitForAll()
+      
+      adblockResourceDownloader = Publishers.Merge(regionalAdblockResourcesSetup(), generalAdblockResourcesSetup())
+        .collect()
+        .receive(on: DispatchQueue.main)
+        .sink { res in
+          switch res {
+          case .failure(let error):
+            log.error("Failed to Download Adblock-Resources: \(error)")
+          default:
+            break
           }
-        } catch {
-          log.error("Failed to Download Adblock-Resources: \(error)")
+        } receiveValue: { _ in
+          log.debug("Successfully Downloaded Adblock-Resources")
         }
-      }
     }
   }
 
-  func regionalAdblockResourcesSetup() async throws {
+  func regionalAdblockResourcesSetup() -> AnyPublisher<Void, Error> {
     if !Preferences.Shields.useRegionAdBlock.value {
       log.debug("Regional adblocking disabled, aborting attempt to download regional resources")
-      return
+      return Empty(outputType: Void.self, failureType: Error.self).eraseToAnyPublisher()
     }
 
-    try await downloadResources(
+    return downloadResources(
       type: .regional(locale: locale),
       queueName: "Regional adblock setup")
-    log.debug("Regional blocklists download and setup completed.")
-    Preferences.Debug.lastRegionalAdblockUpdate.value = Date()
+      .receive(on: DispatchQueue.main)
+      .map {
+        log.debug("Regional blocklists download and setup completed.")
+        Preferences.Debug.lastRegionalAdblockUpdate.value = Date()
+      }.eraseToAnyPublisher()
   }
 
-  func generalAdblockResourcesSetup() async throws {
-    try await downloadResources(
+  func generalAdblockResourcesSetup() -> AnyPublisher<Void, Error> {
+    return downloadResources(
       type: .general,
       queueName: "General adblock setup")
-    log.debug("General blocklists download and setup completed.")
-    Preferences.Debug.lastGeneralAdblockUpdate.value = Date()
+      .receive(on: DispatchQueue.main)
+      .map {
+        log.debug("General blocklists download and setup completed.")
+        Preferences.Debug.lastGeneralAdblockUpdate.value = Date()
+      }.eraseToAnyPublisher()
   }
 
-  private func downloadResources(type: AdblockerType, queueName: String) async throws {
+  private func downloadResources(type: AdblockerType, queueName: String) -> AnyPublisher<Void, Error> {
     let nm = networkManager
     let folderName = AdblockResourceDownloader.folderName
 
     // file name of which the file will be saved on disk
     let fileName = type.identifier
-
-    async let completedDownloads = type.associatedFiles.asyncConcurrentCompactMap { [weak self] fileType -> AdBlockNetworkResource? in
-      guard let self = self else { return nil }
-
+    
+    let completedDownloads = type.associatedFiles.compactMap({ fileType -> AnyPublisher<AdBlockNetworkResource, Error>? in
       let fileExtension = fileType.rawValue
       let etagExtension = fileExtension + ".etag"
 
@@ -110,28 +117,37 @@ class AdblockResourceDownloader {
       }
 
       let etag = self.fileFromDocumentsAsString("\(fileName).\(etagExtension)", inFolder: folderName)
-      let resource = try await nm.downloadResource(
+      return nm.downloadResource(
         with: url,
         resourceType: .cached(etag: etag),
         checkLastServerSideModification: !AppConstants.buildChannel.isPublic,
         customHeaders: headers)
+        .compactMap({ resource in
+          if resource.data.isEmpty {
+            return nil
+          }
 
-      if resource.data.isEmpty {
-        return nil
+          return AdBlockNetworkResource(
+            resource: resource,
+            fileType: fileType,
+            type: type)
+        }).eraseToAnyPublisher()
+    })
+    
+    return Publishers.MergeMany(completedDownloads)
+      .collect()
+      .subscribe(on: DispatchQueue.global(qos: .userInitiated))
+      .flatMap { resources in
+        // json to content rules compilation happens first, otherwise it makes no sense to proceed further
+        // and overwrite old files that were working before.
+        self.compileContentBlocker(resources: resources).compactMap({
+          self.writeFilesToDisk(resources: resources, name: fileName) ? resources : nil
+        })
       }
-
-      return AdBlockNetworkResource(
-        resource: resource,
-        fileType: fileType,
-        type: type)
-    }
-
-    // json to content rules compilation happens first, otherwise it makes no sense to proceed further
-    // and overwrite old files that were working before.
-    try await compileContentBlocker(resources: completedDownloads)
-    if try await writeFilesToDisk(resources: completedDownloads, name: fileName) {
-      try await setUpFiles(resources: completedDownloads, compileJsonRules: false)
-    }
+      .flatMap {
+        return self.setUpFiles(resources: $0, compileJsonRules: false)
+      }
+      .eraseToAnyPublisher()
   }
 
   private func fileFromDocumentsAsString(_ name: String, inFolder folder: String) -> String? {
@@ -145,15 +161,19 @@ class AdblockResourceDownloader {
     return String(data: data, encoding: .utf8)
   }
 
-  private func compileContentBlocker(resources: [AdBlockNetworkResource]) async {
-    await resources.filter { $0.fileType == .json }
-      .asyncConcurrentForEach { res in
-        guard let blockList = res.type.blockListName else { return }
-        await blockList.compile(data: res.resource.data)
-      }
+  private func compileContentBlocker(resources: [AdBlockNetworkResource]) -> AnyPublisher<Void, Error> {
+    let lists = resources.filter({ $0.fileType == .json })
+      .compactMap({ res in
+        return res.type.blockListName?.compile(data: res.resource.data)
+      })
+    
+    return Publishers.MergeMany(lists)
+      .collect()
+      .flatMap({ $0.publisher })
+      .eraseToAnyPublisher()
   }
 
-  private func writeFilesToDisk(resources: [AdBlockNetworkResource], name: String) async -> Bool {
+  private func writeFilesToDisk(resources: [AdBlockNetworkResource], name: String) -> Bool {
     var fileSaveCompletions = [Bool]()
     let fm = FileManager.default
     let folderName = AdblockResourceDownloader.folderName
@@ -188,21 +208,27 @@ class AdblockResourceDownloader {
     return !fileSaveCompletions.contains(false)
   }
 
-  private func setUpFiles(resources: [AdBlockNetworkResource], compileJsonRules: Bool) async throws {
-    try await resources.asyncConcurrentForEach {
+  private func setUpFiles(resources: [AdBlockNetworkResource], compileJsonRules: Bool) -> AnyPublisher<Void, Error> {
+    let resources: [AnyPublisher<Void, Error>] = resources.compactMap {
       switch $0.fileType {
       case .dat:
-        try await AdBlockStats.shared.setDataFile(
+        return AdBlockStats.shared.setDataFile(
           data: $0.resource.data,
           id: $0.type.identifier)
       case .json:
         if compileJsonRules {
-          await self.compileContentBlocker(resources: resources)
+          return self.compileContentBlocker(resources: resources)
         }
+        return nil
       case .tgz:
-        break  // TODO: Add downloadable httpse list
+        return nil  // TODO: Add downloadable httpse list
       }
     }
+    
+    return Publishers.MergeMany(resources)
+      .collect()
+      .flatMap({ $0.publisher })
+      .eraseToAnyPublisher()
   }
 }
 
@@ -210,12 +236,21 @@ extension AdblockResourceDownloader: PreferencesObserver {
   func preferencesDidChange(for key: String) {
     let regionalAdblockPref = Preferences.Shields.useRegionAdBlock
     if key == regionalAdblockPref.key {
-      Task {
-        do {
-          try await regionalAdblockResourcesSetup()
-        } catch {
+      var cancellable: AnyCancellable?
+      cancellable = regionalAdblockResourcesSetup()
+        .subscribe(on: DispatchQueue.global(qos: .userInitiated))
+        .receive(on: DispatchQueue.main)
+        .sink { res in
+        switch res {
+        case .failure(let error):
           log.error(error)
+        default:
+          break
         }
+        
+        cancellable = nil
+      } receiveValue: { _ in
+        log.debug("Successfully Setup Adblock Regional Preferences")
       }
     }
   }

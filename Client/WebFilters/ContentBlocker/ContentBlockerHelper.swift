@@ -6,6 +6,7 @@ import WebKit
 import Shared
 import Data
 import BraveShared
+import Combine
 
 private let log = Logger.browserLogger
 
@@ -45,8 +46,8 @@ class ContentBlockerHelper {
   static let ruleStore: WKContentRuleListStore = WKContentRuleListStore.default()
   weak var tab: Tab?
 
-  static func compileBundledLists() async {
-    return await BlocklistName.compileBundledRules(ruleStore: ruleStore)
+  static func compileBundledLists() -> AnyPublisher<Void, Error> {
+    return BlocklistName.compileBundledRules(ruleStore: ruleStore)
   }
 
   var isUserEnabled: Bool? {
