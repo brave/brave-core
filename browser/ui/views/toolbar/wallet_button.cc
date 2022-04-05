@@ -73,7 +73,9 @@ WalletButton::WalletButton(View* backup_anchor_view, PrefService* prefs)
     : ToolbarButton(base::BindRepeating(&WalletButton::OnWalletPressed,
                                         base::Unretained(this)),
                     std::make_unique<WalletButtonMenuModel>(prefs),
-                    nullptr),
+                    nullptr,
+                    false),  // Long-pressing is not intended for something that
+                             // already shows a panel on click
       prefs_(prefs),
       backup_anchor_view_(backup_anchor_view) {
   pref_change_registrar_.Init(prefs_);
@@ -81,6 +83,17 @@ WalletButton::WalletButton(View* backup_anchor_view, PrefService* prefs)
       kShowWalletIconOnToolbar,
       base::BindRepeating(&WalletButton::OnPreferenceChanged,
                           base::Unretained(this)));
+
+  // The MenuButtonController makes sure the panel closes when clicked if the
+  // panel is already open.
+  auto menu_button_controller = std::make_unique<views::MenuButtonController>(
+      this,
+      base::BindRepeating(&WalletButton::OnWalletPressed,
+                          base::Unretained(this)),
+      std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
+  menu_button_controller_ = menu_button_controller.get();
+  SetButtonController(std::move(menu_button_controller));
+
   UpdateVisibility();
 }
 

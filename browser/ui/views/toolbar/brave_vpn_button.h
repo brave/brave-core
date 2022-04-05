@@ -10,6 +10,7 @@
 #include "brave/components/brave_vpn/brave_vpn_service_observer.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/views/controls/button/menu_button_controller.h"
 
 namespace brave_vpn {
 class BraveVpnService;
@@ -43,6 +44,7 @@ class BraveVPNButton : public ToolbarButton,
 
   raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<brave_vpn::BraveVpnService> service_ = nullptr;
+  raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_
