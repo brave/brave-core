@@ -26,9 +26,9 @@ class FilTxMeta : public TxMeta {
   FilTxMeta();
   explicit FilTxMeta(std::unique_ptr<FilTransaction> tx);
   FilTxMeta(const FilTxMeta&) = delete;
-  ~FilTxMeta() override;
-  bool operator==(const FilTxMeta&) const;
   FilTxMeta operator=(const FilTxMeta&) = delete;
+  bool operator==(const FilTxMeta&) const;
+  ~FilTxMeta() override;
 
   // TxMeta
   base::Value ToValue() const override;
