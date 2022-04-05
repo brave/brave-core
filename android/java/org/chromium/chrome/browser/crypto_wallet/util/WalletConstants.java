@@ -7,4 +7,7 @@ public final class WalletConstants {
             "advance-tx-setting-intent-tx-nonce";
     public static final String ADVANCE_TX_SETTING_INTENT_RESULT_NONCE =
             "advance-tx-setting-intent-result-nonce";
+    // BraveWalletAddNetworksFragment
+    public static final String ADD_NETWORK_FRAGMENT_ARG_ACTIVE_NETWORK = "activeNetwork";
+    public static final String ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID = "chainId";
 }
