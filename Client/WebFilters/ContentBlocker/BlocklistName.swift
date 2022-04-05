@@ -6,6 +6,7 @@ import WebKit
 import Shared
 import Data
 import BraveShared
+import Combine
 
 private let log = Logger.browserLogger
 
@@ -88,36 +89,43 @@ class BlocklistName: CustomStringConvertible, ContentBlocker {
     return (onList, offList)
   }
 
-  static func compileBundledRules(ruleStore: WKContentRuleListStore) async {
-    await withTaskGroup(of: Void.self) { group in
-      BlocklistName.allLists.forEach { list in
-        group.addTask { await list.buildRule(ruleStore: ruleStore) }
-      }
-
-      // Compile block-cookie additionally
-      group.addTask { await BlocklistName.cookie.buildRule(ruleStore: ruleStore) }
-      await group.waitForAll()
-    }
+  static func compileBundledRules(ruleStore: WKContentRuleListStore) -> AnyPublisher<Void, Error> {
+    var allRules = BlocklistName.allLists.map({ $0.buildRule(ruleStore: ruleStore) })
+    
+    // Compile block-cookie additionally
+    allRules.append(BlocklistName.cookie.buildRule(ruleStore: ruleStore))
+    return Publishers.MergeMany(allRules)
+      .collect()
+      .flatMap({ $0.publisher })
+      .eraseToAnyPublisher()
   }
 
   func compile(
     data: Data?,
     ruleStore: WKContentRuleListStore = ContentBlockerHelper.ruleStore
-  ) async {
+  ) -> AnyPublisher<Void, Error> {
+    return Future { [weak self] completion in
+      guard let self = self else {
+        completion(.failure("BlockListName Deallocated"))
+        return
+      }
+      
+      guard let data = data, let dataString = String(data: data, encoding: .utf8) else {
+        completion(.failure("Could not read data for content blocker compilation."))
+        return
+      }
 
-    guard let data = data, let dataString = String(data: data, encoding: .utf8) else {
-      log.error("Could not read data for content blocker compilation.")
-      return
-    }
-
-    do {
-      let rule = try await ruleStore.compileContentRuleList(forIdentifier: filename, encodedContentRuleList: dataString)
-
-      assert(rule != nil)
-      self.rule = rule
-    } catch {
-      // TODO #382: Potential telemetry location
-      log.error("Content blocker '\(self.filename)' errored: \(error.localizedDescription)")
-    }
+      ruleStore.compileContentRuleList(forIdentifier: self.filename, encodedContentRuleList: dataString) { rule, error in
+        if let error = error {
+          // TODO #382: Potential telemetry location
+          completion(.failure("Content blocker '\(self.filename)' errored: \(error.localizedDescription)"))
+          return
+        }
+        
+        assert(rule != nil)
+        self.rule = rule
+        completion(.success(()))
+      }
+    }.eraseToAnyPublisher()
   }
 }
