@@ -1011,7 +1011,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="6955535239952325894">Este ajuste está inhabilitado en los navegadores administrados</translation>
 <translation id="6963766334940102469">Eliminar marcadores</translation>
 <translation id="6979737339423435258">Desde siempre</translation>
-<translation id="6995899638241819463">Avisar si tus contraseñas se ven expuestas en una quiebra de seguridad de datos</translation>
+<translation id="6995899638241819463">Avisarte si tus contraseñas se ven expuestas en una quiebra de seguridad de datos</translation>
 <translation id="7001056293070445572">Este archivo es grande (<ph name="FILE_SIZE"/>)</translation>
 <translation id="7020741890149022655">Añadir a lista de lectura <ph name="BEGIN_NEW"/>Nuevo<ph name="END_NEW"/></translation>
 <translation id="7022756207310403729">Abrir en el navegador</translation>
@@ -1329,7 +1329,7 @@ Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anu
 <translation id="8699120352855309748">No ofrecer que se traduzcan estos idiomas</translation>
 <translation id="8725066075913043281">Reintentar</translation>
 <translation id="8730621377337864115">Hecho</translation>
-<translation id="8746155870861185046">Compartir destacado</translation>
+<translation id="8746155870861185046">Compartir resaltado</translation>
 <translation id="8748850008226585750">Contenidos ocultos</translation>
 <translation id="8766529642647037772">¿Crear un enlace destacado como este?</translation>
 <translation id="8773160212632396039">Procesando solicitud</translation>

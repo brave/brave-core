@@ -14,18 +14,12 @@
 <translation id="5147525139567260139">Distribuie o filă Brave</translation>
 <translation id="1530633922026945685">Brave are nevoie de permisiunea de a accesa camera foto pentru a crea o hartă 3D a lucrurilor din jurul tău</translation>
 <translation id="4449148723378534338">Examinează cele mai importante opțiuni de confidențialitate și de securitate din Brave</translation>
-<translation id="5359574361379286250">Dacă vrei să folosești contul o singură dată, poți utiliza <ph name="GUEST_LINK_BEGIN"/>modul pentru invitați<ph name="GUEST_LINK_END"/> în browserul Brave. Dacă vrei să adaugi un cont pentru altcineva, <ph name="LINK_BEGIN"/>adaugă o nouă persoană<ph name="LINK_END"/> pe <ph name="DEVICE_TYPE"/>.
-
-Permisiunile pe care le-ai acordat deja site-urilor și aplicațiilor se pot aplica acestui cont. Îți poți gestiona Conturile Brave din <ph name="SETTINGS_LINK_BEGIN"/>Setări<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="5616153642055197778">Brave este disponibil într-o versiune nouă și mai sigură.</translation>
 <translation id="6797402139308059782">Permiteți Brave să ruleze în fundal</translation>
 <translation id="5875673934455379806">Reinstalați Brave</translation>
 <translation id="4528406859989804913">Vă conectați cu un cont gestionat și îi permiteți administratorului acestuia controlul asupra profilului dvs. Brave. Datele Brave, cum ar fi aplicațiile, marcajele, istoricul, parolele și alte setări vor fi asociate definitiv cu <ph name="USER_NAME"/>. Veți putea să ștergeți aceste date prin intermediul Tabloului de bord pentru Conturi Brave, însă nu veți putea să asociați aceste date cu alt cont. Aveți opțiunea de a crea un profil nou, pentru a păstra separat datele Brave existente. <ph name="LEARN_MORE"/></translation>
 <translation id="1649714546770135458">Dacă dezactivezi, te poți conecta la site-uri Brave ca Gmail fără a te conecta la Brave</translation>
 <translation id="189297655255130768">Brave nu mai răspunde. Îl reporniți acum?</translation>
-<translation id="479793348545936567">Dacă vrei să folosești contul o singură dată, poți utiliza modul pentru invitați în browserul Brave. Dacă vrei să adaugi un cont pentru altcineva, <ph name="LINK_BEGIN"/>adaugă o nouă persoană<ph name="LINK_END"/> pe <ph name="DEVICE_TYPE"/>.
-
-Permisiunile pe care le-ai acordat deja site-urilor și aplicațiilor se pot aplica acestui cont. Îți poți gestiona Conturile Brave din <ph name="SETTINGS_LINK_BEGIN"/>Setări<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1775322105159056176">Brave nu poate determina sau seta browserul prestabilit</translation>
 <translation id="7665553140559834626">Relansează pentru a actualiza sistemul de operare &amp;Brave</translation>
 <translation id="9220324636239049437">Astfel, se va șterge 1 element de pe acest dispozitiv. Pentru a recupera datele mai târziu, conectează-te la Brave ca <ph name="USER_EMAIL"/>.</translation>
@@ -294,6 +288,12 @@ Brave nu poate recupera setările.</translation>
 <translation id="4484434718272972655">Cine folosește Brave?</translation>
 <translation id="7173394303099002355">Beneficiază de cel mai înalt nivel de securitate de la Brave</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="479793348545936567">Dacă doriți să utilizați acest cont o singură dată, puteți utiliza modul pentru Invitați în browserul Brave. Dacă doriți să creați un cont pentru altcineva, <ph name="LINK_BEGIN"/> adăugați un nou profil<ph name="LINK_END"/> la <ph name="DEVICE_TYPE"/>.
+
+Permisiunile pe care le-ați oferit deja site-urilor și aplicațiilor se pot aplica și acestui cont. Vă puteți gestiona lanțurile de sincronizare în <ph name="SETTINGS_LINK_BEGIN"/>Setări<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Dacă doriți să utilizați cont doar o singură dată, puteți utiliza <ph name="GUEST_LINK_BEGIN"/>Modul pentru invitați<ph name="GUEST_LINK_END"/> în browserul Brave. Dacă doriți să creați un cont pentru altcineva, <ph name="LINK_BEGIN"/>adăugați un nou profil<ph name="LINK_END"/> în <ph name="DEVICE_TYPE"/>
+
+Permisiunile pe care le-ați acordat deja site-urilor web și aplicațiilor se pot aplica și acestui cont. Vă puteți gestiona lanțurile de sincronizare în <ph name="SETTINGS_LINK_BEGIN"/>Setări<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Avertisment: Brave nu poate împiedica extensiile să înregistreze istoricul de navigare. Pentru a dezactiva această extensie în modul incognito, debifați această opțiune.</translation>
 <translation id="1448049584457347995">Pentru mai multă siguranță în Brave, am dezactivat câteva extensii care nu sunt incluse în <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> și care este posibil să fi fost adăugate fără știrea dvs.</translation>
 <translation id="8848045066928358658">Pentru mai multă siguranță în Brave, am dezactivat următoarea extensie care nu este inclusă în <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> și care este posibil să fi fost adăugată fără știrea ta.</translation>

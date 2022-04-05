@@ -1380,7 +1380,6 @@
 <translation id="2327492829706409234">הפעלת האפליקציה</translation>
 <translation id="2327920026543055248">הזנת תו <ph name="CHARACTER"/> מתוך <ph name="TOTAL"/></translation>
 <translation id="2328561734797404498">יש להפעיל מחדש את המכשיר כדי להשתמש ב-<ph name="APP_NAME"/>.</translation>
-<translation id="6304377454418270508">‏במצב פרטי, אתרים יכולים להשתמש בקובצי cookie רק כדי לראות את פעילות הגלישה שלך באתר שלהם בלבד. קובצי cookie נמחקים בסיום הסשן הפרטי.</translation>
 <translation id="2329597144923131178">יש להיכנס כדי לקבל גישה אל הסימניות, ההיסטוריה, הסיסמאות והגדרות נוספות בכל המכשירים שברשותך.</translation>
 <translation id="2330878972945412956">‏<ph name="BEGIN_PARAGRAPH1"/>שליחה אוטומטית של דוחות ממכשירי BraveOS עוזרת לנו לקבוע את סדר העדיפויות של התיקונים והשיפורים ב-BraveOS. הדוחות האלה יכולים להכיל מידע כמו התכונות שמשמשות אותך, נפח הזיכרון שבשימוש בדרך כלל, נתוני שימוש וניתוח הביצועים של אפליקציות ל-Android ושגיאות. חלק מהנתונים הנצברים יעזרו גם לשפר את האפליקציות של Brave וכן יעזרו לשותפים של Brave, כמו מפתחים של Android.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>תמיד אפשר להעניק או לבטל את ההרשאה לשליחת הדוחות האלה בהגדרות של מכשיר BraveOS. מנהלי דומיין יכולים לשנות את ההגדרה הזו במסוף Admin.<ph name="END_PARAGRAPH2"/>
@@ -2103,7 +2102,6 @@
 <translation id="3036546437875325427">‏הפעלת Flash</translation>
 <translation id="3037754279345160234">אי אפשר לנתח את התצורה כדי להצטרף לדומיין. יש לפנות למנהל המערכת.</translation>
 <translation id="3038612606416062604">הוספה ידנית של מדפסת</translation>
-<translation id="8766876672295471671">הצגת שיחות, שליחת תגובה להודעות והוספת אנשים לצ'אטים קבוציים</translation>
 <translation id="3039491566278747710">התקנת המדיניות במצב אופליין במכשיר נכשלה.</translation>
 <translation id="3043218608271070212"><ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENT_STRING"/></translation>
 <translation id="3043581297103810752">מ-<ph name="ORIGIN"/></translation>
@@ -4271,7 +4269,6 @@
 <translation id="529296195492126134">אין תמיכה בפרופיל הזמני. יש לפנות למנהל המערכת</translation>
 <translation id="5293170712604732402">שחזור ההגדרות לברירות המחדל המקוריות שלהן</translation>
 <translation id="5294097441441645251">השם צריך להתחיל באות קטנה או בקו תחתון</translation>
-<translation id="8273477935094091719">‏חיישן מובנה ב-<ph name="DEVICE_TYPE"/> משמש לזיהוי אנשים שנמצאים מול המכשיר. מתבצע עיבוד מיידי של כל הנתונים במכשיר ואז הם נמחקים. נתוני החיישנים אף פעם לא נשלחים אל Brave. <ph name="LINK_BEGIN"/>למידע נוסף<ph name="LINK_END"/></translation>
 <translation id="5297082477358294722">הסיסמה נשמרה. אפשר להציג סיסמאות שמורות ולנהל אותן דרך <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">אם אדם אחר יסתכל על המסך שלך, יוצג סמל הפרטיות בצורת עין בפינה השמאלית התחתונה במסך</translation>
 <translation id="5298219193514155779">נושא שנוצר על ידי</translation>
@@ -8167,7 +8164,6 @@
 <translation id="994289308992179865">הפעלה ב&amp;רצף</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">יוצר חיבור מאובטח...</translation>
-<translation id="2361296898422164385">הצגת זיכרונות של האנשים האהובים עליך ועוד</translation>
 <translation id="3285581355655524751">‏יש להפעיל <ph name="LINK1_BEGIN"/>סנכרון Brave<ph name="LINK1_END"/> כדי להשתמש בסנכרון Wi-Fi. <ph name="LINK2_BEGIN"/>מידע נוסף<ph name="LINK2_END"/></translation>
 <translation id="998747458861718449">&amp;בדיקה</translation>
 <translation id="658539216370629794">פתח קישור בחלון גלישה פרטית</translation>
@@ -8190,6 +8186,7 @@
 <translation id="5097649414558628673">כלי: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">חנות אינטרנטית</translation>
 <translation id="8261378640211443080">התוסף הזה לא רשום ב<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> וייתכן שנוסף ללא ידיעתך.</translation>
+<translation id="2361296898422164385">צפו בזכרונות של החשבונות המועדפים שלכם ועוד</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (גלישה בסתר)</translation>
 <translation id="263189163883089157">אפשר לגלוש בפרטיות בעזרת חלון גלישה בסתר</translation>
 <translation id="5263632074804780211">חלון גלישה בסתר מאפשר לגלוש בלי לשמור את היסטוריית הגלישה</translation>
@@ -8229,6 +8226,8 @@
 <translation id="2254158488150713536">כדי להמשיך יש ללחוץ על 'אישור' ולאחר מכן ללחוץ על 'הוספת משתמש' כדי ליצור פרופיל חדש בשביל כתובת האימייל שלך.</translation>
 <translation id="1725743343613175327">כדי להמשיך יש ללחוץ על 'אישור' ולאחר מכן ללחוץ על 'הוספת משתמש' כדי ליצור פרופיל חדש בשביל כתובת האימייל שלך ב-<ph name="DOMAIN"/>.</translation>
 <translation id="3707212204259470604">נהל אנשים אחרים</translation>
+<translation id="8766876672295471671">צפו בשיחות, הגיבו להודעות, והוסיפו פרופילים לצ׳אט קבוצתי</translation>
+<translation id="8273477935094091719">ה<ph name="DEVICE_TYPE"/>שלך עושה שימוש בחיישן מובנה כדי לזהות פרופילים אל מול המכשיר שלך. כל המידע מעובד במכשיר שלך באופן מיידי ונמחק מיד לאחר מכן. נתוני חיישנים לעולם לא נשלחים אל Brave. <ph name="LINK_BEGIN"/>לפרטים נוספים <ph name="LINK_END"/></translation>
 <translation id="5832813618714645810">אנשים</translation>
 <translation id="3216703137209942563">{COUNT, plural,
 =1 {החלון הפרטי שלך לא ייפתח לאחר הפעלה מחדש}
@@ -8237,6 +8236,7 @@ other {{COUNT} החלונות הפרטיים שלך לא ייפתחו מחדש �
 <translation id="383007806262310953">הצג את סרגל הסימניות</translation>
 <translation id="8648684608605749476">‏חסימת קובצי cookie של צד שלישי במצב אנונימי</translation>
 <translation id="3293179957233653243">ייתכן שתכונות באתרים מסוימים לא יפעלו במצב פרטי</translation>
+<translation id="6304377454418270508">בעת מצב גלישה פרטי, אתרים יכולים להשתמש בקובצי Cookie כדי לראות את פעילות הגלישה שלך באתר שלהם. קובצי Cookie נמחקים בסוף הגלישה הפרטית.</translation>
 <translation id="7447787726493910888">הצג פרטים על חסימת קובצי Cookie של צד שלישי במצב פרטי</translation>
 <translation id="255999604394332437">‏במצב אנונימי, אתרים לא יכולים להשתמש בקובצי Cookie כדי לקבל מידע על פעילות הגלישה שלך. המידע הזה דרוש להם לצרכים שונים, כמו למשל הצגה של מודעות בהתאמה אישית. ייתכן שתכונות באתרים מסוימים לא יפעלו כראוי.</translation>
 <translation id="6105125042109106861">‏קובצי cookie של צד שלישי חסומים במצב אנונימי</translation>

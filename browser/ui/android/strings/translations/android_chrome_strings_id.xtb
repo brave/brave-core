@@ -718,7 +718,6 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>reset sinkronisasi<ph name="E
 <translation id="5329858041417644019">Browser Anda tidak dikelola</translation>
 <translation id="5342314432463739672">Permintaan izin</translation>
 <translation id="5355191726083956201">Perlindungan yang Ditingkatkan aktif</translation>
-<translation id="9148151251783962691">Untuk menjelajah secara pribadi di perangkat ini, coba mode Samaran</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> tab terbuka, ketuk untuk beralih tab}other{<ph name="OPEN_TABS_MANY"/> tab terbuka, ketuk untuk beralih tab}}</translation>
 <translation id="5375577065097716013">Telusuri dengan Lens <ph name="BEGIN_NEW"/>Baru<ph name="END_NEW"/></translation>
 <translation id="5403644198645076998">Hanya izinkan situs tertentu</translation>
@@ -1252,7 +1251,6 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
 <translation id="834313815369870491">Jangan pernah terjemahkan situs</translation>
 <translation id="8352996530981010042">Tidak dapat mendownload reaksi. Coba lagi.</translation>
 <translation id="8354977102499939946">Telusuri dengan cepat menggunakan suara Anda. Untuk mengedit pintasan ini, buka Setelan.</translation>
-<translation id="3488655102287645931">Anda dapat dengan mudah mengelola kontrol media, sesi Samaran, download, dan lainnya</translation>
 <translation id="835847953965672673"><ph name="NUMBER_OF_DOWNLOADS"/> download dipulihkan</translation>
 <translation id="8364299278605033898">Lihat situs yang populer</translation>
 <translation id="8368001212524806591">Pantau harga</translation>
@@ -1444,6 +1442,7 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
 <translation id="4660964651149493586">Buka Kunci Privat</translation>
 <translation id="3763131702135887799">Bantulah Brave menjadi lebih baik untuk profil-profil yang menggunakannya dengan cara seperti Anda</translation>
 <translation id="4167670741834902166">Tab Privat baru</translation>
+<translation id="9148151251783962691">Untuk meramban secara privat di perangkat ini, cobalah mode Privat</translation>
 <translation id="8355284051444779553">Untuk membuka tab Privat baru, buka menu</translation>
 <translation id="8120164982795455341">Tab Privat baru</translation>
 <translation id="6464648082977038075">Tutup tab Privat</translation>
@@ -1467,4 +1466,5 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
           other {<ph name="INCOGNITO_TAB_COUNT"/> privat lainnya dan <ph name="TAB_COUNT_MANY"/> lebih dari itu akan ditutup}}</translation>
 <translation id="3947065058794437451">Privat tidak tersedia pada perangkat ini.</translation>
 <translation id="1998933850996224665">Untuk berbagi dengan profil yang berdekatan, biarkan mereka memindai Kode QR ini.</translation>
+<translation id="3488655102287645931">Anda akan dapat dengan mudah mengelola kontrol media, sesi privat, pengunduhan, dan banyak lagi.</translation>
 </translationbundle>
