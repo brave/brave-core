@@ -9,17 +9,41 @@
 #include <memory>
 #include <vector>
 
+#include "brave/components/brave_federated/synthetic_dataset/synthetic_dataset.h"
+
 namespace brave_federated {
 
 class Model {
  public:
-  Model();
+  Model(int num_iterations, float learning_rate, int num_params);
+  
   ~Model();
 
-  void Forward(std::vector<float> input);
+  std::vector<float> Predict(std::vector<std::vector<float>> X);
+
+  std::tuple<size_t, float, float> Train(std::vector<std::vector<float>>& dataset);
+
+  std::tuple<size_t, float, float> Evaluate(SyntheticDataset& test_dataset);
+
+  std::vector<float> PredWeights();
+
+  void SetPredWeights(std::vector<float> new_pred_weights);
+
+  float Bias();
+
+  void SetBias(float new_bias);
+
+  size_t ModelSize();
 
  private:
-  std::vector<std::vector<float>> parameters_;
+  int num_iterations_;
+  int batch_size_;
+  float learning_rate_;
+
+  std::vector<float> pred_weights_;
+  float pred_b_;
+
+  float ComputeMSE(std::vector<float> true_y, std::vector<float> pred);
 };
 
 } // namespace brave_federated

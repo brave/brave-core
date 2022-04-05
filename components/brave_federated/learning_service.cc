@@ -5,8 +5,11 @@
 
 #include "brave/components/brave_federated/learning_service.h"
 
+#include <iostream>
 #include <string>
 #include <map>
+#include <random>
+#include <vector>
 
 #include "brave/components/brave_federated/client/client.h"
 #include "brave/components/brave_federated/client/model.h"
@@ -26,8 +29,19 @@ LearningService::LearningService(
       eligibility_service_(eligibility_service) {
   
     auto* ad_timing_data_store = data_store_service_->GetAdNotificationTimingDataStore();
-    Model* model = new Model();
+    
+    // Populate local datasets
+    std::vector<float> ms{3.5, 9.3};  //  b + m_0*x0 + m_1*x1
+    float b = 1.7;
+
+    Model* model = new Model(500, 0.01, ms.size());
+
     Client* ad_notification_client = new Client(kAdNotificationTaskName, model);
+    
+    SyntheticDataset local_training_data = SyntheticDataset(ms, b, 1000);
+    std::cout << "Training set generated." << std::endl;
+    ad_notification_client->SetTrainingData(local_training_data.DataPoints());
+    
     clients_.insert(std::make_pair(kAdNotificationTaskName, std::move(ad_notification_client)));
 
     auto callback = base::BindOnce(&LearningService::AdNotificationLogsLoadComplete,
@@ -57,9 +71,9 @@ void LearningService::StopParticipating() {
 
 void LearningService::OnEligibilityChanged(bool is_eligible) {
     if (is_eligible) {
-        StartLearning();
+        StartParticipating();
     } else {
-        StopLearning();
+        StopParticipating();
     }
 }
 

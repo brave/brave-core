@@ -5,16 +5,158 @@
 
 #include "brave/components/brave_federated/client/model.h"
 
+#include <algorithm>
+#include <iostream>
+#include <random>
 #include <vector>
+
+#include "brave/components/brave_federated/linear_algebra_util/linear_algebra_util.h"
+#include "brave/components/brave_federated/synthetic_dataset/synthetic_dataset.h"
 
 namespace brave_federated {
 
-Model::Model() {}
+Model::Model(int num_iterations, float learning_rate, int num_params)
+    : num_iterations_(num_iterations), learning_rate_(learning_rate) {
+  std::random_device rd;
+  std::mt19937 mt(rd());
+  std::uniform_int_distribution<> distr(-10.0, 10.0);
+  for (int i = 0; i < num_params; i++) {
+    this->pred_weights_.push_back(distr(mt));
+  }
+
+  this->pred_b_ = 0.0;
+  this->batch_size_ = 64;
+}
 
 Model::~Model() {}
 
-void Model::Forward(std::vector<float> input) {
-    // TODO
+std::vector<float> Model::PredWeights() {
+  std::vector<float> copy_of_weights(this->pred_weights_);
+  return copy_of_weights;
 }
 
+void Model::SetPredWeights(std::vector<float> new_weights) {
+  this->pred_weights_.assign(new_weights.begin(), new_weights.end());
 }
+
+float Model::Bias() {
+  return this->pred_b_;
+}
+void Model::SetBias(float new_bias) {
+  this->pred_b_ = new_bias;
+}
+
+size_t Model::ModelSize() {
+  return this->pred_weights_.size();
+}
+
+std::vector<float> Model::Predict(
+    std::vector<std::vector<float>> X) {
+  std::vector<float> prediction(X.size(), 0.0);
+  for (int i = 0; i < (int) X.size(); i++) {
+    for (int j = 0; j < (int) X[i].size(); j++) {
+      prediction[i] += this->pred_weights_[j] * X[i][j];
+    }
+    prediction[i] += this->pred_b_;
+  }
+
+  return prediction;
+}
+
+std::tuple<size_t, float, float> Model::Train(
+    std::vector<std::vector<float>>& dataset) {
+  int features = dataset[0].size() - 1;
+
+  std::vector<float> data_indices(dataset.size());
+  for (int i = 0; i < (int) dataset.size(); i++) {
+    data_indices.push_back(i);
+  }
+
+  std::vector<float> dW(features);
+  std::vector<float> err(batch_size_, 10000);
+  std::vector<float> pW(features);
+  float training_error = 0.0;
+  for (int iteration = 0; iteration < num_iterations; iteration++) {
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(data_indices.begin(), data_indices.end(), g);
+
+    std::vector<std::vector<float>> X(this->batch_size_,
+                                       std::vector<float>(features));
+    std::vector<float> y(this->batch_size_);
+
+    for (int i = 0; i < this->batch_size_; i++) {
+      std::vector<float> point = dataset[data_indices[i]];
+      y[i] = point.back();
+      point.pop_back();
+      X[i] = point;
+    }
+
+    pW = this->pred_weights_;
+    float pB = this->pred_b_;
+    float dB;
+
+    std::vector<float> pred = Predict(X);
+
+    err = LinearAlgebraUtil::SubtractVector(y, pred);
+
+    dW = LinearAlgebraUtil::MultiplyMatrixVector(
+        LinearAlgebraUtil::TransposeVector(X), err);
+    dW = LinearAlgebraUtil::MultiplyVectorScalar(dW,
+                                                   (-2.0 / this->batch_size_));
+
+    dB = (-2.0 / this->batch_size_) *
+         std::accumulate(err.begin(), err.end(), 0.0);
+
+    this->pred_weights_ = LinearAlgebraUtil::SubtractVector(
+        pW, LinearAlgebraUtil::MultiplyVectorScalar(dW, learning_rate_));
+    this->pred_b_ = pB - learning_rate_ * dB;
+
+    if (iteration % 250 == 0) {
+      training_error = this->ComputeMSE(y, Predict(X));
+      std::cout << "Iteration: " << iteration
+                << "  Training error: " << training_error << '\n';
+    }
+  }
+  std::cout << "Local model:" << std::endl;
+  for (size_t i = 0; i < pred_weights.size(); i++) {
+    std::cout << "  m" << i << "_local = " << std::fixed << pred_weights[i]
+              << std::endl;
+  }
+  std::cout << "  b_local = " << std::fixed << pred_b_ << std::endl << std::endl;
+
+  float accuracy = training_error;
+  return std::make_tuple(dataset.size(), training_error, accuracy);
+}
+
+float Model::ComputeMSE(std::vector<float> true_y,
+                                   std::vector<float> pred) {
+  float error = 0.0;
+
+  for (int i = 0; i < (int) true_y.size(); i++) {
+    error += (pred[i] - true_y[i]) * (pred[i] - true_y[i]);
+  }
+
+  return error / (1.0 * true_y.size());
+}
+
+std::tuple<size_t, float, float> Model::Evaluate(
+    SyntheticDataset& test_dataset) {
+  std::vector<std::vector<float>> data_points = test_dataset.DataPoints();
+  int num_features = data_points[0].size();
+  std::vector<std::vector<float>> X(test_dataset.size(),
+                                     std::vector<float>(num_features));
+  std::vector<float> y(test_dataset.size());
+
+  for (int i = 0; i < (int) test_dataset.size(); i++) {
+    std::vector<float> point = data_points[i];
+    y[i] = point.back();
+    point.pop_back();
+    X[i] = point;
+  }
+
+  float test_loss = ComputeMSE(y, Predict(X));
+  return std::make_tuple(test_dataset.size(), test_loss, test_loss);
+}
+
+} // namespace brave_federated
