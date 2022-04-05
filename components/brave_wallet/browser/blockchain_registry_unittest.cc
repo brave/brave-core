@@ -48,6 +48,76 @@ const char token_list_json[] = R"(
    }
   })";
 
+const char solana_token_list_json[] = R"(
+  {
+    "So11111111111111111111111111111111111111112": {
+      "name": "Wrapped SOL",
+      "logo": "So11111111111111111111111111111111111111112.png",
+      "erc20": false,
+      "symbol": "SOL",
+      "decimals": 9,
+      "chainId": "0x65",
+      "coingeckoId": "solana"
+    },
+    "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": {
+      "name": "USD Coin",
+      "logo": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
+      "erc20": false,
+      "symbol": "USDC",
+      "decimals": 6,
+      "chainId": "0x65",
+      "coingeckoId": "usd-coin"
+    },
+    "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ": {
+      "name": "Tesla Inc.",
+      "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
+      "erc20": false,
+      "symbol": "TSLA",
+      "decimals": 8,
+      "chainId": "0x65"
+    }
+  })";
+
+mojom::BlockchainTokenPtr wrapped_sol = mojom::BlockchainToken::New(
+    "So11111111111111111111111111111111111111112",
+    "Wrapped SOL",
+    "So11111111111111111111111111111111111111112.png",
+    false,
+    false,
+    "SOL",
+    9,
+    true,
+    "",
+    "solana",
+    "0x65",
+    mojom::CoinType::SOL);
+mojom::BlockchainTokenPtr usdc = mojom::BlockchainToken::New(
+    "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "USD Coin",
+    "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
+    false,
+    false,
+    "USDC",
+    6,
+    true,
+    "",
+    "usd-coin",
+    "0x65",
+    mojom::CoinType::SOL);
+mojom::BlockchainTokenPtr tsla = mojom::BlockchainToken::New(
+    "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ",
+    "Tesla Inc.",
+    "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
+    false,
+    false,
+    "TSLA",
+    8,
+    true,
+    "",
+    "",
+    "0x65",
+    mojom::CoinType::SOL);
+
 }  // namespace
 
 TEST(BlockchainRegistryUnitTest, GetAllTokens) {
@@ -56,6 +126,8 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
   TokenListMap token_list_map;
   ASSERT_TRUE(
       ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
+  ASSERT_TRUE(ParseTokenList(solana_token_list_json, &token_list_map,
+                             mojom::CoinType::SOL));
   registry->UpdateTokenList(std::move(token_list_map));
 
   // Loop twice to make sure getting the same list twice works
@@ -120,6 +192,20 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
             run_loop3.Quit();
           }));
   run_loop3.Run();
+
+  // Get Solana tokens
+  base::RunLoop run_loop4;
+  registry->GetAllTokens(
+      mojom::kSolanaMainnet, mojom::CoinType::SOL,
+      base::BindLambdaForTesting(
+          [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
+            ASSERT_EQ(token_list.size(), 3UL);
+            EXPECT_EQ(token_list[0], tsla);
+            EXPECT_EQ(token_list[1], usdc);
+            EXPECT_EQ(token_list[2], wrapped_sol);
+            run_loop4.Quit();
+          }));
+  run_loop4.Run();
 }
 
 TEST(BlockchainRegistryUnitTest, GetTokenByAddress) {
@@ -128,6 +214,8 @@ TEST(BlockchainRegistryUnitTest, GetTokenByAddress) {
   TokenListMap token_list_map;
   ASSERT_TRUE(
       ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
+  ASSERT_TRUE(ParseTokenList(solana_token_list_json, &token_list_map,
+                             mojom::CoinType::SOL));
   registry->UpdateTokenList(std::move(token_list_map));
   base::RunLoop run_loop;
   registry->GetTokenByAddress(
@@ -171,6 +259,17 @@ TEST(BlockchainRegistryUnitTest, GetTokenByAddress) {
         run_loop4.Quit();
       }));
   run_loop4.Run();
+
+  // Get Solana token
+  base::RunLoop run_loop5;
+  registry->GetTokenByAddress(
+      mojom::kSolanaMainnet, mojom::CoinType::SOL,
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
+        EXPECT_EQ(token, usdc);
+        run_loop5.Quit();
+      }));
+  run_loop5.Run();
 }
 
 TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
@@ -179,6 +278,8 @@ TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
   TokenListMap token_list_map;
   ASSERT_TRUE(
       ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
+  ASSERT_TRUE(ParseTokenList(solana_token_list_json, &token_list_map,
+                             mojom::CoinType::SOL));
   registry->UpdateTokenList(std::move(token_list_map));
   base::RunLoop run_loop;
   registry->GetTokenBySymbol(
@@ -220,6 +321,16 @@ TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
         run_loop4.Quit();
       }));
   run_loop4.Run();
+
+  // Get Solana token
+  base::RunLoop run_loop5;
+  registry->GetTokenBySymbol(
+      mojom::kSolanaMainnet, mojom::CoinType::SOL, "USDC",
+      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
+        EXPECT_EQ(token, usdc);
+        run_loop5.Quit();
+      }));
+  run_loop5.Run();
 }
 
 }  // namespace brave_wallet
