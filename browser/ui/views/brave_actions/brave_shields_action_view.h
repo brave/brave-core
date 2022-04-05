@@ -13,6 +13,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "ui/views/controls/button/label_button.h"
+#include "ui/views/controls/button/menu_button_controller.h"
 
 class TabStripModel;
 class IconWithBadgeImageSource;
@@ -53,6 +54,7 @@ class BraveShieldsActionView
   std::unique_ptr<WebUIBubbleManagerT<ShieldsPanelUI>> webui_bubble_manager_;
   Profile* profile_ = nullptr;
   TabStripModel* tab_strip_model_ = nullptr;
+  raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_SHIELDS_ACTION_VIEW_H_

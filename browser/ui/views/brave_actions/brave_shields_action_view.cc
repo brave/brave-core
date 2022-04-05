@@ -69,6 +69,15 @@ BraveShieldsActionView::BraveShieldsActionView(Profile* profile,
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
   ink_drop->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
   tab_strip_model_->AddObserver(this);
+
+  // This helps to maintain mouse pressed locks so the widget can properly show/close
+  auto menu_button_controller = std::make_unique<views::MenuButtonController>(
+      this,
+      base::BindRepeating(&BraveShieldsActionView::ButtonPressed,
+                          base::Unretained(this)),
+      std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
+  menu_button_controller_ = menu_button_controller.get();
+  SetButtonController(std::move(menu_button_controller));
 }
 
 BraveShieldsActionView::~BraveShieldsActionView() = default;
