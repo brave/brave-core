@@ -455,6 +455,33 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
                                      &oldest_block, &reward));
 }
 
+TEST(EthResponseParserUnitTest, ParseDataURIAndExtractJSON) {
+  std::string json;
+  std::string url;
+  // Invalid URL
+  EXPECT_FALSE(ParseDataURIAndExtractJSON(GURL(""), &json));
+  // Valid URL, incorrect scheme
+  EXPECT_FALSE(ParseDataURIAndExtractJSON(GURL("https://brave.com"),
+                                          &json));  // Incorrect scheme
+  // Valid URL and scheme, invalid mime_type
+  EXPECT_FALSE(ParseDataURIAndExtractJSON(
+      GURL("data:text/vnd-example+xyz;foo=bar;base64,R0lGODdh"),
+      &json));  // Incorrect mime type
+
+  // All valid
+  std::string expected =
+      R"({"attributes":"","description":"Non fungible lion","image":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgNTAwIj48cGF0aCBkPSIiLz48L3N2Zz4=","name":"NFL"})";
+  url =
+      "data:application/"
+      "json;base64,"
+      "eyJhdHRyaWJ1dGVzIjoiIiwiZGVzY3JpcHRpb24iOiJOb24gZnVuZ2libGUgbGlvbiIsImlt"
+      "YWdlIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNE"
+      "b3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhacFpYZENiM2c5SWpBZ01DQTFNREFn"
+      "TlRBd0lqNDhjR0YwYUNCa1BTSWlMejQ4TDNOMlp6ND0iLCJuYW1lIjoiTkZMIn0=";
+  EXPECT_TRUE(ParseDataURIAndExtractJSON(GURL(url), &json));
+  EXPECT_EQ(json, expected);
+}
+
 }  // namespace eth
 
 }  // namespace brave_wallet

@@ -12,6 +12,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "net/base/data_url.h"
 
 namespace brave_wallet {
 
@@ -267,6 +268,20 @@ bool ParseUnstoppableDomainsProxyReaderGetMany(
 bool ParseUnstoppableDomainsProxyReaderGet(const std::string& json,
                                            std::string* value) {
   return ParseStringResult(json, value);
+}
+
+bool ParseDataURIAndExtractJSON(const GURL url, std::string* json) {
+  std::string mime_type, charset, data;
+  if (!net::DataURL::Parse(url, &mime_type, &charset, &data) || data.empty()) {
+    return false;
+  }
+
+  if (mime_type != "application/json") {
+    return false;
+  }
+
+  *json = data;
+  return true;
 }
 
 }  // namespace eth

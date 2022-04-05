@@ -1561,7 +1561,7 @@ void JsonRpcService::OnGetERC721TokenUri(
   }
 
   if (scheme == url::kDataScheme) {
-    if (!ParseDataURIAndExtractJSON(url, &metadata_json)) {
+    if (!eth::ParseDataURIAndExtractJSON(url, &metadata_json)) {
       std::move(callback).Run(
           "", mojom::ProviderError::kParsingError,
           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));

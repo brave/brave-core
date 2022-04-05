@@ -44,6 +44,9 @@ bool ParseUnstoppableDomainsProxyReaderGetMany(
 bool ParseUnstoppableDomainsProxyReaderGet(const std::string& json,
                                            std::string* value);
 
+// Get the JSON included in a data URI with a mime type application/json
+bool ParseDataURIAndExtractJSON(const GURL url, std::string* json);
+
 }  // namespace eth
 
 }  // namespace brave_wallet
