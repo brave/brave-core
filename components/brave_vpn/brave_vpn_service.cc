@@ -255,7 +255,8 @@ void BraveVpnService::OnRemoved() {
 }
 
 void BraveVpnService::UpdateAndNotifyConnectionStateChange(
-    ConnectionState state) {
+    ConnectionState state,
+    bool force) {
   // this is a simple state machine for handling connection state
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (connection_state_ == state)
@@ -277,7 +278,7 @@ void BraveVpnService::UpdateAndNotifyConnectionStateChange(
 
   // On Windows, we could get disconnected state after connect failed.
   // To make connect failed state as a last state, ignore disconnected state.
-  if (connection_state_ == ConnectionState::CONNECT_FAILED &&
+  if (!force && connection_state_ == ConnectionState::CONNECT_FAILED &&
       state == ConnectionState::DISCONNECTED) {
     VLOG(2) << __func__ << ": Ignore disconnected state after connect failed";
     return;
@@ -446,6 +447,15 @@ void BraveVpnService::GetConnectionState(GetConnectionStateCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__ << " : " << connection_state_;
   std::move(callback).Run(connection_state_);
+}
+
+void BraveVpnService::ResetConnectionState() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // Reset is allowed only when it has failed state.
+  if (connection_state_ != ConnectionState::CONNECT_NOT_ALLOWED && connection_state_ != ConnectionState::CONNECT_FAILED)
+    return;
+
+  UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED, true);
 }
 
 void BraveVpnService::FetchRegionData(bool background_fetch) {

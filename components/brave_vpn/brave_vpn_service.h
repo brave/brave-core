@@ -94,6 +94,7 @@ class BraveVpnService :
 
   // mojom::vpn::ServiceHandler
   void GetConnectionState(GetConnectionStateCallback callback) override;
+  void ResetConnectionState() override;
   void Connect() override;
   void Disconnect() override;
   void CreateVPNConnection() override;
@@ -161,7 +162,8 @@ class BraveVpnService :
   void LoadCachedRegionData();
   void LoadCachedSelectedRegion();
   void UpdateAndNotifyConnectionStateChange(
-      brave_vpn::mojom::ConnectionState state);
+      brave_vpn::mojom::ConnectionState state,
+      bool force = false);
 
   void FetchRegionData(bool background_fetch);
   void OnFetchRegionList(bool background_fetch,

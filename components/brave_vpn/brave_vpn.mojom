@@ -44,6 +44,9 @@ interface ServiceHandler {
   GetConnectionState() => (ConnectionState state);
 
   [EnableIfNot=is_android]
+  ResetConnectionState();
+
+  [EnableIfNot=is_android]
   CreateVPNConnection();
 
   [EnableIfNot=is_android]
