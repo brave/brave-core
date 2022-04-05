@@ -22,7 +22,7 @@ class AdBlockStats: LocalAdblockResourceProtocol {
   private var regionalAdblockEngine: AdblockRustEngine?
 
   /// The task that downloads all the files. Can be cancelled
-  private var downloadTask: Task<Void, Never>?
+  private var downloadTask: AnyCancellable?
 
   fileprivate var isRegionalAdblockEnabled: Bool { return Preferences.Shields.useRegionAdBlock.value }
 
@@ -66,18 +66,28 @@ class AdBlockStats: LocalAdblockResourceProtocol {
     let filePaths = enumerator?.allObjects as? [URL]
     let datFileUrls = filePaths?.filter { $0.pathExtension == "dat" }
 
-    downloadTask?.cancel()
-    downloadTask = Task {
-      do {
-        try await datFileUrls?.asyncConcurrentForEach {
-          try Task.checkCancellation()
-          let fileName = $0.deletingPathExtension().lastPathComponent
-          guard let data = fm.contents(atPath: $0.path) else { return }
-          try await self.setDataFile(data: data, id: fileName)
+    downloadTask = nil
+    let setupFiles = datFileUrls?.compactMap({ url -> AnyPublisher<Void, Error>? in
+      let fileName = url.deletingPathExtension().lastPathComponent
+      guard let data = fm.contents(atPath: url.path) else { return nil }
+      return self.setDataFile(data: data, id: fileName)
+    }) ?? []
+    
+    if !setupFiles.isEmpty {
+      downloadTask = Publishers.MergeMany(setupFiles)
+        .collect()
+        .subscribe(on: DispatchQueue.global(qos: .userInitiated))
+        .flatMap({ $0.publisher })
+        .sink { res in
+          switch res {
+          case .failure(let error):
+            log.error("Failed to Setup Adblock Stats: \(error)")
+          default:
+            break
+          }
+        } receiveValue: { _ in
+          log.debug("Successfully Setup Adblock Stats")
         }
-      } catch {
-        log.error(error)
-      }
     }
   }
 

@@ -409,9 +409,22 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     Preferences.Playlist.webMediaSourceCompatibility.observe(from: self)
     // Lists need to be compiled before attempting tab restoration
     contentBlockListDeferred = Deferred<()>()
-    Task.detached(priority: .userInitiated) { [weak self] in
-      _ = await ContentBlockerHelper.compileBundledLists()
-      await self?.contentBlockListDeferred?.fill(())
+    
+    var contentBlockListTask: AnyCancellable?
+    contentBlockListTask = ContentBlockerHelper.compileBundledLists()
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] res in
+        switch res {
+        case .failure(let error):
+          log.error("Content Blocker failed to compile bundled lists: \(error)")
+        default:
+          break
+        }
+          
+        contentBlockListTask = nil
+        self?.contentBlockListDeferred?.fill(())
+    } receiveValue: { _ in
+      log.debug("Content Blocker successfully compiled bundled lists")
     }
 
     if rewards.ledger != nil {
