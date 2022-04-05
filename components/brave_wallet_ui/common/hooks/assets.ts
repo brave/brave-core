@@ -52,7 +52,7 @@ export default function useAssets (
         .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase()))
         .filter(asset => !assetsByNetwork
           .some(token => token.symbol.toUpperCase() === asset.symbol.toUpperCase()))
-    ]
+    ].filter(asset => asset.chainId === selectedNetwork.chainId)
   }, [fullTokenList, userVisibleTokensInfo, nativeAsset, assetsByNetwork])
 
   const [buyAssetOptions, setBuyAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([nativeAsset])
