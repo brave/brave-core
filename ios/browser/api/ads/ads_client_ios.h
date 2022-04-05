@@ -45,6 +45,9 @@ class AdsClientIOS : public ads::AdsClient {
   void LoadAdsResource(const std::string& id,
                        const int version,
                        ads::LoadCallback callback) override;
+  void LoadAdsFileResource(const std::string& id,
+                           const int version,
+                           ads::LoadFileCallback callback) override;
   void GetBrowsingHistory(const int max_count,
                           const int days_ago,
                           ads::GetBrowsingHistoryCallback callback) override;

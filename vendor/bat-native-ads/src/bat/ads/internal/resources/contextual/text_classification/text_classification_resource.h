@@ -7,7 +7,9 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_RESOURCE_H_
 
 #include <memory>
+#include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/resources/resource.h"
 
 namespace ads {
@@ -33,7 +35,12 @@ class TextClassification final
   ml::pipeline::TextProcessing* get() const override;
 
  private:
+  void CreateTextClassificationOnMainThread(
+      std::unique_ptr<std::string> resource_json);
+
   std::unique_ptr<ml::pipeline::TextProcessing> text_processing_pipeline_;
+
+  base::WeakPtrFactory<TextClassification> weak_ptr_factory_{this};
 };
 
 }  // namespace resource

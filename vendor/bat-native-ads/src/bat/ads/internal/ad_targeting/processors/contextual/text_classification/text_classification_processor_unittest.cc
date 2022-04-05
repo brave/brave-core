@@ -22,16 +22,25 @@ class BatAdsTextClassificationProcessorTest : public UnitTestBase {
   BatAdsTextClassificationProcessorTest() = default;
 
   ~BatAdsTextClassificationProcessorTest() override = default;
+
+  void SetUp() override {
+    UnitTestBase::SetUp();
+
+    resource_.Load();
+    task_environment()->RunUntilIdle();
+  }
+
+  resource::TextClassification resource_;
 };
 
 TEST_F(BatAdsTextClassificationProcessorTest,
        DoNotProcessIfResourceIsNotInitialized) {
   // Arrange
-  resource::TextClassification resource;
+  resource::TextClassification uninitialized_resource;
 
   // Act
   const std::string text = "The quick brown fox jumps over the lazy dog";
-  processor::TextClassification processor(&resource);
+  processor::TextClassification processor(&uninitialized_resource);
   processor.Process(text);
 
   // Assert
@@ -42,13 +51,9 @@ TEST_F(BatAdsTextClassificationProcessorTest,
 }
 
 TEST_F(BatAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
-  // Arrange
-  resource::TextClassification resource;
-  resource.Load();
-
   // Act
   const std::string text = "";
-  processor::TextClassification processor(&resource);
+  processor::TextClassification processor(&resource_);
   processor.Process(text);
 
   // Assert
@@ -59,10 +64,6 @@ TEST_F(BatAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
 }
 
 TEST_F(BatAdsTextClassificationProcessorTest, NeverProcessed) {
-  // Arrange
-  resource::TextClassification resource;
-  resource.Load();
-
   // Act
   model::TextClassification model;
   const SegmentList segments = model.GetSegments();
@@ -75,13 +76,9 @@ TEST_F(BatAdsTextClassificationProcessorTest, NeverProcessed) {
 }
 
 TEST_F(BatAdsTextClassificationProcessorTest, ProcessText) {
-  // Arrange
-  resource::TextClassification resource;
-  resource.Load();
-
   // Act
   const std::string text = "Some content about technology & computing";
-  processor::TextClassification processor(&resource);
+  processor::TextClassification processor(&resource_);
   processor.Process(text);
 
   // Assert
@@ -92,12 +89,8 @@ TEST_F(BatAdsTextClassificationProcessorTest, ProcessText) {
 }
 
 TEST_F(BatAdsTextClassificationProcessorTest, ProcessMultipleText) {
-  // Arrange
-  resource::TextClassification resource;
-  resource.Load();
-
   // Act
-  processor::TextClassification processor(&resource);
+  processor::TextClassification processor(&resource_);
 
   const std::string text_1 = "Some content about cooking food";
   processor.Process(text_1);

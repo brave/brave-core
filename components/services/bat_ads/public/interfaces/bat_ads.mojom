@@ -5,6 +5,7 @@
 module bat_ads.mojom;
 
 import "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom";
+import "mojo/public/mojom/base/file.mojom";
 
 // Service which hands out bat ads.
 interface BatAdsService {
@@ -54,6 +55,7 @@ interface BatAdsClient {
   Save(string name, string value) => (bool success);
   Load(string name) => (bool success, string value);
   LoadAdsResource(string id, int32 version) => (bool success, string value);
+  LoadAdsFileResource(string id, int32 version) => (mojo_base.mojom.File file);
   ClearScheduledCaptcha();
   GetScheduledCaptcha(string payment_id) => (string captcha_id);
   ShowScheduledCaptchaNotification(string payment_id, string captcha_id);

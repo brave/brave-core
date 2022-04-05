@@ -91,6 +91,12 @@ class ADS_EXPORT AdsClient {
                                const int version,
                                LoadCallback callback) = 0;
 
+  // Load ads resource as base::File for name and version from persistent
+  // storage.
+  virtual void LoadAdsFileResource(const std::string& name,
+                                   const int version,
+                                   LoadFileCallback callback) = 0;
+
   // Should return the resource for given |id|
   virtual std::string LoadResourceForId(const std::string& id) = 0;
 

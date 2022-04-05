@@ -6,6 +6,7 @@
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/check.h"
 #include "bat/ads/internal/logging.h"
@@ -60,8 +61,9 @@ void TextProcessing::SetInfo(const PipelineInfo& info) {
   transformations_ = GetTransformationVectorDeepCopy(info.transformations);
 }
 
-bool TextProcessing::FromJson(const std::string& json) {
-  absl::optional<PipelineInfo> pipeline_info = ParsePipelineJSON(json);
+bool TextProcessing::FromJson(std::string json) {
+  absl::optional<PipelineInfo> pipeline_info =
+      ParsePipelineJSON(std::move(json));
 
   if (pipeline_info.has_value()) {
     SetInfo(pipeline_info.value());

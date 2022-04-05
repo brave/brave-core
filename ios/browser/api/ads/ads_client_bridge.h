@@ -23,6 +23,9 @@
 - (void)loadAdsResource:(const std::string&)id
                 version:(const int)version
                callback:(ads::LoadCallback)callback;
+- (void)loadAdsFileResource:(const std::string&)id
+                    version:(const int)version
+                   callback:(ads::LoadFileCallback)callback;
 - (void)clearScheduledCaptcha;
 - (void)getScheduledCaptcha:(const std::string&)payment_id
                    callback:(ads::GetScheduledCaptchaCallback)callback;

@@ -19,7 +19,7 @@ namespace pipeline {
 
 struct PipelineInfo;
 
-absl::optional<PipelineInfo> ParsePipelineJSON(const std::string& json);
+absl::optional<PipelineInfo> ParsePipelineJSON(std::string json);
 
 }  // namespace pipeline
 }  // namespace ml

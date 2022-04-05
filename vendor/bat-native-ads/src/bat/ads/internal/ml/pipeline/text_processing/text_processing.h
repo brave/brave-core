@@ -33,7 +33,7 @@ class TextProcessing final {
 
   void SetInfo(const PipelineInfo& info);
 
-  bool FromJson(const std::string& json);
+  bool FromJson(std::string json);
 
   PredictionMap Apply(const std::unique_ptr<Data>& input_data) const;
 

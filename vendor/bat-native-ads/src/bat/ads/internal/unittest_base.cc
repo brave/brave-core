@@ -179,6 +179,7 @@ void UnitTestBase::Initialize() {
 
   MockLoad(ads_client_mock_, temp_dir_);
   MockLoadAdsResource(ads_client_mock_);
+  MockLoadAdsFileResource(ads_client_mock_);
   MockLoadResourceForId(ads_client_mock_);
   MockSave(ads_client_mock_);
 

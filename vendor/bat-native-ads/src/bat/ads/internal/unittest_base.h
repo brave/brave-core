@@ -96,6 +96,8 @@ class UnitTestBase : public testing::Test {
   // to see what those are
   size_t GetPendingTaskCount() const;
 
+  base::test::TaskEnvironment* task_environment() { return &task_environment_; }
+
  private:
   bool setup_called_ = false;
   bool teardown_called_ = false;

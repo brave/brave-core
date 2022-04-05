@@ -312,6 +312,7 @@ class AdsServiceImpl : public AdsService,
                          const std::string& json);
 
   void OnLoaded(const ads::LoadCallback& callback, const std::string& value);
+  void OnFileLoaded(const ads::LoadFileCallback& callback, base::File value);
   void OnSaved(const ads::ResultCallback& callback, const bool success);
 
   void OnRunDBTransaction(ads::RunDBTransactionCallback callback,
@@ -395,6 +396,10 @@ class AdsServiceImpl : public AdsService,
   void LoadAdsResource(const std::string& id,
                        const int version,
                        ads::LoadCallback callback) override;
+
+  void LoadAdsFileResource(const std::string& id,
+                           const int version,
+                           ads::LoadFileCallback callback) override;
 
   void GetBrowsingHistory(const int max_count,
                           const int days_ago,

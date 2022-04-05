@@ -5,8 +5,10 @@
 
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 
-#include <string>
+#include <utility>
 
+#include "base/files/file_util.h"
+#include "base/task/thread_pool.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
@@ -19,6 +21,18 @@ namespace resource {
 
 namespace {
 constexpr char kResourceId[] = "feibnmjhecfbjpeciancnchbmlobenjn";
+
+std::unique_ptr<std::string> ReadFileToString(base::File file) {
+  if (!file.IsValid())
+    return {};
+  std::string content;
+  base::ScopedFILE stream(base::FileToFILE(std::move(file), "rb"));
+  if (!base::ReadStreamToString(stream.get(), &content)) {
+    return {};
+  }
+  return std::make_unique<std::string>(content);
+}
+
 }  // namespace
 
 TextClassification::TextClassification() {
@@ -34,30 +48,41 @@ bool TextClassification::IsInitialized() const {
 }
 
 void TextClassification::Load() {
-  AdsClientHelper::Get()->LoadAdsResource(
+  auto weak_ptr = weak_ptr_factory_.GetWeakPtr();
+  AdsClientHelper::Get()->LoadAdsFileResource(
       kResourceId, features::GetTextClassificationResourceVersion(),
-      [=](const bool success, const std::string& json) {
-        text_processing_pipeline_.reset(
-            ml::pipeline::TextProcessing::CreateInstance());
-
-        if (!success) {
-          BLOG(1, "Failed to load " << kResourceId
-                                    << " text classification resource");
-          return;
-        }
-
-        BLOG(1, "Successfully loaded " << kResourceId
-                                       << " text classification resource");
-
-        if (!text_processing_pipeline_->FromJson(json)) {
-          BLOG(1, "Failed to initialize " << kResourceId
-                                          << " text classification resource");
-          return;
-        }
-
-        BLOG(1, "Successfully initialized " << kResourceId
-                                            << " text classification resource");
+      [weak_ptr](base::File file) {
+        base::ThreadPool::PostTaskAndReplyWithResult(
+            FROM_HERE, {base::MayBlock()},
+            base::BindOnce(&ReadFileToString, std::move(file)),
+            base::BindOnce(
+                &TextClassification::CreateTextClassificationOnMainThread,
+                weak_ptr));
       });
+}
+
+void TextClassification::CreateTextClassificationOnMainThread(
+    std::unique_ptr<std::string> resource_json) {
+  if (!resource_json) {
+    BLOG(1,
+         "Failed to load " << kResourceId << " text classification resource");
+    return;
+  }
+
+  text_processing_pipeline_.reset(
+      ml::pipeline::TextProcessing::CreateInstance());
+
+  BLOG(1, "Successfully loaded " << kResourceId
+                                 << " text classification resource");
+
+  if (!text_processing_pipeline_->FromJson(std::move(*resource_json))) {
+    BLOG(1, "Failed to initialize " << kResourceId
+                                    << " text classification resource");
+    return;
+  }
+
+  BLOG(1, "Successfully initialized " << kResourceId
+                                      << " text classification resource");
 }
 
 ml::pipeline::TextProcessing* TextClassification::get() const {

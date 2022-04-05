@@ -48,6 +48,9 @@ OBJC_EXPORT
 
 #pragma mark - File Managment
 
+/// Retuns the path to a file with the given name
+- (NSString*)dataPathForFilename:(NSString*)filename;
+
 /// Save the contents to a file with the given name
 - (bool)saveContents:(const std::string&)contents name:(const std::string&)name;
 /// Load the contents of a saved file with the given name
