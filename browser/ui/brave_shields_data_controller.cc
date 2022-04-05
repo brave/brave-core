@@ -239,8 +239,10 @@ void BraveShieldsDataController::SetAdBlockMode(AdBlockMode mode) {
 
   if (mode == AdBlockMode::AGGRESSIVE) {
     control_type_cosmetic = ControlType::BLOCK;  // aggressive
-  } else {
+  } else if (mode == AdBlockMode::STANDARD) {
     control_type_cosmetic = ControlType::BLOCK_THIRD_PARTY;  // standard
+  } else {
+    control_type_cosmetic = ControlType::ALLOW;  // allow
   }
 
   brave_shields::SetAdControlType(map, control_type_ad, GetCurrentSiteURL(),
