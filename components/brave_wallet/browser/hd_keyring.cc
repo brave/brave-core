@@ -100,6 +100,13 @@ std::string HDKeyring::GetAddress(size_t index) const {
   return GetAddressInternal(accounts_[index].get());
 }
 
+std::string HDKeyring::GetDiscoveryAddress(size_t index) const {
+  if (auto key = root_->DeriveChild(index)) {
+    return GetAddressInternal(key.get());
+  }
+  return std::string();
+}
+
 std::string HDKeyring::GetEncodedPrivateKey(const std::string& address) {
   HDKeyBase* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key)

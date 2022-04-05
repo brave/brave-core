@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "ios/chrome/browser/browser_state/browser_state_otr_helper.h"
@@ -38,15 +39,18 @@ KeyringServiceFactory* KeyringServiceFactory::GetInstance() {
 KeyringServiceFactory::KeyringServiceFactory()
     : BrowserStateKeyedServiceFactory(
           "KeyringService",
-          BrowserStateDependencyManager::GetInstance()) {}
+          BrowserStateDependencyManager::GetInstance()) {
+  DependsOn(brave_wallet::JsonRpcServiceFactory::GetInstance());
+}
 
 KeyringServiceFactory::~KeyringServiceFactory() = default;
 
 std::unique_ptr<KeyedService> KeyringServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
-  std::unique_ptr<KeyringService> keyring_service(
-      new KeyringService(browser_state->GetPrefs()));
+  std::unique_ptr<KeyringService> keyring_service(new KeyringService(
+      JsonRpcServiceFactory::GetServiceForState(browser_state),
+      browser_state->GetPrefs()));
   return keyring_service;
 }
 
