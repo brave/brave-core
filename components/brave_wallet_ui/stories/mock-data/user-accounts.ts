@@ -18,7 +18,7 @@ export const mockUserAccounts: UserAccountType[] = [
   }
 ]
 
-export const recoveryPhrase = [
+export const mockRecoveryPhrase = [
   'tomato',
   'tomato',
   'velvet',

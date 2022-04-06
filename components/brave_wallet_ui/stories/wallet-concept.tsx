@@ -2,7 +2,6 @@ import * as React from 'react'
 import { combineReducers, createStore } from 'redux'
 import { WalletWidgetStandIn } from './style'
 import {
-  // SideNav,
   WalletPageLayout,
   WalletSubViewLayout,
   LockScreen,
@@ -24,12 +23,10 @@ import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
 import CryptoStoryView from './screens/crypto-story-view'
 import './locale'
-// import { NavOptions } from '../options/side-nav-options'
-import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
 import BuySendSwap from './screens/buy-send-swap'
-import { recoveryPhrase, mockUserAccounts } from './mock-data/user-accounts'
+import { mockRecoveryPhrase, mockUserAccounts } from './mock-data/user-accounts'
 import { mockRPCResponse } from './mock-data/rpc-response'
-import { CurrentPriceMockData } from './mock-data/current-price-data'
+import { mockedCurrentPriceData } from './mock-data/current-price-data'
 import { PriceHistoryMockData } from './mock-data/price-history-data'
 import { mockUserWalletPreferences } from './mock-data/user-wallet-preferences'
 import { getLocale } from '../../common/locale'
@@ -47,6 +44,7 @@ import { mockPageState } from './mock-data/mock-page-state'
 import { createPageReducer } from '../page/reducers/page_reducer'
 import * as Lib from '../common/async/__mocks__/lib'
 import { LibContext } from '../common/context/lib.context'
+import { mockAccountAssetOptions, mockBasicAttentionToken, mockEthToken, mockNewAssetOptions } from './mock-data/mock-asset-options'
 
 const store = createStore(combineReducers({
   wallet: createWalletReducer(mockWalletState),
@@ -306,8 +304,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [selectedNetwork, setSelectedNetwork] = React.useState<BraveWallet.NetworkInfo>(mockNetworks[0])
   const [, setSelectedAccount] = React.useState<UserAccountType>(mockUserAccounts[0])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
-  const [fromAsset, setFromAsset] = React.useState<BraveWallet.BlockchainToken>(AccountAssetOptions[0])
-  const [, setToAsset] = React.useState<BraveWallet.BlockchainToken>(AccountAssetOptions[1])
+  const [fromAsset, setFromAsset] = React.useState<BraveWallet.BlockchainToken>(mockEthToken)
+  const [, setToAsset] = React.useState<BraveWallet.BlockchainToken>(mockBasicAttentionToken)
   const [exchangeRate] = React.useState('0.0027533')
   const [toAddress, setToAddress] = React.useState('')
   const [buyAmount, setBuyAmount] = React.useState('')
@@ -374,7 +372,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   }
 
   const onRestore = (phrase: string, password: string, isLegacy: boolean) => {
-    if (JSON.stringify(phrase.split(' ')) === JSON.stringify(recoveryPhrase)) {
+    if (JSON.stringify(phrase.split(' ')) === JSON.stringify(mockRecoveryPhrase)) {
       completeWalletSetup(true)
     } else {
       setHasRestoreError(true)
@@ -383,7 +381,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   const selectedUSDAssetPrice = React.useMemo(() => {
     if (selectedAsset) {
-      const data = CurrentPriceMockData.find((coin) => coin.symbol === selectedAsset.symbol)
+      const data = mockedCurrentPriceData.find((coin) => coin.symbol === selectedAsset.symbol)
       const usdValue = data ? data.usd : '0'
       const usdTimeframeChange = data ? data.usdTimeframeChange : '0'
       const response: BraveWallet.AssetPrice = {
@@ -399,7 +397,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   const selectedBTCAssetPrice = React.useMemo(() => {
     if (selectedAsset) {
-      const data = CurrentPriceMockData.find((coin) => coin.symbol === selectedAsset.symbol)
+      const data = mockedCurrentPriceData.find((coin) => coin.symbol === selectedAsset.symbol)
       const btcValue = data ? data.btc : '0'
       const btcTimeframeChange = data ? data.btcTimeframeChange : '0'
       const response: BraveWallet.AssetPrice = {
@@ -469,14 +467,14 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   // This will scrape all of the user's accounts and combine the fiat value for a single asset
   const scrapedFullAssetFiatBalance = (asset: BraveWallet.BlockchainToken) => {
     const fullBallance = scrapedFullAssetBalance(asset)
-    const price = Number(CurrentPriceMockData.find((coin) => coin.symbol === asset?.symbol)?.usd)
+    const price = Number(mockedCurrentPriceData.find((coin) => coin.symbol === asset?.symbol)?.usd)
     const value = price ? price * fullBallance : 0
     return value
   }
 
   const userAssetList = React.useMemo(() => {
     const userList = mockUserWalletPreferences.viewableAssets
-    const newList = NewAssetOptions.filter((asset) => userList.includes(asset.contractAddress))
+    const newList = mockNewAssetOptions.filter((asset) => userList.includes(asset.contractAddress))
     return newList.map((asset) => {
       return {
         asset: asset,
@@ -678,7 +676,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   }
 
   const onFindTokenInfoByContractAddress = (contractAddress: string) => {
-    const foundToken = NewAssetOptions.find((token) => token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
+    const foundToken = mockNewAssetOptions.find((token) => token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
     setFoundTokenInfo(foundToken)
   }
 
@@ -706,7 +704,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                     <Onboarding
                       checkIsStrongPassword={checkIsStrongPassword}
                       importError={importWalletError}
-                      recoveryPhrase={recoveryPhrase}
+                      recoveryPhrase={mockRecoveryPhrase}
                       onSubmit={completeWalletSetup}
                       onPasswordProvided={passwordProvided}
                       onShowRestore={onToggleRestore}
@@ -735,7 +733,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                                   isOnboarding={false}
                                   onCancel={onHideBackup}
                                   onSubmit={onWalletBackedUp}
-                                  recoveryPhrase={recoveryPhrase}
+                                  recoveryPhrase={mockRecoveryPhrase}
                                 />
                               ) : (
                                 <CryptoStoryView
@@ -748,7 +746,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                                   selectedAssetPriceHistory={selectedAssetPriceHistory}
                                   selectedTimeline={selectedTimeline}
                                   selectedAsset={selectedAsset}
-                                  fullAssetList={NewAssetOptions}
+                                  fullAssetList={mockNewAssetOptions}
                                   onSelectAsset={onSelectAsset}
                                   portfolioPriceHistory={selectedAssetPriceHistory}
                                   portfolioBalance={scrapedFullPortfolioBalance()}
@@ -826,8 +824,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                 onSelectAccount={onSelectAccount}
                 onSelectPresetSendAmount={onSelectPresetSendAmount}
                 onSelectTab={setSelectedWidgetTab}
-                buyAssetOptions={AccountAssetOptions}
-                sendAssetOptions={AccountAssetOptions}
+                buyAssetOptions={mockAccountAssetOptions}
+                sendAssetOptions={mockAccountAssetOptions}
                 networkList={mockNetworks}
                 onSelectSendAsset={onSelectTransactAsset}
                 onAddNetwork={onAddNetwork}

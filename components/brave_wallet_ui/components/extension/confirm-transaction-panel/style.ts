@@ -195,7 +195,7 @@ export const TransactionText = styled.span<Partial<StyleProps>>`
   line-height: 18px;
   letter-spacing: 0.01em;
   color: ${(p) => p.hasError ? p.theme.color.errorText : p.theme.color.text03};
-  text-align: right;
+  text-align: left;
 `
 
 export const FavIcon = styled.img`

@@ -6,7 +6,7 @@ import { mockAccount } from '../constants/mocks'
 import { BraveWallet } from '../../constants/types'
 
 // Options
-import { AccountAssetOptions, makeNetworkAsset } from '../../options/asset-options'
+import { makeNetworkAsset } from '../../options/asset-options'
 
 // Hooks
 import { TextEncoder, TextDecoder } from 'util'
@@ -25,6 +25,7 @@ import * as MockedLib from '../async/__mocks__/lib'
 import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
 import { mockPageState } from '../../stories/mock-data/mock-page-state'
 import { LibContext } from '../context/lib.context'
+import { mockBasicAttentionToken, mockEthToken } from '../../stories/mock-data/mock-asset-options'
 
 jest.useFakeTimers()
 
@@ -71,8 +72,8 @@ describe('useSwap hook', () => {
     const { result, waitForNextUpdate } = renderHook(() => useSwap(), renderHookOptions)
 
     act(() => {
-      result.current.setFromAsset(AccountAssetOptions[0])
-      result.current.setToAsset(AccountAssetOptions[1])
+      result.current.setFromAsset(mockEthToken)
+      result.current.setToAsset(mockBasicAttentionToken)
     })
 
     await waitForNextUpdate()
@@ -357,7 +358,7 @@ describe('useSwap hook', () => {
       await waitForValueToChange(() => result.current.isSwapSupported)
 
       await act(async () => {
-        result.current.setFromAsset(AccountAssetOptions[0]) // From asset is ETH
+        result.current.setFromAsset(mockEthToken) // From asset is ETH
         result.current.setSwapQuote({
           ...mockQuote,
           gasPrice: '10',
@@ -394,7 +395,7 @@ describe('useSwap hook', () => {
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(), renderHookOptionsWithCustomStore(mockStore))
 
       act(() => {
-        result.current.setFromAsset(AccountAssetOptions[0])
+        result.current.setFromAsset(mockEthToken)
         result.current.setSwapQuote({
           ...mockQuote,
           gasPrice: '10',
