@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/settings_routes.ts b/chrome/browser/resources/settings/settings_routes.ts
-index 2ba49e1b624bff534de65a827c1e49046c2ce04c..ef69419593f5e79eb0211f51f8ef48e04c8cffa3 100644
+index 9ba653f21b482c02b759282bb1c6bfacb04d0f55..5a2cda173defa66cc602ee29cb94cba8f21832f7 100644
 --- a/chrome/browser/resources/settings/settings_routes.ts
 +++ b/chrome/browser/resources/settings/settings_routes.ts
-@@ -87,4 +87,5 @@ export type SettingsRoutes = {
+@@ -88,4 +88,5 @@ export type SettingsRoutes = {
    SYNC_ADVANCED: Route,
    SYSTEM: Route,
    TRIGGERED_RESET_DIALOG: Route,

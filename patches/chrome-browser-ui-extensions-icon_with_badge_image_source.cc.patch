@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/extensions/icon_with_badge_image_source.cc b/chrome/browser/ui/extensions/icon_with_badge_image_source.cc
-index f89600b5c3b180ae4466519c89cbe349932acac6..804269865775c6db21a93ea497dd533460818149 100644
+index cdd4882eb906ac6ee8fb5dd590a1da3c70445c4a..3238041d6a32e893a5671412452e65c85ad9f7f7 100644
 --- a/chrome/browser/ui/extensions/icon_with_badge_image_source.cc
 +++ b/chrome/browser/ui/extensions/icon_with_badge_image_source.cc
 @@ -155,6 +155,7 @@ void IconWithBadgeImageSource::Draw(gfx::Canvas* canvas) {

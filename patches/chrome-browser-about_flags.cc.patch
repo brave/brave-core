@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index e230d139fb95930b68511c026c6d96d25071d032..db600b72bce8a786f56a04227953ec6dc65df7ce 100644
+index acfe572390ed19c0cddd7c8176239414036a3e7b..c602de660e527da2717fdd7b4b8b86b0b4207810 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -2931,6 +2931,7 @@ const FeatureEntry::Choice kAlwaysEnableHdcpChoices[] = {
+@@ -2968,6 +2968,7 @@ const FeatureEntry::FeatureVariation kDesktopSharePreviewVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
