@@ -1,3 +1,4 @@
+import("//build/buildflag_header.gni")
 import("//build/config/android/rules.gni")
 
 declare_args() {
