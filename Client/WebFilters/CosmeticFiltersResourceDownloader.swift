@@ -71,11 +71,8 @@ class CosmeticFiltersResourceDownloader {
         initialLoad = loadDownloadedFiles(into: engine)
           .receive(on: DispatchQueue.main)
           .sink { res in
-            switch res {
-            case .failure(let error):
+            if case .failure(let error) = res {
               log.error("Error Loading Cosmetic-Filters: \(error)")
-            default:
-              break
             }
           } receiveValue: { _ in
             log.debug("Successfully Loaded Cosmetic-Filters")
@@ -118,11 +115,8 @@ class CosmeticFiltersResourceDownloader {
         }
         .flatMap { $0 }
         .sink { res in
-          switch res {
-          case .failure(let error):
+          if case .failure(let error) = res {
             log.error("Failed to Setup Cosmetic-Filters: \(error)")
-          default:
-            break
           }
         } receiveValue: { [weak self] engine in
           self?.engine = engine

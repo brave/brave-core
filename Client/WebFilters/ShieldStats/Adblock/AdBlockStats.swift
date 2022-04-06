@@ -79,11 +79,8 @@ class AdBlockStats: LocalAdblockResourceProtocol {
         .subscribe(on: DispatchQueue.global(qos: .userInitiated))
         .map({ _ in () })
         .sink { res in
-          switch res {
-          case .failure(let error):
+          if case .failure(let error) = res {
             log.error("Failed to Setup Adblock Stats: \(error)")
-          default:
-            break
           }
         } receiveValue: { _ in
           log.debug("Successfully Setup Adblock Stats")
