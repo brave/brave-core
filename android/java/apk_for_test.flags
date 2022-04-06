@@ -452,3 +452,13 @@
 -keep class org.chromium.components.variations.firstrun.VariationsSeedFetcher {
     *** get(...);
 }
+
+-keep class org.chromium.chrome.browser.share.send_tab_to_self.DevicePickerBottomSheetContent {
+    public <init>(...);
+    *** createManageDevicesLink(...);
+}
+
+-keep class org.chromium.chrome.browser.share.send_tab_to_self.BraveDevicePickerBottomSheetContent {
+    public <init>(...);
+    *** createManageDevicesLink(...);
+}
