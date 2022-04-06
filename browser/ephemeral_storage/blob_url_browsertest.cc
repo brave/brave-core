@@ -5,6 +5,7 @@
 
 #include "base/strings/pattern.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -13,6 +14,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
+#include "net/base/features.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "url/gurl.h"
@@ -55,8 +57,14 @@ constexpr char kFetchBlobViaWorkerScript[] = R"(
 
 }  // namespace
 
-class BlobUrlBrowserTest : public EphemeralStorageBrowserTest {
+class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
  public:
+  struct RenderFrameHostBlobData {
+    content::RenderFrameHost* rfh;
+    GURL blob_url;
+  };
+  using FramesWithRegisteredBlobs = std::vector<RenderFrameHostBlobData>;
+
   void SetUpOnMainThread() override {
     EphemeralStorageBrowserTest::SetUpOnMainThread();
     ASSERT_TRUE(embedded_test_server()->Start());
@@ -83,6 +91,18 @@ class BlobUrlBrowserTest : public EphemeralStorageBrowserTest {
     return fetch_result;
   }
 
+  static void EnsureBlobsAreCrossAvailable(
+      const FramesWithRegisteredBlobs& frames_with_registered_blobs,
+      size_t rfh1_idx,
+      size_t rfh2_idx) {
+    EXPECT_EQ(std::to_string(rfh2_idx),
+              FetchBlob(frames_with_registered_blobs[rfh1_idx].rfh,
+                        frames_with_registered_blobs[rfh2_idx].blob_url));
+    EXPECT_EQ(std::to_string(rfh1_idx),
+              FetchBlob(frames_with_registered_blobs[rfh2_idx].rfh,
+                        frames_with_registered_blobs[rfh1_idx].blob_url));
+  }
+
   static std::vector<content::RenderFrameHost*> GetFrames(
       content::RenderFrameHost* main_frame) {
     return {
@@ -93,82 +113,69 @@ class BlobUrlBrowserTest : public EphemeralStorageBrowserTest {
         content::ChildFrameAt(main_frame, 3),
     };
   }
-};
 
-IN_PROC_BROWSER_TEST_F(BlobUrlBrowserTest, BlobsArePartitioned) {
-  // Register blobs in a.com and its subframes, check blobs can be fetched from
-  // originating frames without any issues.
-  std::vector<GURL> a_com_registered_blobs;
-  {
-    content::RenderFrameHost* main_frame =
-        LoadURLInNewTab(a_site_ephemeral_storage_url_)->GetMainFrame();
+  FramesWithRegisteredBlobs RegisterBlobs(const GURL& url) {
+    FramesWithRegisteredBlobs frames_with_registered_blobs;
+    content::RenderFrameHost* main_frame = LoadURLInNewTab(url)->GetMainFrame();
     const std::vector<content::RenderFrameHost*> rfhs = GetFrames(main_frame);
 
     for (size_t idx = 0; idx < rfhs.size(); ++idx) {
       auto* rfh = rfhs[idx];
       // Register blob.
-      a_com_registered_blobs.push_back(RegisterBlob(rfh, std::to_string(idx)));
-
+      GURL blob_url = RegisterBlob(rfh, std::to_string(idx));
       // Blob should be fetchable from the same frame.
-      EXPECT_EQ(std::to_string(idx),
-                FetchBlob(rfh, a_com_registered_blobs[idx]));
+      EXPECT_EQ(std::to_string(idx), FetchBlob(rfh, blob_url));
+
+      frames_with_registered_blobs.push_back({rfh, std::move(blob_url)});
     }
-
-    // Expect blob created from a.com is available in iframe and vice versa.
-    EXPECT_EQ(std::to_string(0), FetchBlob(rfhs[3], a_com_registered_blobs[0]));
-    EXPECT_EQ(std::to_string(3), FetchBlob(rfhs[0], a_com_registered_blobs[3]));
-
-    // Expect blob created from b.com iframe is available in another b.com
-    // iframe and vice versa.
-    EXPECT_EQ(std::to_string(1), FetchBlob(rfhs[2], a_com_registered_blobs[1]));
-    EXPECT_EQ(std::to_string(2), FetchBlob(rfhs[1], a_com_registered_blobs[2]));
+    return frames_with_registered_blobs;
   }
 
-  // Register blobs in b.com and its subframes, check they can be fetched from
-  // originating frames without any issues.
-  // Ensure no blobs from a.com are available to fetch in iframes.
-  std::vector<GURL> b_com_registered_blobs;
-  {
-    content::RenderFrameHost* main_frame =
-        LoadURLInNewTab(b_site_ephemeral_storage_url_)->GetMainFrame();
-    const std::vector<content::RenderFrameHost*> rfhs = GetFrames(main_frame);
+  void TestBlobsArePartitioned() {
+    // Register blobs in a.com and its subframes, check blobs can be fetched
+    // from
+    // originating frames without any issues.
+    FramesWithRegisteredBlobs a_com_registered_blobs =
+        RegisterBlobs(a_site_ephemeral_storage_url_);
+    // Expect blob created from a.com is available in iframe and vice versa.
+    EnsureBlobsAreCrossAvailable(a_com_registered_blobs, 0, 3);
+    // Expect blob created from b.com iframe is available in another b.com
+    // iframe and vice versa.
+    EnsureBlobsAreCrossAvailable(a_com_registered_blobs, 1, 2);
 
-    for (size_t idx = 0; idx < rfhs.size(); ++idx) {
-      auto* rfh = rfhs[idx];
-      // Register blob.
-      b_com_registered_blobs.push_back(RegisterBlob(rfh, std::to_string(idx)));
+    // Register blobs in b.com and its subframes, check they can be fetched from
+    // originating frames without any issues.
+    FramesWithRegisteredBlobs b_com_registered_blobs =
+        RegisterBlobs(b_site_ephemeral_storage_url_);
 
-      // Blob should be fetchable from the same frame.
-      EXPECT_EQ(std::to_string(idx),
-                FetchBlob(rfh, b_com_registered_blobs[idx]));
-
+    // Ensure no blobs from a.com are available to fetch in b.com iframes.
+    for (size_t idx = 0; idx < b_com_registered_blobs.size(); ++idx) {
+      auto* rfh = b_com_registered_blobs[idx].rfh;
       // No blobs from a.com should be available.
       for (size_t a_com_blob_idx = 0;
            a_com_blob_idx < a_com_registered_blobs.size(); ++a_com_blob_idx) {
-        EXPECT_EQ("error",
-                  FetchBlob(rfh, a_com_registered_blobs[a_com_blob_idx]));
+        EXPECT_EQ(
+            "error",
+            FetchBlob(rfh, a_com_registered_blobs[a_com_blob_idx].blob_url));
       }
     }
-  }
 
-  // Expect all a.com blobs (including the ones from 3p frames) are
-  // available in another a.com tab.
-  {
-    content::RenderFrameHost* main_frame =
-        LoadURLInNewTab(a_site_ephemeral_storage_url_)->GetMainFrame();
-    const std::vector<content::RenderFrameHost*> rfhs = GetFrames(main_frame);
-
-    for (size_t idx = 0; idx < rfhs.size(); ++idx) {
-      auto* rfh = rfhs[idx];
+    // Expect all a.com blobs (including the ones from 3p frames) are
+    // available in another a.com tab.
+    FramesWithRegisteredBlobs a_com2_registered_blobs =
+        RegisterBlobs(a_site_ephemeral_storage_url_);
+    for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
+      auto* rfh = a_com2_registered_blobs[idx].rfh;
       // All blobs from another a.com tab should be avilable.
       EXPECT_EQ(std::to_string(idx),
-                FetchBlob(rfh, a_com_registered_blobs[idx]));
+                FetchBlob(rfh, a_com_registered_blobs[idx].blob_url));
 
       // No blobs from b.com should be available.
       for (size_t b_com_blob_idx = 0;
            b_com_blob_idx < b_com_registered_blobs.size(); ++b_com_blob_idx) {
-        EXPECT_EQ("error",
-                  FetchBlob(rfh, b_com_registered_blobs[b_com_blob_idx]));
+        EXPECT_EQ(
+            "error",
+            FetchBlob(rfh, b_com_registered_blobs[b_com_blob_idx].blob_url));
       }
     }
 
@@ -177,19 +184,185 @@ IN_PROC_BROWSER_TEST_F(BlobUrlBrowserTest, BlobsArePartitioned) {
     ASSERT_TRUE(browser()->tab_strip_model()->CloseWebContentsAt(
         1, TabStripModel::CloseTypes::CLOSE_NONE));
     content::RunAllTasksUntilIdle();
-    for (size_t idx = 0; idx < rfhs.size(); ++idx) {
-      auto* rfh = rfhs[idx];
-      EXPECT_EQ("error", FetchBlob(rfh, a_com_registered_blobs[idx]));
+    for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
+      auto* rfh = a_com2_registered_blobs[idx].rfh;
+      EXPECT_EQ("error", FetchBlob(rfh, a_com_registered_blobs[idx].blob_url));
     }
   }
+
+  void TestBlobsAreNotPartitioned() {
+    // Register blobs in a.com and its subframes, check blobs can be fetched
+    // from
+    // originating frames without any issues.
+    FramesWithRegisteredBlobs a_com_registered_blobs =
+        RegisterBlobs(a_site_ephemeral_storage_url_);
+    // Expect blob created from a.com is available in iframe and vice versa.
+    EnsureBlobsAreCrossAvailable(a_com_registered_blobs, 0, 3);
+    // Expect blob created from b.com iframe is available in another b.com
+    // iframe and vice versa.
+    EnsureBlobsAreCrossAvailable(a_com_registered_blobs, 1, 2);
+
+    // Register blobs in b.com and its subframes, check they can be fetched from
+    // originating frames without any issues.
+    FramesWithRegisteredBlobs b_com_registered_blobs =
+        RegisterBlobs(b_site_ephemeral_storage_url_);
+
+    // Ensure blobs from a.com tab are available to fetch in b.com tab.
+    for (size_t idx = 0; idx < b_com_registered_blobs.size(); ++idx) {
+      auto* rfh = b_com_registered_blobs[idx].rfh;
+      // Blobs from a.com should be available.
+      if (idx == 0) {
+        const size_t b_com_inside_a_com_idx = 1;
+        EXPECT_EQ(
+            std::to_string(b_com_inside_a_com_idx),
+            FetchBlob(rfh,
+                      a_com_registered_blobs[b_com_inside_a_com_idx].blob_url));
+      } else {
+        EXPECT_EQ(std::to_string(idx),
+                  FetchBlob(rfh, a_com_registered_blobs[idx].blob_url));
+      }
+    }
+
+    // Expect all a.com blobs (including the ones from 3p frames) are
+    // available in another a.com tab.
+    FramesWithRegisteredBlobs a_com2_registered_blobs =
+        RegisterBlobs(a_site_ephemeral_storage_url_);
+    for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
+      auto* rfh = a_com2_registered_blobs[idx].rfh;
+      // All blobs from another a.com tab should be avilable.
+      EXPECT_EQ(std::to_string(idx),
+                FetchBlob(rfh, a_com_registered_blobs[idx].blob_url));
+
+      // Blobs from b.com should also be available.
+      if (idx == 0) {
+        const size_t a_com_inside_b_com_idx = 3;
+        EXPECT_EQ(
+            std::to_string(a_com_inside_b_com_idx),
+            FetchBlob(rfh,
+                      a_com_registered_blobs[a_com_inside_b_com_idx].blob_url));
+      } else {
+        EXPECT_EQ(std::to_string(idx),
+                  FetchBlob(rfh, b_com_registered_blobs[idx].blob_url));
+      }
+    }
+
+    // Close the first a.com tab, ensure all blobs created there become obsolete
+    // and can't be fetched.
+    ASSERT_TRUE(browser()->tab_strip_model()->CloseWebContentsAt(
+        1, TabStripModel::CloseTypes::CLOSE_NONE));
+    content::RunAllTasksUntilIdle();
+    for (size_t idx = 0; idx < a_com2_registered_blobs.size(); ++idx) {
+      auto* rfh = a_com2_registered_blobs[idx].rfh;
+      EXPECT_EQ("error", FetchBlob(rfh, a_com_registered_blobs[idx].blob_url));
+    }
+  }
+};
+
+class BlobUrlPartitionEnabledBrowserTest : public BlobUrlBrowserTestBase {
+ public:
+  BlobUrlPartitionEnabledBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        net::features::kBravePartitionBlobStorage);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
+                       BlobsArePartitioned) {
+  TestBlobsArePartitioned();
+}
+
+IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
+                       BlobsAreNotPartitionedWhenShieldsDisabled) {
+  // Disable shields on a.com and b.com.
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false,
+                                        a_site_ephemeral_storage_url_);
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false,
+                                        b_site_ephemeral_storage_url_);
+
+  TestBlobsAreNotPartitioned();
+}
+
+class BlobUrlPartitionEnabledWith1PESBrowserTest
+    : public BlobUrlBrowserTestBase {
+ public:
+  BlobUrlPartitionEnabledWith1PESBrowserTest() {
+    scoped_feature_list_.InitWithFeatures(
+        {net::features::kBraveFirstPartyEphemeralStorage,
+         net::features::kBravePartitionBlobStorage},
+        {});
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledWith1PESBrowserTest,
+                       BlobsArePartitionedIn1PESMode) {
+  SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
+  TestBlobsArePartitioned();
+}
+
+IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledWith1PESBrowserTest,
+                       BlobsArePartitionedIn1PESModeForBothSites) {
+  SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
+  SetCookieSetting(b_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
+  TestBlobsArePartitioned();
+}
+
+class BlobUrlPartitionDisabledBrowserTest : public BlobUrlBrowserTestBase {
+ public:
+  BlobUrlPartitionDisabledBrowserTest() {
+    scoped_feature_list_.InitAndDisableFeature(
+        net::features::kBravePartitionBlobStorage);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BlobUrlPartitionDisabledBrowserTest,
+                       BlobsAreNotPartitioned) {
+  TestBlobsAreNotPartitioned();
+}
+
+class BlobUrlEphemeralStorageDisabledBrowserTest
+    : public BlobUrlBrowserTestBase {
+ public:
+  BlobUrlEphemeralStorageDisabledBrowserTest() {
+    scoped_feature_list_.InitAndDisableFeature(
+        net::features::kBraveEphemeralStorage);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BlobUrlEphemeralStorageDisabledBrowserTest,
+                       BlobsAreNotPartitioned) {
+  TestBlobsAreNotPartitioned();
 }
 
 // Tests for the blob: URL scheme, originally implemented in
 // content/browser/blob_storage/blob_url_browsertest.cc,
 // migrated from content_browsertests to brave_browser_tests.
-using BlobUrlBrowserTest_Chromium = BlobUrlBrowserTest;
+class BlobUrlBrowserTest : public BlobUrlBrowserTestBase,
+                           public testing::WithParamInterface<bool> {
+ public:
+  BlobUrlBrowserTest() {
+    scoped_feature_list_.InitWithFeatureState(
+        net::features::kBravePartitionBlobStorage, GetParam());
+  }
 
-IN_PROC_BROWSER_TEST_F(BlobUrlBrowserTest_Chromium, LinkToUniqueOriginBlob) {
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+INSTANTIATE_TEST_SUITE_P(, BlobUrlBrowserTest, testing::Bool());
+
+IN_PROC_BROWSER_TEST_P(BlobUrlBrowserTest, LinkToUniqueOriginBlob) {
   // Use a data URL to obtain a test page in a unique origin. The page
   // contains a link to a "blob:null/SOME-GUID-STRING" URL.
   auto* rfh = ui_test_utils::NavigateToURL(
@@ -216,7 +389,7 @@ IN_PROC_BROWSER_TEST_F(BlobUrlBrowserTest_Chromium, LinkToUniqueOriginBlob) {
       EvalJs(new_contents, "self.origin + ' ' + document.body.innerText;"));
 }
 
-IN_PROC_BROWSER_TEST_F(BlobUrlBrowserTest_Chromium, LinkToSameOriginBlob) {
+IN_PROC_BROWSER_TEST_P(BlobUrlBrowserTest, LinkToSameOriginBlob) {
   // Using an http page, click a link that opens a popup to a same-origin blob.
   GURL url = https_server_.GetURL("chromium.org", "/title1.html");
   url::Origin origin = url::Origin::Create(url);
@@ -243,8 +416,7 @@ IN_PROC_BROWSER_TEST_F(BlobUrlBrowserTest_Chromium, LinkToSameOriginBlob) {
 }
 
 // Regression test for https://crbug.com/646278
-IN_PROC_BROWSER_TEST_F(BlobUrlBrowserTest_Chromium,
-                       LinkToSameOriginBlobWithAuthority) {
+IN_PROC_BROWSER_TEST_P(BlobUrlBrowserTest, LinkToSameOriginBlobWithAuthority) {
   // Using an http page, click a link that opens a popup to a same-origin blob
   // that has a spoofy authority section applied. This should be blocked.
   GURL url = embedded_test_server()->GetURL("chromium.org", "/title1.html");
@@ -278,8 +450,7 @@ IN_PROC_BROWSER_TEST_F(BlobUrlBrowserTest_Chromium,
 }
 
 // Regression test for https://crbug.com/646278
-IN_PROC_BROWSER_TEST_F(BlobUrlBrowserTest_Chromium,
-                       ReplaceStateToAddAuthorityToBlob) {
+IN_PROC_BROWSER_TEST_P(BlobUrlBrowserTest, ReplaceStateToAddAuthorityToBlob) {
   // history.replaceState from a validly loaded blob URL shouldn't allow adding
   // an authority to the inner URL, which would be spoofy.
   GURL url = embedded_test_server()->GetURL("chromium.org", "/title1.html");
