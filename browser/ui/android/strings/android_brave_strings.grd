@@ -2917,16 +2917,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_BACK_BUTTON_TEXT" desc="Back button text for Brave wallet permission dialog.">
       Back
     </message>
-  <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_TITLE" desc="Change network panel title">
-  Allow this site to switch the network?
-  </message>
-  <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_DESCRIPTION" desc="Change network panel description">
-  This will switch the network to a previously added network.
-  </message>
-  <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON" desc="Change network panel button">
-  Switch network
-  </message>
-
+    <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_TITLE" desc="Change network panel title">
+      Allow this site to switch the network?
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_DESCRIPTION" desc="Change network panel description">
+      This will switch the network to a previously added network.
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON" desc="Change network panel button">
+      Switch network
+    </message>
+    <message name="IDS_ENABLE_TAB_GROUPS_TITLE" desc="Menu item for grouping Tabs automatically.">
+      Enable Tab Group auto creation
+    </message>
     </messages>
   </release>
 </grit>
