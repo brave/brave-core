@@ -30,11 +30,13 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/web_ui_util.h"
 
+using brave_sync::TimeLimitedWords;
+using brave_sync::WordsValidationResult;
+
 namespace {
 
 std::string GetSyncCodeValidationString(
-    brave_sync::WordsValidationResult validation_result) {
-  using brave_sync::WordsValidationResult;
+    WordsValidationResult validation_result) {
   switch (validation_result) {
     case WordsValidationResult::kValid:
       return "";
@@ -125,7 +127,7 @@ void BraveSyncHandler::HandleGetSyncCode(const base::Value::List& args) {
     sync_code = sync_service->GetOrCreateSyncCode();
 
   std::string time_limited_sync_code =
-      brave_sync::TimeLimitedWords::GenerateForNow(sync_code);
+      TimeLimitedWords::GenerateForNow(sync_code);
 
   ResolveJavascriptCallback(args[0].Clone(),
                             base::Value(time_limited_sync_code));
@@ -147,10 +149,18 @@ void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
   AllowJavascript();
   CHECK_EQ(2U, args.size());
   CHECK(args[1].is_string());
-  const std::string sync_code = args[1].GetString();
+  const std::string time_limited_sync_code = args[1].GetString();
+
+  // Sync code arrives here with time-limit 25th word, remove it to get proper
+  // pure seed for QR generation
+  std::string pure_sync_code;
+  auto validation_result =
+      TimeLimitedWords::Validate(time_limited_sync_code, &pure_sync_code);
+  CHECK_EQ(validation_result, WordsValidationResult::kValid);
+  CHECK_NE(pure_sync_code.size(), 0u);
 
   std::vector<uint8_t> seed;
-  if (!brave_sync::crypto::PassphraseToBytes32(sync_code, &seed)) {
+  if (!brave_sync::crypto::PassphraseToBytes32(pure_sync_code, &seed)) {
     LOG(ERROR) << "invalid sync code when generating qr code";
     RejectJavascriptCallback(args[0].Clone(), base::Value("invalid sync code"));
     return;
@@ -201,10 +211,9 @@ void BraveSyncHandler::HandleSetSyncCode(const base::Value::List& args) {
   }
 
   std::string pure_sync_code;
-  brave_sync::WordsValidationResult validation_result =
-      brave_sync::TimeLimitedWords::Validate(time_limited_sync_code,
-                                             &pure_sync_code);
-  if (validation_result != brave_sync::WordsValidationResult::kValid) {
+  WordsValidationResult validation_result =
+      TimeLimitedWords::Validate(time_limited_sync_code, &pure_sync_code);
+  if (validation_result != WordsValidationResult::kValid) {
     LOG(ERROR) << "Could not validate a sync code, validation_result="
                << static_cast<int>(validation_result) << " "
                << GetSyncCodeValidationString(validation_result);
