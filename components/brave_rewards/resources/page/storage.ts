@@ -85,19 +85,29 @@ export const defaultState: Rewards.State = {
 
 export const load = (): Rewards.State => {
   const data = window.localStorage.getItem(keyName)
-  let state: Rewards.State = defaultState
-  if (data) {
-    try {
-      state = JSON.parse(data)
-      if (!state || state.version !== defaultState.version) {
-        throw new Error('State versions do not match')
-      }
-      state.initializing = true
-    } catch (e) {
-      console.error('Could not parse local storage data: ', e)
-    }
+  if (!data) {
+    return defaultState
   }
-  return state
+
+  let parsedData: any
+  try {
+    parsedData = JSON.parse(data)
+  } catch {
+    parsedData = null
+  }
+
+  if (!parsedData || typeof parsedData !== 'object') {
+    console.error('Local storage data is not an object')
+    return defaultState
+  }
+
+  if (parsedData.version !== defaultState.version) {
+    console.error('Local storage state version does not match')
+    return defaultState
+  }
+
+  parsedData.initializing = true
+  return parsedData as Rewards.State
 }
 
 export const debouncedSave = debounce((data: Rewards.State) => {
