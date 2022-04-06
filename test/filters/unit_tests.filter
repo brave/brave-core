@@ -179,6 +179,7 @@
 -HostContentSettingsMapTest.*
 -IncognitoThemeServiceTestWithIncognitoBrandConsistencyFlag/IncognitoThemeServiceTest.*
 -InfoBarViewTest.*
+-InstalledExtensionMenuItemViewTest.*
 -InstallVerifierTest.*
 -InstantNTPURLRewriteTest.*
 -InstantServiceTest.*
@@ -291,9 +292,11 @@
 -SettingsResetPromptModelTest.*
 -SharedModuleServiceUnitTest.*
 -SharingDialogViewTest.*
+-SidePanelCoordinatorTest.*
 -SidePanelToolbarButtonTest.*
 -SigninErrorHandlerTest.*
 -SigninManagerTest.*
+-SitePermissionsHelperUnitTest.*
 -SiteSettingsCounterTest.*
 -SiteSettingsHandlerInfobarTest.*
 -SiteSettingsHandlerTest.*
