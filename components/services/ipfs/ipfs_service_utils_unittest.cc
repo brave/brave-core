@@ -29,8 +29,8 @@ TEST_F(IPFSServiceUtils, UpdateConfigJSONTest) {
       "\"Gateway\":\"/ip4/127.0.0.1/tcp/GatewayPort\",\"Swarm\":"
       "[\"/ip4/0.0.0.0/tcp/SwarmPort\",\"/ip6/::/tcp/SwarmPort\""
       "]},\"Datastore\":{\"GCPeriod\":\"1h\",\"StorageMax\":"
-      "\"StorageSize\"},\"Swarm\":{\"ConnMgr\":{\"HighWater\""
-      ":300,\"LowWater\":50}}}";
+      "\"StorageSize\"},\"Swarm\":{\"ConnMgr\":{\"GracePeriod\":\"20s\","
+      "\"HighWater\":40,\"LowWater\":20}}}";
   ASSERT_TRUE(UpdateConfigJSON(json, config.get(), &updated));
   EXPECT_EQ(updated, expect);
   updated.clear();
