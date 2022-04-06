@@ -22,6 +22,7 @@
 -All/DownloadReferrerPolicyTest.*
 -All/IdentityGetProfileUserInfoFunctionTestWithAccountStatusParam.*
 -All/IntentPickerBubbleViewBrowserTest.*
+-All/IntentPickerBubbleViewFencedFrameBrowserTest.*
 -All/IntentPickerBubbleViewPrerenderingBrowserTest.*
 -All/LoadingPredictorNetworkIsolationKeyBrowserTest.*
 -All/LoginPromptBrowserTest.*
@@ -57,6 +58,7 @@
 -All/QuietUIPromoBrowserTest.*
 -All/ReportingBrowserTest.*
 -All/SafeBrowsingBlockingPageDelayedWarningPrerenderingBrowserTest.*
+-All/SafeBrowsingFencedFrameBrowserTest.*
 -All/SafeBrowsingPrerenderBrowserTest.*
 -All/SafeBrowsingThreatDetailsPrerenderBrowserTest.*
 -All/SameOriginUaOriginTrialBrowserTest.*
@@ -78,6 +80,7 @@
 -All/WellKnownChangePasswordNavigationThrottleBrowserTest.*
 -AllForms/FormStructureBrowserTest.*
 -AllowlistedUrlDeepScanningBrowserTest.*
+-AllRedirectCodes/CriticalClientHintsRedirectBrowserTest.*
 -AppApiTest.*
 -AppBannerManagerPrerenderBrowserTest.*
 -AppControllerProfilePickerBrowserTest.*
@@ -114,6 +117,9 @@
 -ChromeNavigationBrowserTest.*
 -ChromeOriginTrialsTest.*
 -ChromePasswordProtectionServiceBrowserTestWithActivation.*
+-ChromePasswordProtectionServiceDeferActivationBrowserTest.DeferActivatePrerenderStartedAfterRequest
+-ChromePasswordProtectionServiceDeferActivationBrowserTest.DeferActivatePrerenderStartedBeforeRequest
+-ChromePasswordProtectionServiceDeferActivationBrowserTest.PrerenderActivationDeferredByModalWarning
 -ChromePasswordProtectionServiceSyncBrowserTest.*
 -ChromeRenderProcessHostTest.*
 -ChromeRenderProcessHostTestWithCommandLine.*
@@ -126,6 +132,7 @@
 -ClientHintsBrowserTestWithEmulatedMedia.*
 -ClientHintsBrowserTestWithThirdPartyDelegation.*
 -ClientHintsCommandLineSwitchBrowserTest.*
+-ClientHintsUAOverrideBrowserTest.*
 -ClientHintsWebHoldbackBrowserTest.*
 -ClientSideDetectionHostBrowserTest.*
 -ClientSideDetectionHostPrerenderBrowserTest.*
@@ -172,6 +179,7 @@
 -DiceBrowsingDataRemoverBrowserTest.*
 -DiceManageAccountBrowserTest.*
 -DiceSigninUiUtilBrowserTest.*
+-DiceWebSigninInterceptionBubbleBrowserTest.*
 -DiceWebSigninInterceptorBrowserTest.*
 -DiceWebSigninInterceptorEnterpriseBrowserTest.*
 -DiskCachesizeExperiment.*
@@ -219,6 +227,7 @@
 -ExtensionSettingsUIBrowserTest.*
 -ExtensionTabUtilBrowserTest.*
 -ExtensionTagsTest.*
+-ExtensionTelemetryServiceBrowserTest.*
 -ExtensionUninstallDialogViewInteractiveBrowserTest.*
 -ExtensionURLRewriteBrowserTest.*
 -ExtensionWebRequestApiFencedFrameTest/ExtensionWebRequestApiFencedFrameTest.*
@@ -262,6 +271,8 @@
 -HintsFetcherSearchPageBrowserTest.*
 -HintsFetcherSearchPagePrerenderingBrowserTest.*
 -HistoryBrowserTest.*
+-HistoryClustersInternalsBrowserTest.*
+-HistoryClustersInternalsDisabledBrowserTest.*
 -HistoryPrerenderBrowserTest.*
 -HTMLCSSNoStatePrefetchBrowserTest.*
 -HTMLCSSScriptNoStatePrefetchBrowserTest.*
@@ -270,6 +281,7 @@
 -HTMLOnlyNoStatePrefetchBrowserTest.*
 -IdentityGetAccountsFunctionTest.*
 -IdentityGetProfileUserInfoFunctionTest.*
+-ImageUtilTest.CheckDefaultToolbarColor
 -IncognitoBrowsingDataBrowserTest.*
 -IncognitoProfileMainNetworkContext/NetworkContextConfigurationBrowserTest.*
 -IncognitoProfileMainNetworkContext/NetworkContextConfigurationReportingAndNelBrowserTest.*
@@ -284,6 +296,7 @@
 -IntentChipButtonBrowserTest.*
 -InterestGroupFledgeOnBrowserTest.*
 -InterestGroupPermissionsBrowserTest.*
+-IsolatedAppsDeveloperModeAllowedPolicyTest.*
 -JavaScriptDialogForPrerenderTest.*
 -JavascriptFrameworksUkmObserverBrowserTest.*
 -KeepAliveDevToolsTest.*
@@ -305,6 +318,7 @@
 -LogWebUIUrlTest.*
 -ManagedUiTest.*
 -MediaEngagementBrowserTest.*
+-MediaEngagementContentsObserverPrerenderBrowserTest.*
 -MediaHistoryForPrerenderBrowserTest.*
 -MediaRouterDialogControllerViewsTest.*
 -MediaRouterIntegrationBrowserTest.*
@@ -382,6 +396,14 @@
 -PaymentRequestForPrerenderBrowserBasicCardDisabledTest.*
 -PaymentRequestForPrerenderBrowserBasicCardEnabledTest.*
 -PaymentRequestForPrerenderBrowserTest.*
+-PDFExtensionHitTestTest.ContextMenuCoordinates
+-PDFExtensionPrerenderTest.*
+-PDFExtensionRegionSearchTest.NoContextMenuCommandExtensionMainFrame
+-PDFExtensionRegionSearchTest.NoContextMenuCommandPluginFrame
+-PDFExtensionTest.ContextMenuPrintCommandExtensionMainFrame
+-PDFExtensionTest.ContextMenuPrintCommandPluginFrame
+-PDFExtensionTest.PdfAccessibilityContextMenuAction
+-PDFExtensionTestWithTestGuestViewManager.PdfExtensionLoadedWhileOldPdfCloses
 -PDFIFrameNavigationThrottleBrowserTest.*
 -PerformanceHintsObserverBrowserTest.*
 -PerformanceHintsObserverFencedFrameTest.*
@@ -423,9 +445,12 @@
 -PrerenderSiteDetailsBrowserTest.*
 -PresentationReceiverWindowControllerBrowserTest.*
 -PrintPrerenderBrowserTest.*
+-PrintPreviewDialogControllerBrowserTest.NavigateFromInitiatorTab
+-PrintPreviewDialogControllerBrowserTest.TaskManagementTest
 -PrivacyBudgetBrowserTest.*
 -PrivacyBudgetBrowserTestWithScopedConfig.*
 -PrivacyBudgetBrowserTestWithTestRecorder.*
+-PrivacySandboxDialogHelperTestWithParamInstance/PrivacySandboxDialogHelperTestWithParam.*
 -PrivacySandboxSettingsBrowserTest.*
 -PrivateNetworkAccessWithFeatureEnabledBrowserTest.*
 -ProcessManagementTest.*
@@ -481,6 +506,7 @@
 -SaveCardBubbleViewsFullFormBrowserTestWithAutofillUpstream.*
 -SaveCardBubbleViewsSyncTransportFullFormBrowserTest.*
 -SavePageBrowserTest.*
+-SBNavigationObserverBrowserTest.PrerenderReferrerChains
 -SearchApiTest.*
 -SearchByImageBrowserTest.*
 -SearchEnginePreconnectorDesktopAutoStartBrowserTest.*
@@ -489,9 +515,11 @@
 -SearchEnginePreconnectorNoDelaysBrowserTest.*
 -SearchEngineTabHelperPrerenderingBrowserTest.*
 -SearchPrefetchServiceBFCacheTest.*
+-SearchPrefetchServiceHeadStartTest.*
 -SearchPrefetchServiceZeroCacheTimeBrowserTest.*
 -SearchPrefetchServiceZeroErrorTimeBrowserTest.*
 -SecurityStatePageLoadMetricsBrowserTest.*
+-SecurityStatePageLoadMetricsPrerenderBrowserTest.*
 -SecurityStateTabHelperPrerenderTest.*
 -SensorsPolicyTest.*
 -ServiceWorker/CookiesApiTest.*
