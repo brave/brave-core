@@ -44,13 +44,10 @@ class AdblockDebugMenuTableViewController: TableViewController {
           compileListsTask = ContentBlockerHelper.compileBundledLists()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] res in
-              switch res {
-              case .failure(let error):
+              if case .failure(let error) = res {
                 let alert = UIAlertController(title: nil, message: "Failed to Recompile Blockers: \(error)", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default))
                 self?.present(alert, animated: true)
-              default:
-                break
               }
               compileListsTask = nil
           } receiveValue: { [weak self] _ in

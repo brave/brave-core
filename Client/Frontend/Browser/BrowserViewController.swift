@@ -414,11 +414,8 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     contentBlockListTask = ContentBlockerHelper.compileBundledLists()
       .receive(on: DispatchQueue.main)
       .sink { [weak self] res in
-        switch res {
-        case .failure(let error):
+        if case .failure(let error) = res {
           log.error("Content Blocker failed to compile bundled lists: \(error)")
-        default:
-          break
         }
           
         contentBlockListTask = nil

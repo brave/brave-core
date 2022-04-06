@@ -250,17 +250,13 @@ extension AdblockResourceDownloader: PreferencesObserver {
         .subscribe(on: DispatchQueue.global(qos: .userInitiated))
         .receive(on: DispatchQueue.main)
         .sink { res in
-        switch res {
-        case .failure(let error):
-          log.error(error)
-        default:
-          break
+          if case .failure(let error) = res {
+            log.error(error)
+          }
+          cancellable = nil
+        } receiveValue: { _ in
+          log.debug("Successfully Setup Adblock Regional Preferences")
         }
-        
-        cancellable = nil
-      } receiveValue: { _ in
-        log.debug("Successfully Setup Adblock Regional Preferences")
-      }
     }
   }
 }
