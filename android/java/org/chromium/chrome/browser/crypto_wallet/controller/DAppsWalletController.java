@@ -15,10 +15,14 @@ import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.modal.BraveWalletPanel;
@@ -29,10 +33,13 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
-public class DAppsWalletController implements ConnectionErrorHandler, KeyringServiceObserver {
+public class DAppsWalletController implements ConnectionErrorHandler, KeyringServiceObserver,
+                                              BraveWalletPanel.BraveWalletPanelServices {
     private Context mContext;
     private View mAnchorViewHost;
+    private AssetRatioService mAssetRatioService;
     private KeyringService mKeyringService;
+    private BraveWalletService mBraveWalletService;
     protected JsonRpcService mJsonRpcService;
     private boolean mHasStateInitialise;
     private DAppsDialog mDAppsDialog;
@@ -60,8 +67,10 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
     }
 
     public void showWalletPanel() {
+        InitAssetRatioService();
         InitKeyringService();
         InitJsonRpcService();
+        InitBraveWalletService();
         if (Utils.shouldShowCryptoOnboarding()) {
             showOnBoardingOrUnlock();
         } else {
@@ -87,7 +96,7 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
                 accountInfos = keyringInfo.accountInfos;
             }
             mBraveWalletPanel = new BraveWalletPanel(
-                    mAnchorViewHost, mDialogOrPanelDismissListener, mJsonRpcService, accountInfos);
+                    mAnchorViewHost, mDialogOrPanelDismissListener, this, accountInfos);
             mBraveWalletPanel.showLikePopDownMenu();
             setupLifeCycleUpdater();
         });
@@ -103,13 +112,51 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
     }
 
     @Override
+    public AssetRatioService getAssetRatioService() {
+        assert mAssetRatioService != null;
+        return mAssetRatioService;
+    }
+
+    @Override
+    public BraveWalletService getBraveWalletService() {
+        assert mBraveWalletService != null;
+        return mBraveWalletService;
+    }
+
+    @Override
+    public KeyringService getKeyringService() {
+        assert mKeyringService != null;
+        return mKeyringService;
+    }
+
+    @Override
+    public JsonRpcService getJsonRpcService() {
+        assert mJsonRpcService != null;
+        return mJsonRpcService;
+    }
+
+    @Override
     public void onConnectionError(MojoException e) {
-        mKeyringService.close();
-        mJsonRpcService.close();
-        mKeyringService = null;
-        mJsonRpcService = null;
+        if (mKeyringService != null) {
+            mKeyringService.close();
+            mKeyringService = null;
+        }
+        if (mJsonRpcService != null) {
+            mJsonRpcService.close();
+            mJsonRpcService = null;
+        }
+        if (mBraveWalletService != null) {
+            mBraveWalletService.close();
+            mBraveWalletService = null;
+        }
+        if (mAssetRatioService != null) {
+            mAssetRatioService.close();
+            mAssetRatioService = null;
+        }
+        InitAssetRatioService();
         InitKeyringService();
         InitJsonRpcService();
+        InitBraveWalletService();
         updateState();
     }
 
@@ -153,12 +200,38 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
         mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
     }
 
+    private void InitBraveWalletService() {
+        if (mBraveWalletService != null) {
+            return;
+        }
+
+        mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
+    }
+
+    private void InitAssetRatioService() {
+        if (mAssetRatioService != null) {
+            return;
+        }
+
+        mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
+    }
+
     private void cleanUp() {
         if (mKeyringService != null) {
             mKeyringService.close();
+            mKeyringService = null;
         }
         if (mJsonRpcService != null) {
             mJsonRpcService.close();
+            mJsonRpcService = null;
+        }
+        if (mBraveWalletService != null) {
+            mBraveWalletService.close();
+            mBraveWalletService = null;
+        }
+        if (mAssetRatioService != null) {
+            mAssetRatioService.close();
+            mAssetRatioService = null;
         }
 
         if (mActivity != null) {
