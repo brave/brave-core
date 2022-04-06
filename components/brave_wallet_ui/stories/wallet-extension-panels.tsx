@@ -85,6 +85,16 @@ const transactionList = {
   ]
 }
 
+const mockCustomStoreState: Partial<WalletState> = {
+  accounts: mockAccounts,
+  selectedPendingTransaction: mockTransactionInfo,
+  transactionSpotPrices: mockTransactionSpotPrices,
+  defaultCurrencies: { fiat: 'USD', crypto: 'ETH' },
+  fullTokenList: mockNewAssetOptions,
+  activeOrigin: originInfo,
+  transactions: transactionList
+}
+
 function createStoreWithCustomState (customWalletState: Partial<WalletState> = {}) {
   return createStore(combineReducers({
     wallet: createWalletReducer({
@@ -101,14 +111,7 @@ export const _ConfirmTransaction = () => {
   const getERC20Allowance = () => Promise.resolve('0x15ddf09c97b0000')
 
   return (
-    <Provider store={createStoreWithCustomState({
-      accounts: mockAccounts,
-      selectedPendingTransaction: mockTransactionInfo,
-      transactionSpotPrices: mockTransactionSpotPrices,
-      defaultCurrencies: { fiat: 'USD', crypto: 'ETH' },
-      fullTokenList: mockNewAssetOptions,
-      activeOrigin: originInfo
-    })}>
+    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
       <StyledExtensionWrapperLonger>
         <LibContext.Provider value={{
           ...MockedLib as any,
@@ -779,29 +782,31 @@ export const _TransactionDetail = () => {
 
   const tx = transactionList[mockedTransactionAccounts[0].address][0]
   return (
-    <StyledExtensionWrapper>
-      <Panel
-        navAction={mockedFunction}
-        title={'Recent Transactions'}
-        useSearch={false}
-        searchAction={undefined}
-      >
-        <ScrollContainer>
-          <TransactionDetailPanel
-            onBack={mockedFunction}
-            onCancelTransaction={mockedFunction}
-            onRetryTransaction={mockedFunction}
-            onSpeedupTransaction={mockedFunction}
-            accounts={mockedTransactionAccounts}
-            defaultCurrencies={mockDefaultCurrencies}
-            selectedNetwork={mockNetworks[0]}
-            visibleTokens={mockNewAssetOptions}
-            transactionSpotPrices={[]}
-            transaction={tx}
-          />
-        </ScrollContainer>
-      </Panel>
-    </StyledExtensionWrapper>
+    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
+      <StyledExtensionWrapper>
+        <Panel
+          navAction={mockedFunction}
+          title={'Recent Transactions'}
+          useSearch={false}
+          searchAction={undefined}
+        >
+          <ScrollContainer>
+            <TransactionDetailPanel
+              onBack={mockedFunction}
+              onCancelTransaction={mockedFunction}
+              onRetryTransaction={mockedFunction}
+              onSpeedupTransaction={mockedFunction}
+              accounts={mockedTransactionAccounts}
+              defaultCurrencies={mockDefaultCurrencies}
+              selectedNetwork={mockNetworks[0]}
+              visibleTokens={mockNewAssetOptions}
+              transactionSpotPrices={[]}
+              transaction={tx}
+            />
+          </ScrollContainer>
+        </Panel>
+      </StyledExtensionWrapper>
+    </Provider>
   )
 }
 
@@ -819,27 +824,29 @@ export const _RecentTransaction = () => {
   }
 
   return (
-    <StyledExtensionWrapper>
-      <Panel
-        navAction={navigateTo}
-        title={'Recent Transactions'}
-        useSearch={false}
-        searchAction={undefined}
-      >
-        <ScrollContainer>
-          <TransactionsPanel
-            accounts={mockedTransactionAccounts}
-            defaultCurrencies={mockDefaultCurrencies}
-            onSelectTransaction={onSelectTransaction}
-            selectedNetwork={mockNetworks[0]}
-            selectedAccount={mockedTransactionAccounts[0]}
-            visibleTokens={mockNewAssetOptions}
-            transactionSpotPrices={[{ assetTimeframeChange: '', fromAsset: 'ETH', toAsset: 'USD', price: '2500' }]}
-            transactions={transactionList}
-          />
-        </ScrollContainer>
-      </Panel>
-    </StyledExtensionWrapper>
+    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
+      <StyledExtensionWrapper>
+        <Panel
+          navAction={navigateTo}
+          title={'Recent Transactions'}
+          useSearch={false}
+          searchAction={undefined}
+        >
+          <ScrollContainer>
+            <TransactionsPanel
+              accounts={mockedTransactionAccounts}
+              defaultCurrencies={mockDefaultCurrencies}
+              onSelectTransaction={onSelectTransaction}
+              selectedNetwork={mockNetworks[0]}
+              selectedAccount={mockedTransactionAccounts[0]}
+              visibleTokens={mockNewAssetOptions}
+              transactionSpotPrices={[{ assetTimeframeChange: '', fromAsset: 'ETH', toAsset: 'USD', price: '2500' }]}
+              transactions={transactionList}
+            />
+          </ScrollContainer>
+        </Panel>
+      </StyledExtensionWrapper>
+    </Provider>
   )
 }
 
