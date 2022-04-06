@@ -15,7 +15,7 @@
 #include "base/mac/scoped_nsobject.h"
 #include "base/mac/sdk_forward_declarations.h"
 
-@interface BackgroundHelperDelegate : NSObject {
+@interface BackgroundHelperDelegateMac : NSObject {
  @private
   brave_ads::BackgroundHelper* helper_;  // NOT OWNED
 }
@@ -25,7 +25,7 @@
 
 @end
 
-@implementation BackgroundHelperDelegate
+@implementation BackgroundHelperDelegateMac
 
 - (id)initWithHelper:(brave_ads::BackgroundHelper*)helper {
   if ((self = [super init])) {
@@ -57,8 +57,21 @@
 
 namespace brave_ads {
 
+class BackgroundHelperMac::BackgroundHelperDelegate {
+ public:
+  BackgroundHelperDelegate(BackgroundHelper* background_helper) {
+    delegate_.reset(
+        [[BackgroundHelperDelegateMac alloc] initWithHelper:background_helper]);
+  }
+
+  ~BackgroundHelperDelegate() = default;
+
+ private:
+  base::scoped_nsobject<BackgroundHelperDelegateMac> delegate_;
+};
+
 BackgroundHelperMac::BackgroundHelperMac() {
-  delegate_.reset([[BackgroundHelperDelegate alloc] initWithHelper:this]);
+  delegate_ = std::make_unique<BackgroundHelperDelegate>(this);
 }
 
 BackgroundHelperMac::~BackgroundHelperMac() {}
