@@ -181,7 +181,7 @@ absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
 
   if (regional_resources && regional_resources->is_dict()) {
     MergeResourcesInto(std::move(*regional_resources), &*resources,
-                       /*force_hide=*/false);
+                       /*force_hide=*/true);
   }
 
   absl::optional<base::Value> custom_resources =
