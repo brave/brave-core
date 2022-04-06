@@ -31,7 +31,10 @@ static_library("brave_vpn") {
     "//brave/components/skus/browser",
     "//brave/components/skus/common",
     "//brave/components/skus/common:mojom",
+    "//brave/components/version_info",
     "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/version_info",
     "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
@@ -76,9 +79,6 @@ static_library("brave_vpn") {
 
     deps += [
       ":brave_vpn_internal",
-      "//brave/components/version_info",
-      "//components/prefs",
-      "//components/version_info",
       "//third_party/icu",
     ]
   }
