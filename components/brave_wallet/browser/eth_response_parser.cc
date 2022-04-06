@@ -231,19 +231,6 @@ bool ParseEthGasPrice(const std::string& json, std::string* result) {
   return ParseSingleStringResult(json, result);
 }
 
-bool ParseERC721TokenUri(const std::string encoded, GURL* url) {
-  size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
-  std::string decoded;
-  brave_wallet::DecodeString(offset, encoded, &decoded);
-
-  *url = GURL(decoded);
-  if (!url->is_valid()) {
-    return false;
-  }
-
-  return true;
-}
-
 bool ParseEnsResolverContentHash(const std::string& json,
                                  std::string* content_hash) {
   return ParseStringResult(json, content_hash);
@@ -267,6 +254,10 @@ bool ParseUnstoppableDomainsProxyReaderGetMany(
 
 bool ParseUnstoppableDomainsProxyReaderGet(const std::string& json,
                                            std::string* value) {
+  return ParseStringResult(json, value);
+}
+
+bool ParseERC721TokenUri(const std::string& json, std::string* value) {
   return ParseStringResult(json, value);
 }
 

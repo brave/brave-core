@@ -34,7 +34,6 @@ bool ParseEthCall(const std::string& json, std::string* result);
 bool ParseEthEstimateGas(const std::string& json, std::string* result);
 bool ParseEthGasPrice(const std::string& json, std::string* result);
 
-bool ParseERC721TokenUri(const std::string encoded, GURL* url);
 bool ParseEnsResolverContentHash(const std::string& json,
                                  std::string* content_hash);
 bool ParseUnstoppableDomainsProxyReaderGetMany(
@@ -43,6 +42,8 @@ bool ParseUnstoppableDomainsProxyReaderGetMany(
 
 bool ParseUnstoppableDomainsProxyReaderGet(const std::string& json,
                                            std::string* value);
+
+bool ParseERC721TokenUri(const std::string& json, std::string* value);
 
 // Get the JSON included in a data URI with a mime type application/json
 bool ParseDataURIAndExtractJSON(const GURL url, std::string* json);
