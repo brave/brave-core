@@ -13,6 +13,7 @@
 #include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_stats/browser/buildflags.h"
 #include "build/build_config.h"
 
 namespace brave_stats {
@@ -81,7 +82,7 @@ base::Time GetYMDAsDate(const base::StringPiece& ymd) {
 }
 
 std::string GetAPIKey() {
-  std::string api_key = BRAVE_STATS_API_KEY;
+  std::string api_key = BUILDFLAG(BRAVE_STATS_API_KEY);
   std::unique_ptr<base::Environment> env(base::Environment::Create());
   if (env->HasVar("BRAVE_STATS_API_KEY"))
     env->GetVar("BRAVE_STATS_API_KEY", &api_key);
