@@ -1,4 +1,5 @@
 import("//brave/components/common/typescript.gni")
+import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
@@ -11,8 +12,9 @@ if (is_official_build) {
   assert(brave_sync_endpoint != "")
 }
 
-config("brave_sync_config") {
-  defines = [ "BRAVE_SYNC_ENDPOINT=\"$brave_sync_endpoint\"" ]
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "BRAVE_SYNC_ENDPOINT=\"$brave_sync_endpoint\"" ]
 }
 
 static_library("crypto") {
@@ -109,7 +111,7 @@ group("brave_sync") {
 }
 
 group("constants") {
-  public_configs = [ ":brave_sync_config" ]
+  public_deps = [ ":buildflags" ]
 }
 
 source_set("unit_tests") {
