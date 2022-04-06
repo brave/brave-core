@@ -153,6 +153,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   let legacyWallet: BraveLedger?
   var promotionFetchTimer: Timer?
   private var notificationsHandler: AdsNotificationHandler?
+  let notificationsPresenter = BraveNotificationsPresenter()
   var publisher: Ledger.PublisherInfo?
 
   let vpnProductInfo = VPNProductInfo()
@@ -496,23 +497,25 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
   }
 
   private func setupAdsNotificationHandler() {
-    notificationsHandler = AdsNotificationHandler(ads: rewards.ads, presentingController: self)
+    notificationsHandler = AdsNotificationHandler(ads: rewards.ads,
+                                                  presentingController: self,
+                                                  notificationsPresenter: notificationsPresenter)
     notificationsHandler?.canShowNotifications = { [weak self] in
       guard let self = self else { return false }
       return !PrivateBrowsingManager.shared.isPrivateBrowsing && !self.topToolbar.inOverlayMode
     }
-    notificationsHandler?.actionOccured = { [weak self] notification, action in
-      guard let self = self else { return }
+    notificationsHandler?.actionOccured = { [weak self] ad, action in
+      guard let self = self, let ad = ad else { return }
       if action == .opened {
-        var url = URL(string: notification.targetURL)
+        var url = URL(string: ad.targetURL)
         if url == nil,
-          let percentEncodedURLString =
-            notification.targetURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+           let percentEncodedURLString =
+            ad.targetURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
           // Try to percent-encode the string and try that
           url = URL(string: percentEncodedURLString)
         }
         guard let targetURL = url else {
-          assertionFailure("Invalid target URL for creative instance id: \(notification.creativeInstanceID)")
+          assertionFailure("Invalid target URL for creative instance id: \(ad.creativeInstanceID)")
           return
         }
         let request = URLRequest(url: targetURL)
