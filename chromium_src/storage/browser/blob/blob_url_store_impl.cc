@@ -38,9 +38,14 @@ bool IsBlobUrlValidForPartitionedOrigin(const url::Origin& origin,
 }  // namespace storage
 
 #define BlobURLStoreImpl BlobURLStoreImpl_ChromiumImpl
+#define BRAVE_BLOB_URL_STORE_IMPL_BLOB_URL_IS_VALID                         \
+  if (!valid_origin) {                                                      \
+    valid_origin = IsBlobUrlValidForPartitionedOrigin(origin_, url_origin); \
+  }
 
 #include "src/storage/browser/blob/blob_url_store_impl.cc"
 
+#undef BRAVE_BLOB_URL_STORE_IMPL_BLOB_URL_IS_VALID
 #undef BlobURLStoreImpl
 
 namespace storage {

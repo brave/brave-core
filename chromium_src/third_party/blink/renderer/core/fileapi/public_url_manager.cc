@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "net/base/features.h"
+#include "third_party/blink/public/mojom/blob/blob_registry.mojom-blink.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/public/platform/web_security_origin.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
@@ -12,7 +13,8 @@ namespace blink {
 namespace {
 
 WebSecurityOrigin GetEphemeralOrOriginalSecurityOrigin(
-    ExecutionContext* context) {
+    ExecutionContext* context,
+    const SecurityOrigin* origin) {
   if (base::FeatureList::IsEnabled(net::features::kBravePartitionBlobStorage)) {
     if (WebContentSettingsClient* settings =
             brave::GetContentSettingsClientFor(context)) {
@@ -24,10 +26,16 @@ WebSecurityOrigin GetEphemeralOrOriginalSecurityOrigin(
     }
   }
 
-  return base::WrapRefCounted(context->GetSecurityOrigin());
+  return base::WrapRefCounted(origin);
 }
 
 }  // namespace
 }  // namespace blink
 
+#define URLStoreForOrigin(ORIGIN, URL_STORE) \
+  URLStoreForOrigin(                         \
+      GetEphemeralOrOriginalSecurityOrigin(context, ORIGIN).Get(), URL_STORE);
+
 #include "src/third_party/blink/renderer/core/fileapi/public_url_manager.cc"
+
+#undef URLStoreForOrigin
