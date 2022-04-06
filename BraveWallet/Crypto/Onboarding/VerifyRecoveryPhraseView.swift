@@ -158,6 +158,7 @@ private struct SelectedWordsBox: View {
   }
 
   private func tappedWord(atIndex index: Int) {
+    guard index < selectedWords.count else { return }
     withAnimation(.default) {
       _ = selectedWords.remove(at: index)
     }
