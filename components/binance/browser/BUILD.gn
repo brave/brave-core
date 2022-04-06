@@ -1,10 +1,16 @@
 import("//brave/build/config.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
+import("//build/buildflag_header.gni")
 
 assert(binance_enabled)
 
 declare_args() {
   binance_client_id = ""
+}
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "BINANCE_CLIENT_ID=\"$binance_client_id\"" ]
 }
 
 static_library("browser") {
@@ -18,6 +24,7 @@ static_library("browser") {
   ]
 
   deps = [
+    ":buildflags",
     "//base",
     "//brave/common:pref_names",
     "//brave/components/ntp_widget_utils/browser",
@@ -32,9 +39,4 @@ static_library("browser") {
     "//services/network/public/cpp",
     "//url",
   ]
-  configs += [ ":binance_config" ]
-}
-
-config("binance_config") {
-  defines = [ "BINANCE_CLIENT_ID=\"$binance_client_id\"" ]
 }
