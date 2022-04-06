@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_BACKGROUND_HELPER_BACKGROUND_HELPER_LINUX_H_
 #define BRAVE_BROWSER_BRAVE_ADS_BACKGROUND_HELPER_BACKGROUND_HELPER_LINUX_H_
 
-#include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_ads/background_helper/background_helper.h"
 #include "chrome/browser/ui/browser_list_observer.h"
@@ -18,17 +17,17 @@ class BackgroundHelperLinux
       public base::SupportsWeakPtr<BackgroundHelperLinux>,
       public BrowserListObserver {
  public:
+  ~BackgroundHelperLinux() override;
+
   BackgroundHelperLinux(const BackgroundHelperLinux&) = delete;
   BackgroundHelperLinux& operator=(const BackgroundHelperLinux&) = delete;
 
-  static BackgroundHelperLinux* GetInstance();
-
- private:
-  friend struct base::DefaultSingletonTraits<BackgroundHelperLinux>;
+ protected:
+  friend class BackgroundHelperHolder;
 
   BackgroundHelperLinux();
-  ~BackgroundHelperLinux() override;
 
+ private:
   // BrowserListObserver overrides
   void OnBrowserSetLastActive(Browser* browser) override;
   void OnBrowserNoLongerActive(Browser* browser) override;

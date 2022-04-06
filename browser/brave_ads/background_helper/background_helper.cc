@@ -5,13 +5,15 @@
 
 #include "brave/browser/brave_ads/background_helper/background_helper.h"
 
+#include "base/memory/singleton.h"
+#include "brave/browser/brave_ads/background_helper/background_helper_holder.h"
 #include "build/build_config.h"
 
 namespace brave_ads {
 
-BackgroundHelper::BackgroundHelper() {}
+BackgroundHelper::BackgroundHelper() = default;
 
-BackgroundHelper::~BackgroundHelper() {}
+BackgroundHelper::~BackgroundHelper() = default;
 
 bool BackgroundHelper::IsForeground() const {
   return true;
@@ -37,12 +39,10 @@ void BackgroundHelper::TriggerOnForeground() {
   }
 }
 
-#if !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_WIN) && !BUILDFLAG(IS_LINUX) && \
-    !BUILDFLAG(IS_ANDROID)
+// static
 BackgroundHelper* BackgroundHelper::GetInstance() {
-  // just return a dummy background helper for all other platforms
-  return base::Singleton<BackgroundHelper>::get();
+  BackgroundHelperHolder* holder = BackgroundHelperHolder::GetInstance();
+  return holder->GetBackgroundHelper();
 }
-#endif
 
 }  // namespace brave_ads

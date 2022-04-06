@@ -18,17 +18,17 @@ class NotificationHelperWin
     : public NotificationHelper,
       public base::SupportsWeakPtr<NotificationHelperWin> {
  public:
+  ~NotificationHelperWin() override;
+
   NotificationHelperWin(const NotificationHelperWin&) = delete;
   NotificationHelperWin& operator=(const NotificationHelperWin&) = delete;
 
-  static NotificationHelperWin* GetInstanceImpl();
-
- private:
-  friend struct base::DefaultSingletonTraits<NotificationHelperWin>;
+ protected:
+  friend class NotificationHelperHolder;
 
   NotificationHelperWin();
-  ~NotificationHelperWin() override;
 
+ private:
   bool IsFocusAssistEnabled() const;
 
   bool IsNotificationsEnabled();
