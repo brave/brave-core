@@ -7,7 +7,6 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_untrusted_web_ui_controller_factory.h"
-#include "chrome/browser/ui/webui/chrome_untrusted_web_ui_controller_factory.h"
 #endif
 
 #define BrowserProcessImpl BraveBrowserProcessImpl
