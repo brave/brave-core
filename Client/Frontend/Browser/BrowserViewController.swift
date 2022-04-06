@@ -375,6 +375,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
 
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
+    ScriptFactory.shared.clearCaches()
 
     for tab in tabManager.tabsForCurrentMode where tab.id != tabManager.selectedTab?.id {
       tab.newTabPageViewController = nil
@@ -2046,8 +2047,6 @@ extension BrowserViewController: TabDelegate {
     tab.addContentScript(tab.contentBlocker, name: ContentBlockerHelper.name(), contentWorld: .page)
 
     tab.addContentScript(FocusHelper(tab: tab), name: FocusHelper.name(), contentWorld: .defaultClient)
-
-    tab.addContentScript(FingerprintingProtection(tab: tab), name: FingerprintingProtection.name(), contentWorld: .page)
 
     tab.addContentScript(BraveGetUA(tab: tab), name: BraveGetUA.name(), contentWorld: .page)
     tab.addContentScript(
