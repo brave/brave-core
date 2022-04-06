@@ -50,32 +50,20 @@ class NetworkManager {
     customHeaders: [String: String] = [:],
     _ completion: @escaping (Result<CachedNetworkResource, Error>) -> Void
   ) {
-    let request = createDownloadRequest(with: url,
+    var cancellable: AnyCancellable?
+    cancellable = self.downloadResource(with: url,
                                         resourceType: resourceType,
+                                        retryTimeout: retryTimeout,
+                                        checkLastServerSideModification: checkLastServerSideModification,
                                         customHeaders: customHeaders)
-    
-    if let retryTimeout = retryTimeout {
-      retry(times: 3, retryDelay: retryTimeout, task: { [weak self] completion in
-        self?.dataRequest(with: request) { result in
-          completion(result)
-        }
-      }, completion: {
-        switch $0 {
-        case .success(let (data, response)):
-          do {
-            let result = try self.createDownloadResponse(resourceType: resourceType,
-                                                         checkLastServerSideModification: checkLastServerSideModification,
-                                                         data: data,
-                                                         response: response)
-            completion(.success(result))
-          } catch {
-            completion(.failure(error))
-          }
-        case .failure(let error):
+      .sink(receiveCompletion: { res in
+        if case .failure(let error) = res {
           completion(.failure(error))
         }
+        cancellable = nil
+      }, receiveValue: { res in
+        completion(.success(res))
       })
-    }
   }
   
   /// - parameter checkLastServerSideModification: If true, the `CachedNetworkResource` will contain a timestamp
@@ -93,7 +81,7 @@ class NetworkManager {
     
     if let retryTimeout = retryTimeout {
       return dataRequest(with: request)
-        .retry(3, delay: .init(floatLiteral: retryTimeout), scheduler: DispatchQueue.main)
+        .retry(3, delay: .seconds(retryTimeout), scheduler: DispatchQueue.main)
         .tryMap({ try self.createDownloadResponse(resourceType: resourceType,
                                                   checkLastServerSideModification: checkLastServerSideModification,
                                                   data: $0, response: $1) })
@@ -131,34 +119,6 @@ class NetworkManager {
 }
 
 extension NetworkManager {
-  private func retry<T>(times: Int,
-                        retryDelay: TimeInterval,
-                        task: @escaping (@escaping (Result<T, Error>) -> Void) -> Void,
-                        completion: @escaping (Result<T, Error>) -> Void) {
-    task({ [weak self] in
-      guard let self = self else {
-        completion(.failure("Network Manager Deallocated"))
-        return
-      }
-      
-      switch $0 {
-      case .success(let result):
-        completion(.success(result))
-      case .failure(let error):
-        if times > 0 {
-          DispatchQueue.main.asyncAfter(deadline: .now() + retryDelay) {
-            self.retry(times: times - 1,
-                       retryDelay: retryDelay,
-                       task: task,
-                       completion: completion)
-          }
-        } else {
-          completion(.failure(error))
-        }
-      }
-    })
-  }
-  
   private func task(for request: URLRequest, retryTimeout: TimeInterval?) async throws -> NetworkSessionDataResponse {
     if let retryTimeout = retryTimeout {
       return try await Task.retry(retryCount: 3, retryDelay: retryTimeout) {

@@ -417,25 +417,30 @@ class NTPDownloader {
       }
 
       if let error = error {
-        return completion(nil, nil, .metadataError(error))
+        completion(nil, nil, .metadataError(error))
+        return
       }
 
       if let cacheInfo = cacheInfo, cacheInfo.statusCode == 304 {
-        return completion(nil, cacheInfo, nil)
+        completion(nil, cacheInfo, nil)
+        return
       }
 
       guard let data = data else {
-        return completion(nil, nil, .metadataError("Invalid \(type.resourceName) for NTP Download"))
+        completion(nil, nil, .metadataError("Invalid \(type.resourceName) for NTP Download"))
+        return
       }
 
       switch type {
       case .sponsor:
         if Self.isSponsorCampaignEnded(data: data) {
-          return completion(nil, nil, .campaignEnded)
+          completion(nil, nil, .campaignEnded)
+          return
         }
       case .superReferral(_):
         if Self.isSuperReferralCampaignEnded(data: data) {
-          return completion(nil, nil, .campaignEnded)
+          completion(nil, nil, .campaignEnded)
+          return
         }
       }
 
@@ -462,7 +467,8 @@ class NTPDownloader {
   // Downloads the item at the specified url relative to the baseUrl
   private func download(type: ResourceType, path: String?, etag: String?, _ completion: @escaping (Data?, CacheResponse?, Error?) -> Void) {
     guard var url = type.resourceBaseURL() else {
-      return completion(nil, nil, nil)
+      completion(nil, nil, nil)
+      return
     }
 
     if let path = path {
@@ -555,15 +561,15 @@ class NTPDownloader {
       for itemURL in imagesToDownload {
         group.enter()
         self.download(type: type, path: itemURL, etag: nil) { data, _, err in
+          defer { group.leave() }
+          
           if let err = err {
             error = err
-            group.leave()
             return
           }
 
           guard let data = data else {
             error = "No Data Available for NTP-Download: \(itemURL)"
-            group.leave()
             return
           }
 
@@ -573,8 +579,6 @@ class NTPDownloader {
           } catch let err {
             error = err
           }
-
-          group.leave()
         }
       }
 
@@ -591,15 +595,15 @@ class NTPDownloader {
           group.enter()
 
           self.download(type: type, path: topSite.iconUrl, etag: nil) { data, _, err in
+            defer { group.leave() }
+            
             if let err = err {
               error = err
-              group.leave()
               return
             }
 
             guard let data = data else {
               error = "No Data Available for top site: \(topSite.destinationUrl)"
-              group.leave()
               return
             }
 
@@ -619,15 +623,14 @@ class NTPDownloader {
             } catch let err {
               error = err
             }
-
-            group.leave()
           }
         }
       }
 
       group.notify(queue: .main) {
         if let error = error {
-          return completion(nil, .unpackError(error))
+          completion(nil, .unpackError(error))
+          return
         }
 
         completion(directory, nil)
