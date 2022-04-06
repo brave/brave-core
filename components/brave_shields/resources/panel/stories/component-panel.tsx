@@ -7,7 +7,7 @@ import MainPanel from '../components/main-panel'
 import TreeList from '../components/tree-list'
 import shieldsDarkTheme from '../theme/shields-dark'
 import shieldsLightTheme from '../theme/shields-light'
-import ThemeProvider from '../../../../common/StorybookThemeProvider'
+import ThemeProvider from '../../../../common/BraveCoreThemeProvider'
 import DataContext from '../state/context'
 import { AdBlockMode, FingerprintMode, CookieBlockMode } from '../api/panel_browser_api'
 import { ViewType } from '../state/component_types'
@@ -70,8 +70,8 @@ export default {
       return (
         <DataContext.Provider value={store}>
           <ThemeProvider
-            darkTheme={shieldsDarkTheme}
-            lightTheme={shieldsLightTheme}
+            dark={shieldsDarkTheme}
+            light={shieldsLightTheme}
           >
             <Story />
           </ThemeProvider>

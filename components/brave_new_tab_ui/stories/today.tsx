@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { withKnobs, text } from '@storybook/addon-knobs'
-import ThemeProvider from '../../common/StorybookThemeProvider'
+import ThemeProvider from '../../common/BraveCoreThemeProvider'
 import BraveTodayLoadingCard from '../components/default/braveToday/cards/cardLoading'
 import BraveTodayErrorCard from '../components/default/braveToday/cards/cardError'
 import PublisherMeta from '../components/default/braveToday/cards/PublisherMeta'

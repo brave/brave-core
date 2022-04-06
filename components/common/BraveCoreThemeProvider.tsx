@@ -17,7 +17,7 @@ export default function LightDarkThemeProvider (props: React.PropsWithChildren<P
   const [isDarkMode, setIsDarkMode] = React.useState(darkModeMediaMatcher.matches)
 
   React.useEffect(() => {
-    const handleDarkModeChange = (e) => {
+    const handleDarkModeChange = (e: MediaQueryListEvent) => {
       setIsDarkMode(e.matches)
     }
     darkModeMediaMatcher.addEventListener('change', handleDarkModeChange)
