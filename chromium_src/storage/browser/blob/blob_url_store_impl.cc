@@ -17,7 +17,7 @@ namespace {
 // appending an opaque nonce internally to all URLs, the valid precursor origin
 // is used to check if an URL can be used to access a blob.
 bool CanUseOriginForPartitioning(const url::Origin& origin) {
-  return origin.opaque() &&
+  return origin.CanUseNonceForEphemeralStorageKeying() &&
          origin.GetTupleOrPrecursorTupleIfOpaque().IsValid() &&
          base::FeatureList::IsEnabled(
              net::features::kBravePartitionBlobStorage);
