@@ -1968,5 +1968,12 @@ extension Strings {
       value: "Enter your wallet password to enable biometrics for wallet (you'll only be asked for this once)",
       comment: "The title displayed on the screen to enter password to enable biometrics unlock from wallet settings."
     )
+    public static let dappsConnectionNotificationTitle = NSLocalizedString(
+      "wallet.dappsConnectionNotificationTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "This page wants to interact with Brave Wallet",
+      comment: "The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet."
+    )
   }
 }
