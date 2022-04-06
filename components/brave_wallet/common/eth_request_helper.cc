@@ -9,6 +9,7 @@
 #include <tuple>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
@@ -333,6 +334,48 @@ bool ParseEthGetEncryptionPublicKeyParams(const std::string& json,
   return true;
 }
 
+bool ParseEthDecryptParams(const std::string& json,
+                           std::string* untrusted_encrypted_data_json,
+                           std::string* address) {
+  if (!address)
+    return false;
+
+  // eth_decrypt allows extra params
+  auto list = GetParamsList(json);
+  if (!list || list->size() < 2)
+    return false;
+
+  const std::string* untrusted_hex_json_str = (*list)[0].GetIfString();
+  if (!untrusted_hex_json_str)
+    return false;
+
+  const std::string* address_str = (*list)[1].GetIfString();
+  if (!address_str)
+    return false;
+
+  std::string untrusted_json;
+
+  // untrusted_hex_json should hex decode to this schema example:
+  // {
+  //   "version": "x25519-xsalsa20-poly1305",
+  //   "nonce": "base64-string",
+  //   "ephemPublicKey": "base64-string",
+  //   "ciphertext":"base64-string"
+  // }
+
+  if (!IsValidHexString(*untrusted_hex_json_str))
+    return false;
+
+  // IsValidHexString guarantees at least 2 bytes and starts with 0x
+  if (!base::HexStringToString(untrusted_hex_json_str->data() + 2,
+                               &untrusted_json))
+    return false;
+
+  *untrusted_encrypted_data_json = untrusted_json;
+  *address = *address_str;
+  return true;
+}
+
 bool ParsePersonalEcRecoverParams(const std::string& json,
                                   std::string* message,
                                   std::string* signature) {
@@ -422,6 +465,57 @@ bool ParseEthSignTypedDataParams(const std::string& json,
 
   *domain_out = domain->Clone();
 
+  return true;
+}
+
+bool ParseEthDecryptData(const std::string& json,
+                         std::string* version,
+                         std::vector<uint8_t>* nonce,
+                         std::vector<uint8_t>* ephemeral_public_key,
+                         std::vector<uint8_t>* ciphertext) {
+  // {
+  //   "version": "x25519-xsalsa20-poly1305",
+  //   "nonce": "base64-string",
+  //   "ephemPublicKey": "base64-string",
+  //   "ciphertext":"base64-string"
+  // }
+  auto obj = base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                              base::JSON_ALLOW_TRAILING_COMMAS);
+  if (!obj || !obj->is_dict())
+    return false;
+
+  const std::string* version_str = obj->FindStringKey("version");
+  if (!version_str)
+    return false;
+  *version = *version_str;
+
+  const std::string* nonce_str = obj->FindStringKey("nonce");
+  if (!nonce_str)
+    return false;
+  std::string decoded_nonce;
+  if (!base::Base64Decode(*nonce_str, &decoded_nonce))
+    return false;
+  *nonce = std::vector<uint8_t>(decoded_nonce.begin(), decoded_nonce.end());
+
+  const std::string* ephemeral_public_key_str =
+      obj->FindStringKey("ephemPublicKey");
+  if (!ephemeral_public_key_str)
+    return false;
+  std::string ephemeral_public_key_decoded;
+  if (!base::Base64Decode(*ephemeral_public_key_str,
+                          &ephemeral_public_key_decoded))
+    return false;
+  *ephemeral_public_key = std::vector<uint8_t>(
+      ephemeral_public_key_decoded.begin(), ephemeral_public_key_decoded.end());
+
+  const std::string* ciphertext_str = obj->FindStringKey("ciphertext");
+  if (!ciphertext_str)
+    return false;
+  std::string decoded_ciphertext;
+  if (!base::Base64Decode(*ciphertext_str, &decoded_ciphertext))
+    return false;
+  *ciphertext = std::vector<uint8_t>(decoded_ciphertext.begin(),
+                                     decoded_ciphertext.end());
   return true;
 }
 

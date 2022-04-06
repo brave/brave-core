@@ -670,8 +670,12 @@ struct SwitchChainRequest {
 struct GetEncryptionPublicKeyRequest {
   url.mojom.Url origin;
   string address;
-  // TODO(bbondy): This field is used in the front-end but will be removed soon
-  string? message;
+};
+
+struct DecryptRequest {
+  url.mojom.Url origin;
+  string address;
+  string? unsafe_message;
 };
 
 // Deals with the ETH JSON RPC API, as well as things like the user's current
@@ -1014,6 +1018,11 @@ interface BraveWalletService {
   // rejects getting the public key for an origin
   NotifyGetPublicKeyRequestProcessed(bool approved, url.mojom.Url origin);
   GetPendingGetEncryptionPublicKeyRequests() => (array<GetEncryptionPublicKeyRequest> requests);
+
+  // This is used for UI notifying native when the user approves or
+  // rejects decrypting data for an origin
+  NotifyDecryptRequestProcessed(bool approved, url.mojom.Url origin);
+  GetPendingDecryptRequests() => (array<DecryptRequest> requests);
 
   // Resets the keyring and the related preferences
   Reset();

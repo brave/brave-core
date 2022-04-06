@@ -34,6 +34,7 @@ export interface Props {
   selectedNetwork: BraveWallet.NetworkInfo
   encryptionKeyPayload: BraveWallet.GetEncryptionPublicKeyRequest
   eTldPlusOne: string
+  decryptPayload: BraveWallet.DecryptRequest
   onProvideOrAllow: () => void
   onCancel: () => void
 }
@@ -45,18 +46,20 @@ function EncryptionKeyPanel (props: Props) {
     selectedNetwork,
     encryptionKeyPayload,
     eTldPlusOne,
+    decryptPayload,
     onProvideOrAllow,
     onCancel
   } = props
   const [isDecrypted, setIsDecrypted] = React.useState<boolean>(false)
+  const payloadAddress = panelType === 'request' ? encryptionKeyPayload.address : decryptPayload.address
 
   const foundAccountName = React.useMemo(() => {
-    return accounts.find((account) => account.address.toLowerCase() === encryptionKeyPayload.address.toLowerCase())?.name
-  }, [encryptionKeyPayload])
+    return accounts.find((account) => account.address.toLowerCase() === payloadAddress.toLowerCase())?.name
+  }, [payloadAddress])
 
   const orb = React.useMemo(() => {
-    return create({ seed: encryptionKeyPayload.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [encryptionKeyPayload])
+    return create({ seed: payloadAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+  }, [payloadAddress])
 
   const onDecryptMessage = () => {
     setIsDecrypted(true)
@@ -117,7 +120,7 @@ function EncryptionKeyPanel (props: Props) {
                   } />
                 {afterTag}
               </>
-              : encryptionKeyPayload.message}
+              : decryptPayload.unsafeMessage}
           </MessageText>
         )}
       </MessageBox>

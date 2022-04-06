@@ -19,6 +19,7 @@
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "services/data_decoder/public/cpp/json_sanitizer.h"
 
 class HostContentSettingsMap;
 class PrefService;
@@ -87,6 +88,10 @@ class BraveWalletProviderImpl final
   void GetEncryptionPublicKey(const std::string& address,
                               RequestCallback callback,
                               base::Value id);
+  void Decrypt(const std::string& untrusted_encrypted_data_json,
+               const std::string& address,
+               RequestCallback callback,
+               base::Value id);
   // Used for eth_signTypedData
   // message is for displaying the sign request to users
   // message_to_sign is the hex representation without 0x for eip712 hash
@@ -229,6 +234,21 @@ class BraveWalletProviderImpl final
   void ContinueGetEncryptionPublicKey(
       RequestCallback callback,
       base::Value id,
+      const std::string& address,
+      const std::vector<std::string>& allowed_accounts,
+      mojom::ProviderError error,
+      const std::string& error_message);
+  void ContinueDecryptWithSanitizedJson(RequestCallback callback,
+                                        base::Value id,
+                                        const std::string& address,
+                                        data_decoder::JsonSanitizer::Result);
+  void ContinueDecryptWithAllowedAccounts(
+      RequestCallback callback,
+      base::Value id,
+      const std::string& version,
+      const std::vector<uint8_t>& nonce,
+      const std::vector<uint8_t>& ephemeral_public_key,
+      const std::vector<uint8_t>& ciphertext,
       const std::string& address,
       const std::vector<std::string>& allowed_accounts,
       mojom::ProviderError error,

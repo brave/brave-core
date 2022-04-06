@@ -602,6 +602,19 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     return requests_out;
   }
 
+  std::vector<mojom::DecryptRequestPtr> GetPendingDecryptRequests() const {
+    base::RunLoop run_loop;
+    std::vector<mojom::DecryptRequestPtr> requests_out;
+    brave_wallet_service_->GetPendingDecryptRequests(base::BindLambdaForTesting(
+        [&](std::vector<mojom::DecryptRequestPtr> requests) {
+          for (const auto& request : requests)
+            requests_out.push_back(request.Clone());
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return requests_out;
+  }
+
   std::vector<std::string> GetAddresses() {
     std::vector<std::string> result;
     base::RunLoop run_loop;
@@ -719,6 +732,46 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
       EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
       brave_wallet_service_->NotifyGetPublicKeyRequestProcessed(approved,
                                                                 GetOrigin());
+    }
+    run_loop.Run();
+  }
+
+  void Decrypt(const std::string& encrypted_data_json,
+               const std::string& address,
+               bool approved,
+               std::string* unsafe_message,
+               mojom::ProviderError* error_out,
+               std::string* error_message_out) {
+    *unsafe_message = "";
+    base::RunLoop run_loop;
+    provider_->Decrypt(
+        encrypted_data_json, address,
+        base::BindLambdaForTesting([&](base::Value id,
+                                       base::Value formed_response, bool reject,
+                                       const std::string& first_allowed_account,
+                                       const bool update_bind_js_properties) {
+          if (formed_response.type() == base::Value::Type::STRING) {
+            *unsafe_message = formed_response.GetString();
+          }
+          mojom::ProviderError error;
+          std::string error_message;
+          GetErrorCodeMessage(std::move(formed_response), &error,
+                              &error_message);
+          *error_out = error;
+          *error_message_out = error_message;
+          run_loop.Quit();
+        }),
+        base::Value());
+    // The request is not immediately added, needs sanitization first
+    base::RunLoop().RunUntilIdle();
+    auto requests = GetPendingDecryptRequests();
+    if (requests.size() > 0) {
+      ASSERT_EQ(requests.size(), 1u);
+      EXPECT_EQ(requests[0]->origin, GetOrigin());
+      EXPECT_EQ(requests[0]->address, address);
+      EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
+      brave_wallet_service_->NotifyDecryptRequestProcessed(approved,
+                                                           GetOrigin());
     }
     run_loop.Run();
   }
@@ -2138,6 +2191,113 @@ TEST_F(BraveWalletProviderImplUnitTest, GetEncryptionPublicKey) {
   // Invalid address gives the invalid params error
   GetEncryptionPublicKey("", true, &key, &error, &error_message);
   EXPECT_TRUE(key.empty());
+  EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
+  EXPECT_FALSE(error_message.empty());
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, Decrypt) {
+  RestoreWallet(kMnemonic1, "brave", false);
+  CreateBraveWalletTabHelper();
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddEthereumPermission(url);
+  brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
+
+  std::string valid_pi_json =
+      R"({"version":"x25519-xsalsa20-poly1305","nonce":"6IWDnjTObWyEB/XpQWT9Rs6CTed24BaA","ephemPublicKey":"XhoADVJjjmI5iUveoJ8sm3v9+wWBwCN6x/6K2tFhdg8=","ciphertext":"lru72L3/fK+X30ZBTxhVmp1YDTb0CZ+NAAxG919PJR9Y0icmpjhEijoASBLB2kR1KfKMtERHxpeCl9XYtmRY87LBRIuRFAmvoA6j0kF4YhDSm4AzMpwQRzvZSIC49rLHJZM1rSDLBMKkFdON0H3D"})";
+  std::string empty_message_json =
+      R"({"version":"x25519-xsalsa20-poly1305","nonce":"X0HlUQmgWwjiB0794AB4Js/wbzjrM9v9","ephemPublicKey":"nf595GsfgQKpQahDibdvFsxjOCG4j8luJ+fM5WIjoGQ=","ciphertext":"jvRnfKcpv4t1Oghb+q4vqw=="})";
+
+  // Happy path w/ key GeiNTGIpEKEVFeMBpd3aVs/S2EjoF8FOoichRuqjBg0=
+  std::string unsafe_message;
+  mojom::ProviderError error;
+  std::string error_message;
+  Decrypt(valid_pi_json, from(), true, &unsafe_message, &error, &error_message);
+  EXPECT_EQ(unsafe_message,
+            "3."
+            "141592653589793238462643383279502884197169399375105820974944592307"
+            "816406286208998628034825...");
+  EXPECT_EQ(mojom::ProviderError::kSuccess, error);
+  EXPECT_TRUE(error_message.empty());
+
+  // Happy path w/ empty message
+  Decrypt(empty_message_json, from(), true, &unsafe_message, &error,
+          &error_message);
+  EXPECT_TRUE(unsafe_message.empty());
+  EXPECT_EQ(mojom::ProviderError::kSuccess, error);
+  EXPECT_TRUE(error_message.empty());
+
+  std::vector<std::string> error_cases = {
+      // Wrong version
+      R"({"version":"x25519-xsalsa20-poly1306","nonce":"6IWDnjTObWyEB/XpQWT9Rs6CTed24BaA","ephemPublicKey":"XhoADVJjjmI5iUveoJ8sm3v9+wWBwCN6x/6K2tFhdg8=","ciphertext":"lru72L3/fK+X30ZBTxhVmp1YDTb0CZ+NAAxG919PJR9Y0icmpjhEijoASBLB2kR1KfKMtERHxpeCl9XYtmRY87LBRIuRFAmvoA6j0kF4YhDSm4AzMpwQRzvZSIC49rLHJZM1rSDLBMKkFdON0H3D"})",
+      // Bad nonce
+      R"({"version":"x25519-xsalsa20-poly1305","nonce":"5IWDnjTObWyEB/XpQWT9Rs6CTed24BaA","ephemPublicKey":"XhoADVJjjmI5iUveoJ8sm3v9+wWBwCN6x/6K2tFhdg8=","ciphertext":"lru72L3/fK+X30ZBTxhVmp1YDTb0CZ+NAAxG919PJR9Y0icmpjhEijoASBLB2kR1KfKMtERHxpeCl9XYtmRY87LBRIuRFAmvoA6j0kF4YhDSm4AzMpwQRzvZSIC49rLHJZM1rSDLBMKkFdON0H3D"})",
+      // Bad ephemeral public key
+      R"({"version":"x25519-xsalsa20-poly1305","nonce":"6IWDnjTObWyEB/XpQWT9Rs6CTed24BaA","ephemPublicKey":"YhoADVJjjmI5iUveoJ8sm3v9+wWBwCN6x/6K2tFhdg8=","ciphertext":"lru72L3/fK+X30ZBTxhVmp1YDTb0CZ+NAAxG919PJR9Y0icmpjhEijoASBLB2kR1KfKMtERHxpeCl9XYtmRY87LBRIuRFAmvoA6j0kF4YhDSm4AzMpwQRzvZSIC49rLHJZM1rSDLBMKkFdON0H3D"})",
+      // Bad ciphertext
+      R"({"version":"x25519-xsalsa20-poly1305","nonce":"6IWDnjTObWyEB/XpQWT9Rs6CTed24BaA","ephemPublicKey":"XhoADVJjjmI5iUveoJ8sm3v9+wWBwCN6x/6K2tFhdg8=","ciphertext":"mru72L3/fK+X30ZBTxhVmp1YDTb0CZ+NAAxG919PJR9Y0icmpjhEijoASBLB2kR1KfKMtERHxpeCl9XYtmRY87LBRIuRFAmvoA6j0kF4YhDSm4AzMpwQRzvZSIC49rLHJZM1rSDLBMKkFdON0H3D"})",
+      // Missing version
+      R"({"nonce":"6IWDnjTObWyEB/XpQWT9Rs6CTed24BaA","ephemPublicKey":"XhoADVJjjmI5iUveoJ8sm3v9+wWBwCN6x/6K2tFhdg8=","ciphertext":"lru72L3/fK+X30ZBTxhVmp1YDTb0CZ+NAAxG919PJR9Y0icmpjhEijoASBLB2kR1KfKMtERHxpeCl9XYtmRY87LBRIuRFAmvoA6j0kF4YhDSm4AzMpwQRzvZSIC49rLHJZM1rSDLBMKkFdON0H3D"})",
+      // Missing nonce
+      R"({"version":"x25519-xsalsa20-poly1305","ephemPublicKey":"XhoADVJjjmI5iUveoJ8sm3v9+wWBwCN6x/6K2tFhdg8=","ciphertext":"lru72L3/fK+X30ZBTxhVmp1YDTb0CZ+NAAxG919PJR9Y0icmpjhEijoASBLB2kR1KfKMtERHxpeCl9XYtmRY87LBRIuRFAmvoA6j0kF4YhDSm4AzMpwQRzvZSIC49rLHJZM1rSDLBMKkFdON0H3D"})",
+      // Missing ephemeral public key
+      R"({"version":"x25519-xsalsa20-poly1305","nonce":"6IWDnjTObWyEB/XpQWT9Rs6CTed24BaA","ciphertext":"lru72L3/fK+X30ZBTxhVmp1YDTb0CZ+NAAxG919PJR9Y0icmpjhEijoASBLB2kR1KfKMtERHxpeCl9XYtmRY87LBRIuRFAmvoA6j0kF4YhDSm4AzMpwQRzvZSIC49rLHJZM1rSDLBMKkFdON0H3D"})",
+      // Missing ciphertext
+      R"({"version":"x25519-xsalsa20-poly1305","nonce":"6IWDnjTObWyEB/XpQWT9Rs6CTed24BaA","ephemPublicKey":"XhoADVJjjmI5iUveoJ8sm3v9+wWBwCN6x/6K2tFhdg8="})"
+      // Wrong JSON
+      "[]",
+      // Invalid JSON
+      "\"Pickle rick"};
+  for (auto& error_case : error_cases) {
+    Decrypt(error_case, from(), true, &unsafe_message, &error, &error_message);
+    EXPECT_TRUE(unsafe_message.empty()) << " case: " << error_case;
+    EXPECT_EQ(mojom::ProviderError::kInvalidParams, error)
+        << " case: " << error_case;
+    EXPECT_FALSE(error_message.empty()) << " case: " << error_case;
+  }
+
+  // Locked should give invalid params error
+  std::string from_address = from();
+  Lock();
+  Decrypt(valid_pi_json, from_address, true, &unsafe_message, &error,
+          &error_message);
+  EXPECT_TRUE(unsafe_message.empty());
+  EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
+  EXPECT_FALSE(error_message.empty());
+
+  // Unlocked and user rejected
+  Unlock();
+  Decrypt(valid_pi_json, from(), false, &unsafe_message, &error,
+          &error_message);
+  EXPECT_TRUE(unsafe_message.empty());
+  EXPECT_EQ(mojom::ProviderError::kUserRejectedRequest, error);
+  EXPECT_EQ(l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST),
+            error_message);
+
+  // Address without permissions gives the invalid params error
+  AddAccount();
+  Decrypt(valid_pi_json, from(1), true, &unsafe_message, &error,
+          &error_message);
+  EXPECT_TRUE(unsafe_message.empty());
+  EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
+  EXPECT_FALSE(error_message.empty());
+
+  // Invalid address gives the invalid params error
+  Decrypt(valid_pi_json, "", true, &unsafe_message, &error, &error_message);
+  EXPECT_TRUE(unsafe_message.empty());
+  EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
+  EXPECT_FALSE(error_message.empty());
+
+  // Encrypted string for the message: '\x00\x01\x02' (non-printable)
+  Decrypt(
+      "0x7b2276657273696f6e223a227832353531392d7873616c736132302d706f6c79313330"
+      "35222c226e6f6e6365223a22444d59686b526f712b7a695a7a47366d6142526f48464176"
+      "4f33624743456976222c22657068656d5075626c69634b6579223a227a4b634c4f4c5575"
+      "7273735a634b377a7a71757062713647566566494a374d6d43656475412f732b577a4d3d"
+      "222c2263697068657274657874223a22724964467156436b4e694456504b31366b634b78"
+      "50586b424f413d3d227d",
+      from(), true, &unsafe_message, &error, &error_message);
+  EXPECT_TRUE(unsafe_message.empty());
   EXPECT_EQ(mojom::ProviderError::kInvalidParams, error);
   EXPECT_FALSE(error_message.empty());
 }

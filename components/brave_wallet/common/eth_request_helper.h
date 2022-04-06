@@ -42,6 +42,14 @@ bool ParsePersonalEcRecoverParams(const std::string& json,
                                   std::string* signature);
 bool ParseEthGetEncryptionPublicKeyParams(const std::string& json,
                                           std::string* address);
+bool ParseEthDecryptParams(const std::string& json,
+                           std::string* untrusted_encrypted_data_json,
+                           std::string* address);
+bool ParseEthDecryptData(const std::string& json,
+                         std::string* version,
+                         std::vector<uint8_t>* nonce,
+                         std::vector<uint8_t>* ephemeral_public_key,
+                         std::vector<uint8_t>* ciphertext);
 
 bool ParseEthSignTypedDataParams(const std::string& json,
                                  std::string* address,

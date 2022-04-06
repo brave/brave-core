@@ -332,7 +332,14 @@ _SignData.story = {
 
 const encryptionKeyMockPayload = {
   address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-  message: 'This is a test message.',
+  origin: {
+    url: originInfo.origin
+  }
+}
+
+const decryptMockPayload = {
+  address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
+  unsafeMessage: 'This is a test message.',
   origin: {
     url: originInfo.origin
   }
@@ -352,6 +359,7 @@ export const _ProvideEncryptionKey = () => {
       <EncryptionKeyPanel
         panelType='request'
         encryptionKeyPayload={encryptionKeyMockPayload}
+        decryptPayload={decryptMockPayload}
         accounts={accounts}
         selectedNetwork={mockNetworks[0]}
         onCancel={onCancel}
@@ -380,6 +388,7 @@ export const _ReadEncryptedMessage = () => {
       <EncryptionKeyPanel
         panelType='read'
         encryptionKeyPayload={encryptionKeyMockPayload}
+        decryptPayload={decryptMockPayload}
         accounts={accounts}
         selectedNetwork={mockNetworks[0]}
         onCancel={onCancel}

@@ -8,6 +8,7 @@ import {
   AccountPayloadType,
   AddSuggestTokenProcessedPayload,
   GetEncryptionPublicKeyProcessedPayload,
+  DecryptProcessedPayload,
   ShowConnectToSitePayload,
   EthereumChainPayload,
   EthereumChainRequestPayload,
@@ -49,3 +50,5 @@ export const addSuggestToken = createAction<BraveWallet.AddSuggestTokenRequest>(
 export const addSuggestTokenProcessed = createAction<AddSuggestTokenProcessedPayload>('addSuggestTokenProcessed')
 export const getEncryptionPublicKey = createAction<BraveWallet.GetEncryptionPublicKeyRequest>('getEncryptionPublicKey')
 export const getEncryptionPublicKeyProcessed = createAction<GetEncryptionPublicKeyProcessedPayload>('getEncryptionPublicKeyProcessed')
+export const decrypt = createAction<BraveWallet.DecryptRequest>('decrypt')
+export const decryptProcessed = createAction<DecryptProcessedPayload>('decryptProcessed')

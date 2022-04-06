@@ -104,7 +104,7 @@ export type PanelTypes =
   | 'transactionDetails'
   | 'assets'
   | 'provideEncryptionKey' // For grep: 'getEncryptionPublicKey'
-  | 'allowReadingEncryptedMessage'
+  | 'allowReadingEncryptedMessage' // For grep: 'decryptRequest'
 
 export type NavTypes =
   | 'crypto'
@@ -236,6 +236,7 @@ export interface PanelState {
   networkPayload: BraveWallet.NetworkInfo
   signMessageData: BraveWallet.SignMessageRequest[]
   getEncryptionPublicKeyRequest: BraveWallet.GetEncryptionPublicKeyRequest
+  decryptRequest: BraveWallet.DecryptRequest
   switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
   suggestedToken?: BraveWallet.BlockchainToken

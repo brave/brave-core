@@ -56,3 +56,8 @@ export type GetEncryptionPublicKeyProcessedPayload = {
   approved: boolean
   origin: Url
 }
+
+export type DecryptProcessedPayload = {
+  approved: boolean
+  origin: Url
+}

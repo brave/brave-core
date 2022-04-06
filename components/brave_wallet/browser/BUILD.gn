@@ -139,6 +139,7 @@ static_library("browser") {
     "//components/prefs",
     "//components/sync_preferences",
     "//crypto",
+    "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//third_party/boringssl",

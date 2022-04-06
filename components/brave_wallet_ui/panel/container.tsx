@@ -123,7 +123,8 @@ function Container (props: Props) {
     signMessageData,
     switchChainRequest,
     suggestedToken,
-    getEncryptionPublicKeyRequest
+    getEncryptionPublicKeyRequest,
+    decryptRequest
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -535,11 +536,11 @@ function Container (props: Props) {
   }
 
   const onAllowReadingEncryptedMessage = () => {
-    // Logic here to allow reading encrypted message
+    props.walletPanelActions.decryptProcessed({ approved: true, origin: decryptRequest.origin })
   }
 
   const onCancelAllowReadingEncryptedMessage = () => {
-    // Logic here to cancel allow reading encrypted message
+    props.walletPanelActions.decryptProcessed({ approved: false, origin: decryptRequest.origin })
   }
 
   const isConnectedToSite = React.useMemo((): boolean => {
@@ -711,6 +712,7 @@ function Container (props: Props) {
                 : 'read'
             }
             encryptionKeyPayload={getEncryptionPublicKeyRequest}
+            decryptPayload={decryptRequest}
             accounts={accounts}
             selectedNetwork={selectedNetwork}
             eTldPlusOne={activeOrigin.eTldPlusOne}

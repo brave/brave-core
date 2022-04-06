@@ -25,7 +25,8 @@ import {
   SignMessageProcessedPayload,
   SignMessageHardwareProcessedPayload,
   SwitchEthereumChainProcessedPayload,
-  GetEncryptionPublicKeyProcessedPayload
+  GetEncryptionPublicKeyProcessedPayload,
+  DecryptProcessedPayload
 } from '../constants/action_types'
 import {
   findHardwareAccountInfo,
@@ -91,6 +92,16 @@ async function getPendingGetEncryptionPublicKeyRequest () {
   const braveWalletService = getWalletPanelApiProxy().braveWalletService
   const requests =
     (await braveWalletService.getPendingGetEncryptionPublicKeyRequests()).requests
+  if (requests && requests.length) {
+    return requests[0]
+  }
+  return null
+}
+
+async function getPendingDecryptRequest () {
+  const braveWalletService = getWalletPanelApiProxy().braveWalletService
+  const requests =
+    (await braveWalletService.getPendingDecryptRequests()).requests
   if (requests && requests.length) {
     return requests[0]
   }
@@ -191,6 +202,11 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
     const getEncryptionPublicKeyRequest = await getPendingGetEncryptionPublicKeyRequest()
     if (getEncryptionPublicKeyRequest) {
       store.dispatch(PanelActions.getEncryptionPublicKey(getEncryptionPublicKeyRequest))
+      return
+    }
+    const decryptRequest = await getPendingDecryptRequest()
+    if (decryptRequest) {
+      store.dispatch(PanelActions.decrypt(decryptRequest))
       return
     }
   }
@@ -345,6 +361,12 @@ handler.on(PanelActions.getEncryptionPublicKey.getType(), async (store: Store) =
   apiProxy.panelHandler.showUI()
 })
 
+handler.on(PanelActions.decrypt.getType(), async (store: Store) => {
+  store.dispatch(PanelActions.navigateTo('allowReadingEncryptedMessage'))
+  const apiProxy = getWalletPanelApiProxy()
+  apiProxy.panelHandler.showUI()
+})
+
 handler.on(PanelActions.switchEthereumChainProcessed.getType(), async (store: Store, payload: SwitchEthereumChainProcessedPayload) => {
   const apiProxy = getWalletPanelApiProxy()
   const jsonRpcService = apiProxy.jsonRpcService
@@ -364,6 +386,18 @@ handler.on(PanelActions.getEncryptionPublicKeyProcessed.getType(), async (store:
   const getEncryptionPublicKeyRequest = await getPendingGetEncryptionPublicKeyRequest()
   if (getEncryptionPublicKeyRequest) {
     store.dispatch(PanelActions.getEncryptionPublicKey(getEncryptionPublicKeyRequest))
+    return
+  }
+  apiProxy.panelHandler.closeUI()
+})
+
+handler.on(PanelActions.decryptProcessed.getType(), async (store: Store, payload: DecryptProcessedPayload) => {
+  const apiProxy = getWalletPanelApiProxy()
+  const braveWalletService = apiProxy.braveWalletService
+  braveWalletService.notifyDecryptRequestProcessed(payload.approved, payload.origin)
+  const decryptRequest = await getPendingDecryptRequest()
+  if (decryptRequest) {
+    store.dispatch(PanelActions.decrypt(decryptRequest))
     return
   }
   apiProxy.panelHandler.closeUI()
