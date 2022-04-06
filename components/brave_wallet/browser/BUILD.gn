@@ -197,6 +197,7 @@ source_set("utils") {
     "//base",
     "//brave/components/brave_wallet/common:buildflags",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/version_info",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//components/prefs",
     "//crypto",

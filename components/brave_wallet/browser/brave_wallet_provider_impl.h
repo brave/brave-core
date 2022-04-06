@@ -61,6 +61,7 @@ class BraveWalletProviderImpl final
                           const std::string& error_message,
                           RequestCallback callback,
                           base::Value id);
+  void Web3ClientVersion(RequestCallback callback, base::Value id);
   void GetChainId(GetChainIdCallback callback) override;
   void GetAllowedAccounts(bool include_accounts_when_locked,
                           GetAllowedAccountsCallback callback);

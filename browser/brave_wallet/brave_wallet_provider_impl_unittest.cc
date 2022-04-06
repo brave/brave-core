@@ -41,6 +41,7 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#include "brave/components/version_info/version_info.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -396,6 +397,28 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   void ResetEthereumPermission(const GURL& url, size_t from_index = 0) {
     permissions::BraveEthereumPermissionContext::ResetEthereumPermission(
         browser_context(), url.spec(), from(from_index));
+  }
+
+  void Web3ClientVersion(std::string* version,
+                         mojom::ProviderError* error_out,
+                         std::string* error_message_out) {
+    if (!version || !error_out || !error_message_out)
+      return;
+    base::RunLoop run_loop;
+    provider()->Web3ClientVersion(
+        base::BindLambdaForTesting(
+            [&](base::Value id, base::Value formed_response, const bool reject,
+                const std::string& first_allowed_account,
+                const bool update_bind_js_properties) {
+              if (formed_response.type() == base::Value::Type::STRING) {
+                *version = formed_response.GetString();
+              }
+              GetErrorCodeMessage(std::move(formed_response), error_out,
+                                  error_message_out);
+              run_loop.Quit();
+            }),
+        base::Value());
+    run_loop.Run();
   }
 
   void SignMessageHardware(bool user_approved,
@@ -1793,6 +1816,18 @@ TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEvent) {
   AddEthereumPermission(url, 1);
   SetSelectedAccount(from(0), mojom::CoinType::ETH);
   EXPECT_FALSE(observer_->AccountsChangedFired());
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, Web3ClientVersion) {
+  std::string expected_version = base::StringPrintf(
+      "BraveWallet/v%s", version_info::GetBraveChromiumVersionNumber().c_str());
+  std::string version;
+  mojom::ProviderError error;
+  std::string error_message;
+  Web3ClientVersion(&version, &error, &error_message);
+  EXPECT_EQ(version, expected_version);
+  EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+  EXPECT_TRUE(error_message.empty());
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEventSelectedAccount) {

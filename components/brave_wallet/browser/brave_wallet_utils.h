@@ -127,6 +127,12 @@ GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls);
 
 absl::optional<std::string> GetPrefKeyForCoinType(mojom::CoinType coin);
 
+// Returns a string used for web3_clientVersion in the form of
+// BraveWallet/v[chromium-version]. Note that we expose only the Chromium
+// version and not the Brave version because that way no extra entropy
+// is leaked from what the user agent provides for fingerprinting.
+std::string GetWeb3ClientVersion();
+
 /**
  * Given an url, return eTLD + 1 for that URL
  */
