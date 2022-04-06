@@ -67,9 +67,8 @@ where
                             .get_single_use_item_creds(&item.id)
                             .await?
                             .ok_or(InternalError::ItemCredentialsMissing)?;
-                        let unblinded_creds = creds
-                            .unblinded_creds
-                            .ok_or(InternalError::ItemCredentialsMissing)?;
+                        let unblinded_creds =
+                            creds.unblinded_creds.ok_or(InternalError::ItemCredentialsMissing)?;
 
                         // retrieve the next unspent token
                         let (i, cred) = unblinded_creds
@@ -83,9 +82,8 @@ where
                         let verification_key =
                             cred.unblinded_cred.derive_verification_key::<Sha512>();
                         // FIXME change the payload we're creating the binding with
-                        let signature = verification_key
-                            .sign::<HmacSha512>(issuer.as_bytes())
-                            .encode_base64();
+                        let signature =
+                            verification_key.sign::<HmacSha512>(issuer.as_bytes()).encode_base64();
 
                         let redemption = json!({
                             "issuer": issuer,
@@ -163,9 +161,7 @@ where
         if let Some(orders) = self.client.get_orders().await? {
             for order in orders {
                 if order.location_matches(&self.environment, domain) {
-                    match self
-                        .prepare_order_credentials_presentation(&order.id, domain, path)
-                        .await
+                    match self.prepare_order_credentials_presentation(&order.id, domain, path).await
                     {
                         Ok(Some(value)) => return Ok(Some(value)),
                         Ok(None) => continue,
@@ -190,9 +186,8 @@ where
         domain: &str,
         path: &str,
     ) -> Result<Option<String>, SkusError> {
-        if let Some(value) = self
-            .prepare_order_credentials_presentation(order_id, domain, path)
-            .await?
+        if let Some(value) =
+            self.prepare_order_credentials_presentation(order_id, domain, path).await?
         {
             // NOTE web server which recieves the cookie should unset it
             self.client.set_cookie(&value);

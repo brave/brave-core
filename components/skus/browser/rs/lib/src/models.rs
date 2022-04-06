@@ -119,6 +119,7 @@ pub struct OrderItem {
     pub location: String,
     pub description: String,
     pub credential_type: CredentialType,
+    pub credential_version: u32,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

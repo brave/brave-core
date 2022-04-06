@@ -81,17 +81,12 @@ where
                                 let blinded_creds: Vec<BlindedToken> =
                                     creds.iter().map(|t| t.blind()).collect();
 
-                                self.client
-                                    .init_single_use_item_creds(&item.id, creds)
-                                    .await?;
+                                self.client.init_single_use_item_creds(&item.id, creds).await?;
                                 blinded_creds
                             }
                         };
 
-                    let claim_req = ItemCredentialsRequest {
-                        item_id: item.id,
-                        blinded_creds,
-                    };
+                    let claim_req = ItemCredentialsRequest { item_id: item.id, blinded_creds };
 
                     let request_with_retries = FutureRetry::new(
                         || async {
@@ -121,7 +116,71 @@ where
                     );
                     request_with_retries.await?;
                 }
-                CredentialType::TimeLimited => (), // Time limited credentials do not require a submission step
+                // TODO check version here look at item.credential_version
+                CredentialType::TimeLimited => {
+                    match item.credential_version {
+                        2 => {
+                            // TODO combine this and above if there's a 3rd instancee
+                            let blinded_creds: Vec<BlindedToken> =
+                                match self.client.get_single_use_item_creds(&item.id).await? {
+                                    Some(item_creds) => {
+                                        item_creds.creds.iter().map(|t| t.blind()).collect()
+                                    }
+                                    None => {
+                                        let creds: Vec<Token> = iter::repeat_with(|| {
+                                            Token::random::<Sha512, _>(&mut csprng)
+                                        })
+                                        .take(item.quantity as usize)
+                                        .collect();
+
+                                        let blinded_creds: Vec<BlindedToken> =
+                                            creds.iter().map(|t| t.blind()).collect();
+
+                                        self.client
+                                            .init_single_use_item_creds(&item.id, creds)
+                                            .await?;
+                                        blinded_creds
+                                    }
+                                };
+
+                            let claim_req =
+                                ItemCredentialsRequest { item_id: item.id, blinded_creds };
+
+                            let request_with_retries = FutureRetry::new(
+                                || async {
+                                    let body = serde_json::to_vec(&claim_req)
+                                        .or(Err(InternalError::SerializationFailed))?;
+
+                                    let req = http::Request::builder()
+                                        .method("POST")
+                                        .uri(format!(
+                                            "{}/v2/orders/{}/credentials",
+                                            self.base_url, order_id
+                                        ))
+                                        .body(body)
+                                        .unwrap();
+                                    let resp = self.fetch(req).await?;
+
+                                    match resp.status() {
+                                        http::StatusCode::OK => Ok(()),
+                                        http::StatusCode::CONFLICT => Err(
+                                            InternalError::BadRequest(http::StatusCode::CONFLICT),
+                                        ),
+                                        http::StatusCode::NOT_FOUND => Err(InternalError::NotFound),
+                                        _ => Err(resp.into()),
+                                    }
+                                },
+                                HttpHandler::new(
+                                    3,
+                                    "Sign order item credentials request",
+                                    &self.client,
+                                ),
+                            );
+                            request_with_retries.await?;
+                        }
+                        _ => (), // Time limited credentials do not require a submission step
+                    }
+                } 
             }
         }
         Ok(())
@@ -150,10 +209,7 @@ where
             || async move {
                 let mut builder = http::Request::builder();
                 builder.method("GET");
-                builder.uri(format!(
-                    "{}/v1/orders/{}/credentials",
-                    self.base_url, order_id
-                ));
+                builder.uri(format!("{}/v1/orders/{}/credentials", self.base_url, order_id));
 
                 let req = builder.body(vec![]).unwrap();
 
@@ -241,9 +297,7 @@ where
         }
 
         for (item_id, item_creds) in time_limited_creds.into_iter() {
-            self.client
-                .store_time_limited_creds(&item_id, item_creds)
-                .await?;
+            self.client.store_time_limited_creds(&item_id, item_creds).await?;
         }
 
         Ok(())

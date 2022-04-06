@@ -43,18 +43,13 @@ where
             // FIXME only returns summary for first item
             if let Some(item) = order.items.iter().next() {
                 return Ok(match item.credential_type {
-                    CredentialType::SingleUse => self
-                        .client
-                        .get_single_use_item_creds(&item.id)
-                        .await?
-                        .and_then(|creds| {
+                    CredentialType::SingleUse => {
+                        self.client.get_single_use_item_creds(&item.id).await?.and_then(|creds| {
                             let unblinded_creds = creds.unblinded_creds?;
 
-                            let remaining_credential_count: u32 = unblinded_creds
-                                .into_iter()
-                                .filter(|cred| !cred.spent)
-                                .count()
-                                as u32;
+                            let remaining_credential_count: u32 =
+                                unblinded_creds.into_iter().filter(|cred| !cred.spent).count()
+                                    as u32;
 
                             let expires_at = None;
                             let active = remaining_credential_count > 0;
@@ -65,7 +60,8 @@ where
                                 expires_at,
                                 active,
                             })
-                        }),
+                        })
+                    }
                     CredentialType::TimeLimited => {
                         let expires_at = self
                             .last_matching_time_limited_credential(&item.id)
@@ -105,16 +101,11 @@ where
         &self,
         item_id: &str,
     ) -> Result<Option<TimeLimitedCredential>, SkusError> {
-        Ok(self
-            .client
-            .get_time_limited_creds(item_id)
-            .await?
-            .and_then(|creds| {
-                creds.creds.into_iter().find(|cred| {
-                    Utc::now().naive_utc() < cred.expires_at
-                        && Utc::now().naive_utc() > cred.issued_at
-                })
-            }))
+        Ok(self.client.get_time_limited_creds(item_id).await?.and_then(|creds| {
+            creds.creds.into_iter().find(|cred| {
+                Utc::now().naive_utc() < cred.expires_at && Utc::now().naive_utc() > cred.issued_at
+            })
+        }))
     }
 
     #[instrument]
@@ -137,9 +128,8 @@ where
         if let Some(orders) = self.client.get_orders().await? {
             for order in orders {
                 if order.location_matches(&self.environment, domain) {
-                    if let Some(value) = self
-                        .matching_order_credential_summary(&order.id, domain)
-                        .await?
+                    if let Some(value) =
+                        self.matching_order_credential_summary(&order.id, domain).await?
                     {
                         return Ok(Some(value));
                     }
