@@ -12,6 +12,7 @@
 #include "base/system/sys_info.h"
 #include "bat/ads/pref_names.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
+#include "brave/browser/brave_stats/buildflags.h"
 #include "brave/browser/brave_stats/switches.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/network_constants.h"
@@ -105,7 +106,7 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
     if (!GURL(usage_server_).is_valid())
       LOG(ERROR) << "bad url given as stats updater url: " << usage_server_;
   } else {
-    usage_server_ = BRAVE_USAGE_SERVER;
+    usage_server_ = BUILDFLAG(BRAVE_USAGE_SERVER);
   }
 
   // Track initial profile creation
