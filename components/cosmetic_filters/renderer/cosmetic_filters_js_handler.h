@@ -40,7 +40,7 @@ class CosmeticFiltersJSHandler {
   // filtering is enabled, and returns whether or not to proceed with cosmetic
   // filtering.
   bool ProcessURL(const GURL& url, absl::optional<base::OnceClosure> callback);
-  void ApplyRules();
+  void ApplyRules(bool de_amp_enabled);
 
  private:
   void BindFunctionsToObject(v8::Isolate* isolate,

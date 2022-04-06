@@ -12,9 +12,11 @@
 #include "brave/common/brave_renderer_configuration.mojom.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/de_amp/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_process_host.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -23,10 +25,15 @@ BraveRendererUpdater::BraveRendererUpdater(Profile* profile)
     : profile_(profile), is_wallet_allowed_for_context_(false) {
   PrefService* pref_service = profile->GetPrefs();
   brave_wallet_web3_provider_.Init(kDefaultWallet2, pref_service);
+  de_amp_enabled_.Init(de_amp::kDeAmpPrefEnabled, pref_service);
 
   pref_change_registrar_.Init(pref_service);
   pref_change_registrar_.Add(
       kDefaultWallet2,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      de_amp::kDeAmpPrefEnabled,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
 }
@@ -102,7 +109,11 @@ void BraveRendererUpdater::UpdateRenderer(
       default_wallet ==
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;
 
+  PrefService* pref_service = profile_->GetPrefs();
+  bool de_amp_enabled = pref_service->GetBoolean(de_amp::kDeAmpPrefEnabled);
+
   (*renderer_configuration)
       ->SetConfiguration(brave::mojom::DynamicParams::New(
-          brave_use_native_wallet, allow_overwrite_window_web3_provider));
+          brave_use_native_wallet, allow_overwrite_window_web3_provider,
+          de_amp_enabled));
 }
