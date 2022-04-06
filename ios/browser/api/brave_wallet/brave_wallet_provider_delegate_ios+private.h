@@ -27,8 +27,14 @@ class BraveWalletProviderDelegateBridge
   url::Origin GetOrigin() const override;
   void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) override;
-  void GetAllowedAccounts(bool include_accounts_when_locked,
+  void GetAllowedAccounts(mojom::CoinType type,
+                          bool include_accounts_when_locked,
                           GetAllowedAccountsCallback callback) override;
+  void RequestSolanaPermission(
+      RequestSolanaPermissionCallback callback) override {}
+  void IsSelectedAccountAllowed(
+      mojom::CoinType type,
+      IsSelectedAccountAllowedCallback callback) override {}
 };
 
 }  // namespace brave_wallet

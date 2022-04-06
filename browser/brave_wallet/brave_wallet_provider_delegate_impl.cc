@@ -90,6 +90,50 @@ void OnGetAllowedAccounts(
       success ? "" : l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
+bool IsAccountAllowed(const std::vector<std::string>& allowed_accounts,
+                      const std::string& account) {
+  for (const auto& allowed_account : allowed_accounts) {
+    if (base::CompareCaseInsensitiveASCII(account, allowed_account) == 0)
+      return true;
+  }
+  return false;
+}
+
+void OnRequestSolanaPermission(
+    const std::vector<std::string>& accounts,
+    const std::string& selected_account,
+    BraveWalletProviderDelegateImpl::RequestSolanaPermissionCallback callback,
+    const std::vector<ContentSetting>& responses) {
+  DCHECK(responses.empty() || responses.size() == accounts.size());
+
+  std::vector<std::string> granted_accounts;
+  for (size_t i = 0; i < responses.size(); i++) {
+    if (responses[i] == CONTENT_SETTING_ALLOW) {
+      granted_accounts.push_back(accounts[i]);
+    }
+  }
+
+  // The responses array will be empty if operation failed.
+  bool success = !responses.empty();
+  std::move(callback).Run(
+      IsAccountAllowed(granted_accounts, selected_account)
+          ? absl::optional<std::string>(selected_account)
+          : absl::nullopt,
+      success ? mojom::SolanaProviderError::kSuccess
+              : mojom::SolanaProviderError::kInternalError,
+      success ? "" : l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+void OnIsSelectedAccountAllowed(
+    const std::string& selected_account,
+    BraveWalletProviderDelegateImpl::IsSelectedAccountAllowedCallback callback,
+    bool success,
+    const std::vector<std::string>& allowed_accounts) {
+  bool allowed = IsAccountAllowed(allowed_accounts, selected_account);
+
+  std::move(callback).Run(selected_account, allowed);
+}
+
 }  // namespace
 
 BraveWalletProviderDelegateImpl::BraveWalletProviderDelegateImpl(
@@ -135,7 +179,7 @@ void BraveWalletProviderDelegateImpl::RequestEthereumPermissions(
   }
 
   GetAllowedAccounts(
-      false,
+      mojom::CoinType::ETH, false,
       base::BindOnce(
           &BraveWalletProviderDelegateImpl::ContinueRequestEthereumPermissions,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -238,14 +282,83 @@ void BraveWalletProviderDelegateImpl::ContinueGetAllowedAccounts(
 }
 
 void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
+    mojom::CoinType type,
     bool include_accounts_when_locked,
     GetAllowedAccountsCallback callback) {
   keyring_service_->GetSelectedAccount(
-      mojom::CoinType::ETH,
+      type, base::BindOnce(
+                &BraveWalletProviderDelegateImpl::ContinueGetAllowedAccounts,
+                weak_ptr_factory_.GetWeakPtr(), include_accounts_when_locked,
+                std::move(callback)));
+}
+
+void BraveWalletProviderDelegateImpl::RequestSolanaPermission(
+    RequestSolanaPermissionCallback callback) {
+  // Check if there's already a permission request in progress
+  auto* rfh = content::RenderFrameHost::FromID(host_id_);
+  if (rfh && permissions::BraveWalletPermissionContext::HasRequestsInProgress(
+                 rfh, permissions::RequestType::kBraveSolana)) {
+    std::move(callback).Run(
+        "", mojom::SolanaProviderError::kUserRejectedRequest,
+        l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
+    return;
+  }
+
+  IsSelectedAccountAllowed(
+      mojom::CoinType::SOL,
       base::BindOnce(
-          &BraveWalletProviderDelegateImpl::ContinueGetAllowedAccounts,
-          weak_ptr_factory_.GetWeakPtr(), include_accounts_when_locked,
-          std::move(callback)));
+          &BraveWalletProviderDelegateImpl::ContinueRequestSolanaPermission,
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void BraveWalletProviderDelegateImpl::IsSelectedAccountAllowed(
+    mojom::CoinType type,
+    IsSelectedAccountAllowedCallback callback) {
+  keyring_service_->GetSelectedAccount(
+      type,
+      base::BindOnce(
+          &BraveWalletProviderDelegateImpl::ContinueIsSelectedAccountAllowed,
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void BraveWalletProviderDelegateImpl::ContinueRequestSolanaPermission(
+    RequestSolanaPermissionCallback callback,
+    const absl::optional<std::string>& selected_account,
+    bool is_selected_account_allowed) {
+  if (!selected_account) {
+    std::move(callback).Run(
+        "", mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+  if (is_selected_account_allowed) {
+    std::move(callback).Run(*selected_account,
+                            mojom::SolanaProviderError::kSuccess, "");
+  } else {
+    std::vector<std::string> addresses;
+    addresses.push_back(*selected_account);
+    permissions::BraveWalletPermissionContext::RequestPermissions(
+        ContentSettingsType::BRAVE_SOLANA,
+        content::RenderFrameHost::FromID(host_id_), addresses,
+        base::BindOnce(&OnRequestSolanaPermission, addresses, *selected_account,
+                       std::move(callback)));
+  }
+}
+
+void BraveWalletProviderDelegateImpl::ContinueIsSelectedAccountAllowed(
+    IsSelectedAccountAllowedCallback callback,
+    const absl::optional<std::string>& selected_account) {
+  if (!selected_account.has_value()) {
+    std::move(callback).Run(absl::nullopt, false);
+    return;
+  }
+  std::vector<std::string> addresses;
+  addresses.push_back(*selected_account);
+  permissions::BraveWalletPermissionContext::GetAllowedAccounts(
+      ContentSettingsType::BRAVE_SOLANA,
+      content::RenderFrameHost::FromID(host_id_), addresses,
+      base::BindOnce(&OnIsSelectedAccountAllowed, *selected_account,
+                     std::move(callback)));
 }
 
 void BraveWalletProviderDelegateImpl::WebContentsDestroyed() {

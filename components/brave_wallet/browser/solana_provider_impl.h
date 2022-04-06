@@ -17,12 +17,12 @@
 
 namespace brave_wallet {
 class KeyringService;
-class SolanaProviderDelegate;
+class BraveWalletProviderDelegate;
 
 class SolanaProviderImpl final : public mojom::SolanaProvider {
  public:
   SolanaProviderImpl(KeyringService* keyring_service,
-                     std::unique_ptr<SolanaProviderDelegate> delegate);
+                     std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~SolanaProviderImpl() override;
   SolanaProviderImpl(const SolanaProviderImpl&) = delete;
   SolanaProviderImpl& operator=(const SolanaProviderImpl&) = delete;
@@ -48,13 +48,13 @@ class SolanaProviderImpl final : public mojom::SolanaProvider {
 
  private:
   void OnConnect(ConnectCallback callback,
-                 const std::string& account,
+                 const absl::optional<std::string>& account,
                  mojom::SolanaProviderError error,
                  const std::string& error_message);
 
   mojo::Remote<mojom::SolanaEventsListener> events_listener_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
-  std::unique_ptr<SolanaProviderDelegate> delegate_;
+  std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   base::WeakPtrFactory<SolanaProviderImpl> weak_factory_;
 };
 

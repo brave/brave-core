@@ -10,14 +10,16 @@
 
 #include "base/notreached.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/brave_wallet/browser/solana_provider_delegate.h"
+#include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
 SolanaProviderImpl::SolanaProviderImpl(
     KeyringService* keyring_service,
-    std::unique_ptr<SolanaProviderDelegate> delegate)
+    std::unique_ptr<BraveWalletProviderDelegate> delegate)
     : keyring_service_(keyring_service),
       delegate_(std::move(delegate)),
       weak_factory_(this) {}
@@ -96,12 +98,18 @@ void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
 }
 
 void SolanaProviderImpl::OnConnect(ConnectCallback callback,
-                                   const std::string& account,
+                                   const absl::optional<std::string>& account,
                                    mojom::SolanaProviderError error,
                                    const std::string& error_message) {
-  std::move(callback).Run(
-      error, error_message,
-      error == mojom::SolanaProviderError::kSuccess ? account : "");
+  if (error == mojom::SolanaProviderError::kSuccess && !account) {
+    std::move(callback).Run(
+        mojom::SolanaProviderError::kUserRejectedRequest,
+        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
+  } else {
+    std::move(callback).Run(
+        error, error_message,
+        error == mojom::SolanaProviderError::kSuccess ? *account : "");
+  }
 }
 
 }  // namespace brave_wallet

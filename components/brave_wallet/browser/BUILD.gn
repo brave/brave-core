@@ -82,7 +82,6 @@ static_library("browser") {
     "solana_instruction_builder.h",
     "solana_message.cc",
     "solana_message.h",
-    "solana_provider_delegate.h",
     "solana_provider_impl.cc",
     "solana_provider_impl.h",
     "solana_requests.cc",

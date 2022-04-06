@@ -43,8 +43,14 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   url::Origin GetOrigin() const override;
   void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) override;
-  void GetAllowedAccounts(bool include_accounts_when_locked,
+  void GetAllowedAccounts(mojom::CoinType type,
+                          bool include_accounts_when_locked,
                           GetAllowedAccountsCallback callback) override;
+  void RequestSolanaPermission(
+      RequestSolanaPermissionCallback callback) override;
+  void IsSelectedAccountAllowed(
+      mojom::CoinType type,
+      IsSelectedAccountAllowedCallback callback) override;
 
  private:
   void ContinueRequestEthereumPermissions(
@@ -62,6 +68,14 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
   void ContinueGetAllowedAccounts(
       bool include_accounts_when_locked,
       GetAllowedAccountsCallback callback,
+      const absl::optional<std::string>& selected_account);
+  void ContinueRequestSolanaPermission(
+      RequestSolanaPermissionCallback callback,
+      const absl::optional<std::string>& selected_account,
+      bool is_selected_account_allowed);
+
+  void ContinueIsSelectedAccountAllowed(
+      IsSelectedAccountAllowedCallback callback,
       const absl::optional<std::string>& selected_account);
 
   // content::WebContentsObserver overrides

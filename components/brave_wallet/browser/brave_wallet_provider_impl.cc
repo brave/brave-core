@@ -1188,9 +1188,9 @@ void BraveWalletProviderImpl::OnRequestEthereumPermissions(
     first_allowed_account = accounts[0];
   }
   if (success && accounts.empty()) {
-    formed_response =
-        GetProviderErrorDictionary(mojom::ProviderError::kUserRejectedRequest,
-                                   "User rejected the request.");
+    formed_response = GetProviderErrorDictionary(
+        mojom::ProviderError::kUserRejectedRequest,
+        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
   } else if (!success) {
     formed_response = GetProviderErrorDictionary(error, error_message);
   } else if (method == kRequestPermissionsMethod) {
@@ -1213,7 +1213,7 @@ void BraveWalletProviderImpl::GetAllowedAccounts(
     GetAllowedAccountsCallback callback) {
   DCHECK(delegate_);
   delegate_->GetAllowedAccounts(
-      include_accounts_when_locked,
+      mojom::CoinType::ETH, include_accounts_when_locked,
       base::BindOnce(&BraveWalletProviderImpl::OnGetAllowedAccounts,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }

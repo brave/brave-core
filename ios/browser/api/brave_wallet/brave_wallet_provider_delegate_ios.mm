@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios.h"
 
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
 #include "brave/ios/browser/api/url/url_origin_ios+private.h"
 #include "net/base/mac/url_conversions.h"
@@ -47,6 +48,7 @@ void BraveWalletProviderDelegateBridge::RequestEthereumPermissions(
 }
 
 void BraveWalletProviderDelegateBridge::GetAllowedAccounts(
+    mojom::CoinType type,
     bool include_accounts_when_locked,
     GetAllowedAccountsCallback callback) {
   auto completion =
