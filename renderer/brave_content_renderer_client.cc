@@ -63,7 +63,8 @@ void BraveContentRendererClient::RenderFrameCreated(
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockCosmeticFiltering)) {
     new cosmetic_filters::CosmeticFiltersJsRenderFrameObserver(
-        render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+        render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL,
+        base::BindRepeating(&BraveRenderThreadObserver::GetDynamicParams));
   }
 
   if (base::FeatureList::IsEnabled(

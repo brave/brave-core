@@ -33,6 +33,7 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
+#include "brave/components/de_amp/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -101,6 +102,10 @@ void AdBlockServiceTest::SetUp() {
 void AdBlockServiceTest::PreRunTestOnMainThread() {
   ExtensionBrowserTest::PreRunTestOnMainThread();
   WaitForAdBlockServiceThreads();
+}
+
+content::WebContents* AdBlockServiceTest::web_contents() {
+  return browser()->tab_strip_model()->GetActiveWebContents();
 }
 
 HostContentSettingsMap* AdBlockServiceTest::content_settings() {
@@ -2084,26 +2089,23 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringUnhide) {
 // Test scriptlet injection that modifies window attributes
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringWindowScriptlet) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
-  /* "content" below corresponds to the following scriptlet:
-   * ```
-   * (function() {
-   *   const send = window.getComputedStyle;
-   *   window.getComputedStyle = function(selector) {
-   *     return { 'color': 'Impossible value' };
-   *   }
-   * })();
-   * ```
-   */
+  std::string scriptlet =
+      "(function() {"
+      "  const send = window.getComputedStyle;"
+      "  window.getComputedStyle = function(selector) {"
+      "    return { 'color': 'Impossible value' };"
+      "  }"
+      "})();";
+  std::string scriptlet_base64;
+  base::Base64Encode(scriptlet, &scriptlet_base64);
   UpdateAdBlockInstanceWithRules(
       "b.com##+js(hjt)",
       "[{"
       "\"name\": \"hijacktest\","
       "\"aliases\": [\"hjt\"],"
       "\"kind\": {\"mime\": \"application/javascript\"},"
-      "\"content\": \"KGZ1bmN0aW9uKCkgewogIGNvbnN0IHNlbmQgPSB3aW5kb3cuZ2V0"
-      "Q29tcHV0ZWRTdHlsZTsKICB3aW5kb3cuZ2V0Q29tcHV0ZWRTdHlsZSA9IGZ1bmN0aW9"
-      "uKHNlbGVjdG9yKSB7CiAgICByZXR1cm4geyAnY29sb3InOiAnSW1wb3NzaWJsZSB2YW"
-      "x1ZScgfTsKICB9Cn0pKCk7Cg==\"}]");
+      "\"content\": \"" +
+          scriptlet_base64 + "\"}]");
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -2124,6 +2126,67 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringWindowScriptlet) {
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   ASSERT_TRUE(result.error.empty());
   EXPECT_EQ(base::Value(true), result.value);
+}
+
+// Test scriptlet injection with DeAMP enabled
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CheckForDeAmpPref) {
+  std::string scriptlet =
+      "(function() {"
+      " if (deAmpEnabled) {"
+      "   window.getComputedStyle = function(selector) {"
+      "     return { 'color': 'green' };"
+      "   }"
+      " } else {"
+      "   window.getComputedStyle = function(selector) {"
+      "     return { 'color': 'red' };"
+      "   }"
+      " }"
+      "})();";
+  std::string scriptlet_base64;
+  base::Base64Encode(scriptlet, &scriptlet_base64);
+  UpdateAdBlockInstanceWithRules(
+      "b.*##+js(deamp)",
+      "[{"
+      "\"name\": \"deamp\","
+      "\"aliases\": [\"deamp\"],"
+      "\"kind\": {\"mime\": \"application/javascript\"},"
+      "\"content\": \"" +
+          scriptlet_base64 + "\"}]");
+
+  GURL url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  auto result1 = EvalJs(web_contents(),
+                        R"(async function waitCSSSelector() {
+          if (await checkSelector('body', 'color', 'green')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.log('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())",
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  ASSERT_TRUE(result1.error.empty());
+  EXPECT_EQ(base::Value(true), result1.value);
+
+  PrefService* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(de_amp::kDeAmpPrefEnabled, false);
+
+  web_contents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(web_contents()));
+
+  auto result2 = EvalJs(web_contents(),
+                        R"(async function waitCSSSelector() {
+          if (await checkSelector('body', 'color', 'red')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.log('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())",
+                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  ASSERT_TRUE(result2.error.empty());
+  EXPECT_EQ(base::Value(true), result2.value);
 }
 
 // Test scriptlet injection that modifies window attributes
