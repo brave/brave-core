@@ -1,15 +1,15 @@
+import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 
 declare_args() {
   safebrowsing_api_endpoint = ""
 }
 
-config("safebrowsing_config") {
-  defines = [
-    "SAFEBROWSING_ENDPOINT=\"$safebrowsing_api_endpoint\""
-  ]
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "SAFEBROWSING_ENDPOINT=\"$safebrowsing_api_endpoint\"" ]
 }
 
 source_set("safebrowsing") {
-  public_configs = [ ":safebrowsing_config" ]
+  public_deps = [ ":buildflags" ]
 }

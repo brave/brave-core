@@ -12,6 +12,7 @@
 
 #include "base/strings/string_piece_forward.h"
 #include "brave/browser/net/brave_geolocation_buildflags.h"
+#include "brave/browser/safebrowsing/buildflags.h"
 #include "brave/common/network_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/net_errors.h"
@@ -27,7 +28,7 @@ bool g_safebrowsing_api_endpoint_for_testing_ = false;
 base::StringPiece GetSafeBrowsingEndpoint() {
   if (g_safebrowsing_api_endpoint_for_testing_)
     return kSafeBrowsingTestingEndpoint;
-  return SAFEBROWSING_ENDPOINT;
+  return BUILDFLAG(SAFEBROWSING_ENDPOINT);
 }
 
 }  // namespace
