@@ -74,7 +74,6 @@ import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.BraveWalletServiceObserver;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
@@ -187,10 +186,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Brave's extension for ChromeActivity
  */
 @JNINamespace("chrome::android")
-public abstract class BraveActivity<C extends ChromeActivityComponent>
-        extends ChromeActivity implements BrowsingDataBridge.OnClearBrowsingDataListener,
-                                          BraveVpnObserver, OnBraveSetDefaultBrowserListener,
-                                          ConnectionErrorHandler, BraveWalletServiceObserver {
+public abstract class BraveActivity<C extends ChromeActivityComponent> extends ChromeActivity
+        implements BrowsingDataBridge.OnClearBrowsingDataListener, BraveVpnObserver,
+                   OnBraveSetDefaultBrowserListener, ConnectionErrorHandler {
     public static final int SITE_BANNER_REQUEST_CODE = 33;
     public static final int VERIFY_WALLET_ACTIVITY_REQUEST_CODE = 34;
     public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;
@@ -354,7 +352,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         }
 
         mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
-        mBraveWalletService.addObserver(this);
     }
 
     private void InitKeyringService() {
@@ -443,8 +440,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         });
     }
 
-    @Override
-    public void onShowPanel() {
+    public void showWalletPanel() {
         BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
         assert layout != null;
         if (layout != null) {
@@ -460,8 +456,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         });
     }
 
-    @Override
-    public void onShowWalletOnboarding() {
+    public void showWalletOnboarding() {
         BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
         assert layout != null;
         if (layout != null) {

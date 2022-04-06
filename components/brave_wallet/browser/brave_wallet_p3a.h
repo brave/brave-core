@@ -51,8 +51,6 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
   void OnDefaultBaseCryptocurrencyChanged(
       const std::string& cryptocurrency) override {}
   void OnNetworkListChanged() override {}
-  void OnShowPanel() override {}
-  void OnShowWalletOnboarding() override {}
 
  private:
   void RecordInitialBraveWalletP3AState();

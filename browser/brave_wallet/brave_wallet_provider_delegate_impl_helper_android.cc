@@ -3,27 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/android/jni_android.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "content/public/browser/web_contents.h"
+#include "brave/build/android/jni_headers/BraveWalletProviderDelegateImplHelper_jni.h"
+
+namespace content {
+class WebContents;
+}
 
 namespace brave_wallet {
 
-void ShowPanel(content::WebContents* web_contents) {
-  BraveWalletService* brave_wallet_service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-          web_contents->GetBrowserContext());
-  CHECK(brave_wallet_service);
-  brave_wallet_service->ShowPanel();
+void ShowPanel(content::WebContents*) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveWalletProviderDelegateImplHelper_showPanel(env);
 }
 
-void ShowWalletOnboarding(content::WebContents* web_contents) {
-  BraveWalletService* brave_wallet_service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-          web_contents->GetBrowserContext());
-  CHECK(brave_wallet_service);
-  brave_wallet_service->ShowWalletOnboarding();
+void ShowWalletOnboarding(content::WebContents*) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveWalletProviderDelegateImplHelper_showWalletOnboarding(env);
 }
 
 }  // namespace brave_wallet

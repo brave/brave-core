@@ -891,12 +891,6 @@ interface BraveWalletServiceObserver {
 
   // Fired when the list of networks changes
   OnNetworkListChanged();
-
-  // Used on Android to show a panel from a dapp call
-  OnShowPanel();
-
-  // Used on Android to show an onboarding from a dapp call
-  OnShowWalletOnboarding();
 };
 
 struct SignMessageRequest {

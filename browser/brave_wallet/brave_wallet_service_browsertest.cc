@@ -48,8 +48,6 @@ class TestBraveWalletServiceObserver
   void OnDefaultBaseCryptocurrencyChanged(
       const std::string& cryptocurrency) override {}
   void OnNetworkListChanged() override {}
-  void OnShowPanel() override {}
-  void OnShowWalletOnboarding() override {}
 
   void OnActiveOriginChanged(const std::string& origin,
                              const std::string& etld_plus_one) override {
