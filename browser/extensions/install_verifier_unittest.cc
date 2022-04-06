@@ -10,14 +10,8 @@
 
 #if defined(OFFICIAL_BUILD)
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
-TEST(InstallVerifierUnitTest, TestShouldEnforce) {
-  EXPECT_TRUE(extensions::InstallVerifier::ShouldEnforce());
-}
-#else
 TEST(InstallVerifierUnitTest, TestShouldNotEnforce) {
   EXPECT_FALSE(extensions::InstallVerifier::ShouldEnforce());
 }
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 
 #endif  // defined(OFFICIAL_BUILD)
