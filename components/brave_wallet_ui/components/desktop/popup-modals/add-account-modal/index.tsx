@@ -12,6 +12,8 @@ import { NavButton, DividerLine } from '../../../extension'
 import { getLocale } from '../../../../../common/locale'
 import AccountTypeItem from './account-type-item'
 import { CreateAccountOptions } from '../../../../options/create-account-options'
+import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
+
 // Styled Components
 import {
   Input,
@@ -219,6 +221,10 @@ const AddAccountModal = (props: Props) => {
     }
   }, [tab])
 
+  const onClearClipboard = () => {
+    copyToClipboard('')
+  }
+
   return (
     <PopupModal title={modalTitle} onClose={onClickClose}>
       <DividerLine />
@@ -274,6 +280,7 @@ const AddAccountModal = (props: Props) => {
                   type='password'
                   autoFocus={true}
                   autoComplete='off'
+                  onPaste={onClearClipboard}
                 />
               ) : (
                 <>
