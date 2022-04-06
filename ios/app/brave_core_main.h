@@ -16,7 +16,7 @@
 @class BraveStats;
 
 @protocol BraveWalletBlockchainRegistry;
-@protocol BraveWalletBraveWalletProvider;
+@protocol BraveWalletEthereumProvider;
 @protocol BraveWalletProviderDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -73,7 +73,7 @@ OBJC_EXPORT
 
 @property(class, readonly) id<BraveWalletBlockchainRegistry> blockchainRegistry;
 
-- (nullable id<BraveWalletBraveWalletProvider>)
+- (nullable id<BraveWalletEthereumProvider>)
     walletProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
              isPrivateBrowsing:(bool)isPrivateBrowsing;
 

@@ -913,7 +913,7 @@ void BraveWalletService::AddSignMessageRequest(
 
 void BraveWalletService::AddSuggestTokenRequest(
     mojom::AddSuggestTokenRequestPtr request,
-    mojom::BraveWalletProvider::RequestCallback callback,
+    mojom::EthereumProvider::RequestCallback callback,
     base::Value id) {
   // wallet_watchAsset currently only expect non-empty contract address and
   // only ERC20 type.
@@ -957,7 +957,7 @@ void BraveWalletService::AddSuggestTokenRequest(
 void BraveWalletService::AddGetPublicKeyRequest(
     const std::string& address,
     const url::Origin& origin,
-    mojom::BraveWalletProvider::RequestCallback callback,
+    mojom::EthereumProvider::RequestCallback callback,
     base::Value id) {
   // There can be only 1 request per origin
   if (add_get_encryption_public_key_requests_.contains(origin)) {
@@ -977,7 +977,7 @@ void BraveWalletService::AddGetPublicKeyRequest(
 
 void BraveWalletService::AddDecryptRequest(
     mojom::DecryptRequestPtr request,
-    mojom::BraveWalletProvider::RequestCallback callback,
+    mojom::EthereumProvider::RequestCallback callback,
     base::Value id) {
   url::Origin origin = request->origin_info->origin;
   // There can be only 1 request per origin

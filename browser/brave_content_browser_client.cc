@@ -52,8 +52,8 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
@@ -261,9 +261,9 @@ void BindCosmeticFiltersResources(
                                 std::move(receiver)));
 }
 
-void MaybeBindBraveWalletProvider(
+void MaybeBindEthereumProvider(
     content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletProvider> receiver) {
+    mojo::PendingReceiver<brave_wallet::mojom::EthereumProvider> receiver) {
   auto* json_rpc_service =
       brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
           frame_host->GetBrowserContext());
@@ -291,7 +291,7 @@ void MaybeBindBraveWalletProvider(
   content::WebContents* web_contents =
       content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_wallet::BraveWalletProviderImpl>(
+      std::make_unique<brave_wallet::EthereumProviderImpl>(
           HostContentSettingsMapFactory::GetForProfile(
               Profile::FromBrowserContext(frame_host->GetBrowserContext())),
           json_rpc_service, tx_service, keyring_service, brave_wallet_service,
@@ -505,8 +505,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (brave_wallet::IsNativeWalletEnabled() &&
       brave_wallet::IsAllowedForContext(
           render_frame_host->GetBrowserContext())) {
-    map->Add<brave_wallet::mojom::BraveWalletProvider>(
-        base::BindRepeating(&MaybeBindBraveWalletProvider));
+    map->Add<brave_wallet::mojom::EthereumProvider>(
+        base::BindRepeating(&MaybeBindEthereumProvider));
     map->Add<brave_wallet::mojom::SolanaProvider>(
         base::BindRepeating(&MaybeBindSolanaProvider));
   }

@@ -36,7 +36,7 @@ namespace brave_wallet {
 
 class EthTransaction;
 class KeyringServiceUnitTest;
-class BraveWalletProviderImplUnitTest;
+class EthereumProviderImplUnitTest;
 class FilecoinKeyring;
 class JsonRpcService;
 
@@ -278,7 +278,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
                            RestoreWalletTwice);
 
-  friend class BraveWalletProviderImplUnitTest;
+  friend class EthereumProviderImplUnitTest;
   friend class KeyringServiceAccountDiscoveryUnitTest;
   friend class EthTxManagerUnitTest;
   friend class FilTxManagerUnitTest;

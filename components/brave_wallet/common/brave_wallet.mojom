@@ -122,9 +122,9 @@ union ProviderErrorUnion {
   FilecoinProviderError filecoin_provider_error;
 };
 
-// There is one BraveWalletProvider per renderer, the renderer communicates
+// There is one EthereumProvider per renderer, the renderer communicates
 // with this for window.ethereum usage.
-interface BraveWalletProvider {
+interface EthereumProvider {
   // Initializes an EventsListener
   Init(pending_remote<EventsListener> events_listener);
 

@@ -143,23 +143,21 @@ class BraveWalletService : public KeyedService,
 
   void AddSignMessageRequest(mojom::SignMessageRequestPtr request,
                              SignMessageRequestCallback callback);
-  void AddSuggestTokenRequest(
-      mojom::AddSuggestTokenRequestPtr request,
-      mojom::BraveWalletProvider::RequestCallback callback,
-      base::Value id);
-  void AddGetPublicKeyRequest(
-      const std::string& address,
-      const url::Origin& origin,
-      mojom::BraveWalletProvider::RequestCallback callback,
-      base::Value id);
+  void AddSuggestTokenRequest(mojom::AddSuggestTokenRequestPtr request,
+                              mojom::EthereumProvider::RequestCallback callback,
+                              base::Value id);
+  void AddGetPublicKeyRequest(const std::string& address,
+                              const url::Origin& origin,
+                              mojom::EthereumProvider::RequestCallback callback,
+                              base::Value id);
   void AddDecryptRequest(mojom::DecryptRequestPtr request,
-                         mojom::BraveWalletProvider::RequestCallback callback,
+                         mojom::EthereumProvider::RequestCallback callback,
                          base::Value id);
 
   void RemovePrefListenersForTests();
 
  private:
-  friend class BraveWalletProviderImplUnitTest;
+  friend class EthereumProviderImplUnitTest;
   friend class BraveWalletServiceUnitTest;
 
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
@@ -215,18 +213,18 @@ class BraveWalletService : public KeyedService,
 
   base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
   base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;
-  base::flat_map<std::string, mojom::BraveWalletProvider::RequestCallback>
+  base::flat_map<std::string, mojom::EthereumProvider::RequestCallback>
       add_suggest_token_callbacks_;
   base::flat_map<std::string, base::Value> add_suggest_token_ids_;
   base::flat_map<std::string, mojom::AddSuggestTokenRequestPtr>
       add_suggest_token_requests_;
   base::flat_map<url::Origin, std::string>
       add_get_encryption_public_key_requests_;
-  base::flat_map<url::Origin, mojom::BraveWalletProvider::RequestCallback>
+  base::flat_map<url::Origin, mojom::EthereumProvider::RequestCallback>
       add_get_encryption_public_key_callbacks_;
   base::flat_map<url::Origin, base::Value> get_encryption_public_key_ids_;
   base::flat_map<url::Origin, mojom::DecryptRequestPtr> decrypt_requests_;
-  base::flat_map<url::Origin, mojom::BraveWalletProvider::RequestCallback>
+  base::flat_map<url::Origin, mojom::EthereumProvider::RequestCallback>
       decrypt_callbacks_;
   base::flat_map<url::Origin, base::Value> decrypt_ids_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;

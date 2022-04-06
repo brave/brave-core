@@ -128,7 +128,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {
         base::StringPrintf("%s('0x084DCb94038af1715963F149079cE011C4B22961',"
                            " '0xdeadbeef')",
                            method.c_str())));
-    // Wait for BraveWalletProviderImpl::ContinueSignMessage
+    // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
@@ -162,7 +162,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserRejectedRequest) {
         base::StringPrintf("%s('0x084DCb94038af1715963F149079cE011C4B22961',"
                            " '0xdeadbeef')",
                            method.c_str())));
-    // Wait for BraveWalletProviderImpl::ContinueSignMessage
+    // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
@@ -192,7 +192,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UnknownAddress) {
         base::StringPrintf("%s('0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909',"
                            " '0xdeadbeef')",
                            method.c_str())));
-    // Wait for BraveWalletProviderImpl::ContinueSignMessage
+    // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
     EXPECT_FALSE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
@@ -221,7 +221,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, InvalidAddressParam) {
     ASSERT_TRUE(ExecJs(web_contents(), base::StringPrintf("%s(null,"
                                                           " '0xdeadbeef')",
                                                           method.c_str())));
-    // Wait for BraveWalletProviderImpl::ContinueSignMessage
+    // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
     EXPECT_FALSE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
@@ -250,7 +250,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, NoEthPermission) {
         base::StringPrintf("%s('0x084DCb94038af1715963F149079cE011C4B22961',"
                            " '0xdeadbeef')",
                            method.c_str())));
-    // Wait for BraveWalletProviderImpl::ContinueSignMessage
+    // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
     EXPECT_FALSE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())

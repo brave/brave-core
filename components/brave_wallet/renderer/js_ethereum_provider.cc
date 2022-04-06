@@ -113,20 +113,20 @@ JSEthereumProvider::JSEthereumProvider(content::RenderFrame* render_frame,
 JSEthereumProvider::~JSEthereumProvider() = default;
 
 bool JSEthereumProvider::EnsureConnected() {
-  if (brave_use_native_wallet_ && !brave_wallet_provider_.is_bound()) {
+  if (brave_use_native_wallet_ && !ethereum_provider_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
-        brave_wallet_provider_.BindNewPipeAndPassReceiver());
-    brave_wallet_provider_->Init(receiver_.BindNewPipeAndPassRemote());
-    brave_wallet_provider_.set_disconnect_handler(
+        ethereum_provider_.BindNewPipeAndPassReceiver());
+    ethereum_provider_->Init(receiver_.BindNewPipeAndPassRemote());
+    ethereum_provider_.set_disconnect_handler(
         base::BindOnce(&JSEthereumProvider::OnRemoteDisconnect,
                        weak_ptr_factory_.GetWeakPtr()));
   }
 
-  return brave_wallet_provider_.is_bound();
+  return ethereum_provider_.is_bound();
 }
 
 void JSEthereumProvider::OnRemoteDisconnect() {
-  brave_wallet_provider_.reset();
+  ethereum_provider_.reset();
   receiver_.reset();
   EnsureConnected();
 }
@@ -370,7 +370,7 @@ v8::Local<v8::Promise> JSEthereumProvider::Send(gin::Arguments* args) {
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
 
   // There's no id in this format so we can just use 1
-  brave_wallet_provider_->Send(
+  ethereum_provider_->Send(
       method, std::move(*params),
       base::BindOnce(&JSEthereumProvider::OnRequestOrSendAsync,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
@@ -398,7 +398,7 @@ void JSEthereumProvider::SendAsync(gin::Arguments* args) {
       content::V8ValueConverter::Create()->FromV8Value(
           input, isolate->GetCurrentContext());
 
-  brave_wallet_provider_->Request(
+  ethereum_provider_->Request(
       std::move(*input_value),
       base::BindOnce(
           &JSEthereumProvider::JSEthereumProvider::OnRequestOrSendAsync,
@@ -440,7 +440,7 @@ v8::Local<v8::Promise> JSEthereumProvider::Request(v8::Isolate* isolate,
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
 
-  brave_wallet_provider_->Request(
+  ethereum_provider_->Request(
       std::move(*input_value),
       base::BindOnce(
           &JSEthereumProvider::JSEthereumProvider::OnRequestOrSendAsync,
@@ -488,7 +488,7 @@ v8::Local<v8::Promise> JSEthereumProvider::Enable() {
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
 
-  brave_wallet_provider_->Enable(
+  ethereum_provider_->Enable(
       base::BindOnce(&JSEthereumProvider::OnRequestOrSendAsync,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      nullptr, std::move(promise_resolver), isolate, false));
@@ -512,7 +512,7 @@ v8::Local<v8::Promise> JSEthereumProvider::IsUnlocked() {
   auto promise_resolver(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   auto context(v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
-  brave_wallet_provider_->IsLocked(base::BindOnce(
+  ethereum_provider_->IsLocked(base::BindOnce(
       &JSEthereumProvider::OnIsUnlocked, weak_ptr_factory_.GetWeakPtr(),
       std::move(global_context), std::move(promise_resolver), isolate));
 
@@ -552,7 +552,7 @@ void JSEthereumProvider::ConnectEvent() {
   if (!EnsureConnected())
     return;
 
-  brave_wallet_provider_->GetChainId(base::BindOnce(
+  ethereum_provider_->GetChainId(base::BindOnce(
       &JSEthereumProvider::OnGetChainId, weak_ptr_factory_.GetWeakPtr()));
 }
 
