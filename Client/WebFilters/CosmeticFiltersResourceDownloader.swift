@@ -88,8 +88,18 @@ class CosmeticFiltersResourceDownloader {
       // This is because `engine_add_resources` will ADD resources, and not delete old ones
       // Thus we get a huge amount of memory usage and slow down.
       let tempEngine = AdblockRustEngine()
-      downloadTask = Publishers.Merge(downloadCosmeticSamples(with: tempEngine),
-                                      downloadResourceSamples(with: tempEngine))
+      
+      let cosmeticSamplesTask = downloadCosmeticSamples(with: tempEngine).catch { error -> AnyPublisher<Void, Never> in
+        log.error("Failed to Download Cosmetic-Filters (CosmeticSamples): \(error)")
+        return Just(()).eraseToAnyPublisher()
+      }
+      
+      let resourceSamplesTask = downloadResourceSamples(with: tempEngine).catch { error -> AnyPublisher<Void, Never> in
+        log.error("Failed to Download Cosmetic-Filters (ResourceSamples): \(error)")
+        return Just(()).eraseToAnyPublisher()
+      }
+      
+      downloadTask = Publishers.Merge(cosmeticSamplesTask, resourceSamplesTask)
         .collect()
         .subscribe(on: DispatchQueue.global(qos: .userInitiated))
         .receive(on: DispatchQueue.main)
@@ -99,6 +109,10 @@ class CosmeticFiltersResourceDownloader {
           }
           
           // Load downloaded files into the new engine
+          // This is because the Rust Engine will LEAK memory
+          // if any functions are called more than once
+          // We cannot `reset` the Rust Engine
+          // So instead, we discard it and replace it with a new one
           let newEngine = AdblockRustEngine()
           return self.loadDownloadedFiles(into: newEngine).map({ newEngine }).eraseToAnyPublisher()
         }
@@ -106,13 +120,13 @@ class CosmeticFiltersResourceDownloader {
         .sink { res in
           switch res {
           case .failure(let error):
-            log.error("Failed to Download Cosmetic-Filters: \(error)")
+            log.error("Failed to Setup Cosmetic-Filters: \(error)")
           default:
             break
           }
         } receiveValue: { [weak self] engine in
-          log.debug("Successfully Downloaded Cosmetic-Filters")
           self?.engine = engine
+          log.debug("Successfully Setup Cosmetic-Filters")
         }
     }
   }
@@ -147,7 +161,7 @@ class CosmeticFiltersResourceDownloader {
     return Publishers.MergeMany(dataFilesSetup + jsonFilesSetup)
       .collect()
       .subscribe(on: DispatchQueue.global(qos: .userInitiated))
-      .flatMap { $0.publisher }
+      .map({ _ in () })
       .eraseToAnyPublisher()
   }
 
@@ -229,6 +243,7 @@ class CosmeticFiltersResourceDownloader {
       .flatMap { resources in
         self.setUpFiles(into: engine, resources: resources)
       }
+      .map({ _ in () })
       .eraseToAnyPublisher()
   }
 
@@ -306,34 +321,38 @@ class CosmeticFiltersResourceDownloader {
     return Publishers.MergeMany(resources)
       .collect()
       .subscribe(on: DispatchQueue.global(qos: .userInitiated))
-      .flatMap { $0.publisher }
+      .map({ _ in () })
       .eraseToAnyPublisher()
   }
 
   private func setDataFile(into engine: AdblockRustEngine, data: Data, id: String) -> AnyPublisher<Void, Error> {
-    return Future { completion in
-      CosmeticFiltersResourceDownloader.queue.async {
-        if engine.set(data: data) {
-          completion(.success(()))
-        } else {
-          completion(.failure("Failed to deserialize adblock list with id: \(id)"))
+    Combine.Deferred {
+      Future { completion in
+        CosmeticFiltersResourceDownloader.queue.async {
+          if engine.set(data: data) {
+            completion(.success(()))
+          } else {
+            completion(.failure("Failed to deserialize adblock list with id: \(id)"))
+          }
         }
       }
     }.eraseToAnyPublisher()
   }
 
   private func setJSONFile(into engine: AdblockRustEngine, data: Data, id: String) -> AnyPublisher<Void, Error> {
-    return Future { completion in
-      CosmeticFiltersResourceDownloader.queue.async {
-        if !CosmeticFiltersResourceDownloader.isValidJSONData(data) {
-          completion(.failure("Invalid JSON Data"))
-          return
-        }
-        
-        if engine.set(json: data) {
-          completion(.success(()))
-        } else {
-          completion(.failure("Invalid JSON String - Bad Encoding"))
+    Combine.Deferred {
+      Future { completion in
+        CosmeticFiltersResourceDownloader.queue.async {
+          if !CosmeticFiltersResourceDownloader.isValidJSONData(data) {
+            completion(.failure("Invalid JSON Data"))
+            return
+          }
+          
+          if engine.set(json: data) {
+            completion(.success(()))
+          } else {
+            completion(.failure("Invalid JSON String - Bad Encoding"))
+          }
         }
       }
     }.eraseToAnyPublisher()

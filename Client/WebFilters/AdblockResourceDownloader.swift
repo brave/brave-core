@@ -48,18 +48,21 @@ class AdblockResourceDownloader {
     if now.timeIntervalSince(lastFetchDate) >= fetchInterval {
       lastFetchDate = now
       
-      adblockResourceDownloader = Publishers.Merge(regionalAdblockResourcesSetup(), generalAdblockResourcesSetup())
+      let regionalSetup = regionalAdblockResourcesSetup().catch { error -> AnyPublisher<Void, Never> in
+        log.error("Failed to Download Regional Adblock-Resources: \(error)")
+        return Just(()).eraseToAnyPublisher()
+      }
+      
+      let generalSetup = generalAdblockResourcesSetup().catch { error -> AnyPublisher<Void, Never> in
+        log.error("Failed to Download General Adblock-Resources: \(error)")
+        return Just(()).eraseToAnyPublisher()
+      }
+      
+      adblockResourceDownloader = Publishers.Merge(regionalSetup, generalSetup)
         .collect()
         .receive(on: DispatchQueue.main)
-        .sink { res in
-          switch res {
-          case .failure(let error):
-            log.error("Failed to Download Adblock-Resources: \(error)")
-          default:
-            break
-          }
-        } receiveValue: { _ in
-          log.debug("Successfully Downloaded Adblock-Resources")
+        .sink { _ in
+          log.debug("Finished Setting Up Adblock-Resources")
         }
     }
   }
@@ -94,7 +97,9 @@ class AdblockResourceDownloader {
     // file name of which the file will be saved on disk
     let fileName = type.identifier
     
-    let completedDownloads = type.associatedFiles.compactMap({ fileType -> AnyPublisher<AdBlockNetworkResource, Error>? in
+    let completedDownloads = type.associatedFiles.compactMap({ [weak self] fileType -> AnyPublisher<AdBlockNetworkResource, Error>? in
+      guard let self = self else { return nil }
+      
       let fileExtension = fileType.rawValue
       let etagExtension = fileExtension + ".etag"
 
@@ -158,6 +163,10 @@ class AdblockResourceDownloader {
   }
 
   private func compileContentBlocker(resources: [AdBlockNetworkResource]) -> AnyPublisher<Void, Error> {
+    if resources.isEmpty {
+      return Fail(error: "No Adblock Resource to Compile").eraseToAnyPublisher()
+    }
+    
     let lists = resources.filter({ $0.fileType == .json })
       .compactMap({ res in
         return res.type.blockListName?.compile(data: res.resource.data)
@@ -165,7 +174,7 @@ class AdblockResourceDownloader {
     
     return Publishers.MergeMany(lists)
       .collect()
-      .flatMap({ $0.publisher })
+      .map { _ in () }
       .eraseToAnyPublisher()
   }
 
@@ -227,7 +236,7 @@ class AdblockResourceDownloader {
     
     return Publishers.MergeMany(resources)
       .collect()
-      .flatMap({ $0.publisher })
+      .map { _ in () }
       .eraseToAnyPublisher()
   }
 }

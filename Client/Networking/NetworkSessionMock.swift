@@ -33,28 +33,32 @@ class NetworkSessionMock: NetworkSession {
   }
   
   func dataRequest(with url: URL) -> AnyPublisher<NetworkSessionDataResponse, Error> {
-    return Future { completion in
-      if let error = self.error {
-        completion(.failure(error))
-        return
-      }
+    Combine.Deferred {
+      Future { completion in
+        if let error = self.error {
+          completion(.failure(error))
+          return
+        }
 
-      let data = self.data ?? Data()
-      let response = self.response ?? HTTPURLResponse()
-      completion(.success((data, response)))
+        let data = self.data ?? Data()
+        let response = self.response ?? HTTPURLResponse()
+        completion(.success((data, response)))
+      }
     }.eraseToAnyPublisher()
   }
   
   func dataRequest(with urlRequest: URLRequest) -> AnyPublisher<NetworkSessionDataResponse, Error> {
-    return Future { completion in
-      if let error = self.error {
-        completion(.failure(error))
-        return
-      }
+    Combine.Deferred {
+      Future { completion in
+        if let error = self.error {
+          completion(.failure(error))
+          return
+        }
 
-      let data = self.data ?? Data()
-      let response = self.response ?? HTTPURLResponse()
-      completion(.success((data, response)))
+        let data = self.data ?? Data()
+        let response = self.response ?? HTTPURLResponse()
+        completion(.success((data, response)))
+      }
     }.eraseToAnyPublisher()
   }
 

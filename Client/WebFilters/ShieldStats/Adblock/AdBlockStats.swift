@@ -77,7 +77,7 @@ class AdBlockStats: LocalAdblockResourceProtocol {
       downloadTask = Publishers.MergeMany(setupFiles)
         .collect()
         .subscribe(on: DispatchQueue.global(qos: .userInitiated))
-        .flatMap({ $0.publisher })
+        .map({ _ in () })
         .sink { res in
           switch res {
           case .failure(let error):
@@ -157,16 +157,18 @@ class AdBlockStats: LocalAdblockResourceProtocol {
       return Fail(error: "Adblock engine with id: \(id) is nil").eraseToAnyPublisher()
     }
 
-    return Future { completion in
-      AdBlockStats.adblockSerialQueue.async {
-        if engine.set(data: data) {
-          log.debug("Adblock file with id: \(id) deserialized successfully")
-          // Clearing the cache or checked urls.
-          // The new list can bring blocked resource that were previously set as not-blocked.
-          self.fifoCacheOfUrlsChecked = FifoDict()
-          completion(.success(()))
-        } else {
-          completion(.failure("Failed to deserialize adblock list with id: \(id)"))
+    return Combine.Deferred {
+      Future { completion in
+        AdBlockStats.adblockSerialQueue.async {
+          if engine.set(data: data) {
+            log.debug("Adblock file with id: \(id) deserialized successfully")
+            // Clearing the cache or checked urls.
+            // The new list can bring blocked resource that were previously set as not-blocked.
+            self.fifoCacheOfUrlsChecked = FifoDict()
+            completion(.success(()))
+          } else {
+            completion(.failure("Failed to deserialize adblock list with id: \(id)"))
+          }
         }
       }
     }.eraseToAnyPublisher()
