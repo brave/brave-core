@@ -5,9 +5,12 @@
 
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "base/feature_list.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/de_amp/common/features.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/platform/web_isolated_world_info.h"
@@ -48,13 +51,15 @@ void EnsureIsolatedWorldInitialized(int world_id) {
 
 CosmeticFiltersJsRenderFrameObserver::CosmeticFiltersJsRenderFrameObserver(
     content::RenderFrame* render_frame,
-    const int32_t isolated_world_id)
+    const int32_t isolated_world_id,
+    GetDynamicParamsCallback get_dynamic_params_callback)
     : RenderFrameObserver(render_frame),
       RenderFrameObserverTracker<CosmeticFiltersJsRenderFrameObserver>(
           render_frame),
       isolated_world_id_(isolated_world_id),
       native_javascript_handle_(
           new CosmeticFiltersJSHandler(render_frame, isolated_world_id)),
+      get_dynamic_params_callback_(std::move(get_dynamic_params_callback)),
       ready_(new base::OneShotEvent()) {}
 
 CosmeticFiltersJsRenderFrameObserver::~CosmeticFiltersJsRenderFrameObserver() {}
@@ -106,7 +111,11 @@ void CosmeticFiltersJsRenderFrameObserver::RunScriptsAtDocumentStart() {
 }
 
 void CosmeticFiltersJsRenderFrameObserver::ApplyRules() {
-  native_javascript_handle_->ApplyRules();
+  auto dynamic_params = get_dynamic_params_callback_.Run();
+  bool de_amp_enabled =
+      base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP) &&
+      dynamic_params.de_amp_enabled;
+  native_javascript_handle_->ApplyRules(de_amp_enabled);
 }
 
 void CosmeticFiltersJsRenderFrameObserver::OnProcessURL() {

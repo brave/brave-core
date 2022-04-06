@@ -1,4 +1,5 @@
 include_rules = [
+  "+brave/common",
   "+content/public/renderer",
   "+gin",
   "+third_party/blink/public",
