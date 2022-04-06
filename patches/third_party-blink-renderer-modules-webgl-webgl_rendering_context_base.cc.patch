@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
-index 1e315cebbfcd934e5c986f13bab3393f5ed2915f..8cbbe85cc926622d76b3f1be2fe6b06d4b3bf463 100644
+index b78f578c6c31a24e9f62c190e2a99e90f91dd731..db6fb2145052fa22b4d39967748d8f74b11e0d1f 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 @@ -3004,6 +3004,7 @@ WebGLActiveInfo* WebGLRenderingContextBase::getActiveAttrib(
@@ -56,7 +56,7 @@ index 1e315cebbfcd934e5c986f13bab3393f5ed2915f..8cbbe85cc926622d76b3f1be2fe6b06d
      case WebGLDebugRendererInfo::kUnmaskedRendererWebgl:
 +      BRAVE_WEBGL_GET_PARAMETER_UNMASKED_RENDERER
        if (ExtensionEnabled(kWebGLDebugRendererInfoName)) {
-         if (IdentifiabilityStudySettings::Get()->ShouldSample(
+         if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
                  blink::IdentifiableSurface::Type::kWebGLParameter)) {
 @@ -3673,6 +3680,7 @@ ScriptValue WebGLRenderingContextBase::getParameter(ScriptState* script_state,
            "invalid parameter name, WEBGL_debug_renderer_info not enabled");
@@ -64,7 +64,7 @@ index 1e315cebbfcd934e5c986f13bab3393f5ed2915f..8cbbe85cc926622d76b3f1be2fe6b06d
      case WebGLDebugRendererInfo::kUnmaskedVendorWebgl:
 +      BRAVE_WEBGL_GET_PARAMETER_UNMASKED_VENDOR
        if (ExtensionEnabled(kWebGLDebugRendererInfoName)) {
-         if (IdentifiabilityStudySettings::Get()->ShouldSample(
+         if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
                  blink::IdentifiableSurface::Type::kWebGLParameter)) {
 @@ -3765,6 +3773,7 @@ ScriptValue WebGLRenderingContextBase::getProgramParameter(
    // intended to prevent applications from entering an infinite polling loop.
@@ -113,7 +113,7 @@ index 1e315cebbfcd934e5c986f13bab3393f5ed2915f..8cbbe85cc926622d76b3f1be2fe6b06d
 +  BRAVE_WEBGL_RENDERING_CONTEXT_BASE_GETSHADERINFOLOG
    auto* result = MakeGarbageCollected<WebGLShaderPrecisionFormat>(
        range[0], range[1], precision);
-   if (IdentifiabilityStudySettings::Get()->ShouldSample(
+   if (IdentifiabilityStudySettings::Get()->ShouldSampleType(
 @@ -3954,6 +3968,7 @@ WebGLShaderPrecisionFormat* WebGLRenderingContextBase::getShaderPrecisionFormat(
  String WebGLRenderingContextBase::getShaderSource(WebGLShader* shader) {
    if (!ValidateWebGLProgramOrShader("getShaderSource", shader))

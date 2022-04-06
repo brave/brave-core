@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index e5f3e53975c5636e85ba3dd45d9d199c67836129..f30d7821723195c57166fbb191189654baadcaca 100644
+index be0f0ed3911f966b52c502561aaf7f5d41001079..f978ad82a0cfd777adad9c0da54070019fc4a7d4 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1198,6 +1198,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1199,6 +1199,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  
    registry->RegisterBooleanPref(
        policy::policy_prefs::kSetTimeoutWithout1MsClampEnabled, false);
 +  brave::RegisterLocalStatePrefs(registry);
  
-   // This is intentionally last.
-   RegisterLocalStatePrefsForMigration(registry);
-@@ -1523,6 +1524,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+ #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
+   screen_ai::RegisterLocalStatePrefs(registry);
+@@ -1528,6 +1529,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
    registry->RegisterBooleanPref(prefs::kPrivacyGuideViewed, false);
  
    RegisterProfilePrefsForMigration(registry);

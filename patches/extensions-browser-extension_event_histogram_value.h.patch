@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index 6934bf27000ec960f299ffbee378a891460ea29c..078a6f8c3ee8028a0b0a4c2a713d4f2b49b066b1 100644
+index 13a79db2da3bea4e7898a91d8ca6e802d54b92ab..d1b2670edcc8a2e4b30fbc1bed45efc16a4ca951 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -510,6 +510,20 @@ enum HistogramValue {
-   WEB_AUTHENTICATION_PROXY_ON_GET_REQUEST = 488,
+@@ -511,6 +511,20 @@ enum HistogramValue {
    DEVELOPER_PRIVATE_ON_USER_SITE_SETTINGS_CHANGED = 489,
    TERMINAL_PRIVATE_ON_PREF_CHANGED = 490,
+   WEB_AUTHENTICATION_PROXY_ON_REMOTE_SESSION_STATE_CHANGE = 491,
 +
 +  BRAVE_START = 600,
 +  BRAVE_AD_BLOCKED,
