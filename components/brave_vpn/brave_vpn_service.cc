@@ -48,7 +48,6 @@ constexpr char kBraveVPNEntryName[] = "BraveVPN";
 constexpr char kRegionContinentKey[] = "continent";
 constexpr char kRegionNameKey[] = "name";
 constexpr char kRegionNamePrettyKey[] = "name-pretty";
-constexpr char kRegionCountryIsoCodeKey[] = "country-iso-code";
 
 constexpr char kCreateSupportTicket[] = "api/v1.2/partners/support-ticket";
 
@@ -497,13 +496,10 @@ void BraveVpnService::LoadCachedRegionData() {
     const std::string* name = region_value->FindStringKey(kRegionNameKey);
     const std::string* name_pretty =
         region_value->FindStringKey(kRegionNamePrettyKey);
-    const std::string* country_iso_code =
-        region_value->FindStringKey(kRegionCountryIsoCodeKey);
-    if (continent && name && name_pretty && country_iso_code) {
+    if (continent && name && name_pretty) {
       device_region_.continent = *continent;
       device_region_.name = *name;
       device_region_.name_pretty = *name_pretty;
-      device_region_.country_iso_code = *country_iso_code;
       VLOG(2) << __func__ << " : "
               << "Loaded cached device region";
     }
@@ -526,11 +522,9 @@ void BraveVpnService::LoadCachedSelectedRegion() {
     const std::string* name = region_value->FindStringKey(kRegionNameKey);
     const std::string* name_pretty =
         region_value->FindStringKey(kRegionNamePrettyKey);
-    const std::string* country_iso_code =
-        region_value->FindStringKey(kRegionCountryIsoCodeKey);
-    if (continent && name && name_pretty && country_iso_code) {
-      selected_region_ = brave_vpn::mojom::Region(
-          *continent, *name, *name_pretty, *country_iso_code);
+    if (continent && name && name_pretty) {
+      selected_region_ =
+          brave_vpn::mojom::Region(*continent, *name, *name_pretty);
       VLOG(2) << __func__ << " : "
               << "Loaded selected region";
     }
@@ -596,8 +590,6 @@ bool BraveVpnService::ParseAndCacheRegionList(const base::Value& region_value) {
       region.name = *name;
     if (auto* name_pretty = value.FindStringKey(kRegionNamePrettyKey))
       region.name_pretty = *name_pretty;
-    if (auto* country_iso_code = value.FindStringKey(kRegionCountryIsoCodeKey))
-      region.country_iso_code = *country_iso_code;
 
     regions_.push_back(region);
   }
@@ -697,7 +689,6 @@ void BraveVpnService::SetRegionToPrefs(const std::string& key,
   dict->SetStringKey(kRegionContinentKey, region.continent);
   dict->SetStringKey(kRegionNameKey, region.name);
   dict->SetStringKey(kRegionNamePrettyKey, region.name_pretty);
-  dict->SetStringKey(kRegionCountryIsoCodeKey, region.country_iso_code);
 }
 
 void BraveVpnService::SetDeviceRegion(const brave_vpn::mojom::Region& region) {
