@@ -7,6 +7,7 @@
 // chrome/BUILD.gn
 #include "brave/app/brave_command_line_helper.cc"
 #include "brave/app/brave_main_delegate.cc"
+#include "brave/components/brave_sync/buildflags.h"
 #include "build/build_config.h"
 #include "components/sync/base/command_line_switches.h"
 
@@ -75,7 +76,7 @@ bool ChromeMainDelegate::BasicStartupComplete(int* exit_code) {
                                    kBraveOriginTrialsPublicKey);
   }
 
-  std::string brave_sync_service_url = BRAVE_SYNC_ENDPOINT;
+  std::string brave_sync_service_url = BUILDFLAG(BRAVE_SYNC_ENDPOINT);
 #if BUILDFLAG(IS_ANDROID)
   AdjustSyncServiceUrlForAndroid(&brave_sync_service_url);
 #endif  // BUILDFLAG(IS_ANDROID)
