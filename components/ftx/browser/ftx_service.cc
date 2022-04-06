@@ -14,6 +14,7 @@
 #include "base/task/post_task.h"
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ftx/browser/ftx_json_parser.h"
 #include "brave/components/ftx/common/pref_names.h"
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
@@ -75,8 +76,8 @@ void BuildFormEncoding(const std::string& key,
 }  // namespace
 
 FTXService::FTXService(content::BrowserContext* context)
-    : client_id_(FTX_CLIENT_ID),
-      client_secret_(FTX_CLIENT_SECRET),
+    : client_id_(BUILDFLAG(FTX_CLIENT_ID)),
+      client_secret_(BUILDFLAG(FTX_CLIENT_SECRET)),
       context_(context),
       url_loader_factory_(context_->GetDefaultStoragePartition()
                               ->GetURLLoaderFactoryForBrowserProcess()),
