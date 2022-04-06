@@ -2146,7 +2146,7 @@ void AdsServiceImpl::RecordP2AEvent(const std::string& name,
 }
 
 void AdsServiceImpl::LogTrainingCovariates(
-    const ads::mojom::TrainingCovariatesPtr training_covariates) {
+    const brave_federated::mojom::TrainingCovariatesPtr training_covariates) {
   if (!ad_notification_timing_data_store_) {
     return;
   }
@@ -2157,8 +2157,8 @@ void AdsServiceImpl::LogTrainingCovariates(
 
   for (const auto& covariate : training_covariates->covariates) {
     switch (covariate->covariate_type) {
-      case ads::mojom::CovariateType::kAdNotificationWasClicked: {
-        DCHECK_EQ(ads::mojom::DataType::kBool, covariate->data_type)
+      case brave_federated::mojom::CovariateType::kAdNotificationWasClicked: {
+        DCHECK_EQ(brave_federated::mojom::DataType::kBool, covariate->data_type)
             << "covariate type should be a bool";
 
         bool value_as_bool = false;
@@ -2170,17 +2170,20 @@ void AdsServiceImpl::LogTrainingCovariates(
         break;
       }
 
-      case ads::mojom::CovariateType::
+      case brave_federated::mojom::CovariateType::
           kAdNotificationLocaleCountryAtTimeOfServing: {
-        DCHECK_EQ(ads::mojom::DataType::kString, covariate->data_type)
+        DCHECK_EQ(brave_federated::mojom::DataType::kString,
+                  covariate->data_type)
             << "covariate type should be a string";
 
         log.locale = covariate->value;
         break;
       }
 
-      case ads::mojom::CovariateType::kAdNotificationImpressionServedAt: {
-        DCHECK_EQ(ads::mojom::DataType::kDouble, covariate->data_type)
+      case brave_federated::mojom::CovariateType::
+          kAdNotificationImpressionServedAt: {
+        DCHECK_EQ(brave_federated::mojom::DataType::kDouble,
+                  covariate->data_type)
             << "covariate type should be a double";
 
         double value_as_double = 0.0;
@@ -2193,9 +2196,9 @@ void AdsServiceImpl::LogTrainingCovariates(
         break;
       }
 
-      case ads::mojom::CovariateType::
+      case brave_federated::mojom::CovariateType::
           kAdNotificationNumberOfTabsOpenedInPast30Minutes: {
-        DCHECK_EQ(ads::mojom::DataType::kInt, covariate->data_type)
+        DCHECK_EQ(brave_federated::mojom::DataType::kInt, covariate->data_type)
             << "covariate type should be an int";
 
         int value_as_int = 0;

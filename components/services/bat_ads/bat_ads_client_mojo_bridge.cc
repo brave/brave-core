@@ -234,7 +234,7 @@ void BatAdsClientMojoBridge::RecordP2AEvent(const std::string& name,
 }
 
 void BatAdsClientMojoBridge::LogTrainingCovariates(
-    ads::mojom::TrainingCovariatesPtr training_covariates) {
+    brave_federated::mojom::TrainingCovariatesPtr training_covariates) {
   if (!connected()) {
     return;
   }

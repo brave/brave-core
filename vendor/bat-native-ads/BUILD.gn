@@ -91,6 +91,7 @@ source_set("headers") {
 
   public_deps = [
     "include/bat/ads/public/interfaces",
+    "//brave/components/brave_federated/public/interfaces",
     "//sql",
   ]
 }

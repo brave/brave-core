@@ -222,7 +222,7 @@ void AdsClientMojoBridge::RecordP2AEvent(const std::string& name,
 }
 
 void AdsClientMojoBridge::LogTrainingCovariates(
-    ads::mojom::TrainingCovariatesPtr training_covariates) {
+    brave_federated::mojom::TrainingCovariatesPtr training_covariates) {
   ads_client_->LogTrainingCovariates(std::move(training_covariates));
 }
 

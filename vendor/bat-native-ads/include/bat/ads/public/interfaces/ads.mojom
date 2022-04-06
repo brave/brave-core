@@ -141,27 +141,3 @@ struct DBCommandResponse {
   DBCommandResult? result;
   Status status;
 };
-
-enum CovariateType {
-  kAdNotificationWasClicked,
-  kAdNotificationLocaleCountryAtTimeOfServing,
-  kAdNotificationImpressionServedAt,
-  kAdNotificationNumberOfTabsOpenedInPast30Minutes
-};
-
-enum DataType {
-  kBool,
-  kDouble,
-  kInt,
-  kString
-};
-
-struct Covariate {
-  DataType data_type;
-  CovariateType covariate_type;
-  string value;
-};
-
-struct TrainingCovariates {
-  array<Covariate> covariates;
-};

@@ -1,0 +1,7 @@
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("interfaces") {
+  sources = [ "brave_federated.mojom" ]
+
+  public_deps = [ "//mojo/public/mojom/base" ]
+}

@@ -427,8 +427,8 @@ class AdsServiceImpl : public AdsService,
                       const ads::mojom::P2AEventType type,
                       const std::string& value) override;
 
-  void LogTrainingCovariates(
-      const ads::mojom::TrainingCovariatesPtr training_covariates) override;
+  void LogTrainingCovariates(const brave_federated::mojom::TrainingCovariatesPtr
+                                 training_covariates) override;
   void OnLogTrainingCovariates(bool success);
 
   void WriteDiagnosticLog(const std::string& file,
