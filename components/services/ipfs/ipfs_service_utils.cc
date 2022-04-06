@@ -49,8 +49,9 @@ bool UpdateConfigJSON(const std::string& source,
             std::make_unique<base::Value>("/ip4/127.0.0.1/tcp/" +
                                           config->gateway_port));
   dict->Set("Datastore.GCPeriod", std::make_unique<base::Value>("1h"));
-  dict->Set("Swarm.ConnMgr.LowWater", std::make_unique<base::Value>(50));
-  dict->Set("Swarm.ConnMgr.HighWater", std::make_unique<base::Value>(300));
+  dict->Set("Swarm.ConnMgr.GracePeriod", std::make_unique<base::Value>("20s"));
+  dict->Set("Swarm.ConnMgr.LowWater", std::make_unique<base::Value>(20));
+  dict->Set("Swarm.ConnMgr.HighWater", std::make_unique<base::Value>(40));
   dict->Set("Datastore.StorageMax",
             std::make_unique<base::Value>(config->storage_max));
   std::unique_ptr<base::ListValue> list = std::make_unique<base::ListValue>();
