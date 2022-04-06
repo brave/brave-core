@@ -102,12 +102,4 @@ bool NotificationHelperAndroid::ShowMyFirstAdNotification() {
   return true;
 }
 
-NotificationHelperAndroid* NotificationHelperAndroid::GetInstanceImpl() {
-  return base::Singleton<NotificationHelperAndroid>::get();
-}
-
-NotificationHelper* NotificationHelper::GetInstanceImpl() {
-  return NotificationHelperAndroid::GetInstanceImpl();
-}
-
 }  // namespace brave_ads

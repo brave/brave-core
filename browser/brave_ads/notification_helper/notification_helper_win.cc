@@ -98,14 +98,6 @@ bool NotificationHelperWin::ShowMyFirstAdNotification() {
   return false;
 }
 
-NotificationHelperWin* NotificationHelperWin::GetInstanceImpl() {
-  return base::Singleton<NotificationHelperWin>::get();
-}
-
-NotificationHelper* NotificationHelper::GetInstanceImpl() {
-  return NotificationHelperWin::GetInstanceImpl();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 bool NotificationHelperWin::IsFocusAssistEnabled() const {
