@@ -77,18 +77,20 @@ extension ContentBlocker {
   }
 
   private static func loadJsonFromBundle(forResource file: String) -> AnyPublisher<String, Error> {
-    return Future { completion in
-      do {
-        guard let path = Bundle.main.path(forResource: file, ofType: "json") else {
-          assert(false)
-          completion(.failure("Failed to Load JSON From Bundle - Resource: \(file)"))
-          return
+    Combine.Deferred {
+      Future { completion in
+        do {
+          guard let path = Bundle.main.path(forResource: file, ofType: "json") else {
+            assert(false)
+            completion(.failure("Failed to Load JSON From Bundle - Resource: \(file)"))
+            return
+          }
+          
+          let source = try String(contentsOfFile: path, encoding: .utf8)
+          completion(.success(source))
+        } catch {
+          completion(.failure(error))
         }
-        
-        let source = try String(contentsOfFile: path, encoding: .utf8)
-        completion(.success(source))
-      } catch {
-        completion(.failure(error))
       }
     }.eraseToAnyPublisher()
   }

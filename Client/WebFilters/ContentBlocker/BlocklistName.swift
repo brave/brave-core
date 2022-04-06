@@ -96,7 +96,7 @@ class BlocklistName: CustomStringConvertible, ContentBlocker {
     allRules.append(BlocklistName.cookie.buildRule(ruleStore: ruleStore))
     return Publishers.MergeMany(allRules)
       .collect()
-      .flatMap({ $0.publisher })
+      .map({ _ in () })
       .eraseToAnyPublisher()
   }
 
