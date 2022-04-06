@@ -13,6 +13,7 @@
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/export.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
 namespace ads {
 
@@ -131,7 +132,8 @@ class ADS_EXPORT AdsClient {
 
   // Add federated log
   virtual void LogTrainingCovariates(
-      const mojom::TrainingCovariatesPtr training_covariates) = 0;
+      const brave_federated::mojom::TrainingCovariatesPtr
+          training_covariates) = 0;
 
   // Log diagnostic information
   virtual void Log(const char* file,

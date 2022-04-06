@@ -78,6 +78,8 @@
 #include "build/build_config.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
+
 namespace ads {
 
 AdsImpl::AdsImpl(AdsClient* ads_client)

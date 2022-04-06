@@ -4,6 +4,7 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 module bat_ads.mojom;
 
+import "brave/components/brave_federated/public/interfaces/brave_federated.mojom";
 import "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom";
 import "mojo/public/mojom/base/file.mojom";
 
@@ -63,7 +64,7 @@ interface BatAdsClient {
   RunDBTransaction(ads.mojom.DBTransaction transaction) => (ads.mojom.DBCommandResponse response);
   OnAdRewardsChanged();
   RecordP2AEvent(string name, ads.mojom.P2AEventType type, string value);
-  LogTrainingCovariates(ads.mojom.TrainingCovariates training_covariates);
+  LogTrainingCovariates(brave_federated.mojom.TrainingCovariates training_covariates);
   Log(string file, int32 line, int32 verbose_level, string message);
   SetBooleanPref(string path, bool value);
   SetIntegerPref(string path, int32 value);

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
 namespace ads {
 
@@ -17,8 +17,8 @@ class CovariateLogEntry {
   CovariateLogEntry();
   virtual ~CovariateLogEntry();
 
-  virtual mojom::DataType GetDataType() const = 0;
-  virtual mojom::CovariateType GetCovariateType() const = 0;
+  virtual brave_federated::mojom::DataType GetDataType() const = 0;
+  virtual brave_federated::mojom::CovariateType GetCovariateType() const = 0;
   virtual std::string GetValue() const = 0;
 };
 

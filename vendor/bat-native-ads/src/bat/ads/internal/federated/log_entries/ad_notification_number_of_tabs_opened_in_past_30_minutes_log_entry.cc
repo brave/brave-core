@@ -20,14 +20,15 @@ AdNotificationNumberOfTabsOpenedInPast30Minutes::
 AdNotificationNumberOfTabsOpenedInPast30Minutes::
     ~AdNotificationNumberOfTabsOpenedInPast30Minutes() = default;
 
-mojom::DataType AdNotificationNumberOfTabsOpenedInPast30Minutes::GetDataType()
-    const {
-  return mojom::DataType::kInt;
+brave_federated::mojom::DataType
+AdNotificationNumberOfTabsOpenedInPast30Minutes::GetDataType() const {
+  return brave_federated::mojom::DataType::kInt;
 }
 
-mojom::CovariateType
+brave_federated::mojom::CovariateType
 AdNotificationNumberOfTabsOpenedInPast30Minutes::GetCovariateType() const {
-  return mojom::CovariateType::kAdNotificationNumberOfTabsOpenedInPast30Minutes;
+  return brave_federated::mojom::CovariateType::
+      kAdNotificationNumberOfTabsOpenedInPast30Minutes;
 }
 
 std::string AdNotificationNumberOfTabsOpenedInPast30Minutes::GetValue() const {
