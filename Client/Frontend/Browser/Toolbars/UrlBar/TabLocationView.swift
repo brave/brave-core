@@ -16,6 +16,7 @@ protocol TabLocationViewDelegate {
   func tabLocationViewDidTapReaderMode(_ tabLocationView: TabLocationView)
   func tabLocationViewDidBeginDragInteraction(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapPlaylist(_ tabLocationView: TabLocationView)
+  func tabLocationViewDidTapLockImageView(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapReload(_ tabLocationView: TabLocationView)
   func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView, from button: UIButton)
   func tabLocationViewDidTapStop(_ tabLocationView: TabLocationView)
@@ -75,9 +76,9 @@ class TabLocationView: UIView {
     case .localHost:
       lockImageView.isHidden = true
     case .insecure:
-      lockImageView.image = #imageLiteral(resourceName: "insecure-site-icon")
+      lockImageView.setImage(#imageLiteral(resourceName: "insecure-site-icon"), for: .normal)
     case .secure, .unknown:
-      lockImageView.image = #imageLiteral(resourceName: "lock_verified").template
+      lockImageView.setImage(#imageLiteral(resourceName: "lock_verified").template, for: .normal)
     }
   }
 
@@ -137,16 +138,17 @@ class TabLocationView: UIView {
     return urlTextField
   }()
 
-  fileprivate lazy var lockImageView: UIImageView = {
-    let lockImageView = UIImageView(image: #imageLiteral(resourceName: "lock_verified").template)
-    lockImageView.isHidden = true
-    lockImageView.tintColor = #colorLiteral(red: 0.3764705882, green: 0.3843137255, blue: 0.4, alpha: 1)
-    lockImageView.isAccessibilityElement = true
-    lockImageView.contentMode = .center
-    lockImageView.accessibilityLabel = Strings.tabToolbarLockImageAccessibilityLabel
-    lockImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-    return lockImageView
-  }()
+  private(set) lazy var lockImageView = ToolbarButton(top: true).then {
+    $0.setImage(#imageLiteral(resourceName: "lock_verified").template, for: .normal)
+    $0.isHidden = true
+    $0.tintColor = #colorLiteral(red: 0.3764705882, green: 0.3843137255, blue: 0.4, alpha: 1)
+    $0.isAccessibilityElement = true
+    $0.imageView?.contentMode = .center
+    $0.contentHorizontalAlignment = .center
+    $0.accessibilityLabel = Strings.tabToolbarLockImageAccessibilityLabel
+    $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    $0.addTarget(self, action: #selector(didTapLockImageView), for: .touchUpInside)
+  }
 
   fileprivate lazy var readerModeButton: ReaderModeButton = {
     let readerModeButton = ReaderModeButton(frame: .zero)
@@ -275,6 +277,12 @@ class TabLocationView: UIView {
     }
     set {
       super.accessibilityElements = newValue
+    }
+  }
+
+  @objc func didTapLockImageView() {
+    if !loading {
+      delegate?.tabLocationViewDidTapLockImageView(self)
     }
   }
 
