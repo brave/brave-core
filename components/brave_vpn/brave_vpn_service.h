@@ -14,7 +14,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/sequence_checker.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_vpn/brave_vpn.mojom.h"
+#include "brave/components/brave_vpn/mojom/brave_vpn.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
