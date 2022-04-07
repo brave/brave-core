@@ -10,7 +10,6 @@ import {
 } from 'recharts'
 
 import { PriceDataObjectType } from '../../../constants/types'
-import theme from 'brave-ui/theme/colors/'
 import CustomTooltip from './custom-tooltip'
 
 // Styled Components
@@ -19,6 +18,7 @@ import {
   LoadingOverlay,
   LoadIcon
 } from './style'
+import { CustomReferenceDot } from './custom-reference-dot'
 
 export interface Props {
   priceData: PriceDataObjectType[]
@@ -44,10 +44,18 @@ const EmptyChartData = [
   }
 ]
 
-function LineChart (props: Props) {
-  const { priceData, onUpdateBalance, isAsset, isDown, isLoading, isDisabled } = props
+function LineChart ({
+  priceData,
+  onUpdateBalance,
+  isAsset,
+  isDown,
+  isLoading,
+  isDisabled
+}: Props) {
+  // state
   const [position, setPosition] = React.useState<number>(0)
 
+  // memos / computed
   const chartData = React.useMemo(() => {
     if (priceData.length <= 0 || isDisabled) {
       return EmptyChartData
@@ -57,28 +65,11 @@ function LineChart (props: Props) {
 
   const lastPoint = chartData.length - 1
 
-  // This is an animated Pulsating dot that will render at the end
-  // of the line chart for the current price.
-  const CustomReferenceDot = (props: any) => {
-    return (
-      <>
-        <circle fill='none' cx={props.cx} r='3' cy={props.cy} stroke={isAsset ? isDown ? theme.red600 : theme.teal600 : '#BF14A2'} strokeWidth='1'>
-          <animate attributeName='r' values='3;8;3;3' dur='3s' begin='0s' repeatCount='indefinite' />
-          <animate attributeName='opacity' values='1;0;0;0' dur='3s' begin='0s' repeatCount='indefinite' />
-        </circle >
-        <circle fill={isAsset ? isDown ? '#EE6374' : '#2AC194' : '#BF14A2'} cx={props.cx} r='3' cy={props.cy} />
-      </>
-    )
-  }
+  // methods
+  const onChartMouseLeave = React.useCallback(() => onUpdateBalance(undefined), [onUpdateBalance])
+  const onUpdatePosition = React.useCallback((value: number) => setPosition(value), [])
 
-  const onChartMouseLeave = () => {
-    onUpdateBalance(undefined)
-  }
-
-  const onUpdatePosition = (value: number) => {
-    setPosition(value)
-  }
-
+  // render
   return (
     <StyledWrapper>
       <LoadingOverlay isLoading={isLoading}>
@@ -103,7 +94,12 @@ function LineChart (props: Props) {
             <Tooltip
               isAnimationActive={false}
               position={{ x: position, y: 0 }}
-              content={<CustomTooltip onUpdateBalance={onUpdateBalance} onUpdatePosition={onUpdatePosition} />}
+              content={
+                <CustomTooltip
+                  onUpdateBalance={onUpdateBalance}
+                  onUpdatePosition={onUpdatePosition}
+                />
+              }
             />
           }
           <Area
@@ -114,7 +110,11 @@ function LineChart (props: Props) {
             stroke={isAsset ? isDown ? '#EE6374' : '#2AC194' : priceData.length <= 0 ? '#BF14A2' : 'url(#lineGradient)'}
             fill='none'
           />
-          <ReferenceDot x={chartData[lastPoint].date.toString()} y={chartData[lastPoint].close} shape={CustomReferenceDot} />
+          <ReferenceDot
+            x={chartData[lastPoint].date.toString()}
+            y={chartData[lastPoint].close}
+            shape={CustomReferenceDot}
+          />
         </AreaChart>
       </ResponsiveContainer>
     </StyledWrapper>
