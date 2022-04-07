@@ -405,6 +405,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
   EXPECT_FALSE(helper->EncodeField("uint1", base::Value(1)));
   EXPECT_FALSE(helper->EncodeField("uint9", base::Value(1)));
   EXPECT_FALSE(helper->EncodeField("uint264", base::Value(1)));
+  EXPECT_FALSE(helper->EncodeField("uint55", base::Value(1)));
   // exceeds 8 bits maximum
   EXPECT_FALSE(helper->EncodeField("uint8", base::Value(256)));
   // exceeds Number.MAX_SAFE_INTEGER
@@ -421,6 +422,13 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     EXPECT_EQ(
         base::ToLowerASCII(base::HexEncode(*encoded_field)),
         "0000000000000000000000000000000000000000000000000000000000001000");
+
+    encoded_field = helper->EncodeField("uint56", base::Value(4096));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000001000");
+
     encoded_field = helper->EncodeField("uint256", base::Value(65536));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
@@ -436,6 +444,11 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
         base::ToLowerASCII(base::HexEncode(*encoded_field)),
         "00000000000000000000000000000000000000000000000000000000000000ff");
     encoded_field = helper->EncodeField("uint32", base::Value("4096"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000001000");
+    encoded_field = helper->EncodeField("uint56", base::Value("4096"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
         base::ToLowerASCII(base::HexEncode(*encoded_field)),
@@ -468,6 +481,8 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     EXPECT_FALSE(helper->EncodeField("uint16", base::Value("0x10000")));
     EXPECT_FALSE(helper->EncodeField("uint32", base::Value("4294967296")));
     EXPECT_FALSE(helper->EncodeField("uint32", base::Value("0x100000000")));
+    EXPECT_FALSE(
+        helper->EncodeField("uint56", base::Value("0x100000000000000")));
     EXPECT_FALSE(
         helper->EncodeField("uint64", base::Value("18446744073709551616")));
     EXPECT_FALSE(
@@ -511,6 +526,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
   EXPECT_FALSE(helper->EncodeField("int1", base::Value(1)));
   EXPECT_FALSE(helper->EncodeField("int9", base::Value(1)));
   EXPECT_FALSE(helper->EncodeField("int264", base::Value(1)));
+  EXPECT_FALSE(helper->EncodeField("int55", base::Value(1)));
   // exceeds 8 bits maximum
   EXPECT_FALSE(helper->EncodeField("int8", base::Value(128)));
   // exceeds Number.MAX_SAFE_INTEGER
@@ -577,6 +593,10 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     EXPECT_FALSE(helper->EncodeField("int32", base::Value("-2147483649")));
     EXPECT_FALSE(helper->EncodeField("int32", base::Value("0x100000000")));
     EXPECT_FALSE(
+        helper->EncodeField("int56", base::Value("72057594037927935")));
+    EXPECT_FALSE(
+        helper->EncodeField("int56", base::Value("-72057594037927936")));
+    EXPECT_FALSE(
         helper->EncodeField("int64", base::Value("9223372036854775808")));
     EXPECT_FALSE(
         helper->EncodeField("int64", base::Value("-9223372036854775809")));
@@ -629,6 +649,11 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
         base::ToLowerASCII(base::HexEncode(*encoded_field)),
         "000000000000000000000000000000000000000000000000000000000000007f");
     encoded_field = helper->EncodeField("int32", base::Value("4096"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000001000");
+    encoded_field = helper->EncodeField("int56", base::Value("4096"));
     ASSERT_TRUE(encoded_field);
     EXPECT_EQ(
         base::ToLowerASCII(base::HexEncode(*encoded_field)),

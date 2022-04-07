@@ -40,6 +40,17 @@ constexpr int128_t kMin128BitInt = std::numeric_limits<int128_t>::min() >> 1;
 
 constexpr uint64_t kMaxSafeIntegerUint64 = 9007199254740991;  // 2^53-1
 
+// Determines the min/max value for Solidity types such as uint56
+// uintN where 0 < N <= 256; N % 8 == 0
+// Note that you shouldn't use uint256_t and int256_t in general
+// for passing around values that need to be capped in those ranges.
+// This is being used for sign typed data where values are not passed
+// around.
+bool ValidSolidityBits(size_t bits);
+absl::optional<uint256_t> MaxSolidityUint(size_t bits);
+absl::optional<int256_t> MaxSolidityInt(size_t bits);
+absl::optional<int256_t> MinSolidityInt(size_t bits);
+
 struct TransactionReceipt {
   TransactionReceipt();
   ~TransactionReceipt();
