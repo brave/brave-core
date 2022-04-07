@@ -2269,6 +2269,13 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenAccountBalance) {
   TestGetSPLTokenAccountBalance("9864", 2u, "98.64",
                                 mojom::SolanaProviderError::kSuccess, "");
 
+  // Treat non-existed account as 0 balance.
+  SetInterceptor(expected_network, "getTokenAccountBalance", "",
+                 R"({"jsonrpc":"2.0","id":1,"error":
+                    {"code":-32602, "message": "Invalid param: could not find account"}})");
+  TestGetSPLTokenAccountBalance("0", 0u, "0",
+                                mojom::SolanaProviderError::kSuccess, "");
+
   // Response parsing error
   SetInterceptor(expected_network, "getTokenAccountBalance", "",
                  "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}");

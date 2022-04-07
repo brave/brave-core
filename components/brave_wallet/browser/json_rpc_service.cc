@@ -72,6 +72,8 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
+namespace ethereum {
+
 void ChainIdValidationResponse(
     base::OnceCallback<void(bool)> callback,
     const std::string& chain_id,
@@ -95,6 +97,13 @@ bool IsChainExist(PrefService* prefs, const std::string& chain_id) {
   }
   return false;
 }
+
+}  // namespace ethereum
+
+namespace solana {
+// https://github.com/solana-labs/solana/blob/f7b2951c79cd07685ed62717e78ab1c200924924/rpc/src/rpc.rs#L1717
+constexpr char kAccountNotCreatedError[] = "could not find account";
+}  // namespace solana
 
 }  // namespace
 
@@ -262,7 +271,7 @@ void JsonRpcService::AddEthereumChain(mojom::NetworkInfoPtr chain,
     return;
   }
 
-  if (IsChainExist(prefs_, chain_id)) {
+  if (::ethereum::IsChainExist(prefs_, chain_id)) {
     std::move(callback).Run(
         chain_id, mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS));
@@ -272,9 +281,9 @@ void JsonRpcService::AddEthereumChain(mojom::NetworkInfoPtr chain,
   auto result = base::BindOnce(&JsonRpcService::OnEthChainIdValidated,
                                weak_ptr_factory_.GetWeakPtr(), std::move(chain),
                                std::move(callback));
-  RequestInternal(
-      eth::eth_chainId(), true, url,
-      base::BindOnce(&ChainIdValidationResponse, std::move(result), chain_id));
+  RequestInternal(eth::eth_chainId(), true, url,
+                  base::BindOnce(&::ethereum::ChainIdValidationResponse,
+                                 std::move(result), chain_id));
 }
 
 void JsonRpcService::OnEthChainIdValidated(mojom::NetworkInfoPtr chain,
@@ -300,7 +309,7 @@ void JsonRpcService::AddEthereumChainForOrigin(
     AddEthereumChainForOriginCallback callback) {
   DCHECK_EQ(origin, url::Origin::Create(origin).GetURL());
   auto chain_id = chain->chain_id;
-  if (IsChainExist(prefs_, chain_id)) {
+  if (::ethereum::IsChainExist(prefs_, chain_id)) {
     std::move(callback).Run(
         chain_id, mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS));
@@ -326,9 +335,9 @@ void JsonRpcService::AddEthereumChainForOrigin(
                                weak_ptr_factory_.GetWeakPtr(), std::move(chain),
                                origin, std::move(callback));
 
-  RequestInternal(
-      eth::eth_chainId(), true, url,
-      base::BindOnce(&ChainIdValidationResponse, std::move(result), chain_id));
+  RequestInternal(eth::eth_chainId(), true, url,
+                  base::BindOnce(&::ethereum::ChainIdValidationResponse,
+                                 std::move(result), chain_id));
 }
 
 void JsonRpcService::OnEthChainIdValidatedForOrigin(
@@ -1693,6 +1702,16 @@ void JsonRpcService::OnGetSPLTokenAccountBalance(
     mojom::SolanaProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+
+    // Treat balance as 0 if the associated token account is not created yet.
+    if (error == mojom::SolanaProviderError::kInvalidParams &&
+        error_message.find(::solana::kAccountNotCreatedError) !=
+            std::string::npos) {
+      std::move(callback).Run("0", 0u, "0",
+                              mojom::SolanaProviderError::kSuccess, "");
+      return;
+    }
+
     std::move(callback).Run("", 0u, "", error, error_message);
     return;
   }
