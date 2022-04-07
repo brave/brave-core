@@ -51,8 +51,6 @@ extension BrowserViewController {
 
     updateRewardsButtonState()
 
-    UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
-
     guard let tab = tabManager.selectedTab else { return }
 
     let braveRewardsPanel = BraveRewardsViewController(
