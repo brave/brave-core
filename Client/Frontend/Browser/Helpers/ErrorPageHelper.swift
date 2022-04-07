@@ -2,6 +2,7 @@ import Foundation
 import WebKit
 import GCDWebServers
 import Shared
+import BraveShared
 import Storage
 
 fileprivate let MozDomain = "mozilla"
@@ -113,11 +114,10 @@ class ErrorPageHelper {
     // the URL if the user wants to continue.
     if CertificateErrorPageHandler.isValidCertificateError(error: error),
       let certChain = error.userInfo["NSErrorPeerCertificateChainKey"] as? [SecCertificate],
-      let cert = certChain.first,
       let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? NSError,
       let certErrorCode = underlyingError.userInfo["_kCFStreamErrorCodeKey"] as? Int {
-      let encodedCert = (SecCertificateCopyData(cert) as Data).base64EncodedString
-      queryItems.append(URLQueryItem(name: "badcert", value: encodedCert))
+      let encodedCerts = ErrorPageHelper.encodeCertChain(certChain)
+      queryItems.append(URLQueryItem(name: "badcerts", value: encodedCerts))
 
       let certError = CertificateErrorPageHandler.CertErrorCodes[OSStatus(certErrorCode)] ?? ""
       queryItems.append(URLQueryItem(name: "certerror", value: String(certError)))
@@ -165,6 +165,30 @@ extension ErrorPageHelper {
     }
     return 0
   }
+  
+  static func serverTrust(from errorURL: URL) throws -> SecTrust? {
+    guard let internalUrl = InternalURL(errorURL),
+          internalUrl.isErrorPage,
+          let originalURL = internalUrl.originalURLFromErrorPage else {
+      return nil
+    }
+    
+    guard let certs = CertificateErrorPageHandler.certsFromErrorURL(errorURL),
+          !certs.isEmpty,
+          let host = originalURL.host else {
+      return nil
+    }
+    
+    return try BraveCertificateUtils.createServerTrust(certs, for: host)
+  }
+  
+  private static func encodeCertChain(_ certificates: [SecCertificate]) -> String {
+    let certs = certificates.map({
+      (SecCertificateCopyData($0) as Data).base64EncodedString
+    })
+    
+    return certs.joined(separator: ",")
+  }
 }
 
 extension ErrorPageHelper: TabContentScript {
@@ -190,7 +214,7 @@ extension ErrorPageHelper: TabContentScript {
     case MessageOpenInSafari:
       UIApplication.shared.open(originalURL, options: [:])
     case MessageCertVisitOnce:
-      if let cert = CertificateErrorPageHandler.certFromErrorURL(errorURL),
+      if let cert = CertificateErrorPageHandler.certsFromErrorURL(errorURL)?.first,
         let host = originalURL.host {
         let origin = "\(host):\(originalURL.port ?? 443)"
         certStore?.addCertificate(cert, forOrigin: origin)

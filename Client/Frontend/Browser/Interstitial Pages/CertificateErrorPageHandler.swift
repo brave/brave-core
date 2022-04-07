@@ -85,18 +85,24 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
     return (response, data)
   }
 
-  static func certFromErrorURL(_ url: URL) -> SecCertificate? {
-    func getCert(_ url: URL) -> SecCertificate? {
+  static func certsFromErrorURL(_ url: URL) -> [SecCertificate]? {
+    func getCerts(_ url: URL) -> [SecCertificate]? {
       let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-      if let encodedCert = components?.queryItems?.filter({ $0.name == "badcert" }).first?.value,
-        let certData = Data(base64Encoded: encodedCert, options: []) {
-        return SecCertificateCreateWithData(nil, certData as CFData)
+      if let encodedCerts = components?.queryItems?.filter({ $0.name == "badcerts" }).first?.value?.split(separator: ",") {
+        
+        return encodedCerts.compactMap({
+          guard let certData = Data(base64Encoded: String($0), options: []) else {
+            return nil
+          }
+          
+          return SecCertificateCreateWithData(nil, certData as CFData)
+        })
       }
 
       return nil
     }
 
-    let result = getCert(url)
+    let result = getCerts(url)
     if result != nil {
       return result
     }
@@ -104,7 +110,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
     // Fallback case when the error url is nested, this happens when restoring an error url, it will be inside a 'sessionrestore' url.
     // TODO: Investigate if we can restore directly as an error url and avoid the 'sessionrestore?url=' wrapping.
     if let internalUrl = InternalURL(url), let url = internalUrl.extractedUrlParam {
-      return getCert(url)
+      return getCerts(url)
     }
     return nil
   }

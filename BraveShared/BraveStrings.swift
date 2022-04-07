@@ -2087,6 +2087,285 @@ extension Strings {
   }
 }
 
+// MARK: - SSL Certificate Viewer
+
+extension Strings {
+  public struct CertificateViewer {
+    public static let certificateIsValidTitle =
+      NSLocalizedString(
+        "certificateViewer.certificateIsValidTitle",
+        bundle: .braveShared,
+        value: "This certificate is valid",
+        comment: "The description for when an SSL certificate is valid")
+    
+    public static let subjectNameTitle =
+      NSLocalizedString(
+        "certificateViewer.subjectNameTitle",
+        bundle: .braveShared,
+        value: "Subject Name",
+        comment: "Section Title for Subject Name in the SSL Certificate")
+
+    public static let issuerNameTitle =
+      NSLocalizedString(
+        "certificateViewer.issuerNameTitle",
+        bundle: .braveShared,
+        value: "Issuer Name",
+        comment: "Section Title for Issuer Name in the SSL Certificate")
+
+    public static let commonInfoTitle =
+      NSLocalizedString(
+        "certificateViewer.commonInfoTitle",
+        bundle: .braveShared,
+        value: "Common Info",
+        comment: "Section Title displaying common information")
+
+    public static let serialNumberTitle =
+      NSLocalizedString(
+        "certificateViewer.serialNumberTitle",
+        bundle: .braveShared,
+        value: "Serial Number",
+        comment: "Certificates have a serial number to identify that it's unique")
+
+    public static let versionNumberTitle =
+      NSLocalizedString(
+        "certificateViewer.versionNumberTitle",
+        bundle: .braveShared,
+        value: "Version",
+        comment: "Certificates have a version number")
+
+    public static let signatureAlgorithmTitle =
+      NSLocalizedString(
+        "certificateViewer.signatureAlgorithmTitle",
+        bundle: .braveShared,
+        value: "Signature Algorithm",
+        comment: "Title for the section where we display information about the algorithm used to sign the certificate")
+
+    public static let signatureAlgorithmSignatureDescription =
+      NSLocalizedString(
+        "certificateViewer.signatureAlgorithmSignatureDescription",
+        bundle: .braveShared,
+        value: "%@ Signature with %@",
+        comment: "Do NOT translate the %@. They are place holders. Example: 'ECDSA Signature' with 'SHA-256'")
+
+    public static let signatureAlgorithmEncryptionDescription =
+      NSLocalizedString(
+        "certificateViewer.signatureAlgorithmEncryptionDescription",
+        bundle: .braveShared,
+        value: "%@ with %@ Encryption",
+        comment: "Do NOT translate the %@. They are place holders. Example: 'SHA256' with 'RSA' Encryption")
+
+    public static let validityDatesTitle =
+      NSLocalizedString(
+        "certificateViewer.validityDatesTitle",
+        bundle: .braveShared,
+        value: "Validity Dates",
+        comment: "Title of section that determines if the dates on a certificate is valid.")
+
+    public static let notValidBeforeTitle =
+      NSLocalizedString(
+        "certificateViewer.notValidBeforeTitle",
+        bundle: .braveShared,
+        value: "Not Valid Before",
+        comment: "Certificate is 'not valid before' January 1st, 2022 for example.")
+
+    public static let notValidAfterTitle =
+      NSLocalizedString(
+        "certificateViewer.notValidAfterTitle",
+        bundle: .braveShared,
+        value: "Not Valid After",
+        comment: "Certificate is 'not valid after' January 31st, 2022 for example.")
+
+    public static let publicKeyInfoTitle =
+      NSLocalizedString(
+        "certificateViewer.publicKeyInfoTitle",
+        bundle: .braveShared,
+        value: "Public Key Info",
+        comment: "Information about a Public Key section title.")
+
+    public static let signatureTitle =
+      NSLocalizedString(
+        "certificateViewer.signatureTitle",
+        bundle: .braveShared,
+        value: "Signature",
+        comment: "Title of the view that states whether or not something was signed with an encryption algorithm or hash.")
+
+    public static let fingerPrintsTitle =
+      NSLocalizedString(
+        "certificateViewer.fingerPrintsTitle",
+        bundle: .braveShared,
+        value: "Fingerprints",
+        comment: "Fingerprints/Hashes are algorithms used to determine if the certificate is legitimate")
+
+    public static let countryOrRegionTitle =
+      NSLocalizedString(
+        "certificateViewer.countryOrRegionTitle",
+        bundle: .braveShared,
+        value: "Country or Region",
+        comment: "Title of the section for the certificate's issuing country or region. Example: Canada, or USA")
+
+    public static let stateOrProvinceTitle =
+      NSLocalizedString(
+        "certificateViewer.stateOrProvinceTitle",
+        bundle: .braveShared,
+        value: "State/Province",
+        comment: "Title of the section for the certificate's issuing state or province. Example: Ontario Province or California State")
+
+    public static let localityTitle =
+      NSLocalizedString(
+        "certificateViewer.localityTitle",
+        bundle: .braveShared,
+        value: "Locality",
+        comment: "Title of the section for the certificate's issuing city. Example: Toronto, New York, or San Francisco")
+
+    public static let organizationTitle =
+      NSLocalizedString(
+        "certificateViewer.organizationTitle",
+        bundle: .braveShared,
+        value: "Organization",
+        comment: "Title of the section for Name of the Company. Example: Brave Inc.")
+
+    public static let organizationalUnitTitle =
+      NSLocalizedString(
+        "certificateViewer.organizationalUnitTitle",
+        bundle: .braveShared,
+        value: "Organizational Unit",
+        comment: "Title of the section for Department of the Company. Example: Human Resources.")
+
+    public static let commonNameTitle =
+      NSLocalizedString(
+        "certificateViewer.commonNameTitle",
+        bundle: .braveShared,
+        value: "Common Name",
+        comment: "Title of the section for Commonly used Name for the certificate. Example: Alias, Commonly used name, DigiCert High Assurance TLS.")
+
+    public static let streetAddressTitle =
+      NSLocalizedString(
+        "certificateViewer.streetAddressTitle",
+        bundle: .braveShared,
+        value: "Street Address",
+        comment: "Title of the section for the address of where the certificate came from.")
+
+    public static let domainComponentTitle =
+      NSLocalizedString(
+        "certificateViewer.domainComponentTitle",
+        bundle: .braveShared,
+        value: "Domain Component",
+        comment: "Title of the section for the Domain Component such as: DNS or brave.com or a website's domain.")
+
+    public static let userIDTitle =
+      NSLocalizedString(
+        "certificateViewer.userIDTitle",
+        bundle: .braveShared,
+        value: "User ID",
+        comment: "Title of the section for the User's ID (Identifier).")
+
+    public static let noneTitle =
+      NSLocalizedString(
+        "certificateViewer.noneTitle",
+        bundle: .braveShared,
+        value: "None",
+        comment: "Title indicating 'None' or no information or empty.")
+
+    public static let parametersTitle =
+      NSLocalizedString(
+        "certificateViewer.parametersTitle",
+        bundle: .braveShared,
+        value: "Parameters",
+        comment: "Title indicating 'Parameters' or Input passed to a function/algorithm.")
+
+    public static let encryptionTitle =
+      NSLocalizedString(
+        "certificateViewer.encryptionTitle",
+        bundle: .braveShared,
+        value: "Encryption",
+        comment: "Title of the section indication which 'Encryption' algorithm was used.")
+
+    public static let bytesUnitTitle =
+      NSLocalizedString(
+        "certificateViewer.bytesUnitTitle",
+        bundle: .braveShared,
+        value: "bytes",
+        comment: "A measurement unit used in computing to indicate or how memory is used.")
+
+    public static let bitsUnitTitle =
+      NSLocalizedString(
+        "certificateViewer.bitsUnitTitle",
+        bundle: .braveShared,
+        value: "bits",
+        comment: "A measurement unit used in computing to indicate or how memory is used.")
+
+    public static let encryptTitle =
+      NSLocalizedString(
+        "certificateViewer.encryptTitle",
+        bundle: .braveShared,
+        value: "Encrypt",
+        comment: "Title indicating whether or not a private key can be used to encrypt data")
+
+    public static let verifyTitle =
+      NSLocalizedString(
+        "certificateViewer.verifyTitle",
+        bundle: .braveShared,
+        value: "Verify",
+        comment: "Title indicating whether or not a private key can be used to verify data is legitimate")
+
+    public static let wrapTitle =
+      NSLocalizedString(
+        "certificateViewer.wrapTitle",
+        bundle: .braveShared,
+        value: "Wrap",
+        comment: "Title indicating whether or not a private key can be used to wrap or enclose some data")
+
+    public static let deriveTitle =
+      NSLocalizedString(
+        "certificateViewer.deriveTitle",
+        bundle: .braveShared,
+        value: "Derive",
+        comment: "Title indicating whether or not a private key can be used to derive some data from another piece of data. IE: Use one key to generate another")
+
+    public static let anyTitle =
+      NSLocalizedString(
+        "certificateViewer.anyTitle",
+        bundle: .braveShared,
+        value: "Any",
+        comment: "Title indicating whether or not a private key can be used for 'Anything' (encrypting, deriving, wrapping, verifying, signing, etc)")
+
+    public static let algorithmTitle =
+      NSLocalizedString(
+        "certificateViewer.algorithmTitle",
+        bundle: .braveShared,
+        value: "Algorithm",
+        comment: "Title indicating whether the section for the algorithm used")
+
+    public static let publicKeyTitle =
+      NSLocalizedString(
+        "certificateViewer.publicKeyTitle",
+        bundle: .braveShared,
+        value: "Public Key",
+        comment: "Title indicating whether the key used is public (not private)")
+
+    public static let exponentTitle =
+      NSLocalizedString(
+        "certificateViewer.exponentTitle",
+        bundle: .braveShared,
+        value: "Exponent",
+        comment: "Title indicating whether the mathematical exponent used. x³, x², etc.")
+
+    public static let keySizeTitle =
+      NSLocalizedString(
+        "certificateViewer.keySizeTitle",
+        bundle: .braveShared,
+        value: "Key Size",
+        comment: "Title indicating the size of the private or public key used in bytes. Example: KeySize - 1024 Bytes. Key Size - 2048 Bytes.")
+
+    public static let keyUsageTitle =
+      NSLocalizedString(
+        "certificateViewer.keyUsageTitle",
+        bundle: .braveShared,
+        value: "Key Usage",
+        comment: "Title indicating what the private or public key can be used for.")
+  }
+}
+
 // MARK: - Shortcuts
 
 extension Strings {
