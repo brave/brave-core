@@ -574,6 +574,11 @@ void BraveWalletService::MigrateUserAssetEthContractAddress(
   if (prefs->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated))
     return;
 
+  if (!prefs->HasPrefPath(kBraveWalletUserAssetsDeprecated)) {
+    prefs->SetBoolean(kBraveWalletUserAssetEthContractAddressMigrated, true);
+    return;
+  }
+
   DictionaryPrefUpdate update(prefs, kBraveWalletUserAssetsDeprecated);
   base::Value* user_assets_pref = update.Get();
 
