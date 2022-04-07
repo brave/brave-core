@@ -1529,20 +1529,12 @@ void JsonRpcService::OnGetERC721TokenUri(
   }
 
   // Parse response JSON that wraps the result
-  std::string result;
-  if (!eth::ParseERC721TokenUri(body, &result)) {
+  GURL url;
+  if (!eth::ParseERC721TokenUri(body, &url)) {
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::ProviderError>(body, &error, &error_message);
     std::move(callback).Run("", error, error_message);
-    return;
-  }
-
-  // Parse the URI
-  GURL url = GURL(result);
-  if (!url.is_valid()) {
-    std::move(callback).Run("", mojom::ProviderError::kParsingError,
-                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
 

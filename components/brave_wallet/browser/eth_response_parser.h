@@ -43,7 +43,7 @@ bool ParseUnstoppableDomainsProxyReaderGetMany(
 bool ParseUnstoppableDomainsProxyReaderGet(const std::string& json,
                                            std::string* value);
 
-bool ParseERC721TokenUri(const std::string& json, std::string* value);
+bool ParseERC721TokenUri(const std::string& json, GURL* url);
 
 // Get the JSON included in a data URI with a mime type application/json
 bool ParseDataURIAndExtractJSON(const GURL url, std::string* json);
