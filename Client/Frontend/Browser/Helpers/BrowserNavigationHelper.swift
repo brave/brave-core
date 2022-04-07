@@ -22,15 +22,11 @@ class BrowserNavigationHelper {
     _ viewController: UIViewController, doneButton: DoneButton,
     allowSwipeToDismiss: Bool = true
   ) {
-    let nav = SettingsNavigationController(rootViewController: viewController)
-
-    // All menu views should be opened in portrait on iPhones.
-    UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
-
-    nav.isModalInPresentation = !allowSwipeToDismiss
-
-    nav.modalPresentationStyle =
-      UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
+    let nav = SettingsNavigationController(rootViewController: viewController).then {
+      $0.isModalInPresentation = !allowSwipeToDismiss
+      $0.modalPresentationStyle =
+        UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
+    }
 
     let button = UIBarButtonItem(barButtonSystemItem: doneButton.style, target: nav, action: #selector(nav.done))
 
@@ -58,22 +54,6 @@ class BrowserNavigationHelper {
     FileManager.default.openBraveDownloadsFolder(completion)
   }
 
-  func openAddBookmark() {
-    guard let bvc = bvc,
-      let tab = bvc.tabManager.selectedTab,
-      let url = tab.url
-    else { return }
-
-    let bookmarkUrl = url.decodeReaderModeURL ?? url
-
-    let mode = BookmarkEditMode.addBookmark(title: tab.displayTitle, url: bookmarkUrl.absoluteString)
-
-    let vc = AddEditBookmarkTableViewController(bookmarkManager: bvc.bookmarkManager, mode: mode)
-
-    open(vc, doneButton: DoneButton(style: .cancel, position: .left))
-
-  }
-
   func openHistory() {
     guard let bvc = bvc else { return }
     let vc = HistoryViewController(
@@ -83,21 +63,6 @@ class BrowserNavigationHelper {
     vc.toolbarUrlActionsDelegate = bvc
 
     open(vc, doneButton: DoneButton(style: .done, position: .right))
-  }
-
-  func openSettings() {
-    guard let bvc = bvc else { return }
-    let vc = SettingsViewController(
-      profile: bvc.profile,
-      tabManager: bvc.tabManager,
-      feedDataSource: bvc.feedDataSource,
-      rewards: bvc.rewards,
-      windowProtection: bvc.windowProtection,
-      braveCore: bvc.braveCore)
-    vc.settingsDelegate = bvc
-    open(
-      vc, doneButton: DoneButton(style: .done, position: .right),
-      allowSwipeToDismiss: false)
   }
 
   func openShareSheet() {
