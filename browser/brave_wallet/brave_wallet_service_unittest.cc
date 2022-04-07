@@ -1319,6 +1319,18 @@ TEST_F(BraveWalletServiceUnitTest, SolanaTokenUserAssetsAPI) {
   EXPECT_FALSE(success);
 }
 
+TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsDefaultPrefs) {
+  EXPECT_FALSE(
+      GetPrefs()->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated));
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsDeprecated));
+  BraveWalletService::MigrateUserAssetEthContractAddress(GetPrefs());
+  BraveWalletService::MigrateMultichainUserAssets(GetPrefs());
+  EXPECT_TRUE(
+      GetPrefs()->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated));
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsDeprecated));
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssets));
+}
+
 TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
   EXPECT_FALSE(
       GetPrefs()->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated));
