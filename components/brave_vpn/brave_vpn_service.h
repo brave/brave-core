@@ -160,7 +160,6 @@ class BraveVpnService :
 
   const brave_vpn::BraveVPNConnectionInfo& GetConnectionInfo();
   void LoadCachedRegionData();
-  void LoadCachedSelectedRegion();
   void UpdateAndNotifyConnectionStateChange(
       brave_vpn::mojom::ConnectionState state,
       bool force = false);
@@ -169,9 +168,11 @@ class BraveVpnService :
   void OnFetchRegionList(bool background_fetch,
                          const std::string& region_list,
                          bool success);
-  bool ParseAndCacheRegionList(const base::Value& region_value);
+  bool ParseAndCacheRegionList(const base::Value& region_value,
+                               bool save_to_prefs = false);
+  bool ValidateCachedRegionData(const base::Value& region_value) const;
   void OnFetchTimezones(const std::string& timezones_list, bool success);
-  void ParseAndCacheDeviceRegionName(const base::Value& timezons_value);
+  void SetDeviceRegionWithTimezone(const base::Value& timezons_value);
   void FetchHostnamesForRegion(const std::string& name);
   void OnFetchHostnames(const std::string& region,
                         const std::string& hostnames,
@@ -179,10 +180,14 @@ class BraveVpnService :
   void ParseAndCacheHostnames(const std::string& region,
                               const base::Value& hostnames_value);
   void SetDeviceRegion(const std::string& name);
+  void SetSelectedRegion(const std::string& name);
+  std::string GetDeviceRegion() const;
+  std::string GetSelectedRegion() const;
+  brave_vpn::mojom::Region GetRegionWithName(const std::string& name) const;
   void SetFallbackDeviceRegion();
-  void SetDeviceRegion(const brave_vpn::mojom::Region& region);
-  void SetRegionToPrefs(const std::string& key,
-                        const brave_vpn::mojom::Region& region);
+  void SetRegionListToPrefs();
+  brave_vpn::mojom::Region GetRegionFromValue(const base::Value& value) const;
+  base::Value GetValueFromRegion(const brave_vpn::mojom::Region& region) const;
 
   std::string GetCurrentTimeZone();
   void ScheduleBackgroundRegionDataFetch();
@@ -242,8 +247,6 @@ class BraveVpnService :
 #if !BUILDFLAG(IS_ANDROID)
   raw_ptr<PrefService> prefs_ = nullptr;
   std::vector<brave_vpn::mojom::Region> regions_;
-  brave_vpn::mojom::Region device_region_;
-  brave_vpn::mojom::Region selected_region_;
   std::unique_ptr<brave_vpn::Hostname> hostname_;
   brave_vpn::BraveVPNConnectionInfo connection_info_;
   bool cancel_connecting_ = false;

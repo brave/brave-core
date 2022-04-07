@@ -106,6 +106,8 @@ enum PurchasedState {
   FAILED,
 };
 
+// Make sure updating BraveVpnService properly when member is added to Region struct.
+// Ex, IsValidRegion() or IsValidRegionValue(). It should also check new member.
 struct Region {
   string continent;
   string name;

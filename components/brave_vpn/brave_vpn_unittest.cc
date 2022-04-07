@@ -83,8 +83,8 @@ class BraveVPNServiceTest : public testing::Test {
     return service_->regions_;
   }
 
-  brave_vpn::mojom::Region& device_region() const {
-    return service_->device_region_;
+  brave_vpn::mojom::Region device_region() const {
+    return service_->GetRegionWithName(service_->GetDeviceRegion());
   }
 
   std::unique_ptr<brave_vpn::Hostname>& hostname() {
@@ -136,8 +136,8 @@ class BraveVPNServiceTest : public testing::Test {
     return service_->GetConnectionInfo();
   }
 
-  void ResetDeviceRegion() {
-    service_->device_region_ = brave_vpn::mojom::Region();
+  void SetDeviceRegion(const std::string& name) {
+    service_->SetDeviceRegion(name);
   }
 
   void SetFallbackDeviceRegion() { service_->SetFallbackDeviceRegion(); }
@@ -364,7 +364,7 @@ TEST_F(BraveVPNServiceTest, HostnamesTest) {
 
 TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
   // Service try loading
-  EXPECT_EQ(PurchasedState::LOADING, purchased_state());
+  purchased_state() = PurchasedState::LOADING;
   // Treat not purchased When empty credential string received.
   OnCredentialSummary("");
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, purchased_state());
@@ -486,6 +486,7 @@ TEST_F(BraveVPNServiceTest, ConnectionInfoTest) {
 TEST_F(BraveVPNServiceTest, NeedsConnectTest) {
   // Check ignore Connect() request while connecting or disconnecting is
   // in-progress.
+  SetDeviceRegion("eu-es");
   connection_state() = ConnectionState::CONNECTING;
   Connect();
   EXPECT_EQ(ConnectionState::CONNECTING, connection_state());
@@ -519,14 +520,11 @@ TEST_F(BraveVPNServiceTest, LoadRegionDataFromPrefsTest) {
   EXPECT_FALSE(regions().empty());
 
   // Clear region data.
-  device_region() = brave_vpn::mojom::Region();
   regions().clear();
-  EXPECT_EQ(brave_vpn::mojom::Region(), device_region());
   EXPECT_TRUE(regions().empty());
 
   // Check region data is loaded from prefs.
   purchased_state() = PurchasedState::LOADING;
   LoadCachedRegionData();
-  EXPECT_FALSE(brave_vpn::mojom::Region() == device_region());
   EXPECT_FALSE(regions().empty());
 }

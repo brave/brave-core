@@ -11,10 +11,11 @@ class PrefRegistrySimple;
 namespace brave_vpn {
 namespace prefs {
 
-constexpr char kBraveVPNSelectedRegion[] = "brave.brave_vpn.selected_region";
 constexpr char kBraveVPNShowButton[] = "brave.brave_vpn.show_button";
 constexpr char kBraveVPNRegionList[] = "brave.brave_vpn.region_list";
-constexpr char kBraveVPNDeviceRegion[] = "brave.brave_vpn.device_region";
+constexpr char kBraveVPNDeviceRegion[] = "brave.brave_vpn.device_region_name";
+constexpr char kBraveVPNSelectedRegion[] =
+    "brave.brave_vpn.selected_region_name";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
