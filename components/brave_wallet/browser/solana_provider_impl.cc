@@ -17,12 +17,23 @@
 
 namespace brave_wallet {
 
+namespace {
+// When onlyIfTrusted is true, the request would be rejected when selected
+// account doesn't have permission.
+constexpr char kOnlyIfTrustedOption[] = "onlyIfTrusted";
+}  // namespace
+
 SolanaProviderImpl::SolanaProviderImpl(
     KeyringService* keyring_service,
     std::unique_ptr<BraveWalletProviderDelegate> delegate)
     : keyring_service_(keyring_service),
       delegate_(std::move(delegate)),
-      weak_factory_(this) {}
+      weak_factory_(this) {
+  DCHECK(keyring_service_);
+  keyring_service_->AddObserver(
+      keyring_observer_receiver_.BindNewPipeAndPassRemote());
+}
+
 SolanaProviderImpl::~SolanaProviderImpl() = default;
 
 void SolanaProviderImpl::Init(
@@ -34,20 +45,42 @@ void SolanaProviderImpl::Init(
 
 void SolanaProviderImpl::Connect(absl::optional<base::Value> arg,
                                  ConnectCallback callback) {
-  // TODO(darkdh): handle onlyIfTrusted when it exists
   DCHECK(delegate_);
+  if (arg.has_value()) {
+    const base::Value::Dict* arg_dict = arg->GetIfDict();
+    if (arg_dict) {
+      absl::optional<bool> only_if_trusted =
+          arg_dict->FindBool(kOnlyIfTrustedOption);
+      if (only_if_trusted.has_value() && *only_if_trusted) {
+        delegate_->IsSelectedAccountAllowed(
+            mojom::CoinType::SOL,
+            base::BindOnce(&SolanaProviderImpl::OnEagerlyConnect,
+                           weak_factory_.GetWeakPtr(), std::move(callback)));
+        return;
+      }
+    }
+  }
   delegate_->RequestSolanaPermission(
       base::BindOnce(&SolanaProviderImpl::OnConnect, weak_factory_.GetWeakPtr(),
                      std::move(callback)));
 }
 
 void SolanaProviderImpl::Disconnect() {
-  NOTIMPLEMENTED();
+  DCHECK(keyring_service_);
+  absl::optional<std::string> account =
+      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  if (account)
+    connected_set_.erase(*account);
 }
 
 void SolanaProviderImpl::IsConnected(IsConnectedCallback callback) {
-  NOTIMPLEMENTED();
-  std::move(callback).Run(false);
+  DCHECK(keyring_service_);
+  absl::optional<std::string> account =
+      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  if (!account)
+    std::move(callback).Run(false);
+  else
+    std::move(callback).Run(connected_set_.contains(*account));
 }
 
 void SolanaProviderImpl::GetPublicKey(GetPublicKeyCallback callback) {
@@ -101,15 +134,46 @@ void SolanaProviderImpl::OnConnect(ConnectCallback callback,
                                    const absl::optional<std::string>& account,
                                    mojom::SolanaProviderError error,
                                    const std::string& error_message) {
-  if (error == mojom::SolanaProviderError::kSuccess && !account) {
+  if (error == mojom::SolanaProviderError::kSuccess) {
+    if (!account) {
+      std::move(callback).Run(
+          mojom::SolanaProviderError::kUserRejectedRequest,
+          l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
+    } else {
+      std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
+                              *account);
+      connected_set_.insert(*account);
+    }
+  } else {
+    std::move(callback).Run(error, error_message, "");
+  }
+}
+
+void SolanaProviderImpl::OnEagerlyConnect(
+    ConnectCallback callback,
+    const absl::optional<std::string>& account,
+    bool allowed) {
+  if (allowed) {
+    std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "", *account);
+    connected_set_.insert(*account);
+  } else {
     std::move(callback).Run(
         mojom::SolanaProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
-  } else {
-    std::move(callback).Run(
-        error, error_message,
-        error == mojom::SolanaProviderError::kSuccess ? *account : "");
   }
+}
+
+void SolanaProviderImpl::SelectedAccountChanged(mojom::CoinType coin) {
+  if (!events_listener_.is_bound() || coin != mojom::CoinType::SOL)
+    return;
+
+  DCHECK(keyring_service_);
+  absl::optional<std::string> account =
+      keyring_service_->GetSelectedAccount(mojom::CoinType::SOL);
+  if (connected_set_.contains(*account))
+    events_listener_->AccountChangedEvent(account);
+  else
+    events_listener_->AccountChangedEvent(absl::nullopt);
 }
 
 }  // namespace brave_wallet

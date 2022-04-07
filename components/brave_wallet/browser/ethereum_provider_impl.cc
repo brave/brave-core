@@ -1303,12 +1303,6 @@ void EthereumProviderImpl::ChainChangedEvent(const std::string& chain_id,
   events_listener_->ChainChangedEvent(chain_id);
 }
 
-void EthereumProviderImpl::OnConnectionError() {
-  rpc_observer_receiver_.reset();
-  tx_observer_receiver_.reset();
-  keyring_observer_receiver_.reset();
-}
-
 void EthereumProviderImpl::OnTransactionStatusChanged(
     mojom::TransactionInfoPtr tx_info) {
   auto tx_status = tx_info->tx_status;
