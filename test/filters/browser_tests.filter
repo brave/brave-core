@@ -105,6 +105,7 @@
 -BrowserViewTest.*
 -BrowsingDataCounterUtilsBrowserTest.*
 -BrowsingDataRemoverBrowserTest.*
+-BrowsingTopicsBrowserTest.*
 -CaptivePortalBlockingPageTest.*
 -CaptivePortalBrowserTest.*
 -CaptivePortalForPrerenderingTest.*
@@ -182,6 +183,8 @@
 -DiceWebSigninInterceptionBubbleBrowserTest.*
 -DiceWebSigninInterceptorBrowserTest.*
 -DiceWebSigninInterceptorEnterpriseBrowserTest.*
+-DIPSTabHelperBrowserTest.Histograms_ClickThenStorage
+-DIPSTabHelperBrowserTest.Histograms_StorageThenClick
 -DiskCachesizeExperiment.*
 -DistillablePageUtilsBrowserTestAllArticles.*
 -DNSErrorPageTest.*
@@ -336,6 +339,7 @@
 -MojoJSInterfaceBrokerBrowserTest.*
 -MultiPageBrowserTest.*
 -MultipleTabSharingUIViewsBrowserTest.*
+-MultiTabLoadingPageLoadMetricsBrowserTest.MultiTabForeground
 -NativeBindingsApiTest.*
 -NativeMessagingLaunchBackgroundModeApiTest.*
 -NavigationEntryRemoverTest.*
@@ -516,6 +520,7 @@
 -SearchEngineTabHelperPrerenderingBrowserTest.*
 -SearchPrefetchServiceBFCacheTest.*
 -SearchPrefetchServiceHeadStartTest.*
+-SearchPrefetchServiceHeadStartTooLongTest.*
 -SearchPrefetchServiceZeroCacheTimeBrowserTest.*
 -SearchPrefetchServiceZeroErrorTimeBrowserTest.*
 -SecurityStatePageLoadMetricsBrowserTest.*
