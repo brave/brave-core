@@ -14,6 +14,7 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_component_updater/browser/switches.h"
+#include "brave/components/brave_sync/buildflags.h"
 #include "brave/components/update_client/buildflags.h"
 #include "components/browser_sync/browser_sync_switches.h"
 #include "components/component_updater/component_updater_switches.h"
@@ -26,7 +27,6 @@
 #endif
 
 namespace {
-const char kBraveSyncServiceURL[] = BRAVE_SYNC_ENDPOINT;
 
 std::string GetUpdateURLHost() {
   const base::CommandLine& command_line =
@@ -63,7 +63,7 @@ void BraveMainDelegate::BasicStartupComplete() {
   // Brave's sync protocol does not use the sync service url
   if (!command_line->HasSwitch(syncer::kSyncServiceURL)) {
     command_line->AppendSwitchASCII(syncer::kSyncServiceURL,
-                                    kBraveSyncServiceURL);
+                                    BUILDFLAG(BRAVE_SYNC_ENDPOINT));
   }
 
   if (!command_line->HasSwitch(switches::kVModule)) {
