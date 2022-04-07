@@ -13,7 +13,6 @@ import {
   PriceDataObjectType,
   RPCResponseType,
   UserAccountType,
-  ToOrFromType,
   AccountTransactions,
   BuySendSwapTypes,
   WalletAccountType,
@@ -44,11 +43,14 @@ import { mockPageState } from './mock-data/mock-page-state'
 import { createPageReducer } from '../page/reducers/page_reducer'
 import * as Lib from '../common/async/__mocks__/lib'
 import { LibContext } from '../common/context/lib.context'
-import { mockAccountAssetOptions, mockBasicAttentionToken, mockEthToken, mockNewAssetOptions } from './mock-data/mock-asset-options'
+import { mockAccountAssetOptions, mockNewAssetOptions } from './mock-data/mock-asset-options'
+import { createSendCryptoReducer } from '../common/reducers/send_crypto_reducer'
+import { mockSendCryptoState } from './mock-data/send-crypto-state'
 
 const store = createStore(combineReducers({
   wallet: createWalletReducer(mockWalletState),
-  page: createPageReducer(mockPageState)
+  page: createPageReducer(mockPageState),
+  sendCrypto: createSendCryptoReducer(mockSendCryptoState)
 }))
 
 export default {
@@ -304,14 +306,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [selectedNetwork, setSelectedNetwork] = React.useState<BraveWallet.NetworkInfo>(mockNetworks[0])
   const [, setSelectedAccount] = React.useState<UserAccountType>(mockUserAccounts[0])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
-  const [fromAsset, setFromAsset] = React.useState<BraveWallet.BlockchainToken>(mockEthToken)
-  const [, setToAsset] = React.useState<BraveWallet.BlockchainToken>(mockBasicAttentionToken)
-  const [exchangeRate] = React.useState('0.0027533')
-  const [toAddress, setToAddress] = React.useState('')
   const [buyAmount, setBuyAmount] = React.useState('')
-  const [sendAmount, setSendAmount] = React.useState('')
-  const [fromAmount] = React.useState('')
-  const [, setToAmount] = React.useState('')
   const [isRestoring, setIsRestoring] = React.useState<boolean>(false)
   const [importAccountError, setImportAccountError] = React.useState<boolean>(false)
   const [importWalletError, setImportWalletError] = React.useState<ImportWalletError>({ hasError: false })
@@ -549,38 +544,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setSelectedNetwork(network)
   }
 
-  const onSelectTransactAsset = (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => {
-    if (toOrFrom === 'from') {
-      setFromAsset(asset)
-    } else {
-      setToAsset(asset)
-    }
-  }
-
   const onSubmitBuy = (asset: BraveWallet.BlockchainToken) => {
     alert(`Buy ${asset.symbol} asset`)
-  }
-
-  const onSubmitSend = () => {
-    alert('Submit Send Transaction')
-  }
-
-  const calculateToAmount = (amount: number, market: boolean) => {
-    if (market) {
-      const calculated = Number(amount) / Number(exchangeRate)
-      setToAmount(calculated.toString())
-    } else {
-      const calculated = Number(fromAmount) / Number(amount)
-      setToAmount(calculated.toString())
-    }
-  }
-
-  const fromAssetBalance = '26'
-
-  const onSelectPresetSendAmount = (percent: number) => {
-    const amount = Number(fromAssetBalance) * percent
-    setSendAmount(amount.toString())
-    calculateToAmount(amount, true)
   }
 
   const onSelectAccount = (account: UserAccountType) => {
@@ -589,14 +554,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
-  }
-
-  const onSetSendAmount = (value: string) => {
-    setSendAmount(value)
-  }
-
-  const onSetToAddress = (value: string) => {
-    setToAddress(value)
   }
 
   const onRemoveAccount = () => {
@@ -665,10 +622,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const defaultCurrencies = {
     fiat: 'USD',
     crypto: 'BTC'
-  }
-
-  const onAddNetwork = () => {
-    alert('Will redirect to Wallet Network Settings')
   }
 
   const onShowVisibleAssetsModal = (value: boolean) => {
@@ -804,33 +757,14 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
           {!needsOnboarding && !walletLocked &&
             <WalletWidgetStandIn>
               <BuySendSwap
-                defaultCurrencies={defaultCurrencies}
-                selectedNetwork={selectedNetwork}
                 selectedTab={selectedWidgetTab}
                 buyAmount={buyAmount}
-                sendAmount={sendAmount}
-                selectedSendAsset={fromAsset}
-                sendAssetBalance={fromAssetBalance}
-                toAddressOrUrl={toAddress}
-                toAddress={toAddress}
-                addressError=''
-                addressWarning=''
                 onSubmitBuy={onSubmitBuy}
                 onSetBuyAmount={onSetBuyAmount}
-                onSetSendAmount={onSetSendAmount}
-                onSetToAddressOrUrl={onSetToAddress}
-                onSubmitSend={onSubmitSend}
                 onSelectNetwork={onSelectNetwork}
                 onSelectAccount={onSelectAccount}
-                onSelectPresetSendAmount={onSelectPresetSendAmount}
                 onSelectTab={setSelectedWidgetTab}
                 buyAssetOptions={mockAccountAssetOptions}
-                sendAssetOptions={mockAccountAssetOptions}
-                networkList={mockNetworks}
-                onSelectSendAsset={onSelectTransactAsset}
-                onAddNetwork={onAddNetwork}
-                onAddAsset={onShowVisibleAssetsModal}
-                sendAmountValidationError={undefined}
               />
               <SweepstakesBanner />
             </WalletWidgetStandIn>

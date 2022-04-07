@@ -402,7 +402,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     }
   }, [showNetworkDropDown])
 
-  const onSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
+  const onSelectCustomNetwork = (network: BraveWallet.NetworkInfo) => {
     setCustomAssetsNetwork(network)
     onHideNetworkDropDown()
   }
@@ -429,11 +429,10 @@ const EditVisibleAssetsModal = (props: Props) => {
               <FormWrapper>
                 <InputLabel>{getLocale('braveWalletSelectNetwork')}</InputLabel>
                 <SelectNetworkDropdown
-                  networkList={networkList}
                   selectedNetwork={customAssetsNetwork}
                   onClick={onShowNetworkDropDown}
-                  onSelectNetwork={onSelectNetwork}
                   showNetworkDropDown={showNetworkDropDown}
+                  onSelectCustomNetwork={onSelectCustomNetwork}
                 />
                 <FormRow>
                   <FormColumn>

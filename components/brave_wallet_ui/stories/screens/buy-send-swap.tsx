@@ -1,15 +1,14 @@
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 import {
   BuySendSwapTypes,
   UserAccountType,
-  ToOrFromType,
   BraveWallet,
   BuySupportedChains,
-  DefaultCurrencies,
-  AmountValidationErrorType
+  WalletState
 } from '../../constants/types'
-import Swap from '../../components/buy-send-swap/tabs/swap-tab'
-import Send from '../../components/buy-send-swap/tabs/send-tab'
+import SwapTab from '../../components/buy-send-swap/tabs/swap-tab'
+import SendTab from '../../components/buy-send-swap/tabs/send-tab'
 import Buy from '../../components/buy-send-swap/tabs/buy-tab'
 import {
   Layout
@@ -17,65 +16,34 @@ import {
 import { useSwap } from '../../common/hooks'
 
 export interface Props {
-  networkList: BraveWallet.NetworkInfo[]
-  selectedSendAsset: BraveWallet.BlockchainToken | undefined
-  sendAssetBalance: string
-  selectedNetwork: BraveWallet.NetworkInfo
   selectedTab: BuySendSwapTypes
-  sendAmountValidationError: AmountValidationErrorType | undefined
   buyAmount: string
-  sendAmount: string
-  toAddressOrUrl: string
-  toAddress: string
-  addressError: string
-  addressWarning: string
   buyAssetOptions: BraveWallet.BlockchainToken[]
-  sendAssetOptions: BraveWallet.BlockchainToken[]
-  defaultCurrencies: DefaultCurrencies
   onSubmitBuy: (asset: BraveWallet.BlockchainToken) => void
-  onSubmitSend: () => void
   onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   onSelectAccount: (account: UserAccountType) => void
   onSetBuyAmount: (value: string) => void
-  onSetSendAmount: (value: string) => void
-  onSetToAddressOrUrl: (value: string) => void
-  onSelectPresetSendAmount: (percent: number) => void
   onSelectTab: (tab: BuySendSwapTypes) => void
-  onSelectSendAsset: (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => void
-  onAddNetwork: () => void
-  onAddAsset: (value: boolean) => void
 }
 
 function BuySendSwap (props: Props) {
   const {
-    networkList,
-    selectedNetwork,
     selectedTab,
     buyAmount,
-    sendAmount,
-    addressError,
-    addressWarning,
-    selectedSendAsset,
-    sendAssetBalance,
-    toAddress,
-    toAddressOrUrl,
     buyAssetOptions,
-    sendAssetOptions,
-    sendAmountValidationError,
-    defaultCurrencies,
     onSubmitBuy,
-    onSubmitSend,
     onSelectNetwork,
     onSelectAccount,
     onSetBuyAmount,
-    onSetSendAmount,
-    onSetToAddressOrUrl,
-    onSelectPresetSendAmount,
-    onSelectTab,
-    onSelectSendAsset,
-    onAddNetwork,
-    onAddAsset
+    onSelectTab
   } = props
+
+  // redux
+  const {
+    networkList,
+    selectedNetwork,
+    defaultCurrencies
+  } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
   const { isSwapSupported } = useSwap({})
 
@@ -99,10 +67,6 @@ function BuySendSwap (props: Props) {
     onSelectTab(tab)
   }
 
-  const onClickAddAsset = () => {
-    onAddAsset(true)
-  }
-
   return (
     <Layout
       selectedNetwork={selectedNetwork}
@@ -112,35 +76,11 @@ function BuySendSwap (props: Props) {
       onChangeTab={changeTab}
     >
       {selectedTab === 'swap' &&
-        <Swap
-          onSelectNetwork={onSelectNetwork}
-          onSelectAccount={onSelectAccount}
-          onAddNetwork={onAddNetwork}
-          onAddAsset={onClickAddAsset}
-        />
+        <SwapTab />
       }
       {selectedTab === 'send' &&
-        <Send
-          amountValidationError={sendAmountValidationError}
-          addressError={addressError}
-          addressWarning={addressWarning}
-          selectedAssetAmount={sendAmount}
-          selectedAssetBalance={sendAssetBalance}
-          toAddressOrUrl={toAddressOrUrl}
-          toAddress={toAddress}
-          onSelectAccount={onSelectAccount}
-          onSelectNetwork={onSelectNetwork}
-          onSelectPresetAmount={onSelectPresetSendAmount}
-          onSelectAsset={onSelectSendAsset}
-          onSetSendAmount={onSetSendAmount}
-          onSetToAddressOrUrl={onSetToAddressOrUrl}
-          onSubmit={onSubmitSend}
-          selectedNetwork={selectedNetwork}
-          selectedAsset={selectedSendAsset}
+        <SendTab
           showHeader={true}
-          assetOptions={sendAssetOptions}
-          onAddNetwork={onAddNetwork}
-          onAddAsset={onClickAddAsset}
         />
       }
       {selectedTab === 'buy' &&
@@ -155,8 +95,6 @@ function BuySendSwap (props: Props) {
           selectedNetwork={selectedNetwork}
           showHeader={true}
           assetOptions={buyAssetOptions}
-          onAddNetwork={onAddNetwork}
-          onAddAsset={onClickAddAsset}
         />
       }
     </Layout>
