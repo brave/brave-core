@@ -546,8 +546,8 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent",
                 "org/chromium/chrome/browser/share/send_tab_to_self/BraveDevicePickerBottomSheetContent",
-                Context.class, String.class, String.class, long.class, BottomSheetController.class,
-                boolean.class));
+                Context.class, String.class, String.class, long.class,
+                BottomSheetController.class));
     }
 
     @Test
