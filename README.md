@@ -48,6 +48,7 @@ Building the code
 1. Add a symlink to `npm` (M1 Macs)
     ```shell
     sudo ln -s $(which npm) /usr/local/bin/npm
+    sudo ln -s $(which node) /usr/local/bin/node
     ```
 1. Open `Client.xcodeproj` in Xcode.
 1. Build the `Debug` scheme in Xcode.
