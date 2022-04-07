@@ -1,0 +1,22 @@
+body {
+    color: #333;
+  }
+  
+h2 {
+  font-size: 110%;
+}
+
+table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin-top: 5px;
+}
+
+th,
+td {
+  border-color: #666;
+  border-style: solid;
+  border-width: 1px;
+  padding: 1px 4px;
+}
