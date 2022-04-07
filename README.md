@@ -55,7 +55,7 @@ Building the code
 Updating Rewards
 ----------------
 
-Some Brave Rewards code is precompiled into a framework in the `BraveRewards` directory. It's code can be found in [brave-core](https://github.com/brave/brave-core/tree/master/vendor/brave-ios), and instructions on building and updating this code can be found [here](https://github.com/brave/brave-ios/blob/master/BraveRewards/Updating%20the%20BraveRewards%20framework.md)
+Some Brave Rewards code is precompiled into a framework in the `BraveRewards` directory. It's code can be found in [brave-core](https://github.com/brave/brave-core/tree/master/vendor/brave-ios), and instructions on building and updating this code can be found [here](https://github.com/brave/brave-ios/blob/development/BraveCore/Updating%20the%20BraveRewards%20framework.md)
 
 ## Contributor guidelines
 
