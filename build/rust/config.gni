@@ -47,7 +47,7 @@ if (use_lto_in_rustc_linking) {
   rustflags += [ "-Clinker-plugin-lto" ]
 }
 
-if (use_lld && !is_debug) {
+if (use_lld && !is_component_build) {
   rustflags += [ "-Cembed-bitcode=yes" ]
   rustflags += [ "-Clto" ]
 }
