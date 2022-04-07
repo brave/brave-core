@@ -116,7 +116,7 @@ extension BrowserViewController {
           bookmarkManager: bookmarkManager,
           isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
         vc.toolbarUrlActionsDelegate = self
-        menuController.presentInnerMenu(vc)
+        menuController.pushInnerMenu(vc)
       }
 
       MenuItemButton(icon: #imageLiteral(resourceName: "menu-history").template, title: Strings.historyMenuItem) { [unowned self, unowned menuController] in
