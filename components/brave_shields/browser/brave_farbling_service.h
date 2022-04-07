@@ -23,7 +23,7 @@ class BraveFarblingService {
   ~BraveFarblingService();
 
   uint64_t session_token(bool is_off_the_record);
-  void set_session_tokens_for_testing();
+  void set_session_tokens_for_testing(uint64_t session_token, uint64_t incognito_session_token);
   bool MakePseudoRandomGeneratorForURL(const GURL& url,
                                        bool is_off_the_record,
                                        std::mt19937_64* prng);
