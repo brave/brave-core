@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "brave/components/brave_federated/linear_algebra_util/linear_algebra_util.h"
-#include "brave/components/brave_federated/synthetic_dataset/synthetic_dataset.h"
 
 namespace brave_federated {
 
@@ -50,11 +49,10 @@ size_t Model::ModelSize() {
   return this->pred_weights_.size();
 }
 
-std::vector<float> Model::Predict(
-    std::vector<std::vector<float>> X) {
+std::vector<float> Model::Predict(std::vector<std::vector<float>> X) {
   std::vector<float> prediction(X.size(), 0.0);
-  for (int i = 0; i < (int) X.size(); i++) {
-    for (int j = 0; j < (int) X[i].size(); j++) {
+  for (int i = 0; i < (int)X.size(); i++) {
+    for (int j = 0; j < (int)X[i].size(); j++) {
       prediction[i] += this->pred_weights_[j] * X[i][j];
     }
     prediction[i] += this->pred_b_;
@@ -68,7 +66,7 @@ std::tuple<size_t, float, float> Model::Train(
   int features = dataset[0].size() - 1;
 
   std::vector<float> data_indices(dataset.size());
-  for (int i = 0; i < (int) dataset.size(); i++) {
+  for (int i = 0; i < (int)dataset.size(); i++) {
     data_indices.push_back(i);
   }
 
@@ -82,7 +80,7 @@ std::tuple<size_t, float, float> Model::Train(
     std::shuffle(data_indices.begin(), data_indices.end(), g);
 
     std::vector<std::vector<float>> X(this->batch_size_,
-                                       std::vector<float>(features));
+                                      std::vector<float>(features));
     std::vector<float> y(this->batch_size_);
 
     for (int i = 0; i < this->batch_size_; i++) {
@@ -102,8 +100,8 @@ std::tuple<size_t, float, float> Model::Train(
 
     dW = LinearAlgebraUtil::MultiplyMatrixVector(
         LinearAlgebraUtil::TransposeVector(X), err);
-    dW = LinearAlgebraUtil::MultiplyVectorScalar(dW,
-                                                   (-2.0 / this->batch_size_));
+    dW =
+        LinearAlgebraUtil::MultiplyVectorScalar(dW, (-2.0 / this->batch_size_));
 
     dB = (-2.0 / this->batch_size_) *
          std::accumulate(err.begin(), err.end(), 0.0);
@@ -123,17 +121,17 @@ std::tuple<size_t, float, float> Model::Train(
     std::cout << "  m" << i << "_local = " << std::fixed << pred_weights_[i]
               << std::endl;
   }
-  std::cout << "  b_local = " << std::fixed << pred_b_ << std::endl << std::endl;
+  std::cout << "  b_local = " << std::fixed << pred_b_ << std::endl
+            << std::endl;
 
   float accuracy = training_error;
   return std::make_tuple(dataset.size(), training_error, accuracy);
 }
 
-float Model::ComputeMSE(std::vector<float> true_y,
-                                   std::vector<float> pred) {
+float Model::ComputeMSE(std::vector<float> true_y, std::vector<float> pred) {
   float error = 0.0;
 
-  for (int i = 0; i < (int) true_y.size(); i++) {
+  for (int i = 0; i < (int)true_y.size(); i++) {
     error += (pred[i] - true_y[i]) * (pred[i] - true_y[i]);
   }
 
@@ -141,15 +139,14 @@ float Model::ComputeMSE(std::vector<float> true_y,
 }
 
 std::tuple<size_t, float, float> Model::Evaluate(
-    SyntheticDataset& test_dataset) {
-  std::vector<std::vector<float>> data_points = test_dataset.DataPoints();
-  int num_features = data_points[0].size();
+    std::vector<std::vector<float>>& test_dataset) {
+  int num_features = test_dataset[0].size();
   std::vector<std::vector<float>> X(test_dataset.size(),
-                                     std::vector<float>(num_features));
+                                    std::vector<float>(num_features));
   std::vector<float> y(test_dataset.size());
 
-  for (int i = 0; i < (int) test_dataset.size(); i++) {
-    std::vector<float> point = data_points[i];
+  for (int i = 0; i < (int)test_dataset.size(); i++) {
+    std::vector<float> point = test_dataset[i];
     y[i] = point.back();
     point.pop_back();
     X[i] = point;
@@ -159,4 +156,4 @@ std::tuple<size_t, float, float> Model::Evaluate(
   return std::make_tuple(test_dataset.size(), test_loss, test_loss);
 }
 
-} // namespace brave_federated
+}  // namespace brave_federated

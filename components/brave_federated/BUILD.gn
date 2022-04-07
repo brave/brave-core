@@ -5,8 +5,8 @@ static_library("brave_federated") {
   sources = [
     "brave_federated_service.cc",
     "brave_federated_service.h",
-    "client/client.h",
-    "client/client.cc",
+    "client/federated_client.h",
+    "client/federated_client.cc",
     "client/model.h",
     "client/model.cc",
     "data_store_service.cc",

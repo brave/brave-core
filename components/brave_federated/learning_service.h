@@ -14,7 +14,7 @@ namespace brave_federated {
 class DataStoreService;
 struct AdNotificationTimingTaskLog;
 class EligibilityService;
-class Client;
+class FederatedClient;
 class Model;
 
 class LearningService: public Observer {
@@ -35,7 +35,7 @@ class LearningService: public Observer {
 
   DataStoreService* data_store_service_;
   EligibilityService* eligibility_service_;
-  std::map<std::string, Client*> clients_;
+  std::map<std::string, FederatedClient*> clients_;
 };
 
 }
