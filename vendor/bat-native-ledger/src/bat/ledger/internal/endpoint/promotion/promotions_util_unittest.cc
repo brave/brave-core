@@ -22,7 +22,8 @@ class PromotionsUtilTest : public testing::Test {
 TEST(PromotionsUtilTest, GetServerUrlDevelopment) {
   ledger::_environment = type::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
-  ASSERT_EQ(url, base::StrCat({BUILDFLAG(REWARDS_GRANT_DEV_ENDPOINT), "/test"}));
+  ASSERT_EQ(url,
+            base::StrCat({BUILDFLAG(REWARDS_GRANT_DEV_ENDPOINT), "/test"}));
 }
 
 TEST(PromotionsUtilTest, GetServerUrlStaging) {
