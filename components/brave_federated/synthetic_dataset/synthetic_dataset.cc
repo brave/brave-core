@@ -7,8 +7,7 @@
 
 namespace brave_federated {
 
-SyntheticDataset::SyntheticDataset(std::vector<float> ms, float b, size_t size)
-    : ms_(ms), b_(b) {
+SyntheticDataset::SyntheticDataset(std::vector<float> ms, float b, size_t size) {
   std::random_device rd;
   std::mt19937 mt(rd());
   std::uniform_int_distribution<> distr(-10.0, 10.0);

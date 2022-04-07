@@ -22,20 +22,26 @@ static_library("brave_federated") {
     "features.h",
     "learning_service.cc",
     "learning_service.h",
+    "linear_algebra_util/linear_algebra_util.cc",
+    "linear_algebra_util/linear_algebra_util.h",
     "operational_patterns.cc",
     "operational_patterns.h",
+    "synthetic_dataset/synthetic_dataset.cc",
+    "synthetic_dataset/synthetic_dataset.h"
   ]
 
   deps = [
     "//brave/components/brave_stats/browser",
     "//brave/components/p3a:p3a",
     "//brave/components/version_info",
+    "//brave/third_party/flower:flower",
     "//components/keyed_service/core",
     "//components/metrics",
     "//components/prefs",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//sql",
+    "//brave/third_party/flower",
   ]
 }
 

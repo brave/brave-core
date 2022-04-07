@@ -76,7 +76,7 @@ std::tuple<size_t, float, float> Model::Train(
   std::vector<float> err(batch_size_, 10000);
   std::vector<float> pW(features);
   float training_error = 0.0;
-  for (int iteration = 0; iteration < num_iterations; iteration++) {
+  for (int iteration = 0; iteration < num_iterations_; iteration++) {
     std::random_device rd;
     std::mt19937 g(rd());
     std::shuffle(data_indices.begin(), data_indices.end(), g);
@@ -119,8 +119,8 @@ std::tuple<size_t, float, float> Model::Train(
     }
   }
   std::cout << "Local model:" << std::endl;
-  for (size_t i = 0; i < pred_weights.size(); i++) {
-    std::cout << "  m" << i << "_local = " << std::fixed << pred_weights[i]
+  for (size_t i = 0; i < pred_weights_.size(); i++) {
+    std::cout << "  m" << i << "_local = " << std::fixed << pred_weights_[i]
               << std::endl;
   }
   std::cout << "  b_local = " << std::fixed << pred_b_ << std::endl << std::endl;

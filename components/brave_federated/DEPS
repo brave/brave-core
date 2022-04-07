@@ -9,4 +9,5 @@ include_rules = [
   "+services/network/public",
   "+sql",
   "+url",
+  "+third_party/flower",
 ]

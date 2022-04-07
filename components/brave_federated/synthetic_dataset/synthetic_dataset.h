@@ -22,9 +22,6 @@ class SyntheticDataset {
   int get_features_count();
 
  private:
-  std::vector<float> ms_;
-  float b_;
-
   std::vector<std::vector<float>> data_points_;
 };
 
