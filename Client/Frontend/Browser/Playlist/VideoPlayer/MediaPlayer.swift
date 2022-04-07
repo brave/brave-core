@@ -652,14 +652,30 @@ extension AVPlayerItem {
       return true  // Assume video
     }
     
-    return (tracks.filter({ $0.assetTrack?.mediaType == .video }).isEmpty == false) || asset.isVideoTracksAvailable()
+    // If the only current track types are audio
+    if !tracks.allSatisfy({ $0.assetTrack?.mediaType == .audio }) {
+      return true  // Assume video
+    }
+    
+    let hasVideoTracks = !tracks.filter({ $0.assetTrack?.mediaType == .video }).isEmpty || asset.isVideoTracksAvailable()
+    
+    // Ultra hack
+    // Some items `fade` in/out or have an audio track that fades out but no video track
+    // In this case, assume video as it is potentially still a video, just with blank frames
+    if !hasVideoTracks &&
+        currentTime().seconds <= 1.0 ||
+        fabs(duration.seconds - currentTime().seconds) <= 3.0 {
+      return true
+    }
+    
+    return hasVideoTracks
   }
 }
 
 extension AVAsset {
   /// Returns whether or not the asset has audio tracks
   func isAudioTracksAvailable() -> Bool {
-    tracks.filter({ $0.mediaType == .audio }).isEmpty == false
+    !tracks.filter({ $0.mediaType == .audio }).isEmpty
   }
 
   /// Returns whether or not the  asset has video tracks
@@ -668,6 +684,6 @@ extension AVAsset {
   /// tracks may not always be available and the particle effect will show even on videos..
   /// It's best to assume this type of media is a video stream.
   func isVideoTracksAvailable() -> Bool {
-    tracks.filter({ $0.mediaType == .video }).isEmpty == false
+    !tracks.filter({ $0.mediaType == .video }).isEmpty
   }
 }

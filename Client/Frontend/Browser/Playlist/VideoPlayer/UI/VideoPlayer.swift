@@ -49,7 +49,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
   }
 
   private let particleView = PlaylistParticleEmitter().then {
-    $0.isHidden = false
+    $0.alpha = 0.0
     $0.contentMode = .scaleAspectFit
     $0.clipsToBounds = true
   }
@@ -80,6 +80,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
   private var playbackRate: Float = 1.0
   private var playerLayer: AVPlayerLayer?
   private var fadeAnimationWorkItem: DispatchWorkItem?
+  private var playerStatusObserver: NSObjectProtocol?
 
   // Vars and enums for handling gestures on the playerLayer (changing volume, scrolling the timeline)
   private enum DraggingDirection {
@@ -545,23 +546,14 @@ class VideoView: UIView, VideoTrackerBarDelegate {
   }
 
   private func toggleOverlays(showOverlay: Bool, except: [UIView] = [], display: [UIView] = []) {
-    var except = except
-    var display = display
-
-    if delegate?.isVideoTracksAvailable == true {
-      if showOverlay {
-        except.append(particleView)
-      }
-    } else {
-      // If the overlay is showing, hide the particle view.. else show it..
-      except.append(particleView)
-      display.append(particleView)
-    }
-
     UIView.animate(
       withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: [.curveEaseInOut, .allowUserInteraction],
       animations: {
         self.subviews.forEach({
+          if $0 == self.particleView {
+            return
+          }
+          
           if !except.contains($0) {
             $0.alpha = showOverlay ? 1.0 : 0.0
           } else if display.contains($0) {
@@ -640,10 +632,29 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     playerLayer = player.attachLayer() as? AVPlayerLayer
     if let playerLayer = playerLayer {
       layer.insertSublayer(playerLayer, at: 0)
+      
+      if let player = playerLayer.player {
+        playerStatusObserver = player.observe(
+          \AVPlayer.currentItem?.tracks, options: [.new],
+          changeHandler: { [weak self] _, change in
+            guard let self = self else { return }
+            
+            if let tracks = change.newValue,
+               tracks?.isEmpty == false,
+               self.delegate?.isVideoTracksAvailable == true {
+              self.particleView.alpha = 1.0
+            } else {
+              self.particleView.alpha = 0.0
+            }
+          }
+        )
+      }
     }
   }
 
   func detachLayer() {
+    playerStatusObserver = nil
+    
     playerLayer?.removeFromSuperlayer()
     playerLayer?.player = nil
   }
