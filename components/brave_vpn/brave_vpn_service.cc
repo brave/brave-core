@@ -131,6 +131,11 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
           "Servers, hosts and credentials for Brave VPN"
         destination: WEBSITE
       }
+      policy {
+        cookies_allowed: NO
+        policy_exception_justification:
+          "Not implemented."
+      }
     )");
 }
 
