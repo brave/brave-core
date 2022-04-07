@@ -223,12 +223,15 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
 #endif
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShieldsPanelV2)) {
-#if !BUILDFLAG(IS_ANDROID)
     if (!web_contents)
       return;
-    brave_shields::BraveShieldsDataController::FromWebContents(web_contents)
-        ->HandleItemBlocked(block_type, subresource);
-#endif
+    auto* shields_data_ctrlr =
+        brave_shields::BraveShieldsDataController::FromWebContents(
+            web_contents);
+    DCHECK(shields_data_ctrlr);
+    if (!shields_data_ctrlr)
+      return;
+    shields_data_ctrlr->HandleItemBlocked(block_type, subresource);
   }
 }
 #endif
