@@ -121,6 +121,9 @@ ShieldsPanelDataHandler::GetActiveShieldsDataController() {
   DCHECK(profile);
 
   Browser* browser = chrome::FindLastActiveWithProfile(profile);
+  if (!browser)
+    return nullptr;
+
   auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
 
   if (web_contents) {
