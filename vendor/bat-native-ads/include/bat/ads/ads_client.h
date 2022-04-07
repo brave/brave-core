@@ -131,9 +131,9 @@ class ADS_EXPORT AdsClient {
                               const std::string& value) = 0;
 
   // Add federated log
-  virtual void LogTrainingCovariates(
-      const brave_federated::mojom::TrainingCovariatesPtr
-          training_covariates) = 0;
+  virtual void LogTrainingInstance(
+      const brave_federated::mojom::TrainingInstancePtr
+          training_instance) = 0;
 
   // Log diagnostic information
   virtual void Log(const char* file,

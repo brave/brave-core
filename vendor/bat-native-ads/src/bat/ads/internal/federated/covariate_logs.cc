@@ -38,10 +38,10 @@ void CovariateLogs::SetCovariateLogEntry(
   covariate_log_entries_[key] = std::move(entry);
 }
 
-brave_federated::mojom::TrainingCovariatesPtr
-CovariateLogs::GetTrainingCovariates() const {
-  brave_federated::mojom::TrainingCovariatesPtr training_covariates =
-      brave_federated::mojom::TrainingCovariates::New();
+brave_federated::mojom::TrainingInstancePtr
+CovariateLogs::GetTrainingInstance() const {
+  brave_federated::mojom::TrainingInstancePtr training_instance =
+      brave_federated::mojom::TrainingInstance::New();
   for (const auto& covariate_log_entry : covariate_log_entries_) {
     const CovariateLogEntry* entry = covariate_log_entry.second.get();
     DCHECK(entry);
@@ -51,10 +51,10 @@ CovariateLogs::GetTrainingCovariates() const {
     covariate->data_type = entry->GetDataType();
     covariate->covariate_type = entry->GetCovariateType();
     covariate->value = entry->GetValue();
-    training_covariates->covariates.push_back(std::move(covariate));
+    training_instance->covariates.push_back(std::move(covariate));
   }
 
-  return training_covariates;
+  return training_instance;
 }
 
 void CovariateLogs::SetAdNotificationImpressionServedAt(
@@ -73,10 +73,10 @@ void CovariateLogs::SetAdNotificationWasClicked(bool was_clicked) {
   SetCovariateLogEntry(std::move(ad_notification_clicked_covariate_log_entry));
 }
 
-void CovariateLogs::LogTrainingCovariates() {
-  brave_federated::mojom::TrainingCovariatesPtr training_covariates =
-      GetTrainingCovariates();
-  AdsClientHelper::Get()->LogTrainingCovariates(std::move(training_covariates));
+void CovariateLogs::LogTrainingInstance() {
+  brave_federated::mojom::TrainingInstancePtr training_instance =
+      GetTrainingInstance();
+  AdsClientHelper::Get()->LogTrainingInstance(std::move(training_instance));
 }
 
 }  // namespace ads

@@ -35,12 +35,12 @@ class CovariateLogs final {
   ~CovariateLogs();
 
   void SetCovariateLogEntry(std::unique_ptr<CovariateLogEntry> entry);
-  brave_federated::mojom::TrainingCovariatesPtr GetTrainingCovariates() const;
+  brave_federated::mojom::TrainingInstancePtr GetTrainingInstance() const;
 
   void SetAdNotificationImpressionServedAt(
       const base::Time impression_served_at);
   void SetAdNotificationWasClicked(bool was_clicked);
-  void LogTrainingCovariates();
+  void LogTrainingInstance();
 
  private:
   base::flat_map<brave_federated::mojom::CovariateType,
