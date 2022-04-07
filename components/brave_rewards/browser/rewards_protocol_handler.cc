@@ -12,6 +12,7 @@
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "brave/components/brave_rewards/common/url_constants.h"
+#include "brave/vendor/bat-native-ledger/buildflags.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/escape.h"
@@ -59,8 +60,8 @@ void LoadRewardsURL(
   }
 
   // Only accept rewards scheme from allowed domains
-  GURL bitflyer_staging_url = GURL(BITFLYER_STAGING_URL);
-  GURL gemini_oauth_staging_url = GURL(GEMINI_OAUTH_STAGING_URL);
+  GURL bitflyer_staging_url = GURL(BUILDFLAG(BITFLYER_STAGING_URL));
+  GURL gemini_oauth_staging_url = GURL(BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
 
   DCHECK(bitflyer_staging_url.is_valid() && bitflyer_staging_url.has_host());
   DCHECK(gemini_oauth_staging_url.is_valid() &&
