@@ -269,7 +269,7 @@ handler.on(WalletActions.getAllTokensList.getType(), async (store) => {
   const { networkList } = state
   const { blockchainRegistry } = getAPIProxy()
   const getAllTokensList = await Promise.all(networkList.map(async (network) => {
-    const list = await blockchainRegistry.getAllTokens(network.chainId)
+    const list = await blockchainRegistry.getAllTokens(network.chainId, network.coin)
     return list.tokens.map((token) => {
       return {
         ...token,
@@ -284,18 +284,18 @@ handler.on(WalletActions.getAllTokensList.getType(), async (store) => {
 
 handler.on(WalletActions.addUserAsset.getType(), async (store: Store, payload: BraveWallet.BlockchainToken) => {
   const { braveWalletService } = getAPIProxy()
-  const result = await braveWalletService.addUserAsset(payload, payload.chainId)
+  const result = await braveWalletService.addUserAsset(payload)
   store.dispatch(WalletActions.addUserAssetError(!result.success))
 })
 
 handler.on(WalletActions.removeUserAsset.getType(), async (store: Store, payload: BraveWallet.BlockchainToken) => {
   const { braveWalletService } = getAPIProxy()
-  await braveWalletService.removeUserAsset(payload, payload.chainId)
+  await braveWalletService.removeUserAsset(payload)
 })
 
 handler.on(WalletActions.setUserAssetVisible.getType(), async (store: Store, payload: SetUserAssetVisiblePayloadType) => {
   const { braveWalletService } = getAPIProxy()
-  await braveWalletService.setUserAssetVisible(payload.token, payload.token.chainId, payload.isVisible)
+  await braveWalletService.setUserAssetVisible(payload.token, payload.isVisible)
 })
 
 handler.on(WalletActions.refreshBalancesAndPriceHistory.getType(), async (store: Store) => {

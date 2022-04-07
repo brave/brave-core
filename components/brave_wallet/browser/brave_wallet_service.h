@@ -62,21 +62,24 @@ class BraveWalletService : public KeyedService,
   void Bind(mojo::PendingReceiver<mojom::BraveWalletService> receiver);
 
   static void MigrateUserAssetEthContractAddress(PrefService* prefs);
+  static void MigrateMultichainUserAssets(PrefService* prefs);
+
+  static base::Value GetDefaultEthereumAssets();
+  static base::Value GetDefaultSolanaAssets();
+  static base::Value GetDefaultFilecoinAssets();
 
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>
                        observer) override;
 
   void GetUserAssets(const std::string& chain_id,
+                     mojom::CoinType coin,
                      GetUserAssetsCallback callback) override;
   void AddUserAsset(mojom::BlockchainTokenPtr token,
-                    const std::string& chain_id,
                     AddUserAssetCallback callback) override;
   void RemoveUserAsset(mojom::BlockchainTokenPtr token,
-                       const std::string& chain_id,
                        RemoveUserAssetCallback callback) override;
   void SetUserAssetVisible(mojom::BlockchainTokenPtr token,
-                           const std::string& chain_id,
                            bool visible,
                            SetUserAssetVisibleCallback callback) override;
   void IsExternalWalletInstalled(mojom::ExternalWalletType,
@@ -164,14 +167,19 @@ class BraveWalletService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetUserAsset);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, ImportFromMetaMask);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, Reset);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetUserAssetAddress);
 
   void OnDefaultWalletChanged();
   void OnDefaultBaseCurrencyChanged();
   void OnDefaultBaseCryptocurrencyChanged();
   void OnNetworkListChanged();
 
-  absl::optional<std::string> GetChecksumAddress(
+  static absl::optional<std::string> GetChecksumAddress(
       const std::string& contract_address,
+      const std::string& chain_id);
+  static absl::optional<std::string> GetUserAssetAddress(
+      const std::string& address,
+      mojom::CoinType coin,
       const std::string& chain_id);
   void OnWalletUnlockPreferenceChanged(const std::string& pref_name);
   void OnP3ATimerFired();
@@ -191,17 +199,14 @@ class BraveWalletService : public KeyedService,
       ImportInfo info,
       ImportError error);
 
-  bool AddUserAsset(mojom::BlockchainTokenPtr token,
-                    const std::string& chain_id);
-  bool RemoveUserAsset(mojom::BlockchainTokenPtr token,
-                       const std::string& chain_id);
-  bool SetUserAssetVisible(mojom::BlockchainTokenPtr token,
-                           const std::string& chain_id,
-                           bool visible);
+  bool AddUserAsset(mojom::BlockchainTokenPtr token);
+  bool RemoveUserAsset(mojom::BlockchainTokenPtr token);
+  bool SetUserAssetVisible(mojom::BlockchainTokenPtr token, bool visible);
   mojom::BlockchainTokenPtr GetUserAsset(const std::string& contract_address,
                                          const std::string& token_id,
                                          bool is_erc721,
-                                         const std::string& chain_id);
+                                         const std::string& chain_id,
+                                         mojom::CoinType coin);
   void OnNetworkChanged();
   void CancelAllSuggestedTokenCallbacks();
   void CancelAllSignMessageCallbacks();

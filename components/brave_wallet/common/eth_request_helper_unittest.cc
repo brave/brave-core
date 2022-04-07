@@ -31,7 +31,8 @@ TEST(EthRequestHelperUnitTest, CommonParseErrors) {
     std::string chain_id;
     EXPECT_FALSE(ParseSwitchEthereumChainParams(error_case, &chain_id));
     mojom::BlockchainTokenPtr token;
-    EXPECT_FALSE(ParseWalletWatchAssetParams(error_case, &token, &message));
+    EXPECT_FALSE(ParseWalletWatchAssetParams(
+        error_case, "0x1", mojom::CoinType::ETH, &token, &message));
     std::string signature;
     EXPECT_FALSE(
         ParsePersonalEcRecoverParams(error_case, &message, &signature));
@@ -820,11 +821,13 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
 
   mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT",
-      "https://test.com/test.png", true, false, "BAT", 18, true, "", "", "");
+      "https://test.com/test.png", true, false, "BAT", 18, true, "", "", "0x1",
+      mojom::CoinType::ETH);
 
   mojom::BlockchainTokenPtr token;
   std::string error_message;
-  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, "0x1", mojom::CoinType::ETH,
+                                          &token, &error_message));
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
 
@@ -844,7 +847,8 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
       "type": "ERC20"
     }
   })";
-  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, "0x1", mojom::CoinType::ETH,
+                                          &token, &error_message));
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
 
@@ -862,7 +866,8 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
       "type": "ERC20"
     }
   })";
-  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, "0x1", mojom::CoinType::ETH,
+                                          &token, &error_message));
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
 
@@ -879,7 +884,8 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
       }
     }
   })";
-  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, "0x1", mojom::CoinType::ETH,
+                                           &token, &error_message));
   EXPECT_FALSE(error_message.empty());
 
   // Missing address
@@ -895,7 +901,8 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
       "type": "ERC20"
     }
   })";
-  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, "0x1", mojom::CoinType::ETH,
+                                           &token, &error_message));
   EXPECT_FALSE(error_message.empty());
 
   // Invalid address
@@ -912,7 +919,8 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
       "type": "ERC20"
     }
   })";
-  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, "0x1", mojom::CoinType::ETH,
+                                           &token, &error_message));
   EXPECT_FALSE(error_message.empty());
 
   // Missing symbol
@@ -928,7 +936,8 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
       "type": "ERC20"
     }
   })";
-  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, "0x1", mojom::CoinType::ETH,
+                                           &token, &error_message));
   EXPECT_FALSE(error_message.empty());
 
   // Invalid symbol, len = 12
@@ -945,7 +954,8 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
       "type": "ERC20"
     }
   })";
-  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, "0x1", mojom::CoinType::ETH,
+                                           &token, &error_message));
   EXPECT_FALSE(error_message.empty());
 
   // Missing decimals
@@ -961,7 +971,8 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
       "type": "ERC20"
     }
   })";
-  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, "0x1", mojom::CoinType::ETH,
+                                           &token, &error_message));
   EXPECT_FALSE(error_message.empty());
 
   // Invalid decimals, negative number or larger than 36.
@@ -978,7 +989,8 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
       "type": "ERC20"
     }
   })";
-  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, "0x1", mojom::CoinType::ETH,
+                                           &token, &error_message));
   EXPECT_FALSE(error_message.empty());
 
   json = R"({
@@ -994,7 +1006,8 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
       "type": "ERC20"
     }
   })";
-  EXPECT_FALSE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_FALSE(ParseWalletWatchAssetParams(json, "0x1", mojom::CoinType::ETH,
+                                           &token, &error_message));
   EXPECT_FALSE(error_message.empty());
 
   // Params in an array should work for legacy send.
@@ -1012,7 +1025,8 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
     }]
   })";
 
-  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, "0x1", mojom::CoinType::ETH,
+                                          &token, &error_message));
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
 
@@ -1032,7 +1046,8 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
     }
   })";
   expected_token->logo = "http://test.com/test.png";
-  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, "0x1", mojom::CoinType::ETH,
+                                          &token, &error_message));
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
 
@@ -1055,7 +1070,8 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
       "png;base64,"
       "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR42mP4z8AAAAMBAQD3"
       "A0FDAAAAAElFTkSuQmCC";
-  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, "0x1", mojom::CoinType::ETH,
+                                          &token, &error_message));
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
 
@@ -1075,7 +1091,8 @@ TEST(EthRequestHelperUnitTest, ParseWalletWatchAssetParams) {
     }
   })";
   expected_token->logo = "";
-  EXPECT_TRUE(ParseWalletWatchAssetParams(json, &token, &error_message));
+  EXPECT_TRUE(ParseWalletWatchAssetParams(json, "0x1", mojom::CoinType::ETH,
+                                          &token, &error_message));
   EXPECT_EQ(token, expected_token);
   EXPECT_TRUE(error_message.empty());
 }

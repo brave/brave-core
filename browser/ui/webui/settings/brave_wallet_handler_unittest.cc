@@ -215,12 +215,12 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
 
   const base::Value* assets_pref =
       handler.prefs()->GetDictionary(kBraveWalletUserAssets);
-  const base::Value* list = assets_pref->FindKey("0x999");
+  const base::Value* list = assets_pref->FindPath("ethereum.0x999");
   ASSERT_TRUE(list->is_list());
   const base::Value::List& asset_list = list->GetList();
   ASSERT_EQ(asset_list.size(), 1u);
 
-  EXPECT_EQ(*asset_list[0].FindStringKey("contract_address"), "");
+  EXPECT_EQ(*asset_list[0].FindStringKey("address"), "");
   EXPECT_EQ(*asset_list[0].FindStringKey("name"), "symbol_name");
   EXPECT_EQ(*asset_list[0].FindStringKey("symbol"), "symbol");
   EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc20"), false);

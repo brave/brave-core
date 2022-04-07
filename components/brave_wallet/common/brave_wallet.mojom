@@ -362,6 +362,9 @@ interface WalletHandler {
 };
 
 struct BlockchainToken {
+  // TODO(jocelyn): contract_address should be renamed to address to be a
+  // general naming for different coin type. Currently it's token mint address
+  // in Solana's context.
   string contract_address;
   string name;
   string logo;
@@ -370,9 +373,10 @@ struct BlockchainToken {
   string symbol;
   int32 decimals;
   bool visible = true;
-  string token_id = "";  // Non-empty for ERC721 tokens.
+  string token_id = "";  // Ethereum only, non-empty for ERC721 tokens.
   string coingecko_id = "";
   string chain_id;
+  CoinType coin;
 };
 
 // WebUI-side handler for requests from the browser.
@@ -410,15 +414,16 @@ interface KeyringServiceObserver {
 
 // List of tokens and coins that are supported.
 interface BlockchainRegistry {
-  // Obtains token information by a contract lookup
-  GetTokenByContract(string chain_id, string contract) => (BlockchainToken? token);
+  // Obtains token information by an address lookup
+  GetTokenByAddress(string chain_id, CoinType coin, string address) => (BlockchainToken? token);
 
   // Obtains token information by a symbol lookup
-  GetTokenBySymbol(string chain_id, string symbol) => (BlockchainToken? token);
+  GetTokenBySymbol(string chain_id, CoinType coin, string symbol) => (BlockchainToken? token);
 
   // Obtains all tokens Send/Swap UI
-  GetAllTokens(string chain_id) => (array<BlockchainToken> tokens);
+  GetAllTokens(string chain_id, CoinType coin) => (array<BlockchainToken> tokens);
 
+  // Below APIs are Ethereum only for the moment.
   // Obtains all tokens for the Buy UI
   GetBuyTokens(string chain_id) => (array<BlockchainToken> tokens);
 
@@ -562,6 +567,7 @@ interface AssetRatioService {
       (bool success, string seconds);
 
   // Obtain token info via contract address through etherscan API.
+  // This is only for Ethereum mainnet.
   GetTokenInfo(string contract_address) => (BlockchainToken? token);
 };
 
@@ -941,20 +947,20 @@ interface BraveWalletService {
   // Adds an observer for BraveWalletService
   AddObserver(pending_remote<BraveWalletServiceObserver> observer);
 
-  // Obtains the user assets for the specified chain ID
-  GetUserAssets(string chain_id) => (array<BlockchainToken> tokens);
+  // Obtains the user assets for the specified chain ID and coin type.
+  GetUserAssets(string chain_id, CoinType coin) => (array<BlockchainToken> tokens);
 
-  // Adds a user asset to the user asset list pref for the specified chain ID.
+  // Adds a user asset to the user asset list pref.
   // This asset could be a token from BlockchainRegistry or a custom token.
-  AddUserAsset(BlockchainToken token, string chain_id) => (bool success);
+  AddUserAsset(BlockchainToken token) => (bool success);
 
-  // Removes a user asset from the user asset list pref for the specified chain
-  // ID. This asset could be a token from BlockchainRegistry or a custom token.
-  RemoveUserAsset(BlockchainToken token, string chain_id) => (bool success);
-
-  // Sets whether or not an asset is visible for the specified chain ID.
+  // Removes a user asset from the user asset list pref.
   // This asset could be a token from BlockchainRegistry or a custom token.
-  SetUserAssetVisible(BlockchainToken token, string chain_id, bool visible) => (bool success);
+  RemoveUserAsset(BlockchainToken token) => (bool success);
+
+  // Sets whether or not an asset is visible.
+  // This asset could be a token from BlockchainRegistry or a custom token.
+  SetUserAssetVisible(BlockchainToken token, bool visible) => (bool success);
 
   // Check if the external wallet is installed (Only check installation state
   // regardless of internal state)

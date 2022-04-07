@@ -1068,7 +1068,9 @@ void BraveWalletProviderImpl::CommonRequestOrSendAsync(
             std::move(id));
   } else if (method == kWalletWatchAsset || method == kMetamaskWatchAsset) {
     mojom::BlockchainTokenPtr token;
-    if (!ParseWalletWatchAssetParams(normalized_json_request, &token,
+    const auto chain_id = json_rpc_service_->GetChainId(mojom::CoinType::ETH);
+    if (!ParseWalletWatchAssetParams(normalized_json_request, chain_id,
+                                     mojom::CoinType::ETH, &token,
                                      &error_message)) {
       if (!error_message.empty())
         error = mojom::ProviderError::kInvalidParams;

@@ -169,6 +169,7 @@ export const mockWalletState: WalletState = {
       symbol: 'USDC',
       tokenId: '',
       visible: true,
+      coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.MAINNET_CHAIN_ID
     },
     {
@@ -182,6 +183,7 @@ export const mockWalletState: WalletState = {
       symbol: 'DAI',
       tokenId: '',
       visible: true,
+      coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.MAINNET_CHAIN_ID
     }
   ],
@@ -236,6 +238,7 @@ export const mockWalletState: WalletState = {
       symbol: 'ETH',
       tokenId: '',
       visible: true,
+      coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.MAINNET_CHAIN_ID
     },
     {
@@ -249,6 +252,7 @@ export const mockWalletState: WalletState = {
       symbol: 'USDC',
       tokenId: '',
       visible: true,
+      coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.MAINNET_CHAIN_ID
     },
     {
@@ -262,6 +266,7 @@ export const mockWalletState: WalletState = {
       symbol: 'ETH',
       tokenId: '',
       visible: true,
+      coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.ROPSTEN_CHAIN_ID
     },
     {
@@ -275,6 +280,7 @@ export const mockWalletState: WalletState = {
       symbol: 'USDC',
       tokenId: '',
       visible: true,
+      coin: BraveWallet.CoinType.ETH,
       chainId: BraveWallet.ROPSTEN_CHAIN_ID
     }
   ],

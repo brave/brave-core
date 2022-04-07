@@ -85,7 +85,8 @@ export const ETH = {
   visible: true,
   tokenId: '',
   coingeckoId: '',
-  chainId: '0x1'
+  chainId: '0x1',
+  coin: BraveWallet.CoinType.ETH
 } as BraveWallet.BlockchainToken
 
 export const BAT = {
@@ -98,5 +99,6 @@ export const BAT = {
   decimals: 18,
   visible: false,
   tokenId: '',
-  coingeckoId: ''
+  coingeckoId: '',
+  coin: BraveWallet.CoinType.ETH
 } as BraveWallet.BlockchainToken

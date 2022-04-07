@@ -261,8 +261,8 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
 
   mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
       "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether USD", "", true,
-      false, "USDT", 6, true, "", "", "");
-  EXPECT_EQ(ParseTokenInfo(json), expected_token);
+      false, "USDT", 6, true, "", "", "0x1", mojom::CoinType::ETH);
+  EXPECT_EQ(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH), expected_token);
 
   // ERC721
   json = (R"(
@@ -283,8 +283,8 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
   )");
   expected_token = mojom::BlockchainToken::New(
       "0x0E3A2A1f2146d86A604adc220b4967A898D7Fe07", "Gods Unchained Cards", "",
-      false, true, "CARD", 0, true, "", "", "");
-  EXPECT_EQ(ParseTokenInfo(json), expected_token);
+      false, true, "CARD", 0, true, "", "", "0x1", mojom::CoinType::ETH);
+  EXPECT_EQ(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH), expected_token);
 
   const std::string valid_json = (R"(
     {
@@ -302,15 +302,17 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
       "lastUpdated": "2021-12-09T22:02:23.187Z"
     }
   )");
-  ASSERT_TRUE(ParseTokenInfo(valid_json));
+  ASSERT_TRUE(ParseTokenInfo(valid_json, "0x1", mojom::CoinType::ETH));
 
   // Invalid contract address.
   json = valid_json;
   base::ReplaceFirstSubstringAfterOffset(
       &json, 0, "0xdac17f958d2ee523a2206206994597c13d831ec7", "0xdac17f9");
-  EXPECT_FALSE(ParseTokenInfo(json)) << "Invalid contract address should fail";
+  EXPECT_FALSE(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH))
+      << "Invalid contract address should fail";
   base::ReplaceFirstSubstringAfterOffset(&json, 0, "0xdac17f9", "");
-  EXPECT_FALSE(ParseTokenInfo(json)) << "Empty contract address should fail";
+  EXPECT_FALSE(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH))
+      << "Empty contract address should fail";
 
   // Invalid decimals.
   json = (R"(
@@ -329,14 +331,17 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
       "lastUpdated": "2021-12-09T22:02:23.187Z"
     }
   )");
-  EXPECT_FALSE(ParseTokenInfo(json)) << "Invalid decimals should fail";
+  EXPECT_FALSE(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH))
+      << "Invalid decimals should fail";
   base::ReplaceFirstSubstringAfterOffset(&json, 0, "NOT A NUMBER", "");
-  EXPECT_FALSE(ParseTokenInfo(json)) << "Empty decimals should fail";
+  EXPECT_FALSE(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH))
+      << "Empty decimals should fail";
 
   // Invalid token type.
   json = valid_json;
   base::ReplaceFirstSubstringAfterOffset(&json, 0, "ERC20", "ERC");
-  EXPECT_FALSE(ParseTokenInfo(json)) << "Invalid token type should fail";
+  EXPECT_FALSE(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH))
+      << "Invalid token type should fail";
 
   // Missing required fields.
   const std::vector<std::string> required_fields = {
@@ -344,7 +349,8 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
   for (const auto& field : required_fields) {
     json = valid_json;
     base::ReplaceFirstSubstringAfterOffset(&json, 0, field, "test");
-    EXPECT_FALSE(ParseTokenInfo(json)) << "Missing " << field << " should fail";
+    EXPECT_FALSE(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH))
+        << "Missing " << field << " should fail";
   }
 
   // Empty values of required fields.
@@ -352,15 +358,16 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
   for (const auto& value : values) {
     json = valid_json;
     base::ReplaceFirstSubstringAfterOffset(&json, 0, value, "");
-    EXPECT_FALSE(ParseTokenInfo(json));
+    EXPECT_FALSE(ParseTokenInfo(json, "0x1", mojom::CoinType::ETH));
   }
 
   // Invalid JSON
-  EXPECT_FALSE(ParseTokenInfo(""));
-  EXPECT_FALSE(ParseTokenInfo("json"));
-  EXPECT_FALSE(ParseTokenInfo("[\"json\"]"));
-  EXPECT_FALSE(ParseTokenInfo("{\"result\": \"no payload property\"}"));
-  EXPECT_FALSE(ParseTokenInfo(R"({"payload":{})"));
+  EXPECT_FALSE(ParseTokenInfo("", "0x1", mojom::CoinType::ETH));
+  EXPECT_FALSE(ParseTokenInfo("json", "0x1", mojom::CoinType::ETH));
+  EXPECT_FALSE(ParseTokenInfo("[\"json\"]", "0x1", mojom::CoinType::ETH));
+  EXPECT_FALSE(ParseTokenInfo("{\"result\": \"no payload property\"}", "0x1",
+                              mojom::CoinType::ETH));
+  EXPECT_FALSE(ParseTokenInfo(R"({"payload":{})", "0x1", mojom::CoinType::ETH));
 }
 
 }  // namespace brave_wallet

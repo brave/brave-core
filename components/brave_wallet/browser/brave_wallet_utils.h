@@ -98,6 +98,8 @@ void SetDefaultBaseCryptocurrency(PrefService* prefs,
                                   const std::string& cryptocurrency);
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
 std::vector<std::string> GetAllKnownEthNetworkIds();
+std::vector<std::string> GetAllKnownSolNetworkIds();
+std::vector<std::string> GetAllKnownFilNetworkIds();
 std::string GetKnownEthNetworkId(const std::string& chain_id);
 
 std::string GetUnstoppableDomainsProxyReaderContractAddress(
@@ -125,7 +127,7 @@ std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin);
 // Otherwise returns an empty GURL
 GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls);
 
-absl::optional<std::string> GetPrefKeyForCoinType(mojom::CoinType coin);
+std::string GetPrefKeyForCoinType(mojom::CoinType coin);
 
 // Returns a string used for web3_clientVersion in the form of
 // BraveWallet/v[chromium-version]. Note that we expose only the Chromium

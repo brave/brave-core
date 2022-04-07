@@ -15,6 +15,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/test/gtest_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -976,12 +977,12 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   // Asset list of new custom chains should have native asset in
   // kBraveWalletUserAssets.
   const base::Value* assets_pref = prefs.GetDictionary(kBraveWalletUserAssets);
-  const base::Value* list1 = assets_pref->FindKey("chain_id");
+  const base::Value* list1 = assets_pref->FindPath("ethereum.chain_id");
   ASSERT_TRUE(list1->is_list());
   const base::Value::List& asset_list1 = list1->GetList();
   ASSERT_EQ(asset_list1.size(), 1u);
 
-  EXPECT_EQ(*asset_list1[0].FindStringKey("contract_address"), "");
+  EXPECT_EQ(*asset_list1[0].FindStringKey("address"), "");
   EXPECT_EQ(*asset_list1[0].FindStringKey("name"), "symbol_name");
   EXPECT_EQ(*asset_list1[0].FindStringKey("symbol"), "symbol");
   EXPECT_EQ(*asset_list1[0].FindBoolKey("is_erc20"), false);
@@ -990,12 +991,12 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   EXPECT_EQ(*asset_list1[0].FindStringKey("logo"), "https://url1.com");
   EXPECT_EQ(*asset_list1[0].FindBoolKey("visible"), true);
 
-  const base::Value* list2 = assets_pref->FindKey("chain_id2");
+  const base::Value* list2 = assets_pref->FindPath("ethereum.chain_id2");
   ASSERT_TRUE(list2->is_list());
   const base::Value::List& asset_list2 = list2->GetList();
   ASSERT_EQ(asset_list2.size(), 1u);
 
-  EXPECT_EQ(*asset_list2[0].FindStringKey("contract_address"), "");
+  EXPECT_EQ(*asset_list2[0].FindStringKey("address"), "");
   EXPECT_EQ(*asset_list2[0].FindStringKey("name"), "symbol_name2");
   EXPECT_EQ(*asset_list2[0].FindStringKey("symbol"), "symbol2");
   EXPECT_EQ(*asset_list2[0].FindBoolKey("is_erc20"), false);
@@ -1029,16 +1030,14 @@ TEST(BraveWalletUtilsUnitTest, GetFirstValidChainURL) {
 
 TEST(BraveWalletUtilsUnitTest, GetPrefKeyForCoinType) {
   auto key = GetPrefKeyForCoinType(mojom::CoinType::ETH);
-  ASSERT_TRUE(key);
-  EXPECT_EQ(*key, kEthereumPrefKey);
+  EXPECT_EQ(key, kEthereumPrefKey);
   key = GetPrefKeyForCoinType(mojom::CoinType::FIL);
-  ASSERT_TRUE(key);
-  EXPECT_EQ(*key, kFilecoinPrefKey);
+  EXPECT_EQ(key, kFilecoinPrefKey);
   key = GetPrefKeyForCoinType(mojom::CoinType::SOL);
-  ASSERT_TRUE(key);
-  EXPECT_EQ(*key, kSolanaPrefKey);
+  EXPECT_EQ(key, kSolanaPrefKey);
 
-  EXPECT_FALSE(GetPrefKeyForCoinType(static_cast<mojom::CoinType>(2016)));
+  EXPECT_DCHECK_DEATH(
+      GetPrefKeyForCoinType(static_cast<mojom::CoinType>(2016)));
 }
 
 TEST(BraveWalletUtilsUnitTest, GetCurrentChainId) {

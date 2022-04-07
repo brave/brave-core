@@ -14,6 +14,7 @@
 #include "base/environment.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
@@ -757,6 +758,26 @@ void GetAllKnownSolChains(std::vector<mojom::NetworkInfoPtr>* result) {
     result->push_back(network.Clone());
 }
 
+std::vector<std::string> GetAllKnownSolNetworkIds() {
+  std::vector<std::string> network_ids;
+  for (const auto& network : kKnownSolNetworks) {
+    std::string network_id = GetKnownSolNetworkId(network.chain_id);
+    if (!network_id.empty())
+      network_ids.push_back(network_id);
+  }
+  return network_ids;
+}
+
+std::vector<std::string> GetAllKnownFilNetworkIds() {
+  std::vector<std::string> network_ids;
+  for (const auto& network : kKnownFilNetworks) {
+    std::string network_id = GetKnownFilNetworkId(network.chain_id);
+    if (!network_id.empty())
+      network_ids.push_back(network_id);
+  }
+  return network_ids;
+}
+
 std::vector<std::string> GetAllKnownEthNetworkIds() {
   std::vector<std::string> network_ids;
   for (const auto& network : kKnownEthNetworks) {
@@ -836,6 +857,9 @@ std::string GetNetworkId(PrefService* prefs,
                          mojom::CoinType coin,
                          const std::string& chain_id) {
   DCHECK(prefs);
+
+  if (chain_id.empty())
+    return "";
 
   std::string id = GetKnownNetworkId(coin, chain_id);
   if (!id.empty())
@@ -923,11 +947,12 @@ void AddCustomNetwork(PrefService* prefs, mojom::NetworkInfoPtr chain) {
 
   DictionaryPrefUpdate update(prefs, kBraveWalletUserAssets);
   base::Value* user_assets_pref = update.Get();
-  base::Value* asset_list = user_assets_pref->SetKey(
-      network_id, base::Value(base::Value::Type::LIST));
+  base::Value* asset_list = user_assets_pref->SetPath(
+      base::StrCat({kEthereumPrefKey, ".", network_id}),
+      base::Value(base::Value::Type::LIST));
 
   base::Value native_asset(base::Value::Type::DICTIONARY);
-  native_asset.SetStringKey("contract_address", "");
+  native_asset.SetStringKey("address", "");
   native_asset.SetStringKey("name", chain->symbol_name);
   native_asset.SetStringKey("symbol", chain->symbol);
   native_asset.SetBoolKey("is_erc20", false);
@@ -960,17 +985,15 @@ std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin) {
   const base::Value* selected_networks =
       prefs->GetDictionary(kBraveWalletSelectedNetworks);
   DCHECK(selected_networks);
-  auto pref_key = GetPrefKeyForCoinType(coin);
-  if (!pref_key)
-    return std::string();
-  const std::string* chain_id = selected_networks->FindStringKey(*pref_key);
+  const std::string* chain_id =
+      selected_networks->FindStringKey(GetPrefKeyForCoinType(coin));
   if (!chain_id)
     return std::string();
 
   return *chain_id;
 }
 
-absl::optional<std::string> GetPrefKeyForCoinType(mojom::CoinType coin) {
+std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
   switch (coin) {
     case mojom::CoinType::ETH:
       return kEthereumPrefKey;
@@ -979,7 +1002,8 @@ absl::optional<std::string> GetPrefKeyForCoinType(mojom::CoinType coin) {
     case mojom::CoinType::SOL:
       return kSolanaPrefKey;
   }
-  return absl::nullopt;
+  NOTREACHED();
+  return "";
 }
 
 std::string eTLDPlusOne(const GURL& url) {

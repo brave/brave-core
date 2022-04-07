@@ -37,36 +37,40 @@ void BlockchainRegistry::UpdateTokenList(TokenListMap token_list_map) {
   token_list_map_ = std::move(token_list_map);
 }
 
-void BlockchainRegistry::GetTokenByContract(
-    const std::string& chain_id,
-    const std::string& contract,
-    GetTokenByContractCallback callback) {
-  std::move(callback).Run(GetTokenByContract(chain_id, contract));
+void BlockchainRegistry::GetTokenByAddress(const std::string& chain_id,
+                                           mojom::CoinType coin,
+                                           const std::string& address,
+                                           GetTokenByAddressCallback callback) {
+  std::move(callback).Run(GetTokenByAddress(chain_id, coin, address));
 }
 
-mojom::BlockchainTokenPtr BlockchainRegistry::GetTokenByContract(
+mojom::BlockchainTokenPtr BlockchainRegistry::GetTokenByAddress(
     const std::string& chain_id,
-    const std::string& contract) {
-  if (token_list_map_.find(chain_id) == token_list_map_.end())
+    mojom::CoinType coin,
+    const std::string& address) {
+  const auto key = GetTokenListKey(coin, chain_id);
+  if (!token_list_map_.contains(key))
     return nullptr;
 
-  const auto& tokens = token_list_map_[chain_id];
+  const auto& tokens = token_list_map_[key];
   auto token_it =
       std::find_if(tokens.begin(), tokens.end(),
                    [&](const mojom::BlockchainTokenPtr& current_token) {
-                     return current_token->contract_address == contract;
+                     return current_token->contract_address == address;
                    });
   return token_it == tokens.end() ? nullptr : token_it->Clone();
 }
 
 void BlockchainRegistry::GetTokenBySymbol(const std::string& chain_id,
+                                          mojom::CoinType coin,
                                           const std::string& symbol,
                                           GetTokenBySymbolCallback callback) {
-  if (token_list_map_.find(chain_id) == token_list_map_.end()) {
+  const auto key = GetTokenListKey(coin, chain_id);
+  if (!token_list_map_.contains(key)) {
     std::move(callback).Run(nullptr);
     return;
   }
-  const auto& tokens = token_list_map_[chain_id];
+  const auto& tokens = token_list_map_[key];
   auto token_it =
       std::find_if(tokens.begin(), tokens.end(),
                    [&](const mojom::BlockchainTokenPtr& current_token) {
@@ -82,13 +86,15 @@ void BlockchainRegistry::GetTokenBySymbol(const std::string& chain_id,
 }
 
 void BlockchainRegistry::GetAllTokens(const std::string& chain_id,
+                                      mojom::CoinType coin,
                                       GetAllTokensCallback callback) {
-  if (token_list_map_.find(chain_id) == token_list_map_.end()) {
+  const auto key = GetTokenListKey(coin, chain_id);
+  if (!token_list_map_.contains(key)) {
     std::move(callback).Run(
         std::vector<brave_wallet::mojom::BlockchainTokenPtr>());
     return;
   }
-  const auto& tokens = token_list_map_[chain_id];
+  const auto& tokens = token_list_map_[key];
   std::vector<brave_wallet::mojom::BlockchainTokenPtr> tokens_copy(
       tokens.size());
   std::transform(
