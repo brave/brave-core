@@ -1501,8 +1501,8 @@ void JsonRpcService::OnGetSupportsInterfaceERC721Metadata(
 
   if (!is_supported) {
     std::move(callback).Run(
-        "", mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+        "", mojom::ProviderError::kMethodNotSupported,
+        l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
     return;
   }
 
@@ -1554,8 +1554,8 @@ void JsonRpcService::OnGetERC721TokenUri(
   if (scheme != url::kDataScheme && scheme != url::kHttpsScheme &&
       scheme != ipfs::kIPFSScheme) {
     std::move(callback).Run(
-        "", mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+        "", mojom::ProviderError::kMethodNotSupported,
+        l10n_util::GetStringUTF8(IDS_WALLET_METHOD_NOT_SUPPORTED_ERROR));
     return;
   }
 
