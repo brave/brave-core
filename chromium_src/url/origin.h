@@ -6,12 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_URL_ORIGIN_H_
 #define BRAVE_CHROMIUM_SRC_URL_ORIGIN_H_
 
-#define GetTupleOrPrecursorTupleIfOpaque                                   \
-  NotUsed() const;                                                         \
-  /* Checks if origin is opaque and nonce is initialized. */               \
-  bool CanUseNonceForEphemeralStorageKeying() const;                       \
-  /* Returns nonce to use as an ephemeral storage key. */                  \
-  const base::UnguessableToken& GetNonceForEphemeralStorageKeying() const; \
+namespace net {
+class EphemeralStorageOriginUtils;
+}  // namespace net
+
+#define GetTupleOrPrecursorTupleIfOpaque   \
+  NotUsed() const;                         \
+  friend net::EphemeralStorageOriginUtils; \
   const SchemeHostPort& GetTupleOrPrecursorTupleIfOpaque
 
 #include "src/url/origin.h"

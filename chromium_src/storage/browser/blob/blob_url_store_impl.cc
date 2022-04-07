@@ -6,6 +6,7 @@
 
 #include "base/strings/strcat.h"
 #include "net/base/features.h"
+#include "net/base/url_util.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -17,7 +18,8 @@ namespace {
 // appending an opaque nonce internally to all URLs, the valid precursor origin
 // is used to check if an URL can be used to access a blob.
 bool CanUseOriginForPartitioning(const url::Origin& origin) {
-  return origin.CanUseNonceForEphemeralStorageKeying() &&
+  return net::EphemeralStorageOriginUtils::CanUseNonceForEphemeralStorageKeying(
+             origin) &&
          origin.GetTupleOrPrecursorTupleIfOpaque().IsValid() &&
          base::FeatureList::IsEnabled(
              net::features::kBravePartitionBlobStorage);
@@ -110,9 +112,11 @@ GURL BlobURLStoreImpl::GetPartitionedOrOriginalUrl(const GURL& url) const {
 
   // Use origin nonce as a partition key and append it to the URL path.
   GURL clean_url = BlobUrlUtils::ClearUrlFragment(url);
-  std::string partitioned_path =
-      base::StrCat({clean_url.path_piece(), "_",
-                    origin_.GetNonceForEphemeralStorageKeying().ToString()});
+  std::string partitioned_path = base::StrCat(
+      {clean_url.path_piece(), "_",
+       net::EphemeralStorageOriginUtils::GetNonceForEphemeralStorageKeying(
+           origin_)
+           .ToString()});
   GURL::Replacements replacements;
   replacements.SetPathStr(partitioned_path);
   return clean_url.ReplaceComponents(replacements);
