@@ -400,7 +400,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     private void maybeShowChainRequestLayout() {
         assert mJsonRpcService != null;
-        mJsonRpcService.getPendingChainRequests(networks -> {
+        mJsonRpcService.getPendingAddChainRequests(networks -> {
             if (networks != null && networks.length != 0) {
                 openBraveWalletDAppsActivity(
                         BraveWalletDAppsActivity.ActivityType.ADD_ETHEREUM_CHAIN);

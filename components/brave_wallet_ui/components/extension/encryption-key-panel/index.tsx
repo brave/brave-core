@@ -39,7 +39,7 @@ export interface Props {
   onCancel: () => void
 }
 
-function EncryptionKeyPanel(props: Props) {
+function EncryptionKeyPanel (props: Props) {
   const {
     panelType,
     accounts,

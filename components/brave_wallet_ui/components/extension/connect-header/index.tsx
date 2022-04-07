@@ -21,7 +21,7 @@ export interface Props {
   hideTitle?: boolean
 }
 
-function ConnectHeader(props: Props) {
+function ConnectHeader (props: Props) {
   const { originInfo, hideTitle } = props
 
   return (

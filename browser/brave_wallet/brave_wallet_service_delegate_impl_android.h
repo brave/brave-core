@@ -33,14 +33,14 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate {
       const BraveWalletServiceDelegateImpl&) = delete;
   ~BraveWalletServiceDelegateImpl() override;
 
-  void AddEthereumPermission(const std::string& origin,
+  void AddEthereumPermission(const url::Origin& origin,
                              const std::string& account,
                              AddEthereumPermissionCallback callback) override;
-  void HasEthereumPermission(const std::string& origin,
+  void HasEthereumPermission(const url::Origin& origin,
                              const std::string& account,
                              HasEthereumPermissionCallback callback) override;
   void ResetEthereumPermission(
-      const std::string& origin,
+      const url::Origin& origin,
       const std::string& account,
       ResetEthereumPermissionCallback callback) override;
 

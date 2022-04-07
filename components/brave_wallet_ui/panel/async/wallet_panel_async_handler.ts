@@ -49,26 +49,26 @@ import { isRemoteImageURL } from '../../utils/string-utils'
 
 const handler = new AsyncActionHandler()
 
-function getPanelState(store: Store): PanelState {
+function getPanelState (store: Store): PanelState {
   return (store.getState() as WalletPanelState).panel
 }
 
-function getWalletState(store: Store): WalletState {
+function getWalletState (store: Store): WalletState {
   return store.getState().wallet
 }
 
-async function refreshWalletInfo(store: Store) {
+async function refreshWalletInfo (store: Store) {
   const walletHandler = getWalletPanelApiProxy().walletHandler
   const result = await walletHandler.getWalletInfo()
   store.dispatch(WalletActions.initialized({ ...result, selectedAccount: '', visibleTokens: [] }))
 }
 
-async function hasPendingUnlockRequest() {
+async function hasPendingUnlockRequest () {
   const keyringService = getWalletPanelApiProxy().keyringService
   return (await keyringService.hasPendingUnlockRequest()).pending
 }
 
-async function getPendingAddChainRequest() {
+async function getPendingAddChainRequest () {
   const jsonRpcService = getWalletPanelApiProxy().jsonRpcService
   const requests = (await jsonRpcService.getPendingAddChainRequests()).requests
   if (requests && requests.length) {
@@ -77,7 +77,7 @@ async function getPendingAddChainRequest() {
   return null
 }
 
-async function getPendingSwitchChainRequest() {
+async function getPendingSwitchChainRequest () {
   const jsonRpcService = getWalletPanelApiProxy().jsonRpcService
   const requests =
     (await jsonRpcService.getPendingSwitchChainRequests()).requests
@@ -87,7 +87,7 @@ async function getPendingSwitchChainRequest() {
   return null
 }
 
-async function getPendingGetEncryptionPublicKeyRequest() {
+async function getPendingGetEncryptionPublicKeyRequest () {
   const braveWalletService = getWalletPanelApiProxy().braveWalletService
   const requests =
     (await braveWalletService.getPendingGetEncryptionPublicKeyRequests()).requests
@@ -97,7 +97,7 @@ async function getPendingGetEncryptionPublicKeyRequest() {
   return null
 }
 
-async function getPendingDecryptRequest() {
+async function getPendingDecryptRequest () {
   const braveWalletService = getWalletPanelApiProxy().braveWalletService
   const requests =
     (await braveWalletService.getPendingDecryptRequests()).requests
@@ -107,7 +107,7 @@ async function getPendingDecryptRequest() {
   return null
 }
 
-async function getPendingSignMessageRequest() {
+async function getPendingSignMessageRequest () {
   const braveWalletService = getWalletPanelApiProxy().braveWalletService
   const requests =
     (await braveWalletService.getPendingSignMessageRequests()).requests
@@ -117,7 +117,7 @@ async function getPendingSignMessageRequest() {
   return null
 }
 
-async function getPendingAddSuggestTokenRequest() {
+async function getPendingAddSuggestTokenRequest () {
   const braveWalletService = getWalletPanelApiProxy().braveWalletService
   const requests =
     (await braveWalletService.getPendingAddSuggestTokenRequests()).requests
@@ -140,7 +140,7 @@ handler.on(PanelActions.navigateToMain.getType(), async (store: Store) => {
   apiProxy.panelHandler.showUI()
 })
 
-async function navigateToConnectHardwareWallet(store: Store) {
+async function navigateToConnectHardwareWallet (store: Store) {
   const apiProxy = getWalletPanelApiProxy()
   apiProxy.panelHandler.setCloseOnDeactivate(false)
 
@@ -171,7 +171,7 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
     const accounts = url.searchParams.getAll('addr') || []
     const originScheme = url.searchParams.get('origin-scheme') || ''
     const originHost = url.searchParams.get('origin-host') || ''
-    const originPort = Number(url.searchParams.get('origin-port') || 0) 
+    const originPort = Number(url.searchParams.get('origin-port') || 0)
     const originSpec = url.searchParams.get('origin-spec') || ''
     const eTldPlusOne = url.searchParams.get('etld-plus-one') || ''
     const originInfo: BraveWallet.OriginInfo = {

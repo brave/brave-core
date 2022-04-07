@@ -74,21 +74,21 @@ type Props = {
   walletActions: typeof WalletActions
 }
 
-function mapStateToProps(state: WalletPanelState): Partial<Props> {
+function mapStateToProps (state: WalletPanelState): Partial<Props> {
   return {
     panel: state.panel,
     wallet: state.wallet
   }
 }
 
-function mapDispatchToProps(dispatch: Dispatch): Partial<Props> {
+function mapDispatchToProps (dispatch: Dispatch): Partial<Props> {
   return {
     walletPanelActions: bindActionCreators(WalletPanelActions, store.dispatch.bind(store)),
     walletActions: bindActionCreators(WalletActions, store.dispatch.bind(store))
   }
 }
 
-function Container(props: Props) {
+function Container (props: Props) {
   const {
     accounts,
     selectedAccount,

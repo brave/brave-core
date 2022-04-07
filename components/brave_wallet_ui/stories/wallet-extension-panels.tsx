@@ -33,7 +33,7 @@ import {
   PanelTypes,
   AppsListType,
   BuySendSwapViewTypes,
-  OriginInfo,
+  Origin,
   WalletState
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
@@ -55,6 +55,7 @@ import { mockDefaultCurrencies } from './mock-data/mock-default-currencies'
 import { mockTransactionSpotPrices } from './mock-data/current-price-data'
 import { mockAccounts, mockedTransactionAccounts } from './mock-data/mock-wallet-accounts'
 import { mockEncryptionKeyRequest, mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
+import { mockOriginInfo } from './mock-data/mock-origin-info'
 import { mockAccountAssetOptions, mockBasicAttentionToken, mockEthToken, mockNewAssetOptions } from './mock-data/mock-asset-options'
 import { LibContext } from '../common/context/lib.context'
 import * as MockedLib from '../common/async/__mocks__/lib'
@@ -75,10 +76,8 @@ export default {
   }
 }
 
-const originInfo: OriginInfo = {
-  origin: 'https://app.uniswap.org/With_A_Really_Looooooong_Site_Name/fixme',
-  eTldPlusOne: 'uniswap.org'
-}
+const originInfo = mockOriginInfo
+
 const store = createStore(combineReducers({
   wallet: createWalletReducer(mockWalletState),
   page: createPageReducer(mockPageState),
@@ -214,7 +213,8 @@ export const _SignData = () => {
   const signMessageDataPayload = [{
     id: 0,
     address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-    message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.'
+    message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.',
+    originInfo: mockOriginInfo
   }]
 
   return (
@@ -464,12 +464,12 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     alert('Will navigate to full wallet restore page')
   }
 
-  const onDisconnectFromOrigin = (origin: string, address: string) => {
-    console.log(`Will disconnect ${address} from ${origin}`)
+  const onDisconnectFromOrigin = (origin: Origin, address: string) => {
+    console.log(`Will disconnect ${address} from ${origin.host}`)
   }
 
-  const onConnectToOrigin = (origin: string, account: WalletAccountType) => {
-    console.log(`Will connect ${account.address} to ${origin}`)
+  const onConnectToOrigin = (origin: Origin, account: WalletAccountType) => {
+    console.log(`Will connect ${account.address} to ${origin.host}`)
   }
 
   const onAddAccount = () => {

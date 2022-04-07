@@ -1061,7 +1061,8 @@ TEST(BraveWalletUtilsUnitTest, eTLDPlusOne) {
 TEST(BraveWalletUtilsUnitTest, MakeOriginInfo) {
   auto origin_info =
       MakeOriginInfo(url::Origin::Create(GURL("https://blog.brave.com:443")));
-  EXPECT_EQ(url::Origin::Create(GURL("https://blog.brave.com")), origin_info->origin);
+  EXPECT_EQ(url::Origin::Create(GURL("https://blog.brave.com")),
+            origin_info->origin);
   EXPECT_EQ("https://blog.brave.com", origin_info->origin_spec);
   EXPECT_EQ("brave.com", origin_info->e_tld_plus_one);
 

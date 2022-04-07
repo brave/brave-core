@@ -207,7 +207,7 @@ function ConfirmTransactionPanel ({
         <>
           <FavIcon src={`chrome://favicon/size/64@1x/${originInfo.originSpec}`} />
           <URLText>
-            <CreateSiteOrigin 
+            <CreateSiteOrigin
               originSpec={originInfo.originSpec}
               eTldPlusOne={originInfo.eTldPlusOne}
             />

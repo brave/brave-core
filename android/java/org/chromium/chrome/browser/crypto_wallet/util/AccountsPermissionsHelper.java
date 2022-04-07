@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.url.internal.mojom.Origin;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 
 import java.util.ArrayList;
@@ -15,11 +16,11 @@ import java.util.HashSet;
 public class AccountsPermissionsHelper {
     private BraveWalletService mBraveWalletService;
     private AccountInfo[] mAccounts;
-    private String mOrigin;
+    private Origin mOrigin;
     private HashSet<AccountInfo> mAccountsWithPermissions;
 
     public AccountsPermissionsHelper(
-            BraveWalletService braveWalletService, AccountInfo[] accounts, String origin) {
+            BraveWalletService braveWalletService, AccountInfo[] accounts, Origin origin) {
         assert braveWalletService != null;
         assert accounts != null;
         mBraveWalletService = braveWalletService;

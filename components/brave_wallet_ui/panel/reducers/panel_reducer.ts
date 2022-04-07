@@ -63,12 +63,12 @@ const defaultState: PanelState = {
   }],
   getEncryptionPublicKeyRequest: {
     originInfo: defaultOriginInfo,
-    address: '',
+    address: ''
   },
   decryptRequest: {
     originInfo: defaultOriginInfo,
     address: '',
-    unsafeMessage: '',
+    unsafeMessage: ''
   },
   switchChainRequest: {
     originInfo: defaultOriginInfo,

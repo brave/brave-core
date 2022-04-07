@@ -43,6 +43,8 @@ import org.chromium.chrome.browser.crypto_wallet.util.SingleTokenBalanceHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.url.GURL;
+import org.chromium.url.internal.mojom.Origin;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -161,9 +163,28 @@ public class BraveWalletPanel implements DialogInterface {
     }
 
     private void updateStatus() {
+        GURL address = getCurrentHostHttpAddress();
+        org.chromium.url.internal.mojom.Origin hostOrigin =
+                new org.chromium.url.internal.mojom.Origin();
+        hostOrigin.scheme = address.getScheme();
+        hostOrigin.host = address.getHost();
+        hostOrigin.port = 0;
+        if (address.getPort().isEmpty()) {
+            if (hostOrigin.scheme.equals("http")) {
+                hostOrigin.port = 80;
+            } else if (hostOrigin.scheme.equals("https")) {
+                hostOrigin.port = 443;
+            }
+        } else {
+            try {
+                hostOrigin.port = Short.parseShort(address.getPort());
+            } catch (Exception e) {
+            }
+        }
+
         AccountsPermissionsHelper accountsPermissionsHelper =
                 new AccountsPermissionsHelper(mBraveWalletPanelServices.getBraveWalletService(),
-                        mAccountInfos, getCurrentHostHttpAddress());
+                        mAccountInfos, hostOrigin);
         accountsPermissionsHelper.checkAccounts(() -> {
             mAccountsWithPermissions = accountsPermissionsHelper.getAccountsWithPermissions();
             updateAccount();
@@ -278,11 +299,11 @@ public class BraveWalletPanel implements DialogInterface {
         // TODO: show connected or disconnected account page
     }
 
-    private String getCurrentHostHttpAddress() {
+    private GURL getCurrentHostHttpAddress() {
         ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
         if (activity != null) {
-            return activity.getActivityTab().getUrl().getOrigin().getSpec();
+            return activity.getActivityTab().getUrl().getOrigin();
         }
-        return "";
+        return new GURL();
     }
 }
