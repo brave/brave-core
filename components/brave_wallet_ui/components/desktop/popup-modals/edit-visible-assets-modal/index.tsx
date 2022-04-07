@@ -489,13 +489,17 @@ const EditVisibleAssetsModal = (props: Props) => {
                       value={coingeckoID}
                       onChange={handleCoingeckoIDChanged}
                     />
-                    <InputLabel>{getLocale('braveWalletWatchListTokenId')}</InputLabel>
-                    <Input
-                      value={tokenID}
-                      onChange={handleTokenIDChanged}
-                      type='number'
-                      disabled={Number(tokenDecimals) > 0}
-                    />
+                    {customAssetsNetwork.coin !== BraveWallet.CoinType.SOL &&
+                      <>
+                        <InputLabel>{getLocale('braveWalletWatchListTokenId')}</InputLabel>
+                        <Input
+                          value={tokenID}
+                          onChange={handleTokenIDChanged}
+                          type='number'
+                          disabled={Number(tokenDecimals) > 0}
+                        />
+                      </>
+                    }
                     {showTokenIDRequired &&
                       <ErrorText>{getLocale('braveWalletWatchListTokenIdError')}</ErrorText>
                     }

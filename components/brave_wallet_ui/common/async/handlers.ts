@@ -27,7 +27,8 @@ import {
   TransactionProviderError,
   SupportedCoinTypes,
   SendFilTransactionParams,
-  SendSolTransactionParams
+  SendSolTransactionParams,
+  SPLTransferFromParams
 } from '../../constants/types'
 
 // Utils
@@ -45,7 +46,8 @@ import {
   refreshPrices,
   sendEthTransaction,
   sendFilTransaction,
-  sendSolTransaction
+  sendSolTransaction,
+  sendSPLTransaction
 } from './lib'
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
@@ -327,6 +329,17 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
   await store.dispatch(refreshTransactionHistory(payload.from))
 })
 
+handler.on(WalletActions.sendSPLTransfer.getType(), async (store: Store, payload: SPLTransferFromParams) => {
+  const { solanaTxManagerProxy } = getAPIProxy()
+  const value = await solanaTxManagerProxy.makeTokenProgramTransferTxData(payload.splTokenMintAddress, payload.from, payload.to, BigInt(payload.value))
+  if (!value.txData) {
+    console.log('Failed making SPL transfer data, to: ', payload.to, ', value: ', payload.value)
+    return
+  }
+  await sendSPLTransaction(value.txData)
+  await store.dispatch(refreshTransactionHistory(payload.from))
+})
+
 handler.on(WalletActions.sendERC20Transfer.getType(), async (store: Store, payload: ER20TransferParams) => {
   const apiProxy = getAPIProxy()
   const { data, success } = await apiProxy.ethTxManagerProxy.makeERC20TransferData(payload.to, payload.value)
@@ -432,7 +445,8 @@ handler.on(WalletActions.refreshGasEstimates.getType(), async (store: Store, txI
 
   if (
     txInfo.txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
-    txInfo.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer
+    txInfo.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
+    txInfo.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
   ) {
     const getSolFee = await solanaTxManagerProxy.getEstimatedTxFee(txInfo.id)
     if (!getSolFee.fee) {

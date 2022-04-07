@@ -39,7 +39,8 @@ import {
   DefaultCurrencies,
   GetPriceReturnInfo,
   OriginInfo,
-  SolFeeEstimates
+  SolFeeEstimates,
+  SPLTransferFromParams
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
@@ -79,6 +80,7 @@ export const selectPortfolioTimeline = createAction<BraveWallet.AssetPriceTimefr
 export const portfolioTimelineUpdated = createAction<BraveWallet.AssetPriceTimeframe>('portfolioTimelineUpdated')
 export const sendTransaction = createAction<SendTransactionParams>('sendTransaction')
 export const sendERC20Transfer = createAction<ER20TransferParams>('sendERC20Transfer')
+export const sendSPLTransfer = createAction<SPLTransferFromParams>('sendSPLTransfer')
 export const sendERC721TransferFrom = createAction<ERC721TransferFromParams>('sendERC721TransferFrom')
 export const approveERC20Allowance = createAction<ApproveERC20Params>('approveERC20Allowance')
 export const newUnapprovedTxAdded = createAction<NewUnapprovedTxAdded>('newUnapprovedTxAdded')

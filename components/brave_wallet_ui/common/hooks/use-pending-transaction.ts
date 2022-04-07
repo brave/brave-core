@@ -80,7 +80,10 @@ export const usePendingTransactions = () => {
   const isERC20Approve = transactionInfo?.txType === BraveWallet.TransactionType.ERC20Approve
   const isERC721SafeTransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
   const isERC721TransferFrom = transactionInfo?.txType === BraveWallet.TransactionType.ERC721TransferFrom
-  const isSolanaSystemTransfer = transactionInfo?.txType === BraveWallet.TransactionType.SolanaSystemTransfer
+  const isSolanaTransaction =
+    transactionInfo?.txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
+    transactionInfo?.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
+    transactionInfo?.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
 
   // methods
   const findAccountName = (address: string) => {
@@ -219,7 +222,7 @@ export const usePendingTransactions = () => {
     isERC20Approve,
     isERC721SafeTransferFrom,
     isERC721TransferFrom,
-    isSolanaSystemTransfer,
+    isSolanaTransaction,
     onEditAllowanceSave,
     queueNextTransaction,
     rejectAllTransactions,
