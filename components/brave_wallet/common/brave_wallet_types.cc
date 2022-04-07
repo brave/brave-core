@@ -104,4 +104,48 @@ bool SolanaAccountInfo::operator!=(const SolanaAccountInfo& info) const {
   return !operator==(info);
 }
 
+bool ValidSolidityBits(size_t bits) {
+  return bits != 0 && bits % 8 == 0 && bits <= 256;
+}
+
+absl::optional<uint256_t> MaxSolidityUint(size_t bits) {
+  if (!ValidSolidityBits(bits))
+    return absl::nullopt;
+  // Max hex for intN value is 0x[ff]... for num bytes
+  uint256_t value = 0;
+  const size_t num_bytes = bits / 8;
+  for (size_t i = 0; i < num_bytes; i++) {
+    value <<= 8;
+    value += 0xff;
+  }
+  return value;
+}
+
+absl::optional<int256_t> MaxSolidityInt(size_t bits) {
+  if (!ValidSolidityBits(bits))
+    return absl::nullopt;
+  // Max hex for intN value is 0x7f[ff]... for num bytes - 1
+  int256_t value = 0x7f;
+  const size_t num_bytes = bits / 8;
+  for (size_t i = 0; i < num_bytes - 1; i++) {
+    value <<= 8;
+    value += 0xff;
+  }
+  return value;
+}
+
+absl::optional<int256_t> MinSolidityInt(size_t bits) {
+  if (!ValidSolidityBits(bits))
+    return absl::nullopt;
+  // Min hex for intN value is 0x80[00]... for num bytes - 1
+  // A simple bit shift doesn't work quite right because of
+  // using boost's int256_t type.
+  int256_t value = 0x80 * -1;
+  const size_t num_bytes = bits / 8;
+  for (size_t i = 0; i < num_bytes - 1; i++) {
+    value *= 256;
+  }
+  return value;
+}
+
 }  // namespace brave_wallet
