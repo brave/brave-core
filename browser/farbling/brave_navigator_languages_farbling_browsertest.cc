@@ -42,6 +42,7 @@ using content::TitleWatcher;
 
 namespace {
 const char kNavigatorLanguagesScript[] = "navigator.languages.toString()";
+const uint64_t kTestingSessionToken = 12345;
 }
 
 class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
@@ -74,7 +75,8 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
     browser_content_client_.reset(new BraveContentBrowserClient());
     content::SetBrowserClientForTesting(browser_content_client_.get());
     g_brave_browser_process->brave_farbling_service()
-        ->set_session_tokens_for_testing();
+        ->set_session_tokens_for_testing(kTestingSessionToken,
+                                         kTestingSessionToken);
 
     host_resolver()->AddRule("*", "127.0.0.1");
   }

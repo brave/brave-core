@@ -30,8 +30,11 @@ uint64_t BraveFarblingService::session_token(bool is_off_the_record) {
   return session_token_;
 }
 
-void BraveFarblingService::set_session_tokens_for_testing() {
-  session_token_ = incognito_session_token_ = 12345;
+void BraveFarblingService::set_session_tokens_for_testing(
+    uint64_t session_token,
+    uint64_t incognito_session_token) {
+  session_token_ = session_token;
+  incognito_session_token_ = incognito_session_token;
 }
 
 bool BraveFarblingService::MakePseudoRandomGeneratorForURL(
