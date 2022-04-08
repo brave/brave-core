@@ -93,7 +93,7 @@ function ConfirmTransactionPanel ({
     isERC20Approve,
     isERC721SafeTransferFrom,
     isERC721TransferFrom,
-    isSolanaSystemTransfer,
+    isSolanaTransaction,
     onEditAllowanceSave,
     queueNextTransaction,
     rejectAllTransactions,
@@ -277,7 +277,7 @@ function ConfirmTransactionPanel ({
           onSubmit={onSelectTab('details')}
           text='Details'
         />
-        {!isSolanaSystemTransfer &&
+        {!isSolanaTransaction &&
           <AdvancedTransactionSettingsButton
             onSubmit={onToggleAdvancedTransactionSettings}
           />
@@ -291,7 +291,7 @@ function ConfirmTransactionPanel ({
         {selectedTab === 'transaction' ? (
           <>
             {isERC20Approve && <Erc20ApproveTransactionInfo onToggleEditGas={onToggleEditGas} />}
-            {!isERC20Approve && <TransactionInfo onToggleEditGas={onToggleEditGas} /> }
+            {!isERC20Approve && <TransactionInfo onToggleEditGas={onToggleEditGas} />}
           </>
         ) : <TransactionDetailBox transactionInfo={transactionInfo} />}
       </MessageBox>

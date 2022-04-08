@@ -165,7 +165,8 @@ const CryptoView = (props: Props) => {
         if (id === 'add-asset') {
           onShowVisibleAssetsModal(true)
         } else {
-          const asset = id?.toLowerCase().startsWith('0x')
+          // If the id length is greater than 15 assumes it's a contractAddress
+          const asset = id?.length > 15
             ? userVisibleTokensInfo.find((token) => token.contractAddress === id)
             : userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === id?.toLowerCase())
           onSelectAsset(asset)

@@ -225,6 +225,25 @@ export default function useSend () {
       coin: selectedAccount.coin
     }))
 
+    if (
+      selectedAccount.coin === BraveWallet.CoinType.SOL &&
+      selectedSendAsset.contractAddress !== '' &&
+      !selectedSendAsset.isErc20 && !selectedSendAsset.isErc721
+    ) {
+      dispatch(WalletActions.sendSPLTransfer({
+        from: selectedAccount.address,
+        to: toAddress,
+        value: new Amount(sendAmount)
+          .multiplyByDecimals(selectedSendAsset.decimals)
+          .toHex(),
+        coin: selectedAccount.coin,
+        splTokenMintAddress: selectedSendAsset.contractAddress
+      }))
+      setToAddressOrUrl('')
+      setSendAmount('')
+      return
+    }
+
     if (selectedSendAsset.isErc721 || selectedSendAsset.isErc20) { return }
 
     dispatch(WalletActions.sendTransaction({

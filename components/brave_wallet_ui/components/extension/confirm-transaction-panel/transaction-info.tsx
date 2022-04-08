@@ -14,19 +14,21 @@ import {
 
 interface TransactionInfoProps {
   onToggleEditGas: () => void
-  isSolanaSystemTransfer?: boolean
 }
 export const TransactionInfo = ({
-  onToggleEditGas,
-  isSolanaSystemTransfer
+  onToggleEditGas
 }: TransactionInfoProps) => {
   const {
-    transactionDetails, isERC721SafeTransferFrom, isERC721TransferFrom
+    transactionDetails,
+    isERC721SafeTransferFrom,
+    isERC721TransferFrom,
+    isSolanaTransaction,
+    transactionsNetwork
   } = usePendingTransactions()
 
   // redux
   const {
-    selectedNetwork, defaultCurrencies
+    defaultCurrencies
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
   // exit early if no details
@@ -62,13 +64,13 @@ export const TransactionInfo = ({
     <SectionRow>
       <TransactionTitle>
         {
-          isSolanaSystemTransfer
+          isSolanaTransaction
             ? getLocale('braveWalletConfirmTransactionTransactionFee')
             : getLocale('braveWalletConfirmTransactionGasFee')
         }
       </TransactionTitle>
 
-      {!isSolanaSystemTransfer &&
+      {!isSolanaTransaction &&
         <EditButton onClick={onToggleEditGas}>
           {getLocale('braveWalletAllowSpendEditButton')}
         </EditButton>
@@ -77,8 +79,8 @@ export const TransactionInfo = ({
 
     <TransactionTypeText>
       {new Amount(transactionDetails.gasFee)
-        .divideByDecimals(selectedNetwork.decimals)
-        .formatAsAsset(6, selectedNetwork.symbol)}
+        .divideByDecimals(transactionsNetwork.decimals)
+        .formatAsAsset(6, transactionsNetwork.symbol)}
     </TransactionTypeText>
 
     <TransactionText>
@@ -93,7 +95,7 @@ export const TransactionInfo = ({
         {getLocale('braveWalletConfirmTransactionTotal')}
         {' '}
         ({
-          isSolanaSystemTransfer
+          isSolanaTransaction
             ? getLocale('braveWalletConfirmTransactionAmountFee')
             : getLocale('braveWalletConfirmTransactionAmountGas')
         })
@@ -105,8 +107,8 @@ export const TransactionInfo = ({
     </TransactionTypeText>
     <TransactionTypeText>
       {new Amount(transactionDetails.gasFee)
-        .divideByDecimals(selectedNetwork.decimals)
-        .formatAsAsset(6, selectedNetwork.symbol)}
+        .divideByDecimals(transactionsNetwork.decimals)
+        .formatAsAsset(6, transactionsNetwork.symbol)}
     </TransactionTypeText>
 
     <TransactionText

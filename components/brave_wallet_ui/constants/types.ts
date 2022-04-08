@@ -403,6 +403,10 @@ export interface SendFilTransactionParams extends BaseTransactionParams {
 export interface SendSolTransactionParams extends BaseTransactionParams {
 }
 
+export interface SPLTransferFromParams extends BaseTransactionParams {
+  splTokenMintAddress: string
+}
+
 export interface SendEthTransactionParams extends BaseEthTransactionParams {
   data?: number[]
 }

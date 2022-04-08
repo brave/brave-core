@@ -280,21 +280,36 @@ export function refreshBalances () {
     const visibleTokens = userVisibleTokensInfo.filter(asset => asset.contractAddress !== '')
 
     const getBlockchainTokensBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
+      const networks = getNetworksByCoinType(networkList, account.coin)
       if (account.coin === BraveWallet.CoinType.ETH) {
         return Promise.all(visibleTokens.map(async (token) => {
-          if (token.isErc721) {
-            return jsonRpcService.getERC721TokenBalance(token.contractAddress, token.tokenId ?? '', account.address, token?.chainId ?? '')
+          if (networks.some(n => n.chainId === token.chainId)) {
+            if (token.isErc721) {
+              return jsonRpcService.getERC721TokenBalance(token.contractAddress, token.tokenId ?? '', account.address, token?.chainId ?? '')
+            }
+            return jsonRpcService.getERC20TokenBalance(token.contractAddress, account.address, token?.chainId ?? '')
           }
-          return jsonRpcService.getERC20TokenBalance(token.contractAddress, account.address, token?.chainId ?? '')
+          return emptyBalance
+        }))
+      } else if (account.coin === BraveWallet.CoinType.SOL) {
+        return Promise.all(visibleTokens.map(async (token) => {
+          if (networks.some(n => n.chainId === token.chainId)) {
+            const getSolTokenBalance = await jsonRpcService.getSPLTokenAccountBalance(account.address, token.contractAddress, token.chainId)
+            return {
+              balance: getSolTokenBalance.amount,
+              error: getSolTokenBalance.error,
+              errorMessage: getSolTokenBalance.errorMessage
+            }
+          }
+          return emptyBalance
         }))
       } else {
         // MULTICHAIN: We do not yet support getting
-        // token balances for SOL and FIL
+        // token balances for FIL
         // Will be implemented here https://github.com/brave/brave-browser/issues/21695
         return []
       }
     }))
-
     await dispatch(WalletActions.tokenBalancesUpdated({
       balances: getBlockchainTokensBalanceReturnInfos
     }))
@@ -336,7 +351,7 @@ export function refreshPrices () {
       }
 
       // If a tokens balance is 0 we do not make an unnecessary api call for the price of that token
-      const price = token.balance > 0 && token.token.isErc20
+      const price = token.balance > 0 && !token.token.isErc721
         ? await assetRatioService.getPrice([getTokenParam(token.token)], [defaultFiatCurrency], selectedPortfolioTimeline)
         : { values: [{ ...emptyPrice, price: '0' }], success: true }
 
@@ -654,4 +669,10 @@ export async function sendSolTransaction (payload: SendSolTransactionParams) {
   const value = await solanaTxManagerProxy.makeSystemProgramTransferTxData(payload.from, payload.to, BigInt(payload.value))
   // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
   return await txService.addUnapprovedTransaction({ solanaTxData: value.txData }, payload.from)
+}
+
+export async function sendSPLTransaction (payload: BraveWallet.SolanaTxData) {
+  const { txService } = getAPIProxy()
+  // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
+  return await txService.addUnapprovedTransaction({ solanaTxData: payload }, payload.feePayer)
 }

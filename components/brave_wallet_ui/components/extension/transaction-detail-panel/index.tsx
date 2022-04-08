@@ -162,6 +162,11 @@ const TransactionDetailPanel = (props: Props) => {
     return ''
   }, [transactionDetails, liveTransaction, defaultCurrencies])
 
+  const isSolanaTransaction =
+    liveTransaction.txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
+    liveTransaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
+    liveTransaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+
   return (
     <StyledWrapper>
       <Header
@@ -200,7 +205,7 @@ const TransactionDetailPanel = (props: Props) => {
         </StatusRow>
       </DetailRow>
       {/* Will remove this conditional for solana once https://github.com/brave/brave-browser/issues/22040 is implemented. */}
-      {liveTransaction.txType !== BraveWallet.TransactionType.SolanaSystemTransfer &&
+      {!isSolanaTransaction &&
         <DetailRow>
           <DetailTitle>
             {getLocale('braveWalletAllowSpendTransactionFee')}
@@ -250,7 +255,7 @@ const TransactionDetailPanel = (props: Props) => {
       </DetailRow>
 
       {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted].includes(transactionDetails.status) &&
-        liveTransaction.txType !== BraveWallet.TransactionType.SolanaSystemTransfer &&
+        !isSolanaTransaction &&
         <DetailRow>
           <DetailTitle />
           <StatusRow>
@@ -261,7 +266,7 @@ const TransactionDetailPanel = (props: Props) => {
         </DetailRow>
       }
       {transactionDetails.status === BraveWallet.TransactionStatus.Error &&
-        liveTransaction.txType !== BraveWallet.TransactionType.SolanaSystemTransfer &&
+        !isSolanaTransaction &&
         <DetailRow>
           <DetailTitle />
           <StatusRow>

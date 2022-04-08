@@ -168,6 +168,11 @@ const PortfolioTransactionItem = (props: Props) => {
     }
   }
 
+  const isSolanaTransaction =
+    transaction.txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
+    transaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
+    transaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+
   const transactionIntentLocale = React.useMemo(() => {
     switch (true) {
       case transaction.txType === BraveWallet.TransactionType.ERC20Approve: {
@@ -329,7 +334,7 @@ const PortfolioTransactionItem = (props: Props) => {
           <DetailTextLight>{transactionDetails.formattedNativeCurrencyTotal}</DetailTextLight>
         </BalanceColumn>
         {/* Will remove this conditional for solana once https://github.com/brave/brave-browser/issues/22040 is implemented. */}
-        {transaction.txType !== BraveWallet.TransactionType.SolanaSystemTransfer &&
+        {!isSolanaTransaction &&
           <TransactionFeesTooltip
             text={
               <>
@@ -381,7 +386,7 @@ const PortfolioTransactionItem = (props: Props) => {
             }
 
             {[BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Approved].includes(transactionDetails.status) &&
-              transaction.txType !== BraveWallet.TransactionType.SolanaSystemTransfer &&
+              !isSolanaTransaction &&
               <TransactionPopupItem
                 onClick={onClickSpeedupTransaction}
                 text={getLocale('braveWalletTransactionSpeedup')}
@@ -389,7 +394,7 @@ const PortfolioTransactionItem = (props: Props) => {
             }
 
             {[BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Approved].includes(transactionDetails.status) &&
-              transaction.txType !== BraveWallet.TransactionType.SolanaSystemTransfer &&
+              !isSolanaTransaction &&
               <TransactionPopupItem
                 onClick={onClickCancelTransaction}
                 text={getLocale('braveWalletTransactionCancel')}
@@ -397,7 +402,7 @@ const PortfolioTransactionItem = (props: Props) => {
             }
 
             {[BraveWallet.TransactionStatus.Error].includes(transactionDetails.status) &&
-              transaction.txType !== BraveWallet.TransactionType.SolanaSystemTransfer &&
+              !isSolanaTransaction &&
               <TransactionPopupItem
                 onClick={onClickRetryTransaction}
                 text={getLocale('braveWalletTransactionRetry')}
