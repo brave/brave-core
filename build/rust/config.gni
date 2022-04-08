@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import("//build/config/clang/clang.gni")
 import("//build/config/compiler/compiler.gni")
 import("//build/config/ios/config.gni")
 import("//build/config/rust.gni")
@@ -28,42 +29,45 @@ rustc_toolchain = ""
 cargo_lib_prefix = ""
 cargo_lib_suffix = ""
 
-# Rust compiler flags setup.
-# ---------------------------
-rustflags = [
-  # Overflow checks are optional in Rust, but even if switched
-  # off they do not cause undefined behavior (the overflowing
-  # behavior is defined). Because containers are bounds-checked
-  # in safe Rust, they also can't provoke buffer overflows.
-  # As such these checks may be less important in Rust than C++.
-  # But in (simplistic) testing they have negligible performance
-  # overhead, and this helps to provide consistent behavior
-  # between different configurations, so we'll keep them on until
-  # we discover a reason to turn them off.
-  "-Coverflow-checks=on",
-]
+default_rustflags = [ "-Coverflow-checks=on" ]
 
-if (use_lto_in_rustc_linking) {
-  rustflags += [ "-Clinker-plugin-lto" ]
+if (use_lld) {
+  default_rustflags += [
+    "-C",
+    "link-arg=-fuse-ld=lld",
+    "-C",
+    "link-arg=-B" + rebase_path("$clang_base_path/bin"),
+  ]
 }
 
-if (use_lld && !is_component_build) {
-  rustflags += [ "-Cembed-bitcode=yes" ]
-  rustflags += [ "-Clto" ]
+# https://bugzilla.mozilla.org/show_bug.cgi?id=1188030#c14
+# Supposedly this bug was fixed, but it's still happening for us.
+too_many_personality_profiles_workaround = use_lld && !is_component_build
+
+if (too_many_personality_profiles_workaround) {
+  default_rustflags += [ "-Cembed-bitcode=yes" ]
+  if (use_thin_lto) {
+    default_rustflags += [ "-Clto=thin" ]
+  } else {
+    default_rustflags += [ "-Clto" ]
+  }
 }
 
-if (optimize_for_size) {
-  rustflags += [ "-Copt-level=s" ]
-} else {
-  rustflags += [ "-Copt-level=3" ]
+if (too_many_personality_profiles_workaround || !is_debug) {
+  # must always be optimized for too_many_personality_profiles_workaround
+  if (is_debug) {
+    default_rustflags += [ "-Copt-level=1" ]
+  } else if (optimize_for_size) {
+    default_rustflags += [ "-Copt-level=s" ]
+  } else {
+    default_rustflags += [ "-Copt-level=3" ]
+  }
 }
 
 if (symbol_level == 1) {
-  rustflags += [ "-Cdebuginfo=1" ]
-}
-
-if (symbol_level == 2) {
-  rustflags += [ "-g" ]
+  default_rustflags += [ "-Cdebuginfo=1" ]
+} else if (symbol_level == 2) {
+  default_rustflags += [ "-g" ]
 }
 
 # get links flags for rust lib
@@ -72,7 +76,7 @@ if (symbol_level == 2) {
 # See https://forge.rust-lang.org/release/platform-support.html for possible targets
 if (is_win) {
   if (current_cpu == "x86") {
-    rustflags += [ "--codegen target-feature=+crt-static" ]
+    default_rustflags += [ "--codegen target-feature=+crt-static" ]
     rustc_target = "i686-pc-windows-msvc"
   } else if (current_cpu == "x64") {
     rustc_target = "x86_64-pc-windows-msvc"
@@ -87,8 +91,8 @@ if (is_win) {
   if (current_cpu == "x64") {
     rustc_target = "x86_64-unknown-linux-gnu"
     if (use_sysroot) {
-      rustflags += [ "-C link-arg=--sysroot=$target_sysroot" ]
-      rustflags += [ "-C link-arg=-Wl,-rpath=\$ORIGIN" ]
+      default_rustflags += [ "-C link-arg=--sysroot=$target_sysroot" ]
+      default_rustflags += [ "-C link-arg=-Wl,-rpath=\$ORIGIN" ]
     }
   }
 } else if (is_android) {

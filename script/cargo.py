@@ -34,8 +34,11 @@ def run_cargo(command, args):
         toolchains_path = os.path.abspath(
             os.path.join(rustup_path, 'toolchains', args.toolchain, "bin"))
         env['PATH'] = toolchains_path + os.pathsep + env['PATH']
-        llvm_ar = os.path.join(toolchains_path, 'llvm-ar')
-        env['AR'] = llvm_ar
+
+    if args.clang_bin_path is not None:
+        env['AR'] = os.path.join(args.clang_bin_path, 'llvm-ar')
+        env['CC'] = os.path.join(args.clang_bin_path, 'clang')
+        env['CXX'] = os.path.join(args.clang_bin_path, 'clang++')
 
     if args.mac_deployment_target is not None:
         env['MACOSX_DEPLOYMENT_TARGET'] = args.mac_deployment_target
@@ -102,6 +105,7 @@ def parse_args():
     parser.add_option('--toolchain')
     parser.add_option('--is_debug')
     parser.add_option('--profile')
+    parser.add_option('--clang_bin_path')
     parser.add_option('--mac_deployment_target')
     parser.add_option('--ios_deployment_target')
     parser.add_option("--rust_flag", action="append",
