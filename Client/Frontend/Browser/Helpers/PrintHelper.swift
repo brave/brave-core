@@ -69,7 +69,13 @@ class PrintHelper: TabContentScript {
 
       if printCounter > 1 {
         // Show confirm alert here.
-        let suppressSheet = UIAlertController(title: nil, message: Strings.suppressAlertsActionMessage, preferredStyle: .actionSheet)
+        let suppressAlertStyle: UIAlertController.Style = UIDevice.isIpad ? .alert : .actionSheet
+        
+        let suppressSheet = UIAlertController(
+          title: nil, message:
+            Strings.suppressAlertsActionMessage,
+          preferredStyle: suppressAlertStyle)
+        
         suppressSheet.addAction(
           UIAlertAction(
             title: Strings.suppressAlertsActionTitle, style: .destructive,
@@ -83,6 +89,7 @@ class PrintHelper: TabContentScript {
             handler: { _ in
               showPrintSheet()
             }))
+        
         if UIDevice.current.userInterfaceIdiom == .pad, let popoverController = suppressSheet.popoverPresentationController {
           popoverController.sourceView = webView
           popoverController.sourceRect = CGRect(x: webView.bounds.midX, y: webView.bounds.midY, width: 0, height: 0)
