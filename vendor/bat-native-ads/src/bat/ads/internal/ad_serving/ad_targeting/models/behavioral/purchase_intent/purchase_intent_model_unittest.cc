@@ -45,6 +45,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   processor::PurchaseIntent processor(&resource);
 
@@ -70,6 +71,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   // Act
   PurchaseIntent model;
@@ -86,6 +88,7 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   processor::PurchaseIntent processor(&resource);
 
@@ -106,6 +109,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   processor::PurchaseIntent processor(&resource);
 
@@ -132,6 +136,7 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   processor::PurchaseIntent processor(&resource);
 
@@ -155,6 +160,7 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   processor::PurchaseIntent processor(&resource);
 

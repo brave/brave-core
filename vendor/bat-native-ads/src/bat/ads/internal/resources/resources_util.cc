@@ -80,5 +80,11 @@ template void LoadAndParseResource<ml::pipeline::TextProcessing>(
     const int version,
     LoadAndParseResourceCallback<ml::pipeline::TextProcessing> callback);
 
+// Explicit instantiation of function for ad_targeting::PurchaseIntentInfo.
+template void LoadAndParseResource<ad_targeting::PurchaseIntentInfo>(
+    const std::string& id,
+    const int version,
+    LoadAndParseResourceCallback<ad_targeting::PurchaseIntentInfo> callback);
+
 }  // namespace resource
 }  // namespace ads

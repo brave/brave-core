@@ -49,6 +49,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   // Act
   const GURL url = GURL("invalid_url");
@@ -66,6 +67,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, NeverProcessed) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   // Act
   model::PurchaseIntent model;
@@ -82,6 +84,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessUrl) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   // Act
   const GURL url = GURL("https://www.brave.com/test?foo=bar");
@@ -106,6 +109,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingUrls) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   // Act
   processor::PurchaseIntent processor(&resource);
@@ -136,6 +140,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueUrls) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   // Act
   processor::PurchaseIntent processor(&resource);
@@ -171,6 +176,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleMatchingKeywords) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   // Act
   processor::PurchaseIntent processor(&resource);
@@ -206,6 +212,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessMultipleUniqueKeywords) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   // Act
   processor::PurchaseIntent processor(&resource);
@@ -239,6 +246,7 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
   // Arrange
   resource::PurchaseIntent resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   // Act
   processor::PurchaseIntent processor(&resource);

@@ -141,9 +141,10 @@ PurchaseIntentSignalInfo PurchaseIntent::ExtractSignal(const GURL& url) const {
 PurchaseIntentSiteInfo PurchaseIntent::GetSite(const GURL& url) const {
   PurchaseIntentSiteInfo info;
 
-  const PurchaseIntentInfo purchase_intent = resource_->get();
+  const PurchaseIntentInfo* purchase_intent = resource_->get();
+  DCHECK(purchase_intent);
 
-  for (const auto& site : purchase_intent.sites) {
+  for (const auto& site : purchase_intent->sites) {
     if (SameDomainOrHost(url.spec(), site.url_netloc)) {
       info = site;
       break;
@@ -159,9 +160,10 @@ SegmentList PurchaseIntent::GetSegmentsForSearchQuery(
 
   const KeywordList search_query_keywords = ToKeywords(search_query);
 
-  const PurchaseIntentInfo purchase_intent = resource_->get();
+  const PurchaseIntentInfo* purchase_intent = resource_->get();
+  DCHECK(purchase_intent);
 
-  for (const auto& keyword : purchase_intent.segment_keywords) {
+  for (const auto& keyword : purchase_intent->segment_keywords) {
     const KeywordList keywords = ToKeywords(keyword.keywords);
 
     // Intended behavior relies on early return from list traversal and
@@ -183,9 +185,10 @@ uint16_t PurchaseIntent::GetFunnelWeightForSearchQuery(
 
   uint16_t max_weight = kPurchaseIntentDefaultSignalWeight;
 
-  const PurchaseIntentInfo purchase_intent = resource_->get();
+  const PurchaseIntentInfo* purchase_intent = resource_->get();
+  DCHECK(purchase_intent);
 
-  for (const auto& keyword : purchase_intent.funnel_keywords) {
+  for (const auto& keyword : purchase_intent->funnel_keywords) {
     const KeywordList keywords = ToKeywords(keyword.keywords);
 
     if (IsSubset(search_query_keywords, keywords) &&
