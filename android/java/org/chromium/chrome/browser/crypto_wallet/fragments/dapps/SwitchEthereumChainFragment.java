@@ -16,6 +16,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.FragmentNavigationItemAdapter;
@@ -40,6 +41,7 @@ public class SwitchEthereumChainFragment extends Fragment {
         info.chainId = "0x4";
         info.symbol = "ETH";
         info.decimals = 18;
+        info.coin = CoinType.ETH;
         info.blockExplorerUrls = new String[] {"https://rinkeby.etherscan.io"};
 
         List<TwoLineItemDataSource> networks = new ArrayList<>();
