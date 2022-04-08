@@ -76,10 +76,6 @@ const char kChromeUIUntrustedNewTabPageUrl[] =
 
 const char kChromiumProjectURL[] = "https://github.com/brave/brave-browser/";
 
-const char kCloudPrintCertificateErrorLearnMoreURL[] =
-    "https://support.brave.com/hc/en-us/articles/"
-    "360017880792-How-do-I-print-from-Brave-";
-
 const char kContentSettingsExceptionsLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018205431-How-do-I-change-site-permissions-";
