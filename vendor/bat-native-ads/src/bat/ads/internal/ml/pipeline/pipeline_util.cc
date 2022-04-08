@@ -188,44 +188,38 @@ absl::optional<model::Linear> ParsePipelineClassifier(
 
 }  // namespace
 
-absl::optional<PipelineInfo> ParsePipelineJSON(std::string json) {
-  absl::optional<base::Value> root = base::JSONReader::Read(json);
-
-  // Free memory in advance to optimize the peak memory consumption. |json| can
-  // be up to 10Mb and the following code allocates an extra memory few Mb of
-  // memory.
-  json = std::string();
-
-  if (!root) {
+absl::optional<PipelineInfo> ParsePipelineValue(base::Value resource_value) {
+  if (!resource_value.is_dict()) {
     return absl::nullopt;
   }
 
-  absl::optional<int> version_value = root->FindIntKey("version");
+  absl::optional<int> version_value = resource_value.FindIntKey("version");
   if (!version_value.has_value()) {
     return absl::nullopt;
   }
   int version = version_value.value();
 
-  std::string* timestamp_value = root->FindStringKey("timestamp");
+  std::string* timestamp_value = resource_value.FindStringKey("timestamp");
   if (!timestamp_value) {
     return absl::nullopt;
   }
   std::string timestamp = *timestamp_value;
 
-  std::string* locale_value = root->FindStringKey("locale");
+  std::string* locale_value = resource_value.FindStringKey("locale");
   if (!locale_value) {
     return absl::nullopt;
   }
   std::string locale = *locale_value;
 
   absl::optional<TransformationVector> transformations_optional =
-      ParsePipelineTransformations(root->FindListKey("transformations"));
+      ParsePipelineTransformations(
+          resource_value.FindListKey("transformations"));
   if (!transformations_optional.has_value()) {
     return absl::nullopt;
   }
 
   const absl::optional<model::Linear> linear_model_optional =
-      ParsePipelineClassifier(root->FindKey("classifier"));
+      ParsePipelineClassifier(resource_value.FindKey("classifier"));
   if (!linear_model_optional.has_value()) {
     return absl::nullopt;
   }

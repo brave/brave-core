@@ -1407,13 +1407,13 @@ void AdsServiceImpl::OnLoaded(const ads::LoadCallback& callback,
     callback(/* success */ true, value);
 }
 
-void AdsServiceImpl::OnFileLoaded(const ads::LoadFileCallback& callback,
+void AdsServiceImpl::OnFileLoaded(ads::LoadFileCallback callback,
                                   base::File file) {
   if (!connected()) {
     return;
   }
 
-  callback(std::move(file));
+  std::move(callback).Run(std::move(file));
 }
 
 void AdsServiceImpl::OnSaved(const ads::ResultCallback& callback,
@@ -2069,7 +2069,7 @@ void AdsServiceImpl::LoadAdsFileResource(const std::string& id,
       g_brave_browser_process->resource_component()->GetPath(id, version);
 
   if (!path) {
-    callback(base::File());
+    std::move(callback).Run(base::File());
     return;
   }
 

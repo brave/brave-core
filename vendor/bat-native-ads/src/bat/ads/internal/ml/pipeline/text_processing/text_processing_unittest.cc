@@ -6,8 +6,11 @@
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 
 #include <map>
+#include <utility>
 #include <vector>
 
+#include "base/json/json_reader.h"
+#include "base/values.h"
 #include "bat/ads/internal/ml/data/data.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
@@ -32,9 +35,6 @@ constexpr char kValidSegmentClassificationPipeline[] =
 
 constexpr char kEmptySegmentClassificationPipeline[] =
     "ml/pipeline/text_processing/empty_segment_classification.json";
-
-constexpr char kInvalidSpamClassificationPipeline[] =
-    "ml/pipeline/text_processing/invalid_spam_classification.json";
 
 constexpr char kValidSpamClassificationPipeline[] =
     "ml/pipeline/text_processing/valid_spam_classification.json";
@@ -93,7 +93,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, BuildSimplePipeline) {
   }
 }
 
-TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromJson) {
+TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromValue) {
   // Arrange
   const std::vector<std::string> train_texts = {
       "This is a spam email.", "Another spam trying to sell you viagra",
@@ -109,7 +109,10 @@ TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromJson) {
   // Act
   ASSERT_TRUE(json_optional.has_value());
   const std::string json = json_optional.value();
-  bool load_success = text_processing_pipeline.FromJson(json);
+  absl::optional<base::Value> value_optional = base::JSONReader::Read(json);
+  ASSERT_TRUE(value_optional.has_value());
+  bool load_success =
+      text_processing_pipeline.FromValue(std::move(*value_optional));
   ASSERT_TRUE(load_success);
 
   std::vector<PredictionMap> prediction_maps(train_texts.size());
@@ -140,25 +143,13 @@ TEST_F(BatAdsTextProcessingPipelineTest, InitValidModelTest) {
   // Act
   ASSERT_TRUE(json_optional.has_value());
   const std::string json = json_optional.value();
-  bool loaded_successfully = text_processing_pipeline.FromJson(json);
+  absl::optional<base::Value> value_optional = base::JSONReader::Read(json);
+  ASSERT_TRUE(value_optional.has_value());
+  bool loaded_successfully =
+      text_processing_pipeline.FromValue(std::move(*value_optional));
 
   // Assert
   EXPECT_TRUE(loaded_successfully);
-}
-
-TEST_F(BatAdsTextProcessingPipelineTest, InvalidModelTest) {
-  // Arrange
-  pipeline::TextProcessing text_processing_pipeline;
-  const absl::optional<std::string> json_optional =
-      ReadFileFromTestPathToString(kInvalidSpamClassificationPipeline);
-
-  // Act
-  ASSERT_TRUE(json_optional.has_value());
-  const std::string json = json_optional.value();
-  bool loaded_successfully = text_processing_pipeline.FromJson(json);
-
-  // Assert
-  EXPECT_FALSE(loaded_successfully);
 }
 
 TEST_F(BatAdsTextProcessingPipelineTest, EmptySegmentModelTest) {
@@ -170,7 +161,10 @@ TEST_F(BatAdsTextProcessingPipelineTest, EmptySegmentModelTest) {
   // Act
   ASSERT_TRUE(json_optional.has_value());
   const std::string json = json_optional.value();
-  const bool loaded_successfully = text_processing_pipeline.FromJson(json);
+  absl::optional<base::Value> value_optional = base::JSONReader::Read(json);
+  ASSERT_TRUE(value_optional.has_value());
+  bool loaded_successfully =
+      text_processing_pipeline.FromValue(std::move(*value_optional));
 
   // Assert
   EXPECT_FALSE(loaded_successfully);
@@ -182,8 +176,11 @@ TEST_F(BatAdsTextProcessingPipelineTest, EmptyModelTest) {
   const std::string empty_model_json = "{}";
 
   // Act
+  absl::optional<base::Value> value_optional =
+      base::JSONReader::Read(empty_model_json);
+  ASSERT_TRUE(value_optional.has_value());
   bool loaded_successfully =
-      text_processing_pipeline.FromJson(empty_model_json);
+      text_processing_pipeline.FromValue(std::move(*value_optional));
 
   // Assert
   EXPECT_FALSE(loaded_successfully);
@@ -194,9 +191,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, MissingModelTest) {
   pipeline::TextProcessing text_processing_pipeline;
 
   // Act
-  const std::string missing_model_json = "";
-  bool loaded_successfully =
-      text_processing_pipeline.FromJson(missing_model_json);
+  bool loaded_successfully = text_processing_pipeline.FromValue(base::Value());
 
   // Assert
   EXPECT_FALSE(loaded_successfully);
@@ -213,7 +208,9 @@ TEST_F(BatAdsTextProcessingPipelineTest, TopPredUnitTest) {
   // Act
   ASSERT_TRUE(json_optional.has_value());
   const std::string json = json_optional.value();
-  ASSERT_TRUE(text_processing_pipeline.FromJson(json));
+  absl::optional<base::Value> value_optional = base::JSONReader::Read(json);
+  ASSERT_TRUE(value_optional.has_value());
+  ASSERT_TRUE(text_processing_pipeline.FromValue(std::move(*value_optional)));
   const PredictionMap predictions =
       text_processing_pipeline.ClassifyPage(kTestPage);
 
@@ -237,7 +234,9 @@ TEST_F(BatAdsTextProcessingPipelineTest, TextCMCCrashTest) {
   ASSERT_TRUE(json_optional.has_value());
 
   const std::string json = json_optional.value();
-  ASSERT_TRUE(text_processing_pipeline.FromJson(json));
+  absl::optional<base::Value> value_optional = base::JSONReader::Read(json);
+  ASSERT_TRUE(value_optional.has_value());
+  ASSERT_TRUE(text_processing_pipeline.FromValue(std::move(*value_optional)));
 
   const absl::optional<std::string> text_optional =
       ReadFileFromTestPathToString(kTextCMCCrash);

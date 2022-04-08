@@ -85,7 +85,7 @@ void AdsClientIOS::LoadAdsResource(const std::string& id,
 void AdsClientIOS::LoadAdsFileResource(const std::string& id,
                                        const int version,
                                        ads::LoadFileCallback callback) {
-  [bridge_ loadAdsFileResource:id version:version callback:callback];
+  [bridge_ loadAdsFileResource:id version:version callback:std::move(callback)];
 }
 
 void AdsClientIOS::GetBrowsingHistory(

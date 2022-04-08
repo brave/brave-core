@@ -6,7 +6,10 @@
 #include "bat/ads/internal/ml/pipeline/pipeline_util.h"
 
 #include <string>
+#include <utility>
 
+#include "base/json/json_reader.h"
+#include "base/values.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_file_util.h"
@@ -31,16 +34,18 @@ class BatAdsPipelineUtilTest : public UnitTestBase {
   ~BatAdsPipelineUtilTest() override = default;
 };
 
-TEST_F(BatAdsPipelineUtilTest, ParsePipelineJSONTest) {
+TEST_F(BatAdsPipelineUtilTest, ParsePipelineValueTest) {
   // Arrange
-  const absl::optional<std::string> opt_value =
+  const absl::optional<std::string> opt_json =
       ReadFileFromTestPathToString(kValidSpamClassificationPipeline);
-  ASSERT_TRUE(opt_value.has_value());
-  const std::string json = opt_value.value();
+  ASSERT_TRUE(opt_json.has_value());
+  const std::string json = opt_json.value();
 
   // Act
+  absl::optional<base::Value> opt_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(opt_value.has_value());
   const absl::optional<pipeline::PipelineInfo> pipeline_info =
-      pipeline::ParsePipelineJSON(json);
+      pipeline::ParsePipelineValue(std::move(*opt_value));
 
   // Assert
   EXPECT_TRUE(pipeline_info.has_value());

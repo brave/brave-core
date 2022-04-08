@@ -1157,7 +1157,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
   base::FilePath file_path(nsFilePath.UTF8String);
   base::File file(file_path, base::File::FLAG_OPEN | base::File::FLAG_READ);
-  callback(std::move(file));
+  std::move(callback).Run(std::move(file));
 }
 
 - (void)clearScheduledCaptcha {

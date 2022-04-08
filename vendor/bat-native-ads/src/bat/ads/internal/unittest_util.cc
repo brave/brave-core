@@ -559,7 +559,7 @@ void MockLoadAdsFileResource(const std::unique_ptr<AdsClientMock>& mock) {
 
         base::File file(
             path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
-        callback(std::move(file));
+        std::move(callback).Run(std::move(file));
       }));
 }
 

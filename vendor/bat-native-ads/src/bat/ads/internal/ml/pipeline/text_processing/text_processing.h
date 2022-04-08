@@ -13,6 +13,10 @@
 #include "bat/ads/internal/ml/ml_aliases.h"
 #include "bat/ads/internal/ml/model/linear/linear.h"
 
+namespace base {
+class Value;
+}
+
 namespace ads {
 namespace ml {
 namespace pipeline {
@@ -21,19 +25,22 @@ struct PipelineInfo;
 
 class TextProcessing final {
  public:
-  static TextProcessing* CreateInstance();
+  static std::unique_ptr<TextProcessing> CreateFromValue(
+      base::Value resource_value,
+      std::string* error_message);
 
   TextProcessing();
-  TextProcessing(const TextProcessing& pipeline);
   TextProcessing(const TransformationVector& transformations,
                  const model::Linear& linear_model);
   ~TextProcessing();
+  TextProcessing(const TextProcessing& pipeline) = delete;
+  TextProcessing& operator=(const TextProcessing& pipeline) = delete;
 
   bool IsInitialized() const;
 
   void SetInfo(const PipelineInfo& info);
 
-  bool FromJson(std::string json);
+  bool FromValue(base::Value resource_value);
 
   PredictionMap Apply(const std::unique_ptr<Data>& input_data) const;
 

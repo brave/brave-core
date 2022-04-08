@@ -312,7 +312,7 @@ class AdsServiceImpl : public AdsService,
                          const std::string& json);
 
   void OnLoaded(const ads::LoadCallback& callback, const std::string& value);
-  void OnFileLoaded(const ads::LoadFileCallback& callback, base::File value);
+  void OnFileLoaded(ads::LoadFileCallback callback, base::File value);
   void OnSaved(const ads::ResultCallback& callback, const bool success);
 
   void OnRunDBTransaction(ads::RunDBTransactionCallback callback,

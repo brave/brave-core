@@ -182,10 +182,6 @@ class AdsClientMojoBridge
                                 const bool success,
                                 const std::string& value);
 
-  static void OnLoadAdsFileResource(
-      CallbackHolder<LoadAdsFileResourceCallback>* holder,
-      base::File file);
-
   static void OnGetBrowsingHistory(
       CallbackHolder<GetBrowsingHistoryCallback>* holder,
       const std::vector<std::string>& history);

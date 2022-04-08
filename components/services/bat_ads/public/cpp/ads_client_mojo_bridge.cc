@@ -165,29 +165,11 @@ void AdsClientMojoBridge::LoadAdsResource(const std::string& id,
       std::bind(AdsClientMojoBridge::OnLoadAdsResource, holder, _1, _2));
 }
 
-// static
-void AdsClientMojoBridge::OnLoadAdsFileResource(
-    CallbackHolder<LoadAdsFileResourceCallback>* holder,
-    base::File file) {
-  DCHECK(holder);
-
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(file));
-  }
-
-  delete holder;
-}
-
 void AdsClientMojoBridge::LoadAdsFileResource(
     const std::string& id,
     const int version,
     LoadAdsFileResourceCallback callback) {
-  // this gets deleted in OnLoadAdsFileResource
-  auto* holder = new CallbackHolder<LoadAdsFileResourceCallback>(
-      AsWeakPtr(), std::move(callback));
-  ads_client_->LoadAdsFileResource(
-      id, version,
-      std::bind(AdsClientMojoBridge::OnLoadAdsFileResource, holder, _1));
+  ads_client_->LoadAdsFileResource(id, version, std::move(callback));
 }
 
 // static
