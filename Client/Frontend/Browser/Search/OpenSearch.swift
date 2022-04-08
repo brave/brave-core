@@ -93,11 +93,12 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     self.isCustomEngine = isCustomEngine
     self.image = image
     self.engineID = aDecoder.decodeObject(of: NSString.self, forKey: "engineID") as String?
-    self.suggestTemplate = nil
+    self.suggestTemplate = aDecoder.decodeObject(of: NSString.self, forKey: "suggestTemplate") as String?
   }
 
   func encode(with aCoder: NSCoder) {
     aCoder.encode(searchTemplate, forKey: "searchTemplate")
+    aCoder.encode(suggestTemplate, forKey: "suggestTemplate")
     aCoder.encode(shortName, forKey: "shortName")
     aCoder.encode(isCustomEngine, forKey: "isCustomEngine")
     aCoder.encode(image, forKey: "image")
