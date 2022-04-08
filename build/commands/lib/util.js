@@ -613,10 +613,7 @@ const util = {
       options.env.AUTONINJA_BUILD_ID = config.buildId
     }
 
-    // TODO(yannic): Switch this back to `autoninja` once upstream no longer unconditionally
-    // overrides `AUTONINJA_BUILD_ID`:
-    // https://source.chromium.org/chromium/chromium/tools/depot_tools/+/main:autoninja;l=14;drc=5506fbfba0c9cdf5d525f86fd2aa829e32c4c960
-    util.run('ninja', ninjaOpts, options)
+    util.run('autoninja', ninjaOpts, options)
 
     if (config.isCI && config.use_goma) {
       util.run('goma_ctl', ['stat'], options)
