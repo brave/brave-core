@@ -30,7 +30,7 @@ export default html`
       --hover-border-color: var(--brave-brand-color) !important;
       --hover-shadow-action-rgb: 255, 118, 84 !important;
       --ink-color-action: white !important;
-      font-family: Muli !important;
+      font-family: Poppins !important;
       outline: none !important;
       border-radius: 100px !important; /* absurdly large to make sure is
                                           rounded at any height */

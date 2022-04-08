@@ -18,7 +18,8 @@ import { createReducer } from './reducers'
 import { getCurrentBalanceReport } from './reducers/utils'
 import * as rewardsActions from './actions/rewards_actions'
 
-import { App } from './components/app'
+// Components
+import App from './components/app'
 
 const store = createStore(createReducer())
 const actions = bindActionCreators(rewardsActions, store.dispatch.bind(store))

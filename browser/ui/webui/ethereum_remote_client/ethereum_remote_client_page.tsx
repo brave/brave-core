@@ -9,7 +9,6 @@ import { initLocale } from 'brave-ui'
 
 import 'emptykit.css'
 import '../../../../ui/webui/resources/fonts/poppins.css'
-import '../../../../ui/webui/resources/fonts/muli.css'
 
 import LegacyApp from './components/legacy_app'
 import Theme from 'brave-ui/theme/brave-default'

@@ -11,7 +11,6 @@ import { bindActionCreators } from 'redux'
 import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
-require('../../../ui/webui/resources/fonts/muli.css')
 require('../../../ui/webui/resources/fonts/poppins.css')
 
 // Containers
