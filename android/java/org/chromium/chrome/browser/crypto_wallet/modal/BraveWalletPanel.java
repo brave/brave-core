@@ -304,6 +304,6 @@ public class BraveWalletPanel implements DialogInterface {
         if (activity != null) {
             return activity.getActivityTab().getUrl().getOrigin();
         }
-        return new GURL();
+        return new GURL("");
     }
 }
