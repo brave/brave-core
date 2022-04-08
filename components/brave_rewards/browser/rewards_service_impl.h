@@ -37,6 +37,7 @@
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/sync/driver/sync_service_observer.h"
+#include "components/sync_device_info/device_info_tracker.h"
 #include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
@@ -106,6 +107,7 @@ class RewardsServiceImpl : public RewardsService,
 #endif
                            public syncer::SyncServiceObserver,
                            public VgSyncService::Observer,
+                           public syncer::DeviceInfoTracker::Observer,
                            public base::SupportsWeakPtr<RewardsServiceImpl> {
  public:
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -628,6 +630,8 @@ class RewardsServiceImpl : public RewardsService,
   void OnDiagnosticLogCleared(ClearDiagnosticLogCallback callback,
                               const bool success);
 
+  void OnResetRewardsSync(SuccessCallback callback);
+
   void Log(
       const char* file,
       const int line,
@@ -805,6 +809,9 @@ class RewardsServiceImpl : public RewardsService,
       std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) override;
 
   void OnRestoreVgs(ledger::type::Result result);
+
+  // syncer::DeviceInfoTracker::Observer:
+  void OnDeviceInfoChange() override;
 
 #if BUILDFLAG(IS_ANDROID)
   ledger::type::Environment GetServerEnvironmentForAndroid();
