@@ -174,7 +174,7 @@ BraveSharedResourcesDataSource::GetAccessControlAllowOriginForOrigin(
                         base::CompareCase::SENSITIVE) &&
       !base::StartsWith(origin, allowed_untrusted_origin_prefix,
                         base::CompareCase::SENSITIVE)) {
-    return "null";
+    return std::string();
   }
   return origin;
 }
