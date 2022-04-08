@@ -42,9 +42,11 @@ if (use_lld) {
 
 # https://bugzilla.mozilla.org/show_bug.cgi?id=1188030#c14
 # Supposedly this bug was fixed, but it's still happening for us.
-too_many_personality_profiles_workaround = use_lld && !is_component_build
+too_many_personality_profiles_workaround = is_apple && use_lld && !is_component_build
 
-if (too_many_personality_profiles_workaround) {
+enable_rust_lto = use_thin_lto || too_many_personality_profiles_workaround
+
+if (enable_rust_lto) {
   default_rustflags += [ "-Cembed-bitcode=yes" ]
   if (use_thin_lto) {
     default_rustflags += [ "-Clto=thin" ]
@@ -53,15 +55,17 @@ if (too_many_personality_profiles_workaround) {
   }
 }
 
-if (too_many_personality_profiles_workaround || !is_debug) {
-  # must always be optimized for too_many_personality_profiles_workaround
-  if (is_debug) {
+if (is_debug) {
+  if (too_many_personality_profiles_workaround) {
+    # must always be optimized for too_many_personality_profiles_workaround to work
     default_rustflags += [ "-Copt-level=1" ]
-  } else if (optimize_for_size) {
-    default_rustflags += [ "-Copt-level=s" ]
   } else {
-    default_rustflags += [ "-Copt-level=3" ]
+    default_rustflags += [ "-Copt-level=0" ]
   }
+} else if (optimize_for_size) {
+  default_rustflags += [ "-Copt-level=s" ]
+} else {
+  default_rustflags += [ "-Copt-level=3" ]
 }
 
 if (symbol_level == 1) {
