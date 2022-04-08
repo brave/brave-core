@@ -2002,6 +2002,16 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
   func tabsBarDidLongPressAddTab(_ tabsBarController: TabsBarViewController, button: UIButton) {
     // The actions are carried to menu actions for Tab-Tray Button
   }
+  
+  func tabsBarDidChangeReaderModeVisibility(_ isHidden: Bool) {
+    if topToolbar.locationView.readerModeState == .active {
+      if isHidden {
+        hideReaderModeBar(animated: false)
+      } else {
+        showReaderModeBar(animated: false)
+      }
+    }
+  }
 }
 
 extension BrowserViewController: TabDelegate {
@@ -2483,8 +2493,12 @@ extension BrowserViewController: TabManagerDelegate {
       image: UIImage(systemName: "xmark"),
       attributes: .destructive,
       handler: UIAction.deferredActionHandler { [unowned self] _ in
-        if let tab = self.tabManager.selectedTab {
-          self.tabManager.removeTab(tab)
+        if let tab = tabManager.selectedTab {
+          if topToolbar.locationView.readerModeState == .active {
+            hideReaderModeBar(animated: false)
+          }
+          
+          tabManager.removeTab(tab)
         }
       })
 
@@ -2695,12 +2709,6 @@ extension BrowserViewController: WKUIDelegate {
     }
 
     return false
-  }
-
-  func webViewDidClose(_ webView: WKWebView) {
-    if let tab = tabManager[webView] {
-      self.tabManager.removeTab(tab)
-    }
   }
 
   func webView(_ webView: WKWebView, contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo, completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {

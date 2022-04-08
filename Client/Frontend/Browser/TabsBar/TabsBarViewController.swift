@@ -13,6 +13,8 @@ protocol TabsBarViewControllerDelegate: AnyObject {
   func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab)
   func tabsBarDidLongPressAddTab(_ tabsBarController: TabsBarViewController, button: UIButton)
   func tabsBarDidSelectAddNewTab(_ isPrivate: Bool)
+  func tabsBarDidChangeReaderModeVisibility(_ isHidden: Bool)
+
 }
 
 class TabsBarViewController: UIViewController {
@@ -60,8 +62,8 @@ class TabsBarViewController: UIViewController {
     }
   }
 
-  fileprivate weak var tabManager: TabManager?
-  fileprivate var tabList = WeakList<Tab>()
+  private weak var tabManager: TabManager?
+  private var tabList = WeakList<Tab>()
 
   init(tabManager: TabManager) {
     self.tabManager = tabManager
@@ -382,15 +384,21 @@ extension TabsBarViewController: UICollectionViewDataSource {
     cell.configure()
 
     cell.closeTabCallback = { [weak self] tab in
-      guard let strongSelf = self, let tabManager = strongSelf.tabManager, let previousIndex = strongSelf.tabList.index(of: tab) else { return }
-
+      guard let self = self,
+              let tabManager = self.tabManager,
+              let previousIndex = self.tabList.index(of: tab) else {
+        return
+      }
+      
+      self.delegate?.tabsBarDidChangeReaderModeVisibility(true)
+      
       tabManager.removeTab(tab)
-      strongSelf.updateData()
+      self.updateData()
 
       let previousOrNext = max(0, previousIndex - 1)
-      tabManager.selectTab(strongSelf.tabList[previousOrNext])
+      tabManager.selectTab(self.tabList[previousOrNext])
 
-      strongSelf.collectionView.selectItem(at: IndexPath(row: previousOrNext, section: 0), animated: true, scrollPosition: .centeredHorizontally)
+      self.collectionView.selectItem(at: IndexPath(row: previousOrNext, section: 0), animated: true, scrollPosition: .centeredHorizontally)
     }
 
     return cell

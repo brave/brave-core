@@ -57,6 +57,11 @@ extension BrowserViewController {
     guard let currentTab = tabManager.selectedTab else {
       return
     }
+    
+    if topToolbar.locationView.readerModeState == .active {
+      hideReaderModeBar(animated: false)
+    }
+    
     tabManager.removeTab(currentTab)
   }
 
