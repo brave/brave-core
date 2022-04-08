@@ -58,8 +58,31 @@ open class Favicon: Identifiable {
 // TODO: Site shouldn't have all of these optional decorators. Include those in the
 // cursor results, perhaps as a tuple.
 open class Site: Identifiable, Hashable {
+  public enum SiteType {
+    case unknown, bookmark, history, tab
+    
+    public var icon: UIImage? {
+      switch self {
+        case .history:
+          return UIImage(systemName: "clock.fill")
+        case .bookmark:
+          return UIImage(systemName: "book.fill")
+        case .tab:
+          if #available(iOS 15, *) {
+            return UIImage(systemName: "square.filled.on.square")
+          } else {
+            return UIImage(systemName: "square.stack.3d.down.right.fill")
+          }
+        default:
+          return nil
+      }
+    }
+  }
+    
   open var id: Int?
   var guid: String?
+  // The id of associated Tab - Used for Tab Suggestions
+  open var tabID: String?
 
   open var tileURL: URL {
     return URL(string: url)?.domainURL ?? URL(string: "about:blank")!
@@ -70,21 +93,22 @@ open class Site: Identifiable, Hashable {
   open var metadata: PageMetadata?
   // Sites may have multiple favicons. We'll return the largest.
   open var icon: Favicon?
-  open fileprivate(set) var bookmarked: Bool?
+  open private(set) var siteType: SiteType
 
   public convenience init(url: String, title: String) {
-    self.init(url: url, title: title, bookmarked: false, guid: nil)
+    self.init(url: url, title: title, siteType: .unknown, guid: nil, tabID: nil)
   }
 
-  public init(url: String, title: String, bookmarked: Bool?, guid: String? = nil) {
+  public init(url: String, title: String, siteType: SiteType, guid: String? = nil, tabID: String? = nil) {
     self.url = url
     self.title = title
-    self.bookmarked = bookmarked
+    self.siteType = siteType
     self.guid = guid
+    self.tabID = tabID
   }
 
   open func setBookmarked(_ bookmarked: Bool) {
-    self.bookmarked = bookmarked
+    self.siteType = .bookmark
   }
 
   // This hash is a bit limited in scope, but contains enough data to make a unique distinction.

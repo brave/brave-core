@@ -804,6 +804,12 @@ class TabManager: NSObject {
 
     return allTabs.filter { $0.webView?.url == url }.first
   }
+  
+  func getTabForID(_ id: String) -> Tab? {
+    assert(Thread.isMainThread)
+
+    return allTabs.filter { $0.id == id }.first
+  }
 
   func resetProcessPool() {
     assert(Thread.isMainThread)

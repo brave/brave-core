@@ -10,7 +10,6 @@ struct TwoLineCellUX {
   static let imageCornerRadius: CGFloat = 8
   static let borderViewMargin: CGFloat = 16
   static let badgeSize: CGFloat = 16
-  static let badgeMargin: CGFloat = 16
   static let borderFrameSize: CGFloat = 32
   static let detailTextTopMargin: CGFloat = 0
 }
@@ -85,8 +84,8 @@ class TwoLineTableViewCell: UITableViewCell, TableViewReusable {
     twoLineHelper.hasRightBadge = badge != nil
   }
 
-  func setLines(_ text: String?, detailText: String?) {
-    twoLineHelper.setLines(text, detailText: detailText)
+  func setLines(_ text: String?, detailText: String?, detailAttributedText: NSAttributedString? = nil) {
+    twoLineHelper.setLines(text, detailText: detailText, detailAttributedText: detailAttributedText)
   }
 
   func mergeAccessibilityLabels(_ views: [AnyObject?]? = nil) {
@@ -244,7 +243,7 @@ private class TwoLineCellHelper {
       contentHeight += detailTextLabelHeight + TwoLineCellUX.detailTextTopMargin
     }
 
-    let textRightInset: CGFloat = hasRightBadge ? (TwoLineCellUX.badgeSize + TwoLineCellUX.badgeMargin) : 0
+    let textRightInset: CGFloat = hasRightBadge ? TwoLineCellUX.badgeSize : 0
 
     textLabel.frame = CGRect(
       x: textLeft, y: (height - contentHeight) / 2,
@@ -272,13 +271,17 @@ private class TwoLineCellHelper {
     }
   }
 
-  func setLines(_ text: String?, detailText: String?) {
+  func setLines(_ text: String?, detailText: String?, detailAttributedText: NSAttributedString? = nil) {
     if text?.isEmpty ?? true {
       textLabel.text = detailText
       detailTextLabel.text = nil
     } else {
       textLabel.text = text
-      detailTextLabel.text = detailText
+      if let attributedText = detailAttributedText {
+        detailTextLabel.attributedText = attributedText
+      } else {
+        detailTextLabel.text = detailText
+      }
     }
   }
 
