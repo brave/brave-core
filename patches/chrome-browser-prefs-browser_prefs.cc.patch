@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index be0f0ed3911f966b52c502561aaf7f5d41001079..f978ad82a0cfd777adad9c0da54070019fc4a7d4 100644
+index be739641724161f396fe65fa6a99e8c3b0234cb9..b628fa7cf725f99fa7f70a0da0a086866b3476bf 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -1199,6 +1199,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
@@ -10,7 +10,7 @@ index be0f0ed3911f966b52c502561aaf7f5d41001079..f978ad82a0cfd777adad9c0da5407001
  
  #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
    screen_ai::RegisterLocalStatePrefs(registry);
-@@ -1528,6 +1529,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -1529,6 +1530,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
    registry->RegisterBooleanPref(prefs::kPrivacyGuideViewed, false);
  
    RegisterProfilePrefsForMigration(registry);

@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index 4175a190794d10b86dc6176dd2fce377fb23473b..3d36d8e492e100f544e9b16351933fa4f9261b30 100644
+index 3e80e3317d1d935aa52e6989fa33f6bf078c92b7..c619fd6d75628be68a959a59e964e2119daeb0a6 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -205,6 +205,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -207,6 +207,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    registry->RegisterIntegerPref(kTrialGroupPrefName, 0);
  
    registry->RegisterIntegerPref(kSigninBottomSheetShownCount, 0);
@@ -10,7 +10,7 @@ index 4175a190794d10b86dc6176dd2fce377fb23473b..3d36d8e492e100f544e9b16351933fa4
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -322,6 +323,8 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -320,6 +321,8 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterBooleanPref(kSigninAllowedByPolicy, true);
  
    registry->RegisterBooleanPref(kShowReadingListInBookmarkBar, true);

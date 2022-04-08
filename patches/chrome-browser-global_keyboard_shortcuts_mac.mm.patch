@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/global_keyboard_shortcuts_mac.mm b/chrome/browser/global_keyboard_shortcuts_mac.mm
-index 4bd6e3af39cc3f369b8a2fce61fa96591998de91..fdf368bc58bce2586eaccb6e698f5a293db37f63 100644
+index b4c85b92468ec43747b72fdeaf2bf4068534bd47..0253843194f8e443e46a37a61d428dead35afdbd 100644
 --- a/chrome/browser/global_keyboard_shortcuts_mac.mm
 +++ b/chrome/browser/global_keyboard_shortcuts_mac.mm
-@@ -173,6 +173,7 @@ CommandForKeyEventResult ShortcutCommand(int cmd) {
-     {true,  false, false, true,  kVK_DownArrow,         IDC_FOCUS_NEXT_PANE},
-     {true,  false, false, true,  kVK_UpArrow,           IDC_FOCUS_PREVIOUS_PANE},
-     {true,  true,  false, true,  kVK_ANSI_A,            IDC_FOCUS_INACTIVE_POPUP_FOR_ACCESSIBILITY},
+@@ -180,6 +180,7 @@ CommandForKeyEventResult ShortcutCommand(int cmd) {
+       {true,  false, false, true,  kVK_DownArrow,         IDC_FOCUS_NEXT_PANE},
+       {true,  false, false, true,  kVK_UpArrow,           IDC_FOCUS_PREVIOUS_PANE},
+       {true,  true,  false, true,  kVK_ANSI_A,            IDC_FOCUS_INACTIVE_POPUP_FOR_ACCESSIBILITY},
 +    {true,  false, false, true,  kVK_ANSI_N,            IDC_NEW_OFFTHERECORD_WINDOW_TOR},
-   });
-   // clang-format on
+     });
+     // clang-format on
  

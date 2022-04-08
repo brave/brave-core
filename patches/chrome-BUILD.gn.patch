@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 6b8f8778d17008582ab9edeae6d63dd1111182f3..4b8f0f861a387492d582305743dc5332d80bcd37 100644
+index 5c61307e43d8ad9e16354750fb60e25b97c7cb88..1313426a1058c47c3e0460343c1c5c68a5c0410c 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -170,6 +170,7 @@ if (!is_android && !is_mac) {
@@ -69,7 +69,7 @@ index 6b8f8778d17008582ab9edeae6d63dd1111182f3..4b8f0f861a387492d582305743dc5332
        }
  
        extra_substitutions = [
-@@ -1197,6 +1204,7 @@ if (is_win) {
+@@ -1192,6 +1199,7 @@ if (is_win) {
        chrome_dylib_version,
        "-Wl,-order_file," + rebase_path("app/framework.order", root_build_dir),
      ]
@@ -77,7 +77,7 @@ index 6b8f8778d17008582ab9edeae6d63dd1111182f3..4b8f0f861a387492d582305743dc5332
  
      if (!is_component_build) {
        # Specify a sensible install_name for static builds. The library is
-@@ -1383,6 +1391,7 @@ if (is_win) {
+@@ -1370,6 +1378,7 @@ if (is_win) {
  
  group("dependencies") {
    public_deps = [
@@ -85,7 +85,7 @@ index 6b8f8778d17008582ab9edeae6d63dd1111182f3..4b8f0f861a387492d582305743dc5332
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/browser",
-@@ -1453,7 +1462,7 @@ group("dependencies") {
+@@ -1440,7 +1449,7 @@ group("dependencies") {
  
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
@@ -94,7 +94,7 @@ index 6b8f8778d17008582ab9edeae6d63dd1111182f3..4b8f0f861a387492d582305743dc5332
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1507,6 +1516,7 @@ group("resources") {
+@@ -1494,6 +1503,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
