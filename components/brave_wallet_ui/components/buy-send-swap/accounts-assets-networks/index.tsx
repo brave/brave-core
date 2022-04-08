@@ -8,7 +8,7 @@ import {
 
 import {
   SelectAccount,
-  SelectNetwork,
+  SelectNetworkWithHeader,
   SelectAsset
 } from '../'
 
@@ -23,12 +23,11 @@ export interface Props {
   assetOptions: BraveWallet.BlockchainToken[]
 
   onClickSelectAccount: (account: UserAccountType) => () => void
-  onClickSelectNetwork: (network: BraveWallet.NetworkInfo) => () => void
   onSelectedAsset: (account: BraveWallet.BlockchainToken) => () => void
   goBack: () => void
 }
 
-function SelectHeader (props: Props) {
+export const AccountsAssetsNetworks = (props: Props) => {
   const {
     selectedView,
     assetOptions,
@@ -64,7 +63,7 @@ function SelectHeader (props: Props) {
         />
       }
       {selectedView === 'networks' &&
-        <SelectNetwork
+        <SelectNetworkWithHeader
           onBack={goBack}
           hasAddButton={true}
         />
@@ -73,4 +72,4 @@ function SelectHeader (props: Props) {
   )
 }
 
-export default SelectHeader
+export default AccountsAssetsNetworks

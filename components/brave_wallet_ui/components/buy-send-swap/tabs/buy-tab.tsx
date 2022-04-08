@@ -19,7 +19,6 @@ export interface Props {
   showHeader?: boolean
   defaultCurrencies: DefaultCurrencies
   onSubmit: (asset: BraveWallet.BlockchainToken) => void
-  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   onSelectAccount: (account: UserAccountType) => void
   onSetBuyAmount: (value: string) => void
 }
@@ -33,7 +32,6 @@ function BuyTab (props: Props) {
     assetOptions,
     defaultCurrencies,
     onSubmit,
-    onSelectNetwork,
     onSelectAccount,
     onSetBuyAmount
   } = props
@@ -42,11 +40,6 @@ function BuyTab (props: Props) {
 
   const onChangeBuyView = (view: BuySendSwapViewTypes) => {
     setBuyView(view)
-  }
-
-  const onClickSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
-    onSelectNetwork(network)
-    setBuyView('buy')
   }
 
   const onClickSelectAccount = (account: UserAccountType) => () => {
@@ -97,7 +90,6 @@ function BuyTab (props: Props) {
           goBack={goBack}
           assetOptions={assetOptions}
           onClickSelectAccount={onClickSelectAccount}
-          onClickSelectNetwork={onClickSelectNetwork}
           onSelectedAsset={onSelectedAsset}
           selectedView={buyView}
         />

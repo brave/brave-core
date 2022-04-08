@@ -35,11 +35,6 @@ function SwapTab () {
     setSwapView(view)
   }
 
-  const onClickSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
-    dispatch(WalletActions.selectNetwork(network))
-    setSwapView('swap')
-  }
-
   const onClickSelectAccount = (account: WalletAccountType) => () => {
     dispatch(WalletActions.selectAccount(account))
     setSwapView('swap')
@@ -106,7 +101,6 @@ function SwapTab () {
           goBack={goBack}
           assetOptions={filteredAssetList}
           onClickSelectAccount={onClickSelectAccount}
-          onClickSelectNetwork={onClickSelectNetwork}
           onSelectedAsset={onSelectAsset}
           selectedView={swapView}
         />

@@ -13,6 +13,8 @@ import {
 import { WalletActions } from '../../../common/actions'
 import { PanelActions } from '../../../panel/actions'
 import { BraveWallet } from '../../../constants/types'
+import { useSend } from '../../../common/hooks'
+import { makeNetworkAsset } from '../../../options/asset-options'
 
 export interface Props {
   hasAddButton?: boolean
@@ -20,18 +22,25 @@ export interface Props {
   onAddNetwork?: () => void
 }
 
-function SelectNetworkWithHeader ({
+export const SelectNetworkWithHeader = ({
   onBack,
   hasAddButton,
   onAddNetwork
-}: Props) {
+}: Props) => {
+  // custom hooks
+  const { selectSendAsset } = useSend()
+
   // redux
   const dispatch = useDispatch()
 
   // methods
   const onSelectCustomNetwork = React.useCallback((network: BraveWallet.NetworkInfo): void => {
     dispatch(WalletActions.selectNetwork(network))
+
+    selectSendAsset(makeNetworkAsset(network))
+
     dispatch(PanelActions.navigateTo('main'))
+
     onBack()
   }, [onBack])
 
