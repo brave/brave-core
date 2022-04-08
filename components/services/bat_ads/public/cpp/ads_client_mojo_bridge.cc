@@ -140,31 +140,6 @@ void AdsClientMojoBridge::Log(
   ads_client_->Log(file.c_str(), line, verbose_level, message);
 }
 
-// static
-void AdsClientMojoBridge::OnLoadAdsResource(
-    CallbackHolder<LoadAdsResourceCallback>* holder,
-    const bool success,
-    const std::string& value) {
-  DCHECK(holder);
-
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(success, std::move(value));
-  }
-
-  delete holder;
-}
-
-void AdsClientMojoBridge::LoadAdsResource(const std::string& id,
-                                          const int version,
-                                          LoadAdsResourceCallback callback) {
-  // this gets deleted in OnLoadAdsResource
-  auto* holder = new CallbackHolder<LoadAdsResourceCallback>(
-      AsWeakPtr(), std::move(callback));
-  ads_client_->LoadAdsResource(
-      id, version,
-      std::bind(AdsClientMojoBridge::OnLoadAdsResource, holder, _1, _2));
-}
-
 void AdsClientMojoBridge::LoadAdsFileResource(
     const std::string& id,
     const int version,

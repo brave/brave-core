@@ -55,7 +55,6 @@ interface BatAdsClient {
   UrlRequest(ads.mojom.UrlRequest request) => (ads.mojom.UrlResponse response);
   Save(string name, string value) => (bool success);
   Load(string name) => (bool success, string value);
-  LoadAdsResource(string id, int32 version) => (bool success, string value);
   LoadAdsFileResource(string id, int32 version) => (mojo_base.mojom.File? file);
   ClearScheduledCaptcha();
   GetScheduledCaptcha(string payment_id) => (string captcha_id);

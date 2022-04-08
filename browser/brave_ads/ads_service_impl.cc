@@ -2042,26 +2042,6 @@ void AdsServiceImpl::Save(const std::string& name,
                      std::move(callback)));
 }
 
-void AdsServiceImpl::LoadAdsResource(const std::string& id,
-                                     const int version,
-                                     ads::LoadCallback callback) {
-  const absl::optional<base::FilePath> path =
-      g_brave_browser_process->resource_component()->GetPath(id, version);
-
-  if (!path) {
-    callback(/* success */ false, "");
-    return;
-  }
-
-  VLOG(1) << "Loading ads resource from " << path.value();
-
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&LoadOnFileTaskRunner, path.value()),
-      base::BindOnce(&AdsServiceImpl::OnLoaded, AsWeakPtr(),
-                     std::move(callback)));
-}
-
 void AdsServiceImpl::LoadAdsFileResource(const std::string& id,
                                          const int version,
                                          ads::LoadFileCallback callback) {

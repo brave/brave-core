@@ -168,24 +168,6 @@ void BatAdsClientMojoBridge::Save(
       std::move(callback)));
 }
 
-void OnLoadAdsResource(const ads::LoadCallback& callback,
-                       const bool success,
-                       const std::string& value) {
-  callback(success, value);
-}
-
-void BatAdsClientMojoBridge::LoadAdsResource(const std::string& id,
-                                             const int version,
-                                             ads::LoadCallback callback) {
-  if (!connected()) {
-    callback(/* success */ false, "");
-    return;
-  }
-
-  bat_ads_client_->LoadAdsResource(
-      id, version, base::BindOnce(&OnLoadAdsResource, std::move(callback)));
-}
-
 void BatAdsClientMojoBridge::LoadAdsFileResource(
     const std::string& id,
     const int version,

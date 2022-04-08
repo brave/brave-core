@@ -20,9 +20,6 @@
 - (bool)canShowBackgroundNotifications;
 - (bool)isNetworkConnectionAvailable;
 - (bool)shouldShowNotifications;
-- (void)loadAdsResource:(const std::string&)id
-                version:(const int)version
-               callback:(ads::LoadCallback)callback;
 - (void)loadAdsFileResource:(const std::string&)id
                     version:(const int)version
                    callback:(ads::LoadFileCallback)callback;
