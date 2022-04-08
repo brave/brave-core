@@ -229,35 +229,12 @@ public class PortfolioFragment
         assert view != null;
 
         RecyclerView rvCoins = view.findViewById(R.id.rvCoins);
-        WalletCoinAdapter walletCoinAdapter =
-                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
-        List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
-        for (BlockchainToken userAsset : userAssets) {
-            String currentAssetSymbol = userAsset.symbol.toLowerCase(Locale.getDefault());
-            Double fiatBalance = Utils.getOrDefault(perTokenFiatSum, currentAssetSymbol, 0.0d);
-            String fiatBalanceString = String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
-            Double cryptoBalance = Utils.getOrDefault(perTokenCryptoSum, currentAssetSymbol, 0.0d);
-            String cryptoBalanceString =
-                    String.format(Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
 
-            WalletListItemModel walletListItemModel =
-                    new WalletListItemModel(R.drawable.ic_eth, userAsset.name, userAsset.symbol,
-                            // Amount in USD
-                            fiatBalanceString,
-                            // Amount in current crypto currency/token
-                            cryptoBalanceString);
-            if (userAsset.symbol.equals("ETH")) {
-                userAsset.logo = "eth.png";
-            }
-            walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
-            walletListItemModel.setBlockchainToken(userAsset);
-            walletListItemModelList.add(walletListItemModel);
-        }
-
-        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        WalletCoinAdapter walletCoinAdapter = Utils.setupVisibleAssetList(
+                userAssets, perTokenCryptoSum, perTokenFiatSum, tokensPath);
         walletCoinAdapter.setOnWalletListItemClick(PortfolioFragment.this);
-        walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
         rvCoins.setAdapter(walletCoinAdapter);
         rvCoins.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -271,7 +248,7 @@ public class PortfolioFragment
             String chainId =
                     Utils.getNetworkConst(getActivity(), mSelectedChainNetworkName, customNetworks);
             Utils.openAssetDetailsActivity(getActivity(), chainId, asset.symbol, asset.name,
-                    asset.contractAddress, asset.logo, asset.decimals);
+                    asset.tokenId, asset.contractAddress, asset.logo, asset.decimals);
         });
     }
 

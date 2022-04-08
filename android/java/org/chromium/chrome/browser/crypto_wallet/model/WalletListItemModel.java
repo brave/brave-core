@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class WalletListItemModel {
     private int mIcon;
@@ -19,7 +20,9 @@ public class WalletListItemModel {
     private Bitmap mTxStatusBitmap;
     private String mText1;
     private String mText2;
+    private String mId;
     private BlockchainToken mBlockchainToken;
+    private boolean mIsAccount;
     private boolean mIsImportedAccount;
     private boolean mIsUserSelected;
     private double mTotalGas;
@@ -29,23 +32,21 @@ public class WalletListItemModel {
     private String mChainSymbol;
     private int mChainDecimals;
 
-    public WalletListItemModel(int icon, String title, String subTitle, String text1, String text2,
-            boolean isImportedAccount) {
+    public WalletListItemModel(
+            int icon, String title, String subTitle, String id, String text1, String text2) {
         mIcon = icon;
         mTitle = title;
         mSubTitle = subTitle;
+        mId = id;
         mText1 = text1;
         mText2 = text2;
-        mIsImportedAccount = isImportedAccount;
     }
 
-    public WalletListItemModel(
-            int icon, String title, String subTitle, String text1, String text2) {
-        mIcon = icon;
-        mTitle = title;
-        mSubTitle = subTitle;
-        mText1 = text1;
-        mText2 = text2;
+    public WalletListItemModel(int icon, String title, String subTitle, String text1, String text2,
+            boolean isImportedAccount) {
+        this(icon, title, subTitle, "", text1, text2);
+        mIsImportedAccount = isImportedAccount;
+        mIsAccount = true;
     }
 
     public void setTransactionInfo(TransactionInfo txInfo) {
@@ -143,7 +144,8 @@ public class WalletListItemModel {
     }
 
     public String getTitle() {
-        return mTitle;
+        // ERC721 has format [Title #ID]
+        return mTitle + (isErc721() ? "#" + Utils.hexToIntString(mId) : "");
     }
 
     public String getSubTitle() {
@@ -164,5 +166,13 @@ public class WalletListItemModel {
 
     public void setIsUserSelected(boolean isUserSelected) {
         mIsUserSelected = isUserSelected;
+    }
+
+    public boolean isErc721() {
+        return !(mId == null || mId.trim().isEmpty());
+    }
+
+    public boolean isAccount() {
+        return mIsAccount;
     }
 }

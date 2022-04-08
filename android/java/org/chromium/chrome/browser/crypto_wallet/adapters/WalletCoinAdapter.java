@@ -162,7 +162,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                                     }
                                 }
                                 onWalletListItemClick.onAssetCheckedChanged(
-                                        walletListItemModel, isChecked);
+                                        walletListItemModel, holder.assetCheck, isChecked);
                             }
                         });
                 holder.assetCheck.setChecked(walletListItemModel.getIsUserSelected());

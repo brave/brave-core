@@ -218,8 +218,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                         || mTxInfo.txType == TransactionType.ERC20_APPROVE) {
                     BlockchainRegistry blockchainRegistry = getBlockchainRegistry();
                     assert blockchainRegistry != null;
-                    TokenUtils.getAllTokensFiltered(
-                            getBraveWalletService(), blockchainRegistry, chainId, tokens -> {
+                    TokenUtils.getAllTokensFiltered(getBraveWalletService(), blockchainRegistry,
+                            chainId, TokenUtils.TokenType.ERC20, tokens -> {
                                 for (BlockchainToken token : tokens) {
                                     // Replace USDC and DAI contract addresses for Ropsten network
                                     token.contractAddress = Utils.getContractAddress(
@@ -241,6 +241,16 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                                         break;
                                     }
                                 }
+                            });
+                } else if (mTxInfo.txType == TransactionType.ERC721_TRANSFER_FROM
+                        || mTxInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM) {
+                    BlockchainRegistry blockchainRegistry = getBlockchainRegistry();
+                    assert blockchainRegistry != null;
+                    TokenUtils.getAllTokensFiltered(getBraveWalletService(), blockchainRegistry,
+                            chainId, TokenUtils.TokenType.ERC721,
+                            tokens
+                            -> {
+                                    // TODO erc721 send
                             });
                 } else {
                     if (mTxInfo.txDataUnion.getEthTxData1559()

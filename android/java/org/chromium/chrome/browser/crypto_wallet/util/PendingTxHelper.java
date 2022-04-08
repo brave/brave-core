@@ -114,7 +114,9 @@ public class PendingTxHelper implements TxServiceObserver {
                             }
 
                         } else if (txInfo.txType != TransactionType.ERC20_APPROVE
-                                && txInfo.txType != TransactionType.ERC20_TRANSFER) {
+                                && txInfo.txType != TransactionType.ERC20_TRANSFER
+                                && txInfo.txType != TransactionType.ERC721_TRANSFER_FROM
+                                && txInfo.txType != TransactionType.ERC721_SAFE_TRANSFER_FROM) {
                             // Filter by ETH only
                             newValue.add(txInfo);
                         }
