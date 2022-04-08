@@ -4,16 +4,16 @@
   <message name="IDS_SETTINGS_NEARBY_SHARE_DESCRIPTION" desc="A description of nearby share that helps users understand what the feature is used for.">
     Share files with profiles around you. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <if expr="chromeos">
+  <if expr="chromeos_ash">
     </if>
 
-  <if expr="lacros">
+  <if expr="chromeos_lacros">
     </if>
 
   <if expr="chromeos_ash or chromeos_lacros">
     </if>
 
-  <if expr="chromeos">
+  <if expr="chromeos_ash">
     </if>
   <if expr="chromeos_ash or chromeos_lacros">
     </if>

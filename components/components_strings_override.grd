@@ -12,6 +12,7 @@
     <file path="strings/components_strings_override_bs.xtb" lang="bs" />
     <file path="strings/components_strings_override_ca.xtb" lang="ca" />
     <file path="strings/components_strings_override_cs.xtb" lang="cs" />
+    <file path="strings/components_strings_override_cy.xtb" lang="cy" />
     <file path="strings/components_strings_override_da.xtb" lang="da" />
     <file path="strings/components_strings_override_de.xtb" lang="de" />
     <file path="strings/components_strings_override_el.xtb" lang="el" />

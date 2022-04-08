@@ -16,6 +16,7 @@
     <output filename="components_strings_bs.pak" type="data_package" lang="bs" />
     <output filename="components_strings_ca.pak" type="data_package" lang="ca" />
     <output filename="components_strings_cs.pak" type="data_package" lang="cs" />
+    <output filename="components_strings_cy.pak" type="data_package" lang="cy" />
     <output filename="components_strings_da.pak" type="data_package" lang="da" />
     <output filename="components_strings_de.pak" type="data_package" lang="de" />
     <output filename="components_strings_el.pak" type="data_package" lang="el" />
@@ -205,6 +206,7 @@
     <file path="strings/components_strings_bs.xtb" lang="bs" />
     <file path="strings/components_strings_ca.xtb" lang="ca" />
     <file path="strings/components_strings_cs.xtb" lang="cs" />
+    <file path="strings/components_strings_cy.xtb" lang="cy" />
     <file path="strings/components_strings_da.xtb" lang="da" />
     <file path="strings/components_strings_de.xtb" lang="de" />
     <file path="strings/components_strings_el.xtb" lang="el" />

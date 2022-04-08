@@ -14,6 +14,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     <file path="resources/chromium_strings_override_bs.xtb" lang="bs" />
     <file path="resources/chromium_strings_override_ca.xtb" lang="ca" />
     <file path="resources/chromium_strings_override_cs.xtb" lang="cs" />
+    <file path="resources/chromium_strings_override_cy.xtb" lang="cy" />
     <file path="resources/chromium_strings_override_da.xtb" lang="da" />
     <file path="resources/chromium_strings_override_de.xtb" lang="de" />
     <file path="resources/chromium_strings_override_el.xtb" lang="el" />
@@ -94,25 +95,25 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="is_macosx or is_linux">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
       <if expr="is_win">
         </if>
-      <if expr="is_macosx or chromeos">
+      <if expr="is_macosx or chromeos_ash">
         </if>
-      <if expr="not is_macosx and not chromeos">
+      <if expr="not is_macosx and not chromeos_ash">
         </if>
-      <if expr="not chromeos">
+      <if expr="not chromeos_ash">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
-      <if expr="not chromeos and not is_macosx">
+      <if expr="not chromeos_ash and not is_macosx">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
       <if expr="is_macosx">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
       <if expr="is_macosx">
         </if>
@@ -126,9 +127,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="not use_titlecase">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_ACCOUNT_MANAGER_DIALOG_WELCOME_BODY_V2" desc="Text body for the Welcome screen in Chrome OS 'Add account' dialog.">
 If you want to use this account one-time only, you can use Guest mode in Brave browser. If you want to add an account for someone else, <ph name="LINK_BEGIN">&lt;a target="_blank" id="newPersonLink" href="$1<ex>https://google.com/</ex>"&gt;</ph>add a new profile<ph name="LINK_END">&lt;/a&gt;</ph> to your <ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph>.
 
@@ -177,49 +178,49 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
       </if>
 
-      <if expr="use_titlecase and not chromeos">
+      <if expr="use_titlecase and not chromeos_ash">
         </if>
-      <if expr="not use_titlecase and not chromeos">
+      <if expr="not use_titlecase and not chromeos_ash">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
 
       <if expr="is_macosx">
         </if>
 
-      <if expr="not chromeos">
+      <if expr="not chromeos_ash">
         </if>
 
       <if expr="toolkit_views">
         </if>
 
-      <if expr="is_win or is_macosx or is_fuchsia or (is_linux and not chromeos)">
+      <if expr="toolkit_views and not chromeos_lacros and not chromeos_ash">
         </if>
 
-      <if expr="not chromeos">
+      <if expr="not chromeos_ash">
         </if>
 
-      <if expr="not chromeos and not is_android and not lacros">
+      <if expr="not chromeos_ash and not is_android and not chromeos_lacros">
         </if>
 
-      <if expr="not chromeos and not is_android">
-        </if>
-
-      <if expr="is_win">
-        </if>
-
-      <if expr="not chromeos">
-        </if>
-      <if expr="chromeos">
-        </if>
-
-      <if expr="chromeos">
+      <if expr="not chromeos_ash and not is_android">
         </if>
 
       <if expr="is_win">
         </if>
 
-      <if expr="chromeos">
+      <if expr="not chromeos_ash">
+        </if>
+      <if expr="chromeos_ash">
+        </if>
+
+      <if expr="chromeos_ash">
+        </if>
+
+      <if expr="is_win">
+        </if>
+
+      <if expr="chromeos_ash">
         </if>
 
       <if expr="is_linux or is_macosx">
@@ -228,7 +229,7 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="is_macosx">
         </if>
 
-      <if expr="not is_android and not chromeos">
+      <if expr="not is_android and not chromeos_ash">
         <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_SYNC" desc="Main text shown as a warning when attempting to remove an user.">
           This profile's browsing data will be deleted from this device. To recover the data, sign in to Brave as <ph name="USER_EMAIL">$2<ex>foo@example.com</ex></ph>.
         </message>
@@ -251,7 +252,7 @@ Permissions you've already given to websites and apps may apply to this account.
         </if>
       </if>
 
-      <if expr="not chromeos">
+      <if expr="not chromeos_ash">
         <message name="IDS_UPDATE_RECOMMENDED" desc="The main text of the Update Recommended dialog with a count of open Private windows.">
           {COUNT, plural,
           =0 {A new update for Brave is available and will be applied as soon as you relaunch.}
@@ -259,7 +260,7 @@ Permissions you've already given to websites and apps may apply to this account.
           other {A new update for Brave is available and will be applied as soon as you relaunch. Your # Private windows won't reopen.}}
         </message>
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
 
       <if expr="use_titlecase">
@@ -279,16 +280,16 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="is_macosx">
         </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
 
-      <if expr="not chromeos and not is_android">
+      <if expr="not chromeos_ash and not is_android">
         </if>
 
       <if expr="is_win">
         </if>
       <if expr="not is_android">
-        <if expr="not chromeos">
+        <if expr="not chromeos_ash">
           <message name="IDS_RELAUNCH_RECOMMENDED_BODY" desc="The body text of a dialog that tells users that a browser relaunch is recommended for an update with Private counter.">
              {COUNT, plural,
               =0 {Your administrator asks that you relaunch Brave to apply this update}
@@ -303,21 +304,21 @@ Permissions you've already given to websites and apps may apply to this account.
           </message>
         </if>
       </if>
-      <if expr="not is_android and not chromeos">
+      <if expr="not is_android and not chromeos_ash">
          </if>
       <if expr="not is_android">
         </if>
       <if expr="enable_extensions and enable_supervised_users">
         </if>
 
-      <if expr="not chromeos and not is_android">
-        <if expr="lacros">
+      <if expr="not chromeos_ash and not is_android">
+        <if expr="chromeos_lacros">
           </if>
-        <if expr="not lacros">
+        <if expr="not chromeos_lacros">
           </if>
         </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
 
       </messages>

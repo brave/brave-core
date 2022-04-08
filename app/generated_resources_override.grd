@@ -18,6 +18,7 @@ are declared in tools/grit/grit_rule.gni.
     <file path="resources/generated_resources_override_bs.xtb" lang="bs" />
     <file path="resources/generated_resources_override_ca.xtb" lang="ca" />
     <file path="resources/generated_resources_override_cs.xtb" lang="cs" />
+    <file path="resources/generated_resources_override_cy.xtb" lang="cy" />
     <file path="resources/generated_resources_override_da.xtb" lang="da" />
     <file path="resources/generated_resources_override_de.xtb" lang="de" />
     <file path="resources/generated_resources_override_el.xtb" lang="el" />
@@ -98,7 +99,7 @@ are declared in tools/grit/grit_rule.gni.
 
       <if expr="chromeos_ash or chromeos_lacros">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <part file="os_settings_strings_override.grdp" />
         <part file="os_settings_search_tag_strings_override.grdp" />
         </if>
@@ -116,7 +117,7 @@ are declared in tools/grit/grit_rule.gni.
         <part file="nearby_share_strings_override.grdp" />
       </if>
 
-      <if expr="not chromeos and not is_android">
+      <if expr="not chromeos_ash and not is_android">
         </if>
 
       <if expr="not is_android">
@@ -133,7 +134,7 @@ are declared in tools/grit/grit_rule.gni.
         <part file="supervised_user_error_page_strings_override.grdp" />
       </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
 
       <if expr="is_win">
@@ -143,11 +144,11 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
       <if expr="is_macosx">
         </if>
-      <if expr="is_win or desktop_linux or is_fuchsia">
+      <if expr="not chromeos_ash and not is_macosx and toolkit_views">
         </if>
       <if expr="not is_android">
         <if expr="is_macosx">
@@ -211,7 +212,7 @@ are declared in tools/grit/grit_rule.gni.
           </if>
       </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
 
       <if expr="not use_titlecase">
@@ -422,7 +423,7 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
       <if expr="not is_android">
         </if>
@@ -450,21 +451,21 @@ are declared in tools/grit/grit_rule.gni.
           </if>
       </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
       <if expr="reven">
         </if>
       <if expr="not reven">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
 
       <if expr="enable_extensions">
         <if expr="is_macosx">
           </if>
-        <if expr="not chromeos and not is_macosx">
+        <if expr="not chromeos_ash and not is_macosx">
           </if>
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           </if>
         <if expr="is_macosx">
           </if>
@@ -502,9 +503,9 @@ are declared in tools/grit/grit_rule.gni.
           </else>
       </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
-      <if expr="lacros">
+      <if expr="chromeos_lacros">
         </if>
 
       <if expr="use_titlecase">
@@ -517,7 +518,7 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not is_macosx">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
       <if expr="use_titlecase">
         </if>
@@ -527,12 +528,12 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not is_android">
         </if>
 
-      <if expr="is_win or is_macosx or is_fuchsia or (is_linux and not chromeos)">
+      <if expr="toolkit_views and not chromeos_lacros and not chromeos_ash">
         </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
-      <if expr="lacros">
+      <if expr="chromeos_lacros">
         </if>
 
       <if expr="is_win">
@@ -643,9 +644,9 @@ are declared in tools/grit/grit_rule.gni.
           </if>
         <if expr="not use_titlecase">
           </if>
-        <if expr="not chromeos">
+        <if expr="not chromeos_ash">
           </if>
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           </if>
         </if>
 
@@ -654,7 +655,7 @@ are declared in tools/grit/grit_rule.gni.
 
       <if expr="is_win or is_macosx">
         </if>
-      <if expr="is_win or chromeos">
+      <if expr="is_win or chromeos_ash">
         </if>
       <if expr="is_win">
         </if>
@@ -708,15 +709,15 @@ are declared in tools/grit/grit_rule.gni.
         </if>
 
       <if expr="not is_android">
-        <if expr="not chromeos and use_titlecase">
+        <if expr="not chromeos_ash and use_titlecase">
           </if>
-        <if expr="not chromeos and not use_titlecase">
+        <if expr="not chromeos_ash and not use_titlecase">
           </if>
-        <if expr="chromeos and use_titlecase">
+        <if expr="chromeos_ash and use_titlecase">
           </if>
-        <if expr="chromeos and not use_titlecase">
+        <if expr="chromeos_ash and not use_titlecase">
           </if>
-      </if> <if expr="chromeos">
+      </if> <if expr="chromeos_ash">
         </if> <if expr="not is_android">
         <message name="IDS_EXTENSIONS_INSTALL_LOCATION_UNKNOWN" desc="The text explaining the the installation location is unknown.">
           Not from Web Store.
@@ -729,13 +730,15 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_android">
         </if>
 
-      <if expr="is_linux and not chromeos and not lacros">
+      <if expr="is_linux and not chromeos_ash and not chromeos_lacros">
         </if>
 
-      <if expr="not use_titlecase">
-        </if>
       <if expr="use_titlecase">
-        </if>
+        <then>
+          </then>
+        <else>
+          </else>
+      </if>
       <if expr="is_android">
       </if>
       <if expr="not use_titlecase">
@@ -767,19 +770,19 @@ are declared in tools/grit/grit_rule.gni.
         </if>
 
       <if expr="not is_android">
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           </if>
         </if>
 
       <if expr="not is_android">
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           </if>
-        <if expr="not chromeos">
+        <if expr="not chromeos_ash">
           </if>
         </if>
 
       <if expr="not use_titlecase">
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           </if>
         </if>
 
@@ -788,22 +791,22 @@ are declared in tools/grit/grit_rule.gni.
           </if>
         <if expr="not is_macosx">
           </if>
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           </if>
         </if>
 
-      <if expr="lacros">
+      <if expr="chromeos_lacros">
         </if>
 
-      <if expr="not chromeos and not is_android and not lacros">
+      <if expr="not chromeos_ash and not is_android and not chromeos_lacros">
         </if>
 
-      <if expr="not chromeos and not is_android">
+      <if expr="not chromeos_ash and not is_android">
         </if>
 
       <if expr="is_win">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
 
       <if expr="is_win">
@@ -814,10 +817,10 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
 
-      <if expr="is_macosx or chromeos">
+      <if expr="is_macosx or chromeos_ash">
         </if>
 
-      <if expr="is_linux and not chromeos and not lacros">
+      <if expr="is_linux and not chromeos_ash and not chromeos_lacros">
         </if>
 
       <if expr="use_titlecase">
@@ -825,30 +828,30 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
 
       <if expr="not use_titlecase">
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           </if>
-        <if expr="not chromeos">
+        <if expr="not chromeos_ash">
           </if>
       </if>
       <if expr="use_titlecase">
         </if>
 
       <if expr="not is_android">
-        <if expr="not chromeos">
+        <if expr="not chromeos_ash">
           </if>
-        <if expr="not chromeos">
+        <if expr="not chromeos_ash">
           </if>
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           </if>
-        <if expr="not chromeos">
+        <if expr="not chromeos_ash">
           </if>
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           </if>
-        <if expr="chromeos">
+        <if expr="chromeos_ash">
           </if>
 
         </if>
@@ -860,9 +863,9 @@ are declared in tools/grit/grit_rule.gni.
           </if>
         </if>
 
-      <if expr="not chromeos">
+      <if expr="not chromeos_ash">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
       <if expr="not use_titlecase">
         </if>
@@ -906,12 +909,12 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_posix and not is_macosx">
         </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
 
-      <if expr="not chromeos">
+      <if expr="not chromeos_ash">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
       <if expr="not use_titlecase">
         </if>
@@ -925,7 +928,7 @@ are declared in tools/grit/grit_rule.gni.
           </if>
         </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         <message name="IDS_APP_LIST_NEW_INCOGNITO_WINDOW" desc="The text label of the New Private window menu item">
           New Private window
         </message>
@@ -933,16 +936,16 @@ are declared in tools/grit/grit_rule.gni.
 
       <if expr="toolkit_views">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
       <if expr="is_macosx">
         </if>
-      <if expr="is_win or desktop_linux or is_fuchsia">
+      <if expr="not chromeos_ash and not is_macosx and toolkit_views">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
       </if>
 
     <if expr="is_win">
@@ -988,19 +991,16 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
     <if expr="not is_android">
-      <if expr="not chromeos">
+      <if expr="not chromeos_ash">
         </if>
-      <if expr="chromeos">
+      <if expr="chromeos_ash">
         </if>
       </if>
 
-    <if expr="is_win or is_macosx or desktop_linux or chromeos or is_fuchsia">
+    <if expr="toolkit_views">
       <message name="IDS_WEBAUTHN_PLATFORM_AUTHENTICATOR_OFF_THE_RECORD_INTERSTITIAL_DESCRIPTION" desc="Description of a dialog that asks for the user's permission to set up device-based sign-in (i.e. using their computer's biometric sensor or screen unlock/PIN) on a website while browsing in Private mode.">
          Sign-in data will be stored on this device after you exit Private mode. You'll be able to sign in to this website with your device again later.
       </message>
-      </if>
-
-   <if expr="is_win or is_macosx or desktop_linux or chromeos or is_android or is_fuchsia">
       </if>
 
    <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the Private version of profile menu.">

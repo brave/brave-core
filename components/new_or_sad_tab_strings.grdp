@@ -52,7 +52,7 @@
           Open page in a new Private window (⇧⌘N)
         </message>
       </if>
-      <if expr="is_win or is_linux or is_fuchsia or chromeos">
+      <if expr="not is_macosx and toolkit_views">
         <message name="IDS_SAD_TAB_RELOAD_INCOGNITO" desc="One of the bullet points displayed on the web page if a reload failed to fix the issue, advising the user to open the web page in Brave's Private mode.">
           Open page in a new Private window (Ctrl-Shift-N)
         </message>
@@ -62,22 +62,22 @@
           Open page in a new Private tab
         </message>
       </if>
-      <if expr="is_macosx or chromeos">
+      <if expr="is_macosx or chromeos_ash or chromeos_lacros">
         <message name="IDS_SAD_TAB_RELOAD_CLOSE_TABS" desc="One of the bullet points displayed on the web page if a reload failed to fix the issue, advising the user to close other Brave tabs or apps running on their computer (Mac, Chrome OS).">
           Close other tabs or apps
         </message>
       </if>
-      <if expr="is_linux and not chromeos">
+      <if expr="is_linux and not chromeos_ash and not chromeos_lacros">
         <message name="IDS_SAD_TAB_RELOAD_CLOSE_TABS" desc="One of the bullet points displayed on the web page if a reload failed to fix the issue, advising the user to close other Brave tabs or programs running on their computer.">
           Close other tabs or programs
         </message>
       </if>
-      <if expr="is_macosx or chromeos or is_ios">
+      <if expr="is_macosx or chromeos_ash or chromeos_lacros or is_ios">
         <message name="IDS_SAD_TAB_RELOAD_CLOSE_NOTABS" desc="One of the bullet points displayed on the web page if a reload failed to fix the issue, advising the user to close other apps running on their computer or device.">
           Close other apps
         </message>
       </if>
-      <if expr="is_linux and not chromeos">
+      <if expr="is_linux and not chromeos_ash and not chromeos_lacros">
         <message name="IDS_SAD_TAB_RELOAD_CLOSE_NOTABS" desc="One of the bullet points displayed on the web page if a reload failed to fix the issue, advising the user to close other programs running on their computer (Linux).">
           Close other programs
         </message>
@@ -92,26 +92,24 @@
           Restart Brave
         </message>
       </if>
-      <if expr="is_win or is_linux or is_macosx or is_fuchsia or chromeos">
-        <message name="IDS_SAD_TAB_RELOAD_RESTART_DEVICE" desc="One of the bullet points displayed on the web page if a reload failed to fix the issue, advising the user to restart their computer.">
-          Restart your computer
-        </message>
-      </if>
       <if expr="is_android or is_ios">
-        <message name="IDS_SAD_TAB_RELOAD_RESTART_DEVICE" desc="One of the bullet points displayed on the web page if a reload failed to fix the issue, advising the user to restart their device (i.e. phone or tablet)." formatter_data="android_java">
-          Restart your device
-        </message>
+	<then>
+          <message name="IDS_SAD_TAB_RELOAD_RESTART_DEVICE" desc="One of the bullet points displayed on the web page if a reload failed to fix the issue, advising the user to restart their device (i.e. phone or tablet)." formatter_data="android_java">
+            Restart your device
+          </message>
+          <message name="IDS_SAD_TAB_RELOAD_LEARN_MORE" desc="The link text displayed on the sad tab page pointing the users to a help article if a reload failed to fix the issue." meaning="Learn more about web pages that fail to load" formatter_data="android_java">
+            Learn more
+          </message>
+	</then>
+	<else>
+          <message name="IDS_SAD_TAB_RELOAD_RESTART_DEVICE" desc="One of the bullet points displayed on the web page if a reload failed to fix the issue, advising the user to restart their computer.">
+            Restart your computer
+          </message>
+          <message name="IDS_SAD_TAB_ERROR_CODE" desc="The message displayed on the crashed web page indicating the type of the crash.">
+            Error code: <ph name="ERROR_CODE">$1<ex>STATUS_ACCESS_VIOLATION</ex></ph>
+          </message>
+	</else>
       </if>
-      <if expr="is_android or is_ios">
-        <message name="IDS_SAD_TAB_RELOAD_LEARN_MORE" desc="The link text displayed on the sad tab page pointing the users to a help article if a reload failed to fix the issue." meaning="Learn more about web pages that fail to load" formatter_data="android_java">
-          Learn more
-        </message>
-      </if>
-      <if expr="is_win or is_linux or is_macosx or is_fuchsia or chromeos">
-        <message name="IDS_SAD_TAB_ERROR_CODE" desc="The message displayed on the crashed web page indicating the type of the crash.">
-          Error code: <ph name="ERROR_CODE">$1<ex>STATUS_ACCESS_VIOLATION</ex></ph>
-        </message>
-</if>
 
       <!-- New Tab -->
       <message name="IDS_NEW_TAB_TITLE" desc="Title of the new tab page, not to be confused with the action of opening a new tab.">

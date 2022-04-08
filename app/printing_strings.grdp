@@ -33,9 +33,6 @@
     <message name="IDS_PRINT_PREVIEW_INVALID_PRINTER_SETTINGS" desc="Message to display when selected printer is not reachable or its settings are invalid. Identical to IDS_PRINT_INVALID_PRINTER_SETTINGS, but includes a line break.">
       The selected printer is not available or not installed correctly. <ph name="BR">&lt;br&gt;</ph> Check your printer or try selecting another printer.
     </message>
-    <message name="IDS_PRINT_PREVIEW_UNSUPPORTED_CLOUD_PRINTER" desc="Message to display when an unsupported cloud printer is selected.">
-      The selected Google Cloud Print device is no longer supported. <ph name="BR">&lt;br&gt;</ph> Try setting up the printer in your computer's system settings.
-    </message>
     <message name="IDS_PRINT_PREVIEW_PRINT_BUTTON" desc="Print button.">
       Print
     </message>
@@ -205,20 +202,11 @@
     <message name="IDS_PRINT_PREVIEW_DESTINATION_SEARCH_TITLE" desc="Title of the destination search UI component.">
       Select a destination
     </message>
-    <message name="IDS_PRINT_PREVIEW_ACCOUNT_SELECT_TITLE" desc="Title of the user's account selection control, to choose the account destinations are being shown for.">
-      Showing destinations for
-    </message>
-    <message name="IDS_PRINT_PREVIEW_ADD_ACCOUNT_TITLE" desc="Title of the selection control item to let user to sign into another account.">
-      Add account...
-    </message>
     <message name="IDS_PRINT_PREVIEW_SEARCH_BOX_PLACEHOLDER" desc="Text to put in a search box when user has not entered a search query.">
       Search destinations
     </message>
     <message name="IDS_PRINT_PREVIEW_NO_DESTINATIONS_MESSAGE" desc="Message to show when no destinations were found.">
       No destinations found
-    </message>
-    <message name="IDS_PRINT_PREVIEW_RECENT_DESTINATIONS_TITLE" desc="Title of the section in the Print Preview dialog that lists recently used printers that the user can print to. 'Destinations' is used because the list may include 'Saving as PDF' or other options that are not physical printers.">
-      Recent Destinations
     </message>
     <message name="IDS_PRINT_PREVIEW_PRINT_DESTINATIONS_TITLE" desc="Title of the section in the Print Preview dialog that lists all printers that the user can print to. 'Destinations' is used because the list may include 'Saving as PDF' or other options that are not physical printers.">
       Print Destinations
@@ -243,12 +231,6 @@
     </message>
     <message name="IDS_PRINT_PREVIEW_OFFLINE" desc="Shown when printer is currently offline.">
       Currently offline
-    </message>
-    <message name="IDS_PRINT_PREVIEW_NO_LONGER_SUPPORTED_FRAGMENT" desc="Shown in destination settings when printer is no longer supported.">
-      No longer supported
-    </message>
-    <message name="IDS_PRINT_PREVIEW_NO_LONGER_SUPPORTED" desc="Shown in destinations dialog when printer is no longer supported.">
-      No longer supported.
     </message>
     <message name="IDS_PRINT_PREVIEW_EXTENSION_DESTINATION_ICON_TOOLTIP" desc="Tooltip for the icon shown in print destination list next to print destination provided by an extension.">
       Documents you send to print via <ph name="APP_NAME">$1<ex>A Brave app</ex></ph> can be read by <ph name="APP_NAME">$1<ex>A Brave app</ex></ph>.
@@ -365,7 +347,7 @@
         other {Exceeds limit of {COUNT} sheets of paper}}
       </message>
     </if>
-    <if expr="not chromeos and not lacros">
+    <if expr="not chromeos_ash and not chromeos_lacros">
       <message name="IDS_PRINT_PREVIEW_SYSTEM_DIALOG_OPTION" desc="Option allowing the user to access advanced printer settings using the native print system dialog instead of printing through the print preview mechanism. Shortcut key is not translated">
         Print using system dialog... <ph name="SHORTCUT_KEY">$1<ex>(Shift+Ctrl+P)</ex></ph>
       </message>
