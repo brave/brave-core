@@ -1111,8 +1111,9 @@ void BraveWalletService::NotifyGetPublicKeyRequestProcessed(
   }
 }
 
-void BraveWalletService::NotifyDecryptRequestProcessed(bool approved,
-                                                       const url::Origin& origin) {
+void BraveWalletService::NotifyDecryptRequestProcessed(
+    bool approved,
+    const url::Origin& origin) {
   if (!decrypt_requests_.contains(origin) ||
       !decrypt_callbacks_.contains(origin) || !decrypt_ids_.contains(origin)) {
     return;
