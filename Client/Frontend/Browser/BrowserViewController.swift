@@ -2136,16 +2136,16 @@ extension BrowserViewController: TabDelegate {
   }
 
   /// Triggered when "Find in Page" is selected on selected text
-  func tab(_ tab: Tab, didSelectFindInPageForSelection selection: String) {
+  func tab(_ tab: Tab, didSelectFindInPageFor selectedText: String) {
     updateFindInPageVisibility(visible: true)
-    findInPageBar?.text = selection
+    findInPageBar?.text = selectedText
   }
 
   /// Triggered when "Search with Brave" is selected on selected web text
-  func tab(_ tab: Tab, didSelectSearchWithBraveForSelection selection: String) {
+  func tab(_ tab: Tab, didSelectSearchWithBraveFor selectedText: String) {
     let engine = profile.searchEngines.defaultEngine()
 
-    guard let url = engine.searchURLForQuery(selection) else {
+    guard let url = engine.searchURLForQuery(selectedText) else {
       assertionFailure("If this returns nil, investigate why and add proper handling or commenting")
       return
     }
@@ -2155,6 +2155,10 @@ extension BrowserViewController: TabDelegate {
       afterTab: tab,
       isPrivate: tab.isPrivate
     )
+    
+    if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+      RecentSearch.addItem(type: .text, text: selectedText, websiteUrl: url.absoluteString)
+    }
   }
 
   func showRequestRewardsPanel(_ tab: Tab) {
