@@ -599,6 +599,18 @@ extension Strings {
       bundle: .braveShared,
       value: "The new search engine will appear in the quick search bar.",
       comment: "The message that asks the user to Add the search provider explaining where the search engine will appear")
+  
+    public static let deleteEngineAlertTitle = NSLocalizedString(
+      "customSearchEngine.deleteEngineAlertTitle",
+      bundle: .braveShared,
+      value: "Are you sure you want to delete %@?",
+      comment: "The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine.")
+    
+    public static let deleteEngineAlertDescription = NSLocalizedString(
+      "customSearchEngine.deleteEngineAlertDescription",
+      bundle: .braveShared,
+      value: "Deleting a custom search engine while it is default will switch default engine automatically.",
+      comment: "The warning description shown to user when custom search engine will be deleted while it is default search engine.")
   }
 }
 

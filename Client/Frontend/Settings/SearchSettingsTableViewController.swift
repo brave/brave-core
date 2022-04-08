@@ -312,23 +312,45 @@ class SearchSettingsTableViewController: UITableViewController {
   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
     if editingStyle == .delete {
       guard let engine = customSearchEngines[safe: indexPath.row] else { return }
+      
+      func deleteCustomEngine() {
+        do {
+          try searchEngines.deleteCustomEngine(engine)
+          tableView.deleteRows(at: [indexPath], with: .right)
+          tableView.reloadData()
+        } catch {
+          log.error("Search Engine Error while deleting")
+        }
+      }
 
-      do {
-        try searchEngines.deleteCustomEngine(engine)
-        tableView.deleteRows(at: [indexPath], with: .right)
-      } catch {
-        log.error("Search Engine Error while deleting")
+      if engine == searchEngines.defaultEngine(forType: .standard) {
+        let alert = UIAlertController(
+          title: String(format: Strings.CustomSearchEngine.deleteEngineAlertTitle, engine.displayName),
+          message: Strings.CustomSearchEngine.deleteEngineAlertDescription,
+          preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel))
+        
+        alert.addAction(UIAlertAction(title: Strings.delete, style: .destructive) { [weak self] _ in
+          guard let self = self else { return }
+          
+          self.searchEngines.updateDefaultEngine(
+            self.searchEngines.defaultEngine(forType: .privateMode).shortName,
+            forType: .standard)
+          
+          deleteCustomEngine()
+        })
+
+        UIImpactFeedbackGenerator(style: .medium).bzzt()
+        present(alert, animated: true, completion: nil)
+      } else {
+        deleteCustomEngine()
       }
     }
   }
 
   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    if let engine = customSearchEngines[safe: indexPath.row],
-      engine == searchEngines.defaultEngine(forType: .standard) {
-      return false
-    }
-
-    return true
+    return indexPath.section == Section.customSearch.rawValue
   }
 }
 
