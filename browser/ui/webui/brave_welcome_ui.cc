@@ -49,10 +49,11 @@ void OpenJapanWelcomePage(Profile* profile) {
 }
 
 void RecordP3AHistogram(int screen_number, bool finished) {
-  int answer = 0;
+  int answer = 0; // Did not click within the welcome screen
   if (finished) {
-    answer = 3;
+    answer = 3; // Made it to the end of the on-boarding flow
   } else {
+    // clicked once, or more, but didn't finish
     answer = std::min(screen_number, 2);
   }
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Welcome.InteractionStatus", answer, 3);
