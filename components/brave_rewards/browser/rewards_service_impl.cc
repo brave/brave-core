@@ -73,6 +73,8 @@
 #include "components/prefs/pref_service.h"
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_user_settings.h"
+#include "components/sync_device_info/device_info_sync_service.h"
+#include "components/sync_device_info/local_device_info_provider.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
@@ -355,6 +357,9 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 
   sync_service_->AddObserver(this);
   vg_sync_service_->SetObserver(this);
+  sync_service_->GetDeviceInfoSyncService()
+      ->GetDeviceInfoTracker()
+      ->AddObserver(this);
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
@@ -367,6 +372,9 @@ RewardsServiceImpl::~RewardsServiceImpl() {
 #endif
 
   vg_sync_service_->SetObserver(nullptr);
+  sync_service_->GetDeviceInfoSyncService()
+      ->GetDeviceInfoTracker()
+      ->RemoveObserver(this);
 
   if (ledger_database_) {
     file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
@@ -3363,6 +3371,13 @@ void RewardsServiceImpl::ClearAllNotifications() {
 void RewardsServiceImpl::CompleteReset(SuccessCallback callback) {
   resetting_rewards_ = true;
 
+  brave_sync::ResetSync(sync_service_,
+                        sync_service_->GetDeviceInfoSyncService(),
+                        base::BindOnce(&RewardsServiceImpl::OnResetRewardsSync,
+                                       AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::OnResetRewardsSync(SuccessCallback callback) {
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
   if (ads_service) {
     ads_service->ResetAllState(/* should_shutdown */ true);
@@ -3656,6 +3671,29 @@ void RewardsServiceImpl::OnRestoreVgs(ledger::type::Result result) {
     UnblindedTokensReady();
   } else {
     VLOG(0) << "RestoreVgs failed";
+  }
+}
+
+void RewardsServiceImpl::OnDeviceInfoChange() {
+  auto* device_info_sync_service = sync_service_->GetDeviceInfoSyncService();
+  auto* device_info_tracker = device_info_sync_service->GetDeviceInfoTracker();
+
+  auto* local_device_info_provider =
+      device_info_sync_service->GetLocalDeviceInfoProvider();
+  auto* local_device_info = local_device_info_provider->GetLocalDeviceInfo();
+
+  auto devices = device_info_tracker->GetAllDeviceInfo();
+  VLOG(0) << "Number of devices in sync chain: " << devices.size();
+  if (devices.size() > 1) {
+    std::sort(devices.begin(), devices.end(),
+              [](const auto& device1, const auto& device2) {
+                return device1->last_updated_timestamp() <
+                       device2->last_updated_timestamp();
+              });
+    if (devices[0]->guid() == local_device_info->guid()) {
+      VLOG(0) << "Removing source device...";
+      CompleteReset(base::DoNothing());
+    }
   }
 }
 
