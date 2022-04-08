@@ -271,6 +271,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         } else {
             chain.blockExplorerUrls = new String[0];
         }
+        chain.coin = CoinType.ETH;
 
         assert mJsonRpcService != null;
         if (!mChainId.isEmpty()) {
