@@ -35,7 +35,7 @@ def run_cargo(command, args):
             os.path.join(rustup_path, 'toolchains', args.toolchain, "bin"))
         env['PATH'] = toolchains_path + os.pathsep + env['PATH']
 
-    if args.clang_bin_path is not None:
+    if args.clang_bin_path is not None and not sys.platform.startswith('win'):
         env['AR'] = os.path.join(args.clang_bin_path, 'llvm-ar')
         env['CC'] = os.path.join(args.clang_bin_path, 'clang')
         env['CXX'] = os.path.join(args.clang_bin_path, 'clang++')

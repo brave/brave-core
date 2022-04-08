@@ -35,9 +35,14 @@ if (use_lld) {
   default_rustflags += [
     "-C",
     "link-arg=-fuse-ld=lld",
-    "-C",
-    "link-arg=-B" + rebase_path("$clang_base_path/bin"),
   ]
+
+  if (!is_win) {
+    default_rustflags += [
+      "-C",
+      "link-arg=-B" + rebase_path("$clang_base_path/bin"),
+    ]
+  }
 }
 
 # https://bugzilla.mozilla.org/show_bug.cgi?id=1188030#c14
