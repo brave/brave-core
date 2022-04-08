@@ -34,7 +34,7 @@ cargo_build("rust_lib") {
   }
 }
 
-if (is_mac) {
+if (is_apple) {
   action("generate_unexport_list") {
     script = "//brave/build/rust/generate_unexport_list.py"
 

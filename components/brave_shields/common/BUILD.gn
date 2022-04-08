@@ -2,6 +2,8 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 static_library("common") {
   sources = [
+    "adblock_domain_resolver.cc",
+    "adblock_domain_resolver.h",
     "brave_shield_utils.cc",
     "brave_shield_utils.h",
     "features.cc",
@@ -18,6 +20,7 @@ static_library("common") {
     "//base",
     "//brave/components/resources:strings",
     "//components/content_settings/core/common",
+    "//net",
     "//ui/base",
     "//url",
   ]
