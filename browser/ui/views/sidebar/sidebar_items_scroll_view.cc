@@ -76,7 +76,7 @@ class SidebarItemsArrowView : public views::ImageButton {
         flags.setStyle(cc::PaintFlags::kFill_Style);
         // Use smaller area for hover rounded rect.
         constexpr int kInset = 2, kRadius = 34;
-        bounds.Inset(kInset, 0);
+        bounds.Inset(gfx::Insets::VH(kInset, 0));
         canvas->DrawRoundRect(bounds, kRadius, flags);
       }
     }
