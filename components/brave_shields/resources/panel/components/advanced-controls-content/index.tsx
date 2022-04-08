@@ -15,14 +15,14 @@ const adBlockModeOptions = [
 ]
 
 const cookieBlockModeOptions = [
+  { value: CookieBlockMode.BLOCKED, text: getLocale('braveShieldsCookiesBlockAll') },
   { value: CookieBlockMode.CROSS_SITE_BLOCKED, text: getLocale('braveShieldsCrossCookiesBlocked') },
-  { value: CookieBlockMode.BLOCKED, text: getLocale('braveShieldsCookiesBlocked') },
-  { value: CookieBlockMode.ALLOW, text: getLocale('braveShieldsCookiesBlockedAll') }
+  { value: CookieBlockMode.ALLOW, text: getLocale('braveShieldsCookiesAllowedAll') }
 ]
 
 const fingerprintModeOptions = [
-  { value: FingerprintMode.STANDARD, text: getLocale('braveShieldsFingerprintingBlockedStd') },
   { value: FingerprintMode.STRICT, text: getLocale('braveShieldsFingerprintingBlockedAgg') },
+  { value: FingerprintMode.STANDARD, text: getLocale('braveShieldsFingerprintingBlockedStd') },
   { value: FingerprintMode.ALLOW, text: getLocale('braveShieldsFingerprintingAllowAll') }
 ]
 
@@ -125,7 +125,6 @@ function AdvancedControlsContent () {
           <label>
             <span>{getLocale('braveShieldsConnectionsUpgraded')}</span>
             <Toggle
-              brand="shields"
               onChange={handleHTTPSEverywhereEnabledChange}
               isOn={siteSettings?.isHttpsEverywhereEnabled}
               size='sm'
@@ -145,7 +144,6 @@ function AdvancedControlsContent () {
           <label>
             <span>{getLocale('braveShieldsScriptsBlocked')}</span>
             <Toggle
-              brand="shields"
               onChange={handleIsNoScriptEnabledChange}
               isOn={siteSettings?.isNoscriptEnabled}
               size='sm'
@@ -180,7 +178,7 @@ function AdvancedControlsContent () {
           <div className="col-2">
             <Select
               value={siteSettings?.cookieBlockMode}
-              ariaLabel={getLocale('braveShieldsCookiesBlocked')}
+              ariaLabel={getLocale('braveShieldsCookiesBlockAll')}
               onChange={handleCookieBlockModeChange}
             >
               {cookieBlockModeOptions.map(entry => {

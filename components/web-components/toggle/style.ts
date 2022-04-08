@@ -48,14 +48,17 @@ export const ToggleBox = styled.button.attrs<ToggleProps>({
   border-radius: 50px;
   background: var(--bg-color);
   background-size: 400% 400%;
-  animation: var(--animation-name) 5s ease infinite;
 
   ${p => p.isOn && css`
     --knob-left: initial;
     --knob-right: 2px;
-    --animation-name: ${moveBg};
+    --knob-color: #4C54D2;
     --bg-color: #E1E2F6;
-    --knob-color: #4436E1;
+
+    @media (prefers-color-scheme: dark) {
+      --knob-color: #4436E1;
+      --bg-color: #7679B1;
+    }
   `}
 
   ${p => !p.isOn && css`
@@ -83,32 +86,17 @@ export const ToggleBox = styled.button.attrs<ToggleProps>({
   ${({ brand, isOn }) => {
     if (!isOn) return
 
-    if (brand === 'vpn') {
+    if (brand === 'shields' || brand === 'vpn') {
       return css`
+        animation: ${moveBg} 5s ease infinite;
         --knob-color: white;
-        --bg-color: linear-gradient(
-            135deg,
-            #381e85 0%,
-            #6845d1 30%,
-            #737ade 100%,
-            #4d56d0 75%,
-            #0e1bd1 100%
-          );
-      `
-    }
+        --bg-color: linear-gradient(305.95deg, #381e85 0%, #6845d1 98.59%, #737ade 100%, #4d56d0 75%, #0e1bd1 100%);
 
-    if (brand === 'shields') {
-      return css`
-        --knob-color: white;
-        --bg-color: linear-gradient(
-            305.95deg,
-            #BF14A2 0%,
-            #F73A1C 98.59%,
-            #737ade 100%,
-            #4d56d0 75%,
-            #0e1bd1 100%
-          );
-        `
+        @media (prefers-color-scheme: dark) {
+          --knob-color: white;
+          --bg-color: linear-gradient(305.95deg, #381e85 0%, #6845d1 98.59%, #737ade 100%, #4d56d0 75%, #0e1bd1 100%);
+        }
+      `
     }
 
     return css``

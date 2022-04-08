@@ -26,7 +26,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ADVANCED_CTRLS" desc="A button label to expand/collapse more options.">
-    Advanced Controls
+    Advanced controls
   </message>
 
   <message name="IDS_BRAVE_SHIELD_SETTINGS_DESCRIPTION" desc="A description to explain the various options below will effect web compatibility.">
@@ -42,7 +42,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_CUSTOMIZE_ADBLOCK_LISTS" desc="A link that redirects to Adblock lists.">
-    Filter Lists
+    Filter lists
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_CONNECTIONS_UPGRADED" desc="A label to describe expand/collapse button for the HTTPS section.">
@@ -66,11 +66,11 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_BLOCKED_STD" desc="Menu option that would block some trackers and advertisement website scripts.">
-    Trackers &amp; ads blocked (standard)
+    Block trackers &amp; ads
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_BLOCKED_AGG" desc="Menu option that would block all trackers and advertisement website scripts.">
-    Trackers &amp; ads blocked (aggressive)
+    Aggressively block trackers &amp; ads
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS_ALLOW_ALL" desc="Menu option that would stop blocking all trackers and advertisement website scripts">
@@ -78,15 +78,15 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_CROSS_COOKIES_BLOCKED" desc="Menu option that would block cross website cookies.">
-    Cross-site cookies blocked
+    Block cross-site cookies
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_COOKIES_BLOCKED" desc="Menu option that would block current website cookies.">
-    Cookies blocked
+    Block all cookies
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_COOKIES_BLOCKED_ALL" desc="Menu option that would allow all cookies.">
-    All cookies allowed
+  <message name="IDS_BRAVE_SHIELDS_COOKIES_ALLOWED_ALL" desc="Menu option that would allow all cookies on the current website.">
+    Allow all cookies
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED" desc="An accessible label for expand/collapse button.">
@@ -94,15 +94,15 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_STD" desc="Menu option that would block some fingerprinting website scripts.">
-    Fingerprinting blocked (standard)
+    Block fingerprinting
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_AGG" desc="Menu option that would block all fingerprinting website scripts.">
-    Fingerprinting blocked (strict, sites may break)
+    Aggressively block fingerprinting
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_ALLOW_ALL" desc="Menu option that would stop blocking all fingerprinting website scripts.">
-    Allow all Fingerprinting
+    Allow fingerprinting
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_REPORT_SITE" desc="An accessible label for reporting broken sites.">
