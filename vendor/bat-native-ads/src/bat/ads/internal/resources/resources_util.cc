@@ -16,6 +16,7 @@
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
+#include "bat/ads/internal/resources/conversions/conversions_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -85,6 +86,12 @@ template void LoadAndParseResource<ad_targeting::PurchaseIntentInfo>(
     const std::string& id,
     const int version,
     LoadAndParseResourceCallback<ad_targeting::PurchaseIntentInfo> callback);
+
+// Explicit instantiation of function for ConversionsInfo.
+template void LoadAndParseResource<ConversionsInfo>(
+    const std::string& id,
+    const int version,
+    LoadAndParseResourceCallback<ConversionsInfo> callback);
 
 }  // namespace resource
 }  // namespace ads

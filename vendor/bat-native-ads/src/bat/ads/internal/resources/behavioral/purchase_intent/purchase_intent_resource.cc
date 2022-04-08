@@ -69,7 +69,5 @@ const ad_targeting::PurchaseIntentInfo* PurchaseIntent::get() const {
   return purchase_intent_.get();
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
 }  // namespace resource
 }  // namespace ads

@@ -178,8 +178,9 @@ void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
   last_html_loaded_hash_ = hash;
 
   ad_transfer_->MaybeTransferAd(tab_id, redirect_chain);
-  conversions_->MaybeConvert(redirect_chain, html,
-                             conversions_resource_->get());
+  conversions_->MaybeConvert(
+      redirect_chain, html,
+      conversions_resource_->get()->conversion_id_patterns);
 }
 
 void AdsImpl::OnTextLoaded(const int32_t tab_id,
