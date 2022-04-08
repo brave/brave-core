@@ -17,6 +17,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
 #include "bat/ads/internal/resources/conversions/conversions_info.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -92,6 +93,12 @@ template void LoadAndParseResource<ConversionsInfo>(
     const std::string& id,
     const int version,
     LoadAndParseResourceCallback<ConversionsInfo> callback);
+
+// Explicit instantiation of function for AntiTargetingInfo.
+template void LoadAndParseResource<AntiTargetingInfo>(
+    const std::string& id,
+    const int version,
+    LoadAndParseResourceCallback<AntiTargetingInfo> callback);
 
 }  // namespace resource
 }  // namespace ads

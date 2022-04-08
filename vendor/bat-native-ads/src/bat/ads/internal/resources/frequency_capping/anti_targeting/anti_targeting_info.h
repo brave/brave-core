@@ -7,8 +7,14 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_FREQUENCY_CAPPING_ANTI_TARGETING_ANTI_TARGETING_INFO_H_
 
 #include <cstdint>
+#include <memory>
+#include <string>
 
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_info_aliases.h"
+
+namespace base {
+class Value;
+}  // namespace base
 
 namespace ads {
 namespace resource {
@@ -18,6 +24,10 @@ struct AntiTargetingInfo final {
   AntiTargetingInfo();
   AntiTargetingInfo(const AntiTargetingInfo& info);
   ~AntiTargetingInfo();
+
+  static std::unique_ptr<AntiTargetingInfo> CreateFromValue(
+      base::Value resource_value,
+      std::string* error_message);
 
   uint16_t version = 0;
   AntiTargetingMap sites;

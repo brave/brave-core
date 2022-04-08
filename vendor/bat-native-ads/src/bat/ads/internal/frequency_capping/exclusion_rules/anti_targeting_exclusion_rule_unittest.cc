@@ -55,6 +55,7 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfCreativeSetDoesNotMatch) {
 
   resource::AntiTargeting resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   BrowsingHistoryList history = {{"https://www.foo1.org"},
                                  {"https://www.brave.com"},
@@ -75,6 +76,7 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest, AllowIfSiteDoesNotMatch) {
 
   resource::AntiTargeting resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   BrowsingHistoryList history = {{"https://www.foo1.org"},
                                  {"https://www.foo2.org"}};
@@ -95,6 +97,7 @@ TEST_F(BatAdsAntiTargetingExclusionRuleTest,
 
   resource::AntiTargeting resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   BrowsingHistoryList history = {{"https://www.foo1.org"},
                                  {"https://www.brave.com"}};
