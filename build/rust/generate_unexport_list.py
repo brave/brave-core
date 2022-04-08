@@ -42,7 +42,7 @@ def main():
   parser.add_argument("--output", required=True)
   args = parser.parse_args()
 
-  exe = os.path.join(args.bin_path, "nm")
+  exe = os.path.join(args.bin_path, "llvm-nm")
   return run(exe, args.input, args.output)
 
 
