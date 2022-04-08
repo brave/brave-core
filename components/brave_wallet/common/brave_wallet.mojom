@@ -1022,14 +1022,17 @@ interface BraveWalletService {
   // Sets the default base cryptocurrency
   SetDefaultBaseCryptocurrency(string cryptocurrency);
 
-  // Adds the Ethereum permission for the account
-  AddEthereumPermission(url.mojom.Origin origin, string account) => (bool success);
+  // Adds the permission of coin type for the account
+  AddPermission(CoinType coin, url.mojom.Origin origin, string account)
+    => (bool success);
 
-  // Checks if the Ethereum permission is allowed for the origin on the account
-  HasEthereumPermission(url.mojom.Origin origin, string account) => (bool success, bool has_permission);
+  // Checks if the permission of coin is allowed for the origin on the account
+  HasPermission(CoinType coin, url.mojom.Origin origin, string account)
+    => (bool success, bool has_permission);
 
-  // Resets the Ethereum permission for the account
-  ResetEthereumPermission(url.mojom.Origin origin, string account) => (bool success);
+  // Resets the permission of coin for the account
+  ResetPermission(CoinType coin, url.mojom.Origin origin, string account)
+    => (bool success);
 
   // Obtains the active origin info.
   GetActiveOrigin() => (OriginInfo origin_info);

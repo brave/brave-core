@@ -135,8 +135,8 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetHasEthereumPermissionResponseContext extends SingleResponseBaseContext
-            implements BraveWalletService.HasEthereumPermission_Response {
+    public static class GetHasEthereumPermissionResponseContext
+            extends SingleResponseBaseContext implements BraveWalletService.HasPermission_Response {
         public Boolean success;
         public Boolean hasPermission;
 

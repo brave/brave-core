@@ -539,32 +539,32 @@ void BraveWalletService::OnNetworkListChanged() {
   }
 }
 
-void BraveWalletService::AddEthereumPermission(
-    const url::Origin& origin,
-    const std::string& account,
-    AddEthereumPermissionCallback callback) {
+void BraveWalletService::AddPermission(mojom::CoinType coin,
+                                       const url::Origin& origin,
+                                       const std::string& account,
+                                       AddPermissionCallback callback) {
   if (delegate_)
-    delegate_->AddEthereumPermission(origin, account, std::move(callback));
+    delegate_->AddPermission(coin, origin, account, std::move(callback));
   else
     std::move(callback).Run(false);
 }
 
-void BraveWalletService::HasEthereumPermission(
-    const url::Origin& origin,
-    const std::string& account,
-    HasEthereumPermissionCallback callback) {
+void BraveWalletService::HasPermission(mojom::CoinType coin,
+                                       const url::Origin& origin,
+                                       const std::string& account,
+                                       HasPermissionCallback callback) {
   if (delegate_)
-    delegate_->HasEthereumPermission(origin, account, std::move(callback));
+    delegate_->HasPermission(coin, origin, account, std::move(callback));
   else
     std::move(callback).Run(false, false);
 }
 
-void BraveWalletService::ResetEthereumPermission(
-    const url::Origin& origin,
-    const std::string& account,
-    ResetEthereumPermissionCallback callback) {
+void BraveWalletService::ResetPermission(mojom::CoinType coin,
+                                         const url::Origin& origin,
+                                         const std::string& account,
+                                         ResetPermissionCallback callback) {
   if (delegate_)
-    delegate_->ResetEthereumPermission(origin, account, std::move(callback));
+    delegate_->ResetPermission(coin, origin, account, std::move(callback));
   else
     std::move(callback).Run(false);
 }

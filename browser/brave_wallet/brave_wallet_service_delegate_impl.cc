@@ -113,32 +113,49 @@ void BraveWalletServiceDelegateImpl::ContinueGetImportInfoFromExternalWallet(
   }
 }
 
-void BraveWalletServiceDelegateImpl::AddEthereumPermission(
+void BraveWalletServiceDelegateImpl::AddPermission(
+    mojom::CoinType coin,
     const url::Origin& origin,
     const std::string& account,
-    AddEthereumPermissionCallback callback) {
+    AddPermissionCallback callback) {
+  auto type = CoinTypeToContentSettingsType(coin);
+  if (!type) {
+    std::move(callback).Run(false);
+    return;
+  }
   bool success = permissions::BraveWalletPermissionContext::AddPermission(
-      ContentSettingsType::BRAVE_ETHEREUM, context_, origin, account);
+      *type, context_, origin, account);
   std::move(callback).Run(success);
 }
 
-void BraveWalletServiceDelegateImpl::HasEthereumPermission(
+void BraveWalletServiceDelegateImpl::HasPermission(
+    mojom::CoinType coin,
     const url::Origin& origin,
     const std::string& account,
-    HasEthereumPermissionCallback callback) {
+    HasPermissionCallback callback) {
   bool has_permission = false;
+  auto type = CoinTypeToContentSettingsType(coin);
+  if (!type) {
+    std::move(callback).Run(false, has_permission);
+    return;
+  }
   bool success = permissions::BraveWalletPermissionContext::HasPermission(
-      ContentSettingsType::BRAVE_ETHEREUM, context_, origin, account,
-      &has_permission);
+      *type, context_, origin, account, &has_permission);
   std::move(callback).Run(success, has_permission);
 }
 
-void BraveWalletServiceDelegateImpl::ResetEthereumPermission(
+void BraveWalletServiceDelegateImpl::ResetPermission(
+    mojom::CoinType coin,
     const url::Origin& origin,
     const std::string& account,
-    ResetEthereumPermissionCallback callback) {
+    ResetPermissionCallback callback) {
+  auto type = CoinTypeToContentSettingsType(coin);
+  if (!type) {
+    std::move(callback).Run(false);
+    return;
+  }
   bool success = permissions::BraveWalletPermissionContext::ResetPermission(
-      ContentSettingsType::BRAVE_ETHEREUM, context_, origin, account);
+      *type, context_, origin, account);
   std::move(callback).Run(success);
 }
 

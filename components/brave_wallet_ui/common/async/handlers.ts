@@ -548,13 +548,13 @@ handler.on(WalletActions.updateUnapprovedTransactionNonce.getType(), async (stor
 
 handler.on(WalletActions.removeSitePermission.getType(), async (store: Store, payload: RemoveSitePermissionPayloadType) => {
   const braveWalletService = getAPIProxy().braveWalletService
-  await braveWalletService.resetEthereumPermission(payload.origin, payload.account)
+  await braveWalletService.resetPermission(payload.coin, payload.origin, payload.account)
   await refreshWalletInfo(store)
 })
 
 handler.on(WalletActions.addSitePermission.getType(), async (store: Store, payload: AddSitePermissionPayloadType) => {
   const braveWalletService = getAPIProxy().braveWalletService
-  await braveWalletService.addEthereumPermission(payload.origin, payload.account)
+  await braveWalletService.addPermission(payload.coin, payload.origin, payload.account)
   await refreshWalletInfo(store)
 })
 

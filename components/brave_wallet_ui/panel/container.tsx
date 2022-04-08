@@ -391,15 +391,15 @@ function Container (props: Props) {
     props.walletPanelActions.cancelConnectHardwareWallet(selectedPendingTransaction)
   }
 
-  const removeSitePermission = (origin: Origin, address: string, connectedAccounts: WalletAccountType[]) => {
-    props.walletActions.removeSitePermission({ origin: origin, account: address })
+  const removeSitePermission = (origin: Origin, account: WalletAccountType, connectedAccounts: WalletAccountType[]) => {
+    props.walletActions.removeSitePermission({ coin: account.coin, origin: origin, account: account.address })
     if (connectedAccounts.length !== 0) {
       props.walletActions.selectAccount(connectedAccounts[0])
     }
   }
 
   const addSitePermission = (origin: Origin, account: WalletAccountType) => {
-    props.walletActions.addSitePermission({ origin: origin, account: account.address })
+    props.walletActions.addSitePermission({ coin: account.coin, origin: origin, account: account.address })
     props.walletActions.selectAccount(account)
   }
 
