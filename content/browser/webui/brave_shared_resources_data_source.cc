@@ -17,6 +17,7 @@
 #include "base/memory/ref_counted_memory.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/ui/webui/resources/grit/brave_webui_resources.h"
 #include "brave/ui/webui/resources/grit/brave_webui_resources_map.h"
 #include "build/build_config.h"
@@ -73,8 +74,11 @@ int GetIdrForPath(const std::string& path) {
 }  // namespace
 
 BraveSharedResourcesDataSource::BraveSharedResourcesDataSource(
-    bool is_untrusted)
-    : is_untrusted_(is_untrusted) {}
+    bool is_untrusted,
+    const std::string& app_locale)
+    : is_untrusted_(is_untrusted),
+      app_language_code_(
+          base::ToLowerASCII(brave_l10n::GetLanguageCode(app_locale))) {}
 
 BraveSharedResourcesDataSource::~BraveSharedResourcesDataSource() = default;
 
@@ -91,8 +95,8 @@ void BraveSharedResourcesDataSource::StartDataRequest(
     const GURL& url,
     const content::WebContents::Getter& wc_getter,
     content::URLDataSource::GotDataCallback callback) {
-  const std::string path = URLDataSource::URLToRequestPath(url);
-  int idr = GetIdrForPath(path);
+  const std::string& path = URLDataSource::URLToRequestPath(url);
+  int idr = GetIdrForPath(ResolveLocaleDependendResource(path));
   DCHECK_NE(-1, idr) << " path: " << path;
   scoped_refptr<base::RefCountedMemory> bytes;
 
@@ -177,6 +181,15 @@ BraveSharedResourcesDataSource::GetAccessControlAllowOriginForOrigin(
     return std::string();
   }
   return origin;
+}
+
+std::string BraveSharedResourcesDataSource::ResolveLocaleDependendResource(
+    const std::string& path) {
+  if (app_language_code_ == "ru" || app_language_code_ == "el") {
+    if (base::EqualsCaseInsensitiveASCII(path, "fonts/poppins.css"))
+      return "fonts/manrope_as_poppins.css";
+  }
+  return path;
 }
 
 }  // namespace brave_content
