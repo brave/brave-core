@@ -396,7 +396,9 @@ extension Strings {
   public static let tabToolbarReaderViewButtonTitle = NSLocalizedString("TabToolbarReaderViewButtonTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Add to Reading List", comment: "Accessibility label for action adding current page to reading list.")
   public static let searchSuggestionsSectionHeader = NSLocalizedString("SearchSuggestionsSectionHeader", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Search Suggestions", comment: "Section header for search suggestions option")
   public static let findOnPageSectionHeader = NSLocalizedString("FindOnPageSectionHeader", tableName: "BraveShared", bundle: Bundle.braveShared, value: "On This Page", comment: "Section header for find in page option")
-  public static let searchHistorySectionHeader = NSLocalizedString("SearchHistorySectionHeader", tableName: "BraveShared", bundle: Bundle.braveShared, value: "History & Bookmarks", comment: "Section header for history and bookmarks option")
+  public static let searchHistorySectionHeader = NSLocalizedString("SearchHistorySectionHeader", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Open Tabs & Bookmarks & History", comment: "Section header for history and bookmarks and open tabs option")
+  public static let searchSuggestionOpenTabActionTitle = NSLocalizedString("searchSuggestionOpenTabActionTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Switch to this tab", comment: "Action title for Switching to an existing tab for the suggestion item shown on the table list")
+  
 }
 
 // MARK:-  TabPeekViewController.swift

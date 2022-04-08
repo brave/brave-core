@@ -352,7 +352,10 @@ extension BrowserViewController: TopToolbarDelegate {
     searchController.searchDelegate = self
     searchController.profile = self.profile
 
-    searchLoader = SearchLoader(historyAPI: braveCore.historyAPI, bookmarkManager: bookmarkManager)
+    searchLoader = SearchLoader(
+      historyAPI: braveCore.historyAPI,
+      bookmarkManager: bookmarkManager,
+      tabManager: tabManager)
     searchLoader?.addListener(searchController)
     searchLoader?.autocompleteSuggestionHandler = { [weak self] completion in
       self?.topToolbar.setAutocompleteSuggestion(completion)

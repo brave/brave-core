@@ -1555,6 +1555,18 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
       openURLInNewTab(url, isPrivate: isPrivate, isPrivileged: isPrivileged)
     }
   }
+  
+  func switchToTabOrOpen(id: String?, url: URL) {
+    popToBVC()
+    
+    if let tabID = id, let tab = tabManager.getTabForID(tabID) {
+      tabManager.selectTab(tab)
+    } else if let tab = tabManager.getTabForURL(url) {
+      tabManager.selectTab(tab)
+    } else {
+      openURLInNewTab(url, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing, isPrivileged: false)
+    }
+  }
 
   func openURLInNewTab(_ url: URL?, isPrivate: Bool = false, isPrivileged: Bool) {
     topToolbar.leaveOverlayMode(didCancel: true)
@@ -2200,6 +2212,10 @@ extension BrowserViewController: SearchViewControllerDelegate {
     finishEditingAndSubmit(url, visitType: .typed)
   }
 
+  func searchViewController(_ searchViewController: SearchViewController, didSelectOpenTab tabInfo: (id: String?, url: URL)) {
+    switchToTabOrOpen(id: tabInfo.id, url: tabInfo.url)
+  }
+  
   func searchViewController(_ searchViewController: SearchViewController, didLongPressSuggestion suggestion: String) {
     self.topToolbar.setLocation(suggestion, search: true)
   }
