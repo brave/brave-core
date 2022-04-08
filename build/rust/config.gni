@@ -49,15 +49,11 @@ if (use_lld) {
 # Supposedly this bug was fixed, but it's still happening for us.
 too_many_personality_profiles_workaround = is_apple && use_lld && !is_component_build
 
-enable_rust_lto = use_thin_lto || too_many_personality_profiles_workaround
+enable_rust_lto = too_many_personality_profiles_workaround
 
 if (enable_rust_lto) {
   default_rustflags += [ "-Cembed-bitcode=yes" ]
-  if (use_thin_lto) {
-    default_rustflags += [ "-Clto=thin" ]
-  } else {
-    default_rustflags += [ "-Clto" ]
-  }
+  default_rustflags += [ "-Clto" ]
 }
 
 if (is_debug) {
