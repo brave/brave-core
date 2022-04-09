@@ -68,9 +68,9 @@ class AdsClientMojoBridge
            const int32_t verbose_level,
            const std::string& message) override;
 
-  void LoadAdsFileResource(const std::string& id,
-                           const int version,
-                           LoadAdsFileResourceCallback callback) override;
+  void LoadFileResource(const std::string& id,
+                        const int version,
+                        LoadFileResourceCallback callback) override;
 
   void GetBrowsingHistory(const int max_count,
                           const int days_ago,

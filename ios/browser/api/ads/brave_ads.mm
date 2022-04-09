@@ -1128,9 +1128,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   callback({});
 }
 
-- (void)loadAdsFileResource:(const std::string&)id
-                    version:(const int)version
-                   callback:(ads::LoadFileCallback)callback {
+- (void)loadFileResource:(const std::string&)id
+                 version:(const int)version
+                callback:(ads::LoadFileCallback)callback {
   NSString* bridgedId = base::SysUTF8ToNSString(id);
   NSString* nsFilePath = [self.commonOps dataPathForFilename:bridgedId];
 

@@ -178,7 +178,7 @@ void UnitTestBase::Initialize() {
   MockGetBrowsingHistory(ads_client_mock_);
 
   MockLoad(ads_client_mock_, temp_dir_);
-  MockLoadAdsFileResource(ads_client_mock_);
+  MockLoadFileResource(ads_client_mock_);
   MockLoadResourceForId(ads_client_mock_);
   MockSave(ads_client_mock_);
 

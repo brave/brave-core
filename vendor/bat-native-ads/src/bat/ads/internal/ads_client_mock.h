@@ -59,7 +59,7 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD2(Load, void(const std::string& name, LoadCallback callback));
 
-  MOCK_METHOD3(LoadAdsFileResource,
+  MOCK_METHOD3(LoadFileResource,
                void(const std::string& id,
                     const int version,
                     LoadFileCallback callback));

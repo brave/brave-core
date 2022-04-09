@@ -140,11 +140,10 @@ void AdsClientMojoBridge::Log(
   ads_client_->Log(file.c_str(), line, verbose_level, message);
 }
 
-void AdsClientMojoBridge::LoadAdsFileResource(
-    const std::string& id,
-    const int version,
-    LoadAdsFileResourceCallback callback) {
-  ads_client_->LoadAdsFileResource(id, version, std::move(callback));
+void AdsClientMojoBridge::LoadFileResource(const std::string& id,
+                                           const int version,
+                                           LoadFileResourceCallback callback) {
+  ads_client_->LoadFileResource(id, version, std::move(callback));
 }
 
 // static

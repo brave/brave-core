@@ -2042,9 +2042,9 @@ void AdsServiceImpl::Save(const std::string& name,
                      std::move(callback)));
 }
 
-void AdsServiceImpl::LoadAdsFileResource(const std::string& id,
-                                         const int version,
-                                         ads::LoadFileCallback callback) {
+void AdsServiceImpl::LoadFileResource(const std::string& id,
+                                      const int version,
+                                      ads::LoadFileCallback callback) {
   const absl::optional<base::FilePath> path =
       g_brave_browser_process->resource_component()->GetPath(id, version);
 

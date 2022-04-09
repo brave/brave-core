@@ -532,8 +532,8 @@ void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
           }));
 }
 
-void MockLoadAdsFileResource(const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, LoadAdsFileResource(_, _, _))
+void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, LoadFileResource(_, _, _))
       .WillByDefault(Invoke([](const std::string& id, const int version,
                                LoadFileCallback callback) {
         const base::FilePath path =
