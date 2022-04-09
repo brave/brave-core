@@ -4,8 +4,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ledger/internal/endpoint/bitflyer/bitflyer_utils.h"
+#include "base/strings/strcat.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/ledger.h"
+#include "brave/vendor/bat-native-ledger/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BitflyerUtilsTest.*
@@ -19,13 +21,13 @@ class BitflyerUtilsTest : public testing::Test {};
 TEST(BitflyerUtilsTest, GetServerUrlDevelopment) {
   ledger::_environment = type::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
-  ASSERT_EQ(url, BITFLYER_STAGING_URL "/test");
+  ASSERT_EQ(url, base::StrCat({BUILDFLAG(BITFLYER_STAGING_URL), "/test"}));
 }
 
 TEST(BitflyerUtilsTest, GetServerUrlStaging) {
   ledger::_environment = type::Environment::STAGING;
   const std::string url = GetServerUrl("/test");
-  ASSERT_EQ(url, BITFLYER_STAGING_URL "/test");
+  ASSERT_EQ(url, base::StrCat({BUILDFLAG(BITFLYER_STAGING_URL), "/test"}));
 }
 
 TEST(BitflyerUtilsTest, GetServerUrlProduction) {

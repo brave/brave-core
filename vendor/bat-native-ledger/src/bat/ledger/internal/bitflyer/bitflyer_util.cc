@@ -16,21 +16,21 @@
 #include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state_keys.h"
+#include "brave/vendor/bat-native-ledger/buildflags.h"
 #include "crypto/random.h"
-
 namespace ledger {
 namespace bitflyer {
 
 std::string GetClientId() {
   return ledger::_environment == type::Environment::PRODUCTION
-             ? BITFLYER_CLIENT_ID
-             : BITFLYER_STAGING_CLIENT_ID;
+             ? BUILDFLAG(BITFLYER_CLIENT_ID)
+             : BUILDFLAG(BITFLYER_STAGING_CLIENT_ID);
 }
 
 std::string GetClientSecret() {
   return ledger::_environment == type::Environment::PRODUCTION
-             ? BITFLYER_CLIENT_SECRET
-             : BITFLYER_STAGING_CLIENT_SECRET;
+             ? BUILDFLAG(BITFLYER_CLIENT_SECRET)
+             : BUILDFLAG(BITFLYER_STAGING_CLIENT_SECRET);
 }
 
 std::string GetUrl() {

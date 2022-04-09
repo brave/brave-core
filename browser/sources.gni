@@ -384,8 +384,6 @@ if (is_mac) {
   }
 }
 
-brave_chrome_browser_defines = []
-
 brave_chrome_browser_sources += brave_browser_autocomplete_sources
 brave_chrome_browser_sources += brave_browser_binance_sources
 brave_chrome_browser_sources += brave_browser_brave_adaptive_captcha_sources

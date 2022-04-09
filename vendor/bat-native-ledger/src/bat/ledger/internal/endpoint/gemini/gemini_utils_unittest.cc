@@ -5,10 +5,12 @@
 
 #include <string>
 
+#include "base/strings/strcat.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/core/bat_ledger_test.h"
 #include "bat/ledger/internal/endpoint/gemini/gemini_utils.h"
 #include "bat/ledger/ledger.h"
+#include "brave/vendor/bat-native-ledger/buildflags.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -23,37 +25,37 @@ class GeminiUtilsTest : public BATLedgerTest {};
 TEST_F(GeminiUtilsTest, GetApiServerUrlDevelopment) {
   ledger::_environment = type::Environment::DEVELOPMENT;
   const std::string url = GetApiServerUrl("/test");
-  ASSERT_EQ(url, GEMINI_API_STAGING_URL "/test");
+  ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_API_STAGING_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, GetApiServerUrlStaging) {
   ledger::_environment = type::Environment::STAGING;
   const std::string url = GetApiServerUrl("/test");
-  ASSERT_EQ(url, GEMINI_API_STAGING_URL "/test");
+  ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_API_STAGING_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, GetApiServerUrlProduction) {
   ledger::_environment = type::Environment::PRODUCTION;
   const std::string url = GetApiServerUrl("/test");
-  ASSERT_EQ(url, GEMINI_API_URL "/test");
+  ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_API_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, GetOauthServerUrlDevelopment) {
   ledger::_environment = type::Environment::DEVELOPMENT;
   const std::string url = GetOauthServerUrl("/test");
-  ASSERT_EQ(url, GEMINI_OAUTH_STAGING_URL "/test");
+  ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, GetOauthServerUrlStaging) {
   ledger::_environment = type::Environment::STAGING;
   const std::string url = GetOauthServerUrl("/test");
-  ASSERT_EQ(url, GEMINI_OAUTH_STAGING_URL "/test");
+  ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, GetOauthServerUrlProduction) {
   ledger::_environment = type::Environment::PRODUCTION;
   const std::string url = GetOauthServerUrl("/test");
-  ASSERT_EQ(url, GEMINI_OAUTH_URL "/test");
+  ASSERT_EQ(url, base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL), "/test"}));
 }
 
 TEST_F(GeminiUtilsTest, CheckStatusCodeTest) {

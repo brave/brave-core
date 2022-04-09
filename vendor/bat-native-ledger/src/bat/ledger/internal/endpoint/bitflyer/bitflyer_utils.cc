@@ -9,12 +9,13 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/bitflyer/bitflyer_util.h"
 #include "bat/ledger/ledger.h"
+#include "brave/vendor/bat-native-ledger/buildflags.h"
 
 namespace ledger {
 namespace endpoint {
 namespace bitflyer {
 
-const char kUrlStaging[] = BITFLYER_STAGING_URL;
+const char kUrlStaging[] = BUILDFLAG(BITFLYER_STAGING_URL);
 const char kUrlProduction[] = "https://bitflyer.com";
 
 std::string GetClientId() {

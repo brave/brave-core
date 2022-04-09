@@ -20,6 +20,7 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/vendor/bat-native-ledger/buildflags.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -406,10 +407,10 @@ class UpholdStateMachine : public RewardsStateBrowserTest,
 };
 
 #ifdef OFFICIAL_BUILD
-#define _UPHOLD_CLIENT_ID_ UPHOLD_CLIENT_ID
+#define _UPHOLD_CLIENT_ID_ +std::string(BUILDFLAG(UPHOLD_CLIENT_ID)) +
 #define _UPHOLD_URL_ "https://uphold.com"
 #else
-#define _UPHOLD_CLIENT_ID_ UPHOLD_STAGING_CLIENT_ID
+#define _UPHOLD_CLIENT_ID_ +std::string(BUILDFLAG(UPHOLD_STAGING_CLIENT_ID)) +
 #define _UPHOLD_URL_ "https://wallet-sandbox.uphold.com"
 #endif
 

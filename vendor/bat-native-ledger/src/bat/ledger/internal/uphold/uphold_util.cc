@@ -15,6 +15,7 @@
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
+#include "brave/vendor/bat-native-ledger/buildflags.h"
 #include "crypto/random.h"
 
 namespace ledger {
@@ -26,14 +27,14 @@ bool g_show_newly_verified_wallet = true;
 
 std::string GetClientId() {
   return ledger::_environment == type::Environment::PRODUCTION
-             ? UPHOLD_CLIENT_ID
-             : UPHOLD_STAGING_CLIENT_ID;
+             ? BUILDFLAG(UPHOLD_CLIENT_ID)
+             : BUILDFLAG(UPHOLD_STAGING_CLIENT_ID);
 }
 
 std::string GetClientSecret() {
   return ledger::_environment == type::Environment::PRODUCTION
-             ? UPHOLD_CLIENT_SECRET
-             : UPHOLD_STAGING_CLIENT_SECRET;
+             ? BUILDFLAG(UPHOLD_CLIENT_SECRET)
+             : BUILDFLAG(UPHOLD_STAGING_CLIENT_SECRET);
 }
 
 std::string GetUrl() {

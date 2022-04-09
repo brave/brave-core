@@ -11,13 +11,14 @@
 #include <vector>
 
 #include "bat/ledger/ledger.h"
+#include "brave/vendor/bat-native-ledger/buildflags.h"
 
 namespace ledger {
 class LedgerImpl;
 
 namespace bitflyer {
 
-const char kUrlStaging[] = BITFLYER_STAGING_URL;
+const char kUrlStaging[] = BUILDFLAG(BITFLYER_STAGING_URL);
 const char kUrlProduction[] = "https://bitflyer.com";
 const char kFeeAddressStaging[] = "068e675b-f137-48ed-8068-4ad34ca4f30f";
 const char kFeeAddressProduction[] = "e77cacb4-c49c-4451-bc2d-5072c10e55d3";

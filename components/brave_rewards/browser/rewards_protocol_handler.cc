@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/strings/strcat.h"
+#include "base/strings/string_piece_forward.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "brave/components/brave_rewards/common/url_constants.h"
@@ -60,24 +61,24 @@ void LoadRewardsURL(
   }
 
   // Only accept rewards scheme from allowed domains
-  GURL bitflyer_staging_url = GURL(BUILDFLAG(BITFLYER_STAGING_URL));
-  GURL gemini_oauth_staging_url = GURL(BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
+  const GURL bitflyer_staging_url(BUILDFLAG(BITFLYER_STAGING_URL));
+  const GURL gemini_oauth_staging_url(BUILDFLAG(GEMINI_OAUTH_STAGING_URL));
 
   DCHECK(bitflyer_staging_url.is_valid() && bitflyer_staging_url.has_host());
   DCHECK(gemini_oauth_staging_url.is_valid() &&
          gemini_oauth_staging_url.has_host());
 
-  const std::string bitflyer_staging_host = bitflyer_staging_url.host();
-  const std::string gemini_staging_host = gemini_oauth_staging_url.host();
-  const char* kAllowedDomains[] = {
-      "bitflyer.com",                 // bitFlyer production
-      bitflyer_staging_host.c_str(),  // bitFlyer staging
-      "gemini.com",                   // Gemini production
-      gemini_staging_host.c_str(),    // Gemini staging
-      "uphold.com",                   // Uphold staging/production
+  const auto bitflyer_staging_host = bitflyer_staging_url.host_piece();
+  const auto gemini_staging_host = gemini_oauth_staging_url.host_piece();
+  const base::StringPiece kAllowedDomains[] = {
+      "bitflyer.com",         // bitFlyer production
+      bitflyer_staging_host,  // bitFlyer staging
+      "gemini.com",           // Gemini production
+      gemini_staging_host,    // Gemini staging
+      "uphold.com",           // Uphold staging/production
   };
   bool allowed_domain = false;
-  for (const auto* domain : kAllowedDomains) {
+  for (const auto domain : kAllowedDomains) {
     if (ref_url.DomainIs(domain)) {
       allowed_domain = true;
       break;

@@ -10,6 +10,7 @@
 #include "bat/ledger/internal/gemini/gemini_util.h"
 #include "bat/ledger/internal/logging/logging.h"
 #include "bat/ledger/ledger.h"
+#include "brave/vendor/bat-native-ledger/buildflags.h"
 #include "net/http/http_status_code.h"
 
 namespace ledger {
@@ -48,9 +49,9 @@ std::string GetApiServerUrl(const std::string& path) {
 
   std::string url;
   if (ledger::_environment == type::Environment::PRODUCTION) {
-    url = GEMINI_API_URL;
+    url = BUILDFLAG(GEMINI_API_URL);
   } else {
-    url = GEMINI_API_STAGING_URL;
+    url = BUILDFLAG(GEMINI_API_STAGING_URL);
   }
 
   return url + path;
@@ -61,9 +62,9 @@ std::string GetOauthServerUrl(const std::string& path) {
 
   std::string url;
   if (ledger::_environment == type::Environment::PRODUCTION) {
-    url = GEMINI_OAUTH_URL;
+    url = BUILDFLAG(GEMINI_OAUTH_URL);
   } else {
-    url = GEMINI_OAUTH_STAGING_URL;
+    url = BUILDFLAG(GEMINI_OAUTH_STAGING_URL);
   }
 
   return url + path;

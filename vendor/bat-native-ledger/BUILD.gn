@@ -30,17 +30,6 @@ buildflag_header("buildflags") {
     "REWARDS_GRANT_DEV_ENDPOINT=\"$rewards_grant_dev_endpoint\"",
     "REWARDS_GRANT_STAGING_ENDPOINT=\"$rewards_grant_staging_endpoint\"",
     "REWARDS_GRANT_PROD_ENDPOINT=\"$rewards_grant_prod_endpoint\"",
-  ]
-}
-
-config("internal_config") {
-  visibility = [
-    ":*",
-    "//brave/components/brave_rewards/test:*",
-    "//brave/test:*",
-    "//brave/vendor/bat-native-ledger/test:*",
-  ]
-  defines = [
     "BITFLYER_CLIENT_ID=\"$bitflyer_client_id\"",
     "BITFLYER_CLIENT_SECRET=\"$bitflyer_client_secret\"",
     "BITFLYER_STAGING_CLIENT_ID=\"$bitflyer_staging_client_id\"",
@@ -58,6 +47,15 @@ config("internal_config") {
     "UPHOLD_CLIENT_SECRET=\"$uphold_client_secret\"",
     "UPHOLD_STAGING_CLIENT_ID=\"$uphold_staging_client_id\"",
     "UPHOLD_STAGING_CLIENT_SECRET=\"$uphold_staging_client_secret\"",
+  ]
+}
+
+config("internal_config") {
+  visibility = [
+    ":*",
+    "//brave/components/brave_rewards/test:*",
+    "//brave/test:*",
+    "//brave/vendor/bat-native-ledger/test:*",
   ]
   include_dirs = [
     "src",

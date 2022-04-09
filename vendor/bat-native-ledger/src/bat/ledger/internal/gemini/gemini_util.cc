@@ -16,6 +16,7 @@
 #include "bat/ledger/internal/gemini/gemini_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state_keys.h"
+#include "brave/vendor/bat-native-ledger/buildflags.h"
 #include "crypto/random.h"
 
 namespace ledger {
@@ -23,20 +24,20 @@ namespace gemini {
 
 std::string GetClientId() {
   return ledger::_environment == type::Environment::PRODUCTION
-             ? GEMINI_WALLET_CLIENT_ID
-             : GEMINI_WALLET_STAGING_CLIENT_ID;
+             ? BUILDFLAG(GEMINI_WALLET_CLIENT_ID)
+             : BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID);
 }
 
 std::string GetClientSecret() {
   return ledger::_environment == type::Environment::PRODUCTION
-             ? GEMINI_WALLET_CLIENT_SECRET
-             : GEMINI_WALLET_STAGING_CLIENT_SECRET;
+             ? BUILDFLAG(GEMINI_WALLET_CLIENT_SECRET)
+             : BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_SECRET);
 }
 
 std::string GetUrl() {
   return ledger::_environment == type::Environment::PRODUCTION
-             ? GEMINI_OAUTH_URL
-             : GEMINI_OAUTH_STAGING_URL;
+             ? BUILDFLAG(GEMINI_OAUTH_URL)
+             : BUILDFLAG(GEMINI_OAUTH_STAGING_URL);
 }
 
 std::string GetFeeAddress() {
