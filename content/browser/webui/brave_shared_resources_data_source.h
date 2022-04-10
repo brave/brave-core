@@ -36,8 +36,8 @@ class BraveSharedResourcesDataSource : public content::URLDataSource {
   std::string GetAccessControlAllowOriginForOrigin(
       const std::string& origin) override;
 
-  private:
-   std::string ResolveLocaleDependendResource(const std::string& path);
+ private:
+  std::string ResolveLocaleDependendResource(const std::string& path);
 
    bool is_untrusted_ = false;
    std::string app_language_code_;
