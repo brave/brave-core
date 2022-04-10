@@ -31,6 +31,7 @@ bool ParseGetSignatureStatuses(
 bool ParseGetAccountInfo(const std::string& json,
                          absl::optional<SolanaAccountInfo>* account_info_out);
 bool ParseGetFeeForMessage(const std::string& json, uint64_t* fee);
+bool ParseGetBlockHeight(const std::string& json, uint64_t* block_height);
 
 }  // namespace solana
 

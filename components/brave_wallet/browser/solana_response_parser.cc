@@ -248,6 +248,21 @@ bool ParseGetFeeForMessage(const std::string& json, uint64_t* fee) {
   return GetUint64FromDictValue(result, "value", true, fee);
 }
 
+bool ParseGetBlockHeight(const std::string& json, uint64_t* block_height) {
+  DCHECK(block_height);
+
+  absl::optional<std::string> converted_json = ConvertSingleUint64Result(json);
+  std::string block_height_string;
+  if (!converted_json || !brave_wallet::ParseSingleStringResult(
+                             *converted_json, &block_height_string))
+    return false;
+
+  if (block_height_string.empty())
+    return false;
+
+  return base::StringToUint64(block_height_string, block_height);
+}
+
 }  // namespace solana
 
 }  // namespace brave_wallet

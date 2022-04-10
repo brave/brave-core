@@ -316,6 +316,27 @@ TEST(SolanaResponseParserUnitTest, ParseGetFeeForMessage) {
   EXPECT_DCHECK_DEATH(ParseGetFeeForMessage(json, nullptr));
 }
 
+TEST(SolanaResponseParserUnitTest, ParseGetBlockHeight) {
+  std::string json = R"({"jsonrpc":2.0,"id":1,"result":18446744073709551615})";
+
+  uint64_t block_height = 0;
+  EXPECT_TRUE(ParseGetBlockHeight(json, &block_height));
+  EXPECT_EQ(block_height, UINT64_MAX);
+
+  std::vector<std::string> invalid_jsons = {
+      R"({"jsonrpc":2.0, "id":1})",
+      R"({"jsonrpc":2.0, "id":1, "result":{}})",
+      R"({"jsonrpc":2.0, "id":1, "result":null})",
+      R"({"jsonrpc":2.0, "id":1, "result":-1})",
+      R"({"jsonrpc":2.0, "id":1, "result":1.2})",
+      R"({"jsonrpc":2.0, "id":1, "result":"1"})"};
+  for (const auto& invalid_json : invalid_jsons)
+    EXPECT_FALSE(ParseGetBlockHeight(invalid_json, &block_height))
+        << invalid_json;
+
+  EXPECT_DCHECK_DEATH(ParseGetBlockHeight(json, nullptr));
+}
+
 }  // namespace solana
 
 }  // namespace brave_wallet

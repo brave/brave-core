@@ -287,6 +287,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               const std::string& error_message)>;
   void GetSolanaFeeForMessage(const std::string& message,  // base64 encoded
                               GetSolanaFeeForMessageCallback callback);
+  using GetSolanaBlockHeightCallback =
+      base::OnceCallback<void(uint64_t block_height,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
+  void GetSolanaBlockHeight(GetSolanaBlockHeightCallback callback);
 
  private:
   void FireNetworkChanged(mojom::CoinType coin);
@@ -481,6 +486,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const base::flat_map<std::string, std::string>& headers);
   void OnGetSolanaFeeForMessage(
       GetSolanaFeeForMessageCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+  void OnGetSolanaBlockHeight(
+      GetSolanaBlockHeightCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);

@@ -643,6 +643,21 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestGetSolanaBlockHeight(uint64_t expected_block_height,
+                                mojom::SolanaProviderError expected_error,
+                                const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetSolanaBlockHeight(base::BindLambdaForTesting(
+        [&](uint64_t block_height, mojom::SolanaProviderError error,
+            const std::string& error_message) {
+          EXPECT_EQ(block_height, expected_block_height);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
  protected:
   std::unique_ptr<JsonRpcService> json_rpc_service_;
 
@@ -2724,6 +2739,38 @@ TEST_F(JsonRpcServiceUnitTest, GetFilTransactionCount) {
                      "resolution lookup failed", 0));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetSolanaBlockHeight) {
+  EXPECT_TRUE(SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL));
+  auto expected_network_url =
+      GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL);
+  SetInterceptor(expected_network_url, "getBlockHeight", "",
+                 R"({"jsonrpc":"2.0", "id":1, "result":5566})");
+
+  TestGetSolanaBlockHeight(5566, mojom::SolanaProviderError::kSuccess, "");
+
+  // Response parsing error
+  SetInterceptor(expected_network_url, "getBlockHeight", "",
+                 R"({"jsonrpc":"2.0","id":1,"result":"not expected"})");
+  TestGetSolanaBlockHeight(0, mojom::SolanaProviderError::kParsingError,
+                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // JSON RPC error
+  SetInterceptor(expected_network_url, "getBlockHeight", "",
+                 R"({"jsonrpc": "2.0", "id": 1,
+                     "error": {
+                       "code":-32601,
+                       "message":"method does not exist"
+                     }
+                    })");
+  TestGetSolanaBlockHeight(0, mojom::SolanaProviderError::kMethodNotFound,
+                           "method does not exist");
+
+  // HTTP error
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetSolanaBlockHeight(0, mojom::SolanaProviderError::kInternalError,
+                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 }  // namespace brave_wallet

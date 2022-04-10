@@ -1912,4 +1912,39 @@ void JsonRpcService::OnGetSolanaFeeForMessage(
   std::move(callback).Run(fee, mojom::SolanaProviderError::kSuccess, "");
 }
 
+void JsonRpcService::GetSolanaBlockHeight(
+    GetSolanaBlockHeightCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetSolanaBlockHeight,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(solana::getBlockHeight(), true,
+                  network_urls_[mojom::CoinType::SOL],
+                  std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetSolanaBlockHeight(
+    GetSolanaBlockHeightCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        0, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  uint64_t block_height = 0;
+  if (!solana::ParseGetBlockHeight(body, &block_height)) {
+    mojom::SolanaProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    std::move(callback).Run(0, error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(block_height, mojom::SolanaProviderError::kSuccess,
+                          "");
+}
+
 }  // namespace brave_wallet
