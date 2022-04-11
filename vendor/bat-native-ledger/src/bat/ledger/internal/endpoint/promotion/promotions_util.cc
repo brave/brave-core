@@ -5,8 +5,8 @@
 
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 
+#include "bat/ledger/buildflags.h"
 #include "bat/ledger/ledger.h"
-#include "brave/vendor/bat-native-ledger/buildflags.h"
 
 namespace ledger {
 namespace endpoint {

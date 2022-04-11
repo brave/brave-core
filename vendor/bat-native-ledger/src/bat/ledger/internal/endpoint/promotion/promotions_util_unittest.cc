@@ -5,9 +5,9 @@
 
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "base/strings/strcat.h"
+#include "bat/ledger/buildflags.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/ledger.h"
-#include "brave/vendor/bat-native-ledger/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=PromotionsUtilTest.*

@@ -8,6 +8,7 @@
 
 #include "base/strings/strcat.h"
 #include "base/test/task_environment.h"
+#include "bat/ledger/buildflags.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/gemini/gemini_util.h"
@@ -15,7 +16,6 @@
 #include "bat/ledger/internal/ledger_impl_mock.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/ledger.h"
-#include "brave/vendor/bat-native-ledger/buildflags.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 // npm run test -- brave_unit_tests --filter=GeminiUtilTest.*

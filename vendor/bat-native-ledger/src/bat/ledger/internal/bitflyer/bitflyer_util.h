@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "bat/ledger/buildflags.h"
 #include "bat/ledger/ledger.h"
-#include "brave/vendor/bat-native-ledger/buildflags.h"
 
 namespace ledger {
 class LedgerImpl;

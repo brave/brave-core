@@ -10,8 +10,8 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/notreached.h"
+#include "bat/ledger/buildflags.h"
 #include "brave/components/brave_ads/common/switches.h"
-#include "brave/vendor/bat-native-ledger/buildflags.h"
 
 namespace brave_adaptive_captcha {
 

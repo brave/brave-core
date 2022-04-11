@@ -23,6 +23,7 @@ config("external_config") {
 }
 
 buildflag_header("buildflags") {
+  header_dir = "brave/vendor/bat-native-ledger/include/bat/ledger"
   header = "buildflags.h"
   flags = [
     "GEMINI_OAUTH_STAGING_URL=\"$gemini_oauth_staging_url\"",

@@ -7,9 +7,9 @@
 
 #include "base/base64.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/buildflags.h"
 #include "bat/ledger/internal/bitflyer/bitflyer_util.h"
 #include "bat/ledger/ledger.h"
-#include "brave/vendor/bat-native-ledger/buildflags.h"
 
 namespace ledger {
 namespace endpoint {
