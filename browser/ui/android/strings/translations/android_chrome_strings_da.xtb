@@ -718,7 +718,6 @@ Hvis du vil ændre denne indstilling, skal du <ph name="BEGIN_LINK"/>nulstille s
 <translation id="5329858041417644019">Din browser administreres ikke</translation>
 <translation id="5342314432463739672">Anmodninger om tilladelse</translation>
 <translation id="5355191726083956201">Forbedret beskyttelse er aktiveret</translation>
-<translation id="9148151251783962691">Hvis du vil bruge nettet privat på denne enhed, kan du prøve at bruge inkognitotilstand</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> åben fane – tryk for at skifte fane}one{<ph name="OPEN_TABS_MANY"/> åben fane – tryk for at skifte fane}other{<ph name="OPEN_TABS_MANY"/> åbne faner – tryk for at skifte fane}}</translation>
 <translation id="5375577065097716013">Søg efter billedet med Google Lens <ph name="BEGIN_NEW"/>Nyhed<ph name="END_NEW"/></translation>
 <translation id="5403644198645076998">Tillad kun bestemte websites</translation>
@@ -1252,7 +1251,6 @@ Nogle websites kan f.eks. reagere på denne anmodning ved at vise dig annoncer, 
 <translation id="834313815369870491">Oversæt aldrig websites</translation>
 <translation id="8352996530981010042">Reaktionerne kunne ikke downloades. Prøv igen.</translation>
 <translation id="8354977102499939946">Søg hurtigt med din stemme. Gå til Indstillinger for at redigere denne genvej.</translation>
-<translation id="3488655102287645931">Du får mulighed for nemt at administrere mediestyring, inkognitosessioner, downloads og meget mere</translation>
 <translation id="835847953965672673"><ph name="NUMBER_OF_DOWNLOADS"/> downloads blev gendannet</translation>
 <translation id="8364299278605033898">Se populære websites</translation>
 <translation id="8368001212524806591">Overvåg pris</translation>
@@ -1444,6 +1442,7 @@ Nogle websites kan f.eks. reagere på denne anmodning ved at vise dig annoncer, 
 <translation id="4660964651149493586">Lås op for Private</translation>
 <translation id="3763131702135887799">Hjælp med at gøre Brave bedre for profiler, som bruger den ligesom dig</translation>
 <translation id="4167670741834902166">Ny Privat fane</translation>
+<translation id="9148151251783962691">Prøv Privat for at browse privat på denne enhed</translation>
 <translation id="8355284051444779553">Åbn menuen for at åbne en privat fane</translation>
 <translation id="8120164982795455341">Ny Privat fane</translation>
 <translation id="6464648082977038075">Luk Private faner</translation>
@@ -1467,4 +1466,5 @@ Nogle websites kan f.eks. reagere på denne anmodning ved at vise dig annoncer, 
           other {<ph name="INCOGNITO_TAB_COUNT"/> private og <ph name="TAB_COUNT_MANY"/> andre faneblade lukkes}}</translation>
 <translation id="3947065058794437451">Du kan ikke bruge privattilstand på denne enhed</translation>
 <translation id="1998933850996224665">Del med profiler i nærheden ved at lade dem scanne denne QR-kode</translation>
+<translation id="3488655102287645931">Du kan let håndtere mediestyring, private sessioner, downloads og mere</translation>
 </translationbundle>

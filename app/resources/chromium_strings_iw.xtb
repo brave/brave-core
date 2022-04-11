@@ -14,18 +14,12 @@
 <translation id="5147525139567260139">‏שיתוף כרטיסיית Brave</translation>
 <translation id="1530633922026945685">‏Brave זקוק להרשאת גישה למצלמה כדי ליצור מפה תלת-ממדית של הסביבה שלך</translation>
 <translation id="4449148723378534338">‏בדיקה של אמצעי הבקרה החשובים ביותר על פרטיות ואבטחה ב-Brave</translation>
-<translation id="5359574361379286250">‏אם ברצונך להשתמש בחשבון הזה באופן חד-פעמי, אפשר להשתמש <ph name="GUEST_LINK_BEGIN"/>במצב אורח<ph name="GUEST_LINK_END"/> בדפדפן Brave. כדי להוסיף חשבון של מישהו אחר, <ph name="LINK_BEGIN"/>יש להוסיף משתמש חדש<ph name="LINK_END"/> אל <ph name="DEVICE_TYPE"/>.
-
-יכול להיות שהרשאות שכבר נתת לאתרים ולאפליקציות יחולו על החשבון הזה. יש לך גם אפשרות לנהל את חשבונות Brave <ph name="SETTINGS_LINK_BEGIN"/>בהגדרות<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="5616153642055197778">‏גרסה חדשה ובטוחה יותר של Brave זמינה כעת.</translation>
 <translation id="6797402139308059782">‏התרה ל-Brave לפעול ברקע</translation>
 <translation id="5875673934455379806">‏התקנת Brave מחדש</translation>
 <translation id="4528406859989804913">‏נכנסת עם חשבון מנוהל שנותן למנהל המערכת שלו שליטה על הפרופיל שלך ב-Brave. הנתונים שלך ב-Brave, כגון אפליקציות, סימניות, היסטוריה, סיסמאות והגדרות אחרות ייקשרו באופן קבוע ל-<ph name="USER_NAME"/>. ניתן למחוק את הנתונים האלה באמצעות לוח הבקרה של חשבונות Brave, אבל אי אפשר לשייך את הנתונים האלה לחשבון אחר. לחלופין, באפשרותך ליצור פרופיל חדש כדי לשמור את הנתונים הקיימים שלך ב-Brave בנפרד.<ph name="LEARN_MORE"/></translation>
 <translation id="1649714546770135458">‏כיבוי הגדרה זו יאפשר לך להיכנס לאתרי Brave, כמו Gmail, בלי להיכנס אל Brave</translation>
 <translation id="189297655255130768">‏Brave אינו מגיב. להפעיל מחדש עכשיו?</translation>
-<translation id="479793348545936567">‏אם ברצונך להשתמש בחשבון הזה באופן חד-פעמי, אפשר להשתמש במצב אורח בדפדפן Brave. כדי להוסיף חשבון של מישהו אחר, <ph name="LINK_BEGIN"/>יש להוסיף משתמש חדש<ph name="LINK_END"/> אל <ph name="DEVICE_TYPE"/>.
-
-יכול להיות שהרשאות שכבר נתת לאתרים ולאפליקציות יחולו על החשבון הזה. יש לך גם אפשרות לנהל את חשבונות Brave <ph name="SETTINGS_LINK_BEGIN"/>בהגדרות<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1775322105159056176">‏ב-Brave לא ניתן לקבוע או להגדיר את דפדפן ברירת המחדל</translation>
 <translation id="7665553140559834626">‏הפעלה מחדש לצורך עדכון &amp;Chrome OS</translation>
 <translation id="9220324636239049437">‏הפעולה הזו תמחק פריט אחד מהמכשיר. כדי לשחזר את הנתונים מאוחר יותר, היכנס אל Brave עם <ph name="USER_EMAIL"/>.</translation>
@@ -293,6 +287,12 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="4484434718272972655">‏מי משתמש/ת ב-Brave?</translation>
 <translation id="7173394303099002355">‏רוצה להשיג את רמת האבטחה הגבוהה ביותר של Brave?</translation>
 <translation id="8992261409816268381">‏מחברי Brave</translation>
+<translation id="479793348545936567">אם ברצונך להשתמש בחשבון זה באופן חד-פעמי בלבד, ביכולתך להשתמש ב׳מצב אורח׳ בדפדפן Brave. אם ברצונך להוסיף חשבון עבור מישהו אחר, <ph name="LINK_BEGIN"/>הוסף פרופיל חדש <ph name="LINK_END"/> אל<ph name="DEVICE_TYPE"/>שלך. 
+
+הרשאות שכבר ניתנו על ידך לאתרים ואפליקציות עשויות לחול על חשבון זה. באפשרותך לנהל את אפשרויות הסנכרון של Brave בעמוד <ph name="SETTINGS_LINK_BEGIN"/>הגדרות<ph name="SETTINGS_LINK_END"/> שלך.</translation>
+<translation id="5359574361379286250">אם ברצונך להשתמש בחשבון זה באופן חד-פעמי בלבד, באפשרותך להשתמש <ph name="GUEST_LINK_BEGIN"/> ב׳מצב אורח׳ <ph name="GUEST_LINK_END"/> בדפדפן Brave. אם ברצונך להוסיף חשבון עבור מישהו אחר, <ph name="LINK_BEGIN"/> הוסף פרופיל חדש <ph name="LINK_END"/> אל <ph name="DEVICE_TYPE"/>שלך. 
+
+הרשאות שכבר ניתנו על ידך לאחרים ואפליקציות עשויות לחול על חשבון זה. באפשרותך לנהל את אפשרויות הסנכרון של Brave בעמוד <ph name="SETTINGS_LINK_BEGIN"/>ההגדרות<ph name="SETTINGS_LINK_END"/> שלך.</translation>
 <translation id="1299765473362724475">‏אזהרה: Brave לא יכול למנוע מתוספים לתעד את היסטוריית הגלישה שלך. כדי להשבית את התוסף הזה במצב גלישה בסתר, צריך לבטל את הבחירה של האפשרות הזו.</translation>
 <translation id="1448049584457347995">‏כדי לשפר את האבטחה של Brave, השבתנו חלק מהתוספים שלא רשומים ב<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> וייתכן שנוספו ללא ידיעתך.</translation>
 <translation id="8848045066928358658">‏כדי לשפר את האבטחה של Brave, השבתנו את התוסף הבא שאינו רשום ב-<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> וייתכן שנוסף ללא ידיעתך.</translation>

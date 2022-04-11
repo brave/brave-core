@@ -498,7 +498,6 @@
 <translation id="2523886232349826891">Запазено само на това устройство</translation>
 <translation id="2524461107774643265">Добавяне на още информация</translation>
 <translation id="2529899080962247600">Това поле не трябва да съдържа повече от <ph name="MAX_ITEMS_LIMIT"/> записа. Следващите се пренебрегват.</translation>
-<translation id="40442660395682483">Отворете нов раздел в режим „инкогнито“, за да сърфирате частно</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{и още 1}other{и още #}}</translation>
 <translation id="2536110899380797252">Добавяне на адрес</translation>
 <translation id="2539524384386349900">Откриване</translation>
@@ -1418,7 +1417,6 @@
 <translation id="5556459405103347317">Повторно зареждане</translation>
 <translation id="5560088892362098740">Дата на изтичане</translation>
 <translation id="55635442646131152">Структура на документа</translation>
-<translation id="5395368798429603306">Отваряне на раздел в режим „инкогнито“</translation>
 <translation id="5565735124758917034">Активно</translation>
 <translation id="5570825185877910964">Защита на профила</translation>
 <translation id="5571083550517324815">Този адрес за вземане не се поддържа. Изберете друг.</translation>
@@ -1873,7 +1871,6 @@
 <translation id="7192203810768312527">Ще освободите <ph name="SIZE"/>. Някои сайтове може да се заредят по-бавно при следващото ви посещение.</translation>
 <translation id="719464814642662924">Visa</translation>
 <translation id="7201591969684833065">Администраторът ви може да вижда:</translation>
-<translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Натиснете Tab и след това – Enter, за да отворите нов раздел в режим „инкогнито“ и да сърфирате частно</translation>
 <translation id="7202346780273620635">Letter-Extra</translation>
 <translation id="7210863904660874423"><ph name="HOST_NAME"/> не се придържа към стандартите за сигурност.</translation>
 <translation id="7210993021468939304">Може да инсталира и стартира приложения за Linux в контейнера, както и да вижда активността в него</translation>
@@ -2134,7 +2131,6 @@
 <translation id="799149739215780103">Подвързване</translation>
 <translation id="7992044431894087211">Споделянето на екрана с(ъс) <ph name="APPLICATION_TITLE"/> бе възобновено</translation>
 <translation id="7995512525968007366">Не е посочено</translation>
-<translation id="3711639027736550870">Бутон „Отваряне на раздел в режим „инкогнито“. Натиснете Enter, за да отворите нов раздел в режим „инкогнито“ и да сърфирате частно</translation>
 <translation id="800218591365569300">Затворете другите раздели или програми, за да освободите памет.</translation>
 <translation id="8004582292198964060">Браузър</translation>
 <translation id="8012116502927253373">{NUM_CARDS,plural, =1{Тази карта и адресът й за фактуриране ще бъдат запазени. Ще можете да я използвате, когато сте влезли в профила <ph name="USER_EMAIL"/>.}other{Тези карти и адресите им за фактуриране ще бъдат запазени. Ще можете да ги използвате, когато сте влезли в профила <ph name="USER_EMAIL"/>.}}</translation>
@@ -2551,6 +2547,10 @@
         <ph name="END_LIST"/></translation>
 <translation id="6043883615739972429"><ph name="BEGIN_LINK"/>Научете повече за поверителния режим в Brave<ph name="END_LINK"/></translation>
 <translation id="9153679102508470540">Блокиране на бисквитките на трети страни в поверителен режим</translation>
+<translation id="5395368798429603306">Отваряне на раздел „Поверително“</translation>
+<translation id="40442660395682483">Отворете нов раздел „Поверително“, за да разглеждате поверително</translation>
+<translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, натиснете Tab, след което Enter, за да отворите нов раздел „Поверително“, за да разглеждате поверително</translation>
+<translation id="3711639027736550870">Бутон за отваряне на раздел „Поверително“, натиснете Enter, за да отворите нов раздел „Поверително“, за да разглеждате поверително</translation>
 <translation id="5549245478906381817">Отворете поверителен прозорец</translation>
 <translation id="5497977785983089120">Отворете нов поверителен прозорец, за да сърфирате в поверителен режим</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, натиснете „Tab,“ след това „Enter“, за да отворите нов поверителен прозорец, за да сърфирате в поверителен режим</translation>

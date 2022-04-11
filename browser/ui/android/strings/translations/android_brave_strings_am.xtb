@@ -43,6 +43,9 @@
 <translation id="1276592121036104130">አዲስ ይዘት ይጫኑ</translation>
 <translation id="3189348785087463371">ከፍ ተደርጓል</translation>
 <translation id="7554145152551782675">ተጨማሪ የBrave አቅርቦቶች</translation>
+<translation id="1717242776111689224">የ Brave ዜናዎች አንቃ</translation>
+<translation id="4732255422524275223">የእርስዎ ምንጮች</translation>
+<translation id="152579389256498990">የግብአት ወይም የሳይት URL</translation>
 <translation id="4975944254857623648">ነባሪ ግብዓቶች</translation>
 <translation id="253886574765651454">ምንጭ አክል</translation>
 <translation id="5787084571334399599">አሳሹ የጣት አሻራ እንዳይወስድ ይከለክላል</translation>
@@ -272,6 +275,7 @@
 <translation id="2927095357213611519">የድር ፈጣሪዎችን በቶክኖች መደገፍ ይችላሉ። \nEar ግላዊነት የሚያከብሩ ማስታወቅያዎችን በማየቶ ቶክን ያግኙ።</translation>
 <translation id="213787746370741250">በአብጅ ትሮች ውስጥ ትሮችን ክፈት</translation>
 <translation id="8030169304546394654">ግንኙነቱ ተቋርጧል</translation>
+<translation id="6181762795539107980">ያልተረጋገጠ</translation>
 <translation id="543510923939676996">የኪስ ቦርሳዎት ተረጋግጧል</translation>
 <translation id="8673913984316081937">የዋሌትዎን ትክክለኛነት ማረጋገጥ አማራጭ ነው</translation>
 <translation id="8558636200953226885">ካረጋገጡ ግን፣ ... ማድረግ ይችላሉ</translation>
@@ -288,6 +292,7 @@
 <translation id="3699674790322420653">የኪስ ቦርሳ ማረጋገጥ ተጠናቋል</translation>
 <translation id="2193391216824305230">የተጠቃሚ ዋሌት</translation>
 <translation id="1665118090708049096">ወደ መለያዬ <ph name="WALLET_PROVIDER"/> ሂድ</translation>
+<translation id="1948959999802743233">ከ <ph name="WALLET_PROVIDER"/> ግንኙነት ያቋርጡ</translation>
 <translation id="6239274080752256452">ገንዘብ ወጪ ያድርጉ</translation>
 <translation id="8874184842967597500">አልተገናኘም</translation>
 <translation id="3368922792935385530">ተያይዟል</translation>
@@ -656,7 +661,9 @@
 <translation id="414639769490080648">Brave Wallet በራስ ሰር እስኪቆለፍ ድረስ የሚጠብቁት የደቂቃዎች ብዛት</translation>
 <translation id="4993345308607970390">የBraveን ቦርሳ እንደገና አስጀምር</translation>
 <translation id="6369495274982305511">የኪስ ቦርሳዎን ዳግም ለማስጀመር እንደሚፈልጉ እርግጠኛ ነዎት? የኪስ ቦርሳዎ ምትኬ ካልተቀመጠ፣ ዳግም ማስጀመር ሁሉንም የመለያ ውሂቦች እንዲያጡ ያደርግዎታል (ማንኛውንም ተዛማጅ ገንዘቦችን ጨምሮ) ለማረጋገጥ 1 <ph name="CONFIRMATION_PHRASE"/> ይጻፉ።</translation>
+<translation id="4862812525895306758">ግብይቱን አጽዳ &amp; የnonce መረጃ</translation>
 <translation id="5693968582510626466">ግብይቶችን ማጽዳት ለገንቢዎች ጠቃሚ ሊሆን ይችላል ወይም ሁኔታን በአካባቢያዊ ሰርቨር ላይ ሲያጸዱ</translation>
+<translation id="5421107279168565467">እርግጠኛ ነዎት፣ ግብይቱን እና የ nonce መረጃ እንደገና ማስጀመር ይፈልጋሉ? ይህ አማራጭ በአብዛኛው ጥቅም ላይ የሚውለው የአካባቢያዊ የሙከራ ሰርቨር በሚያስኬዱ ገንቢዎች ነው። ለማረጋገጥ "<ph name="CONFIRMATION_PHRASE"/>" ይተይቡ።</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# ደቂቃ} other {# ደቂቃዎች}}</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">ግንኙነትዎን ለመጠበቅ እና ወራሪ መከታተያዎችን በሁሉም ቦታ ለማገድ ወደ VPN ያሻሽሉ።</translation>
@@ -738,8 +745,11 @@
 <translation id="1634828734222219955">ድምር</translation>
 <translation id="7995708795274219641">የገንዘብ መጠን + ነዳጅ</translation>
 <translation id="1950052789869821983">ግብይት</translation>
+<translation id="2304783958703511257">የላቁ ቅንብሮች</translation>
 <translation id="4220062530885628403">የአንድ ጊዜ</translation>
+<translation id="1924965034964265193">ብጁ የ nonce እሴት ያስገቡ</translation>
 <translation id="5317780077021120954">አስቀምጥ</translation>
+<translation id="4979796155378508955">የብጁ nonce እሴት በቅደም ተከተል ካልሆነ ወይም ሌሎች ስህተቶች ካሉት፣ ግብይት ወደ ኔትዎርኩ ላይሰራጭ ይችላል።</translation>
 <translation id="6122742277607781713">ፖርትፎሊዮ</translation>
 <translation id="750843150060816463">የጋዝ ዋጋ (Gwei)</translation>
 <translation id="1426320910664514906">የነዳጅ ገደብ</translation>
@@ -823,6 +833,7 @@
 <translation id="1346059596910821859">ምክር</translation>
 <translation id="1549705559752367917">ፍንጭ ይላኩ</translation>
 <translation id="6727102863431372879">ያዘጋጁ</translation>
+<translation id="6413162919383874653">ወርሀዊ ምክሮች</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> የአሜሪካን ዶላር</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">በአድራሻ አሞሌው ውስጥ ራስ-ሰር ማጠናቀቅን አሳይ</translation>
@@ -848,6 +859,7 @@
 <translation id="2156993118928861787">ልክ ያልሆነ አድራሻ</translation>
 <translation id="6889920539620318793">እንደ ገቢር አቀናብር</translation>
 <translation id="2653659639078652383">አስገባ</translation>
+<translation id="4945690646623486292">አውታረ መረብ ይምረጡ</translation>
 <translation id="8853725596990766789">መጠኑን ይቀይሩ</translation>
 <translation id="5233638681132016545">አዲስ ትር</translation>
 </translationbundle>

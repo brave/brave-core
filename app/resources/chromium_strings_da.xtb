@@ -14,18 +14,12 @@
 <translation id="5147525139567260139">Del en Brave-fane</translation>
 <translation id="1530633922026945685">Brave skal have adgangstilladelse til dit kamera for at oprette et 3D-kort over dine omgivelser</translation>
 <translation id="4449148723378534338">Gennemgå vigtige privatlivs- og sikkerhedsindstillinger i Brave</translation>
-<translation id="5359574361379286250">Hvis du kun vil bruge denne konto én gang, kan du anvende <ph name="GUEST_LINK_BEGIN"/>Gæstetilstand<ph name="GUEST_LINK_END"/> i Brave-browseren. Hvis du vil tilføje en konto for en anden person, kan du <ph name="LINK_BEGIN"/>føje en ny person<ph name="LINK_END"/> til din <ph name="DEVICE_TYPE"/>.
-
-De tilladelser, du har givet til websites og apps, gælder muligvis for denne konto. Du kan administrere dine Brave-konti under <ph name="SETTINGS_LINK_BEGIN"/>Indstillinger<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="5616153642055197778">Der findes en ny og mere sikker version af Brave.</translation>
 <translation id="6797402139308059782">Lad Brave køre i baggrunden</translation>
 <translation id="5875673934455379806">Geninstaller Brave</translation>
 <translation id="4528406859989804913">Du er ved at logge ind med en managerstyret konto og give dens administrator kontrol over din profil i Brave. Dine Brave-data, f.eks. dine apps, bogmærker, historikdata, adgangskoder og andre indstillinger, knyttes permanent til <ph name="USER_NAME"/>. Du kan slette disse data via kontrolpanelet for Brave Konti, men du kan ikke knytte disse data til en anden konto. Du kan eventuelt oprette en ny profil for at holde dine Brave-data adskilt. <ph name="LEARN_MORE"/></translation>
 <translation id="1649714546770135458">Når du deaktiverer denne indstilling, kan du logge ind på Brave-websites som f.eks. Gmail uden at logge ind i Brave</translation>
 <translation id="189297655255130768">Brave svarer ikke. Vil du genstarte nu?</translation>
-<translation id="479793348545936567">Hvis du kun vil bruge denne konto én gang, kan du anvende Gæstetilstand i Brave-browseren. Hvis du vil tilføje en konto for en anden person, kan du <ph name="LINK_BEGIN"/>føje en ny person<ph name="LINK_END"/> til din <ph name="DEVICE_TYPE"/>.
-
-De tilladelser, du har givet til websites og apps, gælder muligvis for denne konto. Du kan administrere dine Brave-konti under <ph name="SETTINGS_LINK_BEGIN"/>Indstillinger<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1775322105159056176">Brave kan ikke fastlægge eller angive standardbrowseren</translation>
 <translation id="7665553140559834626">Genstart og opdater &amp;Chrome OS</translation>
 <translation id="9220324636239049437">Denne handling sletter ét element på denne enhed. Hvis du senere vil hente dine data igen, skal du logge ind på Brave som <ph name="USER_EMAIL"/>.</translation>
@@ -295,6 +289,12 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="4484434718272972655">Hvem bruger Brave?</translation>
 <translation id="7173394303099002355">Få Braves stærkeste beskyttelse</translation>
 <translation id="8992261409816268381">Forfatterne til Brave</translation>
+<translation id="479793348545936567">Hvis du kun vil bruge denne konto én gang, kan du vælge Guest i Brave-browseren. Hvis du vil tilføje en konto til en anden, <ph name="LINK_BEGIN"/>så tilføj en ny profil<ph name="LINK_END"/> til din <ph name="DEVICE_TYPE"/>.
+
+Tilladelser, som du allerede har givet til websider og apps kan være gældende for denne konto. Du kan håndtere dine Brave-synkroniseringskæder under <ph name="SETTINGS_LINK_BEGIN"/>Indstillinger<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Hvis du kun vil bruge denne konto én gang, kan du bruge <ph name="GUEST_LINK_BEGIN"/>Guest<ph name="GUEST_LINK_END"/> i Brave-browseren. Hvis du vil tilføje en konto for en anden,<ph name="LINK_BEGIN"/>så tilføj en ny profil<ph name="LINK_END"/> til din <ph name="DEVICE_TYPE"/>.
+
+Tilladelser, som du allerede har givet til websider og apps kan være gældende for denne konto. Du kan håndtere dine Brave-synkroniseringskæder under <ph name="SETTINGS_LINK_BEGIN"/>Indstillinger<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Advarsel! Brave kan ikke forhindre udvidelser i at registrere din browserhistorik. Fjern markeringen i afkrydsningsfeltet for at deaktivere denne udvidelse i privat tilstand.</translation>
 <translation id="1448049584457347995">For at gøre Brave sikrere har vi slået nogle udvidelser fra, som ikke er anført i <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> og muligvis er blevet tilføjet, uden at du vidste det.</translation>
 <translation id="8848045066928358658">For at gøre Brave mere sikker har vi deaktiveret følgende udvidelser, som ikke er anført i <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> og muligvis er blevet tilføjet, uden at du vidste det.</translation>

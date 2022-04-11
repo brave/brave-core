@@ -51,6 +51,8 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="1643029991199044105">Telusuri tab yang paling sering digunakan dengan Ctrl-Tab</translation>
 <translation id="1013121820689882118">Pembaca Kecepatan</translation>
 <translation id="2025435450953474282">Artikel secara otomatis dimuat dengan moda pembaca, sehingga menghemat waktu Anda</translation>
+<translation id="5510493033031835532">Halaman AMP yang diarahkan otomatis</translation>
+<translation id="5197219128592971597">Selalu kunjungi hanya URL laman orisinal (non-AMP), dan bukan versi Laman Seluler Terakselerasi Google</translation>
 <translation id="5802665280774361839">Tampilkan melengkapi-otomatis di bilah alamat</translation>
 <translation id="597020512043916976">Tampilkan situs teratas di saran pengisian otomatis</translation>
 <translation id="264150068416846820">Tampilkan situs-situs yang disarankan Brave dalam saran pengisian otomatis</translation>
@@ -229,6 +231,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="4718664830805652430">Mata uang dasar bawaan</translation>
 <translation id="7992507032049865603">Mata uang kripto dasar bawaan</translation>
 <translation id="1834467296210148203">Tampilkan ikon Brave Wallet pada bilah alat</translation>
+<translation id="4613486011786721686">Sembunyikan ikon Dompet Brave pada bilah alat</translation>
 <translation id="8239147115686034860">Secara otomatis mengunci Brave Wallet</translation>
 <translation id="414639769490080648">Jumlah menit untuk menunggu hingga Brave Wallet terkunci secara otomatis</translation>
 <translation id="6864914031231797928">Izinkan login Google untuk ekstensi</translation>
@@ -390,6 +393,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="8712637175834984815">Mengerti</translation>
 <translation id="4394049700291259645">Nonaktifkan</translation>
 <translation id="7142548388914389999">Memungkinkan analitik produk yang menjaga privasi (P3A)</translation>
+<translation id="8286082624639565868">Informasi yang sepenuhnya anonim ini membantu Brave memperkirakan penggunaan fitur tertentu secara keseluruhan dan menjadikan fitur-fitur ini lebih baik bagi Anda.</translation>
 <translation id="1947672064022327074">Apakah Anda ingin memulai Dompet Kripto untuk dukungan Ethereum?</translation>
 <translation id="7583735190612229830">Atur agar Dompet Kripto berinteraksi dengan aplikasi ini dan lainnya yang serupa.</translation>
 <translation id="8731422418734770661">Atur Dompet Kripto</translation>
@@ -433,7 +437,10 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="2808630562319398131">Atur ulang data Brave Reward...</translation>
 <translation id="2273851479262317744">Tetapkan Brave sebagai peramban bawaan</translation>
 <translation id="8581710194025054669">Untuk memastikan daring dengan privasi terbaik, pertimbangkan untuk menetapkan Brave sebagai peramban bawaan di komputer Anda. Dengan Brave sebagai bawaan, tautan web apa pun yang Anda klik akan terbuka dengan perlindungan privasi Brave.</translation>
+<translation id="1968543937259008435">Siap untuk daring dengan privasi terbaik?</translation>
+<translation id="6817415381278637662">Tetapkan Brave sebagai peramban bawaan Anda untuk mendapatkan perlindungan privasi Brave pada setiap halaman web yang Anda buka.</translation>
 <translation id="8722651357687610395">Setel Brave sebagai peramban baku</translation>
+<translation id="2370739752330685659">Mungkin nanti</translation>
 <translation id="1241283133946520352">Jaringan</translation>
 <translation id="8205945804087322170">Tambahkan jaringan baru</translation>
 <translation id="2156993118928861787">Alamat tidak sah</translation>
