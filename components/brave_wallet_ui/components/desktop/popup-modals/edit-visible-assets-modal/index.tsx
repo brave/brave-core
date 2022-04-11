@@ -67,6 +67,7 @@ const EditVisibleAssetsModal = (props: Props) => {
   // Token List States
   const [filteredTokenList, setFilteredTokenList] = React.useState<BraveWallet.BlockchainToken[]>([])
   const [updatedTokensList, setUpdatedTokensList] = React.useState<BraveWallet.BlockchainToken[]>([])
+  const [tokenDisplayAmount, setTokenDisplayAmount] = React.useState<number>(40)
 
   // Modal UI States
   const [showAddCustomToken, setShowAddCustomToken] = React.useState<boolean>(false)
@@ -99,6 +100,15 @@ const EditVisibleAssetsModal = (props: Props) => {
       userVisibleTokensInfo[0].contractAddress === '' &&
       !userVisibleTokensInfo[0].visible
   }, [userVisibleTokensInfo])
+
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const top = event.currentTarget.scrollTop
+    const offset = event.currentTarget.offsetHeight
+    const height = event.currentTarget.scrollHeight
+    if (offset + top + 400 > height) {
+      setTokenDisplayAmount(tokenDisplayAmount + 40)
+    }
+  }
 
   React.useEffect(() => {
     if (isUserVisibleTokensInfoEmpty) {
@@ -219,6 +229,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     if (search === '') {
       setTimeout(function () {
         setFilteredTokenList(tokenList)
+        setTokenDisplayAmount(40)
       }, 100)
     } else {
       const filteredList = tokenList.filter((item) => {
@@ -537,9 +548,9 @@ const EditVisibleAssetsModal = (props: Props) => {
                     </NoAssetButton>
                   </TopRow>
                 }
-                <WatchlistScrollContainer>
+                <WatchlistScrollContainer onScroll={handleScroll}>
                   <>
-                    {filteredTokenList.map((token) =>
+                    {filteredTokenList.slice(0, tokenDisplayAmount).map((token) =>
                       <AssetWatchlistItem
                         key={`${token.contractAddress}-${token.symbol}-${token.chainId}`}
                         isCustom={isCustomToken(token)}
