@@ -55,7 +55,8 @@ class BraveAppMenuBrowserTest : public InProcessBrowserTest {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   void SetPurchasedUserForBraveVPN(Browser* browser, bool purchased) {
-    auto* service = BraveVpnServiceFactory::GetForProfile(browser->profile());
+    auto* service =
+        brave_vpn::BraveVpnServiceFactory::GetForProfile(browser->profile());
     ASSERT_TRUE(!!service);
     auto target_state = purchased
                             ? brave_vpn::mojom::PurchasedState::PURCHASED

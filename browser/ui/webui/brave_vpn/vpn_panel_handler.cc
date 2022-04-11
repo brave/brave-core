@@ -22,8 +22,8 @@ VPNPanelHandler::~VPNPanelHandler() = default;
 
 void VPNPanelHandler::ShowUI() {
   auto embedder = webui_controller_->embedder();
-  BraveVpnService* vpn_service =
-      BraveVpnServiceFactory::GetForProfile(profile_);
+  brave_vpn::BraveVpnService* vpn_service =
+      brave_vpn::BraveVpnServiceFactory::GetForProfile(profile_);
   DCHECK(vpn_service);
   if (embedder) {
     embedder->ShowUI();

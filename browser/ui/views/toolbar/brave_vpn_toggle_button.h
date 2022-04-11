@@ -10,11 +10,14 @@
 #include "brave/components/brave_vpn/brave_vpn_service_observer.h"
 #include "ui/views/controls/button/toggle_button.h"
 
+namespace brave_vpn {
 class BraveVpnService;
+}  // namespace brave_vpn
+
 class Browser;
 
 class BraveVPNToggleButton : public views::ToggleButton,
-                             public BraveVPNServiceObserver {
+                             public brave_vpn::BraveVPNServiceObserver {
  public:
   explicit BraveVPNToggleButton(Browser* browser);
   ~BraveVPNToggleButton() override;
@@ -31,7 +34,7 @@ class BraveVPNToggleButton : public views::ToggleButton,
   void UpdateState();
 
   raw_ptr<Browser> browser_ = nullptr;
-  raw_ptr<BraveVpnService> service_ = nullptr;
+  raw_ptr<brave_vpn::BraveVpnService> service_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_TOGGLE_BUTTON_H_

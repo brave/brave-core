@@ -17,10 +17,12 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 
+using brave_vpn::BraveVpnService;
+
 namespace {
 
 BraveVpnService* GetBraveVpnService() {
-  return BraveVpnServiceFactory::GetForProfile(
+  return brave_vpn::BraveVpnServiceFactory::GetForProfile(
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
 }
 

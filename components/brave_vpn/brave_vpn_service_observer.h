@@ -10,9 +10,11 @@
 #include "build/build_config.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
+namespace brave_vpn {
+
 class BraveVpnService;
 
-class BraveVPNServiceObserver : public brave_vpn::mojom::ServiceObserver {
+class BraveVPNServiceObserver : public mojom::ServiceObserver {
  public:
   BraveVPNServiceObserver();
   ~BraveVPNServiceObserver() override;
@@ -21,18 +23,18 @@ class BraveVPNServiceObserver : public brave_vpn::mojom::ServiceObserver {
 
   void Observe(BraveVpnService* service);
 
-  // brave_vpn::mojom::ServiceObserver overrides:
-  void OnPurchasedStateChanged(
-      brave_vpn::mojom::PurchasedState state) override {}
+  // mojom::ServiceObserver overrides:
+  void OnPurchasedStateChanged(mojom::PurchasedState state) override {}
 #if !BUILDFLAG(IS_ANDROID)
-  void OnConnectionStateChanged(
-      brave_vpn::mojom::ConnectionState state) override {}
+  void OnConnectionStateChanged(mojom::ConnectionState state) override {}
   void OnConnectionCreated() override {}
   void OnConnectionRemoved() override {}
 #endif  // !BUILDFLAG(IS_ANDROID)
 
  private:
-  mojo::Receiver<brave_vpn::mojom::ServiceObserver> receiver_{this};
+  mojo::Receiver<mojom::ServiceObserver> receiver_{this};
 };
+
+}  // namespace brave_vpn
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_SERVICE_OBSERVER_H_

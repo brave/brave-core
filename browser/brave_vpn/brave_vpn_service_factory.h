@@ -12,8 +12,11 @@
 #include "build/build_config.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
-class BraveVpnService;
 class Profile;
+
+namespace brave_vpn {
+
+class BraveVpnService;
 
 class BraveVpnServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
@@ -33,5 +36,7 @@ class BraveVpnServiceFactory : public BrowserContextKeyedServiceFactory {
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
 };
+
+}  // namespace brave_vpn
 
 #endif  // BRAVE_BROWSER_BRAVE_VPN_BRAVE_VPN_SERVICE_FACTORY_H_

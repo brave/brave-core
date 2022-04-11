@@ -57,12 +57,13 @@ class BraveVPNButtonHighlightPathGenerator
 
 class VPNButtonMenuModel : public ui::SimpleMenuModel,
                            public ui::SimpleMenuModel::Delegate,
-                           public BraveVPNServiceObserver {
+                           public brave_vpn::BraveVPNServiceObserver {
  public:
   explicit VPNButtonMenuModel(Browser* browser)
       : SimpleMenuModel(this),
         browser_(browser),
-        service_(BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
+        service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
+            browser_->profile())) {
     DCHECK(service_);
     Observe(service_);
     Build(service_->is_purchased_user());
@@ -102,7 +103,7 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
   }
 
   raw_ptr<Browser> browser_ = nullptr;
-  raw_ptr<BraveVpnService> service_ = nullptr;
+  raw_ptr<brave_vpn::BraveVpnService> service_ = nullptr;
 };
 
 }  // namespace
@@ -113,7 +114,8 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
                     std::make_unique<VPNButtonMenuModel>(browser),
                     nullptr),
       browser_(browser),
-      service_(BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
+      service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
+          browser_->profile())) {
   DCHECK(service_);
   Observe(service_);
 

@@ -64,8 +64,8 @@ BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
       brave_command_updater_(nullptr) {
   InitBraveCommandState();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (auto* vpn_service =
-          BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
+  if (auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(
+          browser_->profile())) {
     Observe(vpn_service);
   }
 #endif
@@ -209,8 +209,8 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
   UpdateCommandEnabled(IDC_ABOUT_BRAVE_VPN, true);
   UpdateCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN, true);
 
-  if (auto* vpn_service =
-          BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
+  if (auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(
+          browser_->profile())) {
     // Only show vpn sub menu for purchased user.
     UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, vpn_service->is_purchased_user());
     UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN,

@@ -22,7 +22,8 @@ using PurchasedState = brave_vpn::mojom::PurchasedState;
 
 BraveVPNToggleButton::BraveVPNToggleButton(Browser* browser)
     : browser_(browser),
-      service_(BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
+      service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
+          browser_->profile())) {
   DCHECK(service_);
 
   Observe(service_);

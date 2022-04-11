@@ -11,10 +11,14 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
+namespace brave_vpn {
 class BraveVpnService;
+}  // namespace brave_vpn
+
 class Browser;
 
-class BraveVPNButton : public ToolbarButton, public BraveVPNServiceObserver {
+class BraveVPNButton : public ToolbarButton,
+                       public brave_vpn::BraveVPNServiceObserver {
  public:
   METADATA_HEADER(BraveVPNButton);
 
@@ -38,7 +42,7 @@ class BraveVPNButton : public ToolbarButton, public BraveVPNServiceObserver {
   void OnButtonPressed(const ui::Event& event);
 
   raw_ptr<Browser> browser_ = nullptr;
-  raw_ptr<BraveVpnService> service_ = nullptr;
+  raw_ptr<brave_vpn::BraveVpnService> service_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_

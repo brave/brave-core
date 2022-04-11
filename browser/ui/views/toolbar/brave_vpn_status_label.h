@@ -10,11 +10,14 @@
 #include "brave/components/brave_vpn/brave_vpn_service_observer.h"
 #include "ui/views/controls/label.h"
 
+namespace brave_vpn {
 class BraveVpnService;
+}  // namespace brave_vpn
+
 class Browser;
 
 class BraveVPNStatusLabel : public views::Label,
-                            public BraveVPNServiceObserver {
+                            public brave_vpn::BraveVPNServiceObserver {
  public:
   explicit BraveVPNStatusLabel(Browser* browser);
   ~BraveVPNStatusLabel() override;
@@ -23,14 +26,14 @@ class BraveVPNStatusLabel : public views::Label,
   BraveVPNStatusLabel& operator=(const BraveVPNStatusLabel&) = delete;
 
  private:
-  // BraveVPNServiceObserver overrides:
+  // brave_vpn::BraveVPNServiceObserver overrides:
   void OnConnectionStateChanged(
       brave_vpn::mojom::ConnectionState state) override;
 
   void UpdateState();
 
   raw_ptr<Browser> browser_ = nullptr;
-  raw_ptr<BraveVpnService> service_ = nullptr;
+  raw_ptr<brave_vpn::BraveVpnService> service_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_STATUS_LABEL_H_

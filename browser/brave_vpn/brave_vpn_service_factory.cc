@@ -22,6 +22,8 @@
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
 
+namespace brave_vpn {
+
 // static
 BraveVpnServiceFactory* BraveVpnServiceFactory::GetInstance() {
   return base::Singleton<BraveVpnServiceFactory>::get();
@@ -48,7 +50,7 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
   // For now, vpn is disabled by default on desktop but not sure on
   // android.
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
-  if (!brave_vpn::IsBraveVPNEnabled())
+  if (!IsBraveVPNEnabled())
     return nullptr;
 #endif
 
@@ -68,3 +70,5 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
   return new BraveVpnService(shared_url_loader_factory, callback);
 #endif
 }
+
+}  // namespace brave_vpn

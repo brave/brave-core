@@ -26,19 +26,21 @@
 #include "services/network/test/test_shared_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using ConnectionState = brave_vpn::mojom::ConnectionState;
-using PurchasedState = brave_vpn::mojom::PurchasedState;
+namespace brave_vpn {
+
+using ConnectionState = mojom::ConnectionState;
+using PurchasedState = mojom::PurchasedState;
 
 class BraveVPNServiceTest : public testing::Test {
  public:
   BraveVPNServiceTest() {
     scoped_feature_list_.InitWithFeatures(
-        {skus::features::kSkusFeature, brave_vpn::features::kBraveVPN}, {});
+        {skus::features::kSkusFeature, features::kBraveVPN}, {});
   }
 
   void SetUp() override {
     skus::RegisterProfilePrefs(pref_service_.registry());
-    brave_vpn::prefs::RegisterProfilePrefs(pref_service_.registry());
+    prefs::RegisterProfilePrefs(pref_service_.registry());
 
     // Setup required for SKU (dependency of VPN)
     auto url_loader_factory =
@@ -79,17 +81,13 @@ class BraveVPNServiceTest : public testing::Test {
     service_->OnCredentialSummary(summary);
   }
 
-  std::vector<brave_vpn::mojom::Region>& regions() const {
-    return service_->regions_;
-  }
+  std::vector<mojom::Region>& regions() const { return service_->regions_; }
 
-  brave_vpn::mojom::Region device_region() const {
+  mojom::Region device_region() const {
     return service_->GetRegionWithName(service_->GetDeviceRegion());
   }
 
-  std::unique_ptr<brave_vpn::Hostname>& hostname() {
-    return service_->hostname_;
-  }
+  std::unique_ptr<Hostname>& hostname() { return service_->hostname_; }
 
   bool& cancel_connecting() { return service_->cancel_connecting_; }
 
@@ -132,7 +130,7 @@ class BraveVPNServiceTest : public testing::Test {
 
   void OnDisconnected() { service_->OnDisconnected(); }
 
-  const brave_vpn::BraveVPNConnectionInfo& GetConnectionInfo() {
+  const BraveVPNConnectionInfo& GetConnectionInfo() {
     return service_->GetConnectionInfo();
   }
 
@@ -311,7 +309,7 @@ class BraveVPNServiceTest : public testing::Test {
 };
 
 TEST(BraveVPNFeatureTest, FeatureTest) {
-  EXPECT_FALSE(brave_vpn::IsBraveVPNEnabled());
+  EXPECT_FALSE(IsBraveVPNEnabled());
 }
 
 TEST_F(BraveVPNServiceTest, RegionDataTest) {
@@ -479,7 +477,7 @@ TEST_F(BraveVPNServiceTest, ConnectionInfoTest) {
 
   // Check cached connection info is cleared when user set new selected region.
   connection_state() = ConnectionState::DISCONNECTED;
-  service_->SetSelectedRegion(brave_vpn::mojom::Region().Clone());
+  service_->SetSelectedRegion(mojom::Region().Clone());
   EXPECT_FALSE(GetConnectionInfo().IsValid());
 }
 
@@ -507,7 +505,7 @@ TEST_F(BraveVPNServiceTest, NeedsConnectTest) {
 
 TEST_F(BraveVPNServiceTest, LoadRegionDataFromPrefsTest) {
   // Initially, prefs doesn't have region data.
-  EXPECT_EQ(brave_vpn::mojom::Region(), device_region());
+  EXPECT_EQ(mojom::Region(), device_region());
   EXPECT_TRUE(regions().empty());
 
   // Set proper data to store them in prefs.
@@ -516,7 +514,7 @@ TEST_F(BraveVPNServiceTest, LoadRegionDataFromPrefsTest) {
   OnFetchTimezones(GetTimeZonesData(), true);
 
   // Check region data is set with above data.
-  EXPECT_FALSE(brave_vpn::mojom::Region() == device_region());
+  EXPECT_FALSE(mojom::Region() == device_region());
   EXPECT_FALSE(regions().empty());
 
   // Clear region data.
@@ -528,3 +526,5 @@ TEST_F(BraveVPNServiceTest, LoadRegionDataFromPrefsTest) {
   LoadCachedRegionData();
   EXPECT_FALSE(regions().empty());
 }
+
+}  // namespace brave_vpn
