@@ -4,7 +4,13 @@
 
 import { Host, GrantCaptchaStatus } from './interfaces'
 import { GrantInfo } from '../../shared/lib/grant_info'
-import { OpenLinkAction, ClaimGrantAction } from '../../shared/components/notifications'
+
+import {
+  ClaimGrantAction,
+  GrantAvailableNotification,
+  OpenLinkAction
+} from '../../shared/components/notifications'
+
 import { ExternalWalletAction } from '../../shared/components/wallet_card'
 import { getInitialState } from './initial_state'
 import { createStateManager } from '../../shared/lib/state_manager'
@@ -167,6 +173,20 @@ export function createHost (): Host {
 
   function updateNotifications () {
     apiAdapter.getNotifications().then((notifications) => {
+      // We do not want to display any "grant available" notifications if there
+      // is no corresponding grant information available. (This can occur if the
+      // grant is deleted on the server.) For any "grant available" notification
+      // that does not have a matching ID in the current grant map, filter it out
+      // of the list that is displayed to the user. Note that grant data must be
+      // loaded prior to this operation.
+      notifications = notifications.filter((notification) => {
+        if (notification.type === 'grant-available') {
+          const { id } = (notification as GrantAvailableNotification).grantInfo
+          return grants.has(id)
+        }
+        return true
+      })
+
       stateManager.update({ notifications })
     }).catch(console.error)
   }
@@ -222,9 +242,6 @@ export function createHost (): Host {
     addListeners()
 
     await Promise.all([
-      apiAdapter.getGrants().then((list) => {
-        updateGrants(list)
-      }),
       apiAdapter.getRewardsEnabled().then((rewardsEnabled) => {
         stateManager.update({ rewardsEnabled })
       }),
@@ -252,11 +269,13 @@ export function createHost (): Host {
       apiAdapter.getRewardsSummaryData().then((summaryData) => {
         stateManager.update({ summaryData })
       }),
-      apiAdapter.getNotifications().then((notifications) => {
-        stateManager.update({ notifications })
-      }),
       updatePublisherInfo()
     ])
+
+    apiAdapter.getGrants().then((list) => {
+      updateGrants(list)
+      updateNotifications()
+    }).catch(console.error)
 
     requestPublisherInfo().catch(console.error)
 

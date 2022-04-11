@@ -15,6 +15,16 @@ export const root = styled.div`
   right: 0;
   background: rgba(0, 0, 0, 0.15);
   overflow: hidden;
+
+  animation-name: dim-background;
+  animation-easing-function: ease-out;
+  animation-duration: 250ms;
+  animation-fill-mode: both;
+
+  @keyframes dim-background {
+    from { background: rgba(0, 0, 0, 0) }
+    to { background: rgba(0, 0, 0, 0.15) }
+  }
 `
 
 export const card = styled.div`
