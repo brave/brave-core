@@ -67,6 +67,15 @@ interface OnSwapParamChangeArgs {
   full?: boolean
 }
 
+const hasDecimalsOverflow = (amount: string, asset?: BraveWallet.BlockchainToken) => {
+  if (!asset) {
+    return false
+  }
+
+  const amountBaseWrapped = new Amount(amount).multiplyByDecimals(asset.decimals)
+  return amountBaseWrapped.value && amountBaseWrapped.value.decimalPlaces() > 0
+}
+
 export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetProp }: Args = {}) {
   // redux
   const {
@@ -103,7 +112,139 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   const { makeTokenVisible } = useAssetManagement()
   const { getIsSwapSupported, getERC20Allowance } = useLib()
 
+  // memos
+  const nativeAsset = React.useMemo(
+    () => makeNetworkAsset(selectedNetwork),
+    [selectedNetwork]
+  )
+  const fromAssetBalance = getBalance(selectedAccount, fromAsset)
+  const nativeAssetBalance = getBalance(selectedAccount, nativeAsset)
+  const toAssetBalance = getBalance(selectedAccount, toAsset)
+
+  const feesWrapped = React.useMemo(() => {
+    if (!swapQuote) {
+      return new Amount('0')
+    }
+
+    // NOTE: Swap will eventually use EIP-1559 gas fields, but we rely on
+    // gasPrice as a fee-ceiling for validation of inputs.
+    const { gasPrice, gas } = swapQuote
+    const gasPriceWrapped = new Amount(gasPrice)
+    const gasWrapped = new Amount(gas)
+    return gasPriceWrapped.times(gasWrapped)
+  }, [swapQuote])
+
+  const swapAssetOptions: BraveWallet.BlockchainToken[] = React.useMemo(() => {
+    return [
+      nativeAsset,
+      ...fullTokenList.filter((asset) => asset.symbol.toUpperCase() === 'BAT'),
+      ...userVisibleTokensInfo
+        .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase())),
+      ...fullTokenList
+        .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase()))
+        .filter(asset => !userVisibleTokensInfo
+          .some(token => token.symbol.toUpperCase() === asset.symbol.toUpperCase()))
+    ].filter(asset => asset.chainId === selectedNetwork.chainId)
+  }, [fullTokenList, userVisibleTokensInfo, nativeAsset, selectedNetwork])
+
+  const swapValidationError: SwapValidationErrorType | undefined = React.useMemo(() => {
+    if (!fromAsset || !toAsset) {
+      return
+    }
+
+    // No validation to perform when From and To amounts are empty, since quote
+    // is not fetched.
+    if (!fromAmount && !toAmount) {
+      return
+    }
+
+    if (hasDecimalsOverflow(fromAmount, fromAsset)) {
+      return 'fromAmountDecimalsOverflow'
+    }
+
+    if (hasDecimalsOverflow(toAmount, toAsset)) {
+      return 'toAmountDecimalsOverflow'
+    }
+
+    const fromAmountWeiWrapped = new Amount(fromAmount)
+      .multiplyByDecimals(fromAsset.decimals)
+
+    if (fromAmountWeiWrapped.gt(fromAssetBalance)) {
+      return 'insufficientBalance'
+    }
+
+    if (feesWrapped.gt(nativeAssetBalance)) {
+      return 'insufficientFundsForGas'
+    }
+
+    if (fromAsset.symbol === selectedNetwork.symbol && fromAmountWeiWrapped.plus(feesWrapped).gt(fromAssetBalance)) {
+      return 'insufficientFundsForGas'
+    }
+
+    if (allowance !== undefined && new Amount(allowance).lt(fromAmountWeiWrapped)) {
+      return 'insufficientAllowance'
+    }
+
+    if (swapError === undefined) {
+      return
+    }
+
+    const { code, validationErrors } = swapError
+    switch (code) {
+      case SWAP_VALIDATION_ERROR_CODE:
+        if (validationErrors?.find(err => err.reason === 'INSUFFICIENT_ASSET_LIQUIDITY')) {
+          return 'insufficientLiquidity'
+        }
+        break
+
+      default:
+        return 'unknownError'
+    }
+
+    return undefined
+  }, [
+    fromAsset,
+    fromAmount,
+    toAsset,
+    toAmount,
+    fromAssetBalance,
+    nativeAssetBalance,
+    feesWrapped,
+    swapError,
+    allowance
+  ])
+
+  const isSwapButtonDisabled = React.useMemo(() => {
+    return (
+      isLoading ||
+      swapQuote === undefined ||
+      fromAsset === undefined ||
+      toAsset === undefined ||
+      (swapValidationError && swapValidationError !== 'insufficientAllowance') ||
+      new Amount(toAmount).isUndefined() ||
+      new Amount(toAmount).isZero() ||
+      new Amount(fromAmount).isUndefined() ||
+      new Amount(fromAmount).isZero()
+    )
+  }, [
+    toAmount,
+    fromAmount,
+    swapQuote,
+    swapValidationError,
+    isLoading,
+    fromAsset,
+    toAsset
+  ])
+
   // Callbacks / methods
+  const hasToken = React.useCallback((token: BraveWallet.BlockchainToken) =>
+    swapAssetOptions.some(option =>
+      option.chainId === token.chainId &&
+      option.contractAddress.toLowerCase() === token.contractAddress.toLowerCase()
+    ),
+    [swapAssetOptions]
+  )
+
   const setToAssetAndMakeVisible = React.useCallback((token?: BraveWallet.BlockchainToken) => {
     setToAsset(token)
 
@@ -207,17 +348,6 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       }
     }
   }, [isMounted])
-
-  const hasDecimalsOverflow = React.useCallback(
-    (amount: string, asset?: BraveWallet.BlockchainToken) => {
-      if (!asset) {
-        return false
-      }
-
-      const amountBaseWrapped = new Amount(amount).multiplyByDecimals(asset.decimals)
-      return amountBaseWrapped.value && amountBaseWrapped.value.decimalPlaces() > 0
-    }, []
-  )
 
   /**
    * onSwapParamsChange() is triggered whenever a change in the swap fields
@@ -520,136 +650,6 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
     }
   )
 
-  // memos
-  const nativeAsset = React.useMemo(
-    () => makeNetworkAsset(selectedNetwork),
-    [selectedNetwork]
-  )
-  const fromAssetBalance = getBalance(selectedAccount, fromAsset)
-  const nativeAssetBalance = getBalance(selectedAccount, nativeAsset)
-  const toAssetBalance = getBalance(selectedAccount, toAsset)
-
-  const feesWrapped = React.useMemo(() => {
-    if (!swapQuote) {
-      return new Amount('0')
-    }
-
-    // NOTE: Swap will eventually use EIP-1559 gas fields, but we rely on
-    // gasPrice as a fee-ceiling for validation of inputs.
-    const { gasPrice, gas } = swapQuote
-    const gasPriceWrapped = new Amount(gasPrice)
-    const gasWrapped = new Amount(gas)
-    return gasPriceWrapped.times(gasWrapped)
-  }, [swapQuote])
-
-  const swapAssetOptions: BraveWallet.BlockchainToken[] = React.useMemo(() => {
-    return [
-      nativeAsset,
-      ...fullTokenList.filter((asset) => asset.symbol.toUpperCase() === 'BAT'),
-      ...userVisibleTokensInfo
-        .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase())),
-      ...fullTokenList
-        .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase()))
-        .filter(asset => !userVisibleTokensInfo
-          .some(token => token.symbol.toUpperCase() === asset.symbol.toUpperCase()))
-    ].filter(asset => asset.chainId === selectedNetwork.chainId)
-  }, [fullTokenList, userVisibleTokensInfo, nativeAsset, selectedNetwork])
-
-  const swapValidationError: SwapValidationErrorType | undefined = React.useMemo(() => {
-    if (!fromAsset || !toAsset) {
-      return
-    }
-
-    // No validation to perform when From and To amounts are empty, since quote
-    // is not fetched.
-    if (!fromAmount && !toAmount) {
-      return
-    }
-
-    if (hasDecimalsOverflow(fromAmount, fromAsset)) {
-      return 'fromAmountDecimalsOverflow'
-    }
-
-    if (hasDecimalsOverflow(toAmount, toAsset)) {
-      return 'toAmountDecimalsOverflow'
-    }
-
-    const fromAmountWeiWrapped = new Amount(fromAmount)
-      .multiplyByDecimals(fromAsset.decimals)
-
-    if (fromAmountWeiWrapped.gt(fromAssetBalance)) {
-      return 'insufficientBalance'
-    }
-
-    if (feesWrapped.gt(nativeAssetBalance)) {
-      return 'insufficientFundsForGas'
-    }
-
-    if (fromAsset.symbol === selectedNetwork.symbol && fromAmountWeiWrapped.plus(feesWrapped).gt(fromAssetBalance)) {
-      return 'insufficientFundsForGas'
-    }
-
-    if (allowance !== undefined && new Amount(allowance).lt(fromAmountWeiWrapped)) {
-      return 'insufficientAllowance'
-    }
-
-    if (swapError === undefined) {
-      return
-    }
-
-    const { code, validationErrors } = swapError
-    switch (code) {
-      case SWAP_VALIDATION_ERROR_CODE:
-        if (validationErrors?.find(err => err.reason === 'INSUFFICIENT_ASSET_LIQUIDITY')) {
-          return 'insufficientLiquidity'
-        }
-        break
-
-      default:
-        return 'unknownError'
-    }
-
-    return undefined
-  }, [
-    fromAsset,
-    fromAmount,
-    toAsset,
-    toAmount,
-    fromAssetBalance,
-    nativeAssetBalance,
-    feesWrapped,
-    swapError,
-    allowance
-  ])
-
-  const isSwapButtonDisabled = React.useMemo(() => {
-    return (
-      isLoading ||
-      swapQuote === undefined ||
-      fromAsset === undefined ||
-      toAsset === undefined ||
-      (swapValidationError && swapValidationError !== 'insufficientAllowance') ||
-      new Amount(toAmount).isUndefined() ||
-      new Amount(toAmount).isZero() ||
-      new Amount(fromAmount).isUndefined() ||
-      new Amount(fromAmount).isZero()
-    )
-  }, [
-    toAmount,
-    fromAmount,
-    swapQuote,
-    swapValidationError,
-    isLoading,
-    fromAsset,
-    toAsset
-  ])
-
-  const hasToken = React.useCallback((token: BraveWallet.BlockchainToken) =>
-    swapAssetOptions.some(option =>
-      option.chainId === token.chainId &&
-      option.contractAddress.toLowerCase() === token.contractAddress.toLowerCase()),
-    [swapAssetOptions])
-
   // Effects
   React.useEffect(() => {
     // This hook is triggered whenever swapAssetOptions changes, updating
@@ -752,13 +752,17 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       sellTokenToEthRate
     } = swapQuote
 
-    setFromAmount(new Amount(sellAmount)
+    const newFromAmount = new Amount(sellAmount)
       .divideByDecimals(fromAsset.decimals)
-      .format())
+      .format()
 
-    setToAmount(new Amount(buyAmount)
+    setFromAmount(newFromAmount)
+
+    const newToAmount = new Amount(buyAmount)
       .divideByDecimals(toAsset.decimals)
-      .format())
+      .format()
+
+    setToAmount(newToAmount)
 
     /**
      * Price computation block
