@@ -473,6 +473,7 @@ provideStrings({
   braveWalletTransactionStatusSubmitted: 'Submitted',
   braveWalletTransactionStatusConfirmed: 'Confirmed',
   braveWalletTransactionStatusError: 'Error',
+  braveWalletTransactionStatusDropped: 'Dropped',
 
   // NFT Details Page
   braveWalletNFTDetailBlockchain: 'Blockchain',

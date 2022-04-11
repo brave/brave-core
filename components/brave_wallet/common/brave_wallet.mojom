@@ -783,7 +783,8 @@ enum TransactionStatus {
   Rejected = 2,
   Submitted = 3,
   Confirmed = 4,
-  Error = 5
+  Error = 5,
+  Dropped = 6
 };
 
 enum TransactionType {

@@ -337,6 +337,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_SUBMITTED" desc="Status label for submitted transaction">Submitted</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_CONFIRMED" desc="Status label for confirmed transaction">Confirmed</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_ERROR" desc="Status label for error transaction">Error</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_DROPPED" desc="Status label for dropped transaction">Dropped</message>
   <message name="IDS_BRAVE_WALLET_RECENT_TRANSACTIONS" desc="Transactions panel title">Recent transactions</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAILS" desc="Transaction details panel title">Transaction details</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_DATE" desc="Transaction Detail Panel Date of transactions">Date</message>

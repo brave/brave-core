@@ -78,9 +78,14 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, AddAndApproveTransaction);
+  FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash);
 
   // TxManager
   void UpdatePendingTransactions() override;
+
+  void OnGetBlockHeight(uint64_t block_height,
+                        mojom::SolanaProviderError error,
+                        const std::string& error_message);
 
   void OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
                             ApproveTransactionCallback callback,
@@ -95,6 +100,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                                const std::string& error_message);
   void OnGetSignatureStatuses(
       const std::vector<std::string>& tx_meta_ids,
+      uint64_t block_height,
       const std::vector<absl::optional<SolanaSignatureStatus>>&
           signature_statuses,
       mojom::SolanaProviderError error,

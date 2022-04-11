@@ -36,10 +36,12 @@ class SolanaMessage {
   void set_recent_blockhash(const std::string& recent_blockhash) {
     recent_blockhash_ = recent_blockhash;
   }
+  std::string recent_blockhash() { return recent_blockhash_; }
 
   void set_last_valid_block_height(uint64_t last_valid_block_height) {
     last_valid_block_height_ = last_valid_block_height;
   }
+  uint64_t last_valid_block_height() const { return last_valid_block_height_; }
 
   mojom::SolanaTxDataPtr ToSolanaTxData() const;
   base::Value ToValue() const;

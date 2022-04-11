@@ -322,6 +322,7 @@ const PortfolioTransactionItem = (props: Props) => {
           {transactionDetails.status === BraveWallet.TransactionStatus.Submitted && getLocale('braveWalletTransactionStatusSubmitted')}
           {transactionDetails.status === BraveWallet.TransactionStatus.Confirmed && getLocale('braveWalletTransactionStatusConfirmed')}
           {transactionDetails.status === BraveWallet.TransactionStatus.Error && getLocale('braveWalletTransactionStatusError')}
+          {transactionDetails.status === BraveWallet.TransactionStatus.Dropped && getLocale('braveWalletTransactionStatusDropped')}
         </DetailTextDarkBold>
       </StatusRow>
       <DetailRow>
@@ -371,14 +372,14 @@ const PortfolioTransactionItem = (props: Props) => {
 
         {showTransactionPopup &&
           <TransactionPopup>
-            {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Confirmed].includes(transactionDetails.status) &&
+            {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Confirmed, BraveWallet.TransactionStatus.Dropped].includes(transactionDetails.status) &&
               <TransactionPopupItem
                 onClick={onClickViewOnBlockExplorer('tx', transaction.txHash)}
                 text={getLocale('braveWalletTransactionExplorer')}
               />
             }
 
-            {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Confirmed].includes(transactionDetails.status) &&
+            {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Confirmed, BraveWallet.TransactionStatus.Dropped].includes(transactionDetails.status) &&
               <TransactionPopupItem
                 onClick={() => onClickCopyTransactionHash(transaction.txHash)}
                 text={getLocale('braveWalletTransactionCopyHash')}

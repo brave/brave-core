@@ -472,6 +472,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_TRANSACTION_STATUS_CONFIRMED},
     {"braveWalletTransactionStatusError",
      IDS_BRAVE_WALLET_TRANSACTION_STATUS_ERROR},
+    {"braveWalletTransactionStatusDropped",
+     IDS_BRAVE_WALLET_TRANSACTION_STATUS_DROPPED},
     {"braveWalletRecentTransactions", IDS_BRAVE_WALLET_RECENT_TRANSACTIONS},
     {"braveWalletTransactionDetails", IDS_BRAVE_WALLET_TRANSACTION_DETAILS},
     {"braveWalletTransactionDetailDate",

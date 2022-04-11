@@ -155,6 +155,16 @@ void SolanaTxManager::OnSendSolanaTransaction(
 }
 
 void SolanaTxManager::UpdatePendingTransactions() {
+  json_rpc_service_->GetSolanaBlockHeight(base::BindOnce(
+      &SolanaTxManager::OnGetBlockHeight, weak_ptr_factory_.GetWeakPtr()));
+}
+
+void SolanaTxManager::OnGetBlockHeight(uint64_t block_height,
+                                       mojom::SolanaProviderError error,
+                                       const std::string& error_message) {
+  if (error != mojom::SolanaProviderError::kSuccess)
+    return;
+
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
       mojom::TransactionStatus::Submitted, absl::nullopt);
   std::vector<std::string> tx_meta_ids;
@@ -164,15 +174,16 @@ void SolanaTxManager::UpdatePendingTransactions() {
     tx_signatures.push_back(pending_transaction->tx_hash());
   }
   json_rpc_service_->GetSolanaSignatureStatuses(
-      tx_signatures,
-      base::BindOnce(&SolanaTxManager::OnGetSignatureStatuses,
-                     weak_ptr_factory_.GetWeakPtr(), tx_meta_ids));
+      tx_signatures, base::BindOnce(&SolanaTxManager::OnGetSignatureStatuses,
+                                    weak_ptr_factory_.GetWeakPtr(), tx_meta_ids,
+                                    block_height));
   known_no_pending_tx_ = pending_transactions.empty();
   CheckIfBlockTrackerShouldRun();
 }
 
 void SolanaTxManager::OnGetSignatureStatuses(
     const std::vector<std::string>& tx_meta_ids,
+    uint64_t block_height,
     const std::vector<absl::optional<SolanaSignatureStatus>>&
         signature_statuses,
     mojom::SolanaProviderError error,
@@ -186,8 +197,16 @@ void SolanaTxManager::OnGetSignatureStatuses(
   for (size_t i = 0; i < tx_meta_ids.size(); i++) {
     std::unique_ptr<SolanaTxMeta> meta =
         GetSolanaTxStateManager()->GetSolanaTx(tx_meta_ids[i]);
-    if (!meta || !signature_statuses[i])
+    if (!meta)
       continue;
+
+    if (!signature_statuses[i]) {
+      if (meta->tx()->message()->last_valid_block_height() < block_height) {
+        meta->set_status(mojom::TransactionStatus::Dropped);
+        tx_state_manager_->AddOrUpdateTx(*meta);
+      }
+      continue;
+    }
 
     if (!signature_statuses[i]->err.empty()) {
       meta->set_signature_status(*signature_statuses[i]);
