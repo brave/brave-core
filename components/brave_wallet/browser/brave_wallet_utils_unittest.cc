@@ -858,7 +858,7 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
   mojom::NetworkInfo sol_mainnet(
       brave_wallet::mojom::kSolanaMainnet, "Solona Mainnet Beta",
       {"https://explorer.solana.com/"}, {},
-      {"https://api.mainnet-beta.solana.com"}, "SOL", "Solana", 9,
+      {"https://mainnet-beta-solana.brave.com/rpc"}, "SOL", "Solana", 9,
       brave_wallet::mojom::CoinType::SOL, nullptr);
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::SOL));
   EXPECT_EQ(GetChain(&prefs, "0x65", mojom::CoinType::SOL),

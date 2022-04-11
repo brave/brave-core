@@ -706,8 +706,9 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
   json_rpc_service_->GetNetworkUrl(
       mojom::CoinType::SOL,
       base::BindLambdaForTesting([&run_loop2](const std::string& spec) {
-        EXPECT_EQ(url::Origin::Create(GURL(spec)),
-                  url::Origin::Create(GURL("https://api.testnet.solana.com")));
+        EXPECT_EQ(
+            url::Origin::Create(GURL(spec)),
+            url::Origin::Create(GURL("https://testnet-solana.brave.com")));
         run_loop2.Quit();
       }));
   run_loop2.Run();
