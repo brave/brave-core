@@ -98,7 +98,6 @@ public abstract class BraveVpnParentActivity
         if (isSuccess && mBraveVpnPrefModel != null) {
             Long purchaseExpiry = BraveVpnUtils.getPurchaseExpiryDate(jsonResponse);
             if (purchaseExpiry > 0 && purchaseExpiry >= System.currentTimeMillis()) {
-                Log.e("BraveVPN", "purchase token : "+mBraveVpnPrefModel.getPurchaseToken());
                 BraveVpnPrefUtils.setPurchaseToken(mBraveVpnPrefModel.getPurchaseToken());
                 BraveVpnPrefUtils.setProductId(mBraveVpnPrefModel.getProductId());
                 BraveVpnPrefUtils.setPurchaseExpiry(purchaseExpiry);

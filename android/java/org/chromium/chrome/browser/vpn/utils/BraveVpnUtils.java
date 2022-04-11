@@ -250,6 +250,7 @@ public class BraveVpnUtils {
         BraveVpnPrefUtils.setHostnameDisplay("");
         BraveVpnPrefUtils.setServerRegion(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
         BraveVpnPrefUtils.setResetConfiguration(true);
+        dismissProgressDialog();
     }
 
     public static void showVpnAlwaysOnErrorDialog(Activity activity) {

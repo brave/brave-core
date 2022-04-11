@@ -27,6 +27,7 @@ import org.chromium.chrome.browser.vpn.adapters.BraveVpnServerSelectionAdapter;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
+import org.chromium.ui.widget.Toast;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -113,9 +114,15 @@ public class BraveVpnServerSelectionPreferences
     OnServerRegionSelection onServerRegionSelection = new OnServerRegionSelection() {
         @Override
         public void onServerRegionClick(BraveVpnServerRegion braveVpnServerRegion) {
-            BraveVpnUtils.selectedServerRegion = braveVpnServerRegion.getName();
-            BraveVpnUtils.mIsServerLocationChanged = true;
-            getActivity().onBackPressed();
+            if (BraveVpnPrefUtils.getServerRegion().equals(braveVpnServerRegion.getName())) {
+                Toast.makeText(getActivity(), R.string.already_selected_the_server,
+                             Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                BraveVpnUtils.selectedServerRegion = braveVpnServerRegion.getName();
+                BraveVpnUtils.mIsServerLocationChanged = true;
+                getActivity().onBackPressed();
+            }
         }
     };
 
