@@ -54,6 +54,7 @@ window.__firefox__.includeOnce("Playlist", function() {
         if (node) {
             if (!node.$<tagUUID>) {
                 node.$<tagUUID> = uuid_v4();
+                node.addEventListener('webkitpresentationmodechanged', (e) => e.stopPropagation(), true);
             }
         }
     }
