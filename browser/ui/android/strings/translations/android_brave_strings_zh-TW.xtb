@@ -659,7 +659,7 @@
 <translation id="414639769490080648">Brave 錢包自動鎖定前等待的分鐘數</translation>
 <translation id="4993345308607970390">重設 Brave 錢包</translation>
 <translation id="6369495274982305511">您確定要重設您的錢包嗎？若您沒有備份錢包，重設將會導致所有帳戶資料 (包含任何相關聯的資金) 遺失。輸入「<ph name="CONFIRMATION_PHRASE"/>」以確認。</translation>
-<translation id="4862812525895306758">清除交易和 Nonce 資訊</translation>
+<translation id="4862812525895306758">清除交易和 Nonce 的資訊</translation>
 <translation id="5693968582510626466">清除交易對開發人員或清除本機伺服器上的狀態而言很實用</translation>
 <translation id="5421107279168565467">確定要重設交易和 Nonce 資訊嗎？這個選項最常供執行本機測試伺服器的開發人員使用。輸入「<ph name="CONFIRMATION_PHRASE"/>」即可確認。</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# 分鐘} other {# 分鐘}}</translation>

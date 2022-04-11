@@ -1367,7 +1367,6 @@ Poți gestiona setările contului dacă instalezi aplicația Family Link pe disp
 <translation id="2327492829706409234">Activați aplicația</translation>
 <translation id="2327920026543055248">Introdu caracterul <ph name="CHARACTER"/> din <ph name="TOTAL"/></translation>
 <translation id="2328561734797404498">Repornește dispozitivul pentru a folosi <ph name="APP_NAME"/>.</translation>
-<translation id="6304377454418270508">În modul incognito, site-urile pot folosi cookie-uri numai pentru a-ți vedea activitatea de navigare pe site-ul respectiv. Cookie-urile sunt șterse la sfârșitul sesiunii incognito.</translation>
 <translation id="2329597144923131178">Conectează-te și accesează marcajele, istoricul, parolele și alte setări pe toate dispozitivele.</translation>
 <translation id="2330878972945412956"><ph name="BEGIN_PARAGRAPH1"/>Dacă permiți ca dispozitivele cu sistem de operare Brave să trimită rapoarte automate, ne ajuți să stabilim o ordine a priorităților privind remedierile și îmbunătățirile pentru sistemul de operare Brave. Aceste rapoarte pot include aspecte precum funcțiile pe care le folosești, câtă memorie utilizezi de obicei, date de diagnosticare și de utilizare despre aplicațiile pentru Android și erori. Unele date agregate vor ajuta aplicațiile și partenerii Brave, cum ar fi dezvoltatorii Android.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Poți să acorzi sau să anulezi oricând permisiunea pentru aceste rapoarte în setările dispozitivului cu sistem de operare Brave. Dacă ești administratorul unui domeniu, poți să modifici această setare în consola de administrare.<ph name="END_PARAGRAPH2"/>
@@ -2089,7 +2088,6 @@ Mesaj de la server: <ph name="SERVER_MSG"/></translation>
 <translation id="3036546437875325427">Activează Flash</translation>
 <translation id="3037754279345160234">Nu se poate analiza configurația de conectare la domeniu. Contactează administratorul.</translation>
 <translation id="3038612606416062604">Adaugă manual o imprimantă</translation>
-<translation id="8766876672295471671">Vede conversații, reacționează la mesaje și adaugă persoane în chaturi de grup</translation>
 <translation id="3039491566278747710">Nu a putut fi instalată politica offline pe dispozitiv.</translation>
 <translation id="3043218608271070212"><ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENT_STRING"/></translation>
 <translation id="3043581297103810752">De la <ph name="ORIGIN"/></translation>
@@ -4256,7 +4254,6 @@ Mesaj de la server: <ph name="SERVER_MSG"/></translation>
 <translation id="529296195492126134">Modul efemer nu este acceptat. Contactează administratorul.</translation>
 <translation id="5293170712604732402">Restabilește setările la valorile inițiale</translation>
 <translation id="5294097441441645251">Trebuie să înceapă cu literă mică sau cu un caracter de subliniere</translation>
-<translation id="8273477935094091719"><ph name="DEVICE_TYPE"/> folosește un senzor încorporat pentru a detecta persoanele din fața dispozitivului. Toate datele sunt prelucrate imediat pe dispozitiv, apoi sunt șterse. Datele de la senzor nu sunt trimise niciodată la Brave. <ph name="LINK_BEGIN"/>Află mai multe<ph name="LINK_END"/></translation>
 <translation id="5297082477358294722">Parola a fost salvată. Vezi și gestionează parolele salvate în <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Când altcineva îți privește ecranul, afișează pictograma Confidențialitate în formă de ochi în dreapta ecranului</translation>
 <translation id="5298219193514155779">Temă creată de</translation>
@@ -8149,7 +8146,6 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="994289308992179865">&amp;Redă în buclă</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Se stabilește conexiunea securizată...</translation>
-<translation id="2361296898422164385">Vezi amintiri cu persoanele preferate și altele</translation>
 <translation id="3285581355655524751">Activează <ph name="LINK1_BEGIN"/>Sincronizarea Brave<ph name="LINK1_END"/> pentru a folosi Sincronizarea Wi-Fi. <ph name="LINK2_BEGIN"/>Află mai multe<ph name="LINK2_END"/></translation>
 <translation id="998747458861718449">I&amp;nspectează</translation>
 <translation id="658539216370629794">Deschide link în fereastră &amp;privată</translation>
@@ -8172,6 +8168,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="5097649414558628673">Instrument: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Magazin Web</translation>
 <translation id="8261378640211443080">Această extensie nu este inclusă în <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> și este posibil să fi fost adăugată fără știrea dvs.</translation>
+<translation id="2361296898422164385">Vedeți amintirile din profilurile preferate și multe altele</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privat)</translation>
 <translation id="263189163883089157">Puteți naviga incognito folosind o fereastră incognito</translation>
 <translation id="5263632074804780211">Utilizați internetul fără a salva istoricul de navigare, cu ajutorul unei ferestre incognito</translation>
@@ -8220,6 +8217,8 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="2254158488150713536">Pentru a continua, dă clic pe OK, apoi pe Adaugă o persoană pentru a crea un profil nou pentru adresa de e-mail.</translation>
 <translation id="1725743343613175327">Pentru a continua, dă clic pe OK, apoi pe Adaugă o persoană pentru a crea un profil nou pentru adresa de e-mail <ph name="DOMAIN"/>.</translation>
 <translation id="3707212204259470604">Administrează alte profiluri</translation>
+<translation id="8766876672295471671">Urmăriți conversații, reacționați la mesaje și adăugați profiluri la conversațiile de grup</translation>
+<translation id="8273477935094091719">Dispozitivul dvs. <ph name="DEVICE_TYPE"/> utilizează un senzor încorporat pentru a detecta profilurile din fața sa. Toate datele sunt procesate instantaneu pe dispozitiv, după care sunt șterse. Datele preluate de senzori nu sunt niciodată transmise la Brave. <ph name="LINK_BEGIN"/>Aflați mai multe<ph name="LINK_END"/></translation>
 <translation id="5832813618714645810">Profiluri</translation>
 <translation id="3216703137209942563">{COUNT, plural,
       =1 {Fereastra privată nu se va deschide după relansare}
@@ -8228,6 +8227,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="383007806262310953">Afișează bara de marcaje</translation>
 <translation id="8648684608605749476">Blochează cookie-urile terță parte în modul incognito</translation>
 <translation id="3293179957233653243">Anumite funcții de pe anumite site-uri nu funcționează în Privat</translation>
+<translation id="6304377454418270508">Când sunteți în modul Incognito, site-urile pot utiliza module cookie doar pentru a monitoriza activitatea de navigare de pe acestea. Modulele cookie sunt șterse la finalul sesiunii Incognito.</translation>
 <translation id="7447787726493910888">Afișați detalii despre blocarea modulelor cookie terțe în Privat.</translation>
 <translation id="255999604394332437">În modul Incognito, site-urile nu pot utiliza modulele cookie pentru a vedea activitatea dvs. de navigare pe diferite site-uri, de exemplu, cu scopul de a personaliza anunțurile. Este posibil ca funcțiile de pe anumite site-uri să nu funcționeze.</translation>
 <translation id="6105125042109106861">Cookie-urile terță parte sunt blocate în modul Incognito</translation>

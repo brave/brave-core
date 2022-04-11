@@ -1203,7 +1203,7 @@
 <translation id="1992750560347846445">Сообщить о неработающем сайте</translation>
 <translation id="2387532482048804818">Сообщайте нам о сайтах, которые работают неправильно при включенном Щите.</translation>
 <translation id="9167355841012806439">Средства Brave для защиты конфиденциальности отключены на этом сайте.</translation>
-<translation id="6835073906252142271">Brave Щит <ph name="NUMBER"/> Трекеры и реклама блокируются</translation>
+<translation id="6835073906252142271">Brave Щит: заблокировано трекеров и рекламных объявлений: <ph name="NUMBER"/></translation>
 <translation id="1742469581923031760">Подключение…</translation>
 <translation id="1287487756047817908">Отключение…</translation>
 <translation id="2325196879156848326">Ошибка соединения.</translation>

@@ -1382,7 +1382,6 @@ Du kan administrere indstillingerne for denne konto ved at installere Family Lin
 <translation id="2327492829706409234">Aktivér app</translation>
 <translation id="2327920026543055248">Angiv tegn <ph name="CHARACTER"/> af <ph name="TOTAL"/></translation>
 <translation id="2328561734797404498">Genstart enheden for at bruge <ph name="APP_NAME"/>.</translation>
-<translation id="6304377454418270508">Når du er i inkognitotilstand, kan websites kun bruge cookies til at se din browseraktivitet på deres eget website. Cookies slettes, når inkognitosessionen afsluttes.</translation>
 <translation id="2329597144923131178">Log ind for at hente bogmærker, historik, adgangskoder og andre indstillinger på alle dine enheder.</translation>
 <translation id="2330878972945412956"><ph name="BEGIN_PARAGRAPH1"/>Ved at give dine Chrome OS-enheder tilladelse til at sende automatiske rapporter gør du det nemmere for os at prioritere, hvad der skal rettes og forbedres i Chrome OS. Disse rapporter kan f.eks. indeholde oplysninger om, hvilke funktioner du bruger, hvor meget hukommelse du normalt anvender, diagnostik- og brugsdata for Android-apps samt fejl. Visse samlede data hjælper også Brave-apps og -partnere, f.eks. Android-udviklere.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Du kan til enhver tid tillade eller fjerne tilladelsen for disse rapporter i indstillingerne for din Chrome OS-enhed. Hvis du er domæneadministrator, kan du ændre denne indstilling i Administrationskonsol.<ph name="END_PARAGRAPH2"/>
@@ -2104,7 +2103,6 @@ og tryk på Ctrl+Alt+lysstyrke ned for at zoome ud.</translation>
 <translation id="3036546437875325427">Aktivér Flash</translation>
 <translation id="3037754279345160234">Konfigurationen for domænetilmelding kunne ikke parses. Kontakt din administrator.</translation>
 <translation id="3038612606416062604">Tilføj en printer manuelt</translation>
-<translation id="8766876672295471671">Se samtaler, reager på beskeder, og føj brugere til gruppechats</translation>
 <translation id="3039491566278747710">Offlinepolitikken kunne ikke installeres på enheden.</translation>
 <translation id="3043218608271070212"><ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENT_STRING"/></translation>
 <translation id="3043581297103810752">Fra <ph name="ORIGIN"/></translation>
@@ -4272,7 +4270,6 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="529296195492126134">Engangsbruger understøttes ikke. Kontakt din administrator</translation>
 <translation id="5293170712604732402">Gendan indstillinger til deres oprindelige standardkonfiguration</translation>
 <translation id="5294097441441645251">Skal starte med et lille bogstav eller en understregning</translation>
-<translation id="8273477935094091719">Din <ph name="DEVICE_TYPE"/> bruger en indbygget sensor til at registrere, om der er nogen foran din enhed. Alle dataene behandles øjeblikkeligt på din enhed og slettes derefter. Sensordata sendes aldrig til Brave. <ph name="LINK_BEGIN"/>Få flere oplysninger<ph name="LINK_END"/></translation>
 <translation id="5297082477358294722">Adgangskoden blev gemt. Se og administrer gemte adgangskoder på din <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Vis øjeikonet for privatliv nederst til højre på din skærm, når en anden person kigger på din skærm</translation>
 <translation id="5298219193514155779">Tema oprettet af</translation>
@@ -8166,7 +8163,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="994289308992179865">&amp;Sløjfe</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Etablerer sikker forbindelse...</translation>
-<translation id="2361296898422164385">Se minder med dine yndlingspersoner og meget mere</translation>
 <translation id="3285581355655524751">Aktivér <ph name="LINK1_BEGIN"/>Brave-synkronisering<ph name="LINK1_END"/> for at bruge Wi-Fi-synkronisering. <ph name="LINK2_BEGIN"/>Få flere oplysninger<ph name="LINK2_END"/></translation>
 <translation id="998747458861718449">U&amp;ndersøg</translation>
 <translation id="658539216370629794">Åbn link i &amp;privat fane</translation>
@@ -8189,6 +8185,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="5097649414558628673">Værktøj: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Web-butik</translation>
 <translation id="8261378640211443080">Denne udvidelse er ikke anført i <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> og er muligvis blevet tilføjet, uden at du vidste det.</translation>
+<translation id="2361296898422164385">Se minder fra dine yndlingsprofiler med mere</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privat)</translation>
 <translation id="263189163883089157">Du kan browse privat ved at bruge en Privat fane</translation>
 <translation id="5263632074804780211">Brug internettet uden at gemme din browserhistorik med en Privat fane</translation>
@@ -8237,6 +8234,8 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="2254158488150713536">Hvis du vil fortsætte, skal du klikke på OK og derefter klikke på Tilføj person for at oprette en ny profil til din mailadresse.</translation>
 <translation id="1725743343613175327">Hvis du vil fortsætte, skal du klikke på Tilføj person for at oprette en ny profil til din mailadresse på <ph name="DOMAIN"/>.</translation>
 <translation id="3707212204259470604">Administrer andre profiler</translation>
+<translation id="8766876672295471671">Se samtaler, reagér på beskeder, og tilføj profiler til gruppechats</translation>
+<translation id="8273477935094091719">Din <ph name="DEVICE_TYPE"/> bruger en indbygget sensor for at opdage profiler foran din enhed. Alle data bliver øjeblikkeligt behandlet på din enhed og derefter slettet. Sensordata bliver aldrig sendt til Brave. <ph name="LINK_BEGIN"/>Få mere at vide<ph name="LINK_END"/></translation>
 <translation id="5832813618714645810">Profiler</translation>
 <translation id="3216703137209942563">{COUNT, plural,
       =1 {Dit Private-vindue vil ikke åbne, hvis du genstarter}
@@ -8245,6 +8244,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="383007806262310953">Vis bogmærkelinjen</translation>
 <translation id="8648684608605749476">Bloker tredjepartscookies i Inkognito</translation>
 <translation id="3293179957233653243">Nogle funktioner på denne side vil ikke virke i Private</translation>
+<translation id="6304377454418270508">Når du browser privat, kan sider kun bruge cookies til at se din browsing-aktivitet på deres egne sider. Cookies bliver slettet, når du lukker den private session.</translation>
 <translation id="7447787726493910888">Vis detaljer omkring blokering af cookies fra tredjeparter i Private</translation>
 <translation id="255999604394332437">I Private-tilstand kan websider ikke bruge dine cookies til at se din browseraktivitet på andre websider, for eksempel for at finde personligt tilpassede annoncer. Funktioner på nogle websider virker muligvis ikke.</translation>
 <translation id="6105125042109106861">Tredjepartscookies er blokeret i inkognitotilstand</translation>

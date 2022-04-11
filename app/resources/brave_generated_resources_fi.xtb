@@ -51,6 +51,8 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="1643029991199044105">Käy läpi viimeksi käyttämäsi välilehdet painamalla Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Artikkelit ladataan automaattisesti lukijatilassa säästäen sinulta aikaa</translation>
+<translation id="5510493033031835532">AMP-sivujen automaattinen uudelleenohjaus</translation>
+<translation id="5197219128592971597">Käy aina sivun alkuperäisessä URL-osoitteessa (ei-AMP) Googlen Accelerated Mobile Pages -tekniikkaa käyttävän version sijaan</translation>
 <translation id="5802665280774361839">Näytä automaattinen täydennys osoiterivillä</translation>
 <translation id="597020512043916976">Näytä suosituimmat sivustot automaattitäydennyksen ehdotuksissa</translation>
 <translation id="264150068416846820">Näytä Braven ehdotetut sivustot automaattitäydennyksen ehdotuksissa</translation>
@@ -229,6 +231,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="4718664830805652430">Oletusarvoinen perusvaluutta</translation>
 <translation id="7992507032049865603">Oletusarvoinen peruskryptovaluutta</translation>
 <translation id="1834467296210148203">Näytä Brave-lompakon kuvake työkalupalkissa</translation>
+<translation id="4613486011786721686">Piilota Brave-lompakon kuvake työkalurivistä</translation>
 <translation id="8239147115686034860">Lukitse Brave Wallet -lompakko automaattisesti</translation>
 <translation id="414639769490080648">Odottavien minuuttien määrä, kunnes Brave Wallet -lompakko lukitaan automaattisesti</translation>
 <translation id="6864914031231797928">Salli laajennuksille Google-kirjautuminen</translation>
@@ -390,6 +393,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="8712637175834984815">Ymmärretty</translation>
 <translation id="4394049700291259645">Poista käytöstä</translation>
 <translation id="7142548388914389999">Salli yksityisyyden säilyttävä tuoteanalytiikka (P3A)</translation>
+<translation id="8286082624639565868">Nämä täysin anonymisoidut tiedot auttavat Bravea arvioimaan tiettyjen ominaisuuksien kokonaiskäyttöä ja tekemään niistä parempia sinulle.</translation>
 <translation id="1947672064022327074">Haluaisitko aloittaa kryptokukkarot Ethereum-tukea varten?</translation>
 <translation id="7583735190612229830">Asenna kryptokukkaroita ollaksesi vuorovaikutuksessa tämän sovelluksen ja muiden sen kaltaisten kanssa.</translation>
 <translation id="8731422418734770661">Asenna kryptovaluuttalompakot</translation>
@@ -433,7 +437,10 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="2808630562319398131">Tyhjennä Brave Rewardsin tiedot...</translation>
 <translation id="2273851479262317744">Aseta Brave oletusselaimeksi</translation>
 <translation id="8581710194025054669">Varmistaaksesi parhaan tietosuojan verkossa, harkitse Braven asettamista tietokoneesi oletusselaimeksi. Kun Brave on oletuksena, kaikki napsauttamasi verkkolinkit avautuvat Braven tietosuoja-asetusten mukaisesti.</translation>
+<translation id="1968543937259008435">Oletko valmiina parhaaseen tietosuojaan verkossa?</translation>
+<translation id="6817415381278637662">Aseta Brave oletusselaimeksi, niin saat Braven yksityisyyssuojan käyttöösi jokaisella avaamallasi verkkosivulla.</translation>
 <translation id="8722651357687610395">Aseta Brave oletukseksi</translation>
+<translation id="2370739752330685659">Ehkä myöhemmin</translation>
 <translation id="1241283133946520352">Verkot</translation>
 <translation id="8205945804087322170">Lisää uusi verkko</translation>
 <translation id="2156993118928861787">Virheellinen osoite</translation>

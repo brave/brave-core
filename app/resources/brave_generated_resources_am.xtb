@@ -51,6 +51,8 @@
 <translation id="1643029991199044105">የ Ctrl-Tab ትር በመጠቀም በጣም በቅርብ ጊዜ በተጠቀሙባቸው ትሮች ውስጥ ይቃኙ</translation>
 <translation id="1013121820689882118">የፍጥነት አንባቢን</translation>
 <translation id="2025435450953474282">ጽሑፎች ጊዜዎን ለመቆጠብ በራስ-ሰር በአንባቢ ሁነታ ይጫናሉ</translation>
+<translation id="5510493033031835532">የ AMP ገጾችን በራስ ሰር አዙር</translation>
+<translation id="5197219128592971597">ሁልጊዜ ኦሪጅናል (AMP ያልሆኑ) ገጽ URLs ን ይጎብኙ፣ ከ Google Accelerated Mobile ገጽ ስሪቶች ይልቅ</translation>
 <translation id="5802665280774361839">በአድራሻ አሞሌው ውስጥ ራስ-ሰር ማጠናቀቅን አሳይ</translation>
 <translation id="597020512043916976">ዋና ዋና ገጾችን በራስ መሙያ ሃሳቦች ላይ አሳይ</translation>
 <translation id="264150068416846820">በ Brave የተጠቆሙ ገጾችን በራስ መሙያ ጥቁምተ ሃሳቦች ላይ አሳይ</translation>
@@ -229,6 +231,7 @@
 <translation id="4718664830805652430">በነባሪ ላይ የተመሰረተ የመገበያያ ገንዘብ</translation>
 <translation id="7992507032049865603">በነባሪ ላይ የተመሰረተ cryptocurrency</translation>
 <translation id="1834467296210148203">የመሳሪያ አሞሌ ላይ የብሬቭን ቦርሳ አዶን አሳይ</translation>
+<translation id="4613486011786721686">በመሳሪያ አሞሌ ላይ የ Brave Wallet አዶን ይደብቁ</translation>
 <translation id="8239147115686034860">በራስ ሰር Brave Walletን ቆልፍ</translation>
 <translation id="414639769490080648">Brave Wallet በራስ ሰር እስኪቆለፍ ድረስ የሚጠብቁት የደቂቃዎች ብዛት</translation>
 <translation id="6864914031231797928">ለቅጥያዎች የ Google በመለያ መግቢያዎችን ፍቀድ</translation>
@@ -434,7 +437,10 @@
 <translation id="2808630562319398131">የ Brave ሽልማቶች ውሂብን ዳግም ያስጀምሩ...</translation>
 <translation id="2273851479262317744">Brave ን እንደ ነባሪ አሳሽ ያዘጋጁ</translation>
 <translation id="8581710194025054669">በኦንላይን ላይ ምርጥ ግላዊነትን ለማረጋገጥ፣ በኮምፒተርዎ ላይ Brave ን እንደ ነባሪ አሳሽ ያቀናብሩ። Brave ነባሪ አሳሽ ከተደረገ፣ እርስዎ ጠቅ የሚያደርጉት ማንኛውም የድር ማስፈንጠሪያ በ Brave የግላዊነት ጥበቃዎች ይከፈታል።</translation>
+<translation id="1968543937259008435">በኦንላይን ላይ ያለ ለምርጥ ግላዊነት ዝግጁ ነዎት?</translation>
+<translation id="6817415381278637662">በከፈቱት በእያንዳንዱ ድረ-ገጽ ላይ የ Brave ን ግላዊነት ጥበቃ ለማግኘት Brave ን እንደ ነባሪ አሳሽዎ አድርገው ያቀናብሩ።</translation>
 <translation id="8722651357687610395">Braveን እንደ ነባሪ አድርገው ያቀናብሩት</translation>
+<translation id="2370739752330685659">ምናልባት በኋላ</translation>
 <translation id="1241283133946520352">አውታረ መረቦች</translation>
 <translation id="8205945804087322170">አዲስ አውታረ መረብ ያክሉ</translation>
 <translation id="2156993118928861787">ልክ ያልሆነ አድራሻ</translation>

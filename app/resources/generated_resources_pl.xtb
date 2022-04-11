@@ -1364,7 +1364,6 @@ Możesz zarządzać ustawieniami konta, korzystając z aplikacji Family Link na
 <translation id="2327492829706409234">Włącz aplikację</translation>
 <translation id="2327920026543055248">Wpisz znak <ph name="CHARACTER"/> z <ph name="TOTAL"/></translation>
 <translation id="2328561734797404498">Aby użyć <ph name="APP_NAME"/>, uruchom ponownie urządzenie.</translation>
-<translation id="6304377454418270508">Kiedy jesteś w trybie incognito, witryny mogą używać plików cookie tylko do sprawdzania Twojej aktywności związanej z przeglądaniem w danej witrynie. Po zakończeniu sesji incognito pliki cookie są usuwane.</translation>
 <translation id="2329597144923131178">Zaloguj się, by korzystać z zakładek, historii, haseł i innych ustawień na wszystkich swoich urządzeniach.</translation>
 <translation id="2330878972945412956"><ph name="BEGIN_PARAGRAPH1"/>Jeśli pozwolisz na wysyłanie automatycznych raportów z urządzeń z Brave OS, pomożesz nam w ustalaniu, co przede wszystkim należy naprawić i ulepszyć w tym systemie operacyjnym. Raporty mogą zawierać na przykład informacje o używanych funkcjach, typowym wykorzystaniu pamięci, a także dane o korzystaniu z aplikacji na Androida (i dotyczące ich informacje diagnostyczne) oraz o błędach. Niektóre dane zbiorcze pomogą nam też udoskonalić aplikacje Brave lub zostaną wykorzystane przez naszych partnerów, na przykład deweloperów aplikacji na Androida.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Wysyłanie raportów możesz rozpocząć lub wstrzymać w dowolnym momencie w ustawieniach urządzenia z Brave OS. Jeśli jesteś administratorem domeny, możesz zmienić to ustawienie w konsoli administracyjnej.<ph name="END_PARAGRAPH2"/>
@@ -2085,7 +2084,6 @@ Domena <ph name="DOMAIN"/> wymaga, by karta inteligentna pozostała w gnieździ
 <translation id="3036546437875325427">Włącz Flasha</translation>
 <translation id="3037754279345160234">Nie można przeanalizować konfiguracji dołączania do domeny. Skontaktuj się z administratorem.</translation>
 <translation id="3038612606416062604">Dodaj drukarkę ręcznie</translation>
-<translation id="8766876672295471671">Wyświetlaj rozmowy, reaguj na wiadomości i dodawaj nowe osoby do czatów grupowych</translation>
 <translation id="3039491566278747710">Nie udało się zainstalować zasad offline na urządzeniu.</translation>
 <translation id="3043218608271070212"><ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENT_STRING"/></translation>
 <translation id="3043581297103810752">Ze strony <ph name="ORIGIN"/></translation>
@@ -4252,7 +4250,6 @@ Domena <ph name="DOMAIN"/> wymaga, by karta inteligentna pozostała w gnieździ
 <translation id="529296195492126134">Tryb tymczasowy nie jest obsługiwany. Skontaktuj się z administratorem</translation>
 <translation id="5293170712604732402">Przywróć ustawienia do wartości domyślnych</translation>
 <translation id="5294097441441645251">Musi zaczynać się od małej litery lub podkreślenia</translation>
-<translation id="8273477935094091719">Twoje urządzenie <ph name="DEVICE_TYPE"/> korzysta z wbudowanego czujnika, który wykrywa osoby znajdujące się przed ekranem. Wszystkie dane są od razu przetwarzane na urządzeniu i potem usuwane. Czujnik nigdy nie wysyła zebranych danych do Brave. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
 <translation id="5297082477358294722">Hasło zostało zapisane. Swoje zapisane hasła znajdziesz tutaj: <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Kiedy ktoś inny spogląda na Twój ekran, pokaż ikonę oka symbolizującą prywatność w prawym dolnym rogu ekranu</translation>
 <translation id="5298219193514155779">Motyw utworzony przez</translation>
@@ -8143,7 +8140,6 @@ Domena <ph name="DOMAIN"/> wymaga, by karta inteligentna pozostała w gnieździ
 <translation id="994289308992179865">&amp;Powtarzaj</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Nawiązuję bezpieczne połączenie...</translation>
-<translation id="2361296898422164385">Oglądaj wspomnienia związane m.in. ze swoimi ulubionymi osobami</translation>
 <translation id="3285581355655524751">Aby korzystać z synchronizacji Wi-Fi, włącz <ph name="LINK1_BEGIN"/>Synchronizację Brave<ph name="LINK1_END"/>. <ph name="LINK2_BEGIN"/>Więcej informacji<ph name="LINK2_END"/></translation>
 <translation id="998747458861718449">&amp;Zbadaj</translation>
 <translation id="658539216370629794">Otwórz link w &amp;prywatnym oknie</translation>
@@ -8166,6 +8162,7 @@ Domena <ph name="DOMAIN"/> wymaga, by karta inteligentna pozostała w gnieździ
 <translation id="5097649414558628673">Narzędzie: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Web Store</translation>
 <translation id="8261378640211443080">To rozszerzenie nie jest oferowane w <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i mogło zostać dodane bez Twojej wiedzy.</translation>
+<translation id="2361296898422164385">Zobacz wspomnienia z ulubionych profili i nie tylko</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Prywatny)</translation>
 <translation id="263189163883089157">Możesz przeglądać w trybie prywatnym za pomocą okna w trybie prywatnym</translation>
 <translation id="5263632074804780211">Korzystaj z Internetu bez zapisywania historii przeglądania w oknie w trybie prywatnym</translation>
@@ -8214,6 +8211,8 @@ Domena <ph name="DOMAIN"/> wymaga, by karta inteligentna pozostała w gnieździ
 <translation id="2254158488150713536">Aby kontynuować, kliknij OK, a potem kliknij Dodaj osobę, by utworzyć nowy profil dla swojego adresu e-mail.</translation>
 <translation id="1725743343613175327">Aby kontynuować, kliknij OK, a potem kliknij Dodaj osobę, by utworzyć nowy profil dla swojego adresu e-mail w domenie <ph name="DOMAIN"/>.</translation>
 <translation id="3707212204259470604">Zarządzaj innymi profilami</translation>
+<translation id="8766876672295471671">Wyświetlaj rozmowy, reaguj na wiadomości i dodawaj profile do czatów grupowych</translation>
+<translation id="8273477935094091719">Urządzenie <ph name="DEVICE_TYPE"/> wykorzystuje wbudowany czujnik do wykrywania profili znajdujących się przed urządzeniem. Wszystkie dane są natychmiast przetwarzane w Twoim urządzeniu, a następnie usuwane. Dane z czujnika nigdy nie są wysyłane do Brave. <ph name="LINK_BEGIN"/>Dowiedz się więcej<ph name="LINK_END"/></translation>
 <translation id="5832813618714645810">Profile</translation>
 <translation id="3216703137209942563">{COUNT, plural,
 =1 {Twoje prywatne okno nie otworzy się po ponownym uruchomieniu}
@@ -8222,6 +8221,7 @@ other {Prywatne okna w ilości {COUNT} nie otworzą się po ponownym uruchomieni
 <translation id="383007806262310953">Pokaż pasek zakładek</translation>
 <translation id="8648684608605749476">Blokowanie plików cookie innych firm w trybie incognito</translation>
 <translation id="3293179957233653243">Funkcje na niektórych witrynach mogą nie działać w trybie prywatnym</translation>
+<translation id="6304377454418270508">Gdy włączony jest tryb prywatny, witryny mogą używać plików cookie, aby sprawdzać aktywność związaną z przeglądaniem na ich własnych stronach. Pliki cookie są usuwane po zakończeniu sesji prywatnej.</translation>
 <translation id="7447787726493910888">Pokaż szczegóły dotyczące blokowania plików cookie innych firm.</translation>
 <translation id="255999604394332437">W trybie prywatnym witryny nie mogą korzystać z plików cookie, aby sprawdzić aktywność przeglądania w różnych witrynach, na przekład w celu personalizacji reklam. Funkcje niektórych witryn mogą nie działać.</translation>
 <translation id="6105125042109106861">Pliki cookie innych firm są blokowane w trybie incognito</translation>

@@ -243,7 +243,7 @@
 <translation id="8826352442759228526">Dina Brave Rewards kan inte verifieras eftersom du har nått den maximala gränsen för verifierade enheter.</translation>
 <translation id="1221593978088944142">Fel: Teckengränsen har nåtts</translation>
 <translation id="3113653894794167793">Tyvärr uppstod ett problem när din begäran skulle behandlas. Vänligen försök igen.</translation>
-<translation id="3509185560119586847">Tyvärr har din Brave Rewards-profil flaggats och du kan inte verifiera med en vårdnadshavare just nu. Den här flaggan kan ibland bero på oregelbunden Brave Ads-aktivitet, även om den också kan vara felaktig.</translation>
+<translation id="3509185560119586847">Tyvärr har din Brave Rewards-profil flaggats och du kan inte verifiera med en partner just nu. Den här flaggan kan ibland bero på oregelbunden Brave Ads-aktivitet, även om den också kan vara felaktig.</translation>
 <translation id="5031451251720571882">Observera att medan din Brave Rewards-profil är flaggad kan du inte verifiera den.</translation>
 <translation id="7301759045821910866">Du behöver inte vidta några åtgärder. Din Brave Rewards-profil utvärderas automatiskt regelbundet för att avgöra när (eller om) flaggan kan tas bort. Försök igen då och då för att se om flaggan har tagits bort.</translation>
 <translation id="280350148043792509"><ph name="BEGIN_LINK"/>Läs mer om Braves flaggningsprocess för Rewards-profiler.<ph name="END_LINK"/></translation>
@@ -1163,7 +1163,7 @@
 <translation id="2962388922926051374">Begär metod för "eth_chainId" på <ph name="URL"/> misslyckades</translation>
 <translation id="8325036459845654666">Nätverket har redan lagts till.</translation>
 <translation id="554350381160981853">Signering av data stöds endast på Trezor Model One med Firmware 1.10.5 eller senare</translation>
-<translation id="1752214435563414457">Brave Swap-insatser</translation>
+<translation id="1752214435563414457">Brave Swap-stakes</translation>
 <translation id="7829441065063984927">7 dagar med kryptogåvor, ~$500k i priser</translation>
 <translation id="8292716346768453265">Delta nu!</translation>
 <translation id="3155170474926428993">Tor launcher</translation>
@@ -1175,7 +1175,7 @@
 <translation id="1671503397662036257">Tor anslutningsstatus</translation>
 <translation id="6024292492796847324">Tor Initieringsförlopp</translation>
 <translation id="8458987127502506209">Aktivera Brave Sköld</translation>
-<translation id="7509914170164691086">Shields är aktiverat <ph name="LINK_BEFORE"/>för<ph name="LINK_AFTER"/></translation>
+<translation id="7509914170164691086">Shields är UPP <ph name="LINK_BEFORE"/> för <ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Shields är inaktiverat <ph name="LINK_BEFORE"/>för<ph name="LINK_AFTER"/></translation>
 <translation id="7709075156958117386">Om webbplatsen inte fungerar kan du testa att inaktivera Shields. 
     <ph name="LINK_BEFORE"/>Obs: Det kan försämra Braves sekretesskydd.<ph name="LINK_AFTER"/></translation>

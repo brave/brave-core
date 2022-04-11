@@ -496,7 +496,6 @@
 <translation id="2523886232349826891">በዚህ መሣሪያ ላይ ብቻ ይቀመጣል</translation>
 <translation id="2524461107774643265">ተጨማሪ መረጃ ያክሉ</translation>
 <translation id="2529899080962247600">ይህ መስክ ከ<ph name="MAX_ITEMS_LIMIT"/> ግቤቶች በላይ ሊኖሩት አይገባም። ሁሉም ተጨማሪ ግቤቶች ችላ ይባላሉ።</translation>
-<translation id="40442660395682483">በግል ለማሰስ አዲስ ማንነትን የማያሳውቅ ትርን ክፈት</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{እና 1 ተጨማሪ}one{እና # ተጨማሪ}other{እና # ተጨማሪ}}</translation>
 <translation id="2536110899380797252">አድራሻ ያክሉ</translation>
 <translation id="2539524384386349900">አግኝ</translation>
@@ -1412,7 +1411,6 @@
 <translation id="5556459405103347317">ዳግም ጫን</translation>
 <translation id="5560088892362098740">አገልግሎቱ የሚያበቃበት ቀን</translation>
 <translation id="55635442646131152">የሰነድ ቢጋር</translation>
-<translation id="5395368798429603306">ማንነት የማያሳውቅ ትርን ክፈት</translation>
 <translation id="5565735124758917034">ገባሪ</translation>
 <translation id="5570825185877910964">መለያን ጠብቅ</translation>
 <translation id="5571083550517324815">ከዚህ አድራሻ ላይ መውሰድ አይቻልም። የተለየ አድራሻ ይምረጡ።</translation>
@@ -1867,7 +1865,6 @@
 <translation id="7192203810768312527">እስከ <ph name="SIZE"/> ያስለቅቃል። አንዳንድ ጣቢያዎች በሚቀጥለው ጉብኝትዎ ላይ ይበልጥ በዝግታ ሊጫኑ ይችላሉ።</translation>
 <translation id="719464814642662924">Visa</translation>
 <translation id="7201591969684833065">የእርስዎ አስተዳዳሪ እነዚህን መመልከት ይችላል፦</translation>
-<translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>፣ ትርን ይጫኑና ከዚያ በግል እንዲያስሱ አዲስ ማንነት የማያሳውቅ ትርን ለመክፈት አስገባን ይጫኑ</translation>
 <translation id="7202346780273620635">ደብዳቤ-ተጨማሪ</translation>
 <translation id="7210863904660874423"><ph name="HOST_NAME"/> የደህንነት መስፈርቶችን አያከብርም።</translation>
 <translation id="7210993021468939304">በመያዣው ውስጥ ያለ የLinux እንቅስቃሴ፣ እና በመያዣው ውስጥ የLinux መተግበሪያዎችን መጫንና ማሄድ ይችላል</translation>
@@ -2128,7 +2125,6 @@
 <translation id="799149739215780103">ጠርዝ</translation>
 <translation id="7992044431894087211">ከ <ph name="APPLICATION_TITLE"/> ጋር የማያ ገጽ መጋራት ከቆመበት ቀጥሏል</translation>
 <translation id="7995512525968007366">አልተጠቀሰም</translation>
-<translation id="3711639027736550870">ማንነት የማያሳውቅ ትር አዝራርን ይክፈቱ፣ በግል እንዲያስሱ አዲስ ማንነት የማያሳውቅ ትርን ለመክፈት አስገባን ይጫኑ</translation>
 <translation id="800218591365569300">የማህደረ ትውስታ ቦታን ለማስለቀቅ ሌሎች ትሮችን ወይም ፕሮግራሞችን ዘግተው ይሞክሩ።</translation>
 <translation id="8004582292198964060">አሳሽ</translation>
 <translation id="8012116502927253373">{NUM_CARDS,plural, =1{ይህ ካርድ እና የክፍያ መጠየቂያ አድራሻው ይቀመጣሉ። በመለያ ወደ <ph name="USER_EMAIL"/> ሲገቡ ሊጠቀሙበት ይችላሉ።}one{እነዚህ ካርዶች እና የክፍያ መጠየቂያ አድራሻዎቻቸው ይቀመጣሉ። በመለያ ወደ <ph name="USER_EMAIL"/> ሲገቡ ሊጠቀሙባቸው ይችላሉ።}other{እነዚህ ካርዶች እና የክፍያ መጠየቂያ አድራሻዎቻቸው ይቀመጣሉ። በመለያ ወደ <ph name="USER_EMAIL"/> ሲገቡ ሊጠቀሙባቸው ይችላሉ።}}</translation>
@@ -2546,6 +2542,10 @@
 <ph name="END_LIST"/></translation>
 <translation id="6043883615739972429"><ph name="BEGIN_LINK"/>ብሬቭ ውስጥ ስላለው ግላዊ ተጨማሪ ይማሩ<ph name="END_LINK"/></translation>
 <translation id="9153679102508470540">በግላዊ ውስጥ የሶስተኛ ወገን ኩኪዎችን ያግዱ።</translation>
+<translation id="5395368798429603306">የግል ትር ይክፈቱ</translation>
+<translation id="40442660395682483">በግል ለማሰስ ማንነት በማያሳውቅ አዲስ ትር ይክፈቱ</translation>
+<translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>፣ ማንነት በማያሳውቅ አዲስ ትር ለመክፈት Tab ወይም ታብ የሚለውን ከዛ Enter ወይም አስገባ የሚለውን ይጫኑ</translation>
+<translation id="3711639027736550870">የግል ትር አዝራር ይክፈቱ፣ ማንነት በማያሳውቅ አዲስ ትር ለመክፈት ታብ Tab የሚለውን ከዛ Enter የሚለውን ይጫኑ</translation>
 <translation id="5549245478906381817">ማንነት የማያሳውቅ መስኮት ይክፈቱ</translation>
 <translation id="5497977785983089120">በግል ለማሰስ ማንነት የማያሳውቅ አዲስ መስኮት ይክፈቱ</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ማንነት በማያሳውቅ አዲስ መስኮት ለመክፈት Tab ወይም ታብ የሚለውን ከዛ Enter ወይም አስገባ የሚለውን ይጫኑ</translation>

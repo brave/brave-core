@@ -1178,7 +1178,7 @@
 <translation id="1671503397662036257">Tor接続ステータス</translation>
 <translation id="6024292492796847324">Tor初期化の進行状況</translation>
 <translation id="8458987127502506209">Brave Shieldsを有効にする</translation>
-<translation id="7509914170164691086">シールド<ph name="LINK_BEFORE"/>オン<ph name="LINK_AFTER"/></translation>
+<translation id="7509914170164691086">次のサイトでシールド<ph name="LINK_BEFORE"/>オン<ph name="LINK_AFTER"/>:</translation>
 <translation id="260764436039299868">シールド<ph name="LINK_BEFORE"/>オフ<ph name="LINK_AFTER"/></translation>
 <translation id="7709075156958117386">サイトの表示に問題があると思われる場合は、シールドを無効化してください<ph name="LINK_BEFORE"/>注意：これにより、Braveのプライバシー保護機能が低下する場合があります。<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">トラッカー、広告などをブロック。<ph name="LINK_BEFORE"/>詳細<ph name="LINK_AFTER"/></translation>
