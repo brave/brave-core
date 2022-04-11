@@ -160,3 +160,14 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, NonWritable) {
              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result4.value);
 }
+
+// See https://github.com/brave/brave-browser/issues/22213 for details
+IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, IsMetaMaskWritable) {
+  const GURL url = https_server_.GetURL("/simple.html");
+  NavigateToURLAndWaitForLoadStop(url);
+
+  std::string overwrite =
+      "window.ethereum.isMetaMask = false;"
+      "window.ethereum.isMetaMask";
+  EXPECT_FALSE(content::EvalJs(main_frame(), overwrite).ExtractBool());
+}
