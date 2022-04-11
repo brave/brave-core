@@ -1,20 +1,12 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeApplicationImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeApplicationImpl.java
-index 346488166d3082195308895b56e69270166ea321..8db0fc6f2122e47e8b7f95ac3e8f2e904e48138d 100644
+index 346488166d3082195308895b56e69270166ea321..d7d84ac7c400a458c7b9fc90c19397f35d1e5fd2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeApplicationImpl.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeApplicationImpl.java
-@@ -34,6 +34,7 @@ import org.chromium.components.module_installer.util.ModuleUtil;
- import org.chromium.components.version_info.Channel;
- import org.chromium.components.version_info.VersionConstants;
- import org.chromium.url.GURL;
-+import androidx.core.content.ContextCompat;import com.wireguard.android.backend.GoBackend;import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
- 
- /**
-  * Basic application functionality that should be shared among all browser applications that use
-@@ -78,6 +79,7 @@ public class ChromeApplicationImpl extends SplitCompatApplication.Impl {
+@@ -78,6 +78,7 @@ public class ChromeApplicationImpl extends SplitCompatApplication.Impl {
              PartitionResolverSupplier.setInstance(new ProfileResolver());
  
              AppHooks.get().getChimeDelegate().initialize();
-+            GoBackend.setAlwaysOnCallback(new GoBackend.AlwaysOnCallback() {@Override public void alwaysOnTriggered() { BraveVpnProfileUtils.getInstance().startVpn(getApplication()); }});
++            com.wireguard.android.backend.GoBackend.setAlwaysOnCallback(new com.wireguard.android.backend.GoBackend.AlwaysOnCallback() {@Override public void alwaysOnTriggered() { org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils.getInstance().startVpn(getApplication()); }});
          }
      }
  

@@ -1,8 +1,12 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package org.chromium.chrome.browser.vpn.wireguard;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Pair;
 
 import com.wireguard.config.BadConfigException;
@@ -31,25 +35,6 @@ public class WireguardUtils {
         builder.parseAllowedIPs("0.0.0.0/0");
         builder.parseEndpoint(host + ":51821");
         builder.parsePublicKey(serverPublicKey);
-        peers.add(builder.build());
-        return peers;
-    }
-
-    public static Interface getInterface() throws BadConfigException {
-        Interface.Builder builder = new Interface.Builder();
-        builder.parseAddresses("10.99.72.81/32");
-        builder.parseDnsServers("1.1.1.1, 1.0.0.1");
-        builder.parseListenPort("51821");
-        builder.parsePrivateKey("eOVGdgGOcwfo7dyptSL3BMtHJTxmwdUIS/meDLZUx3g=");
-        return builder.build();
-    }
-
-    public static List<Peer> getPeers() throws BadConfigException {
-        List<Peer> peers = new ArrayList<>();
-        Peer.Builder builder = new Peer.Builder();
-        builder.parseAllowedIPs("0.0.0.0/0");
-        builder.parseEndpoint("wg-testing-1-yyz.guardianapp.com:51821");
-        builder.parsePublicKey("T2o1A8pIX+jUEthALK2j+17+KgoNblyUWqUDJT539QU=");
         peers.add(builder.build());
         return peers;
     }

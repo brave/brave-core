@@ -45,8 +45,6 @@ public abstract class BraveVpnParentActivity
     private BraveVpnPrefModel mBraveVpnPrefModel;
 
     abstract void showRestoreMenu(boolean shouldShowRestore);
-    // abstract void showProgress();
-    // abstract void hideProgress();
     abstract void updateProfileView();
 
     ActivityResultLauncher<Intent> intentActivityResultLauncher = registerForActivityResult(

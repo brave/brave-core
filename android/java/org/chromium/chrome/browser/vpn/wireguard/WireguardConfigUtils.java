@@ -1,3 +1,8 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package org.chromium.chrome.browser.vpn.wireguard;
 
 import static org.chromium.chrome.browser.vpn.wireguard.WireguardUtils.getInterface;
@@ -30,18 +35,6 @@ public class WireguardConfigUtils {
                                 .setInterface(getInterface(address, clientPrivateKey))
                                 .addPeers(getPeers(host, serverPublicKey))
                                 .build();
-        fileOutputStream.write(config.toWgQuickString().getBytes(StandardCharsets.UTF_8));
-        return config;
-    }
-
-    public static Config createConfig(Context context) throws IOException, BadConfigException {
-        File file = fileForConfig(context);
-        if (!file.createNewFile()) {
-            throw new IOException("Configuration file already exists");
-        }
-        FileOutputStream fileOutputStream = new FileOutputStream(file, false);
-        Config config =
-                new Config.Builder().setInterface(getInterface()).addPeers(getPeers()).build();
         fileOutputStream.write(config.toWgQuickString().getBytes(StandardCharsets.UTF_8));
         return config;
     }

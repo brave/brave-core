@@ -7,7 +7,6 @@
 
 package org.chromium.chrome.browser.vpn.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,22 +15,15 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-
-import com.wireguard.android.backend.GoBackend;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnConfirmDialogFragment;
-import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
-import org.chromium.chrome.browser.vpn.wireguard.WireguardService;
 import org.chromium.ui.widget.Toast;
 
 public class BraveVpnProfileActivity extends BraveVpnParentActivity {
@@ -42,20 +34,6 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
     private Button mContactSupportButton;
     private ProgressBar mProfileProgress;
     private LinearLayout mProfileLayout;
-
-    // ActivityResultLauncher<Intent> intentActivityResultLauncher = registerForActivityResult(new
-    // ActivityResultContracts.StartActivityForResult(), result -> {
-    //     if (result.getResultCode() == RESULT_OK) {
-    //         ContextCompat.startForegroundService(this, new Intent(this, WireguardService.class));
-    //         BraveVpnUtils.showVpnConfirmDialog(this);
-    //     } else {
-    //         Toast.makeText(this, "Permission cancelled", Toast.LENGTH_SHORT).show();
-    //         mProfileTitle.setText(getResources().getString(R.string.some_context));
-    //         mProfileText.setText(getResources().getString(R.string.some_context_text));
-    //         mInstallVpnButton.setText(getResources().getString(R.string.accept_connection_request));
-    //         mContactSupportButton.setVisibility(View.GONE);
-    //     }
-    // });
 
     @Override
     public void onResumeWithNative() {
@@ -135,37 +113,8 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         return true;
     }
 
-    // @Override
-    // public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    //     if (resultCode == RESULT_OK
-    //             && requestCode == BraveVpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
-    //             && BraveVpnUtils.isBraveVpnFeatureEnable()) {
-    //         BraveVpnProfileUtils.getInstance().startVpn(BraveVpnProfileActivity.this);
-    //         BraveVpnUtils.showVpnConfirmDialog(BraveVpnProfileActivity.this);
-    //     } else if (resultCode == RESULT_CANCELED) {
-    //         mProfileTitle.setText(getResources().getString(R.string.some_context));
-    //         mProfileText.setText(getResources().getString(R.string.some_context_text));
-    //         mInstallVpnButton.setText(getResources().getString(R.string.accept_connection_request));
-    //         mContactSupportButton.setVisibility(View.GONE);
-    //     }
-    //     hideProgress();
-    //     super.onActivityResult(requestCode, resultCode, data);
-    // }
-
     @Override
     public void showRestoreMenu(boolean shouldShowRestore) {}
-
-    // @Override
-    // public void showProgress() {
-    //     BraveVpnUtils.showProgressDialog(
-    //             BraveVpnProfileActivity.this,
-    //             getResources().getString(R.string.vpn_connect_text));
-    // }
-
-    // @Override
-    // public void hideProgress() {
-    //     BraveVpnUtils.dismissProgressDialog();
-    // }
 
     @Override
     public void updateProfileView() {

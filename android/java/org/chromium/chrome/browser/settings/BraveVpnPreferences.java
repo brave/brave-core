@@ -17,7 +17,6 @@ import android.os.Handler;
 import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
 
 import com.android.billingclient.api.Purchase;
@@ -40,8 +39,6 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
-import org.chromium.chrome.browser.vpn.wireguard.WireguardService;
-import org.chromium.chrome.browser.vpn.wireguard.WireguardUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -63,6 +60,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     public static final String PREF_SUPPORT_TECHNICAL = "support_technical";
     public static final String PREF_SUPPORT_VPN = "support_vpn";
     public static final String PREF_SERVER_RESET_CONFIGURATION = "server_reset_configuration";
+
+    private static final int INVALIDATE_CREDENTIAL_TIMER_COUNT = 5000;
 
     private static final String VPN_SUPPORT_PAGE =
             "https://support.brave.com/hc/en-us/articles/360045045952";
@@ -383,7 +382,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
 
             int timerCount = 0;
             if (BraveVpnUtils.mIsServerLocationChanged) {
-                timerCount = 5000;
+                timerCount = INVALIDATE_CREDENTIAL_TIMER_COUNT;
                 BraveVpnUtils.mIsServerLocationChanged = false;
                 try {
                     BraveVpnNativeWorker.getInstance().invalidateCredentials(
@@ -455,7 +454,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                     new Handler().postDelayed(() -> {
                         BraveVpnUtils.resetProfileConfiguration(getActivity());
                         new Handler().post(() -> updateSummaries());
-                    }, 5000);
+                    }, INVALIDATE_CREDENTIAL_TIMER_COUNT);
                     dialog.dismiss();
                 });
         confirmDialog.setNegativeButton(getActivity().getResources().getString(android.R.string.no),

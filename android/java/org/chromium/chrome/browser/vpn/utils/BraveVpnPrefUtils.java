@@ -53,16 +53,6 @@ public class BraveVpnPrefUtils {
         sharedPreferencesEditor.apply();
     }
 
-    // public static boolean hasVpnStarted() {
-    //     return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_START, false);
-    // }
-
-    // public static void setVpnStart(boolean newValue) {
-    //     SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-    //     sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_START, newValue);
-    //     sharedPreferencesEditor.apply();
-    // }
-
     public static boolean shouldShowCallout() {
         return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_CALLOUT, true);
     }

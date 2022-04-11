@@ -16,8 +16,6 @@ public class BraveVpnPrefModel {
     private String mServerRegion;
     private String mClientPrivateKey;
     private String mClientPublicKey;
-    // private String mIpAdress;
-    // private String mServerPublicKey;
 
     public void setPurchaseToken(String purchaseToken) {
         mPurchaseToken = purchaseToken;
@@ -58,14 +56,6 @@ public class BraveVpnPrefModel {
     public void setClientPublicKey(String clientPublicKey) {
         mClientPublicKey = clientPublicKey;
     }
-
-    // public void setIpAddress(String ipAddress) {
-    //     mIpAdress = ipAddress;
-    // }
-
-    // public void setServerPublicKey(String serverPublicKey) {
-    //     mServerPublicKey = serverPublicKey;
-    // }
 
     public String getPurchaseToken() {
         return mPurchaseToken;

@@ -2381,13 +2381,13 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Continue to Email
     </message>
     <message name="IDS_VPN_SUPPORT_TEXT" desc="Brave Vpn support text">
-      Support provided  with the help of the Guardian team.\n\nPlease select the information you're comfortable sharing with us.\n\nThe more information you initially share with us the easier it will be for our support staff to help you resolve your issue.
+      Support provided with the help of the Guardian team.\n\nPlease select the information you're comfortable sharing with us.\n\nThe more information you initially share with us the easier it will be for our support staff to help you resolve your issue.
     </message>
     <message name="IDS_AUTOMATIC_SERVER_SELECTION_TEXT" desc="Vpn server selection text">
       A server region most proximate to you willl be automatically selected, based on your system timezone. This is recommended in order to ensure fast internet speeds.
     </message>
     <message name="IDS_OTHER_ISSUES" desc="Brave Vpn support text">
-      Other Issues
+      Select Issue
     </message>
     <message name="IDS_CANNOT_CONNECT_TO_VPN" desc="Brave Vpn support text">
       Cannot connect to the VPN (Other error)
@@ -2934,9 +2934,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_DAPPS_CONNECTION_REQUEST_MSG" desc="A message shown to user when a DApp site request to connect with Brave wallet">
     This page wants to interact with Brave Wallet
-    </message>
-    <message name="IDS_ALWAYS_ON_BRAVE_TEXT" desc="Always on vpn text">
-      You’ve already set Brave VPN to “Always on” in your device settings.
     </message>
     <message name="IDS_CONNECTION_ERROR" desc="Always on vpn text">
       Connection error
