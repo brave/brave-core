@@ -6,6 +6,7 @@ source_set("browser") {
 
   deps = [
     "//base",
+    "//brave/components/l10n/common",
     "//brave/ui/webui/resources",
     "//content/public/browser",
     "//ui/base",
