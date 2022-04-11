@@ -7269,6 +7269,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_GENERATION_DIALOG_DESCRIPTION" desc="Text for password generation dialog, explaining that the password will be saved in Brave sync chain.">
           Password will be saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>. You won’t have to remember it.
         </message>
+        <message name="IDS_PASSWORD_GENERATION_DIALOG_DESCRIPTION_UPM_BRANDED" desc="Text for password generation dialog, explaining that the password will be saved in Brave sync chain. Unified Password Manager branded variant.">
+          You won’t need to remember this password. It will be saved to Brave Password Manager for <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>.
+        </message>
         <message name="IDS_CONFIRM_USERNAME_DIALOG_TITLE" desc="The title of the confirm username dialog." formatter_data="android_java">
           Confirm your username
         </message>
@@ -12548,6 +12551,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Continue
       </message>
     </if>
+
+    <!-- FedCM Account Selection strings -->
+    <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT" desc="Header for sign in sheet. Sheet is shown to promp user for sign in consent." translateable="false">
+        Sign in to <ph name="SITE_ETLD_PLUS_ONE">$1<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$2<ex>idp.com</ex></ph>
+    </message>
 
     <!-- Input overlay strings -->
     <if expr="chromeos_ash">
