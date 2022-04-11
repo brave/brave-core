@@ -63,6 +63,7 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.OnRampProvider;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.SwapParams;
 import org.chromium.brave_wallet.mojom.SwapResponse;
@@ -874,8 +875,14 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 if (mCurrentChainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
                     assert mBlockchainRegistry != null;
                     String asset = mFromAssetText.getText().toString();
-                    mBlockchainRegistry.getBuyUrl(
-                            BraveWalletConstants.MAINNET_CHAIN_ID, from, asset, value, url -> {
+                    mBlockchainRegistry.getBuyUrl(OnRampProvider.WYRE,
+                            BraveWalletConstants.MAINNET_CHAIN_ID, from, asset, value,
+                            (url, error) -> {
+                                if (error != null && !error.isEmpty()) {
+                                    Log.e(TAG, "Could not get buy URL: " + error);
+                                    return;
+                                }
+
                                 TabUtils.openUrlInNewTab(false, url);
                                 TabUtils.bringChromeTabbedActivityToTheTop(this);
                             });

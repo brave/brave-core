@@ -106,26 +106,50 @@ void BlockchainRegistry::GetAllTokens(const std::string& chain_id,
   std::move(callback).Run(std::move(tokens_copy));
 }
 
-void BlockchainRegistry::GetBuyTokens(const std::string& chain_id,
+void BlockchainRegistry::GetBuyTokens(mojom::OnRampProvider provider,
+                                      const std::string& chain_id,
                                       GetBuyTokensCallback callback) {
   std::vector<brave_wallet::mojom::BlockchainTokenPtr> blockchain_buy_tokens;
-  for (auto token : *kBuyTokens) {
-    auto blockchain_token = brave_wallet::mojom::BlockchainToken::New();
-    *blockchain_token = token;
-    blockchain_buy_tokens.push_back(std::move(blockchain_token));
+  const std::vector<mojom::BlockchainToken>* buy_tokens = nullptr;
+  if (provider == mojom::OnRampProvider::kWyre)
+    buy_tokens = &GetWyreBuyTokens();
+  else if (provider == mojom::OnRampProvider::kRamp)
+    buy_tokens = &GetRampBuyTokens();
+
+  if (buy_tokens == nullptr) {
+    std::move(callback).Run(std::move(blockchain_buy_tokens));
+    return;
+  }
+
+  for (const auto& token : *buy_tokens) {
+    if (token.chain_id != chain_id) {
+      continue;
+    }
+
+    blockchain_buy_tokens.push_back(
+        brave_wallet::mojom::BlockchainToken::New(token));
   }
   std::move(callback).Run(std::move(blockchain_buy_tokens));
 }
 
-void BlockchainRegistry::GetBuyUrl(const std::string& chain_id,
+void BlockchainRegistry::GetBuyUrl(mojom::OnRampProvider provider,
+                                   const std::string& chain_id,
                                    const std::string& address,
                                    const std::string& symbol,
                                    const std::string& amount,
                                    GetBuyUrlCallback callback) {
-  std::string url = base::StringPrintf(kBuyUrl, address.c_str(), symbol.c_str(),
-                                       amount.c_str(), kWyreID);
-
-  std::move(callback).Run(url);
+  std::string url;
+  if (provider == mojom::OnRampProvider::kWyre) {
+    url = base::StringPrintf(kWyreBuyUrl, address.c_str(), symbol.c_str(),
+                             amount.c_str(), kWyreID);
+    std::move(callback).Run(std::move(url), absl::nullopt);
+  } else if (provider == mojom::OnRampProvider::kRamp) {
+    url = base::StringPrintf(kRampBuyUrl, address.c_str(), symbol.c_str(),
+                             amount.c_str(), kRampID);
+    std::move(callback).Run(std::move(url), absl::nullopt);
+  } else {
+    std::move(callback).Run(url, "UNSUPPORTED_ONRAMP_PROVIDER");
+  }
 }
 
 }  // namespace brave_wallet
