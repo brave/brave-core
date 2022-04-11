@@ -68,15 +68,7 @@ class CosmeticFiltersJSHandler {
   void OnHiddenClassIdSelectors(base::Value result);
   bool OnIsFirstParty(const std::string& url_string);
 
-<<<<<<< HEAD
-  void InjectStylesheet(const std::string& stylesheet, int id);
-  void UninjectStylesheet(int id);
-
   bool generichide_ = false;
-  std::map<int, std::unique_ptr<blink::WebString>> inserted_stylesheet_ids;
-
-=======
->>>>>>> parent of bc8e4c25e6 (Merge pull request #12038 from brave/cosmetic-filtering-fixes)
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   mojo::Remote<cosmetic_filters::mojom::CosmeticFiltersResources>
       cosmetic_filters_resources_;
