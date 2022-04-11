@@ -13,6 +13,7 @@
 #include "base/sequence_checker.h"
 #include "base/time/time.h"
 #include "brave/components/brave_federated/data_stores/data_store.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
 namespace brave_federated {
 
@@ -66,7 +67,7 @@ class AdNotificationTimingDataStore final : public DataStore {
 
   using DataStore::DeleteLogs;
 
-  bool AddLog(const AdNotificationTimingTaskLog& log);
+  bool AddLog(const mojom::TrainingInstancePtr training_instance);
   IdToAdNotificationTimingTaskLogMap LoadLogs();
   bool EnsureTable() override;
 

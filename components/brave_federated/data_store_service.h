@@ -17,6 +17,7 @@
 #include "base/task/thread_pool.h"
 #include "base/threading/sequence_bound.h"
 #include "base/threading/sequenced_task_runner_handle.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
 namespace brave_federated {
 
@@ -45,8 +46,9 @@ class AsyncDataStore {
         .Then(std::move(callback));
   }
 
-  void AddLog(const U& log, base::OnceCallback<void(bool)> callback) {
-    data_store_.AsyncCall(&T::AddLog).WithArgs(log).Then(std::move(callback));
+  void LogTrainingInstance(const mojom::TrainingInstancePtr training_instance,
+      base::OnceCallback<void(bool)> callback) {
+    // data_store_.AsyncCall(&T::AddLog).WithArgs(std::move(training_instance)).Then(std::move(callback));
   }
 
   void LoadLogs(base::OnceCallback<void(base::flat_map<int, U>)> callback) {

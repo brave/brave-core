@@ -78,8 +78,10 @@ bool AdNotificationTimingDataStore::Init(int task_id,
 }
 
 bool AdNotificationTimingDataStore::AddLog(
-    const AdNotificationTimingTaskLog& log) {
+    const mojom::TrainingInstancePtr training_instance) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const AdNotificationTimingTaskLog log;
 
   sql::Statement s(db_.GetUniqueStatement(
       base::StringPrintf(
