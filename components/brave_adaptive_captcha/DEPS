@@ -1,4 +1,4 @@
 include_rules = [
-  "+bat/ledger",
+  "+bat/ledger/buildflags.h",
   "+services/network/public",
 ]

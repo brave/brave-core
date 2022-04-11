@@ -18,6 +18,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "crypto/random.h"
+
 namespace ledger {
 namespace bitflyer {
 
