@@ -1081,6 +1081,7 @@ struct SolanaInstruction {
 
 struct SolanaTxData {
   string recent_blockhash;
+  uint64 last_valid_block_height;
   string fee_payer;
   string to_wallet_address;
   string spl_token_mint_address;

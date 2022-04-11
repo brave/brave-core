@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
@@ -16,9 +17,11 @@
 namespace brave_wallet {
 
 SolanaMessage::SolanaMessage(const std::string& recent_blockhash,
+                             uint64_t last_valid_block_height,
                              const std::string& fee_payer,
                              std::vector<SolanaInstruction>&& instructions)
     : recent_blockhash_(recent_blockhash),
+      last_valid_block_height_(last_valid_block_height),
       fee_payer_(fee_payer),
       instructions_(std::move(instructions)) {}
 
@@ -28,6 +31,7 @@ SolanaMessage::~SolanaMessage() = default;
 
 bool SolanaMessage::operator==(const SolanaMessage& message) const {
   return recent_blockhash_ == message.recent_blockhash_ &&
+         last_valid_block_height_ == message.last_valid_block_height_ &&
          fee_payer_ == message.fee_payer_ &&
          instructions_ == message.instructions_;
 }
@@ -171,6 +175,7 @@ mojom::SolanaTxDataPtr SolanaMessage::ToSolanaTxData() const {
 
   auto solana_tx_data = mojom::SolanaTxData::New();
   solana_tx_data->recent_blockhash = recent_blockhash_;
+  solana_tx_data->last_valid_block_height = last_valid_block_height_;
   solana_tx_data->fee_payer = fee_payer_;
   solana_tx_data->instructions = std::move(mojom_instructions);
   return solana_tx_data;
@@ -179,6 +184,8 @@ mojom::SolanaTxDataPtr SolanaMessage::ToSolanaTxData() const {
 base::Value SolanaMessage::ToValue() const {
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("recent_blockhash", recent_blockhash_);
+  dict.SetStringKey("last_valid_block_height",
+                    base::NumberToString(last_valid_block_height_));
   dict.SetStringKey("fee_payer", fee_payer_);
 
   base::Value instruction_list(base::Value::Type::LIST);
@@ -199,6 +206,14 @@ absl::optional<SolanaMessage> SolanaMessage::FromValue(
   if (!recent_blockhash)
     return absl::nullopt;
 
+  const std::string* last_valid_block_height_string =
+      value.FindStringKey("last_valid_block_height");
+  uint64_t last_valid_block_height = 0;
+  if (!last_valid_block_height_string ||
+      !base::StringToUint64(*last_valid_block_height_string,
+                            &last_valid_block_height))
+    return absl::nullopt;
+
   const std::string* fee_payer = value.FindStringKey("fee_payer");
   if (!fee_payer)
     return absl::nullopt;
@@ -215,7 +230,8 @@ absl::optional<SolanaMessage> SolanaMessage::FromValue(
     instructions.push_back(*instruction);
   }
 
-  return SolanaMessage(*recent_blockhash, *fee_payer, std::move(instructions));
+  return SolanaMessage(*recent_blockhash, last_valid_block_height, *fee_payer,
+                       std::move(instructions));
 }
 
 }  // namespace brave_wallet

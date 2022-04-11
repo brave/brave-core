@@ -23,6 +23,7 @@ namespace brave_wallet {
 class SolanaMessage {
  public:
   SolanaMessage(const std::string& recent_blockhash,
+                uint64_t last_valid_block_height,
                 const std::string& fee_payer,
                 std::vector<SolanaInstruction>&& instructions);
   SolanaMessage(const SolanaMessage&);
@@ -32,8 +33,12 @@ class SolanaMessage {
   absl::optional<std::vector<uint8_t>> Serialize(
       std::vector<std::string>* signers) const;
 
-  void SetRecentBlockHash(const std::string& recent_blockhash) {
+  void set_recent_blockhash(const std::string& recent_blockhash) {
     recent_blockhash_ = recent_blockhash;
+  }
+
+  void set_last_valid_block_height(uint64_t last_valid_block_height) {
+    last_valid_block_height_ = last_valid_block_height;
   }
 
   mojom::SolanaTxDataPtr ToSolanaTxData() const;
@@ -48,6 +53,8 @@ class SolanaMessage {
       std::vector<SolanaAccountMeta>* unique_account_metas) const;
 
   std::string recent_blockhash_;
+  uint64_t last_valid_block_height_ = 0;
+
   // The account responsible for paying the cost of executing a transaction.
   std::string fee_payer_;
   std::vector<SolanaInstruction> instructions_;

@@ -61,6 +61,7 @@ TEST_F(SolanaTxStateManagerUnitTest, SolanaTxMetaAndValue) {
   std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
   std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
   std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
+  uint64_t last_valid_block_height = 3090;
   const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
 
   SolanaInstruction instruction(
@@ -71,7 +72,7 @@ TEST_F(SolanaTxStateManagerUnitTest, SolanaTxMetaAndValue) {
        SolanaAccountMeta(to_account, false, true)},
       data);
   auto tx = std::make_unique<SolanaTransaction>(
-      recent_blockhash, from_account,
+      recent_blockhash, last_valid_block_height, from_account,
       std::vector<SolanaInstruction>({instruction}));
 
   SolanaTxMeta meta(std::move(tx));

@@ -106,10 +106,12 @@ void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
   }
 
   meta->set_status(mojom::TransactionStatus::Approved);
+  meta->tx()->message()->set_recent_blockhash(latest_blockhash);
+  meta->tx()->message()->set_last_valid_block_height(last_valid_block_height);
   tx_state_manager_->AddOrUpdateTx(*meta);
 
   json_rpc_service_->SendSolanaTransaction(
-      meta->tx()->GetSignedTransaction(keyring_service_, latest_blockhash),
+      meta->tx()->GetSignedTransaction(keyring_service_),
       base::BindOnce(&SolanaTxManager::OnSendSolanaTransaction,
                      weak_ptr_factory_.GetWeakPtr(), meta->id(),
                      std::move(callback)));
@@ -241,7 +243,8 @@ void SolanaTxManager::MakeSystemProgramTransferTxData(
   }
 
   // recent_blockhash will be updated when we are going to send out the tx.
-  SolanaTransaction transaction("" /* recent_blockhash*/, from, {*instruction});
+  SolanaTransaction transaction("" /* recent_blockhash*/, 0, from,
+                                {*instruction});
   transaction.set_to_wallet_address(to);
   transaction.set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
   transaction.set_lamports(lamports);
@@ -330,8 +333,8 @@ void SolanaTxManager::OnGetAccountInfo(
   instructions.push_back(std::move(*transfer_instruction));
 
   // recent_blockhash will be updated when we are going to send out the tx.
-  SolanaTransaction transaction("" /* recent_blockhash*/, from_wallet_address,
-                                std::move(instructions));
+  SolanaTransaction transaction("" /* recent_blockhash*/, 0,
+                                from_wallet_address, std::move(instructions));
   transaction.set_to_wallet_address(to_wallet_address);
   transaction.set_spl_token_mint_address(spl_token_mint_address);
   transaction.set_amount(amount);
@@ -379,8 +382,10 @@ void SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee(
     return;
   }
 
+  meta->tx()->message()->set_recent_blockhash(latest_blockhash);
+  meta->tx()->message()->set_last_valid_block_height(last_valid_block_height);
   const std::string base64_encoded_message =
-      meta->tx()->GetBase64EncodedMessage(latest_blockhash);
+      meta->tx()->GetBase64EncodedMessage();
   json_rpc_service_->GetSolanaFeeForMessage(
       base64_encoded_message,
       base::BindOnce(&SolanaTxManager::OnGetFeeForMessage,

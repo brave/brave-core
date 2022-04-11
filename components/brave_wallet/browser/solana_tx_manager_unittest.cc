@@ -48,12 +48,14 @@ class SolanaTxManagerUnitTest : public testing::Test {
         "ENTkpA52YStRW5Dia7";
     latest_blockhash1_ = "EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N";
     latest_blockhash2_ = "FkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N";
+    last_valid_block_height1_ = 3090;
+    last_valid_block_height2_ = 3290;
 
     base::test::ScopedFeatureList feature_list;
     feature_list.InitAndEnableFeature(
         brave_wallet::features::kBraveWalletSolanaFeature);
 
-    SetInterceptor(latest_blockhash1_, tx_hash1_);
+    SetInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1_);
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     json_rpc_service_.reset(
         new JsonRpcService(shared_url_loader_factory_, &prefs_));
@@ -88,12 +90,13 @@ class SolanaTxManagerUnitTest : public testing::Test {
   }
 
   void SetInterceptor(const std::string& latest_blockhash,
+                      uint64_t last_valid_block_height,
                       const std::string& tx_hash,
                       const std::string& content = "",
                       bool get_signature_statuses = false) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, latest_blockhash, tx_hash, content,
-         get_signature_statuses](const network::ResourceRequest& request) {
+        [&, latest_blockhash, tx_hash, content, get_signature_statuses,
+         last_valid_block_height](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           base::StringPiece request_string(request.request_body->elements()
                                                ->at(0)
@@ -109,7 +112,8 @@ class SolanaTxManagerUnitTest : public testing::Test {
                 request.url.spec(),
                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
                 "{\"context\":{\"slot\":1069},\"value\":{\"blockhash\":\"" +
-                    latest_blockhash + "\", \"lastValidBlockHeight\":3090}}}");
+                    latest_blockhash + "\", \"lastValidBlockHeight\":" +
+                    std::to_string(last_valid_block_height) + "}}}");
           } else if (*method == "sendTransaction") {
             url_loader_factory_.AddResponse(
                 request.url.spec(),
@@ -303,6 +307,8 @@ class SolanaTxManagerUnitTest : public testing::Test {
   std::string tx_hash2_;
   std::string latest_blockhash1_;
   std::string latest_blockhash2_;
+  uint64_t last_valid_block_height1_ = 0;
+  uint64_t last_valid_block_height2_ = 0;
 };
 
 TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
@@ -326,7 +332,7 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   instructions.push_back(std::move(instruction));
 
   auto solana_tx_data = mojom::SolanaTxData::New(
-      "" /* recent_blockhash */, from_account, to_account,
+      "" /* recent_blockhash */, 0, from_account, to_account,
       "" /* spl_token_mint_address */, 10000000u /* lamport */, 0 /* amount */,
       mojom::TransactionType::SolanaSystemTransfer, std::move(instructions));
 
@@ -356,22 +362,27 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   // Wait for tx to be updated.
   base::RunLoop().RunUntilIdle();
 
+  auto approved_tx = std::make_unique<SolanaTransaction>(*tx);
+  approved_tx->message()->set_recent_blockhash(latest_blockhash1_);
+  approved_tx->message()->set_last_valid_block_height(
+      last_valid_block_height1_);
+
   tx_meta1 = solana_tx_manager()->GetTxForTesting(meta_id1);
   ASSERT_TRUE(tx_meta1);
-  EXPECT_EQ(*tx_meta1->tx(), *tx);
+  EXPECT_EQ(*tx_meta1->tx(), *approved_tx);
   EXPECT_EQ(tx_meta1->signature_status(), SolanaSignatureStatus());
   EXPECT_EQ(tx_meta1->from(), from_account);
   EXPECT_EQ(tx_meta1->status(), mojom::TransactionStatus::Submitted);
   EXPECT_EQ(tx_meta1->tx_hash(), tx_hash1_);
 
   // Send another tx.
-  SetInterceptor(latest_blockhash1_, tx_hash2_);
+  SetInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash2_);
   ApproveTransaction(meta_id2);
   base::RunLoop().RunUntilIdle();
 
   tx_meta2 = solana_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(tx_meta2);
-  EXPECT_EQ(*tx_meta2->tx(), *tx);
+  EXPECT_EQ(*tx_meta2->tx(), *approved_tx);
   EXPECT_EQ(tx_meta2->signature_status(), SolanaSignatureStatus());
   EXPECT_EQ(tx_meta2->from(), from_account);
   EXPECT_EQ(tx_meta2->status(), mojom::TransactionStatus::Submitted);
@@ -381,7 +392,8 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   task_environment_.FastForwardBy(
       base::Seconds(kBlockTrackerDefaultTimeInSeconds));
 
-  SetInterceptor(latest_blockhash2_, tx_hash2_, "", true);
+  SetInterceptor(latest_blockhash2_, last_valid_block_height2_, tx_hash2_, "",
+                 true);
 
   // Fast forward again to have block tracker run with the new interceptor.
   task_environment_.FastForwardBy(
@@ -415,7 +427,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeSystemProgramTransferTxData) {
   std::vector<mojom::SolanaInstructionPtr> instructions;
   instructions.push_back(std::move(mojom_instruction));
   auto tx_data = mojom::SolanaTxData::New(
-      "", from_account, to_account, "", 10000000, 0,
+      "", 0, from_account, to_account, "", 10000000, 0,
       mojom::TransactionType::SolanaSystemTransfer, std::move(instructions));
 
   TestMakeSystemProgramTransferTxData(from_account, to_account, 10000000,
@@ -466,7 +478,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
   std::vector<mojom::SolanaInstructionPtr> instructions;
   instructions.push_back(mojom_transfer_instruction.Clone());
   auto tx_data = mojom::SolanaTxData::New(
-      "", from_wallet_address, to_wallet_address, spl_token_mint_address, 0,
+      "", 0, from_wallet_address, to_wallet_address, spl_token_mint_address, 0,
       10000000, mojom::TransactionType::SolanaSPLTokenTransfer,
       std::move(instructions));
 
@@ -486,7 +498,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
       }
     }
   )";
-  SetInterceptor("", "", json);
+  SetInterceptor("", 0, "", json);
   TestMakeTokenProgramTransferTxData(
       spl_token_mint_address, from_wallet_address, to_wallet_address, 10000000,
       std::move(tx_data), mojom::SolanaProviderError::kSuccess, "");
@@ -520,7 +532,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
       std::move(mojom_create_associated_account_instruction));
   instructions.push_back(std::move(mojom_transfer_instruction));
   tx_data = mojom::SolanaTxData::New(
-      "", from_wallet_address, to_wallet_address, spl_token_mint_address, 0,
+      "", 0, from_wallet_address, to_wallet_address, spl_token_mint_address, 0,
       10000000,
       mojom::TransactionType::
           SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
@@ -542,7 +554,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
       }
     }
   )";
-  SetInterceptor("", "", json);
+  SetInterceptor("", 0, "", json);
   TestMakeTokenProgramTransferTxData(
       spl_token_mint_address, from_wallet_address, to_wallet_address, 10000000,
       tx_data.Clone(), mojom::SolanaProviderError::kSuccess, "");
@@ -556,7 +568,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
         "value":null
       }
     })";
-  SetInterceptor("", "", json);
+  SetInterceptor("", 0, "", json);
   TestMakeTokenProgramTransferTxData(
       spl_token_mint_address, from_wallet_address, to_wallet_address, 10000000,
       std::move(tx_data), mojom::SolanaProviderError::kSuccess, "");
@@ -598,7 +610,7 @@ TEST_F(SolanaTxManagerUnitTest, GetEstimatedTxFee) {
 
   // GetEstimatedTxFee without a valid latest blockhash being returned by
   // remote.
-  SetInterceptor("", "", json);
+  SetInterceptor("", 0, "", json);
   TestGetEstimatedTxFee(system_transfer_meta_id, 0,
                         mojom::SolanaProviderError::kParsingError,
                         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -610,24 +622,24 @@ TEST_F(SolanaTxManagerUnitTest, GetEstimatedTxFee) {
   })";
 
   // GetEstimatedTxFee with latest blockhash and non-null tx fee from remote.
-  SetInterceptor(latest_blockhash1_, "", json);
+  SetInterceptor(latest_blockhash1_, last_valid_block_height1_, "", json);
   TestGetEstimatedTxFee(system_transfer_meta_id, 12345,
                         mojom::SolanaProviderError::kSuccess, "");
 
   // GetEstimatedTxFee with cached blockhash and error at parsing tx fee.
-  SetInterceptor(latest_blockhash1_, "", "");
+  SetInterceptor(latest_blockhash1_, last_valid_block_height1_, "", "");
   TestGetEstimatedTxFee(system_transfer_meta_id, 0,
                         mojom::SolanaProviderError::kParsingError,
                         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
   // GetEstimatedTxFee with cached blockhash and null tx fee from remote.
-  SetInterceptor(latest_blockhash1_, "", json2);
+  SetInterceptor(latest_blockhash1_, last_valid_block_height1_, "", json2);
   TestGetEstimatedTxFee(system_transfer_meta_id, 0,
                         mojom::SolanaProviderError::kSuccess, "");
 
   // GetEstimatedTxFee with cached latest blockhash and non-null tx fee from
   // remote.
-  SetInterceptor("", "", json);
+  SetInterceptor("", 0, "", json);
   TestGetEstimatedTxFee(system_transfer_meta_id, 12345,
                         mojom::SolanaProviderError::kSuccess, "");
 }
