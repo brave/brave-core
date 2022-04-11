@@ -21,8 +21,8 @@ brave_browser_brave_stats_updater_sources = [
 
 brave_browser_brave_stats_updater_deps = [
   "//base",
-  "//brave/browser/brave_stats:buildflags",
   "//brave/browser:browser_process",
+  "//brave/browser/brave_stats:buildflags",
   "//brave/common",
   "//brave/common:network_constants",
   "//brave/common:pref_names",

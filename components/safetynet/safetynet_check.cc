@@ -40,7 +40,7 @@ bool SafetyNetCheck::clientAttestation(const std::string& nonce,
   base::android::ScopedJavaLocalRef<jstring> jnonce =
     base::android::ConvertUTF8ToJavaString(env, nonce);
   base::android::ScopedJavaLocalRef<jstring> japiKey =
-    base::android::ConvertUTF8ToJavaString(env, BUILDFLAG(SAFETYNET_API_KEY));
+      base::android::ConvertUTF8ToJavaString(env, BUILDFLAG(SAFETYNET_API_KEY));
   return Java_SafetyNetCheck_clientAttestation(env, java_obj_, jnonce,
     japiKey, perform_attestation_on_client);
 }
