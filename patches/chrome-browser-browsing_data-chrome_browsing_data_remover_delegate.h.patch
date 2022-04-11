@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
-index 901d47e0119b194ec9d01db157d4a0bebaf59317..a0bc1fec487c6b5e8ea52aa5079836a9e7966d7d 100644
+index ac4143ada8548db3801ac9ac903162384b829eb4..16ff0b21dff7830053938f2b01560ebd00824092 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
 @@ -94,6 +94,7 @@ class ChromeBrowsingDataRemoverDelegate
@@ -10,12 +10,13 @@ index 901d47e0119b194ec9d01db157d4a0bebaf59317..a0bc1fec487c6b5e8ea52aa5079836a9
   private:
    using WebRtcEventLogManager = webrtc_event_logging::WebRtcEventLogManager;
  
-@@ -144,7 +145,7 @@ class ChromeBrowsingDataRemoverDelegate
-     kSecurePaymentConfirmationCredentials = 41,
-     kWebAppHistory = 42,
-     kWebAuthnCredentials = 43,
+@@ -150,7 +151,8 @@ class ChromeBrowsingDataRemoverDelegate
+     // Please update ChromeBrowsingDataRemoverTasks in enums.xml and
+     // History.ClearBrowsingData.Duration.ChromeTask.{Task}
+     // in histograms/metadata/history/histograms.xml when adding entries!
 -    kMaxValue = kWebAuthnCredentials,
++
 +    kIPFSCache = 44, kMaxValue = kIPFSCache,
    };
  
-   // Called by CreateTaskCompletionClosure().
+   // Returns the suffix for the
