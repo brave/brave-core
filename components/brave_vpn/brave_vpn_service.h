@@ -171,7 +171,6 @@ class BraveVpnService :
                          bool success);
   bool ParseAndCacheRegionList(const base::Value& region_value,
                                bool save_to_prefs = false);
-  bool ValidateCachedRegionData(const base::Value& region_value) const;
   void OnFetchTimezones(const std::string& timezones_list, bool success);
   void SetDeviceRegionWithTimezone(const base::Value& timezons_value);
   void FetchHostnamesForRegion(const std::string& name);
@@ -184,17 +183,12 @@ class BraveVpnService :
   void SetSelectedRegion(const std::string& name);
   std::string GetDeviceRegion() const;
   std::string GetSelectedRegion() const;
-  mojom::Region GetRegionWithName(const std::string& name) const;
   void SetFallbackDeviceRegion();
   void SetRegionListToPrefs();
-  mojom::Region GetRegionFromValue(const base::Value& value) const;
-  base::Value GetValueFromRegion(const mojom::Region& region) const;
 
   std::string GetCurrentTimeZone();
   void ScheduleBackgroundRegionDataFetch();
   void ScheduleFetchRegionDataIfNeeded();
-  std::unique_ptr<Hostname> PickBestHostname(
-      const std::vector<Hostname>& hostnames);
 
   void OnGetSubscriberCredentialV12(const std::string& subscriber_credential,
                                     bool success);

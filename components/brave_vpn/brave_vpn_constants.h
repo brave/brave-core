@@ -76,6 +76,13 @@ constexpr char kManageUrlDev[] = "https://account.brave.software/";
 // TODO(simonhong): Update when vpn feedback url is ready.
 constexpr char kFeedbackUrl[] = "http://support.brave.com/";
 constexpr char kAboutUrl[] = "https://brave.com/firewall-vpn/";
+
+constexpr char kBraveVPNEntryName[] = "BraveVPN";
+constexpr char kRegionContinentKey[] = "continent";
+constexpr char kRegionNameKey[] = "name";
+constexpr char kRegionNamePrettyKey[] = "name-pretty";
+constexpr char kCreateSupportTicket[] = "api/v1.2/partners/support-ticket";
+
 }  // namespace brave_vpn
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_CONSTANTS_H_

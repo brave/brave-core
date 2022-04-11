@@ -18,7 +18,6 @@
 #include "url/url_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "base/base64.h"
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/logging.h"
@@ -27,6 +26,7 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
+#include "brave/components/brave_vpn/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/brave_vpn/switches.h"
@@ -37,54 +37,7 @@
 #include "third_party/icu/source/i18n/unicode/timezone.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-using ConnectionState = brave_vpn::mojom::ConnectionState;
-using PurchasedState = brave_vpn::mojom::PurchasedState;
-
 namespace {
-
-#if !BUILDFLAG(IS_ANDROID)
-constexpr char kBraveVPNEntryName[] = "BraveVPN";
-
-constexpr char kRegionContinentKey[] = "continent";
-constexpr char kRegionNameKey[] = "name";
-constexpr char kRegionNamePrettyKey[] = "name-pretty";
-
-constexpr char kCreateSupportTicket[] = "api/v1.2/partners/support-ticket";
-
-bool IsValidRegionValue(const base::Value& value) {
-  if (!value.FindStringKey(kRegionContinentKey) ||
-      !value.FindStringKey(kRegionNameKey) ||
-      !value.FindStringKey(kRegionNamePrettyKey)) {
-    return false;
-  }
-
-  return true;
-}
-
-// On desktop, the environment is tied to SKUs because you would purchase it
-// from `account.brave.com` (or similar, based on env). The credentials for VPN
-// will always be in the same environment as the SKU environment.
-//
-// When the vendor receives a credential from us during auth, it also includes
-// the environment. The vendor then can do a lookup using Payment Service.
-std::string GetBraveVPNPaymentsEnv() {
-  const std::string env = skus::GetEnvironment();
-  if (env == skus::kEnvProduction)
-    return "";
-  // Use same value.
-  if (env == skus::kEnvStaging || env == skus::kEnvDevelopment)
-    return env;
-
-  NOTREACHED();
-
-#if defined(OFFICIAL_BUILD)
-  return "";
-#else
-  return "development";
-#endif
-}
-
-#endif  // !BUILDFLAG(IS_ANDROID)
 
 constexpr char kVpnHost[] = "connect-api.guardianapp.com";
 
@@ -155,6 +108,9 @@ std::string GetSubscriberCredentialFromJson(const std::string& json) {
 }  // namespace
 
 namespace brave_vpn {
+
+using ConnectionState = mojom::ConnectionState;
+using PurchasedState = mojom::PurchasedState;
 
 #if BUILDFLAG(IS_ANDROID)
 BraveVpnService::BraveVpnService(
@@ -537,38 +493,6 @@ void BraveVpnService::OnFetchRegionList(bool background_fetch,
   }
 }
 
-bool BraveVpnService::ValidateCachedRegionData(
-    const base::Value& region_value) const {
-  for (const auto& value : region_value.GetList()) {
-    // Make sure cached one has all latest properties.
-    if (!IsValidRegionValue(value))
-      return false;
-  }
-
-  return true;
-}
-
-base::Value BraveVpnService::GetValueFromRegion(
-    const mojom::Region& region) const {
-  base::Value region_dict(base::Value::Type::DICTIONARY);
-  region_dict.SetStringKey(kRegionContinentKey, region.continent);
-  region_dict.SetStringKey(kRegionNameKey, region.name);
-  region_dict.SetStringKey(kRegionNamePrettyKey, region.name_pretty);
-  return region_dict;
-}
-
-mojom::Region BraveVpnService::GetRegionFromValue(
-    const base::Value& value) const {
-  mojom::Region region;
-  if (auto* continent = value.FindStringKey(kRegionContinentKey))
-    region.continent = *continent;
-  if (auto* name = value.FindStringKey(kRegionNameKey))
-    region.name = *name;
-  if (auto* name_pretty = value.FindStringKey(kRegionNamePrettyKey))
-    region.name_pretty = *name_pretty;
-  return region;
-}
-
 bool BraveVpnService::ParseAndCacheRegionList(const base::Value& region_value,
                                               bool save_to_prefs) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -576,20 +500,7 @@ bool BraveVpnService::ParseAndCacheRegionList(const base::Value& region_value,
   if (!region_value.is_list())
     return false;
 
-  regions_.clear();
-  for (const auto& value : region_value.GetList()) {
-    DCHECK(value.is_dict());
-    if (!value.is_dict())
-      continue;
-    regions_.push_back(GetRegionFromValue(value));
-  }
-
-  // Sort region list alphabetically
-  std::sort(regions_.begin(), regions_.end(),
-            [](mojom::Region& a, mojom::Region& b) {
-              return (a.name_pretty < b.name_pretty);
-            });
-
+  regions_ = ParseRegionList(region_value);
   VLOG(2) << __func__ << " : has regionlist: " << !regions_.empty();
 
   // If we can't get region list, we can't determine device region.
@@ -701,25 +612,13 @@ void BraveVpnService::GetAllRegions(GetAllRegionsCallback callback) {
   std::move(callback).Run(std::move(regions));
 }
 
-mojom::Region BraveVpnService::GetRegionWithName(
-    const std::string& name) const {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  mojom::Region region;
-  auto it =
-      std::find_if(regions_.begin(), regions_.end(),
-                   [&name](const auto& region) { return region.name == name; });
-  if (it != regions_.end())
-    region = *it;
-  return region;
-}
-
 void BraveVpnService::GetDeviceRegion(GetDeviceRegionCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__;
   auto region_name = GetDeviceRegion();
   DCHECK(!region_name.empty());
-  auto region = GetRegionWithName(region_name);
-  std::move(callback).Run(region.Clone());
+  std::move(callback).Run(
+      GetRegionPtrWithNameFromRegionList(region_name, regions_));
 }
 
 void BraveVpnService::GetSelectedRegion(GetSelectedRegionCallback callback) {
@@ -733,9 +632,8 @@ void BraveVpnService::GetSelectedRegion(GetSelectedRegionCallback callback) {
     region_name = GetDeviceRegion();
   }
   DCHECK(!region_name.empty());
-  auto region = GetRegionWithName(region_name);
-  VLOG(2) << __func__ << " : Give " << region.name_pretty;
-  std::move(callback).Run(region.Clone());
+  std::move(callback).Run(
+      GetRegionPtrWithNameFromRegionList(region_name, regions_));
 }
 
 void BraveVpnService::SetSelectedRegion(mojom::RegionPtr region_ptr) {
@@ -771,28 +669,10 @@ void BraveVpnService::CreateSupportTicket(
       base::BindOnce(&BraveVpnService::OnCreateSupportTicket,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  const GURL base_url = GetURLWithPath(kVpnHost, kCreateSupportTicket);
-  base::Value dict(base::Value::Type::DICTIONARY);
-
-  std::string email_trimmed, subject_trimmed, body_trimmed, body_encoded;
-  base::TrimWhitespaceASCII(email, base::TRIM_ALL, &email_trimmed);
-  base::TrimWhitespaceASCII(subject, base::TRIM_ALL, &subject_trimmed);
-  base::TrimWhitespaceASCII(body, base::TRIM_ALL, &body_trimmed);
-  base::Base64Encode(body_trimmed, &body_encoded);
-
-  // required fields
-  dict.SetStringKey("email", email_trimmed);
-  dict.SetStringKey("subject", subject_trimmed);
-  dict.SetStringKey("support-ticket", body_encoded);
-  dict.SetStringKey("partner-client-id", "com.brave.browser");
-
-  // optional (but encouraged) fields
-  dict.SetStringKey("subscriber-credential", "");
-  dict.SetStringKey("payment-validation-method", "brave-premium");
-  dict.SetStringKey("payment-validation-data", "");
-
-  std::string request_body = CreateJSONRequestBody(dict);
-  OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
+  OAuthRequest(
+      GetURLWithPath(kVpnHost, kCreateSupportTicket), "POST",
+      CreateJSONRequestBody(GetValueWithTicketInfos(email, subject, body)),
+      std::move(internal_callback));
 }
 
 void BraveVpnService::GetSupportData(GetSupportDataCallback callback) {
@@ -853,30 +733,7 @@ void BraveVpnService::ParseAndCacheHostnames(
     return;
   }
 
-  constexpr char kHostnameKey[] = "hostname";
-  constexpr char kDisplayNameKey[] = "display-name";
-  constexpr char kOfflineKey[] = "offline";
-  constexpr char kCapacityScoreKey[] = "capacity-score";
-
-  std::vector<Hostname> hostnames;
-  for (const auto& value : hostnames_value.GetList()) {
-    DCHECK(value.is_dict());
-    if (!value.is_dict())
-      continue;
-
-    const std::string* hostname_str = value.FindStringKey(kHostnameKey);
-    const std::string* display_name_str = value.FindStringKey(kDisplayNameKey);
-    absl::optional<bool> offline = value.FindBoolKey(kOfflineKey);
-    absl::optional<int> capacity_score = value.FindIntKey(kCapacityScoreKey);
-
-    if (!hostname_str || !display_name_str || !offline || !capacity_score)
-      continue;
-
-    hostnames.push_back(
-        Hostname{*hostname_str, *display_name_str, *offline, *capacity_score});
-  }
-
-  VLOG(2) << __func__ << " : has hostname: " << !hostnames.empty();
+  std::vector<Hostname> hostnames = ParseHostnames(hostnames_value);
 
   if (hostnames.empty()) {
     VLOG(2) << __func__ << " : got empty hostnames list for " << region;
@@ -975,26 +832,6 @@ void BraveVpnService::OnGetProfileCredentials(
 
   VLOG(2) << __func__ << " : it's invalid profile credential";
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
-}
-
-std::unique_ptr<Hostname> BraveVpnService::PickBestHostname(
-    const std::vector<Hostname>& hostnames) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::vector<Hostname> filtered_hostnames;
-  std::copy_if(hostnames.begin(), hostnames.end(),
-               std::back_inserter(filtered_hostnames),
-               [](const Hostname& hostname) { return !hostname.is_offline; });
-
-  std::sort(filtered_hostnames.begin(), filtered_hostnames.end(),
-            [](const Hostname& a, const Hostname& b) {
-              return a.capacity_score > b.capacity_score;
-            });
-
-  if (filtered_hostnames.empty())
-    return std::make_unique<Hostname>();
-
-  // Pick highest capacity score.
-  return std::make_unique<Hostname>(filtered_hostnames[0]);
 }
 
 BraveVPNOSConnectionAPI* BraveVpnService::GetBraveVPNConnectionAPI() {
@@ -1156,24 +993,7 @@ void BraveVpnService::SetPurchasedState(PurchasedState state) {
     return;
 
   purchased_state_ = state;
-
-  switch (state) {
-    case PurchasedState::NOT_PURCHASED:
-      VLOG(1) << "SetPurchasedState(NOT_PURCHASED);";
-      break;
-    case PurchasedState::PURCHASED:
-      VLOG(1) << "SetPurchasedState(PURCHASED);";
-      break;
-    case PurchasedState::EXPIRED:
-      VLOG(1) << "SetPurchasedState(EXPIRED);";
-      break;
-    case PurchasedState::LOADING:
-      VLOG(1) << "SetPurchasedState(LOADING);";
-      break;
-    case PurchasedState::FAILED:
-      VLOG(1) << "SetPurchasedState(FAILED);";
-      break;
-  }
+  VLOG(1) << "SetPurchasedState: " << purchased_state_;
 
   for (const auto& obs : observers_)
     obs->OnPurchasedStateChanged(purchased_state_);

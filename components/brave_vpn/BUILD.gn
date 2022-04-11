@@ -50,6 +50,8 @@ static_library("brave_vpn") {
       "brave_vpn_os_connection_api.h",
       "brave_vpn_os_connection_api_sim.cc",
       "brave_vpn_os_connection_api_sim.h",
+      "brave_vpn_service_helper.cc",
+      "brave_vpn_service_helper.h",
       "pref_names.cc",
       "pref_names.h",
       "switches.h",

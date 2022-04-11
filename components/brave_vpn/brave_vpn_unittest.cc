@@ -9,6 +9,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
+#include "brave/components/brave_vpn/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/features.h"
 #include "brave/components/brave_vpn/pref_names.h"
@@ -84,7 +85,11 @@ class BraveVPNServiceTest : public testing::Test {
   std::vector<mojom::Region>& regions() const { return service_->regions_; }
 
   mojom::Region device_region() const {
-    return service_->GetRegionWithName(service_->GetDeviceRegion());
+    if (auto region_ptr = GetRegionPtrWithNameFromRegionList(
+            service_->GetDeviceRegion(), regions())) {
+      return *region_ptr;
+    }
+    return mojom::Region();
   }
 
   std::unique_ptr<Hostname>& hostname() { return service_->hostname_; }
