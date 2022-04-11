@@ -14,18 +14,12 @@
 <translation id="5147525139567260139">Jaa Brave-välilehti</translation>
 <translation id="1530633922026945685">Brave tarvitsee luvan käyttää kameraasi ympäristön 3D-kartoittamiseen</translation>
 <translation id="4449148723378534338">Tarkista Bravein tärkeimmät yksityisyys‑ ja turvallisuusasetukset</translation>
-<translation id="5359574361379286250">Jos haluat käyttää tiliä vain tämän kerran, voit käyttää Brave-selaimen <ph name="GUEST_LINK_BEGIN"/>vierastilaa<ph name="GUEST_LINK_END"/>. Jos haluat lisätä tilin jollekulle toiselle, <ph name="LINK_BEGIN"/>lisää uusi henkilö<ph name="LINK_END"/> <ph name="DEVICE_TYPE"/>‑laitteelle.
-
-Sivustoille ja sovelluksille myöntämäsi luvat saattavat koskea tätä tiliä. Voit ylläpitää Brave-tilejä <ph name="SETTINGS_LINK_BEGIN"/>asetuksissa<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="5616153642055197778">Braveista on saatavilla uusi, turvallisempi versio.</translation>
 <translation id="6797402139308059782">Jätä Brave käyntiin taustalle</translation>
 <translation id="5875673934455379806">Asenna Brave uudelleen</translation>
 <translation id="4528406859989804913">Olet kirjautumassa sisään hallinnoidulla tilillä ja antamassa tilin järjestelmänvalvojalle oikeuden hallita Brave-profiiliasi. Brave-tietosi, kuten sovelluksesi, kirjanmerkkisi, historiasi, salasanasi ja muut asetuksesi, yhdistetään pysyvästi käyttäjätiliin <ph name="USER_NAME"/>. Voit poistaa nämä tiedot Brave-tilien Hallintapaneelissa, mutta et voi liittää tietoja toiseen tiliin. Halutessasi voit luoda uuden profiilin, jolloin aiemmat Brave-tietosi pysyvät erillään. <ph name="LEARN_MORE"/></translation>
 <translation id="1649714546770135458">Poistamalla tämän käytöstä voit kirjautua Brave-sivustoille, esim. Gmailiin, kirjautumatta Braveiin.</translation>
 <translation id="189297655255130768">Brave ei vastaa. Käynnistetäänkö uudelleen?</translation>
-<translation id="479793348545936567">Jos haluat käyttää tiliä vain tämän kerran, voit käyttää Brave-selaimen vierastilaa. Jos haluat lisätä tilin jollekulle toiselle, <ph name="LINK_BEGIN"/>lisää uusi henkilö<ph name="LINK_END"/> <ph name="DEVICE_TYPE"/>‑laitteelle.
-
-Sivustoille ja sovelluksille myöntämäsi luvat saattavat koskea tätä tiliä. Voit ylläpitää Brave-tilejä <ph name="SETTINGS_LINK_BEGIN"/>asetuksissa<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1775322105159056176">Brave ei voi tunnistaa tai asettaa oletusselainta.</translation>
 <translation id="7665553140559834626">Päivitä &amp;Brave-käyttöjärjestelmä käynnistämällä se uudelleen</translation>
 <translation id="9220324636239049437">Tämä poistaa yhden kohteen pysyvästi laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>
@@ -295,6 +289,12 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="4484434718272972655">Kuka käyttää Braveia?</translation>
 <translation id="7173394303099002355">Ota Bravein tehokkain suojaus käyttöön</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="479793348545936567">Jos haluat käyttää tätä tiliä vain kerran, voit käyttää Brave-selaimen vierastilaa. Jos haluat lisätä tilin toiselle käyttäjälle, <ph name="LINK_BEGIN"/>lisää uusi profiili<ph name="LINK_END"/> <ph name="DEVICE_TYPE"/>.
+
+Verkkosivustoille ja sovelluksille aiemmin antamasi käyttöoikeudet voivat koskea tätä tiliä. Voit hallita Brave-synkronointiketjujasi valitsemalla <ph name="SETTINGS_LINK_BEGIN"/>Asetukset<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Jos haluat käyttää tätä tiliä vain kerran, voit käyttää Brave-selaimen <ph name="GUEST_LINK_BEGIN"/>vierastilaa<ph name="GUEST_LINK_END"/>. Jos haluat lisätä tilin toiselle käyttäjälle, <ph name="LINK_BEGIN"/>lisää uusi profiili<ph name="LINK_END"/> <ph name="DEVICE_TYPE"/>.
+
+Verkkosivustoille ja sovelluksille aiemmin antamasi käyttöoikeudet voivat koskea tätä tiliä. Voit hallita Brave-synkronointiketjujasi valitsemalla <ph name="SETTINGS_LINK_BEGIN"/>Asetukset<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Varoitus: Brave ei voi estää laajennuksia tallentamasta selaushistoriaasi. Poista tämä valinta, jos haluat poistaa tämän laajennuksen käytöstä yksityisessä tilassa.</translation>
 <translation id="1448049584457347995">Paransimme Bravein turvallisuutta poistamalla käytöstä sovelluksia, joita ei löydy kohteesta <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ja jotka on voitu lisätä ilman lupaasi.</translation>
 <translation id="8848045066928358658">Paransimme Bravein turvallisuutta poistamalla käytöstä sovelluksia, joita <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ei tarjoa ja jotka on voitu lisätä ilman lupaasi.</translation>

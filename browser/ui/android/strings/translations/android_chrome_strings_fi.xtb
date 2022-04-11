@@ -718,7 +718,6 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="5329858041417644019">Selainta ei ylläpidetä</translation>
 <translation id="5342314432463739672">Käyttöoikeuspyynnöt</translation>
 <translation id="5355191726083956201">Parannettu suojaus on päällä</translation>
-<translation id="9148151251783962691">Voit selata yksityisesti tällä laitteella incognito-tilassa</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> avoin välilehti, vaihda välilehteä napauttamalla}other{<ph name="OPEN_TABS_MANY"/> avointa välilehteä, vaihda välilehteä napauttamalla}}</translation>
 <translation id="5375577065097716013">Hae kuvaa Google Lensilla <ph name="BEGIN_NEW"/>Uusi<ph name="END_NEW"/></translation>
 <translation id="5403644198645076998">Salli vain tietyt sivustot</translation>
@@ -1252,7 +1251,6 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="834313815369870491">Älä koskaan käännä näitä sivustoja</translation>
 <translation id="8352996530981010042">Reaktioiden lataaminen ei onnistunut. Yritä uudelleen.</translation>
 <translation id="8354977102499939946">Hae nopeasti äänikomennoilla. Voit muokata pikakuvaketta asetuksista.</translation>
-<translation id="3488655102287645931">Voit helposti hallita esimerkiksi mediaohjaimia, incognito-käyttökertoja ja latauksia</translation>
 <translation id="835847953965672673"><ph name="NUMBER_OF_DOWNLOADS"/> latausta palautettu</translation>
 <translation id="8364299278605033898">Katso suositut sivustot</translation>
 <translation id="8368001212524806591">Seuraa hintaa</translation>
@@ -1444,6 +1442,7 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
 <translation id="4660964651149493586">Avaa yksityiset</translation>
 <translation id="3763131702135887799">Auta tekemään Brave paremmaksi profiileille, jotka käyttävät sitä kuten sinä</translation>
 <translation id="4167670741834902166">Uusi Yksityinen välilehti</translation>
+<translation id="9148151251783962691">Kokeile yksityistilaa, jos haluat käyttää yksityistä selaamista tässä laitteessa</translation>
 <translation id="8355284051444779553">Avaa valikko, jos haluat avata uuden yksityisen välilehden</translation>
 <translation id="8120164982795455341">Uusi Yksityinen välilehti</translation>
 <translation id="6464648082977038075">Sulje Yksityiset välilehdet</translation>
@@ -1467,4 +1466,5 @@ Jotkin verkkosivustot voivat vastata tähän pyyntöön esimerkiksi näyttämäl
           other {<ph name="INCOGNITO_TAB_COUNT"/> yksityistä ja <ph name="TAB_COUNT_MANY"/> muuta välilehteä suljetaan}}</translation>
 <translation id="3947065058794437451">Yksityinen tila ei ole saatavilla tässä laitteessa</translation>
 <translation id="1998933850996224665">Jakaaksesi lähellä olevien profiilien kanssa anna niiden skannata tämä QR-koodi</translation>
+<translation id="3488655102287645931">Voit helposti hallita mediasäätimiä, yksityisiä istuntoja, latauksia ja muuta</translation>
 </translationbundle>

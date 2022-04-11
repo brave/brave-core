@@ -243,11 +243,11 @@
 <translation id="8826352442759228526">您的驗證裝置數已達上限，因此無法驗證您的 Brave 獎勵。</translation>
 <translation id="1221593978088944142">錯誤：已達到裝置限制</translation>
 <translation id="3113653894794167793">抱歉，處理您的要求時出現了問題，請再試一次。</translation>
-<translation id="3509185560119586847">很遺憾，您的 Brave Rewards 個人資料遭標示為違反規定，而您目前無法透過保管人加以驗證。這種情況有時是因為不規律的 Brave Ads 活動所致，不過也可能是標示錯誤。</translation>
-<translation id="5031451251720571882">請注意，Brave Rewards 個人資料標示為違規期間，您將無法加以驗證。</translation>
+<translation id="3509185560119586847">很遺憾，您的 Brave Rewards 個人資料標有旗幟，表示有問題尚待排除，而您目前無法透過保管人加以驗證。這種情況有時是因為不規律的 Brave Ads 活動所致，不過也可能是標示錯誤。</translation>
+<translation id="5031451251720571882">請注意，Brave Rewards 個人資料標示為有問題尚待排除期間，您將無法加以驗證。</translation>
 <translation id="7301759045821910866">您不需執行任何動作。系統會自動定期重新評估您的 Brave Rewards 個人資料，確定標示何時可以移除 (或是否可以移除)。請不定時重新嘗試，查看標示是否已移除。</translation>
 <translation id="280350148043792509">深入瞭解 <ph name="BEGIN_LINK"/>Brave 對 Rewards 個人資料標示為違規的處理程序<ph name="END_LINK"/>。</translation>
-<translation id="5028274575541726856">錯誤：Brave Rewards 個人資料標示為違規</translation>
+<translation id="5028274575541726856">錯誤：Brave Rewards 個人資料標示為有問題尚待排除</translation>
 <translation id="2607420597216860026">請先到 <ph name="PROVIDER"/> 完成 ID 驗證，並再試一次。</translation>
 <translation id="3183954159462541696">錯誤：您需要先驗證帳戶才能登入</translation>
 <translation id="5260522591743022748">您的 Brave 獎勵已使用其他 <ph name="PROVIDER"/> 帳戶驗證。請嘗試使用您先前的帳戶再次驗證。</translation>
@@ -1175,8 +1175,8 @@
 <translation id="1671503397662036257">Tor 連線狀態</translation>
 <translation id="6024292492796847324">Tor 初始化進度</translation>
 <translation id="8458987127502506209">啟用 Brave 防護</translation>
-<translation id="7509914170164691086">Shields 已<ph name="LINK_BEFORE"/>啟用<ph name="LINK_AFTER"/></translation>
-<translation id="260764436039299868">Shields 已<ph name="LINK_BEFORE"/>停用<ph name="LINK_AFTER"/></translation>
+<translation id="7509914170164691086">Shields 已<ph name="LINK_BEFORE"/>啟用<ph name="LINK_AFTER"/>：</translation>
+<translation id="260764436039299868">Shields 已<ph name="LINK_BEFORE"/>停用<ph name="LINK_AFTER"/>：</translation>
 <translation id="7709075156958117386">如果此網站感覺不太正常，請嘗試將 Shields 停用。
     <ph name="LINK_BEFORE"/>注意：這麼做可能會減損 Brave 的隱私防護。<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">已封鎖追蹤程式、廣告等 <ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>

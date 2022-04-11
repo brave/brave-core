@@ -718,7 +718,6 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="5329858041417644019">Twoja przeglądarka nie jest zarządzana</translation>
 <translation id="5342314432463739672">Prośby o uprawnienia</translation>
 <translation id="5355191726083956201">Włączona jest silniejsza ochrona</translation>
-<translation id="9148151251783962691">Wypróbuj tryb incognito do prywatnego przeglądania internetu na tym urządzeniu</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> otwarta karta. Kliknij, by przełączyć się między kartami}few{<ph name="OPEN_TABS_MANY"/> otwarte karty. Kliknij, by przełączyć się między kartami}many{<ph name="OPEN_TABS_MANY"/> otwartych kart. Kliknij, by przełączyć się między kartami}other{<ph name="OPEN_TABS_MANY"/> otwartej karty. Kliknij, by przełączyć się między kartami}}</translation>
 <translation id="5375577065097716013">Szukaj z Obiektywem Brave <ph name="BEGIN_NEW"/>Nowe<ph name="END_NEW"/></translation>
 <translation id="5403644198645076998">Pozwól na otwieranie tylko wybranych stron</translation>
@@ -1252,7 +1251,6 @@ Na przykład niektóre strony mogą na nie zareagować, wyświetlając reklamy b
 <translation id="834313815369870491">Nigdy nie tłumacz stron</translation>
 <translation id="8352996530981010042">Nie udało się pobrać reakcji. Spróbuj ponownie.</translation>
 <translation id="8354977102499939946">Szybko wyszukaj głosowo. Aby edytować ten skrót, otwórz Ustawienia.</translation>
-<translation id="3488655102287645931">Będziesz mieć możliwość łatwego zarządzania opcjami sterowania multimediami, sesjami incognito, pobranymi plikami i nie tylko</translation>
 <translation id="835847953965672673">Przywrócone pliki: <ph name="NUMBER_OF_DOWNLOADS"/></translation>
 <translation id="8364299278605033898">Zobacz najpopularniejsze strony</translation>
 <translation id="8368001212524806591">Monitorowanie cen</translation>
@@ -1444,6 +1442,7 @@ Na przykład niektóre strony mogą na nie zareagować, wyświetlając reklamy b
 <translation id="4660964651149493586">Odblokuj tryb prywatny</translation>
 <translation id="3763131702135887799">Usprawnij Brave dla profili, które używają go w ten sam sposób, co Ty</translation>
 <translation id="4167670741834902166">Nowa karta prywatna</translation>
+<translation id="9148151251783962691">Aby przeglądać prywatnie na tym urządzeniu, wypróbuj tryb prywatny</translation>
 <translation id="8355284051444779553">Aby otworzyć nową zakładkę prywatną, otwórz menu</translation>
 <translation id="8120164982795455341">Nowa karta prywatna</translation>
 <translation id="6464648082977038075">Zamknij karty prywatne</translation>
@@ -1467,4 +1466,5 @@ Na przykład niektóre strony mogą na nie zareagować, wyświetlając reklamy b
           other {<ph name="INCOGNITO_TAB_COUNT"/> prywatnej i <ph name="TAB_COUNT_MANY"/> innych kart}}</translation>
 <translation id="3947065058794437451">Tryb prywatny nie jest dostępny na tym urządzeniu</translation>
 <translation id="1998933850996224665">Aby móc udostępniać profilom w pobliżu, muszą zeskanować ten kod QR</translation>
+<translation id="3488655102287645931">Możesz bezproblemowo zarządzać kontrolą multimediów, prywatnymi sesjami, pobraniami i innymi funkcjami</translation>
 </translationbundle>

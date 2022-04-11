@@ -63,7 +63,7 @@
     "description": ""
   },
   "monthlyTip": {
-    "message": "Monthly Tip",
+    "message": "Plăți lunare",
     "description": ""
   },
   "ok": {
@@ -252,7 +252,7 @@
     "description": ""
   },
   "walletUnverified": {
-    "message": "Unverified",
+    "message": "Neverificat",
     "description": ""
   },
   "walletVerified": {
@@ -380,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Monthly tip failed",
+    "message": "Plățile lunare au eșuat",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -388,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Your monthly tips have been processed.",
+    "message": "Plațile dvs. lunare au fost procesate.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {
