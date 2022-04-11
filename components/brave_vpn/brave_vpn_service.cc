@@ -51,27 +51,6 @@ constexpr char kRegionNamePrettyKey[] = "name-pretty";
 
 constexpr char kCreateSupportTicket[] = "api/v1.2/partners/support-ticket";
 
-std::string GetStringFor(ConnectionState state) {
-  switch (state) {
-    case ConnectionState::CONNECTED:
-      return "Connected";
-    case ConnectionState::CONNECTING:
-      return "Connecting";
-    case ConnectionState::DISCONNECTED:
-      return "Disconnected";
-    case ConnectionState::DISCONNECTING:
-      return "Disconnecting";
-    case ConnectionState::CONNECT_FAILED:
-      return "Connect failed";
-    case ConnectionState::CONNECT_NOT_ALLOWED:
-      return "Connect not allowed";
-    default:
-      NOTREACHED();
-  }
-
-  return std::string();
-}
-
 bool IsValidRegionValue(const base::Value& value) {
   if (!value.FindStringKey(kRegionContinentKey) ||
       !value.FindStringKey(kRegionNameKey) ||
@@ -366,8 +345,7 @@ void BraveVpnService::Connect() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (connection_state_ == ConnectionState::DISCONNECTING ||
       connection_state_ == ConnectionState::CONNECTING) {
-    VLOG(2) << __func__
-            << ": Current state: " << GetStringFor(connection_state_)
+    VLOG(2) << __func__ << ": Current state: " << connection_state_
             << " : prevent connecting while previous operation is in-progress";
     return;
   }
@@ -764,8 +742,7 @@ void BraveVpnService::SetSelectedRegion(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (connection_state_ == ConnectionState::DISCONNECTING ||
       connection_state_ == ConnectionState::CONNECTING) {
-    VLOG(2) << __func__
-            << ": Current state: " << GetStringFor(connection_state_)
+    VLOG(2) << __func__ << ": Current state: " << connection_state_
             << " : prevent changing selected region while previous operation "
                "is in-progress";
     return;
