@@ -49,6 +49,11 @@ Polymer({
       value: false,
       notify: true
     },
+    syncCodeValidationResult: {
+      type: String,
+      value: '',
+      notify: true
+    },
     syncCodeWordCount_: {
       type: Number,
       computed: 'computeSyncCodeWordCount_(syncCode)'

@@ -333,12 +333,12 @@
       <textarea autofocus class="sync-code-text" value="{{syncCode::input}}"></textarea>
       <div class="sync-code-footer">
         [[i18n('braveSyncWordCount', syncCodeWordCount_)]]
-        <template is="dom-if" if="[[isInvalidSyncCode]]">
-          <div class="invalid-sync-code">
-            $i18n{braveSyncInvalidSyncCodeTitle}
-          </div>
-        </template>
       </div>
+      <template is="dom-if" if="[[isInvalidSyncCode]]">
+        <div class="invalid-sync-code">
+          [[syncCodeValidationResult]]
+        </div>
+      </template>
     </div>
 
     <div slot="button-container">
