@@ -17,32 +17,20 @@ export interface Props {
   showHeader?: boolean
 }
 
-function SendTab (props: Props) {
-  const { showHeader } = props
-
-  const {
-    selectSendAsset,
-    setSendAmount
-  } = useSend()
-
+function SendTab ({
+  showHeader
+}: Props) {
+  // custom hooks
+  const { selectSendAsset } = useSend()
   const { sendAssetOptions } = useAssets()
 
+  // redux
   const dispatch = useDispatch()
 
+  // state
   const [sendView, setSendView] = React.useState<BuySendSwapViewTypes>('send')
 
-  const onChangeSendView = (view: BuySendSwapViewTypes) => {
-    setSendView(view)
-  }
-
-  const onClickSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
-    dispatch(WalletActions.selectNetwork(network))
-    setSendView('send')
-
-    // Reset amount to 0
-    setSendAmount('0')
-  }
-
+  // methods
   const onClickSelectAccount = (account: WalletAccountType) => () => {
     dispatch(WalletActions.selectAccount(account))
     setSendView('send')
@@ -57,18 +45,13 @@ function SendTab (props: Props) {
     setSendView('send')
   }
 
+  // render
   return (
     <>
       {sendView === 'send' &&
         <>
-          {showHeader &&
-            <Header
-              onChangeSwapView={onChangeSendView}
-            />
-          }
-          <Send
-            onChangeSendView={onChangeSendView}
-          />
+          {showHeader && <Header onChangeSwapView={setSendView} />}
+          <Send onChangeSendView={setSendView} />
         </>
       }
       {sendView !== 'send' &&
@@ -76,7 +59,6 @@ function SendTab (props: Props) {
           goBack={goBack}
           assetOptions={sendAssetOptions}
           onClickSelectAccount={onClickSelectAccount}
-          onClickSelectNetwork={onClickSelectNetwork}
           onSelectedAsset={onSelectedAsset}
           selectedView={sendView}
         />

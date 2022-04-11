@@ -303,7 +303,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [selectedTimeline, setSelectedTimeline] = React.useState<BraveWallet.AssetPriceTimeframe>(BraveWallet.AssetPriceTimeframe.OneDay)
   const [selectedAssetPriceHistory, setSelectedAssetPriceHistory] = React.useState<PriceDataObjectType[]>(PriceHistoryMockData.slice(15, 20))
   const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>()
-  const [selectedNetwork, setSelectedNetwork] = React.useState<BraveWallet.NetworkInfo>(mockNetworks[0])
+  const [selectedNetwork] = React.useState<BraveWallet.NetworkInfo>(mockNetworks[0])
   const [, setSelectedAccount] = React.useState<UserAccountType>(mockUserAccounts[0])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
   const [buyAmount, setBuyAmount] = React.useState('')
@@ -540,10 +540,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setShowAddModal(!showAddModal)
   }
 
-  const onSelectNetwork = (network: BraveWallet.NetworkInfo) => {
-    setSelectedNetwork(network)
-  }
-
   const onSubmitBuy = (asset: BraveWallet.BlockchainToken) => {
     alert(`Buy ${asset.symbol} asset`)
   }
@@ -761,7 +757,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                 buyAmount={buyAmount}
                 onSubmitBuy={onSubmitBuy}
                 onSetBuyAmount={onSetBuyAmount}
-                onSelectNetwork={onSelectNetwork}
                 onSelectAccount={onSelectAccount}
                 onSelectTab={setSelectedWidgetTab}
                 buyAssetOptions={mockAccountAssetOptions}

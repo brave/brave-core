@@ -162,10 +162,6 @@ function Container (props: Props) {
     props.walletActions.selectAccount(account)
   }
 
-  const onSelectNetwork = (network: BraveWallet.NetworkInfo) => {
-    props.walletActions.selectNetwork(network)
-  }
-
   const completeWalletSetup = (recoveryVerified: boolean) => {
     if (recoveryVerified) {
       props.walletPageActions.walletBackupComplete()
@@ -625,7 +621,6 @@ function Container (props: Props) {
             buyAssetOptions={buyAssetOptions}
             onSetBuyAmount={onSetBuyAmount}
             onSubmitBuy={onSubmitBuy}
-            onSelectNetwork={onSelectNetwork}
             onSelectAccount={onSelectAccount}
             onSelectTab={setSelectedWidgetTab}
           />

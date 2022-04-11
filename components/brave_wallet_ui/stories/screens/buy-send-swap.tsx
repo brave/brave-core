@@ -20,7 +20,6 @@ export interface Props {
   buyAmount: string
   buyAssetOptions: BraveWallet.BlockchainToken[]
   onSubmitBuy: (asset: BraveWallet.BlockchainToken) => void
-  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   onSelectAccount: (account: UserAccountType) => void
   onSetBuyAmount: (value: string) => void
   onSelectTab: (tab: BuySendSwapTypes) => void
@@ -32,7 +31,6 @@ function BuySendSwap (props: Props) {
     buyAmount,
     buyAssetOptions,
     onSubmitBuy,
-    onSelectNetwork,
     onSelectAccount,
     onSetBuyAmount,
     onSelectTab
@@ -89,7 +87,6 @@ function BuySendSwap (props: Props) {
           networkList={networkList}
           buyAmount={buyAmount}
           onSelectAccount={onSelectAccount}
-          onSelectNetwork={onSelectNetwork}
           onSubmit={onSubmitBuy}
           onSetBuyAmount={onSetBuyAmount}
           selectedNetwork={selectedNetwork}

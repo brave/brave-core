@@ -24,7 +24,7 @@ import {
   Send,
   Buy,
   SelectAsset,
-  SelectNetwork,
+  SelectNetworkWithHeader,
   SelectAccount
 } from '../components/buy-send-swap'
 import {
@@ -558,7 +558,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                 }
                 {selectedPanel === 'networks' &&
                   <SelectContainer>
-                    <SelectNetwork
+                    <SelectNetworkWithHeader
                       onBack={onBack}
                       hasAddButton={true}
                       onAddNetwork={onAddNetwork}

@@ -27,7 +27,7 @@ import {
   Buy,
   SelectAsset,
   SelectAccount,
-  SelectNetwork,
+  SelectNetworkWithHeader,
   Swap
 } from '../components/buy-send-swap/'
 import { AppList } from '../components/shared'
@@ -675,7 +675,7 @@ function Container (props: Props) {
     return (
       <PanelWrapper isLonger={false}>
         <SelectContainer>
-          <SelectNetwork
+          <SelectNetworkWithHeader
             onBack={onReturnToMain}
             onAddNetwork={onAddNetwork}
             hasAddButton={true}
