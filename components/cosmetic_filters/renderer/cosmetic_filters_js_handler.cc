@@ -77,24 +77,88 @@ const char kCosmeticFilteringInitScript[] =
 
 const char kHideSelectorsInjectScript[] =
     R"((function() {
+          let nextIndex =
+              window.content_cosmetic.cosmeticStyleSheet.rules.length;
           const selectors = %s;
           selectors.forEach(selector => {
             if ((typeof selector === 'string') &&
                 (window.content_cosmetic.hide1pContent ||
                 !window.content_cosmetic.allSelectorsToRules.has(selector))) {
               let rule = selector + '{display:none !important;}';
-              let ruleIndex = 0;
+              window.content_cosmetic.cosmeticStyleSheet.insertRule(
+                `${rule}`, nextIndex);
               if (!window.content_cosmetic.hide1pContent) {
-                ruleIndex = window.content_cosmetic.nextRuleIndex;
-                window.content_cosmetic.nextRuleIndex++;
                 window.content_cosmetic.allSelectorsToRules.set(
-                  selector, ruleIndex);
+                  selector, nextIndex);
                 window.content_cosmetic.firstRunQueue.add(selector);
               }
-              window.cf_worker.injectStylesheet(rule, ruleIndex);
+              nextIndex++;
             }
           });
-          window.content_cosmetic.scheduleQueuePump(false, false);
+          if (!document.adoptedStyleSheets.includes(
+              window.content_cosmetic.cosmeticStyleSheet)) {
+            document.adoptedStyleSheets =
+              [window.content_cosmetic.cosmeticStyleSheet,
+                ...document.adoptedStyleSheets];
+          };
+        })();)";
+
+const char kForceHideSelectorsInjectScript[] =
+    R"((function() {
+          let nextIndex =
+              window.content_cosmetic.cosmeticStyleSheet.rules.length;
+          const selectors = %s;
+          selectors.forEach(selector => {
+            if (typeof selector === 'string') {
+              let rule = selector + '{display:none !important;}';
+              window.content_cosmetic.cosmeticStyleSheet.insertRule(
+                `${rule}`, nextIndex);
+              if (!window.content_cosmetic.hide1pContent) {
+                window.content_cosmetic.allSelectorsToRules.set(
+                  selector, nextIndex);
+              }
+              nextIndex++;
+            }
+          });
+          if (!document.adoptedStyleSheets.includes(
+              window.content_cosmetic.cosmeticStyleSheet)) {
+            document.adoptedStyleSheets =
+              [window.content_cosmetic.cosmeticStyleSheet,
+                ...document.adoptedStyleSheets];
+          };
+        })();)";
+
+const char kStyleSelectorsInjectScript[] =
+    R"((function() {
+          let nextIndex =
+              window.content_cosmetic.cosmeticStyleSheet.rules.length;
+          const selectors = %s;
+          for (let selector in selectors) {
+            if (window.content_cosmetic.hide1pContent ||
+                !window.content_cosmetic.allSelectorsToRules.has(selector)) {
+              let rule = selector + '{';
+              selectors[selector].forEach(prop => {
+                if (!rule.endsWith('{')) {
+                  rule += ';';
+                }
+                rule += prop;
+              });
+              rule += '}';
+              window.content_cosmetic.cosmeticStyleSheet.insertRule(
+                `${rule}`, nextIndex);
+              if (!window.content_cosmetic.hide1pContent) {
+                window.content_cosmetic.allSelectorsToRules.set(
+                  selector, nextIndex);
+              }
+              nextIndex++;
+            };
+          };
+          if (!document.adoptedStyleSheets.includes(
+                window.content_cosmetic.cosmeticStyleSheet)){
+             document.adoptedStyleSheets =
+               [window.content_cosmetic.cosmeticStyleSheet,
+                 ...document.adoptedStyleSheets];
+          };
         })();)";
 
 std::string LoadDataResource(const int id) {
@@ -173,41 +237,6 @@ void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
   bundle_injected_ = false;
 }
 
-// If `id` is nonzero, then the same number can be later passed to
-// `UninjectStylesheet` to remove the stylesheet from the page.
-void CosmeticFiltersJSHandler::InjectStylesheet(const std::string& stylesheet,
-                                                int id) {
-  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-
-  blink::WebStyleSheetKey* style_sheet_key = nullptr;
-  if (id != 0) {
-    // Prepend a Brave-specific string to avoid collisions with stylesheets
-    // injected from other sources
-    std::string key = "BraveCFRule" + std::to_string(id);
-    inserted_stylesheet_ids.insert({id, std::make_unique<blink::WebString>(
-                                            blink::WebString::FromASCII(key))});
-    style_sheet_key = inserted_stylesheet_ids.at(id).get();
-  }
-  web_frame->GetDocument().InsertStyleSheet(
-      blink::WebString::FromUTF8(stylesheet), style_sheet_key,
-      blink::WebDocument::kUserOrigin);
-}
-
-void CosmeticFiltersJSHandler::UninjectStylesheet(int id) {
-  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-
-  DCHECK_NE(id, 0);
-
-  auto i = inserted_stylesheet_ids.find(id);
-  if (i != inserted_stylesheet_ids.end()) {
-    std::unique_ptr<blink::WebStyleSheetKey> key = std::move(i->second);
-    inserted_stylesheet_ids.erase(i);
-
-    web_frame->GetDocument().RemoveInsertedStyleSheet(
-        *key, blink::WebDocument::kUserOrigin);
-  }
-}
-
 void CosmeticFiltersJSHandler::CreateWorkerObject(
     v8::Isolate* isolate,
     v8::Local<v8::Context> context) {
@@ -236,14 +265,6 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
   BindFunctionToObject(
       isolate, javascript_object, "isFirstPartyUrl",
       base::BindRepeating(&CosmeticFiltersJSHandler::OnIsFirstParty,
-                          base::Unretained(this)));
-  BindFunctionToObject(
-      isolate, javascript_object, "injectStylesheet",
-      base::BindRepeating(&CosmeticFiltersJSHandler::InjectStylesheet,
-                          base::Unretained(this)));
-  BindFunctionToObject(
-      isolate, javascript_object, "uninjectStylesheet",
-      base::BindRepeating(&CosmeticFiltersJSHandler::UninjectStylesheet,
                           base::Unretained(this)));
 }
 
@@ -390,6 +411,11 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
       (IsVettedSearchEngine(url_) && !enabled_1st_party_cf_)) {
     hide_selectors_list = nullptr;
   }
+  base::ListValue* force_hide_selectors_list;
+  if (!resources_dict->GetList("force_hide_selectors",
+                               &force_hide_selectors_list)) {
+    force_hide_selectors_list = nullptr;
+  }
 
   if (hide_selectors_list && hide_selectors_list->GetList().size() != 0) {
     std::string json_selectors;
@@ -407,34 +433,41 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
         blink::BackForwardCacheAware::kAllow);
   }
 
-  base::Value* force_hide_selectors_list =
-      resources_dict->FindListKey("force_hide_selectors");
   if (force_hide_selectors_list &&
       force_hide_selectors_list->GetList().size() != 0) {
-    std::string stylesheet = "";
-    for (auto& selector : force_hide_selectors_list->GetList()) {
-      DCHECK(selector.is_string());
-      stylesheet += selector.GetString() + "{display:none !important}";
+    std::string json_selectors;
+    if (!base::JSONWriter::Write(*force_hide_selectors_list, &json_selectors) ||
+        json_selectors.empty()) {
+      json_selectors = "[]";
     }
-    InjectStylesheet(stylesheet, 0);
+    // Building a script for stylesheet modifications
+    std::string new_selectors_script = base::StringPrintf(
+        kForceHideSelectorsInjectScript, json_selectors.c_str());
+    web_frame->ExecuteScriptInIsolatedWorld(
+        isolated_world_id_,
+        blink::WebScriptSource(
+            blink::WebString::FromUTF8(new_selectors_script)),
+        blink::BackForwardCacheAware::kAllow);
   }
 
-  base::Value* style_selectors_dictionary =
-      resources_dict->FindDictKey("style_selectors");
-  if (style_selectors_dictionary) {
-    std::string stylesheet = "";
-    for (const auto kv : style_selectors_dictionary->DictItems()) {
-      std::string selector = kv.first;
-      base::Value& styles = kv.second;
-      DCHECK(styles.is_list());
-      stylesheet += selector + '{';
-      for (auto& style : styles.GetList()) {
-        DCHECK(style.is_string());
-        stylesheet += style.GetString() + ';';
-      }
-      stylesheet += '}';
+  base::DictionaryValue* style_selectors_dictionary = nullptr;
+  if (resources_dict->GetDictionary("style_selectors",
+                                    &style_selectors_dictionary)) {
+    std::string json_selectors;
+    if (!base::JSONWriter::Write(*style_selectors_dictionary,
+                                 &json_selectors) ||
+        json_selectors.empty()) {
+      json_selectors = "[]";
     }
-    InjectStylesheet(stylesheet, 0);
+    std::string new_selectors_script =
+        base::StringPrintf(kStyleSelectorsInjectScript, json_selectors.c_str());
+    if (!json_selectors.empty()) {
+      web_frame->ExecuteScriptInIsolatedWorld(
+          isolated_world_id_,
+          blink::WebScriptSource(
+              blink::WebString::FromUTF8(new_selectors_script)),
+          blink::BackForwardCacheAware::kAllow);
+    }
   }
 
   if (!enabled_1st_party_cf_)

@@ -51,10 +51,10 @@ function checkSelector(selector, property, expected) {
 <body>
     <div id="ad-banner"><img src="https://example.com/logo.png" alt=""></div>
     <div class="ad-banner">
-        <div class="ad" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
+        <div class="ad" style="background: url(example.com)"><img src="https://example.com/logo.png" alt=""></div>
     </div>
-    <div class="ad" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
-    <div class="ad" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
+    <div class="ad" style="background: url(example.com)"><img src="https://example.com/logo.png" alt=""></div>
+    <div class="ad" style="background: url(example.com)"><img src="https://example.com/logo.png" alt=""></div>
 
     <!-- Assume that the document host is test.lion.appspot.com (see AdBlockServiceTest.*) -->
     <div id="relative-url-div" class="fpsponsored">
@@ -77,6 +77,5 @@ function checkSelector(selector, property, expected) {
       A text of 30 chars and 5 words is needed here to consider element significant.
       <img src="http://chrome.appspot.com/sponsored/640x820.png">
     </div>
-    <div id="inline-block-important" style="display: block !important"></div>
 </body>
 </html>

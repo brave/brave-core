@@ -28,7 +28,6 @@ declare global {
     content_cosmetic: {
       cosmeticStyleSheet: CSSStyleSheet
       allSelectorsToRules: Map<string, number>
-      nextRuleIndex: number
       observingHasStarted: boolean
       hide1pContent: boolean
       generichide: boolean
@@ -41,7 +40,6 @@ declare global {
       alreadyKnownFirstPartySubtrees: WeakSet
       _hasDelayOcurred: boolean
       _startCheckingId: number | undefined
-      scheduleQueuePump: ((hide1pContent: boolean, genericHide: boolean) => void)
       tryScheduleQueuePump: (() => void)
     }
   }
