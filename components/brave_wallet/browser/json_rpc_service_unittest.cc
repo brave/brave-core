@@ -573,13 +573,16 @@ class JsonRpcServiceUnitTest : public testing::Test {
   }
 
   void TestGetSolanaLatestBlockhash(const std::string& expected_hash,
+                                    uint64_t expected_last_valid_block_height,
                                     mojom::SolanaProviderError expected_error,
                                     const std::string& expected_error_message) {
     base::RunLoop run_loop;
     json_rpc_service_->GetSolanaLatestBlockhash(base::BindLambdaForTesting(
-        [&](const std::string& hash, mojom::SolanaProviderError error,
+        [&](const std::string& hash, uint64_t last_valid_block_height,
+            mojom::SolanaProviderError error,
             const std::string& error_message) {
           EXPECT_EQ(hash, expected_hash);
+          EXPECT_EQ(last_valid_block_height, expected_last_valid_block_height);
           EXPECT_EQ(error, expected_error);
           EXPECT_EQ(error_message, expected_error_message);
           run_loop.Quit();
@@ -2355,26 +2358,27 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaLatestBlockhash) {
                  "\"lastValidBlockHeight\":3090}}}");
 
   TestGetSolanaLatestBlockhash("EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N",
-                               mojom::SolanaProviderError::kSuccess, "");
+                               3090, mojom::SolanaProviderError::kSuccess, "");
 
   // Response parsing error
   SetInterceptor(expected_network_url, "getLatestBlockhash", "",
                  "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}");
   TestGetSolanaLatestBlockhash(
-      "", mojom::SolanaProviderError::kParsingError,
+      "", 0, mojom::SolanaProviderError::kParsingError,
       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
   // JSON RPC error
   SetInterceptor(expected_network_url, "getLatestBlockhash", "",
                  "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":"
                  "{\"code\":-32601, \"message\": \"method does not exist\"}}");
-  TestGetSolanaLatestBlockhash("", mojom::SolanaProviderError::kMethodNotFound,
+  TestGetSolanaLatestBlockhash("", 0,
+                               mojom::SolanaProviderError::kMethodNotFound,
                                "method does not exist");
 
   // HTTP error
   SetHTTPRequestTimeoutInterceptor();
   TestGetSolanaLatestBlockhash(
-      "", mojom::SolanaProviderError::kInternalError,
+      "", 0, mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 

@@ -24,7 +24,9 @@ bool ParseGetTokenAccountBalance(const std::string& json,
                                  uint8_t* decimals,
                                  std::string* ui_amount_string);
 bool ParseSendTransaction(const std::string& json, std::string* tx_id);
-bool ParseGetLatestBlockhash(const std::string& json, std::string* hash);
+bool ParseGetLatestBlockhash(const std::string& json,
+                             std::string* hash,
+                             uint64_t* last_valid_block_height);
 bool ParseGetSignatureStatuses(
     const std::string& json,
     std::vector<absl::optional<SolanaSignatureStatus>>* statuses);

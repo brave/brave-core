@@ -1779,21 +1779,24 @@ void JsonRpcService::OnGetSolanaLatestBlockhash(
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
     std::move(callback).Run(
-        "", mojom::SolanaProviderError::kInternalError,
+        "", 0, mojom::SolanaProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   std::string blockhash;
-  if (!solana::ParseGetLatestBlockhash(body, &blockhash)) {
+  uint64_t last_valid_block_height = 0;
+  if (!solana::ParseGetLatestBlockhash(body, &blockhash,
+                                       &last_valid_block_height)) {
     mojom::SolanaProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
-    std::move(callback).Run("", error, error_message);
+    std::move(callback).Run("", 0, error, error_message);
     return;
   }
 
-  std::move(callback).Run(blockhash, mojom::SolanaProviderError::kSuccess, "");
+  std::move(callback).Run(blockhash, last_valid_block_height,
+                          mojom::SolanaProviderError::kSuccess, "");
 }
 
 void JsonRpcService::GetSolanaSignatureStatuses(

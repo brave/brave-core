@@ -265,6 +265,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                              SendSolanaTransactionCallback callback);
   using GetSolanaLatestBlockhashCallback =
       base::OnceCallback<void(const std::string& latest_blockhash,
+                              uint64_t last_valid_block_height,
                               mojom::SolanaProviderError error,
                               const std::string& error_message)>;
   void GetSolanaLatestBlockhash(GetSolanaLatestBlockhashCallback callback);

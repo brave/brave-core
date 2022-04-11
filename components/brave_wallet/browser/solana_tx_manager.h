@@ -85,6 +85,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
   void OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
                             ApproveTransactionCallback callback,
                             const std::string& latest_blockhash,
+                            uint64_t last_valid_block_height,
                             mojom::SolanaProviderError error,
                             const std::string& error_message);
   void OnSendSolanaTransaction(const std::string& tx_meta_id,
@@ -112,6 +113,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       std::unique_ptr<SolanaTxMeta> meta,
       GetEstimatedTxFeeCallback callback,
       const std::string& latest_blockhash,
+      uint64_t last_valid_block_height,
       mojom::SolanaProviderError error,
       const std::string& error_message);
   void OnGetFeeForMessage(GetEstimatedTxFeeCallback callback,
@@ -120,7 +122,8 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                           const std::string& error_message);
 
   // SolanaBlockTracker::Observer
-  void OnLatestBlockhashUpdated(const std::string& blockhash) override;
+  void OnLatestBlockhashUpdated(const std::string& blockhash,
+                                uint64_t last_valid_block_height) override;
 
   SolanaTxStateManager* GetSolanaTxStateManager();
   SolanaBlockTracker* GetSolanaBlockTracker();

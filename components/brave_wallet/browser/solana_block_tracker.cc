@@ -41,7 +41,7 @@ void SolanaBlockTracker::GetLatestBlockhash(GetLatestBlockhashCallback callback,
                                             bool try_cached_value) {
   if (try_cached_value && !latest_blockhash_.empty() &&
       latest_blockhash_expired_time_ > base::Time::Now()) {
-    std::move(callback).Run(latest_blockhash_,
+    std::move(callback).Run(latest_blockhash_, last_valid_block_height_,
                             mojom::SolanaProviderError::kSuccess, "");
     return;
   }
@@ -54,10 +54,12 @@ void SolanaBlockTracker::GetLatestBlockhash(GetLatestBlockhashCallback callback,
 void SolanaBlockTracker::OnGetLatestBlockhash(
     GetLatestBlockhashCallback callback,
     const std::string& latest_blockhash,
+    uint64_t last_valid_block_height,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
   if (callback)
-    std::move(callback).Run(latest_blockhash, error, error_message);
+    std::move(callback).Run(latest_blockhash, last_valid_block_height, error,
+                            error_message);
 
   if (error != mojom::SolanaProviderError::kSuccess) {
     VLOG(1) << __FUNCTION__ << ": Failed to get latest blockhash, error: "
@@ -69,9 +71,11 @@ void SolanaBlockTracker::OnGetLatestBlockhash(
     return;
 
   latest_blockhash_ = latest_blockhash;
+  last_valid_block_height_ = last_valid_block_height;
   latest_blockhash_expired_time_ = base::Time::Now() + kExpiredTimeDelta;
   for (auto& observer : observers_)
-    observer.OnLatestBlockhashUpdated(latest_blockhash);
+    observer.OnLatestBlockhashUpdated(latest_blockhash,
+                                      last_valid_block_height);
 }
 
 void SolanaBlockTracker::AddObserver(SolanaBlockTracker::Observer* observer) {
