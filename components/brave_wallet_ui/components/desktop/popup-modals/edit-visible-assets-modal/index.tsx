@@ -283,11 +283,17 @@ const EditVisibleAssetsModal = (props: Props) => {
   }
 
   const findUpdatedTokenInfo = (token: BraveWallet.BlockchainToken) => {
-    return updatedTokensList.find((t) => t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase())
+    return updatedTokensList.find((t) =>
+      t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
+      t.chainId === token.chainId)
   }
 
   const isUserToken = (token: BraveWallet.BlockchainToken) => {
-    return updatedTokensList.some(e => e.contractAddress.toLowerCase() === token.contractAddress.toLowerCase())
+    return updatedTokensList.some(t =>
+    (
+      t.contractAddress.toLowerCase() === token.contractAddress.toLowerCase() &&
+      t.chainId === token.chainId)
+    )
   }
 
   const isAssetSelected = (token: BraveWallet.BlockchainToken): boolean => {
@@ -308,17 +314,17 @@ const EditVisibleAssetsModal = (props: Props) => {
       const addededToList = [...updatedTokensList, token]
       return addededToList
     }
-    const removedFromList = updatedTokensList.filter((t) => t.contractAddress !== token.contractAddress)
+    const removedFromList = updatedTokensList.filter((t) => t !== token)
     return removedFromList
   }
 
   const onCheckWatchlistItem = (key: string, selected: boolean, token: BraveWallet.BlockchainToken, isCustom: boolean) => {
     if (isUserToken(token)) {
-      if (isCustom) {
-        const updatedCustomToken = selected ? { ...token, visible: true } : { ...token, visible: false }
-        const tokenIndex = updatedTokensList.findIndex((t) => t.contractAddress === token.contractAddress)
+      if (isCustom || token.contractAddress === '') {
+        const updatedToken = selected ? { ...token, visible: true } : { ...token, visible: false }
+        const tokenIndex = updatedTokensList.findIndex((t) => t === token)
         let newList = [...updatedTokensList]
-        newList.splice(tokenIndex, 1, updatedCustomToken)
+        newList.splice(tokenIndex, 1, updatedToken)
         setUpdatedTokensList(newList)
       } else {
         setUpdatedTokensList(addOrRemoveTokenFromList(selected, token))
