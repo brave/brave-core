@@ -144,7 +144,10 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
         .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase()))
         .filter(asset => !userVisibleTokensInfo
           .some(token => token.symbol.toUpperCase() === asset.symbol.toUpperCase()))
-    ].filter(asset => asset.chainId === selectedNetwork.chainId)
+    ].filter(asset => (
+      asset.chainId === selectedNetwork.chainId &&
+      !asset.isErc721 // NFT swaps not supported
+    ))
   }, [fullTokenList, userVisibleTokensInfo, nativeAsset, selectedNetwork])
 
   const swapValidationError: SwapValidationErrorType | undefined = React.useMemo(() => {
