@@ -14,6 +14,7 @@
 #include "brave/components/brave_federated/client/model.h"
 #include "brave/components/brave_federated/linear_algebra_util/linear_algebra_util.h"
 
+#include "brave/third_party/flower/src/cc/flwr/include/start.h"
 namespace brave_federated {
 
 FederatedClient::FederatedClient(const std::string& task_name,
@@ -26,11 +27,11 @@ FederatedClient::~FederatedClient() {}
 void FederatedClient::Start() {
   // TODO
 
-  Model* model = GetModel();
+  // Define a server address
+  std::string server_add = "127.0.0.1:8888";
 
-  model->Train(training_data_);
-  auto evaluation = model->Evaluate(test_data_);
-  std::cout << std::get<0>(evaluation);
+  // Start client
+  start::start_client(server_add, this);
 }
 
 void FederatedClient::Stop() {

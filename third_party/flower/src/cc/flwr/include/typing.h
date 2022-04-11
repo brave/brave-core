@@ -32,25 +32,25 @@ namespace flwr {
 class Scalar {
  public:
   // Getters
-  std::optional<bool> getBool() { return b_; }
-  std::optional<std::string> getBytes() { return bytes_; }
-  std::optional<float> getFloat() { return f_; }
-  std::optional<int> getInt() { return i_; }
-  std::optional<std::string> getString() { return string_; }
+  std::optional<bool> getBool() { return b; }
+  std::optional<std::string> getBytes() { return bytes; }
+  std::optional<float> getFloat() { return f; }
+  std::optional<int> getInt() { return i; }
+  std::optional<std::string> getString() { return string; }
 
   // Setters
-  void setBool(bool b) { this->b_ = b; }
-  void setBytes(std::string bytes) { this->bytes_ = bytes; }
-  void setFloat(float f) { this->f_ = f; }
-  void setInt(int i) { this->i_ = i; }
-  void setString(std::string string) { this->string_ = string; }
+  void setBool(bool b) { this->b = b; }
+  void setBytes(std::string bytes) { this->bytes = bytes; }
+  void setFloat(float f) { this->f = f; }
+  void setInt(int i) { this->i = i; }
+  void setString(std::string string) { this->string = string; }
 
  private:
-  std::optional<bool> b_ = std::nullopt;
-  std::optional<std::string> bytes_ = std::nullopt;
-  std::optional<float> f_ = std::nullopt;
-  std::optional<int> i_ = std::nullopt;
-  std::optional<std::string> string_ = std::nullopt;
+  std::optional<bool> b = std::nullopt;
+  std::optional<std::string> bytes = std::nullopt;
+  std::optional<float> f = std::nullopt;
+  std::optional<int> i = std::nullopt;
+  std::optional<std::string> string = std::nullopt;
 };
 
 typedef std::map<std::string, flwr::Scalar> Metrics;
@@ -60,23 +60,23 @@ typedef std::map<std::string, flwr::Scalar> Metrics;
  */
 class Parameters {
  public:
-  Parameters(){}
+  Parameters() {}
   Parameters(std::list<std::string> tensors, std::string tensor_type)
-      : tensors_(tensors), tensor_type_(tensor_type){}
+      : tensors(tensors), tensor_type(tensor_type) {}
 
   // Getters
-  std::list<std::string> getTensors() { return tensors_; }
-  std::string getTensor_type() { return tensor_type_; }
+  std::list<std::string> getTensors() { return tensors; }
+  std::string getTensor_type() { return tensor_type; }
 
   // Setters
-  void setTensors(std::list<std::string> tensors) { this->tensors_ = tensors; }
+  void setTensors(std::list<std::string> tensors) { this->tensors = tensors; }
   void setTensor_type(std::string tensor_type) {
-    this->tensor_type_ = tensor_type;
+    this->tensor_type = tensor_type;
   }
 
  private:
-  std::list<std::string> tensors_;
-  std::string tensor_type_;
+  std::list<std::string> tensors;
+  std::string tensor_type;
 };
 
 /**
@@ -84,13 +84,13 @@ class Parameters {
  */
 class ParametersRes {
  public:
-  ParametersRes(Parameters parameters) : parameters_(parameters){}
+  ParametersRes(Parameters parameters) : parameters(parameters) {}
 
-  Parameters getParameters() { return parameters_; }
-  void setParameters(Parameters p) { parameters_ = p; }
+  Parameters getParameters() { return parameters; }
+  void setParameters(Parameters p) { parameters = p; }
 
  private:
-  Parameters parameters_;
+  Parameters parameters;
 };
 
 /**
@@ -99,21 +99,21 @@ class ParametersRes {
 class FitIns {
  public:
   FitIns(Parameters parameters, std::map<std::string, flwr::Scalar> config)
-      : parameters_(parameters), config_(config){}
+      : parameters(parameters), config(config) {}
 
   // Getters
-  Parameters getParameters() { return parameters_; }
-  std::map<std::string, Scalar> getConfig() { return config_; }
+  Parameters getParameters() { return parameters; }
+  std::map<std::string, Scalar> getConfig() { return config; }
 
   // Setters
-  void setParameters(Parameters p) { parameters_ = p; }
+  void setParameters(Parameters p) { parameters = p; }
   void setConfig(std::map<std::string, Scalar> config) {
-    this->config_ = config;
+    this->config = config;
   }
 
  private:
-  Parameters parameters_;
-  std::map<std::string, Scalar> config_;
+  Parameters parameters;
+  std::map<std::string, Scalar> config;
 };
 
 /**
@@ -121,43 +121,43 @@ class FitIns {
  */
 class FitRes {
  public:
-  FitRes(){}
+  FitRes() {}
   FitRes(Parameters parameters,
          int num_examples,
          int num_examples_ceil,
          float fit_duration,
          Metrics metrics)
-      : parameters_(parameters),
-        num_examples_(num_examples),
-        fit_duration_(fit_duration),
-        metrics_(metrics){}
+      : parameters(parameters),
+        num_examples(num_examples),
+        fit_duration(fit_duration),
+        metrics(metrics) {}
 
   // Getters
-  Parameters getParameters() { return parameters_; }
-  int getNum_example() { return num_examples_; }
+  Parameters getParameters() { return parameters; }
+  int getNum_example() { return num_examples; }
   /*std::optional<int> getNum_examples_ceil()
   {
           return num_examples_ceil;
   }*/
-  std::optional<float> getFit_duration() { return fit_duration_; }
-  std::optional<Metrics> getMetrics() { return metrics_; }
+  std::optional<float> getFit_duration() { return fit_duration; }
+  std::optional<Metrics> getMetrics() { return metrics; }
 
   // Setters
-  void setParameters(Parameters p) { parameters_ = p; }
-  void setNum_example(int n) { num_examples_ = n; }
+  void setParameters(Parameters p) { parameters = p; }
+  void setNum_example(int n) { num_examples = n; }
   /*void setNum_examples_ceil(int n)
   {
           num_examples_ceil = n;
   }*/
-  void setFit_duration(float f) { fit_duration_ = f; }
-  void setMetrics(flwr::Metrics m) { metrics_ = m; }
+  void setFit_duration(float f) { fit_duration = f; }
+  void setMetrics(flwr::Metrics m) { metrics = m; }
 
  private:
-  Parameters parameters_;
-  int num_examples_;
+  Parameters parameters;
+  int num_examples;
   // std::optional<int> num_examples_ceil = std::nullopt;
-  std::optional<float> fit_duration_ = std::nullopt;
-  std::optional<Metrics> metrics_ = std::nullopt;
+  std::optional<float> fit_duration = std::nullopt;
+  std::optional<Metrics> metrics = std::nullopt;
 };
 
 /**
@@ -166,21 +166,21 @@ class FitRes {
 class EvaluateIns {
  public:
   EvaluateIns(Parameters parameters, std::map<std::string, Scalar> config)
-      : parameters_(parameters), config_(config){}
+      : parameters(parameters), config(config) {}
 
   // Getters
-  Parameters getParameters() { return parameters_; }
-  std::map<std::string, Scalar> getConfig() { return config_; }
+  Parameters getParameters() { return parameters; }
+  std::map<std::string, Scalar> getConfig() { return config; }
 
   // Setters
-  void setParameters(Parameters p) { parameters_ = p; }
+  void setParameters(Parameters p) { parameters = p; }
   void setConfig(std::map<std::string, Scalar> config) {
-    this->config_ = config;
+    this->config = config;
   }
 
  private:
-  Parameters parameters_;
-  std::map<std::string, Scalar> config_;
+  Parameters parameters;
+  std::map<std::string, Scalar> config;
 };
 
 /**
@@ -188,24 +188,24 @@ class EvaluateIns {
  */
 class EvaluateRes {
  public:
-  EvaluateRes(){}
+  EvaluateRes() {}
   EvaluateRes(float loss, int num_examples, float accuracy, Metrics metrics)
-      : loss_(loss), num_examples_(num_examples), metrics_(metrics){}
+      : loss(loss), num_examples(num_examples), metrics(metrics) {}
 
   // Getters
-  float getLoss() { return loss_; }
-  int getNum_example() { return num_examples_; }
-  std::optional<Metrics> getMetrics() { return metrics_; }
+  float getLoss() { return loss; }
+  int getNum_example() { return num_examples; }
+  std::optional<Metrics> getMetrics() { return metrics; }
 
   // Setters
-  void setLoss(float f) { loss_ = f; }
-  void setNum_example(int n) { num_examples_ = n; }
-  void setMetrics(Metrics m) { metrics_ = m; }
+  void setLoss(float f) { loss = f; }
+  void setNum_example(int n) { num_examples = n; }
+  void setMetrics(Metrics m) { metrics = m; }
 
  private:
-  float loss_;
-  int num_examples_;
-  std::optional<Metrics> metrics_ = std::nullopt;
+  float loss;
+  int num_examples;
+  std::optional<Metrics> metrics = std::nullopt;
 };
 
 typedef std::map<std::string, flwr::Scalar> Config;
@@ -213,28 +213,28 @@ typedef std::map<std::string, flwr::Scalar> Properties;
 
 class PropertiesIns {
  public:
-  PropertiesIns(){}
+  PropertiesIns() {}
 
   std::map<std::string, flwr::Scalar> getPropertiesIns() {
-    return static_cast<std::map<std::string, flwr::Scalar>>(config_);
+    return static_cast<std::map<std::string, flwr::Scalar>>(config);
   }
 
-  void setPropertiesIns(Config c) { config_ = c; }
+  void setPropertiesIns(Config c) { config = c; }
 
  private:
-  Config config_;
+  Config config;
 };
 
 class PropertiesRes {
  public:
-  PropertiesRes(){}
+  PropertiesRes() {}
 
-  Properties getPropertiesRes() { return properties_; }
+  Properties getPropertiesRes() { return properties; }
 
-  void setPropertiesRes(Properties p) { properties_ = p; }
+  void setPropertiesRes(Properties p) { properties = p; }
 
  private:
-  Properties properties_;
+  Properties properties;
 };
 
 }  // namespace flwr

@@ -15,11 +15,11 @@
 #include "brave/components/brave_federated/client/model.h"
 #include "brave/components/brave_federated/data_store_service.h"
 #include "brave/components/brave_federated/data_stores/ad_notification_timing_data_store.h"
-#include "brave/components/brave_federated/synthetic_dataset/synthetic_dataset.h"
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/eligibility_service_observer.h"
+#include "brave/components/brave_federated/synthetic_dataset/synthetic_dataset.h"
 
-#include <iostream>
+#include "brave/third_party/flower/src/cc/flwr/include/start.h"
 
 namespace brave_federated {
 
