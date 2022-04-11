@@ -76,7 +76,7 @@ function SwapTab () {
             onChangeSwapView={onChangeSwapView}
             onCustomSlippageToleranceChange={swap.onCustomSlippageToleranceChange}
             onFilterAssetList={onFilterAssetList}
-            onSelectExpiration={swap.onSelectExpiration}
+            setOrderExpiration={swap.setOrderExpiration}
             onSelectPresetAmount={swap.onSelectPresetAmount}
             onSelectSlippageTolerance={swap.onSelectSlippageTolerance}
             onSubmitSwap={swap.onSubmitSwap}

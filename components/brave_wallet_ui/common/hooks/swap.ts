@@ -113,10 +113,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   const { getIsSwapSupported, getERC20Allowance } = useLib()
 
   // memos
-  const nativeAsset = React.useMemo(
-    () => makeNetworkAsset(selectedNetwork),
-    [selectedNetwork]
-  )
+  const nativeAsset = React.useMemo(() => makeNetworkAsset(selectedNetwork), [selectedNetwork])
   const fromAssetBalance = getBalance(selectedAccount, fromAsset)
   const nativeAssetBalance = getBalance(selectedAccount, nativeAsset)
   const toAssetBalance = getBalance(selectedAccount, toAsset)
@@ -471,7 +468,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
     })
   }, [selectedAccount, selectedNetwork, fromAsset, toAsset])
 
-  const onSwapQuoteRefresh = async () => {
+  const onSwapQuoteRefresh = React.useCallback(async () => {
     const customSlippage = {
       id: 4,
       slippage: Number(customSlippageTolerance)
@@ -480,7 +477,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       overrides: { toOrFrom: 'from', slippageTolerance: customSlippageTolerance ? customSlippage : slippageTolerance },
       state: { fromAmount, toAmount }
     })
-  }
+  }, [onSwapParamsChange, fromAmount, toAmount, customSlippageTolerance, slippageTolerance])
 
   /**
    * onSwapParamsChangeDebounced is a debounced function which delays calling
@@ -509,32 +506,24 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
     })
   }, [toAsset, fromAsset, fromAmount, toAmount, onSwapParamsChange])
 
-  const onSetFromAmount = async (value: string) => {
+  const onSetFromAmount = React.useCallback(async (value: string) => {
     setFromAmount(value)
 
     await onSwapParamsChangeDebounced({
       overrides: { toOrFrom: 'from', amount: value },
       state: { fromAmount, toAmount }
     })
-  }
+  }, [onSwapParamsChangeDebounced, fromAmount, toAmount])
 
-  const onSetToAmount = async (value: string) => {
+  const onSetToAmount = React.useCallback(async (value: string) => {
     setToAmount(value)
     await onSwapParamsChangeDebounced({
       overrides: { toOrFrom: 'to', amount: value },
       state: { fromAmount, toAmount }
     })
-  }
+  }, [onSwapParamsChangeDebounced, fromAmount, toAmount])
 
-  const onSetExchangeRate = (value: string) => {
-    setExchangeRate(value)
-  }
-
-  const onSelectExpiration = (expiration: ExpirationPresetObjectType) => {
-    setOrderExpiration(expiration)
-  }
-
-  const onCustomSlippageToleranceChange = (value: string) => {
+  const onCustomSlippageToleranceChange = React.useCallback((value: string) => {
     setCustomSlippageTolerance(value)
     const customSlippage = {
       id: 4,
@@ -545,26 +534,26 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       overrides: { toOrFrom: 'from', slippageTolerance: slippage },
       state: { fromAmount, toAmount }
     })
-  }
+  }, [onSwapParamsChange, fromAmount, toAmount, slippageTolerance])
 
-  const onSelectSlippageTolerance = (slippage: SlippagePresetObjectType) => {
+  const onSelectSlippageTolerance = React.useCallback((slippage: SlippagePresetObjectType) => {
     setSlippageTolerance(slippage)
     setCustomSlippageTolerance('')
     onSwapParamsChange({
       overrides: { toOrFrom: 'from', slippageTolerance: slippage },
       state: { fromAmount, toAmount }
     })
-  }
+  }, [onSwapParamsChange, fromAmount, toAmount])
 
-  const onToggleOrderType = () => {
+  const onToggleOrderType = React.useCallback(() => {
     if (orderType === 'market') {
       setOrderType('limit')
     } else {
       setOrderType('market')
     }
-  }
+  }, [orderType])
 
-  const onSubmitSwap = () => {
+  const onSubmitSwap = React.useCallback(() => {
     if (!swapQuote) {
       return
     }
@@ -603,9 +592,9 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       state: { fromAmount, toAmount },
       full: true
     })
-  }
+  }, [swapQuote, fromAsset, swapValidationError, allowance, selectedAccount, fromAmount, toAmount])
 
-  const onSelectTransactAsset = (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => {
+  const onSelectTransactAsset = React.useCallback((asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => {
     if (toOrFrom === 'from') {
       setFromAsset(asset)
     } else {
@@ -623,9 +612,9 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       state: { fromAmount, toAmount: '0' }
     })
     setIsLoading(false)
-  }
+  }, [onSwapParamsChange, fromAmount])
 
-  const onSwapInputChange = (value: string, name: 'to' | 'from' | 'rate') => {
+  const onSwapInputChange = React.useCallback((value: string, name: 'to' | 'from' | 'rate') => {
     if (name === 'to') {
       onSetToAmount(value)
     }
@@ -633,18 +622,16 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       onSetFromAmount(value)
     }
     if (name === 'rate') {
-      onSetExchangeRate(value)
+      setExchangeRate(value)
     }
-  }
+  }, [onSetToAmount, onSetFromAmount])
 
-  const onFilterAssetList = (asset: BraveWallet.BlockchainToken) => {
+  const onFilterAssetList = React.useCallback((asset: BraveWallet.BlockchainToken) => {
     const newList = swapAssetOptions.filter((assets) => assets !== asset)
     setFilteredAssetList(newList)
-  }
+  }, [swapAssetOptions])
 
-  const clearPreset = () => {
-    setSelectedPreset(undefined)
-  }
+  const clearPreset = React.useCallback(() => setSelectedPreset(undefined), [])
 
   const onSelectPresetAmount = usePreset(
     {
@@ -819,11 +806,11 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
     nativeAssetBalance,
     onCustomSlippageToleranceChange,
     onFilterAssetList,
-    onSelectExpiration,
+    setOrderExpiration,
     onSelectPresetAmount,
     onSelectSlippageTolerance,
     onSelectTransactAsset,
-    onSetExchangeRate,
+    setExchangeRate,
     onSetFromAmount,
     onSetToAmount,
     onSubmitSwap,
