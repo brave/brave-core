@@ -388,9 +388,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 && !OnboardingPrefManager.getInstance().shouldShowBadgeAnimation()) {
             mBadgeAnimationView.setVisibility(View.INVISIBLE);
         }
-        int appOpenCount = SharedPreferencesManager.getInstance().readInt(
-                BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
-
+        
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             if (mSettingsBar != null) {
                 mSettingsBar.setAlpha(0f);
@@ -578,9 +576,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         if (mImageCreditLayout != null) {
             LinearLayout.LayoutParams linearLayoutParams =
                     (LinearLayout.LayoutParams) mImageCreditLayout.getLayoutParams();
-
+            Log.e("tapan","here2");
             int imageCreditCorrection =
-                    NTPUtil.correctImageCreditLayoutTopPosition(mNtpImageGlobal);
+                    NTPUtil.correctImageCreditLayoutTopPosition(mNtpImageGlobal, shouldShowSuperReferral());
 
             if (toTop) {
                 imageCreditCorrection = 0;
@@ -1059,11 +1057,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                                     && ConfigurationUtils.isLandscape(mActivity)) {
                                                 mParentScrollView.smoothScrollTo(0, 0);
                                             } else {
-                                                mParentScrollView.smoothScrollTo(0,
-                                                        mRecyclerView.getHeight()
-                                                                - mParentScrollView
-                                                                          .getMaxScrollAmount()
-                                                                + dpToPx(getContext(), 90));
+                                                
+                                                int pxHeight = ConfigurationUtils.getDisplayMetrics(mActivity).get("height");
+                                                int margin = pxHeight - dpToPx(getContext(), 219);
+                                                mParentScrollView.smoothScrollTo(0, margin);
                                             }
                                         }, 100);
 
@@ -1337,6 +1334,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         Display display = mActivity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
+
         NTPUtil.updateOrientedUI(mActivity, this, size, ntpImage);
         ImageView mSponsoredLogo = (ImageView) findViewById(R.id.sponsored_logo);
         FloatingActionButton mSuperReferralLogo = (FloatingActionButton) findViewById(R.id.super_referral_logo);
@@ -1488,6 +1486,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
             new AsyncTask<List<TopSiteTable>>() {
                 @Override
                 protected List<TopSiteTable> doInBackground() {
+
                     for (TopSite topSite : topSites) {
                         mDatabaseHelper.insertTopSite(topSite);
                     }
@@ -1498,7 +1497,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                 protected void onPostExecute(List<TopSiteTable> topSites) {
                     assert ThreadUtils.runningOnUiThread();
                     if (isCancelled()) return;
-
                     loadTopSites(topSites);
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
