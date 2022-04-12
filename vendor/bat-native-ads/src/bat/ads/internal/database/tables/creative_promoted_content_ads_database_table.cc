@@ -23,6 +23,7 @@
 #include "bat/ads/internal/database/tables/campaigns_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
+#include "bat/ads/internal/database/tables/deposits_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/database/tables/segments_database_table.h"
 #include "bat/ads/internal/logging.h"
@@ -182,6 +183,7 @@ void CreativePromotedContentAds::Save(
     creative_ads_database_table_->InsertOrUpdate(transaction.get(),
                                                  creative_ads);
     dayparts_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
+    deposits_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     geo_targets_database_table_->InsertOrUpdate(transaction.get(),
                                                 creative_ads);
     segments_database_table_->InsertOrUpdate(transaction.get(), creative_ads);

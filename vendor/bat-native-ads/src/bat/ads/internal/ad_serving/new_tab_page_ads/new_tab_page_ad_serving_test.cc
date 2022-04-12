@@ -110,7 +110,7 @@ TEST_F(BatAdsNewTabPageAdServingTest, ServeAd) {
         ASSERT_TRUE(success);
 
         NewTabPageAdInfo expected_ad = BuildNewTabPageAd(creative_ad);
-        expected_ad.uuid = ad.uuid;
+        expected_ad.placement_id = ad.placement_id;
 
         EXPECT_EQ(expected_ad, ad);
       });

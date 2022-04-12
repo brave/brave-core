@@ -24,6 +24,7 @@ namespace table {
 class Campaigns;
 class CreativeAds;
 class Dayparts;
+class Deposits;
 class GeoTargets;
 class Segments;
 
@@ -84,6 +85,7 @@ class CreativePromotedContentAds final : public Table {
   std::unique_ptr<Campaigns> campaigns_database_table_;
   std::unique_ptr<CreativeAds> creative_ads_database_table_;
   std::unique_ptr<Dayparts> dayparts_database_table_;
+  std::unique_ptr<Deposits> deposits_database_table_;
   std::unique_ptr<GeoTargets> geo_targets_database_table_;
   std::unique_ptr<Segments> segments_database_table_;
 };

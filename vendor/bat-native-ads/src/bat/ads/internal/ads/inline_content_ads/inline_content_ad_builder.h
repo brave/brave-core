@@ -18,7 +18,7 @@ InlineContentAdInfo BuildInlineContentAd(
 
 InlineContentAdInfo BuildInlineContentAd(
     const CreativeInlineContentAdInfo& creative_ad,
-    const std::string& uuid);
+    const std::string& placement_id);
 
 }  // namespace ads
 

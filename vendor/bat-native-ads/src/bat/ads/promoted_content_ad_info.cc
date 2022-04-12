@@ -49,7 +49,7 @@ bool PromotedContentAdInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("uuid")) {
-    uuid = document["uuid"].GetString();
+    placement_id = document["uuid"].GetString();
   }
 
   if (document.HasMember("creative_instance_id")) {
@@ -94,7 +94,7 @@ void SaveToJson(JsonWriter* writer, const PromotedContentAdInfo& info) {
   writer->String(info.type.ToString().c_str());
 
   writer->String("uuid");
-  writer->String(info.uuid.c_str());
+  writer->String(info.placement_id.c_str());
 
   writer->String("creative_instance_id");
   writer->String(info.creative_instance_id.c_str());

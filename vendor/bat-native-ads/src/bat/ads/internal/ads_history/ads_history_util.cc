@@ -23,7 +23,7 @@ AdHistoryInfo BuildAdHistory(const AdInfo& ad,
   ad_history.timestamp = base::Time::Now().ToDoubleT();
 
   ad_history.ad_content.type = ad.type;
-  ad_history.ad_content.uuid = ad.uuid;
+  ad_history.ad_content.uuid = ad.placement_id;
   ad_history.ad_content.creative_instance_id = ad.creative_instance_id;
   ad_history.ad_content.creative_set_id = ad.creative_set_id;
   ad_history.ad_content.campaign_id = ad.campaign_id;

@@ -175,6 +175,14 @@ class ADS_EXPORT Ads {
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type) = 0;
 
+  // When a user views or clicks an |ad_mojom| search result ad, we should
+  // trigger an |event_type| event. Should only be called again after
+  // |TriggerSearchResultAdEventCallback|
+  virtual void TriggerSearchResultAdEvent(
+      mojom::SearchResultAdPtr ad_mojom,
+      const mojom::SearchResultAdEventType event_type,
+      TriggerSearchResultAdEventCallback callback) = 0;
+
   // Purge orphaned ad events for the specified |ad_type|
   virtual void PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) = 0;
 

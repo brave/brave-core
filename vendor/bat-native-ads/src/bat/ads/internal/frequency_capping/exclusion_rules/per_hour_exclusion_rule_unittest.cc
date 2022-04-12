@@ -80,6 +80,10 @@ TEST_F(BatAdsPerHourExclusionRuleTest, AdAllowedAfter1HourForMultipleTypes) {
       AdType::kPromotedContentAd, creative_ad, ConfirmationType::kServed);
   ad_events.push_back(ad_event_3);
 
+  const AdEventInfo ad_event_4 = GenerateAdEvent(
+      AdType::kSearchResultAd, creative_ad, ConfirmationType::kServed);
+  ad_events.push_back(ad_event_4);
+
   FastForwardClockBy(base::Hours(1));
 
   // Act

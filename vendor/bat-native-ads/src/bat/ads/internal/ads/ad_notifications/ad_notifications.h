@@ -33,17 +33,18 @@ class AdNotifications final {
 
   void Initialize(InitializeCallback callback);
 
-  bool Get(const std::string& uuid, AdNotificationInfo* ad_notification) const;
+  bool Get(const std::string& placement_id,
+           AdNotificationInfo* ad_notification) const;
 
   void PushBack(const AdNotificationInfo& info);
   void PopFront(const bool should_dismiss);
 
-  bool Remove(const std::string& uuid);
+  bool Remove(const std::string& placement_id);
   void RemoveAll();
 
   void CloseAndRemoveAll();
 
-  bool Exists(const std::string& uuid) const;
+  bool Exists(const std::string& placement_id) const;
 
   uint64_t Count() const;
 
@@ -59,8 +60,8 @@ class AdNotifications final {
   bool GetNotificationFromDictionary(base::DictionaryValue* dictionary,
                                      AdNotificationInfo* ad_notification) const;
 
-  bool GetUuidFromDictionary(base::DictionaryValue* dictionary,
-                             std::string* value) const;
+  bool GetPlacementIdFromDictionary(base::DictionaryValue* dictionary,
+                                    std::string* value) const;
   bool GetCreativeInstanceIdFromDictionary(base::DictionaryValue* dictionary,
                                            std::string* value) const;
   bool GetCreativeSetIdFromDictionary(base::DictionaryValue* dictionary,

@@ -45,6 +45,10 @@ base::Time MaxTime() {
   return TimestampToTime(std::numeric_limits<double>::max());
 }
 
+double DistantPastAsTimestamp() {
+  return DistantPast().ToDoubleT();
+}
+
 base::Time DistantPast() {
   return base::Time();
 }
@@ -63,6 +67,10 @@ base::Time Now() {
 
 std::string NowAsISO8601() {
   return base::TimeToISO8601(Now());
+}
+
+double DistantFutureAsTimestamp() {
+  return DistantFuture().ToDoubleT();
 }
 
 base::Time DistantFuture() {

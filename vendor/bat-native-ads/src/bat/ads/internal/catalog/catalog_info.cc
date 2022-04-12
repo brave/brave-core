@@ -299,7 +299,8 @@ bool CatalogInfo::FromJson(const std::string& json,
           creative_set_info.creative_promoted_content_ads.push_back(
               creative_info);
         } else if (code == "in_page_all_v1") {
-          // TODO(tmancey): https://github.com/brave/brave-browser/issues/7298
+          // TODO(https://github.com/brave/brave-browser/issues/7298): Implement
+          // Brave Publisher Ads
           continue;
         } else {
           // Unknown type

@@ -14,7 +14,7 @@ AdInfo::AdInfo(const AdInfo& info) = default;
 AdInfo::~AdInfo() = default;
 
 bool AdInfo::operator==(const AdInfo& rhs) const {
-  return type == rhs.type && uuid == rhs.uuid &&
+  return type == rhs.type && placement_id == rhs.placement_id &&
          creative_instance_id == rhs.creative_instance_id &&
          creative_set_id == rhs.creative_set_id &&
          campaign_id == rhs.campaign_id && advertiser_id == rhs.advertiser_id &&
@@ -26,8 +26,9 @@ bool AdInfo::operator!=(const AdInfo& rhs) const {
 }
 
 bool AdInfo::IsValid() const {
-  if (type == AdType::kUndefined || creative_instance_id.empty() ||
-      creative_set_id.empty() || campaign_id.empty() || segment.empty() ||
+  if (type == AdType::kUndefined || placement_id.empty() ||
+      creative_instance_id.empty() || creative_set_id.empty() ||
+      campaign_id.empty() || advertiser_id.empty() || segment.empty() ||
       target_url.empty()) {
     return false;
   }

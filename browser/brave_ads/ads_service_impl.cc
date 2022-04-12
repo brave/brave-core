@@ -1087,27 +1087,29 @@ bool AdsServiceImpl::ShouldShowCustomAdNotifications() {
 }
 
 void AdsServiceImpl::MaybeOpenNewTabWithAd() {
-  if (retry_opening_new_tab_for_ad_with_uuid_.empty()) {
+  if (retry_opening_new_tab_for_ad_with_placement_id_.empty()) {
     return;
   }
 
-  OpenNewTabWithAd(retry_opening_new_tab_for_ad_with_uuid_);
+  OpenNewTabWithAd(retry_opening_new_tab_for_ad_with_placement_id_);
 
-  retry_opening_new_tab_for_ad_with_uuid_ = "";
+  retry_opening_new_tab_for_ad_with_placement_id_ = "";
 }
 
-void AdsServiceImpl::OpenNewTabWithAd(const std::string& uuid) {
-  if (StopNotificationTimeoutTimer(uuid)) {
-    VLOG(1) << "Cancelled timeout for ad notification with uuid " << uuid;
+void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
+  if (StopNotificationTimeoutTimer(placement_id)) {
+    VLOG(1) << "Cancelled timeout for ad notification with placement id "
+            << placement_id;
   }
 
   if (!connected() || !is_initialized_) {
-    RetryOpeningNewTabWithAd(uuid);
+    RetryOpeningNewTabWithAd(placement_id);
     return;
   }
 
   bat_ads_->GetAdNotification(
-      uuid, base::BindOnce(&AdsServiceImpl::OnOpenNewTabWithAd, AsWeakPtr()));
+      placement_id,
+      base::BindOnce(&AdsServiceImpl::OnOpenNewTabWithAd, AsWeakPtr()));
 }
 
 void AdsServiceImpl::OnOpenNewTabWithAd(const std::string& json) {
@@ -1162,6 +1164,22 @@ void AdsServiceImpl::OnInlineContentAdEvent(
   bat_ads_->OnInlineContentAdEvent(uuid, creative_instance_id, event_type);
 }
 
+void AdsServiceImpl::TriggerSearchResultAdEvent(
+    ads::mojom::SearchResultAdPtr ad_mojom,
+    const ads::mojom::SearchResultAdEventType event_type,
+    TriggerSearchResultAdEventCallback callback) {
+  if (!connected()) {
+    std::move(callback).Run(/* success */ false, ad_mojom->placement_id,
+                            event_type);
+    return;
+  }
+
+  bat_ads_->TriggerSearchResultAdEvent(
+      std::move(ad_mojom), event_type,
+      base::BindOnce(&AdsServiceImpl::OnTriggerSearchResultAdEvent, AsWeakPtr(),
+                     std::move(callback)));
+}
+
 void AdsServiceImpl::PurgeOrphanedAdEventsForType(
     const ads::mojom::AdType ad_type) {
   if (!connected()) {
@@ -1171,9 +1189,9 @@ void AdsServiceImpl::PurgeOrphanedAdEventsForType(
   bat_ads_->PurgeOrphanedAdEventsForType(ad_type);
 }
 
-void AdsServiceImpl::RetryOpeningNewTabWithAd(const std::string& uuid) {
-  VLOG(1) << "Retry opening new tab for ad with uuid " << uuid;
-  retry_opening_new_tab_for_ad_with_uuid_ = uuid;
+void AdsServiceImpl::RetryOpeningNewTabWithAd(const std::string& placement_id) {
+  VLOG(1) << "Retry opening new tab for ad with placement id " << placement_id;
+  retry_opening_new_tab_for_ad_with_placement_id_ = placement_id;
 }
 
 void AdsServiceImpl::OpenNewTabWithUrl(const std::string& url) {
@@ -1208,12 +1226,12 @@ void AdsServiceImpl::OpenNewTabWithUrl(const std::string& url) {
 #endif
 }
 
-void AdsServiceImpl::NotificationTimedOut(const std::string& uuid) {
+void AdsServiceImpl::NotificationTimedOut(const std::string& placement_id) {
   if (!connected()) {
     return;
   }
 
-  CloseNotification(uuid);
+  CloseNotification(placement_id);
 }
 
 void AdsServiceImpl::RegisterResourceComponentsForLocale(
@@ -1291,6 +1309,14 @@ void AdsServiceImpl::OnGetInlineContentAd(OnGetInlineContentAdCallback callback,
   }
 
   std::move(callback).Run(success, dimensions, dictionary);
+}
+
+void AdsServiceImpl::OnTriggerSearchResultAdEvent(
+    TriggerSearchResultAdEventCallback callback,
+    const bool success,
+    const std::string& placement_id,
+    const ads::mojom::SearchResultAdEventType event_type) {
+  std::move(callback).Run(success, placement_id, event_type);
 }
 
 void AdsServiceImpl::OnGetHistory(OnGetHistoryCallback callback,
@@ -1868,7 +1894,8 @@ void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
       body = base::UTF8ToUTF16(info.body);
     }
 
-    const AdNotification ad_notification(info.uuid, title, body, nullptr);
+    const AdNotification ad_notification(info.placement_id, title, body,
+                                         nullptr);
 
     platform_bridge->ShowAdNotification(ad_notification);
   } else {
@@ -1885,12 +1912,12 @@ void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
     message_center::RichNotificationData notification_data;
     notification_data.context_message = u" ";
 
-    const std::string url = kAdNotificationUrlPrefix + info.uuid;
+    const std::string url = kAdNotificationUrlPrefix + info.placement_id;
 
     std::unique_ptr<message_center::Notification> notification =
         std::make_unique<message_center::Notification>(
-            message_center::NOTIFICATION_TYPE_SIMPLE, info.uuid, title, body,
-            gfx::Image(), std::u16string(), GURL(url),
+            message_center::NOTIFICATION_TYPE_SIMPLE, info.placement_id, title,
+            body, gfx::Image(), std::u16string(), GURL(url),
             message_center::NotifierId(
                 message_center::NotifierType::SYSTEM_COMPONENT,
                 "service.ads_service"),
@@ -1906,10 +1933,11 @@ void AdsServiceImpl::ShowNotification(const ads::AdNotificationInfo& info) {
                               *notification, /*metadata=*/nullptr);
   }
 
-  StartNotificationTimeoutTimer(info.uuid);
+  StartNotificationTimeoutTimer(info.placement_id);
 }
 
-void AdsServiceImpl::StartNotificationTimeoutTimer(const std::string& uuid) {
+void AdsServiceImpl::StartNotificationTimeoutTimer(
+    const std::string& placement_id) {
 #if BUILDFLAG(IS_ANDROID)
   if (!ShouldShowCustomAdNotifications()) {
     return;
@@ -1924,17 +1952,19 @@ void AdsServiceImpl::StartNotificationTimeoutTimer(const std::string& uuid) {
 
   const base::TimeDelta timeout = base::Seconds(timeout_in_seconds);
 
-  notification_timers_[uuid] = std::make_unique<base::OneShotTimer>();
-  notification_timers_[uuid]->Start(
+  notification_timers_[placement_id] = std::make_unique<base::OneShotTimer>();
+  notification_timers_[placement_id]->Start(
       FROM_HERE, timeout,
-      base::BindOnce(&AdsServiceImpl::NotificationTimedOut, AsWeakPtr(), uuid));
+      base::BindOnce(&AdsServiceImpl::NotificationTimedOut, AsWeakPtr(),
+                     placement_id));
 
-  VLOG(1) << "Timeout ad notification with uuid " << uuid << " in "
-          << timeout_in_seconds << " seconds";
+  VLOG(1) << "Timeout ad notification with placement id " << placement_id
+          << " in " << timeout_in_seconds << " seconds";
 }
 
-bool AdsServiceImpl::StopNotificationTimeoutTimer(const std::string& uuid) {
-  const auto iter = notification_timers_.find(uuid);
+bool AdsServiceImpl::StopNotificationTimeoutTimer(
+    const std::string& placement_id) {
+  const auto iter = notification_timers_.find(placement_id);
   if (iter == notification_timers_.end()) {
     return false;
   }
@@ -1957,21 +1987,21 @@ bool AdsServiceImpl::ShouldShowNotifications() {
   return true;
 }
 
-void AdsServiceImpl::CloseNotification(const std::string& uuid) {
+void AdsServiceImpl::CloseNotification(const std::string& placement_id) {
   if (ShouldShowCustomAdNotifications()) {
     std::unique_ptr<AdNotificationPlatformBridge> platform_bridge =
         std::make_unique<AdNotificationPlatformBridge>(profile_);
 
-    platform_bridge->CloseAdNotification(uuid);
+    platform_bridge->CloseAdNotification(placement_id);
   } else {
 #if BUILDFLAG(IS_ANDROID)
     const std::string brave_ads_url_prefix = kAdNotificationUrlPrefix;
     const GURL service_worker_scope =
         GURL(brave_ads_url_prefix.substr(0, brave_ads_url_prefix.size() - 1));
     BraveNotificationPlatformBridgeHelperAndroid::MaybeRegenerateNotification(
-        uuid, service_worker_scope);
+        placement_id, service_worker_scope);
 #endif
-    display_service_->Close(NotificationHandler::Type::BRAVE_ADS, uuid);
+    display_service_->Close(NotificationHandler::Type::BRAVE_ADS, placement_id);
   }
 }
 
