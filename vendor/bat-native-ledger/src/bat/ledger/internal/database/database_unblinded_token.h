@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "bat/ledger/internal/database/database_table.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 namespace database {
@@ -26,8 +27,8 @@ class DatabaseUnblindedToken: public DatabaseTable {
       type::UnblindedTokenList list,
       ledger::ResultCallback callback);
 
-  void GetSpendableRecordsByTriggerIds(
-      const std::vector<std::string>& trigger_ids,
+  void GetSpendableRecords(
+      const absl::optional<std::vector<std::string>>& trigger_ids,
       GetUnblindedTokenListCallback callback);
 
   void MarkRecordListAsSpent(
