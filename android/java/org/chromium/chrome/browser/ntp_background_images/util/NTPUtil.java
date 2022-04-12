@@ -89,7 +89,7 @@ public class NTPUtil {
         BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
     }
 
-    public static int correctImageCreditLayoutTopPosition(NTPImage ntpImage) {
+    public static int correctImageCreditLayoutTopPosition(NTPImage ntpImage, boolean isTopSites) {
         int imageCreditCorrection = 0;
         int widgetCompensation = 0;
         boolean isCompensate = false;
@@ -111,7 +111,12 @@ public class NTPUtil {
             imageCreditCorrection = isLandscape ? (int) (pxHeight * (isCompensate ? 0.48 : 0.54))
                                                 : (int) (pxHeight * (isCompensate ? 0.60 : 0.30));
 
-            widgetCompensation = dpToPx(activity, 80);
+            Log.e("tapan","topsites:"+isTopSites);
+            if(isTopSites) {
+                widgetCompensation = dpToPx(activity, 80);
+            } else {
+                widgetCompensation = dpToPx(activity, -22);
+            }
 
             if (ntpImage instanceof BackgroundImage) {
                 if (!isTablet) {
@@ -181,7 +186,8 @@ public class NTPUtil {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
-            int topMargin = correctImageCreditLayoutTopPosition(ntpImage);
+
+            int topMargin = correctImageCreditLayoutTopPosition(ntpImage, false);
             imageCreditLayoutParams.setMargins(0, topMargin, 0, 10);
 
             View feedSpinner = (View) view.findViewById(R.id.feed_spinner);
