@@ -145,13 +145,6 @@ void FarblePlugins(DOMPluginArray* owner,
 
 }  // namespace brave
 
-#define BRAVE_DOM_PLUGINS_IS_PDF_VIEWER_AVAILABLE                \
-  if (auto* data = GetPluginData())                              \
-    for (const Member<MimeClassInfo>& mime_info : data->Mimes()) \
-      if (mime_info->Type() == "application/pdf")                \
-        return true;                                             \
-  return false;
-
 #define BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__RESET_PLUGIN_DATA \
   if (PluginData* data = GetPluginData())                       \
     data->ResetPluginData();
@@ -163,4 +156,3 @@ void FarblePlugins(DOMPluginArray* owner,
 
 #undef BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__FARBLE_PLUGIN_DATA
 #undef BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA__RESET_PLUGIN_DATA
-#undef BRAVE_DOM_PLUGINS_IS_PDF_VIEWER_AVAILABLE
