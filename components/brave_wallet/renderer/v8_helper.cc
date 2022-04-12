@@ -48,10 +48,9 @@ v8::MaybeLocal<v8::Value> CallMethodOfObject(
     std::vector<v8::Local<v8::Value>>&& args) {
   if (web_frame->IsProvisional())
     return v8::Local<v8::Value>();
-  v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
-  v8::Context::Scope context_scope(context);
-  v8::MicrotasksScope microtasks(v8::Isolate::GetCurrent(),
+  v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Value> object;
   if (!GetProperty(context, context->Global(), object_name).ToLocal(&object)) {
@@ -68,10 +67,10 @@ v8::MaybeLocal<v8::Value> CallMethodOfObject(
     std::vector<v8::Local<v8::Value>>&& args) {
   if (web_frame->IsProvisional())
     return v8::Local<v8::Value>();
-  v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
   v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
   v8::Context::Scope context_scope(context);
-  v8::MicrotasksScope microtasks(v8::Isolate::GetCurrent(),
+  v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Value> method;
   if (!GetProperty(context, object, method_name).ToLocal(&method)) {

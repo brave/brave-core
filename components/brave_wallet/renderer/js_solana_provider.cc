@@ -536,9 +536,8 @@ void JSSolanaProvider::OnConnect(
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
-               std::move(result),
+               result,
                error == mojom::SolanaProviderError::kSuccess);
-
   if (error == mojom::SolanaProviderError::kSuccess) {
     v8::Local<v8::Value> v8_public_key;
     CHECK(
@@ -572,7 +571,7 @@ void JSSolanaProvider::OnSignAndSendTransaction(
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
-               std::move(v8_result),
+               v8_result,
                error == mojom::SolanaProviderError::kSuccess);
 }
 
@@ -620,7 +619,7 @@ void JSSolanaProvider::OnSignMessage(
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
-               std::move(v8_result),
+               v8_result,
                error == mojom::SolanaProviderError::kSuccess);
 }
 
@@ -645,7 +644,7 @@ void JSSolanaProvider::OnSignTransaction(
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
-               std::move(result),
+               result,
                error == mojom::SolanaProviderError::kSuccess);
 }
 
@@ -681,7 +680,7 @@ void JSSolanaProvider::OnSignAllTransactions(
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
-               std::move(result),
+               result,
                error == mojom::SolanaProviderError::kSuccess);
 }
 
@@ -718,7 +717,7 @@ void JSSolanaProvider::OnRequest(
   }
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
-               std::move(v8_result),
+               v8_result,
                error == mojom::SolanaProviderError::kSuccess);
 }
 
@@ -767,7 +766,6 @@ v8::Local<v8::Value> JSSolanaProvider::CreatePublicKey(
   const base::Value public_key_value(base58_str);
   std::vector<v8::Local<v8::Value>> args;
   args.push_back(v8_value_converter_->ToV8Value(&public_key_value, context));
-
   v8::MaybeLocal<v8::Value> public_key_result =
       CallMethodOfObject(render_frame_->GetWebFrame(), u"solana",
                          u"createPublickey", std::move(args));
