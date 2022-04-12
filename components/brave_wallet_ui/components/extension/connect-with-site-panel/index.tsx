@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 // Types
-import { OriginInfo, WalletAccountType } from '../../../constants/types'
+import { BraveWallet, WalletAccountType } from '../../../constants/types'
 
 // Components
 import {
@@ -32,7 +32,7 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
 
 export interface Props {
-  originInfo: OriginInfo
+  originInfo: BraveWallet.OriginInfo
   accounts: WalletAccountType[]
   primaryAction: () => void
   secondaryAction: () => void

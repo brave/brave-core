@@ -7,6 +7,7 @@ module brave_wallet.mojom;
 
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
+import "url/mojom/origin.mojom";
 import "url/mojom/url.mojom";
 
 // Used to notify the renderer of provider information for use in
@@ -127,11 +128,11 @@ interface BraveWalletProvider {
   Init(pending_remote<EventsListener> events_listener);
 
   // Corresponds to window.ethereum.request
-  Request(mojo_base.mojom.Value input, string origin) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
+  Request(mojo_base.mojom.Value input) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
 
   // Corresponds to window.ethereum.enable and eth_requestAccounts
   Enable() => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
-  Send(string method, mojo_base.mojom.Value params, string origin) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
+  Send(string method, mojo_base.mojom.Value params) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
 
   // Used for the connect event
   GetChainId() => (string chain_id);
@@ -230,8 +231,8 @@ interface PanelHandler {
   // Notify the backend that the dialog should be closed.
   CloseUI();
 
-  ConnectToSite(array<string> accounts, string origin);
-  CancelConnectToSite(string origin);
+  ConnectToSite(array<string> accounts);
+  CancelConnectToSite();
   SetCloseOnDeactivate(bool close);
 };
 
@@ -673,18 +674,29 @@ struct NetworkInfo {
   NetworkInfoData? data;
 };
 
+struct OriginInfo {
+  url.mojom.Origin origin;
+  string origin_spec;
+  string e_tld_plus_one;
+};
+
+struct AddChainRequest {
+  OriginInfo origin_info;
+  NetworkInfo network_info;
+};
+
 struct SwitchChainRequest {
-  url.mojom.Url origin;
+  OriginInfo origin_info;
   string chain_id;
 };
 
 struct GetEncryptionPublicKeyRequest {
-  url.mojom.Url origin;
+  OriginInfo origin_info;
   string address;
 };
 
 struct DecryptRequest {
-  url.mojom.Url origin;
+  OriginInfo origin_info;
   string address;
   string? unsafe_message;
 };
@@ -694,14 +706,14 @@ struct DecryptRequest {
 interface JsonRpcService {
   // Checks the chain ID for an ethereum chain that should be added
   AddEthereumChain(NetworkInfo chain) => (string chain_id, ProviderError error, string error_message);
-  AddEthereumChainForOrigin(NetworkInfo chain, url.mojom.Url origin) => (string chain_id, ProviderError error, string error_message);
+  AddEthereumChainForOrigin(NetworkInfo chain, url.mojom.Origin origin) => (string chain_id, ProviderError error, string error_message);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
   RemoveEthereumChain(string chain_id) => (bool success);
-  GetPendingChainRequests() => (array<NetworkInfo> networks);
+  GetPendingAddChainRequests() => (array<AddChainRequest> requests);
 
   // This is used for UI notifying native when the user approves or
   // rejects SwitchChainRequest
-  NotifySwitchChainRequestProcessed(bool approved, url.mojom.Url origin);
+  NotifySwitchChainRequestProcessed(bool approved, url.mojom.Origin origin);
   GetPendingSwitchChainRequests() => (array<SwitchChainRequest> requests);
 
   SetNetwork(string chain_id, CoinType coin) => (bool success);
@@ -911,7 +923,7 @@ interface SolanaTxManagerProxy {
 
 interface BraveWalletServiceObserver {
   // Fired when the active origin is changed along with its eTLD+1
-  OnActiveOriginChanged(string origin, string e_tld_plus_one);
+  OnActiveOriginChanged(OriginInfo origin_info);
 
   // Fired when the default wallet setting changes
   OnDefaultWalletChanged(DefaultWallet wallet);
@@ -927,6 +939,7 @@ interface BraveWalletServiceObserver {
 };
 
 struct SignMessageRequest {
+  OriginInfo origin_info;
   int32 id;
   string address;
   string message;
@@ -943,6 +956,7 @@ enum ExternalWalletType {
 };
 
 struct AddSuggestTokenRequest {
+  OriginInfo origin;
   BlockchainToken token;
 };
 
@@ -1001,16 +1015,16 @@ interface BraveWalletService {
   SetDefaultBaseCryptocurrency(string cryptocurrency);
 
   // Adds the Ethereum permission for the account
-  AddEthereumPermission(string origin, string account) => (bool success);
+  AddEthereumPermission(url.mojom.Origin origin, string account) => (bool success);
 
   // Checks if the Ethereum permission is allowed for the origin on the account
-  HasEthereumPermission(string origin, string account) => (bool success, bool has_permission);
+  HasEthereumPermission(url.mojom.Origin origin, string account) => (bool success, bool has_permission);
 
   // Resets the Ethereum permission for the account
-  ResetEthereumPermission(string origin, string account) => (bool success);
+  ResetEthereumPermission(url.mojom.Origin origin, string account) => (bool success);
 
-  // Obtains the active origin and eTLD+1 of it
-  GetActiveOrigin() => (string origin, string e_tld_plus_one);
+  // Obtains the active origin info.
+  GetActiveOrigin() => (OriginInfo origin_info);
 
   // These are used for UI notifying native when the user approve/reject SignMessage[Hardware]Request
   NotifySignMessageRequestProcessed(bool approved, int32 id);
@@ -1027,12 +1041,12 @@ interface BraveWalletService {
 
   // This is used for UI notifying native when the user approves or
   // rejects getting the public key for an origin
-  NotifyGetPublicKeyRequestProcessed(bool approved, url.mojom.Url origin);
+  NotifyGetPublicKeyRequestProcessed(bool approved, url.mojom.Origin origin);
   GetPendingGetEncryptionPublicKeyRequests() => (array<GetEncryptionPublicKeyRequest> requests);
 
   // This is used for UI notifying native when the user approves or
   // rejects decrypting data for an origin
-  NotifyDecryptRequestProcessed(bool approved, url.mojom.Url origin);
+  NotifyDecryptRequestProcessed(bool approved, url.mojom.Origin origin);
   GetPendingDecryptRequests() => (array<DecryptRequest> requests);
 
   // Resets the keyring and the related preferences

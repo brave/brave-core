@@ -35,6 +35,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -153,14 +154,13 @@ void GetErrorCodeMessage(base::Value formed_response,
 class TestBraveWalletServiceObserver
     : public brave_wallet::mojom::BraveWalletServiceObserver {
  public:
-  TestBraveWalletServiceObserver() {}
+  TestBraveWalletServiceObserver() = default;
 
   void OnDefaultWalletChanged(mojom::DefaultWallet wallet) override {
     default_wallet_ = wallet;
     defaultWalletChangedFired_ = true;
   }
-  void OnActiveOriginChanged(const std::string& origin,
-                             const std::string& etld_plus_one) override {}
+  void OnActiveOriginChanged(mojom::OriginInfoPtr origin_info) override {}
   void OnDefaultBaseCurrencyChanged(const std::string& currency) override {
     currency_ = currency;
     defaultBaseCurrencyChangedFired_ = true;
@@ -549,7 +549,9 @@ class BraveWalletServiceUnitTest : public testing::Test {
                        bool approve,
                        bool run_switch_network = false) {
     mojom::AddSuggestTokenRequestPtr request =
-        mojom::AddSuggestTokenRequest::New(suggested_token.Clone());
+        mojom::AddSuggestTokenRequest::New(
+            MakeOriginInfo(url::Origin::Create(GURL("https://brave.com"))),
+            suggested_token.Clone());
     base::RunLoop run_loop;
     service_->AddSuggestTokenRequest(
         request.Clone(),
@@ -1130,7 +1132,7 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
                            mojom::NetworkInfoData::NewEthData(
                                mojom::NetworkInfoDataETH::New(false)));
 
-  AddCustomNetwork(GetPrefs(), chain.Clone());
+  AddCustomNetwork(GetPrefs(), chain);
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer_->OnNetworkListChangedFired());
 
@@ -1157,7 +1159,7 @@ TEST_F(BraveWalletServiceUnitTest,
                            "Test Coin", 11, mojom::CoinType::ETH,
                            mojom::NetworkInfoData::NewEthData(
                                mojom::NetworkInfoDataETH::New(false)));
-  AddCustomNetwork(GetPrefs(), chain.Clone());
+  AddCustomNetwork(GetPrefs(), chain);
 
   auto native_asset = mojom::BlockchainToken::New(
       "", "Test Coin", "https://url1.com", false, false, "TC", 11, true, "", "",
@@ -1615,12 +1617,15 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
+  mojom::OriginInfoPtr origin_info =
+      MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
   std::string expected_signature = std::string("0xSiGnEd");
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      1, address, std::string(message.begin(), message.end()), false,
-      absl::nullopt, absl::nullopt);
+      origin_info.Clone(), 1, address,
+      std::string(message.begin(), message.end()), false, absl::nullopt,
+      absl::nullopt);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
       std::move(request1), base::BindLambdaForTesting(
@@ -1642,8 +1647,9 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      2, address, std::string(message.begin(), message.end()), false,
-      absl::nullopt, absl::nullopt);
+      origin_info.Clone(), 2, address,
+      std::string(message.begin(), message.end()), false, absl::nullopt,
+      absl::nullopt);
   service_->AddSignMessageRequest(
       std::move(request2), base::BindLambdaForTesting(
                                [&](bool approved, const std::string& signature,
@@ -1661,12 +1667,15 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, SignMessage) {
+  mojom::OriginInfoPtr origin_info =
+      MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
   std::string expected_signature = std::string("0xSiGnEd");
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      1, address, std::string(message.begin(), message.end()), false,
-      absl::nullopt, absl::nullopt);
+      origin_info.Clone(), 1, address,
+      std::string(message.begin(), message.end()), false, absl::nullopt,
+      absl::nullopt);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
       std::move(request1), base::BindLambdaForTesting(
@@ -1684,8 +1693,9 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      2, address, std::string(message.begin(), message.end()), false,
-      absl::nullopt, absl::nullopt);
+      origin_info.Clone(), 2, address,
+      std::string(message.begin(), message.end()), false, absl::nullopt,
+      absl::nullopt);
   service_->AddSignMessageRequest(
       std::move(request2), base::BindLambdaForTesting(
                                [&](bool approved, const std::string& signature,
@@ -1883,11 +1893,14 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletUserAssets));
   EXPECT_TRUE(GetPrefs()->HasPrefPath(kDefaultBaseCurrency));
   EXPECT_TRUE(GetPrefs()->HasPrefPath(kDefaultBaseCryptocurrency));
+  mojom::OriginInfoPtr origin_info =
+      MakeOriginInfo(url::Origin::Create(GURL("https://brave.com")));
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      1, address, std::string(message.begin(), message.end()), false,
-      absl::nullopt, absl::nullopt);
+      origin_info.Clone(), 1, address,
+      std::string(message.begin(), message.end()), false, absl::nullopt,
+      absl::nullopt);
   service_->AddSignMessageRequest(
       std::move(request1),
       base::BindLambdaForTesting(

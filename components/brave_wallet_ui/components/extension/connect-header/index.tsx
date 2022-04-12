@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { OriginInfo } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -15,9 +14,10 @@ import {
 } from './style'
 
 import { URLText } from '../shared-panel-styles'
+import { BraveWallet } from '../../../constants/types'
 
 export interface Props {
-  originInfo: OriginInfo
+  originInfo: BraveWallet.OriginInfo
   hideTitle?: boolean
 }
 
@@ -26,9 +26,12 @@ function ConnectHeader (props: Props) {
 
   return (
     <StyledWrapper>
-      <FavIcon src={`chrome://favicon/size/64@1x/${originInfo.origin}`} />
+      <FavIcon src={`chrome://favicon/size/64@1x/${originInfo.originSpec}`} />
       <URLText>
-        <CreateSiteOrigin originInfo={originInfo} />
+        <CreateSiteOrigin
+          originSpec={originInfo.originSpec}
+          eTldPlusOne={originInfo.eTldPlusOne}
+        />
       </URLText>
       {!hideTitle &&
         <PanelTitle>{getLocale('braveWalletConnectWithSiteHeaderTitle')}</PanelTitle>

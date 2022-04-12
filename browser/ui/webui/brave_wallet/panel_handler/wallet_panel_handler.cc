@@ -36,8 +36,8 @@ void WalletPanelHandler::CloseUI() {
   }
 }
 
-void WalletPanelHandler::ConnectToSite(const std::vector<std::string>& accounts,
-                                       const std::string& origin) {
+void WalletPanelHandler::ConnectToSite(
+    const std::vector<std::string>& accounts) {
   content::WebContents* contents = get_active_web_contents_.Run();
   if (!contents)
     return;
@@ -46,7 +46,7 @@ void WalletPanelHandler::ConnectToSite(const std::vector<std::string>& accounts,
                                                               contents);
 }
 
-void WalletPanelHandler::CancelConnectToSite(const std::string& origin) {
+void WalletPanelHandler::CancelConnectToSite() {
   content::WebContents* contents = get_active_web_contents_.Run();
   if (!contents)
     return;

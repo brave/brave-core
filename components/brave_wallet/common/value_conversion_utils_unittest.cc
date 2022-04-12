@@ -115,7 +115,7 @@ TEST(ValueConversionUtilsUnitTest, EthNetworkInfoToValueTest) {
       "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
       {"https://url1.com"}, "symbol_name", "symbol", 11, mojom::CoinType::ETH,
       mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
-  base::Value value = brave_wallet::EthNetworkInfoToValue(chain.Clone());
+  base::Value value = brave_wallet::EthNetworkInfoToValue(chain);
   EXPECT_EQ(*value.FindStringKey("chainId"), chain.chain_id);
   EXPECT_EQ(*value.FindStringKey("chainName"), chain.chain_name);
   EXPECT_EQ(*value.FindStringPath("nativeCurrency.name"), chain.symbol_name);
@@ -187,8 +187,7 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
   url::Origin origin = url::Origin::Create(GURL("https://brave.com"));
   std::vector<std::string> accounts{
       "0xA99D71De40D67394eBe68e4D0265cA6C9D421029"};
-  base::Value value =
-      PermissionRequestResponseToValue(origin.Serialize(), accounts);
+  base::Value value = PermissionRequestResponseToValue(origin, accounts);
 
   // [{
   //   "caveats":[

@@ -38,7 +38,6 @@ import {
   WalletInfo,
   DefaultCurrencies,
   GetPriceReturnInfo,
-  OriginInfo,
   SolFeeEstimates,
   SPLTransferFromParams
 } from '../../constants/types'
@@ -92,7 +91,7 @@ export const rejectAllTransactions = createAction('rejectAllTransactions')
 export const setAccountTransactions = createAction<AccountTransactions>('setAccountTransactions')
 export const defaultWalletUpdated = createAction<BraveWallet.DefaultWallet>('defaultWalletUpdated')
 export const setSelectedAccount = createAction<WalletAccountType>('setSelectedAccount')
-export const activeOriginChanged = createAction<OriginInfo>('activeOriginChanged')
+export const activeOriginChanged = createAction<BraveWallet.OriginInfo>('activeOriginChanged')
 export const refreshGasEstimates = createAction<BraveWallet.TransactionInfo>('refreshGasEstimates')
 export const setGasEstimates = createAction<BraveWallet.GasEstimation1559>('setGasEstimates')
 export const setSolFeeEstimates = createAction<SolFeeEstimates>('setEstimatedSolFee')

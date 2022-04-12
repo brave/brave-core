@@ -11,6 +11,9 @@
 #include <vector>
 
 class GURL;
+namespace url {
+class Origin;
+}
 
 namespace brave_wallet {
 
@@ -21,9 +24,9 @@ namespace brave_wallet {
  * invalid old_origin or empty addresses.
  */
 bool GetConcatOriginFromWalletAddresses(
-    const GURL& old_origin,
+    const url::Origin& old_origin,
     const std::vector<std::string>& addresses,
-    GURL* new_origin);
+    url::Origin* new_origin);
 
 /**
  * Parse the overwritten requesting origins from ethereum permission
@@ -33,8 +36,8 @@ bool GetConcatOriginFromWalletAddresses(
  * https://origin as the original requesting_origin and 0x123... as the account
  * address.
  */
-bool ParseRequestingOriginFromSubRequest(const GURL& origin,
-                                         std::string* requesting_origin,
+bool ParseRequestingOriginFromSubRequest(const url::Origin& origin,
+                                         url::Origin* requesting_origin,
                                          std::string* account);
 
 /**
@@ -45,17 +48,17 @@ bool ParseRequestingOriginFromSubRequest(const GURL& origin,
  * will return https://origin as the original requesting_origin and
  * {0x123, 0x456} as the address_queue.
  */
-bool ParseRequestingOrigin(const GURL& origin,
-                           std::string* requesting_origin,
+bool ParseRequestingOrigin(const url::Origin& origin,
+                           url::Origin* requesting_origin,
                            std::queue<std::string>* address_queue);
 
 /**
  * Given old_origin, adding account info to its host part and return as
  * new_origin.
  */
-bool GetSubRequestOrigin(const GURL& old_origin,
+bool GetSubRequestOrigin(const url::Origin& old_origin,
                          const std::string& account,
-                         GURL* new_origin);
+                         url::Origin* new_origin);
 
 /**
  * Given accounts, and origin, return the WebUI URL for connecting with site
@@ -65,7 +68,7 @@ bool GetSubRequestOrigin(const GURL& old_origin,
  */
 GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,
                                 const std::vector<std::string>& accounts,
-                                const std::string& origin);
+                                const url::Origin& origin);
 
 }  // namespace brave_wallet
 
