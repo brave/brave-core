@@ -1164,7 +1164,7 @@
 <translation id="2962388922926051374">在 <ph name="URL"/> 上请求方法“eth_chainId”失败</translation>
 <translation id="8325036459845654666">已添加此网络。</translation>
 <translation id="554350381160981853">对输入的数据进行签名只能在使用 1.10.5 及以上固件版本的 Trezor Model One 上进行</translation>
-<translation id="1752214435563414457">Brave 互换股权</translation>
+<translation id="1752214435563414457">Brave Swap-stakes</translation>
 <translation id="7829441065063984927">加密货币赠送活动为期 7 天，奖项价值约 50 万美元。</translation>
 <translation id="8292716346768453265">立即就参加！</translation>
 <translation id="3155170474926428993">Tor 启动器</translation>
@@ -1176,7 +1176,7 @@
 <translation id="1671503397662036257">Tor 连接状态</translation>
 <translation id="6024292492796847324">Tor 的初始化进度</translation>
 <translation id="8458987127502506209">启用 Brave 盾牌</translation>
-<translation id="7509914170164691086">Shields 已 <ph name="LINK_BEFORE"/>启用<ph name="LINK_AFTER"/></translation>
+<translation id="7509914170164691086">Shields 已为<ph name="LINK_AFTER"/> <ph name="LINK_BEFORE"/></translation>
 <translation id="260764436039299868">Shields 已<ph name="LINK_BEFORE"/>停用<ph name="LINK_AFTER"/></translation>
 <translation id="7709075156958117386">如果这个网站无法正常工作，试试关闭 Shields。
 <ph name="LINK_BEFORE"/>注意：这可能会削弱 Brave 的隐私保护。<ph name="LINK_AFTER"/></translation>

@@ -51,6 +51,8 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1643029991199044105">Przejdź przez najczęściej ostatnio używane karty, wciskając klawisze Ctrl i Tab.</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">Artykuły automatycznie ładują się w trybie czytnika, oszczędzając Twój czas</translation>
+<translation id="5510493033031835532">Automatyczne przekierowywanie stron AMP</translation>
+<translation id="5197219128592971597">Zawsze odwiedzaj pierwotne (bez standardu AMP) adresy URL, a nie wersje stron korzystających ze standardu Accelerated Mobile Pages Google</translation>
 <translation id="5802665280774361839">Wyświetl elementy automatycznie wypełnione w pasku adresu</translation>
 <translation id="597020512043916976">Pokaż popularne strony w sugestiach autouzupełnienia</translation>
 <translation id="264150068416846820">Pokaż sugestie stron Brave w sugestiach autouzupełnienia</translation>
@@ -229,6 +231,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="4718664830805652430">Domyślna podstawowa waluta</translation>
 <translation id="7992507032049865603">Domyślna podstawowa kryptowaluta</translation>
 <translation id="1834467296210148203">Pokaż ikonę Brave Wallet na pasku narzędzi</translation>
+<translation id="4613486011786721686">Ukryj ikonę Portfela Brave na pasku narzędzi</translation>
 <translation id="8239147115686034860">Automatycznie zablokuj portfel Brave</translation>
 <translation id="414639769490080648">Czas, w minutach, po upływie którego portfel Brave zostanie automatycznie zablokowany</translation>
 <translation id="6864914031231797928">Zezwól na logowanie Google w przypadku rozszerzeń</translation>
@@ -390,6 +393,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="8712637175834984815">Rozumiem</translation>
 <translation id="4394049700291259645">Wyłącz</translation>
 <translation id="7142548388914389999">Zezwól na zastosowanie analizy produktów z zachowaniem prywatności (P3A)</translation>
+<translation id="8286082624639565868">Te całkowicie anonimowe informacje pomagają Brave oszacować ogólny poziom korzystania z niektórych funkcji i ulepszyć je dla Ciebie.</translation>
 <translation id="1947672064022327074">Czy chcesz uruchomić portfele kryptowalut do obsługi Ethereum?</translation>
 <translation id="7583735190612229830">Skonfiguruj portfele kryptowalut do interakcji z tą aplikacją i innymi podobnymi.</translation>
 <translation id="8731422418734770661">Skonfiguruj portfele kryptowaluty</translation>
@@ -432,7 +436,10 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="2808630562319398131">Zresetuj dane nagród przeglądarki Brave...</translation>
 <translation id="2273851479262317744">Ustaw Brave jako domyślną przeglądarkę</translation>
 <translation id="8581710194025054669">Aby zapewnić sobie najlepszą ochronę prywatności w Internecie, rozważ ustawienie Brave jako domyślnej przeglądarki na swoim komputerze. Jeśli to zrobisz, każde kliknięte łącze internetowe będzie otwierane z wykorzystaniem ochrony prywatności Brave.</translation>
+<translation id="1968543937259008435">Gotów na korzystanie z najlepszej ochrony prywatności online?</translation>
+<translation id="6817415381278637662">Ustaw Brave jako przeglądarkę domyślną, aby skorzystać z ochrony prywatności Brave na każdej stronie sieci Web, którą otworzysz.</translation>
 <translation id="8722651357687610395">Ustaw Brave jako domyślną</translation>
+<translation id="2370739752330685659">Może później</translation>
 <translation id="1241283133946520352">Sieci</translation>
 <translation id="8205945804087322170">Dodawanie nowej sieci</translation>
 <translation id="2156993118928861787">Nieprawidłowy adres</translation>

@@ -189,6 +189,8 @@
 <translation id="905529390827000221">4 iklan per jam</translation>
 <translation id="7694167481321619202">5 iklan per jam</translation>
 <translation id="3705420658531870884">10 iklan per jam</translation>
+<translation id="2356652719351432565">Relevan dengan iklan regional</translation>
+<translation id="3216275550298493597">Ini memungkinkan Brave untuk menunjukkan kepada Anda iklan-iklan yang ditujukan khusus untuk wilayah Anda.</translation>
 <translation id="8446884382197647889">Pelajari Selengkapnya</translation>
 <translation id="6209514229703649203">Dideteksi otomatis sebagai [[adsSubdivisionTarget]]</translation>
 <translation id="8010081455002666927">Deteksi otomatis</translation>
@@ -203,6 +205,8 @@
 <translation id="5810507495128831593">Melihat tip satu kali yang pernah Anda berikan ke situs web dan kreator.</translation>
 <translation id="9147550766164257963">Pelajari lebih lanjut tentang pemberian tip.</translation>
 <translation id="7577100371127227294">Tip Bulanan</translation>
+<translation id="178390304006113804">Menyiapkan tip bulanan berulang sehingga Anda dapat terus mendukung kreator favorit Anda.</translation>
+<translation id="3302159320447117425">Tip bulanan belum disiapkan.</translation>
 <translation id="1617202384704994799">Segera hadir</translation>
 <translation id="2241248417273918295">Penghasilan dibayarkan setiap bulan.</translation>
 <translation id="68906705461077250">Tetapkan frekuensi yang Anda inginkan agar penghasilan bertambah atau berkurang.</translation>
@@ -210,6 +214,7 @@
 <translation id="4129489167302464118">Pembayaran bulanan Anda didistribusikan ke situs yang Anda kunjungi.</translation>
 <translation id="4898632353264854950">Situs akan muncul saat Anda menjelajah</translation>
 <translation id="3024485967181749006">Total tip untuk bulan ini</translation>
+<translation id="8183455888546367148">Tip Total Bulanan untuk bulan ini</translation>
 <translation id="4153752809523809915">Sudahkah Anda memberikan tip untuk pembuat konten favorit Anda hari ini?</translation>
 <translation id="7286722244752781970">Waktu laman minimum sebelum kunjungan dicatat</translation>
 <translation id="4424486208397124985">Kunjungan minimum untuk relevansi penerbit</translation>
@@ -229,6 +234,7 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="7841456038054167122">Masukkan ulang kunci atau coba kunci lain.</translation>
 <translation id="1911900517212490188">Kunci pemulihan yang dimasukkan tidak didukung lagi. Silakan masuk <ph name="BEGIN_LINK"/>di sini<ph name="END_LINK"/> untuk mendapat kunci baru.</translation>
+<translation id="7583327070390027131">Tanggal tip bulanan selanjutnya</translation>
 <translation id="6231182869178328516">Saya baru saja memberi tip untuk <ph name="NAME"/> melalui Brave Browser. Simak di https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipDenganBrave</translation>
 <translation id="3082557070674409251">Diklik</translation>
@@ -237,6 +243,11 @@
 <translation id="8826352442759228526">Brave Rewards Anda tidak dapat diverifikasi karena Anda telah mencapai batas maksimal perangkat yang terverifikasi.</translation>
 <translation id="1221593978088944142">Kesalahan: Batas peranti tercapai</translation>
 <translation id="3113653894794167793">Maaf ada masalah dalam memroses permintaan Anda. Silakan coba lagi.</translation>
+<translation id="3509185560119586847">Sayangnya, profil Imbalan Brave Anda telah ditandai, dan Anda tidak dapat memverifikasi dengan kustodian pada saat ini. Penandaan ini terkadang terjadi karena aktivitas Iklan Brave yang tidak biasa, namun dapat juga merupakan penandaan yang keliru.</translation>
+<translation id="5031451251720571882">Harap perhatikan bahwa sementara profil Imbalan Brave Anda telah ditandai, Anda tidak akan dapat melakukan verifikasi.</translation>
+<translation id="7301759045821910866">Anda tidak perlu melakukan tindakan apa pun. Profil Imbalan Brave akan secara otomatis dievaluasi ulang secara reguler untuk menentukan kapan (atau jika) penandaan bisa dihapuskan. Silakan coba lagi sesering mungkin untuk melihat jika penanda telah dihapus.</translation>
+<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Pelajari lebih lanjut tentang proses Brave dalam menandai profil Imbalan.<ph name="END_LINK"/></translation>
+<translation id="5028274575541726856">Kesalahan: Profil Imbalan Brave telah ditandai</translation>
 <translation id="2607420597216860026">Silakan mencoba lagi setelah Anda menyelesaikan verifikasi ID di <ph name="PROVIDER"/>.</translation>
 <translation id="3183954159462541696">Kesalahan: Anda perlu akun yang terverifikasi untuk masuk</translation>
 <translation id="5260522591743022748">Hmm, sepertinya Brave Rewards Anda telah terverifikasi dengan akun <ph name="PROVIDER"/> lain. Silakan coba memverifikasi kembali dengan akun Anda yang sebelumnya.</translation>
@@ -267,6 +278,7 @@
 <translation id="2359808026110333948">Lanjutkan</translation>
 <translation id="5112354605357157725">Lanjutkan untuk masuk</translation>
 <translation id="1280764044837262633"><ph name="PROVIDER"/> memerlukan saldo minimum sebesar <ph name="AMOUNT"/> BAT untuk membaut akun. Jika Anda sebelumnya telah menghubungkan sebuah akun,</translation>
+<translation id="1892970806832316900">Ditunda hingga <ph name="DATE"/></translation>
 <translation id="752216563428219524">Ads tidak dapat dimulai, silakan segarkan lagi halaman ini.</translation>
 <translation id="7422678632904904341">Jumlah:</translation>
 <translation id="6969783933307596818">Segarkan otomatis setiap 5 detik</translation>
@@ -351,8 +363,13 @@
 <translation id="3248185426436836442">Tertunda</translation>
 <translation id="5906820630265272615">Dana BAT</translation>
 <translation id="5814098892838785557">Anda yakin ingin berhenti mendukung kreator ini?</translation>
+<translation id="6582097696555842139">Batalkan Tip Bulanan</translation>
 <translation id="9087994290002662101">Ubah Jumlah</translation>
+<translation id="2521187434582281933">Konfirmasi Pembatalan Tip Bulanan</translation>
+<translation id="915758461293673891">Jumlah tip:</translation>
+<translation id="78017292973022384">Tip bulanan Anda untuk kreator ini telah dibatalkan.</translation>
 <translation id="534368327994110883">Anda saat ini mendukung kreator ini</translation>
+<translation id="3524380957621081353">Tip bulanan saat ini</translation>
 <translation id="7723816962634734185">Jumlah Khusus</translation>
 <translation id="7286679368056222644">Dukungan bulanan Anda akan</translation>
 <translation id="4088764345615745058">Jumlah tip khusus</translation>
@@ -363,6 +380,8 @@
 <translation id="8994556588732085585">Harap tutup dan buka kembali spanduk tip untuk mencoba lagi.</translation>
 <translation id="8987454605694983241">misalnya <ph name="AMOUNT"/></translation>
 <translation id="4492470488449820476">Jumlah minimal tip adalah <ph name="AMOUNT"/> <ph name="CURRENCY"/></translation>
+<translation id="9088057605518918276">Tip bulanan telah ditetapkan.</translation>
+<translation id="6306631474379759382">Tip tanggal berikutnya:</translation>
 <translation id="3593485149443019592">Token tidak mencukupi. Silakan <ph name="LINK_BEGIN"/>tambahkan dana<ph name="LINK_END"/>.</translation>
 <translation id="3586352807094428968">Brave memungut 5% dari jumlah tip sebagai biaya pemrosesan.</translation>
 <translation id="207268487070188114">Tip Satu Kali</translation>
@@ -463,6 +482,7 @@
 <translation id="4677106999274433911">Anda berhasil mengambil imbalan iklan.</translation>
 <translation id="8304661078305276044">Reward Iklan</translation>
 <translation id="1770001816413426741">Periode Reward</translation>
+<translation id="5419313241771906800">Tip Bulanan</translation>
 <translation id="8307851765167460403">Belum ada aktivitas…</translation>
 <translation id="3630697955794050612">mati</translation>
 <translation id="4921250468871504777">oke</translation>
@@ -483,6 +503,7 @@
 <translation id="135956957367307069">Permintaan Anda tengah diproses, harap menunggu.</translation>
 <translation id="8725066075913043281">Coba lagi</translation>
 <translation id="2600847485413879104">BAT Imbalan</translation>
+<translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="6977372887576114613">BAT Disetorkan</translation>
@@ -549,6 +570,7 @@
 <translation id="923467487918828349">Tampilkan Semua</translation>
 <translation id="5113531205597573951">Situs yang Dikunjungi</translation>
 <translation id="4450893287417543264">Jangan tampilkan lagi</translation>
+<translation id="422369484771082705">Verifikasi adalah opsional. Namun, dengan memverifikasi, Anda akan dapat menarik BAT yang Anda dapatkan dari Imbalan Brave ke dompet kustodian secara langsung.</translation>
 <translation id="3656941797339037856">Tautkan Rewards ke Gemini!</translation>
 <translation id="31532096120351460">Tukarkan kripto 50+, termasuk BAT, di Gemini. Ini adalah platform aman untuk menyimpan kripto Anda. Plus, Anda bisa mendapatkan bunga di AS, HK, dan SG.</translation>
 <translation id="7404779623219601861">Tukar BAT dengan Kartu Hadiah</translation>
@@ -747,6 +769,7 @@
 <translation id="4244985009709452836">Masuklah ke akun <ph name="PROVIDER"/>Anda</translation>
 <translation id="2613359062756190460">Tip Satu Kali</translation>
 <translation id="590733288489975971">Imbalan dari Ads</translation>
+<translation id="6181762795539107980">Tidak Terverifikasi</translation>
 <translation id="3026978804849658576">Lihat rekening koran</translation>
 <translation id="8494748383523030337">Saldo Anda</translation>
 <translation id="1187367336925051518">Rewards <ph name="MONTH"/><ph name="AMOUNT"/></translation>
@@ -876,6 +899,7 @@
 <translation id="5242300593039211344">Kunci Dompet</translation>
 <translation id="765834632354589737">Cadangkan Dompet</translation>
 <translation id="1108298724135935307">Situs terkoneksi</translation>
+<translation id="163697698769819510">Cadangkan dompet Anda sekarang untuk melindungi aset Anda dan memastikan bahwa Anda tidak akan pernah kehilangan akses.</translation>
 <translation id="1018806299114415224">Cadangkan sekarang</translation>
 <translation id="5234764350956374838">Tutup</translation>
 <translation id="4075073132992924258">Brave Wallet tidak diatur sebagai dompet bawaan Anda dan tidak akan merespons ke web3 DApps. Lihat pengaturan untuk mengganti dompet bawaan Anda.</translation>
@@ -979,7 +1003,10 @@
 <translation id="3474375934783434676">Tanda tangani dengan menanggung risiko Anda sendiri</translation>
 <translation id="5488357322146334497">Pesan</translation>
 <translation id="3586752056660754651">Tanda tangani</translation>
+<translation id="3484981968509595506">Ada DApp yang meminta kunci enkripsi publik Anda</translation>
+<translation id="423332628699531400"><ph name="SITE_ORIGIN"/> meminta kunci enkripsi publik dompet Anda. Jika Anda setuju untuk memberikan kunci ini, situs tersebut akan dapat menyusun pesan terenkripsi untuk Anda.</translation>
 <translation id="3340247553212049934">Sediakan</translation>
+<translation id="5883819003576364085"><ph name="SITE_ORIGIN"/> ingin membaca pesan ini untuk menyelesaikan permintaan Anda</translation>
 <translation id="714506544401754321">Dekripsi pesan</translation>
 <translation id="5039804452771397117">Izinkan</translation>
 <translation id="9032898664193335413">Izinkan aplikasi ini untuk menggunakan <ph name="TOKEN_SYMBOL"/> Anda?</translation>
@@ -1084,6 +1111,7 @@
 <translation id="7400927223938424379">Atur yang disarankan</translation>
 <translation id="8179605702342645418">Transaksi mungkin tidak akan diteruskan dalam jaringan ini.</translation>
 <translation id="9100765901046053179">Pengaturan lanjutan</translation>
+<translation id="1924965034964265193">Masukkan nilai khusus saat ini</translation>
 <translation id="4220062530885628403">Saat ini</translation>
 <translation id="2749584096020594976">Nilai saat ini akan secara otomatis ditentukan jika bidang ini tidak disebutkan.</translation>
 <translation id="1599636444563952897">Izin batas pengeluaran memungkinkan <ph name="SITE_ORIGIN"/> untuk menarik dan menghabiskan hingga jumlah berikut:</translation>
@@ -1093,7 +1121,11 @@
 <translation id="6825399159373612149">Domain <ph name="DOMAIN_NAME"/> tidak terdaftar</translation>
 <translation id="8971278306757462297">Alamat penerima adalah alamat Anda sendiri</translation>
 <translation id="3506416339268164412">Alamat penerima adalah alamat kontrak token</translation>
+<translation id="2975056993833847787">Alamat ini tidak dapat diverifikasi (cheksum hilang). Lanjutkan?</translation>
+<translation id="6320252966164556855">Alamat ini tidak lolos verifikasi (checksum tidak valid). Silakan coba lagi, dengan mengganti huruf kecil menjadi huruf besar.</translation>
 <translation id="4667144295226514387">Batas bensin tidak ada</translation>
+<translation id="2021522108838444624">Jumlahnya harus lebih besar dari 0</translation>
+<translation id="8464365289405373974">Alamat pengiriman diperlukan</translation>
 <translation id="862585889767884824">dari</translation>
 <translation id="9106265941552476098">Tolak transaksi <ph name="TRANSACTION_LENGTH"/></translation>
 <translation id="1118876217803190221">Saldo tidak mencukupi</translation>
@@ -1131,6 +1163,9 @@
 <translation id="2962388922926051374">Permintaan metode 'eth_chainId' pada <ph name="URL"/> telah gagal</translation>
 <translation id="8325036459845654666">Jaringan ini telah ditambahkan.</translation>
 <translation id="554350381160981853">Menandatangani data yang diketik didukung hanya pada Trezor Model One dengan Firmware 1.10.5 atau lebih tinggi</translation>
+<translation id="1752214435563414457">Brave Swap-stakes</translation>
+<translation id="7829441065063984927">Pembagian hadiah kripto selama 7 hari, hadiah senilai ~$500 ribu.</translation>
+<translation id="8292716346768453265">Ikuti sekarang!</translation>
 <translation id="3155170474926428993">Peluncur Tor</translation>
 <translation id="3745016858329272300">Info Umum</translation>
 <translation id="4045404575593562245">Peristiwa Kendali Tor</translation>
@@ -1140,9 +1175,16 @@
 <translation id="1671503397662036257">Status Koneksi Tor</translation>
 <translation id="6024292492796847324">Proses Inisialisasi Tor</translation>
 <translation id="8458987127502506209">Aktifkan Brave Shield</translation>
+<translation id="7509914170164691086">Perisai sedang AKTIF <ph name="LINK_BEFORE"/>untuk<ph name="LINK_AFTER"/></translation>
+<translation id="260764436039299868">Perisai sedang TIDAK AKTIF<ph name="LINK_BEFORE"/>untuk<ph name="LINK_AFTER"/></translation>
+<translation id="7709075156958117386">Jika situs ini tampak rusak, coba nonaktifkan Perisai. 
+    <ph name="LINK_BEFORE"/>Catatan: ini dapat mengurangi perlindungan privasi Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Pelacak, iklan, dan lebih banyak pemblokiran <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="5416893287862792505">Kontrol Lanjutan</translation>
+<translation id="5799940914270080805">Mengubah pengaturan ini dapat merusak situs.</translation>
 <translation id="9204041448536398473">Pengaturan Shield Global</translation>
+<translation id="2108334320919763866">Bawaan global</translation>
+<translation id="1928321796986970424">Daftar Filter</translation>
 <translation id="3570081523466826008">Tingkatkan koneksi ke HTTPS</translation>
 <translation id="131231380815754440">Aktifkan HTTPS</translation>
 <translation id="4824468494729001999">Blokir skrip</translation>
@@ -1158,6 +1200,10 @@
 <translation id="5582686930349810484">Sidik jari diblokir (standar)</translation>
 <translation id="6696441392507885865">Sidik jari diblokir (ketat, situs dapat rusak)</translation>
 <translation id="5882733945883311404">Loloskan semua Sidik Jari</translation>
+<translation id="1992750560347846445">Laporkan situs</translation>
+<translation id="2387532482048804818">Beri tahu kami jika situs tidak berfungsi dengan baik saat Perisai diaktifkan.</translation>
+<translation id="9167355841012806439">Anda sedang melihat situs ini tanpa perlindungan privasi Brave</translation>
+<translation id="6835073906252142271">Perisai Brave <ph name="NUMBER"/> Pelacak, iklan, dan lebih banyak hal lagi telah diblokir</translation>
 <translation id="1742469581923031760">Menyambungkan…</translation>
 <translation id="1287487756047817908">Memutuskan…</translation>
 <translation id="2325196879156848326">Koneksi Gagal</translation>

@@ -50,6 +50,8 @@
 <translation id="1643029991199044105">עברו על הלשוניות שנעשה בהן שימוש לאחרונה באמצעות Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">מאמרים נטענים באופן אוטומטי במצב קריאה, כדי לחסוך לך זמן</translation>
+<translation id="5510493033031835532">הפניה אוטומטית של דפי AMP</translation>
+<translation id="5197219128592971597">בקר תמיד בכתובות URL של דפים מקוריים (שאינם AMP), במקום בגרסאות דפי המוביל המואצים של גוגל.</translation>
 <translation id="5802665280774361839">הצג השלמה אוטומטית בשורת הכתובת</translation>
 <translation id="597020512043916976">הצג אתרים מובילים בהצעות להשלמה אוטומטית</translation>
 <translation id="264150068416846820">הצג הצעות לאתרים על ידי Brave בהצעות להשלמה אוטומטית</translation>
@@ -226,6 +228,7 @@
 <translation id="4718664830805652430">ברירת המחדל של מטבע הבסיס</translation>
 <translation id="7992507032049865603">ברירת המחדל של מטבע קריפטו בסיסי</translation>
 <translation id="1834467296210148203">הצג את סמל Brave Wallet בסרגל הכלים</translation>
+<translation id="4613486011786721686">הסתרה של אייקון הארנק בסרגל הפעולות</translation>
 <translation id="8239147115686034860">נעילה אוטומטית של Brave Wallet</translation>
 <translation id="414639769490080648">מספר הדקות להמתנה עד שה-Brave Wallet יינעל אוטומטית</translation>
 <translation id="6864914031231797928">אפשר התחברות באמצעות Google להרחבות</translation>
@@ -388,6 +391,7 @@
 <translation id="8712637175834984815">הבנתי</translation>
 <translation id="4394049700291259645">השבת</translation>
 <translation id="7142548388914389999">אפשר ניתוח מוצרים השומר על פרטיות (P3A)</translation>
+<translation id="8286082624639565868">מידע אנונימי לחלוטין זה עוזר ל-Brave להעריך את השימוש הכולל בתכונות מסוימות ולהפוך אותן לטובות יותר עבורך.</translation>
 <translation id="1947672064022327074">רוצה לפתוח ארנקי קריפטו לקבלת תמיכה ל-Ethereum?</translation>
 <translation id="7583735190612229830">הגדר/י ארנקי קריפטו כדי לקיים אינטראקציה עם אפליקציה זו ואחרות כמוה.</translation>
 <translation id="8731422418734770661">הגדר ארנקי קריפטו</translation>
@@ -430,7 +434,10 @@
 <translation id="2808630562319398131">אפס נתוני Brave Rewards...</translation>
 <translation id="2273851479262317744">הגדירו את Brave כדפדפן ברירת המחדל</translation>
 <translation id="8581710194025054669">להבטחת הפרטיות הטובה ביותר באינטרנט, שקול להגדיר את Brave כדפדפן ברירת המחדל במחשב שלך. עם Brave כברירת מחדל, כל קישור אינטרנט שתלחץ עליו ייפתח עם הגנות הפרטיות של Brave</translation>
+<translation id="1968543937259008435">מוכנים לפרטיות הטובה ביותר ברשת?</translation>
+<translation id="6817415381278637662">הגדירו את Brave כדפדפן ברירת המחדל שלכם כדי לקבל את הגנת הפרטיות של Brave בכל דף אינטרנט שאתם פותחים.</translation>
 <translation id="8722651357687610395">הגדר/י את Brave כברירת מחדל</translation>
+<translation id="2370739752330685659">אולי מאוחר יותר</translation>
 <translation id="1241283133946520352">רשתות</translation>
 <translation id="8205945804087322170">הוסף רשת חדשה</translation>
 <translation id="2156993118928861787">כתובת לא חוקית</translation>

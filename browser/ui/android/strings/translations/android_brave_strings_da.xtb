@@ -43,6 +43,9 @@
 <translation id="1276592121036104130">Indlæs nyt indhold</translation>
 <translation id="3189348785087463371">Promoveret</translation>
 <translation id="7554145152551782675">Flere Brave-tilbud</translation>
+<translation id="1717242776111689224">Vis Brave News</translation>
+<translation id="4732255422524275223">Dine kilder</translation>
+<translation id="152579389256498990">Feed eller URL</translation>
 <translation id="4975944254857623648">Standardkilder</translation>
 <translation id="253886574765651454">Tilføj kilde</translation>
 <translation id="5787084571334399599">Forhindrer browser i fingeraftrykning</translation>
@@ -272,6 +275,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="2927095357213611519">Du kan støtte web-udviklere med tokens.\Tjen tokens ved at se reklamer som respekterer dit privatliv.</translation>
 <translation id="213787746370741250">Åbn faner i Personlige Faner</translation>
 <translation id="8030169304546394654">Afbrudt</translation>
+<translation id="6181762795539107980">Ikke bekræftet</translation>
 <translation id="543510923939676996">Tegnebog verificeret</translation>
 <translation id="8673913984316081937">Det er valgfrit, om du vil verificere din tegnebog</translation>
 <translation id="8558636200953226885">Men bekræft hvis du kan....</translation>
@@ -288,6 +292,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="3699674790322420653">Gennemfør tegnebogsverificering</translation>
 <translation id="2193391216824305230">Brugers tegnebog</translation>
 <translation id="1665118090708049096">Gå til min <ph name="WALLET_PROVIDER"/>-konto</translation>
+<translation id="1948959999802743233">Afbryd forbindelsen til <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Hæv Penge</translation>
 <translation id="8874184842967597500">Ikke tilsluttet</translation>
 <translation id="3368922792935385530">Tilsluttet</translation>
@@ -656,7 +661,9 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="414639769490080648">Antallet minutter, indtil Brave Wallet automatisk bliver låst</translation>
 <translation id="4993345308607970390">Nulstil Brave Wallet</translation>
 <translation id="6369495274982305511">Er du sikker på, at du vil nulstille din wallet? Hvis du ikke har sikkerhedskopieret den, vil du miste alle dine kontodata (deriblandt alle tilknyttede midler), hvis du nulstiller. Skriv "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
+<translation id="4862812525895306758">Ryd transaktion og nonce-information</translation>
 <translation id="5693968582510626466">At rydde transaktioner kan være nyttigt for udviklere eller når status ryddes på en lokal server</translation>
+<translation id="5421107279168565467">Er du sikker på, at du vil nulstille transaktionen og nonce-information? Denne indstilling bruges som regel af udviklere, der kører en lokal testserver. Skriv "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minut} other {# minut}}</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
 <translation id="719977489961414786">Opgradér til en VPN, der beskytter din forbindelse og blokerer invasive trackere over alt.</translation>
@@ -740,8 +747,11 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Beløb + Brændstof</translation>
 <translation id="1950052789869821983">Transaktion</translation>
+<translation id="2304783958703511257">Avancerede indstillinger</translation>
 <translation id="4220062530885628403">Nonce</translation>
+<translation id="1924965034964265193">Angiv tilpasset nonce-værdi</translation>
 <translation id="5317780077021120954">Gem</translation>
+<translation id="4979796155378508955">Transaktion må ikke overføres til netværket, hvis den tilpassede nonce-værdi er ikke-sekventiel eller har andre fejl.</translation>
 <translation id="6122742277607781713">Portefølje</translation>
 <translation id="750843150060816463">"Gas"-pris (Gwei)</translation>
 <translation id="1426320910664514906">Gas-grænse</translation>
@@ -823,6 +833,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1346059596910821859">Donation</translation>
 <translation id="1549705559752367917">Send tip</translation>
 <translation id="6727102863431372879">Indstil</translation>
+<translation id="6413162919383874653">Månedligt bidrag</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Vis autofuldførelse i addressefeltet</translation>
@@ -848,6 +859,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="2156993118928861787">Ugyldig adresse</translation>
 <translation id="6889920539620318793">Markér som aktiv</translation>
 <translation id="2653659639078652383">Indsend</translation>
+<translation id="4945690646623486292">Vælg netværk</translation>
 <translation id="8853725596990766789">Ændr beløb</translation>
 <translation id="5233638681132016545">Ny fane</translation>
 <translation id="9200453331904391567">Afbryd forbindelsen fra Brave Belønninger</translation>

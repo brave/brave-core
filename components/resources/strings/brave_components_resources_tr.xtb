@@ -4,7 +4,7 @@
 <translation id="5288293905681750318">İzleyici &amp; reklam engellendi</translation>
 <translation id="2313532038420432247">HTTPS Yükseltmeleri</translation>
 <translation id="788493840831967104">Kazanıldı</translation>
-<translation id="2318592590318590295">Bant genişliği kaydedildi</translation>
+<translation id="2318592590318590295">Bant genişliği kurtarıldı</translation>
 <translation id="5206618227023752085">En iyi site kaldırıldı.</translation>
 <translation id="2079545284768500474">Geri al</translation>
 <translation id="6040143037577758943">Kapat</translation>
@@ -1175,7 +1175,7 @@
 <translation id="1671503397662036257">Tor Bağlantı Durumu</translation>
 <translation id="6024292492796847324">Tor Başlatma İlerlemesi</translation>
 <translation id="8458987127502506209">Brave Kalkanlarını Etkinleştir</translation>
-<translation id="7509914170164691086">Kalkanlar <ph name="LINK_BEFORE"/>AÇIK<ph name="LINK_AFTER"/></translation>
+<translation id="7509914170164691086">Şunun için Kalkanlar <ph name="LINK_BEFORE"/>AÇIK<ph name="LINK_AFTER"/>:</translation>
 <translation id="260764436039299868">Kalkanlar <ph name="LINK_BEFORE"/>KAPALI<ph name="LINK_AFTER"/></translation>
 <translation id="7709075156958117386">Bu web sitesi bozuk görünüyorsa Kalkanları kapatmayı deneyin. 
     <ph name="LINK_BEFORE"/>Not: Bu Brave'in gizlilik korumalarını azaltabilir.<ph name="LINK_AFTER"/></translation>
@@ -1203,7 +1203,7 @@
 <translation id="1992750560347846445">Web sitesini raporla</translation>
 <translation id="2387532482048804818">Kalkanlar açık durumdayken web sitesi düzgün çalışmıyorsa bunu bize bildirin.</translation>
 <translation id="9167355841012806439">Bu web sitesini Brave'in gizlilik koruması olmadan görüntülüyorsunuz</translation>
-<translation id="6835073906252142271">Brave Kalkanları <ph name="NUMBER"/> İzleyiciler, reklamlar ve daha fazlası engellendi</translation>
+<translation id="6835073906252142271">Brave Kalkanları <ph name="NUMBER"/> İzleyici, reklam ve daha fazlası engellendi</translation>
 <translation id="1742469581923031760">Bağlanıyor…</translation>
 <translation id="1287487756047817908">Bağlantı kesiliyor…</translation>
 <translation id="2325196879156848326">Bağlantı Başarısız Oldu</translation>

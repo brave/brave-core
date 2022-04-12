@@ -252,7 +252,7 @@
     "description": ""
   },
   "walletUnverified": {
-    "message": "Unverified",
+    "message": "Непроверено",
     "description": ""
   },
   "walletVerified": {
@@ -380,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Monthly tip failed",
+    "message": "Месечният бакшиш е неуспешен",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -388,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Your monthly tips have been processed.",
+    "message": "Вашите месечни бакшиши са обработени.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

@@ -43,6 +43,9 @@
 <translation id="1276592121036104130">Încărcați conținut nou</translation>
 <translation id="3189348785087463371">Promovat</translation>
 <translation id="7554145152551782675">Mai multe oferte Brave</translation>
+<translation id="1717242776111689224">Activați Brave News</translation>
+<translation id="4732255422524275223">Sursele dvs.</translation>
+<translation id="152579389256498990">URL-ul fluxului sau al site-ului</translation>
 <translation id="4975944254857623648">Surse implicite</translation>
 <translation id="253886574765651454">Adăugați sursă</translation>
 <translation id="5787084571334399599">Previne amprentarea browserului</translation>
@@ -271,6 +274,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="2927095357213611519">Puteți folosi token-uri pentru a sprijini creatorii de materiale de pe internet.\nCâștigați token-uri vizualizând reclame care respectă confidențialitatea.</translation>
 <translation id="213787746370741250">Deschidere file în File particularizate</translation>
 <translation id="8030169304546394654">Deconectat</translation>
+<translation id="6181762795539107980">Neverificat</translation>
 <translation id="543510923939676996">Portofelul a fost verificat</translation>
 <translation id="8673913984316081937">Verificarea portofelului dvs. este opțională</translation>
 <translation id="8558636200953226885">Dar dacă verificați, veți putea...</translation>
@@ -287,6 +291,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="3699674790322420653">Finalizați verificarea portofelului</translation>
 <translation id="2193391216824305230">Portofel utilizator</translation>
 <translation id="1665118090708049096">Accesați contul <ph name="WALLET_PROVIDER"/> meu</translation>
+<translation id="1948959999802743233">Deconectați de la <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Retragere fonduri</translation>
 <translation id="8874184842967597500">Neconectat</translation>
 <translation id="3368922792935385530">Conectat</translation>
@@ -526,6 +531,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="5187052478998910855">Ai nevoie de o actualizare a Recompenselor?</translation>
 <translation id="8622329973403382303">Fă un tur rapid pentru a vedea cum funcționează, pentru a intra în istorie ca un campion al Recompenselor!</translation>
 <translation id="7625138338483121345">Setează Brave ca browser prestabilit</translation>
+<translation id="4511485286950743564">Când Brave este browser implicit, fiecare link pe care dați clic se deschide cu protecțiile de confidențialitate Brave.</translation>
 <translation id="9218430445555521422">Setează ca prestabilit</translation>
 <translation id="3479552764303398839">Nu acum</translation>
 <translation id="4956847150856741762">1</translation>
@@ -655,7 +661,9 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="414639769490080648">Numărul de minute de așteptare până la blocarea automată a portofelului Brave</translation>
 <translation id="4993345308607970390">Resetați portofelul Brave</translation>
 <translation id="6369495274982305511">Sigur doriți să resetați portofelul dvs.? Dacă nu ați realizat o copie de rezervă după portofel, resetarea va duce la pierderea tuturor datelor privind contul (inclusiv a fondurilor asociate). Tastați „<ph name="CONFIRMATION_PHRASE"/>” pentru a confirma.</translation>
+<translation id="4862812525895306758">Ștergeți informațiile referitoare la tranzacții și nonce</translation>
 <translation id="5693968582510626466">Ștergerea tranzacțiilor poate fi utilă pentru dezvoltatori sau în cazul golirii informațiilor pe un server local</translation>
+<translation id="5421107279168565467">Sigur doriți să resetați toate tranzacțiile din portofel și informația nonce? Această opțiune este utilizată în principal de dezvoltatori care rulează un server de test local. Tastați „<ph name="CONFIRMATION_PHRASE"/>” pentru a confirma.</translation>
 <translation id="930472263779999522">{MINUTE, plural, =1 {# minut} other {# minute}}</translation>
 <translation id="4449475351935531438">Firewall Brave + VPN</translation>
 <translation id="719977489961414786">Treceți la un VPN, pentru a proteja conexiunea și a bloca sistemele invazive de urmărire oriunde v-ați afla.</translation>
@@ -739,8 +747,11 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Suma + Gas</translation>
 <translation id="1950052789869821983">Tranzacție</translation>
+<translation id="2304783958703511257">Setări avansate</translation>
 <translation id="4220062530885628403">Nonce</translation>
+<translation id="1924965034964265193">Introduceți o valoare nonce personalizată</translation>
 <translation id="5317780077021120954">Salvează</translation>
+<translation id="4979796155378508955">E posibil ca tranzacția să nu fie propagată spre rețea dacă valoarea personalizată nonce este non-secvențială sau are erori.</translation>
 <translation id="6122742277607781713">Portofoliu</translation>
 <translation id="750843150060816463">Preț gas (Gwei)</translation>
 <translation id="1426320910664514906">Limită gas</translation>
@@ -822,6 +833,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1346059596910821859">Indiciu</translation>
 <translation id="1549705559752367917">Trimiteți bacșiș</translation>
 <translation id="6727102863431372879">Setați</translation>
+<translation id="6413162919383874653">Plăți lunare</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Afișați completarea automată în bara de adrese</translation>
@@ -847,6 +859,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="2156993118928861787">Adresă incorectă</translation>
 <translation id="6889920539620318793">Setați ca activă</translation>
 <translation id="2653659639078652383">Trimiteți</translation>
+<translation id="4945690646623486292">Selectați rețeaua</translation>
 <translation id="8853725596990766789">Modificați suma</translation>
 <translation id="5233638681132016545">Filă nouă</translation>
 <translation id="9200453331904391567">Deconectare de la Brave Rewards</translation>

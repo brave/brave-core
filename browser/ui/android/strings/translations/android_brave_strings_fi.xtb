@@ -43,6 +43,9 @@
 <translation id="1276592121036104130">Lataa uutta sisältöä</translation>
 <translation id="3189348785087463371">Promootio</translation>
 <translation id="7554145152551782675">Lisää Brave-tarjouksia</translation>
+<translation id="1717242776111689224">Ota Brave-uutiset käyttöön</translation>
+<translation id="4732255422524275223">Lähteesi</translation>
+<translation id="152579389256498990">Syötteen tai sivuston URL-osoite</translation>
 <translation id="4975944254857623648">Oletusarvoiset lähteet</translation>
 <translation id="253886574765651454">Lisää lähde</translation>
 <translation id="5787084571334399599">Estää selaimen sormenjälkitunnistamisen</translation>
@@ -273,6 +276,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="2927095357213611519">Voit tukea verkkotekijöitä poleteilla.\nAnsaitse poletteja katsomalla yksityisyyttä kunnioittavia mainoksia.</translation>
 <translation id="213787746370741250">Avaa välilehdet Muokattavat välilehdet -osiossa</translation>
 <translation id="8030169304546394654">Yhteys katkaistu</translation>
+<translation id="6181762795539107980">Ei vahvistettu</translation>
 <translation id="543510923939676996">Lompakko vahvistettu</translation>
 <translation id="8673913984316081937">Lompakkosi vahvistaminen on vapaaehtoista</translation>
 <translation id="8558636200953226885">Mutta jos vahvistat, voit...</translation>
@@ -289,6 +293,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="3699674790322420653">Viimeistele lompakon vahvistus</translation>
 <translation id="2193391216824305230">Käyttäjälompakko</translation>
 <translation id="1665118090708049096">Siirry <ph name="WALLET_PROVIDER"/> -tililleni</translation>
+<translation id="1948959999802743233">Katkaise yhteys kohteesta <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Nosta rahaa</translation>
 <translation id="8874184842967597500">Ei yhdistetty</translation>
 <translation id="3368922792935385530">Yhdistetty</translation>
@@ -528,6 +533,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="5187052478998910855">Tarvitsetko kertausta Rewardsin toiminnasta?</translation>
 <translation id="8622329973403382303">Käy pikakierroksella kerrataksesi, kuinka voit siirtyä historiassa alaspäin Rewards-ammattilaisen tavoin!</translation>
 <translation id="7625138338483121345">Bravein asettaminen oletusselaimeksi</translation>
+<translation id="4511485286950743564">Kun Brave on oletuksena, jokainen napsauttamasi linkki avautuu Braven tietosuoja-asetusten mukaisesti.</translation>
 <translation id="9218430445555521422">Aseta oletusselaimeksi</translation>
 <translation id="3479552764303398839">Ei nyt</translation>
 <translation id="4956847150856741762">1</translation>
@@ -656,7 +662,9 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="414639769490080648">Odottavien minuuttien määrä, kunnes Brave Wallet -lompakko lukitaan automaattisesti</translation>
 <translation id="4993345308607970390">Nollaa Brave Wallet</translation>
 <translation id="6369495274982305511">Haluatko varmasti nollata lompakkosi? Jos lompakkoasi ei ole varmuuskopioitu, nollaus johtaa kaikkien tilitietojen menetykseen (mukaan lukien kaikki siihen liittyvät varat). Vahvista kirjoittamalla <ph name="CONFIRMATION_PHRASE"/>.</translation>
+<translation id="4862812525895306758">Tyhjennä maksutapahtuma- ja nonce-tiedot</translation>
 <translation id="5693968582510626466">Maksutapahtumien tyhjennys voi olla hyödyllinen kehittäjille tai, kun tyhjennetään tilaa paikallisella palvelimella</translation>
+<translation id="5421107279168565467">Haluatko varmasti nollata maksutapahtuma- ja nonce-tiedot? Tätä vaihtoehtoa käyttävät lähinnä kehittäjät, jotka käyttävät paikallista testipalvelinta. Kirjoita "<ph name="CONFIRMATION_PHRASE"/>" vahvistaaksesi.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# minuutti} other {# minuuttia}}</translation>
 <translation id="4449475351935531438">Brave-palomuuri ja -VPN</translation>
 <translation id="719977489961414786">Päivitä VPN:ksi, jotta voit suojata yhteytesi ja estää invasiivisen seurannan kaikkialla.</translation>
@@ -740,8 +748,11 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="1634828734222219955">Yhteensä</translation>
 <translation id="7995708795274219641">Määrä + gas</translation>
 <translation id="1950052789869821983">Maksutapahtuma</translation>
+<translation id="2304783958703511257">Lisäasetukset</translation>
 <translation id="4220062530885628403">Nonce</translation>
+<translation id="1924965034964265193">Anna muokattu nonce-arvo</translation>
 <translation id="5317780077021120954">Tallenna</translation>
+<translation id="4979796155378508955">Maksutapahtumaa ei välitetä verkkoon, jos muokattu nonce-arvo ei ole järjestyksessä tai jos siinä on muita virheitä.</translation>
 <translation id="6122742277607781713">Portfolio</translation>
 <translation id="750843150060816463">Gas-hinta (Gwei)</translation>
 <translation id="1426320910664514906">Gas-raja</translation>
@@ -823,6 +834,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="1346059596910821859">Tippi</translation>
 <translation id="1549705559752367917">Lähetä tippi</translation>
 <translation id="6727102863431372879">Aseta</translation>
+<translation id="6413162919383874653">Kuukausittainen tippi</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Näytä automaattinen täydennys osoiterivillä</translation>
@@ -848,6 +860,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="2156993118928861787">Virheellinen osoite</translation>
 <translation id="6889920539620318793">Aseta aktiiviseksi</translation>
 <translation id="2653659639078652383">Lähetä</translation>
+<translation id="4945690646623486292">Valitse verkko</translation>
 <translation id="8853725596990766789">Muuta summa</translation>
 <translation id="5233638681132016545">Uusi välilehti</translation>
 <translation id="9200453331904391567">Katkaise yhteys Brave-palkintoihin</translation>

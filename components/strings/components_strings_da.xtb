@@ -500,7 +500,6 @@ Ellers vil det blive blokeret af dine privatlivsindstillinger. Det giver det ind
 <translation id="2523886232349826891">Gemmes kun på denne enhed</translation>
 <translation id="2524461107774643265">Tilføj flere oplysninger</translation>
 <translation id="2529899080962247600">Dette felt må ikke have mere end <ph name="MAX_ITEMS_LIMIT"/> poster. Alle yderligere poster ignoreres.</translation>
-<translation id="40442660395682483">Åbn en ny inkognitofane for at browse privat</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{og 1 mere}one{og # mere}other{og # mere}}</translation>
 <translation id="2536110899380797252">Tilføj adresse</translation>
 <translation id="2539524384386349900">Registrer</translation>
@@ -1420,7 +1419,6 @@ Ellers vil det blive blokeret af dine privatlivsindstillinger. Det giver det ind
 <translation id="5556459405103347317">Genindlæs</translation>
 <translation id="5560088892362098740">Udløbsdato</translation>
 <translation id="55635442646131152">Indholdsfortegnelse</translation>
-<translation id="5395368798429603306">Åbn inkognitofane</translation>
 <translation id="5565735124758917034">Aktiv</translation>
 <translation id="5570825185877910964">Beskyt konto</translation>
 <translation id="5571083550517324815">Der kan ikke afhentes på denne adresse. Vælg en anden adresse.</translation>
@@ -1875,7 +1873,6 @@ Ellers vil det blive blokeret af dine privatlivsindstillinger. Det giver det ind
 <translation id="7192203810768312527">Frigør <ph name="SIZE"/>. Nogle websites indlæses muligvis langsommere, næste gang du besøger websitet.</translation>
 <translation id="719464814642662924">Visa</translation>
 <translation id="7201591969684833065">Din administrator kan se:</translation>
-<translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/> – tryk på Tab-tasten efterfulgt af Enter for at åbne en ny inkognitofane, så du kan browse privat</translation>
 <translation id="7202346780273620635">Letter-Extra</translation>
 <translation id="7210863904660874423"><ph name="HOST_NAME"/> overholder ikke sikkerhedsstandarderne.</translation>
 <translation id="7210993021468939304">Linux-aktivitet i containeren. Kan også installere og køre Linux-apps i containeren.</translation>
@@ -2136,7 +2133,6 @@ Yderligere oplysninger:
 <translation id="799149739215780103">Bind</translation>
 <translation id="7992044431894087211">Skærmdelingen med <ph name="APPLICATION_TITLE"/> blev genoptaget</translation>
 <translation id="7995512525968007366">Ikke angivet</translation>
-<translation id="3711639027736550870">Knappen Åbn inkognitofane – tryk på Enter for at åbne en ny inkognitofane, så du kan browse privat</translation>
 <translation id="800218591365569300">Prøv at lukke andre faner eller programmer for at frigøre hukommelse.</translation>
 <translation id="8004582292198964060">Browser</translation>
 <translation id="8012116502927253373">{NUM_CARDS,plural, =1{Kortet og faktureringsadressen gemmes. Du kan bruge dem, når du er logget ind på <ph name="USER_EMAIL"/>.}one{Kortet og faktureringsadressen gemmes. Du kan bruge dem, når du er logget ind på <ph name="USER_EMAIL"/>.}other{Kortene og faktureringsadresserne gemmes. Du kan bruge dem, når du er logget ind på <ph name="USER_EMAIL"/>.}}</translation>
@@ -2554,6 +2550,10 @@ Yderligere oplysninger:
         <ph name="END_LIST"/></translation>
 <translation id="6043883615739972429"><ph name="BEGIN_LINK"/>Få mere at vide om Private in Brave<ph name="END_LINK"/></translation>
 <translation id="9153679102508470540">Blokér cookies fa tredjeparter i Private</translation>
+<translation id="5395368798429603306">Åbn privat fane</translation>
+<translation id="40442660395682483">Åbn en ny privat fane for at browse privat</translation>
+<translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tryk på Tab og derefter Enter for at åbne en ny privat fane, hvis du vil browse privat</translation>
+<translation id="3711639027736550870">Åbn privat fane-knappen, tryk på Enter for at åbne en ny privat fane for at browse privat</translation>
 <translation id="5549245478906381817">Åbn Privat vindue</translation>
 <translation id="5497977785983089120">Åbn et nyt privat vindue for at browse privat</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tryk på Tab og derefter på Enter for at åbne et nyt privat vindue hvor du kan browse privat</translation>
