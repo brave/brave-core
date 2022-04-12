@@ -38,8 +38,9 @@ class PromotionTransfer {
       type::PromotionList promotions,
       GetEligibleTokensCallback callback);
 
-  void OnGetEligibleTokens(type::UnblindedTokenList list,
-                           ledger::PostSuggestionsClaimCallback callback);
+  void OnGetSpendableUnblindedTokens(
+      type::UnblindedTokenList list,
+      ledger::PostSuggestionsClaimCallback callback);
 
   std::vector<type::PromotionType> GetEligiblePromotions();
 
