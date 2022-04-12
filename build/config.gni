@@ -1,4 +1,3 @@
-import("//brave/build/features.gni")
 import("//build/util/branding.gni")
 
 declare_args() {

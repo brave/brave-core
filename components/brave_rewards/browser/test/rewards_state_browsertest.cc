@@ -12,6 +12,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
+#include "bat/ledger/buildflags.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -406,10 +407,10 @@ class UpholdStateMachine : public RewardsStateBrowserTest,
 };
 
 #ifdef OFFICIAL_BUILD
-#define _UPHOLD_CLIENT_ID_ UPHOLD_CLIENT_ID
+#define _UPHOLD_CLIENT_ID_ +std::string(BUILDFLAG(UPHOLD_CLIENT_ID)) +
 #define _UPHOLD_URL_ "https://uphold.com"
 #else
-#define _UPHOLD_CLIENT_ID_ UPHOLD_STAGING_CLIENT_ID
+#define _UPHOLD_CLIENT_ID_ +std::string(BUILDFLAG(UPHOLD_STAGING_CLIENT_ID)) +
 #define _UPHOLD_URL_ "https://wallet-sandbox.uphold.com"
 #endif
 

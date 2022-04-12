@@ -22,6 +22,7 @@
 #include "base/token.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/binance_json_parser.h"
+#include "brave/components/binance/browser/buildflags.h"
 #include "brave/components/binance/browser/regions.h"
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
@@ -79,7 +80,7 @@ GURL GetURLWithPath(const std::string& host, const std::string& path) {
 }  // namespace
 
 BinanceService::BinanceService(content::BrowserContext* context)
-    : client_id_(BINANCE_CLIENT_ID),
+    : client_id_(BUILDFLAG(BINANCE_CLIENT_ID)),
       oauth_host_(oauth_host),
       gateway_host_(gateway_host),
       context_(context),

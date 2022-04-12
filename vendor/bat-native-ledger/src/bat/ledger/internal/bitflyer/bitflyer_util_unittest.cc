@@ -7,7 +7,10 @@
 #include <memory>
 #include <utility>
 
+#include "base/strings/strcat.h"
+#include "base/strings/stringprintf.h"
 #include "base/test/task_environment.h"
+#include "bat/ledger/buildflags.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bitflyer/bitflyer_util.h"
 #include "bat/ledger/internal/common/random_util.h"
@@ -45,24 +48,24 @@ TEST_F(BitflyerUtilTest, GetClientId) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = bitflyer::GetClientId();
-  ASSERT_EQ(result, BITFLYER_CLIENT_ID);
+  ASSERT_EQ(result, BUILDFLAG(BITFLYER_CLIENT_ID));
 
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = bitflyer::GetClientId();
-  ASSERT_EQ(result, BITFLYER_STAGING_CLIENT_ID);
+  ASSERT_EQ(result, BUILDFLAG(BITFLYER_STAGING_CLIENT_ID));
 }
 
 TEST_F(BitflyerUtilTest, GetClientSecret) {
   // production
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result = bitflyer::GetClientSecret();
-  ASSERT_EQ(result, BITFLYER_CLIENT_SECRET);
+  ASSERT_EQ(result, BUILDFLAG(BITFLYER_CLIENT_SECRET));
 
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = bitflyer::GetClientSecret();
-  ASSERT_EQ(result, BITFLYER_STAGING_CLIENT_SECRET);
+  ASSERT_EQ(result, BUILDFLAG(BITFLYER_STAGING_CLIENT_SECRET));
 }
 
 TEST_F(BitflyerUtilTest, GetFeeAddress) {
@@ -82,29 +85,36 @@ TEST_F(BitflyerUtilTest, GetAuthorizeUrl) {
   ledger::_environment = type::Environment::PRODUCTION;
   std::string result =
       bitflyer::GetAuthorizeUrl("my-state", "my-code-verifier");
-  ASSERT_EQ(result,
-            std::string(kUrlProduction) +
-                "/ex/OAuth/authorize"
-                "?client_id=" BITFLYER_CLIENT_ID
-                "&scope=assets create_deposit_id withdraw_to_deposit_id"
-                "&redirect_uri=rewards://bitflyer/authorization"
-                "&state=my-state"
-                "&response_type=code"
-                "&code_challenge_method=S256"
-                "&code_challenge=5Cxs3JXozcwTeteCIu4BcTieAhEIqjn643F10PxPD_w");
+  ASSERT_EQ(
+      result,
+      base::StrCat(
+          {kUrlProduction,
+           "/ex/OAuth/authorize"
+           "?client_id=",
+           BUILDFLAG(BITFLYER_CLIENT_ID),
+           "&scope=assets create_deposit_id withdraw_to_deposit_id"
+           "&redirect_uri=rewards://bitflyer/authorization"
+           "&state=my-state"
+           "&response_type=code"
+           "&code_challenge_method=S256"
+           "&code_challenge=5Cxs3JXozcwTeteCIu4BcTieAhEIqjn643F10PxPD_w"}));
 
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = bitflyer::GetAuthorizeUrl("my-state", "my-code-verifier");
-  ASSERT_EQ(result, BITFLYER_STAGING_URL
-            "/ex/OAuth/authorize"
-            "?client_id=" BITFLYER_STAGING_CLIENT_ID
-            "&scope=assets create_deposit_id withdraw_to_deposit_id"
-            "&redirect_uri=rewards://bitflyer/authorization"
-            "&state=my-state"
-            "&response_type=code"
-            "&code_challenge_method=S256"
-            "&code_challenge=5Cxs3JXozcwTeteCIu4BcTieAhEIqjn643F10PxPD_w");
+  ASSERT_EQ(
+      result,
+      base::StrCat(
+          {BUILDFLAG(BITFLYER_STAGING_URL),
+           "/ex/OAuth/authorize"
+           "?client_id=",
+           BUILDFLAG(BITFLYER_STAGING_CLIENT_ID),
+           "&scope=assets create_deposit_id withdraw_to_deposit_id"
+           "&redirect_uri=rewards://bitflyer/authorization"
+           "&state=my-state"
+           "&response_type=code"
+           "&code_challenge_method=S256"
+           "&code_challenge=5Cxs3JXozcwTeteCIu4BcTieAhEIqjn643F10PxPD_w"}));
 }
 
 TEST_F(BitflyerUtilTest, GetAddUrl) {
@@ -116,7 +126,8 @@ TEST_F(BitflyerUtilTest, GetAddUrl) {
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = bitflyer::GetAddUrl();
-  ASSERT_EQ(result, BITFLYER_STAGING_URL "/ex/Home?login=1");
+  ASSERT_EQ(result, base::StrCat(
+                        {BUILDFLAG(BITFLYER_STAGING_URL), "/ex/Home?login=1"}));
 }
 
 TEST_F(BitflyerUtilTest, GetWithdrawUrl) {
@@ -128,7 +139,8 @@ TEST_F(BitflyerUtilTest, GetWithdrawUrl) {
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = bitflyer::GetWithdrawUrl();
-  ASSERT_EQ(result, BITFLYER_STAGING_URL "/ex/Home?login=1");
+  ASSERT_EQ(result, base::StrCat(
+                        {BUILDFLAG(BITFLYER_STAGING_URL), "/ex/Home?login=1"}));
 }
 
 TEST_F(BitflyerUtilTest, GetActivityUrl) {
@@ -140,7 +152,8 @@ TEST_F(BitflyerUtilTest, GetActivityUrl) {
   // staging
   ledger::_environment = type::Environment::STAGING;
   result = bitflyer::GetActivityUrl();
-  ASSERT_EQ(result, BITFLYER_STAGING_URL "/ja-jp/ex/tradehistory");
+  ASSERT_EQ(result, base::StrCat({BUILDFLAG(BITFLYER_STAGING_URL),
+                                  "/ja-jp/ex/tradehistory"}));
 }
 
 TEST_F(BitflyerUtilTest, GetWallet) {
@@ -196,101 +209,68 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
   auto wallet = type::ExternalWallet::New();
   wallet->address = "123123123124234234234";
 
+  const char kVerifiedUrlTemplate[] =
+      "%s/ex/OAuth/authorize"
+      "?client_id=%s"
+      "&scope=assets create_deposit_id withdraw_to_deposit_id"
+      "&redirect_uri=rewards://bitflyer/authorization"
+      "&state="
+      "&response_type=code"
+      "&code_challenge_method=S256"
+      "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU";
+  const auto kVerifiedUrl =
+      base::StringPrintf(kVerifiedUrlTemplate, BUILDFLAG(BITFLYER_STAGING_URL),
+                         BUILDFLAG(BITFLYER_STAGING_CLIENT_ID));
+  const auto kStagingUrl =
+      base::StrCat({BUILDFLAG(BITFLYER_STAGING_URL), "/ex/Home?login=1"});
+
   // Not connected
   wallet->status = type::WalletStatus::NOT_CONNECTED;
   auto result = bitflyer::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url, BITFLYER_STAGING_URL
-            "/ex/OAuth/authorize"
-            "?client_id=" BITFLYER_STAGING_CLIENT_ID
-            "&scope=assets create_deposit_id withdraw_to_deposit_id"
-            "&redirect_uri=rewards://bitflyer/authorization"
-            "&state="
-            "&response_type=code"
-            "&code_challenge_method=S256"
-            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU");
-  ASSERT_EQ(result->account_url, BITFLYER_STAGING_URL "/ex/Home?login=1");
+  ASSERT_EQ(result->verify_url, kVerifiedUrl);
+  ASSERT_EQ(result->account_url, kStagingUrl);
 
   // Connected
   wallet->status = type::WalletStatus::CONNECTED;
   result = bitflyer::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url, BITFLYER_STAGING_URL
-            "/ex/OAuth/authorize"
-            "?client_id=" BITFLYER_STAGING_CLIENT_ID
-            "&scope=assets create_deposit_id withdraw_to_deposit_id"
-            "&redirect_uri=rewards://bitflyer/authorization"
-            "&state="
-            "&response_type=code"
-            "&code_challenge_method=S256"
-            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU");
-  ASSERT_EQ(result->account_url, BITFLYER_STAGING_URL "/ex/Home?login=1");
+  ASSERT_EQ(result->verify_url, kVerifiedUrl);
+  ASSERT_EQ(result->account_url, kStagingUrl);
 
   // Verified
   wallet->status = type::WalletStatus::VERIFIED;
   result = bitflyer::GenerateLinks(wallet->Clone());
-  ASSERT_EQ(result->add_url, BITFLYER_STAGING_URL "/ex/Home?login=1");
-  ASSERT_EQ(result->withdraw_url, BITFLYER_STAGING_URL "/ex/Home?login=1");
-  ASSERT_EQ(result->verify_url, BITFLYER_STAGING_URL
-            "/ex/OAuth/authorize"
-            "?client_id=" BITFLYER_STAGING_CLIENT_ID
-            "&scope=assets create_deposit_id withdraw_to_deposit_id"
-            "&redirect_uri=rewards://bitflyer/authorization"
-            "&state="
-            "&response_type=code"
-            "&code_challenge_method=S256"
-            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU");
-  ASSERT_EQ(result->account_url, BITFLYER_STAGING_URL "/ex/Home?login=1");
+  ASSERT_EQ(result->add_url, kStagingUrl);
+  ASSERT_EQ(result->withdraw_url, kStagingUrl);
+  ASSERT_EQ(result->verify_url, kVerifiedUrl);
+  ASSERT_EQ(result->account_url, kStagingUrl);
 
   // Disconnected Non-Verified
   wallet->status = type::WalletStatus::DISCONNECTED_NOT_VERIFIED;
   result = bitflyer::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url, BITFLYER_STAGING_URL
-            "/ex/OAuth/authorize"
-            "?client_id=" BITFLYER_STAGING_CLIENT_ID
-            "&scope=assets create_deposit_id withdraw_to_deposit_id"
-            "&redirect_uri=rewards://bitflyer/authorization"
-            "&state="
-            "&response_type=code"
-            "&code_challenge_method=S256"
-            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU");
-  ASSERT_EQ(result->account_url, BITFLYER_STAGING_URL "/ex/Home?login=1");
+  ASSERT_EQ(result->verify_url, kVerifiedUrl);
+  ASSERT_EQ(result->account_url, kStagingUrl);
 
   // Disconnected Verified
   wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
   result = bitflyer::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url, BITFLYER_STAGING_URL
-            "/ex/OAuth/authorize"
-            "?client_id=" BITFLYER_STAGING_CLIENT_ID
-            "&scope=assets create_deposit_id withdraw_to_deposit_id"
-            "&redirect_uri=rewards://bitflyer/authorization"
-            "&state="
-            "&response_type=code"
-            "&code_challenge_method=S256"
-            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU");
-  ASSERT_EQ(result->account_url, BITFLYER_STAGING_URL "/ex/Home?login=1");
+  ASSERT_EQ(result->verify_url, kVerifiedUrl);
+  ASSERT_EQ(result->account_url, kStagingUrl);
 
   // Pending
   wallet->status = type::WalletStatus::PENDING;
   result = bitflyer::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
-  ASSERT_EQ(result->verify_url, BITFLYER_STAGING_URL
-            "/ex/OAuth/authorize"
-            "?client_id=" BITFLYER_STAGING_CLIENT_ID
-            "&scope=assets create_deposit_id withdraw_to_deposit_id"
-            "&redirect_uri=rewards://bitflyer/authorization"
-            "&state="
-            "&response_type=code"
-            "&code_challenge_method=S256"
-            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU");
-  ASSERT_EQ(result->account_url, BITFLYER_STAGING_URL "/ex/Home?login=1");
+  ASSERT_EQ(result->verify_url, kVerifiedUrl);
+  ASSERT_EQ(result->account_url, kStagingUrl);
 }
 
 }  // namespace bitflyer
