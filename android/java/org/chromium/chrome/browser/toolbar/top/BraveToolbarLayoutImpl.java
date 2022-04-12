@@ -935,9 +935,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         mDAppsWalletController =
                 new DAppsWalletController(getContext(), v, dialog -> mDAppsWalletController = null);
         mDAppsWalletController.showWalletPanel();
-        //        dappsBottomSheetDialogFragment.show(
-        //                activity.getSupportFragmentManager(),
-        //                DappsBottomSheetDialogFragment.TAG_FRAGMENT);
     }
 
     public void showWalletPanel() {
