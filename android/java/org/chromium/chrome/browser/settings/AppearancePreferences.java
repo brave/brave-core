@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.night_mode.NightModeUtils;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -38,6 +39,7 @@ public class AppearancePreferences extends BravePreferenceFragment
     public static final String PREF_SHOW_BRAVE_REWARDS_ICON = "show_brave_rewards_icon";
     public static final String PREF_BRAVE_NIGHT_MODE_ENABLED = "brave_night_mode_enabled_key";
     public static final String PREF_BRAVE_DISABLE_SHARING_HUB = "brave_disable_sharing_hub";
+    public static final String PREF_BRAVE_ENABLE_TAB_GROUPS = "brave_enable_tab_groups";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
@@ -50,6 +52,7 @@ public class AppearancePreferences extends BravePreferenceFragment
                 ContextUtils.getApplicationContext());
         if (isTablet) {
             removePreferenceIfPresent(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
+            removePreferenceIfPresent(PREF_BRAVE_ENABLE_TAB_GROUPS);
         }
 
         if (!NightModeUtils.isNightModeSupported()) {
@@ -112,6 +115,15 @@ public class AppearancePreferences extends BravePreferenceFragment
                                 BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, false));
             }
         }
+
+        Preference enableTabGroups = findPreference(PREF_BRAVE_ENABLE_TAB_GROUPS);
+        if (enableTabGroups != null) {
+            enableTabGroups.setOnPreferenceChangeListener(this);
+            if (enableTabGroups instanceof ChromeSwitchPreference) {
+                ((ChromeSwitchPreference) enableTabGroups)
+                        .setChecked(BraveTabUiFeatureUtilities.isBraveTabGroupsEnabled());
+            }
+        }
     }
 
     @Override
@@ -155,6 +167,10 @@ public class AppearancePreferences extends BravePreferenceFragment
         } else if (PREF_BRAVE_DISABLE_SHARING_HUB.equals(key)) {
             SharedPreferencesManager.getInstance().writeBoolean(
                     BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, (boolean) newValue);
+        } else if (PREF_BRAVE_ENABLE_TAB_GROUPS.equals(key)) {
+            SharedPreferencesManager.getInstance().writeBoolean(
+                    BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
+            BraveRelaunchUtils.askForRelaunch(getActivity());
         }
 
         return true;

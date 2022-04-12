@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser.contextmenu;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import androidx.test.filters.SmallTest;
 
@@ -29,7 +29,7 @@ public class BraveContextMenuPopulatorTest {
         TestThreadUtils.runOnUiThreadBlocking(() -> {
             BraveTabUiFeatureUtilities.maybeOverrideEnableTabGroupAutoCreationPreference(
                     ContextUtils.getApplicationContext());
-            assertFalse(TabUiFeatureUtilities.ENABLE_TAB_GROUP_AUTO_CREATION.getValue());
+            assertTrue(TabUiFeatureUtilities.ENABLE_TAB_GROUP_AUTO_CREATION.getValue());
         });
     }
 }
