@@ -1864,6 +1864,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SIGNOUT_TITLE" desc="Title for sign out of Brave dialog [CHAR_LIMIT=40]">
         Sign out and turn off sync?
       </message>
+      <message name="IDS_TURN_OFF_SYNC_TITLE" desc="Title for turn off sync dialog [CHAR_LIMIT=40]">
+        Turn off sync?
+      </message>
       <message name="IDS_SIGNOUT_MANAGED_ACCOUNT_TITLE" desc="Title for sign out of Brave dialog for enterprise account [CHAR_LIMIT=40]">
         Clear your Brave data from this device?
       </message>
