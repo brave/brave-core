@@ -27,8 +27,14 @@
 
 using brave_shields::ControlType;
 
+namespace {
+
 const char kPluginsLengthScript[] =
     "domAutomationController.send(navigator.plugins.length);";
+const char kNavigatorPdfViewerEnabledCrashTest[] =
+    "navigator.pdfViewerEnabled == navigator.pdfViewerEnabled";
+
+}  // namespace
 
 class BraveNavigatorPluginsFarblingBrowserTest : public InProcessBrowserTest {
  public:
@@ -109,6 +115,13 @@ class BraveNavigatorPluginsFarblingBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<ChromeContentClient> content_client_;
   std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
+
+// Tests that access to navigator.pdfViewerEnabled attribute does not crash.
+IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
+                       NavigatorPdfViewerEnabledNoCrash) {
+  NavigateToURLUntilLoadStop(farbling_url());
+  EXPECT_EQ(true, EvalJs(contents(), kNavigatorPdfViewerEnabledCrashTest));
+}
 
 // Tests results of farbling known values
 // https://github.com/brave/brave-browser/issues/9435
