@@ -1,17 +1,17 @@
 diff --git a/components/os_crypt/os_crypt_win.cc b/components/os_crypt/os_crypt_win.cc
-index 305a8caa4eb45de6782e39e32e175d9d409b2fbf..c6d21eeaa204771274e39eb04975b732c4463181 100644
+index 91f2c6d4f79cf233770abbbcaaedbdd246ee044e..84b8a28a8f18a074ce02bdbdc9821693f22d854d 100644
 --- a/components/os_crypt/os_crypt_win.cc
 +++ b/components/os_crypt/os_crypt_win.cc
-@@ -146,6 +146,7 @@ bool OSCryptImpl::DecryptString16(const std::string& ciphertext,
- 
+@@ -177,6 +177,7 @@ bool OSCryptImpl::DecryptString16(const std::string& ciphertext,
+ // static
  bool OSCryptImpl::EncryptString(const std::string& plaintext,
                              std::string* ciphertext) {
 +  if (IsEncryptionDisabled(plaintext, ciphertext)) { return true; }
-   if (use_legacy_)
+   if (g_use_legacy)
      return EncryptStringWithDPAPI(plaintext, ciphertext);
  
-@@ -171,6 +172,7 @@ bool OSCryptImpl::EncryptString(const std::string& plaintext,
- 
+@@ -203,6 +204,7 @@ bool OSCryptImpl::EncryptString(const std::string& plaintext,
+ // static
  bool OSCryptImpl::DecryptString(const std::string& ciphertext,
                              std::string* plaintext) {
 +  if (IsEncryptionDisabled(ciphertext, plaintext)) { return true; }
