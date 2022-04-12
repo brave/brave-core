@@ -62,6 +62,10 @@ bool IsFirstPartyAccessAllowed(
 
 }  // namespace
 
+CookieSettingsBase::CookieSettingsBase() = default;
+
+CookieSettingsBase::~CookieSettingsBase() = default;
+
 CookieSettingWithBraveMetadata::CookieSettingWithBraveMetadata() = default;
 CookieSettingWithBraveMetadata::CookieSettingWithBraveMetadata(
     const CookieSettingWithBraveMetadata&) = default;
@@ -107,11 +111,6 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
   return allow_1p && !allow_3p;
 }
 
-ScopedEphemeralStorageAwareness
-CookieSettingsBase::CreateScopedEphemeralStorageAwareness() const {
-  return ScopedEphemeralStorageAwareness(&ephemeral_storage_aware_, true);
-}
-
 bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
     const GURL& first_party_url) const {
@@ -123,9 +122,11 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin) const {
-  auto scoped_ephemeral_storage_awareness =
-      CreateScopedEphemeralStorageAwareness();
-  return IsFullCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+  if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin)) {
+    return true;
+  }
+
+  return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin);
 }
 
 bool CookieSettingsBase::IsFullCookieAccessAllowed(
@@ -139,11 +140,6 @@ bool CookieSettingsBase::IsFullCookieAccessAllowed(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin) const {
-  if (ephemeral_storage_aware_ &&
-      ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin)) {
-    return true;
-  }
-
   return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin);
 }
 
@@ -247,12 +243,12 @@ CookieSettingsBase::GetCookieSettingWithBraveMetadata(
     const GURL& url,
     const GURL& first_party_url) const {
   CookieSettingWithBraveMetadata setting_brave_metadata;
-  base::AutoReset<CookieSettingWithBraveMetadata*> auto_reset(
-      &cookie_setting_with_brave_metadata_, &setting_brave_metadata);
+  cookie_setting_with_brave_metadata_.Set(&setting_brave_metadata);
   // GetCookieSetting fills metadata structure implicitly (implemented in
   // GetCookieSettingInternal), the setting value is set explicitly here.
   setting_brave_metadata.setting =
       GetCookieSetting(url, first_party_url, nullptr);
+  cookie_setting_with_brave_metadata_.Set(nullptr);
   return setting_brave_metadata;
 }
 
