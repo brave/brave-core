@@ -62,6 +62,7 @@ extension URLSession: NetworkSession {
     return self.dataTaskPublisher(for: urlRequest)
       .map({ ($0, $1) })
       .mapError({ $0 as Error })
+      .receive(on: DispatchQueue.main)
       .eraseToAnyPublisher()
   }
 
