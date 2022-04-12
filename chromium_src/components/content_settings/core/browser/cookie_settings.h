@@ -28,7 +28,7 @@
   /* Ephemeral storage domain to non_opaque->opaque origins map. */           \
   using EphemeralStorageOrigins =                                             \
       base::flat_map<std::string, base::flat_map<url::Origin, url::Origin>>;  \
-  EphemeralStorageOrigins ephemeral_storage_origins_;                         \
+  EphemeralStorageOrigins ephemeral_storage_origins_ GUARDED_BY(lock_);       \
                                                                               \
  public:                                                                      \
   void ShutdownOnUIThread

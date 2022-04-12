@@ -40,7 +40,10 @@ namespace content_settings {
 
 void CookieSettings::ShutdownOnUIThread() {
   ShutdownOnUIThread_ChromiumImpl();
-  ephemeral_storage_origins_.clear();
+  {
+    base::AutoLock auto_lock(lock_);
+    ephemeral_storage_origins_.clear();
+  }
 }
 
 bool CookieSettings::ShouldUseEphemeralStorage(
@@ -57,6 +60,7 @@ bool CookieSettings::ShouldUseEphemeralStorage(
   const std::string ephemeral_storage_domain =
       net::URLToEphemeralStorageDomain(top_frame_origin->GetURL());
 
+  base::AutoLock auto_lock(lock_);
   auto ephemeral_storage_origins_it =
       ephemeral_storage_origins_.find(ephemeral_storage_domain);
   if (ephemeral_storage_origins_it != ephemeral_storage_origins_.end()) {
@@ -83,6 +87,7 @@ bool CookieSettings::ShouldUseEphemeralStorage(
 std::vector<url::Origin> CookieSettings::TakeEphemeralStorageOpaqueOrigins(
     const std::string& ephemeral_storage_domain) {
   std::vector<url::Origin> result;
+  base::AutoLock auto_lock(lock_);
   auto ephemeral_storage_origins_it =
       ephemeral_storage_origins_.find(ephemeral_storage_domain);
   if (ephemeral_storage_origins_it != ephemeral_storage_origins_.end()) {
