@@ -9,7 +9,7 @@
 
 #include "bat/ads/internal/conversions/conversions_features.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/resources/resources_util.h"
+#include "bat/ads/internal/resources/resources_util_impl.h"
 
 namespace ads {
 namespace resource {

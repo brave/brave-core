@@ -10,7 +10,7 @@
 
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/resources/resources_util.h"
+#include "bat/ads/internal/resources/resources_util_impl.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {

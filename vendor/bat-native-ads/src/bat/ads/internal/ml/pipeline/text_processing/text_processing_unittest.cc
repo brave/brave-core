@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "bat/ads/internal/ml/data/data.h"
 #include "bat/ads/internal/ml/data/text_data.h"
@@ -109,10 +109,8 @@ TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromValue) {
   // Act
   ASSERT_TRUE(json_optional.has_value());
   const std::string json = json_optional.value();
-  absl::optional<base::Value> value_optional = base::JSONReader::Read(json);
-  ASSERT_TRUE(value_optional.has_value());
-  bool load_success =
-      text_processing_pipeline.FromValue(std::move(*value_optional));
+  base::Value value = base::test::ParseJson(json);
+  bool load_success = text_processing_pipeline.FromValue(std::move(value));
   ASSERT_TRUE(load_success);
 
   std::vector<PredictionMap> prediction_maps(train_texts.size());
@@ -143,10 +141,9 @@ TEST_F(BatAdsTextProcessingPipelineTest, InitValidModelTest) {
   // Act
   ASSERT_TRUE(json_optional.has_value());
   const std::string json = json_optional.value();
-  absl::optional<base::Value> value_optional = base::JSONReader::Read(json);
-  ASSERT_TRUE(value_optional.has_value());
+  base::Value value = base::test::ParseJson(json);
   bool loaded_successfully =
-      text_processing_pipeline.FromValue(std::move(*value_optional));
+      text_processing_pipeline.FromValue(std::move(value));
 
   // Assert
   EXPECT_TRUE(loaded_successfully);
@@ -161,10 +158,9 @@ TEST_F(BatAdsTextProcessingPipelineTest, EmptySegmentModelTest) {
   // Act
   ASSERT_TRUE(json_optional.has_value());
   const std::string json = json_optional.value();
-  absl::optional<base::Value> value_optional = base::JSONReader::Read(json);
-  ASSERT_TRUE(value_optional.has_value());
+  base::Value value = base::test::ParseJson(json);
   bool loaded_successfully =
-      text_processing_pipeline.FromValue(std::move(*value_optional));
+      text_processing_pipeline.FromValue(std::move(value));
 
   // Assert
   EXPECT_FALSE(loaded_successfully);
@@ -176,11 +172,9 @@ TEST_F(BatAdsTextProcessingPipelineTest, EmptyModelTest) {
   const std::string empty_model_json = "{}";
 
   // Act
-  absl::optional<base::Value> value_optional =
-      base::JSONReader::Read(empty_model_json);
-  ASSERT_TRUE(value_optional.has_value());
+  base::Value value = base::test::ParseJson(empty_model_json);
   bool loaded_successfully =
-      text_processing_pipeline.FromValue(std::move(*value_optional));
+      text_processing_pipeline.FromValue(std::move(value));
 
   // Assert
   EXPECT_FALSE(loaded_successfully);
@@ -208,9 +202,8 @@ TEST_F(BatAdsTextProcessingPipelineTest, TopPredUnitTest) {
   // Act
   ASSERT_TRUE(json_optional.has_value());
   const std::string json = json_optional.value();
-  absl::optional<base::Value> value_optional = base::JSONReader::Read(json);
-  ASSERT_TRUE(value_optional.has_value());
-  ASSERT_TRUE(text_processing_pipeline.FromValue(std::move(*value_optional)));
+  base::Value value = base::test::ParseJson(json);
+  ASSERT_TRUE(text_processing_pipeline.FromValue(std::move(value)));
   const PredictionMap predictions =
       text_processing_pipeline.ClassifyPage(kTestPage);
 
@@ -234,9 +227,8 @@ TEST_F(BatAdsTextProcessingPipelineTest, TextCMCCrashTest) {
   ASSERT_TRUE(json_optional.has_value());
 
   const std::string json = json_optional.value();
-  absl::optional<base::Value> value_optional = base::JSONReader::Read(json);
-  ASSERT_TRUE(value_optional.has_value());
-  ASSERT_TRUE(text_processing_pipeline.FromValue(std::move(*value_optional)));
+  base::Value value = base::test::ParseJson(json);
+  ASSERT_TRUE(text_processing_pipeline.FromValue(std::move(value)));
 
   const absl::optional<std::string> text_optional =
       ReadFileFromTestPathToString(kTextCMCCrash);

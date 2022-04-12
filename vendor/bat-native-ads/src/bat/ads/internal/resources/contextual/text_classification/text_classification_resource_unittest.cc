@@ -5,10 +5,23 @@
 
 #include "bat/ads/internal/resources/contextual/text_classification/text_classification_resource.h"
 
+#include <utility>
+
 #include "bat/ads/internal/unittest_base.h"
+#include "bat/ads/internal/unittest_file_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
+
+using testing::_;
+using testing::Invoke;
+
+namespace {
+constexpr char kInvalidJsonResourceFile[] =
+    "feibnmjhecfbjpeciancnchbmlobenjn_invalid_json";
+constexpr char kNotExistantResourceFile[] =
+    "feibnmjhecfbjpeciancnchbmlobenjn_not_existant";
+}  // namespace
 
 namespace ads {
 namespace resource {
@@ -29,8 +42,70 @@ TEST_F(BatAdsTextClassificationResourceTest, Load) {
   task_environment()->RunUntilIdle();
 
   // Assert
-  const bool is_initialized = resource.IsInitialized();
-  EXPECT_TRUE(is_initialized);
+  EXPECT_TRUE(resource.IsInitialized());
+}
+
+TEST_F(BatAdsTextClassificationResourceTest, LoadInvalidJsonResource) {
+  // Arrange
+  TextClassification resource;
+  EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
+      .WillOnce(testing::Invoke([](const std::string& id, const int version,
+                                   LoadFileCallback callback) {
+        const base::FilePath path = GetTestPath()
+                                        .AppendASCII("resources")
+                                        .AppendASCII(kInvalidJsonResourceFile);
+
+        base::File file(
+            path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
+        std::move(callback).Run(std::move(file));
+      }));
+
+  // Act
+  resource.Load();
+  task_environment()->RunUntilIdle();
+
+  // Assert
+  EXPECT_FALSE(resource.IsInitialized());
+}
+
+TEST_F(BatAdsTextClassificationResourceTest, LoadNotExistantJsonResource) {
+  // Arrange
+  TextClassification resource;
+  EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
+      .WillOnce(testing::Invoke([](const std::string& id, const int version,
+                                   LoadFileCallback callback) {
+        const base::FilePath path = GetTestPath()
+                                        .AppendASCII("resources")
+                                        .AppendASCII(kNotExistantResourceFile);
+
+        base::File file(
+            path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
+        std::move(callback).Run(std::move(file));
+      }));
+
+  // Act
+  resource.Load();
+  task_environment()->RunUntilIdle();
+
+  // Assert
+  EXPECT_FALSE(resource.IsInitialized());
+}
+
+TEST_F(BatAdsTextClassificationResourceTest, LoadNotInitializedFile) {
+  // Arrange
+  TextClassification resource;
+  EXPECT_CALL(*ads_client_mock_, LoadFileResource(_, _, _))
+      .WillOnce(testing::Invoke([](const std::string& id, const int version,
+                                   LoadFileCallback callback) {
+        std::move(callback).Run(base::File());
+      }));
+
+  // Act
+  resource.Load();
+  task_environment()->RunUntilIdle();
+
+  // Assert
+  EXPECT_FALSE(resource.IsInitialized());
 }
 
 }  // namespace resource

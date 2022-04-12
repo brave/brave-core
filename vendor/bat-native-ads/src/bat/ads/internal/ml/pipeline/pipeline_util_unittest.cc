@@ -8,7 +8,7 @@
 #include <string>
 #include <utility>
 
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 #include "bat/ads/internal/unittest_base.h"
@@ -42,10 +42,9 @@ TEST_F(BatAdsPipelineUtilTest, ParsePipelineValueTest) {
   const std::string json = opt_json.value();
 
   // Act
-  absl::optional<base::Value> opt_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(opt_value.has_value());
+  base::Value value = base::test::ParseJson(json);
   const absl::optional<pipeline::PipelineInfo> pipeline_info =
-      pipeline::ParsePipelineValue(std::move(*opt_value));
+      pipeline::ParsePipelineValue(std::move(value));
 
   // Assert
   EXPECT_TRUE(pipeline_info.has_value());
