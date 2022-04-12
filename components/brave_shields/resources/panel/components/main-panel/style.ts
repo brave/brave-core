@@ -24,7 +24,7 @@ export const Box = styled.div`
 `
 
 export const HeaderBox = styled.section`
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${(p) => p.theme.color.background03};
   padding: 22px 17px 22px 17px;
 `
 
@@ -187,11 +187,13 @@ export const PanelContent = styled.section`
 
 export const AdvancedControlsButton = styled.button`
   --border: 3px solid transparent;
-  --text-color: ${(p) => p.theme.color.text01};
+  --svg-color: ${(p) => p.theme.color.interactive05};
+  --text-color: ${(p) => p.theme.color.interactive06};
 
   background-color: ${(p) => p.theme.color.background03};
   font-family: ${(p) => p.theme.fontFamily.heading};
   font-size: 14px;
+  font-weight: 500;
   color: var(--text-color);
   width: 100%;
   padding: 10px 17px;
@@ -201,6 +203,7 @@ export const AdvancedControlsButton = styled.button`
   grid-gap: 10px;
   align-items: center;
   text-align: left;
+  cursor: pointer;
 
   i { 
     grid-column: 1;
@@ -210,20 +213,21 @@ export const AdvancedControlsButton = styled.button`
     grid-column: 2;
   }
 
-  .icon-globe {
-    path {
-      fill: ${(p) => p.theme.color.interactive05};
-    }
+  svg > path {
+    fill: var(--svg-color);
   }
 
   &:hover {
-    --text-color: ${(p) => p.theme.color.interactive05};
+    --text-color: ${(p) => p.theme.color.interactive07};
+    --svg-color: ${(p) => p.theme.color.interactive08};
   }
 
   &:focus-visible {
     --border: 3px solid ${(p) => p.theme.color.focusBorder};
   }
 `
+
+export const GlobalDefaultsButton = styled(AdvancedControlsButton)``
 
 export const CaratIcon = styled(CaratStrongDownIcon)<CaratIconProps>`
   --rotate: rotate(0deg);

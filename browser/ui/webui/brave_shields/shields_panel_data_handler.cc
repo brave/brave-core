@@ -115,6 +115,20 @@ void ShieldsPanelDataHandler::OpenWebCompatWindow() {
   OpenWebcompatReporterDialog(shields_data_ctrlr->web_contents());
 }
 
+void ShieldsPanelDataHandler::UpdateFavicon() {
+  auto* shields_data_ctrlr = GetActiveShieldsDataController();
+  if (!shields_data_ctrlr)
+    return;
+
+  // TODO(nullhook): Don't update favicon if previous site is the current site
+  site_block_info_.favicon_url = shields_data_ctrlr->GetFaviconURL(true);
+
+  // Notify remote that favicon changed
+  if (ui_handler_remote_) {
+    ui_handler_remote_.get()->OnSiteBlockInfoChanged(site_block_info_.Clone());
+  }
+}
+
 BraveShieldsDataController*
 ShieldsPanelDataHandler::GetActiveShieldsDataController() {
   auto* profile = Profile::FromWebUI(webui_controller_->web_ui());
@@ -167,16 +181,7 @@ void ShieldsPanelDataHandler::OnResourcesChanged() {
 }
 
 void ShieldsPanelDataHandler::OnFaviconUpdated() {
-  auto* shields_data_ctrlr = GetActiveShieldsDataController();
-  if (!shields_data_ctrlr)
-    return;
-
-  site_block_info_.favicon_url = shields_data_ctrlr->GetFaviconURL(true);
-
-  // Notify remote that favicon changed
-  if (ui_handler_remote_) {
-    ui_handler_remote_.get()->OnSiteBlockInfoChanged(site_block_info_.Clone());
-  }
+  UpdateFavicon();
 }
 
 void ShieldsPanelDataHandler::OnTabStripModelChanged(

@@ -18,17 +18,28 @@ export const FooterActionBox = styled.div`
   }
 
   button {
+    --svg-color: ${(p) => p.theme.color.interactive05};
+    --text-color: ${(p) => p.theme.color.interactive06};
     background-color: transparent;
     padding: 0;
     margin: 0;
     border:0;
-    color: ${(p) => p.theme.color.interactive05};
+    color: var(--text-color);
     font-size: 13px;
     font-weight: 500;
     text-decoration: none;
     display: flex;
     align-items: center;
     cursor: pointer;
+
+    svg > path {
+      fill: var(--svg-color);
+    }
+
+    &:hover {
+      --text-color: ${(p) => p.theme.color.interactive07};
+      --svg-color: ${(p) => p.theme.color.interactive08};
+    }
   }
   
   i {
@@ -79,6 +90,7 @@ export const ControlGroup = styled.div`
     font-size: 12px;
     color: ${(p) => p.theme.color.text01};
     text-indent: 8px;
+    cursor: pointer;
 
     span {
       margin-right: 5px;
@@ -94,7 +106,7 @@ export const CountButton = styled.button`
   font-family: ${(p) => p.theme.fontFamily.heading};
   font-size: 18px;
   font-weight: 500;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.color.interactive06};
   padding: 5px 6px;
   max-width: 100%;
   border-radius: 4px;
@@ -102,7 +114,7 @@ export const CountButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: ${(p) => p.theme.color.disabled};
+    background-color: ${(p) => p.theme.color.background03};
   }
 
   &:focus-visible {

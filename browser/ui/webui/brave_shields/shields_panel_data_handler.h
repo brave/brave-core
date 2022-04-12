@@ -47,6 +47,7 @@ class ShieldsPanelDataHandler : public brave_shields::mojom::DataHandler,
   void SetHTTPSEverywhereEnabled(bool is_enabled) override;
   void SetBraveShieldsEnabled(bool is_enabled) override;
   void OpenWebCompatWindow() override;
+  void UpdateFavicon() override;
 
  private:
   BraveShieldsDataController* GetActiveShieldsDataController();

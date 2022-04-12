@@ -39,6 +39,7 @@ interface DataHandler {
   SetHTTPSEverywhereEnabled(bool is_enabled);
   SetBraveShieldsEnabled(bool is_enabled);
   OpenWebCompatWindow();
+  UpdateFavicon();
 };
 
 struct SiteBlockInfo {
