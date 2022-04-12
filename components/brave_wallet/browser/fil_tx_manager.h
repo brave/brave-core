@@ -77,9 +77,10 @@ class FilTxManager : public TxManager {
       int64_t gas_limit,
       mojom::FilecoinProviderError error,
       const std::string& error_message);
-
-  void UpdatePendingTransactions() override;
   FilTxStateManager* GetFilTxStateManager();
+
+  // TxManager
+  void UpdatePendingTransactions() override;
 
   std::unique_ptr<FilNonceTracker> nonce_tracker_;
   base::WeakPtrFactory<FilTxManager> weak_factory_{this};

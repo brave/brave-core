@@ -7,15 +7,13 @@
 
 #include <utility>
 
-#include "base/json/json_reader.h"
-#include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/common/brave_services_key.h"
+#include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/fil_tx_meta.h"
-#include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -23,19 +21,12 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
-#include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/test/browser_task_environment.h"
-#include "content/public/test/test_browser_context.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
-#include "mojo/public/cpp/bindings/receiver.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
