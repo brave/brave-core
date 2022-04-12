@@ -83,7 +83,8 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
       status_, tx_type, tx_params, tx_args,
       base::Milliseconds(created_time_.ToJavaTime()),
       base::Milliseconds(submitted_time_.ToJavaTime()),
-      base::Milliseconds(confirmed_time_.ToJavaTime()));
+      base::Milliseconds(confirmed_time_.ToJavaTime()),
+      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr);
 }
 
 }  // namespace brave_wallet

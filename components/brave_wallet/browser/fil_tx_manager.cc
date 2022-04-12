@@ -29,9 +29,11 @@ FilTxManager::FilTxManager(TxService* tx_service,
 
 FilTxManager::~FilTxManager() = default;
 
-void FilTxManager::AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
-                                            const std::string& from,
-                                            AddUnapprovedTransactionCallback) {
+void FilTxManager::AddUnapprovedTransaction(
+    mojom::TxDataUnionPtr tx_data_union,
+    const std::string& from,
+    const absl::optional<url::Origin>& origin,
+    AddUnapprovedTransactionCallback) {
   NOTIMPLEMENTED();
 }
 

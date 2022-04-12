@@ -28,6 +28,7 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -189,15 +190,27 @@ class SolanaTxManagerUnitTest : public testing::Test {
         tx_service_->GetTxManager(mojom::CoinType::SOL));
   }
 
+  url::Origin GetOrigin() const {
+    return url::Origin::Create(GURL("https://brave.com"));
+  }
+
   void AddUnapprovedTransaction(mojom::SolanaTxDataPtr solana_tx_data,
                                 const std::string& from,
+                                std::string* meta_id) {
+    AddUnapprovedTransaction(std::move(solana_tx_data), from, GetOrigin(),
+                             meta_id);
+  }
+
+  void AddUnapprovedTransaction(mojom::SolanaTxDataPtr solana_tx_data,
+                                const std::string& from,
+                                const absl::optional<url::Origin>& origin,
                                 std::string* meta_id) {
     auto tx_data_union =
         mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data));
 
     base::RunLoop run_loop;
     solana_tx_manager()->AddUnapprovedTransaction(
-        std::move(tx_data_union), from,
+        std::move(tx_data_union), from, origin,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           ASSERT_TRUE(success);
@@ -395,6 +408,44 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   EXPECT_EQ(mojom::TransactionStatus::Confirmed, tx_meta2->status());
   EXPECT_EQ(tx_meta2->signature_status(),
             SolanaSignatureStatus(72u, 0u, "", "finalized"));
+}
+
+TEST_F(SolanaTxManagerUnitTest, WalletOrigin) {
+  const std::string from = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  const std::string to = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+  mojom::SolanaTxDataPtr system_transfer_data = nullptr;
+  TestMakeSystemProgramTransferTxData(from, to, 10000000, nullptr,
+                                      mojom::SolanaProviderError::kSuccess, "",
+                                      &system_transfer_data);
+  ASSERT_TRUE(system_transfer_data);
+
+  std::string meta_id;
+  AddUnapprovedTransaction(std::move(system_transfer_data), from, absl::nullopt,
+                           &meta_id);
+
+  auto tx_meta = solana_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
+}
+
+TEST_F(SolanaTxManagerUnitTest, SomeSiteOrigin) {
+  const std::string from = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  const std::string to = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+  mojom::SolanaTxDataPtr system_transfer_data = nullptr;
+  TestMakeSystemProgramTransferTxData(from, to, 10000000, nullptr,
+                                      mojom::SolanaProviderError::kSuccess, "",
+                                      &system_transfer_data);
+  ASSERT_TRUE(system_transfer_data);
+
+  std::string meta_id;
+  AddUnapprovedTransaction(std::move(system_transfer_data), from,
+                           url::Origin::Create(GURL("https://some.site.com")),
+                           &meta_id);
+
+  auto tx_meta = solana_tx_manager()->GetTxForTesting(meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->origin(),
+            url::Origin::Create(GURL("https://some.site.com")));
 }
 
 TEST_F(SolanaTxManagerUnitTest, MakeSystemProgramTransferTxData) {

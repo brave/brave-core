@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 namespace brave_wallet {
 
@@ -39,7 +40,8 @@ mojom::TransactionInfoPtr SolanaTxMeta::ToTransactionInfo() const {
       std::vector<std::string>() /* tx_args */,
       base::Milliseconds(created_time_.ToJavaTime()),
       base::Milliseconds(submitted_time_.ToJavaTime()),
-      base::Milliseconds(confirmed_time_.ToJavaTime()));
+      base::Milliseconds(confirmed_time_.ToJavaTime()),
+      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr);
 }
 
 }  // namespace brave_wallet

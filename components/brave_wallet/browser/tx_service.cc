@@ -12,17 +12,18 @@
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
 namespace {
 
 mojom::CoinType GetCoinTypeFromTxDataUnion(
-    mojom::TxDataUnionPtr tx_data_union) {
-  if (tx_data_union->is_solana_tx_data())
+    const mojom::TxDataUnion& tx_data_union) {
+  if (tx_data_union.is_solana_tx_data())
     return mojom::CoinType::SOL;
 
-  if (tx_data_union->is_fil_tx_data())
+  if (tx_data_union.is_fil_tx_data())
     return mojom::CoinType::FIL;
 
   return mojom::CoinType::ETH;
@@ -96,10 +97,12 @@ void TxService::BindSolanaTxManagerProxy(
 void TxService::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
     const std::string& from,
+    const absl::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback) {
-  auto coin_type = GetCoinTypeFromTxDataUnion(tx_data_union->Clone());
-  GetTxManager(coin_type)->AddUnapprovedTransaction(std::move(tx_data_union),
-                                                    from, std::move(callback));
+  auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
+
+  GetTxManager(coin_type)->AddUnapprovedTransaction(
+      std::move(tx_data_union), from, origin, std::move(callback));
 }
 
 void TxService::ApproveTransaction(mojom::CoinType coin_type,

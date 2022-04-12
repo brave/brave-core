@@ -76,10 +76,12 @@ function ConfirmTransactionPanel ({
 }: Props) {
   // redux
   const {
-    activeOrigin: originInfo,
+    activeOrigin,
     defaultCurrencies,
     selectedPendingTransaction: transactionInfo
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+
+  const originInfo = transactionInfo?.originInfo ?? activeOrigin
 
   // custom hooks
   const {

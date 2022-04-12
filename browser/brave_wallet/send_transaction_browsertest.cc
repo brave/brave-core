@@ -43,6 +43,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -350,6 +351,8 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     EXPECT_TRUE(
         base::EqualsCaseInsensitiveASCII(from(), infos[0]->from_address));
     EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
+    EXPECT_EQ(MakeOriginInfo(https_server_for_files()->GetOrigin("a.com")),
+              infos[0]->origin_info);
     ASSERT_TRUE(infos[0]->tx_data_union->is_eth_tx_data_1559());
     EXPECT_TRUE(infos[0]
                     ->tx_data_union->get_eth_tx_data_1559()
@@ -401,6 +404,8 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     EXPECT_TRUE(
         base::EqualsCaseInsensitiveASCII(from(), infos[0]->from_address));
     EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
+    EXPECT_EQ(MakeOriginInfo(https_server_for_files()->GetOrigin("a.com")),
+              infos[0]->origin_info);
     ASSERT_TRUE(infos[0]->tx_data_union->is_eth_tx_data_1559());
     EXPECT_TRUE(infos[0]
                     ->tx_data_union->get_eth_tx_data_1559()

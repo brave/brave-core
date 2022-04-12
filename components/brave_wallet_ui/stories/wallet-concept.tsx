@@ -46,6 +46,7 @@ import { LibContext } from '../common/context/lib.context'
 import { mockAccountAssetOptions, mockNewAssetOptions } from './mock-data/mock-asset-options'
 import { createSendCryptoReducer } from '../common/reducers/send_crypto_reducer'
 import { mockSendCryptoState } from './mock-data/send-crypto-state'
+import { mockOriginInfo } from './mock-data/mock-origin-info'
 
 const store = createStore(combineReducers({
   wallet: createWalletReducer(mockWalletState),
@@ -92,7 +93,8 @@ export const transactionDummyData: AccountTransactions = {
       txType: 0,
       createdTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5 * 1000) },
       submittedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) },
-      confirmedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) }
+      confirmedTime: { microseconds: BigInt((Date.now() * 1000) - 1000 * 60 * 5) },
+      originInfo: mockOriginInfo
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -123,7 +125,8 @@ export const transactionDummyData: AccountTransactions = {
       txType: 0,
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) }
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
     },
     {
       fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
@@ -154,7 +157,8 @@ export const transactionDummyData: AccountTransactions = {
       txType: 0,
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) }
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -185,7 +189,8 @@ export const transactionDummyData: AccountTransactions = {
       txType: 0,
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) }
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -216,7 +221,8 @@ export const transactionDummyData: AccountTransactions = {
       txType: 0,
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) }
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
     }
   ],
   [mockUserAccounts[1].id]: [
@@ -249,7 +255,8 @@ export const transactionDummyData: AccountTransactions = {
       txType: 0,
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) }
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
     },
     {
       fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
@@ -280,7 +287,8 @@ export const transactionDummyData: AccountTransactions = {
       txType: 0,
       createdTime: { microseconds: BigInt(0) },
       submittedTime: { microseconds: BigInt(0) },
-      confirmedTime: { microseconds: BigInt(0) }
+      confirmedTime: { microseconds: BigInt(0) },
+      originInfo: mockOriginInfo
     }
   ]
 }

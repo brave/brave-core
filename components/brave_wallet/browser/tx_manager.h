@@ -48,9 +48,11 @@ class TxManager : public TxStateManager::Observer,
   using GetTransactionMessageToSignCallback =
       mojom::TxService::GetTransactionMessageToSignCallback;
 
-  virtual void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
-                                        const std::string& from,
-                                        AddUnapprovedTransactionCallback) = 0;
+  virtual void AddUnapprovedTransaction(
+      mojom::TxDataUnionPtr tx_data_union,
+      const std::string& from,
+      const absl::optional<url::Origin>& origin,
+      AddUnapprovedTransactionCallback) = 0;
   virtual void ApproveTransaction(const std::string& tx_meta_id,
                                   ApproveTransactionCallback) = 0;
   virtual void RejectTransaction(const std::string& tx_meta_id,

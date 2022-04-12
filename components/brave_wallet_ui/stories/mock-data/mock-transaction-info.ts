@@ -1,4 +1,5 @@
 import { BraveWallet } from '../../constants/types'
+import { mockOriginInfo } from './mock-origin-info'
 
 export const mockTransactionInfo: BraveWallet.TransactionInfo = {
   fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -29,7 +30,8 @@ export const mockTransactionInfo: BraveWallet.TransactionInfo = {
   txType: BraveWallet.TransactionType.ERC20Transfer,
   createdTime: { microseconds: BigInt(0) },
   submittedTime: { microseconds: BigInt(0) },
-  confirmedTime: { microseconds: BigInt(0) }
+  confirmedTime: { microseconds: BigInt(0) },
+  originInfo: mockOriginInfo
 }
 
 export const mockedErc20ApprovalTransaction = {

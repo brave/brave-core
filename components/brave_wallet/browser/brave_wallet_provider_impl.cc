@@ -232,19 +232,21 @@ void BraveWalletProviderImpl::ContinueGetDefaultKeyringInfo(
     RequestCallback callback,
     base::Value id,
     const std::string& normalized_json_request,
+    const url::Origin& origin,
     mojom::NetworkInfoPtr chain) {
   keyring_service_->GetKeyringInfo(
       mojom::kDefaultKeyringId,
       base::BindOnce(
           &BraveWalletProviderImpl::OnGetNetworkAndDefaultKeyringInfo,
           weak_factory_.GetWeakPtr(), std::move(callback), std::move(id),
-          normalized_json_request, std::move(chain)));
+          normalized_json_request, origin, std::move(chain)));
 }
 
 void BraveWalletProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
     RequestCallback callback,
     base::Value id,
     const std::string& normalized_json_request,
+    const url::Origin& origin,
     mojom::NetworkInfoPtr chain,
     mojom::KeyringInfoPtr keyring_info) {
   std::unique_ptr<base::Value> formed_response;
@@ -287,14 +289,14 @@ void BraveWalletProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
           base::BindOnce(
               &BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction,
               weak_factory_.GetWeakPtr(), std::move(callback), std::move(id),
-              std::move(tx_data_1559), from));
+              std::move(tx_data_1559), from, origin));
     } else {
       GetAllowedAccounts(
           false,
           base::BindOnce(&BraveWalletProviderImpl::
                              ContinueAddAndApprove1559TransactionWithAccounts,
                          weak_factory_.GetWeakPtr(), std::move(callback),
-                         std::move(id), std::move(tx_data_1559), from));
+                         std::move(id), std::move(tx_data_1559), from, origin));
     }
   } else {
     if (!tx_data_1559) {
@@ -308,10 +310,11 @@ void BraveWalletProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
     }
 
     GetAllowedAccounts(
-        false, base::BindOnce(
-                   &BraveWalletProviderImpl::ContinueAddAndApproveTransaction,
-                   weak_factory_.GetWeakPtr(), std::move(callback),
-                   std::move(id), std::move(tx_data_1559->base_data), from));
+        false,
+        base::BindOnce(
+            &BraveWalletProviderImpl::ContinueAddAndApproveTransaction,
+            weak_factory_.GetWeakPtr(), std::move(callback), std::move(id),
+            std::move(tx_data_1559->base_data), from, origin));
   }
 }
 
@@ -324,6 +327,7 @@ void BraveWalletProviderImpl::ContinueAddAndApproveTransaction(
     base::Value id,
     mojom::TxDataPtr tx_data,
     const std::string& from,
+    const url::Origin& origin,
     const std::vector<std::string>& allowed_accounts,
     mojom::ProviderError error,
     const std::string& error_message) {
@@ -349,7 +353,7 @@ void BraveWalletProviderImpl::ContinueAddAndApproveTransaction(
   }
 
   tx_service_->AddUnapprovedTransaction(
-      mojom::TxDataUnion::NewEthTxData(std::move(tx_data)), from,
+      mojom::TxDataUnion::NewEthTxData(std::move(tx_data)), from, origin,
       base::BindOnce(
           &BraveWalletProviderImpl::OnAddUnapprovedTransactionAdapter,
           weak_factory_.GetWeakPtr(), std::move(callback), std::move(id)));
@@ -375,6 +379,7 @@ void BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction(
     base::Value id,
     mojom::TxData1559Ptr tx_data,
     const std::string& from,
+    const url::Origin& origin,
     const std::string& chain_id) {
   tx_data->chain_id = chain_id;
   GetAllowedAccounts(
@@ -382,7 +387,7 @@ void BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction(
       base::BindOnce(&BraveWalletProviderImpl::
                          ContinueAddAndApprove1559TransactionWithAccounts,
                      weak_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(id), std::move(tx_data), from));
+                     std::move(id), std::move(tx_data), from, origin));
 }
 
 void BraveWalletProviderImpl::ContinueAddAndApprove1559TransactionWithAccounts(
@@ -390,6 +395,7 @@ void BraveWalletProviderImpl::ContinueAddAndApprove1559TransactionWithAccounts(
     base::Value id,
     mojom::TxData1559Ptr tx_data,
     const std::string& from,
+    const url::Origin& origin,
     const std::vector<std::string>& allowed_accounts,
     mojom::ProviderError error,
     const std::string& error_message) {
@@ -415,7 +421,7 @@ void BraveWalletProviderImpl::ContinueAddAndApprove1559TransactionWithAccounts(
   }
 
   tx_service_->AddUnapprovedTransaction(
-      mojom::TxDataUnion::NewEthTxData1559(std::move(tx_data)), from,
+      mojom::TxDataUnion::NewEthTxData1559(std::move(tx_data)), from, origin,
       base::BindOnce(
           &BraveWalletProviderImpl::OnAddUnapprovedTransactionAdapter,
           weak_factory_.GetWeakPtr(), std::move(callback), std::move(id)));
@@ -995,7 +1001,8 @@ void BraveWalletProviderImpl::CommonRequestOrSendAsync(
         mojom::CoinType::ETH,
         base::BindOnce(&BraveWalletProviderImpl::ContinueGetDefaultKeyringInfo,
                        weak_factory_.GetWeakPtr(), std::move(callback),
-                       std::move(id), normalized_json_request));
+                       std::move(id), normalized_json_request,
+                       delegate_->GetOrigin()));
   } else if (method == kEthSign || method == kPersonalSign) {
     std::string address;
     std::string message;

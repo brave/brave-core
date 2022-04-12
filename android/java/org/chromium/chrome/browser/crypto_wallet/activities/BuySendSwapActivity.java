@@ -1273,7 +1273,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 TxDataUnion txDataUnion = new TxDataUnion();
                 txDataUnion.setEthTxData1559(txData1559);
                 mTxService.addUnapprovedTransaction(
-                        txDataUnion, from, (success, tx_meta_id, error_message) -> {
+                        txDataUnion, from, null, (success, tx_meta_id, error_message) -> {
                             // Do nothing here when success as we will receive an
                             // unapproved transaction in TxServiceObserver.
                             // When we have error, let the user know,
@@ -1284,7 +1284,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 TxDataUnion txDataUnion = new TxDataUnion();
                 txDataUnion.setEthTxData(data);
                 mTxService.addUnapprovedTransaction(
-                        txDataUnion, from, (success, tx_meta_id, error_message) -> {
+                        txDataUnion, from, null, (success, tx_meta_id, error_message) -> {
                             // Do nothing here when success as we will receive an
                             // unapproved transaction in TxServiceObserver.
                             // When we have error, let the user know,
