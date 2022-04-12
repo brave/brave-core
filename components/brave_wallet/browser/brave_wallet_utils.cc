@@ -1008,8 +1008,7 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
 
 std::string eTLDPlusOne(const url::Origin& origin) {
   return net::registry_controlled_domains::GetDomainAndRegistry(
-      origin.host(),
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+      origin, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin) {
