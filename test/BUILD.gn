@@ -778,6 +778,7 @@ if (!is_android) {
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/de_amp/browser/test:browser_tests",
+      "//brave/components/de_amp/common:common",
       "//brave/components/debounce/browser",
       "//brave/components/debounce/common",
       "//brave/components/resources:strings_grit",
