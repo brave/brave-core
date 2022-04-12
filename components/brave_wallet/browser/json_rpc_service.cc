@@ -1297,8 +1297,10 @@ bool JsonRpcService::IsValidDomain(const std::string& domain) {
 
 void JsonRpcService::GetERC721OwnerOf(const std::string& contract,
                                       const std::string& token_id,
+                                      const std::string& chain_id,
                                       GetERC721OwnerOfCallback callback) {
-  if (!EthAddress::IsValidAddress(contract)) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
+  if (!EthAddress::IsValidAddress(contract) || !network_url.is_valid()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -1325,8 +1327,7 @@ void JsonRpcService::GetERC721OwnerOf(const std::string& contract,
       base::BindOnce(&JsonRpcService::OnGetERC721OwnerOf,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(eth::eth_call("", contract, "", "", "", data, "latest"), true,
-                  network_urls_[mojom::CoinType::ETH],
-                  std::move(internal_callback));
+                  network_url, std::move(internal_callback));
 }
 
 void JsonRpcService::OnGetERC721OwnerOf(
@@ -1360,8 +1361,7 @@ void JsonRpcService::GetERC721TokenBalance(
     const std::string& chain_id,
     GetERC721TokenBalanceCallback callback) {
   const auto eth_account_address = EthAddress::FromHex(account_address);
-  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
-  if (eth_account_address.IsEmpty() || !network_url.is_valid()) {
+  if (eth_account_address.IsEmpty()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -1372,7 +1372,8 @@ void JsonRpcService::GetERC721TokenBalance(
       &JsonRpcService::ContinueGetERC721TokenBalance,
       weak_ptr_factory_.GetWeakPtr(), eth_account_address.ToChecksumAddress(),
       std::move(callback));
-  GetERC721OwnerOf(contract_address, token_id, std::move(internal_callback));
+  GetERC721OwnerOf(contract_address, token_id, chain_id,
+                   std::move(internal_callback));
 }
 
 void JsonRpcService::ContinueGetERC721TokenBalance(
