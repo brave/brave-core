@@ -16,10 +16,12 @@
 #include "base/no_destructor.h"
 #include "brave/common/brave_constants.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_key.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -223,6 +225,11 @@ void RecordInitialP3AValues(Profile* profile) {
     return;
   }
   RecordSponsoredImagesEnabledP3A(profile);
+  if (profile->IsRegularProfile()) {
+    brave_shields::MaybeRecordInitialShieldsSettings(
+        profile->GetPrefs(),
+        HostContentSettingsMapFactory::GetForProfile(profile));
+  }
 }
 
 void SetDefaultSearchVersion(Profile* profile, bool is_new_profile) {

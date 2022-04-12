@@ -172,10 +172,8 @@ BraveShieldsSetCosmeticFilteringControlTypeFunction::Run() {
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetCosmeticFilteringControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile),
-      control_type,
-      url,
-      g_browser_process->local_state());
+      HostContentSettingsMapFactory::GetForProfile(profile), control_type, url,
+      g_browser_process->local_state(), profile->GetPrefs());
 
   return RespondNow(NoArguments());
 }
@@ -312,10 +310,8 @@ BraveShieldsSetFingerprintingControlTypeFunction::Run() {
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
   ::brave_shields::SetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile),
-      control_type,
-      url,
-      g_browser_process->local_state());
+      HostContentSettingsMapFactory::GetForProfile(profile), control_type, url,
+      g_browser_process->local_state(), profile->GetPrefs());
 
   return RespondNow(NoArguments());
 }

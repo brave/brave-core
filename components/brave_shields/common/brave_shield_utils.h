@@ -10,8 +10,22 @@
 
 class GURL;
 
+namespace brave_shields {
+
+struct ShieldsSettingCounts {
+  int allow;
+  int standard;
+  int aggressive;
+};
+
 ContentSetting GetBraveFPContentSettingFromRules(
     const ContentSettingsForOneType& fp_rules,
     const GURL& primary_url);
+
+ShieldsSettingCounts GetFPSettingCountFromRules(
+    const ContentSettingsForOneType& fp_rules);
+ShieldsSettingCounts GetAdsSettingCountFromRules(
+    const ContentSettingsForOneType& ads_rules);
+}  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_COMMON_BRAVE_SHIELD_UTILS_H_

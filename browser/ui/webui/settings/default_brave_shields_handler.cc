@@ -114,7 +114,8 @@ void DefaultBraveShieldsHandler::SetCosmeticFilteringControlType(
 
   brave_shields::SetCosmeticFilteringControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      ControlTypeFromString(value), GURL(), g_browser_process->local_state());
+      ControlTypeFromString(value), GURL(), g_browser_process->local_state(),
+      profile_->GetPrefs());
 }
 
 void DefaultBraveShieldsHandler::GetCookieControlType(
@@ -162,7 +163,8 @@ void DefaultBraveShieldsHandler::SetFingerprintingControlType(
 
   brave_shields::SetFingerprintingControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      ControlTypeFromString(value), GURL(), g_browser_process->local_state());
+      ControlTypeFromString(value), GURL(), g_browser_process->local_state(),
+      profile_->GetPrefs());
 }
 
 void DefaultBraveShieldsHandler::SetHTTPSEverywhereEnabled(

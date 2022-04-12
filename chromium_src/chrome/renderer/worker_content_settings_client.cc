@@ -27,7 +27,7 @@ BraveFarblingLevel WorkerContentSettingsClient::GetBraveFarblingLevel() {
       setting = CONTENT_SETTING_ALLOW;
     } else {
       // Brave Shields is up, so check fingerprinting rules
-      setting = GetBraveFPContentSettingFromRules(
+      setting = brave_shields::GetBraveFPContentSettingFromRules(
           content_setting_rules_->fingerprinting_rules, primary_url);
     }
   }
