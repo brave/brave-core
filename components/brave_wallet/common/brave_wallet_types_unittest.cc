@@ -88,4 +88,43 @@ TEST(BraveWalletTypesTest, SolanaSignatureStatusToValue) {
   EXPECT_EQ(*status_from_value, status);
 }
 
+TEST(BraveWalletTypesTest, ValidSolidityBits) {
+  for (size_t i = 8; i <= 256; i += 8) {
+    EXPECT_TRUE(ValidSolidityBits(i));
+  }
+  std::vector<size_t> invalid_num_bits = {0, 7, 257};
+  for (size_t i : invalid_num_bits) {
+    EXPECT_FALSE(ValidSolidityBits(i));
+    EXPECT_EQ(MaxSolidityUint(i), absl::nullopt);
+    EXPECT_EQ(MaxSolidityInt(i), absl::nullopt);
+    EXPECT_EQ(MinSolidityInt(i), absl::nullopt);
+  }
+}
+
+TEST(BraveWalletTypesTest, MaxSolidityUint) {
+  EXPECT_EQ(MaxSolidityUint(8), uint256_t(255));
+  EXPECT_EQ(MaxSolidityUint(16), uint256_t(65535));
+  EXPECT_EQ(MaxSolidityUint(24), uint256_t(16777215));
+  EXPECT_EQ(MaxSolidityUint(128),
+            uint256_t(std::numeric_limits<uint128_t>::max()));
+  EXPECT_EQ(MaxSolidityUint(256),
+            uint256_t(std::numeric_limits<uint256_t>::max()));
+}
+
+TEST(BraveWalletTypesTest, MaxSolidityInt) {
+  EXPECT_EQ(MaxSolidityInt(8), int256_t(127));
+  EXPECT_EQ(MaxSolidityInt(16), int256_t(32767));
+  EXPECT_EQ(MaxSolidityInt(24), int256_t(8388607));
+  EXPECT_EQ(MaxSolidityInt(128), int256_t(kMax128BitInt));
+  EXPECT_EQ(MaxSolidityInt(256), int256_t(kMax256BitInt));
+}
+
+TEST(BraveWalletTypesTest, MinSolidityInt) {
+  EXPECT_EQ(MinSolidityInt(8), int256_t(-128));
+  EXPECT_EQ(MinSolidityInt(16), int256_t(-32768));
+  EXPECT_EQ(MinSolidityInt(24), int256_t(-8388608));
+  EXPECT_EQ(MinSolidityInt(128), int256_t(kMin128BitInt));
+  EXPECT_EQ(MinSolidityInt(256), int256_t(kMin256BitInt));
+}
+
 }  // namespace brave_wallet
