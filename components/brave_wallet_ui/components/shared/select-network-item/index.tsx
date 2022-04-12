@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
 import { BraveWallet } from '../../../constants/types'
 import { CreateNetworkIcon } from '../'
 // Styled Components
@@ -8,16 +9,32 @@ import {
   LeftSide,
   BigCheckMark
 } from './style'
+import { WalletActions } from '../../../common/actions'
+import { PanelActions } from '../../../panel/actions'
 
 export interface Props {
   selectedNetwork: BraveWallet.NetworkInfo
   network: BraveWallet.NetworkInfo
-  onSelectNetwork: () => void
+  onSelectCustomNetwork?: (network: BraveWallet.NetworkInfo) => void
 }
 
 function SelectNetworkItem (props: Props) {
-  const { network, onSelectNetwork, selectedNetwork } = props
+  const { network, selectedNetwork, onSelectCustomNetwork } = props
 
+  // redux
+  const dispatch = useDispatch()
+
+  // methods
+  const onSelectNetwork = () => {
+    if (onSelectCustomNetwork) {
+      onSelectCustomNetwork(network)
+      return
+    }
+    dispatch(WalletActions.selectNetwork(network))
+    dispatch(PanelActions.navigateTo('main'))
+  }
+
+  // render
   return (
     <StyledWrapper onClick={onSelectNetwork}>
       <LeftSide>

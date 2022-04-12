@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import org.chromium.chrome.browser.flags.CachedFeatureFlags;
+import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 
 public class BraveTabUiFeatureUtilities {
@@ -17,12 +18,17 @@ public class BraveTabUiFeatureUtilities {
 
     @SuppressLint("VisibleForTests")
     public static void maybeOverrideEnableTabGroupAutoCreationPreference(Context context) {
-        if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled(context)
-                && TabUiFeatureUtilities.ENABLE_TAB_GROUP_AUTO_CREATION.getValue()) {
-            // Override it to make "Open in new tab" menu option in the context menu available.
+        if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled(context)) {
+            // Override it to make "Open in new tab" menu option in the context menu available if
+            // applicable.
             SharedPreferencesManager.getInstance().writeBoolean(
-                    TAB_GROUP_AUTO_CREATION_PREFERENCE, false);
+                    TAB_GROUP_AUTO_CREATION_PREFERENCE, isBraveTabGroupsEnabled());
             CachedFeatureFlags.resetFlagsForTesting();
         }
+    }
+
+    public static boolean isBraveTabGroupsEnabled() {
+        return SharedPreferencesManager.getInstance().readBoolean(
+                BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, true);
     }
 }

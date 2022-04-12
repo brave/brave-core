@@ -12,10 +12,16 @@
 
 namespace brave_wallet {
 
-TEST(FilRequestUnitTest, fil_getBalance) {
+TEST(FilRequestUnitTest, getBalance) {
   ASSERT_EQ(
-      fil_getBalance("t1jdlfl73voaiblrvn2yfivvn5ifucwwv5f26nfza"),
+      fil::getBalance("t1jdlfl73voaiblrvn2yfivvn5ifucwwv5f26nfza"),
       R"({"id":1,"jsonrpc":"2.0","method":"Filecoin.WalletBalance","params":["t1jdlfl73voaiblrvn2yfivvn5ifucwwv5f26nfza"]})");  // NOLINT
+}
+
+TEST(FilRequestUnitTest, getTransactionCount) {
+  ASSERT_EQ(
+      fil::getTransactionCount("t1jdlfl73voaiblrvn2yfivvn5ifucwwv5f26nfza"),
+      R"({"id":1,"jsonrpc":"2.0","method":"Filecoin.MpoolGetNonce","params":["t1jdlfl73voaiblrvn2yfivvn5ifucwwv5f26nfza"]})");  // NOLINT
 }
 
 }  // namespace brave_wallet

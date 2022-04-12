@@ -13,4 +13,8 @@ export class OnboardingCompletedStore {
   save () {
     localStorage.rewardsOnboardingComplete = String(Date.now())
   }
+
+  clear () {
+    delete localStorage.rewardsOnboardingComplete
+  }
 }

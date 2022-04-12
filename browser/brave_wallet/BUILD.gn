@@ -59,13 +59,19 @@ source_set("brave_wallet_delegate") {
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/resources:strings_grit",
+    "//chrome/browser/profiles:profile",
     "//components/content_settings/core/common",
     "//components/permissions",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
   ]
   if (is_android) {
-    sources += [ "brave_wallet_provider_delegate_impl_helper_android.cc" ]
+    sources += [
+      "brave_wallet_provider_delegate_impl_helper_android.cc",
+      "brave_wallet_service_delegate_impl_android.cc",
+      "brave_wallet_service_delegate_impl_android.h",
+    ]
+    deps += [ "//brave/build/android:jni_headers" ]
   } else {
     sources += [
       "brave_wallet_provider_delegate_impl_helper.cc",
@@ -75,7 +81,6 @@ source_set("brave_wallet_delegate") {
     deps += [
       "//brave/browser/brave_wallet:tab_helper",
       "//brave/browser/ui",
-      "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
     ]
     if (enable_extensions) {
@@ -138,7 +143,6 @@ source_set("unit_tests") {
     "brave_wallet_prefs_unittest.cc",
     "brave_wallet_service_unittest.cc",
     "brave_wallet_tab_helper_unittest.cc",
-    "eth_nonce_tracker_unittest.cc",
     "eth_pending_tx_tracker_unittest.cc",
     "filecoin_keyring_unittest.cc",
     "keyring_service_unittest.cc",
@@ -160,6 +164,7 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/resources:strings_grit",
+    "//brave/components/version_info",
     "//chrome/browser",
     "//chrome/test:test_support",
     "//testing/gtest",

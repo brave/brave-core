@@ -24,7 +24,7 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
-#include "brave/components/brave_shields/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/common/adblock_domain_resolver.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
@@ -38,28 +38,6 @@
 #define DAT_FILE "rs-ABPFilterParserData.dat"
 
 namespace brave_shields {
-
-namespace {
-
-// Extracts the start and end characters of a domain from a hostname.
-// Required for correct functionality of adblock-rust.
-void AdBlockServiceDomainResolver(const char* host,
-                                  uint32_t* start,
-                                  uint32_t* end) {
-  const auto host_str = std::string(host);
-  const auto domain = net::registry_controlled_domains::GetDomainAndRegistry(
-      host_str, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  const size_t match = host_str.rfind(domain);
-  if (match != std::string::npos) {
-    *start = match;
-    *end = match + domain.length();
-  } else {
-    *start = 0;
-    *end = host_str.length();
-  }
-}
-
-}  // namespace
 
 AdBlockService::SourceProviderObserver::SourceProviderObserver(
     base::WeakPtr<AdBlockEngine> adblock_engine,
@@ -181,7 +159,7 @@ absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
 
   if (regional_resources && regional_resources->is_dict()) {
     MergeResourcesInto(std::move(*regional_resources), &*resources,
-                       /*force_hide=*/false);
+                       /*force_hide=*/true);
   }
 
   absl::optional<base::Value> custom_resources =
@@ -334,9 +312,6 @@ bool AdBlockService::Start() {
   custom_filters_service();
   regional_service_manager();
   subscription_service_manager();
-
-  MaybeRecordDefaultShieldsAdsSetting(local_state_);
-  MaybeRecordDefaultShieldsFingerprintSetting(local_state_);
 
   return true;
 }

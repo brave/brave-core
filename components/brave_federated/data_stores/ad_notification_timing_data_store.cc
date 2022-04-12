@@ -141,4 +141,17 @@ void AdNotificationTimingDataStore::EnforceRetentionPolicy() {
   DataStore::EnforceRetentionPolicy();
 }
 
+void AdNotificationTimingDataStore::AddLogsForTesting() {
+  const base::Time time = base::Time::Now();
+  const std::string locale = "lo";
+  int number_of_tabs = 5;
+  bool label = true;
+
+  for (int i = 0; i < 5; i++) {
+    AdNotificationTimingTaskLog log(i, time, locale, number_of_tabs, label,
+                                    base::Time::Now());
+    AddLog(log);
+  }
+}
+
 }  // namespace brave_federated

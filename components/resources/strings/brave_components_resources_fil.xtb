@@ -1175,7 +1175,7 @@
 <translation id="1671503397662036257">Status ng Koneksyon ng Tor</translation>
 <translation id="6024292492796847324">Pag-usad ng Pagsisimula ng Tor</translation>
 <translation id="8458987127502506209">I-enable ang Shields ng Brave</translation>
-<translation id="7509914170164691086">NAKA-ON ang Shields <ph name="LINK_BEFORE"/>nang<ph name="LINK_AFTER"/></translation>
+<translation id="7509914170164691086">NAKA-ON ang Shields <ph name="LINK_BEFORE"/>para sa<ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">NAKA-OFF ang Shields <ph name="LINK_BEFORE"/>nang<ph name="LINK_AFTER"/></translation>
 <translation id="7709075156958117386">Kung mukhang sira ang site na ito, subukang naka-off ang Shields. 
     <ph name="LINK_BEFORE"/>Tandaan: posibleng mabawasan nito ang mga privacy protection ng Brave.<ph name="LINK_AFTER"/></translation>

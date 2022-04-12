@@ -13,17 +13,18 @@ namespace ads {
 
 PromotedContentAdInfo BuildPromotedContentAd(
     const CreativePromotedContentAdInfo& creative_promoted_content_ad) {
-  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
-  return BuildPromotedContentAd(creative_promoted_content_ad, uuid);
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
+  return BuildPromotedContentAd(creative_promoted_content_ad, placement_id);
 }
 
 PromotedContentAdInfo BuildPromotedContentAd(
     const CreativePromotedContentAdInfo& creative_promoted_content_ad,
-    const std::string& uuid) {
+    const std::string& placement_id) {
   PromotedContentAdInfo promoted_content_ad;
 
   promoted_content_ad.type = AdType::kPromotedContentAd;
-  promoted_content_ad.uuid = uuid;
+  promoted_content_ad.placement_id = placement_id;
   promoted_content_ad.creative_instance_id =
       creative_promoted_content_ad.creative_instance_id;
   promoted_content_ad.creative_set_id =

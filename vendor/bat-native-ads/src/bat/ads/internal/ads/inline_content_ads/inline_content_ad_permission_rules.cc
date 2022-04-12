@@ -8,6 +8,7 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/inline_content_ads_per_day_permission_rule.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/inline_content_ads_per_hour_permission_rule.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_permission_rule.h"
 
 namespace ads {
 namespace inline_content_ads {
@@ -21,6 +22,11 @@ PermissionRules::~PermissionRules() = default;
 
 bool PermissionRules::HasPermission() const {
   if (!PermissionRulesBase::HasPermission()) {
+    return false;
+  }
+
+  UserActivityPermissionRule user_activity_permission_rule;
+  if (!ShouldAllow(&user_activity_permission_rule)) {
     return false;
   }
 

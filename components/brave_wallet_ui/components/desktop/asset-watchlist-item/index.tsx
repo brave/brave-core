@@ -94,8 +94,8 @@ const AssetWatchlistItem = (props: Props) => {
             <DeleteIcon />
           </DeleteButton>
         }
-        <Checkbox value={{ [token.contractAddress]: isSelected }} onChange={onCheck}>
-          <div data-key={token.contractAddress} />
+        <Checkbox value={{ [`${token.contractAddress}-${token.symbol}-${token.chainId}`]: isSelected }} onChange={onCheck}>
+          <div data-key={`${token.contractAddress}-${token.symbol}-${token.chainId}`} />
         </Checkbox>
       </RightSide>
     </StyledWrapper>

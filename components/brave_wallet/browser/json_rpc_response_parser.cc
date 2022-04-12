@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
+#include "brave/components/json/rs/src/lib.rs.h"
 
 namespace brave_wallet {
 
@@ -68,6 +69,18 @@ bool ParseBoolResult(const std::string& json, bool* value) {
   }
 
   return false;
+}
+
+absl::optional<std::string> ConvertSingleUint64Result(
+    const std::string& raw_json) {
+  if (raw_json.empty())
+    return absl::nullopt;
+  std::string converted_json(
+      json::convert_uint64_value_to_string("/result", raw_json.c_str())
+          .c_str());
+  if (converted_json.empty())
+    return absl::nullopt;
+  return converted_json;
 }
 
 }  // namespace brave_wallet

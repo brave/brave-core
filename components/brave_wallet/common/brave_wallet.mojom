@@ -7,6 +7,7 @@ module brave_wallet.mojom;
 
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
+import "url/mojom/origin.mojom";
 import "url/mojom/url.mojom";
 
 // Used to notify the renderer of provider information for use in
@@ -71,6 +72,18 @@ enum ProviderError {
   kUnknown = -1                 // Unknown error
 };
 
+enum FilecoinProviderError {
+  kSuccess = ProviderError.kSuccess,  // No error
+  kActorNotFound = 1, // Actor not found for given address
+  // Pre-defined error codes specified in
+  // https://www.jsonrpc.org/specification#error_object
+  kParsingError = JsonRpcError.kParsingError,      // Parse error - Invalid JSON
+  kInvalidRequest = JsonRpcError.kInvalidRequest,  // JSON is not a valid request object
+  kMethodNotFound = JsonRpcError.kMethodNotFound,  // Method does not exist
+  kInvalidParams = JsonRpcError.kInvalidParams,    // Invalid method parameters
+  kInternalError = JsonRpcError.kInternalError,    // Internal JSON RPC error
+};
+
 enum SolanaProviderError {
   kSuccess = ProviderError.kSuccess,  // No error
 
@@ -115,11 +128,11 @@ interface BraveWalletProvider {
   Init(pending_remote<EventsListener> events_listener);
 
   // Corresponds to window.ethereum.request
-  Request(mojo_base.mojom.Value input, string origin) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
+  Request(mojo_base.mojom.Value input) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
 
   // Corresponds to window.ethereum.enable and eth_requestAccounts
   Enable() => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
-  Send(string method, mojo_base.mojom.Value params, string origin) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
+  Send(string method, mojo_base.mojom.Value params) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
 
   // Used for the connect event
   GetChainId() => (string chain_id);
@@ -218,8 +231,8 @@ interface PanelHandler {
   // Notify the backend that the dialog should be closed.
   CloseUI();
 
-  ConnectToSite(array<string> accounts, string origin);
-  CancelConnectToSite(string origin);
+  ConnectToSite(array<string> accounts);
+  CancelConnectToSite();
   SetCloseOnDeactivate(bool close);
 };
 
@@ -350,6 +363,9 @@ interface WalletHandler {
 };
 
 struct BlockchainToken {
+  // TODO(jocelyn): contract_address should be renamed to address to be a
+  // general naming for different coin type. Currently it's token mint address
+  // in Solana's context.
   string contract_address;
   string name;
   string logo;
@@ -358,9 +374,10 @@ struct BlockchainToken {
   string symbol;
   int32 decimals;
   bool visible = true;
-  string token_id = "";  // Non-empty for ERC721 tokens.
+  string token_id = "";  // Ethereum only, non-empty for ERC721 tokens.
   string coingecko_id = "";
   string chain_id;
+  CoinType coin;
 };
 
 // WebUI-side handler for requests from the browser.
@@ -396,22 +413,28 @@ interface KeyringServiceObserver {
   SelectedAccountChanged(CoinType coin);
 };
 
+enum OnRampProvider {
+  kWyre = 0,
+  kRamp = 1,
+};
+
 // List of tokens and coins that are supported.
 interface BlockchainRegistry {
-  // Obtains token information by a contract lookup
-  GetTokenByContract(string chain_id, string contract) => (BlockchainToken? token);
+  // Obtains token information by an address lookup
+  GetTokenByAddress(string chain_id, CoinType coin, string address) => (BlockchainToken? token);
 
   // Obtains token information by a symbol lookup
-  GetTokenBySymbol(string chain_id, string symbol) => (BlockchainToken? token);
+  GetTokenBySymbol(string chain_id, CoinType coin, string symbol) => (BlockchainToken? token);
 
   // Obtains all tokens Send/Swap UI
-  GetAllTokens(string chain_id) => (array<BlockchainToken> tokens);
+  GetAllTokens(string chain_id, CoinType coin) => (array<BlockchainToken> tokens);
 
+  // Below APIs are Ethereum only for the moment.
   // Obtains all tokens for the Buy UI
-  GetBuyTokens(string chain_id) => (array<BlockchainToken> tokens);
+  GetBuyTokens(OnRampProvider provider, string chain_id) => (array<BlockchainToken> tokens);
 
   // Obtains the URL used for buying assets
-  GetBuyUrl(string chain_id, string address, string symbol, string amount) => (string url);
+  GetBuyUrl(OnRampProvider provider, string chain_id, string address, string symbol, string amount) => (string url, string? error);
 };
 
 // Implements the HD wallet, Ledger & Trezor integration, account management,
@@ -550,6 +573,7 @@ interface AssetRatioService {
       (bool success, string seconds);
 
   // Obtain token info via contract address through etherscan API.
+  // This is only for Ethereum mainnet.
   GetTokenInfo(string contract_address) => (BlockchainToken? token);
 };
 
@@ -650,16 +674,31 @@ struct NetworkInfo {
   NetworkInfoData? data;
 };
 
+struct OriginInfo {
+  url.mojom.Origin origin;
+  string origin_spec;
+  string e_tld_plus_one;
+};
+
+struct AddChainRequest {
+  OriginInfo origin_info;
+  NetworkInfo network_info;
+};
+
 struct SwitchChainRequest {
-  url.mojom.Url origin;
+  OriginInfo origin_info;
   string chain_id;
 };
 
 struct GetEncryptionPublicKeyRequest {
-  url.mojom.Url origin;
+  OriginInfo origin_info;
   string address;
-  // TODO(bbondy): This field is used in the front-end but will be removed soon
-  string? message;
+};
+
+struct DecryptRequest {
+  OriginInfo origin_info;
+  string address;
+  string? unsafe_message;
 };
 
 // Deals with the ETH JSON RPC API, as well as things like the user's current
@@ -667,14 +706,14 @@ struct GetEncryptionPublicKeyRequest {
 interface JsonRpcService {
   // Checks the chain ID for an ethereum chain that should be added
   AddEthereumChain(NetworkInfo chain) => (string chain_id, ProviderError error, string error_message);
-  AddEthereumChainForOrigin(NetworkInfo chain, url.mojom.Url origin) => (string chain_id, ProviderError error, string error_message);
+  AddEthereumChainForOrigin(NetworkInfo chain, url.mojom.Origin origin) => (string chain_id, ProviderError error, string error_message);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
   RemoveEthereumChain(string chain_id) => (bool success);
-  GetPendingChainRequests() => (array<NetworkInfo> networks);
+  GetPendingAddChainRequests() => (array<AddChainRequest> requests);
 
   // This is used for UI notifying native when the user approves or
   // rejects SwitchChainRequest
-  NotifySwitchChainRequestProcessed(bool approved, url.mojom.Url origin);
+  NotifySwitchChainRequestProcessed(bool approved, url.mojom.Origin origin);
   GetPendingSwitchChainRequests() => (array<SwitchChainRequest> requests);
 
   SetNetwork(string chain_id, CoinType coin) => (bool success);
@@ -759,8 +798,14 @@ enum TransactionType {
   SolanaSPLTokenTransferWithAssociatedTokenAccountCreation = 8
 };
 
-// TODO(spylogsster): Fill the struct with needed fields.
 struct FilTxData {
+  string nonce;
+  string gas_premium;
+  string gas_fee_cap;
+  string gas_limit;
+  string max_fee;
+  string to;
+  string value;
 };
 
 union TxDataUnion {
@@ -878,7 +923,7 @@ interface SolanaTxManagerProxy {
 
 interface BraveWalletServiceObserver {
   // Fired when the active origin is changed along with its eTLD+1
-  OnActiveOriginChanged(string origin, string e_tld_plus_one);
+  OnActiveOriginChanged(OriginInfo origin_info);
 
   // Fired when the default wallet setting changes
   OnDefaultWalletChanged(DefaultWallet wallet);
@@ -894,6 +939,7 @@ interface BraveWalletServiceObserver {
 };
 
 struct SignMessageRequest {
+  OriginInfo origin_info;
   int32 id;
   string address;
   string message;
@@ -910,6 +956,7 @@ enum ExternalWalletType {
 };
 
 struct AddSuggestTokenRequest {
+  OriginInfo origin;
   BlockchainToken token;
 };
 
@@ -919,20 +966,20 @@ interface BraveWalletService {
   // Adds an observer for BraveWalletService
   AddObserver(pending_remote<BraveWalletServiceObserver> observer);
 
-  // Obtains the user assets for the specified chain ID
-  GetUserAssets(string chain_id) => (array<BlockchainToken> tokens);
+  // Obtains the user assets for the specified chain ID and coin type.
+  GetUserAssets(string chain_id, CoinType coin) => (array<BlockchainToken> tokens);
 
-  // Adds a user asset to the user asset list pref for the specified chain ID.
+  // Adds a user asset to the user asset list pref.
   // This asset could be a token from BlockchainRegistry or a custom token.
-  AddUserAsset(BlockchainToken token, string chain_id) => (bool success);
+  AddUserAsset(BlockchainToken token) => (bool success);
 
-  // Removes a user asset from the user asset list pref for the specified chain
-  // ID. This asset could be a token from BlockchainRegistry or a custom token.
-  RemoveUserAsset(BlockchainToken token, string chain_id) => (bool success);
-
-  // Sets whether or not an asset is visible for the specified chain ID.
+  // Removes a user asset from the user asset list pref.
   // This asset could be a token from BlockchainRegistry or a custom token.
-  SetUserAssetVisible(BlockchainToken token, string chain_id, bool visible) => (bool success);
+  RemoveUserAsset(BlockchainToken token) => (bool success);
+
+  // Sets whether or not an asset is visible.
+  // This asset could be a token from BlockchainRegistry or a custom token.
+  SetUserAssetVisible(BlockchainToken token, bool visible) => (bool success);
 
   // Check if the external wallet is installed (Only check installation state
   // regardless of internal state)
@@ -968,16 +1015,16 @@ interface BraveWalletService {
   SetDefaultBaseCryptocurrency(string cryptocurrency);
 
   // Adds the Ethereum permission for the account
-  AddEthereumPermission(string origin, string account) => (bool success);
+  AddEthereumPermission(url.mojom.Origin origin, string account) => (bool success);
 
   // Checks if the Ethereum permission is allowed for the origin on the account
-  HasEthereumPermission(string origin, string account) => (bool success, bool has_permission);
+  HasEthereumPermission(url.mojom.Origin origin, string account) => (bool success, bool has_permission);
 
   // Resets the Ethereum permission for the account
-  ResetEthereumPermission(string origin, string account) => (bool success);
+  ResetEthereumPermission(url.mojom.Origin origin, string account) => (bool success);
 
-  // Obtains the active origin and eTLD+1 of it
-  GetActiveOrigin() => (string origin, string e_tld_plus_one);
+  // Obtains the active origin info.
+  GetActiveOrigin() => (OriginInfo origin_info);
 
   // These are used for UI notifying native when the user approve/reject SignMessage[Hardware]Request
   NotifySignMessageRequestProcessed(bool approved, int32 id);
@@ -994,8 +1041,13 @@ interface BraveWalletService {
 
   // This is used for UI notifying native when the user approves or
   // rejects getting the public key for an origin
-  NotifyGetPublicKeyRequestProcessed(bool approved, url.mojom.Url origin);
+  NotifyGetPublicKeyRequestProcessed(bool approved, url.mojom.Origin origin);
   GetPendingGetEncryptionPublicKeyRequests() => (array<GetEncryptionPublicKeyRequest> requests);
+
+  // This is used for UI notifying native when the user approves or
+  // rejects decrypting data for an origin
+  NotifyDecryptRequestProcessed(bool approved, url.mojom.Origin origin);
+  GetPendingDecryptRequests() => (array<DecryptRequest> requests);
 
   // Resets the keyring and the related preferences
   Reset();

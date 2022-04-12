@@ -27,7 +27,7 @@ import {
   Buy,
   SelectAsset,
   SelectAccount,
-  SelectNetwork,
+  SelectNetworkWithHeader,
   Swap
 } from '../components/buy-send-swap/'
 import { AppList } from '../components/shared'
@@ -50,6 +50,7 @@ import * as WalletActions from '../common/actions/wallet_actions'
 import {
   AppsListType,
   BraveWallet,
+  Origin,
   WalletState,
   PanelState,
   PanelTypes,
@@ -63,14 +64,8 @@ import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
 import { GetBuyOrFaucetUrl } from '../utils/buy-asset-url'
 import { getNetworkInfo } from '../utils/network-utils'
-import {
-  findENSAddress,
-  findUnstoppableDomainAddress,
-  getChecksumEthAddress,
-  getERC20Allowance
-} from '../common/async/lib'
 import { isHardwareAccount } from '../utils/address-utils'
-import { useAssets, useBalance, useSwap, useSend, usePreset } from '../common/hooks'
+import { useAssets, useSwap, useSend } from '../common/hooks'
 
 type Props = {
   panel: PanelState
@@ -106,10 +101,8 @@ function Container (props: Props) {
     isWalletCreated,
     networkList,
     transactionSpotPrices,
-    gasEstimates,
     connectedAccounts,
     activeOrigin,
-    pendingTransactions,
     defaultCurrencies,
     transactions,
     userVisibleTokensInfo
@@ -119,11 +112,12 @@ function Container (props: Props) {
     connectToSiteOrigin,
     panelTitle,
     selectedPanel,
-    networkPayload,
+    addChainRequest,
     signMessageData,
     switchChainRequest,
-    suggestedToken,
-    getEncryptionPublicKeyRequest
+    suggestedTokenRequest,
+    getEncryptionPublicKeyRequest,
+    decryptRequest
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -140,13 +134,7 @@ function Container (props: Props) {
     sendAssetOptions,
     buyAssetOptions,
     panelUserAssetList
-  } = useAssets(
-    selectedAccount,
-    networkList,
-    selectedNetwork,
-    userVisibleTokensInfo,
-    transactionSpotPrices
-  )
+  } = useAssets()
 
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(buyAssetOptions[0])
 
@@ -154,36 +142,14 @@ function Container (props: Props) {
   const {
     filteredAssetList,
     isSwapSupported,
-    onSetFromAmount,
     setSwapToOrFrom,
     swapToOrFrom,
-    onSelectTransactAsset,
-    fromAsset
+    onSelectTransactAsset
   } = swap
 
   const {
-    onSetSendAmount,
-    onSetToAddressOrUrl,
-    onSubmitSend,
-    onSelectSendAsset,
-    sendAmount,
-    toAddressOrUrl,
-    toAddress,
-    addressError,
-    addressWarning,
-    selectedSendAsset,
-    sendAmountValidationError
-  } = useSend(
-    findENSAddress,
-    findUnstoppableDomainAddress,
-    getChecksumEthAddress,
-    sendAssetOptions,
-    selectedAccount,
-    props.walletActions.sendERC20Transfer,
-    props.walletActions.sendTransaction,
-    props.walletActions.sendERC721TransferFrom,
-    props.wallet.fullTokenList
-  )
+    selectSendAsset: onSelectSendAsset
+  } = useSend()
 
   React.useEffect(() => {
     setSelectedAccounts([selectedAccount])
@@ -195,16 +161,6 @@ function Container (props: Props) {
       setInputValue('')
     }
   }, [hasIncorrectPassword])
-
-  const getSelectedAccountBalance = useBalance(networkList)
-  const sendAssetBalance = getSelectedAccountBalance(selectedAccount, selectedSendAsset)
-
-  const onSelectPresetAmount = usePreset(
-    {
-      onSetAmount: onSetFromAmount,
-      asset: fromAsset
-    }
-  )
 
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
@@ -254,14 +210,6 @@ function Container (props: Props) {
     setShowSelectAsset(false)
   }
 
-  const onInputChange = (value: string, name: string) => {
-    if (name === 'address') {
-      onSetToAddressOrUrl(value)
-    } else {
-      onSetSendAmount(value)
-    }
-  }
-
   const [readyToConnect, setReadyToConnect] = React.useState<boolean>(false)
   const selectAccount = (account: WalletAccountType) => {
     const newList = [...selectedAccounts, account]
@@ -275,10 +223,7 @@ function Container (props: Props) {
   }
   const [inputValue, setInputValue] = React.useState<string>('')
   const onSubmit = () => {
-    props.walletPanelActions.connectToSite({
-      selectedAccounts,
-      siteToConnectTo: connectToSiteOrigin.origin
-    })
+    props.walletPanelActions.connectToSite({ selectedAccounts })
   }
   const primaryAction = () => {
     if (!readyToConnect) {
@@ -293,10 +238,7 @@ function Container (props: Props) {
     if (readyToConnect) {
       setReadyToConnect(false)
     } else {
-      props.walletPanelActions.cancelConnectToSite({
-        selectedAccounts,
-        siteToConnectTo: props.panel.connectToSiteOrigin.origin
-      })
+      props.walletPanelActions.cancelConnectToSite({ selectedAccounts })
       setSelectedAccounts([])
       setReadyToConnect(false)
     }
@@ -349,11 +291,6 @@ function Container (props: Props) {
     props.walletPanelActions.navigateTo('main')
   }
 
-  const onSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
-    props.walletActions.selectNetwork(network)
-    props.walletPanelActions.navigateTo('main')
-  }
-
   const onReturnToMain = () => {
     props.walletPanelActions.navigateTo('main')
   }
@@ -386,19 +323,19 @@ function Container (props: Props) {
   }
 
   const onApproveAddNetwork = () => {
-    props.walletPanelActions.addEthereumChainRequestCompleted({ chainId: networkPayload.chainId, approved: true })
+    props.walletPanelActions.addEthereumChainRequestCompleted({ chainId: addChainRequest.networkInfo.chainId, approved: true })
   }
 
   const onCancelAddNetwork = () => {
-    props.walletPanelActions.addEthereumChainRequestCompleted({ chainId: networkPayload.chainId, approved: false })
+    props.walletPanelActions.addEthereumChainRequestCompleted({ chainId: addChainRequest.networkInfo.chainId, approved: false })
   }
 
   const onApproveChangeNetwork = () => {
-    props.walletPanelActions.switchEthereumChainProcessed({ approved: true, origin: switchChainRequest.origin })
+    props.walletPanelActions.switchEthereumChainProcessed({ approved: true, origin: switchChainRequest.originInfo.origin })
   }
 
   const onCancelChangeNetwork = () => {
-    props.walletPanelActions.switchEthereumChainProcessed({ approved: false, origin: switchChainRequest.origin })
+    props.walletPanelActions.switchEthereumChainProcessed({ approved: false, origin: switchChainRequest.originInfo.origin })
   }
 
   const onNetworkLearnMore = () => {
@@ -413,13 +350,6 @@ function Container (props: Props) {
     }
   }
 
-  const onRejectAllTransactions = () => {
-    props.walletActions.rejectAllTransactions()
-  }
-
-  const onQueueNextTransaction = () => {
-    props.walletActions.queueNextTransaction()
-  }
   const retryHardwareOperation = () => {
     // signMessageData by default initialized as [{ id: -1, address: '', message: '' }]
     if (signMessageData && signMessageData.length && signMessageData[0].id !== -1) {
@@ -453,14 +383,14 @@ function Container (props: Props) {
     props.walletPanelActions.cancelConnectHardwareWallet(selectedPendingTransaction)
   }
 
-  const removeSitePermission = (origin: string, address: string, connectedAccounts: WalletAccountType[]) => {
+  const removeSitePermission = (origin: Origin, address: string, connectedAccounts: WalletAccountType[]) => {
     props.walletActions.removeSitePermission({ origin: origin, account: address })
     if (connectedAccounts.length !== 0) {
       props.walletActions.selectAccount(connectedAccounts[0])
     }
   }
 
-  const addSitePermission = (origin: string, account: WalletAccountType) => {
+  const addSitePermission = (origin: Origin, account: WalletAccountType) => {
     props.walletActions.addSitePermission({ origin: origin, account: account.address })
     props.walletActions.selectAccount(account)
   }
@@ -478,17 +408,17 @@ function Container (props: Props) {
   }
 
   const onAddSuggestedToken = () => {
-    if (!suggestedToken) {
+    if (!suggestedTokenRequest) {
       return
     }
-    props.walletPanelActions.addSuggestTokenProcessed({ approved: true, contractAddress: suggestedToken.contractAddress })
+    props.walletPanelActions.addSuggestTokenProcessed({ approved: true, contractAddress: suggestedTokenRequest.token.contractAddress })
   }
 
   const onCancelAddSuggestedToken = () => {
-    if (!suggestedToken) {
+    if (!suggestedTokenRequest) {
       return
     }
-    props.walletPanelActions.addSuggestTokenProcessed({ approved: false, contractAddress: suggestedToken.contractAddress })
+    props.walletPanelActions.addSuggestTokenProcessed({ approved: false, contractAddress: suggestedTokenRequest.token.contractAddress })
   }
 
   const onAddNetwork = () => {
@@ -527,23 +457,23 @@ function Container (props: Props) {
   }
 
   const onProvideEncryptionKey = () => {
-    props.walletPanelActions.getEncryptionPublicKeyProcessed({ approved: true, origin: getEncryptionPublicKeyRequest.origin })
+    props.walletPanelActions.getEncryptionPublicKeyProcessed({ approved: true, origin: getEncryptionPublicKeyRequest.originInfo.origin })
   }
 
   const onCancelProvideEncryptionKey = () => {
-    props.walletPanelActions.getEncryptionPublicKeyProcessed({ approved: false, origin: getEncryptionPublicKeyRequest.origin })
+    props.walletPanelActions.getEncryptionPublicKeyProcessed({ approved: false, origin: getEncryptionPublicKeyRequest.originInfo.origin })
   }
 
   const onAllowReadingEncryptedMessage = () => {
-    // Logic here to allow reading encrypted message
+    props.walletPanelActions.decryptProcessed({ approved: true, origin: decryptRequest.originInfo.origin })
   }
 
   const onCancelAllowReadingEncryptedMessage = () => {
-    // Logic here to cancel allow reading encrypted message
+    props.walletPanelActions.decryptProcessed({ approved: false, origin: decryptRequest.originInfo.origin })
   }
 
   const isConnectedToSite = React.useMemo((): boolean => {
-    if (activeOrigin.origin === WalletOrigin) {
+    if (activeOrigin.originSpec === WalletOrigin) {
       return true
     } else {
       return connectedAccounts.some(account => account.address === selectedAccount.address)
@@ -603,26 +533,8 @@ function Container (props: Props) {
       <PanelWrapper isLonger={true}>
         <LongWrapper>
           <ConfirmTransactionPanel
-            defaultCurrencies={defaultCurrencies}
-            originInfo={activeOrigin}
             onConfirm={onConfirmTransaction}
             onReject={onRejectTransaction}
-            onRejectAllTransactions={onRejectAllTransactions}
-            onQueueNextTransaction={onQueueNextTransaction}
-            transactionQueueNumber={pendingTransactions.findIndex(tx => tx.id === selectedPendingTransaction.id) + 1}
-            transactionsQueueLength={pendingTransactions.length}
-            accounts={accounts}
-            selectedNetwork={getNetworkInfo(selectedNetwork.chainId, networkList)}
-            transactionInfo={selectedPendingTransaction}
-            transactionSpotPrices={transactionSpotPrices}
-            visibleTokens={userVisibleTokensInfo}
-            refreshGasEstimates={props.walletActions.refreshGasEstimates}
-            getERC20Allowance={getERC20Allowance}
-            updateUnapprovedTransactionGasFields={props.walletActions.updateUnapprovedTransactionGasFields}
-            updateUnapprovedTransactionSpendAllowance={props.walletActions.updateUnapprovedTransactionSpendAllowance}
-            updateUnapprovedTransactionNonce={props.walletActions.updateUnapprovedTransactionNonce}
-            gasEstimates={gasEstimates}
-            fullTokenList={props.wallet.fullTokenList}
           />
         </LongWrapper>
       </PanelWrapper>
@@ -636,7 +548,8 @@ function Container (props: Props) {
           <AddSuggestedTokenPanel
             onCancel={onCancelAddSuggestedToken}
             onAddToken={onAddSuggestedToken}
-            token={suggestedToken}
+            // TODO(apaymyshev): make use of origin info here.
+            token={suggestedTokenRequest?.token}
             selectedNetwork={selectedNetwork}
           />
         </StyledExtensionWrapper>
@@ -649,12 +562,12 @@ function Container (props: Props) {
       <PanelWrapper isLonger={true}>
         <LongWrapper>
           <AllowAddChangeNetworkPanel
-            originInfo={activeOrigin}
+            originInfo={addChainRequest.originInfo}
             onApproveAddNetwork={onApproveAddNetwork}
             onApproveChangeNetwork={onApproveChangeNetwork}
             onCancel={onCancelAddNetwork}
             onLearnMore={onNetworkLearnMore}
-            networkPayload={networkPayload}
+            networkPayload={addChainRequest.networkInfo}
             panelType='add'
           />
         </LongWrapper>
@@ -667,7 +580,7 @@ function Container (props: Props) {
       <PanelWrapper isLonger={true}>
         <LongWrapper>
           <AllowAddChangeNetworkPanel
-            originInfo={activeOrigin}
+            originInfo={switchChainRequest.originInfo}
             onApproveAddNetwork={onApproveAddNetwork}
             onApproveChangeNetwork={onApproveChangeNetwork}
             onCancel={onCancelChangeNetwork}
@@ -712,6 +625,7 @@ function Container (props: Props) {
                 : 'read'
             }
             encryptionKeyPayload={getEncryptionPublicKeyRequest}
+            decryptPayload={decryptRequest}
             accounts={accounts}
             selectedNetwork={selectedNetwork}
             eTldPlusOne={activeOrigin.eTldPlusOne}
@@ -745,10 +659,8 @@ function Container (props: Props) {
         <SelectContainer>
           <SelectAsset
             assets={assets}
-            selectedNetwork={selectedNetwork}
             onSelectAsset={onSelectAsset}
             onBack={onHideSelectAsset}
-            onAddAsset={onAddAsset}
           />
         </SelectContainer>
       </PanelWrapper>
@@ -759,11 +671,8 @@ function Container (props: Props) {
     return (
       <PanelWrapper isLonger={false}>
         <SelectContainer>
-          <SelectNetwork
-            selectedNetwork={selectedNetwork}
-            networks={networkList}
+          <SelectNetworkWithHeader
             onBack={onReturnToMain}
-            onSelectNetwork={onSelectNetwork}
             onAddNetwork={onAddNetwork}
             hasAddButton={true}
           />
@@ -848,18 +757,6 @@ function Container (props: Props) {
             <SendWrapper>
               <Send
                 onChangeSendView={onChangeSendView}
-                onInputChange={onInputChange}
-                onSelectPresetAmount={onSelectPresetAmount}
-                onSubmit={onSubmitSend}
-                selectedAsset={selectedSendAsset}
-                selectedNetwork={selectedNetwork}
-                selectedAssetAmount={sendAmount}
-                selectedAssetBalance={sendAssetBalance}
-                addressError={addressError}
-                addressWarning={addressWarning}
-                toAddressOrUrl={toAddressOrUrl}
-                toAddress={toAddress}
-                amountValidationError={sendAmountValidationError}
               />
             </SendWrapper>
           </Panel>

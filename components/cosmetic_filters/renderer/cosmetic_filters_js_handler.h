@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_COSMETIC_FILTERS_RENDERER_COSMETIC_FILTERS_JS_HANDLER_H_
 #define BRAVE_COMPONENTS_COSMETIC_FILTERS_RENDERER_COSMETIC_FILTERS_JS_HANDLER_H_
 
-#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -33,7 +32,7 @@ class CosmeticFiltersJSHandler {
                            const int32_t isolated_world_id);
   ~CosmeticFiltersJSHandler();
 
-  // Adds the "cf_worker" JavaScript object and its functions to the current
+  // Adds the "cs_worker" JavaScript object and its functions to the current
   // render_frame_.
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
   // Fetches an initial set of resources to inject into the page if cosmetic
@@ -69,12 +68,7 @@ class CosmeticFiltersJSHandler {
   void OnHiddenClassIdSelectors(base::Value result);
   bool OnIsFirstParty(const std::string& url_string);
 
-  void InjectStylesheet(const std::string& stylesheet, int id);
-  void UninjectStylesheet(int id);
-
   bool generichide_ = false;
-  std::map<int, std::unique_ptr<blink::WebString>> inserted_stylesheet_ids;
-
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   mojo::Remote<cosmetic_filters::mojom::CosmeticFiltersResources>
       cosmetic_filters_resources_;

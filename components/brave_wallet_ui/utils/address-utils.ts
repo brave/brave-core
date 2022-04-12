@@ -10,7 +10,7 @@ import {
 
 export function isValidFilAddress (value: string): boolean {
   if (!value.startsWith(BraveWallet.FILECOIN_MAINNET) &&
-      !value.startsWith(BraveWallet.FILECOIN_TESTNET)) {
+    !value.startsWith(BraveWallet.FILECOIN_TESTNET)) {
     return false
   }
   // secp256k have 41 address length and BLS keys have 86

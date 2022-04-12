@@ -301,7 +301,8 @@ void AssetRatioService::OnGetTokenInfo(
     return;
   }
 
-  std::move(callback).Run(ParseTokenInfo(body));
+  std::move(callback).Run(
+      ParseTokenInfo(body, mojom::kMainnetChainId, mojom::CoinType::ETH));
 }
 
 }  // namespace brave_wallet

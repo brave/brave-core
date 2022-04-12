@@ -63,7 +63,7 @@
     "description": ""
   },
   "monthlyTip": {
-    "message": "Monthly Tip",
+    "message": "Kuukausittainen tippi",
     "description": ""
   },
   "ok": {
@@ -252,7 +252,7 @@
     "description": ""
   },
   "walletUnverified": {
-    "message": "Unverified",
+    "message": "Ei vahvistettu",
     "description": ""
   },
   "walletVerified": {
@@ -380,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Monthly tip failed",
+    "message": "Kuukausittainen tippi epäonnistui",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -388,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Your monthly tips have been processed.",
+    "message": "Kuukausittaiset tippisi on käsitelty.",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

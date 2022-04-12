@@ -55,9 +55,14 @@ BraveShieldsActionView::BraveShieldsActionView(Profile* profile,
                                                TabStripModel* tab_strip_model)
     : LabelButton(base::BindRepeating(&BraveShieldsActionView::ButtonPressed,
                                       base::Unretained(this)),
-                  std::u16string()) {
-  profile_ = profile;
-  tab_strip_model_ = tab_strip_model;
+                  std::u16string()),
+      profile_(profile),
+      tab_strip_model_(tab_strip_model) {
+  auto* web_contents = tab_strip_model_->GetActiveWebContents();
+  if (web_contents) {
+    brave_shields::BraveShieldsDataController::FromWebContents(web_contents)
+        ->AddObserver(this);
+  }
   auto* ink_drop = views::InkDrop::Get(this);
   ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
   ink_drop->SetBaseColorCallback(base::BindRepeating(
@@ -71,7 +76,13 @@ BraveShieldsActionView::BraveShieldsActionView(Profile* profile,
   tab_strip_model_->AddObserver(this);
 }
 
-BraveShieldsActionView::~BraveShieldsActionView() = default;
+BraveShieldsActionView::~BraveShieldsActionView() {
+  auto* web_contents = tab_strip_model_->GetActiveWebContents();
+  if (web_contents) {
+    brave_shields::BraveShieldsDataController::FromWebContents(web_contents)
+        ->RemoveObserver(this);
+  }
+}
 
 void BraveShieldsActionView::Init() {
   UpdateIconState();
@@ -227,5 +238,6 @@ void BraveShieldsActionView::OnTabStripModelChanged(
           selection.old_contents)
           ->RemoveObserver(this);
     }
+    UpdateIconState();
   }
 }

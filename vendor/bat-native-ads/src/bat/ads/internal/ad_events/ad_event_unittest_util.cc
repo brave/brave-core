@@ -9,6 +9,7 @@
 
 #include "base/guid.h"
 #include "base/time/time.h"
+#include "bat/ads/ad_info.h"
 #include "bat/ads/ad_type.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
@@ -31,6 +32,23 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
   ad_event.creative_set_id = creative_ad.creative_set_id;
   ad_event.creative_instance_id = creative_ad.creative_instance_id;
   ad_event.advertiser_id = creative_ad.advertiser_id;
+  ad_event.created_at = created_at;
+
+  return ad_event;
+}
+
+AdEventInfo BuildAdEvent(const AdInfo& ad,
+                         const AdType& ad_type,
+                         const ConfirmationType& confirmation_type,
+                         const base::Time created_at) {
+  AdEventInfo ad_event;
+  ad_event.type = ad_type;
+  ad_event.confirmation_type = confirmation_type;
+  ad_event.uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
+  ad_event.campaign_id = ad.campaign_id;
+  ad_event.creative_set_id = ad.creative_set_id;
+  ad_event.creative_instance_id = ad.creative_instance_id;
+  ad_event.advertiser_id = ad.advertiser_id;
   ad_event.created_at = created_at;
 
   return ad_event;

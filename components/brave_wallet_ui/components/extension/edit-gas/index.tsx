@@ -31,6 +31,7 @@ import {
   SliderValue,
   WarningText
 } from './style'
+import { ErrorText } from '../../shared/style'
 
 export enum MaxPriorityPanels {
   setSuggested = 0,
@@ -106,8 +107,16 @@ const EditGas = (props: Props) => {
     setGasPrice(event.target.value)
   }
 
-  const handleGasLimitInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setGasLimit(event.target.value)
+  const handleGasLimitInputChanged = ({
+    target: {
+      value,
+      validity: { valid }
+    }
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    if (valid) {
+      const val = new Amount(value).toNumber().toString()
+      setGasLimit(val)
+    }
   }
 
   const handleMaxPriorityFeePerGasInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -185,10 +194,13 @@ const EditGas = (props: Props) => {
       <InputLabel>{getLocale('braveWalletEditGasLimit')}</InputLabel>
       <Input
         placeholder='0'
-        type='number'
+        type="text"
+        pattern="[0-9]*" // allow number characters only
         value={gasLimit}
         onChange={handleGasLimitInputChanged}
+        hasError={gasLimit === '0'}
       />
+      {gasLimit === '0' && <ErrorText>{getLocale('braveWalletEditGasLimitError')}</ErrorText>}
     </>
   )
 

@@ -517,7 +517,7 @@
 <translation id="3157931365184549694">Restaurar</translation>
 <translation id="1797334173232638045">Sus sitios anclados se han trasladado a</translation>
 <translation id="542042553430131913">Si no verificas Recompensas de Brave, tu saldo de BAT se almacenará en los archivos locales de tu dispositivo.</translation>
-<translation id="2142973554991645476">Si quieres asegurar tus BAT por si necesitas reinstalar por completo el navegador o reformatear tu dispositivo, y tener otros beneficios como agregar o retirar tus BAT, te recomendamos que te<ph name="LINK_BEGIN"/>verifiques<ph name="LINK_END"/>.</translation>
+<translation id="2142973554991645476">Si quieres asegurar tus BAT por si necesitas reinstalar por completo el navegador o reformatear tu dispositivo, y tener otros beneficios como agregar o retirar tus BAT, te recomendamos que te <ph name="LINK_BEGIN"/>verifiques<ph name="LINK_END"/>.</translation>
 <translation id="5717619667204259673">Guarde esta clave de recuperación en un lugar seguro.</translation>
 <translation id="7018390569051511373">Puedes usar esta clave en todo momento para recuperar tu perfil de Recompensas de Brave si algo le sucede a tu navegador o computadora. Pero asegúrate de que está protegida, ya que cualquiera que consiga esta clave podría robar tu perfil de Recompensas de Brave. Probablemente, lo más seguro sea escribirla en un papel o en cualquier otro lugar donde guardes información importante.</translation>
 <translation id="8979401359137062629">Nota:</translation>
@@ -570,7 +570,7 @@
 <translation id="923467487918828349">Mostrar todo</translation>
 <translation id="5113531205597573951">Sitios visitados</translation>
 <translation id="4450893287417543264">No volver a mostrar</translation>
-<translation id="422369484771082705">La verificación es opcional. No obstante, si te verificas, podrás transferir los BAT que has ganado con Recompensas de Brave directamente a una billetera con custodia.</translation>
+<translation id="422369484771082705">La verificación es opcional. Sin embargo, si te verificas, podrás transferir los BAT que has ganado con Recompensas de Brave directamente a una billetera con custodia.</translation>
 <translation id="3656941797339037856">¡Asocia Rewards con Gemini!</translation>
 <translation id="31532096120351460">Intercambia más de 50 criptomonedas, como BAT, en Gemini. Esta plataforma segura te permite almacenar tus criptomonedas y, además, ganar intereses en dólares estadounidenses, de Hong Kong y de Singapur.</translation>
 <translation id="7404779623219601861">Canjea BAT por tarjetas de regalo</translation>
@@ -1163,7 +1163,7 @@
 <translation id="2962388922926051374">Error al solicitar el método "eth_chainId" en <ph name="URL"/></translation>
 <translation id="8325036459845654666">Ya se ha agregado esta red.</translation>
 <translation id="554350381160981853">Solo Trezor Model One con Firmware 1.10.5 (o una versión posterior) admite la firma de datos escritos</translation>
-<translation id="1752214435563414457">Brave Swap-stakes</translation>
+<translation id="1752214435563414457">Swap-stakes de Brave</translation>
 <translation id="7829441065063984927">7 días de criptorregalos, con premios valorados en ~$500.000.</translation>
 <translation id="8292716346768453265">¡Participa!</translation>
 <translation id="3155170474926428993">Selector de Tor</translation>
@@ -1175,8 +1175,8 @@
 <translation id="1671503397662036257">Estado de conexión de Tor</translation>
 <translation id="6024292492796847324">Progreso de inicialización de Tor</translation>
 <translation id="8458987127502506209">Activar escudos de Brave</translation>
-<translation id="7509914170164691086">Las protecciones están ACTIVADAS <ph name="LINK_BEFORE"/>durante<ph name="LINK_AFTER"/></translation>
-<translation id="260764436039299868">Las protecciones están DESACTIVADAS <ph name="LINK_BEFORE"/>durante<ph name="LINK_AFTER"/></translation>
+<translation id="7509914170164691086">Las protecciones están ACTIVADAS <ph name="LINK_BEFORE"/>en<ph name="LINK_AFTER"/></translation>
+<translation id="260764436039299868">Las protecciones están DESACTIVADAS <ph name="LINK_BEFORE"/>en<ph name="LINK_AFTER"/></translation>
 <translation id="7709075156958117386">Si el sitio no funciona, prueba a desactivar Protecciones. 
     <ph name="LINK_BEFORE"/>Nota: esto puede reducir la protección de la privacidad de Brave.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Rastreadores, anuncios y más elementos bloqueados <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
@@ -1203,7 +1203,7 @@
 <translation id="1992750560347846445">Informar sobre el sitio</translation>
 <translation id="2387532482048804818">Dinos si el sitio no funcionó como es debido con las protecciones activadas.</translation>
 <translation id="9167355841012806439">Estás consultando este sitio sin la protección de privacidad de Brave</translation>
-<translation id="6835073906252142271">Protecciones de Brave <ph name="NUMBER"/> Se han bloqueado rastreadores, anuncios y otros elementos</translation>
+<translation id="6835073906252142271">Las protecciones de Brave han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</translation>
 <translation id="1742469581923031760">Conectando…</translation>
 <translation id="1287487756047817908">Desconectando…</translation>
 <translation id="2325196879156848326">Error al establecer la conexión</translation>

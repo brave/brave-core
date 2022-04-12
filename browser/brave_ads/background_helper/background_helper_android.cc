@@ -46,12 +46,4 @@ void BackgroundHelperAndroid::OnApplicationStateChange(
   last_state_ = state;
 }
 
-BackgroundHelperAndroid* BackgroundHelperAndroid::GetInstance() {
-  return base::Singleton<BackgroundHelperAndroid>::get();
-}
-
-BackgroundHelper* BackgroundHelper::GetInstance() {
-  return BackgroundHelperAndroid::GetInstance();
-}
-
 }  // namespace brave_ads

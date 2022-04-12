@@ -20,14 +20,15 @@ void AdNotificationImpressionServedAtCovariateLogEntry::SetLastImpressionAt(
   impression_served_at_ = time;
 }
 
-mojom::DataType AdNotificationImpressionServedAtCovariateLogEntry::GetDataType()
-    const {
-  return mojom::DataType::kDouble;
+brave_federated::mojom::DataType
+AdNotificationImpressionServedAtCovariateLogEntry::GetDataType() const {
+  return brave_federated::mojom::DataType::kDouble;
 }
 
-mojom::CovariateType
+brave_federated::mojom::CovariateType
 AdNotificationImpressionServedAtCovariateLogEntry::GetCovariateType() const {
-  return mojom::CovariateType::kAdNotificationImpressionServedAt;
+  return brave_federated::mojom::CovariateType::
+      kAdNotificationImpressionServedAt;
 }
 
 std::string AdNotificationImpressionServedAtCovariateLogEntry::GetValue()

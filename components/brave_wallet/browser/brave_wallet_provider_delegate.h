@@ -11,7 +11,7 @@
 
 #include "base/callback.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "url/gurl.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -33,7 +33,7 @@ class BraveWalletProviderDelegate {
   virtual ~BraveWalletProviderDelegate() = default;
 
   virtual void ShowPanel() = 0;
-  virtual GURL GetOrigin() const = 0;
+  virtual url::Origin GetOrigin() const = 0;
   virtual void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) = 0;
   virtual void GetAllowedAccounts(bool include_accounts_when_locked,

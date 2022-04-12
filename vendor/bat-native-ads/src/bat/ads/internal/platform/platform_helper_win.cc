@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/platform/platform_helper_win.h"
 
-#include "base/memory/singleton.h"
-
 namespace ads {
 
 PlatformHelperWin::PlatformHelperWin() = default;
@@ -23,14 +21,6 @@ std::string PlatformHelperWin::GetPlatformName() const {
 
 PlatformType PlatformHelperWin::GetPlatform() const {
   return PlatformType::kWindows;
-}
-
-PlatformHelperWin* PlatformHelperWin::GetInstanceImpl() {
-  return base::Singleton<PlatformHelperWin>::get();
-}
-
-PlatformHelper* PlatformHelper::GetInstanceImpl() {
-  return PlatformHelperWin::GetInstanceImpl();
 }
 
 }  // namespace ads

@@ -8,6 +8,7 @@ import * as React from 'react'
 // Constants
 import {
   BraveWallet,
+  SolFeeEstimates,
   TimeDelta,
   WalletAccountType
 } from '../../constants/types'
@@ -66,7 +67,7 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   isApprovalUnlimited?: boolean
 }
 
-export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkInfo, networkSpotPrice: string) {
+export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkInfo, networkSpotPrice: string, solFeeEstimates?: SolFeeEstimates) {
   /**
    * Checks if a given gasLimit is empty or zero-value, and returns an
    * appropriate localized error string.
@@ -86,19 +87,25 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkIn
   }, [])
 
   return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransactionFees => {
-    const { txDataUnion: { ethTxData1559: txData } } = transactionInfo
+    const { txDataUnion: { ethTxData1559: txData }, txType } = transactionInfo
+    const isSolTransaction =
+      txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
+      txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
+      txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
     const gasLimit = txData?.baseData.gasLimit || ''
     const gasPrice = txData?.baseData.gasPrice || ''
     const maxFeePerGas = txData?.maxFeePerGas || ''
     const maxPriorityFeePerGas = txData?.maxPriorityFeePerGas || ''
     const isEIP1559Transaction = maxPriorityFeePerGas !== '' && maxFeePerGas !== ''
-    const gasFee = isEIP1559Transaction
-      ? new Amount(maxFeePerGas)
-        .times(gasLimit)
-        .format()
-      : new Amount(gasPrice)
-        .times(gasLimit)
-        .format()
+    const gasFee = isSolTransaction
+      ? new Amount(solFeeEstimates?.fee.toString() ?? '').format()
+      : isEIP1559Transaction
+        ? new Amount(maxFeePerGas)
+          .times(gasLimit)
+          .format()
+        : new Amount(gasPrice)
+          .times(gasLimit)
+          .format()
 
     return {
       gasLimit: Amount.normalize(gasLimit),
@@ -111,7 +118,7 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkIn
         .times(networkSpotPrice)
         .formatAsFiat(),
       isEIP1559Transaction,
-      missingGasLimitError: checkForMissingGasLimitError(gasLimit)
+      missingGasLimitError: isSolTransaction ? undefined : checkForMissingGasLimitError(gasLimit)
     }
   }, [selectedNetwork, networkSpotPrice])
 }
@@ -121,7 +128,8 @@ export function useTransactionParser (
   accounts: WalletAccountType[],
   spotPrices: BraveWallet.AssetPrice[],
   visibleTokens: BraveWallet.BlockchainToken[],
-  fullTokenList?: BraveWallet.BlockchainToken[]
+  fullTokenList?: BraveWallet.BlockchainToken[],
+  solFeeEstimates?: SolFeeEstimates
 ) {
   const nativeAsset = React.useMemo(
     () => makeNetworkAsset(selectedNetwork),
@@ -135,7 +143,7 @@ export function useTransactionParser (
     () => findAssetPrice(selectedNetwork.symbol),
     [selectedNetwork, findAssetPrice]
   )
-  const parseTransactionFees = useTransactionFeesParser(selectedNetwork, networkSpotPrice)
+  const parseTransactionFees = useTransactionFeesParser(selectedNetwork, networkSpotPrice, solFeeEstimates)
 
   const findToken = React.useCallback((contractAddress: string) => {
     const checkVisibleList = visibleTokens.find((token) => token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
@@ -186,12 +194,24 @@ export function useTransactionParser (
   }
 
   return React.useCallback((transactionInfo: BraveWallet.TransactionInfo) => {
-    const { txArgs, txDataUnion: { ethTxData1559: txData }, fromAddress, txType } = transactionInfo
-    const value = txData?.baseData.value || ''
-    const to = txData?.baseData.to || ''
+    const { txArgs, txDataUnion: { ethTxData1559: txData, solanaTxData: solTxData }, fromAddress, txType } = transactionInfo
+    const isSPLTransaction =
+      txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
+      txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+    const isSolTransaction =
+      txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
+      isSPLTransaction
+    const value = isSPLTransaction
+      ? solTxData?.amount.toString() ?? ''
+      : isSolTransaction
+        ? solTxData?.lamports.toString() ?? ''
+        : txData?.baseData.value || ''
+    const to = isSolTransaction
+      ? solTxData?.toWalletAddress ?? ''
+      : txData?.baseData.to || ''
     const nonce = txData?.baseData.nonce || ''
     const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
-    const token = findToken(to)
+    const token = isSPLTransaction ? findToken(solTxData?.splTokenMintAddress ?? '') : findToken(to)
     const accountNativeBalance = getBalance(account, nativeAsset)
     const accountTokenBalance = getBalance(account, token)
 
@@ -327,9 +347,56 @@ export function useTransactionParser (
         } as ParsedTransaction
       }
 
+      case txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer:
+      case txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation: {
+        const price = findAssetPrice(token?.symbol ?? '')
+        const sendAmountFiat = new Amount(value)
+          .divideByDecimals(token?.decimals ?? 9)
+          .times(price)
+
+        const feeDetails = parseTransactionFees(transactionInfo)
+        const { gasFeeFiat, gasFee } = feeDetails
+        const totalAmountFiat = new Amount(gasFeeFiat)
+          .plus(sendAmountFiat)
+
+        const insufficientNativeFunds = new Amount(gasFee)
+          .gt(accountNativeBalance)
+        const insufficientTokenFunds = new Amount(value)
+          .gt(accountTokenBalance)
+
+        return {
+          hash: transactionInfo.txHash,
+          nonce,
+          createdTime: transactionInfo.createdTime,
+          status: transactionInfo.txStatus,
+          sender: fromAddress,
+          senderLabel: getAddressLabel(fromAddress),
+          recipient: to,
+          recipientLabel: getAddressLabel(to),
+          fiatValue: sendAmountFiat,
+          fiatTotal: totalAmountFiat,
+          formattedNativeCurrencyTotal: sendAmountFiat
+            .div(networkSpotPrice)
+            .formatAsAsset(6, selectedNetwork.symbol),
+          value: new Amount(value)
+            .divideByDecimals(token?.decimals ?? 9)
+            .format(6),
+          valueExact: new Amount(value)
+            .divideByDecimals(token?.decimals ?? 9)
+            .format(),
+          symbol: token?.symbol ?? '',
+          decimals: token?.decimals ?? 9,
+          insufficientFundsError: insufficientNativeFunds || insufficientTokenFunds,
+          contractAddressError: checkForContractAddressError(solTxData?.toWalletAddress ?? ''),
+          sameAddressError: checkForSameAddressError(solTxData?.toWalletAddress ?? '', fromAddress),
+          ...feeDetails
+        } as ParsedTransaction
+      }
+
       // FIXME: swap needs a real parser to figure out the From and To details.
       case to.toLowerCase() === SwapExchangeProxy:
       case txType === BraveWallet.TransactionType.ETHSend:
+      case txType === BraveWallet.TransactionType.SolanaSystemTransfer:
       case txType === BraveWallet.TransactionType.Other:
       default: {
         const sendAmountFiat = computeFiatAmount(value, selectedNetwork.symbol, selectedNetwork.decimals)

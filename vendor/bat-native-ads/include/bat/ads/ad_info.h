@@ -24,7 +24,7 @@ struct ADS_EXPORT AdInfo {
   bool IsValid() const;
 
   AdType type = AdType::kUndefined;
-  std::string uuid;
+  std::string placement_id;
   std::string creative_instance_id;
   std::string creative_set_id;
   std::string campaign_id;

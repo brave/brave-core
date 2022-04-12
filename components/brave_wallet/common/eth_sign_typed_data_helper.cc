@@ -225,8 +225,8 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
       result.push_back(0);
     result.insert(result.end(), address.begin(), address.end());
   } else if (base::StartsWith(type, "bytes", base::CompareCase::SENSITIVE)) {
-    unsigned type_check;
-    if (!base::StringToUint(type.data() + 5, &type_check) || type_check > 32)
+    unsigned num_bits;
+    if (!base::StringToUint(type.data() + 5, &num_bits) || num_bits > 32)
       return absl::nullopt;
     const std::string* value_str = value.GetIfString();
     if (!value_str || !IsValidHexString(*value_str))
@@ -241,9 +241,9 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     }
   } else if (base::StartsWith(type, "uint", base::CompareCase::SENSITIVE)) {
     // uint8 to uint256 in steps of 8
-    unsigned type_check;
-    if (!base::StringToUint(type.data() + 4, &type_check) || type_check % 8 ||
-        type_check > 256)
+    unsigned num_bits;
+    if (!base::StringToUint(type.data() + 4, &num_bits) ||
+        !ValidSolidityBits(num_bits))
       return absl::nullopt;
 
     absl::optional<double> value_double = value.GetIfDouble();
@@ -262,44 +262,20 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
       return absl::nullopt;
     }
 
-    // check if value excceeds type bound
-    switch (type_check) {
-      case 8:
-        if (encoded_value > std::numeric_limits<uint8_t>::max())
-          return absl::nullopt;
-        break;
-      case 16:
-        if (encoded_value > std::numeric_limits<uint16_t>::max())
-          return absl::nullopt;
-        break;
-      case 32:
-        if (encoded_value > std::numeric_limits<uint32_t>::max())
-          return absl::nullopt;
-        break;
-      case 64:
-        if (encoded_value > std::numeric_limits<uint64_t>::max())
-          return absl::nullopt;
-        break;
-      case 128:
-        if (encoded_value > std::numeric_limits<uint128_t>::max())
-          return absl::nullopt;
-        break;
-      case 256:
-        if (encoded_value > std::numeric_limits<uint256_t>::max())
-          return absl::nullopt;
-        break;
-      default:
-        return absl::nullopt;
+    absl::optional<uint256_t> max_value = MaxSolidityUint(num_bits);
+    if (max_value == absl::nullopt || encoded_value > *max_value) {
+      return absl::nullopt;
     }
+
     // Append the encoded value to byte array result in big endian order
     for (int i = 256 - 8; i >= 0; i -= 8) {
       result.push_back(static_cast<uint8_t>((encoded_value >> i) & 0xFF));
     }
   } else if (base::StartsWith(type, "int", base::CompareCase::SENSITIVE)) {
     // int8 to int256 in steps of 8
-    unsigned type_check;
-    if (!base::StringToUint(type.data() + 3, &type_check) || type_check % 8 ||
-        type_check > 256)
+    unsigned num_bits;
+    if (!base::StringToUint(type.data() + 3, &num_bits) ||
+        !ValidSolidityBits(num_bits))
       return absl::nullopt;
     absl::optional<double> value_double = value.GetIfDouble();
     const std::string* value_str = value.GetIfString();
@@ -317,39 +293,13 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
       return absl::nullopt;
     }
 
-    // check if value excceeds type bound
-    switch (type_check) {
-      case 8:
-        if (encoded_value > std::numeric_limits<int8_t>::max() ||
-            encoded_value < std::numeric_limits<int8_t>::min())
-          return absl::nullopt;
-        break;
-      case 16:
-        if (encoded_value > std::numeric_limits<int16_t>::max() ||
-            encoded_value < std::numeric_limits<int16_t>::min())
-          return absl::nullopt;
-        break;
-      case 32:
-        if (encoded_value > std::numeric_limits<int32_t>::max() ||
-            encoded_value < std::numeric_limits<int32_t>::min())
-          return absl::nullopt;
-        break;
-      case 64:
-        if (encoded_value > std::numeric_limits<int64_t>::max() ||
-            encoded_value < std::numeric_limits<int64_t>::min())
-          return absl::nullopt;
-        break;
-      case 128:
-        if (encoded_value > kMax128BitInt || encoded_value < kMin128BitInt)
-          return absl::nullopt;
-        break;
-      case 256:
-        if (encoded_value > kMax256BitInt || encoded_value < kMin256BitInt)
-          return absl::nullopt;
-        break;
-      default:
-        return absl::nullopt;
+    absl::optional<int256_t> min_value = MinSolidityInt(num_bits);
+    absl::optional<int256_t> max_value = MaxSolidityInt(num_bits);
+    if (min_value == absl::nullopt || max_value == absl::nullopt ||
+        encoded_value > *max_value || encoded_value < *min_value) {
+      return absl::nullopt;
     }
+
     // Append the encoded value to byte array result in big endian order
     for (int i = 256 - 8; i >= 0; i -= 8) {
       result.push_back(static_cast<uint8_t>((encoded_value >> i) & 0xFF));

@@ -105,4 +105,6 @@
 
     <color name="rewards_divider_color">#3B3E4F</color>
 
+    <!--  Brave Wallet DApp  -->
+    <color name="brave_wallet_dapp_text_color">@android:color/white</color>
 </resources>

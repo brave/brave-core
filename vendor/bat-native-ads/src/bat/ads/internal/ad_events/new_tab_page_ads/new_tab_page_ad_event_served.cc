@@ -18,9 +18,9 @@ AdEventServed::AdEventServed() = default;
 AdEventServed::~AdEventServed() = default;
 
 void AdEventServed::FireEvent(const NewTabPageAdInfo& ad) {
-  BLOG(3, "Served new tab page ad with uuid " << ad.uuid
-                                              << " and creative instance id "
-                                              << ad.creative_instance_id);
+  BLOG(3, "Served new tab page ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
 
   LogAdEvent(ad, ConfirmationType::kServed, [](const bool success) {
     if (!success) {

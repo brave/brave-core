@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/singleton.h"
 #include "base/observer_list.h"
 
 namespace brave_ads {
@@ -17,9 +16,13 @@ class BackgroundHelper {
  public:
   class Observer {
    public:
+    virtual ~Observer() = default;
+
     virtual void OnBackground() = 0;
     virtual void OnForeground() = 0;
   };
+
+  virtual ~BackgroundHelper();
 
   BackgroundHelper(const BackgroundHelper&) = delete;
   BackgroundHelper& operator=(const BackgroundHelper&) = delete;
@@ -35,10 +38,9 @@ class BackgroundHelper {
   virtual bool IsForeground() const;
 
  protected:
-  friend struct base::DefaultSingletonTraits<BackgroundHelper>;
+  friend class BackgroundHelperHolder;
 
   BackgroundHelper();
-  virtual ~BackgroundHelper();
 
  private:
   base::ObserverList<Observer>::Unchecked observers_;

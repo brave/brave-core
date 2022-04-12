@@ -19,9 +19,9 @@ AdEventViewed::AdEventViewed() = default;
 AdEventViewed::~AdEventViewed() = default;
 
 void AdEventViewed::FireEvent(const AdNotificationInfo& ad) {
-  BLOG(3, "Viewed ad notification with uuid " << ad.uuid
-                                              << " and creative instance id "
-                                              << ad.creative_instance_id);
+  BLOG(3, "Viewed ad notification with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
 
   LogAdEvent(ad, ConfirmationType::kViewed, [](const bool success) {
     if (!success) {

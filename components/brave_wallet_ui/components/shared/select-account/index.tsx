@@ -1,6 +1,6 @@
 import * as React from 'react'
 import SelectAccountItem from '../select-account-item'
-import { UserAccountType, BraveWallet, WalletAccountType } from '../../../constants/types'
+import { UserAccountType, WalletAccountType } from '../../../constants/types'
 
 export interface Props {
   accounts: WalletAccountType[]
@@ -11,19 +11,9 @@ export interface Props {
 function SelectAccount (props: Props) {
   const { accounts, selectedAccount, onSelectAccount } = props
 
-  // MULTICHAIN: Remove me once we support SOL and FIL transaction creation.
-  // Will be implemented in these 2 issues
-  // https://github.com/brave/brave-browser/issues/20698
-  // https://github.com/brave/brave-browser/issues/20893
-  const accountsList = React.useMemo(() => {
-    return accounts.filter((account) =>
-      account.coin !== BraveWallet.CoinType.SOL &&
-      account.coin !== BraveWallet.CoinType.FIL)
-  }, [accounts])
-
   return (
     <>
-      {accountsList.map((account) =>
+      {accounts.map((account) =>
         <SelectAccountItem
           key={account.id}
           account={account}

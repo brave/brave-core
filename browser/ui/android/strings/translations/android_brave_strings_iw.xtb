@@ -43,6 +43,9 @@
 <translation id="1276592121036104130">טען תוכן חדש</translation>
 <translation id="3189348785087463371">מקודם</translation>
 <translation id="7554145152551782675">עוד מבצעים של Brave</translation>
+<translation id="1717242776111689224">אפשר את חדשות Brave</translation>
+<translation id="4732255422524275223">המקורות שלך</translation>
+<translation id="152579389256498990">מקור או כתובת URL של האתר</translation>
 <translation id="4975944254857623648">מקורות ברירת מחדל</translation>
 <translation id="253886574765651454">הוספת מקור</translation>
 <translation id="5787084571334399599">מונע מהדפדפן ליצור טביעת אצבע</translation>
@@ -273,6 +276,7 @@
 <translation id="2927095357213611519">באפשרותך לתמוך ביוצרי רשת באמצעות טוקנים.\n הרווח/י טוקנים על ידי צפייה בפרסומות השומרות על הפרטיות.</translation>
 <translation id="213787746370741250">פתח לשוניות בלשוניות מותאמות אישית</translation>
 <translation id="8030169304546394654">מנותק</translation>
+<translation id="6181762795539107980">בלתי מאומת</translation>
 <translation id="543510923939676996">הארנק מאומת</translation>
 <translation id="8673913984316081937">אימות הארנק שלך אינו אופציונלי</translation>
 <translation id="8558636200953226885">אבל אם תאמת/י, תוכל/י...</translation>
@@ -289,6 +293,7 @@
 <translation id="3699674790322420653">השלמת אימות הארנק</translation>
 <translation id="2193391216824305230">ארנק משתמש</translation>
 <translation id="1665118090708049096">עבור לחשבון <ph name="WALLET_PROVIDER"/> 1 שלי</translation>
+<translation id="1948959999802743233">התנתקות מ<ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">משיכת כספים</translation>
 <translation id="8874184842967597500">לא מחובר</translation>
 <translation id="3368922792935385530">מחובר</translation>
@@ -528,6 +533,7 @@
 <translation id="5187052478998910855">זקוקים לרענון לגבי Rewards?</translation>
 <translation id="8622329973403382303">ערכו סיור מהיר כדי לרענן ידיעתכם לגבי איך זה עובד להיכנס להיסטוריה בתור כוכב רוק של Rewards!</translation>
 <translation id="7625138338483121345">‏הגדר את Brave בתור דפדפן ברירת המחדל</translation>
+<translation id="4511485286950743564">עם Brave כברירת מחדל, כל קישור שאתם לוחצים עליו נפתח עם הגנות הפרטיות של Brave.</translation>
 <translation id="9218430445555521422">הגדר כברירת מחדל</translation>
 <translation id="3479552764303398839">לא עכשיו</translation>
 <translation id="4956847150856741762">1</translation>
@@ -656,7 +662,9 @@
 <translation id="414639769490080648">מספר הדקות להמתנה עד שה-Brave Wallet יינעל אוטומטית</translation>
 <translation id="4993345308607970390">איפוס ארנק Brave</translation>
 <translation id="6369495274982305511">האם אתה בטוח שברצונך לאפס את הארנק שלך? אם אין גיבוי לארנק שלך, האיפוס יגרום לך לאבד את כל נתוני החשבון (כולל את כל הכספים המשויכים). הקלד "<ph name="CONFIRMATION_PHRASE"/>" כדי לאשר.</translation>
+<translation id="4862812525895306758">מחיקת עסקאות ופרטי מספרים ייחודיים</translation>
 <translation id="5693968582510626466">ניקוי עסקאות יכול להיות שימושי עבור מפתחים או בעת ניקוי מצב בשרת מקומי</translation>
+<translation id="5421107279168565467">האם את/ה בטוח/ה שברצונך לאפס את פרטי העסקאות והמספרים הייחודיים? אפשרות זו משמשת בעיקר מפתחים המפעילים שרת בדיקה מקומי. יש להקליד ״<ph name="CONFIRMATION_PHRASE"/> " כדי לאשר.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# דקה} other {# דקות}}</translation>
 <translation id="4449475351935531438">חומת אש VPN + Brave</translation>
 <translation id="719977489961414786">שדרג ל- VPN כדי להגן על החיבור שלך וחסום עוקבים פולשניים בכל מקום.</translation>
@@ -740,8 +748,11 @@
 <translation id="1634828734222219955">סך הכל</translation>
 <translation id="7995708795274219641">סכום + גז</translation>
 <translation id="1950052789869821983">עסקה</translation>
+<translation id="2304783958703511257">הגדרות מתקדמות</translation>
 <translation id="4220062530885628403">חוסר</translation>
+<translation id="1924965034964265193">הכנס ערך מספר ייחודי מותאם אישית</translation>
 <translation id="5317780077021120954">שמור</translation>
+<translation id="4979796155378508955">ייתכן ולא ניתן יהיה להוציא לפועל את העסקה אל הרשת אם ערך המספר הייחודי המותאם אישית אינו רציף או אם יש בו שגיאות אחרות.</translation>
 <translation id="6122742277607781713">תיק השקעות</translation>
 <translation id="750843150060816463">מחיר Gas (Gwei)</translation>
 <translation id="1426320910664514906">הגבלת דלק</translation>
@@ -824,6 +835,7 @@
 <translation id="1346059596910821859">טיפ</translation>
 <translation id="1549705559752367917">שלח טיפ</translation>
 <translation id="6727102863431372879">הגדר</translation>
+<translation id="6413162919383874653">טיפ חודשי</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">הצג השלמה אוטומטית בשורת הכתובת</translation>
@@ -849,6 +861,7 @@
 <translation id="2156993118928861787">כתובת לא חוקית</translation>
 <translation id="6889920539620318793">הגדר כפעיל</translation>
 <translation id="2653659639078652383">שלח</translation>
+<translation id="4945690646623486292">בחירת רשת</translation>
 <translation id="8853725596990766789">שנה סכום</translation>
 <translation id="5233638681132016545">כרטיסייה חדשה</translation>
 </translationbundle>

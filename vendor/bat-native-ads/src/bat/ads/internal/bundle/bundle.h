@@ -52,6 +52,8 @@ class Bundle final {
   void SaveCreativePromotedContentAds(
       const CreativePromotedContentAdList& creative_promoted_content_ads);
 
+  void PurgeExpiredDeposits();
+
   void PurgeExpiredConversions();
   void SaveConversions(const ConversionList& conversions);
 };

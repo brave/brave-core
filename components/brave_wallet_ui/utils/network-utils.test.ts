@@ -8,11 +8,11 @@ import {
   getCoinFromTxDataUnion
 } from './network-utils'
 import { mockNetworks } from '../stories/mock-data/mock-networks'
-import { NewAssetOptions } from '../options/asset-options'
 import { BraveWallet } from '../constants/types'
+import { mockNewAssetOptions } from '../stories/mock-data/mock-asset-options'
 
-const ethToken = NewAssetOptions[0]
-const bnbToken = NewAssetOptions[2]
+const ethToken = mockNewAssetOptions[0]
+const bnbToken = mockNewAssetOptions[2]
 const ethMainNetwork = mockNetworks[0]
 
 describe('getNetworkInfo', () => {

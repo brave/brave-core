@@ -33,6 +33,7 @@
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
 #include "bat/ads/internal/database/tables/creative_promoted_content_ads_database_table.h"
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
+#include "bat/ads/internal/database/tables/deposits_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/database/tables/segments_database_table.h"
 #include "bat/ads/internal/logging.h"
@@ -75,6 +76,8 @@ void Bundle::BuildFromCatalog(const Catalog& catalog) {
   SaveCreativeInlineContentAds(bundle.creative_inline_content_ads);
   SaveCreativeNewTabPageAds(bundle.creative_new_tab_page_ads);
   SaveCreativePromotedContentAds(bundle.creative_promoted_content_ads);
+
+  PurgeExpiredDeposits();
 
   PurgeExpiredConversions();
   SaveConversions(bundle.conversions);
@@ -632,6 +635,18 @@ void Bundle::SaveCreativePromotedContentAds(
     }
 
     BLOG(3, "Successfully saved creative promoted content ads state");
+  });
+}
+
+void Bundle::PurgeExpiredDeposits() {
+  database::table::Deposits database_table;
+  database_table.PurgeExpired([](const bool success) {
+    if (!success) {
+      BLOG(0, "Failed to purge expired deposits");
+      return;
+    }
+
+    BLOG(3, "Successfully purged expired deposits");
   });
 }
 

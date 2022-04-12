@@ -14,6 +14,7 @@
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/inline_content_ad_info.h"
+#include "bat/ads/internal/ads/search_result_ads/search_result_ad_info.h"
 #include "bat/ads/internal/ads_history/ads_history_util.h"
 #include "bat/ads/internal/ads_history/filters/ads_history_date_range_filter.h"
 #include "bat/ads/internal/ads_history/filters/ads_history_filter.h"
@@ -66,7 +67,7 @@ void AddAdNotification(const AdNotificationInfo& ad,
 
 void AddNewTabPageAd(const NewTabPageAdInfo& ad,
                      const ConfirmationType& confirmation_type) {
-  const AdHistoryInfo& ad_history =
+  const AdHistoryInfo ad_history =
       BuildAdHistory(ad, confirmation_type, ad.company_name, ad.alt);
 
   Client::Get()->AppendAdHistory(ad_history);
@@ -74,7 +75,7 @@ void AddNewTabPageAd(const NewTabPageAdInfo& ad,
 
 void AddPromotedContentAd(const PromotedContentAdInfo& ad,
                           const ConfirmationType& confirmation_type) {
-  const AdHistoryInfo& ad_history =
+  const AdHistoryInfo ad_history =
       BuildAdHistory(ad, confirmation_type, ad.title, ad.description);
 
   Client::Get()->AppendAdHistory(ad_history);
@@ -82,8 +83,16 @@ void AddPromotedContentAd(const PromotedContentAdInfo& ad,
 
 void AddInlineContentAd(const InlineContentAdInfo& ad,
                         const ConfirmationType& confirmation_type) {
-  const AdHistoryInfo& ad_history =
+  const AdHistoryInfo ad_history =
       BuildAdHistory(ad, confirmation_type, ad.title, ad.description);
+
+  Client::Get()->AppendAdHistory(ad_history);
+}
+
+void AddSearchResultAd(const SearchResultAdInfo& ad,
+                       const ConfirmationType& confirmation_type) {
+  const AdHistoryInfo ad_history =
+      BuildAdHistory(ad, confirmation_type, ad.headline_text, ad.description);
 
   Client::Get()->AppendAdHistory(ad_history);
 }

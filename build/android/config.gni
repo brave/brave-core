@@ -30,6 +30,7 @@ brave_chrome_java_deps = [
   "//brave/third_party/zxing:zxing_java",
   "//third_party/android_deps:google_play_services_vision_common_java",
   "//third_party/android_deps:google_play_services_vision_java",
+  "//url/mojom:url_mojom_origin_java",
 ]
 
 brave_chrome_all_java_deps = [ "//brave/android/features/tab_ui:java" ]

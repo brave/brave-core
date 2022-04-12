@@ -14,18 +14,12 @@
 <translation id="5147525139567260139">Udostępnij kartę Brave</translation>
 <translation id="1530633922026945685">Aby utworzyć mapę 3D Twojego otoczenia, Brave potrzebuje uprawnień dostępu do kamery</translation>
 <translation id="4449148723378534338">Zapoznaj się z najważniejszymi funkcjami prywatności i bezpieczeństwa w Brave</translation>
-<translation id="5359574361379286250">Jeśli chcesz użyć tego konta tylko raz, możesz skorzystać z <ph name="GUEST_LINK_BEGIN"/>trybu gościa<ph name="GUEST_LINK_END"/> w przeglądarce Brave. Jeśli chcesz dodać konto innej osoby, <ph name="LINK_BEGIN"/>dodaj nową osobę<ph name="LINK_END"/> do urządzenia <ph name="DEVICE_TYPE"/>.
-
-Na tym koncie mogą obowiązywać uprawnienia przyznane stronom i aplikacjom. Kontami Brave możesz zarządzać w <ph name="SETTINGS_LINK_BEGIN"/>Ustawieniach<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="5616153642055197778">Dostępna jest nowa, bezpieczniejsza wersja Brave.</translation>
 <translation id="6797402139308059782">Zezwól Brave na działanie w tle</translation>
 <translation id="5875673934455379806">Ponownie zainstaluj Brave</translation>
 <translation id="4528406859989804913">Logujesz się na zarządzane konto i przekazujesz jego administratorowi kontrolę nad swoim profilem Brave. Twoje dane Brave, takie jak aplikacje, zakładki, historia, hasła i inne ustawienia, zostaną trwale powiązane z użytkownikiem <ph name="USER_NAME"/>. Będzie można je usunąć w Panelu kont Brave, ale nie będzie można ich powiązać z innym kontem. Możesz też utworzyć nowy profil, by przechowywać swoje dotychczasowe dane Brave osobno. <ph name="LEARN_MORE"/></translation>
 <translation id="1649714546770135458">Jeśli wyłączysz tę opcję, możesz logować się na stronach Brave takich jak Gmail bez logowania się w Brave</translation>
 <translation id="189297655255130768">Brave nie odpowiada. Uruchomić go teraz ponownie?</translation>
-<translation id="479793348545936567">Jeśli chcesz użyć tego konta tylko raz, możesz skorzystać z trybu gościa w przeglądarce Brave. Jeśli chcesz dodać konto innej osoby, <ph name="LINK_BEGIN"/>dodaj nową osobę<ph name="LINK_END"/> do urządzenia <ph name="DEVICE_TYPE"/>.
-
-Na tym koncie mogą obowiązywać uprawnienia przyznane stronom i aplikacjom. Kontami Brave możesz zarządzać w <ph name="SETTINGS_LINK_BEGIN"/>Ustawieniach<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1775322105159056176">Brave nie może określić ani ustawić domyślnej przeglądarki</translation>
 <translation id="7665553140559834626">Uruchom ponownie, aby zaktualizować &amp;Brave OS</translation>
 <translation id="9220324636239049437">Spowoduje to usunięcie 1 elementu z tego urządzenia. Aby później odzyskać dane, zaloguj się w Brave jako <ph name="USER_EMAIL"/>.</translation>
@@ -291,6 +285,11 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="4484434718272972655">Kto używa Brave?</translation>
 <translation id="7173394303099002355">Korzystaj z najlepszych zabezpieczeń Brave</translation>
 <translation id="8992261409816268381">Autorzy Brave</translation>
+<translation id="479793348545936567">Jeśli chcesz użyć tego konta tylko raz, możesz skorzystać z trybu Gościa w przeglądarce Brave. Jeśli chcesz dodać konto dla kogoś innego, <ph name="LINK_BEGIN"/>dodaj nowy profil<ph name="LINK_END"/> do swojego <ph name="DEVICE_TYPE"/>.
+
+Uprawnienia, które już nadano witrynom i aplikacjom, mogą mieć zastosowanie do tego konta. Można zarządzać łańcuchami synchronizacji Brave w <ph name="SETTINGS_LINK_BEGIN"/>Ustawieniach<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">Jeśli chcesz użyć tego konta tylko raz, możesz skorzystać <ph name="GUEST_LINK_BEGIN"/>z trybu Gościa<ph name="GUEST_LINK_END"/> w przeglądarce Brave. Jeśli chcesz dodać konto dla kogoś innego, <ph name="LINK_BEGIN"/>dodaj nowy profil<ph name="LINK_END"/> do swojego <ph name="DEVICE_TYPE"/>.
+Uprawnienia, które już nadano witrynom i aplikacjom, mogą mieć zastosowanie do tego konta. Można zarządzać łańcuchami synchronizacji Brave w <ph name="SETTINGS_LINK_BEGIN"/>Ustawieniach<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1299765473362724475">Ostrzeżenie: Brave nie może zapobiec rozszerzeniom zapisywania historii przeglądania. Aby wyłączyć to rozszerzenie w trybie prywatnym, usuń zaznaczenie tej opcji.</translation>
 <translation id="1448049584457347995">Aby poprawić bezpieczeństwo Brave, wyłączyliśmy niektóre rozszerzenia niedostępne w <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>, które mogły zostać dodane bez Twojej wiedzy.</translation>
 <translation id="8848045066928358658">Aby poprawić bezpieczeństwo Brave, wyłączyliśmy to rozszerzenie. Nie jest ono dostępne w <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i mogło zostać dodane bez Twojej wiedzy.</translation>

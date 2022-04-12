@@ -26,6 +26,7 @@ TEST_F(BatAdsTextClassificationResourceTest, Load) {
 
   // Act
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   // Assert
   const bool is_initialized = resource.IsInitialized();

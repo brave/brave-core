@@ -82,6 +82,12 @@ void AdsClientIOS::LoadAdsResource(const std::string& id,
   [bridge_ loadAdsResource:id version:version callback:callback];
 }
 
+void AdsClientIOS::LoadAdsFileResource(const std::string& id,
+                                       const int version,
+                                       ads::LoadFileCallback callback) {
+  [bridge_ loadAdsFileResource:id version:version callback:callback];
+}
+
 void AdsClientIOS::GetBrowsingHistory(
     const int max_count,
     const int days_ago,
@@ -194,6 +200,6 @@ void AdsClientIOS::RecordP2AEvent(const std::string& name,
 }
 
 void AdsClientIOS::LogTrainingCovariates(
-    ads::mojom::TrainingCovariatesPtr training_covariates) {
+    brave_federated::mojom::TrainingCovariatesPtr training_covariates) {
   [bridge_ logTrainingCovariates:std::move(training_covariates)];
 }

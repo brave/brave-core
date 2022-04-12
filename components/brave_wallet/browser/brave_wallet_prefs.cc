@@ -19,60 +19,31 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/pref_service_syncable.h"
 
+namespace brave_wallet {
+
 namespace {
 
 base::Value GetDefaultUserAssets() {
-  base::Value eth(base::Value::Type::DICTIONARY);
-  eth.SetKey("contract_address", base::Value(""));
-  eth.SetKey("name", base::Value("Ethereum"));
-  eth.SetKey("symbol", base::Value("ETH"));
-  eth.SetKey("is_erc20", base::Value(false));
-  eth.SetKey("is_erc721", base::Value(false));
-  eth.SetKey("decimals", base::Value(18));
-  eth.SetKey("visible", base::Value(true));
-
-  base::Value bat(base::Value::Type::DICTIONARY);
-  bat.SetKey("contract_address",
-             base::Value("0x0D8775F648430679A709E98d2b0Cb6250d2887EF"));
-  bat.SetKey("name", base::Value("Basic Attention Token"));
-  bat.SetKey("symbol", base::Value("BAT"));
-  bat.SetKey("is_erc20", base::Value(true));
-  bat.SetKey("is_erc721", base::Value(false));
-  bat.SetKey("decimals", base::Value(18));
-  bat.SetKey("visible", base::Value(true));
-  bat.SetKey("logo", base::Value("bat.png"));
-
-  // Show ETH and BAT by default for mainnet, and ETH for other known networks.
   base::Value user_assets_pref(base::Value::Type::DICTIONARY);
-
-  std::vector<std::string> network_ids =
-      brave_wallet::GetAllKnownEthNetworkIds();
-  for (const auto& network_id : network_ids) {
-    base::Value* user_assets_list = user_assets_pref.SetKey(
-        network_id, base::Value(base::Value::Type::LIST));
-    user_assets_list->Append(eth.Clone());
-    if (network_id == "mainnet")
-      user_assets_list->Append(bat.Clone());
-  }
-
+  user_assets_pref.SetKey(kEthereumPrefKey,
+                          BraveWalletService::GetDefaultEthereumAssets());
+  user_assets_pref.SetKey(kSolanaPrefKey,
+                          BraveWalletService::GetDefaultSolanaAssets());
+  user_assets_pref.SetKey(kFilecoinPrefKey,
+                          BraveWalletService::GetDefaultFilecoinAssets());
   return user_assets_pref;
 }
 
 base::Value GetDefaultSelectedNetworks() {
   base::Value selected_networks(base::Value::Type::DICTIONARY);
-  selected_networks.SetStringKey(brave_wallet::kEthereumPrefKey,
-                                 brave_wallet::mojom::kMainnetChainId);
-  selected_networks.SetStringKey(brave_wallet::kSolanaPrefKey,
-                                 brave_wallet::mojom::kSolanaMainnet);
-  selected_networks.SetStringKey(brave_wallet::kFilecoinPrefKey,
-                                 brave_wallet::mojom::kFilecoinMainnet);
+  selected_networks.SetStringKey(kEthereumPrefKey, mojom::kMainnetChainId);
+  selected_networks.SetStringKey(kSolanaPrefKey, mojom::kSolanaMainnet);
+  selected_networks.SetStringKey(kFilecoinPrefKey, mojom::kFilecoinMainnet);
 
   return selected_networks;
 }
 
 }  // namespace
-
-namespace brave_wallet {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
@@ -129,6 +100,9 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterListPref(kBraveWalletCustomNetworksDeprecated);
   registry->RegisterStringPref(kBraveWalletCurrentChainId,
                                brave_wallet::mojom::kMainnetChainId);
+
+  // Added 04/2022
+  registry->RegisterDictionaryPref(kBraveWalletUserAssetsDeprecated);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -161,6 +135,11 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   // Added 10/2021 for migrating the contract address for eth in user asset
   // list from 'eth' to an empty string.
   BraveWalletService::MigrateUserAssetEthContractAddress(prefs);
+
+  // Added 04/22 to have coin_type as the top level, also rename
+  // contract_address key to address.
+  BraveWalletService::MigrateMultichainUserAssets(prefs);
+
   JsonRpcService::MigrateMultichainNetworks(prefs);
 
   if (prefs->HasPrefPath(kBraveWalletWeb3ProviderDeprecated)) {

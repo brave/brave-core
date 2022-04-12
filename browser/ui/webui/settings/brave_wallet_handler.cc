@@ -109,7 +109,7 @@ void BraveWalletHandler::GetCustomNetworksList(const base::Value::List& args) {
   std::vector<brave_wallet::mojom::NetworkInfoPtr> custom_chains;
   brave_wallet::GetAllEthCustomChains(prefs, &custom_chains);
   for (const auto& it : custom_chains) {
-    list.Append(brave_wallet::EthNetworkInfoToValue(it));
+    list.Append(brave_wallet::EthNetworkInfoToValue(*it));
   }
   std::string json_string;
   base::JSONWriter::Write(list, &json_string);

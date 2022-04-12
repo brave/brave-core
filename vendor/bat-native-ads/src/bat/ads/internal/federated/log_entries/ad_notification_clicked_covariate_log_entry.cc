@@ -20,13 +20,14 @@ void AdNotificationClickedCovariateLogEntry::SetClicked(const bool clicked) {
   was_clicked_ = clicked;
 }
 
-mojom::DataType AdNotificationClickedCovariateLogEntry::GetDataType() const {
-  return mojom::DataType::kBool;
+brave_federated::mojom::DataType
+AdNotificationClickedCovariateLogEntry::GetDataType() const {
+  return brave_federated::mojom::DataType::kBool;
 }
 
-mojom::CovariateType AdNotificationClickedCovariateLogEntry::GetCovariateType()
-    const {
-  return mojom::CovariateType::kAdNotificationWasClicked;
+brave_federated::mojom::CovariateType
+AdNotificationClickedCovariateLogEntry::GetCovariateType() const {
+  return brave_federated::mojom::CovariateType::kAdNotificationWasClicked;
 }
 
 std::string AdNotificationClickedCovariateLogEntry::GetValue() const {

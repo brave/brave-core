@@ -82,7 +82,7 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
-    https_server()->ServeFilesFromDirectory(GetChromeTestDataDir());
+    https_server()->ServeFilesFromSourceDirectory(GetChromeTestDataDir());
     ASSERT_TRUE(https_server()->Start());
 
     permission_manager_ =
@@ -101,8 +101,8 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
   content::WebContents* web_contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
-  GURL GetLastCommitedOrigin() {
-    return url::Origin::Create(web_contents()->GetLastCommittedURL()).GetURL();
+  url::Origin GetLastCommitedOrigin() {
+    return url::Origin::Create(web_contents()->GetLastCommittedURL());
   }
 
   net::EmbeddedTestServer* https_server() { return &https_server_; }
@@ -137,13 +137,13 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"};
   std::vector<ContentSettingsType> types(addresses.size(),
                                          ContentSettingsType::BRAVE_ETHEREUM);
-  std::vector<GURL> sub_request_origins(addresses.size(), GURL(""));
+  std::vector<url::Origin> sub_request_origins(addresses.size());
   for (size_t i = 0; i < addresses.size(); i++) {
     ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
         GetLastCommitedOrigin(), addresses[i], &sub_request_origins[i]));
   }
 
-  GURL origin;
+  url::Origin origin;
   ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
       GetLastCommitedOrigin(), addresses, &origin));
 
@@ -151,7 +151,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
       permission_request_manager);
 
   permission_manager()->RequestPermissions(
-      types, web_contents()->GetMainFrame(), origin, true, base::DoNothing());
+      types, web_contents()->GetMainFrame(), origin.GetURL(), true,
+      base::DoNothing());
 
   content::RunAllTasksUntilIdle();
 
@@ -164,7 +165,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
   for (size_t i = 0; i < permission_request_manager->Requests().size(); i++) {
     EXPECT_EQ(permission_request_manager->Requests()[i]->request_type(),
               RequestType::kBraveEthereum);
-    EXPECT_EQ(sub_request_origins[i],
+    EXPECT_EQ(sub_request_origins[i].GetURL(),
               permission_request_manager->Requests()[i]->requesting_origin());
   }
 
@@ -175,15 +176,17 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
   EXPECT_TRUE(IsPendingGroupedRequestsEmpty());
 
   for (size_t i = 0; i < addresses.size(); i++) {
-    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                  sub_request_origins[i], GetLastCommitedOrigin(),
-                  ContentSettingsType::BRAVE_ETHEREUM),
-              ContentSetting::CONTENT_SETTING_ASK);
+    EXPECT_EQ(
+        host_content_settings_map()->GetContentSetting(
+            sub_request_origins[i].GetURL(), GetLastCommitedOrigin().GetURL(),
+            ContentSettingsType::BRAVE_ETHEREUM),
+        ContentSetting::CONTENT_SETTING_ASK);
   }
 
   observer->Reset();
   permission_manager()->RequestPermissions(
-      types, web_contents()->GetMainFrame(), origin, true, base::DoNothing());
+      types, web_contents()->GetMainFrame(), origin.GetURL(), true,
+      base::DoNothing());
 
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(permission_request_manager->IsRequestInProgress());
@@ -195,7 +198,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
   for (size_t i = 0; i < permission_request_manager->Requests().size(); i++) {
     EXPECT_EQ(permission_request_manager->Requests()[i]->request_type(),
               RequestType::kBraveEthereum);
-    EXPECT_EQ(sub_request_origins[i],
+    EXPECT_EQ(sub_request_origins[i].GetURL(),
               permission_request_manager->Requests()[i]->requesting_origin());
   }
 
@@ -210,10 +213,11 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
   EXPECT_TRUE(IsPendingGroupedRequestsEmpty());
 
   for (size_t i = 0; i < addresses.size(); i++) {
-    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                  sub_request_origins[i], GetLastCommitedOrigin(),
-                  ContentSettingsType::BRAVE_ETHEREUM),
-              expected_settings[i]);
+    EXPECT_EQ(
+        host_content_settings_map()->GetContentSetting(
+            sub_request_origins[i].GetURL(), GetLastCommitedOrigin().GetURL(),
+            ContentSettingsType::BRAVE_ETHEREUM),
+        expected_settings[i]);
   }
 }
 
@@ -231,13 +235,13 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8D"};
   std::vector<ContentSettingsType> types(addresses.size(),
                                          ContentSettingsType::BRAVE_ETHEREUM);
-  std::vector<GURL> sub_request_origins(addresses.size(), GURL(""));
+  std::vector<url::Origin> sub_request_origins(addresses.size());
   for (size_t i = 0; i < addresses.size(); i++) {
     ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
         GetLastCommitedOrigin(), addresses[i], &sub_request_origins[i]));
   }
 
-  GURL origin;
+  url::Origin origin;
   ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
       GetLastCommitedOrigin(), addresses, &origin));
 
@@ -245,7 +249,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
       permission_request_manager);
 
   permission_manager()->RequestPermissions(
-      types, web_contents()->GetMainFrame(), origin, true, base::DoNothing());
+      types, web_contents()->GetMainFrame(), origin.GetURL(), true,
+      base::DoNothing());
 
   content::RunAllTasksUntilIdle();
 
@@ -258,7 +263,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
   for (size_t i = 0; i < permission_request_manager->Requests().size(); i++) {
     EXPECT_EQ(permission_request_manager->Requests()[i]->request_type(),
               RequestType::kBraveEthereum);
-    EXPECT_EQ(sub_request_origins[i],
+    EXPECT_EQ(sub_request_origins[i].GetURL(),
               permission_request_manager->Requests()[i]->requesting_origin());
   }
 
@@ -304,13 +309,14 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, GetCanonicalOrigin) {
   std::vector<std::string> addresses = {
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"};
-  GURL origin;
+  url::Origin origin;
   ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
       GetLastCommitedOrigin(), addresses, &origin));
 
-  EXPECT_EQ(origin, permission_manager()->GetCanonicalOrigin(
-                        ContentSettingsType::BRAVE_ETHEREUM, origin,
-                        GetLastCommitedOrigin()))
+  EXPECT_EQ(origin.GetURL(),
+            permission_manager()->GetCanonicalOrigin(
+                ContentSettingsType::BRAVE_ETHEREUM, origin.GetURL(),
+                GetLastCommitedOrigin().GetURL()))
       << "GetCanonicalOrigin should return requesting_origin for Ethereum "
          "permission.";
 }

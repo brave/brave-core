@@ -45,7 +45,7 @@ AdEventInfo GenerateAdEvent(const AdType& type,
                             const ConfirmationType& confirmation_type) {
   AdEventInfo ad_event;
 
-  ad_event.uuid = ad.uuid;
+  ad_event.uuid = ad.placement_id;
   ad_event.type = type;
   ad_event.confirmation_type = confirmation_type;
   ad_event.campaign_id = ad.campaign_id;

@@ -134,6 +134,7 @@ const char kLegacyBraveWallet[] = "legacy_brave_wallet";
 const char kHardwareAccounts[] = "hardware";
 const char kHardwareDerivationPath[] = "derivation_path";
 const char kSelectedAccount[] = "selected_account";
+const int kDiscoveryAttempts = 20;
 
 mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
   if (keyring_id == mojom::kFilecoinKeyringId) {
@@ -203,7 +204,9 @@ void SerializeHardwareAccounts(const std::string& device_id,
 
 }  // namespace
 
-KeyringService::KeyringService(PrefService* prefs) : prefs_(prefs) {
+KeyringService::KeyringService(JsonRpcService* json_rpc_service,
+                               PrefService* prefs)
+    : json_rpc_service_(json_rpc_service), prefs_(prefs) {
   DCHECK(prefs);
   auto_lock_timer_ = std::make_unique<base::OneShotTimer>();
 
@@ -769,7 +772,14 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
       AddAccountForKeyring(mojom::kSolanaKeyringId, GetAccountName(1));
   }
 
-  // TODO(darkdh): add account discovery mechanism
+  if (keyring) {
+    discovery_weak_factory_.InvalidateWeakPtrs();
+    // Start account discovery process. Consecutively look for accounts with at
+    // least one transaction. Add such ones and all missing previous ones(so no
+    // gaps). Stop discovering when there are 20 consecutive accounts with no
+    // transactions.
+    AddDiscoveryAccountsForKeyring(1, kDiscoveryAttempts);
+  }
 
   std::move(callback).Run(keyring);
 }
@@ -1093,6 +1103,48 @@ void KeyringService::AddAccountForKeyring(const std::string& keyring_id,
       keyring->GetAddress(accounts_num - 1), keyring_id);
 }
 
+void KeyringService::AddDiscoveryAccountsForKeyring(
+    size_t discovery_account_index,
+    int attempts_left) {
+  if (attempts_left <= 0)
+    return;
+  auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
+  if (!keyring)
+    return;
+  json_rpc_service_->GetEthTransactionCount(
+      keyring->GetDiscoveryAddress(discovery_account_index),
+      base::BindOnce(&KeyringService::OnGetTransactionCount,
+                     discovery_weak_factory_.GetWeakPtr(),
+                     discovery_account_index, attempts_left));
+}
+
+void KeyringService::OnGetTransactionCount(size_t discovery_account_index,
+                                           int attempts_left,
+                                           uint256_t result,
+                                           mojom::ProviderError error,
+                                           const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess)
+    return;
+
+  if (result > 0) {
+    auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
+    if (!keyring)
+      return;
+    DCHECK_GT(keyring->GetAccountsNumber(), 0u);
+    size_t last_account_index = keyring->GetAccountsNumber() - 1;
+    if (discovery_account_index > last_account_index) {
+      AddAccountsWithDefaultName(discovery_account_index - last_account_index);
+      NotifyAccountsChanged();
+    }
+
+    AddDiscoveryAccountsForKeyring(discovery_account_index + 1,
+                                   kDiscoveryAttempts);
+  } else {
+    AddDiscoveryAccountsForKeyring(discovery_account_index + 1,
+                                   attempts_left - 1);
+  }
+}
+
 absl::optional<std::string> KeyringService::ImportAccountForKeyring(
     const std::string& keyring_id,
     const std::string& account_name,
@@ -1320,6 +1372,23 @@ bool KeyringService::GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
           EthAddress::FromHex(address).ToChecksumAddress(), key);
 }
 
+absl::optional<std::vector<uint8_t>>
+KeyringService::DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
+    const std::string& version,
+    const std::vector<uint8_t>& nonce,
+    const std::vector<uint8_t>& ephemeral_public_key,
+    const std::vector<uint8_t>& ciphertext,
+    const std::string& address) {
+  auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
+  if (!keyring)
+    return absl::nullopt;
+
+  return static_cast<EthereumKeyring*>(keyring)
+      ->DecryptCipherFromX25519_XSalsa20_Poly1305(
+          version, nonce, ephemeral_public_key, ciphertext,
+          EthAddress::FromHex(address).ToChecksumAddress());
+}
+
 std::vector<uint8_t> KeyringService::SignMessage(
     const std::string& keyring_id,
     const std::string& address,
@@ -1442,6 +1511,7 @@ void KeyringService::Reset(bool notify_observer) {
   StopAutoLockTimer();
   encryptors_.clear();
   keyrings_.clear();
+  discovery_weak_factory_.InvalidateWeakPtrs();
   ClearKeyringServiceProfilePrefs(prefs_);
   if (notify_observer) {
     for (const auto& observer : observers_) {

@@ -1147,6 +1147,19 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   callback(/* success */ false, "");
 }
 
+- (void)loadAdsFileResource:(const std::string&)id
+                    version:(const int)version
+                   callback:(ads::LoadFileCallback)callback {
+  NSString* bridgedId = base::SysUTF8ToNSString(id);
+  NSString* nsFilePath = [self.commonOps dataPathForFilename:bridgedId];
+
+  BLOG(1, @"Loading %@ ads resource descriptor", nsFilePath);
+
+  base::FilePath file_path(nsFilePath.UTF8String);
+  base::File file(file_path, base::File::FLAG_OPEN | base::File::FLAG_READ);
+  callback(std::move(file));
+}
+
 - (void)clearScheduledCaptcha {
   // Adaptive captcha not supported on iOS
 }
@@ -1863,7 +1876,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 }
 
 - (void)logTrainingCovariates:
-    (ads::mojom::TrainingCovariatesPtr)training_covariates {
+    (brave_federated::mojom::TrainingCovariatesPtr)training_covariates {
   // Not needed on iOS
 }
 

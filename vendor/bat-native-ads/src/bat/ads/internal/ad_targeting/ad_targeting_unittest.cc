@@ -95,6 +95,7 @@ class BatAdsAdTargetingTest
     text_classification_resource_ =
         std::make_unique<resource::TextClassification>();
     text_classification_resource_->Load();
+    task_environment()->RunUntilIdle();
     text_classification_processor_ =
         std::make_unique<processor::TextClassification>(
             text_classification_resource_.get());

@@ -7,6 +7,8 @@
 // chrome/BUILD.gn
 #include "brave/app/brave_command_line_helper.cc"
 #include "brave/app/brave_main_delegate.cc"
+#include "brave/components/brave_sync/buildflags.h"
+#include "brave/components/variations/buildflags.h"
 #include "build/build_config.h"
 #include "components/sync/base/command_line_switches.h"
 
@@ -75,7 +77,7 @@ bool ChromeMainDelegate::BasicStartupComplete(int* exit_code) {
                                    kBraveOriginTrialsPublicKey);
   }
 
-  std::string brave_sync_service_url = BRAVE_SYNC_ENDPOINT;
+  std::string brave_sync_service_url = BUILDFLAG(BRAVE_SYNC_ENDPOINT);
 #if BUILDFLAG(IS_ANDROID)
   AdjustSyncServiceUrlForAndroid(&brave_sync_service_url);
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -87,17 +89,15 @@ bool ChromeMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitchASCII(switches::kLsoUrl, kDummyUrl);
 
   // Brave variations
-  const std::string kVariationsServerURL = BRAVE_VARIATIONS_SERVER_URL;
   command_line.AppendSwitchASCII(variations::switches::kVariationsServerURL,
-                                 kVariationsServerURL.c_str());
+                                 BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
   // Insecure fall-back for variations is set to the same (secure) URL. This is
   // done so that if VariationsService tries to fall back to insecure url the
   // check for kHttpScheme in VariationsService::MaybeRetryOverHTTP would
   // prevent it from doing so as we don't want to use an insecure fall-back.
-  const std::string kVariationsInsecureServerURL = BRAVE_VARIATIONS_SERVER_URL;
   command_line.AppendSwitchASCII(
       variations::switches::kVariationsInsecureServerURL,
-      kVariationsInsecureServerURL.c_str());
+      BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
 
   // Runtime-enabled features. To override Chromium features default state
   // please see: brave/chromium_src/base/feature_override.h

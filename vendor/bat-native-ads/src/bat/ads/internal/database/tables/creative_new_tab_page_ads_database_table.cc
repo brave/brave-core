@@ -24,6 +24,7 @@
 #include "bat/ads/internal/database/tables/creative_ads_database_table.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ad_wallpapers_database_table.h"
 #include "bat/ads/internal/database/tables/dayparts_database_table.h"
+#include "bat/ads/internal/database/tables/deposits_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/database/tables/segments_database_table.h"
 #include "bat/ads/internal/logging.h"
@@ -201,6 +202,7 @@ void CreativeNewTabPageAds::Save(const CreativeNewTabPageAdList& creative_ads,
     creative_new_tab_page_ad_wallpapers_database_table_->InsertOrUpdate(
         transaction.get(), batch);
     dayparts_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
+    deposits_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     geo_targets_database_table_->InsertOrUpdate(transaction.get(),
                                                 creative_ads);
     segments_database_table_->InsertOrUpdate(transaction.get(), creative_ads);

@@ -18,6 +18,7 @@
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
 #include "crypto/encryptor.h"
+#include "crypto/random.h"
 #include "crypto/sha2.h"
 #include "crypto/symmetric_key.h"
 #include "third_party/boringssl/src/include/openssl/hmac.h"
@@ -424,10 +425,44 @@ std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
 std::vector<uint8_t> HDKey::GetPublicKeyFromX25519_XSalsa20_Poly1305() const {
   size_t public_key_len = crypto_scalarmult_curve25519_tweet_BYTES;
   std::vector<uint8_t> public_key(public_key_len);
+  const uint8_t* private_key_ptr = private_key_.data();
   if (crypto_scalarmult_curve25519_tweet_base(public_key.data(),
-                                              private_key_.data()) != 0)
+                                              private_key_ptr) != 0)
     return std::vector<uint8_t>();
   return public_key;
+}
+
+absl::optional<std::vector<uint8_t>>
+HDKey::DecryptCipherFromX25519_XSalsa20_Poly1305(
+    const std::string& version,
+    const std::vector<uint8_t>& nonce,
+    const std::vector<uint8_t>& ephemeral_public_key,
+    const std::vector<uint8_t>& ciphertext) const {
+  // Only x25519-xsalsa20-poly1305 is supported by MM at the time of writing
+  if (version != "x25519-xsalsa20-poly1305")
+    return absl::nullopt;
+  if (nonce.size() != crypto_box_curve25519xsalsa20poly1305_tweet_NONCEBYTES)
+    return absl::nullopt;
+  if (ephemeral_public_key.size() !=
+      crypto_box_curve25519xsalsa20poly1305_tweet_PUBLICKEYBYTES)
+    return absl::nullopt;
+  if (private_key_.size() !=
+      crypto_box_curve25519xsalsa20poly1305_tweet_SECRETKEYBYTES)
+    return absl::nullopt;
+
+  std::vector<uint8_t> padded_ciphertext = ciphertext;
+  padded_ciphertext.insert(padded_ciphertext.begin(), crypto_box_BOXZEROBYTES,
+                           0);
+  std::vector<uint8_t> padded_plaintext(padded_ciphertext.size());
+  const uint8_t* private_key_ptr = private_key_.data();
+  if (crypto_box_open(padded_plaintext.data(), padded_ciphertext.data(),
+                      padded_ciphertext.size(), nonce.data(),
+                      ephemeral_public_key.data(), private_key_ptr) != 0)
+    return absl::nullopt;
+  std::vector<uint8_t> plaintext(
+      padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
+      padded_plaintext.cend());
+  return plaintext;
 }
 
 void HDKey::SetChainCode(const std::vector<uint8_t>& value) {

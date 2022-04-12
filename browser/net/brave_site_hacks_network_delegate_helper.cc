@@ -57,6 +57,9 @@ const std::string& GetQueryStringTrackers() {
            "gbraid", "wbraid",
            // https://github.com/brave/brave-browser/issues/9019
            "_hsenc", "__hssc", "__hstc", "__hsfp", "hsCtaTracking",
+           // https://github.com/brave/brave-browser/issues/22082
+           "oft_id", "oft_k", "oft_lk", "oft_d", "oft_c", "oft_ck", "oft_ids",
+           "oft_sk",
            // https://github.com/brave/brave-browser/issues/11580
            "igshid"}),
       "|"));

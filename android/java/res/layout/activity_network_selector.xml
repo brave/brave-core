@@ -11,6 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/wallet_bg"
     tools:context=".browser.crypto_wallet.activities.NetworkSelectorActivity">
 
     <com.google.android.material.appbar.MaterialToolbar

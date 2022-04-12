@@ -11,6 +11,7 @@ import { HardwareWalletResponseCodeType } from '../common/hardware/types'
 // path of generated mojom files.
 export { BraveWallet }
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
+export { Origin } from 'gen/url/mojom/origin.mojom.m.js'
 export { TimeDelta }
 
 interface TokenBalanceRegistry {
@@ -104,7 +105,7 @@ export type PanelTypes =
   | 'transactionDetails'
   | 'assets'
   | 'provideEncryptionKey' // For grep: 'getEncryptionPublicKey'
-  | 'allowReadingEncryptedMessage'
+  | 'allowReadingEncryptedMessage' // For grep: 'decryptRequest'
 
 export type NavTypes =
   | 'crypto'
@@ -185,6 +186,10 @@ export interface DefaultCurrencies {
   crypto: string
 }
 
+export interface SolFeeEstimates {
+  fee: bigint
+}
+
 export interface WalletState {
   hasInitialized: boolean
   isFilecoinEnabled: boolean
@@ -211,7 +216,8 @@ export interface WalletState {
   transactionSpotPrices: BraveWallet.AssetPrice[]
   addUserAssetError: boolean
   defaultWallet: BraveWallet.DefaultWallet
-  activeOrigin: OriginInfo
+  activeOrigin: BraveWallet.OriginInfo
+  solFeeEstimates?: SolFeeEstimates
   gasEstimates?: BraveWallet.GasEstimation1559
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean
@@ -224,16 +230,17 @@ export interface WalletState {
 
 export interface PanelState {
   hasInitialized: boolean
-  connectToSiteOrigin: OriginInfo
+  connectToSiteOrigin: BraveWallet.OriginInfo
   selectedPanel: PanelTypes
   panelTitle: string
   connectingAccounts: string[]
-  networkPayload: BraveWallet.NetworkInfo
+  addChainRequest: BraveWallet.AddChainRequest
   signMessageData: BraveWallet.SignMessageRequest[]
   getEncryptionPublicKeyRequest: BraveWallet.GetEncryptionPublicKeyRequest
+  decryptRequest: BraveWallet.DecryptRequest
   switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
-  suggestedToken?: BraveWallet.BlockchainToken
+  suggestedTokenRequest?: BraveWallet.AddSuggestTokenRequest
 }
 
 export interface PageState {
@@ -394,11 +401,18 @@ export interface SendFilTransactionParams extends BaseTransactionParams {
   cid?: string
 }
 
+export interface SendSolTransactionParams extends BaseTransactionParams {
+}
+
+export interface SPLTransferFromParams extends BaseTransactionParams {
+  splTokenMintAddress: string
+}
+
 export interface SendEthTransactionParams extends BaseEthTransactionParams {
   data?: number[]
 }
 
-export type SendTransactionParams = SendEthTransactionParams | SendFilTransactionParams
+export type SendTransactionParams = SendEthTransactionParams | SendFilTransactionParams | SendSolTransactionParams
 
 export interface ER20TransferParams extends BaseEthTransactionParams {
   contractAddress: string
@@ -624,9 +638,4 @@ export enum CoinTypesMap {
   ETH = BraveWallet.CoinType.ETH,
   FIL = BraveWallet.CoinType.FIL,
   SOL = BraveWallet.CoinType.SOL
-}
-
-export type OriginInfo = {
-  origin: string
-  eTldPlusOne: string
 }

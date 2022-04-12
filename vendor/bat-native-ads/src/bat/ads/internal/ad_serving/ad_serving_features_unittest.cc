@@ -564,6 +564,136 @@ TEST(BatAdsAdServingFeaturesTest, DisabledMaximumPromotedContentAdsPerDay) {
             maximum_promoted_content_ads_per_day);
 }
 
+TEST(BatAdsAdServingFeaturesTest, MaximumSearchResultAdsPerHour) {
+  // Arrange
+  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  base::FieldTrialParams kAdServingParameters;
+  kAdServingParameters["maximum_search_result_ads_per_hour"] = "21";
+  enabled_features.push_back({features::kAdServing, kAdServingParameters});
+
+  const std::vector<base::Feature> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+  const int maximum_search_result_ads_per_hour =
+      features::GetMaximumSearchResultAdsPerHour();
+
+  // Assert
+  const int expected_maximum_search_result_ads_per_hour = 21;
+  EXPECT_EQ(expected_maximum_search_result_ads_per_hour,
+            maximum_search_result_ads_per_hour);
+}
+
+TEST(BatAdsAdServingFeaturesTest, DefaultMaximumSearchResultAdsPerHour) {
+  // Arrange
+  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
+      enabled_features;
+
+  const std::vector<base::Feature> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+  // Act
+  const int maximum_search_result_ads_per_hour =
+      features::GetMaximumSearchResultAdsPerHour();
+
+  // Assert
+  const int expected_maximum_search_result_ads_per_hour = 10;
+  EXPECT_EQ(expected_maximum_search_result_ads_per_hour,
+            maximum_search_result_ads_per_hour);
+}
+
+TEST(BatAdsAdServingFeaturesTest, DisabledMaximumSearchResultAdsPerHour) {
+  // Arrange
+  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
+      enabled_features;
+
+  std::vector<base::Feature> disabled_features;
+  disabled_features.push_back(features::kAdServing);
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+  const int maximum_search_result_ads_per_hour =
+      features::GetMaximumSearchResultAdsPerHour();
+
+  // Assert
+  const int expected_maximum_search_result_ads_per_hour = 10;
+  EXPECT_EQ(expected_maximum_search_result_ads_per_hour,
+            maximum_search_result_ads_per_hour);
+}
+
+TEST(BatAdsAdServingFeaturesTest, MaximumSearchResultAdsPerDay) {
+  // Arrange
+  std::vector<base::test::ScopedFeatureList::FeatureAndParams> enabled_features;
+  base::FieldTrialParams kAdServingParameters;
+  kAdServingParameters["maximum_search_result_ads_per_day"] = "24";
+  enabled_features.push_back({features::kAdServing, kAdServingParameters});
+
+  const std::vector<base::Feature> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+  const int maximum_search_result_ads_per_day =
+      features::GetMaximumSearchResultAdsPerDay();
+
+  // Assert
+  const int expected_maximum_search_result_ads_per_day = 24;
+  EXPECT_EQ(expected_maximum_search_result_ads_per_day,
+            maximum_search_result_ads_per_day);
+}
+
+TEST(BatAdsAdServingFeaturesTest, DefaultMaximumSearchResultAdsPerDay) {
+  // Arrange
+  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
+      enabled_features;
+
+  const std::vector<base::Feature> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+  // Act
+  const int maximum_search_result_ads_per_day =
+      features::GetMaximumSearchResultAdsPerDay();
+
+  // Assert
+  const int expected_maximum_search_result_ads_per_day = 40;
+  EXPECT_EQ(expected_maximum_search_result_ads_per_day,
+            maximum_search_result_ads_per_day);
+}
+
+TEST(BatAdsAdServingFeaturesTest, DisabledMaximumSearchResultAdsPerDay) {
+  // Arrange
+  const std::vector<base::test::ScopedFeatureList::FeatureAndParams>
+      enabled_features;
+
+  std::vector<base::Feature> disabled_features;
+  disabled_features.push_back(features::kAdServing);
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+  const int maximum_search_result_ads_per_day =
+      features::GetMaximumSearchResultAdsPerDay();
+
+  // Assert
+  const int expected_maximum_search_result_ads_per_day = 40;
+  EXPECT_EQ(expected_maximum_search_result_ads_per_day,
+            maximum_search_result_ads_per_day);
+}
+
 TEST(BatAdsAdServingFeaturesTest, DefaultAdServingVersion) {
   // Arrange
 

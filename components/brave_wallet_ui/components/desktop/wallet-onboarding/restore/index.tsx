@@ -1,5 +1,15 @@
 import * as React from 'react'
 
+// Components
+import { PasswordInput, BackButton } from '../../../shared'
+import { NavButton } from '../../../extension'
+import { Checkbox } from 'brave-ui'
+
+// Utils
+import { getLocale } from '../../../../../common/locale'
+import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
+
+// Styles
 import {
   StyledWrapper,
   Title,
@@ -12,10 +22,6 @@ import {
   InputColumn,
   FormText
 } from './style'
-import { PasswordInput, BackButton } from '../../../shared'
-import { NavButton } from '../../../extension'
-import { getLocale } from '../../../../../common/locale'
-import { Checkbox } from 'brave-ui'
 
 export interface Props {
   checkIsStrongPassword: (value: string) => Promise<boolean>
@@ -122,6 +128,10 @@ function OnboardingRestore (props: Props) {
     }
   }
 
+  const onClearClipboard = () => {
+    copyToClipboard('')
+  }
+
   return (
     <>
       <BackButton onSubmit={onBack} />
@@ -136,6 +146,7 @@ function OnboardingRestore (props: Props) {
             value={recoveryPhrase}
             type={showRecoveryPhrase ? 'text' : 'password'}
             autoComplete='off'
+            onPaste={onClearClipboard}
           />
           {hasRestoreError && <ErrorText>{getLocale('braveWalletRestoreError')}</ErrorText>}
           {recoveryPhrase.split(' ').length === 24 &&

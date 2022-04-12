@@ -19,11 +19,8 @@ export interface Props {
   showHeader?: boolean
   defaultCurrencies: DefaultCurrencies
   onSubmit: (asset: BraveWallet.BlockchainToken) => void
-  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   onSelectAccount: (account: UserAccountType) => void
   onSetBuyAmount: (value: string) => void
-  onAddNetwork: () => void
-  onAddAsset: () => void
 }
 
 function BuyTab (props: Props) {
@@ -34,23 +31,15 @@ function BuyTab (props: Props) {
     showHeader,
     assetOptions,
     defaultCurrencies,
-    onAddAsset,
     onSubmit,
-    onSelectNetwork,
     onSelectAccount,
-    onSetBuyAmount,
-    onAddNetwork
+    onSetBuyAmount
   } = props
   const [buyView, setBuyView] = React.useState<BuySendSwapViewTypes>('buy')
   const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(assetOptions[0])
 
   const onChangeBuyView = (view: BuySendSwapViewTypes) => {
     setBuyView(view)
-  }
-
-  const onClickSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
-    onSelectNetwork(network)
-    setBuyView('buy')
   }
 
   const onClickSelectAccount = (account: UserAccountType) => () => {
@@ -101,11 +90,8 @@ function BuyTab (props: Props) {
           goBack={goBack}
           assetOptions={assetOptions}
           onClickSelectAccount={onClickSelectAccount}
-          onClickSelectNetwork={onClickSelectNetwork}
           onSelectedAsset={onSelectedAsset}
           selectedView={buyView}
-          onAddNetwork={onAddNetwork}
-          onAddAsset={onAddAsset}
         />
       }
     </>

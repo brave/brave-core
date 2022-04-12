@@ -346,7 +346,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Show top sites in autocomplete suggestions
       </message>
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES" desc="The label for settings switch controlling whether or not Brave suggested sites show up in autocomplete">
-        Show Brave suggested sites in autocomplete suggestions
+        Show suggested sites in autocomplete suggestions
       </message>
       <message name="IDS_SETTINGS_TABS_SEARCH_SHOW" desc="The button for searching tabs on the left of tab strip region.">
         Show tab search button
@@ -397,11 +397,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_SETTINGS_BRAVE_REWARDS_MAX_ADS_TO_DISPLAY_LABEL" desc="The text label for the setting controlling the maximum number of ads to display">
         Maximum number of ads to display
       </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_LABEL" desc="The text label for the setting controlling subdivision-level ad targeting">
-        State-level ad targeting
+      <message name="IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_LABEL" desc="The text label for the setting that allows Brave to show ads meant specifically for user's region">
+        Regional ad relevance
       </message>
       <message name="IDS_SETTINGS_BRAVE_REWARDS_STATE_LEVEL_AD_TARGETING_DESC_LABEL" desc="The text label for the description of subdivision-level ad targeting">
-        This allows Brave to show you ads meant specifically for your state. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+        This allows Brave to show you ads meant specifically for your region. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
       </message>
       <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_TITLE" desc="The text label for the Rewards Auto-Contribute section">
         Auto-Contribute
@@ -648,7 +648,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Trackers &amp; ads blocking
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Brave cookies control setting label">
-        Block cross-site cookies
+        Block cookies
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL" desc="Default Brave fingerprinting control setting label">
         Block fingerprinting
@@ -1656,26 +1656,18 @@ Are you sure you want to do this?
         Reset Brave Rewards data...
       </message>
       <!--First-run dialog messages -->
-      <message name="IDS_FR_CUSTOMIZE_DEFAULT_BROWSER_BRAVE" desc="Default browser checkbox label">
-        Set Brave as default browser
+      <message name="IDS_FIRSTRUN_DLG_HEADER_TEXT" desc="Text for FirstRun dialog header">
+        Ready for the best privacy online?
       </message>
-      <message name="IDS_FIRSTRUN_DLG_COMPLETE_INSTALLATION_LABEL_BRAVE" desc="Label at top of Dialog noting what's going to happen">
-        To ensure the best privacy online, consider setting Brave as the default browser on your computer. With Brave as default, any web link you click will open with Brave's privacy protections.
+      <message name="IDS_FIRSTRUN_DLG_CONTENTS_TEXT" desc="Text for FirstRun dialog contents">
+        Set Brave as your default browser to get Brave's privacy protections on every web page you open.
       </message>
-      <if expr="is_win">
-        <message name="IDS_FIRSTRUN_DLG_WIN_HEADER_TEXT" desc="Text for FirstRun dialog header">
-          Ready for the best privacy online?
-        </message>
-        <message name="IDS_FIRSTRUN_DLG_WIN_CONTENTS_TEXT" desc="Text for FirstRun dialog contents">
-          Set Brave as your default browser to get Brave's privacy protections on every web page you open.
-        </message>
-        <message name="IDS_FIRSTRUN_DLG_WIN_OK_BUTTON_LABEL" desc="Text for FirstRun dialog ok button">
-          Set Brave as default
-        </message>
-        <message name="IDS_FIRSTRUN_DLG_WIN_CANCEL_BUTTON_LABEL" desc="Text for FirstRun dialog cancel button">
-          Maybe later
-        </message>
-      </if>
+      <message name="IDS_FIRSTRUN_DLG_OK_BUTTON_LABEL" desc="Text for FirstRun dialog ok button">
+        Set Brave as default
+      </message>
+      <message name="IDS_FIRSTRUN_DLG_CANCEL_BUTTON_LABEL" desc="Text for FirstRun dialog cancel button">
+        Maybe later
+      </message>
       <message name="IDS_SETTINGS_WALLET_NETWORKS_ITEM" desc="The label for opening wallet networks list">
         Networks
       </message>

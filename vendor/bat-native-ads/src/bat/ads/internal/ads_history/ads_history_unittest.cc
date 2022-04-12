@@ -12,6 +12,7 @@
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/inline_content_ad_info.h"
+#include "bat/ads/internal/ads/search_result_ads/search_result_ad_info.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -72,7 +73,7 @@ TEST_F(BatAdsAdsHistoryTest, AddNewTabPageAd) {
   ASSERT_EQ(1UL, history.size());
 }
 
-TEST_F(BatAdsAdsHistoryTest, AddNewTabPageAdsToHistory) {
+TEST_F(BatAdsAdsHistoryTest, AddNewTabPageAdWithMultipleEvents) {
   // Arrange
   NewTabPageAdInfo ad;
 
@@ -97,7 +98,7 @@ TEST_F(BatAdsAdsHistoryTest, AddPromotedContentAd) {
   ASSERT_EQ(1UL, history.size());
 }
 
-TEST_F(BatAdsAdsHistoryTest, AddPromotedContentAdsToHistory) {
+TEST_F(BatAdsAdsHistoryTest, AddPromotedContentWithMultipleEvents) {
   // Arrange
   PromotedContentAdInfo ad;
 
@@ -122,13 +123,38 @@ TEST_F(BatAdsAdsHistoryTest, AddInlineContentAd) {
   ASSERT_EQ(1UL, history.size());
 }
 
-TEST_F(BatAdsAdsHistoryTest, AddInlineContentAdsToHistory) {
+TEST_F(BatAdsAdsHistoryTest, AddInlineContentWithMultipleEvents) {
   // Arrange
   InlineContentAdInfo ad;
 
   // Act
   history::AddInlineContentAd(ad, ConfirmationType::kViewed);
   history::AddInlineContentAd(ad, ConfirmationType::kClicked);
+
+  // Assert
+  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  ASSERT_EQ(2UL, history.size());
+}
+
+TEST_F(BatAdsAdsHistoryTest, AddSearchResultAd) {
+  // Arrange
+  SearchResultAdInfo ad;
+
+  // Act
+  history::AddSearchResultAd(ad, ConfirmationType::kViewed);
+
+  // Assert
+  const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
+  ASSERT_EQ(1UL, history.size());
+}
+
+TEST_F(BatAdsAdsHistoryTest, AddSearchResultWithMultipleEvents) {
+  // Arrange
+  SearchResultAdInfo ad;
+
+  // Act
+  history::AddSearchResultAd(ad, ConfirmationType::kViewed);
+  history::AddSearchResultAd(ad, ConfirmationType::kClicked);
 
   // Assert
   const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
@@ -151,9 +177,12 @@ TEST_F(BatAdsAdsHistoryTest, AddMultipleAdTypesToHistory) {
   InlineContentAdInfo inline_content_ad;
   history::AddInlineContentAd(inline_content_ad, ConfirmationType::kViewed);
 
+  SearchResultAdInfo search_result_ad;
+  history::AddSearchResultAd(search_result_ad, ConfirmationType::kViewed);
+
   // Assert
   const std::deque<AdHistoryInfo> history = Client::Get()->GetAdsHistory();
-  ASSERT_EQ(4UL, history.size());
+  ASSERT_EQ(5UL, history.size());
 }
 
 TEST_F(BatAdsAdsHistoryTest, PurgedHistoryEntriesOnOrAfter30Days) {

@@ -63,8 +63,8 @@ void BraveEthereumPermissionContext::RequestPermission(
     bool user_gesture,
     BrowserPermissionCallback callback) {
   const std::string id_str = id.ToString();
-  GURL requesting_origin = url::Origin::Create(requesting_frame).GetURL();
-  std::string origin;
+  url::Origin requesting_origin = url::Origin::Create(requesting_frame);
+  url::Origin origin;
 
   // Parse address list from the requesting frame and save it to the map when
   // it is the first time seeing this request ID.
@@ -75,7 +75,7 @@ void BraveEthereumPermissionContext::RequestPermission(
           requesting_origin, &origin, is_new_id ? &address_queue : nullptr)) {
     GURL embedding_origin =
         url::Origin::Create(web_contents->GetLastCommittedURL()).GetURL();
-    NotifyPermissionSet(id, requesting_origin, embedding_origin,
+    NotifyPermissionSet(id, requesting_origin.GetURL(), embedding_origin,
                         std::move(callback), /*persist=*/false,
                         CONTENT_SETTING_BLOCK, /*is_one_time=*/false);
     return;
@@ -90,13 +90,14 @@ void BraveEthereumPermissionContext::RequestPermission(
   // at a time from the map.
   auto& addr_queue = addr_queue_it->second;
   DCHECK(!addr_queue.empty());
-  GURL sub_request_origin;
-  brave_wallet::GetSubRequestOrigin(GURL(origin), addr_queue.front(),
+  url::Origin sub_request_origin;
+  brave_wallet::GetSubRequestOrigin(origin, addr_queue.front(),
                                     &sub_request_origin);
   addr_queue.pop();
   if (addr_queue.empty())
     request_address_queues_.erase(addr_queue_it);
-  PermissionContextBase::RequestPermission(web_contents, id, sub_request_origin,
+  PermissionContextBase::RequestPermission(web_contents, id,
+                                           sub_request_origin.GetURL(),
                                            user_gesture, std::move(callback));
 }
 
@@ -180,16 +181,16 @@ void BraveEthereumPermissionContext::RequestPermissions(
   // addresses, then adjust the origin of each request later in the process
   // because PermissionManager::RequestPermissions only accepts a single origin
   // parameter to be passes in.
-  GURL origin;
+  url::Origin origin;
   if (!brave_wallet::GetConcatOriginFromWalletAddresses(
-          rfh->GetLastCommittedOrigin().GetURL(), addresses, &origin)) {
+          rfh->GetLastCommittedOrigin(), addresses, &origin)) {
     std::move(callback).Run(std::vector<ContentSetting>());
     return;
   }
 
   std::vector<ContentSettingsType> types(addresses.size(),
                                          ContentSettingsType::BRAVE_ETHEREUM);
-  permission_manager->RequestPermissions(types, rfh, origin,
+  permission_manager->RequestPermissions(types, rfh, origin.GetURL(),
                                          rfh->HasTransientUserActivation(),
                                          std::move(callback));
 }
@@ -227,14 +228,15 @@ void BraveEthereumPermissionContext::GetAllowedAccounts(
   }
 
   std::vector<std::string> allowed_accounts;
-  GURL origin = rfh->GetLastCommittedOrigin().GetURL();
+  url::Origin origin = url::Origin::Create(rfh->GetLastCommittedURL());
   for (const auto& address : addresses) {
-    GURL sub_request_origin;
+    url::Origin sub_request_origin;
     bool success =
         brave_wallet::GetSubRequestOrigin(origin, address, &sub_request_origin);
     if (success) {
       PermissionResult result = permission_manager->GetPermissionStatusForFrame(
-          ContentSettingsType::BRAVE_ETHEREUM, rfh, sub_request_origin);
+          ContentSettingsType::BRAVE_ETHEREUM, rfh,
+          sub_request_origin.GetURL());
       if (result.content_setting == CONTENT_SETTING_ALLOW) {
         allowed_accounts.push_back(address);
       }
@@ -247,25 +249,25 @@ void BraveEthereumPermissionContext::GetAllowedAccounts(
 // static
 bool BraveEthereumPermissionContext::AddEthereumPermission(
     content::BrowserContext* context,
-    const std::string& origin_spec,
+    const url::Origin& origin,
     const std::string& account) {
   bool has_permission;
-  if (!HasEthereumPermission(context, origin_spec, account, &has_permission))
+  if (!HasEthereumPermission(context, origin, account, &has_permission))
     return false;
 
   if (has_permission)
     return true;
 
-  GURL origin_wallet_address;
-  if (!brave_wallet::GetSubRequestOrigin(
-          url::Origin::Create(GURL(origin_spec)).GetURL(), account,
-          &origin_wallet_address))
+  url::Origin origin_wallet_address;
+  if (!brave_wallet::GetSubRequestOrigin(origin, account,
+                                         &origin_wallet_address)) {
     return false;
+  }
 
   PermissionsClient::Get()
       ->GetSettingsMap(context)
-      ->SetContentSettingDefaultScope(origin_wallet_address,
-                                      origin_wallet_address,
+      ->SetContentSettingDefaultScope(origin_wallet_address.GetURL(),
+                                      origin_wallet_address.GetURL(),
                                       ContentSettingsType::BRAVE_ETHEREUM,
                                       ContentSetting::CONTENT_SETTING_ALLOW);
 
@@ -275,7 +277,7 @@ bool BraveEthereumPermissionContext::AddEthereumPermission(
 // static
 bool BraveEthereumPermissionContext::HasEthereumPermission(
     content::BrowserContext* context,
-    const std::string& origin_spec,
+    const url::Origin& origin,
     const std::string& account,
     bool* has_permission) {
   CHECK(has_permission);
@@ -285,17 +287,16 @@ bool BraveEthereumPermissionContext::HasEthereumPermission(
   if (!permission_manager)
     return false;
 
-  GURL origin_wallet_address;
-  if (!brave_wallet::GetSubRequestOrigin(
-          url::Origin::Create(GURL(origin_spec)).GetURL(), account,
-          &origin_wallet_address)) {
+  url::Origin origin_wallet_address;
+  if (!brave_wallet::GetSubRequestOrigin(origin, account,
+                                         &origin_wallet_address)) {
     return false;
   }
 
   permissions::PermissionResult result =
       permission_manager->GetPermissionStatus(
-          ContentSettingsType::BRAVE_ETHEREUM, origin_wallet_address,
-          origin_wallet_address);
+          ContentSettingsType::BRAVE_ETHEREUM, origin_wallet_address.GetURL(),
+          origin_wallet_address.GetURL());
 
   *has_permission = result.content_setting == CONTENT_SETTING_ALLOW;
   return true;
@@ -304,23 +305,22 @@ bool BraveEthereumPermissionContext::HasEthereumPermission(
 // static
 bool BraveEthereumPermissionContext::ResetEthereumPermission(
     content::BrowserContext* context,
-    const std::string& origin_spec,
+    const url::Origin& origin,
     const std::string& account) {
   auto* permission_manager = static_cast<permissions::BravePermissionManager*>(
       permissions::PermissionsClient::Get()->GetPermissionManager(context));
   if (!permission_manager)
     return false;
 
-  GURL origin_wallet_address;
-  if (!brave_wallet::GetSubRequestOrigin(
-          url::Origin::Create(GURL(origin_spec)).GetURL(), account,
-          &origin_wallet_address)) {
+  url::Origin origin_wallet_address;
+  if (!brave_wallet::GetSubRequestOrigin(origin, account,
+                                         &origin_wallet_address)) {
     return false;
   }
 
   permission_manager->ResetPermissionViaContentSetting(
-      ContentSettingsType::BRAVE_ETHEREUM, origin_wallet_address,
-      origin_wallet_address);
+      ContentSettingsType::BRAVE_ETHEREUM, origin_wallet_address.GetURL(),
+      origin_wallet_address.GetURL());
   return true;
 }
 

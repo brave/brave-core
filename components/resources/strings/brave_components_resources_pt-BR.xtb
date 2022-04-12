@@ -1163,7 +1163,7 @@
 <translation id="2962388922926051374">Houve uma falha na solicitação do método "eth_chainId" em <ph name="URL"/></translation>
 <translation id="8325036459845654666">Esta rede já foi adicionada.</translation>
 <translation id="554350381160981853">A assinatura de dados de tipo só está disponível no Trezor Model One com firmware 1.10.5 ou superior</translation>
-<translation id="1752214435563414457">Concurso dos Swaps do Brave</translation>
+<translation id="1752214435563414457">Brave Swap-stakes</translation>
 <translation id="7829441065063984927">7 dias de brindes em criptomoedas, cerca de US$ 500 mil em prêmios</translation>
 <translation id="8292716346768453265">Participe agora!</translation>
 <translation id="3155170474926428993">Inicializador Tor</translation>
@@ -1203,7 +1203,7 @@
 <translation id="1992750560347846445">Informar site com problema</translation>
 <translation id="2387532482048804818">Informe-nos se o site não estiver funcionando corretamente com as Proteções ativadas.</translation>
 <translation id="9167355841012806439">Você está visualizando este site sem a proteção de privacidade do Brave</translation>
-<translation id="6835073906252142271">Proteções do Brave <ph name="NUMBER"/> Rastreadores, anúncios e outros conteúdos bloqueados</translation>
+<translation id="6835073906252142271">Proteções do Brave <ph name="NUMBER"/> rastreadores, anúncios e outros conteúdos bloqueados</translation>
 <translation id="1742469581923031760">Conectando…</translation>
 <translation id="1287487756047817908">Desconectando…</translation>
 <translation id="2325196879156848326">Falha na conexão</translation>

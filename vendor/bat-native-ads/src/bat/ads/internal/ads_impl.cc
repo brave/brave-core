@@ -38,6 +38,8 @@
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad.h"
 #include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad.h"
+#include "bat/ads/internal/ads/search_result_ads/search_result_ad.h"
+#include "bat/ads/internal/ads/search_result_ads/search_result_ad_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/browser_manager/browser_manager.h"
@@ -78,6 +80,8 @@
 #include "build/build_config.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
+
 namespace ads {
 
 AdsImpl::AdsImpl(AdsClient* ads_client)
@@ -98,6 +102,7 @@ AdsImpl::~AdsImpl() {
   new_tab_page_ad_->RemoveObserver(this);
   new_tab_page_ad_serving_->RemoveObserver(this);
   promoted_content_ad_->RemoveObserver(this);
+  search_result_ad_->RemoveObserver(this);
 }
 
 void AdsImpl::SetForTesting(privacy::TokenGeneratorInterface* token_generator) {
@@ -397,6 +402,23 @@ void AdsImpl::OnInlineContentAdEvent(
   inline_content_ad_->FireEvent(uuid, creative_instance_id, event_type);
 }
 
+void AdsImpl::TriggerSearchResultAdEvent(
+    mojom::SearchResultAdPtr ad_mojom,
+    const mojom::SearchResultAdEventType event_type,
+    TriggerSearchResultAdEventCallback callback) {
+  if (!IsInitialized()) {
+    callback(/* success */ false, ad_mojom->placement_id, event_type);
+    return;
+  }
+
+  search_result_ad_->FireEvent(
+      ad_mojom, event_type,
+      [=](const bool success, const std::string& placement_id,
+          const mojom::SearchResultAdEventType event_type) {
+        callback(success, placement_id, event_type);
+      });
+}
+
 void AdsImpl::PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) {
   PurgeOrphanedAdEvents(ad_type, [ad_type](const bool success) {
     if (!success) {
@@ -564,6 +586,9 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
 
   promoted_content_ad_ = std::make_unique<PromotedContentAd>();
   promoted_content_ad_->AddObserver(this);
+
+  search_result_ad_ = std::make_unique<SearchResultAd>();
+  search_result_ad_->AddObserver(this);
 
   confirmations_state_ = std::make_unique<ConfirmationsState>();
 
@@ -798,7 +823,8 @@ void AdsImpl::OnCatalogUpdated(const Catalog& catalog) {
 }
 
 void AdsImpl::OnDidServeAdNotification(const AdNotificationInfo& ad) {
-  ad_notification_->FireEvent(ad.uuid, mojom::AdNotificationEventType::kServed);
+  ad_notification_->FireEvent(ad.placement_id,
+                              mojom::AdNotificationEventType::kServed);
 }
 
 void AdsImpl::OnAdNotificationViewed(const AdNotificationInfo& ad) {
@@ -849,7 +875,7 @@ void AdsImpl::OnAdNotificationEventFailed(
 }
 
 void AdsImpl::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
-  new_tab_page_ad_->FireEvent(ad.uuid, ad.creative_instance_id,
+  new_tab_page_ad_->FireEvent(ad.placement_id, ad.creative_instance_id,
                               mojom::NewTabPageAdEventType::kServed);
 }
 
@@ -904,7 +930,7 @@ void AdsImpl::OnPromotedContentAdEventFailed(
 }
 
 void AdsImpl::OnDidServeInlineContentAd(const InlineContentAdInfo& ad) {
-  inline_content_ad_->FireEvent(ad.uuid, ad.creative_instance_id,
+  inline_content_ad_->FireEvent(ad.placement_id, ad.creative_instance_id,
                                 mojom::InlineContentAdEventType::kServed);
 }
 
@@ -927,6 +953,26 @@ void AdsImpl::OnInlineContentAdEventFailed(
   BLOG(1, "Failed to fire inline content ad "
               << event_type << " event for uuid " << uuid
               << " and creative instance id " << creative_instance_id);
+}
+
+void AdsImpl::OnSearchResultAdViewed(const SearchResultAdInfo& ad) {
+  account_->Deposit(ad.creative_instance_id, ad.type,
+                    ConfirmationType::kViewed);
+}
+
+void AdsImpl::OnSearchResultAdClicked(const SearchResultAdInfo& ad) {
+  ad_transfer_->set_last_clicked_ad(ad);
+
+  account_->Deposit(ad.creative_instance_id, ad.type,
+                    ConfirmationType::kClicked);
+}
+
+void AdsImpl::OnSearchResultAdEventFailed(
+    const SearchResultAdInfo& ad,
+    const mojom::SearchResultAdEventType event_type) {
+  BLOG(1, "Failed to fire search result ad "
+              << event_type << " event for placement_id " << ad.placement_id
+              << " and creative instance id " << ad.creative_instance_id);
 }
 
 void AdsImpl::OnWillTransferAd(const AdInfo& ad, const base::Time time) {

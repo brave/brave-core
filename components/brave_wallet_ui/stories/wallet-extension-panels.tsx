@@ -1,4 +1,6 @@
 import * as React from 'react'
+import { Provider } from 'react-redux'
+import { combineReducers, createStore } from 'redux'
 
 // Components
 import {
@@ -22,7 +24,7 @@ import {
   Send,
   Buy,
   SelectAsset,
-  SelectNetwork,
+  SelectNetworkWithHeader,
   SelectAccount
 } from '../components/buy-send-swap'
 import {
@@ -31,13 +33,9 @@ import {
   PanelTypes,
   AppsListType,
   BuySendSwapViewTypes,
-  OriginInfo
+  Origin,
+  WalletState
 } from '../constants/types'
-import {
-  UpdateUnapprovedTransactionGasFieldsType,
-  UpdateUnapprovedTransactionNonceType,
-  UpdateUnapprovedTransactionSpendAllowanceType
-} from '../common/constants/action_types'
 import { AppsList } from '../options/apps-list-options'
 import { filterAppList } from '../utils/filter-app-list'
 import LockPanel from '../components/extension/lock-panel'
@@ -49,10 +47,25 @@ import {
   StyledWelcomPanel
 } from './style'
 import { mockNetworks } from './mock-data/mock-networks'
-import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
 import { PanelTitles } from '../options/panel-titles'
 import './locale'
 import { transactionDummyData } from './wallet-concept'
+import { mockedErc20ApprovalTransaction, mockTransactionInfo } from './mock-data/mock-transaction-info'
+import { mockDefaultCurrencies } from './mock-data/mock-default-currencies'
+import { mockTransactionSpotPrices } from './mock-data/current-price-data'
+import { mockAccounts, mockedTransactionAccounts } from './mock-data/mock-wallet-accounts'
+import { mockEncryptionKeyRequest, mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
+import { mockOriginInfo } from './mock-data/mock-origin-info'
+import { mockAccountAssetOptions, mockBasicAttentionToken, mockEthToken, mockNewAssetOptions } from './mock-data/mock-asset-options'
+import { LibContext } from '../common/context/lib.context'
+import * as MockedLib from '../common/async/__mocks__/lib'
+
+import { createSendCryptoReducer } from '../common/reducers/send_crypto_reducer'
+import { createWalletReducer } from '../common/reducers/wallet_reducer'
+import { createPageReducer } from '../page/reducers/page_reducer'
+import { mockPageState } from './mock-data/mock-page-state'
+import { mockWalletState } from './mock-data/mock-wallet-state'
+import { mockSendCryptoState } from './mock-data/send-crypto-state'
 export default {
   title: 'Wallet/Extension/Panels',
   parameters: {
@@ -63,165 +76,60 @@ export default {
   }
 }
 
-const originInfo: OriginInfo = {
-  origin: 'https://app.uniswap.org/With_A_Really_Looooooong_Site_Name/fixme',
-  eTldPlusOne: 'uniswap.org'
+const originInfo = mockOriginInfo
+
+const store = createStore(combineReducers({
+  wallet: createWalletReducer(mockWalletState),
+  page: createPageReducer(mockPageState),
+  sendCrypto: createSendCryptoReducer(mockSendCryptoState)
+}))
+
+const transactionList = {
+  [mockedTransactionAccounts[0].address]: [
+    ...transactionDummyData[1],
+    ...transactionDummyData[2]
+  ]
 }
 
-const accounts: WalletAccountType[] = [
-  {
-    id: '1',
-    name: 'Account 1',
-    address: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
-    nativeBalanceRegistry: {
-      '0x1': '311780000000000000'
-    },
-    accountType: 'Primary',
-    tokenBalanceRegistry: {},
-    coin: BraveWallet.CoinType.ETH
-  },
-  {
-    id: '2',
-    name: 'Account 2',
-    address: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
-    nativeBalanceRegistry: {
-      '0x1': '311780000000000000'
-    },
-    accountType: 'Primary',
-    tokenBalanceRegistry: {},
-    coin: BraveWallet.CoinType.ETH
-  },
-  {
-    id: '3',
-    name: 'Account 3',
-    address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-    nativeBalanceRegistry: {
-      '0x1': '311780000000000000'
-    },
-    accountType: 'Primary',
-    tokenBalanceRegistry: {},
-    coin: BraveWallet.CoinType.ETH
-  }
-]
-
-const mockDefaultCurrencies = {
-  fiat: 'USD',
-  crypto: 'BTC'
+const mockCustomStoreState: Partial<WalletState> = {
+  accounts: mockAccounts,
+  selectedPendingTransaction: mockTransactionInfo,
+  transactionSpotPrices: mockTransactionSpotPrices,
+  defaultCurrencies: { fiat: 'USD', crypto: 'ETH' },
+  fullTokenList: mockNewAssetOptions,
+  activeOrigin: originInfo,
+  transactions: transactionList
 }
 
-const transactionSpotPrices = [
-  {
-    fromAsset: 'ETH',
-    toAsset: 'USD',
-    price: '3300',
-    assetTimeframeChange: ''
-  },
-  {
-    fromAsset: 'BAT',
-    toAsset: 'USD',
-    price: '0.85',
-    assetTimeframeChange: ''
-  }
-]
-
-const transactionInfo: BraveWallet.TransactionInfo = {
-  fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
-  id: '465a4d6646-kjlwf665',
-  txArgs: ['0x0d8775f648430679a709e98d2b0cb6250d2887ef', '0x15ddf09c97b0000'],
-  txDataUnion: {
-    ethTxData1559: {
-      baseData: {
-        nonce: '0x1',
-        gasPrice: '1',
-        gasLimit: '21000',
-        to: '2',
-        value: '0x15ddf09c97b0000',
-        data: Array.from(new Uint8Array(24))
-      },
-      chainId: '0x0',
-      maxPriorityFeePerGas: '',
-      maxFeePerGas: '',
-      gasEstimation: undefined
-    },
-    ethTxData: undefined,
-    solanaTxData: undefined,
-    filTxData: undefined
-  },
-  txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
-  txStatus: 0,
-  txParams: ['address', 'ammount'],
-  txType: BraveWallet.TransactionType.ERC20Transfer,
-  createdTime: { microseconds: BigInt(0) },
-  submittedTime: { microseconds: BigInt(0) },
-  confirmedTime: { microseconds: BigInt(0) }
-}
-
-const erc20ApproveTransactionInfo: BraveWallet.TransactionInfo = {
-  ...transactionInfo,
-  txType: BraveWallet.TransactionType.ERC20Approve
+function createStoreWithCustomState (customWalletState: Partial<WalletState> = {}) {
+  return createStore(combineReducers({
+    wallet: createWalletReducer({
+      ...mockWalletState,
+      ...customWalletState
+    }),
+    page: createPageReducer(mockPageState)
+  }))
 }
 
 export const _ConfirmTransaction = () => {
-  const onConfirmTransaction = () => {
-    alert('Confirmed Transaction')
-  }
-
-  const onRejectTransaction = () => {
-    alert('Rejected Transaction')
-  }
-
-  const onRejectAllTransactions = () => {
-    alert('Rejected All Transaction')
-  }
-  const onQueueNextTransaction = () => {
-    alert('Will queue next transaction in line')
-  }
-
-  const refreshGasEstimates = () => {
-    // do nothing
-  }
-
-  const updateUnapprovedTransactionGasFields = (payload: UpdateUnapprovedTransactionGasFieldsType) => {
-    alert('Updated gas fields')
-  }
-
-  const updateUnapprovedTransactionSpendAllowance = (payload: UpdateUnapprovedTransactionSpendAllowanceType) => {
-    alert('Updated spending allowance')
-  }
-
-  const updateUnapprovedTransactionNonce = (payload: UpdateUnapprovedTransactionNonceType) => {
-    alert('Updated nonce')
-  }
-
-  const getERC20Allowance = (recipient: string, sender: string, approvalTarget: string) => {
-    return Promise.resolve('0x15ddf09c97b0000')
-  }
+  const onConfirmTransaction = () => alert('Confirmed Transaction')
+  const onRejectTransaction = () => alert('Rejected Transaction')
+  const getERC20Allowance = () => Promise.resolve('0x15ddf09c97b0000')
 
   return (
-    <StyledExtensionWrapperLonger>
-      <ConfirmTransactionPanel
-        defaultCurrencies={mockDefaultCurrencies}
-        originInfo={originInfo}
-        selectedNetwork={mockNetworks[0]}
-        onQueueNextTransaction={onQueueNextTransaction}
-        onRejectAllTransactions={onRejectAllTransactions}
-        transactionQueueNumber={0}
-        transactionsQueueLength={0}
-        onConfirm={onConfirmTransaction}
-        onReject={onRejectTransaction}
-        accounts={accounts}
-        transactionInfo={transactionInfo}
-        visibleTokens={NewAssetOptions}
-        transactionSpotPrices={transactionSpotPrices}
-        refreshGasEstimates={refreshGasEstimates}
-        updateUnapprovedTransactionGasFields={updateUnapprovedTransactionGasFields}
-        updateUnapprovedTransactionSpendAllowance={updateUnapprovedTransactionSpendAllowance}
-        updateUnapprovedTransactionNonce={updateUnapprovedTransactionNonce}
-        getERC20Allowance={getERC20Allowance}
-        fullTokenList={NewAssetOptions}
-        gasEstimates={undefined}
-      />
-    </StyledExtensionWrapperLonger>
+    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
+      <StyledExtensionWrapperLonger>
+        <LibContext.Provider value={{
+          ...MockedLib as any,
+          getERC20Allowance
+        }}>
+          <ConfirmTransactionPanel
+            onConfirm={onConfirmTransaction}
+            onReject={onRejectTransaction}
+          />
+        </LibContext.Provider>
+      </StyledExtensionWrapperLonger>
+    </Provider>
   )
 }
 
@@ -232,38 +140,27 @@ _ConfirmTransaction.story = {
 export const _ConfirmErcApproveTransaction = () => {
   const onConfirmTransaction = () => alert('Confirmed Transaction')
   const onRejectTransaction = () => alert('Rejected Transaction')
-  const onRejectAllTransactions = () => alert('Rejected All Transaction')
-  const onQueueNextTransaction = () => alert('Will queue next transaction in line')
-  const refreshGasEstimates = () => { }
-  const updateUnapprovedTransactionGasFields = () => alert('Updated gas fields')
-  const updateUnapprovedTransactionSpendAllowance = () => alert('Updated spending allowance')
-  const updateUnapprovedTransactionNonce = () => alert('Updated nonce')
   const getERC20Allowance = () => Promise.resolve('0x15ddf09c97b0000')
 
   return (
     <StyledExtensionWrapperLonger>
-      <ConfirmTransactionPanel
-        defaultCurrencies={mockDefaultCurrencies}
-        originInfo={originInfo}
-        selectedNetwork={mockNetworks[0]}
-        onQueueNextTransaction={onQueueNextTransaction}
-        onRejectAllTransactions={onRejectAllTransactions}
-        transactionQueueNumber={0}
-        transactionsQueueLength={0}
-        onConfirm={onConfirmTransaction}
-        onReject={onRejectTransaction}
-        accounts={accounts}
-        transactionInfo={erc20ApproveTransactionInfo}
-        visibleTokens={NewAssetOptions}
-        transactionSpotPrices={transactionSpotPrices}
-        refreshGasEstimates={refreshGasEstimates}
-        updateUnapprovedTransactionGasFields={updateUnapprovedTransactionGasFields}
-        updateUnapprovedTransactionSpendAllowance={updateUnapprovedTransactionSpendAllowance}
-        updateUnapprovedTransactionNonce={updateUnapprovedTransactionNonce}
-        getERC20Allowance={getERC20Allowance}
-        fullTokenList={NewAssetOptions}
-        gasEstimates={undefined}
-      />
+      <Provider store={createStoreWithCustomState({
+        accounts: mockAccounts,
+        selectedPendingTransaction: mockedErc20ApprovalTransaction,
+        transactionSpotPrices: mockTransactionSpotPrices,
+        defaultCurrencies: { fiat: 'USD', crypto: 'ETH' },
+        fullTokenList: mockNewAssetOptions
+      })}>
+        <LibContext.Provider value={{
+          ...MockedLib as any,
+          getERC20Allowance
+        }}>
+          <ConfirmTransactionPanel
+            onConfirm={onConfirmTransaction}
+            onReject={onRejectTransaction}
+          />
+        </LibContext.Provider>
+      </Provider>
     </StyledExtensionWrapperLonger>
   )
 }
@@ -316,14 +213,15 @@ export const _SignData = () => {
   const signMessageDataPayload = [{
     id: 0,
     address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-    message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.'
+    message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.',
+    originInfo: mockOriginInfo
   }]
 
   return (
     <StyledExtensionWrapperLonger>
       <SignPanel
         signMessageData={signMessageDataPayload}
-        accounts={accounts}
+        accounts={mockAccounts}
         selectedNetwork={mockNetworks[0]}
         onCancel={onCancel}
         onSign={onSign}
@@ -335,14 +233,6 @@ export const _SignData = () => {
 
 _SignData.story = {
   name: 'Sign Transaction'
-}
-
-const encryptionKeyMockPayload = {
-  address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
-  message: 'This is a test message.',
-  origin: {
-    url: originInfo.origin
-  }
 }
 
 export const _ProvideEncryptionKey = () => {
@@ -358,8 +248,9 @@ export const _ProvideEncryptionKey = () => {
     <StyledExtensionWrapperLonger>
       <EncryptionKeyPanel
         panelType='request'
-        encryptionKeyPayload={encryptionKeyMockPayload}
-        accounts={accounts}
+        decryptPayload={mockDecryptRequest}
+        encryptionKeyPayload={mockEncryptionKeyRequest}
+        accounts={mockAccounts}
         selectedNetwork={mockNetworks[0]}
         onCancel={onCancel}
         onProvideOrAllow={onProvide}
@@ -386,8 +277,9 @@ export const _ReadEncryptedMessage = () => {
     <StyledExtensionWrapperLonger>
       <EncryptionKeyPanel
         panelType='read'
-        encryptionKeyPayload={encryptionKeyMockPayload}
-        accounts={accounts}
+        encryptionKeyPayload={mockEncryptionKeyRequest}
+        decryptPayload={mockDecryptRequest}
+        accounts={mockAccounts}
         selectedNetwork={mockNetworks[0]}
         onCancel={onCancel}
         onProvideOrAllow={onAllow}
@@ -403,7 +295,7 @@ _ReadEncryptedMessage.story = {
 
 export const _ConnectWithSite = () => {
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([
-    accounts[0]
+    mockAccounts[0]
   ])
   const [readyToConnect, setReadyToConnect] = React.useState<boolean>(false)
   const selectAccount = (account: WalletAccountType) => {
@@ -417,7 +309,7 @@ export const _ConnectWithSite = () => {
     setSelectedAccounts(newList)
   }
   const onSubmit = () => {
-    alert(`Connecting to ${originInfo.origin} using: ${JSON.stringify(selectedAccounts)}`)
+    alert(`Connecting to ${originInfo.originSpec} using: ${JSON.stringify(selectedAccounts)}`)
   }
   const primaryAction = () => {
     if (!readyToConnect) {
@@ -438,7 +330,7 @@ export const _ConnectWithSite = () => {
       <ConnectWithSite
         originInfo={originInfo}
         isReady={readyToConnect}
-        accounts={accounts}
+        accounts={mockAccounts}
         primaryAction={primaryAction}
         secondaryAction={secondaryAction}
         selectAccount={selectAccount}
@@ -453,27 +345,6 @@ _ConnectWithSite.story = {
   name: 'Connect With Site'
 }
 
-const transactionDummyAccounts: WalletAccountType[] = [
-  {
-    id: '1',
-    name: 'Account 1',
-    address: '1',
-    nativeBalanceRegistry: {
-      '0x1': '311780000000000000'
-    },
-    accountType: 'Primary',
-    tokenBalanceRegistry: {},
-    coin: BraveWallet.CoinType.ETH
-  }
-]
-
-const transactionList = {
-  [transactionDummyAccounts[0].address]: [
-    ...transactionDummyData[1],
-    ...transactionDummyData[2]
-  ]
-}
-
 export const _ConnectedPanel = (args: { locked: boolean }) => {
   const { locked } = args
   const [inputValue, setInputValue] = React.useState<string>('')
@@ -481,19 +352,17 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [selectedPanel, setSelectedPanel] = React.useState<PanelTypes>('main')
   const [panelTitle, setPanelTitle] = React.useState<string>('main')
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>(
-    accounts[0]
+    mockAccounts[0]
   )
   const [favoriteApps, setFavoriteApps] = React.useState<BraveWallet.AppItem[]>([
     AppsList()[0].appList[0]
   ])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
-  const [selectedNetwork, setSelectedNetwork] = React.useState<BraveWallet.NetworkInfo>(mockNetworks[0])
-  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(AccountAssetOptions[0])
-  const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(AccountAssetOptions[0])
+  const [selectedNetwork] = React.useState<BraveWallet.NetworkInfo>(mockNetworks[0])
+  const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(mockEthToken)
+  const [, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(mockBasicAttentionToken)
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
-  const [toAddress, setToAddress] = React.useState('')
-  const [fromAmount, setFromAmount] = React.useState('')
   const [buyAmount, setBuyAmount] = React.useState('')
   const [selectedTransaction, setSelectedTransaction] = React.useState<BraveWallet.TransactionInfo | undefined>(transactionList[1][0])
 
@@ -519,11 +388,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     navigateTo('transactions')
   }
 
-  const onSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
-    setSelectedNetwork(network)
-    setSelectedPanel('main')
-  }
-
   const onSelectAccount = (account: WalletAccountType) => () => {
     setSelectedAccount(account)
     setSelectedPanel('main')
@@ -540,14 +404,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
       setSelectedAsset(asset)
     }
     setShowSelectAsset(false)
-  }
-
-  const onInputChange = (value: string, name: string) => {
-    if (name === 'address') {
-      setToAddress(value)
-    } else {
-      setFromAmount(value)
-    }
   }
 
   const getTitle = (path: PanelTypes) => {
@@ -595,18 +451,9 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     setWalletLocked(true)
   }
 
-  const onSelectPresetAmount = (percent: number) => {
-    const amount = Number(selectedAccount.nativeBalanceRegistry[0]) * percent
-    setFromAmount(amount.toString())
-  }
-
   const handlePasswordChanged = (value: string) => {
     setHasPasswordError(false)
     setInputValue(value)
-  }
-
-  const onSubmitSend = () => {
-    alert('Will submit Send')
   }
 
   const onOpenSettings = () => {
@@ -617,12 +464,12 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     alert('Will navigate to full wallet restore page')
   }
 
-  const onDisconnectFromOrigin = (origin: string, address: string) => {
-    console.log(`Will disconnect ${address} from ${origin}`)
+  const onDisconnectFromOrigin = (origin: Origin, address: string) => {
+    console.log(`Will disconnect ${address} from ${origin.host}`)
   }
 
-  const onConnectToOrigin = (origin: string, account: WalletAccountType) => {
-    console.log(`Will connect ${account.address} to ${origin}`)
+  const onConnectToOrigin = (origin: Origin, account: WalletAccountType) => {
+    console.log(`Will connect ${account.address} to ${origin.host}`)
   }
 
   const onAddAccount = () => {
@@ -652,7 +499,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     alert('Will speedup transaction')
   }
 
-  const connectedAccounts = accounts.slice(0, 2)
+  const connectedAccounts = mockAccounts.slice(0, 2)
 
   const onSelectTransaction = (transaction: BraveWallet.TransactionInfo) => {
     navigateTo('transactionDetails')
@@ -661,173 +508,159 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   }
 
   return (
-    <StyledExtensionWrapper>
-      {walletLocked ? (
-        <LockPanel
-          hasPasswordError={hasPasswordError}
-          onSubmit={unlockWallet}
-          disabled={inputValue === ''}
-          onPasswordChanged={handlePasswordChanged}
-          onClickRestore={onRestore}
-        />
-      ) : (
-        <>
-          {selectedPanel === 'main' ? (
-            <ConnectedPanel
-              spotPrices={[]}
-              defaultCurrencies={mockDefaultCurrencies}
-              selectedNetwork={selectedNetwork}
-              selectedAccount={selectedAccount}
-              isConnected={true}
-              navAction={navigateTo}
-              onLockWallet={onLockWallet}
-              onOpenSettings={onOpenSettings}
-              originInfo={originInfo}
-              isSwapSupported={true}
-            />
-          ) : (
-            <>
-              {showSelectAsset &&
-                <SelectContainer>
-                  <SelectAsset
-                    assets={AccountAssetOptions}
-                    selectedNetwork={selectedNetwork}
-                    onSelectAsset={onSelectAsset}
-                    onBack={onHideSelectAsset}
-                    onAddAsset={onAddAsset}
-                  />
-                </SelectContainer>
-              }
-              {selectedPanel === 'accounts' &&
-                <SelectContainer>
-                  <SelectAccount
-                    accounts={accounts}
-                    onBack={onBack}
-                    onSelectAccount={onSelectAccount}
-                    onAddAccount={onAddAccount}
-                    hasAddButton={true}
-                    selectedAccount={selectedAccount}
-                  />
-                </SelectContainer>
-              }
-              {selectedPanel === 'networks' &&
-                <SelectContainer>
-                  <SelectNetwork
-                    selectedNetwork={selectedNetwork}
-                    networks={mockNetworks}
-                    onBack={onBack}
-                    onSelectNetwork={onSelectNetwork}
-                    hasAddButton={true}
-                    onAddNetwork={onAddNetwork}
-                  />
-                </SelectContainer>
-              }
-              {selectedPanel === 'transactionDetails' && selectedTransaction &&
-                <SelectContainer>
-                  <TransactionDetailPanel
-                    transaction={selectedTransaction}
-                    onBack={onBackToTransactions}
-                    onCancelTransaction={onClickCancelTransaction}
-                    onRetryTransaction={onClickRetryTransaction}
-                    onSpeedupTransaction={onClickSpeedupTransaction}
-                    accounts={accounts}
-                    defaultCurrencies={mockDefaultCurrencies}
-                    selectedNetwork={mockNetworks[0]}
-                    visibleTokens={NewAssetOptions}
-                    transactionSpotPrices={[]}
-                  />
-                </SelectContainer>
-              }
-              {!showSelectAsset && selectedPanel !== 'networks' && selectedPanel !== 'accounts' && selectedPanel !== 'transactionDetails' &&
-                < Panel
-                  navAction={navigateTo}
-                  title={panelTitle}
-                  useSearch={selectedPanel === 'apps'}
-                  searchAction={selectedPanel === 'apps' ? filterList : undefined}
-                >
-                  <ScrollContainer>
-                    {selectedPanel === 'apps' &&
-                      <AppList
-                        list={filteredAppsList}
-                        favApps={favoriteApps}
-                        addToFav={addToFavorites}
-                        removeFromFav={removeFromFavorites}
-                        action={browseMore}
-                      />
-                    }
-                    {selectedPanel === 'send' &&
-                      <Send
-                        onChangeSendView={onChangeSendView}
-                        onInputChange={onInputChange}
-                        onSelectPresetAmount={onSelectPresetAmount}
-                        onSubmit={onSubmitSend}
-                        addressError=''
-                        addressWarning=''
-                        selectedAsset={selectedAsset}
-                        selectedAssetAmount={fromAmount}
-                        selectedAssetBalance={(selectedAccount.nativeBalanceRegistry)[selectedAsset.chainId]}
-                        toAddressOrUrl={toAddress}
-                        toAddress={toAddress}
-                        amountValidationError={undefined}
-                        selectedNetwork={selectedNetwork}
-                      />
-                    }
-                    {selectedPanel === 'buy' &&
-                      <Buy
-                        defaultCurrencies={mockDefaultCurrencies}
-                        onChangeBuyView={onChangeSendView}
-                        onInputChange={onSetBuyAmount}
-                        onSubmit={onSubmitBuy}
-                        selectedAsset={selectedWyreAsset}
-                        buyAmount={buyAmount}
-                        selectedNetwork={selectedNetwork}
-                        networkList={[]}
-                      />
-                    }
-                    {selectedPanel === 'sitePermissions' &&
-                      <SitePermissions
-                        selectedAccount={selectedAccount}
-                        originInfo={originInfo}
-                        onDisconnect={onDisconnectFromOrigin}
-                        connectedAccounts={connectedAccounts}
-                        accounts={accounts}
-                        onSwitchAccount={onSelectAccount}
-                        onConnect={onConnectToOrigin}
-                        onAddAccount={onAddAccount}
-                      />
-                    }
-                    {selectedPanel === 'transactions' &&
-                      <TransactionsPanel
-                        accounts={transactionDummyAccounts}
-                        defaultCurrencies={mockDefaultCurrencies}
-                        onSelectTransaction={onSelectTransaction}
-                        selectedNetwork={mockNetworks[0]}
-                        selectedAccount={transactionDummyAccounts[0]}
-                        visibleTokens={NewAssetOptions}
-                        transactionSpotPrices={[]}
-                        transactions={transactionList}
+    <Provider store={store}>
+      <StyledExtensionWrapper>
+        {walletLocked ? (
+          <LockPanel
+            hasPasswordError={hasPasswordError}
+            onSubmit={unlockWallet}
+            disabled={inputValue === ''}
+            onPasswordChanged={handlePasswordChanged}
+            onClickRestore={onRestore}
+          />
+        ) : (
+          <>
+            {selectedPanel === 'main' ? (
+              <ConnectedPanel
+                spotPrices={[]}
+                defaultCurrencies={mockDefaultCurrencies}
+                selectedNetwork={selectedNetwork}
+                selectedAccount={selectedAccount}
+                isConnected={true}
+                navAction={navigateTo}
+                onLockWallet={onLockWallet}
+                onOpenSettings={onOpenSettings}
+                originInfo={originInfo}
+                isSwapSupported={true}
+              />
+            ) : (
+              <>
+                {showSelectAsset &&
+                  <SelectContainer>
+                    <SelectAsset
+                      assets={mockAccountAssetOptions}
+                      onSelectAsset={onSelectAsset}
+                      onBack={onHideSelectAsset}
+                    />
+                  </SelectContainer>
+                }
+                {selectedPanel === 'accounts' &&
+                  <SelectContainer>
+                    <SelectAccount
+                      accounts={mockAccounts}
+                      onBack={onBack}
+                      onSelectAccount={onSelectAccount}
+                      onAddAccount={onAddAccount}
+                      hasAddButton={true}
+                      selectedAccount={selectedAccount}
+                    />
+                  </SelectContainer>
+                }
+                {selectedPanel === 'networks' &&
+                  <SelectContainer>
+                    <SelectNetworkWithHeader
+                      onBack={onBack}
+                      hasAddButton={true}
+                      onAddNetwork={onAddNetwork}
+                    />
+                  </SelectContainer>
+                }
+                {selectedPanel === 'transactionDetails' && selectedTransaction &&
+                  <SelectContainer>
+                    <TransactionDetailPanel
+                      transaction={selectedTransaction}
+                      onBack={onBackToTransactions}
+                      onCancelTransaction={onClickCancelTransaction}
+                      onRetryTransaction={onClickRetryTransaction}
+                      onSpeedupTransaction={onClickSpeedupTransaction}
+                      accounts={mockAccounts}
+                      defaultCurrencies={mockDefaultCurrencies}
+                      selectedNetwork={mockNetworks[0]}
+                      visibleTokens={mockNewAssetOptions}
+                      transactionSpotPrices={[]}
+                    />
+                  </SelectContainer>
+                }
+                {!showSelectAsset && selectedPanel !== 'networks' && selectedPanel !== 'accounts' && selectedPanel !== 'transactionDetails' &&
+                  < Panel
+                    navAction={navigateTo}
+                    title={panelTitle}
+                    useSearch={selectedPanel === 'apps'}
+                    searchAction={selectedPanel === 'apps' ? filterList : undefined}
+                  >
+                    <ScrollContainer>
+                      {selectedPanel === 'apps' &&
+                        <AppList
+                          list={filteredAppsList}
+                          favApps={favoriteApps}
+                          addToFav={addToFavorites}
+                          removeFromFav={removeFromFavorites}
+                          action={browseMore}
+                        />
+                      }
+                      {selectedPanel === 'send' &&
+                        <Send
+                          onChangeSendView={onChangeSendView}
+                          // selectedAssetBalance={(selectedAccount.nativeBalanceRegistry)[selectedAsset.chainId]}
+                        />
+                      }
+                      {selectedPanel === 'buy' &&
+                        <Buy
+                          defaultCurrencies={mockDefaultCurrencies}
+                          onChangeBuyView={onChangeSendView}
+                          onInputChange={onSetBuyAmount}
+                          onSubmit={onSubmitBuy}
+                          selectedAsset={selectedWyreAsset}
+                          buyAmount={buyAmount}
+                          selectedNetwork={selectedNetwork}
+                          networkList={[]}
+                        />
+                      }
+                      {selectedPanel === 'sitePermissions' &&
+                        <SitePermissions
+                          selectedAccount={selectedAccount}
+                          originInfo={originInfo}
+                          onDisconnect={onDisconnectFromOrigin}
+                          connectedAccounts={connectedAccounts}
+                          accounts={mockAccounts}
+                          onSwitchAccount={onSelectAccount}
+                          onConnect={onConnectToOrigin}
+                          onAddAccount={onAddAccount}
+                        />
+                      }
+                      {selectedPanel === 'transactions' &&
+                        <TransactionsPanel
+                          accounts={mockedTransactionAccounts}
+                          defaultCurrencies={mockDefaultCurrencies}
+                          onSelectTransaction={onSelectTransaction}
+                          selectedNetwork={mockNetworks[0]}
+                          selectedAccount={mockedTransactionAccounts[0]}
+                          visibleTokens={mockNewAssetOptions}
+                          transactionSpotPrices={[]}
+                          transactions={transactionList}
 
-                      />
-                    }
-                    {selectedPanel === 'assets' &&
-                      <AssetsPanel
-                        defaultCurrencies={mockDefaultCurrencies}
-                        selectedAccount={selectedAccount}
-                        spotPrices={[]}
-                        userAssetList={AccountAssetOptions}
-                        onAddAsset={onAddAsset}
-                        networkList={[selectedNetwork]}
-                      />
-                    }
-                  </ScrollContainer>
-                </Panel>
-              }
-            </>
-          )}
-        </>
-      )
-      }
-    </StyledExtensionWrapper >
+                        />
+                      }
+                      {selectedPanel === 'assets' &&
+                        <AssetsPanel
+                          defaultCurrencies={mockDefaultCurrencies}
+                          selectedAccount={selectedAccount}
+                          spotPrices={[]}
+                          userAssetList={mockAccountAssetOptions}
+                          onAddAsset={onAddAsset}
+                          networkList={[selectedNetwork]}
+                        />
+                      }
+                    </ScrollContainer>
+                  </Panel>
+                }
+              </>
+            )}
+          </>
+        )
+        }
+      </StyledExtensionWrapper>
+    </Provider>
   )
 }
 
@@ -900,7 +733,7 @@ export const _AddSuggestedToken = () => {
       <AddSuggestedTokenPanel
         onCancel={onCancel}
         onAddToken={onAddToken}
-        token={NewAssetOptions[2]}
+        token={mockNewAssetOptions[2]}
         selectedNetwork={mockNetworks[0]}
       />
     </StyledExtensionWrapper>
@@ -916,31 +749,33 @@ export const _TransactionDetail = () => {
     // Doesn't do anything in storybook
   }
 
-  const tx = transactionList[transactionDummyAccounts[0].address][0]
+  const tx = transactionList[mockedTransactionAccounts[0].address][0]
   return (
-    <StyledExtensionWrapper>
-      <Panel
-        navAction={mockedFunction}
-        title={'Recent Transactions'}
-        useSearch={false}
-        searchAction={undefined}
-      >
-        <ScrollContainer>
-          <TransactionDetailPanel
-            onBack={mockedFunction}
-            onCancelTransaction={mockedFunction}
-            onRetryTransaction={mockedFunction}
-            onSpeedupTransaction={mockedFunction}
-            accounts={transactionDummyAccounts}
-            defaultCurrencies={mockDefaultCurrencies}
-            selectedNetwork={mockNetworks[0]}
-            visibleTokens={NewAssetOptions}
-            transactionSpotPrices={[]}
-            transaction={tx}
-          />
-        </ScrollContainer>
-      </Panel>
-    </StyledExtensionWrapper>
+    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
+      <StyledExtensionWrapper>
+        <Panel
+          navAction={mockedFunction}
+          title={'Recent Transactions'}
+          useSearch={false}
+          searchAction={undefined}
+        >
+          <ScrollContainer>
+            <TransactionDetailPanel
+              onBack={mockedFunction}
+              onCancelTransaction={mockedFunction}
+              onRetryTransaction={mockedFunction}
+              onSpeedupTransaction={mockedFunction}
+              accounts={mockedTransactionAccounts}
+              defaultCurrencies={mockDefaultCurrencies}
+              selectedNetwork={mockNetworks[0]}
+              visibleTokens={mockNewAssetOptions}
+              transactionSpotPrices={[]}
+              transaction={tx}
+            />
+          </ScrollContainer>
+        </Panel>
+      </StyledExtensionWrapper>
+    </Provider>
   )
 }
 
@@ -958,27 +793,29 @@ export const _RecentTransaction = () => {
   }
 
   return (
-    <StyledExtensionWrapper>
-      <Panel
-        navAction={navigateTo}
-        title={'Recent Transactions'}
-        useSearch={false}
-        searchAction={undefined}
-      >
-        <ScrollContainer>
-          <TransactionsPanel
-            accounts={transactionDummyAccounts}
-            defaultCurrencies={mockDefaultCurrencies}
-            onSelectTransaction={onSelectTransaction}
-            selectedNetwork={mockNetworks[0]}
-            selectedAccount={transactionDummyAccounts[0]}
-            visibleTokens={NewAssetOptions}
-            transactionSpotPrices={[{ assetTimeframeChange: '', fromAsset: 'ETH', toAsset: 'USD', price: '2500' }]}
-            transactions={transactionList}
-          />
-        </ScrollContainer>
-      </Panel>
-    </StyledExtensionWrapper>
+    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
+      <StyledExtensionWrapper>
+        <Panel
+          navAction={navigateTo}
+          title={'Recent Transactions'}
+          useSearch={false}
+          searchAction={undefined}
+        >
+          <ScrollContainer>
+            <TransactionsPanel
+              accounts={mockedTransactionAccounts}
+              defaultCurrencies={mockDefaultCurrencies}
+              onSelectTransaction={onSelectTransaction}
+              selectedNetwork={mockNetworks[0]}
+              selectedAccount={mockedTransactionAccounts[0]}
+              visibleTokens={mockNewAssetOptions}
+              transactionSpotPrices={[{ assetTimeframeChange: '', fromAsset: 'ETH', toAsset: 'USD', price: '2500' }]}
+              transactions={transactionList}
+            />
+          </ScrollContainer>
+        </Panel>
+      </StyledExtensionWrapper>
+    </Provider>
   )
 }
 

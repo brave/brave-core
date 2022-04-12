@@ -32,55 +32,55 @@ class BraveEthereumPermissionContextUnitTest : public testing::Test {
 };
 
 TEST_F(BraveEthereumPermissionContextUnitTest, AddEthereumPermission) {
-  GURL url("https://www.brave.com/");
+  url::Origin origin = url::Origin::Create(GURL("https://www.brave.com/"));
   const std::string address = "0x407637cC04893DA7FA4A7C0B58884F82d69eD448";
   bool has_permission;
   bool success =
       permissions::BraveEthereumPermissionContext::HasEthereumPermission(
-          browser_context(), url.spec(), address, &has_permission);
+          browser_context(), origin, address, &has_permission);
   EXPECT_TRUE(success);
   EXPECT_FALSE(has_permission);
 
   success = permissions::BraveEthereumPermissionContext::AddEthereumPermission(
-      browser_context(), url.spec(), address);
+      browser_context(), origin, address);
   EXPECT_TRUE(success);
 
   // Verify the permission is set
   success = permissions::BraveEthereumPermissionContext::HasEthereumPermission(
-      browser_context(), url.spec(), address, &has_permission);
+      browser_context(), origin, address, &has_permission);
   EXPECT_TRUE(success);
   EXPECT_TRUE(has_permission);
 }
 
 TEST_F(BraveEthereumPermissionContextUnitTest, ResetEthereumPermission) {
-  GURL url("https://www.brave.com/");
+  url::Origin origin = url::Origin::Create(GURL("https://www.brave.com/"));
   const std::string address = "0x407637cC04893DA7FA4A7C0B58884F82d69eD448";
 
   bool success =
       permissions::BraveEthereumPermissionContext::AddEthereumPermission(
-          browser_context(), url.spec(), address);
+          browser_context(), origin, address);
   EXPECT_TRUE(success);
 
   // Adding twice is OK
   success = permissions::BraveEthereumPermissionContext::AddEthereumPermission(
-      browser_context(), url.spec(), address);
+      browser_context(), origin, address);
   EXPECT_TRUE(success);
 
   // Verify the permission is set
   bool has_permission;
   success = permissions::BraveEthereumPermissionContext::HasEthereumPermission(
-      browser_context(), url.spec(), address, &has_permission);
+      browser_context(), origin, address, &has_permission);
   EXPECT_TRUE(success);
   EXPECT_TRUE(has_permission);
 
   // Reset the permission
   ASSERT_TRUE(
       permissions::BraveEthereumPermissionContext::ResetEthereumPermission(
-          browser_context(), url.spec(), address));
+          browser_context(), origin, address));
 
   // Verify the permission is reset
   success = permissions::BraveEthereumPermissionContext::HasEthereumPermission(
-      browser_context(), url.spec(), address, &has_permission);
+      browser_context(), origin, address, &has_permission);
   EXPECT_TRUE(success);
   EXPECT_FALSE(has_permission);
 }

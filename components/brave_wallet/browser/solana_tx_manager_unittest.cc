@@ -57,7 +57,8 @@ class SolanaTxManagerUnitTest : public testing::Test {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     json_rpc_service_.reset(
         new JsonRpcService(shared_url_loader_factory_, &prefs_));
-    keyring_service_.reset(new KeyringService(&prefs_));
+    keyring_service_.reset(
+        new KeyringService(json_rpc_service_.get(), &prefs_));
     tx_service_.reset(new TxService(json_rpc_service_.get(),
                                     keyring_service_.get(), &prefs_));
     CreateWallet();

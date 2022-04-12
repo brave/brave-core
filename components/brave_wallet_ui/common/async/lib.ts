@@ -17,7 +17,8 @@ import {
   SupportedCoinTypes,
   SupportedTestNetworks,
   SendEthTransactionParams,
-  SendFilTransactionParams
+  SendFilTransactionParams,
+  SendSolTransactionParams
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
@@ -135,12 +136,26 @@ export async function findHardwareAccountInfo (address: string): Promise<Account
 
 export async function getBuyAssetUrl (address: string, symbol: string, amount: string) {
   const { blockchainRegistry } = getAPIProxy()
-  return (await blockchainRegistry.getBuyUrl(BraveWallet.MAINNET_CHAIN_ID, address, symbol, amount)).url
+  const { url, error } = await blockchainRegistry.getBuyUrl(
+    BraveWallet.OnRampProvider.kWyre,
+    BraveWallet.MAINNET_CHAIN_ID,
+    address,
+    symbol,
+    amount
+  )
+
+  if (error) {
+    console.log(`Failed to get buy URL: ${error}`)
+  }
+
+  return url
 }
 
 export async function getBuyAssets () {
   const { blockchainRegistry } = getAPIProxy()
-  return (await blockchainRegistry.getBuyTokens(BraveWallet.MAINNET_CHAIN_ID)).tokens
+  return (await blockchainRegistry.getBuyTokens(
+    BraveWallet.OnRampProvider.kWyre,
+    BraveWallet.MAINNET_CHAIN_ID)).tokens
 }
 
 export function getKeyringIdFromCoin (coin: BraveWallet.CoinType): BraveKeyrings {
@@ -182,28 +197,20 @@ export function refreshVisibleTokenInfo (currentNetwork: BraveWallet.NetworkInfo
         logo: network.iconUrls[0] ?? '',
         name: network.symbolName,
         symbol: network.symbol,
-        // MULTICHAIN: Change visible back to false once getUserAssets returns
-        // SOL and FIL by default.
-        visible: network.coin === BraveWallet.CoinType.SOL || network.coin === BraveWallet.CoinType.FIL,
+        visible: false,
         tokenId: '',
         coingeckoId: '',
-        chainId: network.chainId
+        chainId: network.chainId,
+        coin: network.coin
       }
 
       // Get a list of user tokens for each coinType and network.
-      const getTokenList = network.chainId === BraveWallet.LOCALHOST_CHAIN_ID &&
-        network.coin === BraveWallet.CoinType.SOL || network.coin === BraveWallet.CoinType.FIL
-        // Since LOCALHOST's chainId is shared between coinType networks,
-        // this check will make sure we create the correct Native Asset for
-        // that network.
-        ? { tokens: [nativeAsset] } // MULTICHAIN: We do not yet support getting userAssets for FIL and SOL
-        // Will be implemented here https://github.com/brave/brave-browser/issues/21547
-        : await braveWalletService.getUserAssets(network.chainId)
+      const getTokenList = await braveWalletService.getUserAssets(network.chainId, network.coin)
 
       // Adds a logo and chainId to each token object
       const tokenList = getTokenList.tokens.map((token) => ({
         ...token,
-        logo: token.symbol.toLowerCase() === 'sol' ? '' : `chrome://erc-token-images/${token.logo}`
+        logo: `chrome://erc-token-images/${token.logo}`
       })) as BraveWallet.BlockchainToken[]
       return tokenList.length === 0 ? [nativeAsset] : tokenList
     }))
@@ -227,20 +234,23 @@ export function refreshBalances () {
       const networks = getNetworksByCoinType(networkList, account.coin)
 
       return Promise.all(networks.map(async (network) => {
-        // MULTICHAIN: Backend needs to allow chainId for getSolanaBalance method
-        // Will be implemented here https://github.com/brave/brave-browser/issues/21695
-        if (account.coin === BraveWallet.CoinType.SOL || account.coin === BraveWallet.CoinType.FIL) {
-          if (defaultNetworks.some(n => n.chainId === network.chainId)) {
-            // Get CoinType SOL balances
-            if (network.coin === BraveWallet.CoinType.SOL) {
-              const solBalanceInfo = await jsonRpcService.getSolanaBalance(account.address, network.chainId)
-              return {
-                ...solBalanceInfo,
-                balance: solBalanceInfo.balance.toString(),
-                chainId: network.chainId
-              }
-            }
+        // Get CoinType SOL balances
+        if (network.coin === BraveWallet.CoinType.SOL) {
+          const getSolBalanceInfo = await jsonRpcService.getSolanaBalance(account.address, network.chainId)
+          const solBalanceInfo = {
+            ...getSolBalanceInfo,
+            balance: getSolBalanceInfo.balance.toString(),
+            chainId: network.chainId
+          }
+          return network.chainId === BraveWallet.LOCALHOST_CHAIN_ID &&
+            getSolBalanceInfo.error !== 0
+            ? { ...emptyBalance, chainId: network.chainId }
+            : solBalanceInfo
+        }
 
+        // Get CoinType FIL balances
+        if (account.coin === BraveWallet.CoinType.FIL) {
+          if (defaultNetworks.some(n => n.chainId === network.chainId)) {
             // Get CoinType FIL balances
             if (network.coin === BraveWallet.CoinType.FIL) {
               const balanceInfo = await jsonRpcService.getBalance(account.address, account.coin, network.chainId)
@@ -251,9 +261,6 @@ export function refreshBalances () {
             }
           }
 
-          // Return emptyBalance for CoinType FIL or SOL if network
-          // is not included in defaultNetworks. Will update when this
-          // is implemented https://github.com/brave/brave-browser/issues/21695
           return {
             ...emptyBalance,
             chainId: network.chainId
@@ -262,7 +269,7 @@ export function refreshBalances () {
 
         // LOCALHOST will return an error until a local instance is
         // detected, we now will will return a 0 balance until it's detected.
-        if (network.chainId === BraveWallet.LOCALHOST_CHAIN_ID) {
+        if (network.chainId === BraveWallet.LOCALHOST_CHAIN_ID && network.coin !== BraveWallet.CoinType.SOL) {
           const localhostBalanceInfo = await jsonRpcService.getBalance(account.address, account.coin, network.chainId)
           const info = localhostBalanceInfo.error === 0 ? localhostBalanceInfo : emptyBalance
           return {
@@ -287,21 +294,36 @@ export function refreshBalances () {
     const visibleTokens = userVisibleTokensInfo.filter(asset => asset.contractAddress !== '')
 
     const getBlockchainTokensBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
+      const networks = getNetworksByCoinType(networkList, account.coin)
       if (account.coin === BraveWallet.CoinType.ETH) {
         return Promise.all(visibleTokens.map(async (token) => {
-          if (token.isErc721) {
-            return jsonRpcService.getERC721TokenBalance(token.contractAddress, token.tokenId ?? '', account.address, token?.chainId ?? '')
+          if (networks.some(n => n.chainId === token.chainId)) {
+            if (token.isErc721) {
+              return jsonRpcService.getERC721TokenBalance(token.contractAddress, token.tokenId ?? '', account.address, token?.chainId ?? '')
+            }
+            return jsonRpcService.getERC20TokenBalance(token.contractAddress, account.address, token?.chainId ?? '')
           }
-          return jsonRpcService.getERC20TokenBalance(token.contractAddress, account.address, token?.chainId ?? '')
+          return emptyBalance
+        }))
+      } else if (account.coin === BraveWallet.CoinType.SOL) {
+        return Promise.all(visibleTokens.map(async (token) => {
+          if (networks.some(n => n.chainId === token.chainId)) {
+            const getSolTokenBalance = await jsonRpcService.getSPLTokenAccountBalance(account.address, token.contractAddress, token.chainId)
+            return {
+              balance: getSolTokenBalance.amount,
+              error: getSolTokenBalance.error,
+              errorMessage: getSolTokenBalance.errorMessage
+            }
+          }
+          return emptyBalance
         }))
       } else {
         // MULTICHAIN: We do not yet support getting
-        // token balances for SOL and FIL
+        // token balances for FIL
         // Will be implemented here https://github.com/brave/brave-browser/issues/21695
         return []
       }
     }))
-
     await dispatch(WalletActions.tokenBalancesUpdated({
       balances: getBlockchainTokensBalanceReturnInfos
     }))
@@ -343,7 +365,7 @@ export function refreshPrices () {
       }
 
       // If a tokens balance is 0 we do not make an unnecessary api call for the price of that token
-      const price = token.balance > 0 && token.token.isErc20
+      const price = token.balance > 0 && !token.token.isErc721
         ? await assetRatioService.getPrice([getTokenParam(token.token)], [defaultFiatCurrency], selectedPortfolioTimeline)
         : { values: [{ ...emptyPrice, price: '0' }], success: true }
 
@@ -418,7 +440,7 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
   }
 }
 
-export function refreshTransactionHistory (coin: BraveWallet.CoinType, address?: string) {
+export function refreshTransactionHistory (address?: string) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
     const { txService } = apiProxy
@@ -430,7 +452,7 @@ export function refreshTransactionHistory (coin: BraveWallet.CoinType, address?:
 
     const freshTransactions: AccountTransactions = await accountsToUpdate.reduce(
       async (acc, account) => acc.then(async (obj) => {
-        const { transactionInfos } = await txService.getAllTransactionInfo(coin, account.address)
+        const { transactionInfos } = await txService.getAllTransactionInfo(account.coin, account.address)
         obj[account.address] = transactionInfos
         return obj
       }), Promise.resolve({}))
@@ -650,9 +672,21 @@ export async function sendFilTransaction (payload: SendFilTransactionParams) {
     gasLimit: payload.gasLimit || '',
     maxFee: payload.maxFee || '0',
     to: payload.to,
-    value: payload.value,
-    cid: payload.cid || ''
+    value: payload.value
   }
   // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
   return await apiProxy.txService.addUnapprovedTransaction({ filTxData: filTxData }, payload.from)
+}
+
+export async function sendSolTransaction (payload: SendSolTransactionParams) {
+  const { solanaTxManagerProxy, txService } = getAPIProxy()
+  const value = await solanaTxManagerProxy.makeSystemProgramTransferTxData(payload.from, payload.to, BigInt(payload.value))
+  // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
+  return await txService.addUnapprovedTransaction({ solanaTxData: value.txData }, payload.from)
+}
+
+export async function sendSPLTransaction (payload: BraveWallet.SolanaTxData) {
+  const { txService } = getAPIProxy()
+  // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
+  return await txService.addUnapprovedTransaction({ solanaTxData: payload }, payload.feePayer)
 }

@@ -8,12 +8,24 @@
 #include "src/net/base/url_util.h"
 
 #include "net/base/net_export.h"
+#include "url/origin.h"
 
 namespace net {
 
 // Convert this URL into an encoded storage domain string, which is used
 // to identify a particular storage domain uniquely in a BrowserContext.
 NET_EXPORT std::string URLToEphemeralStorageDomain(const GURL& url);
+
+// Helpers to access Origin internal data to use for Ephemeral Storage.
+class NET_EXPORT EphemeralStorageOriginUtils {
+ public:
+  /* Checks if an origin is opaque and nonce is initialized. */
+  static bool CanUseNonceForEphemeralStorageKeying(const url::Origin& origin);
+  /* Returns nonce to use as an Ephemeral Storage key. CHECKs if an origin
+   * cannot be used for Ephemeral Storage keying. */
+  static const base::UnguessableToken& GetNonceForEphemeralStorageKeying(
+      const url::Origin& origin);
+};
 
 }  // namespace net
 

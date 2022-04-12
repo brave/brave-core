@@ -3,7 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/build/rust/config.gni")
 import("//brave/ios/browser/api/ads/headers.gni")
+import("//brave/ios/browser/api/brave_shields/headers.gni")
 import("//brave/ios/browser/api/brave_stats/headers.gni")
 import("//brave/ios/browser/api/brave_wallet/headers.gni")
 import("//brave/ios/browser/api/certificate/headers.gni")
@@ -25,6 +27,11 @@ config("internal_config") {
   if (!use_lld) {
     ldflags += [ "-Wl,-no_compact_unwind" ]
   }
+  ldflags += [
+    # prevent export of all rust symbols
+    "-Wl,-unexported_symbols_list," +
+        rebase_path(unexport_list_path, root_build_dir),
+  ]
 }
 
 group("brave_ios") {
@@ -38,7 +45,6 @@ group("brave_ios_tests") {
 
 brave_core_public_headers = [
   "//brave/build/ios/mojom/public/base/base_values.h",
-  "//brave/components/adblock_rust_ffi/src/lib.h",
   "//brave/ios/app/brave_core_main.h",
   "//brave/ios/browser/brave_wallet/brave_wallet_factory_wrappers.h",
   "//brave/ios/browser/skus/skus_sdk_factory_wrappers.h",
@@ -58,6 +64,7 @@ brave_core_public_headers = [
 ]
 
 brave_core_public_headers += ads_public_headers
+brave_core_public_headers += brave_shields_public_headers
 brave_core_public_headers += brave_stats_public_headers
 brave_core_public_headers += brave_wallet_public_headers
 brave_core_public_headers += browser_api_certificate_public_headers
@@ -90,7 +97,7 @@ ios_framework_bundle("brave_core_ios_framework") {
 
   deps = [
     ":brave_core_umbrella_header",
-    "//brave/components/adblock_rust_ffi",
+    "//brave/build/rust:generate_unexport_list",
     "//brave/ios/app",
   ]
 

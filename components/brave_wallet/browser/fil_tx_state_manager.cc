@@ -5,7 +5,16 @@
 
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 
-#include "base/notreached.h"
+#include <utility>
+
+#include "base/strings/strcat.h"
+#include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/fil_tx_meta.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/tx_meta.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -15,15 +24,38 @@ FilTxStateManager::FilTxStateManager(PrefService* prefs,
 
 FilTxStateManager::~FilTxStateManager() = default;
 
-std::unique_ptr<TxMeta> FilTxStateManager::ValueToTxMeta(
-    const base::Value& value) {
-  NOTIMPLEMENTED();
-  return nullptr;
+std::unique_ptr<FilTxMeta> FilTxStateManager::GetFilTx(const std::string& id) {
+  return std::unique_ptr<FilTxMeta>{
+      static_cast<FilTxMeta*>(TxStateManager::GetTx(id).release())};
 }
 
 std::string FilTxStateManager::GetTxPrefPathPrefix() {
-  NOTIMPLEMENTED();
-  return "";
+  return base::StrCat(
+      {kFilecoinPrefKey, ".",
+       GetNetworkId(prefs_, mojom::CoinType::FIL,
+                    json_rpc_service_->GetChainId(mojom::CoinType::FIL))});
+}
+
+std::unique_ptr<FilTxMeta> FilTxStateManager::ValueToFilTxMeta(
+    const base::Value& value) {
+  return std::unique_ptr<FilTxMeta>{
+      static_cast<FilTxMeta*>(ValueToTxMeta(value).release())};
+}
+
+std::unique_ptr<TxMeta> FilTxStateManager::ValueToTxMeta(
+    const base::Value& value) {
+  std::unique_ptr<FilTxMeta> meta = std::make_unique<FilTxMeta>();
+
+  if (!TxStateManager::ValueToTxMeta(value, meta.get()))
+    return nullptr;
+  const base::Value* tx = value.FindKey("tx");
+  if (!tx)
+    return nullptr;
+  absl::optional<FilTransaction> tx_from_value = FilTransaction::FromValue(*tx);
+  if (!tx_from_value)
+    return nullptr;
+  meta->set_tx(std::make_unique<FilTransaction>(*tx_from_value));
+  return meta;
 }
 
 }  // namespace brave_wallet

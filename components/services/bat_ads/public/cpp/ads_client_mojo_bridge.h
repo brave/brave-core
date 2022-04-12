@@ -70,7 +70,11 @@ class AdsClientMojoBridge
       const std::string& message) override;
   void LoadAdsResource(const std::string& id,
                        const int version,
-                       LoadCallback callback) override;
+                       LoadAdsResourceCallback callback) override;
+
+  void LoadAdsFileResource(const std::string& id,
+                           const int version,
+                           LoadAdsFileResourceCallback callback) override;
 
   void GetBrowsingHistory(const int max_count,
                           const int days_ago,
@@ -80,8 +84,8 @@ class AdsClientMojoBridge
                       const ads::mojom::P2AEventType type,
                       const std::string& out_value) override;
 
-  void LogTrainingCovariates(
-      ads::mojom::TrainingCovariatesPtr training_covariates) override;
+  void LogTrainingCovariates(brave_federated::mojom::TrainingCovariatesPtr
+                                 training_covariates) override;
 
   void Load(
       const std::string& name,
@@ -174,9 +178,13 @@ class AdsClientMojoBridge
     Callback callback_;
   };
 
-  static void OnLoadAdsResource(CallbackHolder<LoadCallback>* holder,
+  static void OnLoadAdsResource(CallbackHolder<LoadAdsResourceCallback>* holder,
                                 const bool success,
                                 const std::string& value);
+
+  static void OnLoadAdsFileResource(
+      CallbackHolder<LoadAdsFileResourceCallback>* holder,
+      base::File file);
 
   static void OnGetBrowsingHistory(
       CallbackHolder<GetBrowsingHistoryCallback>* holder,

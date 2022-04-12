@@ -183,12 +183,4 @@ bool NotificationHelperMac::ShowMyFirstAdNotification() {
   return false;
 }
 
-NotificationHelperMac* NotificationHelperMac::GetInstanceImpl() {
-  return base::Singleton<NotificationHelperMac>::get();
-}
-
-NotificationHelper* NotificationHelper::GetInstanceImpl() {
-  return NotificationHelperMac::GetInstanceImpl();
-}
-
 }  // namespace brave_ads

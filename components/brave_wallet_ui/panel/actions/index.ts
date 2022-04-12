@@ -1,1 +1,4 @@
-export * as PanelActions from './wallet_panel_actions'
+import * as PanelActions from './wallet_panel_actions'
+export {
+  PanelActions
+}

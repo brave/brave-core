@@ -154,7 +154,8 @@ void JNI_BravePrefServiceBridge_SetCosmeticFilteringControlType(JNIEnv* env,
       // aggressive
       brave_shields::SetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::BLOCK, GURL(), g_browser_process->local_state());
+          ControlType::BLOCK, GURL(), g_browser_process->local_state(),
+          GetOriginalProfile()->GetPrefs());
       brave_shields::SetAdControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
           ControlType::BLOCK, GURL(), g_browser_process->local_state());
@@ -163,7 +164,8 @@ void JNI_BravePrefServiceBridge_SetCosmeticFilteringControlType(JNIEnv* env,
       // standard
       brave_shields::SetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::DEFAULT, GURL(), g_browser_process->local_state());
+          ControlType::DEFAULT, GURL(), g_browser_process->local_state(),
+          GetOriginalProfile()->GetPrefs());
       brave_shields::SetAdControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
           ControlType::BLOCK, GURL(), g_browser_process->local_state());
@@ -172,7 +174,8 @@ void JNI_BravePrefServiceBridge_SetCosmeticFilteringControlType(JNIEnv* env,
       // allow all
       brave_shields::SetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::ALLOW, GURL(), g_browser_process->local_state());
+          ControlType::ALLOW, GURL(), g_browser_process->local_state(),
+          GetOriginalProfile()->GetPrefs());
       brave_shields::SetAdControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
           ControlType::ALLOW, GURL(), g_browser_process->local_state());
@@ -185,7 +188,8 @@ void JNI_BravePrefServiceBridge_SetCosmeticFilteringControlType(JNIEnv* env,
           ControlType::BLOCK, GURL(), g_browser_process->local_state());
       brave_shields::SetCosmeticFilteringControlType(
           HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
-          ControlType::DEFAULT, GURL(), g_browser_process->local_state());
+          ControlType::DEFAULT, GURL(), g_browser_process->local_state(),
+          GetOriginalProfile()->GetPrefs());
       break;
   }
 }
@@ -240,7 +244,8 @@ void JNI_BravePrefServiceBridge_SetFingerprintingControlType(
       HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile()),
       brave_shields::ControlTypeFromString(
           base::android::ConvertJavaStringToUTF8(env, type)),
-      GURL(), g_browser_process->local_state());
+      GURL(), g_browser_process->local_state(),
+      GetOriginalProfile()->GetPrefs());
 }
 
 base::android::ScopedJavaLocalRef<jstring>
