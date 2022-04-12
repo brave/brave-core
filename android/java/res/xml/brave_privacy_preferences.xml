@@ -46,7 +46,11 @@
             app:dialog_subtitle="@string/block_fingerprinting_text"
             app:dialog_entries="@array/blockFingerprintingTexts"
             app:dialog_default_index="1" />
-
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="de_amp"
+            android:title="@string/de_amp_switch"
+            android:summary="@string/de_amp_summary"
+            android:defaultValue="true" />
 
     <PreferenceCategory
         android:key="clear_data_section"

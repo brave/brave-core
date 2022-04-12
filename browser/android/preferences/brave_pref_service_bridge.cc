@@ -14,6 +14,7 @@
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_today/common/pref_names.h"
+#include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/p3a/buildflags.h"
@@ -95,6 +96,11 @@ void JNI_BravePrefServiceBridge_SetHTTPSEEnabled(
       enabled,
       GURL(),
       g_browser_process->local_state());
+}
+
+void JNI_BravePrefServiceBridge_SetDeAmpEnabled(JNIEnv* env, jboolean enabled) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(de_amp::kDeAmpPrefEnabled,
+                                               enabled);
 }
 
 void JNI_BravePrefServiceBridge_SetIpfsGatewayEnabled(JNIEnv* env,
