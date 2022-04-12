@@ -63,7 +63,6 @@ export interface Props {
   privateKey: string
   networkList: BraveWallet.NetworkInfo[]
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
-  transactionSpotPrices: BraveWallet.AssetPrice[]
   selectedAccount: WalletAccountType | undefined
   defaultCurrencies: DefaultCurrencies
   onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
@@ -81,7 +80,6 @@ function Accounts (props: Props) {
     accounts,
     transactions,
     privateKey,
-    transactionSpotPrices,
     userVisibleTokensInfo,
     selectedAccount,
     defaultCurrencies,
@@ -298,7 +296,6 @@ function Accounts (props: Props) {
           <SubDivider />
           {accountsTokensList.filter((token) => !token.isErc721).map((item) =>
             <PortfolioAssetItem
-              spotPrices={transactionSpotPrices}
               defaultCurrencies={defaultCurrencies}
               key={`${item.contractAddress}-${item.symbol}-${item.chainId}`}
               assetBalance={getBalance(selectedAccount, item)}
@@ -314,7 +311,6 @@ function Accounts (props: Props) {
               <SubDivider />
               {erc271Tokens?.map((item) =>
                 <PortfolioAssetItem
-                  spotPrices={transactionSpotPrices}
                   networks={networkList}
                   defaultCurrencies={defaultCurrencies}
                   key={`${item.contractAddress}-${item.symbol}-${item.chainId}`}

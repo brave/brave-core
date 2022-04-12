@@ -78,12 +78,6 @@ export default {
 
 const originInfo = mockOriginInfo
 
-const store = createStore(combineReducers({
-  wallet: createWalletReducer(mockWalletState),
-  page: createPageReducer(mockPageState),
-  sendCrypto: createSendCryptoReducer(mockSendCryptoState)
-}))
-
 const transactionList = {
   [mockedTransactionAccounts[0].address]: [
     ...transactionDummyData[1],
@@ -107,7 +101,8 @@ function createStoreWithCustomState (customWalletState: Partial<WalletState> = {
       ...mockWalletState,
       ...customWalletState
     }),
-    page: createPageReducer(mockPageState)
+    page: createPageReducer(mockPageState),
+    sendCrypto: createSendCryptoReducer(mockSendCryptoState)
   }))
 }
 
@@ -508,7 +503,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   }
 
   return (
-    <Provider store={store}>
+    <Provider store={createStoreWithCustomState(mockCustomStoreState)}>
       <StyledExtensionWrapper>
         {walletLocked ? (
           <LockPanel
@@ -522,7 +517,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
           <>
             {selectedPanel === 'main' ? (
               <ConnectedPanel
-                spotPrices={[]}
                 defaultCurrencies={mockDefaultCurrencies}
                 selectedNetwork={selectedNetwork}
                 selectedAccount={selectedAccount}
@@ -576,8 +570,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                       accounts={mockAccounts}
                       defaultCurrencies={mockDefaultCurrencies}
                       selectedNetwork={mockNetworks[0]}
-                      visibleTokens={mockNewAssetOptions}
-                      transactionSpotPrices={[]}
                     />
                   </SelectContainer>
                 }
@@ -634,8 +626,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                           onSelectTransaction={onSelectTransaction}
                           selectedNetwork={mockNetworks[0]}
                           selectedAccount={mockedTransactionAccounts[0]}
-                          visibleTokens={mockNewAssetOptions}
-                          transactionSpotPrices={[]}
                           transactions={transactionList}
 
                         />
@@ -644,7 +634,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         <AssetsPanel
                           defaultCurrencies={mockDefaultCurrencies}
                           selectedAccount={selectedAccount}
-                          spotPrices={[]}
                           userAssetList={mockAccountAssetOptions}
                           onAddAsset={onAddAsset}
                           networkList={[selectedNetwork]}
@@ -768,8 +757,6 @@ export const _TransactionDetail = () => {
               accounts={mockedTransactionAccounts}
               defaultCurrencies={mockDefaultCurrencies}
               selectedNetwork={mockNetworks[0]}
-              visibleTokens={mockNewAssetOptions}
-              transactionSpotPrices={[]}
               transaction={tx}
             />
           </ScrollContainer>
@@ -808,8 +795,6 @@ export const _RecentTransaction = () => {
               onSelectTransaction={onSelectTransaction}
               selectedNetwork={mockNetworks[0]}
               selectedAccount={mockedTransactionAccounts[0]}
-              visibleTokens={mockNewAssetOptions}
-              transactionSpotPrices={[{ assetTimeframeChange: '', fromAsset: 'ETH', toAsset: 'USD', price: '2500' }]}
               transactions={transactionList}
             />
           </ScrollContainer>

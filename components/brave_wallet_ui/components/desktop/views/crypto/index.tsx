@@ -45,7 +45,6 @@ export interface Props {
   onOpenWalletSettings: () => void
   defaultCurrencies: DefaultCurrencies
   hasImportError: boolean
-  transactionSpotPrices: BraveWallet.AssetPrice[]
   privateKey: string
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   needsBackup: boolean
@@ -90,7 +89,6 @@ const CryptoView = (props: Props) => {
     defaultWallet,
     hasImportError,
     userVisibleTokensInfo,
-    transactionSpotPrices,
     privateKey,
     selectedNetwork,
     needsBackup,
@@ -264,7 +262,6 @@ const CryptoView = (props: Props) => {
           selectedAccount={selectedAccount}
           privateKey={privateKey}
           transactions={transactions}
-          transactionSpotPrices={transactionSpotPrices}
           userVisibleTokensInfo={userVisibleTokensInfo}
           networkList={networkList}
         />

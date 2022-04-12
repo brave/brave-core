@@ -32,11 +32,9 @@ export const usePendingTransactions = () => {
     selectedNetwork,
     selectedPendingTransaction: transactionInfo,
     userVisibleTokensInfo: visibleTokens,
-    transactionSpotPrices,
     gasEstimates,
     fullTokenList,
     pendingTransactions,
-    solFeeEstimates,
     defaultNetworks
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
   const transactionGasEstimates = transactionInfo?.txDataUnion.ethTxData1559?.gasEstimation
@@ -50,15 +48,8 @@ export const usePendingTransactions = () => {
 
   // custom hooks
   const { getBlockchainTokenInfo, getERC20Allowance } = useLib()
-  const parseTransaction = useTransactionParser(
-    transactionsNetwork,
-    accounts,
-    transactionSpotPrices,
-    visibleTokens,
-    fullTokenList,
-    solFeeEstimates
-  )
-  const { findAssetPrice } = usePricing(transactionSpotPrices)
+  const parseTransaction = useTransactionParser(transactionsNetwork)
+  const { findAssetPrice } = usePricing(transactionsNetwork)
   const {
     onFindTokenInfoByContractAddress,
     foundTokenInfoByContractAddress
@@ -200,7 +191,7 @@ export const usePendingTransactions = () => {
         .format()
       setCurrentTokenAllowance(allowance)
     }).catch(e => console.error(e))
-  }, [])
+  }, [transactionInfo, transactionDetails])
 
   React.useEffect(() => {
     if (
@@ -209,7 +200,7 @@ export const usePendingTransactions = () => {
     ) {
       onFindTokenInfoByContractAddress(transactionDetails.recipient)
     }
-  }, [])
+  }, [transactionDetails, transactionInfo, onFindTokenInfoByContractAddress])
 
   return {
     AssetIconWithPlaceholder,

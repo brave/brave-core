@@ -19,7 +19,7 @@ import Amount from '../../../utils/amount'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 
 // Hooks
-import { useExplorer, useTransactionParser } from '../../../common/hooks'
+import { useExplorer, useParsedTransactionInfo } from '../../../common/hooks'
 import { SwapExchangeProxy } from '../../../common/hooks/address-labels'
 import { useTransactionsNetwork } from '../../../common/hooks/use-transactions-network'
 
@@ -73,7 +73,6 @@ const PortfolioTransactionItem = (props: Props) => {
   // redux
   const dispatch = useDispatch()
   const {
-    transactionSpotPrices,
     defaultCurrencies,
     userVisibleTokensInfo
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
@@ -87,9 +86,9 @@ const PortfolioTransactionItem = (props: Props) => {
     transaction.txType === BraveWallet.TransactionType.SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
 
   // custom hooks
+  const transactionDetails = useParsedTransactionInfo(transaction)
   const transactionsNetwork = useTransactionsNetwork(transaction)
   const onClickViewOnBlockExplorer = useExplorer(transactionsNetwork)
-  const parseTransaction = useTransactionParser(transactionsNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
 
   // methods
   const onShowTransactionPopup = () => setShowTransactionPopup(true)
@@ -167,11 +166,6 @@ const PortfolioTransactionItem = (props: Props) => {
   }, [onSelectAsset, findToken])
 
   // memos
-  const transactionDetails = React.useMemo(
-    () => parseTransaction(transaction),
-    [transaction, parseTransaction]
-  )
-
   const fromOrb = React.useMemo(() => {
     return EthereumBlockies.create({ seed: transactionDetails.sender.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [transactionDetails.sender])

@@ -20,8 +20,6 @@ export interface Props {
   selectedAccount: WalletAccountType
   transactions: AccountTransactions
   accounts: WalletAccountType[]
-  visibleTokens: BraveWallet.BlockchainToken[]
-  transactionSpotPrices: BraveWallet.AssetPrice[]
   defaultCurrencies: DefaultCurrencies
   onSelectTransaction: (transaction: BraveWallet.TransactionInfo) => void
 }
@@ -30,8 +28,6 @@ const TransactionsPanel = (props: Props) => {
   const {
     transactions,
     selectedNetwork,
-    visibleTokens,
-    transactionSpotPrices,
     accounts,
     defaultCurrencies,
     selectedAccount,
@@ -61,8 +57,6 @@ const TransactionsPanel = (props: Props) => {
           accounts={accounts}
           transaction={transaction}
           account={findAccount(transaction.fromAddress)}
-          transactionSpotPrices={transactionSpotPrices}
-          visibleTokens={visibleTokens}
         />
       )}
     </StyledWrapper>

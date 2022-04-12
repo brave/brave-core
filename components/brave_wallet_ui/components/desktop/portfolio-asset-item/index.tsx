@@ -32,7 +32,6 @@ import { usePricing } from '../../../common/hooks'
 import { unbiasedRandom } from '../../../utils/random-utils'
 
 interface Props {
-  spotPrices: BraveWallet.AssetPrice[]
   action?: () => void
   assetBalance: string
   token: BraveWallet.BlockchainToken
@@ -44,7 +43,6 @@ interface Props {
 
 const PortfolioAssetItem = (props: Props) => {
   const {
-    spotPrices,
     assetBalance,
     action,
     token,
@@ -68,7 +66,7 @@ const PortfolioAssetItem = (props: Props) => {
       .divideByDecimals(token.decimals)
       .formatAsAsset(6, token.symbol)
 
-  const { computeFiatAmount } = usePricing(spotPrices)
+  const { computeFiatAmount } = usePricing()
   const fiatBalance = React.useMemo(() => {
     return computeFiatAmount(assetBalance, token.symbol, token.decimals)
   }, [computeFiatAmount, assetBalance, token])

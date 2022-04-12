@@ -39,7 +39,6 @@ export interface Props {
   needsBackup: boolean
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   privateKey: string
-  transactionSpotPrices: BraveWallet.AssetPrice[]
   hasImportError: boolean
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
@@ -67,7 +66,6 @@ const CryptoStoryView = (props: Props) => {
     defaultCurrencies,
     hasImportError,
     userVisibleTokensInfo,
-    transactionSpotPrices,
     privateKey,
     selectedNetwork,
     needsBackup,
@@ -249,7 +247,6 @@ const CryptoStoryView = (props: Props) => {
           onSelectAccount={onSelectAccount}
           privateKey={privateKey}
           transactions={transactions}
-          transactionSpotPrices={transactionSpotPrices}
           userVisibleTokensInfo={userVisibleTokensInfo}
           selectedAccount={selectedAccount}
           networkList={networkList}

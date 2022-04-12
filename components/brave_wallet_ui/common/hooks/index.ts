@@ -7,7 +7,12 @@ import useSwap from './swap'
 import useAssets from './assets'
 import useBalance from './balance'
 import useSend from './send'
-import { useTransactionParser, useTransactionFeesParser } from './transaction-parser'
+import {
+  useTransactionParser,
+  useTransactionFeesParser,
+  useParsedTransactionInfo,
+  useParsedTransactionFees
+} from './transaction-parser'
 import useAddressLabels from './address-labels'
 import usePricing from './pricing'
 import usePreset from './select-preset'
@@ -17,17 +22,19 @@ import useAssetManagement from './assets-management'
 import { useLib } from './useLib'
 
 export {
-  useAssets,
-  useSwap,
-  useBalance,
-  useTransactionParser,
-  useTransactionFeesParser,
-  usePricing,
   useAddressLabels,
-  useSend,
-  usePreset,
-  useTokenInfo,
-  useExplorer,
   useAssetManagement,
-  useLib
+  useAssets,
+  useBalance,
+  useExplorer,
+  useLib,
+  useParsedTransactionFees,
+  useParsedTransactionInfo,
+  usePreset,
+  usePricing,
+  useSend,
+  useSwap,
+  useTokenInfo,
+  useTransactionFeesParser,
+  useTransactionParser
 }

@@ -32,7 +32,6 @@ import {
 import { TransactionPopupItem } from '../transaction-popup'
 
 export interface Props {
-  spotPrices: BraveWallet.AssetPrice[]
   defaultCurrencies: DefaultCurrencies
   address: string
   assetBalance: string
@@ -52,8 +51,7 @@ const PortfolioAccountItem = (props: Props) => {
     assetDecimals,
     selectedNetwork,
     defaultCurrencies,
-    hideBalances,
-    spotPrices
+    hideBalances
   } = props
   const [showAccountPopup, setShowAccountPopup] = React.useState<boolean>(false)
   const onCopyToClipboard = async () => {
@@ -70,7 +68,7 @@ const PortfolioAccountItem = (props: Props) => {
     .divideByDecimals(assetDecimals)
     .format(6, true)
 
-  const { computeFiatAmount } = usePricing(spotPrices)
+  const { computeFiatAmount } = usePricing()
   const fiatBalance = React.useMemo(() => {
     return computeFiatAmount(assetBalance, assetTicker, assetDecimals)
   }, [computeFiatAmount, assetDecimals, assetBalance, assetTicker])

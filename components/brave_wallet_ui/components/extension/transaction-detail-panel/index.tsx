@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import * as EthereumBlockies from 'ethereum-blockies'
 
 // Hooks
-import { useExplorer, useTransactionParser } from '../../../common/hooks'
+import { useExplorer, useParsedTransactionInfo } from '../../../common/hooks'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
@@ -54,8 +54,6 @@ export interface Props {
   transaction: BraveWallet.TransactionInfo
   selectedNetwork: BraveWallet.NetworkInfo
   accounts: WalletAccountType[]
-  visibleTokens: BraveWallet.BlockchainToken[]
-  transactionSpotPrices: BraveWallet.AssetPrice[]
   defaultCurrencies: DefaultCurrencies
   onBack: () => void
   onRetryTransaction: (transaction: BraveWallet.TransactionInfo) => void
@@ -69,8 +67,6 @@ const TransactionDetailPanel = (props: Props) => {
     transaction,
     selectedNetwork,
     accounts,
-    visibleTokens,
-    transactionSpotPrices,
     defaultCurrencies,
     onBack,
     onRetryTransaction,
@@ -99,11 +95,7 @@ const TransactionDetailPanel = (props: Props) => {
     return transactionsList.find(tx => tx.id === transaction.id) ?? transaction
   }, [transaction, transactionsList])
 
-  const parseTransaction = useTransactionParser(transactionsNetwork, accounts, transactionSpotPrices, visibleTokens)
-  const transactionDetails = React.useMemo(
-    () => parseTransaction(liveTransaction),
-    [liveTransaction]
-  )
+  const transactionDetails = useParsedTransactionInfo(liveTransaction, transactionsNetwork)
 
   const fromOrb = React.useMemo(() => {
     return EthereumBlockies.create({ seed: transactionDetails.sender.toLowerCase(), size: 8, scale: 16 }).toDataURL()

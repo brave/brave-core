@@ -100,12 +100,10 @@ function Container (props: Props) {
     hasInitialized,
     isWalletCreated,
     networkList,
-    transactionSpotPrices,
     connectedAccounts,
     activeOrigin,
     defaultCurrencies,
     transactions,
-    userVisibleTokensInfo,
     defaultAccounts
   } = props.wallet
 
@@ -834,8 +832,6 @@ function Container (props: Props) {
             defaultCurrencies={defaultCurrencies}
             selectedNetwork={selectedNetwork}
             transaction={selectedTransaction}
-            transactionSpotPrices={transactionSpotPrices}
-            visibleTokens={userVisibleTokensInfo}
           />
         </SelectContainer>
       </PanelWrapper>
@@ -858,8 +854,6 @@ function Container (props: Props) {
                 onSelectTransaction={onSelectTransaction}
                 selectedNetwork={selectedNetwork}
                 selectedAccount={selectedAccount}
-                visibleTokens={userVisibleTokensInfo}
-                transactionSpotPrices={transactionSpotPrices}
                 transactions={transactions}
               />
             </ScrollContainer>
@@ -883,7 +877,6 @@ function Container (props: Props) {
                 defaultCurrencies={defaultCurrencies}
                 selectedAccount={selectedAccount}
                 userAssetList={panelUserAssetList}
-                spotPrices={transactionSpotPrices}
                 networkList={networkList}
                 onAddAsset={onAddAsset}
               />
@@ -923,7 +916,6 @@ function Container (props: Props) {
     <PanelWrapper isLonger={false}>
       <ConnectedPanel
         defaultCurrencies={defaultCurrencies}
-        spotPrices={transactionSpotPrices}
         selectedAccount={selectedAccount}
         selectedNetwork={getNetworkInfo(selectedNetwork.chainId, networkList)}
         isConnected={isConnectedToSite}

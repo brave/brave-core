@@ -1,16 +1,16 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+* This Source Code Form is subject to the terms of the Mozilla Public
+* License, v. 2.0. If a copy of the MPL was not distributed with this file,
+* You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 
 // Constants
 import {
   BraveWallet,
-  SolFeeEstimates,
   TimeDelta,
-  WalletAccountType
+  WalletState
 } from '../../constants/types'
 import { MAX_UINT256 } from '../constants/magics'
 
@@ -24,7 +24,7 @@ import useAddressLabels, { SwapExchangeProxy } from './address-labels'
 import useBalance from './balance'
 
 // Options
-import { makeNetworkAsset } from '../../options/asset-options'
+import { useSelectedNetworkNativeAsset } from './useSelectedNetworkNativeAsset'
 
 interface ParsedTransactionFees {
   gasLimit: string
@@ -73,26 +73,60 @@ export interface ParsedTransaction extends ParsedTransactionFees {
   minBuyAmount?: string
 }
 
-export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkInfo, networkSpotPrice: string, solFeeEstimates?: SolFeeEstimates) {
-  /**
-   * Checks if a given gasLimit is empty or zero-value, and returns an
-   * appropriate localized error string.
-   *
-   * @remarks
-   *
-   * This function may only be used on ALL transaction types.
-   *
-   * @param gasLimit - The parsed gasLimit string.
-   * @returns Localized string describing the error, or undefined in case of
-   * no error.
-   */
-  const checkForMissingGasLimitError = React.useCallback((gasLimit: string): string | undefined => {
-    return (gasLimit === '' || Amount.normalize(gasLimit) === '0')
-      ? getLocale('braveWalletMissingGasLimitError')
-      : undefined
-  }, [])
+/**
+ * Checks if a given gasLimit is empty or zero-value, and returns an
+ * appropriate localized error string.
+ *
+ * @remarks
+ *
+ * This function may only be used on ALL transaction types.
+ *
+ * @param gasLimit - The parsed gasLimit string.
+ * @returns Localized string describing the error, or undefined in case of
+ * no error.
+ */
+const checkForMissingGasLimitError = (gasLimit: string): string | undefined => {
+  return (gasLimit === '' || Amount.normalize(gasLimit) === '0')
+    ? getLocale('braveWalletMissingGasLimitError')
+    : undefined
+}
 
-  return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransactionFees => {
+/**
+ * Checks if a given set of sender and recipient addresses are the
+ * same.
+ *
+ * @remarks
+ *
+ * This function must only be used for the following transaction types:
+ *  - ERC20Transfer
+ *  - ERC721TransferFrom
+ *  - ERC721SafeTransferFrom
+ *  - ERC20Approve
+ *  - ETHSend
+ *
+ * @param to - The recipient address
+ * @param from - The sender address
+ */
+const checkForSameAddressError = (to: string, from: string): string | undefined => {
+  return to.toLowerCase() === from.toLowerCase()
+    ? getLocale('braveWalletSameAddressError')
+    : undefined
+}
+
+export const useTransactionFeesParser = (
+  transactionNetwork?: BraveWallet.NetworkInfo
+) => {
+  // redux
+  const {
+    selectedNetwork: reduxSelectedNetwork,
+    solFeeEstimates
+  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const selectedNetwork = transactionNetwork || reduxSelectedNetwork
+
+  // custom hooks
+  const { networkAssetSpotPrice } = usePricing(selectedNetwork)
+
+  const transactionFeesParser = React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransactionFees => {
     const { txDataUnion: { ethTxData1559: txData }, txType } = transactionInfo
     const isSolTransaction =
       txType === BraveWallet.TransactionType.SolanaSystemTransfer ||
@@ -121,35 +155,31 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkIn
       gasFee,
       gasFeeFiat: new Amount(gasFee)
         .divideByDecimals(selectedNetwork.decimals)
-        .times(networkSpotPrice)
+        .times(networkAssetSpotPrice)
         .formatAsFiat(),
       isEIP1559Transaction,
       missingGasLimitError: isSolTransaction ? undefined : checkForMissingGasLimitError(gasLimit)
     }
-  }, [selectedNetwork, networkSpotPrice])
+  }, [solFeeEstimates, selectedNetwork, networkAssetSpotPrice, checkForMissingGasLimitError])
+
+  return transactionFeesParser
 }
 
-export function useTransactionParser (
-  selectedNetwork: BraveWallet.NetworkInfo,
-  accounts: WalletAccountType[],
-  spotPrices: BraveWallet.AssetPrice[],
-  visibleTokens: BraveWallet.BlockchainToken[],
-  fullTokenList?: BraveWallet.BlockchainToken[],
-  solFeeEstimates?: SolFeeEstimates
-) {
-  const nativeAsset = React.useMemo(
-    () => makeNetworkAsset(selectedNetwork),
-    [selectedNetwork]
-  )
-  const { findAssetPrice, computeFiatAmount } = usePricing(spotPrices)
+export const useTransactionParser = (
+  transactionNetwork?: BraveWallet.NetworkInfo
+) => {
+  // redux
+  const reduxSelectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
+  const fullTokenList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.fullTokenList)
+  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
+  const visibleTokens = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
+  const selectedNetwork = transactionNetwork || reduxSelectedNetwork
+
+  const nativeAsset = useSelectedNetworkNativeAsset()
+  const { findAssetPrice, computeFiatAmount, networkAssetSpotPrice } = usePricing(selectedNetwork)
   const getBalance = useBalance([selectedNetwork])
   const getAddressLabel = useAddressLabels(accounts)
-
-  const networkSpotPrice = React.useMemo(
-    () => findAssetPrice(selectedNetwork.symbol),
-    [selectedNetwork, findAssetPrice]
-  )
-  const parseTransactionFees = useTransactionFeesParser(selectedNetwork, networkSpotPrice, solFeeEstimates)
+  const parseTransactionFees = useTransactionFeesParser(selectedNetwork)
 
   const findToken = React.useCallback((contractAddress: string) => {
     const checkVisibleList = visibleTokens.find((token) => token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
@@ -171,35 +201,13 @@ export function useTransactionParser (
    * @returns Localized string describing the error, or undefined in case of
    * no error.
    */
-  const checkForContractAddressError = (to: string): string | undefined => {
+  const checkForContractAddressError = React.useCallback((to: string): string | undefined => {
     return fullTokenList?.some(token => token.contractAddress.toLowerCase() === to.toLowerCase())
       ? getLocale('braveWalletContractAddressError')
       : undefined
-  }
+  }, [fullTokenList])
 
-  /**
-   * Checks if a given set of sender and recipient addresses are the
-   * same.
-   *
-   * @remarks
-   *
-   * This function must only be used for the following transaction types:
-   *  - ERC20Transfer
-   *  - ERC721TransferFrom
-   *  - ERC721SafeTransferFrom
-   *  - ERC20Approve
-   *  - ETHSend
-   *
-   * @param to - The recipient address
-   * @param from - The sender address
-   */
-  const checkForSameAddressError = (to: string, from: string): string | undefined => {
-    return to.toLowerCase() === from.toLowerCase()
-      ? getLocale('braveWalletSameAddressError')
-      : undefined
-  }
-
-  return React.useCallback((transactionInfo: BraveWallet.TransactionInfo) => {
+  const transactionParser = React.useCallback((transactionInfo: BraveWallet.TransactionInfo) => {
     const { txArgs, txDataUnion: { ethTxData1559: txData, solanaTxData: solTxData }, fromAddress, txType } = transactionInfo
     const isSPLTransaction =
       txType === BraveWallet.TransactionType.SolanaSPLTokenTransfer ||
@@ -252,7 +260,7 @@ export function useTransactionParser (
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
-            .div(networkSpotPrice)
+            .div(networkAssetSpotPrice)
             .formatAsAsset(6, selectedNetwork.symbol),
           value: new Amount(amount)
             .divideByDecimals(token?.decimals ?? 18)
@@ -297,7 +305,7 @@ export function useTransactionParser (
           fiatValue: Amount.zero(), // Display NFT values in the future
           fiatTotal: new Amount(totalAmountFiat),
           formattedNativeCurrencyTotal: totalAmountFiat && new Amount(totalAmountFiat)
-            .div(networkSpotPrice)
+            .div(networkAssetSpotPrice)
             .formatAsAsset(6, selectedNetwork.symbol),
           value: '1', // Can only send 1 erc721 at a time
           valueExact: '1',
@@ -382,7 +390,7 @@ export function useTransactionParser (
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
-            .div(networkSpotPrice)
+            .div(networkAssetSpotPrice)
             .formatAsAsset(6, selectedNetwork.symbol),
           value: new Amount(value)
             .divideByDecimals(token?.decimals ?? 9)
@@ -451,7 +459,7 @@ export function useTransactionParser (
           fiatValue: sellAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sellAmountFiat
-            .div(networkSpotPrice)
+            .div(networkAssetSpotPrice)
             .formatAsAsset(6, selectedNetwork.symbol),
           value: sellAmountBN.format(6),
           valueExact: sellAmountBN.format(),
@@ -495,7 +503,7 @@ export function useTransactionParser (
           fiatValue: sendAmountFiat,
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: sendAmountFiat
-            .div(networkSpotPrice)
+            .div(networkAssetSpotPrice)
             .formatAsAsset(6, selectedNetwork.symbol),
           value: new Amount(value)
             .divideByDecimals(selectedNetwork.decimals)
@@ -513,5 +521,47 @@ export function useTransactionParser (
         } as ParsedTransaction
       }
     }
-  }, [selectedNetwork, accounts, spotPrices, findToken])
+  }, [
+    selectedNetwork,
+    accounts,
+    findToken,
+    getBalance,
+    nativeAsset,
+    parseTransactionFees,
+    getAddressLabel,
+    networkAssetSpotPrice,
+    checkForContractAddressError,
+    findAssetPrice,
+    computeFiatAmount
+  ])
+
+  return transactionParser
+}
+
+export const useParsedTransactionFees = (
+  transaction: BraveWallet.TransactionInfo,
+  transactionNetwork?: BraveWallet.NetworkInfo
+) => {
+  const parseTransactionFees = useTransactionFeesParser(transactionNetwork)
+
+  const transactionFees = React.useMemo(
+    () => parseTransactionFees(transaction),
+    [parseTransactionFees, transaction]
+  )
+
+  return transactionFees
+}
+
+export const useParsedTransactionInfo = (
+  transaction: BraveWallet.TransactionInfo,
+  transactionNetwork?: BraveWallet.NetworkInfo
+) => {
+  const parseTransaction = useTransactionParser(transactionNetwork)
+
+  const transactionDetails = React.useMemo(
+    () => parseTransaction(transaction),
+    [parseTransaction, transaction]
+  )
+
+  return transactionDetails
 }

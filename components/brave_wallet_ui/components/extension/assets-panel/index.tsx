@@ -18,7 +18,6 @@ import { PortfolioAssetItem } from '../../desktop'
 import { useBalance } from '../../../common/hooks'
 
 export interface Props {
-  spotPrices: BraveWallet.AssetPrice[]
   userAssetList: BraveWallet.BlockchainToken[]
   defaultCurrencies: DefaultCurrencies
   networkList: BraveWallet.NetworkInfo[]
@@ -29,7 +28,6 @@ export interface Props {
 const AssetsPanel = (props: Props) => {
   const {
     userAssetList,
-    spotPrices,
     defaultCurrencies,
     selectedAccount,
     networkList,
@@ -56,7 +54,6 @@ const AssetsPanel = (props: Props) => {
       </AddAssetButton>
       {userAssetList?.map((asset) =>
         <PortfolioAssetItem
-          spotPrices={spotPrices}
           defaultCurrencies={defaultCurrencies}
           action={onClickAsset(asset.symbol)}
           key={asset.contractAddress}

@@ -29,7 +29,6 @@ import {
 
 export interface Props {
   filteredAssetList: UserAssetInfoType[]
-  tokenPrices: BraveWallet.AssetPrice[]
   defaultCurrencies: DefaultCurrencies
   userAssetList: UserAssetInfoType[]
   hideBalances: boolean
@@ -42,7 +41,6 @@ export interface Props {
 const TokenLists = (props: Props) => {
   const {
     filteredAssetList,
-    tokenPrices,
     defaultCurrencies,
     userAssetList,
     hideBalances,
@@ -80,7 +78,6 @@ const TokenLists = (props: Props) => {
       </FilterTokenRow>
       {filteredAssetList.filter((asset) => !asset.asset.isErc721).map((item) =>
         <PortfolioAssetItem
-          spotPrices={tokenPrices}
           defaultCurrencies={defaultCurrencies}
           action={onSelectAsset(item.asset)}
           key={`${item.asset.contractAddress}-${item.asset.symbol}-${item.asset.chainId}`}
@@ -97,7 +94,6 @@ const TokenLists = (props: Props) => {
           <SubDivider />
           {erc721TokenList.map((item) =>
             <PortfolioAssetItem
-              spotPrices={tokenPrices}
               defaultCurrencies={defaultCurrencies}
               action={onSelectAsset(item.asset)}
               key={`${item.asset.contractAddress}-${item.asset.tokenId}-${item.asset.chainId}`}

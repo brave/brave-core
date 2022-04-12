@@ -26,7 +26,6 @@ import { MAX_UINT256, NATIVE_ASSET_CONTRACT_ADDRESS_0X } from '../constants/magi
 // Options
 import { SlippagePresetOptions } from '../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../options/expiration-preset-options'
-import { makeNetworkAsset } from '../../options/asset-options'
 
 // Utils
 import Amount from '../../utils/amount'
@@ -41,6 +40,7 @@ import useBalance from './balance'
 import usePreset from './select-preset'
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
+import { useSelectedNetworkNativeAsset } from './useSelectedNetworkNativeAsset'
 
 const SWAP_VALIDATION_ERROR_CODE = 100
 interface Args {
@@ -113,7 +113,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
   const { getIsSwapSupported, getERC20Allowance } = useLib()
 
   // memos
-  const nativeAsset = React.useMemo(() => makeNetworkAsset(selectedNetwork), [selectedNetwork])
+  const nativeAsset = useSelectedNetworkNativeAsset()
   const fromAssetBalance = getBalance(selectedAccount, fromAsset)
   const nativeAssetBalance = getBalance(selectedAccount, nativeAsset)
   const toAssetBalance = getBalance(selectedAccount, toAsset)
@@ -242,8 +242,7 @@ export default function useSwap ({ fromAsset: fromAssetProp, toAsset: toAssetPro
       option.chainId === token.chainId &&
       option.contractAddress.toLowerCase() === token.contractAddress.toLowerCase()
     ),
-    [swapAssetOptions]
-  )
+  [swapAssetOptions])
 
   const setToAssetAndMakeVisible = React.useCallback((token?: BraveWallet.BlockchainToken) => {
     setToAsset(token)

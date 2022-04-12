@@ -99,7 +99,6 @@ const Portfolio = (props: Props) => {
     networkList,
     transactions,
     isFetchingPortfolioPriceHistory,
-    transactionSpotPrices,
     fullTokenList,
     selectedNetworkFilter
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
@@ -116,7 +115,7 @@ const Portfolio = (props: Props) => {
   // custom hooks
   const { getBlockchainTokenInfo } = useLib()
   const getAccountBalance = useBalance(networkList)
-  const { computeFiatAmount } = usePricing(transactionSpotPrices)
+  const { computeFiatAmount } = usePricing()
   const {
     onFindTokenInfoByContractAddress,
     foundTokenInfoByContractAddress
@@ -203,10 +202,9 @@ const Portfolio = (props: Props) => {
   }, [selectedNetwork, selectedAsset, networkList])
 
   // more custom hooks
-  const parseTransaction = useTransactionParser(selectedAssetsNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
+  const parseTransaction = useTransactionParser(selectedAssetsNetwork)
 
   // memos / computed
-
   const formattedPriceHistory = React.useMemo(() => {
     return selectedAssetPriceHistory.map((obj) => {
       return {
@@ -269,7 +267,7 @@ const Portfolio = (props: Props) => {
         fullAssetBalances.asset.decimals
       )
     : Amount.empty(),
-    [fullAssetBalances]
+    [fullAssetBalances, computeFiatAmount]
   )
 
   // methods
@@ -447,7 +445,6 @@ const Portfolio = (props: Props) => {
           defaultCurrencies={defaultCurrencies}
           userAssetList={userAssetList}
           filteredAssetList={filteredAssetList}
-          tokenPrices={transactionSpotPrices}
           networks={networkList}
           onSetFilteredAssetList={setfilteredAssetList}
           onSelectAsset={onSelectAsset}

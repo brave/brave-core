@@ -45,7 +45,6 @@ import { create, background } from 'ethereum-blockies'
 import { getLocale } from '../../../../common/locale'
 
 export interface Props {
-  spotPrices: BraveWallet.AssetPrice[]
   selectedAccount: WalletAccountType
   selectedNetwork: BraveWallet.NetworkInfo
   isConnected: boolean
@@ -59,7 +58,6 @@ export interface Props {
 
 const ConnectedPanel = (props: Props) => {
   const {
-    spotPrices,
     onLockWallet,
     onOpenSettings,
     isConnected,
@@ -114,7 +112,7 @@ const ConnectedPanel = (props: Props) => {
     .divideByDecimals(selectedNetwork.decimals)
     .formatAsAsset(6, selectedNetwork.symbol)
 
-  const { computeFiatAmount } = usePricing(spotPrices)
+  const { computeFiatAmount } = usePricing()
 
   const selectedAccountFiatBalance = React.useMemo(() => computeFiatAmount(
     selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId], selectedNetwork.symbol, selectedNetwork.decimals

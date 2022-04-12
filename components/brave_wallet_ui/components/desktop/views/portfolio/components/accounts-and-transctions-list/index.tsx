@@ -60,7 +60,6 @@ const AccountsAndTransactionsList = (props: Props) => {
 
   // redux
   const {
-    transactionSpotPrices,
     accounts,
     defaultCurrencies,
     selectedNetwork
@@ -114,7 +113,6 @@ const AccountsAndTransactionsList = (props: Props) => {
           <SubDivider />
           {accountsList.map((account) =>
             <PortfolioAccountItem
-              spotPrices={transactionSpotPrices}
               defaultCurrencies={defaultCurrencies}
               key={account.address}
               assetTicker={selectedAsset.symbol}

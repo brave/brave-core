@@ -12,34 +12,28 @@ import {
   WalletState
 } from '../../constants/types'
 
-// Options
-import { makeNetworkAsset } from '../../options/asset-options'
-
 // Hooks
 import usePricing from './pricing'
 import useBalance from './balance'
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
+import { useSelectedNetworkNativeAsset } from './useSelectedNetworkNativeAsset'
 
-export function useAssets () {
+export const useAssets = () => {
   // redux
   const {
     selectedAccount,
     networkList,
     selectedNetwork,
-    userVisibleTokensInfo,
-    transactionSpotPrices: spotPrices
+    userVisibleTokensInfo
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
   const isMounted = useIsMounted()
   const { getBuyAssets } = useLib()
 
-  const { computeFiatAmount } = usePricing(spotPrices)
+  const { computeFiatAmount } = usePricing()
   const getBalance = useBalance(networkList)
-  const nativeAsset = React.useMemo(
-    () => makeNetworkAsset(selectedNetwork),
-    [selectedNetwork]
-  )
+  const nativeAsset = useSelectedNetworkNativeAsset()
 
   const assetsByNetwork = React.useMemo(() => {
     if (!userVisibleTokensInfo) {

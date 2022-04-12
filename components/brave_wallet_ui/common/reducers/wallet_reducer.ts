@@ -188,7 +188,7 @@ export const createWalletReducer = (initialState: WalletState) => {
     let accounts: WalletAccountType[] = [...state.accounts]
 
     accounts.forEach((account, accountIndex) => {
-      payload.balances[accountIndex].forEach((info, tokenIndex) => {
+      payload.balances[accountIndex]?.forEach((info, tokenIndex) => {
         if (info.error === BraveWallet.ProviderError.kSuccess) {
           accounts[accountIndex].nativeBalanceRegistry[info.chainId] = Amount.normalize(info.balance)
         }

@@ -68,7 +68,6 @@ function Container (props: Props) {
     selectedNetwork,
     selectedAccount,
     hasInitialized,
-    transactionSpotPrices,
     defaultWallet,
     isMetaMaskInstalled,
     defaultCurrencies,
@@ -393,7 +392,6 @@ function Container (props: Props) {
                 onSetImportError={onSetImportAccountError}
                 hasImportError={importAccountError}
                 onAddHardwareAccounts={onAddHardwareAccounts}
-                transactionSpotPrices={transactionSpotPrices}
                 userVisibleTokensInfo={userVisibleTokensInfo}
                 getBalance={getBalance}
                 defaultWallet={defaultWallet}

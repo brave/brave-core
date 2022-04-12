@@ -10,7 +10,7 @@ import { NavButton, Panel } from '../'
 import Amount from '../../../utils/amount'
 
 // Hooks
-import { useTransactionFeesParser } from '../../../common/hooks'
+import { useParsedTransactionFees } from '../../../common/hooks'
 
 // Styled Components
 import {
@@ -66,8 +66,7 @@ const EditGas = (props: Props) => {
     setSuggestedSliderStep,
     setMaxPriorityPanel
   } = props
-  const parseTransactionFees = useTransactionFeesParser(selectedNetwork, networkSpotPrice)
-  const transactionFees = parseTransactionFees(transactionInfo)
+  const transactionFees = useParsedTransactionFees(transactionInfo)
   const { isEIP1559Transaction } = transactionFees
 
   const [suggestedMaxPriorityFee, setSuggestedMaxPriorityFee] = React.useState<string>(suggestedMaxPriorityFeeChoices[1])
