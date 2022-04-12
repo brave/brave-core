@@ -576,6 +576,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         if (mImageCreditLayout != null) {
             LinearLayout.LayoutParams linearLayoutParams =
                     (LinearLayout.LayoutParams) mImageCreditLayout.getLayoutParams();
+
             int imageCreditCorrection =
                     NTPUtil.correctImageCreditLayoutTopPosition(mNtpImageGlobal, mSiteSectionView.getHeight());
 
@@ -1058,6 +1059,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                             } else {
                                                 
                                                 int pxHeight = ConfigurationUtils.getDisplayMetrics(mActivity).get("height");
+
                                                 int margin = pxHeight - dpToPx(getContext(), 195/*219*/);
                                                 mParentScrollView.smoothScrollTo(0, margin);
                                             }
