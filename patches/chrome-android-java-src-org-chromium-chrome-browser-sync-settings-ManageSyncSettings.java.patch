@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 7fc321fee2787463c58b52c3bdbe97992dc08693..ed9d775c828b9b26edce45e667989ebef6bb1d4d 100644
+index fdf3a2ea317e93e259fe26e686358cb22686f8ea..1f115ed5a297b4809d1f385a371fea27520adf06 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -24,7 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +11,7 @@ index 7fc321fee2787463c58b52c3bdbe97992dc08693..ed9d775c828b9b26edce45e667989ebe
  import androidx.preference.Preference;
  import androidx.preference.PreferenceCategory;
  import androidx.preference.PreferenceFragmentCompat;
-@@ -374,7 +374,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
+@@ -373,7 +373,7 @@ public class ManageSyncSettings extends PreferenceFragmentCompat
                  IdentityServicesProvider.get()
                          .getIdentityManager(Profile.getLastUsedRegularProfile())
                          .getPrimaryAccountInfo(ConsentLevel.SYNC));

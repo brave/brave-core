@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 68de25a45f9756c78dd185f650dcec59e61cf62f..d6ecf755cc0e13aeea270bec8cdf64f47b347117 100644
+index 9b43c518db2156ba3241ce9704f2e1c27c006f8e..202f93d7216b45236ca7cc5191c4eca2bd01a890 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -270,6 +270,7 @@ android_resources("chrome_app_java_resources") {
@@ -10,7 +10,7 @@ index 68de25a45f9756c78dd185f650dcec59e61cf62f..d6ecf755cc0e13aeea270bec8cdf64f4
  }
  
  if (enable_vr) {
-@@ -652,6 +653,7 @@ android_library("chrome_java") {
+@@ -653,6 +654,7 @@ android_library("chrome_java") {
    ]
  
    deps += feed_deps
@@ -42,7 +42,7 @@ index 68de25a45f9756c78dd185f650dcec59e61cf62f..d6ecf755cc0e13aeea270bec8cdf64f4
  }
  
  action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -2242,6 +2247,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2238,6 +2243,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -50,7 +50,7 @@ index 68de25a45f9756c78dd185f650dcec59e61cf62f..d6ecf755cc0e13aeea270bec8cdf64f4
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
          if (webview_includes_weblayer && !_is_bundle_module) {
-@@ -2506,6 +2512,7 @@ template("chrome_public_apk_or_module_tmpl") {
+@@ -2496,6 +2502,7 @@ template("chrome_public_apk_or_module_tmpl") {
      load_library_from_apk = chromium_linker_supported
  
      version_name = chrome_version_name
@@ -58,7 +58,7 @@ index 68de25a45f9756c78dd185f650dcec59e61cf62f..d6ecf755cc0e13aeea270bec8cdf64f4
    }
  }
  
-@@ -2647,6 +2654,7 @@ android_library("base_module_java") {
+@@ -2636,6 +2643,7 @@ android_library("base_module_java") {
      "//components/payments/content/android:service_java",
      "//third_party/androidx:androidx_browser_browser_java",
    ]
@@ -66,7 +66,7 @@ index 68de25a45f9756c78dd185f650dcec59e61cf62f..d6ecf755cc0e13aeea270bec8cdf64f4
  
    # More deps for DFMs.
    if (dfmify_dev_ui) {
-@@ -2797,6 +2805,7 @@ template("monochrome_public_apk_or_module_tmpl") {
+@@ -2786,6 +2794,7 @@ template("monochrome_public_apk_or_module_tmpl") {
          deps += [ "//weblayer/browser/java:upstream_java" ]
        }
      }
