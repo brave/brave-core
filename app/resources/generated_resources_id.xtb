@@ -1381,7 +1381,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="2327492829706409234">Aktifkan aplikasi</translation>
 <translation id="2327920026543055248">Masukkan karakter <ph name="CHARACTER"/> dari <ph name="TOTAL"/></translation>
 <translation id="2328561734797404498">Mulai ulang perangkat Anda untuk menggunakan <ph name="APP_NAME"/>.</translation>
-<translation id="6304377454418270508">Jika Anda menggunakan mode Samaran, situs hanya dapat menggunakan cookie untuk melihat aktivitas penjelajahan Anda di situsnya. Cookie akan dihapus pada akhir sesi Samaran.</translation>
 <translation id="2329597144923131178">Login untuk mendapatkan bookmark, histori, sandi, dan setelan Anda lainnya di semua perangkat.</translation>
 <translation id="2330878972945412956"><ph name="BEGIN_PARAGRAPH1"/>Mengizinkan perangkat BraveOS Anda mengirim laporan otomatis akan membantu kami memprioritaskan hal-hal yang harus diperbaiki dan ditingkatkan di BraveOS. Laporan tersebut dapat mencakup informasi seperti fitur mana yang Anda gunakan, berapa banyak memori yang biasanya Anda gunakan, data penggunaan dan diagnostik aplikasi Android, serta error. Beberapa data gabungan juga akan membantu aplikasi dan partner Brave, seperti developer Android.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Anda dapat mulai atau berhenti mengizinkan laporan ini kapan saja di setelan perangkat BraveOS. Jika Anda merupakan administrator domain, Anda dapat mengubah setelan ini di konsol admin.<ph name="END_PARAGRAPH2"/>
@@ -2103,7 +2102,6 @@ dan Ctrl+Alt+Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="3036546437875325427">Aktifkan Flash</translation>
 <translation id="3037754279345160234">Tidak dapat mengurai konfigurasi untuk bergabung dengan domain. Hubungi administrator.</translation>
 <translation id="3038612606416062604">Tambahkan printer secara manual</translation>
-<translation id="8766876672295471671">Lihat percakapan, respons pesan, dan tambahkan pengguna ke chat grup</translation>
 <translation id="3039491566278747710">Gagal menginstal kebijakan offline di perangkat.</translation>
 <translation id="3043218608271070212"><ph name="GROUP_NAME"/>—<ph name="GROUP_CONTENT_STRING"/></translation>
 <translation id="3043581297103810752">Dari <ph name="ORIGIN"/></translation>
@@ -4271,7 +4269,6 @@ dan Ctrl+Alt+Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="529296195492126134">Mode singkat tidak didukung. Harap hubungi administrator Anda</translation>
 <translation id="5293170712604732402">Pulihkan setelan ke default aslinya</translation>
 <translation id="5294097441441645251">Harus diawali dengan karakter huruf kecil atau garis bawah</translation>
-<translation id="8273477935094091719"><ph name="DEVICE_TYPE"/> menggunakan sensor bawaan untuk mendeteksi orang di depan perangkat Anda. Semua data langsung diproses di perangkat lalu dihapus. Data sensor tidak pernah dikirim ke Brave. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="5297082477358294722">Sandi disimpan. Lihat dan kelola sandi tersimpan di <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Jika seseorang melihat layar Anda, ikon mata Privasi akan ditampilkan di kanan bawah layar</translation>
 <translation id="5298219193514155779">Tema dibuat oleh</translation>
@@ -8164,7 +8161,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="994289308992179865">&amp;Putaran</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Membuat koneksi aman...</translation>
-<translation id="2361296898422164385">Lihat kenangan orang-orang favorit Anda dan banyak lagi</translation>
 <translation id="3285581355655524751">Aktifkan <ph name="LINK1_BEGIN"/>Sinkronisasi Brave<ph name="LINK1_END"/> untuk menggunakan Wi-Fi Sync. <ph name="LINK2_BEGIN"/>Pelajari lebih lanjut<ph name="LINK2_END"/></translation>
 <translation id="998747458861718449">I&amp;nspeksi</translation>
 <translation id="658539216370629794">Buka tautan di &amp;jendela pribadi</translation>
@@ -8187,6 +8183,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5097649414558628673">Alat: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Toko Web</translation>
 <translation id="8261378640211443080">Ekstensi ini tidak tercantum dalam <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dan mungkin telah ditambahkan tanpa sepengetahuan Anda.</translation>
+<translation id="2361296898422164385">Lihat memori profil favorit Anda dan banyak hal lagi</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Pribadi)</translation>
 <translation id="263189163883089157">Anda dapat meramban web secara privat dengan menggunakan jendela Privat</translation>
 <translation id="5263632074804780211">Gunakan web tanpa menyimpan riwayat perambanan Anda dengan jendela Privat</translation>
@@ -8235,6 +8232,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2254158488150713536">Untuk melanjutkan, klik Oke, lalu klik Tambahkan Pengguna guna membuat profil baru untuk alamat email Anda.</translation>
 <translation id="1725743343613175327">Untuk melanjutkan, klik Oke, lalu klik Tambahkan Pengguna guna membuat profil baru untuk alamat email <ph name="DOMAIN"/> Anda.</translation>
 <translation id="3707212204259470604">Kelola profil lainnya</translation>
+<translation id="8766876672295471671">Lihat percakapan, bereaksi terhadap pesan, dan tambahkan profil ke obrolan grup</translation>
+<translation id="8273477935094091719"><ph name="DEVICE_TYPE"/> menggunakan sensor terpasang untuk mendeteksi profil di depan perangkat Anda. Semua dapat diproses di perangkat Anda secepatnya dan kemudian dihapus. Data sensor tidak pernah dikirimkan ke Brave. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="5832813618714645810">Profil</translation>
 <translation id="3216703137209942563">{COUNT, plural,
       =1 {Your Private window won't open after you relaunch}
@@ -8243,6 +8242,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="383007806262310953">Tampilkan kolom bookmark</translation>
 <translation id="8648684608605749476">Blokir cookie pihak ketiga dalam mode Samaran</translation>
 <translation id="3293179957233653243">Fitur-fitur pada sejumlah situs mungkin tidak dapat berfungsi di Privat</translation>
+<translation id="6304377454418270508">Ketika Anda berada dalam mode Privat, situs hanya dapat menggunakan cookie untuk melihat aktivitas perambanan Anda di situs mereka sendiri. Kuki akan dihapus pada akhir sesi Privat.</translation>
 <translation id="7447787726493910888">Tampilkan detail tentang pemblokiran cookie pihak ketiga di Privat</translation>
 <translation id="255999604394332437">Ketika berada dalam mode Privat, situs tidak dapat menggunakan kuki Anda untuk melihat aktivitas penjelajahan Anda ke berbagai situs, contohnya, untuk menyesuaikan iklan. Fitur pada beberapa situs mungkin tidak berfungsi.</translation>
 <translation id="6105125042109106861">Cookie pihak ketiga diblokir dalam mode Samaran</translation>

@@ -43,6 +43,9 @@
 <translation id="1276592121036104130">Зареждане на ново съдържание</translation>
 <translation id="3189348785087463371">Повишен</translation>
 <translation id="7554145152551782675">Още оферти на Brave</translation>
+<translation id="1717242776111689224">Активиране на новините на Brave</translation>
+<translation id="4732255422524275223">Вашите източници</translation>
+<translation id="152579389256498990">Информационен канал или URL адрес на сайта</translation>
 <translation id="4975944254857623648">Източници по подразбиране</translation>
 <translation id="253886574765651454">Добавяне на източник</translation>
 <translation id="5787084571334399599">Предпазва браузъра от фингърпринтинг</translation>
@@ -272,6 +275,7 @@
 <translation id="2927095357213611519">Можете да подкрепите уеб създателите с жетони. \ Печелете жетони, като гледате реклами, които спазват поверителността.</translation>
 <translation id="213787746370741250">Отваряне на разделите в персонализирани раздели</translation>
 <translation id="8030169304546394654">Разкачен</translation>
+<translation id="6181762795539107980">Непроверено</translation>
 <translation id="543510923939676996">Портфейлът е проверен</translation>
 <translation id="8673913984316081937">Потвърждаването на портфейла ви не е задължително</translation>
 <translation id="8558636200953226885">Но ако потвърдите, можете...</translation>
@@ -288,6 +292,7 @@
 <translation id="3699674790322420653">Завършете проверката на портфейла</translation>
 <translation id="2193391216824305230">Потребителски портфейл</translation>
 <translation id="1665118090708049096">Към моя акаунт в <ph name="WALLET_PROVIDER"/></translation>
+<translation id="1948959999802743233">Изключване от <ph name="WALLET_PROVIDER"/></translation>
 <translation id="6239274080752256452">Изтегляне на средства</translation>
 <translation id="8874184842967597500">Няма връзка</translation>
 <translation id="3368922792935385530">Установена е връзка</translation>
@@ -656,7 +661,9 @@
 <translation id="414639769490080648">Оставащи минути до автоматичното заключване на портфейл на Brave</translation>
 <translation id="4993345308607970390">Нулиране на портфейл в Brave</translation>
 <translation id="6369495274982305511">Наистина ли искате да нулирате портфейла си? Ако портфейлът ви няма резервно копие, нулирането ще предизвика загуба на всички данни на сметката (включително всички свързани средства). Въведете „<ph name="CONFIRMATION_PHRASE"/>“, за да потвърдите.</translation>
+<translation id="4862812525895306758">Изчистване на транзакцията; информация за еднократно използван числов параметър</translation>
 <translation id="5693968582510626466">Изчистването на трансакциите може да бъде полезно за разработчиците или при изчистване на състоянието на локален сървър</translation>
+<translation id="5421107279168565467">Наистина ли искате да нулирате информацията за транзакциите и еднократно използвания числов параметър? Тази опция се използва предимно от разработчици, занимаващи се с локален тестов сървър. Въведете „<ph name="CONFIRMATION_PHRASE"/>“, за да потвърдите.</translation>
 <translation id="930472263779999522">{MINUTES, plural, =1 {# минута} other {# минути}}</translation>
 <translation id="4449475351935531438">Защитна стена на Brave + VPN</translation>
 <translation id="719977489961414786">Надстройте до VPN, за да защитите връзката си и да блокирате нападателните тракери навсякъде.</translation>
@@ -740,8 +747,11 @@
 <translation id="1634828734222219955">Общо</translation>
 <translation id="7995708795274219641">Количество + газ</translation>
 <translation id="1950052789869821983">Трансакция</translation>
+<translation id="2304783958703511257">Разширени настройки</translation>
 <translation id="4220062530885628403">Nonce</translation>
+<translation id="1924965034964265193">Въведете персонализирана стойност на еднократно използвания числов параметър</translation>
 <translation id="5317780077021120954">Запазване</translation>
+<translation id="4979796155378508955">Транзакцията може да не бъде разпространена в мрежата, ако персонализираната стойност на еднократно използвания числов параметър е непоследователна или има други грешки.</translation>
 <translation id="6122742277607781713">Портфолио</translation>
 <translation id="750843150060816463">Цената на Gas (Gwei)</translation>
 <translation id="1426320910664514906">Ограничение на газ</translation>
@@ -824,6 +834,7 @@
 <translation id="1346059596910821859">Бакшиш</translation>
 <translation id="1549705559752367917">Изпрати бакшиш</translation>
 <translation id="6727102863431372879">Настройване</translation>
+<translation id="6413162919383874653">Месечен бакшиш</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
 <translation id="5802665280774361839">Показване на автоматично попълване в адресната лента</translation>
@@ -849,6 +860,7 @@
 <translation id="2156993118928861787">Невалиден адрес</translation>
 <translation id="6889920539620318793">Задаване като активна</translation>
 <translation id="2653659639078652383">Изпращане</translation>
+<translation id="4945690646623486292">Изберете мрежа</translation>
 <translation id="8853725596990766789">Промяна на сумата</translation>
 <translation id="5233638681132016545">Нов раздел</translation>
 </translationbundle>

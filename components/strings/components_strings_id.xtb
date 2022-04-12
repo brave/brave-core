@@ -496,7 +496,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="2523886232349826891">Hanya disimpan di perangkat ini</translation>
 <translation id="2524461107774643265">Tambahkan Informasi Lainnya</translation>
 <translation id="2529899080962247600">Kolom ini tidak boleh memiliki lebih dari <ph name="MAX_ITEMS_LIMIT"/> entri. Semua entri berikutnya akan diabaikan.</translation>
-<translation id="40442660395682483">Buka tab Samaran baru untuk menjelajah secara pribadi</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{dan 1 lainnya}other{dan # lainnya}}</translation>
 <translation id="2536110899380797252">Tambahkan Alamat</translation>
 <translation id="2539524384386349900">Deteksi</translation>
@@ -1410,7 +1409,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="5556459405103347317">Muat ulang</translation>
 <translation id="5560088892362098740">Tanggal Habis Masa Berlaku</translation>
 <translation id="55635442646131152">Kerangka dokumen</translation>
-<translation id="5395368798429603306">Buka tab Samaran</translation>
 <translation id="5565735124758917034">Aktif</translation>
 <translation id="5570825185877910964">Lindungi akun</translation>
 <translation id="5571083550517324815">Tidak dapat mengambil dari alamat ini. Pilih alamat lain.</translation>
@@ -1865,7 +1863,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="7192203810768312527">Sediakan ruang sebesar <ph name="SIZE"/>. Sebagian situs mungkin dimuat lebih lambat pada kunjungan Anda berikutnya.</translation>
 <translation id="719464814642662924">Visa</translation>
 <translation id="7201591969684833065">Administrator dapat melihat:</translation>
-<translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab lalu Enter untuk membuka tab Samaran baru dan menjelajah secara pribadi</translation>
 <translation id="7202346780273620635">Letter-Extra</translation>
 <translation id="7210863904660874423"><ph name="HOST_NAME"/> tidak mematuhi standar keamanan.</translation>
 <translation id="7210993021468939304">Aktivitas Linux berada dalam penampung, dan dapat menginstal dan menjalankan aplikasi Linux di dalam penampung</translation>
@@ -2124,7 +2121,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="799149739215780103">Jilid</translation>
 <translation id="7992044431894087211">Berbagi layar dengan <ph name="APPLICATION_TITLE"/> dilanjutkan</translation>
 <translation id="7995512525968007366">Tidak Ditentukan</translation>
-<translation id="3711639027736550870">Tombol Buka tab Samaran, tekan Enter untuk membuka tab Samaran baru dan menjelajah secara pribadi</translation>
 <translation id="800218591365569300">Coba tutup tab atau program lain untuk mengosongkan memori.</translation>
 <translation id="8004582292198964060">Browser</translation>
 <translation id="8012116502927253373">{NUM_CARDS,plural, =1{Kartu ini dan alamat penagihannya akan disimpan. Anda dapat menggunakannya saat login ke <ph name="USER_EMAIL"/>.}other{Semua kartu ini dan alamat penagihannya akan disimpan. Anda dapat menggunakannya saat login ke <ph name="USER_EMAIL"/>.}}</translation>
@@ -2539,6 +2535,10 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
         <ph name="END_LIST"/></translation>
 <translation id="6043883615739972429"><ph name="BEGIN_LINK"/>Pelajari lebih lanjut tentang Privat di Brave<ph name="END_LINK"/></translation>
 <translation id="9153679102508470540">Blokir cookie pihak ketiga di Privat</translation>
+<translation id="5395368798429603306">Buka Tab Privat</translation>
+<translation id="40442660395682483">Buka tab Privat baru untuk meramban secara privat</translation>
+<translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab, kemudian Masuk untuk membuka tab Privat baru agar dapat meramban secara privat</translation>
+<translation id="3711639027736550870">Buka tombol tab Privat, tekan Masuk untuk membuka tab Privat baru agar dapat meramban secara privat</translation>
 <translation id="5549245478906381817">Buka jendela Pribadi</translation>
 <translation id="5497977785983089120">Membuka jendela Pribadi baru untuk meramban secara pribadi</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab lalu Enter untuk membuka jendela Pribadi baru untuk meramban secara pribadi</translation>

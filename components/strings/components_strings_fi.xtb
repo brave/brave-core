@@ -500,7 +500,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="2523886232349826891">Tallennetaan vain tälle laitteelle</translation>
 <translation id="2524461107774643265">Lisää tietoja</translation>
 <translation id="2529899080962247600">Kentässä voi olla korkeintaan <ph name="MAX_ITEMS_LIMIT"/> kohtaa. Tämän määrän ylittävät merkinnät ohitetaan.</translation>
-<translation id="40442660395682483">Avaa uusi incognito-välilehti selataksesi yksityisesti</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{ja 1 muu}other{ja # muuta}}</translation>
 <translation id="2536110899380797252">Lisää osoite</translation>
 <translation id="2539524384386349900">Tunnista</translation>
@@ -1421,7 +1420,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="5556459405103347317">Lataa uudelleen</translation>
 <translation id="5560088892362098740">Viimeinen voimassaolopäivä</translation>
 <translation id="55635442646131152">Dokumentin asettelu</translation>
-<translation id="5395368798429603306">Avaa incognito-välilehti</translation>
 <translation id="5565735124758917034">Aktiivinen</translation>
 <translation id="5570825185877910964">Suojaa tili</translation>
 <translation id="5571083550517324815">Nouto tästä osoitteesta ei onnistu. Valitse eri osoite.</translation>
@@ -1876,7 +1874,6 @@ Muussa tapauksessa tämä estetään tietosuoja-asetuksilla. Jos sallit tämän,
 <translation id="7192203810768312527">Vapauttaa <ph name="SIZE"/>. Jotkin sivustot saattavat latautua hitaammin seuraavalla käynnillä.</translation>
 <translation id="719464814642662924">Visa</translation>
 <translation id="7201591969684833065">Järjestelmänvalvoja näkee seuraavat:</translation>
-<translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, paina ensin sarkainta ja sitten Enter avataksesi uuden incognito-välilehden, niin voit selata yksityisesti</translation>
 <translation id="7202346780273620635">Kirje-ekstra</translation>
 <translation id="7210863904660874423"><ph name="HOST_NAME"/> ei noudata tietoturvastandardeja.</translation>
 <translation id="7210993021468939304">Linux-toiminta säilön sisällä, ja voi asentaa ja suorittaa Linux-sovelluksia säilön sisällä</translation>
@@ -2137,7 +2134,6 @@ Lisätietoja:
 <translation id="799149739215780103">Sidonta</translation>
 <translation id="7992044431894087211">Näytön jakamista (<ph name="APPLICATION_TITLE"/>) jatkettu</translation>
 <translation id="7995512525968007366">Ei määritetty</translation>
-<translation id="3711639027736550870">Avaa incognito-välilehti ‑painike, paina Enter avataksesi uuden incognito-välilehden, niin voit selata yksityisesti</translation>
 <translation id="800218591365569300">Yritä vapauttaa muistia sulkemalla muita välilehtiä tai ohjelmia.</translation>
 <translation id="8004582292198964060">Selain</translation>
 <translation id="8012116502927253373">{NUM_CARDS,plural, =1{Tämä kortti ja sen laskutusosoite tallennetaan. Voit käyttää sitä sisäänkirjautuneena (<ph name="USER_EMAIL"/>).}other{Nämä kortit ja niiden laskutusosoitteet tallennetaan. Voit käyttää niitä sisäänkirjautuneena (<ph name="USER_EMAIL"/>).}}</translation>
@@ -2556,6 +2552,10 @@ Lisätietoja:
         <ph name="END_LIST"/></translation>
 <translation id="6043883615739972429"><ph name="BEGIN_LINK"/>Lue lisää Braven yksityisestä tilasta<ph name="END_LINK"/></translation>
 <translation id="9153679102508470540">Estä kolmannen osapuolen evästeet yksityisessä tilassa</translation>
+<translation id="5395368798429603306">Avaa yksityinen välilehti</translation>
+<translation id="40442660395682483">Avaa uusi yksityinen välilehti yksityistä selaamista varten</translation>
+<translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, paina sarkainta ja sitten Enter-näppäintä avataksesi uuden yksityisen välilehden yksityistä selaamista varten</translation>
+<translation id="3711639027736550870">Avaa yksityinen välilehti -painike ja paina Enter-näppäintä, jotta voit avata uuden yksityisen välilehden yksityistä selaamista varten</translation>
 <translation id="5549245478906381817">Avaa yksityinen ikkuna</translation>
 <translation id="5497977785983089120">Avaa uusi yksityinen ikkuna yksityistä selaamista varten</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, paina välilehteä, sitten Enter-näppäintä avataksesi uuden yksityisen ikkunan yksityistä selaamista varten</translation>
