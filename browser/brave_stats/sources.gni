@@ -5,10 +5,6 @@
 
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 
-if (is_official_build) {
-  assert(brave_stats_updater_url != "")
-}
-
 brave_browser_brave_stats_updater_sources = [
   "//brave/browser/brave_stats/brave_stats_tab_helper.cc",
   "//brave/browser/brave_stats/brave_stats_tab_helper.h",
