@@ -11,6 +11,7 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
+#include "url/url_util.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -89,5 +90,51 @@ std::string GetRegistry(const GURL& url) {
 - (bool)brave_hasScheme:(NSString*)scheme {
   return net::GURLWithNSURL(self).SchemeIs(
       base::SysNSStringToUTF8([scheme lowercaseString]));
+}
+@end
+
+@implementation NSURL (StaticUtilities)
+
+std::string GetRegistryFromHost(const std::string& host) {
+  auto GetRegistryLength = [](const std::string& host) -> size_t {
+    return net::registry_controlled_domains::PermissiveGetHostRegistryLength(
+        host, net::registry_controlled_domains::INCLUDE_UNKNOWN_REGISTRIES,
+        net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  };
+
+  if (host.empty() || url::HostIsIPAddress(host)) {
+    return std::string();  // No registry.
+  }
+
+  size_t registry_length = GetRegistryLength(host);
+
+  if ((registry_length == std::string::npos) || (registry_length == 0)) {
+    return std::string();  // No registry.
+  }
+  return std::string(host, host.length() - registry_length, registry_length);
+}
+
++ (NSString*)brave_registryFromHost:(NSString*)host {
+  return base::SysUTF8ToNSString(
+      GetRegistryFromHost(base::SysNSStringToUTF8(host)));
+}
+
++ (NSString*)brave_domainAndRegistryFromHost:(NSString*)host {
+  std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
+      base::SysNSStringToUTF8(host),
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  return base::SysUTF8ToNSString(domain);
+}
+
++ (NSString*)brave_domainAndRegistryExcludingPrivateRegistriesFromHost:
+    (NSString*)host {
+  std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
+      base::SysNSStringToUTF8(host),
+      net::registry_controlled_domains::EXCLUDE_PRIVATE_REGISTRIES);
+  return base::SysUTF8ToNSString(domain);
+}
+
++ (bool)brave_isHostIPAddressFromHost:(NSString*)host {
+  return url::HostIsIPAddress(base::SysNSStringToUTF8(host));
 }
 @end
