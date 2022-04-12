@@ -28,7 +28,9 @@ export const InputLabel = styled.span`
   margin-bottom: 6px;
 `
 
-export const Input = styled.input`
+export const Input = styled.input<{
+  hasError?: boolean
+}>`
   box-sizing: border-box;
   outline: none;
   width: 100%;
@@ -44,7 +46,9 @@ export const Input = styled.input`
   letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 8px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.hasError
+    ? p.theme.color.errorText
+    : p.theme.color.text01};
   ::placeholder {
     font-family: Poppins;
     font-style: normal;
