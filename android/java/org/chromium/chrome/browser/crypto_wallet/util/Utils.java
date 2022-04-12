@@ -422,8 +422,12 @@ public class Utils {
         BigInteger bigNumber = new BigInteger(number, 16);
         BigInteger divider = new BigInteger(getDecimalsDepNumber(decimals));
         BigDecimal bDecimal = new BigDecimal(bigNumber);
-        BigDecimal bDecimalRes = bDecimal.divide(new BigDecimal(divider), MathContext.DECIMAL32);
+        BigDecimal bDecimalRes = bDecimal.divide(new BigDecimal(divider));
         String resStr = bDecimalRes.toPlainString();
+        int integerPlaces = resStr.indexOf('.');
+        if (integerPlaces != -1 && (integerPlaces + 9) <= resStr.length()) {
+            resStr = resStr.substring(0, integerPlaces + 9);
+        }
 
         return Double.valueOf(resStr);
     }
@@ -485,8 +489,12 @@ public class Utils {
         BigInteger bigNumber = new BigInteger(number);
         BigInteger divider = new BigInteger(getDecimalsDepNumber(decimals));
         BigDecimal bDecimal = new BigDecimal(bigNumber);
-        BigDecimal bDecimalRes = bDecimal.divide(new BigDecimal(divider), MathContext.DECIMAL32);
+        BigDecimal bDecimalRes = bDecimal.divide(new BigDecimal(divider));
         String resStr = bDecimalRes.toPlainString();
+        int integerPlaces = resStr.indexOf('.');
+        if (integerPlaces != -1 && (integerPlaces + 9) <= resStr.length()) {
+            resStr = resStr.substring(0, integerPlaces + 9);
+        }
 
         return Double.valueOf(resStr);
     }
