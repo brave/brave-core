@@ -42,7 +42,8 @@ class BraveAdaptiveCaptchaService
       PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       brave_rewards::RewardsService* rewards_service,
-      std::unique_ptr<BraveAdaptiveCaptchaDelegate> delegate);
+      std::unique_ptr<BraveAdaptiveCaptchaDelegate> delegate,
+      const std::string& locale);
   ~BraveAdaptiveCaptchaService() override;
 
   BraveAdaptiveCaptchaService(const BraveAdaptiveCaptchaService&) = delete;
@@ -85,6 +86,7 @@ class BraveAdaptiveCaptchaService
       nullptr;  // NOT OWNED
   std::unique_ptr<BraveAdaptiveCaptchaDelegate> delegate_;
   std::unique_ptr<GetAdaptiveCaptchaChallenge> captcha_challenge_;
+  std::string locale_;
 };
 
 }  // namespace brave_adaptive_captcha

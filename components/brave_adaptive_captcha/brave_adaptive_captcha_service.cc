@@ -11,6 +11,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -18,12 +19,14 @@
 namespace {
 
 std::string GetScheduledCaptchaUrl(const std::string& payment_id,
-                                   const std::string& captcha_id) {
+                                   const std::string& captcha_id,
+                                   const std::string& language_code) {
   DCHECK(!payment_id.empty());
   DCHECK(!captcha_id.empty());
 
-  const std::string path = base::StringPrintf(
-      "/v3/captcha/%s/%s", payment_id.c_str(), captcha_id.c_str());
+  const std::string path =
+      base::StringPrintf("/v3/captcha/%s/%s?lang=%s", payment_id.c_str(),
+                         captcha_id.c_str(), language_code.c_str());
   return brave_adaptive_captcha::GetServerUrl(path);
 }
 
@@ -66,14 +69,16 @@ BraveAdaptiveCaptchaService::BraveAdaptiveCaptchaService(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     brave_rewards::RewardsService* rewards_service,
-    std::unique_ptr<BraveAdaptiveCaptchaDelegate> delegate)
+    std::unique_ptr<BraveAdaptiveCaptchaDelegate> delegate,
+    const std::string& locale)
     : prefs_(prefs),
       rewards_service_(rewards_service),
       delegate_(std::move(delegate)),
       captcha_challenge_(std::make_unique<GetAdaptiveCaptchaChallenge>(
           std::make_unique<api_request_helper::APIRequestHelper>(
               kAnnotationTag,
-              std::move(url_loader_factory)))) {
+              std::move(url_loader_factory)))),
+      locale_(locale) {
   DCHECK(prefs);
   DCHECK(rewards_service);
 
@@ -102,10 +107,12 @@ bool BraveAdaptiveCaptchaService::GetScheduledCaptchaInfo(
     return false;
   }
 
+  const std::string language_code = brave_l10n::GetLanguageCode(locale_);
+
   const int failed_attempts =
       prefs_->GetInteger(kScheduledCaptchaFailedAttempts);
 
-  *url = GetScheduledCaptchaUrl(payment_id, captcha_id);
+  *url = GetScheduledCaptchaUrl(payment_id, captcha_id, language_code);
   *max_attempts_exceeded =
       failed_attempts >= kScheduledCaptchaMaxFailedAttempts;
 

@@ -14,6 +14,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
@@ -75,7 +76,8 @@ KeyedService* BraveAdaptiveCaptchaServiceFactory::BuildServiceInstanceFor(
       user_prefs::UserPrefs::Get(context), std::move(url_loader_factory),
       brave_rewards::RewardsServiceFactory::GetForProfile(
           Profile::FromBrowserContext(context)),
-      std::make_unique<CaptchaDelegate>(context));
+      std::make_unique<CaptchaDelegate>(context),
+      g_browser_process->GetApplicationLocale());
 }
 
 }  // namespace brave_adaptive_captcha

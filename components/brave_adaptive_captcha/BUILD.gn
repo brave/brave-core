@@ -18,6 +18,8 @@ source_set("brave_adaptive_captcha") {
     "//brave/components/api_request_helper:api_request_helper",
     "//brave/components/brave_ads/common:common",
     "//brave/components/brave_rewards/browser",
+    "//brave/components/l10n/browser",
+    "//brave/components/l10n/common",
     "//brave/vendor/bat-native-ledger:buildflags",
     "//components/keyed_service/core",
     "//components/prefs",
