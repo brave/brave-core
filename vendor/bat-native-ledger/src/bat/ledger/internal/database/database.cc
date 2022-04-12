@@ -631,10 +631,10 @@ void Database::MarkUnblindedTokensAsSpendable(
       callback);
 }
 
-void Database::GetSpendableUnblindedTokensByTriggerIds(
-    const std::vector<std::string>& trigger_ids,
-    GetUnblindedTokenListCallback callback) {
-  unblinded_token_->GetSpendableRecordsByTriggerIds(trigger_ids, callback);
+void Database::GetSpendableUnblindedTokens(
+    GetUnblindedTokenListCallback callback,
+    const absl::optional<std::vector<std::string>>& trigger_ids) {
+  unblinded_token_->GetSpendableRecords(trigger_ids, std::move(callback));
 }
 
 void Database::GetReservedUnblindedTokens(

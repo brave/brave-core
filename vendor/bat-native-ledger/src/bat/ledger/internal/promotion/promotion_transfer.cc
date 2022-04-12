@@ -51,26 +51,21 @@ void PromotionTransfer::OnGetEligiblePromotions(
     GetEligibleTokensCallback callback) {
   std::vector<std::string> ids;
   for (auto& promotion : promotions) {
-    if (!promotion) {
-      continue;
+    if (promotion) {
+      ids.push_back(promotion->id);
     }
-
-    ids.push_back(promotion->id);
   }
 
-  ledger_->database()->GetSpendableUnblindedTokensByTriggerIds(
-      ids,
-      callback);
+  ledger_->database()->GetSpendableUnblindedTokens(std::move(callback), ids);
 }
 
 void PromotionTransfer::Start(ledger::PostSuggestionsClaimCallback callback) {
-  auto tokens_callback =
-      std::bind(&PromotionTransfer::OnGetEligibleTokens, this, _1, callback);
-
-  GetEligibleTokens(tokens_callback);
+  ledger_->database()->GetSpendableUnblindedTokens(
+      std::bind(&PromotionTransfer::OnGetSpendableUnblindedTokens, this, _1,
+                std::move(callback)));
 }
 
-void PromotionTransfer::OnGetEligibleTokens(
+void PromotionTransfer::OnGetSpendableUnblindedTokens(
     type::UnblindedTokenList list,
     ledger::PostSuggestionsClaimCallback callback) {
   std::vector<type::UnblindedToken> token_list;
