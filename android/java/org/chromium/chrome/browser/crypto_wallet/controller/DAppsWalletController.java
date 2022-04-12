@@ -28,8 +28,9 @@ import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.modal.BraveWalletPanel;
 import org.chromium.chrome.browser.crypto_wallet.modal.DAppsDialog;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
-import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
@@ -107,7 +108,12 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
     }
 
     private void showOnBoardingOrUnlock() {
-        mDAppsDialog = DAppsDialog.newInstance(mContext, mDialogOrPanelDismissListener);
+        int dialogStyle = DAppsDialog.DAppsDialogStyle.BOTTOM;
+        if (shouldShowNotificationAtTop(mActivity)) {
+            dialogStyle = DAppsDialog.DAppsDialogStyle.TOP;
+        }
+        mDAppsDialog =
+                DAppsDialog.newInstance(mContext, mDialogOrPanelDismissListener, dialogStyle);
         mDAppsDialog.showOnboarding(Utils.shouldShowCryptoOnboarding());
     }
 
@@ -188,7 +194,6 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
         if (mKeyringService != null) {
             return;
         }
-
         mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
     }
 
@@ -196,7 +201,6 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
         if (mJsonRpcService != null) {
             return;
         }
-
         mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
     }
 
@@ -204,7 +208,6 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
         if (mBraveWalletService != null) {
             return;
         }
-
         mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
     }
 
@@ -212,7 +215,6 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
         if (mAssetRatioService != null) {
             return;
         }
-
         mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
     }
 
@@ -233,7 +235,6 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
             mAssetRatioService.close();
             mAssetRatioService = null;
         }
-
         if (mActivity != null) {
             mActivity.getLifecycle().removeObserver(defaultLifecycleObserver);
         }
@@ -248,4 +249,9 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
                     }
                 }
             };
+
+    private boolean shouldShowNotificationAtTop(Context context) {
+        return ConfigurationUtils.isTablet(context)
+                || !BottomToolbarConfiguration.isBottomToolbarEnabled();
+    }
 }
