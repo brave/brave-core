@@ -2884,7 +2884,25 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaBlockHeight) {
 TEST_F(JsonRpcServiceUnitTest, GetFilEstimateGas) {
   SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL);
   std::string response =
-      R"({"jsonrpc":"2.0","result":{"Version":0,"To":"t1tquwkjo6qvweah2g2yikewr7y5dyjds42pnrn3a","From":"t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq","Nonce":1,"Value":"1000000000000000000","GasLimit":2187060,"GasFeeCap":"101520","GasPremium":"100466","Method":0,"Params":"","CID":{"/":"bafy2bzacebefvj6623fkmfwazpvg7qxgomhicefeb6tunc7wbvd2ee4uppfkw"}},"id":1})";
+      R"({
+          "id": 1,
+          "jsonrpc": "2.0",
+          "result": {
+              "CID": {
+                "/": "bafy2bzacebefvj6623fkmfwazpvg7qxgomhicefeb6tunc7wbvd2ee4uppfkw"
+              },
+              "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
+              "GasFeeCap": "101520",
+              "GasLimit": 2187060,
+              "GasPremium": "100466",
+              "Method": 0,
+              "Nonce": 1,
+              "Params": "",
+              "To": "t1tquwkjo6qvweah2g2yikewr7y5dyjds42pnrn3a",
+              "Value": "1000000000000000000",
+              "Version": 0
+          }
+      })";
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
                  "Filecoin.GasEstimateMessageGas", "", response);
 
