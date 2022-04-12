@@ -35,6 +35,7 @@
 #include "bat/ledger/internal/database/database_vg_backup_restore.h"
 #include "bat/ledger/internal/publisher/prefix_list_reader.h"
 #include "bat/ledger/ledger.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -417,9 +418,10 @@ class Database {
       const std::string& redeem_id,
       ledger::ResultCallback callback);
 
-  void GetSpendableUnblindedTokensByTriggerIds(
-      const std::vector<std::string>& trigger_ids,
-      GetUnblindedTokenListCallback callback);
+  void GetSpendableUnblindedTokens(
+      GetUnblindedTokenListCallback callback,
+      const absl::optional<std::vector<std::string>>& trigger_ids =
+          absl::nullopt);
 
   void GetReservedUnblindedTokens(
       const std::string& redeem_id,
