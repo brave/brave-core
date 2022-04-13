@@ -72,7 +72,8 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
         mRootView.removeAllViews();
 
         mScrollViewForPolicy = new NestedScrollView(mActivity);
-        mScrollViewForPolicy.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        mScrollViewForPolicy.setLayoutParams(new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         mScrollViewForPolicy.setBackgroundColor(
                 ApiCompatibilityUtils.getColor(mActivity.getResources(), R.color.default_bg_color));
         mScrollViewForPolicy.setVerticalScrollBarEnabled(false);
