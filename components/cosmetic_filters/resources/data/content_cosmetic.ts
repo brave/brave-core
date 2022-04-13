@@ -33,8 +33,6 @@ const CC = window.content_cosmetic
 
 CC.cosmeticStyleSheet = CC.cosmeticStyleSheet || new CSSStyleSheet()
 CC.allSelectorsToRules = CC.allSelectorsToRules || new Map<string, number>()
-// Start from 1; valid indices must be nonzero.
-CC.nextRuleIndex = CC.nextRuleIndex || 1
 CC.observingHasStarted = CC.observingHasStarted || false
 // All new selectors go in `firstRunQueue`
 CC.firstRunQueue = CC.firstRunQueue || new Set<string>()
@@ -333,11 +331,32 @@ const unhideSelectors = (selectors: Set<string>) => {
     .sort()
     .reverse()
   // Delete the rules
+  let lastIdx: number = CC.allSelectorsToRules.size - 1
   for (const ruleIdx of rulesToRemove) {
     // Safe to asset ruleIdx is a number because we've already filtered out
     // any `undefined` instances with the filter call above.
-    // @ts-expect-error
-    cf_worker.uninjectStylesheet(ruleIdx as number)
+    CC.cosmeticStyleSheet.deleteRule(ruleIdx as number)
+  }
+  // Re-sync the indexes
+  // TODO: Sync is hard, just re-build by iterating through the StyleSheet rules.
+  const ruleLookup = Array.from(CC.allSelectorsToRules.entries())
+  let countAtLastHighest = rulesToRemove.length
+  for (let i = lastIdx; i > 0; i--) {
+    const [selector, oldIdx] = ruleLookup[i]
+    // Is this one we removed?
+    if (rulesToRemove.includes(i)) {
+      CC.allSelectorsToRules.delete(selector)
+      countAtLastHighest--
+      if (countAtLastHighest === 0) {
+        break
+      }
+      continue
+    }
+    if (oldIdx !== i) {
+      // Probably out of sync
+      console.error('Cosmetic Filters: old index did not match lookup index', { selector, oldIdx, i })
+    }
+    CC.allSelectorsToRules.set(selector, oldIdx - countAtLastHighest)
   }
 }
 
@@ -520,6 +539,5 @@ const tryScheduleQueuePump = () => {
 }
 
 CC.tryScheduleQueuePump = CC.tryScheduleQueuePump || tryScheduleQueuePump
-CC.scheduleQueuePump = CC.scheduleQueuePump || scheduleQueuePump
 
 tryScheduleQueuePump()
