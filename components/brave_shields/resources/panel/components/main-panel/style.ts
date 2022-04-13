@@ -34,7 +34,6 @@ export const SiteTitleBox = styled.section`
   grid-template-columns: 24px 1fr 10px;
   grid-gap: 10px;
   align-items: center;
-  margin-bottom: 10px;
 `
 
 export const FavIconBox = styled.i`
@@ -69,6 +68,7 @@ export const CountBox = styled.section`
   align-items: center;
   grid-gap: 10px;
   overflow: hidden;
+  margin-top: 10px;
 `
 
 export const BlockCount = styled.span`
@@ -99,7 +99,7 @@ export const ControlBox = styled.div`
 `
 
 export const ShieldsIcon = styled.i<ShieldsIconProps>`
-  --fill-color: ${(p) => p.theme.color.text02};
+  --fill-color: #5E6175;
   width: 100%;
   height: auto;
   grid-column: 1;
@@ -167,12 +167,13 @@ export const ReportSiteBox = styled.div`
 
 export const ReportSiteAction = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
 
   span {
-    flex: 1;
+    font-weight: 500;
+    font-size: 14px;
     color: ${(p) => p.theme.color.text03};
+    margin-bottom: 16px;
   }
 `
 
