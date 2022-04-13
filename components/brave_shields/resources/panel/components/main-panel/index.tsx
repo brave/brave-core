@@ -36,10 +36,10 @@ function MainPanel () {
     if (!siteBlockInfo?.isShieldsEnabled) {
       return (
         <S.ReportSiteBox>
-          <p>{getLocale('braveShieldsDownDesc')}</p>
           <S.ReportSiteAction>
             <span>{getLocale('braveShieldsReportSiteDesc')}</span>
             <Button
+              isPrimary
               onClick={handleReportSite}
             >
               {getLocale('braveShieldsReportSite')}
