@@ -192,16 +192,9 @@ class TabManager: NSObject {
     configuration.processPool = WKProcessPool()
     configuration.preferences.javaScriptCanOpenWindowsAutomatically = !Preferences.General.blockPopups.value
 
-    // Do NOT add `.link` to the list, it breaks interstitial pages
+    // Dev note: Do NOT add `.link` to the list, it breaks interstitial pages
     // and pages that don't want the URL highlighted!
-    configuration.dataDetectorTypes = [
-      .phoneNumber,
-      .address,
-      .calendarEvent,
-      .trackingNumber,
-      .flightNumber,
-      .lookupSuggestion,
-    ]
+    configuration.dataDetectorTypes = [.phoneNumber]
 
     return configuration
   }
