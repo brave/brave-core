@@ -76,16 +76,10 @@ void AdsClientIOS::Save(const std::string& name,
   [bridge_ save:name value:value callback:callback];
 }
 
-void AdsClientIOS::LoadAdsResource(const std::string& id,
-                                   const int version,
-                                   ads::LoadCallback callback) {
-  [bridge_ loadAdsResource:id version:version callback:callback];
-}
-
-void AdsClientIOS::LoadAdsFileResource(const std::string& id,
-                                       const int version,
-                                       ads::LoadFileCallback callback) {
-  [bridge_ loadAdsFileResource:id version:version callback:callback];
+void AdsClientIOS::LoadFileResource(const std::string& id,
+                                    const int version,
+                                    ads::LoadFileCallback callback) {
+  [bridge_ loadFileResource:id version:version callback:std::move(callback)];
 }
 
 void AdsClientIOS::GetBrowsingHistory(

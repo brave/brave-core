@@ -1371,6 +1371,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
   // Arrange
   resource::Conversions resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   ConversionList conversions;
 
@@ -1394,7 +1395,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
   conversions_->MaybeConvert(
       {"https://foo.bar/", "https://brave.com/thankyou"},
       "<html><meta name=\"ad-conversion-id\" content=\"abc123\"></html>",
-      resource.get());
+      resource.get()->conversion_id_patterns);
 
   // Assert
   conversion_queue_database_table_->GetAll(
@@ -1420,6 +1421,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
   // Arrange
   resource::Conversions resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   ConversionList conversions;
 
@@ -1444,7 +1446,8 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
   // /data/test/resources/nnqccijfhvzwyrxpxwjrpmynaiazctqb
   conversions_->MaybeConvert(
       {"https://foo.bar/", "https://brave.com/foobar"},
-      "<html><div id=\"conversion-id\">abc123</div></html>", resource.get());
+      "<html><div id=\"conversion-id\">abc123</div></html>",
+      resource.get()->conversion_id_patterns);
 
   // Assert
   conversion_queue_database_table_->GetAll(
@@ -1470,6 +1473,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
   // Arrange
   resource::Conversions resource;
   resource.Load();
+  task_environment()->RunUntilIdle();
 
   ConversionList conversions;
 
@@ -1494,7 +1498,8 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
   // /data/test/resources/nnqccijfhvzwyrxpxwjrpmynaiazctqb
   conversions_->MaybeConvert(
       {"https://foo.bar/", "https://brave.com/foobar?conversion_id=abc123"},
-      "<html><div id=\"conversion-id\">foobar</div></html>", resource.get());
+      "<html><div id=\"conversion-id\">foobar</div></html>",
+      resource.get()->conversion_id_patterns);
 
   // Assert
   conversion_queue_database_table_->GetAll(

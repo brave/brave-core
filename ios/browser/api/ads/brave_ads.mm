@@ -1128,28 +1128,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   callback({});
 }
 
-- (void)loadAdsResource:(const std::string&)id
-                version:(const int)version
-               callback:(ads::LoadCallback)callback {
-  NSString* bridgedId = base::SysUTF8ToNSString(id);
-
-  BLOG(1, @"Loading %@ ads resource", bridgedId);
-
-  const std::string contents =
-      [self.commonOps loadContentsFromFileWithName:bridgedId.UTF8String];
-  if (!contents.empty()) {
-    BLOG(1, @"%@ ads resource is cached", bridgedId);
-    callback(/* success */ true, contents);
-    return;
-  }
-
-  BLOG(1, @"%@ ads resource not found", bridgedId);
-  callback(/* success */ false, "");
-}
-
-- (void)loadAdsFileResource:(const std::string&)id
-                    version:(const int)version
-                   callback:(ads::LoadFileCallback)callback {
+- (void)loadFileResource:(const std::string&)id
+                 version:(const int)version
+                callback:(ads::LoadFileCallback)callback {
   NSString* bridgedId = base::SysUTF8ToNSString(id);
   NSString* nsFilePath = [self.commonOps dataPathForFilename:bridgedId];
 
@@ -1157,7 +1138,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
   base::FilePath file_path(nsFilePath.UTF8String);
   base::File file(file_path, base::File::FLAG_OPEN | base::File::FLAG_READ);
-  callback(std::move(file));
+  std::move(callback).Run(std::move(file));
 }
 
 - (void)clearScheduledCaptcha {

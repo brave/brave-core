@@ -63,18 +63,14 @@ class AdsClientMojoBridge
                            GetScheduledCaptchaCallback callback) override;
   void ShowScheduledCaptchaNotification(const std::string& payment_id,
                                         const std::string& captcha_id) override;
-  void Log(
-      const std::string& file,
-      const int32_t line,
-      const int32_t verbose_level,
-      const std::string& message) override;
-  void LoadAdsResource(const std::string& id,
-                       const int version,
-                       LoadAdsResourceCallback callback) override;
+  void Log(const std::string& file,
+           const int32_t line,
+           const int32_t verbose_level,
+           const std::string& message) override;
 
-  void LoadAdsFileResource(const std::string& id,
-                           const int version,
-                           LoadAdsFileResourceCallback callback) override;
+  void LoadFileResource(const std::string& id,
+                        const int version,
+                        LoadFileResourceCallback callback) override;
 
   void GetBrowsingHistory(const int max_count,
                           const int days_ago,
@@ -177,14 +173,6 @@ class AdsClientMojoBridge
     base::WeakPtr<AdsClientMojoBridge> client_;
     Callback callback_;
   };
-
-  static void OnLoadAdsResource(CallbackHolder<LoadAdsResourceCallback>* holder,
-                                const bool success,
-                                const std::string& value);
-
-  static void OnLoadAdsFileResource(
-      CallbackHolder<LoadAdsFileResourceCallback>* holder,
-      base::File file);
 
   static void OnGetBrowsingHistory(
       CallbackHolder<GetBrowsingHistoryCallback>* holder,

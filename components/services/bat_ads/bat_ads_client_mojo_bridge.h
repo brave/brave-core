@@ -54,17 +54,13 @@ class BatAdsClientMojoBridge
   void UrlRequest(ads::mojom::UrlRequestPtr url_request,
                   ads::UrlRequestCallback callback) override;
 
-  void Save(
-      const std::string& name,
-      const std::string& value,
-      ads::ResultCallback callback) override;
-  void LoadAdsResource(const std::string& id,
-                       const int version,
-                       ads::LoadCallback callback) override;
+  void Save(const std::string& name,
+            const std::string& value,
+            ads::ResultCallback callback) override;
 
-  void LoadAdsFileResource(const std::string& id,
-                           const int version,
-                           ads::LoadFileCallback callback) override;
+  void LoadFileResource(const std::string& id,
+                        const int version,
+                        ads::LoadFileCallback callback) override;
 
   void GetBrowsingHistory(const int max_count,
                           const int days_ago,

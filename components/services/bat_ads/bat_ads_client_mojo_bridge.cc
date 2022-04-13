@@ -168,40 +168,15 @@ void BatAdsClientMojoBridge::Save(
       std::move(callback)));
 }
 
-void OnLoadAdsResource(const ads::LoadCallback& callback,
-                       const bool success,
-                       const std::string& value) {
-  callback(success, value);
-}
-
-void OnLoadAdsFileResource(const ads::LoadFileCallback& callback,
-                           base::File file) {
-  callback(std::move(file));
-}
-
-void BatAdsClientMojoBridge::LoadAdsResource(const std::string& id,
-                                             const int version,
-                                             ads::LoadCallback callback) {
+void BatAdsClientMojoBridge::LoadFileResource(const std::string& id,
+                                              const int version,
+                                              ads::LoadFileCallback callback) {
   if (!connected()) {
-    callback(/* success */ false, "");
+    std::move(callback).Run(base::File());
     return;
   }
 
-  bat_ads_client_->LoadAdsResource(
-      id, version, base::BindOnce(&OnLoadAdsResource, std::move(callback)));
-}
-
-void BatAdsClientMojoBridge::LoadAdsFileResource(
-    const std::string& id,
-    const int version,
-    ads::LoadFileCallback callback) {
-  if (!connected()) {
-    callback(base::File());
-    return;
-  }
-
-  bat_ads_client_->LoadAdsFileResource(
-      id, version, base::BindOnce(&OnLoadAdsFileResource, std::move(callback)));
+  bat_ads_client_->LoadFileResource(id, version, std::move(callback));
 }
 
 void OnGetBrowsingHistory(const ads::GetBrowsingHistoryCallback& callback,

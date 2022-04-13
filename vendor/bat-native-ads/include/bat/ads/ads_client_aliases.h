@@ -20,7 +20,7 @@ using ResultCallback = std::function<void(const bool)>;
 
 using LoadCallback = std::function<void(const bool, const std::string&)>;
 
-using LoadFileCallback = std::function<void(base::File)>;
+using LoadFileCallback = base::OnceCallback<void(base::File)>;
 
 using UrlRequestCallback = std::function<void(const mojom::UrlResponse&)>;
 

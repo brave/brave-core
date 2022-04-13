@@ -6,9 +6,12 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_FREQUENCY_CAPPING_ANTI_TARGETING_ANTI_TARGETING_RESOURCE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_FREQUENCY_CAPPING_ANTI_TARGETING_ANTI_TARGETING_RESOURCE_H_
 
+#include <memory>
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_info.h"
+#include "bat/ads/internal/resources/parsing_result.h"
 #include "bat/ads/internal/resources/resource.h"
 
 namespace ads {
@@ -29,11 +32,13 @@ class AntiTargeting final : public Resource<AntiTargetingInfo> {
   AntiTargetingInfo get() const override;
 
  private:
-  bool FromJson(const std::string& json);
+  void OnLoadAndParseResource(ParsingResultPtr<AntiTargetingInfo> result);
 
   bool is_initialized_ = false;
 
-  AntiTargetingInfo anti_targeting_;
+  std::unique_ptr<AntiTargetingInfo> anti_targeting_;
+
+  base::WeakPtrFactory<AntiTargeting> weak_ptr_factory_{this};
 };
 
 }  // namespace resource

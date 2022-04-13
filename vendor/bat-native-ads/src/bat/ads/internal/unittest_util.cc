@@ -532,26 +532,8 @@ void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
           }));
 }
 
-void MockLoadAdsResource(const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, LoadAdsResource(_, _, _))
-      .WillByDefault(Invoke(
-          [](const std::string& id, const int version, LoadCallback callback) {
-            base::FilePath path = GetTestPath();
-            path = path.AppendASCII("resources");
-            path = path.AppendASCII(id);
-
-            std::string value;
-            if (!base::ReadFileToString(path, &value)) {
-              callback(/* success */ false, value);
-              return;
-            }
-
-            callback(/* success */ true, value);
-          }));
-}
-
-void MockLoadAdsFileResource(const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, LoadAdsFileResource(_, _, _))
+void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, LoadFileResource(_, _, _))
       .WillByDefault(Invoke([](const std::string& id, const int version,
                                LoadFileCallback callback) {
         const base::FilePath path =
@@ -559,7 +541,7 @@ void MockLoadAdsFileResource(const std::unique_ptr<AdsClientMock>& mock) {
 
         base::File file(
             path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
-        callback(std::move(file));
+        std::move(callback).Run(std::move(file));
       }));
 }
 

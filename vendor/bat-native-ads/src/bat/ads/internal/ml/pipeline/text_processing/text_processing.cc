@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
-#include "bat/ads/internal/logging.h"
+#include "base/values.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/ml_transformation_util.h"
@@ -24,8 +24,19 @@ namespace ads {
 namespace ml {
 namespace pipeline {
 
-TextProcessing* TextProcessing::CreateInstance() {
-  return new TextProcessing();
+// static
+std::unique_ptr<TextProcessing> TextProcessing::CreateFromValue(
+    base::Value resource_value,
+    std::string* error_message) {
+  DCHECK(error_message);
+
+  auto text_processing = std::make_unique<TextProcessing>();
+  if (!text_processing->FromValue(std::move(resource_value))) {
+    *error_message = "Failed to parse text classification pipeline JSON";
+    return {};
+  }
+
+  return text_processing;
 }
 
 bool TextProcessing::IsInitialized() const {
@@ -33,16 +44,6 @@ bool TextProcessing::IsInitialized() const {
 }
 
 TextProcessing::TextProcessing() : is_initialized_(false) {}
-
-TextProcessing::TextProcessing(const TextProcessing& text_proc) {
-  is_initialized_ = text_proc.is_initialized_;
-  version_ = text_proc.version_;
-  timestamp_ = text_proc.timestamp_;
-  locale_ = text_proc.locale_;
-  linear_model_ = text_proc.linear_model_;
-  transformations_ =
-      GetTransformationVectorDeepCopy(text_proc.transformations_);
-}
 
 TextProcessing::~TextProcessing() = default;
 
@@ -61,16 +62,15 @@ void TextProcessing::SetInfo(const PipelineInfo& info) {
   transformations_ = GetTransformationVectorDeepCopy(info.transformations);
 }
 
-bool TextProcessing::FromJson(std::string json) {
+bool TextProcessing::FromValue(base::Value resource_value) {
   absl::optional<PipelineInfo> pipeline_info =
-      ParsePipelineJSON(std::move(json));
+      ParsePipelineValue(std::move(resource_value));
 
   if (pipeline_info.has_value()) {
     SetInfo(pipeline_info.value());
     is_initialized_ = true;
   } else {
     is_initialized_ = false;
-    BLOG(0, "Failed to parse text classification pipeline JSON");
   }
 
   return is_initialized_;
