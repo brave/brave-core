@@ -250,6 +250,8 @@ export interface PageState {
   invalidMnemonic: boolean
   selectedTimeline: BraveWallet.AssetPriceTimeframe
   selectedAsset: BraveWallet.BlockchainToken | undefined
+  isFetchingNFTMetadata: boolean
+  nftMetadata: NFTMetadataReturnType | undefined
   selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
   selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
@@ -587,11 +589,7 @@ export interface CreateAccountOptionsType {
   icon: string
 }
 
-// This is mostly speculative
-// will likely change once we have an api for getting
-// nft metadata
 export interface NFTMetadataReturnType {
-  chain: string
   chainName: string
   tokenType: string
   tokenID: string

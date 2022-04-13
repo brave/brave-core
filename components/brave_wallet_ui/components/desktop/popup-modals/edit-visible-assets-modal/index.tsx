@@ -558,7 +558,7 @@ const EditVisibleAssetsModal = (props: Props) => {
                   <>
                     {filteredTokenList.slice(0, tokenDisplayAmount).map((token) =>
                       <AssetWatchlistItem
-                        key={`${token.contractAddress}-${token.symbol}-${token.chainId}`}
+                        key={`${token.contractAddress}-${token.symbol}-${token.chainId}-${token.tokenId}`}
                         isCustom={isCustomToken(token)}
                         token={token}
                         networkList={networkList}

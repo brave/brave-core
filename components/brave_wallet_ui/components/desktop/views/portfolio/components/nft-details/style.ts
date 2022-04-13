@@ -3,7 +3,13 @@ import { WalletButton } from '../../../../../shared/style'
 import WebsiteIcon from '../../../../../../assets/svg-icons/website-icon.svg'
 import TwitterIcon from '../../../../../../assets/svg-icons/twitter-icon.svg'
 import FacebookIcon from '../../../../../../assets/svg-icons/facebook-icon.svg'
-import { OpenNewIcon } from 'brave-ui/components/icons'
+import { LoaderIcon, OpenNewIcon } from 'brave-ui/components/icons'
+
+export interface StyleProps {
+  isLoading: boolean
+}
+
+const nftImageDimension = '440px'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -11,12 +17,23 @@ export const StyledWrapper = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
+  min-height: ${nftImageDimension};
+  margin: 16px 0 50px 0;
 `
 
-export const NFTImage = styled.img`
-  width: 440px;
-  height: 440px;
-  margin-right: 10px;
+export const NFTImage = styled.img<Partial<StyleProps>>`
+  display: ${p => p.isLoading ? 'none' : 'block'};
+  width: ${nftImageDimension};
+  height: ${nftImageDimension};
+  margin-right: 28px;
+  border-radius: 12px;
+`
+
+export const NFTImageSkeletonWrapper = styled.div`
+  min-width: ${nftImageDimension};
+  height: ${nftImageDimension};
+  margin-right: 28px;
+  border-radius: 12px;
 `
 
 export const DetailColumn = styled.div`
@@ -204,4 +221,23 @@ export const ExplorerIcon = styled(OpenNewIcon)`
   width: 14px;
   height: 14px;
   color: ${(p) => p.theme.color.interactive05};
+`
+
+export const LoadingOverlay = styled.div<Partial<StyleProps>>`
+  display: ${(p) => p.isLoading ? 'flex' : 'none'};
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 440px;
+  position: absolute;
+  z-index: 10;
+  backdrop-filter: blur(5px);
+`
+
+export const LoadIcon = styled(LoaderIcon)`
+  color: ${p => p.theme.color.interactive08};
+  height: 70px;
+  width: 70px;
+  opacity: .4;
 `

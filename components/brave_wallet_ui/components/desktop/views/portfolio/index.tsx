@@ -32,7 +32,7 @@ import {
   WithHideBalancePlaceholder
 } from '../../'
 
-// import NFTDetails from './components/nft-details'
+import NFTDetails from './components/nft-details'
 import TokenLists from './components/token-lists'
 import AccountsAndTransactionsList from './components/accounts-and-transctions-list'
 
@@ -87,7 +87,6 @@ const Portfolio = (props: Props) => {
   const history = useHistory()
 
   // redux
-  const dispatch = useDispatch()
   const {
     defaultCurrencies,
     addUserAssetError,
@@ -204,6 +203,8 @@ const Portfolio = (props: Props) => {
 
   // more custom hooks
   const parseTransaction = useTransactionParser(selectedAssetsNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
+  const { isFetchingNFTMetadata, nftMetadata } = useSelector((state: { page: PageState }) => state.page)
+  const dispatch = useDispatch()
 
   // memos / computed
 
@@ -304,6 +305,9 @@ const Portfolio = (props: Props) => {
 
   const goBack = () => {
     selectAsset(undefined)
+    if (nftMetadata) {
+      dispatch(WalletPageActions.updateNFTMetadata(undefined))
+    }
     setfilteredAssetList(userAssetList)
     toggleNav()
   }
@@ -422,15 +426,15 @@ const Portfolio = (props: Props) => {
         />
       }
 
-      {/* Temp Commented out until we have an API to get NFT MetaData */}
-      {/* {selectedAsset?.isErc721 &&
+      {selectedAsset?.isErc721 &&
         <NFTDetails
+          isLoading={isFetchingNFTMetadata}
           selectedAsset={selectedAsset}
-          nftMetadata={}
+          nftMetadata={nftMetadata}
           defaultCurrencies={defaultCurrencies}
           selectedNetwork={selectedNetwork}
         />
-      } */}
+      }
 
       <AccountsAndTransactionsList
         formattedFullAssetBalance={formattedFullAssetBalance}
