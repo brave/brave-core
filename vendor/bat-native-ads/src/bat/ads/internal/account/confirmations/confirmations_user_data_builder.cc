@@ -8,6 +8,7 @@
 #include "base/check_op.h"
 #include "base/values.h"
 #include "bat/ads/internal/account/user_data/build_channel_user_data.h"
+#include "bat/ads/internal/account/user_data/catalog_user_data.h"
 #include "bat/ads/internal/account/user_data/conversion_user_data.h"
 #include "bat/ads/internal/account/user_data/created_at_timestamp_user_data.h"
 #include "bat/ads/internal/account/user_data/locale_user_data.h"
@@ -39,6 +40,9 @@ void ConfirmationsUserDataBuilder::Build(
         const base::DictionaryValue build_channel_user_data =
             user_data::GetBuildChannel();
         user_data.MergeDictionary(&build_channel_user_data);
+
+        const base::DictionaryValue catalog_user_data = user_data::GetCatalog();
+        user_data.MergeDictionary(&catalog_user_data);
 
         const base::DictionaryValue created_at_timestamp_user_data =
             user_data::GetCreatedAtTimestamp(time_);
