@@ -19,7 +19,6 @@
 #include "bat/ads/internal/locale/supported_subdivision_codes.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/logging_util.h"
-#include "bat/ads/internal/server/ads_server_util.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "bat/ads/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"

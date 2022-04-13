@@ -30,7 +30,6 @@
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info_aliases.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
-#include "bat/ads/internal/server/ads_server_util.h"
 #include "bat/ads/internal/time_formatting_util.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "net/http/http_status_code.h"

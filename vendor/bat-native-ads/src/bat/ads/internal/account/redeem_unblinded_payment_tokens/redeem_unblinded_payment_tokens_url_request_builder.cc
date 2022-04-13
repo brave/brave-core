@@ -14,7 +14,7 @@
 #include "bat/ads/internal/account/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info.h"
-#include "bat/ads/internal/server/confirmations_server_util.h"
+#include "bat/ads/internal/server/server_host_util.h"
 #include "bat/ads/internal/server/via_header_util.h"
 #include "wrapper.hpp"
 
@@ -57,7 +57,7 @@ mojom::UrlRequestPtr RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
 
 std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v2/confirmation/payment/%s",
-                            confirmations::server::GetHost().c_str(),
+                            server::GetNonAnonymousHost().c_str(),
                             wallet_.id.c_str());
 }
 

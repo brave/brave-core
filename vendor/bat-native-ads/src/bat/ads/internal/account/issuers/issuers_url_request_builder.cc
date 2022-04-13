@@ -6,7 +6,7 @@
 #include "bat/ads/internal/account/issuers/issuers_url_request_builder.h"
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/server/confirmations_server_util.h"
+#include "bat/ads/internal/server/server_host_util.h"
 
 namespace ads {
 
@@ -27,8 +27,7 @@ mojom::UrlRequestPtr IssuersUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string IssuersUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v1/issuers/",
-                            confirmations::server::GetHost().c_str());
+  return base::StringPrintf("%s/v1/issuers/", server::GetStaticHost().c_str());
 }
 
 }  // namespace ads

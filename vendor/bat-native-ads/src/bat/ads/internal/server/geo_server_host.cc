@@ -1,25 +1,27 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/server/confirmations_server_util.h"
+#include "bat/ads/internal/server/geo_server_host.h"
 
 #include "bat/ads/ads.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-namespace confirmations {
-namespace server {
 
 namespace {
 
-constexpr char kProductionHost[] = "https://ads-serve.brave.com";
-constexpr char kStagingHost[] = "https://ads-serve.bravesoftware.com";
+constexpr char kProductionHost[] = "https://geo.ads.brave.com";
+constexpr char kStagingHost[] = "https://geo.ads.bravesoftware.com";
 
 }  // namespace
 
-std::string GetHost() {
+GeoServerHost::GeoServerHost() = default;
+
+GeoServerHost::~GeoServerHost() = default;
+
+std::string GeoServerHost::Get() const {
   switch (g_environment) {
     case mojom::Environment::kProduction: {
       return kProductionHost;
@@ -31,6 +33,4 @@ std::string GetHost() {
   }
 }
 
-}  // namespace server
-}  // namespace confirmations
 }  // namespace ads
