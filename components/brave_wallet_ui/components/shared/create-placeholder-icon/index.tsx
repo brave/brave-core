@@ -5,7 +5,7 @@ import { background } from 'ethereum-blockies'
 import { BraveWallet } from '../../../constants/types'
 
 // Utils
-import { stripERC20TokenImageURL, isRemoteImageURL, isValidIconExtension } from '../../../utils/string-utils'
+import { stripERC20TokenImageURL, isFromDifferentOrigin, isValidIconExtension, httpifyIpfsUrl } from '../../../utils/string-utils'
 
 // Styled components
 import { IconWrapper, PlaceholderText } from './style'
@@ -49,14 +49,13 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
     )
 
     const tokenImageURL = stripERC20TokenImageURL(asset.logo)
-    const isRemoteURL = isRemoteImageURL(tokenImageURL)
+    const isRemoteURL = isFromDifferentOrigin(tokenImageURL)
     const isDataURL = asset.logo.startsWith('chrome://erc-token-images/')
     const isStorybook = asset.logo.startsWith('static/media/components/brave_wallet_ui/')
 
     const isValidIcon = React.useMemo(() => {
       if (isRemoteURL || isDataURL) {
-        const url = new URL(asset.logo)
-        return isValidIconExtension(url.pathname)
+        return tokenImageURL?.includes('data:image/') ? true : isValidIconExtension(new URL(asset.logo).pathname)
       }
       if (isStorybook) {
         return true
@@ -76,7 +75,7 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
 
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
-        return `chrome://image?${tokenImageURL}`
+        return httpifyIpfsUrl(tokenImageURL)
       }
       return ''
     }, [tokenImageURL])

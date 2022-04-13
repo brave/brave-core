@@ -23,6 +23,7 @@ import {
 } from '../constants/action_types'
 import {
   BraveWallet,
+  NFTMetadataReturnType,
   UpdateAccountNamePayloadType
 } from '../../constants/types'
 
@@ -58,3 +59,6 @@ export const setMetaMaskInitialized = createAction<boolean>('setMetaMaskInitiali
 export const importFromCryptoWallets = createAction<ImportFromExternalWalletPayloadType>('importFromCryptoWallets')
 export const importFromMetaMask = createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask')
 export const openWalletSettings = createAction('openWalletSettings')
+export const getNFTMetadata = createAction<BraveWallet.BlockchainToken>('getNFTMetadata')
+export const setIsFetchingNFTMetadata = createAction<boolean>('setIsFetchingNFTMetadata')
+export const updateNFTMetadata = createAction<NFTMetadataReturnType | undefined>('updateNFTMetadata')

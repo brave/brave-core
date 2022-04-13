@@ -4,7 +4,6 @@ import MooncatProjectIcon from '../../assets/png-icons/mooncat-project-icon.png'
 
 export const mockNFTMetadata: NFTMetadataReturnType[] = [
   {
-    chain: '0x1',
     chainName: 'Ethereum',
     tokenType: 'ERC721',
     tokenID: '0x42a5',
