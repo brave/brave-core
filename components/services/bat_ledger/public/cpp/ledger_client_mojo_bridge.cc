@@ -400,12 +400,16 @@ void LedgerClientMojoBridge::DecryptString(const std::string& value,
   std::move(callback).Run(ledger_client_->DecryptString(value));
 }
 
-void LedgerClientMojoBridge::BackUpVgBodies() {
-  ledger_client_->BackUpVgBodies();
+void LedgerClientMojoBridge::OnBackUpVgBodies(
+    ledger::type::Result result,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies) {
+  ledger_client_->OnBackUpVgBodies(result, std::move(vg_bodies));
 }
 
-void LedgerClientMojoBridge::BackUpVgSpendStatuses() {
-  ledger_client_->BackUpVgSpendStatuses();
+void LedgerClientMojoBridge::OnBackUpVgSpendStatuses(
+    ledger::type::Result result,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
+  ledger_client_->OnBackUpVgSpendStatuses(result, std::move(vg_spend_statuses));
 }
 
 }  // namespace bat_ledger
