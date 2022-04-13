@@ -5,11 +5,19 @@
 
 #include "brave/components/brave_federated/client/federated_client.h"
 
+#include<chrono>
+#include<thread>
+
 #include <iostream>
 #include <memory>
 #include <sstream>
 #include <string>
 #include <vector>
+
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
+#include "base/threading/sequence_bound.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 
 #include "brave/components/brave_federated/client/model.h"
 #include "brave/components/brave_federated/linear_algebra_util/linear_algebra_util.h"
@@ -22,20 +30,25 @@ FederatedClient::FederatedClient(const std::string& task_name,
                                  std::string client_id)
     : client_id_(client_id), task_name_(task_name), model_(model) {}
 
-FederatedClient::~FederatedClient() {}
+FederatedClient::~FederatedClient() {
+  Stop();
+}
 
 void FederatedClient::Start() {
-  // TODO
+  base::SequenceBound<start> flwr_communication(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+           base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN}));
 
   // Define a server address
-  std::string server_add = "127.0.0.1:8888";
-
-  // Start client
-  start::start_client(server_add, this);
+  std::string server_add = "localhost:56102";
+  std::cout << "Starting the client..." << std::endl;
+  
+  this->communication_in_progress_ = true;
+  flwr_communication.AsyncCall(&start::start_client).WithArgs(server_add, this, 536870912);
 }
 
 void FederatedClient::Stop() {
-  // TODO
+  this->communication_in_progress_ = false;
 }
 
 Model* FederatedClient::GetModel() {
@@ -51,6 +64,9 @@ void FederatedClient::SetTestData(std::vector<std::vector<float>> test_data) {
   test_data_ = test_data;
 }
 
+bool FederatedClient::is_communicating() {
+  return this->communication_in_progress_;
+}
 /**
  * Return the current local model parameters
  * Simple string are used for now to test communication, needs updates in the

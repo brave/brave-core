@@ -33,6 +33,7 @@ class FederatedClient : public flwr::Client {
   void SetTestData(std::vector<std::vector<float>> test_data);
 
   void set_parameters(flwr::Parameters params);
+  bool is_communicating() override;
   flwr::ParametersRes get_parameters() override;
   flwr::PropertiesRes get_properties(flwr::PropertiesIns ins) override;
   flwr::EvaluateRes evaluate(flwr::EvaluateIns ins) override;
@@ -42,6 +43,7 @@ class FederatedClient : public flwr::Client {
   // TODO() : Constraints: 1. Bound number of participations
   //                       2. Min batch size
   //                       3. Gradient clipping
+  bool communication_in_progress_;
   std::string client_id_;
   std::string task_name_ = "";
   Model* model_;

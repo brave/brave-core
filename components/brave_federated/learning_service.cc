@@ -51,15 +51,17 @@ LearningService::LearningService(DataStoreService* data_store_service,
 
   clients_.insert(std::make_pair(kAdNotificationTaskName,
                                  std::move(ad_notification_client)));
-
   auto callback = base::BindOnce(
       &LearningService::AdNotificationLogsLoadComplete, base::Unretained(this));
   ad_timing_data_store->LoadLogs(std::move(callback));
 
   eligibility_service_->AddObserver(this);
+
+  StartParticipating();
 }
 
 LearningService::~LearningService() {
+  StopParticipating();
   eligibility_service_->RemoveObserver(this);
 }
 

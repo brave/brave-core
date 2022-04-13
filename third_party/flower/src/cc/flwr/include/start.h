@@ -54,9 +54,12 @@ using grpc::Status;
 
 class start {
  public:
-  static void start_client(
+  start();
+
+  void start_client(
       std::string server_address,
       flwr::Client* client,
       int grpc_max_message_length = GRPC_MAX_MESSAGE_LENGTH);
 };
+
 #endif

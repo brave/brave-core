@@ -33,6 +33,8 @@ class Client {
   virtual ParametersRes get_parameters() = 0;
 
   virtual PropertiesRes get_properties(PropertiesIns ins) = 0;
+
+  virtual bool is_communicating() = 0;
   /**
    *
    * @brief Refine the provided weights using the locally held dataset
