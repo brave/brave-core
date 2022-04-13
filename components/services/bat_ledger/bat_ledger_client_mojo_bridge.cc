@@ -406,12 +406,17 @@ absl::optional<std::string> BatLedgerClientMojoBridge::DecryptString(
   return result;
 }
 
-void BatLedgerClientMojoBridge::BackUpVgBodies() {
-  bat_ledger_client_->BackUpVgBodies();
+void BatLedgerClientMojoBridge::OnBackUpVgBodies(
+    ledger::type::Result result,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies) {
+  bat_ledger_client_->OnBackUpVgBodies(result, std::move(vg_bodies));
 }
 
-void BatLedgerClientMojoBridge::BackUpVgSpendStatuses() {
-  bat_ledger_client_->BackUpVgSpendStatuses();
+void BatLedgerClientMojoBridge::OnBackUpVgSpendStatuses(
+    ledger::type::Result result,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
+  bat_ledger_client_->OnBackUpVgSpendStatuses(result,
+                                              std::move(vg_spend_statuses));
 }
 
 }  // namespace bat_ledger

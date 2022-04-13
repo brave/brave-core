@@ -261,8 +261,8 @@ interface BatLedgerClient {
 
   [Sync]
   DecryptString(string value) => (string? decrypted);
+  
+  OnBackUpVgBodies(ledger.mojom.Result result, array<ledger.mojom.VgBody> vg_bodies);
 
-  BackUpVgBodies();
-
-  BackUpVgSpendStatuses();
+  OnBackUpVgSpendStatuses(ledger.mojom.Result result, array<ledger.mojom.VgSpendStatus> vg_spend_statuses);
 };
