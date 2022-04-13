@@ -125,38 +125,50 @@ TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
   }
 }
 
-TEST(JsonRpcResponseParserUnitTest, ConvertSingleUint64Result) {
+TEST(JsonRpcResponseParserUnitTest, ConvertUint64ToString) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" + std::to_string(UINT64_MAX) +
       "}";
 
-  EXPECT_EQ(brave_wallet::ConvertSingleUint64Result(json).value(),
+  EXPECT_EQ(ConvertUint64ToString("/result", json).value(),
             "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +
                 std::to_string(UINT64_MAX) + "\"}");
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":1}";
-  EXPECT_EQ(brave_wallet::ConvertSingleUint64Result(json).value(),
+  EXPECT_EQ(ConvertUint64ToString("/result", json).value(),
             "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"1\"}");
 
+  EXPECT_FALSE(ConvertUint64ToString("", json));
+
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":-1}";
-  EXPECT_FALSE(brave_wallet::ConvertSingleUint64Result(json));
+  EXPECT_FALSE(ConvertUint64ToString("/result", json));
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":1.2}";
-  EXPECT_FALSE(brave_wallet::ConvertSingleUint64Result(json));
+  EXPECT_FALSE(ConvertUint64ToString("/result", json));
 
   json = "bad json";
-  EXPECT_FALSE(brave_wallet::ConvertSingleUint64Result(json));
+  EXPECT_FALSE(ConvertUint64ToString("/result", json));
 
-  EXPECT_FALSE(brave_wallet::ConvertSingleUint64Result(""));
+  EXPECT_FALSE(ConvertUint64ToString("/result", ""));
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"1\"}";
-  EXPECT_FALSE(brave_wallet::ConvertSingleUint64Result(json));
+  EXPECT_FALSE(ConvertUint64ToString("/result", json));
 
   json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{}}";
-  EXPECT_FALSE(brave_wallet::ConvertSingleUint64Result(json));
+  EXPECT_FALSE(ConvertUint64ToString("/result", json));
 
-  json = "{\"jsonrpc\":\"2.0\",\"id\":1}";
-  EXPECT_FALSE(brave_wallet::ConvertSingleUint64Result(json));
+  json = R"({"jsonrpc":"2.0","id":1,"result":{"value":18446744073709551615}})";
+  EXPECT_EQ(
+      *ConvertUint64ToString("/result/value", json),
+      R"({"id":1,"jsonrpc":"2.0","result":{"value":"18446744073709551615"}})");
+
+  json = R"({"jsonrpc": "2.0", "id": 1,
+             "error": {
+               "code":-32601,
+               "message":"method does not exist"
+             }
+            })";
+  EXPECT_EQ(*ConvertUint64ToString("/result", json), json);
 }
 
 }  // namespace brave_wallet

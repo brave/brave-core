@@ -2355,10 +2355,11 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaLatestBlockhash) {
                  "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
                  "{\"context\":{\"slot\":1069},\"value\":{\"blockhash\":"
                  "\"EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N\", "
-                 "\"lastValidBlockHeight\":3090}}}");
+                 "\"lastValidBlockHeight\":18446744073709551615}}}");
 
   TestGetSolanaLatestBlockhash("EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N",
-                               3090, mojom::SolanaProviderError::kSuccess, "");
+                               UINT64_MAX, mojom::SolanaProviderError::kSuccess,
+                               "");
 
   // Response parsing error
   SetInterceptor(expected_network_url, "getLatestBlockhash", "",
@@ -2705,12 +2706,12 @@ TEST_F(JsonRpcServiceUnitTest, GetFilTransactionCount) {
   SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL);
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
                  "Filecoin.MpoolGetNonce", "",
-                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":1}");
+                 R"({"jsonrpc":"2.0","id":1,"result":18446744073709551615})");
 
   json_rpc_service_->GetFilTransactionCount(
       "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
       base::BindOnce(&OnFilUint256Response, &callback_called,
-                     mojom::FilecoinProviderError::kSuccess, "", 1));
+                     mojom::FilecoinProviderError::kSuccess, "", UINT64_MAX));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
@@ -2725,7 +2726,8 @@ TEST_F(JsonRpcServiceUnitTest, GetFilTransactionCount) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  SetInvalidJsonInterceptor();
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                 "Filecoin.MpoolGetNonce", "", R"({"jsonrpc":"2.0","id":1})");
   json_rpc_service_->GetFilTransactionCount(
       "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
       base::BindOnce(&OnFilUint256Response, &callback_called,
@@ -2750,13 +2752,14 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaBlockHeight) {
   auto expected_network_url =
       GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL);
   SetInterceptor(expected_network_url, "getBlockHeight", "",
-                 R"({"jsonrpc":"2.0", "id":1, "result":5566})");
+                 R"({"jsonrpc":"2.0", "id":1, "result":18446744073709551615})");
 
-  TestGetSolanaBlockHeight(5566, mojom::SolanaProviderError::kSuccess, "");
+  TestGetSolanaBlockHeight(UINT64_MAX, mojom::SolanaProviderError::kSuccess,
+                           "");
 
   // Response parsing error
   SetInterceptor(expected_network_url, "getBlockHeight", "",
-                 R"({"jsonrpc":"2.0","id":1,"result":"not expected"})");
+                 R"({"jsonrpc":"2.0","id":1})");
   TestGetSolanaBlockHeight(0, mojom::SolanaProviderError::kParsingError,
                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 

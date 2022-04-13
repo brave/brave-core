@@ -417,10 +417,13 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                        mojom::ProviderError error,
                        const std::string& error_message);
 
-  void RequestInternal(const std::string& json_payload,
-                       bool auto_retry_on_network_change,
-                       const GURL& network_url,
-                       RequestIntermediateCallback callback);
+  void RequestInternal(
+      const std::string& json_payload,
+      bool auto_retry_on_network_change,
+      const GURL& network_url,
+      RequestIntermediateCallback callback,
+      api_request_helper::APIRequestHelper::ResponseConversionCallback
+          conversion_callback);
   void OnEthChainIdValidatedForOrigin(
       mojom::NetworkInfoPtr chain,
       const url::Origin& origin,

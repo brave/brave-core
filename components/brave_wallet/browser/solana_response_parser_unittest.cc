@@ -102,7 +102,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetLatestBlockhash) {
             },
             "value": {
               "blockhash":"EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N",
-              "lastValidBlockHeight": 18446744073709551615
+              "lastValidBlockHeight": "18446744073709551615"
             }
           }
          })";
@@ -118,7 +118,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetLatestBlockhash) {
       R"({"jsonrpc":"2.0", "id":1, "result":{"value":{}}})",
       R"({"jsonrpc":"2.0", "id":1, "result":{"value":{"blockhash":""}}})",
       R"({"jsonrpc":"2.0", "id":1, "result":{"value":{"blockhash":"EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N"}}})",
-      R"({"jsonrpc":"2.0", "id":1, "result":{"value":{"lastValidBlockHeight: 3090}}})",
+      R"({"jsonrpc":"2.0", "id":1, "result":{"value":{"lastValidBlockHeight": "3090"}}})",
   };
   for (const auto& invalid_json : invalid_jsons)
     EXPECT_FALSE(
@@ -314,17 +314,18 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
 
 TEST(SolanaResponseParserUnitTest, ParseGetFeeForMessage) {
   uint64_t fee = 0u;
-  std::string json = R"({"jsonrpc":2.0, "id":1, "result":{"value":12345}})";
+  std::string json = R"({"jsonrpc":"2.0", "id":1, "result":{"value":12345}})";
   EXPECT_TRUE(ParseGetFeeForMessage(json, &fee));
   EXPECT_EQ(fee, 12345u);
 
   EXPECT_TRUE(ParseGetFeeForMessage(
-      R"({"jsonrpc":2.0, "id":1, "result":{"value":null}})", &fee));
+      R"({"jsonrpc":"2.0", "id":1, "result":{"value":null}})", &fee));
   EXPECT_EQ(fee, 0u);
 
   std::vector<std::string> invalid_jsons = {
-      R"({"jsonrpc":2.0, "id":1})", R"({"jsonrpc":2.0, "id":1, "result":{}})",
-      R"({"jsonrpc":2.0, "id":1, "result":{"value":{}}})"};
+      R"({"jsonrpc":"2.0", "id":1})",
+      R"({"jsonrpc":"2.0", "id":1, "result":{}})",
+      R"({"jsonrpc":"2.0", "id":1, "result":{"value":{}}})"};
   for (const auto& invalid_json : invalid_jsons)
     EXPECT_FALSE(ParseGetFeeForMessage(invalid_json, &fee)) << invalid_json;
 
@@ -332,19 +333,20 @@ TEST(SolanaResponseParserUnitTest, ParseGetFeeForMessage) {
 }
 
 TEST(SolanaResponseParserUnitTest, ParseGetBlockHeight) {
-  std::string json = R"({"jsonrpc":2.0,"id":1,"result":18446744073709551615})";
+  std::string json =
+      R"({"jsonrpc":"2.0","id":1,"result":"18446744073709551615"})";
 
   uint64_t block_height = 0;
   EXPECT_TRUE(ParseGetBlockHeight(json, &block_height));
   EXPECT_EQ(block_height, UINT64_MAX);
 
   std::vector<std::string> invalid_jsons = {
-      R"({"jsonrpc":2.0, "id":1})",
-      R"({"jsonrpc":2.0, "id":1, "result":{}})",
-      R"({"jsonrpc":2.0, "id":1, "result":null})",
-      R"({"jsonrpc":2.0, "id":1, "result":-1})",
-      R"({"jsonrpc":2.0, "id":1, "result":1.2})",
-      R"({"jsonrpc":2.0, "id":1, "result":"1"})"};
+      R"({"jsonrpc":"2.0", "id":1})",
+      R"({"jsonrpc":"2.0", "id":1, "result":{}})",
+      R"({"jsonrpc":"2.0", "id":1, "result":null})",
+      R"({"jsonrpc":"2.0", "id":1, "result":-1})",
+      R"({"jsonrpc":"2.0", "id":1, "result":1.2})",
+      R"({"jsonrpc":"2.0", "id":1, "result":1})"};
   for (const auto& invalid_json : invalid_jsons)
     EXPECT_FALSE(ParseGetBlockHeight(invalid_json, &block_height))
         << invalid_json;

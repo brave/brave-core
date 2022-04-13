@@ -111,13 +111,8 @@ bool ParseGetLatestBlockhash(const std::string& json,
                              uint64_t* last_valid_block_height) {
   DCHECK(hash && last_valid_block_height);
 
-  std::string converted_json(json::convert_uint64_value_to_string(
-      "/result/value/lastValidBlockHeight", json));
-  if (converted_json.empty())
-    return false;
-
   base::Value result;
-  if (!ParseResult(converted_json, &result) || !result.is_dict())
+  if (!ParseResult(json, &result) || !result.is_dict())
     return false;
 
   base::Value* value = result.FindDictKey("value");
@@ -265,10 +260,8 @@ bool ParseGetFeeForMessage(const std::string& json, uint64_t* fee) {
 bool ParseGetBlockHeight(const std::string& json, uint64_t* block_height) {
   DCHECK(block_height);
 
-  absl::optional<std::string> converted_json = ConvertSingleUint64Result(json);
   std::string block_height_string;
-  if (!converted_json || !brave_wallet::ParseSingleStringResult(
-                             *converted_json, &block_height_string))
+  if (!brave_wallet::ParseSingleStringResult(json, &block_height_string))
     return false;
 
   if (block_height_string.empty())
