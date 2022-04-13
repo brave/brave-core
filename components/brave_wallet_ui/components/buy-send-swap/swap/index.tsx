@@ -43,7 +43,7 @@ export interface Props {
   fromAssetBalance: ReturnType<typeof useSwap>['fromAssetBalance']
   isSwapButtonDisabled: ReturnType<typeof useSwap>['isSwapButtonDisabled']
   onCustomSlippageToleranceChange: ReturnType<typeof useSwap>['onCustomSlippageToleranceChange']
-  onSelectExpiration: ReturnType<typeof useSwap>['onSelectExpiration']
+  setOrderExpiration: ReturnType<typeof useSwap>['setOrderExpiration']
   onSelectPresetAmount: ReturnType<typeof useSwap>['onSelectPresetAmount']
   onSelectSlippageTolerance: ReturnType<typeof useSwap>['onSelectSlippageTolerance']
   onSubmitSwap: ReturnType<typeof useSwap>['onSubmitSwap']
@@ -73,7 +73,7 @@ function Swap (props: Props) {
     onChangeSwapView,
     onCustomSlippageToleranceChange,
     onFilterAssetList,
-    onSelectExpiration,
+    setOrderExpiration,
     onSelectPresetAmount,
     onSelectSlippageTolerance,
     onSubmitSwap,
@@ -207,7 +207,7 @@ function Swap (props: Props) {
         componentType='selector'
         orderType={orderType}
         onSelectSlippageTolerance={onSelectSlippageTolerance}
-        onSelectExpiration={onSelectExpiration}
+        onSelectExpiration={setOrderExpiration}
         slippageTolerance={slippageTolerance}
         orderExpiration={orderExpiration}
         customSlippageTolerance={customSlippageTolerance}
