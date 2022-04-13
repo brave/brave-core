@@ -61,6 +61,10 @@ class DatabaseCredsBatch: public DatabaseTable {
   void OnGetRecords(
       type::DBCommandResponsePtr response,
       GetCredsBatchListCallback callback);
+
+  void TriggerBackup(type::Result result,
+                     const std::vector<std::string>& trigger_ids,
+                     ledger::ResultCallback callback);
 };
 
 }  // namespace database

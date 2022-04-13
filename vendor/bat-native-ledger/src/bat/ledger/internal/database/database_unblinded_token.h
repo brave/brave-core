@@ -18,6 +18,9 @@ namespace database {
 using GetUnblindedTokenListCallback =
     std::function<void(type::UnblindedTokenList)>;
 
+using GetTokenIdsByTriggersCallback =
+    std::function<void(const absl::optional<std::vector<std::string>>&)>;
+
 class DatabaseUnblindedToken: public DatabaseTable {
  public:
   explicit DatabaseUnblindedToken(LedgerImpl* ledger);
@@ -54,6 +57,10 @@ class DatabaseUnblindedToken: public DatabaseTable {
       const std::vector<type::CredsBatchType>& batch_types,
       GetUnblindedTokenListCallback callback);
 
+  void GetTokenIdsByTriggers(type::CredsBatchType trigger_type,
+                             const std::vector<std::string>& trigger_ids,
+                             GetTokenIdsByTriggersCallback callback);
+
  private:
   void OnGetRecords(
       type::DBCommandResponsePtr response,
@@ -63,6 +70,13 @@ class DatabaseUnblindedToken: public DatabaseTable {
       type::DBCommandResponsePtr response,
       size_t expected_row_count,
       ledger::ResultCallback callback);
+
+  void OnGetTokenIdsByTriggers(type::DBCommandResponsePtr response,
+                               GetTokenIdsByTriggersCallback callback);
+
+  void TriggerBackup(type::Result result,
+                     const std::vector<std::string>& token_ids,
+                     ledger::ResultCallback callback);
 };
 
 }  // namespace database
