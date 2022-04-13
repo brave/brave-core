@@ -171,7 +171,10 @@ source_set("unit_tests") {
     "//testing/gtest",
   ]
   if (!is_android && !is_ios) {
-    sources += [ "ethereum_provider_impl_unittest.cc" ]
+    sources += [
+      "ethereum_provider_impl_unittest.cc",
+      "solana_provider_impl_unittest.cc",
+    ]
     deps += [
       ":brave_wallet_delegate",
       "//brave/components/brave_wallet/common:common_constants",
