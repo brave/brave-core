@@ -119,3 +119,4 @@ export const setTransactionProviderError = createAction<SetTransactionProviderEr
 export const setSelectedCoin = createAction<BraveWallet.CoinType>('setSelectedCoin')
 export const setDefaultNetworks = createAction<BraveWallet.NetworkInfo[]>('setDefaultNetworks')
 export const setSelectedNetworkFilter = createAction<BraveWallet.NetworkInfo>('setSelectedNetworkFilter')
+export const setDefaultAccounts = createAction<BraveWallet.AccountInfo[]>('setDefaultAccounts')

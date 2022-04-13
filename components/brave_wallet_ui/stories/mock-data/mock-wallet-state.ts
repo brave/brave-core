@@ -294,5 +294,14 @@ export const mockWalletState: WalletState = {
   defaultNetworks: [mockNetwork],
   isTestNetworksEnabled: true,
   selectedCoin: BraveWallet.CoinType.ETH,
-  selectedNetworkFilter: AllNetworksOption
+  selectedNetworkFilter: AllNetworksOption,
+  defaultAccounts: [
+    {
+      address: mockAccount.address,
+      coin: mockAccount.coin,
+      name: mockAccount.name,
+      isImported: false,
+      hardware: undefined
+    }
+  ]
 }

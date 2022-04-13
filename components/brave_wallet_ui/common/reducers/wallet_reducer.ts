@@ -97,6 +97,7 @@ const defaultState: WalletState = {
   },
   transactionProviderErrorRegistry: {},
   defaultNetworks: [] as BraveWallet.NetworkInfo[],
+  defaultAccounts: [] as BraveWallet.AccountInfo[],
   selectedNetworkFilter: AllNetworksOption,
   solFeeEstimates: undefined
 }
@@ -501,6 +502,13 @@ export const createWalletReducer = (initialState: WalletState) => {
     return {
       ...state,
       defaultNetworks: payload
+    }
+  })
+
+  reducer.on(WalletActions.setDefaultAccounts, (state: WalletState, payload: BraveWallet.AccountInfo[]): WalletState => {
+    return {
+      ...state,
+      defaultAccounts: payload
     }
   })
 

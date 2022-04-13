@@ -105,7 +105,8 @@ function Container (props: Props) {
     activeOrigin,
     defaultCurrencies,
     transactions,
-    userVisibleTokensInfo
+    userVisibleTokensInfo,
+    defaultAccounts
   } = props.wallet
 
   const {
@@ -117,7 +118,8 @@ function Container (props: Props) {
     switchChainRequest,
     suggestedTokenRequest,
     getEncryptionPublicKeyRequest,
-    decryptRequest
+    decryptRequest,
+    connectingAccounts
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -152,8 +154,14 @@ function Container (props: Props) {
   } = useSend()
 
   React.useEffect(() => {
-    setSelectedAccounts([selectedAccount])
-  }, [selectedAccount])
+    if (selectedPanel === 'connectWithSite') {
+      const foundDefaultAccountInfo = defaultAccounts.find(account => connectingAccounts.includes(account.address.toLowerCase()))
+      const foundDefaultAccount = accounts.find((account) => account.address.toLowerCase() === foundDefaultAccountInfo?.address?.toLowerCase() ?? '')
+      if (foundDefaultAccount) {
+        setSelectedAccounts([foundDefaultAccount])
+      }
+    }
+  }, [selectedPanel, defaultAccounts, connectingAccounts, accounts])
 
   React.useEffect(() => {
     if (hasIncorrectPassword) {

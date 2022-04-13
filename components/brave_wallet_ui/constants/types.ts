@@ -226,6 +226,7 @@ export interface WalletState {
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   defaultNetworks: BraveWallet.NetworkInfo[]
   selectedNetworkFilter: BraveWallet.NetworkInfo
+  defaultAccounts: BraveWallet.AccountInfo[]
 }
 
 export interface PanelState {
