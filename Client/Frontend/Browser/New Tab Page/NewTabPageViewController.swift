@@ -11,6 +11,7 @@ import Shared
 import BraveShared
 import BraveCore
 import SnapKit
+import SwiftUI
 
 /// The behavior for sizing sections when the user is in landscape orientation
 enum NTPLandscapeSizingBehavior {
@@ -783,8 +784,12 @@ class NewTabPageViewController: UIViewController {
     assert(
       !AppConstants.buildChannel.isPublic,
       "Debug settings are not accessible on public builds")
-    let settings = BraveNewsDebugSettingsController(dataSource: feedDataSource)
-    let container = UINavigationController(rootViewController: settings)
+    let settings = BraveNewsDebugSettingsView(dataSource: feedDataSource) { [weak self] in
+      self?.dismiss(animated: true)
+    }
+    let container = UINavigationController(
+      rootViewController: UIHostingController(rootView: settings)
+    )
     present(container, animated: true)
   }
 }

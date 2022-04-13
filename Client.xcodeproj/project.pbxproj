@@ -269,7 +269,7 @@
 		2729E7D326F502AC00200648 /* AccountPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2729E7D226F502AC00200648 /* AccountPicker.swift */; };
 		272B862B270BD96F005ED304 /* SandboxInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272B862A270BD96F005ED304 /* SandboxInspectorView.swift */; };
 		273EB3A72422AB24002A8AAF /* PaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9616E6A240EE43F00667C2D /* PaymentRequest.swift */; };
-		273FCB9A25A7BC5500F279B5 /* BraveNewsDebugSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FCB9925A7BC5500F279B5 /* BraveNewsDebugSettingsController.swift */; };
+		273FCB9A25A7BC5500F279B5 /* BraveNewsDebugSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FCB9925A7BC5500F279B5 /* BraveNewsDebugSettingsView.swift */; };
 		274398E224E4827800E79605 /* FeedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398E124E4827800E79605 /* FeedCard.swift */; };
 		274398E524E4829900E79605 /* FeedFillStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398E424E4829900E79605 /* FeedFillStrategy.swift */; };
 		274398E724E483AD00E79605 /* FeedItemMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398E624E483AD00E79605 /* FeedItemMenu.swift */; };
@@ -1963,7 +1963,7 @@
 		2727369A24A65F650096DCB9 /* UIActionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIActionExtensions.swift; sourceTree = "<group>"; };
 		2729E7D226F502AC00200648 /* AccountPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPicker.swift; sourceTree = "<group>"; };
 		272B862A270BD96F005ED304 /* SandboxInspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxInspectorView.swift; sourceTree = "<group>"; };
-		273FCB9925A7BC5500F279B5 /* BraveNewsDebugSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveNewsDebugSettingsController.swift; sourceTree = "<group>"; };
+		273FCB9925A7BC5500F279B5 /* BraveNewsDebugSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveNewsDebugSettingsView.swift; sourceTree = "<group>"; };
 		274398E124E4827800E79605 /* FeedCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCard.swift; sourceTree = "<group>"; };
 		274398E424E4829900E79605 /* FeedFillStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFillStrategy.swift; sourceTree = "<group>"; };
 		274398E624E483AD00E79605 /* FeedItemMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemMenu.swift; sourceTree = "<group>"; };
@@ -4704,7 +4704,7 @@
 			isa = PBXGroup;
 			children = (
 				27D67CEC24D07EB800066D83 /* BraveNewsSettingsViewController.swift */,
-				273FCB9925A7BC5500F279B5 /* BraveNewsDebugSettingsController.swift */,
+				273FCB9925A7BC5500F279B5 /* BraveNewsDebugSettingsView.swift */,
 				27B68E9325C8911D002D0826 /* BraveNewsAddSourceViewController.swift */,
 				27FD3F7725C8B0E700696156 /* BraveNewsAddSourceResultsViewController.swift */,
 			);
@@ -8709,7 +8709,7 @@
 				D0625CA8208FC47A0081F3B2 /* BrowserViewController+DownloadQueueDelegate.swift in Sources */,
 				2F44FCC71A9E8CF500FD20CC /* SearchSettingsTableViewController.swift in Sources */,
 				2FDF290825DEE265001E5C87 /* AddToPlaylistActivity.swift in Sources */,
-				273FCB9A25A7BC5500F279B5 /* BraveNewsDebugSettingsController.swift in Sources */,
+				273FCB9A25A7BC5500F279B5 /* BraveNewsDebugSettingsView.swift in Sources */,
 				39A359E41BFCCE94006B9E87 /* UserActivityHandler.swift in Sources */,
 				CA8D5C2026D7D04C009BF13D /* PlaylistMediaStreamer.swift in Sources */,
 				0AF6B1EA24A0EE19005417FC /* InstallVPNView.swift in Sources */,
