@@ -128,21 +128,20 @@ class AdsService : public KeyedService {
 
   virtual void OnResourceComponentUpdated(const std::string& id) = 0;
 
-  virtual void OnNewTabPageAdEvent(
-      const std::string& uuid,
+  virtual void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::NewTabPageAdEventType event_type) = 0;
 
-  virtual void OnPromotedContentAdEvent(
-      const std::string& uuid,
+  virtual void TriggerPromotedContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::PromotedContentAdEventType event_type) = 0;
 
   virtual void GetInlineContentAd(const std::string& dimensions,
                                   OnGetInlineContentAdCallback callback) = 0;
-
-  virtual void OnInlineContentAdEvent(
-      const std::string& uuid,
+  virtual void TriggerInlineContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::InlineContentAdEventType event_type) = 0;
 

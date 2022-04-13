@@ -116,7 +116,7 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
 
     const std::string* creative_instance_id =
         data.FindStringKey(kCreativeInstanceIDKey);
-    ads_service_->OnNewTabPageAdEvent(
+    ads_service_->TriggerNewTabPageAdEvent(
         wallpaper_id, creative_instance_id ? *creative_instance_id : "",
         ads::mojom::NewTabPageAdEventType::kViewed);
   }
@@ -275,7 +275,7 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
   if (!ads_service_)
     return;
 
-  ads_service_->OnNewTabPageAdEvent(
+  ads_service_->TriggerNewTabPageAdEvent(
       wallpaper_id, creative_instance_id,
       ads::mojom::NewTabPageAdEventType::kClicked);
 }

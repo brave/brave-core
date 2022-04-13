@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 NS_SWIFT_NAME(AdNotification)
 @interface AdNotificationIOS : NSObject
-@property(nonatomic, readonly) NSString* uuid;
+@property(nonatomic, readonly) NSString* placementID;
 @property(nonatomic, readonly) NSString* creativeInstanceID;
 @property(nonatomic, readonly) NSString* creativeSetID;
 @property(nonatomic, readonly) NSString* campaignID;

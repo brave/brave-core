@@ -66,7 +66,7 @@ class BatAdsAdNotificationTest : public AdNotificationObserver,
   }
 
   void OnAdNotificationEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const mojom::AdNotificationEventType event_type) override {
     did_fail_to_fire_event_ = true;
   }

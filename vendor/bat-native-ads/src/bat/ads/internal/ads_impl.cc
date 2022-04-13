@@ -344,16 +344,16 @@ void AdsImpl::OnResourceComponentUpdated(const std::string& id) {
   }
 }
 
-bool AdsImpl::GetAdNotification(const std::string& uuid,
+bool AdsImpl::GetAdNotification(const std::string& placement_id,
                                 AdNotificationInfo* notification) {
   DCHECK(notification);
-  return ad_notifications_->Get(uuid, notification);
+  return ad_notifications_->Get(placement_id, notification);
 }
 
-void AdsImpl::OnAdNotificationEvent(
-    const std::string& uuid,
+void AdsImpl::TriggerAdNotificationEvent(
+    const std::string& placement_id,
     const mojom::AdNotificationEventType event_type) {
-  ad_notification_->FireEvent(uuid, event_type);
+  ad_notification_->FireEvent(placement_id, event_type);
 }
 
 void AdsImpl::GetNewTabPageAd(GetNewTabPageAdCallback callback) {
@@ -368,18 +368,19 @@ void AdsImpl::GetNewTabPageAd(GetNewTabPageAdCallback callback) {
       });
 }
 
-void AdsImpl::OnNewTabPageAdEvent(
-    const std::string& uuid,
+void AdsImpl::TriggerNewTabPageAdEvent(
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type) {
-  new_tab_page_ad_->FireEvent(uuid, creative_instance_id, event_type);
+  new_tab_page_ad_->FireEvent(placement_id, creative_instance_id, event_type);
 }
 
-void AdsImpl::OnPromotedContentAdEvent(
-    const std::string& uuid,
+void AdsImpl::TriggerPromotedContentAdEvent(
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) {
-  promoted_content_ad_->FireEvent(uuid, creative_instance_id, event_type);
+  promoted_content_ad_->FireEvent(placement_id, creative_instance_id,
+                                  event_type);
 }
 
 void AdsImpl::GetInlineContentAd(const std::string& dimensions,
@@ -396,11 +397,11 @@ void AdsImpl::GetInlineContentAd(const std::string& dimensions,
       });
 }
 
-void AdsImpl::OnInlineContentAdEvent(
-    const std::string& uuid,
+void AdsImpl::TriggerInlineContentAdEvent(
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) {
-  inline_content_ad_->FireEvent(uuid, creative_instance_id, event_type);
+  inline_content_ad_->FireEvent(placement_id, creative_instance_id, event_type);
 }
 
 void AdsImpl::TriggerSearchResultAdEvent(
@@ -616,10 +617,10 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
 }
 
 void AdsImpl::InitializeBrowserManager() {
-  const bool is_foreground = AdsClientHelper::Get()->IsForeground();
+  const bool is_browser_active = AdsClientHelper::Get()->IsBrowserActive();
 
-  BrowserManager::Get()->SetForegrounded(is_foreground);
-  BrowserManager::Get()->SetActive(is_foreground ? true : false);
+  BrowserManager::Get()->SetForegrounded(is_browser_active);
+  BrowserManager::Get()->SetActive(is_browser_active);
 }
 
 void AdsImpl::InitializeDatabase(InitializeCallback callback) {
@@ -869,10 +870,10 @@ void AdsImpl::OnAdNotificationTimedOut(const AdNotificationInfo& ad) {
 }
 
 void AdsImpl::OnAdNotificationEventFailed(
-    const std::string& uuid,
+    const std::string& placement_id,
     const mojom::AdNotificationEventType event_type) {
-  BLOG(1, "Failed to fire ad notification " << event_type << " event for uuid "
-                                            << uuid);
+  BLOG(1, "Failed to fire ad notification "
+              << event_type << " event for placement id " << placement_id);
 }
 
 void AdsImpl::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
@@ -901,11 +902,11 @@ void AdsImpl::OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {
 }
 
 void AdsImpl::OnNewTabPageAdEventFailed(
-    const std::string& uuid,
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type) {
   BLOG(1, "Failed to fire new tab page ad "
-              << event_type << " event for uuid " << uuid
+              << event_type << " event for placement id " << placement_id
               << " and creative instance id " << creative_instance_id);
 }
 
@@ -922,11 +923,11 @@ void AdsImpl::OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) {
 }
 
 void AdsImpl::OnPromotedContentAdEventFailed(
-    const std::string& uuid,
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) {
   BLOG(1, "Failed to fire promoted content ad "
-              << event_type << " event for uuid " << uuid
+              << event_type << " event for placement id " << placement_id
               << " and creative instance id " << creative_instance_id);
 }
 
@@ -948,11 +949,11 @@ void AdsImpl::OnInlineContentAdClicked(const InlineContentAdInfo& ad) {
 }
 
 void AdsImpl::OnInlineContentAdEventFailed(
-    const std::string& uuid,
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) {
   BLOG(1, "Failed to fire inline content ad "
-              << event_type << " event for uuid " << uuid
+              << event_type << " event for placement id " << placement_id
               << " and creative instance id " << creative_instance_id);
 }
 

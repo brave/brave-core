@@ -28,7 +28,7 @@ class InlineContentAdObserver : public base::CheckedObserver {
 
   // Invoked when an inline content ad event fails
   virtual void OnInlineContentAdEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type) {}
 

@@ -30,26 +30,27 @@ AdsClientMojoBridge::AdsClientMojoBridge(
 
 AdsClientMojoBridge::~AdsClientMojoBridge() = default;
 
-bool AdsClientMojoBridge::IsForeground(
-    bool* out_is_foreground) {
-  DCHECK(out_is_foreground);
-  *out_is_foreground = ads_client_->IsForeground();
+bool AdsClientMojoBridge::IsBrowserActive(bool* out_is_browser_active) {
+  DCHECK(out_is_browser_active);
+  *out_is_browser_active = ads_client_->IsBrowserActive();
   return true;
 }
 
-void AdsClientMojoBridge::IsForeground(
-    IsForegroundCallback callback) {
-  std::move(callback).Run(ads_client_->IsForeground());
+void AdsClientMojoBridge::IsBrowserActive(IsBrowserActiveCallback callback) {
+  std::move(callback).Run(ads_client_->IsBrowserActive());
 }
 
-bool AdsClientMojoBridge::IsFullScreen(bool* out_is_full_screen) {
-  DCHECK(out_is_full_screen);
-  *out_is_full_screen = ads_client_->IsFullScreen();
+bool AdsClientMojoBridge::IsBrowserInFullScreenMode(
+    bool* out_is_browser_in_full_screen_mode) {
+  DCHECK(out_is_browser_in_full_screen_mode);
+  *out_is_browser_in_full_screen_mode =
+      ads_client_->IsBrowserInFullScreenMode();
   return true;
 }
 
-void AdsClientMojoBridge::IsFullScreen(IsFullScreenCallback callback) {
-  std::move(callback).Run(ads_client_->IsFullScreen());
+void AdsClientMojoBridge::IsBrowserInFullScreenMode(
+    IsBrowserInFullScreenModeCallback callback) {
+  std::move(callback).Run(ads_client_->IsBrowserInFullScreenMode());
 }
 
 bool AdsClientMojoBridge::CanShowBackgroundNotifications(
@@ -102,18 +103,17 @@ void AdsClientMojoBridge::GetAdEvents(const std::string& ad_type,
   std::move(callback).Run(ads_client_->GetAdEvents(ad_type, confirmation_type));
 }
 
-bool AdsClientMojoBridge::LoadResourceForId(
-    const std::string& id,
-    std::string* out_value) {
+bool AdsClientMojoBridge::LoadDataResourceForId(const std::string& id,
+                                                std::string* out_value) {
   DCHECK(out_value);
-  *out_value = ads_client_->LoadResourceForId(id);
+  *out_value = ads_client_->LoadDataResourceForId(id);
   return true;
 }
 
-void AdsClientMojoBridge::LoadResourceForId(
+void AdsClientMojoBridge::LoadDataResourceForId(
     const std::string& id,
-    LoadResourceForIdCallback callback) {
-  std::move(callback).Run(ads_client_->LoadResourceForId(id));
+    LoadDataResourceForIdCallback callback) {
+  std::move(callback).Run(ads_client_->LoadDataResourceForId(id));
 }
 
 void AdsClientMojoBridge::ClearScheduledCaptcha() {

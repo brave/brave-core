@@ -22,9 +22,9 @@ interface BatAdsClient {
   [Sync]
   IsNetworkConnectionAvailable() => (bool available);
   [Sync]
-  IsForeground() => (bool is_foreground);
+  IsBrowserActive() => (bool is_browser_active);
   [Sync]
-  IsFullScreen() => (bool is_full_screen);
+  IsBrowserInFullScreenMode() => (bool is_browser_in_full_screen_mode);
   [Sync]
   ShouldShowNotifications() => (bool should_show);
   [Sync]
@@ -32,7 +32,7 @@ interface BatAdsClient {
   [Sync]
   GetAdEvents(string ad_type, string confirmation_type) => (array<double> ad_events);
   [Sync]
-  LoadResourceForId(string id) => (string value);
+  LoadDataResourceForId(string id) => (string value);
   [Sync]
   GetBooleanPref(string path) => (bool value);
   [Sync]
@@ -90,12 +90,12 @@ interface BatAds {
   OnMediaStopped(int32 tab_id);
   OnTabUpdated(int32 tab_id, string url, bool is_active, bool is_browser_active, bool is_incognito);
   OnTabClosed(int32 tab_id);
-  GetAdNotification(string uuid) => (string json);
-  OnAdNotificationEvent(string uuid, ads.mojom.AdNotificationEventType event_type);
-  OnNewTabPageAdEvent(string uuid, string creative_instance_id, ads.mojom.NewTabPageAdEventType event_type);
-  OnPromotedContentAdEvent(string uuid, string creative_instance_id, ads.mojom.PromotedContentAdEventType event_type);
+  GetAdNotification(string placement_id) => (string json);
+  TriggerAdNotificationEvent(string placement_id, ads.mojom.AdNotificationEventType event_type);
+  TriggerNewTabPageAdEvent(string placement_id, string creative_instance_id, ads.mojom.NewTabPageAdEventType event_type);
+  TriggerPromotedContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.PromotedContentAdEventType event_type);
   GetInlineContentAd(string size) => (bool success, string dimensions, string ad);
-  OnInlineContentAdEvent(string uuid, string creative_instance_id, ads.mojom.InlineContentAdEventType event_type);
+  TriggerInlineContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.InlineContentAdEventType event_type);
   TriggerSearchResultAdEvent(ads.mojom.SearchResultAd ad_mojom, ads.mojom.SearchResultAdEventType event_type) => (bool success, string placement_id, ads.mojom.SearchResultAdEventType event_type);
   PurgeOrphanedAdEventsForType(ads.mojom.AdType ad_type);
   RemoveAllHistory() => (bool success);

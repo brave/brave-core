@@ -34,13 +34,24 @@ void InlineContentAd::RemoveObserver(InlineContentAdObserver* observer) {
 }
 
 void InlineContentAd::FireEvent(
-    const std::string& uuid,
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) {
-  if (uuid.empty() || creative_instance_id.empty()) {
-    BLOG(1, "Failed to fire inline content ad event due to invalid uuid "
-                << uuid << " or creative instance id " << creative_instance_id);
-    NotifyInlineContentAdEventFailed(uuid, creative_instance_id, event_type);
+  if (placement_id.empty()) {
+    BLOG(1,
+         "Failed to fire inline content ad event due to an invalid placement "
+         "id");
+    NotifyInlineContentAdEventFailed(placement_id, creative_instance_id,
+                                     event_type);
+    return;
+  }
+
+  if (creative_instance_id.empty()) {
+    BLOG(1,
+         "Failed to fire inline content ad event due to an invalid creative "
+         "instance id");
+    NotifyInlineContentAdEventFailed(placement_id, creative_instance_id,
+                                     event_type);
     return;
   }
 
@@ -54,14 +65,15 @@ void InlineContentAd::FireEvent(
                "Failed to fire inline content ad event due to missing creative "
                "instance id "
                    << creative_instance_id);
-          NotifyInlineContentAdEventFailed(uuid, creative_instance_id,
+          NotifyInlineContentAdEventFailed(placement_id, creative_instance_id,
                                            event_type);
           return;
         }
 
-        const InlineContentAdInfo& ad = BuildInlineContentAd(creative_ad, uuid);
+        const InlineContentAdInfo& ad =
+            BuildInlineContentAd(creative_ad, placement_id);
 
-        FireEvent(ad, uuid, creative_instance_id, event_type);
+        FireEvent(ad, placement_id, creative_instance_id, event_type);
       });
 }
 
@@ -69,7 +81,7 @@ void InlineContentAd::FireEvent(
 
 void InlineContentAd::FireEvent(
     const InlineContentAdInfo& ad,
-    const std::string& uuid,
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) {
   database::table::AdEvents database_table;
@@ -78,16 +90,18 @@ void InlineContentAd::FireEvent(
       [=](const bool success, const AdEventList& ad_events) {
         if (!success) {
           BLOG(1, "Inline content ad: Failed to get ad events");
-          NotifyInlineContentAdEventFailed(uuid, creative_instance_id,
+          NotifyInlineContentAdEventFailed(placement_id, creative_instance_id,
                                            event_type);
           return;
         }
 
         if (event_type == mojom::InlineContentAdEventType::kViewed &&
             HasFiredAdViewedEvent(ad, ad_events)) {
-          BLOG(1, "Inline content ad: Not allowed as already viewed uuid "
-                      << uuid);
-          NotifyInlineContentAdEventFailed(uuid, creative_instance_id,
+          BLOG(1,
+               "Inline content ad: Not allowed as already fired a viewed event "
+               "for this placement id "
+                   << placement_id);
+          NotifyInlineContentAdEventFailed(placement_id, creative_instance_id,
                                            event_type);
           return;
         }
@@ -143,11 +157,11 @@ void InlineContentAd::NotifyInlineContentAdClicked(
 }
 
 void InlineContentAd::NotifyInlineContentAdEventFailed(
-    const std::string& uuid,
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) const {
   for (InlineContentAdObserver& observer : observers_) {
-    observer.OnInlineContentAdEventFailed(uuid, creative_instance_id,
+    observer.OnInlineContentAdEventFailed(placement_id, creative_instance_id,
                                           event_type);
   }
 }

@@ -13,7 +13,7 @@
 #endif
 
 @interface AdNotificationIOS ()
-@property(nonatomic, copy) NSString* uuid;
+@property(nonatomic, copy) NSString* placementID;
 @property(nonatomic, copy) NSString* creativeInstanceID;
 @property(nonatomic, copy) NSString* creativeSetID;
 @property(nonatomic, copy) NSString* campaignID;
@@ -28,7 +28,7 @@
 
 - (instancetype)initWithNotificationInfo:(const ads::AdNotificationInfo&)info {
   if ((self = [super init])) {
-    self.uuid = base::SysUTF8ToNSString(info.placement_id);
+    self.placementID = base::SysUTF8ToNSString(info.placement_id);
     self.creativeInstanceID =
         base::SysUTF8ToNSString(info.creative_instance_id);
     self.creativeSetID = base::SysUTF8ToNSString(info.creative_set_id);

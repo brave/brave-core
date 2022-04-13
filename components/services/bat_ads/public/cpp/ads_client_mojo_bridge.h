@@ -32,10 +32,12 @@ class AdsClientMojoBridge
   AdsClientMojoBridge& operator=(const AdsClientMojoBridge&) = delete;
 
   // Overridden from BatAdsClient:
-  bool IsForeground(bool* out_is_foreground) override;
-  void IsForeground(IsForegroundCallback callback) override;
-  bool IsFullScreen(bool* out_is_full_screen) override;
-  void IsFullScreen(IsFullScreenCallback callback) override;
+  bool IsBrowserActive(bool* out_is_browser_active) override;
+  void IsBrowserActive(IsBrowserActiveCallback callback) override;
+  bool IsBrowserInFullScreenMode(
+      bool* out_is_browser_in_full_screen_mosw) override;
+  void IsBrowserInFullScreenMode(
+      IsBrowserInFullScreenModeCallback callback) override;
   bool IsNetworkConnectionAvailable(bool* out_available) override;
   void IsNetworkConnectionAvailable(
       IsNetworkConnectionAvailableCallback callback) override;
@@ -52,12 +54,10 @@ class AdsClientMojoBridge
                    const std::string& confirmation_type,
                    GetAdEventsCallback callback) override;
 
-  bool LoadResourceForId(
-      const std::string& id,
-      std::string* out_value) override;
-  void LoadResourceForId(
-      const std::string& id,
-      LoadResourceForIdCallback callback) override;
+  bool LoadDataResourceForId(const std::string& id,
+                             std::string* out_value) override;
+  void LoadDataResourceForId(const std::string& id,
+                             LoadDataResourceForIdCallback callback) override;
   void ClearScheduledCaptcha() override;
   void GetScheduledCaptcha(const std::string& payment_id,
                            GetScheduledCaptchaCallback callback) override;

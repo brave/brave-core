@@ -163,9 +163,8 @@ void UnitTestBase::Initialize() {
 
   MockIsNetworkConnectionAvailable(ads_client_mock_, true);
 
-  MockIsForeground(ads_client_mock_, true);
-
-  MockIsFullScreen(ads_client_mock_, false);
+  MockIsBrowserActive(ads_client_mock_, true);
+  MockIsBrowserInFullScreenMode(ads_client_mock_, false);
 
   MockShouldShowNotifications(ads_client_mock_, true);
   MockShowNotification(ads_client_mock_);
@@ -179,7 +178,7 @@ void UnitTestBase::Initialize() {
 
   MockLoad(ads_client_mock_, temp_dir_);
   MockLoadFileResource(ads_client_mock_);
-  MockLoadResourceForId(ads_client_mock_);
+  MockLoadDataResourceForId(ads_client_mock_);
   MockSave(ads_client_mock_);
 
   MockPrefs(ads_client_mock_);

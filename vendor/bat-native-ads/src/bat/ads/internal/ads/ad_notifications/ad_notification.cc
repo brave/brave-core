@@ -29,15 +29,15 @@ void AdNotification::RemoveObserver(AdNotificationObserver* observer) {
 }
 
 void AdNotification::FireEvent(
-    const std::string& uuid,
+    const std::string& placement_id,
     const mojom::AdNotificationEventType event_type) {
-  DCHECK(!uuid.empty());
+  DCHECK(!placement_id.empty());
 
   AdNotificationInfo ad;
-  if (!AdNotifications::Get()->Get(uuid, &ad)) {
-    BLOG(1,
-         "Failed to fire ad notification event due to missing uuid " << uuid);
-    NotifyAdNotificationEventFailed(uuid, event_type);
+  if (!AdNotifications::Get()->Get(placement_id, &ad)) {
+    BLOG(1, "Failed to fire ad notification event due to missing placement id "
+                << placement_id);
+    NotifyAdNotificationEventFailed(placement_id, event_type);
     return;
   }
 
@@ -116,10 +116,10 @@ void AdNotification::NotifyAdNotificationTimedOut(
 }
 
 void AdNotification::NotifyAdNotificationEventFailed(
-    const std::string& uuid,
+    const std::string& placement_id,
     const mojom::AdNotificationEventType event_type) const {
   for (AdNotificationObserver& observer : observers_) {
-    observer.OnAdNotificationEventFailed(uuid, event_type);
+    observer.OnAdNotificationEventFailed(placement_id, event_type);
   }
 }
 

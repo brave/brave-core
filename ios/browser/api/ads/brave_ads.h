@@ -135,7 +135,7 @@ OBJC_EXPORT
     NS_SWIFT_NAME(reportTabClosed(tabId:));
 
 /// Report that an ad notification event type was triggered for a given id
-- (void)reportAdNotificationEvent:(NSString*)uuid
+- (void)reportAdNotificationEvent:(NSString*)placementId
                         eventType:(AdsAdNotificationEventType)eventType;
 
 /// Get inline content ad for the given dimensions
@@ -146,7 +146,7 @@ OBJC_EXPORT
     NS_SWIFT_NAME(inlineContentAds(dimensions:completion:));
 
 /// Report that an inline content ad event type was triggered for a given id
-- (void)reportInlineContentAdEvent:(NSString*)uuid
+- (void)reportInlineContentAdEvent:(NSString*)placementId
                 creativeInstanceId:(NSString*)creativeInstanceId
                          eventType:(AdsInlineContentAdEventType)eventType;
 
@@ -156,7 +156,7 @@ OBJC_EXPORT
                       eventType:(AdsNewTabPageAdEventType)eventType;
 
 /// Report that a promoted content ad event type was triggered for a given id
-- (void)reportPromotedContentAdEvent:(NSString*)uuid
+- (void)reportPromotedContentAdEvent:(NSString*)placementId
                   creativeInstanceId:(NSString*)creativeInstanceId
                            eventType:(AdsPromotedContentAdEventType)eventType;
 

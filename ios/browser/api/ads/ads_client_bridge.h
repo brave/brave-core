@@ -15,8 +15,8 @@
 @protocol AdsClientBridge
 @required
 
-- (bool)isForeground;
-- (bool)isFullScreen;
+- (bool)isBrowserActive;
+- (bool)isBrowserInFullScreenMode;
 - (bool)canShowBackgroundNotifications;
 - (bool)isNetworkConnectionAvailable;
 - (bool)shouldShowNotifications;
@@ -32,7 +32,7 @@
                    forDays:(const int)days_ago
                   callback:(ads::GetBrowsingHistoryCallback)callback;
 - (void)load:(const std::string&)name callback:(ads::LoadCallback)callback;
-- (std::string)loadResourceForId:(const std::string&)id;
+- (std::string)loadDataResourceForId:(const std::string&)id;
 - (void)log:(const char*)file
             line:(const int)line
     verboseLevel:(const int)verbose_level

@@ -28,7 +28,7 @@ class PromotedContentAdObserver : public base::CheckedObserver {
 
   // Invoked when a promoted content ad event fails
   virtual void OnPromotedContentAdEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::PromotedContentAdEventType event_type) {}
 

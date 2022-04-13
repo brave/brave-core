@@ -157,21 +157,21 @@ class AdsServiceImpl : public AdsService,
 
   void OnResourceComponentUpdated(const std::string& id) override;
 
-  void OnNewTabPageAdEvent(
-      const std::string& uuid,
+  void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::NewTabPageAdEventType event_type) override;
 
-  void OnPromotedContentAdEvent(
-      const std::string& uuid,
+  void TriggerPromotedContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::PromotedContentAdEventType event_type) override;
 
   void GetInlineContentAd(const std::string& dimensions,
                           OnGetInlineContentAdCallback callback) override;
 
-  void OnInlineContentAdEvent(
-      const std::string& uuid,
+  void TriggerInlineContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const ads::mojom::InlineContentAdEventType event_type) override;
 
@@ -372,9 +372,9 @@ class AdsServiceImpl : public AdsService,
   // AdsClient implementation
   bool IsNetworkConnectionAvailable() const override;
 
-  bool IsForeground() const override;
+  bool IsBrowserActive() const override;
 
-  bool IsFullScreen() const override;
+  bool IsBrowserInFullScreenMode() const override;
 
   bool ShouldShowNotifications() override;
 
@@ -403,19 +403,16 @@ class AdsServiceImpl : public AdsService,
             ads::ResultCallback callback) override;
 
   void Load(const std::string& name, ads::LoadCallback callback) override;
-
   void LoadFileResource(const std::string& id,
                         const int version,
                         ads::LoadFileCallback callback) override;
+  std::string LoadDataResourceForId(const std::string& id) override;
 
   void GetBrowsingHistory(const int max_count,
                           const int days_ago,
                           ads::GetBrowsingHistoryCallback callback) override;
-
   void OnBrowsingHistorySearchComplete(ads::GetBrowsingHistoryCallback callback,
                                        history::QueryResults results);
-
-  std::string LoadResourceForId(const std::string& id) override;
 
   void ClearScheduledCaptcha() override;
 

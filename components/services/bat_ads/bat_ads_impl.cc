@@ -124,32 +124,33 @@ void BatAdsImpl::OnTabClosed(
   ads_->OnTabClosed(tab_id);
 }
 
-void BatAdsImpl::GetAdNotification(
-    const std::string& uuid,
-    GetAdNotificationCallback callback) {
+void BatAdsImpl::GetAdNotification(const std::string& placement_id,
+                                   GetAdNotificationCallback callback) {
   ads::AdNotificationInfo notification;
-  ads_->GetAdNotification(uuid, &notification);
+  ads_->GetAdNotification(placement_id, &notification);
   std::move(callback).Run(notification.ToJson());
 }
 
-void BatAdsImpl::OnAdNotificationEvent(
-    const std::string& uuid,
+void BatAdsImpl::TriggerAdNotificationEvent(
+    const std::string& placement_id,
     const ads::mojom::AdNotificationEventType event_type) {
-  ads_->OnAdNotificationEvent(uuid, event_type);
+  ads_->TriggerAdNotificationEvent(placement_id, event_type);
 }
 
-void BatAdsImpl::OnNewTabPageAdEvent(
-    const std::string& uuid,
+void BatAdsImpl::TriggerNewTabPageAdEvent(
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::NewTabPageAdEventType event_type) {
-  ads_->OnNewTabPageAdEvent(uuid, creative_instance_id, event_type);
+  ads_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                 event_type);
 }
 
-void BatAdsImpl::OnPromotedContentAdEvent(
-    const std::string& uuid,
+void BatAdsImpl::TriggerPromotedContentAdEvent(
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::PromotedContentAdEventType event_type) {
-  ads_->OnPromotedContentAdEvent(uuid, creative_instance_id, event_type);
+  ads_->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
+                                      event_type);
 }
 
 void BatAdsImpl::GetInlineContentAd(const std::string& dimensions,
@@ -162,11 +163,12 @@ void BatAdsImpl::GetInlineContentAd(const std::string& dimensions,
   ads_->GetInlineContentAd(dimensions, get_inline_content_ads_callback);
 }
 
-void BatAdsImpl::OnInlineContentAdEvent(
-    const std::string& uuid,
+void BatAdsImpl::TriggerInlineContentAdEvent(
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::InlineContentAdEventType event_type) {
-  ads_->OnInlineContentAdEvent(uuid, creative_instance_id, event_type);
+  ads_->TriggerInlineContentAdEvent(placement_id, creative_instance_id,
+                                    event_type);
 }
 
 void BatAdsImpl::TriggerSearchResultAdEvent(
