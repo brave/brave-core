@@ -124,7 +124,7 @@ class SettingsViewController: TableViewController {
   }
 
   private func displayBraveNewsDebugMenu() {
-    let settings = BraveNewsDebugSettingsController(dataSource: feedDataSource)
+    let settings = UIHostingController(rootView: BraveNewsDebugSettingsView(dataSource: feedDataSource))
     navigationController?.pushViewController(settings, animated: true)
   }
 

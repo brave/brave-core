@@ -74,11 +74,24 @@ class FeedDataSource {
   // MARK: - Initialization
 
   init() {
+    assert(!FeedDataSource.supportedLanguages.isEmpty, "We shouldn't ever have no supported languages")
+    self.languageCode = {
+      if let code = Locale.preferredLanguages.first?.prefix(2).lowercased(),
+         FeedDataSource.supportedLanguages.contains(code) {
+        return code
+      }
+      return FeedDataSource.supportedLanguages.first!
+    }()
     restoreCachedSources()
+    
     if !AppConstants.buildChannel.isPublic,
       let savedEnvironment = Preferences.BraveNews.debugEnvironment.value,
       let environment = Environment(rawValue: savedEnvironment) {
       self.environment = environment
+      
+      if let savedLanguageCode = Preferences.BraveNews.debugLanguageCode.value {
+        self.languageCode = savedLanguageCode
+      }
     }
   }
 
@@ -115,6 +128,22 @@ class FeedDataSource {
         !AppConstants.buildChannel.isPublic,
         "Environment cannot be changed on non-public build channels")
       Preferences.BraveNews.debugEnvironment.value = environment.rawValue
+      clearCachedFiles()
+    }
+  }
+  
+  /// The language used when fetching localized resources
+  ///
+  /// Updating the language code automatically clears the current cached items if any exists
+  ///
+  /// - warning: Should only be changed in non-public releases
+  var languageCode: String {
+    didSet {
+      if oldValue == languageCode { return }
+      assert(
+        !AppConstants.buildChannel.isPublic,
+        "Language code cannot be changed on non-public build channels")
+      Preferences.BraveNews.debugLanguageCode.value = languageCode
       clearCachedFiles()
     }
   }
@@ -166,8 +195,7 @@ class FeedDataSource {
   private func resourceFilename(for resource: NewsResource) -> String {
     // "en" is the default language and thus does not get the language code inserted into the
     // file name.
-    if resource.isLocalized, let languageCode = Locale.preferredLanguages.first?.prefix(2),
-      languageCode != "en", Self.supportedLanguages.contains(String(languageCode)) {
+    if resource.isLocalized, languageCode != "en" {
       return "\(resource.name).\(languageCode).\(resource.type)"
     }
     return "\(resource.name).\(resource.type)"
