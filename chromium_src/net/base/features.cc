@@ -41,5 +41,9 @@ const base::Feature kBraveFirstPartyEphemeralStorage{
 const base::Feature kBravePartitionBlobStorage{
     "BravePartitionBlobStorage", base::FEATURE_ENABLED_BY_DEFAULT};
 
+// Partition HSTS state storage by top frame site.
+const base::Feature kBravePartitionHSTS{"BravePartitionHSTS",
+                                        base::FEATURE_ENABLED_BY_DEFAULT};
+
 }  // namespace features
 }  // namespace net

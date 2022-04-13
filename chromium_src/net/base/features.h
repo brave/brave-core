@@ -19,6 +19,7 @@ NET_EXPORT extern const base::FeatureParam<int>
     kBraveEphemeralStorageKeepAliveTimeInSeconds;
 NET_EXPORT extern const base::Feature kBraveFirstPartyEphemeralStorage;
 NET_EXPORT extern const base::Feature kBravePartitionBlobStorage;
+NET_EXPORT extern const base::Feature kBravePartitionHSTS;
 
 }  // namespace features
 }  // namespace net

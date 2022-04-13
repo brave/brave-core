@@ -1,5 +1,5 @@
 diff --git a/net/http/transport_security_state.cc b/net/http/transport_security_state.cc
-index 340b2e49df29ac57b2f827836bdcd3a4c63da279..6e014a9e54fdfcaef7ce32f0f03f2420ed1dbf94 100644
+index 340b2e49df29ac57b2f827836bdcd3a4c63da279..f329508de8e0407126d616bf7c547dedd84a17ad 100644
 --- a/net/http/transport_security_state.cc
 +++ b/net/http/transport_security_state.cc
 @@ -417,6 +417,7 @@ TransportSecurityState::TransportSecurityState(
@@ -10,3 +10,11 @@ index 340b2e49df29ac57b2f827836bdcd3a4c63da279..6e014a9e54fdfcaef7ce32f0f03f2420
  #endif
    // Check that there no invalid entries in the static HSTS bypass list.
    for (auto& host : hsts_host_bypass_list) {
+@@ -881,6 +882,7 @@ bool TransportSecurityState::DeleteDynamicDataForHost(const std::string& host) {
+     enabled_sts_hosts_.erase(sts_interator);
+     deleted = true;
+   }
++  BRAVE_TRANSPORT_SECURITY_STATE_DELETE_DYNAMIC_DATA_FOR_HOST
+ 
+   auto pkp_iterator = enabled_pkp_hosts_.find(hashed_host);
+   if (pkp_iterator != enabled_pkp_hosts_.end()) {
