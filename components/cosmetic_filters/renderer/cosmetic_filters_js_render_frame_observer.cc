@@ -52,14 +52,14 @@ void EnsureIsolatedWorldInitialized(int world_id) {
 CosmeticFiltersJsRenderFrameObserver::CosmeticFiltersJsRenderFrameObserver(
     content::RenderFrame* render_frame,
     const int32_t isolated_world_id,
-    GetDynamicParamsCallback get_dynamic_params_callback)
+    base::RepeatingCallback<bool(void)> get_de_amp_enabled_closure)
     : RenderFrameObserver(render_frame),
       RenderFrameObserverTracker<CosmeticFiltersJsRenderFrameObserver>(
           render_frame),
       isolated_world_id_(isolated_world_id),
       native_javascript_handle_(
           new CosmeticFiltersJSHandler(render_frame, isolated_world_id)),
-      get_dynamic_params_callback_(std::move(get_dynamic_params_callback)),
+      get_de_amp_enabled_closure_(std::move(get_de_amp_enabled_closure)),
       ready_(new base::OneShotEvent()) {}
 
 CosmeticFiltersJsRenderFrameObserver::~CosmeticFiltersJsRenderFrameObserver() {}
@@ -111,10 +111,7 @@ void CosmeticFiltersJsRenderFrameObserver::RunScriptsAtDocumentStart() {
 }
 
 void CosmeticFiltersJsRenderFrameObserver::ApplyRules() {
-  auto dynamic_params = get_dynamic_params_callback_.Run();
-  bool de_amp_enabled =
-      base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP) &&
-      dynamic_params.de_amp_enabled;
+  bool de_amp_enabled = get_de_amp_enabled_closure_.Run();
   native_javascript_handle_->ApplyRules(de_amp_enabled);
 }
 
