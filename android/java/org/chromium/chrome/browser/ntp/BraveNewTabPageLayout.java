@@ -45,7 +45,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -954,7 +953,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                                                         public boolean onDoubleTap(MotionEvent e) {
                                                             correctPosition(false);
                                                             mParentScrollView.fullScroll(
-                                                                    ScrollView.FOCUS_UP);
+                                                                    NestedScrollView.FOCUS_UP);
                                                             mRecyclerView.scrollToPosition(0);
                                                             return super.onDoubleTap(e);
                                                         }
@@ -1162,7 +1161,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                     sharedPreferencesEditor.putBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, false);
                     sharedPreferencesEditor.apply();
                     correctPosition(false);
-                    mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
+                    mParentScrollView.fullScroll(NestedScrollView.FOCUS_UP);
                     mImageCreditLayout.setAlpha(1.0f);
                     mOptinLayout.setVisibility(View.GONE);
                 }
@@ -1197,7 +1196,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
                     }
 
                     getFeed();
-                    mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
+                    mParentScrollView.fullScroll(NestedScrollView.FOCUS_UP);
                     mRecyclerView.scrollToPosition(0);
                 }
             });
