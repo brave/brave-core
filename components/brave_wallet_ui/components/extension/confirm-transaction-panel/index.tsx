@@ -23,6 +23,7 @@ import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
 import { Erc20ApproveTransactionInfo } from './erc-twenty-transaction-info'
 import { TransactionInfo } from './transaction-info'
+import BraveIcon from '../../../assets/svg-icons/brave-icon.svg'
 
 // Styled Components
 import {
@@ -205,7 +206,13 @@ function ConfirmTransactionPanel ({
 
       {isERC20Approve ? (
         <>
-          <FavIcon src={`chrome://favicon/size/64@1x/${originInfo.originSpec}`} />
+          <FavIcon
+            src={
+              originInfo.originSpec.startsWith('chrome://wallet')
+                ? BraveIcon
+                : `chrome://favicon/size/64@1x/${originInfo.originSpec}`
+            }
+          />
           <URLText>
             <CreateSiteOrigin
               originSpec={originInfo.originSpec}
