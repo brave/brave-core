@@ -41,6 +41,10 @@ public class BraveWalletUtilsTest {
         assertEquals(Utils.fromHexWei("0xB1A2BC2EC50000", 18), 0.05, 0.001);
         assertEquals(Utils.fromHexWei("0x0", 18), 0, 0.001);
         assertEquals(Utils.fromHexWei("", 18), 0, 0.001);
+        // Tests rounding, 0.069884707965941494 has to have only 8 digits after .
+        assertEquals(Utils.fromHexWei("0xf847c5898ab6f6", 18), 0.0698847, 0.000000001);
+        // Tests rounding, 23.67424743 has to have only 8 digits after .
+        assertEquals(Utils.fromHexWei("0x1488bd29b8e7b2dfe", 18), 23.67424743, 0.000000001);
     }
 
     @Test
