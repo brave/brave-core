@@ -649,15 +649,27 @@ void Database::GetSpendableUnblindedTokensByBatchTypes(
   unblinded_token_->GetSpendableRecordListByBatchTypes(batch_types, callback);
 }
 
+void Database::GetTokenIdsByTriggers(
+    type::CredsBatchType trigger_type,
+    const std::vector<std::string>& trigger_ids,
+    GetTokenIdsByTriggersCallback callback) {
+  unblinded_token_->GetTokenIdsByTriggers(trigger_type, trigger_ids,
+                                          std::move(callback));
+}
+
 /**
  * VIRTUAL GRANT BACKUP & RESTORE
  */
-void Database::BackUpVgBodies(BackUpVgBodiesCallback callback) {
-  vg_backup_restore_->BackUpVgBodies(std::move(callback));
+void Database::BackUpVgBodies(
+    BackUpVgBodiesCallback callback,
+    const absl::optional<std::vector<std::string>>& trigger_ids) {
+  vg_backup_restore_->BackUpVgBodies(std::move(callback), trigger_ids);
 }
 
-void Database::BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) {
-  vg_backup_restore_->BackUpVgSpendStatuses(std::move(callback));
+void Database::BackUpVgSpendStatuses(
+    BackUpVgSpendStatusesCallback callback,
+    const absl::optional<std::vector<std::string>>& token_ids) {
+  vg_backup_restore_->BackUpVgSpendStatuses(std::move(callback), token_ids);
 }
 
 void Database::RestoreVgs(

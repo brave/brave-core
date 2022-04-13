@@ -126,9 +126,13 @@ class BatLedgerClientMojoBridge :
 
   absl::optional<std::string> DecryptString(const std::string& name) override;
 
-  void BackUpVgBodies() override;
+  void OnBackUpVgBodies(
+      ledger::type::Result result,
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies) override;
 
-  void BackUpVgSpendStatuses() override;
+  void OnBackUpVgSpendStatuses(
+      ledger::type::Result result,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) override;
 
  private:
   bool Connected() const;
