@@ -19,11 +19,17 @@ TEST(JsonParser, ConvertUint64ToString) {
   EXPECT_TRUE(
       std::string(json::convert_uint64_value_to_string("/a", json, false))
           .empty());
+  EXPECT_TRUE(
+      std::string(json::convert_uint64_value_to_string("/a", json, true))
+          .empty());
 
   // INT64_MIN
   json = "{\"a\": " + std::to_string(INT64_MIN) + "}";
   EXPECT_TRUE(
       std::string(json::convert_uint64_value_to_string("/a", json, false))
+          .empty());
+  EXPECT_TRUE(
+      std::string(json::convert_uint64_value_to_string("/a", json, true))
           .empty());
 
   json = R"({"a": { "b/a": 1, "c": 2 }, "d": "string"})";
@@ -124,6 +130,8 @@ TEST(JsonParser, ConvertInt64ToString) {
   EXPECT_TRUE(
       std::string(json::convert_int64_value_to_string("/a", json, false))
           .empty());
+  EXPECT_TRUE(std::string(json::convert_int64_value_to_string("/a", json, true))
+                  .empty());
 
   // INT64_MAX
   json = "{\"a\": " + std::to_string(INT64_MAX) + "}";
@@ -222,10 +230,17 @@ TEST(JsonParser, ConvertStringToUint64) {
   EXPECT_TRUE(
       std::string(json::convert_string_value_to_uint64("/a", json, false))
           .empty());
+  EXPECT_TRUE(
+      std::string(json::convert_string_value_to_uint64("/a", json, true))
+          .empty());
+
   // UINT64_MAX + 1
   json = R"({\"a\":18446744073709551616})";
   EXPECT_TRUE(
       std::string(json::convert_string_value_to_uint64("/a", json, false))
+          .empty());
+  EXPECT_TRUE(
+      std::string(json::convert_string_value_to_uint64("/a", json, true))
           .empty());
 
   json = R"({"a": { "b": "1", "c": 2 }, "d": "string"})";
@@ -326,6 +341,8 @@ TEST(JsonParser, ConvertStringToInt64) {
   EXPECT_TRUE(
       std::string(json::convert_string_value_to_int64("/a", json, false))
           .empty());
+  EXPECT_TRUE(std::string(json::convert_string_value_to_int64("/a", json, true))
+                  .empty());
 
   // INT64_MAX
   json = "{\"a\": \"" + std::to_string(INT64_MAX) + "\"}";
@@ -336,6 +353,9 @@ TEST(JsonParser, ConvertStringToInt64) {
   EXPECT_TRUE(
       std::string(json::convert_string_value_to_int64("/a", json, false))
           .empty());
+  json = "{\"a\": \"9223372036854775808\"}";
+  EXPECT_TRUE(std::string(json::convert_string_value_to_int64("/a", json, true))
+                  .empty());
 
   json = R"({"a": { "b": "1", "c": 2 }, "d": "string"})";
   EXPECT_EQ(
@@ -421,6 +441,62 @@ TEST(JsonParser, ConvertStringToInt64) {
   json = R"({"a": 1 })";
   EXPECT_TRUE(std::string(json::convert_string_value_to_int64("/a", json, true))
                   .empty());
+}
+
+TEST(JsonParser, ConvertUint64InObjectArrayToString) {
+  std::string json(
+      R"({"a":[{"key":18446744073709551615},{"key":2},{"key":3}]})");
+  EXPECT_EQ(
+      std::string(
+          json::convert_uint64_in_object_array_to_string("/a", "key", json)),
+      R"({"a":[{"key":"18446744073709551615"},{"key":"2"},{"key":"3"}]})");
+
+  json = R"({"a":{"b":[{"key":18446744073709551615},{"key":2}]}})";
+  EXPECT_EQ(std::string(json::convert_uint64_in_object_array_to_string(
+                "/a/b", "key", json)),
+            R"({"a":{"b":[{"key":"18446744073709551615"},{"key":"2"}]}})");
+
+  // Null value support.
+  json = R"({"a":[{"key":18446744073709551615},{"key":null}]})";
+  EXPECT_EQ(std::string(json::convert_uint64_in_object_array_to_string(
+                "/a", "key", json)),
+            R"({"a":[{"key":"18446744073709551615"},{"key":null}]})");
+
+  // Empty object array, nothing to convert.
+  json = R"({"a":[]})";
+  EXPECT_EQ(std::string(json::convert_uint64_in_object_array_to_string(
+                "/a", "key", json)),
+            json);
+
+  // Unchanged when path is not found.
+  json = R"({"b":[{"key":1},{"key":2}]})";
+  EXPECT_EQ(std::string(json::convert_uint64_in_object_array_to_string(
+                "/a", "key", json)),
+            json);
+
+  // When key is not found in some of the objects in the array, no need to
+  // convert those objects.
+  json = R"({"a":[{"key":1},{"diff-key":1},{"key":2}]})";
+  EXPECT_EQ(std::string(json::convert_uint64_in_object_array_to_string(
+                "/a", "key", json)),
+            R"({"a":[{"key":"1"},{"diff-key":1},{"key":"2"}]})");
+
+  std::vector<std::string> invalid_cases = {
+      // Value at path isn't an array.
+      R"({"a":{[{"key":1},{"key":2}}})",
+      // Value at path isn't an object array.
+      R"({"a":[{"key":1}, [], {"key":2}})",
+      // Value at key is not uint64 or null.
+      R"({"a":[{"key":"1"}]})",
+      // UINT64_MAX + 1
+      R"("{a":[{"key":18446744073709551616}]})",
+      // INT64_MIN
+      R"("{a":[{"key":)" + std::to_string(INT64_MIN) + "}]}"};
+  for (const auto& invalid_case : invalid_cases) {
+    EXPECT_EQ("", std::string(json::convert_uint64_in_object_array_to_string(
+                      "/a", "key", invalid_case)))
+        << invalid_case;
+  }
 }
 
 }  // namespace brave_wallet
