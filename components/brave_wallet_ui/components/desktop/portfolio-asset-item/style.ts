@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
+import { AssetIconProps, AssetIconFactory, WalletButton, AssetIconIframe } from '../../shared/style'
 
 interface StyleProps {
   disabled: boolean
@@ -60,9 +60,15 @@ export const AssetBalanceText = styled.span`
 // support with custom AssetIconFactory.
 //
 // Ref: https://styled-components.com/docs/advanced#style-objects
-export const AssetIcon = AssetIconFactory<AssetIconProps>({
+const assetIconProps = {
   width: '40px',
   height: 'auto'
+}
+export const AssetIcon = AssetIconFactory<AssetIconProps>(assetIconProps)
+export const NFTAssetIcon = AssetIconIframe<AssetIconProps>({
+  ...assetIconProps,
+  height: '40px',
+  border: 'transparent'
 })
 
 export const IconsWrapper = styled.div`

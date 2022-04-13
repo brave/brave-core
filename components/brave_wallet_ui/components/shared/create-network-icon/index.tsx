@@ -10,7 +10,7 @@ import { create } from 'ethereum-blockies'
 import { BraveWallet, SupportedTestNetworks } from '../../../constants/types'
 
 // Utils
-import { stripERC20TokenImageURL, isRemoteImageURL, isValidIconExtension } from '../../../utils/string-utils'
+import { stripERC20TokenImageURL, isFromDifferentOrigin, isValidIconExtension } from '../../../utils/string-utils'
 
 // Styled components
 import { IconWrapper, Placeholder, NetworkIcon } from './style'
@@ -36,7 +36,7 @@ function CreateNetworkIcon (props: Props) {
   )
 
   const networkImageURL = stripERC20TokenImageURL(network?.iconUrls[0])
-  const isRemoteURL = isRemoteImageURL(networkImageURL)
+  const isRemoteURL = isFromDifferentOrigin(networkImageURL)
   const isDataURL = network.iconUrls[0]?.startsWith('chrome://erc-token-images/')
   const isStorybook = network.iconUrls[0]?.startsWith('static/media/components/brave_wallet_ui/')
 

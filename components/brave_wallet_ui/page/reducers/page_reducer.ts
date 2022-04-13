@@ -8,7 +8,8 @@ import * as Actions from '../actions/wallet_page_actions'
 import {
   BraveWallet,
   PageState,
-  ImportWalletError
+  ImportWalletError,
+  NFTMetadataReturnType
 } from '../../constants/types'
 import {
   WalletCreatedPayloadType,
@@ -26,6 +27,8 @@ const defaultState: PageState = {
   importWalletError: { hasError: false },
   selectedTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   selectedAsset: undefined,
+  isFetchingNFTMetadata: true,
+  nftMetadata: undefined,
   selectedAssetFiatPrice: undefined,
   selectedAssetCryptoPrice: undefined,
   selectedAssetPriceHistory: [],
@@ -166,6 +169,21 @@ export const createPageReducer = (initialState: PageState) => {
       isMetaMaskInitialized: payload
     }
   })
+
+  reducer.on(Actions.updateNFTMetadata, (state: PageState, payload: NFTMetadataReturnType) => {
+    return {
+      ...state,
+      nftMetadata: payload
+    }
+  })
+
+  reducer.on(Actions.setIsFetchingNFTMetadata, (state: PageState, payload: boolean) => {
+    return {
+      ...state,
+      isFetchingNFTMetadata: payload
+    }
+  })
+
   return reducer
 }
 
