@@ -106,7 +106,7 @@ const touchOverriddenVectorIconFiles = () => {
 }
 
 /**
- * Checks to make sure the src/chrome/VERSION matches brave-browser's package.json version
+ * Checks to make sure the src/chrome/VERSION matches brave-core's package.json version
  */
 const checkVersionsMatch = () => {
   const srcChromeVersionDir = path.resolve(path.join(config.srcDir, 'chrome', 'VERSION'))
@@ -116,7 +116,7 @@ const checkVersionsMatch = () => {
   const braveVersionFromChromeFile = `${found[2]}.${found[3]}.${found[4]}`
   if (braveVersionFromChromeFile !== config.braveVersion) {
     // Only a warning. The CI environment will choose to proceed or not within its own script.
-    console.warn(`Version files do not match!\nsrc/chrome/VERSION: ${braveVersionFromChromeFile}\nbrave-browser package.json version: ${config.braveVersion}`)
+    console.warn(`Version files do not match!\nsrc/chrome/VERSION: ${braveVersionFromChromeFile}\nbrave-core package.json version: ${config.braveVersion}`)
   }
 }
 
