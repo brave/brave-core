@@ -167,9 +167,13 @@ class LEDGER_EXPORT LedgerClient {
   virtual absl::optional<std::string> DecryptString(
       const std::string& value) = 0;
 
-  virtual void BackUpVgBodies() = 0;
+  virtual void OnBackUpVgBodies(
+      ledger::type::Result result,
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies) = 0;
 
-  virtual void BackUpVgSpendStatuses() = 0;
+  virtual void OnBackUpVgSpendStatuses(
+      ledger::type::Result result,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) = 0;
 };
 
 }  // namespace ledger
