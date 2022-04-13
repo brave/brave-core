@@ -7,7 +7,7 @@
 
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/server/confirmations_server_util.h"
+#include "bat/ads/internal/server/server_host_util.h"
 
 namespace ads {
 
@@ -34,7 +34,7 @@ mojom::UrlRequestPtr FetchPaymentTokenUrlRequestBuilder::Build() {
 
 std::string FetchPaymentTokenUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v2/confirmation/%s/paymentToken",
-                            confirmations::server::GetHost().c_str(),
+                            server::GetAnonymousHost().c_str(),
                             confirmation_.id.c_str());
 }
 

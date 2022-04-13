@@ -6,7 +6,7 @@
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/get_subdivision_url_request_builder.h"
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/server/ads_server_util.h"
+#include "bat/ads/internal/server/server_host_util.h"
 
 namespace ads {
 namespace ad_targeting {
@@ -29,7 +29,7 @@ mojom::UrlRequestPtr GetSubdivisionUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string GetSubdivisionUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v1/getstate", server::GetHost().c_str());
+  return base::StringPrintf("%s/v1/getstate", server::GetGeoHost().c_str());
 }
 
 }  // namespace geographic

@@ -14,7 +14,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "bat/ads/internal/security/crypto_util.h"
-#include "bat/ads/internal/server/confirmations_server_util.h"
+#include "bat/ads/internal/server/server_host_util.h"
 #include "bat/ads/internal/server/via_header_util.h"
 
 namespace ads {
@@ -48,7 +48,7 @@ mojom::UrlRequestPtr RequestSignedTokensUrlRequestBuilder::Build() {
 
 std::string RequestSignedTokensUrlRequestBuilder::BuildUrl() const {
   return base::StringPrintf("%s/v2/confirmation/token/%s",
-                            confirmations::server::GetHost().c_str(),
+                            server::GetNonAnonymousHost().c_str(),
                             wallet_.id.c_str());
 }
 
