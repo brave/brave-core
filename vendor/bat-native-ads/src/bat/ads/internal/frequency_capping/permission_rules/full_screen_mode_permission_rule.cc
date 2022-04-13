@@ -39,7 +39,7 @@ bool FullScreenModePermissionRule::DoesRespectCap() {
     return true;
   }
 
-  return !AdsClientHelper::Get()->IsFullScreen();
+  return !AdsClientHelper::Get()->IsBrowserInFullScreenMode();
 }
 
 }  // namespace ads

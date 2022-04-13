@@ -64,7 +64,7 @@ class BatAdsNewTabPageAdTest : public NewTabPageAdObserver,
   }
 
   void OnNewTabPageAdEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::NewTabPageAdEventType event_type) override {
     did_fail_to_fire_event_ = true;
@@ -241,10 +241,11 @@ TEST_F(BatAdsNewTabPageAdTest, FireEventIfNotExceededAdsPerHourCap) {
 
   FireAdEvents(ad_event, ads_per_hour - 1);
 
-  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
-  new_tab_page_ad_->FireEvent(uuid, creative_ad.creative_instance_id,
+  new_tab_page_ad_->FireEvent(placement_id, creative_ad.creative_instance_id,
                               mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
@@ -263,10 +264,11 @@ TEST_F(BatAdsNewTabPageAdTest, DoNotFireEventIfExceededAdsPerHourCap) {
 
   FireAdEvents(ad_event, ads_per_hour);
 
-  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
-  new_tab_page_ad_->FireEvent(uuid, creative_ad.creative_instance_id,
+  new_tab_page_ad_->FireEvent(placement_id, creative_ad.creative_instance_id,
                               mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
@@ -287,10 +289,11 @@ TEST_F(BatAdsNewTabPageAdTest, FireEventIfNotExceededAdsPerDayCap) {
 
   AdvanceClock(base::Hours(1));
 
-  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
-  new_tab_page_ad_->FireEvent(uuid, creative_ad.creative_instance_id,
+  new_tab_page_ad_->FireEvent(placement_id, creative_ad.creative_instance_id,
                               mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
@@ -311,10 +314,11 @@ TEST_F(BatAdsNewTabPageAdTest, DoNotFireEventIfExceededAdsPerDayCap) {
 
   AdvanceClock(base::Hours(1));
 
-  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
-  new_tab_page_ad_->FireEvent(uuid, creative_ad.creative_instance_id,
+  new_tab_page_ad_->FireEvent(placement_id, creative_ad.creative_instance_id,
                               mojom::NewTabPageAdEventType::kViewed);
 
   // Assert

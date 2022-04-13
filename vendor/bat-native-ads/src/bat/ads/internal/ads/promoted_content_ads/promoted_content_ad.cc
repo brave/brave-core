@@ -35,20 +35,32 @@ void PromotedContentAd::RemoveObserver(PromotedContentAdObserver* observer) {
 }
 
 void PromotedContentAd::FireEvent(
-    const std::string& uuid,
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) {
-  if (uuid.empty() || creative_instance_id.empty()) {
-    BLOG(1, "Failed to fire promoted content ad event due to invalid uuid "
-                << uuid << " or creative instance id " << creative_instance_id);
-    NotifyPromotedContentAdEventFailed(uuid, creative_instance_id, event_type);
+  if (placement_id.empty()) {
+    BLOG(1,
+         "Failed to fire promoted content ad event due to an invalid placement "
+         "id");
+    NotifyPromotedContentAdEventFailed(placement_id, creative_instance_id,
+                                       event_type);
+    return;
+  }
+
+  if (creative_instance_id.empty()) {
+    BLOG(1,
+         "Failed to fire promoted content ad event due to an invalid creative "
+         "instance id");
+    NotifyPromotedContentAdEventFailed(placement_id, creative_instance_id,
+                                       event_type);
     return;
   }
 
   promoted_content_ads::frequency_capping::PermissionRules permission_rules;
   if (!permission_rules.HasPermission()) {
     BLOG(1, "Promoted content ad: Not allowed due to permission rules");
-    NotifyPromotedContentAdEventFailed(uuid, creative_instance_id, event_type);
+    NotifyPromotedContentAdEventFailed(placement_id, creative_instance_id,
+                                       event_type);
     return;
   }
 
@@ -62,15 +74,15 @@ void PromotedContentAd::FireEvent(
                "Failed to fire promoted content ad event due to missing "
                "creative instance id "
                    << creative_instance_id);
-          NotifyPromotedContentAdEventFailed(uuid, creative_instance_id,
+          NotifyPromotedContentAdEventFailed(placement_id, creative_instance_id,
                                              event_type);
           return;
         }
 
         const PromotedContentAdInfo& ad =
-            BuildPromotedContentAd(creative_ad, uuid);
+            BuildPromotedContentAd(creative_ad, placement_id);
 
-        FireEvent(ad, uuid, creative_instance_id, event_type);
+        FireEvent(ad, placement_id, creative_instance_id, event_type);
       });
 }
 
@@ -78,7 +90,7 @@ void PromotedContentAd::FireEvent(
 
 void PromotedContentAd::FireEvent(
     const PromotedContentAdInfo& ad,
-    const std::string& uuid,
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) {
   database::table::AdEvents database_table;
@@ -87,16 +99,18 @@ void PromotedContentAd::FireEvent(
       [=](const bool success, const AdEventList& ad_events) {
         if (!success) {
           BLOG(1, "Promoted content ad: Failed to get ad events");
-          NotifyPromotedContentAdEventFailed(uuid, creative_instance_id,
+          NotifyPromotedContentAdEventFailed(placement_id, creative_instance_id,
                                              event_type);
           return;
         }
 
         if (event_type == mojom::PromotedContentAdEventType::kViewed &&
             HasFiredAdViewedEvent(ad, ad_events)) {
-          BLOG(1, "Promoted content ad: Not allowed as already viewed uuid "
-                      << uuid);
-          NotifyPromotedContentAdEventFailed(uuid, creative_instance_id,
+          BLOG(1,
+               "Promoted content ad: Not allowed as already fired a viewed "
+               "event for this placement id "
+                   << placement_id);
+          NotifyPromotedContentAdEventFailed(placement_id, creative_instance_id,
                                              event_type);
           return;
         }
@@ -104,7 +118,7 @@ void PromotedContentAd::FireEvent(
         if (event_type == mojom::PromotedContentAdEventType::kViewed) {
           // We must fire an ad served event due to promoted content ads not
           // being delivered by the library
-          FireEvent(uuid, creative_instance_id,
+          FireEvent(placement_id, creative_instance_id,
                     mojom::PromotedContentAdEventType::kServed);
         }
 
@@ -159,11 +173,11 @@ void PromotedContentAd::NotifyPromotedContentAdClicked(
 }
 
 void PromotedContentAd::NotifyPromotedContentAdEventFailed(
-    const std::string& uuid,
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) const {
   for (PromotedContentAdObserver& observer : observers_) {
-    observer.OnPromotedContentAdEventFailed(uuid, creative_instance_id,
+    observer.OnPromotedContentAdEventFailed(placement_id, creative_instance_id,
                                             event_type);
   }
 }

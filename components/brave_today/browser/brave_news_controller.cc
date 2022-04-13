@@ -358,7 +358,7 @@ void BraveNewsController::OnPromotedItemView(
     const std::string& item_id,
     const std::string& creative_instance_id) {
   if (ads_service_ && !item_id.empty() && !creative_instance_id.empty()) {
-    ads_service_->OnPromotedContentAdEvent(
+    ads_service_->TriggerPromotedContentAdEvent(
         item_id, creative_instance_id,
         ads::mojom::PromotedContentAdEventType::kViewed);
   }
@@ -368,7 +368,7 @@ void BraveNewsController::OnPromotedItemVisit(
     const std::string& item_id,
     const std::string& creative_instance_id) {
   if (ads_service_ && !item_id.empty() && !creative_instance_id.empty()) {
-    ads_service_->OnPromotedContentAdEvent(
+    ads_service_->TriggerPromotedContentAdEvent(
         item_id, creative_instance_id,
         ads::mojom::PromotedContentAdEventType::kClicked);
   }
@@ -399,7 +399,7 @@ void BraveNewsController::OnDisplayAdVisit(
            "this profile!";
     return;
   }
-  ads_service_->OnInlineContentAdEvent(
+  ads_service_->TriggerInlineContentAdEvent(
       item_id, creative_instance_id,
       ads::mojom::InlineContentAdEventType::kClicked);
 }
@@ -424,7 +424,7 @@ void BraveNewsController::OnDisplayAdView(
            "this profile!";
     return;
   }
-  ads_service_->OnInlineContentAdEvent(
+  ads_service_->TriggerInlineContentAdEvent(
       item_id, creative_instance_id,
       ads::mojom::InlineContentAdEventType::kViewed);
 

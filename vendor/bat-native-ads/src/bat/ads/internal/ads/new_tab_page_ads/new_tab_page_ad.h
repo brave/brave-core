@@ -24,26 +24,25 @@ class NewTabPageAd final : public NewTabPageAdObserver {
   void AddObserver(NewTabPageAdObserver* observer);
   void RemoveObserver(NewTabPageAdObserver* observer);
 
-  void FireEvent(const std::string& uuid,
+  void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
                  const mojom::NewTabPageAdEventType event_type);
 
  private:
   void FireEvent(const NewTabPageAdInfo& ad,
-                 const std::string& uuid,
+                 const std::string& placement_id,
                  const std::string& creative_instance_id,
                  const mojom::NewTabPageAdEventType event_type);
 
   void NotifyNewTabPageAdEvent(
       const NewTabPageAdInfo& ad,
       const mojom::NewTabPageAdEventType event_type) const;
-
   void NotifyNewTabPageAdServed(const NewTabPageAdInfo& ad) const;
   void NotifyNewTabPageAdViewed(const NewTabPageAdInfo& ad) const;
   void NotifyNewTabPageAdClicked(const NewTabPageAdInfo& ad) const;
 
   void NotifyNewTabPageAdEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::NewTabPageAdEventType event_type) const;
 

@@ -25,7 +25,7 @@ class BatAdsFullScreenModePermissionRuleTest : public UnitTestBase {
 
 TEST_F(BatAdsFullScreenModePermissionRuleTest, AllowAd) {
   // Arrange
-  MockIsFullScreen(ads_client_mock_, false);
+  MockIsBrowserInFullScreenMode(ads_client_mock_, false);
 
   // Act
   FullScreenModePermissionRule permission_rule;
@@ -39,7 +39,7 @@ TEST_F(BatAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForAndroid) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
-  MockIsFullScreen(ads_client_mock_, true);
+  MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
   // Act
   FullScreenModePermissionRule permission_rule;
@@ -53,7 +53,7 @@ TEST_F(BatAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForIOS) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
-  MockIsFullScreen(ads_client_mock_, true);
+  MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
   // Act
   FullScreenModePermissionRule permission_rule;
@@ -65,7 +65,7 @@ TEST_F(BatAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForIOS) {
 
 TEST_F(BatAdsFullScreenModePermissionRuleTest, DoNotAllowAd) {
   // Arrange
-  MockIsFullScreen(ads_client_mock_, true);
+  MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
   // Act
   FullScreenModePermissionRule permission_rule;
@@ -90,7 +90,7 @@ TEST_F(BatAdsFullScreenModePermissionRuleTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  MockIsFullScreen(ads_client_mock_, true);
+  MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
   // Act
   FullScreenModePermissionRule permission_rule;

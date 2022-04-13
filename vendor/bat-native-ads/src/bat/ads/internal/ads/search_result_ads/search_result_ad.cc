@@ -46,7 +46,7 @@ void SearchResultAd::FireEvent(
   const SearchResultAdInfo& ad = BuildSearchResultAd(ad_mojom);
 
   if (!ad.IsValid()) {
-    BLOG(1, "Failed to fire event due to invalid search result ad");
+    BLOG(1, "Failed to fire event due to an invalid search result ad");
     NotifySearchResultAdEventFailed(ad, event_type, callback);
     return;
   }
@@ -135,8 +135,8 @@ void SearchResultAd::FireViewedEvent(
 
             if (HasFiredAdViewedEvent(ad, ad_events)) {
               BLOG(1,
-                   "Search result ad: Not allowed as already viewed placement "
-                   "id "
+                   "Search result ad: Not allowed as already fired a viewed "
+                   "event for this placement id "
                        << ad.placement_id);
               NotifySearchResultAdEventFailed(
                   ad, mojom::SearchResultAdEventType::kViewed, callback);

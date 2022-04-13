@@ -394,14 +394,15 @@ void MockIsNetworkConnectionAvailable(
       .WillByDefault(Return(is_available));
 }
 
-void MockIsForeground(const std::unique_ptr<AdsClientMock>& mock,
-                      const bool is_foreground) {
-  ON_CALL(*mock, IsForeground()).WillByDefault(Return(is_foreground));
+void MockIsBrowserActive(const std::unique_ptr<AdsClientMock>& mock,
+                         const bool is_browser_active) {
+  ON_CALL(*mock, IsBrowserActive()).WillByDefault(Return(is_browser_active));
 }
 
-void MockIsFullScreen(const std::unique_ptr<AdsClientMock>& mock,
-                      const bool is_full_screen) {
-  ON_CALL(*mock, IsFullScreen()).WillByDefault(Return(is_full_screen));
+void MockIsBrowserInFullScreenMode(const std::unique_ptr<AdsClientMock>& mock,
+                                   const bool is_browser_in_full_screen_mode) {
+  ON_CALL(*mock, IsBrowserInFullScreenMode())
+      .WillByDefault(Return(is_browser_in_full_screen_mode));
 }
 
 void MockShouldShowNotifications(const std::unique_ptr<AdsClientMock>& mock,
@@ -545,8 +546,8 @@ void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock) {
       }));
 }
 
-void MockLoadResourceForId(const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, LoadResourceForId(_))
+void MockLoadDataResourceForId(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, LoadDataResourceForId(_))
       .WillByDefault(Invoke([](const std::string& id) -> std::string {
         base::FilePath path = GetResourcesPath();
         path = path.AppendASCII(id);

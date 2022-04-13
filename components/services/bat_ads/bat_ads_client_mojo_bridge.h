@@ -34,13 +34,12 @@ class BatAdsClientMojoBridge
 
   bool IsNetworkConnectionAvailable() const override;
 
-  bool IsForeground() const override;
-
-  bool IsFullScreen() const override;
+  bool IsBrowserActive() const override;
+  bool IsBrowserInFullScreenMode() const override;
 
   void ShowNotification(const ads::AdNotificationInfo& info) override;
   bool ShouldShowNotifications() override;
-  void CloseNotification(const std::string& uuid) override;
+  void CloseNotification(const std::string& placement_id) override;
 
   void RecordAdEventForId(const std::string& id,
                           const std::string& ad_type,
@@ -77,8 +76,7 @@ class BatAdsClientMojoBridge
       const std::string& name,
       ads::LoadCallback callback) override;
 
-  std::string LoadResourceForId(
-      const std::string& id) override;
+  std::string LoadDataResourceForId(const std::string& id) override;
 
   void ClearScheduledCaptcha() override;
   void GetScheduledCaptcha(const std::string& payment_id,

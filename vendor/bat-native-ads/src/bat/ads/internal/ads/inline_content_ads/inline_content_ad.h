@@ -24,26 +24,25 @@ class InlineContentAd final : public InlineContentAdObserver {
   void AddObserver(InlineContentAdObserver* observer);
   void RemoveObserver(InlineContentAdObserver* observer);
 
-  void FireEvent(const std::string& uuid,
+  void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
                  const mojom::InlineContentAdEventType event_type);
 
  private:
   void FireEvent(const InlineContentAdInfo& ad,
-                 const std::string& uuid,
+                 const std::string& placement_id,
                  const std::string& creative_instance_id,
                  const mojom::InlineContentAdEventType event_type);
 
   void NotifyInlineContentAdEvent(
       const InlineContentAdInfo& ad,
       const mojom::InlineContentAdEventType event_type) const;
-
   void NotifyInlineContentAdServed(const InlineContentAdInfo& ad) const;
   void NotifyInlineContentAdViewed(const InlineContentAdInfo& ad) const;
   void NotifyInlineContentAdClicked(const InlineContentAdInfo& ad) const;
 
   void NotifyInlineContentAdEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type) const;
 

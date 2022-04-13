@@ -24,26 +24,25 @@ class PromotedContentAd final : public PromotedContentAdObserver {
   void AddObserver(PromotedContentAdObserver* observer);
   void RemoveObserver(PromotedContentAdObserver* observer);
 
-  void FireEvent(const std::string& uuid,
+  void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
                  const mojom::PromotedContentAdEventType event_type);
 
  private:
   void FireEvent(const PromotedContentAdInfo& ad,
-                 const std::string& uuid,
+                 const std::string& placement_id,
                  const std::string& creative_instance_id,
                  const mojom::PromotedContentAdEventType event_type);
 
   void NotifyPromotedContentAdEvent(
       const PromotedContentAdInfo& ad,
       const mojom::PromotedContentAdEventType event_type) const;
-
   void NotifyPromotedContentAdServed(const PromotedContentAdInfo& ad) const;
   void NotifyPromotedContentAdViewed(const PromotedContentAdInfo& ad) const;
   void NotifyPromotedContentAdClicked(const PromotedContentAdInfo& ad) const;
 
   void NotifyPromotedContentAdEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::PromotedContentAdEventType event_type) const;
 

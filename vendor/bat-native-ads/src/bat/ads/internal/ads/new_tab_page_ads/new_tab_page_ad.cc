@@ -34,13 +34,23 @@ void NewTabPageAd::RemoveObserver(NewTabPageAdObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void NewTabPageAd::FireEvent(const std::string& uuid,
+void NewTabPageAd::FireEvent(const std::string& placement_id,
                              const std::string& creative_instance_id,
                              const mojom::NewTabPageAdEventType event_type) {
-  if (uuid.empty() || creative_instance_id.empty()) {
-    BLOG(1, "Failed to fire new tab page ad event due to invalid uuid "
-                << uuid << " or creative instance id " << creative_instance_id);
-    NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
+  if (placement_id.empty()) {
+    BLOG(1,
+         "Failed to fire new tab page ad event due to an invalid placement id");
+    NotifyNewTabPageAdEventFailed(placement_id, creative_instance_id,
+                                  event_type);
+    return;
+  }
+
+  if (creative_instance_id.empty()) {
+    BLOG(1,
+         "Failed to fire new tab page ad event due to an invalid creative "
+         "instance id");
+    NotifyNewTabPageAdEventFailed(placement_id, creative_instance_id,
+                                  event_type);
     return;
   }
 
@@ -52,7 +62,8 @@ void NewTabPageAd::FireEvent(const std::string& uuid,
   if (event_type == mojom::NewTabPageAdEventType::kViewed &&
       !permission_rules.HasPermission()) {
     BLOG(1, "New tab page ad: Not allowed due to permission rules");
-    NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
+    NotifyNewTabPageAdEventFailed(placement_id, creative_instance_id,
+                                  event_type);
     return;
   }
 
@@ -66,20 +77,22 @@ void NewTabPageAd::FireEvent(const std::string& uuid,
                "Failed to fire new tab page ad event due to missing creative "
                "instance id "
                    << creative_instance_id);
-          NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
+          NotifyNewTabPageAdEventFailed(placement_id, creative_instance_id,
+                                        event_type);
           return;
         }
 
-        const NewTabPageAdInfo& ad = BuildNewTabPageAd(creative_ad, uuid);
+        const NewTabPageAdInfo& ad =
+            BuildNewTabPageAd(creative_ad, placement_id);
 
-        FireEvent(ad, uuid, creative_instance_id, event_type);
+        FireEvent(ad, placement_id, creative_instance_id, event_type);
       });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void NewTabPageAd::FireEvent(const NewTabPageAdInfo& ad,
-                             const std::string& uuid,
+                             const std::string& placement_id,
                              const std::string& creative_instance_id,
                              const mojom::NewTabPageAdEventType event_type) {
   database::table::AdEvents database_table;
@@ -88,15 +101,19 @@ void NewTabPageAd::FireEvent(const NewTabPageAdInfo& ad,
       [=](const bool success, const AdEventList& ad_events) {
         if (!success) {
           BLOG(1, "New tab page ad: Failed to get ad events");
-          NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
+          NotifyNewTabPageAdEventFailed(placement_id, creative_instance_id,
+                                        event_type);
           return;
         }
 
         if (event_type == mojom::NewTabPageAdEventType::kViewed &&
             HasFiredAdViewedEvent(ad, ad_events)) {
           BLOG(1,
-               "New tab page ad: Not allowed as already viewed uuid " << uuid);
-          NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
+               "New tab page ad: Not allowed as already fired a viewed event "
+               "for this placement id "
+                   << placement_id);
+          NotifyNewTabPageAdEventFailed(placement_id, creative_instance_id,
+                                        event_type);
           return;
         }
 
@@ -104,7 +121,7 @@ void NewTabPageAd::FireEvent(const NewTabPageAdInfo& ad,
           // TODO(https://github.com/brave/brave-browser/issues/14015): We need
           // to fire an ad served event until new tab page ads are served by the
           // ads library
-          FireEvent(uuid, creative_instance_id,
+          FireEvent(placement_id, creative_instance_id,
                     mojom::NewTabPageAdEventType::kServed);
         }
 
@@ -156,11 +173,12 @@ void NewTabPageAd::NotifyNewTabPageAdClicked(const NewTabPageAdInfo& ad) const {
 }
 
 void NewTabPageAd::NotifyNewTabPageAdEventFailed(
-    const std::string& uuid,
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::NewTabPageAdEventType event_type) const {
   for (NewTabPageAdObserver& observer : observers_) {
-    observer.OnNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
+    observer.OnNewTabPageAdEventFailed(placement_id, creative_instance_id,
+                                       event_type);
   }
 }
 

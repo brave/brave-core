@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 NS_SWIFT_NAME(InlineContentAd)
 @interface InlineContentAdIOS : NSObject
-@property(nonatomic, readonly, copy) NSString* uuid;
+@property(nonatomic, readonly, copy) NSString* placementID;
 @property(nonatomic, readonly, copy) NSString* creativeInstanceID;
 @property(nonatomic, readonly, copy) NSString* creativeSetID;
 @property(nonatomic, readonly, copy) NSString* campaignID;

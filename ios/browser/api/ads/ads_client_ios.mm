@@ -21,12 +21,12 @@ bool AdsClientIOS::IsNetworkConnectionAvailable() const {
   return [bridge_ isNetworkConnectionAvailable];
 }
 
-bool AdsClientIOS::IsForeground() const {
-  return [bridge_ isForeground];
+bool AdsClientIOS::IsBrowserActive() const {
+  return [bridge_ isBrowserActive];
 }
 
-bool AdsClientIOS::IsFullScreen() const {
-  return [bridge_ isFullScreen];
+bool AdsClientIOS::IsBrowserInFullScreenMode() const {
+  return [bridge_ isBrowserInFullScreenMode];
 }
 
 bool AdsClientIOS::CanShowBackgroundNotifications() const {
@@ -93,8 +93,8 @@ void AdsClientIOS::Load(const std::string& name, ads::LoadCallback callback) {
   [bridge_ load:name callback:callback];
 }
 
-std::string AdsClientIOS::LoadResourceForId(const std::string& id) {
-  return [bridge_ loadResourceForId:id];
+std::string AdsClientIOS::LoadDataResourceForId(const std::string& id) {
+  return [bridge_ loadDataResourceForId:id];
 }
 
 void AdsClientIOS::ClearScheduledCaptcha() {

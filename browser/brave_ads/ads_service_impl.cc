@@ -130,14 +130,14 @@ constexpr char kAdNotificationUrlPrefix[] = "https://www.brave.com/ads/?";
 
 const base::Feature kAdServing{"AdServing", base::FEATURE_ENABLED_BY_DEFAULT};
 
-int GetSchemaResourceId(const std::string& name) {
-  if (name == ads::g_catalog_schema_resource_id) {
+int GetDataResourceForId(const std::string& id) {
+  if (id == ads::g_catalog_schema_resource_id) {
     return IDR_ADS_CATALOG_SCHEMA;
   }
 
   NOTREACHED();
 
-  return 0;
+  return -1;
 }
 
 std::string URLMethodToRequestType(ads::mojom::UrlRequestMethod method) {
@@ -1026,8 +1026,8 @@ void AdsServiceImpl::OnShowAdNotification(const std::string& notification_id) {
     return;
   }
 
-  bat_ads_->OnAdNotificationEvent(notification_id,
-                                  ads::mojom::AdNotificationEventType::kViewed);
+  bat_ads_->TriggerAdNotificationEvent(
+      notification_id, ads::mojom::AdNotificationEventType::kViewed);
 }
 
 void AdsServiceImpl::OnCloseAdNotification(const std::string& notification_id,
@@ -1042,7 +1042,7 @@ void AdsServiceImpl::OnCloseAdNotification(const std::string& notification_id,
       by_user ? ads::mojom::AdNotificationEventType::kDismissed
               : ads::mojom::AdNotificationEventType::kTimedOut;
 
-  bat_ads_->OnAdNotificationEvent(notification_id, event_type);
+  bat_ads_->TriggerAdNotificationEvent(notification_id, event_type);
 }
 
 void AdsServiceImpl::OnClickAdNotification(const std::string& notification_id) {
@@ -1052,7 +1052,7 @@ void AdsServiceImpl::OnClickAdNotification(const std::string& notification_id) {
 
   OpenNewTabWithAd(notification_id);
 
-  bat_ads_->OnAdNotificationEvent(
+  bat_ads_->TriggerAdNotificationEvent(
       notification_id, ads::mojom::AdNotificationEventType::kClicked);
 }
 
@@ -1119,26 +1119,28 @@ void AdsServiceImpl::OnOpenNewTabWithAd(const std::string& json) {
   OpenNewTabWithUrl(notification.target_url);
 }
 
-void AdsServiceImpl::OnNewTabPageAdEvent(
-    const std::string& uuid,
+void AdsServiceImpl::TriggerNewTabPageAdEvent(
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::NewTabPageAdEventType event_type) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->OnNewTabPageAdEvent(uuid, creative_instance_id, event_type);
+  bat_ads_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                     event_type);
 }
 
-void AdsServiceImpl::OnPromotedContentAdEvent(
-    const std::string& uuid,
+void AdsServiceImpl::TriggerPromotedContentAdEvent(
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::PromotedContentAdEventType event_type) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->OnPromotedContentAdEvent(uuid, creative_instance_id, event_type);
+  bat_ads_->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
+                                          event_type);
 }
 
 void AdsServiceImpl::GetInlineContentAd(const std::string& dimensions,
@@ -1153,15 +1155,16 @@ void AdsServiceImpl::GetInlineContentAd(const std::string& dimensions,
                                  AsWeakPtr(), std::move(callback)));
 }
 
-void AdsServiceImpl::OnInlineContentAdEvent(
-    const std::string& uuid,
+void AdsServiceImpl::TriggerInlineContentAdEvent(
+    const std::string& placement_id,
     const std::string& creative_instance_id,
     const ads::mojom::InlineContentAdEventType event_type) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->OnInlineContentAdEvent(uuid, creative_instance_id, event_type);
+  bat_ads_->TriggerInlineContentAdEvent(placement_id, creative_instance_id,
+                                        event_type);
 }
 
 void AdsServiceImpl::TriggerSearchResultAdEvent(
@@ -1849,11 +1852,11 @@ bool AdsServiceImpl::IsNetworkConnectionAvailable() const {
   return !net::NetworkChangeNotifier::IsOffline();
 }
 
-bool AdsServiceImpl::IsForeground() const {
+bool AdsServiceImpl::IsBrowserActive() const {
   return BackgroundHelper::GetInstance()->IsForeground();
 }
 
-bool AdsServiceImpl::IsFullScreen() const {
+bool AdsServiceImpl::IsBrowserInFullScreenMode() const {
 #if !BUILDFLAG(IS_ANDROID)
   return IsFullScreenMode();
 #else
@@ -2072,6 +2075,14 @@ void AdsServiceImpl::Save(const std::string& name,
                      std::move(callback)));
 }
 
+void AdsServiceImpl::Load(const std::string& name, ads::LoadCallback callback) {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&LoadOnFileTaskRunner, base_path_.AppendASCII(name)),
+      base::BindOnce(&AdsServiceImpl::OnLoaded, AsWeakPtr(),
+                     std::move(callback)));
+}
+
 void AdsServiceImpl::LoadFileResource(const std::string& id,
                                       const int version,
                                       ads::LoadFileCallback callback) {
@@ -2095,6 +2106,11 @@ void AdsServiceImpl::LoadFileResource(const std::string& id,
           path.value()),
       base::BindOnce(&AdsServiceImpl::OnFileLoaded, AsWeakPtr(),
                      std::move(callback)));
+}
+
+std::string AdsServiceImpl::LoadDataResourceForId(const std::string& id) {
+  const int data_resource_id = GetDataResourceForId(id);
+  return LoadDataResourceAndDecompressIfNeeded(data_resource_id);
 }
 
 void AdsServiceImpl::GetBrowsingHistory(
@@ -2235,19 +2251,6 @@ void AdsServiceImpl::OnLogTrainingCovariates(bool success) {
   }
 
   VLOG(1) << "Successfully logged training covariates";
-}
-
-void AdsServiceImpl::Load(const std::string& name, ads::LoadCallback callback) {
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&LoadOnFileTaskRunner, base_path_.AppendASCII(name)),
-      base::BindOnce(&AdsServiceImpl::OnLoaded, AsWeakPtr(),
-                     std::move(callback)));
-}
-
-std::string AdsServiceImpl::LoadResourceForId(const std::string& id) {
-  const auto resource_id = GetSchemaResourceId(id);
-  return LoadDataResourceAndDecompressIfNeeded(resource_id);
 }
 
 void AdsServiceImpl::ClearScheduledCaptcha() {

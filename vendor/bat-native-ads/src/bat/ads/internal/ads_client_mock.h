@@ -23,9 +23,9 @@ class AdsClientMock : public AdsClient {
 
   MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());
 
-  MOCK_CONST_METHOD0(IsForeground, bool());
+  MOCK_CONST_METHOD0(IsBrowserActive, bool());
 
-  MOCK_CONST_METHOD0(IsFullScreen, bool());
+  MOCK_CONST_METHOD0(IsBrowserInFullScreenMode, bool());
 
   MOCK_METHOD0(ShouldShowNotifications, bool());
 
@@ -69,7 +69,7 @@ class AdsClientMock : public AdsClient {
                     const int days_ago,
                     GetBrowsingHistoryCallback callback));
 
-  MOCK_METHOD1(LoadResourceForId, std::string(const std::string& id));
+  MOCK_METHOD1(LoadDataResourceForId, std::string(const std::string& id));
 
   MOCK_METHOD0(ClearScheduledCaptcha, void());
 

@@ -64,7 +64,7 @@ class BatAdsPromotedContentAdTest : public PromotedContentAdObserver,
   }
 
   void OnPromotedContentAdEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::PromotedContentAdEventType event_type) override {
     did_fail_to_fire_event_ = true;
@@ -250,10 +250,12 @@ TEST_F(BatAdsPromotedContentAdTest, FireEventIfNotExceededAdsPerHourCap) {
 
   FireAdEvents(ad_event, ads_per_hour - 1);
 
-  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
-  promoted_content_ad_->FireEvent(uuid, creative_ad.creative_instance_id,
+  promoted_content_ad_->FireEvent(placement_id,
+                                  creative_ad.creative_instance_id,
                                   mojom::PromotedContentAdEventType::kViewed);
 
   // Assert
@@ -272,10 +274,12 @@ TEST_F(BatAdsPromotedContentAdTest, DoNotFireEventIfExceededAdsPerHourCap) {
   const int ads_per_hour = features::GetMaximumPromotedContentAdsPerHour();
   FireAdEvents(ad_event, ads_per_hour);
 
-  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
-  promoted_content_ad_->FireEvent(uuid, creative_ad.creative_instance_id,
+  promoted_content_ad_->FireEvent(placement_id,
+                                  creative_ad.creative_instance_id,
                                   mojom::PromotedContentAdEventType::kViewed);
 
   // Assert
@@ -297,10 +301,12 @@ TEST_F(BatAdsPromotedContentAdTest, FireEventIfNotExceededAdsPerDayCap) {
 
   AdvanceClock(base::Hours(1));
 
-  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
-  promoted_content_ad_->FireEvent(uuid, creative_ad.creative_instance_id,
+  promoted_content_ad_->FireEvent(placement_id,
+                                  creative_ad.creative_instance_id,
                                   mojom::PromotedContentAdEventType::kViewed);
 
   // Assert
@@ -322,10 +328,12 @@ TEST_F(BatAdsPromotedContentAdTest, DoNotFireEventIfExceededAdsPerDayCap) {
 
   AdvanceClock(base::Hours(1));
 
-  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Act
-  promoted_content_ad_->FireEvent(uuid, creative_ad.creative_instance_id,
+  promoted_content_ad_->FireEvent(placement_id,
+                                  creative_ad.creative_instance_id,
                                   mojom::PromotedContentAdEventType::kViewed);
 
   // Assert

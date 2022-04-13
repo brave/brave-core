@@ -22,8 +22,8 @@ class AdsClientIOS : public ads::AdsClient {
   __unsafe_unretained id<AdsClientBridge> bridge_;
 
   bool IsNetworkConnectionAvailable() const override;
-  bool IsForeground() const override;
-  bool IsFullScreen() const override;
+  bool IsBrowserActive() const override;
+  bool IsBrowserInFullScreenMode() const override;
   bool CanShowBackgroundNotifications() const override;
   void ShowNotification(const ads::AdNotificationInfo& info) override;
   bool ShouldShowNotifications() override;
@@ -48,7 +48,7 @@ class AdsClientIOS : public ads::AdsClient {
   void GetBrowsingHistory(const int max_count,
                           const int days_ago,
                           ads::GetBrowsingHistoryCallback callback) override;
-  std::string LoadResourceForId(const std::string& id) override;
+  std::string LoadDataResourceForId(const std::string& id) override;
   void ClearScheduledCaptcha() override;
   void GetScheduledCaptcha(const std::string& payment_id,
                            ads::GetScheduledCaptchaCallback callback) override;

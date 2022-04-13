@@ -34,7 +34,7 @@ class AdNotificationObserver : public base::CheckedObserver {
 
   // Invoked when an ad notification event fails
   virtual void OnAdNotificationEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const mojom::AdNotificationEventType event_type) {}
 
  protected:

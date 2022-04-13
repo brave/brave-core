@@ -167,29 +167,27 @@ class AdsImpl final : public Ads,
 
   void OnResourceComponentUpdated(const std::string& id) override;
 
-  bool GetAdNotification(const std::string& uuid,
+  bool GetAdNotification(const std::string& placement_id,
                          AdNotificationInfo* ad_notification) override;
-  void OnAdNotificationEvent(
-      const std::string& uuid,
+  void TriggerAdNotificationEvent(
+      const std::string& placement_id,
       const mojom::AdNotificationEventType event_type) override;
 
   void GetNewTabPageAd(GetNewTabPageAdCallback callback) override;
-
-  void OnNewTabPageAdEvent(
-      const std::string& uuid,
+  void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::NewTabPageAdEventType event_type) override;
 
-  void OnPromotedContentAdEvent(
-      const std::string& uuid,
+  void TriggerPromotedContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::PromotedContentAdEventType event_type) override;
 
   void GetInlineContentAd(const std::string& dimensions,
                           GetInlineContentAdCallback callback) override;
-
-  void OnInlineContentAdEvent(
-      const std::string& uuid,
+  void TriggerInlineContentAdEvent(
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type) override;
 
@@ -271,7 +269,7 @@ class AdsImpl final : public Ads,
   void OnAdNotificationDismissed(const AdNotificationInfo& ad) override;
   void OnAdNotificationTimedOut(const AdNotificationInfo& ad) override;
   void OnAdNotificationEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const mojom::AdNotificationEventType event_type) override;
 
   // NewTabPageAdServingObserver:
@@ -281,7 +279,7 @@ class AdsImpl final : public Ads,
   void OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) override;
   void OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) override;
   void OnNewTabPageAdEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::NewTabPageAdEventType event_type) override;
 
@@ -289,7 +287,7 @@ class AdsImpl final : public Ads,
   void OnPromotedContentAdViewed(const PromotedContentAdInfo& ad) override;
   void OnPromotedContentAdClicked(const PromotedContentAdInfo& ad) override;
   void OnPromotedContentAdEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::PromotedContentAdEventType event_type) override;
 
@@ -300,7 +298,7 @@ class AdsImpl final : public Ads,
   void OnInlineContentAdViewed(const InlineContentAdInfo& ad) override;
   void OnInlineContentAdClicked(const InlineContentAdInfo& ad) override;
   void OnInlineContentAdEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type) override;
 

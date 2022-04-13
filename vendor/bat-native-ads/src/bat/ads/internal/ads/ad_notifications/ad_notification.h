@@ -24,14 +24,13 @@ class AdNotification final : public AdNotificationObserver {
   void AddObserver(AdNotificationObserver* observer);
   void RemoveObserver(AdNotificationObserver* observer);
 
-  void FireEvent(const std::string& uuid,
+  void FireEvent(const std::string& placement_id,
                  const mojom::AdNotificationEventType event_type);
 
  private:
   void NotifyAdNotificationEvent(
       const AdNotificationInfo& ad,
       const mojom::AdNotificationEventType event_type) const;
-
   void NotifyAdNotificationServed(const AdNotificationInfo& ad) const;
   void NotifyAdNotificationViewed(const AdNotificationInfo& ad) const;
   void NotifyAdNotificationClicked(const AdNotificationInfo& ad) const;
@@ -39,7 +38,7 @@ class AdNotification final : public AdNotificationObserver {
   void NotifyAdNotificationTimedOut(const AdNotificationInfo& ad) const;
 
   void NotifyAdNotificationEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const mojom::AdNotificationEventType event_type) const;
 
   base::ObserverList<AdNotificationObserver> observers_;

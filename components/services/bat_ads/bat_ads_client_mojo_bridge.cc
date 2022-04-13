@@ -39,24 +39,24 @@ bool BatAdsClientMojoBridge::IsNetworkConnectionAvailable() const {
   return is_available;
 }
 
-bool BatAdsClientMojoBridge::IsForeground() const {
+bool BatAdsClientMojoBridge::IsBrowserActive() const {
   if (!connected()) {
     return false;
   }
 
-  bool is_foreground;
-  bat_ads_client_->IsForeground(&is_foreground);
-  return is_foreground;
+  bool is_browser_active;
+  bat_ads_client_->IsBrowserActive(&is_browser_active);
+  return is_browser_active;
 }
 
-bool BatAdsClientMojoBridge::IsFullScreen() const {
+bool BatAdsClientMojoBridge::IsBrowserInFullScreenMode() const {
   if (!connected()) {
     return false;
   }
 
-  bool is_full_screen;
-  bat_ads_client_->IsFullScreen(&is_full_screen);
-  return is_full_screen;
+  bool is_browser_in_full_screen_mode;
+  bat_ads_client_->IsBrowserInFullScreenMode(&is_browser_in_full_screen_mode);
+  return is_browser_in_full_screen_mode;
 }
 
 void BatAdsClientMojoBridge::ShowNotification(
@@ -79,12 +79,12 @@ bool BatAdsClientMojoBridge::ShouldShowNotifications() {
 }
 
 void BatAdsClientMojoBridge::CloseNotification(
-    const std::string& uuid) {
+    const std::string& placement_id) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->CloseNotification(uuid);
+  bat_ads_client_->CloseNotification(placement_id);
 }
 
 void BatAdsClientMojoBridge::RecordAdEventForId(
@@ -234,7 +234,7 @@ void BatAdsClientMojoBridge::Load(
   bat_ads_client_->Load(name, base::BindOnce(&OnLoad, std::move(callback)));
 }
 
-std::string BatAdsClientMojoBridge::LoadResourceForId(
+std::string BatAdsClientMojoBridge::LoadDataResourceForId(
     const std::string& id) {
   std::string value;
 
@@ -242,7 +242,7 @@ std::string BatAdsClientMojoBridge::LoadResourceForId(
     return value;
   }
 
-  bat_ads_client_->LoadResourceForId(id, &value);
+  bat_ads_client_->LoadDataResourceForId(id, &value);
   return value;
 }
 

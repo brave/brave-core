@@ -19,8 +19,8 @@ Catalog::Catalog() : catalog_(std::make_unique<CatalogInfo>()) {}
 Catalog::~Catalog() = default;
 
 bool Catalog::FromJson(const std::string& json) {
-  auto json_schema =
-      AdsClientHelper::Get()->LoadResourceForId(g_catalog_schema_resource_id);
+  const std::string json_schema = AdsClientHelper::Get()->LoadDataResourceForId(
+      g_catalog_schema_resource_id);
   return LoadFromJson(catalog_.get(), json, json_schema);
 }
 

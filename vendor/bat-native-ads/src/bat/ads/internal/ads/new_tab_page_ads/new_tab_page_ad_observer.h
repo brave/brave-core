@@ -28,7 +28,7 @@ class NewTabPageAdObserver : public base::CheckedObserver {
 
   // Invoked when a new tab page ad event fails
   virtual void OnNewTabPageAdEventFailed(
-      const std::string& uuid,
+      const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::NewTabPageAdEventType event_type) {}
 

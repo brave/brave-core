@@ -577,8 +577,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
     return;
   }
   const auto urlString = base::SysNSStringToUTF8(url.absoluteString);
-  ads->OnTabUpdated((int32_t)tabId, urlString, isSelected, [self isForeground],
-                    isPrivate);
+  ads->OnTabUpdated((int32_t)tabId, urlString, isSelected,
+                    [self isBrowserActive], isPrivate);
 }
 
 - (void)reportTabClosedWithTabId:(NSInteger)tabId {
@@ -588,13 +588,13 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   ads->OnTabClosed((int32_t)tabId);
 }
 
-- (void)reportAdNotificationEvent:(NSString*)uuid
+- (void)reportAdNotificationEvent:(NSString*)placementId
                         eventType:(AdsAdNotificationEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnAdNotificationEvent(
-      base::SysNSStringToUTF8(uuid),
+  ads->TriggerAdNotificationEvent(
+      base::SysNSStringToUTF8(placementId),
       static_cast<ads::mojom::AdNotificationEventType>(eventType));
 }
 
@@ -604,7 +604,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnNewTabPageAdEvent(
+  ads->TriggerNewTabPageAdEvent(
       base::SysNSStringToUTF8(wallpaperId),
       base::SysNSStringToUTF8(creativeInstanceId),
       static_cast<ads::mojom::NewTabPageAdEventType>(eventType));
@@ -627,26 +627,26 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   });
 }
 
-- (void)reportInlineContentAdEvent:(NSString*)uuid
+- (void)reportInlineContentAdEvent:(NSString*)placementId
                 creativeInstanceId:(NSString*)creativeInstanceId
                          eventType:(AdsInlineContentAdEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnInlineContentAdEvent(
-      base::SysNSStringToUTF8(uuid),
+  ads->TriggerInlineContentAdEvent(
+      base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
       static_cast<ads::mojom::InlineContentAdEventType>(eventType));
 }
 
-- (void)reportPromotedContentAdEvent:(NSString*)uuid
+- (void)reportPromotedContentAdEvent:(NSString*)placementId
                   creativeInstanceId:(NSString*)creativeInstanceId
                            eventType:(AdsPromotedContentAdEventType)eventType {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnPromotedContentAdEvent(
-      base::SysNSStringToUTF8(uuid),
+  ads->TriggerPromotedContentAdEvent(
+      base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
       static_cast<ads::mojom::PromotedContentAdEventType>(eventType));
 }
@@ -715,12 +715,12 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   return self.enabled;
 }
 
-- (bool)isForeground {
+- (bool)isBrowserActive {
   return UIApplication.sharedApplication.applicationState ==
          UIApplicationStateActive;
 }
 
-- (bool)isFullScreen {
+- (bool)isBrowserInFullScreenMode {
   return true;
 }
 
@@ -1165,7 +1165,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   }
 }
 
-- (const std::string)loadResourceForId:(const std::string&)id {
+- (const std::string)loadDataResourceForId:(const std::string&)id {
   const auto bundle = [NSBundle bundleForClass:[BraveAds class]];
   const auto path = [bundle pathForResource:base::SysUTF8ToNSString(id)
                                      ofType:nil];
