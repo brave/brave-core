@@ -431,12 +431,20 @@ class Database {
       const std::vector<type::CredsBatchType>& batch_types,
       GetUnblindedTokenListCallback callback);
 
+  void GetTokenIdsByTriggers(type::CredsBatchType trigger_type,
+                             const std::vector<std::string>& trigger_ids,
+                             GetTokenIdsByTriggersCallback callback);
+
   /**
    * VIRTUAL GRANT BACKUP & RESTORE
    */
-  void BackUpVgBodies(BackUpVgBodiesCallback callback);
+  void BackUpVgBodies(BackUpVgBodiesCallback callback,
+                      const absl::optional<std::vector<std::string>>&
+                          trigger_ids = absl::nullopt);
 
-  void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback);
+  void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback,
+                             const absl::optional<std::vector<std::string>>&
+                                 token_ids = absl::nullopt);
 
   void RestoreVgs(
       std::vector<sync_pb::VgBodySpecifics> vg_bodies,
