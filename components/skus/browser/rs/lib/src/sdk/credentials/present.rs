@@ -100,6 +100,32 @@ where
                         let cred = self
                             .matching_time_limited_credential(&item.id)
                             .await?
+                            .map(|Credential::TimeLimited(cred)| cred)
+                            .ok_or(InternalError::ItemCredentialsMissing)?;
+
+                        if Utc::now().naive_utc() > cred.expires_at {
+                            return Err(InternalError::ItemCredentialsExpired.into());
+                        }
+
+                        let presentation = json!({
+                            "issuedAt": cred.issued_at.date().to_string(),
+                            "expiresAt": cred.expires_at.date().to_string(),
+                            "token": cred.token,
+                        });
+
+                        (
+                            Some(format!(
+                                "{}",
+                                cred.expires_at.format("%a, %d %b %Y %H:%M:%S GMT")
+                            )),
+                            base64::encode(&serde_json::to_vec(&presentation)?),
+                        )
+                    }
+                    CredentialType::TimeLimitedV2 => {
+                        let cred = self
+                            .matching_time_limited_credential(&item.id)
+                            .await?
+                            .map(|Credential::TimeLimitedV2(cred)| cred)
                             .ok_or(InternalError::ItemCredentialsMissing)?;
 
                         if Utc::now().naive_utc() > cred.expires_at {

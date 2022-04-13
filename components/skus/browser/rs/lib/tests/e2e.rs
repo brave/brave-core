@@ -106,3 +106,19 @@ fn skus_e2e_works() {
         sdk.present_order_credentials(&order.id, &order.location, "/").await.unwrap();
     });
 }
+
+#[test]
+fn skus_timelimited_v2_e2e_works() {
+    let subscriber = FmtSubscriber::builder().with_max_level(Level::TRACE).finish();
+    tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
+
+    task::block_on(async {
+        let client = CLIClient { store: RefCell::new(CLIStore(HashMap::new())) };
+        let sdk = skus::sdk::SDK::new(client, Environment::Testing, None, None);
+        sdk.initialize().await.unwrap();
+
+        let order = sdk.create_order("time-limited-v2").await.unwrap();
+
+        sdk.fetch_order_credentials(&order.id).await.unwrap();
+    });
+}

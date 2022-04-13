@@ -98,6 +98,7 @@ pub struct UnredeemedToken {
 pub enum CredentialType {
     SingleUse,
     TimeLimited,
+    TimeLimitedV2,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -192,4 +193,28 @@ pub struct TimeLimitedCredential {
 pub struct TimeLimitedCredentials {
     pub item_id: String,
     pub creds: Vec<TimeLimitedCredential>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct TimeLimitedCredentialV2 {
+    pub id: String,
+    pub issuer_id: String,
+    pub order_id: String,
+    pub credentials: String, // TODO fix
+    pub issued_at: NaiveDateTime,
+    pub expires_at: NaiveDateTime,
+    pub token: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct TimeLimitedCredentialsV2 {
+    pub item_id: String,
+    pub creds: Vec<TimeLimitedCredentialV2>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub enum Credential {
+    SingleUse(SingleUseCredential),
+    TimeLimited(TimeLimitedCredential),
+    TimeLimitedV2(TimeLimitedCredentialV2),
 }

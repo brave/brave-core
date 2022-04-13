@@ -7,6 +7,7 @@ use tracing::{error, instrument};
 use crate::errors::{InternalError, SkusError};
 use crate::models::*;
 use crate::sdk::SDK;
+use crate::storage::Credentials;
 use crate::{HTTPClient, StorageClient};
 
 impl<U> SDK<U>
@@ -66,7 +67,7 @@ where
                         let expires_at = self
                             .last_matching_time_limited_credential(&item.id)
                             .await?
-                            .map(|cred| cred.expires_at)
+                            .map(|Credential::TimeLimited(cred)| cred.expires_at)
                             .or(expires_at);
 
                         if let Some(expires_at) = expires_at {
@@ -90,6 +91,20 @@ where
                             active,
                         })
                     }
+                    CredentialType::TimeLimitedV2 => {
+                        let active = matches!(
+                            self.matching_time_limited_credential(&item.id).await,
+                            Ok(Some(_))
+                        );
+                        let expires_at = None;
+
+                        Some(CredentialSummary {
+                            order,
+                            remaining_credential_count: 1,
+                            expires_at,
+                            active,
+                        })
+                    }
                 });
             }
         }
@@ -100,11 +115,19 @@ where
     pub async fn matching_time_limited_credential(
         &self,
         item_id: &str,
-    ) -> Result<Option<TimeLimitedCredential>, SkusError> {
+    ) -> Result<Option<Credential>, SkusError> {
         Ok(self.client.get_time_limited_creds(item_id).await?.and_then(|creds| {
-            creds.creds.into_iter().find(|cred| {
-                Utc::now().naive_utc() < cred.expires_at && Utc::now().naive_utc() > cred.issued_at
-            })
+            if let Credentials::TimeLimited(cred) = creds {
+                cred.creds
+                    .into_iter()
+                    .find(|cred| {
+                        Utc::now().naive_utc() < cred.expires_at
+                            && Utc::now().naive_utc() > cred.issued_at
+                    })
+                    .map(|cred| Credential::TimeLimited(cred))
+            } else {
+                None
+            }
         }))
     }
 
@@ -112,12 +135,20 @@ where
     pub async fn last_matching_time_limited_credential(
         &self,
         item_id: &str,
-    ) -> Result<Option<TimeLimitedCredential>, SkusError> {
+    ) -> Result<Option<Credential>, SkusError> {
         Ok(self
             .client
             .get_time_limited_creds(item_id)
             .await?
-            .and_then(|creds| creds.creds.into_iter().last()))
+            // .and_then(|creds| creds.creds.into_iter().last()))
+            .and_then(|creds| {
+                if let Credentials::TimeLimited(cred) = creds {
+                    cred.creds.into_iter().last()
+                } else {
+                    None
+                }
+            })
+            .map(|cred| Credential::TimeLimited(cred)))
     }
 
     #[instrument]

@@ -14,9 +14,10 @@ use tracing::{event, instrument, Level};
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "kebab-case")]
 #[serde(tag = "type")]
-enum Credentials {
+pub enum Credentials {
     SingleUse(SingleUseCredentials),
     TimeLimited(TimeLimitedCredentials),
+    TimeLimitedV2(TimeLimitedCredentialsV2),
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -281,7 +282,7 @@ where
     async fn get_time_limited_creds(
         &self,
         item_id: &str,
-    ) -> Result<Option<TimeLimitedCredentials>, InternalError> {
+    ) -> Result<Option<Credentials>, InternalError> {
         let mut store = self.get_store()?;
         let mut state: KVState = store.get_state()?;
 
@@ -292,9 +293,13 @@ where
         if let Some(credentials) = state.credentials.as_mut() {
             if let Some(item_credentials) = credentials.items.remove(item_id) {
                 match item_credentials {
-                    Credentials::TimeLimited(credentials) => {
+                    cred @ Credentials::TimeLimited(credentials) => {
                         event!(Level::DEBUG, credentials = ?credentials, "got credentials");
-                        return Ok(Some(credentials));
+                        return Ok(Some(cred));
+                    }
+                    cred @ Credentials::TimeLimitedV2(credentials) => {
+                        event!(Level::DEBUG, credentials = ?credentials, "got credentials");
+                        return Ok(Some(cred));
                     }
                     _ => {
                         return Err(InternalError::StorageReadFailed(
@@ -324,6 +329,33 @@ where
 
         if let Some(credentials) = state.credentials.as_mut() {
             let creds = Credentials::TimeLimited(TimeLimitedCredentials {
+                item_id: item_id.to_string(),
+                creds,
+            });
+
+            // assume that the credentials provided supercede the ones
+            // we may already have, so always overwrite the credentials
+            credentials.items.insert(item_id.to_string(), creds);
+        }
+
+        store.set_state(&state)
+    }
+
+    #[instrument]
+    async fn store_time_limited_creds_v2(
+        &self,
+        item_id: &str,
+        creds: Vec<TimeLimitedCredentialV2>,
+    ) -> Result<(), InternalError> {
+        let mut store = self.get_store()?;
+        let mut state: KVState = store.get_state()?;
+
+        if state.credentials.is_none() {
+            state.credentials = Some(CredentialsState { items: HashMap::new() });
+        }
+
+        if let Some(credentials) = state.credentials.as_mut() {
+            let creds = Credentials::TimeLimitedV2(TimeLimitedCredentialsV2 {
                 item_id: item_id.to_string(),
                 creds,
             });

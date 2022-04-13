@@ -3,7 +3,7 @@ mod kv;
 use async_trait::async_trait;
 use challenge_bypass_ristretto::voprf::*;
 
-pub use kv::{KVClient, KVStore};
+pub use kv::{Credentials, KVClient, KVStore};
 
 use crate::errors::InternalError;
 use crate::models::*;
@@ -40,10 +40,15 @@ pub trait StorageClient {
     async fn get_time_limited_creds(
         &self,
         item_id: &str,
-    ) -> Result<Option<TimeLimitedCredentials>, InternalError>;
+    ) -> Result<Option<Credentials>, InternalError>;
     async fn store_time_limited_creds(
         &self,
         item_id: &str,
         creds: Vec<TimeLimitedCredential>,
+    ) -> Result<(), InternalError>;
+    async fn store_time_limited_creds_v2(
+        &self,
+        item_id: &str,
+        creds: Vec<TimeLimitedCredentialV2>,
     ) -> Result<(), InternalError>;
 }
