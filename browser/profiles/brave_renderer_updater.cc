@@ -12,6 +12,7 @@
 #include "brave/common/brave_renderer_configuration.mojom.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -110,7 +111,7 @@ void BraveRendererUpdater::UpdateRenderer(
       brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;
 
   PrefService* pref_service = profile_->GetPrefs();
-  bool de_amp_enabled = pref_service->GetBoolean(de_amp::kDeAmpPrefEnabled);
+  bool de_amp_enabled = de_amp::IsDeAmpEnabled(pref_service);
 
   (*renderer_configuration)
       ->SetConfiguration(brave::mojom::DynamicParams::New(
