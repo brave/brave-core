@@ -28,7 +28,7 @@ namespace chrome {
 class BraveBrowserCommandController : public chrome::BrowserCommandController
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
     ,
-                                      public BraveVPNServiceObserver
+                                      public brave_vpn::BraveVPNServiceObserver
 #endif
 {
  public:
@@ -59,7 +59,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   bool UpdateCommandEnabled(int id, bool state) override;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  // BraveVPNServiceObserver overrides:
+  // brave_vpn::BraveVPNServiceObserver overrides:
   void OnPurchasedStateChanged(brave_vpn::mojom::PurchasedState state) override;
 #endif
 

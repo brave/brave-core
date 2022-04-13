@@ -14,7 +14,7 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/themes/theme_properties.h"
-#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
@@ -30,6 +30,9 @@
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/highlight_path_generator.h"
+
+using ConnectionState = brave_vpn::mojom::ConnectionState;
+using PurchasedState = brave_vpn::mojom::PurchasedState;
 
 namespace {
 
@@ -54,12 +57,13 @@ class BraveVPNButtonHighlightPathGenerator
 
 class VPNButtonMenuModel : public ui::SimpleMenuModel,
                            public ui::SimpleMenuModel::Delegate,
-                           public BraveVPNServiceObserver {
+                           public brave_vpn::BraveVPNServiceObserver {
  public:
   explicit VPNButtonMenuModel(Browser* browser)
       : SimpleMenuModel(this),
         browser_(browser),
-        service_(BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
+        service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
+            browser_->profile())) {
     DCHECK(service_);
     Observe(service_);
     Build(service_->is_purchased_user());
@@ -99,7 +103,7 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
   }
 
   raw_ptr<Browser> browser_ = nullptr;
-  raw_ptr<BraveVpnServiceDesktop> service_ = nullptr;
+  raw_ptr<brave_vpn::BraveVpnService> service_ = nullptr;
 };
 
 }  // namespace
@@ -110,7 +114,8 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
                     std::make_unique<VPNButtonMenuModel>(browser),
                     nullptr),
       browser_(browser),
-      service_(BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
+      service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
+          browser_->profile())) {
   DCHECK(service_);
   Observe(service_);
 

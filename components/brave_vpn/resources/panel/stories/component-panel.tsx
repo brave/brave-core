@@ -9,11 +9,14 @@ import * as S from './style'
 import { ConnectionState } from '../api/panel_browser_api'
 import { mockRegionList } from './mock-data/region-list'
 import ErrorPanel from '../components/error-panel'
+import ErrorSubscriptionExpired from '../components/error-subscription-failed-panel'
 import SelectRegionList from '../components/select-region-list'
 import MainPanel from '../components/main-panel'
 import SellPanel from '../components/sell-panel'
 import SettingsPanel from '../components/settings-panel'
 import LoadingPanel from '../components/loading-panel'
+import ContactSupport from '../components/contact-support'
+import './mock-data/api'
 
 export default {
   title: 'VPN/Panels',
@@ -55,7 +58,15 @@ export const _Main = () => {
 export const _Error = () => {
   return (
     <S.PanelFrame>
-      <ErrorPanel />
+      <ErrorPanel showContactSupport={() => {}} />
+    </S.PanelFrame>
+  )
+}
+
+export const _ErrorSubscriptionExpired = () => {
+  return (
+    <S.PanelFrame>
+      <ErrorSubscriptionExpired />
     </S.PanelFrame>
   )
 }
@@ -77,9 +88,10 @@ export const _SellPanel = () => {
 }
 
 export const _SettingsPanel = () => {
+  const closeSettingsPanel = () => {}
   return (
     <S.PanelFrame>
-      <SettingsPanel />
+      <SettingsPanel closeSettingsPanel={closeSettingsPanel} showContactSupport={() => {}} />
     </S.PanelFrame>
   )
 }
@@ -88,6 +100,14 @@ export const _LoadingPanel = () => {
   return (
     <S.PanelFrame>
       <LoadingPanel />
+    </S.PanelFrame>
+  )
+}
+
+export const _ContactSupportPanel = () => {
+  return (
+    <S.PanelFrame>
+      <ContactSupport onCloseContactSupport={() => {}} />
     </S.PanelFrame>
   )
 }

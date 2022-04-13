@@ -104,7 +104,7 @@ repack("resources") {
   deps += [ "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources" ]
   sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_script_generated.pak" ]
 
-  if (enable_brave_vpn) {
+  if (enable_brave_vpn && !is_android) {
     deps += [
       "//brave/components/brave_vpn/resources/panel:brave_vpn_panel_generated",
     ]

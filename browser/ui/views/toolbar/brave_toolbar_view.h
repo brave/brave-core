@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
 
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
@@ -53,14 +54,14 @@ class BraveToolbarView : public ToolbarView,
   void OnProfileWasRemoved(const base::FilePath& profile_path,
                            const std::u16string& profile_name) override;
 
-  BookmarkButton* bookmark_ = nullptr;
+  raw_ptr<BookmarkButton> bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.
   BooleanPrefMember edit_bookmarks_enabled_;
 
-  WalletButton* wallet_ = nullptr;
+  raw_ptr<WalletButton> wallet_ = nullptr;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  BraveVPNButton* brave_vpn_ = nullptr;
+  raw_ptr<BraveVPNButton> brave_vpn_ = nullptr;
   BooleanPrefMember show_brave_vpn_button_;
 #endif
 

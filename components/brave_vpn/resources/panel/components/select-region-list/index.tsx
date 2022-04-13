@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { Button, Radio } from 'brave-ui'
+import { Radio } from 'brave-ui'
+import Button from '$web-components/button'
 import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
 
 import * as S from './style'
@@ -15,6 +16,7 @@ function SelectRegion () {
   const currentRegion = useSelector(state => state.currentRegion)
   const regions = useSelector(state => state.regions)
   const [selectedRegion, setSelectedRegion] = React.useState(currentRegion)
+  const ref = React.useRef() as React.MutableRefObject<HTMLButtonElement>
 
   const handleGoBackClick = () => {
     dispatch(Actions.toggleRegionSelector(false))
@@ -33,6 +35,12 @@ function SelectRegion () {
   if (!selectedRegion) {
     console.error('Selected region is not defined')
   }
+
+  React.useEffect(() => {
+    if (ref.current && currentRegion) {
+      ref.current.scrollIntoView()
+    }
+  }, [])
 
   return (
     <S.Box>
@@ -58,6 +66,7 @@ function SelectRegion () {
               >
                 <S.RegionLabel
                   onClick={handleItemClick.bind(this, entry)}
+                  ref={(selectedRegion?.name === entry.name) ? ref : null}
                 >
                   {entry.namePretty}
                 </S.RegionLabel>
@@ -67,12 +76,13 @@ function SelectRegion () {
         </S.RegionList>
         <S.ActionArea>
           <Button
+            type={'submit'}
+            isPrimary
+            isCallToAction
             onClick={handleConnect}
-            level='primary'
-            type='accent'
-            brand='rewards'
-            text={getLocale('braveVpnConnect')}
-          />
+          >
+            {getLocale('braveVpnConnect')}
+          </Button>
         </S.ActionArea>
       </S.PanelContent>
     </S.Box>

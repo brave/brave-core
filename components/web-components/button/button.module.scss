@@ -24,6 +24,12 @@
   outline: none;
   color: var(--color);
 
+
+  &.isCallToAction {
+    width: 100%;
+    max-width: 800px;
+  }
+
   &:focus {
     outline: none;
   }

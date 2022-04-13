@@ -472,6 +472,11 @@ bool ParseJSON(base::StringPiece json,
       { "name": "payment.rewards.brave.software", "policy": "custom", "mode": "force-https", "pins": "brave"},
       { "name": "rewards.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
 
+      // Premium
+      { "name": "account.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "account.bravesoftware.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
+      { "name": "account.brave.software", "mode": "force-https", "policy": "custom", "pins": "brave"},
+
       // Test page using a CA outside of the pinset (expected to be blocked)
       { "name": "ssl-pinning.someblog.org", "policy": "custom", "mode": "force-https", "pins": "brave"}
       // =====END BRAVE HOSTS JSON=====

@@ -5,8 +5,18 @@ import { useSelector } from '../../state/hooks'
 import * as S from './style'
 import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
 
-function SettingsPanel () {
+interface Props {
+  closeSettingsPanel: React.MouseEventHandler<HTMLButtonElement>
+  showContactSupport: React.MouseEventHandler<HTMLAnchorElement>
+}
+
+function SettingsPanel (props: Props) {
   const productUrls = useSelector(state => state.productUrls)
+
+  const handleClick = (entry: string) => {
+    if (!productUrls) return
+    chrome.tabs.create({ url: productUrls?.[entry] })
+  }
 
   return (
     <S.Box>
@@ -14,35 +24,26 @@ function SettingsPanel () {
         <S.PanelHeader>
           <S.BackButton
             type='button'
-            aria-description='Go back to main panel'
+            onClick={props.closeSettingsPanel}
+            aria-label='Close settings'
           >
             <i><CaratStrongLeftIcon /></i>
-            <span>{getLocale('braveVpnSettings')}</span>
+            <span>{getLocale('braveVpnSettingsPanelHeader')}</span>
           </S.BackButton>
         </S.PanelHeader>
         <S.List>
-          <S.Card>
-            <S.CardRow>
-              <dt>{getLocale('braveVpnStatus')}</dt>
-              <dd>Yearly subscription</dd>
-            </S.CardRow>
-            <S.CardRow>
-              <dt>{getLocale('braveVpnExpires')}</dt>
-              <dd>1/12/22</dd>
-            </S.CardRow>
-            <S.CardRow>
-              <a href={productUrls?.manage} target='_blank'>
-                {getLocale('braveVpnManageSubscription')}
-              </a>
-            </S.CardRow>
-          </S.Card>
           <li>
-            <a href={productUrls?.feedback} target='_blank'>
+            <a href="#" onClick={handleClick.bind(this, 'manage')}>
+              {getLocale('braveVpnManageSubscription')}
+            </a>
+          </li>
+          <li>
+            <a href="#" onClick={props.showContactSupport}>
               {getLocale('braveVpnContactSupport')}
             </a>
           </li>
           <li>
-            <a href={productUrls?.about} target='_blank'>
+            <a href="#" onClick={handleClick.bind(this, 'about')}>
               {getLocale('braveVpnAbout')}
               {' '}
               {getLocale('braveVpn')}

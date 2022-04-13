@@ -6,14 +6,19 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_vpn/brave_vpn_service_observer.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
-class BraveVpnServiceDesktop;
+namespace brave_vpn {
+class BraveVpnService;
+}  // namespace brave_vpn
+
 class Browser;
 
-class BraveVPNButton : public ToolbarButton, public BraveVPNServiceObserver {
+class BraveVPNButton : public ToolbarButton,
+                       public brave_vpn::BraveVPNServiceObserver {
  public:
   METADATA_HEADER(BraveVPNButton);
 
@@ -36,8 +41,8 @@ class BraveVPNButton : public ToolbarButton, public BraveVPNServiceObserver {
 
   void OnButtonPressed(const ui::Event& event);
 
-  Browser* browser_ = nullptr;
-  BraveVpnServiceDesktop* service_ = nullptr;
+  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<brave_vpn::BraveVpnService> service_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_

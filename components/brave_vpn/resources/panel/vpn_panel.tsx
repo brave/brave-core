@@ -8,6 +8,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
 
+import '$web-components/app.global.scss'
 import { loadTimeData } from '../../../common/loadTimeData'
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import vpnDarkTheme from './theme/vpn-dark'

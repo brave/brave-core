@@ -36,20 +36,6 @@ export const Card = styled.li`
   border-radius: 8px;
 `
 
-export const CardRow = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 9px 16px;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--divider-color);
-  color: ${(p) => p.theme.color.text01};
-
-  &:last-child {
-    border-bottom: 0;
-    justify-content: center;
-  }
-`
-
 export const PanelContent = styled.section`
   padding: 25px 24px 25px 24px;
   z-index: 2;
@@ -69,6 +55,7 @@ export const BackButton = styled.button`
   padding: 0;
   display: flex;
   align-items: center;
+  cursor: pointer;
 
   span {
     font-family: ${(p) => p.theme.fontFamily.heading};
@@ -83,7 +70,7 @@ export const BackButton = styled.button`
     margin-right: 5px;
   }
 
-  svg > path {
+  svg {
     fill: ${(p) => p.theme.color.interactive05};
   }
 `

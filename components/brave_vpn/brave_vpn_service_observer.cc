@@ -7,20 +7,24 @@
 
 #include <utility>
 
-#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
+
+namespace brave_vpn {
 
 BraveVPNServiceObserver::BraveVPNServiceObserver() = default;
 
 BraveVPNServiceObserver::~BraveVPNServiceObserver() = default;
 
-void BraveVPNServiceObserver::Observe(BraveVpnServiceDesktop* service) {
+void BraveVPNServiceObserver::Observe(BraveVpnService* service) {
   if (!service)
     return;
 
-  if (brave_vpn::IsBraveVPNEnabled()) {
-    mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> listener;
+  if (IsBraveVPNEnabled()) {
+    mojo::PendingRemote<mojom::ServiceObserver> listener;
     receiver_.Bind(listener.InitWithNewPipeAndPassReceiver());
     service->AddObserver(std::move(listener));
   }
 }
+
+}  // namespace brave_vpn

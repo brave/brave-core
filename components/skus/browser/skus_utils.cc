@@ -56,7 +56,6 @@ std::string GetDomain(std::string prefix) {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(prefs::kSkusState);
-  registry->RegisterBooleanPref(prefs::kSkusVPNHasCredential, false);
 }
 
 }  // namespace skus

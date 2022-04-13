@@ -10,16 +10,20 @@
 #include "base/bind.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/themes/theme_properties.h"
-#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/theme_provider.h"
 
+using ConnectionState = brave_vpn::mojom::ConnectionState;
+using PurchasedState = brave_vpn::mojom::PurchasedState;
+
 BraveVPNToggleButton::BraveVPNToggleButton(Browser* browser)
     : browser_(browser),
-      service_(BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
+      service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
+          browser_->profile())) {
   DCHECK(service_);
 
   Observe(service_);

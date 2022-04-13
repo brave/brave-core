@@ -36,7 +36,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/brave_vpn_utils.h"
+#include "brave/browser/brave_vpn/vpn_utils.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -75,7 +75,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isIdleDetectionFeatureEnabled",
       base::FeatureList::IsEnabled(features::kIdleDetection));
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  html_source->AddBoolean("isBraveVPNEnabled", brave_vpn::IsBraveVPNEnabled());
+  html_source->AddBoolean("isBraveVPNEnabled",
+                          brave_vpn::IsBraveVPNEnabled(profile));
 #endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   html_source->AddBoolean(
