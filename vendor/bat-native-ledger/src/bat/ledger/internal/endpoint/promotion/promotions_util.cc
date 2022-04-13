@@ -5,6 +5,7 @@
 
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 
+#include "bat/ledger/buildflags.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
@@ -17,13 +18,13 @@ std::string GetServerUrl(const std::string& path) {
   std::string url;
   switch (ledger::_environment) {
     case type::Environment::DEVELOPMENT:
-      url = REWARDS_GRANT_DEV_ENDPOINT;
+      url = BUILDFLAG(REWARDS_GRANT_DEV_ENDPOINT);
       break;
     case type::Environment::STAGING:
-      url = REWARDS_GRANT_STAGING_ENDPOINT;
+      url = BUILDFLAG(REWARDS_GRANT_STAGING_ENDPOINT);
       break;
     case type::Environment::PRODUCTION:
-      url = REWARDS_GRANT_PROD_ENDPOINT;
+      url = BUILDFLAG(REWARDS_GRANT_PROD_ENDPOINT);
       break;
   }
 

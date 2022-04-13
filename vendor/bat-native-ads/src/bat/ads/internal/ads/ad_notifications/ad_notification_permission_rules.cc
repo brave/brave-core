@@ -15,6 +15,7 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_permission_rule.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/network_connection_permission_rule.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_permission_rule.h"
 
 namespace ads {
 namespace ad_notifications {
@@ -26,6 +27,11 @@ PermissionRules::~PermissionRules() = default;
 
 bool PermissionRules::HasPermission() const {
   if (!PermissionRulesBase::HasPermission()) {
+    return false;
+  }
+
+  UserActivityPermissionRule user_activity_permission_rule;
+  if (!ShouldAllow(&user_activity_permission_rule)) {
     return false;
   }
 

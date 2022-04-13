@@ -89,6 +89,22 @@ class URLMojoTypemap(MojoTypemap):
     def CppToObjC(self, accessor):
         return "net::NSURLWithGURL(%s)" % accessor
 
+class OriginMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return (mojom.IsStructKind(kind) and
+                kind.qualified_name == 'url.mojom.Origin')
+    def ObjCWrappedType(self):
+        return "NSURL*"
+    def ExpectedCppType(self):
+        return "url::Origin"
+    def DefaultObjCValue(self, default):
+        return "[[NSURL alloc] init]"
+    def ObjCToCpp(self, accessor):
+        return "url::Origin::Create(net::GURLWithNSURL(%s))" % accessor
+    def CppToObjC(self, accessor):
+        return "net::NSURLWithGURL(%s.GetURL())" % accessor
+
 _kind_to_c_type = {
     mojom.BOOL: "bool",
     mojom.INT8: "int8_t",
@@ -346,6 +362,7 @@ _mojo_typemaps = [
     TimeMojoTypemap,
     TimeDeltaMojoTypemap,
     URLMojoTypemap,
+    OriginMojoTypemap,
     NumberMojoTypemap,
     EnumMojoTypemap,
     BaseValueMojoTypemap,

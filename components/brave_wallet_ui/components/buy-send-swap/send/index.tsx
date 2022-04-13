@@ -1,11 +1,10 @@
 import * as React from 'react'
 import {
   AmountPresetTypes,
-  AmountValidationErrorType,
-  BraveWallet,
   BuySendSwapViewTypes,
   SwapValidationErrorType,
-  ToOrFromType
+  ToOrFromType,
+  WalletState
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
@@ -20,44 +19,60 @@ import Amount from '../../../utils/amount'
 import {
   StyledWrapper
 } from './style'
+import useSend from '../../../common/hooks/send'
+import { useSelector } from 'react-redux'
+import useBalance from '../../../common/hooks/balance'
+import { usePreset } from '../../../common/hooks'
 
 export interface Props {
-  selectedAsset: BraveWallet.BlockchainToken | undefined
-  selectedNetwork: BraveWallet.NetworkInfo
-  selectedAssetAmount: string
-  selectedAssetBalance: string
-  toAddressOrUrl: string
-  toAddress: string
-  addressError: string
-  addressWarning: string
-  amountValidationError: AmountValidationErrorType | undefined
-  onSubmit: () => void
-  onInputChange: (value: string, name: string) => void
   onChangeSendView: (view: BuySendSwapViewTypes, option?: ToOrFromType) => void
-  onSelectPresetAmount: (percent: number) => void
 }
 
 function Send (props: Props) {
+  const { onChangeSendView } = props
+
+  // redux
   const {
-    selectedAsset,
-    selectedNetwork,
-    selectedAssetAmount,
-    selectedAssetBalance,
+    selectedAccount,
+    networkList,
+    selectedNetwork
+  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+
+  const {
     toAddressOrUrl,
     toAddress,
     addressError,
     addressWarning,
-    amountValidationError,
-    onInputChange,
-    onSelectPresetAmount,
-    onSubmit,
-    onChangeSendView
-  } = props
+    sendAmount,
+    selectedSendAsset,
+    sendAmountValidationError,
+    setSendAmount,
+    setToAddressOrUrl,
+    submitSend
+  } = useSend()
+  const getSelectedAccountBalance = useBalance(networkList)
+
+  // state
+  const sendAssetBalance = getSelectedAccountBalance(selectedAccount, selectedSendAsset)
   const [selectedPreset, setSelectedPreset] = React.useState<AmountPresetTypes | undefined>()
 
-  const onShowAssets = () => {
-    onChangeSendView('assets', 'from')
+  // methods
+  const onSelectPresetAmount = usePreset(
+    {
+      onSetAmount: setSendAmount,
+      asset: selectedSendAsset
+    }
+  )
+
+  const onInputChange = (value: string, name: string) => {
+    if (name === 'address') {
+      setToAddressOrUrl(value)
+    } else {
+      setSendAmount(value)
+    }
   }
+
+  const onShowAssets = () => onChangeSendView('assets', 'from')
 
   const onPasteFromClipboard = async () => {
     const address = await navigator.clipboard.readText()
@@ -83,23 +98,24 @@ function Send (props: Props) {
     onInputChange(value, name)
   }
 
+  // memos
   const insufficientFundsError = React.useMemo((): boolean => {
-    if (!selectedAsset) {
+    if (!selectedSendAsset) {
       return false
     }
 
-    const amountWei = new Amount(selectedAssetAmount)
-      .multiplyByDecimals(selectedAsset.decimals)
+    const amountWei = new Amount(sendAmount)
+      .multiplyByDecimals(selectedSendAsset.decimals)
 
     if (amountWei.isZero()) {
       return false
     }
 
-    return amountWei.gt(selectedAssetBalance)
-  }, [selectedAssetBalance, selectedAssetAmount, selectedAsset])
+    return amountWei.gt(sendAssetBalance)
+  }, [sendAssetBalance, sendAmount, selectedSendAsset])
 
   const tooltipMessage = React.useMemo((): string => {
-    const amountWrapped = new Amount(selectedAssetAmount)
+    const amountWrapped = new Amount(sendAmount)
     if (amountWrapped.isUndefined() || amountWrapped.isZero()) {
       return getLocale('braveWalletZeroBalanceError')
     }
@@ -107,23 +123,24 @@ function Send (props: Props) {
       return getLocale('braveWalletAddressRequiredError')
     }
     return ''
-  }, [toAddressOrUrl, selectedAssetAmount])
+  }, [toAddressOrUrl, sendAmount])
 
+  // render
   return (
     <StyledWrapper>
       <SwapInputComponent
         componentType='fromAmount'
         onSelectPresetAmount={setPresetAmountValue}
         onInputChange={handleOnInputChange}
-        selectedAssetInputAmount={selectedAssetAmount}
+        selectedAssetInputAmount={sendAmount}
         inputName='from'
-        selectedAssetBalance={selectedAssetBalance}
-        selectedAsset={selectedAsset}
+        selectedAssetBalance={sendAssetBalance}
+        selectedAsset={selectedSendAsset}
         selectedNetwork={selectedNetwork}
         onShowSelection={onShowAssets}
         autoFocus={true}
         selectedPreset={selectedPreset}
-        validationError={amountValidationError as SwapValidationErrorType}
+        validationError={sendAmountValidationError as SwapValidationErrorType}
       />
       <SwapInputComponent
         componentType='toAddress'
@@ -141,22 +158,22 @@ function Send (props: Props) {
       <Tooltip
         text={tooltipMessage}
         isVisible={
-          parseFloat(selectedAssetAmount) === 0 ||
-          selectedAssetAmount === '' ||
+          parseFloat(sendAmount) === 0 ||
+          sendAmount === '' ||
           toAddressOrUrl === ''
         }
       >
         <NavButton
           disabled={addressError !== '' ||
             toAddressOrUrl === '' ||
-            parseFloat(selectedAssetAmount) === 0 ||
-            selectedAssetAmount === '' ||
+            parseFloat(sendAmount) === 0 ||
+            sendAmount === '' ||
             insufficientFundsError ||
-            amountValidationError !== undefined
+            sendAmountValidationError !== undefined
           }
           buttonType='primary'
           text={getLocale('braveWalletSend')}
-          onSubmit={onSubmit}
+          onSubmit={submitSend}
         />
       </Tooltip>
       <ResetButton

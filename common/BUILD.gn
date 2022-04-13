@@ -4,6 +4,14 @@ import("//build/util/branding.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
+declare_args() {
+  brave_services_key = ""
+}
+
+if (is_official_build) {
+  assert(brave_services_key != "")
+}
+
 buildflag_header("brave_services_key") {
   header = "brave_services_key.h"
   flags = [ "BRAVE_SERVICES_KEY=\"$brave_services_key\"" ]

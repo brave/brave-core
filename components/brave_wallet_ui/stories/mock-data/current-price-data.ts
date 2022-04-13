@@ -1,4 +1,6 @@
-export const CurrentPriceMockData = [
+import { BraveWallet } from '../../constants/types'
+
+export const mockedCurrentPriceData = [
   {
     name: 'Bitcoin',
     symbol: 'BTC',
@@ -31,5 +33,20 @@ export const CurrentPriceMockData = [
     btc: '0.000022',
     usdTimeframeChange: '2',
     btcTimeframeChange: '2.1'
+  }
+]
+
+export const mockTransactionSpotPrices: BraveWallet.AssetPrice[] = [
+  {
+    fromAsset: 'ETH',
+    toAsset: 'USD',
+    price: '3300',
+    assetTimeframeChange: ''
+  },
+  {
+    fromAsset: 'BAT',
+    toAsset: 'USD',
+    price: '0.85',
+    assetTimeframeChange: ''
   }
 ]

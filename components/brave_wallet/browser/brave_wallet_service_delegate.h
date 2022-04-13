@@ -13,6 +13,7 @@
 #include "base/observer_list_types.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "url/origin.h"
 
 namespace content {
 class BrowserContext;
@@ -40,8 +41,8 @@ class BraveWalletServiceDelegate {
 
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnActiveOriginChanged(const std::string& origin,
-                                       const std::string& etld_plus_one) {}
+    virtual void OnActiveOriginChanged(
+        const mojom::OriginInfoPtr& origin_info) {}
   };
   virtual void AddObserver(Observer* observer) {}
   virtual void RemoveObserver(Observer* observer) {}
@@ -53,14 +54,14 @@ class BraveWalletServiceDelegate {
   virtual void GetImportInfoFromExternalWallet(mojom::ExternalWalletType type,
                                                const std::string& password,
                                                GetImportInfoCallback callback);
-  virtual void AddEthereumPermission(const std::string& origin,
+  virtual void AddEthereumPermission(const url::Origin& origin,
                                      const std::string& account,
                                      AddEthereumPermissionCallback callback);
-  virtual void HasEthereumPermission(const std::string& origin,
+  virtual void HasEthereumPermission(const url::Origin& origin,
                                      const std::string& account,
                                      HasEthereumPermissionCallback callback);
   virtual void ResetEthereumPermission(
-      const std::string& origin,
+      const url::Origin& origin,
       const std::string& account,
       ResetEthereumPermissionCallback callback);
 

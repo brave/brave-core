@@ -89,26 +89,21 @@ template("cargo_build") {
   group_target = target_name
   cargo_build_target = target_name + "_cargo_build"
 
+  _rustflags = default_rustflags
+  if (defined(invoker.rustflags)) {
+    _rustflags += invoker.rustflags
+  }
+
   action(cargo_build_target) {
     script = "//brave/script/cargo.py"
 
     inputs = [ "//brave/script/cargo.py" ]
 
+    forward_variables_from(invoker, "*", [ "inputs" ])
+
     if (defined(invoker.inputs)) {
       inputs += invoker.inputs
     }
-
-    _rustflags = rustflags
-    if (defined(invoker.rustflags)) {
-      _rustflags += invoker.rustflags
-    }
-
-    forward_variables_from(invoker,
-                           "*",
-                           [
-                             "rustflags",
-                             "inputs",
-                           ])
 
     outputs = [ rust_lib_output_path ]
 
@@ -123,6 +118,7 @@ template("cargo_build") {
       "--target=" + target,
       "--toolchain=" +
           rustc_toolchain,  # defined by //brave/build/rust/config.gni,
+      "--clang_bin_path=" + rebase_path("$clang_base_path/bin"),
       "--is_debug=$is_debug",
       "--profile=$cargo_profile",
     ]

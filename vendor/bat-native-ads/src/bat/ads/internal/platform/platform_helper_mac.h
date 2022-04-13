@@ -8,28 +8,24 @@
 
 #include <string>
 
+#include "base/no_destructor.h"
 #include "bat/ads/internal/platform/platform_helper.h"
-
-namespace base {
-template <typename T>
-struct DefaultSingletonTraits;
-}  // namespace base
 
 namespace ads {
 
 class PlatformHelperMac final : public PlatformHelper {
  public:
+  ~PlatformHelperMac() override;
+
   PlatformHelperMac(const PlatformHelperMac&) = delete;
   PlatformHelperMac& operator=(const PlatformHelperMac&) = delete;
 
-  static PlatformHelperMac* GetInstanceImpl();
-
- private:
-  friend struct base::DefaultSingletonTraits<PlatformHelperMac>;
+ protected:
+  friend class base::NoDestructor<PlatformHelperMac>;
 
   PlatformHelperMac();
-  ~PlatformHelperMac() override;
 
+ private:
   // PlatformHelper impl
   bool IsMobile() const override;
   std::string GetPlatformName() const override;

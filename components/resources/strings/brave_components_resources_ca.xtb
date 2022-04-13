@@ -1175,7 +1175,7 @@
 <translation id="1671503397662036257">Estat de la connexió de Tor</translation>
 <translation id="6024292492796847324">Progrés d'inicialització de Tor</translation>
 <translation id="8458987127502506209">Activa els protectors de Brave</translation>
-<translation id="7509914170164691086">Els protectors estan activats <ph name="LINK_BEFORE"/>per a<ph name="LINK_AFTER"/></translation>
+<translation id="7509914170164691086">Els protectors estan activats <ph name="LINK_BEFORE"/>per a <ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Els protectors estan desactivats <ph name="LINK_BEFORE"/>per a<ph name="LINK_AFTER"/></translation>
 <translation id="7709075156958117386">Si aquest lloc sembla que no funciona, proveu de desactivar els protectors. 
     <ph name="LINK_BEFORE"/>Nota: això pot reduir les proteccions de privadesa del Brave.<ph name="LINK_AFTER"/></translation>
@@ -1203,7 +1203,7 @@
 <translation id="1992750560347846445">Informa del lloc</translation>
 <translation id="2387532482048804818">Digueu-nos si el lloc no funcionava correctament amb els protectors activats.</translation>
 <translation id="9167355841012806439">Esteu veient aquest lloc sense la protecció de la privadesa del Brave</translation>
-<translation id="6835073906252142271">Protectors de Brave <ph name="NUMBER"/> rastrejadors, anuncis i més bloquejats</translation>
+<translation id="6835073906252142271">Protectors del Brave <ph name="NUMBER"/> rastrejadors, anuncis i més bloquejats</translation>
 <translation id="1742469581923031760">S'està connectant…</translation>
 <translation id="1287487756047817908">S'està desconnectant…</translation>
 <translation id="2325196879156848326">Connexió fallida</translation>

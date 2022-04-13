@@ -15,18 +15,18 @@ class NotificationHelperAndroid
     : public NotificationHelper,
       public base::SupportsWeakPtr<NotificationHelperAndroid> {
  public:
+  ~NotificationHelperAndroid() override;
+
   NotificationHelperAndroid(const NotificationHelperAndroid&) = delete;
   NotificationHelperAndroid& operator=(const NotificationHelperAndroid&) =
       delete;
 
-  static NotificationHelperAndroid* GetInstanceImpl();
-
- private:
-  friend struct base::DefaultSingletonTraits<NotificationHelperAndroid>;
+ protected:
+  friend class NotificationHelperHolder;
 
   NotificationHelperAndroid();
-  ~NotificationHelperAndroid() override;
 
+ private:
   // NotificationHelper:
   bool CanShowNativeNotifications() override;
 

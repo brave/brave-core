@@ -63,6 +63,7 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.OnRampProvider;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.SwapParams;
 import org.chromium.brave_wallet.mojom.SwapResponse;
@@ -453,7 +454,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         if (mActivityType == ActivityType.BUY) return;
         if (mBlockchainRegistry != null && mCustomAccountAdapter != null
                 && mInitialLayoutInflationComplete) {
-            final BlockchainToken eth = Utils.createEthereumBlockchainToken();
+            final BlockchainToken eth =
+                    Utils.createEthereumBlockchainToken(BraveWalletConstants.MAINNET_CHAIN_ID);
             String swapToAsset = "BAT";
 
             // Swap from
@@ -462,8 +464,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     || swapFromAssetSymbol.equals(eth.symbol)) { // default swap from ETH
                 updateBuySendSwapAsset(eth.symbol, eth, true);
             } else {
-                mBlockchainRegistry.getTokenBySymbol(
-                        BraveWalletConstants.MAINNET_CHAIN_ID, swapFromAssetSymbol, token -> {
+                mBlockchainRegistry.getTokenBySymbol(BraveWalletConstants.MAINNET_CHAIN_ID,
+                        CoinType.ETH, swapFromAssetSymbol, token -> {
                             if (token != null) {
                                 updateBuySendSwapAsset(token.symbol, token, true);
                             }
@@ -475,8 +477,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 if (swapToAsset.equals(swapFromAssetSymbol)) { // swap from BAT
                     updateBuySendSwapAsset(eth.symbol, eth, false);
                 } else {
-                    mBlockchainRegistry.getTokenBySymbol(
-                            BraveWalletConstants.MAINNET_CHAIN_ID, swapToAsset, token -> {
+                    mBlockchainRegistry.getTokenBySymbol(BraveWalletConstants.MAINNET_CHAIN_ID,
+                            CoinType.ETH, swapToAsset, token -> {
                                 if (token != null) {
                                     updateBuySendSwapAsset(token.symbol, token, false);
                                 }
@@ -530,6 +532,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         if (mBtnBuySendSwap.isEnabled() && mCurrentBlockchainToken != null
                                 && mCurrentBlockchainToken.isErc20) {
                             // Check for ERC20 token allowance
+                            assert response != null;
                             checkAllowance(mCurrentBlockchainToken.contractAddress,
                                     response.allowanceTarget, fromValue);
                         }
@@ -872,8 +875,14 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 if (mCurrentChainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
                     assert mBlockchainRegistry != null;
                     String asset = mFromAssetText.getText().toString();
-                    mBlockchainRegistry.getBuyUrl(
-                            BraveWalletConstants.MAINNET_CHAIN_ID, from, asset, value, url -> {
+                    mBlockchainRegistry.getBuyUrl(OnRampProvider.WYRE,
+                            BraveWalletConstants.MAINNET_CHAIN_ID, from, asset, value,
+                            (url, error) -> {
+                                if (error != null && !error.isEmpty()) {
+                                    Log.e(TAG, "Could not get buy URL: " + error);
+                                    return;
+                                }
+
                                 TabUtils.openUrlInNewTab(false, url);
                                 TabUtils.bringChromeTabbedActivityToTheTop(this);
                             });
@@ -917,7 +926,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     amountToGet = mConvertedFromBalance;
                 }
 
-                mFromValueText.setText(String.format(Locale.getDefault(), "%f", amountToGet));
+                mFromValueText.setText(String.format(Locale.getDefault(), "%.8f", amountToGet));
                 radioPerPercent.clearCheck();
                 if (mActivityType == ActivityType.SWAP) {
                     getSendSwapQuota(true, false);
@@ -1236,12 +1245,14 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             } else if (!data.gasPrice.isEmpty()) {
                 // We have hardcoded legacy tx gas fields.
                 isEIP1559 = false;
-            }
-            for (NetworkInfo network : networks) {
-                if (!mCurrentChainId.equals(network.chainId)) {
-                    continue;
+            } else {
+                for (NetworkInfo network : networks) {
+                    if (!mCurrentChainId.equals(network.chainId)) {
+                        continue;
+                    }
+                    isEIP1559 = network.data.getEthData().isEip1559;
+                    break;
                 }
-                isEIP1559 = network.data.getEthData().isEip1559;
             }
 
             assert mTxService != null;

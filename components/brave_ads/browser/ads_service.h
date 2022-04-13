@@ -11,6 +11,7 @@
 
 #include "base/callback_forward.h"
 #include "base/observer_list.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
@@ -51,6 +52,11 @@ using OnToggleFlaggedAdCallback = base::OnceCallback<void(const std::string&)>;
 
 using OnGetInlineContentAdCallback = base::OnceCallback<
     void(const bool, const std::string&, const base::DictionaryValue&)>;
+
+using TriggerSearchResultAdEventCallback =
+    base::OnceCallback<void(const bool,
+                            const std::string&,
+                            const ads::mojom::SearchResultAdEventType)>;
 
 using GetStatementOfAccountsCallback = base::OnceCallback<
     void(const bool, const double, const int, const double, const double)>;
@@ -139,6 +145,11 @@ class AdsService : public KeyedService {
       const std::string& uuid,
       const std::string& creative_instance_id,
       const ads::mojom::InlineContentAdEventType event_type) = 0;
+
+  virtual void TriggerSearchResultAdEvent(
+      ads::mojom::SearchResultAdPtr ad_mojom,
+      const ads::mojom::SearchResultAdEventType event_type,
+      TriggerSearchResultAdEventCallback callback) = 0;
 
   virtual void PurgeOrphanedAdEventsForType(
       const ads::mojom::AdType ad_type) = 0;

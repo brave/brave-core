@@ -500,7 +500,6 @@
 <translation id="2523886232349826891">הכרטיס יישמר רק במכשיר הזה</translation>
 <translation id="2524461107774643265">הוספת עוד מידע</translation>
 <translation id="2529899080962247600">השדה הזה יכול לכלול עד <ph name="MAX_ITEMS_LIMIT"/> רשומות. המערכת תתעלם מרשומות נוספות.</translation>
-<translation id="40442660395682483">כדי לגלוש באופן פרטי, יש לפתוח כרטיסייה פרטית חדשה</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{ודומיין אחד נוסף}two{ו-# דומיינים נוספים}many{ו-# דומיינים נוספים}other{ו-# דומיינים נוספים}}</translation>
 <translation id="2536110899380797252">הוספת כתובת</translation>
 <translation id="2539524384386349900">זהה</translation>
@@ -1423,7 +1422,6 @@ Del</translation>
 <translation id="5556459405103347317">טעינה מחדש</translation>
 <translation id="5560088892362098740">תאריך תפוגה</translation>
 <translation id="55635442646131152">ראשי הפרקים של המסמך</translation>
-<translation id="5395368798429603306">פתיחת כרטיסייה פרטית</translation>
 <translation id="5565735124758917034">פעילה</translation>
 <translation id="5570825185877910964">הגנה על החשבון</translation>
 <translation id="5571083550517324815">לא ניתן לבצע איסוף מהכתובת הזו. עליך לבחור כתובת אחרת.</translation>
@@ -1878,7 +1876,6 @@ Del</translation>
 <translation id="7192203810768312527">פינוי של <ph name="SIZE"/> מהנפח. תיתכן טעינה איטית יותר של אתרים מסוימים בביקור הבא שלך.</translation>
 <translation id="719464814642662924">Visa</translation>
 <translation id="7201591969684833065">מנהל המערכת יכול לראות:</translation>
-<translation id="7627159832789643445">‏<ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, יש להקיש על Tab ואז על Enter כדי לפתוח כרטיסייה פרטית חדשה לגלישה באופן פרטי</translation>
 <translation id="7202346780273620635">Letter-Extra</translation>
 <translation id="7210863904660874423"><ph name="HOST_NAME"/> לא פועל בהתאם לתקני האבטחה.</translation>
 <translation id="7210993021468939304">‏קיימת פעילות של Linux בתוך המאגר וניתן להתקין ולהפעיל אפליקציות של Linux בתוך המאגר</translation>
@@ -2139,7 +2136,6 @@ Del</translation>
 <translation id="799149739215780103">כריכה</translation>
 <translation id="7992044431894087211">שיתוף המסך באמצעות <ph name="APPLICATION_TITLE"/> ממשיך</translation>
 <translation id="7995512525968007366">לא צוין</translation>
-<translation id="3711639027736550870">‏לחצן לפתיחת כרטיסייה פרטית, צריך להקיש על Enter כדי לפתוח כרטיסייה פרטית חדשה ולגלוש באופן פרטי</translation>
 <translation id="800218591365569300">מומלץ לסגור כרטיסיות או תוכניות אחרות וכך לפנות מקום בזיכרון.</translation>
 <translation id="8004582292198964060">דפדפן</translation>
 <translation id="8012116502927253373">{NUM_CARDS,plural, =1{הכרטיס הזה יישמר יחד עם הכתובת שלו לחיוב. יתאפשר לך להשתמש בו לאחר התחברות אל <ph name="USER_EMAIL"/>.}two{הכרטיסים האלה יישמרו יחד עם הכתובות שלהם לחיוב. יתאפשר לך להשתמש בהם לאחר התחברות אל <ph name="USER_EMAIL"/>.}many{הכרטיסים האלה יישמרו יחד עם הכתובות שלהם לחיוב. יתאפשר לך להשתמש בהם לאחר התחברות אל <ph name="USER_EMAIL"/>.}other{הכרטיסים האלה יישמרו יחד עם הכתובות שלהם לחיוב. יתאפשר לך להשתמש בהם לאחר התחברות אל <ph name="USER_EMAIL"/>.}}</translation>
@@ -2556,6 +2552,10 @@ Del</translation>
         <ph name="END_LIST"/></translation>
 <translation id="6043883615739972429"><ph name="BEGIN_LINK"/>למידע נוסף על פרטי ב-Brave<ph name="END_LINK"/></translation>
 <translation id="9153679102508470540">חסום קובצי Cookie של צד שלישי בפרטי</translation>
+<translation id="5395368798429603306">פתח בכרטיסייה פרטית</translation>
+<translation id="40442660395682483">פתח/י חלון פרטי חדש כדי לגלוש בפרטיות</translation>
+<translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, לחץ/י על Tab ואז על Enter לפתיחת חלון פרטי חדש כדי לגלוש בפרטיות</translation>
+<translation id="3711639027736550870">פתחו כרטיסייה בגלישה פרטית, הקישו Enter כדי לפתוח כרטיסייה פרטית חדשה כדי לגלוש באופן פרטי</translation>
 <translation id="5549245478906381817">פתח חלון פרטי</translation>
 <translation id="5497977785983089120">פתח/י חלון פרטי חדש כדי לגלוש בפרטיות</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, לחץ/י על Tab ואז על Enter לפתיחת חלון פרטי חדש כדי לגלוש בפרטיות</translation>

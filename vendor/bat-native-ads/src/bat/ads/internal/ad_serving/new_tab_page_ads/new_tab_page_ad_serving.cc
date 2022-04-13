@@ -115,7 +115,7 @@ bool AdServing::ServeAd(const NewTabPageAdInfo& ad,
   // TODO(https://github.com/brave/brave-browser/issues/14015): Add logging for
   // wallpapers
   BLOG(1, "Serving new tab page ad:\n"
-              << "  uuid: " << ad.uuid << "\n"
+              << "  placementId: " << ad.placement_id << "\n"
               << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
               << "  creativeSetId: " << ad.creative_set_id << "\n"
               << "  campaignId: " << ad.campaign_id << "\n"

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { BraveWallet, OriginInfo } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 
 // Components
@@ -29,7 +29,7 @@ import {
 export type tabs = 'network' | 'details'
 
 export interface Props {
-  originInfo: OriginInfo
+  originInfo: BraveWallet.OriginInfo
   networkPayload: BraveWallet.NetworkInfo
   panelType: 'add' | 'change'
   onCancel: () => void
@@ -59,10 +59,11 @@ function AllowAddChangeNetworkPanel (props: Props) {
   return (
     <StyledWrapper>
       <CenterColumn>
-        <FavIcon src={`chrome://favicon/size/64@1x/${originInfo.origin}`} />
+        <FavIcon src={`chrome://favicon/size/64@1x/${originInfo.originSpec}`} />
         <URLText>
           <CreateSiteOrigin
-            originInfo={originInfo}
+            originSpec={originInfo.originSpec}
+            eTldPlusOne={originInfo.eTldPlusOne}
           />
         </URLText>
         <PanelTitle>

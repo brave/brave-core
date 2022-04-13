@@ -54,12 +54,4 @@ void BackgroundHelperLinux::OnBrowserNoLongerActive(Browser* browser) {
       base::BindOnce(&BackgroundHelperLinux::TriggerOnBackground, AsWeakPtr()));
 }
 
-BackgroundHelperLinux* BackgroundHelperLinux::GetInstance() {
-  return base::Singleton<BackgroundHelperLinux>::get();
-}
-
-BackgroundHelper* BackgroundHelper::GetInstance() {
-  return BackgroundHelperLinux::GetInstance();
-}
-
 }  // namespace brave_ads

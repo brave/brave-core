@@ -18,7 +18,7 @@ import {
   DefaultCurrencies,
   GetPriceReturnInfo,
   GetNativeAssetBalancesPayload,
-  OriginInfo
+  SolFeeEstimates
 } from '../../constants/types'
 import {
   IsEip1559Changed,
@@ -78,8 +78,14 @@ const defaultState: WalletState = {
   addUserAssetError: false,
   defaultWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
   activeOrigin: {
-    origin: '',
-    eTldPlusOne: ''
+    eTldPlusOne: '',
+    originSpec: '',
+    origin: {
+      scheme: '',
+      host: '',
+      port: 0,
+      nonceIfOpaque: undefined
+    }
   },
   gasEstimates: undefined,
   connectedAccounts: [],
@@ -91,7 +97,8 @@ const defaultState: WalletState = {
   },
   transactionProviderErrorRegistry: {},
   defaultNetworks: [] as BraveWallet.NetworkInfo[],
-  selectedNetworkFilter: AllNetworksOption
+  selectedNetworkFilter: AllNetworksOption,
+  solFeeEstimates: undefined
 }
 
 const getAccountType = (info: AccountInfo) => {
@@ -342,11 +349,15 @@ export const createWalletReducer = (initialState: WalletState) => {
   })
 
   reducer.on(WalletActions.setAccountTransactions, (state: WalletState, payload: AccountTransactions): WalletState => {
-    const { selectedAccount } = state
-    const newPendingTransactions = selectedAccount
-      ? payload[selectedAccount.address].filter((tx: BraveWallet.TransactionInfo) => tx.txStatus === BraveWallet.TransactionStatus.Unapproved) : []
+    const { accounts } = state
 
-    const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
+    const newPendingTransactions = accounts.map((account) => {
+      return payload[account.address]
+    }).flat(1)
+
+    const filteredTransactions = newPendingTransactions?.filter((tx: BraveWallet.TransactionInfo) => tx?.txStatus === BraveWallet.TransactionStatus.Unapproved) ?? []
+
+    const sortedTransactionList = sortTransactionByDate(filteredTransactions)
 
     return {
       ...state,
@@ -370,7 +381,7 @@ export const createWalletReducer = (initialState: WalletState) => {
     }
   })
 
-  reducer.on(WalletActions.activeOriginChanged, (state: WalletState, payload: OriginInfo): WalletState => {
+  reducer.on(WalletActions.activeOriginChanged, (state: WalletState, payload: BraveWallet.OriginInfo): WalletState => {
     return {
       ...state,
       activeOrigin: payload
@@ -404,6 +415,13 @@ export const createWalletReducer = (initialState: WalletState) => {
     return {
       ...state,
       gasEstimates: payload
+    }
+  })
+
+  reducer.on(WalletActions.setSolFeeEstimates, (state: WalletState, payload: SolFeeEstimates): WalletState => {
+    return {
+      ...state,
+      solFeeEstimates: payload
     }
   })
 

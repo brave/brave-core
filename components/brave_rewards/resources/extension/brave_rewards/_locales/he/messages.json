@@ -63,7 +63,7 @@
     "description": ""
   },
   "monthlyTip": {
-    "message": "Monthly Tip",
+    "message": "טיפ חודשי",
     "description": ""
   },
   "ok": {
@@ -252,7 +252,7 @@
     "description": ""
   },
   "walletUnverified": {
-    "message": "Unverified",
+    "message": "בלתי מאומת",
     "description": ""
   },
   "walletVerified": {
@@ -380,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "Monthly tip failed",
+    "message": "טיפ חודשי: הפעולה נכשלה ",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -388,7 +388,7 @@
     "description": ""
   },
   "notificationMonthlyTipCompletedText": {
-    "message": "Your monthly tips have been processed.",
+    "message": "הטיפ החודשי שלך עבר. ",
     "description": ""
   },
   "notificationPublisherVerifiedTitle": {

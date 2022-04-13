@@ -106,9 +106,9 @@ BraveWalletProviderDelegateImpl::BraveWalletProviderDelegateImpl(
 
 BraveWalletProviderDelegateImpl::~BraveWalletProviderDelegateImpl() = default;
 
-GURL BraveWalletProviderDelegateImpl::GetOrigin() const {
+url::Origin BraveWalletProviderDelegateImpl::GetOrigin() const {
   auto* rfh = content::RenderFrameHost::FromID(host_id_);
-  return rfh ? rfh->GetLastCommittedOrigin().GetURL() : GURL();
+  return rfh ? rfh->GetLastCommittedOrigin() : url::Origin();
 }
 
 void BraveWalletProviderDelegateImpl::ShowPanel() {

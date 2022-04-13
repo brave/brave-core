@@ -27,13 +27,14 @@ cargo_build("rust_lib") {
     "//brave/components/skus/browser/rs:rust_lib",
     "//brave/components/speedreader/rust/lib",
   ]
+  rustflags = []
   if (enable_rust_bls) {
     rustflags += [ "--cfg=feature=\"enable_rust_bls\"" ]
     deps += [ "//brave/components/bls:rust_lib" ]
   }
 }
 
-if (is_mac) {
+if (is_apple) {
   action("generate_unexport_list") {
     script = "//brave/build/rust/generate_unexport_list.py"
 
@@ -45,7 +46,7 @@ if (is_mac) {
     outputs = [ unexport_list_path ]
 
     args = [
-      "--bin_path=" + mac_bin_path,
+      "--bin_path=" + rebase_path(clang_base_path) + "/bin",
       "--input=" + rebase_path(rust_lib_output_path, root_build_dir),
       "--output=" + rebase_path(unexport_list_path, root_build_dir),
     ]

@@ -1,17 +1,20 @@
 import * as React from 'react'
 import * as EthereumBlockies from 'ethereum-blockies'
+import { useSelector } from 'react-redux'
 
 import { getLocale } from '../../../../common/locale'
 import {
   BraveWallet,
   WalletAccountType,
-  DefaultCurrencies
+  DefaultCurrencies,
+  WalletState
 } from '../../../constants/types'
 
 // Utils
 import { toProperCase } from '../../../utils/string-utils'
 import { getTransactionStatusString } from '../../../utils/tx-utils'
 import { formatDateAsRelative } from '../../../utils/datetime-utils'
+import { getNetworkFromTXDataUnion } from '../../../utils/network-utils'
 import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
 import Amount from '../../../utils/amount'
 
@@ -50,6 +53,10 @@ export interface Props {
   onSelectTransaction: (transaction: BraveWallet.TransactionInfo) => void
 }
 
+const findAccountNameForAddress = (address: string, accounts: WalletAccountType[]): string => {
+  return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name || ''
+}
+
 const { ERC20Approve, ERC721TransferFrom, ERC721SafeTransferFrom } = BraveWallet.TransactionType
 
 const TransactionsListItem = (props: Props) => {
@@ -59,15 +66,27 @@ const TransactionsListItem = (props: Props) => {
     visibleTokens,
     transactionSpotPrices,
     accounts,
-    defaultCurrencies,
-    onSelectTransaction
+    onSelectTransaction,
+    defaultCurrencies
   } = props
 
-  const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens)
+  const {
+    defaultNetworks
+  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+
+  const transactionsNetwork = React.useMemo(() => {
+    return getNetworkFromTXDataUnion(transaction.txDataUnion, defaultNetworks, selectedNetwork)
+  }, [defaultNetworks, transaction, selectedNetwork])
+
+  const parseTransaction = useTransactionParser(transactionsNetwork, accounts, transactionSpotPrices, visibleTokens)
   const transactionDetails = React.useMemo(
     () => parseTransaction(transaction),
     [transaction]
   )
+
+  const fromAccountName = React.useMemo(() => {
+    return findAccountNameForAddress(transaction.fromAddress, accounts)
+  }, [transaction.fromAddress, accounts])
 
   const fromOrb = React.useMemo(() => {
     return EthereumBlockies.create({ seed: transactionDetails.sender.toLowerCase(), size: 8, scale: 16 }).toDataURL()
@@ -96,25 +115,31 @@ const TransactionsListItem = (props: Props) => {
     let erc721ID = transaction.txType === ERC721TransferFrom || transaction.txType === ERC721SafeTransferFrom
       ? ' ' + transactionDetails.erc721TokenId
       : ''
+
     return (
       <DetailTextDark>
         {`${
-            toProperCase(getLocale('braveWalletTransactionSent'))} ${
-            transactionDetails.fiatValue.formatAsFiat(defaultCurrencies.fiat) || '...'
-          } (${
-            transactionDetails.formattedNativeCurrencyTotal || '...'
-          }${
+            toProperCase(getLocale('braveWalletTransactionSent'))
+          } ${
+            transactionDetails.value
+          } ${
+            transactionDetails.symbol
+          } ${
             erc721ID
+          } (${
+            transactionDetails.fiatValue.formatAsFiat(defaultCurrencies.fiat) || '...'
           })`}
       </DetailTextDark>
     )
-  }, [transaction])
+  }, [transaction, fromAccountName, transactionDetails])
 
   const transactionIntentDescription = React.useMemo(() => {
     // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom, ERC721SafeTransferFrom].includes(transaction.txType)
     let from = `${reduceAddress(transactionDetails.sender)} `
     let to = reduceAddress(transactionDetails.recipient)
-    const wrapFromText = transaction.txType === ERC20Approve || transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy
+    const wrapFromText =
+      transaction.txType === ERC20Approve ||
+      transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy
 
     if (transaction.txType === ERC20Approve) {
       // Approval

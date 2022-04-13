@@ -6,17 +6,20 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BLOCKCHAIN_LIST_PARSER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BLOCKCHAIN_LIST_PARSER_H_
 
-#include <map>
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
 using TokenListMap =
-    std::map<std::string, std::vector<mojom::BlockchainTokenPtr>>;
-bool ParseTokenList(const std::string& json, TokenListMap* token_list);
+    base::flat_map<std::string, std::vector<mojom::BlockchainTokenPtr>>;
+bool ParseTokenList(const std::string& json,
+                    TokenListMap* token_list,
+                    mojom::CoinType coin);
+std::string GetTokenListKey(mojom::CoinType coin, const std::string& chain_id);
 
 }  // namespace brave_wallet
 

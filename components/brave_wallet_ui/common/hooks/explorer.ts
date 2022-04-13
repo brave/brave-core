@@ -18,9 +18,13 @@ export default function useExplorer (network: BraveWallet.NetworkInfo) {
         return
       }
 
+      const explorerIndex = explorerURL.lastIndexOf('?')
+
       const url = type === 'contract'
         ? `${explorerURL}/${value}?a=${new Amount(id ?? '').format()}`
-        : `${explorerURL}/${type}/${value}`
+        : (network.chainId === BraveWallet.SOLANA_TESTNET || network.chainId === BraveWallet.SOLANA_DEVNET)
+          ? `${explorerURL.substring(0, explorerIndex)}/${type}/${value}${explorerURL.substring(explorerIndex)}`
+          : `${explorerURL}/${type}/${value}`
 
       if (!chrome.tabs) {
         window.open(url, '_blank')

@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { BraveWallet } from '../../../constants/types'
+import { useDispatch } from 'react-redux'
+
 import { SelectNetwork } from '../../shared'
 import Header from '../select-header'
 import { getLocale } from '../../../../common/locale'
@@ -9,30 +10,51 @@ import {
   SelectScrollContainer
 } from '../shared-styles'
 
+import { WalletActions } from '../../../common/actions'
+import { PanelActions } from '../../../panel/actions'
+import { BraveWallet } from '../../../constants/types'
+import { useSend } from '../../../common/hooks'
+import { makeNetworkAsset } from '../../../options/asset-options'
+
 export interface Props {
-  networks: BraveWallet.NetworkInfo[]
-  selectedNetwork: BraveWallet.NetworkInfo
   hasAddButton?: boolean
-  onSelectNetwork: (network: BraveWallet.NetworkInfo) => () => void
   onBack: () => void
   onAddNetwork?: () => void
 }
 
-function SelectNetworkWithHeader (props: Props) {
-  const { networks, onSelectNetwork, onBack, selectedNetwork, hasAddButton, onAddNetwork } = props
+export const SelectNetworkWithHeader = ({
+  onBack,
+  hasAddButton,
+  onAddNetwork
+}: Props) => {
+  // custom hooks
+  const { selectSendAsset } = useSend()
+
+  // redux
+  const dispatch = useDispatch()
+
+  // methods
+  const onSelectCustomNetwork = React.useCallback((network: BraveWallet.NetworkInfo): void => {
+    dispatch(WalletActions.selectNetwork(network))
+
+    selectSendAsset(makeNetworkAsset(network))
+
+    dispatch(PanelActions.navigateTo('main'))
+
+    onBack()
+  }, [onBack])
+
+  // render
   return (
     <SelectWrapper>
       <Header
         title={getLocale('braveWalletSelectNetwork')}
         onBack={onBack}
         hasAddButton={hasAddButton}
-        onClickAdd={onAddNetwork} />
+        onClickAdd={onAddNetwork}
+      />
       <SelectScrollContainer>
-        <SelectNetwork
-          selectedNetwork={selectedNetwork}
-          networks={networks}
-          onSelectNetwork={onSelectNetwork}
-        />
+        <SelectNetwork onSelectCustomNetwork={onSelectCustomNetwork} />
       </SelectScrollContainer>
     </SelectWrapper>
   )

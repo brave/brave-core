@@ -28,6 +28,9 @@ int GetMaximumNewTabPageAdsPerDay();
 int GetMaximumPromotedContentAdsPerHour();
 int GetMaximumPromotedContentAdsPerDay();
 
+int GetMaximumSearchResultAdsPerHour();
+int GetMaximumSearchResultAdsPerDay();
+
 int GetBrowsingHistoryMaxCount();
 int GetBrowsingHistoryDaysAgo();
 

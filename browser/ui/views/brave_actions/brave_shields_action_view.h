@@ -50,9 +50,9 @@ class BraveShieldsActionView
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
 
-  std::unique_ptr<WebUIBubbleManagerT<ShieldsPanelUI>> webui_bubble_manager_;
   Profile* profile_ = nullptr;
   TabStripModel* tab_strip_model_ = nullptr;
+  std::unique_ptr<WebUIBubbleManagerT<ShieldsPanelUI>> webui_bubble_manager_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_SHIELDS_ACTION_VIEW_H_

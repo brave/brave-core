@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
@@ -220,6 +221,10 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/autofill/BraveAutofillPopupBridge"));
         Assert.assertTrue(
                 classExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/share/send_tab_to_self/BraveDevicePickerBottomSheetContent"));
     }
 
     @Test
@@ -351,6 +356,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher",
                         "get", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent",
+                "createManageDevicesLink", true, void.class, ListView.class));
     }
 
     @Test
@@ -527,6 +535,11 @@ public class BytecodeTest {
                 FeedSurfaceCoordinator.class, Context.class, SnapScrollHelper.class,
                 PropertyModel.class, int.class, FeedActionDelegate.class,
                 FeedOptionsCoordinator.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/share/send_tab_to_self/DevicePickerBottomSheetContent",
+                "org/chromium/chrome/browser/share/send_tab_to_self/BraveDevicePickerBottomSheetContent",
+                Context.class, String.class, String.class, long.class, BottomSheetController.class,
+                boolean.class));
     }
 
     @Test

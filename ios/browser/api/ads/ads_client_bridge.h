@@ -23,6 +23,9 @@
 - (void)loadAdsResource:(const std::string&)id
                 version:(const int)version
                callback:(ads::LoadCallback)callback;
+- (void)loadAdsFileResource:(const std::string&)id
+                    version:(const int)version
+                   callback:(ads::LoadFileCallback)callback;
 - (void)clearScheduledCaptcha;
 - (void)getScheduledCaptcha:(const std::string&)payment_id
                    callback:(ads::GetScheduledCaptchaCallback)callback;
@@ -72,7 +75,7 @@
                   type:(const ads::mojom::P2AEventType)type
                  value:(const std::string&)value;
 - (void)logTrainingCovariates:
-    (const ads::mojom::TrainingCovariatesPtr)training_covariates;
+    (const brave_federated::mojom::TrainingCovariatesPtr)training_covariates;
 
 @end
 

@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "base/containers/flat_map.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
 namespace base {
 class Time;
@@ -35,7 +35,7 @@ class CovariateLogs final {
   ~CovariateLogs();
 
   void SetCovariateLogEntry(std::unique_ptr<CovariateLogEntry> entry);
-  mojom::TrainingCovariatesPtr GetTrainingCovariates() const;
+  brave_federated::mojom::TrainingCovariatesPtr GetTrainingCovariates() const;
 
   void SetAdNotificationImpressionServedAt(
       const base::Time impression_served_at);
@@ -43,7 +43,8 @@ class CovariateLogs final {
   void LogTrainingCovariates();
 
  private:
-  base::flat_map<mojom::CovariateType, std::unique_ptr<CovariateLogEntry>>
+  base::flat_map<brave_federated::mojom::CovariateType,
+                 std::unique_ptr<CovariateLogEntry>>
       covariate_log_entries_;
 };
 

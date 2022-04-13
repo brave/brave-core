@@ -45,7 +45,7 @@ bool InlineContentAdInfo::IsValid() const {
 base::DictionaryValue InlineContentAdInfo::ToValue() const {
   base::DictionaryValue dictionary;
 
-  dictionary.SetStringKey("uuid", uuid);
+  dictionary.SetStringKey("uuid", placement_id);
   dictionary.SetStringKey("creativeInstanceId", creative_instance_id);
   dictionary.SetStringKey("creativeSetId", creative_set_id);
   dictionary.SetStringKey("campaignId", campaign_id);
@@ -67,9 +67,9 @@ bool InlineContentAdInfo::FromValue(const base::Value& value) {
     return false;
   }
 
-  const std::string* uuid_value = dictionary->FindStringKey("uuid");
-  if (uuid_value) {
-    uuid = *uuid_value;
+  const std::string* placement_id_value = dictionary->FindStringKey("uuid");
+  if (placement_id_value) {
+    placement_id = *placement_id_value;
   }
 
   const std::string* creative_instance_id_value =
@@ -155,7 +155,7 @@ bool InlineContentAdInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("uuid")) {
-    uuid = document["uuid"].GetString();
+    placement_id = document["uuid"].GetString();
   }
 
   if (document.HasMember("creative_instance_id")) {
@@ -212,7 +212,7 @@ void SaveToJson(JsonWriter* writer, const InlineContentAdInfo& info) {
   writer->String(info.type.ToString().c_str());
 
   writer->String("uuid");
-  writer->String(info.uuid.c_str());
+  writer->String(info.placement_id.c_str());
 
   writer->String("creative_instance_id");
   writer->String(info.creative_instance_id.c_str());

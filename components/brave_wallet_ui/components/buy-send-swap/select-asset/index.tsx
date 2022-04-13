@@ -1,8 +1,10 @@
 import * as React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Fuse from 'fuse.js'
 
 import SelectAssetItem from '../select-asset-item'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, WalletRoutes, WalletState } from '../../../constants/types'
+import { WalletActions } from '../../../common/actions'
 import { SearchBar } from '../../shared'
 import Header from '../select-header'
 import { getLocale } from '../../../../common/locale'
@@ -13,11 +15,11 @@ import {
   DivderTextWrapper,
   DividerText
 } from '../shared-styles'
+import { useHistory } from 'react-router-dom'
+import { PanelActions } from '../../../panel/actions'
 
 export interface Props {
   assets: BraveWallet.BlockchainToken[]
-  selectedNetwork: BraveWallet.NetworkInfo
-  onAddAsset: () => void
   onSelectAsset: (asset: BraveWallet.BlockchainToken) => () => void
   onBack: () => void
 }
@@ -25,11 +27,33 @@ export interface Props {
 function SelectAsset (props: Props) {
   const {
     assets,
-    selectedNetwork,
-    onAddAsset,
     onBack,
     onSelectAsset
   } = props
+
+  // routing
+  const history = useHistory()
+
+  // redux
+  const {
+    fullTokenList,
+    selectedNetwork
+  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+  const dispatch = useDispatch()
+
+  // methods
+  const showVisibleAssetsModal = () => {
+    if (fullTokenList.length === 0) {
+      dispatch(WalletActions.getAllTokensList())
+    }
+    try {
+      // in wallet page
+      history.push(`${WalletRoutes.AddAssetModal}`)
+    } catch (ex) {
+      // in wallet panel
+      dispatch(PanelActions.expandWalletAddAsset())
+    }
+  }
 
   const fuse = React.useMemo(() => new Fuse(assets, {
     shouldSort: true,
@@ -63,7 +87,7 @@ function SelectAsset (props: Props) {
         title={getLocale('braveWalletSelectAsset')}
         onBack={onBack}
         hasAddButton={true}
-        onClickAdd={onAddAsset}
+        onClickAdd={showVisibleAssetsModal}
       />
       <SearchBar placeholder={getLocale('braveWalletSearchAsset')} action={filterAssetList} autoFocus={true} />
       <SelectScrollSearchContainer>

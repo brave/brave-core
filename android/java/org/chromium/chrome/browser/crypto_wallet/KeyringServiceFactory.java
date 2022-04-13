@@ -33,7 +33,7 @@ public class KeyringServiceFactory {
     }
 
     public KeyringService getKeyringService(ConnectionErrorHandler connectionErrorHandler) {
-        Profile profile = Utils.getProfile(false); // always use regular profile
+        Profile profile = Utils.getProfile(false); // Always use regular profile
         int nativeHandle = KeyringServiceFactoryJni.get().getInterfaceToKeyringService(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         KeyringService keyringService = KeyringService.MANAGER.attachProxy(handle, 0);

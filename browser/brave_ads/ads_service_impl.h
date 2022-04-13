@@ -175,6 +175,11 @@ class AdsServiceImpl : public AdsService,
       const std::string& creative_instance_id,
       const ads::mojom::InlineContentAdEventType event_type) override;
 
+  void TriggerSearchResultAdEvent(
+      ads::mojom::SearchResultAdPtr ad_mojom,
+      const ads::mojom::SearchResultAdEventType event_type,
+      TriggerSearchResultAdEventCallback callback) override;
+
   void PurgeOrphanedAdEventsForType(const ads::mojom::AdType ad_type) override;
 
   void GetHistory(const double from_timestamp,
@@ -256,13 +261,13 @@ class AdsServiceImpl : public AdsService,
   bool ShouldShowCustomAdNotifications();
 
   void MaybeOpenNewTabWithAd();
-  void OpenNewTabWithAd(const std::string& uuid);
+  void OpenNewTabWithAd(const std::string& placement_id);
   void OnOpenNewTabWithAd(const std::string& json);
-  void RetryOpeningNewTabWithAd(const std::string& uuid);
+  void RetryOpeningNewTabWithAd(const std::string& placement_id);
 
   void OpenNewTabWithUrl(const std::string& url);
 
-  void NotificationTimedOut(const std::string& uuid);
+  void NotificationTimedOut(const std::string& placement_id);
 
   void RegisterResourceComponentsForLocale(const std::string& locale);
 
@@ -280,6 +285,12 @@ class AdsServiceImpl : public AdsService,
                             const bool success,
                             const std::string& dimensions,
                             const std::string& json);
+
+  void OnTriggerSearchResultAdEvent(
+      TriggerSearchResultAdEventCallback callback,
+      const bool success,
+      const std::string& placement_id,
+      const ads::mojom::SearchResultAdEventType event_type);
 
   void OnGetHistory(OnGetHistoryCallback callback, const std::string& json);
 
@@ -312,6 +323,7 @@ class AdsServiceImpl : public AdsService,
                          const std::string& json);
 
   void OnLoaded(const ads::LoadCallback& callback, const std::string& value);
+  void OnFileLoaded(const ads::LoadFileCallback& callback, base::File value);
   void OnSaved(const ads::ResultCallback& callback, const bool success);
 
   void OnRunDBTransaction(ads::RunDBTransactionCallback callback,
@@ -349,8 +361,8 @@ class AdsServiceImpl : public AdsService,
 
   std::string LoadDataResourceAndDecompressIfNeeded(const int id) const;
 
-  void StartNotificationTimeoutTimer(const std::string& uuid);
-  bool StopNotificationTimeoutTimer(const std::string& uuid);
+  void StartNotificationTimeoutTimer(const std::string& placement_id);
+  bool StopNotificationTimeoutTimer(const std::string& placement_id);
 
   bool connected();
 
@@ -370,7 +382,7 @@ class AdsServiceImpl : public AdsService,
 
   void ShowNotification(const ads::AdNotificationInfo& info) override;
 
-  void CloseNotification(const std::string& uuid) override;
+  void CloseNotification(const std::string& placement_id) override;
 
   void RecordAdEventForId(const std::string& id,
                           const std::string& type,
@@ -395,6 +407,10 @@ class AdsServiceImpl : public AdsService,
   void LoadAdsResource(const std::string& id,
                        const int version,
                        ads::LoadCallback callback) override;
+
+  void LoadAdsFileResource(const std::string& id,
+                           const int version,
+                           ads::LoadFileCallback callback) override;
 
   void GetBrowsingHistory(const int max_count,
                           const int days_ago,
@@ -422,8 +438,8 @@ class AdsServiceImpl : public AdsService,
                       const ads::mojom::P2AEventType type,
                       const std::string& value) override;
 
-  void LogTrainingCovariates(
-      const ads::mojom::TrainingCovariatesPtr training_covariates) override;
+  void LogTrainingCovariates(const brave_federated::mojom::TrainingCovariatesPtr
+                                 training_covariates) override;
   void OnLogTrainingCovariates(bool success);
 
   void WriteDiagnosticLog(const std::string& file,
@@ -496,7 +512,7 @@ class AdsServiceImpl : public AdsService,
   std::map<std::string, std::unique_ptr<base::OneShotTimer>>
       notification_timers_;
 
-  std::string retry_opening_new_tab_for_ad_with_uuid_;
+  std::string retry_opening_new_tab_for_ad_with_placement_id_;
 
   base::OneShotTimer onboarding_timer_;
 

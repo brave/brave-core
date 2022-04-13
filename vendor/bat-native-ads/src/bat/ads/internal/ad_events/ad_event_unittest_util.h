@@ -19,9 +19,14 @@ namespace ads {
 class AdType;
 class ConfirmationType;
 struct AdEventInfo;
+struct AdInfo;
 struct CreativeAdInfo;
 
 AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
+                         const AdType& ad_type,
+                         const ConfirmationType& confirmation_type,
+                         const base::Time created_at);
+AdEventInfo BuildAdEvent(const AdInfo& ad,
                          const AdType& ad_type,
                          const ConfirmationType& confirmation_type,
                          const base::Time created_at);

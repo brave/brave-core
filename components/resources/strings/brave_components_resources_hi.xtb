@@ -1176,7 +1176,7 @@
 <translation id="1671503397662036257">टॉर कनेक्शन की स्थिति</translation>
 <translation id="6024292492796847324">टॉर के शुरू होने की स्थिति</translation>
 <translation id="8458987127502506209">Brave Shields को इनेबल करें</translation>
-<translation id="7509914170164691086">शील्ड की ये सुविधाएँ <ph name="LINK_BEFORE"/>चालू<ph name="LINK_AFTER"/> हैं</translation>
+<translation id="7509914170164691086"><ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/> के लिए शील्ड चालू है</translation>
 <translation id="260764436039299868">शील्ड की ये सुविधाएँ <ph name="LINK_BEFORE"/>बंद <ph name="LINK_AFTER"/> हैं</translation>
 <translation id="7709075156958117386">अगर यह साइट काम नहीं कर रही है, तो शील्ड को बंद करके कोशिश करें.
 <ph name="LINK_BEFORE"/>ध्यान दें: ऐसा करने से Brave की गोपनीयता सुरक्षा घट जाएगी.<ph name="LINK_AFTER"/></translation>

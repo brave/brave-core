@@ -25,6 +25,7 @@
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_observer.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_observer.h"
 #include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad_observer.h"
+#include "bat/ads/internal/ads/search_result_ads/search_result_ad_observer.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -89,6 +90,7 @@ class CovariateLogs;
 class InlineContentAd;
 class NewTabPageAd;
 class PromotedContentAd;
+class SearchResultAd;
 class TabManager;
 class UserActivity;
 struct AdInfo;
@@ -98,6 +100,7 @@ struct ConversionQueueItemInfo;
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
 struct PromotedContentAdInfo;
+struct SearchResultAdInfo;
 struct WalletInfo;
 
 class AdsImpl final : public Ads,
@@ -111,7 +114,8 @@ class AdsImpl final : public Ads,
                       public ConversionsObserver,
                       public NewTabPageAdObserver,
                       public NewTabPageAdServingObserver,
-                      public PromotedContentAdObserver {
+                      public PromotedContentAdObserver,
+                      public SearchResultAdObserver {
  public:
   explicit AdsImpl(AdsClient* ads_client);
   ~AdsImpl() override;
@@ -189,6 +193,11 @@ class AdsImpl final : public Ads,
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type) override;
 
+  void TriggerSearchResultAdEvent(
+      mojom::SearchResultAdPtr ad_mojom,
+      const mojom::SearchResultAdEventType event_type,
+      TriggerSearchResultAdEventCallback callback) override;
+
   void PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) override;
 
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
@@ -227,6 +236,7 @@ class AdsImpl final : public Ads,
   void LoadConfirmationsState(InitializeCallback callback);
   void LoadAdNotificationsState(InitializeCallback callback);
   void Initialized(InitializeCallback callback);
+
   void Start();
 
   void CleanupAdEvents();
@@ -294,6 +304,13 @@ class AdsImpl final : public Ads,
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type) override;
 
+  // SearchResultAdObserver:
+  void OnSearchResultAdViewed(const SearchResultAdInfo& ad) override;
+  void OnSearchResultAdClicked(const SearchResultAdInfo& ad) override;
+  void OnSearchResultAdEventFailed(
+      const SearchResultAdInfo& ad,
+      const mojom::SearchResultAdEventType event_type) override;
+
   // AdTransferObserver:
   void OnWillTransferAd(const AdInfo& ad, const base::Time time) override;
   void OnDidTransferAd(const AdInfo& ad) override;
@@ -338,6 +355,7 @@ class AdsImpl final : public Ads,
   std::unique_ptr<new_tab_page_ads::AdServing> new_tab_page_ad_serving_;
   std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
   std::unique_ptr<PromotedContentAd> promoted_content_ad_;
+  std::unique_ptr<SearchResultAd> search_result_ad_;
   std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivity> user_activity_;

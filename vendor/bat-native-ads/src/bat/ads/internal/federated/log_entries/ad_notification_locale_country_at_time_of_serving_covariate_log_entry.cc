@@ -16,16 +16,17 @@ AdNotificationLocaleCountryAtTimeOfServingCovariateLogEntry::
 AdNotificationLocaleCountryAtTimeOfServingCovariateLogEntry::
     ~AdNotificationLocaleCountryAtTimeOfServingCovariateLogEntry() = default;
 
-mojom::DataType
+brave_federated::mojom::DataType
 AdNotificationLocaleCountryAtTimeOfServingCovariateLogEntry::GetDataType()
     const {
-  return mojom::DataType::kString;
+  return brave_federated::mojom::DataType::kString;
 }
 
-mojom::CovariateType
+brave_federated::mojom::CovariateType
 AdNotificationLocaleCountryAtTimeOfServingCovariateLogEntry::GetCovariateType()
     const {
-  return mojom::CovariateType::kAdNotificationLocaleCountryAtTimeOfServing;
+  return brave_federated::mojom::CovariateType::
+      kAdNotificationLocaleCountryAtTimeOfServing;
 }
 
 std::string

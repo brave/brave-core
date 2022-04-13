@@ -23,7 +23,7 @@ class BraveWalletProviderDelegateBridge
   __weak id<BraveWalletProviderDelegate> bridge_;
 
   void ShowPanel() override;
-  GURL GetOrigin() const override;
+  url::Origin GetOrigin() const override;
   void RequestEthereumPermissions(
       RequestEthereumPermissionsCallback callback) override;
   void GetAllowedAccounts(bool include_accounts_when_locked,

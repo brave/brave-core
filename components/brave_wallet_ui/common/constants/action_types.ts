@@ -5,6 +5,7 @@
 
 import {
   BraveWallet,
+  Origin,
   SlippagePresetObjectType,
   TransactionProviderError,
   WalletAccountType
@@ -88,12 +89,12 @@ export type SitePermissionsPayloadType = {
 }
 
 export type RemoveSitePermissionPayloadType = {
-  origin: string
+  origin: Origin
   account: string
 }
 
 export type AddSitePermissionPayloadType = {
-  origin: string
+  origin: Origin
   account: string
 }
 

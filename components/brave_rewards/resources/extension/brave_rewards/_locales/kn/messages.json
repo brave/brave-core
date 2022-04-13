@@ -252,7 +252,7 @@
     "description": ""
   },
   "walletUnverified": {
-    "message": "ಪರಿಶೀಲಿಸಿಲ್ಲ",
+    "message": "ಪರಿಶೀಲಿಸಿಲ್ಲದವು",
     "description": ""
   },
   "walletVerified": {
@@ -380,7 +380,7 @@
     "description": ""
   },
   "notificationMonthlyContributionFailedTitle": {
-    "message": "ಮಾಸಿಕ ಸಲಹೆ ವಿಫಲವಾಗಿದೆ",
+    "message": "ಮಾಸಿಕ ಸಲಹೆ ಕಳುಹಿಸುವಿಕೆ ವಿಫಲವಾಗಿದೆ",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {

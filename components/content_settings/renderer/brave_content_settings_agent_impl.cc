@@ -297,7 +297,7 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
                            url::Origin(frame->GetSecurityOrigin()).GetURL())) {
       setting = CONTENT_SETTING_ALLOW;
     } else {
-      setting = GetBraveFPContentSettingFromRules(
+      setting = brave_shields::GetBraveFPContentSettingFromRules(
           content_setting_rules_->fingerprinting_rules, GetOriginOrURL(frame));
     }
   }

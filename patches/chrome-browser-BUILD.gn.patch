@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 9917fcf771ecbfceaba4c02164de620d2aaf0775..74d24482a419119a29cea97fcaa39cc41762ff5d 100644
+index 9917fcf771ecbfceaba4c02164de620d2aaf0775..81353900f69733c61d2e40833ae9fc934bb49d91 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -2541,6 +2541,7 @@ static_library("browser") {
        "performance_monitor/metric_evaluator_helper_posix.h",
      ]
    }
-+  import("//brave/browser/sources.gni") sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps public_deps += brave_chrome_browser_public_deps defines += brave_chrome_browser_defines
++  import("//brave/browser/sources.gni") sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps public_deps += brave_chrome_browser_public_deps
  
    if (is_win || is_mac || is_linux || is_chromeos_ash) {
      deps += [ "//chrome/browser/ui/webui/connectors_internals:mojo_bindings" ]

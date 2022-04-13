@@ -39,8 +39,7 @@ import {
   PanelTypes,
   BraveWallet,
   BuySupportedChains,
-  DefaultCurrencies,
-  OriginInfo
+  DefaultCurrencies
 } from '../../../constants/types'
 import { create, background } from 'ethereum-blockies'
 import { getLocale } from '../../../../common/locale'
@@ -50,7 +49,7 @@ export interface Props {
   selectedAccount: WalletAccountType
   selectedNetwork: BraveWallet.NetworkInfo
   isConnected: boolean
-  originInfo: OriginInfo
+  originInfo: BraveWallet.OriginInfo
   isSwapSupported: boolean
   defaultCurrencies: DefaultCurrencies
   navAction: (path: PanelTypes) => void
@@ -135,7 +134,7 @@ const ConnectedPanel = (props: Props) => {
       />
       <CenterColumn>
         <StatusRow>
-          {!originInfo?.origin?.startsWith('chrome://') ? (
+          {originInfo?.origin?.scheme !== 'chrome' ? (
             <OvalButton onClick={onShowSitePermissions}>
               {isConnected && <BigCheckMark />}
               <OvalButtonText>{isConnected ? getLocale('braveWalletPanelConnected') : getLocale('braveWalletPanelNotConnected')}</OvalButtonText>

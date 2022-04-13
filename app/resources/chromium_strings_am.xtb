@@ -16,18 +16,12 @@
 <translation id="5147525139567260139">የBrave ትር ያጋሩ</translation>
 <translation id="1530633922026945685">Brave የዙሪያዎ 3ል ካርታ መፍጠር እንዲችል ካሜራዎን የመድረስ ፈቃድ ያስፈልገዋል</translation>
 <translation id="4449148723378534338">በBrave ውስጥ ቁልፍ የግላዊነት እና የደህንነት ቁጥጥሮችን ይገምግሙ</translation>
-<translation id="5359574361379286250">ይህን መለያ አንድ ጊዜ ብቻ መጠቀም ከፈለጉ በBrave አሳሽ ውስጥ <ph name="GUEST_LINK_BEGIN"/>የእንግዳ ሁነታ<ph name="GUEST_LINK_END"/>ን መጠቀም ይችላሉ። ለሌላ ሰው መለያ ማከል ከፈለጉ በእርስዎ <ph name="DEVICE_TYPE"/> ላይ <ph name="LINK_BEGIN"/>አዲስ ሰው ያክሉ<ph name="LINK_END"/>።
-
-አስቀድመው ለድር ጣቢያዎች እና መተግበሪያዎች የሰጧቸው ፈቃዶች በዚህ መለያ ላይ ተፈጻሚ ሊሆኑ ይችላሉ። የእርስዎን Brave መለያዎች በ<ph name="SETTINGS_LINK_BEGIN"/>ቅንብሮች<ph name="SETTINGS_LINK_END"/> ውስጥ ማቀናበር ይችላሉ።</translation>
 <translation id="5616153642055197778">አዲስና ደህንነቱ ይበልጥ የተጠበቀ የBrave ስሪት አለ።</translation>
 <translation id="6797402139308059782">Brave ጀርባ ላይ ይሂድ</translation>
 <translation id="5875673934455379806">Braveን ዳግም ጫን</translation>
 <translation id="4528406859989804913">በሚተዳደር መለያ እየገቡ ነው፣ እና አስተዳዳሪው በእርስዎ Brave መገለጫ ላይ ቁጥጥር እየሰጡት ነው። እንደ እርስዎ መተግበሪያዎች፣ ዕልባቶች፣ ታሪክ፣ የይለፍ ቃላት እና ሌሎች ቅንብሮች ያሉ የእርስዎ Brave ውሂብ እስከ መጨረሻው ከ<ph name="USER_NAME"/> ጋር የተያያዙ ይሆናሉ። ይህን ውሂብ በBrave የመለያዎች Dashboard አማካኝነት ሊሰርዙት ይችላሉ፣ ነገር ግን ይህን ውሂብ ከሌላ መለያ ጋር ሊያጎዳኙት አይችሉም። ነባሩ የእርስዎ Brave ውሂብ ለይተው ለማስቀመጥም አዲስ መገለጫ እንደ አማራጭ መፍጠር ይችላሉ። <ph name="LEARN_MORE"/></translation>
 <translation id="1649714546770135458">ይህንን በማጥፋት፣ እንደ Gmail ወደ መሰሉ የBrave ጣቢያዎች ወደ Brave በመለያ ሳይገቡ መግባት ይችላሉ</translation>
 <translation id="189297655255130768">Brave መልስ አይሰጥም። አሁን ዳግም ይጀምር?</translation>
-<translation id="479793348545936567">ይህን መለያ አንድ ጊዜ ብቻ መጠቀም ከፈለጉ በBrave አሳሽ ውስጥ የእንግዳ ሁነታን መጠቀም ይችላሉ። ለሌላ ሰው መለያ ማከል ከፈለጉ በእርስዎ <ph name="DEVICE_TYPE"/> ላይ <ph name="LINK_BEGIN"/>አዲስ ሰው ያክሉ<ph name="LINK_END"/>።
-
-አስቀድመው ለድር ጣቢያዎች እና መተግበሪያዎች የሰጧቸው ፈቃዶች በዚህ መለያ ላይ ተፈጻሚ ሊሆኑ ይችላሉ። የእርስዎን Brave መለያዎች በ<ph name="SETTINGS_LINK_BEGIN"/>ቅንብሮች<ph name="SETTINGS_LINK_END"/> ውስጥ ማቀናበር ይችላሉ።</translation>
 <translation id="1775322105159056176">Brave ነባሪ አሳሹን ማወቅ ወይም ማቀናበር አልቻለም</translation>
 <translation id="7665553140559834626">&amp;Chrome OSን ለማዘመን ዳግም ያስነሱት</translation>
 <translation id="9220324636239049437">ይሄ 1 ንጥል ከዚህ መሣሪያ ይሰርዛል። ውሂብዎን በኋላ ላይ ሰርስረው ለማውጣት እንደ <ph name="USER_EMAIL"/> ሆነው ወደ Brave ይግቡ።</translation>
@@ -296,6 +290,10 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="4484434718272972655">ማነው Braveን የሚጠቀመው?</translation>
 <translation id="7173394303099002355">የBraveን ጠንካራ ደህንነት ያግኙ</translation>
 <translation id="8992261409816268381">የBrave ደራሲዎች</translation>
+<translation id="479793348545936567">ይህንን መለያ ለአንድ ጊዜ ብቻ ለመጠቀም ከፈለጉ፣ በ Brave አሳሽ ውስጥ የ Guest ሁነታን መጠቀም ይችላሉ። ለሌላ ሰው መለያ ማከል ከፈለጉ፣ <ph name="LINK_BEGIN"/>አዲስ መገለጫ ያክሉ<ph name="LINK_END"/> ወደ የእርስዎ <ph name="DEVICE_TYPE"/>።
+
+አስቀድመው ለድር ጣቢያዎች እና መተግበሪያዎች የሰጡዋቸው ፈቃዶች በዚህ መለያ ላይ ተፈጻሚ ሊሆኑ ይችላሉ። የእርስዎን Brave የ sync ሰንሰለቶች በሚከተለው ውስጥ ማስተዳደር ይችላሉ <ph name="SETTINGS_LINK_BEGIN"/>qnbroc<ph name="SETTINGS_LINK_END"/>.</translation>
+<translation id="5359574361379286250">ይህንን መለያ ለአንድ ጊዜ ብቻ ለመጠቀም ከፈለጉ፣ በ Brave አሳሽ ውስጥ <ph name="GUEST_LINK_BEGIN"/>የ Guest ሁነታን <ph name="GUEST_LINK_END"/>መጠቀም ይችላሉ። ለሌላ ሰው መለያ ማከል ከፈለጉ፣ <ph name="LINK_BEGIN"/>አዲስ መገለጫ ያክሉ<ph name="LINK_END"/> ወደ የእርስዎ <ph name="DEVICE_TYPE"/>።አስቀድመው ለድር ጣቢያዎች እና መተግበሪያዎች የሰጡዋቸው ፈቃዶች በዚህ መለያ ላይ ተፈጻሚ ሊሆኑ ይችላሉ። የእርስዎን Brave የ sync ሰንሰለቶች በሚከተለው ውስጥ ማስተዳደር ይችላሉ <ph name="SETTINGS_LINK_BEGIN"/>ቅንብሮች<ph name="SETTINGS_LINK_END"/>።</translation>
 <translation id="1299765473362724475">ማስጠንቀቂያ፦ Brave ቅጥያዎች የአሰሳ ታሪክዎን እንዳይመዘግቡ መከልከል አይችልም። ይህን ቅጥያ ማንነትን በማያሳውቅ ሁነት ላይ ለማሰናከል ይህን አማራጭ አይምረጡ።</translation>
 <translation id="1448049584457347995">Brave ይበልጥ ደህንነቱ የተጠበቀ እንዲሆን ለማድረግ፣ በ <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ውስጥ ያልተጠቀሱ እና እርስዎ ሳያውቋቸው የታከሉ ሊሆኑ የሚችሉ የተወሰኑ ዝርዝሮችን አሰናክለናል።</translation>
 <translation id="8848045066928358658">Braveን ይበልጥ ደህንነቱ የተጠበቀ እንዲሆን ለማድረግ፣ በ<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ውስጥ ያልተዘረዘረውን የሚከተለውን ቅጥያ አሰናክለነዋል እና እርስዎ ሳያውቁት የታከለ ሊሆን ይችላል።</translation>

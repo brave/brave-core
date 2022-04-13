@@ -31,8 +31,11 @@ constexpr char kEthSign[] = "eth_sign";
 constexpr char kPersonalSign[] = "personal_sign";
 constexpr char kPersonalEcRecover[] = "personal_ecRecover";
 constexpr char kEthGetEncryptionPublicKey[] = "eth_getEncryptionPublicKey";
+constexpr char kEthDecrypt[] = "eth_decrypt";
 constexpr char kWalletWatchAsset[] = "wallet_watchAsset";
 constexpr char kMetamaskWatchAsset[] = "metamask_watchAsset";
+constexpr char kWeb3ClientVersion[] = "web3_clientVersion";
+
 // We currently don't handle it until MetaMask point it to v3 or v4 other than
 // v1 or v2
 constexpr char kEthSignTypedData[] = "eth_signTypedData";

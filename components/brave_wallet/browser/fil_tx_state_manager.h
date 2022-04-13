@@ -8,7 +8,9 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
+#include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 
 class PrefService;
@@ -20,6 +22,7 @@ class Value;
 namespace brave_wallet {
 
 class TxMeta;
+class FilTxMeta;
 class JsonRpcService;
 
 class FilTxStateManager : public TxStateManager {
@@ -29,7 +32,12 @@ class FilTxStateManager : public TxStateManager {
   FilTxStateManager(const FilTxStateManager&) = delete;
   FilTxStateManager operator=(const FilTxStateManager&) = delete;
 
+  std::unique_ptr<FilTxMeta> GetFilTx(const std::string& id);
+  std::unique_ptr<FilTxMeta> ValueToFilTxMeta(const base::Value& value);
+
  private:
+  FRIEND_TEST_ALL_PREFIXES(FilTxStateManagerUnitTest, GetTxPrefPathPrefix);
+
   std::unique_ptr<TxMeta> ValueToTxMeta(const base::Value& value) override;
   std::string GetTxPrefPathPrefix() override;
 };

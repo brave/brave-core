@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/wallet_bg"
+    android:layout_margin="12dp"
     android:orientation="vertical"
     tools:context=".ApproveTxBottomSheetDialogFragment"
     tools:ignore="RtlSymmetry,NestedWeights">
 
     <TextView
         android:id="@+id/network_name"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="4dp"
@@ -19,9 +20,38 @@
         android:text="@string/mainnet"
         android:textColor="@color/wallet_text_color"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_transaction_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="12dp"
+        tools:text="1 of 2"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/btn_next_tx"
+        app:layout_constraintTop_toTopOf="@id/btn_next_tx"
+        app:layout_constraintBottom_toBottomOf="@id/btn_next_tx"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_next_tx"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:padding="0dp"
+        android:textAllCaps="false"
+        android:textColor="@color/brave_action_color"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/network_name"
+        tools:text="Next" />
 
     <ImageView
         android:id="@+id/account_picture"
@@ -114,11 +144,22 @@
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+        <Button
+            android:id="@+id/btn_reject_transactions"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAllCaps="false"
+            android:textColor="@color/brave_action_color"
+            android:visibility="gone"
+            tools:text="Reject all transactions" />
+
         <LinearLayout
             android:id="@+id/approve_tx_bottom_sheet_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="12dp"
+            android:layout_marginBottom="12dp"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton

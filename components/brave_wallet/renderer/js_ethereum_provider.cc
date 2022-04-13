@@ -372,8 +372,6 @@ v8::Local<v8::Promise> JSEthereumProvider::Send(gin::Arguments* args) {
   // There's no id in this format so we can just use 1
   brave_wallet_provider_->Send(
       method, std::move(*params),
-      url::Origin(render_frame_->GetWebFrame()->GetSecurityOrigin())
-          .Serialize(),
       base::BindOnce(&JSEthereumProvider::OnRequestOrSendAsync,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      nullptr, std::move(promise_resolver), isolate, true));
@@ -402,8 +400,6 @@ void JSEthereumProvider::SendAsync(gin::Arguments* args) {
 
   brave_wallet_provider_->Request(
       std::move(*input_value),
-      url::Origin(render_frame_->GetWebFrame()->GetSecurityOrigin())
-          .Serialize(),
       base::BindOnce(
           &JSEthereumProvider::JSEthereumProvider::OnRequestOrSendAsync,
           weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
@@ -446,8 +442,6 @@ v8::Local<v8::Promise> JSEthereumProvider::Request(v8::Isolate* isolate,
 
   brave_wallet_provider_->Request(
       std::move(*input_value),
-      url::Origin(render_frame_->GetWebFrame()->GetSecurityOrigin())
-          .Serialize(),
       base::BindOnce(
           &JSEthereumProvider::JSEthereumProvider::OnRequestOrSendAsync,
           weak_ptr_factory_.GetWeakPtr(), std::move(global_context), nullptr,

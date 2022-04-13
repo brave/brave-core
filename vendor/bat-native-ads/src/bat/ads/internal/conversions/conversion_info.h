@@ -17,6 +17,8 @@ struct ConversionInfo final {
   ConversionInfo(const ConversionInfo& info);
   ~ConversionInfo();
 
+  bool IsValid() const;
+
   bool operator==(const ConversionInfo& rhs) const;
   bool operator!=(const ConversionInfo& rhs) const;
 

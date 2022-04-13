@@ -34,6 +34,7 @@ export interface Props {
   selectedNetwork: BraveWallet.NetworkInfo
   encryptionKeyPayload: BraveWallet.GetEncryptionPublicKeyRequest
   eTldPlusOne: string
+  decryptPayload: BraveWallet.DecryptRequest
   onProvideOrAllow: () => void
   onCancel: () => void
 }
@@ -45,24 +46,26 @@ function EncryptionKeyPanel (props: Props) {
     selectedNetwork,
     encryptionKeyPayload,
     eTldPlusOne,
+    decryptPayload,
     onProvideOrAllow,
     onCancel
   } = props
   const [isDecrypted, setIsDecrypted] = React.useState<boolean>(false)
+  const payloadAddress = panelType === 'request' ? encryptionKeyPayload.address : decryptPayload.address
 
   const foundAccountName = React.useMemo(() => {
-    return accounts.find((account) => account.address.toLowerCase() === encryptionKeyPayload.address.toLowerCase())?.name
-  }, [encryptionKeyPayload])
+    return accounts.find((account) => account.address.toLowerCase() === payloadAddress.toLowerCase())?.name
+  }, [payloadAddress])
 
   const orb = React.useMemo(() => {
-    return create({ seed: encryptionKeyPayload.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [encryptionKeyPayload])
+    return create({ seed: payloadAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+  }, [payloadAddress])
 
   const onDecryptMessage = () => {
     setIsDecrypted(true)
   }
 
-  const descriptionString = getLocale('braveWalletProvideEncryptionKeyDescription').replace('$url', encryptionKeyPayload.origin.url)
+  const descriptionString = getLocale('braveWalletProvideEncryptionKeyDescription').replace('$url', encryptionKeyPayload.originInfo.originSpec)
   const { duringTag, afterTag } = splitStringForTag(descriptionString)
 
   return (
@@ -75,12 +78,9 @@ function EncryptionKeyPanel (props: Props) {
       {panelType === 'read' &&
         <URLText>
           <CreateSiteOrigin
-            originInfo={
-              {
-                origin: encryptionKeyPayload.origin.url,
-                eTldPlusOne: eTldPlusOne
-              }
-            }
+            originSpec={encryptionKeyPayload.originInfo.originSpec}
+            // TODO(apaymyshev): why originSpec is coming from payload, but eTldPlusOne from props?
+            eTldPlusOne={eTldPlusOne}
           />
         </URLText>
       }
@@ -109,15 +109,12 @@ function EncryptionKeyPanel (props: Props) {
             {panelType === 'request'
               ? <>
                 <CreateSiteOrigin
-                  originInfo={
-                    {
-                      origin: duringTag ?? '',
-                      eTldPlusOne: eTldPlusOne
-                    }
-                  } />
+                  originSpec={duringTag ?? ''}
+                  eTldPlusOne={eTldPlusOne}
+                />
                 {afterTag}
               </>
-              : encryptionKeyPayload.message}
+              : decryptPayload.unsafeMessage}
           </MessageText>
         )}
       </MessageBox>

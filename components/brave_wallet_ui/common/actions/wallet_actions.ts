@@ -38,7 +38,8 @@ import {
   WalletInfo,
   DefaultCurrencies,
   GetPriceReturnInfo,
-  OriginInfo
+  SolFeeEstimates,
+  SPLTransferFromParams
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
@@ -78,6 +79,7 @@ export const selectPortfolioTimeline = createAction<BraveWallet.AssetPriceTimefr
 export const portfolioTimelineUpdated = createAction<BraveWallet.AssetPriceTimeframe>('portfolioTimelineUpdated')
 export const sendTransaction = createAction<SendTransactionParams>('sendTransaction')
 export const sendERC20Transfer = createAction<ER20TransferParams>('sendERC20Transfer')
+export const sendSPLTransfer = createAction<SPLTransferFromParams>('sendSPLTransfer')
 export const sendERC721TransferFrom = createAction<ERC721TransferFromParams>('sendERC721TransferFrom')
 export const approveERC20Allowance = createAction<ApproveERC20Params>('approveERC20Allowance')
 export const newUnapprovedTxAdded = createAction<NewUnapprovedTxAdded>('newUnapprovedTxAdded')
@@ -89,9 +91,10 @@ export const rejectAllTransactions = createAction('rejectAllTransactions')
 export const setAccountTransactions = createAction<AccountTransactions>('setAccountTransactions')
 export const defaultWalletUpdated = createAction<BraveWallet.DefaultWallet>('defaultWalletUpdated')
 export const setSelectedAccount = createAction<WalletAccountType>('setSelectedAccount')
-export const activeOriginChanged = createAction<OriginInfo>('activeOriginChanged')
-export const refreshGasEstimates = createAction('refreshGasEstimates')
+export const activeOriginChanged = createAction<BraveWallet.OriginInfo>('activeOriginChanged')
+export const refreshGasEstimates = createAction<BraveWallet.TransactionInfo>('refreshGasEstimates')
 export const setGasEstimates = createAction<BraveWallet.GasEstimation1559>('setGasEstimates')
+export const setSolFeeEstimates = createAction<SolFeeEstimates>('setEstimatedSolFee')
 export const updateUnapprovedTransactionGasFields = createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields')
 export const updateUnapprovedTransactionSpendAllowance = createAction<UpdateUnapprovedTransactionSpendAllowanceType>('updateUnapprovedTransactionSpendAllowance')
 export const updateUnapprovedTransactionNonce = createAction<UpdateUnapprovedTransactionNonceType>('updateUnapprovedTransactionNonce')

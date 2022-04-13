@@ -322,8 +322,10 @@ provideStrings({
   // Confirm Transaction Panel
   braveWalletConfirmTransactionTotal: 'Total',
   braveWalletConfirmTransactionGasFee: 'Gas fee',
+  braveWalletConfirmTransactionTransactionFee: 'Transaction fee',
   braveWalletConfirmTransactionBid: 'Bid',
   braveWalletConfirmTransactionAmountGas: 'Amount + gas',
+  braveWalletConfirmTransactionAmountFee: 'Amount + fee',
   braveWalletConfirmTransactionNoData: 'No data.',
   braveWalletConfirmTransactionNext: 'next',
   braveWalletConfirmTransactionFrist: 'first',
@@ -417,6 +419,7 @@ provideStrings({
   braveWalletEditGasSetCustom: 'Set custom',
   braveWalletEditGasSetSuggested: 'Set suggested',
   braveWalletEditGasZeroGasPriceWarning: 'Transaction may not be propagated in the network.',
+  braveWalletEditGasLimitError: 'Gas limit must be an integer greater than 0',
 
   // Advanced transaction settings
   braveWalletAdvancedTransactionSettings: 'Advanced settings',

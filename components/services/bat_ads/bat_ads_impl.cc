@@ -169,6 +169,19 @@ void BatAdsImpl::OnInlineContentAdEvent(
   ads_->OnInlineContentAdEvent(uuid, creative_instance_id, event_type);
 }
 
+void BatAdsImpl::TriggerSearchResultAdEvent(
+    ads::mojom::SearchResultAdPtr ad_mojom,
+    const ads::mojom::SearchResultAdEventType event_type,
+    TriggerSearchResultAdEventCallback callback) {
+  auto* holder = new CallbackHolder<TriggerSearchResultAdEventCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  auto on_search_result_ad_event_callback =
+      std::bind(BatAdsImpl::OnTriggerSearchResultAdEvent, holder, _1, _2, _3);
+  ads_->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type,
+                                   on_search_result_ad_event_callback);
+}
+
 void BatAdsImpl::PurgeOrphanedAdEventsForType(
     const ads::mojom::AdType ad_type) {
   ads_->PurgeOrphanedAdEventsForType(ad_type);
@@ -302,6 +315,18 @@ void BatAdsImpl::OnGetInlineContentAd(
     const ads::InlineContentAdInfo& ad) {
   if (holder->is_valid()) {
     std::move(holder->get()).Run(success, dimensions, ad.ToJson());
+  }
+
+  delete holder;
+}
+
+void BatAdsImpl::OnTriggerSearchResultAdEvent(
+    CallbackHolder<TriggerSearchResultAdEventCallback>* holder,
+    const bool success,
+    const std::string& placement_id,
+    const ads::mojom::SearchResultAdEventType event_type) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(success, placement_id, event_type);
   }
 
   delete holder;

@@ -10,18 +10,38 @@
 
 class PrefRegistrySimple;
 class PrefService;
+class HostContentSettingsMap;
 
 namespace brave_shields {
 
 constexpr char kUsagePrefName[] = "brave_shields.p3a_usage";
-constexpr char kAdsDefaultReportedPrefName[] =
-    "brave_shields.ads_default_reported";
-constexpr char kFingerprintDefaultReportedPrefName[] =
-    "brave_shields.fingerprint_default_reported";
+constexpr char kFirstReportedPrefName[] = "brave_shields.p3a_first_reported";
+
+constexpr char kAdsStrictCountPrefName[] =
+    "brave_shields.p3a_ads_strict_domain_count";
+constexpr char kAdsStandardCountPrefName[] =
+    "brave_shields.p3a_ads_standard_domain_count";
+constexpr char kAdsAllowCountPrefName[] =
+    "brave_shields.p3a_ads_allow_domain_count";
+constexpr char kFPStrictCountPrefName[] =
+    "brave_shields.p3a_fp_strict_domain_count";
+constexpr char kFPStandardCountPrefName[] =
+    "brave_shields.p3a_fp_standard_domain_count";
+constexpr char kFPAllowCountPrefName[] =
+    "brave_shields.p3a_fp_allow_domain_count";
+
 constexpr char kAdsSettingHistogramName[] = "Brave.Shields.AdBlockSetting";
 constexpr char kFingerprintSettingHistogramName[] =
     "Brave.Shields.FingerprintBlockSetting";
 constexpr char kUsageStatusHistogramName[] = "Brave.Shields.UsageStatus";
+constexpr char kDomainAdsSettingsAboveHistogramName[] =
+    "Brave.Shields.DomainAdsSettingsAboveGlobal";
+constexpr char kDomainAdsSettingsBelowHistogramName[] =
+    "Brave.Shields.DomainAdsSettingsBelowGlobal";
+constexpr char kDomainFPSettingsAboveHistogramName[] =
+    "Brave.Shields.DomainFingerprintSettingsAboveGlobal";
+constexpr char kDomainFPSettingsBelowHistogramName[] =
+    "Brave.Shields.DomainFingerprintSettingsBelowGlobal";
 // Note: append-only enumeration! Never remove any existing values, as this enum
 // is used to bucket a UMA histogram, and removing values breaks that.
 enum ShieldsIconUsage {
@@ -40,15 +60,26 @@ enum ShieldsIconUsage {
 void MaybeRecordShieldsUsageP3A(ShieldsIconUsage usage,
                                 PrefService* local_state);
 
-void MaybeRecordDefaultShieldsAdsSetting(PrefService* local_state);
-
-void MaybeRecordDefaultShieldsFingerprintSetting(PrefService* local_state);
-
 void RecordShieldsAdsSetting(ControlType setting);
 
 void RecordShieldsFingerprintSetting(ControlType setting);
 
-void RegisterShieldsP3APrefs(PrefRegistrySimple* local_state);
+void RecordShieldsDomainSettingCounts(PrefService* profile_prefs,
+                                      bool is_fingerprint,
+                                      ControlType global_setting);
+
+void RecordShieldsDomainSettingCountsWithChange(PrefService* profile_prefs,
+                                                bool is_fingerprint,
+                                                ControlType global_setting,
+                                                ControlType* prev_setting,
+                                                ControlType new_setting);
+
+void RegisterShieldsP3ALocalPrefs(PrefRegistrySimple* local_state);
+
+void RegisterShieldsP3AProfilePrefs(PrefRegistrySimple* local_state);
+
+void MaybeRecordInitialShieldsSettings(PrefService* profile_prefs,
+                                       HostContentSettingsMap* map);
 
 }  // namespace brave_shields
 

@@ -13,17 +13,18 @@ namespace ads {
 
 AdNotificationInfo BuildAdNotification(
     const CreativeAdNotificationInfo& creative_ad) {
-  const std::string uuid = base::GUID::GenerateRandomV4().AsLowercaseString();
-  return BuildAdNotification(creative_ad, uuid);
+  const std::string placement_id =
+      base::GUID::GenerateRandomV4().AsLowercaseString();
+  return BuildAdNotification(creative_ad, placement_id);
 }
 
 AdNotificationInfo BuildAdNotification(
     const CreativeAdNotificationInfo& creative_ad,
-    const std::string& uuid) {
+    const std::string& placement_id) {
   AdNotificationInfo ad;
 
   ad.type = AdType::kAdNotification;
-  ad.uuid = uuid;
+  ad.placement_id = placement_id;
   ad.creative_instance_id = creative_ad.creative_instance_id;
   ad.creative_set_id = creative_ad.creative_set_id;
   ad.campaign_id = creative_ad.campaign_id;

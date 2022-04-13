@@ -102,8 +102,8 @@ void PromotedContentAd::FireEvent(
         }
 
         if (event_type == mojom::PromotedContentAdEventType::kViewed) {
-          // TODO(tmancey): We need to fire an ad served event until promoted
-          // content ads are served by the ads library
+          // We must fire an ad served event due to promoted content ads not
+          // being delivered by the library
           FireEvent(uuid, creative_instance_id,
                     mojom::PromotedContentAdEventType::kServed);
         }

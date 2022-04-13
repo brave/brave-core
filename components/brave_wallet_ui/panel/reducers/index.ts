@@ -7,8 +7,10 @@ import { combineReducers } from 'redux'
 
 import panelReducer from './panel_reducer'
 import walletReducer from '../../common/reducers/wallet_reducer'
+import sendCryptoReducer from '../../common/reducers/send_crypto_reducer'
 
 export default combineReducers({
   panel: panelReducer,
-  wallet: walletReducer
+  wallet: walletReducer,
+  sendCrypto: sendCryptoReducer
 })

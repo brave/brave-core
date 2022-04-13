@@ -45,6 +45,7 @@ class HDKeyring {
   bool RemoveImportedAccount(const std::string& address);
 
   std::string GetAddress(size_t index) const;
+  std::string GetDiscoveryAddress(size_t index) const;
   // Find private key by address (it would be hex or base58 depends on
   // underlying hd key
   std::string GetEncodedPrivateKey(const std::string& address);

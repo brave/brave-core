@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 
 #include <utility>
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 namespace brave_wallet {
 
@@ -29,21 +30,21 @@ void BraveWalletServiceDelegate::GetImportInfoFromExternalWallet(
 }
 
 void BraveWalletServiceDelegate::AddEthereumPermission(
-    const std::string& origin,
+    const url::Origin& origin,
     const std::string& account,
     AddEthereumPermissionCallback callback) {
   std::move(callback).Run(false);
 }
 
 void BraveWalletServiceDelegate::HasEthereumPermission(
-    const std::string& origin,
+    const url::Origin& origin,
     const std::string& account,
     HasEthereumPermissionCallback callback) {
   std::move(callback).Run(false, false);
 }
 
 void BraveWalletServiceDelegate::ResetEthereumPermission(
-    const std::string& origin,
+    const url::Origin& origin,
     const std::string& account,
     ResetEthereumPermissionCallback callback) {
   std::move(callback).Run(false);
@@ -51,7 +52,7 @@ void BraveWalletServiceDelegate::ResetEthereumPermission(
 
 void BraveWalletServiceDelegate::GetActiveOrigin(
     GetActiveOriginCallback callback) {
-  std::move(callback).Run("", "");
+  std::move(callback).Run(MakeOriginInfo(url::Origin()));
 }
 
 }  // namespace brave_wallet

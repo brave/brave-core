@@ -7,9 +7,7 @@ import { TopNavOptions } from '../options/top-nav-options'
 import { ChartTimelineOptions } from '../options/chart-timeline-options'
 import Onboarding from './screens/onboarding'
 import './locale'
-import {
-  recoveryPhrase
-} from './mock-data/user-accounts'
+import { mockRecoveryPhrase } from './mock-data/user-accounts'
 import { isStrongPassword } from '../utils/password-utils'
 import BackupWallet from './screens/backup-wallet'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
@@ -114,7 +112,7 @@ export const _Onboarding = () => {
         <Onboarding
           checkIsStrongPassword={checkIsStrongPassword}
           importError={{ hasError: false }}
-          recoveryPhrase={recoveryPhrase}
+          recoveryPhrase={mockRecoveryPhrase}
           onSubmit={complete}
           onPasswordProvided={passwordProvided}
           onShowRestore={onShowRestor}
@@ -139,7 +137,7 @@ export const _BackupWallet = () => {
   }
 
   return <BackupWallet
-    recoveryPhrase={recoveryPhrase}
+    recoveryPhrase={mockRecoveryPhrase}
     onSubmit={complete}
     onCancel={complete}
     isOnboarding={true}
@@ -152,7 +150,7 @@ _BackupWallet.story = {
 
 export const _OnboardingVerify = () => {
   return <OnboardingVerify
-    recoveryPhrase={recoveryPhrase}
+    recoveryPhrase={mockRecoveryPhrase}
     onNextStep={() => console.log('done')}
   />
 }

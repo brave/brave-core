@@ -1,5 +1,19 @@
-import("//brave/build/config.gni")
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
 import("//build/buildflag_header.gni")
+
+declare_args() {
+  updater_dev_endpoint = ""
+  updater_prod_endpoint = ""
+}
+
+if (is_official_build) {
+  assert(updater_dev_endpoint != "")
+  assert(updater_prod_endpoint != "")
+}
 
 buildflag_header("buildflags") {
   header = "buildflags.h"

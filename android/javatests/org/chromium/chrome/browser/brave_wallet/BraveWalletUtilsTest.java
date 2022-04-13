@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.GasEstimation1559;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SwapParams;
@@ -224,6 +225,17 @@ public class BraveWalletUtilsTest {
                 Utils.getRopstenContractAddress("0xdef1c0ded9bec7f1a1670819833240f027b25eff"), "");
     }
 
+    private static String getStackTrace(Exception ex) {
+        String stack = "";
+        StackTraceElement[] st = ex.getStackTrace();
+        stack += ex.getClass().getName() + ": " + ex.getMessage() + "\n";
+        for (int i = 0; i < st.length; i++) {
+            stack += "\t at " + st[i].toString() + "\n";
+        }
+
+        return stack;
+    }
+
     @Test
     @SmallTest
     public void validateBlockchainTokenTest() {
@@ -241,9 +253,9 @@ public class BraveWalletUtilsTest {
                         continue;
                     }
                     if (v == null) {
-                        String message = "Check that " + varName + " is initialized everywhere "
-                                + "in Java files, where BlockchainToken object is created . It "
-                                + "could be safely added to the above if to skip that var on checks "
+                        String message = "Check that " + varName + " is initialized everywhere\n"
+                                + "in Java files, where BlockchainToken object is created. It\n"
+                                + "could be safely added to the above if to skip that var on checks\n"
                                 + "after that.";
                         fail(message);
                     }
@@ -252,6 +264,23 @@ public class BraveWalletUtilsTest {
                 // Exception appears on private field members. We just skip them as we are
                 // interested in public members of a mojom structure
             }
+        }
+        testToken.contractAddress = "";
+        testToken.logo = "";
+        testToken.name = "";
+        testToken.symbol = "";
+        testToken.chainId = "";
+        testToken.coin = CoinType.ETH;
+        try {
+            java.nio.ByteBuffer byteBuffer = testToken.serialize();
+            BlockchainToken testTokenDeserialized = BlockchainToken.deserialize(byteBuffer);
+        } catch (Exception exc) {
+            String message = "Check that a variable with a type in the exception below is\n"
+                    + "initialized everywhere in Java files, where BlockchainToken object is\n"
+                    + "created('git grep \"new BlockchainToken\"' inside src/brave).\n"
+                    + "Initialisation of it could be safely added to the test to pass it,\n"
+                    + "but only after all places where it's created are fixed.\n";
+            fail(message + "\n" + getStackTrace(exc));
         }
     }
 
@@ -272,9 +301,9 @@ public class BraveWalletUtilsTest {
                         continue;
                     }
                     if (v == null) {
-                        String message = "Check that " + varName + " is initialized everywhere "
-                                + "in Java files, where SwapParams object is created . It "
-                                + "could be safely added to the above if to skip that var on checks "
+                        String message = "Check that " + varName + " is initialized everywhere\n"
+                                + "in Java files, where SwapParams object is created. It\n"
+                                + "could be safely added to the above if to skip that var on checks\n"
                                 + "after that.";
                         fail(message);
                     }
@@ -283,6 +312,23 @@ public class BraveWalletUtilsTest {
                 // Exception appears on private field members. We just skip them as we are
                 // interested in public members of a mojom structure
             }
+        }
+        testStruct.takerAddress = "";
+        testStruct.sellAmount = "";
+        testStruct.buyAmount = "";
+        testStruct.buyToken = "";
+        testStruct.sellToken = "";
+        testStruct.gasPrice = "";
+        try {
+            java.nio.ByteBuffer byteBuffer = testStruct.serialize();
+            SwapParams testStructDeserialized = SwapParams.deserialize(byteBuffer);
+        } catch (Exception exc) {
+            String message = "Check that a variable with a type in the exception below is\n"
+                    + "initialized everywhere in Java files, where SwapParams object is\n"
+                    + "created('git grep \"new SwapParams\"' inside src/brave).\n"
+                    + "Initialisation of it could be safely added to the test to pass it,\n"
+                    + "but only after all places where it's created are fixed.\n";
+            fail(message + "\n" + getStackTrace(exc));
         }
     }
 
@@ -302,9 +348,9 @@ public class BraveWalletUtilsTest {
                         continue;
                     }
                     if (v == null) {
-                        String message = "Check that " + varName + " is initialized everywhere "
-                                + "in Java files, where AccountInfo object is created . It "
-                                + "could be safely added to the above if to skip that var on checks "
+                        String message = "Check that " + varName + " is initialized everywhere\n"
+                                + "in Java files, where AccountInfo object is created. It\n"
+                                + "could be safely added to the above if to skip that var on checks\n"
                                 + "after that.";
                         fail(message);
                     }
@@ -313,6 +359,20 @@ public class BraveWalletUtilsTest {
                 // Exception appears on private field members. We just skip them as we are
                 // interested in public members of a mojom structure
             }
+        }
+        testStruct.address = "";
+        testStruct.name = "";
+        testStruct.coin = CoinType.ETH;
+        try {
+            java.nio.ByteBuffer byteBuffer = testStruct.serialize();
+            AccountInfo testStructDeserialized = AccountInfo.deserialize(byteBuffer);
+        } catch (Exception exc) {
+            String message = "Check that a variable with a type in the exception below is\n"
+                    + "initialized everywhere in Java files, where AccountInfo object is\n"
+                    + "created('git grep \"new AccountInfo\"' inside src/brave).\n"
+                    + "Initialisation of it could be safely added to the test to pass it,\n"
+                    + "but only after all places where it's created are fixed.\n";
+            fail(message + "\n" + getStackTrace(exc));
         }
     }
 
@@ -333,9 +393,9 @@ public class BraveWalletUtilsTest {
                         continue;
                     }
                     if (v == null) {
-                        String message = "Check that " + varName + " is initialized everywhere "
-                                + "in Java files, where TxData object is created . It "
-                                + "could be safely added to the above if to skip that var on checks "
+                        String message = "Check that " + varName + " is initialized everywhere\n"
+                                + "in Java files, where TxData object is created. It\n"
+                                + "could be safely added to the above if to skip that var on checks\n"
                                 + "after that.";
                         fail(message);
                     }
@@ -344,6 +404,23 @@ public class BraveWalletUtilsTest {
                 // Exception appears on private field members. We just skip them as we are
                 // interested in public members of a mojom structure
             }
+        }
+        testStruct.nonce = "";
+        testStruct.gasPrice = "";
+        testStruct.gasLimit = "";
+        testStruct.to = "";
+        testStruct.value = "";
+        testStruct.data = new byte[0];
+        try {
+            java.nio.ByteBuffer byteBuffer = testStruct.serialize();
+            TxData testStructDeserialized = TxData.deserialize(byteBuffer);
+        } catch (Exception exc) {
+            String message = "Check that a variable with a type in the exception below is\n"
+                    + "initialized everywhere in Java files, where TxData object is\n"
+                    + "created('git grep \"new TxData\"' inside src/brave).\n"
+                    + "Initialisation of it could be safely added to the test to pass it,\n"
+                    + "but only after all places where it's created are fixed.\n";
+            fail(message + "\n" + getStackTrace(exc));
         }
     }
 
@@ -368,9 +445,9 @@ public class BraveWalletUtilsTest {
                         continue;
                     }
                     if (v == null) {
-                        String message = "Check that " + varName + " is initialized everywhere "
-                                + "in Java files, where GasEstimation1559 object is created . It "
-                                + "could be safely added to the above if to skip that var on checks "
+                        String message = "Check that " + varName + " is initialized everywhere\n"
+                                + "in Java files, where GasEstimation1559 object is created. It\n"
+                                + "could be safely added to the above if to skip that var on checks\n"
                                 + "after that.";
                         fail(message);
                     }
@@ -379,6 +456,24 @@ public class BraveWalletUtilsTest {
                 // Exception appears on private field members. We just skip them as we are
                 // interested in public members of a mojom structure
             }
+        }
+        testStruct.slowMaxPriorityFeePerGas = "";
+        testStruct.slowMaxFeePerGas = "";
+        testStruct.avgMaxPriorityFeePerGas = "";
+        testStruct.avgMaxFeePerGas = "";
+        testStruct.fastMaxPriorityFeePerGas = "";
+        testStruct.fastMaxFeePerGas = "";
+        testStruct.baseFeePerGas = "";
+        try {
+            java.nio.ByteBuffer byteBuffer = testStruct.serialize();
+            GasEstimation1559 testStructDeserialized = GasEstimation1559.deserialize(byteBuffer);
+        } catch (Exception exc) {
+            String message = "Check that a variable with a type in the exception below is\n"
+                    + "initialized everywhere in Java files, where GasEstimation1559 object is\n"
+                    + "created('git grep \"new GasEstimation1559\"' inside src/brave).\n"
+                    + "Initialisation of it could be safely added to the test to pass it,\n"
+                    + "but only after all places where it's created are fixed.\n";
+            fail(message + "\n" + getStackTrace(exc));
         }
     }
 
@@ -399,9 +494,9 @@ public class BraveWalletUtilsTest {
                         continue;
                     }
                     if (v == null) {
-                        String message = "Check that " + varName + " is initialized everywhere "
-                                + "in Java files, where TxData1559 object is created . It "
-                                + "could be safely added to the above if to skip that var on checks "
+                        String message = "Check that " + varName + " is initialized everywhere\n"
+                                + "in Java files, where TxData1559 object is created. It\n"
+                                + "could be safely added to the above if to skip that var on checks\n"
                                 + "after that.";
                         fail(message);
                     }
@@ -410,6 +505,35 @@ public class BraveWalletUtilsTest {
                 // Exception appears on private field members. We just skip them as we are
                 // interested in public members of a mojom structure
             }
+        }
+        testStruct.baseData = new TxData();
+        testStruct.baseData.nonce = "";
+        testStruct.baseData.gasPrice = "";
+        testStruct.baseData.gasLimit = "";
+        testStruct.baseData.to = "";
+        testStruct.baseData.value = "";
+        testStruct.baseData.data = new byte[0];
+        testStruct.chainId = "";
+        testStruct.maxPriorityFeePerGas = "";
+        testStruct.maxFeePerGas = "";
+        testStruct.gasEstimation = new GasEstimation1559();
+        testStruct.gasEstimation.slowMaxPriorityFeePerGas = "";
+        testStruct.gasEstimation.slowMaxFeePerGas = "";
+        testStruct.gasEstimation.avgMaxPriorityFeePerGas = "";
+        testStruct.gasEstimation.avgMaxFeePerGas = "";
+        testStruct.gasEstimation.fastMaxPriorityFeePerGas = "";
+        testStruct.gasEstimation.fastMaxFeePerGas = "";
+        testStruct.gasEstimation.baseFeePerGas = "";
+        try {
+            java.nio.ByteBuffer byteBuffer = testStruct.serialize();
+            TxData1559 testStructDeserialized = TxData1559.deserialize(byteBuffer);
+        } catch (Exception exc) {
+            String message = "Check that a variable with a type in the exception below is\n"
+                    + "initialized everywhere in Java files, where TxData1559 object is\n"
+                    + "created('git grep \"new TxData1559\"' inside src/brave).\n"
+                    + "Initialisation of it could be safely added to the test to pass it,\n"
+                    + "but only after all places where it's created are fixed.\n";
+            fail(message + "\n" + getStackTrace(exc));
         }
     }
 
@@ -431,9 +555,9 @@ public class BraveWalletUtilsTest {
                         continue;
                     }
                     if (v == null) {
-                        String message = "Check that " + varName + " is initialized everywhere "
-                                + "in Java files, where NetworkInfo object is created . It "
-                                + "could be safely added to the above if to skip that var on checks "
+                        String message = "Check that " + varName + " is initialized everywhere\n"
+                                + "in Java files, where NetworkInfo object is created. It\n"
+                                + "could be safely added to the above if to skip that var on checks\n"
                                 + "after that.";
                         fail(message);
                     }
@@ -442,6 +566,25 @@ public class BraveWalletUtilsTest {
                 // Exception appears on private field members. We just skip them as we are
                 // interested in public members of a mojom structure
             }
+        }
+        testStruct.chainId = "";
+        testStruct.chainName = "";
+        testStruct.blockExplorerUrls = new String[0];
+        testStruct.iconUrls = new String[0];
+        testStruct.rpcUrls = new String[0];
+        testStruct.symbol = "";
+        testStruct.symbolName = "";
+        testStruct.coin = CoinType.ETH;
+        try {
+            java.nio.ByteBuffer byteBuffer = testStruct.serialize();
+            NetworkInfo testStructDeserialized = NetworkInfo.deserialize(byteBuffer);
+        } catch (Exception exc) {
+            String message = "Check that a variable with a type in the exception below is\n"
+                    + "initialized everywhere in Java files, where NetworkInfo object is\n"
+                    + "created('git grep \"new NetworkInfo\"' inside src/brave).\n"
+                    + "Initialisation of it could be safely added to the test to pass it,\n"
+                    + "but only after all places where it's created are fixed.\n";
+            fail(message + "\n" + getStackTrace(exc));
         }
     }
 }

@@ -1380,7 +1380,6 @@ Voit ylläpitää tilin asetuksia asentamalla laitteellesi Family Link ‑sovell
 <translation id="2327492829706409234">Ota sovellus käyttöön</translation>
 <translation id="2327920026543055248">Lisää merkki <ph name="CHARACTER"/>/<ph name="TOTAL"/></translation>
 <translation id="2328561734797404498">Käynnistä laite uudelleen käyttääksesi <ph name="APP_NAME"/>:ää.</translation>
-<translation id="6304377454418270508">Kun olet incognito-tilassa, sivustot voivat käyttää evästeitä vain selaustoimintasi näkemiseen omalla sivustollaan. Evästeet poistetaan incognito-käyttökerran jälkeen.</translation>
 <translation id="2329597144923131178">Kirjaudu ja käytä kirjanm., historiaa, salasan. ja muita asetuksia kaikissa laitteissasi.</translation>
 <translation id="2330878972945412956"><ph name="BEGIN_PARAGRAPH1"/>Antamalla BraveOS-laitteiden lähettää raportteja automaattisesti voit auttaa meitä korjaamaan ja kehittämään BraveOS:n ominaisuuksia. Raportteihin voi sisältyä esimerkiksi tietoja käytetyistä ominaisuuksista, tyypillisestä muistin käytöstä sekä Android-sovellusten diagnostiikka- ja käyttödataa ja virheitä. Kootusta datasta on hyötyä myös Braven sovelluksille ja kumppaneille, esim. Android-kehittäjille.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Voit sallia tai estää raporttien lähettämisen milloin tahansa BraveOS-laitteen asetuksissa. Jos olet verkkotunnuksen järjestelmänvalvoja, voit muuttaa asetusta hallintakonsolissa.<ph name="END_PARAGRAPH2"/>
@@ -2102,7 +2101,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3036546437875325427">Ota Flash käyttöön</translation>
 <translation id="3037754279345160234">Verkkotunnuksen liittymiskonfiguraatiota ei voi jäsentää. Ota yhteyttä järjestelmänvalvojaan.</translation>
 <translation id="3038612606416062604">Lisää tulostin manuaalisesti</translation>
-<translation id="8766876672295471671">Lue keskusteluja, reagoi viesteihin ja lisää ihmisiä ryhmäkeskusteluihin</translation>
 <translation id="3039491566278747710">Offline-käytäntöjen asentaminen laitteelle epäonnistui.</translation>
 <translation id="3043218608271070212"><ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENT_STRING"/></translation>
 <translation id="3043581297103810752">Lähde: <ph name="ORIGIN"/></translation>
@@ -4267,7 +4265,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="529296195492126134">Lyhytkestoista tilaa ei tueta. Ota yhteyttä järjestelmänvalvojaasi.</translation>
 <translation id="5293170712604732402">Palauta kaikki asetukset alkuperäisiksi oletusasetuksiksi</translation>
 <translation id="5294097441441645251">On alettava pienellä kirjaimella tai alaviivalla</translation>
-<translation id="8273477935094091719"><ph name="DEVICE_TYPE"/> käyttää sisäänrakennettua anturia, jonka avulla se havaitsee laitteesi edessä olevat ihmiset. Kaikki data käsitellään heti laitteellasi ja poistetaan sitten. Anturidataa ei koskaan lähetetä Bravelle. <ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/></translation>
 <translation id="5297082477358294722">Salasana tallennettu. Katso ja ylläpidä tallennettuja salasanoja: <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297946558563358707">Kun joku muu katsoo näyttöäsi, näytön oikeassa alareunassa näkyy Yksityisyys-silmäkuvake</translation>
 <translation id="5298219193514155779">Teeman loi</translation>
@@ -8159,7 +8156,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="994289308992179865">Toista &amp;jatkuvasti</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Muodostetaan suojattua yhteyttä...</translation>
-<translation id="2361296898422164385">Katso muistoja läheisistä ihmisistä sekä muista</translation>
 <translation id="3285581355655524751">Laita <ph name="LINK1_BEGIN"/>Braven synkronointi<ph name="LINK1_END"/> päälle, jotta voit käyttää Wi-Fin synkronointia <ph name="LINK2_BEGIN"/>Lue lisää<ph name="LINK2_END"/></translation>
 <translation id="998747458861718449">&amp;Tarkista</translation>
 <translation id="658539216370629794">Avaa linkki in &amp;yksityisessä ikkunassa</translation>
@@ -8182,6 +8178,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="5097649414558628673">Työkalu: <ph name="PRINT_NAME"/></translation>
 <translation id="8808478386290700967">Verkkokauppa</translation>
 <translation id="8261378640211443080">Tätä laajennusta ei löydy kohteesta <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>, ja se on voitu lisätä ilman lupaasi.</translation>
+<translation id="2361296898422164385">Katso muistoja suosikkiprofiileistasi ym.</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Yksityinen)</translation>
 <translation id="263189163883089157">Voit selata yksityisesti käyttämällä Yksityistä ikkunaa</translation>
 <translation id="5263632074804780211">Käytä verkkoa tallentamatta selaushistoriaasi Yksityisen ikkunan avulla</translation>
@@ -8230,6 +8227,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="2254158488150713536">Jos haluat jatkaa, valitse OK, Lisää henkilö ja luo sähköpostiosoitteellasi uusi profiili.</translation>
 <translation id="1725743343613175327">Jos haluat jatkaa, valitse OK, Lisää henkilö ja luo sähköpostiosoitteellasi (<ph name="DOMAIN"/>) uusi profiili.</translation>
 <translation id="3707212204259470604">Hallitse muita profiileja</translation>
+<translation id="8766876672295471671">Lue keskusteluita, reagoi viesteihin ja lisää profiileja ryhmäkeskusteluihin</translation>
+<translation id="8273477935094091719"><ph name="DEVICE_TYPE"/> käyttää sisäänrakennettua tunnistinta laitteesi edessä olevien profiilien havaitsemiseen, Kaikki tiedot käsitellään laitteessasi välittömästi ja sitten poistetaan. Tunnistimen tietoja ei koskaan lähetetä Bravelle. <ph name="LINK_BEGIN"/>Lisätietoja<ph name="LINK_END"/></translation>
 <translation id="5832813618714645810">Profiilit</translation>
 <translation id="3216703137209942563">{COUNT, plural,
       =1 {Yksityinen ikkunasi ei avaudu uudelleenkäynnistyksen jälkeen}
@@ -8238,6 +8237,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="383007806262310953">Näytä kirjanmerkkipalkki</translation>
 <translation id="8648684608605749476">Kolmannen osapuolen evästeiden estäminen incognito-tilassa</translation>
 <translation id="3293179957233653243">Joidenkin sivustojen ominaisuudet eivät välttämättä toimi yksityisessä tilassa</translation>
+<translation id="6304377454418270508">Kun olet yksityisessä tilassa, sivustot voivat käyttää evästeitä vain selaustoimintasi tarkasteluun niiden omalla sivustolla. Evästeet poistetaan yksityisen istunnon lopuksi.</translation>
 <translation id="7447787726493910888">Näytä tiedot kolmannen osapuolen evästeiden estämisestä yksityisessä tilassa</translation>
 <translation id="255999604394332437">Yksityisessä tilassa sivustot eivät voi käyttää evästeitäsi selaintoimintojesi tarkastelemiseen eri sivustoilla, esimerkiksi mainosten yksilöimiseksi. Joidenkin sivustojen ominaisuudet eivät ehkä toimi.</translation>
 <translation id="6105125042109106861">Kolmannen osapuolen evästeet estetään incognito-tilassa</translation>
