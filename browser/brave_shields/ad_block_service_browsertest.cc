@@ -1904,7 +1904,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringHide1pContent) {
 
 // Test cosmetic filtering on elements added dynamically
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
-  ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("##.blockme");
 
   GURL tab_url =
@@ -2156,8 +2155,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringIframeScriptlet) {
 
 // Test cosmetic filtering on an element that already has an `!important`
 // marker on its `display` style.
+// Temporarily disabled by https://github.com/brave/brave-core/pull/12950 due
+// to performance impact of newer injection method.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
-                       CosmeticFilteringOverridesImportant) {
+                       DISABLED_CosmeticFilteringOverridesImportant) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("###inline-block-important");
 
