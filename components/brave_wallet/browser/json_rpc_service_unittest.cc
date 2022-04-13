@@ -573,13 +573,16 @@ class JsonRpcServiceUnitTest : public testing::Test {
   }
 
   void TestGetSolanaLatestBlockhash(const std::string& expected_hash,
+                                    uint64_t expected_last_valid_block_height,
                                     mojom::SolanaProviderError expected_error,
                                     const std::string& expected_error_message) {
     base::RunLoop run_loop;
     json_rpc_service_->GetSolanaLatestBlockhash(base::BindLambdaForTesting(
-        [&](const std::string& hash, mojom::SolanaProviderError error,
+        [&](const std::string& hash, uint64_t last_valid_block_height,
+            mojom::SolanaProviderError error,
             const std::string& error_message) {
           EXPECT_EQ(hash, expected_hash);
+          EXPECT_EQ(last_valid_block_height, expected_last_valid_block_height);
           EXPECT_EQ(error, expected_error);
           EXPECT_EQ(error_message, expected_error_message);
           run_loop.Quit();
@@ -640,6 +643,21 @@ class JsonRpcServiceUnitTest : public testing::Test {
                        EXPECT_EQ(error_message, expected_error_message);
                        run_loop.Quit();
                      }));
+    run_loop.Run();
+  }
+
+  void TestGetSolanaBlockHeight(uint64_t expected_block_height,
+                                mojom::SolanaProviderError expected_error,
+                                const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetSolanaBlockHeight(base::BindLambdaForTesting(
+        [&](uint64_t block_height, mojom::SolanaProviderError error,
+            const std::string& error_message) {
+          EXPECT_EQ(block_height, expected_block_height);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
     run_loop.Run();
   }
 
@@ -2337,29 +2355,31 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaLatestBlockhash) {
                  "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
                  "{\"context\":{\"slot\":1069},\"value\":{\"blockhash\":"
                  "\"EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N\", "
-                 "\"lastValidBlockHeight\":3090}}}");
+                 "\"lastValidBlockHeight\":18446744073709551615}}}");
 
   TestGetSolanaLatestBlockhash("EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N",
-                               mojom::SolanaProviderError::kSuccess, "");
+                               UINT64_MAX, mojom::SolanaProviderError::kSuccess,
+                               "");
 
   // Response parsing error
   SetInterceptor(expected_network_url, "getLatestBlockhash", "",
                  "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}");
   TestGetSolanaLatestBlockhash(
-      "", mojom::SolanaProviderError::kParsingError,
+      "", 0, mojom::SolanaProviderError::kParsingError,
       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
   // JSON RPC error
   SetInterceptor(expected_network_url, "getLatestBlockhash", "",
                  "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":"
                  "{\"code\":-32601, \"message\": \"method does not exist\"}}");
-  TestGetSolanaLatestBlockhash("", mojom::SolanaProviderError::kMethodNotFound,
+  TestGetSolanaLatestBlockhash("", 0,
+                               mojom::SolanaProviderError::kMethodNotFound,
                                "method does not exist");
 
   // HTTP error
   SetHTTPRequestTimeoutInterceptor();
   TestGetSolanaLatestBlockhash(
-      "", mojom::SolanaProviderError::kInternalError,
+      "", 0, mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
@@ -2686,12 +2706,12 @@ TEST_F(JsonRpcServiceUnitTest, GetFilTransactionCount) {
   SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL);
   SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
                  "Filecoin.MpoolGetNonce", "",
-                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":1}");
+                 R"({"jsonrpc":"2.0","id":1,"result":18446744073709551615})");
 
   json_rpc_service_->GetFilTransactionCount(
       "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
       base::BindOnce(&OnFilUint256Response, &callback_called,
-                     mojom::FilecoinProviderError::kSuccess, "", 1));
+                     mojom::FilecoinProviderError::kSuccess, "", UINT64_MAX));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
@@ -2706,7 +2726,8 @@ TEST_F(JsonRpcServiceUnitTest, GetFilTransactionCount) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  SetInvalidJsonInterceptor();
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                 "Filecoin.MpoolGetNonce", "", R"({"jsonrpc":"2.0","id":1})");
   json_rpc_service_->GetFilTransactionCount(
       "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
       base::BindOnce(&OnFilUint256Response, &callback_called,
@@ -2724,6 +2745,39 @@ TEST_F(JsonRpcServiceUnitTest, GetFilTransactionCount) {
                      "resolution lookup failed", 0));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetSolanaBlockHeight) {
+  EXPECT_TRUE(SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL));
+  auto expected_network_url =
+      GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL);
+  SetInterceptor(expected_network_url, "getBlockHeight", "",
+                 R"({"jsonrpc":"2.0", "id":1, "result":18446744073709551615})");
+
+  TestGetSolanaBlockHeight(UINT64_MAX, mojom::SolanaProviderError::kSuccess,
+                           "");
+
+  // Response parsing error
+  SetInterceptor(expected_network_url, "getBlockHeight", "",
+                 R"({"jsonrpc":"2.0","id":1})");
+  TestGetSolanaBlockHeight(0, mojom::SolanaProviderError::kParsingError,
+                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // JSON RPC error
+  SetInterceptor(expected_network_url, "getBlockHeight", "",
+                 R"({"jsonrpc": "2.0", "id": 1,
+                     "error": {
+                       "code":-32601,
+                       "message":"method does not exist"
+                     }
+                    })");
+  TestGetSolanaBlockHeight(0, mojom::SolanaProviderError::kMethodNotFound,
+                           "method does not exist");
+
+  // HTTP error
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetSolanaBlockHeight(0, mojom::SolanaProviderError::kInternalError,
+                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 }  // namespace brave_wallet

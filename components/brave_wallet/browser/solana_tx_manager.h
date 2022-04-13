@@ -78,13 +78,19 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, AddAndApproveTransaction);
+  FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash);
 
   // TxManager
   void UpdatePendingTransactions() override;
 
+  void OnGetBlockHeight(uint64_t block_height,
+                        mojom::SolanaProviderError error,
+                        const std::string& error_message);
+
   void OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
                             ApproveTransactionCallback callback,
                             const std::string& latest_blockhash,
+                            uint64_t last_valid_block_height,
                             mojom::SolanaProviderError error,
                             const std::string& error_message);
   void OnSendSolanaTransaction(const std::string& tx_meta_id,
@@ -94,6 +100,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                                const std::string& error_message);
   void OnGetSignatureStatuses(
       const std::vector<std::string>& tx_meta_ids,
+      uint64_t block_height,
       const std::vector<absl::optional<SolanaSignatureStatus>>&
           signature_statuses,
       mojom::SolanaProviderError error,
@@ -112,6 +119,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       std::unique_ptr<SolanaTxMeta> meta,
       GetEstimatedTxFeeCallback callback,
       const std::string& latest_blockhash,
+      uint64_t last_valid_block_height,
       mojom::SolanaProviderError error,
       const std::string& error_message);
   void OnGetFeeForMessage(GetEstimatedTxFeeCallback callback,
@@ -120,7 +128,8 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                           const std::string& error_message);
 
   // SolanaBlockTracker::Observer
-  void OnLatestBlockhashUpdated(const std::string& blockhash) override;
+  void OnLatestBlockhashUpdated(const std::string& blockhash,
+                                uint64_t last_valid_block_height) override;
 
   SolanaTxStateManager* GetSolanaTxStateManager();
   SolanaBlockTracker* GetSolanaBlockTracker();

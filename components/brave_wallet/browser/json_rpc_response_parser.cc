@@ -71,13 +71,13 @@ bool ParseBoolResult(const std::string& json, bool* value) {
   return false;
 }
 
-absl::optional<std::string> ConvertSingleUint64Result(
-    const std::string& raw_json) {
-  if (raw_json.empty())
+absl::optional<std::string> ConvertUint64ToString(const std::string& path,
+                                                  const std::string& json) {
+  if (path.empty() || json.empty())
     return absl::nullopt;
+
   std::string converted_json(
-      json::convert_uint64_value_to_string("/result", raw_json.c_str())
-          .c_str());
+      json::convert_uint64_value_to_string(path, json, true));
   if (converted_json.empty())
     return absl::nullopt;
   return converted_json;

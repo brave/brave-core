@@ -783,7 +783,8 @@ enum TransactionStatus {
   Rejected = 2,
   Submitted = 3,
   Confirmed = 4,
-  Error = 5
+  Error = 5,
+  Dropped = 6
 };
 
 enum TransactionType {
@@ -1081,6 +1082,7 @@ struct SolanaInstruction {
 
 struct SolanaTxData {
   string recent_blockhash;
+  uint64 last_valid_block_height;
   string fee_payer;
   string to_wallet_address;
   string spl_token_mint_address;

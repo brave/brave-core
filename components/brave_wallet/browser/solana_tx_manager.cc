@@ -95,6 +95,7 @@ void SolanaTxManager::ApproveTransaction(const std::string& tx_meta_id,
 void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
                                            ApproveTransactionCallback callback,
                                            const std::string& latest_blockhash,
+                                           uint64_t last_valid_block_height,
                                            mojom::SolanaProviderError error,
                                            const std::string& error_message) {
   if (error != mojom::SolanaProviderError::kSuccess) {
@@ -105,10 +106,12 @@ void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
   }
 
   meta->set_status(mojom::TransactionStatus::Approved);
+  meta->tx()->message()->set_recent_blockhash(latest_blockhash);
+  meta->tx()->message()->set_last_valid_block_height(last_valid_block_height);
   tx_state_manager_->AddOrUpdateTx(*meta);
 
   json_rpc_service_->SendSolanaTransaction(
-      meta->tx()->GetSignedTransaction(keyring_service_, latest_blockhash),
+      meta->tx()->GetSignedTransaction(keyring_service_),
       base::BindOnce(&SolanaTxManager::OnSendSolanaTransaction,
                      weak_ptr_factory_.GetWeakPtr(), meta->id(),
                      std::move(callback)));
@@ -152,6 +155,16 @@ void SolanaTxManager::OnSendSolanaTransaction(
 }
 
 void SolanaTxManager::UpdatePendingTransactions() {
+  json_rpc_service_->GetSolanaBlockHeight(base::BindOnce(
+      &SolanaTxManager::OnGetBlockHeight, weak_ptr_factory_.GetWeakPtr()));
+}
+
+void SolanaTxManager::OnGetBlockHeight(uint64_t block_height,
+                                       mojom::SolanaProviderError error,
+                                       const std::string& error_message) {
+  if (error != mojom::SolanaProviderError::kSuccess)
+    return;
+
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
       mojom::TransactionStatus::Submitted, absl::nullopt);
   std::vector<std::string> tx_meta_ids;
@@ -161,15 +174,16 @@ void SolanaTxManager::UpdatePendingTransactions() {
     tx_signatures.push_back(pending_transaction->tx_hash());
   }
   json_rpc_service_->GetSolanaSignatureStatuses(
-      tx_signatures,
-      base::BindOnce(&SolanaTxManager::OnGetSignatureStatuses,
-                     weak_ptr_factory_.GetWeakPtr(), tx_meta_ids));
+      tx_signatures, base::BindOnce(&SolanaTxManager::OnGetSignatureStatuses,
+                                    weak_ptr_factory_.GetWeakPtr(), tx_meta_ids,
+                                    block_height));
   known_no_pending_tx_ = pending_transactions.empty();
   CheckIfBlockTrackerShouldRun();
 }
 
 void SolanaTxManager::OnGetSignatureStatuses(
     const std::vector<std::string>& tx_meta_ids,
+    uint64_t block_height,
     const std::vector<absl::optional<SolanaSignatureStatus>>&
         signature_statuses,
     mojom::SolanaProviderError error,
@@ -183,8 +197,16 @@ void SolanaTxManager::OnGetSignatureStatuses(
   for (size_t i = 0; i < tx_meta_ids.size(); i++) {
     std::unique_ptr<SolanaTxMeta> meta =
         GetSolanaTxStateManager()->GetSolanaTx(tx_meta_ids[i]);
-    if (!meta || !signature_statuses[i])
+    if (!meta)
       continue;
+
+    if (!signature_statuses[i]) {
+      if (meta->tx()->message()->last_valid_block_height() < block_height) {
+        meta->set_status(mojom::TransactionStatus::Dropped);
+        tx_state_manager_->AddOrUpdateTx(*meta);
+      }
+      continue;
+    }
 
     if (!signature_statuses[i]->err.empty()) {
       meta->set_signature_status(*signature_statuses[i]);
@@ -240,7 +262,8 @@ void SolanaTxManager::MakeSystemProgramTransferTxData(
   }
 
   // recent_blockhash will be updated when we are going to send out the tx.
-  SolanaTransaction transaction("" /* recent_blockhash*/, from, {*instruction});
+  SolanaTransaction transaction("" /* recent_blockhash*/, 0, from,
+                                {*instruction});
   transaction.set_to_wallet_address(to);
   transaction.set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
   transaction.set_lamports(lamports);
@@ -329,8 +352,8 @@ void SolanaTxManager::OnGetAccountInfo(
   instructions.push_back(std::move(*transfer_instruction));
 
   // recent_blockhash will be updated when we are going to send out the tx.
-  SolanaTransaction transaction("" /* recent_blockhash*/, from_wallet_address,
-                                std::move(instructions));
+  SolanaTransaction transaction("" /* recent_blockhash*/, 0,
+                                from_wallet_address, std::move(instructions));
   transaction.set_to_wallet_address(to_wallet_address);
   transaction.set_spl_token_mint_address(spl_token_mint_address);
   transaction.set_amount(amount);
@@ -370,6 +393,7 @@ void SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee(
     std::unique_ptr<SolanaTxMeta> meta,
     GetEstimatedTxFeeCallback callback,
     const std::string& latest_blockhash,
+    uint64_t last_valid_block_height,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
   if (error != mojom::SolanaProviderError::kSuccess) {
@@ -377,8 +401,10 @@ void SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee(
     return;
   }
 
+  meta->tx()->message()->set_recent_blockhash(latest_blockhash);
+  meta->tx()->message()->set_last_valid_block_height(last_valid_block_height);
   const std::string base64_encoded_message =
-      meta->tx()->GetBase64EncodedMessage(latest_blockhash);
+      meta->tx()->GetBase64EncodedMessage();
   json_rpc_service_->GetSolanaFeeForMessage(
       base64_encoded_message,
       base::BindOnce(&SolanaTxManager::OnGetFeeForMessage,
@@ -392,7 +418,9 @@ void SolanaTxManager::OnGetFeeForMessage(GetEstimatedTxFeeCallback callback,
   std::move(callback).Run(tx_fee, error, error_message);
 }
 
-void SolanaTxManager::OnLatestBlockhashUpdated(const std::string& blockhash) {
+void SolanaTxManager::OnLatestBlockhashUpdated(
+    const std::string& blockhash,
+    uint64_t last_valid_block_height) {
   UpdatePendingTransactions();
 }
 

@@ -265,6 +265,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                              SendSolanaTransactionCallback callback);
   using GetSolanaLatestBlockhashCallback =
       base::OnceCallback<void(const std::string& latest_blockhash,
+                              uint64_t last_valid_block_height,
                               mojom::SolanaProviderError error,
                               const std::string& error_message)>;
   void GetSolanaLatestBlockhash(GetSolanaLatestBlockhashCallback callback);
@@ -287,6 +288,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               const std::string& error_message)>;
   void GetSolanaFeeForMessage(const std::string& message,  // base64 encoded
                               GetSolanaFeeForMessageCallback callback);
+  using GetSolanaBlockHeightCallback =
+      base::OnceCallback<void(uint64_t block_height,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
+  void GetSolanaBlockHeight(GetSolanaBlockHeightCallback callback);
 
  private:
   void FireNetworkChanged(mojom::CoinType coin);
@@ -411,10 +417,13 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                        mojom::ProviderError error,
                        const std::string& error_message);
 
-  void RequestInternal(const std::string& json_payload,
-                       bool auto_retry_on_network_change,
-                       const GURL& network_url,
-                       RequestIntermediateCallback callback);
+  void RequestInternal(
+      const std::string& json_payload,
+      bool auto_retry_on_network_change,
+      const GURL& network_url,
+      RequestIntermediateCallback callback,
+      api_request_helper::APIRequestHelper::ResponseConversionCallback
+          conversion_callback);
   void OnEthChainIdValidatedForOrigin(
       mojom::NetworkInfoPtr chain,
       const url::Origin& origin,
@@ -481,6 +490,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const base::flat_map<std::string, std::string>& headers);
   void OnGetSolanaFeeForMessage(
       GetSolanaFeeForMessageCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+  void OnGetSolanaBlockHeight(
+      GetSolanaBlockHeightCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);

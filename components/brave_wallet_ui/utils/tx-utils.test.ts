@@ -24,7 +24,11 @@ describe('Check Transaction Status Strings Value', () => {
     expect(getTransactionStatusString(5)).toEqual('braveWalletTransactionStatusError')
   })
 
-  test('Transaction ID 6 should return an empty string', () => {
-    expect(getTransactionStatusString(6)).toEqual('')
+  test('Transaction ID 6 should return Dropped', () => {
+    expect(getTransactionStatusString(6)).toEqual('braveWalletTransactionStatusDropped')
+  })
+
+  test('Transaction ID 7 should return an empty string', () => {
+    expect(getTransactionStatusString(7)).toEqual('')
   })
 })

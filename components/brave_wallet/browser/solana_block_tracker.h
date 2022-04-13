@@ -27,8 +27,8 @@ class SolanaBlockTracker : public BlockTracker {
 
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnLatestBlockhashUpdated(
-        const std::string& latest_blockhash) = 0;
+    virtual void OnLatestBlockhashUpdated(const std::string& latest_blockhash,
+                                          uint64_t last_valid_block_height) = 0;
   };
 
   void AddObserver(Observer* observer);
@@ -39,9 +39,11 @@ class SolanaBlockTracker : public BlockTracker {
   void Stop() override;
 
   std::string latest_blockhash() const { return latest_blockhash_; }
+  uint64_t last_valid_block_height() const { return last_valid_block_height_; }
 
   using GetLatestBlockhashCallback =
       base::OnceCallback<void(const std::string& latest_blockhash,
+                              uint64_t last_valid_block_height,
                               mojom::SolanaProviderError error,
                               const std::string& error_message)>;
   void GetLatestBlockhash(GetLatestBlockhashCallback callback,
@@ -50,10 +52,12 @@ class SolanaBlockTracker : public BlockTracker {
  private:
   void OnGetLatestBlockhash(GetLatestBlockhashCallback callback,
                             const std::string& latest_blockhash,
+                            uint64_t last_valid_block_height,
                             mojom::SolanaProviderError error,
                             const std::string& error_message);
 
   std::string latest_blockhash_;
+  uint64_t last_valid_block_height_ = 0;
   base::Time latest_blockhash_expired_time_;
   base::ObserverList<Observer> observers_;
 

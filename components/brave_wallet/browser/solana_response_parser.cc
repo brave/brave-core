@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/json/rs/src/lib.rs.h"
 
 namespace brave_wallet {
 
@@ -105,8 +106,10 @@ bool ParseSendTransaction(const std::string& json, std::string* tx_id) {
   return ParseSingleStringResult(json, tx_id);
 }
 
-bool ParseGetLatestBlockhash(const std::string& json, std::string* hash) {
-  DCHECK(hash);
+bool ParseGetLatestBlockhash(const std::string& json,
+                             std::string* hash,
+                             uint64_t* last_valid_block_height) {
+  DCHECK(hash && last_valid_block_height);
 
   base::Value result;
   if (!ParseResult(json, &result) || !result.is_dict())
@@ -121,7 +124,13 @@ bool ParseGetLatestBlockhash(const std::string& json, std::string* hash) {
     return false;
   *hash = *hash_ptr;
 
-  return true;
+  auto* last_valid_block_height_string =
+      value->FindStringKey("lastValidBlockHeight");
+  if (!last_valid_block_height_string ||
+      last_valid_block_height_string->empty())
+    return false;
+  return base::StringToUint64(*last_valid_block_height_string,
+                              last_valid_block_height);
 }
 
 bool ParseGetSignatureStatuses(
@@ -246,6 +255,19 @@ bool ParseGetFeeForMessage(const std::string& json, uint64_t* fee) {
     return false;
 
   return GetUint64FromDictValue(result, "value", true, fee);
+}
+
+bool ParseGetBlockHeight(const std::string& json, uint64_t* block_height) {
+  DCHECK(block_height);
+
+  std::string block_height_string;
+  if (!brave_wallet::ParseSingleStringResult(json, &block_height_string))
+    return false;
+
+  if (block_height_string.empty())
+    return false;
+
+  return base::StringToUint64(block_height_string, block_height);
 }
 
 }  // namespace solana

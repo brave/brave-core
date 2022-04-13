@@ -23,6 +23,7 @@ constexpr char kFromAccount[] = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
 constexpr char kToAccount[] = "3QpJ3j1vq1PfqJdvCcHKWuePykqoUYSvxyRb3Cnh79BD";
 constexpr char kRecentBlockhash[] =
     "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
+constexpr uint64_t kLastValidBlockHeight = 3090;
 
 }  // namespace
 
@@ -37,7 +38,8 @@ TEST(SolanaMessageUnitTest, Serialize) {
       // Data
       {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
 
-  SolanaMessage message(kRecentBlockhash, kFromAccount, {instruction});
+  SolanaMessage message(kRecentBlockhash, kLastValidBlockHeight, kFromAccount,
+                        {instruction});
   std::vector<std::string> signers;
   auto message_bytes = message.Serialize(&signers);
   ASSERT_TRUE(message_bytes);
@@ -75,7 +77,7 @@ TEST(SolanaMessageUnitTest, Serialize) {
   };
   EXPECT_EQ(message_bytes.value(), expected_bytes);
 
-  SolanaMessage message_without_blockhash("", kFromAccount, {instruction});
+  SolanaMessage message_without_blockhash("", 0, kFromAccount, {instruction});
   EXPECT_FALSE(message_without_blockhash.Serialize(nullptr));
 }
 
@@ -89,7 +91,8 @@ TEST(SolanaMessageUnitTest, SerializeNumOfAccountMaxSize) {
   SolanaInstruction instruction(kSolanaSystemProgramId,
                                 std::move(accounts_exceed_signer_account_max),
                                 {});
-  SolanaMessage message(kRecentBlockhash, kFromAccount, {instruction});
+  SolanaMessage message(kRecentBlockhash, kLastValidBlockHeight, kFromAccount,
+                        {instruction});
   EXPECT_FALSE(message.Serialize(nullptr));
 
   std::vector<SolanaAccountMeta> accounts_exceed_writable_account_max;
@@ -100,7 +103,8 @@ TEST(SolanaMessageUnitTest, SerializeNumOfAccountMaxSize) {
   SolanaInstruction instruction2(
       kSolanaSystemProgramId, std::move(accounts_exceed_writable_account_max),
       {});
-  SolanaMessage message2(kRecentBlockhash, kFromAccount, {instruction});
+  SolanaMessage message2(kRecentBlockhash, kLastValidBlockHeight, kFromAccount,
+                         {instruction});
   EXPECT_FALSE(message.Serialize(nullptr));
 
   std::vector<SolanaAccountMeta> accounts_exceed_readonly_account_max;
@@ -111,7 +115,8 @@ TEST(SolanaMessageUnitTest, SerializeNumOfAccountMaxSize) {
   SolanaInstruction instruction3(
       kSolanaSystemProgramId, std::move(accounts_exceed_readonly_account_max),
       {});
-  SolanaMessage message3(kRecentBlockhash, kFromAccount, {instruction});
+  SolanaMessage message3(kRecentBlockhash, kLastValidBlockHeight, kFromAccount,
+                         {instruction});
   EXPECT_FALSE(message.Serialize(nullptr));
 }
 
@@ -132,7 +137,7 @@ TEST(SolanaMessageUnitTest, GetUniqueAccountMetas) {
   // Test instructions with duplicate pubkeys.
   SolanaAccountMeta account2_non_signer_readonly(account2, false, false);
   SolanaInstruction instruction1(program1, {account2_non_signer_readonly}, {});
-  SolanaMessage message(kRecentBlockhash, account1,
+  SolanaMessage message(kRecentBlockhash, kLastValidBlockHeight, account1,
                         {instruction1, instruction1});
   message.GetUniqueAccountMetas(&unique_account_metas);
   // fee payer at first, program ID at last, and no duplicate account pubkeys.
@@ -151,7 +156,7 @@ TEST(SolanaMessageUnitTest, GetUniqueAccountMetas) {
   SolanaInstruction instruction2(
       program1, {account3_non_signer_read_write, account4_signer_readonly}, {});
   SolanaInstruction instruction3(program2, {account5_signer_read_write}, {});
-  message = SolanaMessage(kRecentBlockhash, account1,
+  message = SolanaMessage(kRecentBlockhash, kLastValidBlockHeight, account1,
                           {instruction1, instruction2, instruction3});
   message.GetUniqueAccountMetas(&unique_account_metas);
   expected_account_metas = {
@@ -179,8 +184,8 @@ TEST(SolanaMessageUnitTest, GetUniqueAccountMetas) {
       {account4_non_signer_read_write, account5_signer_read_write,
        account3_non_signer_read_write, account2_signer_read_write},
       {});
-  message =
-      SolanaMessage(kRecentBlockhash, account1, {instruction1, instruction2});
+  message = SolanaMessage(kRecentBlockhash, kLastValidBlockHeight, account1,
+                          {instruction1, instruction2});
   message.GetUniqueAccountMetas(&unique_account_metas);
   expected_account_metas = {account1_fee_payer,
                             account5_signer_read_write,
@@ -202,11 +207,13 @@ TEST(SolanaMessageUnitTest, ToSolanaTxData) {
       {SolanaAccountMeta(kFromAccount, true, true),
        SolanaAccountMeta(kToAccount, false, true)},
       data);
-  SolanaMessage message(kRecentBlockhash, kFromAccount, {instruction});
+  SolanaMessage message(kRecentBlockhash, kLastValidBlockHeight, kFromAccount,
+                        {instruction});
 
   auto solana_tx_data = message.ToSolanaTxData();
   ASSERT_TRUE(solana_tx_data);
   EXPECT_EQ(solana_tx_data->recent_blockhash, kRecentBlockhash);
+  EXPECT_EQ(solana_tx_data->last_valid_block_height, kLastValidBlockHeight);
   EXPECT_EQ(solana_tx_data->fee_payer, kFromAccount);
 
   ASSERT_EQ(solana_tx_data->instructions.size(), 1u);
@@ -234,12 +241,14 @@ TEST(SolanaMessageUnitTest, FromToValue) {
       {SolanaAccountMeta(kFromAccount, true, true),
        SolanaAccountMeta(kToAccount, false, true)},
       data);
-  SolanaMessage message(kRecentBlockhash, kFromAccount, {instruction});
+  SolanaMessage message(kRecentBlockhash, kLastValidBlockHeight, kFromAccount,
+                        {instruction});
 
   base::Value value = message.ToValue();
   auto expect_message_value = base::JSONReader::Read(R"(
     {
       "recent_blockhash": "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6",
+      "last_valid_block_height": "3090",
       "fee_payer": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
       "instructions": [
         {

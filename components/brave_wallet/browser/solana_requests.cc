@@ -77,6 +77,10 @@ std::string getFeeForMessage(const std::string& message) {
   return GetJsonRpc1Param("getFeeForMessage", message);
 }
 
+std::string getBlockHeight() {
+  return GetJsonRpcNoParams("getBlockHeight");
+}
+
 }  // namespace solana
 
 }  // namespace brave_wallet

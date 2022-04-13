@@ -18,15 +18,17 @@ bool ParseFilGetBalance(const std::string& json, std::string* balance) {
 }
 
 bool ParseFilGetTransactionCount(const std::string& raw_json, uint64_t* count) {
+  DCHECK(count);
+
   if (raw_json.empty())
     return false;
-  std::string value;
-  auto converted_json = ConvertSingleUint64Result(raw_json);
-  if (!converted_json ||
-      !brave_wallet::ParseSingleStringResult(converted_json.value(), &value) ||
-      value.empty())
+
+  std::string count_string;
+  if (!brave_wallet::ParseSingleStringResult(raw_json, &count_string))
     return false;
-  return base::StringToUint64(value, count);
+  if (count_string.empty())
+    return false;
+  return base::StringToUint64(count_string, count);
 }
 
 }  // namespace brave_wallet

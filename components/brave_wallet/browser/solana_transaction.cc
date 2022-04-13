@@ -20,9 +20,13 @@ namespace brave_wallet {
 
 SolanaTransaction::SolanaTransaction(
     const std::string& recent_blockhash,
+    uint64_t last_valid_block_height,
     const std::string& fee_payer,
     std::vector<SolanaInstruction>&& instructions)
-    : message_(recent_blockhash, fee_payer, std::move(instructions)) {}
+    : message_(recent_blockhash,
+               last_valid_block_height,
+               fee_payer,
+               std::move(instructions)) {}
 
 SolanaTransaction::SolanaTransaction(SolanaMessage&& message)
     : message_(std::move(message)) {}
@@ -31,7 +35,11 @@ SolanaTransaction::SolanaTransaction(const SolanaTransaction&) = default;
 SolanaTransaction::~SolanaTransaction() = default;
 
 bool SolanaTransaction::operator==(const SolanaTransaction& tx) const {
-  return message_ == tx.message_;
+  return message_ == tx.message_ &&
+         to_wallet_address_ == tx.to_wallet_address_ &&
+         spl_token_mint_address_ == tx.spl_token_mint_address_ &&
+         tx_type_ == tx.tx_type_ && lamports_ == tx.lamports_ &&
+         amount_ == tx.amount_;
 }
 
 // Get serialized and signed transaction.
@@ -40,13 +48,9 @@ bool SolanaTransaction::operator==(const SolanaTransaction& tx) const {
 // item. The array length is a special multi-byte encoding called compact-u16.
 // See https://docs.solana.com/developing/programming-model/transactions.
 std::string SolanaTransaction::GetSignedTransaction(
-    KeyringService* keyring_service,
-    const std::string& recent_blockhash) {
+    KeyringService* keyring_service) const {
   if (!keyring_service)
     return "";
-
-  if (!recent_blockhash.empty())
-    message_.SetRecentBlockHash(recent_blockhash);
 
   std::vector<std::string> signers;
   auto message_bytes = message_.Serialize(&signers);
@@ -73,10 +77,7 @@ std::string SolanaTransaction::GetSignedTransaction(
   return base::Base64Encode(transaction_bytes);
 }
 
-std::string SolanaTransaction::GetBase64EncodedMessage(
-    const std::string& recent_blockhash) {
-  if (!recent_blockhash.empty())
-    message_.SetRecentBlockHash(recent_blockhash);
+std::string SolanaTransaction::GetBase64EncodedMessage() const {
   auto message_bytes = message_.Serialize(nullptr /* signers */);
   if (!message_bytes)
     return "";
@@ -169,8 +170,8 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromSolanaTxData(
   SolanaInstruction::FromMojomSolanaInstructions(solana_tx_data->instructions,
                                                  &instructions);
   auto tx = std::make_unique<SolanaTransaction>(
-      solana_tx_data->recent_blockhash, solana_tx_data->fee_payer,
-      std::move(instructions));
+      solana_tx_data->recent_blockhash, solana_tx_data->last_valid_block_height,
+      solana_tx_data->fee_payer, std::move(instructions));
   tx->set_to_wallet_address(solana_tx_data->to_wallet_address);
   tx->set_spl_token_mint_address(solana_tx_data->spl_token_mint_address);
   tx->set_tx_type(solana_tx_data->tx_type);

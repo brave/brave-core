@@ -179,34 +179,13 @@ void JsonRpcService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
-void JsonRpcService::Request(const std::string& json_payload,
-                             bool auto_retry_on_network_change,
-                             base::Value id,
-                             mojom::CoinType coin,
-                             RequestCallback callback) {
-  RequestInternal(
-      json_payload, auto_retry_on_network_change, network_urls_[coin],
-      base::BindOnce(&JsonRpcService::OnRequestResult, base::Unretained(this),
-                     std::move(callback), std::move(id)));
-}
-
-void JsonRpcService::OnRequestResult(
-    RequestCallback callback,
-    base::Value id,
-    const int code,
-    const std::string& message,
-    const base::flat_map<std::string, std::string>& headers) {
-  bool reject;
-  std::unique_ptr<base::Value> formed_response =
-      GetProviderRequestReturnFromEthJsonResponse(code, message, &reject);
-  std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
-                          "", false);
-}
-
-void JsonRpcService::RequestInternal(const std::string& json_payload,
-                                     bool auto_retry_on_network_change,
-                                     const GURL& network_url,
-                                     RequestIntermediateCallback callback) {
+void JsonRpcService::RequestInternal(
+    const std::string& json_payload,
+    bool auto_retry_on_network_change,
+    const GURL& network_url,
+    RequestIntermediateCallback callback,
+    api_request_helper::APIRequestHelper::ResponseConversionCallback
+        conversion_callback = base::NullCallback()) {
   DCHECK(network_url.is_valid());
 
   base::flat_map<std::string, std::string> request_headers;
@@ -231,7 +210,32 @@ void JsonRpcService::RequestInternal(const std::string& json_payload,
 
   api_request_helper_->Request("POST", network_url, json_payload,
                                "application/json", auto_retry_on_network_change,
-                               std::move(callback), request_headers);
+                               std::move(callback), request_headers, -1u,
+                               std::move(conversion_callback));
+}
+
+void JsonRpcService::Request(const std::string& json_payload,
+                             bool auto_retry_on_network_change,
+                             base::Value id,
+                             mojom::CoinType coin,
+                             RequestCallback callback) {
+  RequestInternal(
+      json_payload, auto_retry_on_network_change, network_urls_[coin],
+      base::BindOnce(&JsonRpcService::OnRequestResult, base::Unretained(this),
+                     std::move(callback), std::move(id)));
+}
+
+void JsonRpcService::OnRequestResult(
+    RequestCallback callback,
+    base::Value id,
+    const int code,
+    const std::string& message,
+    const base::flat_map<std::string, std::string>& headers) {
+  bool reject;
+  std::unique_ptr<base::Value> formed_response =
+      GetProviderRequestReturnFromEthJsonResponse(code, message, &reject);
+  std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
+                          "", false);
 }
 
 void JsonRpcService::FirePendingRequestCompleted(const std::string& chain_id,
@@ -685,7 +689,8 @@ void JsonRpcService::GetFilTransactionCount(const std::string& address,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   RequestInternal(fil::getTransactionCount(address), true, network_url,
-                  std::move(internal_callback));
+                  std::move(internal_callback),
+                  base::BindOnce(&ConvertUint64ToString, "/result"));
 }
 
 void JsonRpcService::GetEthTransactionCount(const std::string& address,
@@ -1769,7 +1774,9 @@ void JsonRpcService::GetSolanaLatestBlockhash(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(solana::getLatestBlockhash(), true,
                   network_urls_[mojom::CoinType::SOL],
-                  std::move(internal_callback));
+                  std::move(internal_callback),
+                  base::BindOnce(&ConvertUint64ToString,
+                                 "/result/value/lastValidBlockHeight"));
 }
 
 void JsonRpcService::OnGetSolanaLatestBlockhash(
@@ -1779,21 +1786,24 @@ void JsonRpcService::OnGetSolanaLatestBlockhash(
     const base::flat_map<std::string, std::string>& headers) {
   if (status < 200 || status > 299) {
     std::move(callback).Run(
-        "", mojom::SolanaProviderError::kInternalError,
+        "", 0, mojom::SolanaProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
   std::string blockhash;
-  if (!solana::ParseGetLatestBlockhash(body, &blockhash)) {
+  uint64_t last_valid_block_height = 0;
+  if (!solana::ParseGetLatestBlockhash(body, &blockhash,
+                                       &last_valid_block_height)) {
     mojom::SolanaProviderError error;
     std::string error_message;
     ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
-    std::move(callback).Run("", error, error_message);
+    std::move(callback).Run("", 0, error, error_message);
     return;
   }
 
-  std::move(callback).Run(blockhash, mojom::SolanaProviderError::kSuccess, "");
+  std::move(callback).Run(blockhash, last_valid_block_height,
+                          mojom::SolanaProviderError::kSuccess, "");
 }
 
 void JsonRpcService::GetSolanaSignatureStatuses(
@@ -1910,6 +1920,42 @@ void JsonRpcService::OnGetSolanaFeeForMessage(
   }
 
   std::move(callback).Run(fee, mojom::SolanaProviderError::kSuccess, "");
+}
+
+void JsonRpcService::GetSolanaBlockHeight(
+    GetSolanaBlockHeightCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetSolanaBlockHeight,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(solana::getBlockHeight(), true,
+                  network_urls_[mojom::CoinType::SOL],
+                  std::move(internal_callback),
+                  base::BindOnce(&ConvertUint64ToString, "/result"));
+}
+
+void JsonRpcService::OnGetSolanaBlockHeight(
+    GetSolanaBlockHeightCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        0, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  uint64_t block_height = 0;
+  if (!solana::ParseGetBlockHeight(body, &block_height)) {
+    mojom::SolanaProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    std::move(callback).Run(0, error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(block_height, mojom::SolanaProviderError::kSuccess,
+                          "");
 }
 
 }  // namespace brave_wallet
