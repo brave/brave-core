@@ -60,3 +60,4 @@ export const setMetaMaskInitialized = createAction<boolean>('setMetaMaskInitiali
 export const importFromCryptoWallets = createAction<ImportFromExternalWalletPayloadType>('importFromCryptoWallets')
 export const importFromMetaMask = createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask')
 export const openWalletSettings = createAction('openWalletSettings')
+export const getNFTMetadata = createAction<BraveWallet.BlockchainToken>('getNFTMetadata')
