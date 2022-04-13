@@ -915,7 +915,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     amountToGet = mConvertedFromBalance;
                 }
 
-                mFromValueText.setText(String.format(Locale.getDefault(), "%f", amountToGet));
+                mFromValueText.setText(String.format(Locale.getDefault(), "%.8f", amountToGet));
                 radioPerPercent.clearCheck();
                 if (mActivityType == ActivityType.SWAP) {
                     getSendSwapQuota(true, false);
