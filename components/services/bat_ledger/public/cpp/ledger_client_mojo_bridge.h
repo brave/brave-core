@@ -152,9 +152,13 @@ class LedgerClientMojoBridge :
   void DecryptString(const std::string& value,
                      DecryptStringCallback callback) override;
 
-  void BackUpVgBodies() override;
+  void OnBackUpVgBodies(
+      ledger::type::Result result,
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies) override;
 
-  void BackUpVgSpendStatuses() override;
+  void OnBackUpVgSpendStatuses(
+      ledger::type::Result result,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind

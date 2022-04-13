@@ -8,6 +8,7 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 #include "brave/components/sync/protocol/vg_specifics.pb.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
 namespace database {
@@ -28,9 +29,13 @@ class DatabaseVgBackupRestore : public DatabaseTable {
 
   ~DatabaseVgBackupRestore() override;
 
-  void BackUpVgBodies(BackUpVgBodiesCallback callback) const;
+  void BackUpVgBodies(
+      BackUpVgBodiesCallback callback,
+      const absl::optional<std::vector<std::string>>& trigger_ids) const;
 
-  void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) const;
+  void BackUpVgSpendStatuses(
+      BackUpVgSpendStatusesCallback callback,
+      const absl::optional<std::vector<std::string>>& token_ids) const;
 
   void RestoreVgs(
       std::vector<sync_pb::VgBodySpecifics> vg_bodies,

@@ -185,13 +185,29 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
+  ledger::ResultCallback trigger_backup_callback =
+      std::bind(&DatabaseUnblindedToken::TriggerBackup, this, _1, ids,
+                std::move(callback));
 
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  auto transaction_callback =
+      std::bind(&OnResultCallback, _1, std::move(trigger_backup_callback));
+
+  ledger_->ledger_client()->RunDBTransaction(std::move(transaction),
+                                             std::move(transaction_callback));
+}
+
+void DatabaseUnblindedToken::TriggerBackup(
+    type::Result result,
+    const std::vector<std::string>& token_ids,
+    ledger::ResultCallback callback) {
+  if (result == type::Result::LEDGER_OK) {
+    ledger_->database()->BackUpVgSpendStatuses(
+        base::BindOnce(&LedgerClient::OnBackUpVgSpendStatuses,
+                       base::Unretained(ledger_->ledger_client())),
+        token_ids);
+  }
+
+  callback(result);
 }
 
 void DatabaseUnblindedToken::MarkRecordListAsReserved(
@@ -416,6 +432,52 @@ void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
   ledger_->ledger_client()->RunDBTransaction(
       std::move(transaction),
       transaction_callback);
+}
+
+void DatabaseUnblindedToken::GetTokenIdsByTriggers(
+    type::CredsBatchType trigger_type,
+    const std::vector<std::string>& trigger_ids,
+    GetTokenIdsByTriggersCallback callback) {
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
+  command->command = base::StringPrintf(
+      "SELECT ut.token_id "
+      "FROM %s AS ut "
+      "LEFT JOIN creds_batch AS cb "
+      "ON cb.creds_id = ut.creds_id "
+      "WHERE cb.trigger_type = ? AND cb.trigger_id IN (%s)",
+      kTableName, GenerateStringInCase(trigger_ids).c_str());
+
+  BindInt(command.get(), 0, static_cast<int>(trigger_type));
+
+  command->record_bindings = {
+      type::DBCommand::RecordBindingType::INT64_TYPE  // token_id
+  };
+
+  auto transaction = type::DBTransaction::New();
+  transaction->commands.push_back(std::move(command));
+
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&DatabaseUnblindedToken::OnGetTokenIdsByTriggers, this, _1,
+                std::move(callback)));
+}
+
+void DatabaseUnblindedToken::OnGetTokenIdsByTriggers(
+    type::DBCommandResponsePtr response,
+    GetTokenIdsByTriggersCallback callback) {
+  if (!response ||
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "GetTokenIdsByTriggers failed: bad response!");
+    return callback(absl::nullopt);
+  }
+
+  std::vector<std::string> token_ids;
+  for (const auto& record : response->result->get_records()) {
+    token_ids.push_back(std::to_string(GetInt64Column(record.get(), 0)));
+  }
+
+  callback(token_ids);
 }
 
 }  // namespace database

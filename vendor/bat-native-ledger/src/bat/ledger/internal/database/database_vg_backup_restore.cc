@@ -12,6 +12,19 @@
 #include "bat/ledger/internal/database/database_vg_backup_restore.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
+// Currently, there are 3 types of tokens:
+// - UGP (creds_batch.trigger_id == promotion.promotion_id):
+//   - creds_batch.trigger_type == 1 (type::CredsBatchType::PROMOTION)
+//   - promotion.type == 0 (type::PromotionType::UGP)
+// - ADS (creds_batch.trigger_id == promotion.promotion_id):
+//   - creds_batch.trigger_type == 1 (type::CredsBatchType::PROMOTION)
+//   - promotion.type == 1 (type::PromotionType::ADS)
+// - SKU (creds_batch.trigger_id == sku_order.order_id):
+//   - creds_batch.trigger_type == 2 (type::CredsBatchType::SKU)
+//
+// We only back up UGP and ADS tokens, hence we use the above conditions in
+// WHERE clauses in the SQL queries below.
+
 template <typename Key, typename Value>
 std::vector<Key> GetKeys(const std::map<Key, Value>& map) {
   std::vector<Key> keys{};
@@ -33,11 +46,17 @@ DatabaseVgBackupRestore::DatabaseVgBackupRestore(LedgerImpl* ledger)
 DatabaseVgBackupRestore::~DatabaseVgBackupRestore() = default;
 
 void DatabaseVgBackupRestore::BackUpVgBodies(
-    BackUpVgBodiesCallback callback) const {
-  VLOG(0) << "DatabaseVgBackupRestore::BackUpVgBodies()";
-
+    BackUpVgBodiesCallback callback,
+    const absl::optional<std::vector<std::string>>& trigger_ids) const {
   auto command = type::DBCommand::New();
   command->type = type::DBCommand::Type::READ;
+
+  const std::string condition =
+      (trigger_ids && !trigger_ids->empty()
+           ? base::StringPrintf("AND cb.trigger_id IN (%s)",
+                                GenerateStringInCase(*trigger_ids).c_str())
+           : "");
+
   command->command = R"(
     SELECT   cb.creds_id,
              cb.trigger_id,
@@ -55,6 +74,8 @@ void DatabaseVgBackupRestore::BackUpVgBodies(
     FROM     creds_batch AS cb
     JOIN     unblinded_tokens AS ut
     ON       ut.creds_id = cb.creds_id
+    WHERE    cb.trigger_type = 1
+  )" + condition + R"(
     ORDER BY ut.token_id
   )";
 
@@ -85,8 +106,6 @@ void DatabaseVgBackupRestore::BackUpVgBodies(
 void DatabaseVgBackupRestore::OnBackUpVgBodies(
     BackUpVgBodiesCallback callback,
     type::DBCommandResponsePtr response) const {
-  VLOG(0) << "DatabaseVgBackupRestore::OnBackUpVgBodies()";
-
   if (!response ||
       response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "BackUpVgBodies failed: bad response!");
@@ -146,18 +165,30 @@ void DatabaseVgBackupRestore::OnBackUpVgBodies(
 }
 
 void DatabaseVgBackupRestore::BackUpVgSpendStatuses(
-    BackUpVgSpendStatusesCallback callback) const {
+    BackUpVgSpendStatusesCallback callback,
+    const absl::optional<std::vector<std::string>>& token_ids) const {
   auto command = type::DBCommand::New();
   command->type = type::DBCommand::Type::READ;
+
+  const std::string condition =
+      (token_ids && !token_ids->empty()
+           ? base::StringPrintf("AND ut.token_id IN (%s)",
+                                GenerateStringInCase(*token_ids).c_str())
+           : "");
+
   command->command = R"(
     WITH aux AS (
       SELECT SUM(
                CASE
-                 WHEN redeem_id IS NOT NULL AND redeem_id != '' AND redeemed_at = 0 THEN 1
+                 WHEN ut.redeem_id IS NOT NULL AND ut.redeem_id != '' AND ut.redeemed_at = 0 THEN 1
                  ELSE 0
                END
              ) AS in_progress
-      FROM   unblinded_tokens
+      FROM   unblinded_tokens AS ut
+      JOIN   creds_batch AS cb
+      ON     cb.creds_id = ut.creds_id
+      WHERE  cb.trigger_type = 1
+  )" + condition + R"(
     )
     SELECT   NULL AS token_id,
              NULL AS redeemed_at,
@@ -171,7 +202,8 @@ void DatabaseVgBackupRestore::BackUpVgSpendStatuses(
     FROM     creds_batch AS cb, aux
     JOIN     unblinded_tokens AS ut
     ON       ut.creds_id = cb.creds_id
-    WHERE    aux.in_progress = 0
+    WHERE    aux.in_progress = 0 AND cb.trigger_type = 1
+  )" + condition + R"(
     ORDER BY ut.token_id
   )";
 
@@ -557,36 +589,36 @@ void DatabaseVgBackupRestore::RestoreVgs(
   //  } while (++creds_id_range.first != creds_id_range.second);
   //}
 
-  //std::size_t counter = 0;
-  //for (const auto& vg_spend_status : vg_spend_statuses) {
-  //  auto command = type::DBCommand::New();
-  //  command->type = type::DBCommand::Type::RUN;
-  //  command->command = R"(
-  //      INSERT INTO unblinded_tokens (
-  //        token_id,
-  //        token_value,
-  //        public_key,
-  //        value,
-  //        creds_id,
-  //        expires_at,
-  //        redeemed_at,
-  //        redeem_id,
-  //        redeem_type,
-  //        reserved_at
-  //      )
-  //      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  //    )";
-  //  BindInt64(command.get(), 0, vg_spend_status.token_id());
-  //  BindString(command.get(), 1, std::to_string(counter));
-  //  BindString(command.get(), 2, std::to_string(counter));
-  //  BindDouble(command.get(), 3, 0.0);
-  //  BindString(command.get(), 4, "");
-  //  BindInt64(command.get(), 5, 0);
-  //  BindInt64(command.get(), 6, vg_spend_status.redeemed_at());
-  //  BindString(command.get(), 7, "");  // redeem_id
-  //  BindInt64(command.get(), 8,
-  //            static_cast<int>(vg_spend_status.redeem_type()));
-  //  BindInt64(command.get(), 9, 0);  // reserved_at
+  // std::size_t counter = 0;
+  // for (const auto& vg_spend_status : vg_spend_statuses) {
+  //   auto command = type::DBCommand::New();
+  //   command->type = type::DBCommand::Type::RUN;
+  //   command->command = R"(
+  //       INSERT INTO unblinded_tokens (
+  //         token_id,
+  //         token_value,
+  //         public_key,
+  //         value,
+  //         creds_id,
+  //         expires_at,
+  //         redeemed_at,
+  //         redeem_id,
+  //         redeem_type,
+  //         reserved_at
+  //       )
+  //       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  //     )";
+  //   BindInt64(command.get(), 0, vg_spend_status.token_id());
+  //   BindString(command.get(), 1, std::to_string(counter));
+  //   BindString(command.get(), 2, std::to_string(counter));
+  //   BindDouble(command.get(), 3, 0.0);
+  //   BindString(command.get(), 4, "");
+  //   BindInt64(command.get(), 5, 0);
+  //   BindInt64(command.get(), 6, vg_spend_status.redeemed_at());
+  //   BindString(command.get(), 7, "");  // redeem_id
+  //   BindInt64(command.get(), 8,
+  //             static_cast<int>(vg_spend_status.redeem_type()));
+  //   BindInt64(command.get(), 9, 0);  // reserved_at
 
   //  transaction->commands.push_back(std::move(command));
 
