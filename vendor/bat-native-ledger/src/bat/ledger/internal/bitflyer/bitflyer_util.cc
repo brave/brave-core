@@ -45,12 +45,6 @@ std::string GetFeeAddress() {
              : kFeeAddressStaging;
 }
 
-std::string GetACAddress() {
-  return ledger::_environment == type::Environment::PRODUCTION
-             ? kACAddressProduction
-             : kACAddressStaging;
-}
-
 std::string GetAuthorizeUrl(const std::string& state,
                             const std::string& code_verifier) {
   const std::string id = GetClientId();
