@@ -19,7 +19,9 @@
 {% for import in imports %}
 #include "{{import|objc_import_module_name}}.objc.h"
 {% endfor %}
+
 #include "base_values.h"
+#include "url_origin_ios.h"
 
 {# Enum Decls #}
 {%- for enum in all_enums %}
