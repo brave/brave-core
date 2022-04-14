@@ -176,9 +176,13 @@ public class SwapTokenStore: ObservableObject {
       completion(nil)
       return
     }
-
-    rpcService.balance(for: token, in: account) { balance in
-      completion(balance.map { BDouble($0) })
+    
+    rpcService.balance(
+      for: token,
+      in: account.address,
+      decimalFormatStyle: .decimals(precision: Int(token.decimals))
+    ) { balance in
+      completion(balance)
     }
   }
 
@@ -356,13 +360,13 @@ public class SwapTokenStore: ObservableObject {
     checkBalanceShowError(swapResponse: response)
   }
 
-  private func createERC20SwapTransaction(_ spenderAddress: String) {
+  private func createERC20ApprovalTransaction(_ spenderAddress: String) {
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     guard
       let fromToken = selectedFromToken,
       let accountInfo = accountInfo,
       let balanceInWeiHex = weiFormatter.weiString(
-        from: selectedFromTokenBalance?.decimalDescription ?? "0",
+        from: selectedFromTokenBalance?.decimalExpansion(precisionAfterDecimalPoint: Int(fromToken.decimals), rounded: false) ?? "0",
         radix: .hex,
         decimals: Int(fromToken.decimals)
       )
@@ -517,7 +521,7 @@ public class SwapTokenStore: ObservableObject {
         ownerAddress: ownerAddress,
         spenderAddress: spenderAddress
       ) { allowance, status, _ in
-        let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+        let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: Int(fromToken.decimals)))
         let allowanceValue = BDouble(weiFormatter.decimalString(for: allowance.removingHexPrefix, radix: .hex, decimals: Int(fromToken.decimals)) ?? "") ?? 0
         guard status == .success, amountToSend > allowanceValue else { return }  // no problem with its allowance
         self?.state = .lowAllowance(spenderAddress)
@@ -546,7 +550,7 @@ public class SwapTokenStore: ObservableObject {
       // will never come here
       break
     case .lowAllowance(let spenderAddress):
-      createERC20SwapTransaction(spenderAddress)
+      createERC20ApprovalTransaction(spenderAddress)
     case .swap:
       createETHSwapTransaction()
     }
@@ -592,17 +596,16 @@ public class SwapTokenStore: ObservableObject {
 
     func updateSelectedTokens(in network: BraveWallet.NetworkInfo) {
       if let fromToken = selectedFromToken {  // refresh balance
-        rpcService.balance(for: fromToken, in: accountInfo) { [weak self] balance in
-          self?.selectedFromTokenBalance = BDouble(balance ?? 0)
+        fetchTokenBalance(for: fromToken) { [weak self] balance in
+          self?.selectedFromTokenBalance = balance ?? 0
         }
       } else {
         selectedFromToken = allTokens.first(where: { $0.symbol == network.symbol })
       }
 
       if let toToken = selectedToToken {
-        rpcService.balance(for: toToken, in: accountInfo) { [weak self] balance in
-          self?.selectedToTokenBalance = BDouble(balance ?? 0)
-          completion?()
+        fetchTokenBalance(for: toToken) { [weak self] balance in
+          self?.selectedToTokenBalance = balance ?? 0
         }
       } else {
         if network.chainId == BraveWallet.MainnetChainId {
@@ -651,6 +654,17 @@ public class SwapTokenStore: ObservableObject {
       }
     }
   }
+  
+  func suggestedAmountTapped(_ amount: ShortcutAmountGrid.Amount) {
+    var decimalPoint = 6
+    var rounded = true
+    if amount == .all {
+      decimalPoint = Int(selectedFromToken?.decimals ?? 18)
+      rounded = false
+    }
+    sellAmount = ((selectedFromTokenBalance ?? 0) * amount.rawValue)
+      .decimalExpansion(precisionAfterDecimalPoint: decimalPoint, rounded: rounded)
+  }
 
   #if DEBUG
   func setUpTest() {
@@ -659,6 +673,11 @@ public class SwapTokenStore: ObservableObject {
     selectedToToken = .previewToken
     sellAmount = "0.01"
     selectedFromTokenBalance = 0.02
+  }
+  
+  func setUpTestForRounding() {
+    accountInfo = .init()
+    selectedFromToken = .previewToken
   }
   #endif
 }
