@@ -330,6 +330,7 @@ provideStrings({
   braveWalletConfirmTransactionNext: 'next',
   braveWalletConfirmTransactionFrist: 'first',
   braveWalletConfirmTransactions: 'transactions',
+  braveWalletConfirmTransactionAccountCreationFee: 'The associated token account does not exist yet. A small amount of SOL will be spent to create and fund it.',
   braveWalletAllowSpendCurrentAllowance: 'Current allowance',
   braveWalletAllowSpendProposedAllowance: 'Proposed allowance',
 

@@ -16,12 +16,8 @@ import {
   MessageBox,
   MessageText,
   ButtonRow,
-  WarningBox,
-  WarningText,
-  WarningTitle,
   WarningTitleRow,
-  WarningIcon,
-  LearnMoreButton
+  WarningIcon
 } from './style'
 
 import {
@@ -30,7 +26,13 @@ import {
   QueueStepText
 } from '../confirm-transaction-panel/style'
 
-import { TabRow } from '../shared-panel-styles'
+import {
+  TabRow,
+  WarningBox,
+  WarningTitle,
+  WarningText,
+  LearnMoreButton
+} from '../shared-panel-styles'
 
 export interface Props {
   accounts: WalletAccountType[]
@@ -127,10 +129,10 @@ function SignPanel (props: Props) {
       <AccountNameText>{reduceAccountDisplayName(findAccountName(selectedQueueData.address) ?? '', 14)}</AccountNameText>
       <PanelTitle>{getLocale('braveWalletSignTransactionTitle')}</PanelTitle>
       {signStep === SignDataSteps.SignRisk &&
-        <WarningBox>
+        <WarningBox warningType='danger'>
           <WarningTitleRow>
             <WarningIcon />
-            <WarningTitle>{getLocale('braveWalletSignWarningTitle')}</WarningTitle>
+            <WarningTitle warningType='danger'>{getLocale('braveWalletSignWarningTitle')}</WarningTitle>
           </WarningTitleRow>
           <WarningText>{getLocale('braveWalletSignWarning')}</WarningText>
           <LearnMoreButton onClick={onClickLearnMore}>{getLocale('braveWalletAllowAddNetworkLearnMoreButton')}</LearnMoreButton>
