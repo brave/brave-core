@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_ads/search_result_ad/search_result_ad_service_factory.h"
+#include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/dom_distiller/content/browser/distiller_javascript_utils.h"
 #include "components/dom_distiller/content/browser/distiller_page_web_contents.h"
@@ -39,6 +41,8 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
   ads_service_ = AdsServiceFactory::GetForProfile(profile);
+  search_result_ad_service_ =
+      SearchResultAdServiceFactory::GetForProfile(profile);
 
 #if !BUILDFLAG(IS_ANDROID)
   BrowserList::AddObserver(this);
@@ -136,7 +140,12 @@ void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
     return;
   }
 
-  RunIsolatedJavaScript(web_contents()->GetMainFrame());
+  content::RenderFrameHost* render_frame_host = web_contents()->GetMainFrame();
+  RunIsolatedJavaScript(render_frame_host);
+
+  if (search_result_ad_service_) {
+    search_result_ad_service_->MaybeRetrieveSearchResultAd(render_frame_host);
+  }
 }
 
 void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
