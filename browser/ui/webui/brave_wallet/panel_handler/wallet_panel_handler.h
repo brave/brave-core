@@ -20,13 +20,11 @@ class WebUI;
 
 class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
  public:
-  using GetActiveWebContentsCallback =
-      base::RepeatingCallback<content::WebContents*()>;
   using PanelCloseOnDeactivationCallback = base::RepeatingCallback<void(bool)>;
   WalletPanelHandler(
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
       ui::MojoBubbleWebUIController* webui_controller,
-      GetActiveWebContentsCallback get_active_web_contents,
+      content::WebContents* active_web_contents,
       PanelCloseOnDeactivationCallback close_on_deactivation);
 
   WalletPanelHandler(const WalletPanelHandler&) = delete;
@@ -43,7 +41,7 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
  private:
   mojo::Receiver<brave_wallet::mojom::PanelHandler> receiver_;
   ui::MojoBubbleWebUIController* const webui_controller_;
-  const GetActiveWebContentsCallback get_active_web_contents_;
+  raw_ptr<content::WebContents> active_web_contents_ = nullptr;
   const PanelCloseOnDeactivationCallback close_on_deactivation_;
 };
 

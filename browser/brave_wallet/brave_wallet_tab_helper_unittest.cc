@@ -7,29 +7,18 @@
 
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/test/base/testing_browser_process.h"
-#include "chrome/test/base/testing_profile.h"
-#include "chrome/test/base/testing_profile_manager.h"
-#include "components/grit/brave_components_strings.h"
-#include "content/public/test/browser_task_environment.h"
-#include "content/public/test/test_browser_context.h"
-#include "content/public/test/test_renderer_host.h"
-#include "content/public/test/web_contents_tester.h"
-#include "testing/gtest/include/gtest/gtest.h"
-
-#if !BUILDFLAG(IS_ANDROID)
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/ui/hid/hid_chooser_controller.h"
 #include "chrome/grit/generated_resources.h"
+#include "chrome/test/base/browser_with_test_window_test.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/permissions/chooser_title_util.h"
+#include "content/public/test/web_contents_tester.h"
 #include "services/device/public/mojom/hid.mojom.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
-#endif
 
-#if !BUILDFLAG(IS_ANDROID)
 namespace {
 std::u16string BraveCreateTitleLabel() {
   auto wallet_title =
@@ -47,24 +36,26 @@ std::u16string GetHIDTitle(content::WebContents* content, const GURL& url) {
   return hid_chooser_controller->GetTitle();
 }
 }  // namespace
-#endif
 
 namespace brave_wallet {
 
-class BraveWalletTabHelperUnitTest : public testing::Test {
+class BraveWalletTabHelperUnitTest : public BrowserWithTestWindowTest {
  public:
-  BraveWalletTabHelperUnitTest()
-      : profile_manager_(TestingBrowserProcess::GetGlobal()) {}
+  BraveWalletTabHelperUnitTest() {}
   ~BraveWalletTabHelperUnitTest() override = default;
 
   void SetUp() override {
-    ASSERT_TRUE(profile_manager_.SetUp());
-    profile_ = profile_manager_.CreateTestingProfile("TestProfile");
+    BrowserWithTestWindowTest::SetUp();
     web_contents_ =
-        content::WebContentsTester::CreateTestWebContents(profile_, nullptr);
+        content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
     ASSERT_TRUE(web_contents_.get());
     brave_wallet::BraveWalletTabHelper::CreateForWebContents(
         web_contents_.get());
+  }
+
+  void TearDown() override {
+    web_contents_.reset();
+    BrowserWithTestWindowTest::TearDown();
   }
 
   brave_wallet::BraveWalletTabHelper* brave_wallet_tab_helper() {
@@ -75,16 +66,9 @@ class BraveWalletTabHelperUnitTest : public testing::Test {
   content::WebContents* web_contents() { return web_contents_.get(); }
 
  private:
-  content::BrowserTaskEnvironment task_environment_;
-  TestingProfileManager profile_manager_;
-  raw_ptr<TestingProfile> profile_ = nullptr;
-  // Needed to ensure we don't end up creating actual RenderViewHosts
-  // and RenderProcessHosts.
-  content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   std::unique_ptr<content::WebContents> web_contents_;
 };
 
-#if !BUILDFLAG(IS_ANDROID)
 TEST_F(BraveWalletTabHelperUnitTest, GetApproveBubbleURL) {
   auto* helper = brave_wallet_tab_helper();
   ASSERT_TRUE(helper);
@@ -100,7 +84,5 @@ TEST_F(BraveWalletTabHelperUnitTest, ChooserTitle) {
             wallet_label);
   EXPECT_NE(GetHIDTitle(web_contents(), GURL("a.com")), wallet_label);
 }
-
-#endif
 
 }  // namespace brave_wallet

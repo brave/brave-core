@@ -67,6 +67,7 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
                               std::make_unique<SanitizedImageSource>(profile));
   content::WebUIDataSource::Add(profile, source);
   brave_wallet::AddBlockchainTokenImageSource(profile);
+  active_web_contents_ = brave_wallet::GetActiveWebContents();
 }
 
 WalletPanelUI::~WalletPanelUI() = default;
@@ -110,8 +111,7 @@ void WalletPanelUI::CreatePanelHandler(
   DCHECK(profile);
 
   panel_handler_ = std::make_unique<WalletPanelHandler>(
-      std::move(panel_receiver), this,
-      base::BindRepeating(&brave_wallet::GetActiveWebContents),
+      std::move(panel_receiver), this, active_web_contents_,
       std::move(deactivation_callback_));
   wallet_handler_ =
       std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);
