@@ -7,13 +7,28 @@
 #include <utility>
 #include <vector>
 
+#include "base/json/json_reader.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
+namespace {
+
+void CompareJSON(const std::string& request_string,
+                 const std::string& expected_request) {
+  auto request_json = base::JSONReader::Read(request_string);
+  ASSERT_TRUE(request_json);
+  auto expected_request_json = base::JSONReader::Read(expected_request);
+  ASSERT_TRUE(expected_request_json);
+  EXPECT_EQ(*request_json, *expected_request_json);
+}
+
+}  // namespace
+
 namespace brave_wallet {
+
 TEST(JsonRpcResponseParserUnitTest, ParseSingleStringResult) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
@@ -169,6 +184,65 @@ TEST(JsonRpcResponseParserUnitTest, ConvertUint64ToString) {
              }
             })";
   EXPECT_EQ(*ConvertUint64ToString("/result", json), json);
+}
+
+TEST(JsonRpcResponseParserUnitTest, ConvertMultiUint64ToString) {
+  std::string json =
+      R"({"id":1,"jsonrpc":"2.0","result":{
+            "value":18446744073709551615,
+            "a":{"b":18446744073709551615}
+            }})";
+  std::string expected_json =
+      R"({"id":1,"jsonrpc":"2.0","result":{
+            "value":"18446744073709551615",
+            "a":{"b":"18446744073709551615"}
+            }})";
+
+  CompareJSON(
+      *ConvertMultiUint64ToString({"/result/value", "/result/a/b"}, json),
+      expected_json);
+
+  EXPECT_FALSE(ConvertMultiUint64ToString({}, json));
+  EXPECT_FALSE(ConvertMultiUint64ToString({"", "/result/value"}, json));
+  EXPECT_FALSE(ConvertMultiUint64ToString({"result/value", "/result/a/b"}, ""));
+
+  // Fail all if one of the path fails.
+  json = R"({"result":{"value":18446744073709551615,"bad":-1}})";
+  EXPECT_FALSE(
+      ConvertMultiUint64ToString({"/result/value", "/result/bad"}, json));
+}
+
+TEST(JsonRpcResponseParserUnitTest, ConvertMultiUint64InObjectArrayToString) {
+  std::string json =
+      R"({"result":{"array":[
+           {"key1":18446744073709551615,"key2":18446744073709551615},
+           {"key1":18446744073709551615,"key2":18446744073709551615}
+           ]}})";
+  std::string expected_json =
+      R"({"result":{"array":[
+           {"key1":"18446744073709551615","key2":"18446744073709551615"},
+           {"key1":"18446744073709551615","key2":"18446744073709551615"}
+           ]}})";
+  CompareJSON(*ConvertMultiUint64InObjectArrayToString("/result/array",
+                                                       {"key1", "key2"}, json),
+              expected_json);
+
+  EXPECT_FALSE(
+      ConvertMultiUint64InObjectArrayToString("", {"key1", "key2"}, json));
+  EXPECT_FALSE(ConvertMultiUint64InObjectArrayToString("/result/array",
+                                                       {"key1", ""}, json));
+  EXPECT_FALSE(
+      ConvertMultiUint64InObjectArrayToString("/result/array", {}, json));
+  EXPECT_FALSE(ConvertMultiUint64InObjectArrayToString("/result/array",
+                                                       {"key1", "key2"}, ""));
+
+  // Fail all if one of the key fails.
+  json = R"({"result":{"array":[
+              {"key1":18446744073709551615,"key2":18446744073709551615},
+              {"key1":-1,"key2":1}
+              ]}})";
+  EXPECT_FALSE(ConvertMultiUint64InObjectArrayToString("/result/array",
+                                                       {"key1", "key2"}, json));
 }
 
 }  // namespace brave_wallet
