@@ -27,7 +27,7 @@ mojom::BuildChannel& BuildChannel() {
 
 bool g_is_debug = false;
 
-const char g_catalog_schema_resource_id[] = "catalog-schema.json";
+const char g_catalog_json_schema_data_resource_name[] = "catalog-schema.json";
 
 bool IsSupportedLocale(const std::string& locale) {
   const std::string country_code = brave_l10n::GetCountryCode(locale);

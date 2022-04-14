@@ -406,7 +406,7 @@ class AdsServiceImpl : public AdsService,
   void LoadFileResource(const std::string& id,
                         const int version,
                         ads::LoadFileCallback callback) override;
-  std::string LoadDataResourceForId(const std::string& id) override;
+  std::string LoadDataResource(const std::string& name) override;
 
   void GetBrowsingHistory(const int max_count,
                           const int days_ago,

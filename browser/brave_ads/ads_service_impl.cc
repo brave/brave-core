@@ -130,8 +130,8 @@ constexpr char kAdNotificationUrlPrefix[] = "https://www.brave.com/ads/?";
 
 const base::Feature kAdServing{"AdServing", base::FEATURE_ENABLED_BY_DEFAULT};
 
-int GetDataResourceForId(const std::string& id) {
-  if (id == ads::g_catalog_schema_resource_id) {
+int GetDataResourceId(const std::string& name) {
+  if (name == ads::g_catalog_json_schema_data_resource_name) {
     return IDR_ADS_CATALOG_SCHEMA;
   }
 
@@ -2108,9 +2108,9 @@ void AdsServiceImpl::LoadFileResource(const std::string& id,
                      std::move(callback)));
 }
 
-std::string AdsServiceImpl::LoadDataResourceForId(const std::string& id) {
-  const int data_resource_id = GetDataResourceForId(id);
-  return LoadDataResourceAndDecompressIfNeeded(data_resource_id);
+std::string AdsServiceImpl::LoadDataResource(const std::string& name) {
+  const int id = GetDataResourceId(name);
+  return LoadDataResourceAndDecompressIfNeeded(id);
 }
 
 void AdsServiceImpl::GetBrowsingHistory(

@@ -234,15 +234,14 @@ void BatAdsClientMojoBridge::Load(
   bat_ads_client_->Load(name, base::BindOnce(&OnLoad, std::move(callback)));
 }
 
-std::string BatAdsClientMojoBridge::LoadDataResourceForId(
-    const std::string& id) {
+std::string BatAdsClientMojoBridge::LoadDataResource(const std::string& name) {
   std::string value;
 
   if (!connected()) {
     return value;
   }
 
-  bat_ads_client_->LoadDataResourceForId(id, &value);
+  bat_ads_client_->LoadDataResource(name, &value);
   return value;
 }
 

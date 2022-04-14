@@ -87,18 +87,18 @@ class ADS_EXPORT AdsClient {
   // |false|. |value| containing the persisted value.
   virtual void Load(const std::string& name, LoadCallback callback) = 0;
 
-  // Load a file resource for the specified |name| and |version| from persistent
+  // Load a file resource for the specified |id| and |version| from persistent
   // storage. The callback takes 1 argument - |base::File| will be valid if
   // successful otherwise invalid.
-  virtual void LoadFileResource(const std::string& name,
+  virtual void LoadFileResource(const std::string& id,
                                 const int version,
                                 LoadFileCallback callback) = 0;
 
-  // Load a data resource for the specified |id|. Returns the resource if
+  // Load a data resource for the specified |name|. Returns the resource if
   // successful otherwise an empty string.
-  virtual std::string LoadDataResourceForId(const std::string& id) = 0;
+  virtual std::string LoadDataResource(const std::string& name) = 0;
 
-  // Clears the currently scheduled captcha, if any.
+  // Clear the currently scheduled captcha, if any.
   virtual void ClearScheduledCaptcha() = 0;
 
   // Retrieves the captcha scheduled for the specified |payment_id|, if any. The
@@ -158,7 +158,7 @@ class ADS_EXPORT AdsClient {
   virtual void SetInt64Pref(const std::string& path, const int64_t value) = 0;
   virtual void SetUint64Pref(const std::string& path, const uint64_t value) = 0;
 
-  // Clear the preference for specified |path|.
+  // Remove the preference from the specified |path|.
   virtual void ClearPref(const std::string& path) = 0;
 
   // Returns |true| if a value has been set for the specified preference |path|.

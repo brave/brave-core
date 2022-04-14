@@ -41,8 +41,8 @@ mojom::BuildChannel& BuildChannel();
 // this flag.
 extern bool g_is_debug;
 
-// Catalog schema resource id
-extern const char g_catalog_schema_resource_id[];
+// Data resources
+extern const char g_catalog_json_schema_data_resource_name[];
 
 // Returns |true| if the locale is supported otherwise returns |false|.
 bool IsSupportedLocale(const std::string& locale);
@@ -86,7 +86,7 @@ class ADS_EXPORT Ads {
                             const std::string& text) = 0;
 
   // Called when a page navigation was initiated by a user gesture.
-  // |page_transition_type| containing the page transition type. See enums for
+  // |page_transition_type| containing the page transition type, see enums for
   // |PageTransitionType|.
   virtual void OnUserGesture(const int32_t page_transition_type) = 0;
 
@@ -153,7 +153,7 @@ class ADS_EXPORT Ads {
 
   // Should be called to get a new tab page ad. The callback takes two arguments
   // - |bool| is set to |true| if successful otherwise |false| and
-  //   |NewTabPageAdInfo| containing the info for the ad.
+  // |NewTabPageAdInfo| containing the info for the ad.
   virtual void GetNewTabPageAd(GetNewTabPageAdCallback callback) = 0;
 
   // Called when a user views or interacts with a new tab page ad to trigger an

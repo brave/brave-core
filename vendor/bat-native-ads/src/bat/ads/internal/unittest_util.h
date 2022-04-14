@@ -116,7 +116,7 @@ void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
               const base::ScopedTempDir& temp_dir);
 
 void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock);
-void MockLoadDataResourceForId(const std::unique_ptr<AdsClientMock>& mock);
+void MockLoadDataResource(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
                     const URLEndpoints& endpoints);

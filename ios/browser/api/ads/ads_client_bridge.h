@@ -32,7 +32,7 @@
                    forDays:(const int)days_ago
                   callback:(ads::GetBrowsingHistoryCallback)callback;
 - (void)load:(const std::string&)name callback:(ads::LoadCallback)callback;
-- (std::string)loadDataResourceForId:(const std::string&)id;
+- (std::string)loadDataResource:(const std::string&)name;
 - (void)log:(const char*)file
             line:(const int)line
     verboseLevel:(const int)verbose_level
