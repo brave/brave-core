@@ -38,11 +38,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -745,8 +745,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         if (compositorView != null) {
             ViewGroup root = (ViewGroup) compositorView.getChildAt(1);
 
-            if (root.getChildAt(0) instanceof ScrollView) {
-                ScrollView scrollView = (ScrollView) root.getChildAt(0);
+            if (root.getChildAt(0) instanceof NestedScrollView) {
+                NestedScrollView scrollView = (NestedScrollView) root.getChildAt(0);
 
                 DisplayMetrics displayMetrics = new DisplayMetrics();
                 getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
