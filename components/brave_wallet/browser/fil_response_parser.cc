@@ -32,19 +32,12 @@ bool ParseFilGetTransactionCount(const std::string& raw_json, uint64_t* count) {
   return base::StringToUint64(count_string, count);
 }
 
-bool ParseFilEstimateGas(const std::string& raw_json,
+bool ParseFilEstimateGas(const std::string& json,
                          std::string* gas_premium,
                          std::string* gas_fee_cap,
                          int64_t* gas_limit) {
-  if (raw_json.empty())
-    return false;
-  std::string converted_json(
-      json::convert_int64_value_to_string("/result/GasLimit", raw_json.c_str())
-          .c_str());
-  if (converted_json.empty())
-    return false;
   base::Value result;
-  if (!ParseResult(converted_json, &result) || !result.is_dict())
+  if (!ParseResult(json, &result) || !result.is_dict())
     return false;
   auto* limit = result.FindStringKey("GasLimit");
   if (!limit)

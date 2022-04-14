@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/fil_response_parser.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -72,7 +73,7 @@ TEST(FilResponseParserUnitTest, ParseFilEstimateGas) {
               },
               "From": "1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
               "GasFeeCap": "101520",
-              "GasLimit": 2187060,
+              "GasLimit": "2187060",
               "GasPremium": "100466",
               "Method": 0,
               "Nonce": 1,
@@ -143,7 +144,7 @@ TEST(FilResponseParserUnitTest, ParseFilEstimateGas) {
               },
               "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
               "GasFeeCap": "101520",
-              "GasLimit": 2187060,
+              "GasLimit": "2187060",
               "Method": 0,
               "Nonce": 1,
               "Params": "",
@@ -165,7 +166,7 @@ TEST(FilResponseParserUnitTest, ParseFilEstimateGas) {
                 "/": "bafy2bzacebefvj6623fkmfwazpvg7qxgomhicefeb6tunc7wbvd2ee4uppfkw"
               },
               "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
-              "GasLimit": 2187060,
+              "GasLimit": "2187060",
               "GasPremium": "100466",
               "Method": 0,
               "Nonce": 1,

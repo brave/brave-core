@@ -1266,7 +1266,8 @@ void JsonRpcService::GetFilEstimateGas(const std::string& from_address,
       fil::getEstimateGas(from_address, to_address, gas_premium, gas_fee_cap,
                           gas_limit, nonce, max_fee, value);
   RequestInternal(request, true, network_urls_[mojom::CoinType::FIL],
-                  std::move(internal_callback));
+                  std::move(internal_callback),
+                  base::BindOnce(&ConvertInt64ToString, "/result/GasLimit"));
 }
 
 void JsonRpcService::OnGetFilEstimateGas(

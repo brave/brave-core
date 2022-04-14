@@ -62,12 +62,12 @@ std::string getEstimateGas(const std::string& from_address,
   dictionary.SetIntKey("id", 1);
   std::string json;
   base::JSONWriter::Write(dictionary, &json);
-  json = std::string(
-      json::convert_string_value_to_int64("/params/0/GasLimit", json.c_str())
-          .c_str());
-  return std::string(
-      json::convert_string_value_to_uint64("/params/0/Nonce", json.c_str())
-          .c_str());
+  json = std::string(json::convert_string_value_to_int64("/params/0/GasLimit",
+                                                         json.c_str(), false)
+                         .c_str());
+  return std::string(json::convert_string_value_to_uint64("/params/0/Nonce",
+                                                          json.c_str(), false)
+                         .c_str());
 }
 
 }  // namespace fil
