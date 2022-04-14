@@ -25,7 +25,7 @@ class AdNotificationImpressionServedAtCovariateLogEntry final
 
   void SetLastImpressionAt(const base::Time time);
 
-  // CovariateLogEntry
+  // CovariateLogEntry:
   brave_federated::mojom::DataType GetDataType() const override;
   brave_federated::mojom::CovariateType GetCovariateType() const override;
   std::string GetValue() const override;

@@ -47,14 +47,14 @@ class UnitTestBase : public testing::Test {
   // If |integration_test| is set to true test the functionality and performance
   // under product-like circumstances with data to replicate live settings to
   // simulate what a real user scenario looks like from start to finish. You
-  // must call |InitializeAds| manually after setting up your mocks
+  // must call |InitializeAds| manually after setting up your mocks.
   void SetUpForTesting(const bool integration_test);
 
   void InitializeAds();
 
   AdsImpl* GetAds() const;
 
-  // testing::Test implementation
+  // testing::Test:
   void SetUp() override;
   void TearDown() override;
 
@@ -71,29 +71,29 @@ class UnitTestBase : public testing::Test {
   // thread and thread pool with a remaining delay less than or equal to
   // |time_delta| to be executed in their natural order before this returns. For
   // debugging purposes use |task_environment_.DescribePendingMainThreadTasks()|
-  // to dump information about pending tasks
+  // to dump information about pending tasks.
   void FastForwardClockBy(const base::TimeDelta time_delta);
 
   // Fast-forwards virtual time to |time|, causing all tasks on the main thread
   // and thread pool with a remaining delay less than or equal to |time| to be
   // executed in their natural order before this returns. For debugging purposes
   // use |task_environment_.DescribePendingMainThreadTasks()| to dump
-  // information about pending tasks
+  // information about pending tasks.
   void FastForwardClockTo(const base::Time time);
 
   // Unlike |FastForwardClockBy|, |FastForwardClockTo| and |FastForwardBy|
-  // AdvanceClock does not run tasks
+  // AdvanceClock does not run tasks.
   void AdvanceClockToMidnightUTC();
   void AdvanceClock(const base::Time time);
   void AdvanceClock(const base::TimeDelta time_delta);
 
   // Returns the delay until the next pending task of the main thread's
-  // TaskRunner if there is one, otherwise it returns TimeDelta::Max()
+  // TaskRunner if there is one, otherwise it returns TimeDelta::Max().
   base::TimeDelta NextPendingTaskDelay() const;
 
   // Returns the number of pending tasks of the main thread's TaskRunner. When
   // debugging, you can use |task_environment_.DescribePendingMainThreadTasks()|
-  // to see what those are
+  // to see what those are.
   size_t GetPendingTaskCount() const;
 
   base::test::TaskEnvironment* task_environment() { return &task_environment_; }

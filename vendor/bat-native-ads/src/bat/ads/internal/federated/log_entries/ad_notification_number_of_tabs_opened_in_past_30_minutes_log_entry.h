@@ -22,7 +22,7 @@ class AdNotificationNumberOfTabsOpenedInPast30Minutes final
       const AdNotificationNumberOfTabsOpenedInPast30Minutes&) = delete;
   ~AdNotificationNumberOfTabsOpenedInPast30Minutes() override;
 
-  // CovariateLogEntry
+  // CovariateLogEntry:
   brave_federated::mojom::DataType GetDataType() const override;
   brave_federated::mojom::CovariateType GetCovariateType() const override;
   std::string GetValue() const override;

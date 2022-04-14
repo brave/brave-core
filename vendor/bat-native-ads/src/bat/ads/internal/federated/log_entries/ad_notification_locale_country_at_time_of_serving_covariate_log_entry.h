@@ -24,7 +24,7 @@ class AdNotificationLocaleCountryAtTimeOfServingCovariateLogEntry final
       delete;
   ~AdNotificationLocaleCountryAtTimeOfServingCovariateLogEntry() override;
 
-  // CovariateLogEntry
+  // CovariateLogEntry:
   brave_federated::mojom::DataType GetDataType() const override;
   brave_federated::mojom::CovariateType GetCovariateType() const override;
   std::string GetValue() const override;

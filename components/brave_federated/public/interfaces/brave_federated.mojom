@@ -6,16 +6,49 @@
 module brave_federated.mojom;
 
 enum CovariateType {
-  kAdNotificationWasClicked,
-  kAdNotificationLocaleCountryAtTimeOfServing,
   kAdNotificationImpressionServedAt,
-  kAdNotificationNumberOfTabsOpenedInPast30Minutes
+  kAdNotificationLocaleCountryAtTimeOfServing,
+  kAdNotificationNumberOfTabsOpenedInPast30Minutes,
+  kAdNotificationWasClicked,
+  kAverageClickthroughRate,
+  kLastAdNotificationWasClicked,
+  kNumberOfBrowserDidBecomeActiveEvents,
+  kNumberOfBrowserWindowIsActiveEvents,
+  kNumberOfBrowserWindowIsInactiveEvents,
+  kNumberOfClickedBackOrForwardNavigationButtonsEvents,
+  kNumberOfClickedLinkEvents,
+  kNumberOfClickedReloadButtonEvents,
+  kNumberOfClosedTabEvents,
+  kNumberOfFocusedOnExistingTabEvents,
+  kNumberOfNewNavigationEvents,
+  kNumberOfOpenedNewTabEvents,
+  kNumberOfPlayedMediaEvents,
+  kNumberOfSubmittedFormEvents,
+  kNumberOfTypedAndSelectedNonUrlEvents,
+  kNumberOfTypedKeywordOtherThanDefaultSearchProviderEvents,
+  kNumberOfTypedUrlEvents,
+  kTimeSinceLastBrowserDidBecomeActiveEvent,
+  kTimeSinceLastBrowserWindowIsActiveEvent,
+  kTimeSinceLastBrowserWindowIsInactiveEvent,
+  kTimeSinceLastClickedBackOrForwardNavigationButtonsEvent,
+  kTimeSinceLastClickedLinkEvent,
+  kTimeSinceLastClickedReloadButtonEvent,
+  kTimeSinceLastClosedTabEvent,
+  kTimeSinceLastFocusedOnExistingTabEvent,
+  kTimeSinceLastNewNavigationEvent,
+  kTimeSinceLastOpenedNewTabEvent,
+  kTimeSinceLastPlayedMediaEvent,
+  kTimeSinceLastSubmittedFormEvent,
+  kTimeSinceLastTypedAndSelectedNonUrlEvent,
+  kTimeSinceLastTypedKeywordOtherThanDefaultSearchProviderEvent,
+  kTimeSinceLastTypedUrlEvent
 };
 
 enum DataType {
   kBool,
   kDouble,
   kInt,
+  kInt64,
   kString
 };
 

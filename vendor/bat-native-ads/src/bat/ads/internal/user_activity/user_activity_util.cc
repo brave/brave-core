@@ -10,9 +10,46 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
+#include "bat/ads/internal/user_activity/user_activity_event_types.h"
 #include "bat/ads/internal/user_activity/user_activity_trigger_info.h"
 
 namespace ads {
+
+namespace {
+constexpr int64_t kMissingValue = -1;
+}  // namespace
+
+int GetNumberOfTabsOpened(const UserActivityEventList& events) {
+  return std::count_if(
+      events.cbegin(), events.cend(), [](const UserActivityEventInfo& event) {
+        return event.type == UserActivityEventType::kOpenedNewTab;
+      });
+}
+
+int GetNumberOfUserActivityEvents(const UserActivityEventList& events,
+                                  UserActivityEventType event_type) {
+  return std::count_if(events.cbegin(), events.cend(),
+                       [event_type](const UserActivityEventInfo& event) {
+                         return event.type == event_type;
+                       });
+}
+
+int64_t GetTimeSinceLastUserActivityEvent(const UserActivityEventList& events,
+                                          UserActivityEventType event_type) {
+  const auto iter =
+      std::find_if(events.crbegin(), events.crend(),
+                   [event_type](const UserActivityEventInfo& event) {
+                     return event.type == event_type;
+                   });
+
+  if (iter == events.crend()) {
+    return kMissingValue;
+  }
+
+  const base::TimeDelta time_delta = base::Time::Now() - iter->created_at;
+  return time_delta.InSeconds();
+}
 
 UserActivityTriggerList ToUserActivityTriggers(const std::string& param_value) {
   UserActivityTriggerList triggers;
