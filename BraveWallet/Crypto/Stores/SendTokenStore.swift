@@ -6,6 +6,7 @@
 import Foundation
 import BraveCore
 import Shared
+import BigNumber
 
 /// A store contains data for sending tokens
 public class SendTokenStore: ObservableObject {
@@ -18,7 +19,7 @@ public class SendTokenStore: ObservableObject {
     }
   }
   /// The current selected token balance. Default with nil value.
-  @Published var selectedSendTokenBalance: Double?
+  @Published var selectedSendTokenBalance: BDouble?
   /// A boolean indicates if this store is making an unapproved tx
   @Published var isMakingTx = false
   /// The destination account address
@@ -34,6 +35,8 @@ public class SendTokenStore: ObservableObject {
   }
   /// An error for input send address. Nil for no error.
   @Published var addressError: AddressError?
+  /// The amount the user inputs to send
+  @Published var sendAmount = ""
 
   enum AddressError: LocalizedError {
     case sameAsFromAddress
@@ -110,6 +113,16 @@ public class SendTokenStore: ObservableObject {
       }
     }
   }
+  
+  func suggestedAmountTapped(_ amount: ShortcutAmountGrid.Amount) {
+    var decimalPoint = 6
+    var rounded = true
+    if amount == .all {
+      decimalPoint = Int(selectedSendToken?.decimals ?? 18)
+      rounded = false
+    }
+    sendAmount = ((selectedSendTokenBalance ?? 0) * amount.rawValue).decimalExpansion(precisionAfterDecimalPoint: decimalPoint, rounded: rounded)
+  }
 
   private func fetchAssetBalance() {
     guard let token = selectedSendToken else {
@@ -134,61 +147,13 @@ public class SendTokenStore: ObservableObject {
         self.selectedSendTokenBalance = nil
         return
       }
-
-      let balanceFormatter = WeiFormatter(decimalFormatStyle: .balance)
-      func updateBalance(_ status: BraveWallet.ProviderError, _ balance: String) {
-        guard status == .success,
-          let decimalString = balanceFormatter.decimalString(
-            for: balance.removingHexPrefix,
-            radix: .hex,
-            decimals: Int(token.decimals)
-          ), !decimalString.isEmpty, let decimal = Double(decimalString)
-        else {
-          return
-        }
-        selectedSendTokenBalance = decimal
-      }
-
-      self.rpcService.network { network in
-        // Get balance for ETH token
-        if token.symbol == network.symbol {
-          self.rpcService.balance(accountAddress, coin: .eth, chainId: network.chainId) { balance, status, _ in
-            guard status == .success else {
-              self.selectedSendTokenBalance = nil
-              return
-            }
-            updateBalance(status, balance)
-          }
-        }
-        // Get balance for erc20 token
-        else if token.isErc20 {
-          self.rpcService.erc20TokenBalance(
-            token.contractAddress,
-            address: accountAddress,
-            chainId: network.chainId
-          ) { balance, status, _ in
-            guard status == .success else {
-              self.selectedSendTokenBalance = nil
-              return
-            }
-            updateBalance(status, balance)
-          }
-        }
-        // Get balance for erc721 token
-        else if token.isErc721 {
-          self.rpcService.erc721TokenBalance(
-            token.contractAddress,
-            tokenId: token.id,
-            accountAddress: accountAddress,
-            chainId: network.chainId
-          ) { balance, status, _ in
-            guard status == .success else {
-              self.selectedSendTokenBalance = nil
-              return
-            }
-            updateBalance(status, balance)
-          }
-        }
+      
+      rpcService.balance(
+        for: token,
+        in: accountAddress,
+        decimalFormatStyle: .decimals(precision: Int(token.decimals))
+      ) { [weak self] balance in
+        self?.selectedSendTokenBalance = balance
       }
     }
   }

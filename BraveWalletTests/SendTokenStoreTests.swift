@@ -6,6 +6,7 @@
 import XCTest
 import Combine
 import BraveCore
+import BigNumber
 @testable import BraveWallet
 
 class SendTokenStoreTests: XCTestCase {
@@ -157,6 +158,59 @@ class SendTokenStoreTests: XCTestCase {
         XCTAssertTrue(success)
       }
     }
+    waitForExpectations(timeout: 3) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  func testSendFullBalanceNoRounding() {
+    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let mockBalance = "47.156499657504857477"
+    let mockBalanceWei = formatter.weiString(from: mockBalance, radix: .hex, decimals: 18) ?? ""
+    
+    let rpcService = BraveWallet.TestJsonRpcService()
+    rpcService._chainId = { $1(BraveWallet.NetworkInfo.ropsten.chainId) }
+    rpcService._network = { $1(BraveWallet.NetworkInfo.ropsten)}
+    rpcService._balance = { _, _, _, completion in
+      completion(mockBalanceWei, .success, "")
+    }
+    rpcService._addObserver = { _ in }
+    
+    let walletService = BraveWallet.TestBraveWalletService()
+    walletService._userAssets = { $1([.previewToken]) }
+    
+    let keyringService = BraveWallet.TestKeyringService()
+    keyringService._selectedAccount = { $1("account-address") }
+    keyringService._addObserver = { _ in }
+    
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      ethTxManagerProxy: MockEthTxManagerProxy(),
+      prefilledToken: .previewToken
+    )
+    store.setUpTest()
+    
+    let fetchSelectedTokenBalanceEx = expectation(description: "fetchSelectedTokenBalance")
+    store.$selectedSendTokenBalance
+      .sink { balance in
+        XCTAssertEqual(balance, BDouble(mockBalance)!)
+        store.suggestedAmountTapped(.all)
+        fetchSelectedTokenBalanceEx.fulfill()
+      }
+      .store(in: &cancellables)
+    
+    let sendFullBalanceEx = expectation(description: "sendFullBalance")
+    store.$sendAmount
+      .sink { amount in
+        XCTAssertEqual("\(amount)", "\(mockBalance)")
+        sendFullBalanceEx.fulfill()
+      }
+      .store(in: &cancellables)
+    
     waitForExpectations(timeout: 3) { error in
       XCTAssertNil(error)
     }

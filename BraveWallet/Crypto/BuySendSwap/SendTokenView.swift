@@ -15,14 +15,13 @@ struct SendTokenView: View {
 
   @Environment(\.presentationMode) @Binding private var presentationMode
 
-  @State private var amountInput = ""
   @State private var isShowingScanner = false
   @State private var isShowingError = false
 
   @ScaledMetric private var length: CGFloat = 16.0
 
   private var isSendDisabled: Bool {
-    guard let sendAmount = BDouble(amountInput),
+    guard let sendAmount = BDouble(sendTokenStore.sendAmount),
       let balance = sendTokenStore.selectedSendTokenBalance,
       let token = sendTokenStore.selectedSendToken,
       !sendTokenStore.isMakingTx
@@ -31,13 +30,13 @@ struct SendTokenView: View {
     }
 
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: Int(token.decimals)))
-    if weiFormatter.weiString(from: amountInput, radix: .decimal, decimals: Int(token.decimals)) == nil {
+    if weiFormatter.weiString(from: sendTokenStore.sendAmount, radix: .decimal, decimals: Int(token.decimals)) == nil {
       return true
     }
 
     return sendAmount == 0
       || sendAmount > balance
-      || amountInput.isEmpty
+      || sendTokenStore.sendAmount.isEmpty
       || sendTokenStore.addressError != nil
   }
 
@@ -73,7 +72,7 @@ struct SendTokenView: View {
                 .font(.title3.weight(.semibold))
                 .foregroundColor(Color(.braveLabel))
               Spacer()
-              Text(String(format: "%.04f", sendTokenStore.selectedSendTokenBalance ?? 0))
+              Text(sendTokenStore.selectedSendTokenBalance?.decimalDescription ?? "0.0000")
                 .font(.title3.weight(.semibold))
                 .foregroundColor(Color(.braveLabel))
             }
@@ -91,7 +90,7 @@ struct SendTokenView: View {
               )
             ),
           footer: ShortcutAmountGrid(action: { amount in
-            amountInput = "\((sendTokenStore.selectedSendTokenBalance ?? 0) * amount.rawValue)"
+            sendTokenStore.suggestedAmountTapped(amount)
           })
           .listRowInsets(.zero)
           .padding(.bottom, 8)
@@ -100,7 +99,7 @@ struct SendTokenView: View {
             String.localizedStringWithFormat(
               Strings.Wallet.amountInCurrency,
               sendTokenStore.selectedSendToken?.symbol ?? ""),
-            text: $amountInput
+            text: $sendTokenStore.sendAmount
           )
           .keyboardType(.decimalPad)
         }
@@ -157,7 +156,7 @@ struct SendTokenView: View {
             WalletLoadingButton(
               isLoading: sendTokenStore.isMakingTx,
               action: {
-                sendTokenStore.sendToken(amount: amountInput) { success in
+                sendTokenStore.sendToken(amount: sendTokenStore.sendAmount) { success in
                   isShowingError = !success
                 }
               },

@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveCore
+import BigNumber
 
 extension BraveWalletJsonRpcService {
   /// Obtain the decimal balance of an `BlockchainToken` for a given account
@@ -47,6 +48,56 @@ extension BraveWalletJsonRpcService {
           token.contractAddress,
           tokenId: token.tokenId,
           accountAddress: account.address,
+          chainId: network.chainId,
+          completion: convert)
+      } else {
+        completion(nil)
+      }
+    }
+  }
+  
+  /// Obtain the decimal balance in `BDouble` of an `BlockchainToken` for a given account
+  /// with certain decimal format style
+  ///
+  /// If the call fails for some reason or the resulting wei cannot be converted,
+  /// `completion` will be called with `nil`
+  func balance(
+    for token: BraveWallet.BlockchainToken,
+    in accountAddress: String,
+    decimalFormatStyle: WeiFormatter.DecimalFormatStyle,
+    completion: @escaping (BDouble?) -> Void
+  ) {
+    let convert: (String, BraveWallet.ProviderError, String) -> Void = { wei, status, _ in
+      guard status == .success && !wei.isEmpty else {
+        completion(nil)
+        return
+      }
+      let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+      if let valueString = formatter.decimalString(
+        for: wei.removingHexPrefix,
+        radix: .hex,
+        decimals: Int(token.decimals)
+      ) {
+        completion(BDouble(valueString))
+      } else {
+        completion(nil)
+      }
+    }
+    network { [self] network in
+      if token.symbol == network.symbol {
+        balance(accountAddress, coin: .eth, chainId: network.chainId, completion: convert)
+      } else if token.isErc20 {
+        erc20TokenBalance(
+          token.contractAddress(in: network),
+          address: accountAddress,
+          chainId: network.chainId,
+          completion: convert
+        )
+      } else if token.isErc721 {
+        erc721TokenBalance(
+          token.contractAddress,
+          tokenId: token.tokenId,
+          accountAddress: accountAddress,
           chainId: network.chainId,
           completion: convert)
       } else {

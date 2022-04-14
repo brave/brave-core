@@ -256,8 +256,7 @@ struct SwapCryptoView: View {
       ),
       footer: VStack(spacing: 20) {
         ShortcutAmountGrid(action: { amount in
-          swapTokensStore.sellAmount = ((swapTokensStore.selectedFromTokenBalance ?? 0) * amount.rawValue)
-            .decimalExpansion(precisionAfterDecimalPoint: Int(swapTokensStore.selectedFromToken?.decimals ?? 18))
+          swapTokensStore.suggestedAmountTapped(amount)
         })
         Button(action: {
           swapTokensStore.swapSelectedTokens()
