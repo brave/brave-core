@@ -318,7 +318,7 @@ function ConfirmTransactionPanel ({
           transactionDetails.contractAddressError,
           transactionDetails.sameAddressError,
           transactionDetails.missingGasLimitError
-        ].map(error => <ErrorText key={error}>{error}</ErrorText>)
+        ].map((error, index) => <ErrorText key={`${index}-${error}`}>{error}</ErrorText>)
       }
 
       <ButtonRow>

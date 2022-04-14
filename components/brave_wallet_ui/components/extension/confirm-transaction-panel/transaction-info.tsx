@@ -55,7 +55,7 @@ export const TransactionInfo = ({
     {transactionValueParts.map((part, i, { length }) => [
       part,
       ...(i < (length - 1) ? ['.'] : []),
-      <wbr />
+      <wbr key={part} />
     ])}
   </span>
 
