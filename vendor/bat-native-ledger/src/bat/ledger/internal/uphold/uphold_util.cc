@@ -48,12 +48,6 @@ std::string GetFeeAddress() {
              : kFeeAddressStaging;
 }
 
-std::string GetACAddress() {
-  return ledger::_environment == type::Environment::PRODUCTION
-             ? kACAddressProduction
-             : kACAddressStaging;
-}
-
 std::string GetAuthorizeUrl(const std::string& state, const bool kyc_flow) {
   const std::string id = GetClientId();
   const std::string intention = kyc_flow ? "kyc" : "login";

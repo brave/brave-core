@@ -22,8 +22,6 @@ const char kUrlStaging[] = BUILDFLAG(BITFLYER_STAGING_URL);
 const char kUrlProduction[] = "https://bitflyer.com";
 const char kFeeAddressStaging[] = "068e675b-f137-48ed-8068-4ad34ca4f30f";
 const char kFeeAddressProduction[] = "e77cacb4-c49c-4451-bc2d-5072c10e55d3";
-const char kACAddressStaging[] = "";
-const char kACAddressProduction[] = "";  // FIXME: Need official deposit_id
 
 std::string GetClientId();
 
@@ -32,8 +30,6 @@ std::string GetClientSecret();
 std::string GetUrl();
 
 std::string GetFeeAddress();
-
-std::string GetACAddress();
 
 std::string GetAuthorizeUrl(const std::string& state,
                             const std::string& code_verifier);
