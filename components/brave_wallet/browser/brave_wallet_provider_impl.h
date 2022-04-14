@@ -202,6 +202,7 @@ class BraveWalletProviderImpl final
       base::Value id,
       mojom::TxDataPtr tx_data,
       const std::string& from,
+      const url::Origin& origin,
       const std::vector<std::string>& allowed_accounts,
       mojom::ProviderError error,
       const std::string& error_message);
@@ -210,12 +211,14 @@ class BraveWalletProviderImpl final
                                             base::Value id,
                                             mojom::TxData1559Ptr tx_data,
                                             const std::string& from,
+                                            const url::Origin& origin,
                                             const std::string& chain_id);
   void ContinueAddAndApprove1559TransactionWithAccounts(
       RequestCallback callback,
       base::Value id,
       mojom::TxData1559Ptr tx_data,
       const std::string& from,
+      const url::Origin& origin,
       const std::vector<std::string>& allowed_accounts,
       mojom::ProviderError error,
       const std::string& error_message);
@@ -241,6 +244,7 @@ class BraveWalletProviderImpl final
   void ContinueGetDefaultKeyringInfo(RequestCallback callback,
                                      base::Value id,
                                      const std::string& normalized_json_request,
+                                     const url::Origin& origin,
                                      mojom::NetworkInfoPtr chain);
   void ContinueGetEncryptionPublicKey(
       RequestCallback callback,
@@ -272,6 +276,7 @@ class BraveWalletProviderImpl final
       RequestCallback callback,
       base::Value id,
       const std::string& normalized_json_request,
+      const url::Origin& origin,
       mojom::NetworkInfoPtr chain,
       mojom::KeyringInfoPtr keyring_info);
 

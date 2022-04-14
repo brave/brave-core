@@ -39,6 +39,7 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -269,6 +270,10 @@ class EthTxManagerUnitTest : public testing::Test {
         ->GetAddress(0);
   }
 
+  url::Origin GetOrigin() const {
+    return url::Origin::Create(GURL("https://brave.com"));
+  }
+
   EthTxManager* eth_tx_manager() { return tx_service_->GetEthTxManager(); }
 
   PrefService* GetPrefs() { return &prefs_; }
@@ -370,19 +375,28 @@ class EthTxManagerUnitTest : public testing::Test {
   }
 
   void AddUnapprovedTransaction(
+      mojom::TxDataUnionPtr tx_data,
+      const std::string& from,
+      const absl::optional<url::Origin>& origin,
+      EthTxManager::AddUnapprovedTransactionCallback callback) {
+    eth_tx_manager()->AddUnapprovedTransaction(std::move(tx_data), from, origin,
+                                               std::move(callback));
+  }
+
+  void AddUnapprovedTransaction(
       mojom::TxDataPtr tx_data,
       const std::string& from,
       EthTxManager::AddUnapprovedTransactionCallback callback) {
-    eth_tx_manager()->AddUnapprovedTransaction(std::move(tx_data), from,
-                                               std::move(callback));
+    eth_tx_manager()->AddUnapprovedTransaction(
+        std::move(tx_data), from, GetOrigin(), std::move(callback));
   }
 
   void AddUnapproved1559Transaction(
       mojom::TxData1559Ptr tx_data,
       const std::string& from,
       EthTxManager::AddUnapprovedTransactionCallback callback) {
-    eth_tx_manager()->AddUnapproved1559Transaction(std::move(tx_data), from,
-                                                   std::move(callback));
+    eth_tx_manager()->AddUnapproved1559Transaction(
+        std::move(tx_data), from, GetOrigin(), std::move(callback));
   }
 
  protected:
@@ -423,6 +437,51 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithGasPriceAndGasLimit) {
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
   EXPECT_EQ(tx_meta->tx()->gas_price(), gas_price_value);
   EXPECT_EQ(tx_meta->tx()->gas_limit(), gas_limit_value);
+}
+
+TEST_F(EthTxManagerUnitTest, WalletOrigin) {
+  auto tx_data =
+      mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  AddUnapprovedTransaction(
+      mojom::TxDataUnion::NewEthTxData(std::move(tx_data)), from(),
+      absl::nullopt,
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
+}
+
+TEST_F(EthTxManagerUnitTest, SomeSiteOrigin) {
+  auto tx_data =
+      mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  AddUnapprovedTransaction(
+      mojom::TxDataUnion::NewEthTxData(std::move(tx_data)), from(),
+      url::Origin::Create(GURL("https://some.site.com")),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  EXPECT_EQ(tx_meta->origin(),
+            url::Origin::Create(GURL("https://some.site.com")));
 }
 
 TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {

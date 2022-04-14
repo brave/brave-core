@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -70,6 +71,13 @@ bool TxStateManager::ValueToTxMeta(const base::Value& value, TxMeta* meta) {
   if (!tx_hash)
     return false;
   meta->set_tx_hash(*tx_hash);
+
+  const std::string* origin_spec = value.FindStringKey("origin");
+  // That's ok not to have origin.
+  if (origin_spec) {
+    meta->set_origin(url::Origin::Create(GURL(*origin_spec)));
+    DCHECK(!meta->origin()->opaque());
+  }
 
   return true;
 }

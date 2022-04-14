@@ -10,6 +10,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
@@ -39,7 +40,8 @@ mojom::TransactionInfoPtr FilTxMeta::ToTransactionInfo() const {
       std::vector<std::string>() /* tx_args */,
       base::Milliseconds(created_time_.ToJavaTime()),
       base::Milliseconds(submitted_time_.ToJavaTime()),
-      base::Milliseconds(confirmed_time_.ToJavaTime()));
+      base::Milliseconds(confirmed_time_.ToJavaTime()),
+      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr);
 }
 
 }  // namespace brave_wallet

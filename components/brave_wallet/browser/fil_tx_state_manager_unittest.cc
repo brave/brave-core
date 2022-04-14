@@ -74,6 +74,7 @@ TEST_F(FilTxStateManagerUnitTest, FilTxMetaAndValue) {
   meta.set_submitted_time(base::Time::Now());
   meta.set_confirmed_time(base::Time::Now());
   meta.set_tx_hash("cid");
+  meta.set_origin(url::Origin::Create(GURL("https://test.brave.com")));
 
   base::Value meta_value = meta.ToValue();
   auto meta_from_value = fil_tx_state_manager_->ValueToFilTxMeta(meta_value);

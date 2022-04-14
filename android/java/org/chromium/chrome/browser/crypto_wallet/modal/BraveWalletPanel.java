@@ -182,9 +182,8 @@ public class BraveWalletPanel implements DialogInterface {
             }
         }
 
-        AccountsPermissionsHelper accountsPermissionsHelper =
-                new AccountsPermissionsHelper(mBraveWalletPanelServices.getBraveWalletService(),
-                        mAccountInfos, hostOrigin);
+        AccountsPermissionsHelper accountsPermissionsHelper = new AccountsPermissionsHelper(
+                mBraveWalletPanelServices.getBraveWalletService(), mAccountInfos, hostOrigin);
         accountsPermissionsHelper.checkAccounts(() -> {
             mAccountsWithPermissions = accountsPermissionsHelper.getAccountsWithPermissions();
             updateAccount();

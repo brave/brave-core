@@ -10,6 +10,8 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/origin.h"
 
 namespace base {
 class Value;
@@ -20,20 +22,21 @@ namespace brave_wallet {
 class TxMeta {
  public:
   TxMeta();
-  virtual ~TxMeta() = default;
+  virtual ~TxMeta();
 
   static std::string GenerateMetaID();
 
   virtual base::Value ToValue() const;
   virtual mojom::TransactionInfoPtr ToTransactionInfo() const = 0;
 
-  std::string id() const { return id_; }
+  const std::string& id() const { return id_; }
   mojom::TransactionStatus status() const { return status_; }
-  std::string from() const { return from_; }
+  const std::string& from() const { return from_; }
   base::Time created_time() const { return created_time_; }
   base::Time submitted_time() const { return submitted_time_; }
   base::Time confirmed_time() const { return confirmed_time_; }
-  std::string tx_hash() const { return tx_hash_; }
+  const std::string& tx_hash() const { return tx_hash_; }
+  const absl::optional<url::Origin>& origin() const { return origin_; }
 
   void set_id(const std::string& id) { id_ = id; }
   void set_status(mojom::TransactionStatus status) { status_ = status; }
@@ -48,6 +51,9 @@ class TxMeta {
     confirmed_time_ = confirmed_time;
   }
   void set_tx_hash(const std::string& tx_hash) { tx_hash_ = tx_hash; }
+  void set_origin(const absl::optional<url::Origin>& origin) {
+    origin_ = origin;
+  }
 
  protected:
   bool operator==(const TxMeta&) const;
@@ -59,6 +65,7 @@ class TxMeta {
   base::Time submitted_time_;
   base::Time confirmed_time_;
   std::string tx_hash_;
+  absl::optional<url::Origin> origin_;
 };
 
 }  // namespace brave_wallet

@@ -11,8 +11,10 @@
 
 #include "base/json/json_reader.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -53,12 +55,16 @@ TEST(SolanaTxMetaUnitTest, ToTransactionInfo) {
   meta.set_tx_hash(
       "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpRzr"
       "FmBV6UjKdiSZkQUW");
+  meta.set_origin(url::Origin::Create(GURL("https://test.brave.com/")));
 
   mojom::TransactionInfoPtr ti = meta.ToTransactionInfo();
   EXPECT_EQ(ti->id, meta.id());
   EXPECT_EQ(ti->tx_status, meta.status());
   EXPECT_EQ(ti->from_address, meta.from());
   EXPECT_EQ(ti->tx_hash, meta.tx_hash());
+  EXPECT_EQ(
+      ti->origin_info,
+      MakeOriginInfo(url::Origin::Create(GURL("https://test.brave.com/"))));
 
   EXPECT_EQ(meta.created_time().ToJavaTime(),
             ti->created_time.InMilliseconds());
@@ -130,6 +136,7 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
   meta.set_tx_hash(
       "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpRzr"
       "FmBV6UjKdiSZkQUW");
+  meta.set_origin(url::Origin::Create(GURL("https://test.brave.com/")));
 
   base::Value value = meta.ToValue();
   auto expect_value = base::JSONReader::Read(R"(
@@ -138,6 +145,7 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
       "status": 4,
       "from": "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
       "tx_hash": "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpRzrFmBV6UjKdiSZkQUW",
+      "origin": "https://test.brave.com/",
       "confirmed_time": "11996733600000000",
       "created_time": "11996733540000000",
       "submitted_time": "11996733597000000",
