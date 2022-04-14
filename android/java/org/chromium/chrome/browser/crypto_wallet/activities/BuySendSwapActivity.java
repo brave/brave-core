@@ -1096,27 +1096,20 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     }
 
     private TextWatcher getTextWatcherFromToValueText(boolean from) {
-        return new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (mFromValueText.hasFocus()) {
-                    getSendSwapQuota(from, false);
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        };
+        return new FilterTextFromToValueText(from);
     }
 
-    private TextWatcher filterTextWatcherFrom = new TextWatcher() {
+    private class FilterTextFromToValueText implements TextWatcher {
+        boolean mFrom;
+
+        public FilterTextFromToValueText(boolean from) {
+            mFrom = from;
+        }
+
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (mFromValueText.hasFocus()) {
-                getSendSwapQuota(true, false);
+            if (mFrom ? mFromValueText.hasFocus() : mToValueText.hasFocus()) {
+                getSendSwapQuota(mFrom, false);
             }
         }
 
@@ -1125,7 +1118,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
         @Override
         public void afterTextChanged(Editable s) {}
-    };
+    }
 
     private class FilterTextWatcherSendToAddr implements TextWatcher {
         Validations.SendToAccountAddress mValidator;
