@@ -100,7 +100,11 @@ where
                         let cred = self
                             .matching_time_limited_credential(&item.id)
                             .await?
-                            .map(|Credential::TimeLimited(cred)| cred)
+                            .map(|cred| match cred {
+                                Credential::TimeLimited(tl) => Some(tl),
+                                _ => None,
+                            })
+                            .ok_or(InternalError::ItemCredentialsMissing)?
                             .ok_or(InternalError::ItemCredentialsMissing)?;
 
                         if Utc::now().naive_utc() > cred.expires_at {
@@ -125,7 +129,11 @@ where
                         let cred = self
                             .matching_time_limited_credential(&item.id)
                             .await?
-                            .map(|Credential::TimeLimitedV2(cred)| cred)
+                            .map(|maybe_cred| match maybe_cred {
+                                Credential::TimeLimitedV2(cred) => Some(cred),
+                                _ => None,
+                            })
+                            .ok_or(InternalError::ItemCredentialsMissing)?
                             .ok_or(InternalError::ItemCredentialsMissing)?;
 
                         if Utc::now().naive_utc() > cred.expires_at {

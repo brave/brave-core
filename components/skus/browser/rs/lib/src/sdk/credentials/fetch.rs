@@ -54,7 +54,7 @@ enum ItemCredentialsResponse {
         credentials: String, // this needs to be TimeAwareSubIssuedCreds?
         expires_at: String,
         issued_at: String,
-        token: String,
+        token: Token,
     },
 }
 
@@ -130,14 +130,11 @@ where
                 CredentialType::TimeLimitedV2 => {
                     // TODO combine this and above if there's a 3rd instancee
                     let blinded_creds: Vec<BlindedToken> =
-                        // below should be updated?
                         match self.client.get_time_limited_creds(&item.id).await? {
-                            //FAIL here
                             Some(Credentials::TimeLimitedV2(item_creds)) => {
-                                //TODO not sure what to do here
-                                item_creds.creds.iter().map(|t| t.blind()).collect()
+                                item_creds.creds.into_iter().map(|t| t.token.blind()).collect()
                             }
-                            None => {
+                            _ => {
                                 let creds: Vec<Token> =
                                     iter::repeat_with(|| Token::random::<Sha512, _>(&mut csprng))
                                         .take(item.quantity as usize)
@@ -181,7 +178,7 @@ where
                     );
                     request_with_retries.await?;
                 }
-                CredentialType::TimeLimited => (), // Time limited credentials do not require a submission step
+                _ => (), // Time limited credentials do not require a submission step
             }
         }
         Ok(())

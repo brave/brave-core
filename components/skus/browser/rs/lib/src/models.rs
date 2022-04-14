@@ -203,7 +203,7 @@ pub struct TimeLimitedCredentialV2 {
     pub credentials: String, // TODO fix
     pub issued_at: NaiveDateTime,
     pub expires_at: NaiveDateTime,
-    pub token: String,
+    pub token: Token,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

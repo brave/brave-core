@@ -293,13 +293,13 @@ where
         if let Some(credentials) = state.credentials.as_mut() {
             if let Some(item_credentials) = credentials.items.remove(item_id) {
                 match item_credentials {
-                    cred @ Credentials::TimeLimited(credentials) => {
-                        event!(Level::DEBUG, credentials = ?credentials, "got credentials");
-                        return Ok(Some(cred));
+                    Credentials::TimeLimited(other_credentials) => {
+                        event!(Level::DEBUG, other_credentials = ?other_credentials, "got credentials");
+                        return Ok(Some(Credentials::TimeLimited(other_credentials)));
                     }
-                    cred @ Credentials::TimeLimitedV2(credentials) => {
-                        event!(Level::DEBUG, credentials = ?credentials, "got credentials");
-                        return Ok(Some(cred));
+                    Credentials::TimeLimitedV2(other_credentials) => {
+                        event!(Level::DEBUG, other_credentials = ?other_credentials, "got credentials");
+                        return Ok(Some(Credentials::TimeLimitedV2(other_credentials)));
                     }
                     _ => {
                         return Err(InternalError::StorageReadFailed(

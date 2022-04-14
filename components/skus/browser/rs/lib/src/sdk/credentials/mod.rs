@@ -64,20 +64,22 @@ where
                         })
                     }
                     CredentialType::TimeLimited => {
-                        let expires_at = self
-                            .last_matching_time_limited_credential(&item.id)
-                            .await?
-                            .map(|Credential::TimeLimited(cred)| cred.expires_at)
-                            .or(expires_at);
+                        let maybe_cred =
+                            self.last_matching_time_limited_credential(&item.id).await?;
 
-                        if let Some(expires_at) = expires_at {
-                            // attempt to refresh credentials if we're within 5 days of expiry
-                            if Utc::now().naive_utc() > (expires_at - chrono::Duration::days(5)) {
-                                if let Err(e) = self.refresh_order_credentials(order_id).await {
-                                    error!(error = %e, "failed to refresh order credentials");
+                        match maybe_cred {
+                            Some(Credential::TimeLimited(cred)) => {
+                                // attempt to refresh credentials if we're within 5 days of expiry
+                                if Utc::now().naive_utc()
+                                    > (cred.expires_at - chrono::Duration::days(5))
+                                {
+                                    if let Err(e) = self.refresh_order_credentials(order_id).await {
+                                        error!(error = %e, "failed to refresh order credentials");
+                                    }
                                 }
                             }
-                        }
+                            _ => {}
+                        };
 
                         let active = matches!(
                             self.matching_time_limited_credential(&item.id).await,
