@@ -21,6 +21,8 @@ constexpr char kWeeklyMaxCardVisitsHistogramName[] =
     "Brave.Today.WeeklyMaxCardVisitsCount";
 constexpr char kWeeklyMaxCardViewsHistogramName[] =
     "Brave.Today.WeeklyMaxCardViewsCount";
+constexpr char kTotalCardViewsHistogramName[] =
+    "Brave.Today.WeeklyTotalCardViews";
 constexpr char kWeeklyDisplayAdsViewedHistogramName[] =
     "Brave.Today.WeeklyDisplayAdsViewedCount";
 constexpr char kDirectFeedsTotalHistogramName[] =
@@ -38,6 +40,9 @@ void RecordWeeklyMaxCardViewsCount(PrefService* prefs,
 void RecordWeeklyDisplayAdsViewedCount(PrefService* prefs, bool is_add);
 void RecordWeeklyAddedDirectFeedsCount(PrefService* prefs, int change);
 void RecordDirectFeedsTotal(PrefService* prefs);
+void RecordTotalCardViews(PrefService* prefs,
+                          uint64_t cards_viewed_session_total_count);
+void ResetCurrSessionTotalViewsCount(PrefService* prefs);
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 }  // namespace p3a

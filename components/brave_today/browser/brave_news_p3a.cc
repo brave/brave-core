@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "base/cxx17_backports.h"
+#include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_today/common/pref_names.h"
@@ -115,13 +116,44 @@ void RecordWeeklyAddedDirectFeedsCount(PrefService* prefs, int change) {
                           weekly_total);
 }
 
+void ResetCurrSessionTotalViewsCount(PrefService* prefs) {
+  prefs->SetUint64(prefs::kBraveTodayCurrSessionCardViews, 0);
+  VLOG(1) << "NewsP3A: reset curr session total card views count";
+}
+
+void RecordTotalCardViews(PrefService* prefs,
+                          uint64_t cards_viewed_session_total_count) {
+  WeeklyStorage total_storage(prefs, prefs::kBraveTodayTotalCardViews);
+
+  uint64_t stored_curr_session_views =
+      prefs->GetUint64(prefs::kBraveTodayCurrSessionCardViews);
+
+  // Since the front-end repeatedly sends the updated total,
+  // we should subtract the last known total for the current session and
+  // add the new total.
+  total_storage.SubDelta(stored_curr_session_views);
+  total_storage.AddDelta(cards_viewed_session_total_count);
+
+  prefs->SetUint64(prefs::kBraveTodayCurrSessionCardViews,
+                   cards_viewed_session_total_count);
+
+  uint64_t total = total_storage.GetWeeklySum();
+
+  int buckets[] = {0, 1, 10, 20, 40, 80, 100};
+  VLOG(1) << "NewsP3A: total card views update: total = " << total
+          << " curr session = " << cards_viewed_session_total_count;
+  RecordToHistogramBucket(kTotalCardViewsHistogramName, buckets, total);
+}
+
 void RecordAtStart(PrefService* prefs) {
+  ResetCurrSessionTotalViewsCount(prefs);
   RecordDirectFeedsTotal(prefs);
   RecordWeeklyAddedDirectFeedsCount(prefs, 0);
   RecordWeeklySessionCount(prefs, false);
   RecordWeeklyMaxCardVisitsCount(prefs, 0);
   RecordWeeklyMaxCardViewsCount(prefs, 0);
   RecordWeeklyDisplayAdsViewedCount(prefs, false);
+  RecordTotalCardViews(prefs, 0);
 }
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
@@ -130,6 +162,8 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(prefs::kBraveTodayWeeklyCardVisitsCount);
   registry->RegisterListPref(prefs::kBraveTodayWeeklyDisplayAdViewedCount);
   registry->RegisterListPref(prefs::kBraveTodayWeeklyAddedDirectFeedsCount);
+  registry->RegisterListPref(prefs::kBraveTodayTotalCardViews);
+  registry->RegisterUint64Pref(prefs::kBraveTodayCurrSessionCardViews, 0);
 }
 
 }  // namespace p3a

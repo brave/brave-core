@@ -346,6 +346,7 @@ void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
 void BraveNewsController::OnInteractionSessionStarted() {
   p3a::RecordEverInteracted();
   p3a::RecordWeeklySessionCount(prefs_, true);
+  p3a::ResetCurrSessionTotalViewsCount(prefs_);
 }
 
 void BraveNewsController::OnSessionCardVisitsCountChanged(
@@ -377,6 +378,7 @@ void BraveNewsController::OnPromotedItemVisit(
 void BraveNewsController::OnSessionCardViewsCountChanged(
     uint16_t cards_viewed_session_total_count) {
   p3a::RecordWeeklyMaxCardViewsCount(prefs_, cards_viewed_session_total_count);
+  p3a::RecordTotalCardViews(prefs_, cards_viewed_session_total_count);
 }
 
 void BraveNewsController::OnDisplayAdVisit(
