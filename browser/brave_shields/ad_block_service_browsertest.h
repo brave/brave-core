@@ -56,6 +56,7 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
   void ShieldsDown(const GURL& url);
   void LoadDAT(base::FilePath path);
   void EnableRedirectUrlParsing();
+  content::WebContents* web_contents();
 
   std::vector<std::unique_ptr<brave_shields::TestFiltersProvider>>
       source_providers_;

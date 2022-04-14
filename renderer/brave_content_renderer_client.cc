@@ -62,8 +62,13 @@ void BraveContentRendererClient::RenderFrameCreated(
 
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockCosmeticFiltering)) {
+    auto dynamic_params_closure = base::BindRepeating([]() {
+      auto dynamic_params = BraveRenderThreadObserver::GetDynamicParams();
+      return dynamic_params.de_amp_enabled;
+    });
+
     new cosmetic_filters::CosmeticFiltersJsRenderFrameObserver(
-        render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+        render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL, dynamic_params_closure);
   }
 
   if (base::FeatureList::IsEnabled(

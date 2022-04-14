@@ -5,7 +5,11 @@
 
 #include "brave/components/de_amp/browser/de_amp_util.h"
 
+#include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "brave/components/de_amp/common/features.h"
+#include "brave/components/de_amp/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace de_amp {
@@ -22,6 +26,11 @@ constexpr char kFindCanonicalLinkTagPattern[] =
     "(<\\s*?link\\s[^>]*?rel=(?:\"|')canonical(?:\"|')(?:\\s[^>]*?>|>|/>))";
 constexpr char kFindCanonicalHrefInTagPattern[] = "href=(?:\"|')(.*?)(?:\"|')";
 }  // namespace
+
+bool IsDeAmpEnabled(PrefService* prefs) {
+  return base::FeatureList::IsEnabled(features::kBraveDeAMP) &&
+         prefs->GetBoolean(de_amp::kDeAmpPrefEnabled);
+}
 
 bool VerifyCanonicalAmpUrl(const GURL& canonical_link,
                            const GURL& original_url) {

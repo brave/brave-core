@@ -9,6 +9,7 @@ module brave.mojom;
 struct DynamicParams {
   bool brave_use_native_wallet = false;
   bool allow_overwrite_window_web3_provider = true;
+  bool de_amp_enabled = true;
 };
 
 // Configures the renderer.
