@@ -95,15 +95,15 @@ class OriginMojoTypemap(MojoTypemap):
         return (mojom.IsStructKind(kind) and
                 kind.qualified_name == 'url.mojom.Origin')
     def ObjCWrappedType(self):
-        return "NSURL*"
+        return "URLOriginIOS*"
     def ExpectedCppType(self):
         return "url::Origin"
     def DefaultObjCValue(self, default):
-        return "[[NSURL alloc] init]"
+        return "[[URLOriginIOS alloc] init]"
     def ObjCToCpp(self, accessor):
-        return "url::Origin::Create(net::GURLWithNSURL(%s))" % accessor
+        return "[%s underlyingOrigin]" % accessor
     def CppToObjC(self, accessor):
-        return "net::NSURLWithGURL(%s.GetURL())" % accessor
+        return "[[URLOriginIOS alloc] initWithOrigin:%s]" % accessor
 
 _kind_to_c_type = {
     mojom.BOOL: "bool",
