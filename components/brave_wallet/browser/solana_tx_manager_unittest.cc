@@ -680,7 +680,7 @@ TEST_F(SolanaTxManagerUnitTest, GetEstimatedTxFee) {
 
   std::string json = R"({
       "jsonrpc": "2.0",
-      "result": { "context": { "slot": 5068 }, "value": 12345 },
+      "result": { "context": { "slot": 5068 }, "value": 18446744073709551615 },
       "id": 1
   })";
 
@@ -699,11 +699,11 @@ TEST_F(SolanaTxManagerUnitTest, GetEstimatedTxFee) {
 
   // GetEstimatedTxFee with latest blockhash and non-null tx fee from remote.
   SetInterceptor(latest_blockhash1_, last_valid_block_height1_, "", json);
-  TestGetEstimatedTxFee(system_transfer_meta_id, 12345,
+  TestGetEstimatedTxFee(system_transfer_meta_id, UINT64_MAX,
                         mojom::SolanaProviderError::kSuccess, "");
 
   // GetEstimatedTxFee with cached blockhash and error at parsing tx fee.
-  SetInterceptor(latest_blockhash1_, last_valid_block_height1_, "", "");
+  SetInterceptor(latest_blockhash1_, last_valid_block_height1_, "", "{}");
   TestGetEstimatedTxFee(system_transfer_meta_id, 0,
                         mojom::SolanaProviderError::kParsingError,
                         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -716,7 +716,7 @@ TEST_F(SolanaTxManagerUnitTest, GetEstimatedTxFee) {
   // GetEstimatedTxFee with cached latest blockhash and non-null tx fee from
   // remote.
   SetInterceptor("", 0, "", json);
-  TestGetEstimatedTxFee(system_transfer_meta_id, 12345,
+  TestGetEstimatedTxFee(system_transfer_meta_id, UINT64_MAX,
                         mojom::SolanaProviderError::kSuccess, "");
 }
 
