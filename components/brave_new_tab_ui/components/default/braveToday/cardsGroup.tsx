@@ -121,7 +121,10 @@ export default function CardsGroups (props: Props) {
       >
         {cardInstance}
         {shouldTriggerViewCountUpdate &&
-          <div {...{ [attributeNameCardCount]: index }} ref={props.onPeriodicCardViews} />
+          <div
+            {...{ [attributeNameCardCount]: index + props.itemStartingDisplayIndex }}
+            ref={props.onPeriodicCardViews}
+          />
         }
       </React.Fragment>
     )
