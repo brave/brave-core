@@ -57,6 +57,7 @@ class FilTxManager : public TxManager {
   void Reset() override;
 
   void GetEstimatedGas(const std::string& from,
+                       const absl::optional<url::Origin>& origin,
                        std::unique_ptr<FilTransaction> tx,
                        AddUnapprovedTransactionCallback callback);
   std::unique_ptr<FilTxMeta> GetTxForTesting(const std::string& tx_meta_id);
@@ -70,6 +71,7 @@ class FilTxManager : public TxManager {
                       uint256_t nonce);
   void ContinueAddUnapprovedTransaction(
       const std::string& from,
+      const absl::optional<url::Origin>& origin,
       std::unique_ptr<FilTransaction> tx,
       AddUnapprovedTransactionCallback callback,
       const std::string& gas_premium,

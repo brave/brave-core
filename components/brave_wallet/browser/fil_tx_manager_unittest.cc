@@ -27,6 +27,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -70,6 +71,9 @@ class FilTxManagerUnitTest : public testing::Test {
         ->GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId)
         ->GetAddress(0);
   }
+  url::Origin GetOrigin() const {
+    return url::Origin::Create(GURL("https://brave.com"));
+  }
   void SetInterceptor(const GURL& expected_url,
                       const std::string& expected_method,
                       const std::string& content) {
@@ -95,7 +99,7 @@ class FilTxManagerUnitTest : public testing::Test {
 
     base::RunLoop run_loop;
     fil_tx_manager()->AddUnapprovedTransaction(
-        std::move(tx_data_union), from,
+        std::move(tx_data_union), from, GetOrigin(),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           ASSERT_TRUE(success);
