@@ -90,8 +90,8 @@ def AddBravePartsForSigning(parts, config):
     )
 
     full_hardened_runtime_options = (
-        CodeSignOptions.HARDENED_RUNTIME + CodeSignOptions.RESTRICT +
-        CodeSignOptions.LIBRARY_VALIDATION + CodeSignOptions.KILL)
+        CodeSignOptions.HARDENED_RUNTIME | CodeSignOptions.RESTRICT
+        | CodeSignOptions.LIBRARY_VALIDATION | CodeSignOptions.KILL)
 
     # Add Sparkle
     if not development:
@@ -100,7 +100,7 @@ def AddBravePartsForSigning(parts, config):
             '{0.framework_dir}/Versions/{1.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/fileop'  # pylint: disable=line-too-long
             .format(config, config),
             'fileop',
-            verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
+            verify_options=VerifyOptions.DEEP | VerifyOptions.NO_STRICT)
         parts['sparkle-framework-fileop'].options = (
             full_hardened_runtime_options
         )
@@ -109,7 +109,7 @@ def AddBravePartsForSigning(parts, config):
             '{0.framework_dir}/Versions/{1.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/Autoupdate'  # pylint: disable=line-too-long
             .format(config, config),
             'org.sparkle-project.Sparkle.Autoupdate',
-            verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
+            verify_options=VerifyOptions.DEEP | VerifyOptions.NO_STRICT)
         parts['sparkle-framework-autoupdate'].options = (
             full_hardened_runtime_options
         )
@@ -117,14 +117,14 @@ def AddBravePartsForSigning(parts, config):
         parts['sparkle-framework'] = CodeSignedProduct(
             '{.framework_dir}/Frameworks/Sparkle.framework'.format(config),
             'org.sparkle-project.Sparkle',
-            verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
+            verify_options=VerifyOptions.DEEP | VerifyOptions.NO_STRICT)
         parts['sparkle-framework'].options = full_hardened_runtime_options
 
     # Overwrite to avoid TeamID mismatch with widevine dylib.
     parts['helper-app'].entitlements = 'helper-entitlements.plist'
     parts['helper-app'].options = (CodeSignOptions.RESTRICT
-                                   + CodeSignOptions.KILL
-                                   + CodeSignOptions.HARDENED_RUNTIME)
+                                   | CodeSignOptions.KILL
+                                   | CodeSignOptions.HARDENED_RUNTIME)
 
     return parts
 
