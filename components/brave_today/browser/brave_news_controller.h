@@ -67,6 +67,8 @@ class BraveNewsController : public KeyedService,
   // mojom::BraveNewsController
   void GetFeed(GetFeedCallback callback) override;
   void GetPublishers(GetPublishersCallback callback) override;
+  void FindFeeds(const GURL& possible_feed_or_site_url,
+                 FindFeedsCallback callback) override;
   void SubscribeToNewDirectFeed(
       const GURL& feed_url,
       SubscribeToNewDirectFeedCallback callback) override;

@@ -119,6 +119,12 @@ void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
   publishers_controller_.GetOrFetchPublishers(std::move(callback));
 }
 
+void BraveNewsController::FindFeeds(const GURL& possible_feed_or_site_url,
+                                    FindFeedsCallback callback) {
+  direct_feed_controller_.FindFeeds(possible_feed_or_site_url,
+                                    std::move(callback));
+}
+
 void BraveNewsController::SubscribeToNewDirectFeed(
     const GURL& feed_url,
     SubscribeToNewDirectFeedCallback callback) {

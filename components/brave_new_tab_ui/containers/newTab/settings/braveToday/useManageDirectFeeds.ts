@@ -5,13 +5,15 @@
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
-import getBraveNewsAPI, { Publisher, Publishers, PublisherType } from '../../../../api/brave_news'
+import getBraveNewsAPI, { FeedSearchResultItem, Publisher, Publishers, PublisherType } from '../../../../api/brave_news'
 import * as todayActions from '../../../../actions/today_actions'
 
 export enum FeedInputValidity {
   Valid,
   NotValid,
-  Pending
+  IsDuplicate,
+  Pending,
+  HasResults,
 }
 
 const regexThe = /^the /
@@ -39,6 +41,8 @@ function isValidFeedUrl (feedInput: string): boolean {
   return false
 }
 
+type FeedSearchResultModel = FeedSearchResultItem & { status?: FeedInputValidity }
+
 export default function useManageDirectFeeds (publishers?: Publishers) {
   const dispatch = useDispatch()
   // Memoize user feeds
@@ -56,43 +60,110 @@ export default function useManageDirectFeeds (publishers?: Publishers) {
   }
   const [feedInputText, setFeedInputText] = React.useState<string>()
   const [feedInputIsValid, setFeedInputIsValid] = React.useState<FeedInputValidity>(FeedInputValidity.Valid)
+  const [feedSearchResults, setFeedSearchResults] = React.useState<FeedSearchResultModel[]>([])
+
   const onChangeFeedInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFeedInputText(e.target.value)
     setFeedInputIsValid(FeedInputValidity.Valid)
   }
-  const onAddSource = React.useCallback(async () => {
-    // Validate
+
+  const onSearchForSources = async () => {
     if (!feedInputText) {
       return
     }
-    if (!isValidFeedUrl(feedInputText)) {
+    let feedUrlRaw = feedInputText
+    // Default protocol that should catch most cases. Make sure
+    // we check for validity after adding this prefix, and
+    // not before.
+    if (!feedUrlRaw.includes('://')) {
+      feedUrlRaw = 'https://' + feedUrlRaw
+    }
+    if (!isValidFeedUrl(feedUrlRaw)) {
       setFeedInputIsValid(FeedInputValidity.NotValid)
       return
     }
-    // Ask the backend
     setFeedInputIsValid(FeedInputValidity.Pending)
     const api = getBraveNewsAPI()
-    const result = await api.subscribeToNewDirectFeed({ url: feedInputText })
-    if (!result.isValidFeed) {
+    const { results } = await api.findFeeds({ url: feedUrlRaw })
+    if (results.length === 0) {
       setFeedInputIsValid(FeedInputValidity.NotValid)
       return
     }
-    if (result.isDuplicate) {
-      setFeedInputIsValid(FeedInputValidity.NotValid)
+    if (results.length === 1) {
+      const result = await api.subscribeToNewDirectFeed(results[0].feedUrl)
+      if (!result.isValidFeed) {
+        setFeedInputIsValid(FeedInputValidity.NotValid)
+        return
+      }
+      if (result.isDuplicate) {
+        setFeedInputIsValid(FeedInputValidity.IsDuplicate)
+        return
+      }
+      // Valid
+      setFeedInputIsValid(FeedInputValidity.Valid)
+      setFeedInputText('')
+      dispatch(todayActions.dataReceived({ publishers: result.publishers }))
       return
     }
-    // Valid
-    setFeedInputIsValid(FeedInputValidity.Valid)
-    setFeedInputText('')
+    setFeedSearchResults(results.map(r => ({ ...r, status: FeedInputValidity.Valid })))
+    setFeedInputIsValid(FeedInputValidity.HasResults)
+  }
+
+  const setFeedSearchResultsItemStatus = (sourceUrl: string, status: FeedInputValidity) => {
+    setFeedSearchResults(existing => {
+      // Amend by index to preserve order
+      const itemIdx = existing.findIndex(item => item.feedUrl.url === sourceUrl)
+      const newResults = [...existing]
+      newResults[itemIdx] = {
+        ...newResults[itemIdx],
+        status
+      }
+      return newResults
+    })
+  }
+
+  const removeSearchResultItem = (sourceUrl: string) => {
+    const item = feedSearchResults.find(item => item.feedUrl.url === sourceUrl)
+    if (item) {
+      if (feedSearchResults.length > 1) {
+        const others = feedSearchResults.filter(other => other !== item)
+        setFeedSearchResults(others)
+      } else {
+        // Remove all results
+        setFeedSearchResults([])
+        setFeedInputIsValid(FeedInputValidity.Valid)
+      }
+    }
+  }
+
+  const onAddSource = async (sourceUrl: string) => {
+    // Ask the backend
+    setFeedSearchResultsItemStatus(sourceUrl, FeedInputValidity.Pending)
+    const api = getBraveNewsAPI()
+    const result = await api.subscribeToNewDirectFeed({ url: sourceUrl })
+    const status = !result.isValidFeed
+      ? FeedInputValidity.NotValid
+      : result.isDuplicate
+        ? FeedInputValidity.IsDuplicate
+        : FeedInputValidity.Valid
+    // Remove item if successful, as user shouldn't try to add more than once
+    if (status === FeedInputValidity.Valid) {
+      removeSearchResultItem(sourceUrl)
+    } else {
+      setFeedSearchResultsItemStatus(sourceUrl, status)
+    }
+    // Update state with new publisher list
     dispatch(todayActions.dataReceived({ publishers: result.publishers }))
-  }, [feedInputText, feedInputIsValid, setFeedInputIsValid, dispatch])
+  }
 
   return {
     userFeeds,
     feedInputIsValid,
     feedInputText,
+    feedSearchResults,
     onRemoveDirectFeed,
     onChangeFeedInput,
+    onSearchForSources,
     onAddSource
   }
 }
