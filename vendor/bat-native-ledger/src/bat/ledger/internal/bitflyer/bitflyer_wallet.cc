@@ -48,7 +48,8 @@ void BitflyerWallet::Generate(ledger::ResultCallback callback) {
   wallet = GenerateLinks(std::move(wallet));
   ledger_->bitflyer()->SetWallet(wallet->Clone());
 
-  if (wallet->status == type::WalletStatus::VERIFIED) {
+  if (wallet->status == type::WalletStatus::VERIFIED ||
+      wallet->status == type::WalletStatus::DISCONNECTED_VERIFIED) {
     // If the wallet is verified, attempt to transfer any applicable grants to
     // the user's external wallet.
     //
