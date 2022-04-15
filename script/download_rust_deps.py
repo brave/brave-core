@@ -6,6 +6,7 @@
 """Script to download rust_deps."""
 
 import argparse
+import deps
 import os
 import subprocess
 import sys
@@ -13,18 +14,12 @@ import sys
 try:
     from urllib2 import URLError
 except ImportError:  # For Py3 compatibility
-    from urllib.error import URLError # pylint: disable=no-name-in-module,import-error
+    from urllib.error import URLError  # pylint: disable=no-name-in-module,import-error
 
-import deps
 from rust_deps_config import RUST_DEPS_PACKAGES_URL, RUST_DEPS_PACKAGE_VERSION
-
-BRAVE_CORE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-
-BRAVE_BROWSER_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
+from lib.config import BRAVE_CORE_ROOT
 
 RUSTUP_PATH = os.path.join(BRAVE_CORE_ROOT, 'build', 'rustup')
-
 RUSTUP_HOME = os.path.join(RUSTUP_PATH, RUST_DEPS_PACKAGE_VERSION)
 
 
@@ -89,8 +84,8 @@ def get_android_linker(target_arch):
 
 
 def make_standalone_toolchain_for_android():
-    ANDROID_NDK_PATH = os.path.join(
-        BRAVE_BROWSER_ROOT, 'third_party', 'android_ndk')
+    ANDROID_NDK_PATH = os.path.join(os.path.dirname(
+        __file__), '..', '..', 'third_party', 'android_ndk')
 
     make_standalone_toolchain = os.path.join(
         ANDROID_NDK_PATH, 'build', 'tools', 'make_standalone_toolchain.py')
