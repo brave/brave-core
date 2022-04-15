@@ -847,7 +847,7 @@ void AdsImpl::OnAdNotificationClicked(const AdNotificationInfo& ad) {
       {ad.segment, mojom::AdNotificationEventType::kClicked});
 
   covariate_logs_->SetAdNotificationWasClicked(true);
-  covariate_logs_->LogTrainingCovariates();
+  covariate_logs_->LogTrainingInstance();
 }
 
 void AdsImpl::OnAdNotificationDismissed(const AdNotificationInfo& ad) {
@@ -858,7 +858,7 @@ void AdsImpl::OnAdNotificationDismissed(const AdNotificationInfo& ad) {
       {ad.segment, mojom::AdNotificationEventType::kDismissed});
 
   covariate_logs_->SetAdNotificationWasClicked(false);
-  covariate_logs_->LogTrainingCovariates();
+  covariate_logs_->LogTrainingInstance();
 }
 
 void AdsImpl::OnAdNotificationTimedOut(const AdNotificationInfo& ad) {
@@ -866,7 +866,7 @@ void AdsImpl::OnAdNotificationTimedOut(const AdNotificationInfo& ad) {
       {ad.segment, mojom::AdNotificationEventType::kTimedOut});
 
   covariate_logs_->SetAdNotificationWasClicked(false);
-  covariate_logs_->LogTrainingCovariates();
+  covariate_logs_->LogTrainingInstance();
 }
 
 void AdsImpl::OnAdNotificationEventFailed(

@@ -20,25 +20,25 @@ class BatAdsCovariateLogsTest : public UnitTestBase {
   ~BatAdsCovariateLogsTest() override = default;
 };
 
-TEST_F(BatAdsCovariateLogsTest, GetTrainingCovariates) {
+TEST_F(BatAdsCovariateLogsTest, GetTrainingInstance) {
   // Arrange
 
   // Act
-  brave_federated::mojom::TrainingCovariatesPtr training_covariates =
-      CovariateLogs::Get()->GetTrainingCovariates();
+  brave_federated::mojom::TrainingInstancePtr training_covariates =
+      CovariateLogs::Get()->GetTrainingInstance();
 
   // Assert
   EXPECT_EQ(34U, training_covariates->covariates.size());
 }
 
-TEST_F(BatAdsCovariateLogsTest, GetTrainingCovariatesWithSetters) {
+TEST_F(BatAdsCovariateLogsTest, GetTrainingInstanceWithSetters) {
   // Arrange
   CovariateLogs::Get()->SetAdNotificationImpressionServedAt(Now());
   CovariateLogs::Get()->SetAdNotificationWasClicked(true);
 
   // Act
-  brave_federated::mojom::TrainingCovariatesPtr training_covariates =
-      CovariateLogs::Get()->GetTrainingCovariates();
+  brave_federated::mojom::TrainingInstancePtr training_covariates =
+      CovariateLogs::Get()->GetTrainingInstance();
 
   // Assert
   EXPECT_EQ(36U, training_covariates->covariates.size());

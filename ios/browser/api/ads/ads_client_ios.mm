@@ -193,7 +193,7 @@ void AdsClientIOS::RecordP2AEvent(const std::string& name,
   [bridge_ recordP2AEvent:name type:type value:value];
 }
 
-void AdsClientIOS::LogTrainingCovariates(
-    brave_federated::mojom::TrainingCovariatesPtr training_covariates) {
-  [bridge_ logTrainingCovariates:std::move(training_covariates)];
+void AdsClientIOS::LogTrainingInstance(
+    brave_federated::mojom::TrainingInstancePtr training_instance) {
+  [bridge_ logTrainingInstance:std::move(training_instance)];
 }
