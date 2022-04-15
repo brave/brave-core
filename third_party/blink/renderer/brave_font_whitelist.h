@@ -21,6 +21,10 @@ const base::flat_set<base::StringPiece>& GetAllowedFontFamilies();
 const base::flat_set<base::StringPiece>&
 GetAdditionalAllowedFontFamiliesByLocale(WTF::String locale_language);
 
+void set_allowed_font_families_for_testing(
+    bool can_restrict_fonts,
+    const base::flat_set<base::StringPiece>& allowed_font_families);
+
 }  // namespace brave
 
 #endif  // BRAVE_THIRD_PARTY_BLINK_RENDERER_BRAVE_FONT_WHITELIST_H_

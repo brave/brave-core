@@ -15,6 +15,7 @@ base::flat_set<base::StringPiece> kEmptyFontSet =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
 
 #if BUILDFLAG(IS_MAC)
+bool kCanRestrictFonts = true;
 // This list covers the fonts installed by default on Mac OS as of Mac OS 12.3.
 base::flat_set<base::StringPiece> kAllowedFontFamilies =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
@@ -291,6 +292,7 @@ base::flat_set<base::StringPiece> kAllowedFontFamilies =
         "Zapfino",
     });
 #elif BUILDFLAG(IS_WIN)
+bool kCanRestrictFonts = true;
 // This list covers the fonts installed by default on Windows 11.
 // See <https://docs.microsoft.com/en-us/typography/fonts/windows_11_font_list>
 base::flat_set<base::StringPiece> kAllowedFontFamilies =
@@ -610,6 +612,13 @@ base::flat_set<base::StringPiece> kAllowedFontFamilies =
         "Yu Gothic UI Regular",
         "Yu Gothic UI Semibold",
         "Yu Gothic UI Semilight"});
+#else
+bool kCanRestrictFonts = false;
+base::flat_set<base::StringPiece> kAllowedFontFamilies =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+#endif
+
+#if BUILDFLAG(IS_WIN)
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesAR =
     base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{
         "Aldhabi", "Andalus", "Arabic Typesetting", "Microsoft Uighur",
@@ -692,28 +701,50 @@ base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesLO =
 base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesML =
     base::MakeFlatSet<base::StringPiece>(
         std::vector<base::StringPiece>{"Kartika", "Kartika Bold"});
+#else
+base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesAR =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesAS =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesIU =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesHI =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesAM =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesGU =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesPA =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesZH =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesHE =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesJA =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesKN =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesKM =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesKO =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesLO =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
+base::flat_set<base::StringPiece> kAdditionalAllowedFontFamiliesML =
+    base::MakeFlatSet<base::StringPiece>(std::vector<base::StringPiece>{});
 #endif
 }  // namespace
 
 bool CanRestrictFontFamiliesOnThisPlatform() {
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
-  return true;
-#else
-  return false;
-#endif
+  return kCanRestrictFonts;
 }
 
 const base::flat_set<base::StringPiece>& GetAllowedFontFamilies() {
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
   return kAllowedFontFamilies;
-#else
-  return kEmptyFontSet;
-#endif
 }
 
 const base::flat_set<base::StringPiece>&
 GetAdditionalAllowedFontFamiliesByLocale(WTF::String locale_language) {
-#if BUILDFLAG(IS_WIN)
   if (locale_language == "ar" || locale_language == "fa" ||
       locale_language == "ur")
     return kAdditionalAllowedFontFamiliesAR;
@@ -745,8 +776,14 @@ GetAdditionalAllowedFontFamiliesByLocale(WTF::String locale_language) {
     return kAdditionalAllowedFontFamiliesLO;
   if (locale_language == "ml")
     return kAdditionalAllowedFontFamiliesML;
-#endif
   return kEmptyFontSet;
+}
+
+void set_allowed_font_families_for_testing(
+    bool can_restrict_fonts,
+    const base::flat_set<base::StringPiece>& allowed_font_families) {
+  kCanRestrictFonts = can_restrict_fonts;
+  kAllowedFontFamilies = allowed_font_families;
 }
 
 }  // namespace brave
