@@ -1,5 +1,7 @@
 source_set("cpp") {
   sources = [
+    "in_process_ledger_service.cc",
+    "in_process_ledger_service.h",
     "ledger_client_mojo_bridge.cc",
     "ledger_client_mojo_bridge.h",
   ]

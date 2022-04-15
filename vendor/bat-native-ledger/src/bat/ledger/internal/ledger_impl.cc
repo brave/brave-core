@@ -43,7 +43,9 @@ LedgerImpl::LedgerImpl(LedgerClient* client)
   set_ledger_client_for_logging(ledger_client_);
 }
 
-LedgerImpl::~LedgerImpl() = default;
+LedgerImpl::~LedgerImpl() {
+  set_ledger_client_for_logging(nullptr);
+}
 
 BATLedgerContext* LedgerImpl::context() const {
   return context_.get();

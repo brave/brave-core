@@ -57,6 +57,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/services/bat_ledger/public/cpp/in_process_ledger_service.h"
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
@@ -459,21 +460,26 @@ void RewardsServiceImpl::CheckPreferences() {
 
 void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
   if (Connected()) {
-    BLOG(1, "Ledger process is already running");
+    BLOG(1, "Ledger instance is already connected");
     return;
   }
 
   ledger_database_.reset(
       ledger::LedgerDatabase::CreateInstance(publisher_info_db_path_));
 
-  BLOG(1, "Starting ledger process");
-
   if (!bat_ledger_service_.is_bound()) {
-    content::ServiceProcessHost::Launch(
-        bat_ledger_service_.BindNewPipeAndPassReceiver(),
-        content::ServiceProcessHost::Options()
-            .WithDisplayName(IDS_UTILITY_PROCESS_LEDGER_NAME)
-            .Pass());
+    if (bat_ledger::features::UseInProcessLedgerService()) {
+      BLOG(1, "Create in-process ledger instance");
+      bat_ledger::MakeInProcessLedgerService(
+          bat_ledger_service_.BindNewPipeAndPassReceiver());
+    } else {
+      BLOG(1, "Starting ledger process");
+      content::ServiceProcessHost::Launch(
+          bat_ledger_service_.BindNewPipeAndPassReceiver(),
+          content::ServiceProcessHost::Options()
+              .WithDisplayName(IDS_UTILITY_PROCESS_LEDGER_NAME)
+              .Pass());
+    }
 
     bat_ledger_service_.set_disconnect_handler(
         base::BindOnce(&RewardsServiceImpl::ConnectionClosed, AsWeakPtr()));

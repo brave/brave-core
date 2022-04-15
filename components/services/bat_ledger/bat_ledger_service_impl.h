@@ -25,6 +25,7 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
 
   ~BatLedgerServiceImpl() override;
 
+  BatLedgerServiceImpl();
   BatLedgerServiceImpl(const BatLedgerServiceImpl&) = delete;
   BatLedgerServiceImpl& operator=(const BatLedgerServiceImpl&) = delete;
 
@@ -48,8 +49,8 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
   void GetGeminiRetries(GetGeminiRetriesCallback callback) override;
 
  private:
-  mojo::Receiver<mojom::BatLedgerService> receiver_;
-  bool initialized_;
+  mojo::Receiver<mojom::BatLedgerService> receiver_{this};
+  bool initialized_ = false;
   mojo::UniqueAssociatedReceiverSet<mojom::BatLedger> associated_receivers_;
 };
 
