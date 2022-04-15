@@ -9,6 +9,8 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
@@ -32,6 +34,7 @@ namespace content {
 class WebContents;
 }  // namespace content
 
+class BraveBrowser;
 class WalletButton;
 
 class BraveBrowserView : public BrowserView {
@@ -67,6 +70,9 @@ class BraveBrowserView : public BrowserView {
 
  private:
   class TabCyclingEventHandler;
+  friend class WindowClosingConfirmBrowserTest;
+
+  static void SetDownloadConfirmReturnForTesting(bool allow);
 
   // BrowserView overrides:
   void OnTabStripModelChanged(
@@ -74,10 +80,17 @@ class BraveBrowserView : public BrowserView {
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
   void ShowBraveVPNBubble() override;
+  views::CloseRequestResult OnWindowCloseRequested() override;
+  void ConfirmBrowserCloseWithPendingDownloads(
+      int download_count,
+      Browser::DownloadCloseType dialog_type,
+      base::OnceCallback<void(bool)> callback) override;
 
   void StopTabCycling();
   void UpdateSearchTabsButtonState();
   void OnPreferenceChanged(const std::string& pref_name);
+  void OnWindowClosingConfirmResponse(bool allowed_to_close);
+  BraveBrowser* GetBraveBrowser() const;
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
   sidebar::Sidebar* InitSidebar() override;
@@ -88,9 +101,9 @@ class BraveBrowserView : public BrowserView {
   // |original_contents_container_| points to original contents container that
   // includes contents & devtools webview. It's used by
   // GetContentsLayoutManager().
-  views::View* original_contents_container_ = nullptr;
-  SidebarContainerView* sidebar_container_view_ = nullptr;
-  views::View* sidebar_host_view_ = nullptr;
+  raw_ptr<views::View> original_contents_container_ = nullptr;
+  raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
+  raw_ptr<views::View> sidebar_host_view_ = nullptr;
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -99,6 +112,8 @@ class BraveBrowserView : public BrowserView {
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
   PrefChangeRegistrar pref_change_registrar_;
+
+  base::WeakPtrFactory<BraveBrowserView> weak_ptr_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_H_

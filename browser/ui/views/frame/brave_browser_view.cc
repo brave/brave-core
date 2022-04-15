@@ -7,19 +7,23 @@
 
 #include <utility>
 
-#include "base/memory/raw_ptr.h"
+#include "base/bind.h"
 #include "brave/browser/sparkle_buildflags.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
+#include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/translate/core/common/buildflags.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "extensions/buildflags/buildflags.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/events/event_observer.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/event_monitor.h"
@@ -30,7 +34,6 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
@@ -54,6 +57,15 @@
     BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #include "brave/browser/translate/brave_translate_utils.h"
 #endif
+
+namespace {
+absl::optional<bool> g_download_confirm_return_allow_for_testing;
+}  // namespace
+
+// static
+void BraveBrowserView::SetDownloadConfirmReturnForTesting(bool allow) {
+  g_download_confirm_return_allow_for_testing = allow;
+}
 
 class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
                                                  public views::WidgetObserver {
@@ -156,8 +168,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   // |brave_contents_container_| also contains sidebar.
   auto orignal_contents_container = RemoveChildViewT(contents_container_.get());
   sidebar_container_view_ = brave_contents_container->AddChildView(
-      std::make_unique<SidebarContainerView>(
-          static_cast<BraveBrowser*>(browser_.get())));
+      std::make_unique<SidebarContainerView>(GetBraveBrowser()));
   original_contents_container_ = brave_contents_container->AddChildView(
       std::move(orignal_contents_container));
   brave_contents_container->SetLayoutManager(
@@ -345,6 +356,53 @@ void BraveBrowserView::OnTabStripModelChanged(
     // After stopping, current tab cycling, new tab cycling will be started.
     StopTabCycling();
   }
+}
+
+views::CloseRequestResult BraveBrowserView::OnWindowCloseRequested() {
+  if (GetBraveBrowser()->ShouldAskForBrowserClosingBeforeHandlers()) {
+    WindowClosingConfirmDialogView::Show(
+        browser(),
+        base::BindOnce(&BraveBrowserView::OnWindowClosingConfirmResponse,
+                       weak_ptr_.GetWeakPtr()));
+    return views::CloseRequestResult::kCannotClose;
+  }
+
+  return BrowserView::OnWindowCloseRequested();
+}
+
+void BraveBrowserView::OnWindowClosingConfirmResponse(bool allowed_to_close) {
+  auto* browser = GetBraveBrowser();
+  // Set to Browser instance because Browser instance knows about the result
+  // of any warning handlers or beforeunload handlers.
+  browser->set_confirmed_to_close(allowed_to_close);
+  if (allowed_to_close) {
+    // Start close window again as user allowed to close it.
+    // Confirm dialog will not be launched for this closing request
+    // as we set BraveBrowser::confirmed_to_closed_window_ to true.
+    // If user cancels this window closing via additional warnings
+    // or beforeunload handler, this dialog will be shown again.
+    chrome::CloseWindow(browser);
+  }
+}
+
+void BraveBrowserView::ConfirmBrowserCloseWithPendingDownloads(
+    int download_count,
+    Browser::DownloadCloseType dialog_type,
+    base::OnceCallback<void(bool)> callback) {
+  // Simulate user response.
+  if (g_download_confirm_return_allow_for_testing) {
+    base::SequencedTaskRunnerHandle::Get()->PostTask(
+        FROM_HERE,
+        base::BindOnce(std::move(callback),
+                       *g_download_confirm_return_allow_for_testing));
+    return;
+  }
+  BrowserView::ConfirmBrowserCloseWithPendingDownloads(
+      download_count, dialog_type, std::move(callback));
+}
+
+BraveBrowser* BraveBrowserView::GetBraveBrowser() const {
+  return static_cast<BraveBrowser*>(browser_.get());
 }
 
 void BraveBrowserView::StartTabCycling() {

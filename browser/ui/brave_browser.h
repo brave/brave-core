@@ -39,6 +39,18 @@ class BraveBrowser : public Browser {
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
+  void FinishWarnBeforeClosing(WarnBeforeClosingResult result) override;
+  void BeforeUnloadFired(content::WebContents* source,
+                         bool proceed,
+                         bool* proceed_to_fire_unload) override;
+  bool TryToCloseWindow(
+      bool skip_beforeunload,
+      const base::RepeatingCallback<void(bool)>& on_close_confirmed) override;
+  void ResetTryToCloseWindow() override;
+
+  // Returns true when we should ask browser closing to users before handling
+  // any warning/onbeforeunload handlers.
+  bool ShouldAskForBrowserClosingBeforeHandlers();
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
   sidebar::SidebarController* sidebar_controller() {
@@ -48,10 +60,16 @@ class BraveBrowser : public Browser {
 
   BraveBrowserWindow* brave_window();
 
+  void set_confirmed_to_close(bool close) { confirmed_to_close_ = close; }
+
  private:
 #if BUILDFLAG(ENABLE_SIDEBAR)
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
 #endif
+
+  // Set true when user allowed to close browser before starting any
+  // warning or onbeforeunload handlers.
+  bool confirmed_to_close_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_H_

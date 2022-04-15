@@ -243,6 +243,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kBraveWaybackMachineEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
+  (*s_brave_allowlist)[kEnableWindowClosingConfirm] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Hangouts pref
   (*s_brave_allowlist)[kHangoutsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

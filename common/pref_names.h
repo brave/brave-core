@@ -91,6 +91,10 @@ extern const char kSafetynetCheckFailed[];
 extern const char kSafetynetStatus[];
 #endif
 
+#if !BUILDFLAG(IS_ANDROID)
+extern const char kEnableWindowClosingConfirm[];
+#endif
+
 extern const char kDefaultBrowserLaunchingCount[];
 extern const char kTabsSearchShow[];
 extern const char kDontAskForCrashReporting[];

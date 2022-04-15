@@ -254,6 +254,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"braveHelpTips", IDS_SETTINGS_HELP_TIPS},
     {"braveHelpTipsWaybackMachineLabel",
      IDS_SETTINGS_HELP_TIPS_SHOW_BRAVE_WAYBACK_MACHINE_PROMPT},
+    {"braveHelpTipsWarnBeforeClosingWindow",
+     IDS_SETTINGS_WINDOW_CLOSING_CONFIRM_OPTION_LABEL},
     // New Tab Page
     {"braveNewTab", IDS_SETTINGS_NEW_TAB},
     {"braveNewTabBraveRewards", IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS},

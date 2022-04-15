@@ -419,17 +419,13 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if !BUILDFLAG(IS_ANDROID)
   BraveOmniboxClientImpl::RegisterProfilePrefs(registry);
-#endif
-
-#if !BUILDFLAG(IS_ANDROID)
   brave_ads::RegisterP2APrefs(registry);
-#endif
 
-#if !BUILDFLAG(IS_ANDROID)
   // Turn on most visited mode on NTP by default.
   // We can turn customization mode on when we have add-shortcut feature.
   registry->SetDefaultPrefValue(ntp_prefs::kNtpUseMostVisitedTiles,
                                 base::Value(true));
+  registry->RegisterBooleanPref(kEnableWindowClosingConfirm, false);
   RegisterDefaultBraveBrowserPromptPrefs(registry);
 #endif
 
