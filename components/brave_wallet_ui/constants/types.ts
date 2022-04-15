@@ -367,12 +367,6 @@ export interface GetFlattenedAccountBalancesReturnInfo {
   balance: number
 }
 
-export interface PortfolioTokenHistoryAndInfo {
-  history: GetPriceHistoryReturnObjectInfo
-  token: BraveWallet.BlockchainToken
-  balance: string
-}
-
 interface BaseTransactionParams {
   from: string
   to: string

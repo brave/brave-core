@@ -18,23 +18,29 @@ import {
   SupportedTestNetworks,
   SendEthTransactionParams,
   SendFilTransactionParams,
-  SendSolTransactionParams
+  SendSolTransactionParams,
+  WalletState,
+  GetPriceReturnInfo,
+  GetPriceHistoryReturnInfo
 } from '../../constants/types'
-import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
 import { getNetworkInfo, getNetworksByCoinType, getTokensCoinType } from '../../utils/network-utils'
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
+import { getAccountType, refreshSelectedAccount } from '../../utils/account-utils'
+import { sortTransactionByDate } from '../../utils/tx-utils'
+import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
 import Amount from '../../utils/amount'
 
 import getAPIProxy from './bridge'
-import { Dispatch, State, Store } from './types'
+import { Store } from './types'
 import { getHardwareKeyring } from '../api/hardware_keyrings'
 import { GetAccountsHardwareOperationResult } from '../hardware/types'
 import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
 import { AllNetworksOption } from '../../options/network-filter-options'
+import { BalancesAndPricesHistoryRefreshedPayload, RefreshTokenPriceHistoryResult, TransactionHistoryRefreshedPayload, WalletInfoUpdatedPayload } from '../constants/action_types'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -182,47 +188,51 @@ export async function getIsSwapSupported (network: BraveWallet.NetworkInfo): Pro
   return (await swapService.isSwapSupported(network.chainId)).result
 }
 
-export function refreshVisibleTokenInfo (currentNetwork: BraveWallet.NetworkInfo) {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    const { braveWalletService } = getAPIProxy()
-    const { wallet: { networkList } } = getState()
+export async function refreshVisibleTokenInfo (networkList: BraveWallet.NetworkInfo[]) {
+  const { braveWalletService } = getAPIProxy()
 
-    const getVisibleAssets = await Promise.all(networkList.map(async (network) => {
-      // Creates a network's Native Asset if not returned
-      const nativeAsset: BraveWallet.BlockchainToken = {
-        contractAddress: '',
-        decimals: network.decimals,
-        isErc20: false,
-        isErc721: false,
-        logo: network.iconUrls[0] ?? '',
-        name: network.symbolName,
-        symbol: network.symbol,
-        visible: false,
-        tokenId: '',
-        coingeckoId: '',
-        chainId: network.chainId,
-        coin: network.coin
-      }
+  const getVisibleAssets = await Promise.all(networkList.map(async (network) => {
+    // Creates a network's Native Asset if not returned
+    const nativeAsset: BraveWallet.BlockchainToken = {
+      contractAddress: '',
+      decimals: network.decimals,
+      isErc20: false,
+      isErc721: false,
+      logo: network.iconUrls[0] ?? '',
+      name: network.symbolName,
+      symbol: network.symbol,
+      visible: false,
+      tokenId: '',
+      coingeckoId: '',
+      chainId: network.chainId,
+      coin: network.coin
+    }
 
-      // Get a list of user tokens for each coinType and network.
-      const getTokenList = await braveWalletService.getUserAssets(network.chainId, network.coin)
+    // Get a list of user tokens for each coinType and network.
+    const getTokenList = await braveWalletService.getUserAssets(network.chainId, network.coin)
 
-      // Adds a logo and chainId to each token object
-      const tokenList = getTokenList.tokens.map((token) => ({
-        ...token,
-        logo: `chrome://erc-token-images/${token.logo}`
-      })) as BraveWallet.BlockchainToken[]
-      return tokenList.length === 0 ? [nativeAsset] : tokenList
-    }))
-    const visibleAssets = getVisibleAssets.flat(1)
-    await dispatch(WalletActions.setVisibleTokensInfo(visibleAssets))
-  }
+    // Adds a logo and chainId to each token object
+    const tokenList = getTokenList.tokens.map((token) => ({
+      ...token,
+      logo: `chrome://erc-token-images/${token.logo}`
+    })) as BraveWallet.BlockchainToken[]
+    return tokenList.length === 0 ? [nativeAsset] : tokenList
+  }))
+
+  return getVisibleAssets.flat(1)
 }
 
-export function refreshBalances () {
-  return async (dispatch: Dispatch, getState: () => State) => {
+export const refreshBalances = async ({
+  accounts,
+  userVisibleTokensInfo,
+  networkList,
+  defaultNetworks,
+  selectedAccount
+}: Pick<
+  WalletState,
+  'accounts' | 'userVisibleTokensInfo' | 'networkList' | 'defaultNetworks' | 'selectedAccount'
+>) => {
     const { jsonRpcService } = getAPIProxy()
-    const { wallet: { accounts, userVisibleTokensInfo, networkList, defaultNetworks } } = getState()
 
     const emptyBalance = {
       balance: '0x0',
@@ -287,10 +297,6 @@ export function refreshBalances () {
       }))
     }))
 
-    await dispatch(WalletActions.nativeAssetBalancesUpdated({
-      balances: getNativeAssetsBalanceReturnInfos
-    }))
-
     const visibleTokens = userVisibleTokensInfo.filter(asset => asset.contractAddress !== '')
 
     const getBlockchainTokensBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
@@ -324,259 +330,412 @@ export function refreshBalances () {
         return []
       }
     }))
-    await dispatch(WalletActions.tokenBalancesUpdated({
-      balances: getBlockchainTokensBalanceReturnInfos
-    }))
-  }
+
+    let updatedAccounts: WalletAccountType[] = [...accounts]
+
+    updatedAccounts.forEach((account, accountIndex) => {
+      getNativeAssetsBalanceReturnInfos[accountIndex].forEach((info, tokenIndex) => {
+        if (info.error === BraveWallet.ProviderError.kSuccess) {
+          accounts[accountIndex].nativeBalanceRegistry[info.chainId] = Amount.normalize(info.balance)
+        }
+      })
+
+      getBlockchainTokensBalanceReturnInfos[accountIndex].forEach((info, tokenIndex) => {
+        if (info.error === BraveWallet.ProviderError.kSuccess) {
+          const contractAddress = visibleTokens[tokenIndex].contractAddress.toLowerCase()
+          accounts[accountIndex].tokenBalanceRegistry[contractAddress] = Amount.normalize(info.balance)
+        }
+      })
+    })
+
+    // Refresh selectedAccount object
+    const newSelectedAccount = refreshSelectedAccount(accounts, selectedAccount)
+
+    return {
+      accounts: updatedAccounts,
+      selectedAccount: newSelectedAccount
+    }
 }
 
-export function refreshPrices () {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    const { assetRatioService } = getAPIProxy()
-    const { wallet: { accounts, selectedPortfolioTimeline, userVisibleTokensInfo, defaultCurrencies, networkList } } = getState()
-    const defaultFiatCurrency = defaultCurrencies.fiat.toLowerCase()
+export const refreshPrices = async ({
+  accounts,
+  selectedPortfolioTimeline,
+  userVisibleTokensInfo,
+  defaultCurrencies,
+  networkList
+}: Pick<
+  WalletState,
+  'accounts' | 'selectedPortfolioTimeline' | 'userVisibleTokensInfo' | 'defaultCurrencies' | 'networkList'
+>): Promise<GetPriceReturnInfo> => {
+  const { assetRatioService } = getAPIProxy()
+  const defaultFiatCurrency = defaultCurrencies.fiat.toLowerCase()
 
-    // Return if userVisibleTokensInfo is empty
-    if (!userVisibleTokensInfo) {
-      return
+  // Return if userVisibleTokensInfo is empty
+  if (!userVisibleTokensInfo) {
+    return {
+      success: false,
+      values: []
+    }
+  }
+
+  // Get prices for each networks native asset
+  const mainnetList = networkList.filter((network) => !SupportedTestNetworks.includes(network.chainId))
+  const getNativeAssetPrices = await Promise.all(mainnetList.map(async (network) => {
+    const getNativeAssetPrice = await assetRatioService.getPrice([network.symbol.toLowerCase()], [defaultFiatCurrency], selectedPortfolioTimeline)
+    const nativeAssetPrice = getNativeAssetPrice.success ? getNativeAssetPrice.values.find((i) => i.toAsset === defaultFiatCurrency)?.price ?? '' : ''
+    return {
+      fromAsset: network.symbol.toLowerCase(),
+      toAsset: defaultFiatCurrency,
+      price: nativeAssetPrice,
+      assetTimeframeChange: ''
+    }
+  }))
+
+  // Get prices for all other tokens on each network
+  const blockChainTokenInfo = userVisibleTokensInfo.filter((token) => token.contractAddress !== '')
+  const getTokenPrices = await Promise.all(getFlattenedAccountBalances(accounts, blockChainTokenInfo).map(async (token) => {
+    const emptyPrice = {
+      fromAsset: token.token.symbol,
+      toAsset: defaultFiatCurrency,
+      price: '',
+      assetTimeframeChange: ''
     }
 
-    // Get prices for each networks native asset
-    const mainnetList = networkList.filter((network) => !SupportedTestNetworks.includes(network.chainId))
-    const getNativeAssetPrices = await Promise.all(mainnetList.map(async (network) => {
-      const getNativeAssetPrice = await assetRatioService.getPrice([network.symbol.toLowerCase()], [defaultFiatCurrency], selectedPortfolioTimeline)
-      const nativeAssetPrice = getNativeAssetPrice.success ? getNativeAssetPrice.values.find((i) => i.toAsset === defaultFiatCurrency)?.price ?? '' : ''
-      return {
-        fromAsset: network.symbol.toLowerCase(),
-        toAsset: defaultFiatCurrency,
-        price: nativeAssetPrice,
-        assetTimeframeChange: ''
-      }
-    }))
+    // If a tokens balance is 0 we do not make an unnecessary api call for the price of that token
+    const price = token.balance > 0 && !token.token.isErc721
+      ? await assetRatioService.getPrice([getTokenParam(token.token)], [defaultFiatCurrency], selectedPortfolioTimeline)
+      : { values: [{ ...emptyPrice, price: '0' }], success: true }
 
-    // Get prices for all other tokens on each network
-    const blockChainTokenInfo = userVisibleTokensInfo.filter((token) => token.contractAddress !== '')
-    const getTokenPrices = await Promise.all(getFlattenedAccountBalances(accounts, blockChainTokenInfo).map(async (token) => {
-      const emptyPrice = {
-        fromAsset: token.token.symbol,
-        toAsset: defaultFiatCurrency,
-        price: '',
-        assetTimeframeChange: ''
-      }
+    const tokenPrice = {
+      ...price.values[0],
+      fromAsset: token.token.symbol.toLowerCase()
+    }
+    return price.success ? tokenPrice : emptyPrice
+  }))
 
-      // If a tokens balance is 0 we do not make an unnecessary api call for the price of that token
-      const price = token.balance > 0 && !token.token.isErc721
-        ? await assetRatioService.getPrice([getTokenParam(token.token)], [defaultFiatCurrency], selectedPortfolioTimeline)
-        : { values: [{ ...emptyPrice, price: '0' }], success: true }
-
-      const tokenPrice = {
-        ...price.values[0],
-        fromAsset: token.token.symbol.toLowerCase()
-      }
-      return price.success ? tokenPrice : emptyPrice
-    }))
-
-    await dispatch(WalletActions.pricesUpdated({
-      success: true,
-      values: [
-        ...getNativeAssetPrices,
-        ...getTokenPrices
-      ]
-    }))
+  return {
+    success: true,
+    values: [
+      ...getNativeAssetPrices,
+      ...getTokenPrices
+    ]
   }
 }
 
-export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe) {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    const apiProxy = getAPIProxy()
-    const { assetRatioService } = apiProxy
+export const refreshPortfolioPriceHistory = async ({
+  accounts,
+  defaultCurrencies,
+  userVisibleTokensInfo,
+  selectedNetworkFilter,
+  networkList,
+  selectedPortfolioTimeline
+}: Pick<
+  WalletState,
+  'accounts' | 'defaultCurrencies' | 'userVisibleTokensInfo' | 'selectedNetworkFilter' | 'networkList' | 'selectedPortfolioTimeline'
+>): Promise<RefreshTokenPriceHistoryResult> => {
+  const { assetRatioService } = getAPIProxy()
 
-    const { wallet: { accounts, defaultCurrencies, userVisibleTokensInfo, selectedNetworkFilter, networkList } } = getState()
+  // By default we do not fetch Price history for Test Networks Tokens if
+  // Selected Network Filter is all
+  const filteredTokenInfo = selectedNetworkFilter.chainId === AllNetworksOption.chainId
+    ? userVisibleTokensInfo.filter((token) => !SupportedTestNetworks.includes(token.chainId))
+    // If chainId is Localhost we also do a check for coinType to only
+    // fetch Price History for for the correct tokens
+    : selectedNetworkFilter.chainId === BraveWallet.LOCALHOST_CHAIN_ID
+      ? userVisibleTokensInfo.filter((token) =>
+        token.chainId === selectedNetworkFilter.chainId &&
+        getTokensCoinType(networkList, token) === selectedNetworkFilter.coin)
+      // Fetch Price History for Tokens by Selected Network Filter's chainId
+      : userVisibleTokensInfo.filter((token) => token.chainId === selectedNetworkFilter.chainId)
 
-    // By default we do not fetch Price history for Test Networks Tokens if
-    // Selected Network Filter is all
-    const filteredTokenInfo = selectedNetworkFilter.chainId === AllNetworksOption.chainId
-      ? userVisibleTokensInfo.filter((token) => !SupportedTestNetworks.includes(token.chainId))
-      // If chainId is Localhost we also do a check for coinType to only
-      // fetch Price History for for the correct tokens
-      : selectedNetworkFilter.chainId === BraveWallet.LOCALHOST_CHAIN_ID
-        ? userVisibleTokensInfo.filter((token) =>
-          token.chainId === selectedNetworkFilter.chainId &&
-          getTokensCoinType(networkList, token) === selectedNetworkFilter.coin)
-        // Fetch Price History for Tokens by Selected Network Filter's chainId
-        : userVisibleTokensInfo.filter((token) => token.chainId === selectedNetworkFilter.chainId)
+  // Get all Price History
+  const priceHistory = await Promise.all(getFlattenedAccountBalances(accounts, filteredTokenInfo)
+    // If a tokens balance is 0 we do not make an unnecessary api call for price history of that token
+    .filter(({ token, balance }) => !token.isErc721 && balance > 0)
+    .map(async ({ token }) => ({
+      // If a visible asset has a contractAddress of ''
+      // it is a native asset so we use a symbol instead.
+      contractAddress: token.contractAddress ? token.contractAddress : token.symbol,
+      history: await assetRatioService.getPriceHistory(
+        getTokenParam(token), defaultCurrencies.fiat.toLowerCase(), selectedPortfolioTimeline
+      )
+    }))
+  )
 
-    // Get all Price History
-    const priceHistory = await Promise.all(getFlattenedAccountBalances(accounts, filteredTokenInfo)
-      // If a tokens balance is 0 we do not make an unnecessary api call for price history of that token
-      .filter(({ token, balance }) => !token.isErc721 && balance > 0)
-      .map(async ({ token }) => ({
-        // If a visible asset has a contractAddress of ''
-        // it is a native asset so we use a symbol instead.
-        contractAddress: token.contractAddress ? token.contractAddress : token.symbol,
-        history: await assetRatioService.getPriceHistory(
-          getTokenParam(token), defaultCurrencies.fiat.toLowerCase(), selectedPortfolioTimeline
-        )
-      }))
-    )
+  // Combine Price History and Balances
+  const priceHistoryWithBalances = accounts.map((account) => {
+    return filteredTokenInfo
+      .filter((token) => !token.isErc721)
+      .map((token) => {
+        const balance = token.contractAddress
+          ? account.tokenBalanceRegistry[token.contractAddress.toLowerCase()]
+          : account.nativeBalanceRegistry[token.chainId || '']
+        const contractAddress = token.contractAddress ? token.contractAddress : token.symbol
+        return {
+          token,
+          balance: balance || '0',
+          history: priceHistory.find((t) => contractAddress === t.contractAddress)?.history ?? { success: true, values: [] }
+        }
+      })
+  })
 
-    // Combine Price History and Balances
-    const priceHistoryWithBalances = accounts.map((account) => {
-      return filteredTokenInfo
-        .filter((token) => !token.isErc721)
-        .map((token) => {
-          const balance = token.contractAddress
-            ? account.tokenBalanceRegistry[token.contractAddress.toLowerCase()]
-            : account.nativeBalanceRegistry[token.chainId || '']
-          const contractAddress = token.contractAddress ? token.contractAddress : token.symbol
+  const history = priceHistoryWithBalances.map((infoArray) => {
+    return infoArray.map((info) => {
+      if (new Amount(info.balance).isPositive() && info.token.visible) {
+        return info.history.values.map((value) => {
           return {
-            token,
-            balance: balance || '0',
-            history: priceHistory.find((t) => contractAddress === t.contractAddress)?.history ?? { success: true, values: [] }
+            date: value.date,
+            price: new Amount(info.balance)
+              .divideByDecimals(info.token.decimals)
+              .times(value.price)
+              .toNumber()
           }
         })
-    })
-    dispatch(WalletActions.portfolioPriceHistoryUpdated(priceHistoryWithBalances))
-  }
-}
-
-export function refreshTransactionHistory (address?: string) {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    const apiProxy = getAPIProxy()
-    const { txService } = apiProxy
-    const { wallet: { accounts, transactions } } = getState()
-
-    const accountsToUpdate = address !== undefined
-      ? accounts.filter(account => account.address === address)
-      : accounts
-
-    const freshTransactions: AccountTransactions = await accountsToUpdate.reduce(
-      async (acc, account) => acc.then(async (obj) => {
-        const { transactionInfos } = await txService.getAllTransactionInfo(account.coin, account.address)
-        obj[account.address] = transactionInfos
-        return obj
-      }), Promise.resolve({}))
-
-    dispatch(WalletActions.setAccountTransactions({
-      ...transactions,
-      ...freshTransactions
-    }))
-  }
-}
-
-export function refreshNetworkInfo () {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    const apiProxy = getAPIProxy()
-    const { jsonRpcService } = apiProxy
-    const { wallet: { selectedCoin, isFilecoinEnabled, isSolanaEnabled, isTestNetworksEnabled } } = getState()
-
-    // Get All Networks
-    const getFullNetworkList = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
-      // MULTICHAIN: While we are still in development for FIL and SOL,
-      // we will not use their networks unless enabled by brave://flags
-      if (coin === BraveWallet.CoinType.FIL && !isFilecoinEnabled) {
-        return []
-      }
-      if (coin === BraveWallet.CoinType.SOL && !isSolanaEnabled) {
-        return []
-      }
-      const networkList = await jsonRpcService.getAllNetworks(coin)
-      return networkList.networks
-    }))
-    const flattenedNetworkList = getFullNetworkList.flat(1)
-    const networkList =
-      isTestNetworksEnabled
-        ? flattenedNetworkList
-        : flattenedNetworkList.filter((network) => !SupportedTestNetworks.includes(network.chainId))
-    dispatch(WalletActions.setAllNetworks(networkList))
-
-    // Get default network for each coinType
-    const defaultNetworks = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
-      const coinsChainId = await jsonRpcService.getChainId(coin)
-      const network = getNetworkInfo(coinsChainId.chainId, networkList)
-      return network
-    }))
-    dispatch(WalletActions.setDefaultNetworks(defaultNetworks))
-
-    // Get current selected networks info
-    const chainId = await jsonRpcService.getChainId(selectedCoin)
-    const currentNetwork = getNetworkInfo(chainId.chainId, networkList)
-    dispatch(WalletActions.setNetwork(currentNetwork))
-    return currentNetwork
-  }
-}
-
-export function refreshKeyringInfo () {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    const { wallet: { selectedCoin } } = getState()
-    const apiProxy = getAPIProxy()
-    const { keyringService, walletHandler } = apiProxy
-
-    const walletInfoBase = await walletHandler.getWalletInfo()
-    const walletInfo = { ...walletInfoBase, visibleTokens: [], selectedAccount: '' }
-
-    // Get/Set selectedAccount
-    if (!walletInfo.isWalletCreated) {
-      dispatch(WalletActions.initialized(walletInfo))
-      return
-    }
-
-    // Get default accounts for each CoinType
-    const defaultAccounts = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
-      const defaultAccount = await keyringService.getSelectedAccount(coin)
-      const defaultAccountAddress = defaultAccount.address
-      return walletInfo.accountInfos.find((account) => account.address.toLowerCase() === defaultAccountAddress?.toLowerCase()) ?? {} as BraveWallet.AccountInfo
-    }))
-    const filteredDefaultAccounts = defaultAccounts.filter((account) => Object.keys(account).length !== 0)
-    dispatch(WalletActions.setDefaultAccounts(filteredDefaultAccounts))
-
-    // Get selectedAccountAddress
-    const getSelectedAccount = await keyringService.getSelectedAccount(selectedCoin)
-    const selectedAddress = getSelectedAccount.address
-
-    // Fallback account address if selectedAccount returns null
-    const fallbackAccount = walletInfo.accountInfos[0]
-
-    // If selectedAccount is null will setSelectedAccount to fallback address
-    if (!selectedAddress) {
-      await keyringService.setSelectedAccount(fallbackAccount.address, fallbackAccount.coin)
-      walletInfo.selectedAccount = fallbackAccount.address
-    } else {
-      // If a user has already created an wallet but then chooses to restore
-      // a different wallet, getSelectedAccount still returns the previous wallets
-      // selected account.
-      // This check looks to see if the returned selectedAccount exist in the accountInfos
-      // payload, if not it will setSelectedAccount to the fallback address
-      if (!walletInfo.accountInfos.find((account) => account.address.toLowerCase() === selectedAddress?.toLowerCase())) {
-        walletInfo.selectedAccount = fallbackAccount.address
-        await keyringService.setSelectedAccount(fallbackAccount.address, fallbackAccount.coin)
       } else {
-        walletInfo.selectedAccount = selectedAddress
+        return []
       }
-    }
+    })
+  })
 
-    dispatch(WalletActions.initialized(walletInfo))
+  const jointHistory = [].concat
+    .apply([], [...history])
+    .filter((h: []) => h.length > 1) as GetPriceHistoryReturnInfo[][]
+
+  // Since the Price History API sometimes will return a shorter
+  // array of history, this checks for the shortest array first to
+  // then map and reduce to it length
+  const shortestHistory = jointHistory.length > 0 ? jointHistory.reduce((a, b) => a.length <= b.length ? a : b) : []
+  const sumOfHistory = jointHistory.length > 0 ? shortestHistory.map((token, tokenIndex) => {
+    return {
+      date: mojoTimeDeltaToJSDate(token.date),
+      close: jointHistory.map(price => Number(price[tokenIndex].price) || 0).reduce((sum, x) => sum + x, 0)
+    }
+  }) : []
+
+  return {
+    portfolioPriceHistory: sumOfHistory,
+    isFetchingPortfolioPriceHistory: sumOfHistory.length === 0
   }
 }
 
-export function refreshSitePermissions () {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    const apiProxy = getAPIProxy()
-    const { braveWalletService } = apiProxy
+export const refreshTransactionHistory = async (
+  { accounts, transactions }: Pick<WalletState, 'accounts' | 'transactions'>,
+  address?: string
+): Promise<TransactionHistoryRefreshedPayload> => {
+  const { txService } = getAPIProxy()
 
-    const { wallet: { accounts, activeOrigin } } = getState()
+  const accountsToUpdate = address !== undefined
+    ? accounts.filter(account => account.address === address)
+    : accounts
 
-    // Get a list of accounts with permissions of the active origin
-    const getAllPermissions = await Promise.all(accounts.map(async (account) => {
-      const result = await braveWalletService.hasEthereumPermission(activeOrigin.origin, account.address)
-      if (result.hasPermission) {
-        return account
-      }
+  const freshTransactions: AccountTransactions = await accountsToUpdate.reduce(
+    async (acc, account) => acc.then(async (obj) => {
+      const { transactionInfos } = await txService.getAllTransactionInfo(account.coin, account.address)
+      obj[account.address] = transactionInfos
+      return obj
+    }),
+    Promise.resolve({})
+  )
 
-      return undefined
-    }))
-    const accountsWithPermission: WalletAccountType[] = getAllPermissions.filter((account): account is WalletAccountType => account !== undefined)
-    dispatch(WalletActions.setSitePermissions({ accounts: accountsWithPermission }))
+  const accountTransactions = {
+    ...transactions,
+    ...freshTransactions
+  }
+
+  const newPendingTransactions = accounts.map((account) => {
+    return accountTransactions[account.address]
+  }).flat(1)
+
+  const filteredTransactions = newPendingTransactions?.filter((tx: BraveWallet.TransactionInfo) => tx?.txStatus === BraveWallet.TransactionStatus.Unapproved) ?? []
+
+  const sortedTransactionList = sortTransactionByDate(filteredTransactions)
+
+  return {
+    transactions: accountTransactions,
+    pendingTransactions: sortedTransactionList,
+    selectedPendingTransaction: sortedTransactionList[0]
+  }
+}
+
+export interface RefreshedNetworkInfo {
+  networkList: BraveWallet.NetworkInfo[]
+  defaultNetworks: BraveWallet.NetworkInfo[]
+  selectedNetwork: BraveWallet.NetworkInfo
+}
+
+export const refreshNetworkInfo = async ({
+  selectedCoin,
+  isFilecoinEnabled,
+  isSolanaEnabled,
+  isTestNetworksEnabled
+}: Pick<
+  WalletState,
+  | 'selectedCoin'
+  | 'isFilecoinEnabled'
+  | 'isSolanaEnabled'
+  | 'isTestNetworksEnabled'
+>): Promise<RefreshedNetworkInfo> => {
+  const { jsonRpcService } = getAPIProxy()
+
+  // Get All Networks
+  const getFullNetworkList = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
+    // MULTICHAIN: While we are still in development for FIL and SOL,
+    // we will not use their networks unless enabled by brave://flags
+    if (coin === BraveWallet.CoinType.FIL && !isFilecoinEnabled) {
+      return []
+    }
+    if (coin === BraveWallet.CoinType.SOL && !isSolanaEnabled) {
+      return []
+    }
+    const networkList = await jsonRpcService.getAllNetworks(coin)
+    return networkList.networks
+  }))
+  const flattenedNetworkList = getFullNetworkList.flat(1)
+  const newNetworkList =
+    isTestNetworksEnabled
+      ? flattenedNetworkList
+      : flattenedNetworkList.filter((network) => !SupportedTestNetworks.includes(network.chainId))
+
+  // Get default network for each coinType
+  const newDefaultNetworks = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
+    const coinsChainId = await jsonRpcService.getChainId(coin)
+    const network = getNetworkInfo(coinsChainId.chainId, newNetworkList)
+    return network
+  }))
+
+  // Get current selected networks info
+  const chainId = await jsonRpcService.getChainId(selectedCoin)
+  const currentNetwork = getNetworkInfo(chainId.chainId, newNetworkList)
+
+  return {
+    networkList: newNetworkList,
+    defaultNetworks: newDefaultNetworks,
+    selectedNetwork: currentNetwork
+  }
+}
+
+export interface RefreshedKeyringInfo {
+  defaultAccounts?: BraveWallet.AccountInfo[]
+  selectedAccount?: WalletAccountType
+  accounts?: WalletAccountType[]
+  hasInitialized: boolean
+  isWalletCreated: boolean
+  isFilecoinEnabled: boolean
+  isSolanaEnabled: boolean
+  isWalletLocked: boolean
+  isWalletBackedUp: boolean
+  favoriteApps: BraveWallet.AppItem[]
+}
+
+export const refreshKeyringInfo = async ({
+  selectedCoin
+}: Pick<WalletState, 'selectedCoin'>): Promise<RefreshedKeyringInfo> => {
+  const { keyringService, walletHandler } = getAPIProxy()
+
+  const walletInfoBase = await walletHandler.getWalletInfo()
+  const walletInfo = { ...walletInfoBase, visibleTokens: [], selectedAccount: '' }
+
+  // Get/Set selectedAccount
+  if (!walletInfo.isWalletCreated) {
+    return {
+      defaultAccounts: undefined,
+      selectedAccount: undefined,
+      accounts: undefined,
+      hasInitialized: true,
+      isWalletCreated: walletInfo.isWalletCreated,
+      isFilecoinEnabled: walletInfo.isFilecoinEnabled,
+      isSolanaEnabled: walletInfo.isSolanaEnabled,
+      isWalletLocked: walletInfo.isWalletLocked,
+      favoriteApps: walletInfo.favoriteApps,
+      isWalletBackedUp: walletInfo.isWalletBackedUp
+    }
+  }
+
+  // Get default accounts for each CoinType
+  const defaultAccounts = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
+    const defaultAccount = await keyringService.getSelectedAccount(coin)
+    const defaultAccountAddress = defaultAccount.address
+    return walletInfo.accountInfos.find((account) => account.address.toLowerCase() === defaultAccountAddress?.toLowerCase()) ?? {} as BraveWallet.AccountInfo
+  }))
+  const filteredDefaultAccounts = defaultAccounts.filter((account) => Object.keys(account).length !== 0)
+
+  // Get selectedAccountAddress
+  const getSelectedAccount = await keyringService.getSelectedAccount(selectedCoin)
+  const selectedAddress = getSelectedAccount.address
+
+  // Fallback account address if selectedAccount returns null
+  const fallbackAccount = walletInfo.accountInfos[0]
+
+  // If selectedAccount is null will setSelectedAccount to fallback address
+  if (!selectedAddress) {
+    await keyringService.setSelectedAccount(fallbackAccount.address, fallbackAccount.coin)
+    walletInfo.selectedAccount = fallbackAccount.address
+  } else {
+    // If a user has already created an wallet but then chooses to restore
+    // a different wallet, getSelectedAccount still returns the previous wallets
+    // selected account.
+    // This check looks to see if the returned selectedAccount exist in the accountInfos
+    // payload, if not it will setSelectedAccount to the fallback address
+    if (!walletInfo.accountInfos.find((account) => account.address.toLowerCase() === selectedAddress?.toLowerCase())) {
+      walletInfo.selectedAccount = fallbackAccount.address
+      await keyringService.setSelectedAccount(fallbackAccount.address, fallbackAccount.coin)
+    } else {
+      walletInfo.selectedAccount = selectedAddress
+    }
+  }
+
+  const accounts = walletInfo.accountInfos.map((info: AccountInfo, idx: number): WalletAccountType => {
+    return {
+      id: `${idx + 1}`,
+      name: info.name,
+      address: info.address,
+      accountType: getAccountType(info),
+      deviceId: info.hardware ? info.hardware.deviceId : '',
+      tokenBalanceRegistry: {},
+      nativeBalanceRegistry: {},
+      coin: info.coin
+    }
+  })
+
+  const selectedAccount = walletInfo.selectedAccount
+    ? accounts.find((account) => account.address.toLowerCase() === walletInfo.selectedAccount.toLowerCase()) ?? accounts[0]
+    : accounts[0]
+
+  return {
+    defaultAccounts: filteredDefaultAccounts,
+    selectedAccount,
+    accounts,
+    hasInitialized: true,
+    isWalletCreated: walletInfo.isWalletCreated,
+    isFilecoinEnabled: walletInfo.isFilecoinEnabled,
+    isSolanaEnabled: walletInfo.isSolanaEnabled,
+    isWalletLocked: walletInfo.isWalletLocked,
+    favoriteApps: walletInfo.favoriteApps,
+    isWalletBackedUp: walletInfo.isWalletBackedUp
+  }
+}
+
+export const refreshSitePermissions = async ({
+  accounts,
+  activeOrigin
+}: Pick<WalletState, 'accounts' | 'activeOrigin'>) => {
+  const { braveWalletService } = getAPIProxy()
+
+  // Get a list of accounts with permissions of the active origin
+  const getAllPermissions = await Promise.all(accounts.map(async (account) => {
+    const result = await braveWalletService.hasEthereumPermission(activeOrigin.origin, account.address)
+    if (result.hasPermission) {
+      return account
+    }
+
+    return undefined
+  }))
+
+  const accountsWithPermission: WalletAccountType[] = getAllPermissions
+    .filter((account): account is WalletAccountType => account !== undefined)
+
+  return {
+    connectedAccounts: accountsWithPermission
   }
 }
 
@@ -700,4 +859,172 @@ export async function sendSPLTransaction (payload: BraveWallet.SolanaTxData) {
   const { txService } = getAPIProxy()
   // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
   return await txService.addUnapprovedTransaction({ solanaTxData: payload }, payload.feePayer)
+}
+
+export const getAllTokensList = async (networkList: BraveWallet.NetworkInfo[]): Promise<BraveWallet.BlockchainToken[]> => {
+  const { blockchainRegistry } = getAPIProxy()
+  const resolved = await Promise.all(networkList.map(async (network) => {
+    const list = await blockchainRegistry.getAllTokens(network.chainId, network.coin)
+    return list.tokens.map((token) => {
+      return {
+        ...token,
+        chainId: network.chainId,
+        logo: `chrome://erc-token-images/${token.logo}`
+      }
+    })
+  }))
+  const allTokensList = resolved.flat(1)
+  return allTokensList
+}
+
+export const refreshBalancesPricesAndHistory = async (walletState: WalletState): Promise<BalancesAndPricesHistoryRefreshedPayload> => {
+  let newState = { ...walletState }
+
+  // await store.dispatch(refreshVisibleTokenInfo(walletState.selectedNetwork))
+  const userVisibleTokensInfo = await refreshVisibleTokenInfo(newState.networkList)
+  newState.userVisibleTokensInfo = userVisibleTokensInfo
+
+  // await store.dispatch(refreshBalances(walletState))
+  const { accounts, selectedAccount } = await refreshBalances(newState)
+  newState.accounts = accounts
+  newState.selectedAccount = selectedAccount
+
+  // await store.dispatch(refreshPrices(walletState))
+  const { success, values } = await refreshPrices(newState)
+  newState.transactionSpotPrices = success ? values : newState.transactionSpotPrices
+
+  // await store.dispatch(refreshTokenPriceHistory(walletState.selectedPortfolioTimeline))
+  const { isFetchingPortfolioPriceHistory, portfolioPriceHistory } = await refreshPortfolioPriceHistory(newState)
+
+  return {
+    userVisibleTokensInfo: userVisibleTokensInfo,
+    selectedAccount: selectedAccount,
+    transactionSpotPrices: success ? values : walletState.transactionSpotPrices,
+    portfolioPriceHistory: portfolioPriceHistory,
+    isFetchingPortfolioPriceHistory
+  }
+}
+
+export const refreshWalletInfo = async (walletState: WalletState): Promise<WalletInfoUpdatedPayload> => {
+  const { braveWalletService } = getAPIProxy()
+
+  const refreshedKeyringInfo = await refreshKeyringInfo(walletState)
+  const accounts = refreshedKeyringInfo.accounts || walletState.accounts
+
+  let walletInfo: WalletInfoUpdatedPayload = {
+    ...refreshedKeyringInfo,
+    accounts,
+    defaultAccounts: refreshedKeyringInfo.defaultAccounts || walletState.defaultAccounts,
+    selectedAccount: refreshedKeyringInfo.selectedAccount || walletState.selectedAccount
+  }
+
+  if (refreshedKeyringInfo.isWalletCreated && !refreshedKeyringInfo.isWalletLocked) {
+    const refreshedNetworkInfo = await refreshNetworkInfo(walletState)
+
+    // Populate tokens from blockchain registry.
+    const fullTokenList = await getAllTokensList(refreshedNetworkInfo.networkList)
+
+    const { defaultWallet } = await braveWalletService.getDefaultWallet()
+
+    const {
+      installed: isMetaMaskInstalled
+    } = await braveWalletService.isExternalWalletInstalled(
+      BraveWallet.ExternalWalletType.MetaMask
+    )
+
+    const refreshedTransactionHistory = await refreshTransactionHistory({
+      accounts,
+      transactions: walletState.transactions
+    })
+
+    const { connectedAccounts } = await refreshSitePermissions({
+      accounts,
+      activeOrigin: walletState.activeOrigin
+    })
+
+    walletInfo = {
+      ...walletInfo,
+      isMetaMaskInstalled,
+      connectedAccounts,
+      fullTokenList,
+      ...refreshedNetworkInfo,
+      ...refreshedTransactionHistory,
+      defaultWallet
+    }
+  }
+
+  return walletInfo
+}
+
+export const updateAccountInfo = async (walletState: WalletState) => {
+  const { walletHandler } = getAPIProxy()
+  const walletInfo = await walletHandler.getWalletInfo()
+
+  if (walletState.accounts.length === walletInfo.accountInfos.length) {
+    const updatedAccounts = walletState.accounts.map(account => {
+      const info = walletInfo.accountInfos.find(info => account.address === info.address)
+      if (info) {
+        account.name = info.name
+      }
+      return account
+    })
+    return updatedAccounts
+  }
+
+  const { accounts: updatedAccounts } = await refreshWalletInfo(walletState)
+  return updatedAccounts
+}
+
+interface RefreshedBalancesAndPrices {
+  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
+  accounts: WalletAccountType[]
+  selectedAccount: WalletAccountType
+  transactionSpotPrices: BraveWallet.AssetPrice[]
+}
+
+export const getRefreshedBalancesAndPrices = async ({
+  accounts,
+  defaultCurrencies,
+  defaultNetworks,
+  networkList,
+  selectedAccount,
+  selectedPortfolioTimeline,
+  transactionSpotPrices
+}: Pick<
+  WalletState,
+  'accounts'
+  | 'defaultCurrencies'
+  | 'defaultNetworks'
+  | 'networkList'
+  | 'selectedAccount'
+  | 'selectedPortfolioTimeline'
+  | 'transactionSpotPrices'
+>): Promise<RefreshedBalancesAndPrices> => {
+  const newVisibleTokenInfo = await refreshVisibleTokenInfo(networkList)
+
+  const {
+    accounts: newAccounts,
+    selectedAccount: newSelectedAccount
+  } = await refreshBalances({
+    accounts,
+    defaultNetworks,
+    networkList,
+    userVisibleTokensInfo: newVisibleTokenInfo,
+    selectedAccount
+  })
+
+  const priceInfo = await refreshPrices({
+    accounts: newAccounts,
+    defaultCurrencies,
+    networkList,
+    selectedPortfolioTimeline,
+    userVisibleTokensInfo: newVisibleTokenInfo
+  })
+
+  return {
+    userVisibleTokensInfo: newVisibleTokenInfo,
+    accounts: newAccounts,
+    selectedAccount: newSelectedAccount,
+    transactionSpotPrices: priceInfo.success ? priceInfo.values : transactionSpotPrices
+  }
 }

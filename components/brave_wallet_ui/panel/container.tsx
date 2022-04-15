@@ -488,8 +488,11 @@ function Container (props: Props) {
     }
   }, [connectedAccounts, selectedAccount, activeOrigin])
 
-  if (!hasInitialized || !accounts) {
-    return null
+  if (!hasInitialized) {
+    return <p>Not initialized</p>
+  }
+  if (!accounts) {
+    return <p>No accounts</p>
   }
 
   if (!isWalletCreated) {

@@ -263,7 +263,11 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
   if (hardwareAccount.vendor === BraveWallet.LEDGER_HARDWARE_VENDOR) {
     const { success, error, code } = await signLedgerTransaction(apiProxy, hardwareAccount.path, txInfo)
     if (success) {
-      refreshTransactionHistory(txInfo.fromAddress)
+      const txHistory = await refreshTransactionHistory(
+        getWalletState(store),
+        txInfo.fromAddress
+      )
+      store.dispatch(WalletActions.transactionHistoryRefreshed(txHistory))
       return
     }
 
@@ -287,7 +291,11 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
   } else if (hardwareAccount.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR) {
     const { success, error, deviceError } = await signTrezorTransaction(apiProxy, hardwareAccount.path, txInfo)
     if (success) {
-      refreshTransactionHistory(txInfo.fromAddress)
+      const txHistory = await refreshTransactionHistory(
+        getWalletState(store),
+        txInfo.fromAddress
+      )
+      store.dispatch(WalletActions.transactionHistoryRefreshed(txHistory))
       await store.dispatch(PanelActions.navigateToMain())
       return
     }

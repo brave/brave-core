@@ -4,12 +4,15 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import {
+  AccountTransactions,
   BraveWallet,
   Origin,
   SlippagePresetObjectType,
   TransactionProviderError,
-  WalletAccountType
+  WalletAccountType,
+  WalletState
 } from '../../constants/types'
+import { RefreshedKeyringInfo, RefreshedNetworkInfo } from '../async/lib'
 
 export type UnlockWalletPayloadType = {
   password: string
@@ -101,4 +104,80 @@ export type AddSitePermissionPayloadType = {
 export type SetTransactionProviderErrorType = {
   transaction: BraveWallet.TransactionInfo
   providerError: TransactionProviderError
+}
+
+export interface SetAssetBalancesPayload {
+  tokenBalances: []
+  nativeAssetBalances: []
+}
+
+export interface BalancesAndPricesRefreshedPayload {
+  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
+  accounts: WalletAccountType[]
+  selectedAccount: WalletAccountType
+  transactionSpotPrices: BraveWallet.AssetPrice[]
+}
+
+export type WalletInfoUpdatedPayload = {
+  isMetaMaskInstalled?: boolean
+  connectedAccounts?: WalletAccountType[]
+  fullTokenList?: BraveWallet.BlockchainToken[]
+  accounts: WalletAccountType[]
+  defaultAccounts: BraveWallet.AccountInfo[]
+  selectedAccount: WalletAccountType
+  defaultWallet?: number
+} & RefreshedKeyringInfo & Partial<TransactionHistoryRefreshedPayload> & Partial<RefreshedNetworkInfo>
+
+export interface ChainChangeCompletedPayload {
+  selectedAccount: WalletAccountType
+  coin: number
+}
+
+export interface SelectAccountCompletedPayload {
+  coin: number
+  pendingTransactions: BraveWallet.TransactionInfo[]
+  selectedAccount: WalletAccountType
+  selectedNetwork: BraveWallet.NetworkInfo
+  selectedPendingTransaction?: BraveWallet.TransactionInfo
+  transactions: AccountTransactions
+}
+
+export interface AccountUpdatedPayload {
+  accounts: WalletAccountType[]
+  selectedAccount: WalletAccountType
+}
+
+export interface WalletDataInitializedPayload {
+  defaultCurrencies?: WalletState['defaultCurrencies']
+  defaultNetworks?: WalletState['defaultNetworks']
+  networkList?: WalletState['networkList']
+  selectedNetwork?: WalletState['selectedNetwork']
+  userVisibleTokensInfo?: WalletState['userVisibleTokensInfo']
+  accounts?: WalletState['accounts']
+  selectedAccount?: WalletState['selectedAccount']
+  transactionSpotPrices?: WalletState['transactionSpotPrices']
+  isFetchingPortfolioPriceHistory?: WalletState['isFetchingPortfolioPriceHistory']
+  portfolioPriceHistory?: WalletState['portfolioPriceHistory']
+  pendingTransactions?: WalletState['pendingTransactions']
+  selectedPendingTransaction?: WalletState['selectedPendingTransaction']
+  transactions?: WalletState['transactions']
+}
+
+export interface BalancesAndPricesHistoryRefreshedPayload {
+  userVisibleTokensInfo?: WalletState['userVisibleTokensInfo']
+  selectedAccount?: WalletState['selectedAccount']
+  transactionSpotPrices?: WalletState['transactionSpotPrices']
+  portfolioPriceHistory?: WalletState['portfolioPriceHistory']
+  isFetchingPortfolioPriceHistory?: WalletState['isFetchingPortfolioPriceHistory']
+}
+
+export interface RefreshTokenPriceHistoryResult {
+  portfolioPriceHistory: WalletState['portfolioPriceHistory']
+  isFetchingPortfolioPriceHistory: WalletState['isFetchingPortfolioPriceHistory']
+}
+
+export interface TransactionHistoryRefreshedPayload {
+  transactions: WalletState['transactions']
+  pendingTransactions: WalletState['pendingTransactions']
+  selectedPendingTransaction: WalletState['selectedPendingTransaction']
 }
