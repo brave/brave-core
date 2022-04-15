@@ -69,7 +69,7 @@ class AdsClientMock : public AdsClient {
                     const int days_ago,
                     GetBrowsingHistoryCallback callback));
 
-  MOCK_METHOD1(LoadDataResourceForId, std::string(const std::string& id));
+  MOCK_METHOD1(LoadDataResource, std::string(const std::string& name));
 
   MOCK_METHOD0(ClearScheduledCaptcha, void());
 

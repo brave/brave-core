@@ -1165,9 +1165,9 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   }
 }
 
-- (const std::string)loadDataResourceForId:(const std::string&)id {
+- (const std::string)loadDataResource:(const std::string&)name {
   const auto bundle = [NSBundle bundleForClass:[BraveAds class]];
-  const auto path = [bundle pathForResource:base::SysUTF8ToNSString(id)
+  const auto path = [bundle pathForResource:base::SysUTF8ToNSString(name)
                                      ofType:nil];
   if (!path || path.length == 0) {
     return "";

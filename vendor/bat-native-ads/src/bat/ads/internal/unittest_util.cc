@@ -546,11 +546,11 @@ void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock) {
       }));
 }
 
-void MockLoadDataResourceForId(const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, LoadDataResourceForId(_))
-      .WillByDefault(Invoke([](const std::string& id) -> std::string {
+void MockLoadDataResource(const std::unique_ptr<AdsClientMock>& mock) {
+  ON_CALL(*mock, LoadDataResource(_))
+      .WillByDefault(Invoke([](const std::string& name) -> std::string {
         base::FilePath path = GetResourcesPath();
-        path = path.AppendASCII(id);
+        path = path.AppendASCII(name);
 
         std::string value;
         base::ReadFileToString(path, &value);

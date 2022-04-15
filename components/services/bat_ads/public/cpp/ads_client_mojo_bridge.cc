@@ -103,17 +103,16 @@ void AdsClientMojoBridge::GetAdEvents(const std::string& ad_type,
   std::move(callback).Run(ads_client_->GetAdEvents(ad_type, confirmation_type));
 }
 
-bool AdsClientMojoBridge::LoadDataResourceForId(const std::string& id,
-                                                std::string* out_value) {
+bool AdsClientMojoBridge::LoadDataResource(const std::string& name,
+                                           std::string* out_value) {
   DCHECK(out_value);
-  *out_value = ads_client_->LoadDataResourceForId(id);
+  *out_value = ads_client_->LoadDataResource(name);
   return true;
 }
 
-void AdsClientMojoBridge::LoadDataResourceForId(
-    const std::string& id,
-    LoadDataResourceForIdCallback callback) {
-  std::move(callback).Run(ads_client_->LoadDataResourceForId(id));
+void AdsClientMojoBridge::LoadDataResource(const std::string& name,
+                                           LoadDataResourceCallback callback) {
+  std::move(callback).Run(ads_client_->LoadDataResource(name));
 }
 
 void AdsClientMojoBridge::ClearScheduledCaptcha() {

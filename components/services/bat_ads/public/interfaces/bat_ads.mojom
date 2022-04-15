@@ -32,7 +32,7 @@ interface BatAdsClient {
   [Sync]
   GetAdEvents(string ad_type, string confirmation_type) => (array<double> ad_events);
   [Sync]
-  LoadDataResourceForId(string id) => (string value);
+  LoadDataResource(string name) => (string value);
   [Sync]
   GetBooleanPref(string path) => (bool value);
   [Sync]

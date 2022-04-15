@@ -54,10 +54,10 @@ class AdsClientMojoBridge
                    const std::string& confirmation_type,
                    GetAdEventsCallback callback) override;
 
-  bool LoadDataResourceForId(const std::string& id,
-                             std::string* out_value) override;
-  void LoadDataResourceForId(const std::string& id,
-                             LoadDataResourceForIdCallback callback) override;
+  bool LoadDataResource(const std::string& name,
+                        std::string* out_value) override;
+  void LoadDataResource(const std::string& name,
+                        LoadDataResourceCallback callback) override;
   void ClearScheduledCaptcha() override;
   void GetScheduledCaptcha(const std::string& payment_id,
                            GetScheduledCaptchaCallback callback) override;

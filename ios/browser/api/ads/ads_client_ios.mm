@@ -93,8 +93,8 @@ void AdsClientIOS::Load(const std::string& name, ads::LoadCallback callback) {
   [bridge_ load:name callback:callback];
 }
 
-std::string AdsClientIOS::LoadDataResourceForId(const std::string& id) {
-  return [bridge_ loadDataResourceForId:id];
+std::string AdsClientIOS::LoadDataResource(const std::string& name) {
+  return [bridge_ loadDataResource:name];
 }
 
 void AdsClientIOS::ClearScheduledCaptcha() {
