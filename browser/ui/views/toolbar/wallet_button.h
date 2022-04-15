@@ -13,6 +13,7 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/views/controls/button/menu_button_controller.h"
 
 class PrefService;
 
@@ -42,6 +43,7 @@ class WalletButton : public ToolbarButton {
   void OnWalletPressed(const ui::Event& event);
 
   raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;
   raw_ptr<views::View> backup_anchor_view_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
 };
