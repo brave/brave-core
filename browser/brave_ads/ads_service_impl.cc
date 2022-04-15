@@ -2236,6 +2236,11 @@ void AdsServiceImpl::LogTrainingCovariates(
         log.number_of_tabs = value_as_int;
         break;
       }
+
+      default: {
+        VLOG(1) << covariate->covariate_type << " covariate unsupported";
+        break;
+      }
     }
   }
 

@@ -21,6 +21,14 @@ std::string ToString(const int value) {
   return base::NumberToString(value);
 }
 
+std::string ToString(const int64_t value) {
+  return base::NumberToString(value);
+}
+
+std::string ToString(const double value) {
+  return base::NumberToString(value);
+}
+
 std::string ToString(const bool value) {
   return value ? kTrue : kFalse;
 }

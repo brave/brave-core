@@ -24,15 +24,18 @@ class CovariateLogEntry;
 // "instance ". A column is called "feature". To differentiate between
 // Chromium/griffin features and federated services features, we call them
 // covariates instead. Covariate values can be of different data types as
-// defined in |mojom::ads::Covariate|.
-// All covariates are only session based at the moment, i.e no measurements
-// are persistet across sessions
+// defined in |mojom::ads::Covariate|. All covariates are only session based at
+// the moment, i.e no measurements are persisted across sessions.
 class CovariateLogs final {
  public:
   CovariateLogs();
   CovariateLogs(const CovariateLogs&) = delete;
   CovariateLogs& operator=(const CovariateLogs&) = delete;
   ~CovariateLogs();
+
+  static CovariateLogs* Get();
+
+  static bool HasInstance();
 
   void SetCovariateLogEntry(std::unique_ptr<CovariateLogEntry> entry);
   brave_federated::mojom::TrainingCovariatesPtr GetTrainingCovariates() const;

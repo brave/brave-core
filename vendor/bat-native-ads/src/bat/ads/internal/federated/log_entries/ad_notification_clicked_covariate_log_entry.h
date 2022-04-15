@@ -23,7 +23,7 @@ class AdNotificationClickedCovariateLogEntry final : public CovariateLogEntry {
 
   void SetClicked(const bool clicked);
 
-  // CovariateLogEntry
+  // CovariateLogEntry:
   brave_federated::mojom::DataType GetDataType() const override;
   brave_federated::mojom::CovariateType GetCovariateType() const override;
   std::string GetValue() const override;

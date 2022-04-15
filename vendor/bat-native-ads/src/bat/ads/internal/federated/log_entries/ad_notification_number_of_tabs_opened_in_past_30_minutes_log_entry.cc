@@ -9,7 +9,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/federated/covariate_logs_util.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
-#include "bat/ads/internal/user_activity/user_activity_tabs_util.h"
+#include "bat/ads/internal/user_activity/user_activity_util.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {
