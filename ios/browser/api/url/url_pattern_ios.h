@@ -22,8 +22,7 @@ typedef NS_OPTIONS(NSInteger, URLPatternIOSScheme) {
   URLPatternIOSSchemeWs = 1 << 7,
   URLPatternIOSSchemeWss = 1 << 8,
   URLPatternIOSSchemeData = 1 << 9,
-  URLPatternIOSSchemeUrn = 1 << 10,
-  URLPatternIOSSchemeUUIDInPackage = 1 << 11,
+  URLPatternIOSSchemeUUIDInPackage = 1 << 10,
   URLPatternIOSSchemeAll = -1
 } NS_SWIFT_NAME(URLPattern.Scheme);
 
