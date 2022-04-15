@@ -12,6 +12,7 @@
 #include "base/containers/span.h"
 #include "base/logging.h"
 #include "base/notreached.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
@@ -23,12 +24,21 @@ namespace brave_sync {
 
 namespace {
 
-// TODO(alexeybarabash): subject to change
-static constexpr char kWordsv1SunsetDate[] = "Wed, 1 Jun 2022 00:00:00 GMT";
-
-static constexpr char kWordsv2Epoch[] = "Fri, 15 Apr 2022 00:00:00 GMT";
+static constexpr char kWordsv1SunsetDate[] = "Mon, 1 Aug 2022 00:00:00 GMT";
+static constexpr char kWordsv2Epoch[] = "Tue, 10 May 2022 00:00:00 GMT";
 
 }  // namespace
+
+TimeLimitedWords::PureWordsWithStatus::PureWordsWithStatus() = default;
+
+TimeLimitedWords::PureWordsWithStatus::PureWordsWithStatus(
+    PureWordsWithStatus&& other) = default;
+
+TimeLimitedWords::PureWordsWithStatus::~PureWordsWithStatus() = default;
+
+TimeLimitedWords::PureWordsWithStatus&
+TimeLimitedWords::PureWordsWithStatus::operator=(PureWordsWithStatus&& other) =
+    default;
 
 using base::Time;
 using base::TimeDelta;
@@ -117,11 +127,11 @@ std::string TimeLimitedWords::GenerateForDate(const std::string& pure_words,
 
   std::string last_word = GetWordByIndex(days_since_words_v2_epoch);
 
-  std::string time_limited_code = pure_words + " " + last_word;
+  std::string time_limited_code = base::StrCat({pure_words, " ", last_word});
   return time_limited_code;
 }
 
-WordsValidationResult TimeLimitedWords::Validate(
+WordsValidationStatus TimeLimitedWords::Validate(
     const std::string& time_limited_words,
     std::string* pure_words) {
   CHECK_NE(pure_words, nullptr);
@@ -144,12 +154,12 @@ WordsValidationResult TimeLimitedWords::Validate(
           base::span<std::string>(words.begin(), kPureWordsCount), " ");
       if (crypto::IsPassphraseValid(recombined_pure_words)) {
         *pure_words = recombined_pure_words;
-        return WordsValidationResult::kValid;
+        return WordsValidationStatus::kValid;
       } else {
-        return WordsValidationResult::kNotValidPureWords;
+        return WordsValidationStatus::kNotValidPureWords;
       }
     } else {
-      return WordsValidationResult::kVersionDeprecated;
+      return WordsValidationStatus::kVersionDeprecated;
     }
   } else if (num_words == kWordsV2Count) {
     std::string recombined_pure_words = base::JoinString(
@@ -164,21 +174,36 @@ WordsValidationResult TimeLimitedWords::Validate(
       int days_abs_diff = std::abs(days_actual - days_encoded);
       if (days_abs_diff <= 1) {
         *pure_words = recombined_pure_words;
-        return WordsValidationResult::kValid;
+        return WordsValidationStatus::kValid;
       } else if (days_actual > days_encoded) {
-        return WordsValidationResult::kExpired;
+        return WordsValidationStatus::kExpired;
       } else if (days_encoded > days_actual) {
-        return WordsValidationResult::kValidForTooLong;
+        return WordsValidationStatus::kValidForTooLong;
       }
     } else {
-      return WordsValidationResult::kNotValidPureWords;
+      return WordsValidationStatus::kNotValidPureWords;
     }
   } else {
-    return WordsValidationResult::kWrongWordsNumber;
+    return WordsValidationStatus::kWrongWordsNumber;
   }
 
   NOTREACHED();
-  return WordsValidationResult::kNotValidPureWords;
+  return WordsValidationStatus::kNotValidPureWords;
+}
+
+TimeLimitedWords::PureWordsWithStatus TimeLimitedWords::Parse(
+    const std::string& time_limited_words) {
+  PureWordsWithStatus ret;
+  std::string pure_words;
+  ret.status = Validate(time_limited_words, &pure_words);
+
+  if (ret.status == WordsValidationStatus::kValid) {
+    ret.pure_words = pure_words;
+  } else {
+    ret.pure_words = absl::nullopt;
+  }
+
+  return ret;
 }
 
 }  // namespace brave_sync

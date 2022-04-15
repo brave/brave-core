@@ -44,12 +44,7 @@ Polymer({
       value: 'choose',
       notify: true
     },
-    isInvalidSyncCode: {
-      type: Boolean,
-      value: false,
-      notify: true
-    },
-    syncCodeValidationResult: {
+    syncCodeValidationError: {
       type: String,
       value: '',
       notify: true
@@ -69,7 +64,6 @@ Polymer({
   },
 
   observers: [
-    'updateSyncCodeValidity_(syncCode)',
     'getQRCode_(syncCode, codeType)',
   ],
 
@@ -78,10 +72,6 @@ Polymer({
 
   created: function() {
     this.syncBrowserProxy_ = BraveSyncBrowserProxy.getInstance();
-  },
-
-  updateSyncCodeValidity_: function() {
-    this.isInvalidSyncCode = false
   },
 
   computeSyncCodeWordCount_: function() {

@@ -358,9 +358,11 @@ int JNI_BraveSyncWorker_GetWordsValidationResult(
   std::string str_time_limited_words =
       base::android::ConvertJavaStringToUTF8(time_limited_words);
   DCHECK(!str_time_limited_words.empty());
-  std::string pure_words_stub;
-  return static_cast<int>(brave_sync::TimeLimitedWords::Validate(
-      str_time_limited_words, &pure_words_stub));
+
+  auto pure_words_with_status =
+      brave_sync::TimeLimitedWords::Parse(str_time_limited_words);
+
+  return static_cast<int>(pure_words_with_status.status);
 }
 
 static base::android::ScopedJavaLocalRef<jstring>
@@ -371,12 +373,14 @@ JNI_BraveSyncWorker_GetPureWordsFromTimeLimited(
       base::android::ConvertJavaStringToUTF8(time_limited_words);
   DCHECK(!str_time_limited_words.empty());
 
-  std::string pure_words;
-  auto validation_result = brave_sync::TimeLimitedWords::Validate(
-      str_time_limited_words, &pure_words);
-  DCHECK_EQ(validation_result, brave_sync::WordsValidationResult::kValid);
+  auto pure_words_with_status =
+      brave_sync::TimeLimitedWords::Parse(str_time_limited_words);
+  DCHECK_EQ(pure_words_with_status.status,
+            brave_sync::WordsValidationStatus::kValid);
+  DCHECK(pure_words_with_status.pure_words.has_value());
 
-  return base::android::ConvertUTF8ToJavaString(env, pure_words);
+  return base::android::ConvertUTF8ToJavaString(
+      env, pure_words_with_status.pure_words.value());
 }
 
 static base::android::ScopedJavaLocalRef<jstring>

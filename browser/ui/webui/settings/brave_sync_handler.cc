@@ -31,24 +31,24 @@
 #include "ui/base/webui/web_ui_util.h"
 
 using brave_sync::TimeLimitedWords;
-using brave_sync::WordsValidationResult;
+using brave_sync::WordsValidationStatus;
 
 namespace {
 
 std::string GetSyncCodeValidationString(
-    WordsValidationResult validation_result) {
+    WordsValidationStatus validation_result) {
   switch (validation_result) {
-    case WordsValidationResult::kValid:
+    case WordsValidationStatus::kValid:
       return "";
-    case WordsValidationResult::kWrongWordsNumber:
-    case WordsValidationResult::kNotValidPureWords:
+    case WordsValidationStatus::kWrongWordsNumber:
+    case WordsValidationStatus::kNotValidPureWords:
       return l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_CODE_INVALID);
-    case WordsValidationResult::kVersionDeprecated:
+    case WordsValidationStatus::kVersionDeprecated:
       return l10n_util::GetStringUTF8(
           IDS_BRAVE_SYNC_CODE_FROM_DEPRECATED_VERSION);
-    case WordsValidationResult::kExpired:
+    case WordsValidationStatus::kExpired:
       return l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_CODE_EXPIRED);
-    case WordsValidationResult::kValidForTooLong:
+    case WordsValidationStatus::kValidForTooLong:
       return l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_CODE_VALID_FOR_TOO_LONG);
     default:
       NOTREACHED();
@@ -152,15 +152,15 @@ void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
   const std::string time_limited_sync_code = args[1].GetString();
 
   // Sync code arrives here with time-limit 25th word, remove it to get proper
-  // pure seed for QR generation
-  std::string pure_sync_code;
-  auto validation_result =
-      TimeLimitedWords::Validate(time_limited_sync_code, &pure_sync_code);
-  CHECK_EQ(validation_result, WordsValidationResult::kValid);
-  CHECK_NE(pure_sync_code.size(), 0u);
+  // pure seed for QR generation  (QR codes have their own expiry)
+  auto pure_words_with_status = TimeLimitedWords::Parse(time_limited_sync_code);
+  CHECK_EQ(pure_words_with_status.status, WordsValidationStatus::kValid);
+  CHECK(pure_words_with_status.pure_words);
+  CHECK_NE(pure_words_with_status.pure_words.value().size(), 0u);
 
   std::vector<uint8_t> seed;
-  if (!brave_sync::crypto::PassphraseToBytes32(pure_sync_code, &seed)) {
+  if (!brave_sync::crypto::PassphraseToBytes32(
+          pure_words_with_status.pure_words.value(), &seed)) {
     LOG(ERROR) << "invalid sync code when generating qr code";
     RejectJavascriptCallback(args[0].Clone(), base::Value("invalid sync code"));
     return;
@@ -210,23 +210,24 @@ void BraveSyncHandler::HandleSetSyncCode(const base::Value::List& args) {
     return;
   }
 
-  std::string pure_sync_code;
-  WordsValidationResult validation_result =
-      TimeLimitedWords::Validate(time_limited_sync_code, &pure_sync_code);
-  if (validation_result != WordsValidationResult::kValid) {
+  auto pure_words_with_status = TimeLimitedWords::Parse(time_limited_sync_code);
+
+  if (pure_words_with_status.status != WordsValidationStatus::kValid) {
     LOG(ERROR) << "Could not validate a sync code, validation_result="
-               << static_cast<int>(validation_result) << " "
-               << GetSyncCodeValidationString(validation_result);
-    RejectJavascriptCallback(
-        args[0].Clone(),
-        base::Value(GetSyncCodeValidationString(validation_result)));
+               << static_cast<int>(pure_words_with_status.status) << " "
+               << GetSyncCodeValidationString(pure_words_with_status.status);
+    RejectJavascriptCallback(args[0].Clone(),
+                             base::Value(GetSyncCodeValidationString(
+                                 pure_words_with_status.status)));
     return;
   }
 
-  CHECK(!pure_sync_code.empty());
+  CHECK(pure_words_with_status.pure_words);
+  CHECK(!pure_words_with_status.pure_words.value().empty());
 
   auto* sync_service = GetSyncService();
-  if (!sync_service || !sync_service->SetSyncCode(pure_sync_code)) {
+  if (!sync_service ||
+      !sync_service->SetSyncCode(pure_words_with_status.pure_words.value())) {
     RejectJavascriptCallback(args[0].Clone(), base::Value(false));
     return;
   }

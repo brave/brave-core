@@ -334,9 +334,9 @@
       <div class="sync-code-footer">
         [[i18n('braveSyncWordCount', syncCodeWordCount_)]]
       </div>
-      <template is="dom-if" if="[[isInvalidSyncCode]]">
+      <template is="dom-if" if="[[syncCodeValidationError]]">
         <div class="invalid-sync-code">
-          [[syncCodeValidationResult]]
+          [[syncCodeValidationError]]
         </div>
       </template>
     </div>

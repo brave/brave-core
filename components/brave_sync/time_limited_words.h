@@ -11,10 +11,11 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/time/time.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_sync {
 
-enum class WordsValidationResult {
+enum class WordsValidationStatus {
   kValid = 0,
   kNotValidPureWords = 1,
   kVersionDeprecated = 2,
@@ -27,14 +28,26 @@ FORWARD_DECLARE_TEST(TimeLimitedWordsTest, GenerateForDate);
 FORWARD_DECLARE_TEST(TimeLimitedWordsTest, GetIndexByWord);
 FORWARD_DECLARE_TEST(TimeLimitedWordsTest, GetRoundedDaysDiff);
 FORWARD_DECLARE_TEST(TimeLimitedWordsTest, GetWordByIndex);
-FORWARD_DECLARE_TEST(TimeLimitedWordsTest, Validate);
+FORWARD_DECLARE_TEST(TimeLimitedWordsTest, Parse);
 
 class TimeLimitedWords {
  public:
-  static std::string GenerateForNow(const std::string& pure_words);
+  struct PureWordsWithStatus {
+    PureWordsWithStatus();
+    PureWordsWithStatus(PureWordsWithStatus&& other);
+    PureWordsWithStatus& operator=(PureWordsWithStatus&& other);
 
-  static WordsValidationResult Validate(const std::string& time_limited_words,
-                                        std::string* pure_words);
+    PureWordsWithStatus(const PureWordsWithStatus&) = delete;
+    PureWordsWithStatus& operator=(const PureWordsWithStatus&) = delete;
+
+    ~PureWordsWithStatus();
+
+    absl::optional<std::string> pure_words;
+    WordsValidationStatus status;
+  };
+
+  static std::string GenerateForNow(const std::string& pure_words);
+  static PureWordsWithStatus Parse(const std::string& time_limited_words);
 
   static base::Time GetWordsV1SunsetDay();
   static base::Time GetWordsV2Epoch();
@@ -44,7 +57,10 @@ class TimeLimitedWords {
   FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, GetIndexByWord);
   FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, GetRoundedDaysDiff);
   FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, GetWordByIndex);
-  FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, Validate);
+  FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, Parse);
+
+  static WordsValidationStatus Validate(const std::string& time_limited_words,
+                                        std::string* pure_words);
 
   static std::string GenerateForDate(const std::string& pure_words,
                                      const base::Time& not_after);
