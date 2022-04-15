@@ -37,6 +37,7 @@ class TimeLimitedWords {
                                         std::string* pure_words);
 
   static base::Time GetWordsV1SunsetDay();
+  static base::Time GetWordsV2Epoch();
 
  private:
   FRIEND_TEST_ALL_PREFIXES(TimeLimitedWordsTest, GenerateForDate);
@@ -54,6 +55,7 @@ class TimeLimitedWords {
   static int GetIndexByWord(const std::string& word);
 
   static base::Time words_v1_sunset_day_;
+  static base::Time words_v2_epoch_;
 };
 
 }  // namespace brave_sync

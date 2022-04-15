@@ -10,7 +10,6 @@
 #include "base/logging.h"
 #include "base/test/gtest_util.h"
 #include "base/time/time_override.h"
-#include "brave/components/brave_sync/qr_code_validator.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::subtle::ScopedTimeClockOverrides;
@@ -39,7 +38,7 @@ std::unique_ptr<ScopedTimeClockOverrides> OverrideWithTimeNow(
 }  // namespace
 
 TEST(TimeLimitedWordsTest, GetRoundedDaysDiff) {
-  const base::Time time1 = QrCodeDataValidator::GetQRv1SunsetDay();
+  const base::Time time1 = TimeLimitedWords::GetWordsV2Epoch();
 
   base::Time time2 = time1 + base::Hours(11);
   EXPECT_EQ(TimeLimitedWords::GetRoundedDaysDiff(time1, time2), 0);
@@ -65,14 +64,14 @@ TEST(TimeLimitedWordsTest, GetWordByIndex) {
 TEST(TimeLimitedWordsTest, GenerateForDate) {
   EXPECT_EQ(std::string(kValidSyncCode) + " abandon",
             TimeLimitedWords::GenerateForDate(
-                kValidSyncCode, QrCodeDataValidator::GetQRv1SunsetDay()));
-  EXPECT_EQ(std::string(kValidSyncCode) + " ability",
-            TimeLimitedWords::GenerateForDate(
-                kValidSyncCode,
-                QrCodeDataValidator::GetQRv1SunsetDay() + base::Days(1)));
+                kValidSyncCode, TimeLimitedWords::GetWordsV2Epoch()));
+  EXPECT_EQ(
+      std::string(kValidSyncCode) + " ability",
+      TimeLimitedWords::GenerateForDate(
+          kValidSyncCode, TimeLimitedWords::GetWordsV2Epoch() + base::Days(1)));
   EXPECT_EQ("", TimeLimitedWords::GenerateForDate(
                     kValidSyncCode,
-                    QrCodeDataValidator::GetQRv1SunsetDay() - base::Days(1)));
+                    TimeLimitedWords::GetWordsV2Epoch() - base::Days(1)));
 }
 
 TEST(TimeLimitedWordsTest, Validate) {
@@ -108,7 +107,7 @@ TEST(TimeLimitedWordsTest, Validate) {
   }
 
   const base::Time anchorDayForWordsV2 =
-      QrCodeDataValidator::GetQRv1SunsetDay() + base::Days(20);
+      TimeLimitedWords::GetWordsV2Epoch() + base::Days(20);
   const std::string valid25thAnchoredWord =
       TimeLimitedWords::GetWordByIndex(20);
   const std::string valid25thAnchoredWords =
@@ -171,7 +170,7 @@ TEST(TimeLimitedWordsTest, Validate) {
         kValidSyncCode + std::string(" ") + validModulo2048Word;
 
     auto time_override = OverrideWithTimeNow(
-        QrCodeDataValidator::GetQRv1SunsetDay() + base::Days(2048));
+        TimeLimitedWords::GetWordsV2Epoch() + base::Days(2048));
     result = TimeLimitedWords::Validate(validModulo2048Words, &pure_words);
     EXPECT_EQ(result, WordsValidationResult::kValid);
     EXPECT_EQ(pure_words, kValidSyncCode);

@@ -16,7 +16,6 @@
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
-#include "brave/components/brave_sync/qr_code_validator.h"
 #include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
 #include "brave/vendor/bip39wally-core-native/src/wordlist.h"
 
@@ -27,12 +26,15 @@ namespace {
 // TODO(alexeybarabash): subject to change
 static constexpr char kWordsv1SunsetDate[] = "Wed, 1 Jun 2022 00:00:00 GMT";
 
+static constexpr char kWordsv2Epoch[] = "Fri, 15 Apr 2022 00:00:00 GMT";
+
 }  // namespace
 
 using base::Time;
 using base::TimeDelta;
 
 Time TimeLimitedWords::words_v1_sunset_day_;
+Time TimeLimitedWords::words_v2_epoch_;
 
 std::string TimeLimitedWords::GetWordByIndex(size_t index) {
   DCHECK_EQ(BIP39_WORDLIST_LEN, 2048);
@@ -79,6 +81,17 @@ Time TimeLimitedWords::GetWordsV1SunsetDay() {
   return words_v1_sunset_day_;
 }
 
+Time TimeLimitedWords::GetWordsV2Epoch() {
+  if (words_v2_epoch_.is_null()) {
+    bool convert_result = Time::FromUTCString(kWordsv2Epoch, &words_v2_epoch_);
+    CHECK(convert_result);
+  }
+
+  CHECK(!words_v2_epoch_.is_null());
+
+  return words_v2_epoch_;
+}
+
 int TimeLimitedWords::GetRoundedDaysDiff(const Time& time1, const Time& time2) {
   TimeDelta delta = time2 - time1;
 
@@ -94,15 +107,15 @@ std::string TimeLimitedWords::GenerateForNow(const std::string& pure_words) {
 
 std::string TimeLimitedWords::GenerateForDate(const std::string& pure_words,
                                               const Time& not_after) {
-  int days_since_qrv2_epoh =
-      GetRoundedDaysDiff(QrCodeDataValidator::GetQRv1SunsetDay(), not_after);
+  int days_since_words_v2_epoch =
+      GetRoundedDaysDiff(GetWordsV2Epoch(), not_after);
 
-  if (days_since_qrv2_epoh < 0) {
+  if (days_since_words_v2_epoch < 0) {
     // Something goes bad, requested |not_after| is even before sync v2 epoch
     return std::string();
   }
 
-  std::string last_word = GetWordByIndex(days_since_qrv2_epoh);
+  std::string last_word = GetWordByIndex(days_since_words_v2_epoch);
 
   std::string time_limited_code = pure_words + " " + last_word;
   return time_limited_code;
@@ -143,8 +156,7 @@ WordsValidationResult TimeLimitedWords::Validate(
         base::span<std::string>(words.begin(), kPureWordsCount), " ");
     if (crypto::IsPassphraseValid(recombined_pure_words)) {
       int days_actual =
-          GetRoundedDaysDiff(QrCodeDataValidator::GetQRv1SunsetDay(), now) %
-          BIP39_WORDLIST_LEN;
+          GetRoundedDaysDiff(GetWordsV2Epoch(), now) % BIP39_WORDLIST_LEN;
 
       int days_encoded = GetIndexByWord(words[kWordsV2Count - 1]);
       DCHECK(days_encoded < BIP39_WORDLIST_LEN);
