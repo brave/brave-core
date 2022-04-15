@@ -2245,21 +2245,20 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaBalance) {
   auto expected_network =
       GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
   SetInterceptor(expected_network, "getBalance", "",
-                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-                 "{\"context\":{\"slot\":106921266},\"value\":513234116063}}");
-  TestGetSolanaBalance(513234116063ULL, mojom::SolanaProviderError::kSuccess,
-                       "");
+                 R"({"jsonrpc":"2.0","id":1,"result":{
+                      "context":{"slot":106921266},"value":18446744073709551615}})");
+  TestGetSolanaBalance(UINT64_MAX, mojom::SolanaProviderError::kSuccess, "");
 
   // Response parsing error
   SetInterceptor(expected_network, "getBalance", "",
-                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}");
+                 R"({"jsonrpc":"2.0","id":1,"result":"0"})");
   TestGetSolanaBalance(0u, mojom::SolanaProviderError::kParsingError,
                        l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
   // JSON RPC error
   SetInterceptor(expected_network, "getBalance", "",
-                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":"
-                 "{\"code\":-32601, \"message\": \"method does not exist\"}}");
+                 R"({"jsonrpc":"2.0","id":1,"error":{
+                      "code":-32601, "message": "method does not exist"}})");
   TestGetSolanaBalance(0u, mojom::SolanaProviderError::kMethodNotFound,
                        "method does not exist");
 
@@ -2466,14 +2465,14 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaSignatureStatuses) {
           "context": {"slot": 82},
           "value": [
             {
-              "slot": 9007199254740991,
+              "slot": 18446744073709551615,
               "confirmations": 10,
               "err": null,
               "confirmationStatus": "confirmed"
             },
             {
               "slot": 72,
-              "confirmations": 9007199254740991,
+              "confirmations": 18446744073709551615,
               "err": null,
               "confirmationStatus": "confirmed"
             },
@@ -2504,8 +2503,8 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaSignatureStatuses) {
       "NTkpA52YStRW5Dia7"};
 
   std::vector<absl::optional<SolanaSignatureStatus>> expected_statuses(
-      {SolanaSignatureStatus(kMaxSafeIntegerUint64, 10u, "", "confirmed"),
-       SolanaSignatureStatus(72u, kMaxSafeIntegerUint64, "", "confirmed"),
+      {SolanaSignatureStatus(UINT64_MAX, 10u, "", "confirmed"),
+       SolanaSignatureStatus(72u, UINT64_MAX, "", "confirmed"),
        SolanaSignatureStatus(
            1092u, 0u, R"({"InstructionError":[0,{"Custom":1}]})", "finalized"),
        absl::nullopt});
@@ -2514,7 +2513,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaSignatureStatuses) {
 
   // Response parsing error
   SetInterceptor(expected_network_url, "getSignatureStatuses", "",
-                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}");
+                 R"({"jsonrpc":"2.0","id":1,"result":"0"})");
   TestGetSolanaSignatureStatuses(
       tx_sigs, std::vector<absl::optional<SolanaSignatureStatus>>(),
       mojom::SolanaProviderError::kParsingError,
@@ -2522,8 +2521,8 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaSignatureStatuses) {
 
   // JSON RPC error
   SetInterceptor(expected_network_url, "getSignatureStatuses", "",
-                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":"
-                 "{\"code\":-32601, \"message\": \"method does not exist\"}}");
+                 R"({"jsonrpc":"2.0","id":1,"error":{
+                      "code":-32601, "message": "method does not exist"}})");
   TestGetSolanaSignatureStatuses(
       tx_sigs, std::vector<absl::optional<SolanaSignatureStatus>>(),
       mojom::SolanaProviderError::kMethodNotFound, "method does not exist");
@@ -2545,9 +2544,9 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaAccountInfo) {
         "value":{
           "data":["SEVMTE8gV09STEQ=","base64"],
           "executable":false,
-          "lamports":88801034809120,
+          "lamports":18446744073709551615,
           "owner":"11111111111111111111111111111111",
-          "rentEpoch":284
+          "rentEpoch":18446744073709551615
         }
       }
     }
@@ -2558,11 +2557,11 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaAccountInfo) {
   SetInterceptor(expected_network_url, "getAccountInfo", "", json);
 
   SolanaAccountInfo expected_info;
-  expected_info.lamports = 88801034809120ULL;
+  expected_info.lamports = UINT64_MAX;
   expected_info.owner = "11111111111111111111111111111111";
   expected_info.data = "SEVMTE8gV09STEQ=";
   expected_info.executable = false;
-  expected_info.rent_epoch = 284;
+  expected_info.rent_epoch = UINT64_MAX;
   TestGetSolanaAccountInfo(expected_info, mojom::SolanaProviderError::kSuccess,
                            "");
 
@@ -2575,15 +2574,15 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaAccountInfo) {
 
   // Response parsing error
   SetInterceptor(expected_network_url, "getAccountInfo", "",
-                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}");
+                 R"({"jsonrpc":"2.0","id":1,"result":"0"})");
   TestGetSolanaAccountInfo(absl::nullopt,
                            mojom::SolanaProviderError::kParsingError,
                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
   // JSON RPC error
   SetInterceptor(expected_network_url, "getAccountInfo", "",
-                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":"
-                 "{\"code\":-32601, \"message\": \"method does not exist\"}}");
+                 R"({"jsonrpc":"2.0","id":1,"error":{
+                      "code":-32601, "message": "method does not exist"}})");
   TestGetSolanaAccountInfo(absl::nullopt,
                            mojom::SolanaProviderError::kMethodNotFound,
                            "method does not exist");
@@ -2601,7 +2600,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaFeeForMessage) {
       "jsonrpc":"2.0","id":1,
       "result": {
         "context":{"slot":123065869},
-        "value": 12345
+        "value": 18446744073709551615
       }
     }
   )";
@@ -2612,7 +2611,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaFeeForMessage) {
   std::string base64_encoded_string;
   base::Base64Encode("test", &base64_encoded_string);
 
-  TestGetSolanaFeeForMessage(base64_encoded_string, 12345,
+  TestGetSolanaFeeForMessage(base64_encoded_string, UINT64_MAX,
                              mojom::SolanaProviderError::kSuccess, "");
   std::string base58_encoded_string = "JvSKSz9YHfqEQ8j";
   // Message has to be base64 encoded string and non-empty.

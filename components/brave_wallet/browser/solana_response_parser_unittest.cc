@@ -17,37 +17,32 @@ namespace solana {
 
 TEST(SolanaResponseParserUnitTest, ParseSolanaGetBalance) {
   std::string json =
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-      "{\"context\":{\"slot\":106921266},\"value\":513234116063}}";
+      R"({"jsonrpc":"2.0","id":1,"result":{
+            "context":{"slot":106921266},"value":"18446744073709551615"}})";
 
   uint64_t balance = 0;
   EXPECT_TRUE(ParseGetBalance(json, &balance));
-  EXPECT_EQ(balance, 513234116063ULL);
+  EXPECT_EQ(balance, UINT64_MAX);
 
   json =
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-      "{\"context\":{\"slot\":1069},\"value\":0}}";
+      R"({"jsonrpc":"2.0","id":1,"result":{
+            "context":{"slot":1069},"value":"0"}})";
   EXPECT_TRUE(ParseGetBalance(json, &balance));
   EXPECT_EQ(balance, 0ULL);
 
   json =
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-      "{\"context\":{\"slot\":1069},\"value\":\"0\"}}";
+      R"({"jsonrpc":"2.0","id":1,"result":{
+            "context":{"slot":1069},"value":0}})";
   EXPECT_FALSE(ParseGetBalance(json, &balance));
 
   json =
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-      "{\"context\":{\"slot\":1069},\"value\":18446744073709551615}}";
+      R"({"jsonrpc":"2.0","id":1,"result":{
+            "context":{"slot":1069},"value":"63.33"}})";
   EXPECT_FALSE(ParseGetBalance(json, &balance));
 
   json =
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-      "{\"context\":{\"slot\":1069},\"value\":63.33}}";
-  EXPECT_FALSE(ParseGetBalance(json, &balance));
-
-  json =
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-      "{\"context\":{\"slot\":1069},\"value\":-1}}";
+      R"({"jsonrpc":"2.0","id":1,"result":{
+            {"context":{"slot":1069},"value":"-1"}})";
   EXPECT_FALSE(ParseGetBalance(json, &balance));
 }
 
@@ -133,26 +128,26 @@ TEST(SolanaResponseParserUnitTest, ParseGetSignatureStatuses) {
           "context": {"slot": 82},
           "value": [
             {
-              "slot": 9007199254740991,
-              "confirmations": 10,
+              "slot": "18446744073709551615",
+              "confirmations": "10",
               "err": null,
               "confirmationStatus": "confirmed"
             },
             {
-              "slot": 72,
-              "confirmations": 9007199254740991,
+              "slot": "72",
+              "confirmations": "18446744073709551615",
               "err": null,
               "confirmationStatus": "confirmed"
             },
             {
-              "slot": 1092,
+              "slot": "1092",
               "confirmations": null,
               "err": {"InstructionError":[0,{"Custom":1}]},
               "confirmationStatus": "finalized"
             },
             {
-              "slot": 11,
-              "confirmations": 0,
+              "slot": "11",
+              "confirmations": "0",
               "err": null,
               "confirmationStatus": null
             },
@@ -166,8 +161,8 @@ TEST(SolanaResponseParserUnitTest, ParseGetSignatureStatuses) {
   ASSERT_TRUE(ParseGetSignatureStatuses(json, &statuses));
 
   std::vector<absl::optional<SolanaSignatureStatus>> expected_statuses(
-      {SolanaSignatureStatus(kMaxSafeIntegerUint64, 10u, "", "confirmed"),
-       SolanaSignatureStatus(72u, kMaxSafeIntegerUint64, "", "confirmed"),
+      {SolanaSignatureStatus(UINT64_MAX, 10u, "", "confirmed"),
+       SolanaSignatureStatus(72u, UINT64_MAX, "", "confirmed"),
        SolanaSignatureStatus(
            1092u, 0u, R"({"InstructionError":[0,{"Custom":1}]})", "finalized"),
        SolanaSignatureStatus(11u, 0u, "", ""), absl::nullopt});
@@ -180,14 +175,14 @@ TEST(SolanaResponseParserUnitTest, ParseGetSignatureStatuses) {
           "context": {"slot": 82},
           "value": [
             {
-              "slot": 18446744073709551615,
+              "slot": "18446744073709551615",
               "confirmations": 10,
               "err": null,
               "confirmationStatus": "confirmed"
             },
             {
               "slot": 72,
-              "confirmations": 18446744073709551615,
+              "confirmations": "18446744073709551615",
               "err": null,
               "confirmationStatus": "confirmed"
             },
@@ -212,20 +207,20 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
         "value":{
           "data":["SEVMTE8gV09STEQ=","base64"],
           "executable":false,
-          "lamports":88801034809120,
+          "lamports":"18446744073709551615",
           "owner":"11111111111111111111111111111111",
-          "rentEpoch":284
+          "rentEpoch":"18446744073709551615"
         }
       }
     }
   )";
 
   SolanaAccountInfo expected_info;
-  expected_info.lamports = 88801034809120ULL;
+  expected_info.lamports = UINT64_MAX;
   expected_info.owner = "11111111111111111111111111111111";
   expected_info.data = "SEVMTE8gV09STEQ=";
   expected_info.executable = false;
-  expected_info.rent_epoch = 284;
+  expected_info.rent_epoch = UINT64_MAX;
 
   absl::optional<SolanaAccountInfo> info;
   ASSERT_TRUE(ParseGetAccountInfo(json, &info));
@@ -251,9 +246,9 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
         "value":{
           "data":["JvSKSz9YHfqEQ8j","base64"],
           "executable":false,
-          "lamports":88801034809120,
+          "lamports":"88801034809120",
           "owner":"11111111111111111111111111111111",
-          "rentEpoch":284
+          "rentEpoch":"284"
         }
       }
     }
@@ -269,9 +264,9 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
         "value":{
           "data":["JvSKSz9YHfqEQ8j","base58"],
           "executable":false,
-          "lamports":88801034809120,
+          "lamports":"88801034809120",
           "owner":"11111111111111111111111111111111",
-          "rentEpoch":284
+          "rentEpoch":"284"
         }
       }
     }
@@ -297,9 +292,9 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
             }
           },
           "executable":false,
-          "lamports":88801034809120,
+          "lamports":"88801034809120",
           "owner":"11111111111111111111111111111111",
-          "rentEpoch":284
+          "rentEpoch":"284"
         }
       }
     }
@@ -314,9 +309,10 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
 
 TEST(SolanaResponseParserUnitTest, ParseGetFeeForMessage) {
   uint64_t fee = 0u;
-  std::string json = R"({"jsonrpc":"2.0", "id":1, "result":{"value":12345}})";
+  std::string json =
+      R"({"jsonrpc":"2.0", "id":1, "result":{"value":"18446744073709551615"}})";
   EXPECT_TRUE(ParseGetFeeForMessage(json, &fee));
-  EXPECT_EQ(fee, 12345u);
+  EXPECT_EQ(fee, UINT64_MAX);
 
   EXPECT_TRUE(ParseGetFeeForMessage(
       R"({"jsonrpc":"2.0", "id":1, "result":{"value":null}})", &fee));

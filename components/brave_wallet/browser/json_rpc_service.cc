@@ -1630,7 +1630,8 @@ void JsonRpcService::GetSolanaBalance(const std::string& pubkey,
       base::BindOnce(&JsonRpcService::OnGetSolanaBalance,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(solana::getBalance(pubkey), true, network_url,
-                  std::move(internal_callback));
+                  std::move(internal_callback),
+                  base::BindOnce(&ConvertUint64ToString, "/result/value"));
 }
 
 void JsonRpcService::GetSPLTokenAccountBalance(
@@ -1812,9 +1813,11 @@ void JsonRpcService::GetSolanaSignatureStatuses(
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetSolanaSignatureStatuses,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(solana::getSignatureStatuses(tx_signatures), true,
-                  network_urls_[mojom::CoinType::SOL],
-                  std::move(internal_callback));
+  RequestInternal(
+      solana::getSignatureStatuses(tx_signatures), true,
+      network_urls_[mojom::CoinType::SOL], std::move(internal_callback),
+      base::BindOnce(&ConvertMultiUint64InObjectArrayToString, "/result/value",
+                     std::vector<std::string>({"slot", "confirmations"})));
 }
 
 void JsonRpcService::OnGetSolanaSignatureStatuses(
@@ -1850,9 +1853,12 @@ void JsonRpcService::GetSolanaAccountInfo(
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetSolanaAccountInfo,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(solana::getAccountInfo(pubkey), true,
-                  network_urls_[mojom::CoinType::SOL],
-                  std::move(internal_callback));
+  RequestInternal(
+      solana::getAccountInfo(pubkey), true, network_urls_[mojom::CoinType::SOL],
+      std::move(internal_callback),
+      base::BindOnce(&ConvertMultiUint64ToString,
+                     std::vector<std::string>({"/result/value/lamports",
+                                               "/result/value/rentEpoch"})));
 }
 
 void JsonRpcService::OnGetSolanaAccountInfo(
@@ -1895,7 +1901,8 @@ void JsonRpcService::GetSolanaFeeForMessage(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(solana::getFeeForMessage(message), true,
                   network_urls_[mojom::CoinType::SOL],
-                  std::move(internal_callback));
+                  std::move(internal_callback),
+                  base::BindOnce(&ConvertUint64ToString, "/result/value"));
 }
 
 void JsonRpcService::OnGetSolanaFeeForMessage(

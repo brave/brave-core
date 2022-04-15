@@ -36,21 +36,11 @@ bool GetUint64FromDictValue(const base::Value& dict_value,
     return true;
   }
 
-  if (!value->is_int() && !value->is_double()) {
+  auto* string_value = value->GetIfString();
+  if (!string_value || string_value->empty())
     return false;
-  }
 
-  // We currently only support number up to kMaxSafeIntegerUint64, because
-  // double-precision floating-point can only precisely represent an integer
-  // up to kMaxSafeIntegerUint64.
-  double double_value = value->GetDouble();
-  if (double_value < 0 || double_value > kMaxSafeIntegerUint64)
-    return false;
-  *ret = static_cast<uint64_t>(double_value);
-
-  // This will be false if double_value is not an integer, which is considered
-  // as an invalid input.
-  return double_value == static_cast<double>(*ret);
+  return base::StringToUint64(*string_value, ret);
 }
 
 }  // namespace
@@ -124,13 +114,8 @@ bool ParseGetLatestBlockhash(const std::string& json,
     return false;
   *hash = *hash_ptr;
 
-  auto* last_valid_block_height_string =
-      value->FindStringKey("lastValidBlockHeight");
-  if (!last_valid_block_height_string ||
-      last_valid_block_height_string->empty())
-    return false;
-  return base::StringToUint64(*last_valid_block_height_string,
-                              last_valid_block_height);
+  return GetUint64FromDictValue(*value, "lastValidBlockHeight", false,
+                                last_valid_block_height);
 }
 
 bool ParseGetSignatureStatuses(

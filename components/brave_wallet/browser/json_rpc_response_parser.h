@@ -68,6 +68,15 @@ bool ParseBoolResult(const std::string& json, bool* value);
 absl::optional<std::string> ConvertUint64ToString(const std::string& path,
                                                   const std::string& json);
 
+absl::optional<std::string> ConvertMultiUint64ToString(
+    const std::vector<std::string>& paths,
+    const std::string& json);
+
+absl::optional<std::string> ConvertMultiUint64InObjectArrayToString(
+    const std::string& path,
+    const std::vector<std::string>& keys,
+    const std::string& json);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_RESPONSE_PARSER_H_
