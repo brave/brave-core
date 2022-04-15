@@ -47,10 +47,7 @@ import {
   QueueStepRow,
   QueueStepButton,
   ErrorText,
-  WarningBox,
-  WarningIcon,
-  WarningTitle,
-  WarningTitleRow
+  WarningIcon
 } from './style'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
 
@@ -61,7 +58,11 @@ import {
   AccountCircle,
   AddressAndOrb,
   AddressText,
-  URLText
+  URLText,
+  WarningBox,
+  WarningTitle,
+  LearnMoreButton,
+  WarningBoxTitleRow
 } from '../shared-panel-styles'
 
 type confirmPanelTabs = 'transaction' | 'details'
@@ -97,6 +98,7 @@ function ConfirmTransactionPanel ({
     isERC721SafeTransferFrom,
     isERC721TransferFrom,
     isSolanaTransaction,
+    isAssociatedTokenAccountCreation,
     onEditAllowanceSave,
     queueNextTransaction,
     rejectAllTransactions,
@@ -128,6 +130,14 @@ function ConfirmTransactionPanel ({
 
   const onToggleAdvancedTransactionSettings = () => {
     setShowAdvancedTransactionSettings(!showAdvancedTransactionSettings)
+  }
+
+  const onClickLearnMore = () => {
+    chrome.tabs.create({ url: 'https://support.brave.com/hc/en-us/articles/5546517853325' }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
   }
 
   // render
@@ -225,13 +235,13 @@ function ConfirmTransactionPanel ({
           <Description>{getLocale('braveWalletAllowSpendDescription').replace('$1', foundTokenInfoByContractAddress?.symbol ?? '')}</Description>
 
           {transactionDetails.isApprovalUnlimited &&
-            <WarningBox>
-              <WarningTitleRow>
+            <WarningBox warningType='danger'>
+              <WarningBoxTitleRow>
                 <WarningIcon />
-                <WarningTitle>
+                <WarningTitle warningType='danger'>
                   {getLocale('braveWalletAllowSpendUnlimitedWarningTitle')}
                 </WarningTitle>
-              </WarningTitleRow>
+              </WarningBoxTitleRow>
             </WarningBox>
           }
 
@@ -272,6 +282,20 @@ function ConfirmTransactionPanel ({
                 transactionDetails.fiatValue.formatAsFiat(defaultCurrencies.fiat)
               }
             </TransactionFiatAmountBig>
+          }
+          {isAssociatedTokenAccountCreation &&
+            <WarningBox warningType='warning'>
+              <WarningBoxTitleRow>
+                <WarningTitle warningType='warning'>
+                  {getLocale('braveWalletConfirmTransactionAccountCreationFee')}
+                  <LearnMoreButton
+                    onClick={onClickLearnMore}
+                  >
+                    {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
+                  </LearnMoreButton>
+                </WarningTitle>
+              </WarningBoxTitleRow>
+            </WarningBox>
           }
         </>
       )}

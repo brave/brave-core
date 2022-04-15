@@ -9,8 +9,9 @@ import {
   TransactionTypeText,
   TransactionText, Divider,
   SectionRow,
-  EditButton, WarningTitleRow
+  EditButton
 } from './style'
+import { WarningBoxTitleRow } from '../shared-panel-styles'
 
 interface TransactionInfoProps {
   onToggleEditGas: () => void
@@ -90,7 +91,7 @@ export const TransactionInfo = ({
 
     <Divider />
 
-    <WarningTitleRow>
+    <WarningBoxTitleRow>
       <TransactionTitle>
         {getLocale('braveWalletConfirmTransactionTotal')}
         {' '}
@@ -100,7 +101,7 @@ export const TransactionInfo = ({
             : getLocale('braveWalletConfirmTransactionAmountGas')
         })
       </TransactionTitle>
-    </WarningTitleRow>
+    </WarningBoxTitleRow>
 
     <TransactionTypeText>
       {transactionValueText} {transactionDetails.symbol} +
