@@ -47,6 +47,11 @@ IGNORED_NPM_ADVISORIES = [
     'https://github.com/advisories/GHSA-whgm-jr23-g3j9',  # rxdos
     'https://github.com/advisories/GHSA-ww39-953v-wcq6'   # rxdos
 ]
+IGNORED_NPM_ADVISORIES_WDP = IGNORED_NPM_ADVISORIES + [
+    # temporary workaround; only used in dev dep
+    'https://github.com/advisories/GHSA-fwr7-v2mv-hh25'
+]
+WDP_DIRECTORY = os.path.join('vendor', 'web-discovery-project')
 
 
 def main():
@@ -129,7 +134,7 @@ def npm_audit_deps(path, args):
         print('Audit failed to return valid json')
         return 1
 
-    resolutions = extract_resolutions(result)
+    resolutions = extract_resolutions(result, path)
 
     if len(resolutions) > 0:
         print('Result: Audit failed due to vulnerabilities')
@@ -175,10 +180,13 @@ def cargo_audit_deps(path, args):
     return subprocess.call(cargo_args, env=env)
 
 
-def extract_resolutions(result):
+def extract_resolutions(result, path):
     """Extract resolutions from advisories present in the result."""
 
     resolutions = []
+    ignored = (IGNORED_NPM_ADVISORIES_WDP
+               if WDP_DIRECTORY in path
+               else IGNORED_NPM_ADVISORIES)
     # npm 7+
     if 'vulnerabilities' in result:
         advisories = result['vulnerabilities']
@@ -188,7 +196,7 @@ def extract_resolutions(result):
             via = v['via']
             for item in via:
                 if isinstance(item, dict) and \
-                   item['url'] not in IGNORED_NPM_ADVISORIES:
+                   item['url'] not in ignored:
                     resolutions.append(item['url'])
     # npm 6 and earlier
     if 'advisories' in result:
@@ -197,7 +205,7 @@ def extract_resolutions(result):
             return resolutions
         for _, v in advisories.items():
             url = v['url']
-            if url not in IGNORED_NPM_ADVISORIES:
+            if url not in ignored:
                 resolutions.append(url)
     return resolutions
 
