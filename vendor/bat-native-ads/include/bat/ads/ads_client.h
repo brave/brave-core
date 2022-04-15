@@ -128,10 +128,9 @@ class ADS_EXPORT AdsClient {
                               const mojom::P2AEventType type,
                               const std::string& value) = 0;
 
-  // Log |training_covariates|.
-  virtual void LogTrainingCovariates(
-      const brave_federated::mojom::TrainingCovariatesPtr
-          training_covariates) = 0;
+  // Log |training_instance|.
+  virtual void LogTrainingInstance(
+      const brave_federated::mojom::TrainingInstancePtr training_instance) = 0;
 
   // Log a |message| to |file| and the console log with |line| and
   // |verbose_level|.

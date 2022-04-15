@@ -58,6 +58,6 @@ struct Covariate {
   string value;
 };
 
-struct TrainingCovariates {
+struct TrainingInstance {
   array<Covariate> covariates;
 };

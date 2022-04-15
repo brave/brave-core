@@ -1856,8 +1856,8 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   // Not needed on iOS
 }
 
-- (void)logTrainingCovariates:
-    (brave_federated::mojom::TrainingCovariatesPtr)training_covariates {
+- (void)logTrainingInstance:
+    (brave_federated::mojom::TrainingInstancePtr)training_instance {
   // Not needed on iOS
 }
 
