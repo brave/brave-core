@@ -19,14 +19,7 @@ CHROMIUM_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 BRAVE_CORE_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..', '..'))
-BRAVE_BROWSER_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
-"""
-SHALLOW_BRAVE_BROWSER_ROOT assumes the brave-browser directory is in the same
-parent directory as brave-core
-"""
-SHALLOW_BRAVE_BROWSER_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..', '..', '..', 'brave-browser'))
+
 verbose_mode = False
 
 
@@ -44,28 +37,6 @@ def output_dir(target_os, target_arch):
         target_arch_suffix = '_' + target_arch
 
     return os.path.join(CHROMIUM_ROOT, 'out', target_os_prefix + 'Release' + target_arch_suffix)
-
-
-# Use brave-browser/package.json version for canonical version definition
-def brave_browser_package():
-    try:
-        pjson = os.path.join(BRAVE_BROWSER_ROOT, 'package.json')
-        with open(pjson) as f:
-            obj = json.load(f)
-            return obj
-    except IOError:
-        # When IOError exception is caught, try SHALLOW_BRAVE_BROWSER_ROOT next
-        try:
-            """
-            SHALLOW_BRAVE_BROWSER_ROOT assumes the brave-browser directory is in the same
-            parent directory as brave-core
-            """
-            pjson = os.path.join(SHALLOW_BRAVE_BROWSER_ROOT, 'package.json')
-            with open(pjson) as f:
-                obj = json.load(f)
-                return obj
-        except Exception as e:
-            exit("Error: cannot open file package.json: {}".format(e))
 
 
 def brave_core_package():
