@@ -18,6 +18,7 @@ if (process.platform === 'win32') {
   dirName = fs.realpathSync.native(dirName)
 }
 const rootDir = path.resolve(dirName, '..', '..', '..', '..', '..')
+const braveCoreDir = path.join(rootDir, 'src', 'brave')
 
 const run = (cmd, args = [], options) => {
   const prog = spawnSync(cmd, args, options)
@@ -29,8 +30,7 @@ const run = (cmd, args = [], options) => {
   return prog
 }
 
-// this is a huge hack because the npm config doesn't get passed through from brave-browser .npmrc/package.json
-var packageConfig = function (key, sourceDir = rootDir) {
+var packageConfig = function (key, sourceDir = braveCoreDir) {
   let packages = { config: {} }
   const configAbsolutePath = path.join(sourceDir, 'package.json')
   if (fs.existsSync(configAbsolutePath)) {
@@ -46,10 +46,6 @@ var packageConfig = function (key, sourceDir = rootDir) {
     obj = obj[key[i]]
   }
   return obj
-}
-
-var packageConfigBraveCore = function (key) {
-  return packageConfig(key, path.join(rootDir, 'src', 'brave'))
 }
 
 const getNPMConfig = (key, default_value = undefined) => {
@@ -69,10 +65,6 @@ const getNPMConfig = (key, default_value = undefined) => {
   const npmConfigDeprecatedValue = NpmConfig[key.join('-').replace(/_/g, '-')]
   if (npmConfigDeprecatedValue !== undefined)
     return npmConfigDeprecatedValue
-
-  const packageConfigBraveCoreValue = packageConfigBraveCore(key)
-  if (packageConfigBraveCoreValue !== undefined)
-    return packageConfigBraveCoreValue
 
   const packageConfigValue = packageConfig(key)
   if (packageConfigValue !== undefined)
@@ -105,7 +97,7 @@ const Config = function () {
   this.srcDir = path.join(this.rootDir, 'src')
   this.chromeVersion = this.getProjectVersion('chrome')
   this.chromiumRepo = getNPMConfig(['projects', 'chrome', 'repository', 'url'])
-  this.braveCoreDir = path.join(this.srcDir, 'brave')
+  this.braveCoreDir = braveCoreDir
   this.buildToolsDir = path.join(this.srcDir, 'build')
   this.resourcesDir = path.join(this.rootDir, 'resources')
   this.depotToolsDir = path.join(this.braveCoreDir, 'vendor', 'depot_tools')
@@ -155,9 +147,7 @@ const Config = function () {
   this.rewardsGrantProdEndpoint = getNPMConfig(['rewards_grant_prod_endpoint']) || ''
   // this.buildProjects()
 
-  // version should be taken from b-c package.json,  not from brave-browser
-  // or npm config.
-  this.braveVersion = packageConfigBraveCore(['version']) || '0.0.0'
+  this.braveVersion = packageConfig(['version']) || '0.0.0'
 
   this.androidOverrideVersionName = this.braveVersion
   this.releaseTag = this.braveVersion.split('+')[0]

@@ -7,7 +7,6 @@ pipeline {
     parameters {
         choice(name: 'CHANNEL', choices: ['nightly', 'dev', 'beta', 'release', 'development'])
         choice(name: 'BUILD_TYPE', choices: ["Static", "Release", "Component", "Debug"])
-        choice(name: 'BUILD_STATUS', choices: ['', 'SUCCESS', 'FAILURE', 'UNSTABLE', 'ABORTED'])
         booleanParam(name: 'TERMINATE_NODE', defaultValue: false)
         booleanParam(name: 'WIPE_WORKSPACE', defaultValue: false)
         booleanParam(name: 'SKIP_INIT', defaultValue: false)
@@ -23,45 +22,19 @@ pipeline {
             agent { label 'master' }
             steps {
                 script {
-                    REPO = JOB_NAME.substring(0, JOB_NAME.indexOf('-build-pr'))
-                    OTHER_REPO = REPO.equals('brave-browser') ? 'brave-core' : 'brave-browser'
                     PLATFORM = JOB_NAME.substring(JOB_NAME.indexOf('-build-pr') + 10, JOB_NAME.indexOf('/PR-'))
                     PIPELINE_NAME = 'pr-brave-browser-' + CHANGE_BRANCH.replace('/', '-') + '-' + PLATFORM
-
-                    if (params.BUILD_STATUS) {
-                        if (Jenkins.instance.getItemByFullName(JOB_NAME).getLastBuild().getCause(hudson.model.Cause$UpstreamCause) == null) {
-                            echo 'Aborting build as it has been started manually with BUILD_STATUS set'
-                            currentBuild.result = 'ABORTED'
-                            return
-                        }
-                        else {
-                            echo "Setting other PR build status to ${params.BUILD_STATUS}"
-                            currentBuild.result = params.BUILD_STATUS
-                            return
-                        }
-                    }
 
                     withCredentials([usernamePassword(credentialsId: 'brave-builds-github-token-for-pr-builder', usernameVariable: 'PR_BUILDER_USER', passwordVariable: 'PR_BUILDER_TOKEN')]) {
                         GITHUB_API = 'https://api.github.com/repos/brave'
                         GITHUB_AUTH_HEADERS = [[name: 'Authorization', value: 'token ' + PR_BUILDER_TOKEN]]
                         CHANGE_BRANCH_ENCODED = java.net.URLEncoder.encode(CHANGE_BRANCH, 'UTF-8')
-                        def prDetails = readJSON(text: httpRequest(url: GITHUB_API + '/' + REPO + '/pulls?head=brave:' + CHANGE_BRANCH_ENCODED, customHeaders: GITHUB_AUTH_HEADERS, quiet: true).content)[0]
+                        def prDetails = readJSON(text: httpRequest(url: GITHUB_API + '/brave-core/pulls?head=brave:' + CHANGE_BRANCH_ENCODED, customHeaders: GITHUB_AUTH_HEADERS, quiet: true).content)[0]
                         SKIP = (prDetails.draft.equals(true) && prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-draft') }.equals(0)) || prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip') }.equals(1) || prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip-${PLATFORM}") }.equals(1)
                         RUN_NETWORK_AUDIT = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-network-audit') }.equals(1)
                         RUN_AUDIT_DEPS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-audit-deps') }.equals(1)
                         RUN_UPSTREAM_TESTS = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-upstream-tests') }.equals(1)
                         STORYBOOK = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/storybook-url') }.equals(1)
-                        def branchExistsInOtherRepo = httpRequest(url: GITHUB_API + '/' + OTHER_REPO + '/branches/' + CHANGE_BRANCH_ENCODED, validResponseCodes: '100:499', customHeaders: GITHUB_AUTH_HEADERS, quiet: true).status.equals(200)
-                        if (branchExistsInOtherRepo) {
-                            def otherPrDetails = readJSON(text: httpRequest(url: GITHUB_API + '/' + OTHER_REPO + '/pulls?head=brave:' + CHANGE_BRANCH_ENCODED, customHeaders: GITHUB_AUTH_HEADERS, quiet: true).content)[0]
-                            if (otherPrDetails) {
-                                env.OTHER_PR_NUMBER = otherPrDetails.number
-                                SKIP = SKIP || otherPrDetails.draft.equals(true) || otherPrDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip') }.equals(1) || otherPrDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip-${PLATFORM}") }.equals(1)
-                                RUN_NETWORK_AUDIT = RUN_NETWORK_AUDIT || otherPrDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-network-audit') }.equals(1)
-                                RUN_AUDIT_DEPS = RUN_AUDIT_DEPS || otherPrDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-audit-deps') }.equals(1)
-                                RUN_UPSTREAM_TESTS = RUN_UPSTREAM_TESTS || otherPrDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/run-upstream-tests') }.equals(1)
-                            }
-                        }
                     }
 
                     if (SKIP && PLATFORM != 'noplatform') {
@@ -133,9 +106,6 @@ pipeline {
                     ]
 
                     currentBuild.result = build(job: PIPELINE_NAME, parameters: params, propagate: false).result
-                    if (env.OTHER_PR_NUMBER) {
-                        build(job: OTHER_REPO + '-build-pr-' + PLATFORM + '/PR-' + env.OTHER_PR_NUMBER, parameters: [string(name: 'BUILD_STATUS', value: currentBuild.result)], propagate: false)
-                    }
                 }
             }
         }
