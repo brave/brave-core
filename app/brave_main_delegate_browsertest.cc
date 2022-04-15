@@ -118,6 +118,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
     &features::kCopyLinkToText,
 #endif
+    &features::kDigitalGoodsApi,
     &features::kFedCm,
     &features::kFirstPartySets,
     &features::kIdleDetection,
