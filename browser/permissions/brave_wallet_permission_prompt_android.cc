@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/permissions/brave_ethereum_permission_prompt_android.h"
+#include "brave/browser/permissions/brave_wallet_permission_prompt_android.h"
 
 #include <utility>
 
@@ -13,7 +13,7 @@
 #include "components/permissions/android/permission_prompt_android.h"
 #include "content/public/browser/web_contents.h"
 
-BraveEthereumPermissionPrompt::BraveEthereumPermissionPrompt(
+BraveWalletPermissionPrompt::BraveWalletPermissionPrompt(
     content::WebContents* web_contents,
     std::unique_ptr<Delegate> delegate)
     : web_contents_(web_contents), delegate_(std::move(delegate)) {
@@ -23,9 +23,9 @@ BraveEthereumPermissionPrompt::BraveEthereumPermissionPrompt(
   dialog_controller_->ShowDialog();
 }
 
-BraveEthereumPermissionPrompt::~BraveEthereumPermissionPrompt() {}
+BraveWalletPermissionPrompt::~BraveWalletPermissionPrompt() {}
 
-void BraveEthereumPermissionPrompt::ConnectToSite(
+void BraveWalletPermissionPrompt::ConnectToSite(
     const std::vector<std::string>& accounts) {
   has_interacted_with_dialog_ = true;
   dialog_controller_.reset();
@@ -33,13 +33,13 @@ void BraveEthereumPermissionPrompt::ConnectToSite(
                                                             web_contents_);
 }
 
-void BraveEthereumPermissionPrompt::CancelConnectToSite() {
+void BraveWalletPermissionPrompt::CancelConnectToSite() {
   has_interacted_with_dialog_ = true;
   dialog_controller_.reset();
   permissions::BraveWalletPermissionContext::Cancel(web_contents_);
 }
 
-void BraveEthereumPermissionPrompt::OnDialogDismissed() {
+void BraveWalletPermissionPrompt::OnDialogDismissed() {
   if (!dialog_controller_) {
     // Dismissed by clicking on dialog buttons.
     return;
@@ -52,19 +52,19 @@ void BraveEthereumPermissionPrompt::OnDialogDismissed() {
   }
 }
 
-void BraveEthereumPermissionPrompt::Delegate::Closing() {
+void BraveWalletPermissionPrompt::Delegate::Closing() {
   if (!permission_prompt_)
     return;
   permission_prompt_->Closing();
 }
 
-BraveEthereumPermissionPrompt::Delegate::~Delegate() {
+BraveWalletPermissionPrompt::Delegate::~Delegate() {
   Closing();
 }
 
-BraveEthereumPermissionPrompt::Delegate::Delegate() {}
+BraveWalletPermissionPrompt::Delegate::Delegate() {}
 
-BraveEthereumPermissionPrompt::Delegate::Delegate(
+BraveWalletPermissionPrompt::Delegate::Delegate(
     const base::WeakPtr<permissions::PermissionPromptAndroid>&
         permission_prompt)
     : permission_prompt_(permission_prompt) {}

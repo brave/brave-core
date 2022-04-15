@@ -18,7 +18,7 @@
 #include "url/origin.h"
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/permissions/brave_ethereum_permission_prompt_android.h"
+#include "brave/browser/permissions/brave_wallet_permission_prompt_android.h"
 #include "components/permissions/android/permission_prompt_android.h"
 #endif
 
@@ -56,10 +56,10 @@ ChromePermissionsClient::MaybeCreateMessageUI(
       prompt->delegate()->Requests();
   if (requests.size() != 0 &&
       requests[0]->request_type() == permissions::RequestType::kBraveEthereum) {
-    auto delegate = std::make_unique<BraveEthereumPermissionPrompt::Delegate>(
+    auto delegate = std::make_unique<BraveWalletPermissionPrompt::Delegate>(
         std::move(prompt));
-    return std::make_unique<BraveEthereumPermissionPrompt>(web_contents,
-                                                           std::move(delegate));
+    return std::make_unique<BraveWalletPermissionPrompt>(web_contents,
+                                                         std::move(delegate));
   }
 
   return MaybeCreateMessageUI_ChromiumImpl(web_contents, type,
