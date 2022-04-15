@@ -395,7 +395,6 @@ test("brave_unit_tests") {
         [ "//brave/components/binance/browser/binance_json_parser_unittest.cc" ]
     deps += [
       "//brave/components/binance/browser",
-      "//brave/components/content_settings/core/common",
     ]
   }
 
@@ -404,7 +403,6 @@ test("brave_unit_tests") {
         [ "//brave/components/gemini/browser/gemini_json_parser_unittest.cc" ]
     deps += [
       "//brave/components/binance/browser",
-      "//brave/components/content_settings/core/common",
       "//brave/components/gemini/browser",
     ]
   }

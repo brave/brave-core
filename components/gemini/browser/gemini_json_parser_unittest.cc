@@ -8,7 +8,6 @@
 #include <map>
 
 #include "brave/components/gemini/browser/gemini_service.h"
-#include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 
 // npm run test -- brave_unit_tests --filter=GeminiJSONParserTest.*

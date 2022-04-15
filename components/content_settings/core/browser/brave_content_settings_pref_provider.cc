@@ -163,7 +163,7 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
   AddObserver(this);
 }
 
-BravePrefProvider::~BravePrefProvider() {}
+BravePrefProvider::~BravePrefProvider() = default;
 
 void BravePrefProvider::ShutdownOnUIThread() {
   RemoveObserver(this);
