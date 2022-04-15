@@ -9,8 +9,10 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "bat/ads/ads_client.h"
+#include "bat/ads/database.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/client/client.h"
+#include "bat/ads/internal/database/database_initialize.h"
 #include "bat/ads/internal/unittest_file_util.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -53,7 +55,7 @@ void UnitTestBase::SetUp() {
   // Code here will be called immediately after the constructor (right before
   // each test)
 
-  SetUpForTesting(/* integration_test */ false);
+  SetUpForTesting(/* is_integration_test */ false);
 }
 
 void UnitTestBase::TearDown() {
@@ -73,22 +75,20 @@ bool UnitTestBase::CopyFileFromTestPathToTempDir(
          "|SetUpForTesting|";
 
   const base::FilePath from_path = GetTestPath().AppendASCII(source_filename);
-
   const base::FilePath to_path = temp_dir_.GetPath().AppendASCII(dest_filename);
-
   return base::CopyFile(from_path, to_path);
 }
 
-void UnitTestBase::SetUpForTesting(const bool integration_test) {
+void UnitTestBase::SetUpForTesting(const bool is_integration_test) {
   setup_called_ = true;
 
-  integration_test_ = integration_test;
+  is_integration_test_ = is_integration_test;
 
   Initialize();
 }
 
 void UnitTestBase::InitializeAds() {
-  CHECK(integration_test_)
+  CHECK(is_integration_test_)
       << "|InitializeAds| should only be called if "
          "|SetUpForTesting| was initialized for integration testing";
 
@@ -187,7 +187,7 @@ void UnitTestBase::Initialize() {
   database_ = std::make_unique<Database>(path);
   MockRunDBTransaction(ads_client_mock_, database_);
 
-  if (integration_test_) {
+  if (is_integration_test_) {
     ads_ = std::make_unique<AdsImpl>(ads_client_mock_.get());
     return;
   }

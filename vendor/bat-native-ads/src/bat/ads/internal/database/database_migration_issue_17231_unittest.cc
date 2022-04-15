@@ -26,7 +26,7 @@ class BatAdsDatabaseMigrationIssue17231Test : public UnitTestBase {
     ASSERT_TRUE(CopyFileFromTestPathToTempDir("database_issue_17231.sqlite",
                                               "database.sqlite"));
 
-    UnitTestBase::SetUpForTesting(/* integration_test */ false);
+    UnitTestBase::SetUpForTesting(/* is_integration_test */ false);
   }
 };
 

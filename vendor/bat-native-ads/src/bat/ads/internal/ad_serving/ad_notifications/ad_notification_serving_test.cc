@@ -53,7 +53,7 @@ class BatAdsAdNotificationServingTest : public UnitTestBase {
     ASSERT_TRUE(CopyFileFromTestPathToTempDir(
         "confirmations_with_unblinded_tokens.json", "confirmations.json"));
 
-    UnitTestBase::SetUpForTesting(/* integration_test */ true);
+    UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
 
     const URLEndpoints endpoints = {
         {"/v9/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},

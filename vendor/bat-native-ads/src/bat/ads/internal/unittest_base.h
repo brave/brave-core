@@ -17,7 +17,7 @@
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/browser_manager/browser_manager.h"
-#include "bat/ads/internal/database/database_initialize.h"
+#include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/federated/covariate_logs.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
@@ -44,11 +44,11 @@ class UnitTestBase : public testing::Test {
   bool CopyFileFromTestPathToTempDir(const std::string& source_filename,
                                      const std::string& dest_filename) const;
 
-  // If |integration_test| is set to true test the functionality and performance
-  // under product-like circumstances with data to replicate live settings to
-  // simulate what a real user scenario looks like from start to finish. You
-  // must call |InitializeAds| manually after setting up your mocks.
-  void SetUpForTesting(const bool integration_test);
+  // If |is_integration_test| is set to true test the functionality and
+  // performance under product-like circumstances with data to replicate live
+  // settings to simulate what a real user scenario looks like from start to
+  // finish. You must call |InitializeAds| manually after setting up your mocks.
+  void SetUpForTesting(const bool is_integration_test);
 
   void InitializeAds();
 
@@ -102,7 +102,7 @@ class UnitTestBase : public testing::Test {
   bool setup_called_ = false;
   bool teardown_called_ = false;
 
-  bool integration_test_ = false;
+  bool is_integration_test_ = false;
 
   std::unique_ptr<AdsClientHelper> ads_client_helper_;
   std::unique_ptr<Client> client_;

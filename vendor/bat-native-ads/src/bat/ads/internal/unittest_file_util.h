@@ -14,13 +14,15 @@
 namespace ads {
 
 base::FilePath GetTestPath();
-
 absl::optional<std::string> ReadFileFromTestPathToString(
     const std::string& name);
+absl::optional<std::string> ReadFileFromTestPathAndParseTagsToString(
+    const std::string& name);
 
-base::FilePath GetResourcesPath();
+base::FilePath GetFileResourcePath();
 
-absl::optional<std::string> ReadFileFromResourcePathToString(
+base::FilePath GetDataResourcePath();
+absl::optional<std::string> ReadFileFromDataResourcePathToString(
     const std::string& name);
 
 }  // namespace ads

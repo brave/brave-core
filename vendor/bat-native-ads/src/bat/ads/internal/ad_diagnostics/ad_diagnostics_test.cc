@@ -35,7 +35,7 @@ class AdDiagnosticsTest : public UnitTestBase {
   ~AdDiagnosticsTest() override = default;
 
   void SetUp() override {
-    UnitTestBase::SetUpForTesting(/* integration_test */ true);
+    UnitTestBase::SetUpForTesting(/* is_integration_test */ true);
   }
 };
 

@@ -13,6 +13,7 @@
 #include "bat/ads/internal/unittest_file_util.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -21,10 +22,8 @@ namespace ads {
 namespace {
 
 constexpr char kEmptyCatalog[] = "empty_catalog.json";
-
 constexpr char kCatalogWithSingleCampaign[] =
     "catalog_with_single_campaign.json";
-
 constexpr char kCatalogWithMultipleCampaigns[] =
     "catalog_with_multiple_campaigns.json";
 
@@ -443,11 +442,10 @@ class BatAdsCatalogTest : public UnitTestBase {
 
 TEST_F(BatAdsCatalogTest, ParseCatalog) {
   // Arrange
-  const absl::optional<std::string> opt_value =
-      ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
-  ASSERT_TRUE(opt_value.has_value());
-
-  const std::string json = opt_value.value();
+  const absl::optional<std::string> json_optional =
+      ReadFileFromTestPathAndParseTagsToString(kCatalogWithMultipleCampaigns);
+  ASSERT_TRUE(json_optional.has_value());
+  const std::string& json = json_optional.value();
 
   // Act
   Catalog catalog;
@@ -459,11 +457,10 @@ TEST_F(BatAdsCatalogTest, ParseCatalog) {
 
 TEST_F(BatAdsCatalogTest, ParseEmptyCatalog) {
   // Arrange
-  const absl::optional<std::string> opt_value =
-      ReadFileFromTestPathToString(kEmptyCatalog);
-  ASSERT_TRUE(opt_value.has_value());
-
-  const std::string json = opt_value.value();
+  const absl::optional<std::string> json_optional =
+      ReadFileFromTestPathAndParseTagsToString(kEmptyCatalog);
+  ASSERT_TRUE(json_optional.has_value());
+  const std::string& json = json_optional.value();
 
   // Act
   Catalog catalog;
@@ -486,11 +483,10 @@ TEST_F(BatAdsCatalogTest, InvalidCatalog) {
 
 TEST_F(BatAdsCatalogTest, HasChanged) {
   // Arrange
-  const absl::optional<std::string> opt_value =
-      ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
-  ASSERT_TRUE(opt_value.has_value());
-
-  const std::string json = opt_value.value();
+  const absl::optional<std::string> json_optional =
+      ReadFileFromTestPathAndParseTagsToString(kCatalogWithMultipleCampaigns);
+  ASSERT_TRUE(json_optional.has_value());
+  const std::string& json = json_optional.value();
 
   Catalog catalog;
   ASSERT_TRUE(catalog.FromJson(json));
@@ -505,11 +501,10 @@ TEST_F(BatAdsCatalogTest, HasChanged) {
 
 TEST_F(BatAdsCatalogTest, HasNotChanged) {
   // Arrange
-  const absl::optional<std::string> opt_value =
-      ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
-  ASSERT_TRUE(opt_value.has_value());
-
-  const std::string json = opt_value.value();
+  const absl::optional<std::string> json_optional =
+      ReadFileFromTestPathAndParseTagsToString(kCatalogWithMultipleCampaigns);
+  ASSERT_TRUE(json_optional.has_value());
+  const std::string& json = json_optional.value();
 
   Catalog catalog;
   ASSERT_TRUE(catalog.FromJson(json));
@@ -524,11 +519,10 @@ TEST_F(BatAdsCatalogTest, HasNotChanged) {
 
 TEST_F(BatAdsCatalogTest, GetId) {
   // Arrange
-  const absl::optional<std::string> opt_value =
-      ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
-  ASSERT_TRUE(opt_value.has_value());
-
-  const std::string json = opt_value.value();
+  const absl::optional<std::string> json_optional =
+      ReadFileFromTestPathAndParseTagsToString(kCatalogWithMultipleCampaigns);
+  ASSERT_TRUE(json_optional.has_value());
+  const std::string& json = json_optional.value();
 
   Catalog catalog;
   ASSERT_TRUE(catalog.FromJson(json));
@@ -542,11 +536,10 @@ TEST_F(BatAdsCatalogTest, GetId) {
 
 TEST_F(BatAdsCatalogTest, GetVersion) {
   // Arrange
-  const absl::optional<std::string> opt_value =
-      ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
-  ASSERT_TRUE(opt_value.has_value());
-
-  const std::string json = opt_value.value();
+  const absl::optional<std::string> json_optional =
+      ReadFileFromTestPathAndParseTagsToString(kCatalogWithMultipleCampaigns);
+  ASSERT_TRUE(json_optional.has_value());
+  const std::string& json = json_optional.value();
 
   Catalog catalog;
   ASSERT_TRUE(catalog.FromJson(json));
@@ -560,11 +553,10 @@ TEST_F(BatAdsCatalogTest, GetVersion) {
 
 TEST_F(BatAdsCatalogTest, GetPing) {
   // Arrange
-  const absl::optional<std::string> opt_value =
-      ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
-  ASSERT_TRUE(opt_value.has_value());
-
-  const std::string json = opt_value.value();
+  const absl::optional<std::string> json_optional =
+      ReadFileFromTestPathAndParseTagsToString(kCatalogWithMultipleCampaigns);
+  ASSERT_TRUE(json_optional.has_value());
+  const std::string& json = json_optional.value();
 
   Catalog catalog;
   ASSERT_TRUE(catalog.FromJson(json));
@@ -578,11 +570,10 @@ TEST_F(BatAdsCatalogTest, GetPing) {
 
 TEST_F(BatAdsCatalogTest, GetCampaign) {
   // Arrange
-  const absl::optional<std::string> opt_value =
-      ReadFileFromTestPathToString(kCatalogWithSingleCampaign);
-  ASSERT_TRUE(opt_value.has_value());
-
-  const std::string json = opt_value.value();
+  const absl::optional<std::string> json_optional =
+      ReadFileFromTestPathAndParseTagsToString(kCatalogWithSingleCampaign);
+  ASSERT_TRUE(json_optional.has_value());
+  const std::string& json = json_optional.value();
 
   Catalog catalog;
   ASSERT_TRUE(catalog.FromJson(json));
@@ -600,11 +591,10 @@ TEST_F(BatAdsCatalogTest, GetCampaign) {
 
 TEST_F(BatAdsCatalogTest, GetCampaigns) {
   // Arrange
-  const absl::optional<std::string> opt_value =
-      ReadFileFromTestPathToString(kCatalogWithMultipleCampaigns);
-  ASSERT_TRUE(opt_value.has_value());
-
-  const std::string json = opt_value.value();
+  const absl::optional<std::string> json_optional =
+      ReadFileFromTestPathAndParseTagsToString(kCatalogWithMultipleCampaigns);
+  ASSERT_TRUE(json_optional.has_value());
+  const std::string& json = json_optional.value();
 
   Catalog catalog;
   ASSERT_TRUE(catalog.FromJson(json));

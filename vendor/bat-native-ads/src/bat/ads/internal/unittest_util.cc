@@ -23,6 +23,7 @@
 #include "bat/ads/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 using ::testing::_;
@@ -537,8 +538,7 @@ void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, LoadFileResource(_, _, _))
       .WillByDefault(Invoke([](const std::string& id, const int version,
                                LoadFileCallback callback) {
-        const base::FilePath path =
-            GetTestPath().AppendASCII("resources").AppendASCII(id);
+        const base::FilePath path = GetFileResourcePath().AppendASCII(id);
 
         base::File file(
             path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
@@ -549,13 +549,13 @@ void MockLoadFileResource(const std::unique_ptr<AdsClientMock>& mock) {
 void MockLoadDataResource(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, LoadDataResource(_))
       .WillByDefault(Invoke([](const std::string& name) -> std::string {
-        base::FilePath path = GetResourcesPath();
-        path = path.AppendASCII(name);
+        const absl::optional<std::string>& content_optional =
+            ReadFileFromDataResourcePathToString(name);
+        if (!content_optional.has_value()) {
+          return "";
+        }
 
-        std::string value;
-        base::ReadFileToString(path, &value);
-
-        return value;
+        return content_optional.value();
       }));
 }
 
