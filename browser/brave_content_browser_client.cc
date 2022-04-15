@@ -421,6 +421,16 @@ void BraveContentBrowserClient::
       RegisterAssociatedInterfaceBindersForRenderFrameHost(render_frame_host,
                                                            associated_registry);
 }
+void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
+    content::WebUIBrowserInterfaceBrokerRegistry& registry) {
+  ChromeContentBrowserClient::RegisterWebUIInterfaceBrokers(registry);
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
+  if (brave_vpn::IsBraveVPNEnabled()) {
+    registry.ForWebUI<VPNPanelUI>()
+        .Add<brave_vpn::mojom::PanelHandlerFactory>();
+  }
+#endif
+}
 
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
     const GURL& url,
@@ -510,12 +520,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
         federated_internals::mojom::PageHandlerFactory, FederatedInternalsUI>(
         map);
-  }
-#endif
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
-  if (brave_vpn::IsBraveVPNEnabled()) {
-    chrome::internal::RegisterWebUIControllerInterfaceBinder<
-        brave_vpn::mojom::PanelHandlerFactory, VPNPanelUI>(map);
   }
 #endif
 

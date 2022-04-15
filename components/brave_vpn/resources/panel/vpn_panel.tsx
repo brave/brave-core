@@ -19,11 +19,7 @@ import store from './state/store'
 import getPanelBrowserAPI from './api/panel_browser_api'
 
 function App () {
-  const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
-
   React.useEffect(() => {
-    chrome.braveTheme.getBraveThemeType(setInitialThemeType)
-
     const onVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
         getPanelBrowserAPI().panelHandler.showUI()
@@ -39,17 +35,14 @@ function App () {
 
   return (
     <Provider store={store}>
-      {initialThemeType &&
-        <BraveCoreThemeProvider
-          initialThemeType={initialThemeType}
-          dark={vpnDarkTheme}
-          light={vpnLightTheme}
-        >
-          <PanelWrapper>
-            <Container />
-          </PanelWrapper>
-        </BraveCoreThemeProvider>
-      }
+      <BraveCoreThemeProvider
+        dark={vpnDarkTheme}
+        light={vpnLightTheme}
+      >
+        <PanelWrapper>
+          <Container />
+        </PanelWrapper>
+      </BraveCoreThemeProvider>
     </Provider>
   )
 }

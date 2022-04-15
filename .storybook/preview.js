@@ -5,7 +5,7 @@ import { addParameters } from '@storybook/react'
 import { initLocale } from 'brave-ui/helpers'
 import '../components/web-components/app.global.scss'
 import { getString } from './locale'
-import ThemeProvider from '../components/common/StorybookThemeProvider'
+import ThemeProvider from '../components/common/BraveCoreThemeProvider'
 
 // Fonts
 import '../ui/webui/resources/fonts/muli.css'
@@ -36,6 +36,6 @@ chrome.extension = {
 
 export const decorators = [
   (Story) => <div dir={boolean('rtl?', false) ? 'rtl' : ''}><Story /></div>,
-  (Story, context) => <ThemeProvider darkTheme={context.args.darkTheme} lightTheme={context.args.lightTheme}><Story /></ThemeProvider>,
+  (Story, context) => <ThemeProvider dark={context.args.darkTheme} light={context.args.lightTheme}><Story /></ThemeProvider>,
   withKnobs
 ]

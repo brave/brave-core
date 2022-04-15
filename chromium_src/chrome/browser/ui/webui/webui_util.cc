@@ -4,6 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/webui/webui_util.h"
+#include "base/no_destructor.h"
+#include "base/strings/strcat.h"
+#include "content/public/common/url_constants.h"
 
 #define SetupWebUIDataSource SetupWebUIDataSource_ChromiumImpl
 #include "src/chrome/browser/ui/webui/webui_util.cc"
@@ -12,8 +15,26 @@
 namespace webui {
 
 namespace {
+
+// A chrome-untrusted data source's name starts with chrome-untrusted://.
+bool IsChromeUntrustedDataSource(content::WebUIDataSource* source) {
+  static const base::NoDestructor<std::string> kChromeUntrustedSourceNamePrefix(
+      base::StrCat(
+          {content::kChromeUIUntrustedScheme, url::kStandardSchemeSeparator}));
+
+  return base::StartsWith(source->GetSource(),
+                          *kChromeUntrustedSourceNamePrefix,
+                          base::CompareCase::SENSITIVE);
+}
+
 constexpr char kBraveCSP[] =
-    "script-src chrome://resources chrome://brave-resources chrome://test "
+    "script-src chrome://resources "
+    "chrome://brave-resources chrome://test "
+    "'self';";
+
+constexpr char kBraveUntrustedCSP[] =
+    "script-src chrome-untrusted://resources "
+    "chrome-untrusted://brave-resources chrome://test "
     "'self';";
 }  // namespace
 
@@ -22,7 +43,8 @@ void SetupWebUIDataSource(content::WebUIDataSource* source,
                           int default_resource) {
   SetupWebUIDataSource_ChromiumImpl(source, resources, default_resource);
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ScriptSrc, kBraveCSP);
+      network::mojom::CSPDirectiveName::ScriptSrc,
+      IsChromeUntrustedDataSource(source) ? kBraveUntrustedCSP : kBraveCSP);
 }
 
 }  // namespace webui

@@ -154,7 +154,6 @@
       "chrome://webcompat/*",
       "chrome://wallet/*",
       "chrome://wallet-panel.top-chrome/*",
-      "chrome://vpn-panel.top-chrome/*",
       "chrome://brave-shields.top-chrome/*"
     ]
   }],
