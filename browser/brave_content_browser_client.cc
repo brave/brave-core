@@ -99,6 +99,7 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/weak_document_ptr.h"
+#include "content/public/browser/web_ui_browser_interface_broker_registry.h"
 #include "content/public/common/content_client.h"
 #include "content/public/common/content_switches.h"
 #include "content/public/common/url_constants.h"
