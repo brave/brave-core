@@ -44,7 +44,7 @@ const uint8_t kWalletDataFilesSha2Hash[] = {
 const char kWalletDataFilesDisplayName[] = "Brave Wallet data files";
 const char kComponentId[] = "bbckkcdiepaecefgfnibemejliemjnio";
 
-static_assert(base::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
+static_assert(std::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
               "Wrong hash length");
 
 absl::optional<base::Version> last_installed_wallet_version;
@@ -169,7 +169,7 @@ base::FilePath WalletDataFilesInstallerPolicy::GetRelativeInstallDir() const {
 
 void WalletDataFilesInstallerPolicy::GetHash(std::vector<uint8_t>* hash) const {
   hash->assign(kWalletDataFilesSha2Hash,
-               kWalletDataFilesSha2Hash + base::size(kWalletDataFilesSha2Hash));
+               kWalletDataFilesSha2Hash + std::size(kWalletDataFilesSha2Hash));
 }
 
 std::string WalletDataFilesInstallerPolicy::GetName() const {

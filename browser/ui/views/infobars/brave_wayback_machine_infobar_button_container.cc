@@ -9,9 +9,9 @@
 #include <utility>
 
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_throbber.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/view_class_properties.h"
 
@@ -24,8 +24,8 @@ BraveWaybackMachineInfoBarButtonContainer::
     BraveWaybackMachineInfoBarButtonContainer(
         views::Button::PressedCallback callback) {
   auto button = std::make_unique<views::MdTextButton>(
-      std::move(callback),
-      l10n_util::GetStringUTF16(IDS_BRAVE_WAYBACK_MACHINE_CHECK_BUTTON_TEXT));
+      std::move(callback), brave_l10n::GetLocalizedResourceUTF16String(
+                               IDS_BRAVE_WAYBACK_MACHINE_CHECK_BUTTON_TEXT));
   button_ = button.get();
   button->SetProminent(true);
   button->SizeToPreferredSize();

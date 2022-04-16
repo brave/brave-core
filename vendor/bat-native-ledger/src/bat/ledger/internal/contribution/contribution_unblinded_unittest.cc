@@ -6,7 +6,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/cxx17_backports.h"
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/database/database_contribution_info.h"
@@ -131,7 +130,7 @@ TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
       {0.80, "publisher5"}, {0.90, "publisher5"},
   };
 
-  for (size_t i = 0; i < base::size(cases); i++) {
+  for (size_t i = 0; i < std::size(cases); i++) {
     const std::string publisher_key =
         unblinded_->GetStatisticalVotingWinnerForTesting(cases[i].dart, 100.0,
                                                          publisher_list);

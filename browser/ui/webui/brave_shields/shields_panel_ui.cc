@@ -11,6 +11,7 @@
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/resources/panel/grit/brave_shields_panel_generated_map.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
@@ -24,7 +25,11 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(kShieldsPanelHost);
 
-  source->AddLocalizedStrings(brave_shields::kLocalizedStrings);
+  for (const auto& str : brave_shields::kLocalizedStrings) {
+    std::u16string l10n_str =
+        brave_l10n::GetLocalizedResourceUTF16String(str.id);
+    source->AddString(str.name, l10n_str);
+  }
 
   content::URLDataSource::Add(
       profile_, std::make_unique<FaviconSource>(

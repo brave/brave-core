@@ -16,6 +16,8 @@
 #include "base/supports_user_data.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "services/network/public/mojom/websocket.mojom.h"
 
@@ -61,8 +63,8 @@ class ResourceContextData : public base::SupportsUserData::Data {
       content::BrowserContext* browser_context,
       int render_process_id,
       int frame_tree_node_id,
-      network::mojom::URLLoaderFactoryRequest request,
-      network::mojom::URLLoaderFactoryPtrInfo target_factory);
+      mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver,
+      mojo::PendingRemote<network::mojom::URLLoaderFactory> target_factory);
 
   static BraveProxyingWebSocket* StartProxyingWebSocket(
       content::ContentBrowserClient::WebSocketFactory factory,

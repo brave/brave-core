@@ -7,7 +7,6 @@
 
 #include <algorithm>
 
-#include "base/cxx17_backports.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/values.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
@@ -47,7 +46,7 @@ void RecordSearchEventP3A(uint64_t number_of_searches) {
       std::lower_bound(kIntervals, std::end(kIntervals), number_of_searches);
   const int answer = it - kIntervals;
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Omnibox.SearchCount", answer,
-                             base::size(kIntervals));
+                             std::size(kIntervals));
 }
 
 }  // namespace

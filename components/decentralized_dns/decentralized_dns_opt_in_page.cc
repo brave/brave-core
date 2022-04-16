@@ -16,10 +16,10 @@
 #include "base/values.h"
 #include "brave/components/decentralized_dns/decentralized_dns_interstitial_controller_client.h"
 #include "brave/components/decentralized_dns/utils.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace decentralized_dns {
 
@@ -80,37 +80,39 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
   };
 
   if (IsUnstoppableDomainsTLD(request_url_)) {
-    load_time_data->SetStringKey(
-        "tabTitle",
-        l10n_util::GetStringUTF16(IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE));
-    load_time_data->SetStringKey(
-        "heading",
-        l10n_util::GetStringUTF16(IDS_UNSTOPPABLE_DOMAINS_OPT_IN_HEADING));
+    load_time_data->SetStringKey("tabTitle",
+                                 brave_l10n::GetLocalizedResourceUTF16String(
+                                     IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE));
+    load_time_data->SetStringKey("heading",
+                                 brave_l10n::GetLocalizedResourceUTF16String(
+                                     IDS_UNSTOPPABLE_DOMAINS_OPT_IN_HEADING));
 
     load_time_data->SetStringKey(
         "primaryParagraph",
         base::ReplaceStringPlaceholders(
-            l10n_util::GetStringUTF16(
+            brave_l10n::GetLocalizedResourceUTF16String(
                 IDS_UNSTOPPABLE_DOMAINS_OPT_IN_PRIMARY_PARAGRAPH),
             message_params, nullptr));
   } else {
     load_time_data->SetStringKey(
-        "tabTitle", l10n_util::GetStringUTF16(IDS_ENS_OPT_IN_TITLE));
+        "tabTitle",
+        brave_l10n::GetLocalizedResourceUTF16String(IDS_ENS_OPT_IN_TITLE));
     load_time_data->SetStringKey(
-        "heading", l10n_util::GetStringUTF16(IDS_ENS_OPT_IN_HEADING));
+        "heading",
+        brave_l10n::GetLocalizedResourceUTF16String(IDS_ENS_OPT_IN_HEADING));
     load_time_data->SetStringKey(
-        "primaryParagraph",
-        base::ReplaceStringPlaceholders(
-            l10n_util::GetStringUTF16(IDS_ENS_OPT_IN_PRIMARY_PARAGRAPH),
-            message_params, nullptr));
+        "primaryParagraph", base::ReplaceStringPlaceholders(
+                                brave_l10n::GetLocalizedResourceUTF16String(
+                                    IDS_ENS_OPT_IN_PRIMARY_PARAGRAPH),
+                                message_params, nullptr));
   }
 
   load_time_data->SetStringKey(
-      "primaryButtonText",
-      l10n_util::GetStringUTF16(IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_BUTTON));
+      "primaryButtonText", brave_l10n::GetLocalizedResourceUTF16String(
+                               IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_BUTTON));
   load_time_data->SetStringKey(
       "dontProceedButtonText",
-      l10n_util::GetStringUTF16(
+      brave_l10n::GetLocalizedResourceUTF16String(
           IDS_DECENTRALIZED_DNS_OPT_IN_DONT_PROCEED_BUTTON));
   load_time_data->SetStringKey("finalParagraph", std::u16string());
 }

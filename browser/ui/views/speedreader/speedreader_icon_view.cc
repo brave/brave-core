@@ -14,6 +14,7 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/themes/theme_properties.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/speedreader/features.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -21,7 +22,6 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
 #include "chrome/grit/generated_resources.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/theme_provider.h"
 #include "ui/views/animation/ink_drop.h"
@@ -98,7 +98,7 @@ std::u16string SpeedreaderIconView::GetTextForTooltipAndAccessibleName() const {
     default:
       id = IDS_SPEEDREADER_ICON_TURN_ON_READER_MODE;
   }
-  return l10n_util::GetStringUTF16(id);
+  return brave_l10n::GetLocalizedResourceUTF16String(id);
 }
 
 void SpeedreaderIconView::OnExecuting(

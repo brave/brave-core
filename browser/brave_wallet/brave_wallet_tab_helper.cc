@@ -129,9 +129,9 @@ const std::vector<int32_t>& BraveWalletTabHelper::GetPopupIdsForTesting() {
 
 GURL BraveWalletTabHelper::GetApproveBubbleURL() {
   GURL webui_url = GURL(kBraveUIWalletPanelURL);
-  url::Replacements<char> replacements;
+  GURL::Replacements replacements;
   const std::string ref = "approveTransaction";
-  replacements.SetRef(ref.c_str(), url::Component(0, ref.size()));
+  replacements.SetRefStr(ref);
   return webui_url.ReplaceComponents(replacements);
 }
 

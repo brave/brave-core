@@ -14,6 +14,7 @@
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/features.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"
@@ -24,7 +25,6 @@
 #include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
 
 // static
@@ -99,7 +99,8 @@ void SyncV2MigrateInfoBarDelegate::InfoBarDismissed() {
 }
 
 std::u16string SyncV2MigrateInfoBarDelegate::GetMessageText() const {
-  return l10n_util::GetStringUTF16(IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE);
+  return brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_MESSAGE);
 }
 
 int SyncV2MigrateInfoBarDelegate::GetButtons() const {
@@ -108,7 +109,8 @@ int SyncV2MigrateInfoBarDelegate::GetButtons() const {
 
 std::u16string SyncV2MigrateInfoBarDelegate::GetButtonLabel(
     InfoBarButton button) const {
-  return l10n_util::GetStringUTF16(IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND);
+  return brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_BRAVE_SYNC_V2_MIGRATE_INFOBAR_COMMAND);
 }
 
 bool SyncV2MigrateInfoBarDelegate::Accept() {

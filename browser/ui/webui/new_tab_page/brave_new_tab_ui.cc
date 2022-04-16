@@ -18,6 +18,7 @@
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/common/features.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
@@ -25,7 +26,6 @@
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "ui/base/l10n/l10n_util.h"
 
 using ntp_background_images::NTPCustomBackgroundImagesServiceFactory;
 using ntp_background_images::NTPCustomImagesSource;
@@ -36,7 +36,8 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
           true /* Needed for legacy non-mojom message handler */),
       page_factory_receiver_(this) {
   Profile* profile = Profile::FromWebUI(web_ui);
-  web_ui->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
+  web_ui->OverrideTitle(
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_NEW_TAB_TITLE));
 
   if (brave::ShouldNewTabShowBlankpage(profile)) {
     content::WebUIDataSource* source =

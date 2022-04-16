@@ -21,6 +21,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/ui/hid/hid_chooser_controller.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/permissions/chooser_title_util.h"
@@ -31,7 +32,8 @@
 #if !BUILDFLAG(IS_ANDROID)
 namespace {
 std::u16string BraveCreateTitleLabel() {
-  auto wallet_title = l10n_util::GetStringUTF16(IDS_BRAVE_WALLET);
+  auto wallet_title =
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_WALLET);
   return l10n_util::GetStringFUTF16(IDS_HID_CHOOSER_PROMPT_ORIGIN,
                                     wallet_title);
 }

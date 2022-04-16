@@ -19,7 +19,7 @@ namespace settings {
 
 BrowserLifetimeHandler::~BrowserLifetimeHandler() {}
 
-void BrowserLifetimeHandler::HandleRelaunch(base::Value::ConstListView args) {
+void BrowserLifetimeHandler::HandleRelaunch(const base::Value::List& args) {
 #if BUILDFLAG(ENABLE_SPARKLE)
   brave_relaunch_handler::RelaunchOnMac();
   return;

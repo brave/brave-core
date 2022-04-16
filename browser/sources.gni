@@ -58,7 +58,7 @@ brave_chrome_browser_visibility = [
   # for Brave, but also for the rest of chrome. Thus, we need to provide our own
   # permissive list for chrome here too, to be removed in the future if Chrome
   # ever provides it's own list (at which point we'll append instead of set).
-  "//chrome:browser_dependencies",
+  "//chrome:dependencies",
   "//chrome/app/*",
   "//chrome/test/*",
   "//extensions/*",

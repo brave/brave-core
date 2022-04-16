@@ -10,8 +10,8 @@
 #include "brave/browser/ui/views/sidebar/bubble_border_with_arrow.h"
 #include "brave/browser/ui/views/sidebar/sidebar_bubble_background.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -113,7 +113,8 @@ void SidebarItemAddedFeedbackBubble::AddChildViews() {
       gfx::CreateVectorIcon(kSidebarItemAddedCheckIcon, SK_ColorWHITE));
   // Use 12pt and 600 weight.
   auto* label = first_row->AddChildView(std::make_unique<views::Label>(
-      l10n_util::GetStringUTF16(IDS_SIDEBAR_ADDED_FEEDBACK_TITLE_1),
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SIDEBAR_ADDED_FEEDBACK_TITLE_1),
       views::Label::CustomFont(
           {views::Label::GetDefaultFontList().DeriveWithWeight(
               gfx::Font::Weight::SEMIBOLD)})));
@@ -122,7 +123,8 @@ void SidebarItemAddedFeedbackBubble::AddChildViews() {
 
   // 11pt (1 decreased from default(12)) and 500 weight.
   label = AddChildView(std::make_unique<views::Label>(
-      l10n_util::GetStringUTF16(IDS_SIDEBAR_ADDED_FEEDBACK_TITLE_2),
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SIDEBAR_ADDED_FEEDBACK_TITLE_2),
       views::Label::CustomFont(
           {views::Label::GetDefaultFontList()
                .DeriveWithSizeDelta(-1)

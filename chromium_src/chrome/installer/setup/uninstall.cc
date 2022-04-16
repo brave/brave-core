@@ -20,7 +20,7 @@ void DeleteBraveFileKeys(HKEY root) {
   std::wstring reg_prog_id(ShellUtil::kRegClasses);
   reg_prog_id.push_back(base::FilePath::kSeparators[0]);
   reg_prog_id.append(GetProgIdForFileType());
-  InstallUtil::DeleteRegistryKey(root, reg_prog_id, WorkItem::kWow64Default);
+  DeleteRegistryKey(root, reg_prog_id, WorkItem::kWow64Default);
 
   // Cleanup OpenWithList and OpenWithProgids:
   // http://msdn.microsoft.com/en-us/library/bb166549
@@ -35,9 +35,8 @@ void DeleteBraveFileKeys(HKEY root) {
     open_with_progids_key.assign(file_assoc_key);
     open_with_progids_key.append(ShellUtil::kRegOpenWithProgids);
     if (ShouldUseFileTypeProgId(ShellUtil::kPotentialFileAssociations[i])) {
-      InstallUtil::DeleteRegistryValue(root, open_with_progids_key,
-                                       WorkItem::kWow64Default,
-                                       GetProgIdForFileType());
+      DeleteRegistryValue(root, open_with_progids_key, WorkItem::kWow64Default,
+                          GetProgIdForFileType());
     }
   }
 }

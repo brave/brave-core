@@ -7,45 +7,15 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     <output filename="grit/chromium_strings.h" type="rc_header">
       <emit emit_type="prepend" />
     </output>
-    <if expr="is_android">
-      <output filename="chromium_strings_af.pak" type="data_package" lang="af" />
-      <output filename="chromium_strings_as.pak" type="data_package" lang="as" />
-      <output filename="chromium_strings_az.pak" type="data_package" lang="az" />
-      <output filename="chromium_strings_be.pak" type="data_package" lang="be" />
-      <output filename="chromium_strings_bs.pak" type="data_package" lang="bs" />
-      <output filename="chromium_strings_eu.pak" type="data_package" lang="eu" />
-      <output filename="chromium_strings_fr-CA.pak" type="data_package" lang="fr-CA" />
-      <output filename="chromium_strings_gl.pak" type="data_package" lang="gl" />
-      <output filename="chromium_strings_hy.pak" type="data_package" lang="hy" />
-      <output filename="chromium_strings_is.pak" type="data_package" lang="is" />
-      <output filename="chromium_strings_ka.pak" type="data_package" lang="ka" />
-      <output filename="chromium_strings_kk.pak" type="data_package" lang="kk" />
-      <output filename="chromium_strings_km.pak" type="data_package" lang="km" />
-      <output filename="chromium_strings_ky.pak" type="data_package" lang="ky" />
-      <output filename="chromium_strings_lo.pak" type="data_package" lang="lo" />
-      <output filename="chromium_strings_mk.pak" type="data_package" lang="mk" />
-      <output filename="chromium_strings_mn.pak" type="data_package" lang="mn" />
-      <output filename="chromium_strings_my.pak" type="data_package" lang="my" />
-      <output filename="chromium_strings_ne.pak" type="data_package" lang="ne" />
-      <output filename="chromium_strings_or.pak" type="data_package" lang="or" />
-      <output filename="chromium_strings_pa.pak" type="data_package" lang="pa" />
-      <output filename="chromium_strings_si.pak" type="data_package" lang="si" />
-      <output filename="chromium_strings_sq.pak" type="data_package" lang="sq" />
-      <output filename="chromium_strings_sr-Latn.pak" type="data_package" lang="sr-Latn" />
-      <output filename="chromium_strings_ur.pak" type="data_package" lang="ur" />
-      <output filename="chromium_strings_uz.pak" type="data_package" lang="uz" />
-      <output filename="chromium_strings_zh-HK.pak" type="data_package" lang="zh-HK" />
-      <output filename="chromium_strings_zu.pak" type="data_package" lang="zu" />
-    </if>
-    <if expr="chromeos_ash or chromeos_lacros">
-      <output filename="chromium_strings_af.pak" type="data_package" lang="af" />
-      <output filename="chromium_strings_is.pak" type="data_package" lang="is" />
-      <output filename="chromium_strings_zu.pak" type="data_package" lang="zu" />
-    </if>
+    <output filename="chromium_strings_af.pak" type="data_package" lang="af" />
     <output filename="chromium_strings_am.pak" type="data_package" lang="am" />
     <output filename="chromium_strings_ar.pak" type="data_package" lang="ar" />
+    <output filename="chromium_strings_as.pak" type="data_package" lang="as" />
+    <output filename="chromium_strings_az.pak" type="data_package" lang="az" />
+    <output filename="chromium_strings_be.pak" type="data_package" lang="be" />
     <output filename="chromium_strings_bg.pak" type="data_package" lang="bg" />
     <output filename="chromium_strings_bn.pak" type="data_package" lang="bn" />
+    <output filename="chromium_strings_bs.pak" type="data_package" lang="bs" />
     <output filename="chromium_strings_ca.pak" type="data_package" lang="ca" />
     <output filename="chromium_strings_cs.pak" type="data_package" lang="cs" />
     <output filename="chromium_strings_da.pak" type="data_package" lang="da" />
@@ -56,35 +26,55 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     <output filename="chromium_strings_es.pak" type="data_package" lang="es" />
     <output filename="chromium_strings_es-419.pak" type="data_package" lang="es-419" />
     <output filename="chromium_strings_et.pak" type="data_package" lang="et" />
+    <output filename="chromium_strings_eu.pak" type="data_package" lang="eu" />
     <output filename="chromium_strings_fa.pak" type="data_package" lang="fa" />
     <output filename="chromium_strings_fi.pak" type="data_package" lang="fi" />
     <output filename="chromium_strings_fil.pak" type="data_package" lang="fil" />
+    <output filename="chromium_strings_fr-CA.pak" type="data_package" lang="fr-CA" />
     <output filename="chromium_strings_fr.pak" type="data_package" lang="fr" />
+    <output filename="chromium_strings_gl.pak" type="data_package" lang="gl" />
     <output filename="chromium_strings_gu.pak" type="data_package" lang="gu" />
     <output filename="chromium_strings_he.pak" type="data_package" lang="he" />
     <output filename="chromium_strings_hi.pak" type="data_package" lang="hi" />
     <output filename="chromium_strings_hr.pak" type="data_package" lang="hr" />
     <output filename="chromium_strings_hu.pak" type="data_package" lang="hu" />
+    <output filename="chromium_strings_hy.pak" type="data_package" lang="hy" />
     <output filename="chromium_strings_id.pak" type="data_package" lang="id" />
+    <output filename="chromium_strings_is.pak" type="data_package" lang="is" />
     <output filename="chromium_strings_it.pak" type="data_package" lang="it" />
     <output filename="chromium_strings_ja.pak" type="data_package" lang="ja" />
+    <output filename="chromium_strings_ka.pak" type="data_package" lang="ka" />
+    <output filename="chromium_strings_kk.pak" type="data_package" lang="kk" />
+    <output filename="chromium_strings_km.pak" type="data_package" lang="km" />
     <output filename="chromium_strings_kn.pak" type="data_package" lang="kn" />
     <output filename="chromium_strings_ko.pak" type="data_package" lang="ko" />
+    <output filename="chromium_strings_ky.pak" type="data_package" lang="ky" />
+    <output filename="chromium_strings_lo.pak" type="data_package" lang="lo" />
     <output filename="chromium_strings_lt.pak" type="data_package" lang="lt" />
     <output filename="chromium_strings_lv.pak" type="data_package" lang="lv" />
+    <output filename="chromium_strings_mk.pak" type="data_package" lang="mk" />
     <output filename="chromium_strings_ml.pak" type="data_package" lang="ml" />
+    <output filename="chromium_strings_mn.pak" type="data_package" lang="mn" />
     <output filename="chromium_strings_mr.pak" type="data_package" lang="mr" />
     <output filename="chromium_strings_ms.pak" type="data_package" lang="ms" />
+    <output filename="chromium_strings_my.pak" type="data_package" lang="my" />
+    <output filename="chromium_strings_ne.pak" type="data_package" lang="ne" />
     <output filename="chromium_strings_nl.pak" type="data_package" lang="nl" />
+    <!-- The translation console uses 'no' for Norwegian Bokmål. It should
+         be 'nb'. -->
     <output filename="chromium_strings_nb.pak" type="data_package" lang="no" />
-    <!-- 'no' for Norwegian Bokmål. It should be 'nb'. -->
+    <output filename="chromium_strings_pa.pak" type="data_package" lang="pa" />
     <output filename="chromium_strings_pl.pak" type="data_package" lang="pl" />
     <output filename="chromium_strings_pt-BR.pak" type="data_package" lang="pt-BR" />
     <output filename="chromium_strings_pt-PT.pak" type="data_package" lang="pt-PT" />
+    <output filename="chromium_strings_or.pak" type="data_package" lang="or" />
     <output filename="chromium_strings_ro.pak" type="data_package" lang="ro" />
     <output filename="chromium_strings_ru.pak" type="data_package" lang="ru" />
+    <output filename="chromium_strings_si.pak" type="data_package" lang="si" />
     <output filename="chromium_strings_sk.pak" type="data_package" lang="sk" />
     <output filename="chromium_strings_sl.pak" type="data_package" lang="sl" />
+    <output filename="chromium_strings_sq.pak" type="data_package" lang="sq" />
+    <output filename="chromium_strings_sr-Latn.pak" type="data_package" lang="sr-Latn" />
     <output filename="chromium_strings_sr.pak" type="data_package" lang="sr" />
     <output filename="chromium_strings_sv.pak" type="data_package" lang="sv" />
     <output filename="chromium_strings_sw.pak" type="data_package" lang="sw" />
@@ -93,9 +83,16 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     <output filename="chromium_strings_th.pak" type="data_package" lang="th" />
     <output filename="chromium_strings_tr.pak" type="data_package" lang="tr" />
     <output filename="chromium_strings_uk.pak" type="data_package" lang="uk" />
+    <output filename="chromium_strings_ur.pak" type="data_package" lang="ur" />
+    <output filename="chromium_strings_uz.pak" type="data_package" lang="uz" />
     <output filename="chromium_strings_vi.pak" type="data_package" lang="vi" />
     <output filename="chromium_strings_zh-CN.pak" type="data_package" lang="zh-CN" />
+    <output filename="chromium_strings_zh-HK.pak" type="data_package" lang="zh-HK" />
     <output filename="chromium_strings_zh-TW.pak" type="data_package" lang="zh-TW" />
+    <output filename="chromium_strings_zu.pak" type="data_package" lang="zu" />
+    <!-- Pseudolocales -->
+    <output filename="chromium_strings_ar-XB.pak" type="data_package" lang="ar-XB" />
+    <output filename="chromium_strings_en-XA.pak" type="data_package" lang="en-XA" />
 
     <!-- On Android, output some strings into Android's xml string format.
          These strings are tagged with formatter_data="android_java" -->
@@ -181,11 +178,10 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <output filename="java/res/values-zh-rHK/chromium_strings.xml" lang="zh-HK" type="android" context="android_java" />
       <output filename="java/res/values-zh-rTW/chromium_strings.xml" lang="zh-TW" type="android" context="android_java" />
       <output filename="java/res/values-zu/chromium_strings.xml" lang="zu" type="android" context="android_java" />
+      <!-- Pseudolocales -->
+      <output filename="java/res/values-ar-rXB/chromium_strings.xml" lang="ar-XB" type="android" context="android_java" />
+      <output filename="java/res/values-en-rXA/chromium_strings.xml" lang="en-XA" type="android" context="android_java" />
     </if>
-
-    <!-- Pseudolocales -->
-    <output filename="chromium_strings_ar-XB.pak" type="data_package" lang="ar-XB" />
-    <output filename="chromium_strings_en-XA.pak" type="data_package" lang="en-XA" />
   </outputs>
   <translations>
     <file path="resources/chromium_strings_af.xtb" lang="af" />
@@ -310,8 +306,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           Chrome OS
         </message>
       </if>
-      <!-- Brave enterprise logo won't be used in Brave -->
-      <message name="IDS_PRODUCT_LOGO_ENTERPRISE_ALT_TEXT" desc="Alt text for the Brave Enterprise logo image." />
+      <message name="IDS_PRODUCT_LOGO_ENTERPRISE_ALT_TEXT" desc="Alt text for the Brave Enterprise logo image." formatter_data="android_java">
+        Brave Enterprise logo
+      </message>
       <if expr="is_win">
         <message name="IDS_SHORTCUT_NEW_WINDOW" desc="The text label of the New window shortcut context menu entry as of Windows 8">
           New window
@@ -1279,7 +1276,7 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
       </if>
       <!-- Brave parent extension/app install blocking dialog. -->
-      <if expr="chromeos">
+      <if expr="enable_extensions and enable_supervised_users">
         <message name="IDS_EXTENSION_INSTALL_BLOCKED_BY_PARENT_PROMPT_MESSAGE" desc="Text for the dialog indicating that a parent has blocked extensions and apps.">
          Your parent has turned off "Permissions for sites, apps and extensions" for Brave. Adding this <ph name="EXTENSION_TYPE_PARAMETER">$1<ex>extension</ex></ph> is not allowed.
         </message>
@@ -1373,6 +1370,47 @@ Permissions you've already given to websites and apps may apply to this account.
       </message>
       <message name="IDS_TAILORED_SECURITY_UNCONSENTED_PROMOTION_MESSAGE_ACCEPT" desc="Accept button shown in the message shown when a user changes their account-level tailored security setting encouraging them to enable Enhanced Safe Browsing">
         Continue
+      </message>
+
+      <!-- Privacy Sandbox Dialog strings -->
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_SUBTITLE" desc="A subtitle on the consent page. Consider this a tagline for the Privacy Sandbox project.* “exploring” conveys that this is a work in progress. * “new features” include settings that the user can turn on/off and also backend features that change the way Brave works for everyone * “allow sites to deliver”: Privacy Sandbox is proposed by Brave as a collaborative effort with the browser industry. We’re building and testing functionality that will live in the Brave browser. In order to land the full promise of Privacy Sandbox, websites and advertisers need to adopt the new APIs / functionality that we’re developing. So “allow sites…” makes it clear to the user that we’re building something for the ecosystem. Typically a Brave product builds something for the user, and that’s true in this case, but it’s bigger than that. * “same browsing experience using less of your info”: Another definition of the promise of Privacy Sandbox. Third-party cookies are going away. In this new world, the user will have essentially the same browsing experience but it’s more private because it doesn’t expose so much of the user’s info.">
+        Brave is exploring new features that allow sites to deliver the same browsing experience using less of your info
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BODY_DESCRIPTION_2" desc="A paragraph beneath the “More control over the ads you see” subtitle.* “During the trials”: The trials happens in addition to today’s current system based on third-party cookies. In other words, even by agreeing to or remaining in a trial,, the user’s core experience doesn’t change much. This is an experiment, and we need the user to understand as much. * “see and remove topics of interests”: we want to stress the element of control * “estimate topics”: Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). * “recent browsing history”: Later in the UI, we define this as “a record of sites you’ve visited using Brave on this device.” By “recent”, we mean the last 3 weeks (also defined later in the UI).">
+        During the trials, you can see and remove topics of interest sites use to show you ads. Brave estimates your interests based on your recent browsing history.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_LABEL" desc="Learn more link * Unfolds content within the page * The text that appears describes 2 ways in which a site can target ads: the “Topics API” and the “FLEDGE API”. You can see what those are at www.privacysanbox.com or they’re described for the user’s benefit in other text. * “ad personalization” can mean different things in different contexts. Here, we’re using it as a simple noun. In other words, it’s not the name of a control but a descriptive term used to describe the personalization of ads in the Brave browser. This “ad personalization” shouldn’t be confused with the setting in the Brave sync chain called “Ad personalization”.">
+        Learn more about ad personalization in Brave
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_HEADER" desc="TOPICS API A sub title that describes the first of 2 ways a site can get info from Brave in order to target ads to the user. Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. * “Your”: we need to convey a sense of ownership, even if the user didn’t explicitly choose the interests we’re talking about. Without the “your”, it could sound like Brave is simply building a generic library of interests. * “estimated”: It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). * “by Brave”: This is new behavior for a browser (Brave) to take an active role in processing user data for the purposes of showing ads. It’s important to convey “Brave”, the actor in this case.">
+        Your interests as estimated by Brave
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_BULLET_POINT_1" desc="TOPICS API Bullet 1 of 3 that appear beneath the “Your interests as estimated by Brave” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “What data is used:” is bold and serves as a label to help profiles skimming the page. * “Your browsing history”: The user’s browsing history is available beneath the “History” menu at Brave’s top level. The Topics API estimates topics of interest based on sites in the user’s browsing history that are participating in the trials.">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>What data is used:<ph name="END_BOLD">&lt;/b&gt;</ph> Your browsing history, a record of sites you’ve visited using Brave on this device.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_BULLET_POINT_2" desc="TOPICS API Bullet 2 of 3 that appear beneath the “Your interests as estimated by Brave” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “How we use this data:” is bold and serves as a label to help profiles skimming the page. * “estimate your interests”: Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”).">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How we use this data:<ph name="END_BOLD">&lt;/b&gt;</ph> Brave can estimate your interests. Later, a site you visit can ask Brave to see your interests in order to personalize the ads you see.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_BULLET_POINT_3" desc="TOPICS API Bullet 3 of 3 that appear beneath the “Your interests as estimated by Brave” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “How you can manage your data:” is bold and serves as a label to help profiles skimming the page. * “To protect your privacy”: Today, most data is kept for long periods of time. This new Topics API doesn’t retain estimated topics for more than 3 weeks. The only reason for this feature is to protect the user’s privacy. * “auto”: isn’t strictly necessary, but it conveys that this feature is an ongoing part of the service. This isn’t describing, for example, a one-time deletion. * “older than 3 weeks”: We’re trying to convey a rolling delete. Imagine a user opens a browser for the very first time. As the user browses, Brave will estimate up to 5 topics of interest in the first week. In the second week, Brave will estimate up to 5 additional topics of interest. The same for the third week, for a total of 15 potential interests. In week 4, Brave will automatically delete the 5 interests from week 1 so that there aren’t ever more than 15 topics associated with a user at any given time. * “interests can refresh”: If a user loves horror films and reads about them for months on end, the interest “Horror movies” might get deleted and refreshed in the same week, so that “Horror movies” doesn’t ever disappear from the user’s list of interests. * “Or you can…”: A user might love horror movies but can’t stand the idea of seeing ads about horror movies (because even the visuals will ruin the surprise of opening night). In this case, the user can remove “Horror movies” from the list of interests Brave will consider. This removal remains in place indefinitely. Note that the user might still see ads about Horror movies from different ad networks or by other means than Brave’s “Browser-based ad personalization” setting.">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How you can manage your data:<ph name="END_BOLD">&lt;/b&gt;</ph> To protect your privacy, we auto-delete your interests that are older than 4 weeks. As you keep browsing, an interest might appear on the list again. Or you can remove interests you don’t want Brave to consider.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_2_BULLET_POINT_1" desc="FLEDGE APIBullet 1 of 3 that appear beneath the “Sites you visit that define your interests” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “What data is used:” is bold and serves as a label to help profiles skimming the page. * “Your browsing history”: The user’s browsing history is available beneath the “History” menu at Brave’s top level. This content taken in isolation is somewhat misleading. With FLEDGE, a site can store information in Brave about the user’s visit to their site. For example, the site might store “running_shoes_red_size_35” to indicate that the user showed interest in a particular shoe. We’re OK with the simplification in this bullet because 1) we explain it in the next bullet and 2) we want the user to understand that at the top level, both Topics &amp; Fledge are based on the same thing and that is the user’s browsing history.">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>What data is used:<ph name="END_BOLD">&lt;/b&gt;</ph> Your browsing history, a record of sites you’ve visited using Brave on this device.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_2_BULLET_POINT_2" desc="FLEDGE API Bullet 2 of 3 that appear beneath the “Sites you visit that define your interests” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “How we use this data:” is bold and serves as a label to help profiles skimming the page.">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How we use this data:<ph name="END_BOLD">&lt;/b&gt;</ph> Sites can store information with Brave about your interests. For example, if you visit a site to buy shoes for a marathon, the site might define your interest as running marathons. Later, if you visit a different site to register for a race, that site can show you an ad for running shoes based on your interests.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BOTTOM_SUMMARY" desc="A conclusion paragraph for the entire page. It sits beneath the “More control over the ads you see” subtitle but it’s no more associated with that topic than “Limit sharing between sites”. * “You can change your mind”: When writing a consent moment, we have a legal obligation to inform the user how they can “revoke their consent” or “opt out”. A friendlier way to say this is “change your mind”. * “in Brave settings”: The URL is chrome://settings/privacySandbox. We don’t make it a live link because we need the users to stay in this moment until they make a choice. * “The trials run alongside…”: The trials happen in addition to today’s current system based on third-party cookies. In other words, even by accepting in this consent moment, the user’s core experience doesn’t change much. This is an experiment, and we need the user to understand as much. ">
+        You can change your mind at any time in Brave settings. The trials run alongside the current way ads get served, so you won’t see changes right away.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_SUBTITLE" desc="A subtitle on the consent page. Consider this a tagline for the Privacy Sandbox project.* “exploring” conveys that this is a work in progress. * “new features” include settings that the user can turn on/off and also backend features that change the way Brave works for everyone * “allow sites to deliver”: Privacy Sandbox is proposed by Brave as a collaborative effort with the browser industry. We’re building and testing functionality that will live in the Brave browser. In order to land the full promise of Privacy Sandbox, websites and advertisers need to adopt the new APIs / functionality that we’re developing. So “allow sites…” makes it clear to the user that we’re building something for the ecosystem. Typically a Brave product builds something for the user, and that’s true in this case, but it’s bigger than that. * “same browsing experience using less of your info”: Another definition of the promise of Privacy Sandbox. Third-party cookies are going away. In this new world, the user will have essentially the same browsing experience but it’s more private because it doesn’t expose so much of the user’s info.">
+        Brave is exploring new features that allow sites to deliver the same browsing experience using less of your info
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_BODY_DESCRIPTION_2" desc="A paragraph beneath the “More control over the ads you see” subtitle.* “During the trials”: The trials happens in addition to today’s current system based on third-party cookies. In other words, even by agreeing to or remaining in a trial,, the user’s core experience doesn’t change much. This is an experiment, and we need the user to understand as much. * “see and remove topics of interests”: we want to stress the element of control * “estimate topics”: Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). * “recent browsing history”: Later in the UI, we define this as “a record of sites you’ve visited using Brave on this device.” By “recent”, we mean the last 3 weeks (also defined later in the UI).">
+        During the trials, you can see and remove topics of interest sites use to show you ads. Brave estimates your interests based on your recent browsing history.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_BOTTOM_SUMMARY" desc="A conclusion paragraph for the entire page. It sits beneath the “More control over the ads you see” subtitle but it’s no more associated with that topic than “Limit sharing between sites”. * “in Brave settings”: The URL is chrome://settings/privacySandbox. We don’t make it a live link because we need the users to stay in this moment until they make a choice.">
+        You can learn more about these features in Brave settings.
       </message>
     </messages>
   </release>

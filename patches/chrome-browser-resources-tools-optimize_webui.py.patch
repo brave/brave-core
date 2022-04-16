@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/resources/tools/optimize_webui.py b/chrome/browser/resources/tools/optimize_webui.py
-index 35fa2bb6f6ef15715fbdb5d16769f6e0bb4f91d7..c75f34cecb1008102693933ea18f04010f6cbc0d 100755
+index 5a6272320981ee6fc591a0c9d78084f4cc3ce7b4..8cf233c9c6f3c767abb852794f0a086583f452c2 100755
 --- a/chrome/browser/resources/tools/optimize_webui.py
 +++ b/chrome/browser/resources/tools/optimize_webui.py
-@@ -26,6 +26,7 @@ import node_modules
+@@ -24,6 +24,7 @@ import node_modules
  
  # These files are already combined and minified.
  _BASE_EXCLUDES = []
 +_BASE_EXCLUDES += [ 'chrome://brave-resources/fonts/muli.css', 'chrome://brave-resources/fonts/poppins.css' ]; _BR_RESOURCES_PATH = os.path.join(_SRC_PATH, 'brave', 'ui', 'webui', 'resources','').replace('\\', '/')
  for excluded_file in [
-   'resources/polymer/v1_0/web-animations-js/web-animations-next-lite.min.js',
-   'resources/css/roboto.css',
-@@ -52,6 +53,8 @@ def _request_list_path(out_path, target_name):
-   return os.path.join(out_path, target_name + '_requestlist.txt')
+     'resources/polymer/v1_0/web-animations-js/web-animations-next-lite.min.js',
+     'resources/css/roboto.css',
+@@ -51,6 +52,8 @@ def _request_list_path(out_path, target_name):
+ 
  
  def _get_dep_path(dep, host_url, in_path):
 +  for brave_host_url in ['chrome://brave-resources/', '//brave-resources/']:

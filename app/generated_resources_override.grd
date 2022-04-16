@@ -92,6 +92,8 @@ are declared in tools/grit/grit_rule.gni.
     <messages fallback_to_english="true">
       <part file="bookmarks_strings_override.grdp" />
 
+      <part file="app_management_strings_override.grdp" />
+
       <part file="profiles_strings_override.grdp" />
 
       <if expr="is_win or is_macosx or is_linux">
@@ -487,6 +489,10 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_EXTENSIONS_ADDED_WITHOUT_KNOWLEDGE" desc="Text shown in the extensions settings for items that might have been forcefully added to Brave without the user's knowledge">
         This extension is not listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
       </message>
+      <if expr="use_titlecase">
+        </if>
+        <if expr="not use_titlecase">
+        </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -951,10 +957,13 @@ are declared in tools/grit/grit_rule.gni.
 
     <if expr="not is_android">
       <if expr="use_titlecase">
-      </if>
+        </if>
       <if expr="not use_titlecase">
-      </if>
+        </if>
     </if>
+
+    <if expr="not is_android">
+      </if>
 
     <if expr="not is_android">
       </if>

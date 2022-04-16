@@ -12,6 +12,7 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/metrics/metrics_reporting_state.h"
@@ -82,11 +83,11 @@ CrashReportPermissionAskDialogView::CrashReportPermissionAskDialogView(
   set_should_ignore_snapping(true);
 
   SetButtonLabel(ui::DIALOG_BUTTON_OK,
-                 l10n_util::GetStringUTF16(
+                 brave_l10n::GetLocalizedResourceUTF16String(
                      IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_OK_BUTTON_LABEL));
   SetButtonLabel(
       ui::DIALOG_BUTTON_CANCEL,
-      l10n_util::GetStringUTF16(
+      brave_l10n::GetLocalizedResourceUTF16String(
           IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_CANCEL_BUTTON_LABEL));
   SetAcceptCallback(
       base::BindOnce(&CrashReportPermissionAskDialogView::OnAcceptButtonClicked,
@@ -129,8 +130,9 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
   header_image->SetImage(ui::ImageModel::FromVectorIcon(
       kBraveSadIcon, header_image_color, kIconSize));
 
-  const std::u16string header_browser_name = l10n_util::GetStringUTF16(
-      IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_HEADER_TEXT_BROWSER_NAME_PART);
+  const std::u16string header_browser_name =
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_HEADER_TEXT_BROWSER_NAME_PART);
   size_t offset;
   const std::u16string header_text = l10n_util::GetStringFUTF16(
       IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_HEADER_TEXT, header_browser_name,
@@ -162,7 +164,7 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
       gfx::Insets{0, kPadding + kChildSpacing, 0, 0}, 5));
   constexpr int kContentsTextFontSize = 13;
   auto* contents_label = contents->AddChildView(std::make_unique<views::Label>(
-      l10n_util::GetStringUTF16(
+      brave_l10n::GetLocalizedResourceUTF16String(
           IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_CONTENT_TEXT),
       views::Label::CustomFont{
           GetFont(kContentsTextFontSize, gfx::Font::Weight::NORMAL)}));
@@ -170,9 +172,10 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
   contents_label->SetMultiLine(true);
   constexpr int kContentsLabelMaxWidth = 350;
   contents_label->SetMaximumWidth(kContentsLabelMaxWidth);
-  dont_ask_again_checkbox_ = contents->AddChildView(
-      std::make_unique<views::Checkbox>(l10n_util::GetStringUTF16(
-          IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_DONT_ASK_TEXT)));
+  dont_ask_again_checkbox_ =
+      contents->AddChildView(std::make_unique<views::Checkbox>(
+          brave_l10n::GetLocalizedResourceUTF16String(
+              IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_DONT_ASK_TEXT)));
 
   // Construct footnote text area
   constexpr int kFootnoteVerticalPadding = 16;
@@ -186,8 +189,9 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
   footnote->SetBackground(
       views::CreateThemedSolidBackground(footnote, ui::kColorDialogBackground));
 
-  const std::u16string setting_text = l10n_util::GetStringUTF16(
-      IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT_SETTING_PART);
+  const std::u16string setting_text =
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT_SETTING_PART);
   const std::u16string footnote_text = l10n_util::GetStringFUTF16(
       IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT, setting_text,
       &offset);

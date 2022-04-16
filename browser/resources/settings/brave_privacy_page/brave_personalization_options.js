@@ -27,8 +27,22 @@ Polymer({
     },
 
     webRTCPolicy_: String,
-    p3aEnabled_: Boolean,
-    statsUsagePingEnabled_: Boolean
+    p3aEnabledPref_: {
+      type: Object,
+      value() {
+        // TODO(dbeam): this is basically only to appease PrefControlMixin.
+        // Maybe add a no-validate attribute instead? This makes little sense.
+        return {};
+      },
+    },
+    statsUsagePingEnabledPref_: {
+      type: Object,
+      value() {
+        // TODO(dbeam): this is basically only to appease PrefControlMixin.
+        // Maybe add a no-validate attribute instead? This makes little sense.
+        return {};
+      },
+    },
   },
 
   /** @private {?settings.BravePrivacyBrowserProxy} */
@@ -42,24 +56,38 @@ Polymer({
   /** @override */
   ready: function() {
     // Used for first time initialization of checked state.
-    // Can't use `prefs` property of `settings-toggle-button`
-    // because p3a enabled is a local state setting.
-    this.browserProxy_.getP3AEnabled().then(enabled => {
-      this.p3aEnabled_ = enabled;
-    });
-    this.browserProxy_.getStatsUsagePingEnabled().then(enabled => {
-      this.statsUsagePingEnabled_ = enabled;
-    });
-    this.addWebUIListener('stats-usage-ping-enabled-changed', (enabled) => {
-      this.statsUsagePingEnabled_ = enabled;
-    })
-    this.addWebUIListener('p3a-enabled-changed', (enabled) => {
-      this.p3aEnabled_ = enabled
-    })
+    // Can't use `prefs` property of `settings-toggle-button` directly
+    // because p3a enabled is a local state setting, but PrefControlMixin
+    // checks for a pref being valid, so have to fake it, same as upstream.
+    const setP3AEnabledPref = (enabled) => this.setP3AEnabledPref_(enabled);
+    this.addWebUIListener('p3a-enabled-changed', setP3AEnabledPref);
+    this.browserProxy_.getP3AEnabled().then(setP3AEnabledPref);
+
+    const setStatsUsagePingEnabledPref = (enabled) => this.setStatsUsagePingEnabledPref_(enabled);
+    this.addWebUIListener('stats-usage-ping-enabled-changed', setStatsUsagePingEnabledPref);
+    this.browserProxy_.getStatsUsagePingEnabled().then(setStatsUsagePingEnabledPref);
+  },
+
+  setP3AEnabledPref_: function (enabled) {
+    const pref = {
+      key: '',
+      type: chrome.settingsPrivate.PrefType.BOOLEAN,
+      value: enabled,
+    };
+    this.p3aEnabledPref_ = pref;
   },
 
   onP3AEnabledChange_: function() {
     this.browserProxy_.setP3AEnabled(this.$.p3aEnabled.checked);
+  },
+
+  setStatsUsagePingEnabledPref_: function (enabled) {
+    const pref = {
+      key: '',
+      type: chrome.settingsPrivate.PrefType.BOOLEAN,
+      value: enabled,
+    };
+    this.statsUsagePingEnabledPref_ = pref;
   },
 
   onStatsUsagePingEnabledChange_: function() {

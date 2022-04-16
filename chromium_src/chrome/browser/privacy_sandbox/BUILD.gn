@@ -12,6 +12,7 @@ source_set("unit_tests") {
     "//chrome/browser",
     "//chrome/common:chrome_features",
     "//chrome/test:test_support",
+    "//components/browsing_topics",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
     "//components/content_settings/core/test:test_support",

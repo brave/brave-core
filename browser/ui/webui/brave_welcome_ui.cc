@@ -70,8 +70,8 @@ class WelcomeDOMHandler : public WebUIMessageHandler {
   void RegisterMessages() override;
 
  private:
-  void HandleImportNowRequested(base::Value::ConstListView args);
-  void HandleRecordP3A(base::Value::ConstListView args);
+  void HandleImportNowRequested(const base::Value::List& args);
+  void HandleRecordP3A(const base::Value::List& args);
   Browser* GetBrowser();
 
   int screen_number_ = 0;
@@ -98,12 +98,12 @@ void WelcomeDOMHandler::RegisterMessages() {
 }
 
 void WelcomeDOMHandler::HandleImportNowRequested(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   chrome::ShowSettingsSubPageInTabbedBrowser(GetBrowser(),
                                              chrome::kImportDataSubPage);
 }
 
-void WelcomeDOMHandler::HandleRecordP3A(base::Value::ConstListView args) {
+void WelcomeDOMHandler::HandleRecordP3A(const base::Value::List& args) {
   if (!args[0].is_int() || !args[1].is_bool() || !args[2].is_bool())
     return;
   screen_number_ = args[0].GetInt();

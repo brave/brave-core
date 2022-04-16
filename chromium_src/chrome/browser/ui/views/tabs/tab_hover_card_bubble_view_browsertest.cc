@@ -115,7 +115,7 @@ IN_PROC_BROWSER_TEST_F(TabHoverCardBubbleViewBrowserTest,
   TabRendererData new_tab_data = TabRendererData();
   new_tab_data.title = u"Settings - Addresses and more";
   new_tab_data.last_committed_url = GURL("chrome://settings/addresses");
-  tab_strip()->AddTabAt(1, new_tab_data, false);
+  tab_strip()->AddTabAt(1, new_tab_data);
 
   ShowUi("default");
   Widget* widget = hover_card()->GetWidget();

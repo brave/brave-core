@@ -1,10 +1,10 @@
 diff --git a/components/content_settings/core/common/content_settings_types.h b/components/content_settings/core/common/content_settings_types.h
-index c73c004085240ed2106fe93c85692dd28b7639e7..9c932e5127924ff177b079e7ce6e707597aec202 100644
+index c110a0332eda11e3855835aeff3309bc5fbb42b5..2eecffc2f3f7ea297ca87a3e683dc7f70f32a140 100644
 --- a/components/content_settings/core/common/content_settings_types.h
 +++ b/components/content_settings/core/common/content_settings_types.h
-@@ -281,6 +281,7 @@ enum class ContentSettingsType : int32_t {
-   // site instead of the mobile one.
-   REQUEST_DESKTOP_SITE,
+@@ -285,6 +285,7 @@ enum class ContentSettingsType : int32_t {
+   // the browser FedCM API.
+   FEDERATED_IDENTITY_API,
  
 +  BRAVE_CONTENT_SETTINGS_TYPES_LIST,
    NUM_TYPES,

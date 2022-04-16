@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/first_run/upgrade_util_win.cc b/chrome/browser/first_run/upgrade_util_win.cc
-index 0d0593f022998f728aac933840f35bd1726e29af..2808fbf058ab9d7ed218fc4b9a83b2e299d1f30c 100644
+index 563d5e13d148cda826d245c4b21fb8041ef9ff66..52ea94801c4dc8a70231655d7087ef1bf19f8821 100644
 --- a/chrome/browser/first_run/upgrade_util_win.cc
 +++ b/chrome/browser/first_run/upgrade_util_win.cc
-@@ -44,7 +44,7 @@
+@@ -43,7 +43,7 @@
  #include "components/prefs/pref_service.h"
  #include "ui/base/ui_base_switches.h"
  
@@ -11,7 +11,7 @@ index 0d0593f022998f728aac933840f35bd1726e29af..2808fbf058ab9d7ed218fc4b9a83b2e2
  #include "google_update/google_update_idl.h"
  #endif
  
-@@ -58,7 +58,7 @@ bool GetNewerChromeFile(base::FilePath* path) {
+@@ -57,7 +57,7 @@ bool GetNewerChromeFile(base::FilePath* path) {
  }
  
  bool InvokeGoogleUpdateForRename() {

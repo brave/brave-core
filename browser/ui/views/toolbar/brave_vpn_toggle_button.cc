@@ -11,10 +11,10 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/theme_provider.h"
 
 BraveVPNToggleButton::BraveVPNToggleButton(Browser* browser)
@@ -41,8 +41,8 @@ BraveVPNToggleButton::BraveVPNToggleButton(Browser* browser)
   }
 
   // TODO(simonhong): Re-visit this name.
-  SetAccessibleName(
-      l10n_util::GetStringUTF16(IDS_BRAVE_VPN_TOGGLE_MENU_ITEM_TEXT));
+  SetAccessibleName(brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_BRAVE_VPN_TOGGLE_MENU_ITEM_TEXT));
 }
 
 BraveVPNToggleButton::~BraveVPNToggleButton() = default;

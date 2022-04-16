@@ -22,6 +22,7 @@
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/chrome_select_file_policy.h"
@@ -67,14 +68,15 @@ const char kImportFileNameParam[] = "filename";
 std::u16string GetImportNotificationTitle(ipfs::ImportState state) {
   switch (state) {
     case ipfs::IPFS_IMPORT_SUCCESS:
-      return l10n_util::GetStringUTF16(IDS_IPFS_IMPORT_NOTIFICATION_TITLE);
+      return brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_IPFS_IMPORT_NOTIFICATION_TITLE);
     case ipfs::IPFS_IMPORT_ERROR_REQUEST_EMPTY:
     case ipfs::IPFS_IMPORT_ERROR_ADD_FAILED:
-      return l10n_util::GetStringUTF16(
+      return brave_l10n::GetLocalizedResourceUTF16String(
           IDS_IPFS_IMPORT_ERROR_NOTIFICATION_TITLE);
     case ipfs::IPFS_IMPORT_ERROR_MKDIR_FAILED:
     case ipfs::IPFS_IMPORT_ERROR_MOVE_FAILED:
-      return l10n_util::GetStringUTF16(
+      return brave_l10n::GetLocalizedResourceUTF16String(
           IDS_IPFS_IMPORT_PARTLY_COMPLETED_NOTIFICATION_TITLE);
     default:
       NOTREACHED();
@@ -91,12 +93,14 @@ std::u16string GetImportNotificationBody(ipfs::ImportState state,
           IDS_IPFS_IMPORT_NOTIFICATION_BODY,
           base::UTF8ToUTF16(shareable_link.spec()));
     case ipfs::IPFS_IMPORT_ERROR_REQUEST_EMPTY:
-      return l10n_util::GetStringUTF16(IDS_IPFS_IMPORT_ERROR_NO_REQUEST_BODY);
+      return brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_IPFS_IMPORT_ERROR_NO_REQUEST_BODY);
     case ipfs::IPFS_IMPORT_ERROR_ADD_FAILED:
-      return l10n_util::GetStringUTF16(IDS_IPFS_IMPORT_ERROR_ADD_FAILED_BODY);
+      return brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_IPFS_IMPORT_ERROR_ADD_FAILED_BODY);
     case ipfs::IPFS_IMPORT_ERROR_MKDIR_FAILED:
     case ipfs::IPFS_IMPORT_ERROR_MOVE_FAILED:
-      return l10n_util::GetStringUTF16(
+      return brave_l10n::GetLocalizedResourceUTF16String(
           IDS_IPFS_IMPORT_PARTLY_COMPLETED_NOTIFICATION_BODY);
     default:
       NOTREACHED();

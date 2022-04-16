@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/bind.h"
-#include "base/cxx17_backports.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
@@ -346,7 +345,7 @@ void ViewCounterService::UpdateP3AValues() const {
       std::lower_bound(kNewTabCount, std::end(kNewTabCount), new_tab_count);
   int answer = it_count - kNewTabCount;
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.NTP.NewTabsCreated", answer,
-                             base::size(kNewTabCount) + 1);
+                             std::size(kNewTabCount) + 1);
 
   constexpr double kSponsoredRatio[] = {0, 10.0, 20.0, 30.0, 40.0, 50.0};
   uint64_t branded_new_tab_count =
@@ -361,7 +360,7 @@ void ViewCounterService::UpdateP3AValues() const {
     answer = it_ratio - kSponsoredRatio;
   }
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.NTP.SponsoredNewTabsCreated", answer,
-                             base::size(kSponsoredRatio) + 1);
+                             std::size(kSponsoredRatio) + 1);
 }
 
 }  // namespace ntp_background_images

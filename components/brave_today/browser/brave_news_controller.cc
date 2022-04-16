@@ -349,7 +349,7 @@ void BraveNewsController::OnInteractionSessionStarted() {
                        total_session_count);
   int answer = it_count - kSessionCountBuckets;
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklySessionCount", answer,
-                             base::size(kSessionCountBuckets) + 1);
+                             std::size(kSessionCountBuckets) + 1);
 }
 
 void BraveNewsController::OnSessionCardVisitsCountChanged(
@@ -364,7 +364,7 @@ void BraveNewsController::OnSessionCardVisitsCountChanged(
   const int* it_count = std::lower_bound(kBuckets, std::end(kBuckets), total);
   int answer = it_count - kBuckets;
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyMaxCardVisitsCount", answer,
-                             base::size(kBuckets) + 1);
+                             std::size(kBuckets) + 1);
 }
 
 void BraveNewsController::OnPromotedItemView(
@@ -399,7 +399,7 @@ void BraveNewsController::OnSessionCardViewsCountChanged(
   const int* it_count = std::lower_bound(kBuckets, std::end(kBuckets), total);
   int answer = it_count - kBuckets;
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyMaxCardViewsCount", answer,
-                             base::size(kBuckets) + 1);
+                             std::size(kBuckets) + 1);
 }
 
 void BraveNewsController::OnDisplayAdVisit(
@@ -459,7 +459,7 @@ void BraveNewsController::OnDisplayAdView(
   const int* it_count = std::lower_bound(kBuckets, std::end(kBuckets), total);
   int answer = it_count - kBuckets;
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyDisplayAdsViewedCount", answer,
-                             base::size(kBuckets) + 1);
+                             std::size(kBuckets) + 1);
 }
 
 void BraveNewsController::CheckForPublishersUpdate() {

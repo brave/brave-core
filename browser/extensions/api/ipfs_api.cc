@@ -22,6 +22,7 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_service.h"
@@ -29,7 +30,6 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
-#include "ui/base/l10n/l10n_util.h"
 
 using ipfs::IPFSResolveMethodTypes;
 
@@ -321,20 +321,20 @@ void IpfsGetIpnsKeysListFunction::OnKeysLoaded(::ipfs::IpnsKeysManager* manager,
 
 ExtensionFunction::ResponseAction IpfsGetResolveMethodListFunction::Run() {
   base::Value list(base::Value::Type::LIST);
-  list.Append(
-      MakeSelectValue(l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_ASK),
-                      IPFSResolveMethodTypes::IPFS_ASK));
   list.Append(MakeSelectValue(
-      l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_GATEWAY),
-      IPFSResolveMethodTypes::IPFS_GATEWAY));
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_IPFS_RESOLVE_OPTION_ASK),
+      IPFSResolveMethodTypes::IPFS_ASK));
+  list.Append(MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
+                                  IDS_IPFS_RESOLVE_OPTION_GATEWAY),
+                              IPFSResolveMethodTypes::IPFS_GATEWAY));
 
-  list.Append(
-      MakeSelectValue(l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_LOCAL),
-                      IPFSResolveMethodTypes::IPFS_LOCAL));
+  list.Append(MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
+                                  IDS_IPFS_RESOLVE_OPTION_LOCAL),
+                              IPFSResolveMethodTypes::IPFS_LOCAL));
 
-  list.Append(MakeSelectValue(
-      l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_DISABLED),
-      IPFSResolveMethodTypes::IPFS_DISABLED));
+  list.Append(MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
+                                  IDS_IPFS_RESOLVE_OPTION_DISABLED),
+                              IPFSResolveMethodTypes::IPFS_DISABLED));
   std::string json_string;
   base::JSONWriter::Write(list, &json_string);
   return RespondNow(OneArgument(base::Value(json_string)));

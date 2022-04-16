@@ -270,7 +270,8 @@ class BaseDictionaryValueMojoTypemap(MojoTypemap):
     @staticmethod
     def IsMojoType(kind):
         return (mojom.IsStructKind(kind) and
-                kind.qualified_name == 'mojo_base.mojom.DictionaryValue')
+                (kind.qualified_name ==
+                 'mojo_base.mojom.DeprecatedDictionaryValue'))
     def ObjCWrappedType(self):
         return "NSDictionary<NSString*,MojoBaseValue*>*"
     def ExpectedCppType(self):

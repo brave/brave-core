@@ -12,6 +12,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
@@ -19,7 +20,6 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_resources.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/color_palette.h"
@@ -64,10 +64,10 @@ class HighlightPathGenerator : public views::HighlightPathGenerator {
 class IPFSLocationButtonView : public views::LabelButton {
  public:
   explicit IPFSLocationButtonView(Profile* profile)
-      : LabelButton(
-            base::BindRepeating(&IPFSLocationButtonView::ButtonPressed,
-                                base::Unretained(this)),
-            l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_USING_IPFS)),
+      : LabelButton(base::BindRepeating(&IPFSLocationButtonView::ButtonPressed,
+                                        base::Unretained(this)),
+                    brave_l10n::GetLocalizedResourceUTF16String(
+                        IDS_LOCATION_BAR_OPEN_USING_IPFS)),
         profile_(profile) {
     // Render vector icon
     const gfx::ImageSkia image =

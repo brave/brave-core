@@ -9,6 +9,7 @@
 #include "base/mac/scoped_nsobject.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/cocoa/key_equivalent_constants.h"
 #include "chrome/grit/chromium_strings.h"
@@ -16,7 +17,6 @@
 #import "third_party/google_toolbox_for_mac/src/AppKit/GTMUILocalizerAndLayoutTweaker.h"
 #include "ui/base/cocoa/controls/button_utils.h"
 #include "ui/base/cocoa/controls/textfield_utils.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/l10n/l10n_util_mac.h"
 
 namespace {
@@ -24,8 +24,9 @@ namespace {
 // Return the internationalized message |message_id|, with the product name
 // substituted in for $1.
 NSString* NSStringWithProductName(int message_id) {
-  return l10n_util::GetNSStringF(message_id,
-                                 l10n_util::GetStringUTF16(IDS_PRODUCT_NAME));
+  return l10n_util::GetNSStringF(
+      message_id,
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_PRODUCT_NAME));
 }
 
 // Reflows buttons. Requires them to be passed in vertical order, top down.
@@ -113,8 +114,9 @@ void CenterVertically(NSView* view) {
 
   // This string starts with the app name, which is strongly LTR, so force the
   // correct layout.
-  std::u16string completeInstallationString = l10n_util::GetStringUTF16(
-      IDS_FIRSTRUN_DLG_COMPLETE_INSTALLATION_LABEL_BRAVE);
+  std::u16string completeInstallationString =
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_FIRSTRUN_DLG_COMPLETE_INSTALLATION_LABEL_BRAVE);
   base::i18n::AdjustStringForLocaleDirection(&completeInstallationString);
   NSTextField* completionLabel = [TextFieldUtils
       labelWithString:base::SysUTF16ToNSString(completeInstallationString)];

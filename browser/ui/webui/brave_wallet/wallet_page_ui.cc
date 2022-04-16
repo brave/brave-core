@@ -27,6 +27,7 @@
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
@@ -45,7 +46,11 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(kWalletPageHost);
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
-  source->AddLocalizedStrings(brave_wallet::kLocalizedStrings);
+  for (const auto& str : brave_wallet::kLocalizedStrings) {
+    std::u16string l10n_str =
+        brave_l10n::GetLocalizedResourceUTF16String(str.id);
+    source->AddString(str.name, l10n_str);
+  }
   NavigationBarDataProvider::Initialize(source);
   webui::SetupWebUIDataSource(
       source,

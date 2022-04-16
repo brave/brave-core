@@ -49,6 +49,7 @@ fixup_replacements = [
     (r'Brave Docs', r'Google Docs'),
     (r'Brave Drive', r'Google Drive'),
     (r'Brave OS', r'Chrome OS'),
+    (r'BraveOS', r'ChromeOS'),
     (r'Brave Safe Browsing', r'Google Safe Browsing'),
     (r'Safe Browsing \(protects you and your device from dangerous sites\)',
      r'Google Safe Browsing (protects you and your device from dangerous sites)'

@@ -10,10 +10,10 @@
 
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace ipfs {
 
@@ -56,27 +56,29 @@ void IPFSNotConnectedPage::CommandReceived(const std::string& command) {
 
 void IPFSNotConnectedPage::PopulateInterstitialStrings(
     base::Value* load_time_data) {
-  load_time_data->SetStringKey(
-      "tabTitle", l10n_util::GetStringUTF16(IDS_IPFS_NOT_CONNECTED_TITLE));
-  load_time_data->SetStringKey(
-      "heading", l10n_util::GetStringUTF16(IDS_IPFS_NOT_CONNECTED_HEADING));
+  load_time_data->SetStringKey("tabTitle",
+                               brave_l10n::GetLocalizedResourceUTF16String(
+                                   IDS_IPFS_NOT_CONNECTED_TITLE));
+  load_time_data->SetStringKey("heading",
+                               brave_l10n::GetLocalizedResourceUTF16String(
+                                   IDS_IPFS_NOT_CONNECTED_HEADING));
 
-  load_time_data->SetStringKey(
-      "primaryParagraph",
-      l10n_util::GetStringUTF16(IDS_IPFS_NOT_CONNECTED_PRIMARY_PARAGRAPH));
+  load_time_data->SetStringKey("primaryParagraph",
+                               brave_l10n::GetLocalizedResourceUTF16String(
+                                   IDS_IPFS_NOT_CONNECTED_PRIMARY_PARAGRAPH));
 
+  load_time_data->SetStringKey("primaryButtonText",
+                               brave_l10n::GetLocalizedResourceUTF16String(
+                                   IDS_IPFS_NOT_CONNECTED_PRIMARY_BUTTON));
+  load_time_data->SetStringKey("openDetails",
+                               brave_l10n::GetLocalizedResourceUTF16String(
+                                   IDS_IPFS_NOT_CONNECTED_OPEN_DETAILS_BUTTON));
   load_time_data->SetStringKey(
-      "primaryButtonText",
-      l10n_util::GetStringUTF16(IDS_IPFS_NOT_CONNECTED_PRIMARY_BUTTON));
-  load_time_data->SetStringKey(
-      "openDetails",
-      l10n_util::GetStringUTF16(IDS_IPFS_NOT_CONNECTED_OPEN_DETAILS_BUTTON));
-  load_time_data->SetStringKey(
-      "closeDetails",
-      l10n_util::GetStringUTF16(IDS_IPFS_NOT_CONNECTED_CLOSE_DETAILS_BUTTON));
-  load_time_data->SetStringKey(
-      "explanationParagraph",
-      l10n_util::GetStringUTF16(IDS_IPFS_NOT_CONNECTED_EXPLANATION));
+      "closeDetails", brave_l10n::GetLocalizedResourceUTF16String(
+                          IDS_IPFS_NOT_CONNECTED_CLOSE_DETAILS_BUTTON));
+  load_time_data->SetStringKey("explanationParagraph",
+                               brave_l10n::GetLocalizedResourceUTF16String(
+                                   IDS_IPFS_NOT_CONNECTED_EXPLANATION));
   load_time_data->SetStringKey("finalParagraph", std::u16string());
 }
 

@@ -1,18 +1,18 @@
 diff --git a/components/os_crypt/os_crypt_win.cc b/components/os_crypt/os_crypt_win.cc
-index 1a4042deee94de3cd8a76398f8c859fc9838c951..3793b907f347563d1a9ab6632d61e24eac2cc60c 100644
+index 91f2c6d4f79cf233770abbbcaaedbdd246ee044e..84b8a28a8f18a074ce02bdbdc9821693f22d854d 100644
 --- a/components/os_crypt/os_crypt_win.cc
 +++ b/components/os_crypt/os_crypt_win.cc
-@@ -135,6 +135,7 @@ bool OSCrypt::DecryptString16(const std::string& ciphertext,
+@@ -177,6 +177,7 @@ bool OSCryptImpl::DecryptString16(const std::string& ciphertext,
  // static
- bool OSCrypt::EncryptString(const std::string& plaintext,
+ bool OSCryptImpl::EncryptString(const std::string& plaintext,
                              std::string* ciphertext) {
 +  if (IsEncryptionDisabled(plaintext, ciphertext)) { return true; }
    if (g_use_legacy)
      return EncryptStringWithDPAPI(plaintext, ciphertext);
  
-@@ -161,6 +162,7 @@ bool OSCrypt::EncryptString(const std::string& plaintext,
+@@ -203,6 +204,7 @@ bool OSCryptImpl::EncryptString(const std::string& plaintext,
  // static
- bool OSCrypt::DecryptString(const std::string& ciphertext,
+ bool OSCryptImpl::DecryptString(const std::string& ciphertext,
                              std::string* plaintext) {
 +  if (IsEncryptionDisabled(ciphertext, plaintext)) { return true; }
    if (!base::StartsWith(ciphertext, kEncryptionVersionPrefix,

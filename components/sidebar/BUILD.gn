@@ -17,6 +17,7 @@ static_library("sidebar") {
 
   deps = [
     "//base",
+    "//brave/components/l10n/common",
     "//brave/components/resources:strings",
     "//components/keyed_service/core",
     "//components/prefs",

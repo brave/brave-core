@@ -13,7 +13,7 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-const int kBraveCurrentDataVersion = 18;
+const int kBraveCurrentDataVersion = 19;
 // DO NOT CHANGE THIS ONE. Used for backfilling kBraveDefaultSearchVersion.
 const int kBraveFirstTrackedDataVersion = 6;
 
@@ -55,6 +55,7 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
           engine.search_url_post_params,
           engine.suggest_url_post_params,
           engine.image_url_post_params,
+          engine.side_search_param,
           engine.alternate_urls,
           engine.alternate_urls_size,
           engine.type,
@@ -71,6 +72,7 @@ const PrepopulatedEngine duckduckgo = {
     "https://duckduckgo.com/?q={searchTerms}&t=brave",
     "UTF-8",
     "https://ac.duckduckgo.com/ac/?q={searchTerms}&type=list",
+    NULL,
     NULL,
     NULL,
     NULL,
@@ -121,6 +123,7 @@ const PrepopulatedEngine duckduckgo_lite = {
     NULL,
     NULL,
     NULL,
+    NULL,
     0,
     SEARCH_ENGINE_DUCKDUCKGO,
     NULL,
@@ -159,6 +162,7 @@ const PrepopulatedEngine qwant = {
     NULL,
     NULL,
     NULL,
+    NULL,
     0,
     SEARCH_ENGINE_QWANT,
     NULL,
@@ -174,6 +178,7 @@ const PrepopulatedEngine startpage = {
     "UTF-8",
     "https://www.startpage.com/cgi-bin/"
     "csuggest?query={searchTerms}&limit=10&format=json",
+    NULL,
     NULL,
     NULL,
     NULL,
@@ -217,6 +222,7 @@ const PrepopulatedEngine brave_search = {
 #endif
     "UTF-8",
     "https://search.brave.com/api/suggest?q={searchTerms}",
+    NULL,
     NULL,
     NULL,
     NULL,

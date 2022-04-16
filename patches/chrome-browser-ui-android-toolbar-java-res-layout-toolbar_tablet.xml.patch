@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
-index 82d675d6ea2055ac4c080a03c057b921cade63dd..20cc6fe2a04e56905c3edfab1bd9ba81d76bd399 100644
+index 58bebd07c50ea3e0a7bdbaeec7954670f433b72f..81da697fcde42ed2d0d85177727029873e2ad308 100644
 --- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
 +++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
-@@ -58,7 +58,7 @@
+@@ -61,7 +61,7 @@
              android:layout_height="@dimen/modern_toolbar_background_size"
              android:layout_weight="1"
              android:layout_gravity="center_vertical"
@@ -11,7 +11,7 @@ index 82d675d6ea2055ac4c080a03c057b921cade63dd..20cc6fe2a04e56905c3edfab1bd9ba81
              android:paddingStart="@dimen/location_bar_lateral_padding"
              android:paddingEnd="@dimen/location_bar_lateral_padding" />
  
-@@ -78,6 +78,7 @@
+@@ -81,6 +81,7 @@
              android:contentDescription="@string/accessibility_toolbar_btn_tabswitcher_toggle_default"
              android:visibility="gone" />
  

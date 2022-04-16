@@ -10,7 +10,6 @@
 
 #include <vector>
 
-#include "base/cxx17_backports.h"
 #include "base/i18n/rtl.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
@@ -108,7 +107,7 @@ TEST_F(BraveDownloadItemModelTest, GetOriginUrlText) {
   };
 
   SetupDownloadItemDefaults();
-  for (unsigned i = 0; i < base::size(kTestCases); ++i) {
+  for (unsigned i = 0; i < std::size(kTestCases); ++i) {
     const TestCase& test_case = kTestCases[i];
     EXPECT_CALL(item(), GetURL())
         .WillRepeatedly(ReturnRefOfCopy(GURL(test_case.url)));
@@ -134,7 +133,7 @@ TEST_F(BraveDownloadItemModelTest, GetTooltipText) {
   };
 
   SetupDownloadItemDefaults();
-  for (unsigned i = 0; i < base::size(kTestCases); ++i) {
+  for (unsigned i = 0; i < std::size(kTestCases); ++i) {
     const TestCase& test_case = kTestCases[i];
     EXPECT_CALL(item(), GetURL())
         .WillRepeatedly(ReturnRefOfCopy(GURL(test_case.url)));

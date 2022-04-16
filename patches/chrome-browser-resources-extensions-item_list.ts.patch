@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/resources/extensions/item_list.ts b/chrome/browser/resources/extensions/item_list.ts
-index 4666a42b5ec00896c2889bf751ca5d09aa0e4331..247d8224173be3212f95ac48881239712855e80e 100644
+index da86db23349e3dc4368da9946689df4b46db9e28..63e8228ddddc3636a8ce0bf11d247cad90e6de86 100644
 --- a/chrome/browser/resources/extensions/item_list.ts
 +++ b/chrome/browser/resources/extensions/item_list.ts
-@@ -12,6 +12,7 @@ import {IronA11yAnnouncer} from 'chrome://resources/polymer/v3_0/iron-a11y-annou
- import {html, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+@@ -13,6 +13,7 @@ import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bu
  
  import {ExtensionsItemElement, ItemDelegate} from './item.js';
+ import {getTemplate} from './item_list.html.js';
 +import './brave_item_list_more_items.js'
  
  type Filter = (info: chrome.developerPrivate.ExtensionInfo) => boolean;
