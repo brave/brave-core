@@ -92,7 +92,7 @@ ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url);
 
 // Referrers is always set along with cookies so there is no setter and
 // these is just included for backwards compat.
-bool AllowReferrers(HostContentSettingsMap* map, const GURL& url);
+bool AreReferrersAllowed(HostContentSettingsMap* map, const GURL& url);
 
 void SetFingerprintingControlType(HostContentSettingsMap* map,
                                   ControlType type,

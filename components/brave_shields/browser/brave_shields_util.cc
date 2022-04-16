@@ -376,8 +376,8 @@ ControlType GetCookieControlType(HostContentSettingsMap* map, const GURL& url) {
   }
 }
 
-bool AllowReferrers(HostContentSettingsMap* map, const GURL& url) {
-  ContentSetting setting =
+bool AreReferrersAllowed(HostContentSettingsMap* map, const GURL& url) {
+  const ContentSetting setting =
       map->GetContentSetting(url, GURL(), ContentSettingsType::BRAVE_REFERRERS);
 
   return setting == CONTENT_SETTING_ALLOW;
