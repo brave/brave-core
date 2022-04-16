@@ -45,6 +45,22 @@ bool OwnerOf(uint256_t token_id, std::string* data);
 
 }  // namespace erc721
 
+namespace erc1155 {
+
+// Transfer the ownership of token from one address to another address.
+bool SafeTransferFrom(const std::string& from_address,
+                      const std::string& to_address,
+                      uint256_t token_id,
+                      uint256_t value,
+                      std::string* data);
+
+// Return the balance of an address for a token ID.
+bool BalanceOf(const std::string& owner_address,
+               uint256_t token_id,
+               std::string* data);
+
+}  // namespace erc1155
+
 namespace erc165 {
 
 bool SupportsInterface(const std::string& interface_id, std::string* data);

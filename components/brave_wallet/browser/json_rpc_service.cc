@@ -1454,6 +1454,53 @@ void JsonRpcService::ContinueGetERC721TokenBalance(
                           mojom::ProviderError::kSuccess, "");
 }
 
+void JsonRpcService::GetERC1155TokenBalance(
+    const std::string& contract_address,
+    const std::string& token_id,
+    const std::string& owner_address,
+    const std::string& chain_id,
+    GetERC1155TokenBalanceCallback callback) {
+  const auto eth_account_address = EthAddress::FromHex(owner_address);
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
+
+  if (eth_account_address.IsEmpty() || !network_url.is_valid()) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  if (!EthAddress::IsValidAddress(contract_address)) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  uint256_t token_id_uint = 0;
+  if (!HexValueToUint256(token_id, &token_id_uint)) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  std::string data;
+  if (!erc1155::BalanceOf(owner_address, token_id_uint, &data)) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnEthGetBalance,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(
+      eth::eth_call("", contract_address, "", "", "", data, "latest"), true,
+      network_url, std::move(internal_callback));
+}
+
 void JsonRpcService::GetSupportsInterface(
     const std::string& contract_address,
     const std::string& interface_id,

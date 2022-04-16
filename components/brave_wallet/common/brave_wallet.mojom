@@ -765,6 +765,9 @@ interface JsonRpcService {
   // address, otherwise balance is 0x0.
   GetERC721TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
 
+  // Obtains the quanitity of ERC1155 tokens a user has 
+  GetERC1155TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
+
   // Solana JSON RPCs
   // https://docs.solana.com/developing/clients/jsonrpc-api
 
@@ -796,7 +799,8 @@ enum TransactionType {
   Other = 5,
   SolanaSystemTransfer = 6,  // transfering SOL
   SolanaSPLTokenTransfer = 7,
-  SolanaSPLTokenTransferWithAssociatedTokenAccountCreation = 8
+  SolanaSPLTokenTransferWithAssociatedTokenAccountCreation = 8,
+  ERC1155SafeTransferFrom = 9
 };
 
 struct FilTxData {
@@ -889,6 +893,7 @@ interface EthTxManagerProxy {
   MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);
   MakeERC20ApproveData(string spender_address, string amount) => (bool success, array<uint8> data);
   MakeERC721TransferFromData(string from, string to, string token_id, string contract_address) => (bool success, array<uint8> data);
+  MakeERC1155TransferFromData(string from, string to, string token_id, string value, string contract_address) => (bool success, array<uint8> data);
 
   // Gas estimation API via eth_feeHistory API
   GetGasEstimation1559() => (GasEstimation1559? estimation);
