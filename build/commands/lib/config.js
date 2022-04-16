@@ -18,6 +18,7 @@ if (process.platform === 'win32') {
   dirName = fs.realpathSync.native(dirName)
 }
 const rootDir = path.resolve(dirName, '..', '..', '..', '..', '..')
+const braveCoreDir = path.join(rootDir, 'src', 'brave')
 
 const run = (cmd, args = []) => {
   const prog = spawnSync(cmd, args)
@@ -29,8 +30,7 @@ const run = (cmd, args = []) => {
   return prog
 }
 
-// this is a huge hack because the npm config doesn't get passed through from brave-browser .npmrc/package.json
-var packageConfig = function (key, sourceDir = rootDir) {
+var packageConfig = function (key, sourceDir = braveCoreDir) {
   let packages = { config: {} }
   const configAbsolutePath = path.join(sourceDir, 'package.json')
   if (fs.existsSync(configAbsolutePath)) {
@@ -48,17 +48,13 @@ var packageConfig = function (key, sourceDir = rootDir) {
   return obj
 }
 
-var packageConfigBraveCore = function (key) {
-  return packageConfig(key, path.join(rootDir, 'src', 'brave'))
-}
-
 const getNPMConfig = (key) => {
   if (!NpmConfig) {
     const list = run(npmCommand, ['config', 'list', '--json', '--userconfig=' + path.join(rootDir, '.npmrc')])
     NpmConfig = JSON.parse(list.stdout.toString())
   }
 
-  return NpmConfig[key.join('-').replace(/_/g, '-')] || packageConfigBraveCore(key) || packageConfig(key)
+  return NpmConfig[key.join('-').replace(/_/g, '-')] || packageConfig(key)
 }
 
 const parseExtraInputs = (inputs, accumulator, callback) => {
@@ -85,7 +81,7 @@ const Config = function () {
   this.srcDir = path.join(this.rootDir, 'src')
   this.chromeVersion = this.getProjectVersion('chrome')
   this.chromiumRepo = getNPMConfig(['projects', 'chrome', 'repository', 'url'])
-  this.braveCoreDir = path.join(this.srcDir, 'brave')
+  this.braveCoreDir = braveCoreDir
   this.buildToolsDir = path.join(this.srcDir, 'build')
   this.resourcesDir = path.join(this.rootDir, 'resources')
   this.depotToolsDir = path.join(this.braveCoreDir, 'vendor', 'depot_tools')
@@ -134,7 +130,7 @@ const Config = function () {
   this.rewardsGrantStagingEndpoint = getNPMConfig(['rewards_grant_staging_endpoint']) || ''
   this.rewardsGrantProdEndpoint = getNPMConfig(['rewards_grant_prod_endpoint']) || ''
   // this.buildProjects()
-  this.braveVersion = getNPMConfig(['version']) || '0.0.0'
+  this.braveVersion = packageConfig(['version']) || '0.0.0'
   this.androidOverrideVersionName = this.braveVersion
   this.releaseTag = this.braveVersion.split('+')[0]
   this.mac_signing_identifier = getNPMConfig(['mac_signing_identifier'])
