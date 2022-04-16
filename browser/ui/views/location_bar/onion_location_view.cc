@@ -12,6 +12,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/tor/tor_profile_manager.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile_window.h"
@@ -20,7 +21,6 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_resources.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/color_palette.h"
@@ -77,13 +77,15 @@ class OnionLocationButtonView : public views::LabelButton {
   explicit OnionLocationButtonView(Profile* profile)
       : LabelButton(base::BindRepeating(&OnionLocationButtonView::ButtonPressed,
                                         base::Unretained(this)),
-                    l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_IN_TOR)),
+                    brave_l10n::GetLocalizedResourceUTF16String(
+                        IDS_LOCATION_BAR_OPEN_IN_TOR)),
         profile_(profile) {
-    SetTooltipText(
-        l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT));
+    SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
+        IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT));
     if (profile->IsTor()) {
-      SetText(l10n_util::GetStringUTF16(IDS_LOCATION_BAR_ONION_AVAILABLE));
-      SetTooltipText(l10n_util::GetStringUTF16(
+      SetText(brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_LOCATION_BAR_ONION_AVAILABLE));
+      SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
           IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT));
     }
     // Render vector icon

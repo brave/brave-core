@@ -18,6 +18,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_drag_context.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
@@ -27,7 +28,6 @@
 #include "ui/base/clipboard/clipboard_format_type.h"
 #include "ui/base/dragdrop/drag_drop_types.h"
 #include "ui/base/dragdrop/mojom/drag_drop_types.mojom.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/theme_provider.h"
 #include "ui/events/event.h"
@@ -100,14 +100,14 @@ SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
   bounds_animator_observed_.AddObservation(scroll_animator_for_smooth_.get());
   contents_view_ =
       AddChildView(std::make_unique<SidebarItemsContentsView>(browser_, this));
-  up_arrow_ = AddChildView(
-      std::make_unique<SidebarItemsArrowView>(l10n_util::GetStringUTF16(
+  up_arrow_ = AddChildView(std::make_unique<SidebarItemsArrowView>(
+      brave_l10n::GetLocalizedResourceUTF16String(
           IDS_SIDEBAR_ITEMS_SCROLL_UP_BUTTON_ACCESSIBLE_NAME)));
   up_arrow_->SetCallback(
       base::BindRepeating(&SidebarItemsScrollView::OnButtonPressed,
                           base::Unretained(this), up_arrow_));
-  down_arrow_ = AddChildView(
-      std::make_unique<SidebarItemsArrowView>(l10n_util::GetStringUTF16(
+  down_arrow_ = AddChildView(std::make_unique<SidebarItemsArrowView>(
+      brave_l10n::GetLocalizedResourceUTF16String(
           IDS_SIDEBAR_ITEMS_SCROLL_DOWN_BUTTON_ACCESSIBLE_NAME)));
   down_arrow_->SetCallback(
       base::BindRepeating(&SidebarItemsScrollView::OnButtonPressed,

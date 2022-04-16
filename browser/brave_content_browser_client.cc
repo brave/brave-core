@@ -109,7 +109,6 @@
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
-#include "ui/base/l10n/l10n_util.h"
 
 using blink::web_pref::WebPreferences;
 using brave_shields::BraveShieldsWebContentsObserver;
@@ -545,10 +544,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 bool BraveContentBrowserClient::HandleExternalProtocol(
     const GURL& url,
     content::WebContents::Getter web_contents_getter,
-    int child_id,
     int frame_tree_node_id,
     content::NavigationUIData* navigation_data,
-    bool is_main_frame,
+    bool is_primary_main_frame,
+    bool is_in_fenced_frame_tree,
     network::mojom::WebSandboxFlags sandbox_flags,
     ui::PageTransition page_transition,
     bool has_user_gesture,
@@ -562,7 +561,8 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
                            : content::WeakDocumentPtr();
 
     webtorrent::HandleMagnetProtocol(url, web_contents_getter, page_transition,
-                                     has_user_gesture, initiating_origin,
+                                     has_user_gesture, is_in_fenced_frame_tree,
+                                     initiating_origin,
                                      std::move(weak_initiator_document));
     return true;
   }
@@ -599,9 +599,10 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 #endif
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
-      url, web_contents_getter, child_id, frame_tree_node_id, navigation_data,
-      is_main_frame, sandbox_flags, page_transition, has_user_gesture,
-      initiating_origin, initiator_document, out_factory);
+      url, web_contents_getter, frame_tree_node_id, navigation_data,
+      is_primary_main_frame, is_in_fenced_frame_tree, sandbox_flags,
+      page_transition, has_user_gesture, initiating_origin, initiator_document,
+      out_factory);
 }
 
 void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
@@ -640,7 +641,7 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
         translate::switches::kBraveTranslateUseGoogleEndpoint,
     };
     command_line->CopySwitchesFrom(browser_command_line, kSwitchNames,
-                                   base::size(kSwitchNames));
+                                   std::size(kSwitchNames));
   }
 }
 

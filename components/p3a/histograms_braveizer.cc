@@ -6,7 +6,6 @@
 #include "brave/components/p3a/histograms_braveizer.h"
 
 #include "base/bind.h"
-#include "base/cxx17_backports.h"
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/metrics/statistics_recorder.h"
@@ -63,7 +62,7 @@ void HistogramsBraveizer::DoHistogramBravetization(
     const int* it = std::lower_bound(kIntervals, std::end(kIntervals), sample);
     const int answer = it - kIntervals;
     UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.BookmarksCountOnProfileLoad.2",
-                               answer, base::size(kIntervals));
+                               answer, std::size(kIntervals));
     return;
   }
 

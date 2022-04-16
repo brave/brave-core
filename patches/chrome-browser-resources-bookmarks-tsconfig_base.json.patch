@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/bookmarks/tsconfig_base.json b/chrome/browser/resources/bookmarks/tsconfig_base.json
-index 3d55197917715878dcc53b28a6895237ee2a1402..862320dbd7ea51d54c31275d2bdca4c5e3c2425c 100644
+index 0a20352d2653446dc321ad6de4eceded9aa9a859..e4b4ff4dc1b7a3783892724ae8c180482c589b88 100644
 --- a/chrome/browser/resources/bookmarks/tsconfig_base.json
 +++ b/chrome/browser/resources/bookmarks/tsconfig_base.json
 @@ -1,6 +1,7 @@
@@ -9,4 +9,4 @@ index 3d55197917715878dcc53b28a6895237ee2a1402..862320dbd7ea51d54c31275d2bdca4c5
 +    "allowJs": true,
      "noPropertyAccessFromIndexSignature": false,
      "noUnusedLocals": false,
-     "noUnusedParameters": false,
+     "strictPropertyInitialization": false

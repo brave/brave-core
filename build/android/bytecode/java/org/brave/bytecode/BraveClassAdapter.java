@@ -18,6 +18,7 @@ public class BraveClassAdapter {
         chain = new BraveBottomControlsMediatorClassAdapter(chain);
         chain = new BraveCommandLineInitUtilClassAdapter(chain);
         chain = new BraveContentSettingsResourcesClassAdapter(chain);
+        chain = new BraveCustomizationProviderDelegateImplClassAdapter(chain);
         chain = new BraveDefaultBrowserPromoUtilsClassAdapter(chain);
         chain = new BraveDevicePickerBottomSheetContentClassAdapter(chain);
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);

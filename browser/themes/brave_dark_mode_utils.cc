@@ -12,15 +12,15 @@
 #include "brave/browser/themes/brave_dark_mode_utils_internal.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/channel_info.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/version_info/channel.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/native_theme/native_theme.h"
 
 namespace {
@@ -184,9 +184,9 @@ base::Value GetBraveDarkModeTypeList() {
         "value",
         base::Value(static_cast<int>(
             BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT)));
-    system_type.SetKey(
-        "name",
-        base::Value(l10n_util::GetStringUTF16(IDS_BRAVE_THEME_TYPE_SYSTEM)));
+    system_type.SetKey("name",
+                       base::Value(brave_l10n::GetLocalizedResourceUTF16String(
+                           IDS_BRAVE_THEME_TYPE_SYSTEM)));
     list.Append(std::move(system_type));
   }
 
@@ -195,9 +195,9 @@ base::Value GetBraveDarkModeTypeList() {
       "value",
       base::Value(static_cast<int>(
           BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK)));
-  dark_type.SetKey(
-      "name",
-      base::Value(l10n_util::GetStringUTF16(IDS_BRAVE_THEME_TYPE_DARK)));
+  dark_type.SetKey("name",
+                   base::Value(brave_l10n::GetLocalizedResourceUTF16String(
+                       IDS_BRAVE_THEME_TYPE_DARK)));
   list.Append(std::move(dark_type));
 
   base::Value light_type(base::Value::Type::DICTIONARY);
@@ -205,9 +205,9 @@ base::Value GetBraveDarkModeTypeList() {
       "value",
       base::Value(static_cast<int>(
           BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT)));
-  light_type.SetKey(
-      "name",
-      base::Value(l10n_util::GetStringUTF16(IDS_BRAVE_THEME_TYPE_LIGHT)));
+  light_type.SetKey("name",
+                    base::Value(brave_l10n::GetLocalizedResourceUTF16String(
+                        IDS_BRAVE_THEME_TYPE_LIGHT)));
   list.Append(std::move(light_type));
 
   return list;

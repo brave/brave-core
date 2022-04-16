@@ -46,6 +46,7 @@ source_set("brave_ads") {
     "//brave/browser/ui/brave_ads",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/common",
+    "//brave/components/l10n/common",
     "//components/prefs",
     "//skia",
     "//ui/accessibility",

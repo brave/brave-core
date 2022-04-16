@@ -28,8 +28,8 @@ class TorInternalsDOMHandler : public content::WebUIMessageHandler,
   void RegisterMessages() override;
 
  private:
-  void HandleGetTorGeneralInfo(base::Value::ConstListView args);
-  void HandleGetTorLog(base::Value::ConstListView args);
+  void HandleGetTorGeneralInfo(const base::Value::List& args);
+  void HandleGetTorLog(const base::Value::List& args);
 
   void OnGetTorLog(bool success, const std::string& log);
 

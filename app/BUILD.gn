@@ -24,7 +24,7 @@ grit("brave_generated_resources_grit") {
     "brave_generated_resources.pak",
   ]
 
-  foreach(locale, locales_with_pseudolocales) {
+  foreach(locale, all_chrome_locales) {
     outputs += [ "brave_generated_resources_$locale.pak" ]
   }
 

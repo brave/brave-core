@@ -8,13 +8,13 @@
 #include <memory>
 
 #include "brave/browser/ui/content_settings/brave_autoplay_content_setting_bubble_model.h"
-#include "brave/grit/brave_generated_resources.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/vector_icons/vector_icons.h"
 #include "content/public/browser/web_contents.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/vector_icon_types.h"
 
@@ -41,7 +41,8 @@ bool BraveAutoplayBlockedImageModel::UpdateAndGetVisibility(
   const gfx::VectorIcon* icon = &kAutoplayStatusIcon;
   set_icon(*icon, *badge_id);
   set_explanatory_string_id(IDS_BLOCKED_AUTOPLAY_TITLE);
-  set_tooltip(l10n_util::GetStringUTF16(IDS_BLOCKED_AUTOPLAY_TITLE));
+  set_tooltip(
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_BLOCKED_AUTOPLAY_TITLE));
   return true;
 }
 

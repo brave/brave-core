@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-index 4a3c4f3cb08546bac4be19a177c704857ea26a75..169ae2c575c4de0ae53f3dc63c5c9c987901274e 100644
+index c234ee2b112b86d756f276fe461af9d3469d34f7..0e2fbd48acc7576f932652794c1162a3a1d4b1f8 100644
 --- a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
 +++ b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-@@ -132,6 +132,7 @@ content::WebUIDataSource* CreateBookmarksUIHTMLSource(Profile* profile) {
-   // need this attribute.
-   source->AddString("enableBrandingUpdateAttribute", "enable-branding-update");
+@@ -128,6 +128,7 @@ content::WebUIDataSource* CreateBookmarksUIHTMLSource(Profile* profile) {
+   for (const auto& str : kStrings)
+     AddLocalizedString(source, str.name, str.id);
  
 +  BRAVE_CREATE_BOOKMARKS_UI_HTML_SOURCE
    return source;

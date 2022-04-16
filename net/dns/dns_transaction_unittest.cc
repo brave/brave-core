@@ -14,7 +14,6 @@
 #include "base/base64url.h"
 #include "base/bind.h"
 #include "base/containers/circular_deque.h"
-#include "base/cxx17_backports.h"
 #include "base/memory/raw_ptr.h"
 #include "base/rand_util.h"
 #include "base/run_loop.h"
@@ -1005,7 +1004,7 @@ TEST_F(BraveDnsTransactionTest,
        SkipDecentralizedDNSResolversForNonTargetTLDsWithUserDoHServer) {
   BraveConfigureDohServers(true);
   AddQueryAndResponse(0, kT0HostName, kT0Qtype, kT0ResponseDatagram,
-                      base::size(kT0ResponseDatagram), SYNCHRONOUS,
+                      std::size(kT0ResponseDatagram), SYNCHRONOUS,
                       Transport::HTTPS, nullptr /* opt_rdata */,
                       DnsQuery::PaddingStrategy::BLOCK_LENGTH_128,
                       false /* enqueue_transaction_id */);
@@ -1020,7 +1019,7 @@ TEST_F(BraveDnsTransactionTest,
   BraveConfigureDohServers(false);
   AddQueryAndResponse(
       0, kTestCryptoHostName, dns_protocol::kTypeA, kTestCryptoResponseDatagram,
-      base::size(kTestCryptoResponseDatagram), SYNCHRONOUS, Transport::HTTPS,
+      std::size(kTestCryptoResponseDatagram), SYNCHRONOUS, Transport::HTTPS,
       nullptr /* opt_rdata */, DnsQuery::PaddingStrategy::BLOCK_LENGTH_128,
       false /* enqueue_transaction_id */);
   TransactionHelper helper0(1);
@@ -1035,7 +1034,7 @@ TEST_F(BraveDnsTransactionTest,
   BraveConfigureDohServers(true);
   AddQueryAndResponse(
       0, kTestCryptoHostName, dns_protocol::kTypeA, kTestCryptoResponseDatagram,
-      base::size(kTestCryptoResponseDatagram), SYNCHRONOUS, Transport::HTTPS,
+      std::size(kTestCryptoResponseDatagram), SYNCHRONOUS, Transport::HTTPS,
       nullptr /* opt_rdata */, DnsQuery::PaddingStrategy::BLOCK_LENGTH_128,
       false /* enqueue_transaction_id */);
   TransactionHelper helper0(1);
@@ -1050,7 +1049,7 @@ TEST_F(BraveDnsTransactionTest,
   BraveConfigureDohServers(false);
   AddQueryAndResponse(
       0, kTestEthHostName, dns_protocol::kTypeA, kTestEthResponseDatagram,
-      base::size(kTestEthResponseDatagram), SYNCHRONOUS, Transport::HTTPS,
+      std::size(kTestEthResponseDatagram), SYNCHRONOUS, Transport::HTTPS,
       nullptr /* opt_rdata */, DnsQuery::PaddingStrategy::BLOCK_LENGTH_128,
       false /* enqueue_transaction_id */);
   TransactionHelper helper0(1);
@@ -1064,7 +1063,7 @@ TEST_F(BraveDnsTransactionTest, UseENSResolverForEthDomainsWithUserDoHServer) {
   BraveConfigureDohServers(false);
   AddQueryAndResponse(
       0, kTestEthHostName, dns_protocol::kTypeA, kTestEthResponseDatagram,
-      base::size(kTestEthResponseDatagram), SYNCHRONOUS, Transport::HTTPS,
+      std::size(kTestEthResponseDatagram), SYNCHRONOUS, Transport::HTTPS,
       nullptr /* opt_rdata */, DnsQuery::PaddingStrategy::BLOCK_LENGTH_128,
       false /* enqueue_transaction_id */);
   TransactionHelper helper0(1);

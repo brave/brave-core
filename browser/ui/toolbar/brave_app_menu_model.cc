@@ -30,9 +30,9 @@
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/ui/browser.h"
-#include "ui/base/l10n/l10n_util.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -78,11 +78,14 @@ class SidebarMenuModel : public ui::SimpleMenuModel,
     // ConvertIDCToSidebarShowOptions() to avoid any issue with app menu.
     // Ex, id with 0 is always disabled state in the app menu.
     AddCheckItem(IDC_SIDEBAR_SHOW_OPTION_ALWAYS,
-                 l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ALWAYS));
+                 brave_l10n::GetLocalizedResourceUTF16String(
+                     IDS_SIDEBAR_SHOW_OPTION_ALWAYS));
     AddCheckItem(IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER,
-                 l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER));
+                 brave_l10n::GetLocalizedResourceUTF16String(
+                     IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER));
     AddCheckItem(IDC_SIDEBAR_SHOW_OPTION_NEVER,
-                 l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_NEVER));
+                 brave_l10n::GetLocalizedResourceUTF16String(
+                     IDS_SIDEBAR_SHOW_OPTION_NEVER));
   }
 
   ShowSidebarOption ConvertIDCToSidebarShowOptions(int id) const {

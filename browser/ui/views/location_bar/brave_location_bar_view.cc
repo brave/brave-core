@@ -13,6 +13,7 @@
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -20,6 +21,7 @@
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
+#include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 #include "chrome/grit/chromium_strings.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/omnibox/browser/omnibox_edit_model.h"
@@ -146,7 +148,8 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
   // We do not want to override this.
   if (!GetLocationBarModel()->GetSecureDisplayText().empty())
     return;
-  auto badge_text = l10n_util::GetStringUTF16(IDS_IPFS_BADGE_TITLE);
+  auto badge_text =
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_IPFS_BADGE_TITLE);
   location_icon_view()->SetLabel(badge_text);
 }
 

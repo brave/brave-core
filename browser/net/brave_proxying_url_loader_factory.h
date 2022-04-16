@@ -25,6 +25,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "net/base/completion_once_callback.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -181,7 +182,7 @@ class BraveProxyingURLLoaderFactory
       int render_process_id,
       int frame_tree_node_id,
       mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver,
-      network::mojom::URLLoaderFactoryPtrInfo target_factory,
+      mojo::PendingRemote<network::mojom::URLLoaderFactory> target_factory,
       scoped_refptr<RequestIDGenerator> request_id_generator,
       DisconnectCallback on_disconnect);
 
@@ -226,7 +227,7 @@ class BraveProxyingURLLoaderFactory
   const int frame_tree_node_id_;
 
   mojo::ReceiverSet<network::mojom::URLLoaderFactory> proxy_receivers_;
-  network::mojom::URLLoaderFactoryPtr target_factory_;
+  mojo::Remote<network::mojom::URLLoaderFactory> target_factory_;
 
   std::set<std::unique_ptr<InProgressRequest>, base::UniquePtrComparator>
       requests_;

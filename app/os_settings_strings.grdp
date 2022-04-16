@@ -64,16 +64,16 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_RELAUNCH_AND_POWERWASH" desc="The label for the button that relaunches and powerwashes the browser once update is complete">
     Restart and reset
   </message>
-  <message name="IDS_SETTINGS_UPGRADE_SUCCESSFUL_RELAUNCH" desc="Status label: Successfully updated BraveOS/BraveOS">
+  <message name="IDS_SETTINGS_UPGRADE_SUCCESSFUL_RELAUNCH" desc="Status label: Successfully updated ChromeOS/ChromeOS">
     Nearly up to date! Restart your device to finish updating.
   </message>
-  <message name="IDS_SETTINGS_UPGRADE_UPDATING" desc="Status label: Updating BraveOS or BraveOS">
+  <message name="IDS_SETTINGS_UPGRADE_UPDATING" desc="Status label: Updating ChromeOS or ChromeOS">
     Updating your device
   </message>
-  <message name="IDS_SETTINGS_UPGRADE_UPDATING_PERCENT" desc="Status label: Updating BraveOS or BraveOS (90%)">
+  <message name="IDS_SETTINGS_UPGRADE_UPDATING_PERCENT" desc="Status label: Updating ChromeOS or ChromeOS (90%)">
     Updating your device (<ph name="PROGRESS_PERCENT">$1<ex>90%</ex></ph>)
   </message>
-  <message name="IDS_SETTINGS_UPGRADE_UPDATING_CHANNEL_SWITCH" desc="Status label: Updating BraveOS/BraveOS to a specified channel">
+  <message name="IDS_SETTINGS_UPGRADE_UPDATING_CHANNEL_SWITCH" desc="Status label: Updating ChromeOS/ChromeOS to a specified channel">
     Updating your device to <ph name="CHANNEL_NAME">$1<ex>stable</ex></ph> channel (<ph name="PROGRESS_PERCENT">$2<ex>90%</ex></ph>)
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_TITLE" desc="Title used for End of Life section on the About Page.">
@@ -82,13 +82,13 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME" desc="Title of the line item on the about page that allows the user to edit the device hostname.">
     Device name
   </message>
-  <message name="IDS_SETTINGS_UPGRADE_ROLLBACK_IN_PROGRESS" desc="Status label: Rolling back BraveOS or Chrome OS.">
+  <message name="IDS_SETTINGS_UPGRADE_ROLLBACK_IN_PROGRESS" desc="Status label: Rolling back ChromeOS or Chrome OS.">
     <ph name="MANAGER">$1<ex>google.com</ex></ph> is putting this device on a previous version (<ph name="PROGRESS_PERCENT">$2<ex>90%</ex></ph>)
   </message>
   <message name="IDS_SETTINGS_UPGRADE_ROLLBACK_SUCCESS" desc="Status label: Successfully rolled back Chrome OS. All data on the device will be deleted during the next reboot.">
     <ph name="MANAGER">$1<ex>google.com</ex></ph> has put this device on a previous version. Please save important files, then restart. All data on the device will be deleted.
   </message>
-  <message name="IDS_SETTINGS_UPGRADE_SUCCESSFUL_CHANNEL_SWITCH" desc="Status label: Channel was successfully switched on BraveOS/BraveOS">
+  <message name="IDS_SETTINGS_UPGRADE_SUCCESSFUL_CHANNEL_SWITCH" desc="Status label: Channel was successfully switched on ChromeOS/ChromeOS">
     Channel changed. Restart your device to apply changes.
   </message>
   <message name="IDS_SETTINGS_ABOUT_TPM_FIRMWARE_UPDATE_TITLE" desc="Title for the line item on the about page that allows the user to trigger a device hardware reset and request installation of a TPM firmware update.">
@@ -196,16 +196,16 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_EDIT_BTN_A11Y_DESCRIPTION" desc="The a11y description for the edit button for device name on the detailed build into page">
     Current device name is <ph name="DEVICE_NAME">$1<ex>MyChromebook</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_UPGRADE_TRY_AGAIN" desc="Status label: Update check error (BraveOS/BraveOS)">
+  <message name="IDS_SETTINGS_UPGRADE_TRY_AGAIN" desc="Status label: Update check error (ChromeOS/ChromeOS)">
     Couldn't update your Chromebook. Please try again later.
   </message>
-  <message name="IDS_SETTINGS_UPGRADE_DOWNLOAD_ERROR" desc="Status label: Update check download error(BraveOS/BraveOS)">
+  <message name="IDS_SETTINGS_UPGRADE_DOWNLOAD_ERROR" desc="Status label: Update check download error(ChromeOS/ChromeOS)">
     Couldn't download the update. Please try again later.
   </message>
-  <message name="IDS_SETTINGS_UPGRADE_ADMINISTRATOR_ERROR" desc="Status label: Update blocked by policy (BraveOS/BraveOS)">
+  <message name="IDS_SETTINGS_UPGRADE_ADMINISTRATOR_ERROR" desc="Status label: Update blocked by policy (ChromeOS/ChromeOS)">
     Updates are blocked by your administrator
   </message>
-  <message name="IDS_SETTINGS_UPGRADE_UP_TO_DATE" desc="Status label: Already up to date (BraveOS/BraveOS)">
+  <message name="IDS_SETTINGS_UPGRADE_UP_TO_DATE" desc="Status label: Already up to date (ChromeOS/ChromeOS)">
     Your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> is up to date
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_MANAGED_END_OF_LIFE_SUBTITLE" desc="Subtitle used for End of Life section on the Additional details subpage of the ABout page for managed users.">
@@ -244,7 +244,7 @@
   </message>
   <if expr="reven">
     <message name="IDS_OS_SETTINGS_SYNC_FEATURE_LABEL" desc="Label describing the OS sync feature.">
-      Your apps and settings will sync across all CloudReady 2.0 devices where you are signed in with your Brave account. For browser sync options, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>Brave settings<ph name="LINK_END">&lt;/a&gt;</ph>.
+      Your apps and settings will sync across all ChromeOS Flex devices where you are signed in with your Brave account. For browser sync options, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>Brave settings<ph name="LINK_END">&lt;/a&gt;</ph>.
     </message>
   </if>
   <if expr="not reven">
@@ -1386,7 +1386,7 @@ Press an assigned switch or key to remove assignment.
     Assign 1 more switch
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_2_SWITCHES_DESCRIPTION" desc="The description for the option to use two switches (with one already assigned), within the Switch Access setup guide. It details that the second switch will be 'next' and move focus to the next item onscreen. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    Use “Next” to move forward on the screen
+    Use “Next” to move your focus forward on the screen
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_CHOOSE_3_SWITCHES" desc="The label for the option to use three switches (with one already assigned), within the Switch Access setup guide. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Assign 2 more switches
@@ -1772,10 +1772,10 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_CROSTINI_CONTAINER_UPGRADE_BUTTON" desc="Label for the button that launches the upgrade to Debian 10 for Crostini.">
     Upgrade
   </message>
-  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING" desc="Label for managing port forwarding in Linux on BraveOS.">
+  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING" desc="Label for managing port forwarding in Linux on ChromeOS.">
     Port forwarding
   </message>
-  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_DESCRIPTION" desc="Description for managing port forwarding in Linux on BraveOS.">
+  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_DESCRIPTION" desc="Description for managing port forwarding in Linux on ChromeOS.">
     Make Linux ports available to other devices on your network.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_NO_PORTS" desc="Label for when user has no port forwarding preferences.">
@@ -1861,6 +1861,13 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_TITLE" desc="Title of the dialog for entering details to create a new Linux container.">
     Create a new container
+  </message>
+  <!-- TODO(crbug/1300764): Remove translateable on error strings once they are finalized.-->
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_CONTAINER_EXISTS_ERROR" translateable="false" desc="Error for invalid input when creating a new Linux container.">
+    This container and VM name combination already exists.
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_EMPTY_CONTAINER_NAME_ERROR" translateable="false" desc="Error for invalid input when creating a new Linux container.">
+    Container name cannot be empty.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_IMAGE_SERVER" desc="Heading for the input field for entering the image server URL when creating a new Linux container.">
     Image Server
@@ -2204,22 +2211,22 @@ Press an assigned switch or key to remove assignment.
 
 
   <!-- Parental Controls -->
-  <message name="IDS_SETTINGS_PARENTAL_CONTROLS_PAGE_TITLE" desc="Name of the settings page which manages BraveOS's parental controls.">
+  <message name="IDS_SETTINGS_PARENTAL_CONTROLS_PAGE_TITLE" desc="Name of the settings page which manages ChromeOS's parental controls.">
     Parental controls
   </message>
-  <message name="IDS_SETTINGS_PARENTAL_CONTROLS_PAGE_SET_UP_LABEL" desc="Label/description of the settings page which manages BraveOS's parental controls.">
+  <message name="IDS_SETTINGS_PARENTAL_CONTROLS_PAGE_SET_UP_LABEL" desc="Label/description of the settings page which manages ChromeOS's parental controls.">
     Set website restrictions &amp; screen time limits with Family Link
   </message>
   <message name="IDS_SETTINGS_PARENTAL_CONTROLS_PAGE_CONNECT_TO_INTERNET_LABEL" desc="Label/description shown when the Parental control setup can't be launched because there is no Internet Connection.">
     Connect to the internet to set up parental controls
   </message>
-  <message name="IDS_SETTINGS_PARENTAL_CONTROLS_PAGE_VIEW_SETTINGS_LABEL" desc="Label/description of the settings page which manages BraveOS's parental controls.">
+  <message name="IDS_SETTINGS_PARENTAL_CONTROLS_PAGE_VIEW_SETTINGS_LABEL" desc="Label/description of the settings page which manages ChromeOS's parental controls.">
     Open the Family Link app to see your supervision settings
   </message>
-  <message name="IDS_SETTINGS_PARENTAL_CONTROLS_SET_UP_BUTTON_LABEL" desc="Label/description of the button which launches page which enables BraveOS's parental controls.">
+  <message name="IDS_SETTINGS_PARENTAL_CONTROLS_SET_UP_BUTTON_LABEL" desc="Label/description of the button which launches page which enables ChromeOS's parental controls.">
     Set up
   </message>
-  <message name="IDS_SETTINGS_PARENTAL_CONTROLS_SET_UP_BUTTON_ROLE" desc="Role description of the button which launches page which enables BraveOS's parental controls. Spoken aloud by screen readers when the Set Up button is focused">
+  <message name="IDS_SETTINGS_PARENTAL_CONTROLS_SET_UP_BUTTON_ROLE" desc="Role description of the button which launches page which enables ChromeOS's parental controls. Spoken aloud by screen readers when the Set Up button is focused">
     Set up button
   </message>
 
@@ -2294,7 +2301,7 @@ Press an assigned switch or key to remove assignment.
     Haptic feedback
   </message>
   <message name="IDS_SETTINGS_TOUCHPAD_HAPTIC_FEEDBACK_SECONDARY_TEXT" desc="In Device Settings, the text next to the toggle for enabling touchpad haptic feedback.">
-    Receive vibration confirmation for actions like split screen and switching desks.
+    Receive vibration confirmation for actions like split screen and switching desks. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_TOUCHPAD_HAPTIC_CLICK_SENSITIVITY_LABEL" desc="In Device Settings, the text next to the slider for setting the touchpad haptic click sensitivity.">
     Click strength
@@ -2687,6 +2694,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_MENU_FORGET" desc="Settings &gt; Internet &gt; Known networks &gt; Dropdown menu item to forget a known network.">
     Forget
   </message>
+  <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_MENU_BUTTON_TITLE" desc="Settings &gt; Internet &gt; Known networks &gt; Item &gt; Title for button that opens dropdown menu for the network.">
+    More actions for <ph name="NETWORK_NAME">$1<ex>Brave-A</ex></ph>
+  </message>
   <message name="IDS_SETTINGS_SETTINGS_NETWORK_ALLOW_DATA_ROAMING" desc="Settings &gt; Internet &gt; Network details: Toggle label to allow mobile data roaming.">
     Allow mobile data roaming
   </message>
@@ -2863,6 +2873,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_PRIMARY_USER_CONTROLLED" desc="Settings &gt; Internet &gt; Network details: Text to show when a network configuration is controlled by the primary user.">
     Network configuration is controlled by <ph name="USER_EMAIL">$1<ex>joe@gmail.com</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_A11Y_MANAGED_BY_ADMINISTRATOR" desc="Settings &gt; Internet &gt; Network details: A11Y label for managed by administrator icon, indicating which network settings is being managed by an administrator">
+    <ph name="NETWORK_NAME">$1<ex>Brave-A</ex></ph> is managed by your administrator
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_ADVANCED" desc="Settings &gt; Internet &gt; Network details: Advanced section label.">
     Advanced
@@ -3163,7 +3176,7 @@ Press an assigned switch or key to remove assignment.
     Choose either one each time you sign in
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_INSTRUCTIONS" desc="The second paragraph of text shown in the dialog containing the Phone Hub notification opt-in flow. Alerts the user that to enable notifications, they need to have their phone unlocked, nearby, and with Bluetooth/Wi-Fi on to complete setup.">
-    Make sure your phone is nearby, unlocked, and has Bluetooth and Wi-Fi turned on.
+    Make sure your phone is nearby, unlocked, and has Bluetooth and Wi-Fi turned on
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_COMPLETED_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow when the feature is successfully turned on and notifications on their phone will now be mirrored to their Chromebook.">
     Notifications turned on
@@ -3222,32 +3235,26 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_ACK_SUBTITLE" desc="The subtitle of the dialog containing the phone permissions opt-in flow shown when a user clicks the Phone Hub 'Notifications' or 'Apps' setup button.">
     Your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> can then:
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_NOTIFICATION_ITEM_TITLE" desc="The title of the dialog containing the phone permissions opt-in flow shown when when a user clicks the Phone Hub 'Notifications' setup button. Explains to the user that they need to grant permission to use notifications by enabling access to the Google Play Services app on their phone.">
-    Get phone notifications
+  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_CAMERA_ROLL_ITEM_SUMMARY" desc="The summary of the dialog containing the phone permissions opt-in flow shown when when a user clicks the Phone Hub 'Recent photos' setup button. Explains to the user that they need to grant Google Play Services permission to access files on the phone.">
+    View your phone's recent photos and media
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_NOTIFICATION_ITEM_SUMMARY" desc="The summary of the dialog containing the phone permissions opt-in flow shown when when a user clicks the Phone Hub 'Notifications' setup button. Explains to the user that they need to grant permission to use notifications by enabling access to the Google Play Services app on their phone.">
-    Receive and respond to messages
-  </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_APPS_ITEM_TITLE" desc="The title of the dialog containing the phone permissions opt-in flow shown when when a user clicks the Phone Hub 'Apps' setup button. Explains to the user that they need to grant phone permission to steam apps.">
-    Stream messaging apps
+    View, dismiss, and reply to your phone's notifications
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_APPS_ITEM_SUMMARY" desc="The summary of the dialog containing the phone permissions opt-in flow shown when when a user clicks the Phone Hub 'Apps' setup button. Explains to the user that they need to grant phone permission to stream apps.">
-    View conversations, react to messages, and add profiles to group chats
+    Stream messaging apps
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_AWAITING_RESPONSE_TITLE" desc="The title of the dialog containing the phone permissions opt-in flow shown when the user needs to follow the setup flow instructions on their phone.">
-    Finish setup on your phone
+    Finish setting up on your phone
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_OPERATION_INSTRUCTIONS" desc="The text shown in the dialog containing the phone permissions opt-in flow. Alerts the user that to enable notifications and apps permissionss on the phone.">
-    Go to your phone to review a few more permissions.
-  </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_INSTRUCTIONS" desc="The text shown in the dialog containing the phone permissions opt-in flow. Alerts the user that to enable notifications and apps, they need to have their phone unlocked, nearby, and with Bluetooth/Wi-Fi on to complete setup.">
-    Make sure your phone is nearby, unlocked, and that Bluetooth and Wi-Fi are turned on.
+    Go to your phone to review a few more permissions. Make sure your phone's Bluetooth and Wi-Fi are turned on.
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_COMPLETED_TITLE" desc="The title shown in the dialog containing the phone permissions opt-in flow when the feature is successfully turned on.">
     Your phone and <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> are connected
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_COMPLETED_SUMMARY" desc="The text shown in the dialog containing the phone permissions opt-in flow. Alerts the user that dismiss notifications on the Chromebook will also dismiss them on the phone.">
-    Keep in mind, dismissing notifications on your Chromebook will also dismiss them on your phone.
+    Keep in mind, dismissing notifications on your Chromebook will also dismiss them on your phone
   </message>
 
   <!-- Lock Screen Page (OS settings) -->
@@ -3282,7 +3289,7 @@ Press an assigned switch or key to remove assignment.
     Confirm PIN to turn on automatic unlock
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PIN_AUTOSUBMIT_ERROR_PIN_TOO_LONG" desc="Error shown to users when trying to enable PIN auto submit telling them that their PIN is too long for this feature.">
-    PIN must be 12 digits or less
+    PIN must be 12 digits or less to use automatic unlock
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PIN_AUTOSUBMIT_ERROR_PIN_INCORRECT" desc="Error shown to users when trying to enable PIN auto submit telling them that their PIN is incorrect.">
     Incorrect PIN
@@ -3966,10 +3973,10 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_KEYBOARD_KEY_EXTERNAL_COMMAND" desc="In Device Settings, the dropdown list item for the external Command key on Apple keyboards.">
     External Command
   </message>
-  <message name="IDS_SETTINGS_KEYBOARD_KEY_EXTERNAL_META" desc="In Device Settings, the dropdown list item for the external Meta key (Search key on BraveOS keyboards, and Windows key on Windows keyboards).">
+  <message name="IDS_SETTINGS_KEYBOARD_KEY_EXTERNAL_META" desc="In Device Settings, the dropdown list item for the external Meta key (Search key on ChromeOS keyboards, and Windows key on Windows keyboards).">
     External Meta
   </message>
-  <message name="IDS_SETTINGS_KEYBOARD_KEY_META" desc="In Device Settings, the dropdown list item for the external Meta key (Search key on BraveOS keyboards, and Windows key on Windows keyboards) when there's no internal keyboard on the device.">
+  <message name="IDS_SETTINGS_KEYBOARD_KEY_META" desc="In Device Settings, the dropdown list item for the external Meta key (Search key on ChromeOS keyboards, and Windows key on Windows keyboards) when there's no internal keyboard on the device.">
     Meta
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_SEND_FUNCTION_KEYS" desc="In Device Settings, the checkbox label for interpreting the top-row keys as function keys instead.">
@@ -4066,13 +4073,11 @@ Press an assigned switch or key to remove assignment.
   </message>
 
    <!-- Apps > Manage your apps > Borealis -->
-   <!-- TODO(b/194640944): Replace "borealis" string before launch -->
-  <message name="IDS_SETTINGS_APPS_BOREALIS_MAIN_PERMISSION_TEXT" translateable="false" desc="Describes how Borealis permissions are applied on main app with learn more link.">
-    Permission settings applied here are applied across all Borealis apps. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_APPS_BOREALIS_MAIN_PERMISSION_TEXT" desc="Description in Steam (name of app, manages other apps) settings page.">
+    Permissions allowed for Steam apply to all Steam games and apps.
   </message>
-  <message name="IDS_SETTINGS_APPS_BOREALIS_APP_PERMISSION_TEXT" translateable="false" desc="Link to main Borealis app from other borealis apps.">
-    Permissions for apps installed by Borealis are managed via the <ph name="LINK_BEGIN">&lt;a&gt;</ph>Borealis app settings<ph name="LINK_END">&lt;/a&gt;</ph>.
-    Borealis permission settings are applied across all Borealis applications.
+  <message name="IDS_SETTINGS_APPS_BOREALIS_APP_PERMISSION_TEXT" desc="Description on settings page for apps that are managed by Steam (name of app). Link to Steam app settings page where permissions can be changed.">
+    Permissions for games and apps installed via Steam can be managed in the <ph name="LINK_BEGIN">&lt;a&gt;</ph>Steam app settings<ph name="LINK_END">&lt;/a&gt;</ph>.
   </message>
 
   <!-- Apps > Manage your apps > Parallels -->
@@ -4088,7 +4093,7 @@ Press an assigned switch or key to remove assignment.
 
   <!-- Apps > Manage your apps > Parallels > Shared folders -->
   <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_INSTRUCTIONS_LOCATE" desc="Instructions for how to locate shared folders in Parallels.">
-      Shared folders are available in Windows at <ph name="BASE_DIR">$1<ex>Network › BraveOS</ex></ph>.
+      Shared folders are available in Windows at <ph name="BASE_DIR">$1<ex>Network › ChromeOS</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_INSTRUCTIONS_ADD" desc="Instructions for how to add shared folders in Parallels.">
     To share, right-click on a folder in Files app, then select "Share with Parallels Desktop".
@@ -4170,8 +4175,8 @@ Press an assigned switch or key to remove assignment.
 
   <!-- Privacy Page -->
   <if expr="reven">
-    <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable crash and user metrics logging in CloudReady 2.0.">
-      Help improve CloudReady 2.0 features and performance
+    <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable crash and user metrics logging in ChromeOS Flex.">
+      Help improve ChromeOS Flex features and performance
     </message>
   </if>
   <if expr="not reven">
@@ -4194,10 +4199,10 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_ENABLE_CONTENT_PROTECTION_ATTESTATION" desc="description label for verified access about premium contents">
     Enable Verified Access
   </message>
-  <message name="IDS_OS_SETTINGS_DATA_ACCESS_PROTECTION_TOGGLE_TITLE" desc="The title of the toggle to enable/disable peripheral data access protection. Peripheral data access protection refers to the system (BraveOS) preventing external peripherals (e.g. Thunderbolt docks) from accessing the device's memory.">
+  <message name="IDS_OS_SETTINGS_DATA_ACCESS_PROTECTION_TOGGLE_TITLE" desc="The title of the toggle to enable/disable peripheral data access protection. Peripheral data access protection refers to the system (ChromeOS) preventing external peripherals (e.g. Thunderbolt docks) from accessing the device's memory.">
     Data access protection for peripherals
   </message>
-  <message name="IDS_OS_SETTINGS_DATA_ACCESS_PROTECTION_TOGGLE_DESCRIPTION" desc="The description of the toggle to enable/disable peripheral data access protection. Peripheral data access protection refers to the system (BraveOS) preventing external peripherals (e.g. Thunderbolt docks) from accessing the device's memory.">
+  <message name="IDS_OS_SETTINGS_DATA_ACCESS_PROTECTION_TOGGLE_DESCRIPTION" desc="The description of the toggle to enable/disable peripheral data access protection. Peripheral data access protection refers to the system (ChromeOS) preventing external peripherals (e.g. Thunderbolt docks) from accessing the device's memory.">
     Some devices require you to disable data access protection to work properly or at full performance.
   </message>
   <message name="IDS_OS_SETTINGS_DISABLE_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_TITLE" desc="The title of the dialog that asks users for confirmation that they indeed do want to disable Data Access Protection.">
@@ -4222,10 +4227,10 @@ Press an assigned switch or key to remove assignment.
     Your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> uses a built-in sensor to detect profiles in front of your device. All data is processed on your device immediately and then deleted. Sensor data is never sent to Brave. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_OS_SETTINGS_SMART_PRIVACY_QUICK_DIM_TITLE" desc="The name of the quick dim feature shown as the label of a toggle in the smart privacy subpage.">
-    Lock on Leave
+    Lock-on-leave
   </message>
   <message name="IDS_OS_SETTINGS_SMART_PRIVACY_QUICK_DIM_SUBTEXT" desc="Sub-label elaborating on the meaning of smart screen locking.">
-    If you move away from your device, your screen will lock automatically. When you're in front of your device, your screen will stay awake.
+    If you move away from your device, your screen will lock automatically. When you're in front of your device, your screen will stay awake longer. If you aren't using a lock screen, your device will sleep instead of lock.
   </message>
   <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_TITLE" desc="Text in the smart privacy section which is the subheader for snooping protection options.">
     Viewing protection
@@ -4236,11 +4241,11 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_NOTIFICATIONS" desc="Text for the name of the toggle in the smart privacy section requesting notification hiding when a snooper is detected.">
     Hide notification content when someone else is detected
   </message>
-  <message name="IDS_OS_SETTINGS_HW_DATA_USAGE_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable device hardware data collection and usage in CloudReady 2.0.">
-    <ph name="DEVICE_OS">$1<ex>CloudReady 2.0</ex></ph> hardware support and stability
+  <message name="IDS_OS_SETTINGS_HW_DATA_USAGE_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable device hardware data collection and usage in ChromeOS Flex.">
+    <ph name="DEVICE_OS">$1<ex>ChromeOS Flex</ex></ph> hardware support and stability
   </message>
-  <message name="IDS_OS_SETTINGS_HW_DATA_USAGE_TOGGLE_DESC" desc="The description of the checkbox to enable/disable device hardware data collection and usage in CloudReady 2.0.">
-    Let Brave use your hardware data to help improve <ph name="DEVICE_OS">$1<ex>CloudReady 2.0</ex></ph>. If you decline, this data is still sent to Brave to determine proper updates, but is not stored or used otherwise.
+  <message name="IDS_OS_SETTINGS_HW_DATA_USAGE_TOGGLE_DESC" desc="The description of the checkbox to enable/disable device hardware data collection and usage in ChromeOS Flex.">
+    Let Brave use your hardware data to help improve <ph name="DEVICE_OS">$1<ex>ChromeOS Flex</ex></ph>. If you decline, this data is still sent to Brave to determine proper updates, but is not stored or used otherwise.
   </message>
 
 

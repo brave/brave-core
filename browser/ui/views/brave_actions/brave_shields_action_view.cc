@@ -12,6 +12,7 @@
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
@@ -26,6 +27,7 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/gfx/image/image_skia_rep.h"
 #include "ui/views/animation/ink_drop_impl.h"
 #include "ui/views/controls/button/label_button_border.h"
 #include "ui/views/controls/highlight_path_generator.h"
@@ -69,7 +71,8 @@ BraveShieldsActionView::BraveShieldsActionView(Profile* profile,
       [](views::View* host) { return GetToolbarInkDropBaseColor(host); },
       this));
 
-  SetAccessibleName(l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS));
+  SetAccessibleName(
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_SHIELDS));
   SetHasInkDropActionOnClick(true);
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
   ink_drop->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
@@ -221,7 +224,7 @@ std::u16string BraveShieldsActionView::GetTooltipText(
     }
   }
 
-  return l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS);
+  return brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_SHIELDS);
 }
 
 void BraveShieldsActionView::Update() {

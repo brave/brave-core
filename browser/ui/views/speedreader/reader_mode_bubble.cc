@@ -16,6 +16,7 @@
 #include "brave/browser/ui/views/speedreader/speedreader_bubble_util.h"
 #include "brave/browser/ui/views/speedreader/speedreader_dancing_books.h"
 #include "brave/common/url_constants.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
@@ -26,7 +27,6 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/common/referrer.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/events/event.h"
@@ -110,7 +110,7 @@ void ReaderModeBubble::Init() {
 
   // Heading
   auto heading_label = std::make_unique<views::Label>(
-      l10n_util::GetStringUTF16(IDS_SPEEDREADER_ASK_ENABLE));
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_SPEEDREADER_ASK_ENABLE));
   heading_label->SetMultiLine(true);
   heading_label->SetFontList(
       GetFont(kFontHeading, gfx::Font::Weight::SEMIBOLD));
@@ -119,8 +119,8 @@ void ReaderModeBubble::Init() {
 
   // Explanation of Speedreader features
   auto global_toggle_label = BuildLabelWithEndingLink(
-      l10n_util::GetStringUTF16(IDS_SPEEDREADER_EXPLANATION),
-      l10n_util::GetStringUTF16(IDS_LEARN_MORE),
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_SPEEDREADER_EXPLANATION),
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_LEARN_MORE),
       base::BindRepeating(&ReaderModeBubble::OnLinkClicked,
                           base::Unretained(this)));
   global_toggle_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
@@ -131,7 +131,8 @@ void ReaderModeBubble::Init() {
   auto enable_speedreader_button = std::make_unique<ReaderButton>(
       base::BindRepeating(&ReaderModeBubble::OnButtonPressed,
                           base::Unretained(this)),
-      l10n_util::GetStringUTF16(IDS_SPEEDREADER_ENABLE_BUTTON));
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SPEEDREADER_ENABLE_BUTTON));
   enable_speedreader_button_ =
       AddChildView(std::move(enable_speedreader_button));
 

@@ -122,11 +122,18 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SETTINGS_INCOGNITO_TAB_LOCK_SUMMARY_ANDROID_SETTING_ON" desc="Summary for a toggle in Settings that allows users to lock their existing Private tabs with a device reauthentication mechanism. This summary is shown to the user when the screen lock setting is on in the device.">
         Use screen lock to see open Private tabs
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_SUMMARY" desc="Summary of the settings page to configure spam and fraud reduction." translateable="false">
+      <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_SUMMARY" desc="The description of card 3 of 3. * “help”: This API is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players.">
         Help sites fight fraud and distinguish bots from profiles
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_DESCRIPTION" desc="Description of the settings page to configure spam and fraud reduction." translateable="false">
+      <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_DESCRIPTION_TRIALS_ON" desc="The first of 3 paragraphs on the spam &amp; fraud card. This is a behind-the-scenes upgrade to Brave. There aren’t any user controls or data to interact with, at least not yet. * “trust tokens”: explained in the next paragraph * “help”: This feature is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players. * “interaction”: is broad. It’s not just viewing a site but also how you interact with it, like by signing in * “Later”:  is important to convey the passage of time. We don’t want to convey how much time (it could be tiny). What’s important is that the user understands this is essentially a two-step process. A trust token is issued. Sometime in the future, when hyou visit a different site, that trust token might get used. ">
         Spam &amp; fraud reduction relies on trust tokens to help sites fight fraud and distinguish bots from profiles.
+
+Based on your interaction with a site, like regularly signing in to an account, that site can issue a trust token to your browser. Later, if other sites you visit check for and find a valid trust token, they’re more likely to treat you like a profile and not a bot.
+
+Trust tokens improve privacy on the web and can’t be used to find out who you are.
+      </message>
+            <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_DESCRIPTION_TRIALS_OFF" desc="The first of 3 paragraphs on the spam &amp; fraud card. This is a behind-the-scenes upgrade to Brave. There aren’t any user controls or data to interact with, at least not yet. * “trust tokens”: explained in the next paragraph * “help”: This feature is one way that sites can fight fraud. Don’t suggest that sites must use this API to fight fraud. * “distinguish bots from profiles”: This touches on just one aspect of fraud but we hope it helps the user understand the purpose of this API, and that is to distinguish real users from malicious players. * “interaction”: is broad. It’s not just viewing a site but also how you interact with it, like by signing in * “Later”:  is important to convey the passage of time. We don’t want to convey how much time (it could be tiny). What’s important is that the user understands this is essentially a two-step process. A trust token is issued. Sometime in the future, when hyou visit a different site, that trust token might get used. ">
+        When trials are on, Spam &amp; fraud reduction relies on trust tokens to help sites fight fraud and distinguish bots from profiles.
 
 Based on your interaction with a site, like regularly signing in to an account, that site can issue a trust token to your browser. Later, if other sites you visit check for and find a valid trust token, they’re more likely to treat you like a profile and not a bot.
 
@@ -139,7 +146,7 @@ Trust tokens improve privacy on the web and can’t be used to find out who you 
         While in private, sites can’t use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
       </message>
       <message name="IDS_DOWNLOAD_LOCATION_INCOGNITO_WARNING" desc="Text that indicates to the user that downloaded files in Private are still saved on the device and are visible to other users of this device.">
-        Files you download in Private mode are still visible to anyone who uses this device.
+        Anyone using this device can see files you download in Private
       </message>
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the Private stack selection 'button'.">
         Private tabs
@@ -254,7 +261,10 @@ Trust tokens improve privacy on the web and can’t be used to find out who you 
       </message>
 
       <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_MESSAGE" desc="The body text of a dialog explaining the benefits of enabling Brave notifications.">
-        You’ll be able to easily manage media controls, private sessions, downloads and more
+        You’ll be able to easily manage media controls, Private sessions, downloads and more
+      </message>
+      <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_TITLE_VARIATION_2" desc="The title of a dialog shown to users before asking for notification permission.">
+        Manage media controls, Private tabs, and more with notifications
       </message>
       </messages>
   </release>

@@ -10,6 +10,7 @@
 #include "third_party/skia/include/core/SkScalar.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/geometry/rect_f.h"
 #include "ui/views/view.h"
 
 SidebarBubbleBackground::SidebarBubbleBackground(BubbleBorderWithArrow* border)

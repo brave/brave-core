@@ -9,11 +9,11 @@
 #include "brave/common/pref_names.h"
 #include "components/external_intents/android/jni_headers/InterceptNavigationDelegateImpl_jni.h"
 #include "components/navigation_interception/intercept_navigation_delegate.h"
-#include "components/navigation_interception/navigation_params.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/escape.h"
 #include "url/gurl.h"
@@ -22,7 +22,6 @@ namespace external_intents {
 namespace {
 
 using navigation_interception::InterceptNavigationDelegate;
-using navigation_interception::NavigationParams;
 
 class BraveInterceptNavigationDelegate : public InterceptNavigationDelegate {
  public:
@@ -34,16 +33,13 @@ class BraveInterceptNavigationDelegate : public InterceptNavigationDelegate {
   }
 
   bool ShouldIgnoreNavigation(
-      const NavigationParams& navigation_params) override {
-    NavigationParams chrome_navigation_params(navigation_params);
-    chrome_navigation_params.url() =
-        GURL(net::EscapeExternalHandlerValue(navigation_params.url().spec()));
-
-    if (ShouldPlayVideoInBrowser(chrome_navigation_params.url()))
+      content::NavigationHandle* navigation_handle) override {
+    if (ShouldPlayVideoInBrowser(GURL(net::EscapeExternalHandlerValue(
+            navigation_handle->GetURL().spec()))))
       return false;
 
     return InterceptNavigationDelegate::ShouldIgnoreNavigation(
-        chrome_navigation_params);
+        navigation_handle);
   }
 
  private:

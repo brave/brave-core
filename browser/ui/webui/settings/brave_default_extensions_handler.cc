@@ -211,15 +211,14 @@ bool BraveDefaultExtensionsHandler::IsRestartNeeded() {
 }
 
 void BraveDefaultExtensionsHandler::GetRestartNeeded(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(IsRestartNeeded()));
 }
 
-void BraveDefaultExtensionsHandler::ResetWallet(
-    base::Value::ConstListView args) {
+void BraveDefaultExtensionsHandler::ResetWallet(const base::Value::List& args) {
   auto* brave_wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile_);
   if (brave_wallet_service)
@@ -227,7 +226,7 @@ void BraveDefaultExtensionsHandler::ResetWallet(
 }
 
 void BraveDefaultExtensionsHandler::ResetTransactionInfo(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   auto* tx_service =
       brave_wallet::TxServiceFactory::GetServiceForContext(profile_);
   if (tx_service)
@@ -235,7 +234,7 @@ void BraveDefaultExtensionsHandler::ResetTransactionInfo(
 }
 
 void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   bool enabled = args[0].GetBool();
@@ -260,7 +259,7 @@ void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
 }
 
 void BraveDefaultExtensionsHandler::SetHangoutsEnabled(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   bool enabled = args[0].GetBool();
@@ -308,7 +307,7 @@ void BraveDefaultExtensionsHandler::OnRestartNeededChanged() {
 }
 
 void BraveDefaultExtensionsHandler::SetTorEnabled(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
 #if BUILDFLAG(ENABLE_TOR)
   CHECK_EQ(args.size(), 1U);
   bool enabled = args[0].GetBool();
@@ -318,7 +317,7 @@ void BraveDefaultExtensionsHandler::SetTorEnabled(
 }
 
 void BraveDefaultExtensionsHandler::IsTorEnabled(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(
@@ -342,7 +341,7 @@ void BraveDefaultExtensionsHandler::OnTorEnabledChanged() {
 }
 
 void BraveDefaultExtensionsHandler::IsTorManaged(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -358,7 +357,7 @@ void BraveDefaultExtensionsHandler::IsTorManaged(
 }
 
 void BraveDefaultExtensionsHandler::SetWidevineEnabled(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
 #if BUILDFLAG(ENABLE_WIDEVINE)
   CHECK_EQ(args.size(), 1U);
   bool enabled = args[0].GetBool();
@@ -368,7 +367,7 @@ void BraveDefaultExtensionsHandler::SetWidevineEnabled(
 }
 
 void BraveDefaultExtensionsHandler::IsWidevineEnabled(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
@@ -403,7 +402,7 @@ void BraveDefaultExtensionsHandler::OnWidevineEnabledChanged() {
 }
 
 void BraveDefaultExtensionsHandler::ExportIPNSKey(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   std::string key_name = args[0].GetString();
@@ -431,7 +430,7 @@ void BraveDefaultExtensionsHandler::ExportIPNSKey(
 }
 
 void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   bool enabled = args[0].GetBool();
@@ -465,7 +464,7 @@ void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   bool enabled = args[0].GetBool();
@@ -483,7 +482,7 @@ void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(
 #endif
 
 void BraveDefaultExtensionsHandler::IsDecentralizedDnsEnabled(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(
@@ -496,7 +495,7 @@ void BraveDefaultExtensionsHandler::IsDecentralizedDnsEnabled(
 }
 
 void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 2U);
   AllowJavascript();
 
@@ -512,7 +511,7 @@ void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
 
 #if BUILDFLAG(ENABLE_IPFS)
 void BraveDefaultExtensionsHandler::LaunchIPFSService(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   ipfs::IpfsService* service =
       ipfs::IpfsServiceFactory::GetForContext(profile_);
   if (!service) {
@@ -523,7 +522,7 @@ void BraveDefaultExtensionsHandler::LaunchIPFSService(
 }
 
 void BraveDefaultExtensionsHandler::SetIPFSStorageMax(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(args[0].is_int());
   CHECK(profile_);
@@ -582,7 +581,7 @@ void BraveDefaultExtensionsHandler::FileSelectionCanceled(void* params) {
 }
 
 void BraveDefaultExtensionsHandler::ImportIpnsKey(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   std::string key_name = args[0].GetString();
@@ -607,7 +606,7 @@ void BraveDefaultExtensionsHandler::ImportIpnsKey(
 }
 
 void BraveDefaultExtensionsHandler::CheckIpfsNodeStatus(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   NotifyNodeStatus();
 }
 

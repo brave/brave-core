@@ -1,5 +1,6 @@
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
+-AccessCodeCastDiscoveryInterfaceTest.SyncError
 -AccessibilityCheckerTest.*
 -ActiveTabDelegateTest.*
 -ActiveTabTest.*
@@ -105,6 +106,7 @@
 -DiceWebSigninInterceptorForcedSeparationTest.*
 -DiceWebSigninInterceptorTest.*
 -DocumentOverlayWindowViewsTest.*
+-DownloadBubblePrefsTest.EnhancedProtectionEnabled
 -DownloadProtectionServiceTest.*
 -DownloadRequestMakerTest.*
 -DownloadShelfWebViewTest.*
@@ -177,6 +179,7 @@
 -HostContentSettingsMapTest.*
 -IncognitoThemeServiceTestWithIncognitoBrandConsistencyFlag/IncognitoThemeServiceTest.*
 -InfoBarViewTest.*
+-InstalledExtensionMenuItemViewTest.*
 -InstallVerifierTest.*
 -InstantNTPURLRewriteTest.*
 -InstantServiceTest.*
@@ -289,9 +292,11 @@
 -SettingsResetPromptModelTest.*
 -SharedModuleServiceUnitTest.*
 -SharingDialogViewTest.*
+-SidePanelCoordinatorTest.*
 -SidePanelToolbarButtonTest.*
 -SigninErrorHandlerTest.*
 -SigninManagerTest.*
+-SitePermissionsHelperUnitTest.*
 -SiteSettingsCounterTest.*
 -SiteSettingsHandlerInfobarTest.*
 -SiteSettingsHandlerTest.*

@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/translate/brave_translate_bubble_view.h"
 
 #include "brave/browser/ui/views/translate/brave_translate_icon_view.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
 #include "chrome/browser/profiles/profile.h"
@@ -16,7 +17,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/translate/core/browser/translate_pref_names.h"
 #include "extensions/browser/extension_registry.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/layout/grid_layout.h"
@@ -65,20 +65,23 @@ BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
   auto dont_ask_button = std::make_unique<views::LabelButton>(
       base::BindRepeating(&BraveTranslateBubbleView::ButtonPressed,
                           base::Unretained(this), BUTTON_ID_ALWAYS_TRANSLATE),
-      l10n_util::GetStringUTF16(IDS_BRAVE_TRANSLATE_BUBBLE_DONT_ASK_AGAIN));
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_BRAVE_TRANSLATE_BUBBLE_DONT_ASK_AGAIN));
   dont_ask_button->SetID(BUTTON_ID_ALWAYS_TRANSLATE);
 
   auto accept_button = std::make_unique<views::MdTextButton>(
       base::BindRepeating(&BraveTranslateBubbleView::ButtonPressed,
                           base::Unretained(this), BUTTON_ID_DONE),
-      l10n_util::GetStringUTF16(IDS_BRAVE_TRANSLATE_BUBBLE_INSTALL));
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_BRAVE_TRANSLATE_BUBBLE_INSTALL));
   accept_button->SetID(BUTTON_ID_DONE);
   accept_button->SetIsDefault(true);
 
   auto cancel_button = std::make_unique<views::MdTextButton>(
       base::BindRepeating(&BraveTranslateBubbleView::ButtonPressed,
                           base::Unretained(this), BUTTON_ID_CLOSE),
-      l10n_util::GetStringUTF16(IDS_BRAVE_TRANSLATE_BUBBLE_CANCEL));
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_BRAVE_TRANSLATE_BUBBLE_CANCEL));
   cancel_button->SetID(BUTTON_ID_CLOSE);
 
   layout->StartRowWithPadding(

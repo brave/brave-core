@@ -117,6 +117,7 @@
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
+#include "components/feed/core/common/pref_names.h"
 #include "components/feed/core/shared_prefs/pref_names.h"
 #include "components/ntp_tiles/pref_names.h"
 #include "components/translate/core/browser/translate_pref_names.h"
@@ -256,10 +257,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(ntp_tiles::prefs::kPopularSitesJsonPref,
                                 base::Value(base::Value::Type::LIST));
   // Disable NTP suggestions
-  registry->SetDefaultPrefValue(feed::prefs::kEnableSnippets,
-                                base::Value(false));
-  registry->SetDefaultPrefValue(feed::prefs::kArticlesListVisible,
-                                base::Value(false));
+  feed::RegisterProfilePrefs(registry);
+  registry->RegisterBooleanPref(feed::prefs::kEnableSnippets, false);
+  registry->RegisterBooleanPref(feed::prefs::kArticlesListVisible, false);
   // Translate is not available on Android
   registry->SetDefaultPrefValue(translate::prefs::kOfferTranslateEnabled,
                                 base::Value(false));
@@ -438,8 +438,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kEnableMediaRouterOnRestart, false);
 
   // Disable Raw sockets API (see github.com/brave/brave-browser/issues/11546).
-  registry->SetDefaultPrefValue(policy::policy_prefs::kEnableDirectSockets,
-                                base::Value(false));
+  registry->SetDefaultPrefValue(
+      policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed,
+      base::Value(false));
 
   BraveFarblingService::RegisterProfilePrefs(registry);
 

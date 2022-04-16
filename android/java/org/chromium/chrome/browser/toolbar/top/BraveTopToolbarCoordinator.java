@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.toolbar.top;
 
 import android.content.Context;
+import android.view.ViewStub;
 
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.BooleanSupplier;
@@ -43,9 +44,9 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     private boolean mIsBottomToolbarVisible;
 
     public BraveTopToolbarCoordinator(ToolbarControlContainer controlContainer,
-            ToolbarLayout toolbarLayout, ToolbarDataProvider toolbarDataProvider,
-            ToolbarTabController tabController, UserEducationHelper userEducationHelper,
-            List<ButtonDataProvider> buttonDataProviders,
+            ViewStub toolbarStub, ToolbarLayout toolbarLayout,
+            ToolbarDataProvider toolbarDataProvider, ToolbarTabController tabController,
+            UserEducationHelper userEducationHelper, List<ButtonDataProvider> buttonDataProviders,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             ThemeColorProvider normalThemeColorProvider,
             ThemeColorProvider overviewThemeColorProvider,
@@ -66,7 +67,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             BooleanSupplier partnerHomepageEnabledSupplier, OfflineDownloader offlineDownloader,
             boolean initializeWithIncognitoColors, ObservableSupplier<Profile> profileSupplier,
             Callback<LoadUrlParams> startSurfaceLogoClickedCallback) {
-        super(controlContainer, toolbarLayout, toolbarDataProvider, tabController,
+        super(controlContainer, toolbarStub, toolbarLayout, toolbarDataProvider, tabController,
                 userEducationHelper, buttonDataProviders, layoutStateProviderSupplier,
                 normalThemeColorProvider, overviewThemeColorProvider,
                 browsingModeMenuButtonCoordinator, overviewModeMenuButtonCoordinator,

@@ -127,6 +127,7 @@ import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.tab.TabImpl;
+import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.util.TabUtils;
@@ -1318,12 +1319,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
     public void initialize(NewTabPageManager manager, Activity activity,
             TileGroup.Delegate tileGroupDelegate, boolean searchProviderHasLogo,
             boolean searchProviderIsGoogle, FeedSurfaceScrollDelegate scrollDelegate,
-            ContextMenuManager contextMenuManager, UiConfig uiConfig, Supplier<Tab> tabProvider,
+            ContextMenuManager contextMenuManager, TouchEnabledDelegate touchEnabledDelegate,
+            UiConfig uiConfig, Supplier<Tab> tabProvider,
             ActivityLifecycleDispatcher lifecycleDispatcher, NewTabPageUma uma, boolean isIncognito,
             WindowAndroid windowAndroid) {
         super.initialize(manager, activity, tileGroupDelegate, searchProviderHasLogo,
-                searchProviderIsGoogle, scrollDelegate, contextMenuManager, uiConfig, tabProvider,
-                lifecycleDispatcher, uma, isIncognito, windowAndroid);
+                searchProviderIsGoogle, scrollDelegate, contextMenuManager, touchEnabledDelegate,
+                uiConfig, tabProvider, lifecycleDispatcher, uma, isIncognito, windowAndroid);
 
         assert (activity instanceof BraveActivity);
         mActivity = activity;

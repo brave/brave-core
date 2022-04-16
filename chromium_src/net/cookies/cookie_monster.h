@@ -45,7 +45,8 @@ class NET_EXPORT CookieMonster : public ChromiumCookieMonster {
       const GURL& source_url,
       const CookieOptions& options,
       SetCookiesCallback callback,
-      const CookieAccessResult* cookie_access_result = nullptr) override;
+      absl::optional<CookieAccessResult> cookie_access_result =
+          absl::nullopt) override;
   void GetCookieListWithOptionsAsync(
       const GURL& url,
       const CookieOptions& options,

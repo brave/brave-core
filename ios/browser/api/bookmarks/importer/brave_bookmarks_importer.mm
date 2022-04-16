@@ -11,7 +11,6 @@
 #include "base/bind.h"
 #include "base/callback_helpers.h"
 #include "base/compiler_specific.h"
-#include "base/cxx17_backports.h"
 #include "base/files/file_path.h"
 #include "base/mac/foundation_util.h"
 #include "base/path_service.h"
@@ -219,7 +218,7 @@
 
   // Filter out the URLs with unsupported schemes.
   const char* const kInvalidSchemes[] = {"wyciwyg", "place", "about", "chrome"};
-  for (size_t i = 0; i < base::size(kInvalidSchemes); ++i) {
+  for (size_t i = 0; i < std::size(kInvalidSchemes); ++i) {
     if (url.SchemeIs(kInvalidSchemes[i])) {
       return false;
     }
