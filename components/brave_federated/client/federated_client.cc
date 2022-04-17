@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_federated/client/federated_client.h"
 
-#include<chrono>
-#include<thread>
+#include <chrono>
+#include <thread>
 
 #include <iostream>
 #include <memory>
@@ -35,16 +35,18 @@ FederatedClient::~FederatedClient() {
 }
 
 void FederatedClient::Start() {
-  base::SequenceBound<start> flwr_communication(base::ThreadPool::CreateSequencedTaskRunner(
+  base::SequenceBound<start> flwr_communication(
+      base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN}));
 
   // Define a server address
   std::string server_add = "localhost:56102";
   std::cout << "Starting the client..." << std::endl;
-  
+
   this->communication_in_progress_ = true;
-  flwr_communication.AsyncCall(&start::start_client).WithArgs(server_add, this, 536870912);
+  flwr_communication.AsyncCall(&start::start_client)
+      .WithArgs(server_add, this, 536870912);
 }
 
 void FederatedClient::Stop() {
@@ -86,7 +88,7 @@ flwr::ParametersRes FederatedClient::get_parameters() {
   oss2.write(reinterpret_cast<const char*>(&pred_b), sizeof(float));
   tensors.push_back(oss2.str());
 
-  std::string tensor_str = "cpp_double";
+  std::string tensor_str = "cpp_float";
   return flwr::Parameters(tensors, tensor_str);
 }
 
@@ -99,10 +101,15 @@ void FederatedClient::set_parameters(flwr::Parameters params) {
     auto layer = s.begin();
     size_t num_bytes = (*layer).size();
     const char* weights_char = (*layer).c_str();
-    const float* weights_float = reinterpret_cast<const float*>(weights_char);
+    const float* weights_float =
+        reinterpret_cast<const float*>(weights_char);
     std::vector<float> weights(weights_float,
-                               weights_float + num_bytes / sizeof(float));
+                                weights_float + num_bytes / sizeof(float));
     this->model_->SetPredWeights(weights);
+    for (size_t j = 0; j < this->model_->PredWeights().size(); j++) {
+      std::cout << "  m" << j << "_server = " << std::fixed
+                << this->model_->PredWeights()[j] << std::endl;
+    }
 
     // Layer 2 = Bias
     auto layer_2 = std::next(layer, 1);

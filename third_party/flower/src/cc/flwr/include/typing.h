@@ -41,6 +41,7 @@ class Scalar {
   // Setters
   void setBool(bool b) { this->b = b; }
   void setBytes(std::string bytes) { this->bytes = bytes; }
+  void setDouble(double d) { this->d = d; }
   void setFloat(float f) { this->f = f; }
   void setInt(int i) { this->i = i; }
   void setString(std::string string) { this->string = string; }
@@ -48,6 +49,7 @@ class Scalar {
  private:
   std::optional<bool> b = std::nullopt;
   std::optional<std::string> bytes = std::nullopt;
+  std::optional<double> d = std::nullopt;
   std::optional<float> f = std::nullopt;
   std::optional<int> i = std::nullopt;
   std::optional<std::string> string = std::nullopt;
