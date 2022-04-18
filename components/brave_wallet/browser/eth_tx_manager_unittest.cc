@@ -424,9 +424,7 @@ class EthTxManagerUnitTest : public testing::Test {
                 EXPECT_EQ(tx_args[1], to);
                 EXPECT_EQ(tx_args[2], token_id);
                 EXPECT_EQ(tx_args[3], value);
-                EXPECT_EQ(tx_args[4],
-                          "0x00000000000000000000000000000000000000000000000000"
-                          "00000000000000");
+                EXPECT_EQ(tx_args[4], "0x");
                 EXPECT_EQ(tx_params[0], "address");
                 EXPECT_EQ(tx_params[1], "address");
                 EXPECT_EQ(tx_params[2], "uint256");
