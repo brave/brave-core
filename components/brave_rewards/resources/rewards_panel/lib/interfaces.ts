@@ -38,6 +38,7 @@ export interface GrantCaptchaInfo {
   imageURL: string
   hint: string
   status: GrantCaptchaStatus
+  verifying: boolean
   grantInfo: GrantInfo
 }
 

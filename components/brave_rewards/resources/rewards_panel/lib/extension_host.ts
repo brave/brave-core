@@ -77,6 +77,7 @@ export function createHost (): Host {
         hint: '',
         imageURL: '',
         status,
+        verifying: false,
         grantInfo
       }
     })
@@ -92,6 +93,7 @@ export function createHost (): Host {
           hint: properties.hint,
           imageURL: properties.captchaImage,
           status,
+          verifying: false,
           grantInfo
         }
       })
@@ -420,6 +422,10 @@ export function createHost (): Host {
       if (!grantCaptchaInfo) {
         return
       }
+
+      stateManager.update({
+        grantCaptchaInfo: { ...grantCaptchaInfo, verifying: true }
+      })
 
       function mapResult (result: number): GrantCaptchaStatus {
         switch (result) {

@@ -63,7 +63,7 @@ export function GrantCaptchaChallenge (props: Props) {
     })
   }
 
-  if (!grantCaptchaInfo.imageURL) {
+  if (!grantCaptchaInfo.imageURL || grantCaptchaInfo.verifying) {
     return (
       <style.root>
         <style.loading>
@@ -76,11 +76,11 @@ export function GrantCaptchaChallenge (props: Props) {
   return (
     <style.root>
       <style.hint>
-          {
-            formatMessage(getString('grantCaptchaHint'), [
-              <strong key='hint'>{grantCaptchaInfo.hint}</strong>
-            ])
-          }
+        {
+          formatMessage(getString('grantCaptchaHint'), [
+            <strong key='hint'>{grantCaptchaInfo.hint}</strong>
+          ])
+        }
       </style.hint>
       <style.dragObject>
         <style.dragObjectCircle>
