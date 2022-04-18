@@ -31,6 +31,7 @@ public class BraveClassAdapter {
         chain = new BraveIntentHandlerClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
         chain = new BraveMainPreferenceBaseClassAdapter(chain);
+        chain = new BraveApplicationImplBaseClassAdapter(chain);
         chain = new BraveManageSyncSettingsClassAdapter(chain);
         chain = new BraveMenuButtonCoordinatorClassAdapter(chain);
         chain = new BraveMimeUtilsClassAdapter(chain);

@@ -14,6 +14,7 @@ import("//components/feed/features.gni")
 
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveAppHooks.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BraveApplicationImplBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveBadge.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveFeatureList.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveHelper.java",

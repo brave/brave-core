@@ -112,6 +112,7 @@ public class BytecodeTest {
     @Test
     @SmallTest
     public void testClassesExist() throws Exception {
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/ChromeApplicationImpl"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/settings/MainSettings"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BookmarkBridge"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/LaunchIntentDispatcher"));
@@ -701,6 +702,8 @@ public class BytecodeTest {
     @Test
     @SmallTest
     public void testSuperNames() throws Exception {
+        Assert.assertTrue(checkSuperName("org/chromium/chrome/browser/ChromeApplicationImpl",
+                "org/chromium/chrome/browser/BraveApplicationImplBase"));
         Assert.assertTrue(checkSuperName("org/chromium/chrome/browser/settings/MainSettings",
                 "org/chromium/chrome/browser/settings/BraveMainPreferencesBase"));
         Assert.assertTrue(checkSuperName(

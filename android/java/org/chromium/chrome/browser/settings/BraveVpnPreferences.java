@@ -318,7 +318,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
 
     @Override
     public void onInvalidateCredentials(String jsonInvalidateCredentials, boolean isSuccess) {
-        Log.e("BraveVPN", "Did InvalidateCredentials work ? : " + isSuccess);
+        Log.e("BraveVPN", "Got reponse back from api");
     }
 
     @Override
