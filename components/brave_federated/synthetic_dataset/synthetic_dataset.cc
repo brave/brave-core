@@ -7,7 +7,9 @@
 
 namespace brave_federated {
 
-SyntheticDataset::SyntheticDataset(std::vector<float> ms, float b, size_t size) {
+SyntheticDataset::SyntheticDataset(std::vector<float> ms,
+                                   float b,
+                                   size_t size) {
   std::random_device rd;
   std::mt19937 mt(rd());
   std::uniform_int_distribution<> distr(-10.0, 10.0);
@@ -39,7 +41,11 @@ SyntheticDataset::SyntheticDataset(std::vector<float> ms, float b, size_t size) 
   for (int i = 0; i < (int)size; i++) {
     std::vector<float> data_point;
     data_point.insert(data_point.end(), xs[i].begin(), xs[i].end());
-    data_point.push_back(ys[i]);
+    if (ys[i] >= 0.0) {
+      data_point.push_back(1.0);
+    } else {
+      data_point.push_back(0.0);
+    }
 
     data_points.push_back(data_point);
   }

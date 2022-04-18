@@ -165,9 +165,9 @@ flwr::EvaluateRes FederatedClient::evaluate(flwr::EvaluateIns ins) {
   resp.setNum_example(std::get<0>(result));
   resp.setLoss(std::get<1>(result));
 
-  flwr::Scalar loss_metric = flwr::Scalar();
-  loss_metric.setFloat(std::get<2>(result));
-  std::map<std::string, flwr::Scalar> metric = {{"loss", loss_metric}};
+  flwr::Scalar accuracy = flwr::Scalar();
+  accuracy.setFloat(std::get<2>(result));
+  std::map<std::string, flwr::Scalar> metric = {{"accuracy", accuracy}};
   resp.setMetrics(metric);
 
   return resp;

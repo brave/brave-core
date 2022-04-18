@@ -39,11 +39,14 @@ class Model {
   int num_iterations_;
   int batch_size_;
   float learning_rate_;
+  float threshold_;
 
   std::vector<float> pred_weights_;
   float pred_b_;
 
-  float ComputeMSE(std::vector<float> true_y, std::vector<float> pred);
+  float ComputeNLL(std::vector<float> true_y, std::vector<float> pred);
+
+  float Activation(float z);
 };
 
 }  // namespace brave_federated

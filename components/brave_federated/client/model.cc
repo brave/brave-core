@@ -6,6 +6,7 @@
 #include "brave/components/brave_federated/client/model.h"
 
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <random>
 #include <vector>
@@ -25,6 +26,7 @@ Model::Model(int num_iterations, float learning_rate, int num_params)
 
   this->pred_b_ = 0.0;
   this->batch_size_ = 64;
+  this->threshold_ = 0.7;
 }
 
 Model::~Model() {}
@@ -52,10 +54,13 @@ size_t Model::ModelSize() {
 std::vector<float> Model::Predict(std::vector<std::vector<float>> X) {
   std::vector<float> prediction(X.size(), 0.0);
   for (int i = 0; i < (int)X.size(); i++) {
+    float z = 0.0;
     for (int j = 0; j < (int)X[i].size(); j++) {
-      prediction[i] += this->pred_weights_[j] * X[i][j];
+      z += this->pred_weights_[j] * X[i][j];
     }
-    prediction[i] += this->pred_b_;
+    z += this->pred_b_;
+
+    prediction[i] = this->Activation(z);
   }
 
   return prediction;
@@ -111,7 +116,7 @@ std::tuple<size_t, float, float> Model::Train(
     this->pred_b_ = pB - learning_rate_ * dB;
 
     if (iteration % 250 == 0) {
-      training_error = this->ComputeMSE(y, Predict(X));
+      training_error = this->ComputeNLL(y, Predict(X));
       std::cout << "Iteration: " << iteration
                 << "  Training error: " << training_error << '\n';
     }
@@ -128,14 +133,18 @@ std::tuple<size_t, float, float> Model::Train(
   return std::make_tuple(dataset.size(), training_error, accuracy);
 }
 
-float Model::ComputeMSE(std::vector<float> true_y, std::vector<float> pred) {
+float Model::ComputeNLL(std::vector<float> true_y, std::vector<float> pred) {
   float error = 0.0;
 
-  for (int i = 0; i < (int)true_y.size(); i++) {
-    error += (pred[i] - true_y[i]) * (pred[i] - true_y[i]);
+  for (int i = 0; i < (int) true_y.size(); i++) {
+    error += (true_y[i] * log(Activation(pred[i])) + (1.0 - true_y[i]) * log(1 - Activation(pred[i])));
   }
 
-  return error / (1.0 * true_y.size());
+  return -error;
+}
+
+float Model::Activation(float z) {
+  return 1.0 / (1 + exp(-1.0 * z));
 }
 
 std::tuple<size_t, float, float> Model::Evaluate(
@@ -152,8 +161,23 @@ std::tuple<size_t, float, float> Model::Evaluate(
     X[i] = point;
   }
 
-  float test_loss = ComputeMSE(y, Predict(X));
-  return std::make_tuple(test_dataset.size(), test_loss, test_loss);
+  std::vector<float> predicted_value = Predict(X);
+  int total_correct = 0;
+  for (int i = 0; i < (int)test_dataset.size(); i++) {
+    if (predicted_value[i] >= this->threshold_) {
+      predicted_value[i] = 1.0;
+    } else {
+      predicted_value[i] = 0.0;
+    }
+
+    if (predicted_value[i] == y[i]) {
+      total_correct++;
+    }
+  }
+  float accuracy = total_correct * 1.0 / test_dataset.size();
+
+  float test_loss = ComputeNLL(y, Predict(X));
+  return std::make_tuple(test_dataset.size(), test_loss, accuracy);
 }
 
 }  // namespace brave_federated
