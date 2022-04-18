@@ -5,6 +5,7 @@
 
 #include "brave/components/services/bat_ledger/in_process/in_process_ledger_service.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/bind.h"
