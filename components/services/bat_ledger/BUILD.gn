@@ -1,5 +1,6 @@
 static_library("lib") {
   visibility = [
+    "//brave/components/services/bat_ledger/in_process",
     "//brave/test:*",
     "//chrome/utility:*",
   ]

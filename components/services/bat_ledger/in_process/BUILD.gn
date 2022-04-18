@@ -1,0 +1,14 @@
+static_library("in_process") {
+  sources = [
+    "in_process_ledger_service.cc",
+    "in_process_ledger_service.h",
+  ]
+
+  public_deps = [ "//brave/components/services/bat_ledger/public/interfaces" ]
+
+  deps = [
+    "//base",
+    "//brave/components/services/bat_ledger:lib",
+    "//mojo/public/cpp/system",
+  ]
+}

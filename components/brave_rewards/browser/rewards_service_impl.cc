@@ -57,7 +57,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/services/bat_ledger/public/cpp/in_process_ledger_service.h"
+#include "brave/components/services/bat_ledger/in_process/in_process_ledger_service.h"
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"

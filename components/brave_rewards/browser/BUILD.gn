@@ -41,6 +41,7 @@ static_library("browser") {
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/buildflags",
     "//brave/components/resources",
+    "//brave/components/services/bat_ledger/in_process",
     "//brave/components/services/bat_ledger/public/cpp",
     "//brave/vendor/bat-native-ads",
     "//mojo/public/cpp/bindings",
