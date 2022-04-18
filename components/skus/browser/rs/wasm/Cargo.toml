@@ -22,7 +22,7 @@ console_error_panic_hook = "0.1.7"
 tracing-wasm = "0.1.0"
 wasm-cookies = "0.1.0"
 futures = "0.3"
-gloo-timers = { version = "0.2.1", features = ["futures"] }
+gloo-timers = { version = "0.2.4", features = ["futures"] }
 tracing-subscriber = "0.2"
 
 [features]
