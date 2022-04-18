@@ -148,10 +148,10 @@ export const createPanelReducer = (initialState: PanelState) => {
     }
   })
 
-  reducer.on(PanelActions.addSuggestToken, (state: any, payload: BraveWallet.AddSuggestTokenRequest) => {
+  reducer.on(PanelActions.addSuggestToken, (state: PanelState, payload: BraveWallet.AddSuggestTokenRequest): PanelState => {
     return {
       ...state,
-      suggestedToken: payload.token
+      suggestedTokenRequest: payload
     }
   })
   return reducer
