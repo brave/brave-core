@@ -36,9 +36,8 @@ LearningService::LearningService(DataStoreService* data_store_service,
 
   Model* model = new Model(500, 0.01, ms.size());
 
-  std::string client_id = "placeholder";
   FederatedClient* ad_notification_client =
-      new FederatedClient(kAdNotificationTaskName, model, client_id);
+      new FederatedClient(kAdNotificationTaskName, model);
 
   SyntheticDataset local_training_data = SyntheticDataset(ms, b, 1000);
   std::cout << "Training set generated." << std::endl;

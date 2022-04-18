@@ -25,10 +25,8 @@
 #include "brave/third_party/flower/src/cc/flwr/include/start.h"
 namespace brave_federated {
 
-FederatedClient::FederatedClient(const std::string& task_name,
-                                 Model* model,
-                                 std::string client_id)
-    : client_id_(client_id), task_name_(task_name), model_(model) {}
+FederatedClient::FederatedClient(const std::string& task_name, Model* model)
+    : task_name_(task_name), model_(model) {}
 
 FederatedClient::~FederatedClient() {
   Stop();
@@ -101,10 +99,9 @@ void FederatedClient::set_parameters(flwr::Parameters params) {
     auto layer = s.begin();
     size_t num_bytes = (*layer).size();
     const char* weights_char = (*layer).c_str();
-    const float* weights_float =
-        reinterpret_cast<const float*>(weights_char);
+    const float* weights_float = reinterpret_cast<const float*>(weights_char);
     std::vector<float> weights(weights_float,
-                                weights_float + num_bytes / sizeof(float));
+                               weights_float + num_bytes / sizeof(float));
     this->model_->SetPredWeights(weights);
     for (size_t j = 0; j < this->model_->PredWeights().size(); j++) {
       std::cout << "  m" << j << "_server = " << std::fixed

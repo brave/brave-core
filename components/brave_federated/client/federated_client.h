@@ -19,8 +19,7 @@ class Model;
 class FederatedClient : public flwr::Client {
  public:
   FederatedClient(const std::string& task_name,
-                  Model* model,
-                  std::string client_id);
+                  Model* model);
   ~FederatedClient();
 
   Model* GetModel();
