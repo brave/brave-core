@@ -1,14 +1,16 @@
 import * as React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
 
 // Constants
 import {
-  PriceDataObjectType,
-  AccountTransactions,
   BraveWallet,
-  WalletAccountType,
   UserAssetInfoType,
-  DefaultCurrencies,
-  AddAccountNavTypes
+  AddAccountNavTypes,
+  WalletState,
+  PageState,
+  SupportedTestNetworks,
+  WalletRoutes
 } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
 import { CurrencySymbols } from '../../../../utils/currency-symbols'
@@ -35,7 +37,8 @@ import TokenLists from './components/token-lists'
 import AccountsAndTransactionsList from './components/accounts-and-transctions-list'
 
 // Hooks
-import { usePricing, useTransactionParser } from '../../../../common/hooks'
+import { useAssetManagement, useBalance, usePricing, useTokenInfo, useTransactionParser } from '../../../../common/hooks'
+import { useLib } from '../../../../common/hooks/useLib'
 
 // Styled Components
 import {
@@ -58,84 +61,137 @@ import {
   ShowBalanceButton,
   NetworkDescription
 } from './style'
+import { AllNetworksOption } from '../../../../options/network-filter-options'
+import { mojoTimeDeltaToJSDate } from '../../../../../common/mojomUtils'
+import { WalletPageActions } from '../../../../page/actions'
+import { WalletActions } from '../../../../common/actions'
 
 export interface Props {
   toggleNav: () => void
-  onChangeTimeline: (path: BraveWallet.AssetPriceTimeframe) => void
-  onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
-  onSelectAccount: (account: WalletAccountType) => void
   onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
-  onAddCustomAsset: (token: BraveWallet.BlockchainToken) => void
   onShowVisibleAssetsModal: (showModal: boolean) => void
-  onUpdateVisibleAssets: (updatedTokensList: BraveWallet.BlockchainToken[]) => void
   showVisibleAssetsModal: boolean
-  defaultCurrencies: DefaultCurrencies
-  addUserAssetError: boolean
-  selectedNetwork: BraveWallet.NetworkInfo
-  networkList: BraveWallet.NetworkInfo[]
-  userAssetList: UserAssetInfoType[]
-  accounts: WalletAccountType[]
-  selectedTimeline: BraveWallet.AssetPriceTimeframe
-  selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
-  selectedAsset: BraveWallet.BlockchainToken | undefined
-  selectedAssetFiatPrice: BraveWallet.AssetPrice | undefined
-  selectedAssetCryptoPrice: BraveWallet.AssetPrice | undefined
-  selectedAssetPriceHistory: PriceDataObjectType[]
-  portfolioPriceHistory: PriceDataObjectType[]
-  portfolioBalance: string
-  transactions: AccountTransactions
-  isLoading: boolean
-  fullAssetList: BraveWallet.BlockchainToken[]
-  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
-  isFetchingPortfolioPriceHistory: boolean
-  transactionSpotPrices: BraveWallet.AssetPrice[]
-  onRetryTransaction: (transaction: BraveWallet.TransactionInfo) => void
-  onSpeedupTransaction: (transaction: BraveWallet.TransactionInfo) => void
-  onCancelTransaction: (transaction: BraveWallet.TransactionInfo) => void
-  onFindTokenInfoByContractAddress: (contractAddress: string) => void
-  foundTokenInfoByContractAddress: BraveWallet.BlockchainToken | undefined
 }
+
+const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 
 const Portfolio = (props: Props) => {
   const {
     toggleNav,
-    onChangeTimeline,
-    onSelectAsset,
-    onSelectAccount,
     onClickAddAccount,
-    onAddCustomAsset,
     onShowVisibleAssetsModal,
-    onUpdateVisibleAssets,
-    showVisibleAssetsModal,
+    showVisibleAssetsModal
+  } = props
+
+  // routing
+  const history = useHistory()
+
+  // redux
+  const dispatch = useDispatch()
+  const {
     defaultCurrencies,
     addUserAssetError,
     userVisibleTokensInfo,
     selectedNetwork,
-    fullAssetList,
     portfolioPriceHistory,
-    selectedAssetPriceHistory,
-    selectedAssetFiatPrice,
-    selectedAssetCryptoPrice,
-    selectedTimeline,
     selectedPortfolioTimeline,
     accounts,
     networkList,
-    selectedAsset,
-    portfolioBalance,
     transactions,
-    userAssetList,
-    isLoading,
     isFetchingPortfolioPriceHistory,
     transactionSpotPrices,
-    onRetryTransaction,
-    onSpeedupTransaction,
-    onCancelTransaction,
+    fullTokenList,
+    selectedNetworkFilter
+  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+
+  const {
+    isFetchingPriceHistory: isLoading,
+    selectedTimeline,
+    selectedAsset,
+    selectedAssetPriceHistory,
+    selectedAssetFiatPrice,
+    selectedAssetCryptoPrice
+  } = useSelector(({ page }: { page: PageState }) => page)
+
+  // custom hooks
+  const { getBlockchainTokenInfo } = useLib()
+  const getAccountBalance = useBalance(networkList)
+  const { computeFiatAmount } = usePricing(transactionSpotPrices)
+  const {
     onFindTokenInfoByContractAddress,
     foundTokenInfoByContractAddress
-  } = props
+  } = useTokenInfo(getBlockchainTokenInfo, userVisibleTokensInfo, fullTokenList, selectedNetwork)
+  const {
+    onAddCustomAsset,
+    onUpdateVisibleAssets
+  } = useAssetManagement()
 
+  // This will scrape all the user's accounts and combine the asset balances for a single asset
+  const fullAssetBalance = React.useCallback((asset: BraveWallet.BlockchainToken) => {
+    const tokensCoinType = getTokensCoinType(networkList, asset)
+    const amounts = accounts.filter((account) => account.coin === tokensCoinType).map((account) =>
+      getAccountBalance(account, asset))
+
+    // If a user has not yet created a FIL or SOL account,
+    // we return 0 until they create an account
+    if (amounts.length === 0) {
+      return '0'
+    }
+
+    return amounts.reduce(function (a, b) {
+      return a !== '' && b !== ''
+        ? new Amount(a).plus(b).format()
+        : ''
+    })
+  }, [accounts, networkList, getAccountBalance])
+
+  // This looks at the users asset list and returns the full balance for each asset
+  const userAssetList = React.useMemo(() => {
+    const allAssets = userVisibleTokensInfo.map((asset) => ({
+      asset: asset,
+      assetBalance: fullAssetBalance(asset)
+    }) as UserAssetInfoType)
+    // By default we dont show any testnetwork assets
+    if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
+      return allAssets.filter((asset) => !SupportedTestNetworks.includes(asset.asset.chainId))
+    }
+    // If chainId is Localhost we also do a check for coinType to return
+    // the correct asset
+    if (selectedNetworkFilter.chainId === BraveWallet.LOCALHOST_CHAIN_ID) {
+      return allAssets.filter((asset) =>
+        asset.asset.chainId === selectedNetworkFilter.chainId &&
+        getTokensCoinType(networkList, asset.asset) === selectedNetworkFilter.coin
+      )
+    }
+    // Filter by all other assets by chainId's
+    return allAssets.filter((asset) => asset.asset.chainId === selectedNetworkFilter.chainId)
+  }, [userVisibleTokensInfo, selectedNetworkFilter, fullAssetBalance, networkList])
+
+  // This will scrape all of the user's accounts and combine the fiat value for every asset
+  const fullPortfolioFiatBalance = React.useMemo(() => {
+    const visibleAssetOptions = userAssetList
+      .filter((token) =>
+        token.asset.visible &&
+        !token.asset.isErc721
+      )
+
+    if (visibleAssetOptions.length === 0) {
+      return ''
+    }
+
+    const visibleAssetFiatBalances = visibleAssetOptions
+      .map((item) => {
+        return computeFiatAmount(item.assetBalance, item.asset.symbol, item.asset.decimals)
+      })
+
+    const grandTotal = visibleAssetFiatBalances.reduce(function (a, b) {
+      return a.plus(b)
+    })
+    return grandTotal.formatAsFiat()
+  }, [userAssetList, computeFiatAmount])
+
+  // state
   const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(userAssetList)
-  const [fullPortfolioFiatBalance, setFullPortfolioFiatBalance] = React.useState<string>(portfolioBalance)
   const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hoverPrice, setHoverPrice] = React.useState<string>()
   const [hideBalances, setHideBalances] = React.useState<boolean>(false)
@@ -145,33 +201,109 @@ const Portfolio = (props: Props) => {
     }
     return getTokensNetwork(networkList, selectedAsset)
   }, [selectedNetwork, selectedAsset, networkList])
+
+  // more custom hooks
   const parseTransaction = useTransactionParser(selectedAssetsNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
 
-  const onSetFilteredAssetList = (filteredList: UserAssetInfoType[]) => {
-    setfilteredAssetList(filteredList)
+  // memos / computed
+
+  const formattedPriceHistory = React.useMemo(() => {
+    return selectedAssetPriceHistory.map((obj) => {
+      return {
+        date: mojoTimeDeltaToJSDate(obj.date),
+        close: Number(obj.price)
+      }
+    })
+  }, [selectedAssetPriceHistory])
+
+  const priceHistory = React.useMemo(() => {
+    if (parseFloat(fullPortfolioFiatBalance) === 0) {
+      return []
+    } else {
+      return portfolioPriceHistory
+    }
+  }, [portfolioPriceHistory, fullPortfolioFiatBalance])
+
+  const transactionsByNetwork = React.useMemo(() => {
+    const accountsByNetwork = accounts.filter((account) => account.coin === selectedAssetsNetwork.coin)
+    return accountsByNetwork.map((account) => {
+      return transactions[account.address]
+    }).flat(1)
+  }, [accounts, transactions, selectedAssetsNetwork])
+
+  const selectedAssetTransactions = React.useMemo((): BraveWallet.TransactionInfo[] => {
+    if (selectedAsset) {
+      const filteredTransactions = transactionsByNetwork.filter((tx) => {
+        return tx && parseTransaction(tx).symbol === selectedAsset?.symbol
+      })
+      return sortTransactionByDate(filteredTransactions, 'descending')
+    }
+    return []
+  }, [selectedAsset, transactionsByNetwork, parseTransaction])
+
+  const fullAssetBalances = React.useMemo(() => {
+    if (selectedAsset?.contractAddress === '') {
+      return filteredAssetList.find(
+        (asset) =>
+          asset.asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase() &&
+          asset.asset.chainId === selectedAsset?.chainId
+      )
+    }
+    return filteredAssetList.find(
+      (asset) =>
+        asset.asset.contractAddress.toLowerCase() === selectedAsset?.contractAddress.toLowerCase() &&
+        asset.asset.chainId === selectedAsset?.chainId
+    )
+  }, [filteredAssetList, selectedAsset])
+
+  const formattedFullAssetBalance = fullAssetBalances?.assetBalance
+    ? '(' + new Amount(fullAssetBalances?.assetBalance ?? '')
+      .divideByDecimals(selectedAsset?.decimals ?? 18)
+      .formatAsAsset(6, selectedAsset?.symbol ?? '') + ')'
+    : ''
+
+  const fullAssetFiatBalance = React.useMemo(() => fullAssetBalances?.assetBalance
+    ? computeFiatAmount(
+        fullAssetBalances.assetBalance,
+        fullAssetBalances.asset.symbol,
+        fullAssetBalances.asset.decimals
+      )
+    : Amount.empty(),
+    [fullAssetBalances]
+  )
+
+  // methods
+  const onChangeTimeline = (timeline: BraveWallet.AssetPriceTimeframe) => {
+    if (selectedAsset) {
+      dispatch(WalletPageActions.selectAsset({
+        asset: selectedAsset,
+        timeFrame: timeline
+      }))
+    } else {
+      dispatch(WalletActions.selectPortfolioTimeline(timeline))
+    }
   }
 
-  React.useEffect(() => {
-    if (portfolioBalance !== '') {
-      setFullPortfolioFiatBalance(portfolioBalance)
+  const selectAsset = (asset: BraveWallet.BlockchainToken | undefined) => {
+    if (asset) {
+      if (asset.contractAddress === '') {
+        history.push(`${WalletRoutes.Portfolio}/${asset.symbol}`)
+        return
+      }
+      history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}`)
+    } else {
+      dispatch(WalletPageActions.selectAsset({ asset, timeFrame: selectedTimeline }))
+      history.push(WalletRoutes.Portfolio)
     }
-  }, [portfolioBalance])
+  }
 
-  React.useEffect(() => {
-    setfilteredAssetList(userAssetList)
-  }, [userAssetList])
-
-  const portfolioHistory = React.useMemo(() => {
-    return portfolioPriceHistory
-  }, [portfolioPriceHistory])
-
-  const selectAsset = (asset: BraveWallet.BlockchainToken) => () => {
-    onSelectAsset(asset)
+  const onSelectAsset = (asset: BraveWallet.BlockchainToken) => () => {
+    selectAsset(asset)
     toggleNav()
   }
 
   const goBack = () => {
-    onSelectAsset(undefined)
+    selectAsset(undefined)
     setfilteredAssetList(userAssetList)
     toggleNav()
   }
@@ -196,77 +328,16 @@ const Portfolio = (props: Props) => {
     onShowVisibleAssetsModal(!showVisibleAssetsModal)
   }
 
-  const priceHistory = React.useMemo(() => {
-    if (parseFloat(portfolioBalance) === 0) {
-      return []
-    } else {
-      return portfolioHistory
-    }
-  }, [portfolioHistory, portfolioBalance])
-
-  const transactionsByNetwork = React.useMemo(() => {
-    const accountsByNetwork = accounts.filter((account) => account.coin === selectedAssetsNetwork.coin)
-    return accountsByNetwork.map((account) => {
-      return transactions[account.address]
-    }).flat(1)
-  }, [accounts, transactions, selectedAssetsNetwork])
-
-  const selectedAssetTransactions = React.useMemo((): BraveWallet.TransactionInfo[] => {
-    if (selectedAsset) {
-      const filteredTransactions = transactionsByNetwork.filter((tx) => {
-        return parseTransaction(tx).symbol === selectedAsset?.symbol ? tx : []
-      })
-      return sortTransactionByDate(filteredTransactions, 'descending')
-    }
-    return []
-  }, [selectedAsset, transactionsByNetwork])
-
-  const fullAssetBalances = React.useMemo(() => {
-    if (selectedAsset?.contractAddress === '') {
-      return filteredAssetList.find(
-        (asset) =>
-          asset.asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase() &&
-          asset.asset.chainId === selectedAsset?.chainId
-      )
-    }
-    return filteredAssetList.find(
-      (asset) =>
-        asset.asset.contractAddress.toLowerCase() === selectedAsset?.contractAddress.toLowerCase() &&
-        asset.asset.chainId === selectedAsset?.chainId
-    )
-  }, [filteredAssetList, selectedAsset])
-
-  const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
-  }, [])
-
-  const formattedFullAssetBalance = fullAssetBalances?.assetBalance
-    ? '(' + new Amount(fullAssetBalances?.assetBalance ?? '')
-      .divideByDecimals(selectedAsset?.decimals ?? 18)
-      .formatAsAsset(6, selectedAsset?.symbol ?? '') + ')'
-    : ''
-
-  const { computeFiatAmount } = usePricing(transactionSpotPrices)
-  const fullAssetFiatBalance = fullAssetBalances?.assetBalance
-    ? computeFiatAmount(
-      fullAssetBalances.assetBalance,
-      fullAssetBalances.asset.symbol,
-      fullAssetBalances.asset.decimals
-    )
-    : Amount.empty()
-
   const onToggleHideBalances = () => {
     setHideBalances(!hideBalances)
   }
 
-  const filteredAccountsByCoinType = React.useMemo(() => {
-    if (!selectedAsset) {
-      return []
-    }
-    const coinType = getTokensCoinType(networkList, selectedAsset)
-    return accounts.filter((account) => account.coin === coinType)
-  }, [networkList, accounts, selectedAsset])
+  // effects
+  React.useEffect(() => {
+    setfilteredAssetList(userAssetList)
+  }, [userAssetList])
 
+  // render
   return (
     <StyledWrapper>
       <TopRow>
@@ -291,6 +362,7 @@ const Portfolio = (props: Props) => {
           />
         </BalanceRow>
       </TopRow>
+
       {!selectedAsset ? (
         <WithHideBalancePlaceholder
           size='big'
@@ -334,14 +406,19 @@ const Portfolio = (props: Props) => {
           }
         </>
       )}
+
       {!selectedAsset?.isErc721 &&
         <LineChart
           isDown={selectedAsset && selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}
           isAsset={!!selectedAsset}
-          priceData={selectedAsset ? selectedAssetPriceHistory : priceHistory}
+          priceData={
+            selectedAsset
+              ? formattedPriceHistory
+              : priceHistory
+          }
           onUpdateBalance={onUpdateBalance}
-          isLoading={selectedAsset ? isLoading : parseFloat(portfolioBalance) === 0 ? false : isFetchingPortfolioPriceHistory}
-          isDisabled={selectedAsset ? false : parseFloat(portfolioBalance) === 0}
+          isLoading={selectedAsset ? isLoading : parseFloat(fullPortfolioFiatBalance) === 0 ? false : isFetchingPortfolioPriceHistory}
+          isDisabled={selectedAsset ? false : parseFloat(fullPortfolioFiatBalance) === 0}
         />
       }
 
@@ -356,24 +433,15 @@ const Portfolio = (props: Props) => {
       } */}
 
       <AccountsAndTransactionsList
-        accounts={filteredAccountsByCoinType}
-        defaultCurrencies={defaultCurrencies}
         formattedFullAssetBalance={formattedFullAssetBalance}
         fullAssetFiatBalance={fullAssetFiatBalance}
         selectedAsset={selectedAsset}
         selectedAssetTransactions={selectedAssetTransactions}
-        selectedNetwork={selectedAssetsNetwork ?? selectedNetwork}
-        transactionSpotPrices={transactionSpotPrices}
-        userVisibleTokensInfo={userVisibleTokensInfo}
         onClickAddAccount={onClickAddAccount}
-        onSelectAccount={onSelectAccount}
-        onSelectAsset={selectAsset}
-        onCancelTransaction={onCancelTransaction}
-        onRetryTransaction={onRetryTransaction}
-        onSpeedupTransaction={onSpeedupTransaction}
         hideBalances={hideBalances}
         networkList={networkList}
       />
+
       {!selectedAsset &&
         <TokenLists
           defaultCurrencies={defaultCurrencies}
@@ -381,15 +449,16 @@ const Portfolio = (props: Props) => {
           filteredAssetList={filteredAssetList}
           tokenPrices={transactionSpotPrices}
           networks={networkList}
-          onSetFilteredAssetList={onSetFilteredAssetList}
-          onSelectAsset={selectAsset}
+          onSetFilteredAssetList={setfilteredAssetList}
+          onSelectAsset={onSelectAsset}
           onShowAssetModal={toggleShowVisibleAssetModal}
           hideBalances={hideBalances}
         />
       }
+
       {showVisibleAssetsModal &&
         <EditVisibleAssetsModal
-          fullAssetList={fullAssetList}
+          fullAssetList={fullTokenList}
           userVisibleTokensInfo={userVisibleTokensInfo}
           addUserAssetError={addUserAssetError}
           onClose={toggleShowVisibleAssetModal}
