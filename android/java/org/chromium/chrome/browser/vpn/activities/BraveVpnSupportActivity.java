@@ -127,6 +127,9 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
                 if (otherIssueCheckbox5.isChecked()) {
                     bodyText.append(otherIssueCheckbox5.getText() + "\n");
                 }
+                bodyText.append("\n\nPlatform\n")
+                        .append("Android"
+                                + "\n");
 
                 composeEmail(bodyText.toString());
             }
@@ -161,7 +164,7 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
     private void composeEmail(String body) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:")); // only email apps should handle this
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[] {"brave@guardianapp.com"});
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[] {"braveandroid@guardianapp.com"});
         intent.putExtra(Intent.EXTRA_SUBJECT, "Brave Firewall + VPN Issue");
         intent.putExtra(Intent.EXTRA_TEXT, body);
         finish();

@@ -16,7 +16,6 @@ public class BraveApplicationImplBaseClassAdapter extends BraveClassVisitor {
 
     public BraveApplicationImplBaseClassAdapter(ClassVisitor visitor) {
         super(visitor);
-        changeSuperName(sChromeApplicationImplClassName,
-                        sBraveApplicationImplBaseClassName);
+        changeSuperName(sChromeApplicationImplClassName, sBraveApplicationImplBaseClassName);
     }
 }
