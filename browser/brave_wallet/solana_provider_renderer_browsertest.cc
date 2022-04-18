@@ -21,7 +21,6 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -432,9 +431,9 @@ class TestBraveContentBrowserClient : public BraveContentBrowserClient {
 
 }  // namespace
 
-class SolanaProviderTest : public InProcessBrowserTest {
+class SolanaProviderRendererTest : public InProcessBrowserTest {
  public:
-  SolanaProviderTest() {
+  SolanaProviderRendererTest() {
     feature_list_.InitWithFeatures(
         {brave_wallet::features::kBraveWalletSolanaFeature,
          brave_wallet::features::kBraveWalletSolanaProviderFeature},
@@ -462,12 +461,6 @@ class SolanaProviderTest : public InProcessBrowserTest {
         brave_wallet::features::kNativeBraveWalletFeature));
   }
 
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    // HTTPS server only serves a valid cert for localhost, so this is needed
-    // to load pages from other hosts without an error.
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
-  }
-
   content::WebContents* web_contents(Browser* browser) const {
     return browser->tab_strip_model()->GetActiveWebContents();
   }
@@ -490,7 +483,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
   net::test_server::EmbeddedTestServerHandle test_server_handle_;
 };
 
-class SolanaProviderDisabledTest : public SolanaProviderTest {
+class SolanaProviderDisabledTest : public SolanaProviderRendererTest {
  public:
   SolanaProviderDisabledTest() {
     feature_list_.Reset();
@@ -505,7 +498,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderDisabledTest, SolanaObject) {
   EXPECT_EQ(base::Value(false), result.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Incognito) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Incognito) {
   Browser* private_browser = CreateIncognitoBrowser(nullptr);
   GURL url = embedded_test_server()->GetURL("/empty.html");
   NavigateToURLAndWaitForLoadStop(private_browser, url);
@@ -515,7 +508,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Incognito) {
   EXPECT_EQ(base::Value(false), result.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, DefaultWallet) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, DefaultWallet) {
   auto result = EvalJs(web_contents(browser()), CheckSolanaProviderScript,
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
 
@@ -536,7 +529,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, DefaultWallet) {
   EXPECT_EQ(base::Value(false), result3.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ExtensionOverwrite) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
   brave_wallet::SetDefaultWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
@@ -558,7 +551,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ExtensionOverwrite) {
       "test");
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, NonWritable) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, NonWritable) {
   // window.solana.*
   auto result = EvalJs(web_contents(browser()),
                        NonWriteableScript("on", R"(('connect', ()=>{}))"),
@@ -598,7 +591,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, NonWritable) {
   EXPECT_EQ(base::Value(true), result6.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, IsPhantom) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, IsPhantom) {
   auto result =
       EvalJs(web_contents(browser()),
              "window.domAutomationController.send(window.solana.isPhantom)",
@@ -606,7 +599,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, IsPhantom) {
   EXPECT_EQ(base::Value(true), result.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Connect) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Connect) {
   auto result = EvalJs(web_contents(browser()), ConnectScript(""),
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(kTestPublicKey), result.value);
@@ -638,7 +631,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Connect) {
             result4.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, OnConnect) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, OnConnect) {
   auto result =
       EvalJs(web_contents(browser()),
              R"(async function connect() {await window.solana.connect()}
@@ -649,7 +642,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, OnConnect) {
   EXPECT_EQ(base::Value(kTestPublicKey), result.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, IsConnected) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, IsConnected) {
   auto result =
       EvalJs(web_contents(browser()),
              "window.domAutomationController.send(window.solana.isConnected)",
@@ -670,7 +663,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, IsConnected) {
   EXPECT_EQ(base::Value(false), result2.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, GetPublicKey) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, GetPublicKey) {
   auto result = EvalJs(
       web_contents(browser()),
       "window.domAutomationController.send(window.solana.publicKey.toString())",
@@ -678,7 +671,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, GetPublicKey) {
   EXPECT_EQ(base::Value(kTestPublicKey), result.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Disconnect) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Disconnect) {
   auto result = EvalJs(web_contents(browser()),
                        R"(async function disconnect() {
                   const result = await window.solana.disconnect()
@@ -706,7 +699,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Disconnect) {
   EXPECT_EQ(base::Value(true), result2.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignTransaction) {
   const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
   const std::string tx =
       base::StrCat({"(window.solana.createTransaction(new Uint8Array([",
@@ -751,7 +744,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignTransaction) {
             result5.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAllTransactions) {
   const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
   const std::string txs = base::StrCat(
       {"([window.solana.createTransaction(new Uint8Array([", serialized_tx_str,
@@ -811,7 +804,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAllTransactions) {
             result6.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
   const std::string serialized_tx_str = VectorToArrayString(kSerializedTx);
   const std::string tx =
       base::StrCat({"(window.solana.createTransaction(new Uint8Array([",
@@ -860,7 +853,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignAndSendTransaction) {
             result5.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignMessage) {
   const std::string msg_str = VectorToArrayString(kMessageToSign);
   const std::string msg = base::StrCat({"(new Uint8Array([", msg_str, "]))"});
   auto result = EvalJs(web_contents(browser()), SignMessageScript(msg),
@@ -916,7 +909,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, SignMessage) {
 // Request test here won't be testing params object, renderer just convert the
 // object to dictionary and pass it to browser and it is resposibility of
 // browser process to extract the info
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Request) {
   const std::string request =
       base::StrCat({"(", GetRequstObject("connect"), ")"});
   auto result = EvalJs(web_contents(browser()), RequestScript(request),
@@ -965,7 +958,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
             result6.value);
 }
 
-IN_PROC_BROWSER_TEST_F(SolanaProviderTest, OnAccountChanged) {
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, OnAccountChanged) {
   auto result = EvalJs(web_contents(browser()), OnAccountChangedScript,
                        content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(kTestPublicKey), result.value);
