@@ -9,11 +9,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" >
 
+    <View
+        android:id="@+id/tile_view_icon_background"
+        android:layout_width="@dimen/tile_view_icon_size"
+        android:layout_height="@dimen/tile_view_icon_size"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/tile_view_icon_background_margin_top_modern"
+        android:background="@drawable/tile_view_icon_background_modern"/>
+
     <!-- The main icon. -->
     <ImageView
         android:id="@+id/tile_view_icon"
-        android:layout_width="@dimen/brave_tile_view_icon_size_modern"
-        android:layout_height="@dimen/brave_tile_view_icon_size_modern"
+        android:layout_width="@dimen/tile_view_icon_size_modern"
+        android:layout_height="@dimen/tile_view_icon_size_modern"
         android:layout_gravity="center_horizontal"
         tools:ignore="ContentDescription" />
 

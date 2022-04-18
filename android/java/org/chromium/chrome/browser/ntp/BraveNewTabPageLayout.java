@@ -326,6 +326,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout implements Connectio
         if (mSiteSectionView.getParent() != null) {
             ((ViewGroup) mSiteSectionView.getParent()).removeView(mSiteSectionView);
         }
+        mSiteSectionView.setBackgroundResource(R.drawable.rounded_dark_bg_alpha);
+        mSiteSectionView.setLayoutParams(layoutParams);
+        mSiteSectionView.requestLayout();
         mainLayout.addView(mSiteSectionView, insertionPoint);
     }
 
