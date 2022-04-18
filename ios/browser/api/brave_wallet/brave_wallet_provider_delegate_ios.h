@@ -18,6 +18,14 @@ typedef void (^BraveWalletProviderResultsCallback)(
     BraveWalletProviderError error,
     NSString* errorMessage);
 
+typedef void (^RequestSolanaPermissionCallback)(
+    NSString* _Nullable account,
+    BraveWalletSolanaProviderError error,
+    NSString* errorMessage);
+
+typedef void (^IsSelectedAccountAllowedCallback)(NSString* _Nullable account,
+                                                 bool allowed);
+
 OBJC_EXPORT
 @protocol BraveWalletProviderDelegate
 - (void)showPanel;
@@ -25,8 +33,12 @@ OBJC_EXPORT
 - (void)walletInteractionDetected;
 - (void)requestEthereumPermissions:
     (BraveWalletProviderResultsCallback)completion;
-- (void)getAllowedAccounts:(BOOL)includeAccountsWhenLocked
-                completion:(BraveWalletProviderResultsCallback)completion;
+- (void)getAllowedAccounts:(BraveWalletCoinType)type
+    includeAccountsWhenLocked:(BOOL)includeAccountsWhenLocked
+                   completion:(BraveWalletProviderResultsCallback)completion;
+- (void)requestSolanaPermission:(RequestSolanaPermissionCallback)completion;
+- (void)isSelectedAccountAllowed:(BraveWalletCoinType)type
+                      completion:(IsSelectedAccountAllowedCallback)completion;
 @end
 
 NS_ASSUME_NONNULL_END

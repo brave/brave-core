@@ -31,10 +31,10 @@ class BraveWalletProviderDelegateBridge
                           bool include_accounts_when_locked,
                           GetAllowedAccountsCallback callback) override;
   void RequestSolanaPermission(
-      RequestSolanaPermissionCallback callback) override {}
+      RequestSolanaPermissionCallback callback) override;
   void IsSelectedAccountAllowed(
       mojom::CoinType type,
-      IsSelectedAccountAllowedCallback callback) override {}
+      IsSelectedAccountAllowedCallback callback) override;
 };
 
 }  // namespace brave_wallet

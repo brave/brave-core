@@ -68,8 +68,47 @@ void BraveWalletProviderDelegateBridge::GetAllowedAccounts(
             v, static_cast<brave_wallet::mojom::ProviderError>(error),
             base::SysNSStringToUTF8(errorMessage));
       };
-  [bridge_ getAllowedAccounts:include_accounts_when_locked
-                   completion:completion];
+  [bridge_ getAllowedAccounts:static_cast<BraveWalletCoinType>(type)
+      includeAccountsWhenLocked:include_accounts_when_locked
+                     completion:completion];
+}
+
+void BraveWalletProviderDelegateBridge::RequestSolanaPermission(
+    RequestSolanaPermissionCallback callback) {
+  auto completion =
+      [callback = std::make_shared<decltype(callback)>(std::move(callback))](
+          NSString* _Nullable account, BraveWalletSolanaProviderError error,
+          NSString* errorMessage) {
+        if (!callback) {
+          return;
+        }
+        std::move(*callback).Run(
+            account == nil
+                ? absl::nullopt
+                : absl::optional<std::string>(base::SysNSStringToUTF8(account)),
+            static_cast<brave_wallet::mojom::SolanaProviderError>(error),
+            base::SysNSStringToUTF8(errorMessage));
+      };
+  [bridge_ requestSolanaPermission:completion];
+}
+
+void BraveWalletProviderDelegateBridge::IsSelectedAccountAllowed(
+    mojom::CoinType type,
+    IsSelectedAccountAllowedCallback callback) {
+  auto completion =
+      [callback = std::make_shared<decltype(callback)>(std::move(callback))](
+          NSString* _Nullable account, bool allowed) {
+        if (!callback) {
+          return;
+        }
+        std::move(*callback).Run(
+            account == nil
+                ? absl::nullopt
+                : absl::optional<std::string>(base::SysNSStringToUTF8(account)),
+            allowed);
+      };
+  [bridge_ isSelectedAccountAllowed:static_cast<BraveWalletCoinType>(type)
+                         completion:completion];
 }
 
 }  // namespace brave_wallet
