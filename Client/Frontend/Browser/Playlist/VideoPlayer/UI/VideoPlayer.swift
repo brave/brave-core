@@ -640,8 +640,8 @@ class VideoView: UIView, VideoTrackerBarDelegate {
             guard let self = self else { return }
             
             if let tracks = change.newValue,
-               tracks?.isEmpty == false,
-               self.delegate?.isVideoTracksAvailable == true {
+               !(tracks?.isEmpty ?? true),
+               !(self.delegate?.isVideoTracksAvailable ?? true) {
               self.particleView.alpha = 1.0
             } else {
               self.particleView.alpha = 0.0

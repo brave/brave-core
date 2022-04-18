@@ -632,6 +632,14 @@ extension MediaPlayer {
 }
 
 extension AVPlayerItem {
+  private var isReadyToPlay: Bool {
+    var error: NSError?
+    if case .loaded = self.asset.statusOfValue(forKey: "tracks", error: &error) {
+      return true
+    }
+    return false
+  }
+  
   /// Returns whether or not the assetTrack has audio tracks OR the asset has audio tracks
   func isAudioTracksAvailable() -> Bool {
     tracks.filter({ $0.assetTrack?.mediaType == .audio }).isEmpty == false
@@ -643,6 +651,10 @@ extension AVPlayerItem {
   /// tracks may not always be available and the particle effect will show even on videos..
   /// It's best to assume this type of media is a video stream.
   func isVideoTracksAvailable() -> Bool {
+    if !isReadyToPlay {
+      return true
+    }
+    
     if tracks.isEmpty && asset.tracks.isEmpty {
       return true  // Assume video
     }
