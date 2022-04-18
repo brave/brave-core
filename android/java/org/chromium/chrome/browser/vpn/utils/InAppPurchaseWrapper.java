@@ -40,7 +40,6 @@ import java.util.Map;
 public class InAppPurchaseWrapper {
     public static final String NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
     public static final String NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
-    private static InAppPurchaseWrapper sInAppPurchaseWrapper;
     private BillingClient mBillingClient;
 
     private final Map<String, SkuDetails> mSkusWithSkuDetails = new HashMap<>();
@@ -52,10 +51,20 @@ public class InAppPurchaseWrapper {
     public static final List<String> SUBS_SKUS = new ArrayList<>(
             Arrays.asList(NIGHTLY_MONTHLY_SUBSCRIPTION, NIGHTLY_YEARLY_SUBSCRIPTION));
 
-    public static InAppPurchaseWrapper getInstance() {
-        if (sInAppPurchaseWrapper == null) sInAppPurchaseWrapper = new InAppPurchaseWrapper();
+    private static volatile InAppPurchaseWrapper sInAppPurchaseWrapper;
+    private static Object mutex = new Object();
 
-        return sInAppPurchaseWrapper;
+    private InAppPurchaseWrapper() {}
+
+    public static InAppPurchaseWrapper getInstance() {
+        InAppPurchaseWrapper result = sInAppPurchaseWrapper;
+        if (result == null) {
+            synchronized (mutex) {
+                result = sInAppPurchaseWrapper;
+                if (result == null) sInAppPurchaseWrapper = result = new InAppPurchaseWrapper();
+            }
+        }
+        return result;
     }
 
     public void startBillingServiceConnection(Context context) {

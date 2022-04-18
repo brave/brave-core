@@ -56,6 +56,6 @@ public class WireguardConfigUtils {
     }
 
     private static File fileForConfig(Context context) {
-        return new File(context.getFilesDir(), TunnelModel.TUNNEL_NAME + ".conf");
+        return new File(context.getNoBackupFilesDir(), TunnelModel.TUNNEL_NAME + ".conf");
     }
 }

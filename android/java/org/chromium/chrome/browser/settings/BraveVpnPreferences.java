@@ -14,6 +14,7 @@ import android.net.NetworkRequest;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
@@ -240,10 +241,20 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             mVpnSwitch.setChecked(
                     BraveVpnProfileUtils.getInstance().isBraveVPNConnected(getActivity()));
         }
-        findPreference(PREF_SERVER_RESET_CONFIGURATION)
-                .setEnabled(WireguardConfigUtils.isConfigExist(getActivity()));
-        findPreference(PREF_SERVER_CHANGE_LOCATION)
-                .setEnabled(WireguardConfigUtils.isConfigExist(getActivity()));
+        new Thread() {
+            @Override
+            public void run() {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            findPreference(PREF_SERVER_CHANGE_LOCATION)
+                                    .setEnabled(WireguardConfigUtils.isConfigExist(getActivity()));
+                        }
+                    });
+                }
+            }
+        }.start();
 
         BraveVpnUtils.dismissProgressDialog();
     }
@@ -335,20 +346,27 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                             new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
                     mSubscriptionExpires.setSummary(formatter.format(new Date(purchaseExpiry)));
                 }
+                checkVpnAfterVerification();
+            } else {
+                BraveVpnApiResponseUtils.queryPurchaseFailed(getActivity());
+            }
+        }
+    };
 
+    private void checkVpnAfterVerification() {
+        new Thread() {
+            @Override
+            public void run() {
                 Intent intent = GoBackend.VpnService.prepare(getActivity());
                 if (intent != null || !WireguardConfigUtils.isConfigExist(getActivity())) {
                     BraveVpnUtils.dismissProgressDialog();
                     BraveVpnUtils.openBraveVpnProfileActivity(getActivity());
                     return;
                 }
-
                 BraveVpnProfileUtils.getInstance().startVpn(getActivity());
-            } else {
-                BraveVpnApiResponseUtils.queryPurchaseFailed(getActivity());
             }
-        }
-    };
+        }.start();
+    }
 
     @Override
     public void onGetSubscriberCredential(String subscriberCredential, boolean isSuccess) {
@@ -395,6 +413,21 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             }
 
             new Handler().postDelayed(() -> {
+                stopStartConnection(braveVpnWireguardProfileCredentials);
+            }, timerCount);
+        } else {
+            Toast.makeText(getActivity(), R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG)
+                    .show();
+            BraveVpnUtils.dismissProgressDialog();
+            new Handler().post(() -> updateSummaries());
+        }
+    }
+
+    private void stopStartConnection(
+            BraveVpnWireguardProfileCredentials braveVpnWireguardProfileCredentials) {
+        new Thread() {
+            @Override
+            public void run() {
                 try {
                     if (BraveVpnProfileUtils.getInstance().isBraveVPNConnected(getActivity())) {
                         BraveVpnProfileUtils.getInstance().stopVpn(getActivity());
@@ -415,14 +448,9 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 mBraveVpnPrefModel.setApiAuthToken(
                         braveVpnWireguardProfileCredentials.getApiAuthToken());
                 BraveVpnPrefUtils.setPrefModel(mBraveVpnPrefModel);
-                new Handler().post(() -> updateSummaries());
-            }, timerCount);
-        } else {
-            Toast.makeText(getActivity(), R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG)
-                    .show();
-            BraveVpnUtils.dismissProgressDialog();
-            new Handler().post(() -> updateSummaries());
-        }
+                new Handler(Looper.getMainLooper()).post(() -> updateSummaries());
+            }
+        }.start();
     }
 
     @Override

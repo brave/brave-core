@@ -507,14 +507,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                     BraveVpnUtils.openBraveVpnProfileActivity(BraveActivity.this);
                 } else {
                     if (!mIsVerification) {
-                        Intent intent = GoBackend.VpnService.prepare(BraveActivity.this);
-                        if (intent != null
-                                || !WireguardConfigUtils.isConfigExist(getApplicationContext())) {
-                            BraveVpnUtils.dismissProgressDialog();
-                            BraveVpnUtils.openBraveVpnProfileActivity(BraveActivity.this);
-                            return;
-                        }
-                        BraveVpnProfileUtils.getInstance().startVpn(BraveActivity.this);
+                        checkForVpn();
                     } else {
                         mIsVerification = false;
                         if (BraveVpnProfileUtils.getInstance().isBraveVPNConnected(
@@ -549,6 +542,22 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             mIsVerification = false;
         }
     };
+
+    private void checkForVpn() {
+        new Thread() {
+            @Override
+            public void run() {
+                Intent intent = GoBackend.VpnService.prepare(BraveActivity.this);
+                if (intent != null
+                        || !WireguardConfigUtils.isConfigExist(getApplicationContext())) {
+                    BraveVpnUtils.dismissProgressDialog();
+                    BraveVpnUtils.openBraveVpnProfileActivity(BraveActivity.this);
+                    return;
+                }
+                BraveVpnProfileUtils.getInstance().startVpn(BraveActivity.this);
+            }
+        }.start();
+    }
 
     @Override
     public void onVerifyCredentials(String jsonVerifyCredentials, boolean isSuccess) {

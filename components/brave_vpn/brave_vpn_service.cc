@@ -1059,7 +1059,6 @@ void BraveVpnService::GetHostnamesForRegion(ResponseCallback callback,
   GURL base_url = GetURLWithPath(kVpnHost, kHostnameForRegion);
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("region", region);
-  dict.SetBoolKey("beta-capable", true);
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }

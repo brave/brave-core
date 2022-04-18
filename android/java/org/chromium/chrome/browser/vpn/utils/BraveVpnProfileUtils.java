@@ -22,11 +22,20 @@ import org.chromium.chrome.browser.vpn.wireguard.WireguardUtils;
 import org.chromium.ui.widget.Toast;
 
 public class BraveVpnProfileUtils {
-    private static BraveVpnProfileUtils sBraveVpnProfileUtils;
+    private static volatile BraveVpnProfileUtils sBraveVpnProfileUtils;
+    private static Object mutex = new Object();
+
+    private BraveVpnProfileUtils() {}
 
     public static BraveVpnProfileUtils getInstance() {
-        if (sBraveVpnProfileUtils == null) sBraveVpnProfileUtils = new BraveVpnProfileUtils();
-        return sBraveVpnProfileUtils;
+        BraveVpnProfileUtils result = sBraveVpnProfileUtils;
+        if (result == null) {
+            synchronized (mutex) {
+                result = sBraveVpnProfileUtils;
+                if (result == null) sBraveVpnProfileUtils = result = new BraveVpnProfileUtils();
+            }
+        }
+        return result;
     }
 
     public boolean isBraveVPNConnected(Context context) {

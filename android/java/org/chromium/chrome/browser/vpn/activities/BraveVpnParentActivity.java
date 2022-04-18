@@ -166,29 +166,40 @@ public abstract class BraveVpnParentActivity
                     braveVpnWireguardProfileCredentials.getApiAuthToken());
             BraveVpnPrefUtils.setPrefModel(mBraveVpnPrefModel);
 
-            try {
-                if (!WireguardConfigUtils.isConfigExist(getApplicationContext())) {
-                    WireguardConfigUtils.createConfig(getApplicationContext(),
-                            braveVpnWireguardProfileCredentials.getMappedIpv4Address(),
-                            mBraveVpnPrefModel.getHostname(),
-                            mBraveVpnPrefModel.getClientPrivateKey(),
-                            braveVpnWireguardProfileCredentials.getServerPublicKey());
-                }
-
-                Intent intent = GoBackend.VpnService.prepare(this);
-                if (intent != null) {
-                    intentActivityResultLauncher.launch(intent);
-                    return;
-                }
-                BraveVpnUtils.dismissProgressDialog();
-                BraveVpnProfileUtils.getInstance().startVpn(BraveVpnParentActivity.this);
-                finish();
-            } catch (Exception e) {
-                Log.e("BraveVPN", e.getMessage());
-            }
+            checkForVpn(braveVpnWireguardProfileCredentials, mBraveVpnPrefModel);
         } else {
             Toast.makeText(this, R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG).show();
             BraveVpnUtils.dismissProgressDialog();
         }
+    }
+
+    private void checkForVpn(
+            BraveVpnWireguardProfileCredentials braveVpnWireguardProfileCredentials,
+            BraveVpnPrefModel braveVpnPrefModel) {
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    if (!WireguardConfigUtils.isConfigExist(getApplicationContext())) {
+                        WireguardConfigUtils.createConfig(getApplicationContext(),
+                                braveVpnWireguardProfileCredentials.getMappedIpv4Address(),
+                                braveVpnPrefModel.getHostname(),
+                                braveVpnPrefModel.getClientPrivateKey(),
+                                braveVpnWireguardProfileCredentials.getServerPublicKey());
+                    }
+
+                    Intent intent = GoBackend.VpnService.prepare(BraveVpnParentActivity.this);
+                    if (intent != null) {
+                        intentActivityResultLauncher.launch(intent);
+                        return;
+                    }
+                    BraveVpnUtils.dismissProgressDialog();
+                    BraveVpnProfileUtils.getInstance().startVpn(BraveVpnParentActivity.this);
+                    finish();
+                } catch (Exception e) {
+                    Log.e("BraveVPN", e.getMessage());
+                }
+            }
+        }.start();
     }
 }
