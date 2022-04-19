@@ -113,7 +113,14 @@ function LineChart ({
           <ReferenceDot
             x={chartData[lastPoint].date.toString()}
             y={chartData[lastPoint].close}
-            shape={CustomReferenceDot}
+            shape={
+              <CustomReferenceDot
+                cx={chartData[lastPoint].date.toString()}
+                cy={chartData[lastPoint].close}
+                isAsset={isAsset}
+                isDown={isDown}
+              />
+            }
           />
         </AreaChart>
       </ResponsiveContainer>
