@@ -17,8 +17,6 @@
 #include "bat/ads/internal/federated/covariate_log_entry.h"
 #include "bat/ads/internal/federated/log_entries/ad_notification_clicked_covariate_log_entry.h"
 #include "bat/ads/internal/federated/log_entries/ad_notification_impression_served_at_covariate_log_entry.h"
-#include "bat/ads/internal/federated/log_entries/ad_notification_locale_country_at_time_of_serving_covariate_log_entry.h"
-#include "bat/ads/internal/federated/log_entries/ad_notification_number_of_tabs_opened_in_past_30_minutes_log_entry.h"
 #include "bat/ads/internal/federated/log_entries/average_clickthrough_rate.h"
 #include "bat/ads/internal/federated/log_entries/last_ad_notification_was_clicked.h"
 #include "bat/ads/internal/federated/log_entries/number_of_user_activity_events.h"
@@ -117,11 +115,6 @@ CovariateLogs::CovariateLogs() {
   DCHECK_EQ(g_covariate_logs, nullptr);
   g_covariate_logs = this;
 
-  SetCovariateLogEntry(
-      std::make_unique<
-          AdNotificationLocaleCountryAtTimeOfServingCovariateLogEntry>());
-  SetCovariateLogEntry(
-      std::make_unique<AdNotificationNumberOfTabsOpenedInPast30Minutes>());
   SetCovariateLogEntry(std::make_unique<LastAdNotificationWasClicked>());
 
   for (const auto& average_clickthrough_rate_time_window :

@@ -122,8 +122,6 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kTrue[] = "true";
-
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
 constexpr char kAdNotificationUrlPrefix[] = "https://www.brave.com/ads/?";
@@ -2180,70 +2178,6 @@ void AdsServiceImpl::LogTrainingInstance(
   // TODO(https://github.com/brave/brave-browser/issues/21189): Refactor DB to
   // use generic key/value schema across all data stores
   brave_federated::AdNotificationTimingTaskLog log;
-
-  for (const auto& covariate : training_instance->covariates) {
-    switch (covariate->covariate_type) {
-      case brave_federated::mojom::CovariateType::kAdNotificationWasClicked: {
-        DCHECK_EQ(brave_federated::mojom::DataType::kBool, covariate->data_type)
-            << "covariate type should be a bool";
-
-        bool value_as_bool = false;
-        if (covariate->value == kTrue) {
-          value_as_bool = true;
-        }
-
-        log.label = value_as_bool;
-        break;
-      }
-
-      case brave_federated::mojom::CovariateType::
-          kAdNotificationLocaleCountryAtTimeOfServing: {
-        DCHECK_EQ(brave_federated::mojom::DataType::kString,
-                  covariate->data_type)
-            << "covariate type should be a string";
-
-        log.locale = covariate->value;
-        break;
-      }
-
-      case brave_federated::mojom::CovariateType::
-          kAdNotificationImpressionServedAt: {
-        DCHECK_EQ(brave_federated::mojom::DataType::kDouble,
-                  covariate->data_type)
-            << "covariate type should be a double";
-
-        double value_as_double = 0.0;
-        if (!base::StringToDouble(covariate->value, &value_as_double)) {
-          NOTREACHED() << "Failed to convert covariate value to double";
-          break;
-        }
-
-        log.time = base::Time::FromDoubleT(value_as_double);
-        break;
-      }
-
-      case brave_federated::mojom::CovariateType::
-          kAdNotificationNumberOfTabsOpenedInPast30Minutes: {
-        DCHECK_EQ(brave_federated::mojom::DataType::kInt, covariate->data_type)
-            << "covariate type should be an int";
-
-        int value_as_int = 0;
-        if (!base::StringToInt(covariate->value, &value_as_int)) {
-          NOTREACHED() << "Failed to convert covariate value to int";
-          break;
-        }
-
-        log.number_of_tabs = value_as_int;
-        break;
-      }
-
-      default: {
-        VLOG(1) << covariate->covariate_type << " covariate unsupported";
-        break;
-      }
-    }
-  }
-
   auto callback =
       base::BindOnce(&AdsServiceImpl::OnLogTrainingInstance, AsWeakPtr());
   ad_notification_timing_data_store_->AddLog(log, std::move(callback));
