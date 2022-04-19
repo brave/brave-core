@@ -974,7 +974,7 @@ public class BraveNewTabPageLayout
                 mParentScrollView.post(() -> {
                     mContainer.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.VISIBLE);
-                    mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
+                    mParentScrollView.fullScroll(NestedScrollView.FOCUS_UP);
                 });
             }
         } else {
