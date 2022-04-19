@@ -52,6 +52,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class BraveVpnPreferences extends BravePreferenceFragment implements BraveVpnObserver {
+    private static final String TAG = "BraveVPN";
     public static final String PREF_VPN_SWITCH = "vpn_switch";
     public static final String PREF_SUBSCRIPTION_MANAGE = "subscription_manage";
     public static final String PREF_SUBSCRIPTION_STATUS = "subscription_status";
@@ -317,11 +318,6 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     }
 
     @Override
-    public void onInvalidateCredentials(String jsonInvalidateCredentials, boolean isSuccess) {
-        Log.e("BraveVPN", "Got reponse back from api");
-    }
-
-    @Override
     public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
         if (isSuccess && mBraveVpnPrefModel != null) {
             Long purchaseExpiry = BraveVpnUtils.getPurchaseExpiryDate(jsonResponse);
@@ -408,7 +404,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                             BraveVpnPrefUtils.getSubscriberCredential(),
                             BraveVpnPrefUtils.getApiAuthToken());
                 } catch (Exception ex) {
-                    Log.e("BraveVPN", ex.getMessage());
+                    Log.e(TAG, ex.getMessage());
                 }
             }
 
@@ -442,7 +438,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                     }
                     BraveVpnProfileUtils.getInstance().startVpn(getActivity());
                 } catch (Exception e) {
-                    Log.e("BraveVPN", e.getMessage());
+                    Log.e(TAG, e.getMessage());
                 }
                 mBraveVpnPrefModel.setClientId(braveVpnWireguardProfileCredentials.getClientId());
                 mBraveVpnPrefModel.setApiAuthToken(

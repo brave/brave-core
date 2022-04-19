@@ -114,10 +114,6 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         yearlySubscriptionAmountText.setText(
                 String.format(getResources().getString(R.string.yearly_subscription_amount),
                         yearlySkuDetails.getPrice()));
-        BraveVpnUtils.showProgressDialog(
-                BraveVpnPlansActivity.this, getResources().getString(R.string.vpn_connect_text));
-        mIsVerification = true;
-        verifySubscription();
     }
 
     @Override
@@ -162,6 +158,15 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         };
         mFirstRunFlowSequencer.start();
         onInitialLayoutInflationComplete();
+    }
+
+    @Override
+    public void finishNativeInitialization() {
+        super.finishNativeInitialization();
+        BraveVpnUtils.showProgressDialog(
+                BraveVpnPlansActivity.this, getResources().getString(R.string.vpn_connect_text));
+        mIsVerification = true;
+        verifySubscription();
     }
 
     @Override

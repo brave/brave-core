@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Random;
 
 public class BraveVpnUtils {
+    private static final String TAG = "BraveVPN";
     public static final String SUBSCRIPTION_PARAM_TEXT = "subscription";
     public static final String IAP_ANDROID_PARAM_TEXT = "iap-android";
     public static final String VERIFY_CREDENTIALS_FAILED = "verify_credentials_failed";
@@ -108,7 +109,7 @@ public class BraveVpnUtils {
                 }
             }
         } catch (JSONException e) {
-            Log.e("BraveVPN", "BraveVpnUtils -> getRegionForTimeZone JSONException error " + e);
+            Log.e(TAG, "BraveVpnUtils -> getRegionForTimeZone JSONException error " + e);
         }
         return "";
     }
@@ -135,7 +136,7 @@ public class BraveVpnUtils {
             }
             return new Pair<>(hostname.getString("hostname"), hostname.getString("display-name"));
         } catch (JSONException e) {
-            Log.e("BraveVPN", "BraveVpnUtils -> getHostnameForRegion JSONException error " + e);
+            Log.e(TAG, "BraveVpnUtils -> getHostnameForRegion JSONException error " + e);
         }
         return new Pair<String, String>("", "");
     }
@@ -154,8 +155,7 @@ public class BraveVpnUtils {
                             wireguardProfileCredentials.getString("server-public-key"));
             return braveVpnWireguardProfileCredentials;
         } catch (JSONException e) {
-            Log.e("BraveVPN",
-                    "BraveVpnUtils -> getWireguardProfileCredentials JSONException error " + e);
+            Log.e(TAG, "BraveVpnUtils -> getWireguardProfileCredentials JSONException error " + e);
         }
         return null;
     }
@@ -166,7 +166,7 @@ public class BraveVpnUtils {
             String expiryTimeInString = purchase.getString("expiryTimeMillis");
             return Long.parseLong(expiryTimeInString);
         } catch (JSONException | NumberFormatException e) {
-            Log.e("BraveVPN",
+            Log.e(TAG,
                     "BraveVpnUtils -> getPurchaseExpiryDate JSONException | NumberFormatException error "
                             + e);
         }
@@ -190,7 +190,7 @@ public class BraveVpnUtils {
                 vpnServerRegions.add(vpnServerRegion);
             }
         } catch (JSONException e) {
-            Log.e("BraveVPN", "BraveVpnUtils -> getServerLocations JSONException error " + e);
+            Log.e(TAG, "BraveVpnUtils -> getServerLocations JSONException error " + e);
         }
         return vpnServerRegions;
     }
@@ -224,7 +224,7 @@ public class BraveVpnUtils {
         try {
             WireguardConfigUtils.deleteConfig(activity);
         } catch (Exception ex) {
-            Log.e("BraveVPN", "resetProfileConfiguration : " + ex.getMessage());
+            Log.e(TAG, "resetProfileConfiguration : " + ex.getMessage());
         }
         BraveVpnPrefUtils.setHostname("");
         BraveVpnPrefUtils.setHostnameDisplay("");

@@ -18,8 +18,8 @@ brave_monochrome_public_apk_or_module_tmpl_loadable_modules = []
 brave_monochrome_public_apk_or_module_tmpl_secondary_abi_loadable_modules = []
 
 if (android_64bit_target_cpu) {
-  brave_monochrome_public_apk_or_module_tmpl_loadable_modules =
-    [ "$_lib_dir/$android_app_abi/libwg-go.so" ]
+  brave_monochrome_public_apk_or_module_tmpl_loadable_modules +=
+      [ "$_lib_dir/$android_app_abi/libwg-go.so" ]
   brave_monochrome_public_apk_or_module_tmpl_secondary_abi_loadable_modules +=
       [ "$_lib_dir/$android_app_secondary_abi/libwg-go.so" ]
 }

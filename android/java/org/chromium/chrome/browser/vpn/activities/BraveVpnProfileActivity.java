@@ -81,11 +81,6 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
                 BraveVpnUtils.openBraveVpnSupportActivity(BraveVpnProfileActivity.this);
             }
         });
-
-        if (getIntent() != null
-                && getIntent().getBooleanExtra(BraveVpnUtils.VERIFY_CREDENTIALS_FAILED, false)) {
-            verifySubscription();
-        }
     }
 
     @Override
@@ -106,6 +101,15 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         };
         mFirstRunFlowSequencer.start();
         onInitialLayoutInflationComplete();
+    }
+
+    @Override
+    public void finishNativeInitialization() {
+        super.finishNativeInitialization();
+        if (getIntent() != null
+                && getIntent().getBooleanExtra(BraveVpnUtils.VERIFY_CREDENTIALS_FAILED, false)) {
+            verifySubscription();
+        }
     }
 
     @Override

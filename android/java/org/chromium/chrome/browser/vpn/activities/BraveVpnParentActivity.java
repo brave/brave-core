@@ -41,6 +41,7 @@ import java.util.TimeZone;
 
 public abstract class BraveVpnParentActivity
         extends AsyncInitializationActivity implements BraveVpnObserver {
+    private static final String TAG = "BraveVPN";
     public boolean mIsVerification;
     private BraveVpnPrefModel mBraveVpnPrefModel;
 
@@ -59,7 +60,10 @@ public abstract class BraveVpnParentActivity
                     } else {
                         updateProfileView();
                     }
-                    Toast.makeText(this, "Permission cancelled", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,
+                                 getResources().getString(R.string.permission_was_cancelled),
+                                 Toast.LENGTH_SHORT)
+                            .show();
                 }
             });
 
@@ -197,7 +201,7 @@ public abstract class BraveVpnParentActivity
                     BraveVpnProfileUtils.getInstance().startVpn(BraveVpnParentActivity.this);
                     finish();
                 } catch (Exception e) {
-                    Log.e("BraveVPN", e.getMessage());
+                    Log.e(TAG, e.getMessage());
                 }
             }
         }.start();

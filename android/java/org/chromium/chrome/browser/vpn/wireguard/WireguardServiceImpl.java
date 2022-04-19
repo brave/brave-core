@@ -26,6 +26,7 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 public class WireguardServiceImpl
         extends WireguardService.Impl implements TunnelModel.TunnelStateUpdateListener {
+    private static final String TAG = "BraveVPN";
     private Backend mBackend;
     private TunnelModel mTunnelModel;
     private final IBinder mBinder = new LocalBinder();
@@ -61,10 +62,10 @@ public class WireguardServiceImpl
                     startVpn();
                 } catch (BackendException e) {
                     if (e.getReason() == BackendException.Reason.VPN_NOT_AUTHORIZED) {
-                        Log.e("BraveVPN", e.getReason().name());
+                        Log.e(TAG, e.getReason().name());
                     }
                 } catch (Exception e) {
-                    Log.e("BraveVPN", e.getMessage());
+                    Log.e(TAG, e.getMessage());
                 }
             }
         }.start();
