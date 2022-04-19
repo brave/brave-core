@@ -15,6 +15,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -2629,6 +2630,53 @@ TEST_F(KeyringServiceUnitTest, GetChecksumEthAddress) {
   EXPECT_EQ(GetChecksumEthAddress(&service, "hello"), "0x");
 }
 
+TEST_F(KeyringServiceUnitTest, SignTransactionByFilecoinKeyring) {
+  KeyringService service(json_rpc_service(), GetPrefs());
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(
+      brave_wallet::features::kBraveWalletFilecoinFeature);
+  ASSERT_FALSE(service.SignTransactionByFilecoinKeyring(nullptr));
+  auto transaction = FilTransaction::FromTxData(mojom::FilTxData::New(
+      "1", "2", "3", "4", "5", "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
+      "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6"));
+  ASSERT_FALSE(service.SignTransactionByFilecoinKeyring(&transaction.value()));
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  absl::optional<std::string> imported_account = ImportFilecoinAccount(
+      &service, "Imported Filecoin account 1",
+      // t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q
+      "7b2254797065223a22736563703235366b31222c22507269766174654b6579223a2257"
+      "6b4545645a45794235364b5168512b453338786a7663464c2b545a4842464e732b696a"
+      "58533535794b383d227d",
+      mojom::kFilecoinTestnet);
+  ASSERT_TRUE(imported_account);
+  EXPECT_EQ(*imported_account, "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
+
+  auto result = service.SignTransactionByFilecoinKeyring(&transaction.value());
+  ASSERT_TRUE(result);
+  std::string expected_result =
+      R"({
+      "Message": {
+        "From": "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
+        "GasFeeCap": "3",
+        "GasLimit": 4,
+        "GasPremium": "2",
+        "MethodNum": 0,
+        "Nonce": 1,
+        "Params": "",
+        "To": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
+        "Value": "6",
+        "Version": 0
+      },
+      "Signature": {
+        "Data": "nbzCnsLhMGfRUmjiGP4y6Y+PxpXpGgPEPEujf8filC0tbyN8ntEril1x7cCZWpWyDUFM/VhEWaaCPgHlOQkh1AA=",
+        "Type": 1
+      }
+    })";
+  EXPECT_EQ(base::JSONReader::Read(*result),
+            base::JSONReader::Read(expected_result));
+}
+
 TEST_F(KeyringServiceUnitTest, AddFilecoinAccounts) {
   KeyringService service(json_rpc_service(), GetPrefs());
   {
@@ -2637,9 +2685,8 @@ TEST_F(KeyringServiceUnitTest, AddFilecoinAccounts) {
     ASSERT_FALSE(AddAccount(&service, "FIL account1", mojom::CoinType::FIL));
     service.Reset();
   }
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(
-      brave_wallet::features::kBraveWalletFilecoinFeature);
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletFilecoinFeature};
 
   ASSERT_TRUE(CreateWallet(&service, "brave"));
 
@@ -2711,34 +2758,40 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
     const char* address;
     const char* private_key;
     // const char* public_key;
-  } imported_accounts[] = {
-    {"Imported Filecoin account 1",
-     "7b2254797065223a22736563703235366b31222c22507269766174654b6579223a22576b4"
-     "545645a45794235364b5168512b453338786a7663464c2b545a4842464e732b696a585335"
-     "35794b383d227d",
-     "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
-     "WkEEdZEyB56KQhQ+E38xjvcFL+TZHBFNs+ijXS55yK8="},
-    {"Imported Filecoin account 2",
-     "7b2254797065223a22736563703235366b31222c22507269766174654b6579223a22774d5"
-     "267766730734d6a764657356e32515472705a5658414c596a744d7036725156714d52535a"
-     "6a482f513d227d",
-     "t1par4kjqybnejlyuvpa3rodmluidq34ba6muafda",
-     "wMRgvg0sMjvFW5n2QTrpZVXALYjtMp6rQVqMRSZjH/Q="},
-    {"Imported Filecoin account 3",
-     "7b2254797065223a22736563703235366b31222c22507269766174654b6579223a22774e5"
-     "3667774514d2f466b665334423334496a475750343553546b2f737434304c724379433955"
-     "6a7761773d227d",
-     "t1zvggbhs5sxyeifzcrmik5oljbley7lvo57ovusy",
-     "wNSfwtQM/FkfS4B34IjGWP45STk/st40LrCyC9Ujwaw="}
-    ,
-    {"Imported Filecoin account 4",
-     "7b2254797065223a22626c73222c22507269766174654b6579223a2270536e7752332f385"
-     "5616b53516f777858742b345a75393257586d424d526e74716d6448696136724853453d22"
-     "7d",
-     "t3wwtato54ee5aod7j5uv2n75jpyn4hpwx3f2kx5cijtoxgytiul2dczrak3ghlbt5zjnj574"
-     "y3snhcb5bthva",
-     "pSnwR3/8UakSQowxXt+4Zu92WXmBMRntqmdHia6rHSE="}
-  };
+  } imported_accounts[] = {{"Imported Filecoin account 1",
+                            "7b2254797065223a22736563703235366b31222c2250726976"
+                            "6174654b6579223a22576b4"
+                            "545645a45794235364b5168512b453338786a7663464c2b545"
+                            "a4842464e732b696a585335"
+                            "35794b383d227d",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
+                            "WkEEdZEyB56KQhQ+E38xjvcFL+TZHBFNs+ijXS55yK8="},
+                           {"Imported Filecoin account 2",
+                            "7b2254797065223a22736563703235366b31222c2250726976"
+                            "6174654b6579223a22774d5"
+                            "267766730734d6a764657356e32515472705a5658414c596a7"
+                            "44d7036725156714d52535a"
+                            "6a482f513d227d",
+                            "t1par4kjqybnejlyuvpa3rodmluidq34ba6muafda",
+                            "wMRgvg0sMjvFW5n2QTrpZVXALYjtMp6rQVqMRSZjH/Q="},
+                           {"Imported Filecoin account 3",
+                            "7b2254797065223a22736563703235366b31222c2250726976"
+                            "6174654b6579223a22774e5"
+                            "3667774514d2f466b665334423334496a475750343553546b2"
+                            "f737434304c724379433955"
+                            "6a7761773d227d",
+                            "t1zvggbhs5sxyeifzcrmik5oljbley7lvo57ovusy",
+                            "wNSfwtQM/FkfS4B34IjGWP45STk/st40LrCyC9Ujwaw="},
+                           {"Imported Filecoin account 4",
+                            "7b2254797065223a22626c73222c22507269766174654b6579"
+                            "223a2270536e7752332f385"
+                            "5616b53516f777858742b345a75393257586d424d526e74716"
+                            "d6448696136724853453d22"
+                            "7d",
+                            "t3wwtato54ee5aod7j5uv2n75jpyn4hpwx3f2kx5cijtoxgyti"
+                            "ul2dczrak3ghlbt5zjnj574"
+                            "y3snhcb5bthva",
+                            "pSnwR3/8UakSQowxXt+4Zu92WXmBMRntqmdHia6rHSE="}};
   auto amount = sizeof(imported_accounts) / sizeof(imported_accounts[0]);
   for (size_t i = 0; i < amount; ++i) {
     absl::optional<std::string> address = ImportFilecoinAccount(

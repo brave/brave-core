@@ -8,6 +8,7 @@
 
 #include <string>
 #include "base/values.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -27,6 +28,12 @@ std::string getEstimateGas(const std::string& from_address,
                            uint64_t nonce,
                            const std::string& max_fee,
                            const std::string& value);
+// Returns Filecoin.ChainHead request.
+std::string getChainHead();
+// Returns Filecoin.StateSearchMsgLimited request.
+std::string getStateSearchMsgLimited(const std::string& cid, uint64_t period);
+// Returns Filecoin.MPoolPush request.
+absl::optional<std::string> getSendTransaction(const std::string& signed_tx);
 
 }  // namespace fil
 

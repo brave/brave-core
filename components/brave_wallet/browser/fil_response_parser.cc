@@ -55,4 +55,46 @@ bool ParseFilEstimateGas(const std::string& json,
   return true;
 }
 
+bool ParseFilGetChainHead(const std::string& json, uint64_t* height) {
+  base::Value result;
+  if (!height || !ParseResult(json, &result))
+    return false;
+  auto* height_value = result.FindStringKey("Height");
+  if (!height_value) {
+    return false;
+  }
+
+  return base::StringToUint64(*height_value, height);
+}
+
+// Returns parsed receipt exit code.
+bool ParseFilStateSearchMsgLimited(const std::string& json,
+                                   const std::string& cid,
+                                   int64_t* exit_code) {
+  base::Value result;
+  if (!exit_code || !ParseResult(json, &result) || !result.is_dict()) {
+    return false;
+  }
+  auto* cid_value = result.FindStringPath("Message./");
+  if (!cid_value || cid != *cid_value)
+    return false;
+  auto* code_value = result.FindStringPath("Receipt.ExitCode");
+  if (!code_value) {
+    return false;
+  }
+  return base::StringToInt64(*code_value, exit_code);
+}
+
+bool ParseSendFilecoinTransaction(const std::string& json, std::string* cid) {
+  base::Value result;
+  if (!cid || !ParseResult(json, &result))
+    return false;
+
+  auto* cid_value = result.FindStringKey("/");
+  if (!cid_value)
+    return false;
+  *cid = *cid_value;
+  return true;
+}
+
 }  // namespace brave_wallet

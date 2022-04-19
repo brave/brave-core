@@ -31,7 +31,7 @@ export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
         gasEstimation: undefined
       },
       ethTxData: {} as any,
-      filTxData: {} as any,
+      filTxData: undefined,
       solanaTxData: {} as any
     },
     txStatus: BraveWallet.TransactionStatus.Approved,

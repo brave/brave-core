@@ -180,4 +180,103 @@ TEST(FilResponseParserUnitTest, ParseFilEstimateGas) {
                                                  &gas_fee_cap, &gas_limit));
 }
 
+TEST(FilResponseParserUnitTest, ParseFilGetChainHead) {
+  uint64_t height = 0;
+  EXPECT_TRUE(brave_wallet::ParseFilGetChainHead(GetResponse(R"({
+        "Blocks":[],
+        "Cids": [{
+              "/": "bafy2bzaceauxm7waysuftonc4vod6wk4trdjx2ibw233dos6jcvkf5nrhflju"
+        }],
+        "Height": "18446744073709551615"
+      })"),
+                                                 &height));
+  EXPECT_EQ(height, 18446744073709551615u);
+  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(GetResponse(R"()"), &height));
+  EXPECT_FALSE(
+      brave_wallet::ParseFilGetChainHead(GetResponse(R"({})"), &height));
+  EXPECT_FALSE(
+      brave_wallet::ParseFilGetChainHead(GetResponse(R"({,})"), &height));
+  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(
+      GetResponse(R"({"Height": 11})"), &height));
+  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(
+      GetResponse(R"({"Height": "abc"})"), &height));
+  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(
+      GetResponse(R"({"Height": {}})"), &height));
+  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(
+      GetResponse(R"({"Height": []})"), &height));
+  EXPECT_FALSE(brave_wallet::ParseFilGetChainHead(
+      GetResponse(R"({"Height": ""})"), &height));
+}
+
+TEST(FilResponseParserUnitTest, ParseFilStateSearchMsgLimited) {
+  int64_t exit_code = -1;
+  EXPECT_TRUE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse(
+          "{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":\"" +
+          std::to_string(INT64_MAX) + "\"}}"),
+      "cid", &exit_code));
+  EXPECT_EQ(exit_code, INT64_MAX);
+  EXPECT_TRUE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse(
+          "{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":\"" +
+          std::to_string(INT64_MIN) + "\"}}"),
+      "cid", &exit_code));
+  EXPECT_EQ(exit_code, INT64_MIN);
+
+  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse(
+          "{\"Message\": {\"/\":\"cid\"},\"Receipt\": {\"ExitCode\":\"" +
+          std::to_string(INT64_MIN) + "\"}}"),
+      "anothercid", &exit_code));
+
+  EXPECT_FALSE(
+      brave_wallet::ParseFilStateSearchMsgLimited("", "cid", &exit_code));
+  EXPECT_FALSE(
+      brave_wallet::ParseFilStateSearchMsgLimited("{}", "cid", &exit_code));
+  EXPECT_FALSE(
+      brave_wallet::ParseFilStateSearchMsgLimited("{,}", "cid", &exit_code));
+  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse(R"({\"Message\": {\"/\":\"cid\"},"Receipt": {}})"), "cid",
+      &exit_code));
+  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse(R"({\"Message\": {\"/\":\"cid\"},"Receipt": []]})"), "cid",
+      &exit_code));
+  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse(
+          R"({\"Message\": {\"/\":\"cid\"},"Receipt": {"ExitCode": "a"}})"),
+      "cid", &exit_code));
+  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse(
+          R"({\"Message\": {\"/\":\"cid\"},"Receipt": {"ExitCode": []}})"),
+      "cid", &exit_code));
+  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(
+      GetResponse(
+          R"({\"Message\": {\"/\":\"cid\"},"Receipt": {"ExitCode": {}}})"),
+      "cid", &exit_code));
+  EXPECT_FALSE(brave_wallet::ParseFilStateSearchMsgLimited(GetResponse("null"),
+                                                           "cid", &exit_code));
+}
+
+TEST(FilResponseParserUnitTest, ParseSendFilecoinTransaction) {
+  std::string cid;
+  EXPECT_TRUE(brave_wallet::ParseSendFilecoinTransaction(GetResponse(R"({
+    "/": "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4"
+  })"),
+                                                         &cid));
+  EXPECT_EQ(cid,
+            "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4");
+
+  cid.clear();
+  EXPECT_FALSE(
+      brave_wallet::ParseSendFilecoinTransaction(GetResponse(R"({})"), &cid));
+  EXPECT_TRUE(cid.empty());
+
+  EXPECT_FALSE(brave_wallet::ParseSendFilecoinTransaction(
+      GetResponse(R"(broken)"), &cid));
+  EXPECT_TRUE(cid.empty());
+  EXPECT_FALSE(
+      brave_wallet::ParseSendFilecoinTransaction(GetResponse(""), &cid));
+  EXPECT_TRUE(cid.empty());
+}
+
 }  // namespace brave_wallet

@@ -459,7 +459,6 @@ export function refreshTransactionHistory (address?: string) {
     const freshTransactions: AccountTransactions = await accountsToUpdate.reduce(
       async (acc, account) => acc.then(async (obj) => {
         const { transactionInfos } = await txService.getAllTransactionInfo(account.coin, account.address)
-
         obj[account.address] = transactionInfos
         return obj
       }), Promise.resolve({}))
