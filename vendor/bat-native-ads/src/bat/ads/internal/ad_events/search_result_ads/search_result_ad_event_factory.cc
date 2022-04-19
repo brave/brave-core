@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_factory.h"
 
-#include "bat/ads/internal/ad_events/ad_event.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_clicked.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_served.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_viewed.h"
@@ -14,7 +13,7 @@
 namespace ads {
 namespace search_result_ads {
 
-std::unique_ptr<AdEvent<SearchResultAdInfo>> AdEventFactory::Build(
+std::unique_ptr<AdEventInterface<SearchResultAdInfo>> AdEventFactory::Build(
     const mojom::SearchResultAdEventType event_type) {
   switch (event_type) {
     case mojom::SearchResultAdEventType::kServed: {

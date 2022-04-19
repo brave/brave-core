@@ -8,7 +8,6 @@
 #include "base/check.h"
 #include "bat/ads/internal/account/deposits/deposit_builder.h"
 #include "bat/ads/internal/account/deposits/deposit_info.h"
-#include "bat/ads/internal/ad_events/ad_event.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ad_events/search_result_ads/search_result_ad_event_factory.h"

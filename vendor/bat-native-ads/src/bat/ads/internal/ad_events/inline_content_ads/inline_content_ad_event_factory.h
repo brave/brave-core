@@ -8,12 +8,10 @@
 
 #include <memory>
 
+#include "bat/ads/internal/ad_events/ad_event_interface.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-
-template <typename T>
-class AdEvent;
 
 struct InlineContentAdInfo;
 
@@ -21,7 +19,7 @@ namespace inline_content_ads {
 
 class AdEventFactory final {
  public:
-  static std::unique_ptr<AdEvent<InlineContentAdInfo>> Build(
+  static std::unique_ptr<AdEventInterface<InlineContentAdInfo>> Build(
       const mojom::InlineContentAdEventType event_type);
 };
 
